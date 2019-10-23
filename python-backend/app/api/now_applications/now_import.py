@@ -17,18 +17,34 @@ def Import(now_submission_message_id):
 
     return now_app
 
+
 def _import_camp_activities(a, s):
-    
+    if not s.cbsfreclamation or s.cbsfreclamationcost or s.campbuildstgetotaldistarea or s.fuellubstoreonsite is None:
+
+        camp = app_models.Camp(
+            now_application=a,
+            reclamation_description=s.cbsfreclamation,
+            reclamation_cost=s.cbsfreclamationcost,
+            total_disturbed_area=s.campbuildstgetotaldistarea,
+            total_disturbed_area_unit_type_code='HA',
+            has_fuel_stored=s.fuellubstoreonsite == 'Yes',
+        )
+
+        camp_detail = app_models.CampDetail()
+        camp.activity_details.append(camp_detail)
+
+        camp.save()
+
 
 def _import_now_details(a, s):
     a.now_message_id = s.messageid
     a.now_tracking_number = s.trackingnumber
 
     a.notice_of_work_type_code = code_lookup(app_models.NOWApplicationType,
-                                              s.noticeofworktype).notice_of_work_type_code
+                                             s.noticeofworktype).notice_of_work_type_code
 
     a.now_application_status_code = code_lookup(app_models.NOWApplicationStatus,
-                                                 s.status).now_application_status_code
+                                                s.status).now_application_status_code
     a.submitted_date = s.submitteddate
     a.received_date = s.receiveddate
     a.latitude = s.latitude

@@ -42,5 +42,7 @@ class NOWApplication(Base, AuditMixin):
     #placer_operations = db.relationship(
     #    'PlacerOperation', lazy='select', secondary='now_application_place_xref')
 
+    camps = db.relationship('Camp', lazy='selectin')
+
     def __repr__(self):
         return '<Application %r>' % self.application_guid
