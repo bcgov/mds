@@ -16,6 +16,25 @@ def transmogrify_now(now_submission_message_id):
     return now_app
 
 
+def _transmogrify_now_details(a, s):
+    a.now_message_id = s.messageid
+    a.now_tracking_number = s.trackingnumber
+    a.notice_of_work_type_code = code_lookup(app_models.NOWApplicationType,
+                                             s.noticeofworktype).notice_of_work_type_code
+
+    a.now_application_status_code = code_lookup(app_models.NOWApplicationStatus,
+                                                s.status).now_application_status_code
+    a.submitted_date = s.submitteddate
+    a.received_date = s.receiveddate
+    a.latitude = s.latitude
+    a.longitude = s.longitude
+    a.property_name = s.nameofproperty
+    a.tenure_number = s.tenurenumbers
+    a.proposed_start_date = s.proposedstartdate
+    a.proposed_end_date = s.proposedenddate
+    return
+
+
 def _transmogrify_camp_activities(a, s):
     if not s.cbsfreclamation or s.cbsfreclamationcost or s.campbuildstgetotaldistarea or s.fuellubstoreonsite is None:
 
@@ -50,23 +69,38 @@ def _transmogrify_camp_activities(a, s):
 
         a.camps.append(camp)
 
+    return
 
-def _transmogrify_now_details(a, s):
-    a.now_message_id = s.messageid
-    a.now_tracking_number = s.trackingnumber
-    a.notice_of_work_type_code = code_lookup(app_models.NOWApplicationType,
-                                             s.noticeofworktype).notice_of_work_type_code
 
-    a.now_application_status_code = code_lookup(app_models.NOWApplicationStatus,
-                                                s.status).now_application_status_code
-    a.submitted_date = s.submitteddate
-    a.received_date = s.receiveddate
-    a.latitude = s.latitude
-    a.longitude = s.longitude
-    a.property_name = s.nameofproperty
-    a.tenure_number = s.tenurenumbers
-    a.proposed_start_date = s.proposedstartdate
-    a.proposed_end_date = s.proposedenddate
+def _transmogrify_cut_lines_polarization_survey(a, s):
+    if not s.cutlinesreclamation or s.cutlinesreclamationcost or s.cutlinesexplgriddisturbedarea is None:
+
+        clps = app_models.CutLinesPolarizationSurvey(
+            reclamation_description=s.cutlinesreclamation,
+            reclamation_cost=s.cutlinesreclamationcost,
+            total_disturbed_area=s.cutlinesexplgriddisturbedarea,
+            total_disturbed_area_unit_type_code='HA')
+
+        if not s.cutlinesexplgridtotallinekms or s.cutlinesexplgridtimbervolume is None:
+            clps_detial = app_models.CutLinesPolarizationSurveyDetail(
+                cut_line_length=s.cutlinesexplgridtotallinekms,
+                timber_volume=s.cutlinesexplgridtimbervolume)
+            clps.details.append(clps_detial)
+
+        a.cut_lines_polarization_survey.append(clps)
+
+    return
+
+
+def _transmogrify_exploration_surface_drilling(a, s):
+    if not s.expsurfacedrillreclcorestorage or s.expsurfacedrillreclamation or s.expsurfacedrillreclamationcost or s.expsurfacedrilltotaldistarea is None:
+        esd = app_models.ExplorationSurfaceDrilling(
+            reclamation_description=s.expsurfacedrillreclamation,
+            reclamation_cost=s.expsurfacedrillreclamationcost,
+            total_disturbed_area=s.expsurfacedrilltotaldistarea,
+            reclamation_core_storage=s.expsurfacedrillreclcorestorage)
+
+        a.exploration_surface_drilling = esd
     return
 
 

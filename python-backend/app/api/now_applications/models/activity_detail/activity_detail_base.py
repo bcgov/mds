@@ -29,6 +29,7 @@ class ActivityDetailBase(AuditMixin, Base):
     incline = db.Column(db.Numeric(14, 2))
     incline_unit_type_code = db.Column(db.String, db.ForeignKey('unit_type.unit_type_code'))
     cut_line_length = db.Column(db.Integer)
+    # TODO: cut_line_unit_type_code?
     water_quantity = db.Column(db.Integer)
     water_quantity_unit_type_code = db.Column(db.String, db.ForeignKey('unit_type.unit_type_code'))
 

@@ -43,6 +43,8 @@ class NOWApplication(Base, AuditMixin):
     #    'PlacerOperation', lazy='select', secondary='now_application_place_xref')
 
     camps = db.relationship('Camp', lazy='selectin')
+    cut_lines_polarization_survey = db.relationship('CutLinesPolarizationSurvey', lazy='selectin')
+    exploration_surface_drilling = db.relationship('ExplorationSurfaceDrilling', lazy='selectin')
 
     def __repr__(self):
         return '<Application %r>' % self.application_guid
