@@ -7,15 +7,16 @@ from sqlalchemy.exc import SQLAlchemyError
 from flask_jwt_oidc.exceptions import AuthError
 
 from app.api.compliance.namespace import api as compliance_api
-from app.api.parties.namespace import api as parties_api
-from app.api.mines.namespace import api as mines_api
 from app.api.download_token.namespace import api as download_token_api
-from app.api.users.namespace import api as users_api
-from app.api.search.namespace import api as search_api
-from app.api.reporting.namespace import api as reporting_api
-from app.api.variances.namespace import api as variances_api
 from app.api.incidents.namespace import api as incidents_api
-from app.api.now_submissions.namespace import api as now_api
+from app.api.mines.namespace import api as mines_api
+from app.api.now_submissions.namespace import api as now_sub_api
+from app.api.now_applications.namespace import api as now_app_api
+from app.api.parties.namespace import api as parties_api
+from app.api.reporting.namespace import api as reporting_api
+from app.api.search.namespace import api as search_api
+from app.api.variances.namespace import api as variances_api
+from app.api.users.namespace import api as users_api
 
 from app.commands import register_commands
 from app.config import Config
@@ -79,7 +80,8 @@ def register_routes(app):
     api.add_namespace(variances_api)
     api.add_namespace(incidents_api)
     api.add_namespace(reporting_api)
-    api.add_namespace(now_api)
+    api.add_namespace(now_sub_api)
+    api.add_namespace(now_app_api)
 
     # Healthcheck endpoint
     @api.route('/health')
