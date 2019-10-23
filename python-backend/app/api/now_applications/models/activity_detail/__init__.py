@@ -1,5 +1,4 @@
 from .activity_detail_base import *
-from .blasting_operation_detail import *
 from .camp_detail import *
 from .cut_lines_polarization_survey_detail import *
 from .exploration_access_detail import *

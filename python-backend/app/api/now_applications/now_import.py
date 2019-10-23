@@ -24,10 +24,8 @@ def _transmogrify_camp_activities(a, s):
 def _transmogrify_now_details(a, s):
     a.now_message_id = s.messageid
     a.now_tracking_number = s.trackingnumber
-
     a.notice_of_work_type_code = code_lookup(app_models.NOWApplicationType,
                                              s.noticeofworktype).notice_of_work_type_code
-
     a.now_application_status_code = code_lookup(app_models.NOWApplicationStatus,
                                                 s.status).now_application_status_code
     a.submitted_date = s.submitteddate
