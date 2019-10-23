@@ -32,28 +32,28 @@ class Application(Base):
     messageid = db.Column(db.Integer, primary_key=True)
     application_guid = db.Column(UUID(as_uuid=True), nullable=False)
     mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine.mine_guid'))
-    trackingnumber = db.Column(db.Integer)
+    trackingnumber = db.Column(db.Integer)  #mapped
     applicationtype = db.Column(db.String)
-    status = db.Column(db.String)
-    submitteddate = db.Column(db.DateTime)
-    receiveddate = db.Column(db.DateTime)
+    status = db.Column(db.String)  #mapped
+    submitteddate = db.Column(db.DateTime)  #mapped
+    receiveddate = db.Column(db.DateTime)  #mapped
     applicantclientid = db.Column(db.Integer, db.ForeignKey('now_submissions.client.clientid'))
     submitterclientid = db.Column(db.Integer, db.ForeignKey('now_submissions.client.clientid'))
-    noticeofworktype = db.Column(db.String)
+    noticeofworktype = db.Column(db.String)  #mapped
     typeofpermit = db.Column(db.String)
     typeofapplication = db.Column(db.String)
-    minenumber = db.Column(db.String)
-    latitude = db.Column(db.Numeric(9, 7))
-    longitude = db.Column(db.Numeric(11, 7))
-    nameofproperty = db.Column(db.String)
-    tenurenumbers = db.Column(db.String)
+    minenumber = db.Column(db.String)  #NOT mapped
+    latitude = db.Column(db.Numeric(9, 7))  #mapped
+    longitude = db.Column(db.Numeric(11, 7))  #mapped
+    nameofproperty = db.Column(db.String)  #mapped
+    tenurenumbers = db.Column(db.String)  #mapped
     crowngrantlotnumbers = db.Column(db.String)
     sitedirections = db.Column(db.String)
     firstaidequipmentonsite = db.Column(db.String)
     firstaidcertlevel = db.Column(db.String)
     descexplorationprogram = db.Column(db.String)
-    proposedstartdate = db.Column(db.DateTime)
-    proposedenddate = db.Column(db.DateTime)
+    proposedstartdate = db.Column(db.DateTime)  #mapped
+    proposedenddate = db.Column(db.DateTime)  #mapped
     yearroundseasonal = db.Column(db.String)
     landcommunitywatershed = db.Column(db.String)
     landprivate = db.Column(db.String)
