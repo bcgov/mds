@@ -12,6 +12,7 @@ def transmogrify_now(now_submission_message_id):
         raise Exception('No NOW Submission with message_id')
     now_app = app_models.NOWApplication(mine_guid=now_sub.mine_guid)
     _transmogrify_camp_activities(now_app, now_sub)
+    _transmogrify_blasting_activities(now_app, now_sub)
     return now_app
 
 def _transmogrify_camp_activities(a, s):
@@ -34,3 +35,10 @@ def _transmogrify_now_details(a, s):
     a.tenure_number = s.tenurenumbers
     a.proposed_start_date = s.proposedstartdate
     a.proposed_end_date = s.proposedenddate
+
+def _transmogrify_blasting_activities(a, s):
+    blast_act = app_models.BlastingOperation(now_application=a)
+    blast_act.explosive_permit_issued = s.bcexplosivespermitissued == 'Yes'
+    blast_act.explosive_permit_number = s.bcexplosivespermitnumber
+    blast_act.explosive_permit_expiry_date = s.bcexplosivespermitexpiry
+    blast_act.has_storage_explosive_on_site = s.storeexplosivesonsite == 'Yes'
