@@ -15,18 +15,21 @@ def transmogrify_now(now_submission_message_id):
     _transmogrify_blasting_activities(now_app, now_sub)
     return now_app
 
+
 def _transmogrify_camp_activities(a, s):
-    
+    pass
+    return
+
 
 def _transmogrify_now_details(a, s):
     a.now_message_id = s.messageid
     a.now_tracking_number = s.trackingnumber
 
     a.notice_of_work_type_code = code_lookup(app_models.NOWApplicationType,
-                                              s.noticeofworktype).notice_of_work_type_code
+                                             s.noticeofworktype).notice_of_work_type_code
 
     a.now_application_status_code = code_lookup(app_models.NOWApplicationStatus,
-                                                 s.status).now_application_status_code
+                                                s.status).now_application_status_code
     a.submitted_date = s.submitteddate
     a.received_date = s.receiveddate
     a.latitude = s.latitude
@@ -35,6 +38,8 @@ def _transmogrify_now_details(a, s):
     a.tenure_number = s.tenurenumbers
     a.proposed_start_date = s.proposedstartdate
     a.proposed_end_date = s.proposedenddate
+    return
+
 
 def _transmogrify_blasting_activities(a, s):
     blast_act = app_models.BlastingOperation(now_application=a)
@@ -42,3 +47,4 @@ def _transmogrify_blasting_activities(a, s):
     blast_act.explosive_permit_number = s.bcexplosivespermitnumber
     blast_act.explosive_permit_expiry_date = s.bcexplosivespermitexpiry
     blast_act.has_storage_explosive_on_site = s.storeexplosivesonsite == 'Yes'
+    return
