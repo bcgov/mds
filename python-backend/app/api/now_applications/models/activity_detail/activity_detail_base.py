@@ -32,17 +32,14 @@ class ActivityDetailBase(AuditMixin, Base):
     water_quantity = db.Column(db.Integer)
     water_quantity_unit_type_code = db.Column(db.String, db.ForeignKey('unit_type.unit_type_code'))
 
-    #activity_type_code = 'hardcode'
-
-    activity_summaries = db.relationship('ActivitySummaryBase',
-                                         secondary='activity_summary_detail_xref')
+    activity_summaries = db.relationship(
+        'ActivitySummaryBase', secondary='activity_summary_detail_xref')
     activity_type_code = db.column_property(
         db.select(
             [ActivitySummaryBase.activity_type_code],
             and_(
-                ActivitySummaryDetailXref.activity_summary_id ==
-                ActivitySummaryBase.activity_summary_id,
+                ActivitySummaryDetailXref.activity_summary_id == ActivitySummaryBase.
+                activity_summary_id,
                 ActivitySummaryDetailXref.activity_detail_id == activity_detail_id)).as_scalar())
-    #activity_type_code = association_proxy('activity_summary', 'activity_type_code')
 
     __mapper_args__ = {'polymorphic_on': activity_type_code}
