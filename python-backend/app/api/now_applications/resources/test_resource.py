@@ -23,7 +23,7 @@ from app.api.now_applications.models.activity_summary.exploration_surface_drilli
 from app.api.now_applications.models.unit_type import UnitType
 from app.api.now_applications.models.activity_detail.exploration_surface_drilling_detail import ExplorationSurfaceDrillingDetail
 
-from app.api.now_applications.now_import import *
+from app.api.now_applications.now_import import transmogrify_now
 
 
 class NOWApplicationResource(Resource, UserMixin):
@@ -46,6 +46,6 @@ class NOWApplicationResource(Resource, UserMixin):
         submission = Application.query.filter_by(application_guid=application_guid).first()
         if not submission:
             raise NotFound('now submission with that guid')
-        application = Import(submission.messageid)
-
+        application = transmogrify_now(submission.messageid)
+        application.save()
         return {'CORE NOW APPLICATION GUID': application.now_application_id}
