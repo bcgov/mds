@@ -35,7 +35,7 @@ class ActivityDetailBase(AuditMixin, Base):
 
     activity_summaries = db.relationship(
         'ActivitySummaryBase', secondary='activity_summary_detail_xref')
-    is_existing = association_proxy('activity_summary_detail_xref', 'is_existing')
+    #is_existing = association_proxy('activity_summaries', 'is_existing')
 
     activity_type_code = db.column_property(
         db.select(

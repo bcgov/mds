@@ -26,6 +26,7 @@ def transmogrify_now(now_submission_message_id):
     _transmogrify_camp_activities(now_app, now_sub)
     _transmogrify_blasting_activities(now_app, now_sub)
     _transmogrify_sand_and_gravel_activities(now_app,now_sub)
+    _transmogrify_placer_operations(now_app,now_sub)
     return now_app
 
 
@@ -48,7 +49,7 @@ def _transmogrify_now_details(a, s):
 
 
 def _transmogrify_camp_activities(a, s):
-    if not s.cbsfreclamation or s.cbsfreclamationcost or s.campbuildstgetotaldistarea or s.fuellubstoreonsite is None:
+    if s.cbsfreclamation or s.cbsfreclamationcost or s.campbuildstgetotaldistarea or s.fuellubstoreonsite:
 
         camp = app_models.Camp(
             reclamation_description=s.cbsfreclamation,
@@ -58,34 +59,34 @@ def _transmogrify_camp_activities(a, s):
             has_fuel_stored=s.fuellubstoreonsite == 'Yes',
         )
 
-        if not s.campdisturbedarea or s.camptimbervolume is None:
+        if s.campdisturbedarea or s.camptimbervolume:
             camp_detail = app_models.CampDetail(
                 activity_type_description='Camps',
                 disturbed_area=s.campdisturbedarea,
                 timber_volume=s.camptimbervolume)
             camp.details.append(camp_detail)
 
-        if not s.bldgdisturbedarea or s.bldgtimbervolume is None:
+        if s.bldgdisturbedarea or s.bldgtimbervolume:
             camp_detail = app_models.CampDetail(
                 activity_type_description='Buildings',
                 disturbed_area=s.bldgdisturbedarea,
                 timber_volume=s.bldgtimbervolume)
             camp.details.append(camp_detail)
 
-        if not s.stgedisturbedarea or s.stgetimbervolume is None:
+        if s.stgedisturbedarea or s.stgetimbervolume:
             camp_detail = app_models.CampDetail(
                 activity_type_description='Staging Area',
                 disturbed_area=s.stgedisturbedarea,
                 timber_volume=s.stgetimbervolume)
             camp.details.append(camp_detail)
 
-        a.camps.append(camp)
+        a.camps = camp
 
     return
 
 
 def _transmogrify_cut_lines_polarization_survey(a, s):
-    if not s.cutlinesreclamation or s.cutlinesreclamationcost or s.cutlinesexplgriddisturbedarea is None:
+    if s.cutlinesreclamation or s.cutlinesreclamationcost or s.cutlinesexplgriddisturbedarea:
 
         clps = app_models.CutLinesPolarizationSurvey(
             reclamation_description=s.cutlinesreclamation,
@@ -93,19 +94,19 @@ def _transmogrify_cut_lines_polarization_survey(a, s):
             total_disturbed_area=s.cutlinesexplgriddisturbedarea,
             total_disturbed_area_unit_type_code='HA')
 
-        if not s.cutlinesexplgridtotallinekms or s.cutlinesexplgridtimbervolume is None:
+        if s.cutlinesexplgridtotallinekms or s.cutlinesexplgridtimbervolume:
             clps_detial = app_models.CutLinesPolarizationSurveyDetail(
                 cut_line_length=s.cutlinesexplgridtotallinekms,
                 timber_volume=s.cutlinesexplgridtimbervolume)
             clps.details.append(clps_detial)
 
-        a.cut_lines_polarization_survey.append(clps)
+        a.cut_lines_polarization_survey = clps
 
     return
 
 
 def _transmogrify_exploration_surface_drilling(a, s):
-    if not s.expsurfacedrillreclcorestorage or s.expsurfacedrillreclamation or s.expsurfacedrillreclamationcost or s.expsurfacedrilltotaldistarea is None:
+    if s.expsurfacedrillreclcorestorage or s.expsurfacedrillreclamation or s.expsurfacedrillreclamationcost or s.expsurfacedrilltotaldistarea:
         esd = app_models.ExplorationSurfaceDrilling(
             reclamation_description=s.expsurfacedrillreclamation,
             reclamation_cost=s.expsurfacedrillreclamationcost,
@@ -126,7 +127,7 @@ def _transmogrify_exploration_surface_drilling(a, s):
 
 
 def _transmogrify_mechanical_trenching(a, s):
-    if not s.mechtrenchingreclamation or s.mechtrenchingreclamationcost or s.mechtrenchingtotaldistarea is None:
+    if s.mechtrenchingreclamation or s.mechtrenchingreclamationcost or s.mechtrenchingtotaldistarea:
         mech = app_models.MechanicalTrenching(
             reclamation_description=s.mechtrenchingreclamation,
             reclamation_cost=s.mechtrenchingreclamationcost,
@@ -141,7 +142,7 @@ def _transmogrify_mechanical_trenching(a, s):
                 timber_volume=sd.timbervolume)
             mech.details.append(mech_detail)
 
-        a.mechanical_trenching.append(mech)
+        a.mechanical_trenching = mech
     return
 
 
@@ -152,8 +153,8 @@ def _transmogrify_placer_operations(a, s):
             reclamation_cost=s.placerreclamationcost,
             total_disturbed_area=s.placerreclamationarea,
             total_disturbed_area_unit_type_code='HA',
-            is_underground_placer_operations=s.placerundergroundoperations == 'Yes',
-            is_hand_operations=s.placerhandoperations == 'Yes')
+            is_underground=s.placerundergroundoperations == 'Yes',
+            is_hand_operation=s.placerhandoperations == 'Yes')
 
         for proposed_placer_activity in s.proposed_placer_activity:
             proposed_placer_detail = app_models.PlacerOperationDetail(
@@ -163,8 +164,7 @@ def _transmogrify_placer_operations(a, s):
                 width=proposed_placer_activity.width,
                 length=proposed_placer_activity.length,
                 depth=proposed_placer_activity.depth,
-                quantity=proposed_placer_activity.quantity,
-                is_existing=False)
+                quantity=proposed_placer_activity.quantity)
             placer.details.append(proposed_placer_detail)
 
         for existing_placer_activity in s.existing_placer_activity:
@@ -179,8 +179,7 @@ def _transmogrify_placer_operations(a, s):
                     width=existing_placer_activity.width,
                     length=existing_placer_activity.length,
                     depth=existing_placer_activity.depth,
-                    quantity=existing_placer_activity.quantity
-                    is_existing=True)
+                    quantity=existing_placer_activity.quantity)
 
             placer.details.append(existing_placer_detail)
 
