@@ -98,7 +98,7 @@ def _transmogrify_exploration_surface_drilling(a, s):
             reclamation_description=s.expsurfacedrillreclamation,
             reclamation_cost=s.expsurfacedrillreclamationcost,
             total_disturbed_area=s.expsurfacedrilltotaldistarea,
-            reclamation_core_storage=s.expsurfacedrillreclcorestorage
+            reclamation_core_storage=s.expsurfacedrillreclcorestorage,
             total_disturbed_area_unit_type_code='HA')
 
         for sd in s.exp_surface_drill_activity:
