@@ -3,12 +3,17 @@ from app.api.now_submissions import models as sub_models
 
 from flask import current_app
 
+unit_type_map = {'m3' : 'Meters cubed',
+'tonnes': 'Tonne (Metric Ton 1000Kg)',
+'m3/year' : 'Meters cubed',
+'tonnes/year' :'Tonne (Metric Ton 1000Kg)'}
+
 
 def code_lookup(model, description):
     row = model.query.filter_by(description=description).first()
     if not row:
         raise Exception(
-            f'Code description "{description}" not found on table "{model.__classname__}"')
+            f'Code description "{description}" not found on table "{model.__name__}"')
     return row
 
 
@@ -20,6 +25,7 @@ def transmogrify_now(now_submission_message_id):
     _transmogrify_now_details(now_app, now_sub)
     _transmogrify_camp_activities(now_app, now_sub)
     _transmogrify_blasting_activities(now_app, now_sub)
+    _transmogrify_sand_and_gravel_activities(now_app,now_sub)
     return now_app
 
 
@@ -140,7 +146,7 @@ def _transmogrify_mechanical_trenching(a, s):
 
 
 def _transmogrify_placer_operations(a, s):
-    if not s.placerundergroundoperations or s.placerhandoperations or s.placerhandoperations or s.placerreclamationarea or s.placerreclamation or s.placerreclamationcost is None:
+    if s.placerundergroundoperations or s.placerhandoperations or s.placerhandoperations or s.placerreclamationarea or s.placerreclamation or s.placerreclamationcost:
         placer = app_models.PlacerOperation(
             reclamation_description=s.placerreclamation,
             reclamation_cost=s.placerreclamationcost,
@@ -178,14 +184,63 @@ def _transmogrify_placer_operations(a, s):
 
             placer.details.append(existing_placer_detail)
 
-        a.placer_operations.append(placer)
+        a.placer_operation = placer
     return
 
 
 def _transmogrify_blasting_activities(a, s):
-    blast_act = app_models.BlastingOperation(now_application=a)
-    blast_act.explosive_permit_issued = s.bcexplosivespermitissued == 'Yes'
-    blast_act.explosive_permit_number = s.bcexplosivespermitnumber
-    blast_act.explosive_permit_expiry_date = s.bcexplosivespermitexpiry
-    blast_act.has_storage_explosive_on_site = s.storeexplosivesonsite == 'Yes'
+    if s.bcexplosivespermitissued or s.bcexplosivespermitnumber or s.bcexplosivespermitexpiry or s.storeexplosivesonsite:
+        a.blasting = app_models.BlastingOperation(
+            explosive_permit_issued=s.bcexplosivespermitissued == 'Yes',
+            explosive_permit_number=s.bcexplosivespermitnumber,
+            explosive_permit_expiry_date=s.bcexplosivespermitexpiry,
+            has_storage_explosive_on_site=s.storeexplosivesonsite == 'Yes')
+    return
+
+
+def _transmogrify_sand_and_gravel_activities(a, s):
+
+    if (s.sandgrvqrydepthoverburden or s.sandgrvqrydepthtopsoil or s.sandgrvqrystabilizemeasures
+            or s.sandgrvqrywithinaglandres or s.sandgrvqryalrpermitnumber
+            or s.sandgrvqrylocalgovsoilrembylaw or s.sandgrvqryofficialcommplan
+            or s.sandgrvqrylandusezoning or s.sandgrvqryendlanduse or s.sandgrvqrytotalmineres
+            or s.sandgrvqrytotalmineresunits or s.sandgrvqryannualextrest
+            or s.sandgrvqryannualextrestunits or s.sandgrvqryreclamation
+            or s.sandgrvqryreclamationbackfill or s.sandgrvqryreclamationcost
+            or s.sandgrvqrygrdwtravgdepth or s.sandgrvqrygrdwtrexistingareas
+            or s.sandgrvqrygrdwtrtestpits or s.sandgrvqrygrdwtrtestwells or s.sandgrvqrygrdwtrother
+            or s.sandgrvqrygrdwtrmeasprotect or s.sandgrvqryimpactdistres
+            or s.sandgrvqryimpactdistwater or s.sandgrvqryimpactnoise
+            or s.sandgrvqryimpactprvtaccess or s.sandgrvqryimpactprevtdust
+            or s.sandgrvqryimpactminvisual):
+        a.sand_and_gravel = app_models.SandGravelQuarryOperation(
+            average_overburden_depth=s.sandgrvqrydepthoverburden,
+            average_top_soil_depth=s.sandgrvqrydepthtopsoil,
+            stability_measures_description=s.sandgrvqrystabilizemeasures,
+            is_agricultural_land_reserve=s.sandgrvqrywithinaglandres == 'Yes',
+            agri_lnd_rsrv_permit_application_number=s.sandgrvqryalrpermitnumber,
+            has_local_soil_removal_bylaw=s.sandgrvqrylocalgovsoilrembylaw == 'Yes',
+            community_plan=s.sandgrvqryofficialcommplan,
+            land_use_zoning=s.sandgrvqrylandusezoning,
+            proposed_land_use=s.sandgrvqryendlanduse,
+            total_minable_reserves=s.sandgrvqrytotalmineres,
+            total_minable_reserves_unit_type_code=code_lookup(app_models.UnitType, unit_type_map[s.sandgrvqrytotalmineresunits]).unit_type_code,
+            total_annual_extraction=s.sandgrvqryannualextrest,
+            total_annual_extraction_unit_type_code=code_lookup(app_models.UnitType,unit_type_map[s.sandgrvqryannualextrestunits]).unit_type_code,
+            reclamation_description=s.sandgrvqryreclamation,
+            reclamation_backfill_detail=s.sandgrvqryreclamationbackfill,
+            reclamation_cost=s.sandgrvqryreclamationcost,
+            average_groundwater_depth=s.sandgrvqrygrdwtravgdepth,
+            has_groundwater_from_existing_area=s.sandgrvqrygrdwtrexistingareas == 'Yes',
+            has_groundwater_from_test_pits=s.sandgrvqrygrdwtrtestpits == 'Yes',
+            has_groundwater_from_test_wells=s.sandgrvqrygrdwtrtestwells == 'Yes',
+            groundwater_from_other_description=s.sandgrvqrygrdwtrother,
+            groundwater_protection_plan=s.sandgrvqrygrdwtrmeasprotect,
+            nearest_residence_distance=s.sandgrvqryimpactdistres,
+            nearest_water_source_distance=s.sandgrvqryimpactdistwater,
+            noise_impact_plan=s.sandgrvqryimpactnoise,
+            secure_access_plan=s.sandgrvqryimpactprvtaccess,
+            dust_impact_plan=s.sandgrvqryimpactprevtdust,
+            visual_impact_plan=s.sandgrvqryimpactminvisual)
+
     return

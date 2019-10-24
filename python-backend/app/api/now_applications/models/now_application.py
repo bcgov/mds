@@ -41,7 +41,9 @@ class NOWApplication(Base, AuditMixin):
     cut_lines_polarization_survey = db.relationship('CutLinesPolarizationSurvey', lazy='selectin')
     exploration_surface_drilling = db.relationship('ExplorationSurfaceDrilling', lazy='selectin')
     mechanical_trenching = db.relationship('MechanicalTrenching', lazy='selectin')
-    placer_operations = db.relationship('PlacerOperation', lazy='selectin')
+    placer_operations = db.relationship('PlacerOperation', lazy='selectin', uselist=False)
+    blasting = db.relationship('BlastingOperation', lazy='selectin', uselist=False)
+    sand_and_gravel = db.relationship('SandGravelQuarryOperation', lazy='selectin', uselist=False)
 
     def __repr__(self):
         return '<Application %r>' % self.application_guid
