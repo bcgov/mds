@@ -53,21 +53,24 @@ def _transmogrify_camp_activities(a, s):
         )
 
         if not s.campdisturbedarea or s.camptimbervolume is None:
-            camp_detail = app_models.CampDetail(activity_type_description='Camps',
-                                                disturbed_area=s.campdisturbedarea,
-                                                timber_volume=s.camptimbervolume)
+            camp_detail = app_models.CampDetail(
+                activity_type_description='Camps',
+                disturbed_area=s.campdisturbedarea,
+                timber_volume=s.camptimbervolume)
             camp.details.append(camp_detail)
 
         if not s.bldgdisturbedarea or s.bldgtimbervolume is None:
-            camp_detail = app_models.CampDetail(activity_type_description='Buildings',
-                                                disturbed_area=s.bldgdisturbedarea,
-                                                timber_volume=s.bldgtimbervolume)
+            camp_detail = app_models.CampDetail(
+                activity_type_description='Buildings',
+                disturbed_area=s.bldgdisturbedarea,
+                timber_volume=s.bldgtimbervolume)
             camp.details.append(camp_detail)
 
         if not s.stgedisturbedarea or s.stgetimbervolume is None:
-            camp_detail = app_models.CampDetail(activity_type_description='Staging Area',
-                                                disturbed_area=s.stgedisturbedarea,
-                                                timber_volume=s.stgetimbervolume)
+            camp_detail = app_models.CampDetail(
+                activity_type_description='Staging Area',
+                disturbed_area=s.stgedisturbedarea,
+                timber_volume=s.stgetimbervolume)
             camp.details.append(camp_detail)
 
         a.camps.append(camp)
@@ -118,16 +121,18 @@ def _transmogrify_exploration_surface_drilling(a, s):
 
 def _transmogrify_mechanical_trenching(a, s):
     if not s.mechtrenchingreclamation or s.mechtrenchingreclamationcost or s.mechtrenchingtotaldistarea is None:
-        mech = app_models.MechanicalTrenching(reclamation_description=s.mechtrenchingreclamation,
-                                              reclamation_cost=s.mechtrenchingreclamationcost,
-                                              total_disturbed_area=s.mechtrenchingtotaldistarea,
-                                              total_disturbed_area_unit_type_code='HA')
+        mech = app_models.MechanicalTrenching(
+            reclamation_description=s.mechtrenchingreclamation,
+            reclamation_cost=s.mechtrenchingreclamationcost,
+            total_disturbed_area=s.mechtrenchingtotaldistarea,
+            total_disturbed_area_unit_type_code='HA')
 
         for sd in s.mech_trenching_activity:
-            mech_detail = app_models.MechanicalTrenchingDetail(activity_type_description=sd.type,
-                                                               number_of_sites=sd.numberofsites,
-                                                               disturbed_area=sd.disturbedarea,
-                                                               timber_volume=sd.timbervolume)
+            mech_detail = app_models.MechanicalTrenchingDetail(
+                activity_type_description=sd.type,
+                number_of_sites=sd.numberofsites,
+                disturbed_area=sd.disturbedarea,
+                timber_volume=sd.timbervolume)
             mech.details.append(mech_detail)
 
         a.mechanical_trenching.append(mech)
@@ -144,19 +149,34 @@ def _transmogrify_placer_operations(a, s):
             is_underground_placer_operations=s.placerundergroundoperations == 'Yes',
             is_hand_operations=s.placerhandoperations == 'Yes')
 
-        for sd in s.proposed_placer_activity:
-            placer_detail = app_models.PlacerOperationDetail(activity_type_description=s.type,
-                                                             disturbed_area=sd.disturbedarea,
-                                                             timber_volume=sd.timbervolume,
-                                                             width=sd.width,
-                                                             length=sd.length,
-                                                             depth=sd.depth,
-                                                             quantity=sd.quantity)
-            placer.details.append(placer_detail)
+        for proposed_placer_activity in s.proposed_placer_activity:
+            proposed_placer_detail = app_models.PlacerOperationDetail(
+                activity_type_description=proposed_placer_activity.type,
+                disturbed_area=proposed_placer_activity.disturbedarea,
+                timber_volume=proposed_placer_activity.timbervolume,
+                width=proposed_placer_activity.width,
+                length=proposed_placer_activity.length,
+                depth=proposed_placer_activity.depth,
+                quantity=proposed_placer_activity.quantity,
+                is_existing=False)
+            placer.details.append(proposed_placer_detail)
 
-        for s_detail in s.existing_placer_activity:
-            # TODO: barf
-            pass
+        for existing_placer_activity in s.existing_placer_activity:
+            existing_placer_detail = app_models.ETLActivityDetail.query.filter_by(
+                placeractivityid=existing_placer_activity.placeractivityid).first()
+
+            if not existing_placer_detail:
+                existing_placer_detail = app_models.PlacerOperationDetail(
+                    activity_type_description=existing_placer_activity.type,
+                    disturbed_area=existing_placer_activity.disturbedarea,
+                    timber_volume=existing_placer_activity.timbervolume,
+                    width=existing_placer_activity.width,
+                    length=existing_placer_activity.length,
+                    depth=existing_placer_activity.depth,
+                    quantity=existing_placer_activity.quantity
+                    is_existing=True)
+
+            placer.details.append(existing_placer_detail)
 
         a.placer_operations.append(placer)
     return
