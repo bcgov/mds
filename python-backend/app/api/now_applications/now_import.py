@@ -26,6 +26,7 @@ def transmogrify_now(now_submission_message_id):
     _transmogrify_camp_activities(now_app, now_sub)
     _transmogrify_blasting_activities(now_app, now_sub)
     _transmogrify_sand_and_gravel_activities(now_app,now_sub)
+    _transmogrify_surface_bulk_sample(now_app,now_sub)
     return now_app
 
 
@@ -223,4 +224,18 @@ def _transmogrify_sand_and_gravel_activities(a, s):
             dust_impact_plan=s.sandgrvqryimpactprevtdust,
             visual_impact_plan=s.sandgrvqryimpactminvisual)
 
+    return
+
+def _transmogrify_surface_bulk_sample(a, s):
+    if (s.surfacebulksampleprocmethods or s.surfacebulksamplereclsephandl or s.surfacebulksamplereclamation
+            or s.surfacebulksamplerecldrainmiti or s.surfacebulksamplereclcost
+            or s.surfacebulksampletotaldistarea):
+        a.surface_bulk_sample = app_models.SurfaceBulkSample(
+            reclamation_description=s.surfacebulksamplereclamation,
+            reclamation_cost=s.surfacebulksamplereclcost,
+            total_disturbed_area=s.surfacebulksampletotaldistarea,
+            total_disturbed_area_unit_type_code='HA',
+            processing_method_description=s.surfacebulksampleprocmethods,
+            handling_instructions=s.surfacebulksamplereclsephandl,
+            drainage_mitigation_description=s.surfacebulksamplerecldrainmiti)
     return
