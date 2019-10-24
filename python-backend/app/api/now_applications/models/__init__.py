@@ -7,3 +7,4 @@ from .now_application_status import NOWApplicationStatus
 from .now_application_document_type import NOWApplicationDocumentType
 from .now_application_document_xref import NOWApplicationDocumentXref
 from .blasting_operation import BlastingOperation
+from .unit_type import UnitType

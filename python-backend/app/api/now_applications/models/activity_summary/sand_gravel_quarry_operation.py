@@ -26,8 +26,8 @@ class SandGravelQuarryOperation(ActivitySummaryBase):
     community_plan = db.Column(db.String)
     land_use_zoning = db.Column(db.String)
     proposed_land_use = db.Column(db.String)
-    total_mineable_reserves = db.Column(db.Integer)
-    total_mineable_reserves_unit_type_code = db.Column(db.String,
+    total_minable_reserves = db.Column(db.Integer)
+    total_minable_reserves_unit_type_code = db.Column(db.String,
                                                        db.ForeignKey('unit_type.unit_type_code'),
                                                        nullable=False)
     total_annual_extraction = db.Column(db.Integer)
@@ -52,7 +52,11 @@ class SandGravelQuarryOperation(ActivitySummaryBase):
     dust_impact_plan = db.Column(db.String)
     visual_impact_plan = db.Column(db.String)
 
-    details = db.relationship('SandGravelQuarryOperationDetail', secondary='activity_summary_detail_xref')
+    reclamation_backfill_detail = db.Column(db.String)
+
+    details = db.relationship('SandGravelQuarryOperationDetail',
+                              secondary='activity_summary_detail_xref')
+
 
 def __repr__(self):
     return '<SandGravelQuarryOperation %r>' % self.activity_id
