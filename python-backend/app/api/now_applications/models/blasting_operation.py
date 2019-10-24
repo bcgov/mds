@@ -8,10 +8,12 @@ from app.extensions import db
 from app.api.now_applications.models.activity_summary.activity_summary_base import ActivitySummaryBase
 
 
-class BlastingOperation(AuditMixin, Base):
+class BlastingOperation(Base):
     __tablename__ = "blasting_operation"
 
-    now_application_id = db.Column(db.Integer, db.ForeignKey('now_application.now_application_id'))
+    now_application_id = db.Column(db.Integer,
+                                   db.ForeignKey('now_application.now_application_id'),
+                                   primary_key=True)
     now_application = db.relationship('NOWApplication')
 
     has_storage_explosive_on_site = db.Column(db.Boolean,

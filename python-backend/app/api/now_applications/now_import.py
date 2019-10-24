@@ -135,7 +135,7 @@ def _transmogrify_mechanical_trenching(a, s):
 
 
 def _transmogrify_placer_operations(a, s):
-    if not s.placerundergroundoperations or s.placerhandoperations or s.placerhandoperations or s.placerreclamationarea or s.placerreclamation or s.placerreclamationcost is None:
+    if s.placerundergroundoperations or s.placerhandoperations or s.placerhandoperations or s.placerreclamationarea or s.placerreclamation or s.placerreclamationcost:
         placer = app_models.PlacerOperation(
             reclamation_description=s.placerreclamation,
             reclamation_cost=s.placerreclamationcost,
@@ -158,14 +158,16 @@ def _transmogrify_placer_operations(a, s):
             # TODO: barf
             pass
 
-        a.placer_operations.append(placer)
+        a.placer_operation = placer
     return
 
 
 def _transmogrify_blasting_activities(a, s):
-    blast_act = app_models.BlastingOperation(now_application=a)
-    blast_act.explosive_permit_issued = s.bcexplosivespermitissued == 'Yes'
-    blast_act.explosive_permit_number = s.bcexplosivespermitnumber
-    blast_act.explosive_permit_expiry_date = s.bcexplosivespermitexpiry
-    blast_act.has_storage_explosive_on_site = s.storeexplosivesonsite == 'Yes'
+    #raise Exception(s.__dict__)
+    if s.bcexplosivespermitissued or s.bcexplosivespermitnumber or s.bcexplosivespermitexpiry or s.storeexplosivesonsite:
+        a.blasting = app_models.BlastingOperation(
+            explosive_permit_issued=s.bcexplosivespermitissued == 'Yes',
+            explosive_permit_number=s.bcexplosivespermitnumber,
+            explosive_permit_expiry_date=s.bcexplosivespermitexpiry,
+            has_storage_explosive_on_site=s.storeexplosivesonsite == 'Yes')
     return
