@@ -14,6 +14,7 @@ class ExplorationAccess(ActivitySummaryBase):
     }
 
     ## NO TABLE FOR THIS TYPE
+    details = db.relationship('ExplorationAccessDetail', secondary='activity_summary_detail_xref')
 
     def __repr__(self):
         return '<ExplorationAccess %r>' % self.activity_summary_id

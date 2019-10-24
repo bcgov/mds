@@ -26,5 +26,8 @@ class UndergroundExploration(ActivitySummaryBase):
     total_waste_amount_unit_type_code = db.Column(db.String,
                                                   db.ForeignKey('unit_type.unit_type_code'))
 
+    details = db.relationship(
+        'UndergroundExplorationDetail', secondary='activity_summary_detail_xref')
+
     def __repr__(self):
         return '<UndergroundExploration %r>' % self.activity_summary_id

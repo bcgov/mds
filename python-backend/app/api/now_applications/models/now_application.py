@@ -36,15 +36,12 @@ class NOWApplication(Base, AuditMixin):
     proposed_start_date = db.Column(db.Date)
     proposed_end_date = db.Column(db.Date)
 
-    exploration_access_acts = db.relationship('ExplorationAccess', lazy='joined')
-    exploration_surface_drilling_acts = db.relationship('ExplorationSurfaceDrilling', lazy='joined')
-
-    #placer_operations = db.relationship(
-    #    'PlacerOperation', lazy='select', secondary='now_application_place_xref')
-
+    # Activities
     camps = db.relationship('Camp', lazy='selectin')
     cut_lines_polarization_survey = db.relationship('CutLinesPolarizationSurvey', lazy='selectin')
     exploration_surface_drilling = db.relationship('ExplorationSurfaceDrilling', lazy='selectin')
+    mechanical_trenching = db.relationship('MechanicalTrenching', lazy='selectin')
+    placer_operations = db.relationship('PlacerOperations', lazy='selectin')
 
     def __repr__(self):
         return '<Application %r>' % self.application_guid

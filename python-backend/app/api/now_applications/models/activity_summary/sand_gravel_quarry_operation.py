@@ -52,6 +52,7 @@ class SandGravelQuarryOperation(ActivitySummaryBase):
     dust_impact_plan = db.Column(db.String)
     visual_impact_plan = db.Column(db.String)
 
+    details = db.relationship('SandGravelQuarryOperationDetail', secondary='activity_summary_detail_xref')
 
 def __repr__(self):
     return '<SandGravelQuarryOperation %r>' % self.activity_id
