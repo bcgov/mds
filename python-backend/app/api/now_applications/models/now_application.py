@@ -51,7 +51,7 @@ class NOWApplication(Base, AuditMixin):
     surface_bulk_sample = db.relationship('SurfaceBulkSample', lazy='selectin', uselist=False)
     water_source_activites = db.relationship('WaterSupply', lazy='selectin', uselist=False)
     exploration_access = db.relationship('ExplorationAccess', lazy='selectin', uselist=False)
-    settling_pond = db.relationship('SettlignPond', lazy='selectin', uselist=False)
+    settling_pond = db.relationship('SettlingPond', lazy='selectin', uselist=False)
     underground_exploration = db.relationship(
         'UndergroundExploration', lazy='selectin', uselist=False)
 

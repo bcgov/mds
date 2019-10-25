@@ -37,11 +37,10 @@ class ActivityDetailBase(AuditMixin, Base):
     _etl_activity_details = db.relationship('ETLActivityDetail', load_on_pending=True)
 
     activity_type_code = db.column_property(
-        db.select(
-            [ActivitySummaryBase.activity_type_code],
-            and_(
-                ActivitySummaryDetailXref.activity_summary_id ==
-                ActivitySummaryBase.activity_summary_id,
-                ActivitySummaryDetailXref.activity_detail_id == activity_detail_id)).as_scalar())
+        db.select([ActivitySummaryBase.activity_type_code],
+                  and_(
+                      ActivitySummaryDetailXref.activity_summary_id == ActivitySummaryBase.
+                      activity_summary_id, ActivitySummaryDetailXref.activity_detail_id ==
+                      activity_detail_id)).limit(1).as_scalar())
 
     __mapper_args__ = {'polymorphic_on': activity_type_code}

@@ -32,7 +32,7 @@ def transmogrify_now(now_submission_message_id):
     _transmogrify_blasting_activities(now_app, now_sub)
     _transmogrify_camp_activities(now_app, now_sub)
     _transmogrify_exploration_access(now_app, now_sub)
-    _transmogrify_state_of_lane(now_app,now_sub)
+    #_transmogrify_state_of_lane(now_app,now_sub)
     _transmogrify_cut_lines_polarization_survey(now_app,now_sub)
     _transmogrify_exploration_surface_drilling(now_app,now_sub)
     _transmogrify_mechanical_trenching(now_app, now_sub)
@@ -40,7 +40,7 @@ def transmogrify_now(now_submission_message_id):
     _transmogrify_sand_and_gravel_activities(now_app,now_sub)
     _transmogrify_surface_bulk_sample(now_app,now_sub)
     _transmogrify_underground_exploration(now_app,now_sub)
-    _transmogrify_water_supply(now_app, now_sub)
+    #_transmogrify_water_supply(now_app, now_sub)
 
     return now_app
 
@@ -71,13 +71,13 @@ def _transmogrify_blasting_activities(a, s):
             has_storage_explosive_on_site=s.storeexplosivesonsite == 'Yes')
     return
 
-def _transmogrify_state_of_lane(a, s):
-    if s.landcommunitywatershed or s.archsitesaffected:
-        a.state_of_land = app_models.StateOfLand(
-            has_community_water_shed=s.landcommunitywatershed == 'Yes',
-            arch_sites_affected=s.archsitesaffected == 'Yes'
-        )
-    return
+#def _transmogrify_state_of_lane(a, s):
+#    if s.landcommunitywatershed or s.archsitesaffected:
+#        a.state_of_land = app_models.StateOfLand(
+#            has_community_water_shed=s.landcommunitywatershed == 'Yes',
+#            arch_sites_affected=s.archsitesaffected == 'Yes'
+#        )
+#    return
 
 
 
@@ -230,8 +230,8 @@ def _transmogrify_placer_operations(a, s):
                     depth=existing.depth,
                     quantity=existing.quantity)
 
-            etl_detail = app_models.ETLActivityDetail(placeractivityid=existing.placeractivityid)
-            existing_detail._etl_activity_details.append(etl_detail)
+                etl_detail = app_models.ETLActivityDetail(placeractivityid=existing.placeractivityid)
+                existing_detail._etl_activity_details.append(etl_detail)
 
             existing_xref = app_models.ActivitySummaryDetailXref(summary=placer, detail=existing_detail, is_existing=True)
 
@@ -282,8 +282,8 @@ def _transmogrify_settling_ponds(a, s):
                     disturbed_area=existing.disturbedarea,
                     timber_volume=existing.timbervolume)
 
-            etl_detail = app_models.ETLActivityDetail(settlingpondid=existing.settlingpondid)
-            existing_detail._etl_activity_details.append(etl_detail)
+                etl_detail = app_models.ETLActivityDetail(settlingpondid=existing.settlingpondid)
+                existing_detail._etl_activity_details.append(etl_detail)
 
             existing_xref = app_models.ActivitySummaryDetailXref(summary=settling_pond, detail=existing_detail, is_existing=True)
 

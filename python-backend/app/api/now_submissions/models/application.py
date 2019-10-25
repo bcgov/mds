@@ -10,7 +10,7 @@ from app.api.now_submissions.models.contact import Contact
 from app.api.now_submissions.models.document import Document
 from app.api.now_submissions.models.placer_activity import PlacerActivity
 from app.api.now_submissions.models.sand_grv_qry_activity import SandGrvQryActivity
-from app.api.now_submissions.models.settling_pond import SettlingPond
+from app.api.now_submissions.models.settling_pond import SettlingPondSubmission
 from app.api.now_submissions.models.surface_bulk_sample_activity import SurfaceBulkSampleActivity
 from app.api.now_submissions.models.under_exp_new_activity import UnderExpNewActivity
 from app.api.now_submissions.models.under_exp_rehab_activity import UnderExpRehabActivity
@@ -176,7 +176,6 @@ class Application(Base):
     contacts = db.relationship('Contact', lazy='select')
     documents = db.relationship('Document', lazy='select')
 
-
     sand_grv_qry_activity = db.relationship('SandGrvQryActivity', lazy='select')
     surface_bulk_sample_activity = db.relationship('SurfaceBulkSampleActivity', lazy='select')
     under_exp_new_activity = db.relationship('UnderExpNewActivity', lazy='select')
@@ -190,11 +189,15 @@ class Application(Base):
     existing_placer_activity = db.relationship(
         'PlacerActivity', lazy='select', secondary='now_submissions.existing_placer_activity_xref')
     existing_settling_pond = db.relationship(
-        'SettlingPond', lazy='select', secondary='now_submissions.existing_settling_pond_xref')
+        'SettlingPondSubmission',
+        lazy='select',
+        secondary='now_submissions.existing_settling_pond_xref')
     proposed_placer_activity = db.relationship(
         'PlacerActivity', lazy='select', secondary='now_submissions.proposed_placer_activity_xref')
     proposed_settling_pond = db.relationship(
-        'SettlingPond', lazy='select', secondary='now_submissions.proposed_settling_pond_xref')
+        'SettlingPondSubmission',
+        lazy='select',
+        secondary='now_submissions.proposed_settling_pond_xref')
 
     mine_name = association_proxy('mine', 'mine_name')
     mine_region = association_proxy('mine', 'mine_region')

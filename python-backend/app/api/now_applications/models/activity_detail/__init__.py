@@ -1,4 +1,5 @@
 from .activity_detail_base import *
+from .etl_activity_detail import *
 from .camp_detail import *
 from .cut_lines_polarization_survey_detail import *
 from .exploration_access_detail import *
@@ -12,4 +13,3 @@ from .underground_exploration_detail import *
 from .underground_exploration_type import *
 from .water_supply_detail import *
 from .activity_summary_detail_xref import *
-from .etl_activity_detail import *

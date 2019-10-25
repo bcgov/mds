@@ -36,7 +36,7 @@ from app.api.now_submissions.models.application import Application as NOWApplica
 from app.api.now_submissions.models.client import Client as NOWClient
 from app.api.now_submissions.models.contact import Contact as NOWContact
 from app.api.now_submissions.models.placer_activity import PlacerActivity as NOWPlacerActivity
-from app.api.now_submissions.models.settling_pond import SettlingPond as NOWSettlingPond
+from app.api.now_submissions.models.settling_pond import SettlingPondSubmission as NOWSettlingPond
 from app.api.now_submissions.models.document import Document as NOWDocument
 from app.api.now_submissions.models.sand_grv_qry_activity import SandGrvQryActivity as NOWSandGrvQryActivity
 from app.api.now_submissions.models.under_exp_new_activity import UnderExpNewActivity as NOWUnderExpNewActivity

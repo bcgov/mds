@@ -28,26 +28,11 @@ from app.api.now_applications.now_import import transmogrify_now
 
 class NOWApplicationResource(Resource, UserMixin):
     def post(self, application_guid):
-
-        # mine = Mine.query.first()
-        # now_application = NOWApplication(mine_guid=mine.mine_guid,
-        #                                  notice_of_work_type_code='COL',
-        #                                  now_application_status_code='ACC',
-        #                                  submitted_date=datetime.utcnow(),
-        #                                  received_date=datetime.utcnow())
-
-        # now_application.exploration_access_acts.append(ExplorationAccess(reclamation_cost=100))
-        # now_application.exploration_surface_drilling_acts.append(
-        #     ExplorationSurfaceDrilling(reclamation_core_storage="this is a cool column"))
-        # now_application.exploration_surface_drilling_acts[0].details.append(
-        #     ExplorationSurfaceDrillingDetail(number_of_sites=1))
-        # now_application.save()
-
         submission = Application.query.filter_by(application_guid=application_guid).first()
         if not submission:
             raise NotFound('now submission with that guid')
         application = transmogrify_now(submission.messageid)
-        #application.save()
+        application.save()
         current_app.logger.debug(f"""
         {submission} -> {application}
         Camps = {str(application.camps)}
