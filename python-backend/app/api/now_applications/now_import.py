@@ -23,10 +23,11 @@ def transmogrify_now(now_submission_message_id):
         raise Exception('No NOW Submission with message_id')
     now_app = app_models.NOWApplication(mine_guid=now_sub.mine_guid)
     _transmogrify_now_details(now_app, now_sub)
-    _transmogrify_camp_activities(now_app, now_sub)
     _transmogrify_blasting_activities(now_app, now_sub)
-    _transmogrify_sand_and_gravel_activities(now_app,now_sub)
+    _transmogrify_camp_activities(now_app, now_sub)
+    _transmogrify_exploration_access(now_app, now_sub)
     _transmogrify_placer_operations(now_app,now_sub)
+    _transmogrify_sand_and_gravel_activities(now_app,now_sub)
     _transmogrify_surface_bulk_sample(now_app,now_sub)
     return now_app
 
@@ -146,6 +147,16 @@ def _transmogrify_mechanical_trenching(a, s):
         a.mechanical_trenching = mech
     return
 
+def _transmogrify_exploration_access(a,s):
+    if s.expaccessreclamation or s.expaccessreclamationcost or s.expaccesstotaldistarea:
+        exploration_access = app_models.ExplorationAccess(
+            reclamation_description=s.expaccessreclamation,
+            reclamation_cost=s.expaccessreclamationcost,
+            total_disturbed_area=s.expaccesstotaldistarea,
+            total_disturbed_area_unit_type_code='HA'
+        )
+
+        a.exploration_access = exploration_access
 
 def _transmogrify_placer_operations(a, s):
     if s.placerundergroundoperations or s.placerhandoperations or s.placerhandoperations or s.placerreclamationarea or s.placerreclamation or s.placerreclamationcost:
@@ -157,44 +168,96 @@ def _transmogrify_placer_operations(a, s):
             is_underground=s.placerundergroundoperations == 'Yes',
             is_hand_operation=s.placerhandoperations == 'Yes')
 
-        for proposed_placer_activity in s.proposed_placer_activity:
-            proposed_placer_detail = app_models.PlacerOperationDetail(
-                activity_type_description=proposed_placer_activity.type,
-                disturbed_area=proposed_placer_activity.disturbedarea,
-                timber_volume=proposed_placer_activity.timbervolume,
-                width=proposed_placer_activity.width,
-                length=proposed_placer_activity.length,
-                depth=proposed_placer_activity.depth,
-                quantity=proposed_placer_activity.quantity)
+        for proposed in s.proposed_placer_activity:
+            proposed_detail = app_models.PlacerOperationDetail(
+                activity_type_description=proposed.type,
+                disturbed_area=proposed.disturbedarea,
+                timber_volume=proposed.timbervolume,
+                width=proposed.width,
+                length=proposed.length,
+                depth=proposed.depth,
+                quantity=proposed.quantity)
             
-            etl_activity_detail = app_models.ETLActivityDetail(placeractivityid=proposed_placer_activity.placeractivityid)
-            proposed_placer_detail._etl_activity_details.append(etl_activity_detail)
+            etl_detail = app_models.ETLActivityDetail(placeractivityid=proposed.placeractivityid)
+            proposed_detail._etl_activity_details.append(etl_detail)
 
-            proposed_placer_xref = app_models.ActivitySummaryDetailXref(summary=placer, detail=proposed_placer_detail, is_existing=False)
+            proposed_xref = app_models.ActivitySummaryDetailXref(summary=placer, detail=proposed_detail, is_existing=False)
             
 
-        for existing_placer_activity in s.existing_placer_activity:
-            existing_placer_detail_etl = app_models.ETLActivityDetail.query.filter_by(
-                placeractivityid=existing_placer_activity.placeractivityid).first()
+        for existing in s.existing_placer_activity:
+            existing_etl = app_models.ETLActivityDetail.query.filter_by(
+                placeractivityid=existing.placeractivityid).first()
 
-            if existing_placer_detail_etl:
-                existing_placer_detail = existing_placer_detail_etl.activity_detail
+            if existing_etl:
+                existing_detail = existing_etl.activity_detail
             else:
-                existing_placer_detail = app_models.PlacerOperationDetail(
-                    activity_type_description=existing_placer_activity.type,
-                    disturbed_area=existing_placer_activity.disturbedarea,
-                    timber_volume=existing_placer_activity.timbervolume,
-                    width=existing_placer_activity.width,
-                    length=existing_placer_activity.length,
-                    depth=existing_placer_activity.depth,
-                    quantity=existing_placer_activity.quantity)
+                existing_detail = app_models.PlacerOperationDetail(
+                    activity_type_description=existing.type,
+                    disturbed_area=existing.disturbedarea,
+                    timber_volume=existing.timbervolume,
+                    width=existing.width,
+                    length=existing.length,
+                    depth=existing.depth,
+                    quantity=existing.quantity)
 
-            etl_activity_detail = app_models.ETLActivityDetail(placeractivityid=existing_placer_activity.placeractivityid)
-            existing_placer_detail._etl_activity_details.append(etl_activity_detail)
+            etl_detail = app_models.ETLActivityDetail(placeractivityid=existing.placeractivityid)
+            existing_detail._etl_activity_details.append(etl_detail)
 
-            existing_placer_xref = app_models.ActivitySummaryDetailXref(summary=placer, detail=existing_placer_detail, is_existing=True)
+            existing_xref = app_models.ActivitySummaryDetailXref(summary=placer, detail=existing_detail, is_existing=True)
 
         a.placer_operation = placer
+    return
+
+def _transmogrify_settling_ponds(a, s):
+    if s.pondsreclamation or s.pondsreclamationcost or s.pondstotaldistarea or s.pondsexfiltratedtoground or s.pondsrecycled or s.pondsdischargedtoenv:
+        settling_pond = app_models.SettlingPond(
+            reclamation_description=s.pondsreclamation,
+            reclamation_cost=s.pondsreclamationcost,
+            total_disturbed_area=s.pondstotaldistarea,
+            total_disturbed_area_unit_type_code='HA',
+            is_ponds_exfiltared=s.pondsexfiltratedtoground == 'Yes',
+            is_ponds_recycled=s.pondsrecycled == 'Yes',
+            is_ponds_discharged=s.pondsdischargedtoenv == 'Yes')
+
+        for proposed in s.proposed_settling_pond:
+            proposed_detail = app_models.SettlingPondDetail(
+                activity_type_description=proposed.pondid,
+                water_source_description=proposed.watersource,
+                construction_plan=proposed.constructionmethod,
+                width=proposed.width,
+                length=proposed.length,
+                depth=proposed.depth,
+                disturbed_area=proposed.disturbedarea,
+                timber_volume=proposed.timbervolume)
+            
+            etl_detail = app_models.ETLActivityDetail(settlingpondid=proposed.settlingpondid)
+            proposed_detail._etl_activity_details.append(etl_detail)
+
+            proposed_xref = app_models.ActivitySummaryDetailXref(summary=settling_pond, detail=proposed_detail, is_existing=False)
+            
+        for existing in s.existing_settling_pond:
+            existing_etl = app_models.ETLActivityDetail.query.filter_by(
+                settlingpondid=existing.settlingpondid).first()
+
+            if existing_etl:
+                existing_detail = existing_etl.activity_detail
+            else:
+                existing_detail = app_models.SettlingPondDetail(
+                    activity_type_description=existing.pondid,
+                    water_source_description=existing.watersource,
+                    construction_plan=existing.constructionmethod,
+                    width=existing.width,
+                    length=existing.length,
+                    depth=existing.depth,
+                    disturbed_area=existing.disturbedarea,
+                    timber_volume=existing.timbervolume)
+
+            etl_detail = app_models.ETLActivityDetail(settlingpondid=existing.settlingpondid)
+            existing_detail._etl_activity_details.append(etl_detail)
+
+            existing_xref = app_models.ActivitySummaryDetailXref(summary=settling_pond, detail=existing_detail, is_existing=True)
+
+        a.settling_pond = settling_pond
     return
 
 
