@@ -32,7 +32,6 @@ class ActivityDetailBase(AuditMixin, Base):
     cut_line_length = db.Column(db.Integer)
     # TODO: cut_line_unit_type_code?
     water_quantity = db.Column(db.Integer)
-    water_quantity_unit_type_code = db.Column(db.String, db.ForeignKey('unit_type.unit_type_code'))
 
     _etl_activity_details = db.relationship('ETLActivityDetail', load_on_pending=True)
 
@@ -42,5 +41,5 @@ class ActivityDetailBase(AuditMixin, Base):
                       ActivitySummaryDetailXref.activity_summary_id == ActivitySummaryBase.
                       activity_summary_id, ActivitySummaryDetailXref.activity_detail_id ==
                       activity_detail_id)).limit(1).as_scalar())
-
-    __mapper_args__ = {'polymorphic_on': activity_type_code}
+    water_quantity = db.Column(db.Integer)
+    water_quantity_unit_type_code = db.Column(db.String, db.ForeignKey('unit_type.unit_type_code'))
