@@ -23,8 +23,9 @@ import MineTailingsInfo from "@/components/mine/Tailings/MineTailingsInfo";
 import MineReportInfo from "@/components/mine/Reports/MineReportInfo";
 import MineNOWApplications from "@/components/mine/NoticeOfWork/MineNOWApplications";
 import HomePage from "@/components/dashboard/HomePage";
-import NoticeOfWorkApplication from "@/components/noticeOfWork/NoticeOfWorkApplication";
+import NoticeOfWorkSubmission from "@/components/noticeOfWork/submissions/NoticeOfWorkSubmission";
 import NoticeOfWorkHomePage from "@/components/dashboard/noticeOfWorkHomePage/NoticeOfWorkHomePage";
+import NoticeOfWorkApplication from "@/components/noticeOfWork/applications/NoticeOfWorkApplication";
 
 export const DASHBOARD = {
   route: "/",
@@ -178,7 +179,7 @@ export const SEARCH_RESULTS = {
   component: SearchResults,
 };
 
-export const NOTICE_OF_WORK_APPLICATIONS = {
+export const NOTICE_OF_WORK_SUBMISSIONS = {
   route: "/dashboard/reporting/notice-of-work",
   dynamicRoute: ({ page, per_page, ...params }) =>
     `/dashboard/reporting/notice-of-work?${queryString.stringify(
@@ -188,9 +189,15 @@ export const NOTICE_OF_WORK_APPLICATIONS = {
   component: NoticeOfWorkHomePage,
 };
 
+export const NOTICE_OF_WORK_SUBMISSION = {
+  route: "/dashboard/notice-of-work/initial-submission/:id",
+  dynamicRoute: (submissionGuid) =>
+    `/dashboard/notice-of-work/initial-submission/${submissionGuid}`,
+  component: NoticeOfWorkSubmission,
+};
+
 export const NOTICE_OF_WORK_APPLICATION = {
-  route: "/dashboard/notice-of-work/initial-application/:id",
-  dynamicRoute: (applicationGuid) =>
-    `/dashboard/notice-of-work/initial-application/${applicationGuid}`,
+  route: "/dashboard/notice-of-work/application",
+  dynamicRoute: (guid) => `/dashboard/notice-of-work/application?id=${guid}`,
   component: NoticeOfWorkApplication,
 };

@@ -4,30 +4,30 @@ import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import CustomPropTypes from "@/customPropTypes";
-import NOWGeneralInfo from "@/components/noticeOfWork/NOWGeneralInfo";
-import NOWWorkPlan from "@/components/noticeOfWork/NOWWorkPlan";
-import { fetchNoticeOfWorkApplication } from "@/actionCreators/noticeOfWorkActionCreator";
+import NOWGeneralInfo from "@/components/noticeOfWork/submissions/NOWGeneralInfo";
+import NOWWorkPlan from "@/components/noticeOfWork/submissions/NOWWorkPlan";
+import { fetchNoticeOfWorkSubmission } from "@/actionCreators/noticeOfWorkActionCreator";
 import { getNoticeOfWork } from "@/selectors/noticeOfWorkSelectors";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
 import * as Strings from "@/constants/strings";
 /**
- * @class NoticeOfWorkApplication - contains all information regarding to a notice of work application
+ * @class NoticeOfWorkSubmission - contains all information regarding to a notice of work application
  */
 
 const { Panel } = Collapse;
 
 const propTypes = {
-  fetchNoticeOfWorkApplication: PropTypes.func.isRequired,
+  fetchNoticeOfWorkSubmission: PropTypes.func.isRequired,
   noticeOfWork: CustomPropTypes.nowApplication.isRequired,
   match: CustomPropTypes.match.isRequired,
 };
 
-export class NoticeOfWorkApplication extends Component {
+export class NoticeOfWorkSubmission extends Component {
   state = { isLoaded: false };
 
   componentDidMount() {
     const { id } = this.props.match.params;
-    this.props.fetchNoticeOfWorkApplication(id).then(() => {
+    this.props.fetchNoticeOfWorkSubmission(id).then(() => {
       this.setState({ isLoaded: true });
     });
   }
@@ -77,11 +77,11 @@ export class NoticeOfWorkApplication extends Component {
 const mapStateToProps = (state) => ({ noticeOfWork: getNoticeOfWork(state) });
 
 const mapDispatchToProps = (dispatch) =>
-  bindActionCreators({ fetchNoticeOfWorkApplication }, dispatch);
+  bindActionCreators({ fetchNoticeOfWorkSubmission }, dispatch);
 
-NoticeOfWorkApplication.propTypes = propTypes;
+NoticeOfWorkSubmission.propTypes = propTypes;
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(NoticeOfWorkApplication);
+)(NoticeOfWorkSubmission);

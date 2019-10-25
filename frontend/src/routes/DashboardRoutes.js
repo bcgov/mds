@@ -54,8 +54,13 @@ const DashboardRoutes = () => (
     />
     <Route
       exact
-      path={routes.NOTICE_OF_WORK_APPLICATIONS.route}
-      component={routes.NOTICE_OF_WORK_APPLICATIONS.component}
+      path={routes.NOTICE_OF_WORK_SUBMISSIONS.route}
+      component={routes.NOTICE_OF_WORK_SUBMISSIONS.component}
+    />
+    <Route
+      exact
+      path={routes.NOTICE_OF_WORK_SUBMISSION.route}
+      component={routes.NOTICE_OF_WORK_SUBMISSION.component}
     />
     <Route
       exact

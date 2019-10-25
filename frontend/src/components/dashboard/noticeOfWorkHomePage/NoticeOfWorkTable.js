@@ -15,7 +15,7 @@ import { formatDate, optionsFilterAdapter, getTableHeaders } from "@/utils/helpe
  */
 const propTypes = {
   handleSearch: PropTypes.func.isRequired,
-  noticeOfWorkApplications: PropTypes.arrayOf(CustomPropTypes.nowApplication),
+  noticeOfWorkSubmissions: PropTypes.arrayOf(CustomPropTypes.nowApplication),
   sortField: PropTypes.string,
   sortDir: PropTypes.string,
   searchParams: PropTypes.shape({ mine_region: PropTypes.arrayOf(PropTypes.string) }),
@@ -27,7 +27,7 @@ const propTypes = {
 const defaultProps = {
   sortField: null,
   sortDir: null,
-  noticeOfWorkApplications: [],
+  noticeOfWorkSubmissions: [],
   searchParams: {},
 };
 
@@ -141,7 +141,7 @@ export class NoticeOfWorkTable extends Component {
       dataIndex: "nowNum",
       sortField: "trackingnumber",
       render: (text, record) => (
-        <Link to={router.NOTICE_OF_WORK_APPLICATION.dynamicRoute(record.key)}>{text}</Link>
+        <Link to={router.NOTICE_OF_WORK_SUBMISSION.dynamicRoute(record.key)}>{text}</Link>
       ),
       sorter: true,
       ...this.filterProperties("NoW No.", "trackingnumber"),
@@ -179,6 +179,16 @@ export class NoticeOfWorkTable extends Component {
       render: (text) => <div title="Import Date">{text}</div>,
       sorter: true,
     },
+    {
+      title: "",
+      dataIndex: "verify",
+      width: 150,
+      render: (text, record) => (
+        <div title="" align="right" className="inline-flex">
+          <Link to={router.NOTICE_OF_WORK_APPLICATION.dynamicRoute(record.key)}>Verify</Link>
+        </div>
+      ),
+    },
   ];
 
   render() {
@@ -196,7 +206,7 @@ export class NoticeOfWorkTable extends Component {
             this.props.sortField,
             this.props.sortDir
           )}
-          dataSource={this.transformRowData(this.props.noticeOfWorkApplications)}
+          dataSource={this.transformRowData(this.props.noticeOfWorkSubmissions)}
           locale={{ emptyText: <NullScreen type="no-results" /> }}
           onChange={handleTableChange(this.props.handleSearch)}
         />

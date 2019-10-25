@@ -1,8 +1,8 @@
 import MockAdapter from "axios-mock-adapter";
 import axios from "axios";
 import {
-  fetchNoticeOfWorkApplication,
-  fetchNoticeOfWorkApplications,
+  fetchNoticeOfWorkSubmission,
+  fetchNoticeOfWorkSubmissions,
 } from "@/actionCreators/noticeOfWorkActionCreator";
 import * as genericActions from "@/actions/genericActions";
 import * as API from "@/constants/API";
@@ -24,13 +24,13 @@ beforeEach(() => {
   errorSpy.mockClear();
 });
 
-describe("`fetchNoticeOfWorkApplication` action creator", () => {
+describe("`fetchNoticeOfWorkSubmission` action creator", () => {
   const appliactionGuid = NOW_MOCK.NOTICE_OF_WORK.application_guid;
-  const url = ENVIRONMENT.apiUrl + API.NOTICE_OF_WORK_APPLICATION(appliactionGuid);
+  const url = ENVIRONMENT.apiUrl + API.NOTICE_OF_WORK_SUBMISSION(appliactionGuid);
   it("Request successful, dispatches `success` with correct response", () => {
     const mockResponse = { data: { success: true } };
     mockAxios.onGet(url).reply(200, mockResponse);
-    return fetchNoticeOfWorkApplication(appliactionGuid)(dispatch).then(() => {
+    return fetchNoticeOfWorkSubmission(appliactionGuid)(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(5);
@@ -39,7 +39,7 @@ describe("`fetchNoticeOfWorkApplication` action creator", () => {
 
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onGet(url, MOCK.createMockHeader()).reply(400, MOCK.ERROR);
-    return fetchNoticeOfWorkApplication(appliactionGuid)(dispatch).then(() => {
+    return fetchNoticeOfWorkSubmission(appliactionGuid)(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
@@ -47,12 +47,12 @@ describe("`fetchNoticeOfWorkApplication` action creator", () => {
   });
 });
 
-describe("`fetchNoticeOfWorkApplications` action creator", () => {
-  const url = ENVIRONMENT.apiUrl + API.NOTICE_OF_WORK_APPLICATIONS();
+describe("`fetchNoticeOfWorkSubmissions` action creator", () => {
+  const url = ENVIRONMENT.apiUrl + API.NOTICE_OF_WORK_SUBMISSIONS();
   it("Request successful, dispatches `success` with correct response", () => {
     const mockResponse = { data: { success: true } };
     mockAxios.onGet(url).reply(200, mockResponse);
-    return fetchNoticeOfWorkApplications()(dispatch).then(() => {
+    return fetchNoticeOfWorkSubmissions()(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(5);
@@ -61,7 +61,7 @@ describe("`fetchNoticeOfWorkApplications` action creator", () => {
 
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onGet(url, MOCK.createMockHeader()).reply(400, MOCK.ERROR);
-    return fetchNoticeOfWorkApplications()(dispatch).then(() => {
+    return fetchNoticeOfWorkSubmissions()(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);

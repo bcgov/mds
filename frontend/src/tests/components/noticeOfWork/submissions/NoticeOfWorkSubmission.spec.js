@@ -1,13 +1,13 @@
 import React from "react";
 import { shallow } from "enzyme";
-import { NoticeOfWorkApplication } from "@/components/noticeOfWork/NoticeOfWorkApplication";
+import { NoticeOfWorkSubmission } from "@/components/noticeOfWork/submissions/NoticeOfWorkSubmission";
 import * as MOCK from "@/tests/mocks/noticeOfWorkMocks";
 
 const dispatchProps = {};
 const reducerProps = {};
 
 const setupDispatchProps = () => {
-  dispatchProps.fetchNoticeOfWorkApplication = jest.fn(() => Promise.resolve());
+  dispatchProps.fetchNoticeOfWorkSubmission = jest.fn(() => Promise.resolve());
 };
 
 const setupReducerProps = () => {
@@ -20,10 +20,10 @@ beforeEach(() => {
   setupReducerProps();
 });
 
-describe("NoticeOfWorkApplication", () => {
+describe("NoticeOfWorkSubmission", () => {
   it("renders properly", () => {
     const component = shallow(
-      <NoticeOfWorkApplication {...dispatchProps} {...reducerProps} match={{ params: { id: 1 } }} />
+      <NoticeOfWorkSubmission {...dispatchProps} {...reducerProps} match={{ params: { id: 1 } }} />
     );
     expect(component).toMatchSnapshot();
   });

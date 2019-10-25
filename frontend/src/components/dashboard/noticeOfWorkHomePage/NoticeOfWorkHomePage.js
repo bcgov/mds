@@ -14,16 +14,16 @@ import { fetchRegionOptions } from "@/actionCreators/staticContentActionCreator"
 import NoticeOfWorkTable from "@/components/dashboard/noticeOfWorkHomePage/NoticeOfWorkTable";
 import NoticeOfWorkSearch from "@/components/dashboard/noticeOfWorkHomePage/NoticeOfWorkSearch";
 import ResponsivePagination from "@/components/common/ResponsivePagination";
-import { fetchNoticeOfWorkApplications } from "@/actionCreators/noticeOfWorkActionCreator";
+import { fetchNoticeOfWorkSubmissions } from "@/actionCreators/noticeOfWorkActionCreator";
 import { getNoticeOfWorkList, getNoticeOfWorkPageData } from "@/selectors/noticeOfWorkSelectors";
 import { formatQueryListParams } from "@/utils/helpers";
 
 const propTypes = {
-  fetchNoticeOfWorkApplications: PropTypes.func.isRequired,
+  fetchNoticeOfWorkSubmissions: PropTypes.func.isRequired,
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
   location: PropTypes.shape({ search: PropTypes.string }).isRequired,
   pageData: CustomPropTypes.pageData.isRequired,
-  noticeOfWorkApplications: PropTypes.arrayOf(CustomPropTypes.nowApplication).isRequired,
+  noticeOfWorkSubmissions: PropTypes.arrayOf(CustomPropTypes.nowApplication).isRequired,
   fetchRegionOptions: PropTypes.func.isRequired,
   mineRegionHash: PropTypes.objectOf(PropTypes.string).isRequired,
   mineRegionOptions: CustomPropTypes.options.isRequired,
@@ -58,7 +58,7 @@ export class NoticeOfWorkHomePage extends Component {
       this.renderDataFromURL();
     } else {
       this.props.history.push(
-        router.NOTICE_OF_WORK_APPLICATIONS.dynamicRoute({
+        router.NOTICE_OF_WORK_SUBMISSIONS.dynamicRoute({
           page,
           per_page,
         })
@@ -86,7 +86,7 @@ export class NoticeOfWorkHomePage extends Component {
         isLoaded: false,
       },
       () =>
-        this.props.fetchNoticeOfWorkApplications(parsedParams).then(() => {
+        this.props.fetchNoticeOfWorkSubmissions(parsedParams).then(() => {
           this.setState({ isLoaded: true });
         })
     );
@@ -107,13 +107,13 @@ export class NoticeOfWorkHomePage extends Component {
     };
 
     this.props.history.push(
-      router.NOTICE_OF_WORK_APPLICATIONS.dynamicRoute(this.joinListParams(updatedParams))
+      router.NOTICE_OF_WORK_SUBMISSIONS.dynamicRoute(this.joinListParams(updatedParams))
     );
   };
 
   onPageChange = (page, per_page) => {
     this.props.history.push(
-      router.NOTICE_OF_WORK_APPLICATIONS.dynamicRoute({
+      router.NOTICE_OF_WORK_SUBMISSIONS.dynamicRoute({
         ...this.state.params,
         page,
         per_page,
@@ -140,7 +140,7 @@ export class NoticeOfWorkHomePage extends Component {
               <NoticeOfWorkTable
                 isLoaded={this.state.isLoaded}
                 handleSearch={this.handleSearch}
-                noticeOfWorkApplications={this.props.noticeOfWorkApplications}
+                noticeOfWorkSubmissions={this.props.noticeOfWorkSubmissions}
                 sortField={this.state.params.sort_field}
                 sortDir={this.state.params.sort_dir}
                 searchParams={this.state.params}
@@ -164,7 +164,7 @@ export class NoticeOfWorkHomePage extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  noticeOfWorkApplications: getNoticeOfWorkList(state),
+  noticeOfWorkSubmissions: getNoticeOfWorkList(state),
   pageData: getNoticeOfWorkPageData(state),
   mineRegionHash: getMineRegionHash(state),
   mineRegionOptions: getMineRegionDropdownOptions(state),
@@ -173,7 +173,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
-      fetchNoticeOfWorkApplications,
+      fetchNoticeOfWorkSubmissions,
       fetchRegionOptions,
     },
     dispatch

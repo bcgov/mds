@@ -1,25 +1,24 @@
 import React, { Component } from "react";
-import { compose, bindActionCreators } from "redux";
+import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { Divider } from "antd";
 import PropTypes from "prop-types";
 import queryString from "query-string";
 import * as router from "@/constants/routes";
-import { AuthorizationGuard } from "@/HOC/AuthorizationGuard";
 import CustomPropTypes from "@/customPropTypes";
 import { getMineRegionHash } from "@/selectors/staticContentSelectors";
 import { fetchRegionOptions } from "@/actionCreators/staticContentActionCreator";
 import MineNoticeOfWorkTable from "@/components/mine/NoticeOfWork/MineNoticeOfWorkTable";
-import { fetchMineNoticeOfWorkApplications } from "@/actionCreators/noticeOfWorkActionCreator";
+import { fetchMineNoticeOfWorkSubmissions } from "@/actionCreators/noticeOfWorkActionCreator";
 import { getNoticeOfWorkList } from "@/selectors/noticeOfWorkSelectors";
 import { getMineGuid } from "@/selectors/mineSelectors";
 
 const propTypes = {
   mineGuid: PropTypes.string.isRequired,
-  fetchMineNoticeOfWorkApplications: PropTypes.func.isRequired,
+  fetchMineNoticeOfWorkSubmissions: PropTypes.func.isRequired,
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
   location: PropTypes.shape({ search: PropTypes.string }).isRequired,
-  noticeOfWorkApplications: PropTypes.arrayOf(CustomPropTypes.nowApplication).isRequired,
+  noticeOfWorkSubmissions: PropTypes.arrayOf(CustomPropTypes.nowApplication).isRequired,
   fetchRegionOptions: PropTypes.func.isRequired,
   mineRegionHash: PropTypes.objectOf(PropTypes.string).isRequired,
 };
@@ -59,7 +58,7 @@ export class MineNOWApplications extends Component {
         isLoaded: false,
       },
       () =>
-        this.props.fetchMineNoticeOfWorkApplications(this.props.mineGuid, parsedParams).then(() => {
+        this.props.fetchMineNoticeOfWorkSubmissions(this.props.mineGuid, parsedParams).then(() => {
           this.setState({ isLoaded: true });
         })
     );
@@ -92,7 +91,7 @@ export class MineNOWApplications extends Component {
         <MineNoticeOfWorkTable
           isLoaded={this.state.isLoaded}
           handleSearch={this.handleSearch}
-          noticeOfWorkApplications={this.props.noticeOfWorkApplications}
+          noticeOfWorkSubmissions={this.props.noticeOfWorkSubmissions}
           sortField={this.state.params.sort_field}
           sortDir={this.state.params.sort_dir}
           searchParams={this.state.params}
@@ -105,14 +104,14 @@ export class MineNOWApplications extends Component {
 
 const mapStateToProps = (state) => ({
   mineGuid: getMineGuid(state),
-  noticeOfWorkApplications: getNoticeOfWorkList(state),
+  noticeOfWorkSubmissions: getNoticeOfWorkList(state),
   mineRegionHash: getMineRegionHash(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
-      fetchMineNoticeOfWorkApplications,
+      fetchMineNoticeOfWorkSubmissions,
       fetchRegionOptions,
     },
     dispatch

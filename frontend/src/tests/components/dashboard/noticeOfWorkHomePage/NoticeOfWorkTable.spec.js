@@ -7,7 +7,7 @@ const props = {};
 
 const setupProps = () => {
   props.handleSearch = jest.fn();
-  props.noticeOfWorkApplications = MOCK.NOW.applications;
+  props.noticeOfWorkSubmissions = MOCK.NOW.applications;
   props.sortField = "trackingnumber";
   props.sortDir = "asc";
   props.searchParams = { mine_search: "substring", mine_region: "SW,NE" };

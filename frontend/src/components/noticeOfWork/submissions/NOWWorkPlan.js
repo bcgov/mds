@@ -3,7 +3,7 @@ import { Divider, Col, Row, Table } from "antd";
 import CustomPropTypes from "@/customPropTypes";
 import * as Strings from "@/constants/strings";
 import NullScreen from "@/components/common/NullScreen";
-import NOWActivities from "@/components/noticeOfWork/NOWActivities";
+import NOWActivities from "@/components/noticeOfWork/submissions/NOWActivities";
 import LinkButton from "@/components/common/LinkButton";
 import { downloadNowDocument } from "@/utils/actionlessNetworkCalls";
 import { UNIQUELY_SPATIAL } from "@/constants/fileTypes";

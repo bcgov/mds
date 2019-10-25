@@ -94,17 +94,21 @@ export const reducerObject = {
     networkReducer,
     reducerTypes.GET_VARIANCE_STATUS_OPTIONS
   ),
-  [reducerTypes.GET_NOTICE_OF_WORK_APPLICATIONS]: createReducer(
+  [reducerTypes.GET_NOTICE_OF_WORK_SUBMISSIONS]: createReducer(
     networkReducer,
-    reducerTypes.GET_NOTICE_OF_WORK_APPLICATIONS
+    reducerTypes.GET_NOTICE_OF_WORK_SUBMISSIONS
   ),
-  [reducerTypes.GET_NOTICE_OF_WORK_APPLICATION]: createReducer(
+  [reducerTypes.GET_NOTICE_OF_WORK_SUBMISSION]: createReducer(
     networkReducer,
-    reducerTypes.GET_NOTICE_OF_WORK_APPLICATION
+    reducerTypes.GET_NOTICE_OF_WORK_SUBMISSION
   ),
-  [reducerTypes.GET_MINE_NOTICE_OF_WORK_APPLICATIONS]: createReducer(
+  [reducerTypes.GET_MINE_NOTICE_OF_WORK_SUBMISSIONS]: createReducer(
     networkReducer,
-    reducerTypes.GET_NOTICE_OF_WORK_APPLICATIONS
+    reducerTypes.GET_NOTICE_OF_WORK_SUBMISSIONS
+  ),
+  [reducerTypes.CREATE_NOTICE_OF_WORK_APPLICATION]: createReducer(
+    networkReducer,
+    reducerTypes.CREATE_NOTICE_OF_WORK_APPLICATION
   ),
 };
 

@@ -1,6 +1,6 @@
 import React from "react";
 import { shallow } from "enzyme";
-import { NOWWorkPlan } from "@/components/noticeOfWork/NOWWorkPlan";
+import { NOWGeneralInfo } from "@/components/noticeOfWork/submissions/NOWGeneralInfo";
 import * as MOCK from "@/tests/mocks/noticeOfWorkMocks";
 
 const props = {};
@@ -13,9 +13,9 @@ beforeEach(() => {
   setupProps();
 });
 
-describe("NOWWorkPlan", () => {
+describe("NOWGeneralInfo", () => {
   it("renders properly", () => {
-    const component = shallow(<NOWWorkPlan {...props} />);
+    const component = shallow(<NOWGeneralInfo {...props} />);
     expect(component).toMatchSnapshot();
   });
 });
