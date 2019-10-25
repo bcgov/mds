@@ -174,10 +174,12 @@ def _transmogrify_placer_operations(a, s):
             
 
         for existing_placer_activity in s.existing_placer_activity:
-            existing_placer_detail = app_models.ETLActivityDetail.query.filter_by(
+            existing_placer_detail_etl = app_models.ETLActivityDetail.query.filter_by(
                 placeractivityid=existing_placer_activity.placeractivityid).first()
 
-            if not existing_placer_detail:
+            if existing_placer_detail_etl:
+                existing_placer_detail = existing_placer_detail_etl.activity_detail
+            else:
                 existing_placer_detail = app_models.PlacerOperationDetail(
                     activity_type_description=existing_placer_activity.type,
                     disturbed_area=existing_placer_activity.disturbedarea,
@@ -187,7 +189,9 @@ def _transmogrify_placer_operations(a, s):
                     depth=existing_placer_activity.depth,
                     quantity=existing_placer_activity.quantity)
 
-            etl_activity_detail = app_models.ETLActivityDetail(placeractivityid=existing_placer_detail.placeractivityid)
+            etl_activity_detail = app_models.ETLActivityDetail(placeractivityid=existing_placer_activity.placeractivityid)
+            existing_placer_detail._etl_activity_details.append(etl_activity_detail)
+
             existing_placer_xref = app_models.ActivitySummaryDetailXref(summary=placer, detail=existing_placer_detail, is_existing=True)
 
         a.placer_operation = placer
