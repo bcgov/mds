@@ -8,6 +8,7 @@ import NOWGeneralInfo from "@/components/noticeOfWork/submissions/NOWGeneralInfo
 import NOWWorkPlan from "@/components/noticeOfWork/submissions/NOWWorkPlan";
 import { fetchNoticeOfWorkSubmission } from "@/actionCreators/noticeOfWorkActionCreator";
 import { getNoticeOfWork } from "@/selectors/noticeOfWorkSelectors";
+import { getMineRegionHash } from "@/selectors/staticContentSelectors";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
 import * as Strings from "@/constants/strings";
 /**
@@ -20,6 +21,7 @@ const propTypes = {
   fetchNoticeOfWorkSubmission: PropTypes.func.isRequired,
   noticeOfWork: CustomPropTypes.nowApplication.isRequired,
   match: CustomPropTypes.match.isRequired,
+  regionHash: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
 export class NoticeOfWorkSubmission extends Component {
@@ -60,7 +62,10 @@ export class NoticeOfWorkSubmission extends Component {
         >
           <Panel header={<h2>General Information</h2>} key="1">
             <LoadingWrapper condition={this.state.isLoaded}>
-              <NOWGeneralInfo noticeOfWork={this.props.noticeOfWork} />
+              <NOWGeneralInfo
+                noticeOfWork={this.props.noticeOfWork}
+                regionHash={this.props.regionHash}
+              />
             </LoadingWrapper>
           </Panel>
           <Panel header={<h2>Work Plan</h2>} key="2">
@@ -74,7 +79,10 @@ export class NoticeOfWorkSubmission extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({ noticeOfWork: getNoticeOfWork(state) });
+const mapStateToProps = (state) => ({
+  noticeOfWork: getNoticeOfWork(state),
+  regionHash: getMineRegionHash(state),
+});
 
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators({ fetchNoticeOfWorkSubmission }, dispatch);

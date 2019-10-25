@@ -518,10 +518,43 @@ VALUES
 	('QIM', 'Q', 'Quarry - Industrial Mineral', true, 'system-mds', 'system-mds')
 on conflict do nothing;
 
-INSERT INTO application_status
-(application_status_code, description, active_ind, create_user, update_user)
+INSERT INTO now_application_status
+(now_application_status_code, description, active_ind, create_user, update_user)
 VALUES
 	('ACC', 'Accepted', true, 'system-mds', 'system-mds'),
 	('WDN', 'Withdrawn', true, 'system-mds', 'system-mds'),
 	('UNR', 'Under Review', true, 'system-mds', 'system-mds')
 on conflict do nothing;
+
+INSERT INTO activity_type (
+    activity_type_code,
+    description,
+    create_user,
+    update_user
+    )
+VALUES
+    ('cut_lines_polarization_survey', 'Cut Lines and Induced Polarization Survey', 'system-mds', 'system-mds'),
+    ('water_supply', 'Water Supply', 'system-mds', 'system-mds'),
+    ('settling_pond', 'Settling Ponds', 'system-mds', 'system-mds'),
+    ('exploration_surface_drilling', 'Exploration Surface Drilling', 'system-mds', 'system-mds'),
+    ('sand_gravel_quarry_operation', 'Sand and Gravel / Quarry Operations', 'system-mds', 'system-mds'),
+    ('exploration_access', 'Access Roads, trails, Help Pads, Air Strips, Boat Ramps', 'system-mds', 'system-mds'),
+    ('underground_exploration', 'Underground Exploration', 'system-mds', 'system-mds'),
+    ('camp', 'Camps, Buildings, Staging Area, Fuel/Lubricant Storage', 'system-mds', 'system-mds'),
+    ('mechanical_trenching', 'Mechanical Trenching / Test Pits', 'system-mds', 'system-mds'),
+    ('surface_bulk_sample', 'Surface Bulk Sample', 'system-mds', 'system-mds'),
+    ('blasting_operation', 'Blasting Operations', 'system-mds', 'system-mds'),
+    ('placer', 'Placer Opertations', 'system-mds', 'system-mds')
+ON CONFLICT DO NOTHING;
+
+INSERT INTO underground_exploration_type (
+    underground_exploration_type_code,
+    description,
+    create_user,
+    update_user
+    )
+VALUES
+    ('NEW', 'New', 'system-mds', 'system-mds'),
+    ('RHB', 'Rehabilitation', 'system-mds', 'system-mds'),
+    ('SUR', 'Surface', 'system-mds', 'system-mds')
+ON CONFLICT DO NOTHING;

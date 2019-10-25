@@ -170,3 +170,7 @@ clean:
 	@docker-compose rm -f -v -s
 	@docker rmi -f mds_postgres mds_backend mds_frontend mds_flyway
 	@docker volume rm mds_postgres-data -f
+
+clean-db: stop |
+	@docker rmi -f mds_flyway
+	@docker volume rm mds_postgres-data -f

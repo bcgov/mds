@@ -144,6 +144,14 @@ EXP_ACCESS_ACTIVITY = api.model(
         'timbervolume': fields.Arbitrary,
     })
 
+EXP_SURFACE_DRILL_ACTIVITY = api.model(
+    'EXP_SURFACE_DRILL_ACTIVITY', {
+        'type': fields.String,
+        'numberofsites': fields.Arbitrary,
+        'disturbedarea': fields.Arbitrary,
+        'timbervolume': fields.Arbitrary,
+    })
+
 MECH_TRENCHING_ACTIVITY = api.model(
     'EXP_ACCESS_ACTIVITY', {
         'type': fields.String,
@@ -312,6 +320,7 @@ APPLICATION = api.model(
         'existing_placer_activity': fields.Nested(PLACER_ACTIVITY),
         'existing_settling_pond': fields.Nested(SETTLING_POND),
         'exp_access_activity': fields.List(fields.Nested(EXP_ACCESS_ACTIVITY)),
+        'exp_surface_drill_activity': fields.List(fields.Nested(EXP_SURFACE_DRILL_ACTIVITY)),
         'proposed_placer_activity': fields.Nested(PLACER_ACTIVITY),
         'proposed_settling_pond': fields.Nested(SETTLING_POND),
         'surface_bulk_sample_activity': fields.List(fields.Nested(SURFACE_BULK_SAMPLE_ACTIVITY)),

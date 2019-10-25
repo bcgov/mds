@@ -4,7 +4,13 @@ import * as Strings from "@/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
 import { COLOR } from "@/constants/styles";
 import { formatDate } from "@/utils/helpers";
-import { isMineralOrCoal, isPlacer, isSandAndGravelOrQuarry } from "@/constants/NOWConditions";
+import {
+  isMineralOrCoal,
+  isPlacer,
+  isSandAndGravelOrQuarry,
+  isConditionTrue,
+  isMineralOrPlacerOrCoal,
+} from "@/constants/NOWConditions";
 
 const { Panel } = Collapse;
 
@@ -17,7 +23,7 @@ export class NOWActivities extends Component {
     const columns = [
       {
         title: "Access Type",
-        dataIndex: "accessType",
+        dataIndex: "type",
         key: "accessType",
         render: (text) => <div title="Access Type">{text}</div>,
       },
@@ -35,8 +41,8 @@ export class NOWActivities extends Component {
       },
       {
         title: "Merchantable timber volume (m3)",
-        dataIndex: "volume",
-        key: "volume",
+        dataIndex: "timberVolume",
+        key: "timberVolume",
         render: (text) => <div title="Merchantable timber volume (m3)">{text}</div>,
       },
     ];
@@ -60,7 +66,7 @@ export class NOWActivities extends Component {
             emptyText: "No data",
           }}
         />
-        <br />
+        {/* <br />
         <h4>Bridges, Culverts, and Crossings</h4>
         <Divider className="margin-10" />
         <Row gutter={16} className="padding-small">
@@ -70,7 +76,7 @@ export class NOWActivities extends Component {
           <Col md={12} xs={24}>
             <p>{"Unknown" || Strings.EMPTY_FIELD}</p>
           </Col>
-        </Row>
+        </Row> */}
         <br />
         <h4>Reclamation Program</h4>
         <Divider className="margin-10" />
@@ -82,6 +88,16 @@ export class NOWActivities extends Component {
           </Col>
           <Col md={12} xs={24}>
             <p>{this.props.noticeOfWork.expaccessreclamation || Strings.EMPTY_FIELD}</p>
+          </Col>
+        </Row>
+        <Row gutter={16} className="padding-small">
+          <Col md={12} xs={24}>
+            <p className="field-title">
+              Estimated cost of reclamation of activities described above
+            </p>
+          </Col>
+          <Col md={12} xs={24}>
+            <p>{this.props.noticeOfWork.expaccessreclamationcost || Strings.EMPTY_FIELD}</p>
           </Col>
         </Row>
       </div>
@@ -101,60 +117,65 @@ export class NOWActivities extends Component {
         </Row>
         <Row gutter={16} className="padding-small">
           <Col md={12} xs={24}>
-            <p className="field-title--light">Explosive Magazine Storage and Use Permit</p>
+            <p className="field-title">Explosive Magazine Storage and Use Permit</p>
           </Col>
           <Col md={12} xs={24}>
             <p>{this.props.noticeOfWork.bcexplosivespermitissued || Strings.EMPTY_FIELD}</p>
           </Col>
         </Row>
-        <Row gutter={16} className="padding-small">
-          <Col md={12} xs={24}>
-            <p className="field-title--light">Permit Number</p>
-          </Col>
-          <Col md={12} xs={24}>
-            <p>{this.props.noticeOfWork.bcexplosivespermitnumber || Strings.EMPTY_FIELD}</p>
-          </Col>
-        </Row>
-        <Row gutter={16} className="padding-small">
-          <Col md={12} xs={24}>
-            <p className="field-title--light">Expiry Date</p>
-          </Col>
-          <Col md={12} xs={24}>
-            <p>
-              {formatDate(this.props.noticeOfWork.bcexplosivespermitexpiry) || Strings.EMPTY_FIELD}
-            </p>
-          </Col>
-        </Row>
+        {isConditionTrue(this.props.noticeOfWork.bcexplosivespermitissued) && (
+          <div>
+            <Row gutter={16} className="padding-small">
+              <Col md={12} xs={24}>
+                <p className="field-title--light">Permit Number</p>
+              </Col>
+              <Col md={12} xs={24}>
+                <p>{this.props.noticeOfWork.bcexplosivespermitnumber || Strings.EMPTY_FIELD}</p>
+              </Col>
+            </Row>
+            <Row gutter={16} className="padding-small">
+              <Col md={12} xs={24}>
+                <p className="field-title--light">Expiry Date</p>
+              </Col>
+              <Col md={12} xs={24}>
+                <p>
+                  {formatDate(this.props.noticeOfWork.bcexplosivespermitexpiry) ||
+                    Strings.EMPTY_FIELD}
+                </p>
+              </Col>
+            </Row>
+          </div>
+        )}
       </div>
     );
   };
 
   renderCampsAndStorage = () => {
     const campColumns = [
-      {
-        title: "Name",
-        dataIndex: "name",
-        key: "name",
-        render: (text) => <div title="Name">{text}</div>,
-      },
-      {
-        title: "Number of People",
-        dataIndex: "numPeople",
-        key: "numPeople",
-        render: (text) => <div title="Number of People">{text}</div>,
-      },
-      {
-        title: "Number of Structures",
-        dataIndex: "structures",
-        key: "structures",
-        render: (text) => <div title="Number of Structures">{text}</div>,
-      },
-      {
-        title: "Estimated quantity of water (m3/s)",
-        dataIndex: "waterQuality",
-        key: "waterQuality",
-        render: (text) => <div title="Estimated quantity of water (m3/s)">{text}</div>,
-      },
+      // {
+      //   title: "Name",
+      //   dataIndex: "name",
+      //   key: "name",
+      //   render: (text) => <div title="Name">{text}</div>,
+      // },
+      // {
+      //   title: "Number of People",
+      //   dataIndex: "numPeople",
+      //   key: "numPeople",
+      //   render: (text) => <div title="Number of People">{text}</div>,
+      // },
+      // {
+      //   title: "Number of Structures",
+      //   dataIndex: "structures",
+      //   key: "structures",
+      //   render: (text) => <div title="Number of Structures">{text}</div>,
+      // },
+      // {
+      //   title: "Estimated quantity of water (m3/s)",
+      //   dataIndex: "waterQuality",
+      //   key: "waterQuality",
+      //   render: (text) => <div title="Estimated quantity of water (m3/s)">{text}</div>,
+      // },
       {
         title: "Disturbed Area (ha)",
         dataIndex: "disturbedArea",
@@ -170,12 +191,12 @@ export class NOWActivities extends Component {
     ];
 
     const buildingsColumns = [
-      {
-        title: "Name",
-        dataIndex: "name",
-        key: "name",
-        render: (text) => <div title="Name">{text}</div>,
-      },
+      // {
+      //   title: "Name",
+      //   dataIndex: "name",
+      //   key: "name",
+      //   render: (text) => <div title="Name">{text}</div>,
+      // },
       {
         title: "Disturbed Area (ha)",
         dataIndex: "disturbedArea",
@@ -190,6 +211,21 @@ export class NOWActivities extends Component {
       },
     ];
 
+    const campData = {
+      disturbedArea: this.props.noticeOfWork.campdisturbedarea || Strings.EMPTY_FIELD,
+      timberVolume: this.props.noticeOfWork.camptimbervolume || Strings.EMPTY_FIELD,
+    };
+
+    const stagingAreaData = {
+      disturbedArea: this.props.noticeOfWork.stgedisturbedarea || Strings.EMPTY_FIELD,
+      timberVolume: this.props.noticeOfWork.stgetimbervolume || Strings.EMPTY_FIELD,
+    };
+
+    const buildingData = {
+      disturbedArea: this.props.noticeOfWork.bldgdisturbedarea || Strings.EMPTY_FIELD,
+      timberVolume: this.props.noticeOfWork.bldgtimbervolume || Strings.EMPTY_FIELD,
+    };
+
     return (
       <div className="padding-large--sides">
         <div>
@@ -199,7 +235,7 @@ export class NOWActivities extends Component {
             align="left"
             pagination={false}
             columns={campColumns}
-            dataSource={[]}
+            dataSource={[campData]}
             locale={{
               emptyText: "Unknown",
             }}
@@ -213,7 +249,7 @@ export class NOWActivities extends Component {
             align="left"
             pagination={false}
             columns={buildingsColumns}
-            dataSource={[]}
+            dataSource={[buildingData]}
             locale={{
               emptyText: "Unknown",
             }}
@@ -227,7 +263,7 @@ export class NOWActivities extends Component {
             align="left"
             pagination={false}
             columns={buildingsColumns}
-            dataSource={[]}
+            dataSource={[stagingAreaData]}
             locale={{
               emptyText: "Unknown",
             }}
@@ -245,24 +281,29 @@ export class NOWActivities extends Component {
               <p>{this.props.noticeOfWork.fuellubstoreonsite || Strings.EMPTY_FIELD}</p>
             </Col>
           </Row>
-          <Row gutter={16} className="padding-small">
-            <Col md={12} xs={24}>
-              <p className="field-title--light">How much do you want to store?</p>
-            </Col>
-            <Col md={12} xs={24}>
-              <p>{this.props.noticeOfWork.fuellubstored || Strings.EMPTY_FIELD}</p>
-            </Col>
-          </Row>
-          <Row gutter={16} className="padding-small">
-            <Col md={12} xs={24}>
-              <p className="field-title">Storage Method</p>
-            </Col>
-            <Col md={12} xs={24}>
-              <p>{this.props.noticeOfWork.fuellubstoremethodbulk || Strings.EMPTY_FIELD}</p>
-            </Col>
-          </Row>
+          {isConditionTrue(this.props.noticeOfWork.fuellubstoreonsite) && (
+            <div>
+              <Row gutter={16} className="padding-small">
+                <Col md={12} xs={24}>
+                  <p className="field-title--light">How much do you want to store?</p>
+                </Col>
+                <Col md={12} xs={24}>
+                  <p>{this.props.noticeOfWork.fuellubstored || Strings.EMPTY_FIELD}</p>
+                </Col>
+              </Row>
+              <Row gutter={16} className="padding-small">
+                <Col md={12} xs={24}>
+                  <p className="field-title--light">Storage Method</p>
+                </Col>
+                <Col md={12} xs={24}>
+                  <p>{this.props.noticeOfWork.fuellubstoremethodbulk || Strings.EMPTY_FIELD}</p>
+                </Col>
+              </Row>
+            </div>
+          )}
         </div>
         <div>
+          <br />
           <h4>Reclamation Program</h4>
           <Divider className="margin-10" />
           <Row gutter={16} className="padding-small">
@@ -273,6 +314,16 @@ export class NOWActivities extends Component {
             </Col>
             <Col md={12} xs={24}>
               <p>{this.props.noticeOfWork.cbsfreclamation || Strings.EMPTY_FIELD}</p>
+            </Col>
+          </Row>
+          <Row gutter={16} className="padding-small">
+            <Col md={12} xs={24}>
+              <p className="field-title">
+                Estimated cost of reclamation of activities described above
+              </p>
+            </Col>
+            <Col md={12} xs={24}>
+              <p>{this.props.noticeOfWork.cbsfreclamationcost || Strings.EMPTY_FIELD}</p>
             </Col>
           </Row>
         </div>
@@ -303,9 +354,9 @@ export class NOWActivities extends Component {
     ];
 
     const data = {
-      total: this.props.noticeOfWork.cutlinesexplgridtotallinekms || Strings.EMPTY_FIELD,
-      disturbedArea: this.props.noticeOfWork.cutlinesexplgriddisturbedarea || Strings.EMPTY_FIELD,
-      timberVolume: this.props.noticeOfWork.cutlinesexplgridtimbervolume || Strings.EMPTY_FIELD,
+      total: this.props.noticeOfWork.cutlinesexplgridtotallinekms || Strings.ZERO,
+      disturbedArea: this.props.noticeOfWork.cutlinesexplgriddisturbedarea || Strings.ZERO,
+      timberVolume: this.props.noticeOfWork.cutlinesexplgridtimbervolume || Strings.ZERO,
     };
 
     return (
@@ -337,6 +388,16 @@ export class NOWActivities extends Component {
               <p>{this.props.noticeOfWork.cutlinesreclamation || Strings.EMPTY_FIELD}</p>
             </Col>
           </Row>
+          <Row gutter={16} className="padding-small">
+            <Col md={12} xs={24}>
+              <p className="field-title">
+                Estimated cost of reclamation of activities described above
+              </p>
+            </Col>
+            <Col md={12} xs={24}>
+              <p>{this.props.noticeOfWork.cutlinesreclamationcost || Strings.EMPTY_FIELD}</p>
+            </Col>
+          </Row>
         </div>
       </div>
     );
@@ -346,8 +407,8 @@ export class NOWActivities extends Component {
     const columns = [
       {
         title: "Activity",
-        dataIndex: "activity",
-        key: "activity",
+        dataIndex: "type",
+        key: "type",
         render: (text) => <div title="Activity">{text}</div>,
       },
       {
@@ -370,6 +431,14 @@ export class NOWActivities extends Component {
       },
     ];
 
+    const transformData = (activities) =>
+      activities.map((activity) => ({
+        type: activity.type || Strings.EMPTY_FIELD,
+        numSites: activity.numberofsites || Strings.EMPTY_FIELD,
+        disturbedArea: activity.disturbedarea || Strings.EMPTY_FIELD,
+        timberVolume: activity.timbervolume || Strings.EMPTY_FIELD,
+      }));
+
     return (
       <div className="padding-large--sides">
         <div>
@@ -379,14 +448,15 @@ export class NOWActivities extends Component {
             align="left"
             pagination={false}
             columns={columns}
-            dataSource={[]}
+            dataSource={transformData(this.props.noticeOfWork.exp_surface_drill_activity)}
             locale={{
-              emptyText: "Unknown",
+              emptyText: "No data",
             }}
           />
           <br />
         </div>
-        <div>
+        {/* <div>
+          <br />
           <h4>Support of the Drilling Program</h4>
           <Divider className="margin-10" />
           <Row gutter={16} className="padding-small">
@@ -397,8 +467,9 @@ export class NOWActivities extends Component {
               <p>{"Unknown" || Strings.EMPTY_FIELD}</p>
             </Col>
           </Row>
-        </div>
+        </div> */}
         <div>
+          <br />
           <h4>Reclamation Program</h4>
           <Divider className="margin-10" />
           <Row gutter={16} className="padding-small">
@@ -409,6 +480,16 @@ export class NOWActivities extends Component {
             </Col>
             <Col md={12} xs={24}>
               <p>{this.props.noticeOfWork.expsurfacedrillreclamation || Strings.EMPTY_FIELD}</p>
+            </Col>
+          </Row>
+          <Row gutter={16} className="padding-small">
+            <Col md={12} xs={24}>
+              <p className="field-title">
+                Estimated cost of reclamation of activities described above
+              </p>
+            </Col>
+            <Col md={12} xs={24}>
+              <p>{this.props.noticeOfWork.expsurfacedrillreclamationcost || Strings.EMPTY_FIELD}</p>
             </Col>
           </Row>
         </div>
@@ -606,7 +687,7 @@ export class NOWActivities extends Component {
             <p className="field-title">Is this an application for Underground Placer Operations?</p>
           </Col>
           <Col md={12} xs={24}>
-            <p>{"Unknown" || Strings.EMPTY_FIELD}</p>
+            <p>{this.props.noticeOfWork.placerundergroundoperations || Strings.EMPTY_FIELD}</p>
           </Col>
         </Row>
         <Row gutter={16} className="padding-small">
@@ -614,7 +695,7 @@ export class NOWActivities extends Component {
             <p className="field-title">Is this an application for Hand Operations?</p>
           </Col>
           <Col md={12} xs={24}>
-            <p>{"Unknown" || Strings.EMPTY_FIELD}</p>
+            <p>{this.props.noticeOfWork.placerhandoperations || Strings.EMPTY_FIELD}</p>
           </Col>
         </Row>
         <br />
@@ -627,7 +708,7 @@ export class NOWActivities extends Component {
             emptyText: "No Data",
           }}
         />
-        <br />
+        {/* <br />
         <Row gutter={16} className="padding-small">
           <Col md={12} xs={24}>
             <p className="field-title">Proposed Production</p>
@@ -635,7 +716,7 @@ export class NOWActivities extends Component {
           <Col md={12} xs={24}>
             <p>{"Unknown" || Strings.EMPTY_FIELD}</p>
           </Col>
-        </Row>
+        </Row> */}
         <br />
         <h4>Total Planned Reclamation Area</h4>
         <Divider className="margin-10" />
@@ -644,10 +725,10 @@ export class NOWActivities extends Component {
             <p className="field-title">Total area of planned reclamation this year</p>
           </Col>
           <Col md={12} xs={24}>
-            <p>{"Unknown" || Strings.EMPTY_FIELD}</p>
+            <p>{this.props.noticeOfWork.placerreclamationarea || Strings.EMPTY_FIELD}</p>
           </Col>
         </Row>
-        <br />
+        {/* <br />
         <h4>Changes In and About a Stream</h4>
         <Divider className="margin-10" />
         <Row gutter={16} className="padding-small">
@@ -659,7 +740,7 @@ export class NOWActivities extends Component {
           <Col md={12} xs={24}>
             <p>{"Unknown" || Strings.EMPTY_FIELD}</p>
           </Col>
-        </Row>
+        </Row> */}
         <br />
         <div>
           <h4>Reclamation Program</h4>
@@ -671,7 +752,7 @@ export class NOWActivities extends Component {
               </p>
             </Col>
             <Col md={12} xs={24}>
-              <p>{"Unknown" || Strings.EMPTY_FIELD}</p>
+              <p>{this.props.noticeOfWork.placerreclamation || Strings.EMPTY_FIELD}</p>
             </Col>
           </Row>
           <Row gutter={16} className="padding-small">
@@ -681,7 +762,7 @@ export class NOWActivities extends Component {
               </p>
             </Col>
             <Col md={12} xs={24}>
-              <p>{"Unknown" || Strings.EMPTY_FIELD}</p>
+              <p>{this.props.noticeOfWork.placerreclamationcost || Strings.EMPTY_FIELD}</p>
             </Col>
           </Row>
         </div>
@@ -696,12 +777,6 @@ export class NOWActivities extends Component {
         dataIndex: "activity",
         key: "activity",
         render: (text) => <div title="Activity">{text}</div>,
-      },
-      {
-        title: "Number of Sites",
-        dataIndex: "numSites",
-        key: "numSites",
-        render: (text) => <div title="Number of Sites">{text}</div>,
       },
       {
         title: "Total Disturbance Area (ha)",
@@ -720,7 +795,6 @@ export class NOWActivities extends Component {
     const transformData = (activities) =>
       activities.map((activity) => ({
         activity: activity.type || Strings.EMPTY_FIELD,
-        numSites: "Unknown" || Strings.EMPTY_FIELD,
         disturbedArea: activity.disturbedarea || Strings.EMPTY_FIELD,
         timberVolume: activity.timbervolume || Strings.EMPTY_FIELD,
       }));
@@ -765,14 +839,16 @@ export class NOWActivities extends Component {
             <p>{this.props.noticeOfWork.sandgrvqrywithinaglandres || Strings.EMPTY_FIELD}</p>
           </Col>
         </Row>
-        <Row gutter={16} className="padding-small">
-          <Col md={12} xs={24}>
-            <p className="field-title--light">Permit Application Number</p>
-          </Col>
-          <Col md={12} xs={24}>
-            <p>{this.props.noticeOfWork.sandgrvqryalrpermitnumber || Strings.EMPTY_FIELD}</p>
-          </Col>
-        </Row>
+        {isConditionTrue(this.props.noticeOfWork.sandgrvqrywithinaglandres) && (
+          <Row gutter={16} className="padding-small">
+            <Col md={12} xs={24}>
+              <p className="field-title--light">Permit Application Number</p>
+            </Col>
+            <Col md={12} xs={24}>
+              <p>{this.props.noticeOfWork.sandgrvqryalrpermitnumber || Strings.EMPTY_FIELD}</p>
+            </Col>
+          </Row>
+        )}
         <Row gutter={16} className="padding-small">
           <Col md={12} xs={24}>
             <p className="field-title">Does the local government have a soil removal bylaw?</p>
@@ -847,12 +923,6 @@ export class NOWActivities extends Component {
         render: (text) => <div title="Activity">{text}</div>,
       },
       {
-        title: "QTY",
-        dataIndex: "qty",
-        key: "qty",
-        render: (text) => <div title="QTY">{text}</div>,
-      },
-      {
         title: "Total Disturbance Area (ha)",
         dataIndex: "disturbedArea",
         key: "disturbedArea",
@@ -869,7 +939,6 @@ export class NOWActivities extends Component {
     const transformData = (activities) =>
       activities.map((activity) => ({
         activity: activity.type || Strings.EMPTY_FIELD,
-        qty: "Unknown" || Strings.EMPTY_FIELD,
         disturbedArea: activity.disturbedarea || Strings.EMPTY_FIELD,
         timberVolume: activity.timbervolume || Strings.EMPTY_FIELD,
       }));
@@ -894,14 +963,14 @@ export class NOWActivities extends Component {
             <p>{this.props.noticeOfWork.surfacebulksampleprocmethods || Strings.EMPTY_FIELD}</p>
           </Col>
         </Row>
-        <Row gutter={16} className="padding-small">
+        {/* <Row gutter={16} className="padding-small">
           <Col md={12} xs={24}>
             <p className="field-title">Bed Rock Expansion</p>
           </Col>
           <Col md={12} xs={24}>
             <p>{"Unknown" || Strings.EMPTY_FIELD}</p>
           </Col>
-        </Row>
+        </Row> */}
         <br />
         <h4>Reclamation Program</h4>
         <Divider className="margin-10" />
@@ -913,6 +982,14 @@ export class NOWActivities extends Component {
           </Col>
           <Col md={12} xs={24}>
             <p>{this.props.noticeOfWork.surfacebulksamplereclamation || Strings.EMPTY_FIELD}</p>
+          </Col>
+        </Row>
+        <Row gutter={16} className="padding-small">
+          <Col md={12} xs={24}>
+            <p className="field-title">Estimated cost of reclamation activities described above</p>
+          </Col>
+          <Col md={12} xs={24}>
+            <p>{this.props.noticeOfWork.surfacebulksamplereclcost || Strings.EMPTY_FIELD}</p>
           </Col>
         </Row>
         <Row gutter={16} className="padding-small">
@@ -1023,14 +1100,14 @@ export class NOWActivities extends Component {
 
     return (
       <div className="padding-large--sides">
-        <Row gutter={16} className="padding-small">
+        {/* <Row gutter={16} className="padding-small">
           <Col md={12} xs={24}>
             <p className="field-title">Proposed Activities</p>
           </Col>
           <Col md={12} xs={24}>
             <p>{"Unknown" || Strings.EMPTY_FIELD}</p>
           </Col>
-        </Row>
+        </Row> */}
         <h4>New Underground Exploration Development</h4>
         <Divider className="margin-10" />
         <Table
@@ -1082,7 +1159,7 @@ export class NOWActivities extends Component {
             emptyText: "No data",
           }}
         />
-        <Row gutter={16} className="padding-small">
+        {/* <Row gutter={16} className="padding-small">
           <Col md={12} xs={24}>
             <p className="field-title">Total Ore</p>
           </Col>
@@ -1097,7 +1174,7 @@ export class NOWActivities extends Component {
           <Col md={12} xs={24}>
             <p>{"Unknown" || Strings.EMPTY_FIELD}</p>
           </Col>
-        </Row>
+        </Row> */}
         <br />
       </div>
     );
@@ -1182,7 +1259,7 @@ export class NOWActivities extends Component {
             <Panel header="Camps, Buildings, Staging Area, Fuel/Lubricant Storage" key="3">
               {this.renderCampsAndStorage()}
             </Panel>
-            {isMineralOrCoal(nowType) && isPlacer(nowType) && (
+            {isMineralOrPlacerOrCoal(nowType) && (
               <Panel header="Cut Lines and Induced Polarization Survey" key="4">
                 {this.renderLinesAndSurvey()}
               </Panel>
@@ -1211,7 +1288,7 @@ export class NOWActivities extends Component {
                 {this.renderSurfaceBulkSample()}
               </Panel>
             )}
-            {isMineralOrCoal(nowType) && isPlacer(nowType) && (
+            {isMineralOrPlacerOrCoal(nowType) && (
               <Panel header="Underground Exploration" key="11">
                 {this.renderUnderGround()}
               </Panel>

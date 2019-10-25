@@ -1,12 +1,14 @@
 import React from "react";
 import { shallow } from "enzyme";
 import { NOWGeneralInfo } from "@/components/noticeOfWork/submissions/NOWGeneralInfo";
-import * as MOCK from "@/tests/mocks/noticeOfWorkMocks";
+import * as NOW_MOCK from "@/tests/mocks/noticeOfWorkMocks";
+import * as MOCK from "@/tests/mocks/dataMocks";
 
 const props = {};
 
 const setupProps = () => {
-  props.noticeOfWork = MOCK.NOTICE_OF_WORK;
+  props.noticeOfWork = NOW_MOCK.NOTICE_OF_WORK;
+  props.regionHash = MOCK.REGION_HASH;
 };
 
 beforeEach(() => {

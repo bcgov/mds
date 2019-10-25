@@ -34,5 +34,11 @@
         padding: $default-padding-lg;
       }
     }
+    
+.contact-card {
+  min-height: 300px;
+
+  @include tablet {
+    min-height: inherit;
   }
 }
