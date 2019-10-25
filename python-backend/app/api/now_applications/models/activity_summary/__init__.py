@@ -8,3 +8,4 @@ from .placer_operation import *
 from .sand_gravel_quarry_operation import *
 from .surface_bulk_sample import *
 from .water_supply import *
+from .underground_exploration import *

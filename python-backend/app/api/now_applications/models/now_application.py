@@ -50,6 +50,8 @@ class NOWApplication(Base, AuditMixin):
     water_source_activites = db.relationship('WaterSupply', lazy='selectin', uselist=False)
     exploration_access = db.relationship('ExplorationAccess', lazy='selectin', uselist=False)
     settling_pond = db.relationship('SettlignPond', lazy='selectin', uselist=False)
+    underground_exploration = db.relationship(
+        'UndergroundExploration', lazy='selectin', uselist=False)
 
     def __repr__(self):
-        return '<Application %r>' % self.application_guid
+        return '<NOWApplication %r>' % self.now_application_guid

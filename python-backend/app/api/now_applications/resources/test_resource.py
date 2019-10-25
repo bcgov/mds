@@ -48,4 +48,15 @@ class NOWApplicationResource(Resource, UserMixin):
             raise NotFound('now submission with that guid')
         application = transmogrify_now(submission.messageid)
         application.save()
+        current_app.logger.debug(f"""{submission} -> {application}
+        Camps = {str(application.cut_lines_polarization_survey)}
+        Cut Lines polarization = {str(application.exploration_surface_drilling)}
+        Exploration Surface Drilling = {str(application.mechanical_trenching)}
+        Placer Operation = {str(application.placer_operation)}
+        Blasting = {str(application.blasting)}
+        Sand and Gravel = {str(application.sand_and_gravel)}
+        Surface Bulk Sample = {str(application.surface_bulk_sample)}
+        Water Sources = {str(application.water_source_activites)}
+        Underground Exploration = {str(application.underground_exploration)}""")
+
         return {'CORE NOW APPLICATION GUID': application.now_application_id}
