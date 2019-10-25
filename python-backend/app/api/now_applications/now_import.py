@@ -30,6 +30,7 @@ def transmogrify_now(now_submission_message_id):
     _transmogrify_sand_and_gravel_activities(now_app,now_sub)
     _transmogrify_placer_operations(now_app,now_sub)
     _transmogrify_surface_bulk_sample(now_app,now_sub)
+    _transmogrify_underground_exploration(now_app,now_sub)
     return now_app
 
 
@@ -337,7 +338,7 @@ def _transmogrify_underground_exploration(a, s):
             length=rehab_uea.length,
             width=rehab_uea.width,
             height=rehab_uea.height,
-            underground_exploration_type_code='NEW'
+            underground_exploration_type_code='RHB'
             )
         )
 
@@ -347,7 +348,7 @@ def _transmogrify_underground_exploration(a, s):
             quantity=surface_uea.quantity,
             disturbed_area=surface_uea.disturbedarea,
             timber_volume=surface_uea.timbervolume,
-            underground_exploration_type_code='NEW'
+            underground_exploration_type_code='SUR'
             )
         )
     
