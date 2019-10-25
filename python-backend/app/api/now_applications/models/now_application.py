@@ -38,15 +38,18 @@ class NOWApplication(Base, AuditMixin):
 
     # Activities
     camps = db.relationship('Camp', lazy='selectin', uselist=False)
-    cut_lines_polarization_survey = db.relationship(
-        'CutLinesPolarizationSurvey', lazy='selectin', uselist=False)
-    exploration_surface_drilling = db.relationship(
-        'ExplorationSurfaceDrilling', lazy='selectin', uselist=False)
+    cut_lines_polarization_survey = db.relationship('CutLinesPolarizationSurvey',
+                                                    lazy='selectin',
+                                                    uselist=False)
+    exploration_surface_drilling = db.relationship('ExplorationSurfaceDrilling',
+                                                   lazy='selectin',
+                                                   uselist=False)
     mechanical_trenching = db.relationship('MechanicalTrenching', lazy='selectin', uselist=False)
     placer_operation = db.relationship('PlacerOperation', lazy='selectin', uselist=False)
     blasting = db.relationship('BlastingOperation', lazy='selectin', uselist=False)
     sand_and_gravel = db.relationship('SandGravelQuarryOperation', lazy='selectin', uselist=False)
     surface_bulk_sample = db.relationship('SurfaceBulkSample', lazy='selectin', uselist=False)
+    water_source_activites = db.relationship('WaterSupply', lazy='selectin', uselist=False)
 
     def __repr__(self):
         return '<Application %r>' % self.application_guid
