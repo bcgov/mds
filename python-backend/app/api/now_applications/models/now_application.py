@@ -36,6 +36,9 @@ class NOWApplication(Base, AuditMixin):
     proposed_start_date = db.Column(db.Date)
     proposed_end_date = db.Column(db.Date)
 
+    blasting = db.relationship('BlastingOperation', lazy='selectin', uselist=False)
+    state_of_land = db.relationship('StateOfLand', lazy='selectin')
+
     # Activities
     camps = db.relationship('Camp', lazy='selectin', uselist=False)
     cut_lines_polarization_survey = db.relationship('CutLinesPolarizationSurvey',
@@ -46,7 +49,6 @@ class NOWApplication(Base, AuditMixin):
                                                    uselist=False)
     mechanical_trenching = db.relationship('MechanicalTrenching', lazy='selectin', uselist=False)
     placer_operation = db.relationship('PlacerOperation', lazy='selectin', uselist=False)
-    blasting = db.relationship('BlastingOperation', lazy='selectin', uselist=False)
     sand_and_gravel = db.relationship('SandGravelQuarryOperation', lazy='selectin', uselist=False)
     surface_bulk_sample = db.relationship('SurfaceBulkSample', lazy='selectin', uselist=False)
     water_source_activites = db.relationship('WaterSupply', lazy='selectin', uselist=False)

@@ -175,6 +175,8 @@ class Application(Base):
     submitter = db.relationship('Client', lazy='select', foreign_keys=[submitterclientid])
     contacts = db.relationship('Contact', lazy='select')
     documents = db.relationship('Document', lazy='select')
+
+
     sand_grv_qry_activity = db.relationship('SandGrvQryActivity', lazy='select')
     surface_bulk_sample_activity = db.relationship('SurfaceBulkSampleActivity', lazy='select')
     under_exp_new_activity = db.relationship('UnderExpNewActivity', lazy='select')

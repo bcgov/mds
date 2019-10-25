@@ -47,8 +47,9 @@ class NOWApplicationResource(Resource, UserMixin):
         if not submission:
             raise NotFound('now submission with that guid')
         application = transmogrify_now(submission.messageid)
-        application.save()
-        current_app.logger.debug(f"""{submission} -> {application}
+        #application.save()
+        current_app.logger.debug(f"""
+        {submission} -> {application}
         Camps = {str(application.camps)}
         Cut Lines polarization = {str(application.exploration_surface_drilling)}
         Exploration Surface Drilling = {str(application.mechanical_trenching)}
