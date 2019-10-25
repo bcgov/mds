@@ -10,3 +10,5 @@ from .settling_pond_detail import *
 from .surface_bulk_sample_detail import *
 from .underground_exploration_detail import *
 from .water_supply_detail import *
+from .activity_summary_detail_xref import *
+from .etl_activity_detail import *

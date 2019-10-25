@@ -22,7 +22,7 @@ class SettlingPond(ActivitySummaryBase):
     is_ponds_recycled = db.Column(db.Boolean, nullable=False, default=False)
     is_ponds_discharged = db.Column(db.Boolean, nullable=False, default=False)
 
-    details = db.relationship('SettlingPondDetail', secondary='activity_summary_detail_xref')
+    details = db.relationship('SettlingPondDetail', secondary='activity_summary_detail_xref', load_on_pending=True)
 
     def __repr__(self):
         return '<SettlingPond %r>' % self.activity_summary_id

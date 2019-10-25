@@ -33,9 +33,7 @@ class ActivityDetailBase(AuditMixin, Base):
     water_quantity = db.Column(db.Integer)
     water_quantity_unit_type_code = db.Column(db.String, db.ForeignKey('unit_type.unit_type_code'))
 
-    activity_summaries = db.relationship(
-        'ActivitySummaryBase', secondary='activity_summary_detail_xref')
-    #is_existing = association_proxy('activity_summaries', 'is_existing')
+    _etl_activity_details = db.relationship('ETLActivityDetail', load_on_pending=True)
 
     activity_type_code = db.column_property(
         db.select(

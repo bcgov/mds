@@ -55,7 +55,7 @@ class SandGravelQuarryOperation(ActivitySummaryBase):
     reclamation_backfill_detail = db.Column(db.String)
 
     details = db.relationship('SandGravelQuarryOperationDetail',
-                              secondary='activity_summary_detail_xref')
+                              secondary='activity_summary_detail_xref', load_on_pending=True)
 
 
 def __repr__(self):

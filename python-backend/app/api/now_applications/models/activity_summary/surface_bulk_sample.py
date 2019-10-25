@@ -21,7 +21,7 @@ class SurfaceBulkSample(ActivitySummaryBase):
     handling_instructions = db.Column(db.String)
     drainage_mitigation_description = db.Column(db.String)
 
-    details = db.relationship('SurfaceBulkSampleDetail', secondary='activity_summary_detail_xref')
+    details = db.relationship('SurfaceBulkSampleDetail', secondary='activity_summary_detail_xref', load_on_pending=True)
 
     def __repr__(self):
         return '<SurfaceBulkSurface %r>' % self.activity_summary_id
