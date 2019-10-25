@@ -25,12 +25,16 @@ def transmogrify_now(now_submission_message_id):
         raise Exception('No NOW Submission with message_id')
     now_app = app_models.NOWApplication(mine_guid=now_sub.mine_guid)
     _transmogrify_now_details(now_app, now_sub)
-    _transmogrify_camp_activities(now_app, now_sub)
     _transmogrify_blasting_activities(now_app, now_sub)
-    _transmogrify_sand_and_gravel_activities(now_app,now_sub)
+    _transmogrify_camp_activities(now_app, now_sub)
+    _transmogrify_cut_lines_polarization_survey(now_app,now_sub)
+    _transmogrify_exploration_surface_drilling(now_app,now_sub)
+    _transmogrify_mechanical_trenching(now_app, now_sub)
     _transmogrify_placer_operations(now_app,now_sub)
+    _transmogrify_sand_and_gravel_activities(now_app,now_sub)
     _transmogrify_surface_bulk_sample(now_app,now_sub)
     _transmogrify_underground_exploration(now_app,now_sub)
+    _transmogrify_water_supply(now_app, now_sub)
     return now_app
 
 
@@ -51,6 +55,14 @@ def _transmogrify_now_details(a, s):
     a.proposed_end_date = s.proposedenddate
     return
 
+def _transmogrify_blasting_activities(a, s):
+    if s.bcexplosivespermitissued or s.bcexplosivespermitnumber or s.bcexplosivespermitexpiry or s.storeexplosivesonsite:
+        a.blasting = app_models.BlastingOperation(
+            explosive_permit_issued=s.bcexplosivespermitissued == 'Yes',
+            explosive_permit_number=s.bcexplosivespermitnumber,
+            explosive_permit_expiry_date=s.bcexplosivespermitexpiry,
+            has_storage_explosive_on_site=s.storeexplosivesonsite == 'Yes')
+    return
 
 def _transmogrify_camp_activities(a, s):
     if s.cbsfreclamation or s.cbsfreclamationcost or s.campbuildstgetotaldistarea or s.fuellubstoreonsite:
@@ -88,7 +100,6 @@ def _transmogrify_camp_activities(a, s):
 
     return
 
-
 def _transmogrify_cut_lines_polarization_survey(a, s):
     if s.cutlinesreclamation or s.cutlinesreclamationcost or s.cutlinesexplgriddisturbedarea:
 
@@ -107,7 +118,6 @@ def _transmogrify_cut_lines_polarization_survey(a, s):
         a.cut_lines_polarization_survey = clps
 
     return
-
 
 def _transmogrify_exploration_surface_drilling(a, s):
     if s.expsurfacedrillreclcorestorage or s.expsurfacedrillreclamation or s.expsurfacedrillreclamationcost or s.expsurfacedrilltotaldistarea:
@@ -129,7 +139,6 @@ def _transmogrify_exploration_surface_drilling(a, s):
         a.exploration_surface_drilling = esd
     return
 
-
 def _transmogrify_mechanical_trenching(a, s):
     if s.mechtrenchingreclamation or s.mechtrenchingreclamationcost or s.mechtrenchingtotaldistarea:
         mech = app_models.MechanicalTrenching(
@@ -148,7 +157,6 @@ def _transmogrify_mechanical_trenching(a, s):
 
         a.mechanical_trenching = mech
     return
-
 
 def _transmogrify_placer_operations(a, s):
     if s.placerundergroundoperations or s.placerhandoperations or s.placerhandoperations or s.placerreclamationarea or s.placerreclamation or s.placerreclamationcost:
@@ -199,17 +207,6 @@ def _transmogrify_placer_operations(a, s):
 
         a.placer_operation = placer
     return
-
-
-def _transmogrify_blasting_activities(a, s):
-    if s.bcexplosivespermitissued or s.bcexplosivespermitnumber or s.bcexplosivespermitexpiry or s.storeexplosivesonsite:
-        a.blasting = app_models.BlastingOperation(
-            explosive_permit_issued=s.bcexplosivespermitissued == 'Yes',
-            explosive_permit_number=s.bcexplosivespermitnumber,
-            explosive_permit_expiry_date=s.bcexplosivespermitexpiry,
-            has_storage_explosive_on_site=s.storeexplosivesonsite == 'Yes')
-    return
-
 
 def _transmogrify_sand_and_gravel_activities(a, s):
 
@@ -286,19 +283,6 @@ def _transmogrify_surface_bulk_sample(a, s):
             )
     return
 
-def _transmogrify_water_supply(a, s):
-    for wsa in s.water_source_activity:
-        a.water_source_activites.details.append(app_models.WaterSupplyDetail(
-            supply_source_description=wsa.sourcewatersupply,
-            supply_source_type=wsa.type, 
-            water_use_description=wsa.useofwater, 
-            estimate_rate=wsa.estimateratewater, 
-            pump_size=wsa.pumpsizeinwater, 
-            intake_location=wsa.locationwaterintake
-        ))
-    return
-
-    
 def _transmogrify_underground_exploration(a, s):
     if (s.underexptotalore or s.underexptotaloreunits or s.underexpreclamation
         or s.underexpreclamationcost or s.underexptotalwaste
@@ -353,3 +337,17 @@ def _transmogrify_underground_exploration(a, s):
         )
     
     return
+
+def _transmogrify_water_supply(a, s):
+    for wsa in s.water_source_activity:
+        a.water_source_activites.details.append(app_models.WaterSupplyDetail(
+            supply_source_description=wsa.sourcewatersupply,
+            supply_source_type=wsa.type, 
+            water_use_description=wsa.useofwater, 
+            estimate_rate=wsa.estimateratewater, 
+            pump_size=wsa.pumpsizeinwater, 
+            intake_location=wsa.locationwaterintake
+        ))
+    return
+
+    
