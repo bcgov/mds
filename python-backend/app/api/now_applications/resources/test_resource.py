@@ -57,6 +57,6 @@ class NOWApplicationResource(Resource, UserMixin):
         Sand and Gravel = {str(application.sand_and_gravel)}
         Surface Bulk Sample = {str(application.surface_bulk_sample)}
         Water Sources = {str(application.water_source_activites)}
-        Undergroudn Exploration = {str(application.underground_exploration)}""")
+        Underground Exploration = {str(application.underground_exploration)}""")
 
         return {'CORE NOW APPLICATION GUID': application.now_application_id}
