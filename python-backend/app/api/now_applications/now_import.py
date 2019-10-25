@@ -29,7 +29,7 @@ def transmogrify_now(now_submission_message_id):
     now_app = app_models.NOWApplication(mine_guid=now_sub.mine_guid)
     _transmogrify_now_details(now_app, now_sub)
     _transmogrify_blasting_activities(now_app, now_sub)
-    _transmogrify_state_of_lane(now_app,now_sub)
+    _transmogrify_state_of_land(now_app,now_sub)
     #Activities   
     _transmogrify_camp_activities(now_app, now_sub)
     _transmogrify_cut_lines_polarization_survey(now_app,now_sub)
@@ -70,15 +70,13 @@ def _transmogrify_blasting_activities(a, s):
             has_storage_explosive_on_site=s.storeexplosivesonsite == 'Yes')
     return
 
-def _transmogrify_state_of_lane(a, s):
+def _transmogrify_state_of_land(a, s):
     if s.landcommunitywatershed or s.archsitesaffected:
         a.state_of_land = app_models.StateOfLand(
             has_community_water_shed=s.landcommunitywatershed == 'Yes',
-            arch_sites_affected=s.archsitesaffected == 'Yes'
+            has_archaeology_sites_affected=s.archsitesaffected == 'Yes'
         )
     return
-
-
 
 #Activities   
 
