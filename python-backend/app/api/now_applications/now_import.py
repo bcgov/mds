@@ -78,8 +78,8 @@ def _transmogrify_state_of_land(a, s):
         )
     return
 
-#Activities   
 
+#Activities   
 def _transmogrify_camp_activities(a, s):
     if s.cbsfreclamation or s.cbsfreclamationcost or s.campbuildstgetotaldistarea or s.fuellubstoreonsite:
 
@@ -364,4 +364,16 @@ def _transmogrify_water_supply(a, s):
             pump_size=wsa.pumpsizeinwater, 
             intake_location=wsa.locationwaterintake
         ))
+    return
+
+
+def _transmogrify_activity_equipment(a,s):
+    # for equip in s.mech_trenching_equip:
+    #     pass
+    # for equip in s.sand_grv_qry_equip:
+    #     pass
+    # for equip in s.surface_bulk_sample_equip:
+    #     pass    
+    # for equip in s.placer_equip:
+    #     pass
     return

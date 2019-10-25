@@ -176,7 +176,6 @@ class Application(Base):
     contacts = db.relationship('Contact', lazy='select')
     documents = db.relationship('Document', lazy='select')
 
-
     sand_grv_qry_activity = db.relationship('SandGrvQryActivity', lazy='select')
     surface_bulk_sample_activity = db.relationship('SurfaceBulkSampleActivity', lazy='select')
     under_exp_new_activity = db.relationship('UnderExpNewActivity', lazy='select')
@@ -195,6 +194,20 @@ class Application(Base):
         'PlacerActivity', lazy='select', secondary='now_submissions.proposed_placer_activity_xref')
     proposed_settling_pond = db.relationship(
         'SettlingPond', lazy='select', secondary='now_submissions.proposed_settling_pond_xref')
+
+    mech_trenching_equip = db.relationship('EquipmentSubmission',
+                                           lazy='select',
+                                           secondary='now_submissions.mech_trenching_equip_xref')
+    sand_grv_qry_equip = db.relationship('EquipmentSubmission',
+                                         lazy='select',
+                                         secondary='now_submissions.sand_grv_qry_equip_xref')
+    surface_bulk_sample_equip = db.relationship(
+        'EquipmentSubmission',
+        lazy='select',
+        secondary='now_submissions.surface_bulk_sample_equip_xref')
+    placer_equip = db.relationship('EquipmentSubmission',
+                                   lazy='select',
+                                   secondary='now_submissions.placer_equip_xref')
 
     mine_name = association_proxy('mine', 'mine_name')
     mine_region = association_proxy('mine', 'mine_region')

@@ -9,9 +9,9 @@ from app.extensions import db
 from app.api.utils.models_mixins import AuditMixin, Base
 
 
-class EquipmentAssignmentType(AuditMixin, Base):
-    __tablename__ = 'equipment_assignment_type'
-    equipment_assignment_type_code = db.Column(db.String, primary_key=True)
+class ActivityEquipmentXrefType(Base):
+    __tablename__ = 'activity_equipment_xref_type'
+    activity_equipment_xref_type_code = db.Column(db.String, primary_key=True)
     description = db.Column(db.String, nullable=False)
     active_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
 

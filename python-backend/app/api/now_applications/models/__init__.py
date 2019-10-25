@@ -8,3 +8,6 @@ from .now_application_document_xref import NOWApplicationDocumentXref
 from .blasting_operation import BlastingOperation
 from .unit_type import UnitType
 from .state_of_land import StateOfLand
+from .equipment import Equipment
+from .activity_equipment_xref import ActivityEquipmentXref
+from .activity_equipment_xref_type import ActivityEquipmentXrefType
