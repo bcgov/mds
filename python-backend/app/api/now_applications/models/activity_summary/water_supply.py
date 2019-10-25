@@ -9,20 +9,12 @@ from app.api.now_applications.models.activity_summary.activity_summary_base impo
 
 
 class WaterSupply(ActivitySummaryBase):
-    __tablename__ = "water_supply"
     __mapper_args__ = {
         'polymorphic_identity': 'water_supply',  ## type code
     }
 
-    activity_summary_id = db.Column(
-        db.Integer, db.ForeignKey('activity.activity_summary_id'), primary_key=True)
-
-    water_use_description = db.Column(db.String)
-    estimate_rate = db.Column(db.Numeric(14, 2))
-    pump_size = db.Column(db.Numeric(14, 2))
-    intake_location = db.Column(db.String)
-
-    details = db.relationship('WaterSupplyDetail', secondary='activity_summary_detail_xref', load_on_pending=True)
+    ## NO TABLE FOR THIS TYPE
+    details = db.relationship('WaterSupplyDetail', secondary='activity_summary_detail_xref')
 
     def __repr__(self):
         return '<WaterSupply %r>' % self.activity_summary_id

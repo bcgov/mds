@@ -253,6 +253,13 @@ def _transmogrify_sand_and_gravel_activities(a, s):
             dust_impact_plan=s.sandgrvqryimpactprevtdust,
             visual_impact_plan=s.sandgrvqryimpactminvisual)
 
+        for detail in s.sand_grv_qry_activity:
+            a.sand_and_gravel.details.append(app_models.SandGravelQuarryOperationDetail(
+                disturbed_area=detail.disturbedarea, 
+                timber_volume=detail.timbervolume,
+                activity_type_description=detail.type)
+            )
+
     return
 
 def _transmogrify_surface_bulk_sample(a, s):
@@ -267,4 +274,23 @@ def _transmogrify_surface_bulk_sample(a, s):
             processing_method_description=s.surfacebulksampleprocmethods,
             handling_instructions=s.surfacebulksamplereclsephandl,
             drainage_mitigation_description=s.surfacebulksamplerecldrainmiti)
+
+        for detail in s.surface_bulk_sample_activity:
+            a.surface_bulk_sample.details.append(app_models.SurfaceBulkSampleDetail(
+                disturbed_area=detail.disturbedarea, 
+                timber_volume=detail.timbervolume,
+                activity_type_description=detail.type)
+            )
+    return
+
+def _transmogrify_water_supply(a, s):
+    for wsd in s.water_source_activity:
+        a.water_source_activites.details.append(app_models.WaterSupplyDetail(
+            supply_source_description=wsd.sourcewatersupply,
+            supply_source_type=wsd.type, 
+            water_use_description=wsd.useofwater, 
+            estimate_rate=wsd.estimateratewater, 
+            pump_size=wsd.pumpsizeinwater, 
+            intake_location=wsd.locationwaterintake
+        ))
     return
