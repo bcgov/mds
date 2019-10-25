@@ -9,14 +9,14 @@ from app.extensions import db
 class NOWApplicationDocumentXref(AuditMixin, Base):
     __tablename__ = "now_application_document_xref"
 
-    now_application_document_xref_guid = db.Column(
-        UUID(as_uuid=True), primary_key=True, server_default=FetchedValue())
-    mine_document_guid = db.Column(
-        UUID(as_uuid=True), db.ForeignKey('mine_document.mine_document_guid'))
-    now_application_id = db.Column(
-        db.Integer,
-        db.ForeignKey('now_application.now_application_id'),
-        server_default=FetchedValue())
+    now_application_document_xref_guid = db.Column(UUID(as_uuid=True),
+                                                   primary_key=True,
+                                                   server_default=FetchedValue())
+    mine_document_guid = db.Column(UUID(as_uuid=True),
+                                   db.ForeignKey('mine_document.mine_document_guid'))
+    now_application_id = db.Column(db.Integer,
+                                   db.ForeignKey('now_application.now_application_id'),
+                                   server_default=FetchedValue())
     now_application_document_type_code = db.Column(
         db.String,
         db.ForeignKey('now_application_document_type.now_application_document_type_code'))

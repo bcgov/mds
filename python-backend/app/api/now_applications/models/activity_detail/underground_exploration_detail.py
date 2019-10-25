@@ -14,8 +14,9 @@ class UndergroundExplorationDetail(ActivityDetailBase):
         'polymorphic_identity': 'underground_exploration',  ## type code
     }
 
-    activity_detail_id = db.Column(
-        db.Integer, db.ForeignKey('activity_detail.activity_detail_id'), primary_key=True)
+    activity_detail_id = db.Column(db.Integer,
+                                   db.ForeignKey('activity_detail.activity_detail_id'),
+                                   primary_key=True)
 
     underground_exploration_type_code = db.Column(
         db.String, db.ForeignKey('underground_exploration_type.underground_exploration_type_code'))

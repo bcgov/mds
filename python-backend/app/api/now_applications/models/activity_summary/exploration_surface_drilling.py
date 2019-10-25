@@ -13,14 +13,13 @@ class ExplorationSurfaceDrilling(ActivitySummaryBase):
     __mapper_args__ = {
         'polymorphic_identity': 'exploration_surface_drilling',
     }
-    activity_summary_id = db.Column(
-        db.Integer, db.ForeignKey('activity_summary.activity_summary_id'), primary_key=True)
+    activity_summary_id = db.Column(db.Integer,
+                                    db.ForeignKey('activity_summary.activity_summary_id'),
+                                    primary_key=True)
     reclamation_core_storage = db.Column(db.String)
 
-    details = db.relationship(
-        'ExplorationSurfaceDrillingDetail',
-        secondary='activity_summary_detail_xref',
-        load_on_pending=True)
+    details = db.relationship('ExplorationSurfaceDrillingDetail',
+                              secondary='activity_summary_detail_xref', load_on_pending=True)
 
     def __repr__(self):
         return '<ExplorationSurfaceDrilling %r>' % self.activity_summary_id

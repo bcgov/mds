@@ -16,8 +16,9 @@ class WaterSupplyDetail(ActivityDetailBase):
         'polymorphic_identity': 'water_supply',  ## type code
     }
 
-    activity_detail_id = db.Column(
-        db.Integer, db.ForeignKey('activity_detail.activity_detail_id'), primary_key=True)
+    activity_detail_id = db.Column(db.Integer,
+                                   db.ForeignKey('activity_detail.activity_detail_id'),
+                                   primary_key=True)
 
     supply_source_description = db.Column(db.String)
     supply_source_type = db.Column(db.String)
