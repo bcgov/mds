@@ -286,7 +286,7 @@ def _transmogrify_surface_bulk_sample(a, s):
     return
 
 def _transmogrify_water_supply(a, s):
-    for wsd in s.water_source_activity:
+    for wsa in s.water_source_activity:
         a.water_source_activites.details.append(app_models.WaterSupplyDetail(
             supply_source_description=wsa.sourcewatersupply,
             supply_source_type=wsa.type, 

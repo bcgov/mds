@@ -55,4 +55,4 @@ class NOWApplication(Base, AuditMixin):
                                               uselist=False)
 
     def __repr__(self):
-        return '<Application %r>' % self.application_guid
+        return '<NOWApplication %r>' % self.now_application_guid
