@@ -11,13 +11,16 @@ unit_type_map = {'m3' : 'Meters cubed',
 'Percent':'Grade (Percent)'}
 
 
-def code_lookup(model, description):
-    row = model.query.filter_by(description=description).first()
-    if not row:
-        raise Exception(
-            f'Code description "{description}" not found on table "{model.__name__}"')
-    return row
-
+def code_lookup(model, description, code_column_name):
+    if description:
+        row = model.query.filter_by(description=description).first()
+        if not row:
+            raise Exception(
+                f'Code description "{description}" not found on table "{model.__name__}"')
+        result = getattr(row, code_column_name)
+    else:
+        result = None
+    return result
 
 def transmogrify_now(now_submission_message_id):
     now_sub = sub_models.Application.query.get(now_submission_message_id)
@@ -42,9 +45,9 @@ def _transmogrify_now_details(a, s):
     a.now_message_id = s.messageid
     a.now_tracking_number = s.trackingnumber
     a.notice_of_work_type_code = code_lookup(app_models.NOWApplicationType,
-                                             s.noticeofworktype).notice_of_work_type_code
+                                             s.noticeofworktype,'notice_of_work_type_code')
     a.now_application_status_code = code_lookup(app_models.NOWApplicationStatus,
-                                                s.status).now_application_status_code
+                                                s.status,'now_application_status_code')
     a.submitted_date = s.submitteddate
     a.received_date = s.receiveddate
     a.latitude = s.latitude
@@ -234,9 +237,9 @@ def _transmogrify_sand_and_gravel_activities(a, s):
             land_use_zoning=s.sandgrvqrylandusezoning,
             proposed_land_use=s.sandgrvqryendlanduse,
             total_minable_reserves=s.sandgrvqrytotalmineres,
-            total_minable_reserves_unit_type_code=code_lookup(app_models.UnitType, unit_type_map[s.sandgrvqrytotalmineresunits]).unit_type_code,
+            total_minable_reserves_unit_type_code=code_lookup(app_models.UnitType, unit_type_map[s.sandgrvqrytotalmineresunits],'unit_type_code'),
             total_annual_extraction=s.sandgrvqryannualextrest,
-            total_annual_extraction_unit_type_code=code_lookup(app_models.UnitType,unit_type_map[s.sandgrvqryannualextrestunits]).unit_type_code,
+            total_annual_extraction_unit_type_code=code_lookup(app_models.UnitType,unit_type_map[s.sandgrvqryannualextrestunits],'unit_type_code'),
             reclamation_description=s.sandgrvqryreclamation,
             reclamation_backfill_detail=s.sandgrvqryreclamationbackfill,
             reclamation_cost=s.sandgrvqryreclamationcost,
@@ -294,16 +297,16 @@ def _transmogrify_underground_exploration(a, s):
             total_disturbed_area_unit_type_code='HA',
 
             total_ore_amount=s.underexptotalore,
-            total_ore_unit_type_code=code_lookup(app_models.UnitType,unit_type_map[s.underexptotaloreunits]).unit_type_code,
+            total_ore_unit_type_code=code_lookup(app_models.UnitType,unit_type_map[s.underexptotaloreunits], 'unit_type_code'),
             total_waste_amount=s.underexptotalwaste,
-            total_waste_unit_type_code=code_lookup(app_models.UnitType,unit_type_map[s.underexptotalwasteunits]).unit_type_code
+            total_waste_unit_type_code=code_lookup(app_models.UnitType,unit_type_map[s.underexptotalwasteunits],'unit_type_code')
         )
     
     for new_uea in s.under_exp_new_activity:
         a.underground_exploration.details.append(app_models.UndergroundExplorationDetail(
             activity_type_description=new_uea.type,
             incline=new_uea.incline,
-            incline_unit_type_code=code_lookup(app_models.UnitType,unit_type_map[new_uea.inclineunits]).unit_type_code,
+            incline_unit_type_code=code_lookup(app_models.UnitType,unit_type_map[new_uea.inclineunits],'unit_type_code'),
             quantity=new_uea.quantity,
             length=new_uea.length,
             width=new_uea.width,
@@ -317,7 +320,7 @@ def _transmogrify_underground_exploration(a, s):
         a.underground_exploration.details.append(app_models.UndergroundExplorationDetail(
             activity_type_description=rehab_uea.type,
             incline=rehab_uea.incline,
-            incline_unit_type_code=code_lookup(app_models.UnitType,unit_type_map[rehab_uea.inclineunits]).unit_type_code,
+            incline_unit_type_code=code_lookup(app_models.UnitType,unit_type_map[rehab_uea.inclineunits],'unit_type_code'),
             quantity=rehab_uea.quantity,
             length=rehab_uea.length,
             width=rehab_uea.width,
@@ -349,5 +352,3 @@ def _transmogrify_water_supply(a, s):
             intake_location=wsa.locationwaterintake
         ))
     return
-
-    
