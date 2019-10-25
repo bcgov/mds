@@ -309,9 +309,9 @@ def _transmogrify_underground_exploration(a, s):
             total_disturbed_area_unit_type_code='HA',
 
             total_ore_amount=s.underexptotalore,
-            total_ore_amount_unit_type_code=code_lookup(app_models.UnitType,unit_type_map[s.underexptotaloreunits]).unit_type_code,
+            total_ore_unit_type_code=code_lookup(app_models.UnitType,unit_type_map[s.underexptotaloreunits]).unit_type_code,
             total_waste_amount=s.underexptotalwaste,
-            total_waste_amount_unit_type_code=code_lookup(app_models.UnitType,unit_type_map[s.underexptotalwasteunits]).unit_type_code
+            total_waste_unit_type_code=code_lookup(app_models.UnitType,unit_type_map[s.underexptotalwasteunits]).unit_type_code
         )
     
     for new_uea in s.under_exp_new_activity:

@@ -18,11 +18,9 @@ class UndergroundExploration(ActivitySummaryBase):
                                     primary_key=True)
 
     total_ore_amount = db.Column(db.Integer)
-    total_ore_amount_unit_type_code = db.Column(db.String,
-                                                db.ForeignKey('unit_type.unit_type_code'))
+    total_ore_unit_type_code = db.Column(db.String, db.ForeignKey('unit_type.unit_type_code'))
     total_waste_amount = db.Column(db.Integer)
-    total_waste_amount_unit_type_code = db.Column(db.String,
-                                                  db.ForeignKey('unit_type.unit_type_code'))
+    total_waste_unit_type_code = db.Column(db.String, db.ForeignKey('unit_type.unit_type_code'))
 
     details = db.relationship('UndergroundExplorationDetail',
                               secondary='activity_summary_detail_xref',
