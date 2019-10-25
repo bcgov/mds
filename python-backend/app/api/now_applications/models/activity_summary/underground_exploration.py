@@ -27,7 +27,7 @@ class UndergroundExploration(ActivitySummaryBase):
                                                   db.ForeignKey('unit_type.unit_type_code'))
 
     details = db.relationship(
-        'UndergroundExplorationDetail', secondary='activity_summary_detail_xref')
+        'UndergroundExplorationDetail', secondary='activity_summary_detail_xref', load_on_pending=True)
 
     def __repr__(self):
         return '<UndergroundExploration %r>' % self.activity_summary_id

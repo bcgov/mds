@@ -22,7 +22,7 @@ class WaterSupply(ActivitySummaryBase):
     pump_size = db.Column(db.Numeric(14, 2))
     intake_location = db.Column(db.String)
 
-    details = db.relationship('WaterSupplyDetail', secondary='activity_summary_detail_xref')
+    details = db.relationship('WaterSupplyDetail', secondary='activity_summary_detail_xref', load_on_pending=True)
 
     def __repr__(self):
         return '<WaterSupply %r>' % self.activity_summary_id
