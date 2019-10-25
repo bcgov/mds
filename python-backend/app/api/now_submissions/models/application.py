@@ -199,6 +199,20 @@ class Application(Base):
         lazy='select',
         secondary='now_submissions.proposed_settling_pond_xref')
 
+    mech_trenching_equip = db.relationship('EquipmentSubmission',
+                                           lazy='select',
+                                           secondary='now_submissions.mech_trenching_equip_xref')
+    sand_grv_qry_equip = db.relationship('EquipmentSubmission',
+                                         lazy='select',
+                                         secondary='now_submissions.sand_grv_qry_equip_xref')
+    surface_bulk_sample_equip = db.relationship(
+        'EquipmentSubmission',
+        lazy='select',
+        secondary='now_submissions.surface_bulk_sample_equip_xref')
+    placer_equip = db.relationship('EquipmentSubmission',
+                                   lazy='select',
+                                   secondary='now_submissions.placer_equip_xref')
+
     mine_name = association_proxy('mine', 'mine_name')
     mine_region = association_proxy('mine', 'mine_region')
 
