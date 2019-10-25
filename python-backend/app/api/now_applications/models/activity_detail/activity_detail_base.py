@@ -25,6 +25,7 @@ class ActivityDetailBase(AuditMixin, Base):
     width = db.Column(db.Integer)
     length = db.Column(db.Integer)
     depth = db.Column(db.Integer)
+    height = db.Column(db.Integer)
     quantity = db.Column(db.Integer)
     incline = db.Column(db.Numeric(14, 2))
     incline_unit_type_code = db.Column(db.String, db.ForeignKey('unit_type.unit_type_code'))
@@ -39,8 +40,8 @@ class ActivityDetailBase(AuditMixin, Base):
         db.select(
             [ActivitySummaryBase.activity_type_code],
             and_(
-                ActivitySummaryDetailXref.activity_summary_id == ActivitySummaryBase.
-                activity_summary_id,
+                ActivitySummaryDetailXref.activity_summary_id ==
+                ActivitySummaryBase.activity_summary_id,
                 ActivitySummaryDetailXref.activity_detail_id == activity_detail_id)).as_scalar())
 
     __mapper_args__ = {'polymorphic_on': activity_type_code}
