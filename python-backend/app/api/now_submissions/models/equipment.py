@@ -11,4 +11,4 @@ class EquipmentSubmission(Base):
     quantity = db.Column(db.Integer)
 
     def __repr__(self):
-        return '<Equipment %r>' % self.equipmentid
+        return '<EquipmentSubmission %r>' % self.equipmentid

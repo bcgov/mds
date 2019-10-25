@@ -172,8 +172,25 @@ def _transmogrify_mechanical_trenching(a, s):
                 timber_volume=sd.timbervolume)
             mech.details.append(mech_detail)
 
+        for e in s.mech_trenching_equip:
+            equipment = _transmogrify_equipment(e)
+            mech.equipment.append(equipment)
+
         a.mechanical_trenching = mech
     return
+
+def _transmogrify_equipment(e):
+    existing_etl = app_models.ETLEquipment.query.filter_by(
+        equipmentid=e.equipmentid).first()
+    if existing_etl:
+        return existing_etl.equipment
+
+    equipment = app_models.Equipment(description=e.type, quantity=e.quantity, capacity=e.sizecapacity)
+    etl_equipment = app_models.ETLEquipment(equipmentid=e.equipmentid)
+    equipment._etl_equipment.append(etl_equipment)
+
+    return equipment
+
 
 def _transmogrify_exploration_access(a,s):
     if s.expaccessreclamation or s.expaccessreclamationcost or s.expaccesstotaldistarea:
@@ -232,6 +249,10 @@ def _transmogrify_placer_operations(a, s):
                 existing_detail._etl_activity_details.append(etl_detail)
 
             existing_xref = app_models.ActivitySummaryDetailXref(summary=placer, detail=existing_detail, is_existing=True)
+
+        for e in s.placer_equip:
+            equipment = _transmogrify_equipment(e)
+            placer.equipment.append(equipment)
 
         a.placer_operation = placer
     return
@@ -351,6 +372,10 @@ def _transmogrify_sand_and_gravel_activities(a, s):
                 activity_type_description=detail.type)
             )
 
+        for e in s.sand_grv_qry_equip:
+            equipment = _transmogrify_equipment(e)
+            a.sand_and_gravel.equipment.append(equipment)
+
     return
 
 def _transmogrify_surface_bulk_sample(a, s):
@@ -372,6 +397,10 @@ def _transmogrify_surface_bulk_sample(a, s):
                 timber_volume=detail.timbervolume,
                 activity_type_description=detail.type)
             )
+
+        for e in s.surface_bulk_sample_equip:
+            equipment = _transmogrify_equipment(e)
+            a.surface_bulk_sample.equipment.append(equipment)
     return
 
 def _transmogrify_underground_exploration(a, s):
@@ -430,25 +459,18 @@ def _transmogrify_underground_exploration(a, s):
     return
 
 def _transmogrify_water_supply(a, s):
-    for wsa in s.water_source_activity:
-        a.water_source_activites.details.append(app_models.WaterSupplyDetail(
-            supply_source_description=wsa.sourcewatersupply,
-            supply_source_type=wsa.type, 
-            water_use_description=wsa.useofwater, 
-            estimate_rate=wsa.estimateratewater, 
-            pump_size=wsa.pumpsizeinwater, 
-            intake_location=wsa.locationwaterintake
-        ))
-    return
+    if s.water_source_activity:
+        water_supply = app_models.WaterSupply()
 
-
-def _transmogrify_activity_equipment(a,s):
-    # for equip in s.mech_trenching_equip:
-    #     pass
-    # for equip in s.sand_grv_qry_equip:
-    #     pass
-    # for equip in s.surface_bulk_sample_equip:
-    #     pass    
-    # for equip in s.placer_equip:
-    #     pass
+        for wsa in s.water_source_activity:
+            water_supply.details.append(app_models.WaterSupplyDetail(
+                supply_source_description=wsa.sourcewatersupply,
+                supply_source_type=wsa.type, 
+                water_use_description=wsa.useofwater, 
+                estimate_rate=wsa.estimateratewater, 
+                pump_size=wsa.pumpsizeinwater, 
+                intake_location=wsa.locationwaterintake
+            ))
+        
+        a.water_supply = water_supply
     return

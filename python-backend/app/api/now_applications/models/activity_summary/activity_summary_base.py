@@ -23,4 +23,7 @@ class ActivitySummaryBase(AuditMixin, Base):
     total_disturbed_area_unit_type_code = db.Column(db.String,
                                                     db.ForeignKey('unit_type.unit_type_code'))
 
+    equipment = db.relationship(
+        'Equipment', secondary='activity_equipment_xref', load_on_pending=True)
+
     __mapper_args__ = {'polymorphic_on': activity_type_code}

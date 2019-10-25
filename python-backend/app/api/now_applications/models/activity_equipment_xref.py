@@ -9,11 +9,8 @@ from app.extensions import db
 class ActivityEquipmentXref(Base):
     __tablename__ = "activity_equipment_xref"
 
-    activity_summary_id = db.Column(db.Integer,
-                                    db.ForeignKey('activity_summary.activity_summary_id'),
-                                    primary_key=True)
-    activity_equipment_xref_type_code = db.Column(
-        db.String, db.ForeignKey('activity_equipment_xref_type.activity_equipment_xref_type_code'))
+    activity_summary_id = db.Column(
+        db.Integer, db.ForeignKey('activity_summary.activity_summary_id'), primary_key=True)
     equipment_id = db.Column(db.Integer, db.ForeignKey('equipment.equipment_id'), primary_key=True)
 
     def __repr__(self):
