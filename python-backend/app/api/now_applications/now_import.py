@@ -6,7 +6,9 @@ from flask import current_app
 unit_type_map = {'m3' : 'Meters cubed',
 'tonnes': 'Tonne (Metric Ton 1000Kg)',
 'm3/year' : 'Meters cubed',
-'tonnes/year' :'Tonne (Metric Ton 1000Kg)'}
+'tonnes/year' :'Tonne (Metric Ton 1000Kg)',
+'Degrees':'Degrees',
+'Percent':'Grade (Percent)'}
 
 
 def code_lookup(model, description):
@@ -282,11 +284,67 @@ def _transmogrify_surface_bulk_sample(a, s):
 def _transmogrify_water_supply(a, s):
     for wsd in s.water_source_activity:
         a.water_source_activites.details.append(app_models.WaterSupplyDetail(
-            supply_source_description=wsd.sourcewatersupply,
-            supply_source_type=wsd.type, 
-            water_use_description=wsd.useofwater, 
-            estimate_rate=wsd.estimateratewater, 
-            pump_size=wsd.pumpsizeinwater, 
-            intake_location=wsd.locationwaterintake
+            supply_source_description=wsa.sourcewatersupply,
+            supply_source_type=wsa.type, 
+            water_use_description=wsa.useofwater, 
+            estimate_rate=wsa.estimateratewater, 
+            pump_size=wsa.pumpsizeinwater, 
+            intake_location=wsa.locationwaterintake
         ))
+    return
+
+    
+def _transmogrify_underground_exploration(a, s):
+    if (s.underexptotalore or s.underexptotaloreunits or s.underexpreclamation
+        or s.underexpreclamationcost or s.underexptotalwaste
+        or s.underexptotalwasteunits or s.underexptotaldistarea):
+        a.underground_exploration = app_models.UndergroundExploration(
+            reclamation_description=s.underexpreclamation,
+            reclamation_cost=s.underexpreclamationcost,
+            total_disturbed_area=s.underexptotaldistarea,
+            total_disturbed_area_unit_type_code='HA',
+
+            total_ore_amount=s.underexptotalore,
+            total_ore_amount_unit_type_code=code_lookup(app_models.UnitType,unit_type_map[s.underexptotaloreunits]).unit_type_code,
+            total_waste_amount=s.underexptotalwaste,
+            total_waste_amount_unit_type_code=code_lookup(app_models.UnitType,unit_type_map[s.underexptotalwasteunits]).unit_type_code
+        )
+    
+    for new_uea in s.under_exp_new_activity:
+        a.underground_exploration.details.append(app_models.UndergroundExplorationDetail(
+            activity_type_description=new_uea.type,
+            incline=new_uea.incline,
+            incline_unit_type_code=code_lookup(app_models.UnitType,unit_type_map[new_uea.inclineunits]).unit_type_code,
+            quantity=new_uea.quantity,
+            length=new_uea.length,
+            width=new_uea.width,
+            height=new_uea.height,
+            underground_exploration_type_code='NEW'
+            )
+        )
+
+
+    for rehab_uea in s.under_exp_rehab_activity:
+        a.underground_exploration.details.append(app_models.UndergroundExplorationDetail(
+            activity_type_description=rehab_uea.type,
+            incline=rehab_uea.incline,
+            incline_unit_type_code=code_lookup(app_models.UnitType,unit_type_map[rehab_uea.inclineunits]).unit_type_code,
+            quantity=rehab_uea.quantity,
+            length=rehab_uea.length,
+            width=rehab_uea.width,
+            height=rehab_uea.height,
+            underground_exploration_type_code='NEW'
+            )
+        )
+
+    for surface_uea in s.under_exp_surface_activity:
+        a.underground_exploration.details.append(app_models.UndergroundExplorationDetail(
+            activity_type_description=surface_uea.type,
+            quantity=surface_uea.quantity,
+            disturbed_area=surface_uea.disturbedarea,
+            timber_volume=surface_uea.timbervolume,
+            underground_exploration_type_code='NEW'
+            )
+        )
+    
     return

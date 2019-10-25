@@ -50,6 +50,9 @@ class NOWApplication(Base, AuditMixin):
     sand_and_gravel = db.relationship('SandGravelQuarryOperation', lazy='selectin', uselist=False)
     surface_bulk_sample = db.relationship('SurfaceBulkSample', lazy='selectin', uselist=False)
     water_source_activites = db.relationship('WaterSupply', lazy='selectin', uselist=False)
+    underground_exploration = db.relationship('UndergroundExploration',
+                                              lazy='selectin',
+                                              uselist=False)
 
     def __repr__(self):
         return '<Application %r>' % self.application_guid
