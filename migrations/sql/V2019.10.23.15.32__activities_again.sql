@@ -26,8 +26,9 @@ ALTER TABLE equipment_assignment DROP COLUMN now_application_id;
 ALTER TABLE equipment_assignment ADD COLUMN activity_summary_id integer;
 ALTER TABLE equipment_assignment ADD FOREIGN KEY (activity_summary_id) REFERENCES activity_summary(activity_summary_id);
 ALTER TABLE equipment_assignment ADD PRIMARY KEY (activity_summary_id, equipment_id);
-ALTER TABLE DROP COLUMN equipment_assignment_type_code;
+ALTER TABLE equipment_assignment DROP COLUMN equipment_assignment_type_code;
 ALTER TABLE equipment_assignment RENAME TO activity_equipment_xref;
+
 DROP TABLE activity_equipment_xref_type;
 
 ALTER TABLE state_of_land drop column create_user;
