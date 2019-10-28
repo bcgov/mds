@@ -27,6 +27,13 @@ from app.api.now_submissions.models.proposed_settling_pond_xref import ProposedS
 
 from app.api.now_applications.models.now_application_type import NOWApplicationType
 from app.api.now_applications.models.now_application_status import NOWApplicationStatus
+from app.api.now_applications.models.unit_type import UnitType
+
+from app.api.now_applications.transmogrify_now import unit_type_map
+
+
+def randomYesNo():
+    return random.choice(['Yes', 'No'])
 
 
 class NOWSubmissionFactory(BaseFactory):
@@ -52,6 +59,67 @@ class NOWSubmissionFactory(BaseFactory):
     receiveddate = factory.Faker('past_datetime')
     minenumber = factory.Faker('word')
     originating_system = random.choice(['NROS', 'VFCBC'])
+
+    #exploration_surface_drilling
+    expsurfacedrillreclcorestorage = factory.Faker('sentence', nb_words=1)
+    expsurfacedrillreclamationcost = factory.fuzzy.FuzzyDecimal(100)
+    expsurfacedrilltotaldistarea = factory.fuzzy.FuzzyDecimal(100)
+    expsurfacedrillreclcorestorage = factory.Faker('sentence', nb_words=1)
+
+    #placer_operations
+    placerundergroundoperations = factory.LazyFunction(randomYesNo)
+    placerhandoperations = factory.LazyFunction(randomYesNo)
+    placerreclamationarea = factory.fuzzy.FuzzyDecimal(1000)
+    placerreclamation = factory.Faker('sentence', nb_words=2)
+    placerreclamationcost = factory.fuzzy.FuzzyDecimal(1000)
+
+    #sand_and_gravel
+    sandgrvqrydepthoverburden = factory.fuzzy.FuzzyDecimal(1000)
+    sandgrvqrydepthtopsoil = factory.fuzzy.FuzzyDecimal(1000)
+    sandgrvqrystabilizemeasures = factory.Faker('sentence', nb_words=2)
+    sandgrvqrywithinaglandres = factory.LazyFunction(randomYesNo)
+    sandgrvqryalrpermitnumber = factory.Faker('sentence', nb_words=2)
+    sandgrvqrylocalgovsoilrembylaw = factory.LazyFunction(randomYesNo)
+    sandgrvqryofficialcommplan = factory.Faker('sentence', nb_words=2)
+    sandgrvqrylandusezoning = factory.Faker('sentence', nb_words=2)
+    sandgrvqryendlanduse = factory.Faker('sentence', nb_words=2)
+    sandgrvqrytotalmineres = factory.fuzzy.FuzzyInteger(1, 100)
+    sandgrvqrytotalmineresunits = factory.LazyFunction(lambda: random.choice(
+        list(unit_type_map.keys())))
+    sandgrvqryannualextrest = factory.fuzzy.FuzzyInteger(1, 100)
+    sandgrvqryannualextrestunits = factory.LazyFunction(lambda: random.choice(
+        list(unit_type_map.keys())))
+    sandgrvqryreclamation = factory.Faker('sentence', nb_words=2)
+    sandgrvqryreclamationbackfill = factory.Faker('sentence', nb_words=2)
+    sandgrvqryreclamationcost = factory.fuzzy.FuzzyDecimal(1000)
+    sandgrvqrygrdwtravgdepth = factory.fuzzy.FuzzyDecimal(100)
+    sandgrvqrygrdwtrexistingareas = factory.LazyFunction(randomYesNo)
+    sandgrvqrygrdwtrtestpits = factory.LazyFunction(randomYesNo)
+    sandgrvqrygrdwtrtestwells = factory.LazyFunction(randomYesNo)
+    sandgrvqrygrdwtrother = factory.Faker('sentence', nb_words=2)
+    sandgrvqrygrdwtrmeasprotect = factory.Faker('sentence', nb_words=2)
+    sandgrvqryimpactdistres = factory.fuzzy.FuzzyInteger(1, 100)
+    sandgrvqryimpactdistwater = factory.fuzzy.FuzzyInteger(1, 100)
+    sandgrvqryimpactnoise = factory.Faker('sentence', nb_words=3)
+    sandgrvqryimpactprvtaccess = factory.Faker('sentence', nb_words=3)
+    sandgrvqryimpactprevtdust = factory.Faker('sentence', nb_words=3)
+    sandgrvqryimpactminvisual = factory.Faker('sentence', nb_words=3)
+
+    #surface_bulk_sample
+    surfacebulksampleprocmethods = factory.Faker('sentence', nb_words=3)
+    surfacebulksamplereclsephandl = factory.Faker('sentence', nb_words=3)
+    surfacebulksamplereclamation = factory.Faker('sentence', nb_words=3)
+    surfacebulksamplerecldrainmiti = factory.Faker('sentence', nb_words=3)
+    surfacebulksamplereclcost = factory.fuzzy.FuzzyDecimal(100)
+    surfacebulksampletotaldistarea = factory.fuzzy.FuzzyDecimal(100)
+
+    #settling_pond
+    pondsreclamation = factory.Faker('sentence', nb_words=3)
+    pondsreclamationcost = factory.fuzzy.FuzzyDecimal(100)
+    pondstotaldistarea = factory.fuzzy.FuzzyDecimal(100)
+    pondsexfiltratedtoground = factory.LazyFunction(randomYesNo)
+    pondsrecycled = factory.LazyFunction(randomYesNo)
+    pondsdischargedtoenv = factory.LazyFunction(randomYesNo)
 
     @factory.post_generation
     def documents(obj, create, extracted, **kwargs):
@@ -142,16 +210,6 @@ class NOWSubmissionFactory(BaseFactory):
             extracted = 1
 
         NOWProposedPlacerActivityXrefFactory.create_batch(size=extracted, application=obj, **kwargs)
-
-    @factory.post_generation
-    def surface_bulk_sample_activity(obj, create, extracted, **kwargs):
-        if not create:
-            return
-
-        if not isinstance(extracted, int):
-            extracted = 1
-
-        NOWSurfaceBulkSampleActivityFactory.create_batch(size=extracted, application=obj, **kwargs)
 
     @factory.post_generation
     def existing_settling_pond(obj, create, extracted, **kwargs):
