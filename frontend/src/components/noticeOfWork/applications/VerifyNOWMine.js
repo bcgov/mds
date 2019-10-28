@@ -88,8 +88,8 @@ export class VerifyNOWMine extends Component {
         </LoadingWrapper>
         <LoadingWrapper condition={this.state.isMineLoaded}>
           <div>
-            <div className="content__card">
-              <div className="content__card-right">
+            <div className="mine-content__card">
+              <div className="mine-content__card-right">
                 <div className="inline-flex padding-small">
                   <p className="field-title">Mine Name</p>
                   <p>{this.state.mine.mine_name}</p>
@@ -115,9 +115,9 @@ export class VerifyNOWMine extends Component {
                   </ul>
                 </div>
               </div>
-              <div className="content__card-left">
+              <div className="mine-content__card-left">
                 <MineHeaderMapLeaflet mine={this.state.mine} />
-                <div className="content__card-left--footer">
+                <div className="mine-content__card-left--footer">
                   <div className="inline-flex between">
                     <p className="p-white">
                       Lat:{" "}

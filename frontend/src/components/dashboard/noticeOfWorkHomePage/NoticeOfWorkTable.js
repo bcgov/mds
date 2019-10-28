@@ -9,6 +9,8 @@ import * as router from "@/constants/routes";
 import NullScreen from "@/components/common/NullScreen";
 import TableLoadingWrapper from "@/components/common/wrappers/TableLoadingWrapper";
 import { formatDate, optionsFilterAdapter, getTableHeaders } from "@/utils/helpers";
+import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
+import * as Permission from "@/constants/permissions";
 
 /**
  * @class NoticeOfWorkTable - paginated list of notice of work applications
@@ -178,8 +180,10 @@ export class NoticeOfWorkTable extends Component {
       dataIndex: "verify",
       width: 150,
       render: (text, record) => (
-        <div title="" align="right" className="inline-flex">
-          <Link to={router.NOTICE_OF_WORK_APPLICATION.dynamicRoute(record.key)}>Verify</Link>
+        <div title="">
+          <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
+            <Link to={router.NOTICE_OF_WORK_APPLICATION.dynamicRoute(record.key)}>Verify</Link>
+          </AuthorizationWrapper>
         </div>
       ),
     },
