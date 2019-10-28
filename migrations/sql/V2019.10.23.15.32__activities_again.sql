@@ -29,7 +29,7 @@ ALTER TABLE equipment_assignment ADD PRIMARY KEY (activity_summary_id, equipment
 ALTER TABLE equipment_assignment DROP COLUMN equipment_assignment_type_code;
 ALTER TABLE equipment_assignment RENAME TO activity_equipment_xref;
 
-DROP TABLE activity_equipment_xref_type;
+DROP TABLE equipment_assignment_type;
 
 ALTER TABLE state_of_land drop column create_user;
 ALTER TABLE state_of_land drop column create_timestamp;
