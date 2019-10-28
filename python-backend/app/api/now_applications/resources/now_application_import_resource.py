@@ -1,3 +1,4 @@
+import uuid
 from datetime import datetime
 
 from flask import request, current_app
@@ -27,8 +28,10 @@ class NOWApplicationImportResource(Resource, UserMixin):
 
     #@requires_role_mine_edit
     #@api.marshal_with(NOW_APPLICATION_MODEL, code=200)
+    @api.expect(parser)
     def post(self, application_guid):
-        mine_guid = request.args.get('mine_guid')
+        data = self.parser.parse_args()
+        mine_guid = data.get('mine_guid')
         mine = Mine.find_by_mine_guid(mine_guid)
         if not mine:
             raise NotFound('Mine not found')

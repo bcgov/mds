@@ -1,4 +1,4 @@
-import uuid
+import uuid, random
 from datetime import datetime
 from os import path
 from sqlalchemy.orm.scoping import scoped_session
@@ -25,6 +25,9 @@ from app.api.now_submissions.models.proposed_placer_activity_xref import Propose
 from app.api.now_submissions.models.existing_settling_pond_xref import ExistingSettlingPondXref as NOWExistingSettlingPondXref
 from app.api.now_submissions.models.proposed_settling_pond_xref import ProposedSettlingPondXref as NOWProposedSettlingPondXref
 
+from app.api.now_applications.models.now_application_type import NOWApplicationType
+from app.api.now_applications.models.now_application_status import NOWApplicationStatus
+
 
 class NOWSubmissionFactory(BaseFactory):
     class Meta:
@@ -40,9 +43,11 @@ class NOWSubmissionFactory(BaseFactory):
     messageid = factory.Sequence(lambda n: n)
     applicantclientid = factory.SelfAttribute('applicant.clientid')
     submitterclientid = factory.SelfAttribute('submitter.clientid')
-    noticeofworktype = factory.Faker('word')
+    noticeofworktype = factory.LazyFunction(lambda: random.choice(
+        [x.description for x in NOWApplicationType.query.all()]))
     trackingnumber = factory.fuzzy.FuzzyInteger(1, 100)
-    status = random.choice(['Approved', 'Rejected', 'Received', 'Client Delayed'])
+    status = factory.LazyFunction(lambda: random.choice(
+        [x.description for x in NOWApplicationStatus.query.all()]))
     receiveddate = factory.Faker('past_datetime')
     minenumber = factory.Faker('word')
     originating_system = random.choice(['NROS', 'VFCBC'])
