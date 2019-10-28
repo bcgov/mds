@@ -48,6 +48,7 @@ class NOWSubmissionFactory(BaseFactory):
     trackingnumber = factory.fuzzy.FuzzyInteger(1, 100)
     status = factory.LazyFunction(lambda: random.choice(
         [x.description for x in NOWApplicationStatus.query.all()]))
+    submitteddate = factory.Faker('past_datetime')
     receiveddate = factory.Faker('past_datetime')
     minenumber = factory.Faker('word')
     originating_system = random.choice(['NROS', 'VFCBC'])
