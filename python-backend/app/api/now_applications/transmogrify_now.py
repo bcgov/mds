@@ -419,42 +419,42 @@ def _transmogrify_underground_exploration(a, s):
             total_waste_unit_type_code=code_lookup(app_models.UnitType,unit_type_map[s.underexptotalwasteunits],'unit_type_code')
         )
     
-    for new_uea in s.under_exp_new_activity:
-        a.underground_exploration.details.append(app_models.UndergroundExplorationDetail(
-            activity_type_description=new_uea.type,
-            incline=new_uea.incline,
-            incline_unit_type_code=code_lookup(app_models.UnitType,unit_type_map[new_uea.inclineunits],'unit_type_code'),
-            quantity=new_uea.quantity,
-            length=new_uea.length,
-            width=new_uea.width,
-            height=new_uea.height,
-            underground_exploration_type_code='NEW'
+        for new_uea in s.under_exp_new_activity:
+            a.underground_exploration.details.append(app_models.UndergroundExplorationDetail(
+                activity_type_description=new_uea.type,
+                incline=new_uea.incline,
+                incline_unit_type_code=code_lookup(app_models.UnitType,unit_type_map[new_uea.inclineunits],'unit_type_code'),
+                quantity=new_uea.quantity,
+                length=new_uea.length,
+                width=new_uea.width,
+                height=new_uea.height,
+                underground_exploration_type_code='NEW'
+                )
             )
-        )
 
 
-    for rehab_uea in s.under_exp_rehab_activity:
-        a.underground_exploration.details.append(app_models.UndergroundExplorationDetail(
-            activity_type_description=rehab_uea.type,
-            incline=rehab_uea.incline,
-            incline_unit_type_code=code_lookup(app_models.UnitType,unit_type_map[rehab_uea.inclineunits],'unit_type_code'),
-            quantity=rehab_uea.quantity,
-            length=rehab_uea.length,
-            width=rehab_uea.width,
-            height=rehab_uea.height,
-            underground_exploration_type_code='RHB'
+        for rehab_uea in s.under_exp_rehab_activity:
+            a.underground_exploration.details.append(app_models.UndergroundExplorationDetail(
+                activity_type_description=rehab_uea.type,
+                incline=rehab_uea.incline,
+                incline_unit_type_code=code_lookup(app_models.UnitType,unit_type_map[rehab_uea.inclineunits],'unit_type_code'),
+                quantity=rehab_uea.quantity,
+                length=rehab_uea.length,
+                width=rehab_uea.width,
+                height=rehab_uea.height,
+                underground_exploration_type_code='RHB'
+                )
             )
-        )
 
-    for surface_uea in s.under_exp_surface_activity:
-        a.underground_exploration.details.append(app_models.UndergroundExplorationDetail(
-            activity_type_description=surface_uea.type,
-            quantity=surface_uea.quantity,
-            disturbed_area=surface_uea.disturbedarea,
-            timber_volume=surface_uea.timbervolume,
-            underground_exploration_type_code='SUR'
+        for surface_uea in s.under_exp_surface_activity:
+            a.underground_exploration.details.append(app_models.UndergroundExplorationDetail(
+                activity_type_description=surface_uea.type,
+                quantity=surface_uea.quantity,
+                disturbed_area=surface_uea.disturbedarea,
+                timber_volume=surface_uea.timbervolume,
+                underground_exploration_type_code='SUR'
+                )
             )
-        )
     
     return
 
