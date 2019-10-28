@@ -612,7 +612,7 @@ class MineFactory(BaseFactory):
         MineReportFactory.create_batch(size=extracted, mine=obj, **kwargs)
 
 
-class NOWApplicationFactory(BaseFactory):
+class NOWSubmissionFactory(BaseFactory):
     class Meta:
         model = NOWApplication
 
@@ -791,7 +791,7 @@ class NOWDocumentFactory(BaseFactory):
         model = NOWDocument
 
     class Params:
-        application = factory.SubFactory('tests.factories.NOWApplicationFactory')
+        application = factory.SubFactory('tests.factories.NOWSubmissionFactory')
 
     id = factory.Sequence(lambda n: n)
     messageid = factory.SelfAttribute('application.messageid')
@@ -803,7 +803,7 @@ class NOWContactFactory(BaseFactory):
         model = NOWContact
 
     class Params:
-        application = factory.SubFactory('tests.factories.NOWApplicationFactory')
+        application = factory.SubFactory('tests.factories.NOWSubmissionFactory')
 
     id = factory.Sequence(lambda n: n)
     messageid = factory.SelfAttribute('application.messageid')
@@ -815,7 +815,7 @@ class NOWSandGrvQryActivityFactory(BaseFactory):
         model = NOWSandGrvQryActivity
 
     class Params:
-        application = factory.SubFactory('tests.factories.NOWApplicationFactory')
+        application = factory.SubFactory('tests.factories.NOWSubmissionFactory')
 
     id = factory.Sequence(lambda n: n)
     messageid = factory.SelfAttribute('application.messageid')
@@ -827,7 +827,7 @@ class NOWUnderExpNewActivityFactory(BaseFactory):
         model = NOWUnderExpNewActivity
 
     class Params:
-        application = factory.SubFactory('tests.factories.NOWApplicationFactory')
+        application = factory.SubFactory('tests.factories.NOWSubmissionFactory')
 
     id = factory.Sequence(lambda n: n)
     messageid = factory.SelfAttribute('application.messageid')
@@ -839,7 +839,7 @@ class NOWUnderExpRehabActivityFactory(BaseFactory):
         model = NOWUnderExpRehabActivity
 
     class Params:
-        application = factory.SubFactory('tests.factories.NOWApplicationFactory')
+        application = factory.SubFactory('tests.factories.NOWSubmissionFactory')
 
     id = factory.Sequence(lambda n: n)
     messageid = factory.SelfAttribute('application.messageid')
@@ -851,7 +851,7 @@ class NOWUnderExpSurfaceActivityFactory(BaseFactory):
         model = NOWUnderExpSurfaceActivity
 
     class Params:
-        application = factory.SubFactory('tests.factories.NOWApplicationFactory')
+        application = factory.SubFactory('tests.factories.NOWSubmissionFactory')
 
     id = factory.Sequence(lambda n: n)
     messageid = factory.SelfAttribute('application.messageid')
@@ -863,7 +863,7 @@ class NOWWaterSourceActivityFactory(BaseFactory):
         model = NOWWaterSourceActivity
 
     class Params:
-        application = factory.SubFactory('tests.factories.NOWApplicationFactory')
+        application = factory.SubFactory('tests.factories.NOWSubmissionFactory')
 
     id = factory.Sequence(lambda n: n)
     messageid = factory.SelfAttribute('application.messageid')
@@ -875,7 +875,7 @@ class NOWSurfaceBulkSampleActivityFactory(BaseFactory):
         model = NOWSurfaceBulkSampleActivity
 
     class Params:
-        application = factory.SubFactory('tests.factories.NOWApplicationFactory')
+        application = factory.SubFactory('tests.factories.NOWSubmissionFactory')
 
     id = factory.Sequence(lambda n: n)
     messageid = factory.SelfAttribute('application.messageid')
@@ -887,7 +887,7 @@ class NOWExistingPlacerActivityXrefFactory(BaseFactory):
         model = NOWExistingPlacerActivityXref
 
     class Params:
-        application = factory.SubFactory('tests.factories.NOWApplicationFactory')
+        application = factory.SubFactory('tests.factories.NOWSubmissionFactory')
         placer_activity = factory.SubFactory('tests.factories.NOWPlacerActivityFactory')
 
     messageid = factory.SelfAttribute('application.messageid')
@@ -907,7 +907,7 @@ class NOWProposedPlacerActivityXrefFactory(BaseFactory):
         model = NOWProposedPlacerActivityXref
 
     class Params:
-        application = factory.SubFactory('tests.factories.NOWApplicationFactory')
+        application = factory.SubFactory('tests.factories.NOWSubmissionFactory')
         placer_activity = factory.SubFactory('tests.factories.NOWPlacerActivityFactory')
 
     messageid = factory.SelfAttribute('application.messageid')
@@ -927,7 +927,7 @@ class NOWExistingSettlingPondXrefFactory(BaseFactory):
         model = NOWExistingSettlingPondXref
 
     class Params:
-        application = factory.SubFactory('tests.factories.NOWApplicationFactory')
+        application = factory.SubFactory('tests.factories.NOWSubmissionFactory')
         settling_pond = factory.SubFactory('tests.factories.NOWSettlingPondFactory')
 
     messageid = factory.SelfAttribute('application.messageid')
@@ -939,7 +939,7 @@ class NOWProposedSettlingPondXrefFactory(BaseFactory):
         model = NOWProposedSettlingPondXref
 
     class Params:
-        application = factory.SubFactory('tests.factories.NOWApplicationFactory')
+        application = factory.SubFactory('tests.factories.NOWSubmissionFactory')
         settling_pond = factory.SubFactory('tests.factories.NOWSettlingPondFactory')
 
     messageid = factory.SelfAttribute('application.messageid')
