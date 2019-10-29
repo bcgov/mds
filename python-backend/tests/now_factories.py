@@ -48,6 +48,119 @@ class NOWSubmissionFactory(BaseFactory):
         mine = factory.SubFactory('tests.factories.MineFactory', minimal=True)
         applicant = factory.SubFactory('tests.factories.NOWClientFactory')
         submitter = factory.SubFactory('tests.factories.NOWClientFactory')
+        all_activites = factory.Trait(blasting=True,
+                                      state_of_land=True,
+                                      camps=True,
+                                      cut_lines_polarization_survey=True,
+                                      exploration_access=True,
+                                      exploration_surface_drilling=True,
+                                      mechanical_trenching=True,
+                                      placer_operation=True,
+                                      sand_and_gravel=True,
+                                      surface_bulk_sample=True,
+                                      settling_pond=True,
+                                      underground_exploration=True)
+        camps = factory.Trait(
+            cbsfreclamation=factory.Faker('sentence', nb_words=3),
+            cbsfreclamationcost=factory.fuzzy.FuzzyDecimal(100),
+            campbuildstgetotaldistarea=factory.fuzzy.FuzzyDecimal(100),
+            fuellubstoreonsite=factory.LazyFunction(
+                randomYesNo))  #details=factory.SubFactory('tests.now_factories.NOWCampDetails'))
+
+        blasting = factory.Trait(bcexplosivespermitissued=factory.LazyFunction(randomYesNo),
+                                 bcexplosivespermitnumber=factory.Faker(
+                                     'bothify',
+                                     text='???#####',
+                                     letters='ABCDEFGHIJKLMNOPQRSTUVWXYZ'),
+                                 bcexplosivespermitexpiry=factory.Faker('future_datetime',
+                                                                        end_date='+30d'),
+                                 storeexplosivesonsite=factory.LazyFunction(randomYesNo))
+
+        state_of_land = factory.Trait(landcommunitywatershed=factory.LazyFunction(randomYesNo),
+                                      archsitesaffected=factory.LazyFunction(randomYesNo))
+
+        cut_lines_polarization_survey = factory.Trait(
+            cutlinesreclamation=factory.Faker('sentence', nb_words=3),
+            cutlinesreclamationcost=factory.fuzzy.FuzzyDecimal(100),
+            cutlinesexplgriddisturbedarea=factory.fuzzy.FuzzyDecimal(100))
+
+        exploration_access = factory.Trait(expaccessreclamation=factory.Faker('sentence',
+                                                                              nb_words=3),
+                                           expaccessreclamationcost=factory.fuzzy.FuzzyDecimal(100),
+                                           expaccesstotaldistarea=factory.fuzzy.FuzzyDecimal(100))
+
+        exploration_surface_drilling = factory.Trait(
+            expsurfacedrillreclcorestorage=factory.Faker('sentence', nb_words=1),
+            expsurfacedrillreclamationcost=factory.fuzzy.FuzzyDecimal(100),
+            expsurfacedrilltotaldistarea=factory.fuzzy.FuzzyDecimal(100))
+
+        mechanical_trenching = factory.Trait(
+            mechtrenchingreclamation=factory.Faker('sentence', nb_words=3),
+            mechtrenchingreclamationcost=factory.fuzzy.FuzzyDecimal(100),
+            mechtrenchingtotaldistarea=factory.fuzzy.FuzzyDecimal(100))
+
+        placer_operation = factory.Trait(
+            placerundergroundoperations=factory.LazyFunction(randomYesNo),
+            placerhandoperations=factory.LazyFunction(randomYesNo),
+            placerreclamationarea=factory.fuzzy.FuzzyDecimal(1000),
+            placerreclamation=factory.Faker('sentence', nb_words=2),
+            placerreclamationcost=factory.fuzzy.FuzzyDecimal(1000))
+
+        sand_and_gravel = factory.Trait(
+            sandgrvqrydepthoverburden=factory.fuzzy.FuzzyDecimal(1000),
+            sandgrvqrydepthtopsoil=factory.fuzzy.FuzzyDecimal(1000),
+            sandgrvqrystabilizemeasures=factory.Faker('sentence', nb_words=2),
+            sandgrvqrywithinaglandres=factory.LazyFunction(randomYesNo),
+            sandgrvqryalrpermitnumber=factory.Faker('sentence', nb_words=2),
+            sandgrvqrylocalgovsoilrembylaw=factory.LazyFunction(randomYesNo),
+            sandgrvqryofficialcommplan=factory.Faker('sentence', nb_words=2),
+            sandgrvqrylandusezoning=factory.Faker('sentence', nb_words=2),
+            sandgrvqryendlanduse=factory.Faker('sentence', nb_words=2),
+            sandgrvqrytotalmineres=factory.fuzzy.FuzzyInteger(1, 100),
+            sandgrvqrytotalmineresunits=factory.LazyFunction(randomUnitDescription),
+            sandgrvqryannualextrest=factory.fuzzy.FuzzyInteger(1, 100),
+            sandgrvqryannualextrestunits=factory.LazyFunction(randomUnitDescription),
+            sandgrvqryreclamation=factory.Faker('sentence', nb_words=2),
+            sandgrvqryreclamationbackfill=factory.Faker('sentence', nb_words=2),
+            sandgrvqryreclamationcost=factory.fuzzy.FuzzyDecimal(1000),
+            sandgrvqrygrdwtravgdepth=factory.fuzzy.FuzzyDecimal(100),
+            sandgrvqrygrdwtrexistingareas=factory.LazyFunction(randomYesNo),
+            sandgrvqrygrdwtrtestpits=factory.LazyFunction(randomYesNo),
+            sandgrvqrygrdwtrtestwells=factory.LazyFunction(randomYesNo),
+            sandgrvqrygrdwtrother=factory.Faker('sentence', nb_words=2),
+            sandgrvqrygrdwtrmeasprotect=factory.Faker('sentence', nb_words=2),
+            sandgrvqryimpactdistres=factory.fuzzy.FuzzyInteger(1, 100),
+            sandgrvqryimpactdistwater=factory.fuzzy.FuzzyInteger(1, 100),
+            sandgrvqryimpactnoise=factory.Faker('sentence', nb_words=3),
+            sandgrvqryimpactprvtaccess=factory.Faker('sentence', nb_words=3),
+            sandgrvqryimpactprevtdust=factory.Faker('sentence', nb_words=3),
+            sandgrvqryimpactminvisual=factory.Faker('sentence', nb_words=3))
+
+        surface_bulk_sample = factory.Trait(
+            surfacebulksampleprocmethods=factory.Faker('sentence', nb_words=3),
+            surfacebulksamplereclsephandl=factory.Faker('sentence', nb_words=3),
+            surfacebulksamplereclamation=factory.Faker('sentence', nb_words=3),
+            surfacebulksamplerecldrainmiti=factory.Faker('sentence', nb_words=3),
+            surfacebulksamplereclcost=factory.fuzzy.FuzzyDecimal(100),
+            surfacebulksampletotaldistarea=factory.fuzzy.FuzzyDecimal(100))
+
+        settling_pond = factory.Trait(pondsreclamation=factory.Faker('sentence', nb_words=3),
+                                      pondsreclamationcost=factory.fuzzy.FuzzyDecimal(100),
+                                      pondstotaldistarea=factory.fuzzy.FuzzyDecimal(100),
+                                      pondsexfiltratedtoground=factory.LazyFunction(randomYesNo),
+                                      pondsrecycled=factory.LazyFunction(randomYesNo),
+                                      pondsdischargedtoenv=factory.LazyFunction(randomYesNo))
+
+        underground_exploration = factory.Trait(
+            underexptotalore=factory.fuzzy.FuzzyInteger(1, 100),
+            underexptotaloreunits=factory.LazyFunction(randomUnitDescription),
+            underexpreclamation=factory.Faker('sentence', nb_words=3),
+            underexpreclamationcost=factory.fuzzy.FuzzyDecimal(100),
+            underexptotalwaste=factory.fuzzy.FuzzyInteger(1, 100),
+            underexptotalwasteunits=factory.LazyFunction(randomUnitDescription),
+            underexptotaldistarea=factory.fuzzy.FuzzyDecimal(100))
+
+    all_activites = True
 
     application_guid = GUID
     mine_guid = factory.SelfAttribute('mine.mine_guid')
@@ -63,107 +176,6 @@ class NOWSubmissionFactory(BaseFactory):
     receiveddate = factory.Faker('past_datetime')
     minenumber = factory.Faker('word')
     originating_system = random.choice(['NROS', 'VFCBC'])
-
-    #lasting
-    bcexplosivespermitissued = factory.LazyFunction(randomYesNo)
-    bcexplosivespermitnumber = factory.Faker('bothify',
-                                             text='???#####',
-                                             letters='ABCDEFGHIJKLMNOPQRSTUVWXYZ')
-    bcexplosivespermitexpiry = factory.Faker('future_datetime', end_date='+30d')
-    storeexplosivesonsite = factory.LazyFunction(randomYesNo)
-
-    #state of land
-    landcommunitywatershed = factory.LazyFunction(randomYesNo)
-    archsitesaffected = factory.LazyFunction(randomYesNo)
-
-    #activity_summary -> camps
-    cbsfreclamation = factory.Faker('sentence', nb_words=3)
-    cbsfreclamationcost = factory.fuzzy.FuzzyDecimal(100)
-    campbuildstgetotaldistarea = factory.fuzzy.FuzzyDecimal(100)
-    fuellubstoreonsite = factory.LazyFunction(randomYesNo)
-
-    #activity_summary -> cut_lines+polariazation_survey
-    cutlinesreclamation = factory.Faker('sentence', nb_words=3)
-    cutlinesreclamationcost = factory.fuzzy.FuzzyDecimal(100)
-    cutlinesexplgriddisturbedarea = factory.fuzzy.FuzzyDecimal(100)
-
-    #activity_summary -> exploration_access
-    expaccessreclamation = factory.Faker('sentence', nb_words=3)
-    expaccessreclamationcost = factory.fuzzy.FuzzyDecimal(100)
-    expaccesstotaldistarea = factory.fuzzy.FuzzyDecimal(100)
-
-    #activity_summary -> exploration_surface_drilling
-    expsurfacedrillreclcorestorage = factory.Faker('sentence', nb_words=1)
-    expsurfacedrillreclamationcost = factory.fuzzy.FuzzyDecimal(100)
-    expsurfacedrilltotaldistarea = factory.fuzzy.FuzzyDecimal(100)
-    expsurfacedrillreclcorestorage = factory.Faker('sentence', nb_words=1)
-
-    #activity_summary - mechanical_trenching
-    mechtrenchingreclamation = factory.Faker('sentence', nb_words=3)
-    mechtrenchingreclamationcost = factory.fuzzy.FuzzyDecimal(100)
-    mechtrenchingtotaldistarea = factory.fuzzy.FuzzyDecimal(100)
-
-    #activity_summary -> placer_operations
-    placerundergroundoperations = factory.LazyFunction(randomYesNo)
-    placerhandoperations = factory.LazyFunction(randomYesNo)
-    placerreclamationarea = factory.fuzzy.FuzzyDecimal(1000)
-    placerreclamation = factory.Faker('sentence', nb_words=2)
-    placerreclamationcost = factory.fuzzy.FuzzyDecimal(1000)
-
-    #activity_summary -> sand_and_gravel
-    sandgrvqrydepthoverburden = factory.fuzzy.FuzzyDecimal(1000)
-    sandgrvqrydepthtopsoil = factory.fuzzy.FuzzyDecimal(1000)
-    sandgrvqrystabilizemeasures = factory.Faker('sentence', nb_words=2)
-    sandgrvqrywithinaglandres = factory.LazyFunction(randomYesNo)
-    sandgrvqryalrpermitnumber = factory.Faker('sentence', nb_words=2)
-    sandgrvqrylocalgovsoilrembylaw = factory.LazyFunction(randomYesNo)
-    sandgrvqryofficialcommplan = factory.Faker('sentence', nb_words=2)
-    sandgrvqrylandusezoning = factory.Faker('sentence', nb_words=2)
-    sandgrvqryendlanduse = factory.Faker('sentence', nb_words=2)
-    sandgrvqrytotalmineres = factory.fuzzy.FuzzyInteger(1, 100)
-    sandgrvqrytotalmineresunits = factory.LazyFunction(randomUnitDescription)
-    sandgrvqryannualextrest = factory.fuzzy.FuzzyInteger(1, 100)
-    sandgrvqryannualextrestunits = factory.LazyFunction(randomUnitDescription)
-    sandgrvqryreclamation = factory.Faker('sentence', nb_words=2)
-    sandgrvqryreclamationbackfill = factory.Faker('sentence', nb_words=2)
-    sandgrvqryreclamationcost = factory.fuzzy.FuzzyDecimal(1000)
-    sandgrvqrygrdwtravgdepth = factory.fuzzy.FuzzyDecimal(100)
-    sandgrvqrygrdwtrexistingareas = factory.LazyFunction(randomYesNo)
-    sandgrvqrygrdwtrtestpits = factory.LazyFunction(randomYesNo)
-    sandgrvqrygrdwtrtestwells = factory.LazyFunction(randomYesNo)
-    sandgrvqrygrdwtrother = factory.Faker('sentence', nb_words=2)
-    sandgrvqrygrdwtrmeasprotect = factory.Faker('sentence', nb_words=2)
-    sandgrvqryimpactdistres = factory.fuzzy.FuzzyInteger(1, 100)
-    sandgrvqryimpactdistwater = factory.fuzzy.FuzzyInteger(1, 100)
-    sandgrvqryimpactnoise = factory.Faker('sentence', nb_words=3)
-    sandgrvqryimpactprvtaccess = factory.Faker('sentence', nb_words=3)
-    sandgrvqryimpactprevtdust = factory.Faker('sentence', nb_words=3)
-    sandgrvqryimpactminvisual = factory.Faker('sentence', nb_words=3)
-
-    #activity_summary -> surface_bulk_sample
-    surfacebulksampleprocmethods = factory.Faker('sentence', nb_words=3)
-    surfacebulksamplereclsephandl = factory.Faker('sentence', nb_words=3)
-    surfacebulksamplereclamation = factory.Faker('sentence', nb_words=3)
-    surfacebulksamplerecldrainmiti = factory.Faker('sentence', nb_words=3)
-    surfacebulksamplereclcost = factory.fuzzy.FuzzyDecimal(100)
-    surfacebulksampletotaldistarea = factory.fuzzy.FuzzyDecimal(100)
-
-    #activity_summary -> settling_pond
-    pondsreclamation = factory.Faker('sentence', nb_words=3)
-    pondsreclamationcost = factory.fuzzy.FuzzyDecimal(100)
-    pondstotaldistarea = factory.fuzzy.FuzzyDecimal(100)
-    pondsexfiltratedtoground = factory.LazyFunction(randomYesNo)
-    pondsrecycled = factory.LazyFunction(randomYesNo)
-    pondsdischargedtoenv = factory.LazyFunction(randomYesNo)
-
-    #activity_summary -> underground_exploration
-    underexptotalore = factory.fuzzy.FuzzyInteger(1, 100)
-    underexptotaloreunits = factory.LazyFunction(randomUnitDescription)
-    underexpreclamation = factory.Faker('sentence', nb_words=3)
-    underexpreclamationcost = factory.fuzzy.FuzzyDecimal(100)
-    underexptotalwaste = factory.fuzzy.FuzzyInteger(1, 100)
-    underexptotalwasteunits = factory.LazyFunction(randomUnitDescription)
-    underexptotaldistarea = factory.fuzzy.FuzzyDecimal(100)
 
     @factory.post_generation
     def documents(obj, create, extracted, **kwargs):
