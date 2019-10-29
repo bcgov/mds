@@ -40,6 +40,6 @@ class TestPostApplicationImportResource:
         assert not na.placer_operation
         assert not na.sand_and_gravel
         assert not na.surface_bulk_sample
-        assert not na.water_supply
+        assert na.water_supply
         assert not na.settling_pond
         assert not na.underground_exploration
