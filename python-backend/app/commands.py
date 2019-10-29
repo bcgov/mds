@@ -64,7 +64,7 @@ def register_commands(app):
                     mine=mine, mine_party_appt_type_code='MMG')
                 permitee = MinePartyAppointmentFactory(
                     mine=mine, mine_party_appt_type_code='PMT', party__company=True)
-            #NOWSubmissionFactory(mine=mine)
+            NOWSubmissionFactory(mine=mine)
             try:
                 db.session.commit()
                 print(f'Created {num} random mines with related data.')
