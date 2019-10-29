@@ -271,7 +271,7 @@
                 "livenessProbe": {
                   "httpGet": {
                     "path": "${BASE_PATH}/health",
-                    "port": "${PORT}",
+                    "port": ${PORT},
                     "scheme": "HTTP"
                   },
                   "initialDelaySeconds": 10,
@@ -281,7 +281,7 @@
                 "readinessProbe": {
                   "httpGet": {
                     "path": "${BASE_PATH}/health",
-                    "port": "${PORT}",
+                    "port": ${PORT},
                     "scheme": "HTTP"
                   },
                   "initialDelaySeconds": 15,
