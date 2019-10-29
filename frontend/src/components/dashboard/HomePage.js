@@ -91,11 +91,11 @@ export class HomePage extends Component {
               <li>
                 <p>
                   <a
-                    href="https://gww.nrs.gov.bc.ca/empr/mines-and-mineral-resources-division/mds-employee-info-resource-hub"
+                    href="https://gww.nrs.gov.bc.ca/empr/mines-and-mineral-resources/inspector-mines-training"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    EMPR Intranet
+                    Inspector of Mines Training
                   </a>
                 </p>
               </li>
@@ -103,6 +103,17 @@ export class HomePage extends Component {
                 <p>
                   <a href="https://minfile.gov.bc.ca/" target="_blank" rel="noopener noreferrer">
                     Mineral Inventory (MINFILE)
+                  </a>
+                </p>
+              </li>
+              <li>
+                <p>
+                  <a
+                    href="https://gww.nrs.gov.bc.ca/empr/mines-and-mineral-resources-division/mds-employee-info-resource-hub"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Project Information & Resources
                   </a>
                 </p>
               </li>
