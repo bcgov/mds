@@ -38,6 +38,7 @@ def transmogrify_now(now_submission_message_id):
     _transmogrify_mechanical_trenching(now_app, now_sub)
     _transmogrify_placer_operations(now_app,now_sub)
     _transmogrify_sand_and_gravel_activities(now_app,now_sub)
+    _transmogrify_settling_ponds(now_app,now_sub)
     _transmogrify_surface_bulk_sample(now_app,now_sub)
     _transmogrify_underground_exploration(now_app,now_sub)
     _transmogrify_water_supply(now_app, now_sub)
@@ -264,7 +265,7 @@ def _transmogrify_settling_ponds(a, s):
             reclamation_cost=s.pondsreclamationcost,
             total_disturbed_area=s.pondstotaldistarea,
             total_disturbed_area_unit_type_code='HA',
-            is_ponds_exfiltared=s.pondsexfiltratedtoground == 'Yes',
+            is_ponds_exfiltrated=s.pondsexfiltratedtoground == 'Yes',
             is_ponds_recycled=s.pondsrecycled == 'Yes',
             is_ponds_discharged=s.pondsdischargedtoenv == 'Yes')
 

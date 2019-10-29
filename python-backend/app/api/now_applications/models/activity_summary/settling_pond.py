@@ -13,13 +13,15 @@ class SettlingPond(ActivitySummaryBase):
     __mapper_args__ = {
         'polymorphic_identity': 'settling_pond',  ## type code
     }
-    activity_summary_id = db.Column(
-        db.Integer, db.ForeignKey('activity_summary.activity_summary_id'), primary_key=True)
+    activity_summary_id = db.Column(db.Integer,
+                                    db.ForeignKey('activity_summary.activity_summary_id'),
+                                    primary_key=True)
 
     proponent_pond_name = db.Column(db.String)
-    is_ponds_exfiltared = db.Column(db.Boolean, nullable=False, default=False)
+    is_ponds_exfiltrated = db.Column(db.Boolean, nullable=False, default=False)
     is_ponds_recycled = db.Column(db.Boolean, nullable=False, default=False)
     is_ponds_discharged = db.Column(db.Boolean, nullable=False, default=False)
 
-    details = db.relationship(
-        'SettlingPondDetail', secondary='activity_summary_detail_xref', load_on_pending=True)
+    details = db.relationship('SettlingPondDetail',
+                              secondary='activity_summary_detail_xref',
+                              load_on_pending=True)
