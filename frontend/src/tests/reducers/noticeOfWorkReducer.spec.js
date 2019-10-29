@@ -1,7 +1,7 @@
 import noticeOfWorkReducer from "@/reducers/noticeOfWorkReducer";
 import {
-  storeNoticeOfWorkSubmissions,
-  storeNoticeOfWorkSubmission,
+  storeNoticeOfWorkApplications,
+  storeNoticeOfWorkApplication,
 } from "@/actions/noticeOfWorkActions";
 import * as MOCK from "@/tests/mocks/noticeOfWorkMocks";
 
@@ -21,21 +21,24 @@ describe("noticeOfWorkReducer", () => {
     expect(result).toEqual(expectedValue);
   });
 
-  it("receives STORE_NOTICE_OF_WORK_SUBMISSIONS", () => {
+  it("receives STORE_NOTICE_OF_WORK_APPLICATIONS", () => {
     const expectedValue = getBaseExpectedValue();
     expectedValue.noticeOfWorkList = MOCK.NOTICE_OF_WORK_LIST.records;
     expectedValue.noticeOfWorkPageData = MOCK.NOTICE_OF_WORK_LIST;
     const result = noticeOfWorkReducer(
       undefined,
-      storeNoticeOfWorkSubmissions(MOCK.NOTICE_OF_WORK_LIST)
+      storeNoticeOfWorkApplications(MOCK.NOTICE_OF_WORK_LIST)
     );
     expect(result).toEqual(expectedValue);
   });
 
-  it("receives STORE_NOTICE_OF_WORK_SUBMISSION", () => {
+  it("receives STORE_NOTICE_OF_WORK_APPLICATION", () => {
     const expectedValue = getBaseExpectedValue();
     expectedValue.noticeOfWork = MOCK.NOTICE_OF_WORK;
-    const result = noticeOfWorkReducer(undefined, storeNoticeOfWorkSubmission(MOCK.NOTICE_OF_WORK));
+    const result = noticeOfWorkReducer(
+      undefined,
+      storeNoticeOfWorkApplication(MOCK.NOTICE_OF_WORK)
+    );
     expect(result).toEqual(expectedValue);
   });
 });

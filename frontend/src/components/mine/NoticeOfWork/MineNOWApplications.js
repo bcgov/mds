@@ -9,16 +9,16 @@ import CustomPropTypes from "@/customPropTypes";
 import { getMineRegionHash } from "@/selectors/staticContentSelectors";
 import { fetchRegionOptions } from "@/actionCreators/staticContentActionCreator";
 import MineNoticeOfWorkTable from "@/components/mine/NoticeOfWork/MineNoticeOfWorkTable";
-import { fetchMineNoticeOfWorkSubmissions } from "@/actionCreators/noticeOfWorkActionCreator";
+import { fetchMineNoticeOfWorkApplications } from "@/actionCreators/noticeOfWorkActionCreator";
 import { getNoticeOfWorkList } from "@/selectors/noticeOfWorkSelectors";
 import { getMineGuid } from "@/selectors/mineSelectors";
 
 const propTypes = {
   mineGuid: PropTypes.string.isRequired,
-  fetchMineNoticeOfWorkSubmissions: PropTypes.func.isRequired,
+  fetchMineNoticeOfWorkApplications: PropTypes.func.isRequired,
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
   location: PropTypes.shape({ search: PropTypes.string }).isRequired,
-  noticeOfWorkSubmissions: PropTypes.arrayOf(CustomPropTypes.nowApplication).isRequired,
+  noticeOfWorkApplications: PropTypes.arrayOf(CustomPropTypes.nowApplication).isRequired,
   fetchRegionOptions: PropTypes.func.isRequired,
   mineRegionHash: PropTypes.objectOf(PropTypes.string).isRequired,
 };
@@ -58,7 +58,7 @@ export class MineNOWApplications extends Component {
         isLoaded: false,
       },
       () =>
-        this.props.fetchMineNoticeOfWorkSubmissions(this.props.mineGuid, parsedParams).then(() => {
+        this.props.fetchMineNoticeOfWorkApplications(this.props.mineGuid, parsedParams).then(() => {
           this.setState({ isLoaded: true });
         })
     );
@@ -91,7 +91,7 @@ export class MineNOWApplications extends Component {
         <MineNoticeOfWorkTable
           isLoaded={this.state.isLoaded}
           handleSearch={this.handleSearch}
-          noticeOfWorkSubmissions={this.props.noticeOfWorkSubmissions}
+          noticeOfWorkApplications={this.props.noticeOfWorkApplications}
           sortField={this.state.params.sort_field}
           sortDir={this.state.params.sort_dir}
           searchParams={this.state.params}
@@ -104,14 +104,14 @@ export class MineNOWApplications extends Component {
 
 const mapStateToProps = (state) => ({
   mineGuid: getMineGuid(state),
-  noticeOfWorkSubmissions: getNoticeOfWorkList(state),
+  noticeOfWorkApplications: getNoticeOfWorkList(state),
   mineRegionHash: getMineRegionHash(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
-      fetchMineNoticeOfWorkSubmissions,
+      fetchMineNoticeOfWorkApplications,
       fetchRegionOptions,
     },
     dispatch

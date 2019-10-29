@@ -1,11 +1,11 @@
 import * as actionTypes from "../constants/actionTypes";
 
-export const storeNoticeOfWorkSubmissions = (payload) => ({
-  type: actionTypes.STORE_NOTICE_OF_WORK_SUBMISSIONS,
+export const storeNoticeOfWorkApplications = (payload) => ({
+  type: actionTypes.STORE_NOTICE_OF_WORK_APPLICATIONS,
   payload,
 });
 
-export const storeNoticeOfWorkSubmission = (payload) => ({
-  type: actionTypes.STORE_NOTICE_OF_WORK_SUBMISSION,
+export const storeNoticeOfWorkApplication = (payload) => ({
+  type: actionTypes.STORE_NOTICE_OF_WORK_APPLICATION,
   payload,
 });

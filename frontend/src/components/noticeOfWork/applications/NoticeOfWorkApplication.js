@@ -7,7 +7,7 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import * as router from "@/constants/routes";
 import {
-  fetchNoticeOfWorkSubmission,
+  fetchNoticeOfWorkApplication,
   createNoticeOfWorkApplication,
 } from "@/actionCreators/noticeOfWorkActionCreator";
 import { getNoticeOfWork } from "@/selectors/noticeOfWorkSelectors";
@@ -22,7 +22,7 @@ const { Step } = Steps;
  */
 
 const propTypes = {
-  fetchNoticeOfWorkSubmission: PropTypes.func.isRequired,
+  fetchNoticeOfWorkApplication: PropTypes.func.isRequired,
   noticeOfWork: CustomPropTypes.nowApplication.isRequired,
   createNoticeOfWorkApplication: PropTypes.func.isRequired,
   location: PropTypes.shape({ search: PropTypes.string }).isRequired,
@@ -38,7 +38,7 @@ export class NoticeOfWorkApplication extends Component {
   componentDidMount() {
     const params = queryString.parse(this.props.location.search);
     const { id } = params;
-    this.props.fetchNoticeOfWorkSubmission(id).then((data) => {
+    this.props.fetchNoticeOfWorkApplication(id).then((data) => {
       this.setState({ isLoaded: true, associatedMineGuid: data.data.mine_guid });
     });
   }
@@ -107,7 +107,7 @@ export class NoticeOfWorkApplication extends Component {
           <div>
             <h1>NoW Number: {Strings.EMPTY_FIELD}</h1>
             <Link
-              to={router.NOTICE_OF_WORK_SUBMISSION.dynamicRoute(
+              to={router.NOTICE_OF_WORK_INITIAL_APPLICATION.dynamicRoute(
                 this.props.noticeOfWork.application_guid
               )}
             >
@@ -130,7 +130,7 @@ export class NoticeOfWorkApplication extends Component {
 const mapStateToProps = (state) => ({ noticeOfWork: getNoticeOfWork(state) });
 
 const mapDispatchToProps = (dispatch) =>
-  bindActionCreators({ fetchNoticeOfWorkSubmission, createNoticeOfWorkApplication }, dispatch);
+  bindActionCreators({ fetchNoticeOfWorkApplication, createNoticeOfWorkApplication }, dispatch);
 
 NoticeOfWorkApplication.propTypes = propTypes;
 

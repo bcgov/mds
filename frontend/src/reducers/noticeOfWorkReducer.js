@@ -9,13 +9,13 @@ const initialState = {
 
 const noticeOfWorkReducer = (state = initialState, action) => {
   switch (action.type) {
-    case actionTypes.STORE_NOTICE_OF_WORK_SUBMISSIONS:
+    case actionTypes.STORE_NOTICE_OF_WORK_APPLICATIONS:
       return {
         ...state,
         noticeOfWorkList: action.payload.records,
         noticeOfWorkPageData: action.payload,
       };
-    case actionTypes.STORE_NOTICE_OF_WORK_SUBMISSION:
+    case actionTypes.STORE_NOTICE_OF_WORK_APPLICATION:
       return {
         ...state,
         noticeOfWork: action.payload,

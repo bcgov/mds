@@ -10,14 +10,14 @@ import NullScreen from "@/components/common/NullScreen";
 import TableLoadingWrapper from "@/components/common/wrappers/TableLoadingWrapper";
 import { formatDate, optionsFilterAdapter, getTableHeaders } from "@/utils/helpers";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
-import * as Permission from "@/constants/permissions";
 
 /**
  * @class NoticeOfWorkTable - paginated list of notice of work applications
  */
+
 const propTypes = {
   handleSearch: PropTypes.func.isRequired,
-  noticeOfWorkSubmissions: PropTypes.arrayOf(CustomPropTypes.nowApplication),
+  noticeOfWorkApplications: PropTypes.arrayOf(CustomPropTypes.nowApplication),
   sortField: PropTypes.string,
   sortDir: PropTypes.string,
   searchParams: PropTypes.shape({ mine_region: PropTypes.arrayOf(PropTypes.string) }),
@@ -29,7 +29,7 @@ const propTypes = {
 const defaultProps = {
   sortField: null,
   sortDir: null,
-  noticeOfWorkSubmissions: [],
+  noticeOfWorkApplications: [],
   searchParams: {},
 };
 
@@ -137,7 +137,7 @@ export class NoticeOfWorkTable extends Component {
       dataIndex: "nowNum",
       sortField: "trackingnumber",
       render: (text, record) => (
-        <Link to={router.NOTICE_OF_WORK_SUBMISSION.dynamicRoute(record.key)}>{text}</Link>
+        <Link to={router.NOTICE_OF_WORK_INITIAL_APPLICATION.dynamicRoute(record.key)}>{text}</Link>
       ),
       sorter: true,
       ...this.filterProperties("NoW No.", "trackingnumber"),
@@ -181,7 +181,7 @@ export class NoticeOfWorkTable extends Component {
       width: 150,
       render: (text, record) => (
         <div title="">
-          <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
+          <AuthorizationWrapper inDevelopment>
             <Link to={router.NOTICE_OF_WORK_APPLICATION.dynamicRoute(record.key)}>Verify</Link>
           </AuthorizationWrapper>
         </div>
@@ -204,7 +204,7 @@ export class NoticeOfWorkTable extends Component {
             this.props.sortField,
             this.props.sortDir
           )}
-          dataSource={this.transformRowData(this.props.noticeOfWorkSubmissions)}
+          dataSource={this.transformRowData(this.props.noticeOfWorkApplications)}
           locale={{ emptyText: <NullScreen type="no-results" /> }}
           onChange={handleTableChange(this.props.handleSearch)}
         />

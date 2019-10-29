@@ -8,60 +8,60 @@ import * as noticeOfWorkActions from "@/actions/noticeOfWorkActions";
 import * as reducerTypes from "@/constants/reducerTypes";
 
 // vFCBC & NROS NoW initial submissions
-export const fetchNoticeOfWorkSubmission = (applicationGuid) => (dispatch) => {
-  dispatch(request(reducerTypes.GET_NOTICE_OF_WORK_SUBMISSION));
+export const fetchNoticeOfWorkApplication = (applicationGuid) => (dispatch) => {
+  dispatch(request(reducerTypes.GET_NOTICE_OF_WORK_APPLICATION));
   dispatch(showLoading());
   return CustomAxios()
     .get(
-      `${ENVIRONMENT.apiUrl}${API.NOTICE_OF_WORK_SUBMISSION(applicationGuid)}`,
+      `${ENVIRONMENT.apiUrl}${API.NOTICE_OF_WORK_APPLICATION(applicationGuid)}`,
       createRequestHeader()
     )
     .then((response) => {
-      dispatch(success(reducerTypes.GET_NOTICE_OF_WORK_SUBMISSION));
-      dispatch(noticeOfWorkActions.storeNoticeOfWorkSubmission(response.data));
+      dispatch(success(reducerTypes.GET_NOTICE_OF_WORK_APPLICATION));
+      dispatch(noticeOfWorkActions.storeNoticeOfWorkApplication(response.data));
       return response;
     })
-    .catch(() => dispatch(error(reducerTypes.GET_NOTICE_OF_WORK_SUBMISSION)))
+    .catch(() => dispatch(error(reducerTypes.GET_NOTICE_OF_WORK_APPLICATION)))
     .finally(() => dispatch(hideLoading()));
 };
 
-export const fetchNoticeOfWorkSubmissions = (params = {}) => (dispatch) => {
-  dispatch(request(reducerTypes.GET_NOTICE_OF_WORK_SUBMISSIONS));
+export const fetchNoticeOfWorkApplications = (params = {}) => (dispatch) => {
+  dispatch(request(reducerTypes.GET_NOTICE_OF_WORK_APPLICATIONS));
   dispatch(showLoading());
   return CustomAxios()
-    .get(`${ENVIRONMENT.apiUrl}${API.NOTICE_OF_WORK_SUBMISSIONS(params)}`, createRequestHeader())
+    .get(`${ENVIRONMENT.apiUrl}${API.NOTICE_OF_WORK_APPLICATIONS(params)}`, createRequestHeader())
     .then((response) => {
-      dispatch(success(reducerTypes.GET_NOTICE_OF_WORK_SUBMISSIONS));
-      dispatch(noticeOfWorkActions.storeNoticeOfWorkSubmissions(response.data));
+      dispatch(success(reducerTypes.GET_NOTICE_OF_WORK_APPLICATIONS));
+      dispatch(noticeOfWorkActions.storeNoticeOfWorkApplications(response.data));
       return response;
     })
-    .catch(() => dispatch(error(reducerTypes.GET_NOTICE_OF_WORK_SUBMISSIONS)))
+    .catch(() => dispatch(error(reducerTypes.GET_NOTICE_OF_WORK_APPLICATIONS)))
     .finally(() => dispatch(hideLoading()));
 };
 
-export const fetchMineNoticeOfWorkSubmissions = (mineGuid, params = {}) => (dispatch) => {
-  dispatch(request(reducerTypes.GET_MINE_NOTICE_OF_WORK_SUBMISSIONS));
+export const fetchMineNoticeOfWorkApplications = (mineGuid, params = {}) => (dispatch) => {
+  dispatch(request(reducerTypes.GET_MINE_NOTICE_OF_WORK_APPLICATIONS));
   dispatch(showLoading());
   return CustomAxios()
     .get(
-      `${ENVIRONMENT.apiUrl}${API.MINE_NOTICE_OF_WORK_SUBMISSIONS(mineGuid, params)}`,
+      `${ENVIRONMENT.apiUrl}${API.MINE_NOTICE_OF_WORK_APPLICATIONS(mineGuid, params)}`,
       createRequestHeader()
     )
     .then((response) => {
-      dispatch(success(reducerTypes.GET_MINE_NOTICE_OF_WORK_SUBMISSIONS));
-      dispatch(noticeOfWorkActions.storeNoticeOfWorkSubmissions(response.data));
+      dispatch(success(reducerTypes.GET_MINE_NOTICE_OF_WORK_APPLICATIONS));
+      dispatch(noticeOfWorkActions.storeNoticeOfWorkApplications(response.data));
       return response;
     })
-    .catch(() => dispatch(error(reducerTypes.GET_MINE_NOTICE_OF_WORK_SUBMISSIONS)))
+    .catch(() => dispatch(error(reducerTypes.GET_MINE_NOTICE_OF_WORK_APPLICATIONS)))
     .finally(() => dispatch(hideLoading()));
 };
 
-export const createNoticeOfWorkApplication = (mine_guid, submissionGuid) => (dispatch) => {
+export const createNoticeOfWorkApplication = (mine_guid, applicationGuid) => (dispatch) => {
   dispatch(request(reducerTypes.CREATE_NOTICE_OF_WORK_APPLICATION));
   dispatch(showLoading());
   return CustomAxios()
     .get(
-      `${ENVIRONMENT.apiUrl}${API.NOTICE_OF_WORK_APPLICATION_IMPORT(submissionGuid)}`,
+      `${ENVIRONMENT.apiUrl}${API.NOTICE_OF_WORK_APPLICATION_IMPORT(applicationGuid)}`,
       { mine_guid },
       createRequestHeader()
     )

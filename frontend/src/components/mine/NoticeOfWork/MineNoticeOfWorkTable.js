@@ -15,7 +15,7 @@ import { formatDate, getTableHeaders } from "@/utils/helpers";
  */
 const propTypes = {
   handleSearch: PropTypes.func.isRequired,
-  noticeOfWorkSubmissions: PropTypes.arrayOf(CustomPropTypes.nowApplication),
+  noticeOfWorkApplications: PropTypes.arrayOf(CustomPropTypes.nowApplication),
   sortField: PropTypes.string,
   sortDir: PropTypes.string,
   searchParams: PropTypes.objectOf(PropTypes.string),
@@ -25,7 +25,7 @@ const propTypes = {
 const defaultProps = {
   sortField: null,
   sortDir: null,
-  noticeOfWorkSubmissions: [],
+  noticeOfWorkApplications: [],
   searchParams: {},
 };
 
@@ -110,7 +110,7 @@ export class MineNoticeOfWorkTable extends Component {
       dataIndex: "nowNum",
       sortField: "trackingnumber",
       render: (text, record) => (
-        <Link to={router.NOTICE_OF_WORK_SUBMISSION.dynamicRoute(record.key)}>{text}</Link>
+        <Link to={router.NOTICE_OF_WORK_INITIAL_APPLICATION.dynamicRoute(record.key)}>{text}</Link>
       ),
       sorter: true,
       ...this.filterProperties("NoW No.", "trackingnumber"),
@@ -154,7 +154,7 @@ export class MineNoticeOfWorkTable extends Component {
             this.props.sortField,
             this.props.sortDir
           )}
-          dataSource={transformRowData(this.props.noticeOfWorkSubmissions)}
+          dataSource={transformRowData(this.props.noticeOfWorkApplications)}
           locale={{
             emptyText: <NullScreen type="notice-of-work" />,
           }}

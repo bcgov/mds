@@ -7,7 +7,7 @@ const dispatchProps = {};
 const reducerProps = {};
 
 const setupDispatchProps = () => {
-  dispatchProps.fetchNoticeOfWorkSubmissions = jest.fn(() => Promise.resolve({}));
+  dispatchProps.fetchNoticeOfWorkApplications = jest.fn(() => Promise.resolve({}));
   dispatchProps.fetchRegionOptions = jest.fn();
 };
 
@@ -17,7 +17,7 @@ const setupReducerProps = () => {
     push: jest.fn(),
     location: {},
   };
-  reducerProps.noticeOfWorkSubmissions = MOCK.NOW.applications;
+  reducerProps.noticeOfWorkApplications = MOCK.NOW.applications;
   reducerProps.pageData = MOCK.PAGE_DATA;
 };
 

@@ -22,7 +22,7 @@ exports[`MineNOWApplications renders properly 1`] = `
         "SW": "South West",
       }
     }
-    noticeOfWorkSubmissions={
+    noticeOfWorkApplications={
       Array [
         Object {
           "application_guid": "07e801a0-fa33-4c3b-abcc-ac6df628d483",

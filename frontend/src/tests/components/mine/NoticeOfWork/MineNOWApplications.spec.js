@@ -9,13 +9,13 @@ const setupProps = () => {
   props.mineGuid = MOCK.NOW.applications[0].mine_guid;
   props.history = { push: jest.fn() };
   props.location = { search: "" };
-  props.noticeOfWorkSubmissions = MOCK.NOW.applications;
+  props.noticeOfWorkApplications = MOCK.NOW.applications;
   props.mineRegionHash = MOCK.REGION_HASH;
 };
 
 const setupDispatchProps = () => {
   props.fetchRegionOptions = jest.fn(() => Promise.resolve());
-  props.fetchMineNoticeOfWorkSubmissions = jest.fn(() => Promise.resolve());
+  props.fetchMineNoticeOfWorkApplications = jest.fn(() => Promise.resolve());
 };
 
 beforeEach(() => {

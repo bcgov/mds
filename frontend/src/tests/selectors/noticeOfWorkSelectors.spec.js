@@ -1,8 +1,8 @@
 import { getNoticeOfWorkList, getNoticeOfWork } from "@/selectors/noticeOfWorkSelectors";
 import noticeOfWorkReducer from "@/reducers/noticeOfWorkReducer";
 import {
-  storeNoticeOfWorkSubmissions,
-  storeNoticeOfWorkSubmission,
+  storeNoticeOfWorkApplications,
+  storeNoticeOfWorkApplication,
 } from "@/actions/noticeOfWorkActions";
 import { NOTICE_OF_WORK } from "@/constants/reducerTypes";
 import * as MOCKS from "@/tests/mocks/noticeOfWorkMocks";
@@ -16,7 +16,7 @@ describe("noticeOfWorkSelectors", () => {
   const { noticeOfWorkList, noticeOfWork } = mockState;
 
   it("`getNoticeOfWorkList` calls `noticeOfWorkReducer.getNoticeOfWorkList`", () => {
-    const storeAction = storeNoticeOfWorkSubmissions(MOCKS.NOTICE_OF_WORK_LIST);
+    const storeAction = storeNoticeOfWorkApplications(MOCKS.NOTICE_OF_WORK_LIST);
     const storeState = noticeOfWorkReducer({}, storeAction);
     const localMockState = {
       [NOTICE_OF_WORK]: storeState,
@@ -25,7 +25,7 @@ describe("noticeOfWorkSelectors", () => {
   });
 
   it("`getNoticeOfWork` calls `noticeOfWorkReducer.getNoticeOfWork`", () => {
-    const storeAction = storeNoticeOfWorkSubmission(MOCKS.NOTICE_OF_WORK);
+    const storeAction = storeNoticeOfWorkApplication(MOCKS.NOTICE_OF_WORK);
     const storeState = noticeOfWorkReducer({}, storeAction);
     const localMockState = {
       [NOTICE_OF_WORK]: storeState,

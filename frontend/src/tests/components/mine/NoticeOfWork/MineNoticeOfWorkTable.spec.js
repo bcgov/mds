@@ -7,7 +7,7 @@ const props = {};
 
 const setupProps = () => {
   props.handleSearch = jest.fn();
-  props.noticeOfWorkSubmissions = MOCK.NOW.applications;
+  props.noticeOfWorkApplications = MOCK.NOW.applications;
   props.sortField = "trackingnumber";
   props.sortDir = "asc";
   props.searchParams = { noticeofworktype: "other" };

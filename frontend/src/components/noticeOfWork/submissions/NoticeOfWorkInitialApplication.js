@@ -6,30 +6,30 @@ import { connect } from "react-redux";
 import CustomPropTypes from "@/customPropTypes";
 import NOWGeneralInfo from "@/components/noticeOfWork/submissions/NOWGeneralInfo";
 import NOWWorkPlan from "@/components/noticeOfWork/submissions/NOWWorkPlan";
-import { fetchNoticeOfWorkSubmission } from "@/actionCreators/noticeOfWorkActionCreator";
+import { fetchNoticeOfWorkApplication } from "@/actionCreators/noticeOfWorkActionCreator";
 import { getNoticeOfWork } from "@/selectors/noticeOfWorkSelectors";
 import { getMineRegionHash } from "@/selectors/staticContentSelectors";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
 import * as Strings from "@/constants/strings";
 /**
- * @class NoticeOfWorkSubmission - contains all information regarding to a notice of work application
+ * @class NoticeOfWorkInitialApplication - contains all information regarding to a notice of work application
  */
 
 const { Panel } = Collapse;
 
 const propTypes = {
-  fetchNoticeOfWorkSubmission: PropTypes.func.isRequired,
+  fetchNoticeOfWorkApplication: PropTypes.func.isRequired,
   noticeOfWork: CustomPropTypes.nowApplication.isRequired,
   match: CustomPropTypes.match.isRequired,
   regionHash: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
-export class NoticeOfWorkSubmission extends Component {
+export class NoticeOfWorkInitialApplication extends Component {
   state = { isLoaded: false };
 
   componentDidMount() {
     const { id } = this.props.match.params;
-    this.props.fetchNoticeOfWorkSubmission(id).then(() => {
+    this.props.fetchNoticeOfWorkApplication(id).then(() => {
       this.setState({ isLoaded: true });
     });
   }
@@ -85,11 +85,11 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) =>
-  bindActionCreators({ fetchNoticeOfWorkSubmission }, dispatch);
+  bindActionCreators({ fetchNoticeOfWorkApplication }, dispatch);
 
-NoticeOfWorkSubmission.propTypes = propTypes;
+NoticeOfWorkInitialApplication.propTypes = propTypes;
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(NoticeOfWorkSubmission);
+)(NoticeOfWorkInitialApplication);
