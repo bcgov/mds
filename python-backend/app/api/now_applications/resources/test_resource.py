@@ -3,7 +3,7 @@ from datetime import datetime
 from flask import request, current_app
 from flask_restplus import Resource
 from sqlalchemy_filters import apply_sort, apply_pagination, apply_filters
-from werkzeug.exceptions import BadRequest, InternalServerError
+from werkzeug.exceptions import BadRequest, InternalServerError, NotFound
 from sqlalchemy import and_, or_
 
 from app.extensions import api
@@ -15,26 +15,34 @@ from app.api.parties.response_models import PARTY, PAGINATED_PARTY_LIST
 
 from app.api.mines.mine.models.mine import Mine
 
+from app.api.now_submissions.models.application import Application
+
 from app.api.now_applications.models.now_application import NOWApplication
 from app.api.now_applications.models.activity_summary.exploration_access import ExplorationAccess
 from app.api.now_applications.models.activity_summary.exploration_surface_drilling import ExplorationSurfaceDrilling
 from app.api.now_applications.models.unit_type import UnitType
 from app.api.now_applications.models.activity_detail.exploration_surface_drilling_detail import ExplorationSurfaceDrillingDetail
 
+from app.api.now_applications.transmogrify_now import transmogrify_now
+
 
 class NOWApplicationResource(Resource, UserMixin):
-    def post(self):
-        mine = Mine.query.first()
-        now_application = NOWApplication(mine_guid=mine.mine_guid,
-                                         notice_of_work_type_code='COL',
-                                         now_application_status_code='ACC',
-                                         submitted_date=datetime.utcnow(),
-                                         received_date=datetime.utcnow())
+    def post(self, application_guid):
+        submission = Application.query.filter_by(application_guid=application_guid).first()
+        if not submission:
+            raise NotFound('now submission with that guid')
+        application = transmogrify_now(submission.messageid)
+        #application.save()
+        current_app.logger.debug(f"""
+        {submission} -> {application}
+        Camps = {str(application.camps)}
+        Cut Lines polarization = {str(application.exploration_surface_drilling)}
+        Exploration Surface Drilling = {str(application.mechanical_trenching)}
+        Placer Operation = {str(application.placer_operation)}
+        Blasting = {str(application.blasting)}
+        Sand and Gravel = {str(application.sand_and_gravel)}
+        Surface Bulk Sample = {str(application.surface_bulk_sample)}
+        Water Sources = {str(application.water_supply)}
+        Underground Exploration = {str(application.underground_exploration)}""")
 
-        now_application.exploration_access_acts.append(ExplorationAccess(reclamation_cost=100))
-        now_application.exploration_surface_drilling_acts.append(
-            ExplorationSurfaceDrilling(reclamation_core_storage="this is a cool column"))
-        now_application.exploration_surface_drilling_acts[0].details.append(
-            ExplorationSurfaceDrillingDetail(number_of_sites=1))
-        now_application.save()
-        return
+        return {'CORE NOW APPLICATION GUID': application.now_application_id}

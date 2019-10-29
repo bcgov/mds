@@ -10,7 +10,7 @@ from app.api.now_submissions.models.contact import Contact
 from app.api.now_submissions.models.document import Document
 from app.api.now_submissions.models.placer_activity import PlacerActivity
 from app.api.now_submissions.models.sand_grv_qry_activity import SandGrvQryActivity
-from app.api.now_submissions.models.settling_pond import SettlingPond
+from app.api.now_submissions.models.settling_pond import SettlingPondSubmission
 from app.api.now_submissions.models.surface_bulk_sample_activity import SurfaceBulkSampleActivity
 from app.api.now_submissions.models.under_exp_new_activity import UnderExpNewActivity
 from app.api.now_submissions.models.under_exp_rehab_activity import UnderExpRehabActivity
@@ -32,28 +32,28 @@ class Application(Base):
     messageid = db.Column(db.Integer, primary_key=True)
     application_guid = db.Column(UUID(as_uuid=True), nullable=False)
     mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine.mine_guid'))
-    trackingnumber = db.Column(db.Integer)
+    trackingnumber = db.Column(db.Integer)  #mapped
     applicationtype = db.Column(db.String)
-    status = db.Column(db.String)
-    submitteddate = db.Column(db.DateTime)
-    receiveddate = db.Column(db.DateTime)
+    status = db.Column(db.String)  #mapped
+    submitteddate = db.Column(db.DateTime)  #mapped
+    receiveddate = db.Column(db.DateTime)  #mapped
     applicantclientid = db.Column(db.Integer, db.ForeignKey('now_submissions.client.clientid'))
     submitterclientid = db.Column(db.Integer, db.ForeignKey('now_submissions.client.clientid'))
-    noticeofworktype = db.Column(db.String)
+    noticeofworktype = db.Column(db.String)  #mapped
     typeofpermit = db.Column(db.String)
     typeofapplication = db.Column(db.String)
-    minenumber = db.Column(db.String)
-    latitude = db.Column(db.Numeric(9, 7))
-    longitude = db.Column(db.Numeric(11, 7))
-    nameofproperty = db.Column(db.String)
-    tenurenumbers = db.Column(db.String)
+    minenumber = db.Column(db.String)  #NOT mapped
+    latitude = db.Column(db.Numeric(9, 7))  #mapped
+    longitude = db.Column(db.Numeric(11, 7))  #mapped
+    nameofproperty = db.Column(db.String)  #mapped
+    tenurenumbers = db.Column(db.String)  #mapped
     crowngrantlotnumbers = db.Column(db.String)
     sitedirections = db.Column(db.String)
     firstaidequipmentonsite = db.Column(db.String)
     firstaidcertlevel = db.Column(db.String)
     descexplorationprogram = db.Column(db.String)
-    proposedstartdate = db.Column(db.DateTime)
-    proposedenddate = db.Column(db.DateTime)
+    proposedstartdate = db.Column(db.DateTime)  #mapped
+    proposedenddate = db.Column(db.DateTime)  #mapped
     yearroundseasonal = db.Column(db.String)
     landcommunitywatershed = db.Column(db.String)
     landprivate = db.Column(db.String)
@@ -175,6 +175,7 @@ class Application(Base):
     submitter = db.relationship('Client', lazy='select', foreign_keys=[submitterclientid])
     contacts = db.relationship('Contact', lazy='select')
     documents = db.relationship('Document', lazy='select')
+
     sand_grv_qry_activity = db.relationship('SandGrvQryActivity', lazy='select')
     surface_bulk_sample_activity = db.relationship('SurfaceBulkSampleActivity', lazy='select')
     under_exp_new_activity = db.relationship('UnderExpNewActivity', lazy='select')
@@ -188,11 +189,29 @@ class Application(Base):
     existing_placer_activity = db.relationship(
         'PlacerActivity', lazy='select', secondary='now_submissions.existing_placer_activity_xref')
     existing_settling_pond = db.relationship(
-        'SettlingPond', lazy='select', secondary='now_submissions.existing_settling_pond_xref')
+        'SettlingPondSubmission',
+        lazy='select',
+        secondary='now_submissions.existing_settling_pond_xref')
     proposed_placer_activity = db.relationship(
         'PlacerActivity', lazy='select', secondary='now_submissions.proposed_placer_activity_xref')
     proposed_settling_pond = db.relationship(
-        'SettlingPond', lazy='select', secondary='now_submissions.proposed_settling_pond_xref')
+        'SettlingPondSubmission',
+        lazy='select',
+        secondary='now_submissions.proposed_settling_pond_xref')
+
+    mech_trenching_equip = db.relationship('EquipmentSubmission',
+                                           lazy='select',
+                                           secondary='now_submissions.mech_trenching_equip_xref')
+    sand_grv_qry_equip = db.relationship('EquipmentSubmission',
+                                         lazy='select',
+                                         secondary='now_submissions.sand_grv_qry_equip_xref')
+    surface_bulk_sample_equip = db.relationship(
+        'EquipmentSubmission',
+        lazy='select',
+        secondary='now_submissions.surface_bulk_sample_equip_xref')
+    placer_equip = db.relationship('EquipmentSubmission',
+                                   lazy='select',
+                                   secondary='now_submissions.placer_equip_xref')
 
     mine_name = association_proxy('mine', 'mine_name')
     mine_region = association_proxy('mine', 'mine_region')

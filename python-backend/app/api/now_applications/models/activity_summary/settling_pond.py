@@ -18,9 +18,10 @@ class SettlingPond(ActivitySummaryBase):
                                     primary_key=True)
 
     proponent_pond_name = db.Column(db.String)
-    is_ponds_exfiltared = db.Column(db.Boolean, nullable=False, default=False)
+    is_ponds_exfiltrated = db.Column(db.Boolean, nullable=False, default=False)
     is_ponds_recycled = db.Column(db.Boolean, nullable=False, default=False)
     is_ponds_discharged = db.Column(db.Boolean, nullable=False, default=False)
 
-    def __repr__(self):
-        return '<SettlingPond %r>' % self.activity_summary_id
+    details = db.relationship('SettlingPondDetail',
+                              secondary='activity_summary_detail_xref',
+                              load_on_pending=True)
