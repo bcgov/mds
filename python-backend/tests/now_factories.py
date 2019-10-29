@@ -36,6 +36,10 @@ def randomYesNo():
     return random.choice(['Yes', 'No'])
 
 
+def randomUnitDescription():
+    return random.choice(list(unit_type_map.keys()))
+
+
 class NOWSubmissionFactory(BaseFactory):
     class Meta:
         model = NOWApplication
@@ -84,11 +88,9 @@ class NOWSubmissionFactory(BaseFactory):
     sandgrvqrylandusezoning = factory.Faker('sentence', nb_words=2)
     sandgrvqryendlanduse = factory.Faker('sentence', nb_words=2)
     sandgrvqrytotalmineres = factory.fuzzy.FuzzyInteger(1, 100)
-    sandgrvqrytotalmineresunits = factory.LazyFunction(lambda: random.choice(
-        list(unit_type_map.keys())))
+    sandgrvqrytotalmineresunits = factory.LazyFunction(randomUnitDescription)
     sandgrvqryannualextrest = factory.fuzzy.FuzzyInteger(1, 100)
-    sandgrvqryannualextrestunits = factory.LazyFunction(lambda: random.choice(
-        list(unit_type_map.keys())))
+    sandgrvqryannualextrestunits = factory.LazyFunction(randomUnitDescription)
     sandgrvqryreclamation = factory.Faker('sentence', nb_words=2)
     sandgrvqryreclamationbackfill = factory.Faker('sentence', nb_words=2)
     sandgrvqryreclamationcost = factory.fuzzy.FuzzyDecimal(1000)
@@ -120,6 +122,15 @@ class NOWSubmissionFactory(BaseFactory):
     pondsexfiltratedtoground = factory.LazyFunction(randomYesNo)
     pondsrecycled = factory.LazyFunction(randomYesNo)
     pondsdischargedtoenv = factory.LazyFunction(randomYesNo)
+
+    #underground_exploration
+    underexptotalore = factory.fuzzy.FuzzyInteger(1, 100)
+    underexptotaloreunits = factory.LazyFunction(randomUnitDescription)
+    underexpreclamation = factory.Faker('sentence', nb_words=3)
+    underexpreclamationcost = factory.fuzzy.FuzzyDecimal(100)
+    underexptotalwaste = factory.fuzzy.FuzzyInteger(1, 100)
+    underexptotalwasteunits = factory.LazyFunction(randomUnitDescription)
+    underexptotaldistarea = factory.fuzzy.FuzzyDecimal(100)
 
     @factory.post_generation
     def documents(obj, create, extracted, **kwargs):
@@ -286,6 +297,12 @@ class NOWUnderExpNewActivityFactory(BaseFactory):
     id = factory.Sequence(lambda n: n)
     messageid = factory.SelfAttribute('application.messageid')
     type = factory.Faker('sentence', nb_words=1)
+    incline = factory.fuzzy.FuzzyDecimal(100, precision=1)
+    inclineunits = factory.LazyFunction(randomUnitDescription)
+    quantity = factory.fuzzy.FuzzyInteger(100)
+    length = factory.fuzzy.FuzzyDecimal(100, precision=1)
+    width = factory.fuzzy.FuzzyDecimal(100, precision=1)
+    height = factory.fuzzy.FuzzyDecimal(100, precision=1)
 
 
 class NOWUnderExpRehabActivityFactory(BaseFactory):
@@ -298,6 +315,12 @@ class NOWUnderExpRehabActivityFactory(BaseFactory):
     id = factory.Sequence(lambda n: n)
     messageid = factory.SelfAttribute('application.messageid')
     type = factory.Faker('sentence', nb_words=1)
+    incline = factory.fuzzy.FuzzyDecimal(100, precision=1)
+    inclineunits = factory.LazyFunction(randomUnitDescription)
+    quantity = factory.fuzzy.FuzzyInteger(100)
+    length = factory.fuzzy.FuzzyDecimal(100, precision=1)
+    width = factory.fuzzy.FuzzyDecimal(100, precision=1)
+    height = factory.fuzzy.FuzzyDecimal(100, precision=1)
 
 
 class NOWUnderExpSurfaceActivityFactory(BaseFactory):
@@ -310,6 +333,8 @@ class NOWUnderExpSurfaceActivityFactory(BaseFactory):
     id = factory.Sequence(lambda n: n)
     messageid = factory.SelfAttribute('application.messageid')
     type = factory.Faker('sentence', nb_words=1)
+    disturbedarea = factory.fuzzy.FuzzyDecimal(100)
+    timbervolume = factory.fuzzy.FuzzyDecimal(100)
 
 
 class NOWWaterSourceActivityFactory(BaseFactory):
@@ -334,6 +359,8 @@ class NOWSurfaceBulkSampleActivityFactory(BaseFactory):
     id = factory.Sequence(lambda n: n)
     messageid = factory.SelfAttribute('application.messageid')
     type = factory.Faker('sentence', nb_words=1)
+    disturbedarea = factory.fuzzy.FuzzyDecimal(100)
+    timbervolume = factory.fuzzy.FuzzyDecimal(100)
 
 
 class NOWExistingPlacerActivityXrefFactory(BaseFactory):
