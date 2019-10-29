@@ -123,7 +123,7 @@ psql --dbname=mds --username=mds --host=localhost --password --port=5432
 
 ## Architecture Diagrams
 
-![High Level Architecture](docs\MDS_Arch.png)
+![High Level Architecture](./docs/MDS_Arch.png)
 
 ## Authentication Workflow
 
