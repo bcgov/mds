@@ -88,18 +88,6 @@ export class NoticeOfWorkApplication extends Component {
         title: "Received Application",
         content: this.renderStepTwo(),
       },
-      {
-        title: "Technical Review",
-        content: this.renderStepTwo(),
-      },
-      {
-        title: "Referral / Consultation",
-        content: this.renderStepTwo(),
-      },
-      {
-        title: "Decision",
-        content: this.renderStepTwo(),
-      },
     ];
 
     return (
