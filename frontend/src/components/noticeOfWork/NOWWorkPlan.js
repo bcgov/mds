@@ -7,7 +7,12 @@ import NOWActivities from "@/components/noticeOfWork/NOWActivities";
 import LinkButton from "@/components/common/LinkButton";
 import { downloadNowDocument } from "@/utils/actionlessNetworkCalls";
 import { UNIQUELY_SPATIAL } from "@/constants/fileTypes";
-import { isMineralOrCoal, isPlacer, isSandAndGravelOrQuarry } from "@/constants/NOWConditions";
+import {
+  isMineralOrCoal,
+  isPlacer,
+  isSandAndGravelOrQuarry,
+  isMineralOrPlacerOrCoal,
+} from "@/constants/NOWConditions";
 
 const propTypes = {
   noticeOfWork: CustomPropTypes.nowApplication.isRequired,
@@ -53,16 +58,15 @@ export class NOWWorkPlan extends Component {
     ];
 
     // conditional rendering of the data is based on the same logic used for the activity sections on the NoW application form
-    const cutLinesRow =
-      isMineralOrCoal(nowType) && isPlacer(nowType)
-        ? [
-            {
-              activity: "Cut Lines and Induced Polarization Survey",
-              effectedArea: this.props.noticeOfWork.cutlinesexplgriddisturbedarea || Strings.ZERO,
-              cost: this.props.noticeOfWork.cutlinesreclamationcost || Strings.ZERO,
-            },
-          ]
-        : [];
+    const cutLinesRow = isMineralOrPlacerOrCoal(nowType)
+      ? [
+          {
+            activity: "Cut Lines and Induced Polarization Survey",
+            effectedArea: this.props.noticeOfWork.cutlinesexplgriddisturbedarea || Strings.ZERO,
+            cost: this.props.noticeOfWork.cutlinesreclamationcost || Strings.ZERO,
+          },
+        ]
+      : [];
 
     const placerRow = isPlacer(nowType)
       ? [
@@ -94,16 +98,15 @@ export class NOWWorkPlan extends Component {
         ]
       : [];
 
-    const undergroundExpRow =
-      isMineralOrCoal(nowType) && isPlacer(nowType)
-        ? [
-            {
-              activity: "Underground Exploration",
-              effectedArea: this.props.noticeOfWork.underexptotaldistarea || Strings.ZERO,
-              cost: this.props.noticeOfWork.underexpreclamationcost || Strings.ZERO,
-            },
-          ]
-        : [];
+    const undergroundExpRow = isMineralOrPlacerOrCoal(nowType)
+      ? [
+          {
+            activity: "Underground Exploration",
+            effectedArea: this.props.noticeOfWork.underexptotaldistarea || Strings.ZERO,
+            cost: this.props.noticeOfWork.underexpreclamationcost || Strings.ZERO,
+          },
+        ]
+      : [];
 
     const data = [
       {
@@ -274,14 +277,14 @@ export class NOWWorkPlan extends Component {
   render() {
     return (
       <div className="page__content--nested">
-        <Row gutter={16} className="padding-small">
+        {/* <Row gutter={16} className="padding-small">
           <Col md={12} xs={24}>
             <p className="field-title">Description of Work</p>
           </Col>
           <Col md={12} xs={24}>
             <p>Unknown</p>
           </Col>
-        </Row>
+        </Row> */}
         {this.renderSummaryOfReclamation()}
         <NOWActivities noticeOfWork={this.props.noticeOfWork} />
         {this.renderDocuments()}
