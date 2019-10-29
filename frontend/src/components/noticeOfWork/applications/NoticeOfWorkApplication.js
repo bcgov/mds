@@ -65,6 +65,7 @@ export class NoticeOfWorkApplication extends Component {
         noticeOfWork={this.props.noticeOfWork}
         isNoWLoaded={this.state.isLoaded}
         handleSave={this.handleUpdateNOW}
+        setMineGuid={this.setMineGuid}
       />
     );
 
