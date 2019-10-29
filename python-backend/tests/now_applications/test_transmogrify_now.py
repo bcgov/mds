@@ -18,11 +18,11 @@ class TestPostApplicationImportResource:
         assert na.camps
         assert na.cut_lines_polarization_survey
         assert na.exploration_surface_drilling
+        assert na.exploration_access
         assert na.mechanical_trenching
         assert na.placer_operation
         assert na.sand_and_gravel
         assert na.surface_bulk_sample
         assert na.water_supply
-        assert na.exploration_access
         assert na.settling_pond
         assert na.underground_exploration
