@@ -60,7 +60,7 @@ export const createNoticeOfWorkApplication = (mine_guid, applicationGuid) => (di
   dispatch(request(reducerTypes.CREATE_NOTICE_OF_WORK_APPLICATION));
   dispatch(showLoading());
   return CustomAxios()
-    .get(
+    .post(
       `${ENVIRONMENT.apiUrl}${API.NOTICE_OF_WORK_APPLICATION_IMPORT(applicationGuid)}`,
       { mine_guid },
       createRequestHeader()
