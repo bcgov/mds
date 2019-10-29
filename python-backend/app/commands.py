@@ -8,7 +8,7 @@ from flask import current_app
 from app.api.utils.include.user_info import User
 from app.extensions import db
 
-from tests.factories import MineFactory, MinePartyAppointmentFactory, NOWSubmissionFactory
+from tests.factories import MineFactory, MinePartyAppointmentFactory, NOWSubmissionFactory, NOWApplicationFactory
 
 
 def register_commands(app):
@@ -64,7 +64,8 @@ def register_commands(app):
                     mine=mine, mine_party_appt_type_code='MMG')
                 permitee = MinePartyAppointmentFactory(
                     mine=mine, mine_party_appt_type_code='PMT', party__company=True)
-            #NOWSubmissionFactory(mine=mine)
+                #NOWSubmissionFactory(mine=mine)
+                NOWApplicationFactory(mine=mine)
             try:
                 db.session.commit()
                 print(f'Created {num} random mines with related data.')

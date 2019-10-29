@@ -48,46 +48,46 @@ class NOWSubmissionFactory(BaseFactory):
         mine = factory.SubFactory('tests.factories.MineFactory', minimal=True)
         applicant = factory.SubFactory('tests.factories.NOWClientFactory')
         submitter = factory.SubFactory('tests.factories.NOWClientFactory')
-        all_activites = factory.Trait(blasting=True,
-                                      state_of_land=True,
-                                      camps=True,
-                                      cut_lines_polarization_survey=True,
-                                      exploration_access=True,
-                                      exploration_surface_drilling=True,
-                                      mechanical_trenching=True,
-                                      placer_operation=True,
-                                      sand_and_gravel=True,
-                                      surface_bulk_sample=True,
-                                      settling_pond=True,
-                                      underground_exploration=True)
+        all_activites = factory.Trait(
+            blasting=True,
+            state_of_land=True,
+            camps=True,
+            cut_lines_polarization_survey=True,
+            exploration_access=True,
+            exploration_surface_drilling=True,
+            mechanical_trenching=True,
+            placer_operation=True,
+            sand_and_gravel=True,
+            surface_bulk_sample=True,
+            settling_pond=True,
+            underground_exploration=True)
         camps = factory.Trait(
             cbsfreclamation=factory.Faker('sentence', nb_words=3),
             cbsfreclamationcost=factory.fuzzy.FuzzyDecimal(100),
             campbuildstgetotaldistarea=factory.fuzzy.FuzzyDecimal(100),
-            fuellubstoreonsite=factory.LazyFunction(
-                randomYesNo))  #details=factory.SubFactory('tests.now_factories.NOWCampDetails'))
+            fuellubstoreonsite=factory.LazyFunction(randomYesNo)
+        )  #details=factory.SubFactory('tests.now_submission_factories.NOWCampDetails'))
 
-        blasting = factory.Trait(bcexplosivespermitissued=factory.LazyFunction(randomYesNo),
-                                 bcexplosivespermitnumber=factory.Faker(
-                                     'bothify',
-                                     text='???#####',
-                                     letters='ABCDEFGHIJKLMNOPQRSTUVWXYZ'),
-                                 bcexplosivespermitexpiry=factory.Faker('future_datetime',
-                                                                        end_date='+30d'),
-                                 storeexplosivesonsite=factory.LazyFunction(randomYesNo))
+        blasting = factory.Trait(
+            bcexplosivespermitissued=factory.LazyFunction(randomYesNo),
+            bcexplosivespermitnumber=factory.Faker(
+                'bothify', text='???#####', letters='ABCDEFGHIJKLMNOPQRSTUVWXYZ'),
+            bcexplosivespermitexpiry=factory.Faker('future_datetime', end_date='+30d'),
+            storeexplosivesonsite=factory.LazyFunction(randomYesNo))
 
-        state_of_land = factory.Trait(landcommunitywatershed=factory.LazyFunction(randomYesNo),
-                                      archsitesaffected=factory.LazyFunction(randomYesNo))
+        state_of_land = factory.Trait(
+            landcommunitywatershed=factory.LazyFunction(randomYesNo),
+            archsitesaffected=factory.LazyFunction(randomYesNo))
 
         cut_lines_polarization_survey = factory.Trait(
             cutlinesreclamation=factory.Faker('sentence', nb_words=3),
             cutlinesreclamationcost=factory.fuzzy.FuzzyDecimal(100),
             cutlinesexplgriddisturbedarea=factory.fuzzy.FuzzyDecimal(100))
 
-        exploration_access = factory.Trait(expaccessreclamation=factory.Faker('sentence',
-                                                                              nb_words=3),
-                                           expaccessreclamationcost=factory.fuzzy.FuzzyDecimal(100),
-                                           expaccesstotaldistarea=factory.fuzzy.FuzzyDecimal(100))
+        exploration_access = factory.Trait(
+            expaccessreclamation=factory.Faker('sentence', nb_words=3),
+            expaccessreclamationcost=factory.fuzzy.FuzzyDecimal(100),
+            expaccesstotaldistarea=factory.fuzzy.FuzzyDecimal(100))
 
         exploration_surface_drilling = factory.Trait(
             expsurfacedrillreclcorestorage=factory.Faker('sentence', nb_words=1),
@@ -144,12 +144,13 @@ class NOWSubmissionFactory(BaseFactory):
             surfacebulksamplereclcost=factory.fuzzy.FuzzyDecimal(100),
             surfacebulksampletotaldistarea=factory.fuzzy.FuzzyDecimal(100))
 
-        settling_pond = factory.Trait(pondsreclamation=factory.Faker('sentence', nb_words=3),
-                                      pondsreclamationcost=factory.fuzzy.FuzzyDecimal(100),
-                                      pondstotaldistarea=factory.fuzzy.FuzzyDecimal(100),
-                                      pondsexfiltratedtoground=factory.LazyFunction(randomYesNo),
-                                      pondsrecycled=factory.LazyFunction(randomYesNo),
-                                      pondsdischargedtoenv=factory.LazyFunction(randomYesNo))
+        settling_pond = factory.Trait(
+            pondsreclamation=factory.Faker('sentence', nb_words=3),
+            pondsreclamationcost=factory.fuzzy.FuzzyDecimal(100),
+            pondstotaldistarea=factory.fuzzy.FuzzyDecimal(100),
+            pondsexfiltratedtoground=factory.LazyFunction(randomYesNo),
+            pondsrecycled=factory.LazyFunction(randomYesNo),
+            pondsdischargedtoenv=factory.LazyFunction(randomYesNo))
 
         underground_exploration = factory.Trait(
             underexptotalore=factory.fuzzy.FuzzyInteger(1, 100),
@@ -167,11 +168,11 @@ class NOWSubmissionFactory(BaseFactory):
     messageid = factory.Sequence(lambda n: n)
     applicantclientid = factory.SelfAttribute('applicant.clientid')
     submitterclientid = factory.SelfAttribute('submitter.clientid')
-    noticeofworktype = factory.LazyFunction(lambda: random.choice(
-        [x.description for x in NOWApplicationType.query.all()]))
+    noticeofworktype = factory.LazyFunction(
+        lambda: random.choice([x.description for x in NOWApplicationType.query.all()]))
     trackingnumber = factory.fuzzy.FuzzyInteger(1, 100)
-    status = factory.LazyFunction(lambda: random.choice(
-        [x.description for x in NOWApplicationStatus.query.all()]))
+    status = factory.LazyFunction(
+        lambda: random.choice([x.description for x in NOWApplicationStatus.query.all()]))
     submitteddate = factory.Faker('past_datetime')
     receiveddate = factory.Faker('past_datetime')
     minenumber = factory.Faker('word')

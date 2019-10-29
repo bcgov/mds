@@ -1,4 +1,4 @@
-from tests.now_factories import NOWSubmissionFactory
+from tests.now_submission_factories import NOWSubmissionFactory
 
 from app.api.now_applications.transmogrify_now import transmogrify_now
 

@@ -35,5 +35,7 @@ ALTER TABLE state_of_land drop column create_user;
 ALTER TABLE state_of_land drop column create_timestamp;
 ALTER TABLE state_of_land drop column update_user;
 ALTER TABLE state_of_land drop column update_timestamp;
+ALTER TABLE state_of_land DROP COLUMN state_of_land_id;
+ALTER TABLE state_of_land ADD PRIMARY KEY (now_application_id);
 
 ALTER TABLE now_application ADD UNIQUE (now_application_guid);
