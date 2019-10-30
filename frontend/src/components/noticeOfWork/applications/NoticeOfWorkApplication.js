@@ -11,9 +11,10 @@ import {
   createNoticeOfWorkApplication,
 } from "@/actionCreators/noticeOfWorkActionCreator";
 import { getNoticeOfWork } from "@/selectors/noticeOfWorkSelectors";
-import VerifyNOWMine from "@/components/noticeOfWork/applications/VerifyNOWMine";
+import VerifyNOWMine from "@/components/noticeOfWork/applications/verification/VerifyNOWMine";
 import * as Strings from "@/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
+import ScrollContentWrapper from "@/components/common/wrappers/ScrollContentWrapper";
 
 const { Step } = Steps;
 
@@ -71,10 +72,12 @@ export class NoticeOfWorkApplication extends Component {
 
   renderStepTwo = () => {
     return (
-      <Result
-        icon={<Icon type="smile" theme="twoTone" />}
-        title="Great, we have verified the mine details!"
-      />
+      <ScrollContentWrapper id="blach">
+        <Result
+          icon={<Icon type="smile" theme="twoTone" />}
+          title="Great, we have verified the mine details!"
+        />
+      </ScrollContentWrapper>
     );
   };
 
@@ -86,6 +89,18 @@ export class NoticeOfWorkApplication extends Component {
       },
       {
         title: "Received Application",
+        content: this.renderStepTwo(),
+      },
+      {
+        title: "Technical Review",
+        content: this.renderStepTwo(),
+      },
+      {
+        title: "Referral / Consultation",
+        content: this.renderStepTwo(),
+      },
+      {
+        title: "Decision",
         content: this.renderStepTwo(),
       },
     ];
