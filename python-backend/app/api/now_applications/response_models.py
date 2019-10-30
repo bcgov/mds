@@ -34,18 +34,26 @@ NOW_APPLICATION_CUT_LINES = api.inherit(
     'NOWApplicationCutLines',
     NOW_APPLICATION_ACTIVITY_SUMMARY_BASE,
     {
-                                                 #No columns
+        #No columns
+    })
+
+NOW_APPLICATION_EXP_ACCESS = api.inherit(
+    'NOWApplicationExplorationAccess',
+    NOW_APPLICATION_ACTIVITY_SUMMARY_BASE,
+    {
+        #No columns
     })
 
 NOW_APPLICATION_EXP_SURFACE_DRILL = api.inherit('NOWApplicationExpSurfaceDrill',
                                                 NOW_APPLICATION_ACTIVITY_SUMMARY_BASE,
                                                 {'reclamation_core_storage': fields.String})
 
+
 NOW_APPLICATION_MECH_TRENCHING = api.inherit(
     'NOWApplicationMechTrenching',
     NOW_APPLICATION_ACTIVITY_SUMMARY_BASE,
     {
-                                                 #No columns
+       #No columns
     })
 
 NOW_APPLICATION_PLACER_OPS = api.inherit(
@@ -90,18 +98,30 @@ NOW_APPLICATION_SAND_AND_GRAVEL = api.inherit(
         'reclamation_backfill_detail': fields.String,
     })
 
-NOW_APPLICATION_CUT_LINES = api.inherit(
-    'NOWApplicationCamp',
+NOW_APPLICATION_SETTLING_POND = api.inherit(
+    'NOWApplicationSettlingPond',
     NOW_APPLICATION_ACTIVITY_SUMMARY_BASE,
     {
-                                                 #No columns
+     'proponent_pond_name': fields.String,
+     'is_ponds_exfiltrated': fields.Boolean,
+     'is_ponds_recycled': fields.Boolean,
+     'is_ponds_discharged': fields.Boolean
     })
 
-NOW_APPLICATION_CUT_LINES = api.inherit(
-    'NOWApplicationCamp',
+NOW_APPLICATION_SURFACE_BULK = api.inherit(
+    'NOWApplicationSurfaceBulkSample',
     NOW_APPLICATION_ACTIVITY_SUMMARY_BASE,
     {
-                                                 #No columns
+        'processing_method_description': fields.String,
+        'handling_instructions': fields.String,
+        'drainage_mitigation_description': fields.String
+    })
+
+NOW_APPLICATION_WATER_SUPPLY = api.inherit(
+    'NOWApplicationWaterSupply',
+    NOW_APPLICATION_ACTIVITY_SUMMARY_BASE,
+    {
+     #No columns
     })
 
 NOW_APPLICATION_MODEL = api.model(
@@ -110,8 +130,8 @@ NOW_APPLICATION_MODEL = api.model(
         'now_application_guid': fields.String,
         'mine_guid': fields.String,
         'now_message_id': fields.String,
-        'notice_of_work_type_code': fields.String,                   ## code
-        'now_application_status_code': fields.String,                ##code
+        'notice_of_work_type_code': fields.String,                  
+        'now_application_status_code': fields.String,               
         'submitted_date': Date,
         'received_date': Date,
         'now_application_guid': fields.String,
@@ -125,8 +145,13 @@ NOW_APPLICATION_MODEL = api.model(
         'proposed_end_date': Date,
         'camps': fields.Nested(NOW_APPLICATION_CAMP, skip_none=True),
         'cut_lines_polarization_survey': fields.Nested(NOW_APPLICATION_CUT_LINES, skip_none=True),
+        'exploration_access': fields.Nested(NOW_APPLICATION_EXP_ACCESS, skip_none=True),
         'exploration_surface_drilling': fields.Nested(NOW_APPLICATION_EXP_SURFACE_DRILL, skip_none=True),
         'mechanical_trenching': fields.Nested(NOW_APPLICATION_MECH_TRENCHING, skip_none=True),
         'placer_operation': fields.Nested(NOW_APPLICATION_PLACER_OPS, skip_none=True),
-        'sand_and_gravel': fields.Nested(NOW_APPLICATION_SAND_AND_GRAVEL, skip_none=True)
+        'sand_and_gravel': fields.Nested(NOW_APPLICATION_SAND_AND_GRAVEL, skip_none=True),
+        'settling_pond': fields.Nested(NOW_APPLICATION_SETTLING_POND, skip_none=True),
+        'surface_bulk_sample': fields.Nested(NOW_APPLICATION_SURFACE_BULK, skip_none=True),
+        'underground_exploration': fields.Nested(NOW_APPLICATION_EXP_SURFACE_DRILL, skip_none=True),
+        'water_supply': fields.Nested(NOW_APPLICATION_WATER_SUPPLY, skip_none=True)
     })
