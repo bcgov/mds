@@ -2,8 +2,9 @@ CREATE SCHEMA IF NOT EXISTS MMS_NOW_Submissions;
 
 CREATE TABLE MMS_NOW_Submissions.application (
     ID serial PRIMARY KEY,
-    MESSAGEID integer UNIQUE,
-    MMS_CID integer,
+    APPLICATION_GUID uuid DEFAULT gen_random_uuid() NOT NULL,
+    MESSAGEID integer,
+    MMS_CID integer UNIQUE,
     SUBMITTEDDATE date,
     RECEIVEDDATE date,
     NOTICEOFWORKTYPE character varying(300),
@@ -99,7 +100,7 @@ CREATE TABLE MMS_NOW_Submissions.water_source_activity (
 	PUMPSIZEINWATER numeric(14,2),
 	LOCATIONWATERINTAKE character varying(4000),
 
-  FOREIGN KEY (MESSAGEID) REFERENCES NOW_Submissions.application(MESSAGEID) DEFERRABLE INITIALLY DEFERRED
+  FOREIGN KEY (MMS_CID) REFERENCES MMS_NOW_Submissions.application(MMS_CID) DEFERRABLE INITIALLY DEFERRED
 );
 
 ALTER TABLE MMS_NOW_Submissions.water_source_activity OWNER TO mds;
@@ -124,7 +125,7 @@ CREATE TABLE MMS_NOW_Submissions.sand_grv_qry_activity (
 	DISTURBEDAREA numeric(14,2),
 	TIMBERVOLUME numeric(14,2),
 
-  FOREIGN KEY (MESSAGEID) REFERENCES NOW_Submissions.application(MESSAGEID) DEFERRABLE INITIALLY DEFERRED
+  FOREIGN KEY (MMS_CID) REFERENCES MMS_NOW_Submissions.application(MMS_CID) DEFERRABLE INITIALLY DEFERRED
 );
 
 ALTER TABLE MMS_NOW_Submissions.sand_grv_qry_activity OWNER TO mds;
@@ -147,7 +148,7 @@ CREATE TABLE MMS_NOW_Submissions.under_exp_new_activity (
 	TYPE character varying(4000),
 	QUANTITY integer,
 	
-  FOREIGN KEY (MESSAGEID) REFERENCES MMS_NOW_Submissions.application(MESSAGEID) DEFERRABLE INITIALLY DEFERRED
+  FOREIGN KEY (MMS_CID) REFERENCES MMS_NOW_Submissions.application(MMS_CID) DEFERRABLE INITIALLY DEFERRED
 );
 
 ALTER TABLE MMS_NOW_Submissions.under_exp_new_activity OWNER TO mds;
@@ -159,7 +160,7 @@ CREATE TABLE MMS_NOW_Submissions.under_exp_rehab_activity (
 	TYPE character varying(4000),
 	QUANTITY integer,
 
-  FOREIGN KEY (MESSAGEID) REFERENCES MMS_NOW_Submissions.application(MESSAGEID) DEFERRABLE INITIALLY DEFERRED
+  FOREIGN KEY (MMS_CID) REFERENCES MMS_NOW_Submissions.application(MMS_CID) DEFERRABLE INITIALLY DEFERRED
 );
 
 ALTER TABLE MMS_NOW_Submissions.under_exp_rehab_activity OWNER TO mds;
@@ -173,7 +174,7 @@ CREATE TABLE MMS_NOW_Submissions.under_exp_surface_activity (
 	DISTURBEDAREA numeric(14,2),
 	TIMBERVOLUME numeric(14,2),
 
-  FOREIGN KEY (MESSAGEID) REFERENCES MMS_NOW_Submissions.application(MESSAGEID) DEFERRABLE INITIALLY DEFERRED
+  FOREIGN KEY (MMS_CID) REFERENCES MMS_NOW_Submissions.application(MMS_CID) DEFERRABLE INITIALLY DEFERRED
 );
 
 ALTER TABLE MMS_NOW_Submissions.under_exp_surface_activity OWNER TO mds;
@@ -197,7 +198,7 @@ CREATE TABLE MMS_NOW_Submissions.exp_access_activity (
 	DISTURBEDAREA numeric(14,2),
 	TIMBERVOLUME numeric(14,2),
 
-  FOREIGN KEY (MESSAGEID) REFERENCES MMS_NOW_Submissions.application(MESSAGEID) DEFERRABLE INITIALLY DEFERRED
+  FOREIGN KEY (MMS_CID) REFERENCES MMS_NOW_Submissions.application(MMS_CID) DEFERRABLE INITIALLY DEFERRED
 );
 
 ALTER TABLE MMS_NOW_Submissions.exp_access_activity OWNER TO mds;
@@ -211,7 +212,7 @@ CREATE TABLE MMS_NOW_Submissions.exp_surface_drill_activity (
 	DISTURBEDAREA numeric(14,2),
 	TIMBERVOLUME numeric(14,2),
 
-    FOREIGN KEY (MESSAGEID) REFERENCES MMS_NOW_Submissions.application(MESSAGEID) DEFERRABLE INITIALLY DEFERRED
+    FOREIGN KEY (MMS_CID) REFERENCES MMS_NOW_Submissions.application(MMS_CID) DEFERRABLE INITIALLY DEFERRED
 );
 
 ALTER TABLE MMS_NOW_Submissions.exp_surface_drill_activity OWNER TO mds;
@@ -225,7 +226,7 @@ CREATE TABLE MMS_NOW_Submissions.mech_trenching_activity (
 	DISTURBEDAREA numeric(14,2),
 	TIMBERVOLUME numeric(14,2),
 
-  FOREIGN KEY (MESSAGEID) REFERENCES MMS_NOW_Submissions.application(MESSAGEID) DEFERRABLE INITIALLY DEFERRED
+  FOREIGN KEY (MMS_CID) REFERENCES MMS_NOW_Submissions.application(MMS_CID) DEFERRABLE INITIALLY DEFERRED
 );
 
 ALTER TABLE MMS_NOW_Submissions.mech_trenching_activity OWNER TO mds;
@@ -249,7 +250,7 @@ CREATE TABLE MMS_NOW_Submissions.contact (
     MAILINGADDRESSPROVSTATE character varying(200),
     MAILINGADDRESSPOSTALZIP character varying(10),
 
-    FOREIGN KEY (MESSAGEID) REFERENCES MMS_NOW_Submissions.application(MESSAGEID) DEFERRABLE INITIALLY DEFERRED
+    FOREIGN KEY (MMS_CID) REFERENCES MMS_NOW_Submissions.application(MMS_CID) DEFERRABLE INITIALLY DEFERRED
 );
 
 ALTER TABLE MMS_NOW_Submissions.contact OWNER TO mds;
@@ -272,7 +273,7 @@ CREATE TABLE MMS_NOW_Submissions.client (
     MAILINGADDRESSPROVSTATE character varying(200),
     MAILINGADDRESSPOSTALZIP character varying(10),
 
-    FOREIGN KEY (MESSAGEID) REFERENCES MMS_NOW_Submissions.application(MESSAGEID) DEFERRABLE INITIALLY DEFERRED
+    FOREIGN KEY (MMS_CID) REFERENCES MMS_NOW_Submissions.application(MMS_CID) DEFERRABLE INITIALLY DEFERRED
 );
 
 ALTER TABLE MMS_NOW_Submissions.client OWNER TO mds;
@@ -288,9 +289,7 @@ CREATE TABLE MMS_NOW_Submissions.application_start_stop (
 ALTER TABLE MMS_NOW_Submissions.application_start_stop OWNER TO mds;
 
 CREATE TABLE MMS_NOW_Submissions.application_nda (
-    ID serial PRIMARY KEY,
-    MESSAGEID integer,
-    MMS_CID integer,
+    MESSAGEID integer PRIMARY KEY,
     TRACKINGNUMBER integer,
     APPLICATIONTYPE character varying(100),
     STATUS character varying(60),

@@ -152,7 +152,8 @@ def ETL_MMS_NOW_schema(connection, tables, schema, system_name):
         sand_grv_qry_activity_4 = etl.cutout(sand_grv_qry_activity_4, ['act4_ind', 'act4_ar', 'act4_vol'])
 
         sand_grv_qry_activity_detail = etl.join(sand_grv_qry_activity_detail, sand_grv_qry_activity_4, key='mms_cid')
-
+        
+        sand_grv_qry_activity_detail = etl.join(sand_grv_qry_activity_detail, message_ids, key='mms_cid')
         applications = etl.outerjoin(applications, sand_grv_qry_activity_app_cols, key='mms_cid')
 
         surface_bulk_activity = etl.fromdb(
@@ -253,6 +254,7 @@ def ETL_MMS_NOW_schema(connection, tables, schema, system_name):
 
         surface_bulk_activity_detail = etl.join(surface_bulk_activity_detail, surface_bulk_activity_6, key='mms_cid')
 
+        surface_bulk_activity_detail = etl.join(surface_bulk_activity_detail, message_ids, key='mms_cid')
         applications = etl.outerjoin(applications, surface_bulk_activity_app_cols, key='mms_cid')
 
         cut_lines = etl.fromdb(
@@ -362,7 +364,7 @@ def ETL_MMS_NOW_schema(connection, tables, schema, system_name):
         exploration_access_activity_5 = etl.addfield(exploration_access_activity_5, 'timbervolume', lambda v: v['act5_vol'])
         exploration_access_activity_5 = etl.addfield(exploration_access_activity_5, 'length', lambda v: v['act5_len'])
  
-        exploration_access_activity_ = etl.cutout(exploration_access_activity_5, ['act5_ind', 'act5_len', 'act5_ar', 'act5_vol'])
+        exploration_access_activity_5 = etl.cutout(exploration_access_activity_5, ['act5_ind', 'act5_len', 'act5_ar', 'act5_vol'])
 
         exploration_access_activity_detail = etl.join(exploration_access_activity_detail, exploration_access_activity_5, key='mms_cid')
 
@@ -386,6 +388,7 @@ def ETL_MMS_NOW_schema(connection, tables, schema, system_name):
 
         exploration_access_activity_detail = etl.join(exploration_access_activity_detail, exploration_access_activity_7, key='mms_cid')
 
+        exploration_access_activity_detail = etl.join(exploration_access_activity_detail, message_ids, key='mms_cid')
         applications = etl.outerjoin(applications, exploration_access_app_cols, key='mms_cid')
 
         exploration_surface_drill = etl.fromdb(
@@ -493,7 +496,7 @@ def ETL_MMS_NOW_schema(connection, tables, schema, system_name):
         exploration_surface_drill_activity_5 = etl.addfield(exploration_surface_drill_activity_5, 'timbervolume', lambda v: v['act5_vol'])
         exploration_surface_drill_activity_5 = etl.addfield(exploration_surface_drill_activity_5, 'numberofsites', lambda v: v['act5_cnt'])
  
-        exploration_access_activity_ = etl.cutout(exploration_surface_drill_activity_5, ['act5_ind', 'act5_len', 'act5_ar', 'act5_vol'])
+        exploration_access_activity_5 = etl.cutout(exploration_surface_drill_activity_5, ['act5_ind', 'act5_len', 'act5_ar', 'act5_vol'])
 
         exploration_surface_drill_activity_detail = etl.join(exploration_surface_drill_activity_detail, exploration_surface_drill_activity_5, key='mms_cid')
 
@@ -526,6 +529,7 @@ def ETL_MMS_NOW_schema(connection, tables, schema, system_name):
 
         exploration_surface_drill_activity_detail = etl.join(exploration_surface_drill_activity_detail, exploration_surface_drill_activity_8, key='mms_cid')
 
+        exploration_surface_drill_activity_detail = etl.join(exploration_surface_drill_activity_detail, message_ids, key='mms_cid')
         applications = etl.outerjoin(applications, exploration_surface_drill_app_cols, key='mms_cid')
 
         mech_trenching = etl.fromdb(
@@ -575,7 +579,279 @@ def ETL_MMS_NOW_schema(connection, tables, schema, system_name):
 
         mech_trenching_activity_detail = etl.join(mech_trenching_activity_detail, mech_trenching_activity_2, key='mms_cid')
 
+        mech_trenching_activity_detail = etl.join(mech_trenching_activity_detail, message_ids, key='mms_cid')
         applications = etl.outerjoin(applications, mech_trenching_app_cols, key='mms_cid')
+
+        under_exp_activity = etl.fromdb(
+            connection,
+            f'SELECT cid as mms_cid, recl_desc as UnderExpReclamation, recl_dol as UnderExpReclamationCost, t_ar as UNDEREXPSURFACETOTALDISTAREA, t_vol as UNDEREXPSURFACETIMBERVOLUME, devr1_ind, devr2_ind, devr3_ind, devr4_ind, devr5_ind, devr6_ind, devr7_ind, devr8_ind, devr1_ct, devr2_ct, devr3_ct, devr4_ct, devr5_ct, devr6_ct, devr7_ct, devr8_ct, devn1_ind, devn2_ind, devn3_ind, devn4_ind, devn5_ind, devn6_ind, devn7_ind, devn8_ind, devn1_ct, devn2_ct, devn3_ct, devn4_ct, devn5_ct, devn6_ct, devn7_ct, devn8_ct, surf1_ind, surf2_ind, surf3_ind, surf4_ind, surf7_ind, surf8_ind, surf9_ind, surf10_ind, surf1_ct, surf2_ct, surf3_ct, surf4_ct, surf7_ct, surf8_ct, surf9_ct, surf10_ct, surf1_ar, surf2_ar, surf3_ar, surf4_ar, surf7_ar, surf8_ar, surf9_ar, surf10_ar, surf1_vol, surf2_vol, surf3_vol, surf4_vol, surf7_vol, surf8_vol, surf9_vol, surf10_vol from mms.mmsscg_n'
+        )
+
+        under_exp_activity_app_cols = etl.cut(mech_trenching, [
+            'mms_cid', 'UnderExpReclamation', 'UnderExpReclamationCost', 'UNDEREXPSURFACETOTALDISTAREA', 'UNDEREXPSURFACETIMBERVOLUME'
+        ])
+
+        under_exp_activity = etl.cutout(mech_trenching, [
+            'UnderExpReclamation', 'UnderExpReclamationCost', 'UNDEREXPSURFACETOTALDISTAREA', 'UNDEREXPSURFACETIMBERVOLUME'
+        ])
+        
+        under_exp_surface_activity_detail = etl.fromdb(
+            connection,
+            f'SELECT * from MMS_NOW_Submissions.under_exp_surface_activity'
+        )
+
+        under_exp_surface_activity_1 = etl.cut(under_exp_activity, ['mms_cid', 'surf1_ind', 'surf1_ct', 'surf1_ar', 'surf1_vol'])
+        under_exp_surface_activity_2 = etl.cut(under_exp_activity, ['mms_cid', 'surf2_ind', 'surf2_ct', 'surf2_ar', 'surf2_vol'])
+        under_exp_surface_activity_3 = etl.cut(under_exp_activity, ['mms_cid', 'surf3_ind', 'surf3_ct', 'surf3_ar', 'surf3_vol'])
+        under_exp_surface_activity_4 = etl.cut(under_exp_activity, ['mms_cid', 'surf4_ind', 'surf4_ct', 'surf4_ar', 'surf4_vol'])
+        under_exp_surface_activity_7 = etl.cut(under_exp_activity, ['mms_cid', 'surf7_ind', 'surf7_ct', 'surf7_ar', 'surf7_vol'])
+        under_exp_surface_activity_8 = etl.cut(under_exp_activity, ['mms_cid', 'surf8_ind', 'surf8_ct', 'surf8_ar', 'surf8_vol'])
+        under_exp_surface_activity_9 = etl.cut(under_exp_activity, ['mms_cid', 'surf9_ind', 'surf9_ct', 'surf9_ar', 'surf9_vol'])
+        under_exp_surface_activity_10 = etl.cut(under_exp_activity, ['mms_cid', 'surf10_ind', 'surf10_ct', 'surf10_ar', 'surf10_vol'])
+
+        under_exp_surface_activity_1 = etl.select(under_exp_surface_activity_1, lambda v: v['surf1_ind'] == 1)
+        under_exp_surface_activity_2 = etl.select(under_exp_surface_activity_2, lambda v: v['surf2_ind'] == 1)
+        under_exp_surface_activity_3 = etl.select(under_exp_surface_activity_3, lambda v: v['surf3_ind'] == 1)
+        under_exp_surface_activity_4 = etl.select(under_exp_surface_activity_4, lambda v: v['surf4_ind'] == 1)
+        under_exp_surface_activity_7 = etl.select(under_exp_surface_activity_7, lambda v: v['surf7_ind'] == 1)
+        under_exp_surface_activity_8 = etl.select(under_exp_surface_activity_8, lambda v: v['surf8_ind'] == 1)
+        under_exp_surface_activity_9 = etl.select(under_exp_surface_activity_9, lambda v: v['surf9_ind'] == 1)
+        under_exp_surface_activity_10 = etl.select(under_exp_surface_activity_10, lambda v: v['surf10_ind'] == 1)
+    
+        under_exp_surface_activity_1 = etl.addfield(under_exp_surface_activity_1, 'type','Portals/Entries')
+        under_exp_surface_activity_1 = etl.addfield(under_exp_surface_activity_1, 'quantity', lambda v: v['surf1_ct'])
+        under_exp_surface_activity_1 = etl.addfield(under_exp_surface_activity_1, 'disturbedarea', lambda v: v['surf1_ar'])
+        under_exp_surface_activity_1 = etl.addfield(under_exp_surface_activity_1, 'timbervolume', lambda v: v['surf1_vol'])
+
+        under_exp_surface_activity_1 = etl.cutout(under_exp_surface_activity_1, ['surf1_ind', 'surf1_ct', 'surf1_ar', 'surf1_vol'])
+
+        under_exp_surface_activity_detail = etl.join(under_exp_surface_activity_detail, under_exp_surface_activity_1, key='mms_cid')
+    
+        under_exp_surface_activity_2 = etl.addfield(under_exp_surface_activity_2, 'type','Ore Dump')
+        under_exp_surface_activity_2 = etl.addfield(under_exp_surface_activity_2, 'quantity', lambda v: v['surf2_ct'])
+        under_exp_surface_activity_2 = etl.addfield(under_exp_surface_activity_2, 'disturbedarea', lambda v: v['surf2_ar'])
+        under_exp_surface_activity_2 = etl.addfield(under_exp_surface_activity_2, 'timbervolume', lambda v: v['surf2_vol'])
+
+        under_exp_surface_activity_2 = etl.cutout(under_exp_surface_activity_2, ['surf2_ind', 'surf2_ct', 'surf2_ar', 'surf2_vol'])
+
+        under_exp_surface_activity_detail = etl.join(under_exp_surface_activity_detail, under_exp_surface_activity_2, key='mms_cid')
+
+        under_exp_surface_activity_3 = etl.addfield(under_exp_surface_activity_3, 'type','Waste Dump')
+        under_exp_surface_activity_3 = etl.addfield(under_exp_surface_activity_3, 'quantity', lambda v: v['surf3_ct'])
+        under_exp_surface_activity_3 = etl.addfield(under_exp_surface_activity_3, 'disturbedarea', lambda v: v['surf3_ar'])
+        under_exp_surface_activity_3 = etl.addfield(under_exp_surface_activity_3, 'timbervolume', lambda v: v['surf3_vol'])
+
+        under_exp_surface_activity_3 = etl.cutout(under_exp_surface_activity_3, ['surf3_ind', 'surf3_ct', 'surf3_ar', 'surf3_vol'])
+
+        under_exp_surface_activity_detail = etl.join(under_exp_surface_activity_detail, under_exp_surface_activity_3, key='mms_cid')
+
+        under_exp_surface_activity_4 = etl.addfield(under_exp_surface_activity_4, 'type','Soil/Overburden')
+        under_exp_surface_activity_4 = etl.addfield(under_exp_surface_activity_4, 'quantity', lambda v: v['surf4_ct'])
+        under_exp_surface_activity_4 = etl.addfield(under_exp_surface_activity_4, 'disturbedarea', lambda v: v['surf4_ar'])
+        under_exp_surface_activity_4 = etl.addfield(under_exp_surface_activity_4, 'timbervolume', lambda v: v['surf4_vol'])
+
+        under_exp_surface_activity_4 = etl.cutout(under_exp_surface_activity_4, ['surf4_ind', 'surf4_ct', 'surf4_ar', 'surf4_vol'])
+
+        under_exp_surface_activity_detail = etl.join(under_exp_surface_activity_detail, under_exp_surface_activity_4, key='mms_cid')
+    
+        under_exp_surface_activity_7 = etl.addfield(under_exp_surface_activity_7, 'type','Equipment Lay-down Area')
+        under_exp_surface_activity_7 = etl.addfield(under_exp_surface_activity_7, 'quantity', lambda v: v['surf7_ct'])
+        under_exp_surface_activity_7 = etl.addfield(under_exp_surface_activity_7, 'disturbedarea', lambda v: v['surf7_ar'])
+        under_exp_surface_activity_7 = etl.addfield(under_exp_surface_activity_7, 'timbervolume', lambda v: v['surf7_vol'])
+
+        under_exp_surface_activity_7 = etl.cutout(under_exp_surface_activity_7, ['surf7_ind', 'surf7_ct', 'surf7_ar', 'surf7_vol'])
+
+        under_exp_surface_activity_detail = etl.join(under_exp_surface_activity_detail, under_exp_surface_activity_7, key='mms_cid')
+
+        under_exp_surface_activity_8 = etl.addfield(under_exp_surface_activity_8, 'type','Fuel Storage (for the mine)')
+        under_exp_surface_activity_8 = etl.addfield(under_exp_surface_activity_8, 'quantity', lambda v: v['surf8_ct'])
+        under_exp_surface_activity_8 = etl.addfield(under_exp_surface_activity_8, 'disturbedarea', lambda v: v['surf8_ar'])
+        under_exp_surface_activity_8 = etl.addfield(under_exp_surface_activity_8, 'timbervolume', lambda v: v['surf8_vol'])
+
+        under_exp_surface_activity_8 = etl.cutout(under_exp_surface_activity_8, ['surf8_ind', 'surf8_ct', 'surf8_ar', 'surf8_vol'])
+
+        under_exp_surface_activity_detail = etl.join(under_exp_surface_activity_detail, under_exp_surface_activity_8, key='mms_cid')
+    
+        under_exp_surface_activity_9 = etl.addfield(under_exp_surface_activity_9, 'type','Other')
+        under_exp_surface_activity_9 = etl.addfield(under_exp_surface_activity_9, 'quantity', lambda v: v['surf9_ct'])
+        under_exp_surface_activity_9 = etl.addfield(under_exp_surface_activity_9, 'disturbedarea', lambda v: v['surf9_ar'])
+        under_exp_surface_activity_9 = etl.addfield(under_exp_surface_activity_9, 'timbervolume', lambda v: v['surf9_vol'])
+
+        under_exp_surface_activity_9 = etl.cutout(under_exp_surface_activity_9, ['surf9_ind', 'surf9_ct', 'surf9_ar', 'surf9_vol'])
+
+        under_exp_surface_activity_detail = etl.join(under_exp_surface_activity_detail, under_exp_surface_activity_9, key='mms_cid')
+
+        under_exp_surface_activity_10 = etl.addfield(under_exp_surface_activity_10, 'type','Shaft')
+        under_exp_surface_activity_10 = etl.addfield(under_exp_surface_activity_10, 'quantity', lambda v: v['surf10_ct'])
+        under_exp_surface_activity_10 = etl.addfield(under_exp_surface_activity_10, 'disturbedarea', lambda v: v['surf10_ar'])
+        under_exp_surface_activity_10 = etl.addfield(under_exp_surface_activity_10, 'timbervolume', lambda v: v['surf10_vol'])
+
+        under_exp_surface_activity_10 = etl.cutout(under_exp_surface_activity_10, ['surf10_ind', 'surf10_ct', 'surf10_ar', 'surf10_vol'])
+
+        under_exp_surface_activity_detail = etl.join(under_exp_surface_activity_detail, under_exp_surface_activity_10, key='mms_cid')
+        under_exp_surface_activity_detail = etl.join(under_exp_surface_activity_detail, message_ids, key='mms_cid')
+
+        under_exp_new_activity_detail = etl.fromdb(
+            connection,
+            f'SELECT * from MMS_NOW_Submissions.under_exp_new_activity'
+        )
+
+        under_exp_new_activity_1 = etl.cut(under_exp_activity, ['mms_cid', 'devn1_ind', 'devn1_ct'])
+        under_exp_new_activity_2 = etl.cut(under_exp_activity, ['mms_cid', 'devn2_ind', 'devn2_ct'])
+        under_exp_new_activity_3 = etl.cut(under_exp_activity, ['mms_cid', 'devn3_ind', 'devn3_ct'])
+        under_exp_new_activity_4 = etl.cut(under_exp_activity, ['mms_cid', 'devn4_ind', 'devn4_ct'])
+        under_exp_new_activity_5 = etl.cut(under_exp_activity, ['mms_cid', 'devn5_ind', 'devn5_ct'])
+        under_exp_new_activity_6 = etl.cut(under_exp_activity, ['mms_cid', 'devn6_ind', 'devn6_ct'])
+        under_exp_new_activity_7 = etl.cut(under_exp_activity, ['mms_cid', 'devn7_ind', 'devn7_ct'])
+        under_exp_new_activity_8 = etl.cut(under_exp_activity, ['mms_cid', 'devn8_ind', 'devn8_ct'])
+
+        under_exp_new_activity_1 = etl.select(under_exp_new_activity_1, lambda v: v['devn1_ind'] == 1)
+        under_exp_new_activity_2 = etl.select(under_exp_new_activity_2, lambda v: v['devn2_ind'] == 1)
+        under_exp_new_activity_3 = etl.select(under_exp_new_activity_3, lambda v: v['devn3_ind'] == 1)
+        under_exp_new_activity_4 = etl.select(under_exp_new_activity_4, lambda v: v['devn4_ind'] == 1)
+        under_exp_new_activity_5 = etl.select(under_exp_new_activity_5, lambda v: v['devn5_ind'] == 1)
+        under_exp_new_activity_6 = etl.select(under_exp_new_activity_6, lambda v: v['devn6_ind'] == 1)
+        under_exp_new_activity_7 = etl.select(under_exp_new_activity_7, lambda v: v['devn7_ind'] == 1)
+        under_exp_new_activity_8 = etl.select(under_exp_new_activity_8, lambda v: v['devn8_ind'] == 1)
+    
+        under_exp_new_activity_1 = etl.addfield(under_exp_new_activity_1, 'type','Portals/Entries')
+        under_exp_new_activity_1 = etl.addfield(under_exp_new_activity_1, 'quantity', lambda v: v['devn1_ct'])
+
+        under_exp_new_activity_1 = etl.cutout(under_exp_new_activity_1, ['devn1_ind', 'devn1_ct'])
+
+        under_exp_new_activity_detail = etl.join(under_exp_new_activity_detail, under_exp_new_activity_1, key='mms_cid')
+    
+        under_exp_new_activity_2 = etl.addfield(under_exp_new_activity_2, 'type','Drifts')
+        under_exp_new_activity_2 = etl.addfield(under_exp_new_activity_2, 'quantity', lambda v: v['devn2_ct'])
+
+        under_exp_new_activity_2 = etl.cutout(under_exp_new_activity_2, ['devn2_ind', 'devn2_ct'])
+
+        under_exp_new_activity_detail = etl.join(under_exp_new_activity_detail, under_exp_new_activity_2, key='mms_cid')
+
+        under_exp_new_activity_3 = etl.addfield(under_exp_new_activity_3, 'type','Raises')
+        under_exp_new_activity_3 = etl.addfield(under_exp_new_activity_3, 'quantity', lambda v: v['devn3_ct'])
+
+        under_exp_new_activity_3 = etl.cutout(under_exp_new_activity_3, ['devn3_ind', 'devn3_ct'])
+
+        under_exp_new_activity_detail = etl.join(under_exp_new_activity_detail, under_exp_new_activity_3, key='mms_cid')
+
+        under_exp_new_activity_4 = etl.addfield(under_exp_new_activity_4, 'type','Ramps')
+        under_exp_new_activity_4 = etl.addfield(under_exp_new_activity_4, 'quantity', lambda v: v['devn4_ct'])
+
+        under_exp_new_activity_4 = etl.cutout(under_exp_new_activity_4, ['devn4_ind', 'devn4_ct'])
+
+        under_exp_new_activity_detail = etl.join(under_exp_new_activity_detail, under_exp_new_activity_4, key='mms_cid')
+
+        under_exp_new_activity_5 = etl.addfield(under_exp_new_activity_5, 'type','Shafts')
+        under_exp_new_activity_5 = etl.addfield(under_exp_new_activity_5, 'quantity', lambda v: v['devn5_ct'])
+
+        under_exp_new_activity_5 = etl.cutout(under_exp_new_activity_5, ['devn5_ind', 'devn5_ct'])
+
+        under_exp_new_activity_detail = etl.join(under_exp_new_activity_detail, under_exp_new_activity_5, key='mms_cid')
+
+        under_exp_new_activity_6 = etl.addfield(under_exp_new_activity_6, 'type','De-Pillar')
+        under_exp_new_activity_6 = etl.addfield(under_exp_new_activity_6, 'quantity', lambda v: v['devn6_ct'])
+
+        under_exp_new_activity_6 = etl.cutout(under_exp_new_activity_6, ['devn6_ind', 'devn6_ct'])
+
+        under_exp_new_activity_detail = etl.join(under_exp_new_activity_detail, under_exp_new_activity_6, key='mms_cid')
+
+        under_exp_new_activity_7 = etl.addfield(under_exp_new_activity_7, 'type', 'Other')
+        under_exp_new_activity_7 = etl.addfield(under_exp_new_activity_7, 'quantity', lambda v: v['devn7_ct'])
+
+        under_exp_new_activity_7 = etl.cutout(under_exp_new_activity_7, ['devn7_ind', 'devn7_ct'])
+
+        under_exp_new_activity_detail = etl.join(under_exp_new_activity_detail, under_exp_new_activity_7, key='mms_cid')
+
+        under_exp_new_activity_8 = etl.addfield(under_exp_new_activity_8, 'type','Stope')
+        under_exp_new_activity_8 = etl.addfield(under_exp_new_activity_8, 'quantity', lambda v: v['devn8_ct'])
+
+        under_exp_new_activity_8 = etl.cutout(under_exp_new_activity_8, ['devn8_ind', 'devn8_ct'])
+
+        under_exp_new_activity_detail = etl.join(under_exp_new_activity_detail, under_exp_new_activity_8, key='mms_cid')
+        under_exp_new_activity_detail = etl.join(under_exp_new_activity_detail, message_ids, key='mms_cid')
+
+        under_exp_rehab_activity_detail = etl.fromdb(
+            connection,
+            f'SELECT * from MMS_NOW_Submissions.under_exp_rehab_activity'
+        )
+
+        under_exp_rehab_activity_1 = etl.cut(under_exp_activity, ['mms_cid', 'devr1_ind', 'devr1_ct'])
+        under_exp_rehab_activity_2 = etl.cut(under_exp_activity, ['mms_cid', 'devr2_ind', 'devr2_ct'])
+        under_exp_rehab_activity_3 = etl.cut(under_exp_activity, ['mms_cid', 'devr3_ind', 'devr3_ct'])
+        under_exp_rehab_activity_4 = etl.cut(under_exp_activity, ['mms_cid', 'devr4_ind', 'devr4_ct'])
+        under_exp_rehab_activity_5 = etl.cut(under_exp_activity, ['mms_cid', 'devr5_ind', 'devr5_ct'])
+        under_exp_rehab_activity_6 = etl.cut(under_exp_activity, ['mms_cid', 'devr6_ind', 'devr6_ct'])
+        under_exp_rehab_activity_7 = etl.cut(under_exp_activity, ['mms_cid', 'devr7_ind', 'devr7_ct'])
+        under_exp_rehab_activity_8 = etl.cut(under_exp_activity, ['mms_cid', 'devr8_ind', 'devr8_ct'])
+
+        under_exp_rehab_activity_1 = etl.select(under_exp_rehab_activity_1, lambda v: v['devr1_ind'] == 1)
+        under_exp_rehab_activity_2 = etl.select(under_exp_rehab_activity_2, lambda v: v['devr2_ind'] == 1)
+        under_exp_rehab_activity_3 = etl.select(under_exp_rehab_activity_3, lambda v: v['devr3_ind'] == 1)
+        under_exp_rehab_activity_4 = etl.select(under_exp_rehab_activity_4, lambda v: v['devr4_ind'] == 1)
+        under_exp_rehab_activity_5 = etl.select(under_exp_rehab_activity_5, lambda v: v['devr5_ind'] == 1)
+        under_exp_rehab_activity_6 = etl.select(under_exp_rehab_activity_6, lambda v: v['devr6_ind'] == 1)
+        under_exp_rehab_activity_7 = etl.select(under_exp_rehab_activity_7, lambda v: v['devr7_ind'] == 1)
+        under_exp_rehab_activity_8 = etl.select(under_exp_rehab_activity_8, lambda v: v['devr8_ind'] == 1)
+    
+        under_exp_rehab_activity_1 = etl.addfield(under_exp_rehab_activity_1, 'type','Portals/Entries')
+        under_exp_rehab_activity_1 = etl.addfield(under_exp_rehab_activity_1, 'quantity', lambda v: v['devr1_ct'])
+
+        under_exp_rehab_activity_1 = etl.cutout(under_exp_rehab_activity_1, ['devr1_ind', 'devr1_ct'])
+
+        under_exp_rehab_activity_detail = etl.join(under_exp_rehab_activity_detail, under_exp_rehab_activity_1, key='mms_cid')
+    
+        under_exp_rehab_activity_2 = etl.addfield(under_exp_rehab_activity_2, 'type','Drifts')
+        under_exp_rehab_activity_2 = etl.addfield(under_exp_rehab_activity_2, 'quantity', lambda v: v['devr2_ct'])
+
+        under_exp_rehab_activity_2 = etl.cutout(under_exp_rehab_activity_2, ['devr2_ind', 'devr2_ct'])
+
+        under_exp_rehab_activity_detail = etl.join(under_exp_rehab_activity_detail, under_exp_rehab_activity_2, key='mms_cid')
+
+        under_exp_rehab_activity_3 = etl.addfield(under_exp_rehab_activity_3, 'type','Raises')
+        under_exp_rehab_activity_3 = etl.addfield(under_exp_rehab_activity_3, 'quantity', lambda v: v['devr3_ct'])
+
+        under_exp_rehab_activity_3 = etl.cutout(under_exp_rehab_activity_3, ['devr3_ind', 'devr3_ct'])
+
+        under_exp_rehab_activity_detail = etl.join(under_exp_rehab_activity_detail, under_exp_rehab_activity_3, key='mms_cid')
+
+        under_exp_rehab_activity_4 = etl.addfield(under_exp_rehab_activity_4, 'type','Ramps')
+        under_exp_rehab_activity_4 = etl.addfield(under_exp_rehab_activity_4, 'quantity', lambda v: v['devr4_ct'])
+
+        under_exp_rehab_activity_4 = etl.cutout(under_exp_rehab_activity_4, ['devr4_ind', 'devr4_ct'])
+
+        under_exp_rehab_activity_detail = etl.join(under_exp_rehab_activity_detail, under_exp_rehab_activity_4, key='mms_cid')
+
+        under_exp_rehab_activity_5 = etl.addfield(under_exp_rehab_activity_5, 'type','Shafts')
+        under_exp_rehab_activity_5 = etl.addfield(under_exp_rehab_activity_5, 'quantity', lambda v: v['devr5_ct'])
+
+        under_exp_rehab_activity_5 = etl.cutout(under_exp_rehab_activity_5, ['devr5_ind', 'devr5_ct'])
+
+        under_exp_rehab_activity_detail = etl.join(under_exp_rehab_activity_detail, under_exp_rehab_activity_5, key='mms_cid')
+
+        under_exp_rehab_activity_6 = etl.addfield(under_exp_rehab_activity_6, 'type','De-Pillar')
+        under_exp_rehab_activity_6 = etl.addfield(under_exp_rehab_activity_6, 'quantity', lambda v: v['devr6_ct'])
+
+        under_exp_rehab_activity_6 = etl.cutout(under_exp_rehab_activity_6, ['devr6_ind', 'devr6_ct'])
+
+        under_exp_rehab_activity_detail = etl.join(under_exp_rehab_activity_detail, under_exp_rehab_activity_6, key='mms_cid')
+
+        under_exp_rehab_activity_7 = etl.addfield(under_exp_rehab_activity_7, 'type', 'Other')
+        under_exp_rehab_activity_7 = etl.addfield(under_exp_rehab_activity_7, 'quantity', lambda v: v['devr7_ct'])
+
+        under_exp_rehab_activity_7 = etl.cutout(under_exp_rehab_activity_7, ['devr7_ind', 'devr7_ct'])
+
+        under_exp_rehab_activity_detail = etl.join(under_exp_rehab_activity_detail, under_exp_rehab_activity_7, key='mms_cid')
+
+        under_exp_rehab_activity_8 = etl.addfield(under_exp_rehab_activity_8, 'type','Stope')
+        under_exp_rehab_activity_8 = etl.addfield(under_exp_rehab_activity_8, 'quantity', lambda v: v['devr8_ct'])
+
+        under_exp_rehab_activity_8 = etl.cutout(under_exp_rehab_activity_8, ['devr8_ind', 'devr8_ct'])
+
+        under_exp_rehab_activity_detail = etl.join(under_exp_rehab_activity_detail, under_exp_rehab_activity_8, key='mms_cid')
+
+        under_exp_rehab_activity_detail = etl.join(under_exp_rehab_activity_detail, message_ids, key='mms_cid')
+        applications = etl.outerjoin(applications, under_exp_activity_app_cols, key='mms_cid')
 
         camps = etl.fromdb(
             connection,
@@ -619,12 +895,12 @@ def ETL_MMS_NOW_schema(connection, tables, schema, system_name):
 
         streamline_application = etl.addfield(
             streamline_application, 'FirstAidEquipmentOnsite',
-            first_aid_equipment_on_site)
+            lambda v: v['comm_desc'].split('  ')[0] if (v['comm_desc'] != '' or v['comm_desc'] is not None) else None)
         
 
         streamline_application = etl.addfield(
             streamline_application, 'FirstAidCertLevel',
-            first_aid_cert_level)
+            lambda v: v['comm_desc'].split('  ')[1] if (v['comm_desc'] != '' or v['comm_desc'] is not None) else None)
         
 
         streamline_application = etl.addfield(
@@ -676,7 +952,8 @@ def ETL_MMS_NOW_schema(connection, tables, schema, system_name):
 
         streamline_application_app_cols = etl.cutout(streamline_application, ['str_dt_seasonal', 'end_dt_seasonal'])
         
-        streamline_application = etl.cut(streamline_application, ['mms_cid', 'str_dt_seasonal', 'end_dt_seasonal'])
+        streamline_application = etl.cut(streamline_application, ['mms_cid', 'startworkdate', 'endworkdate'])
+        streamline_application = etl.join(streamline_application, message_ids, key='mms_cid')
 
         applications = etl.outerjoin(applications, streamline_application_app_cols, key='mms_cid')
 
@@ -685,8 +962,20 @@ def ETL_MMS_NOW_schema(connection, tables, schema, system_name):
             f'SELECT cid as mms_cid, water_nm as sourcewatersupply, activity as type, water_use as useofwater, water_vol as EstimateRateWater, pump_size as PumpSizeInWater, water_intake as LocationWaterIntake from mms.mmsscp_n_d'
         )
 
-        etl.appenddb(
-            applications, connection, 'application', schema='mms_now_submissions', commit=False)
+        water_source_activity = etl.join(water_source_activity, message_ids, key='mms_cid')
+
+        application_nda = etl.fromdb(
+            connection,
+            f'SELECT * from mms.mmsnda'
+        )
+
+        application_nda = etl.cutout(application_nda, 'oldenddate')
+
+        etl.appenddb(applications, connection, 'application', schema='mms_now_submissions', commit=False)
+
+        etl.appenddb(water_source_activity, connection, 'water_source_activity', schema='mms_now_submissions', commit=False)
+
+        etl.appenddb(streamline_application, connection, 'application_start_stop', schema='mms_now_submissions', commit=False)
 
         etl.appenddb(sand_grv_qry_activity_detail, connection,
                              'sand_grv_qry_activity', schema='mms_now_submissions', commit=False)
@@ -696,13 +985,20 @@ def ETL_MMS_NOW_schema(connection, tables, schema, system_name):
 
         etl.appenddb(exploration_access_activity_detail, connection,
                              'exp_access_activity', schema='mms_now_submissions', commit=False)
-                             
+
         etl.appenddb(mech_trenching_activity_detail, connection,
                              'mech_trenching_activity', schema='mms_now_submissions', commit=False)
-                             
 
-        for app in applications:
-            cid = app['cid']
+        etl.appenddb(under_exp_rehab_activity_detail, connection,
+                             'under_exp_rehab_activity', schema='mms_now_submissions', commit=False)
+
+        etl.appenddb(under_exp_surface_activity_detail, connection,
+                             'under_exp_surface_activity', schema='mms_now_submissions', commit=False)
+
+        etl.appenddb(under_exp_new_activity_detail, connection,
+                             'under_exp_new_activity', schema='mms_now_submissions', commit=False)
+
+        etl.appenddb(application_nda, connection, 'application_nda', schema='mms_now_submissions', commit=False)                        
 
     except Exception as err:
         print(f'ETL Parsing error: {err}')
@@ -716,12 +1012,5 @@ def mms_now_submissions_ETL(connection):
         truncate_table(connection, TABLES)
 
         # Importing the vFCBC NoW submission data.
-        print('Beginning vFCBC NoW ETL:')
+        print('Beginning MMS NoW ETL:')
         ETL_MMS_NOW_schema(connection, TABLES, 'mms_now_vfcbc', 'VFCBC')
-
-        # Importing the NROS NoW submission data.
-        print('Beginning NROS NoW ETL:')
-        ETL_MMS_NOW_schema(connection, TABLES, 'mms_now_nros', 'NROS')
-
-def _convert_snd_grv_qry_type(row):
-    if row['']
