@@ -10,7 +10,7 @@ from app.api.utils.models_mixins import AuditMixin, Base
 from app.api.now_applications.models.activity_detail.activity_detail_base import ActivityDetailBase
 
 
-class WaterSupply(ActivityDetailBase):
+class WaterSupplyDetail(ActivityDetailBase):
     __tablename__ = 'water_supply_detail'
     __mapper_args__ = {
         'polymorphic_identity': 'water_supply',  ## type code
