@@ -32,28 +32,28 @@ class Application(Base):
     messageid = db.Column(db.Integer, primary_key=True)
     application_guid = db.Column(UUID(as_uuid=True), nullable=False)
     mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine.mine_guid'))
-    trackingnumber = db.Column(db.Integer)  #mapped
+    trackingnumber = db.Column(db.Integer)
     applicationtype = db.Column(db.String)
-    status = db.Column(db.String)  #mapped
-    submitteddate = db.Column(db.DateTime)  #mapped
-    receiveddate = db.Column(db.DateTime)  #mapped
+    status = db.Column(db.String)
+    submitteddate = db.Column(db.DateTime)
+    receiveddate = db.Column(db.DateTime)
     applicantclientid = db.Column(db.Integer, db.ForeignKey('now_submissions.client.clientid'))
     submitterclientid = db.Column(db.Integer, db.ForeignKey('now_submissions.client.clientid'))
-    noticeofworktype = db.Column(db.String)  #mapped
+    noticeofworktype = db.Column(db.String)
     typeofpermit = db.Column(db.String)
     typeofapplication = db.Column(db.String)
-    minenumber = db.Column(db.String)  #NOT mapped
-    latitude = db.Column(db.Numeric(9, 7))  #mapped
-    longitude = db.Column(db.Numeric(11, 7))  #mapped
-    nameofproperty = db.Column(db.String)  #mapped
-    tenurenumbers = db.Column(db.String)  #mapped
+    minenumber = db.Column(db.String)
+    latitude = db.Column(db.Numeric(9, 7))
+    longitude = db.Column(db.Numeric(11, 7))
+    nameofproperty = db.Column(db.String)
+    tenurenumbers = db.Column(db.String)
     crowngrantlotnumbers = db.Column(db.String)
     sitedirections = db.Column(db.String)
     firstaidequipmentonsite = db.Column(db.String)
     firstaidcertlevel = db.Column(db.String)
     descexplorationprogram = db.Column(db.String)
-    proposedstartdate = db.Column(db.DateTime)  #mapped
-    proposedenddate = db.Column(db.DateTime)  #mapped
+    proposedstartdate = db.Column(db.DateTime)
+    proposedenddate = db.Column(db.DateTime)
     yearroundseasonal = db.Column(db.String)
     landcommunitywatershed = db.Column(db.String)
     landprivate = db.Column(db.String)
@@ -199,19 +199,16 @@ class Application(Base):
         lazy='select',
         secondary='now_submissions.proposed_settling_pond_xref')
 
-    mech_trenching_equip = db.relationship('EquipmentSubmission',
-                                           lazy='select',
-                                           secondary='now_submissions.mech_trenching_equip_xref')
-    sand_grv_qry_equip = db.relationship('EquipmentSubmission',
-                                         lazy='select',
-                                         secondary='now_submissions.sand_grv_qry_equip_xref')
+    mech_trenching_equip = db.relationship(
+        'EquipmentSubmission', lazy='select', secondary='now_submissions.mech_trenching_equip_xref')
+    sand_grv_qry_equip = db.relationship(
+        'EquipmentSubmission', lazy='select', secondary='now_submissions.sand_grv_qry_equip_xref')
     surface_bulk_sample_equip = db.relationship(
         'EquipmentSubmission',
         lazy='select',
         secondary='now_submissions.surface_bulk_sample_equip_xref')
-    placer_equip = db.relationship('EquipmentSubmission',
-                                   lazy='select',
-                                   secondary='now_submissions.placer_equip_xref')
+    placer_equip = db.relationship(
+        'EquipmentSubmission', lazy='select', secondary='now_submissions.placer_equip_xref')
 
     mine_name = association_proxy('mine', 'mine_name')
     mine_region = association_proxy('mine', 'mine_region')
