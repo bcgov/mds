@@ -254,6 +254,29 @@ CREATE TABLE MMS_NOW_Submissions.contact (
 
 ALTER TABLE MMS_NOW_Submissions.contact OWNER TO mds;
 
+CREATE TABLE MMS_NOW_Submissions.client (
+    ID serial PRIMARY KEY,
+    MESSAGEID integer,
+    MMS_CID integer,
+    ORG_LEGALNAME character varying(250),
+    IND_FIRSTNAME character varying(60),
+    IND_LASTNAME character varying(60),
+    IND_PHONENUMBER character varying(10),
+    DAYPHONENUMBER character varying(10),
+    DAYPHONENUMBEREXT character varying(4),
+    FAXNUMBER character varying(10),
+    EMAIL character varying(60),
+    ORG_CONTACTNAME character varying(4000),
+    MAILINGADDRESSLINE1 character varying(4000),
+    MAILINGADDRESSCITY character varying(100),
+    MAILINGADDRESSPROVSTATE character varying(200),
+    MAILINGADDRESSPOSTALZIP character varying(10),
+
+    FOREIGN KEY (MESSAGEID) REFERENCES MMS_NOW_Submissions.application(MESSAGEID) DEFERRABLE INITIALLY DEFERRED
+);
+
+ALTER TABLE MMS_NOW_Submissions.client OWNER TO mds;
+
 CREATE TABLE MMS_NOW_Submissions.application_start_stop (
     ID serial PRIMARY KEY,
     MESSAGEID integer,
