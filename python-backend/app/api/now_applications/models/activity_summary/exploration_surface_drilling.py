@@ -19,7 +19,7 @@ class ExplorationSurfaceDrilling(ActivitySummaryBase):
     reclamation_core_storage = db.Column(db.String)
 
     details = db.relationship('ExplorationSurfaceDrillingDetail',
-                              secondary='activity_summary_detail_xref')
+                              secondary='activity_summary_detail_xref', load_on_pending=True)
 
     def __repr__(self):
         return '<ExplorationSurfaceDrilling %r>' % self.activity_summary_id
