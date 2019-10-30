@@ -12,14 +12,14 @@ class Date(fields.Raw):
         return value.strftime("%Y-%m-%d") if value else None
 
 
-NOW_APPLICATION_MODEL = api.inherit(
+NOW_APPLICATION_MODEL = api.model(
     'NOWApplication',
     {
         'now_application_guid': fields.String,
         'mine_guid': fields.String,
         'now_message_id': fields.String,
-        'notice_of_work_type_code': fields.String,  ## code
-        'now_application_status_code': fields.String,  ##code 
+        'notice_of_work_type_code': fields.String,                        ## code
+        'now_application_status_code': fields.String,                     ##code
         'submitted_date': Date,
         'received_date': Date,
         'now_application_guid': fields.String,
