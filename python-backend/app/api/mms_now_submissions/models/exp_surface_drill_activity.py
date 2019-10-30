@@ -3,7 +3,7 @@ from app.extensions import db
 
 
 class MMSExpAccessActivity(Base):
-    __tablename__ = "exp_access_activity"
+    __tablename__ = "exp_surface_drill_activity"
     __table_args__ = {"schema": "mms_now_submissions"}
     id = db.Column(db.Integer, primary_key=True)
     messageid = db.Column(db.Integer, db.ForeignKey('mms_now_submissions.application.messageid'))

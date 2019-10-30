@@ -5,18 +5,6 @@ from sqlalchemy.ext.associationproxy import association_proxy
 
 from app.extensions import db
 from app.api.utils.models_mixins import Base
-from app.api.mms_now_submissions.models.contact import MMSContact
-from app.api.mms_now_submissions.models.exp_access_activity import MMSExpAccessActivity
-from app.api.mms_now_submissions.models.exp_surface_drill_activity import MMSExpSurfaceDrillActivity
-from app.api.mms_now_submissions.models.mech_trenching_activity import MMSMechTrenchingActivity
-from app.api.mms_now_submissions.models.placer_activity import MMSPlacerActivity
-from app.api.mms_now_submissions.models.sand_grv_qry_activity import MMSSandGrvQryActivity
-from app.api.mms_now_submissions.models.settling_pond import MMSSettlingPondSubmission
-from app.api.mms_now_submissions.models.surface_bulk_sample_activity import MMSSurfaceBulkSampleActivity
-from app.api.mms_now_submissions.models.under_exp_new_activity import MMSUnderExpNewActivity
-from app.api.mms_now_submissions.models.under_exp_rehab_activity import MMSUnderExpRehabActivity
-from app.api.mms_now_submissions.models.under_exp_surface_activity import MMSUnderExpSurfaceActivity
-from app.api.mms_now_submissions.models.water_source_activity import MMSWaterSourceActivity
 
 
 class MMSApplication(Base):
