@@ -25,11 +25,11 @@ def code_lookup(model, description, code_column_name):
 
 def transmogrify_now(now_submission_message_id):
     now_sub = sub_models.Application.query.get(now_submission_message_id)
-    mms_now_sub = mms_sub_models.Application.query.get(now_submission_message_id)
+    mms_now_sub = mms_sub_models.MMSApplication.query.get(now_submission_message_id)
 
     if not now_sub:
         raise Exception('No NOW Submission with message_id')
-    
+
     now_app = app_models.NOWApplication(mine_guid=now_sub.mine_guid)
     _transmogrify_now_details(now_app, now_sub)
     _transmogrify_blasting_activities(now_app, now_sub)
