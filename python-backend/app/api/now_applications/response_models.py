@@ -12,12 +12,30 @@ class Date(fields.Raw):
         return value.strftime("%Y-%m-%d") if value else None
 
 
+NOW_APPLICATION_ACTIVITY_DETAIL_BASE = api.model('NOWApplicationActivityDetailBase',
+    {
+        'activity_type_description': fields.String,
+        'disturbed_area': fields.Fixed,
+        'timber_volume': fields.Fixed,
+        'number_of_sites': fields.Integer,
+        'width': fields.Integer,
+        'length'  : fields.Integer,
+        'depth': fields.Integer,
+        'height': fields.Integer,
+        'quantity': fields.Integer,
+        'incline': fields.Fixed,
+        'incline_unit_type_code': fields.String,
+        'cut_line_length' : fields.Integer,
+        'water_quantity' : fields.Integer,
+        'water_quantity_unit_type_code': fields.String
+    }
+)
 NOW_APPLICATION_ACTIVITY_SUMMARY_BASE = api.model(
     'NOWApplicationActivitySummaryBase', {
         'reclamation_description': fields.String,
         'reclamation_cost': fields.Fixed,
         'total_disturbed_area': fields.Fixed,
-        'total_disturbed_area_unit_type_code': fields.String
+        'total_disturbed_area_unit_type_code': fields.String,
     })
 
 NOW_APPLICATION_CAMP = api.inherit(
@@ -28,20 +46,22 @@ NOW_APPLICATION_CAMP = api.inherit(
         'has_fuel_stored': fields.Boolean,
         'has_fuel_stored_in_bulk': fields.Boolean,
         'has_fuel_stored_in_barrels': fields.Boolean,
+        'details': fields.List(fields.Nested(NOW_APPLICATION_ACTIVITY_DETAIL_BASE,skip_none=True))
+
     })
 
 NOW_APPLICATION_CUT_LINES = api.inherit(
     'NOWApplicationCutLines',
     NOW_APPLICATION_ACTIVITY_SUMMARY_BASE,
     {
-        #No columns
+       'details': fields.List(fields.Nested(NOW_APPLICATION_ACTIVITY_DETAIL_BASE,skip_none=True))
     })
 
 NOW_APPLICATION_EXP_ACCESS = api.inherit(
     'NOWApplicationExplorationAccess',
     NOW_APPLICATION_ACTIVITY_SUMMARY_BASE,
     {
-        #No columns
+       'details': fields.List(fields.Nested(NOW_APPLICATION_ACTIVITY_DETAIL_BASE,skip_none=True))
     })
 
 NOW_APPLICATION_EXP_SURFACE_DRILL = api.inherit('NOWApplicationExpSurfaceDrill',
@@ -53,7 +73,7 @@ NOW_APPLICATION_MECH_TRENCHING = api.inherit(
     'NOWApplicationMechTrenching',
     NOW_APPLICATION_ACTIVITY_SUMMARY_BASE,
     {
-       #No columns
+       'details': fields.List(fields.Nested(NOW_APPLICATION_ACTIVITY_DETAIL_BASE,skip_none=True))
     })
 
 NOW_APPLICATION_PLACER_OPS = api.inherit(
@@ -61,7 +81,9 @@ NOW_APPLICATION_PLACER_OPS = api.inherit(
         'is_underground': fields.Boolean,
         'is_hand_operation': fields.Boolean,
         'reclamation_area': fields.Fixed,
-        'reclamation_unit_type_code': fields.String
+        'reclamation_unit_type_code': fields.String,
+        'details': fields.List(fields.Nested(NOW_APPLICATION_ACTIVITY_DETAIL_BASE,skip_none=True))
+
     })
 
 NOW_APPLICATION_SAND_AND_GRAVEL = api.inherit(
@@ -96,6 +118,8 @@ NOW_APPLICATION_SAND_AND_GRAVEL = api.inherit(
         'dust_impact_plan': fields.String,
         'visual_impact_plan': fields.String,
         'reclamation_backfill_detail': fields.String,
+        'details': fields.List(fields.Nested(NOW_APPLICATION_ACTIVITY_DETAIL_BASE,skip_none=True))
+        
     })
 
 NOW_APPLICATION_SETTLING_POND = api.inherit(
@@ -105,7 +129,8 @@ NOW_APPLICATION_SETTLING_POND = api.inherit(
      'proponent_pond_name': fields.String,
      'is_ponds_exfiltrated': fields.Boolean,
      'is_ponds_recycled': fields.Boolean,
-     'is_ponds_discharged': fields.Boolean
+     'is_ponds_discharged': fields.Boolean,
+     'details': fields.List(fields.Nested(NOW_APPLICATION_ACTIVITY_DETAIL_BASE,skip_none=True))
     })
 
 NOW_APPLICATION_SURFACE_BULK = api.inherit(
@@ -114,14 +139,16 @@ NOW_APPLICATION_SURFACE_BULK = api.inherit(
     {
         'processing_method_description': fields.String,
         'handling_instructions': fields.String,
-        'drainage_mitigation_description': fields.String
+        'drainage_mitigation_description': fields.String,
+        'details': fields.List(fields.Nested(NOW_APPLICATION_ACTIVITY_DETAIL_BASE,skip_none=True))
+
     })
 
 NOW_APPLICATION_WATER_SUPPLY = api.inherit(
     'NOWApplicationWaterSupply',
     NOW_APPLICATION_ACTIVITY_SUMMARY_BASE,
     {
-     #No columns
+        'details': fields.List(fields.Nested(NOW_APPLICATION_ACTIVITY_DETAIL_BASE,skip_none=True))
     })
 
 NOW_APPLICATION_MODEL = api.model(
