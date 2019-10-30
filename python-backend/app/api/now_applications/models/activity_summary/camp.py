@@ -13,17 +13,21 @@ class Camp(ActivitySummaryBase):
     __mapper_args__ = {
         'polymorphic_identity': 'camp',  ## type code
     }
-    activity_summary_id = db.Column(
-        db.Integer, db.ForeignKey('activity_summary.activity_summary_id'), primary_key=True)
+    activity_summary_id = db.Column(db.Integer,
+                                    db.ForeignKey('activity_summary.activity_summary_id'),
+                                    primary_key=True)
 
     camp_name = db.Column(db.String)
     camp_number_people = db.Column(db.String)
     camp_number_structures = db.Column(db.String)
     has_fuel_stored = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
     has_fuel_stored_in_bulk = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
-    has_fuel_stored_in_barrels = db.Column(
-        db.Boolean, nullable=False, server_default=FetchedValue())
+    has_fuel_stored_in_barrels = db.Column(db.Boolean,
+                                           nullable=False,
+                                           server_default=FetchedValue())
     volume_fuel_stored = db.Column(db.Integer)
+
+    details = db.relationship('CampDetail', secondary='activity_summary_detail_xref', load_on_pending=True)
 
     def __repr__(self):
         return '<Camp %r>' % self.activity_summary_id
