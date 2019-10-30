@@ -45,14 +45,20 @@
   }
 }
 
-.active-circle {
-  &--purple {
-    color: $violet;
+.scroll-wrapper {
+  .circle {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    &.purple {
+      background-color: $violet;
+    }
+    &.grey {
+      background-color: $non-textual-grey;
+    }
   }
-  &--gray {
-    color: gray;
+  &--border {
+    height: 100%;
+    border-left: 2px solid $non-textual-grey;
   }
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
 }

@@ -15,12 +15,14 @@ const propTypes = {
 
 export const ScrollContentWrapper = (props) => {
   const isActive = () =>
-    includes(props.id, props.location.hash) ? "circle--purple" : "circle--gray";
+    includes(props.id, props.location.hash) ? "circle purple" : "circle grey";
 
   return (
-    <div className="scroll">
+    <div className="scroll-wrapper">
       <div className={isActive()} />
-      <div>{props.children}</div>
+      <div className="scroll-wrapper--border">
+        <div>{props.children}</div>
+      </div>
     </div>
   );
 };
