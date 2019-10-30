@@ -2,7 +2,7 @@ from app.api.utils.models_mixins import Base
 from app.extensions import db
 
 
-class MMSExpAccessActivity(Base):
+class MMSExpSurfaceDrillActivity(Base):
     __tablename__ = "exp_surface_drill_activity"
     __table_args__ = {"schema": "mms_now_submissions"}
     id = db.Column(db.Integer, primary_key=True)
@@ -14,4 +14,4 @@ class MMSExpAccessActivity(Base):
     timbervolume = db.Column(db.Numeric(14, 2))
 
     def __repr__(self):
-        return '<MMSExpAccessActivity %r>' % self.id
+        return '<MMSExpSurfaceDrillActivity %r>' % self.id
