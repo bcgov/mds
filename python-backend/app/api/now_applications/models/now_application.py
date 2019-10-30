@@ -57,3 +57,7 @@ class NOWApplication(Base, AuditMixin):
 
     def __repr__(self):
         return '<NOWApplication %r>' % self.now_application_guid
+
+    @classmethod
+    def find_by_application_guid(cls, _id):
+        return cls.query.filter_by(now_application_guid=_id).first()
