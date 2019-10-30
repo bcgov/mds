@@ -14,6 +14,8 @@ class CutLinesPolarizationSurvey(ActivitySummaryBase):
     }
 
     ## NO TABLE FOR THIS TYPE
+    details = db.relationship('CutLinesPolarizationSurveyDetail',
+                              secondary='activity_summary_detail_xref', load_on_pending=True)
 
     def __repr__(self):
         return '<CutLinesPolarizationSurvey %r>' % self.activity_summary_id

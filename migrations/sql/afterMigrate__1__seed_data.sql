@@ -487,15 +487,6 @@ VALUES
 	('EVT', 'Reports that are related to an event that occured', true, 'system-mds', 'system-mds')
 on conflict do nothing;
 
-INSERT INTO equipment_assignment_type
-(equipment_assignment_type_code, description, active_ind, create_user, update_user)
-VALUES
-	('MCT', 'Mechanical Trenching', true, 'system-mds', 'system-mds'),
-	('SBS', 'Surface Bulk Sample', true, 'system-mds', 'system-mds'),
-	('SGQ', 'Sand Gravel Quarry', true, 'system-mds', 'system-mds'),
-	('PMT', 'Placer', true, 'system-mds', 'system-mds')
-on conflict do nothing;
-
 INSERT INTO unit_type
 (unit_type_code, description, active_ind, create_user, update_user)
 VALUES

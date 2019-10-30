@@ -32,22 +32,6 @@ from app.api.parties.party_appt.models.party_business_role_appt import PartyBusi
 from app.api.mines.reports.models.mine_report import MineReport
 from app.api.mines.reports.models.mine_report_submission import MineReportSubmission
 from app.api.mines.reports.models.mine_report_comment import MineReportComment
-from app.api.now_submissions.models.application import Application as NOWApplication
-from app.api.now_submissions.models.client import Client as NOWClient
-from app.api.now_submissions.models.contact import Contact as NOWContact
-from app.api.now_submissions.models.placer_activity import PlacerActivity as NOWPlacerActivity
-from app.api.now_submissions.models.settling_pond import SettlingPond as NOWSettlingPond
-from app.api.now_submissions.models.document import Document as NOWDocument
-from app.api.now_submissions.models.sand_grv_qry_activity import SandGrvQryActivity as NOWSandGrvQryActivity
-from app.api.now_submissions.models.under_exp_new_activity import UnderExpNewActivity as NOWUnderExpNewActivity
-from app.api.now_submissions.models.under_exp_rehab_activity import UnderExpRehabActivity as NOWUnderExpRehabActivity
-from app.api.now_submissions.models.under_exp_surface_activity import UnderExpSurfaceActivity as NOWUnderExpSurfaceActivity
-from app.api.now_submissions.models.water_source_activity import WaterSourceActivity as NOWWaterSourceActivity
-from app.api.now_submissions.models.surface_bulk_sample_activity import SurfaceBulkSampleActivity as NOWSurfaceBulkSampleActivity
-from app.api.now_submissions.models.existing_placer_activity_xref import ExistingPlacerActivityXref as NOWExistingPlacerActivityXref
-from app.api.now_submissions.models.proposed_placer_activity_xref import ProposedPlacerActivityXref as NOWProposedPlacerActivityXref
-from app.api.now_submissions.models.existing_settling_pond_xref import ExistingSettlingPondXref as NOWExistingSettlingPondXref
-from app.api.now_submissions.models.proposed_settling_pond_xref import ProposedSettlingPondXref as NOWProposedSettlingPondXref
 
 GUID = factory.LazyFunction(uuid.uuid4)
 TODAY = factory.LazyFunction(datetime.now)
@@ -66,6 +50,10 @@ class BaseFactory(factory.alchemy.SQLAlchemyModelFactory, FactoryRegistry):
         abstract = True
         sqlalchemy_session = db.session
         sqlalchemy_session_persistence = 'flush'
+
+
+from tests.now_submission_factories import *
+from tests.now_application_factories import *
 
 
 class MineDocumentFactory(BaseFactory):
@@ -96,10 +84,12 @@ class MineTypeDetailFactory(BaseFactory):
 
     class Params:
         tenure = 'MIN'
-        commodity = factory.Trait(mine_commodity_code=factory.LazyAttribute(
-            lambda o: SampleMineCommodityCodes(o.tenure, 1)[0]))
-        disturbance = factory.Trait(mine_disturbance_code=factory.LazyAttribute(
-            lambda o: SampleMineDisturbanceCodes(o.tenure, 1)[0]))
+        commodity = factory.Trait(
+            mine_commodity_code=factory.LazyAttribute(
+                lambda o: SampleMineCommodityCodes(o.tenure, 1)[0]))
+        disturbance = factory.Trait(
+            mine_disturbance_code=factory.LazyAttribute(
+                lambda o: SampleMineDisturbanceCodes(o.tenure, 1)[0]))
 
     mine_type_detail_xref_guid = GUID
     mine_commodity_code = None
@@ -128,16 +118,18 @@ class MineTypeFactory(BaseFactory):
         disturbances = SampleMineDisturbanceCodes(obj.mine_tenure_type, disturbances)
 
         for commodity in commodities:
-            MineTypeDetailFactory(mine_type_guid=obj.mine_type_guid,
-                                  tenure=obj.mine_tenure_type_code,
-                                  mine_commodity_code=commodity,
-                                  **kwargs)
+            MineTypeDetailFactory(
+                mine_type_guid=obj.mine_type_guid,
+                tenure=obj.mine_tenure_type_code,
+                mine_commodity_code=commodity,
+                **kwargs)
 
         for disturbance in disturbances:
-            MineTypeDetailFactory(mine_type_guid=obj.mine_type_guid,
-                                  tenure=obj.mine_tenure_type_code,
-                                  mine_disturbance_code=disturbance,
-                                  **kwargs)
+            MineTypeDetailFactory(
+                mine_type_guid=obj.mine_type_guid,
+                tenure=obj.mine_tenure_type_code,
+                mine_disturbance_code=disturbance,
+                **kwargs)
 
 
 class MineTailingsStorageFacilityFactory(BaseFactory):
@@ -156,12 +148,14 @@ class VarianceFactory(BaseFactory):
     class Params:
         mine = factory.SubFactory('tests.factories.MineFactory', minimal=True)
         inspector = factory.SubFactory('tests.factories.PartyBusinessRoleFactory')
-        approved = factory.Trait(variance_application_status_code='APP',
-                                 issue_date=TODAY,
-                                 expiry_date=TODAY,
-                                 inspector_party_guid=factory.SelfAttribute('inspector.party_guid'))
-        denied = factory.Trait(variance_application_status_code='DEN',
-                               inspector_party_guid=factory.SelfAttribute('inspector.party_guid'))
+        approved = factory.Trait(
+            variance_application_status_code='APP',
+            issue_date=TODAY,
+            expiry_date=TODAY,
+            inspector_party_guid=factory.SelfAttribute('inspector.party_guid'))
+        denied = factory.Trait(
+            variance_application_status_code='DEN',
+            inspector_party_guid=factory.SelfAttribute('inspector.party_guid'))
         not_applicable = factory.Trait(variance_application_status_code='NAP')
 
     variance_guid = GUID
@@ -180,10 +174,8 @@ class VarianceFactory(BaseFactory):
         if not isinstance(extracted, int):
             extracted = 1
 
-        VarianceDocumentFactory.create_batch(size=extracted,
-                                             variance=obj,
-                                             mine_document__mine=None,
-                                             **kwargs)
+        VarianceDocumentFactory.create_batch(
+            size=extracted, variance=obj, mine_document__mine=None, **kwargs)
 
 
 class VarianceDocumentFactory(BaseFactory):
@@ -191,8 +183,9 @@ class VarianceDocumentFactory(BaseFactory):
         model = VarianceDocumentXref
 
     class Params:
-        mine_document = factory.SubFactory('tests.factories.MineDocumentFactory',
-                                           mine_guid=factory.SelfAttribute('..variance.mine_guid'))
+        mine_document = factory.SubFactory(
+            'tests.factories.MineDocumentFactory',
+            mine_guid=factory.SelfAttribute('..variance.mine_guid'))
         variance = factory.SubFactory('tests.factories.VarianceFactory')
 
     variance_document_xref_guid = GUID
@@ -304,10 +297,8 @@ class MineIncidentFactory(BaseFactory):
         if not isinstance(extracted, int):
             extracted = 1
 
-        MineIncidentDocumentFactory.create_batch(size=extracted,
-                                                 incident=obj,
-                                                 mine_document__mine=None,
-                                                 **kwargs)
+        MineIncidentDocumentFactory.create_batch(
+            size=extracted, incident=obj, mine_document__mine=None, **kwargs)
 
 
 class MineIncidentDocumentFactory(BaseFactory):
@@ -315,8 +306,9 @@ class MineIncidentDocumentFactory(BaseFactory):
         model = MineIncidentDocumentXref
 
     class Params:
-        mine_document = factory.SubFactory('tests.factories.MineDocumentFactory',
-                                           mine_guid=factory.SelfAttribute('..incident.mine_guid'))
+        mine_document = factory.SubFactory(
+            'tests.factories.MineDocumentFactory',
+            mine_guid=factory.SelfAttribute('..incident.mine_guid'))
         incident = factory.SubFactory('tests.factories.MineIncidentFactory')
 
     mine_incident_document_xref_guid = GUID
@@ -390,10 +382,9 @@ class MineReportSubmissionFactory(BaseFactory):
 class AddressFactory(BaseFactory):
     class Meta:
         model = Address
-    
+
     class Params:
         party = factory.SubFactory('tests.factories.PartyFactory', person=True)
-
 
     party_guid = factory.SelfAttribute('party.party_guid')
     address_line_1 = factory.Faker('street_address')
@@ -402,6 +393,7 @@ class AddressFactory(BaseFactory):
     city = factory.Faker('city')
     sub_division_code = factory.LazyFunction(RandomSubDivisionCode)
     post_code = factory.Faker('bothify', text='?#?#?#', letters='ABCDEFGHIJKLMNOPQRSTUVWXYZ')
+
 
 class PartyFactory(BaseFactory):
     class Meta:
@@ -431,7 +423,7 @@ class PartyFactory(BaseFactory):
     party_type_code = None
 
     mine_party_appt = []
-    address=[]
+    address = []
 
     @factory.post_generation
     def address(obj, create, extracted, **kwargs):
@@ -441,7 +433,7 @@ class PartyFactory(BaseFactory):
         if not isinstance(extracted, int):
             extracted = 1
 
-        AddressFactory.create_batch(size=extracted, party=obj,  **kwargs)
+        AddressFactory.create_batch(size=extracted, party=obj, **kwargs)
 
 
 class PartyBusinessRoleFactory(BaseFactory):
@@ -468,10 +460,11 @@ class MinePartyAppointmentFactory(BaseFactory):
     processed_on = TODAY
 
     mine_tailings_storage_facility_guid = factory.LazyAttribute(
-        lambda o: o.mine.mine_tailings_storage_facilities[0].mine_tailings_storage_facility_guid
-        if o.mine_party_appt_type_code == 'EOR' else None)
-    permit_guid = factory.LazyAttribute(lambda o: o.mine.mine_permit[0].permit_guid
-                                        if o.mine_party_appt_type_code == 'PMT' else None)
+        lambda o: o.mine.mine_tailings_storage_facilities[0].mine_tailings_storage_facility_guid if o.mine_party_appt_type_code == 'EOR' else None
+    )
+    permit_guid = factory.LazyAttribute(
+        lambda o: o.mine.mine_permit[0].permit_guid if o.mine_party_appt_type_code == 'PMT' else None
+    )
 
 
 class CoreUserFactory(BaseFactory):
@@ -536,8 +529,7 @@ class MineFactory(BaseFactory):
             mine_permit=0,
             mine_incidents=0,
             mine_variance=0,
-            mine_reports=0
-        )
+            mine_reports=0)
 
     mine_guid = GUID
     mine_no = factory.Faker('ean', length=8)
@@ -580,7 +572,6 @@ class MineFactory(BaseFactory):
 
         PermitFactory.create_batch(size=extracted, mine=obj, **kwargs)
 
-
     @factory.post_generation
     def mine_incidents(obj, create, extracted, **kwargs):
         if not create:
@@ -610,337 +601,3 @@ class MineFactory(BaseFactory):
             extracted = 1
 
         MineReportFactory.create_batch(size=extracted, mine=obj, **kwargs)
-
-
-class NOWApplicationFactory(BaseFactory):
-    class Meta:
-        model = NOWApplication
-
-    class Params:
-        mine = factory.SubFactory('tests.factories.MineFactory', minimal=True)
-        applicant = factory.SubFactory('tests.factories.NOWClientFactory')
-        submitter = factory.SubFactory('tests.factories.NOWClientFactory')
-
-    application_guid = GUID
-    mine_guid = factory.SelfAttribute('mine.mine_guid')
-    messageid = factory.Sequence(lambda n: n)
-    applicantclientid = factory.SelfAttribute('applicant.clientid')
-    submitterclientid = factory.SelfAttribute('submitter.clientid')
-    noticeofworktype = factory.Faker('word')
-    trackingnumber = factory.fuzzy.FuzzyInteger(1, 100)
-    status = random.choice(['Approved', 'Rejected', 'Received', 'Client Delayed'])
-    receiveddate = factory.Faker('past_datetime')
-    minenumber = factory.Faker('word')
-    originating_system = random.choice(['NROS','VFCBC'])
-
-    @factory.post_generation
-    def documents(obj, create, extracted, **kwargs):
-        if not create:
-            return
-
-        if not isinstance(extracted, int):
-            extracted = 1
-
-        NOWDocumentFactory.create_batch(size=extracted,
-                                        application=obj,
-                                        **kwargs)
-
-    @factory.post_generation
-    def contacts(obj, create, extracted, **kwargs):
-        if not create:
-            return
-
-        if not isinstance(extracted, int):
-            extracted = 1
-
-        NOWContactFactory.create_batch(size=extracted,
-                                       application=obj,
-                                       **kwargs)
-
-    @factory.post_generation
-    def sand_grv_qry_activity(obj, create, extracted, **kwargs):
-        if not create:
-            return
-
-        if not isinstance(extracted, int):
-            extracted = 1
-
-        NOWSandGrvQryActivityFactory.create_batch(size=extracted,
-                                                  application=obj,
-                                                  **kwargs)
-
-    @factory.post_generation
-    def under_exp_new_activity(obj, create, extracted, **kwargs):
-        if not create:
-            return
-
-        if not isinstance(extracted, int):
-            extracted = 1
-
-        NOWUnderExpNewActivityFactory.create_batch(size=extracted,
-                                                   application=obj,
-                                                   **kwargs)
-
-    @factory.post_generation
-    def under_exp_rehab_activity(obj, create, extracted, **kwargs):
-        if not create:
-            return
-
-        if not isinstance(extracted, int):
-            extracted = 1
-
-        NOWUnderExpRehabActivityFactory.create_batch(size=extracted,
-                                                     application=obj,
-                                                     **kwargs)
-
-    @factory.post_generation
-    def under_exp_surface_activity(obj, create, extracted, **kwargs):
-        if not create:
-            return
-
-        if not isinstance(extracted, int):
-            extracted = 1
-
-        NOWUnderExpSurfaceActivityFactory.create_batch(size=extracted,
-                                                       application=obj,
-                                                       **kwargs)
-
-    @factory.post_generation
-    def water_source_activity(obj, create, extracted, **kwargs):
-        if not create:
-            return
-
-        if not isinstance(extracted, int):
-            extracted = 1
-
-        NOWWaterSourceActivityFactory.create_batch(size=extracted,
-                                                   application=obj,
-                                                   **kwargs)
-
-    @factory.post_generation
-    def existing_placer_activity(obj, create, extracted, **kwargs):
-        if not create:
-            return
-
-        if not isinstance(extracted, int):
-            extracted = 1
-
-        NOWExistingPlacerActivityXrefFactory.create_batch(size=extracted,
-                                                          application=obj,
-                                                          **kwargs)
-
-    @factory.post_generation
-    def proposed_placer_activity(obj, create, extracted, **kwargs):
-        if not create:
-            return
-
-        if not isinstance(extracted, int):
-            extracted = 1
-
-        NOWProposedPlacerActivityXrefFactory.create_batch(size=extracted,
-                                                          application=obj,
-                                                          **kwargs)
-
-    @factory.post_generation
-    def surface_bulk_sample_activity(obj, create, extracted, **kwargs):
-        if not create:
-            return
-
-        if not isinstance(extracted, int):
-            extracted = 1
-
-        NOWSurfaceBulkSampleActivityFactory.create_batch(size=extracted,
-                                                        application=obj,
-                                                        **kwargs)
-
-    @factory.post_generation
-    def existing_settling_pond(obj, create, extracted, **kwargs):
-        if not create:
-            return
-
-        if not isinstance(extracted, int):
-            extracted = 1
-
-        NOWExistingSettlingPondXrefFactory.create_batch(size=extracted,
-                                                        application=obj,
-                                                        **kwargs)
-
-    @factory.post_generation
-    def proposed_settling_pond(obj, create, extracted, **kwargs):
-        if not create:
-            return
-
-        if not isinstance(extracted, int):
-            extracted = 1
-
-        NOWProposedSettlingPondXrefFactory.create_batch(size=extracted,
-                                                        application=obj,
-                                                        **kwargs)
-
-
-class NOWClientFactory(BaseFactory):
-    class Meta:
-        model = NOWClient
-
-    clientid = factory.Sequence(lambda n: n)
-    type = factory.Faker('sentence', nb_words=1)
-
-
-class NOWDocumentFactory(BaseFactory):
-    class Meta:
-        model = NOWDocument
-
-    class Params:
-        application = factory.SubFactory('tests.factories.NOWApplicationFactory')
-
-    id = factory.Sequence(lambda n: n)
-    messageid = factory.SelfAttribute('application.messageid')
-    filename = factory.Faker('file_name')
-
-
-class NOWContactFactory(BaseFactory):
-    class Meta:
-        model = NOWContact
-
-    class Params:
-        application = factory.SubFactory('tests.factories.NOWApplicationFactory')
-
-    id = factory.Sequence(lambda n: n)
-    messageid = factory.SelfAttribute('application.messageid')
-    type = factory.Faker('sentence', nb_words=1)
-
-
-class NOWSandGrvQryActivityFactory(BaseFactory):
-    class Meta:
-        model = NOWSandGrvQryActivity
-
-    class Params:
-        application = factory.SubFactory('tests.factories.NOWApplicationFactory')
-
-    id = factory.Sequence(lambda n: n)
-    messageid = factory.SelfAttribute('application.messageid')
-    type = factory.Faker('sentence', nb_words=1)
-
-
-class NOWUnderExpNewActivityFactory(BaseFactory):
-    class Meta:
-        model = NOWUnderExpNewActivity
-
-    class Params:
-        application = factory.SubFactory('tests.factories.NOWApplicationFactory')
-
-    id = factory.Sequence(lambda n: n)
-    messageid = factory.SelfAttribute('application.messageid')
-    type = factory.Faker('sentence', nb_words=1)
-
-
-class NOWUnderExpRehabActivityFactory(BaseFactory):
-    class Meta:
-        model = NOWUnderExpRehabActivity
-
-    class Params:
-        application = factory.SubFactory('tests.factories.NOWApplicationFactory')
-
-    id = factory.Sequence(lambda n: n)
-    messageid = factory.SelfAttribute('application.messageid')
-    type = factory.Faker('sentence', nb_words=1)
-
-
-class NOWUnderExpSurfaceActivityFactory(BaseFactory):
-    class Meta:
-        model = NOWUnderExpSurfaceActivity
-
-    class Params:
-        application = factory.SubFactory('tests.factories.NOWApplicationFactory')
-
-    id = factory.Sequence(lambda n: n)
-    messageid = factory.SelfAttribute('application.messageid')
-    type = factory.Faker('sentence', nb_words=1)
-
-
-class NOWWaterSourceActivityFactory(BaseFactory):
-    class Meta:
-        model = NOWWaterSourceActivity
-
-    class Params:
-        application = factory.SubFactory('tests.factories.NOWApplicationFactory')
-
-    id = factory.Sequence(lambda n: n)
-    messageid = factory.SelfAttribute('application.messageid')
-    type = factory.Faker('sentence', nb_words=1)
-
-
-class NOWSurfaceBulkSampleActivityFactory(BaseFactory):
-    class Meta:
-        model = NOWSurfaceBulkSampleActivity
-
-    class Params:
-        application = factory.SubFactory('tests.factories.NOWApplicationFactory')
-
-    id = factory.Sequence(lambda n: n)
-    messageid = factory.SelfAttribute('application.messageid')
-    type = factory.Faker('sentence', nb_words=1)
-
-
-class NOWExistingPlacerActivityXrefFactory(BaseFactory):
-    class Meta:
-        model = NOWExistingPlacerActivityXref
-
-    class Params:
-        application = factory.SubFactory('tests.factories.NOWApplicationFactory')
-        placer_activity = factory.SubFactory('tests.factories.NOWPlacerActivityFactory')
-
-    messageid = factory.SelfAttribute('application.messageid')
-    placeractivityid = factory.SelfAttribute('placer_activity.placeractivityid')
-
-
-class NOWPlacerActivityFactory(BaseFactory):
-    class Meta:
-        model = NOWPlacerActivity
-
-    placeractivityid = factory.Sequence(lambda n: n)
-    type = factory.Faker('sentence', nb_words=1)
-
-
-class NOWProposedPlacerActivityXrefFactory(BaseFactory):
-    class Meta:
-        model = NOWProposedPlacerActivityXref
-
-    class Params:
-        application = factory.SubFactory('tests.factories.NOWApplicationFactory')
-        placer_activity = factory.SubFactory('tests.factories.NOWPlacerActivityFactory')
-
-    messageid = factory.SelfAttribute('application.messageid')
-    placeractivityid = factory.SelfAttribute('placer_activity.placeractivityid')
-
-
-class NOWSettlingPondFactory(BaseFactory):
-    class Meta:
-        model = NOWSettlingPond
-
-    settlingpondid = factory.Sequence(lambda n: n)
-    pondid = factory.Faker('sentence', nb_words=1)
-
-
-class NOWExistingSettlingPondXrefFactory(BaseFactory):
-    class Meta:
-        model = NOWExistingSettlingPondXref
-
-    class Params:
-        application = factory.SubFactory('tests.factories.NOWApplicationFactory')
-        settling_pond = factory.SubFactory('tests.factories.NOWSettlingPondFactory')
-
-    messageid = factory.SelfAttribute('application.messageid')
-    settlingpondid = factory.SelfAttribute('settling_pond.settlingpondid')
-
-
-class NOWProposedSettlingPondXrefFactory(BaseFactory):
-    class Meta:
-        model = NOWProposedSettlingPondXref
-
-    class Params:
-        application = factory.SubFactory('tests.factories.NOWApplicationFactory')
-        settling_pond = factory.SubFactory('tests.factories.NOWSettlingPondFactory')
-
-    messageid = factory.SelfAttribute('application.messageid')
-    settlingpondid = factory.SelfAttribute('settling_pond.settlingpondid')

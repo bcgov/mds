@@ -1,0 +1,2 @@
+ALTER TABLE sand_gravel_quarry_operation RENAME COLUMN total_minable_reserves to total_mineable_reserves;
+ALTER TABLE sand_gravel_quarry_operation RENAME COLUMN total_minable_reserves_unit_type_code to total_mineable_reserves_unit_type_code;
