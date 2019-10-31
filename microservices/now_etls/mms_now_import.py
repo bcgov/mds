@@ -51,6 +51,11 @@ def ETL_MMS_NOW_schema(connection, tables, schema, system_name):
             f'SELECT msg_id as messageid, cid as mms_cid, mine_no as minenumber, apl_dt as submitteddate, lat_dec as latitude, lon_dec as longitude, multi_year_ind, multi_year_area_ind, str_Dt as ProposedStartDate, end_dt as ProposedEndDate, site_desc as SiteDirections, prpty_nm as NameOfProperty, apl_typ from mms.mmsnow'
         )
 
+        print('-------------------------------------------------------')
+        print('application Table')
+        print(applications)
+        print('-------------------------------------------------------')
+        
         applications = etl.addfield(
             applications, 'NoticeOfWorkType',
             lambda v: 'Mineral' if v['apl_typ'] == 'M' else ('Placer Operations' if v['apl_typ'] == 'P' else 'Sand & Gravel')
@@ -584,6 +589,11 @@ def ETL_MMS_NOW_schema(connection, tables, schema, system_name):
 
         mech_trenching_activity_detail = etl.join(mech_trenching_activity_detail, message_ids, key='mms_cid')
         applications = etl.outerjoin(applications, mech_trenching_app_cols, key='mms_cid')
+
+        print('-------------------------------------------------------')
+        print('application Table')
+        print(applications)
+        print('-------------------------------------------------------')
 
         under_exp_activity = etl.fromdb(
             connection,
