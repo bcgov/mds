@@ -17,7 +17,6 @@ const propTypes = {
 
 export const NOWSideMenu = (props) => {
   const onChange = (link) => {
-    console.log("Anchor:OnChange", link);
     return props.history.push(link);
   };
   return (
