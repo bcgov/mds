@@ -12,23 +12,17 @@ const { Link } = Anchor;
 
 const propTypes = {
   location: PropTypes.shape({ hash: PropTypes.string }).isRequired,
+  history: PropTypes.shape({ push: PropTypes.func }).isRequired,
 };
 
-const onChange = (e, link) => {
-  console.log("Anchor:OnChange", link);
-};
-
-export const NOWSideMenu = () => {
+export const NOWSideMenu = (props) => {
+  const onChange = (link) => {
+    console.log("Anchor:OnChange", link);
+    return props.history.push(link);
+  };
   return (
     <div className="side-menu">
-      <Anchor
-        offsetTop={260}
-        affix={false}
-        onChange={(e, link) => {
-          return onChange(e, link);
-        }}
-        getCurrentAnchor={() => console.log()}
-      >
+      <Anchor offsetTop={260} affix={false} onChange={onChange}>
         <Link href="#application-info" title="Application Info" />
         <Link href="#contacts" title="Contacts" />
         <Link href="#access" title="Access" />
