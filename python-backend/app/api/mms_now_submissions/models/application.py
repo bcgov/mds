@@ -13,6 +13,7 @@ class MMSApplication(Base):
     id = db.Column(db.Integer, primary_key=True)
     messageid = db.Column(db.Integer)
     mms_cid = db.Column(db.Integer)
+    application_guid = db.Column(UUID(as_uuid=True), nullable=False)
     submitteddate = db.Column(db.DateTime)
     receiveddate = db.Column(db.DateTime)
     noticeofworktype = db.Column(db.String)
@@ -104,3 +105,8 @@ class MMSApplication(Base):
 
     def __repr__(self):
         return '<MMSApplication %r>' % self.id
+
+    @classmethod
+    def find_by_application_guid(cls, guid):
+        cls.validate_guid(guid)
+        return cls.query.filter_by(application_guid=guid).first()
