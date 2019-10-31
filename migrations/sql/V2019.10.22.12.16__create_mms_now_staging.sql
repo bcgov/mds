@@ -106,7 +106,7 @@ CREATE TABLE MMS_NOW_Submissions.water_source_activity (
 ALTER TABLE MMS_NOW_Submissions.water_source_activity OWNER TO mds;
 
 CREATE TABLE MMS_NOW_Submissions.placer_activity (
-  ID serial PRIMARY KEY,
+  PLACERACTIVITYID serial PRIMARY KEY,
   MESSAGEID integer,
   MMS_CID integer,
 	TYPE character varying(4000),
@@ -180,7 +180,7 @@ CREATE TABLE MMS_NOW_Submissions.under_exp_surface_activity (
 ALTER TABLE MMS_NOW_Submissions.under_exp_surface_activity OWNER TO mds;
 
 CREATE TABLE MMS_NOW_Submissions.settling_pond (
-  ID serial PRIMARY KEY,
+  SETTLINGPONDID serial PRIMARY KEY,
   MESSAGEID integer,
   MMS_CID integer,
 	DISTURBEDAREA numeric(14,2),
@@ -315,3 +315,43 @@ CREATE TABLE MMS_NOW_Submissions.application_nda (
 );
 
 ALTER TABLE MMS_NOW_Submissions.application_nda OWNER TO mds;
+
+CREATE TABLE MMS_NOW_Submissions.existing_placer_activity_xref (
+    MMS_CID integer,
+	  PLACERACTIVITYID integer,
+
+    FOREIGN KEY (MMS_CID) REFERENCES MMS_NOW_Submissions.application(MMS_CID) DEFERRABLE INITIALLY DEFERRED,
+    FOREIGN KEY (PLACERACTIVITYID) REFERENCES MMS_NOW_Submissions.placer_activity(PLACERACTIVITYID) DEFERRABLE INITIALLY DEFERRED
+);
+
+ALTER TABLE MMS_NOW_Submissions.existing_placer_activity_xref OWNER TO mds;
+
+CREATE TABLE MMS_NOW_Submissions.existing_settling_pond_xref (
+    MMS_CID integer,
+  	SETTLINGPONDID integer,
+
+    FOREIGN KEY (MMS_CID) REFERENCES MMS_NOW_Submissions.application(MMS_CID) DEFERRABLE INITIALLY DEFERRED,
+    FOREIGN KEY (SETTLINGPONDID) REFERENCES MMS_NOW_Submissions.settling_pond(SETTLINGPONDID) DEFERRABLE INITIALLY DEFERRED
+);
+
+ALTER TABLE MMS_NOW_Submissions.existing_settling_pond_xref OWNER TO mds;
+
+CREATE TABLE MMS_NOW_Submissions.proposed_placer_activity_xref (
+    MMS_CID integer,
+  	PLACERACTIVITYID integer,
+
+    FOREIGN KEY (MMS_CID) REFERENCES MMS_NOW_Submissions.application(MMS_CID) DEFERRABLE INITIALLY DEFERRED,
+    FOREIGN KEY (PLACERACTIVITYID) REFERENCES MMS_NOW_Submissions.placer_activity(PLACERACTIVITYID) DEFERRABLE INITIALLY DEFERRED
+);
+
+ALTER TABLE MMS_NOW_Submissions.proposed_placer_activity_xref OWNER TO mds;
+
+CREATE TABLE MMS_NOW_Submissions.proposed_settling_pond_xref (
+    MMS_CID integer,
+	  SETTLINGPONDID integer,
+
+    FOREIGN KEY (MMS_CID) REFERENCES MMS_NOW_Submissions.application(MMS_CID) DEFERRABLE INITIALLY DEFERRED,
+    FOREIGN KEY (SETTLINGPONDID) REFERENCES MMS_NOW_Submissions.settling_pond(SETTLINGPONDID) DEFERRABLE INITIALLY DEFERRED
+);
+
+ALTER TABLE MMS_NOW_Submissions.proposed_settling_pond_xref OWNER TO mds;

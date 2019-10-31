@@ -30,7 +30,8 @@ TABLES = [
 def truncate_table(connection, tables):
     cursor = connection.cursor()
     for table in tables:
-        cursor.execute(f'TRUNCATE TABLE now_submissions.{table} CONTINUE IDENTITY CASCADE;')
+        print(f'Truncating {table}...')
+        cursor.execute(f'TRUNCATE TABLE mms_now_submissions.{table} CONTINUE IDENTITY CASCADE;')
 
 
 def join_mine_guids(connection, application_table):
@@ -49,10 +50,17 @@ def ETL_MMS_NOW_schema(connection, tables, schema, system_name):
             connection,
             f'SELECT msg_id as messageid, cid as mms_cid, mine_no as minenumber, apl_dt as submitteddate, lat_dec as latitude, lon_dec as longitude, multi_year_ind, multi_year_area_ind, str_Dt as ProposedStartDate, end_dt as ProposedEndDate, site_desc as SiteDirections, prpty_nm as NameOfProperty, apl_typ from mms.mmsnow'
         )
+
+        print('-------------------------------------------------------')
+        print('application Table')
+        print(applications)
+        print('-------------------------------------------------------')
+        
         applications = etl.addfield(
             applications, 'NoticeOfWorkType',
             lambda v: 'Mineral' if v['apl_typ'] == 'M' else ('Placer Operations' if v['apl_typ'] == 'P' else 'Sand & Gravel')
         )
+
         applications = etl.cutout(applications, 'apl_typ')
 
         message_ids = etl.cut(applications, ['mms_cid', 'messageid'])
@@ -582,6 +590,11 @@ def ETL_MMS_NOW_schema(connection, tables, schema, system_name):
         mech_trenching_activity_detail = etl.join(mech_trenching_activity_detail, message_ids, key='mms_cid')
         applications = etl.outerjoin(applications, mech_trenching_app_cols, key='mms_cid')
 
+        print('-------------------------------------------------------')
+        print('application Table')
+        print(applications)
+        print('-------------------------------------------------------')
+
         under_exp_activity = etl.fromdb(
             connection,
             f'SELECT cid as mms_cid, recl_desc as UnderExpReclamation, recl_dol as UnderExpReclamationCost, t_ar as UNDEREXPSURFACETOTALDISTAREA, t_vol as UNDEREXPSURFACETIMBERVOLUME, devr1_ind, devr2_ind, devr3_ind, devr4_ind, devr5_ind, devr6_ind, devr7_ind, devr8_ind, devr1_ct, devr2_ct, devr3_ct, devr4_ct, devr5_ct, devr6_ct, devr7_ct, devr8_ct, devn1_ind, devn2_ind, devn3_ind, devn4_ind, devn5_ind, devn6_ind, devn7_ind, devn8_ind, devn1_ct, devn2_ct, devn3_ct, devn4_ct, devn5_ct, devn6_ct, devn7_ct, devn8_ct, surf1_ind, surf2_ind, surf3_ind, surf4_ind, surf7_ind, surf8_ind, surf9_ind, surf10_ind, surf1_ct, surf2_ct, surf3_ct, surf4_ct, surf7_ct, surf8_ct, surf9_ct, surf10_ct, surf1_ar, surf2_ar, surf3_ar, surf4_ar, surf7_ar, surf8_ar, surf9_ar, surf10_ar, surf1_vol, surf2_vol, surf3_vol, surf4_vol, surf7_vol, surf8_vol, surf9_vol, surf10_vol from mms.mmsscg_n'
@@ -957,7 +970,10 @@ def ETL_MMS_NOW_schema(connection, tables, schema, system_name):
         )
 
         application_nda = etl.cutout(application_nda, 'oldenddate')
-
+        print('-------------------------------------------------------')
+        print('application Table')
+        print(applications)
+        print('-------------------------------------------------------')  
         etl.appenddb(applications, connection, 'application', schema='mms_now_submissions', commit=False)
         etl.appenddb(water_source_activity, connection, 'water_source_activity', schema='mms_now_submissions', commit=False)
         etl.appenddb(streamline_application, connection, 'application_start_stop', schema='mms_now_submissions', commit=False)
