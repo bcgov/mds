@@ -17,8 +17,9 @@ digdag server --database digdag-server --task-log digdag-logs --config digdag.pr
 # Wait for migrations to run before pushing new project details
 sleep 30
 # Update the projects
-digdag push etl-tasks --project etl -r "$(date +%Y-%m-%dT%H:%M:%S%z)" --endpoint 0.0.0.0:8081
-
+if [ $ENVIRONMENT_NAME != "dev"]
+    digdag push etl-tasks --project etl -r "$(date +%Y-%m-%dT%H:%M:%S%z)" --endpoint 0.0.0.0:8081
+fi
 # Run keycloak-gatekeeper for authenticated reverse proxy
 keycloak-gatekeeper --config ./gatekeeper.conf
 
