@@ -957,7 +957,10 @@ def ETL_MMS_NOW_schema(connection, tables, schema, system_name):
         )
 
         application_nda = etl.cutout(application_nda, 'oldenddate')
-
+        print('-------------------------------------------------------')
+        print('application Table')
+        print(applications)
+        print('-------------------------------------------------------')  
         etl.appenddb(applications, connection, 'application', schema='mms_now_submissions', commit=False)
         etl.appenddb(water_source_activity, connection, 'water_source_activity', schema='mms_now_submissions', commit=False)
         etl.appenddb(streamline_application, connection, 'application_start_stop', schema='mms_now_submissions', commit=False)
