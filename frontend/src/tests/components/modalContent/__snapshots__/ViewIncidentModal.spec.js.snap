@@ -238,11 +238,8 @@ exports[`ViewIncidentModal renders properly 1`] = `
     <h5>
       Initial Report Documents
     </h5>
-    <Table
+    <withStore(Table)
       align="left"
-      bordered={false}
-      childrenColumnName="children"
-      className=""
       columns={
         Array [
           Object {
@@ -261,24 +258,12 @@ exports[`ViewIncidentModal renders properly 1`] = `
           },
         ]
       }
-      indentSize={20}
-      loading={false}
       locale={
         Object {
           "emptyText": "This incident does not contain any initial documents",
         }
       }
       pagination={false}
-      rowKey="key"
-      showHeader={true}
-      size="default"
-      sortDirections={
-        Array [
-          "ascend",
-          "descend",
-        ]
-      }
-      useFixedHeader={false}
     />
     <br />
   </div>
@@ -359,11 +344,8 @@ exports[`ViewIncidentModal renders properly 1`] = `
     <h5>
       Final Investigation Report
     </h5>
-    <Table
+    <withStore(Table)
       align="left"
-      bordered={false}
-      childrenColumnName="children"
-      className=""
       columns={
         Array [
           Object {
@@ -374,24 +356,12 @@ exports[`ViewIncidentModal renders properly 1`] = `
         ]
       }
       dataSource={Array []}
-      indentSize={20}
-      loading={false}
       locale={
         Object {
           "emptyText": "This incident does not contain any final documents",
         }
       }
       pagination={false}
-      rowKey="key"
-      showHeader={true}
-      size="default"
-      sortDirections={
-        Array [
-          "ascend",
-          "descend",
-        ]
-      }
-      useFixedHeader={false}
     />
     <br />
   </div>
