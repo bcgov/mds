@@ -890,64 +890,51 @@ def ETL_MMS_NOW_schema(connection, tables, schema, system_name):
         streamline_application = etl.addfield(
             streamline_application, 'typeofapplication',
             lambda v: 'New Permit' if v['pmt_typ'] == 'N' else 'Amendment')
-        
-        # first_aid_equipment_on_site, first_aid_cert_level = streamline_application['comm_desc'].split('  ', 2)
 
         streamline_application = etl.addfield(
             streamline_application, 'FirstAidEquipmentOnsite',
             lambda v: v['comm_desc'].split('  ')[0] if (v['comm_desc'] != '' or v['comm_desc'] is not None) else None)
         
-
         streamline_application = etl.addfield(
             streamline_application, 'FirstAidCertLevel',
             lambda v: v['comm_desc'].split('  ')[1] if (v['comm_desc'] != '' or v['comm_desc'] is not None) else None)
         
-
         streamline_application = etl.addfield(
             streamline_application, 'TenureNumbers',
             lambda v: v['ten_nos1'] + v['ten_nos2'])
-        
         
         streamline_application = etl.addfield(
             streamline_application, 'CrownGrantLotNumbers',
             lambda v: v['cg_clms1'] + v['cg_clms2'])
         
-
         streamline_application = etl.addfield(
             streamline_application, 'LandLegalDesc',
             lambda v: v['legal_desc1'] + v['legal_desc2'])
         
-
         streamline_application = etl.addfield(
             streamline_application, 'LandPrivate',
             lambda v: 'Yes' if v['priv_ind'] == 1 else 'No')
         
-
         streamline_application = etl.addfield(
             streamline_application, 'LandCommunityWatershed',
             lambda v: 'Yes' if v['water_ind'] == 1 else 'No')
         
-
         streamline_application = etl.addfield(
             streamline_application, 'ArchSitesAffected',
             lambda v: 'Yes' if v['culture_ind'] == 1 else 'No')
         
-
         streamline_application = etl.addfield(
             streamline_application, 'FuelLubStoreOnSite',
             lambda v: 'Yes' if v['fuel_ind'] == 1 else 'No')
         
-
         streamline_application = etl.addfield(
             streamline_application, 'FuelLubStoreMethodBarrel',
             lambda v: 'Yes' if v['barrel_ind'] == 1 else 'No')
         
-
         streamline_application = etl.addfield(
             streamline_application, 'FuelLubStoreMethodBulk',
             lambda v: 'Yes' if v['bulk_ind'] == 1 else 'No')
         
-
         streamline_application = etl.cutout(streamline_application, ['comm_desc', 'pmt_typ', 'ten_nos1', 'ten_nos2', 'cg_clms1', 'cg_clms2', 'legal_desc1', 'legal_desc2', 'priv_ind', 'water_ind', 'culture_ind', 'fuel_ind', 'barrel_ind', 'bulk_ind'])
 
         streamline_application_app_cols = etl.cutout(streamline_application, ['str_dt_seasonal', 'end_dt_seasonal'])
@@ -972,32 +959,15 @@ def ETL_MMS_NOW_schema(connection, tables, schema, system_name):
         application_nda = etl.cutout(application_nda, 'oldenddate')
 
         etl.appenddb(applications, connection, 'application', schema='mms_now_submissions', commit=False)
-
         etl.appenddb(water_source_activity, connection, 'water_source_activity', schema='mms_now_submissions', commit=False)
-
         etl.appenddb(streamline_application, connection, 'application_start_stop', schema='mms_now_submissions', commit=False)
-
-        etl.appenddb(sand_grv_qry_activity_detail, connection,
-                             'sand_grv_qry_activity', schema='mms_now_submissions', commit=False)
-
-        etl.appenddb(surface_bulk_activity_detail, connection,
-                             'surface_bulk_sample_activity', schema='mms_now_submissions', commit=False)
-
-        etl.appenddb(exploration_access_activity_detail, connection,
-                             'exp_access_activity', schema='mms_now_submissions', commit=False)
-
-        etl.appenddb(mech_trenching_activity_detail, connection,
-                             'mech_trenching_activity', schema='mms_now_submissions', commit=False)
-
-        etl.appenddb(under_exp_rehab_activity_detail, connection,
-                             'under_exp_rehab_activity', schema='mms_now_submissions', commit=False)
-
-        etl.appenddb(under_exp_surface_activity_detail, connection,
-                             'under_exp_surface_activity', schema='mms_now_submissions', commit=False)
-
-        etl.appenddb(under_exp_new_activity_detail, connection,
-                             'under_exp_new_activity', schema='mms_now_submissions', commit=False)
-
+        etl.appenddb(sand_grv_qry_activity_detail, connection, 'sand_grv_qry_activity', schema='mms_now_submissions', commit=False)
+        etl.appenddb(surface_bulk_activity_detail, connection, 'surface_bulk_sample_activity', schema='mms_now_submissions', commit=False)
+        etl.appenddb(exploration_access_activity_detail, connection, 'exp_access_activity', schema='mms_now_submissions', commit=False)
+        etl.appenddb(mech_trenching_activity_detail, connection, 'mech_trenching_activity', schema='mms_now_submissions', commit=False)
+        etl.appenddb(under_exp_rehab_activity_detail, connection, 'under_exp_rehab_activity', schema='mms_now_submissions', commit=False)
+        etl.appenddb(under_exp_surface_activity_detail, connection, 'under_exp_surface_activity', schema='mms_now_submissions', commit=False)
+        etl.appenddb(under_exp_new_activity_detail, connection, 'under_exp_new_activity', schema='mms_now_submissions', commit=False)
         etl.appenddb(application_nda, connection, 'application_nda', schema='mms_now_submissions', commit=False)                        
 
     except Exception as err:
