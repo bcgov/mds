@@ -18,6 +18,10 @@ from app.api.variances.models.variance_document_category_code import VarianceDoc
 from app.api.variances.models.variance_application_status_code import VarianceApplicationStatusCode
 from app.api.mines.reports.models.mine_report_definition import MineReportDefinition
 from app.api.mines.reports.models.mine_report_submission_status_code import MineReportSubmissionStatusCode
+from app.api.now_applications.models.now_application_type import NOWApplicationType
+from app.api.now_applications.models.now_application_status import NOWApplicationStatus
+from app.api.now_applications.models.unit_type import UnitType
+from app.api.now_applications.models.activity_detail.underground_exploration_type import UndergroundExplorationType
 
 
 def RandomMineRegionCode():
@@ -105,12 +109,10 @@ def RandomVarianceDocumentCategoryCode():
 
 def SampleDangerousOccurrenceSubparagraphs(num):
     return random.sample(
-        db.session.query(ComplianceArticle).filter(ComplianceArticle.article_act_code == 'HSRCM',
-                                                   ComplianceArticle.section == '1',
-                                                   ComplianceArticle.sub_section == '7',
-                                                   ComplianceArticle.paragraph == '3',
-                                                   ComplianceArticle.sub_paragraph != None).all(),
-        num)
+        db.session.query(ComplianceArticle).filter(
+            ComplianceArticle.article_act_code == 'HSRCM', ComplianceArticle.section == '1',
+            ComplianceArticle.sub_section == '7', ComplianceArticle.paragraph == '3',
+            ComplianceArticle.sub_paragraph != None).all(), num)
 
 
 def RandomVarianceApplicationStatusCode():
@@ -118,4 +120,25 @@ def RandomVarianceApplicationStatusCode():
         x.variance_application_status_code
         for x in filter(lambda x: x.variance_application_status_code not in ['APP', 'DEN'],
                         VarianceApplicationStatusCode.active())
+    ])
+
+
+def RandomNOWTypeCode():
+    return random.choice(
+        [x.notice_of_work_type_code for x in db.session.query(NOWApplicationType).all()])
+
+
+def RandomNOWStatusCode():
+    return random.choice(
+        [x.now_application_status_code for x in db.session.query(NOWApplicationStatus).all()])
+
+
+def RandomUnitTypeCode():
+    return random.choice([x.unit_type_code for x in db.session.query(UnitType).all()])
+
+
+def RandomUndergroundExplorationTypeCode():
+    return random.choice([
+        x.underground_exploration_type_code
+        for x in db.session.query(UndergroundExplorationType).all()
     ])
