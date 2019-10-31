@@ -30,6 +30,8 @@ NOW_APPLICATION_ACTIVITY_DETAIL_BASE = api.model('NOWApplicationActivityDetailBa
         'water_quantity_unit_type_code': fields.String
     }
 )
+
+
 NOW_APPLICATION_ACTIVITY_SUMMARY_BASE = api.model(
     'NOWApplicationActivitySummaryBase', {
         'reclamation_description': fields.String,
@@ -49,6 +51,7 @@ NOW_APPLICATION_CAMP = api.inherit(
         'details': fields.List(fields.Nested(NOW_APPLICATION_ACTIVITY_DETAIL_BASE,skip_none=True))
 
     })
+
 
 NOW_APPLICATION_CUT_LINES = api.inherit(
     'NOWApplicationCutLines',
@@ -121,6 +124,12 @@ NOW_APPLICATION_SAND_AND_GRAVEL = api.inherit(
         'details': fields.List(fields.Nested(NOW_APPLICATION_ACTIVITY_DETAIL_BASE,skip_none=True))
         
     })
+NOW_APPLICATION_SETTLING_POND_DETAIL = api.inherit(
+    'NOWApplicationCampDetail', NOW_APPLICATION_ACTIVITY_DETAIL_BASE,{
+        'water_source_description': fields.String, 
+        'construction_plan': fields.String
+    }
+)
 
 NOW_APPLICATION_SETTLING_POND = api.inherit(
     'NOWApplicationSettlingPond',
@@ -130,7 +139,7 @@ NOW_APPLICATION_SETTLING_POND = api.inherit(
      'is_ponds_exfiltrated': fields.Boolean,
      'is_ponds_recycled': fields.Boolean,
      'is_ponds_discharged': fields.Boolean,
-     'details': fields.List(fields.Nested(NOW_APPLICATION_ACTIVITY_DETAIL_BASE,skip_none=True))
+     'details': fields.List(fields.Nested(NOW_APPLICATION_SETTLING_POND_DETAIL,skip_none=True))
     })
 
 NOW_APPLICATION_SURFACE_BULK = api.inherit(
@@ -144,11 +153,35 @@ NOW_APPLICATION_SURFACE_BULK = api.inherit(
 
     })
 
+NOW_APPLICATION_UNDERGROUND_EXPLORATION_DETAIL = api.inherit(
+    'NOWApplicationCampDetail', NOW_APPLICATION_ACTIVITY_DETAIL_BASE,{
+        'underground_exploration_type_code': fields.String, 
+    }
+)
+
+NOW_APPLICATION_UNDERGROUND_EXPLORATION = api.inherit(
+    'NOWApplicationUndergroundExploration',
+    NOW_APPLICATION_ACTIVITY_SUMMARY_BASE,
+    {
+        'details': fields.List(fields.Nested(NOW_APPLICATION_ACTIVITY_DETAIL_BASE,skip_none=True))
+    })
+
+NOW_APPLICATION_WATER_SUPPLY_DETAIL = api.inherit(
+    'NOWApplicationWaterSupplyDetail', NOW_APPLICATION_ACTIVITY_DETAIL_BASE,{
+        'supply_source_description': fields.String, 
+        'supply_source_type': fields.String, 
+        'water_use_description': fields.String, 
+        'estimate_rate': fields.Fixed,
+        'pump_size': fields.Fixed,
+        'intake_location': fields.String
+    }
+)
+
 NOW_APPLICATION_WATER_SUPPLY = api.inherit(
     'NOWApplicationWaterSupply',
     NOW_APPLICATION_ACTIVITY_SUMMARY_BASE,
     {
-        'details': fields.List(fields.Nested(NOW_APPLICATION_ACTIVITY_DETAIL_BASE,skip_none=True))
+        'details': fields.List(fields.Nested(NOW_APPLICATION_WATER_SUPPLY_DETAIL,skip_none=True))
     })
 
 NOW_APPLICATION_MODEL = api.model(
@@ -179,6 +212,6 @@ NOW_APPLICATION_MODEL = api.model(
         'sand_and_gravel': fields.Nested(NOW_APPLICATION_SAND_AND_GRAVEL, skip_none=True),
         'settling_pond': fields.Nested(NOW_APPLICATION_SETTLING_POND, skip_none=True),
         'surface_bulk_sample': fields.Nested(NOW_APPLICATION_SURFACE_BULK, skip_none=True),
-        'underground_exploration': fields.Nested(NOW_APPLICATION_EXP_SURFACE_DRILL, skip_none=True),
+        'underground_exploration': fields.Nested(NOW_APPLICATION_UNDERGROUND_EXPLORATION, skip_none=True),
         'water_supply': fields.Nested(NOW_APPLICATION_WATER_SUPPLY, skip_none=True)
     })
