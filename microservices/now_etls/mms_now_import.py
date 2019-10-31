@@ -53,9 +53,9 @@ def ETL_MMS_NOW_schema(connection, tables, schema, system_name):
 
         print('-------------------------------------------------------')
         print('application Table')
-        print(applications)
+        print(applications[1])
         print('-------------------------------------------------------')
-        
+
         applications = etl.addfield(
             applications, 'NoticeOfWorkType',
             lambda v: 'Mineral' if v['apl_typ'] == 'M' else ('Placer Operations' if v['apl_typ'] == 'P' else 'Sand & Gravel')
@@ -592,7 +592,7 @@ def ETL_MMS_NOW_schema(connection, tables, schema, system_name):
 
         print('-------------------------------------------------------')
         print('application Table')
-        print(applications)
+        print(applications[1])
         print('-------------------------------------------------------')
 
         under_exp_activity = etl.fromdb(
@@ -972,7 +972,7 @@ def ETL_MMS_NOW_schema(connection, tables, schema, system_name):
         application_nda = etl.cutout(application_nda, 'oldenddate')
         print('-------------------------------------------------------')
         print('application Table')
-        print(applications)
+        print(applications[1])
         print('-------------------------------------------------------')  
         etl.appenddb(applications, connection, 'application', schema='mms_now_submissions', commit=False)
         etl.appenddb(water_source_activity, connection, 'water_source_activity', schema='mms_now_submissions', commit=False)
