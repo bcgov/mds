@@ -24,4 +24,5 @@ class NOWApplicationResource(Resource, UserMixin):
         if not application:
             raise NotFound('NOWApplication not found')
 
+        application.imported_to_core = True
         return application
