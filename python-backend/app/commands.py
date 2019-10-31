@@ -60,12 +60,11 @@ def register_commands(app):
             for _ in range(int(num)):
                 mine = MineFactory()
                 eor = MinePartyAppointmentFactory(mine=mine, mine_party_appt_type_code='EOR')
-                mine_manager = MinePartyAppointmentFactory(mine=mine,
-                                                           mine_party_appt_type_code='MMG')
-                permitee = MinePartyAppointmentFactory(mine=mine,
-                                                       mine_party_appt_type_code='PMT',
-                                                       party__company=True)
-                NOWSubmissionFactory(mine=mine)
+                mine_manager = MinePartyAppointmentFactory(
+                    mine=mine, mine_party_appt_type_code='MMG')
+                permitee = MinePartyAppointmentFactory(
+                    mine=mine, mine_party_appt_type_code='PMT', party__company=True)
+                #NOWSubmissionFactory(mine=mine)
                 NOWApplicationFactory(mine=mine)
             try:
                 db.session.commit()
