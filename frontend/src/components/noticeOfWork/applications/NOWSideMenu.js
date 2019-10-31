@@ -14,14 +14,21 @@ const propTypes = {
   location: PropTypes.shape({ hash: PropTypes.string }).isRequired,
 };
 
-const onChange = (link) => {
+const onChange = (e, link) => {
   console.log("Anchor:OnChange", link);
 };
 
 export const NOWSideMenu = () => {
   return (
     <div className="side-menu">
-      <Anchor offsetTop={260} affix={false} onChange={onChange()}>
+      <Anchor
+        offsetTop={260}
+        affix={false}
+        onChange={(e, link) => {
+          return onChange(e, link);
+        }}
+        getCurrentAnchor={() => console.log()}
+      >
         <Link href="#application-info" title="Application Info" />
         <Link href="#contacts" title="Contacts" />
         <Link href="#access" title="Access" />
