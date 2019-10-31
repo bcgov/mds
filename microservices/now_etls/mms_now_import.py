@@ -30,6 +30,7 @@ TABLES = [
 def truncate_table(connection, tables):
     cursor = connection.cursor()
     for table in tables:
+        print(f'Truncating {table}...')
         cursor.execute(f'TRUNCATE TABLE now_submissions.{table} CONTINUE IDENTITY CASCADE;')
 
 
