@@ -31,7 +31,7 @@ def truncate_table(connection, tables):
     cursor = connection.cursor()
     for table in tables:
         print(f'Truncating {table}...')
-        cursor.execute(f'TRUNCATE TABLE now_submissions.{table} CONTINUE IDENTITY CASCADE;')
+        cursor.execute(f'TRUNCATE TABLE mms_now_submissions.{table} CONTINUE IDENTITY CASCADE;')
 
 
 def join_mine_guids(connection, application_table):
@@ -50,10 +50,12 @@ def ETL_MMS_NOW_schema(connection, tables, schema, system_name):
             connection,
             f'SELECT msg_id as messageid, cid as mms_cid, mine_no as minenumber, apl_dt as submitteddate, lat_dec as latitude, lon_dec as longitude, multi_year_ind, multi_year_area_ind, str_Dt as ProposedStartDate, end_dt as ProposedEndDate, site_desc as SiteDirections, prpty_nm as NameOfProperty, apl_typ from mms.mmsnow'
         )
+
         applications = etl.addfield(
             applications, 'NoticeOfWorkType',
             lambda v: 'Mineral' if v['apl_typ'] == 'M' else ('Placer Operations' if v['apl_typ'] == 'P' else 'Sand & Gravel')
         )
+
         applications = etl.cutout(applications, 'apl_typ')
 
         message_ids = etl.cut(applications, ['mms_cid', 'messageid'])
