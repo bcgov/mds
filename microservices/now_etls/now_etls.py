@@ -41,5 +41,5 @@ def etl_mms_now_submission_data():
 
 
 if __name__ == '__main__':
-    etl_now_submission_data()
+    # etl_now_submission_data()
     etl_mms_now_submission_data()
