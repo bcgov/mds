@@ -15,6 +15,7 @@ import VerifyNOWMine from "@/components/noticeOfWork/applications/verification/V
 import * as Strings from "@/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
 import ScrollContentWrapper from "@/components/common/wrappers/ScrollContentWrapper";
+import NOWSideMenu from "@/components/noticeOfWork/applications/NOWSideMenu";
 
 const { Step } = Steps;
 
@@ -72,12 +73,44 @@ export class NoticeOfWorkApplication extends Component {
 
   renderStepTwo = () => {
     return (
-      <ScrollContentWrapper id="blach">
-        <Result
-          icon={<Icon type="smile" theme="twoTone" />}
-          title="Great, we have verified the mine details!"
-        />
-      </ScrollContentWrapper>
+      <div>
+        <ScrollContentWrapper id="application-info" title="Application Info">
+          <Result
+            icon={<Icon type="smile" theme="twoTone" />}
+            title="Great, we have verified the mine details!"
+          />
+        </ScrollContentWrapper>
+        <ScrollContentWrapper id="contacts" title="Contacts">
+          <Result
+            icon={<Icon type="smile" theme="twoTone" />}
+            title="Great, we have verified the mine details!"
+          />
+        </ScrollContentWrapper>
+        <ScrollContentWrapper id="access" title="Access">
+          <Result
+            icon={<Icon type="smile" theme="twoTone" />}
+            title="Great, we have verified the mine details!"
+          />
+        </ScrollContentWrapper>
+        <ScrollContentWrapper id="state-of-land" title="State of Land">
+          <Result
+            icon={<Icon type="smile" theme="twoTone" />}
+            title="Great, we have verified the mine details!"
+          />
+          <Result
+            icon={<Icon type="smile" theme="twoTone" />}
+            title="Great, we have verified the mine details!"
+          />
+          <Result
+            icon={<Icon type="smile" theme="twoTone" />}
+            title="Great, we have verified the mine details!"
+          />
+          <Result
+            icon={<Icon type="smile" theme="twoTone" />}
+            title="Great, we have verified the mine details!"
+          />
+        </ScrollContentWrapper>
+      </div>
     );
   };
 
@@ -106,26 +139,29 @@ export class NoticeOfWorkApplication extends Component {
     ];
 
     return (
-      <div className="page__content">
-        <div className="inline-flex between">
-          <div>
-            <h1>NoW Number: {Strings.EMPTY_FIELD}</h1>
-            <Link
-              to={router.NOTICE_OF_WORK_INITIAL_APPLICATION.dynamicRoute(
-                this.props.noticeOfWork.application_guid
-              )}
-            >
-              Open Original NoW
-            </Link>
+      <div className="page">
+        <div className="steps--header">
+          <div className="inline-flex between">
+            <div>
+              <h1>NoW Number: {Strings.EMPTY_FIELD}</h1>
+              <Link
+                to={router.NOTICE_OF_WORK_INITIAL_APPLICATION.dynamicRoute(
+                  this.props.noticeOfWork.application_guid
+                )}
+              >
+                Open Original NoW
+              </Link>
+            </div>
           </div>
+          <br />
+          <Steps current={this.state.currentStep} onChange={this.onChange}>
+            {steps.map((item) => (
+              <Step key={item.title} title={item.title} />
+            ))}
+          </Steps>
         </div>
-        <br />
-        <Steps current={this.state.currentStep} onChange={this.onChange}>
-          {steps.map((item) => (
-            <Step key={item.title} title={item.title} />
-          ))}
-        </Steps>
-        <div className="steps-content">{steps[this.state.currentStep].content}</div>
+        {this.state.currentStep !== 0 && <NOWSideMenu />}
+        <div className="steps--content">{steps[this.state.currentStep].content}</div>
       </div>
     );
   }

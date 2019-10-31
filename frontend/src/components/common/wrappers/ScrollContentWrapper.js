@@ -11,15 +11,23 @@ const propTypes = {
   id: PropTypes.string.isRequired,
   children: PropTypes.element.isRequired,
   location: PropTypes.shape({ hash: PropTypes.string }).isRequired,
+  title: PropTypes.string.isRequired,
 };
 
 export const ScrollContentWrapper = (props) => {
   const isActive = () =>
-    includes(props.id, props.location.hash) ? "circle purple" : "circle grey";
+    includes(props.location.hash, props.id) ? "circle purple" : "circle grey";
 
   return (
-    <div className="scroll-wrapper">
-      <div className={isActive()} />
+    <div className="side-menu--content scroll-wrapper">
+      <div className="inline-flex">
+        <div className={isActive()} />
+        <div id={props.id}>
+          <div className="scroll-wrapper--title">
+            <h3>{props.title}</h3>
+          </div>
+        </div>
+      </div>
       <div className="scroll-wrapper--border">
         <div>{props.children}</div>
       </div>

@@ -50,6 +50,7 @@
     width: 30px;
     height: 30px;
     border-radius: 50%;
+    margin-top: 10px;
     &.purple {
       background-color: $violet;
     }
@@ -58,7 +59,58 @@
     }
   }
   &--border {
+    margin-left: 14px;
     height: 100%;
-    border-left: 2px solid $non-textual-grey;
+    border-left: 1px solid $non-textual-grey;
+  }
+
+  &--title {
+    border-bottom: 1px solid gray;
+    width: 60vw;
+
+    h3 {
+      margin-left: 20px;
+      margin-bottom: 10px;
+    }
+  }
+}
+
+.steps {
+  &--header {
+    background-color: white;
+    position: fixed;
+    top: 60px;
+    width: 100%;
+    z-index: 100;
+    padding: 30px;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  }
+
+  &--content {
+    // position: relative;
+    margin-top: 200px;
+    margin-bottom: 20px;
+  }
+}
+
+// SIDE MENU NAVIGATION
+.ant-anchor-wrapper {
+  background-color: $light-grey;
+}
+
+.side-menu {
+  width: 240px;
+  position: fixed;
+  left: 0;
+  // top: 255px;
+  // background-color: $light-grey;
+
+  ul {
+    list-style: none;
+  }
+
+  &--content {
+    position: relative;
+    left: 250px;
   }
 }
