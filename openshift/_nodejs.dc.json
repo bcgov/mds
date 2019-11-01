@@ -270,7 +270,7 @@
                 ],
                 "livenessProbe": {
                   "httpGet": {
-                    "path": "${BASE_PATH}/health",
+                    "path": "/health",
                     "port": "${{PORT}}",
                     "scheme": "HTTP"
                   },
@@ -280,7 +280,7 @@
                 },
                 "readinessProbe": {
                   "httpGet": {
-                    "path": "${BASE_PATH}/health",
+                    "path": "/health",
                     "port": "${{PORT}}",
                     "scheme": "HTTP"
                   },
