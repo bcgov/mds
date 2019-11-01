@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { Steps, Result, Icon } from "antd";
-import queryString from "query-string";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { bindActionCreators } from "redux";
@@ -9,6 +8,7 @@ import * as router from "@/constants/routes";
 import {
   fetchNoticeOfWorkApplication,
   createNoticeOfWorkApplication,
+  fetchImportedNoticeOfWorkApplication,
 } from "@/actionCreators/noticeOfWorkActionCreator";
 import { getNoticeOfWork } from "@/selectors/noticeOfWorkSelectors";
 import VerifyNOWMine from "@/components/noticeOfWork/applications/verification/VerifyNOWMine";
@@ -27,7 +27,12 @@ const propTypes = {
   fetchNoticeOfWorkApplication: PropTypes.func.isRequired,
   noticeOfWork: CustomPropTypes.nowApplication.isRequired,
   createNoticeOfWorkApplication: PropTypes.func.isRequired,
-  location: PropTypes.shape({ search: PropTypes.string }).isRequired,
+  fetchImportedNoticeOfWorkApplication: PropTypes.func.isRequired,
+  match: PropTypes.shape({
+    params: {
+      id: PropTypes.string,
+    },
+  }).isRequired,
 };
 
 export class NoticeOfWorkApplication extends Component {
@@ -38,10 +43,11 @@ export class NoticeOfWorkApplication extends Component {
   };
 
   componentDidMount() {
-    const params = queryString.parse(this.props.location.search);
-    const { id } = params;
+    // const params = queryString.parse(this.props.location.search);
+    const { id } = this.props.match.params;
     this.props.fetchNoticeOfWorkApplication(id).then((data) => {
-      this.setState({ isLoaded: true, associatedMineGuid: data.data.mine_guid });
+      const associatedMineGuid = data.data.mine_guid ? data.data.mine_guid : "";
+      this.setState({ isLoaded: true, associatedMineGuid });
     });
   }
 
@@ -55,10 +61,18 @@ export class NoticeOfWorkApplication extends Component {
 
   handleUpdateNOW = (currentStep) => {
     this.setState({ currentStep });
-    this.props.createNoticeOfWorkApplication(
-      this.state.associatedMineGuid,
-      this.props.noticeOfWork.application_guid
-    );
+    this.props
+      .createNoticeOfWorkApplication(
+        this.state.associatedMineGuid,
+        this.props.noticeOfWork.application_guid
+      )
+      .then((data) => {
+        return this.props
+          .fetchImportedNoticeOfWorkApplication(data.data.application_guid)
+          .then(() => {
+            console.log("fetched data: state will change with new data");
+          });
+      });
   };
 
   renderStepOne = () =>
@@ -73,7 +87,10 @@ export class NoticeOfWorkApplication extends Component {
 
   renderStepTwo = () => {
     return (
+      // To DO: add loading wrapper when fetching new data
+      // <LoadingWrapper condition={this.state.isLoaded}>
       <div>
+        <NOWSideMenu />
         <ScrollContentWrapper id="application-info" title="Application Info">
           <Result
             icon={<Icon type="smile" theme="twoTone" />}
@@ -111,6 +128,7 @@ export class NoticeOfWorkApplication extends Component {
           />
         </ScrollContentWrapper>
       </div>
+      // </LoadingWrapper>
     );
   };
 
@@ -119,10 +137,6 @@ export class NoticeOfWorkApplication extends Component {
       {
         title: "Verification",
         content: this.renderStepOne(),
-      },
-      {
-        title: "Received Application",
-        content: this.renderStepTwo(),
       },
       {
         title: "Technical Review",
@@ -160,7 +174,6 @@ export class NoticeOfWorkApplication extends Component {
             ))}
           </Steps>
         </div>
-        {this.state.currentStep !== 0 && <NOWSideMenu />}
         <div className="steps--content">{steps[this.state.currentStep].content}</div>
       </div>
     );
@@ -170,7 +183,14 @@ export class NoticeOfWorkApplication extends Component {
 const mapStateToProps = (state) => ({ noticeOfWork: getNoticeOfWork(state) });
 
 const mapDispatchToProps = (dispatch) =>
-  bindActionCreators({ fetchNoticeOfWorkApplication, createNoticeOfWorkApplication }, dispatch);
+  bindActionCreators(
+    {
+      fetchNoticeOfWorkApplication,
+      createNoticeOfWorkApplication,
+      fetchImportedNoticeOfWorkApplication,
+    },
+    dispatch
+  );
 
 NoticeOfWorkApplication.propTypes = propTypes;
 
