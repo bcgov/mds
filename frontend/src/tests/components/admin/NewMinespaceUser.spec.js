@@ -7,13 +7,12 @@ const props = {};
 const dispatchProps = {};
 
 const setupProps = () => {
-  props.mines = MOCK.MINE_NAME_LIST;
+  props.mines = MOCK.MINE_NAME_LIST.mines;
 };
 
 const setupDispatchProps = () => {
   dispatchProps.fetchMineNameList = jest.fn();
   dispatchProps.fetchMinespaceUsers = jest.fn();
-
   dispatchProps.createMinespaceUser = jest.fn(() => Promise.resolve());
 };
 

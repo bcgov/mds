@@ -4,16 +4,15 @@ import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import CustomPropTypes from "@/customPropTypes";
-import NOWGeneralInfo from "@/components/noticeOfWork/NOWGeneralInfo";
-import NOWWorkPlan from "@/components/noticeOfWork/NOWWorkPlan";
+import NOWGeneralInfo from "@/components/noticeOfWork/submissions/NOWGeneralInfo";
+import NOWWorkPlan from "@/components/noticeOfWork/submissions/NOWWorkPlan";
 import { fetchNoticeOfWorkApplication } from "@/actionCreators/noticeOfWorkActionCreator";
 import { getNoticeOfWork } from "@/selectors/noticeOfWorkSelectors";
 import { getMineRegionHash } from "@/selectors/staticContentSelectors";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
 import * as Strings from "@/constants/strings";
 /**
- * @class NoticeOfWorkApplication - contains all information regarding to a notice of work application
- * NOTE: In all children components - for all fields that CORE does not have data for is commented out until CORE gets access to that data
+ * @class NoticeOfWorkInitialApplication - contains all information regarding to a notice of work application
  */
 
 const { Panel } = Collapse;
@@ -25,7 +24,7 @@ const propTypes = {
   regionHash: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
-export class NoticeOfWorkApplication extends Component {
+export class NoticeOfWorkInitialApplication extends Component {
   state = { isLoaded: false };
 
   componentDidMount() {
@@ -88,9 +87,9 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators({ fetchNoticeOfWorkApplication }, dispatch);
 
-NoticeOfWorkApplication.propTypes = propTypes;
+NoticeOfWorkInitialApplication.propTypes = propTypes;
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(NoticeOfWorkApplication);
+)(NoticeOfWorkInitialApplication);

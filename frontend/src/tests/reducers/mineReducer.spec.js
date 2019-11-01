@@ -60,9 +60,7 @@ describe("mineReducer", () => {
 
   it("receives STORE_MINE_NAME_LIST", () => {
     const expectedValue = getBaseExpectedValue();
-    expectedValue.mineNameList = {
-      mines: [{ mine_guid: "test123", mine_name: "mineName", mine_no: "2039" }],
-    };
+    expectedValue.mineNameList = [{ mine_guid: "test123", mine_name: "mineName", mine_no: "2039" }];
     const result = mineReducer(
       undefined,
       storeMineNameList({

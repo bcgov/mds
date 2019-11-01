@@ -1,6 +1,6 @@
 import React from "react";
 import { shallow } from "enzyme";
-import { NOWGeneralInfo } from "@/components/noticeOfWork/NOWGeneralInfo";
+import { NOWGeneralInfo } from "@/components/noticeOfWork/submissions/NOWGeneralInfo";
 import * as NOW_MOCK from "@/tests/mocks/noticeOfWorkMocks";
 import * as MOCK from "@/tests/mocks/dataMocks";
 
