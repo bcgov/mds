@@ -53,4 +53,5 @@ app.use(`${BASE_PATH}*`, staticServe);
 app.use(`/`, staticServe);
 app.use(`*`, staticServe);
 
-app.listen(PORT, "0.0.0.0", () => console.log("Server running"));
+// app.listen(PORT, "0.0.0.0", () => console.log("Server running"));
+app.listen(PORT, () => console.log("Server running"));
