@@ -21,7 +21,6 @@ class NOWApplication(Base, AuditMixin):
         'NOWApplicationIdentity', lazy='joined', uselist=False)
     now_application_guid = association_proxy('now_application_identity', 'now_application_guid')
     mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine.mine_guid'))
-    now_message_id = db.Column(db.Integer, nullable=False)
     now_tracking_number = db.Column(db.Integer)
     notice_of_work_type_code = db.Column(
         db.String, db.ForeignKey('notice_of_work_type.notice_of_work_type_code'), nullable=False)
@@ -68,7 +67,7 @@ class NOWApplication(Base, AuditMixin):
             application_guid=guid).first().now_application_id
         if not now_application_id:
             raise NotFound('Could not find an application for this id')
-        return cls.query.filter_by(now_application_id=now_application_idguid).first()
+        return cls.query.filter_by(now_application_id=now_application_id).first()
 
     @classmethod
     def validate_guid(cls, guid, msg='Invalid guid.'):

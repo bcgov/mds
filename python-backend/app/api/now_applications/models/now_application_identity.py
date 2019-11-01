@@ -11,7 +11,7 @@ class NOWApplicationIdentity(Base, AuditMixin):
 
     now_application_guid = db.Column(UUID(as_uuid=True), primary_key=True)
     now_application_id = db.Column(db.Integer, db.ForeignKey('now_application.now_application_id'))
-    message_id = db.Column(db.Integer)
+    messageid = db.Column(db.Integer)
     mms_cid = db.Column(db.Integer)
 
     def __repr__(self):

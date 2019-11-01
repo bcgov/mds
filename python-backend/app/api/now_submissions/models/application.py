@@ -25,6 +25,8 @@ from app.api.now_submissions.models.existing_settling_pond_xref import ExistingS
 from app.api.now_submissions.models.proposed_placer_activity_xref import ProposedPlacerActivityXref
 from app.api.now_submissions.models.proposed_settling_pond_xref import ProposedSettlingPondXref
 
+from app.api.now_applications.models.now_application_identity import NOWApplicationIdentity
+
 
 class Application(Base):
     __tablename__ = "application"
@@ -219,7 +221,14 @@ class Application(Base):
     @classmethod
     def find_by_application_guid(cls, guid):
         cls.validate_guid(guid)
-        return cls.query.filter_by(application_guid=guid).first()
+        messageid = NOWApplicationIdentity.filter_by(application_guid=guid).first().messageid
+        if not messageid:
+            raise NotFound('Could not find a nros/vbcbc application for this id')
+        return cls.find_by_messageid(messageid)
+
+    @classmethod
+    def find_by_messageid(cls, messageid):
+        return cls.query.filter_by(messageid=messageid).first()
 
     @classmethod
     def validate_guid(cls, guid, msg='Invalid guid.'):

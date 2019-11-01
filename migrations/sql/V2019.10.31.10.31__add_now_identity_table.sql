@@ -7,3 +7,5 @@ CREATE TABLE IF NOT EXISTS now_application_identity  (
 ALTER TABLE now_application_identity OWNER TO mds;
 
 ALTER TABLE now_application DROP COLUMN now_application_guid;
+ALTER TABLE now_application DROP COLUMN now_message_id;
+

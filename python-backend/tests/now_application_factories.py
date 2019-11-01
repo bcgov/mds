@@ -363,9 +363,7 @@ class NOWApplicationFactory(BaseFactory):
         mine = factory.SubFactory('tests.factories.MineFactory', minimal=True)
 
     now_application_id = factory.Sequence(lambda n: n)
-    now_application_guid = GUID
     mine_guid = factory.SelfAttribute('mine.mine_guid')
-    now_message_id = factory.Sequence(lambda n: n)
     now_tracking_number = factory.fuzzy.FuzzyInteger(1, 100)
     notice_of_work_type_code = factory.LazyFunction(RandomNOWTypeCode)
     now_application_status_code = factory.LazyFunction(RandomNOWStatusCode)
