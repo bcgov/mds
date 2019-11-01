@@ -74,7 +74,7 @@ def ETL_MMS_NOW_schema(connection, tables, schema, system_name):
 
         sand_grv_qry_activity = etl.fromdb(
             connection,
-            f'SELECT cid as mms_cid, recl_desc as SandGrvQryReclamation, recl_dol as SandGrvQryReclamationCost, backslope as SandGrvQryReclamationCost, oper1_ind, oper2_ind, oper3_ind, alr_ind as SandGrvQryWithinAgLandRes, srb_ind as SandGrvQryLocalGovSoilRemBylaw, pdist_ar as SANDGRVQRYDISTURBEDAREA, t_vol as SANDGRVQRYTIMBERVOLUME, edist_Ar as SANDGRVQRYTOTALEXISTDISTAREA, act1_ind, act2_ind, act3_ind, act4_ind, act1_ar, act2_ar, act3_ar, act4_ar, act1_vol, act2_vol, act3_vol, act4_vol from mms.mmssci_n'
+            "SELECT cid as mms_cid, convert_to(recl_desc, 'UTF-8') as SandGrvQryReclamation, recl_dol as SandGrvQryReclamationCost, backslope as SandGrvQryReclamationCost, oper1_ind, oper2_ind, oper3_ind, alr_ind as SandGrvQryWithinAgLandRes, srb_ind as SandGrvQryLocalGovSoilRemBylaw, pdist_ar as SANDGRVQRYDISTURBEDAREA, t_vol as SANDGRVQRYTIMBERVOLUME, edist_Ar as SANDGRVQRYTOTALEXISTDISTAREA, act1_ind, act2_ind, act3_ind, act4_ind, act1_ar, act2_ar, act3_ar, act4_ar, act1_vol, act2_vol, act3_vol, act4_vol from mms.mmssci_n"
         )
 
         sand_grv_qry_activity_app_cols = etl.cut(sand_grv_qry_activity, [
