@@ -196,7 +196,7 @@ exports[`DashboardRoutes  renders properly 1`] = `
       }
     }
     exact={true}
-    path="/dashboard/notice-of-work/application"
+    path="/dashboard/notice-of-work/application/:id"
   />
   <Route
     component={[Function]}
