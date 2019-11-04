@@ -84,6 +84,11 @@ def ETL_MMS_NOW_schema(connection, tables, schema, system_name):
             'SANDGRVQRYTOTALEXISTDISTAREA', 'SANDGRVQRYDISTURBEDAREA', 'SANDGRVQRYTIMBERVOLUME',
         ])
 
+        print('-------------------------------------------------------')
+        print('application Table')
+        print(sand_grv_qry_activity_app_cols[1:10])
+        print('-------------------------------------------------------')
+
         sand_grv_qry_activity = etl.cutout(sand_grv_qry_activity, [
             'oper1_ind', 'oper2_ind', 'oper3_ind', 'SandGrvQryReclamation',
             'SandGrvQryReclamationCost', 'SandGrvQryReclamationBackfill',
@@ -589,11 +594,6 @@ def ETL_MMS_NOW_schema(connection, tables, schema, system_name):
 
         mech_trenching_activity_detail = etl.join(mech_trenching_activity_detail, message_ids, key='mms_cid')
         applications = etl.outerjoin(applications, mech_trenching_app_cols, key='mms_cid')
-
-        print('-------------------------------------------------------')
-        print('application Table')
-        print(applications[1])
-        print('-------------------------------------------------------')
 
         under_exp_activity = etl.fromdb(
             connection,
