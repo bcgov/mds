@@ -160,6 +160,11 @@ def ETL_MMS_NOW_schema(connection, tables, schema, system_name):
         applications = etl.outerjoin(applications, sand_grv_qry_activity_app_cols, key='mms_cid')
 
         print('-------------------------------------------------------')
+        print('sand_grv_qry_activity_app_cols Table')
+        print(sand_grv_qry_activity_app_cols[1])
+        print('-------------------------------------------------------')
+        
+        print('-------------------------------------------------------')
         print('sand_grv_qry_activity Table')
         print(applications[1])
         print('-------------------------------------------------------')
