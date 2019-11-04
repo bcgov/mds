@@ -73,7 +73,7 @@ def ETL_MMS_NOW_schema(connection, tables, schema, system_name):
         )
 
         sand_grv_qry_activity_app_cols = etl.cut(sand_grv_qry_activity, 
-            'mms_cid', 'oper1_ind', 'oper2_ind', 'oper3_ind', 'SandGrvQryReclamation',
+            'mms_cid', 'oper1_ind', 'oper2_ind', 'oper3_ind', 'SANDGRVQRYRECLAMATION',
             'SANDGRVQRYRECLAMATIONCOST', 'SANDGRVQRYRECLAMATIONBACKFILL',
             'SANDGRVQRYWITHINAGLANDRES', 'SANDGRVQRYLOCALGOVSOILREMBYLAW',
             'SANDGRVQRYTOTALEXISTDISTAREA', 'SANDGRVQRYDISTURBEDAREA', 'SANDGRVQRYTIMBERVOLUME',
@@ -161,7 +161,7 @@ def ETL_MMS_NOW_schema(connection, tables, schema, system_name):
 
         print('-------------------------------------------------------')
         print('sand_grv_qry_activity_app_cols Table')
-        print(sand_grv_qry_activity_app_cols[1])
+        print(etl.header(sand_grv_qry_activity_app_cols))
         print('-------------------------------------------------------')
         
         print('-------------------------------------------------------')
