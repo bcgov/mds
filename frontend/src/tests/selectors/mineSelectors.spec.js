@@ -26,7 +26,7 @@ const mineResponse = Mock.MINE_RESPONSE.mines[1];
 const mockState = {
   mines: Mock.MINES.mines,
   mineIds: Mock.MINES.mineIds,
-  mineNameList: Mock.MINE_NAME_LIST,
+  mineNameList: Mock.MINE_NAME_LIST.mines,
   minesPageData: Mock.PAGE_DATA,
   mineGuid: false,
   subscribedMines: Mock.SUBSCRIBED_MINES.mines,

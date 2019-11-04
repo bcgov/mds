@@ -4,6 +4,7 @@ from app.api.now_submissions.resources.application_resource import ApplicationRe
 from app.api.now_submissions.resources.application_document_resource import ApplicationDocumentResource, ApplicationDocumentTokenResource
 from app.api.now_submissions.resources.application_list_resource import ApplicationListResource
 
+
 api = Namespace('now-submissions', description='Notice of Work operations')
 
 api.add_resource(ApplicationListResource, '/applications')

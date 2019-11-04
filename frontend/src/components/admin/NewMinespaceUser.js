@@ -67,7 +67,7 @@ export class NewMinespaceUser extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  mines: getMineNames(state).mines,
+  mines: getMineNames(state),
 });
 
 const mapDispatchToProps = (dispatch) =>

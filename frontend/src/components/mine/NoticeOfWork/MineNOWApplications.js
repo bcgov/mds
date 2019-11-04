@@ -1,11 +1,10 @@
 import React, { Component } from "react";
-import { compose, bindActionCreators } from "redux";
+import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { Divider } from "antd";
 import PropTypes from "prop-types";
 import queryString from "query-string";
 import * as router from "@/constants/routes";
-import { AuthorizationGuard } from "@/HOC/AuthorizationGuard";
 import CustomPropTypes from "@/customPropTypes";
 import { getMineRegionHash } from "@/selectors/staticContentSelectors";
 import { fetchRegionOptions } from "@/actionCreators/staticContentActionCreator";
