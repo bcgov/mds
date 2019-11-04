@@ -86,7 +86,7 @@ def ETL_MMS_NOW_schema(connection, tables, schema, system_name):
 
         print('-------------------------------------------------------')
         print('application Table')
-        print(sand_grv_qry_activity_app_cols[1:10])
+        print(sand_grv_qry_activity_app_cols[1])
         print('-------------------------------------------------------')
 
         sand_grv_qry_activity = etl.cutout(sand_grv_qry_activity, [
@@ -970,10 +970,7 @@ def ETL_MMS_NOW_schema(connection, tables, schema, system_name):
         )
 
         application_nda = etl.cutout(application_nda, 'oldenddate')
-        print('-------------------------------------------------------')
-        print('application Table')
-        print(applications[1])
-        print('-------------------------------------------------------')  
+
         etl.appenddb(applications, connection, 'application', schema='mms_now_submissions', commit=False)
         etl.appenddb(water_source_activity, connection, 'water_source_activity', schema='mms_now_submissions', commit=False)
         etl.appenddb(streamline_application, connection, 'application_start_stop', schema='mms_now_submissions', commit=False)
