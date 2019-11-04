@@ -55,7 +55,7 @@ export const updateMineRecord = (id, payload, mineName) => (dispatch) => {
 export const createMineTypes = (mineGuid, mineTypes) => (dispatch) => {
   dispatch(request(reducerTypes.CREATE_MINE_TYPE));
   if (mineTypes === undefined) return Promise.resolve([]);
-  let mineTypeResponses = mineTypes.map((mineType) =>
+  const mineTypeResponses = mineTypes.map((mineType) =>
     CustomAxios()
       .post(`${ENVIRONMENT.apiUrl}${API.MINE_TYPES(mineGuid)}`, mineType, createRequestHeader())
       .catch(handleError(dispatch, reducerTypes.CREATE_MINE_TYPE))
@@ -137,6 +137,7 @@ export const fetchMineRecordById = (mineNo) => (dispatch) => {
     .then((response) => {
       dispatch(success(reducerTypes.GET_MINE_RECORD));
       dispatch(mineActions.storeMine(response.data, mineNo));
+      return response;
     })
     .catch(() => dispatch(error(reducerTypes.GET_MINE_RECORD)))
     .finally(() => dispatch(hideLoading()));

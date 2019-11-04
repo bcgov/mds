@@ -14,10 +14,12 @@ const propTypes = {
   data: PropTypes.arrayOf(PropTypes.any).isRequired,
   placeholder: PropTypes.string,
   iconColor: PropTypes.string,
+  defaultValue: PropTypes.string,
 };
 
 const defaultProps = {
   placeholder: "",
+  defaultValue: "",
   iconColor: Styles.COLOR.violet,
 };
 
@@ -28,6 +30,7 @@ const RenderAutoComplete = (props) => (
     allowClear
     dropdownMatchSelectWidth
     backfill
+    defaultValue={props.defaultValue}
     style={{ width: "100%" }}
     dataSource={props.data}
     placeholder={props.placeholder}

@@ -74,7 +74,7 @@ export class MinespaceUserManagement extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  mines: getMineNames(state).mines,
+  mines: getMineNames(state),
   minespaceUsers: getMinespaceUsers(state),
   minespaceUserMines: getMinespaceUserMines(state),
 });
