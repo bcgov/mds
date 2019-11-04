@@ -24,51 +24,52 @@ def code_lookup(model, description, code_column_name):
     return result
 
 def transmogrify_now(application_guid):
-    now_sub = sub_models.Application.query.get(application_guid)
-    mms_now_sub = mms_sub_models.MMSApplication.query.get(application_guid)
+    now_identity = app_models.NOWApplicationIdentity.filter_by(
+            application_guid=guid).first()
+    if not now_identity:
+        raise Exception('No valid notice of work with application_guid')
 
-    if not now_sub:
-        raise Exception('No NOW Submission with message_id')
-
+    now_sub = sub_models.Application.find_by_messageid(now_identity.messageid) or sub_models.Application()
+    mms_now_sub = mms_sub_models.MMSApplication.find_by_mms_cid(now_identity.mms_cid) or mms_sub_models.MMSApplication()
     now_app = app_models.NOWApplication(mine_guid=now_sub.mine_guid)
-    _transmogrify_now_details(now_app, now_sub)
-    _transmogrify_blasting_activities(now_app, now_sub)
-    _transmogrify_state_of_land(now_app, now_sub)
+
+    _transmogrify_now_details(now_app, now_sub, mms_now_sub)
+    _transmogrify_blasting_activities(now_app, now_sub, mms_now_sub)
+    _transmogrify_state_of_land(now_app, now_sub, mms_now_sub)
 
     #Activities   
-    _transmogrify_camp_activities(now_app, now_sub)
-    _transmogrify_exploration_access(now_app, now_sub)
-    _transmogrify_cut_lines_polarization_survey(now_app, now_sub)
-    _transmogrify_exploration_surface_drilling(now_app, now_sub)
-    _transmogrify_mechanical_trenching(now_app, now_sub)
-    _transmogrify_placer_operations(now_app, now_sub)
-    _transmogrify_sand_and_gravel_activities(now_app, now_sub)
-    _transmogrify_settling_ponds(now_app, now_sub)
-    _transmogrify_surface_bulk_sample(now_app, now_sub)
-    _transmogrify_underground_exploration(now_app, now_sub)
-    _transmogrify_water_supply(now_app, now_sub)
+    _transmogrify_camp_activities(now_app, now_sub, mms_now_sub)
+    _transmogrify_exploration_access(now_app, now_sub, mms_now_sub)
+    _transmogrify_cut_lines_polarization_survey(now_app, now_sub, mms_now_sub)
+    _transmogrify_exploration_surface_drilling(now_app, now_sub, mms_now_sub)
+    _transmogrify_mechanical_trenching(now_app, now_sub, mms_now_sub)
+    _transmogrify_placer_operations(now_app, now_sub, mms_now_sub)
+    _transmogrify_sand_and_gravel_activities(now_app, now_sub, mms_now_sub)
+    _transmogrify_settling_ponds(now_app, now_sub, mms_now_sub)
+    _transmogrify_surface_bulk_sample(now_app, now_sub, mms_now_sub)
+    _transmogrify_underground_exploration(now_app, now_sub, mms_now_sub)
+    _transmogrify_water_supply(now_app, now_sub, mms_now_sub)
 
     return now_app
 
 
-def _transmogrify_now_details(now_app, now_sub):
-    now_app.now_message_id = now_sub.messageid
+def _transmogrify_now_details(now_app, now_sub, mms_now_sub):
     now_app.now_tracking_number = now_sub.trackingnumber
     now_app.notice_of_work_type_code = code_lookup(app_models.NOWApplicationType,
-                                             now_sub.noticeofworktype,'notice_of_work_type_code')
+                                             mms_now_sub.noticeofworktype or now_sub.noticeofworktype,'notice_of_work_type_code')
     now_app.now_application_status_code = code_lookup(app_models.NOWApplicationStatus,
                                                 now_sub.status,'now_application_status_code')
-    now_app.submitted_date = now_sub.submitteddate
-    now_app.received_date = now_sub.receiveddate
-    now_app.latitude = now_sub.latitude
-    now_app.longitude = now_sub.longitude
-    now_app.property_name = now_sub.nameofproperty
-    now_app.tenure_number = now_sub.tenurenumbers
-    now_app.proposed_start_date = now_sub.proposedstartdate
-    now_app.proposed_end_date = now_sub.proposedenddate
+    now_app.submitted_date = mms_now_sub.submitteddate or now_sub.submitteddate
+    now_app.received_date = mms_now_sub.receiveddate or now_sub.receiveddate
+    now_app.latitude = mms_now_sub.latitude or now_sub.latitude
+    now_app.longitude = mms_now_sub.longitude or now_sub.longitude
+    now_app.property_name = mms_now_sub.nameofproperty or now_sub.nameofproperty
+    now_app.tenure_number = mms_now_sub.tenurenumbers or now_sub.tenurenumbers
+    now_app.proposed_start_date = mms_now_sub.proposedstartdate or now_sub.proposedstartdate
+    now_app.proposed_end_date = mms_now_sub.proposedenddate or now_sub.proposedenddate
     return
 
-def _transmogrify_blasting_activities(now_app, now_sub):
+def _transmogrify_blasting_activities(now_app, now_sub, mms_now_sub):
     if now_sub.bcexplosivespermitissued or now_sub.bcexplosivespermitnumber or now_sub.bcexplosivespermitexpiry or now_sub.storeexplosivesonsite:
         now_app.blasting = app_models.BlastingOperation(
             explosive_permit_issued=now_sub.bcexplosivespermitissued == 'Yes',
@@ -77,7 +78,7 @@ def _transmogrify_blasting_activities(now_app, now_sub):
             has_storage_explosive_on_site=now_sub.storeexplosivesonsite == 'Yes')
     return
 
-def _transmogrify_state_of_land(now_app, now_sub):
+def _transmogrify_state_of_land(now_app, now_sub, mms_now_sub):
     if now_sub.landcommunitywatershed or now_sub.archsitesaffected:
         now_app.state_of_land = app_models.StateOfLand(
             has_community_water_shed=now_sub.landcommunitywatershed == 'Yes',
@@ -87,7 +88,7 @@ def _transmogrify_state_of_land(now_app, now_sub):
 
 
 #Activities   
-def _transmogrify_camp_activities(now_app, now_sub):
+def _transmogrify_camp_activities(now_app, now_sub, mms_now_sub):
     if now_sub.cbsfreclamation or now_sub.cbsfreclamationcost or now_sub.campbuildstgetotaldistarea or now_sub.fuellubstoreonsite:
 
         camp = app_models.Camp(
@@ -123,7 +124,7 @@ def _transmogrify_camp_activities(now_app, now_sub):
 
     return
 
-def _transmogrify_cut_lines_polarization_survey(now_app, now_sub):
+def _transmogrify_cut_lines_polarization_survey(now_app, now_sub, mms_now_sub):
     if now_sub.cutlinesreclamation or now_sub.cutlinesreclamationcost or now_sub.cutlinesexplgriddisturbedarea:
 
         clps = app_models.CutLinesPolarizationSurvey(
@@ -142,7 +143,7 @@ def _transmogrify_cut_lines_polarization_survey(now_app, now_sub):
 
     return
 
-def _transmogrify_exploration_surface_drilling(now_app, now_sub):
+def _transmogrify_exploration_surface_drilling(now_app, now_sub, mms_now_sub):
     if now_sub.expsurfacedrillreclcorestorage or now_sub.expsurfacedrillreclamation or now_sub.expsurfacedrillreclamationcost or now_sub.expsurfacedrilltotaldistarea:
         esd = app_models.ExplorationSurfaceDrilling(
             reclamation_description=now_sub.expsurfacedrillreclamation,
@@ -162,7 +163,7 @@ def _transmogrify_exploration_surface_drilling(now_app, now_sub):
         now_app.exploration_surface_drilling = esd
     return
 
-def _transmogrify_mechanical_trenching(now_app, now_sub):
+def _transmogrify_mechanical_trenching(now_app, now_sub, mms_now_sub):
     if now_sub.mechtrenchingreclamation or now_sub.mechtrenchingreclamationcost or now_sub.mechtrenchingtotaldistarea:
         mech = app_models.MechanicalTrenching(
             reclamation_description=now_sub.mechtrenchingreclamation,
@@ -198,7 +199,7 @@ def _transmogrify_equipment(e):
     return equipment
 
 
-def _transmogrify_exploration_access(now_app, now_sub):
+def _transmogrify_exploration_access(now_app, now_sub, mms_now_sub):
     if now_sub.expaccessreclamation or now_sub.expaccessreclamationcost or now_sub.expaccesstotaldistarea:
         exploration_access = app_models.ExplorationAccess(
             reclamation_description=now_sub.expaccessreclamation,
@@ -209,7 +210,7 @@ def _transmogrify_exploration_access(now_app, now_sub):
 
         now_app.exploration_access = exploration_access
 
-def _transmogrify_placer_operations(now_app, now_sub):
+def _transmogrify_placer_operations(now_app, now_sub, mms_now_sub):
     if now_sub.placerundergroundoperations or now_sub.placerhandoperations or now_sub.placerhandoperations or now_sub.placerreclamationarea or now_sub.placerreclamation or now_sub.placerreclamationcost:
         placer = app_models.PlacerOperation(
             reclamation_description=now_sub.placerreclamation,
@@ -263,7 +264,7 @@ def _transmogrify_placer_operations(now_app, now_sub):
         now_app.placer_operation = placer
     return
 
-def _transmogrify_settling_ponds(now_app, now_sub):
+def _transmogrify_settling_ponds(now_app, now_sub, mms_now_sub):
     if now_sub.pondsreclamation or now_sub.pondsreclamationcost or now_sub.pondstotaldistarea or now_sub.pondsexfiltratedtoground or now_sub.pondsrecycled or now_sub.pondsdischargedtoenv:
         settling_pond = app_models.SettlingPond(
             reclamation_description=now_sub.pondsreclamation,
@@ -316,7 +317,7 @@ def _transmogrify_settling_ponds(now_app, now_sub):
     return
 
 
-def _transmogrify_blasting_activities(now_app, now_sub):
+def _transmogrify_blasting_activities(now_app, now_sub, mms_now_sub):
     if now_sub.bcexplosivespermitissued or now_sub.bcexplosivespermitnumber or now_sub.bcexplosivespermitexpiry or now_sub.storeexplosivesonsite:
         now_app.blasting = app_models.BlastingOperation(
             explosive_permit_issued=now_sub.bcexplosivespermitissued == 'Yes',
@@ -326,7 +327,7 @@ def _transmogrify_blasting_activities(now_app, now_sub):
     return
 
 
-def _transmogrify_sand_and_gravel_activities(now_app, now_sub):
+def _transmogrify_sand_and_gravel_activities(now_app, now_sub, mms_now_sub):
 
     if (now_sub.sandgrvqrydepthoverburden or now_sub.sandgrvqrydepthtopsoil or now_sub.sandgrvqrystabilizemeasures
             or now_sub.sandgrvqrywithinaglandres or now_sub.sandgrvqryalrpermitnumber
@@ -384,7 +385,7 @@ def _transmogrify_sand_and_gravel_activities(now_app, now_sub):
 
     return
 
-def _transmogrify_surface_bulk_sample(now_app, now_sub):
+def _transmogrify_surface_bulk_sample(now_app, now_sub, mms_now_sub):
     if (now_sub.surfacebulksampleprocmethods or now_sub.surfacebulksamplereclsephandl or now_sub.surfacebulksamplereclamation
             or now_sub.surfacebulksamplerecldrainmiti or now_sub.surfacebulksamplereclcost
             or now_sub.surfacebulksampletotaldistarea):
@@ -409,7 +410,7 @@ def _transmogrify_surface_bulk_sample(now_app, now_sub):
             now_app.surface_bulk_sample.equipment.append(equipment)
     return
 
-def _transmogrify_underground_exploration(now_app, now_sub):
+def _transmogrify_underground_exploration(now_app, now_sub, mms_now_sub):
     if (now_sub.underexptotalore or now_sub.underexptotaloreunits or now_sub.underexpreclamation
         or now_sub.underexpreclamationcost or now_sub.underexptotalwaste
         or now_sub.underexptotalwasteunits or now_sub.underexptotaldistarea):
@@ -464,7 +465,7 @@ def _transmogrify_underground_exploration(now_app, now_sub):
     
     return
 
-def _transmogrify_water_supply(now_app, now_sub):
+def _transmogrify_water_supply(now_app, now_sub, mms_now_sub):
     if now_sub.water_source_activity:
         water_supply = app_models.WaterSupply()
 
