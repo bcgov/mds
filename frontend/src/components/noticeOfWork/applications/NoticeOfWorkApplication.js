@@ -31,6 +31,7 @@ const propTypes = {
   noticeOfWork: CustomPropTypes.nowApplication.isRequired,
   createNoticeOfWorkApplication: PropTypes.func.isRequired,
   fetchImportedNoticeOfWorkApplication: PropTypes.func.isRequired,
+  history: PropTypes.shape({ push: PropTypes.func }).isRequired,
   match: PropTypes.shape({
     params: {
       id: PropTypes.string,
@@ -68,15 +69,16 @@ export class NoticeOfWorkApplication extends Component {
   };
 
   handleScroll = () => {
+    // disabled for now, this will enable sticky navigation for steps
     if (window.pageYOffset > "100" && !this.state.fixedTop) {
-      this.setState({ fixedTop: true });
+      // this.setState({ fixedTop: true });
     } else if (window.pageYOffset < "100" && this.state.fixedTop) {
-      this.setState({ fixedTop: false });
+      // this.setState({ fixedTop: false });
     }
   };
 
   handleUpdateNOW = (currentStep) => {
-    this.setState({ currentStep });
+    const { id } = this.props.match.params;
     this.props
       .createNoticeOfWorkApplication(
         this.state.associatedMineGuid,
@@ -86,6 +88,11 @@ export class NoticeOfWorkApplication extends Component {
         return this.props
           .fetchImportedNoticeOfWorkApplication(data.data.application_guid)
           .then(() => {
+            // updates route to include active section
+            this.props.history.push(
+              router.NOTICE_OF_WORK_APPLICATION.hashRoute(id, "#application-info")
+            );
+            this.setState({ currentStep });
             console.log("fetched data: state will change with new data");
           });
       });

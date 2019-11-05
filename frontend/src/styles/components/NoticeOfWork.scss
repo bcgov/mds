@@ -119,13 +119,11 @@
 
 .fixed-top {
   position: relative;
-  // top: 300px;
 }
 .side-menu {
   margin-top: 10px;
   width: 240px;
-  // top: 230px;
-  position: absolute;
+  position: fixed;
   left: 0;
 
   ul {
@@ -150,6 +148,7 @@
 
 .ant-input[disabled] {
   border: none;
+  color: rgba(0, 0, 0, 0.65);
 }
 
 .mine-info {

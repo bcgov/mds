@@ -13,11 +13,17 @@ const { Link } = Anchor;
 const propTypes = {
   location: PropTypes.shape({ hash: PropTypes.string }).isRequired,
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
+  match: PropTypes.shape({
+    params: {
+      id: PropTypes.string,
+    },
+  }).isRequired,
 };
 
 export const NOWSideMenu = (props) => {
   const onChange = (link) => {
-    return props.history.push(routes.NOTICE_OF_WORK_APPLICATION.hashRoute(link));
+    const { id } = props.match.params;
+    return props.history.push(routes.NOTICE_OF_WORK_APPLICATION.hashRoute(id, link));
   };
 
   return (
