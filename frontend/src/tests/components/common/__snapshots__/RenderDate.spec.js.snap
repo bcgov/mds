@@ -8,6 +8,7 @@ exports[`RenderDate renders properly 1`] = `
   validateStatus=""
 >
   <PickerWrapper
+    disabled={false}
     format={false}
     id={1}
     locale={Object {}}
