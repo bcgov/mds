@@ -541,13 +541,14 @@ def ETL_MMS_NOW_schema(connection, tables):
             f'SELECT cid as mms_cid, recl_desc as mechtrenchingreclamation, recl_dol as mechtrenchingreclamationcost, act1_ind, act2_ind, act1_cnt, act2_cnt, act1_ar, act2_ar, act1_vol, act2_vol from mms.mmsscb_n'
         )
 
-        mech_trenching_app_cols = etl.cut(mech_trenching, [
-            'mms_cid', 'mechtrenchingreclamation', 'mechtrenchingreclamationcost'
-        ])
+        mech_trenching_app_cols = etl.cut(mech_trenching, 'mms_cid', 'mechtrenchingreclamation', 'mechtrenchingreclamationcost')
 
-        mech_trenching = etl.cutout(mech_trenching, [
-            'mechtrenchingreclamation', 'mechtrenchingreclamationcost'
-        ])
+        mech_trenching = etl.cutout(mech_trenching, 'mechtrenchingreclamation', 'mechtrenchingreclamationcost')
+
+        print('------------------------------------------------------------------------------------------------')
+        print('Mechanical Trenching Application Columns')
+        print(etl.header(mech_trenching_app_cols))
+        print('------------------------------------------------------------------------------------------------')
 
         mech_trenching_activity_detail = etl.fromdb(
             connection,
@@ -961,11 +962,6 @@ def ETL_MMS_NOW_schema(connection, tables):
         )
 
         application_nda = etl.cutout(application_nda, 'oldenddate')
-
-        print('------------------------------------------------------------------------------------------------')
-        print('Applications Table')
-        print(etl.header(applications))
-        print('------------------------------------------------------------------------------------------------')
 
         etl.appenddb(applications, connection, 'application', schema='mms_now_submissions', commit=False)
         etl.appenddb(water_source_activity, connection, 'water_source_activity', schema='mms_now_submissions', commit=False)
