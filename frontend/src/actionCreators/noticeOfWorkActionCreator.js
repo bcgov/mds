@@ -74,7 +74,6 @@ export const createNoticeOfWorkApplication = (mine_guid, applicationGuid) => (di
 };
 
 export const fetchImportedNoticeOfWorkApplication = (applicationGuid) => (dispatch) => {
-  console.log("FETCHING");
   dispatch(request(reducerTypes.GET_IMPORTED_NOTICE_OF_WORK_APPLICATION));
   dispatch(showLoading());
   return CustomAxios()

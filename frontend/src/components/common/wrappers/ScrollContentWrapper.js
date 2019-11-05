@@ -19,7 +19,7 @@ export const ScrollContentWrapper = (props) => {
     includes(props.location.hash, props.id) ? "circle purple" : "circle grey";
 
   return (
-    <div className="side-menu--content scroll-wrapper">
+    <div className="scroll-wrapper">
       <div className="inline-flex">
         <div className={isActive()} />
         <div id={props.id}>
@@ -29,7 +29,7 @@ export const ScrollContentWrapper = (props) => {
         </div>
       </div>
       <div className="scroll-wrapper--border">
-        <div>{props.children}</div>
+        <div className="scroll-wrapper--body">{props.children}</div>
       </div>
     </div>
   );

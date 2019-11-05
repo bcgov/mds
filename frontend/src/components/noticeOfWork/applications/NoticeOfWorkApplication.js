@@ -1,6 +1,7 @@
 import React, { Component } from "react";
-import { Steps, Result, Icon } from "antd";
+import { Steps, Button } from "antd";
 import PropTypes from "prop-types";
+import { getFormValues } from "redux-form";
 import { Link } from "react-router-dom";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
@@ -14,8 +15,10 @@ import { getNoticeOfWork } from "@/selectors/noticeOfWorkSelectors";
 import VerifyNOWMine from "@/components/noticeOfWork/applications/verification/VerifyNOWMine";
 import * as Strings from "@/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
-import ScrollContentWrapper from "@/components/common/wrappers/ScrollContentWrapper";
+import NOWReview from "@/components/noticeOfWork/applications/review/NOWReview";
+import NullScreen from "@/components/common/NullScreen";
 import NOWSideMenu from "@/components/noticeOfWork/applications/NOWSideMenu";
+import * as FORM from "@/constants/forms";
 
 const { Step } = Steps;
 
@@ -40,10 +43,11 @@ export class NoticeOfWorkApplication extends Component {
     currentStep: 0,
     isLoaded: false,
     associatedMineGuid: "",
+    isViewMode: true,
+    fixedTop: false,
   };
 
   componentDidMount() {
-    // const params = queryString.parse(this.props.location.search);
     const { id } = this.props.match.params;
     this.props.fetchNoticeOfWorkApplication(id).then((data) => {
       const associatedMineGuid = data.data.mine_guid ? data.data.mine_guid : "";
@@ -51,12 +55,24 @@ export class NoticeOfWorkApplication extends Component {
     });
   }
 
+  toggleEditMode = () => {
+    this.setState((prevState) => ({ isViewMode: !prevState.isViewMode }));
+  };
+
   onChange = (currentStep) => {
     this.setState({ currentStep });
   };
 
   setMineGuid = (mineGuid) => {
     this.setState({ associatedMineGuid: mineGuid });
+  };
+
+  handleScroll = () => {
+    if (window.pageYOffset > "100" && !this.state.fixedTop) {
+      this.setState({ fixedTop: true });
+    } else if (window.pageYOffset < "100" && this.state.fixedTop) {
+      this.setState({ fixedTop: false });
+    }
   };
 
   handleUpdateNOW = (currentStep) => {
@@ -88,47 +104,7 @@ export class NoticeOfWorkApplication extends Component {
   renderStepTwo = () => {
     return (
       // To DO: add loading wrapper when fetching new data
-      // <LoadingWrapper condition={this.state.isLoaded}>
-      <div>
-        <NOWSideMenu />
-        <ScrollContentWrapper id="application-info" title="Application Info">
-          <Result
-            icon={<Icon type="smile" theme="twoTone" />}
-            title="Great, we have verified the mine details!"
-          />
-        </ScrollContentWrapper>
-        <ScrollContentWrapper id="contacts" title="Contacts">
-          <Result
-            icon={<Icon type="smile" theme="twoTone" />}
-            title="Great, we have verified the mine details!"
-          />
-        </ScrollContentWrapper>
-        <ScrollContentWrapper id="access" title="Access">
-          <Result
-            icon={<Icon type="smile" theme="twoTone" />}
-            title="Great, we have verified the mine details!"
-          />
-        </ScrollContentWrapper>
-        <ScrollContentWrapper id="state-of-land" title="State of Land">
-          <Result
-            icon={<Icon type="smile" theme="twoTone" />}
-            title="Great, we have verified the mine details!"
-          />
-          <Result
-            icon={<Icon type="smile" theme="twoTone" />}
-            title="Great, we have verified the mine details!"
-          />
-          <Result
-            icon={<Icon type="smile" theme="twoTone" />}
-            title="Great, we have verified the mine details!"
-          />
-          <Result
-            icon={<Icon type="smile" theme="twoTone" />}
-            title="Great, we have verified the mine details!"
-          />
-        </ScrollContentWrapper>
-      </div>
-      // </LoadingWrapper>
+      <NOWReview isViewMode={this.state.isViewMode} initialValues={this.props.noticeOfWork} />
     );
   };
 
@@ -144,17 +120,17 @@ export class NoticeOfWorkApplication extends Component {
       },
       {
         title: "Referral / Consultation",
-        content: this.renderStepTwo(),
+        content: <NullScreen type="next-stage" />,
       },
       {
         title: "Decision",
-        content: this.renderStepTwo(),
+        content: <NullScreen type="next-stage" />,
       },
     ];
 
     return (
-      <div className="page">
-        <div className="steps--header">
+      <div className="page" onScroll={this.handleScroll()}>
+        <div className={this.state.fixedTop ? "steps--header fixed-scroll" : "steps--header"}>
           <div className="inline-flex between">
             <div>
               <h1>NoW Number: {Strings.EMPTY_FIELD}</h1>
@@ -166,6 +142,11 @@ export class NoticeOfWorkApplication extends Component {
                 Open Original NoW
               </Link>
             </div>
+            {this.state.isViewMode ? (
+              <Button onClick={this.toggleEditMode}>Edit</Button>
+            ) : (
+              <Button onClick={this.toggleEditMode}>Save</Button>
+            )}
           </div>
           <br />
           <Steps current={this.state.currentStep} onChange={this.onChange}>
@@ -173,6 +154,7 @@ export class NoticeOfWorkApplication extends Component {
               <Step key={item.title} title={item.title} />
             ))}
           </Steps>
+          {this.state.currentStep === 1 && <NOWSideMenu />}
         </div>
         <div className="steps--content">{steps[this.state.currentStep].content}</div>
       </div>
@@ -180,7 +162,10 @@ export class NoticeOfWorkApplication extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({ noticeOfWork: getNoticeOfWork(state) });
+const mapStateToProps = (state) => ({
+  noticeOfWork: getNoticeOfWork(state),
+  formValues: getFormValues(FORM.EDIT_NOTICE_OF_WORK)(state),
+});
 
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(

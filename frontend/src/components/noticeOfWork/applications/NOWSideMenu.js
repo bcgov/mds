@@ -1,8 +1,8 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
 import { PropTypes } from "prop-types";
-
 import { Anchor } from "antd";
+import * as routes from "@/constants/routes";
 
 const { Link } = Anchor;
 
@@ -17,11 +17,12 @@ const propTypes = {
 
 export const NOWSideMenu = (props) => {
   const onChange = (link) => {
-    return props.history.push(link);
+    return props.history.push(routes.NOTICE_OF_WORK_APPLICATION.hashRoute(link));
   };
+
   return (
     <div className="side-menu">
-      <Anchor offsetTop={260} affix={false} onChange={onChange}>
+      <Anchor affix={false} offsetTop={195} onChange={onChange}>
         <Link href="#application-info" title="Application Info" />
         <Link href="#contacts" title="Contacts" />
         <Link href="#access" title="Access" />
