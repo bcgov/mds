@@ -848,7 +848,7 @@ def ETL_MMS_NOW_schema(connection, tables):
 
         streamline_application = etl.fromdb(
             connection,
-            f'SELECT cid as mms_cid, recv_dt as receiveddate, pmt_typ, comm_desc, exp_desc as descexplorationprogram, ten_nos1, ten_nos2, cg_clms1, cg_clms2, legal_desc1, legal_desc2, priv_ind, water_ind, culture_ind, fuel_ind, ltr_amt as fuellubstored, barrel_ind, bulk_ind, str_dt_seasonal as startworkdate, end_dt_seasonal as endworkdate from mmsstream_now'
+            f'SELECT cid as mms_cid, recv_dt as receiveddate, pmt_typ, comm_desc, exp_desc as descexplorationprogram, ten_nos1, ten_nos2, cg_clms1, cg_clms2, legal_desc1, legal_desc2, priv_ind, water_ind, culture_ind, fuel_ind, ltr_amt as fuellubstored, barrel_ind, bulk_ind, str_dt_seasonal as startworkdate, end_dt_seasonal as endworkdate from mms.mmsstream_now'
         )
 
         streamline_application = etl.addfield(
