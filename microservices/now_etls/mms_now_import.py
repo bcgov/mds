@@ -550,14 +550,14 @@ def ETL_MMS_NOW_schema(connection, tables):
             f'SELECT cid as mms_cid, recl_desc as underexpreclamation, recl_dol as underexpreclamationcost, t_ar as underexpsurfacetotaldistarea, t_vol as underexpsurfacetimbervolume, devr1_ind, devr2_ind, devr3_ind, devr4_ind, devr5_ind, devr6_ind, devr7_ind, devr8_ind, devr1_ct, devr2_ct, devr3_ct, devr4_ct, devr5_ct, devr6_ct, devr7_ct, devr8_ct, devn1_ind, devn2_ind, devn3_ind, devn4_ind, devn5_ind, devn6_ind, devn7_ind, devn8_ind, devn1_ct, devn2_ct, devn3_ct, devn4_ct, devn5_ct, devn6_ct, devn7_ct, devn8_ct, surf1_ind, surf2_ind, surf3_ind, surf4_ind, surf7_ind, surf8_ind, surf9_ind, surf10_ind, surf1_ct, surf2_ct, surf3_ct, surf4_ct, surf7_ct, surf8_ct, surf9_ct, surf10_ct, surf1_ar, surf2_ar, surf3_ar, surf4_ar, surf7_ar, surf8_ar, surf9_ar, surf10_ar, surf1_vol, surf2_vol, surf3_vol, surf4_vol, surf7_vol, surf8_vol, surf9_vol, surf10_vol from mms.mmsscg_n'
         )
 
-        under_exp_activity_app_cols = etl.cut(mech_trenching, 'mms_cid', 'underexpreclamation', 'underexpreclamationcost', 'underexpsurfacetotaldistarea', 'underexpsurfacetimbervolume')
+        under_exp_activity_app_cols = etl.cut(under_exp_activity, 'mms_cid', 'underexpreclamation', 'underexpreclamationcost', 'underexpsurfacetotaldistarea', 'underexpsurfacetimbervolume')
 
         print('------------------------------------------------------------------------------------------------')
         print('Under ground exploration Application Columns')
         print(etl.header(under_exp_activity_app_cols))
         print('------------------------------------------------------------------------------------------------')
 
-        under_exp_activity = etl.cutout(mech_trenching, 'underexpreclamation', 'underexpreclamationcost', 'underexpsurfacetotaldistarea', 'underexpsurfacetimbervolume')
+        under_exp_activity = etl.cutout(under_exp_activity, 'underexpreclamation', 'underexpreclamationcost', 'underexpsurfacetotaldistarea', 'underexpsurfacetimbervolume')
         
         under_exp_surface_activity_detail = etl.fromdb(
             connection,
