@@ -538,7 +538,7 @@ def ETL_MMS_NOW_schema(connection, tables):
 
         mech_trenching = etl.fromdb(
             connection,
-            f'SELECT cid as mms_cid, recl_desc as mechtrenchingreclamation, recl_dol as mechtrenchingreclamationcost, material_desc as surfacebulksamplereclsephandl, drainage_desc as surfacebulksamplerecldrainmiti, act1_ind, act2_ind, act1_cnt, act2_cnt, act1_ar, act2_ar, act1_vol, act2_vol from mms.mmsscb_n'
+            f'SELECT cid as mms_cid, recl_desc as mechtrenchingreclamation, recl_dol as mechtrenchingreclamationcost, act1_ind, act2_ind, act1_cnt, act2_cnt, act1_ar, act2_ar, act1_vol, act2_vol from mms.mmsscb_n'
         )
 
         mech_trenching_app_cols = etl.cut(mech_trenching, [
