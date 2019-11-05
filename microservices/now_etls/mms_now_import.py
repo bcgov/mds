@@ -596,6 +596,11 @@ def ETL_MMS_NOW_schema(connection, tables):
             'mms_cid', 'underexpreclamation', 'underexpreclamationcost', 'underexpsurfacetotaldistarea', 'underexpsurfacetimbervolume'
         ])
 
+        print('------------------------------------------------------------------------------------------------')
+        print('Under ground exploration Application Columns')
+        print(etl.header(under_exp_activity_app_cols))
+        print('------------------------------------------------------------------------------------------------')
+
         under_exp_activity = etl.cutout(mech_trenching, [
             'underexpreclamation', 'underexpreclamationcost', 'underexpsurfacetotaldistarea', 'underexpsurfacetimbervolume'
         ])
