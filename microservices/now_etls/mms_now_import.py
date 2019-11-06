@@ -821,6 +821,11 @@ def ETL_MMS_NOW_schema(connection, tables):
 
         applications = etl.outerjoin(applications, timber_cutting, key='mms_cid')
 
+        print('------------------------------------------------------------------------------------------------')
+        print('Application before explosives Columns')
+        print(etl.header(applications))
+        print('------------------------------------------------------------------------------------------------')
+
         explosive_permits = etl.fromdb(
             connection,
             f'SELECT cid as mms_cid, perm_ind, perm_no as bcexplosivespermitnumber, expry_dt as bcexplosivespermitexpiry from mms.mmsscc_n'
