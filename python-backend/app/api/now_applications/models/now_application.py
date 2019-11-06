@@ -19,7 +19,7 @@ class NOWApplication(Base, AuditMixin):
     now_application_id = db.Column(db.Integer, primary_key=True, server_default=FetchedValue())
     now_application_identity = db.relationship(
         'NOWApplicationIdentity', lazy='joined', uselist=False)
-    now_application_guid = association_proxy('now_application_identity', 'now_application_guid')
+    #now_application_guid = association_proxy('now_application_identity', 'now_application_guid')
     mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine.mine_guid'))
     now_tracking_number = db.Column(db.Integer)
     notice_of_work_type_code = db.Column(
