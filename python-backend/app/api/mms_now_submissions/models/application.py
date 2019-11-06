@@ -73,6 +73,7 @@ class MMSApplication(Base):
     sandgrvqryreclamation = db.Column(db.String)
     sandgrvqryreclamationbackfill = db.Column(db.String)
     sandgrvqryreclamationcost = db.Column(db.Numeric(14, 2))
+    sandgrvqrytotalexistdistarea = db.Column(db.Numeric(14, 2))
     cutlinesexplgridtotallinekms = db.Column(db.Integer)
     cutlinesexplgridtimbervolume = db.Column(db.Numeric(14, 2))
     cutlinesreclamation = db.Column(db.String)
