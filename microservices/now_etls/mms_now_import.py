@@ -848,7 +848,7 @@ def ETL_MMS_NOW_schema(connection, tables):
 
         streamline_application = etl.fromdb(
             connection,
-            f'SELECT cid as mms_cid, recv_dt as receiveddate, pmt_typ, comm_desc, exp_desc as descexplorationprogram, ten_nos1, ten_nos2, cg_clms1, cg_clms2, legal_desc1, legal_desc2, priv_ind, water_ind, culture_ind, fuel_ind, ltr_amt as fuellubstored, barrel_ind, bulk_ind, str_dt_seasonal as startworkdate, end_dt_seasonal as endworkdate from mms.mmsstream_now'
+            f'SELECT cid as mms_cid, recv_dt as receiveddate, pmt_typ, comm_desc, exp_desc as descexplorationprogram, ten_nos1, ten_nos2, cg_clms1, cg_clms2, legal_desc1, legal_desc2, priv_ind, water_ind, culture_ind, fuel_ind, ltr_amt as fuellubstored, barrel_ind, bulk_ind from mms.mmsstream_now'
         )
 
         streamline_application = etl.addfield(
@@ -900,8 +900,6 @@ def ETL_MMS_NOW_schema(connection, tables):
             lambda v: 'Yes' if v['bulk_ind'] == 1 else 'No')
         
         streamline_application = etl.cutout(streamline_application, 'comm_desc', 'pmt_typ', 'ten_nos1', 'ten_nos2', 'cg_clms1', 'cg_clms2', 'legal_desc1', 'legal_desc2', 'priv_ind', 'water_ind', 'culture_ind', 'fuel_ind', 'barrel_ind', 'bulk_ind')
-
-        streamline_application_app_cols = etl.cutout(streamline_application, 'str_dt_seasonal', 'end_dt_seasonal')
         
         streamline_application = etl.cut(streamline_application, 'mms_cid', 'startworkdate', 'endworkdate')
         streamline_application = etl.join(streamline_application, message_ids, key='mms_cid')
