@@ -836,7 +836,8 @@ def ETL_MMS_NOW_schema(connection, tables):
             f'SELECT cid as mms_cid, perm_ind, perm_no as bcexplosivespermitnumber, expry_dt as bcexplosivespermitexpiry from mms.mmsscc_n'
         )
 
-        explosive_permits = etl.addfield(explosive_permits, 'BCExplosivesPermitIssued', lambda v: 'Yes' if v['perm_ind'] == 1 else 'No')
+        explosive_permits = etl.addfield(explosive_permits, 'bcexplosivespermitissued', lambda v: 'Yes' if v['perm_ind'] == 1 else 'No')
+        explosive_permits = etl.cutout(explosive_permits, 'perm_ind')
 
         applications = etl.outerjoin(applications, explosive_permits, key='mms_cid')
 
