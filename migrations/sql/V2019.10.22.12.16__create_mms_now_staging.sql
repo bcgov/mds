@@ -4,7 +4,7 @@ CREATE TABLE MMS_NOW_Submissions.application (
     ID serial PRIMARY KEY,
     APPLICATION_GUID uuid DEFAULT gen_random_uuid() NOT NULL,
     MESSAGEID integer,
-    MMS_CID integer UNIQUE,
+    MMS_CID bigint UNIQUE,
     SUBMITTEDDATE date,
     RECEIVEDDATE date,
     NOTICEOFWORKTYPE character varying(300),
