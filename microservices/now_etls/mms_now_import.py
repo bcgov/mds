@@ -158,7 +158,7 @@ def ETL_MMS_NOW_schema(connection, tables):
         sand_grv_qry_activity_detail = etl.join(sand_grv_qry_activity_detail, sand_grv_qry_activity_4, key='mms_cid')
         
         sand_grv_qry_activity_detail = etl.join(sand_grv_qry_activity_detail, message_ids, key='mms_cid')
-        applications = etl.outerjoin(applications, sand_grv_qry_activity_app_cols, key='mms_cid')
+        applications = etl.leftjoin(applications, sand_grv_qry_activity_app_cols, key='mms_cid')
 
         surface_bulk_activity = etl.fromdb(
             connection,
@@ -259,14 +259,14 @@ def ETL_MMS_NOW_schema(connection, tables):
         surface_bulk_activity_detail = etl.join(surface_bulk_activity_detail, surface_bulk_activity_6, key='mms_cid')
 
         surface_bulk_activity_detail = etl.join(surface_bulk_activity_detail, message_ids, key='mms_cid')
-        applications = etl.outerjoin(applications, surface_bulk_activity_app_cols, key='mms_cid')
+        applications = etl.leftjoin(applications, surface_bulk_activity_app_cols, key='mms_cid')
 
         cut_lines = etl.fromdb(
             connection,
             f'SELECT cid as mms_cid, line_km as cutlinesexplgridtotallinekms, t_vol as cutlinesexplgridtimbervolume, recl_desc as cutlinesreclamation, recl_dol as cutlinesreclamationcost, t_ar as cutlinesexplgriddisturbedarea from mms.mmssco_n'
         )
 
-        applications = etl.outerjoin(applications, cut_lines, key='mms_cid')
+        applications = etl.leftjoin(applications, cut_lines, key='mms_cid')
 
         exploration_access = etl.fromdb(
             connection,
@@ -375,7 +375,7 @@ def ETL_MMS_NOW_schema(connection, tables):
         exploration_access_activity_detail = etl.join(exploration_access_activity_detail, exploration_access_activity_7, key='mms_cid')
 
         exploration_access_activity_detail = etl.join(exploration_access_activity_detail, message_ids, key='mms_cid')
-        applications = etl.outerjoin(applications, exploration_access_app_cols, key='mms_cid')
+        applications = etl.leftjoin(applications, exploration_access_app_cols, key='mms_cid')
 
         exploration_surface_drill = etl.fromdb(
             connection,
@@ -496,7 +496,7 @@ def ETL_MMS_NOW_schema(connection, tables):
         exploration_surface_drill_activity_detail = etl.join(exploration_surface_drill_activity_detail, exploration_surface_drill_activity_8, key='mms_cid')
 
         exploration_surface_drill_activity_detail = etl.join(exploration_surface_drill_activity_detail, message_ids, key='mms_cid')
-        applications = etl.outerjoin(applications, exploration_surface_drill_app_cols, key='mms_cid')
+        applications = etl.leftjoin(applications, exploration_surface_drill_app_cols, key='mms_cid')
 
         mech_trenching = etl.fromdb(
             connection,
@@ -538,7 +538,7 @@ def ETL_MMS_NOW_schema(connection, tables):
         mech_trenching_activity_detail = etl.join(mech_trenching_activity_detail, mech_trenching_activity_2, key='mms_cid')
 
         mech_trenching_activity_detail = etl.join(mech_trenching_activity_detail, message_ids, key='mms_cid')
-        applications = etl.outerjoin(applications, mech_trenching_app_cols, key='mms_cid')
+        applications = etl.leftjoin(applications, mech_trenching_app_cols, key='mms_cid')
 
         under_exp_activity = etl.fromdb(
             connection,
@@ -805,21 +805,21 @@ def ETL_MMS_NOW_schema(connection, tables):
         under_exp_rehab_activity_detail = etl.join(under_exp_rehab_activity_detail, under_exp_rehab_activity_8, key='mms_cid')
 
         under_exp_rehab_activity_detail = etl.join(under_exp_rehab_activity_detail, message_ids, key='mms_cid')
-        applications = etl.outerjoin(applications, under_exp_activity_app_cols, key='mms_cid')
+        applications = etl.leftjoin(applications, under_exp_activity_app_cols, key='mms_cid')
 
         camps = etl.fromdb(
             connection,
             f'SELECT cid as mms_cid, act1_ar as campdisturbedarea, act1_vol as camptimbervolume, act2_ar as bldgdisturbedarea, act2_vol as bldgtimbervolume, act3_ar as stgedisturbedarea, act3_vol as stgetimbervolume, recl_desc as cbsfreclamation, recl_dol as cbsfreclamationcost from mms.mmssca_n'
         )
 
-        applications = etl.outerjoin(applications, camps, key='mms_cid')
+        applications = etl.leftjoin(applications, camps, key='mms_cid')
 
         timber_cutting = etl.fromdb(
             connection,
             f'SELECT cid as mms_cid, tot_bol as timbertotalvolume, fup_ind as freeusepermit, ltc_ind as licencetocut from mms.mmssck_n'
         )
 
-        applications = etl.outerjoin(applications, timber_cutting, key='mms_cid')
+        applications = etl.leftjoin(applications, timber_cutting, key='mms_cid')
 
         print('------------------------------------------------------------------------------------------------')
         print('Application before explosives Columns')
@@ -834,7 +834,7 @@ def ETL_MMS_NOW_schema(connection, tables):
         explosive_permits = etl.addfield(explosive_permits, 'bcexplosivespermitissued', lambda v: 'Yes' if v['perm_ind'] == 1 else 'No')
         explosive_permits = etl.cutout(explosive_permits, 'perm_ind')
 
-        applications = etl.outerjoin(applications, explosive_permits, key='mms_cid')
+        applications = etl.leftjoin(applications, explosive_permits, key='mms_cid')
 
         contacts = etl.fromdb(
             connection,
