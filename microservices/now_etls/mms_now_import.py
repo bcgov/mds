@@ -904,8 +904,6 @@ def ETL_MMS_NOW_schema(connection, tables):
         streamline_application = etl.cut(streamline_application, 'mms_cid', 'startworkdate', 'endworkdate')
         streamline_application = etl.join(streamline_application, message_ids, key='mms_cid')
 
-        applications = etl.outerjoin(applications, streamline_application_app_cols, key='mms_cid')
-
         water_source_activity = etl.fromdb(
             connection,
             f'SELECT cid as mms_cid, water_nm as sourcewatersupply, activity as type, water_use as useofwater, water_vol as estimateratewater, pump_size as pumpsizeinwater, water_intake as locationwaterintake from mms.mmsscp_n_d'
