@@ -93,7 +93,7 @@ ALTER TABLE MMS_NOW_Submissions.application OWNER TO mds;
 CREATE TABLE MMS_NOW_Submissions.water_source_activity (
   ID serial PRIMARY KEY,
 	MESSAGEID integer,
-  MMS_CID integer,
+  MMS_CID bigint,
 	SOURCEWATERSUPPLY character varying,
 	TYPE character varying,
 	USEOFWATER character varying,
@@ -109,7 +109,7 @@ ALTER TABLE MMS_NOW_Submissions.water_source_activity OWNER TO mds;
 CREATE TABLE MMS_NOW_Submissions.placer_activity (
   PLACERACTIVITYID serial PRIMARY KEY,
   MESSAGEID integer,
-  MMS_CID integer,
+  MMS_CID bigint,
 	TYPE character varying,
 	QUANTITY integer,
 	DISTURBEDAREA numeric(14,2),
@@ -121,7 +121,7 @@ ALTER TABLE MMS_NOW_Submissions.placer_activity OWNER TO mds;
 CREATE TABLE MMS_NOW_Submissions.sand_grv_qry_activity (
   ID serial PRIMARY KEY,
 	MESSAGEID integer,
-  MMS_CID integer,
+  MMS_CID bigint,
 	TYPE character varying,
 	DISTURBEDAREA numeric(14,2),
 	TIMBERVOLUME numeric(14,2),
@@ -134,7 +134,7 @@ ALTER TABLE MMS_NOW_Submissions.sand_grv_qry_activity OWNER TO mds;
 CREATE TABLE MMS_NOW_Submissions.surface_bulk_sample_activity (
   ID serial PRIMARY KEY,
   MESSAGEID integer,
-  MMS_CID integer,
+  MMS_CID bigint,
 	TYPE character varying,
 	DISTURBEDAREA numeric(14,2),
 	TIMBERVOLUME numeric(14,2)
@@ -145,7 +145,7 @@ ALTER TABLE MMS_NOW_Submissions.surface_bulk_sample_activity OWNER TO mds;
 CREATE TABLE MMS_NOW_Submissions.under_exp_new_activity (
   ID serial PRIMARY KEY,
 	MESSAGEID integer,
-  MMS_CID integer,
+  MMS_CID bigint,
 	TYPE character varying,
 	QUANTITY integer,
 	
@@ -157,7 +157,7 @@ ALTER TABLE MMS_NOW_Submissions.under_exp_new_activity OWNER TO mds;
 CREATE TABLE MMS_NOW_Submissions.under_exp_rehab_activity (
   ID serial PRIMARY KEY,
 	MESSAGEID integer,
-  MMS_CID integer,
+  MMS_CID bigint,
 	TYPE character varying,
 	QUANTITY integer,
 
@@ -169,7 +169,7 @@ ALTER TABLE MMS_NOW_Submissions.under_exp_rehab_activity OWNER TO mds;
 CREATE TABLE MMS_NOW_Submissions.under_exp_surface_activity (
   ID serial PRIMARY KEY,
 	MESSAGEID integer,
-  MMS_CID integer,
+  MMS_CID bigint,
 	TYPE character varying,
 	QUANTITY integer,
 	DISTURBEDAREA numeric(14,2),
@@ -183,7 +183,7 @@ ALTER TABLE MMS_NOW_Submissions.under_exp_surface_activity OWNER TO mds;
 CREATE TABLE MMS_NOW_Submissions.settling_pond (
   SETTLINGPONDID serial PRIMARY KEY,
   MESSAGEID integer,
-  MMS_CID integer,
+  MMS_CID bigint,
 	DISTURBEDAREA numeric(14,2),
 	TIMBERVOLUME numeric(14,2)
 );
@@ -193,7 +193,7 @@ ALTER TABLE MMS_NOW_Submissions.settling_pond OWNER TO mds;
 CREATE TABLE MMS_NOW_Submissions.exp_access_activity (
   ID serial PRIMARY KEY,
   MESSAGEID integer,
-  MMS_CID integer,
+  MMS_CID bigint,
 	TYPE character varying,
 	LENGTH numeric(14,2),
 	DISTURBEDAREA numeric(14,2),
@@ -207,7 +207,7 @@ ALTER TABLE MMS_NOW_Submissions.exp_access_activity OWNER TO mds;
 CREATE TABLE MMS_NOW_Submissions.exp_surface_drill_activity (
   ID serial PRIMARY KEY,
   MESSAGEID integer,
-  MMS_CID integer,
+  MMS_CID bigint,
 	TYPE character varying,
 	NUMBEROFSITES integer,
 	DISTURBEDAREA numeric(14,2),
@@ -221,7 +221,7 @@ ALTER TABLE MMS_NOW_Submissions.exp_surface_drill_activity OWNER TO mds;
 CREATE TABLE MMS_NOW_Submissions.mech_trenching_activity (
   ID serial PRIMARY KEY,
   MESSAGEID integer,
-  MMS_CID integer,
+  MMS_CID bigint,
 	TYPE character varying,
 	NUMBEROFSITES integer,
 	DISTURBEDAREA numeric(14,2),
@@ -235,7 +235,7 @@ ALTER TABLE MMS_NOW_Submissions.mech_trenching_activity OWNER TO mds;
 CREATE TABLE MMS_NOW_Submissions.contact (
     ID serial PRIMARY KEY,
     MESSAGEID integer,
-    MMS_CID integer,
+    MMS_CID bigint,
     ORG_LEGALNAME character varying,
     IND_FIRSTNAME character varying,
     IND_LASTNAME character varying,
@@ -259,7 +259,7 @@ ALTER TABLE MMS_NOW_Submissions.contact OWNER TO mds;
 CREATE TABLE MMS_NOW_Submissions.client (
     ID serial PRIMARY KEY,
     MESSAGEID integer,
-    MMS_CID integer,
+    MMS_CID bigint,
     ORG_LEGALNAME character varying,
     IND_FIRSTNAME character varying,
     IND_LASTNAME character varying,
@@ -282,7 +282,7 @@ ALTER TABLE MMS_NOW_Submissions.client OWNER TO mds;
 CREATE TABLE MMS_NOW_Submissions.application_start_stop (
     ID serial PRIMARY KEY,
     MESSAGEID integer,
-    MMS_CID integer,
+    MMS_CID bigint,
     STARTWORKDATE date,
     ENDWORKDATE date
 );
@@ -318,7 +318,7 @@ CREATE TABLE MMS_NOW_Submissions.application_nda (
 ALTER TABLE MMS_NOW_Submissions.application_nda OWNER TO mds;
 
 CREATE TABLE MMS_NOW_Submissions.existing_placer_activity_xref (
-    MMS_CID integer,
+    MMS_CID bigint,
 	  PLACERACTIVITYID integer,
 
     FOREIGN KEY (MMS_CID) REFERENCES MMS_NOW_Submissions.application(MMS_CID) DEFERRABLE INITIALLY DEFERRED,
@@ -328,7 +328,7 @@ CREATE TABLE MMS_NOW_Submissions.existing_placer_activity_xref (
 ALTER TABLE MMS_NOW_Submissions.existing_placer_activity_xref OWNER TO mds;
 
 CREATE TABLE MMS_NOW_Submissions.existing_settling_pond_xref (
-    MMS_CID integer,
+    MMS_CID bigint,
   	SETTLINGPONDID integer,
 
     FOREIGN KEY (MMS_CID) REFERENCES MMS_NOW_Submissions.application(MMS_CID) DEFERRABLE INITIALLY DEFERRED,
@@ -338,7 +338,7 @@ CREATE TABLE MMS_NOW_Submissions.existing_settling_pond_xref (
 ALTER TABLE MMS_NOW_Submissions.existing_settling_pond_xref OWNER TO mds;
 
 CREATE TABLE MMS_NOW_Submissions.proposed_placer_activity_xref (
-    MMS_CID integer,
+    MMS_CID bigint,
   	PLACERACTIVITYID integer,
 
     FOREIGN KEY (MMS_CID) REFERENCES MMS_NOW_Submissions.application(MMS_CID) DEFERRABLE INITIALLY DEFERRED,
@@ -348,7 +348,7 @@ CREATE TABLE MMS_NOW_Submissions.proposed_placer_activity_xref (
 ALTER TABLE MMS_NOW_Submissions.proposed_placer_activity_xref OWNER TO mds;
 
 CREATE TABLE MMS_NOW_Submissions.proposed_settling_pond_xref (
-    MMS_CID integer,
+    MMS_CID bigint,
 	  SETTLINGPONDID integer,
 
     FOREIGN KEY (MMS_CID) REFERENCES MMS_NOW_Submissions.application(MMS_CID) DEFERRABLE INITIALLY DEFERRED,
