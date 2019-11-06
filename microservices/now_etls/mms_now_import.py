@@ -507,11 +507,6 @@ def ETL_MMS_NOW_schema(connection, tables):
 
         mech_trenching = etl.cutout(mech_trenching, 'mechtrenchingreclamation', 'mechtrenchingreclamationcost')
 
-        print('------------------------------------------------------------------------------------------------')
-        print('Mechanical Trenching Application Columns')
-        print(etl.header(mech_trenching_app_cols))
-        print('------------------------------------------------------------------------------------------------')
-
         mech_trenching_activity_detail = etl.fromdb(
             connection,
             f'SELECT * from MMS_NOW_Submissions.mech_trenching_activity'
@@ -551,11 +546,6 @@ def ETL_MMS_NOW_schema(connection, tables):
         )
 
         under_exp_activity_app_cols = etl.cut(under_exp_activity, 'mms_cid', 'underexpreclamation', 'underexpreclamationcost', 'underexpsurfacetotaldistarea', 'underexpsurfacetimbervolume')
-
-        print('------------------------------------------------------------------------------------------------')
-        print('Under ground exploration Application Columns')
-        print(etl.header(under_exp_activity_app_cols))
-        print('------------------------------------------------------------------------------------------------')
 
         under_exp_activity = etl.cutout(under_exp_activity, 'underexpreclamation', 'underexpreclamationcost', 'underexpsurfacetotaldistarea', 'underexpsurfacetimbervolume')
         
@@ -920,6 +910,11 @@ def ETL_MMS_NOW_schema(connection, tables):
         )
 
         application_nda = etl.cutout(application_nda, 'oldenddate')
+
+        print('------------------------------------------------------------------------------------------------')
+        print('Application Columns')
+        print(etl.header(applications))
+        print('------------------------------------------------------------------------------------------------')
 
         etl.appenddb(applications, connection, 'application', schema='mms_now_submissions', commit=False)
         etl.appenddb(water_source_activity, connection, 'water_source_activity', schema='mms_now_submissions', commit=False)
