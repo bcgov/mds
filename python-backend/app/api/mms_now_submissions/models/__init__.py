@@ -13,3 +13,7 @@ from .under_exp_new_activity import *
 from .under_exp_rehab_activity import *
 from .under_exp_surface_activity import *
 from .water_source_activity import *
+from .existing_placer_activity_xref import *
+from .existing_settling_pond_xref import *
+from .proposed_placer_activity_xref import *
+from .proposed_settling_pond_xref import *

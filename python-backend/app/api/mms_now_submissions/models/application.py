@@ -105,6 +105,23 @@ class MMSApplication(Base):
     exp_surface_drill_activity = db.relationship('MMSExpSurfaceDrillActivity', lazy='select')
     mech_trenching_activity = db.relationship('MMSMechTrenchingActivity', lazy='select')
 
+    existing_placer_activity = db.relationship(
+        'MMSPlacerActivity',
+        lazy='select',
+        secondary='mms_now_submissions.existing_placer_activity_xref')
+    existing_settling_pond = db.relationship(
+        'MMSSettlingPondSubmission',
+        lazy='select',
+        secondary='mms_now_submissions.existing_settling_pond_xref')
+    proposed_placer_activity = db.relationship(
+        'MMSPlacerActivity',
+        lazy='select',
+        secondary='mms_now_submissions.proposed_placer_activity_xref')
+    proposed_settling_pond = db.relationship(
+        'MMSSettlingPondSubmission',
+        lazy='select',
+        secondary='mms_now_submissions.proposed_settling_pond_xref')
+
     def __repr__(self):
         return '<MMSApplication %r>' % self.id
 
@@ -118,6 +135,8 @@ class MMSApplication(Base):
 
     @classmethod
     def find_by_mms_cid(cls, mms_cid):
+        if not mms_cid:
+            return
         return cls.query.filter_by(mms_cid=mms_cid).first()
 
     @classmethod

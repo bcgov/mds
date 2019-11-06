@@ -11,7 +11,6 @@ unit_type_map = {'m3' : 'Meters cubed',
 'Degrees':'Degrees',
 'Percent':'Grade (Percent)'}
 
-
 def code_lookup(model, description, code_column_name):
     if description:
         row = model.query.filter_by(description=description).first()
@@ -23,14 +22,10 @@ def code_lookup(model, description, code_column_name):
         result = None
     return result
 
-def transmogrify_now(application_guid):
-    now_identity = app_models.NOWApplicationIdentity.filter_by(
-            application_guid=guid).first()
-    if not now_identity:
-        raise Exception('No valid notice of work with application_guid')
+def transmogrify_now(now_application_identity):
+    now_sub = sub_models.Application.find_by_messageid(now_application_identity.messageid) or sub_models.Application()
+    mms_now_sub = mms_sub_models.MMSApplication.find_by_mms_cid(now_application_identity.mms_cid) or mms_sub_models.Application()
 
-    now_sub = sub_models.Application.find_by_messageid(now_identity.messageid) or sub_models.Application()
-    mms_now_sub = mms_sub_models.MMSApplication.find_by_mms_cid(now_identity.mms_cid) or mms_sub_models.MMSApplication()
     now_app = app_models.NOWApplication(mine_guid=now_sub.mine_guid)
 
     _transmogrify_now_details(now_app, now_sub, mms_now_sub)
@@ -55,8 +50,7 @@ def transmogrify_now(application_guid):
 
 def _transmogrify_now_details(now_app, now_sub, mms_now_sub):
     now_app.now_tracking_number = now_sub.trackingnumber
-    now_app.notice_of_work_type_code = code_lookup(app_models.NOWApplicationType,
-                                             mms_now_sub.noticeofworktype or now_sub.noticeofworktype,'notice_of_work_type_code')
+    now_app.notice_of_work_type_code = code_lookup(app_models.NOWApplicationType, mms_now_sub.noticeofworktype or now_sub.noticeofworktype,'notice_of_work_type_code')
     now_app.now_application_status_code = code_lookup(app_models.NOWApplicationStatus,
                                                 now_sub.status,'now_application_status_code')
     now_app.submitted_date = mms_now_sub.submitteddate or now_sub.submitteddate
@@ -69,55 +63,58 @@ def _transmogrify_now_details(now_app, now_sub, mms_now_sub):
     now_app.proposed_end_date = mms_now_sub.proposedenddate or now_sub.proposedenddate
     return
 
-def _transmogrify_blasting_activities(now_app, now_sub, mms_now_sub):
-    if now_sub.bcexplosivespermitissued or now_sub.bcexplosivespermitnumber or now_sub.bcexplosivespermitexpiry or now_sub.storeexplosivesonsite:
-        now_app.blasting = app_models.BlastingOperation(
-            explosive_permit_issued=now_sub.bcexplosivespermitissued == 'Yes',
-            explosive_permit_number=now_sub.bcexplosivespermitnumber,
-            explosive_permit_expiry_date=now_sub.bcexplosivespermitexpiry,
-            has_storage_explosive_on_site=now_sub.storeexplosivesonsite == 'Yes')
-    return
-
 def _transmogrify_state_of_land(now_app, now_sub, mms_now_sub):
-    if now_sub.landcommunitywatershed or now_sub.archsitesaffected:
+    landcommunitywatershed = mms_now_sub.landcommunitywatershed or now_sub.landcommunitywatershed
+    archsitesaffected = mms_now_sub.archsitesaffected or now_sub.archsitesaffected
+    if landcommunitywatershed or archsitesaffected:
         now_app.state_of_land = app_models.StateOfLand(
-            has_community_water_shed=now_sub.landcommunitywatershed == 'Yes',
-            has_archaeology_sites_affected=now_sub.archsitesaffected == 'Yes'
+            has_community_water_shed=landcommunitywatershed == 'Yes',
+            has_archaeology_sites_affected=archsitesaffected == 'Yes'
         )
     return
 
 
 #Activities   
 def _transmogrify_camp_activities(now_app, now_sub, mms_now_sub):
-    if now_sub.cbsfreclamation or now_sub.cbsfreclamationcost or now_sub.campbuildstgetotaldistarea or now_sub.fuellubstoreonsite:
+    cbsfreclamation = mms_now_sub.cbsfreclamation or now_sub.cbsfreclamation
+    cbsfreclamationcost = mms_now_sub.cbsfreclamationcost or now_sub.cbsfreclamationcost
+    campbuildstgetotaldistarea = now_sub.campbuildstgetotaldistarea
+    fuellubstoreonsite = mms_now_sub.fuellubstoreonsite or now_sub.fuellubstoreonsite
+    if cbsfreclamation or cbsfreclamationcost or campbuildstgetotaldistarea or fuellubstoreonsite:
 
         camp = app_models.Camp(
-            reclamation_description=now_sub.cbsfreclamation,
-            reclamation_cost=now_sub.cbsfreclamationcost,
-            total_disturbed_area=now_sub.campbuildstgetotaldistarea,
+            reclamation_description=cbsfreclamation,
+            reclamation_cost=cbsfreclamationcost,
+            total_disturbed_area=campbuildstgetotaldistarea,
             total_disturbed_area_unit_type_code='HA',
-            has_fuel_stored=now_sub.fuellubstoreonsite == 'Yes',
+            has_fuel_stored=fuellubstoreonsite == 'Yes',
         )
 
-        if now_sub.campdisturbedarea or now_sub.camptimbervolume:
+        campdisturbedarea = mms_now_sub.campdisturbedarea or now_sub.campdisturbedarea
+        camptimbervolume = mms_now_sub.camptimbervolume or now_sub.camptimbervolume
+        if campdisturbedarea or camptimbervolume:
             camp_detail = app_models.CampDetail(
                 activity_type_description='Camps',
-                disturbed_area=now_sub.campdisturbedarea,
-                timber_volume=now_sub.camptimbervolume)
+                disturbed_area=campdisturbedarea,
+                timber_volume=camptimbervolume)
             camp.details.append(camp_detail)
 
-        if now_sub.bldgdisturbedarea or now_sub.bldgtimbervolume:
+        bldgdisturbedarea = mms_now_sub.bldgdisturbedarea or now_sub.bldgdisturbedarea
+        bldgtimbervolume = mms_now_sub.bldgtimbervolume or now_sub.bldgtimbervolume
+        if bldgdisturbedarea or bldgtimbervolume:
             camp_detail = app_models.CampDetail(
                 activity_type_description='Buildings',
-                disturbed_area=now_sub.bldgdisturbedarea,
-                timber_volume=now_sub.bldgtimbervolume)
+                disturbed_area=bldgdisturbedarea,
+                timber_volume=bldgtimbervolume)
             camp.details.append(camp_detail)
 
-        if now_sub.stgedisturbedarea or now_sub.stgetimbervolume:
+        stgedisturbedarea = mms_now_sub.stgedisturbedarea or now_sub.stgedisturbedarea
+        stgetimbervolume = mms_now_sub.stgetimbervolume or now_sub.stgetimbervolume
+        if stgedisturbedarea or stgetimbervolume:
             camp_detail = app_models.CampDetail(
                 activity_type_description='Staging Area',
-                disturbed_area=now_sub.stgedisturbedarea,
-                timber_volume=now_sub.stgetimbervolume)
+                disturbed_area=stgedisturbedarea,
+                timber_volume=stgetimbervolume)
             camp.details.append(camp_detail)
 
         now_app.camps = camp
@@ -125,34 +122,46 @@ def _transmogrify_camp_activities(now_app, now_sub, mms_now_sub):
     return
 
 def _transmogrify_cut_lines_polarization_survey(now_app, now_sub, mms_now_sub):
-    if now_sub.cutlinesreclamation or now_sub.cutlinesreclamationcost or now_sub.cutlinesexplgriddisturbedarea:
+    cutlinesreclamation = mms_now_sub.cutlinesreclamation or now_sub.cutlinesreclamation
+    cutlinesreclamationcost = mms_now_sub.cutlinesreclamationcost or now_sub.cutlinesreclamationcost
+    cutlinesexplgriddisturbedarea = mms_now_sub.cutlinesexplgriddisturbedarea or now_sub.cutlinesexplgriddisturbedarea
+    if cutlinesreclamation or cutlinesreclamationcost or cutlinesexplgriddisturbedarea:
 
         clps = app_models.CutLinesPolarizationSurvey(
-            reclamation_description=now_sub.cutlinesreclamation,
-            reclamation_cost=now_sub.cutlinesreclamationcost,
-            total_disturbed_area=now_sub.cutlinesexplgriddisturbedarea,
+            reclamation_description=cutlinesreclamation,
+            reclamation_cost=cutlinesreclamationcost,
+            total_disturbed_area=cutlinesexplgriddisturbedarea,
             total_disturbed_area_unit_type_code='HA')
 
-        if now_sub.cutlinesexplgridtotallinekms or now_sub.cutlinesexplgridtimbervolume:
+        if cutlinesexplgridtotallinekms or cutlinesexplgridtimbervolume:
             clps_detial = app_models.CutLinesPolarizationSurveyDetail(
-                cut_line_length=now_sub.cutlinesexplgridtotallinekms,
-                timber_volume=now_sub.cutlinesexplgridtimbervolume)
-            clpnow_sub.details.append(clps_detial)
+                cut_line_length=cutlinesexplgridtotallinekms,
+                timber_volume=cutlinesexplgridtimbervolume)
+            clps.details.append(clps_detial)
 
         now_app.cut_lines_polarization_survey = clps
 
     return
 
 def _transmogrify_exploration_surface_drilling(now_app, now_sub, mms_now_sub):
-    if now_sub.expsurfacedrillreclcorestorage or now_sub.expsurfacedrillreclamation or now_sub.expsurfacedrillreclamationcost or now_sub.expsurfacedrilltotaldistarea:
+    expsurfacedrillreclcorestorage = mms_now_sub.expsurfacedrillreclcorestorage or now_sub.expsurfacedrillreclcorestorage
+    expsurfacedrillreclamation = mms_now_sub.expsurfacedrillreclamation or now_sub.expsurfacedrillreclamation
+    expsurfacedrillreclamationcost = mms_now_sub.expsurfacedrillreclamationcost or now_sub.expsurfacedrillreclamationcost
+    expsurfacedrilltotaldistarea = now_sub.expsurfacedrilltotaldistarea
+    if expsurfacedrillreclcorestorage or expsurfacedrillreclamation or expsurfacedrillreclamationcost or expsurfacedrilltotaldistarea:
         esd = app_models.ExplorationSurfaceDrilling(
-            reclamation_description=now_sub.expsurfacedrillreclamation,
-            reclamation_cost=now_sub.expsurfacedrillreclamationcost,
-            total_disturbed_area=now_sub.expsurfacedrilltotaldistarea,
-            reclamation_core_storage=now_sub.expsurfacedrillreclcorestorage,
+            reclamation_description=expsurfacedrillreclamation,
+            reclamation_cost=expsurfacedrillreclamationcost,
+            total_disturbed_area=expsurfacedrilltotaldistarea,
+            reclamation_core_storage=expsurfacedrillreclcorestorage,
             total_disturbed_area_unit_type_code='HA')
 
-        for sd in now_sub.exp_surface_drill_activity:
+        if(len(mms_now_sub.exp_surface_drill_activity) > 0):
+            exp_surface_drill_activity = mms_now_sub.exp_surface_drill_activity
+        else:
+            exp_surface_drill_activity = now_sub.exp_surface_drill_activity
+
+        for sd in exp_surface_drill_activity:
             esd_detail = app_models.ExplorationSurfaceDrillingDetail(
                 activity_type_description=sd.type,
                 number_of_sites=sd.numberofsites,
@@ -164,14 +173,22 @@ def _transmogrify_exploration_surface_drilling(now_app, now_sub, mms_now_sub):
     return
 
 def _transmogrify_mechanical_trenching(now_app, now_sub, mms_now_sub):
-    if now_sub.mechtrenchingreclamation or now_sub.mechtrenchingreclamationcost or now_sub.mechtrenchingtotaldistarea:
+    mechtrenchingreclamation = mms_now_sub.mechtrenchingreclamation or now_sub.mechtrenchingreclamation
+    mechtrenchingreclamationcost = mms_now_sub.mechtrenchingreclamationcost or now_sub.mechtrenchingreclamationcost
+    mechtrenchingtotaldistarea = now_sub.mechtrenchingtotaldistarea
+    if mechtrenchingreclamation or mechtrenchingreclamationcost or mechtrenchingtotaldistarea:
         mech = app_models.MechanicalTrenching(
-            reclamation_description=now_sub.mechtrenchingreclamation,
-            reclamation_cost=now_sub.mechtrenchingreclamationcost,
-            total_disturbed_area=now_sub.mechtrenchingtotaldistarea,
+            reclamation_description=mechtrenchingreclamation,
+            reclamation_cost=mechtrenchingreclamationcost,
+            total_disturbed_area=mechtrenchingtotaldistarea,
             total_disturbed_area_unit_type_code='HA')
 
-        for sd in now_sub.mech_trenching_activity:
+        if(len(mms_now_sub.mech_trenching_activity) > 0):
+            mech_trenching_activity = mms_now_sub.mech_trenching_activity
+        else:
+            mech_trenching_activity = now_sub.mech_trenching_activity
+
+        for sd in mech_trenching_activity:
             mech_detail = app_models.MechanicalTrenchingDetail(
                 activity_type_description=sd.type,
                 number_of_sites=sd.numberofsites,
@@ -200,27 +217,41 @@ def _transmogrify_equipment(e):
 
 
 def _transmogrify_exploration_access(now_app, now_sub, mms_now_sub):
-    if now_sub.expaccessreclamation or now_sub.expaccessreclamationcost or now_sub.expaccesstotaldistarea:
+    expaccessreclamation = mms_now_sub.expaccessreclamation or now_sub.expaccessreclamation
+    expaccessreclamationcost = mms_now_sub.expaccessreclamationcost or now_sub.expaccessreclamationcost
+    expaccesstotaldistarea = now_sub.expaccesstotaldistarea
+    if expaccessreclamation or expaccessreclamationcost or expaccesstotaldistarea:
         exploration_access = app_models.ExplorationAccess(
-            reclamation_description=now_sub.expaccessreclamation,
-            reclamation_cost=now_sub.expaccessreclamationcost,
-            total_disturbed_area=now_sub.expaccesstotaldistarea,
+            reclamation_description=expaccessreclamation,
+            reclamation_cost=expaccessreclamationcost,
+            total_disturbed_area=expaccesstotaldistarea,
             total_disturbed_area_unit_type_code='HA'
         )
 
         now_app.exploration_access = exploration_access
 
 def _transmogrify_placer_operations(now_app, now_sub, mms_now_sub):
-    if now_sub.placerundergroundoperations or now_sub.placerhandoperations or now_sub.placerhandoperations or now_sub.placerreclamationarea or now_sub.placerreclamation or now_sub.placerreclamationcost:
+    placerundergroundoperations = now_sub.placerundergroundoperations
+    placerhandoperations = now_sub.placerhandoperations
+    placerreclamationarea = now_sub.placerreclamationarea
+    placerreclamation = mms_now_sub.placerreclamation or now_sub.placerreclamation
+    placerreclamationcost = mms_now_sub.placerreclamationcost or now_sub.placerreclamationcost
+    expaccesstotaldistarea = now_sub.expaccesstotaldistarea
+    if placerundergroundoperations or placerhandoperations or placerreclamationarea or placerreclamation or placerreclamationcost:
         placer = app_models.PlacerOperation(
-            reclamation_description=now_sub.placerreclamation,
-            reclamation_cost=now_sub.placerreclamationcost,
-            total_disturbed_area=now_sub.placerreclamationarea,
+            reclamation_description=placerreclamation,
+            reclamation_cost=placerreclamationcost,
+            total_disturbed_area=placerreclamationarea,
             total_disturbed_area_unit_type_code='HA',
-            is_underground=now_sub.placerundergroundoperations == 'Yes',
-            is_hand_operation=now_sub.placerhandoperations == 'Yes')
+            is_underground=placerundergroundoperations == 'Yes',
+            is_hand_operation=placerhandoperations == 'Yes')
 
-        for proposed in now_sub.proposed_placer_activity:
+        if(len(mms_now_sub.proposed_placer_activity) > 0):
+            proposed_placer_activity = mms_now_sub.proposed_placer_activity
+        else:
+            proposed_placer_activity = now_sub.proposed_placer_activity
+
+        for proposed in proposed_placer_activity:
             proposed_detail = app_models.PlacerOperationDetail(
                 activity_type_description=proposed.type,
                 disturbed_area=proposed.disturbedarea,
@@ -235,8 +266,12 @@ def _transmogrify_placer_operations(now_app, now_sub, mms_now_sub):
 
             proposed_xref = app_models.ActivitySummaryDetailXref(summary=placer, detail=proposed_detail, is_existing=False)
             
+        if(len(mms_now_sub.existing_placer_activity) > 0):
+            existing_placer_activity = mms_now_sub.existing_placer_activity
+        else:
+            existing_placer_activity = now_sub.existing_placer_activity
 
-        for existing in now_sub.existing_placer_activity:
+        for existing in existing_placer_activity:
             existing_etl = app_models.ETLActivityDetail.query.filter_by(
                 placeractivityid=existing.placeractivityid).first()
 
@@ -265,17 +300,28 @@ def _transmogrify_placer_operations(now_app, now_sub, mms_now_sub):
     return
 
 def _transmogrify_settling_ponds(now_app, now_sub, mms_now_sub):
-    if now_sub.pondsreclamation or now_sub.pondsreclamationcost or now_sub.pondstotaldistarea or now_sub.pondsexfiltratedtoground or now_sub.pondsrecycled or now_sub.pondsdischargedtoenv:
+    pondsreclamation = mms_now_sub.pondsreclamation or now_sub.pondsreclamation
+    pondsreclamationcost = mms_now_sub.pondsreclamationcost or now_sub.pondsreclamationcost
+    pondstotaldistarea = now_sub.pondstotaldistarea
+    pondsexfiltratedtoground = mms_now_sub.pondsexfiltratedtoground or now_sub.pondsexfiltratedtoground
+    pondsrecycled = mms_now_sub.pondsrecycled or now_sub.pondsrecycled
+    pondsdischargedtoenv = mms_now_sub.pondsdischargedtoenv or now_sub.pondsdischargedtoenv
+    if pondsreclamation or pondsreclamationcost or pondstotaldistarea or pondsexfiltratedtoground or pondsrecycled or pondsdischargedtoenv:
         settling_pond = app_models.SettlingPond(
-            reclamation_description=now_sub.pondsreclamation,
-            reclamation_cost=now_sub.pondsreclamationcost,
-            total_disturbed_area=now_sub.pondstotaldistarea,
+            reclamation_description=pondsreclamation,
+            reclamation_cost=pondsreclamationcost,
+            total_disturbed_area=pondstotaldistarea,
             total_disturbed_area_unit_type_code='HA',
-            is_ponds_exfiltrated=now_sub.pondsexfiltratedtoground == 'Yes',
-            is_ponds_recycled=now_sub.pondsrecycled == 'Yes',
-            is_ponds_discharged=now_sub.pondsdischargedtoenv == 'Yes')
+            is_ponds_exfiltrated=pondsexfiltratedtoground == 'Yes',
+            is_ponds_recycled=pondsrecycled == 'Yes',
+            is_ponds_discharged=pondsdischargedtoenv == 'Yes')
 
-        for proposed in now_sub.proposed_settling_pond:
+        if(len(mms_now_sub.proposed_settling_pond) > 0):
+            proposed_settling_pond = mms_now_sub.proposed_settling_pond
+        else:
+            proposed_settling_pond = now_sub.proposed_settling_pond
+
+        for proposed in proposed_settling_pond:
             proposed_detail = app_models.SettlingPondDetail(
                 activity_type_description=proposed.pondid,
                 water_source_description=proposed.watersource,
@@ -291,7 +337,12 @@ def _transmogrify_settling_ponds(now_app, now_sub, mms_now_sub):
 
             proposed_xref = app_models.ActivitySummaryDetailXref(summary=settling_pond, detail=proposed_detail, is_existing=False)
             
-        for existing in now_sub.existing_settling_pond:
+        if(len(mms_now_sub.existing_settling_pond) > 0):
+            existing_settling_pond = mms_now_sub.existing_settling_pond
+        else:
+            existing_settling_pond = now_sub.existing_settling_pond
+
+        for existing in existing_settling_pond:
             existing_etl = app_models.ETLActivityDetail.query.filter_by(
                 settlingpondid=existing.settlingpondid).first()
 
@@ -318,61 +369,97 @@ def _transmogrify_settling_ponds(now_app, now_sub, mms_now_sub):
 
 
 def _transmogrify_blasting_activities(now_app, now_sub, mms_now_sub):
-    if now_sub.bcexplosivespermitissued or now_sub.bcexplosivespermitnumber or now_sub.bcexplosivespermitexpiry or now_sub.storeexplosivesonsite:
+    bcexplosivespermitissued = mms_now_sub.bcexplosivespermitissued or now_sub.bcexplosivespermitissued
+    bcexplosivespermitnumber = mms_now_sub.bcexplosivespermitnumber or now_sub.bcexplosivespermitnumber
+    bcexplosivespermitexpiry = mms_now_sub.bcexplosivespermitexpiry or now_sub.bcexplosivespermitexpiry
+    storeexplosivesonsite = now_sub.storeexplosivesonsite
+    if bcexplosivespermitissued or bcexplosivespermitnumber or bcexplosivespermitexpiry or storeexplosivesonsite:
         now_app.blasting = app_models.BlastingOperation(
-            explosive_permit_issued=now_sub.bcexplosivespermitissued == 'Yes',
-            explosive_permit_number=now_sub.bcexplosivespermitnumber,
-            explosive_permit_expiry_date=now_sub.bcexplosivespermitexpiry,
-            has_storage_explosive_on_site=now_sub.storeexplosivesonsite == 'Yes')
+            explosive_permit_issued=bcexplosivespermitissued == 'Yes',
+            explosive_permit_number=bcexplosivespermitnumber,
+            explosive_permit_expiry_date=bcexplosivespermitexpiry,
+            has_storage_explosive_on_site=storeexplosivesonsite == 'Yes')
     return
 
 
 def _transmogrify_sand_and_gravel_activities(now_app, now_sub, mms_now_sub):
-
-    if (now_sub.sandgrvqrydepthoverburden or now_sub.sandgrvqrydepthtopsoil or now_sub.sandgrvqrystabilizemeasures
-            or now_sub.sandgrvqrywithinaglandres or now_sub.sandgrvqryalrpermitnumber
-            or now_sub.sandgrvqrylocalgovsoilrembylaw or now_sub.sandgrvqryofficialcommplan
-            or now_sub.sandgrvqrylandusezoning or now_sub.sandgrvqryendlanduse or now_sub.sandgrvqrytotalmineres
-            or now_sub.sandgrvqrytotalmineresunits or now_sub.sandgrvqryannualextrest
-            or now_sub.sandgrvqryannualextrestunits or now_sub.sandgrvqryreclamation
-            or now_sub.sandgrvqryreclamationbackfill or now_sub.sandgrvqryreclamationcost
-            or now_sub.sandgrvqrygrdwtravgdepth or now_sub.sandgrvqrygrdwtrexistingareas
-            or now_sub.sandgrvqrygrdwtrtestpits or now_sub.sandgrvqrygrdwtrtestwells or now_sub.sandgrvqrygrdwtrother
-            or now_sub.sandgrvqrygrdwtrmeasprotect or now_sub.sandgrvqryimpactdistres
-            or now_sub.sandgrvqryimpactdistwater or now_sub.sandgrvqryimpactnoise
-            or now_sub.sandgrvqryimpactprvtaccess or now_sub.sandgrvqryimpactprevtdust
-            or now_sub.sandgrvqryimpactminvisual):
+    sandgrvqrydepthoverburden = now_sub.sandgrvqrydepthoverburden
+    sandgrvqrydepthtopsoil = now_sub.sandgrvqrydepthtopsoil
+    sandgrvqrystabilizemeasures = now_sub.sandgrvqrystabilizemeasures
+    sandgrvqrywithinaglandres = mms_now_sub.sandgrvqrywithinaglandres or now_sub.sandgrvqrywithinaglandres
+    sandgrvqryalrpermitnumber = now_sub.sandgrvqryalrpermitnumber
+    sandgrvqrylocalgovsoilrembylaw = mms_now_sub.sandgrvqrylocalgovsoilrembylaw or now_sub.sandgrvqrylocalgovsoilrembylaw
+    sandgrvqryofficialcommplan = now_sub.sandgrvqryofficialcommplan
+    sandgrvqrylandusezoning = now_sub.sandgrvqrylandusezoning
+    sandgrvqryendlanduse = now_sub.sandgrvqryendlanduse
+    sandgrvqrytotalmineres = now_sub.sandgrvqrytotalmineres
+    sandgrvqrytotalmineresunits = now_sub.sandgrvqrytotalmineresunits
+    sandgrvqryannualextrest = now_sub.sandgrvqryannualextrest
+    sandgrvqryannualextrestunits = now_sub.sandgrvqryannualextrestunits
+    sandgrvqryreclamation = mms_now_sub.sandgrvqryreclamation or now_sub.sandgrvqryreclamation
+    sandgrvqryreclamationbackfill = mms_now_sub.sandgrvqryreclamationbackfill or now_sub.sandgrvqryreclamationbackfill
+    sandgrvqryreclamationcost = mms_now_sub.sandgrvqryreclamationcost or now_sub.sandgrvqryreclamationcost
+    sandgrvqrygrdwtravgdepth = now_sub.sandgrvqrygrdwtravgdepth
+    sandgrvqrygrdwtrexistingareas = now_sub.sandgrvqrygrdwtrexistingareas
+    sandgrvqrygrdwtrtestpits = now_sub.sandgrvqrygrdwtrtestpits
+    sandgrvqrygrdwtrtestwells = now_sub.sandgrvqrygrdwtrtestwells
+    sandgrvqrygrdwtrother = now_sub.sandgrvqrygrdwtrother
+    sandgrvqrygrdwtrmeasprotect = now_sub.sandgrvqrygrdwtrmeasprotect
+    sandgrvqryimpactdistres = now_sub.sandgrvqryimpactdistres
+    sandgrvqryimpactdistwater = now_sub.sandgrvqryimpactdistwater
+    sandgrvqryimpactnoise = now_sub.sandgrvqryimpactnoise
+    sandgrvqryimpactprvtaccess = now_sub.sandgrvqryimpactprvtaccess
+    sandgrvqryimpactprevtdust = now_sub.sandgrvqryimpactprevtdust
+    sandgrvqryimpactminvisual = now_sub.sandgrvqryimpactminvisual
+    if (sandgrvqrydepthoverburden or sandgrvqrydepthtopsoil or sandgrvqrystabilizemeasures
+            or sandgrvqrywithinaglandres or sandgrvqryalrpermitnumber
+            or sandgrvqrylocalgovsoilrembylaw or sandgrvqryofficialcommplan
+            or sandgrvqrylandusezoning or sandgrvqryendlanduse or sandgrvqrytotalmineres
+            or sandgrvqrytotalmineresunits or sandgrvqryannualextrest
+            or sandgrvqryannualextrestunits or sandgrvqryreclamation
+            or sandgrvqryreclamationbackfill or sandgrvqryreclamationcost
+            or sandgrvqrygrdwtravgdepth or sandgrvqrygrdwtrexistingareas
+            or sandgrvqrygrdwtrtestpits or sandgrvqrygrdwtrtestwells or sandgrvqrygrdwtrother
+            or sandgrvqrygrdwtrmeasprotect or sandgrvqryimpactdistres
+            or sandgrvqryimpactdistwater or sandgrvqryimpactnoise
+            or sandgrvqryimpactprvtaccess or sandgrvqryimpactprevtdust
+            or sandgrvqryimpactminvisual):
         now_app.sand_and_gravel = app_models.SandGravelQuarryOperation(
-            average_overburden_depth=now_sub.sandgrvqrydepthoverburden,
-            average_top_soil_depth=now_sub.sandgrvqrydepthtopsoil,
-            stability_measures_description=now_sub.sandgrvqrystabilizemeasures,
-            is_agricultural_land_reserve=now_sub.sandgrvqrywithinaglandres == 'Yes',
-            agri_lnd_rsrv_permit_application_number=now_sub.sandgrvqryalrpermitnumber,
-            has_local_soil_removal_bylaw=now_sub.sandgrvqrylocalgovsoilrembylaw == 'Yes',
-            community_plan=now_sub.sandgrvqryofficialcommplan,
-            land_use_zoning=now_sub.sandgrvqrylandusezoning,
-            proposed_land_use=now_sub.sandgrvqryendlanduse,
-            total_mineable_reserves=now_sub.sandgrvqrytotalmineres,
+            average_overburden_depth=sandgrvqrydepthoverburden,
+            average_top_soil_depth=sandgrvqrydepthtopsoil,
+            stability_measures_description=sandgrvqrystabilizemeasures,
+            is_agricultural_land_reserve=sandgrvqrywithinaglandres == 'Yes',
+            agri_lnd_rsrv_permit_application_number=sandgrvqryalrpermitnumber,
+            has_local_soil_removal_bylaw=sandgrvqrylocalgovsoilrembylaw == 'Yes',
+            community_plan=sandgrvqryofficialcommplan,
+            land_use_zoning=sandgrvqrylandusezoning,
+            proposed_land_use=sandgrvqryendlanduse,
+            total_mineable_reserves=sandgrvqrytotalmineres,
             total_mineable_reserves_unit_type_code=code_lookup(app_models.UnitType, unit_type_map[now_sub.sandgrvqrytotalmineresunits],'unit_type_code'),
-            total_annual_extraction=now_sub.sandgrvqryannualextrest,
+            total_annual_extraction=sandgrvqryannualextrest,
             total_annual_extraction_unit_type_code=code_lookup(app_models.UnitType,unit_type_map[now_sub.sandgrvqryannualextrestunits],'unit_type_code'),
-            reclamation_description=now_sub.sandgrvqryreclamation,
-            reclamation_backfill_detail=now_sub.sandgrvqryreclamationbackfill,
-            reclamation_cost=now_sub.sandgrvqryreclamationcost,
-            average_groundwater_depth=now_sub.sandgrvqrygrdwtravgdepth,
-            has_groundwater_from_existing_area=now_sub.sandgrvqrygrdwtrexistingareas == 'Yes',
-            has_groundwater_from_test_pits=now_sub.sandgrvqrygrdwtrtestpits == 'Yes',
-            has_groundwater_from_test_wells=now_sub.sandgrvqrygrdwtrtestwells == 'Yes',
-            groundwater_from_other_description=now_sub.sandgrvqrygrdwtrother,
-            groundwater_protection_plan=now_sub.sandgrvqrygrdwtrmeasprotect,
-            nearest_residence_distance=now_sub.sandgrvqryimpactdistres,
-            nearest_water_source_distance=now_sub.sandgrvqryimpactdistwater,
-            noise_impact_plan=now_sub.sandgrvqryimpactnoise,
-            secure_access_plan=now_sub.sandgrvqryimpactprvtaccess,
-            dust_impact_plan=now_sub.sandgrvqryimpactprevtdust,
-            visual_impact_plan=now_sub.sandgrvqryimpactminvisual)
+            reclamation_description=sandgrvqryreclamation,
+            reclamation_backfill_detail=sandgrvqryreclamationbackfill,
+            reclamation_cost=sandgrvqryreclamationcost,
+            average_groundwater_depth=sandgrvqrygrdwtravgdepth,
+            has_groundwater_from_existing_area=sandgrvqrygrdwtrexistingareas == 'Yes',
+            has_groundwater_from_test_pits=sandgrvqrygrdwtrtestpits == 'Yes',
+            has_groundwater_from_test_wells=sandgrvqrygrdwtrtestwells == 'Yes',
+            groundwater_from_other_description=sandgrvqrygrdwtrother,
+            groundwater_protection_plan=sandgrvqrygrdwtrmeasprotect,
+            nearest_residence_distance=sandgrvqryimpactdistres,
+            nearest_water_source_distance=sandgrvqryimpactdistwater,
+            noise_impact_plan=sandgrvqryimpactnoise,
+            secure_access_plan=sandgrvqryimpactprvtaccess,
+            dust_impact_plan=sandgrvqryimpactprevtdust,
+            visual_impact_plan=sandgrvqryimpactminvisual)
 
-        for detail in now_sub.sand_grv_qry_activity:
+        if(len(mms_now_sub.sand_grv_qry_activity) > 0):
+            sand_grv_qry_activity = mms_now_sub.sand_grv_qry_activity
+        else:
+            sand_grv_qry_activity = now_sub.sand_grv_qry_activity
+
+        for detail in sand_grv_qry_activity:
             now_app.sand_and_gravel.details.append(app_models.SandGravelQuarryOperationDetail(
                 disturbed_area=detail.disturbedarea, 
                 timber_volume=detail.timbervolume,
@@ -386,19 +473,30 @@ def _transmogrify_sand_and_gravel_activities(now_app, now_sub, mms_now_sub):
     return
 
 def _transmogrify_surface_bulk_sample(now_app, now_sub, mms_now_sub):
-    if (now_sub.surfacebulksampleprocmethods or now_sub.surfacebulksamplereclsephandl or now_sub.surfacebulksamplereclamation
-            or now_sub.surfacebulksamplerecldrainmiti or now_sub.surfacebulksamplereclcost
-            or now_sub.surfacebulksampletotaldistarea):
+    surfacebulksampleprocmethods = now_sub.surfacebulksampleprocmethods
+    surfacebulksamplereclsephandl = mms_now_sub.surfacebulksamplereclsephandl or now_sub.surfacebulksamplereclsephandl
+    surfacebulksamplereclamation = mms_now_sub.surfacebulksamplereclamation or now_sub.surfacebulksamplereclamation
+    surfacebulksamplerecldrainmiti = mms_now_sub.surfacebulksamplerecldrainmiti or now_sub.surfacebulksamplerecldrainmiti
+    surfacebulksamplereclcost = mms_now_sub.surfacebulksamplereclcost or now_sub.surfacebulksamplereclcost
+    surfacebulksampletotaldistarea = now_sub.surfacebulksampletotaldistarea
+    if (surfacebulksampleprocmethods or surfacebulksamplereclsephandl or surfacebulksamplereclamation
+            or surfacebulksamplerecldrainmiti or surfacebulksamplereclcost
+            or surfacebulksampletotaldistarea):
         now_app.surface_bulk_sample = app_models.SurfaceBulkSample(
-            reclamation_description=now_sub.surfacebulksamplereclamation,
-            reclamation_cost=now_sub.surfacebulksamplereclcost,
-            total_disturbed_area=now_sub.surfacebulksampletotaldistarea,
+            reclamation_description=surfacebulksamplereclamation,
+            reclamation_cost=surfacebulksamplereclcost,
+            total_disturbed_area=surfacebulksampletotaldistarea,
             total_disturbed_area_unit_type_code='HA',
-            processing_method_description=now_sub.surfacebulksampleprocmethods,
-            handling_instructions=now_sub.surfacebulksamplereclsephandl,
-            drainage_mitigation_description=now_sub.surfacebulksamplerecldrainmiti)
+            processing_method_description=surfacebulksampleprocmethods,
+            handling_instructions=surfacebulksamplereclsephandl,
+            drainage_mitigation_description=surfacebulksamplerecldrainmiti)
 
-        for detail in now_sub.surface_bulk_sample_activity:
+        if(len(mms_now_sub.surface_bulk_sample_activity) > 0):
+            surface_bulk_sample_activity = mms_now_sub.surface_bulk_sample_activity
+        else:
+            surface_bulk_sample_activity = now_sub.surface_bulk_sample_activity
+
+        for detail in surface_bulk_sample_activity:
             now_app.surface_bulk_sample.details.append(app_models.SurfaceBulkSampleDetail(
                 disturbed_area=detail.disturbedarea, 
                 timber_volume=detail.timbervolume,
@@ -411,22 +509,34 @@ def _transmogrify_surface_bulk_sample(now_app, now_sub, mms_now_sub):
     return
 
 def _transmogrify_underground_exploration(now_app, now_sub, mms_now_sub):
-    if (now_sub.underexptotalore or now_sub.underexptotaloreunits or now_sub.underexpreclamation
-        or now_sub.underexpreclamationcost or now_sub.underexptotalwaste
-        or now_sub.underexptotalwasteunits or now_sub.underexptotaldistarea):
+    underexptotalore = now_sub.underexptotalore
+    underexptotaloreunits = now_sub.underexptotaloreunits
+    underexpreclamation = mms_now_sub.underexpreclamation or now_sub.underexpreclamation
+    underexpreclamationcost = mms_now_sub.underexpreclamationcost or now_sub.underexpreclamationcost
+    underexptotalwaste = now_sub.underexptotalwaste
+    underexptotalwasteunits = now_sub.underexptotalwasteunits
+    underexptotaldistarea = now_sub.underexptotaldistarea
+    if (underexptotalore or underexptotaloreunits or underexpreclamation
+        or underexpreclamationcost or underexptotalwaste
+        or underexptotalwasteunits or underexptotaldistarea):
         now_app.underground_exploration = app_models.UndergroundExploration(
-            reclamation_description=now_sub.underexpreclamation,
-            reclamation_cost=now_sub.underexpreclamationcost,
-            total_disturbed_area=now_sub.underexptotaldistarea,
+            reclamation_description=underexpreclamation,
+            reclamation_cost=underexpreclamationcost,
+            total_disturbed_area=underexptotaldistarea,
             total_disturbed_area_unit_type_code='HA',
 
-            total_ore_amount=now_sub.underexptotalore,
-            total_ore_unit_type_code=code_lookup(app_models.UnitType,unit_type_map[now_sub.underexptotaloreunits], 'unit_type_code'),
-            total_waste_amount=now_sub.underexptotalwaste,
-            total_waste_unit_type_code=code_lookup(app_models.UnitType,unit_type_map[now_sub.underexptotalwasteunits],'unit_type_code')
+            total_ore_amount=underexptotalore,
+            total_ore_unit_type_code=code_lookup(app_models.UnitType,unit_type_map[underexptotaloreunits], 'unit_type_code'),
+            total_waste_amount=underexptotalwaste,
+            total_waste_unit_type_code=code_lookup(app_models.UnitType,unit_type_map[underexptotalwasteunits],'unit_type_code')
         )
+
+        if(len(mms_now_sub.under_exp_new_activity) > 0):
+            under_exp_new_activity = mms_now_sub.under_exp_new_activity
+        else:
+            under_exp_new_activity = now_sub.under_exp_new_activity
     
-        for new_uea in now_sub.under_exp_new_activity:
+        for new_uea in under_exp_new_activity:
             now_app.underground_exploration.details.append(app_models.UndergroundExplorationDetail(
                 activity_type_description=new_uenow_app.type,
                 incline=new_uenow_app.incline,
@@ -439,8 +549,12 @@ def _transmogrify_underground_exploration(now_app, now_sub, mms_now_sub):
                 )
             )
 
+        if(len(mms_now_sub.under_exp_rehab_activity) > 0):
+            under_exp_rehab_activity = mms_now_sub.under_exp_rehab_activity
+        else:
+            under_exp_rehab_activity = now_sub.under_exp_rehab_activity
 
-        for rehab_uea in now_sub.under_exp_rehab_activity:
+        for rehab_uea in under_exp_rehab_activity:
             now_app.underground_exploration.details.append(app_models.UndergroundExplorationDetail(
                 activity_type_description=rehab_uenow_app.type,
                 incline=rehab_uenow_app.incline,
@@ -453,7 +567,12 @@ def _transmogrify_underground_exploration(now_app, now_sub, mms_now_sub):
                 )
             )
 
-        for surface_uea in now_sub.under_exp_surface_activity:
+        if(len(mms_now_sub.under_exp_surface_activity) > 0):
+            under_exp_surface_activity = mms_now_sub.under_exp_surface_activity
+        else:
+            under_exp_surface_activity = now_sub.under_exp_surface_activity
+
+        for surface_uea in under_exp_surface_activity:
             now_app.underground_exploration.details.append(app_models.UndergroundExplorationDetail(
                 activity_type_description=surface_uenow_app.type,
                 quantity=surface_uenow_app.quantity,
@@ -466,10 +585,15 @@ def _transmogrify_underground_exploration(now_app, now_sub, mms_now_sub):
     return
 
 def _transmogrify_water_supply(now_app, now_sub, mms_now_sub):
-    if now_sub.water_source_activity:
+    if now_sub.water_source_activity or mms_now_sub.water_source_activity:
         water_supply = app_models.WaterSupply()
 
-        for wsa in now_sub.water_source_activity:
+        if(len(mms_now_sub.water_source_activity) > 0):
+            water_source_activity = mms_now_sub.water_source_activity
+        else:
+            water_source_activity = now_sub.water_source_activity
+
+        for wsa in water_source_activity:
             water_supply.details.append(app_models.WaterSupplyDetail(
                 supply_source_description=wsnow_app.sourcewatersupply,
                 supply_source_type=wsnow_app.type, 

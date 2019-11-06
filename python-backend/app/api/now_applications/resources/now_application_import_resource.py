@@ -11,7 +11,7 @@ from app.api.utils.resources_mixins import UserMixin
 from app.api.utils.custom_reqparser import CustomReqparser
 
 from app.api.mines.mine.models.mine import Mine
-from app.api.now_submissions.models.application import Application
+from app.api.now_applications.models.now_application_identity import NOWApplicationIdentity
 
 from app.api.now_applications.models.now_application import NOWApplication
 from app.api.now_applications.models.activity_summary.exploration_access import ExplorationAccess
@@ -36,11 +36,12 @@ class NOWApplicationImportResource(Resource, UserMixin):
         if not mine:
             raise NotFound('Mine not found')
 
-        submission = Application.query.filter_by(application_guid=application_guid).first()
-        if not submission:
-            raise NotFound('NoW Submission not found')
+        now_application_identity = NOWApplicationIdentity.query.filter_by(
+            now_application_guid=application_guid).first()
+        if not now_application_identity:
+            raise NotFound('No identity record for this application guid.')
 
-        application = transmogrify_now(submission.messageid)
+        application = transmogrify_now(now_application_identity)
         application.mine_guid = mine_guid
         application.now_application_guid = application_guid
         application.save()
