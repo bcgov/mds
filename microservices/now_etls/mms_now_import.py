@@ -49,15 +49,24 @@ def ETL_MMS_NOW_schema(connection, tables):
     try:
         applications = etl.fromdb(
             connection,
-            f'SELECT msg_id as messageid, cid as mms_cid, mine_no as minenumber, apl_dt as submitteddate, lat_dec as latitude, lon_dec as longitude, multi_year_ind, multi_year_area_ind, str_Dt as ProposedStartDate, end_dt as ProposedEndDate, site_desc as SiteDirections, prpty_nm as NameOfProperty, apl_typ from mms.mmsnow'
+            f'SELECT msg_id as messageid, cid as mms_cid, mine_no as minenumber, apl_dt as submitteddate, lat_dec, lon_dec, multi_year_ind, multi_year_area_ind, str_Dt as ProposedStartDate, end_dt as ProposedEndDate, site_desc as SiteDirections, prpty_nm as NameOfProperty, apl_typ from mms.mmsnow'
         )
 
         applications = etl.addfield(
             applications, 'noticeofworktype',
             lambda v: 'Mineral' if v['apl_typ'] == 'M' else ('Placer Operations' if v['apl_typ'] == 'P' else 'Sand & Gravel')
         )
+        applications = etl.addfield(
+            applications, 'latitude',
+            lambda v: None if v['lat_dec'] > 90 or v['lat_dec'] < -90 else v['lat_dec']
+        )
 
-        applications = etl.cutout(applications, 'apl_typ')
+        applications = etl.addfield(
+            applications, 'longitude',
+            lambda v: None if v['lon_dec'] > 180 or v['lon_dec'] < -180 else v['lon_dec']
+        )
+
+        applications = etl.cutout(applications, 'apl_typ','lon_dec', 'lon_dec')
 
         message_ids = etl.cut(applications, 'mms_cid', 'messageid')
 
