@@ -1,6 +1,6 @@
 import React from "react";
 import { shallow } from "enzyme";
-import { NOWWorkPlan } from "@/components/noticeOfWork/NOWWorkPlan";
+import { NOWWorkPlan } from "@/components/noticeOfWork/submissions/NOWWorkPlan";
 import * as MOCK from "@/tests/mocks/noticeOfWorkMocks";
 
 const props = {};
