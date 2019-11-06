@@ -66,7 +66,7 @@ def ETL_MMS_NOW_schema(connection, tables):
             lambda v: None if v['lon_dec'] > 180 or v['lon_dec'] < -180 else v['lon_dec']
         )
 
-        applications = etl.cutout(applications, 'apl_typ','lon_dec', 'lon_dec')
+        applications = etl.cutout(applications, 'apl_typ', 'lat_dec', 'lon_dec')
 
         message_ids = etl.cut(applications, 'mms_cid', 'messageid')
 
