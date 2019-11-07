@@ -174,7 +174,7 @@ def ETL_MMS_NOW_schema(connection, tables):
             f'SELECT cid as mms_cid, recl_desc as surfacebulksamplereclamation, recl_dol as surfacebulksamplereclcost, material_desc as surfacebulksamplereclsephandl, drainage_desc as surfacebulksamplerecldrainmiti, act1_ind, act2_ind, act3_ind, act4_ind, act5_ind, act6_ind, act1_ar, act2_ar, act3_ar, act4_ar, act5_ar, act6_ar, act1_vol, act2_vol, act3_vol, act4_vol, act5_vol, act6_vol  from mms.mmsscf_n'
         )
 
-        surface_bulk_activity_app_cols = etl.cut(surface_bulk_activity, ['mms_cid', 'surfacebulksamplereclamation', 'surfacebulksamplereclcost', 'surfacebulksamplereclsephandl', 'surfacebulksamplerecldrainmiti'])
+        surface_bulk_activity_app_cols = etl.cut(surface_bulk_activity, 'mms_cid', 'surfacebulksamplereclamation', 'surfacebulksamplereclcost', 'surfacebulksamplereclsephandl', 'surfacebulksamplerecldrainmiti')
 
         surface_bulk_activity = etl.cutout(surface_bulk_activity, 'surfacebulksamplereclamation', 'surfacebulksamplereclcost', 'surfacebulksamplereclsephandl', 'surfacebulksamplerecldrainmiti')
 
@@ -183,29 +183,17 @@ def ETL_MMS_NOW_schema(connection, tables):
             f'SELECT * from MMS_NOW_Submissions.surface_bulk_sample_activity'
         )
         
-        surface_bulk_activity_1 = etl.cut(surface_bulk_activity, [
-            'mms_cid', 'act1_ind', 'act1_ar', 'act1_vol'
-        ])
+        surface_bulk_activity_1 = etl.cut(surface_bulk_activity, 'mms_cid', 'act1_ind', 'act1_ar', 'act1_vol')
 
-        surface_bulk_activity_2 = etl.cut(surface_bulk_activity, [
-            'mms_cid', 'act2_ind', 'act2_ar', 'act2_vol'
-        ])
+        surface_bulk_activity_2 = etl.cut(surface_bulk_activity, 'mms_cid', 'act2_ind', 'act2_ar', 'act2_vol')
 
-        surface_bulk_activity_3 = etl.cut(surface_bulk_activity, [
-            'mms_cid', 'act3_ind', 'act3_ar', 'act3_vol'
-        ])
+        surface_bulk_activity_3 = etl.cut(surface_bulk_activity, 'mms_cid', 'act3_ind', 'act3_ar', 'act3_vol')
 
-        surface_bulk_activity_4 = etl.cut(surface_bulk_activity, [
-            'mms_cid', 'act4_ind', 'act4_ar', 'act4_vol'
-        ])
+        surface_bulk_activity_4 = etl.cut(surface_bulk_activity, 'mms_cid', 'act4_ind', 'act4_ar', 'act4_vol')
         
-        surface_bulk_activity_5 = etl.cut(surface_bulk_activity, [
-            'mms_cid', 'act5_ind', 'act5_ar', 'act5_vol'
-        ])
+        surface_bulk_activity_5 = etl.cut(surface_bulk_activity, 'mms_cid', 'act5_ind', 'act5_ar', 'act5_vol')
 
-        surface_bulk_activity_6 = etl.cut(surface_bulk_activity, [
-            'mms_cid', 'act6_ind', 'act6_ar', 'act6_vol'
-        ])
+        surface_bulk_activity_6 = etl.cut(surface_bulk_activity, 'mms_cid', 'act6_ind', 'act6_ar', 'act6_vol')
 
         surface_bulk_activity_1 = etl.select(surface_bulk_activity_1, lambda v: v['act1_ind'] == 1)
         surface_bulk_activity_2 = etl.select(surface_bulk_activity_2, lambda v: v['act2_ind'] == 1)
