@@ -43,6 +43,10 @@
   @include tablet {
     min-height: inherit;
   }
+
+  &--long {
+    min-height: 100px;
+  }
 }
 
 .scroll-wrapper {
@@ -65,7 +69,7 @@
   }
 
   &--title {
-    border-bottom: 1px solid gray;
+    border-bottom: 1px solid $non-textual-grey;
     width: 60vw;
 
     h3 {
@@ -93,7 +97,8 @@
   }
 
   &--content {
-    margin-bottom: 20px;
+    // adding white space to bottom, so scroll-to will take the element to the top of the page always
+    margin-bottom: 500px;
   }
 }
 
@@ -114,7 +119,7 @@
 }
 .ant-anchor-link {
   border-bottom: 1px solid $light-grey;
-  padding: $default-padding-lg;
+  padding: 7px;
 }
 
 .fixed-top {
@@ -123,7 +128,7 @@
 .side-menu {
   margin-top: 10px;
   width: 240px;
-  position: fixed;
+  position: absolute;
   left: 0;
 
   ul {
@@ -138,6 +143,7 @@
 
     @include tablet {
       position: inherit;
+      width: 100%;
     }
   }
 
@@ -151,8 +157,6 @@
   color: rgba(0, 0, 0, 0.65);
 }
 
-.mine-info {
-  background-color: red;
-  height: 200px;
-  width: 240px;
+.ant-radio-disabled + span {
+  color: rgba(0, 0, 0, 0.65);
 }

@@ -15,7 +15,7 @@ import { getNoticeOfWork } from "@/selectors/noticeOfWorkSelectors";
 import VerifyNOWMine from "@/components/noticeOfWork/applications/verification/VerifyNOWMine";
 import * as Strings from "@/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
-import NOWReview from "@/components/noticeOfWork/applications/review/NOWReview";
+import ReviewNOWApplication from "@/components/noticeOfWork/applications/review/ReviewNOWApplication";
 import NullScreen from "@/components/common/NullScreen";
 import NOWSideMenu from "@/components/noticeOfWork/applications/NOWSideMenu";
 import * as FORM from "@/constants/forms";
@@ -69,11 +69,10 @@ export class NoticeOfWorkApplication extends Component {
   };
 
   handleScroll = () => {
-    // disabled for now, this will enable sticky navigation for steps
     if (window.pageYOffset > "100" && !this.state.fixedTop) {
-      // this.setState({ fixedTop: true });
+      this.setState({ fixedTop: true });
     } else if (window.pageYOffset < "100" && this.state.fixedTop) {
-      // this.setState({ fixedTop: false });
+      this.setState({ fixedTop: false });
     }
   };
 
@@ -111,7 +110,11 @@ export class NoticeOfWorkApplication extends Component {
   renderStepTwo = () => {
     return (
       // To DO: add loading wrapper when fetching new data
-      <NOWReview isViewMode={this.state.isViewMode} initialValues={this.props.noticeOfWork} />
+      <ReviewNOWApplication
+        isViewMode={this.state.isViewMode}
+        initialValues={this.props.noticeOfWork}
+        noticeOfWork={this.props.noticeOfWork}
+      />
     );
   };
 
@@ -149,10 +152,14 @@ export class NoticeOfWorkApplication extends Component {
                 Open Original NoW
               </Link>
             </div>
-            {this.state.isViewMode ? (
-              <Button onClick={this.toggleEditMode}>Edit</Button>
-            ) : (
-              <Button onClick={this.toggleEditMode}>Save</Button>
+            {false && (
+              <div>
+                {this.state.isViewMode ? (
+                  <Button onClick={this.toggleEditMode}>Edit</Button>
+                ) : (
+                  <Button onClick={this.toggleEditMode}>Save</Button>
+                )}
+              </div>
             )}
           </div>
           <br />

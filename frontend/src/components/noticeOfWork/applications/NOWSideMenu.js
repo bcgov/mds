@@ -36,6 +36,21 @@ export const NOWSideMenu = (props) => {
         <Link href="#first-aid" title="First Aid" />
         <Link href="#equipment" title="Equipment" />
         <Link href="#reclamation" title="Summary of Reclamation" />
+        <Link href="#access-roads" title="Access Roads, Trails, Helipads, Air Strips, Boat Ramps" />
+        <Link href="#blasting" title="Blasting" />
+        <Link href="#camps" title="Camps, Buildings, Staging Areas, Fuel/Lubricant Storage" />
+        <Link
+          href="#cut-lines-polarization-survey"
+          title="Cut Lines and Induced Polarization Survey"
+        />
+        <Link href="#surface-drilling" title="Exploration Surface Drilling" />
+        <Link href="#mechanical-trenching" title="Mechanical Trenching / Test Pits" />
+        <Link href="#settling-ponds" title="Settling Ponds" />
+        <Link href="#surface-bulk-samples" title="Surface Bulk Sample" />
+        <Link href="#underground-exploration" title="Underground Exploration" />
+        <Link href="#sand-gravel-quarry-operations" title="Sand and Gravel / Quarry Operations" />
+        <Link href="#placer-operations" title="Placer Operations" />
+        <Link href="#water-supply" title="Water Supply" />
         <Link href="#documents" title="Documents" />
       </Anchor>
     </div>
