@@ -1,0 +1,20 @@
+{
+  "extensions.ignoreRecommendations": true,
+  "files.eol": "\n",
+  "files.trimFinalNewlines": true,
+  "editor.renderWhitespace": "none",
+  "editor.formatOnSave": true,
+  "python.formatting.provider": "yapf",
+  "python.formatting.yapfArgs": [
+    "--style={column_limit:100, spaces_before_comment:'15,30,50', SPLIT_BEFORE_EXPRESSION_AFTER_OPENING_PAREN:TRUE}"
+  ],
+  "python.linting.enabled": true,
+  "eslint.alwaysShowStatus": true,
+  "eslint.autoFixOnSave": true,
+  "files.exclude": {
+    "**/__pycache__": true
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
+}
