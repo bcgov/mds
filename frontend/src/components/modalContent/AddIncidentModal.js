@@ -162,6 +162,7 @@ const StepForms = (
         initialValues={props.initialValues}
         incidentDeterminationOptions={props.incidentDeterminationOptions}
         followupActionOptions={props.followupActionOptions}
+        incidentStatusCodeOptions={props.incidentStatusCodeOptions}
         hasFatalities={props.addIncidentFormValues.number_of_fatalities > 0 || false}
         hasFollowUp={props.addIncidentFormValues.followup_inspection || false}
         determinationTypeCode={props.addIncidentFormValues.determination_type_code}
