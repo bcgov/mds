@@ -903,10 +903,8 @@ def ETL_MMS_NOW_schema(connection, tables):
 
         application_nda = etl.fromdb(
             connection,
-            f'SELECT * from mms.mmsnda'
+            f'SELECT messageid, trackingnumber, applicationtype, status, submitteddate, receiveddate, applicantclientid, submitterclientid, typedeemedauthorization, permitnumber, minenumber, nownumber, planactivitiesdrillprogram, planactivitiesipsurvey, proposedstartdate, proposedenddate, totallinekilometers, descplannedactivities, proposednewenddate, reasonforextension, anyotherinformation, vfcbcapplicationurl from mms.mmsnda'
         )
-
-        application_nda = etl.cutout(application_nda, 'oldenddate', 'mmsnda_id')
 
         print('------------------------------------------------------------------------------------------------')
         print('Columns')
