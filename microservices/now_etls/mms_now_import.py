@@ -818,11 +818,6 @@ def ETL_MMS_NOW_schema(connection, tables):
 
         applications = etl.leftjoin(applications, timber_cutting, key='mms_cid')
 
-        print('------------------------------------------------------------------------------------------------')
-        print('Application before explosives Columns')
-        print(etl.header(applications))
-        print('------------------------------------------------------------------------------------------------')
-
         explosive_permits = etl.fromdb(
             connection,
             f'SELECT cid as mms_cid, perm_ind, perm_no as bcexplosivespermitnumber, expry_dt as bcexplosivespermitexpiry from mms.mmsscc_n'
@@ -914,8 +909,8 @@ def ETL_MMS_NOW_schema(connection, tables):
         application_nda = etl.cutout(application_nda, 'oldenddate')
 
         print('------------------------------------------------------------------------------------------------')
-        print('Application Columns')
-        print(etl.header(applications))
+        print('Surface Bulk Activity Detail Columns')
+        print(etl.header(surface_bulk_activity_detail))
         print('------------------------------------------------------------------------------------------------')
 
         etl.appenddb(applications, connection, 'application', schema='mms_now_submissions', commit=False)
