@@ -21,16 +21,7 @@ from marshmallow import fields
 
 
 class NOWApplicationResource(Resource, UserMixin):
-    # @api.expect(NOW_APPLICATION_MODEL)
-    # @requires_role_mine_edit
-    # @api.marshal_with(NOW_APPLICATION_MODEL, code=200)
-    # def get(self, application_guid):
-    #     application = NOWApplication.find_by_application_guid(application_guid)
-    #     if not application:
-    #         raise NotFound('NOWApplication not found')
-    #     return application
-
-    #@requires_role_mine_edit
+    @requires_role_mine_edit
     def get(self, application_guid):
         application = NOWApplication.query.filter_by(now_application_guid=application_guid).first()
         if not application:
