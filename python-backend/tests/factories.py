@@ -440,7 +440,7 @@ class PartyBusinessRoleFactory(BaseFactory):
     class Meta:
         model = PartyBusinessRoleAppointment
 
-    party_business_role_code = factory.LazyFunction(RandomPartyBusinessRoleCode)
+    party_business_role_code = factory.LazyFunction(RandomPartyBusinessRole)
     party = factory.SubFactory(PartyFactory, person=True)
     start_date = TODAY
     end_date = None

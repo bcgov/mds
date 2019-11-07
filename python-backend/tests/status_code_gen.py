@@ -13,7 +13,7 @@ from app.api.mines.status.models.mine_status_xref import MineStatusXref
 from app.api.compliance.models.compliance_article import ComplianceArticle
 from app.api.parties.party.models.sub_division_code import SubDivisionCode
 from app.api.parties.party_appt.models.mine_party_appt_type import MinePartyAppointmentType
-from app.api.parties.party_appt.models.party_business_role_code import PartyBusinessRoleCode
+from app.api.parties.party_appt.models.party_business_role import PartyBusinessRole
 from app.api.variances.models.variance_document_category_code import VarianceDocumentCategoryCode
 from app.api.variances.models.variance_application_status_code import VarianceApplicationStatusCode
 from app.api.mines.reports.models.mine_report_definition import MineReportDefinition
@@ -62,9 +62,8 @@ def RandomMinePartyAppointmentTypeCode():
         [x.mine_party_appt_type_code for x in db.session.query(MinePartyAppointmentType).all()])
 
 
-def RandomPartyBusinessRoleCode():
-    return random.choice(
-        [x.party_business_role_code for x in db.session.query(PartyBusinessRoleCode)])
+def RandomPartyBusinessRole():
+    return random.choice([x.party_business_role_code for x in db.session.query(PartyBusinessRole)])
 
 
 def RandomComplianceArticleId():
@@ -109,10 +108,12 @@ def RandomVarianceDocumentCategoryCode():
 
 def SampleDangerousOccurrenceSubparagraphs(num):
     return random.sample(
-        db.session.query(ComplianceArticle).filter(
-            ComplianceArticle.article_act_code == 'HSRCM', ComplianceArticle.section == '1',
-            ComplianceArticle.sub_section == '7', ComplianceArticle.paragraph == '3',
-            ComplianceArticle.sub_paragraph != None).all(), num)
+        db.session.query(ComplianceArticle).filter(ComplianceArticle.article_act_code == 'HSRCM',
+                                                   ComplianceArticle.section == '1',
+                                                   ComplianceArticle.sub_section == '7',
+                                                   ComplianceArticle.paragraph == '3',
+                                                   ComplianceArticle.sub_paragraph != None).all(),
+        num)
 
 
 def RandomVarianceApplicationStatusCode():
