@@ -65,6 +65,7 @@ def _transmogrify_now_details(a, s):
     a.tenure_number = s.tenurenumbers
     a.proposed_start_date = s.proposedstartdate
     a.proposed_end_date = s.proposedenddate
+    a.directions_to_site = s.sitedirections
     return
 
 
