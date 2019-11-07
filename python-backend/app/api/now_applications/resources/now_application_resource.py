@@ -14,7 +14,7 @@ from app.api.utils.custom_reqparser import CustomReqparser
 from app.api.mines.mine.models.mine import Mine
 from app.api.now_applications.models.now_application import NOWApplication
 from app.api.now_applications.models.activity_detail import ActivityDetailBase
-from app.api.now_applications.response_models import NOWApplicationSchema, NOWExplorationSurfaceDrillingSchema
+from app.api.now_applications.response_models import NOWApplicationSchema
 
 from marshmallow_sqlalchemy import ModelSchema, ModelConverter
 from marshmallow import fields
