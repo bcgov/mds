@@ -17,6 +17,16 @@ exports[`AddIncidentReportingForm renders properly 1`] = `
         >
           <Field
             component={[Function]}
+            id="mine_incident_category_code"
+            label="Incident type*"
+            name="mine_incident_category_code"
+          />
+        </FormItem>
+        <FormItem
+          hasFeedback={false}
+        >
+          <Field
+            component={[Function]}
             id="reported_to_inspector_party_guid"
             label="Incident reported to*:"
             name="reported_to_inspector_party_guid"

@@ -2399,8 +2399,7 @@ export const INCIDENT_STATUS_OPTIONS_HASH = {
   FIN: "Final",
 };
 
-export const INCIDENT_STATUS_OPTIONS_HASH = {
-};
+export const INCIDENT_CATEGORY_OPTIONS_HASH = {};
 
 export const INCIDENT_DETERMINATION = [
   {
