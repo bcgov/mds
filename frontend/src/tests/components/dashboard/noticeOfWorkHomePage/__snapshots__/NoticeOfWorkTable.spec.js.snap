@@ -11,6 +11,7 @@ exports[`NoticeOfWorkTable renders properly 1`] = `
       "NoW Type",
       "Application Status",
       "Import Date",
+      "",
     ]
   }
 >
@@ -72,6 +73,13 @@ exports[`NoticeOfWorkTable renders properly 1`] = `
           "sortOrder": false,
           "sorter": true,
           "title": "Import Date",
+        },
+        Object {
+          "dataIndex": "verify",
+          "render": [Function],
+          "sortOrder": false,
+          "title": "",
+          "width": 150,
         },
       ]
     }
