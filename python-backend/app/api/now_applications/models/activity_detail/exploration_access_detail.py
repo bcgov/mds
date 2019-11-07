@@ -10,7 +10,7 @@ from app.api.now_applications.models.activity_detail.activity_detail_base import
 
 class ExplorationAccessDetail(ActivityDetailBase):
     __mapper_args__ = {
-        'polymorphic_identity': 'exploration_access',  ## type code
+        'polymorphic_identity': 'exploration_access', ## type code
     }
 
     ## NO TABLE FOR THIS TYPE

@@ -21,6 +21,7 @@ from app.api.users.namespace import api as users_api
 from app.commands import register_commands
 from app.config import Config
 from app.extensions import db, jwt, api, cache, apm
+from app.api.utils import setup_marshmallow
 
 
 def create_app(test_config=None):
@@ -59,7 +60,6 @@ def register_extensions(app):
 
     cache.init_app(app)
     db.init_app(app)
-
     CORS(app)
     Compress(app)
 
