@@ -247,9 +247,9 @@ def ETL_MMS_NOW_schema(connection, tables):
 
         surface_bulk_activity_detail = etl.join(surface_bulk_activity_detail, surface_bulk_activity_5, key='mms_cid')
 
-        surface_bulk_activity_6 = etl.addfield(surface_bulk_activity_1, 'type','Processing Facilities')
-        surface_bulk_activity_6 = etl.addfield(surface_bulk_activity_1, 'disturbedarea', lambda v: v['act6_ar'])
-        surface_bulk_activity_6 = etl.addfield(surface_bulk_activity_1, 'timbervolume', lambda v: v['act6_vol'])
+        surface_bulk_activity_6 = etl.addfield(surface_bulk_activity_6, 'type','Processing Facilities')
+        surface_bulk_activity_6 = etl.addfield(surface_bulk_activity_6, 'disturbedarea', lambda v: v['act6_ar'])
+        surface_bulk_activity_6 = etl.addfield(surface_bulk_activity_6, 'timbervolume', lambda v: v['act6_vol'])
 
         surface_bulk_activity_6 = etl.cutout(surface_bulk_activity_6, 'act6_ind', 'act6_ar', 'act6_vol')
 
