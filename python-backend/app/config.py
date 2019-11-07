@@ -35,8 +35,6 @@ class Config(object):
 
     BUNDLE_ERRORS = True     #RequestParser global config
 
-    #RESTPLUS_VALIDATE = True
-
     def JWT_ROLE_CALLBACK(jwt_dict):
         return (jwt_dict['realm_access']['roles'])
 
