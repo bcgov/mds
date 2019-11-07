@@ -853,63 +853,63 @@ def ETL_MMS_NOW_schema(connection, tables):
         contact_type = etl.fromdb(connection,
                                   f'SELECT cid as mms_cid, cid_ccn, type_ind from mms.mmsccc')
 
-        streamline_application = etl.fromdb(
-            connection,
-            f'SELECT cid as mms_cid, recv_dt as receiveddate, pmt_typ, comm_desc, exp_desc as descexplorationprogram, ten_nos1, ten_nos2, cg_clms1, cg_clms2, legal_desc1, legal_desc2, priv_ind, water_ind, culture_ind, fuel_ind, ltr_amt as fuellubstored, barrel_ind, bulk_ind from mms.mmsstream_now'
-        )
+        # streamline_application = etl.fromdb(
+        #     connection,
+        #     f'SELECT cid as mms_cid, recv_dt as receiveddate, pmt_typ, comm_desc, exp_desc as descexplorationprogram, ten_nos1, ten_nos2, cg_clms1, cg_clms2, legal_desc1, legal_desc2, priv_ind, water_ind, culture_ind, fuel_ind, ltr_amt as fuellubstored, barrel_ind, bulk_ind from mms.mmsstream_now'
+        # )
 
-        streamline_application = etl.addfield(
-            streamline_application, 'typeofapplication',
-            lambda v: 'New Permit' if v['pmt_typ'] == 'N' else 'Amendment')
+        # streamline_application = etl.addfield(
+        #     streamline_application, 'typeofapplication',
+        #     lambda v: 'New Permit' if v['pmt_typ'] == 'N' else 'Amendment')
 
-        streamline_application = etl.addfield(
-            streamline_application, 'firstaidequipmentonsite',
-            lambda v: v['comm_desc'].split('  ')[0] if (v['comm_desc'] != '' or v['comm_desc'] is not None) else None)
+        # streamline_application = etl.addfield(
+        #     streamline_application, 'firstaidequipmentonsite',
+        #     lambda v: v['comm_desc'].split('  ')[0] if (v['comm_desc'] != '' or v['comm_desc'] is not None) else None)
         
-        streamline_application = etl.addfield(
-            streamline_application, 'firstaidcertlevel',
-            lambda v: v['comm_desc'].split('  ')[1] if (v['comm_desc'] != '' or v['comm_desc'] is not None) else None)
+        # streamline_application = etl.addfield(
+        #     streamline_application, 'firstaidcertlevel',
+        #     lambda v: v['comm_desc'].split('  ')[1] if (v['comm_desc'] != '' or v['comm_desc'] is not None) else None)
         
-        streamline_application = etl.addfield(
-            streamline_application, 'tenurenumbers',
-            lambda v: v['ten_nos1'] + v['ten_nos2'])
+        # streamline_application = etl.addfield(
+        #     streamline_application, 'tenurenumbers',
+        #     lambda v: v['ten_nos1'] + v['ten_nos2'])
         
-        streamline_application = etl.addfield(
-            streamline_application, 'crowngrantlotnumbers',
-            lambda v: v['cg_clms1'] + v['cg_clms2'])
+        # streamline_application = etl.addfield(
+        #     streamline_application, 'crowngrantlotnumbers',
+        #     lambda v: v['cg_clms1'] + v['cg_clms2'])
         
-        streamline_application = etl.addfield(
-            streamline_application, 'landlegaldesc',
-            lambda v: v['legal_desc1'] + v['legal_desc2'])
+        # streamline_application = etl.addfield(
+        #     streamline_application, 'landlegaldesc',
+        #     lambda v: v['legal_desc1'] + v['legal_desc2'])
         
-        streamline_application = etl.addfield(
-            streamline_application, 'landprivate',
-            lambda v: 'Yes' if v['priv_ind'] == 1 else 'No')
+        # streamline_application = etl.addfield(
+        #     streamline_application, 'landprivate',
+        #     lambda v: 'Yes' if v['priv_ind'] == 1 else 'No')
         
-        streamline_application = etl.addfield(
-            streamline_application, 'landcommunitywatershed',
-            lambda v: 'Yes' if v['water_ind'] == 1 else 'No')
+        # streamline_application = etl.addfield(
+        #     streamline_application, 'landcommunitywatershed',
+        #     lambda v: 'Yes' if v['water_ind'] == 1 else 'No')
         
-        streamline_application = etl.addfield(
-            streamline_application, 'archsitesaffected',
-            lambda v: 'Yes' if v['culture_ind'] == 1 else 'No')
+        # streamline_application = etl.addfield(
+        #     streamline_application, 'archsitesaffected',
+        #     lambda v: 'Yes' if v['culture_ind'] == 1 else 'No')
         
-        streamline_application = etl.addfield(
-            streamline_application, 'fuellubstoreonsite',
-            lambda v: 'Yes' if v['fuel_ind'] == 1 else 'No')
+        # streamline_application = etl.addfield(
+        #     streamline_application, 'fuellubstoreonsite',
+        #     lambda v: 'Yes' if v['fuel_ind'] == 1 else 'No')
         
-        streamline_application = etl.addfield(
-            streamline_application, 'fuellubstoremethodbarrel',
-            lambda v: 'Yes' if v['barrel_ind'] == 1 else 'No')
+        # streamline_application = etl.addfield(
+        #     streamline_application, 'fuellubstoremethodbarrel',
+        #     lambda v: 'Yes' if v['barrel_ind'] == 1 else 'No')
         
-        streamline_application = etl.addfield(
-            streamline_application, 'fuellubstoremethodbulk',
-            lambda v: 'Yes' if v['bulk_ind'] == 1 else 'No')
+        # streamline_application = etl.addfield(
+        #     streamline_application, 'fuellubstoremethodbulk',
+        #     lambda v: 'Yes' if v['bulk_ind'] == 1 else 'No')
         
-        streamline_application = etl.cutout(streamline_application, 'comm_desc', 'pmt_typ', 'ten_nos1', 'ten_nos2', 'cg_clms1', 'cg_clms2', 'legal_desc1', 'legal_desc2', 'priv_ind', 'water_ind', 'culture_ind', 'fuel_ind', 'barrel_ind', 'bulk_ind')
+        # streamline_application = etl.cutout(streamline_application, 'comm_desc', 'pmt_typ', 'ten_nos1', 'ten_nos2', 'cg_clms1', 'cg_clms2', 'legal_desc1', 'legal_desc2', 'priv_ind', 'water_ind', 'culture_ind', 'fuel_ind', 'barrel_ind', 'bulk_ind')
         
-        streamline_application = etl.cut(streamline_application, 'mms_cid', 'startworkdate', 'endworkdate')
-        streamline_application = etl.join(streamline_application, message_ids, key='mms_cid')
+        # streamline_application = etl.cut(streamline_application, 'mms_cid', 'startworkdate', 'endworkdate')
+        # streamline_application = etl.join(streamline_application, message_ids, key='mms_cid')
 
         water_source_activity = etl.fromdb(
             connection,
@@ -932,7 +932,7 @@ def ETL_MMS_NOW_schema(connection, tables):
 
         etl.appenddb(applications, connection, 'application', schema='mms_now_submissions', commit=False)
         etl.appenddb(water_source_activity, connection, 'water_source_activity', schema='mms_now_submissions', commit=False)
-        etl.appenddb(streamline_application, connection, 'application_start_stop', schema='mms_now_submissions', commit=False)
+        # etl.appenddb(streamline_application, connection, 'application_start_stop', schema='mms_now_submissions', commit=False)
         etl.appenddb(sand_grv_qry_activity_detail, connection, 'sand_grv_qry_activity', schema='mms_now_submissions', commit=False)
         etl.appenddb(surface_bulk_activity_detail, connection, 'surface_bulk_sample_activity', schema='mms_now_submissions', commit=False)
         etl.appenddb(exploration_access_activity_detail, connection, 'exp_access_activity', schema='mms_now_submissions', commit=False)
