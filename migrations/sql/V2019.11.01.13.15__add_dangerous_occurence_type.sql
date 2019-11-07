@@ -1,5 +1,5 @@
 CREATE TABLE mine_incident_category (
-    mine_incident_category character varying PRIMARY KEY,
+    mine_incident_category_code character varying PRIMARY KEY,
     description character varying NOT NULL,
     active_ind boolean DEFAULT true NOT NULL,
     create_user character varying NOT NULL,
@@ -10,4 +10,4 @@ CREATE TABLE mine_incident_category (
 
 ALTER TABLE mine_incident_category OWNER TO mds;
 
-alter table mine_incident add column mine_incident_category character varying REFERENCES mine_incident_category(mine_incident_category);
+alter table mine_incident add column mine_incident_category_code character varying REFERENCES mine_incident_category(mine_incident_category_code);

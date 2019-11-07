@@ -9,6 +9,7 @@ import {
   fetchRegionOptions,
   fetchMineComplianceCodes,
   fetchMineIncidentStatusCodeOptions,
+  fetchMineIncidentCategoryCodeOptions,
 } from "@/actionCreators/staticContentActionCreator";
 import { modalConfig } from "@/components/modalContent/config";
 import { openModal, closeModal } from "@/actions/modalActions";
@@ -56,6 +57,7 @@ const propTypes = {
   incidents: PropTypes.arrayOf(CustomPropTypes.incident).isRequired,
   updateMineIncident: PropTypes.func.isRequired,
   fetchMineIncidentStatusCodeOptions: PropTypes.func.isRequired,
+  fetchMineIncidentCategoryCodeOptions: PropTypes.func.isRequired,
   location: PropTypes.shape({ search: PropTypes.string }).isRequired,
   mineRegionOptions: CustomPropTypes.options.isRequired,
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
@@ -142,6 +144,7 @@ export class IncidentsHomePage extends Component {
     this.props.fetchMineComplianceCodes();
     this.props.fetchRegionOptions();
     this.props.fetchMineIncidentStatusCodeOptions();
+    this.props.fetchMineIncidentCategoryCodeOptions();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -372,6 +375,7 @@ const mapDispatchToProps = (dispatch) =>
       fetchRegionOptions,
       fetchMineComplianceCodes,
       fetchMineIncidentStatusCodeOptions,
+      fetchMineIncidentCategoryCodeOptions,
       fetchInspectors,
     },
     dispatch

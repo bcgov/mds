@@ -27,6 +27,7 @@ import {
   getDropdownIncidentDeterminationOptions,
   getDropdownIncidentStatusCodeOptions,
   getIncidentFollowupActionOptions,
+  getDropdownIncidentCategoryCodeOptions,
 } from "@/selectors/staticContentSelectors";
 import { getDropdownInspectors } from "@/selectors/partiesSelectors";
 
@@ -36,6 +37,7 @@ import {
   fetchMineIncidentFollowActionOptions,
   fetchMineIncidentDeterminationOptions,
   fetchMineIncidentStatusCodeOptions,
+  fetchMineIncidentCategoryCodeOptions,
 } from "@/actionCreators/staticContentActionCreator";
 
 /**
@@ -50,6 +52,7 @@ const propTypes = {
   followupActionsOptions: CustomPropTypes.options.isRequired,
   incidentDeterminationOptions: CustomPropTypes.options.isRequired,
   incidentStatusCodeOptions: CustomPropTypes.options.isRequired,
+  incidentCategoryCodeOptions: CustomPropTypes.options.isRequired,
   doSubparagraphOptions: CustomPropTypes.options.isRequired,
   inspectors: CustomPropTypes.groupOptions.isRequired,
   openModal: PropTypes.func.isRequired,
@@ -62,6 +65,7 @@ const propTypes = {
   fetchMineIncidentFollowActionOptions: PropTypes.func.isRequired,
   fetchMineIncidentDeterminationOptions: PropTypes.func.isRequired,
   fetchMineIncidentStatusCodeOptions: PropTypes.func.isRequired,
+  fetchMineIncidentCategoryCodeOptions: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
@@ -80,6 +84,7 @@ export class MineIncidents extends Component {
     this.props.fetchMineIncidentFollowActionOptions();
     this.props.fetchMineIncidentDeterminationOptions();
     this.props.fetchMineIncidentStatusCodeOptions();
+    this.props.fetchMineIncidentCategoryCodeOptions();
   }
 
   handleAddMineIncident = (values) => {
@@ -159,6 +164,7 @@ export class MineIncidents extends Component {
         followupActionOptions: this.props.followupActionsOptions,
         incidentDeterminationOptions: this.props.incidentDeterminationOptions,
         incidentStatusCodeOptions: this.props.incidentStatusCodeOptions,
+        incidentCategoryCodeOptions: this.props.incidentCategoryCodeOptions,
         doSubparagraphOptions: this.props.doSubparagraphOptions,
         inspectors: this.props.inspectors,
         clearOnSubmit: true,
@@ -208,6 +214,7 @@ const mapStateToProps = (state) => ({
   followupActionsOptions: getDropdownIncidentFollowupActionOptions(state),
   incidentDeterminationOptions: getDropdownIncidentDeterminationOptions(state),
   incidentStatusCodeOptions: getDropdownIncidentStatusCodeOptions(state),
+  incidentCategoryCodeOptions: getDropdownIncidentCategoryCodeOptions(state),
   doSubparagraphOptions: getDangerousOccurrenceSubparagraphOptions(state),
 });
 
@@ -219,6 +226,7 @@ const mapDispatchToProps = (dispatch) =>
       fetchMineIncidentFollowActionOptions,
       fetchMineIncidentDeterminationOptions,
       fetchMineIncidentStatusCodeOptions,
+      fetchMineIncidentCategoryCodeOptions,
       createMineIncident,
       updateMineIncident,
       destroy,

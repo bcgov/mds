@@ -65,7 +65,7 @@ class MineIncidentListResource(Resource, UserMixin):
     parser.add_argument('dangerous_occurrence_subparagraph_ids', type=list, location='json')
     parser.add_argument('updated_documents', type=list, location='json', store_missing=False)
     parser.add_argument('recommendations', type=list, location='json', store_missing=False)
-    parser.add_argument('incident_category', type=str, location='json')
+    parser.add_argument('mine_incident_category_code', type=str, location='json')
 
     @api.marshal_with(MINE_INCIDENT_MODEL, envelope='records', code=200)
     @api.doc(description='returns the incidents for a given mine.')
@@ -104,7 +104,7 @@ class MineIncidentListResource(Resource, UserMixin):
             followup_investigation_type_code=data['followup_investigation_type_code'],
             reported_timestamp=data['reported_timestamp'],
             reported_by_name=data['reported_by_name'],
-            mine_incident_category=data['incident_category'],
+            mine_incident_category_code=data['mine_incident_category_code'],
         )
 
         incident.reported_by_email = data.get('reported_by_email')
@@ -229,6 +229,8 @@ class MineIncidentResource(Resource, UserMixin):
         'mine_determination_type_code', type=str, location='json', store_missing=False)
     parser.add_argument(
         'mine_determination_representative', type=str, location='json', store_missing=False)
+    parser.add_argument(
+        'mine_incident_category_code', type=str, location='json', store_missing=False)
 
     @api.marshal_with(MINE_INCIDENT_MODEL, code=200)
     @requires_role_view_all
