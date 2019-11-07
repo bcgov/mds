@@ -906,11 +906,11 @@ def ETL_MMS_NOW_schema(connection, tables):
             f'SELECT * from mms.mmsnda'
         )
 
-        application_nda = etl.cutout(application_nda, 'oldenddate')
+        application_nda = etl.cutout(application_nda, 'oldenddate', 'mmsnda_id')
 
         print('------------------------------------------------------------------------------------------------')
-        print('Surface Bulk Activity Detail Columns')
-        print(etl.header(surface_bulk_activity_detail))
+        print('Columns')
+        print(etl.header(application_nda))
         print('------------------------------------------------------------------------------------------------')
 
         etl.appenddb(applications, connection, 'application', schema='mms_now_submissions', commit=False)
