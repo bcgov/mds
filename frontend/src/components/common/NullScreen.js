@@ -30,6 +30,7 @@ const propTypes = {
     "applications",
     "notice-of-work",
     "next-stage",
+    "documents",
   ]),
 };
 

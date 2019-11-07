@@ -49,6 +49,7 @@ export class NoticeOfWorkApplication extends Component {
   };
 
   componentDidMount() {
+    window.scrollTo(0, 0);
     const { id } = this.props.match.params;
     this.props.fetchNoticeOfWorkApplication(id).then((data) => {
       const associatedMineGuid = data.data.mine_guid ? data.data.mine_guid : "";

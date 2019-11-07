@@ -1,7 +1,7 @@
 import React from "react";
 import { PropTypes } from "prop-types";
 import { Field, reduxForm } from "redux-form";
-import { Form, Divider, Row, Col, Card, Table } from "antd";
+import { Form, Divider, Row, Col, Card } from "antd";
 import CustomPropTypes from "@/customPropTypes";
 import RenderField from "@/components/common/RenderField";
 import RenderDate from "@/components/common/RenderDate";
@@ -12,9 +12,7 @@ import ScrollContentWrapper from "@/components/common/wrappers/ScrollContentWrap
 import ReviewActivities from "@/components/noticeOfWork/applications/review/ReviewActivities";
 import NullScreen from "@/components/common/NullScreen";
 import Address from "@/components/common/Address";
-import LinkButton from "@/components/common/LinkButton";
-import { downloadNowDocument } from "@/utils/actionlessNetworkCalls";
-import { UNIQUELY_SPATIAL } from "@/constants/fileTypes";
+
 /**
  * @constant ReviewNOWApplication renders edit/view for the NoW Application review step
  */
@@ -555,99 +553,16 @@ export const ReviewNOWApplication = (props) => {
   );
 
   const renderDocuments = () => {
-    const columns = [
-      {
-        title: "File name",
-        dataIndex: "filename",
-        key: "filename",
-        render: (text, record) => (
-          <div title="File Name">
-            <LinkButton
-              onClick={() =>
-                downloadNowDocument(record.key, record.application_guid, record.filename)
-              }
-            >
-              <span>{text}</span>
-            </LinkButton>
-          </div>
-        ),
-      },
-      {
-        title: "Category",
-        dataIndex: "category",
-        key: "category",
-        render: (text) => <div title="Category">{text}</div>,
-      },
-      {
-        title: "Proponent Description",
-        dataIndex: "description",
-        key: "description",
-        render: (text) => <div title="Proponent Description">{text}</div>,
-      },
-    ];
-
-    const isSpatialFile = (document) =>
-      document.documenttype === "SpatialFileDoc" ||
-      (document.filename &&
-        Object.keys(UNIQUELY_SPATIAL).includes(
-          document.filename.substr(document.filename.length - 4)
-        ));
-
-    const transfromData = (documents, application_guid, spatial = false) =>
-      documents
-        .filter((document) => (spatial ? isSpatialFile(document) : !isSpatialFile(document)))
-        .map((document) => ({
-          key: document.id,
-          application_guid,
-          filename: document.filename || Strings.EMPTY_FIELD,
-          url: document.documenturl,
-          category: document.documenttype || Strings.EMPTY_FIELD,
-          description: document.description || Strings.EMPTY_FIELD,
-        }));
-
     return (
       <div>
         <br />
         <h4>Documents</h4>
         <Divider />
-        <div>
-          {props.noticeOfWork.documents && props.noticeOfWork.documents.length >= 1 ? (
-            <Table
-              align="left"
-              pagination={false}
-              columns={columns}
-              dataSource={transfromData(
-                props.noticeOfWork.documents,
-                props.noticeOfWork.application_guid
-              )}
-              locale={{ emptyText: "There are no documents associated with this Notice of Work" }}
-            />
-          ) : (
-            <NullScreen type="documents" />
-          )}
-        </div>
+        <NullScreen type="documents" />
         <br />
         <h4>Spatial Files</h4>
         <Divider />
-        <div>
-          {props.noticeOfWork.documents && props.noticeOfWork.documents.length >= 1 ? (
-            <Table
-              align="left"
-              pagination={false}
-              columns={columns}
-              dataSource={transfromData(
-                props.noticeOfWork.documents,
-                props.noticeOfWork.application_guid,
-                true
-              )}
-              locale={{
-                emptyText: "There are no spacial files associated with this Notice of Work",
-              }}
-            />
-          ) : (
-            <NullScreen type="documents" />
-          )}
-        </div>
+        <NullScreen type="documents" />
       </div>
     );
   };

@@ -39,7 +39,7 @@ const RenderAutoSizeField = (props) => (
       disabled={props.disabled}
       id={props.id}
       {...props.input}
-      autosize
+      autoSize
       placeholder={props.placeholder}
     />
   </Form.Item>
