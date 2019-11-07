@@ -905,11 +905,27 @@ def ETL_MMS_NOW_schema(connection, tables):
             connection,
             f'SELECT messageid, trackingnumber, applicationtype, status, submitteddate, receiveddate, applicantclientid, submitterclientid, typedeemedauthorization, permitnumber, minenumber, nownumber, planactivitiesdrillprogram, planactivitiesipsurvey, proposedstartdate, proposedenddate, totallinekilometers, descplannedactivities, proposednewenddate, reasonforextension, anyotherinformation, vfcbcapplicationurl from mms.mmsnda'
         )
+        
+        settling_ponds = etl.fromdb(
+            connection,
+            f'SELECT cid as mms_cid, edist_ar as sandgrvqrytotalexistdistarea, pdist_ar as sandgrvqrydisturbedarea, pdist_vol as sandgrvqrytimbervolume, water1_ind, water2_ind, water3_ind, recl_desc as pondsreclamation, recl_dol as pondsreclamationcost from mms.mmscj_n'
+        )
 
-        print('------------------------------------------------------------------------------------------------')
-        print('Columns')
-        print(etl.header(application_nda))
-        print('------------------------------------------------------------------------------------------------')
+        settling_ponds = etl.addfield(
+            settling_ponds, 'pondsrecycled',
+            lambda v: 'Yes' if v['water1_ind'] == 1 else 'No')
+
+        settling_ponds = etl.addfield(
+            settling_ponds, 'pondsexfiltratedtoground',
+            lambda v: 'Yes' if v['water2_ind'] == 1 else 'No')
+
+        settling_ponds = etl.addfield(
+            settling_ponds, 'pondsdischargedtoenv',
+            lambda v: 'Yes' if v['water3_ind'] == 1 else 'No')
+
+        settling_ponds = etl.cutout(settling_ponds, 'water1_ind', 'water2_ind', 'water3_ind')
+
+        applications = etl.leftjoin(applications, settling_ponds, key='mms_cid')
 
         etl.appenddb(applications, connection, 'application', schema='mms_now_submissions', commit=False)
         etl.appenddb(water_source_activity, connection, 'water_source_activity', schema='mms_now_submissions', commit=False)
