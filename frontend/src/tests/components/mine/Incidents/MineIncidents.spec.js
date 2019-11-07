@@ -14,6 +14,7 @@ const setupDispatchProps = () => {
   dispatchProps.fetchMineIncidentFollowActionOptions = jest.fn();
   dispatchProps.fetchMineIncidentDeterminationOptions = jest.fn();
   dispatchProps.fetchMineIncidentStatusCodeOptions = jest.fn();
+  dispatchProps.fetchMineIncidentCategoryCodeOptions = jest.fn();
   dispatchProps.createMineIncident = jest.fn();
   dispatchProps.updateMineIncident = jest.fn();
   dispatchProps.destroy = jest.fn();
@@ -28,6 +29,7 @@ const setupReducerProps = () => {
   reducerProps.followupActionsOptions = {};
   reducerProps.incidentDeterminationOptions = {};
   reducerProps.incidentStatusCodeOptions = {};
+  reducerProps.incidentCategoryCodeOptions = {};
   reducerProps.doSubparagraphOptions = {};
 };
 

@@ -518,7 +518,7 @@ VALUES
 on conflict do nothing;
 
 INSERT INTO mine_incident_category
-(mine_incident_category, description, active_ind, create_user, update_user)
+(mine_incident_category_code, description, active_ind, create_user, update_user)
 VALUES
 	('H&S', 'Health and Safety', true, 'system-mds', 'system-mds'),
 	('GTC', 'Geotechnical', true, 'system-mds', 'system-mds'),
