@@ -24,6 +24,7 @@ const baseExpectedValue = {
   incidentFollowupActionOptions: [],
   incidentDeterminationOptions: [],
   incidentStatusCodeOptions: [],
+  incidentCategoryCodeOptions: [],
   varianceStatusOptions: [],
   varianceDocumentCategoryOptions: [],
   mineReportDefinitionOptions: [],
