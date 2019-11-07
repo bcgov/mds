@@ -21,7 +21,7 @@ class BaseMeta:
     ordered = True
     sqla_session = db.session
     model_converter = CoreConverter
-    exclude = ('create_user', 'create_timestamp', 'update_user', 'update_timestamp', 'deleted_ind')
+    exclude = ('create_user', 'create_timestamp', 'update_user', 'update_timestamp')
 
 
 class NOWApplicationSurfaceDrillingDetailSchema(ModelSchema):
