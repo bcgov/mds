@@ -204,6 +204,7 @@ NOW_APPLICATION_MODEL = api.model(
         'description_of_land': fields.String,
         'proposed_start_date': Date,
         'proposed_end_date': Date,
+        'directions_to_site':fields.String,
         'camps': fields.Nested(NOW_APPLICATION_CAMP, skip_none=True),
         'cut_lines_polarization_survey': fields.Nested(NOW_APPLICATION_CUT_LINES, skip_none=True),
         'exploration_access': fields.Nested(NOW_APPLICATION_EXP_ACCESS, skip_none=True),
