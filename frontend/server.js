@@ -49,6 +49,12 @@ app.get(`${BASE_PATH}/env`, (req, res) => {
   });
 });
 
+app.get(`/health`, (req, res) => {
+  res.json({
+    status: "pass",
+  });
+});
+
 app.use(`${BASE_PATH}/`, staticServe);
 app.use(`${BASE_PATH}/vendor/`, vendorServe);
 app.use(`${BASE_PATH}*`, staticServe);
