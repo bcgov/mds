@@ -24,6 +24,7 @@ const propTypes = {
   closeModal: PropTypes.func.isRequired,
   incidentDeterminationOptions: CustomPropTypes.options.isRequired,
   incidentStatusCodeOptions: CustomPropTypes.options.isRequired,
+  incidentCategoryCodeOptions: CustomPropTypes.options.isRequired,
   followupActionOptions: CustomPropTypes.options.isRequired,
   doSubparagraphOptions: CustomPropTypes.options.isRequired,
   initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
@@ -83,7 +84,11 @@ const StepForms = (
   {
     title: "Initial Report",
     content: (
-      <AddIncidentReportingForm initialValues={props.initialValues} inspectors={props.inspectors} />
+      <AddIncidentReportingForm
+        initialValues={props.initialValues}
+        inspectors={props.inspectors}
+        incidentCategoryCodeOptions={props.incidentCategoryCodeOptions}
+      />
     ),
     buttons: (
       <Button
