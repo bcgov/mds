@@ -903,7 +903,7 @@ def ETL_MMS_NOW_schema(connection, tables):
         
         settling_ponds = etl.fromdb(
             connection,
-            f'SELECT cid as mms_cid, edist_ar as settlingpondtotalexistdistarea, pdist_ar as settlingponddisturbedarea, pdist_vol as settlingpondtimbervolume, water1_ind, water2_ind, water3_ind, recl_desc as pondsreclamation, recl_dol as pondsreclamationcost from mms.mmscj_n'
+            f'SELECT cid as mms_cid, edist_ar as settlingpondtotalexistdistarea, pdist_ar as settlingponddisturbedarea, pdist_vol as settlingpondtimbervolume, water1_ind, water2_ind, water3_ind, recl_desc as pondsreclamation, recl_dol as pondsreclamationcost from mms.mmsscj_n'
         )
 
         settling_ponds = etl.addfield(
