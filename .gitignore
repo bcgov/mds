@@ -10,7 +10,6 @@ __pycache__
 *.pytest_cache
 *.pyc
 *tmp*.tar
-.vscode
 *.pgCustom
 *.sw*
 microservices/document_manager/backend/document_uploads/

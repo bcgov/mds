@@ -18,6 +18,7 @@ export const {
   getIncidentFollowupActionOptions,
   getIncidentDeterminationOptions,
   getIncidentStatusCodeOptions,
+  getIncidentCategoryCodeOptions,
   getVarianceStatusOptions,
   getVarianceDocumentCategoryOptions,
 } = staticContentReducer;
@@ -145,8 +146,18 @@ export const getDropdownIncidentStatusCodeOptions = createSelector(
   (options) => createDropDownList(options, "description", "mine_incident_status_code")
 );
 
+export const getDropdownIncidentCategoryCodeOptions = createSelector(
+  [getIncidentCategoryCodeOptions],
+  (options) => createDropDownList(options, "description", "mine_incident_category_code")
+);
+
 export const getIncidentStatusCodeHash = createSelector(
   [getDropdownIncidentStatusCodeOptions],
+  createLabelHash
+);
+
+export const getIncidentCategoryCodeHash = createSelector(
+  [getDropdownIncidentCategoryCodeOptions],
   createLabelHash
 );
 
