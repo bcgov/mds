@@ -11,7 +11,9 @@ import {
   createNoticeOfWorkApplication,
   fetchImportedNoticeOfWorkApplication,
 } from "@/actionCreators/noticeOfWorkActionCreator";
+import { fetchMineRecordById } from "@/actionCreators/mineActionCreator";
 import { getNoticeOfWork } from "@/selectors/noticeOfWorkSelectors";
+import { getMines } from "@/selectors/mineSelectors";
 import VerifyNOWMine from "@/components/noticeOfWork/applications/verification/VerifyNOWMine";
 import * as Strings from "@/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
@@ -30,6 +32,7 @@ const propTypes = {
   fetchNoticeOfWorkApplication: PropTypes.func.isRequired,
   noticeOfWork: CustomPropTypes.nowApplication.isRequired,
   createNoticeOfWorkApplication: PropTypes.func.isRequired,
+  fetchMineRecordById: PropTypes.func.isRequired,
   fetchImportedNoticeOfWorkApplication: PropTypes.func.isRequired,
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
   match: PropTypes.shape({
@@ -37,6 +40,8 @@ const propTypes = {
       id: PropTypes.string,
     },
   }).isRequired,
+  formValues: CustomPropTypes.nowApplication.isRequired,
+  mines: PropTypes.arrayOf(CustomPropTypes.mine).isRequired,
 };
 
 export class NoticeOfWorkApplication extends Component {
@@ -58,6 +63,7 @@ export class NoticeOfWorkApplication extends Component {
   }
 
   toggleEditMode = () => {
+    console.log(this.props.formValues);
     this.setState((prevState) => ({ isViewMode: !prevState.isViewMode }));
   };
 
@@ -88,6 +94,7 @@ export class NoticeOfWorkApplication extends Component {
         return this.props
           .fetchImportedNoticeOfWorkApplication(data.data.application_guid)
           .then(() => {
+            this.props.fetchMineRecordById(this.state.associatedMineGuid);
             // updates route to include active section
             this.props.history.push(
               router.NOTICE_OF_WORK_APPLICATION.hashRoute(id, "#application-info")
@@ -109,9 +116,11 @@ export class NoticeOfWorkApplication extends Component {
     );
 
   renderStepTwo = () => {
+    const mine = this.props.mines ? this.props.mines[this.state.associatedMineGuid] : {};
     return (
       // To DO: add loading wrapper when fetching new data
       <ReviewNOWApplication
+        mine={mine}
         isViewMode={this.state.isViewMode}
         initialValues={this.props.noticeOfWork}
         noticeOfWork={this.props.noticeOfWork}
@@ -120,6 +129,7 @@ export class NoticeOfWorkApplication extends Component {
   };
 
   render() {
+    const { id } = this.props.match.params;
     const steps = [
       {
         title: "Verification",
@@ -145,15 +155,13 @@ export class NoticeOfWorkApplication extends Component {
           <div className="inline-flex between">
             <div>
               <h1>NoW Number: {Strings.EMPTY_FIELD}</h1>
-              <Link
-                to={router.NOTICE_OF_WORK_INITIAL_APPLICATION.dynamicRoute(
-                  this.props.noticeOfWork.application_guid
-                )}
-              >
+              {/* update to use application_guid for link once guid is persisted */}
+              <Link to={router.NOTICE_OF_WORK_INITIAL_APPLICATION.dynamicRoute(id)}>
                 Open Original NoW
               </Link>
             </div>
-            {false && (
+            {/* hiding the edit button until fully functionality is implemented */}
+            {true && (
               <div>
                 {this.state.isViewMode ? (
                   <Button onClick={this.toggleEditMode}>Edit</Button>
@@ -180,6 +188,7 @@ export class NoticeOfWorkApplication extends Component {
 const mapStateToProps = (state) => ({
   noticeOfWork: getNoticeOfWork(state),
   formValues: getFormValues(FORM.EDIT_NOTICE_OF_WORK)(state),
+  mines: getMines(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
@@ -188,6 +197,7 @@ const mapDispatchToProps = (dispatch) =>
       fetchNoticeOfWorkApplication,
       createNoticeOfWorkApplication,
       fetchImportedNoticeOfWorkApplication,
+      fetchMineRecordById,
     },
     dispatch
   );

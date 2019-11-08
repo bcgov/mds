@@ -174,6 +174,7 @@ export const importedNOWApplication = shape({
   description_of_land: PropTypes.string,
   proposed_start_date: PropTypes.string,
   proposed_end_date: PropTypes.string,
+
   contacts: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)),
   blasting: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)),
   state_of_land: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)),
