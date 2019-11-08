@@ -13,7 +13,6 @@ const propTypes = {
 export const AccessRoads = (props) => {
   return (
     <div>
-      THIS WILL BE A TABLE
       <br />
       <h4>Bridges, Culverts, and Crossings</h4>
       <Row gutter={16}>

@@ -12,8 +12,7 @@ const propTypes = {
 export const MechanicalTrenching = (props) => {
   return (
     <div>
-      <br />
-      THIS WILL BE A TABLE
+      {/* <br /> */}
       <br />
       <h4>Reclamation Program</h4>
       <Row gutter={16}>

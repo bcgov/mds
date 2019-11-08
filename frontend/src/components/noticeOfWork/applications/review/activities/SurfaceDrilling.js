@@ -12,9 +12,8 @@ const propTypes = {
 export const SurfaceDrilling = (props) => {
   return (
     <div>
-      <br />
-      <h4>Drilling</h4>
-      THIS WILL BE A TABLE
+      {/* <br />
+      <h4>Drilling</h4> */}
       <br />
       <h4>Support of the Drilling Program</h4>
       <Row gutter={16}>

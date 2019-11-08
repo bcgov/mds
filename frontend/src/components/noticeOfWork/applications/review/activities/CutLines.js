@@ -12,9 +12,8 @@ const propTypes = {
 export const CutLines = (props) => {
   return (
     <div>
-      <br />
-      <h4>Exploration Grid</h4>
-      THIS WILL BE A TABLE
+      {/* <br />
+      <h4>Exploration Grid</h4> */}
       <br />
       <h4>Reclamation Program</h4>
       <Row gutter={16}>

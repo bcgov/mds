@@ -13,15 +13,14 @@ const propTypes = {
 export const Camps = (props) => {
   return (
     <div>
-      <br />
+      {/* <br />
       <h4>Camps</h4>
-      THIS WILL BE A TABLE
+
       <br />
       <h4>Buildings</h4>
-      THIS WILL BE A TABLE
+
       <br />
-      <h4>Staging Area</h4>
-      THIS WILL BE A TABLE
+      <h4>Staging Area</h4> */}
       <br />
       <h4>Fuel</h4>
       <Row gutter={16}>
