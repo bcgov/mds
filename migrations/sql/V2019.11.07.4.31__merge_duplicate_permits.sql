@@ -1,4 +1,5 @@
 -- Insert duplicate permits into a temp table
+DROP TABLE IF EXISTS duplicate_permits;
 SELECT permit_no, mine_guid, MIN(permit_id) as permit_id, count(*)
 INTO temporary table duplicate_permits
 FROM permit 
@@ -6,6 +7,7 @@ GROUP BY permit_no, mine_guid
 HAVING count(permit_no) > 1;
 
 -- Create a mapping for every related permit amendment to only a single permit record
+DROP TABLE IF EXISTS duplicate_permit_mapping;
 SELECT permit_amendment_id, permit_id, 
 (select dp.permit_id from duplicate_permits dp join permit p on dp.permit_no = p.permit_no and dp.mine_guid=p.mine_guid where 
 p.permit_id=permit_amendment.permit_id) as new_permit_id
