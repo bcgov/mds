@@ -11,6 +11,7 @@ import CustomPropTypes from "@/customPropTypes";
 const propTypes = {
   initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
   inspectors: CustomPropTypes.groupOptions.isRequired,
+  incidentCategoryCodeOptions: CustomPropTypes.options.isRequired,
 };
 
 export const AddIncidentReportingForm = (props) => (
@@ -28,6 +29,15 @@ export const AddIncidentReportingForm = (props) => (
           ) : (
             ""
           )}
+          <Form.Item>
+            <Field
+              id="mine_incident_category_code"
+              name="mine_incident_category_code"
+              label="Incident type*"
+              component={renderConfig.SELECT}
+              data={props.incidentCategoryCodeOptions}
+            />
+          </Form.Item>
           <Form.Item>
             <Field
               id="reported_to_inspector_party_guid"

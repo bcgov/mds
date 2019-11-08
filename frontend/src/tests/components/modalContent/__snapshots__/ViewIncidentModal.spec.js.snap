@@ -15,6 +15,18 @@ exports[`ViewIncidentModal renders properly 1`] = `
         <p
           className="field-title"
         >
+          Incident type
+        </p>
+        <p>
+          N/A
+        </p>
+      </div>
+      <div
+        className="inline-flex padding-small"
+      >
+        <p
+          className="field-title"
+        >
           Incident reported to
         </p>
         <p>

@@ -19,6 +19,7 @@ import {
   getIncidentFollowupActionOptions,
   getIncidentDeterminationOptions,
   getIncidentStatusCodeOptions,
+  getIncidentCategoryCodeOptions,
   getVarianceStatusOptions,
   getVarianceDocumentCategoryOptions,
 } from "@/selectors/staticContentSelectors";
@@ -131,6 +132,17 @@ export const fetchMineIncidentStatusCodeOptions = () => (dispatch) => {
       dispatch(staticContentActions.storeMineIncidentStatusCodeOptions(response.data));
     })
     .catch(() => dispatch(error(reducerTypes.GET_MINE_INCIDENT_STATUS_CODE_OPTIONS)));
+};
+
+export const fetchMineIncidentCategoryCodeOptions = () => (dispatch) => {
+  dispatch(request(reducerTypes.GET_MINE_INCIDENT_CATEGORY_CODE_OPTIONS));
+  return CustomAxios({ selector: getIncidentCategoryCodeOptions })
+    .get(ENVIRONMENT.apiUrl + API.INCIDENT_CATEGORY_CODES, createRequestHeader())
+    .then((response) => {
+      dispatch(success(reducerTypes.GET_MINE_INCIDENT_CATEGORY_CODE_OPTIONS));
+      dispatch(staticContentActions.storeMineIncidentCategoryCodeOptions(response.data));
+    })
+    .catch(() => dispatch(error(reducerTypes.GET_MINE_INCIDENT_CATEGORY_CODE_OPTIONS)));
 };
 
 export const fetchProvinceCodes = () => (dispatch) => {
