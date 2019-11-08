@@ -10,6 +10,11 @@ import Camps from "@/components/noticeOfWork/applications/review/activities/Camp
 import CutLines from "@/components/noticeOfWork/applications/review/activities/CutLines";
 import MechanicalTrenching from "@/components/noticeOfWork/applications/review/activities/MechanicalTrenching";
 import SettlingPonds from "@/components/noticeOfWork/applications/review/activities/SettlingPonds";
+import SandGravelQuarry from "@/components/noticeOfWork/applications/review/activities/SandGravelQuarry";
+import SurfaceBulkSamples from "@/components/noticeOfWork/applications/review/activities/SurfaceBulkSamples";
+import WaterSupply from "@/components/noticeOfWork/applications/review/activities/WaterSupply";
+import UndergroundExploration from "@/components/noticeOfWork/applications/review/activities/UndergroundExploration";
+
 /**
  * @constant ReviewActivities renders edit/view for the NoW Application review step
  */
@@ -84,22 +89,42 @@ export const ReviewActivities = (props) => {
         </FormSection>
       </ScrollContentWrapper>
       <ScrollContentWrapper id="surface-bulk-samples" title="Surface Bulk Sample">
-        <div />
+        <FormSection name="surface_bulk_sample">
+          <SurfaceBulkSamples
+            initialValues={props.noticeOfWork.surface_bulk_sample}
+            isViewMode={props.isViewMode}
+          />
+        </FormSection>
       </ScrollContentWrapper>
       <ScrollContentWrapper id="underground-exploration" title="Underground Exploration">
-        <div />
+        <FormSection name="underground_exploration">
+          <UndergroundExploration
+            initialValues={props.noticeOfWork.underground_exploration}
+            isViewMode={props.isViewMode}
+          />
+        </FormSection>
       </ScrollContentWrapper>
       <ScrollContentWrapper
         id="sand-gravel-quarry-operations"
         title="Sand and Gravel / Quary Operations"
       >
-        <div />
+        <FormSection name="sand_and_gravel">
+          <SandGravelQuarry
+            initialValues={props.noticeOfWork.sand_and_gravel}
+            isViewMode={props.isViewMode}
+          />
+        </FormSection>
       </ScrollContentWrapper>
       <ScrollContentWrapper id="placer-operations" title="Placer Operations">
         <div />
       </ScrollContentWrapper>
       <ScrollContentWrapper id="water-supply" title="Water Supply">
-        <div />
+        <FormSection name="water_supply">
+          <WaterSupply
+            initialValues={props.noticeOfWork.water_supply}
+            isViewMode={props.isViewMode}
+          />
+        </FormSection>
       </ScrollContentWrapper>
     </div>
   );

@@ -394,17 +394,12 @@ export const ReviewNOWApplication = (props) => {
     </div>
   );
 
-  const renderEquipment = () => <div>THIS WILL BE A TABLE</div>;
+  const renderEquipment = () => <div />;
   const renderWorkPlan = () => (
     <Row gutter={16}>
       <Col md={12} sm={24}>
         <div className="field-title">Description of Work**</div>
-        <Field
-          id="property_name"
-          name="property_name"
-          component={RenderField}
-          disabled={props.isViewMode}
-        />
+        <Field id="" name="" component={RenderField} disabled={props.isViewMode} />
       </Col>
     </Row>
   );
@@ -413,11 +408,10 @@ export const ReviewNOWApplication = (props) => {
     <div>
       <Row gutter={16}>
         <Col md={12} sm={24}>
-          <div className="field-title">Description of Work**</div>
+          <div className="field-title">Total merchantable timber volume**</div>
           <Field id="" name="" component={RenderField} disabled={props.isViewMode} />
         </Col>
       </Row>
-      A TABLE WILL GO HERE
     </div>
   );
 
