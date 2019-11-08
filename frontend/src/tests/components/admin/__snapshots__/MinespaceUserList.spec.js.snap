@@ -11,11 +11,8 @@ exports[`MinespaceUserList renders properly 1`] = `
     ]
   }
 >
-  <Table
+  <withStore(Table)
     align="center"
-    bordered={false}
-    childrenColumnName="children"
-    className=""
     columns={
       Array [
         Object {
@@ -39,8 +36,6 @@ exports[`MinespaceUserList renders properly 1`] = `
       ]
     }
     dataSource={Array []}
-    indentSize={20}
-    loading={false}
     locale={
       Object {
         "emptyText": <NullScreen
@@ -50,16 +45,6 @@ exports[`MinespaceUserList renders properly 1`] = `
     }
     pagination={false}
     rowClassName="fade-in"
-    rowKey="key"
-    showHeader={true}
-    size="default"
-    sortDirections={
-      Array [
-        "ascend",
-        "descend",
-      ]
-    }
-    useFixedHeader={false}
   />
 </TableLoadingWrapper>
 `;

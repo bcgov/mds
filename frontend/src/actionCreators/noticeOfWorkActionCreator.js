@@ -65,9 +65,27 @@ export const createNoticeOfWorkApplication = (mine_guid, applicationGuid) => (di
       { mine_guid },
       createRequestHeader()
     )
-    .then(() => {
+    .then((response) => {
       dispatch(success(reducerTypes.CREATE_NOTICE_OF_WORK_APPLICATION));
+      return response;
     })
     .catch(() => dispatch(error(reducerTypes.CREATE_NOTICE_OF_WORK_APPLICATION)))
+    .finally(() => dispatch(hideLoading()));
+};
+
+export const fetchImportedNoticeOfWorkApplication = (applicationGuid) => (dispatch) => {
+  dispatch(request(reducerTypes.GET_IMPORTED_NOTICE_OF_WORK_APPLICATION));
+  dispatch(showLoading());
+  return CustomAxios()
+    .get(
+      `${ENVIRONMENT.apiUrl}${API.NOTICE_OF_WORK_IMPORTED_APPLICATION(applicationGuid)}`,
+      createRequestHeader()
+    )
+    .then((response) => {
+      dispatch(success(reducerTypes.GET_IMPORTED_NOTICE_OF_WORK_APPLICATION));
+      dispatch(noticeOfWorkActions.storeNoticeOfWorkApplication(response.data));
+      return response;
+    })
+    .catch(() => dispatch(error(reducerTypes.GET_IMPORTED_NOTICE_OF_WORK_APPLICATION)))
     .finally(() => dispatch(hideLoading()));
 };

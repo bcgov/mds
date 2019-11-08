@@ -4,12 +4,15 @@ from app.api.mms_now_submissions import models as mms_sub_models
 
 from flask import current_app
 
-unit_type_map = {'m3' : 'Meters cubed',
-'tonnes': 'Tonne (Metric Ton 1000Kg)',
-'m3/year' : 'Meters cubed',
-'tonnes/year' :'Tonne (Metric Ton 1000Kg)',
-'Degrees':'Degrees',
-'Percent':'Grade (Percent)'}
+unit_type_map = {
+    'm3': 'Meters cubed',
+    'tonnes': 'Tonne (Metric Ton 1000Kg)',
+    'm3/year': 'Meters cubed',
+    'tonnes/year': 'Tonne (Metric Ton 1000Kg)',
+    'Degrees': 'Degrees',
+    'Percent': 'Grade (Percent)',
+    None: None
+}
 
 def code_lookup(model, description, code_column_name):
     if description:
@@ -148,13 +151,7 @@ def _transmogrify_exploration_surface_drilling(now_app, now_sub, mms_now_sub):
     expsurfacedrillreclamation = mms_now_sub.expsurfacedrillreclamation or now_sub.expsurfacedrillreclamation
     expsurfacedrillreclamationcost = mms_now_sub.expsurfacedrillreclamationcost or now_sub.expsurfacedrillreclamationcost
     expsurfacedrilltotaldistarea = now_sub.expsurfacedrilltotaldistarea
-    if expsurfacedrillreclcorestorage or expsurfacedrillreclamation or expsurfacedrillreclamationcost or expsurfacedrilltotaldistarea:
         esd = app_models.ExplorationSurfaceDrilling(
-            reclamation_description=expsurfacedrillreclamation,
-            reclamation_cost=expsurfacedrillreclamationcost,
-            total_disturbed_area=expsurfacedrilltotaldistarea,
-            reclamation_core_storage=expsurfacedrillreclcorestorage,
-            total_disturbed_area_unit_type_code='HA')
 
         if(len(mms_now_sub.exp_surface_drill_activity) > 0):
             exp_surface_drill_activity = mms_now_sub.exp_surface_drill_activity
@@ -203,13 +200,14 @@ def _transmogrify_mechanical_trenching(now_app, now_sub, mms_now_sub):
         now_app.mechanical_trenching = mech
     return
 
+
 def _transmogrify_equipment(e):
-    existing_etl = app_models.ETLEquipment.query.filter_by(
-        equipmentid=e.equipmentid).first()
+    existing_etl = app_models.ETLEquipment.query.filter_by(equipmentid=e.equipmentid).first()
     if existing_etl:
         return existing_etl.equipment
 
-    equipment = app_models.Equipment(description=e.type, quantity=e.quantity, capacity=e.sizecapacity)
+    equipment = app_models.Equipment(
+        description=e.type, quantity=e.quantity, capacity=e.sizecapacity)
     etl_equipment = app_models.ETLEquipment(equipmentid=e.equipmentid)
     equipment._etl_equipment.append(etl_equipment)
 
@@ -260,7 +258,7 @@ def _transmogrify_placer_operations(now_app, now_sub, mms_now_sub):
                 length=proposed.length,
                 depth=proposed.depth,
                 quantity=proposed.quantity)
-            
+
             etl_detail = app_models.ETLActivityDetail(placeractivityid=proposed.placeractivityid)
             proposed_detail._etl_activity_details.append(etl_detail)
 
@@ -287,10 +285,12 @@ def _transmogrify_placer_operations(now_app, now_sub, mms_now_sub):
                     depth=existing.depth,
                     quantity=existing.quantity)
 
-                etl_detail = app_models.ETLActivityDetail(placeractivityid=existing.placeractivityid)
+                etl_detail = app_models.ETLActivityDetail(
+                    placeractivityid=existing.placeractivityid)
                 existing_detail._etl_activity_details.append(etl_detail)
 
-            existing_xref = app_models.ActivitySummaryDetailXref(summary=placer, detail=existing_detail, is_existing=True)
+            existing_xref = app_models.ActivitySummaryDetailXref(
+                summary=placer, detail=existing_detail, is_existing=True)
 
         for e in now_sub.placer_equip:
             equipment = _transmogrify_equipment(e)
@@ -331,7 +331,7 @@ def _transmogrify_settling_ponds(now_app, now_sub, mms_now_sub):
                 depth=proposed.depth,
                 disturbed_area=proposed.disturbedarea,
                 timber_volume=proposed.timbervolume)
-            
+
             etl_detail = app_models.ETLActivityDetail(settlingpondid=proposed.settlingpondid)
             proposed_detail._etl_activity_details.append(etl_detail)
 
@@ -362,7 +362,8 @@ def _transmogrify_settling_ponds(now_app, now_sub, mms_now_sub):
                 etl_detail = app_models.ETLActivityDetail(settlingpondid=existing.settlingpondid)
                 existing_detail._etl_activity_details.append(etl_detail)
 
-            existing_xref = app_models.ActivitySummaryDetailXref(summary=settling_pond, detail=existing_detail, is_existing=True)
+            existing_xref = app_models.ActivitySummaryDetailXref(
+                summary=settling_pond, detail=existing_detail, is_existing=True)
 
         now_app.settling_pond = settling_pond
     return

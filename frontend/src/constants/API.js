@@ -154,6 +154,8 @@ export const NOTICE_OF_WORK_DOCUMENT_TOKEN_GET_URL = (id, applicationGuid) =>
   `${NOTICE_OF_WORK_APPLICATION(applicationGuid)}/document/${id}/token`;
 export const NOTICE_OF_WORK_APPLICATION_IMPORT = (applicationGuid) =>
   `/now-applications/${applicationGuid}/import`;
+export const NOTICE_OF_WORK_IMPORTED_APPLICATION = (applicationGuid) =>
+  `/now-applications/${applicationGuid}`;
 
 // Mine Party Appointments
 export const MINE_PARTY_APPOINTMENT_DOCUMENTS = (mineGuid, minePartyAppointmentGuid) =>
