@@ -11,6 +11,14 @@ class Date(fields.Raw):
     def format(self, value):
         return value.strftime("%Y-%m-%d") if value else None
 
+NOW_APPLICATION_EQUIPMENT = api.model(
+    'NOWEquipment',
+    {
+        'description':fields.String,
+        'quantity':fields.Integer,
+        'capacity':fields.String,
+    }
+)    
 
 NOW_APPLICATION_ACTIVITY_DETAIL_BASE = api.model('NOWApplicationActivityDetailBase',
     {
@@ -38,6 +46,7 @@ NOW_APPLICATION_ACTIVITY_SUMMARY_BASE = api.model(
         'reclamation_cost': fields.Fixed,
         'total_disturbed_area': fields.Fixed,
         'total_disturbed_area_unit_type_code': fields.String,
+        'equipment':fields.List(fields.Nested(NOW_APPLICATION_EQUIPMENT))
     })
 
 NOW_APPLICATION_CAMP = api.inherit(
@@ -184,6 +193,14 @@ NOW_APPLICATION_WATER_SUPPLY = api.inherit(
         'details': fields.List(fields.Nested(NOW_APPLICATION_WATER_SUPPLY_DETAIL,skip_none=True))
     })
 
+NOW_APPLCATION_STATE_OF_LAND = api.model(
+    'NOWStateOfLand',
+    {
+        'has_community_water_shed': fields.Boolean,
+        'has_archaeology_sites_affected': fields.Boolean
+    }
+)
+
 NOW_APPLICATION_MODEL = api.model(
     'NOWApplication',
     {
@@ -205,6 +222,7 @@ NOW_APPLICATION_MODEL = api.model(
         'proposed_start_date': Date,
         'proposed_end_date': Date,
         'directions_to_site':fields.String,
+        'state_of_land': fields.Nested(NOW_APPLCATION_STATE_OF_LAND,skip_none=True),
         'camps': fields.Nested(NOW_APPLICATION_CAMP, skip_none=True),
         'cut_lines_polarization_survey': fields.Nested(NOW_APPLICATION_CUT_LINES, skip_none=True),
         'exploration_access': fields.Nested(NOW_APPLICATION_EXP_ACCESS, skip_none=True),
