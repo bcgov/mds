@@ -56,9 +56,18 @@ export class NoticeOfWorkApplication extends Component {
   componentDidMount() {
     window.scrollTo(0, 0);
     const { id } = this.props.match.params;
-    this.props.fetchNoticeOfWorkApplication(id).then((data) => {
-      const associatedMineGuid = data.data.mine_guid ? data.data.mine_guid : "";
-      this.setState({ isLoaded: true, associatedMineGuid });
+    let currentStep = 0;
+    this.props.fetchImportedNoticeOfWorkApplication(id).then(({ data }) => {
+      const associatedMineGuid = data.mine_guid ? data.mine_guid : "";
+      this.props.fetchMineRecordById(associatedMineGuid).then(() => {
+        if (data.imported_to_core) {
+          this.props.history.push(
+            router.NOTICE_OF_WORK_APPLICATION.hashRoute(id, "#application-info")
+          );
+          currentStep = 1;
+        }
+        this.setState({ isLoaded: true, associatedMineGuid, currentStep });
+      });
     });
   }
 
@@ -88,11 +97,11 @@ export class NoticeOfWorkApplication extends Component {
     this.props
       .createNoticeOfWorkApplication(
         this.state.associatedMineGuid,
-        this.props.noticeOfWork.application_guid
+        this.props.noticeOfWork.now_application_guid
       )
       .then((data) => {
         return this.props
-          .fetchImportedNoticeOfWorkApplication(data.data.application_guid)
+          .fetchImportedNoticeOfWorkApplication(this.props.noticeOfWork.now_application_guid)
           .then(() => {
             this.props.fetchMineRecordById(this.state.associatedMineGuid);
             // updates route to include active section
@@ -105,15 +114,20 @@ export class NoticeOfWorkApplication extends Component {
       });
   };
 
-  renderStepOne = () =>
-    this.state.isLoaded && (
-      <VerifyNOWMine
-        noticeOfWork={this.props.noticeOfWork}
-        isNoWLoaded={this.state.isLoaded}
-        handleSave={this.handleUpdateNOW}
-        setMineGuid={this.setMineGuid}
-      />
+  renderStepOne = () => {
+    const mine = this.props.mines ? this.props.mines[this.state.associatedMineGuid] : {};
+    return (
+      this.state.isLoaded && (
+        <VerifyNOWMine
+          noticeOfWork={this.props.noticeOfWork}
+          isNoWLoaded={this.state.isLoaded}
+          handleSave={this.handleUpdateNOW}
+          setMineGuid={this.setMineGuid}
+          currentMine={mine}
+        />
+      )
     );
+  };
 
   renderStepTwo = () => {
     const mine = this.props.mines ? this.props.mines[this.state.associatedMineGuid] : {};

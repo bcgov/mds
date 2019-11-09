@@ -19,8 +19,13 @@ class NOWApplication(Base, AuditMixin):
     now_application_id = db.Column(db.Integer, primary_key=True, server_default=FetchedValue())
     now_application_identity = db.relationship(
         'NOWApplicationIdentity', lazy='joined', uselist=False)
-    #now_application_guid = association_proxy('now_application_identity', 'now_application_guid')
-    mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine.mine_guid'))
+    now_application_guid = association_proxy('now_application_identity', 'now_application_guid')
+
+    mine_guid = association_proxy('now_application_identity', 'mine_guid')
+    mine_name = association_proxy('now_application_identity', 'mine.mine_name')
+    mine_no = association_proxy('now_application_identity', 'mine.mine_no')
+    mine_region = association_proxy('now_application_identity', 'mine.mine_region')
+
     now_tracking_number = db.Column(db.Integer)
     notice_of_work_type_code = db.Column(
         db.String, db.ForeignKey('notice_of_work_type.notice_of_work_type_code'), nullable=False)
@@ -68,6 +73,10 @@ class NOWApplication(Base, AuditMixin):
             application_guid=guid).first().now_application_id
         if not now_application_id:
             raise NotFound('Could not find an application for this id')
+        return cls.query.filter_by(now_application_id=now_application_id).first()
+
+    @classmethod
+    def find_by_application_id(cls, now_application_id):
         return cls.query.filter_by(now_application_id=now_application_id).first()
 
     @classmethod

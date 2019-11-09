@@ -103,14 +103,13 @@ export class MineNoticeOfWorkTable extends Component {
       <Icon type="search" style={{ color: filtered ? "#1890ff" : undefined }} />
     ),
   });
-
   columns = () => [
     {
       title: "NoW No.",
       dataIndex: "nowNum",
       sortField: "trackingnumber",
       render: (text, record) => (
-        <Link to={router.NOTICE_OF_WORK_INITIAL_APPLICATION.dynamicRoute(record.key)}>{text}</Link>
+        <Link to={router.NOTICE_OF_WORK_APPLICATION.dynamicRoute(record.key)}>{text}</Link>
       ),
       sorter: true,
       ...this.filterProperties("NoW No.", "trackingnumber"),

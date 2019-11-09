@@ -27,9 +27,9 @@ def code_lookup(model, description, code_column_name):
 
 def transmogrify_now(now_application_identity):
     now_sub = sub_models.Application.find_by_messageid(now_application_identity.messageid) or sub_models.Application()
-    mms_now_sub = mms_sub_models.MMSApplication.find_by_mms_cid(now_application_identity.mms_cid) or mms_sub_models.Application()
-
-    now_app = app_models.NOWApplication(mine_guid=now_sub.mine_guid)
+    mms_now_sub = mms_sub_models.MMSApplication.find_by_mms_cid(now_application_identity.mms_cid) or mms_sub_models.MMSApplication()
+    
+    now_app = app_models.NOWApplication(now_application_identity=now_application_identity)
 
     _transmogrify_now_details(now_app, now_sub, mms_now_sub)
     _transmogrify_blasting_activities(now_app, now_sub, mms_now_sub)
@@ -151,7 +151,13 @@ def _transmogrify_exploration_surface_drilling(now_app, now_sub, mms_now_sub):
     expsurfacedrillreclamation = mms_now_sub.expsurfacedrillreclamation or now_sub.expsurfacedrillreclamation
     expsurfacedrillreclamationcost = mms_now_sub.expsurfacedrillreclamationcost or now_sub.expsurfacedrillreclamationcost
     expsurfacedrilltotaldistarea = now_sub.expsurfacedrilltotaldistarea
+    if expsurfacedrillreclcorestorage or expsurfacedrillreclamation or expsurfacedrillreclamationcost or expsurfacedrilltotaldistarea:
         esd = app_models.ExplorationSurfaceDrilling(
+            reclamation_description=expsurfacedrillreclamation,
+            reclamation_cost=expsurfacedrillreclamationcost,
+            total_disturbed_area=expsurfacedrilltotaldistarea,
+            reclamation_core_storage=expsurfacedrillreclcorestorage,
+            total_disturbed_area_unit_type_code='HA')
 
         if(len(mms_now_sub.exp_surface_drill_activity) > 0):
             exp_surface_drill_activity = mms_now_sub.exp_surface_drill_activity
