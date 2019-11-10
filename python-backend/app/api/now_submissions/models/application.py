@@ -34,8 +34,8 @@ class Application(Base):
     messageid = db.Column(db.Integer, primary_key=True)
     now_application_identity = db.relationship('NOWApplicationIdentity', lazy='joined', uselist=False,
         primaryjoin=messageid==NOWApplicationIdentity.messageid, foreign_keys=messageid)
-    application_guid = association_proxy('now_application_identity', 'now_application_guid')
-    #application_guid = db.Column(UUID(as_uuid=True), nullable=False)
+    application_guid = db.Column(UUID(as_uuid=True), nullable=False)
+    now_application_guid = association_proxy('now_application_identity', 'now_application_guid')
     mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine.mine_guid'))
     #mine_guid = association_proxy('now_application_identity', 'mine_guid')
     trackingnumber = db.Column(db.Integer)  

@@ -6,7 +6,7 @@ from flask_restplus import Resource
 from werkzeug.exceptions import BadRequest, InternalServerError, NotFound
 
 from app.extensions import api
-from app.api.utils.access_decorators import requires_role_view_all, requires_role_edit_party, requires_any_of, VIEW_ALL, MINESPACE_PROPONENT
+from app.api.utils.access_decorators import requires_role_view_all, requires_role_mine_edit, requires_any_of, VIEW_ALL
 from app.api.utils.resources_mixins import UserMixin
 from app.api.utils.custom_reqparser import CustomReqparser
 
@@ -26,8 +26,7 @@ class NOWApplicationImportResource(Resource, UserMixin):
     parser = CustomReqparser()
     parser.add_argument('mine_guid', type=str, help='guid of the mine.', required=True)
 
-    #@requires_role_mine_edit
-    #@api.marshal_with(NOW_APPLICATION_MODEL, code=200)
+    @requires_role_mine_edit
     @api.expect(parser)
     def post(self, application_guid):
         data = self.parser.parse_args()

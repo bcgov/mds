@@ -487,4 +487,5 @@ ReviewNOWApplication.propTypes = propTypes;
 export default reduxForm({
   form: FORM.EDIT_NOTICE_OF_WORK,
   touchOnBlur: true,
+  enableReinitialize: true,
 })(ReviewNOWApplication);

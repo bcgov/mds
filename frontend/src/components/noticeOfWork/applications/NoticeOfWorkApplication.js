@@ -7,12 +7,12 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import * as router from "@/constants/routes";
 import {
-  fetchNoticeOfWorkApplication,
   createNoticeOfWorkApplication,
   fetchImportedNoticeOfWorkApplication,
+  fetchOriginalNoticeOfWorkApplication,
 } from "@/actionCreators/noticeOfWorkActionCreator";
 import { fetchMineRecordById } from "@/actionCreators/mineActionCreator";
-import { getNoticeOfWork } from "@/selectors/noticeOfWorkSelectors";
+import { getNoticeOfWork, getOriginalNoticeOfWork } from "@/selectors/noticeOfWorkSelectors";
 import { getMines } from "@/selectors/mineSelectors";
 import VerifyNOWMine from "@/components/noticeOfWork/applications/verification/VerifyNOWMine";
 import * as Strings from "@/constants/strings";
@@ -29,10 +29,11 @@ const { Step } = Steps;
  */
 
 const propTypes = {
-  fetchNoticeOfWorkApplication: PropTypes.func.isRequired,
-  noticeOfWork: CustomPropTypes.nowApplication.isRequired,
+  noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
+  originalNoticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
   createNoticeOfWorkApplication: PropTypes.func.isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
+  fetchImportedNoticeOfWorkApplication: PropTypes.func.isRequired,
   fetchImportedNoticeOfWorkApplication: PropTypes.func.isRequired,
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
   match: PropTypes.shape({
@@ -50,6 +51,7 @@ export class NoticeOfWorkApplication extends Component {
     isLoaded: false,
     associatedMineGuid: "",
     isViewMode: true,
+    showOriginalValues: false,
     fixedTop: false,
   };
 
@@ -69,11 +71,16 @@ export class NoticeOfWorkApplication extends Component {
         this.setState({ isLoaded: true, associatedMineGuid, currentStep });
       });
     });
+    this.props.fetchOriginalNoticeOfWorkApplication(id);
   }
 
   toggleEditMode = () => {
     console.log(this.props.formValues);
     this.setState((prevState) => ({ isViewMode: !prevState.isViewMode }));
+  };
+
+  toggleShowOriginalValues = () => {
+    this.setState((prevState) => ({ showOriginalValues: !prevState.showOriginalValues }));
   };
 
   onChange = (currentStep) => {
@@ -136,8 +143,12 @@ export class NoticeOfWorkApplication extends Component {
       <ReviewNOWApplication
         mine={mine}
         isViewMode={this.state.isViewMode}
-        initialValues={this.props.noticeOfWork}
-        noticeOfWork={this.props.noticeOfWork}
+        initialValues={
+          this.state.showOriginalValues ? this.props.originalNoticeOfWork : this.props.noticeOfWork
+        }
+        noticeOfWork={
+          this.state.showOriginalValues ? this.props.originalNoticeOfWork : this.props.noticeOfWork
+        }
       />
     );
   };
@@ -177,10 +188,15 @@ export class NoticeOfWorkApplication extends Component {
             {/* hiding the edit button until fully functionality is implemented */}
             {true && (
               <div>
-                {this.state.isViewMode ? (
-                  <Button onClick={this.toggleEditMode}>Edit</Button>
-                ) : (
-                  <Button onClick={this.toggleEditMode}>Save</Button>
+                {this.state.isViewMode && (
+                  <Button onClick={this.toggleShowOriginalValues}>
+                    {this.state.showOriginalValues ? `Show Current` : `Show Original`}
+                  </Button>
+                )}
+                {!this.state.showOriginalValues && (
+                  <Button onClick={this.toggleEditMode}>
+                    {this.state.isViewMode ? "Edit" : "Save"}
+                  </Button>
                 )}
               </div>
             )}
@@ -201,6 +217,7 @@ export class NoticeOfWorkApplication extends Component {
 
 const mapStateToProps = (state) => ({
   noticeOfWork: getNoticeOfWork(state),
+  originalNoticeOfWork: getOriginalNoticeOfWork(state),
   formValues: getFormValues(FORM.EDIT_NOTICE_OF_WORK)(state),
   mines: getMines(state),
 });
@@ -208,9 +225,9 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
-      fetchNoticeOfWorkApplication,
       createNoticeOfWorkApplication,
       fetchImportedNoticeOfWorkApplication,
+      fetchOriginalNoticeOfWorkApplication,
       fetchMineRecordById,
     },
     dispatch
