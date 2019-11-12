@@ -14,6 +14,7 @@ import SandGravelQuarry from "@/components/noticeOfWork/applications/review/acti
 import SurfaceBulkSamples from "@/components/noticeOfWork/applications/review/activities/SurfaceBulkSamples";
 import WaterSupply from "@/components/noticeOfWork/applications/review/activities/WaterSupply";
 import UndergroundExploration from "@/components/noticeOfWork/applications/review/activities/UndergroundExploration";
+import Placer from "@/components/noticeOfWork/applications/review/activities/Placer";
 
 /**
  * @constant ReviewActivities renders edit/view for the NoW Application review step
@@ -116,7 +117,9 @@ export const ReviewActivities = (props) => {
         </FormSection>
       </ScrollContentWrapper>
       <ScrollContentWrapper id="placer-operations" title="Placer Operations">
-        <div />
+        <FormSection name="Placer">
+          <Placer initialValues={props.noticeOfWork.placer} isViewMode={props.isViewMode} />
+        </FormSection>
       </ScrollContentWrapper>
       <ScrollContentWrapper id="water-supply" title="Water Supply">
         <FormSection name="water_supply">

@@ -394,7 +394,7 @@ export const ReviewNOWApplication = (props) => {
     </div>
   );
 
-  const renderEquipment = () => <div />;
+  const renderEquipment = () => <NullScreen type="now-equipment" />;
   const renderWorkPlan = () => (
     <Row gutter={16}>
       <Col md={12} sm={24}>
