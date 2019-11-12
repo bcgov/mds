@@ -24,22 +24,20 @@ CONNECTION = psycopg2.connect(
 def etl_now_submission_data():
 
     click.echo('Beginning ETL')
-    try:
-        NOW_submissions_ETL(CONNECTION)
-    finally:
-        CONNECTION.close()
+    NOW_submissions_ETL(CONNECTION)
 
 
 @click.command()
 def etl_mms_now_submission_data():
 
     click.echo('Beginning MMS Now ETL')
-    try:
-        mms_now_submissions_ETL(CONNECTION)
-    finally:
-        CONNECTION.close()
+    mms_now_submissions_ETL(CONNECTION)
 
 
 if __name__ == '__main__':
-    etl_now_submission_data()
-    etl_mms_now_submission_data()
+
+    try:
+        etl_now_submission_data()
+        etl_mms_now_submission_data()
+    finally:
+        CONNECTION.close()
