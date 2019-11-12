@@ -180,7 +180,9 @@ export class NoticeOfWorkApplication extends Component {
           </Steps>
           {this.state.currentStep === 1 && <NOWSideMenu />}
         </div>
-        <div className="steps--content">{steps[this.state.currentStep].content}</div>
+        <div className={this.state.fixedTop ? "steps--content with-fixed-top" : "steps--content"}>
+          {steps[this.state.currentStep].content}
+        </div>
       </div>
     );
   }

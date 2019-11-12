@@ -99,6 +99,10 @@
   &--content {
     // adding white space to bottom, so scroll-to will take the element to the top of the page always
     margin-bottom: 500px;
+
+    &.with-fixed-top {
+      margin-top: 80px;
+    }
   }
 }
 
@@ -125,10 +129,11 @@
 .fixed-top {
   position: relative;
 }
+
 .side-menu {
   margin-top: 10px;
   width: 240px;
-  position: fixed;
+  position: absolute;
   left: 0;
 
   ul {
