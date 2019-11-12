@@ -1,0 +1,10 @@
+💾 Backend:
+  - python-backend/**/*
+
+💻 Frontend:
+  - frontend/**/*
+  - frontend-public/**/*
+
+🏭 CI/CD:
+  - openshift/**/*
+  - pipeline/**/*
