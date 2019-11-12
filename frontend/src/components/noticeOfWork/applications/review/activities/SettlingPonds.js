@@ -15,7 +15,7 @@ export const SettlingPonds = (props) => {
       <Row gutter={16}>
         <Col md={12} sm={24}>
           <div className="field-title">
-            Describe the proposed reclamation and timing for this specific activity**
+            Proposed reclamation and timing for this specific activity**
           </div>
           <Field
             id="reclamation_description"
