@@ -58,6 +58,7 @@ export const ReviewNOWApplication = (props) => {
             id="mine_no"
             name="mine_no"
             component={RenderField}
+            placeholder={props.mine.mine_no}
             defaultValue={props.mine.mine_no}
             disabled
           />
@@ -73,6 +74,7 @@ export const ReviewNOWApplication = (props) => {
           <Field
             id="mine_region"
             name="mine_region"
+            placeholder={props.mine.mine_region}
             defaultValue={props.mine.mine_region}
             component={RenderField}
             disabled
@@ -239,7 +241,7 @@ export const ReviewNOWApplication = (props) => {
       <Row gutter={16}>
         <Col md={12} sm={24}>
           <div className="field-title">
-            Do you need to build a road, create stream crossings or other surface distrubance that
+            Do you need to build a road, create stream crossings or other surface disturbance that
             will not be on your tenure?**
           </div>
           <Field id="" name="" component={RenderRadioButtons} disabled={props.isViewMode} />

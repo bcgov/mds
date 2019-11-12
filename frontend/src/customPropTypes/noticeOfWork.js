@@ -188,4 +188,5 @@ export const importedNOWApplication = shape({
   surface_bulk_sample: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)),
   underground_exploration: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)),
   water_supply: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)),
+  placer_operation: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)),
 });

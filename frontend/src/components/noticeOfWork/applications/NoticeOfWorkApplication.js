@@ -40,6 +40,8 @@ const propTypes = {
       id: PropTypes.string,
     },
   }).isRequired,
+  // the following prop will be used in the future
+  // eslint-disable-next-line
   formValues: CustomPropTypes.nowApplication.isRequired,
   mines: PropTypes.arrayOf(CustomPropTypes.mine).isRequired,
 };
@@ -63,7 +65,6 @@ export class NoticeOfWorkApplication extends Component {
   }
 
   toggleEditMode = () => {
-    console.log(this.props.formValues);
     this.setState((prevState) => ({ isViewMode: !prevState.isViewMode }));
   };
 
@@ -161,7 +162,7 @@ export class NoticeOfWorkApplication extends Component {
               </Link>
             </div>
             {/* hiding the edit button until fully functionality is implemented */}
-            {true && (
+            {false && (
               <div>
                 {this.state.isViewMode ? (
                   <Button onClick={this.toggleEditMode}>Edit</Button>

@@ -117,8 +117,11 @@ export const ReviewActivities = (props) => {
         </FormSection>
       </ScrollContentWrapper>
       <ScrollContentWrapper id="placer-operations" title="Placer Operations">
-        <FormSection name="Placer">
-          <Placer initialValues={props.noticeOfWork.placer} isViewMode={props.isViewMode} />
+        <FormSection name="placer_operation">
+          <Placer
+            initialValues={props.noticeOfWork.placer_operation}
+            isViewMode={props.isViewMode}
+          />
         </FormSection>
       </ScrollContentWrapper>
       <ScrollContentWrapper id="water-supply" title="Water Supply">
