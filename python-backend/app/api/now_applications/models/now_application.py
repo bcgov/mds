@@ -19,8 +19,13 @@ class NOWApplication(Base, AuditMixin):
     now_application_id = db.Column(db.Integer, primary_key=True, server_default=FetchedValue())
     now_application_identity = db.relationship(
         'NOWApplicationIdentity', lazy='joined', uselist=False)
-    #now_application_guid = association_proxy('now_application_identity', 'now_application_guid')
-    mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine.mine_guid'))
+    now_application_guid = association_proxy('now_application_identity', 'now_application_guid')
+
+    mine_guid = association_proxy('now_application_identity', 'mine_guid')
+    mine_name = association_proxy('now_application_identity', 'mine.mine_name')
+    mine_no = association_proxy('now_application_identity', 'mine.mine_no')
+    mine_region = association_proxy('now_application_identity', 'mine.mine_region')
+
     now_tracking_number = db.Column(db.Integer)
     notice_of_work_type_code = db.Column(
         db.String, db.ForeignKey('notice_of_work_type.notice_of_work_type_code'), nullable=False)
@@ -37,6 +42,7 @@ class NOWApplication(Base, AuditMixin):
     description_of_land = db.Column(db.String)
     proposed_start_date = db.Column(db.Date)
     proposed_end_date = db.Column(db.Date)
+    directions_to_site = db.Column(db.String)
 
     blasting = db.relationship('BlastingOperation', lazy='joined', uselist=False)
     state_of_land = db.relationship('StateOfLand', lazy='joined', uselist=False)
@@ -45,17 +51,17 @@ class NOWApplication(Base, AuditMixin):
     camps = db.relationship('Camp', lazy='selectin', uselist=False)
     cut_lines_polarization_survey = db.relationship(
         'CutLinesPolarizationSurvey', lazy='selectin', uselist=False)
+    exploration_access = db.relationship('ExplorationAccess', lazy='selectin', uselist=False)
     exploration_surface_drilling = db.relationship(
         'ExplorationSurfaceDrilling', lazy='selectin', uselist=False)
     mechanical_trenching = db.relationship('MechanicalTrenching', lazy='selectin', uselist=False)
     placer_operation = db.relationship('PlacerOperation', lazy='selectin', uselist=False)
     sand_and_gravel = db.relationship('SandGravelQuarryOperation', lazy='selectin', uselist=False)
-    surface_bulk_sample = db.relationship('SurfaceBulkSample', lazy='selectin', uselist=False)
-    water_supply = db.relationship('WaterSupply', lazy='selectin', uselist=False)
-    exploration_access = db.relationship('ExplorationAccess', lazy='selectin', uselist=False)
     settling_pond = db.relationship('SettlingPond', lazy='selectin', uselist=False)
+    surface_bulk_sample = db.relationship('SurfaceBulkSample', lazy='selectin', uselist=False)
     underground_exploration = db.relationship(
         'UndergroundExploration', lazy='selectin', uselist=False)
+    water_supply = db.relationship('WaterSupply', lazy='selectin', uselist=False)
 
     def __repr__(self):
         return '<NOWApplication %r>' % self.now_application_guid
@@ -67,6 +73,10 @@ class NOWApplication(Base, AuditMixin):
             application_guid=guid).first().now_application_id
         if not now_application_id:
             raise NotFound('Could not find an application for this id')
+        return cls.query.filter_by(now_application_id=now_application_id).first()
+
+    @classmethod
+    def find_by_application_id(cls, now_application_id):
         return cls.query.filter_by(now_application_id=now_application_id).first()
 
     @classmethod

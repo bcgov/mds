@@ -29,6 +29,8 @@ const propTypes = {
     "reports",
     "applications",
     "notice-of-work",
+    "next-stage",
+    "documents",
   ]),
 };
 
@@ -117,6 +119,12 @@ const NullScreen = (props) => (
         <img alt="mine_img" src={NO_MINE} />
         <h3>{String.UNAUTHORIZED}</h3>
         <p>{String.CONTACT_ADMIN}</p>
+      </div>
+    )}
+    {props.type === "next-stage" && (
+      <div className="no-nav-bar">
+        <img alt="mine_img" src={NO_MINE} />
+        <h3>Content is unavailable until the application reaches this stage</h3>
       </div>
     )}
     {props.type === "unauthorized-page" && (
