@@ -34,7 +34,7 @@ const propTypes = {
   createNoticeOfWorkApplication: PropTypes.func.isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
   fetchImportedNoticeOfWorkApplication: PropTypes.func.isRequired,
-  fetchImportedNoticeOfWorkApplication: PropTypes.func.isRequired,
+  fetchOriginalNoticeOfWorkApplication: PropTypes.func.isRequired,
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
   match: PropTypes.shape({
     params: {
@@ -58,7 +58,6 @@ export class NoticeOfWorkApplication extends Component {
   };
 
   componentDidMount() {
-    window.scrollTo(0, 0);
     const { id } = this.props.match.params;
     let currentStep = 0;
     this.props.fetchImportedNoticeOfWorkApplication(id).then(({ data }) => {
@@ -107,7 +106,7 @@ export class NoticeOfWorkApplication extends Component {
         this.state.associatedMineGuid,
         this.props.noticeOfWork.now_application_guid
       )
-      .then((data) => {
+      .then(() => {
         return this.props
           .fetchImportedNoticeOfWorkApplication(this.props.noticeOfWork.now_application_guid)
           .then(() => {
