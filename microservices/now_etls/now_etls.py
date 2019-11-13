@@ -5,7 +5,7 @@ import psycopg2
 
 from NOW_import import NOW_submissions_ETL
 from mms_now_import import mms_now_submissions_ETL
-
+from create_now_identities import create_and_update_now_identities
 ENV_FILE = find_dotenv()
 if ENV_FILE:
     load_dotenv(ENV_FILE)
@@ -32,6 +32,12 @@ def etl_mms_now_submission_data():
 
     click.echo('Beginning MMS Now ETL')
     mms_now_submissions_ETL(CONNECTION)
+
+
+@click.command()
+def etl_create_identities():
+    click.echo('Create and update identities using MMS/NROS/vFCBC')
+    create_and_update_now_identities(CONNECTION)
 
 
 if __name__ == '__main__':
