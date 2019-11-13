@@ -45,5 +45,6 @@ if __name__ == '__main__':
     try:
         etl_now_submission_data()
         etl_mms_now_submission_data()
+        etl_create_identities()
     finally:
         CONNECTION.close()
