@@ -16,35 +16,43 @@ DB_PASS = os.environ.get('DB_PASS')
 DB_PORT = os.environ.get('DB_PORT')
 DB_NAME = os.environ.get('DB_NAME')
 
-CONNECTION = psycopg2.connect(
-    host=DB_HOST, port=DB_PORT, user=DB_USER, password=DB_PASS, dbname=DB_NAME)
-
 
 @click.command()
 def etl_now_submission_data():
-
-    click.echo('Beginning ETL')
-    NOW_submissions_ETL(CONNECTION)
+    connection = psycopg2.connect(
+        host=DB_HOST, port=DB_PORT, user=DB_USER, password=DB_PASS, dbname=DB_NAME)
+    try:
+        click.echo('Beginning ETL')
+        NOW_submissions_ETL(connection)
+    finally:
+        connection.close()
 
 
 @click.command()
 def etl_mms_now_submission_data():
 
-    click.echo('Beginning MMS Now ETL')
-    mms_now_submissions_ETL(CONNECTION)
+    connection = psycopg2.connect(
+        host=DB_HOST, port=DB_PORT, user=DB_USER, password=DB_PASS, dbname=DB_NAME)
+    try:
+        click.echo('Beginning MMS Now ETL')
+        mms_now_submissions_ETL(connection)
+    finally:
+        connection.close()
 
 
 @click.command()
 def etl_create_identities():
-    click.echo('Create and update identities using MMS/NROS/vFCBC')
-    create_and_update_now_identities(CONNECTION)
+    connection = psycopg2.connect(
+        host=DB_HOST, port=DB_PORT, user=DB_USER, password=DB_PASS, dbname=DB_NAME)
+    try:
+        click.echo('Create and update identities using MMS/NROS/vFCBC')
+        create_and_update_now_identities(connection)
+    finally:
+        connection.close()
 
 
 if __name__ == '__main__':
 
-    try:
-        etl_now_submission_data()
-        etl_mms_now_submission_data()
-        etl_create_identities()
-    finally:
-        CONNECTION.close()
+    etl_now_submission_data()
+    etl_mms_now_submission_data()
+    etl_create_identities()
