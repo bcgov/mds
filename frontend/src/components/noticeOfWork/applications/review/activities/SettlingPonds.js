@@ -64,6 +64,16 @@ export const SettlingPonds = (props) => {
 
   return (
     <div>
+      <Row gutter={16}>
+        <Col md={12} sm={24}>
+          <div className="field-title">
+            Describe the waste water treatment facility (settling pond design, recycling, distance
+            from creek, etc.)**
+          </div>
+          <Field id="" name="" component={RenderAutoSizeField} disabled={props.isViewMode} />
+        </Col>
+      </Row>
+      <br />
       <Table
         align="left"
         pagination={false}
