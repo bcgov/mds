@@ -67,21 +67,5 @@ class NOWApplication(Base, AuditMixin):
         return '<NOWApplication %r>' % self.now_application_guid
 
     @classmethod
-    def find_by_application_guid(cls, guid):
-        cls.validate_guid(guid)
-        now_application_id = NOWApplicationIdentity.filter_by(
-            application_guid=guid).first().now_application_id
-        if not now_application_id:
-            raise NotFound('Could not find an application for this id')
-        return cls.query.filter_by(now_application_id=now_application_id).first()
-
-    @classmethod
-    def find_by_application_id(cls, now_application_id):
-        return cls.query.filter_by(now_application_id=now_application_id).first()
-
-    @classmethod
-    def validate_guid(cls, guid, msg='Invalid guid.'):
-        try:
-            uuid.UUID(str(guid), version=4)
-        except ValueError:
-            raise AssertionError(msg)
+    def find_by_application_guid(cls, _id):
+        return cls.query.filter_by(now_application_guid=_id).first()

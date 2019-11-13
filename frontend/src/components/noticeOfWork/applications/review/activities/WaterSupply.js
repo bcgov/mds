@@ -9,24 +9,9 @@ const propTypes = {
   isViewMode: PropTypes.bool.isRequired,
 };
 
-export const SurfaceDrilling = (props) => {
+export const WaterSupply = (props) => {
   return (
     <div>
-      {/* <br />
-      <h4>Drilling</h4> */}
-      <br />
-      <h4>Support of the Drilling Program</h4>
-      <Row gutter={16}>
-        <Col md={12} sm={24}>
-          <div className="field-title">The Drilling program will be</div>
-          <Field
-            id="reclamation_core_storage"
-            name="reclamation_core_storage"
-            component={RenderField}
-            disabled={props.isViewMode}
-          />
-        </Col>
-      </Row>
       <br />
       <h4>Reclamation Program</h4>
       <Row gutter={16}>
@@ -57,6 +42,6 @@ export const SurfaceDrilling = (props) => {
   );
 };
 
-SurfaceDrilling.propTypes = propTypes;
+WaterSupply.propTypes = propTypes;
 
-export default SurfaceDrilling;
+export default WaterSupply;

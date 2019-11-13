@@ -93,7 +93,7 @@ exports[`NOWActivities renders properly 1`] = `
               <p
                 className="field-title"
               >
-                Describe the proposed reclamation and timing for this specific activity
+                Proposed reclamation and timing for this specific activity
               </p>
             </Col>
             <Col
@@ -368,7 +368,7 @@ exports[`NOWActivities renders properly 1`] = `
                 <p
                   className="field-title"
                 >
-                  Describe the proposed reclamation and timing for this specific activity
+                  Proposed reclamation and timing for this specific activity
                 </p>
               </Col>
               <Col
@@ -479,7 +479,7 @@ exports[`NOWActivities renders properly 1`] = `
                 <p
                   className="field-title"
                 >
-                  Describe the proposed reclamation and timing for this specific activity
+                  Proposed reclamation and timing for this specific activity
                 </p>
               </Col>
               <Col
@@ -589,7 +589,7 @@ exports[`NOWActivities renders properly 1`] = `
                 <p
                   className="field-title"
                 >
-                  Describe the proposed reclamation and timing for this specific activity
+                  Proposed reclamation and timing for this specific activity
                 </p>
               </Col>
               <Col

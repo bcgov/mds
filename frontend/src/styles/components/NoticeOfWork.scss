@@ -99,36 +99,21 @@
   &--content {
     // adding white space to bottom, so scroll-to will take the element to the top of the page always
     margin-bottom: 500px;
-  }
-}
 
-// SIDE MENU NAVIGATION
-.ant-anchor-wrapper {
-  background-color: $lightest-grey;
-  height: 100%;
-}
-.ant-anchor-link-active {
-  border-left: 10px solid $violet;
-}
-.ant-anchor-link-active > .ant-anchor-link-title {
-  font-weight: $bold;
-  text-decoration: none;
-}
-.ant-anchor-link-title {
-  text-decoration: none;
-}
-.ant-anchor-link {
-  border-bottom: 1px solid $light-grey;
-  padding: 7px;
+    &.with-fixed-top {
+      margin-top: 80px;
+    }
+  }
 }
 
 .fixed-top {
   position: relative;
 }
+
 .side-menu {
   margin-top: 10px;
   width: 240px;
-  position: fixed;
+  position: absolute;
   left: 0;
 
   ul {

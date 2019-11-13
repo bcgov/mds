@@ -9,10 +9,9 @@ import * as router from "@/constants/routes";
 import {
   createNoticeOfWorkApplication,
   fetchImportedNoticeOfWorkApplication,
-  fetchOriginalNoticeOfWorkApplication,
 } from "@/actionCreators/noticeOfWorkActionCreator";
 import { fetchMineRecordById } from "@/actionCreators/mineActionCreator";
-import { getNoticeOfWork, getOriginalNoticeOfWork } from "@/selectors/noticeOfWorkSelectors";
+import { getNoticeOfWork } from "@/selectors/noticeOfWorkSelectors";
 import { getMines } from "@/selectors/mineSelectors";
 import VerifyNOWMine from "@/components/noticeOfWork/applications/verification/VerifyNOWMine";
 import * as Strings from "@/constants/strings";
@@ -27,13 +26,12 @@ const { Step } = Steps;
 /**
  * @class NoticeOfWorkApplication- contains all information regarding a CORE notice of work application
  */
-
+/* eslint-disable */
 const propTypes = {
   noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
   originalNoticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
   createNoticeOfWorkApplication: PropTypes.func.isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
-  fetchImportedNoticeOfWorkApplication: PropTypes.func.isRequired,
   fetchImportedNoticeOfWorkApplication: PropTypes.func.isRequired,
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
   match: PropTypes.shape({
@@ -41,6 +39,7 @@ const propTypes = {
       id: PropTypes.string,
     },
   }).isRequired,
+  // the following prop will be used in the future
   formValues: CustomPropTypes.nowApplication.isRequired,
   mines: PropTypes.arrayOf(CustomPropTypes.mine).isRequired,
 };
@@ -51,36 +50,21 @@ export class NoticeOfWorkApplication extends Component {
     isLoaded: false,
     associatedMineGuid: "",
     isViewMode: true,
-    showOriginalValues: false,
     fixedTop: false,
   };
 
   componentDidMount() {
     window.scrollTo(0, 0);
     const { id } = this.props.match.params;
-    let currentStep = 0;
-    this.props.fetchImportedNoticeOfWorkApplication(id).then(({ data }) => {
-      const associatedMineGuid = data.mine_guid ? data.mine_guid : "";
-      this.props.fetchMineRecordById(associatedMineGuid).then(() => {
-        if (data.imported_to_core) {
-          this.props.history.push(
-            router.NOTICE_OF_WORK_APPLICATION.hashRoute(id, "#application-info")
-          );
-          currentStep = 1;
-        }
-        this.setState({ isLoaded: true, associatedMineGuid, currentStep });
-      });
+    this.props.fetchNoticeOfWorkApplication(id).then((data) => {
+      const associatedMineGuid = data.data.mine_guid ? data.data.mine_guid : "";
+      this.setState({ isLoaded: true, associatedMineGuid });
     });
     this.props.fetchOriginalNoticeOfWorkApplication(id);
   }
 
   toggleEditMode = () => {
-    console.log(this.props.formValues);
     this.setState((prevState) => ({ isViewMode: !prevState.isViewMode }));
-  };
-
-  toggleShowOriginalValues = () => {
-    this.setState((prevState) => ({ showOriginalValues: !prevState.showOriginalValues }));
   };
 
   onChange = (currentStep) => {
@@ -104,11 +88,11 @@ export class NoticeOfWorkApplication extends Component {
     this.props
       .createNoticeOfWorkApplication(
         this.state.associatedMineGuid,
-        this.props.noticeOfWork.now_application_guid
+        this.props.noticeOfWork.application_guid
       )
       .then((data) => {
         return this.props
-          .fetchImportedNoticeOfWorkApplication(this.props.noticeOfWork.now_application_guid)
+          .fetchImportedNoticeOfWorkApplication(data.data.application_guid)
           .then(() => {
             this.props.fetchMineRecordById(this.state.associatedMineGuid);
             // updates route to include active section
@@ -116,7 +100,6 @@ export class NoticeOfWorkApplication extends Component {
               router.NOTICE_OF_WORK_APPLICATION.hashRoute(id, "#application-info")
             );
             this.setState({ currentStep });
-            console.log("fetched data: state will change with new data");
           });
       });
   };
@@ -143,12 +126,8 @@ export class NoticeOfWorkApplication extends Component {
       <ReviewNOWApplication
         mine={mine}
         isViewMode={this.state.isViewMode}
-        initialValues={
-          this.state.showOriginalValues ? this.props.originalNoticeOfWork : this.props.noticeOfWork
-        }
-        noticeOfWork={
-          this.state.showOriginalValues ? this.props.originalNoticeOfWork : this.props.noticeOfWork
-        }
+        initialValues={this.props.noticeOfWork}
+        noticeOfWork={this.props.noticeOfWork}
       />
     );
   };
@@ -186,17 +165,12 @@ export class NoticeOfWorkApplication extends Component {
               </Link>
             </div>
             {/* hiding the edit button until fully functionality is implemented */}
-            {true && (
+            {false && (
               <div>
-                {this.state.isViewMode && (
-                  <Button onClick={this.toggleShowOriginalValues}>
-                    {this.state.showOriginalValues ? `Show Current` : `Show Original`}
-                  </Button>
-                )}
-                {!this.state.showOriginalValues && (
-                  <Button onClick={this.toggleEditMode}>
-                    {this.state.isViewMode ? "Edit" : "Save"}
-                  </Button>
+                {this.state.isViewMode ? (
+                  <Button onClick={this.toggleEditMode}>Edit</Button>
+                ) : (
+                  <Button onClick={this.toggleEditMode}>Save</Button>
                 )}
               </div>
             )}
@@ -209,7 +183,9 @@ export class NoticeOfWorkApplication extends Component {
           </Steps>
           {this.state.currentStep === 1 && <NOWSideMenu />}
         </div>
-        <div className="steps--content">{steps[this.state.currentStep].content}</div>
+        <div className={this.state.fixedTop ? "steps--content with-fixed-top" : "steps--content"}>
+          {steps[this.state.currentStep].content}
+        </div>
       </div>
     );
   }
@@ -217,7 +193,6 @@ export class NoticeOfWorkApplication extends Component {
 
 const mapStateToProps = (state) => ({
   noticeOfWork: getNoticeOfWork(state),
-  originalNoticeOfWork: getOriginalNoticeOfWork(state),
   formValues: getFormValues(FORM.EDIT_NOTICE_OF_WORK)(state),
   mines: getMines(state),
 });
@@ -225,9 +200,9 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
+      fetchNoticeOfWorkApplication,
       createNoticeOfWorkApplication,
       fetchImportedNoticeOfWorkApplication,
-      fetchOriginalNoticeOfWorkApplication,
       fetchMineRecordById,
     },
     dispatch
