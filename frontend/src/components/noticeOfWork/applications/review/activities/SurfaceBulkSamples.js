@@ -4,27 +4,28 @@ import { Field } from "redux-form";
 import { Row, Col } from "antd";
 import RenderField from "@/components/common/RenderField";
 import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
+import RenderRadioButtons from "@/components/common/RenderRadioButtons";
 
 const propTypes = {
   isViewMode: PropTypes.bool.isRequired,
 };
 
-export const SurfaceDrilling = (props) => {
+export const SurfaceBulkSamples = (props) => {
   return (
     <div>
-      {/* <br />
-      <h4>Drilling</h4> */}
-      <br />
-      <h4>Support of the Drilling Program</h4>
       <Row gutter={16}>
         <Col md={12} sm={24}>
-          <div className="field-title">The Drilling program will be</div>
+          <div className="field-title">Processing Methods</div>
           <Field
-            id="reclamation_core_storage"
-            name="reclamation_core_storage"
+            id="processing_method_description"
+            name="processing_method_description"
             component={RenderField}
             disabled={props.isViewMode}
           />
+        </Col>
+        <Col md={12} sm={24}>
+          <div className="field-title">Bed rock expansion**</div>
+          <Field id="" name="" component={RenderRadioButtons} disabled={props.isViewMode} />
         </Col>
       </Row>
       <br />
@@ -53,10 +54,20 @@ export const SurfaceDrilling = (props) => {
           />
         </Col>
       </Row>
+      <Row gutter={16}>
+        <Col md={12} sm={24}>
+          <div className="field-title">Surface water damage**</div>
+          <Field id="" name="" component={RenderAutoSizeField} disabled={props.isViewMode} />
+        </Col>
+        <Col md={12} sm={24}>
+          <div className="field-title">Spontaneous Combustion**</div>
+          <Field id="" name="" component={RenderField} disabled={props.isViewMode} />
+        </Col>
+      </Row>
     </div>
   );
 };
 
-SurfaceDrilling.propTypes = propTypes;
+SurfaceBulkSamples.propTypes = propTypes;
 
-export default SurfaceDrilling;
+export default SurfaceBulkSamples;

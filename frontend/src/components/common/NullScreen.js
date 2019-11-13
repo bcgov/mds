@@ -31,6 +31,7 @@ const propTypes = {
     "notice-of-work",
     "next-stage",
     "documents",
+    "now-equipment",
   ]),
 };
 
@@ -127,6 +128,12 @@ const NullScreen = (props) => (
         <h3>Content is unavailable until the application reaches this stage</h3>
       </div>
     )}
+    {props.type === "now-equipment" && (
+      <div>
+        <img alt="mine_img" src={NO_MINE} />
+        <h3>No equipment associated with this Notice of Work</h3>
+      </div>
+    )}
     {props.type === "unauthorized-page" && (
       <div className="no-nav-bar">
         <img alt="mine_img" src={NO_MINE} />
@@ -148,8 +155,8 @@ const NullScreen = (props) => (
     )}
     {props.type === "now-contacts" && (
       <div>
-        <img alt="mine_img" src={MINER_TWO} />
-        <h3>No contacts found</h3>
+        <img alt="mine_img" src={GROUP_MINERS} />
+        <h3>No contacts associated with this Notice of Work</h3>
       </div>
     )}
     {props.type === "incidents" && (

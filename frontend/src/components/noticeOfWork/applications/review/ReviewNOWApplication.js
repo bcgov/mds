@@ -58,6 +58,7 @@ export const ReviewNOWApplication = (props) => {
             id="mine_no"
             name="mine_no"
             component={RenderField}
+            placeholder={props.mine.mine_no}
             defaultValue={props.mine.mine_no}
             disabled
           />
@@ -73,6 +74,7 @@ export const ReviewNOWApplication = (props) => {
           <Field
             id="mine_region"
             name="mine_region"
+            placeholder={props.mine.mine_region}
             defaultValue={props.mine.mine_region}
             component={RenderField}
             disabled
@@ -239,7 +241,7 @@ export const ReviewNOWApplication = (props) => {
       <Row gutter={16}>
         <Col md={12} sm={24}>
           <div className="field-title">
-            Do you need to build a road, create stream crossings or other surface distrubance that
+            Do you need to build a road, create stream crossings or other surface disturbance that
             will not be on your tenure?**
           </div>
           <Field id="" name="" component={RenderRadioButtons} disabled={props.isViewMode} />
@@ -394,17 +396,12 @@ export const ReviewNOWApplication = (props) => {
     </div>
   );
 
-  const renderEquipment = () => <div>THIS WILL BE A TABLE</div>;
+  const renderEquipment = () => <NullScreen type="now-equipment" />;
   const renderWorkPlan = () => (
     <Row gutter={16}>
       <Col md={12} sm={24}>
         <div className="field-title">Description of Work**</div>
-        <Field
-          id="property_name"
-          name="property_name"
-          component={RenderField}
-          disabled={props.isViewMode}
-        />
+        <Field id="" name="" component={RenderField} disabled={props.isViewMode} />
       </Col>
     </Row>
   );
@@ -413,11 +410,10 @@ export const ReviewNOWApplication = (props) => {
     <div>
       <Row gutter={16}>
         <Col md={12} sm={24}>
-          <div className="field-title">Description of Work**</div>
+          <div className="field-title">Total merchantable timber volume**</div>
           <Field id="" name="" component={RenderField} disabled={props.isViewMode} />
         </Col>
       </Row>
-      A TABLE WILL GO HERE
     </div>
   );
 
@@ -487,5 +483,4 @@ ReviewNOWApplication.propTypes = propTypes;
 export default reduxForm({
   form: FORM.EDIT_NOTICE_OF_WORK,
   touchOnBlur: true,
-  enableReinitialize: true,
 })(ReviewNOWApplication);

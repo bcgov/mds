@@ -83,7 +83,7 @@ export class NOWActivities extends Component {
         <Row gutter={16} className="padding-small">
           <Col md={12} xs={24}>
             <p className="field-title">
-              Describe the proposed reclamation and timing for this specific activity
+              Proposed reclamation and timing for this specific activity
             </p>
           </Col>
           <Col md={12} xs={24}>
@@ -309,7 +309,7 @@ export class NOWActivities extends Component {
           <Row gutter={16} className="padding-small">
             <Col md={12} xs={24}>
               <p className="field-title">
-                Describe the proposed reclamation and timing for this specific activity
+                Proposed reclamation and timing for this specific activity
               </p>
             </Col>
             <Col md={12} xs={24}>
@@ -381,7 +381,7 @@ export class NOWActivities extends Component {
           <Row gutter={16} className="padding-small">
             <Col md={12} xs={24}>
               <p className="field-title">
-                Describe the proposed reclamation and timing for this specific activity
+                Proposed reclamation and timing for this specific activity
               </p>
             </Col>
             <Col md={12} xs={24}>
@@ -475,7 +475,7 @@ export class NOWActivities extends Component {
           <Row gutter={16} className="padding-small">
             <Col md={12} xs={24}>
               <p className="field-title">
-                Describe the proposed reclamation and timing for this specific activity
+                Proposed reclamation and timing for this specific activity
               </p>
             </Col>
             <Col md={12} xs={24}>
@@ -555,7 +555,7 @@ export class NOWActivities extends Component {
           <Row gutter={16} className="padding-small">
             <Col md={12} xs={24}>
               <p className="field-title">
-                Describe the proposed reclamation and timing for this specific activity
+                Proposed reclamation and timing for this specific activity
               </p>
             </Col>
             <Col md={12} xs={24}>
@@ -748,7 +748,7 @@ export class NOWActivities extends Component {
           <Row gutter={16} className="padding-small">
             <Col md={12} xs={24}>
               <p className="field-title">
-                Describe the proposed reclamation and timing for this specific activity
+                Proposed reclamation and timing for this specific activity
               </p>
             </Col>
             <Col md={12} xs={24}>
@@ -977,7 +977,7 @@ export class NOWActivities extends Component {
         <Row gutter={16} className="padding-small">
           <Col md={12} xs={24}>
             <p className="field-title">
-              Describe the proposed reclamation and timing for this specific activity
+              Proposed reclamation and timing for this specific activity
             </p>
           </Col>
           <Col md={12} xs={24}>

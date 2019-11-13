@@ -5,6 +5,7 @@ import { uniqBy } from "lodash";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { fetchMineNameList, fetchMineRecordById } from "@/actionCreators/mineActionCreator";
+import { fetchRegionOptions } from "@/actionCreators/staticContentActionCreator";
 import { getMineNames } from "@/selectors/mineSelectors";
 import MineHeaderMapLeaflet from "@/components/maps/MineHeaderMapLeaflet";
 import CustomPropTypes from "@/customPropTypes";
@@ -169,6 +170,7 @@ const mapDispatchToProps = (dispatch) =>
     {
       fetchMineNameList,
       fetchMineRecordById,
+      fetchRegionOptions,
     },
     dispatch
   );

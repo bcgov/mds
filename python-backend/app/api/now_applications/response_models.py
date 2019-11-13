@@ -206,10 +206,8 @@ NOW_APPLICATION_MODEL = api.model(
     {
         'now_application_guid': fields.String,
         'mine_guid': fields.String,
-        'mine_name': fields.String,
-        'mine_no': fields.String,
-        'mine_region': fields.String,
         'imported_to_core' : fields.Boolean, #Just-in-time attribute
+        'now_message_id': fields.String,
         'notice_of_work_type_code': fields.String,                  
         'now_application_status_code': fields.String,               
         'submitted_date': Date,
