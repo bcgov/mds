@@ -396,9 +396,6 @@ export const ReviewNOWApplication = (props) => {
     </div>
   );
 
-  const renderEquipment = () => {
-    return <NullScreen type="now-equipment" />;
-  };
   const renderWorkPlan = () => (
     <Row gutter={16}>
       <Col md={12} sm={24}>
@@ -454,9 +451,6 @@ export const ReviewNOWApplication = (props) => {
           </ScrollContentWrapper>
           <ScrollContentWrapper id="first-aid" title="First Aid">
             {renderFirstAid()}
-          </ScrollContentWrapper>
-          <ScrollContentWrapper id="equipment" title="Equipment">
-            {renderEquipment(props.noticeOfWork)}
           </ScrollContentWrapper>
           <br />
           <h2>Work Plan</h2>

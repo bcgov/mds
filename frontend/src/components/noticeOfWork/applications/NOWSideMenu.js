@@ -34,7 +34,6 @@ export const NOWSideMenu = (props) => {
         <Link href="#access" title="Access" />
         <Link href="#state-of-land" title="State of Land" />
         <Link href="#first-aid" title="First Aid" />
-        <Link href="#equipment" title="Equipment" />
         <Link href="#reclamation" title="Summary of Reclamation" />
         <Link href="#access-roads" title="Access Roads, Trails, Helipads, Air Strips, Boat Ramps" />
         <Link href="#blasting" title="Blasting" />
