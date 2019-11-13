@@ -27,7 +27,7 @@ const { Step } = Steps;
 /**
  * @class NoticeOfWorkApplication- contains all information regarding a CORE notice of work application
  */
-
+/* eslint-disable */
 const propTypes = {
   noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
   originalNoticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
@@ -116,7 +116,6 @@ export class NoticeOfWorkApplication extends Component {
               router.NOTICE_OF_WORK_APPLICATION.hashRoute(id, "#application-info")
             );
             this.setState({ currentStep });
-            console.log("fetched data: state will change with new data");
           });
       });
   };

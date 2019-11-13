@@ -223,12 +223,13 @@ class Application(Base):
         return '<Application %r>' % self.messageid
 
     @classmethod
-    def find_by_application_guid(cls, guid):
-        cls.validate_guid(guid)
-        messageid = NOWApplicationIdentity.query.filter_by(now_application_guid=guid).first().messageid
-        if not messageid:
-            raise NotFound('Could not find a nros/vbcbc application for this id')
-        return cls.find_by_messageid(messageid)
+    def find_by_application_guid(cls, application_guid):
+        #cls.validate_guid(guid)
+        #now_identity = NOWApplicationIdentity.query.filter_by(now_application_guid=guid).first()
+        #if not now_identity:
+        #    raise NotFound('Could not find a nros/vbcbc application for this id')
+        #return cls.find_by_messageid(now_identity.messageid)
+        return cls.query.filter_by(application_guid=application_guid).first()
 
     @classmethod
     def find_by_messageid(cls, messageid):

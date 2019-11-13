@@ -128,6 +128,8 @@ def _transmogrify_cut_lines_polarization_survey(now_app, now_sub, mms_now_sub):
     cutlinesreclamation = mms_now_sub.cutlinesreclamation or now_sub.cutlinesreclamation
     cutlinesreclamationcost = mms_now_sub.cutlinesreclamationcost or now_sub.cutlinesreclamationcost
     cutlinesexplgriddisturbedarea = mms_now_sub.cutlinesexplgriddisturbedarea or now_sub.cutlinesexplgriddisturbedarea
+    cutlinesexplgridtotallinekms = mms_now_sub.cutlinesexplgridtotallinekms or now_sub.cutlinesexplgridtotallinekms
+    cutlinesexplgridtimbervolume = mms_now_sub.cutlinesexplgridtimbervolume or now_sub.cutlinesexplgridtimbervolume
     if cutlinesreclamation or cutlinesreclamationcost or cutlinesexplgriddisturbedarea:
 
         clps = app_models.CutLinesPolarizationSurvey(
@@ -135,7 +137,7 @@ def _transmogrify_cut_lines_polarization_survey(now_app, now_sub, mms_now_sub):
             reclamation_cost=cutlinesreclamationcost,
             total_disturbed_area=cutlinesexplgriddisturbedarea,
             total_disturbed_area_unit_type_code='HA')
-
+        
         if cutlinesexplgridtotallinekms or cutlinesexplgridtimbervolume:
             clps_detial = app_models.CutLinesPolarizationSurveyDetail(
                 cut_line_length=cutlinesexplgridtotallinekms,
@@ -545,13 +547,13 @@ def _transmogrify_underground_exploration(now_app, now_sub, mms_now_sub):
     
         for new_uea in under_exp_new_activity:
             now_app.underground_exploration.details.append(app_models.UndergroundExplorationDetail(
-                activity_type_description=new_uenow_app.type,
-                incline=new_uenow_app.incline,
-                incline_unit_type_code=code_lookup(app_models.UnitType,unit_type_map[new_uenow_app.inclineunits],'unit_type_code'),
-                quantity=new_uenow_app.quantity,
-                length=new_uenow_app.length,
-                width=new_uenow_app.width,
-                height=new_uenow_app.height,
+                activity_type_description=new_uea.type,
+                incline=new_uea.incline,
+                incline_unit_type_code=code_lookup(app_models.UnitType,unit_type_map[new_uea.inclineunits],'unit_type_code'),
+                quantity=new_uea.quantity,
+                length=new_uea.length,
+                width=new_uea.width,
+                height=new_uea.height,
                 underground_exploration_type_code='NEW'
                 )
             )
@@ -563,13 +565,13 @@ def _transmogrify_underground_exploration(now_app, now_sub, mms_now_sub):
 
         for rehab_uea in under_exp_rehab_activity:
             now_app.underground_exploration.details.append(app_models.UndergroundExplorationDetail(
-                activity_type_description=rehab_uenow_app.type,
-                incline=rehab_uenow_app.incline,
-                incline_unit_type_code=code_lookup(app_models.UnitType,unit_type_map[rehab_uenow_app.inclineunits],'unit_type_code'),
-                quantity=rehab_uenow_app.quantity,
-                length=rehab_uenow_app.length,
-                width=rehab_uenow_app.width,
-                height=rehab_uenow_app.height,
+                activity_type_description=rehab_uea.type,
+                incline=rehab_uea.incline,
+                incline_unit_type_code=code_lookup(app_models.UnitType,unit_type_map[rehab_uea.inclineunits],'unit_type_code'),
+                quantity=rehab_uea.quantity,
+                length=rehab_uea.length,
+                width=rehab_uea.width,
+                height=rehab_uea.height,
                 underground_exploration_type_code='RHB'
                 )
             )
@@ -581,10 +583,10 @@ def _transmogrify_underground_exploration(now_app, now_sub, mms_now_sub):
 
         for surface_uea in under_exp_surface_activity:
             now_app.underground_exploration.details.append(app_models.UndergroundExplorationDetail(
-                activity_type_description=surface_uenow_app.type,
-                quantity=surface_uenow_app.quantity,
-                disturbed_area=surface_uenow_app.disturbedarea,
-                timber_volume=surface_uenow_app.timbervolume,
+                activity_type_description=surface_uea.type,
+                quantity=surface_uea.quantity,
+                disturbed_area=surface_uea.disturbedarea,
+                timber_volume=surface_uea.timbervolume,
                 underground_exploration_type_code='SUR'
                 )
             )
@@ -602,12 +604,12 @@ def _transmogrify_water_supply(now_app, now_sub, mms_now_sub):
 
         for wsa in water_source_activity:
             water_supply.details.append(app_models.WaterSupplyDetail(
-                supply_source_description=wsnow_app.sourcewatersupply,
-                supply_source_type=wsnow_app.type, 
-                water_use_description=wsnow_app.useofwater, 
-                estimate_rate=wsnow_app.estimateratewater, 
-                pump_size=wsnow_app.pumpsizeinwater, 
-                intake_location=wsnow_app.locationwaterintake
+                supply_source_description=wsa.sourcewatersupply,
+                supply_source_type=wsa.type, 
+                water_use_description=wsa.useofwater, 
+                estimate_rate=wsa.estimateratewater, 
+                pump_size=wsa.pumpsizeinwater, 
+                intake_location=wsa.locationwaterintake
             ))
         
         now_app.water_supply = water_supply

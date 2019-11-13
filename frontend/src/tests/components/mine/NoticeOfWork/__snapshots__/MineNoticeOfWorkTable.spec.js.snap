@@ -9,6 +9,7 @@ exports[`MineNoticeOfWorkTable renders properly 1`] = `
       "NoW Type",
       "Application Status",
       "Import Date",
+      "",
     ]
   }
 >
@@ -54,6 +55,13 @@ exports[`MineNoticeOfWorkTable renders properly 1`] = `
           "sorter": true,
           "title": "Import Date",
         },
+        Object {
+          "dataIndex": "verify",
+          "render": [Function],
+          "sortOrder": false,
+          "title": "",
+          "width": 150,
+        },
       ]
     }
     dataSource={
@@ -63,6 +71,7 @@ exports[`MineNoticeOfWorkTable renders properly 1`] = `
           "key": "07e801a0-fa33-4c3b-abcc-ac6df628d483",
           "mineGuid": "6e9d3426-ebf1-413f-9e5f-c3a71ab56797",
           "mineName": "Hamilton, Herrera and Mccormick",
+          "nowApplicationGuid": undefined,
           "nowNum": 44,
           "nowType": "choice",
           "status": "Approved",
@@ -72,6 +81,7 @@ exports[`MineNoticeOfWorkTable renders properly 1`] = `
           "key": "8e1536da-644c-4961-976b-b1326fa75825",
           "mineGuid": "60300a07-376c-46f1-a984-88a813f91438",
           "mineName": "Thompson-Sullivan",
+          "nowApplicationGuid": undefined,
           "nowNum": 52,
           "nowType": "technology",
           "status": "Approved",
