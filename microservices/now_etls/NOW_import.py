@@ -73,7 +73,7 @@ def ETL_MMS_NOW_schema(connection, tables, schema, system_name):
                     connection,
                     destination,
                     schema='now_submissions',
-                    commit=True)
+                    commit=False)
             else:
 
                 etl.appenddb(
@@ -89,14 +89,16 @@ def NOW_submissions_ETL(connection):
         # Removing the data imported from the previous run.
         print('Truncating existing tables...')
         truncate_table(connection, {**SHARED_TABLES, **NROS_ONLY_TABLES})
+        connection.commit()
 
         # Importing the vFCBC NoW submission data.
         print('Beginning vFCBC NoW ETL:')
         ETL_MMS_NOW_schema(connection, SHARED_TABLES, 'mms_now_vfcbc', 'VFCBC')
-
+        connection.commit()
         # Importing the NROS NoW submission data.
         print('Beginning NROS NoW ETL:')
         ETL_MMS_NOW_schema(connection, {
             **SHARED_TABLES,
             **NROS_ONLY_TABLES
         }, 'mms_now_nros', 'NROS')
+        connection.commit()
