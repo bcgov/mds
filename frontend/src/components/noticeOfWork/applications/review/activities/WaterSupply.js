@@ -14,15 +14,9 @@ const propTypes = {
 export const WaterSupply = (props) => {
   const columns = [
     {
-      title: "Source",
+      title: "Activity",
       dataIndex: "type",
       key: "type",
-      render: (text) => <div title="Source">{text}</div>,
-    },
-    {
-      title: "Activity",
-      dataIndex: "activity",
-      key: "activity",
       render: (text) => <div title="Activity">{text}</div>,
     },
     {
@@ -42,9 +36,8 @@ export const WaterSupply = (props) => {
   const transformData = (activities) =>
     activities.map((activity) => ({
       type: activity.activity_type_description || Strings.EMPTY_FIELD,
-      activity: activity.activity_type_description || Strings.EMPTY_FIELD,
-      water: activity.disturbed_area || Strings.EMPTY_FIELD,
-      estimate: activity.timber_volume || Strings.EMPTY_FIELD,
+      water: Strings.EMPTY_FIELD,
+      estimate: activity.water_quantity || Strings.EMPTY_FIELD,
     }));
 
   return (
