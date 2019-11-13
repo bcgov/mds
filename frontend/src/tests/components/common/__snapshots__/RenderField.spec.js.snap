@@ -11,6 +11,8 @@ exports[`RenderField renders properly 1`] = `
     className="inline-flex"
   >
     <Input
+      defaultValue=""
+      disabled={false}
       id={1}
       placeholder=""
       type="text"
