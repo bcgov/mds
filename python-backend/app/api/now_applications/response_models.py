@@ -105,7 +105,7 @@ NOW_APPLICATION_SAND_AND_GRAVEL = api.inherit(
         'average_overburden_depth': fields.Fixed,
         'average_top_soil_depth': fields.Fixed,
         'stability_measures_description': fields.String,
-        'is_agricultural_land_reserve': fields.String,
+        'is_agricultural_land_reserve': fields.Boolean,
         'agri_lnd_rsrv_permit_application_number': fields.String,
         'has_local_soil_removal_bylaw': fields.Boolean,
         'community_plan': fields.String,
