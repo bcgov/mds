@@ -92,7 +92,7 @@
   background-color: $primary-btn-color;
   border: none;
   border-radius: 0;
-  border-top: 1px solid #5e46a1;
+  border-top: 1px solid $violet;
   position: inherit;
   // if the activeClass is on nav, change default hover color to white, else leave violet
   .ant-menu-submenu-title:hover {

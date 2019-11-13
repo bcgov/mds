@@ -9,7 +9,7 @@ import RenderRadioButtons from "@/components/common/RenderRadioButtons";
 
 const propTypes = {
   isViewMode: PropTypes.bool.isRequired,
-  // initialValues: PropTypes.objectOf(PropTypes.string).isRequired,
+  initialValues: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
 export const AccessRoads = (props) => {
@@ -17,7 +17,7 @@ export const AccessRoads = (props) => {
     {
       title: "Access Type",
       dataIndex: "type",
-      key: "accessType",
+      key: "type",
       render: (text) => <div title="Access Type">{text}</div>,
     },
     {
@@ -54,7 +54,7 @@ export const AccessRoads = (props) => {
         align="left"
         pagination={false}
         columns={columns}
-        dataSource={transformData([])}
+        dataSource={transformData(props.initialValues.details ? props.initialValues.details : [])}
         locale={{
           emptyText: "No data",
         }}

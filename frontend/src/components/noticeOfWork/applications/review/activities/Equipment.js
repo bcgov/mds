@@ -4,7 +4,11 @@ import { Table } from "antd";
 import * as Strings from "@/constants/strings";
 
 const propTypes = {
-  initialValues: PropTypes.objectOf(PropTypes.string).isRequired,
+  equipment: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)),
+};
+
+const defaultProps = {
+  equipment: [],
 };
 
 export const Equipment = (props) => {
@@ -38,20 +42,22 @@ export const Equipment = (props) => {
 
   return (
     <div>
-      <h3>Equipment</h3>
+      <h4>Equipment</h4>
       <Table
         align="left"
         pagination={false}
         columns={columns}
-        dataSource={transformData(props.initialValues.equipment)}
+        dataSource={transformData(props.equipment)}
         locale={{
           emptyText: "No equipment related to this activity",
         }}
       />
+      <br />
     </div>
   );
 };
 
 Equipment.propTypes = propTypes;
+Equipment.defaultProps = defaultProps;
 
 export default Equipment;
