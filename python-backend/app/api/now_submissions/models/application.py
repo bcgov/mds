@@ -25,13 +25,19 @@ from app.api.now_submissions.models.existing_settling_pond_xref import ExistingS
 from app.api.now_submissions.models.proposed_placer_activity_xref import ProposedPlacerActivityXref
 from app.api.now_submissions.models.proposed_settling_pond_xref import ProposedSettlingPondXref
 
+from app.api.now_applications.models.now_application_identity import NOWApplicationIdentity
+
 
 class Application(Base):
     __tablename__ = "application"
     __table_args__ = {"schema": "now_submissions"}
     messageid = db.Column(db.Integer, primary_key=True)
+    now_application_identity = db.relationship('NOWApplicationIdentity', lazy='joined', uselist=False,
+        primaryjoin=messageid==NOWApplicationIdentity.messageid, foreign_keys=messageid)
     application_guid = db.Column(UUID(as_uuid=True), nullable=False)
+    now_application_guid = association_proxy('now_application_identity', 'now_application_guid')
     mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine.mine_guid'))
+    #mine_guid = association_proxy('now_application_identity', 'mine_guid')
     trackingnumber = db.Column(db.Integer)  
     applicationtype = db.Column(db.String)
     status = db.Column(db.String)  
@@ -219,7 +225,14 @@ class Application(Base):
     @classmethod
     def find_by_application_guid(cls, guid):
         cls.validate_guid(guid)
-        return cls.query.filter_by(application_guid=guid).first()
+        messageid = NOWApplicationIdentity.query.filter_by(now_application_guid=guid).first().messageid
+        if not messageid:
+            raise NotFound('Could not find a nros/vbcbc application for this id')
+        return cls.find_by_messageid(messageid)
+
+    @classmethod
+    def find_by_messageid(cls, messageid):
+        return cls.query.filter_by(messageid=messageid).first()
 
     @classmethod
     def validate_guid(cls, guid, msg='Invalid guid.'):

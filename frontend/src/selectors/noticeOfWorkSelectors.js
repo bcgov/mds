@@ -4,4 +4,5 @@ export const {
   getNoticeOfWorkList,
   getNoticeOfWorkPageData,
   getNoticeOfWork,
+  getOriginalNoticeOfWork,
 } = noticeOfWorkReducer;

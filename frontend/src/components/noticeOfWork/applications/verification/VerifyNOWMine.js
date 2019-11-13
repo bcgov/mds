@@ -23,6 +23,7 @@ const propTypes = {
   setMineGuid: PropTypes.func.isRequired,
   noticeOfWork: CustomPropTypes.nowApplication.isRequired,
   mineRegionHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  currentMine: CustomPropTypes.mine.isRequired,
 };
 
 export class VerifyNOWMine extends Component {
@@ -35,10 +36,13 @@ export class VerifyNOWMine extends Component {
   componentDidMount() {
     this.props.fetchMineNameList().then(() => {
       this.setState({ isLoaded: true });
-      this.props.fetchMineRecordById(this.props.noticeOfWork.mine_guid).then((data) => {
-        this.setState({ isMineLoaded: true, mine: data.data });
-      });
     });
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.currentMine && nextProps.currentMine !== this.state.mine) {
+      this.setState({ isMineLoaded: true, mine: nextProps.currentMine });
+    }
   }
 
   handleChange = (name) => {
@@ -80,7 +84,7 @@ export class VerifyNOWMine extends Component {
               <RenderAutoComplete
                 placeholder="Search for a mine by name"
                 handleSelect={this.handleMineSearch}
-                defaultValue={`${this.props.noticeOfWork.mine_name} - ${this.props.noticeOfWork.minenumber}`}
+                defaultValue={`${this.props.noticeOfWork.mine_name} - ${this.props.noticeOfWork.mine_no}`}
                 data={this.transformData(this.props.mineNameList)}
                 handleChange={this.handleChange}
               />
