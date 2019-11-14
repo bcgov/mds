@@ -110,18 +110,10 @@ class MMSApplication(Base):
         'MMSPlacerActivity',
         lazy='select',
         secondary='mms_now_submissions.existing_placer_activity_xref')
-    existing_settling_pond = db.relationship(
-        'MMSSettlingPondSubmission',
-        lazy='select',
-        secondary='mms_now_submissions.existing_settling_pond_xref')
     proposed_placer_activity = db.relationship(
         'MMSPlacerActivity',
         lazy='select',
         secondary='mms_now_submissions.proposed_placer_activity_xref')
-    proposed_settling_pond = db.relationship(
-        'MMSSettlingPondSubmission',
-        lazy='select',
-        secondary='mms_now_submissions.proposed_settling_pond_xref')
 
     def __repr__(self):
         return '<MMSApplication %r>' % self.id
