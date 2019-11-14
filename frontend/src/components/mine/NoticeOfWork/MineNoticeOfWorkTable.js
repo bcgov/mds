@@ -149,10 +149,14 @@ export class MineNoticeOfWorkTable extends Component {
       render: (text, record) =>
         record.nowApplicationGuid && (
           <div title="">
-            <AuthorizationWrapper inTesting permission={Permission.ADMIN}>
-              <Link to={router.NOTICE_OF_WORK_APPLICATION.dynamicRoute(record.nowApplicationGuid)}>
-                <img src={EDIT_OUTLINE_VIOLET} alt="Edit NoW" />
-              </Link>
+            <AuthorizationWrapper inTesting>
+              <AuthorizationWrapper permission={Permission.ADMIN}>
+                <Link
+                  to={router.NOTICE_OF_WORK_APPLICATION.dynamicRoute(record.nowApplicationGuid)}
+                >
+                  <img src={EDIT_OUTLINE_VIOLET} alt="Edit NoW" />
+                </Link>
+              </AuthorizationWrapper>
             </AuthorizationWrapper>
           </div>
         ),

@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { Steps, Button } from "antd";
 import PropTypes from "prop-types";
 import { getFormValues } from "redux-form";
-import { Link } from "react-router-dom";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import * as router from "@/constants/routes";
@@ -140,27 +139,20 @@ export class NoticeOfWorkApplication extends Component {
   renderStepTwo = () => {
     const mine = this.props.mines ? this.props.mines[this.state.associatedMineGuid] : {};
     return (
-      <LoadingWrapper condition={this.state.isNoWLoaded}>
-        <ReviewNOWApplication
-          mine={mine}
-          isViewMode={this.state.isViewMode}
-          initialValues={
-            this.state.showOriginalValues
-              ? this.props.originalNoticeOfWork
-              : this.props.noticeOfWork
-          }
-          noticeOfWork={
-            this.state.showOriginalValues
-              ? this.props.originalNoticeOfWork
-              : this.props.noticeOfWork
-          }
-        />
-      </LoadingWrapper>
+      <ReviewNOWApplication
+        mine={mine}
+        isViewMode={this.state.isViewMode}
+        initialValues={
+          this.state.showOriginalValues ? this.props.originalNoticeOfWork : this.props.noticeOfWork
+        }
+        noticeOfWork={
+          this.state.showOriginalValues ? this.props.originalNoticeOfWork : this.props.noticeOfWork
+        }
+      />
     );
   };
 
   render() {
-    const { id } = this.props.match.params;
     const steps = [
       {
         title: "Verification",
@@ -168,7 +160,9 @@ export class NoticeOfWorkApplication extends Component {
       },
       {
         title: "Technical Review",
-        content: this.renderStepTwo(),
+        content: (
+          <LoadingWrapper condition={this.state.isNoWLoaded}>{this.renderStepTwo()}</LoadingWrapper>
+        ),
       },
       {
         title: "Referral / Consultation",
@@ -187,9 +181,14 @@ export class NoticeOfWorkApplication extends Component {
             <div>
               <h1>NoW Number: {Strings.EMPTY_FIELD}</h1>
               {/* update to use application_guid for link once guid is persisted */}
-              <Link to={router.NOTICE_OF_WORK_INITIAL_APPLICATION.dynamicRoute(id)}>
+              {/* commenting out for now as we no longer have the correct application_guid  */}
+              {/* <Link
+                to={router.NOTICE_OF_WORK_INITIAL_APPLICATION.dynamicRoute(
+                  this.props.originalNoticeOfWork.application_guid
+                )}
+              >
                 Open Original NoW
-              </Link>
+              </Link> */}
             </div>
             {/* hiding the edit button until fully functionality is implemented */}
             {false && (
