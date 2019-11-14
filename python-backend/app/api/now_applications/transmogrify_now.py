@@ -239,8 +239,6 @@ def _transmogrify_exploration_access(now_app, now_sub, mms_now_sub):
 
         now_app.exploration_access = exploration_access
 
-        now_app.exploration_access = exploration_access
-
 def _transmogrify_placer_operations(now_app, now_sub, mms_now_sub):
     placerundergroundoperations = now_sub.placerundergroundoperations
     placerhandoperations = now_sub.placerhandoperations
