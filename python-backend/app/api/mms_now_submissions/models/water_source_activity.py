@@ -13,6 +13,7 @@ class MMSWaterSourceActivity(Base):
     estimateratewater = db.Column(db.Numeric(14, 2))
     pumpsizeinwater = db.Column(db.Numeric(14, 2))
     locationwaterintake = db.Column(db.String)
+    sourcewatersupply = db.Column(db.String)
 
     def __repr__(self):
         return '<MMSWaterSourceActivity %r>' % self.id
