@@ -89,12 +89,12 @@ def NOW_submissions_ETL(connection):
         # Removing the data imported from the previous run.
         print('Truncating existing tables...')
         truncate_table(connection, {**SHARED_TABLES, **NROS_ONLY_TABLES})
-        connection.commit()
+        # connection.commit()
 
         # Importing the vFCBC NoW submission data.
         print('Beginning vFCBC NoW ETL:')
         ETL_MMS_NOW_schema(connection, SHARED_TABLES, 'mms_now_vfcbc', 'VFCBC')
-        connection.commit()
+        # connection.commit()
         # Importing the NROS NoW submission data.
         print('Beginning NROS NoW ETL:')
         ETL_MMS_NOW_schema(connection, {
