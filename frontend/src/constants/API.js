@@ -127,6 +127,7 @@ export const INCIDENT_FOLLOWUP_ACTIONS = `/incidents/followup-types`;
 export const INCIDENT_DETERMINATION_TYPES = `/incidents/determination-types`;
 export const INCIDENT_STATUS_CODES = `/incidents/status-codes`;
 export const INCIDENT_DOCUMENT_TYPE = `/incidents/document-types`;
+export const INCIDENT_CATEGORY_CODES = `/incidents/category-codes`;
 
 // report
 export const MINE_REPORT_DEFINITIONS = () => `/mines/reports/definitions`;
@@ -153,6 +154,8 @@ export const NOTICE_OF_WORK_DOCUMENT_TOKEN_GET_URL = (id, applicationGuid) =>
   `${NOTICE_OF_WORK_APPLICATION(applicationGuid)}/document/${id}/token`;
 export const NOTICE_OF_WORK_APPLICATION_IMPORT = (applicationGuid) =>
   `/now-applications/${applicationGuid}/import`;
+export const NOTICE_OF_WORK_IMPORTED_APPLICATION = (applicationGuid) =>
+  `/now-applications/${applicationGuid}`;
 
 // Mine Party Appointments
 export const MINE_PARTY_APPOINTMENT_DOCUMENTS = (mineGuid, minePartyAppointmentGuid) =>

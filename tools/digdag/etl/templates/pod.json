@@ -16,7 +16,18 @@
         "env": [],
         "image": "${IMAGE_PATH}:${IMAGE_TAG}",
         "imagePullPolicy": "Always",
-        "name": "${NAME}"
+        "name": "${NAME}",
+
+        "resources": {
+          "limits": {
+            "cpu": "250m",
+            "memory": "4Gi"
+          },
+          "requests": {
+            "cpu": "100m",
+            "memory": "1Gi"
+          }
+        }
       }
     ],
     "dnsPolicy": "ClusterFirst",

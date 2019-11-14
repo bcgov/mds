@@ -517,6 +517,15 @@ VALUES
 	('UNR', 'Under Review', true, 'system-mds', 'system-mds')
 on conflict do nothing;
 
+INSERT INTO mine_incident_category
+(mine_incident_category_code, description, active_ind, create_user, update_user)
+VALUES
+	('H&S', 'Health and Safety', true, 'system-mds', 'system-mds'),
+	('GTC', 'Geotechnical', true, 'system-mds', 'system-mds'),
+	('ENV', 'Environmental', true, 'system-mds', 'system-mds'),
+    ('SPI', 'Spill', true, 'system-mds', 'system-mds')
+on conflict do nothing;
+
 INSERT INTO activity_type (
     activity_type_code,
     description,

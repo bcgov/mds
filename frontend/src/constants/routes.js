@@ -197,7 +197,8 @@ export const NOTICE_OF_WORK_INITIAL_APPLICATION = {
 };
 
 export const NOTICE_OF_WORK_APPLICATION = {
-  route: "/dashboard/notice-of-work/application",
-  dynamicRoute: (guid) => `/dashboard/notice-of-work/application?id=${guid}`,
+  route: "/dashboard/notice-of-work/application/:id/",
+  dynamicRoute: (guid) => `/dashboard/notice-of-work/application/${guid}/`,
+  hashRoute: (guid, link) => `/dashboard/notice-of-work/application/${guid}/${link}`,
   component: NoticeOfWorkApplication,
 };

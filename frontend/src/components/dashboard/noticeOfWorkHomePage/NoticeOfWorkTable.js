@@ -10,6 +10,8 @@ import NullScreen from "@/components/common/NullScreen";
 import TableLoadingWrapper from "@/components/common/wrappers/TableLoadingWrapper";
 import { formatDate, optionsFilterAdapter, getTableHeaders } from "@/utils/helpers";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
+import { EDIT_OUTLINE_VIOLET } from "@/constants/assets";
+import * as Permission from "@/constants/permissions";
 
 /**
  * @class NoticeOfWorkTable - paginated list of notice of work applications
@@ -66,8 +68,9 @@ export class NoticeOfWorkTable extends Component {
   transformRowData = (applications) =>
     applications.map((application) => ({
       key: application.application_guid,
+      nowApplicationGuid: application.now_application_guid,
       source: Strings.EMPTY_FIELD,
-      mine_region: application.mine_region
+      mineRegion: application.mine_region
         ? this.props.mineRegionHash[application.mine_region]
         : Strings.EMPTY_FIELD,
       nowNum: application.trackingnumber || Strings.EMPTY_FIELD,
@@ -125,7 +128,7 @@ export class NoticeOfWorkTable extends Component {
   columns = () => [
     {
       title: "Region",
-      dataIndex: "mine_region",
+      dataIndex: "mineRegion",
       render: (text) => <div title="Region">{text}</div>,
       filteredValue: this.props.searchParams.mine_region,
       filters: this.props.mineRegionOptions
@@ -179,13 +182,20 @@ export class NoticeOfWorkTable extends Component {
       title: "",
       dataIndex: "verify",
       width: 150,
-      render: (text, record) => (
-        <div title="">
-          <AuthorizationWrapper inDevelopment>
-            <Link to={router.NOTICE_OF_WORK_APPLICATION.dynamicRoute(record.key)}>Verify</Link>
-          </AuthorizationWrapper>
-        </div>
-      ),
+      render: (text, record) =>
+        record.nowApplicationGuid && (
+          <div title="">
+            <AuthorizationWrapper inTesting>
+              <AuthorizationWrapper permission={Permission.ADMIN}>
+                <Link
+                  to={router.NOTICE_OF_WORK_APPLICATION.dynamicRoute(record.nowApplicationGuid)}
+                >
+                  <img src={EDIT_OUTLINE_VIOLET} alt="Edit NoW" />
+                </Link>
+              </AuthorizationWrapper>
+            </AuthorizationWrapper>
+          </div>
+        ),
     },
   ];
 

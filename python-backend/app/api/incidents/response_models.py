@@ -1,6 +1,11 @@
 from app.extensions import api
 from flask_restplus import fields
 
+MINE_INCIDENT_CATEGORY_MODEL = api.model(
+    'Mine Incident Category', {
+        'mine_incident_category_code': fields.String,
+        'description': fields.String
+    })
 
 MINE_INCIDENT_DETERMINATION_TYPE_MODEL = api.model(
     'Mine Incident Determination Type', {
@@ -49,6 +54,7 @@ MINE_INCIDENT_MODEL = api.model(
         'mine_incident_guid': fields.String,
         'mine_incident_report_no': fields.String,
         'mine_incident_id_year': fields.Integer,
+        'mine_incident_cateogry_code': fields.String,
         'mine_guid': fields.String,
         'mine_name': fields.String,
         'mine_region': fields.String,

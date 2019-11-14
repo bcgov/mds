@@ -12,11 +12,13 @@ const propTypes = {
   label: PropTypes.string,
   placeholder: PropTypes.string,
   meta: PropTypes.objectOf(PropTypes.any).isRequired,
+  disabled: PropTypes.bool,
 };
 
 const defaultProps = {
   placeholder: "",
   label: "",
+  disabled: false,
 };
 
 const { TextArea } = Input;
@@ -33,7 +35,13 @@ const RenderAutoSizeField = (props) => (
         (props.meta.warning && <span>{props.meta.warning}</span>))
     }
   >
-    <TextArea id={props.id} {...props.input} autosize placeholder={props.placeholder} />
+    <TextArea
+      disabled={props.disabled}
+      id={props.id}
+      {...props.input}
+      autoSize
+      placeholder={props.placeholder}
+    />
   </Form.Item>
 );
 
