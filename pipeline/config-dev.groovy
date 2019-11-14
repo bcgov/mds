@@ -255,6 +255,7 @@ environments {
         vars {
             DB_PVC_SIZE = '1Gi'
             DOCUMENT_PVC_SIZE = '1Gi'
+
             LOG_PVC_SIZE = '1Gi'
             git {
                 changeId = "${opt.'pr'}"
@@ -365,6 +366,7 @@ environments {
                 'mds-redis' {
                     HOST = "http://mds-redis${vars.deployment.suffix}"
                 }
+
             }
         }
     }

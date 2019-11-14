@@ -396,7 +396,6 @@ export const ReviewNOWApplication = (props) => {
     </div>
   );
 
-  const renderEquipment = () => <NullScreen type="now-equipment" />;
   const renderWorkPlan = () => (
     <Row gutter={16}>
       <Col md={12} sm={24}>
@@ -453,9 +452,6 @@ export const ReviewNOWApplication = (props) => {
           <ScrollContentWrapper id="first-aid" title="First Aid">
             {renderFirstAid()}
           </ScrollContentWrapper>
-          <ScrollContentWrapper id="equipment" title="Equipment">
-            {renderEquipment()}
-          </ScrollContentWrapper>
           <br />
           <h2>Work Plan</h2>
           <Divider />
@@ -483,4 +479,5 @@ ReviewNOWApplication.propTypes = propTypes;
 export default reduxForm({
   form: FORM.EDIT_NOTICE_OF_WORK,
   touchOnBlur: true,
+  enableReinitialize: true,
 })(ReviewNOWApplication);

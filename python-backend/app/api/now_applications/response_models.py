@@ -105,7 +105,7 @@ NOW_APPLICATION_SAND_AND_GRAVEL = api.inherit(
         'average_overburden_depth': fields.Fixed,
         'average_top_soil_depth': fields.Fixed,
         'stability_measures_description': fields.String,
-        'is_agricultural_land_reserve': fields.String,
+        'is_agricultural_land_reserve': fields.Boolean,
         'agri_lnd_rsrv_permit_application_number': fields.String,
         'has_local_soil_removal_bylaw': fields.Boolean,
         'community_plan': fields.String,
@@ -206,8 +206,10 @@ NOW_APPLICATION_MODEL = api.model(
     {
         'now_application_guid': fields.String,
         'mine_guid': fields.String,
+        'mine_name': fields.String,
+        'mine_no': fields.String,
+        'mine_region': fields.String,
         'imported_to_core' : fields.Boolean, #Just-in-time attribute
-        'now_message_id': fields.String,
         'notice_of_work_type_code': fields.String,                  
         'now_application_status_code': fields.String,               
         'submitted_date': Date,

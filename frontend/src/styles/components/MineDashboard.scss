@@ -59,3 +59,20 @@
     }
   }
 }
+
+// MINE SUMMARY NAVIGATION
+.sub-menu {
+  a,
+  link {
+    color: $darkest-grey;
+    text-decoration: none;
+    &:hover {
+      color: $pure-white;
+    }
+  }
+  background-color: $light-grey;
+
+  li:hover {
+    background-color: $violet;
+  }
+}
