@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { Steps, Button } from "antd";
 import PropTypes from "prop-types";
 import { getFormValues } from "redux-form";
-import { Link } from "react-router-dom";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import * as router from "@/constants/routes";
@@ -21,6 +20,7 @@ import ReviewNOWApplication from "@/components/noticeOfWork/applications/review/
 import NullScreen from "@/components/common/NullScreen";
 import NOWSideMenu from "@/components/noticeOfWork/applications/NOWSideMenu";
 import * as FORM from "@/constants/forms";
+import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
 
 const { Step } = Steps;
 
@@ -51,6 +51,7 @@ export class NoticeOfWorkApplication extends Component {
   state = {
     currentStep: 0,
     isLoaded: false,
+    isNoWLoaded: false,
     associatedMineGuid: "",
     isViewMode: true,
     showOriginalValues: false,
@@ -69,7 +70,7 @@ export class NoticeOfWorkApplication extends Component {
           );
           currentStep = 1;
         }
-        this.setState({ isLoaded: true, associatedMineGuid, currentStep });
+        this.setState({ isLoaded: true, associatedMineGuid, currentStep, isNoWLoaded: true });
       });
     });
     this.props.fetchOriginalNoticeOfWorkApplication(id);
@@ -115,7 +116,7 @@ export class NoticeOfWorkApplication extends Component {
             this.props.history.push(
               router.NOTICE_OF_WORK_APPLICATION.hashRoute(id, "#application-info")
             );
-            this.setState({ currentStep });
+            this.setState({ currentStep, isNoWLoaded: true });
           });
       });
   };
@@ -138,7 +139,6 @@ export class NoticeOfWorkApplication extends Component {
   renderStepTwo = () => {
     const mine = this.props.mines ? this.props.mines[this.state.associatedMineGuid] : {};
     return (
-      // To DO: add loading wrapper when fetching new data
       <ReviewNOWApplication
         mine={mine}
         isViewMode={this.state.isViewMode}
@@ -153,7 +153,6 @@ export class NoticeOfWorkApplication extends Component {
   };
 
   render() {
-    const { id } = this.props.match.params;
     const steps = [
       {
         title: "Verification",
@@ -161,7 +160,9 @@ export class NoticeOfWorkApplication extends Component {
       },
       {
         title: "Technical Review",
-        content: this.renderStepTwo(),
+        content: (
+          <LoadingWrapper condition={this.state.isNoWLoaded}>{this.renderStepTwo()}</LoadingWrapper>
+        ),
       },
       {
         title: "Referral / Consultation",
@@ -180,9 +181,14 @@ export class NoticeOfWorkApplication extends Component {
             <div>
               <h1>NoW Number: {Strings.EMPTY_FIELD}</h1>
               {/* update to use application_guid for link once guid is persisted */}
-              <Link to={router.NOTICE_OF_WORK_INITIAL_APPLICATION.dynamicRoute(id)}>
+              {/* commenting out for now as we no longer have the correct application_guid  */}
+              {/* <Link
+                to={router.NOTICE_OF_WORK_INITIAL_APPLICATION.dynamicRoute(
+                  this.props.originalNoticeOfWork.application_guid
+                )}
+              >
                 Open Original NoW
-              </Link>
+              </Link> */}
             </div>
             {/* hiding the edit button until fully functionality is implemented */}
             {false && (

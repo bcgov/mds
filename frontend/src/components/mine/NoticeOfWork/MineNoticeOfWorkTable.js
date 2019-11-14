@@ -11,6 +11,7 @@ import TableLoadingWrapper from "@/components/common/wrappers/TableLoadingWrappe
 import { formatDate, getTableHeaders } from "@/utils/helpers";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import { EDIT_OUTLINE_VIOLET } from "@/constants/assets";
+import * as Permission from "@/constants/permissions";
 
 /**
  * @class MineNoticeOfWorkTable - list of mine notice of work applications
@@ -106,6 +107,7 @@ export class MineNoticeOfWorkTable extends Component {
       <Icon type="search" style={{ color: filtered ? "#1890ff" : undefined }} />
     ),
   });
+
   columns = () => [
     {
       title: "NoW No.",
@@ -147,10 +149,14 @@ export class MineNoticeOfWorkTable extends Component {
       render: (text, record) =>
         record.nowApplicationGuid && (
           <div title="">
-            <AuthorizationWrapper inDevelopment>
-              <Link to={router.NOTICE_OF_WORK_APPLICATION.dynamicRoute(record.nowApplicationGuid)}>
-                <img src={EDIT_OUTLINE_VIOLET} alt="Edit NoW" />
-              </Link>
+            <AuthorizationWrapper inTesting>
+              <AuthorizationWrapper permission={Permission.ADMIN}>
+                <Link
+                  to={router.NOTICE_OF_WORK_APPLICATION.dynamicRoute(record.nowApplicationGuid)}
+                >
+                  <img src={EDIT_OUTLINE_VIOLET} alt="Edit NoW" />
+                </Link>
+              </AuthorizationWrapper>
             </AuthorizationWrapper>
           </div>
         ),
