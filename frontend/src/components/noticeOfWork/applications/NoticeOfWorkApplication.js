@@ -21,13 +21,14 @@ import ReviewNOWApplication from "@/components/noticeOfWork/applications/review/
 import NullScreen from "@/components/common/NullScreen";
 import NOWSideMenu from "@/components/noticeOfWork/applications/NOWSideMenu";
 import * as FORM from "@/constants/forms";
+import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
 
 const { Step } = Steps;
 
 /**
  * @class NoticeOfWorkApplication- contains all information regarding a CORE notice of work application
  */
-/* eslint-disable */
+
 const propTypes = {
   noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
   originalNoticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
@@ -51,6 +52,7 @@ export class NoticeOfWorkApplication extends Component {
   state = {
     currentStep: 0,
     isLoaded: false,
+    isNoWLoaded: false,
     associatedMineGuid: "",
     isViewMode: true,
     showOriginalValues: false,
@@ -69,7 +71,7 @@ export class NoticeOfWorkApplication extends Component {
           );
           currentStep = 1;
         }
-        this.setState({ isLoaded: true, associatedMineGuid, currentStep });
+        this.setState({ isLoaded: true, associatedMineGuid, currentStep, isNoWLoaded: true });
       });
     });
     this.props.fetchOriginalNoticeOfWorkApplication(id);
@@ -115,7 +117,7 @@ export class NoticeOfWorkApplication extends Component {
             this.props.history.push(
               router.NOTICE_OF_WORK_APPLICATION.hashRoute(id, "#application-info")
             );
-            this.setState({ currentStep });
+            this.setState({ currentStep, isNoWLoaded: true });
           });
       });
   };
@@ -138,17 +140,22 @@ export class NoticeOfWorkApplication extends Component {
   renderStepTwo = () => {
     const mine = this.props.mines ? this.props.mines[this.state.associatedMineGuid] : {};
     return (
-      // To DO: add loading wrapper when fetching new data
-      <ReviewNOWApplication
-        mine={mine}
-        isViewMode={this.state.isViewMode}
-        initialValues={
-          this.state.showOriginalValues ? this.props.originalNoticeOfWork : this.props.noticeOfWork
-        }
-        noticeOfWork={
-          this.state.showOriginalValues ? this.props.originalNoticeOfWork : this.props.noticeOfWork
-        }
-      />
+      <LoadingWrapper condition={this.state.isNoWLoaded}>
+        <ReviewNOWApplication
+          mine={mine}
+          isViewMode={this.state.isViewMode}
+          initialValues={
+            this.state.showOriginalValues
+              ? this.props.originalNoticeOfWork
+              : this.props.noticeOfWork
+          }
+          noticeOfWork={
+            this.state.showOriginalValues
+              ? this.props.originalNoticeOfWork
+              : this.props.noticeOfWork
+          }
+        />
+      </LoadingWrapper>
     );
   };
 
