@@ -9,6 +9,8 @@ import * as router from "@/constants/routes";
 import NullScreen from "@/components/common/NullScreen";
 import TableLoadingWrapper from "@/components/common/wrappers/TableLoadingWrapper";
 import { formatDate, getTableHeaders } from "@/utils/helpers";
+import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
+import { EDIT_OUTLINE_VIOLET } from "@/constants/assets";
 
 /**
  * @class MineNoticeOfWorkTable - list of mine notice of work applications
@@ -51,6 +53,7 @@ const applySortIndicator = (_columns, field, dir) =>
 const transformRowData = (applications) =>
   applications.map((application) => ({
     key: application.application_guid,
+    nowApplicationGuid: application.now_application_guid,
     nowNum: application.trackingnumber || Strings.EMPTY_FIELD,
     mineGuid: application.mine_guid || Strings.EMPTY_FIELD,
     mineName: application.mine_name || Strings.EMPTY_FIELD,
@@ -103,7 +106,6 @@ export class MineNoticeOfWorkTable extends Component {
       <Icon type="search" style={{ color: filtered ? "#1890ff" : undefined }} />
     ),
   });
-
   columns = () => [
     {
       title: "NoW No.",
@@ -137,6 +139,21 @@ export class MineNoticeOfWorkTable extends Component {
       sortField: "receiveddate",
       render: (text) => <div title="Import Date">{text}</div>,
       sorter: true,
+    },
+    {
+      title: "",
+      dataIndex: "verify",
+      width: 150,
+      render: (text, record) =>
+        record.nowApplicationGuid && (
+          <div title="">
+            <AuthorizationWrapper inDevelopment>
+              <Link to={router.NOTICE_OF_WORK_APPLICATION.dynamicRoute(record.nowApplicationGuid)}>
+                <img src={EDIT_OUTLINE_VIOLET} alt="Edit NoW" />
+              </Link>
+            </AuthorizationWrapper>
+          </div>
+        ),
     },
   ];
 

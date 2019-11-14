@@ -1,5 +1,6 @@
 from tests.now_submission_factories import NOWSubmissionFactory
 
+from app.api.now_applications.models.now_application_identity import NOWApplicationIdentity
 from app.api.now_applications.transmogrify_now import transmogrify_now
 
 
@@ -8,11 +9,13 @@ class TestPostApplicationImportResource:
 
     def test_transmogrify_success(self, db_session):
         now_submission = NOWSubmissionFactory()
-        assert transmogrify_now(now_submission.messageid)
+        now_application_identity = NOWApplicationIdentity(messageid=now_submission.messageid, mine_guid=now_submission.mine_guid)
+        assert transmogrify_now(now_application_identity)
 
     def test_transmogrify_success_all_activites(self, db_session):
         now_submission = NOWSubmissionFactory()
-        na = transmogrify_now(now_submission.messageid)
+        now_application_identity = NOWApplicationIdentity(messageid=now_submission.messageid, mine_guid=now_submission.mine_guid)
+        na = transmogrify_now(now_application_identity)
         assert na.blasting
         assert na.state_of_land
         assert na.camps
@@ -29,7 +32,8 @@ class TestPostApplicationImportResource:
 
     def test_transmogrify_success_no_activites(self, db_session):
         now_submission = NOWSubmissionFactory(all_activites=False)
-        na = transmogrify_now(now_submission.messageid)
+        now_application_identity = NOWApplicationIdentity(messageid=now_submission.messageid, mine_guid=now_submission.mine_guid)
+        na = transmogrify_now(now_application_identity)
         assert not na.blasting
         assert not na.state_of_land
         assert not na.camps

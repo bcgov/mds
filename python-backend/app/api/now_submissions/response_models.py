@@ -174,6 +174,7 @@ WATER_SOURCE_ACTIVITY = api.model(
 APPLICATION = api.model(
     'Application', {
         'application_guid': fields.String,
+        'now_application_guid': fields.String,
         'originating_system': fields.String,
         'mine_guid': fields.String,
         'mine_name': fields.String,
@@ -335,6 +336,7 @@ APPLICATION = api.model(
 APPLICATION_LIST = api.model(
     'Application', {
         'application_guid': fields.String,
+        'now_application_guid': fields.String,
         'mine_guid': fields.String,
         'mine_name': fields.String,
         'mine_region': fields.String,

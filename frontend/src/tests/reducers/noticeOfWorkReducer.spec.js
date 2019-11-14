@@ -9,6 +9,7 @@ const baseExpectedValue = {
   noticeOfWorkList: [],
   noticeOfWork: {},
   noticeOfWorkPageData: {},
+  originalNoticeOfWork: {},
 };
 
 // Creates deep copy of javascript object instead of setting a reference

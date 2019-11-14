@@ -245,6 +245,23 @@ app {
                             'ENVIRONMENT_NAME':"${app.deployment.env.name}",
                             'API_URL': "https://${vars.modules.'mds-nginx'.HOST_CORE}${vars.modules.'mds-nginx'.PATH}/nris_api",
                     ]
+                ],
+                                [
+                    'file':'tools/openshift/digdag.dc.json',
+                    'params':[
+                            'NAME':"digdag",
+                            'VERSION':"${app.deployment.version}",
+                            'NAMESPACE':"${vars.deployment.namespace}",
+                            'SUFFIX': "${vars.deployment.suffix}",
+                            'SCHEDULER_PVC_SIZE':"${vars.SCHEDULER_PVC_SIZE}",
+                            'ENVIRONMENT_NAME':"${app.deployment.env.name}",
+                            'KEYCLOAK_DISCOVERY_URL':"${vars.keycloak.known_config_url}",
+                            'APPLICATION_DOMAIN': "${vars.modules.'digdag'.HOST}",
+                            'CPU_REQUEST':"${vars.resources.digdag.cpu_request}",
+                            'CPU_LIMIT':"${vars.resources.digdag.cpu_limit}",
+                            'MEMORY_REQUEST':"${vars.resources.digdag.memory_request}",
+                            'MEMORY_LIMIT':"${vars.resources.digdag.memory_limit}"
+                    ]
                 ]
         ]
     }
@@ -253,8 +270,10 @@ app {
 environments {
     'dev' {
         vars {
-            DB_PVC_SIZE = '1Gi'
+            DB_PVC_SIZE = '5Gi'
             DOCUMENT_PVC_SIZE = '1Gi'
+            SCHEDULER_PVC_SIZE = '2Gi'
+
             LOG_PVC_SIZE = '1Gi'
             git {
                 changeId = "${opt.'pr'}"
@@ -307,16 +326,22 @@ environments {
                     replica_max = 1
                 }
                 postgres {
-                    cpu_request = "50m"
-                    cpu_limit = "100m"
-                    memory_request = "256Mi"
-                    memory_limit = "512Mi"
+                    cpu_request = "200m"
+                    cpu_limit = "1"
+                    memory_request = "1.5Gi"
+                    memory_limit = "4Gi"
                 }
                 redis {
                     cpu_request = "10m"
                     cpu_limit = "20m"
                     memory_request = "16Mi"
                     memory_limit = "32Mi"
+                }
+                digdag {
+                    cpu_request = "100m"
+                    cpu_limit = "200m"
+                    memory_request = "512Mi"
+                    memory_limit = "1Gi"
                 }
             }
             deployment {
@@ -365,6 +390,10 @@ environments {
                 'mds-redis' {
                     HOST = "http://mds-redis${vars.deployment.suffix}"
                 }
+                'digdag' {
+                    HOST = "mds-digdag-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
+                }
+
             }
         }
     }

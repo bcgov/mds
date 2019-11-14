@@ -89,3 +89,22 @@ export const fetchImportedNoticeOfWorkApplication = (applicationGuid) => (dispat
     .catch(() => dispatch(error(reducerTypes.GET_IMPORTED_NOTICE_OF_WORK_APPLICATION)))
     .finally(() => dispatch(hideLoading()));
 };
+
+export const fetchOriginalNoticeOfWorkApplication = (applicationGuid) => (dispatch) => {
+  dispatch(request(reducerTypes.GET_ORIGINAL_NOTICE_OF_WORK_APPLICATION));
+  dispatch(showLoading());
+  return CustomAxios()
+    .get(
+      `${ENVIRONMENT.apiUrl}${API.NOTICE_OF_WORK_IMPORTED_APPLICATION(
+        applicationGuid
+      )}?original=True`,
+      createRequestHeader()
+    )
+    .then((response) => {
+      dispatch(success(reducerTypes.GET_ORIGINAL_NOTICE_OF_WORK_APPLICATION));
+      dispatch(noticeOfWorkActions.storeOriginalNoticeOfWorkApplication(response.data));
+      return response;
+    })
+    .catch(() => dispatch(error(reducerTypes.GET_ORIGINAL_NOTICE_OF_WORK_APPLICATION)))
+    .finally(() => dispatch(hideLoading()));
+};
