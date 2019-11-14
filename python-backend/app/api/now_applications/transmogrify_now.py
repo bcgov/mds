@@ -14,6 +14,7 @@ unit_type_map = {
     None: None
 }
 
+
 def code_lookup(model, description, code_column_name):
     if description:
         row = model.query.filter_by(description=description).first()
@@ -129,6 +130,7 @@ def _transmogrify_camp_activities(now_app, now_sub, mms_now_sub):
 
     return
 
+
 def _transmogrify_cut_lines_polarization_survey(now_app, now_sub, mms_now_sub):
     cutlinesreclamation = mms_now_sub.cutlinesreclamation or now_sub.cutlinesreclamation
     cutlinesreclamationcost = mms_now_sub.cutlinesreclamationcost or now_sub.cutlinesreclamationcost
@@ -142,6 +144,7 @@ def _transmogrify_cut_lines_polarization_survey(now_app, now_sub, mms_now_sub):
             reclamation_cost=cutlinesreclamationcost,
             total_disturbed_area=cutlinesexplgriddisturbedarea,
             total_disturbed_area_unit_type_code='HA')
+
         if cutlinesexplgridtotallinekms or cutlinesexplgridtimbervolume:
             clps_detial = app_models.CutLinesPolarizationSurveyDetail(
                 cut_line_length=cutlinesexplgridtotallinekms,
@@ -151,6 +154,7 @@ def _transmogrify_cut_lines_polarization_survey(now_app, now_sub, mms_now_sub):
         now_app.cut_lines_polarization_survey = clps
 
     return
+
 
 def _transmogrify_exploration_surface_drilling(now_app, now_sub, mms_now_sub):
     expsurfacedrillreclcorestorage = mms_now_sub.expsurfacedrillreclcorestorage or now_sub.expsurfacedrillreclcorestorage
@@ -180,6 +184,7 @@ def _transmogrify_exploration_surface_drilling(now_app, now_sub, mms_now_sub):
 
         now_app.exploration_surface_drilling = esd
     return
+
 
 def _transmogrify_mechanical_trenching(now_app, now_sub, mms_now_sub):
     mechtrenchingreclamation = mms_now_sub.mechtrenchingreclamation or now_sub.mechtrenchingreclamation
@@ -239,6 +244,7 @@ def _transmogrify_exploration_access(now_app, now_sub, mms_now_sub):
 
         now_app.exploration_access = exploration_access
 
+
 def _transmogrify_placer_operations(now_app, now_sub, mms_now_sub):
     placerundergroundoperations = now_sub.placerundergroundoperations
     placerhandoperations = now_sub.placerhandoperations
@@ -273,12 +279,8 @@ def _transmogrify_placer_operations(now_app, now_sub, mms_now_sub):
             etl_detail = app_models.ETLActivityDetail(placeractivityid=proposed.placeractivityid)
             proposed_detail._etl_activity_details.append(etl_detail)
 
-            proposed_xref = app_models.ActivitySummaryDetailXref(summary=placer, detail=proposed_detail, is_existing=False)
-            
-        if(len(mms_now_sub.existing_placer_activity) > 0):
-            existing_placer_activity = mms_now_sub.existing_placer_activity
-        else:
-            existing_placer_activity = now_sub.existing_placer_activity
+            proposed_xref = app_models.ActivitySummaryDetailXref(
+                summary=placer, detail=proposed_detail, is_existing=False)
 
         if (len(mms_now_sub.existing_placer_activity) > 0):
             existing_placer_activity = mms_now_sub.existing_placer_activity
@@ -315,6 +317,7 @@ def _transmogrify_placer_operations(now_app, now_sub, mms_now_sub):
         now_app.placer_operation = placer
     return
 
+
 def _transmogrify_settling_ponds(now_app, now_sub, mms_now_sub):
     pondsreclamation = mms_now_sub.pondsreclamation or now_sub.pondsreclamation
     pondsreclamationcost = mms_now_sub.pondsreclamationcost or now_sub.pondsreclamationcost
@@ -348,12 +351,8 @@ def _transmogrify_settling_ponds(now_app, now_sub, mms_now_sub):
             etl_detail = app_models.ETLActivityDetail(settlingpondid=proposed.settlingpondid)
             proposed_detail._etl_activity_details.append(etl_detail)
 
-            proposed_xref = app_models.ActivitySummaryDetailXref(summary=settling_pond, detail=proposed_detail, is_existing=False)
-            
-        if(len(mms_now_sub.existing_settling_pond) > 0):
-            existing_settling_pond = mms_now_sub.existing_settling_pond
-        else:
-            existing_settling_pond = now_sub.existing_settling_pond
+            proposed_xref = app_models.ActivitySummaryDetailXref(
+                summary=settling_pond, detail=proposed_detail, is_existing=False)
 
         existing_settling_pond = now_sub.existing_settling_pond
 
@@ -491,6 +490,7 @@ def _transmogrify_sand_and_gravel_activities(now_app, now_sub, mms_now_sub):
 
     return
 
+
 def _transmogrify_surface_bulk_sample(now_app, now_sub, mms_now_sub):
     surfacebulksampleprocmethods = now_sub.surfacebulksampleprocmethods
     surfacebulksamplereclsephandl = mms_now_sub.surfacebulksamplereclsephandl or now_sub.surfacebulksamplereclsephandl
@@ -526,6 +526,7 @@ def _transmogrify_surface_bulk_sample(now_app, now_sub, mms_now_sub):
             equipment = _transmogrify_equipment(e)
             now_app.surface_bulk_sample.equipment.append(equipment)
     return
+
 
 def _transmogrify_underground_exploration(now_app, now_sub, mms_now_sub):
     underexptotalore = now_sub.underexptotalore
@@ -603,64 +604,8 @@ def _transmogrify_underground_exploration(now_app, now_sub, mms_now_sub):
                     timber_volume=surface_uea.timbervolume,
                     underground_exploration_type_code='SUR'))
 
-            total_ore_amount=underexptotalore,
-            total_ore_unit_type_code=code_lookup(app_models.UnitType,unit_type_map[underexptotaloreunits], 'unit_type_code'),
-            total_waste_amount=underexptotalwaste,
-            total_waste_unit_type_code=code_lookup(app_models.UnitType,unit_type_map[underexptotalwasteunits],'unit_type_code')
-        )
-
-        if(len(mms_now_sub.under_exp_new_activity) > 0):
-            under_exp_new_activity = mms_now_sub.under_exp_new_activity
-        else:
-            under_exp_new_activity = now_sub.under_exp_new_activity
-    
-        for new_uea in under_exp_new_activity:
-            now_app.underground_exploration.details.append(app_models.UndergroundExplorationDetail(
-                activity_type_description=new_uea.type,
-                incline=new_uea.incline,
-                incline_unit_type_code=code_lookup(app_models.UnitType,unit_type_map[new_uea.inclineunits],'unit_type_code'),
-                quantity=new_uea.quantity,
-                length=new_uea.length,
-                width=new_uea.width,
-                height=new_uea.height,
-                underground_exploration_type_code='NEW'
-                )
-            )
-
-        if(len(mms_now_sub.under_exp_rehab_activity) > 0):
-            under_exp_rehab_activity = mms_now_sub.under_exp_rehab_activity
-        else:
-            under_exp_rehab_activity = now_sub.under_exp_rehab_activity
-
-        for rehab_uea in under_exp_rehab_activity:
-            now_app.underground_exploration.details.append(app_models.UndergroundExplorationDetail(
-                activity_type_description=rehab_uea.type,
-                incline=rehab_uea.incline,
-                incline_unit_type_code=code_lookup(app_models.UnitType,unit_type_map[rehab_uea.inclineunits],'unit_type_code'),
-                quantity=rehab_uea.quantity,
-                length=rehab_uea.length,
-                width=rehab_uea.width,
-                height=rehab_uea.height,
-                underground_exploration_type_code='RHB'
-                )
-            )
-
-        if(len(mms_now_sub.under_exp_surface_activity) > 0):
-            under_exp_surface_activity = mms_now_sub.under_exp_surface_activity
-        else:
-            under_exp_surface_activity = now_sub.under_exp_surface_activity
-
-        for surface_uea in under_exp_surface_activity:
-            now_app.underground_exploration.details.append(app_models.UndergroundExplorationDetail(
-                activity_type_description=surface_uea.type,
-                quantity=surface_uea.quantity,
-                disturbed_area=surface_uea.disturbedarea,
-                timber_volume=surface_uea.timbervolume,
-                underground_exploration_type_code='SUR'
-                )
-            )
-    
     return
+
 
 def _transmogrify_water_supply(now_app, now_sub, mms_now_sub):
     if now_sub.water_source_activity or mms_now_sub.water_source_activity:
