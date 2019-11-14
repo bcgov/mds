@@ -27,7 +27,7 @@ const { Step } = Steps;
 /**
  * @class NoticeOfWorkApplication- contains all information regarding a CORE notice of work application
  */
-
+/* eslint-disable */
 const propTypes = {
   noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
   originalNoticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
