@@ -261,3 +261,23 @@
 .ant-modal-body {
   min-height: 200px;
 }
+
+// SIDE MENU NAVIGATION
+.ant-anchor-wrapper {
+  background-color: $lightest-grey;
+  height: 100%;
+}
+.ant-anchor-link-active {
+  border-left: 10px solid $violet;
+}
+.ant-anchor-link-active > .ant-anchor-link-title {
+  font-weight: $bold;
+  text-decoration: none;
+}
+.ant-anchor-link-title {
+  text-decoration: none;
+}
+.ant-anchor-link {
+  border-bottom: 1px solid $light-grey;
+  padding: 7px;
+}

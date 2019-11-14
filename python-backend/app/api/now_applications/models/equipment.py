@@ -2,7 +2,7 @@ from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
 from sqlalchemy.ext.associationproxy import association_proxy
 
-from app.api.utils.models_mixins import Base
+from app.api.utils.models_mixins import AuditMixin, Base
 from app.extensions import db
 
 
@@ -13,6 +13,7 @@ class Equipment(AuditMixin, Base):
     description = db.Column(db.String)
     quantity = db.Column(db.Integer)
     capacity = db.Column(db.String)
+    _etl_equipment = db.relationship('ETLEquipment', load_on_pending=True)
 
     def __repr__(self):
         return '<Equipment %r>' % self.equipment_id

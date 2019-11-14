@@ -38,7 +38,7 @@ const mineReducer = (state = initialState, action) => {
     case actionTypes.STORE_MINE_NAME_LIST:
       return {
         ...state,
-        mineNameList: action.payload,
+        mineNameList: action.payload.mines,
       };
     case actionTypes.STORE_MINE_BASIC_INFO_LIST:
       return {

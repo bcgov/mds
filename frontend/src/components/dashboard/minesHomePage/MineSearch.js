@@ -120,7 +120,7 @@ export class MineSearch extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  mineNameList: getMineNames(state).mines,
+  mineNameList: getMineNames(state),
 });
 
 const mapDispatchToProps = (dispatch) =>

@@ -329,29 +329,31 @@ export const PARTY = {
   },
 };
 
-export const MINE_NAME_LIST = [
-  {
-    mine_guid: "fc72863d-83e8-46ba-90f9-87b0ed78823f",
-    mine_name: "New Mine",
-    mine_no: "BLAH6194",
-    longitude: "-119.6963833",
-    latitude: "51.4961750",
-  },
-  {
-    mine_guid: "89a65274-581d-4862-8630-99f5f7687089",
-    mine_name: "Mine Two",
-    mine_no: "BLAH0502",
-    longitude: "-119.6963833",
-    latitude: "51.4961750",
-  },
-  {
-    mine_guid: "75692b61-7ab9-406b-b1f5-8c9b857404ac",
-    mine_name: "Legit Mine",
-    mine_no: "BLAH6734",
-    longitude: "-119.6963833",
-    latitude: "51.4961750",
-  },
-];
+export const MINE_NAME_LIST = {
+  mines: [
+    {
+      mine_guid: "fc72863d-83e8-46ba-90f9-87b0ed78823f",
+      mine_name: "New Mine",
+      mine_no: "BLAH6194",
+      longitude: "-119.6963833",
+      latitude: "51.4961750",
+    },
+    {
+      mine_guid: "89a65274-581d-4862-8630-99f5f7687089",
+      mine_name: "Mine Two",
+      mine_no: "BLAH0502",
+      longitude: "-119.6963833",
+      latitude: "51.4961750",
+    },
+    {
+      mine_guid: "75692b61-7ab9-406b-b1f5-8c9b857404ac",
+      mine_name: "Legit Mine",
+      mine_no: "BLAH6734",
+      longitude: "-119.6963833",
+      latitude: "51.4961750",
+    },
+  ],
+};
 
 export const MINE_NO = "BLAH6666";
 
@@ -2396,6 +2398,8 @@ export const INCIDENT_STATUS_OPTIONS_HASH = {
   PRE: "Preliminary",
   FIN: "Final",
 };
+
+export const INCIDENT_CATEGORY_OPTIONS_HASH = {};
 
 export const INCIDENT_DETERMINATION = [
   {

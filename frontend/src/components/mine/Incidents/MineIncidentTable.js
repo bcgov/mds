@@ -11,11 +11,13 @@ import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrap
 import {
   getIncidentDeterminationHash,
   getIncidentStatusCodeHash,
+  getIncidentCategoryCodeHash,
   getHSRCMComplianceCodesHash,
 } from "@/selectors/staticContentSelectors";
 import {
   fetchMineIncidentDeterminationOptions,
   fetchMineIncidentStatusCodeOptions,
+  fetchMineIncidentCategoryCodeOptions,
 } from "@/actionCreators/staticContentActionCreator";
 import * as Permission from "@/constants/permissions";
 import { downloadFileFromDocumentManager } from "@/utils/actionlessNetworkCalls";
@@ -39,20 +41,24 @@ const propTypes = {
   sortDir: PropTypes.string,
   fetchMineIncidentDeterminationOptions: PropTypes.func,
   fetchMineIncidentStatusCodeOptions: PropTypes.func,
+  fetchMineIncidentCategoryCodeOptions: PropTypes.func,
   handleIncidentSearch: PropTypes.func,
   incidentDeterminationHash: PropTypes.objectOf(PropTypes.string),
   complianceCodesHash: PropTypes.objectOf(PropTypes.string),
   incidentStatusCodeHash: PropTypes.objectOf(PropTypes.string),
+  incidentCategoryCodeHash: PropTypes.objectOf(PropTypes.string),
   isPaginated: PropTypes.bool,
 };
 
 const defaultProps = {
   fetchMineIncidentDeterminationOptions: () => {},
   fetchMineIncidentStatusCodeOptions: () => {},
+  fetchMineIncidentCategoryCodeOptions: () => {},
   handleIncidentSearch: () => {},
   incidentDeterminationHash: {},
   complianceCodesHash: {},
   incidentStatusCodeHash: {},
+  incidentCategoryCodeHash: {},
   isDashboardView: false,
   sortField: null,
   sortDir: null,
@@ -99,6 +105,7 @@ export class MineIncidentTable extends Component {
   componentDidMount() {
     this.props.fetchMineIncidentDeterminationOptions();
     this.props.fetchMineIncidentStatusCodeOptions();
+    this.props.fetchMineIncidentCategoryCodeOptions();
   }
 
   transformRowData = (
@@ -345,7 +352,8 @@ export class MineIncidentTable extends Component {
             this.props.openMineIncidentModal,
             this.props.openViewMineIncidentModal,
             this.props.incidentDeterminationHash,
-            this.props.incidentStatusCodeHash
+            this.props.incidentStatusCodeHash,
+            this.props.incidentCategoryCodeHash
           )}
         />
       </TableLoadingWrapper>
@@ -359,6 +367,7 @@ MineIncidentTable.defaultProps = defaultProps;
 const mapStateToProps = (state) => ({
   incidentDeterminationHash: getIncidentDeterminationHash(state),
   incidentStatusCodeHash: getIncidentStatusCodeHash(state),
+  incidentCategoryCodeHash: getIncidentCategoryCodeHash(state),
   complianceCodesHash: getHSRCMComplianceCodesHash(state),
 });
 
@@ -367,6 +376,7 @@ const mapDispatchToProps = (dispatch) =>
     {
       fetchMineIncidentDeterminationOptions,
       fetchMineIncidentStatusCodeOptions,
+      fetchMineIncidentCategoryCodeOptions,
     },
     dispatch
   );

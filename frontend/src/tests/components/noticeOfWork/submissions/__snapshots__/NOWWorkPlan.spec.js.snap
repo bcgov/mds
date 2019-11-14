@@ -1,0 +1,583 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NOWWorkPlan renders properly 1`] = `
+<div
+  className="page__content--nested"
+>
+  <div>
+    <br />
+    <h3>
+      Summary of Reclamation
+    </h3>
+    <Divider />
+    <div
+      className="padding-large--sides"
+    >
+      <Row
+        className="padding-small"
+        gutter={16}
+      >
+        <Col
+          md={12}
+          xs={24}
+        >
+          <p
+            className="field-title"
+          >
+            Total merchantable timber volume
+          </p>
+        </Col>
+        <Col
+          md={12}
+          xs={24}
+        >
+          <p>
+            N/A
+          </p>
+        </Col>
+      </Row>
+      <br />
+      <withStore(Table)
+        align="left"
+        columns={
+          Array [
+            Object {
+              "dataIndex": "activity",
+              "key": "activity",
+              "render": [Function],
+              "title": "Activity",
+            },
+            Object {
+              "dataIndex": "effectedArea",
+              "key": "effectedArea",
+              "render": [Function],
+              "title": "Total Effected Area (ha)",
+            },
+            Object {
+              "dataIndex": "cost",
+              "key": "cost",
+              "render": [Function],
+              "title": "Estimated Cost of Reclamation",
+            },
+          ]
+        }
+        dataSource={
+          Array [
+            Object {
+              "activity": "Access Roads, trails, Helipads, Air Strips, Boat Ramps",
+              "cost": "0.00",
+              "effectedArea": "0.00",
+            },
+            Object {
+              "activity": "Camps, Buildings, Staging Area, Fuel/Lubricant Storage",
+              "cost": "0.00",
+              "effectedArea": "0.00",
+            },
+            Object {
+              "activity": "Exploration Surface Drilling",
+              "cost": "0.00",
+              "effectedArea": "0.00",
+            },
+            Object {
+              "activity": "Mechanical Trenching / Test Pits",
+              "cost": "0.00",
+              "effectedArea": "0.00",
+            },
+            Object {
+              "activity": "Settling Ponds",
+              "cost": "0.00",
+              "effectedArea": "0.00",
+            },
+            Object {
+              "activity": "Total:",
+              "cost": "N/A",
+              "effectedArea": "N/A",
+              "footer": true,
+            },
+          ]
+        }
+        locale={
+          Object {
+            "emptyText": "There is no reclamation data associated with this Notice of Work",
+          }
+        }
+        pagination={false}
+      />
+    </div>
+  </div>
+  <NOWActivities
+    noticeOfWork={
+      Object {
+        "anyotherinformation": null,
+        "applicant": Object {
+          "dayphonenumber": null,
+          "dayphonenumberext": null,
+          "email": null,
+          "faxnumber": null,
+          "ind_firstname": null,
+          "ind_lastname": null,
+          "ind_middlename": null,
+          "ind_phonenumber": null,
+          "mailingaddresscity": null,
+          "mailingaddresscountry": null,
+          "mailingaddressline1": null,
+          "mailingaddressline2": null,
+          "mailingaddresspostalzip": null,
+          "mailingaddressprovstate": null,
+          "org_bcfedincorpnumber": null,
+          "org_bcregnumber": null,
+          "org_contactname": null,
+          "org_doingbusinessas": null,
+          "org_hstregnumber": null,
+          "org_legalname": null,
+          "org_societynumber": null,
+          "type": null,
+        },
+        "applicantclientid": 42,
+        "application_guid": "89ce70bc-a34b-4ec6-aff0-704ba68c4606",
+        "applicationtype": null,
+        "archsitesaffected": null,
+        "bcexplosivespermitexpiry": null,
+        "bcexplosivespermitissued": null,
+        "bcexplosivespermitnumber": null,
+        "bldgdisturbedarea": null,
+        "bldgtimbervolume": null,
+        "campbuildstgetotaldistarea": null,
+        "campdisturbedarea": null,
+        "camptimbervolume": null,
+        "cbsfreclamation": null,
+        "cbsfreclamationcost": null,
+        "contacts": Array [
+          Object {
+            "contactcertificationid": null,
+            "contactcertificationtype": null,
+            "contacttype": null,
+            "dayphonenumber": null,
+            "dayphonenumberext": null,
+            "email": null,
+            "faxnumber": null,
+            "ind_firstname": null,
+            "ind_lastname": null,
+            "ind_middlename": null,
+            "ind_phonenumber": null,
+            "mailingaddresscity": null,
+            "mailingaddresscountry": null,
+            "mailingaddressline1": null,
+            "mailingaddressline2": null,
+            "mailingaddresspostalzip": null,
+            "mailingaddressprovstate": null,
+            "org_bcfedincorpnumber": null,
+            "org_bcregnumber": null,
+            "org_contactname": null,
+            "org_doingbusinessas": null,
+            "org_hstregnumber": null,
+            "org_legalname": null,
+            "org_societynumber": null,
+            "seq_no": null,
+            "type": null,
+          },
+          Object {
+            "contactcertificationid": null,
+            "contactcertificationtype": null,
+            "contacttype": null,
+            "dayphonenumber": null,
+            "dayphonenumberext": null,
+            "email": null,
+            "faxnumber": null,
+            "ind_firstname": null,
+            "ind_lastname": null,
+            "ind_middlename": null,
+            "ind_phonenumber": null,
+            "mailingaddresscity": null,
+            "mailingaddresscountry": null,
+            "mailingaddressline1": null,
+            "mailingaddressline2": null,
+            "mailingaddresspostalzip": null,
+            "mailingaddressprovstate": null,
+            "org_bcfedincorpnumber": null,
+            "org_bcregnumber": null,
+            "org_contactname": null,
+            "org_doingbusinessas": null,
+            "org_hstregnumber": null,
+            "org_legalname": null,
+            "org_societynumber": null,
+            "seq_no": null,
+            "type": null,
+          },
+        ],
+        "crowngrantlotnumbers": null,
+        "cutlinesexplgriddisturbedarea": null,
+        "cutlinesexplgridtimbervolume": null,
+        "cutlinesexplgridtotallinekms": null,
+        "cutlinesreclamation": null,
+        "cutlinesreclamationcost": null,
+        "descexplorationprogram": null,
+        "documents": Array [
+          Object {
+            "description": null,
+            "documenttype": null,
+            "documenturl": null,
+            "filename": null,
+          },
+          Object {
+            "description": null,
+            "documenttype": null,
+            "documenturl": null,
+            "filename": null,
+          },
+        ],
+        "existing_placer_activity": Array [
+          Object {
+            "depth": null,
+            "disturbedarea": null,
+            "length": null,
+            "quantity": null,
+            "timbervolume": null,
+            "type": null,
+            "width": null,
+          },
+        ],
+        "existing_settling_pond": Array [
+          Object {
+            "constructionmethod": null,
+            "depth": null,
+            "disturbedarea": null,
+            "length": null,
+            "pondid": null,
+            "timbervolume": null,
+            "watersource": null,
+            "width": null,
+          },
+        ],
+        "exp_access_activity": Array [],
+        "exp_surface_drill_activity": Array [],
+        "expaccessreclamation": null,
+        "expaccessreclamationcost": null,
+        "expaccesstotaldistarea": null,
+        "expsurfacedrillreclamation": null,
+        "expsurfacedrillreclamationcost": null,
+        "expsurfacedrillreclcorestorage": null,
+        "expsurfacedrilltotaldistarea": null,
+        "firstaidcertlevel": null,
+        "firstaidequipmentonsite": null,
+        "freeusepermit": null,
+        "fuellubstored": null,
+        "fuellubstoremethodbarrel": null,
+        "fuellubstoremethodbulk": null,
+        "fuellubstoreonsite": null,
+        "isblastselect": null,
+        "istimberselect": null,
+        "landcommunitywatershed": null,
+        "landlegaldesc": null,
+        "landprivate": null,
+        "latitude": null,
+        "licencetocut": null,
+        "longitude": null,
+        "mech_trenching_activity": Array [],
+        "mechtrenchingreclamation": null,
+        "mechtrenchingreclamationcost": null,
+        "mechtrenchingtotaldistarea": null,
+        "messagecreateddate": null,
+        "mine_guid": "20af050d-2a1a-4870-9016-eacabaa68f02",
+        "mine_name": null,
+        "mine_region": "NW",
+        "minenumber": null,
+        "nameofproperty": null,
+        "noticeofworktype": null,
+        "nrsosapplicationid": null,
+        "placerhandoperations": null,
+        "placerreclamation": null,
+        "placerreclamationarea": null,
+        "placerreclamationcost": null,
+        "placertotaldistarea": null,
+        "placerundergroundoperations": null,
+        "pondsdischargedtoenv": null,
+        "pondsexfiltratedtoground": null,
+        "pondsreclamation": null,
+        "pondsreclamationcost": null,
+        "pondsrecycled": null,
+        "pondstotaldistarea": null,
+        "pondswastewatertreatfacility": null,
+        "processed": null,
+        "processeddate": null,
+        "proposed_placer_activity": Array [
+          Object {
+            "depth": null,
+            "disturbedarea": null,
+            "length": null,
+            "quantity": null,
+            "timbervolume": null,
+            "type": null,
+            "width": null,
+          },
+        ],
+        "proposed_settling_pond": Array [
+          Object {
+            "constructionmethod": null,
+            "depth": null,
+            "disturbedarea": null,
+            "length": null,
+            "pondid": null,
+            "timbervolume": null,
+            "watersource": null,
+            "width": null,
+          },
+        ],
+        "proposedenddate": null,
+        "proposedstartdate": null,
+        "receiveddate": null,
+        "reclareaexist": null,
+        "reclarearecl": null,
+        "reclareasubtotal": null,
+        "reclareatotal": null,
+        "reclcostexist": null,
+        "reclcostrecl": null,
+        "reclcostsubtotal": null,
+        "reclcosttotal": null,
+        "sand_grv_qry_activity": Array [
+          Object {
+            "disturbedarea": null,
+            "timbervolume": null,
+            "type": null,
+          },
+        ],
+        "sandgravelquarryoperations": null,
+        "sandgrvqryalrpermitnumber": null,
+        "sandgrvqryannualextrest": null,
+        "sandgrvqryannualextrestunits": null,
+        "sandgrvqrydepthoverburden": null,
+        "sandgrvqrydepthtopsoil": null,
+        "sandgrvqryendlanduse": null,
+        "sandgrvqrygrdwtravgdepth": null,
+        "sandgrvqrygrdwtrexistingareas": null,
+        "sandgrvqrygrdwtrmeasprotect": null,
+        "sandgrvqrygrdwtrother": null,
+        "sandgrvqrygrdwtrtestpits": null,
+        "sandgrvqrygrdwtrtestwells": null,
+        "sandgrvqryimpactdistres": null,
+        "sandgrvqryimpactdistwater": null,
+        "sandgrvqryimpactminvisual": null,
+        "sandgrvqryimpactnoise": null,
+        "sandgrvqryimpactprevtdust": null,
+        "sandgrvqryimpactprvtaccess": null,
+        "sandgrvqrylandusezoning": null,
+        "sandgrvqrylocalgovsoilrembylaw": null,
+        "sandgrvqryofficialcommplan": null,
+        "sandgrvqryreclamation": null,
+        "sandgrvqryreclamationbackfill": null,
+        "sandgrvqryreclamationcost": null,
+        "sandgrvqrystabilizemeasures": null,
+        "sandgrvqrytotaldistarea": null,
+        "sandgrvqrytotalexistdistarea": null,
+        "sandgrvqrytotalmineres": null,
+        "sandgrvqrytotalmineresunits": null,
+        "sandgrvqrywithinaglandres": null,
+        "sitedirections": null,
+        "status": null,
+        "stgedisturbedarea": null,
+        "stgetimbervolume": null,
+        "storeexplosivesonsite": null,
+        "submitteddate": null,
+        "submitter": Object {
+          "dayphonenumber": null,
+          "dayphonenumberext": null,
+          "email": "someone@submitter.com",
+          "faxnumber": null,
+          "ind_firstname": null,
+          "ind_lastname": null,
+          "ind_middlename": null,
+          "ind_phonenumber": null,
+          "mailingaddresscity": null,
+          "mailingaddresscountry": null,
+          "mailingaddressline1": null,
+          "mailingaddressline2": null,
+          "mailingaddresspostalzip": null,
+          "mailingaddressprovstate": null,
+          "org_bcfedincorpnumber": null,
+          "org_bcregnumber": null,
+          "org_contactname": null,
+          "org_doingbusinessas": null,
+          "org_hstregnumber": null,
+          "org_legalname": null,
+          "org_societynumber": null,
+          "type": null,
+        },
+        "submitterclientid": 43,
+        "surface_bulk_sample_activity": Array [
+          Object {
+            "disturbedarea": 1.11,
+            "timbervolume": null,
+            "type": null,
+          },
+        ],
+        "surfacebulksampleprocmethods": null,
+        "surfacebulksamplereclamation": null,
+        "surfacebulksamplereclcost": null,
+        "surfacebulksamplerecldrainmiti": null,
+        "surfacebulksamplereclsephandl": null,
+        "surfacebulksampletotaldistarea": null,
+        "tenurenumbers": null,
+        "timbertotalvolume": null,
+        "trackingnumber": null,
+        "typeofapplication": null,
+        "typeofpermit": null,
+        "under_exp_new_activity": Array [
+          Object {
+            "height": null,
+            "incline": null,
+            "inclineunits": null,
+            "length": null,
+            "quantity": 400,
+            "seq_no": null,
+            "type": null,
+            "width": null,
+          },
+        ],
+        "under_exp_rehab_activity": Array [
+          Object {
+            "height": null,
+            "incline": null,
+            "inclineunits": null,
+            "length": null,
+            "quantity": 711,
+            "seq_no": null,
+            "type": null,
+            "width": null,
+          },
+        ],
+        "under_exp_surface_activity": Array [
+          Object {
+            "disturbedarea": null,
+            "quantity": 810,
+            "timbervolume": null,
+            "type": null,
+          },
+        ],
+        "underexpreclamation": null,
+        "underexpreclamationcost": null,
+        "underexptotaldistarea": null,
+        "underexptotalore": null,
+        "underexptotaloreunits": null,
+        "underexptotalwaste": null,
+        "underexptotalwasteunits": null,
+        "vfcbcapplicationurl": null,
+        "water_source_activity": Array [
+          Object {
+            "estimateratewater": null,
+            "locationwaterintake": null,
+            "pumpsizeinwater": null,
+            "seq_no": null,
+            "sourcewatersupply": null,
+            "type": null,
+            "useofwater": null,
+          },
+        ],
+        "yearroundseasonal": null,
+      }
+    }
+  />
+  <div>
+    <br />
+    <h3>
+      Documents
+    </h3>
+    <Divider />
+    <div
+      className="padding-large--sides"
+    >
+      <withStore(Table)
+        align="left"
+        columns={
+          Array [
+            Object {
+              "dataIndex": "filename",
+              "key": "filename",
+              "render": [Function],
+              "title": "File name",
+            },
+            Object {
+              "dataIndex": "category",
+              "key": "category",
+              "render": [Function],
+              "title": "Category",
+            },
+            Object {
+              "dataIndex": "description",
+              "key": "description",
+              "render": [Function],
+              "title": "Proponent Description",
+            },
+          ]
+        }
+        dataSource={
+          Array [
+            Object {
+              "application_guid": "89ce70bc-a34b-4ec6-aff0-704ba68c4606",
+              "category": "N/A",
+              "description": "N/A",
+              "filename": "N/A",
+              "key": undefined,
+              "url": null,
+            },
+            Object {
+              "application_guid": "89ce70bc-a34b-4ec6-aff0-704ba68c4606",
+              "category": "N/A",
+              "description": "N/A",
+              "filename": "N/A",
+              "key": undefined,
+              "url": null,
+            },
+          ]
+        }
+        locale={
+          Object {
+            "emptyText": "There are no documents associated with this Notice of Work",
+          }
+        }
+        pagination={false}
+      />
+    </div>
+    <br />
+    <h3>
+      Spatial Files
+    </h3>
+    <Divider />
+    <div
+      className="padding-large--sides"
+    >
+      <withStore(Table)
+        align="left"
+        columns={
+          Array [
+            Object {
+              "dataIndex": "filename",
+              "key": "filename",
+              "render": [Function],
+              "title": "File name",
+            },
+            Object {
+              "dataIndex": "category",
+              "key": "category",
+              "render": [Function],
+              "title": "Category",
+            },
+            Object {
+              "dataIndex": "description",
+              "key": "description",
+              "render": [Function],
+              "title": "Proponent Description",
+            },
+          ]
+        }
+        dataSource={Array []}
+        locale={
+          Object {
+            "emptyText": "There are no spacial files associated with this Notice of Work",
+          }
+        }
+        pagination={false}
+      />
+    </div>
+  </div>
+</div>
+`;

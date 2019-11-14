@@ -282,7 +282,7 @@ export class AddPartyModal extends Component {
 const mapStateToProps = (state) => ({
   addPartyFormValues: getFormValues(FORM.ADD_FULL_PARTY)(state) || {},
   addRolesFormValues: getFormValues(FORM.ADD_ROLES)(state) || {},
-  mineNameList: getMineNames(state).mines,
+  mineNameList: getMineNames(state),
   addPartyForm: state.form[FORM.ADD_FULL_PARTY],
 });
 const mapDispatchToProps = (dispatch) =>

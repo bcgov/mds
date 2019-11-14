@@ -1,7 +1,147 @@
+// mineHeader on NoW verification step of NoticeOfWorkApplication
+.mine-content__card {
+  @include flex;
+  height: 275px;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  margin-top: $default-margin-lg;
+
+  @include large {
+    display: block;
+    height: 100%;
+  }
+
+  &-right {
+    flex: 2;
+    padding: $default-padding-lg;
+  }
+
+  &-left {
+    flex: 1;
+
+    @include large {
+      top: 0;
+      height: 200px;
+    }
+
+    &--footer {
+      padding: $default-padding-md;
+      background: $default-overlay;
+      position: relative;
+      height: 80px;
+      top: -80px;
+      opacity: 0.9;
+      @include large {
+        padding: $default-padding-lg;
+      }
+    }
+  }
+}
+
 .contact-card {
   min-height: 300px;
 
   @include tablet {
     min-height: inherit;
   }
+
+  &--long {
+    min-height: 100px;
+  }
+}
+
+.scroll-wrapper {
+  .circle {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-top: 10px;
+    &.purple {
+      background-color: $violet;
+    }
+    &.grey {
+      background-color: $non-textual-grey;
+    }
+  }
+  &--border {
+    margin-left: 14px;
+    height: 100%;
+    border-left: 1px solid $non-textual-grey;
+  }
+
+  &--title {
+    border-bottom: 1px solid $non-textual-grey;
+    width: 60vw;
+
+    h3 {
+      margin-left: 20px;
+      margin-bottom: 10px;
+    }
+  }
+
+  &--body {
+    padding: 20px;
+  }
+}
+
+.steps {
+  &--header {
+    padding: 30px;
+    &.fixed-scroll {
+      padding: 10px;
+      position: fixed;
+      width: 100vw;
+      top: -40px;
+      background-color: white;
+      z-index: 120;
+    }
+  }
+
+  &--content {
+    // adding white space to bottom, so scroll-to will take the element to the top of the page always
+    margin-bottom: 500px;
+
+    &.with-fixed-top {
+      margin-top: 80px;
+    }
+  }
+}
+
+.fixed-top {
+  position: relative;
+}
+
+.side-menu {
+  margin-top: 10px;
+  width: 240px;
+  position: absolute;
+  left: 0;
+
+  ul {
+    list-style: none;
+  }
+
+  &--content {
+    position: relative;
+    padding-right: 20px;
+    left: 250px;
+    width: calc(100vw - 250px);
+
+    @include tablet {
+      position: inherit;
+      width: 100%;
+    }
+  }
+
+  @include tablet {
+    display: none;
+  }
+}
+
+.ant-input[disabled] {
+  border: none;
+  color: rgba(0, 0, 0, 0.65);
+}
+
+.ant-radio-disabled + span {
+  color: rgba(0, 0, 0, 0.65);
 }

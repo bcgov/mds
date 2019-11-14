@@ -487,15 +487,6 @@ VALUES
 	('EVT', 'Reports that are related to an event that occured', true, 'system-mds', 'system-mds')
 on conflict do nothing;
 
-INSERT INTO equipment_assignment_type
-(equipment_assignment_type_code, description, active_ind, create_user, update_user)
-VALUES
-	('MCT', 'Mechanical Trenching', true, 'system-mds', 'system-mds'),
-	('SBS', 'Surface Bulk Sample', true, 'system-mds', 'system-mds'),
-	('SGQ', 'Sand Gravel Quarry', true, 'system-mds', 'system-mds'),
-	('PMT', 'Placer', true, 'system-mds', 'system-mds')
-on conflict do nothing;
-
 INSERT INTO unit_type
 (unit_type_code, description, active_ind, create_user, update_user)
 VALUES
@@ -524,6 +515,15 @@ VALUES
 	('ACC', 'Accepted', true, 'system-mds', 'system-mds'),
 	('WDN', 'Withdrawn', true, 'system-mds', 'system-mds'),
 	('UNR', 'Under Review', true, 'system-mds', 'system-mds')
+on conflict do nothing;
+
+INSERT INTO mine_incident_category
+(mine_incident_category_code, description, active_ind, create_user, update_user)
+VALUES
+	('H&S', 'Health and Safety', true, 'system-mds', 'system-mds'),
+	('GTC', 'Geotechnical', true, 'system-mds', 'system-mds'),
+	('ENV', 'Environmental', true, 'system-mds', 'system-mds'),
+    ('SPI', 'Spill', true, 'system-mds', 'system-mds')
 on conflict do nothing;
 
 INSERT INTO activity_type (

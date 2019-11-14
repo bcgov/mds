@@ -12,10 +12,8 @@ exports[`MineResultsTable renders properly 1`] = `
       }
     }
   />
-  <Table
+  <withStore(Table)
     align="left"
-    bordered={false}
-    childrenColumnName="children"
     className="nested-table padding-large--bottom"
     columns={
       Array [
@@ -115,20 +113,8 @@ exports[`MineResultsTable renders properly 1`] = `
         },
       ]
     }
-    indentSize={20}
-    loading={false}
-    locale={Object {}}
     pagination={false}
-    rowKey="key"
     showHeader={false}
-    size="default"
-    sortDirections={
-      Array [
-        "ascend",
-        "descend",
-      ]
-    }
-    useFixedHeader={false}
   />
 </div>
 `;

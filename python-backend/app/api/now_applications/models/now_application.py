@@ -35,12 +35,30 @@ class NOWApplication(Base, AuditMixin):
     description_of_land = db.Column(db.String)
     proposed_start_date = db.Column(db.Date)
     proposed_end_date = db.Column(db.Date)
+    directions_to_site = db.Column(db.String)
 
-    exploration_access_acts = db.relationship('ExplorationAccess', lazy='joined')
-    exploration_surface_drilling_acts = db.relationship('ExplorationSurfaceDrilling', lazy='joined')
+    blasting = db.relationship('BlastingOperation', lazy='selectin', uselist=False)
+    state_of_land = db.relationship('StateOfLand', lazy='selectin', uselist=False)
 
-    #placer_operations = db.relationship(
-    #    'PlacerOperation', lazy='select', secondary='now_application_place_xref')
+    # Activities
+    camps = db.relationship('Camp', lazy='selectin', uselist=False)
+    cut_lines_polarization_survey = db.relationship(
+        'CutLinesPolarizationSurvey', lazy='selectin', uselist=False)
+    exploration_access = db.relationship('ExplorationAccess', lazy='selectin', uselist=False)
+    exploration_surface_drilling = db.relationship(
+        'ExplorationSurfaceDrilling', lazy='selectin', uselist=False)
+    mechanical_trenching = db.relationship('MechanicalTrenching', lazy='selectin', uselist=False)
+    placer_operation = db.relationship('PlacerOperation', lazy='selectin', uselist=False)
+    sand_and_gravel = db.relationship('SandGravelQuarryOperation', lazy='selectin', uselist=False)
+    settling_pond = db.relationship('SettlingPond', lazy='selectin', uselist=False)
+    surface_bulk_sample = db.relationship('SurfaceBulkSample', lazy='selectin', uselist=False)
+    underground_exploration = db.relationship(
+        'UndergroundExploration', lazy='selectin', uselist=False)
+    water_supply = db.relationship('WaterSupply', lazy='selectin', uselist=False)
 
     def __repr__(self):
-        return '<Application %r>' % self.application_guid
+        return '<NOWApplication %r>' % self.now_application_guid
+
+    @classmethod
+    def find_by_application_guid(cls, _id):
+        return cls.query.filter_by(now_application_guid=_id).first()

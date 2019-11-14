@@ -12,3 +12,9 @@ class ActivitySummaryDetailXref(Base):
         db.Integer, db.ForeignKey('activity_summary.activity_summary_id'), primary_key=True)
     activity_detail_id = db.Column(
         db.Integer, db.ForeignKey('activity_detail.activity_detail_id'), primary_key=True)
+    is_existing = db.Column(db.Boolean)
+
+    summary = db.relationship(
+        'ActivitySummaryBase', backref="summary_associations", load_on_pending=True)
+    detail = db.relationship(
+        'ActivityDetailBase', backref="detail_associations", load_on_pending=True)

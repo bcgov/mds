@@ -9,7 +9,8 @@ exports[`RenderAutoSizeField renders properly 1`] = `
   validateStatus=""
 >
   <TextArea
-    autosize={true}
+    autoSize={true}
+    disabled={false}
     id={1}
     placeholder=""
   />

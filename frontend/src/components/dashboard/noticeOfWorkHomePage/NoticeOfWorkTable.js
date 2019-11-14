@@ -9,10 +9,12 @@ import * as router from "@/constants/routes";
 import NullScreen from "@/components/common/NullScreen";
 import TableLoadingWrapper from "@/components/common/wrappers/TableLoadingWrapper";
 import { formatDate, optionsFilterAdapter, getTableHeaders } from "@/utils/helpers";
+import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 
 /**
  * @class NoticeOfWorkTable - paginated list of notice of work applications
  */
+
 const propTypes = {
   handleSearch: PropTypes.func.isRequired,
   noticeOfWorkApplications: PropTypes.arrayOf(CustomPropTypes.nowApplication),
@@ -135,7 +137,7 @@ export class NoticeOfWorkTable extends Component {
       dataIndex: "nowNum",
       sortField: "trackingnumber",
       render: (text, record) => (
-        <Link to={router.NOTICE_OF_WORK_APPLICATION.dynamicRoute(record.key)}>{text}</Link>
+        <Link to={router.NOTICE_OF_WORK_INITIAL_APPLICATION.dynamicRoute(record.key)}>{text}</Link>
       ),
       sorter: true,
       ...this.filterProperties("NoW No.", "trackingnumber"),
@@ -172,6 +174,18 @@ export class NoticeOfWorkTable extends Component {
       sortField: "receiveddate",
       render: (text) => <div title="Import Date">{text}</div>,
       sorter: true,
+    },
+    {
+      title: "",
+      dataIndex: "verify",
+      width: 150,
+      render: (text, record) => (
+        <div title="">
+          <AuthorizationWrapper inDevelopment>
+            <Link to={router.NOTICE_OF_WORK_APPLICATION.dynamicRoute(record.key)}>Verify</Link>
+          </AuthorizationWrapper>
+        </div>
+      ),
     },
   ];
 
