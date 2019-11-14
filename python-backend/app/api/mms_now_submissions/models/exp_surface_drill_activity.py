@@ -9,7 +9,6 @@ class MMSExpSurfaceDrillActivity(Base):
     messageid = db.Column(db.Integer, db.ForeignKey('mms_now_submissions.application.messageid'))
     mms_cid = db.Column(db.Integer)
     type = db.Column(db.String)
-    length = db.Column(db.Numeric(14, 2))
     disturbedarea = db.Column(db.Numeric(14, 2))
     timbervolume = db.Column(db.Numeric(14, 2))
 
