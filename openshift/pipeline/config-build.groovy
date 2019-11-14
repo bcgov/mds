@@ -34,95 +34,95 @@ app {
         timeoutInSeconds = 60*40 // 40 minutes
         templates = [
                 [
-                    'file':'openshift/_python36.bc.json',
+                    'file':'openshift/templates/_python36.bc.json',
                     'params':[
-                            'NAME':"mds-python-backend",
+                            'NAME':"mds-core-api",
                             'SUFFIX': "${app.build.suffix}",
                             'VERSION':"${app.build.version}",
-                            'SOURCE_CONTEXT_DIR': "python-backend",
+                            'SOURCE_CONTEXT_DIR': "services/core-api",
                             'SOURCE_REPOSITORY_URL': "${app.git.uri}"
                     ]
                 ],
                 [
-                    'file':'microservices/document_manager/openshift/_python36_docman.bc.json',
+                    'file':'openshift/templates/docman.bc.json',
                     'params':[
-                            'NAME':"mds-docman-backend",
+                            'NAME':"mds-docman-api",
                             'SUFFIX': "${app.build.suffix}",
                             'VERSION':"${app.build.version}",
-                            'SOURCE_CONTEXT_DIR': "microservices/document_manager/backend",
+                            'SOURCE_CONTEXT_DIR': "services/document_manager/backend",
                             'SOURCE_REPOSITORY_URL': "${app.git.uri}"
                     ]
                 ],
                 [
-                    'file':'microservices/now_etls/python36.bc.json',
+                    'file':'openshift/templates/tasks/now_etl.bc.json',
                     'params':[
                             'NAME':"mds-now-etl",
                             'SUFFIX': "${app.build.suffix}",
                             'VERSION':"${app.build.version}",
-                            'SOURCE_CONTEXT_DIR': "microservices/now_etls",
+                            'SOURCE_CONTEXT_DIR': "tasks/now_etls",
                             'SOURCE_REPOSITORY_URL': "${app.git.uri}"
                     ]
                 ],
                 [
-                    'file':'microservices/nris_api/openshift/_python36_oracle.bc.json',
+                    'file':'openshift/templates/nris-api/_python36_oracle.bc.json',
                     'params':[
-                            'NAME':"mds-nris-backend",
+                            'NAME':"mds-nris-api",
                             'SUFFIX': "${app.build.suffix}",
                             'VERSION':"${app.build.version}",
-                            'SOURCE_CONTEXT_DIR': "microservices/nris_api/backend",
+                            'SOURCE_CONTEXT_DIR': "services/nris_api/backend",
                             'SOURCE_REPOSITORY_URL': "${app.git.uri}",
                     ]
                 ],
                 [
-                    'file':'openshift/_nginx.bc.json',
+                    'file':'openshift/templates/_nginx.bc.json',
                     'params':[
                             'NAME':"mds-nginx",
                             'SUFFIX': "${app.build.suffix}",
                             'VERSION':"${app.build.version}",
-                            'SOURCE_CONTEXT_DIR': "nginx",
+                            'SOURCE_CONTEXT_DIR': "services/nginx",
                             'SOURCE_REPOSITORY_URL': "${app.git.uri}"
                     ]
                 ],
                 [
-                    'file':'openshift/bddstack.bc.json',
+                    'file':'openshift/templates/bddstack.bc.json',
                     'params':[
                             'NAME':"bdd-stack",
                             'SUFFIX': "${app.build.suffix}",
                             'VERSION':"${app.build.version}",
-                            'SOURCE_CONTEXT_DIR': "functional-tests",
+                            'SOURCE_CONTEXT_DIR': "tests/functional-tests",
                             'SOURCE_REPOSITORY_URL': "${app.git.uri}"
                     ]
                 ],
                 [
-                        'file':'openshift/_nodejs.bc.json',
+                        'file':'openshift/templates/_nodejs.bc.json',
                         'params':[
-                            'NAME':"mds-frontend",
+                            'NAME':"mds-core-web",
                             'SUFFIX': "${app.build.suffix}",
                             'APPLICATION_SUFFIX': "-${app.build.env.id}",
                             'BASE_PATH': "/${app.git.changeId}",
                             'VERSION':"${app.build.version}",
-                            'SOURCE_CONTEXT_DIR': "frontend",
-                            'DOCKER_IMAGE_DIRECTORY': "docker-images/nodejs-10",
+                            'SOURCE_CONTEXT_DIR': "services/core-web",
+                            'DOCKER_IMAGE_DIRECTORY': "openshift/docker-images/nodejs-10",
                             'SOURCE_REPOSITORY_URL': "${app.git.uri}",
                             'NODE_ENV': "production"
                         ]
                 ],
                 [
-                        'file':'openshift/_nodejs.bc.json',
+                        'file':'openshift/templates/_nodejs.bc.json',
                         'params':[
-                            'NAME':"mds-frontend-public",
+                            'NAME':"mds-minespace-web",
                             'SUFFIX': "${app.build.suffix}",
                             'APPLICATION_SUFFIX': "-${app.build.env.id}",
                             'BASE_PATH': "/${app.git.changeId}",
                             'VERSION':"${app.build.version}",
-                            'SOURCE_CONTEXT_DIR': "frontend-public",
-                            'DOCKER_IMAGE_DIRECTORY': "docker-images/nodejs-10-public",
+                            'SOURCE_CONTEXT_DIR': "services/minespace-web",
+                            'DOCKER_IMAGE_DIRECTORY': "openshift/docker-images/nodejs-10-public",
                             'SOURCE_REPOSITORY_URL': "${app.git.uri}",
                             'NODE_ENV': "production"
                         ]
                 ],
                 [
-                    'file':'openshift/postgresql.bc.json',
+                    'file':'openshift/templates/postgresql.bc.json',
                     'params':[
                         'NAME':"mds-postgresql",
                         'SUFFIX': "${app.build.suffix}",
@@ -130,7 +130,7 @@ app {
                     ]
                 ],
                 [
-                    'file':'openshift/dbbackup.bc.json',
+                    'file':'openshift/templates/dbbackup.bc.json',
                     'params':[
                         'NAME':"mds-database-backup",
                         'SUFFIX': "${app.build.suffix}",
@@ -138,7 +138,7 @@ app {
                     ]
                 ],
                 [
-                    'file':'openshift/flyway.bc.json',
+                    'file':'openshift/templates/flyway.bc.json',
                     'params':[
                             'NAME':"mds-flyway-migration",
                             'SUFFIX': "${app.build.suffix}",
@@ -148,42 +148,42 @@ app {
                     ]
                 ],
                 [
-                    'file':'openshift/tools/schemaspy.bc.json',
+                    'file':'openshift/templates/tools/schemaspy.bc.json',
                     'params':[
                             'NAME':"schemaspy",
                             'SUFFIX': "${app.build.suffix}",
                             'VERSION':"${app.build.version}",
-                            'SOURCE_CONTEXT_DIR': "docker-images/schemaspy",
+                            'SOURCE_CONTEXT_DIR': "openshift/docker-images/schemaspy",
                             'SOURCE_REPOSITORY_URL': "${app.git.uri}"
                     ]
                 ],
                 [
-                    'file':'openshift/tools/metabase.bc.json',
+                    'file':'openshift/templates/tools/metabase.bc.json',
                     'params':[
                             'NAME':"metabase",
                             'SUFFIX': "${app.build.suffix}",
                             'VERSION':"${app.build.version}",
-                            'SOURCE_CONTEXT_DIR': "docker-images/metabase",
+                            'SOURCE_CONTEXT_DIR': "openshift/docker-images/metabase",
                             'SOURCE_REPOSITORY_URL': "${app.git.uri}"
                     ]
                 ],
                 [
-                    'file':'tools/openshift/digdag.bc.json',
+                    'file':'openshift/templates/digdag/digdag.bc.json',
                     'params':[
                             'NAME':"digdag",
                             'SUFFIX': "${app.build.suffix}",
                             'VERSION':"${app.build.version}",
-                            'SOURCE_CONTEXT_DIR': "tools/digdag",
+                            'SOURCE_CONTEXT_DIR': "services/digdag",
                             'SOURCE_REPOSITORY_URL': "${app.git.uri}"
                     ]
                 ],
                 [
-                    'file':'openshift/tools/logstash.bc.json',
+                    'file':'openshift/templates/tools/logstash.bc.json',
                     'params':[
                             'NAME':"mds-logstash",
                             'SUFFIX': "${app.build.suffix}",
                             'VERSION':"${app.build.version}",
-                            'SOURCE_CONTEXT_DIR': "elastic/logstash",
+                            'SOURCE_CONTEXT_DIR': "services/elastic/logstash",
                             'SOURCE_REPOSITORY_URL': "${app.git.uri}"
                     ]
                 ]

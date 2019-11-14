@@ -52,7 +52,7 @@ app {
         timeoutInSeconds = 60*20 // 20 minutes
         templates = [
                 [
-                    'file':'openshift/postgresql.dc.json',
+                    'file':'openshift/templates/postgresql.dc.json',
                     'params':[
                             'NAME':"mds-postgresql",
                             'SUFFIX':"${vars.deployment.suffix}",
@@ -69,7 +69,7 @@ app {
                     ]
                 ],
                 [
-                    'file':'openshift/redis.dc.json',
+                    'file':'openshift/templates/redis.dc.json',
                     'params':[
                             'NAME':"mds-redis",
                             'DATABASE_SERVICE_NAME':"mds-redis${vars.deployment.suffix}",
@@ -81,9 +81,9 @@ app {
                     ]
                 ],
                 [
-                    'file':'openshift/_nodejs.dc.json',
+                    'file':'openshift/templates/_nodejs.dc.json',
                     'params':[
-                            'NAME':"mds-frontend",
+                            'NAME':"mds-core-web",
                             'SUFFIX': "${vars.deployment.suffix}",
                             'APPLICATION_SUFFIX': "${vars.deployment.application_suffix}",
                             'TAG_NAME':"${app.deployment.version}",
@@ -94,8 +94,8 @@ app {
                             'MEMORY_LIMIT':"${vars.resources.node.memory_limit}",
                             'REPLICA_MIN':"${vars.resources.node.replica_min}",
                             'REPLICA_MAX':"${vars.resources.node.replica_max}",
-                            'APPLICATION_DOMAIN': "${vars.modules.'mds-frontend'.HOST}",
-                            'BASE_PATH': "${vars.modules.'mds-frontend'.PATH}",
+                            'APPLICATION_DOMAIN': "${vars.modules.'mds-core-web'.HOST}",
+                            'BASE_PATH': "${vars.modules.'mds-core-web'.PATH}",
                             'NODE_ENV': "${vars.deployment.node_env}",
                             'FN_LAYER_URL': "${vars.deployment.fn_layer_url}",
                             'KEYCLOAK_RESOURCE': "${vars.keycloak.resource}",
@@ -107,9 +107,9 @@ app {
                     ]
                 ],
                 [
-                    'file':'openshift/_nodejs.dc.json',
+                    'file':'openshift/templates/_nodejs.dc.json',
                     'params':[
-                            'NAME':"mds-frontend-public",
+                            'NAME':"mds-minespace-web",
                             'SUFFIX': "${vars.deployment.suffix}",
                             'APPLICATION_SUFFIX': "${vars.deployment.application_suffix}",
                             'TAG_NAME':"${app.deployment.version}",
@@ -120,8 +120,8 @@ app {
                             'MEMORY_LIMIT':"${vars.resources.node.memory_limit}",
                             'REPLICA_MIN':"${vars.resources.node.replica_min}",
                             'REPLICA_MAX':"${vars.resources.node.replica_max}",
-                            'APPLICATION_DOMAIN': "${vars.modules.'mds-frontend-public'.HOST}",
-                            'BASE_PATH': "${vars.modules.'mds-frontend-public'.PATH}",
+                            'APPLICATION_DOMAIN': "${vars.modules.'mds-minespace-web'.HOST}",
+                            'BASE_PATH': "${vars.modules.'mds-minespace-web'.PATH}",
                             'NODE_ENV': "${vars.deployment.node_env}",
                             'KEYCLOAK_RESOURCE': "${vars.keycloak.resource}",
                             'KEYCLOAK_CLIENT_ID': "${vars.keycloak.clientId_minespace}",
@@ -134,7 +134,7 @@ app {
                     ]
                 ],
                 [
-                    'file':'openshift/_nginx.dc.json',
+                    'file':'openshift/templates/_nginx.dc.json',
                     'params':[
                             'NAME':"mds-nginx",
                             'SUFFIX': "${vars.deployment.suffix}",
@@ -150,17 +150,17 @@ app {
                             'MINESPACE_DOMAIN': "${vars.modules.'mds-nginx'.HOST_MINESPACE}",
                             'ROUTE': "${vars.modules.'mds-nginx'.ROUTE}",
                             'PATH_PREFIX': "${vars.modules.'mds-nginx'.PATH}",
-                            'CORE_SERVICE_URL': "${vars.modules.'mds-frontend'.HOST}",
-                            'NRIS_API_SERVICE_URL': "${vars.modules.'mds-nris-backend'.HOST}",
+                            'CORE_SERVICE_URL': "${vars.modules.'mds-core-web'.HOST}",
+                            'NRIS_API_SERVICE_URL': "${vars.modules.'mds-nris-api'.HOST}",
                             'DOCUMENT_MANAGER_SERVICE_URL': "${vars.modules.'mds-docman-backend'.HOST}",
-                            'MINESPACE_SERVICE_URL': "${vars.modules.'mds-frontend-public'.HOST}",
-                            'API_SERVICE_URL': "${vars.modules.'mds-python-backend'.HOST}",
+                            'MINESPACE_SERVICE_URL': "${vars.modules.'mds-minespace-web'.HOST}",
+                            'API_SERVICE_URL': "${vars.modules.'mds-core-api'.HOST}",
                     ]
                 ],
                 [
-                    'file':'openshift/_python36.dc.json',
+                    'file':'openshift/templates/_python36.dc.json',
                     'params':[
-                            'NAME':"mds-python-backend",
+                            'NAME':"mds-core-api",
                             'FLYWAY_NAME':"mds-flyway-migration-client",
                             'SUFFIX': "${vars.deployment.suffix}",
                             'VERSION':"${app.deployment.version}",
@@ -174,8 +174,8 @@ app {
                             'REPLICA_MAX':"${vars.resources.python.replica_max}",
                             'JWT_OIDC_WELL_KNOWN_CONFIG': "${vars.keycloak.known_config_url}",
                             'JWT_OIDC_AUDIENCE': "${vars.keycloak.clientId_core}",
-                            'APPLICATION_DOMAIN': "${vars.modules.'mds-python-backend'.HOST}",
-                            'BASE_PATH': "${vars.modules.'mds-python-backend'.PATH}",
+                            'APPLICATION_DOMAIN': "${vars.modules.'mds-core-api'.HOST}",
+                            'BASE_PATH': "${vars.modules.'mds-core-api'.PATH}",
                             'DB_CONFIG_NAME': "mds-postgresql${vars.deployment.suffix}",
                             'DB_NRIS_CONFIG_NAME': "mds-postgresql${vars.deployment.suffix}-nris",
                             'REDIS_CONFIG_NAME': "mds-redis${vars.deployment.suffix}",
@@ -184,12 +184,12 @@ app {
                             'ELASTIC_SERVICE_NAME': "${vars.deployment.elastic_service_name}",
                             'ENVIRONMENT_NAME':"${app.deployment.env.name}",
                             'API_URL': "https://${vars.modules.'mds-nginx'.HOST_CORE}${vars.modules.'mds-nginx'.PATH}/api",
-                            'NRIS_API_URL': "${vars.modules.'mds-nris-backend'.HOST}${vars.modules.'mds-nris-backend'.PATH}",
-                            'DOCUMENT_MANAGER_URL': "${vars.modules.'mds-docman-backend'.HOST}${vars.modules.'mds-docman-backend'.PATH}",
+                            'NRIS_API_URL': "${vars.modules.'mds-nris-api'.HOST}${vars.modules.'mds-nris-api'.PATH}",
+                            'DOCUMENT_MANAGER_URL': "${vars.modules.'mds-docman-api'.HOST}${vars.modules.'mds-docman-api'.PATH}",
                     ]
                 ],
                 [
-                    'file':'microservices/document_manager/openshift/_python36_docman.dc.json',
+                    'file':'microservices/document_manager/openshift/templates/_python36_docman.dc.json',
                     'params':[
                             'NAME':"mds-docman-backend",
                             'SUFFIX': "${vars.deployment.suffix}",
@@ -219,7 +219,7 @@ app {
                     ]
                 ],
                 [
-                    'file':'microservices/nris_api/openshift/_python36_oracle.dc.json',
+                    'file':'microservices/nris_api/openshift/templates/_python36_oracle.dc.json',
                     'params':[
                             'NAME':"mds-nris-backend",
                             'SUFFIX': "${vars.deployment.suffix}",
