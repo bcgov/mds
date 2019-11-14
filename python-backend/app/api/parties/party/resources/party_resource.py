@@ -94,16 +94,14 @@ class PartyResource(Resource, UserMixin):
         description='Fetch a party by guid', params={
             'party_guid': 'guid of the party to fetch',
         })
-    #@requires_role_view_all
-    #@api.marshal_with(PARTY, code=200)
+    @requires_role_view_all
+    @api.marshal_with(PARTY, code=200)
     def get(self, party_guid):
         party = Party.find_by_party_guid(party_guid)
-        schema = Party.__marshmallow__()
-
         if not party:
             raise NotFound('Party not found')
 
-        return schema.dumps(party), 200
+        return party
 
     @api.expect(parser)
     @api.doc(
