@@ -2,7 +2,7 @@ CREATE TABLE IF NOT EXISTS now_application_identity  (
   now_application_guid uuid DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
   now_application_id integer references now_application(now_application_id),
   messageid integer,
-  mms_cid integer
+  mms_cid bigint
 );
 
 ALTER TABLE now_application_identity OWNER TO mds;

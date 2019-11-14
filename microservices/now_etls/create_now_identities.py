@@ -9,6 +9,7 @@ def create_and_update_now_identities(connection):
     with connection:
         cursor = connection.cursor()
 
+        print('INSERT_NOW_SUBMISSION_IDENTITIES')
         INSERT_NOW_SUBMISSION_IDENTITIES = """
         INSERT INTO public.now_application_identity
         SELECT gen_random_uuid(), null, messageid, null, 'now-etl-mds', now(), 'now-etl-mds', now(), (SELECT mine_guid FROM public.mine WHERE public.mine.mine_no=now_submissions.application.minenumber) as mine_guid
@@ -18,6 +19,7 @@ def create_and_update_now_identities(connection):
         """
         cursor.execute(INSERT_NOW_SUBMISSION_IDENTITIES)
 
+        print('UPDATE_MMS_CIDS_ON_EXISTING_NOW_IDENTITIES')
         UPDATE_MMS_CIDS_ON_EXISTING_NOW_IDENTITIES = """
         UPDATE public.now_application_identity SET mms_cid=(SELECT mms_cid FROM mms_now_submissions.application where messageid=now_application_identity.messageid)
         FROM mms_now_submissions.application
@@ -25,6 +27,7 @@ def create_and_update_now_identities(connection):
         """
         cursor.execute(UPDATE_MMS_CIDS_ON_EXISTING_NOW_IDENTITIES)
 
+        print('INSERT_NOW_IDENTITIES_FOR_MMS_ONLY_APPLICATIONS')
         INSERT_NOW_IDENTITIES_FOR_MMS_ONLY_APPLICATIONS = """
         INSERT INTO public.now_application_identity
         SELECT gen_random_uuid(), null, messageid, null, 'now-etl-mds', now(), 'now-etl-mds', now(), (SELECT mine_guid FROM public.mine WHERE public.mine.mine_no=mms_now_submissions.application.minenumber) as mine_guid
