@@ -373,3 +373,23 @@ export const NOTICE_OF_WORK_LIST = {
   total: 25,
   total_pages: 5,
 };
+
+export const NOTICE_OF_WORK_ACTIVITY_TYPES = {
+  records: [
+    {
+      activity_type_code: "cut_lines_polarization_survey",
+      description: "Cut Lines and Induced Polarization Survey",
+    },
+    { activity_type_code: "water_supply", description: "Water Supply" },
+    { activity_type_code: "water_supply", description: "Water Supply" },
+  ],
+};
+
+export const DROPDOWN_NOTICE_OF_WORK_ACTIVITY_TYPES = [
+  {
+    value: "cut_lines_polarization_survey",
+    label: "Cut Lines and Induced Polarization Survey",
+  },
+  { value: "water_supply", label: "Water Supply" },
+  { value: "water_supply", label: "Water Supply" },
+];
