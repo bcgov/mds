@@ -177,7 +177,7 @@ export const importedNOWApplication = shape({
 
   contacts: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)),
   blasting: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)),
-  state_of_land: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)),
+  state_of_land: PropTypes.objectOf(PropTypes.any),
   camps: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)),
   cut_lines_polarization_survey: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)),
   exploration_access: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)),

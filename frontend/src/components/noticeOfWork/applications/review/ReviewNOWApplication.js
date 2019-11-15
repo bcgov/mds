@@ -13,6 +13,7 @@ import ScrollContentWrapper from "@/components/common/wrappers/ScrollContentWrap
 import ReviewActivities from "@/components/noticeOfWork/applications/review/ReviewActivities";
 import NullScreen from "@/components/common/NullScreen";
 import Address from "@/components/common/Address";
+import ReclamationSummary from "./activities/ReclamationSummary";
 
 /**
  * @constant ReviewNOWApplication renders edit/view for the NoW Application review step
@@ -26,6 +27,9 @@ const propTypes = {
   // mine is being passed into field Component, thus ReviewNOWApplication.js assumes it isn't being used
   // eslint-disable-next-line
   mine: CustomPropTypes.mine.isRequired,
+  // reclamationSummary is being passed into field Component, thus ReviewNOWApplication.js assumes it isn't being used
+  // eslint-disable-next-line
+  reclamationSummary: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.strings)).isRequired,
 };
 
 export const ReviewNOWApplication = (props) => {
@@ -413,6 +417,8 @@ export const ReviewNOWApplication = (props) => {
           <Field id="" name="" component={RenderField} disabled={props.isViewMode} />
         </Col>
       </Row>
+      <br />
+      <ReclamationSummary summary={props.reclamationSummary} />
     </div>
   );
 

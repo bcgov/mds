@@ -11,7 +11,11 @@ import {
   fetchOriginalNoticeOfWorkApplication,
 } from "@/actionCreators/noticeOfWorkActionCreator";
 import { fetchMineRecordById } from "@/actionCreators/mineActionCreator";
-import { getNoticeOfWork, getOriginalNoticeOfWork } from "@/selectors/noticeOfWorkSelectors";
+import {
+  getNoticeOfWork,
+  getOriginalNoticeOfWork,
+  getNOWReclamationSummary,
+} from "@/selectors/noticeOfWorkSelectors";
 import { getMines } from "@/selectors/mineSelectors";
 import VerifyNOWMine from "@/components/noticeOfWork/applications/verification/VerifyNOWMine";
 import * as Strings from "@/constants/strings";
@@ -27,7 +31,7 @@ const { Step } = Steps;
 /**
  * @class NoticeOfWorkApplication- contains all information regarding a CORE notice of work application
  */
-/* eslint-disable */
+
 const propTypes = {
   noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
   originalNoticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
@@ -45,6 +49,7 @@ const propTypes = {
   // eslint-disable-next-line
   formValues: CustomPropTypes.nowApplication.isRequired,
   mines: PropTypes.arrayOf(CustomPropTypes.mine).isRequired,
+  reclamationSummary: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.strings)).isRequired,
 };
 
 export class NoticeOfWorkApplication extends Component {
@@ -141,6 +146,7 @@ export class NoticeOfWorkApplication extends Component {
     return (
       <ReviewNOWApplication
         mine={mine}
+        reclamationSummary={this.props.reclamationSummary}
         isViewMode={this.state.isViewMode}
         initialValues={
           this.state.showOriginalValues ? this.props.originalNoticeOfWork : this.props.noticeOfWork
@@ -160,9 +166,7 @@ export class NoticeOfWorkApplication extends Component {
       },
       {
         title: "Technical Review",
-        content: (
-          <LoadingWrapper condition={this.state.isNoWLoaded}>{this.renderStepTwo()}</LoadingWrapper>
-        ),
+        content: this.renderStepTwo(),
       },
       {
         title: "Referral / Consultation",
@@ -212,7 +216,9 @@ export class NoticeOfWorkApplication extends Component {
               <Step key={item.title} title={item.title} />
             ))}
           </Steps>
-          {this.state.currentStep === 1 && <NOWSideMenu />}
+          <LoadingWrapper condition={this.state.isNoWLoaded}>
+            {this.state.currentStep === 1 && <NOWSideMenu />}
+          </LoadingWrapper>
         </div>
         <div className={this.state.fixedTop ? "steps--content with-fixed-top" : "steps--content"}>
           {steps[this.state.currentStep].content}
@@ -227,6 +233,7 @@ const mapStateToProps = (state) => ({
   originalNoticeOfWork: getOriginalNoticeOfWork(state),
   formValues: getFormValues(FORM.EDIT_NOTICE_OF_WORK)(state),
   mines: getMines(state),
+  reclamationSummary: getNOWReclamationSummary(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
