@@ -237,3 +237,10 @@ NOW_APPLICATION_MODEL = api.model(
         'underground_exploration': fields.Nested(NOW_APPLICATION_UNDERGROUND_EXPLORATION, skip_none=True),
         'water_supply': fields.Nested(NOW_APPLICATION_WATER_SUPPLY, skip_none=True)
     })
+
+
+
+    NOW_ACTIVITY_TYPE_CODE = api.model('ActivityType', {
+        'activity_type_code': fields.String,
+        'description': fields.String
+    })
