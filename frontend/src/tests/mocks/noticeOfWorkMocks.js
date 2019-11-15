@@ -374,6 +374,38 @@ export const NOTICE_OF_WORK_LIST = {
   total_pages: 5,
 };
 
+export const IMPORTED_NOTICE_OF_WORK = {
+  now_application_id: "",
+  now_application_guid: "",
+  mine_guid: "",
+  now_message_id: 47284,
+  now_tracking_number: 47284,
+  notice_of_work_type_code: "",
+  submitted_date: "",
+  received_date: "",
+  latitude: "",
+  longitude: "",
+  property_name: "",
+  tenure_number: "",
+  description_of_land: "",
+  proposed_start_date: "",
+  proposed_end_date: "",
+  contacts: [],
+  blasting: [],
+  state_of_land: {},
+  camps: [],
+  cut_lines_polarization_survey: [],
+  exploration_access: [],
+  exploration_surface_drilling: [],
+  mechanical_trenching: [],
+  sand_and_gravel: [],
+  settling_pond: [],
+  surface_bulk_sample: [],
+  underground_exploration: [],
+  water_supply: [],
+  placer_operation: [],
+};
+
 export const NOTICE_OF_WORK_ACTIVITY_TYPES = {
   records: [
     {
