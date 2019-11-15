@@ -1,10 +1,11 @@
 import uuid
-import simplejson
 from datetime import datetime
 from decimal import Decimal
 from flask import request, current_app
 from flask_restplus import Resource
 from werkzeug.exceptions import BadRequest, InternalServerError, NotFound
+
+from sqlalchemy.inspection import inspect
 
 from app.extensions import api, db
 from app.api.utils.access_decorators import requires_role_view_all, requires_role_edit_party, requires_any_of, VIEW_ALL, requires_role_mine_edit
@@ -35,6 +36,7 @@ class NOWApplicationResource(Resource, UserMixin):
         if not application:
             raise NotFound('NOWApplication not found')
 
-        application = NOWApplicationSchema().load(request.json)
+        application.deep_update_from_dict(application, request.json.items())
+
         application.save()
         return NOWApplicationSchema().dump(application)

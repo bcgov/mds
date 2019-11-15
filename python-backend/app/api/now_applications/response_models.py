@@ -1,14 +1,15 @@
 import uuid
-import simplejson
 import sqlalchemy as sa
+from sqlalchemy.inspection import inspect
 from decimal import Decimal
 from app.extensions import api, db               #
-                                                 #from flask_restplus import fields
-from marshmallow_sqlalchemy import ModelSchema, ModelConverter
-from marshmallow import fields
-from geoalchemy2 import Geometry
-                                                 #from flask_restplus import fields
 
+#from flask_restplus import fields
+from marshmallow_sqlalchemy import ModelSchema, ModelConverter, field_for
+from marshmallow import fields, pre_load, post_dump
+from geoalchemy2 import Geometry
+#from flask_restplus import fields
+#from sqlalchemy_utils import
 from .models import *
 
 
@@ -24,163 +25,191 @@ class BaseMeta:
     exclude = ('create_user', 'create_timestamp', 'update_user', 'update_timestamp')
 
 
-class NOWApplicationCampDetailSchema(ModelSchema):
+class BaseModelSchema(ModelSchema):
+    pass
+    # @post_dump
+    # def strip_primary_keys(self, data, **kwargs):
+    #     for pk in inspect(self.Meta.model).primary_key:
+    #         del data[pk.name]
+    #         print('removing pk ' + pk.name, flush=True)
+    #     #for fk in inspect(self.Meta.model).foreign_keys:
+    #     #del data[fk.name]
+    #     #   print('removing fk ' + fk.name, flush=True)
+
+    #     return data
+
+
+class NOWApplicationCampDetailSchema(BaseModelSchema):
     class Meta(BaseMeta):
         model = CampDetail
 
-    activity_type_code = fields.String(dump_only=True)
+    def __init__():
+        exclude.append('now_application_id', 'now_application')
+
+    activity_type_code = fields.String(required=False)
 
 
-class NOWApplicationCampSchema(ModelSchema):
+class NOWApplicationCampSchema(BaseModelSchema):
     class Meta(BaseMeta):
         model = Camp
 
     details = fields.Nested(NOWApplicationCampDetailSchema, many=True)
 
 
-class NOWApplicationCutLinesPolarizationSurveyDetailSchema(ModelSchema):
+class NOWApplicationCutLinesPolarizationSurveyDetailSchema(BaseModelSchema):
     class Meta(BaseMeta):
         model = CutLinesPolarizationSurveyDetail
 
-    activity_type_code = fields.String(dump_only=True)
+    activity_type_code = fields.String(required=False)
 
 
-class NOWExplorationCutLinesPolarizationSurveySchema(ModelSchema):
+class NOWExplorationCutLinesPolarizationSurveySchema(BaseModelSchema):
     class Meta(BaseMeta):
         model = CutLinesPolarizationSurvey
 
     details = fields.Nested(NOWApplicationCutLinesPolarizationSurveyDetailSchema, many=True)
 
 
-class NOWApplicationExplorationSurfaceDrillingDetailSchema(ModelSchema):
+class NOWApplicationExplorationSurfaceDrillingDetailSchema(BaseModelSchema):
     class Meta(BaseMeta):
         model = ExplorationSurfaceDrillingDetail
 
-    activity_type_code = fields.String(dump_only=True)
+    activity_type_code = fields.String(required=False)
 
 
-class NOWApplicationExplorationSurfaceDrillingSchema(ModelSchema):
+class NOWApplicationExplorationSurfaceDrillingSchema(BaseModelSchema):
     class Meta(BaseMeta):
         model = ExplorationSurfaceDrilling
 
     details = fields.Nested(NOWApplicationExplorationSurfaceDrillingDetailSchema, many=True)
 
 
-class NOWApplicationExplorationAccessDetailSchema(ModelSchema):
+class NOWApplicationExplorationAccessDetailSchema(BaseModelSchema):
     class Meta(BaseMeta):
         model = ExplorationSurfaceDrillingDetail
 
-    activity_type_code = fields.String(dump_only=True)
+    activity_type_code = fields.String(required=False)
 
 
-class NOWApplicationExplorationAccessSchema(ModelSchema):
+class NOWApplicationExplorationAccessSchema(BaseModelSchema):
     class Meta(BaseMeta):
         model = ExplorationAccess
 
     details = fields.Nested(NOWApplicationExplorationAccessDetailSchema, many=True)
 
 
-class NOWApplicatioMechanicalTrenchingDetailSchema(ModelSchema):
+class NOWApplicatioMechanicalTrenchingDetailSchema(BaseModelSchema):
     class Meta(BaseMeta):
         model = MechanicalTrenchingDetail
 
-    activity_type_code = fields.String(dump_only=True)
+    activity_type_code = fields.String(required=False)
 
 
-class NOWApplicationMechanicalTrenchingSchema(ModelSchema):
+class NOWApplicationMechanicalTrenchingSchema(BaseModelSchema):
     class Meta(BaseMeta):
         model = MechanicalTrenching
 
     details = fields.Nested(NOWApplicatioMechanicalTrenchingDetailSchema, many=True)
 
 
-class NOWApplicationPlacerOperationDetailSchema(ModelSchema):
+class NOWApplicationPlacerOperationDetailSchema(BaseModelSchema):
     class Meta(BaseMeta):
         model = PlacerOperationDetail
 
-    activity_type_code = fields.String(dump_only=True)
+    activity_type_code = fields.String(required=False)
 
 
-class NOWApplicationPlacerOperationSchema(ModelSchema):
+class NOWApplicationPlacerOperationSchema(BaseModelSchema):
     class Meta(BaseMeta):
         model = PlacerOperation
 
     details = fields.Nested(NOWApplicationPlacerOperationDetailSchema, many=True)
 
 
-class NOWApplicationSandGravelQuarryOperationDetailSchema(ModelSchema):
+class NOWApplicationSandGravelQuarryOperationDetailSchema(BaseModelSchema):
     class Meta(BaseMeta):
         model = SandGravelQuarryOperationDetail
 
-    activity_type_code = fields.String(dump_only=True)
+    activity_type_code = fields.String(required=False)
 
 
-class NOWApplicationSandGravelQuarryOperationSchema(ModelSchema):
+class NOWApplicationSandGravelQuarryOperationSchema(BaseModelSchema):
     class Meta(BaseMeta):
         model = SandGravelQuarryOperation
 
     details = fields.Nested(NOWApplicationSandGravelQuarryOperationDetailSchema, many=True)
 
 
-class NOWApplicationSurfaceBulkSampleDetailSchema(ModelSchema):
+class NOWApplicationSurfaceBulkSampleDetailSchema(BaseModelSchema):
     class Meta(BaseMeta):
         model = SurfaceBulkSampleDetail
 
-    activity_type_code = fields.String(dump_only=True)
+    activity_type_code = fields.String(required=False)
 
 
-class NOWApplicationSurfaceBulkSampleSchema(ModelSchema):
+class NOWApplicationSurfaceBulkSampleSchema(BaseModelSchema):
     class Meta(BaseMeta):
         model = SurfaceBulkSample
 
     details = fields.Nested(NOWApplicationSurfaceBulkSampleDetailSchema, many=True)
 
 
-class NOWApplicationWaterSupplyDetailSchema(ModelSchema):
+class NOWApplicationWaterSupplyDetailSchema(BaseModelSchema):
     class Meta(BaseMeta):
         model = WaterSupplyDetail
 
-    activity_type_code = fields.String(dump_only=True)
+    activity_type_code = fields.String(required=False)
 
 
-class NOWApplicationWaterSupplySchema(ModelSchema):
+class NOWApplicationWaterSupplySchema(BaseModelSchema):
     class Meta(BaseMeta):
         model = WaterSupply
 
     details = fields.Nested(NOWApplicationWaterSupplyDetailSchema, many=True)
 
 
-class NOWApplicationSettlingPondDetailSchema(ModelSchema):
+class NOWApplicationSettlingPondDetailSchema(BaseModelSchema):
     class Meta(BaseMeta):
         model = SettlingPondDetail
 
-    activity_type_code = fields.String(dump_only=True)
+    activity_type_code = fields.String(required=False)
 
 
-class NOWApplicationSettlingPondSchema(ModelSchema):
+class NOWApplicationSettlingPondSchema(BaseModelSchema):
     class Meta(BaseMeta):
         model = SettlingPond
 
     details = fields.Nested(NOWApplicationSettlingPondDetailSchema, many=True)
 
 
-class NOWApplicationUndergroundExplorationDetailSchema(ModelSchema):
+class NOWApplicationUndergroundExplorationDetailSchema(BaseModelSchema):
     class Meta(BaseMeta):
         model = UndergroundExplorationDetail
 
-    activity_type_code = fields.String(dump_only=True)
+    activity_type_code = fields.String(required=False)
 
 
-class NOWApplicationUndergroundExplorationSchema(ModelSchema):
+class NOWApplicationUndergroundExplorationSchema(BaseModelSchema):
     class Meta(BaseMeta):
         model = UndergroundExploration
 
     details = fields.Nested(NOWApplicationUndergroundExplorationDetailSchema, many=True)
 
 
-class NOWApplicationSchema(ModelSchema):
+class NOWApplicationSchema(BaseModelSchema):
     class Meta(BaseMeta):
         model = NOWApplication
+
+    @pre_load
+    def remove_empty_related_models(self, data, **kwargs):
+        for key in ('camps', 'cut_lines_polarization_survey', 'exploration_surface_drilling',
+                    'exploration_access', 'mechanical_trenching', 'placer_operation',
+                    'sand_and_gravel', 'settling_pond', 'surface_bulk_sample',
+                    'underground_exploration', 'water_supply'):
+            if data[key] is None:
+                print('deleting falsy key ' + key, flush=True)
+                del data[key]
+        return data
 
     camps = fields.Nested(NOWApplicationCampSchema)
     cut_lines_polarization_survey = fields.Nested(NOWExplorationCutLinesPolarizationSurveySchema)
