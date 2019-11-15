@@ -4,7 +4,7 @@ from app.extensions import api
 from app.api.utils.access_decorators import requires_any_of, VIEW_ALL
 
 from app.api.utils.resources_mixins import UserMixin 
-from app.api.now_applications.models..activity_summary.activity_type import ActivityType
+from app.api.now_applications.models.activity_summary.activity_type import ActivityType
 from app.api.now_applications.response_models import NOW_ACTIVITY_TYPE_CODE
 
 

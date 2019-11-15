@@ -156,6 +156,7 @@ export const NOTICE_OF_WORK_APPLICATION_IMPORT = (applicationGuid) =>
   `/now-applications/${applicationGuid}/import`;
 export const NOTICE_OF_WORK_IMPORTED_APPLICATION = (applicationGuid) =>
   `/now-applications/${applicationGuid}`;
+export const NOTICE_OF_WORK_ACTIVITY_TYPE_OPTIONS = "/now-applications/activity-type-code";
 
 // Mine Party Appointments
 export const MINE_PARTY_APPOINTMENT_DOCUMENTS = (mineGuid, minePartyAppointmentGuid) =>

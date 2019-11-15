@@ -16,6 +16,7 @@ import {
   getOriginalNoticeOfWork,
   getNOWReclamationSummary,
 } from "@/selectors/noticeOfWorkSelectors";
+import { fetchNoticeOFWorkActivityTypeOptions } from "@/actionCreators/staticContentActionCreator";
 import { getMines } from "@/selectors/mineSelectors";
 import VerifyNOWMine from "@/components/noticeOfWork/applications/verification/VerifyNOWMine";
 import * as Strings from "@/constants/strings";
@@ -39,6 +40,7 @@ const propTypes = {
   fetchMineRecordById: PropTypes.func.isRequired,
   fetchImportedNoticeOfWorkApplication: PropTypes.func.isRequired,
   fetchOriginalNoticeOfWorkApplication: PropTypes.func.isRequired,
+  fetchNoticeOFWorkActivityTypeOptions: PropTypes.func.isRequired,
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
   match: PropTypes.shape({
     params: {
@@ -66,6 +68,7 @@ export class NoticeOfWorkApplication extends Component {
   componentDidMount() {
     const { id } = this.props.match.params;
     let currentStep = 0;
+    this.props.fetchNoticeOFWorkActivityTypeOptions();
     this.props.fetchImportedNoticeOfWorkApplication(id).then(({ data }) => {
       const associatedMineGuid = data.mine_guid ? data.mine_guid : "";
       this.props.fetchMineRecordById(associatedMineGuid).then(() => {
@@ -243,6 +246,7 @@ const mapDispatchToProps = (dispatch) =>
       fetchImportedNoticeOfWorkApplication,
       fetchOriginalNoticeOfWorkApplication,
       fetchMineRecordById,
+      fetchNoticeOFWorkActivityTypeOptions,
     },
     dispatch
   );

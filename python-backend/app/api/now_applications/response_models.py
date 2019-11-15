@@ -239,8 +239,10 @@ NOW_APPLICATION_MODEL = api.model(
     })
 
 
-
-    NOW_ACTIVITY_TYPE_CODE = api.model('ActivityType', {
+NOW_ACTIVITY_TYPE_CODE = api.model(
+    'ActivityType', 
+    {
         'activity_type_code': fields.String,
         'description': fields.String
-    })
+    }
+)

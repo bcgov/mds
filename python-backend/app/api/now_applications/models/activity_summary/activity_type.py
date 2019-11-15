@@ -13,3 +13,7 @@ class ActivityType(Base, AuditMixin):
 
     def __repr__(self):
         return '<ActivityType %r>' % self.activity_type_code
+
+    @classmethod
+    def active(cls):
+        return cls.query.filter_by(active_ind=True).all()

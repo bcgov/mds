@@ -30,7 +30,7 @@ export const ReclamationSummary = (props) => {
 
   return (
     <div>
-      <h3>ReclamationSummary</h3>
+      <h3>Reclamation Summary</h3>
       <Table
         align="left"
         pagination={false}
