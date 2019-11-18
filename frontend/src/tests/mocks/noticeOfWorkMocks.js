@@ -413,7 +413,6 @@ export const NOTICE_OF_WORK_ACTIVITY_TYPES = {
       description: "Cut Lines and Induced Polarization Survey",
     },
     { activity_type_code: "water_supply", description: "Water Supply" },
-    { activity_type_code: "water_supply", description: "Water Supply" },
   ],
 };
 
@@ -423,5 +422,17 @@ export const DROPDOWN_NOTICE_OF_WORK_ACTIVITY_TYPES = [
     label: "Cut Lines and Induced Polarization Survey",
   },
   { value: "water_supply", label: "Water Supply" },
-  { value: "water_supply", label: "Water Supply" },
+];
+
+export const RECLAMATION_SUMMARY = [
+  {
+    label: "Cut Lines and Induced Polarization Survey",
+    total: "0.00",
+    cost: "0.00",
+  },
+  {
+    label: "Water Supply",
+    total: "0.00",
+    cost: "0.00",
+  },
 ];

@@ -145,10 +145,8 @@ export class NoticeOfWorkApplication extends Component {
   };
 
   renderStepTwo = () => {
-    const mine = this.props.mines ? this.props.mines[this.state.associatedMineGuid] : {};
     return (
       <ReviewNOWApplication
-        mine={mine}
         reclamationSummary={this.props.reclamationSummary}
         isViewMode={this.state.isViewMode}
         initialValues={
