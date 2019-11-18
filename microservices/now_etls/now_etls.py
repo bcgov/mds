@@ -51,5 +51,5 @@ def etl_create_identities():
 if __name__ == '__main__':
 
     etl_now_submission_data()
-    # etl_mms_now_submission_data()
+    etl_mms_now_submission_data()
     etl_create_identities()
