@@ -21,8 +21,7 @@ class PermitAmendmentDocument(AuditMixin, Base):
     document_manager_guid = db.Column(UUID(as_uuid=True))
     active_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
 
-    permit_amendment = db.relationship(
-        'PermitAmendment', backref='related_documents', lazy='joined')
+    permit_amendment = db.relationship('PermitAmendment', lazy='joined')
 
     mine_name = association_proxy('permit_amendment', 'permit.mine.mine_name')
 
