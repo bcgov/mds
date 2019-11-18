@@ -27,7 +27,7 @@ export const NOWSideMenu = (props) => {
   };
 
   return (
-    <div className="side-menu">
+    <div>
       <Anchor affix={false} offsetTop={195} onChange={onChange}>
         <Link href="#application-info" title="Application Info" />
         <Link href="#contacts" title="Contacts" />

@@ -217,13 +217,19 @@ export class NoticeOfWorkApplication extends Component {
               <Step key={item.title} title={item.title} />
             ))}
           </Steps>
-          <LoadingWrapper condition={this.state.isNoWLoaded}>
-            {this.state.currentStep === 1 && <NOWSideMenu />}
-          </LoadingWrapper>
         </div>
-        <div className={this.state.fixedTop ? "steps--content with-fixed-top" : "steps--content"}>
-          {steps[this.state.currentStep].content}
-        </div>
+        <LoadingWrapper condition={this.state.isNoWLoaded}>
+          <div>
+            <div className={this.state.fixedTop ? "side-menu--fixed" : "side-menu"}>
+              {this.state.currentStep === 1 && <NOWSideMenu />}
+            </div>
+            <div
+              className={this.state.fixedTop ? "steps--content with-fixed-top" : "steps--content"}
+            >
+              {steps[this.state.currentStep].content}
+            </div>
+          </div>
+        </LoadingWrapper>
       </div>
     );
   }
