@@ -3,7 +3,7 @@ import { PropTypes } from "prop-types";
 import { Table } from "antd";
 
 const propTypes = {
-  summary: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)).isRequired,
+  summary: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
 };
 
 export const ReclamationSummary = (props) => {

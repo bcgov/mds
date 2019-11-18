@@ -393,17 +393,17 @@ export const IMPORTED_NOTICE_OF_WORK = {
   contacts: [],
   blasting: [],
   state_of_land: {},
-  camps: [],
-  cut_lines_polarization_survey: [],
-  exploration_access: [],
-  exploration_surface_drilling: [],
-  mechanical_trenching: [],
-  sand_and_gravel: [],
-  settling_pond: [],
-  surface_bulk_sample: [],
-  underground_exploration: [],
-  water_supply: [],
-  placer_operation: [],
+  camps: { details: [] },
+  cut_lines_polarization_survey: { details: [] },
+  exploration_access: { details: [] },
+  exploration_surface_drilling: { details: [] },
+  mechanical_trenching: { details: [] },
+  sand_and_gravel: { details: [] },
+  settling_pond: { details: [] },
+  surface_bulk_sample: { details: [] },
+  underground_exploration: { details: [] },
+  water_supply: { details: [] },
+  placer_operation: { details: [] },
 };
 
 export const NOTICE_OF_WORK_ACTIVITY_TYPES = {
@@ -434,5 +434,13 @@ export const RECLAMATION_SUMMARY = [
     label: "Water Supply",
     total: "0.00",
     cost: "0.00",
+  },
+];
+
+export const EQUIPMENT = [
+  {
+    capacity: "John Deere 690",
+    description: "Excavator",
+    quantity: 1,
   },
 ];

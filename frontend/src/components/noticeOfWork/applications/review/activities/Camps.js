@@ -9,7 +9,7 @@ import RenderRadioButtons from "@/components/common/RenderRadioButtons";
 
 const propTypes = {
   isViewMode: PropTypes.bool.isRequired,
-  initialValues: PropTypes.objectOf(PropTypes.string).isRequired,
+  initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 export const Camps = (props) => {

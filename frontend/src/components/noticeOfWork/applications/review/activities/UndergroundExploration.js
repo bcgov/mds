@@ -7,7 +7,7 @@ import RenderField from "@/components/common/RenderField";
 
 const propTypes = {
   isViewMode: PropTypes.bool.isRequired,
-  initialValues: PropTypes.objectOf(PropTypes.string).isRequired,
+  initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 export const UndergroundExploration = (props) => {

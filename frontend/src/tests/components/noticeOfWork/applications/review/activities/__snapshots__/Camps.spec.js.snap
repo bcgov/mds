@@ -1,0 +1,140 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Camps renders properly 1`] = `
+<div>
+  <withStore(Table)
+    align="left"
+    columns={
+      Array [
+        Object {
+          "dataIndex": "name",
+          "key": "name",
+          "render": [Function],
+          "title": "Name",
+        },
+        Object {
+          "dataIndex": "disturbedArea",
+          "key": "disturbedArea",
+          "render": [Function],
+          "title": "Disturbed Area (ha)",
+        },
+        Object {
+          "dataIndex": "timberVolume",
+          "key": "timberVolume",
+          "render": [Function],
+          "title": "Merchantable timber volume (m3)",
+        },
+      ]
+    }
+    dataSource={Array []}
+    locale={
+      Object {
+        "emptyText": "No data",
+      }
+    }
+    pagination={false}
+  />
+  <br />
+  <h4>
+    Fuel
+  </h4>
+  <Row
+    gutter={16}
+  >
+    <Col
+      md={12}
+      sm={24}
+    >
+      <div
+        className="field-title"
+      >
+        Do you propose to store fuel?**
+      </div>
+      <Field
+        component={[Function]}
+        disabled={true}
+        id="has_fuel_stored"
+        name="has_fuel_stored"
+      />
+    </Col>
+    <Col
+      md={12}
+      sm={24}
+    >
+      <div
+        className="field-title"
+      >
+        Storage Method**
+      </div>
+      <Row
+        gutter={16}
+      >
+        <Col
+          md={12}
+          sm={24}
+        >
+          <Field
+            component={[Function]}
+            disabled={true}
+            id="has_fuel_stored_in_bulk"
+            label="Bulk"
+            name="has_fuel_stored_in_bulk"
+          />
+        </Col>
+        <Col
+          md={12}
+          sm={24}
+        >
+          <Field
+            component={[Function]}
+            disabled={true}
+            id="has_fuel_stored_in_barrels"
+            label="Barrell"
+            name="has_fuel_stored_in_barrels"
+          />
+        </Col>
+      </Row>
+    </Col>
+  </Row>
+  <br />
+  <h4>
+    Reclamation Program
+  </h4>
+  <Row
+    gutter={16}
+  >
+    <Col
+      md={12}
+      sm={24}
+    >
+      <div
+        className="field-title"
+      >
+        Proposed reclamation and timing for this specific activity**
+      </div>
+      <Field
+        component={[Function]}
+        disabled={true}
+        id="reclamation_description"
+        name="reclamation_description"
+      />
+    </Col>
+    <Col
+      md={12}
+      sm={24}
+    >
+      <div
+        className="field-title"
+      >
+        Estimated Cost of reclamation activities described above**
+      </div>
+      <Field
+        component={[Function]}
+        disabled={true}
+        id="reclamation_cost"
+        name="reclamation_cost"
+      />
+    </Col>
+  </Row>
+</div>
+`;

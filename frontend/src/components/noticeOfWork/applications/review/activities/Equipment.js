@@ -4,7 +4,9 @@ import { Table } from "antd";
 import * as Strings from "@/constants/strings";
 
 const propTypes = {
-  equipment: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)),
+  equipment: PropTypes.arrayOf(
+    PropTypes.objectOf(PropTypes.oneOfType([PropTypes.string, PropTypes.number]))
+  ),
 };
 
 const defaultProps = {

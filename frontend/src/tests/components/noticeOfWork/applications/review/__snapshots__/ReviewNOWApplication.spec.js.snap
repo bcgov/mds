@@ -1,0 +1,1014 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ReviewNOWApplication renders properly 1`] = `
+<div>
+  <Form
+    colon={true}
+    hideRequiredMark={false}
+    layout="vertical"
+    onSubmit={[Function]}
+  >
+    <div
+      className="side-menu--content"
+    >
+      <h2>
+        General Information
+      </h2>
+      <Divider />
+      <withRouter(ScrollContentWrapper)
+        id="application-info"
+        title="Application Info"
+      >
+        <div>
+          <Row
+            gutter={16}
+          >
+            <Col
+              md={12}
+              sm={24}
+            >
+              <div
+                className="field-title"
+              >
+                Name of Property
+              </div>
+              <Field
+                component={[Function]}
+                disabled={true}
+                id="property_name"
+                name="property_name"
+              />
+            </Col>
+            <Col
+              md={12}
+              sm={24}
+            >
+              <div
+                className="field-title"
+              >
+                Permit Status**
+              </div>
+              <Field
+                component={[Function]}
+                disabled={true}
+                id="permit_status_code"
+                name="permit_status_code"
+              />
+            </Col>
+          </Row>
+          <Row
+            gutter={16}
+          >
+            <Col
+              md={12}
+              sm={24}
+            >
+              <div
+                className="field-title"
+              >
+                Mine Number
+              </div>
+              <Field
+                component={[Function]}
+                disabled={true}
+                id="mine_no"
+                name="mine_no"
+              />
+            </Col>
+            <Col
+              md={12}
+              sm={24}
+            >
+              <div
+                className="field-title"
+              >
+                Individual or Company/Organization?**
+              </div>
+              <Field
+                component={[Function]}
+                disabled={true}
+                id=""
+                name=""
+              />
+            </Col>
+          </Row>
+          <Row
+            gutter={16}
+          >
+            <Col
+              md={12}
+              sm={24}
+            >
+              <div
+                className="field-title"
+              >
+                Region
+              </div>
+              <Field
+                component={[Function]}
+                disabled={true}
+                id="mine_region"
+                name="mine_region"
+              />
+            </Col>
+            <Col
+              md={12}
+              sm={24}
+            >
+              <div
+                className="field-title"
+              >
+                Relationship to Individual or Company/Organization?**
+              </div>
+              <Field
+                component={[Function]}
+                disabled={true}
+                id=""
+                name=""
+              />
+            </Col>
+          </Row>
+          <Row
+            gutter={16}
+          >
+            <Col
+              md={12}
+              sm={24}
+            >
+              <div
+                className="field-title"
+              >
+                Lat
+              </div>
+              <Field
+                component={[Function]}
+                disabled={true}
+                id="latitude"
+                name="latitude"
+              />
+            </Col>
+            <Col
+              md={12}
+              sm={24}
+            >
+              <div
+                className="field-title"
+              >
+                Description of Land
+              </div>
+              <Field
+                component={[Function]}
+                disabled={true}
+                id="description_of_land"
+                name="description_of_land"
+              />
+            </Col>
+          </Row>
+          <Row
+            gutter={16}
+          >
+            <Col
+              md={12}
+              sm={24}
+            >
+              <div
+                className="field-title"
+              >
+                Long
+              </div>
+              <Field
+                component={[Function]}
+                disabled={true}
+                id="longitude"
+                name="longitude"
+              />
+            </Col>
+            <Col
+              md={12}
+              sm={24}
+            >
+              <div
+                className="field-title"
+              >
+                Type of Application**
+              </div>
+              <Field
+                component={[Function]}
+                disabled={true}
+                id=""
+                name=""
+              />
+            </Col>
+          </Row>
+          <Row
+            gutter={16}
+          >
+            <Col
+              md={12}
+              sm={24}
+            >
+              <div
+                className="field-title"
+              >
+                Type of Notice of Work
+              </div>
+              <Field
+                component={[Function]}
+                disabled={true}
+                id="notice_of_work_type_code"
+                name="notice_of_work_type_code"
+              />
+            </Col>
+            <Col
+              md={12}
+              sm={24}
+            >
+              <div
+                className="field-title"
+              >
+                Term of Application**
+              </div>
+              <Field
+                component={[Function]}
+                disabled={true}
+                id=""
+                name=""
+              />
+            </Col>
+          </Row>
+          <Row
+            gutter={16}
+          >
+            <Col
+              md={12}
+              sm={24}
+            >
+              <div
+                className="field-title"
+              >
+                Permit Type**
+              </div>
+              <Field
+                component={[Function]}
+                disabled={true}
+                id=""
+                name=""
+              />
+            </Col>
+            <Col
+              md={12}
+              sm={24}
+            >
+              <div
+                className="field-title"
+              >
+                Proposed Start Date
+              </div>
+              <Field
+                component={[Function]}
+                disabled={true}
+                id="proposed_start_date"
+                name="proposed_start_date"
+              />
+            </Col>
+          </Row>
+          <Row
+            gutter={16}
+          >
+            <Col
+              md={12}
+              sm={24}
+            >
+              <div
+                className="field-title"
+              >
+                Crown Grant / District Lot Numbers**
+              </div>
+              <Field
+                component={[Function]}
+                disabled={true}
+                id=""
+                name=""
+              />
+            </Col>
+            <Col
+              md={12}
+              sm={24}
+            >
+              <div
+                className="field-title"
+              >
+                Proposed End Date
+              </div>
+              <Field
+                component={[Function]}
+                disabled={true}
+                id="proposed_end_date"
+                name="proposed_end_date"
+              />
+            </Col>
+          </Row>
+          <Row
+            gutter={16}
+          >
+            <Col
+              md={12}
+              sm={24}
+            >
+              <div
+                className="field-title"
+              >
+                Tenure Number(s)
+              </div>
+              <Field
+                component={[Function]}
+                disabled={true}
+                id="tenure_number"
+                name="tenure_number"
+              />
+            </Col>
+          </Row>
+        </div>
+      </withRouter(ScrollContentWrapper)>
+      <withRouter(ScrollContentWrapper)
+        id="contacts"
+        title="Contacts"
+      >
+        <div>
+          <NullScreen
+            type="now-contacts"
+          />
+        </div>
+      </withRouter(ScrollContentWrapper)>
+      <withRouter(ScrollContentWrapper)
+        id="access"
+        title="Access"
+      >
+        <div>
+          <Row
+            gutter={16}
+          >
+            <Col
+              md={12}
+              sm={24}
+            >
+              <div
+                className="field-title"
+              >
+                Directions to Site
+              </div>
+              <Field
+                component={[Function]}
+                disabled={true}
+                id="directions_to_site"
+                name="directions_to_site"
+              />
+            </Col>
+            <Col
+              md={12}
+              sm={24}
+            >
+              <div
+                className="field-title"
+              >
+                Do you have the required access authorizations in place?**
+              </div>
+              <Field
+                component={[Function]}
+                disabled={true}
+                id=""
+                name=""
+              />
+            </Col>
+          </Row>
+          <Row
+            gutter={16}
+          >
+            <Col
+              md={12}
+              sm={24}
+            >
+              <div
+                className="field-title"
+              >
+                Do you need to build a road, create stream crossings or other surface disturbance that will not be on your tenure?**
+              </div>
+              <Field
+                component={[Function]}
+                disabled={true}
+                id=""
+                name=""
+              />
+            </Col>
+            <Col
+              md={12}
+              sm={24}
+            >
+              <div
+                className="field-title"
+              >
+                Access presently gated**
+              </div>
+              <Field
+                component={[Function]}
+                disabled={true}
+                id=""
+                name=""
+              />
+            </Col>
+          </Row>
+          <Row
+            gutter={16}
+          >
+            <Col
+              md={12}
+              sm={24}
+            >
+              <Field
+                component={[Function]}
+                disabled={true}
+                id=""
+                name=""
+              />
+            </Col>
+            <Col
+              md={12}
+              sm={24}
+            >
+              <div
+                className="field-title"
+              >
+                Key provided to the inspector**
+              </div>
+              <Field
+                component={[Function]}
+                disabled={true}
+                id=""
+                name=""
+              />
+            </Col>
+          </Row>
+        </div>
+      </withRouter(ScrollContentWrapper)>
+      <withRouter(ScrollContentWrapper)
+        id="state-of-land"
+        title="State of Land"
+      >
+        <div>
+          <h4>
+            Present State of Land
+          </h4>
+          <FormSection
+            name="state_of_land"
+          >
+            <Row
+              gutter={16}
+            >
+              <Col
+                md={12}
+                sm={24}
+              >
+                <div
+                  className="field-title"
+                >
+                  Present condition of the land**
+                </div>
+                <Field
+                  component={[Function]}
+                  disabled={true}
+                  id=""
+                  name=""
+                />
+              </Col>
+              <Col
+                md={12}
+                sm={24}
+              >
+                <div
+                  className="field-title"
+                >
+                  Current means of access**
+                </div>
+                <Field
+                  component={[Function]}
+                  disabled={true}
+                  id=""
+                  name=""
+                />
+              </Col>
+            </Row>
+            <Row
+              gutter={16}
+            >
+              <Col
+                md={12}
+                sm={24}
+              >
+                <div
+                  className="field-title"
+                >
+                  Physiography**
+                </div>
+                <Field
+                  component={[Function]}
+                  disabled={true}
+                  id=""
+                  name=""
+                />
+              </Col>
+              <Col
+                md={12}
+                sm={24}
+              >
+                <div
+                  className="field-title"
+                >
+                  Old Equipment**
+                </div>
+                <Field
+                  component={[Function]}
+                  disabled={true}
+                  id=""
+                  name=""
+                />
+              </Col>
+            </Row>
+            <Row
+              gutter={16}
+            >
+              <Col
+                md={12}
+                sm={24}
+              >
+                <div
+                  className="field-title"
+                >
+                  Type of vegetation**
+                </div>
+                <Field
+                  component={[Function]}
+                  disabled={true}
+                  id=""
+                  name=""
+                />
+              </Col>
+              <Col
+                md={12}
+                sm={24}
+              >
+                <div
+                  className="field-title"
+                >
+                  Recreational trail/use**
+                </div>
+                <Field
+                  component={[Function]}
+                  disabled={true}
+                  id=""
+                  name=""
+                />
+              </Col>
+            </Row>
+            <br />
+            <h4>
+              Land Ownership
+            </h4>
+            <Row
+              gutter={16}
+            >
+              <Col
+                md={12}
+                sm={24}
+              >
+                <div
+                  className="field-title"
+                >
+                  Application in a community watershed
+                </div>
+                <Field
+                  component={[Function]}
+                  disabled={true}
+                  id="has_community_water_shed"
+                  name="has_community_water_shed"
+                />
+              </Col>
+              <Col
+                md={12}
+                sm={24}
+              >
+                <div
+                  className="field-title"
+                >
+                  Activities in park**
+                </div>
+                <Field
+                  component={[Function]}
+                  disabled={true}
+                  id=""
+                  name=""
+                />
+              </Col>
+            </Row>
+            <Row
+              gutter={16}
+            >
+              <Col
+                md={12}
+                sm={24}
+              >
+                <div
+                  className="field-title"
+                >
+                  Proposed activities on private land**
+                </div>
+                <Field
+                  component={[Function]}
+                  disabled={true}
+                  id=""
+                  name=""
+                />
+              </Col>
+              <Col
+                md={12}
+                sm={24}
+              >
+                <div
+                  className="field-title--light"
+                >
+                  Do you have authorization by the Lieutenant Governor in Council?**
+                </div>
+                <Field
+                  component={[Function]}
+                  disabled={true}
+                  id=""
+                  name=""
+                />
+              </Col>
+            </Row>
+            <br />
+            <h4>
+              Cultural Heritage Resources
+            </h4>
+            <Row
+              gutter={16}
+            >
+              <Col
+                md={12}
+                sm={24}
+              >
+                <div
+                  className="field-title"
+                >
+                  Are you aware of any protected archaeological sites that may be affected by the proposed project?
+                </div>
+                <Field
+                  component={[Function]}
+                  disabled={true}
+                  id="has_archaeology_sites_affected"
+                  name="has_archaeology_sites_affected"
+                />
+                <div
+                  className="field-title--light"
+                >
+                  Plan to protect the archaeological site**
+                </div>
+                <Field
+                  component={[Function]}
+                  disabled={true}
+                  id=""
+                  name=""
+                />
+              </Col>
+            </Row>
+            <br />
+            <h4>
+              First Nations Engagement
+            </h4>
+            <Row
+              gutter={16}
+            >
+              <Col
+                md={12}
+                sm={24}
+              >
+                <div
+                  className="field-title"
+                >
+                  Have you shared information and engaged with First Nations in the area of the proposed activity?**
+                </div>
+                <Field
+                  component={[Function]}
+                  disabled={true}
+                  id=""
+                  name=""
+                />
+              </Col>
+              <Col
+                md={12}
+                sm={24}
+              >
+                <div
+                  className="field-title"
+                >
+                  As a result of the engagement, are you aware of any cultural heritage resources in the area where the work is proposed?**
+                </div>
+                <Field
+                  component={[Function]}
+                  disabled={true}
+                  id=""
+                  name=""
+                />
+              </Col>
+            </Row>
+            <Row
+              gutter={16}
+            >
+              <Col
+                md={12}
+                sm={24}
+              >
+                <div
+                  className="field-title"
+                >
+                  Describe your First Nations engagement activities**
+                </div>
+                <Field
+                  component={[Function]}
+                  disabled={true}
+                  id=""
+                  name=""
+                />
+              </Col>
+              <Col
+                md={12}
+                sm={24}
+              >
+                <div
+                  className="field-title"
+                >
+                  Describe any cultural heritage resources in the area**
+                </div>
+                <Field
+                  component={[Function]}
+                  disabled={true}
+                  id=""
+                  name=""
+                />
+              </Col>
+            </Row>
+          </FormSection>
+        </div>
+      </withRouter(ScrollContentWrapper)>
+      <withRouter(ScrollContentWrapper)
+        id="first-aid"
+        title="First Aid"
+      >
+        <div>
+          <Row
+            gutter={16}
+          >
+            <Col
+              md={12}
+              sm={24}
+            >
+              <div
+                className="field-title"
+              >
+                Proposed First Aid equipment on site**
+              </div>
+              <Field
+                component={[Function]}
+                disabled={true}
+                id=""
+                name=""
+              />
+            </Col>
+            <Col
+              md={12}
+              sm={24}
+            >
+              <div
+                className="field-title"
+              >
+                Level of First Aid Certificate held by attendant**
+              </div>
+              <Field
+                component={[Function]}
+                disabled={true}
+                id=""
+                name=""
+              />
+            </Col>
+          </Row>
+        </div>
+      </withRouter(ScrollContentWrapper)>
+      <br />
+      <h2>
+        Work Plan
+      </h2>
+      <Divider />
+      <Row
+        gutter={16}
+      >
+        <Col
+          md={12}
+          sm={24}
+        >
+          <div
+            className="field-title"
+          >
+            Description of Work**
+          </div>
+          <Field
+            component={[Function]}
+            disabled={true}
+            id=""
+            name=""
+          />
+        </Col>
+      </Row>
+      <br />
+      <withRouter(ScrollContentWrapper)
+        id="reclamation"
+        title="Summary of Reclamation"
+      >
+        <div>
+          <Row
+            gutter={16}
+          >
+            <Col
+              md={12}
+              sm={24}
+            >
+              <div
+                className="field-title"
+              >
+                Total merchantable timber volume**
+              </div>
+              <Field
+                component={[Function]}
+                disabled={true}
+                id=""
+                name=""
+              />
+            </Col>
+          </Row>
+          <br />
+          <ReclamationSummary
+            summary={
+              Array [
+                Object {
+                  "cost": "0.00",
+                  "label": "Cut Lines and Induced Polarization Survey",
+                  "total": "0.00",
+                },
+                Object {
+                  "cost": "0.00",
+                  "label": "Water Supply",
+                  "total": "0.00",
+                },
+              ]
+            }
+          />
+        </div>
+      </withRouter(ScrollContentWrapper)>
+      <ReviewActivities
+        initialValues={
+          Object {
+            "blasting": Array [],
+            "camps": Object {
+              "details": Array [],
+            },
+            "contacts": Array [],
+            "cut_lines_polarization_survey": Object {
+              "details": Array [],
+            },
+            "description_of_land": "",
+            "exploration_access": Object {
+              "details": Array [],
+            },
+            "exploration_surface_drilling": Object {
+              "details": Array [],
+            },
+            "latitude": "",
+            "longitude": "",
+            "mechanical_trenching": Object {
+              "details": Array [],
+            },
+            "mine_guid": "",
+            "notice_of_work_type_code": "",
+            "now_application_guid": "",
+            "now_application_id": "",
+            "now_message_id": 47284,
+            "now_tracking_number": 47284,
+            "placer_operation": Object {
+              "details": Array [],
+            },
+            "property_name": "",
+            "proposed_end_date": "",
+            "proposed_start_date": "",
+            "received_date": "",
+            "sand_and_gravel": Object {
+              "details": Array [],
+            },
+            "settling_pond": Object {
+              "details": Array [],
+            },
+            "state_of_land": Object {},
+            "submitted_date": "",
+            "surface_bulk_sample": Object {
+              "details": Array [],
+            },
+            "tenure_number": "",
+            "underground_exploration": Object {
+              "details": Array [],
+            },
+            "water_supply": Object {
+              "details": Array [],
+            },
+          }
+        }
+        isViewMode={true}
+        noticeOfWork={
+          Object {
+            "blasting": Array [],
+            "camps": Object {
+              "details": Array [],
+            },
+            "contacts": Array [],
+            "cut_lines_polarization_survey": Object {
+              "details": Array [],
+            },
+            "description_of_land": "",
+            "exploration_access": Object {
+              "details": Array [],
+            },
+            "exploration_surface_drilling": Object {
+              "details": Array [],
+            },
+            "latitude": "",
+            "longitude": "",
+            "mechanical_trenching": Object {
+              "details": Array [],
+            },
+            "mine_guid": "",
+            "notice_of_work_type_code": "",
+            "now_application_guid": "",
+            "now_application_id": "",
+            "now_message_id": 47284,
+            "now_tracking_number": 47284,
+            "placer_operation": Object {
+              "details": Array [],
+            },
+            "property_name": "",
+            "proposed_end_date": "",
+            "proposed_start_date": "",
+            "received_date": "",
+            "sand_and_gravel": Object {
+              "details": Array [],
+            },
+            "settling_pond": Object {
+              "details": Array [],
+            },
+            "state_of_land": Object {},
+            "submitted_date": "",
+            "surface_bulk_sample": Object {
+              "details": Array [],
+            },
+            "tenure_number": "",
+            "underground_exploration": Object {
+              "details": Array [],
+            },
+            "water_supply": Object {
+              "details": Array [],
+            },
+          }
+        }
+      />
+      <withRouter(ScrollContentWrapper)
+        id="documents"
+        title="Documents"
+      >
+        <div>
+          <br />
+          <h4>
+            Documents
+          </h4>
+          <Divider />
+          <NullScreen
+            type="documents"
+          />
+          <br />
+          <h4>
+            Spatial Files
+          </h4>
+          <Divider />
+          <NullScreen
+            type="documents"
+          />
+        </div>
+      </withRouter(ScrollContentWrapper)>
+    </div>
+  </Form>
+</div>
+`;
