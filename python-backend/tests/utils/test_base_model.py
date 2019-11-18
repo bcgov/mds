@@ -49,7 +49,7 @@ def test_update_unexpected_type(db_session):
 
 def test_update_new_item_in_list(db_session):
     mine = MineFactory(mine_permit=5)
-    permit = PermitFactory(permit_amendments=0)
+    permit = PermitFactory()
 
     partial_mine_permit_dict = marshal(
         {'mine_permit': mine.mine_permit},

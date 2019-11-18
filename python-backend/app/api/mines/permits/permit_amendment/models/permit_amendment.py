@@ -14,8 +14,6 @@ from app.api.mines.permits.permit_amendment.models.permit_amendment_document imp
 from . import permit_amendment_status_code, permit_amendment_type_code
 from app.api.utils.models_mixins import AuditMixin, Base
 
-from marshmallow_sqlalchemy import ModelConversionError, ModelSchema, ModelConverter
-
 
 class PermitAmendment(AuditMixin, Base):
     __tablename__ = 'permit_amendment'
@@ -34,13 +32,13 @@ class PermitAmendment(AuditMixin, Base):
 
     related_documents = db.relationship('PermitAmendmentDocument')
 
-    # permit_amendment_status = db.relationship('PermitAmendmentStatusCode')
-    # permit_amendment_status_description = association_proxy('permit_amendment_status',
-    #                                                         'description')
-    # permit_guid = association_proxy('permit', 'permit_guid')
-    # mine_guid = association_proxy('permit', 'mine_guid')
-    # permit_amendment_type = db.relationship('PermitAmendmentTypeCode')
-    # permit_amendment_type_description = association_proxy('permit_amendment_type', 'description')
+    permit_amendment_status = db.relationship('PermitAmendmentStatusCode')
+    permit_amendment_status_description = association_proxy('permit_amendment_status',
+                                                            'description')
+    permit_guid = association_proxy('permit', 'permit_guid')
+    mine_guid = association_proxy('permit', 'mine_guid')
+    permit_amendment_type = db.relationship('PermitAmendmentTypeCode')
+    permit_amendment_type_description = association_proxy('permit_amendment_type', 'description')
 
     @classmethod
     def create(cls,
@@ -128,6 +126,9 @@ class PermitAmendment(AuditMixin, Base):
         if description and len(description) > 280:
             raise AssertionError('Permit amendment description must be 280 characters or fewer.')
         return description
+
+
+from marshmallow_sqlalchemy import ModelConversionError, ModelSchema, ModelConverter
 
 
 class PermitAmendmentSchema(ModelSchema):

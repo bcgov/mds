@@ -57,5 +57,5 @@ def setup_schema(Base, session):
     return setup_schema_fn
 
 
-#event.listen(mapper, "after_configured", setup_schema(Base, db.session))
-#Base.metadata.create_all(db.engine.connect())
+# event.listen(mapper, "after_configured", setup_schema(Base, db.session))
+# Base.metadata.create_all(db.engine.connect())
