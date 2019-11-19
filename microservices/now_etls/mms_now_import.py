@@ -76,8 +76,9 @@ def ETL_MMS_NOW_schema(connection, tables):
         applications = etl.cutout(applications, 'multi_year_area_ind')
         applications = etl.cutout(applications, 'multi_year_ind')
 
-        applications = etl.leftjoin(applications, now_number_mineral, key='mms_cid')
-        applications = etl.leftjoin(applications, now_number_placer, key='mms_cid')
+        now_numbers = etl.cat(now_number_placer, now_number_mineral)
+
+        applications = etl.leftjoin(applications, now_numbers, key='mms_cid')
 
         sand_grv_qry_activity = etl.fromdb(
             connection,
