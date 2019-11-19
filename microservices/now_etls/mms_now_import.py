@@ -1050,8 +1050,8 @@ def ETL_MMS_NOW_schema(connection, tables):
 
         proposed_placer_activity_xref = etl.leftjoin(message_ids, proposed_placer_activity_xref, key='mms_cid')
         existing_placer_activity_xref = etl.leftjoin(message_ids, existing_placer_activity_xref, key='mms_cid')
-        proposed_placer_activity_xref = etl.cutout(proposed_placer_activity_xref, 'message_id')
-        existing_placer_activity_xref = etl.cutout(existing_placer_activity_xref, 'message_id')
+        proposed_placer_activity_xref = etl.cutout(proposed_placer_activity_xref, 'messageid')
+        existing_placer_activity_xref = etl.cutout(existing_placer_activity_xref, 'messageid')
         placer_activity = etl.cutout(placer_activity, 'identifier')
 
         applications = etl.leftjoin(applications, placer_activity_app_cols, key='mms_cid')
