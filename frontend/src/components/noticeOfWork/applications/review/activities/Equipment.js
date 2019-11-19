@@ -1,12 +1,10 @@
 import React from "react";
-import { PropTypes } from "prop-types";
 import { Table } from "antd";
 import * as Strings from "@/constants/strings";
+import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
-  equipment: PropTypes.arrayOf(
-    PropTypes.objectOf(PropTypes.oneOfType([PropTypes.string, PropTypes.number]))
-  ),
+  equipment: CustomPropTypes.activityEquipment,
 };
 
 const defaultProps = {

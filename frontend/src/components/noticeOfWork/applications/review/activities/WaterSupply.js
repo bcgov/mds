@@ -5,10 +5,15 @@ import { Row, Col, Table } from "antd";
 import * as Strings from "@/constants/strings";
 import RenderField from "@/components/common/RenderField";
 import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
+import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
   isViewMode: PropTypes.bool.isRequired,
-  initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
+  initialValues: CustomPropTypes.waterSupply,
+};
+
+const defaultProps = {
+  initialValues: {},
 };
 
 export const WaterSupply = (props) => {
@@ -89,5 +94,6 @@ export const WaterSupply = (props) => {
 };
 
 WaterSupply.propTypes = propTypes;
+WaterSupply.defaultProps = defaultProps;
 
 export default WaterSupply;

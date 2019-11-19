@@ -7,10 +7,15 @@ import RenderRadioButtons from "@/components/common/RenderRadioButtons";
 import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
 import RenderField from "@/components/common/RenderField";
 import Equipment from "@/components/noticeOfWork/applications/review/activities/Equipment";
+import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
   isViewMode: PropTypes.bool.isRequired,
-  initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
+  initialValues: CustomPropTypes.placer,
+};
+
+const defaultProps = {
+  initialValues: {},
 };
 
 export const Placer = (props) => {
@@ -148,5 +153,6 @@ export const Placer = (props) => {
 };
 
 Placer.propTypes = propTypes;
+Placer.defaultProps = defaultProps;
 
 export default Placer;

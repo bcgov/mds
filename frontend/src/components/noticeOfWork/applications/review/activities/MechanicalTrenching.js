@@ -6,10 +6,14 @@ import RenderField from "@/components/common/RenderField";
 import * as Strings from "@/constants/strings";
 import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
 import Equipment from "@/components/noticeOfWork/applications/review/activities/Equipment";
+import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
   isViewMode: PropTypes.bool.isRequired,
-  initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
+  initialValues: CustomPropTypes.defaultActivity,
+};
+const defaultProps = {
+  initialValues: {},
 };
 
 export const MechanicalTrenching = (props) => {
@@ -91,5 +95,6 @@ export const MechanicalTrenching = (props) => {
 };
 
 MechanicalTrenching.propTypes = propTypes;
+MechanicalTrenching.defaultProps = defaultProps;
 
 export default MechanicalTrenching;

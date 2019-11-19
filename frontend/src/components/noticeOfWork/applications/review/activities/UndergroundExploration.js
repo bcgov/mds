@@ -4,10 +4,15 @@ import { Field } from "redux-form";
 import { Row, Col, Table } from "antd";
 import * as Strings from "@/constants/strings";
 import RenderField from "@/components/common/RenderField";
+import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
   isViewMode: PropTypes.bool.isRequired,
-  initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
+  initialValues: CustomPropTypes.defaultActivity,
+};
+
+const defaultProps = {
+  initialValues: {},
 };
 
 export const UndergroundExploration = (props) => {
@@ -124,5 +129,6 @@ export const UndergroundExploration = (props) => {
 };
 
 UndergroundExploration.propTypes = propTypes;
+UndergroundExploration.defaultProps = defaultProps;
 
 export default UndergroundExploration;

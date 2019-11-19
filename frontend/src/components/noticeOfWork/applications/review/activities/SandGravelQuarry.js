@@ -7,10 +7,15 @@ import RenderField from "@/components/common/RenderField";
 import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
 import RenderRadioButtons from "@/components/common/RenderRadioButtons";
 import Equipment from "@/components/noticeOfWork/applications/review/activities/Equipment";
+import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
   isViewMode: PropTypes.bool.isRequired,
-  initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
+  initialValues: CustomPropTypes.sandGravelQuarry,
+};
+
+const defaultProps = {
+  initialValues: {},
 };
 
 export const SandGravelQuarry = (props) => {
@@ -183,5 +188,6 @@ export const SandGravelQuarry = (props) => {
 };
 
 SandGravelQuarry.propTypes = propTypes;
+SandGravelQuarry.defaultProps = defaultProps;
 
 export default SandGravelQuarry;
