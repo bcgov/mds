@@ -67,18 +67,17 @@ const applySortIndicator = (_columns, field, dir) =>
 export class NoticeOfWorkTable extends Component {
   transformRowData = (applications) =>
     applications.map((application) => ({
-      key: application.application_guid,
-      nowApplicationGuid: application.now_application_guid,
+      key: application.now_application_guid,
       source: Strings.EMPTY_FIELD,
       mineRegion: application.mine_region
         ? this.props.mineRegionHash[application.mine_region]
         : Strings.EMPTY_FIELD,
-      nowNum: application.trackingnumber || Strings.EMPTY_FIELD,
+      nowNum: application.tracking_number || Strings.EMPTY_FIELD,
       mineGuid: application.mine_guid || Strings.EMPTY_FIELD,
       mineName: application.mine_name || Strings.EMPTY_FIELD,
-      nowType: application.noticeofworktype || Strings.EMPTY_FIELD,
-      status: application.status || Strings.EMPTY_FIELD,
-      date: formatDate(application.receiveddate) || Strings.EMPTY_FIELD,
+      nowType: application.notice_of_work_type_description || Strings.EMPTY_FIELD,
+      status: application.now_application_status_description || Strings.EMPTY_FIELD,
+      date: formatDate(application.received_date) || Strings.EMPTY_FIELD,
     }));
 
   filterProperties = (name, field) => ({
@@ -138,12 +137,12 @@ export class NoticeOfWorkTable extends Component {
     {
       title: "NoW No.",
       dataIndex: "nowNum",
-      sortField: "trackingnumber",
+      sortField: "tracking_number",
       render: (text, record) => (
         <Link to={router.NOTICE_OF_WORK_INITIAL_APPLICATION.dynamicRoute(record.key)}>{text}</Link>
       ),
       sorter: true,
-      ...this.filterProperties("NoW No.", "trackingnumber"),
+      ...this.filterProperties("NoW No.", "tracking_number"),
     },
     {
       title: "Mine",
@@ -158,23 +157,23 @@ export class NoticeOfWorkTable extends Component {
     {
       title: "NoW Type",
       dataIndex: "nowType",
-      sortField: "noticeofworktype",
+      sortField: "notice_of_work_type_description",
       render: (text) => <div title="NoW Mine Type">{text}</div>,
       sorter: true,
-      ...this.filterProperties("NoW Type", "noticeofworktype"),
+      ...this.filterProperties("NoW Type", "notice_of_work_type_description"),
     },
     {
       title: "Application Status",
       dataIndex: "status",
-      sortField: "status",
+      sortField: "now_application_status_description",
       render: (text) => <div title="Application Status">{text}</div>,
       sorter: true,
-      ...this.filterProperties("Status", "status"),
+      ...this.filterProperties("Status", "now_application_status_description"),
     },
     {
       title: "Import Date",
       dataIndex: "date",
-      sortField: "receiveddate",
+      sortField: "received_date",
       render: (text) => <div title="Import Date">{text}</div>,
       sorter: true,
     },
@@ -183,7 +182,7 @@ export class NoticeOfWorkTable extends Component {
       dataIndex: "verify",
       width: 150,
       render: (text, record) =>
-        record.nowApplicationGuid && (
+        record.key && (
           <div title="">
             <AuthorizationWrapper inTesting>
               <AuthorizationWrapper permission={Permission.ADMIN}>
