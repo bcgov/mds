@@ -83,7 +83,7 @@ def ETL_MMS_NOW_schema(connection, tables):
 
         sand_grv_qry_activity = etl.fromdb(
             connection,
-            f'SELECT cid as mms_cid, recl_desc as sandgrvqryreclamation, recl_dol as sandgrvqryreclamationcost, backslope as sandgrvqryreclamationbackfill, oper1_ind, oper2_ind, oper3_ind, alr_ind as sandgrvqrywithinaglandres, srb_ind as sandgrvqrylocalgovsoilrembylaw, pdist_ar as sandgrvqrydisturbedarea, t_vol as sandgrvqrytimbervolume, edist_Ar as sandgrvqrytotalexistdistarea, act1_ind, act2_ind, act3_ind, act4_ind, act1_ar, act2_ar, act3_ar, act4_ar, act1_vol, act2_vol, act3_vol, act4_vol from mms.mmssci_n {SANDGRVQRYEXCLUDE}'
+            f'SELECT b.msg_id as messageid, b.cid as mms_cid, recl_desc as sandgrvqryreclamation, recl_dol as sandgrvqryreclamationcost, backslope as sandgrvqryreclamationbackfill, oper1_ind, oper2_ind, oper3_ind, alr_ind as sandgrvqrywithinaglandres, srb_ind as sandgrvqrylocalgovsoilrembylaw, pdist_ar as sandgrvqrydisturbedarea, t_vol as sandgrvqrytimbervolume, edist_Ar as sandgrvqrytotalexistdistarea, act1_ind, act2_ind, act3_ind, act4_ind, act1_ar, act2_ar, act3_ar, act4_ar, act1_vol, act2_vol, act3_vol, act4_vol from mms.mmssci_n a inner join mms.mmsnow b on a.cid = b.cid {SANDGRVQRYEXCLUDE}'
         )
 
         sand_grv_qry_activity_app_cols = etl.cut(sand_grv_qry_activity, 
@@ -116,19 +116,19 @@ def ETL_MMS_NOW_schema(connection, tables):
         sand_grv_qry_activity_detail = etl.cutout(sand_grv_qry_activity_detail, 'messageid', 'id')
         
         sand_grv_qry_activity_1 = etl.cut(sand_grv_qry_activity, 
-            'mms_cid', 'act1_ind', 'act1_ar', 'act1_vol'
+            'messageid', 'mms_cid', 'act1_ind', 'act1_ar', 'act1_vol'
         )
 
         sand_grv_qry_activity_2 = etl.cut(sand_grv_qry_activity, 
-            'mms_cid', 'act2_ind', 'act2_ar', 'act2_vol'
+            'messageid', 'mms_cid', 'act2_ind', 'act2_ar', 'act2_vol'
         )
 
         sand_grv_qry_activity_3 = etl.cut(sand_grv_qry_activity, 
-            'mms_cid', 'act3_ind', 'act3_ar', 'act3_vol'
+            'messageid', 'mms_cid', 'act3_ind', 'act3_ar', 'act3_vol'
         )
 
         sand_grv_qry_activity_4 = etl.cut(sand_grv_qry_activity, 
-            'mms_cid', 'act4_ind', 'act4_ar', 'act4_vol'
+            'messageid', 'mms_cid', 'act4_ind', 'act4_ar', 'act4_vol'
         )
 
         sand_grv_qry_activity_1 = etl.select(sand_grv_qry_activity_1, lambda v: v['act1_ind'] == 1)
@@ -171,13 +171,12 @@ def ETL_MMS_NOW_schema(connection, tables):
         sand_grv_qry_activity_4 = etl.cutout(sand_grv_qry_activity_4, 'act4_ind', 'act4_ar', 'act4_vol')
 
         sand_grv_qry_activity_detail = etl.cat(sand_grv_qry_activity_detail, sand_grv_qry_activity_4)
-        
-        sand_grv_qry_activity_detail = etl.leftjoin(message_ids, sand_grv_qry_activity_detail, key='mms_cid')
+
         applications = etl.leftjoin(applications, sand_grv_qry_activity_app_cols, key='mms_cid')
 
         surface_bulk_activity = etl.fromdb(
             connection,
-            f'SELECT cid as mms_cid, recl_desc as surfacebulksamplereclamation, recl_dol as surfacebulksamplereclcost, material_desc as surfacebulksamplereclsephandl, drainage_desc as surfacebulksamplerecldrainmiti, act1_ind, act2_ind, act3_ind, act4_ind, act5_ind, act6_ind, act1_ar, act2_ar, act3_ar, act4_ar, act5_ar, act6_ar, act1_vol, act2_vol, act3_vol, act4_vol, act5_vol, act6_vol  from mms.mmsscf_n'
+            f'SELECT b.msg_id as messageid, b.cid as mms_cid, recl_desc as surfacebulksamplereclamation, recl_dol as surfacebulksamplereclcost, material_desc as surfacebulksamplereclsephandl, drainage_desc as surfacebulksamplerecldrainmiti, act1_ind, act2_ind, act3_ind, act4_ind, act5_ind, act6_ind, act1_ar, act2_ar, act3_ar, act4_ar, act5_ar, act6_ar, act1_vol, act2_vol, act3_vol, act4_vol, act5_vol, act6_vol from mms.mmsscf_n a inner join mms.mmsnow b on a.cid = b.cid'
         )
 
         surface_bulk_activity_app_cols = etl.cut(surface_bulk_activity, 'mms_cid', 'surfacebulksamplereclamation', 'surfacebulksamplereclcost', 'surfacebulksamplereclsephandl', 'surfacebulksamplerecldrainmiti')
@@ -191,17 +190,17 @@ def ETL_MMS_NOW_schema(connection, tables):
 
         surface_bulk_activity_detail = etl.cutout(surface_bulk_activity_detail, 'messageid', 'id')
         
-        surface_bulk_activity_1 = etl.cut(surface_bulk_activity, 'mms_cid', 'act1_ind', 'act1_ar', 'act1_vol')
+        surface_bulk_activity_1 = etl.cut(surface_bulk_activity, 'messageid', 'mms_cid', 'act1_ind', 'act1_ar', 'act1_vol')
 
-        surface_bulk_activity_2 = etl.cut(surface_bulk_activity, 'mms_cid', 'act2_ind', 'act2_ar', 'act2_vol')
+        surface_bulk_activity_2 = etl.cut(surface_bulk_activity, 'messageid', 'mms_cid', 'act2_ind', 'act2_ar', 'act2_vol')
 
-        surface_bulk_activity_3 = etl.cut(surface_bulk_activity, 'mms_cid', 'act3_ind', 'act3_ar', 'act3_vol')
+        surface_bulk_activity_3 = etl.cut(surface_bulk_activity, 'messageid', 'mms_cid', 'act3_ind', 'act3_ar', 'act3_vol')
 
-        surface_bulk_activity_4 = etl.cut(surface_bulk_activity, 'mms_cid', 'act4_ind', 'act4_ar', 'act4_vol')
+        surface_bulk_activity_4 = etl.cut(surface_bulk_activity, 'messageid', 'mms_cid', 'act4_ind', 'act4_ar', 'act4_vol')
         
-        surface_bulk_activity_5 = etl.cut(surface_bulk_activity, 'mms_cid', 'act5_ind', 'act5_ar', 'act5_vol')
+        surface_bulk_activity_5 = etl.cut(surface_bulk_activity, 'messageid', 'mms_cid', 'act5_ind', 'act5_ar', 'act5_vol')
 
-        surface_bulk_activity_6 = etl.cut(surface_bulk_activity, 'mms_cid', 'act6_ind', 'act6_ar', 'act6_vol')
+        surface_bulk_activity_6 = etl.cut(surface_bulk_activity, 'messageid', 'mms_cid', 'act6_ind', 'act6_ar', 'act6_vol')
 
         surface_bulk_activity_1 = etl.select(surface_bulk_activity_1, lambda v: v['act1_ind'] == 1)
         surface_bulk_activity_2 = etl.select(surface_bulk_activity_2, lambda v: v['act2_ind'] == 1)
@@ -268,14 +267,14 @@ def ETL_MMS_NOW_schema(connection, tables):
 
         cut_lines = etl.fromdb(
             connection,
-            f'SELECT cid as mms_cid, line_km as cutlinesexplgridtotallinekms, t_vol as cutlinesexplgridtimbervolume, recl_desc as cutlinesreclamation, recl_dol as cutlinesreclamationcost, t_ar as cutlinesexplgriddisturbedarea from mms.mmssco_n'
+            f'SELECT b.cid as mms_cid, line_km as cutlinesexplgridtotallinekms, t_vol as cutlinesexplgridtimbervolume, recl_desc as cutlinesreclamation, recl_dol as cutlinesreclamationcost, t_ar as cutlinesexplgriddisturbedarea from mms.mmssco_n a inner join mms.mmsnow b on a.cid = b.cid'
         )
 
         applications = etl.leftjoin(applications, cut_lines, key='mms_cid')
 
         exploration_access = etl.fromdb(
             connection,
-            f'SELECT cid as mms_cid, recl_desc as expaccessreclamation, recl_dol as expaccessreclamationcost, act1_ind, act2_ind, act3_ind, act4_ind, act5_ind, act6_ind, act7_ind, act1_len, act2_len, act3_len, act4_len, act5_len, act6_len, act7_len, act1_ar, act2_ar, act3_ar, act4_ar, act5_ar, act6_ar, act7_ar, act1_vol, act2_vol, act3_vol, act4_vol, act5_vol, act6_vol, act7_vol from mms.mmssce_n'
+            f'SELECT b.msg_id as messageid, b.cid as mms_cid, recl_desc as expaccessreclamation, recl_dol as expaccessreclamationcost, act1_ind, act2_ind, act3_ind, act4_ind, act5_ind, act6_ind, act7_ind, act1_len, act2_len, act3_len, act4_len, act5_len, act6_len, act7_len, act1_ar, act2_ar, act3_ar, act4_ar, act5_ar, act6_ar, act7_ar, act1_vol, act2_vol, act3_vol, act4_vol, act5_vol, act6_vol, act7_vol from mms.mmssce_n a inner join mms.mmsnow b on a.cid = b.cid'
         )
 
         exploration_access_app_cols = etl.cut(exploration_access, 'mms_cid', 'expaccessreclamation', 'expaccessreclamationcost')
@@ -286,22 +285,21 @@ def ETL_MMS_NOW_schema(connection, tables):
             connection,
             f'SELECT * from MMS_NOW_Submissions.exp_access_activity'
         )
-
         exploration_access_activity_detail = etl.cutout(exploration_access_activity_detail, 'messageid', 'id')
         
-        exploration_access_activity_1 = etl.cut(exploration_access, 'mms_cid', 'act1_ind', 'act1_len', 'act1_ar', 'act1_vol')
+        exploration_access_activity_1 = etl.cut(exploration_access, 'messageid', 'mms_cid', 'act1_ind', 'act1_len', 'act1_ar', 'act1_vol')
 
-        exploration_access_activity_2 = etl.cut(exploration_access, 'mms_cid', 'act2_ind', 'act2_len', 'act2_ar', 'act2_vol')
+        exploration_access_activity_2 = etl.cut(exploration_access, 'messageid', 'mms_cid', 'act2_ind', 'act2_len', 'act2_ar', 'act2_vol')
 
-        exploration_access_activity_3 = etl.cut(exploration_access, 'mms_cid', 'act3_ind', 'act3_len', 'act3_ar', 'act3_vol')
+        exploration_access_activity_3 = etl.cut(exploration_access, 'messageid', 'mms_cid', 'act3_ind', 'act3_len', 'act3_ar', 'act3_vol')
 
-        exploration_access_activity_4 = etl.cut(exploration_access, 'mms_cid', 'act4_ind', 'act4_len', 'act4_ar', 'act4_vol')
+        exploration_access_activity_4 = etl.cut(exploration_access, 'messageid', 'mms_cid', 'act4_ind', 'act4_len', 'act4_ar', 'act4_vol')
         
-        exploration_access_activity_5 = etl.cut(exploration_access, 'mms_cid', 'act5_ind', 'act5_len', 'act5_ar', 'act5_vol')
+        exploration_access_activity_5 = etl.cut(exploration_access, 'messageid', 'mms_cid', 'act5_ind', 'act5_len', 'act5_ar', 'act5_vol')
 
-        exploration_access_activity_6 = etl.cut(exploration_access, 'mms_cid', 'act6_ind', 'act6_len', 'act6_ar', 'act6_vol')
+        exploration_access_activity_6 = etl.cut(exploration_access, 'messageid', 'mms_cid', 'act6_ind', 'act6_len', 'act6_ar', 'act6_vol')
 
-        exploration_access_activity_7 = etl.cut(exploration_access, 'mms_cid', 'act7_ind', 'act7_len', 'act7_ar', 'act7_vol')
+        exploration_access_activity_7 = etl.cut(exploration_access, 'messageid', 'mms_cid', 'act7_ind', 'act7_len', 'act7_ar', 'act7_vol')
 
         exploration_access_activity_1 = etl.select(exploration_access_activity_1, lambda v: v['act1_ind'] == 1)
         exploration_access_activity_2 = etl.select(exploration_access_activity_2, lambda v: v['act2_ind'] == 1)
@@ -381,12 +379,11 @@ def ETL_MMS_NOW_schema(connection, tables):
 
         exploration_access_activity_detail = etl.cat(exploration_access_activity_detail, exploration_access_activity_7)
 
-        exploration_access_activity_detail = etl.leftjoin(message_ids, exploration_access_activity_detail, key='mms_cid')
         applications = etl.leftjoin(applications, exploration_access_app_cols, key='mms_cid')
 
         exploration_surface_drill = etl.fromdb(
             connection,
-            f'SELECT cid as mms_cid, recl_desc as expsurfacedrillreclamation, recl_dol as expsurfacedrillreclamationcost, storage_desc as expsurfacedrillreclcorestorage, act1_ind, act2_ind, act3_ind, act4_ind, act5_ind, act6_ind, act7_ind, act8_ind, act1_cnt, act2_cnt, act3_cnt, act4_cnt, act5_cnt, act6_cnt, act7_cnt, act8_cnt, act1_ar, act2_ar, act3_ar, act4_ar, act5_ar, act6_ar, act7_ar, act8_ar, act1_vol, act2_vol, act3_vol, act4_vol, act5_vol, act6_vol, act7_vol, act8_vol from mms.mmsscd_n {SURFACEEXPEXCLUDE}'
+            f'SELECT b.msg_id as messageid, b.cid as mms_cid, recl_desc as expsurfacedrillreclamation, recl_dol as expsurfacedrillreclamationcost, storage_desc as expsurfacedrillreclcorestorage, act1_ind, act2_ind, act3_ind, act4_ind, act5_ind, act6_ind, act7_ind, act8_ind, act1_cnt, act2_cnt, act3_cnt, act4_cnt, act5_cnt, act6_cnt, act7_cnt, act8_cnt, act1_ar, act2_ar, act3_ar, act4_ar, act5_ar, act6_ar, act7_ar, act8_ar, act1_vol, act2_vol, act3_vol, act4_vol, act5_vol, act6_vol, act7_vol, act8_vol from mms.mmsscd_n a inner join mms.mmsnow b on a.cid = b.cid {SURFACEEXPEXCLUDE}'
         )
 
         exploration_surface_drill_app_cols = etl.cut(exploration_surface_drill, 'mms_cid', 'expsurfacedrillreclamation', 'expsurfacedrillreclamationcost', 'expsurfacedrillreclcorestorage')
@@ -397,24 +394,24 @@ def ETL_MMS_NOW_schema(connection, tables):
             connection,
             f'SELECT * from MMS_NOW_Submissions.exp_access_activity'
         )
-
+        
         exploration_surface_drill_activity_detail = etl.cutout(exploration_surface_drill_activity_detail, 'messageid', 'id')
+
+        exploration_surface_drill_activity_1 = etl.cut(exploration_surface_drill, 'messageid', 'mms_cid', 'act1_ind', 'act1_cnt', 'act1_ar', 'act1_vol')
+
+        exploration_surface_drill_activity_2 = etl.cut(exploration_surface_drill, 'messageid', 'mms_cid', 'act2_ind', 'act2_cnt', 'act2_ar', 'act2_vol')
+
+        exploration_surface_drill_activity_3 = etl.cut(exploration_surface_drill, 'messageid', 'mms_cid', 'act3_ind', 'act3_cnt', 'act3_ar', 'act3_vol')
+
+        exploration_surface_drill_activity_4 = etl.cut(exploration_surface_drill, 'messageid', 'mms_cid', 'act4_ind', 'act4_cnt', 'act4_ar', 'act4_vol')
         
-        exploration_surface_drill_activity_1 = etl.cut(exploration_surface_drill, 'mms_cid', 'act1_ind', 'act1_cnt', 'act1_ar', 'act1_vol')
+        exploration_surface_drill_activity_5 = etl.cut(exploration_surface_drill, 'messageid', 'mms_cid', 'act5_ind', 'act5_cnt', 'act5_ar', 'act5_vol')
 
-        exploration_surface_drill_activity_2 = etl.cut(exploration_surface_drill, 'mms_cid', 'act2_ind', 'act2_cnt', 'act2_ar', 'act2_vol')
+        exploration_surface_drill_activity_6 = etl.cut(exploration_surface_drill, 'messageid', 'mms_cid', 'act6_ind', 'act6_cnt', 'act6_ar', 'act6_vol')
 
-        exploration_surface_drill_activity_3 = etl.cut(exploration_surface_drill, 'mms_cid', 'act3_ind', 'act3_cnt', 'act3_ar', 'act3_vol')
+        exploration_surface_drill_activity_7 = etl.cut(exploration_surface_drill, 'messageid', 'mms_cid', 'act7_ind', 'act7_cnt', 'act7_ar', 'act7_vol')
 
-        exploration_surface_drill_activity_4 = etl.cut(exploration_surface_drill, 'mms_cid', 'act4_ind', 'act4_cnt', 'act4_ar', 'act4_vol')
-        
-        exploration_surface_drill_activity_5 = etl.cut(exploration_surface_drill, 'mms_cid', 'act5_ind', 'act5_cnt', 'act5_ar', 'act5_vol')
-
-        exploration_surface_drill_activity_6 = etl.cut(exploration_surface_drill, 'mms_cid', 'act6_ind', 'act6_cnt', 'act6_ar', 'act6_vol')
-
-        exploration_surface_drill_activity_7 = etl.cut(exploration_surface_drill, 'mms_cid', 'act7_ind', 'act7_cnt', 'act7_ar', 'act7_vol')
-
-        exploration_surface_drill_activity_8 = etl.cut(exploration_surface_drill, 'mms_cid', 'act8_ind', 'act8_cnt', 'act8_ar', 'act8_vol')
+        exploration_surface_drill_activity_8 = etl.cut(exploration_surface_drill, 'messageid', 'mms_cid', 'act8_ind', 'act8_cnt', 'act8_ar', 'act8_vol')
 
         exploration_surface_drill_activity_1 = etl.select(exploration_surface_drill_activity_1, lambda v: v['act1_ind'] == 1)
         exploration_surface_drill_activity_2 = etl.select(exploration_surface_drill_activity_2, lambda v: v['act2_ind'] == 1)
@@ -504,12 +501,11 @@ def ETL_MMS_NOW_schema(connection, tables):
 
         exploration_surface_drill_activity_detail = etl.cat(exploration_surface_drill_activity_detail, exploration_surface_drill_activity_8)
 
-        exploration_surface_drill_activity_detail = etl.leftjoin(message_ids, exploration_surface_drill_activity_detail, key='mms_cid')
         applications = etl.leftjoin(applications, exploration_surface_drill_app_cols, key='mms_cid')
 
         mech_trenching = etl.fromdb(
             connection,
-            f'SELECT cid as mms_cid, recl_desc as mechtrenchingreclamation, recl_dol as mechtrenchingreclamationcost, act1_ind, act2_ind, act1_cnt, act2_cnt, act1_ar, act2_ar, act1_vol, act2_vol from mms.mmsscb_n'
+            f'SELECT b.msg_id as messageid, b.cid as mms_cid, recl_desc as mechtrenchingreclamation, recl_dol as mechtrenchingreclamationcost, act1_ind, act2_ind, act1_cnt, act2_cnt, act1_ar, act2_ar, act1_vol, act2_vol from mms.mmsscb_n a inner join mms.mmsnow b on a.cid = b.cid'
         )
 
         mech_trenching_app_cols = etl.cut(mech_trenching, 'mms_cid', 'mechtrenchingreclamation', 'mechtrenchingreclamationcost')
@@ -520,12 +516,10 @@ def ETL_MMS_NOW_schema(connection, tables):
             connection,
             f'SELECT * from MMS_NOW_Submissions.mech_trenching_activity'
         )
-
         mech_trenching_activity_detail = etl.cutout(mech_trenching_activity_detail, 'messageid', 'id')
-        
-        mech_trenching_activity_1 = etl.cut(mech_trenching, 'mms_cid', 'act1_ind', 'act1_cnt', 'act1_ar', 'act1_vol')
+        mech_trenching_activity_1 = etl.cut(mech_trenching, 'messageid', 'mms_cid', 'act1_ind', 'act1_cnt', 'act1_ar', 'act1_vol')
 
-        mech_trenching_activity_2 = etl.cut(mech_trenching, 'mms_cid', 'act2_ind', 'act2_cnt', 'act2_ar', 'act2_vol')
+        mech_trenching_activity_2 = etl.cut(mech_trenching, 'messageid', 'mms_cid', 'act2_ind', 'act2_cnt', 'act2_ar', 'act2_vol')
 
         mech_trenching_activity_1 = etl.select(mech_trenching_activity_1, lambda v: v['act1_ind'] == 1)
         mech_trenching_activity_2 = etl.select(mech_trenching_activity_2, lambda v: v['act2_ind'] == 1)
@@ -553,7 +547,7 @@ def ETL_MMS_NOW_schema(connection, tables):
 
         under_exp_activity = etl.fromdb(
             connection,
-            f'SELECT cid as mms_cid, recl_desc as underexpreclamation, recl_dol as underexpreclamationcost, t_ar as underexpsurfacetotaldistarea, t_vol as underexpsurfacetimbervolume, devr1_ind, devr2_ind, devr3_ind, devr4_ind, devr5_ind, devr6_ind, devr7_ind, devr8_ind, devr1_ct, devr2_ct, devr3_ct, devr4_ct, devr5_ct, devr6_ct, devr7_ct, devr8_ct, devn1_ind, devn2_ind, devn3_ind, devn4_ind, devn5_ind, devn6_ind, devn7_ind, devn8_ind, devn1_ct, devn2_ct, devn3_ct, devn4_ct, devn5_ct, devn6_ct, devn7_ct, devn8_ct, surf1_ind, surf2_ind, surf3_ind, surf4_ind, surf7_ind, surf8_ind, surf9_ind, surf10_ind, surf1_ct, surf2_ct, surf3_ct, surf4_ct, surf7_ct, surf8_ct, surf9_ct, surf10_ct, surf1_ar, surf2_ar, surf3_ar, surf4_ar, surf7_ar, surf8_ar, surf9_ar, surf10_ar, surf1_vol, surf2_vol, surf3_vol, surf4_vol, surf7_vol, surf8_vol, surf9_vol, surf10_vol from mms.mmsscg_n'
+            f'SELECT b.msg_id as messageid, b.cid as mms_cid, recl_desc as underexpreclamation, recl_dol as underexpreclamationcost, t_ar as underexpsurfacetotaldistarea, t_vol as underexpsurfacetimbervolume, devr1_ind, devr2_ind, devr3_ind, devr4_ind, devr5_ind, devr6_ind, devr7_ind, devr8_ind, devr1_ct, devr2_ct, devr3_ct, devr4_ct, devr5_ct, devr6_ct, devr7_ct, devr8_ct, devn1_ind, devn2_ind, devn3_ind, devn4_ind, devn5_ind, devn6_ind, devn7_ind, devn8_ind, devn1_ct, devn2_ct, devn3_ct, devn4_ct, devn5_ct, devn6_ct, devn7_ct, devn8_ct, surf1_ind, surf2_ind, surf3_ind, surf4_ind, surf7_ind, surf8_ind, surf9_ind, surf10_ind, surf1_ct, surf2_ct, surf3_ct, surf4_ct, surf7_ct, surf8_ct, surf9_ct, surf10_ct, surf1_ar, surf2_ar, surf3_ar, surf4_ar, surf7_ar, surf8_ar, surf9_ar, surf10_ar, surf1_vol, surf2_vol, surf3_vol, surf4_vol, surf7_vol, surf8_vol, surf9_vol, surf10_vol from mms.mmsscg_n a inner join mms.mmsnow b on a.cid = b.cid'
         )
 
         under_exp_activity_app_cols = etl.cut(under_exp_activity, 'mms_cid', 'underexpreclamation', 'underexpreclamationcost', 'underexpsurfacetotaldistarea', 'underexpsurfacetimbervolume')
@@ -564,17 +558,16 @@ def ETL_MMS_NOW_schema(connection, tables):
             connection,
             f'SELECT * from MMS_NOW_Submissions.under_exp_surface_activity'
         )
-
         under_exp_surface_activity_detail = etl.cutout(under_exp_surface_activity_detail, 'messageid', 'id')
 
-        under_exp_surface_activity_1 = etl.cut(under_exp_activity, 'mms_cid', 'surf1_ind', 'surf1_ct', 'surf1_ar', 'surf1_vol')
-        under_exp_surface_activity_2 = etl.cut(under_exp_activity, 'mms_cid', 'surf2_ind', 'surf2_ct', 'surf2_ar', 'surf2_vol')
-        under_exp_surface_activity_3 = etl.cut(under_exp_activity, 'mms_cid', 'surf3_ind', 'surf3_ct', 'surf3_ar', 'surf3_vol')
-        under_exp_surface_activity_4 = etl.cut(under_exp_activity, 'mms_cid', 'surf4_ind', 'surf4_ct', 'surf4_ar', 'surf4_vol')
-        under_exp_surface_activity_7 = etl.cut(under_exp_activity, 'mms_cid', 'surf7_ind', 'surf7_ct', 'surf7_ar', 'surf7_vol')
-        under_exp_surface_activity_8 = etl.cut(under_exp_activity, 'mms_cid', 'surf8_ind', 'surf8_ct', 'surf8_ar', 'surf8_vol')
-        under_exp_surface_activity_9 = etl.cut(under_exp_activity, 'mms_cid', 'surf9_ind', 'surf9_ct', 'surf9_ar', 'surf9_vol')
-        under_exp_surface_activity_10 = etl.cut(under_exp_activity, 'mms_cid', 'surf10_ind', 'surf10_ct', 'surf10_ar', 'surf10_vol')
+        under_exp_surface_activity_1 = etl.cut(under_exp_activity, 'messageid', 'mms_cid', 'surf1_ind', 'surf1_ct', 'surf1_ar', 'surf1_vol')
+        under_exp_surface_activity_2 = etl.cut(under_exp_activity, 'messageid', 'mms_cid', 'surf2_ind', 'surf2_ct', 'surf2_ar', 'surf2_vol')
+        under_exp_surface_activity_3 = etl.cut(under_exp_activity, 'messageid', 'mms_cid', 'surf3_ind', 'surf3_ct', 'surf3_ar', 'surf3_vol')
+        under_exp_surface_activity_4 = etl.cut(under_exp_activity, 'messageid', 'mms_cid', 'surf4_ind', 'surf4_ct', 'surf4_ar', 'surf4_vol')
+        under_exp_surface_activity_7 = etl.cut(under_exp_activity, 'messageid', 'mms_cid', 'surf7_ind', 'surf7_ct', 'surf7_ar', 'surf7_vol')
+        under_exp_surface_activity_8 = etl.cut(under_exp_activity, 'messageid', 'mms_cid', 'surf8_ind', 'surf8_ct', 'surf8_ar', 'surf8_vol')
+        under_exp_surface_activity_9 = etl.cut(under_exp_activity, 'messageid', 'mms_cid', 'surf9_ind', 'surf9_ct', 'surf9_ar', 'surf9_vol')
+        under_exp_surface_activity_10 = etl.cut(under_exp_activity, 'messageid', 'mms_cid', 'surf10_ind', 'surf10_ct', 'surf10_ar', 'surf10_vol')
 
         under_exp_surface_activity_1 = etl.select(under_exp_surface_activity_1, lambda v: v['surf1_ind'] == 1)
         under_exp_surface_activity_2 = etl.select(under_exp_surface_activity_2, lambda v: v['surf2_ind'] == 1)
@@ -656,7 +649,6 @@ def ETL_MMS_NOW_schema(connection, tables):
         under_exp_surface_activity_10 = etl.cutout(under_exp_surface_activity_10, 'surf10_ind', 'surf10_ct', 'surf10_ar', 'surf10_vol')
 
         under_exp_surface_activity_detail = etl.cat(under_exp_surface_activity_detail, under_exp_surface_activity_10)
-        under_exp_surface_activity_detail = etl.leftjoin(message_ids, under_exp_surface_activity_detail, key='mms_cid')
 
         under_exp_new_activity_detail = etl.fromdb(
             connection,
@@ -665,14 +657,14 @@ def ETL_MMS_NOW_schema(connection, tables):
 
         under_exp_new_activity_detail = etl.cutout(under_exp_new_activity_detail, 'messageid', 'id')
 
-        under_exp_new_activity_1 = etl.cut(under_exp_activity, 'mms_cid', 'devn1_ind', 'devn1_ct')
-        under_exp_new_activity_2 = etl.cut(under_exp_activity, 'mms_cid', 'devn2_ind', 'devn2_ct')
-        under_exp_new_activity_3 = etl.cut(under_exp_activity, 'mms_cid', 'devn3_ind', 'devn3_ct')
-        under_exp_new_activity_4 = etl.cut(under_exp_activity, 'mms_cid', 'devn4_ind', 'devn4_ct')
-        under_exp_new_activity_5 = etl.cut(under_exp_activity, 'mms_cid', 'devn5_ind', 'devn5_ct')
-        under_exp_new_activity_6 = etl.cut(under_exp_activity, 'mms_cid', 'devn6_ind', 'devn6_ct')
-        under_exp_new_activity_7 = etl.cut(under_exp_activity, 'mms_cid', 'devn7_ind', 'devn7_ct')
-        under_exp_new_activity_8 = etl.cut(under_exp_activity, 'mms_cid', 'devn8_ind', 'devn8_ct')
+        under_exp_new_activity_1 = etl.cut(under_exp_activity, 'messageid', 'mms_cid', 'devn1_ind', 'devn1_ct')
+        under_exp_new_activity_2 = etl.cut(under_exp_activity, 'messageid', 'mms_cid', 'devn2_ind', 'devn2_ct')
+        under_exp_new_activity_3 = etl.cut(under_exp_activity, 'messageid', 'mms_cid', 'devn3_ind', 'devn3_ct')
+        under_exp_new_activity_4 = etl.cut(under_exp_activity, 'messageid', 'mms_cid', 'devn4_ind', 'devn4_ct')
+        under_exp_new_activity_5 = etl.cut(under_exp_activity, 'messageid', 'mms_cid', 'devn5_ind', 'devn5_ct')
+        under_exp_new_activity_6 = etl.cut(under_exp_activity, 'messageid', 'mms_cid', 'devn6_ind', 'devn6_ct')
+        under_exp_new_activity_7 = etl.cut(under_exp_activity, 'messageid', 'mms_cid', 'devn7_ind', 'devn7_ct')
+        under_exp_new_activity_8 = etl.cut(under_exp_activity, 'messageid', 'mms_cid', 'devn8_ind', 'devn8_ct')
 
         under_exp_new_activity_1 = etl.select(under_exp_new_activity_1, lambda v: v['devn1_ind'] == 1)
         under_exp_new_activity_2 = etl.select(under_exp_new_activity_2, lambda v: v['devn2_ind'] == 1)
@@ -738,23 +730,21 @@ def ETL_MMS_NOW_schema(connection, tables):
         under_exp_new_activity_8 = etl.cutout(under_exp_new_activity_8, 'devn8_ind', 'devn8_ct')
 
         under_exp_new_activity_detail = etl.cat(under_exp_new_activity_detail, under_exp_new_activity_8)
-        under_exp_new_activity_detail = etl.leftjoin(message_ids, under_exp_new_activity_detail, key='mms_cid')
 
         under_exp_rehab_activity_detail = etl.fromdb(
             connection,
             f'SELECT * from MMS_NOW_Submissions.under_exp_rehab_activity'
         )
-
         under_exp_rehab_activity_detail = etl.cutout(under_exp_rehab_activity_detail, 'messageid', 'id')
 
-        under_exp_rehab_activity_1 = etl.cut(under_exp_activity, 'mms_cid', 'devr1_ind', 'devr1_ct')
-        under_exp_rehab_activity_2 = etl.cut(under_exp_activity, 'mms_cid', 'devr2_ind', 'devr2_ct')
-        under_exp_rehab_activity_3 = etl.cut(under_exp_activity, 'mms_cid', 'devr3_ind', 'devr3_ct')
-        under_exp_rehab_activity_4 = etl.cut(under_exp_activity, 'mms_cid', 'devr4_ind', 'devr4_ct')
-        under_exp_rehab_activity_5 = etl.cut(under_exp_activity, 'mms_cid', 'devr5_ind', 'devr5_ct')
-        under_exp_rehab_activity_6 = etl.cut(under_exp_activity, 'mms_cid', 'devr6_ind', 'devr6_ct')
-        under_exp_rehab_activity_7 = etl.cut(under_exp_activity, 'mms_cid', 'devr7_ind', 'devr7_ct')
-        under_exp_rehab_activity_8 = etl.cut(under_exp_activity, 'mms_cid', 'devr8_ind', 'devr8_ct')
+        under_exp_rehab_activity_1 = etl.cut(under_exp_activity, 'messageid', 'mms_cid', 'devr1_ind', 'devr1_ct')
+        under_exp_rehab_activity_2 = etl.cut(under_exp_activity, 'messageid', 'mms_cid', 'devr2_ind', 'devr2_ct')
+        under_exp_rehab_activity_3 = etl.cut(under_exp_activity, 'messageid', 'mms_cid', 'devr3_ind', 'devr3_ct')
+        under_exp_rehab_activity_4 = etl.cut(under_exp_activity, 'messageid', 'mms_cid', 'devr4_ind', 'devr4_ct')
+        under_exp_rehab_activity_5 = etl.cut(under_exp_activity, 'messageid', 'mms_cid', 'devr5_ind', 'devr5_ct')
+        under_exp_rehab_activity_6 = etl.cut(under_exp_activity, 'messageid', 'mms_cid', 'devr6_ind', 'devr6_ct')
+        under_exp_rehab_activity_7 = etl.cut(under_exp_activity, 'messageid', 'mms_cid', 'devr7_ind', 'devr7_ct')
+        under_exp_rehab_activity_8 = etl.cut(under_exp_activity, 'messageid', 'mms_cid', 'devr8_ind', 'devr8_ct')
 
         under_exp_rehab_activity_1 = etl.select(under_exp_rehab_activity_1, lambda v: v['devr1_ind'] == 1)
         under_exp_rehab_activity_2 = etl.select(under_exp_rehab_activity_2, lambda v: v['devr2_ind'] == 1)
@@ -821,26 +811,25 @@ def ETL_MMS_NOW_schema(connection, tables):
 
         under_exp_rehab_activity_detail = etl.cat(under_exp_rehab_activity_detail, under_exp_rehab_activity_8)
 
-        under_exp_rehab_activity_detail = etl.leftjoin(message_ids, under_exp_rehab_activity_detail, key='mms_cid')
         applications = etl.leftjoin(applications, under_exp_activity_app_cols, key='mms_cid')
 
         camps = etl.fromdb(
             connection,
-            f'SELECT cid as mms_cid, act1_ar as campdisturbedarea, act1_vol as camptimbervolume, act2_ar as bldgdisturbedarea, act2_vol as bldgtimbervolume, act3_ar as stgedisturbedarea, act3_vol as stgetimbervolume, recl_desc as cbsfreclamation, recl_dol as cbsfreclamationcost from mms.mmssca_n'
+            f'SELECT b.cid as mms_cid, act1_ar as campdisturbedarea, act1_vol as camptimbervolume, act2_ar as bldgdisturbedarea, act2_vol as bldgtimbervolume, act3_ar as stgedisturbedarea, act3_vol as stgetimbervolume, recl_desc as cbsfreclamation, recl_dol as cbsfreclamationcost from mms.mmssca_n a inner join mms.mmsnow b on a.cid = b.cid'
         )
 
         applications = etl.leftjoin(applications, camps, key='mms_cid')
 
         timber_cutting = etl.fromdb(
             connection,
-            f'SELECT cid as mms_cid, tot_bol as timbertotalvolume, fup_ind as freeusepermit, ltc_ind as licencetocut from mms.mmssck_n'
+            f'SELECT b.cid as mms_cid, tot_bol as timbertotalvolume, fup_ind as freeusepermit, ltc_ind as licencetocut from mms.mmssck_n a inner join mms.mmsnow b on a.cid = b.cid'
         )
 
         applications = etl.leftjoin(applications, timber_cutting, key='mms_cid')
 
         explosive_permits = etl.fromdb(
             connection,
-            f'SELECT cid as mms_cid, perm_ind, perm_no as bcexplosivespermitnumber, expry_dt as bcexplosivespermitexpiry from mms.mmsscc_n'
+            f'SELECT b.cid as mms_cid, perm_ind, perm_no as bcexplosivespermitnumber, expry_dt as bcexplosivespermitexpiry from mms.mmsscc_n a inner join mms.mmsnow b on a.cid = b.cid'
         )
 
         explosive_permits = etl.addfield(explosive_permits, 'bcexplosivespermitissued', lambda v: 'Yes' if v['perm_ind'] == 1 else 'No')
@@ -851,7 +840,7 @@ def ETL_MMS_NOW_schema(connection, tables):
         #Existing Placer------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         placer_activity = etl.fromdb(
             connection,
-            f'SELECT cid as mms_cid, recl_desc as placerreclamation, recl_dol as placerreclamationcost, edist_ar as placertotalexistdistarea, pdist_ar as placerdisturbedarea, t_vol as placertimbervolume, edist1_ind, edist2_ind, edist3_ind, edist4_ind, edist5_ind, edist6_ind, edist7_ind, edist8_ind, edist1_cnt, edist2_cnt, edist3_cnt, edist4_cnt, edist5_cnt, edist6_cnt, edist7_cnt, edist8_cnt, edist1_ar, edist2_ar, edist3_ar, edist4_ar, edist5_ar, edist6_ar, edist7_ar, edist8_ar, pdist2_ind, pdist3_ind, pdist4_ind, pdist8_ind, pdist9_ind, pdist2_cnt, pdist3_cnt, pdist4_cnt, pdist8_cnt, pdist9_cnt, pdist2_ar, pdist3_ar, pdist9_ar, pdist4_ar, pdist8_ar from mms.mmssch_n'
+            f'SELECT b.msg_id as messageid, b.cid as mms_cid, recl_desc as placerreclamation, recl_dol as placerreclamationcost, edist_ar as placertotalexistdistarea, pdist_ar as placerdisturbedarea, t_vol as placertimbervolume, edist1_ind, edist2_ind, edist3_ind, edist4_ind, edist5_ind, edist6_ind, edist7_ind, edist8_ind, edist1_cnt, edist2_cnt, edist3_cnt, edist4_cnt, edist5_cnt, edist6_cnt, edist7_cnt, edist8_cnt, edist1_ar, edist2_ar, edist3_ar, edist4_ar, edist5_ar, edist6_ar, edist7_ar, edist8_ar, pdist2_ind, pdist3_ind, pdist4_ind, pdist8_ind, pdist9_ind, pdist2_cnt, pdist3_cnt, pdist4_cnt, pdist8_cnt, pdist9_cnt, pdist2_ar, pdist3_ar, pdist9_ar, pdist4_ar, pdist8_ar from mms.mmssch_n a inner join mms.mmsnow b on a.cid = b.cid'
         )
 
         placer_activity_app_cols = etl.cut(placer_activity, 'mms_cid', 'placerreclamation', 'placerreclamationcost', 'placertotalexistdistarea', 'placerdisturbedarea', 'placertimbervolume')
@@ -870,14 +859,14 @@ def ETL_MMS_NOW_schema(connection, tables):
         
         proposed_placer_activity = etl.cutout(proposed_placer_activity, 'messageid', 'placeractivityid')
         
-        existing_placer_activity_1 = etl.cut(placer_activity, 'mms_cid', 'edist1_ind', 'edist1_cnt', 'edist1_ar')
-        existing_placer_activity_2 = etl.cut(placer_activity, 'mms_cid', 'edist2_ind', 'edist2_cnt', 'edist2_ar')
-        existing_placer_activity_3 = etl.cut(placer_activity, 'mms_cid', 'edist3_ind', 'edist3_cnt', 'edist3_ar')
-        existing_placer_activity_4 = etl.cut(placer_activity, 'mms_cid', 'edist4_ind', 'edist4_cnt', 'edist4_ar')
-        existing_placer_activity_5 = etl.cut(placer_activity, 'mms_cid', 'edist5_ind', 'edist5_cnt', 'edist5_ar')
-        existing_placer_activity_6 = etl.cut(placer_activity, 'mms_cid', 'edist6_ind', 'edist6_cnt', 'edist6_ar')
-        existing_placer_activity_7 = etl.cut(placer_activity, 'mms_cid', 'edist7_ind', 'edist7_cnt', 'edist7_ar')
-        existing_placer_activity_8 = etl.cut(placer_activity, 'mms_cid', 'edist8_ind', 'edist8_cnt', 'edist8_ar')
+        existing_placer_activity_1 = etl.cut(placer_activity, 'messageid', 'mms_cid', 'edist1_ind', 'edist1_cnt', 'edist1_ar')
+        existing_placer_activity_2 = etl.cut(placer_activity, 'messageid', 'mms_cid', 'edist2_ind', 'edist2_cnt', 'edist2_ar')
+        existing_placer_activity_3 = etl.cut(placer_activity, 'messageid', 'mms_cid', 'edist3_ind', 'edist3_cnt', 'edist3_ar')
+        existing_placer_activity_4 = etl.cut(placer_activity, 'messageid', 'mms_cid', 'edist4_ind', 'edist4_cnt', 'edist4_ar')
+        existing_placer_activity_5 = etl.cut(placer_activity, 'messageid', 'mms_cid', 'edist5_ind', 'edist5_cnt', 'edist5_ar')
+        existing_placer_activity_6 = etl.cut(placer_activity, 'messageid', 'mms_cid', 'edist6_ind', 'edist6_cnt', 'edist6_ar')
+        existing_placer_activity_7 = etl.cut(placer_activity, 'messageid', 'mms_cid', 'edist7_ind', 'edist7_cnt', 'edist7_ar')
+        existing_placer_activity_8 = etl.cut(placer_activity, 'messageid', 'mms_cid', 'edist8_ind', 'edist8_cnt', 'edist8_ar')
 
         existing_placer_activity_1 = etl.select(existing_placer_activity_1, lambda v: v['edist1_ind'] == 1)
         existing_placer_activity_2 = etl.select(existing_placer_activity_2, lambda v: v['edist2_ind'] == 1)
@@ -972,11 +961,11 @@ def ETL_MMS_NOW_schema(connection, tables):
 
         #Proposed Placer------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-        proposed_placer_activity_2 = etl.cut(placer_activity, 'mms_cid', 'pdist2_ind', 'pdist2_cnt', 'pdist2_ar')
-        proposed_placer_activity_3 = etl.cut(placer_activity, 'mms_cid', 'pdist3_ind', 'pdist3_cnt', 'pdist3_ar')
-        proposed_placer_activity_4 = etl.cut(placer_activity, 'mms_cid', 'pdist4_ind', 'pdist4_cnt', 'pdist4_ar')
-        proposed_placer_activity_8 = etl.cut(placer_activity, 'mms_cid', 'pdist8_ind', 'pdist8_cnt', 'pdist8_ar')
-        proposed_placer_activity_9 = etl.cut(placer_activity, 'mms_cid', 'pdist9_ind', 'pdist9_cnt', 'pdist9_ar')
+        proposed_placer_activity_2 = etl.cut(placer_activity, 'messageid', 'mms_cid', 'pdist2_ind', 'pdist2_cnt', 'pdist2_ar')
+        proposed_placer_activity_3 = etl.cut(placer_activity, 'messageid', 'mms_cid', 'pdist3_ind', 'pdist3_cnt', 'pdist3_ar')
+        proposed_placer_activity_4 = etl.cut(placer_activity, 'messageid', 'mms_cid', 'pdist4_ind', 'pdist4_cnt', 'pdist4_ar')
+        proposed_placer_activity_8 = etl.cut(placer_activity, 'messageid', 'mms_cid', 'pdist8_ind', 'pdist8_cnt', 'pdist8_ar')
+        proposed_placer_activity_9 = etl.cut(placer_activity, 'messageid', 'mms_cid', 'pdist9_ind', 'pdist9_cnt', 'pdist9_ar')
 
         proposed_placer_activity_2 = etl.select(proposed_placer_activity_2, lambda v: v['pdist2_ind'] == 1)
         proposed_placer_activity_3 = etl.select(proposed_placer_activity_3, lambda v: v['pdist3_ind'] == 1)
@@ -1035,7 +1024,6 @@ def ETL_MMS_NOW_schema(connection, tables):
         proposed_placer_activity = etl.addfield(proposed_placer_activity, 'identifier', 'proposed')
 
         placer_activity = etl.cat(proposed_placer_activity, existing_placer_activity)
-        placer_activity = etl.leftjoin(message_ids, placer_activity, key='mms_cid')
         placer_activity = etl.cutout(placer_activity, 'messageid')
 
         placer_activity = etl.addrownumbers(placer_activity)
