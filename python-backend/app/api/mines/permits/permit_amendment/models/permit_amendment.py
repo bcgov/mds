@@ -27,12 +27,8 @@ class PermitAmendment(AuditMixin, Base):
         db.String(3), db.ForeignKey('permit_amendment_status_code.permit_amendment_status_code'))
     permit_amendment_type_code = db.Column(
         db.String(3), db.ForeignKey('permit_amendment_type_code.permit_amendment_type_code'))
-
     description = db.Column(db.String, nullable=True)
-
     deleted_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
-
-    #related_documents = db.relationship('PermitAmendmentDocument')
 
     permit_amendment_status = db.relationship('PermitAmendmentStatusCode')
     permit_amendment_status_description = association_proxy('permit_amendment_status',
