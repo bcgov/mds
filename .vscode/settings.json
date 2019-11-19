@@ -6,7 +6,7 @@
   "editor.formatOnSave": true,
   "python.formatting.provider": "yapf",
   "python.formatting.yapfArgs": [
-    "--style={column_limit:100, spaces_before_comment:'15,30,50', SPLIT_BEFORE_EXPRESSION_AFTER_OPENING_PAREN:TRUE}"
+    "--style={column_limit:100, spaces_before_comment:'5', SPLIT_BEFORE_EXPRESSION_AFTER_OPENING_PAREN:TRUE}"
   ],
   "python.linting.enabled": true,
   "eslint.alwaysShowStatus": true,

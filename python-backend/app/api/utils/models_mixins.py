@@ -91,7 +91,7 @@ class Base(db.Model):
                         existing_obj = next((x for x in obj_list if all(
                             i.get(pk_name, None) == getattr(x, pk_name) for pk_name in pk_names)),
                                             None)     #false always if new obj.
-                        #print([(getattr(x, pk_names[0]), i[pk_names[0]]) for x in obj_list])
+                        #print([(getattr(x, pk_names[0]), i[pk_names[0]]) for x in o    bj_list])
                         if existing_obj:
                             print(depth * ' ' + f'found existing{existing_obj}', flush=True)
                             existing_obj.deep_update_from_dict(i, depth=(depth + 1))

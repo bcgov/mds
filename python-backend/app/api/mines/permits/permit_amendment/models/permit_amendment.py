@@ -142,7 +142,5 @@ class PermitAmendmentSchema(ModelSchema):
         #model_converter = CoreConverter
         exclude = ('create_user', 'create_timestamp', 'update_user', 'update_timestamp')
 
-    activity_type_code = fields.String(read_only=True)
-
 
 PermitAmendment._schema = PermitAmendmentSchema
