@@ -67,9 +67,6 @@ def ETL_MMS_NOW_schema(connection, tables):
 
         applications = etl.cutout(applications, 'apl_typ', 'lat_dec', 'lon_dec')
 
-        message_ids = etl.cut(applications, 'mms_cid', 'messageid')
-        message_ids = etl.select(message_ids, lambda v: v['mms_cid'] is not None)
-
         applications = etl.addfield(
             applications, 'typeofpermit',
             lambda v: 'I would like to apply for a Multi-Year, Area Based permit' if v['multi_year_area_ind'] == 1 else ('I would like to apply for a Multi-Year permit' if v['multi_year_ind'] == 1 else None)
@@ -262,7 +259,6 @@ def ETL_MMS_NOW_schema(connection, tables):
 
         surface_bulk_activity_detail = etl.cat(surface_bulk_activity_detail, surface_bulk_activity_6)
 
-        surface_bulk_activity_detail = etl.leftjoin(message_ids, surface_bulk_activity_detail, key='mms_cid')
         applications = etl.leftjoin(applications, surface_bulk_activity_app_cols, key='mms_cid')
 
         cut_lines = etl.fromdb(
@@ -542,7 +538,6 @@ def ETL_MMS_NOW_schema(connection, tables):
 
         mech_trenching_activity_detail = etl.cat(mech_trenching_activity_detail, mech_trenching_activity_2)
 
-        mech_trenching_activity_detail = etl.leftjoin(message_ids, mech_trenching_activity_detail, key='mms_cid')
         applications = etl.leftjoin(applications, mech_trenching_app_cols, key='mms_cid')
 
         under_exp_activity = etl.fromdb(
@@ -1113,14 +1108,11 @@ def ETL_MMS_NOW_schema(connection, tables):
         # streamline_application = etl.cutout(streamline_application, 'comm_desc', 'pmt_typ', 'ten_nos1', 'ten_nos2', 'cg_clms1', 'cg_clms2', 'legal_desc1', 'legal_desc2', 'priv_ind', 'water_ind', 'culture_ind', 'fuel_ind', 'barrel_ind', 'bulk_ind')
         
         # streamline_application = etl.cut(streamline_application, 'mms_cid', 'startworkdate', 'endworkdate')
-        # streamline_application = etl.leftjoin(message_ids, streamline_application, key='mms_cid')
 
         water_source_activity = etl.fromdb(
             connection,
-            f'SELECT cid as mms_cid, water_nm as sourcewatersupply, activity as type, water_use as useofwater, water_vol as estimateratewater, pump_size as pumpsizeinwater, water_intake as locationwaterintake from mms.mmsscp_n_d'
+            f'SELECT b._msg_id as messageid, b.cid as mms_cid, water_nm as sourcewatersupply, activity as type, water_use as useofwater, water_vol as estimateratewater, pump_size as pumpsizeinwater, water_intake as locationwaterintake from mms.mmsscp_n_d a inner join mms.mmsnow b on a.cid = b.cid'
         )
-
-        water_source_activity = etl.leftjoin(message_ids, water_source_activity, key='mms_cid')
 
         application_nda = etl.fromdb(
             connection,
