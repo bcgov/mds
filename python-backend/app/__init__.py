@@ -60,6 +60,7 @@ def register_extensions(app):
 
     cache.init_app(app)
     db.init_app(app)
+
     CORS(app)
     Compress(app)
 

@@ -27,7 +27,9 @@ class PermitAmendment(AuditMixin, Base):
         db.String(3), db.ForeignKey('permit_amendment_status_code.permit_amendment_status_code'))
     permit_amendment_type_code = db.Column(
         db.String(3), db.ForeignKey('permit_amendment_type_code.permit_amendment_type_code'))
+
     description = db.Column(db.String, nullable=True)
+
     deleted_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
 
     related_documents = db.relationship('PermitAmendmentDocument')
@@ -139,6 +141,8 @@ class PermitAmendmentSchema(ModelSchema):
         sqla_session = db.session
         #model_converter = CoreConverter
         exclude = ('create_user', 'create_timestamp', 'update_user', 'update_timestamp')
+
+    activity_type_code = fields.String(read_only=True)
 
 
 PermitAmendment._schema = PermitAmendmentSchema
