@@ -25,9 +25,7 @@ class CoreConverter(ModelConverter):
 
 
 def setup_schema(Base, session):
-    # Create a function which incorporates the Base and session information
     def setup_schema_fn():
-        # print(f'modules that inherit from base {list(Base._decl_class_registry.values())}')
         for class_ in Base._decl_class_registry.values():
             if hasattr(class_, "__tablename__"):
                 try:
@@ -46,7 +44,6 @@ def setup_schema(Base, session):
 
                     schema_class_name = "%sSchema" % class_.__name__
 
-                    #current_app.logger.debug(
                     schema_class = type(schema_class_name, (ModelSchema, ), {"Meta": Meta})
 
                     setattr(class_, "_schema", schema_class)
@@ -57,5 +54,7 @@ def setup_schema(Base, session):
     return setup_schema_fn
 
 
+# TODO: finish this and resolve errors now_application/activity_detail_base.activity_type_code to all for programatic generation of schema
+# TODO: add call to model method to execute post_generation of schema.
 # event.listen(mapper, "after_configured", setup_schema(Base, db.session))
-# Base.metadata.create_all(db.engine.connect())
+# Base.metadata.create_all(db.engine.connect()) # i think this is not used
