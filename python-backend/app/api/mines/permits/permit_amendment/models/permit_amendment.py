@@ -32,7 +32,7 @@ class PermitAmendment(AuditMixin, Base):
 
     deleted_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
 
-    related_documents = db.relationship('PermitAmendmentDocument')
+    #related_documents = db.relationship('PermitAmendmentDocument')
 
     permit_amendment_status = db.relationship('PermitAmendmentStatusCode')
     permit_amendment_status_description = association_proxy('permit_amendment_status',

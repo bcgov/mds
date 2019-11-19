@@ -103,11 +103,8 @@ class Base(db.Model):
                             rel = getattr(self.__class__, k)
                             new_obj_class = rel.property.entity.class_
                             schema = new_obj_class._schema()
-                            #print(schema)
-                            #print(schema.load_fields)
                             new_obj = schema.load(i)
-                            existing_relationship = getattr(self, k)
-                            existing_relationship.append(new_obj)
+                            obj_list.append(new_obj)
                             print(
                                 f'just created and saved{new_obj}=' + str(schema.dump(new_obj)),
                                 flush=True)

@@ -88,6 +88,7 @@ PERMIT_AMENDMENT_DOCUMENT_MODEL = api.model(
 
 PERMIT_AMENDMENT_MODEL = api.model(
     'PermitAmendment', {
+        #'permit_guid':fields.String,
         'permit_amendment_id':fields.Integer,
         'permit_amendment_guid': fields.String,
         'permit_amendment_status_code': fields.String,
