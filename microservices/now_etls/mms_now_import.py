@@ -1035,6 +1035,8 @@ def ETL_MMS_NOW_schema(connection, tables):
         proposed_placer_activity = etl.addfield(proposed_placer_activity, 'identifier', 'proposed')
 
         placer_activity = etl.cat(proposed_placer_activity, existing_placer_activity)
+        placer_activity = etl.leftjoin(message_ids, placer_activity, key='mms_cid')
+        placer_activity = etl.cutout(placer_activity, 'messageid')
 
         placer_activity = etl.addrownumbers(placer_activity)
 
@@ -1048,12 +1050,8 @@ def ETL_MMS_NOW_schema(connection, tables):
 
         existing_placer_activity_xref = etl.cut(existing_placer_activity_xref, 'placeractivityid', 'mms_cid')
 
-        proposed_placer_activity_xref = etl.leftjoin(message_ids, proposed_placer_activity_xref, key='mms_cid')
-        existing_placer_activity_xref = etl.leftjoin(message_ids, existing_placer_activity_xref, key='mms_cid')
-        proposed_placer_activity_xref = etl.cutout(proposed_placer_activity_xref, 'messageid')
-        existing_placer_activity_xref = etl.cutout(existing_placer_activity_xref, 'messageid')
         placer_activity = etl.cutout(placer_activity, 'identifier')
-
+        
         applications = etl.leftjoin(applications, placer_activity_app_cols, key='mms_cid')
 
         #Contacts----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -1066,7 +1064,7 @@ def ETL_MMS_NOW_schema(connection, tables):
 
         clients = etl.select(contacts, lambda v: v['type_ind'] == 'NNNNNY')
 
-        # contacts = etl.select(contacts, )
+        contacts = etl.select(contacts, lambda v: v['type_ind'] != 'NNNNNY')
 
         #Streamline NoW----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         # This is temporarily removed due to the data in the streamline NoW table in MMS being bad and unable to be imported.
