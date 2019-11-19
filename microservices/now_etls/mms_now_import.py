@@ -172,6 +172,7 @@ def ETL_MMS_NOW_schema(connection, tables):
         sand_grv_qry_activity_detail = etl.cat(sand_grv_qry_activity_detail, sand_grv_qry_activity_4)
         
         sand_grv_qry_activity_detail = etl.leftjoin(message_ids, sand_grv_qry_activity_detail, key='mms_cid')
+        sand_grv_qry_activity_detail = etl.select(sand_grv_qry_activity_detail, lambda v: v['mms_cid'] is not None)
         applications = etl.leftjoin(applications, sand_grv_qry_activity_app_cols, key='mms_cid')
 
         surface_bulk_activity = etl.fromdb(
@@ -263,6 +264,7 @@ def ETL_MMS_NOW_schema(connection, tables):
         surface_bulk_activity_detail = etl.cat(surface_bulk_activity_detail, surface_bulk_activity_6)
 
         surface_bulk_activity_detail = etl.leftjoin(message_ids, surface_bulk_activity_detail, key='mms_cid')
+        surface_bulk_activity_detail = etl.select(surface_bulk_activity_detail, lambda v: v['mms_cid'] is not None)
         applications = etl.leftjoin(applications, surface_bulk_activity_app_cols, key='mms_cid')
 
         cut_lines = etl.fromdb(
@@ -381,6 +383,7 @@ def ETL_MMS_NOW_schema(connection, tables):
         exploration_access_activity_detail = etl.cat(exploration_access_activity_detail, exploration_access_activity_7)
 
         exploration_access_activity_detail = etl.leftjoin(message_ids, exploration_access_activity_detail, key='mms_cid')
+        exploration_access_activity_detail = etl.select(exploration_access_activity_detail, lambda v: v['mms_cid'] is not None)
         applications = etl.leftjoin(applications, exploration_access_app_cols, key='mms_cid')
 
         exploration_surface_drill = etl.fromdb(
@@ -504,6 +507,7 @@ def ETL_MMS_NOW_schema(connection, tables):
         exploration_surface_drill_activity_detail = etl.cat(exploration_surface_drill_activity_detail, exploration_surface_drill_activity_8)
 
         exploration_surface_drill_activity_detail = etl.leftjoin(message_ids, exploration_surface_drill_activity_detail, key='mms_cid')
+        exploration_surface_drill_activity_detail = etl.select(exploration_surface_drill_activity_detail, lambda v: v['mms_cid'] is not None)
         applications = etl.leftjoin(applications, exploration_surface_drill_app_cols, key='mms_cid')
 
         mech_trenching = etl.fromdb(
@@ -548,6 +552,7 @@ def ETL_MMS_NOW_schema(connection, tables):
         mech_trenching_activity_detail = etl.cat(mech_trenching_activity_detail, mech_trenching_activity_2)
 
         mech_trenching_activity_detail = etl.leftjoin(message_ids, mech_trenching_activity_detail, key='mms_cid')
+        mech_trenching_activity_detail = etl.select(mech_trenching_activity_detail, lambda v: v['mms_cid'] is not None)
         applications = etl.leftjoin(applications, mech_trenching_app_cols, key='mms_cid')
 
         under_exp_activity = etl.fromdb(
@@ -656,6 +661,7 @@ def ETL_MMS_NOW_schema(connection, tables):
 
         under_exp_surface_activity_detail = etl.cat(under_exp_surface_activity_detail, under_exp_surface_activity_10)
         under_exp_surface_activity_detail = etl.leftjoin(message_ids, under_exp_surface_activity_detail, key='mms_cid')
+        under_exp_surface_activity_detail = etl.select(under_exp_surface_activity_detail, lambda v: v['mms_cid'] is not None)
 
         under_exp_new_activity_detail = etl.fromdb(
             connection,
@@ -738,6 +744,7 @@ def ETL_MMS_NOW_schema(connection, tables):
 
         under_exp_new_activity_detail = etl.cat(under_exp_new_activity_detail, under_exp_new_activity_8)
         under_exp_new_activity_detail = etl.leftjoin(message_ids, under_exp_new_activity_detail, key='mms_cid')
+        under_exp_new_activity_detail = etl.select(under_exp_new_activity_detail, lambda v: v['mms_cid'] is not None)
 
         under_exp_rehab_activity_detail = etl.fromdb(
             connection,
@@ -821,6 +828,7 @@ def ETL_MMS_NOW_schema(connection, tables):
         under_exp_rehab_activity_detail = etl.cat(under_exp_rehab_activity_detail, under_exp_rehab_activity_8)
 
         under_exp_rehab_activity_detail = etl.leftjoin(message_ids, under_exp_rehab_activity_detail, key='mms_cid')
+        under_exp_rehab_activity_detail = etl.select(under_exp_rehab_activity_detail, lambda v: v['mms_cid'] is not None)
         applications = etl.leftjoin(applications, under_exp_activity_app_cols, key='mms_cid')
 
         camps = etl.fromdb(
@@ -1123,6 +1131,7 @@ def ETL_MMS_NOW_schema(connection, tables):
         
         # streamline_application = etl.cut(streamline_application, 'mms_cid', 'startworkdate', 'endworkdate')
         # streamline_application = etl.leftjoin(message_ids, streamline_application, key='mms_cid')
+        # streamline_application = etl.select(streamline_application, lambda v: v['mms_cid'] is not None)
 
         water_source_activity = etl.fromdb(
             connection,
@@ -1130,6 +1139,7 @@ def ETL_MMS_NOW_schema(connection, tables):
         )
 
         water_source_activity = etl.leftjoin(message_ids, water_source_activity, key='mms_cid')
+        water_source_activity = etl.select(water_source_activity, lambda v: v['mms_cid'] is not None)
 
         application_nda = etl.fromdb(
             connection,
