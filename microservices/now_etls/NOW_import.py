@@ -68,7 +68,7 @@ def ETL_MMS_NOW_schema(connection, tables, schema, system_name):
 
                 table_plus_os_guid = join_mine_guids(connection, table_plus_os)
 
-                etl.todb(
+                etl.appenddb(
                     table_plus_os_guid,
                     connection,
                     destination,
@@ -76,7 +76,7 @@ def ETL_MMS_NOW_schema(connection, tables, schema, system_name):
                     commit=False)
             else:
 
-                etl.todb(
+                etl.appenddb(
                     current_table, connection, destination, schema='now_submissions', commit=False)
 
         except Exception as err:
