@@ -31,7 +31,7 @@ def truncate_table(connection, tables):
     cursor = connection.cursor()
     for table in tables:
         print(f'Truncating {table}...')
-        cursor.execute(f'TRUNCATE TABLE mms_now_submissions.{table} RESTART IDENTITY CASCADE;')
+        cursor.execute(f'TRUNCATE TABLE mms_now_submissions.{table} CONTINUE IDENTITY CASCADE;')
 
 def ETL_MMS_NOW_schema(connection, tables):
     '''Import all the data from the specified schema and tables.'''
@@ -1018,46 +1018,48 @@ def ETL_MMS_NOW_schema(connection, tables):
 
         proposed_placer_activity = etl.addfield(proposed_placer_activity, 'identifier', 'proposed')
 
-        placer_activity = etl.cat(proposed_placer_activity, existing_placer_activity)
-        placer_activity = etl.cutout(placer_activity, 'messageid')
+        placer_activity_detail = etl.cat(proposed_placer_activity, existing_placer_activity)
+        placer_activity_detail = etl.cutout(placer_activity_detail, 'messageid')
 
-        placer_activity = etl.addrownumbers(placer_activity)
+        placer_activity_detail = etl.addrownumbers(placer_activity_detail)
 
-        placer_activity = etl.rename(placer_activity, 'row', 'placeractivityid')
+        placer_activity_detail = etl.rename(placer_activity_detail, 'row', 'placeractivityid')
 
-        proposed_placer_activity_xref = etl.select(placer_activity, lambda v: v['identifier'] == 'proposed')
+        proposed_placer_activity_xref = etl.select(placer_activity_detail, lambda v: v['identifier'] == 'proposed')
 
-        existing_placer_activity_xref = etl.select(placer_activity, lambda v: v['identifier'] == 'existing')
+        existing_placer_activity_xref = etl.select(placer_activity_detail, lambda v: v['identifier'] == 'existing')
 
-        placer_activity = etl.cutout(placer_activity, 'identifier')
+        placer_activity = etl.cutout(placer_activity_detail, 'identifier')
 
         proposed_placer_activity_xref = etl.cut(proposed_placer_activity_xref, 'placeractivityid', 'mms_cid')
 
-        garbage_data1 = etl.select(placer_activity, lambda v: v['placeractivityid'] == '9414')
-        garbage_data2 = etl.select(placer_activity, lambda v: v['placeractivityid'] == 9414)
-
-        print(garbage_data1)
-        print(garbage_data2)
-        
-        print(etl.tail(proposed_placer_activity_xref, 5))
+        print(etl.nrows(placer_activity_detail))
+        print(etl.nrows(proposed_placer_activity_xref))
+        print(etl.nrows(existing_placer_activity_xref))
 
         existing_placer_activity_xref = etl.cut(existing_placer_activity_xref, 'placeractivityid', 'mms_cid')
-
-        print(etl.tail(existing_placer_activity_xref, 5))
         
         applications = etl.leftjoin(applications, placer_activity_app_cols, key='mms_cid')
 
         #Contacts----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-        contacts = etl.fromdb(connection, 'SELECT cid as mms_cid, mine_no, name, l_name, phone, tel_ext, fax, email, street, city, prov, post_cd, entered_by from mms.mmsscc_n')
+        contacts = etl.fromdb(connection, 'SELECT b.cid as mms_cid, c.type_ind as type_ind, mine_no, name, l_name, phone, tel_ext, fax, email, street, city, prov, post_cd, entered_by from mms.mmsscc_n a inner join mms.mmsnow b on a.cid = b.cid inner join mms.mmsccc c on a.cid = c.cid')
 
-        contact_type = etl.fromdb(connection, 'SELECT cid as mms_cid, cid_ccn, type_ind from mms.mmsccc')
-
-        contacts = etl.join(contacts, contact_type, key='mms_cid')
-
-        clients = etl.select(contacts, lambda v: v['type_ind'] == 'NNNNNY')
-
-        contacts = etl.select(contacts, lambda v: v['type_ind'] != 'NNNNNY')
+        tenure_holders = etl.select(contacts, lambda v: True if len(v['type_ind']) >= 1 and v['type_ind'][0] == 'Y' else False)
+        site_operators = etl.select(contacts, lambda v: True if len(v['type_ind']) >= 2 and v['type_ind'][1] == 'Y' else False)
+        mine_managers = etl.select(contacts, lambda v: True if len(v['type_ind']) >= 3 and v['type_ind'][2] == 'Y' else False)
+        permitees = etl.select(contacts, lambda v: True if len(v['type_ind']) >= 4 and v['type_ind'][3] == 'Y' else False)
+        private_land_owners = etl.select(contacts, lambda v: True if len(v['type_ind']) >= 5 and v['type_ind'][4] == 'Y' else False)
+        clients = etl.select(contacts, lambda v: True if len(v['type_ind']) >= 6 and v['type_ind'][5] == 'Y' else False)
+        others = etl.select(contacts, lambda v: 'Y' in v['type_ind'])
+        
+        print(etl.tail(tenure_holders, 5))
+        print(etl.tail(site_operators, 5))
+        print(etl.tail(mine_managers, 5))
+        print(etl.tail(permitees, 5))
+        print(etl.tail(private_land_owners, 5))
+        print(etl.tail(clients, 5))
+        print(etl.tail(others, 5))
 
         #Streamline NoW----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         # This is temporarily removed due to the data in the streamline NoW table in MMS being bad and unable to be imported.
