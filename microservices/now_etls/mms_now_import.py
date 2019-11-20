@@ -1029,15 +1029,19 @@ def ETL_MMS_NOW_schema(connection, tables):
 
         existing_placer_activity_xref = etl.select(placer_activity, lambda v: v['identifier'] == 'existing')
 
+        placer_activity = etl.cutout(placer_activity, 'identifier')
+
         proposed_placer_activity_xref = etl.cut(proposed_placer_activity_xref, 'placeractivityid', 'mms_cid')
+
+        garbage_data = etl.select(proposed_placer_activity_xref, lambda v: v['placeractivityid'] == 9414)
+
+        print(garbage_data)
         
-        print(etl.head(proposed_placer_activity_xref, 5))
+        print(etl.tail(proposed_placer_activity_xref, 5))
 
         existing_placer_activity_xref = etl.cut(existing_placer_activity_xref, 'placeractivityid', 'mms_cid')
 
-        print(etl.head(existing_placer_activity_xref, 5))
-
-        placer_activity = etl.cutout(placer_activity, 'identifier')
+        print(etl.tail(existing_placer_activity_xref, 5))
         
         applications = etl.leftjoin(applications, placer_activity_app_cols, key='mms_cid')
 
