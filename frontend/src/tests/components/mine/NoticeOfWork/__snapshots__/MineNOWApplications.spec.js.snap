@@ -46,7 +46,11 @@ exports[`MineNOWApplications renders properly 1`] = `
         },
       ]
     }
-    searchParams={Object {}}
+    searchParams={
+      Object {
+        "submissions_only": true,
+      }
+    }
     sortDir={null}
     sortField={null}
   />

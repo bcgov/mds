@@ -1,12 +1,13 @@
 CREATE OR REPLACE VIEW notice_of_work_view
 	AS
 SELECT nid.now_application_guid,
-nid.mine_guid, 
+m.mine_guid, 
 m.mine_no,
 sub.trackingnumber as tracking_number,
 COALESCE(msub.noticeofworktype, sub.noticeofworktype, nowt.description) as notice_of_work_type_description,
 COALESCE(sub.status, nows.description) as now_application_status_description,
-COALESCE(msub.receiveddate, sub.receiveddate, app.received_date) as received_date
+COALESCE(msub.receiveddate, sub.receiveddate, app.received_date) as received_date,
+sub.originating_system
 FROM now_application_identity nid 
 JOIN mine m on nid.mine_guid = m.mine_guid
 LEFT JOIN now_submissions.application sub on nid.messageid = sub.messageid
