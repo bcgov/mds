@@ -75,7 +75,7 @@ class Base(db.Model):
         ]
         assert isinstance(data_dict, dict)
         for k, v in data_dict.items():
-            #print(depth * '>' + f'{type(v)}-{k}')
+            current_app.logger.debug(depth * '>' + f'{type(v)}-{k}')
             if isinstance(v, dict):
                 current_app.logger.debug(depth * ' ' + f'recursivly updating {k}')
                 getattr(self, k).deep_update_from_dict(v, depth=(depth + 1))
@@ -86,10 +86,10 @@ class Base(db.Model):
                 for i in v:
                     current_app.logger.debug(depth * ' ' + str(i))
                     pk_names = [pk.name for pk in inspect(obj_list[0].__class__).primary_key]
-                    #lists of object, never lists of anything else.
+                    #ASSUMPTION: lists of object, never lists of anything else.
                     existing_obj = next((x for x in obj_list if all(
                         i.get(pk_name, None) == getattr(x, pk_name) for pk_name in pk_names)),
-                                        None)     #false always if new obj.
+                                        None)     #ALWAYS NONE for new obj, except tests
                     if existing_obj:
                         current_app.logger.debug(
                             depth * ' ' +
@@ -103,16 +103,14 @@ class Base(db.Model):
                         current_app.logger.debug(depth * ' ' + f'ADD NEW ITEM TO LIST {k}')
                         rel = getattr(self.__class__, k)
                         new_obj_class = rel.property.entity.class_
-                        schema = new_obj_class._schema()
-
-                        new_obj = schema.load(i)
+                        new_obj = new_obj_class._schema().load(i)
                         obj_list.append(new_obj)
                         current_app.logger.debug(f'just created and saved{new_obj}=' +
-                                                 str(schema.dump(new_obj)))
+                                                 str(new_obj_class._schema().dump(new_obj)))
 
             if k in [c.name for c in editable_columns]:
                 col = next(col for col in editable_columns if col.name == k)
-                current_app.logger.debug(depth * ' ' + f'updating column <{k}>={v}')
+                current_app.logger.debug(depth * ' ' + f'updating {self}.{k}={v}')
                 if (type(col.type) == UUID):
                     assert isinstance(v, (UUID, str))
                 else:
@@ -125,8 +123,8 @@ class Base(db.Model):
                             f"cannot assign '{k}':{v}{type(v)} to column of type {py_type}")
                     else:
                         setattr(self, k, v)
-        current_app.logger.debug(f'saving and returning from updating {self}')
-        self.save()
+        if depth == 0:
+            self.save()     ##should we only save at top level?
         return self
 
 
