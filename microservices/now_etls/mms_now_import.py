@@ -846,6 +846,8 @@ def ETL_MMS_NOW_schema(connection, tables):
             connection,
             f'SELECT * from MMS_NOW_Submissions.placer_activity')
 
+        print(etl.header(existing_placer_activity))
+
         existing_placer_activity = etl.cutout(existing_placer_activity, 'messageid', 'placeractivityid')
 
         proposed_placer_activity = etl.fromdb(
@@ -1022,6 +1024,7 @@ def ETL_MMS_NOW_schema(connection, tables):
         placer_activity_detail = etl.cutout(placer_activity_detail, 'messageid')
 
         placer_activity_detail = etl.addrownumbers(placer_activity_detail, field='placeractivityid')
+        placer_activity_detail = placer_activity_detail[:-1]
 
         proposed_placer_activity_xref = etl.select(placer_activity_detail, lambda v: v['identifier'] == 'proposed')
 
@@ -1030,6 +1033,8 @@ def ETL_MMS_NOW_schema(connection, tables):
         placer_activity = etl.cutout(placer_activity_detail, 'identifier')
 
         proposed_placer_activity_xref = etl.cut(proposed_placer_activity_xref, 'placeractivityid', 'mms_cid')
+
+        placer_activity = etl.cutout()
 
         print(etl.nrows(placer_activity_detail))
         print(etl.nrows(proposed_placer_activity_xref))
