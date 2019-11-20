@@ -8,6 +8,7 @@ from app.api.mines.now_submissions.resources.application_resource import MineApp
 from app.api.mines.mine.resources.mine_map import MineMapResource
 from app.api.mines.mine.resources.mine import MineResource, MineListSearch, MineListResource
 from app.api.mines.mine.resources.mine_type import MineTypeResource, MineTypeListResource
+from app.api.mines.mine.resources.mine_csv_resource import MineCSVResource
 from app.api.mines.mine.resources.mine_tenure_type_code import MineTenureTypeCodeResource
 from app.api.mines.mine.resources.mine_disturbance_code import MineDisturbanceCodeResource
 from app.api.mines.mine.resources.mine_commodity_code import MineCommodityCodeResource
@@ -120,3 +121,6 @@ api.add_resource(MineApplicationResource, '/<string:mine_guid>/now-submissions/a
 
 api.add_resource(MinePartyApptDocumentUploadResource,
                  '/<string:mine_guid>/party-appts/<string:mine_party_appt_guid>/documents')
+
+api.add_resource(MineCSVResource,
+                 '/csv')

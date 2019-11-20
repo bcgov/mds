@@ -163,6 +163,17 @@ class Mine(AuditMixin, Base):
 
         return result
 
+# METHOD TO CONVERT DATA TO CSV
+    @classmethod
+    def to_csv(cls, records, columns):
+        rows = [','.join(columns)]
+        for record in records:
+            row = []
+            for column in columns:
+                row.append(str(getattr(record, column)))
+            rows.append(','.join(row))
+        return '\n'.join(rows)
+
     @validates('mine_name')
     def validate_mine_name(self, key, mine_name):
         if not mine_name:
