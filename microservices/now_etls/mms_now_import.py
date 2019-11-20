@@ -1024,7 +1024,7 @@ def ETL_MMS_NOW_schema(connection, tables):
         placer_activity_detail = etl.cutout(placer_activity_detail, 'messageid')
 
         placer_activity_detail = etl.addrownumbers(placer_activity_detail, field='placeractivityid')
-        placer_activity_detail = placer_activity_detail[:-1]
+        placer_activity_detail = et.rowslice(placer_activity_detail, len(placer_activity_detail)-1)
 
         proposed_placer_activity_xref = etl.select(placer_activity_detail, lambda v: v['identifier'] == 'proposed')
 
