@@ -69,3 +69,4 @@ def test_update_new_item_in_list(db_session):
 
     mine = Mine.query.filter_by(mine_guid=mine.mine_guid).first()
     assert len(mine.mine_permit) == 6
+    assert all(len(p.permit_amendments) > 0 for p in mine.mine_permit)
