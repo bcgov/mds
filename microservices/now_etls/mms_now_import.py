@@ -1033,9 +1033,11 @@ def ETL_MMS_NOW_schema(connection, tables):
 
         proposed_placer_activity_xref = etl.cut(proposed_placer_activity_xref, 'placeractivityid', 'mms_cid')
 
-        garbage_data = etl.select(proposed_placer_activity_xref, lambda v: v['placeractivityid'] == '9414')
+        garbage_data1 = etl.select(placer_activity, lambda v: v['placeractivityid'] == '9414')
+        garbage_data2 = etl.select(placer_activity, lambda v: v['placeractivityid'] == 9414)
 
-        print(garbage_data)
+        print(garbage_data1)
+        print(garbage_data2)
         
         print(etl.tail(proposed_placer_activity_xref, 5))
 
