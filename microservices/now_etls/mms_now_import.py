@@ -1035,15 +1035,15 @@ def ETL_MMS_NOW_schema(connection, tables):
         print(etl.nrows(proposed_placer_activity_xref))
         print(etl.nrows(existing_placer_activity_xref))
         print(etl.tail(proposed_placer_activity_xref, 5))
-        print(etl.tail(existing_placer_activity_xref, 5))
 
         existing_placer_activity_xref = etl.cut(existing_placer_activity_xref, 'placeractivityid', 'mms_cid')
-        
+        print(etl.tail(existing_placer_activity_xref, 5))
+
         applications = etl.leftjoin(applications, placer_activity_app_cols, key='mms_cid')
 
         #Contacts----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-        contacts = etl.fromdb(connection, 'SELECT b.msg_id as messageid, b.cid as mms_cid, c.type_ind as type_ind, a.mine_no, name, l_name, phone, tel_ext, fax, email, street, city, prov, post_cd, entered_by from mms.mmsccn a inner join mms.mmsnow b on a.cid = b.cid inner join mms.mmsccc c on a.cid = c.cid')
+        contacts = etl.fromdb(connection, 'SELECT c.msg_id as messageid, c.cid as mms_cid, b.type_ind as type_ind, a.mine_no, a.name, l_name, phone, tel_ext, fax, email, street, city, prov, post_cd, a.entered_by from mms.mmsccn a inner join mms.mmsccc b on a.cid = b.cid_ccn inner join mms.mmsnow c on c.cid = b.cid')
 
         tenure_holders = etl.select(contacts, lambda v: True if len(v['type_ind']) >= 1 and v['type_ind'][0] == 'Y' else False)
         site_operators = etl.select(contacts, lambda v: True if len(v['type_ind']) >= 2 and v['type_ind'][1] == 'Y' else False)
