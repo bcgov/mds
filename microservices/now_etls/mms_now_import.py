@@ -1030,8 +1030,12 @@ def ETL_MMS_NOW_schema(connection, tables):
         existing_placer_activity_xref = etl.select(placer_activity, lambda v: v['identifier'] == 'existing')
 
         proposed_placer_activity_xref = etl.cut(proposed_placer_activity_xref, 'placeractivityid', 'mms_cid')
+        
+        print(proposed_placer_activity_xref[0:10])
 
         existing_placer_activity_xref = etl.cut(existing_placer_activity_xref, 'placeractivityid', 'mms_cid')
+
+        print(existing_placer_activity_xref[0:10])
 
         placer_activity = etl.cutout(placer_activity, 'identifier')
         
