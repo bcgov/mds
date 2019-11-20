@@ -50,7 +50,6 @@ def test_permit_amendment_model_validate_type_code():
     assert 'Permit amendment type code is not provided.' in str(e.value)
 
 
-@pytest.mark.skip('datevalidation currently broken with MarshmallowSchema.load()')
 def test_permit_model_validate_received_date():
     with pytest.raises(AssertionError) as e:
         PermitAmendment(
@@ -64,7 +63,6 @@ def test_permit_model_validate_received_date():
     assert 'Permit amendment received date cannot be set to the future.' in str(e.value)
 
 
-@pytest.mark.skip('datevalidation currently broken with MarshmallowSchema.load()')
 def test_permit_model_validate_issue_date(db_session):
     with pytest.raises(AssertionError) as e:
         PermitAmendment(
