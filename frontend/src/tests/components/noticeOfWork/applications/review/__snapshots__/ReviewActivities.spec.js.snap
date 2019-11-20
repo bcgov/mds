@@ -24,10 +24,10 @@ exports[`ReviewActivities renders properly 1`] = `
     title="Blasting"
   >
     <FormSection
-      name="blasting"
+      name="blasting_operation"
     >
       <Blasting
-        initialValues={Array []}
+        initialValues={Object {}}
         isViewMode={true}
       />
     </FormSection>

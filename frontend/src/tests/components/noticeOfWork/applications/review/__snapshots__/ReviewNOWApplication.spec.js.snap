@@ -875,7 +875,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
       <ReviewActivities
         initialValues={
           Object {
-            "blasting": Array [],
+            "blasting_operation": Object {},
             "camps": Object {
               "details": Array [],
             },
@@ -931,7 +931,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
         isViewMode={true}
         noticeOfWork={
           Object {
-            "blasting": Array [],
+            "blasting_operation": Object {},
             "camps": Object {
               "details": Array [],
             },
