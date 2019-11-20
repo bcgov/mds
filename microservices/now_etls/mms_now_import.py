@@ -1111,7 +1111,7 @@ def ETL_MMS_NOW_schema(connection, tables):
 
         water_source_activity = etl.fromdb(
             connection,
-            f'SELECT b._msg_id as messageid, b.cid as mms_cid, water_nm as sourcewatersupply, activity as type, water_use as useofwater, water_vol as estimateratewater, pump_size as pumpsizeinwater, water_intake as locationwaterintake from mms.mmsscp_n_d a inner join mms.mmsnow b on a.cid = b.cid'
+            f'SELECT b.msg_id as messageid, b.cid as mms_cid, water_nm as sourcewatersupply, activity as type, water_use as useofwater, water_vol as estimateratewater, pump_size as pumpsizeinwater, water_intake as locationwaterintake from mms.mmsscp_n_d a inner join mms.mmsnow b on a.cid = b.cid'
         )
 
         application_nda = etl.fromdb(
