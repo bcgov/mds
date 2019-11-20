@@ -61,11 +61,10 @@ def test_update_new_item_in_list(db_session):
 
     del new_permit_dict['mine_guid']
     del new_permit_dict['permit_guid']
-    del new_permit_dict['permit_id']
+    #FOR TESTING ONLY, lets Permitid stay because it's correct and
+    #postgres sequence doesn't get increased by factory object creation
 
-    #print(new_permit_dict)
     partial_mine_permit_dict['mine_permit'].append(new_permit_dict)
-    #print(len(partial_mine_permit_dict['mine_permit']))
     mine.deep_update_from_dict(partial_mine_permit_dict)
 
     mine = Mine.query.filter_by(mine_guid=mine.mine_guid).first()
