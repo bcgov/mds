@@ -27,7 +27,8 @@ class NoticeOfWorkListResource(Resource, UserMixin ):
             'notice_of_work_type_search': 'Substring to match with a NoW\s type',
             'mine_region': 'Mine region code to match with a NoW. Default: All regions.',
             'tracking_number': 'Number of the NoW',
-            'mine_search': 'Substring to match against a NoW mine number or mine name'
+            'mine_search': 'Substring to match against a NoW mine number or mine name',
+            'submissions_only': 'Boolean to filter based on NROS/VFCBC submissions only',
         })
         
     @requires_role_view_all
@@ -43,7 +44,8 @@ class NoticeOfWorkListResource(Resource, UserMixin ):
             notice_of_work_type_search=request.args.get('notice_of_work_type_search', type=str),
             mine_region=request.args.get('mine_region', type=str),
             tracking_number=request.args.get('tracking_number', type=int),
-            mine_search=request.args.get('mine_search', type=str))
+            mine_search=request.args.get('mine_search', type=str),
+            submissions_only=request.args.get('submissions_only', type=str) in ['true', 'True'])
 
         data = records.all()
 
@@ -65,9 +67,13 @@ class NoticeOfWorkListResource(Resource, UserMixin ):
                                       notice_of_work_type_search=None,
                                       mine_region=None,
                                       tracking_number=None,
-                                      mine_search=None):
+                                      mine_search=None,
+                                      submissions_only=None):
         filters = []
         base_query = NoticeOfWorkView.query
+
+        if submissions_only:
+            filters.append(NoticeOfWorkView.originating_system != None)
 
         if mine_guid is not None:
             filters.append(NoticeOfWorkView.mine_guid == mine_guid)

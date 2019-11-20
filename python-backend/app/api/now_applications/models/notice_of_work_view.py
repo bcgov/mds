@@ -19,6 +19,7 @@ class NoticeOfWorkView(Base):
     notice_of_work_type_description =  db.Column(db.String)
     now_application_status_description =  db.Column(db.String)
     received_date = db.Column(db.Date)
+    originating_system = db.Column(db.String)
 
     def __repr__(self):
         return '<NoticeOfWorkView>'
