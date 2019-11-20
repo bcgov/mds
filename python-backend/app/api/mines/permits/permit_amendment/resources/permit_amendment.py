@@ -1,5 +1,5 @@
 from datetime import datetime
-from flask_restplus import Resource, reqparse
+from flask_restplus import Resource, reqparse, inputs
 from flask import current_app
 from werkzeug.exceptions import BadRequest, InternalServerError, NotFound
 
@@ -23,19 +23,13 @@ class PermitAmendmentListResource(Resource, UserMixin):
         help='GUID of the party that is the permittee for this permit.',
         location='json')
     parser.add_argument(
-        'received_date',
-        location='json',
-        type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None,
-        store_missing=False)
+        'received_date', location='json', type=inputs.datetime_from_iso8601, store_missing=False)
     parser.add_argument(
-        'issue_date',
-        location='json',
-        type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None,
-        store_missing=False)
+        'issue_date', location='json', type=inputs.datetime_from_iso8601, store_missing=False)
     parser.add_argument(
         'authorization_end_date',
         location='json',
-        type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None,
+        type=inputs.datetime_from_iso8601,
         store_missing=False)
     parser.add_argument(
         'permit_amendment_type_code', type=str, location='json', store_missing=False)
@@ -76,7 +70,7 @@ class PermitAmendmentListResource(Resource, UserMixin):
             if permittee.end_date is None:
                 if permittee.party_guid == party.party_guid:
                     party_is_active_permittee = True
-                else:        # inactive old permittees
+                else:     # inactive old permittees
                     permittee.end_date = datetime.utcnow()
                     permittee.save()
 

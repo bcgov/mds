@@ -8,12 +8,6 @@ class DateTime(fields.Raw):
     def format(self, value):
         return value.strftime("%Y-%m-%d %H:%M") if value else None
 
-
-class Date(fields.Raw):
-    def format(self, value):
-        return value.strftime("%Y-%m-%d") if value else None
-
-
 BASIC_MINE_LOCATION_MODEL = api.model('BasicMineLocation', {
     'latitude': fields.String,
     'longitude': fields.String,
@@ -93,9 +87,9 @@ PERMIT_AMENDMENT_MODEL = api.model(
         'permit_amendment_guid': fields.String,
         'permit_amendment_status_code': fields.String,
         'permit_amendment_type_code': fields.String,
-        'received_date': fields.Date,
-        'issue_date': fields.Date,
-        'authorization_end_date': fields.Date,
+        'received_date': fields.DateTime(dt_format='iso8601'),
+        'issue_date': fields.DateTime(dt_format='iso8601'),
+        'authorization_end_date': fields.DateTime(dt_format='iso8601'),
         #'permit_amendment_status_description': fields.String,
         #'permit_amendment_type_description': fields.String,
         'description': fields.String,
@@ -133,9 +127,9 @@ STATUS_MODEL = api.model(
         'mine_status_xref_guid': fields.String,
         'status_values': fields.List(fields.String),
         'status_labels': fields.List(fields.String),
-        'effective_date': Date,
-        'expiry_date': Date,
-        'status_date': Date,
+        'effective_date': fields.DateTime,
+        'expiry_date': fields.DateTime,
+        'status_date': fields.DateTime,
         'status_description': fields.String,
     })
 MINE_REPORT_SUBMISSION_STATUS = api.model(
@@ -173,7 +167,7 @@ MINE_VERIFIED_MODEL = api.model(
         'mine_name': fields.String,
         'healthy_ind': fields.Boolean,
         'verifying_user': fields.String,
-        'verifying_timestamp': Date,
+        'verifying_timestamp': fields.DateTime,
     })
 
 MINES_MODEL = api.model(

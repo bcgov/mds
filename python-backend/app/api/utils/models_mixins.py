@@ -1,4 +1,5 @@
 from datetime import datetime
+from dateutil import parser
 from flask import current_app
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.types import TypeEngine
@@ -9,6 +10,7 @@ from app.extensions import db
 from .include.user_info import User
 
 from sqlalchemy.inspection import inspect
+from flask_restplus import inputs
 
 
 class UserBoundQuery(db.Query):
@@ -103,6 +105,7 @@ class Base(db.Model):
                             rel = getattr(self.__class__, k)
                             new_obj_class = rel.property.entity.class_
                             schema = new_obj_class._schema()
+
                             new_obj = schema.load(i)
                             obj_list.append(new_obj)
                             print(
@@ -119,7 +122,7 @@ class Base(db.Model):
                 else:
                     py_type = col.type.python_type
                     if py_type == datetime:
-                        setattr(self, k, datetime.strptime(v, '%Y-%m-%d'))
+                        setattr(self, k, parser.parse(v))
                         continue
                     elif not isinstance(v, py_type):
                         raise DictLoadingError(

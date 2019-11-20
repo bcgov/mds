@@ -1,6 +1,6 @@
 import json, pytest, uuid
 from datetime import datetime, timedelta
-
+from dateutil import parser
 from app.api.mines.permits.permit_amendment.models.permit_amendment import PermitAmendment
 from app.api.mines.permits.permit.models.permit import Permit
 from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
@@ -59,9 +59,9 @@ def test_post_permit_amendment_with_date_params(test_client, db_session, auth_he
 
     data = {
         'permittee_party_guid': party_guid,
-        'received_date': datetime.today().strftime('%Y-%m-%d'),
-        'issue_date': datetime.today().strftime('%Y-%m-%d'),
-        'authorization_end_date': (datetime.today() + timedelta(days=1)).strftime('%Y-%m-%d')
+        'received_date': datetime.today().date().isoformat(),
+        'issue_date': datetime.today().date().isoformat(),
+        'authorization_end_date': (datetime.today() + timedelta(days=1)).date().isoformat(),
     }
 
     post_resp = test_client.post(
@@ -74,9 +74,10 @@ def test_post_permit_amendment_with_date_params(test_client, db_session, auth_he
 
     assert post_resp.status_code == 200, post_resp.response
     #assert post_data['permit_guid'] == str(permit_guid), str(post_data)
-    assert post_data['received_date'] == data['received_date']
-    assert post_data['issue_date'] == data['issue_date']
-    assert post_data['authorization_end_date'] == data['authorization_end_date']
+    assert parser.parse(post_data['received_date']) == parser.parse(data['received_date'])
+    assert parser.parse(post_data['issue_date']) == parser.parse(data['issue_date'])
+    assert parser.parse(post_data['authorization_end_date']) == parser.parse(
+        data['authorization_end_date'])
     assert permittees[0].party_guid == party_guid
 
     #permit_amdendment is actually in db
@@ -117,10 +118,10 @@ def test_put_permit_amendment(test_client, db_session, auth_headers):
     #assert put_data['permit_guid'] == str(permit.permit_guid), str(put_data)
     assert put_data['permit_amendment_type_code'] == data['permit_amendment_type_code']
     assert put_data['permit_amendment_status_code'] == data['permit_amendment_status_code']
-    assert put_data['received_date'] == amendment.received_date.strftime('%Y-%m-%d')
-    assert put_data['issue_date'] == amendment.issue_date.strftime('%Y-%m-%d')
-    assert put_data['authorization_end_date'] == amendment.authorization_end_date.strftime(
-        '%Y-%m-%d')
+    assert parser.parse(put_data['received_date']).date() == amendment.received_date
+    assert parser.parse(put_data['issue_date']).date() == amendment.issue_date
+    assert parser.parse(
+        put_data['authorization_end_date']).date() == amendment.authorization_end_date
 
 
 #DELETE
