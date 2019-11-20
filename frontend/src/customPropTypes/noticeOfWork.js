@@ -300,7 +300,7 @@ export const importedNOWApplication = shape({
   directions_to_site: PropTypes.string,
 
   contacts: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)),
-  blasting: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)),
+  blasting_operation: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)),
   state_of_land: statueOfLand,
   camps,
   cut_lines_polarization_survey: defaultActivity,

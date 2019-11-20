@@ -391,7 +391,7 @@ export const IMPORTED_NOTICE_OF_WORK = {
   proposed_start_date: "",
   proposed_end_date: "",
   contacts: [],
-  blasting: [],
+  blasting_operation: {},
   state_of_land: {},
   camps: { details: [] },
   cut_lines_polarization_survey: { details: [] },

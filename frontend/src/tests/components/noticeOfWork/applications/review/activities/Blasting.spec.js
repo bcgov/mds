@@ -7,7 +7,7 @@ const reducerProps = {};
 
 const setupReducerProps = () => {
   reducerProps.isViewMode = true;
-  reducerProps.initialValues = NOW_MOCK.IMPORTED_NOTICE_OF_WORK.blasting;
+  reducerProps.initialValues = NOW_MOCK.IMPORTED_NOTICE_OF_WORK.blasting_operation;
 };
 
 beforeEach(() => {
