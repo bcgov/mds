@@ -11,6 +11,7 @@ from tests.factories import *
 from app.api.now_applications import models as app_models
 from app.api.now_submissions import models as sub_models
 
+SEQUENCE = factory.Sequence(lambda n: n)
 
 class BlastingOperationFactory(BaseFactory):
     class Meta:
@@ -55,7 +56,7 @@ class ActivitySummaryBaseFactory(BaseFactory):
         now_application = factory.SubFactory('tests.factories.NOWApplicationFactory')
 
     now_application_id = factory.SelfAttribute('now_application.now_application_id')
-    activity_summary_id = factory.Sequence(lambda n: n)
+    activity_summary_id = SEQUENCE
 
     reclamation_description = factory.Faker('sentence', nb_words=40, variable_nb_words=True)
     reclamation_cost = factory.Faker('pydecimal', right_digits=2, positive=True, max_value=500000)
@@ -357,15 +358,9 @@ class UndergroundExplorationDetailFactory(ActivityDetailBaseFactory):
 
 class NOWApplicationFactory(BaseFactory):
     class Meta:
-        model = app_models.NOWApplication
-
-    class Params:
-        mine = factory.SubFactory('tests.factories.MineFactory', minimal=True)
+        model = app_models.NOWApplication\
 
     now_application_id = factory.Sequence(lambda n: n)
-    now_application_guid = GUID
-    mine_guid = factory.SelfAttribute('mine.mine_guid')
-    now_message_id = factory.Sequence(lambda n: n)
     now_tracking_number = factory.fuzzy.FuzzyInteger(1, 100)
     notice_of_work_type_code = factory.LazyFunction(RandomNOWTypeCode)
     now_application_status_code = factory.LazyFunction(RandomNOWStatusCode)
@@ -397,3 +392,18 @@ class NOWApplicationFactory(BaseFactory):
     settling_pond = factory.RelatedFactory(SettlingPondFactory, 'now_application')
     underground_exploration = factory.RelatedFactory(UndergroundExplorationFactory,
                                                      'now_application')
+
+class NOWApplicationIdentityFactory(BaseFactory):
+    class Meta:
+        model = app_models.NOWApplicationIdentity
+    
+    class Params:
+        mine = factory.SubFactory('tests.factories.MineFactory', minimal=True)
+        now_application = factory.SubFactory('tests.factories.NOWApplicationFactory')
+        now_submission = factory.SubFactory('tests.factories.NOWSubmissionFactory')
+
+    now_application_guid = GUID
+    mine_guid = factory.SelfAttribute('mine.mine_guid')
+    now_application_id = factory.SelfAttribute('now_application.now_application_id')
+    messageid = factory.SelfAttribute('now_submission.messageid')
+    mms_cid = factory.Sequence(lambda n: n)

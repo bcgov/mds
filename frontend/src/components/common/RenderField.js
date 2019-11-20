@@ -13,12 +13,16 @@ const propTypes = {
   placeholder: PropTypes.string,
   meta: PropTypes.objectOf(PropTypes.any).isRequired,
   inlineLabel: PropTypes.string,
+  disabled: PropTypes.bool,
+  defaultValue: PropTypes.string,
 };
 
 const defaultProps = {
   label: "",
   placeholder: "",
   inlineLabel: "",
+  disabled: false,
+  defaultValue: "",
 };
 
 const RenderField = (props) => (
@@ -44,6 +48,7 @@ const RenderField = (props) => (
         </label>
       )}
       <Input
+        disabled={props.disabled}
         defaultValue={props.defaultValue}
         id={props.id}
         placeholder={props.placeholder}

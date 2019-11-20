@@ -10,6 +10,12 @@ const propTypes = {
   id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   label: PropTypes.string.isRequired,
   meta: PropTypes.objectOf(PropTypes.any).isRequired,
+  disabled: PropTypes.bool,
+  input: PropTypes.objectOf(PropTypes.any).isRequired,
+};
+
+const defaultProps = {
+  disabled: false,
 };
 
 class RenderRadioButtons extends Component {
@@ -23,6 +29,7 @@ class RenderRadioButtons extends Component {
         label={this.props.label}
       >
         <Radio.Group
+          disabled={this.props.disabled}
           checked={() => {
             this.setState((prevState) => ({ value: !prevState.value }));
           }}
@@ -37,5 +44,6 @@ class RenderRadioButtons extends Component {
 }
 
 RenderRadioButtons.propTypes = propTypes;
+RenderRadioButtons.defaultProps = defaultProps;
 
 export default RenderRadioButtons;

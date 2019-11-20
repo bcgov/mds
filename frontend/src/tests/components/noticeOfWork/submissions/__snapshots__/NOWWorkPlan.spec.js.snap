@@ -37,11 +37,8 @@ exports[`NOWWorkPlan renders properly 1`] = `
         </Col>
       </Row>
       <br />
-      <Table
+      <withStore(Table)
         align="left"
-        bordered={false}
-        childrenColumnName="children"
-        className=""
         columns={
           Array [
             Object {
@@ -99,24 +96,12 @@ exports[`NOWWorkPlan renders properly 1`] = `
             },
           ]
         }
-        indentSize={20}
-        loading={false}
         locale={
           Object {
             "emptyText": "There is no reclamation data associated with this Notice of Work",
           }
         }
         pagination={false}
-        rowKey="key"
-        showHeader={true}
-        size="default"
-        sortDirections={
-          Array [
-            "ascend",
-            "descend",
-          ]
-        }
-        useFixedHeader={false}
       />
     </div>
   </div>
@@ -500,11 +485,8 @@ exports[`NOWWorkPlan renders properly 1`] = `
     <div
       className="padding-large--sides"
     >
-      <Table
+      <withStore(Table)
         align="left"
-        bordered={false}
-        childrenColumnName="children"
-        className=""
         columns={
           Array [
             Object {
@@ -547,24 +529,12 @@ exports[`NOWWorkPlan renders properly 1`] = `
             },
           ]
         }
-        indentSize={20}
-        loading={false}
         locale={
           Object {
             "emptyText": "There are no documents associated with this Notice of Work",
           }
         }
         pagination={false}
-        rowKey="key"
-        showHeader={true}
-        size="default"
-        sortDirections={
-          Array [
-            "ascend",
-            "descend",
-          ]
-        }
-        useFixedHeader={false}
       />
     </div>
     <br />
@@ -575,11 +545,8 @@ exports[`NOWWorkPlan renders properly 1`] = `
     <div
       className="padding-large--sides"
     >
-      <Table
+      <withStore(Table)
         align="left"
-        bordered={false}
-        childrenColumnName="children"
-        className=""
         columns={
           Array [
             Object {
@@ -603,24 +570,12 @@ exports[`NOWWorkPlan renders properly 1`] = `
           ]
         }
         dataSource={Array []}
-        indentSize={20}
-        loading={false}
         locale={
           Object {
             "emptyText": "There are no spacial files associated with this Notice of Work",
           }
         }
         pagination={false}
-        rowKey="key"
-        showHeader={true}
-        size="default"
-        sortDirections={
-          Array [
-            "ascend",
-            "descend",
-          ]
-        }
-        useFixedHeader={false}
       />
     </div>
   </div>

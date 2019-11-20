@@ -17,7 +17,6 @@ const propTypes = {
   doSubparagraphOptions: CustomPropTypes.options.isRequired,
   inspectors: CustomPropTypes.groupOptions.isRequired,
   incidentStatusCodeOptions: CustomPropTypes.options.isRequired,
-  incidentCategoryCodeOptions: CustomPropTypes.options.isRequired,
   mineGuid: PropTypes.string.isRequired,
   doDetermination: PropTypes.string,
   uploadedFiles: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,

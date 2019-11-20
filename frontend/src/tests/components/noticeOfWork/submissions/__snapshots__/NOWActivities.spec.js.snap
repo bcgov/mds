@@ -37,11 +37,8 @@ exports[`NOWActivities renders properly 1`] = `
         <div
           className="padding-large--sides"
         >
-          <Table
+          <withStore(Table)
             align="left"
-            bordered={false}
-            childrenColumnName="children"
-            className=""
             columns={
               Array [
                 Object {
@@ -71,24 +68,12 @@ exports[`NOWActivities renders properly 1`] = `
               ]
             }
             dataSource={Array []}
-            indentSize={20}
-            loading={false}
             locale={
               Object {
                 "emptyText": "No data",
               }
             }
             pagination={false}
-            rowKey="key"
-            showHeader={true}
-            size="default"
-            sortDirections={
-              Array [
-                "ascend",
-                "descend",
-              ]
-            }
-            useFixedHeader={false}
           />
           <br />
           <h4>
@@ -108,7 +93,7 @@ exports[`NOWActivities renders properly 1`] = `
               <p
                 className="field-title"
               >
-                Describe the proposed reclamation and timing for this specific activity
+                Proposed reclamation and timing for this specific activity
               </p>
             </Col>
             <Col
@@ -214,11 +199,8 @@ exports[`NOWActivities renders properly 1`] = `
             <Divider
               className="margin-10"
             />
-            <Table
+            <withStore(Table)
               align="left"
-              bordered={false}
-              childrenColumnName="children"
-              className=""
               columns={
                 Array [
                   Object {
@@ -243,24 +225,12 @@ exports[`NOWActivities renders properly 1`] = `
                   },
                 ]
               }
-              indentSize={20}
-              loading={false}
               locale={
                 Object {
                   "emptyText": "Unknown",
                 }
               }
               pagination={false}
-              rowKey="key"
-              showHeader={true}
-              size="default"
-              sortDirections={
-                Array [
-                  "ascend",
-                  "descend",
-                ]
-              }
-              useFixedHeader={false}
             />
             <br />
           </div>
@@ -271,11 +241,8 @@ exports[`NOWActivities renders properly 1`] = `
             <Divider
               className="margin-10"
             />
-            <Table
+            <withStore(Table)
               align="left"
-              bordered={false}
-              childrenColumnName="children"
-              className=""
               columns={
                 Array [
                   Object {
@@ -300,24 +267,12 @@ exports[`NOWActivities renders properly 1`] = `
                   },
                 ]
               }
-              indentSize={20}
-              loading={false}
               locale={
                 Object {
                   "emptyText": "Unknown",
                 }
               }
               pagination={false}
-              rowKey="key"
-              showHeader={true}
-              size="default"
-              sortDirections={
-                Array [
-                  "ascend",
-                  "descend",
-                ]
-              }
-              useFixedHeader={false}
             />
             <br />
           </div>
@@ -328,11 +283,8 @@ exports[`NOWActivities renders properly 1`] = `
             <Divider
               className="margin-10"
             />
-            <Table
+            <withStore(Table)
               align="left"
-              bordered={false}
-              childrenColumnName="children"
-              className=""
               columns={
                 Array [
                   Object {
@@ -357,24 +309,12 @@ exports[`NOWActivities renders properly 1`] = `
                   },
                 ]
               }
-              indentSize={20}
-              loading={false}
               locale={
                 Object {
                   "emptyText": "Unknown",
                 }
               }
               pagination={false}
-              rowKey="key"
-              showHeader={true}
-              size="default"
-              sortDirections={
-                Array [
-                  "ascend",
-                  "descend",
-                ]
-              }
-              useFixedHeader={false}
             />
             <br />
           </div>
@@ -428,7 +368,7 @@ exports[`NOWActivities renders properly 1`] = `
                 <p
                   className="field-title"
                 >
-                  Describe the proposed reclamation and timing for this specific activity
+                  Proposed reclamation and timing for this specific activity
                 </p>
               </Col>
               <Col
@@ -480,11 +420,8 @@ exports[`NOWActivities renders properly 1`] = `
             <Divider
               className="margin-10"
             />
-            <Table
+            <withStore(Table)
               align="left"
-              bordered={false}
-              childrenColumnName="children"
-              className=""
               columns={
                 Array [
                   Object {
@@ -514,24 +451,12 @@ exports[`NOWActivities renders properly 1`] = `
                 ]
               }
               dataSource={Array []}
-              indentSize={20}
-              loading={false}
               locale={
                 Object {
                   "emptyText": "No data",
                 }
               }
               pagination={false}
-              rowKey="key"
-              showHeader={true}
-              size="default"
-              sortDirections={
-                Array [
-                  "ascend",
-                  "descend",
-                ]
-              }
-              useFixedHeader={false}
             />
             <br />
           </div>
@@ -554,7 +479,7 @@ exports[`NOWActivities renders properly 1`] = `
                 <p
                   className="field-title"
                 >
-                  Describe the proposed reclamation and timing for this specific activity
+                  Proposed reclamation and timing for this specific activity
                 </p>
               </Col>
               <Col
@@ -606,11 +531,8 @@ exports[`NOWActivities renders properly 1`] = `
             <Divider
               className="margin-10"
             />
-            <Table
+            <withStore(Table)
               align="left"
-              bordered={false}
-              childrenColumnName="children"
-              className=""
               columns={
                 Array [
                   Object {
@@ -640,24 +562,12 @@ exports[`NOWActivities renders properly 1`] = `
                 ]
               }
               dataSource={Array []}
-              indentSize={20}
-              loading={false}
               locale={
                 Object {
                   "emptyText": "No data",
                 }
               }
               pagination={false}
-              rowKey="key"
-              showHeader={true}
-              size="default"
-              sortDirections={
-                Array [
-                  "ascend",
-                  "descend",
-                ]
-              }
-              useFixedHeader={false}
             />
             <br />
           </div>
@@ -679,7 +589,7 @@ exports[`NOWActivities renders properly 1`] = `
                 <p
                   className="field-title"
                 >
-                  Describe the proposed reclamation and timing for this specific activity
+                  Proposed reclamation and timing for this specific activity
                 </p>
               </Col>
               <Col
@@ -748,11 +658,8 @@ exports[`NOWActivities renders properly 1`] = `
             </Col>
           </Row>
           <br />
-          <Table
+          <withStore(Table)
             align="left"
-            bordered={false}
-            childrenColumnName="children"
-            className=""
             columns={
               Array [
                 Object {
@@ -798,24 +705,12 @@ exports[`NOWActivities renders properly 1`] = `
                 },
               ]
             }
-            indentSize={20}
-            loading={false}
             locale={
               Object {
                 "emptyText": "No data",
               }
             }
             pagination={false}
-            rowKey="key"
-            showHeader={true}
-            size="default"
-            sortDirections={
-              Array [
-                "ascend",
-                "descend",
-              ]
-            }
-            useFixedHeader={false}
           />
         </div>
       </CollapsePanel>
@@ -826,11 +721,8 @@ exports[`NOWActivities renders properly 1`] = `
         <div
           className="padding-large--sides"
         >
-          <Table
+          <withStore(Table)
             align="left"
-            bordered={false}
-            childrenColumnName="children"
-            className=""
             columns={
               Array [
                 Object {
@@ -869,24 +761,12 @@ exports[`NOWActivities renders properly 1`] = `
                 },
               ]
             }
-            indentSize={20}
-            loading={false}
             locale={
               Object {
                 "emptyText": "No data",
               }
             }
             pagination={false}
-            rowKey="key"
-            showHeader={true}
-            size="default"
-            sortDirections={
-              Array [
-                "ascend",
-                "descend",
-              ]
-            }
-            useFixedHeader={false}
           />
           <br />
         </div>

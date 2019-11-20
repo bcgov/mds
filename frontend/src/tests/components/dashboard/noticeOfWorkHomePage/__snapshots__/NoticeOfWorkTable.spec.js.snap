@@ -15,15 +15,12 @@ exports[`NoticeOfWorkTable renders properly 1`] = `
     ]
   }
 >
-  <Table
+  <withStore(Table)
     align="left"
-    bordered={false}
-    childrenColumnName="children"
-    className=""
     columns={
       Array [
         Object {
-          "dataIndex": "mine_region",
+          "dataIndex": "mineRegion",
           "filteredValue": "SW,NE",
           "filters": Array [],
           "render": [Function],
@@ -90,7 +87,8 @@ exports[`NoticeOfWorkTable renders properly 1`] = `
           "key": "07e801a0-fa33-4c3b-abcc-ac6df628d483",
           "mineGuid": "6e9d3426-ebf1-413f-9e5f-c3a71ab56797",
           "mineName": "Hamilton, Herrera and Mccormick",
-          "mine_region": "N/A",
+          "mineRegion": "N/A",
+          "nowApplicationGuid": undefined,
           "nowNum": 44,
           "nowType": "choice",
           "source": "N/A",
@@ -101,7 +99,8 @@ exports[`NoticeOfWorkTable renders properly 1`] = `
           "key": "8e1536da-644c-4961-976b-b1326fa75825",
           "mineGuid": "60300a07-376c-46f1-a984-88a813f91438",
           "mineName": "Thompson-Sullivan",
-          "mine_region": "N/A",
+          "mineRegion": "N/A",
+          "nowApplicationGuid": undefined,
           "nowNum": 52,
           "nowType": "technology",
           "source": "N/A",
@@ -109,8 +108,6 @@ exports[`NoticeOfWorkTable renders properly 1`] = `
         },
       ]
     }
-    indentSize={20}
-    loading={false}
     locale={
       Object {
         "emptyText": <NullScreen
@@ -121,16 +118,6 @@ exports[`NoticeOfWorkTable renders properly 1`] = `
     onChange={[Function]}
     pagination={false}
     rowClassName="fade-in"
-    rowKey="key"
-    showHeader={true}
-    size="default"
-    sortDirections={
-      Array [
-        "ascend",
-        "descend",
-      ]
-    }
-    useFixedHeader={false}
   />
 </TableLoadingWrapper>
 `;
