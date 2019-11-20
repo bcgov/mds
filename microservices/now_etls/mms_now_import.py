@@ -1027,8 +1027,9 @@ def ETL_MMS_NOW_schema(connection, tables):
         placer_activity_detail = etl.rowslice(placer_activity_detail, etl.nrows(placer_activity_detail)-1)
 
         proposed_placer_activity_xref = etl.select(placer_activity_detail, lambda v: v['identifier'] == 'proposed')
-
+        proposed_placer_activity_xref = etl.rowslice(proposed_placer_activity_xref, etl.nrows(proposed_placer_activity_xref)-1)
         existing_placer_activity_xref = etl.select(placer_activity_detail, lambda v: v['identifier'] == 'existing')
+        existing_placer_activity_xref = etl.rowslice(existing_placer_activity_xref, etl.nrows(existing_placer_activity_xref)-1)
 
         placer_activity = etl.cutout(placer_activity_detail, 'identifier')
 
