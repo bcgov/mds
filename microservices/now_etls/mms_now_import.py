@@ -1035,8 +1035,6 @@ def ETL_MMS_NOW_schema(connection, tables):
 
         proposed_placer_activity_xref = etl.cut(proposed_placer_activity_xref, 'placeractivityid', 'mms_cid')
 
-        placer_activity = etl.cutout(placer_activity_detail, etl.nrows(placer_activity_detail)-1)
-
         print(etl.nrows(placer_activity_detail))
         print(etl.nrows(proposed_placer_activity_xref))
         print(etl.nrows(existing_placer_activity_xref))
