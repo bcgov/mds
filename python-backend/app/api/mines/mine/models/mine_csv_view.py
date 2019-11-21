@@ -1,13 +1,8 @@
-from datetime import datetime
-from sqlalchemy.schema import FetchedValue
-
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.inspection import inspect
 
-from app.api.utils.models_mixins import AuditMixin, Base
+from app.api.utils.models_mixins import Base
 from app.extensions import db
-
-from sqlalchemy.ext.hybrid import hybrid_property
 
 
 class MineCSVView(Base):
@@ -31,5 +26,4 @@ class MineCSVView(Base):
 
     def csv_row(self):
         model = inspect(self.__class__)
-        return "\"" + '","'.join(
-            [getattr(self, c.name) or "" for c in model.columns]) + "\""
+        return "\"" + '","'.join([getattr(self, c.name) or "" for c in model.columns]) + "\""
