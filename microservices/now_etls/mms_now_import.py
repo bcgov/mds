@@ -1038,7 +1038,6 @@ def ETL_MMS_NOW_schema(connection, tables):
         print(etl.nrows(placer_activity_detail))
         print(etl.nrows(proposed_placer_activity_xref))
         print(etl.nrows(existing_placer_activity_xref))
-        print(etl.tail(proposed_placer_activity_xref, 5))
 
         existing_placer_activity_xref = etl.cut(existing_placer_activity_xref, 'placeractivityid', 'mms_cid')
         print(etl.tail(existing_placer_activity_xref, 5))
@@ -1047,7 +1046,7 @@ def ETL_MMS_NOW_schema(connection, tables):
 
         #Contacts----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-        contacts = etl.fromdb(connection, 'SELECT c.msg_id as messageid, c.cid as mms_cid, b.type_ind as type_ind, a.mine_no, a.name, l_name, phone, tel_ext, fax, email, street, city, prov, post_cd, a.entered_by from mms.mmsccn a inner join mms.mmsccc b on a.cid = b.cid_ccn inner join mms.mmsnow c on c.cid = b.cid')
+        contacts = etl.fromdb(connection, 'SELECT c.msg_id as messageid, c.cid as mms_cid, b.type_ind as type_ind, a.name as ind_firstname, l_name as ind_lastname, phone as ind_phonenumber, tel_ext as dayphonenumberext, fax as faxnumber, email, street as mailingadressline1, city as mailingaddresscity, prov as mailingaddressprovstate, post_cd as mailingaddresspostalzip from mms.mmsccn a inner join mms.mmsccc b on a.cid = b.cid_ccn inner join mms.mmsnow c on c.cid = b.cid')
 
         tenure_holders = etl.select(contacts, lambda v: True if len(v['type_ind']) >= 1 and v['type_ind'][0] == 'Y' else False)
         site_operators = etl.select(contacts, lambda v: True if len(v['type_ind']) >= 2 and v['type_ind'][1] == 'Y' else False)
@@ -1056,14 +1055,22 @@ def ETL_MMS_NOW_schema(connection, tables):
         private_land_owners = etl.select(contacts, lambda v: True if len(v['type_ind']) >= 5 and v['type_ind'][4] == 'Y' else False)
         clients = etl.select(contacts, lambda v: True if len(v['type_ind']) >= 6 and v['type_ind'][5] == 'Y' else False)
         others = etl.select(contacts, lambda v: 'Y' in v['type_ind'])
-        
-        print(etl.tail(tenure_holders, 5))
-        print(etl.tail(site_operators, 5))
-        print(etl.tail(mine_managers, 5))
-        print(etl.tail(permitees, 5))
-        print(etl.tail(private_land_owners, 5))
-        print(etl.tail(clients, 5))
-        print(etl.tail(others, 5))
+
+        tenure_holders = etl.addfield(tenure_holders, 'contacttype','Tenure Holder')
+        site_operators = etl.addfield(site_operators, 'contacttype','Site Operator')
+        mine_managers = etl.addfield(mine_managers, 'contacttype','Mine Manager')
+        permitees = etl.addfield(permitees, 'contacttype','Permitee')
+        private_land_owners = etl.addfield(private_land_owners, 'contacttype','Private Landowner')
+        others = etl.addfield(others, 'contacttype', None)
+
+        contacts = etl.cat(tenure_holders, site_operators)
+        contacts = etl.cat(contacts, mine_managers)
+        contacts = etl.cat(contacts, permitees)
+        contacts = etl.cat(contacts, private_land_owners)
+        contacts = etl.cat(contacts, others)
+
+        contacts = etl.cutout(contacts, 'type_ind')
+        clients = etl.cutout(clients, 'type_ind')
 
         #Streamline NoW----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         # This is temporarily removed due to the data in the streamline NoW table in MMS being bad and unable to be imported.
@@ -1170,6 +1177,8 @@ def ETL_MMS_NOW_schema(connection, tables):
         etl.appenddb(placer_activity, connection, 'placer_activity', schema='mms_now_submissions', commit=False)
         etl.appenddb(proposed_placer_activity_xref, connection, 'proposed_placer_activity_xref', schema='mms_now_submissions', commit=False)
         etl.appenddb(existing_placer_activity_xref, connection, 'existing_placer_activity_xref', schema='mms_now_submissions', commit=False)
+        etl.appenddb(clients, connection, 'client', schema='mms_now_submissions', commit=False)
+        etl.appenddb(contacts, connection, 'contact', schema='mms_now_submissions', commit=False)
 
     except Exception as err:
         print(f'ETL Parsing error: {err}')
