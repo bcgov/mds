@@ -212,3 +212,15 @@ export const fetchMineReportStatusOptions = () => (dispatch) => {
     })
     .catch(() => dispatch(error(reducerTypes.GET_MINE_REPORT_STATUS_OPTIONS)));
 };
+
+export const fetchNoticeOFWorkActivityTypeOptions = () => (dispatch) => {
+  dispatch(request(reducerTypes.GET_NOTICE_OF_WORK_ACTIVITY_TYPE_OPTIONS));
+  return CustomAxios()
+    .get(`${ENVIRONMENT.apiUrl + API.NOTICE_OF_WORK_ACTIVITY_TYPE_OPTIONS}`, createRequestHeader())
+    .then((response) => {
+      dispatch(success(reducerTypes.GET_NOTICE_OF_WORK_ACTIVITY_TYPE_OPTIONS));
+      dispatch(staticContentActions.storeNoticeOfWorkActivityTypeOptions(response.data));
+      return response;
+    })
+    .catch(() => dispatch(error(reducerTypes.GET_NOTICE_OF_WORK_ACTIVITY_TYPE_OPTIONS)));
+};

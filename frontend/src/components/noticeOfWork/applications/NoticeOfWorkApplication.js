@@ -11,7 +11,12 @@ import {
   fetchOriginalNoticeOfWorkApplication,
 } from "@/actionCreators/noticeOfWorkActionCreator";
 import { fetchMineRecordById } from "@/actionCreators/mineActionCreator";
-import { getNoticeOfWork, getOriginalNoticeOfWork } from "@/selectors/noticeOfWorkSelectors";
+import {
+  getNoticeOfWork,
+  getOriginalNoticeOfWork,
+  getNOWReclamationSummary,
+} from "@/selectors/noticeOfWorkSelectors";
+import { fetchNoticeOFWorkActivityTypeOptions } from "@/actionCreators/staticContentActionCreator";
 import { getMines } from "@/selectors/mineSelectors";
 import VerifyNOWMine from "@/components/noticeOfWork/applications/verification/VerifyNOWMine";
 import * as Strings from "@/constants/strings";
@@ -27,7 +32,7 @@ const { Step } = Steps;
 /**
  * @class NoticeOfWorkApplication- contains all information regarding a CORE notice of work application
  */
-/* eslint-disable */
+
 const propTypes = {
   noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
   originalNoticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
@@ -35,6 +40,7 @@ const propTypes = {
   fetchMineRecordById: PropTypes.func.isRequired,
   fetchImportedNoticeOfWorkApplication: PropTypes.func.isRequired,
   fetchOriginalNoticeOfWorkApplication: PropTypes.func.isRequired,
+  fetchNoticeOFWorkActivityTypeOptions: PropTypes.func.isRequired,
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
   match: PropTypes.shape({
     params: {
@@ -45,6 +51,7 @@ const propTypes = {
   // eslint-disable-next-line
   formValues: CustomPropTypes.nowApplication.isRequired,
   mines: PropTypes.arrayOf(CustomPropTypes.mine).isRequired,
+  reclamationSummary: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.strings)).isRequired,
 };
 
 export class NoticeOfWorkApplication extends Component {
@@ -61,6 +68,7 @@ export class NoticeOfWorkApplication extends Component {
   componentDidMount() {
     const { id } = this.props.match.params;
     let currentStep = 0;
+    this.props.fetchNoticeOFWorkActivityTypeOptions();
     this.props.fetchImportedNoticeOfWorkApplication(id).then(({ data }) => {
       const associatedMineGuid = data.mine_guid ? data.mine_guid : "";
       this.props.fetchMineRecordById(associatedMineGuid).then(() => {
@@ -137,10 +145,9 @@ export class NoticeOfWorkApplication extends Component {
   };
 
   renderStepTwo = () => {
-    const mine = this.props.mines ? this.props.mines[this.state.associatedMineGuid] : {};
     return (
       <ReviewNOWApplication
-        mine={mine}
+        reclamationSummary={this.props.reclamationSummary}
         isViewMode={this.state.isViewMode}
         initialValues={
           this.state.showOriginalValues ? this.props.originalNoticeOfWork : this.props.noticeOfWork
@@ -160,9 +167,7 @@ export class NoticeOfWorkApplication extends Component {
       },
       {
         title: "Technical Review",
-        content: (
-          <LoadingWrapper condition={this.state.isNoWLoaded}>{this.renderStepTwo()}</LoadingWrapper>
-        ),
+        content: this.renderStepTwo(),
       },
       {
         title: "Referral / Consultation",
@@ -212,11 +217,19 @@ export class NoticeOfWorkApplication extends Component {
               <Step key={item.title} title={item.title} />
             ))}
           </Steps>
-          {this.state.currentStep === 1 && <NOWSideMenu />}
         </div>
-        <div className={this.state.fixedTop ? "steps--content with-fixed-top" : "steps--content"}>
-          {steps[this.state.currentStep].content}
-        </div>
+        <LoadingWrapper condition={this.state.isNoWLoaded}>
+          <div>
+            <div className={this.state.fixedTop ? "side-menu--fixed" : "side-menu"}>
+              {this.state.currentStep === 1 && <NOWSideMenu />}
+            </div>
+            <div
+              className={this.state.fixedTop ? "steps--content with-fixed-top" : "steps--content"}
+            >
+              {steps[this.state.currentStep].content}
+            </div>
+          </div>
+        </LoadingWrapper>
       </div>
     );
   }
@@ -227,6 +240,7 @@ const mapStateToProps = (state) => ({
   originalNoticeOfWork: getOriginalNoticeOfWork(state),
   formValues: getFormValues(FORM.EDIT_NOTICE_OF_WORK)(state),
   mines: getMines(state),
+  reclamationSummary: getNOWReclamationSummary(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
@@ -236,6 +250,7 @@ const mapDispatchToProps = (dispatch) =>
       fetchImportedNoticeOfWorkApplication,
       fetchOriginalNoticeOfWorkApplication,
       fetchMineRecordById,
+      fetchNoticeOFWorkActivityTypeOptions,
     },
     dispatch
   );

@@ -6,10 +6,15 @@ import * as Strings from "@/constants/strings";
 import RenderField from "@/components/common/RenderField";
 import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
 import RenderRadioButtons from "@/components/common/RenderRadioButtons";
+import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
   isViewMode: PropTypes.bool.isRequired,
-  initialValues: PropTypes.objectOf(PropTypes.string).isRequired,
+  initialValues: CustomPropTypes.camps,
+};
+
+const defaultProps = {
+  initialValues: {},
 };
 
 export const Camps = (props) => {
@@ -119,5 +124,6 @@ export const Camps = (props) => {
 };
 
 Camps.propTypes = propTypes;
+Camps.defaultProps = defaultProps;
 
 export default Camps;

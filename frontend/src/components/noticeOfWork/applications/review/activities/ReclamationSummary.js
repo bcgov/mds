@@ -1,24 +1,23 @@
 import React from "react";
 import { PropTypes } from "prop-types";
 import { Table } from "antd";
-import * as Strings from "@/constants/strings";
 
 const propTypes = {
-  summary: PropTypes.objectOf(PropTypes.string).isRequired,
+  summary: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
 };
 
 export const ReclamationSummary = (props) => {
   const columns = [
     {
       title: "Activity",
-      dataIndex: "activity",
-      key: "activity",
+      dataIndex: "label",
+      key: "label",
       render: (text) => <div title="Activity">{text}</div>,
     },
     {
       title: "Total Effected Area (ha)",
-      dataIndex: "effectedArea",
-      key: "effectedArea",
+      dataIndex: "total",
+      key: "total",
       render: (text) => <div title="Total Effected Area (ha)">{text}</div>,
     },
     {
@@ -29,21 +28,14 @@ export const ReclamationSummary = (props) => {
     },
   ];
 
-  const transformData = (activities) =>
-    activities.map((activity) => ({
-      accessType: activity.quantity || Strings.EMPTY_FIELD,
-      description: activity.description || Strings.EMPTY_FIELD,
-      capacity: activity.capacity || Strings.EMPTY_FIELD,
-    }));
-
   return (
     <div>
-      <h3>ReclamationSummary</h3>
+      <h3>Reclamation Summary</h3>
       <Table
         align="left"
         pagination={false}
         columns={columns}
-        dataSource={transformData(props.summary)}
+        dataSource={props.summary}
         locale={{
           emptyText: "No data",
         }}

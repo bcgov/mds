@@ -9,8 +9,10 @@ import {
   storeComplianceCodes,
   storeVarianceStatusOptions,
   storeVarianceDocumentCategoryOptions,
+  storeNoticeOfWorkActivityTypeOptions,
 } from "@/actions/staticContentActions";
 import * as MOCK from "@/tests/mocks/dataMocks";
+import * as NOW_MOCK from "@/tests/mocks/noticeOfWorkMocks";
 
 const baseExpectedValue = {
   mineStatusOptions: [],
@@ -29,6 +31,7 @@ const baseExpectedValue = {
   varianceDocumentCategoryOptions: [],
   mineReportDefinitionOptions: [],
   mineReportStatusOptions: [],
+  noticeOfWorkActivityTypeOptions: [],
 };
 
 // Creates deep copy of javascript object instead of setting a reference
@@ -109,6 +112,16 @@ describe("staticContentReducer", () => {
     const result = staticContentReducer(
       undefined,
       storeVarianceDocumentCategoryOptions(MOCK.VARIANCE_DOCUMENT_CATEGORY_OPTIONS)
+    );
+    expect(result).toEqual(expectedValue);
+  });
+
+  it("receives STORE_NOTICE_OF_WORK_ACTIVITY_TYPE_OPTIONS", () => {
+    const expectedValue = getBaseExpectedValue();
+    expectedValue.noticeOfWorkActivityTypeOptions = NOW_MOCK.NOTICE_OF_WORK_ACTIVITY_TYPES.records;
+    const result = staticContentReducer(
+      undefined,
+      storeNoticeOfWorkActivityTypeOptions(NOW_MOCK.NOTICE_OF_WORK_ACTIVITY_TYPES)
     );
     expect(result).toEqual(expectedValue);
   });

@@ -13,6 +13,7 @@ import ScrollContentWrapper from "@/components/common/wrappers/ScrollContentWrap
 import ReviewActivities from "@/components/noticeOfWork/applications/review/ReviewActivities";
 import NullScreen from "@/components/common/NullScreen";
 import Address from "@/components/common/Address";
+import ReclamationSummary from "./activities/ReclamationSummary";
 
 /**
  * @constant ReviewNOWApplication renders edit/view for the NoW Application review step
@@ -23,9 +24,9 @@ const propTypes = {
   // eslint-disable-next-line
   isViewMode: PropTypes.bool.isRequired,
   noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
-  // mine is being passed into field Component, thus ReviewNOWApplication.js assumes it isn't being used
+  // reclamationSummary is being passed into field Component, thus ReviewNOWApplication.js assumes it isn't being used
   // eslint-disable-next-line
-  mine: CustomPropTypes.mine.isRequired,
+  reclamationSummary: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.strings)).isRequired,
 };
 
 export const ReviewNOWApplication = (props) => {
@@ -54,14 +55,7 @@ export const ReviewNOWApplication = (props) => {
       <Row gutter={16}>
         <Col md={12} sm={24}>
           <div className="field-title">Mine Number</div>
-          <Field
-            id="mine_no"
-            name="mine_no"
-            component={RenderField}
-            placeholder={props.mine.mine_no}
-            defaultValue={props.mine.mine_no}
-            disabled
-          />
+          <Field id="mine_no" name="mine_no" component={RenderField} disabled />
         </Col>
         <Col md={12} sm={24}>
           <div className="field-title">Individual or Company/Organization?**</div>
@@ -71,14 +65,7 @@ export const ReviewNOWApplication = (props) => {
       <Row gutter={16}>
         <Col md={12} sm={24}>
           <div className="field-title">Region</div>
-          <Field
-            id="mine_region"
-            name="mine_region"
-            placeholder={props.mine.mine_region}
-            defaultValue={props.mine.mine_region}
-            component={RenderField}
-            disabled
-          />
+          <Field id="mine_region" name="mine_region" component={RenderField} disabled />
         </Col>
         <Col md={12} sm={24}>
           <div className="field-title">Relationship to Individual or Company/Organization?**</div>
@@ -413,6 +400,8 @@ export const ReviewNOWApplication = (props) => {
           <Field id="" name="" component={RenderField} disabled={props.isViewMode} />
         </Col>
       </Row>
+      <br />
+      <ReclamationSummary summary={props.reclamationSummary} />
     </div>
   );
 

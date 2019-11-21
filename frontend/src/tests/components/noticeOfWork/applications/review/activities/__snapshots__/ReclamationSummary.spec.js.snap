@@ -1,0 +1,40 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ReclamationSummary renders properly 1`] = `
+<div>
+  <h3>
+    Reclamation Summary
+  </h3>
+  <withStore(Table)
+    align="left"
+    columns={
+      Array [
+        Object {
+          "dataIndex": "label",
+          "key": "label",
+          "render": [Function],
+          "title": "Activity",
+        },
+        Object {
+          "dataIndex": "total",
+          "key": "total",
+          "render": [Function],
+          "title": "Total Effected Area (ha)",
+        },
+        Object {
+          "dataIndex": "cost",
+          "key": "cost",
+          "render": [Function],
+          "title": "Estimated Cost of Reclamation",
+        },
+      ]
+    }
+    locale={
+      Object {
+        "emptyText": "No data",
+      }
+    }
+    pagination={false}
+  />
+</div>
+`;

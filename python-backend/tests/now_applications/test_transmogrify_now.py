@@ -16,7 +16,7 @@ class TestPostApplicationImportResource:
         now_submission = NOWSubmissionFactory()
         now_application_identity = NOWApplicationIdentity(messageid=now_submission.messageid, mine_guid=now_submission.mine_guid)
         na = transmogrify_now(now_application_identity)
-        assert na.blasting
+        assert na.blasting_operation
         assert na.state_of_land
         assert na.camps
         assert na.cut_lines_polarization_survey
@@ -34,7 +34,7 @@ class TestPostApplicationImportResource:
         now_submission = NOWSubmissionFactory(all_activites=False)
         now_application_identity = NOWApplicationIdentity(messageid=now_submission.messageid, mine_guid=now_submission.mine_guid)
         na = transmogrify_now(now_application_identity)
-        assert not na.blasting
+        assert not na.blasting_operation
         assert not na.state_of_land
         assert not na.camps
         assert not na.cut_lines_polarization_survey
