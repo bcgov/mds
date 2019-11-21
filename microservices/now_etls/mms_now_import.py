@@ -1018,7 +1018,9 @@ def ETL_MMS_NOW_schema(connection, tables):
 
         # grab only the needed columns for the XREF tables.
         proposed_placer_activity_xref = etl.cut(proposed_placer_activity_xref, 'placeractivityid', 'mms_cid')
+        print(etl.valuecounter(proposed_placer_activity_xref, 'placeractivityid'))
         existing_placer_activity_xref = etl.cut(existing_placer_activity_xref, 'placeractivityid', 'mms_cid')
+        print(etl.valuecounter(existing_placer_activity_xref, 'placeractivityid'))
 
         applications = etl.leftjoin(applications, placer_activity_app_cols, key='mms_cid')
 
