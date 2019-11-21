@@ -1,11 +1,8 @@
-from flask import request, Response
-from flask_restplus import Resource, reqparse
-from sqlalchemy import cast, String
-from sqlalchemy.sql.functions import coalesce
+from flask import Response
+from flask_restplus import Resource
 from sqlalchemy.inspection import inspect
 
 from ..models.mine_csv_view import MineCSVView
-from app.api.mines.permits.permit.models.permit import Permit
 
 from app.extensions import api
 from ....utils.access_decorators import requires_role_view_all
