@@ -18,10 +18,11 @@ export const getNOWReclamationSummary = createSelector(
       options.forEach(({ value, label }) => {
         // If the object is empty - it means the NOW does not contain that specific activity.
         // if the object does not contain total_disturbed_area || reclamation_cost - it means the activity doesn't have any reclamation data
-        const keysExist =
-          noticeOfWork[value].total_disturbed_area !== undefined ||
-          noticeOfWork[value].reclamation_cost !== undefined;
-        if (!isEmpty(noticeOfWork[value]) && keysExist) {
+        if (
+          !isEmpty(noticeOfWork[value]) &&
+          (noticeOfWork[value].total_disturbed_area !== undefined &&
+            noticeOfWork[value].reclamation_cost !== undefined)
+        ) {
           reclamationList.push({
             label,
             total: noticeOfWork[value].total_disturbed_area
