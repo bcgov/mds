@@ -1046,7 +1046,7 @@ def ETL_MMS_NOW_schema(connection, tables):
 
         #Contacts----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-        contacts = etl.fromdb(connection, 'SELECT c.msg_id as messageid, c.cid as mms_cid, b.type_ind as type_ind, a.name as ind_firstname, l_name as ind_lastname, phone as ind_phonenumber, tel_ext as dayphonenumberext, fax as faxnumber, email, street as mailingadressline1, city as mailingaddresscity, prov as mailingaddressprovstate, post_cd as mailingaddresspostalzip from mms.mmsccn a inner join mms.mmsccc b on a.cid = b.cid_ccn inner join mms.mmsnow c on c.cid = b.cid')
+        contacts = etl.fromdb(connection, 'SELECT c.msg_id as messageid, c.cid as mms_cid, b.type_ind as type_ind, a.name as ind_firstname, l_name as ind_lastname, phone as ind_phonenumber, tel_ext as dayphonenumberext, fax as faxnumber, email, street as mailingaddressline1, city as mailingaddresscity, prov as mailingaddressprovstate, post_cd as mailingaddresspostalzip from mms.mmsccn a inner join mms.mmsccc b on a.cid = b.cid_ccn inner join mms.mmsnow c on c.cid = b.cid')
 
         tenure_holders = etl.select(contacts, lambda v: True if len(v['type_ind']) >= 1 and v['type_ind'][0] == 'Y' else False)
         site_operators = etl.select(contacts, lambda v: True if len(v['type_ind']) >= 2 and v['type_ind'][1] == 'Y' else False)
