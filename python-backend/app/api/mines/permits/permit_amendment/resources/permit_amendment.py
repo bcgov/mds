@@ -112,17 +112,17 @@ class PermitAmendmentResource(Resource, UserMixin):
     parser.add_argument(
         'received_date',
         location='json',
-        type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None,
+        type=lambda x: inputs.datetime_from_iso8601(x) if x else None,
         store_missing=False)
     parser.add_argument(
         'issue_date',
         location='json',
-        type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None,
+        type=lambda x: inputs.datetime_from_iso8601(x) if x else None,
         store_missing=False)
     parser.add_argument(
         'authorization_end_date',
         location='json',
-        type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None,
+        type=lambda x: inputs.datetime_from_iso8601(x) if x else None,
         store_missing=False)
     parser.add_argument(
         'permit_amendment_type_code', type=str, location='json', store_missing=False)
