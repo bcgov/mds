@@ -90,3 +90,4 @@ TIMEOUT_12_HOURS = 43140
 
 #Redis Map Cache
 MINE_MAP_CACHE = "MINE_MAP_CACHE"
+MINE_DETAILS_CSV = "mds:mines:csv"

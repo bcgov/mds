@@ -4,8 +4,9 @@ from sqlalchemy.inspection import inspect
 
 from ..models.mine_csv_view import MineCSVView
 
-from app.extensions import api
+from app.extensions import api, cache
 from ....utils.access_decorators import requires_role_view_all
+from app.api.constants import MINE_DETAILS_CSV, TIMEOUT_60_MINUTES
 
 
 class MineCSVResource(Resource):
@@ -17,11 +18,15 @@ class MineCSVResource(Resource):
     @requires_role_view_all
     def get(self):
 
-        model = inspect(MineCSVView)
+        csv_string = cache.get(MINE_DETAILS_CSV)
+        if not csv_string:
 
-        result = "\"" + '","'.join([c.name or "" for c in model.columns]) + "\"\n"
+            model = inspect(MineCSVView)
 
-        rows = MineCSVView.query.distinct(MineCSVView.mine_name, MineCSVView.permit_no).all()
-        result += '\n'.join([r.csv_row() for r in rows])
+            csv_string = "\"" + '","'.join([c.name or "" for c in model.columns]) + "\"\n"
 
-        return Response(result, mimetype='text/csv')
+            rows = MineCSVView.query.distinct(MineCSVView.mine_name, MineCSVView.permit_no).all()
+            csv_string += '\n'.join([r.csv_row() for r in rows])
+            cache.set(MINE_DETAILS_CSV, csv_string, timeout=TIMEOUT_60_MINUTES)
+
+        return Response(csv_string, mimetype='text/csv')

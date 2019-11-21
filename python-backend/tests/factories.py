@@ -85,8 +85,9 @@ class MineTypeDetailFactory(BaseFactory):
 
     class Params:
         tenure = 'MIN'
-        commodity = factory.Trait(mine_commodity_code=factory.LazyAttribute(
-            lambda o: SampleMineCommodityCodes(o.tenure, 1)[0]))
+        commodity = factory.Trait(
+            mine_commodity_code=factory.LazyAttribute(
+                lambda o: SampleMineCommodityCodes(o.tenure, 1)[0]))
         disturbance = factory.Trait(
             mine_disturbance_code=factory.LazyAttribute(
                 lambda o: SampleMineDisturbanceCodes(o.tenure, 1)[0]))
@@ -113,23 +114,23 @@ class MineTypeFactory(BaseFactory):
         if extracted is None:
             extracted = {}
         commodities = extracted.get('commodities', 1)
-        commodities = SampleMineCommodityCodes(obj.mine_tenure_type,
-                                               commodities)
+        commodities = SampleMineCommodityCodes(obj.mine_tenure_type, commodities)
         disturbances = extracted.get('disturbances', 1)
-        disturbances = SampleMineDisturbanceCodes(obj.mine_tenure_type,
-                                                  disturbances)
+        disturbances = SampleMineDisturbanceCodes(obj.mine_tenure_type, disturbances)
 
         for commodity in commodities:
-            MineTypeDetailFactory(mine_type_guid=obj.mine_type_guid,
-                                  tenure=obj.mine_tenure_type_code,
-                                  mine_commodity_code=commodity,
-                                  **kwargs)
+            MineTypeDetailFactory(
+                mine_type_guid=obj.mine_type_guid,
+                tenure=obj.mine_tenure_type_code,
+                mine_commodity_code=commodity,
+                **kwargs)
 
         for disturbance in disturbances:
-            MineTypeDetailFactory(mine_type_guid=obj.mine_type_guid,
-                                  tenure=obj.mine_tenure_type_code,
-                                  mine_disturbance_code=disturbance,
-                                  **kwargs)
+            MineTypeDetailFactory(
+                mine_type_guid=obj.mine_type_guid,
+                tenure=obj.mine_tenure_type_code,
+                mine_disturbance_code=disturbance,
+                **kwargs)
 
 
 class MineTailingsStorageFacilityFactory(BaseFactory):
@@ -147,8 +148,7 @@ class VarianceFactory(BaseFactory):
 
     class Params:
         mine = factory.SubFactory('tests.factories.MineFactory', minimal=True)
-        inspector = factory.SubFactory(
-            'tests.factories.PartyBusinessRoleFactory')
+        inspector = factory.SubFactory('tests.factories.PartyBusinessRoleFactory')
         approved = factory.Trait(
             variance_application_status_code='APP',
             issue_date=TODAY,
@@ -175,10 +175,8 @@ class VarianceFactory(BaseFactory):
         if not isinstance(extracted, int):
             extracted = 1
 
-        VarianceDocumentFactory.create_batch(size=extracted,
-                                             variance=obj,
-                                             mine_document__mine=None,
-                                             **kwargs)
+        VarianceDocumentFactory.create_batch(
+            size=extracted, variance=obj, mine_document__mine=None, **kwargs)
 
 
 class VarianceDocumentFactory(BaseFactory):
@@ -192,16 +190,14 @@ class VarianceDocumentFactory(BaseFactory):
         variance = factory.SubFactory('tests.factories.VarianceFactory')
 
     variance_document_xref_guid = GUID
-    mine_document_guid = factory.SelfAttribute(
-        'mine_document.mine_document_guid')
+    mine_document_guid = factory.SelfAttribute('mine_document.mine_document_guid')
     variance_id = factory.SelfAttribute('variance.variance_id')
-    variance_document_category_code = factory.LazyFunction(
-        RandomVarianceDocumentCategoryCode)
+    variance_document_category_code = factory.LazyFunction(RandomVarianceDocumentCategoryCode)
 
 
 def RandomPermitNumber():
-    return random.choice(['C-', 'CX-', 'M-', 'M-', 'P-', 'PX-', 'G-', 'Q-'
-                          ]) + str(random.randint(1, 9999999))
+    return random.choice(['C-', 'CX-', 'M-', 'M-', 'P-', 'PX-', 'G-', 'Q-']) + str(
+        random.randint(1, 9999999))
 
 
 class PermitFactory(BaseFactory):
@@ -223,9 +219,7 @@ class PermitFactory(BaseFactory):
             extracted = 1
 
         for n in range(extracted):
-            PermitAmendmentFactory(permit=obj,
-                                   initial_permit=(n == 0),
-                                   **kwargs)
+            PermitAmendmentFactory(permit=obj, initial_permit=(n == 0), **kwargs)
 
 
 class PermitAmendmentFactory(BaseFactory):
@@ -255,8 +249,7 @@ class PermitAmendmentDocumentFactory(BaseFactory):
         model = PermitAmendmentDocument
 
     permit_amendment_document_guid = GUID
-    permit_amendment_id = factory.SelfAttribute(
-        'permit_amendment.permit_amendment_id')
+    permit_amendment_id = factory.SelfAttribute('permit_amendment.permit_amendment_id')
     document_name = factory.Faker('file_name')
     mine_guid = factory.SelfAttribute('permit_amendment.permit.mine.mine_guid')
     document_manager_guid = GUID
@@ -286,18 +279,14 @@ class MineIncidentFactory(BaseFactory):
     mine_incident_guid = GUID
     mine_guid = factory.SelfAttribute('mine.mine_guid')
     incident_timestamp = factory.Faker('past_datetime')
-    incident_description = factory.Faker('sentence',
-                                         nb_words=20,
-                                         variable_nb_words=True)
+    incident_description = factory.Faker('sentence', nb_words=20, variable_nb_words=True)
     reported_timestamp = factory.Faker('past_datetime')
     reported_by_name = factory.Faker('name')
-    determination_type_code = factory.LazyFunction(
-        RandomIncidentDeterminationTypeCode)
+    determination_type_code = factory.LazyFunction(RandomIncidentDeterminationTypeCode)
     status_code = factory.LazyFunction(RandomIncidentStatusCode)
     followup_investigation_type_code = 'NO'
     dangerous_occurrence_subparagraphs = factory.LazyAttribute(
-        lambda o: SampleDangerousOccurrenceSubparagraphs(o.
-                                                         do_subparagraph_count)
+        lambda o: SampleDangerousOccurrenceSubparagraphs(o.do_subparagraph_count)
         if o.determination_type_code == 'DO' else [])
     documents = []
 
@@ -309,10 +298,8 @@ class MineIncidentFactory(BaseFactory):
         if not isinstance(extracted, int):
             extracted = 1
 
-        MineIncidentDocumentFactory.create_batch(size=extracted,
-                                                 incident=obj,
-                                                 mine_document__mine=None,
-                                                 **kwargs)
+        MineIncidentDocumentFactory.create_batch(
+            size=extracted, incident=obj, mine_document__mine=None, **kwargs)
 
 
 class MineIncidentDocumentFactory(BaseFactory):
@@ -326,11 +313,9 @@ class MineIncidentDocumentFactory(BaseFactory):
         incident = factory.SubFactory('tests.factories.MineIncidentFactory')
 
     mine_incident_document_xref_guid = GUID
-    mine_document_guid = factory.SelfAttribute(
-        'mine_document.mine_document_guid')
+    mine_document_guid = factory.SelfAttribute('mine_document.mine_document_guid')
     mine_incident_id = factory.SelfAttribute('incident.mine_incident_id')
-    mine_incident_document_type_code = factory.LazyFunction(
-        RandomIncidentDocumentType)
+    mine_incident_document_type_code = factory.LazyFunction(RandomIncidentDocumentType)
 
 
 class MineReportFactory(BaseFactory):
@@ -342,8 +327,7 @@ class MineReportFactory(BaseFactory):
 
     mine_report_guid = GUID
     mine_guid = factory.SelfAttribute('mine.mine_guid')
-    mine_report_definition_id = factory.LazyFunction(
-        RandomMineReportDefinition)
+    mine_report_definition_id = factory.LazyFunction(RandomMineReportDefinition)
     due_date = factory.Faker('future_datetime', end_date='+30d')
     submission_year = factory.fuzzy.FuzzyInteger(2020, 3000)
     mine_report_submissions = []
@@ -356,9 +340,7 @@ class MineReportFactory(BaseFactory):
         if not isinstance(extracted, int):
             extracted = 1
 
-        MineReportSubmissionFactory.create_batch(size=extracted,
-                                                 report=obj,
-                                                 **kwargs)
+        MineReportSubmissionFactory.create_batch(size=extracted, report=obj, **kwargs)
 
 
 class MineReportCommentFactory(BaseFactory):
@@ -366,15 +348,12 @@ class MineReportCommentFactory(BaseFactory):
         model = MineReportComment
 
     class Params:
-        submission = factory.SubFactory(
-            'tests.factories.MineReportSubmissionFactory')
+        submission = factory.SubFactory('tests.factories.MineReportSubmissionFactory')
 
-    mine_report_submission_id = factory.SelfAttribute(
-        'submission.mine_report_submission_id')
+    mine_report_submission_id = factory.SelfAttribute('submission.mine_report_submission_id')
     mine_report_comment_guid = GUID
     report_comment = factory.Faker('paragraph')
-    comment_visibility_ind = factory.Faker('boolean',
-                                           chance_of_getting_true=50)
+    comment_visibility_ind = factory.Faker('boolean', chance_of_getting_true=50)
 
 
 class MineReportSubmissionFactory(BaseFactory):
@@ -386,8 +365,7 @@ class MineReportSubmissionFactory(BaseFactory):
 
     mine_report_id = factory.SelfAttribute('report.mine_report_id')
     mine_report_submission_guid = GUID
-    mine_report_submission_status_code = factory.LazyFunction(
-        RandomMineReportSubmissionStatusCode)
+    mine_report_submission_status_code = factory.LazyFunction(RandomMineReportSubmissionStatusCode)
     submission_date = factory.Faker('future_datetime', end_date='+30d')
     comments = []
 
@@ -399,9 +377,7 @@ class MineReportSubmissionFactory(BaseFactory):
         if not isinstance(extracted, int):
             extracted = 1
 
-        MineReportCommentFactory.create_batch(size=extracted,
-                                              submission=obj,
-                                              **kwargs)
+        MineReportCommentFactory.create_batch(size=extracted, submission=obj, **kwargs)
 
 
 class AddressFactory(BaseFactory):
@@ -417,9 +393,7 @@ class AddressFactory(BaseFactory):
     address_line_2 = factory.Iterator([None, 'Apt. 123', None, 'Apt. 123'])
     city = factory.Faker('city')
     sub_division_code = factory.LazyFunction(RandomSubDivisionCode)
-    post_code = factory.Faker('bothify',
-                              text='?#?#?#',
-                              letters='ABCDEFGHIJKLMNOPQRSTUVWXYZ')
+    post_code = factory.Faker('bothify', text='?#?#?#', letters='ABCDEFGHIJKLMNOPQRSTUVWXYZ')
 
 
 class PartyFactory(BaseFactory):
@@ -430,8 +404,7 @@ class PartyFactory(BaseFactory):
         person = factory.Trait(
             first_name=factory.Faker('first_name'),
             party_name=factory.Faker('last_name'),
-            email=factory.LazyAttribute(
-                lambda o: f'{o.first_name}.{o.party_name}@example.com'),
+            email=factory.LazyAttribute(lambda o: f'{o.first_name}.{o.party_name}@example.com'),
             party_type_code='PER',
         )
 
@@ -468,8 +441,7 @@ class PartyBusinessRoleFactory(BaseFactory):
     class Meta:
         model = PartyBusinessRoleAppointment
 
-    party_business_role_code = factory.LazyFunction(
-        RandomPartyBusinessRoleCode)
+    party_business_role_code = factory.LazyFunction(RandomPartyBusinessRoleCode)
     party = factory.SubFactory(PartyFactory, person=True)
     start_date = TODAY
     end_date = None
@@ -482,20 +454,17 @@ class MinePartyAppointmentFactory(BaseFactory):
     mine_party_appt_guid = GUID
     mine = factory.SubFactory('tests.factories.MineFactory')
     party = factory.SubFactory(PartyFactory, person=True)
-    mine_party_appt_type_code = factory.LazyFunction(
-        RandomMinePartyAppointmentTypeCode)
+    mine_party_appt_type_code = factory.LazyFunction(RandomMinePartyAppointmentTypeCode)
     start_date = TODAY
     end_date = None
     processed_by = factory.Faker('first_name')
     processed_on = TODAY
 
     mine_tailings_storage_facility_guid = factory.LazyAttribute(
-        lambda o: o.mine.mine_tailings_storage_facilities[
-            0].mine_tailings_storage_facility_guid
+        lambda o: o.mine.mine_tailings_storage_facilities[0].mine_tailings_storage_facility_guid
         if o.mine_party_appt_type_code == 'EOR' else None)
-    permit_guid = factory.LazyAttribute(
-        lambda o: o.mine.mine_permit[0].permit_guid if o.mine.mine_permit and o
-        .mine_party_appt_type_code == 'PMT' else None)
+    permit_guid = factory.LazyAttribute(lambda o: o.mine.mine_permit[
+        0].permit_guid if o.mine.mine_permit and o.mine_party_appt_type_code == 'PMT' else None)
 
 
 class CoreUserFactory(BaseFactory):
@@ -506,8 +475,7 @@ class CoreUserFactory(BaseFactory):
     email = factory.Faker('email')
     phone_no = factory.Faker('numerify', text='###-###-####')
     last_logon = TODAY
-    idir_user_detail = factory.RelatedFactory(
-        'tests.factories.IdirUserDetailFactory', 'core_user')
+    idir_user_detail = factory.RelatedFactory('tests.factories.IdirUserDetailFactory', 'core_user')
 
 
 class IdirUserDetailFactory(BaseFactory):
@@ -546,21 +514,22 @@ class MineFactory(BaseFactory):
         model = Mine
 
     class Params:
-        minimal = factory.Trait(mine_no=None,
-                                mine_note=None,
-                                mine_region='NE',
-                                latitude=None,
-                                longitude=None,
-                                geom=None,
-                                mine_location_description=None,
-                                mine_type=None,
-                                verified_status=None,
-                                mine_status=None,
-                                mine_tailings_storage_facilities=0,
-                                mine_permit=0,
-                                mine_incidents=0,
-                                mine_variance=0,
-                                mine_reports=0)
+        minimal = factory.Trait(
+            mine_no=None,
+            mine_note=None,
+            mine_region='NE',
+            latitude=None,
+            longitude=None,
+            geom=None,
+            mine_location_description=None,
+            mine_type=None,
+            verified_status=None,
+            mine_status=None,
+            mine_tailings_storage_facilities=0,
+            mine_permit=0,
+            mine_incidents=0,
+            mine_variance=0,
+            mine_reports=0)
 
     mine_guid = GUID
     mine_no = factory.Faker('ean', length=8)
@@ -572,15 +541,10 @@ class MineFactory(BaseFactory):
     union_ind = factory.Faker('boolean', chance_of_getting_true=50)
     mine_type = factory.RelatedFactory(MineTypeFactory, 'mine')
     verified_status = factory.RelatedFactory(MineVerifiedStatusFactory, 'mine')
-    latitude = factory.Faker(
-        'latitude')  # or factory.fuzzy.FuzzyFloat(49, 60) for ~ inside BC
-    longitude = factory.Faker(
-        'longitude')  # or factory.fuzzy.FuzzyFloat(-132, -114.7) for ~ BC
-    geom = factory.LazyAttribute(lambda o: 'SRID=3005;POINT(%f %f)' %
-                                 (o.longitude, o.latitude))
-    mine_location_description = factory.Faker('sentence',
-                                              nb_words=8,
-                                              variable_nb_words=True)
+    latitude = factory.Faker('latitude')         # or factory.fuzzy.FuzzyFloat(49, 60) for ~ inside BC
+    longitude = factory.Faker('longitude')       # or factory.fuzzy.FuzzyFloat(-132, -114.7) for ~ BC
+    geom = factory.LazyAttribute(lambda o: 'SRID=3005;POINT(%f %f)' % (o.longitude, o.latitude))
+    mine_location_description = factory.Faker('sentence', nb_words=8, variable_nb_words=True)
     mine_status = factory.RelatedFactory(MineStatusFactory, 'mine')
     mine_tailings_storage_facilities = []
     mine_permit = []
@@ -596,9 +560,7 @@ class MineFactory(BaseFactory):
         if not isinstance(extracted, int):
             extracted = 1
 
-        MineTailingsStorageFacilityFactory.create_batch(size=extracted,
-                                                        mine=obj,
-                                                        **kwargs)
+        MineTailingsStorageFacilityFactory.create_batch(size=extracted, mine=obj, **kwargs)
 
     @factory.post_generation
     def mine_permit(obj, create, extracted, **kwargs):
