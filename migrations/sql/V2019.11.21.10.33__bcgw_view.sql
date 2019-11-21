@@ -1,5 +1,5 @@
 CREATE VIEW bcgw_view as
-SELECT m.mine_guid::varchar, m.mine_name, m.mine_no, 
+SELECT m.mine_guid::varchar, p.permit_guid, m.mine_name, m.mine_no, 
 CONCAT(mos.description, ',', mosr.description, ',', mossr.description) as operating_status, 
 CONCAT(mos.mine_operation_status_code, ',', mosr.mine_operation_status_reason_code, ',', mossr.mine_operation_status_sub_reason_code) as operating_status_code, 
 ms.effective_date::varchar,
@@ -26,7 +26,8 @@ LEFT JOIN mine_tenure_type_code mttc on mt.mine_tenure_type_code=mttc.mine_tenur
 LEFT JOIN mine_type_detail_xref mtdx on mt.mine_type_guid = mtdx.mine_type_guid and mtdx.active_ind = true
 LEFT JOIN mine_disturbance_code mdc on mtdx.mine_disturbance_code = mdc.mine_disturbance_code
 LEFT JOIN mine_commodity_code mcc on mtdx.mine_commodity_code = mcc.mine_commodity_code
-GROUP BY p.permit_no, m.mine_guid, m.mine_name, m.mine_no,
+where m.deleted_ind = false
+GROUP BY p.permit_no, p.permit_guid, m.mine_guid, m.mine_name, m.mine_no, m.deleted_ind,
 mos.description, mosr.description, mossr.description, 
 mos.mine_operation_status_code, mosr.mine_operation_status_reason_code, mossr.mine_operation_status_sub_reason_code, 
 ms.effective_date,

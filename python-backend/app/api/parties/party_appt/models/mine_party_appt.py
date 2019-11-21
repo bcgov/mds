@@ -20,32 +20,43 @@ from app.api.parties.party_appt.models.mine_party_appt_document_xref import Mine
 class MinePartyAppointment(AuditMixin, Base):
     __tablename__ = "mine_party_appt"
     # Columns
-    mine_party_appt_id = db.Column(db.Integer, primary_key=True, server_default=FetchedValue())
-    mine_party_appt_guid = db.Column(UUID(as_uuid=True), server_default=FetchedValue())
+    mine_party_appt_id = db.Column(db.Integer,
+                                   primary_key=True,
+                                   server_default=FetchedValue())
+    mine_party_appt_guid = db.Column(UUID(as_uuid=True),
+                                     server_default=FetchedValue())
     mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine.mine_guid'))
-    party_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('party.party_guid'))
+    party_guid = db.Column(UUID(as_uuid=True),
+                           db.ForeignKey('party.party_guid'))
     mine_party_appt_type_code = db.Column(
-        db.String(3), db.ForeignKey('mine_party_appt_type_code.mine_party_appt_type_code'))
+        db.String(3),
+        db.ForeignKey('mine_party_appt_type_code.mine_party_appt_type_code'))
     start_date = db.Column(db.DateTime)
     end_date = db.Column(db.DateTime)
     processed_by = db.Column(db.String(60), server_default=FetchedValue())
-    processed_on = db.Column(db.DateTime, nullable=False, server_default=FetchedValue())
+    processed_on = db.Column(db.DateTime,
+                             nullable=False,
+                             server_default=FetchedValue())
 
     #type specific foreign keys
     mine_tailings_storage_facility_guid = db.Column(
         UUID(as_uuid=True),
-        db.ForeignKey('mine_tailings_storage_facility.mine_tailings_storage_facility_guid'))
-    permit_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('permit.permit_guid'))
+        db.ForeignKey(
+            'mine_tailings_storage_facility.mine_tailings_storage_facility_guid'
+        ))
+    permit_guid = db.Column(UUID(as_uuid=True),
+                            db.ForeignKey('permit.permit_guid'))
 
     deleted_ind = db.Column(db.Boolean, server_default=FetchedValue())
 
     # Relationships
     party = db.relationship('Party', lazy='joined')
 
-    mine_party_appt_type = db.relationship('MinePartyAppointmentType',
-                                           backref='mine_party_appt',
-                                           order_by='desc(MinePartyAppointmentType.display_order)',
-                                           lazy='joined')
+    mine_party_appt_type = db.relationship(
+        'MinePartyAppointmentType',
+        backref='mine_party_appt',
+        order_by='desc(MinePartyAppointmentType.display_order)',
+        lazy='joined')
 
     documents = db.relationship('MineDocument',
                                 lazy='joined',
@@ -70,7 +81,10 @@ class MinePartyAppointment(AuditMixin, Base):
             'documents': [doc.json() for doc in self.documents]
         }
         if 'party' in relationships:
-            result.update({'party': self.party.json(show_mgr=False) if self.party else str({})})
+            result.update({
+                'party':
+                self.party.json(show_mgr=False) if self.party else str({})
+            })
         related_guid = ""
         if self.mine_party_appt_type_code == "EOR":
             related_guid = str(self.mine_tailings_storage_facility_guid)
@@ -121,12 +135,14 @@ class MinePartyAppointment(AuditMixin, Base):
                                   mine_tailings_storage_facility_guid=None):
         built_query = cls.query.filter_by(deleted_ind=False).filter_by(
             mine_guid=mine_guid).filter_by(
-                mine_party_appt_type_code=mine_party_appt_type_code).filter_by(end_date=None)
+                mine_party_appt_type_code=mine_party_appt_type_code).filter_by(
+                    end_date=None)
         if permit_guid:
             built_query = built_query.filter_by(permit_guid=permit_guid)
         if mine_tailings_storage_facility_guid:
             built_query = built_query.filter_by(
-                mine_tailings_storage_facility_guid=mine_tailings_storage_facility_guid)
+                mine_tailings_storage_facility_guid=
+                mine_tailings_storage_facility_guid)
         return built_query.all()
 
     @classmethod
@@ -204,12 +220,14 @@ class MinePartyAppointment(AuditMixin, Base):
         if self.mine_party_appt_type_code == 'EOR':
             if not val:
                 raise AssertionError(
-                    'No mine_tailings_storage_facility_guid, but mine_party_appt_type_code is EOR.')
+                    'No mine_tailings_storage_facility_guid, but mine_party_appt_type_code is EOR.'
+                )
         return val
 
     @validates('permit_guid')
     def validate_permit_guid(self, key, val):
         if self.mine_party_appt_type_code == 'PMT':
             if not val:
-                raise AssertionError('No permit_guid, but mine_party_appt_type_code is PMT.')
+                raise AssertionError(
+                    'No permit_guid, but mine_party_appt_type_code is PMT.')
         return val
