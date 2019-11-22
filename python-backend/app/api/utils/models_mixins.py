@@ -68,6 +68,21 @@ class Base(db.Model):
                 raise e
 
     def deep_update_from_dict(self, data_dict, depth=0):
+        """
+        This function takes a python dictionary and assigns all present key value pairs to 
+        the attributes of this SQLALchemy model (self). If the value type is a dict, update 
+        the related model using the value as the new starting point for that model. IF the 
+        value type is a list, use the relationship (of the same name) to update the related 
+        objects, matching on the destination model's set of primary key, if there isn't an 
+        existing item, create a new object using Marshmallow.ModelSchema.load() 
+        
+        Handle types, UUID doesn't implement python_type, and datetime columns needs special handling.
+
+        Parameters: data_dict <dict>
+        Return: None
+        Side-Effect: Self attributes have been overwritten by values in data_dict, matched on key, recursivly.
+        """
+
         current_app.logger.debug(depth * '-' + f'updating{self}')
         model = inspect(self.__class__)
         editable_columns = [
@@ -91,8 +106,8 @@ class Base(db.Model):
 
                     #see if object list holds a child that has the same values as the json dict for all primary key values of class
                     existing_obj = next((x for x in obj_list if all(
-                        i.get(pk_name, None) == getattr(x, pk_name) for pk_name in pk_names)),
-                                        None)     #ALWAYS NONE for new obj, except tests
+                        i.get(pk_name, None) == getattr(x, pk_name) for pk_name in pk_names)), None)
+                    #ALWAYS NONE for new obj, except tests
                     if existing_obj:
                         current_app.logger.debug(
                             depth * ' ' +
@@ -106,9 +121,9 @@ class Base(db.Model):
                     else:
                         #no existing obj with PK match, so create  item in related list
                         current_app.logger.debug(depth * ' ' + f'add new item to {self}.{k}')
-                        rel = getattr(self.__class__, k)     #SA.relationship definition
-                        new_obj_class = rel.property.entity.class_     #class for relationship target
-                        new_obj = new_obj_class._schema().load(i)     #marshmallow load dict -> obj
+                        rel = getattr(self.__class__, k)                               #SA.relationship definition
+                        new_obj_class = rel.property.entity.class_                     #class for relationship target
+                        new_obj = new_obj_class._schema().load(i)                      #marshmallow load dict -> obj
                         obj_list.append(new_obj)
                         current_app.logger.debug(f'just created and saved{new_obj}=' +
                                                  str(new_obj_class._schema().dump(new_obj)))
@@ -122,7 +137,8 @@ class Base(db.Model):
                     assert isinstance(v, (UUID, str))
                 else:
                     py_type = col.type.python_type
-                    if py_type == datetime:     #json value is string, if expecting datetime in that column, convert here
+                    if py_type == datetime:
+                        #json value is string, if expecting datetime in that column, convert here
                         setattr(self, k, parser.parse(v))
                         continue
                     elif not isinstance(v, py_type):
@@ -133,7 +149,7 @@ class Base(db.Model):
                         setattr(self, k, v)
         if depth == 0:
             self.save()
-        return self
+        return
 
 
 class AuditMixin(object):
