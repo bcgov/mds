@@ -843,7 +843,7 @@ def ETL_MMS_NOW_schema(connection, tables):
         placer_activity_app_cols = etl.cut(proposed_placer_activity, 'mms_cid', 'placerreclamation', 'placerreclamationcost', 'placertotalexistdistarea', 'placerdisturbedarea', 'placertimbervolume')
 
         proposed_placer_activity = etl.cutout(proposed_placer_activity, 'placerreclamation', 'placerreclamationcost', 'placertotalexistdistarea', 'placerdisturbedarea', 'placertimbervolume')
-        existing_placer_activity = etl.cutout(proposed_placer_activity, 'placerreclamation', 'placerreclamationcost', 'placertotalexistdistarea', 'placerdisturbedarea', 'placertimbervolume')
+        existing_placer_activity = etl.cutout(existing_placer_activity, 'placerreclamation', 'placerreclamationcost', 'placertotalexistdistarea', 'placerdisturbedarea', 'placertimbervolume')
 
         existing_placer_activity_detail = etl.fromdb(
             connection,
