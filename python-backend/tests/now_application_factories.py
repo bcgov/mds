@@ -13,6 +13,7 @@ from app.api.now_submissions import models as sub_models
 
 SEQUENCE = factory.Sequence(lambda n: n)
 
+
 class BlastingOperationFactory(BaseFactory):
     class Meta:
         model = app_models.BlastingOperation
@@ -361,13 +362,14 @@ class NOWApplicationFactory(BaseFactory):
         model = app_models.NOWApplication\
 
     now_application_id = factory.Sequence(lambda n: n)
+
     now_tracking_number = factory.fuzzy.FuzzyInteger(1, 100)
     notice_of_work_type_code = factory.LazyFunction(RandomNOWTypeCode)
     now_application_status_code = factory.LazyFunction(RandomNOWStatusCode)
     submitted_date = factory.Faker('past_datetime')
     received_date = factory.Faker('past_datetime')
-    latitude = factory.Faker('latitude')  # or factory.fuzzy.FuzzyFloat(49, 60) for ~ inside BC
-    longitude = factory.Faker('longitude')  # or factory.fuzzy.FuzzyFloat(-132, -114.7) for ~ BC
+    latitude = factory.Faker('latitude')         # or factory.fuzzy.FuzzyFloat(49, 60) for ~ inside BC
+    longitude = factory.Faker('longitude')       # or factory.fuzzy.FuzzyFloat(-132, -114.7) for ~ BC
     property_name = factory.Faker('company')
     tenure_number = str(factory.Sequence(lambda n: n))
     description_of_land = factory.Faker('sentence', nb_words=6, variable_nb_words=True)
@@ -393,14 +395,16 @@ class NOWApplicationFactory(BaseFactory):
     underground_exploration = factory.RelatedFactory(UndergroundExplorationFactory,
                                                      'now_application')
 
+
 class NOWApplicationIdentityFactory(BaseFactory):
     class Meta:
         model = app_models.NOWApplicationIdentity
-    
+
     class Params:
         mine = factory.SubFactory('tests.factories.MineFactory', minimal=True)
-        now_application = factory.SubFactory('tests.factories.NOWApplicationFactory')
-        now_submission = factory.SubFactory('tests.factories.NOWSubmissionFactory')
+        now_application = factory.SubFactory(
+            'tests.now_application_factories.NOWApplicationFactory')
+        now_submission = factory.SubFactory('tests.now_submission_factories.NOWSubmissionFactory')
 
     now_application_guid = GUID
     mine_guid = factory.SelfAttribute('mine.mine_guid')
