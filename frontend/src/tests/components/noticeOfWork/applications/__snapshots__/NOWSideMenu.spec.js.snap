@@ -1,0 +1,90 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NOWSideMenu renders properly 1`] = `
+<div>
+  <Anchor
+    affix={false}
+    getContainer={[Function]}
+    offsetTop={195}
+    onChange={[Function]}
+    showInkInFixed={false}
+  >
+    <AnchorLink
+      href="#application-info"
+      title="Application Info"
+    />
+    <AnchorLink
+      href="#contacts"
+      title="Contacts"
+    />
+    <AnchorLink
+      href="#access"
+      title="Access"
+    />
+    <AnchorLink
+      href="#state-of-land"
+      title="State of Land"
+    />
+    <AnchorLink
+      href="#first-aid"
+      title="First Aid"
+    />
+    <AnchorLink
+      href="#reclamation"
+      title="Summary of Reclamation"
+    />
+    <AnchorLink
+      href="#access-roads"
+      title="Access Roads, Trails, Helipads, Air Strips, Boat Ramps"
+    />
+    <AnchorLink
+      href="#blasting"
+      title="Blasting"
+    />
+    <AnchorLink
+      href="#camps"
+      title="Camps, Buildings, Staging Areas, Fuel/Lubricant Storage"
+    />
+    <AnchorLink
+      href="#cut-lines-polarization-survey"
+      title="Cut Lines and Induced Polarization Survey"
+    />
+    <AnchorLink
+      href="#surface-drilling"
+      title="Exploration Surface Drilling"
+    />
+    <AnchorLink
+      href="#mechanical-trenching"
+      title="Mechanical Trenching / Test Pits"
+    />
+    <AnchorLink
+      href="#settling-ponds"
+      title="Settling Ponds"
+    />
+    <AnchorLink
+      href="#surface-bulk-samples"
+      title="Surface Bulk Sample"
+    />
+    <AnchorLink
+      href="#underground-exploration"
+      title="Underground Exploration"
+    />
+    <AnchorLink
+      href="#sand-gravel-quarry-operations"
+      title="Sand and Gravel / Quarry Operations"
+    />
+    <AnchorLink
+      href="#placer-operations"
+      title="Placer Operations"
+    />
+    <AnchorLink
+      href="#water-supply"
+      title="Water Supply"
+    />
+    <AnchorLink
+      href="#documents"
+      title="Documents"
+    />
+  </Anchor>
+</div>
+`;

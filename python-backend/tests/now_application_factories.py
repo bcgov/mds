@@ -374,7 +374,7 @@ class NOWApplicationFactory(BaseFactory):
     proposed_start_date = factory.Faker('past_datetime')
     proposed_end_date = factory.Faker('past_datetime')
 
-    blasting = factory.RelatedFactory(BlastingOperationFactory, 'now_application')
+    blasting_operation = factory.RelatedFactory(BlastingOperationFactory, 'now_application')
     state_of_land = factory.RelatedFactory(StateOfLandFactory, 'now_application')
 
     # Activities

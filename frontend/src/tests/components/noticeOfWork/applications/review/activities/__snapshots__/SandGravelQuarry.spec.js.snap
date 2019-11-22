@@ -1,0 +1,254 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SandGravelQuarry renders properly 1`] = `
+<div>
+  <br />
+  <h4>
+    Soil Conservation
+  </h4>
+  <Row
+    gutter={16}
+  >
+    <Col
+      md={12}
+      sm={24}
+    >
+      <div
+        className="field-title"
+      >
+        Average Depth Overburden(m)
+      </div>
+      <Field
+        component={[Function]}
+        disabled={true}
+        id="average_overburden_depth"
+        name="average_overburden_depth"
+      />
+    </Col>
+    <Col
+      md={12}
+      sm={24}
+    >
+      <div
+        className="field-title"
+      >
+        Measures to stabilize soil overburden stockpiles and control noxious weeds
+      </div>
+      <Field
+        component={[Function]}
+        disabled={true}
+        id="stability_measures_description"
+        name="stability_measures_description"
+      />
+    </Col>
+  </Row>
+  <Row
+    gutter={16}
+  >
+    <Col
+      md={12}
+      sm={24}
+    >
+      <div
+        className="field-title"
+      >
+        Average Depth of top soil(m)
+      </div>
+      <Field
+        component={[Function]}
+        disabled={true}
+        id="average_top_soil_depth"
+        name="average_top_soil_depth"
+      />
+    </Col>
+  </Row>
+  <br />
+  <h4>
+    Land Use
+  </h4>
+  <Row
+    gutter={16}
+  >
+    <Col
+      md={12}
+      sm={24}
+    >
+      <div
+        className="field-title"
+      >
+        Is this site within the Agricultural Land Reserve?
+      </div>
+      <Field
+        component={[Function]}
+        disabled={true}
+        id="is_agricultural_land_reserve"
+        name="is_agricultural_land_reserve"
+      />
+    </Col>
+    <Col
+      md={12}
+      sm={24}
+    >
+      <div
+        className="field-title"
+      >
+        Current land use zoning for the site 
+      </div>
+      <Field
+        component={[Function]}
+        disabled={true}
+        id="land_use_zoning"
+        name="land_use_zoning"
+      />
+    </Col>
+  </Row>
+  <Row
+    gutter={16}
+  >
+    <Col
+      md={12}
+      sm={24}
+    >
+      <div
+        className="field-title--light"
+      >
+        Permit Application Number**
+      </div>
+      <Field
+        component={[Function]}
+        disabled={true}
+        id=""
+        name=""
+      />
+    </Col>
+    <Col
+      md={12}
+      sm={24}
+    >
+      <div
+        className="field-title"
+      >
+        Proposed land use
+      </div>
+      <Field
+        component={[Function]}
+        disabled={true}
+        id="proposed_land_use"
+        name="proposed_land_use"
+      />
+    </Col>
+  </Row>
+  <Row
+    gutter={16}
+  >
+    <Col
+      md={12}
+      sm={24}
+    >
+      <div
+        className="field-title"
+      >
+        Does the local government have a soil removal bylaw?
+      </div>
+      <Field
+        component={[Function]}
+        disabled={true}
+        id="has_local_soil_removal_bylaw"
+        name="has_local_soil_removal_bylaw"
+      />
+    </Col>
+    <Col
+      md={12}
+      sm={24}
+    >
+      <div
+        className="field-title"
+      >
+        Estimate total mineable reserves over the life of the mine(m3)
+      </div>
+      <Field
+        component={[Function]}
+        disabled={true}
+        id="total_mineable_reserves"
+        name="total_mineable_reserves"
+      />
+    </Col>
+  </Row>
+  <Row
+    gutter={16}
+  >
+    <Col
+      md={12}
+      sm={24}
+    >
+      <div
+        className="field-title"
+      >
+        Official community plan for the site
+      </div>
+      <Field
+        component={[Function]}
+        disabled={true}
+        id="community_plan"
+        name="community_plan"
+      />
+    </Col>
+    <Col
+      md={12}
+      sm={24}
+    >
+      <div
+        className="field-title"
+      >
+        Estimate annual extraction from site (tonnes/year)
+      </div>
+      <Field
+        component={[Function]}
+        disabled={true}
+        id="total_annual_extraction"
+        name="total_annual_extraction"
+      />
+    </Col>
+  </Row>
+  <br />
+  <withStore(Table)
+    align="left"
+    columns={
+      Array [
+        Object {
+          "dataIndex": "type",
+          "key": "type",
+          "render": [Function],
+          "title": "Activity",
+        },
+        Object {
+          "dataIndex": "length",
+          "key": "length",
+          "render": [Function],
+          "title": "Length(km)",
+        },
+        Object {
+          "dataIndex": "disturbedArea",
+          "key": "disturbedArea",
+          "render": [Function],
+          "title": "Disturbed Area (ha)",
+        },
+        Object {
+          "dataIndex": "timberVolume",
+          "key": "timberVolume",
+          "render": [Function],
+          "title": "Merchantable timber volume (m3)",
+        },
+      ]
+    }
+    dataSource={Array []}
+    locale={
+      Object {
+        "emptyText": "No data",
+      }
+    }
+    pagination={false}
+  />
+  <br />
+</div>
+`;

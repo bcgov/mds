@@ -1,0 +1,206 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ReviewActivities renders properly 1`] = `
+<div>
+  <withRouter(ScrollContentWrapper)
+    id="access-roads"
+    title="Access Roads, Trails, Helipads, Air Strips, Boat Ramps"
+  >
+    <FormSection
+      name="exploration_access"
+    >
+      <AccessRoads
+        initialValues={
+          Object {
+            "details": Array [],
+          }
+        }
+        isViewMode={true}
+      />
+    </FormSection>
+  </withRouter(ScrollContentWrapper)>
+  <withRouter(ScrollContentWrapper)
+    id="blasting"
+    title="Blasting"
+  >
+    <FormSection
+      name="blasting_operation"
+    >
+      <Blasting
+        initialValues={Object {}}
+        isViewMode={true}
+      />
+    </FormSection>
+  </withRouter(ScrollContentWrapper)>
+  <withRouter(ScrollContentWrapper)
+    id="camps"
+    title="Camps, Buildings, Staging Areas, Fuel/Lubricant Storage"
+  >
+    <FormSection
+      name="camps"
+    >
+      <Camps
+        initialValues={
+          Object {
+            "details": Array [],
+          }
+        }
+        isViewMode={true}
+      />
+    </FormSection>
+  </withRouter(ScrollContentWrapper)>
+  <withRouter(ScrollContentWrapper)
+    id="cut-lines-polarization-survey"
+    title="Cut Lines and Induced Polarization Survey"
+  >
+    <FormSection
+      name="cut_lines_polarization_survey"
+    >
+      <CutLines
+        initialValues={
+          Object {
+            "details": Array [],
+          }
+        }
+        isViewMode={true}
+      />
+    </FormSection>
+  </withRouter(ScrollContentWrapper)>
+  <withRouter(ScrollContentWrapper)
+    id="surface-drilling"
+    title="Exploration Surface Drilling"
+  >
+    <FormSection
+      name="exploration_surface_drilling"
+    >
+      <SurfaceDrilling
+        initialValues={
+          Object {
+            "details": Array [],
+          }
+        }
+        isViewMode={true}
+      />
+    </FormSection>
+  </withRouter(ScrollContentWrapper)>
+  <withRouter(ScrollContentWrapper)
+    id="mechanical-trenching"
+    title="Mechanical Trenching / Test Pits"
+  >
+    <FormSection
+      name="mechanical_trenching"
+    >
+      <MechanicalTrenching
+        initialValues={
+          Object {
+            "details": Array [],
+          }
+        }
+        isViewMode={true}
+      />
+    </FormSection>
+  </withRouter(ScrollContentWrapper)>
+  <withRouter(ScrollContentWrapper)
+    id="settling-ponds"
+    title="Settling Ponds"
+  >
+    <FormSection
+      name="settling_pond"
+    >
+      <SettlingPonds
+        initialValues={
+          Object {
+            "details": Array [],
+          }
+        }
+        isViewMode={true}
+      />
+    </FormSection>
+  </withRouter(ScrollContentWrapper)>
+  <withRouter(ScrollContentWrapper)
+    id="surface-bulk-samples"
+    title="Surface Bulk Sample"
+  >
+    <FormSection
+      name="surface_bulk_sample"
+    >
+      <SurfaceBulkSamples
+        initialValues={
+          Object {
+            "details": Array [],
+          }
+        }
+        isViewMode={true}
+      />
+    </FormSection>
+  </withRouter(ScrollContentWrapper)>
+  <withRouter(ScrollContentWrapper)
+    id="underground-exploration"
+    title="Underground Exploration"
+  >
+    <FormSection
+      name="underground_exploration"
+    >
+      <UndergroundExploration
+        initialValues={
+          Object {
+            "details": Array [],
+          }
+        }
+        isViewMode={true}
+      />
+    </FormSection>
+  </withRouter(ScrollContentWrapper)>
+  <withRouter(ScrollContentWrapper)
+    id="sand-gravel-quarry-operations"
+    title="Sand and Gravel / Quary Operations"
+  >
+    <FormSection
+      name="sand_and_gravel"
+    >
+      <SandGravelQuarry
+        initialValues={
+          Object {
+            "details": Array [],
+          }
+        }
+        isViewMode={true}
+      />
+    </FormSection>
+  </withRouter(ScrollContentWrapper)>
+  <withRouter(ScrollContentWrapper)
+    id="placer-operations"
+    title="Placer Operations"
+  >
+    <FormSection
+      name="placer_operation"
+    >
+      <Placer
+        initialValues={
+          Object {
+            "details": Array [],
+          }
+        }
+        isViewMode={true}
+      />
+    </FormSection>
+  </withRouter(ScrollContentWrapper)>
+  <withRouter(ScrollContentWrapper)
+    id="water-supply"
+    title="Water Supply"
+  >
+    <FormSection
+      name="water_supply"
+    >
+      <WaterSupply
+        initialValues={
+          Object {
+            "details": Array [],
+          }
+        }
+        isViewMode={true}
+      />
+    </FormSection>
+  </withRouter(ScrollContentWrapper)>
+</div>
+`;

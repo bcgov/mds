@@ -46,7 +46,7 @@ class NOWApplication(Base, AuditMixin):
     proposed_end_date = db.Column(db.Date)
     directions_to_site = db.Column(db.String)
 
-    blasting = db.relationship('BlastingOperation', lazy='joined', uselist=False)
+    blasting_operation = db.relationship('BlastingOperation', lazy='joined', uselist=False)
     state_of_land = db.relationship('StateOfLand', lazy='joined', uselist=False)
 
     # Activities

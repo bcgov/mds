@@ -1,0 +1,84 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`WaterSupply renders properly 1`] = `
+<div>
+  <withStore(Table)
+    align="left"
+    columns={
+      Array [
+        Object {
+          "dataIndex": "source",
+          "key": "source",
+          "render": [Function],
+          "title": "Source",
+        },
+        Object {
+          "dataIndex": "type",
+          "key": "type",
+          "render": [Function],
+          "title": "Activity",
+        },
+        Object {
+          "dataIndex": "water",
+          "key": "water",
+          "render": [Function],
+          "title": "Water Use",
+        },
+        Object {
+          "dataIndex": "estimate",
+          "key": "estimate",
+          "render": [Function],
+          "title": "Estimate",
+        },
+      ]
+    }
+    dataSource={Array []}
+    locale={
+      Object {
+        "emptyText": "No data",
+      }
+    }
+    pagination={false}
+  />
+  <br />
+  <h4>
+    Reclamation Program
+  </h4>
+  <Row
+    gutter={16}
+  >
+    <Col
+      md={12}
+      sm={24}
+    >
+      <div
+        className="field-title"
+      >
+        Proposed reclamation and timing for this specific activity
+      </div>
+      <Field
+        component={[Function]}
+        disabled={true}
+        id="reclamation_description"
+        name="reclamation_description"
+      />
+    </Col>
+    <Col
+      md={12}
+      sm={24}
+    >
+      <div
+        className="field-title"
+      >
+        Estimated Cost of reclamation activities described above
+      </div>
+      <Field
+        component={[Function]}
+        disabled={true}
+        id="reclamation_description"
+        name="reclamation_description"
+      />
+    </Col>
+  </Row>
+</div>
+`;

@@ -544,7 +544,7 @@ VALUES
     ('mechanical_trenching', 'Mechanical Trenching / Test Pits', 'system-mds', 'system-mds'),
     ('surface_bulk_sample', 'Surface Bulk Sample', 'system-mds', 'system-mds'),
     ('blasting_operation', 'Blasting Operations', 'system-mds', 'system-mds'),
-    ('placer', 'Placer Opertations', 'system-mds', 'system-mds')
+    ('placer_operation', 'Placer Opertations', 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
 
 INSERT INTO underground_exploration_type (

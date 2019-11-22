@@ -42,8 +42,11 @@ export const ReviewActivities = (props) => {
         </FormSection>
       </ScrollContentWrapper>
       <ScrollContentWrapper id="blasting" title="Blasting">
-        <FormSection name="blasting">
-          <Blasting initialValues={props.noticeOfWork.blasting} isViewMode={props.isViewMode} />
+        <FormSection name="blasting_operation">
+          <Blasting
+            initialValues={props.noticeOfWork.blasting_operation}
+            isViewMode={props.isViewMode}
+          />
         </FormSection>
       </ScrollContentWrapper>
       <ScrollContentWrapper

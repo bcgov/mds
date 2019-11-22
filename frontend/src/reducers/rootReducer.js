@@ -110,6 +110,10 @@ export const reducerObject = {
     networkReducer,
     reducerTypes.CREATE_NOTICE_OF_WORK_APPLICATION
   ),
+  [reducerTypes.GET_NOTICE_OF_WORK_ACTIVITY_TYPE_OPTIONS]: createReducer(
+    networkReducer,
+    reducerTypes.GET_NOTICE_OF_WORK_ACTIVITY_TYPE_OPTIONS
+  ),
 };
 
 export const rootReducer = combineReducers(reducerObject);
