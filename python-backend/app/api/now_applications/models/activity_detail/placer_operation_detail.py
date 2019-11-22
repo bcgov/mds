@@ -10,7 +10,7 @@ from app.api.now_applications.models.activity_detail.activity_detail_base import
 
 class PlacerOperationDetail(ActivityDetailBase):
     __mapper_args__ = {
-        'polymorphic_identity': 'placer',  ## type code
+        'polymorphic_identity': 'placer_operation', ## type code
     }
 
     ## NO TABLE FOR THIS TYPE
