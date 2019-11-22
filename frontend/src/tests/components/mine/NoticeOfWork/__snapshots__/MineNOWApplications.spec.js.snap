@@ -25,28 +25,32 @@ exports[`MineNOWApplications renders properly 1`] = `
     noticeOfWorkApplications={
       Array [
         Object {
-          "application_guid": "07e801a0-fa33-4c3b-abcc-ac6df628d483",
           "mine_guid": "6e9d3426-ebf1-413f-9e5f-c3a71ab56797",
           "mine_name": "Hamilton, Herrera and Mccormick",
-          "minenumber": "brother",
-          "noticeofworktype": "choice",
-          "receiveddate": "2019-08-14",
-          "status": "Approved",
-          "trackingnumber": 44,
+          "mine_no": "brother",
+          "notice_of_work_type_description": "choice",
+          "now_application_guid": "07e801a0-fa33-4c3b-abcc-ac6df628d483",
+          "now_application_status_description": "Approved",
+          "received_date": "2019-08-14",
+          "tracking_number": 44,
         },
         Object {
-          "application_guid": "8e1536da-644c-4961-976b-b1326fa75825",
           "mine_guid": "60300a07-376c-46f1-a984-88a813f91438",
           "mine_name": "Thompson-Sullivan",
-          "minenumber": "other",
-          "noticeofworktype": "technology",
-          "receiveddate": "2019-07-21",
-          "status": "Approved",
-          "trackingnumber": 52,
+          "mine_no": "other",
+          "notice_of_work_type_description": "technology",
+          "now_application_guid": "8e1536da-644c-4961-976b-b1326fa75825",
+          "now_application_status_description": "Approved",
+          "received_date": "2019-07-21",
+          "tracking_number": 52,
         },
       ]
     }
-    searchParams={Object {}}
+    searchParams={
+      Object {
+        "submissions_only": true,
+      }
+    }
     sortDir={null}
     sortField={null}
   />
