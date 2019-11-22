@@ -541,8 +541,8 @@ class MineFactory(BaseFactory):
     union_ind = factory.Faker('boolean', chance_of_getting_true=50)
     mine_type = factory.RelatedFactory(MineTypeFactory, 'mine')
     verified_status = factory.RelatedFactory(MineVerifiedStatusFactory, 'mine')
-    latitude = factory.Faker('latitude')         # or factory.fuzzy.FuzzyFloat(49, 60) for ~ inside BC
-    longitude = factory.Faker('longitude')       # or factory.fuzzy.FuzzyFloat(-132, -114.7) for ~ BC
+    latitude = factory.Faker('latitude')     # or factory.fuzzy.FuzzyFloat(49, 60) for ~ inside BC
+    longitude = factory.Faker('longitude')     # or factory.fuzzy.FuzzyFloat(-132, -114.7) for ~ BC
     geom = factory.LazyAttribute(lambda o: 'SRID=3005;POINT(%f %f)' % (o.longitude, o.latitude))
     mine_location_description = factory.Faker('sentence', nb_words=8, variable_nb_words=True)
     mine_status = factory.RelatedFactory(MineStatusFactory, 'mine')
