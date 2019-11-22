@@ -49,7 +49,7 @@ class NOWSubmissionFactory(BaseFactory):
         applicant = factory.SubFactory('tests.factories.NOWClientFactory')
         submitter = factory.SubFactory('tests.factories.NOWClientFactory')
         all_activites = factory.Trait(
-            blasting=True,
+            blasting_operation=True,
             state_of_land=True,
             camps=True,
             cut_lines_polarization_survey=True,
@@ -68,7 +68,7 @@ class NOWSubmissionFactory(BaseFactory):
             fuellubstoreonsite=factory.LazyFunction(randomYesNo)
         )  #details=factory.SubFactory('tests.now_submission_factories.NOWCampDetails'))
 
-        blasting = factory.Trait(
+        blasting_operation = factory.Trait(
             bcexplosivespermitissued=factory.LazyFunction(randomYesNo),
             bcexplosivespermitnumber=factory.Faker(
                 'bothify', text='???#####', letters='ABCDEFGHIJKLMNOPQRSTUVWXYZ'),

@@ -389,7 +389,7 @@ def _transmogrify_blasting_activities(now_app, now_sub, mms_now_sub):
     bcexplosivespermitexpiry = mms_now_sub.bcexplosivespermitexpiry or now_sub.bcexplosivespermitexpiry
     storeexplosivesonsite = now_sub.storeexplosivesonsite
     if bcexplosivespermitissued or bcexplosivespermitnumber or bcexplosivespermitexpiry or storeexplosivesonsite:
-        now_app.blasting = app_models.BlastingOperation(
+        now_app.blasting_operation = app_models.BlastingOperation(
             explosive_permit_issued=bcexplosivespermitissued == 'Yes',
             explosive_permit_number=bcexplosivespermitnumber,
             explosive_permit_expiry_date=bcexplosivespermitexpiry,

@@ -23,6 +23,7 @@ const initialState = {
   varianceDocumentCategoryOptions: [],
   mineReportDefinitionOptions: [],
   mineReportStatusOptions: [],
+  noticeOfWorkActivityTypeOptions: [],
 };
 
 const staticContentReducer = (state = initialState, action) => {
@@ -112,6 +113,11 @@ const staticContentReducer = (state = initialState, action) => {
         ...state,
         mineReportStatusOptions: action.payload.records,
       };
+    case actionTypes.STORE_NOTICE_OF_WORK_ACTIVITY_TYPE_OPTIONS:
+      return {
+        ...state,
+        noticeOfWorkActivityTypeOptions: action.payload.records,
+      };
     default:
       return state;
   }
@@ -141,5 +147,7 @@ export const getVarianceDocumentCategoryOptions = (state) =>
 export const getMineReportDefinitionOptions = (state) =>
   state[STATIC_CONTENT].mineReportDefinitionOptions;
 export const getMineReportStatusOptions = (state) => state[STATIC_CONTENT].mineReportStatusOptions;
+export const getNoticeOfWorkActivityTypeOptions = (state) =>
+  state[STATIC_CONTENT].noticeOfWorkActivityTypeOptions;
 
 export default staticContentReducer;

@@ -1,0 +1,78 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Blasting renders properly 1`] = `
+<div>
+  <Row
+    gutter={16}
+  >
+    <Col
+      md={12}
+      sm={24}
+    >
+      <div
+        className="field-title"
+      >
+        On site storage explosives
+      </div>
+      <Field
+        component={[Function]}
+        disabled={true}
+        id="has_storage_explosive_on_site"
+        name="has_storage_explosive_on_site"
+      />
+    </Col>
+    <Col
+      md={12}
+      sm={24}
+    >
+      <div
+        className="field-title"
+      >
+        Explosive Magazine Storage and Use Permit
+      </div>
+      <Field
+        component={[Function]}
+        disabled={true}
+        id="explosive_permit_issued"
+        name="explosive_permit_issued"
+      />
+    </Col>
+  </Row>
+  <Row
+    gutter={16}
+  >
+    <Col
+      md={12}
+      sm={24}
+    >
+      <div
+        className="field-title"
+      >
+        Expiry Date
+      </div>
+      <Field
+        component={[Function]}
+        disabled={true}
+        id="explosive_permit_expiry_date"
+        name="explosive_permit_expiry_date"
+      />
+    </Col>
+    <Col
+      md={12}
+      sm={24}
+    >
+      <div
+        className="field-title"
+      >
+        Permit Number
+      </div>
+      <Field
+        component={[Function]}
+        disabled={true}
+        id="explosive_permit_number"
+        name="explosive_permit_number"
+      />
+    </Col>
+  </Row>
+</div>
+`;

@@ -1,0 +1,50 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Equipment renders properly 1`] = `
+<div>
+  <h4>
+    Equipment
+  </h4>
+  <withStore(Table)
+    align="left"
+    columns={
+      Array [
+        Object {
+          "dataIndex": "quantity",
+          "key": "quantity",
+          "render": [Function],
+          "title": "Quantity",
+        },
+        Object {
+          "dataIndex": "description",
+          "key": "description",
+          "render": [Function],
+          "title": "Description",
+        },
+        Object {
+          "dataIndex": "capacity",
+          "key": "capacity",
+          "render": [Function],
+          "title": "Capacity",
+        },
+      ]
+    }
+    dataSource={
+      Array [
+        Object {
+          "capacity": "John Deere 690",
+          "description": "Excavator",
+          "quantity": 1,
+        },
+      ]
+    }
+    locale={
+      Object {
+        "emptyText": "No equipment related to this activity",
+      }
+    }
+    pagination={false}
+  />
+  <br />
+</div>
+`;
