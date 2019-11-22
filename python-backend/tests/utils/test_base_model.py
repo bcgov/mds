@@ -47,6 +47,19 @@ def test_update_unexpected_type(db_session):
     assert pytest.raises(DictLoadingError, mine.deep_update_from_dict, mine_dict)
 
 
+def test_update_field_in_nested_item(db_session):
+    mine = MineFactory(mine_permit=5)
+    new_permit_no = 'XXX-9999'
+    partial_mine_permit_dict = marshal(
+        {'mine_permit': mine.mine_permit},
+        api.model('test_list', {'mine_permit': fields.List(fields.Nested(PERMIT_MODEL))}))
+    partial_mine_permit_dict['mine_permit'][1]['permit_no'] = new_permit_no
+    mine.deep_update_from_dict(partial_mine_permit_dict)
+
+    mine = Mine.query.filter_by(mine_guid=mine.mine_guid).first()
+    assert mine.mine_permit[1].permit_no == new_permit_no
+
+
 def test_update_new_item_in_list(db_session):
     mine = MineFactory(mine_permit=5)
     permit = PermitFactory()
