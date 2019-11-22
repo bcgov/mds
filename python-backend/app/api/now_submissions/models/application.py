@@ -242,5 +242,3 @@ class Application(Base):
             uuid.UUID(str(now_application_guid), version=4)
         except ValueError:
             raise AssertionError(msg)
-
-            raise AssertionError(msg)
