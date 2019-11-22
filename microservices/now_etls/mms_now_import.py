@@ -1018,9 +1018,7 @@ def ETL_MMS_NOW_schema(connection, tables):
 
         # grab only the needed columns for the XREF tables.
         proposed_placer_activity_xref = etl.cut(proposed_placer_activity_xref, 'placeractivityid', 'mms_cid')
-        print(etl.valuecounter(proposed_placer_activity_xref, 'placeractivityid'))
         existing_placer_activity_xref = etl.cut(existing_placer_activity_xref, 'placeractivityid', 'mms_cid')
-        print(etl.valuecounter(existing_placer_activity_xref, 'placeractivityid'))
 
         applications = etl.leftjoin(applications, placer_activity_app_cols, key='mms_cid')
 
@@ -1146,6 +1144,8 @@ def ETL_MMS_NOW_schema(connection, tables):
 
         applications = etl.leftjoin(applications, settling_ponds, key='mms_cid')
 
+        print(etl.nrows(existing_placer_activity_xref))
+
         etl.appenddb(applications, connection, 'application', schema='mms_now_submissions', commit=False)
         print(f'    application:{etl.nrows(applications)}')
         etl.appenddb(water_source_activity, connection, 'water_source_activity', schema='mms_now_submissions', commit=False)
@@ -1170,8 +1170,10 @@ def ETL_MMS_NOW_schema(connection, tables):
         print(f'    application_nda:{etl.nrows(application_nda)}')
         etl.appenddb(placer_activity_detail, connection, 'placer_activity', schema='mms_now_submissions', commit=False)
         print(f'    placer_activity:{etl.nrows(placer_activity_detail)}')
+        print(f'    before proposed_placer_activity_xref:{etl.nrows(proposed_placer_activity_xref)}')
         etl.appenddb(proposed_placer_activity_xref, connection, 'proposed_placer_activity_xref', schema='mms_now_submissions', commit=False)
         print(f'    proposed_placer_activity_xref:{etl.nrows(proposed_placer_activity_xref)}')
+        print(f'    before existing_placer_activity_xref:{etl.nrows(existing_placer_activity_xref)}')
         etl.appenddb(existing_placer_activity_xref, connection, 'existing_placer_activity_xref', schema='mms_now_submissions', commit=False)
         print(f'    existing_placer_activity_xref:{etl.nrows(existing_placer_activity_xref)}')
         etl.appenddb(clients, connection, 'client', schema='mms_now_submissions', commit=False)
