@@ -1,4 +1,5 @@
-from datetime import datetime
+import decimal
+from datetime import datetime, date
 from dateutil import parser
 from flask import current_app
 from sqlalchemy.exc import SQLAlchemyError
@@ -92,7 +93,7 @@ class Base(db.Model):
                     #see if object list holds a child that has the same values as the json dict for all primary key values of class
                     existing_obj = next((x for x in obj_list if all(
                         i.get(pk_name, None) == getattr(x, pk_name) for pk_name in pk_names)),
-                                        None)     #ALWAYS NONE for new obj, except tests
+                                        None)                                                                                             #ALWAYS NONE for new obj, except tests
                     if existing_obj:
                         current_app.logger.debug(
                             depth * ' ' +
@@ -100,15 +101,15 @@ class Base(db.Model):
                         )
                         existing_obj.deep_update_from_dict(i, depth=(depth + 1))
                     elif False:
-                        #TODO check if this item is in the db, but not in json set should be removed
-                        #unsure if we want this behaviour, could be done in second pass as well
+                                                                                                                                          #TODO check if this item is in the db, but not in json set should be removed
+                                                                                                                                          #unsure if we want this behaviour, could be done in second pass as well
                         pass
                     else:
-                        #no existing obj with PK match, so create  item in related list
+                                                                                                                                          #no existing obj with PK match, so create  item in related list
                         current_app.logger.debug(depth * ' ' + f'add new item to {self}.{k}')
-                        rel = getattr(self.__class__, k)     #SA.relationship definition
-                        new_obj_class = rel.property.entity.class_     #class for relationship target
-                        new_obj = new_obj_class._schema().load(i)     #marshmallow load dict -> obj
+                        rel = getattr(self.__class__, k)                                                                                  #SA.relationship definition
+                        new_obj_class = rel.property.entity.class_                                                                        #class for relationship target
+                        new_obj = new_obj_class._schema().load(i)                                                                         #marshmallow load dict -> obj
                         obj_list.append(new_obj)
                         current_app.logger.debug(f'just created and saved{new_obj}=' +
                                                  str(new_obj_class._schema().dump(new_obj)))
@@ -120,12 +121,21 @@ class Base(db.Model):
                 if (type(col.type) == UUID):
                     #UUID does not implement python_type, manual check
                     assert isinstance(v, (UUID, str))
+                if (type(col.type) == decimal.Decimal):
+                    assert False
                 else:
                     py_type = col.type.python_type
-                    if py_type == datetime:     #json value is string, if expecting datetime in that column, convert here
+                    if py_type == datetime or py_type == date:
+                        #json value is string, if expecting datetime in that column, convert here
                         setattr(self, k, parser.parse(v))
                         continue
-                    elif not isinstance(v, py_type):
+                    if py_type == decimal.Decimal:
+                        #if Decimal column, cast whatever you get to Decimal
+                        dec = decimal.Decimal(v)
+                        #don't care about anything more precise, procection if incoming data is float
+                        setattr(self, k, dec.quantize(decimal.Decimal('.0000001')))
+                        continue
+                    elif (v is not None) and (not isinstance(v, py_type)):
                         #type safety (don't coalese empty string to false if it's targetting a boolean column)
                         raise DictLoadingError(
                             f"cannot assign '{k}':{v}{type(v)} to column of type {py_type}")

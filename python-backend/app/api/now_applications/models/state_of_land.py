@@ -18,4 +18,4 @@ class StateOfLand(Base):
         db.Boolean, nullable=False, server_default=FetchedValue())
 
     def __repr__(self):
-        return '<StateOfLand %r>' % self.state_of_land_id
+        return '<StateOfLand %r>' % self.now_application_id
