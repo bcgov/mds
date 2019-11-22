@@ -26,7 +26,7 @@ class ApplicationDocumentTokenResource(Resource, UserMixin ):
     @requires_role_view_all
     def get(self, application_guid, id):
 
-        application = Application.find_by_application_guid(application_guid)
+        application = Application.find_by_now_application_guid(application_guid)
         if not application:
             raise NotFound('Application not found')
 
