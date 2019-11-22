@@ -33,7 +33,7 @@ class Config(object):
     METABASE_SITE_URL = os.environ.get('METABASE_SITE_URL', None)
     METABASE_EMBEDDING_SECRET_KEY = os.environ.get('METABASE_EMBEDDING_SECRET_KEY', None)
 
-    BUNDLE_ERRORS = True  #RequestParser global config
+    BUNDLE_ERRORS = True     #RequestParser global config
 
     def JWT_ROLE_CALLBACK(jwt_dict):
         return (jwt_dict['realm_access']['roles'])
@@ -102,18 +102,13 @@ class TestConfig(Config):
 
     JWT_OIDC_TEST_KEYS = {
         "keys": [{
-            "kid":
-            "flask-jwt-oidc-test-client",
-            "kty":
-            "RSA",
-            "alg":
-            "RS256",
-            "use":
-            "sig",
+            "kid": "flask-jwt-oidc-test-client",
+            "kty": "RSA",
+            "alg": "RS256",
+            "use": "sig",
             "n":
             "AN-fWcpCyE5KPzHDjigLaSUVZI0uYrcGcc40InVtl-rQRDmAh-C2W8H4_Hxhr5VLc6crsJ2LiJTV_E72S03pzpOOaaYV6-TzAjCou2GYJIXev7f6Hh512PuG5wyxda_TlBSsI-gvphRTPsKCnPutrbiukCYrnPuWxX5_cES9eStR",
-            "e":
-            "AQAB"
+            "e": "AQAB"
         }]
     }
     # Dummy Private Keys for testing purposes.

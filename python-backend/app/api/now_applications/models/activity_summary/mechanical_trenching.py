@@ -10,11 +10,12 @@ from app.api.now_applications.models.activity_summary.activity_summary_base impo
 
 class MechanicalTrenching(ActivitySummaryBase):
     __mapper_args__ = {
-        'polymorphic_identity': 'mechanical_trenching',  ## type code
+        'polymorphic_identity': 'mechanical_trenching', ## type code
     }
 
     ## NO TABLE FOR THIS TYPE
-    details = db.relationship('MechanicalTrenchingDetail', secondary='activity_summary_detail_xref', load_on_pending=True)
+    details = db.relationship(
+        'MechanicalTrenchingDetail', secondary='activity_summary_detail_xref', load_on_pending=True)
 
     def __repr__(self):
         return '<MechanicalTrenching %r>' % self.activity_summary_id

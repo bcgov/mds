@@ -14,7 +14,7 @@ from app.api.now_applications.models.activity_summary.activity_summary_base impo
 class PlacerOperation(ActivitySummaryBase):
     __tablename__ = 'placer_operation'
     __mapper_args__ = {
-        'polymorphic_identity': 'placer',  ## type code
+        'polymorphic_identity': 'placer',        ## type code
     }
     activity_summary_id = db.Column(
         db.Integer, db.ForeignKey('activity_summary.activity_summary_id'), primary_key=True)
@@ -25,7 +25,8 @@ class PlacerOperation(ActivitySummaryBase):
     reclamation_unit_type_code = db.Column(
         db.String, db.ForeignKey('unit_type.unit_type_code'), nullable=False)
 
-    details = db.relationship('PlacerOperationDetail', secondary='activity_summary_detail_xref', load_on_pending=True)
+    details = db.relationship(
+        'PlacerOperationDetail', secondary='activity_summary_detail_xref', load_on_pending=True)
 
     def __repr__(self):
         return '<PlacerOperation %r>' % self.activity_summary_id
