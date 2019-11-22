@@ -1,4 +1,4 @@
-CREATE VIEW bcgw_view as
+CREATE VIEW mine_summary_view as
 SELECT m.mine_guid::varchar, p.permit_guid, m.mine_name, m.mine_no, 
 CONCAT(mos.description, ',', mosr.description, ',', mossr.description) as operating_status, 
 CONCAT(mos.mine_operation_status_code, ',', mosr.mine_operation_status_reason_code, ',', mossr.mine_operation_status_sub_reason_code) as operating_status_code, 

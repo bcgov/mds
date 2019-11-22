@@ -19,18 +19,13 @@ class BlastingOperationFactory(BaseFactory):
         model = app_models.BlastingOperation
 
     class Params:
-        now_application = factory.SubFactory(
-            'tests.factories.NOWApplicationFactory')
+        now_application = factory.SubFactory('tests.factories.NOWApplicationFactory')
 
-    now_application_id = factory.SelfAttribute(
-        'now_application.now_application_id')
-    has_storage_explosive_on_site = factory.Faker('boolean',
-                                                  chance_of_getting_true=50)
-    explosive_permit_issued = factory.Faker('boolean',
-                                            chance_of_getting_true=50)
+    now_application_id = factory.SelfAttribute('now_application.now_application_id')
+    has_storage_explosive_on_site = factory.Faker('boolean', chance_of_getting_true=50)
+    explosive_permit_issued = factory.Faker('boolean', chance_of_getting_true=50)
     explosive_permit_number = factory.Sequence(lambda n: n)
-    explosive_permit_expiry_date = factory.Faker('future_datetime',
-                                                 end_date='+30d')
+    explosive_permit_expiry_date = factory.Faker('future_datetime', end_date='+30d')
 
 
 class StateOfLandFactory(BaseFactory):
@@ -38,15 +33,11 @@ class StateOfLandFactory(BaseFactory):
         model = app_models.StateOfLand
 
     class Params:
-        now_application = factory.SubFactory(
-            'tests.factories.NOWApplicationFactory')
+        now_application = factory.SubFactory('tests.factories.NOWApplicationFactory')
 
-    now_application_id = factory.SelfAttribute(
-        'now_application.now_application_id')
-    has_community_water_shed = factory.Faker('boolean',
-                                             chance_of_getting_true=50)
-    has_archaeology_sites_affected = factory.Faker('boolean',
-                                                   chance_of_getting_true=50)
+    now_application_id = factory.SelfAttribute('now_application.now_application_id')
+    has_community_water_shed = factory.Faker('boolean', chance_of_getting_true=50)
+    has_archaeology_sites_affected = factory.Faker('boolean', chance_of_getting_true=50)
 
 
 class EquipmentFactory(BaseFactory):
@@ -63,53 +54,32 @@ class ActivitySummaryBaseFactory(BaseFactory):
         model = app_models.ActivitySummaryBase
 
     class Params:
-        now_application = factory.SubFactory(
-            'tests.factories.NOWApplicationFactory')
+        now_application = factory.SubFactory('tests.factories.NOWApplicationFactory')
 
-    now_application_id = factory.SelfAttribute(
-        'now_application.now_application_id')
+    now_application_id = factory.SelfAttribute('now_application.now_application_id')
     #activity_summary_id = SEQUENCE
 
-    reclamation_description = factory.Faker('sentence',
-                                            nb_words=40,
-                                            variable_nb_words=True)
-    reclamation_cost = factory.Faker('pydecimal',
-                                     right_digits=2,
-                                     positive=True,
-                                     max_value=500000)
-    total_disturbed_area = factory.Faker('pydecimal',
-                                         right_digits=2,
-                                         positive=True,
-                                         max_value=500000)
-    total_disturbed_area_unit_type_code = factory.LazyFunction(
-        RandomUnitTypeCode)
+    reclamation_description = factory.Faker('sentence', nb_words=40, variable_nb_words=True)
+    reclamation_cost = factory.Faker('pydecimal', right_digits=2, positive=True, max_value=500000)
+    total_disturbed_area = factory.Faker(
+        'pydecimal', right_digits=2, positive=True, max_value=500000)
+    total_disturbed_area_unit_type_code = factory.LazyFunction(RandomUnitTypeCode)
 
 
 class ActivityDetailBaseFactory(BaseFactory):
     class Meta:
         model = app_models.ActivityDetailBase
 
-    activity_type_description = factory.Faker('sentence',
-                                              nb_words=40,
-                                              variable_nb_words=True)
-    disturbed_area = factory.Faker('pydecimal',
-                                   right_digits=2,
-                                   positive=True,
-                                   max_value=500000)
-    timber_volume = factory.Faker('pydecimal',
-                                  right_digits=2,
-                                  positive=True,
-                                  max_value=500000)
+    activity_type_description = factory.Faker('sentence', nb_words=40, variable_nb_words=True)
+    disturbed_area = factory.Faker('pydecimal', right_digits=2, positive=True, max_value=500000)
+    timber_volume = factory.Faker('pydecimal', right_digits=2, positive=True, max_value=500000)
     number_of_sites = factory.Faker('pyint', min_value=1, max_value=50)
     width = factory.Faker('pyint', min_value=1, max_value=5000)
     length = factory.Faker('pyint', min_value=1, max_value=5000)
     depth = factory.Faker('pyint', min_value=1, max_value=5000)
     height = factory.Faker('pyint', min_value=1, max_value=5000)
     quantity = factory.Faker('pyint', min_value=1, max_value=50)
-    incline = factory.Faker('pydecimal',
-                            right_digits=2,
-                            positive=True,
-                            max_value=500000)
+    incline = factory.Faker('pydecimal', right_digits=2, positive=True, max_value=500000)
     incline_unit_type_code = factory.LazyFunction(RandomUnitTypeCode)
     cut_line_length = factory.Faker('pyint', min_value=1, max_value=5000)
     water_quantity = factory.Faker('pyint', min_value=1, max_value=5000)
@@ -139,10 +109,8 @@ class CampFactory(ActivitySummaryBaseFactory):
     camp_number_people = factory.Faker('pyint', min_value=1, max_value=500)
     camp_number_structures = factory.Faker('pyint', min_value=1, max_value=50)
     has_fuel_stored = factory.Faker('boolean', chance_of_getting_true=50)
-    has_fuel_stored_in_bulk = factory.Faker('boolean',
-                                            chance_of_getting_true=50)
-    has_fuel_stored_in_barrels = factory.Faker('boolean',
-                                               chance_of_getting_true=50)
+    has_fuel_stored_in_bulk = factory.Faker('boolean', chance_of_getting_true=50)
+    has_fuel_stored_in_barrels = factory.Faker('boolean', chance_of_getting_true=50)
     volume_fuel_stored = factory.Faker('pyint', min_value=1, max_value=9999)
 
     @factory.post_generation
@@ -173,16 +141,14 @@ class CutLinesPolarizationSurveyFactory(ActivitySummaryBaseFactory):
         if not isinstance(extracted, int):
             extracted = 1
 
-        CutLinesPolarizationSurveyDetailFactory.create_batch(size=extracted,
-                                                             **kwargs)
+        CutLinesPolarizationSurveyDetailFactory.create_batch(size=extracted, **kwargs)
 
 
 class ExplorationSurfaceDrillingFactory(ActivitySummaryBaseFactory):
     class Meta:
         model = app_models.ExplorationSurfaceDrilling
 
-    reclamation_core_storage = factory.Faker('boolean',
-                                             chance_of_getting_true=50)
+    reclamation_core_storage = factory.Faker('boolean', chance_of_getting_true=50)
 
     @factory.post_generation
     def details(obj, create, extracted, **kwargs):
@@ -192,8 +158,7 @@ class ExplorationSurfaceDrillingFactory(ActivitySummaryBaseFactory):
         if not isinstance(extracted, int):
             extracted = 1
 
-        ExplorationSurfaceDrillingDetailFactory.create_batch(size=extracted,
-                                                             **kwargs)
+        ExplorationSurfaceDrillingDetailFactory.create_batch(size=extracted, **kwargs)
 
 
 class ExplorationSurfaceDrillingDetailFactory(ActivityDetailBaseFactory):
@@ -227,10 +192,7 @@ class PlacerOperationFactory(ActivitySummaryBaseFactory):
 
     is_underground = factory.Faker('boolean', chance_of_getting_true=50)
     is_hand_operation = factory.Faker('boolean', chance_of_getting_true=50)
-    reclamation_area = factory.Faker('pydecimal',
-                                     right_digits=2,
-                                     positive=True,
-                                     max_value=500000)
+    reclamation_area = factory.Faker('pydecimal', right_digits=2, positive=True, max_value=500000)
     reclamation_unit_type_code = factory.LazyFunction(RandomUnitTypeCode)
 
     @factory.post_generation
@@ -273,15 +235,9 @@ class SurfaceBulkFactory(ActivitySummaryBaseFactory):
     class Meta:
         model = app_models.SurfaceBulkSample
 
-    processing_method_description = factory.Faker('sentence',
-                                                  nb_words=50,
-                                                  variable_nb_words=True)
-    handling_instructions = factory.Faker('sentence',
-                                          nb_words=50,
-                                          variable_nb_words=True)
-    drainage_mitigation_description = factory.Faker('sentence',
-                                                    nb_words=50,
-                                                    variable_nb_words=True)
+    processing_method_description = factory.Faker('sentence', nb_words=50, variable_nb_words=True)
+    handling_instructions = factory.Faker('sentence', nb_words=50, variable_nb_words=True)
+    drainage_mitigation_description = factory.Faker('sentence', nb_words=50, variable_nb_words=True)
 
     @factory.post_generation
     def details(obj, create, extracted, **kwargs):
@@ -318,26 +274,12 @@ class WaterSupplyDetailFactory(ActivityDetailBaseFactory):
     class Meta:
         model = app_models.WaterSupplyDetail
 
-    supply_source_description = factory.Faker('sentence',
-                                              nb_words=50,
-                                              variable_nb_words=True)
-    supply_source_type = factory.Faker('sentence',
-                                       nb_words=50,
-                                       variable_nb_words=True)
-    water_use_description = factory.Faker('sentence',
-                                          nb_words=50,
-                                          variable_nb_words=True)
-    estimate_rate = factory.Faker('pydecimal',
-                                  right_digits=2,
-                                  positive=True,
-                                  max_value=500000)
-    pump_size = factory.Faker('pydecimal',
-                              right_digits=2,
-                              positive=True,
-                              max_value=500000)
-    intake_location = factory.Faker('sentence',
-                                    nb_words=50,
-                                    variable_nb_words=True)
+    supply_source_description = factory.Faker('sentence', nb_words=50, variable_nb_words=True)
+    supply_source_type = factory.Faker('sentence', nb_words=50, variable_nb_words=True)
+    water_use_description = factory.Faker('sentence', nb_words=50, variable_nb_words=True)
+    estimate_rate = factory.Faker('pydecimal', right_digits=2, positive=True, max_value=500000)
+    pump_size = factory.Faker('pydecimal', right_digits=2, positive=True, max_value=500000)
+    intake_location = factory.Faker('sentence', nb_words=50, variable_nb_words=True)
 
 
 class ExplorationAccessFactory(ActivitySummaryBaseFactory):
@@ -364,9 +306,7 @@ class SettlingPondFactory(ActivitySummaryBaseFactory):
     class Meta:
         model = app_models.SettlingPond
 
-    proponent_pond_name = factory.Faker('sentence',
-                                        nb_words=6,
-                                        variable_nb_words=True)
+    proponent_pond_name = factory.Faker('sentence', nb_words=6, variable_nb_words=True)
     is_ponds_exfiltrated = factory.Faker('boolean', chance_of_getting_true=50)
     is_ponds_recycled = factory.Faker('boolean', chance_of_getting_true=50)
     is_ponds_discharged = factory.Faker('boolean', chance_of_getting_true=50)
@@ -386,12 +326,8 @@ class SettlingPondDetailFactory(ActivityDetailBaseFactory):
     class Meta:
         model = app_models.SettlingPondDetail
 
-    water_source_description = factory.Faker('sentence',
-                                             nb_words=50,
-                                             variable_nb_words=True)
-    construction_plan = factory.Faker('sentence',
-                                      nb_words=50,
-                                      variable_nb_words=True)
+    water_source_description = factory.Faker('sentence', nb_words=50, variable_nb_words=True)
+    construction_plan = factory.Faker('sentence', nb_words=50, variable_nb_words=True)
 
 
 class UndergroundExplorationFactory(ActivitySummaryBaseFactory):
@@ -411,16 +347,14 @@ class UndergroundExplorationFactory(ActivitySummaryBaseFactory):
         if not isinstance(extracted, int):
             extracted = 1
 
-        UndergroundExplorationDetailFactory.create_batch(size=extracted,
-                                                         **kwargs)
+        UndergroundExplorationDetailFactory.create_batch(size=extracted, **kwargs)
 
 
 class UndergroundExplorationDetailFactory(ActivityDetailBaseFactory):
     class Meta:
         model = app_models.UndergroundExplorationDetail
 
-    underground_exploration_type_code = factory.LazyFunction(
-        RandomUndergroundExplorationTypeCode)
+    underground_exploration_type_code = factory.LazyFunction(RandomUndergroundExplorationTypeCode)
 
 
 class NOWApplicationFactory(BaseFactory):
@@ -435,15 +369,11 @@ class NOWApplicationFactory(BaseFactory):
     now_application_status_code = factory.LazyFunction(RandomNOWStatusCode)
     submitted_date = factory.Faker('past_datetime')
     received_date = factory.Faker('past_datetime')
-    latitude = factory.Faker(
-        'latitude')  # or factory.fuzzy.FuzzyFloat(49, 60) for ~ inside BC
-    longitude = factory.Faker(
-        'longitude')  # or factory.fuzzy.FuzzyFloat(-132, -114.7) for ~ BC
+    latitude = factory.Faker('latitude')         # or factory.fuzzy.FuzzyFloat(49, 60) for ~ inside BC
+    longitude = factory.Faker('longitude')       # or factory.fuzzy.FuzzyFloat(-132, -114.7) for ~ BC
     property_name = factory.Faker('company')
     tenure_number = str(factory.Sequence(lambda n: n))
-    description_of_land = factory.Faker('sentence',
-                                        nb_words=6,
-                                        variable_nb_words=True)
+    description_of_land = factory.Faker('sentence', nb_words=6, variable_nb_words=True)
     proposed_start_date = factory.Faker('past_datetime')
     proposed_end_date = factory.Faker('past_datetime')
 
@@ -452,26 +382,19 @@ class NOWApplicationFactory(BaseFactory):
 
     # Activities
     camps = factory.RelatedFactory(CampFactory, 'now_application')
-    cut_lines_polarization_survey = factory.RelatedFactory(
-        CutLinesPolarizationSurveyFactory, 'now_application')
-    exploration_surface_drilling = factory.RelatedFactory(
-        ExplorationSurfaceDrillingFactory, 'now_application')
-    mechanical_trenching = factory.RelatedFactory(MechanicalTrenchingFactory,
-                                                  'now_application')
-    placer_operation = factory.RelatedFactory(PlacerOperationFactory,
-                                              'now_application')
-    sand_and_gravel = factory.RelatedFactory(SandAndGravelFactory,
-                                             'now_application')
-    surface_bulk_sample = factory.RelatedFactory(SurfaceBulkFactory,
-                                                 'now_application')
-    water_supply = factory.RelatedFactory(WaterSupplyFactory,
-                                          'now_application')
-    exploration_access = factory.RelatedFactory(ExplorationAccessFactory,
-                                                'now_application')
-    settling_pond = factory.RelatedFactory(SettlingPondFactory,
-                                           'now_application')
-    underground_exploration = factory.RelatedFactory(
-        UndergroundExplorationFactory, 'now_application')
+    cut_lines_polarization_survey = factory.RelatedFactory(CutLinesPolarizationSurveyFactory,
+                                                           'now_application')
+    exploration_surface_drilling = factory.RelatedFactory(ExplorationSurfaceDrillingFactory,
+                                                          'now_application')
+    mechanical_trenching = factory.RelatedFactory(MechanicalTrenchingFactory, 'now_application')
+    placer_operation = factory.RelatedFactory(PlacerOperationFactory, 'now_application')
+    sand_and_gravel = factory.RelatedFactory(SandAndGravelFactory, 'now_application')
+    surface_bulk_sample = factory.RelatedFactory(SurfaceBulkFactory, 'now_application')
+    water_supply = factory.RelatedFactory(WaterSupplyFactory, 'now_application')
+    exploration_access = factory.RelatedFactory(ExplorationAccessFactory, 'now_application')
+    settling_pond = factory.RelatedFactory(SettlingPondFactory, 'now_application')
+    underground_exploration = factory.RelatedFactory(UndergroundExplorationFactory,
+                                                     'now_application')
 
 
 class NOWApplicationIdentityFactory(BaseFactory):
@@ -482,12 +405,10 @@ class NOWApplicationIdentityFactory(BaseFactory):
         mine = factory.SubFactory('tests.factories.MineFactory', minimal=True)
         now_application = factory.SubFactory(
             'tests.now_application_factories.NOWApplicationFactory')
-        now_submission = factory.SubFactory(
-            'tests.now_submission_factories.NOWSubmissionFactory')
+        now_submission = factory.SubFactory('tests.now_submission_factories.NOWSubmissionFactory')
 
     now_application_guid = GUID
     mine_guid = factory.SelfAttribute('mine.mine_guid')
-    now_application_id = factory.SelfAttribute(
-        'now_application.now_application_id')
+    now_application_id = factory.SelfAttribute('now_application.now_application_id')
     messageid = factory.SelfAttribute('now_submission.messageid')
     mms_cid = factory.Sequence(lambda n: n)

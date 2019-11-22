@@ -5,8 +5,8 @@ from app.api.utils.models_mixins import Base
 from app.extensions import db
 
 
-class MineCSVView(Base):
-    __tablename__ = "bcgw_view"
+class MineSummaryCSVView(Base):
+    __tablename__ = "mine_summary_view"
     mine_guid = db.Column(UUID(as_uuid=True), primary_key=True)
     mine_name = db.Column(db.String(60))
     mine_no = db.Column(db.String(10))

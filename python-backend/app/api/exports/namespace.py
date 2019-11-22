@@ -1,7 +1,7 @@
 from flask_restplus import Namespace
 
-from app.api.exports.mines.resources.mine_csv_resource import MineCSVResource
+from app.api.exports.mines.resources.mine_summary_csv_resource import MineSummaryCSVResource
 
 api = Namespace('exports', description='Data dumps')
 
-api.add_resource(MineCSVResource, '/mine-status-types-permits-csv')
+api.add_resource(MineSummaryCSVResource, '/mine-summary-csv')
