@@ -5,10 +5,15 @@ import { Row, Col, Table } from "antd";
 import * as Strings from "@/constants/strings";
 import RenderField from "@/components/common/RenderField";
 import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
+import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
   isViewMode: PropTypes.bool.isRequired,
-  initialValues: PropTypes.objectOf(PropTypes.string).isRequired,
+  initialValues: CustomPropTypes.defaultActivity,
+};
+
+const defaultProps = {
+  initialValues: {},
 };
 
 export const CutLines = (props) => {
@@ -84,5 +89,6 @@ export const CutLines = (props) => {
 };
 
 CutLines.propTypes = propTypes;
+CutLines.defaultProps = defaultProps;
 
 export default CutLines;

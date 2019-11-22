@@ -1,8 +1,13 @@
-import { getNoticeOfWorkList, getNoticeOfWork } from "@/selectors/noticeOfWorkSelectors";
+import {
+  getNoticeOfWorkList,
+  getNoticeOfWork,
+  getOriginalNoticeOfWork,
+} from "@/selectors/noticeOfWorkSelectors";
 import noticeOfWorkReducer from "@/reducers/noticeOfWorkReducer";
 import {
   storeNoticeOfWorkApplications,
   storeNoticeOfWorkApplication,
+  storeOriginalNoticeOfWorkApplication,
 } from "@/actions/noticeOfWorkActions";
 import { NOTICE_OF_WORK } from "@/constants/reducerTypes";
 import * as MOCKS from "@/tests/mocks/noticeOfWorkMocks";
@@ -10,10 +15,11 @@ import * as MOCKS from "@/tests/mocks/noticeOfWorkMocks";
 const mockState = {
   noticeOfWorkList: MOCKS.NOTICE_OF_WORK_LIST.records,
   noticeOfWork: MOCKS.NOTICE_OF_WORK,
+  originalNoticeOfWork: MOCKS.IMPORTED_NOTICE_OF_WORK,
 };
 
 describe("noticeOfWorkSelectors", () => {
-  const { noticeOfWorkList, noticeOfWork } = mockState;
+  const { noticeOfWorkList, noticeOfWork, originalNoticeOfWork } = mockState;
 
   it("`getNoticeOfWorkList` calls `noticeOfWorkReducer.getNoticeOfWorkList`", () => {
     const storeAction = storeNoticeOfWorkApplications(MOCKS.NOTICE_OF_WORK_LIST);
@@ -31,5 +37,14 @@ describe("noticeOfWorkSelectors", () => {
       [NOTICE_OF_WORK]: storeState,
     };
     expect(getNoticeOfWork(localMockState)).toEqual(noticeOfWork);
+  });
+
+  it("`getOriginalNoticeOfWork` calls `noticeOfWorkReducer.getOriginalNoticeOfWork`", () => {
+    const storeAction = storeOriginalNoticeOfWorkApplication(MOCKS.IMPORTED_NOTICE_OF_WORK);
+    const storeState = noticeOfWorkReducer({}, storeAction);
+    const localMockState = {
+      [NOTICE_OF_WORK]: storeState,
+    };
+    expect(getOriginalNoticeOfWork(localMockState)).toEqual(originalNoticeOfWork);
   });
 });

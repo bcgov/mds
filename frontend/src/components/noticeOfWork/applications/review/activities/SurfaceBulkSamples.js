@@ -7,10 +7,15 @@ import RenderField from "@/components/common/RenderField";
 import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
 import RenderRadioButtons from "@/components/common/RenderRadioButtons";
 import Equipment from "@/components/noticeOfWork/applications/review/activities/Equipment";
+import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
   isViewMode: PropTypes.bool.isRequired,
-  initialValues: PropTypes.objectOf(PropTypes.string).isRequired,
+  initialValues: CustomPropTypes.surfaceBulkSamples,
+};
+
+const defaultProps = {
+  initialValues: {},
 };
 
 export const SurfaceBulkSamples = (props) => {
@@ -117,5 +122,6 @@ export const SurfaceBulkSamples = (props) => {
 };
 
 SurfaceBulkSamples.propTypes = propTypes;
+SurfaceBulkSamples.defaultProps = defaultProps;
 
 export default SurfaceBulkSamples;

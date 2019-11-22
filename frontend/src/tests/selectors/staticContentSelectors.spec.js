@@ -18,6 +18,8 @@ import {
   getVarianceDocumentCategoryOptionsHash,
   getDropdownVarianceDocumentCategoryOptions,
   getVarianceDocumentCategoryOptions,
+  getNoticeOfWorkActivityTypeOptions,
+  getDropdownNoticeOfWorkActivityTypeOptions,
 } from "@/selectors/staticContentSelectors";
 import staticContentReducer from "@/reducers/staticContentReducer";
 import {
@@ -30,9 +32,11 @@ import {
   storeComplianceCodes,
   storeVarianceStatusOptions,
   storeVarianceDocumentCategoryOptions,
+  storeNoticeOfWorkActivityTypeOptions,
 } from "@/actions/staticContentActions";
 import { STATIC_CONTENT } from "@/constants/reducerTypes";
 import * as Mock from "@/tests/mocks/dataMocks";
+import * as NOW_MOCK from "@/tests/mocks/noticeOfWorkMocks";
 
 const mockState = {
   mineStatusOptions: Mock.STATUS_OPTIONS.records,
@@ -44,10 +48,15 @@ const mockState = {
   complianceCodes: Mock.COMPLIANCE_CODES.records,
   varianceStatusOptions: Mock.VARIANCE_STATUS_OPTIONS.records,
   varianceDocumentCategoryOptions: Mock.VARIANCE_DOCUMENT_CATEGORY_OPTIONS.records,
+  noticeOfWorkActivityTypeOptions: NOW_MOCK.NOTICE_OF_WORK_ACTIVITY_TYPES.records,
 };
 
 describe("staticContentSelectors", () => {
-  const { mineDisturbanceOptions, mineCommodityOptions } = mockState;
+  const {
+    mineDisturbanceOptions,
+    mineCommodityOptions,
+    noticeOfWorkActivityTypeOptions,
+  } = mockState;
   const { provinceOptions, varianceDocumentCategoryOptions } = mockState;
 
   it("`getMineStatusDropDownOptions` calls `staticContentReducer.getMineStatusDropDownOptions`", () => {
@@ -245,4 +254,29 @@ describe("staticContentSelectors", () => {
       mockVarianceDocumentCategoryOptionsHash
     );
   });
+
+  it("`getNoticeOfWorkActivityTypeOptions` calls `staticContentReducer.getNoticeOfWorkActivityTypeOptions`", () => {
+    const storeAction = storeNoticeOfWorkActivityTypeOptions(
+      NOW_MOCK.NOTICE_OF_WORK_ACTIVITY_TYPES
+    );
+    const storeState = staticContentReducer({}, storeAction);
+    const localMockState = {
+      [STATIC_CONTENT]: storeState,
+    };
+    expect(getNoticeOfWorkActivityTypeOptions(localMockState)).toEqual(
+      noticeOfWorkActivityTypeOptions
+    );
+  });
+});
+
+it("`getDropdownNoticeOfWorkActivityTypeOptions` calls `staticContentReducer.getNoticeOfWorkActivityTypeOptions`", () => {
+  const storeAction = storeNoticeOfWorkActivityTypeOptions(NOW_MOCK.NOTICE_OF_WORK_ACTIVITY_TYPES);
+  const storeState = staticContentReducer({}, storeAction);
+  const localMockState = {
+    [STATIC_CONTENT]: storeState,
+  };
+  const mockDropdownNOWActivityTypeOptions = NOW_MOCK.DROPDOWN_NOTICE_OF_WORK_ACTIVITY_TYPES;
+  expect(getDropdownNoticeOfWorkActivityTypeOptions(localMockState)).toEqual(
+    mockDropdownNOWActivityTypeOptions
+  );
 });

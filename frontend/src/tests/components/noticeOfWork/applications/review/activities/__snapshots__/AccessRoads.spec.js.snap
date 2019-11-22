@@ -1,0 +1,114 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AccessRoads renders properly 1`] = `
+<div>
+  <withStore(Table)
+    align="left"
+    columns={
+      Array [
+        Object {
+          "dataIndex": "type",
+          "key": "type",
+          "render": [Function],
+          "title": "Access Type",
+        },
+        Object {
+          "dataIndex": "length",
+          "key": "length",
+          "render": [Function],
+          "title": "Length(km)",
+        },
+        Object {
+          "dataIndex": "disturbedArea",
+          "key": "disturbedArea",
+          "render": [Function],
+          "title": "Disturbed Area (ha)",
+        },
+        Object {
+          "dataIndex": "timberVolume",
+          "key": "timberVolume",
+          "render": [Function],
+          "title": "Merchantable timber volume (m3)",
+        },
+      ]
+    }
+    dataSource={Array []}
+    locale={
+      Object {
+        "emptyText": "No data",
+      }
+    }
+    pagination={false}
+  />
+  <br />
+  <h4>
+    Bridges, Culverts, and Crossings
+  </h4>
+  <Row
+    gutter={16}
+  >
+    <Col
+      md={12}
+      sm={24}
+    >
+      <div
+        className="field-title"
+      >
+        Are you proposing any bridges, culverts, and crossings?**
+      </div>
+      <Field
+        component={[Function]}
+        disabled={true}
+        id=""
+        name=""
+      />
+      <Field
+        component={[Function]}
+        disabled={true}
+        id=""
+        name=""
+      />
+    </Col>
+  </Row>
+  <br />
+  <h4>
+    Reclamation Program
+  </h4>
+  <Row
+    gutter={16}
+  >
+    <Col
+      md={12}
+      sm={24}
+    >
+      <div
+        className="field-title"
+      >
+        Proposed reclamation and timing for this specific activity
+      </div>
+      <Field
+        component={[Function]}
+        disabled={true}
+        id="reclamation_description"
+        name="reclamation_description"
+      />
+    </Col>
+    <Col
+      md={12}
+      sm={24}
+    >
+      <div
+        className="field-title"
+      >
+        Estimated Cost of reclamation activities described above
+      </div>
+      <Field
+        component={[Function]}
+        disabled={true}
+        id="reclamation_cost"
+        name="reclamation_cost"
+      />
+    </Col>
+  </Row>
+</div>
+`;

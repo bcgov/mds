@@ -21,6 +21,7 @@ export const {
   getIncidentCategoryCodeOptions,
   getVarianceStatusOptions,
   getVarianceDocumentCategoryOptions,
+  getNoticeOfWorkActivityTypeOptions,
 } = staticContentReducer;
 
 // removes all expired compliance codes from the array
@@ -330,4 +331,9 @@ export const getDropdownMineReportCategoryOptions = createSelector(
 export const getDropdownMineReportStatusOptions = createSelector(
   [getMineReportStatusOptions],
   (options) => createDropDownList(options, "description", "mine_report_submission_status_code")
+);
+
+export const getDropdownNoticeOfWorkActivityTypeOptions = createSelector(
+  [getNoticeOfWorkActivityTypeOptions],
+  (options) => createDropDownList(options, "description", "activity_type_code")
 );
