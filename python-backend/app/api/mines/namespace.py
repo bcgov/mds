@@ -4,7 +4,6 @@ from app.api.mines.compliance.resources.compliance import MineComplianceSummaryR
 from app.api.mines.documents.resources.mine_document_resource import MineDocumentListResource
 from app.api.mines.incidents.resources.mine_incidents import MineIncidentListResource, MineIncidentResource
 from app.api.mines.incidents.resources.mine_incident_document import MineIncidentDocumentListResource, MineIncidentDocumentResource
-from app.api.mines.now_submissions.resources.application_resource import MineApplicationResource
 from app.api.mines.mine.resources.mine_map import MineMapResource
 from app.api.mines.mine.resources.mine import MineResource, MineListSearch, MineListResource
 from app.api.mines.mine.resources.mine_type import MineTypeResource, MineTypeListResource
@@ -32,6 +31,8 @@ from app.api.mines.variances.resources.variance_list import MineVarianceListReso
 from app.api.mines.variances.resources.variance_document_upload import MineVarianceDocumentUploadResource
 from app.api.mines.variances.resources.variance_uploaded_documents import MineVarianceUploadedDocumentsResource
 from app.api.parties.party_appt.resources.mine_party_appt_document_upload_resource import MinePartyApptDocumentUploadResource
+
+from app.api.now_applications.resources.now_application_list_resource import NoticeOfWorkListResource
 
 api = Namespace('mines', description='Mine related operations')
 
@@ -116,7 +117,7 @@ api.add_resource(
     '/<string:mine_guid>/permits/<string:permit_guid>/amendments/<string:permit_amendment_guid>/documents/<string:permit_amendment_document_guid>',
 )
 
-api.add_resource(MineApplicationResource, '/<string:mine_guid>/now-submissions/applications')
+api.add_resource(NoticeOfWorkListResource, '/<string:mine_guid>/now-applications')
 
 api.add_resource(MinePartyApptDocumentUploadResource,
                  '/<string:mine_guid>/party-appts/<string:mine_party_appt_guid>/documents')
