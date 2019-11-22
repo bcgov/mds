@@ -227,7 +227,8 @@ class Application(Base):
     @classmethod
     def find_by_now_application_guid(cls, now_application_guid):
         cls.validate_guid(now_application_guid)
-        now_identity = self.now_application_identity
+        now_identity = NOWApplicationIdentity.query.filter_by(
+            now_application_guid=now_application_guid).first()
         if not now_identity:
             raise NotFound('Could not find a nros/vbcbc application for this id')
         return cls.find_by_messageid(now_identity.messageid)
