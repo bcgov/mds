@@ -591,6 +591,13 @@ CREATE OR REPLACE FUNCTION transfer_permit_permitee_information() RETURNS void A
             RAISE NOTICE '.. Step 2 of 4: Update permit info in MDS';
             SELECT count(*) FROM permit INTO old_row;
             SELECT count(*) FROM permit_amendment INTO old_amendment_row;
+			
+            RAISE NOTICE '.. Update ETL_PERMIT and all_permit_info with permit_guids for new amendments that may be for an existing permit';
+			UPDATE ETL_PERMIT SET permit_guid = (select permit_guid from permit WHERE ETL_PERMIT.permit_no=permit.permit_no and ETL_PERMIT.mine_guid = permit.mine_guid limit 1)
+			where permit_amendment_guid NOT IN (
+				SELECT permit_amendment_guid
+				FROM permit_amendment
+				);
 
             -- Upsert permit data from ETL_PERMIT
             RAISE NOTICE '.. Update existing permit records with latest MMS data';
@@ -636,7 +643,7 @@ CREATE OR REPLACE FUNCTION transfer_permit_permitee_information() RETURNS void A
             WITH
             --Select only new entry in ETL_PERMIT table
             new_permit AS (
-                SELECT *
+                SELECT DISTINCT mine_guid, permit_no, permit_status_code
                 FROM ETL_PERMIT etl
                 WHERE permit_guid NOT IN (
                     SELECT permit_guid
@@ -655,7 +662,7 @@ CREATE OR REPLACE FUNCTION transfer_permit_permitee_information() RETURNS void A
                     update_timestamp
                 )
                 SELECT
-                    new_permit.permit_guid         ,
+                    gen_random_uuid() as permit_guid,
                     new_permit.mine_guid           ,
                     new_permit.permit_no           ,
                     new_permit.permit_status_code  ,

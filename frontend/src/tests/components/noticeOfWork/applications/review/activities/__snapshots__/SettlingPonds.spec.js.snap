@@ -1,0 +1,183 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SettlingPonds renders properly 1`] = `
+<div>
+  <Row
+    gutter={16}
+  >
+    <Col
+      md={12}
+      sm={24}
+    >
+      <div
+        className="field-title"
+      >
+        Describe the waste water treatment facility (settling pond design, recycling, distance from creek, etc.)**
+      </div>
+      <Field
+        component={[Function]}
+        disabled={true}
+        id=""
+        name=""
+      />
+    </Col>
+  </Row>
+  <br />
+  <withStore(Table)
+    align="left"
+    columns={
+      Array [
+        Object {
+          "dataIndex": "id",
+          "key": "id",
+          "render": [Function],
+          "title": "Pond ID",
+        },
+        Object {
+          "dataIndex": "width",
+          "key": "width",
+          "render": [Function],
+          "title": "Width(m)",
+        },
+        Object {
+          "dataIndex": "length",
+          "key": "length",
+          "render": [Function],
+          "title": "Length(km)",
+        },
+        Object {
+          "dataIndex": "depth",
+          "key": "depth",
+          "render": [Function],
+          "title": "Depth(m)",
+        },
+        Object {
+          "dataIndex": "disturbedArea",
+          "key": "disturbedArea",
+          "render": [Function],
+          "title": "Disturbed Area (ha)",
+        },
+        Object {
+          "dataIndex": "timberVolume",
+          "key": "timberVolume",
+          "render": [Function],
+          "title": "Merchantable timber volume (m3)",
+        },
+      ]
+    }
+    dataSource={Array []}
+    locale={
+      Object {
+        "emptyText": "No data",
+      }
+    }
+    pagination={false}
+  />
+  <br />
+  <Row
+    gutter={16}
+  >
+    <Col
+      md={12}
+      sm={24}
+    >
+      <div
+        className="field-title"
+      >
+        Disposal of fines from clean out (i.e. use as a subsoil material)**
+      </div>
+      <Field
+        component={[Function]}
+        disabled={true}
+        id=""
+        name=""
+      />
+    </Col>
+  </Row>
+  <Row
+    gutter={16}
+  >
+    <div
+      className="field-title"
+    >
+      Water from Ponds will be
+    </div>
+    <Col
+      md={8}
+      sm={24}
+    >
+      <Field
+        component={[Function]}
+        disabled={true}
+        id="is_ponds_recycled"
+        label="Recycled"
+        name="is_ponds_recycled"
+      />
+    </Col>
+    <Col
+      md={8}
+      sm={24}
+    >
+      <Field
+        component={[Function]}
+        disabled={true}
+        id="is_ponds_exfiltrated"
+        label="Exfiltrated to Ground"
+        name="is_ponds_exfiltrated"
+      />
+    </Col>
+    <Col
+      md={8}
+      sm={24}
+    >
+      <Field
+        component={[Function]}
+        disabled={true}
+        id="is_ponds_discharged"
+        label="Discharged to Environment"
+        name="is_ponds_discharged"
+      />
+    </Col>
+  </Row>
+  <br />
+  <h4>
+    Reclamation Program
+  </h4>
+  <Row
+    gutter={16}
+  >
+    <Col
+      md={12}
+      sm={24}
+    >
+      <div
+        className="field-title"
+      >
+        Proposed reclamation and timing for this specific activity**
+      </div>
+      <Field
+        component={[Function]}
+        disabled={true}
+        id="reclamation_description"
+        name="reclamation_description"
+      />
+    </Col>
+    <Col
+      md={12}
+      sm={24}
+    >
+      <div
+        className="field-title"
+      >
+        Estimated Cost of reclamation activities described above**
+      </div>
+      <Field
+        component={[Function]}
+        disabled={true}
+        id="reclamation_cost"
+        name="reclamation_cost"
+      />
+    </Col>
+  </Row>
+</div>
+`;

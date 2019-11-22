@@ -32,6 +32,7 @@ const propTypes = {
     "next-stage",
     "documents",
     "now-equipment",
+    "now-contacts",
   ]),
 };
 

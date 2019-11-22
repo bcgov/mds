@@ -89,3 +89,8 @@ export const storeMineReportStatusOptions = (payload) => ({
   type: ActionTypes.STORE_MINE_REPORT_STATUS_OPTIONS,
   payload,
 });
+
+export const storeNoticeOfWorkActivityTypeOptions = (payload) => ({
+  type: ActionTypes.STORE_NOTICE_OF_WORK_ACTIVITY_TYPE_OPTIONS,
+  payload,
+});

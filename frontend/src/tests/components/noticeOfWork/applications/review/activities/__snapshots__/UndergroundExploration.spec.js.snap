@@ -1,0 +1,131 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`UndergroundExploration renders properly 1`] = `
+<div>
+  <withStore(Table)
+    align="left"
+    columns={
+      Array [
+        Object {
+          "dataIndex": "type",
+          "key": "type",
+          "render": [Function],
+          "title": "Activity",
+        },
+        Object {
+          "dataIndex": "quantity",
+          "key": "quantity",
+          "render": [Function],
+          "title": "Quantity",
+        },
+        Object {
+          "dataIndex": "incline",
+          "key": "incline",
+          "render": [Function],
+          "title": "Incline",
+        },
+        Object {
+          "dataIndex": "units",
+          "key": "units",
+          "render": [Function],
+          "title": "Units",
+        },
+        Object {
+          "dataIndex": "width",
+          "key": "width",
+          "render": [Function],
+          "title": "Width(m)",
+        },
+        Object {
+          "dataIndex": "length",
+          "key": "length",
+          "render": [Function],
+          "title": "Length(km)",
+        },
+        Object {
+          "dataIndex": "height",
+          "key": "height",
+          "render": [Function],
+          "title": "Height(m)",
+        },
+        Object {
+          "dataIndex": "disturbedArea",
+          "key": "disturbedArea",
+          "render": [Function],
+          "title": "Disturbed Area (ha)",
+        },
+        Object {
+          "dataIndex": "timberVolume",
+          "key": "timberVolume",
+          "render": [Function],
+          "title": "Merchantable timber volume (m3)",
+        },
+      ]
+    }
+    dataSource={Array []}
+    locale={
+      Object {
+        "emptyText": "No data",
+      }
+    }
+    pagination={false}
+  />
+  <br />
+  <Row
+    gutter={16}
+  >
+    <Col
+      md={12}
+      sm={24}
+    >
+      <div
+        className="field-title"
+      >
+        Proposed Activities**
+      </div>
+      <Field
+        component={[Function]}
+        disabled={true}
+        id=""
+        name=""
+      />
+    </Col>
+  </Row>
+  <Row
+    gutter={16}
+  >
+    <Col
+      md={12}
+      sm={24}
+    >
+      <div
+        className="field-title"
+      >
+        Total Ore
+      </div>
+      <Field
+        component={[Function]}
+        disabled={true}
+        id="total_ore_amount"
+        name="total_ore_amount"
+      />
+    </Col>
+    <Col
+      md={12}
+      sm={24}
+    >
+      <div
+        className="field-title"
+      >
+        Total Waste
+      </div>
+      <Field
+        component={[Function]}
+        disabled={true}
+        id="total_waste_amount"
+        name="total_waste_amount"
+      />
+    </Col>
+  </Row>
+</div>
+`;

@@ -1,0 +1,174 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Placer renders properly 1`] = `
+<div>
+  <Row
+    gutter={16}
+  >
+    <Col
+      md={12}
+      sm={24}
+    >
+      <div
+        className="field-title"
+      >
+        Is this an application for Underground Placer Operations?
+      </div>
+      <Field
+        component={[Function]}
+        disabled={true}
+        id="is_underground"
+        name="is_underground"
+      />
+    </Col>
+    <Col
+      md={12}
+      sm={24}
+    >
+      <div
+        className="field-title"
+      >
+        Is this an application for Hand Operations?
+      </div>
+      <Field
+        component={[Function]}
+        disabled={true}
+        id="is_hand_operation"
+        name="is_hand_operation"
+      />
+    </Col>
+  </Row>
+  <br />
+  <withStore(Table)
+    align="left"
+    columns={
+      Array [
+        Object {
+          "dataIndex": "type",
+          "key": "type",
+          "render": [Function],
+          "title": "Activity",
+        },
+        Object {
+          "dataIndex": "quantity",
+          "key": "quantity",
+          "render": [Function],
+          "title": "Quantity",
+        },
+        Object {
+          "dataIndex": "width",
+          "key": "width",
+          "render": [Function],
+          "title": "Width(m)",
+        },
+        Object {
+          "dataIndex": "length",
+          "key": "length",
+          "render": [Function],
+          "title": "Length(km)",
+        },
+        Object {
+          "dataIndex": "disturbedArea",
+          "key": "disturbedArea",
+          "render": [Function],
+          "title": "Disturbed Area (ha)",
+        },
+        Object {
+          "dataIndex": "timberVolume",
+          "key": "timberVolume",
+          "render": [Function],
+          "title": "Merchantable timber volume (m3)",
+        },
+      ]
+    }
+    dataSource={Array []}
+    locale={
+      Object {
+        "emptyText": "No data",
+      }
+    }
+    pagination={false}
+  />
+  <br />
+  <Row
+    gutter={16}
+  >
+    <Col
+      md={12}
+      sm={24}
+    >
+      <div
+        className="field-title"
+      >
+        Proposed Production**
+      </div>
+      <Field
+        component={[Function]}
+        disabled={true}
+        id=""
+        name=""
+      />
+    </Col>
+  </Row>
+  <br />
+  <h4>
+    Reclamation Program
+  </h4>
+  <Row
+    gutter={16}
+  >
+    <Col
+      md={12}
+      sm={24}
+    >
+      <div
+        className="field-title"
+      >
+        Total area of planned reclamation this year
+      </div>
+      <Field
+        component={[Function]}
+        disabled={true}
+        id="total_disturbed_area"
+        name="total_disturbed_area"
+      />
+    </Col>
+  </Row>
+  <Row
+    gutter={16}
+  >
+    <Col
+      md={12}
+      sm={24}
+    >
+      <div
+        className="field-title"
+      >
+        Proposed reclamation and timing for this specific activity
+      </div>
+      <Field
+        component={[Function]}
+        disabled={true}
+        id="reclamation_description"
+        name="reclamation_description"
+      />
+    </Col>
+    <Col
+      md={12}
+      sm={24}
+    >
+      <div
+        className="field-title"
+      >
+        Estimated Cost of reclamation activities described above
+      </div>
+      <Field
+        component={[Function]}
+        disabled={true}
+        id="reclamation_cost"
+        name="reclamation_cost"
+      />
+    </Col>
+  </Row>
+</div>
+`;
