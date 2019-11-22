@@ -835,14 +835,15 @@ def ETL_MMS_NOW_schema(connection, tables):
             f'SELECT b.msg_id as messageid, b.cid as mms_cid, recl_desc as placerreclamation, recl_dol as placerreclamationcost, edist_ar as placertotalexistdistarea, pdist_ar as placerdisturbedarea, t_vol as placertimbervolume, edist1_ind, edist2_ind, edist3_ind, edist4_ind, edist5_ind, edist6_ind, edist7_ind, edist8_ind, edist1_cnt, edist2_cnt, edist3_cnt, edist4_cnt, edist5_cnt, edist6_cnt, edist7_cnt, edist8_cnt, edist1_ar, edist2_ar, edist3_ar, edist4_ar, edist5_ar, edist6_ar, edist7_ar, edist8_ar, pdist2_ind, pdist3_ind, pdist4_ind, pdist8_ind, pdist9_ind, pdist2_cnt, pdist3_cnt, pdist4_cnt, pdist8_cnt, pdist9_cnt, pdist2_ar, pdist3_ar, pdist9_ar, pdist4_ar, pdist8_ar from mms.mmssch_n a inner join mms.mmsnow b on a.cid = b.cid'
         )
 
-        existing_placer_activity = = etl.fromdb(
+        existing_placer_activity = etl.fromdb(
             connection,
             f'SELECT b.msg_id as messageid, b.cid as mms_cid, recl_desc as placerreclamation, recl_dol as placerreclamationcost, edist_ar as placertotalexistdistarea, pdist_ar as placerdisturbedarea, t_vol as placertimbervolume, edist1_ind, edist2_ind, edist3_ind, edist4_ind, edist5_ind, edist6_ind, edist7_ind, edist8_ind, edist1_cnt, edist2_cnt, edist3_cnt, edist4_cnt, edist5_cnt, edist6_cnt, edist7_cnt, edist8_cnt, edist1_ar, edist2_ar, edist3_ar, edist4_ar, edist5_ar, edist6_ar, edist7_ar, edist8_ar, pdist2_ind, pdist3_ind, pdist4_ind, pdist8_ind, pdist9_ind, pdist2_cnt, pdist3_cnt, pdist4_cnt, pdist8_cnt, pdist9_cnt, pdist2_ar, pdist3_ar, pdist9_ar, pdist4_ar, pdist8_ar from mms.mmssch_n a inner join mms.mmsnow b on a.cid = b.cid'
         )
 
         placer_activity_app_cols = etl.cut(proposed_placer_activity, 'mms_cid', 'placerreclamation', 'placerreclamationcost', 'placertotalexistdistarea', 'placerdisturbedarea', 'placertimbervolume')
 
-        placer_activity = etl.cutout(proposed_placer_activity, 'placerreclamation', 'placerreclamationcost', 'placertotalexistdistarea', 'placerdisturbedarea', 'placertimbervolume')
+        proposed_placer_activity = etl.cutout(proposed_placer_activity, 'placerreclamation', 'placerreclamationcost', 'placertotalexistdistarea', 'placerdisturbedarea', 'placertimbervolume')
+        existing_placer_activity = etl.cutout(proposed_placer_activity, 'placerreclamation', 'placerreclamationcost', 'placertotalexistdistarea', 'placerdisturbedarea', 'placertimbervolume')
 
         existing_placer_activity_detail = etl.fromdb(
             connection,
@@ -941,9 +942,6 @@ def ETL_MMS_NOW_schema(connection, tables):
 
         existing_placer_activity_detail = etl.cat(existing_placer_activity_detail, existing_placer_activity_8)
 
-        # Add an identifier to the existing placer activities so they can be selected later.
-        # existing_placer_activity_detail = etl.addfield(existing_placer_activity, 'identifier', 'existing')
-
     #Proposed Placer------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         # Pull out all the separate activities into their own tables.
         proposed_placer_activity_2 = etl.cut(proposed_placer_activity, 'messageid', 'mms_cid', 'pdist2_ind', 'pdist2_cnt', 'pdist2_ar')
@@ -1000,29 +998,16 @@ def ETL_MMS_NOW_schema(connection, tables):
 
         proposed_placer_activity_detail = etl.cat(proposed_placer_activity_detail, proposed_placer_activity_9)
 
-        # Add an identifier to the prposed placer activities so that they can be selected later.
-        # proposed_placer_activity = etl.addfield(proposed_placer_activity, 'identifier', 'proposed')
-
         # Turn the proposed placer activity and existing placer activity into a single table.
         proposed_placer_activity_detail = etl.addrownumbers(proposed_placer_activity_detail, start=1, field='placeractivityid')
         existing_placer_activity_detail = etl.addrownumbers(existing_placer_activity_detail, start=etl.nrows(proposed_placer_activity_detail)+1, field='placeractivityid')
         placer_activity_detail = etl.cat(proposed_placer_activity_detail, existing_placer_activity_detail)
         # Remove the messageid since it is not how the placer is linked to the application.
         placer_activity_detail = etl.cutout(placer_activity_detail, 'messageid')
-
-        # Add row numbers and call it placeractivityid to be used as the serial ID
-        # placer_activity_detail = etl.addrownumbers(placer_activity_detail, field='placeractivityid')
+    
         # for some reason addrownumbers causes there to be an additional phantom row that breaks the appenddb so this grabs only the actual rows.
-        # placer_activity_detail = etl.rowslice(placer_activity_detail, etl.nrows(placer_activity_detail))
-        
-        # Split the placer activities back out into their seperate types by the added identifiers.
-        # proposed_placer_activity_xref = etl.select(placer_activity_detail, lambda v: v['identifier'] == 'proposed')
-        proposed_placer_activity_xref = etl.rowslice(proposed_placer_activity_detail, etl.nrows(proposed_placer_activity_detail))
-        # existing_placer_activity_xref = etl.select(placer_activity_detail, lambda v: v['identifier'] == 'existing')
+        proposed_placer_activity_xref = etl.rowslice(proposed_placer_activity_detail, etl.nrows(proposed_placer_activity_detail))        
         existing_placer_activity_xref = etl.rowslice(existing_placer_activity_detail, etl.nrows(existing_placer_activity_detail))
-
-        # Remove the added identifier from the activity table.
-        # placer_activity_detail = etl.cutout(placer_activity_detail, 'identifier')
 
         # grab only the needed columns for the XREF tables.
         proposed_placer_activity_xref = etl.cut(proposed_placer_activity_xref, 'placeractivityid', 'mms_cid')
