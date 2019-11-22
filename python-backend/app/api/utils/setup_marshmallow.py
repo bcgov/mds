@@ -25,6 +25,9 @@ class CoreConverter(ModelConverter):
 
 
 def setup_schema(Base, session):
+    """
+    inspired by: https://marshmallow-sqlalchemy.readthedocs.io/en/latest/recipes.html#automatically-generating-schemas-for-sqlalchemy-models
+    """
     def setup_schema_fn():
         for class_ in Base._decl_class_registry.values():
             if hasattr(class_, "__tablename__"):
