@@ -42,4 +42,14 @@ describe("noticeOfWorkReducer", () => {
     );
     expect(result).toEqual(expectedValue);
   });
+
+  it("receives STORE_ORIGINAL_NOTICE_OF_WORK_APPLICATION", () => {
+    const expectedValue = getBaseExpectedValue();
+    expectedValue.noticeOfWork = MOCK.NOTICE_OF_WORK;
+    const result = noticeOfWorkReducer(
+      undefined,
+      storeNoticeOfWorkApplication(MOCK.NOTICE_OF_WORK)
+    );
+    expect(result).toEqual(expectedValue);
+  });
 });

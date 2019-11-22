@@ -116,6 +116,15 @@
   position: absolute;
   left: 0;
 
+  &--fixed {
+    position: fixed;
+    width: 240px;
+
+    @include tablet {
+      display: none;
+    }
+  }
+
   ul {
     list-style: none;
   }

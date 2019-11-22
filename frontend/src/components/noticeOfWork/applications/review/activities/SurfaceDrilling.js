@@ -5,10 +5,15 @@ import { Row, Col, Table } from "antd";
 import * as Strings from "@/constants/strings";
 import RenderField from "@/components/common/RenderField";
 import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
+import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
   isViewMode: PropTypes.bool.isRequired,
-  initialValues: PropTypes.objectOf(PropTypes.string).isRequired,
+  initialValues: CustomPropTypes.surfaceDrilling,
+};
+
+const defaultProps = {
+  initialValues: {},
 };
 
 export const SurfaceDrilling = (props) => {
@@ -104,5 +109,6 @@ export const SurfaceDrilling = (props) => {
 };
 
 SurfaceDrilling.propTypes = propTypes;
+SurfaceDrilling.defaultProps = defaultProps;
 
 export default SurfaceDrilling;

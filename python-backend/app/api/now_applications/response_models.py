@@ -61,6 +61,13 @@ NOW_APPLICATION_CAMP = api.inherit(
 
     })
 
+NOW_APPLICATION_BLASTING_OPERATION = api.inherit(
+    'NOWApplicationBlasting', { 
+        'has_storage_explosive_on_site': fields.Boolean,
+        'explosive_permit_issued': fields.Boolean,
+        'explosive_permit_number': fields.String,
+        'explosive_permit_expiry_date': Date
+    })
 
 NOW_APPLICATION_CUT_LINES = api.inherit(
     'NOWApplicationCutLines',
@@ -215,16 +222,16 @@ NOW_APPLICATION_MODEL = api.model(
         'submitted_date': Date,
         'received_date': Date,
         'now_application_guid': fields.String,
-        'latitude': fields.Fixed,
-        'longitude': fields.Fixed,
+        'latitude': fields.Float,
+        'longitude': fields.Float,
         'property_name': fields.String,
         'tenure_number': fields.String,
-        'latitude': fields.String,
         'description_of_land': fields.String,
         'proposed_start_date': Date,
         'proposed_end_date': Date,
         'directions_to_site':fields.String,
         'state_of_land': fields.Nested(NOW_APPLCATION_STATE_OF_LAND,skip_none=True),
+        'blasting_operation': fields.Nested(NOW_APPLICATION_BLASTING_OPERATION, skip_none=True),
         'camps': fields.Nested(NOW_APPLICATION_CAMP, skip_none=True),
         'cut_lines_polarization_survey': fields.Nested(NOW_APPLICATION_CUT_LINES, skip_none=True),
         'exploration_access': fields.Nested(NOW_APPLICATION_EXP_ACCESS, skip_none=True),
@@ -237,3 +244,12 @@ NOW_APPLICATION_MODEL = api.model(
         'underground_exploration': fields.Nested(NOW_APPLICATION_UNDERGROUND_EXPLORATION, skip_none=True),
         'water_supply': fields.Nested(NOW_APPLICATION_WATER_SUPPLY, skip_none=True)
     })
+
+
+NOW_ACTIVITY_TYPES = api.model(
+    'ActivityType', 
+    {
+        'activity_type_code': fields.String,
+        'description': fields.String
+    }
+)

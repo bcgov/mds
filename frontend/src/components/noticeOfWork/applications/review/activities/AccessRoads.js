@@ -6,10 +6,15 @@ import * as Strings from "@/constants/strings";
 import RenderField from "@/components/common/RenderField";
 import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
 import RenderRadioButtons from "@/components/common/RenderRadioButtons";
+import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
   isViewMode: PropTypes.bool.isRequired,
-  initialValues: PropTypes.objectOf(PropTypes.string).isRequired,
+  initialValues: CustomPropTypes.defaultActivity,
+};
+
+const defaultProps = {
+  initialValues: {},
 };
 
 export const AccessRoads = (props) => {
@@ -101,5 +106,6 @@ export const AccessRoads = (props) => {
 };
 
 AccessRoads.propTypes = propTypes;
+AccessRoads.defaultProps = defaultProps;
 
 export default AccessRoads;

@@ -373,3 +373,74 @@ export const NOTICE_OF_WORK_LIST = {
   total: 25,
   total_pages: 5,
 };
+
+export const IMPORTED_NOTICE_OF_WORK = {
+  now_application_id: "",
+  now_application_guid: "",
+  mine_guid: "",
+  now_message_id: 47284,
+  now_tracking_number: 47284,
+  notice_of_work_type_code: "",
+  submitted_date: "",
+  received_date: "",
+  latitude: "",
+  longitude: "",
+  property_name: "",
+  tenure_number: "",
+  description_of_land: "",
+  proposed_start_date: "",
+  proposed_end_date: "",
+  contacts: [],
+  blasting_operation: {},
+  state_of_land: {},
+  camps: { details: [] },
+  cut_lines_polarization_survey: { details: [] },
+  exploration_access: { details: [] },
+  exploration_surface_drilling: { details: [] },
+  mechanical_trenching: { details: [] },
+  sand_and_gravel: { details: [] },
+  settling_pond: { details: [] },
+  surface_bulk_sample: { details: [] },
+  underground_exploration: { details: [] },
+  water_supply: { details: [] },
+  placer_operation: { details: [] },
+};
+
+export const NOTICE_OF_WORK_ACTIVITY_TYPES = {
+  records: [
+    {
+      activity_type_code: "cut_lines_polarization_survey",
+      description: "Cut Lines and Induced Polarization Survey",
+    },
+    { activity_type_code: "water_supply", description: "Water Supply" },
+  ],
+};
+
+export const DROPDOWN_NOTICE_OF_WORK_ACTIVITY_TYPES = [
+  {
+    value: "cut_lines_polarization_survey",
+    label: "Cut Lines and Induced Polarization Survey",
+  },
+  { value: "water_supply", label: "Water Supply" },
+];
+
+export const RECLAMATION_SUMMARY = [
+  {
+    label: "Cut Lines and Induced Polarization Survey",
+    total: "0.00",
+    cost: "0.00",
+  },
+  {
+    label: "Water Supply",
+    total: "0.00",
+    cost: "0.00",
+  },
+];
+
+export const EQUIPMENT = [
+  {
+    capacity: "John Deere 690",
+    description: "Excavator",
+    quantity: 1,
+  },
+];
