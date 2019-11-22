@@ -2,7 +2,6 @@ import uuid
 from datetime import datetime
 from os import path
 from sqlalchemy.orm.scoping import scoped_session
-from random import randrange
 
 import factory
 import factory.fuzzy
@@ -568,7 +567,7 @@ class MineFactory(BaseFactory):
             return
 
         if not isinstance(extracted, int):
-            extracted = randrange(4)
+            extracted = 1
 
         PermitFactory.create_batch(size=extracted, mine=obj, **kwargs)
 

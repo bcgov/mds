@@ -361,8 +361,7 @@ class NOWApplicationFactory(BaseFactory):
     class Meta:
         model = app_models.NOWApplication\
 
-
-   now_application_id = factory.Sequence(lambda n: n)
+    now_application_id = factory.Sequence(lambda n: n)
 
     now_tracking_number = factory.fuzzy.FuzzyInteger(1, 100)
     notice_of_work_type_code = factory.LazyFunction(RandomNOWTypeCode)
