@@ -83,26 +83,26 @@ exports[`NoticeOfWorkTable renders properly 1`] = `
     dataSource={
       Array [
         Object {
-          "date": "N/A",
-          "key": undefined,
+          "date": "Aug 14 2019",
+          "key": "07e801a0-fa33-4c3b-abcc-ac6df628d483",
           "mineGuid": "6e9d3426-ebf1-413f-9e5f-c3a71ab56797",
           "mineName": "Hamilton, Herrera and Mccormick",
           "mineRegion": "N/A",
-          "nowNum": "N/A",
-          "nowType": "N/A",
+          "nowNum": 44,
+          "nowType": "choice",
           "source": "N/A",
-          "status": "N/A",
+          "status": "Approved",
         },
         Object {
-          "date": "N/A",
-          "key": undefined,
+          "date": "Jul 21 2019",
+          "key": "8e1536da-644c-4961-976b-b1326fa75825",
           "mineGuid": "60300a07-376c-46f1-a984-88a813f91438",
           "mineName": "Thompson-Sullivan",
           "mineRegion": "N/A",
-          "nowNum": "N/A",
-          "nowType": "N/A",
+          "nowNum": 52,
+          "nowType": "technology",
           "source": "N/A",
-          "status": "N/A",
+          "status": "Approved",
         },
       ]
     }
