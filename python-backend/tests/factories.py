@@ -203,6 +203,7 @@ class PermitFactory(BaseFactory):
     class Meta:
         model = Permit
 
+    permit_id = factory.Sequence(lambda n: n)
     permit_guid = GUID
     permit_no = factory.LazyFunction(RandomPermitNumber)
     permit_status_code = factory.LazyFunction(RandomPermitStatusCode)
@@ -440,7 +441,7 @@ class PartyBusinessRoleFactory(BaseFactory):
     class Meta:
         model = PartyBusinessRoleAppointment
 
-    party_business_role_code = factory.LazyFunction(RandomPartyBusinessRoleCode)
+    party_business_role_code = factory.LazyFunction(RandomPartyBusinessRole)
     party = factory.SubFactory(PartyFactory, person=True)
     start_date = TODAY
     end_date = None
@@ -462,8 +463,9 @@ class MinePartyAppointmentFactory(BaseFactory):
     mine_tailings_storage_facility_guid = factory.LazyAttribute(
         lambda o: o.mine.mine_tailings_storage_facilities[0].mine_tailings_storage_facility_guid
         if o.mine_party_appt_type_code == 'EOR' else None)
-    permit_guid = factory.LazyAttribute(lambda o: o.mine.mine_permit[
-        0].permit_guid if o.mine.mine_permit and o.mine_party_appt_type_code == 'PMT' else None)
+
+    permit_guid = factory.LazyAttribute(lambda o: o.mine.mine_permit[0].permit_guid
+                                        if o.mine.mine_permit and o.mine_party_appt_type_code == 'PMT' else None)
 
 
 class CoreUserFactory(BaseFactory):

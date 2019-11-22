@@ -11,7 +11,7 @@ from app.api.now_applications.models.activity_summary.activity_summary_base impo
 class SettlingPond(ActivitySummaryBase):
     __tablename__ = "settling_pond"
     __mapper_args__ = {
-        'polymorphic_identity': 'settling_pond',  ## type code
+        'polymorphic_identity': 'settling_pond', ## type code
     }
     activity_summary_id = db.Column(
         db.Integer, db.ForeignKey('activity_summary.activity_summary_id'), primary_key=True)

@@ -9,6 +9,8 @@ from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.schema import FetchedValue
 from app.extensions import db
 
+from app.api.mines.permits.permit_amendment.models.permit_amendment_document import PermitAmendmentDocument
+
 from . import permit_amendment_status_code, permit_amendment_type_code
 from app.api.utils.models_mixins import AuditMixin, Base
 
@@ -46,13 +48,14 @@ class PermitAmendment(AuditMixin, Base):
                description=None,
                permit_amendment_status_code='ACT',
                add_to_session=True):
-        new_pa = cls(permit_id=permit.permit_id,
-                     received_date=received_date,
-                     issue_date=issue_date,
-                     authorization_end_date=authorization_end_date,
-                     permit_amendment_type_code=permit_amendment_type_code,
-                     permit_amendment_status_code=permit_amendment_status_code,
-                     description=description)
+        new_pa = cls(
+            permit_id=permit.permit_id,
+            received_date=received_date,
+            issue_date=issue_date,
+            authorization_end_date=authorization_end_date,
+            permit_amendment_type_code=permit_amendment_type_code,
+            permit_amendment_status_code=permit_amendment_status_code,
+            description=description)
         permit.permit_amendments.append(new_pa)
         if add_to_session:
             new_pa.save(commit=False)
@@ -121,3 +124,19 @@ class PermitAmendment(AuditMixin, Base):
         if description and len(description) > 280:
             raise AssertionError('Permit amendment description must be 280 characters or fewer.')
         return description
+
+
+from marshmallow_sqlalchemy import ModelConversionError, ModelSchema, ModelConverter
+
+
+class PermitAmendmentSchema(ModelSchema):
+    class Meta(object):
+        model = PermitAmendment
+        ordered = True
+        include_fk = True
+        sqla_session = db.session
+        #model_converter = CoreConverter
+        exclude = ('create_user', 'create_timestamp', 'update_user', 'update_timestamp')
+
+
+PermitAmendment._schema = PermitAmendmentSchema

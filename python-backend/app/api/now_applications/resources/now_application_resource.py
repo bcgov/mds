@@ -35,7 +35,8 @@ class NOWApplicationResource(Resource, UserMixin):
             raise NotFound('No identity record for this application guid.')
 
         if now_application_identity.now_application_id and not original:
-            application = NOWApplication.find_by_application_id(now_application_identity.now_application_id)
+            application = NOWApplication.find_by_application_id(
+                now_application_identity.now_application_id)
             application.imported_to_core = True
         else:
             application = transmogrify_now(now_application_identity)
