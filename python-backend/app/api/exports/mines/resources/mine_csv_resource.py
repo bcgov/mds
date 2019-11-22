@@ -5,7 +5,7 @@ from sqlalchemy.inspection import inspect
 from ..models.mine_csv_view import MineCSVView
 
 from app.extensions import api, cache
-from ....utils.access_decorators import requires_role_view_all
+from app.api.utils.access_decorators import requires_role_view_all
 from app.api.constants import MINE_DETAILS_CSV, TIMEOUT_60_MINUTES
 
 
