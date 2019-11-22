@@ -1004,8 +1004,8 @@ def ETL_MMS_NOW_schema(connection, tables):
         # proposed_placer_activity = etl.addfield(proposed_placer_activity, 'identifier', 'proposed')
 
         # Turn the proposed placer activity and existing placer activity into a single table.
-        proposed_placer_activity_detail = etl.addrownumbers(proposed_placer_activity_detail, field='placeractivityid' start=1)
-        existing_placer_activity_detail = etl.addrownumbers(existing_placer_activity_detail, field='placeractivityid' start=etl.nrows(proposed_placer_activity_detail)+1)
+        proposed_placer_activity_detail = etl.addrownumbers(proposed_placer_activity_detail, start=1, field='placeractivityid')
+        existing_placer_activity_detail = etl.addrownumbers(existing_placer_activity_detail, start=etl.nrows(proposed_placer_activity_detail)+1, field='placeractivityid')
         placer_activity_detail = etl.cat(proposed_placer_activity_detail, existing_placer_activity_detail)
         # Remove the messageid since it is not how the placer is linked to the application.
         placer_activity_detail = etl.cutout(placer_activity_detail, 'messageid')
@@ -1017,16 +1017,16 @@ def ETL_MMS_NOW_schema(connection, tables):
         
         # Split the placer activities back out into their seperate types by the added identifiers.
         # proposed_placer_activity_xref = etl.select(placer_activity_detail, lambda v: v['identifier'] == 'proposed')
-        # proposed_placer_activity_xref = etl.rowslice(proposed_placer_activity_xref, etl.nrows(proposed_placer_activity_xref))
+        proposed_placer_activity_xref = etl.rowslice(proposed_placer_activity_detail, etl.nrows(proposed_placer_activity_detail))
         # existing_placer_activity_xref = etl.select(placer_activity_detail, lambda v: v['identifier'] == 'existing')
-        # existing_placer_activity_xref = etl.rowslice(existing_placer_activity_xref, etl.nrows(existing_placer_activity_xref))
+        existing_placer_activity_xref = etl.rowslice(existing_placer_activity_detail, etl.nrows(existing_placer_activity_detail))
 
         # Remove the added identifier from the activity table.
         # placer_activity_detail = etl.cutout(placer_activity_detail, 'identifier')
 
         # grab only the needed columns for the XREF tables.
-        proposed_placer_activity_xref = etl.cut(proposed_placer_activity_detail, 'placeractivityid', 'mms_cid')
-        existing_placer_activity_xref = etl.cut(existing_placer_activity_detail, 'placeractivityid', 'mms_cid')
+        proposed_placer_activity_xref = etl.cut(proposed_placer_activity_xref, 'placeractivityid', 'mms_cid')
+        existing_placer_activity_xref = etl.cut(existing_placer_activity_xref, 'placeractivityid', 'mms_cid')
 
         applications = etl.leftjoin(applications, placer_activity_app_cols, key='mms_cid')
 
