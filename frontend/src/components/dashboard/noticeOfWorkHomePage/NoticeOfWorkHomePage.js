@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
@@ -44,6 +46,7 @@ export class NoticeOfWorkHomePage extends Component {
     params: {
       page: Strings.DEFAULT_PAGE,
       per_page: Strings.DEFAULT_PER_PAGE,
+      submissions_only: true,
       ...this.params,
     },
   };
@@ -53,7 +56,11 @@ export class NoticeOfWorkHomePage extends Component {
 
     const params = this.props.location.search;
     const parsedParams = queryString.parse(params);
-    const { page = this.state.params.page, per_page = this.state.params.per_page } = parsedParams;
+    const {
+      page = this.state.params.page,
+      per_page = this.state.params.per_page,
+      submissions_only = this.state.params.submissions_only,
+    } = parsedParams;
     if (params) {
       this.renderDataFromURL();
     } else {
@@ -61,6 +68,7 @@ export class NoticeOfWorkHomePage extends Component {
         router.NOTICE_OF_WORK_APPLICATIONS.dynamicRoute({
           page,
           per_page,
+          submissions_only,
         })
       );
     }
@@ -104,6 +112,7 @@ export class NoticeOfWorkHomePage extends Component {
       ...searchParams,
       // Reset page number
       page: Strings.DEFAULT_PAGE,
+      submissions_only: true,
     };
 
     this.props.history.push(
@@ -117,6 +126,7 @@ export class NoticeOfWorkHomePage extends Component {
         ...this.state.params,
         page,
         per_page,
+        submissions_only,
       })
     );
   };

@@ -463,8 +463,9 @@ class MinePartyAppointmentFactory(BaseFactory):
     mine_tailings_storage_facility_guid = factory.LazyAttribute(
         lambda o: o.mine.mine_tailings_storage_facilities[0].mine_tailings_storage_facility_guid
         if o.mine_party_appt_type_code == 'EOR' else None)
+
     permit_guid = factory.LazyAttribute(lambda o: o.mine.mine_permit[0].permit_guid
-                                        if o.mine_party_appt_type_code == 'PMT' else None)
+                                        if o.mine.mine_permit and o.mine_party_appt_type_code == 'PMT' else None)
 
 
 class CoreUserFactory(BaseFactory):
@@ -541,8 +542,8 @@ class MineFactory(BaseFactory):
     union_ind = factory.Faker('boolean', chance_of_getting_true=50)
     mine_type = factory.RelatedFactory(MineTypeFactory, 'mine')
     verified_status = factory.RelatedFactory(MineVerifiedStatusFactory, 'mine')
-    latitude = factory.Faker('latitude')     # or factory.fuzzy.FuzzyFloat(49, 60) for ~ inside BC
-    longitude = factory.Faker('longitude')     # or factory.fuzzy.FuzzyFloat(-132, -114.7) for ~ BC
+    latitude = factory.Faker('latitude')         # or factory.fuzzy.FuzzyFloat(49, 60) for ~ inside BC
+    longitude = factory.Faker('longitude')       # or factory.fuzzy.FuzzyFloat(-132, -114.7) for ~ BC
     geom = factory.LazyAttribute(lambda o: 'SRID=3005;POINT(%f %f)' % (o.longitude, o.latitude))
     mine_location_description = factory.Faker('sentence', nb_words=8, variable_nb_words=True)
     mine_status = factory.RelatedFactory(MineStatusFactory, 'mine')

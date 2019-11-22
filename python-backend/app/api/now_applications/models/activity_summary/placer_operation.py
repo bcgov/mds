@@ -14,7 +14,7 @@ from app.api.now_applications.models.activity_summary.activity_summary_base impo
 class PlacerOperation(ActivitySummaryBase):
     __tablename__ = 'placer_operation'
     __mapper_args__ = {
-        'polymorphic_identity': 'placer',        ## type code
+        'polymorphic_identity': 'placer_operation', ## type code
     }
     activity_summary_id = db.Column(
         db.Integer, db.ForeignKey('activity_summary.activity_summary_id'), primary_key=True)

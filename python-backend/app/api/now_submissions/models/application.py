@@ -227,7 +227,7 @@ class Application(Base):
     @classmethod
     def find_by_now_application_guid(cls, now_application_guid):
         cls.validate_guid(now_application_guid)
-        now_identity = now_application_identity
+        now_identity = self.now_application_identity
         if not now_identity:
             raise NotFound('Could not find a nros/vbcbc application for this id')
         return cls.find_by_messageid(now_identity.messageid)
@@ -237,8 +237,10 @@ class Application(Base):
         return cls.query.filter_by(messageid=messageid).first()
 
     @classmethod
-    def validate_guid(cls, guid, msg='Invalid guid.'):
+    def validate_guid(cls, now_application_guid, msg='Invalid guid.'):
         try:
-            uuid.UUID(str(guid), version=4)
+            uuid.UUID(str(now_application_guid), version=4)
         except ValueError:
+            raise AssertionError(msg)
+
             raise AssertionError(msg)

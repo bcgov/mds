@@ -248,6 +248,32 @@ NOW_APPLICATION_MODEL = api.model(
         'water_supply': fields.Nested(NOW_APPLICATION_WATER_SUPPLY, skip_none=True)
     })
 
+NOW_VIEW_MODEL = api.model(
+    'NOWApplication',
+    {
+        'now_application_guid': fields.String,
+        'mine_guid': fields.String,
+        'mine_no': fields.String,
+        'mine_name':fields.String,
+        'mine_region':fields.String,
+        'tracking_number': fields.String,
+        'notice_of_work_type_description': fields.String,
+        'now_application_status_description': fields.String,
+        'received_date': Date
+    }
+)
+
+PAGINATED_LIST = api.model(
+    'List', {
+        'current_page': fields.Integer,
+        'total_pages': fields.Integer,
+        'items_per_page': fields.Integer,
+        'total': fields.Integer,
+    })
+
+NOW_VIEW_LIST = api.inherit('NOWApplicationList', PAGINATED_LIST, {
+    'records': fields.List(fields.Nested(NOW_VIEW_MODEL)),
+    })
 
 NOW_ACTIVITY_TYPES = api.model(
     'ActivityType', 

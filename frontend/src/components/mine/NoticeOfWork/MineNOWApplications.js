@@ -12,6 +12,7 @@ import MineNoticeOfWorkTable from "@/components/mine/NoticeOfWork/MineNoticeOfWo
 import { fetchMineNoticeOfWorkApplications } from "@/actionCreators/noticeOfWorkActionCreator";
 import { getNoticeOfWorkList } from "@/selectors/noticeOfWorkSelectors";
 import { getMineGuid } from "@/selectors/mineSelectors";
+import { formatQueryListParams } from "@/utils/helpers";
 
 const propTypes = {
   mineGuid: PropTypes.string.isRequired,
@@ -26,16 +27,37 @@ const propTypes = {
 export class MineNOWApplications extends Component {
   params = queryString.parse(this.props.location.search);
 
+  splitListParams = formatQueryListParams("split", this.listQueryParams);
+
   state = {
     isLoaded: false,
     params: {
+      submissions_only: true,
       ...this.params,
     },
   };
 
   componentDidMount() {
     this.props.fetchRegionOptions();
-    this.renderDataFromURL();
+
+    const params = this.props.location.search;
+    const parsedParams = queryString.parse(params);
+    const {
+      page = this.state.params.page,
+      per_page = this.state.params.per_page,
+      submissions_only = this.state.params.submissions_only,
+    } = parsedParams;
+    if (params) {
+      this.renderDataFromURL();
+    } else {
+      this.props.history.push(
+        router.NOTICE_OF_WORK_APPLICATIONS.dynamicRoute({
+          page,
+          per_page,
+          submissions_only,
+        })
+      );
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -46,7 +68,9 @@ export class MineNOWApplications extends Component {
   }
 
   componentWillUnmount() {
-    this.setState({ params: {} });
+    this.setState({
+      params: {},
+    });
   }
 
   renderDataFromURL = (queryParams) => {
@@ -54,7 +78,7 @@ export class MineNOWApplications extends Component {
     const parsedParams = queryString.parse(params);
     this.setState(
       {
-        params: parsedParams,
+        params: this.splitListParams(parsedParams),
         isLoaded: false,
       },
       () =>
@@ -71,14 +95,12 @@ export class MineNOWApplications extends Component {
       ...persistedParams,
       // Overwrite prev params with any newly provided search params
       ...searchParams,
+      submissions_only: true,
     };
 
     this.props.history.push(
       router.MINE_NOW_APPLICATIONS.dynamicRoute(this.props.mineGuid, updatedParams)
     );
-    this.setState({
-      params: updatedParams,
-    });
   };
 
   render() {
