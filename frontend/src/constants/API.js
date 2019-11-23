@@ -143,11 +143,11 @@ export const MINE_REPORT_STATUS = "/mines/reports/status-codes";
 
 // Notice Of Work
 export const NOTICE_OF_WORK_APPLICATIONS = (params = {}) =>
-  `/now-submissions/applications?${queryString.stringify(params)}`;
+  `/now-applications?${queryString.stringify(params)}`;
 export const NOTICE_OF_WORK_APPLICATION = (applicationGuid) =>
   `/now-submissions/applications/${applicationGuid}`;
 export const MINE_NOTICE_OF_WORK_APPLICATIONS = (mineGuid, params = {}) =>
-  `/mines/${mineGuid}/now-submissions/applications?${queryString.stringify(params)}`;
+  `/mines/${mineGuid}/now-applications?${queryString.stringify(params)}`;
 export const NOTICE_OF_WORK_DOCUMENT_FILE_GET_URL = (id, applicationGuid, token = {}) =>
   `${NOTICE_OF_WORK_APPLICATION(applicationGuid)}/document/${id}?${queryString.stringify(token)}`;
 export const NOTICE_OF_WORK_DOCUMENT_TOKEN_GET_URL = (id, applicationGuid) =>
@@ -156,6 +156,7 @@ export const NOTICE_OF_WORK_APPLICATION_IMPORT = (applicationGuid) =>
   `/now-applications/${applicationGuid}/import`;
 export const NOTICE_OF_WORK_IMPORTED_APPLICATION = (applicationGuid) =>
   `/now-applications/${applicationGuid}`;
+export const NOTICE_OF_WORK_ACTIVITY_TYPE_OPTIONS = "/now-applications/activity-types";
 
 // Mine Party Appointments
 export const MINE_PARTY_APPOINTMENT_DOCUMENTS = (mineGuid, minePartyAppointmentGuid) =>

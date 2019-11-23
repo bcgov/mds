@@ -5,14 +5,25 @@ import { Row, Col, Table } from "antd";
 import * as Strings from "@/constants/strings";
 import RenderField from "@/components/common/RenderField";
 import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
+import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
   isViewMode: PropTypes.bool.isRequired,
-  initialValues: PropTypes.objectOf(PropTypes.string).isRequired,
+  initialValues: CustomPropTypes.waterSupply,
+};
+
+const defaultProps = {
+  initialValues: {},
 };
 
 export const WaterSupply = (props) => {
   const columns = [
+    {
+      title: "Source",
+      dataIndex: "source",
+      key: "source",
+      render: (text) => <div title="Source">{text}</div>,
+    },
     {
       title: "Activity",
       dataIndex: "type",
@@ -35,9 +46,10 @@ export const WaterSupply = (props) => {
 
   const transformData = (activities) =>
     activities.map((activity) => ({
+      source: activity.supply_source_description || Strings.EMPTY_FIELD,
       type: activity.activity_type_description || Strings.EMPTY_FIELD,
-      water: Strings.EMPTY_FIELD,
-      estimate: activity.water_quantity || Strings.EMPTY_FIELD,
+      water: activity.water_use_description || Strings.EMPTY_FIELD,
+      estimate: activity.estimate_rate || Strings.EMPTY_FIELD,
     }));
 
   return (
@@ -82,5 +94,6 @@ export const WaterSupply = (props) => {
 };
 
 WaterSupply.propTypes = propTypes;
+WaterSupply.defaultProps = defaultProps;
 
 export default WaterSupply;

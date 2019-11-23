@@ -11,6 +11,7 @@ from app.extensions import db
 from werkzeug.exceptions import BadRequest
 
 from app.api.utils.models_mixins import AuditMixin, Base
+from app.api.parties.party.models.address import Address
 
 
 class Party(AuditMixin, Base):
@@ -115,13 +116,13 @@ class Party(AuditMixin, Base):
     @classmethod
     def create(
             cls,
-            # Required fields
+     # Required fields
             party_name,
             phone_no,
             party_type_code,
-            # Optional fields
+     # Optional fields
             address_type_code=None,
-            # Nullable fields
+     # Nullable fields
             email=None,
             first_name=None,
             phone_ext=None,
@@ -133,11 +134,11 @@ class Party(AuditMixin, Base):
             post_code=None,
             add_to_session=True):
         party = cls(
-            # Required fields
+        # Required fields
             party_name=party_name,
             phone_no=phone_no,
             party_type_code=party_type_code,
-            # Optional fields
+        # Optional fields
             email=email,
             first_name=first_name,
             phone_ext=phone_ext)

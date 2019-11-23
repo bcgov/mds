@@ -7,7 +7,6 @@ from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
 from app.extensions import db
 from sqlalchemy.ext.associationproxy import association_proxy
-
 from app.api.utils.models_mixins import AuditMixin, Base
 
 from app.api.now_applications.models.activity_detail.activity_summary_detail_xref import *
@@ -39,8 +38,9 @@ class ActivityDetailBase(AuditMixin, Base):
     activity_type_code = db.column_property(
         db.select([ActivitySummaryBase.activity_type_code],
                   and_(
-                      ActivitySummaryDetailXref.activity_summary_id == ActivitySummaryBase.
-                      activity_summary_id, ActivitySummaryDetailXref.activity_detail_id ==
-                      activity_detail_id)).limit(1).as_scalar())
+                      ActivitySummaryDetailXref.activity_summary_id ==
+                      ActivitySummaryBase.activity_summary_id,
+                      ActivitySummaryDetailXref.activity_detail_id == activity_detail_id)).limit(
+                          1).as_scalar())
 
     __mapper_args__ = {'polymorphic_on': activity_type_code}

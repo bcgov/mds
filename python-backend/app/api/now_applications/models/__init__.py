@@ -1,5 +1,6 @@
 from .activity_detail import *
 from .activity_summary import *
+from .notice_of_work_view import NoticeOfWorkView
 from .now_application import NOWApplication
 from .now_application_identity import NOWApplicationIdentity
 from .now_application_type import NOWApplicationType

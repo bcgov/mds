@@ -5,6 +5,12 @@ from sqlalchemy.orm import validates
 from sqlalchemy.schema import FetchedValue
 from app.extensions import db
 
+from app.api.mines.permits.permit_amendment.models.permit_amendment import PermitAmendment
+#for schema creation
+from app.api.mines.permits.permit.models.permit_status_code import PermitStatusCode
+from app.api.mines.documents.models.mine_document import MineDocument
+from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
+
 from app.api.utils.models_mixins import AuditMixin, Base
 
 
@@ -16,7 +22,6 @@ class Permit(AuditMixin, Base):
     permit_no = db.Column(db.String(16), nullable=False)
     permit_status_code = db.Column(
         db.String(2), db.ForeignKey('permit_status_code.permit_status_code'))
-    permit_status_code_relationship = db.relationship('PermitStatusCode', lazy='select')
     permit_amendments = db.relationship(
         'PermitAmendment',
         backref='permit',
@@ -26,6 +31,7 @@ class Permit(AuditMixin, Base):
         lazy='select')
 
     mine_party_appointment = db.relationship('MinePartyAppointment', lazy='select', uselist=False)
+    permit_status_code_relationship = db.relationship('PermitStatusCode', lazy='select')
     permit_status_code_description = association_proxy('permit_status_code_relationship',
                                                        'description')
     permitee = association_proxy('mine_party_appointment', 'party.name')
@@ -76,3 +82,21 @@ class Permit(AuditMixin, Base):
         if len(permit_no) > 16:
             raise AssertionError('Permit number must not exceed 16 characters.')
         return permit_no
+
+
+from marshmallow_sqlalchemy import ModelConversionError, ModelSchema, ModelConverter, fields
+
+
+class PermitSchema(ModelSchema):
+    class Meta(object):
+        model = Permit
+        ordered = True
+        include_fk = True
+        sqla_session = db.session
+        #model_converter = CoreConverter
+        exclude = ('create_user', 'create_timestamp', 'update_user', 'update_timestamp')
+
+    permit_amendments = fields.Nested(PermitAmendment._schema, many=True, exclude=['permit_id'])
+
+
+Permit._schema = PermitSchema
