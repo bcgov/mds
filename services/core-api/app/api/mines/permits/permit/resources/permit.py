@@ -12,7 +12,7 @@ from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointme
 from app.extensions import api, db
 from app.api.utils.access_decorators import requires_role_view_all, requires_role_edit_permit
 from app.api.utils.resources_mixins import UserMixin
-from app.api.mines.permits.response_models import PERMIT_MODEL
+from app.api.mines.response_models import PERMIT_MODEL
 
 
 class PermitListResource(Resource, UserMixin):
@@ -43,10 +43,8 @@ class PermitListResource(Resource, UserMixin):
         type=str,
         location='json',
         help='Status of the permit being added.')
-    parser.add_argument('description', type=str,
-                        location='json', help='Permit description')
-    parser.add_argument('uploadedFiles', type=list,
-                        location='json', store_missing=False)
+    parser.add_argument('description', type=str, location='json', help='Permit description')
+    parser.add_argument('uploadedFiles', type=list, location='json', store_missing=False)
 
     @api.doc(params={'mine_guid': 'mine_guid to filter on'})
     @requires_role_view_all
@@ -63,8 +61,7 @@ class PermitListResource(Resource, UserMixin):
 
         mine = Mine.find_by_mine_guid(mine_guid)
         if not mine:
-            raise NotFound(
-                'There was no mine found with the provided mine_guid.')
+            raise NotFound('There was no mine found with the provided mine_guid.')
 
         party = Party.find_by_party_guid(data.get('permittee_party_guid'))
         if not party:
@@ -99,10 +96,10 @@ class PermitListResource(Resource, UserMixin):
             amendment.related_documents.append(new_pa_doc)
         db.session.commit()
 
-        permittee = MinePartyAppointment.create(
-            mine.mine_guid, data.get(
-                'permittee_party_guid'), 'PMT', datetime.utcnow(), None,
-            self.get_user_info(), permit.permit_guid, True)
+        permittee = MinePartyAppointment.create(mine.mine_guid,
+                                                data.get('permittee_party_guid'), 'PMT',
+                                                datetime.utcnow(), None, self.get_user_info(),
+                                                permit.permit_guid, True)
         db.session.commit()
 
         return permit
@@ -147,8 +144,7 @@ class PermitResource(Resource, UserMixin):
         store_missing=False)
     parser.add_argument(
         'description', type=str, location='json', help='Permit description', store_missing=False)
-    parser.add_argument('uploadedFiles', type=list,
-                        location='json', store_missing=False)
+    parser.add_argument('uploadedFiles', type=list, location='json', store_missing=False)
 
     @api.doc(params={'permit_guid': 'Permit guid.'})
     @requires_role_view_all
@@ -175,7 +171,7 @@ class PermitResource(Resource, UserMixin):
         data = self.parser.parse_args()
         for key, value in data.items():
             if key in ['permit_no', 'mine_guid', 'uploadedFiles']:
-                continue  # non-editable fields from put
+                continue     # non-editable fields from put
             setattr(permit, key, value)
 
         permit.save()

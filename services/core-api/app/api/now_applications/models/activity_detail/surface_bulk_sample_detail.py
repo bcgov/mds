@@ -10,7 +10,7 @@ from app.api.now_applications.models.activity_detail.activity_detail_base import
 
 class SurfaceBulkSampleDetail(ActivityDetailBase):
     __mapper_args__ = {
-        'polymorphic_identity': 'surface_bulk_sample',  ## type code
+        'polymorphic_identity': 'surface_bulk_sample', ## type code
     }
 
     ## NO TABLE FOR THIS TYPE
