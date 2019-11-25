@@ -1025,7 +1025,7 @@ def ETL_MMS_NOW_schema(connection, tables):
         permitees = etl.select(contacts, lambda v: True if len(v['type_ind']) >= 4 and v['type_ind'][3] == 'Y' else False)
         private_land_owners = etl.select(contacts, lambda v: True if len(v['type_ind']) >= 5 and v['type_ind'][4] == 'Y' else False)
         clients = etl.select(contacts, lambda v: True if len(v['type_ind']) >= 6 and v['type_ind'][5] == 'Y' else False)
-        others = etl.select(contacts, lambda v: 'Y' in v['type_ind'])
+        others = etl.select(contacts, lambda v: 'Y' not in v['type_ind'])
 
         # Convert the columns back to the NROS/vFCBC form.  
         tenure_holders = etl.addfield(tenure_holders, 'contacttype','Tenure Holder')
