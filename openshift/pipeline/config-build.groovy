@@ -44,7 +44,7 @@ app {
                     ]
                 ],
                 [
-                    'file':'openshift/templates/docman.bc.json',
+                    'file':'openshift/templates/document-manager/docman.bc.json',
                     'params':[
                             'NAME':"mds-docman-api",
                             'SUFFIX': "${app.build.suffix}",
