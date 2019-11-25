@@ -30,6 +30,8 @@ def _get_fiscal_year():
     #current_app.logger.debug(f'{fiscal_year_end} vs {current_date}')
     return current_year if current_date > fiscal_year_end else current_year - 1
 
+#def get_nris_download_token():
+
 
 @register_apm()
 def _get_NRIS_data_by_mine(auth_token, mine_no):
@@ -112,6 +114,17 @@ def _process_NRIS_data(raw_data):
                 elif stop['noncompliance_permits']:
                     violation = stop['noncompliance_permits'][0].get('permitSectionNumber')
 
+                documents = []
+                for document in inspection['documents']:
+                    document = {
+                        'external_id': document['external_id'],
+                        'document_date': document['document_date'],
+                        'document_type': document['document_type'],
+                        'file_name': document['file_name'],
+                        'comment': document['comment']
+                    }
+                    documents.append(document)
+
                 order = {
                     'order_no': str(inspection['external_id']) + '-' + str(order_count),
                     'violation': violation,
@@ -120,6 +133,7 @@ def _process_NRIS_data(raw_data):
                     'order_status': stop['stop_status'],
                     'due_date': stop['completion_date'],
                     'overdue': False,
+                    'documents': documents
                 }
 
                 #Open

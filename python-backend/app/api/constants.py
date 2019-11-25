@@ -70,6 +70,7 @@ MINE_OPERATION_STATUS_SUB_REASON = {
 #Cache prefixes
 NRIS_MAJOR_MINE_LIST = "major_mine_list"
 NRIS_TOKEN = "nris:token"
+NRIS_REMOTE_TOKEN = "nris_remote:token"
 NROS_TOKEN = "nros:token"
 VFCBC_COOKIES = "vdcbc_cookies"
 

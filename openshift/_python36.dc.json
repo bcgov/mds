@@ -494,6 +494,33 @@
                     }
                   },
                   {
+                    "name": "NRIS_TOKEN_URL",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${MDS_NRIS_SECRET}",
+                        "key": "token-url"
+                      }
+                    }
+                  },
+                  {
+                    "name": "NRIS_CLIENT_ID",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${MDS_NRIS_SECRET}",
+                        "key": "user-name"
+                      }
+                    }
+                  },
+                  {
+                    "name": "NRIS_CLIENT_SECRET",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${MDS_NRIS_SECRET}",
+                        "key": "password"
+                      }
+                    }
+                  },
+                  {
                     "name": "VFCBC_TOKEN_URL",
                     "valueFrom": {
                       "secretKeyRef": {
