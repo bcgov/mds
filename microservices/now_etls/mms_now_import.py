@@ -435,7 +435,7 @@ def ETL_MMS_NOW_schema(connection, tables):
         exploration_surface_drill_activity_5 = etl.addfield(exploration_surface_drill_activity_5, 'timbervolume', lambda v: v['act5_vol'])
         exploration_surface_drill_activity_5 = etl.addfield(exploration_surface_drill_activity_5, 'numberofsites', lambda v: v['act5_cnt'])
  
-        exploration_access_activity_5 = etl.cutout(exploration_surface_drill_activity_5, 'act5_ind', 'act5_cnt', 'act5_ar', 'act5_vol')
+        exploration_surface_drill_activity_5 = etl.cutout(exploration_surface_drill_activity_5, 'act5_ind', 'act5_cnt', 'act5_ar', 'act5_vol')
 
         exploration_surface_drill_activity_detail = etl.cat(exploration_surface_drill_activity_detail, exploration_surface_drill_activity_5)
 
