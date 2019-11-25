@@ -6,7 +6,8 @@ from flask_restplus import Resource
 from werkzeug.exceptions import BadRequest, InternalServerError, NotFound, NotImplemented
 
 from app.extensions import api
-from app.api.utils.access_decorators import requires_role_view_all, requires_role_edit_party, requires_any_of, VIEW_ALL, requires_role_mine_edit
+from app.api.utils.access_decorators import requires_role_view_all, requires_role_edit_permit
+
 from app.api.utils.resources_mixins import UserMixin
 from app.api.utils.custom_reqparser import CustomReqparser
 
@@ -24,6 +25,7 @@ class NOWApplicationResource(Resource, UserMixin):
         params={
             'original': f'Retrieve the original version of the application. Default: false ',
         })
+    @requires_role_view_all
     @api.marshal_with(NOW_APPLICATION_MODEL, code=200)
     def get(self, application_guid):
         original = request.args.get('original', False, type=bool)
@@ -45,6 +47,7 @@ class NOWApplicationResource(Resource, UserMixin):
         description=
         'Updates a now application and nested objects, this endpoint is not idempotent, nested objects without primary keys will be treated as new objects.'
     )
+    @requires_role_edit_permit
     @api.marshal_with(NOW_APPLICATION_MODEL, code=200)
     def put(self, application_guid):
         now_application_identity = NOWApplicationIdentity.find_by_guid(application_guid)
