@@ -408,7 +408,7 @@ def ETL_MMS_NOW_schema(connection, tables):
         exploration_surface_drill_activity_2 = etl.addfield(exploration_surface_drill_activity_2, 'timbervolume', lambda v: v['act2_vol'])
         exploration_surface_drill_activity_2 = etl.addfield(exploration_surface_drill_activity_2, 'numberofsites', lambda v: v['act2_cnt'])
 
-        exploration_surface_drill_activity_2 = etl.cutout(exploration_surface_drill_activity_2, 'act2_ind', 'act2_len', 'act2_ar', 'act2_vol')
+        exploration_surface_drill_activity_2 = etl.cutout(exploration_surface_drill_activity_2, 'act2_ind', 'act2_cnt', 'act2_ar', 'act2_vol')
 
         exploration_surface_drill_activity_detail = etl.cat(exploration_surface_drill_activity_detail, exploration_surface_drill_activity_2)
 
@@ -417,7 +417,7 @@ def ETL_MMS_NOW_schema(connection, tables):
         exploration_surface_drill_activity_3 = etl.addfield(exploration_surface_drill_activity_3, 'timbervolume', lambda v: v['act3_vol'])
         exploration_surface_drill_activity_3 = etl.addfield(exploration_surface_drill_activity_3, 'numberofsites', lambda v: v['act3_cnt'])
 
-        exploration_surface_drill_activity_3 = etl.cutout(exploration_surface_drill_activity_3, 'act3_ind', 'act3_len', 'act3_ar', 'act3_vol')
+        exploration_surface_drill_activity_3 = etl.cutout(exploration_surface_drill_activity_3, 'act3_ind', 'act3_cnt', 'act3_ar', 'act3_vol')
 
         exploration_surface_drill_activity_detail = etl.cat(exploration_surface_drill_activity_detail, exploration_surface_drill_activity_3)
 
@@ -426,7 +426,7 @@ def ETL_MMS_NOW_schema(connection, tables):
         exploration_surface_drill_activity_4 = etl.addfield(exploration_surface_drill_activity_4, 'timbervolume', lambda v: v['act4_vol'])
         exploration_surface_drill_activity_4 = etl.addfield(exploration_surface_drill_activity_4, 'numberofsites', lambda v: v['act4_cnt'])
 
-        exploration_surface_drill_activity_4 = etl.cutout(exploration_surface_drill_activity_4, 'act4_ind', 'act4_len', 'act4_ar', 'act4_vol')
+        exploration_surface_drill_activity_4 = etl.cutout(exploration_surface_drill_activity_4, 'act4_ind', 'act4_cnt', 'act4_ar', 'act4_vol')
 
         exploration_surface_drill_activity_detail = etl.cat(exploration_surface_drill_activity_detail, exploration_surface_drill_activity_4)
 
@@ -435,7 +435,7 @@ def ETL_MMS_NOW_schema(connection, tables):
         exploration_surface_drill_activity_5 = etl.addfield(exploration_surface_drill_activity_5, 'timbervolume', lambda v: v['act5_vol'])
         exploration_surface_drill_activity_5 = etl.addfield(exploration_surface_drill_activity_5, 'numberofsites', lambda v: v['act5_cnt'])
  
-        exploration_access_activity_5 = etl.cutout(exploration_surface_drill_activity_5, 'act5_ind', 'act5_len', 'act5_ar', 'act5_vol')
+        exploration_access_activity_5 = etl.cutout(exploration_surface_drill_activity_5, 'act5_ind', 'act5_cnt', 'act5_ar', 'act5_vol')
 
         exploration_surface_drill_activity_detail = etl.cat(exploration_surface_drill_activity_detail, exploration_surface_drill_activity_5)
 
@@ -444,7 +444,7 @@ def ETL_MMS_NOW_schema(connection, tables):
         exploration_surface_drill_activity_6 = etl.addfield(exploration_surface_drill_activity_6, 'timbervolume', lambda v: v['act6_vol'])
         exploration_surface_drill_activity_6 = etl.addfield(exploration_surface_drill_activity_6, 'numberofsites', lambda v: v['act6_cnt'])
 
-        exploration_surface_drill_activity_6 = etl.cutout(exploration_surface_drill_activity_6, 'act6_ind', 'act6_len', 'act6_ar', 'act6_vol')
+        exploration_surface_drill_activity_6 = etl.cutout(exploration_surface_drill_activity_6, 'act6_ind', 'act6_cnt', 'act6_ar', 'act6_vol')
 
         exploration_surface_drill_activity_detail = etl.cat(exploration_surface_drill_activity_detail, exploration_surface_drill_activity_6)
 
@@ -453,7 +453,7 @@ def ETL_MMS_NOW_schema(connection, tables):
         exploration_surface_drill_activity_7 = etl.addfield(exploration_surface_drill_activity_7, 'timbervolume', lambda v: v['act7_vol'])
         exploration_surface_drill_activity_7 = etl.addfield(exploration_surface_drill_activity_7, 'numberofsites', lambda v: v['act7_cnt'])
 
-        exploration_surface_drill_activity_7 = etl.cutout(exploration_surface_drill_activity_7, 'act7_ind', 'act7_len', 'act7_ar', 'act7_vol')
+        exploration_surface_drill_activity_7 = etl.cutout(exploration_surface_drill_activity_7, 'act7_ind', 'act7_cnt', 'act7_ar', 'act7_vol')
 
         exploration_surface_drill_activity_detail = etl.cat(exploration_surface_drill_activity_detail, exploration_surface_drill_activity_7)
 
@@ -462,7 +462,7 @@ def ETL_MMS_NOW_schema(connection, tables):
         exploration_surface_drill_activity_8 = etl.addfield(exploration_surface_drill_activity_8, 'timbervolume', lambda v: v['act8_vol'])
         exploration_surface_drill_activity_8 = etl.addfield(exploration_surface_drill_activity_8, 'numberofsites', lambda v: v['act8_cnt'])
 
-        exploration_surface_drill_activity_8 = etl.cutout(exploration_surface_drill_activity_8, 'act8_ind', 'act8_len', 'act8_ar', 'act8_vol')
+        exploration_surface_drill_activity_8 = etl.cutout(exploration_surface_drill_activity_8, 'act8_ind', 'act8_cnt', 'act8_ar', 'act8_vol')
 
         exploration_surface_drill_activity_detail = etl.cat(exploration_surface_drill_activity_detail, exploration_surface_drill_activity_8)
 
