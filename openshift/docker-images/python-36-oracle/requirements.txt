@@ -1,1 +1,1 @@
-../../microservices/nris_api/backend/requirements.txt
+../../../services/nris-api/backend/requirements.txt
