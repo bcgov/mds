@@ -189,7 +189,7 @@ app {
                     ]
                 ],
                 [
-                    'file':'microservices/document_manager/openshift/templates/_python36_docman.dc.json',
+                    'file':'/openshift/templates/document-manager/_python36_docman.dc.json',
                     'params':[
                             'NAME':"mds-docman-backend",
                             'SUFFIX': "${vars.deployment.suffix}",
@@ -219,7 +219,7 @@ app {
                     ]
                 ],
                 [
-                    'file':'microservices/nris_api/openshift/templates/_python36_oracle.dc.json',
+                    'file':'/openshift/templates/nris-api/_python36_oracle.dc.json',
                     'params':[
                             'NAME':"mds-nris-backend",
                             'SUFFIX': "${vars.deployment.suffix}",

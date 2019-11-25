@@ -52,7 +52,7 @@ app {
         timeoutInSeconds = 60*20 // 20 minutes
         templates = [
                 [
-                    'file':'openshift/postgresql.dc.json',
+                    'file':'openshift/templates/postgresql.dc.json',
                     'params':[
                             'NAME':"mds-postgresql",
                             'SUFFIX':"${vars.deployment.suffix}",
@@ -69,7 +69,7 @@ app {
                     ]
                 ],
                 [
-                    'file':'openshift/redis.dc.json',
+                    'file':'openshift/templates/redis.dc.json',
                     'params':[
                             'NAME':"mds-redis",
                             'DATABASE_SERVICE_NAME':"mds-redis${vars.deployment.suffix}",
@@ -81,7 +81,7 @@ app {
                     ]
                 ],
                 [
-                    'file':'openshift/_nodejs.dc.json',
+                    'file':'openshift/templates/_nodejs.dc.json',
                     'params':[
                             'NAME':"mds-frontend",
                             'SUFFIX': "${vars.deployment.suffix}",
@@ -107,7 +107,7 @@ app {
                     ]
                 ],
                 [
-                    'file':'openshift/_nodejs.dc.json',
+                    'file':'openshift/templates/_nodejs.dc.json',
                     'params':[
                             'NAME':"mds-frontend-public",
                             'SUFFIX': "${vars.deployment.suffix}",
@@ -133,7 +133,7 @@ app {
                     ]
                 ],
                 [
-                    'file':'openshift/_nginx.dc.json',
+                    'file':'openshift/templates/_nginx.dc.json',
                     'params':[
                             'NAME':"mds-nginx",
                             'SUFFIX': "${vars.deployment.suffix}",
@@ -157,7 +157,7 @@ app {
                     ]
                 ],
                 [
-                    'file':'openshift/_python36.dc.json',
+                    'file':'openshift/templates/_python36.dc.json',
                     'params':[
                             'NAME':"mds-python-backend",
                             'FLYWAY_NAME':"mds-flyway-migration-client",
@@ -188,7 +188,7 @@ app {
                     ]
                 ],
                 [
-                    'file':'microservices/document_manager/openshift/_python36_docman.dc.json',
+                    'file':'openshift/templates/document-manager/_python36_docman.dc.json',
                     'params':[
                             'NAME':"mds-docman-backend",
                             'SUFFIX': "${vars.deployment.suffix}",
@@ -218,7 +218,7 @@ app {
                     ]
                 ],
                 [
-                    'file':'microservices/nris_api/openshift/_python36_oracle.dc.json',
+                    'file':'openshift/templates/nris-api/_python36_oracle.dc.json',
                     'params':[
                             'NAME':"mds-nris-backend",
                             'SUFFIX': "${vars.deployment.suffix}",
@@ -246,7 +246,7 @@ app {
                     ]
                 ],
                 [
-                    'file':'openshift/tools/schemaspy.dc.json',
+                    'file':'openshift/templates/tools/schemaspy.dc.json',
                     'params':[
                             'NAME':"schemaspy",
                             'VERSION':"${app.deployment.version}",
@@ -257,7 +257,7 @@ app {
                     ]
                 ],
                 [
-                    'file':'openshift/tools/metabase.dc.json',
+                    'file':'openshift/templates/tools/metabase.dc.json',
                     'params':[
                             'NAME':"metabase",
                             'NAME_DATABASE':"metabase-postgres",
@@ -277,7 +277,7 @@ app {
                     ]
                 ],
                 [
-                    'file':'openshift/tools/logstash.dc.json',
+                    'file':'openshift/templates/tools/logstash.dc.json',
                     'params':[
                             'NAME':"mds-logstash",
                             'VERSION':"${app.deployment.version}",
@@ -291,7 +291,7 @@ app {
                     ]
                 ],
                 [
-                    'file':'tools/openshift/digdag.dc.json',
+                    'file':'openshift/templates/digdag/digdag.dc.json',
                     'params':[
                             'NAME':"digdag",
                             'VERSION':"${app.deployment.version}",
