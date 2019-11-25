@@ -151,7 +151,7 @@
         ],
         "runPolicy": "SerialLatestOnly",
         "source": {
-          "contextDir": "docker-images/sonar-scanner",
+          "contextDir": "openshift/docker-images/sonar-scanner",
           "git": {
             "ref": "${SOURCE_REPOSITORY_REF}",
             "uri": "${SOURCE_REPOSITORY_URL}"

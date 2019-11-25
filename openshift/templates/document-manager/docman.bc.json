@@ -131,7 +131,7 @@
         ],
         "runPolicy": "SerialLatestOnly",
         "source": {
-          "contextDir": "docker-images/python-36-docman",
+          "contextDir": "openshift/docker-images/python-36-docman",
           "type": "Binary"
         },
         "strategy": {

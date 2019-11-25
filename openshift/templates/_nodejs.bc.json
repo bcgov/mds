@@ -33,7 +33,7 @@
     },
     {
       "name": "DOCKER_IMAGE_DIRECTORY",
-      "value": "docker-images/nodejs-10"
+      "value": "openshift/docker-images/nodejs-10"
     },
     {
       "name": "SOURCE_CONTEXT_DIR",

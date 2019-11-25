@@ -133,7 +133,7 @@
         ],
         "runPolicy": "SerialLatestOnly",
         "source": {
-          "contextDir": "docker-images/python-36",
+          "contextDir": "openshift/docker-images/python-36",
           "type": "Binary"
         },
         "strategy": {
