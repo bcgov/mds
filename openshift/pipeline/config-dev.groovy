@@ -219,7 +219,7 @@ app {
                     ]
                 ],
                 [
-                    'file':'/openshift/templates/nris-api/_python36_oracle.dc.json',
+                    'file':'openshift/templates/nris-api/_python36_oracle.dc.json',
                     'params':[
                             'NAME':"mds-nris-backend",
                             'SUFFIX': "${vars.deployment.suffix}",
