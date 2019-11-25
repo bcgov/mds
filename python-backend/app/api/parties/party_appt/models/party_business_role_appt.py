@@ -7,7 +7,7 @@ from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
 from app.extensions import db
 
-from app.api.parties.party_appt.models.party_business_role_code import PartyBusinessRoleCode
+from app.api.parties.party_appt.models.party_business_role import PartyBusinessRole
 from app.api.parties.party.models.party import Party
 from app.api.utils.models_mixins import AuditMixin, Base
 
@@ -28,7 +28,7 @@ class PartyBusinessRoleAppointment(AuditMixin, Base):
     party = db.relationship('Party', lazy='joined')
 
     party_business_role = db.relationship(
-        'PartyBusinessRoleCode', backref='party_business_role_appt', lazy='joined')
+        'PartyBusinessRole', backref='party_business_role_appt', lazy='joined')
 
     @classmethod
     def find_by_business_role_appt_id(cls, _id):

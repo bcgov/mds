@@ -8,12 +8,6 @@ class DateTime(fields.Raw):
     def format(self, value):
         return value.strftime("%Y-%m-%d %H:%M") if value else None
 
-
-class Date(fields.Raw):
-    def format(self, value):
-        return value.strftime("%Y-%m-%d") if value else None
-
-
 BASIC_MINE_LOCATION_MODEL = api.model('BasicMineLocation', {
     'latitude': fields.String,
     'longitude': fields.String,
@@ -75,13 +69,57 @@ MINE_DOCUMENT_MODEL = api.model(
         'upload_date': fields.DateTime,
     })
 
-PERMIT_MODEL = api.model('MinePermit', {
-    'permit_guid': fields.String,
-    'permit_no': fields.String,
+
+PERMIT_AMENDMENT_DOCUMENT_MODEL = api.model(
+    'PermitAmendmentDocument', {
+        'permit_id':fields.Integer,
+        'permit_amendment_document_guid': fields.String,
+        'mine_guid': fields.String,
+        'document_manager_guid': fields.String,
+        'document_name': fields.String,
+        'active_ind': fields.Boolean
+    })
+
+PERMIT_AMENDMENT_MODEL = api.model(
+    'PermitAmendment', {
+        #'permit_guid':fields.String,
+        'permit_amendment_id':fields.Integer,
+        'permit_amendment_guid': fields.String,
+        'permit_amendment_status_code': fields.String,
+        'permit_amendment_type_code': fields.String,
+        'received_date': fields.DateTime(dt_format='iso8601'),
+        'issue_date': fields.DateTime(dt_format='iso8601'),
+        'authorization_end_date': fields.DateTime(dt_format='iso8601'),
+        #'permit_amendment_status_description': fields.String,
+        #'permit_amendment_type_description': fields.String,
+        'description': fields.String,
+        'related_documents': fields.List(fields.Nested(PERMIT_AMENDMENT_DOCUMENT_MODEL))
+    })
+
+PERMIT_MODEL = api.model(
+    'Permit', {
+        'permit_id' : fields.Integer,
+        'permit_guid': fields.String,
+        'mine_guid': fields.String,
+        'permit_no': fields.String,
+        'permit_status_code': fields.String,
+        # 'permit_status_code_description': fields.String,
+        'permit_amendments': fields.List(fields.Nested(PERMIT_AMENDMENT_MODEL)),
+    })
+
+PERMIT_STATUS_CODE_MODEL = api.model('PermitStatusCode', {
     'permit_status_code': fields.String,
-    'permit_status_code_description': fields.String,
+    'description': fields.String,
+    'display_order': fields.Integer
 })
 
+PERMIT_AMENDEMENT_STATUS_CODE_MODEL = api.model(
+    'PermitAmendmentStatusCode', {
+        'permit_amendment_status_code': fields.String,
+        'description': fields.String,
+        'display_order': fields.Integer
+    })
+    
 STATUS_MODEL = api.model(
     'MineStatus', {
         'mine_status_guid': fields.String,
@@ -89,9 +127,9 @@ STATUS_MODEL = api.model(
         'mine_status_xref_guid': fields.String,
         'status_values': fields.List(fields.String),
         'status_labels': fields.List(fields.String),
-        'effective_date': Date,
-        'expiry_date': Date,
-        'status_date': Date,
+        'effective_date': fields.DateTime,
+        'expiry_date': fields.DateTime,
+        'status_date': fields.DateTime,
         'status_description': fields.String,
     })
 MINE_REPORT_SUBMISSION_STATUS = api.model(
@@ -129,7 +167,7 @@ MINE_VERIFIED_MODEL = api.model(
         'mine_name': fields.String,
         'healthy_ind': fields.Boolean,
         'verifying_user': fields.String,
-        'verifying_timestamp': Date,
+        'verifying_timestamp': fields.DateTime,
     })
 
 MINES_MODEL = api.model(
