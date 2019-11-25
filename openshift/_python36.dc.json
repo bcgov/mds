@@ -74,11 +74,6 @@
       "value": "template.mds-vfcbc-client-service"
     },
     {
-      "name": "MDS_NRIS_API_SECRET",
-      "required": false,
-      "value": "template.mds-nris-secret"
-    },
-    {
       "name": "MDS_IDIR_SECRET",
       "required": false,
       "value": "template.mds-idir-secret"
