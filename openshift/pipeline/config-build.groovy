@@ -49,7 +49,7 @@ app {
                             'NAME':"mds-docman-api",
                             'SUFFIX': "${app.build.suffix}",
                             'VERSION':"${app.build.version}",
-                            'SOURCE_CONTEXT_DIR': "services/document_manager/backend",
+                            'SOURCE_CONTEXT_DIR': "services/document-manager/backend",
                             'SOURCE_REPOSITORY_URL': "${app.git.uri}"
                     ]
                 ],
@@ -59,7 +59,7 @@ app {
                             'NAME':"mds-now-etl",
                             'SUFFIX': "${app.build.suffix}",
                             'VERSION':"${app.build.version}",
-                            'SOURCE_CONTEXT_DIR': "tasks/now_etls",
+                            'SOURCE_CONTEXT_DIR': "tasks/now-etls",
                             'SOURCE_REPOSITORY_URL': "${app.git.uri}"
                     ]
                 ],
@@ -69,7 +69,7 @@ app {
                             'NAME':"mds-nris-api",
                             'SUFFIX': "${app.build.suffix}",
                             'VERSION':"${app.build.version}",
-                            'SOURCE_CONTEXT_DIR': "services/nris_api/backend",
+                            'SOURCE_CONTEXT_DIR': "services/nris-api/backend",
                             'SOURCE_REPOSITORY_URL': "${app.git.uri}",
                     ]
                 ],
