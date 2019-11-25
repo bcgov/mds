@@ -68,6 +68,9 @@ class Base(db.Model):
                 db.session.rollback()
                 raise e
 
+    def marshmallow_post_generate():
+        pass
+
     def deep_update_from_dict(self, data_dict, depth=0):
         """
         This function takes a python dictionary and assigns all present key value pairs to 
@@ -102,8 +105,10 @@ class Base(db.Model):
                 for i in v:
                     current_app.logger.debug(depth * ' ' + str(i))
                     #get list of pk column names for child class
-                    pk_names = [pk.name for pk in inspect(obj_list[0].__class__).primary_key]
-                    #ASSUMPTION: lists of object, never lists of anything else.
+                    rel = getattr(self.__class__, k) #SA.relationship definition
+                    obj_list_class = rel.property.entity.class_
+                    pk_names = [pk.name for pk in inspect(obj_list_class).primary_key]
+                                                     #ASSUMPTION: lists of object, never lists of anything else.
 
                     #see if object list holds a child that has the same values as the json dict for all primary key values of class
                     existing_obj = next((x for x in obj_list if all(
@@ -120,14 +125,13 @@ class Base(db.Model):
                         #unsure if we want this behaviour, could be done in second pass as well
                         pass
                     else:
+                        #THIS BLOCK MAKES PUT NON-IDEMPOTENT... may need to be reconsidered
                         #no existing obj with PK match, so create  item in related list
                         current_app.logger.debug(depth * ' ' + f'add new item to {self}.{k}')
-                        rel = getattr(self.__class__, k)                               #SA.relationship definition
-                        new_obj_class = rel.property.entity.class_                     #class for relationship target
-                        new_obj = new_obj_class._schema().load(i)                      #marshmallow load dict -> obj
+                        new_obj = obj_list_class._schema().load(i)                     #marshmallow load dict -> obj
                         obj_list.append(new_obj)
                         current_app.logger.debug(f'just created and saved{new_obj}=' +
-                                                 str(new_obj_class._schema().dump(new_obj)))
+                                                 str(obj_list_class._schema().dump(new_obj)))
 
             if k in [c.name for c in editable_columns]:
                 col = next(col for col in editable_columns if col.name == k)
@@ -138,7 +142,7 @@ class Base(db.Model):
                     assert isinstance(v, (UUID, str))
                 else:
                     py_type = col.type.python_type
-                    if py_type == datetime:
+                    if py_type == datetime or py_type == date:
                         #json value is string, if expecting datetime in that column, convert here
                         setattr(self, k, parser.parse(v))
                         continue
@@ -148,13 +152,14 @@ class Base(db.Model):
                         #don't care about anything more precise, procection if incoming data is float
                         setattr(self, k, dec.quantize(decimal.Decimal('.0000001')))
                         continue
-                    elif not isinstance(v, py_type):
+                    elif (v is not None) and not isinstance(v, py_type):
                         #type safety (don't coalese empty string to false if it's targetting a boolean column)
                         raise DictLoadingError(
                             f"cannot assign '{k}':{v}{type(v)} to column of type {py_type}")
                     else:
                         setattr(self, k, v)
         if depth == 0:
+            current_app.logger.debug('DONE UPDATING AND SAVING')
             self.save()
         return
 

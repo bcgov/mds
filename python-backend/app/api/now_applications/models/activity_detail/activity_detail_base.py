@@ -1,5 +1,5 @@
 import uuid, datetime
-
+from marshmallow import Schema, fields, pprint
 from sqlalchemy import and_, select
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import validates
@@ -44,3 +44,7 @@ class ActivityDetailBase(AuditMixin, Base):
                           1).as_scalar())
 
     __mapper_args__ = {'polymorphic_on': activity_type_code}
+
+    @classmethod
+    def marshmallow_post_generate(cls):
+        cls._schema.activity_type_code = fields.String(dump_only=True)

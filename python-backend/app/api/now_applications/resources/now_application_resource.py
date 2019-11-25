@@ -24,7 +24,6 @@ class NOWApplicationResource(Resource, UserMixin):
         params={
             'original': f'Retrieve the original version of the application. Default: false ',
         })
-    @requires_role_view_all
     @api.marshal_with(NOW_APPLICATION_MODEL, code=200)
     def get(self, application_guid):
         original = request.args.get('original', False, type=bool)
@@ -34,7 +33,7 @@ class NOWApplicationResource(Resource, UserMixin):
             raise NotFound('No identity record for this application guid.')
 
         if now_application_identity.now_application_id and not original:
-            application = now_application_identity.core_now_application
+            application = now_application_identity.now_application
             application.imported_to_core = True
         else:
             application = transmogrify_now(now_application_identity)
@@ -51,6 +50,6 @@ class NOWApplicationResource(Resource, UserMixin):
         if now_application_identity.now_application_id is None:
             raise NotImplemented('this would cause transmogrify and save, not yet')
         data = request.json
-        print(data)
         now_application_identity.now_application.deep_update_from_dict(data)
+
         return now_application_identity.now_application

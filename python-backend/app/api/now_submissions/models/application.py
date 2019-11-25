@@ -227,6 +227,9 @@ class Application(Base):
     @classmethod
     def find_by_now_application_guid(cls, now_application_guid):
         cls.validate_guid(now_application_guid)
+
+        from app.api.now_applications.models.now_application_identity import NOWApplicationIdentity
+
         now_identity = NOWApplicationIdentity.query.filter_by(
             now_application_guid=now_application_guid).first()
         if not now_identity:

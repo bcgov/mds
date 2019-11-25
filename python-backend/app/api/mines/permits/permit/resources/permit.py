@@ -47,7 +47,6 @@ class PermitListResource(Resource, UserMixin):
     parser.add_argument('uploadedFiles', type=list, location='json', store_missing=False)
 
     @api.doc(params={'mine_guid': 'mine_guid to filter on'})
-    @requires_role_view_all
     @api.marshal_with(PERMIT_MODEL, envelope='records', code=200)
     def get(self, mine_guid):
         results = Permit.find_by_mine_guid(mine_guid)

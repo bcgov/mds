@@ -11,10 +11,17 @@ from app.api.utils.models_mixins import AuditMixin, Base
 from app.extensions import db
 from geoalchemy2 import Geometry
 
+from app.api.now_applications.models.activity_detail.activity_detail_base import ActivityDetailBase
+from sqlalchemy.dialects.postgresql import UUID
+
 
 class CoreConverter(ModelConverter):
     SQLA_TYPE_MAPPING = ModelConverter.SQLA_TYPE_MAPPING.copy()
-    SQLA_TYPE_MAPPING.update({Geometry: fields.String, sa.Numeric: fields.Number})
+    SQLA_TYPE_MAPPING.update({
+        Geometry: fields.String,
+        sa.Numeric: fields.Number,
+                                                 # UUID: fields.String
+    })
 
 
 # class BaseMeta:
@@ -47,7 +54,10 @@ def setup_schema(Base, session):
 
                     schema_class_name = "%sSchema" % class_.__name__
 
-                    schema_class = type(schema_class_name, (ModelSchema, ), {"Meta": Meta})
+                    class ModelSchema2(ModelSchema):
+                        activity_type_code = fields.String(dump_only=True)
+
+                    schema_class = type(schema_class_name, (ModelSchema2, ), {"Meta": Meta})
 
                     setattr(class_, "_schema", schema_class)
                     print(f'created {class_}')
@@ -59,5 +69,5 @@ def setup_schema(Base, session):
 
 # TODO: finish this and resolve errors now_application/activity_detail_base.activity_type_code to all for programatic generation of schema
 # TODO: add call to model method to execute post_generation of schema.
-# event.listen(mapper, "after_configured", setup_schema(Base, db.session))
+event.listen(mapper, "after_configured", setup_schema(Base, db.session))
 # Base.metadata.create_all(db.engine.connect()) # i think this is not used

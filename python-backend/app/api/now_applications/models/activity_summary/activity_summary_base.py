@@ -5,6 +5,7 @@ from app.api.utils.models_mixins import AuditMixin, Base
 from app.extensions import db
 
 from app.api.now_applications.models.activity_summary.activity_type import ActivityType
+from app.api.now_applications.models.now_application import NOWApplication
 
 
 class ActivitySummaryBase(AuditMixin, Base):
