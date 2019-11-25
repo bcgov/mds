@@ -10,6 +10,7 @@ TABLES = [
     'application',
     'application_nda',
     'contact',
+    'client',
     'existing_placer_activity_xref',
     'exp_access_activity',
     'exp_surface_drill_activity',
@@ -1157,6 +1158,8 @@ def ETL_MMS_NOW_schema(connection, tables):
         print(f'    under_exp_surface_activity:{etl.nrows(under_exp_surface_activity_detail)}')
         etl.appenddb(under_exp_new_activity_detail, connection, 'under_exp_new_activity', schema='mms_now_submissions', commit=False)
         print(f'    under_exp_new_activity:{etl.nrows(under_exp_new_activity_detail)}')
+        etl.appenddb(exploration_surface_drill_activity_detail, connection, 'exp_surface_drill_activity', schema='mms_now_submissions', commit=False)
+        print(f'    exp_surface_drill_activity:{etl.nrows(exploration_surface_drill_activity_detail)}')
         etl.appenddb(application_nda, connection, 'application_nda', schema='mms_now_submissions', commit=False)
         print(f'    application_nda:{etl.nrows(application_nda)}')
         etl.appenddb(placer_activity_detail, connection, 'placer_activity', schema='mms_now_submissions', commit=False)
