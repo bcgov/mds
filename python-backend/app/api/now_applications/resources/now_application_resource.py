@@ -41,6 +41,10 @@ class NOWApplicationResource(Resource, UserMixin):
 
         return application
 
+    @api.doc(
+        description=
+        'Updates a now application and nested objects, this endpoint is not idempotent, nested objects without primary keys will be treated as new objects.'
+    )
     @api.marshal_with(NOW_APPLICATION_MODEL, code=200)
     def put(self, application_guid):
         now_application_identity = NOWApplicationIdentity.find_by_guid(application_guid)
