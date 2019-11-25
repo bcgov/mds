@@ -10,7 +10,7 @@ from app.api.now_applications.models.activity_summary.activity_summary_base impo
 
 class ExplorationAccess(ActivitySummaryBase):
     __mapper_args__ = {
-        'polymorphic_identity': 'exploration_access',  ## type code
+        'polymorphic_identity': 'exploration_access', ## type code
     }
 
     ## NO TABLE FOR THIS TYPE

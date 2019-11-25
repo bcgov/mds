@@ -6,7 +6,7 @@ from app.api.mines.permits.permit.models.permit_status_code import PermitStatusC
 from app.extensions import api
 from app.api.utils.access_decorators import requires_role_view_all
 from app.api.utils.resources_mixins import UserMixin
-from app.api.mines.permits.response_models import PERMIT_STATUS_CODE_MODEL
+from app.api.mines.response_models import PERMIT_STATUS_CODE_MODEL
 
 
 class PermitStatusCodeResource(Resource, UserMixin):
