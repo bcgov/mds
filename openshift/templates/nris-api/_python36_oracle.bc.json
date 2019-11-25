@@ -133,7 +133,7 @@
         ],
         "runPolicy": "SerialLatestOnly",
         "source": {
-          "contextDir": "docker-images/python-36-oracle",
+          "contextDir": "openshift/docker-images/python-36-oracle",
           "type": "Binary"
         },
         "strategy": {
