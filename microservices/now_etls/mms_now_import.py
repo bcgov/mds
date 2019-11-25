@@ -368,7 +368,7 @@ def ETL_MMS_NOW_schema(connection, tables):
 
         exploration_surface_drill_activity_detail = etl.fromdb(
             connection,
-            f'SELECT * from MMS_NOW_Submissions.exp_access_activity'
+            f'SELECT * from MMS_NOW_Submissions.exp_surface_drill_activity'
         )
         
         exploration_surface_drill_activity_detail = etl.cutout(exploration_surface_drill_activity_detail, 'messageid', 'id')
