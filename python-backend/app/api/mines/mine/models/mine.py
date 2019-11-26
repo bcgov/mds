@@ -39,10 +39,8 @@ class Mine(AuditMixin, Base):
     # Relationships
 
     #Almost always used and 1:1, so these are joined
-    mine_status = db.relationship('MineStatus',
-                                  backref='mine',
-                                  order_by='desc(MineStatus.update_timestamp)',
-                                  lazy='joined')
+    mine_status = db.relationship(
+        'MineStatus', backref='mine', order_by='desc(MineStatus.update_timestamp)', lazy='joined')
     mine_tailings_storage_facilities = db.relationship(
         'MineTailingsStorageFacility',
         backref='mine',
@@ -50,10 +48,8 @@ class Mine(AuditMixin, Base):
         lazy='joined')
 
     #Almost always used, but faster to use selectin to load related data
-    mine_permit = db.relationship('Permit',
-                                  backref='mine',
-                                  order_by='desc(Permit.create_timestamp)',
-                                  lazy='selectin')
+    mine_permit = db.relationship(
+        'Permit', backref='mine', order_by='desc(Permit.create_timestamp)', lazy='selectin')
     mine_type = db.relationship(
         'MineType',
         backref='mine',
