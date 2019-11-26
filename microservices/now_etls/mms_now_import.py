@@ -1000,8 +1000,9 @@ def ETL_MMS_NOW_schema(connection, tables):
         proposed_placer_activity_detail = etl.cat(proposed_placer_activity_detail, proposed_placer_activity_9)
 
         # Turn the proposed placer activity and existing placer activity into a single table.
+        prop_placer_numrows = etl.nrows(proposed_placer_activity_detail)
         proposed_placer_activity_detail = etl.addrownumbers(proposed_placer_activity_detail, start=1, field='placeractivityid')
-        existing_placer_activity_detail = etl.addrownumbers(existing_placer_activity_detail, start=etl.nrows(proposed_placer_activity_detail)+1, field='placeractivityid')
+        existing_placer_activity_detail = etl.addrownumbers(existing_placer_activity_detail, start=prop_placer_numrows+1, field='placeractivityid')
         placer_activity_detail = etl.cat(proposed_placer_activity_detail, existing_placer_activity_detail)
         # Remove the messageid since it is not how the placer is linked to the application.
         placer_activity_detail = etl.cutout(placer_activity_detail, 'messageid')
@@ -1165,7 +1166,7 @@ def ETL_MMS_NOW_schema(connection, tables):
         etl.appenddb(placer_activity_detail, connection, 'placer_activity', schema='mms_now_submissions', commit=False)
         print(f'    placer_activity:{etl.nrows(placer_activity_detail)}')
         etl.appenddb(proposed_placer_activity_xref, connection, 'proposed_placer_activity_xref', schema='mms_now_submissions', commit=False)
-        print(f'    proposed_placer_activity_xref:{etl.nrows(proposed_placer_activity_xref)}')
+        print(f'    proposed_placer_activity_xref:{prop_placer_numrows}')
         etl.appenddb(existing_placer_activity_xref, connection, 'existing_placer_activity_xref', schema='mms_now_submissions', commit=False)
         print(f'    existing_placer_activity_xref:{etl.nrows(existing_placer_activity_xref)}')
         etl.appenddb(clients, connection, 'client', schema='mms_now_submissions', commit=False)
