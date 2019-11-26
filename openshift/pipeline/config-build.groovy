@@ -46,7 +46,7 @@ app {
                 [
                     'file':'openshift/templates/document-manager/docman.bc.json',
                     'params':[
-                            'NAME':"mds-docman-api",
+                            'NAME':"mds-docman-backend",
                             'SUFFIX': "${app.build.suffix}",
                             'VERSION':"${app.build.version}",
                             'SOURCE_CONTEXT_DIR': "services/document-manager/backend",
@@ -66,7 +66,7 @@ app {
                 [
                     'file':'openshift/templates/nris-api/_python36_oracle.bc.json',
                     'params':[
-                            'NAME':"mds-nris-api",
+                            'NAME':"mds-nris-backend",
                             'SUFFIX': "${app.build.suffix}",
                             'VERSION':"${app.build.version}",
                             'SOURCE_CONTEXT_DIR': "services/nris-api/backend",
@@ -110,7 +110,7 @@ app {
                 [
                         'file':'openshift/templates/_nodejs.bc.json',
                         'params':[
-                            'NAME':"mds-minespace-web",
+                            'NAME':"mds-frontend-public",
                             'SUFFIX': "${app.build.suffix}",
                             'APPLICATION_SUFFIX': "-${app.build.env.id}",
                             'BASE_PATH': "/${app.git.changeId}",
