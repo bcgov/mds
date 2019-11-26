@@ -36,7 +36,7 @@ app {
                 [
                     'file':'openshift/templates/_python36.bc.json',
                     'params':[
-                            'NAME':"mds-core-api",
+                            'NAME':"mds-python-backend",
                             'SUFFIX': "${app.build.suffix}",
                             'VERSION':"${app.build.version}",
                             'SOURCE_CONTEXT_DIR': "services/core-api",
@@ -96,7 +96,7 @@ app {
                 [
                         'file':'openshift/templates/_nodejs.bc.json',
                         'params':[
-                            'NAME':"mds-core-web",
+                            'NAME':"mds-frontend",
                             'SUFFIX': "${app.build.suffix}",
                             'APPLICATION_SUFFIX': "-${app.build.env.id}",
                             'BASE_PATH': "/${app.git.changeId}",
