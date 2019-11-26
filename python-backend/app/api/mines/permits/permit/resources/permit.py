@@ -12,7 +12,7 @@ from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointme
 from app.extensions import api, db
 from app.api.utils.access_decorators import requires_role_view_all, requires_role_edit_permit
 from app.api.utils.resources_mixins import UserMixin
-from app.api.mines.permits.response_models import PERMIT_MODEL
+from app.api.mines.response_models import PERMIT_MODEL
 
 
 class PermitListResource(Resource, UserMixin):

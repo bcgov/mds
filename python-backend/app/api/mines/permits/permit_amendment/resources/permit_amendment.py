@@ -1,5 +1,5 @@
 from datetime import datetime
-from flask_restplus import Resource, reqparse
+from flask_restplus import Resource, reqparse, inputs
 from flask import current_app
 from werkzeug.exceptions import BadRequest, InternalServerError, NotFound
 
@@ -11,7 +11,7 @@ from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointme
 from app.extensions import api
 from app.api.utils.access_decorators import requires_role_view_all, requires_role_edit_permit, requires_role_mine_admin
 from app.api.utils.resources_mixins import UserMixin
-from app.api.mines.permits.response_models import PERMIT_AMENDMENT_MODEL
+from app.api.mines.response_models import PERMIT_AMENDMENT_MODEL
 
 
 class PermitAmendmentListResource(Resource, UserMixin):
@@ -23,19 +23,13 @@ class PermitAmendmentListResource(Resource, UserMixin):
         help='GUID of the party that is the permittee for this permit.',
         location='json')
     parser.add_argument(
-        'received_date',
-        location='json',
-        type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None,
-        store_missing=False)
+        'received_date', location='json', type=inputs.datetime_from_iso8601, store_missing=False)
     parser.add_argument(
-        'issue_date',
-        location='json',
-        type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None,
-        store_missing=False)
+        'issue_date', location='json', type=inputs.datetime_from_iso8601, store_missing=False)
     parser.add_argument(
         'authorization_end_date',
         location='json',
-        type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None,
+        type=inputs.datetime_from_iso8601,
         store_missing=False)
     parser.add_argument(
         'permit_amendment_type_code', type=str, location='json', store_missing=False)
@@ -127,17 +121,17 @@ class PermitAmendmentResource(Resource, UserMixin):
     parser.add_argument(
         'received_date',
         location='json',
-        type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None,
+        type=lambda x: inputs.datetime_from_iso8601(x) if x else None,
         store_missing=False)
     parser.add_argument(
         'issue_date',
         location='json',
-        type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None,
+        type=lambda x: inputs.datetime_from_iso8601(x) if x else None,
         store_missing=False)
     parser.add_argument(
         'authorization_end_date',
         location='json',
-        type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None,
+        type=lambda x: inputs.datetime_from_iso8601(x) if x else None,
         store_missing=False)
     parser.add_argument(
         'permit_amendment_type_code', type=str, location='json', store_missing=False)

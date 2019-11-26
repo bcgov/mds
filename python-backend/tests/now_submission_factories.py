@@ -48,6 +48,7 @@ class NOWSubmissionFactory(BaseFactory):
         mine = factory.SubFactory('tests.factories.MineFactory', minimal=True)
         applicant = factory.SubFactory('tests.factories.NOWClientFactory')
         submitter = factory.SubFactory('tests.factories.NOWClientFactory')
+        #now_application_identity = factory.SubFactory('tests.factories.NOWApplicationIdentityFactory')
         all_activites = factory.Trait(
             blasting_operation=True,
             state_of_land=True,

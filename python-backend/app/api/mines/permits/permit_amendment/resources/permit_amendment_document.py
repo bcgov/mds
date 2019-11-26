@@ -20,7 +20,7 @@ from app.extensions import api, db
 from app.api.utils.access_decorators import requires_role_edit_permit
 from app.api.utils.resources_mixins import UserMixin
 
-from app.api.mines.permits.response_models import PERMIT_AMENDMENT_DOCUMENT_MODEL
+from app.api.mines.response_models import PERMIT_AMENDMENT_DOCUMENT_MODEL
 
 
 class PermitAmendmentDocumentListResource(Resource, UserMixin):
