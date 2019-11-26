@@ -36,7 +36,7 @@ class NOWApplicationIdentity(Base, AuditMixin):
 
     @hybrid_property
     def mms_now_submission(self):
-        return MMSApplication.query.filter_by(mms_cid=self.mms_cid).first
+        return MMSApplication.query.filter_by(mms_cid=self.mms_cid).first()
 
     @classmethod
     def find_by_guid(cls, _id):
