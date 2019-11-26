@@ -1,13 +1,17 @@
+# import json
+
+from uuid import UUID as py_uuid
 from flask import current_app
 
 import sqlalchemy as sa
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import scoped_session, sessionmaker, mapper
 from sqlalchemy import event
+from sqlalchemy.inspection import inspect
 from sqlalchemy.orm.attributes import InstrumentedAttribute
-from marshmallow import fields
+from marshmallow import fields, pprint
 from marshmallow_sqlalchemy import ModelConversionError, ModelSchema, ModelConverter
-from app.api.utils.models_mixins import AuditMixin, Base
+from app.api.utils.models_mixins import AuditMixin, Base as BaseModel
 from app.extensions import db
 from geoalchemy2 import Geometry
 
@@ -20,15 +24,32 @@ class CoreConverter(ModelConverter):
     SQLA_TYPE_MAPPING.update({
         Geometry: fields.String,
         sa.Numeric: fields.Number,
-                                                 # UUID: fields.String
+                                                 # py_uuid: fields.UUID
     })
 
+
+# class UUIDEncoder(json.JSONEncoder):
+#     def default(self, obj):
+#         raise Exception('found python uuid.UUID')
+#         if isinstance(obj, UUID):
+#             # if the obj is uuid, we simply return the value of uuid
+#             return obj.hex
+#         return json.JSONEncoder.default(self, obj)
 
 # class BaseMeta:
 #     ordered = True
 #     sqla_session = db.session
 #     model_converter = CoreConverter
 #     exclude = ('create_user', 'create_timestamp', 'update_user', 'update_timestamp')
+
+# class SmartNested(fields.Nested):
+#     def serialize(self, attr, obj, accessor=None):
+#         print(attr + str(obj.__dict__))
+#         if attr not in obj.__dict__:
+#             pprint(f'new {attr} ->' + str(obj.__class__))
+#         else:
+#             pprint(f'{attr} already loaded -> ' + str(obj.__class__))
+#         return super(SmartNested, self).serialize(attr, obj, accessor)
 
 
 def setup_schema(Base, session):
@@ -64,10 +85,29 @@ def setup_schema(Base, session):
                 except Exception as e:
                     raise e
 
+        for class_ in Base._decl_class_registry.values():
+            if hasattr(class_, "_schema"):
+                pprint(class_.__name__)
+                try:
+                    mapper = inspect(class_)
+
+                    for rel in mapper.relationships:
+                        pprint(rel.foreign_keys)
+                        if rel.property:
+                            pprint('  ' + rel.key)
+
+                            #raise Exception()
+                            class_._schema._declared_fields[rel.key] = fields.Nested(
+                                rel.entity.class_._schema, many=rel.uselist, dump_only=True)
+                            #exclude=[rel.backref.key] + [pk.name for pk in mapper.primary_keys])
+                except Exception as e:
+                    raise e
+
     return setup_schema_fn
 
 
 # TODO: finish this and resolve errors now_application/activity_detail_base.activity_type_code to all for programatic generation of schema
 # TODO: add call to model method to execute post_generation of schema.
-event.listen(mapper, "after_configured", setup_schema(Base, db.session))
+
+#event.listen(mapper, "after_configured", setup_schema(BaseModel, db.session))
 # Base.metadata.create_all(db.engine.connect()) # i think this is not used
