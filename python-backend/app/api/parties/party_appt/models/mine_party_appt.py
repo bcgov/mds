@@ -42,14 +42,14 @@ class MinePartyAppointment(AuditMixin, Base):
     # Relationships
     party = db.relationship('Party', lazy='joined')
 
-    mine_party_appt_type = db.relationship('MinePartyAppointmentType',
-                                           backref='mine_party_appt',
-                                           order_by='desc(MinePartyAppointmentType.display_order)',
-                                           lazy='joined')
+    mine_party_appt_type = db.relationship(
+        'MinePartyAppointmentType',
+        backref='mine_party_appt',
+        order_by='desc(MinePartyAppointmentType.display_order)',
+        lazy='joined')
 
-    documents = db.relationship('MineDocument',
-                                lazy='joined',
-                                secondary='mine_party_appt_document_xref')
+    documents = db.relationship(
+        'MineDocument', lazy='joined', secondary='mine_party_appt_document_xref')
 
     def assign_related_guid(self, related_guid):
         if self.mine_party_appt_type_code == "EOR":
@@ -105,6 +105,24 @@ class MinePartyAppointment(AuditMixin, Base):
     @classmethod
     def find_by_permit_guid(cls, _id):
         return cls.find_by(permit_guid=_id)
+
+
+# given a permmit id, and an issue date of a new amendment, order appointment start_dates
+# return the start_dates surrounding the new amendment and use to set correct end dates of pervious or historical appointments
+
+    @classmethod
+    def find_appointment_end_dates(cls, _id, date=None):
+        start_dates = [datetime.date(date)]
+        appointments = cls.find_by(permit_guid=_id)
+
+        for appointment in appointments:
+            start_dates.append(appointment.start_date)
+
+        ordered_dates = sorted(start_dates, reverse=True)
+        position = ordered_dates.index(datetime.date(date))
+        new_end_dates = [ordered_dates[position - 1], ordered_dates[position + 1]]
+
+        return new_end_dates
 
     @classmethod
     def find_parties_by_mine_party_appt_type_code(cls, code):
@@ -167,13 +185,14 @@ class MinePartyAppointment(AuditMixin, Base):
                processed_by=processed_by,
                permit_guid=None,
                add_to_session=True):
-        mpa = cls(mine_guid=mine_guid,
-                  party_guid=party_guid,
-                  permit_guid=permit_guid,
-                  mine_party_appt_type_code="PMT",
-                  start_date=start_date,
-                  end_date=end_date,
-                  processed_by=processed_by)
+        mpa = cls(
+            mine_guid=mine_guid,
+            party_guid=party_guid,
+            permit_guid=permit_guid,
+            mine_party_appt_type_code="PMT",
+            start_date=start_date,
+            end_date=end_date,
+            processed_by=processed_by)
         if add_to_session:
             mpa.save(commit=False)
         return mpa
