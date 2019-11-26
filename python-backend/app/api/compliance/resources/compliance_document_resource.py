@@ -17,12 +17,13 @@ def DOWNLOAD_TOKEN(token_guid):
 
 
 class ComplianceDocumentTokenResource(Resource, UserMixin ):
-    @api.doc(description='Issues a one-time token for access to a document without auth headers.')
+    @api.doc(description='Issues a one-time token for access to a document without auth headers.',
+        params={'file_name': 'The file name for the download being requested.'})
     @api.marshal_with(DOWNLOAD_TOKEN_MODEL, code=200)
     @requires_role_view_all
     def get(self, inspection_id, attachment_id):
-        documenturl = f'https://a100.gov.bc.ca/int/cvis/nris/attachments/{inspection_id}/attachment/{attachment_id}'
-        filename = 'test.pdf'
+        documenturl = f'https://api.nrs.gov.bc.ca/nrisws-api/v1/attachments/{inspection_id}/attachment/{attachment_id}'
+        filename = request.args.get('file_name', '')
 
         token_guid = uuid.uuid4()
         cache.set(
@@ -45,4 +46,4 @@ class ComplianceDocumentResource(Resource, UserMixin ):
         if not document_info:
             raise BadRequest('Valid token requred for download')
 
-        return NRISDownloadService.download(document_info["documenturl"])
+        return NRISDownloadService.download(document_info["documenturl"], document_info["filename"])

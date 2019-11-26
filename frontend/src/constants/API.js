@@ -162,7 +162,7 @@ export const NOTICE_OF_WORK_ACTIVITY_TYPE_OPTIONS = "/now-applications/activity-
 export const MINE_PARTY_APPOINTMENT_DOCUMENTS = (mineGuid, minePartyAppointmentGuid) =>
   `/mines/${mineGuid}/party-appts/${minePartyAppointmentGuid}/documents`;
 
-export const NRIS_DOCUMENT_TOKEN_GET_URL = (externalId, inspectionId) =>
-  `/compliance/inspection/${inspectionId}/document/${externalId}/token`;
+export const NRIS_DOCUMENT_TOKEN_GET_URL = (externalId, inspectionId, file_name) =>
+  `/compliance/inspection/${inspectionId}/document/${externalId}/token?file_name=${file_name}`;
 export const NRIS_DOCUMENT_FILE_GET_URL = (externalId, inspectionId, token) =>
   `/compliance/inspection/${inspectionId}/document/${externalId}?${queryString.stringify(token)}`;

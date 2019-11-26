@@ -25,7 +25,7 @@ export const downloadNRISDocument = (externalId, inspectionId, fileName) => {
 
   CustomAxios()
     .get(
-      `${ENVIRONMENT.apiUrl + NRIS_DOCUMENT_TOKEN_GET_URL(externalId, inspectionId)}`,
+      `${ENVIRONMENT.apiUrl + NRIS_DOCUMENT_TOKEN_GET_URL(externalId, inspectionId, fileName)}`,
       createRequestHeader()
     )
     .then((response) => {

@@ -1,14 +1,27 @@
 import requests
+import urllib3
 import json
 from flask import Response, stream_with_context, request, current_app
 from requests.auth import HTTPBasicAuth
 from app.extensions import cache
 from app.api.constants import NRIS_REMOTE_TOKEN, TIMEOUT_60_MINUTES
 
+def _change_default_cipher():
+    requests.packages.urllib3.disable_warnings()
+    requests.packages.urllib3.util.ssl_.DEFAULT_CIPHERS += 'HIGH:!DH:!aNULL'
+    try:
+        requests.packages.urllib3.contrib.pyopenssl.DEFAULT_SSL_CIPHER_LIST += 'HIGH:!DH:!aNULL'
+    except AttributeError:
+        # no pyopenssl support used / needed / available
+        pass
+
 def _get_NRIS_token():
     result = cache.get(NRIS_REMOTE_TOKEN)
 
     if result is None:
+        
+        _change_default_cipher()
+
         params = {
             'disableDeveloperFilter': 'true',
             'grant_type': 'client_credentials',
@@ -28,14 +41,15 @@ def _get_NRIS_token():
                 raise
 
             result = resp.json().get('access_token')
-            cache.set(NRIS_TOKEN, result, timeout=TIMEOUT_12_HOURS)
+            cache.set(NRIS_REMOTE_TOKEN, result, timeout=TIMEOUT_60_MINUTES)
 
     return result
 
 class NRISDownloadService():
-    def download(documenturl):
-        return "OK"
+    def download(file_url, file_name):
         _nris_token = _get_NRIS_token()
+
+        _change_default_cipher()
 
         file_download_req = requests.get(
             f'{file_url}', stream=True, headers={"Authorization": f"Bearer {_nris_token}"})
@@ -45,5 +59,5 @@ class NRISDownloadService():
 
         file_download_resp.headers['Content-Type'] = file_download_req.headers['Content-Type']
         file_download_resp.headers[
-            'Content-Disposition'] = f'attachment; filename="{file_info_body["filename"]}"'
+            'Content-Disposition'] = f'attachment; filename="{file_name}"'
         return file_download_resp
