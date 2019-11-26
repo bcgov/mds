@@ -57,7 +57,7 @@ const fileColumns = [
     title: "Type",
     dataIndex: "fileType",
     key: "fileType",
-    sorter: (a, b) => a.file_name.localeCompare(b.fileType),
+    sorter: (a, b) => a.fileType.localeCompare(b.fileType),
     render: (text, record) => <div title="Type">{record.fileType}</div>,
   },
 ];

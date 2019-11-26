@@ -12,6 +12,7 @@ exports[`ComplianceOrdersTable renders properly 1`] = `
       "Inspector Name",
       "Order Status",
       "Due Date",
+      "Documents",
     ]
   }
 >
@@ -61,6 +62,12 @@ exports[`ComplianceOrdersTable renders properly 1`] = `
           "render": [Function],
           "sorter": [Function],
           "title": "Due Date",
+        },
+        Object {
+          "dataIndex": "documents",
+          "key": "documents_key",
+          "render": [Function],
+          "title": "Documents",
         },
       ]
     }
