@@ -55,7 +55,9 @@ class NOWApplicationResource(Resource, UserMixin):
             raise NotFound('No identity record for this application guid.')
 
         if now_application_identity.now_application_id is None:
-            raise NotImplemented('this would cause transmogrify and save, not yet')
+            raise NotImplemented(
+                'This application has not been imported. Please import an application before making changes.'
+            )
         data = request.json
         now_application_identity.now_application.deep_update_from_dict(data)
 
