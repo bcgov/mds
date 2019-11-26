@@ -119,11 +119,6 @@ class MMSApplication(Base):
         return '<MMSApplication %r>' % self.id
 
     @classmethod
-    def find_by_application_guid(cls, guid):
-        cls.validate_guid(guid)
-        return NOWApplicationIdentity.find_by_guid(guid).mms_now_submission
-
-    @classmethod
     def find_by_mms_cid(cls, mms_cid):
         if not mms_cid:
             return
