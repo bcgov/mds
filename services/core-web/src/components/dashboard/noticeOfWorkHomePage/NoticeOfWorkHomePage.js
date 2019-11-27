@@ -32,7 +32,7 @@ const propTypes = {
 export class NoticeOfWorkHomePage extends Component {
   params = queryString.parse(this.props.location.search);
 
-  listQueryParams = ["mine_region"];
+  listQueryParams = ["submissions_only"];
 
   splitListParams = formatQueryListParams("split", this.listQueryParams);
 
@@ -124,7 +124,6 @@ export class NoticeOfWorkHomePage extends Component {
         ...this.state.params,
         page,
         per_page,
-        submissions_only,
       })
     );
   };
