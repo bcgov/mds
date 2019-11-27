@@ -32,7 +32,7 @@ const propTypes = {
 export class NoticeOfWorkHomePage extends Component {
   params = queryString.parse(this.props.location.search);
 
-  listQueryParams = ["submissions_only"];
+  listQueryParams = [];
 
   splitListParams = formatQueryListParams("split", this.listQueryParams);
 
