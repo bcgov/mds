@@ -29,32 +29,32 @@ ifeq ($(KC_HOST_ENTRY),)
 	@echo "++ Adding required keycloak entry to hosts file:"
 	@echo "127.0.0.1       localhost       keycloak" | sudo tee -a /etc/hosts;
 endif
-	@[ ! -f ./frontend/.env ] || cp ./frontend/.env ./frontend/.env-last-backup
-	@cp ./frontend/.env-dev-local-keycloak ./frontend/.env
-	@[ ! -f "./frontend/src/constants/environment.js" ] || cp ./frontend/src/constants/environment.js ./frontend/src/constants/environment.js-last-backup
-	@cp ./frontend/src/constants/environment.js-dev-local-keycloak ./frontend/src/constants/environment.js
-	@[ ! -f "./python-backend/.env" ] || cp ./python-backend/.env ./python-backend/.env-last-backup
-	@cp ./python-backend/.env-dev-local-keycloak ./python-backend/.env
-	@[ ! -f "./microservices/nris_api/backend/.env" ] || cp ./microservices/nris_api/backend/.env ./microservices/nris_api/backend/.env-last-backup
-	@cp ./microservices/nris_api/backend/.env-dev-local-keycloak ./microservices/nris_api/backend/.env
+	@[ ! -f ./services/core-web/.env ] || cp ./services/core-web/.env ./services/core-web/.env-last-backup
+	@cp ./services/core-web/.env-dev-local-keycloak ./services/core-web/.env
+	@[ ! -f "./services/core-web/src/constants/environment.js" ] || cp ./services/core-web/src/constants/environment.js ./services/core-web/src/constants/environment.js-last-backup
+	@cp ./services/core-web/src/constants/environment.js-dev-local-keycloak ./services/core-web/src/constants/environment.js
+	@[ ! -f "./services/core-api/.env" ] || cp ./services/core-api/.env ./services/core-api/.env-last-backup
+	@cp ./services/core-api/.env-dev-local-keycloak ./services/core-api/.env
+	@[ ! -f "./services/nris-api/backend/.env" ] || cp ./services/nris-api/backend/.env ./services/nris-api/backend/.env-last-backup
+	@cp ./services/nris-api/backend/.env-dev-local-keycloak ./services/nris-api/backend/.env
 else
 	@if "$(KC_HOST_ENTRY)" GTR "" (echo "hosts entry already exists") else (echo 127.0.0.1        localhost       keycloak >> C:\Windows\System32\drivers\etc\hosts)
-	@if exist .\frontend\.env copy /Y .\frontend\.env .\frontend\.env-last-backup
-	@copy /Y .\frontend\.env-dev-local-keycloak .\frontend\.env
-	@if exist .\frontend\src\constants\environment.js copy /Y .\frontend\src\constants\environment.js .\frontend\src\constants\environment.js-last-backup
-	@copy /Y .\frontend\src\constants\environment.js-dev-local-keycloak .\frontend\src\constants\environment.js
-	@if exist .\python-backend\.env copy .\python-backend\.env .\python-backend\.env-last-backup
-	@copy /Y .\python-backend\.env-dev-local-keycloak .\python-backend\.env
-	@if exist .\microservices\nris_api/backend\.env copy .\microservices\nris_api\backend\.env .\microservices\nris_api\backend\.env-last-backup
-	@copy /Y .\microservices\nris_api\backend\.env-dev-local-keycloak .\microservices\nris_api\backend\.env
+	@if exist .\services\core-web\.env copy /Y .\services\core-web\.env .\services\core-web\.env-last-backup
+	@copy /Y .\services\core-web\.env-dev-local-keycloak .\services\core-web\.env
+	@if exist .\services\core-web\src\constants\environment.js copy /Y .\services\core-web\src\constants\environment.js .\services\core-web\src\constants\environment.js-last-backup
+	@copy /Y .\services\core-web\src\constants\environment.js-dev-local-keycloak .\services\core-web\src\constants\environment.js
+	@if exist .\services\core-api\.env copy .\services\core-api\.env .\services\core-api\.env-last-backup
+	@copy /Y .\services\core-api\.env-dev-local-keycloak .\services\core-api\.env
+	@if exist .\services\nris-api/backend\.env copy .\services\nris-api\backend\.env .\services\nris-api\backend\.env-last-backup
+	@copy /Y .\services\nris-api\backend\.env-dev-local-keycloak .\services\nris-api\backend\.env
 endif
 	@echo "+"
 
 restore-last-env:
 	@echo "+\n++ Restoring your environment from last backup...\n+"
-	@cp ./frontend/.env-last-backup ./frontend/.env
-	@cp ./frontend/src/constants/environment.js ./frontend/src/constants/environment.js-last-backup
-	@cp ./python-backend/.env-last-backup ./python-backend/.env
+	@cp ./services/core-web/.env-last-backup ./services/core-web/.env
+	@cp ./services/core-web/src/constants/environment.js ./services/core-web/src/constants/environment.js-last-backup
+	@cp ./services/core-api/.env-last-backup ./services/core-api/.env
 
 pause-30:
 	@echo "+\n++ Pausing 30 seconds\n+"
@@ -109,8 +109,8 @@ database-run:
 webpack-frontend:
 	@echo "+\n++ Removing frontend docker container and building local dev version ...\n+"
 	@docker-compose rm -f -v -s frontend
-	@rm -rf ./frontend/node_modules/
-	@cd ./frontend/; npm i; npm run serve; cd ..
+	@rm -rf ./services/core-web/node_modules/
+	@cd ./services/core-web/; npm i; npm run serve; cd ..
 
 frontend-build:
 	@echo "+\n++ Performing frontend build ...\n+"
