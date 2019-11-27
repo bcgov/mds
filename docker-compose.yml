@@ -67,12 +67,12 @@ services:
     restart: always
     container_name: mds_backend
     build:
-      context: python-backend
-    env_file: python-backend/.env
+      context: services/core-api
+    env_file: services/core-api/.env
     ports:
       - 5000:5000
     volumes:
-      - ./python-backend/:/app/
+      - ./services/core-api/:/app/
     depends_on:
       - flyway
       - redis
@@ -97,15 +97,15 @@ services:
     restart: always
     container_name: mds_frontend
     build:
-      context: frontend
+      context: services/core-web
     command: ["npm", "run", "serve"]
     volumes:
-      - ./frontend/src/:/app/src/
+      - ./services/core-web/src/:/app/src/
     ports:
       - 3000:3000
     depends_on:
       - backend
-    env_file: ./frontend/.env
+    env_file: ./services/core-web/.env
     networks:
       - mds
 
@@ -114,16 +114,16 @@ services:
     restart: always
     container_name: nris_python
     build:
-      context: microservices/nris_api/backend
+      context: services/nris-api/backend
     ports:
       - 5500:5500
     volumes:
-      - ./microservices/nris_api/backend/:/app/
+      - ./services/nris-api/backend/:/app/
     depends_on:
       - flyway
       - redis
       - nris_migrate
-    env_file: ./microservices/nris_api/backend/.env
+    env_file: ./services/nris-api/backend/.env
     networks:
       - mds
 
@@ -131,14 +131,14 @@ services:
     restart: on-failure
     container_name: nris_migrate
     build:
-      context: microservices/nris_api/backend
+      context: services/nris-api/backend
     volumes:
-      - ./microservices/nris_api/backend/:/app/
+      - ./services/nris-api/backend/:/app/
     depends_on:
       - flyway
       - redis
     command: flask db upgrade
-    env_file: ./microservices/nris_api/backend/.env
+    env_file: ./services/nris-api/backend/.env
     networks:
       - mds
   ####################### DOCUMENT_MANAGER_BACKEND Definition #######################
@@ -146,16 +146,16 @@ services:
     restart: always
     container_name: document_manager_backend
     build:
-      context: microservices/document_manager/backend
+      context: services/document-manager/backend
     ports:
       - 5001:5001
     volumes:
-      - ./microservices/document_manager/backend/:/app/
+      - ./services/document-manager/backend/:/app/
     depends_on:
       - flyway
       - redis
       - document_manager_migrate
-    env_file: ./microservices/document_manager/backend/.env
+    env_file: ./services/document-manager/backend/.env
     networks:
       - mds
 
@@ -163,14 +163,14 @@ services:
     restart: on-failure
     container_name: document_manager_migrate
     build:
-      context: microservices/document_manager/backend
+      context: services/document-manager/backend
     volumes:
-      - ./microservices/document_manager/backend/:/app/
+      - ./services/document-manager/backend/:/app/
     depends_on:
       - flyway
       - redis
     command: flask db upgrade
-    env_file: ./microservices/document_manager/backend/.env
+    env_file: ./services/document-manager/backend/.env
     networks:
       - mds
 
