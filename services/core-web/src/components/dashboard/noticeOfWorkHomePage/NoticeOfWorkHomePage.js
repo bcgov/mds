@@ -1,5 +1,3 @@
-/* eslint-disable */
-
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
@@ -191,7 +189,4 @@ const mapDispatchToProps = (dispatch) =>
 
 NoticeOfWorkHomePage.propTypes = propTypes;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(NoticeOfWorkHomePage);
+export default connect(mapStateToProps, mapDispatchToProps)(NoticeOfWorkHomePage);
