@@ -6,8 +6,6 @@ from sqlalchemy.ext.associationproxy import association_proxy
 from app.extensions import db
 from app.api.utils.models_mixins import Base
 
-from app.api.now_applications.models.now_application_identity import NOWApplicationIdentity
-
 
 class MMSApplication(Base):
     __tablename__ = "application"
