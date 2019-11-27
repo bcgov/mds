@@ -17,7 +17,7 @@ from app.api.constants import *
 
 class Permit(AuditMixin, Base):
     __tablename__ = 'permit'
-    _edit_groups = [PERMIT_EDIT_GROUP, MINE_EDIT_GROUP]
+    _edit_groups = [PERMIT_EDIT_GROUP]
     _edit_key = PERMIT_EDIT_GROUP
 
     permit_id = db.Column(db.Integer, primary_key=True)
