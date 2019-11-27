@@ -6,8 +6,6 @@ from sqlalchemy.ext.associationproxy import association_proxy
 from app.extensions import db
 from app.api.utils.models_mixins import Base
 
-from app.api.now_applications.models.now_application_identity import NOWApplicationIdentity
-
 
 class MMSApplication(Base):
     __tablename__ = "application"
@@ -117,14 +115,6 @@ class MMSApplication(Base):
 
     def __repr__(self):
         return '<MMSApplication %r>' % self.id
-
-    @classmethod
-    def find_by_application_guid(cls, guid):
-        cls.validate_guid(guid)
-        mms_cid = NOWApplicationIdentity.filter_by(application_guid=guid).first().mms_cid
-        if not mms_cid:
-            raise NotFound('Could not find a mms application for this id')
-        return cls.find_by_mms_cid(mms_cid)
 
     @classmethod
     def find_by_mms_cid(cls, mms_cid):
