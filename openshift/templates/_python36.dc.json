@@ -351,7 +351,7 @@
                     "name": "NRIS_REMOTE_CLIENT_ID",
                     "valueFrom": {
                       "secretKeyRef": {
-                        "name": "${MDS_NRIS_SECRET}",
+                        "name": "${MDS_NRIS_API_SECRET}",
                         "key": "user-name"
                       }
                     }
@@ -360,7 +360,7 @@
                     "name": "NRIS_REMOTE_CLIENT_SECRET",
                     "valueFrom": {
                       "secretKeyRef": {
-                        "name": "${MDS_NRIS_SECRET}",
+                        "name": "${MDS_NRIS_API_SECRET}",
                         "key": "password"
                       }
                     }
@@ -369,7 +369,7 @@
                     "name": "NRIS_REMOTE_TOKEN_URL",
                     "valueFrom": {
                       "secretKeyRef": {
-                        "name": "${MDS_NRIS_SECRET}",
+                        "name": "${MDS_NRIS_API_SECRET}",
                         "key": "token-url"
                       }
                     }
