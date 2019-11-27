@@ -189,7 +189,4 @@ const mapDispatchToProps = (dispatch) =>
 
 NoticeOfWorkHomePage.propTypes = propTypes;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(NoticeOfWorkHomePage);
+export default connect(mapStateToProps, mapDispatchToProps)(NoticeOfWorkHomePage);

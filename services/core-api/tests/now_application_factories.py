@@ -359,7 +359,7 @@ class UndergroundExplorationDetailFactory(ActivityDetailBaseFactory):
 
 class NOWApplicationFactory(BaseFactory):
     class Meta:
-        model = app_models.NOWApplication\
+        model = app_models.NOWApplication
 
     now_application_id = factory.Sequence(lambda n: n)
 
@@ -379,7 +379,6 @@ class NOWApplicationFactory(BaseFactory):
     blasting_operation = factory.RelatedFactory(BlastingOperationFactory, 'now_application')
     state_of_land = factory.RelatedFactory(StateOfLandFactory, 'now_application')
 
-    # Activities
     camps = factory.RelatedFactory(CampFactory, 'now_application')
     cut_lines_polarization_survey = factory.RelatedFactory(CutLinesPolarizationSurveyFactory,
                                                            'now_application')
@@ -402,12 +401,12 @@ class NOWApplicationIdentityFactory(BaseFactory):
 
     class Params:
         mine = factory.SubFactory('tests.factories.MineFactory', minimal=True)
-        now_application = factory.SubFactory(
-            'tests.now_application_factories.NOWApplicationFactory')
-        now_submission = factory.SubFactory('tests.now_submission_factories.NOWSubmissionFactory')
 
     now_application_guid = GUID
-    mine_guid = factory.SelfAttribute('mine.mine_guid')
     now_application_id = factory.SelfAttribute('now_application.now_application_id')
     messageid = factory.SelfAttribute('now_submission.messageid')
     mms_cid = factory.Sequence(lambda n: n)
+    mine_guid = factory.SelfAttribute('mine.mine_guid')
+
+    now_application = factory.SubFactory('tests.now_application_factories.NOWApplicationFactory')
+    now_submission = factory.SubFactory('tests.now_submission_factories.NOWSubmissionFactory')

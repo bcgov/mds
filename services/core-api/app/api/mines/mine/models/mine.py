@@ -13,6 +13,7 @@ from app.api.utils.models_mixins import AuditMixin, Base
 # This breaks micro-service architecture and is done
 # for search performance until search can be refactored
 from app.api.mines.permits.permit.models.permit import Permit
+from app.api.constants import *
 
 # NOTE: Be careful about relationships defined in the mine model. lazy='joined' will cause the relationship
 # to be joined and loaded immediately, so that data will load even when it may not be needed. Setting
@@ -22,6 +23,8 @@ from app.api.mines.permits.permit.models.permit import Permit
 
 class Mine(AuditMixin, Base):
     __tablename__ = 'mine'
+    _edit_key = MINE_EDIT_GROUP
+
     mine_guid = db.Column(UUID(as_uuid=True), primary_key=True, server_default=FetchedValue())
     mine_no = db.Column(db.String(10))
     mine_name = db.Column(db.String(60), nullable=False)
@@ -39,10 +42,8 @@ class Mine(AuditMixin, Base):
     # Relationships
 
     #Almost always used and 1:1, so these are joined
-    mine_status = db.relationship('MineStatus',
-                                  backref='mine',
-                                  order_by='desc(MineStatus.update_timestamp)',
-                                  lazy='joined')
+    mine_status = db.relationship(
+        'MineStatus', backref='mine', order_by='desc(MineStatus.update_timestamp)', lazy='joined')
     mine_tailings_storage_facilities = db.relationship(
         'MineTailingsStorageFacility',
         backref='mine',
@@ -50,10 +51,8 @@ class Mine(AuditMixin, Base):
         lazy='joined')
 
     #Almost always used, but faster to use selectin to load related data
-    mine_permit = db.relationship('Permit',
-                                  backref='mine',
-                                  order_by='desc(Permit.create_timestamp)',
-                                  lazy='selectin')
+    mine_permit = db.relationship(
+        'Permit', backref='mine', order_by='desc(Permit.create_timestamp)', lazy='selectin')
     mine_type = db.relationship(
         'MineType',
         backref='mine',

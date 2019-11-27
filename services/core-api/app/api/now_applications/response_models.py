@@ -11,6 +11,7 @@ class Date(fields.Raw):
     def format(self, value):
         return value.strftime("%Y-%m-%d") if value else None
 
+
 NOW_APPLICATION_EQUIPMENT = api.model(
     'NOWEquipment',
     {
@@ -22,6 +23,7 @@ NOW_APPLICATION_EQUIPMENT = api.model(
 
 NOW_APPLICATION_ACTIVITY_DETAIL_BASE = api.model('NOWApplicationActivityDetailBase',
     {
+        'activity_detail_id': fields.Integer,
         'activity_type_description': fields.String,
         'disturbed_area': fields.Fixed,
         'timber_volume': fields.Fixed,
@@ -52,8 +54,8 @@ NOW_APPLICATION_ACTIVITY_SUMMARY_BASE = api.model(
 NOW_APPLICATION_CAMP = api.inherit(
     'NOWApplicationCamp', NOW_APPLICATION_ACTIVITY_SUMMARY_BASE, {
         'camp_name': fields.String,
-        'camp_number_people': fields.Fixed,
-        'camp_number_structures': fields.Fixed,
+        'camp_number_people': fields.String,
+        'camp_number_structures': fields.String,
         'has_fuel_stored': fields.Boolean,
         'has_fuel_stored_in_bulk': fields.Boolean,
         'has_fuel_stored_in_barrels': fields.Boolean,
@@ -222,8 +224,10 @@ NOW_APPLICATION_MODEL = api.model(
         'submitted_date': Date,
         'received_date': Date,
         'now_application_guid': fields.String,
-        'latitude': fields.Float,
-        'longitude': fields.Float,
+        'latitude': fields.Fixed(description='fixed precision decimal.',
+                                 decimals=7),
+        'longitude': fields.Fixed(description='fixed precision decimal.',
+                                  decimals=7),
         'property_name': fields.String,
         'tenure_number': fields.String,
         'description_of_land': fields.String,
