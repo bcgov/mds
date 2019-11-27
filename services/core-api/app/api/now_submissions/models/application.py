@@ -25,41 +25,43 @@ from app.api.now_submissions.models.existing_settling_pond_xref import ExistingS
 from app.api.now_submissions.models.proposed_placer_activity_xref import ProposedPlacerActivityXref
 from app.api.now_submissions.models.proposed_settling_pond_xref import ProposedSettlingPondXref
 
-from app.api.now_applications.models.now_application_identity import NOWApplicationIdentity
-
 
 class Application(Base):
     __tablename__ = "application"
     __table_args__ = {"schema": "now_submissions"}
     messageid = db.Column(db.Integer, primary_key=True)
-    now_application_identity = db.relationship('NOWApplicationIdentity', lazy='joined', uselist=False,
-        primaryjoin=messageid==NOWApplicationIdentity.messageid, foreign_keys=messageid)
+    now_application_identity = db.relationship(
+        'NOWApplicationIdentity',
+        lazy='joined',
+        uselist=False,
+        primaryjoin='Application.messageid==NOWApplicationIdentity.messageid',
+        foreign_keys=messageid)
     application_guid = db.Column(UUID(as_uuid=True), nullable=False)
     now_application_guid = association_proxy('now_application_identity', 'now_application_guid')
     mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine.mine_guid'))
     #mine_guid = association_proxy('now_application_identity', 'mine_guid')
-    trackingnumber = db.Column(db.Integer)  
+    trackingnumber = db.Column(db.Integer)
     applicationtype = db.Column(db.String)
-    status = db.Column(db.String)  
-    submitteddate = db.Column(db.DateTime)  
-    receiveddate = db.Column(db.DateTime)  
+    status = db.Column(db.String)
+    submitteddate = db.Column(db.DateTime)
+    receiveddate = db.Column(db.DateTime)
     applicantclientid = db.Column(db.Integer, db.ForeignKey('now_submissions.client.clientid'))
     submitterclientid = db.Column(db.Integer, db.ForeignKey('now_submissions.client.clientid'))
-    noticeofworktype = db.Column(db.String)  
+    noticeofworktype = db.Column(db.String)
     typeofpermit = db.Column(db.String)
     typeofapplication = db.Column(db.String)
-    minenumber = db.Column(db.String) 
-    latitude = db.Column(db.Numeric(9, 7))  
-    longitude = db.Column(db.Numeric(11, 7))  
-    nameofproperty = db.Column(db.String)  
-    tenurenumbers = db.Column(db.String)  
+    minenumber = db.Column(db.String)
+    latitude = db.Column(db.Numeric(9, 7))
+    longitude = db.Column(db.Numeric(11, 7))
+    nameofproperty = db.Column(db.String)
+    tenurenumbers = db.Column(db.String)
     crowngrantlotnumbers = db.Column(db.String)
     sitedirections = db.Column(db.String)
     firstaidequipmentonsite = db.Column(db.String)
     firstaidcertlevel = db.Column(db.String)
     descexplorationprogram = db.Column(db.String)
-    proposedstartdate = db.Column(db.DateTime)  
-    proposedenddate = db.Column(db.DateTime)  
+    proposedstartdate = db.Column(db.DateTime)
+    proposedenddate = db.Column(db.DateTime)
     yearroundseasonal = db.Column(db.String)
     landcommunitywatershed = db.Column(db.String)
     landprivate = db.Column(db.String)
@@ -225,7 +227,11 @@ class Application(Base):
     @classmethod
     def find_by_now_application_guid(cls, now_application_guid):
         cls.validate_guid(now_application_guid)
-        now_identity = NOWApplicationIdentity.query.filter_by(now_application_guid=now_application_guid).first()
+
+        from app.api.now_applications.models.now_application_identity import NOWApplicationIdentity
+
+        now_identity = NOWApplicationIdentity.query.filter_by(
+            now_application_guid=now_application_guid).first()
         if not now_identity:
             raise NotFound('Could not find a nros/vbcbc application for this id')
         return cls.find_by_messageid(now_identity.messageid)
@@ -239,6 +245,4 @@ class Application(Base):
         try:
             uuid.UUID(str(now_application_guid), version=4)
         except ValueError:
-            raise AssertionError(msg)
-
             raise AssertionError(msg)

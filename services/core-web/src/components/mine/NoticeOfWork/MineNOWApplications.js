@@ -26,6 +26,7 @@ const propTypes = {
 
 export class MineNOWApplications extends Component {
   params = queryString.parse(this.props.location.search);
+
   splitListParams = formatQueryListParams("split", this.listQueryParams);
 
   state = {
