@@ -18,7 +18,7 @@ from app.api.constants import *
 
 class PermitAmendment(AuditMixin, Base):
     __tablename__ = 'permit_amendment'
-    _edit_groups = [PERMIT_EDIT_GROUP, PERMIT_AMENDMENT_EDIT_GROUP, MINE_EDIT_GROUP]
+    _edit_groups = [PERMIT_EDIT_GROUP, PERMIT_AMENDMENT_EDIT_GROUP]
     _edit_key = PERMIT_AMENDMENT_EDIT_GROUP
 
     permit_amendment_id = db.Column(db.Integer, primary_key=True)
