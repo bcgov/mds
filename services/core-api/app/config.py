@@ -85,6 +85,11 @@ class Config(object):
     VFCBC_CLIENT_SECRET = os.environ.get('VFCBC_CLIENT_SECRET', None)
     VFCBC_CLIENT_ID = os.environ.get('VFCBC_CLIENT_ID', None)
 
+    # NRIS Remote API
+    NRIS_REMOTE_CLIENT_SECRET = os.environ.get('NRIS_REMOTE_CLIENT_SECRET', None)
+    NRIS_REMOTE_CLIENT_ID = os.environ.get('NRIS_REMOTE_CLIENT_ID', None)
+    NRIS_REMOTE_TOKEN_URL = os.environ.get('NRIS_REMOTE_TOKEN_URL', None)
+
 
 class TestConfig(Config):
     # The following configs are for testing purposes and all variables and keys are generated using dummy data.

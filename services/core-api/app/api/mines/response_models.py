@@ -364,6 +364,16 @@ MINE_REPORT_DEFINITION_MODEL = api.model(
     }
 )
 
+ORDER_DOCUMENT_MODEL = api.model(
+    'MineComplianceOrderDocument', {
+        "external_id": fields.String,
+        "document_date": fields.DateTime,
+        "document_type": fields.String,
+        "file_name": fields.String,
+        "comment": fields.String
+    }
+)
+
 ORDER_MODEL = api.model(
     'MineComplianceOrder', {
         "order_no": fields.String,
@@ -373,6 +383,7 @@ ORDER_MODEL = api.model(
         "due_date": fields.Date,
         "order_status": fields.String,
         "overdue": fields.Boolean,
+        "documents": fields.List(fields.Nested(ORDER_DOCUMENT_MODEL))
     })
 
 COMPLAINCE_AGGREGATION_MODEL = api.model(
