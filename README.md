@@ -22,4 +22,4 @@ Please read the [How to develop](USAGE.md).
 Code released under the [Apache License, Version 2.0](LICENSE.md).
 
 ## Testing Thanks
-Thanks to BrowserStack for Testing Tool support via OpenSource Licensing ![BrowserStack](browserstack-logo-white-small.png)
+Thanks to BrowserStack for Testing Tool support via OpenSource Licensing ![BrowserStack](docs/browserstack-logo-white-small.png)
