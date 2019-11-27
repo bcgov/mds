@@ -1,0 +1,233 @@
+{
+  "kind": "Template",
+  "apiVersion": "v1",
+  "metadata": {
+    "name": "mds-python-oracle-bc",
+    "creationTimestamp": null
+  },
+  "parameters": [
+    {
+      "name": "NAME",
+      "displayName": "Name",
+      "description": "A suffix appended to all objects",
+      "required": true
+    },
+    {
+      "name": "SUFFIX",
+      "displayName": "Name Suffix",
+      "description": "A suffix appended to all objects",
+      "required": true
+    },
+    {
+      "name": "VERSION",
+      "required": true
+    },
+    {
+      "name": "SOURCE_CONTEXT_DIR",
+      "required": true
+    },
+    {
+      "name": "SOURCE_REPOSITORY_URL",
+      "required": true
+    },
+    {
+      "name": "SOURCE_REPOSITORY_REF",
+      "required": false,
+      "value": "master"
+    }
+  ],
+  "objects": [
+    {
+      "kind": "ImageStream",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "rhscl-python-36-rhel7",
+        "creationTimestamp": null,
+        "annotations": {
+          "description": "Python Base Image"
+        },
+        "labels": {
+          "shared": "true"
+        }
+      },
+      "spec": {
+        "lookupPolicy": {
+          "local": false
+        },
+        "tags": [
+          {
+            "name": "3.6.1-36",
+            "annotations": null,
+            "from": {
+              "kind": "DockerImage",
+              "name": "registry.access.redhat.com/rhscl/python-36-rhel7:1-36"
+            },
+            "importPolicy": {},
+            "referencePolicy": {
+              "type": "Local"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "kind": "ImageStream",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "${NAME}-base",
+        "creationTimestamp": null,
+        "annotations": {
+          "description": "Python Runtime Image"
+        },
+        "labels": {
+          "shared": "true"
+        }
+      },
+      "spec": {
+        "lookupPolicy": {
+          "local": false
+        }
+      }
+    },
+    {
+      "kind": "ImageStream",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "${NAME}",
+        "creationTimestamp": null,
+        "labels": {
+          "shared": "true"
+        },
+        "annotations": {
+          "description": "Keeps track of changes in the application image"
+        }
+      },
+      "spec": {
+        "lookupPolicy": {
+          "local": false
+        },
+        "tags": []
+      }
+    },
+    {
+      "kind": "BuildConfig",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "${NAME}-base${SUFFIX}",
+        "creationTimestamp": null,
+        "labels": {},
+        "annotations": {}
+      },
+      "spec": {
+        "completionDeadlineSeconds": 1440,
+        "successfulBuildsHistoryLimit": 3,
+        "failedBuildsHistoryLimit": 3,
+        "triggers": [
+          {
+            "type": "ImageChange",
+            "imageChange": {}
+          },
+          {
+            "type": "ConfigChange"
+          }
+        ],
+        "runPolicy": "SerialLatestOnly",
+        "source": {
+          "contextDir": "openshift/docker-images/python-36-oracle",
+          "type": "Binary"
+        },
+        "strategy": {
+          "type": "Docker",
+          "dockerStrategy": {
+            "from": {
+              "kind": "ImageStreamTag",
+              "name": "rhscl-python-36-rhel7:3.6.1-36"
+            },
+            "env": []
+          }
+        },
+        "output": {
+          "to": {
+            "kind": "ImageStreamTag",
+            "name": "${NAME}-base:${VERSION}"
+          }
+        },
+        "resources": {
+          "limits": {
+            "cpu": "500m",
+            "memory": "2Gi"
+          },
+          "requests": {
+            "cpu": "250m",
+            "memory": "1Gi"
+          }
+        },
+        "postCommit": {},
+        "nodeSelector": null
+      }
+    },
+    {
+      "kind": "BuildConfig",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "${NAME}${SUFFIX}",
+        "creationTimestamp": null,
+        "annotations": {
+          "description": "Defines how to build the application"
+        }
+      },
+      "spec": {
+        "completionDeadlineSeconds": 600,
+        "triggers": [
+          {
+            "type": "ImageChange"
+          },
+          {
+            "type": "ConfigChange"
+          }
+        ],
+        "runPolicy": "SerialLatestOnly",
+        "source": {
+          "type": "Git",
+          "git": {
+            "uri": "${SOURCE_REPOSITORY_URL}",
+            "ref": "${SOURCE_REPOSITORY_REF}"
+          },
+          "contextDir": "${SOURCE_CONTEXT_DIR}"
+        },
+        "strategy": {
+          "type": "Source",
+          "sourceStrategy": {
+            "from": {
+              "kind": "ImageStreamTag",
+              "name": "${NAME}-base:${VERSION}"
+            },
+            "env": [
+              {
+                "name": "BUILD_LOGLEVEL",
+                "value": "2"
+              }
+            ]
+          }
+        },
+        "output": {
+          "to": {
+            "kind": "ImageStreamTag",
+            "name": "${NAME}:${VERSION}"
+          }
+        },
+        "resources": {
+          "limits": {
+            "cpu": "200m",
+            "memory": "3Gi"
+          },
+          "requests": {
+            "cpu": "100m",
+            "memory": "2Gi"
+          }
+        },
+        "nodeSelector": null
+      }
+    }
+  ]
+}

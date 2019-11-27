@@ -1,1 +1,0 @@
-../../microservices/document_manager/backend/requirements.txt
