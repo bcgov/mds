@@ -1,10 +1,9 @@
 💾 Backend:
-  - python-backend/**/*
+  - services/core-api/**/*
 
 💻 Frontend:
-  - frontend/**/*
-  - frontend-public/**/*
+  - services/core-web/**/*
+  - services/minespace-web/**/*
 
 🏭 CI/CD:
   - openshift/**/*
-  - pipeline/**/*

@@ -1,1 +1,0 @@
-../../microservices/nris_api/backend/requirements.txt
