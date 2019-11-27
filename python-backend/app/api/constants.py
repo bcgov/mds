@@ -91,3 +91,5 @@ TIMEOUT_12_HOURS = 43140
 #Redis Map Cache
 MINE_MAP_CACHE = "mds:mines:map-json"
 MINE_DETAILS_CSV = "mds:mines:summary-csv"
+
+SCHEMA_EDIT_GROUPS = {'now_applications': "NOW_APPLICATIONS"}

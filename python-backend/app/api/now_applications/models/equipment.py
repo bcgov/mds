@@ -4,10 +4,12 @@ from sqlalchemy.ext.associationproxy import association_proxy
 
 from app.api.utils.models_mixins import AuditMixin, Base
 from app.extensions import db
+from app.api.constants import SCHEMA_EDIT_GROUPS as EG
 
 
 class Equipment(AuditMixin, Base):
     __tablename__ = "equipment"
+    __edit_groups__ = [EG['now_applications']]
 
     equipment_id = db.Column(db.Integer, primary_key=True, server_default=FetchedValue())
     description = db.Column(db.String)

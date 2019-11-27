@@ -9,10 +9,13 @@ from app.extensions import db
 
 from app.api.now_submissions.models.application import Application
 from app.api.mms_now_submissions.models.application import MMSApplication
+from app.api.constants import SCHEMA_EDIT_GROUPS as EG
 
 
 class NOWApplicationIdentity(Base, AuditMixin):
     __tablename__ = "now_application_identity"
+    __edit_groups__ = [EG['now_applications']]
+    __edit_key__ = EG['now_applications']
 
     now_application_guid = db.Column(UUID(as_uuid=True), primary_key=True)
     now_application_id = db.Column(db.Integer, db.ForeignKey('now_application.now_application_id'))

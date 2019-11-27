@@ -55,7 +55,7 @@ class DictLoadingError(Exception):
 
 class Base(db.Model):
     __abstract__ = True
-
+    __edit_groups__ = []
     # Set default query_class on base class.
     query_class = UserBoundQuery
 
@@ -71,7 +71,7 @@ class Base(db.Model):
     def marshmallow_post_generate():
         pass
 
-    def deep_update_from_dict(self, data_dict, depth=0):
+    def deep_update_from_dict(self, data_dict, depth=0, __edit_key__=None):
         """
         This function takes a python dictionary and assigns all present key value pairs to 
         the attributes of this SQLALchemy model (self). If the value type is a dict, update 
@@ -86,29 +86,47 @@ class Base(db.Model):
         Return: None
         Side-Effect: Self attributes have been overwritten by values in data_dict, matched on key, recursivly.
         """
-
         current_app.logger.debug(depth * '-' + f'updating{self}')
         model = inspect(self.__class__)
         editable_columns = [
             c for c in model.columns if c.name not in [pk.name for pk in model.primary_key]
         ]
+        if not __edit_key__:
+            __edit_key__ = self.__edit_key__
+
         assert isinstance(data_dict, dict)
         for k, v in data_dict.items():
             current_app.logger.debug(depth * '>' + f'{type(v)}-{k}')
             if isinstance(v, dict):
+                rel = getattr(self.__class__, k)
+                rel_class = rel.property.entity.class_
+                if __edit_key__ not in rel_class.__edit_groups__:
+                    current_app.logger.debug(
+                        f'COMBOBREAKER!!! {__edit_key__} not in {rel_class} edit groups {rel_class.__edit_groups__}'
+                    )
+                    continue
                 current_app.logger.debug(depth * ' ' + f'recursivly updating {k}')
-                getattr(self, k).deep_update_from_dict(v, depth=(depth + 1))
+                getattr(self, k).deep_update_from_dict(
+                    v, depth=(depth + 1), __edit_key__=__edit_key__)
 
             if isinstance(v, list):
+                rel = getattr(self.__class__, k) #SA.relationship definition
                 obj_list = getattr(self, k)
+                obj_list_class = rel.property.entity.class_
+
+                if __edit_key__ not in obj_list_class.__edit_groups__:
+                    #not part of same edit group, skip
+                    current_app.logger.debug(
+                        f'COMBOBREAKER!!! {__edit_key__} not in {rel_class} edit groups {rel_class.__edit_groups__}'
+                    )
+                    continue
+
                 current_app.logger.debug(depth * ' ' + f'updating child list = {obj_list}')
                 for i in v:
                     current_app.logger.debug(depth * ' ' + str(i))
                     #get list of pk column names for child class
-                    rel = getattr(self.__class__, k) #SA.relationship definition
-                    obj_list_class = rel.property.entity.class_
                     pk_names = [pk.name for pk in inspect(obj_list_class).primary_key]
-                                                     #ASSUMPTION: lists of object, never lists of anything else.
+                    #ASSUMPTION: lists of object, never lists of anything else.
 
                     #see if object list holds a child that has the same values as the json dict for all primary key values of class
                     existing_obj = next((x for x in obj_list if all(
@@ -119,12 +137,14 @@ class Base(db.Model):
                             depth * ' ' +
                             f'found existing{existing_obj} with pks {[(pk_name,getattr(existing_obj, pk_name)) for pk_name in pk_names]}'
                         )
-                        existing_obj.deep_update_from_dict(i, depth=(depth + 1))
+                        existing_obj.deep_update_from_dict(
+                            i, depth=(depth + 1), __edit_key__=__edit_key__)
                     elif False:
                         #TODO check if this item is in the db, but not in json set should be removed
                         #unsure if we want this behaviour, could be done in second pass as well
                         pass
                     else:
+                        raise Exception("Marshmallow schemas don't exist yet, it will soon ")
                         #THIS BLOCK MAKES PUT NON-IDEMPOTENT... may need to be reconsidered
                         #no existing obj with PK match, so create  item in related list
                         current_app.logger.debug(depth * ' ' + f'add new item to {self}.{k}')

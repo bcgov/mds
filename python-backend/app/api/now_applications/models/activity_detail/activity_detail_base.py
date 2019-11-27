@@ -11,10 +11,12 @@ from app.api.utils.models_mixins import AuditMixin, Base
 
 from app.api.now_applications.models.activity_detail.activity_summary_detail_xref import *
 from app.api.now_applications.models.activity_summary.activity_summary_base import ActivitySummaryBase
+from app.api.constants import SCHEMA_EDIT_GROUPS as EG
 
 
 class ActivityDetailBase(AuditMixin, Base):
     __tablename__ = 'activity_detail'
+    __edit_groups__ = [EG['now_applications']]
 
     activity_detail_id = db.Column(db.Integer, primary_key=True, server_default=FetchedValue())
     activity_type_description = db.Column(db.String)

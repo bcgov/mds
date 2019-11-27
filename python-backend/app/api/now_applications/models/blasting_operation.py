@@ -6,10 +6,12 @@ from app.api.utils.models_mixins import AuditMixin, Base
 from app.extensions import db
 
 from app.api.now_applications.models.activity_summary.activity_summary_base import ActivitySummaryBase
+from app.api.constants import SCHEMA_EDIT_GROUPS as EG
 
 
 class BlastingOperation(Base):
     __tablename__ = "blasting_operation"
+    __edit_groups__ = [EG['now_applications']]
 
     now_application_id = db.Column(
         db.Integer, db.ForeignKey('now_application.now_application_id'), primary_key=True)

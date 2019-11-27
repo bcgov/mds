@@ -4,10 +4,12 @@ from sqlalchemy.ext.associationproxy import association_proxy
 
 from app.api.utils.models_mixins import Base
 from app.extensions import db
+from app.api.constants import SCHEMA_EDIT_GROUPS as EG
 
 
 class StateOfLand(Base):
     __tablename__ = "state_of_land"
+    __edit_groups__ = [EG['now_applications']]
 
     now_application_id = db.Column(
         db.Integer, db.ForeignKey('now_application.now_application_id'), primary_key=True)
