@@ -47,7 +47,7 @@ routes.items.each {Map route ->
     String routeProtocol = ((route.spec?.tls!=null)?'https':'http')
     String routeUrl = "${routeProtocol}://${route.spec.host}${route.spec.path?:'/'}"
     println "Running ZAP for ${routeUrl}"
-    OpenShiftHelper._exec(["bash", '-c', "oc process -f openshift/zap.pod.json -l 'zap=${route.metadata.name}' -l 'app-name=${config.app.name}' -p 'APP=${appLabel}' -p 'NAME=zap-${route.metadata.name}' -p 'URL=${routeUrl}' --namespace=${toolsNamespace} |  oc replace -f - --namespace=${toolsNamespace} --force=true"], new StringBuffer(), new StringBuffer())
+    OpenShiftHelper._exec(["bash", '-c', "oc process -f openshift/templates/zap.pod.json -l 'zap=${route.metadata.name}' -l 'app-name=${config.app.name}' -p 'APP=${appLabel}' -p 'NAME=zap-${route.metadata.name}' -p 'URL=${routeUrl}' --namespace=${toolsNamespace} |  oc replace -f - --namespace=${toolsNamespace} --force=true"], new StringBuffer(), new StringBuffer())
 }
 
 int inprogress=1
