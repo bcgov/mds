@@ -10,13 +10,13 @@ from app.extensions import db
 from .now_application_type import NOWApplicationType
 from .now_application_status import NOWApplicationStatus
 from .now_application_identity import NOWApplicationIdentity
-from app.api.constants import SCHEMA_EDIT_GROUPS as EG
+from app.api.constants import *
 
 
 class NOWApplication(Base, AuditMixin):
     __tablename__ = "now_application"
-    __edit_groups__ = [EG['now_applications']]
-    __edit_key__ = EG['now_applications']
+    _edit_groups = [NOW_APPLICATION_EDIT_GROUP]
+    _edit_key = NOW_APPLICATION_EDIT_GROUP
 
     now_application_id = db.Column(db.Integer, primary_key=True, server_default=FetchedValue())
     now_application_identity = db.relationship(

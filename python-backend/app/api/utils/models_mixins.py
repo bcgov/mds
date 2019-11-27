@@ -55,7 +55,7 @@ class DictLoadingError(Exception):
 
 class Base(db.Model):
     __abstract__ = True
-    __edit_groups__ = []
+    _edit_groups = []
     # Set default query_class on base class.
     query_class = UserBoundQuery
 
@@ -71,7 +71,7 @@ class Base(db.Model):
     def marshmallow_post_generate():
         pass
 
-    def deep_update_from_dict(self, data_dict, depth=0, __edit_key__=None):
+    def deep_update_from_dict(self, data_dict, depth=0, _edit_key=None):
         """
         This function takes a python dictionary and assigns all present key value pairs to 
         the attributes of this SQLALchemy model (self). If the value type is a dict, update 
@@ -91,33 +91,34 @@ class Base(db.Model):
         editable_columns = [
             c for c in model.columns if c.name not in [pk.name for pk in model.primary_key]
         ]
-        if not __edit_key__:
-            __edit_key__ = self.__edit_key__
-
+        if not _edit_key:
+            if not self._edit_key:
+                current_app.logger.warn(
+                    'Model._edit_key not set, no related models will be updated')
+            _edit_key = self._edit_key
         assert isinstance(data_dict, dict)
         for k, v in data_dict.items():
             current_app.logger.debug(depth * '>' + f'{type(v)}-{k}')
             if isinstance(v, dict):
                 rel = getattr(self.__class__, k)
                 rel_class = rel.property.entity.class_
-                if __edit_key__ not in rel_class.__edit_groups__:
+                if _edit_key not in rel_class._edit_groups:
                     current_app.logger.debug(
-                        f'COMBOBREAKER!!! {__edit_key__} not in {rel_class} edit groups {rel_class.__edit_groups__}'
+                        f'COMBOBREAKER!!! {_edit_key} not in {rel_class} edit groups {rel_class._edit_groups}'
                     )
                     continue
                 current_app.logger.debug(depth * ' ' + f'recursivly updating {k}')
-                getattr(self, k).deep_update_from_dict(
-                    v, depth=(depth + 1), __edit_key__=__edit_key__)
+                getattr(self, k).deep_update_from_dict(v, depth=(depth + 1), _edit_key=_edit_key)
 
             if isinstance(v, list):
                 rel = getattr(self.__class__, k) #SA.relationship definition
                 obj_list = getattr(self, k)
                 obj_list_class = rel.property.entity.class_
 
-                if __edit_key__ not in obj_list_class.__edit_groups__:
+                if _edit_key not in obj_list_class._edit_groups:
                     #not part of same edit group, skip
                     current_app.logger.debug(
-                        f'COMBOBREAKER!!! {__edit_key__} not in {rel_class} edit groups {rel_class.__edit_groups__}'
+                        f'COMBOBREAKER!!! {_edit_key} not in {obj_list_class} edit groups {obj_list_class._edit_groups}'
                     )
                     continue
 
@@ -138,7 +139,7 @@ class Base(db.Model):
                             f'found existing{existing_obj} with pks {[(pk_name,getattr(existing_obj, pk_name)) for pk_name in pk_names]}'
                         )
                         existing_obj.deep_update_from_dict(
-                            i, depth=(depth + 1), __edit_key__=__edit_key__)
+                            i, depth=(depth + 1), _edit_key=_edit_key)
                     elif False:
                         #TODO check if this item is in the db, but not in json set should be removed
                         #unsure if we want this behaviour, could be done in second pass as well

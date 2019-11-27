@@ -13,10 +13,14 @@ from app.api.mines.permits.permit_amendment.models.permit_amendment_document imp
 
 from . import permit_amendment_status_code, permit_amendment_type_code
 from app.api.utils.models_mixins import AuditMixin, Base
+from app.api.constants import *
 
 
 class PermitAmendment(AuditMixin, Base):
     __tablename__ = 'permit_amendment'
+    _edit_groups = [PERMIT_EDIT_GROUP, PERMIT_AMENDMENT_EDIT_GROUP, MINE_EDIT_GROUP]
+    _edit_key = PERMIT_AMENDMENT_EDIT_GROUP
+
     permit_amendment_id = db.Column(db.Integer, primary_key=True)
     permit_amendment_guid = db.Column(UUID(as_uuid=True), server_default=FetchedValue())
     permit_id = db.Column(db.Integer, db.ForeignKey('permit.permit_id'), nullable=False)

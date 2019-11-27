@@ -12,10 +12,14 @@ from app.api.mines.documents.models.mine_document import MineDocument
 from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
 
 from app.api.utils.models_mixins import AuditMixin, Base
+from app.api.constants import *
 
 
 class Permit(AuditMixin, Base):
     __tablename__ = 'permit'
+    _edit_groups = [PERMIT_EDIT_GROUP, MINE_EDIT_GROUP]
+    _edit_key = PERMIT_EDIT_GROUP
+
     permit_id = db.Column(db.Integer, primary_key=True)
     permit_guid = db.Column(UUID(as_uuid=True), server_default=FetchedValue())
     mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine.mine_guid'))

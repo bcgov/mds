@@ -60,6 +60,7 @@ def test_update_field_in_nested_item(db_session):
     assert mine.mine_permit[1].permit_no == new_permit_no
 
 
+@pytest.mark.xfail(reason='Global marshmallow schemas not implemented')
 def test_update_new_item_in_list(db_session):
     mine = MineFactory(mine_permit=5)
     permit = PermitFactory()
