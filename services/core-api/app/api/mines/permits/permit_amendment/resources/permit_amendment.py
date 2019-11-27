@@ -74,20 +74,16 @@ class PermitAmendmentListResource(Resource, UserMixin):
         current_app.logger.debug(new_end_dates)
 
         for permittee in permittees:
+            # check if the new appointment is older than the current appointment, if so create a new permittee appointment
             if permittee.start_date > datetime.date(permit_issue_date):
                 is_historical_permit = True
-            # elif permittee.start_date == new_end_dates[1]:
-            #     permittee.end_date = permit_issue_date #
-            #     permittee.save()
             else:
+                # if the amendment is the newest, change the end dates of the other appointments
                 position = new_end_dates.index(permittee.start_date)
                 if new_end_dates.index(permittee.start_date) == 0:
                     permittee.save()
-                elif new_end_dates.index(permittee.start_date) == len(new_end_dates) - 1:
-                    permittee.end_date = permit_issue_date
-                    permittee.save()
                 else:
-                    permittee.end_date = new_end_dates[position + 1]
+                    permittee.end_date = new_end_dates[position - 1]
                     permittee.save()
 
         permittee_start_date = permit_issue_date
