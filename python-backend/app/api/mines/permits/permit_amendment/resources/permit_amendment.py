@@ -63,25 +63,36 @@ class PermitAmendmentListResource(Resource, UserMixin):
             raise NotFound('Party not found')
 
         permittees = MinePartyAppointment.find_by_permit_guid(permit_guid)
+        if not permittees:
+            raise NotFound('Party appointments not found')
 
         permit_issue_date = data.get('issue_date')
         is_historical_permit = False
 
         new_end_dates = MinePartyAppointment.find_appointment_end_dates(
             permit_guid, permit_issue_date)
+        current_app.logger.debug(new_end_dates)
 
         for permittee in permittees:
             if permittee.start_date > datetime.date(permit_issue_date):
                 is_historical_permit = True
-            elif permittee.start_date == new_end_dates[1]:
-                permittee.end_date = permit_issue_date
-                permittee.save()
-            else:            # inactive old permittees
-                permittee.end_date = permit_issue_date
-                permittee.save()
+            # elif permittee.start_date == new_end_dates[1]:
+            #     permittee.end_date = permit_issue_date #
+            #     permittee.save()
+            else:
+                position = new_end_dates.index(permittee.start_date)
+                if new_end_dates.index(permittee.start_date) == 0:
+                    permittee.save()
+                elif new_end_dates.index(permittee.start_date) == len(new_end_dates) - 1:
+                    permittee.end_date = permit_issue_date
+                    permittee.save()
+                else:
+                    permittee.end_date = new_end_dates[position + 1]
+                    permittee.save()
 
         permittee_start_date = permit_issue_date
-        permittee_end_date = new_end_dates[0] if is_historical_permit else None
+        position = new_end_dates.index(datetime.date(permit_issue_date))
+        permittee_end_date = new_end_dates[position - 1] if is_historical_permit else None
 
         # create a new appointment, so every amendment is associated with a permittee
         new_permittee = MinePartyAppointment.create(permit.mine_guid,

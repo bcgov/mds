@@ -121,8 +121,8 @@ class MinePartyAppointment(AuditMixin, Base):
         ordered_dates = sorted(start_dates, reverse=True)
         position = ordered_dates.index(datetime.date(date))
         new_end_dates = [ordered_dates[position - 1], ordered_dates[position + 1]]
-
-        return new_end_dates
+        current_app.logger.debug(ordered_dates)
+        return ordered_dates
 
     @classmethod
     def find_parties_by_mine_party_appt_type_code(cls, code):
