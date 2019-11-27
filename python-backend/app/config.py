@@ -86,9 +86,9 @@ class Config(object):
     VFCBC_CLIENT_ID = os.environ.get('VFCBC_CLIENT_ID', None)
 
     # NRIS Remote API
-    NRIS_CLIENT_SECRET = os.environ.get('NRIS_CLIENT_SECRET', None)
-    NRIS_CLIENT_ID = os.environ.get('NRIS_CLIENT_ID', None)
-    NRIS_TOKEN_URL = os.environ.get('NRIS_TOKEN_URL', None)
+    NRIS_REMOTE_CLIENT_SECRET = os.environ.get('NRIS_REMOTE_CLIENT_SECRET', None)
+    NRIS_REMOTE_CLIENT_ID = os.environ.get('NRIS_REMOTE_CLIENT_ID', None)
+    NRIS_REMOTE_TOKEN_URL = os.environ.get('NRIS_REMOTE_TOKEN_URL', None)
 
 
 class TestConfig(Config):

@@ -27,14 +27,14 @@ def _get_NRIS_token():
             'grant_type': 'client_credentials',
             'scope': 'NRISWS.*'
         }
-        url = current_app.config['NRIS_TOKEN_URL']
+        url = current_app.config['NRIS_REMOTE_TOKEN_URL']
         if url is None:
             raise TypeError('Could not load the NRIS URL.')
         else:
             resp = requests.get(
                 url=url,
                 params=params,
-                auth=(current_app.config['NRIS_CLIENT_ID'], current_app.config['NRIS_CLIENT_SECRET']))
+                auth=(current_app.config['NRIS_REMOTE_CLIENT_ID'], current_app.config['NRIS_REMOTE_CLIENT_SECRET']))
             try:
                 resp.raise_for_status()
             except:
