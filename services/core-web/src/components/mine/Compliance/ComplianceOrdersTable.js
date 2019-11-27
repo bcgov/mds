@@ -8,6 +8,9 @@ import { COLOR } from "@/constants/styles";
 import CustomPropTypes from "@/customPropTypes";
 import NullScreen from "@/components/common/NullScreen";
 import TableLoadingWrapper from "@/components/common/wrappers/TableLoadingWrapper";
+import LinkButton from "@/components/common/LinkButton";
+import { formatDateTime } from "@/utils/helpers";
+import { downloadNRISDocument } from "@/utils/actionlessNetworkCalls";
 
 const propTypes = {
   filteredOrders: CustomPropTypes.complianceOrders,
@@ -21,6 +24,43 @@ const errorStyle = (isOverdue) => (isOverdue ? { color: errorRed } : {});
 const defaultProps = {
   filteredOrders: [],
 };
+
+const fileColumns = [
+  {
+    title: "File Name",
+    dataIndex: "fileName",
+    key: "fileName",
+    sorter: (a, b) => a.fileName.localeCompare(b.fileName),
+    render: (text, record) => (
+      <div title="File Name">
+        <div key={record.externalId}>
+          <LinkButton
+            key={record.externalId}
+            onClick={() =>
+              downloadNRISDocument(record.externalId, record.inspectionId, record.fileName)
+            }
+          >
+            {record.fileName}
+          </LinkButton>
+        </div>
+      </div>
+    ),
+  },
+  {
+    title: "Upload Date/Time",
+    dataIndex: "fileDate",
+    key: "fileDate",
+    sorter: (a, b) => (moment(a.fileDate) > moment(b.fileDate) ? -1 : 1),
+    render: (text, record) => <div title="Date">{formatDateTime(record.fileDate)}</div>,
+  },
+  {
+    title: "Type",
+    dataIndex: "fileType",
+    key: "fileType",
+    sorter: (a, b) => a.fileType.localeCompare(b.fileType),
+    render: (text, record) => <div title="Type">{record.fileType}</div>,
+  },
+];
 
 const columns = [
   {
@@ -97,7 +137,29 @@ const columns = [
     sorter: (a, b) => (moment(a.due_date) > moment(b.due_date) ? -1 : 1),
     defaultSortOrder: "descend",
   },
+  {
+    title: "Documents",
+    dataIndex: "documents",
+    key: "documents_key",
+    render: (text, record) => (
+      <Table
+        align="left"
+        pagination={false}
+        columns={fileColumns}
+        dataSource={record.documents.map((file) => transformFileRowData(file, record.report_no))}
+      />
+    ),
+  },
 ];
+
+const transformFileRowData = (file, inspectionId) => ({
+  key: file.external_id,
+  externalId: file.external_id,
+  inspectionId,
+  fileName: file.file_name,
+  fileDate: file.document_date,
+  fileType: file.document_type,
+});
 
 const transformRowData = (orders) =>
   orders.map((order) => ({
