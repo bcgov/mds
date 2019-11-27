@@ -74,6 +74,11 @@
       "value": "template.mds-vfcbc-client-service"
     },
     {
+      "name": "MDS_NRIS_API_SECRET",
+      "required": false,
+      "value": "template.mds-nris-secret"
+    },
+    {
       "name": "MDS_IDIR_SECRET",
       "required": false,
       "value": "template.mds-idir-secret"
@@ -484,33 +489,6 @@
                     "valueFrom": {
                       "secretKeyRef": {
                         "name": "${MDS_NROS_DOCUMENT_API_SECRET}",
-                        "key": "password"
-                      }
-                    }
-                  },
-                  {
-                    "name": "NRIS_TOKEN_URL",
-                    "valueFrom": {
-                      "secretKeyRef": {
-                        "name": "${MDS_NRIS_SECRET}",
-                        "key": "token-url"
-                      }
-                    }
-                  },
-                  {
-                    "name": "NRIS_CLIENT_ID",
-                    "valueFrom": {
-                      "secretKeyRef": {
-                        "name": "${MDS_NRIS_SECRET}",
-                        "key": "user-name"
-                      }
-                    }
-                  },
-                  {
-                    "name": "NRIS_CLIENT_SECRET",
-                    "valueFrom": {
-                      "secretKeyRef": {
-                        "name": "${MDS_NRIS_SECRET}",
                         "key": "password"
                       }
                     }
