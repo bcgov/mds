@@ -5,9 +5,9 @@ from petl import timeparser
 from datetime import datetime, time, timedelta
 
 SHARED_TABLES = {
+    'client': 'client',
     'application': 'application',
     'application_nda': 'application_nda',
-    'client': 'client',
     'contact': 'contact',
     'document': 'document',
     'document_nda': 'document_nda',
@@ -65,9 +65,7 @@ def ETL_MMS_NOW_schema(connection, tables, schema, system_name):
             if (source == 'application'):
                 # add originating source
                 table_plus_os = etl.addfield(current_table, 'originating_system', system_name)
-
                 table_plus_os_guid = join_mine_guids(connection, table_plus_os)
-
                 etl.appenddb(
                     table_plus_os_guid,
                     connection,

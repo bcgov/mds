@@ -1,0 +1,1 @@
+ALTER TABLE mms_now_submissions.application add column mmsnownumber character varying;

@@ -12,6 +12,11 @@ from app.api.utils.models_mixins import AuditMixin, Base
 # FIXME: Model import from outside of its namespace
 # This breaks micro-service architecture and is done
 # for search performance until search can be refactored
+<<<<<<< HEAD
+=======
+from app.api.mines.permits.permit.models.permit import Permit
+from app.api.constants import *
+>>>>>>> 367c7c20962c86b012679d8d026159f8a1bc5a9f
 
 # NOTE: Be careful about relationships defined in the mine model. lazy='joined' will cause the relationship
 # to be joined and loaded immediately, so that data will load even when it may not be needed. Setting
@@ -21,6 +26,8 @@ from app.api.utils.models_mixins import AuditMixin, Base
 
 class Mine(AuditMixin, Base):
     __tablename__ = 'mine'
+    _edit_key = MINE_EDIT_GROUP
+
     mine_guid = db.Column(UUID(as_uuid=True), primary_key=True, server_default=FetchedValue())
     mine_no = db.Column(db.String(10))
     mine_name = db.Column(db.String(60), nullable=False)
