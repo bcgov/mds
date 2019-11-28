@@ -3,13 +3,13 @@ import PropTypes from "prop-types";
 import { Table } from "antd";
 import moment from "moment";
 import { RED_CLOCK } from "@/constants/assets";
-import { formatDate, compareCodes, getTableHeaders } from "@/utils/helpers";
+import { formatDate, compareCodes, getTableHeaders, formatDateTime } from "@/utils/helpers";
 import { COLOR } from "@/constants/styles";
 import CustomPropTypes from "@/customPropTypes";
 import NullScreen from "@/components/common/NullScreen";
 import TableLoadingWrapper from "@/components/common/wrappers/TableLoadingWrapper";
 import LinkButton from "@/components/common/LinkButton";
-import { formatDateTime } from "@/utils/helpers";
+
 import { downloadNRISDocument } from "@/utils/actionlessNetworkCalls";
 
 const propTypes = {
@@ -24,6 +24,15 @@ const errorStyle = (isOverdue) => (isOverdue ? { color: errorRed } : {});
 const defaultProps = {
   filteredOrders: [],
 };
+
+const transformFileRowData = (file, inspectionId) => ({
+  key: file.external_id,
+  externalId: file.external_id,
+  inspectionId,
+  fileName: file.file_name,
+  fileDate: file.document_date,
+  fileType: file.document_type,
+});
 
 const fileColumns = [
   {
@@ -151,15 +160,6 @@ const columns = [
     ),
   },
 ];
-
-const transformFileRowData = (file, inspectionId) => ({
-  key: file.external_id,
-  externalId: file.external_id,
-  inspectionId,
-  fileName: file.file_name,
-  fileDate: file.document_date,
-  fileType: file.document_type,
-});
 
 const transformRowData = (orders) =>
   orders.map((order) => ({
