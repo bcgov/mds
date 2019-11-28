@@ -27,6 +27,8 @@ const propTypes = {
 export class MineNOWApplications extends Component {
   params = queryString.parse(this.props.location.search);
 
+  listQueryParams = [];
+
   splitListParams = formatQueryListParams("split", this.listQueryParams);
 
   state = {
@@ -39,8 +41,8 @@ export class MineNOWApplications extends Component {
 
   componentDidMount() {
     this.props.fetchRegionOptions();
-
     const params = this.props.location.search;
+    console.log(params);
     const parsedParams = queryString.parse(params);
     const {
       page = this.state.params.page,
@@ -51,7 +53,7 @@ export class MineNOWApplications extends Component {
       this.renderDataFromURL();
     } else {
       this.props.history.push(
-        router.NOTICE_OF_WORK_APPLICATIONS.dynamicRoute({
+        router.MINE_NOW_APPLICATIONS.dynamicRoute(this.props.mineGuid, {
           page,
           per_page,
           submissions_only,
