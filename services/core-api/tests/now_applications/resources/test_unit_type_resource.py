@@ -1,6 +1,6 @@
 import json
 
-from app.api.now_applications.models.unit_type_type import UnitType
+from app.api.now_applications.models.unit_type import UnitType
 
 
 class TestGetUnitType:

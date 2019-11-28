@@ -24,6 +24,8 @@ const initialState = {
   mineReportDefinitionOptions: [],
   mineReportStatusOptions: [],
   noticeOfWorkActivityTypeOptions: [],
+  noticeOfWorkUnitTypeOptions: [],
+  noticeOfWorkApplicationTypeOptions: [],
 };
 
 const staticContentReducer = (state = initialState, action) => {
@@ -118,6 +120,16 @@ const staticContentReducer = (state = initialState, action) => {
         ...state,
         noticeOfWorkActivityTypeOptions: action.payload.records,
       };
+    case actionTypes.STORE_NOTICE_OF_WORK_UNIT_TYPE_OPTIONS:
+      return {
+        ...state,
+        noticeOfWorkUnitTypeOptions: action.payload.records,
+      };
+    case actionTypes.STORE_NOTICE_OF_WORK_APPLICATION_TYPE_OPTIONS:
+      return {
+        ...state,
+        noticeOfWorkApplicationTypeOptions: action.payload.records,
+      };
     default:
       return state;
   }
@@ -149,5 +161,9 @@ export const getMineReportDefinitionOptions = (state) =>
 export const getMineReportStatusOptions = (state) => state[STATIC_CONTENT].mineReportStatusOptions;
 export const getNoticeOfWorkActivityTypeOptions = (state) =>
   state[STATIC_CONTENT].noticeOfWorkActivityTypeOptions;
+export const getNoticeOfWorkUnitTypeOptions = (state) =>
+  state[STATIC_CONTENT].noticeOfWorkUnitTypeOptions;
+export const getNoticeOfWorkApplicationTypeOptions = (state) =>
+  state[STATIC_CONTENT].noticeOfWorkApplicationTypeOptions;
 
 export default staticContentReducer;
