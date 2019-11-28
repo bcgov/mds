@@ -3,9 +3,9 @@ import json
 from app.api.now_applications.models.now_application_type import NOWApplicationType
 
 
-class TestGetActivityTypes:
+class TestGetNOWApplicationType:
     """GET /now-applications/application-types"""
-    def test_get_activity_types(self, test_client, db_session, auth_headers):
+    def test_get_application_types(self, test_client, db_session, auth_headers):
         """Should return the correct number of records with a 200 response code"""
 
         get_resp = test_client.get(

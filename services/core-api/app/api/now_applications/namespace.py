@@ -5,6 +5,10 @@ from app.api.now_applications.resources.now_application_resource import NOWAppli
 from app.api.now_applications.resources.now_application_list_resource import NoticeOfWorkListResource
 from app.api.now_applications.resources.now_activity_type_resource import NOWActivityTypeResource
 from app.api.now_applications.resources.now_application_type_resource import NOWApplicationTypeResource
+from app.api.now_applications.resources.now_application_status_code_resource import NOWApplicationStatusCodeResource
+from app.api.now_applications.resources.unit_type_resource import UnitTypeResource
+from app.api.now_applications.resources.now_application_document_type_resource import NOWApplicationDocumentTypeResource
+from app.api.now_applications.resources.underground_exploration_type_resource import UndergroundExplorationTypeResource
 
 api = Namespace('now-applications', description='Party related operations')
 
@@ -15,3 +19,7 @@ api.add_resource(NOWApplicationResource, '/<string:application_guid>')
 # now static content
 api.add_resource(NOWActivityTypeResource, '/activity-types')
 api.add_resource(NOWApplicationTypeResource, '/application-types')
+api.add_resource(NOWApplicationStatusCodeResource, '/application-status-codes')
+api.add_resource(UnitTypeResource, '/unit-types')
+api.add_resource(NOWApplicationDocumentTypeResource, '/application-document-types')
+api.add_resource(UndergroundExplorationTypeResource, '/underground-exploration-types')

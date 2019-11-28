@@ -285,9 +285,42 @@ NOW_ACTIVITY_TYPES = api.model(
 )
 
 NOW_APPLICATION_TYPES = api.model(
-    'ActivityType', 
+    'ApplicationType', 
     {
         'notice_of_work_type_code': fields.String,
+        'description': fields.String
+    }
+)
+
+NOW_APPLICATION_STATUS_CODES = api.model(
+    'ActivityStatusCodes', 
+    {
+        'now_application_status_code': fields.String,
+        'description': fields.String
+    }
+)
+
+
+UNIT_TYPES = api.model(
+    'UnitTypeCodes', 
+    {
+        'unit_type_code': fields.String,
+        'description': fields.String
+    }
+)
+
+NOW_APPLICATION_DOCUMENT_TYPES = api.model(
+    'ApplicationDocumentTypes', 
+    {
+        'now_application_document_type_code': fields.String,
+        'description': fields.String
+    }
+)
+
+UNDERGROUND_EXPLORATION_TYPES = api.model(
+    'UndergroundExplorationTypes', 
+    {
+        'underground_exploration_type_code': fields.String,
         'description': fields.String
     }
 )
