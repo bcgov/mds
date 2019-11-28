@@ -128,17 +128,3 @@ class PermitAmendment(AuditMixin, Base):
         if description and len(description) > 280:
             raise AssertionError('Permit amendment description must be 280 characters or fewer.')
         return description
-
-
-# from marshmallow_sqlalchemy import ModelConversionError, ModelSchema, ModelConverter
-
-# class PermitAmendmentSchema(ModelSchema):
-#     class Meta(object):
-#         model = PermitAmendment
-#         ordered = True
-#         include_fk = True
-#         sqla_session = db.session
-#         #model_converter = CoreConverter
-#         exclude = ('create_user', 'create_timestamp', 'update_user', 'update_timestamp')
-
-# PermitAmendment._schema = PermitAmendmentSchema

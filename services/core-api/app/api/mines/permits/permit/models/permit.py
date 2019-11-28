@@ -86,19 +86,3 @@ class Permit(AuditMixin, Base):
         if len(permit_no) > 16:
             raise AssertionError('Permit number must not exceed 16 characters.')
         return permit_no
-
-
-# from marshmallow_sqlalchemy import ModelConversionError, ModelSchema, ModelConverter, fields
-
-# class PermitSchema(ModelSchema):
-#     class Meta(object):
-#         model = Permit
-#         ordered = True
-#         include_fk = True
-#         sqla_session = db.session
-#         #model_converter = CoreConverter
-#         exclude = ('create_user', 'create_timestamp', 'update_user', 'update_timestamp')
-
-#     permit_amendments = fields.Nested(PermitAmendment._schema, many=True, exclude=['permit_id'])
-
-# Permit._schema = PermitSchema
