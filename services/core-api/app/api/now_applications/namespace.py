@@ -4,10 +4,14 @@ from app.api.now_applications.resources.now_application_import_resource import N
 from app.api.now_applications.resources.now_application_resource import NOWApplicationResource
 from app.api.now_applications.resources.now_application_list_resource import NoticeOfWorkListResource
 from app.api.now_applications.resources.now_activity_type_resource import NOWActivityTypeResource
+from app.api.now_applications.resources.now_application_type_resource import NOWApplicationTypeResource
 
 api = Namespace('now-applications', description='Party related operations')
 
 api.add_resource(NoticeOfWorkListResource, '')
 api.add_resource(NOWApplicationImportResource, '/<string:application_guid>/import')
 api.add_resource(NOWApplicationResource, '/<string:application_guid>')
+
+# now static content
 api.add_resource(NOWActivityTypeResource, '/activity-types')
+api.add_resource(NOWApplicationTypeResource, '/application-types')

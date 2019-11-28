@@ -283,3 +283,11 @@ NOW_ACTIVITY_TYPES = api.model(
         'description': fields.String
     }
 )
+
+NOW_APPLICATION_TYPES = api.model(
+    'ActivityType', 
+    {
+        'notice_of_work_type_code': fields.String,
+        'description': fields.String
+    }
+)
