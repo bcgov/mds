@@ -10,7 +10,6 @@ import { createRequestHeader } from "@/utils/RequestHeaders";
 import CustomAxios from "@/customAxios";
 
 export const createPermit = (mineGuid, payload) => (dispatch) => {
-  console.log(payload);
   dispatch(request(reducerTypes.CREATE_PERMIT));
   dispatch(showLoading("modal"));
   return CustomAxios()
@@ -59,7 +58,6 @@ export const updatePermit = (mineGuid, permitGuid, payload) => (dispatch) => {
 };
 
 export const createPermitAmendment = (mineGuid, permitGuid, payload) => (dispatch) => {
-  console.log(payload);
   dispatch(request(reducerTypes.CREATE_PERMIT_AMENDMENT));
   dispatch(showLoading("modal"));
   return CustomAxios()
