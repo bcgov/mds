@@ -445,3 +445,88 @@ export const EQUIPMENT = [
     quantity: 1,
   },
 ];
+
+export const UNDERGROUND_EXPLORATION_TYPES = {
+  records: [
+    {
+      underground_exploration_type_code: "NEW",
+      description: "New",
+    },
+    {
+      underground_exploration_type_code: "RHB",
+      description: "Rehabilitation",
+    },
+    {
+      underground_exploration_type_code: "SUR",
+      description: "Surface",
+    },
+  ],
+};
+
+export const DROPDOWN_UNDERGROUND_EXPLORATION_TYPES = [
+  {
+    value: "NEW",
+    label: "new",
+  },
+  { value: "RHB", label: "Rehabilitation" },
+  { value: "SUR", label: "Surface" },
+];
+
+export const UNDERGROUND_EXPLORATION_TYPES_HASH = {
+  NEW: "new",
+  RHB: "Rehabilitation",
+  SUR: "Surface",
+};
+
+export const APPLICATION_TYPES = {
+  records: [
+    {
+      notice_of_work_type_code: "QCA",
+      description: "Quarry - Construction Aggregate",
+    },
+    {
+      notice_of_work_type_code: "COL",
+      description: "Coal",
+    },
+    {
+      notice_of_work_type_code: "PLA",
+      description: "Placer Operations",
+    },
+    {
+      notice_of_work_type_code: "MIN",
+      description: "Mineral",
+    },
+    {
+      notice_of_work_type_code: "SAG",
+      description: "Sand & Gravel",
+    },
+    {
+      notice_of_work_type_code: "QIM",
+      description: "Quarry - Industrial Mineral",
+    },
+  ],
+};
+
+export const DROPDOWN_APPLICATION_TYPES = [
+  {
+    value: "QCA",
+    label: "Quarry - Construction Aggregate",
+  },
+  { value: "COL", label: "Coal" },
+  { value: "PLA", label: "Placer Operations" },
+  {
+    value: "MIN",
+    label: "Mineral",
+  },
+  { value: "SAG", label: "Sand & Gravel" },
+  { value: "QIM", label: "Quarry - Industrial Mineral" },
+];
+
+export const APPLICATION_TYPES_HASH = {
+  QCA: "Quarry - Construction Aggregate",
+  COL: "Coal",
+  PLA: "Placer Operations",
+  MIN: "Mineral",
+  SAG: "Sand & Gravel",
+  QIM: "Quarry - Industrial Mineral",
+};
