@@ -9,6 +9,7 @@ from flask_restplus import marshal, fields
 
 from app.api.mines.mine.models.mine import Mine
 from app.api.mines.response_models import PERMIT_MODEL
+from app.api.constants import *
 
 
 def test_update_first_level_info(db_session):
@@ -23,7 +24,7 @@ def test_update_first_level_info(db_session):
         'latitude': new_latitude,
     }
 
-    mine.deep_update_from_dict(mine_dict)
+    mine.deep_update_from_dict(mine_dict, _edit_key=PERMIT_EDIT_GROUP)
     assert mine.mine_name[-6:] == 'edited'
     assert mine.major_mine_ind != org_major_mine_ind
     assert mine.latitude == new_latitude
@@ -36,15 +37,28 @@ def test_update_ignores_pk_change(db_session):
         'mine_guid': str(uuid.uuid4()),
     }
 
-    mine.deep_update_from_dict(mine_dict)
+    mine.deep_update_from_dict(mine_dict, _edit_key=PERMIT_EDIT_GROUP)
     assert mine.mine_guid == org_mine_guid
+
+
+def test_update_ignores_related_object_not_in_edit_group(db_session):
+    mine = MineFactory()
+    mine_dict = {
+        'mine': {
+            'mine_name': "NEW_MINE_NAME"
+        },
+    }
+
+    mine.mine_permit[0].deep_update_from_dict(mine_dict)
+    assert mine.mine_name != 'NEW_MINE_NAME'
 
 
 def test_update_unexpected_type(db_session):
     mine = MineFactory()
     org_major_mine_ind = mine.major_mine_ind
     mine_dict = {'major_mine_ind': "SHOULD BE BOOLEAN"}
-    assert pytest.raises(DictLoadingError, mine.deep_update_from_dict, mine_dict)
+    assert pytest.raises(
+        DictLoadingError, mine.deep_update_from_dict, mine_dict, _edit_key=PERMIT_EDIT_GROUP)
 
 
 def test_update_field_in_nested_item(db_session):
@@ -54,12 +68,13 @@ def test_update_field_in_nested_item(db_session):
         {'mine_permit': mine.mine_permit},
         api.model('test_list', {'mine_permit': fields.List(fields.Nested(PERMIT_MODEL))}))
     partial_mine_permit_dict['mine_permit'][1]['permit_no'] = new_permit_no
-    mine.deep_update_from_dict(partial_mine_permit_dict)
+    mine.deep_update_from_dict(partial_mine_permit_dict, _edit_key=PERMIT_EDIT_GROUP)
 
     mine = Mine.query.filter_by(mine_guid=mine.mine_guid).first()
     assert mine.mine_permit[1].permit_no == new_permit_no
 
 
+@pytest.mark.xfail(reason='Global marshmallow schemas not implemented')
 def test_update_new_item_in_list(db_session):
     mine = MineFactory(mine_permit=5)
     permit = PermitFactory()
@@ -78,7 +93,7 @@ def test_update_new_item_in_list(db_session):
     #postgres sequence doesn't get increased by factory object creation
 
     partial_mine_permit_dict['mine_permit'].append(new_permit_dict)
-    mine.deep_update_from_dict(partial_mine_permit_dict)
+    mine.deep_update_from_dict(partial_mine_permit_dict, _edit_key=PERMIT_EDIT_GROUP)
 
     mine = Mine.query.filter_by(mine_guid=mine.mine_guid).first()
     assert len(mine.mine_permit) == 6

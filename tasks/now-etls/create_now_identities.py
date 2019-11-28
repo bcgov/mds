@@ -1,5 +1,4 @@
 import psycopg2
-import uuid
 import petl as etl
 from petl import timeparser
 from datetime import datetime, time, timedelta

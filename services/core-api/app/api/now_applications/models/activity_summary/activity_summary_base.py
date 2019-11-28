@@ -5,10 +5,13 @@ from app.api.utils.models_mixins import AuditMixin, Base
 from app.extensions import db
 
 from app.api.now_applications.models.activity_summary.activity_type import ActivityType
+from app.api.now_applications.models.now_application import NOWApplication
+from app.api.constants import *
 
 
 class ActivitySummaryBase(AuditMixin, Base):
     __tablename__ = "activity_summary"
+    _edit_groups = [NOW_APPLICATION_EDIT_GROUP]
 
     activity_summary_id = db.Column(db.Integer, primary_key=True, server_default=FetchedValue())
 

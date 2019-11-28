@@ -184,8 +184,8 @@ app {
                             'ELASTIC_SERVICE_NAME': "${vars.deployment.elastic_service_name}",
                             'ENVIRONMENT_NAME':"${app.deployment.env.name}",
                             'API_URL': "https://${vars.modules.'mds-nginx'.HOST_CORE}${vars.modules.'mds-nginx'.PATH}/api",
-                            'NRIS_API_URL': "${vars.modules.'mds-nris-api'.HOST}${vars.modules.'mds-nris-api'.PATH}",
-                            'DOCUMENT_MANAGER_URL': "${vars.modules.'mds-docman-api'.HOST}${vars.modules.'mds-docman-api'.PATH}",
+                            'NRIS_API_URL': "${vars.modules.'mds-nris-backend'.HOST}${vars.modules.'mds-nris-backend'.PATH}",
+                            'DOCUMENT_MANAGER_URL': "${vars.modules.'mds-docman-backend'.HOST}${vars.modules.'mds-docman-backend'.PATH}",
                     ]
                 ],
                 [

@@ -70,6 +70,7 @@ MINE_OPERATION_STATUS_SUB_REASON = {
 #Cache prefixes
 NRIS_MAJOR_MINE_LIST = "major_mine_list"
 NRIS_TOKEN = "nris:token"
+NRIS_REMOTE_TOKEN = "nris_remote:token"
 NROS_TOKEN = "nros:token"
 VFCBC_COOKIES = "vdcbc_cookies"
 
@@ -91,3 +92,8 @@ TIMEOUT_12_HOURS = 43140
 #Redis Map Cache
 MINE_MAP_CACHE = "mds:mines:map-json"
 MINE_DETAILS_CSV = "mds:mines:summary-csv"
+
+NOW_APPLICATION_EDIT_GROUP = 'NOW_APPLICATIONS'
+PERMIT_EDIT_GROUP = 'PERMIT'
+PERMIT_AMENDMENT_EDIT_GROUP = 'PERMIT_AMENDMENTS'
+MINE_EDIT_GROUP = 'MINE'

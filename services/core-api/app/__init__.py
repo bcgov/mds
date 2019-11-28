@@ -23,6 +23,8 @@ from app.commands import register_commands
 from app.config import Config
 from app.extensions import db, jwt, api, cache, apm
 
+import app.api.utils.setup_marshmallow
+
 
 def create_app(test_config=None):
     """Create and configure an instance of the Flask application."""
