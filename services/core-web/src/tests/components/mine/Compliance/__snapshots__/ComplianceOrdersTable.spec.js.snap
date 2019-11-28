@@ -1,0 +1,115 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ComplianceOrdersTable renders properly 1`] = `
+<TableLoadingWrapper
+  isPaginated={false}
+  tableHeaders={
+    Array [
+      "",
+      "Order #",
+      "Violation",
+      "Report #",
+      "Inspector Name",
+      "Order Status",
+      "Due Date",
+      "Documents",
+    ]
+  }
+>
+  <withStore(Table)
+    align="left"
+    className="center-pagination page-count-1"
+    columns={
+      Array [
+        Object {
+          "dataIndex": "overdue",
+          "render": [Function],
+          "title": "",
+        },
+        Object {
+          "dataIndex": "order_no",
+          "render": [Function],
+          "sorter": [Function],
+          "title": "Order #",
+        },
+        Object {
+          "dataIndex": "violation",
+          "render": [Function],
+          "sorter": [Function],
+          "title": "Violation",
+        },
+        Object {
+          "dataIndex": "report_no",
+          "render": [Function],
+          "sorter": [Function],
+          "title": "Report #",
+        },
+        Object {
+          "dataIndex": "inspector",
+          "render": [Function],
+          "sorter": [Function],
+          "title": "Inspector Name",
+        },
+        Object {
+          "dataIndex": "status",
+          "render": [Function],
+          "sorter": [Function],
+          "title": "Order Status",
+        },
+        Object {
+          "dataIndex": "due_date",
+          "defaultSortOrder": "descend",
+          "render": [Function],
+          "sorter": [Function],
+          "title": "Due Date",
+        },
+        Object {
+          "dataIndex": "documents",
+          "key": "documents_key",
+          "render": [Function],
+          "title": "Documents",
+        },
+      ]
+    }
+    dataSource={
+      Array [
+        Object {
+          "due_date": "2019-01-31",
+          "inspector": "George",
+          "key": "2",
+          "order_no": "2",
+          "overdue": true,
+          "report_no": "report3",
+          "violation": "Mine isn't good enough",
+        },
+        Object {
+          "due_date": "2019-02-28",
+          "inspector": "Paul",
+          "key": "1",
+          "order_no": "1",
+          "overdue": false,
+          "report_no": "report2",
+          "violation": "Wearing purple hats",
+        },
+        Object {
+          "due_date": "2019-02-02",
+          "inspector": "Paul",
+          "key": "7",
+          "order_no": "7",
+          "overdue": true,
+          "report_no": "report1",
+          "violation": "Looks dangerous",
+        },
+      ]
+    }
+    locale={
+      Object {
+        "emptyText": <NullScreen
+          type="no-results"
+        />,
+      }
+    }
+    pagination={true}
+  />
+</TableLoadingWrapper>
+`;

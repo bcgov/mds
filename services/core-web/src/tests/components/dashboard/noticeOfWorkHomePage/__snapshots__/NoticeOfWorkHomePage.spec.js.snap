@@ -1,0 +1,83 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NoticeOfWorkHomePage renders properly 1`] = `
+<div
+  className="landing-page"
+>
+  <div
+    className="landing-page__header"
+  >
+    <div>
+      <h1>
+        Browse Notice of Work
+      </h1>
+      <p>
+        Applications shown are from NROS and vFCBC only
+      </p>
+    </div>
+  </div>
+  <div
+    className="landing-page__content"
+  >
+    <div
+      className="page__content"
+    >
+      <NoticeOfWorkSearch
+        handleSearch={[Function]}
+        initialValues={
+          Object {
+            "mine_search": undefined,
+          }
+        }
+      />
+      <div>
+        <NoticeOfWorkTable
+          handleSearch={[Function]}
+          isLoaded={false}
+          noticeOfWorkApplications={
+            Array [
+              Object {
+                "mine_guid": "6e9d3426-ebf1-413f-9e5f-c3a71ab56797",
+                "mine_name": "Hamilton, Herrera and Mccormick",
+                "mine_no": "brother",
+                "notice_of_work_type_description": "choice",
+                "now_application_guid": "07e801a0-fa33-4c3b-abcc-ac6df628d483",
+                "now_application_status_description": "Approved",
+                "received_date": "2019-08-14",
+                "tracking_number": 44,
+              },
+              Object {
+                "mine_guid": "60300a07-376c-46f1-a984-88a813f91438",
+                "mine_name": "Thompson-Sullivan",
+                "mine_no": "other",
+                "notice_of_work_type_description": "technology",
+                "now_application_guid": "8e1536da-644c-4961-976b-b1326fa75825",
+                "now_application_status_description": "Approved",
+                "received_date": "2019-07-21",
+                "tracking_number": 52,
+              },
+            ]
+          }
+          searchParams={
+            Object {
+              "mine_region": "SW,NE",
+            }
+          }
+          sortDir={null}
+          sortField={null}
+        />
+        <div
+          className="center"
+        >
+          <ResponsivePagination
+            currentPage={NaN}
+            itemsPerPage={NaN}
+            onPageChange={[Function]}
+            pageTotal={9000}
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
