@@ -291,7 +291,9 @@ export const fetchNoticeOFWorkUndergroundExplorationTypeOptions = () => (dispatc
     )
     .then((response) => {
       dispatch(success(reducerTypes.GET_NOW_UNDERGROUND_EXPLORATION_TYPE_OPTIONS));
-      dispatch(staticContentActions.storeNoticeOfWorkApplicationDocumentTypeOptions(response.data));
+      dispatch(
+        staticContentActions.storeNoticeOfWorkUndergroundExplorationTypeOptions(response.data)
+      );
       return response;
     })
     .catch(() => dispatch(error(reducerTypes.GET_NOW_UNDERGROUND_EXPLORATION_TYPE_OPTIONS)));
