@@ -240,7 +240,7 @@ export class NOWWorkPlan extends Component {
               columns={columns}
               dataSource={transfromData(
                 this.props.noticeOfWork.documents,
-                this.props.noticeOfWork.application_guid
+                this.props.noticeOfWork.now_application_guid
               )}
               locale={{ emptyText: "There are no documents associated with this Notice of Work" }}
             />

@@ -284,6 +284,7 @@ exports[`NOWWorkPlan renders properly 1`] = `
         "minenumber": null,
         "nameofproperty": null,
         "noticeofworktype": null,
+        "now_application_guid": "07e801a0-fa33-4c3b-abcc-ac6df628d483",
         "nrsosapplicationid": null,
         "placerhandoperations": null,
         "placerreclamation": null,
@@ -512,7 +513,7 @@ exports[`NOWWorkPlan renders properly 1`] = `
         dataSource={
           Array [
             Object {
-              "application_guid": "89ce70bc-a34b-4ec6-aff0-704ba68c4606",
+              "application_guid": "07e801a0-fa33-4c3b-abcc-ac6df628d483",
               "category": "N/A",
               "description": "N/A",
               "filename": "N/A",
@@ -520,7 +521,7 @@ exports[`NOWWorkPlan renders properly 1`] = `
               "url": null,
             },
             Object {
-              "application_guid": "89ce70bc-a34b-4ec6-aff0-704ba68c4606",
+              "application_guid": "07e801a0-fa33-4c3b-abcc-ac6df628d483",
               "category": "N/A",
               "description": "N/A",
               "filename": "N/A",
