@@ -108,7 +108,7 @@ class MinePartyAppointment(AuditMixin, Base):
 
 
 # given a permmit id, and an issue date of a new amendment, order appointment start_dates
-# return the start_dates surrounding the new amendment and use to set correct end dates of pervious or historical appointments
+# return the all appointment start_dates in order
 
     @classmethod
     def find_appointment_end_dates(cls, _id, date=None):
@@ -119,9 +119,6 @@ class MinePartyAppointment(AuditMixin, Base):
             start_dates.append(appointment.start_date)
 
         ordered_dates = sorted(start_dates, reverse=True)
-        position = ordered_dates.index(datetime.date(date))
-        new_end_dates = [ordered_dates[position - 1], ordered_dates[position + 1]]
-        current_app.logger.debug(ordered_dates)
         return ordered_dates
 
     @classmethod
