@@ -14,3 +14,4 @@ class NOWActivityTypeResource(Resource, UserMixin):
     @api.marshal_with(NOW_ACTIVITY_TYPES, code=200, envelope='records')
     def get(self):
         return ActivityType.active()
+        ##change
