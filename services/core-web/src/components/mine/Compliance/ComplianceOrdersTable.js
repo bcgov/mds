@@ -25,6 +25,15 @@ const defaultProps = {
   filteredOrders: [],
 };
 
+const transformFileRowData = (file, inspectionId) => ({
+  key: file.external_id,
+  externalId: file.external_id,
+  inspectionId,
+  fileName: file.file_name,
+  fileDate: file.document_date,
+  fileType: file.document_type,
+});
+
 const fileColumns = [
   {
     title: "File Name",
