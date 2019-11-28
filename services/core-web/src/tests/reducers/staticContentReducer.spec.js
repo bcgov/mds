@@ -32,6 +32,11 @@ const baseExpectedValue = {
   mineReportDefinitionOptions: [],
   mineReportStatusOptions: [],
   noticeOfWorkActivityTypeOptions: [],
+  noticeOfWorkUnitTypeOptions: [],
+  noticeOfWorkApplicationTypeOptions: [],
+  noticeOfWorkApplicationStatusOptions: [],
+  noticeOfWorkApplicationDocumentTypeOptions: [],
+  noticeOfWorkUndergroundExplorationTypeOptions: [],
 };
 
 // Creates deep copy of javascript object instead of setting a reference
