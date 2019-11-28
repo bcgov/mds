@@ -247,8 +247,52 @@ export const fetchNoticeOFWorkApplicationTypeOptions = () => (dispatch) => {
     )
     .then((response) => {
       dispatch(success(reducerTypes.GET_NOTICE_OF_WORK_APPLICATION_TYPE_OPTIONS));
-      dispatch(staticContentActions.storeNoticeOfWorkUnitTypeOptions(response.data));
+      dispatch(staticContentActions.storeNoticeOfWorkApplicationTypeOptions(response.data));
       return response;
     })
     .catch(() => dispatch(error(reducerTypes.GET_NOTICE_OF_WORK_APPLICATION_TYPE_OPTIONS)));
+};
+
+export const fetchNoticeOFWorkApplicationStatusOptions = () => (dispatch) => {
+  dispatch(request(reducerTypes.GET_NOTICE_OF_WORK_APPLICATION_STATUS_OPTIONS));
+  return CustomAxios()
+    .get(
+      `${ENVIRONMENT.apiUrl + API.NOTICE_OF_WORK_APPLICATION_STATUS_OPTIONS}`,
+      createRequestHeader()
+    )
+    .then((response) => {
+      dispatch(success(reducerTypes.GET_NOTICE_OF_WORK_APPLICATION_STATUS_OPTIONS));
+      dispatch(staticContentActions.storeNoticeOfWorkApplicationStatusOptions(response.data));
+      return response;
+    })
+    .catch(() => dispatch(error(reducerTypes.GET_NOTICE_OF_WORK_APPLICATION_STATUS_OPTIONS)));
+};
+
+export const fetchNoticeOFWorkApplicationDocumentTypeOptions = () => (dispatch) => {
+  dispatch(request(reducerTypes.GET_NOTICE_OF_WORK_APPLICATION_DOCUMENT_TYPE_OPTIONS));
+  return CustomAxios()
+    .get(`${ENVIRONMENT.apiUrl + API.NOW_APPLICATION_DOCUMENT_TYPE_OPTIONS}`, createRequestHeader())
+    .then((response) => {
+      dispatch(success(reducerTypes.GET_NOTICE_OF_WORK_APPLICATION_DOCUMENT_TYPE_OPTIONS));
+      dispatch(staticContentActions.storeNoticeOfWorkApplicationDocumentTypeOptions(response.data));
+      return response;
+    })
+    .catch(() =>
+      dispatch(error(reducerTypes.GET_NOTICE_OF_WORK_APPLICATION_DOCUMENT_TYPE_OPTIONS))
+    );
+};
+
+export const fetchNoticeOFWorkUndergroundExplorationTypeOptions = () => (dispatch) => {
+  dispatch(request(reducerTypes.GET_NOW_UNDERGROUND_EXPLORATION_TYPE_OPTIONS));
+  return CustomAxios()
+    .get(
+      `${ENVIRONMENT.apiUrl + API.NOW_UNDERGROUND_EXPLORATION_TYPE_OPTIONS}`,
+      createRequestHeader()
+    )
+    .then((response) => {
+      dispatch(success(reducerTypes.GET_NOW_UNDERGROUND_EXPLORATION_TYPE_OPTIONS));
+      dispatch(staticContentActions.storeNoticeOfWorkApplicationDocumentTypeOptions(response.data));
+      return response;
+    })
+    .catch(() => dispatch(error(reducerTypes.GET_NOW_UNDERGROUND_EXPLORATION_TYPE_OPTIONS)));
 };
