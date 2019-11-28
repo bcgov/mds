@@ -71,7 +71,6 @@ class PermitAmendmentListResource(Resource, UserMixin):
 
         new_end_dates = MinePartyAppointment.find_appointment_end_dates(
             permit_guid, permit_issue_date)
-        current_app.logger.debug(new_end_dates)
 
         for permittee in permittees:
             # check if the new appointment is older than the current appointment, if so create a new permittee appointment
