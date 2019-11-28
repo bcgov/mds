@@ -46,7 +46,7 @@ routes.items.each {Map route ->
     String minespaceRouteUrl = "${routeProtocol}://${minespaceRoutes.items[0].spec.host}${minespaceRoutes.items[0].spec.path?:'/'}/"
     println "Core URLs found:  ${routeUrl}"
     println "Minspace URLs found:  ${minespaceRouteUrl}"
-    OpenShiftHelper._exec(["bash", '-c', "oc process -f openshift/bddstack.pod.json -l 'bdd=${route.metadata.name},app-name=${config.app.name},app=${appLabel}' -p 'NAME=bdd-stack' -p 'URL=${routeUrl}' -p 'MINESPACE_URL=${minespaceRouteUrl}' -p 'IDIR_CONFIG_NAME=${idirConfig}' -p 'DB_CONFIG_NAME=${dbConfig}' -p 'SUFFIX=${config.app.build.suffix}' -p 'VERSION=${config.app.build.version}' --namespace='${devNamespace}' |  oc replace -f - --namespace='${devNamespace}' --force=true"], new StringBuffer(), new StringBuffer())
+    OpenShiftHelper._exec(["bash", '-c', "oc process -f openshift/templates/bddstack.pod.json -l 'bdd=${route.metadata.name},app-name=${config.app.name},app=${appLabel}' -p 'NAME=bdd-stack' -p 'URL=${routeUrl}' -p 'MINESPACE_URL=${minespaceRouteUrl}' -p 'IDIR_CONFIG_NAME=${idirConfig}' -p 'DB_CONFIG_NAME=${dbConfig}' -p 'SUFFIX=${config.app.build.suffix}' -p 'VERSION=${config.app.build.version}' --namespace='${devNamespace}' |  oc replace -f - --namespace='${devNamespace}' --force=true"], new StringBuffer(), new StringBuffer())
 }
 
 int inprogress=1
