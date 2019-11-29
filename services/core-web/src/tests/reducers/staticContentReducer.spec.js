@@ -10,6 +10,11 @@ import {
   storeVarianceStatusOptions,
   storeVarianceDocumentCategoryOptions,
   storeNoticeOfWorkActivityTypeOptions,
+  storeNoticeOfWorkUnitTypeOptions,
+  storeNoticeOfWorkApplicationTypeOptions,
+  storeNoticeOfWorkApplicationStatusOptions,
+  storeNoticeOfWorkApplicationDocumentTypeOptions,
+  storeNoticeOfWorkUndergroundExplorationTypeOptions,
 } from "@/actions/staticContentActions";
 import * as MOCK from "@/tests/mocks/dataMocks";
 import * as NOW_MOCK from "@/tests/mocks/noticeOfWorkMocks";
@@ -127,6 +132,58 @@ describe("staticContentReducer", () => {
     const result = staticContentReducer(
       undefined,
       storeNoticeOfWorkActivityTypeOptions(NOW_MOCK.NOTICE_OF_WORK_ACTIVITY_TYPES)
+    );
+    expect(result).toEqual(expectedValue);
+  });
+
+  it("receives STORE_NOTICE_OF_WORK_UNIT_TYPE_OPTIONS", () => {
+    const expectedValue = getBaseExpectedValue();
+    expectedValue.noticeOfWorkUnitTypeOptions = NOW_MOCK.UNIT_TYPES.records;
+    const result = staticContentReducer(
+      undefined,
+      storeNoticeOfWorkUnitTypeOptions(NOW_MOCK.UNIT_TYPES)
+    );
+    expect(result).toEqual(expectedValue);
+  });
+
+  it("receives STORE_NOTICE_OF_WORK_APPLICATION_TYPE_OPTIONS", () => {
+    const expectedValue = getBaseExpectedValue();
+    expectedValue.noticeOfWorkApplicationTypeOptions = NOW_MOCK.APPLICATION_TYPES.records;
+    const result = staticContentReducer(
+      undefined,
+      storeNoticeOfWorkApplicationTypeOptions(NOW_MOCK.APPLICATION_TYPES)
+    );
+    expect(result).toEqual(expectedValue);
+  });
+
+  it("receives STORE_NOTICE_OF_WORK_APPLICATION_STATUS_OPTIONS", () => {
+    const expectedValue = getBaseExpectedValue();
+    expectedValue.noticeOfWorkApplicationStatusOptions = NOW_MOCK.APPLICATION_STATUS_CODES.records;
+    const result = staticContentReducer(
+      undefined,
+      storeNoticeOfWorkApplicationStatusOptions(NOW_MOCK.APPLICATION_STATUS_CODES)
+    );
+    expect(result).toEqual(expectedValue);
+  });
+
+  it("receives STORE_NOTICE_OF_WORK_APPLICATION_DOCUMENT_TYPE_OPTIONS", () => {
+    const expectedValue = getBaseExpectedValue();
+    expectedValue.noticeOfWorkApplicationDocumentTypeOptions =
+      NOW_MOCK.APPLICATION_DOCUMENT_TYPES.records;
+    const result = staticContentReducer(
+      undefined,
+      storeNoticeOfWorkApplicationDocumentTypeOptions(NOW_MOCK.APPLICATION_DOCUMENT_TYPES)
+    );
+    expect(result).toEqual(expectedValue);
+  });
+
+  it("receives STORE_NOW_UNDERGROUND_EXPLORATION_TYPE_OPTIONS", () => {
+    const expectedValue = getBaseExpectedValue();
+    expectedValue.noticeOfWorkUndergroundExplorationTypeOptions =
+      NOW_MOCK.UNDERGROUND_EXPLORATION_TYPES.records;
+    const result = staticContentReducer(
+      undefined,
+      storeNoticeOfWorkUndergroundExplorationTypeOptions(NOW_MOCK.UNDERGROUND_EXPLORATION_TYPES)
     );
     expect(result).toEqual(expectedValue);
   });

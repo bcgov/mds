@@ -343,6 +343,11 @@ export const getDropdownNoticeOfWorkActivityTypeOptions = createSelector(
   (options) => createDropDownList(options, "description", "activity_type_code")
 );
 
+export const getNoticeOfWorkActivityTypeOptionsHash = createSelector(
+  [getDropdownNoticeOfWorkActivityTypeOptions],
+  createLabelHash
+);
+
 export const getDropdownNoticeOfWorkUnitTypeOptions = createSelector(
   [getNoticeOfWorkUnitTypeOptions],
   (options) => createDropDownList(options, "description", "unit_type_code")
