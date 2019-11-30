@@ -558,3 +558,16 @@ VALUES
     ('RHB', 'Rehabilitation', 'system-mds', 'system-mds'),
     ('SUR', 'Surface', 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
+
+INSERT INTO application_progress_type (
+    application_progress_type_code,
+    description,
+    create_user,
+    update_user
+    )
+VALUES
+    ('VER', 'Verification', 'system-mds', 'system-mds'),
+    ('REV', 'Technical Review', 'system-mds', 'system-mds'),
+    ('REF', 'Referral / Consultation', 'system-mds', 'system-mds')
+    ('DEC', 'Decision', 'system-mds', 'system-mds')
+ON CONFLICT DO NOTHING;
