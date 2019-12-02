@@ -94,3 +94,28 @@ export const storeNoticeOfWorkActivityTypeOptions = (payload) => ({
   type: ActionTypes.STORE_NOTICE_OF_WORK_ACTIVITY_TYPE_OPTIONS,
   payload,
 });
+
+export const storeNoticeOfWorkUnitTypeOptions = (payload) => ({
+  type: ActionTypes.STORE_NOTICE_OF_WORK_UNIT_TYPE_OPTIONS,
+  payload,
+});
+
+export const storeNoticeOfWorkApplicationTypeOptions = (payload) => ({
+  type: ActionTypes.STORE_NOTICE_OF_WORK_APPLICATION_TYPE_OPTIONS,
+  payload,
+});
+
+export const storeNoticeOfWorkApplicationStatusOptions = (payload) => ({
+  type: ActionTypes.STORE_NOTICE_OF_WORK_APPLICATION_STATUS_OPTIONS,
+  payload,
+});
+
+export const storeNoticeOfWorkApplicationDocumentTypeOptions = (payload) => ({
+  type: ActionTypes.STORE_NOTICE_OF_WORK_APPLICATION_DOCUMENT_TYPE_OPTIONS,
+  payload,
+});
+
+export const storeNoticeOfWorkUndergroundExplorationTypeOptions = (payload) => ({
+  type: ActionTypes.STORE_NOW_UNDERGROUND_EXPLORATION_TYPE_OPTIONS,
+  payload,
+});
