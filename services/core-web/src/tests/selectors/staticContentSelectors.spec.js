@@ -19,7 +19,21 @@ import {
   getDropdownVarianceDocumentCategoryOptions,
   getVarianceDocumentCategoryOptions,
   getNoticeOfWorkActivityTypeOptions,
+  getNoticeOfWorkActivityTypeOptionsHash,
   getDropdownNoticeOfWorkActivityTypeOptions,
+  getNoticeOfWorkUnitTypeOptions,
+  getDropdownNoticeOfWorkUnitTypeOptions,
+  getNoticeOfWorkUnitTypeOptionsHash,
+  getNoticeOfWorkApplicationTypeOptions,
+  getDropdownNoticeOfWorkApplicationTypeOptions,
+  getNoticeOfWorkApplicationTypeOptionsHash,
+  getNoticeOfWorkApplicationStatusOptions,
+  getDropdownNoticeOfWorkApplicationStatusOptions,
+  getNoticeOfWorkApplicationStatusOptionsHash,
+  getNoticeOfWorkApplicationDocumentTypeOptions,
+  getNoticeOfWorkUndergroundExplorationTypeOptions,
+  getDropdownNoticeOfWorkUndergroundExplorationTypeOptions,
+  getNoticeOfWorkUndergroundExplorationTypeOptionsHash,
 } from "@/selectors/staticContentSelectors";
 import staticContentReducer from "@/reducers/staticContentReducer";
 import {
@@ -33,6 +47,11 @@ import {
   storeVarianceStatusOptions,
   storeVarianceDocumentCategoryOptions,
   storeNoticeOfWorkActivityTypeOptions,
+  storeNoticeOfWorkUnitTypeOptions,
+  storeNoticeOfWorkApplicationTypeOptions,
+  storeNoticeOfWorkApplicationStatusOptions,
+  storeNoticeOfWorkApplicationDocumentTypeOptions,
+  storeNoticeOfWorkUndergroundExplorationTypeOptions,
 } from "@/actions/staticContentActions";
 import { STATIC_CONTENT } from "@/constants/reducerTypes";
 import * as Mock from "@/tests/mocks/dataMocks";
@@ -49,6 +68,11 @@ const mockState = {
   varianceStatusOptions: Mock.VARIANCE_STATUS_OPTIONS.records,
   varianceDocumentCategoryOptions: Mock.VARIANCE_DOCUMENT_CATEGORY_OPTIONS.records,
   noticeOfWorkActivityTypeOptions: NOW_MOCK.NOTICE_OF_WORK_ACTIVITY_TYPES.records,
+  noticeOfWorkUnitTypeOptions: NOW_MOCK.UNIT_TYPES.records,
+  noticeOfWorkApplicationTypeOptions: NOW_MOCK.APPLICATION_TYPES.records,
+  noticeOfWorkApplicationStatusOptions: NOW_MOCK.APPLICATION_STATUS_CODES.records,
+  noticeOfWorkApplicationDocumentTypeOptions: NOW_MOCK.APPLICATION_DOCUMENT_TYPES.records,
+  noticeOfWorkUndergroundExplorationTypeOptions: NOW_MOCK.UNDERGROUND_EXPLORATION_TYPES.records,
 };
 
 describe("staticContentSelectors", () => {
@@ -57,7 +81,15 @@ describe("staticContentSelectors", () => {
     mineCommodityOptions,
     noticeOfWorkActivityTypeOptions,
   } = mockState;
-  const { provinceOptions, varianceDocumentCategoryOptions } = mockState;
+  const {
+    provinceOptions,
+    varianceDocumentCategoryOptions,
+    noticeOfWorkUnitTypeOptions,
+    noticeOfWorkApplicationTypeOptions,
+    noticeOfWorkApplicationStatusOptions,
+    noticeOfWorkApplicationDocumentTypeOptions,
+    noticeOfWorkUndergroundExplorationTypeOptions,
+  } = mockState;
 
   it("`getMineStatusDropDownOptions` calls `staticContentReducer.getMineStatusDropDownOptions`", () => {
     const storeAction = storeStatusOptions(Mock.STATUS_OPTIONS);
@@ -267,16 +299,185 @@ describe("staticContentSelectors", () => {
       noticeOfWorkActivityTypeOptions
     );
   });
-});
 
-it("`getDropdownNoticeOfWorkActivityTypeOptions` calls `staticContentReducer.getNoticeOfWorkActivityTypeOptions`", () => {
-  const storeAction = storeNoticeOfWorkActivityTypeOptions(NOW_MOCK.NOTICE_OF_WORK_ACTIVITY_TYPES);
-  const storeState = staticContentReducer({}, storeAction);
-  const localMockState = {
-    [STATIC_CONTENT]: storeState,
-  };
-  const mockDropdownNOWActivityTypeOptions = NOW_MOCK.DROPDOWN_NOTICE_OF_WORK_ACTIVITY_TYPES;
-  expect(getDropdownNoticeOfWorkActivityTypeOptions(localMockState)).toEqual(
-    mockDropdownNOWActivityTypeOptions
-  );
+  it("`getDropdownNoticeOfWorkActivityTypeOptions` calls `staticContentReducer.getNoticeOfWorkActivityTypeOptions`", () => {
+    const storeAction = storeNoticeOfWorkActivityTypeOptions(
+      NOW_MOCK.NOTICE_OF_WORK_ACTIVITY_TYPES
+    );
+    const storeState = staticContentReducer({}, storeAction);
+    const localMockState = {
+      [STATIC_CONTENT]: storeState,
+    };
+    const mockDropdownNOWActivityTypeOptions = NOW_MOCK.DROPDOWN_NOTICE_OF_WORK_ACTIVITY_TYPES;
+    expect(getDropdownNoticeOfWorkActivityTypeOptions(localMockState)).toEqual(
+      mockDropdownNOWActivityTypeOptions
+    );
+  });
+
+  it("`getNoticeOfWorkActivityTypeOptionsHash` calls `staticContentReducer.getNoticeOfWorkActivityTypeOptions`", () => {
+    const storeAction = storeNoticeOfWorkActivityTypeOptions(
+      NOW_MOCK.NOTICE_OF_WORK_ACTIVITY_TYPES
+    );
+    const storeState = staticContentReducer({}, storeAction);
+    const localMockState = {
+      [STATIC_CONTENT]: storeState,
+    };
+    const mockOptionsHash = NOW_MOCK.ACTIVITY_TYPE_HASH;
+    expect(getNoticeOfWorkActivityTypeOptionsHash(localMockState)).toEqual(mockOptionsHash);
+  });
+
+  it("`getNoticeOfWorkUnitTypeOptions` calls `staticContentReducer.getNoticeOfWorkUnitTypeOptions`", () => {
+    const storeAction = storeNoticeOfWorkUnitTypeOptions(NOW_MOCK.UNIT_TYPES);
+    const storeState = staticContentReducer({}, storeAction);
+    const localMockState = {
+      [STATIC_CONTENT]: storeState,
+    };
+    expect(getNoticeOfWorkUnitTypeOptions(localMockState)).toEqual(noticeOfWorkUnitTypeOptions);
+  });
+
+  it("`getDropdownNoticeOfWorkUnitTypeOptions` calls `staticContentReducer.getNoticeOfWorkUnitTypeOptions`", () => {
+    const storeAction = storeNoticeOfWorkUnitTypeOptions(NOW_MOCK.UNIT_TYPES);
+    const storeState = staticContentReducer({}, storeAction);
+    const localMockState = {
+      [STATIC_CONTENT]: storeState,
+    };
+    const mockDropdownOptions = NOW_MOCK.DROPDOWN_UNIT_TYPES;
+    expect(getDropdownNoticeOfWorkUnitTypeOptions(localMockState)).toEqual(mockDropdownOptions);
+  });
+
+  it("`getNoticeOfWorkUnitTypeOptionsHash` calls `staticContentReducer.getNoticeOfWorkUnitTypeOptions`", () => {
+    const storeAction = storeNoticeOfWorkUnitTypeOptions(NOW_MOCK.UNIT_TYPES);
+    const storeState = staticContentReducer({}, storeAction);
+    const localMockState = {
+      [STATIC_CONTENT]: storeState,
+    };
+    const mockOptionsHash = NOW_MOCK.UNIT_TYPES_HASH;
+    expect(getNoticeOfWorkUnitTypeOptionsHash(localMockState)).toEqual(mockOptionsHash);
+  });
+
+  it("`getNoticeOfWorkApplicationTypeOptions` calls `staticContentReducer.getNoticeOfWorkApplicationTypeOptions`", () => {
+    const storeAction = storeNoticeOfWorkApplicationTypeOptions(NOW_MOCK.APPLICATION_TYPES);
+    const storeState = staticContentReducer({}, storeAction);
+    const localMockState = {
+      [STATIC_CONTENT]: storeState,
+    };
+    expect(getNoticeOfWorkApplicationTypeOptions(localMockState)).toEqual(
+      noticeOfWorkApplicationTypeOptions
+    );
+  });
+
+  it("`getDropdownNoticeOfWorkUnitTypeOptions` calls `staticContentReducer.getNoticeOfWorkApplicationTypeOptions`", () => {
+    const storeAction = storeNoticeOfWorkApplicationTypeOptions(NOW_MOCK.APPLICATION_TYPES);
+    const storeState = staticContentReducer({}, storeAction);
+    const localMockState = {
+      [STATIC_CONTENT]: storeState,
+    };
+    const mockDropdownOptions = NOW_MOCK.DROPDOWN_APPLICATION_TYPES;
+    expect(getDropdownNoticeOfWorkApplicationTypeOptions(localMockState)).toEqual(
+      mockDropdownOptions
+    );
+  });
+
+  it("`getNoticeOfWorkUnitTypeOptionsHash` calls `staticContentReducer.getNoticeOfWorkApplicationTypeOptions`", () => {
+    const storeAction = storeNoticeOfWorkApplicationTypeOptions(NOW_MOCK.APPLICATION_TYPES);
+    const storeState = staticContentReducer({}, storeAction);
+    const localMockState = {
+      [STATIC_CONTENT]: storeState,
+    };
+    const mockOptionsHash = NOW_MOCK.APPLICATION_TYPES_HASH;
+    expect(getNoticeOfWorkApplicationTypeOptionsHash(localMockState)).toEqual(mockOptionsHash);
+  });
+
+  it("`getNoticeOfWorkApplicationStatusOptions` calls `staticContentReducer.getNoticeOfWorkApplicationStatusOptions`", () => {
+    const storeAction = storeNoticeOfWorkApplicationStatusOptions(
+      NOW_MOCK.APPLICATION_STATUS_CODES
+    );
+    const storeState = staticContentReducer({}, storeAction);
+    const localMockState = {
+      [STATIC_CONTENT]: storeState,
+    };
+    expect(getNoticeOfWorkApplicationStatusOptions(localMockState)).toEqual(
+      noticeOfWorkApplicationStatusOptions
+    );
+  });
+
+  it("`getDropdownNoticeOfWorkApplicationStatusOptions` calls `staticContentReducer.getNoticeOfWorkApplicationStatusOptions`", () => {
+    const storeAction = storeNoticeOfWorkApplicationStatusOptions(
+      NOW_MOCK.APPLICATION_STATUS_CODES
+    );
+    const storeState = staticContentReducer({}, storeAction);
+    const localMockState = {
+      [STATIC_CONTENT]: storeState,
+    };
+    const mockDropdownOptions = NOW_MOCK.DROPDOWN_APPLICATION_STATUS_CODES;
+    expect(getDropdownNoticeOfWorkApplicationStatusOptions(localMockState)).toEqual(
+      mockDropdownOptions
+    );
+  });
+
+  it("`getNoticeOfWorkApplicationStatusOptionsHash` calls `staticContentReducer.getNoticeOfWorkApplicationStatusOptions`", () => {
+    const storeAction = storeNoticeOfWorkApplicationStatusOptions(
+      NOW_MOCK.APPLICATION_STATUS_CODES
+    );
+    const storeState = staticContentReducer({}, storeAction);
+    const localMockState = {
+      [STATIC_CONTENT]: storeState,
+    };
+    const mockOptionsHash = NOW_MOCK.APPLICATION_STATUS_CODES_HASH;
+    expect(getNoticeOfWorkApplicationStatusOptionsHash(localMockState)).toEqual(mockOptionsHash);
+  });
+
+  it("`getNoticeOfWorkApplicationDocumentTypeOptions` calls `staticContentReducer.getNoticeOfWorkApplicationDocumentTypeOptions`", () => {
+    const storeAction = storeNoticeOfWorkApplicationDocumentTypeOptions(
+      NOW_MOCK.APPLICATION_DOCUMENT_TYPES
+    );
+    const storeState = staticContentReducer({}, storeAction);
+    const localMockState = {
+      [STATIC_CONTENT]: storeState,
+    };
+    expect(getNoticeOfWorkApplicationDocumentTypeOptions(localMockState)).toEqual(
+      noticeOfWorkApplicationDocumentTypeOptions
+    );
+  });
+
+  it("`getNoticeOfWorkUndergroundExplorationTypeOptions` calls `staticContentReducer.getNoticeOfWorkUndergroundExplorationTypeOptions`", () => {
+    const storeAction = storeNoticeOfWorkUndergroundExplorationTypeOptions(
+      NOW_MOCK.UNDERGROUND_EXPLORATION_TYPES
+    );
+    const storeState = staticContentReducer({}, storeAction);
+    const localMockState = {
+      [STATIC_CONTENT]: storeState,
+    };
+    expect(getNoticeOfWorkUndergroundExplorationTypeOptions(localMockState)).toEqual(
+      noticeOfWorkUndergroundExplorationTypeOptions
+    );
+  });
+
+  it("`getDropdownNoticeOfWorkApplicationStatusOptions` calls `staticContentReducer.getNoticeOfWorkUndergroundExplorationTypeOptions`", () => {
+    const storeAction = storeNoticeOfWorkUndergroundExplorationTypeOptions(
+      NOW_MOCK.UNDERGROUND_EXPLORATION_TYPES
+    );
+    const storeState = staticContentReducer({}, storeAction);
+    const localMockState = {
+      [STATIC_CONTENT]: storeState,
+    };
+    const mockDropdownOptions = NOW_MOCK.DROPDOWN_UNDERGROUND_EXPLORATION_TYPES;
+    expect(getDropdownNoticeOfWorkUndergroundExplorationTypeOptions(localMockState)).toEqual(
+      mockDropdownOptions
+    );
+  });
+
+  it("`getNoticeOfWorkApplicationStatusOptionsHash` calls `staticContentReducer.getNoticeOfWorkUndergroundExplorationTypeOptions`", () => {
+    const storeAction = storeNoticeOfWorkUndergroundExplorationTypeOptions(
+      NOW_MOCK.UNDERGROUND_EXPLORATION_TYPES
+    );
+    const storeState = staticContentReducer({}, storeAction);
+    const localMockState = {
+      [STATIC_CONTENT]: storeState,
+    };
+    const mockOptionsHash = NOW_MOCK.UNDERGROUND_EXPLORATION_TYPES_HASH;
+    expect(getNoticeOfWorkUndergroundExplorationTypeOptionsHash(localMockState)).toEqual(
+      mockOptionsHash
+    );
+  });
 });
