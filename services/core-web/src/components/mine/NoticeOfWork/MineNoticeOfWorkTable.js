@@ -147,14 +147,17 @@ export class MineNoticeOfWorkTable extends Component {
       width: 150,
       render: (text, record) =>
         record.key && (
-          <div title="">
+          <div title="" className="btn--middle flex">
             <AuthorizationWrapper inTesting>
               <AuthorizationWrapper permission={Permission.ADMIN}>
                 <Link to={router.NOTICE_OF_WORK_APPLICATION.dynamicRoute(record.key)}>
-                  <img src={EDIT_OUTLINE_VIOLET} alt="Edit NoW" />
+                  <img src={EDIT_OUTLINE_VIOLET} alt="Edit NoW" className="padding-large--right" />
                 </Link>
               </AuthorizationWrapper>
             </AuthorizationWrapper>
+            <Link to={router.VIEW_NOTICE_OF_WORK_APPLICATION.dynamicRoute(record.key)}>
+              <Icon type="eye" className="icon-lg icon-svg-filter padding-large--left" />
+            </Link>
           </div>
         ),
     },
