@@ -24,6 +24,11 @@ const initialState = {
   mineReportDefinitionOptions: [],
   mineReportStatusOptions: [],
   noticeOfWorkActivityTypeOptions: [],
+  noticeOfWorkUnitTypeOptions: [],
+  noticeOfWorkApplicationTypeOptions: [],
+  noticeOfWorkApplicationStatusOptions: [],
+  noticeOfWorkApplicationDocumentTypeOptions: [],
+  noticeOfWorkUndergroundExplorationTypeOptions: [],
 };
 
 const staticContentReducer = (state = initialState, action) => {
@@ -118,6 +123,31 @@ const staticContentReducer = (state = initialState, action) => {
         ...state,
         noticeOfWorkActivityTypeOptions: action.payload.records,
       };
+    case actionTypes.STORE_NOTICE_OF_WORK_UNIT_TYPE_OPTIONS:
+      return {
+        ...state,
+        noticeOfWorkUnitTypeOptions: action.payload.records,
+      };
+    case actionTypes.STORE_NOTICE_OF_WORK_APPLICATION_TYPE_OPTIONS:
+      return {
+        ...state,
+        noticeOfWorkApplicationTypeOptions: action.payload.records,
+      };
+    case actionTypes.STORE_NOTICE_OF_WORK_APPLICATION_STATUS_OPTIONS:
+      return {
+        ...state,
+        noticeOfWorkApplicationStatusOptions: action.payload.records,
+      };
+    case actionTypes.STORE_NOTICE_OF_WORK_APPLICATION_DOCUMENT_TYPE_OPTIONS:
+      return {
+        ...state,
+        noticeOfWorkApplicationDocumentTypeOptions: action.payload.records,
+      };
+    case actionTypes.STORE_NOW_UNDERGROUND_EXPLORATION_TYPE_OPTIONS:
+      return {
+        ...state,
+        noticeOfWorkUndergroundExplorationTypeOptions: action.payload.records,
+      };
     default:
       return state;
   }
@@ -149,5 +179,15 @@ export const getMineReportDefinitionOptions = (state) =>
 export const getMineReportStatusOptions = (state) => state[STATIC_CONTENT].mineReportStatusOptions;
 export const getNoticeOfWorkActivityTypeOptions = (state) =>
   state[STATIC_CONTENT].noticeOfWorkActivityTypeOptions;
+export const getNoticeOfWorkUnitTypeOptions = (state) =>
+  state[STATIC_CONTENT].noticeOfWorkUnitTypeOptions;
+export const getNoticeOfWorkApplicationTypeOptions = (state) =>
+  state[STATIC_CONTENT].noticeOfWorkApplicationTypeOptions;
+export const getNoticeOfWorkApplicationStatusOptions = (state) =>
+  state[STATIC_CONTENT].noticeOfWorkApplicationStatusOptions;
+export const getNoticeOfWorkApplicationDocumentTypeOptions = (state) =>
+  state[STATIC_CONTENT].noticeOfWorkApplicationDocumentTypeOptions;
+export const getNoticeOfWorkUndergroundExplorationTypeOptions = (state) =>
+  state[STATIC_CONTENT].noticeOfWorkUndergroundExplorationTypeOptions;
 
 export default staticContentReducer;
