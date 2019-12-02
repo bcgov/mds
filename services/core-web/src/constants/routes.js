@@ -26,6 +26,7 @@ import HomePage from "@/components/dashboard/HomePage";
 import NoticeOfWorkInitialApplication from "@/components/noticeOfWork/submissions/NoticeOfWorkInitialApplication";
 import NoticeOfWorkHomePage from "@/components/dashboard/noticeOfWorkHomePage/NoticeOfWorkHomePage";
 import NoticeOfWorkApplication from "@/components/noticeOfWork/applications/NoticeOfWorkApplication";
+import ViewNoticeOfWorkApplication from "@/components/noticeOfWork/applications/ViewNoticeOfWorkApplication";
 
 export const DASHBOARD = {
   route: "/",
@@ -201,4 +202,11 @@ export const NOTICE_OF_WORK_APPLICATION = {
   dynamicRoute: (guid) => `/dashboard/notice-of-work/application/${guid}/`,
   hashRoute: (guid, link) => `/dashboard/notice-of-work/application/${guid}/${link}`,
   component: NoticeOfWorkApplication,
+};
+
+export const VIEW_NOTICE_OF_WORK_APPLICATION = {
+  route: "/dashboard/notice-of-work/application/:id/view",
+  dynamicRoute: (guid) => `/dashboard/notice-of-work/application/${guid}/view`,
+  hashRoute: (guid, link) => `/dashboard/notice-of-work/application/${guid}/view${link}`,
+  component: ViewNoticeOfWorkApplication,
 };
