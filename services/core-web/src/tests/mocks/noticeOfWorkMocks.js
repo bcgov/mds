@@ -425,6 +425,11 @@ export const DROPDOWN_NOTICE_OF_WORK_ACTIVITY_TYPES = [
   { value: "water_supply", label: "Water Supply" },
 ];
 
+export const ACTIVITY_TYPE_HASH = {
+  cut_lines_polarization_survey: "Cut Lines and Induced Polarization Survey",
+  water_supply: "Water Supply",
+};
+
 export const RECLAMATION_SUMMARY = [
   {
     label: "Cut Lines and Induced Polarization Survey",
@@ -445,3 +450,177 @@ export const EQUIPMENT = [
     quantity: 1,
   },
 ];
+
+export const UNDERGROUND_EXPLORATION_TYPES = {
+  records: [
+    {
+      underground_exploration_type_code: "NEW",
+      description: "New",
+    },
+    {
+      underground_exploration_type_code: "RHB",
+      description: "Rehabilitation",
+    },
+    {
+      underground_exploration_type_code: "SUR",
+      description: "Surface",
+    },
+  ],
+};
+
+export const DROPDOWN_UNDERGROUND_EXPLORATION_TYPES = [
+  {
+    value: "NEW",
+    label: "New",
+  },
+  { value: "RHB", label: "Rehabilitation" },
+  { value: "SUR", label: "Surface" },
+];
+
+export const UNDERGROUND_EXPLORATION_TYPES_HASH = {
+  NEW: "New",
+  RHB: "Rehabilitation",
+  SUR: "Surface",
+};
+
+export const APPLICATION_TYPES = {
+  records: [
+    {
+      notice_of_work_type_code: "QCA",
+      description: "Quarry - Construction Aggregate",
+    },
+    {
+      notice_of_work_type_code: "COL",
+      description: "Coal",
+    },
+    {
+      notice_of_work_type_code: "PLA",
+      description: "Placer Operations",
+    },
+    {
+      notice_of_work_type_code: "MIN",
+      description: "Mineral",
+    },
+    {
+      notice_of_work_type_code: "SAG",
+      description: "Sand & Gravel",
+    },
+    {
+      notice_of_work_type_code: "QIM",
+      description: "Quarry - Industrial Mineral",
+    },
+  ],
+};
+
+export const DROPDOWN_APPLICATION_TYPES = [
+  {
+    value: "QCA",
+    label: "Quarry - Construction Aggregate",
+  },
+  { value: "COL", label: "Coal" },
+  { value: "PLA", label: "Placer Operations" },
+  {
+    value: "MIN",
+    label: "Mineral",
+  },
+  { value: "SAG", label: "Sand & Gravel" },
+  { value: "QIM", label: "Quarry - Industrial Mineral" },
+];
+
+export const APPLICATION_TYPES_HASH = {
+  QCA: "Quarry - Construction Aggregate",
+  COL: "Coal",
+  PLA: "Placer Operations",
+  MIN: "Mineral",
+  SAG: "Sand & Gravel",
+  QIM: "Quarry - Industrial Mineral",
+};
+
+export const APPLICATION_STATUS_CODES = {
+  records: [
+    {
+      now_application_status_code: "ACC",
+      description: "Accepted",
+    },
+    {
+      now_application_status_code: "WDN",
+      description: "Withdrawn",
+    },
+    {
+      now_application_status_code: "UNR",
+      description: "Under Review",
+    },
+  ],
+};
+
+export const DROPDOWN_APPLICATION_STATUS_CODES = [
+  {
+    value: "ACC",
+    label: "Accepted",
+  },
+  { value: "WDN", label: "Withdrawn" },
+  { value: "UNR", label: "Under Review" },
+];
+
+export const APPLICATION_STATUS_CODES_HASH = {
+  ACC: "Accepted",
+  WDN: "Withdrawn",
+  UNR: "Under Review",
+};
+
+export const UNIT_TYPES = {
+  records: [
+    {
+      unit_type_code: "MTN",
+      description: "Tonne (Metric Ton 1000Kg)",
+    },
+    {
+      unit_type_code: "MEC",
+      description: "Meters cubed",
+    },
+    {
+      unit_type_code: "HA",
+      description: "Hectares",
+    },
+    {
+      unit_type_code: "DEG",
+      description: "Degrees",
+    },
+    {
+      unit_type_code: "PER",
+      description: "Grade (Percent)",
+    },
+    {
+      unit_type_code: "MTR",
+      description: "Meters",
+    },
+  ],
+};
+
+export const DROPDOWN_UNIT_TYPES = [
+  {
+    value: "MTN",
+    label: "Tonne (Metric Ton 1000Kg)",
+  },
+  { value: "MEC", label: "Meters cubed" },
+  { value: "HA", label: "Hectares" },
+  {
+    value: "DEG",
+    label: "Degrees",
+  },
+  { value: "PER", label: "Grade (Percent)" },
+  { value: "MTR", label: "Meters" },
+];
+
+export const UNIT_TYPES_HASH = {
+  MTN: "Tonne (Metric Ton 1000Kg)",
+  MEC: "Meters cubed",
+  HA: "Hectares",
+  DEG: "Degrees",
+  PER: "Grade (Percent)",
+  MTR: "Meters",
+};
+
+export const APPLICATION_DOCUMENT_TYPES = {
+  records: [],
+};

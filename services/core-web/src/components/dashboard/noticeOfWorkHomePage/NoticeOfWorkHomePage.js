@@ -32,7 +32,7 @@ const propTypes = {
 export class NoticeOfWorkHomePage extends Component {
   params = queryString.parse(this.props.location.search);
 
-  listQueryParams = ["mine_region"];
+  listQueryParams = [];
 
   splitListParams = formatQueryListParams("split", this.listQueryParams);
 
@@ -124,7 +124,6 @@ export class NoticeOfWorkHomePage extends Component {
         ...this.state.params,
         page,
         per_page,
-        submissions_only,
       })
     );
   };
@@ -189,4 +188,7 @@ const mapDispatchToProps = (dispatch) =>
 
 NoticeOfWorkHomePage.propTypes = propTypes;
 
-export default connect(mapStateToProps, mapDispatchToProps)(NoticeOfWorkHomePage);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(NoticeOfWorkHomePage);

@@ -22,6 +22,11 @@ export const {
   getVarianceStatusOptions,
   getVarianceDocumentCategoryOptions,
   getNoticeOfWorkActivityTypeOptions,
+  getNoticeOfWorkUnitTypeOptions,
+  getNoticeOfWorkApplicationTypeOptions,
+  getNoticeOfWorkApplicationStatusOptions,
+  getNoticeOfWorkApplicationDocumentTypeOptions,
+  getNoticeOfWorkUndergroundExplorationTypeOptions,
 } = staticContentReducer;
 
 // removes all expired compliance codes from the array
@@ -336,4 +341,59 @@ export const getDropdownMineReportStatusOptions = createSelector(
 export const getDropdownNoticeOfWorkActivityTypeOptions = createSelector(
   [getNoticeOfWorkActivityTypeOptions],
   (options) => createDropDownList(options, "description", "activity_type_code")
+);
+
+export const getNoticeOfWorkActivityTypeOptionsHash = createSelector(
+  [getDropdownNoticeOfWorkActivityTypeOptions],
+  createLabelHash
+);
+
+export const getDropdownNoticeOfWorkUnitTypeOptions = createSelector(
+  [getNoticeOfWorkUnitTypeOptions],
+  (options) => createDropDownList(options, "description", "unit_type_code")
+);
+
+export const getNoticeOfWorkUnitTypeOptionsHash = createSelector(
+  [getDropdownNoticeOfWorkUnitTypeOptions],
+  createLabelHash
+);
+
+export const getDropdownNoticeOfWorkApplicationTypeOptions = createSelector(
+  [getNoticeOfWorkApplicationTypeOptions],
+  (options) => createDropDownList(options, "description", "notice_of_work_type_code")
+);
+
+export const getNoticeOfWorkApplicationTypeOptionsHash = createSelector(
+  [getDropdownNoticeOfWorkApplicationTypeOptions],
+  createLabelHash
+);
+
+export const getDropdownNoticeOfWorkApplicationStatusOptions = createSelector(
+  [getNoticeOfWorkApplicationStatusOptions],
+  (options) => createDropDownList(options, "description", "now_application_status_code")
+);
+
+export const getNoticeOfWorkApplicationStatusOptionsHash = createSelector(
+  [getDropdownNoticeOfWorkApplicationStatusOptions],
+  createLabelHash
+);
+
+export const getDropdownNoticeOfWorkApplicationDocumentTypeOptions = createSelector(
+  [getNoticeOfWorkApplicationDocumentTypeOptions],
+  (options) => createDropDownList(options, "description", "now_application_document_type_code")
+);
+
+export const getNoticeOfWorkApplicationDocumentTypeOptionsHash = createSelector(
+  [getDropdownNoticeOfWorkApplicationDocumentTypeOptions],
+  createLabelHash
+);
+
+export const getDropdownNoticeOfWorkUndergroundExplorationTypeOptions = createSelector(
+  [getNoticeOfWorkUndergroundExplorationTypeOptions],
+  (options) => createDropDownList(options, "description", "underground_exploration_type_code")
+);
+
+export const getNoticeOfWorkUndergroundExplorationTypeOptionsHash = createSelector(
+  [getDropdownNoticeOfWorkUndergroundExplorationTypeOptions],
+  createLabelHash
 );
