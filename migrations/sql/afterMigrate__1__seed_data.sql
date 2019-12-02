@@ -559,8 +559,8 @@ VALUES
     ('SUR', 'Surface', 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
 
-INSERT INTO application_progress_type (
-    application_progress_type_code,
+INSERT INTO application_progress_status (
+    application_progress_status_code,
     description,
     create_user,
     update_user
