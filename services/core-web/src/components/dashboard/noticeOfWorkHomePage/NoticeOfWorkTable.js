@@ -187,7 +187,7 @@ export class NoticeOfWorkTable extends Component {
             <AuthorizationWrapper inTesting>
               <AuthorizationWrapper permission={Permission.ADMIN}>
                 <Link to={router.NOTICE_OF_WORK_APPLICATION.dynamicRoute(record.key)}>
-                  <img src={EDIT_OUTLINE_VIOLET} alt="Edit NoW" className="padding-large--right" />
+                  <img src={EDIT_OUTLINE_VIOLET} alt="Edit NoW" className="padding-md--right" />
                 </Link>
               </AuthorizationWrapper>
             </AuthorizationWrapper>

@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import * as router from "@/constants/routes";
+import * as routes from "@/constants/routes";
 import {
   fetchImportedNoticeOfWorkApplication,
   fetchOriginalNoticeOfWorkApplication,
@@ -50,7 +50,7 @@ export class ViewNoticeOfWorkApplication extends Component {
     this.props.fetchNoticeOFWorkActivityTypeOptions();
     this.props.fetchImportedNoticeOfWorkApplication(id).then(() => {
       this.props.history.push(
-        router.VIEW_NOTICE_OF_WORK_APPLICATION.hashRoute(id, "#application-info")
+        routes.VIEW_NOTICE_OF_WORK_APPLICATION.hashRoute(id, "#application-info")
       );
       this.setState({ isLoaded: true });
     });
@@ -74,12 +74,10 @@ export class ViewNoticeOfWorkApplication extends Component {
       <div className="page" onScroll={this.handleScroll()}>
         <LoadingWrapper condition={this.state.isLoaded}>
           <div>
-            <div className={this.state.fixedTop ? "side-menu--fixed" : "side-menu"}>
-              {this.state.currentStep === 1 && <NOWSideMenu />}
+            <div className="side-menu">
+              <NOWSideMenu route={routes.VIEW_NOTICE_OF_WORK_APPLICATION} />
             </div>
-            <div
-              className={this.state.fixedTop ? "steps--content with-fixed-top" : "steps--content"}
-            >
+            <div className="steps--content">
               <ReviewNOWApplication
                 reclamationSummary={this.props.reclamationSummary}
                 isViewMode
