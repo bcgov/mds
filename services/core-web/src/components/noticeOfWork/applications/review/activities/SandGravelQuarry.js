@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { PropTypes } from "prop-types";
 import { Field } from "redux-form";
-import { Row, Col, Table } from "antd";
+import { Row, Col, Table, Button } from "antd";
 import * as Strings from "@/constants/strings";
 import RenderField from "@/components/common/RenderField";
 import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
@@ -19,11 +19,13 @@ const defaultProps = {
 };
 
 export const SandGravelQuarry = (props) => {
+  const [activities, setActivities] = useState(props.initialValues.details);
+
   const columns = [
     {
       title: "Activity",
-      dataIndex: "type",
-      key: "type",
+      dataIndex: "activity_type_description",
+      key: "activity_type_description",
       render: (text) => <div title="Activity">{text}</div>,
     },
     {
@@ -40,15 +42,27 @@ export const SandGravelQuarry = (props) => {
     },
     {
       title: "Merchantable timber volume (m3)",
-      dataIndex: "timberVolume",
-      key: "timberVolume",
+      dataIndex: "timber_volume",
+      key: "timber_volume",
       render: (text) => <div title="Merchantable timber volume (m3)">{text}</div>,
     },
   ];
 
-  const transformData = (activities) =>
-    activities.map((activity) => ({
-      type: activity.activity_type_description || Strings.EMPTY_FIELD,
+  const addActivity = (currentActivities) => {
+    const newActivity = {
+      activity_type_description: "test",
+      length: null,
+      disturbedArea: null,
+      timberVolume: null,
+    };
+    currentActivities.push(newActivity);
+    setActivities((prevActivities) => [...prevActivities, newActivity]);
+    console.log(activities);
+  };
+
+  const transformData = (activityDetails) =>
+    activityDetails.map((activity) => ({
+      activity_type_description: activity.activity_type_description || Strings.EMPTY_FIELD,
       length: activity.length || Strings.EMPTY_FIELD,
       disturbedArea: activity.disturbed_area || Strings.EMPTY_FIELD,
       timberVolume: activity.timber_volume || Strings.EMPTY_FIELD,
@@ -176,11 +190,14 @@ export const SandGravelQuarry = (props) => {
         align="left"
         pagination={false}
         columns={columns}
-        dataSource={transformData(props.initialValues.details ? props.initialValues.details : [])}
+        dataSource={transformData(activities || [])}
         locale={{
           emptyText: "No data",
         }}
       />
+      <Button type="primary" onClick={() => addActivity(props.initialValues.details)}>
+        Add Activity
+      </Button>
       <br />
       {props.initialValues.equipment && <Equipment equipment={props.initialValues.equipment} />}
     </div>
