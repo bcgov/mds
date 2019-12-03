@@ -210,6 +210,15 @@ NOW_APPLCATION_STATE_OF_LAND = api.model(
     }
 )
 
+NOW_APPLCATION_PROGRESS = api.model(
+    'NOWApplicationProgress',
+    {
+        'start_date': Date,
+        'created_by': fields.String,
+        'application_progress_status_code': fields.String
+    }
+)
+
 NOW_APPLICATION_MODEL = api.model(
     'NOWApplication',
     {
@@ -234,6 +243,7 @@ NOW_APPLICATION_MODEL = api.model(
         'proposed_start_date': Date,
         'proposed_end_date': Date,
         'directions_to_site':fields.String,
+        'application_progress': fields.Nested(NOW_APPLCATION_PROGRESS,skip_none=True),
         'state_of_land': fields.Nested(NOW_APPLCATION_STATE_OF_LAND,skip_none=True),
         'blasting_operation': fields.Nested(NOW_APPLICATION_BLASTING_OPERATION, skip_none=True),
         'camps': fields.Nested(NOW_APPLICATION_CAMP, skip_none=True),
