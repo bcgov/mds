@@ -69,9 +69,14 @@ export class ViewNoticeOfWorkApplication extends Component {
     }
   };
 
-  render() {
-    return (
-      <div className="page" onScroll={this.handleScroll()}>
+  render = () => (
+    <div className="page" onScroll={this.handleScroll()}>
+      <div className="steps--header">
+        <div className="inline-flex between padding-xxl--bottom">
+          <div>
+            <h1>NoW Number: </h1>
+          </div>
+        </div>
         <LoadingWrapper condition={this.state.isLoaded}>
           <div>
             <div className="side-menu">
@@ -96,8 +101,8 @@ export class ViewNoticeOfWorkApplication extends Component {
           </div>
         </LoadingWrapper>
       </div>
-    );
-  }
+    </div>
+  );
 }
 
 const mapStateToProps = (state) => ({
