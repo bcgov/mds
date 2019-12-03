@@ -199,63 +199,6 @@ def RandomPermitNumber():
         random.randint(1, 9999999))
 
 
-class PermitFactory(BaseFactory):
-    class Meta:
-        model = Permit
-
-    permit_id = factory.Sequence(lambda n: n)
-    permit_guid = GUID
-    permit_no = factory.LazyFunction(RandomPermitNumber)
-    permit_status_code = factory.LazyFunction(RandomPermitStatusCode)
-    permit_amendments = []
-    mine = factory.SubFactory('tests.factories.MineFactory', minimal=True)
-
-    @factory.post_generation
-    def permit_amendments(obj, create, extracted, **kwargs):
-        if not create:
-            return
-
-        if not isinstance(extracted, int):
-            extracted = 1
-
-        for n in range(extracted):
-            PermitAmendmentFactory(permit=obj, initial_permit=(n == 0), **kwargs)
-
-
-class PermitAmendmentFactory(BaseFactory):
-    class Meta:
-        model = PermitAmendment
-
-    class Params:
-        initial_permit = factory.Trait(
-            description='Initial permit issued.',
-            permit_amendment_type_code='OGP',
-        )
-        permit = factory.SubFactory(PermitFactory, permit_amendments=0)
-
-    permit_amendment_guid = GUID
-    permit_id = factory.SelfAttribute('permit.permit_id')
-    received_date = TODAY
-    issue_date = TODAY
-    authorization_end_date = factory.Faker('future_datetime', end_date='+30d')
-    permit_amendment_status_code = 'ACT'
-    permit_amendment_type_code = 'AMD'
-    description = factory.Faker('sentence', nb_words=6, variable_nb_words=True)
-    related_documents = []
-
-
-class PermitAmendmentDocumentFactory(BaseFactory):
-    class Meta:
-        model = PermitAmendmentDocument
-
-    permit_amendment_document_guid = GUID
-    permit_amendment_id = factory.SelfAttribute('permit_amendment.permit_amendment_id')
-    document_name = factory.Faker('file_name')
-    mine_guid = factory.SelfAttribute('permit_amendment.permit.mine.mine_guid')
-    document_manager_guid = GUID
-    permit_amendment = factory.SubFactory(PermitAmendmentFactory)
-
-
 class MineVerifiedStatusFactory(BaseFactory):
     class Meta:
         model = MineVerifiedStatus
@@ -459,13 +402,11 @@ class MinePartyAppointmentFactory(BaseFactory):
     end_date = None
     processed_by = factory.Faker('first_name')
     processed_on = TODAY
-
+    permit_guid = factory.LazyAttribute(lambda o: o.mine.mine_permit[
+        0].permit_guid if o.mine.mine_permit and o.mine_party_appt_type_code == 'PMT' else None)
     mine_tailings_storage_facility_guid = factory.LazyAttribute(
         lambda o: o.mine.mine_tailings_storage_facilities[0].mine_tailings_storage_facility_guid
         if o.mine_party_appt_type_code == 'EOR' else None)
-
-    permit_guid = factory.LazyAttribute(lambda o: o.mine.mine_permit[0].permit_guid
-                                        if o.mine.mine_permit and o.mine_party_appt_type_code == 'PMT' else None)
 
 
 class CoreUserFactory(BaseFactory):
@@ -602,3 +543,67 @@ class MineFactory(BaseFactory):
             extracted = 1
 
         MineReportFactory.create_batch(size=extracted, mine=obj, **kwargs)
+
+
+class PermitFactory(BaseFactory):
+    class Meta:
+        model = Permit
+
+    permit_id = factory.Sequence(lambda n: n)
+    permit_guid = GUID
+    permit_no = factory.LazyFunction(RandomPermitNumber)
+    permit_status_code = factory.LazyFunction(RandomPermitStatusCode)
+    permit_amendments = []
+    mine = factory.SubFactory('tests.factories.MineFactory', minimal=True)
+
+    permitee = factory.RelatedFactory(
+        'tests.factories.MinePartyAppointmentFactory',
+        mine=factory.SelfAttribute('mine'),
+        permit_guid=factory.SelfAttribute('permit_guid'),
+        mine_party_appt_type_code='PMT',
+        party__company=True)
+
+    @factory.post_generation
+    def permit_amendments(obj, create, extracted, **kwargs):
+        if not create:
+            return
+
+        if not isinstance(extracted, int):
+            extracted = 1
+
+        for n in range(extracted):
+            PermitAmendmentFactory(permit=obj, initial_permit=(n == 0), **kwargs)
+
+
+class PermitAmendmentFactory(BaseFactory):
+    class Meta:
+        model = PermitAmendment
+
+    class Params:
+        initial_permit = factory.Trait(
+            description='Initial permit issued.',
+            permit_amendment_type_code='OGP',
+        )
+        permit = factory.SubFactory(PermitFactory, permit_amendments=0)
+
+    permit_amendment_guid = GUID
+    permit_id = factory.SelfAttribute('permit.permit_id')
+    received_date = TODAY
+    issue_date = TODAY
+    authorization_end_date = factory.Faker('future_datetime', end_date='+30d')
+    permit_amendment_status_code = 'ACT'
+    permit_amendment_type_code = 'AMD'
+    description = factory.Faker('sentence', nb_words=6, variable_nb_words=True)
+    related_documents = []
+
+
+class PermitAmendmentDocumentFactory(BaseFactory):
+    class Meta:
+        model = PermitAmendmentDocument
+
+    permit_amendment_document_guid = GUID
+    permit_amendment_id = factory.SelfAttribute('permit_amendment.permit_amendment_id')
+    document_name = factory.Faker('file_name')
+    mine_guid = factory.SelfAttribute('permit_amendment.permit.mine.mine_guid')
+    document_manager_guid = GUID
+    permit_amendment = factory.SubFactory(PermitAmendmentFactory)
