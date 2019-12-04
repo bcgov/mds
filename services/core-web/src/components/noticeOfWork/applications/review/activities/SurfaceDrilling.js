@@ -46,7 +46,7 @@ export const SurfaceDrilling = (props) => {
 
   const transformData = (activities) =>
     activities.map((activity) => ({
-      type: activity.activity_type_description || Strings.EMPTY_FIELD,
+      activity: activity.activity_type_description || Strings.EMPTY_FIELD,
       numSites: activity.number_of_sites || Strings.EMPTY_FIELD,
       disturbedArea: activity.disturbed_area || Strings.EMPTY_FIELD,
       timberVolume: activity.timber_volume || Strings.EMPTY_FIELD,
