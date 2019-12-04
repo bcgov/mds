@@ -70,6 +70,9 @@ def _transmogrify_now_details(now_app, now_sub, mms_now_sub):
     now_app.tenure_number = mms_now_sub.tenurenumbers or now_sub.tenurenumbers
     now_app.proposed_start_date = mms_now_sub.proposedstartdate or now_sub.proposedstartdate
     now_app.proposed_end_date = mms_now_sub.proposedenddate or now_sub.proposedenddate
+    now_app.directions_to_site = mms_now_sub.sitedirections or now_sub.sitedirections
+    now_app.first_aid_equipment_on_site = mms_now_sub.firstaidequipmentonsite or now_sub.firstaidequipmentonsite
+    now_app.first_aid_cert_level = mms_now_sub.firstaidcertlevel or now_sub.firstaidcertlevel
     return
 
 
