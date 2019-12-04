@@ -372,12 +372,22 @@ export const ReviewNOWApplication = (props) => {
     <div>
       <Row gutter={16}>
         <Col md={12} sm={24}>
-          <div className="field-title">Proposed First Aid equipment on site**</div>
-          <Field id="" name="" component={RenderField} disabled={props.isViewMode} />
+          <div className="field-title">Proposed First Aid equipment on site</div>
+          <Field
+            id="first_aid_equipment_on_site"
+            name="first_aid_equipment_on_site"
+            component={RenderField}
+            disabled={props.isViewMode}
+          />
         </Col>
         <Col md={12} sm={24}>
-          <div className="field-title">Level of First Aid Certificate held by attendant**</div>
-          <Field id="" name="" component={RenderField} disabled={props.isViewMode} />
+          <div className="field-title">Level of First Aid Certificate held by attendant</div>
+          <Field
+            id="first_aid_cert_level"
+            name="first_aid_cert_level"
+            component={RenderField}
+            disabled={props.isViewMode}
+          />
         </Col>
       </Row>
     </div>
