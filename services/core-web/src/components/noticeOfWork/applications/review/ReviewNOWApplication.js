@@ -376,7 +376,7 @@ export const ReviewNOWApplication = (props) => {
           <Field
             id="first_aid_equipment_on_site"
             name="first_aid_equipment_on_site"
-            component={RenderField}
+            component={RenderAutoSizeField}
             disabled={props.isViewMode}
           />
         </Col>
