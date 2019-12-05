@@ -1,8 +1,11 @@
-import React, { useState } from "react";
+import React from "react";
 import { PropTypes } from "prop-types";
-import { Field } from "redux-form";
+import { bindActionCreators } from "redux";
+import { Field, formValueSelector, arrayInsert, arrayRemove, arrayPush } from "redux-form";
+import { connect } from "react-redux";
 import { Row, Col, Table, Button } from "antd";
-import * as Strings from "@/constants/strings";
+import * as FORM from "@/constants/forms";
+import { TRASHCAN } from "@/constants/assets";
 import RenderField from "@/components/common/RenderField";
 import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
 import RenderRadioButtons from "@/components/common/RenderRadioButtons";
@@ -11,62 +14,122 @@ import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
   isViewMode: PropTypes.bool.isRequired,
-  initialValues: CustomPropTypes.sandGravelQuarry,
+  details: CustomPropTypes.activityDetails.isRequired,
+  equipment: CustomPropTypes.activityEquipment.isRequired,
+  arrayInsert: PropTypes.func.isRequired,
+  arrayRemove: PropTypes.func.isRequired,
+  arrayPush: PropTypes.func.isRequired,
 };
 
-const defaultProps = {
-  initialValues: {},
-};
+const defaultProps = {};
 
 export const SandGravelQuarry = (props) => {
-  const [activities, setActivities] = useState(props.initialValues.details);
+  const removeRecord = (event, rowIndex) => {
+    event.preventDefault();
+    props.arrayRemove(FORM.EDIT_NOTICE_OF_WORK, "sand_and_gravel.details", rowIndex);
+  };
 
-  const columns = [
+  const editRecord = (event, rowIndex) => {
+    const activityToChange = props.details[rowIndex];
+    activityToChange[event.target.name] = event.target.value;
+    props.arrayRemove(FORM.EDIT_NOTICE_OF_WORK, "sand_and_gravel.details", rowIndex);
+    props.arrayInsert(
+      FORM.EDIT_NOTICE_OF_WORK,
+      "sand_and_gravel.details",
+      rowIndex,
+      activityToChange
+    );
+  };
+
+  const standardColumns = [
     {
       title: "Activity",
       dataIndex: "activity_type_description",
       key: "activity_type_description",
-      render: (text) => <div title="Activity">{text}</div>,
-    },
-    {
-      title: "Length(km)",
-      dataIndex: "length",
-      key: "length",
-      render: (text) => <div title="Length(km)">{text}</div>,
+      render: (text, record) => (
+        <div title="Activity">
+          <div className="inline-flex">
+            <input
+              name="activity_type_description"
+              type="text"
+              disabled={props.isViewMode}
+              value={text}
+              onChange={(e) => editRecord(e, record.index)}
+            />
+          </div>
+        </div>
+      ),
     },
     {
       title: "Disturbed Area (ha)",
-      dataIndex: "disturbedArea",
-      key: "disturbedArea",
-      render: (text) => <div title="Disturbed Area (ha)">{text}</div>,
+      dataIndex: "disturbed_area",
+      key: "disturbed_area",
+      render: (text, record) => (
+        <div title="Disturbed Area (ha)">
+          <div className="inline-flex">
+            <input
+              name="disturbed_area"
+              type="text"
+              disabled={props.isViewMode}
+              value={text}
+              onChange={(e) => editRecord(e, record.index)}
+            />
+          </div>
+        </div>
+      ),
     },
     {
       title: "Merchantable timber volume (m3)",
       dataIndex: "timber_volume",
       key: "timber_volume",
-      render: (text) => <div title="Merchantable timber volume (m3)">{text}</div>,
+      render: (text, record) => (
+        <div title="Merchantable timber volume (m3)">
+          <div className="inline-flex">
+            <input
+              name="timber_volume"
+              type="text"
+              disabled={props.isViewMode}
+              value={text}
+              onChange={(e) => editRecord(e, record.index)}
+            />
+          </div>
+        </div>
+      ),
     },
   ];
 
-  const addActivity = (currentActivities) => {
-    const newActivity = {
-      activity_type_description: "test",
-      length: null,
-      disturbedArea: null,
-      timberVolume: null,
-    };
-    currentActivities.push(newActivity);
-    setActivities((prevActivities) => [...prevActivities, newActivity]);
-    console.log(activities);
+  const removeColumn = {
+    dataIndex: "remove",
+    key: "remove",
+    render: (text, record) => (
+      <div name="remove" title="remove">
+        <Button type="primary" size="small" onClick={(e) => removeRecord(e, record.index)} ghost>
+          <img name="remove" src={TRASHCAN} alt="Remove Activity" />
+        </Button>
+      </div>
+    ),
   };
 
-  const transformData = (activityDetails) =>
-    activityDetails.map((activity) => ({
-      activity_type_description: activity.activity_type_description || Strings.EMPTY_FIELD,
-      length: activity.length || Strings.EMPTY_FIELD,
-      disturbedArea: activity.disturbed_area || Strings.EMPTY_FIELD,
-      timberVolume: activity.timber_volume || Strings.EMPTY_FIELD,
+  const columns = (isViewMode) =>
+    !isViewMode ? [...standardColumns, removeColumn] : standardColumns;
+
+  const addActivity = () => {
+    const newActivity = {
+      activity_type_description: null,
+      disturbed_area: null,
+      timber_volume: null,
+    };
+    props.arrayPush(FORM.EDIT_NOTICE_OF_WORK, "sand_and_gravel.details", newActivity);
+  };
+
+  const transformData = (activityDetails) => {
+    return activityDetails.map((activity, index) => ({
+      activity_type_description: activity.activity_type_description,
+      disturbed_area: activity.disturbed_area,
+      timber_volume: activity.timber_volume,
+      index,
     }));
+  };
 
   return (
     <div>
@@ -189,22 +252,39 @@ export const SandGravelQuarry = (props) => {
       <Table
         align="left"
         pagination={false}
-        columns={columns}
-        dataSource={transformData(activities || [])}
+        columns={columns(props.isViewMode)}
+        dataSource={transformData(props.details || [])}
         locale={{
           emptyText: "No data",
         }}
       />
-      <Button type="primary" onClick={() => addActivity(props.initialValues.details)}>
+      <Button type="primary" onClick={() => addActivity()}>
         Add Activity
       </Button>
       <br />
-      {props.initialValues.equipment && <Equipment equipment={props.initialValues.equipment} />}
+      {props.equipment && <Equipment equipment={props.equipment} />}
     </div>
   );
 };
 
+const selector = formValueSelector(FORM.EDIT_NOTICE_OF_WORK);
 SandGravelQuarry.propTypes = propTypes;
 SandGravelQuarry.defaultProps = defaultProps;
 
-export default SandGravelQuarry;
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators(
+    {
+      arrayInsert,
+      arrayRemove,
+      arrayPush,
+    },
+    dispatch
+  );
+
+export default connect(
+  (state) => ({
+    details: selector(state, "sand_and_gravel.details"),
+    equipment: selector(state, "sand_and_gravel.equipment"),
+  }),
+  mapDispatchToProps
+)(SandGravelQuarry);

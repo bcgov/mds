@@ -216,8 +216,8 @@ exports[`SandGravelQuarry renders properly 1`] = `
     columns={
       Array [
         Object {
-          "dataIndex": "type",
-          "key": "type",
+          "dataIndex": "activity_type_description",
+          "key": "activity_type_description",
           "render": [Function],
           "title": "Activity",
         },
@@ -234,8 +234,8 @@ exports[`SandGravelQuarry renders properly 1`] = `
           "title": "Disturbed Area (ha)",
         },
         Object {
-          "dataIndex": "timberVolume",
-          "key": "timberVolume",
+          "dataIndex": "timber_volume",
+          "key": "timber_volume",
           "render": [Function],
           "title": "Merchantable timber volume (m3)",
         },
@@ -249,6 +249,16 @@ exports[`SandGravelQuarry renders properly 1`] = `
     }
     pagination={false}
   />
+  <Button
+    block={false}
+    ghost={false}
+    htmlType="button"
+    loading={false}
+    onClick={[Function]}
+    type="primary"
+  >
+    Add Activity
+  </Button>
   <br />
 </div>
 `;

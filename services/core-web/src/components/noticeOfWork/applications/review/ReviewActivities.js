@@ -1,7 +1,6 @@
 import React from "react";
 import { PropTypes } from "prop-types";
 import { FormSection } from "redux-form";
-import CustomPropTypes from "@/customPropTypes";
 import ScrollContentWrapper from "@/components/common/wrappers/ScrollContentWrapper";
 import AccessRoads from "@/components/noticeOfWork/applications/review/activities/AccessRoads";
 import Blasting from "@/components/noticeOfWork/applications/review/activities/Blasting";
@@ -24,7 +23,7 @@ const propTypes = {
   // isViewMode is being passed into field Component, thus ReviewActivities.js assumes it isn't being used
   // eslint-disable-next-line
   isViewMode: PropTypes.bool.isRequired,
-  noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
+  // noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
 };
 
 export const ReviewActivities = (props) => {
@@ -36,7 +35,7 @@ export const ReviewActivities = (props) => {
       >
         <FormSection name="exploration_access">
           <AccessRoads
-            initialValues={props.noticeOfWork.exploration_access}
+            // initialValues={props.noticeOfWork.exploration_access}
             isViewMode={props.isViewMode}
           />
         </FormSection>
@@ -44,7 +43,7 @@ export const ReviewActivities = (props) => {
       <ScrollContentWrapper id="blasting" title="Blasting">
         <FormSection name="blasting_operation">
           <Blasting
-            initialValues={props.noticeOfWork.blasting_operation}
+            // initialValues={props.noticeOfWork.blasting_operation}
             isViewMode={props.isViewMode}
           />
         </FormSection>
@@ -54,7 +53,10 @@ export const ReviewActivities = (props) => {
         title="Camps, Buildings, Staging Areas, Fuel/Lubricant Storage"
       >
         <FormSection name="camps">
-          <Camps initialValues={props.noticeOfWork.camps} isViewMode={props.isViewMode} />
+          <Camps
+            // initialValues={props.noticeOfWork.camps}
+            isViewMode={props.isViewMode}
+          />
         </FormSection>
       </ScrollContentWrapper>
       <ScrollContentWrapper
@@ -63,7 +65,7 @@ export const ReviewActivities = (props) => {
       >
         <FormSection name="cut_lines_polarization_survey">
           <CutLines
-            initialValues={props.noticeOfWork.cut_lines_polarization_survey}
+            // initialValues={props.noticeOfWork.cut_lines_polarization_survey}
             isViewMode={props.isViewMode}
           />
         </FormSection>
@@ -71,7 +73,7 @@ export const ReviewActivities = (props) => {
       <ScrollContentWrapper id="surface-drilling" title="Exploration Surface Drilling">
         <FormSection name="exploration_surface_drilling">
           <SurfaceDrilling
-            initialValues={props.noticeOfWork.exploration_surface_drilling}
+            // initialValues={props.noticeOfWork.exploration_surface_drilling}
             isViewMode={props.isViewMode}
           />
         </FormSection>
@@ -79,7 +81,7 @@ export const ReviewActivities = (props) => {
       <ScrollContentWrapper id="mechanical-trenching" title="Mechanical Trenching / Test Pits">
         <FormSection name="mechanical_trenching">
           <MechanicalTrenching
-            initialValues={props.noticeOfWork.mechanical_trenching}
+            // initialValues={props.noticeOfWork.mechanical_trenching}
             isViewMode={props.isViewMode}
           />
         </FormSection>
@@ -87,7 +89,7 @@ export const ReviewActivities = (props) => {
       <ScrollContentWrapper id="settling-ponds" title="Settling Ponds">
         <FormSection name="settling_pond">
           <SettlingPonds
-            initialValues={props.noticeOfWork.settling_pond}
+            // initialValues={props.noticeOfWork.settling_pond}
             isViewMode={props.isViewMode}
           />
         </FormSection>
@@ -95,7 +97,7 @@ export const ReviewActivities = (props) => {
       <ScrollContentWrapper id="surface-bulk-samples" title="Surface Bulk Sample">
         <FormSection name="surface_bulk_sample">
           <SurfaceBulkSamples
-            initialValues={props.noticeOfWork.surface_bulk_sample}
+            // initialValues={props.noticeOfWork.surface_bulk_sample}
             isViewMode={props.isViewMode}
           />
         </FormSection>
@@ -103,7 +105,7 @@ export const ReviewActivities = (props) => {
       <ScrollContentWrapper id="underground-exploration" title="Underground Exploration">
         <FormSection name="underground_exploration">
           <UndergroundExploration
-            initialValues={props.noticeOfWork.underground_exploration}
+            // initialValues={props.noticeOfWork.underground_exploration}
             isViewMode={props.isViewMode}
           />
         </FormSection>
@@ -114,7 +116,7 @@ export const ReviewActivities = (props) => {
       >
         <FormSection name="sand_and_gravel">
           <SandGravelQuarry
-            initialValues={props.noticeOfWork.sand_and_gravel}
+            // initialValues={props.noticeOfWork.sand_and_gravel}
             isViewMode={props.isViewMode}
           />
         </FormSection>
@@ -122,7 +124,7 @@ export const ReviewActivities = (props) => {
       <ScrollContentWrapper id="placer-operations" title="Placer Operations">
         <FormSection name="placer_operation">
           <Placer
-            initialValues={props.noticeOfWork.placer_operation}
+            // initialValues={props.noticeOfWork.placer_operation}
             isViewMode={props.isViewMode}
           />
         </FormSection>
@@ -130,7 +132,7 @@ export const ReviewActivities = (props) => {
       <ScrollContentWrapper id="water-supply" title="Water Supply">
         <FormSection name="water_supply">
           <WaterSupply
-            initialValues={props.noticeOfWork.water_supply}
+            // initialValues={props.noticeOfWork.water_supply}
             isViewMode={props.isViewMode}
           />
         </FormSection>

@@ -1,8 +1,9 @@
 import React from "react";
 import { PropTypes } from "prop-types";
-import { Field, reduxForm, FormSection } from "redux-form";
+import { compose } from "redux";
+import { connect } from "react-redux";
+import { Field, reduxForm, FormSection, formValueSelector } from "redux-form";
 import { Form, Divider, Row, Col, Card } from "antd";
-import CustomPropTypes from "@/customPropTypes";
 import RenderField from "@/components/common/RenderField";
 import RenderDate from "@/components/common/RenderDate";
 import RenderRadioButtons from "@/components/common/RenderRadioButtons";
@@ -23,7 +24,9 @@ const propTypes = {
   // isViewMode is being passed into field Component, thus ReviewNOWApplication.js assumes it isn't being used
   // eslint-disable-next-line
   isViewMode: PropTypes.bool.isRequired,
-  noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
+  // contacts is being passed into field Component, thus ReviewNOWApplication.js assumes it isn't being used
+  // eslint-disable-next-line
+  contacts: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
   // reclamationSummary is being passed into field Component, thus ReviewNOWApplication.js assumes it isn't being used
   // eslint-disable-next-line
   reclamationSummary: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.strings)).isRequired,
@@ -168,9 +171,9 @@ export const ReviewNOWApplication = (props) => {
 
   const renderContacts = () => (
     <div>
-      {props.noticeOfWork.contacts && props.noticeOfWork.contacts.length >= 1 ? (
+      {props.contacts && props.contacts.length >= 1 ? (
         <Row gutter={16}>
-          {props.noticeOfWork.contacts.map((contact) => {
+          {props.contacts.map((contact) => {
             const formattedPhoneNo = contact.phone_ext
               ? `${contact.phone_no} ext: ${contact.phone_ext}`
               : contact.phone_no;
@@ -422,6 +425,7 @@ export const ReviewNOWApplication = (props) => {
 
   return (
     <div>
+      {/* eslint-disable-next-line */}
       <Form layout="vertical" onSubmit={() => console.log("submitting form")}>
         <div className="side-menu--content">
           <h2>General Information</h2>
@@ -449,11 +453,7 @@ export const ReviewNOWApplication = (props) => {
           <ScrollContentWrapper id="reclamation" title="Summary of Reclamation">
             {renderReclamation()}
           </ScrollContentWrapper>
-          <ReviewActivities
-            isViewMode={props.isViewMode}
-            initialValues={props.noticeOfWork}
-            noticeOfWork={props.noticeOfWork}
-          />
+          <ReviewActivities isViewMode={props.isViewMode} />
           <ScrollContentWrapper id="documents" title="Documents">
             {renderDocuments()}
           </ScrollContentWrapper>
@@ -464,9 +464,15 @@ export const ReviewNOWApplication = (props) => {
 };
 
 ReviewNOWApplication.propTypes = propTypes;
+const selector = formValueSelector(FORM.EDIT_NOTICE_OF_WORK);
 
-export default reduxForm({
-  form: FORM.EDIT_NOTICE_OF_WORK,
-  touchOnBlur: true,
-  enableReinitialize: true,
-})(ReviewNOWApplication);
+export default compose(
+  connect((state) => ({
+    contacts: selector(state, "contacts"),
+  })),
+  reduxForm({
+    form: FORM.EDIT_NOTICE_OF_WORK,
+    touchOnBlur: true,
+    enableReinitialize: true,
+  })
+)(ReviewNOWApplication);

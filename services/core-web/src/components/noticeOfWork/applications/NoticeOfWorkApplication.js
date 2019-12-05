@@ -152,9 +152,6 @@ export class NoticeOfWorkApplication extends Component {
         initialValues={
           this.state.showOriginalValues ? this.props.originalNoticeOfWork : this.props.noticeOfWork
         }
-        noticeOfWork={
-          this.state.showOriginalValues ? this.props.originalNoticeOfWork : this.props.noticeOfWork
-        }
       />
     );
   };
@@ -196,20 +193,19 @@ export class NoticeOfWorkApplication extends Component {
               </Link> */}
             </div>
             {/* hiding the edit button until fully functionality is implemented */}
-            {false && (
-              <div>
-                {this.state.isViewMode && (
-                  <Button onClick={this.toggleShowOriginalValues}>
-                    {this.state.showOriginalValues ? `Show Current` : `Show Original`}
-                  </Button>
-                )}
-                {!this.state.showOriginalValues && (
-                  <Button onClick={this.toggleEditMode}>
-                    {this.state.isViewMode ? "Edit" : "Save"}
-                  </Button>
-                )}
-              </div>
-            )}
+
+            <div>
+              {this.state.isViewMode && (
+                <Button onClick={this.toggleShowOriginalValues}>
+                  {this.state.showOriginalValues ? `Show Current` : `Show Original`}
+                </Button>
+              )}
+              {!this.state.showOriginalValues && (
+                <Button onClick={this.toggleEditMode}>
+                  {this.state.isViewMode ? "Edit" : "Save"}
+                </Button>
+              )}
+            </div>
           </div>
           <br />
           <Steps current={this.state.currentStep} onChange={this.onChange}>

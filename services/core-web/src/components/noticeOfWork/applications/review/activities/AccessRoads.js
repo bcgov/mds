@@ -1,8 +1,10 @@
 import React from "react";
 import { PropTypes } from "prop-types";
-import { Field } from "redux-form";
+import { Field, formValueSelector } from "redux-form";
+import { connect } from "react-redux";
 import { Row, Col, Table } from "antd";
 import * as Strings from "@/constants/strings";
+import * as FORM from "@/constants/forms";
 import RenderField from "@/components/common/RenderField";
 import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
 import RenderRadioButtons from "@/components/common/RenderRadioButtons";
@@ -10,12 +12,10 @@ import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
   isViewMode: PropTypes.bool.isRequired,
-  initialValues: CustomPropTypes.defaultActivity,
+  details: CustomPropTypes.activityDetails.isRequired,
 };
 
-const defaultProps = {
-  initialValues: {},
-};
+const defaultProps = {};
 
 export const AccessRoads = (props) => {
   const columns = [
@@ -59,7 +59,7 @@ export const AccessRoads = (props) => {
         align="left"
         pagination={false}
         columns={columns}
-        dataSource={transformData(props.initialValues.details ? props.initialValues.details : [])}
+        dataSource={transformData(props.details ? props.details : [])}
         locale={{
           emptyText: "No data",
         }}
@@ -105,7 +105,10 @@ export const AccessRoads = (props) => {
   );
 };
 
+const selector = formValueSelector(FORM.EDIT_NOTICE_OF_WORK);
 AccessRoads.propTypes = propTypes;
 AccessRoads.defaultProps = defaultProps;
 
-export default AccessRoads;
+export default connect((state) => ({
+  details: selector(state, "exploration_access.details"),
+}))(AccessRoads);
