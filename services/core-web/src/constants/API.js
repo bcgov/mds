@@ -164,6 +164,8 @@ export const NOTICE_OF_WORK_APPLICATION_STATUS_OPTIONS =
 export const NOW_APPLICATION_DOCUMENT_TYPE_OPTIONS = "/now-applications/application-document-types";
 export const NOW_UNDERGROUND_EXPLORATION_TYPE_OPTIONS =
   "/now-applications/underground-exploration-types";
+export const NOTICE_OF_WORK_APPLICATION_PROGRESS = (applicationGuid) =>
+  `/now-applications/${applicationGuid}/progress`;
 
 // Mine Party Appointments
 export const MINE_PARTY_APPOINTMENT_DOCUMENTS = (mineGuid, minePartyAppointmentGuid) =>

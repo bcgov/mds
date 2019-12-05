@@ -559,7 +559,7 @@ VALUES
     ('SUR', 'Surface', 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
 
-INSERT INTO application_progress_status (
+INSERT INTO now_application_progress_status (
     application_progress_status_code,
     description,
     create_user,
@@ -568,6 +568,6 @@ INSERT INTO application_progress_status (
 VALUES
     ('VER', 'Verification', 'system-mds', 'system-mds'),
     ('REV', 'Technical Review', 'system-mds', 'system-mds'),
-    ('REF', 'Referral / Consultation', 'system-mds', 'system-mds')
+    ('REF', 'Referral / Consultation', 'system-mds', 'system-mds'),
     ('DEC', 'Decision', 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
