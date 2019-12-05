@@ -210,6 +210,15 @@ NOW_APPLCATION_STATE_OF_LAND = api.model(
     }
 )
 
+NOW_SUBMISSION_DOCUMENT = api.model(
+    'DOCUMENT', {
+        'id': fields.Integer,
+        'documenturl': fields.String,
+        'filename': fields.String,
+        'documenttype': fields.String,
+        'description': fields.String,
+    })
+
 NOW_APPLICATION_MODEL = api.model(
     'NOWApplication',
     {
@@ -246,7 +255,8 @@ NOW_APPLICATION_MODEL = api.model(
         'settling_pond': fields.Nested(NOW_APPLICATION_SETTLING_POND, skip_none=True),
         'surface_bulk_sample': fields.Nested(NOW_APPLICATION_SURFACE_BULK, skip_none=True),
         'underground_exploration': fields.Nested(NOW_APPLICATION_UNDERGROUND_EXPLORATION, skip_none=True),
-        'water_supply': fields.Nested(NOW_APPLICATION_WATER_SUPPLY, skip_none=True)
+        'water_supply': fields.Nested(NOW_APPLICATION_WATER_SUPPLY, skip_none=True),
+        'submission_documents': fields.List(fields.Nested(NOW_SUBMISSION_DOCUMENT), skip_none=True),
     })
 
 NOW_VIEW_MODEL = api.model(

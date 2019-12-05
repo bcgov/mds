@@ -12,6 +12,7 @@ from .now_application_status import NOWApplicationStatus
 from .now_application_identity import NOWApplicationIdentity
 from app.api.constants import *
 
+from app.api.now_submissions.models.document import Document
 
 class NOWApplication(Base, AuditMixin):
     __tablename__ = "now_application"
@@ -20,7 +21,7 @@ class NOWApplication(Base, AuditMixin):
 
     now_application_id = db.Column(db.Integer, primary_key=True, server_default=FetchedValue())
     now_application_identity = db.relationship(
-        'NOWApplicationIdentity', lazy='joined', uselist=False)
+        'NOWApplicationIdentity', lazy='selectin', uselist=False)
     now_application_guid = association_proxy('now_application_identity', 'now_application_guid')
 
     mine_guid = association_proxy('now_application_identity', 'mine_guid')
@@ -65,6 +66,15 @@ class NOWApplication(Base, AuditMixin):
     underground_exploration = db.relationship(
         'UndergroundExploration', lazy='selectin', uselist=False)
     water_supply = db.relationship('WaterSupply', lazy='selectin', uselist=False)
+
+    # Documents
+    submission_documents = db.relationship(
+        'Document',
+        lazy='selectin',
+        uselist=False,
+        primaryjoin='and_(NOWApplication.now_application_id==NOWApplicationIdentity.now_application_id, NOWApplicationIdentity.messageid==Application.messageid)',
+        secondaryjoin='Application.messageid==Document.messageid',
+        viewonly=True)
 
     def __repr__(self):
         return '<NOWApplication %r>' % self.now_application_guid
