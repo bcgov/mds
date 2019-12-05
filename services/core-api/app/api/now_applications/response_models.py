@@ -233,6 +233,7 @@ NOW_APPLICATION_MODEL = api.model(
         'property_name': fields.String,
         'tenure_number': fields.String,
         'description_of_land': fields.String,
+        'application_permit_type_code': fields.String,
         'proposed_start_date': Date,
         'proposed_end_date': Date,
         'directions_to_site':fields.String,
@@ -267,7 +268,7 @@ NOW_VIEW_MODEL = api.model(
         'received_date': Date
     }
 )
-
+ 
 PAGINATED_LIST = api.model(
     'List', {
         'current_page': fields.Integer,

@@ -125,7 +125,12 @@ export const ReviewNOWApplication = (props) => {
       <Row gutter={16}>
         <Col md={12} sm={24}>
           <div className="field-title">Permit Type**</div>
-          <Field id="" name="" component={RenderField} disabled={props.isViewMode} />
+          <Field
+            id="application_permit_type_code"
+            name="application_permit_type_code"
+            component={RenderField}
+            disabled={props.isViewMode}
+          />
         </Col>
         <Col md={12} sm={24}>
           <div className="field-title">Proposed Start Date</div>
@@ -158,7 +163,7 @@ export const ReviewNOWApplication = (props) => {
           <Field
             id="tenure_number"
             name="tenure_number"
-            component={RenderField}
+            component={RenderAutoSizeField}
             disabled={props.isViewMode}
           />
         </Col>

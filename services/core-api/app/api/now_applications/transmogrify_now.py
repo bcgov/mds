@@ -14,6 +14,13 @@ unit_type_map = {
     None: None
 }
 
+type_of_permit_map = {
+    'I would like to apply for a Multi-Year permit': 'MYP',
+    'I would like to apply for a one year permit': 'OYP',
+    'I would like to apply for a Multi-Year, Area Based permit': 'MY-ABP',
+    None: None
+}
+
 
 def code_lookup(model, description, code_column_name):
     if description:
@@ -62,6 +69,8 @@ def _transmogrify_now_details(now_app, now_sub, mms_now_sub):
         'notice_of_work_type_code')
     now_app.now_application_status_code = code_lookup(app_models.NOWApplicationStatus,
                                                       now_sub.status, 'now_application_status_code')
+    now_app.application_permit_type_code = type_of_permit_map[now_sub.typeofpermit]
+
     now_app.submitted_date = mms_now_sub.submitteddate or now_sub.submitteddate
     now_app.received_date = mms_now_sub.receiveddate or now_sub.receiveddate
     now_app.latitude = mms_now_sub.latitude or now_sub.latitude
