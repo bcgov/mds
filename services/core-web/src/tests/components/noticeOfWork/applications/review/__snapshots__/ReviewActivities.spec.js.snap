@@ -9,12 +9,7 @@ exports[`ReviewActivities renders properly 1`] = `
     <FormSection
       name="exploration_access"
     >
-      <AccessRoads
-        initialValues={
-          Object {
-            "details": Array [],
-          }
-        }
+      <Connect(AccessRoads)
         isViewMode={true}
       />
     </FormSection>
@@ -27,7 +22,6 @@ exports[`ReviewActivities renders properly 1`] = `
       name="blasting_operation"
     >
       <Blasting
-        initialValues={Object {}}
         isViewMode={true}
       />
     </FormSection>
@@ -40,11 +34,7 @@ exports[`ReviewActivities renders properly 1`] = `
       name="camps"
     >
       <Camps
-        initialValues={
-          Object {
-            "details": Array [],
-          }
-        }
+        initialValues={Object {}}
         isViewMode={true}
       />
     </FormSection>
@@ -57,11 +47,7 @@ exports[`ReviewActivities renders properly 1`] = `
       name="cut_lines_polarization_survey"
     >
       <CutLines
-        initialValues={
-          Object {
-            "details": Array [],
-          }
-        }
+        initialValues={Object {}}
         isViewMode={true}
       />
     </FormSection>
@@ -74,11 +60,7 @@ exports[`ReviewActivities renders properly 1`] = `
       name="exploration_surface_drilling"
     >
       <SurfaceDrilling
-        initialValues={
-          Object {
-            "details": Array [],
-          }
-        }
+        initialValues={Object {}}
         isViewMode={true}
       />
     </FormSection>
@@ -91,11 +73,7 @@ exports[`ReviewActivities renders properly 1`] = `
       name="mechanical_trenching"
     >
       <MechanicalTrenching
-        initialValues={
-          Object {
-            "details": Array [],
-          }
-        }
+        initialValues={Object {}}
         isViewMode={true}
       />
     </FormSection>
@@ -108,11 +86,7 @@ exports[`ReviewActivities renders properly 1`] = `
       name="settling_pond"
     >
       <SettlingPonds
-        initialValues={
-          Object {
-            "details": Array [],
-          }
-        }
+        initialValues={Object {}}
         isViewMode={true}
       />
     </FormSection>
@@ -125,11 +99,7 @@ exports[`ReviewActivities renders properly 1`] = `
       name="surface_bulk_sample"
     >
       <SurfaceBulkSamples
-        initialValues={
-          Object {
-            "details": Array [],
-          }
-        }
+        initialValues={Object {}}
         isViewMode={true}
       />
     </FormSection>
@@ -142,11 +112,7 @@ exports[`ReviewActivities renders properly 1`] = `
       name="underground_exploration"
     >
       <UndergroundExploration
-        initialValues={
-          Object {
-            "details": Array [],
-          }
-        }
+        initialValues={Object {}}
         isViewMode={true}
       />
     </FormSection>
@@ -158,12 +124,7 @@ exports[`ReviewActivities renders properly 1`] = `
     <FormSection
       name="sand_and_gravel"
     >
-      <SandGravelQuarry
-        initialValues={
-          Object {
-            "details": Array [],
-          }
-        }
+      <Connect(SandGravelQuarry)
         isViewMode={true}
       />
     </FormSection>
@@ -176,11 +137,7 @@ exports[`ReviewActivities renders properly 1`] = `
       name="placer_operation"
     >
       <Placer
-        initialValues={
-          Object {
-            "details": Array [],
-          }
-        }
+        initialValues={Object {}}
         isViewMode={true}
       />
     </FormSection>
@@ -193,11 +150,7 @@ exports[`ReviewActivities renders properly 1`] = `
       name="water_supply"
     >
       <WaterSupply
-        initialValues={
-          Object {
-            "details": Array [],
-          }
-        }
+        initialValues={Object {}}
         isViewMode={true}
       />
     </FormSection>

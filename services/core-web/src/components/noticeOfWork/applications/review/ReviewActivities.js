@@ -115,10 +115,7 @@ export const ReviewActivities = (props) => {
         title="Sand and Gravel / Quary Operations"
       >
         <FormSection name="sand_and_gravel">
-          <SandGravelQuarry
-            // initialValues={props.noticeOfWork.sand_and_gravel}
-            isViewMode={props.isViewMode}
-          />
+          <SandGravelQuarry isViewMode={props.isViewMode} />
         </FormSection>
       </ScrollContentWrapper>
       <ScrollContentWrapper id="placer-operations" title="Placer Operations">

@@ -222,14 +222,8 @@ exports[`SandGravelQuarry renders properly 1`] = `
           "title": "Activity",
         },
         Object {
-          "dataIndex": "length",
-          "key": "length",
-          "render": [Function],
-          "title": "Length(km)",
-        },
-        Object {
-          "dataIndex": "disturbedArea",
-          "key": "disturbedArea",
+          "dataIndex": "disturbed_area",
+          "key": "disturbed_area",
           "render": [Function],
           "title": "Disturbed Area (ha)",
         },
