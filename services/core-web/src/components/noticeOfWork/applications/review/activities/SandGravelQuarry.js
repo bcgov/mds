@@ -258,9 +258,11 @@ export const SandGravelQuarry = (props) => {
           emptyText: "No data",
         }}
       />
-      <Button type="primary" onClick={() => addActivity()}>
-        Add Activity
-      </Button>
+      {!props.isViewMode && (
+        <Button type="primary" onClick={() => addActivity()}>
+          Add Activity
+        </Button>
+      )}
       <br />
       {props.equipment && <Equipment equipment={props.equipment} />}
     </div>
