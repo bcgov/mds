@@ -35,7 +35,7 @@ export const PermitResultsTable = (props) => {
           </Col>
           <Col xs={24} md={18}>
             <p>
-              <Highlight search={props.highlightRegex}>{record.permitee}</Highlight>
+              <Highlight search={props.highlightRegex}>{record.current_permittee}</Highlight>
             </p>
           </Col>
           <Col xs={24} md={6}>

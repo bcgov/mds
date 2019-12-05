@@ -74,7 +74,7 @@ class PermitAmendmentListResource(Resource, UserMixin):
 
         for permittee in permittees:
             # check if the new appointment is older than the current appointment, if so create a new permittee appointment
-            if permittee.start_date > datetime.date(permit_issue_date):
+            if permittee.start_date > permit_issue_date:
                 is_historical_permit = True
             else:
                 # if the amendment is the newest, change the end dates of the other appointments
@@ -86,16 +86,20 @@ class PermitAmendmentListResource(Resource, UserMixin):
                     permittee.save()
 
         permittee_start_date = permit_issue_date
-        position = new_end_dates.index(datetime.date(permit_issue_date))
+        position = new_end_dates.index(permit_issue_date)
         permittee_end_date = new_end_dates[position - 1] if is_historical_permit else None
 
         # create a new appointment, so every amendment is associated with a permittee
-        new_permittee = MinePartyAppointment.create(permit.mine_guid,
-                                                    data.get('permittee_party_guid'), 'PMT',
-                                                    permittee_start_date, permittee_end_date,
-                                                    self.get_user_info(), permit_guid, True)
-        new_permittee.save()
+        new_permittee = MinePartyAppointment.create(
+            permit.mine_guid,
+            data.get('permittee_party_guid'),
+            'PMT',
+            self.get_user_info(),
+            start_date=permittee_start_date,
+            end_date=permittee_end_date,
+            permit_guid=permit_guid)
 
+        new_permittee.save()
         new_pa = PermitAmendment.create(
             permit,
             data.get('received_date'),
@@ -112,6 +116,7 @@ class PermitAmendmentListResource(Resource, UserMixin):
                 mine_guid=permit.mine_guid,
             )
             new_pa.related_documents.append(new_pa_doc)
+
         new_pa.save()
         return new_pa
 
