@@ -297,7 +297,7 @@ def _transmogrify_placer_operations(now_app, now_sub, mms_now_sub):
                     activity_type_description=existing.type,
                     disturbed_area=existing.disturbedarea,
                     timber_volume=existing.timbervolume,
-                    width=existing.width,
+                    width=getattr(existing, 'width', None),
                     length=existing.length,
                     depth=existing.depth,
                     quantity=existing.quantity)
