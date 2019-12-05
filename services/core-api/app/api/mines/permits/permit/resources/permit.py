@@ -97,9 +97,13 @@ class PermitListResource(Resource, UserMixin):
         db.session.commit()
 
         permittee_start_date = data.get('issue_date'),
-        permittee = MinePartyAppointment.create(mine.mine_guid, data.get('permittee_party_guid'),
-                                                'PMT', permittee_start_date, None,
-                                                self.get_user_info(), permit.permit_guid, True)
+        permittee = MinePartyAppointment.create(
+            mine.mine_guid,
+            data.get('permittee_party_guid'),
+            'PMT',
+            start_date=permittee_start_date,
+            processed_by=self.get_user_info(),
+            permit_guid=permit.permit_guid)
         db.session.add(permittee)
         db.session.commit()
 

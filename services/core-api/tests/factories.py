@@ -34,7 +34,7 @@ from app.api.mines.reports.models.mine_report_submission import MineReportSubmis
 from app.api.mines.reports.models.mine_report_comment import MineReportComment
 
 GUID = factory.LazyFunction(uuid.uuid4)
-TODAY = factory.LazyFunction(datetime.now)
+TODAY = factory.LazyFunction(datetime.utcnow)
 
 FACTORY_LIST = []
 
@@ -407,6 +407,9 @@ class MinePartyAppointmentFactory(BaseFactory):
     mine_tailings_storage_facility_guid = factory.LazyAttribute(
         lambda o: o.mine.mine_tailings_storage_facilities[0].mine_tailings_storage_facility_guid
         if o.mine_party_appt_type_code == 'EOR' else None)
+
+    permit_guid = factory.LazyAttribute(lambda o: o.mine.mine_permit[
+        0].permit_guid if o.mine.mine_permit and o.mine_party_appt_type_code == 'PMT' else None)
 
 
 class CoreUserFactory(BaseFactory):
