@@ -72,6 +72,7 @@ class NOWApplication(Base, AuditMixin):
         'Document',
         lazy='selectin',
         uselist=False,
+        secondary="join(NOWApplication, NOWApplicationIdentity, NOWApplication.now_application_id == NOWApplicationIdentity.now_application_id).join(Application, NOWApplicationIdentity.messageid == Application.messageid)",
         primaryjoin='and_(NOWApplication.now_application_id==NOWApplicationIdentity.now_application_id, NOWApplicationIdentity.messageid==Application.messageid)',
         secondaryjoin='Application.messageid==Document.messageid',
         viewonly=True)

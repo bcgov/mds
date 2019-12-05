@@ -70,6 +70,7 @@ def _transmogrify_now_details(now_app, now_sub, mms_now_sub):
     now_app.tenure_number = mms_now_sub.tenurenumbers or now_sub.tenurenumbers
     now_app.proposed_start_date = mms_now_sub.proposedstartdate or now_sub.proposedstartdate
     now_app.proposed_end_date = mms_now_sub.proposedenddate or now_sub.proposedenddate
+    now_app.submission_documents = now_sub.documents
     return
 
 
