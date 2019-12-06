@@ -11,3 +11,7 @@ CREATE TABLE now_application_permit_type(
 
 ALTER TABLE public.now_application ADD COLUMN application_permit_type_code varchar REFERENCES now_application_permit_type(now_application_permit_type_code); 
 ALTER TABLE public.now_application ADD COLUMN application_permit_term integer;
+
+
+ALTER TABLE public.now_application ADD COLUMN first_aid_equipment_on_site varchar; 
+ALTER TABLE public.now_application ADD COLUMN first_aid_cert_level varchar; 
