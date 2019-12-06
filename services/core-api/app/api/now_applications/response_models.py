@@ -334,3 +334,11 @@ UNDERGROUND_EXPLORATION_TYPES = api.model(
         'description': fields.String
     }
 )
+
+APPLICATION_PROGRESS_STATUS_CODES = api.model(
+    'ApplicationProgressStatusCodes',
+    {
+        'application_progress_status_code': fields.String,
+        'description': fields.String
+    }
+)

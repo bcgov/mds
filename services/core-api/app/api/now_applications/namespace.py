@@ -10,6 +10,7 @@ from app.api.now_applications.resources.unit_type_resource import UnitTypeResour
 from app.api.now_applications.resources.now_application_document_type_resource import NOWApplicationDocumentTypeResource
 from app.api.now_applications.resources.underground_exploration_type_resource import UndergroundExplorationTypeResource
 from app.api.now_applications.resources.now_application_progress_resource import NOWApplicationProgressResource
+from app.api.now_applications.resources.now_application_progress_status_resource import NOWApplicationProgressStatusResource
 
 api = Namespace('now-applications', description='Party related operations')
 
@@ -25,3 +26,4 @@ api.add_resource(NOWApplicationStatusCodeResource, '/application-status-codes')
 api.add_resource(UnitTypeResource, '/unit-types')
 api.add_resource(NOWApplicationDocumentTypeResource, '/application-document-types')
 api.add_resource(UndergroundExplorationTypeResource, '/underground-exploration-types')
+api.add_resource(NOWApplicationProgressStatusResource, '/application-progress-status-codes')

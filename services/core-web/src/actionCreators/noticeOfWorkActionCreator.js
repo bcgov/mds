@@ -110,7 +110,7 @@ export const fetchOriginalNoticeOfWorkApplication = (applicationGuid) => (dispat
 };
 
 export const createNoticeOfWorkApplicationProgress = (applicationGuid, payload) => (dispatch) => {
-  dispatch(request(reducerTypes.CREATE_NOTICE_OF_WORK_APPLICATION));
+  dispatch(request(reducerTypes.CREATE_NOTICE_OF_WORK_APPLICATION_PROGRESS));
   dispatch(showLoading());
   return CustomAxios()
     .post(
@@ -119,9 +119,9 @@ export const createNoticeOfWorkApplicationProgress = (applicationGuid, payload) 
       createRequestHeader()
     )
     .then((response) => {
-      dispatch(success(reducerTypes.CREATE_NOTICE_OF_WORK_APPLICATION));
+      dispatch(success(reducerTypes.CREATE_NOTICE_OF_WORK_APPLICATION_PROGRESS));
       return response;
     })
-    .catch(() => dispatch(error(reducerTypes.CREATE_NOTICE_OF_WORK_APPLICATION)))
+    .catch(() => dispatch(error(reducerTypes.CREATE_NOTICE_OF_WORK_APPLICATION_PROGRESS)))
     .finally(() => dispatch(hideLoading()));
 };

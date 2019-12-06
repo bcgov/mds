@@ -9,6 +9,7 @@ import {
   createNoticeOfWorkApplication,
   fetchImportedNoticeOfWorkApplication,
   fetchOriginalNoticeOfWorkApplication,
+  createNoticeOfWorkApplicationProgress,
 } from "@/actionCreators/noticeOfWorkActionCreator";
 import { fetchMineRecordById } from "@/actionCreators/mineActionCreator";
 import {
@@ -36,6 +37,7 @@ const { Step } = Steps;
 const propTypes = {
   noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
   originalNoticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
+  createNoticeOfWorkApplicationProgress: CustomPropTypes.importedNOWApplication.isRequired,
   createNoticeOfWorkApplication: PropTypes.func.isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
   fetchImportedNoticeOfWorkApplication: PropTypes.func.isRequired,
@@ -67,16 +69,20 @@ export class NoticeOfWorkApplication extends Component {
 
   componentDidMount() {
     const { id } = this.props.match.params;
-    let currentStep = 0;
+    const currentStep = 0;
     this.props.fetchNoticeOFWorkActivityTypeOptions();
     this.props.fetchImportedNoticeOfWorkApplication(id).then(({ data }) => {
       const associatedMineGuid = data.mine_guid ? data.mine_guid : "";
       this.props.fetchMineRecordById(associatedMineGuid).then(() => {
-        if (data.imported_to_core) {
-          this.props.history.push(
-            router.NOTICE_OF_WORK_APPLICATION.hashRoute(id, "#application-info")
-          );
-          currentStep = 1;
+        if (data.application_progress.length === 0) {
+          this.props.createNoticeOfWorkApplicationProgress(data.now_application_guid, {
+            application_progress_status_code: "VER",
+          });
+
+          // this.props.history.push(
+          //   router.NOTICE_OF_WORK_APPLICATION.hashRoute(id, "#application-info")
+          // );
+          // currentStep = 1;
         }
         this.setState({ isLoaded: true, associatedMineGuid, currentStep, isNoWLoaded: true });
       });
@@ -251,6 +257,7 @@ const mapDispatchToProps = (dispatch) =>
       fetchOriginalNoticeOfWorkApplication,
       fetchMineRecordById,
       fetchNoticeOFWorkActivityTypeOptions,
+      createNoticeOfWorkApplicationProgress,
     },
     dispatch
   );
