@@ -14,6 +14,7 @@ import ReviewActivities from "@/components/noticeOfWork/applications/review/Revi
 import NullScreen from "@/components/common/NullScreen";
 import Address from "@/components/common/Address";
 import ReclamationSummary from "./activities/ReclamationSummary";
+import ReviewNOWDocuments from "./ReviewNOWDocuments";
 
 /**
  * @constant ReviewNOWApplication renders edit/view for the NoW Application review step
@@ -405,21 +406,6 @@ export const ReviewNOWApplication = (props) => {
     </div>
   );
 
-  const renderDocuments = () => {
-    return (
-      <div>
-        <br />
-        <h4>Documents</h4>
-        <Divider />
-        <NullScreen type="documents" />
-        <br />
-        <h4>Spatial Files</h4>
-        <Divider />
-        <NullScreen type="documents" />
-      </div>
-    );
-  };
-
   return (
     <div>
       <Form layout="vertical" onSubmit={() => console.log("submitting form")}>
@@ -455,7 +441,10 @@ export const ReviewNOWApplication = (props) => {
             noticeOfWork={props.noticeOfWork}
           />
           <ScrollContentWrapper id="documents" title="Documents">
-            {renderDocuments()}
+            <ReviewNOWDocuments
+              now_application_guid={props.noticeOfWork.now_application_guid}
+              documents={props.noticeOfWork.submission_documents}
+            />
           </ScrollContentWrapper>
         </div>
       </Form>
