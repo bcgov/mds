@@ -256,6 +256,20 @@ def _transmogrify_exploration_access(now_app, now_sub, mms_now_sub):
 
         now_app.exploration_access = exploration_access
 
+        if (len(mms_now_sub.exp_access_activity) > 0):
+            exp_access_activity = mms_now_sub.exp_access_activity
+        else:
+            exp_access_activity = now_sub.exp_access_activity
+
+        for detail in exp_access_activity:
+            now_app.exploration_access.details.append(
+                app_models.ExplorationAccessDetail(
+                    activity_type_description=detail.type,
+                    length=detail.length,
+                    disturbed_area=detail.disturbedarea,
+                    timber_volume=detail.timbervolume,
+                ))
+
 
 def _transmogrify_placer_operations(now_app, now_sub, mms_now_sub):
     placerundergroundoperations = now_sub.placerundergroundoperations
