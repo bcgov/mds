@@ -872,7 +872,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
           />
         </div>
       </withRouter(ScrollContentWrapper)>
-      <ReviewActivities
+      <Connect(ReviewActivities)
         isViewMode={true}
       />
       <withRouter(ScrollContentWrapper)

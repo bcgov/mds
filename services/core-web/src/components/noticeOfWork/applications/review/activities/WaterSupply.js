@@ -1,55 +1,145 @@
 import React from "react";
 import { PropTypes } from "prop-types";
-import { Field } from "redux-form";
-import { Row, Col, Table } from "antd";
-import * as Strings from "@/constants/strings";
+import { Field, formValueSelector } from "redux-form";
+import { connect } from "react-redux";
+import { Row, Col, Table, Button } from "antd";
+import * as FORM from "@/constants/forms";
+import { TRASHCAN } from "@/constants/assets";
 import RenderField from "@/components/common/RenderField";
 import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
 import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
   isViewMode: PropTypes.bool.isRequired,
-  initialValues: CustomPropTypes.waterSupply,
+  details: CustomPropTypes.activityDetails.isRequired,
+  // removeRecord is being passed into conditionally rendered button but eslint assumes it isn't being used
+  // eslint-disable-next-line
+  removeRecord: PropTypes.func.isRequired,
+  editRecord: PropTypes.func.isRequired,
+  addRecord: PropTypes.func.isRequired,
 };
 
-const defaultProps = {
-  initialValues: {},
-};
+const defaultProps = {};
 
 export const WaterSupply = (props) => {
-  const columns = [
+  const editActivity = (event, rowIndex) => {
+    const activityToChange = props.details[rowIndex];
+    activityToChange[event.target.name] = event.target.value;
+    props.editRecord(activityToChange, "water_supply.details", rowIndex);
+  };
+
+  const addActivity = () => {
+    const newActivity = {
+      supply_source_description: "",
+      activity_type_description: "",
+      water_use_description: "",
+      estimate_rate: "",
+    };
+    props.addRecord("water_supply.details", newActivity);
+  };
+
+  const standardColumns = [
     {
       title: "Source",
-      dataIndex: "source",
-      key: "source",
-      render: (text) => <div title="Source">{text}</div>,
+      dataIndex: "supply_source_description",
+      key: "supply_source_description",
+      render: (text, record) => (
+        <div title="Source">
+          <div className="inline-flex">
+            <input
+              name="supply_source_description"
+              type="text"
+              disabled={props.isViewMode}
+              value={text}
+              onChange={(e) => editActivity(e, record.index)}
+            />
+          </div>
+        </div>
+      ),
     },
     {
       title: "Activity",
-      dataIndex: "type",
-      key: "type",
-      render: (text) => <div title="Activity">{text}</div>,
+      dataIndex: "activity_type_description",
+      key: "activity_type_description",
+      render: (text, record) => (
+        <div title="Activity">
+          <div className="inline-flex">
+            <input
+              name="activity_type_description"
+              type="text"
+              disabled={props.isViewMode}
+              value={text}
+              onChange={(e) => editActivity(e, record.index)}
+            />
+          </div>
+        </div>
+      ),
     },
     {
       title: "Water Use",
-      dataIndex: "water",
-      key: "water",
-      render: (text) => <div title="Water Use">{text}</div>,
+      dataIndex: "water_use_description",
+      key: "water_use_description",
+      render: (text, record) => (
+        <div title="Water Use">
+          <div className="inline-flex">
+            <input
+              name="water_use_description"
+              type="text"
+              disabled={props.isViewMode}
+              value={text}
+              onChange={(e) => editActivity(e, record.index)}
+            />
+          </div>
+        </div>
+      ),
     },
     {
       title: "Estimate",
-      dataIndex: "estimate",
-      key: "estimate",
-      render: (text) => <div title="Estimate">{text}</div>,
+      dataIndex: "estimate_rate",
+      key: "estimate_rate",
+      render: (text, record) => (
+        <div title="Estimate">
+          <div className="inline-flex">
+            <input
+              name="estimate_rate"
+              type="text"
+              disabled={props.isViewMode}
+              value={text}
+              onChange={(e) => editActivity(e, record.index)}
+            />
+          </div>
+        </div>
+      ),
     },
   ];
 
+  const removeColumn = {
+    dataIndex: "remove",
+    key: "remove",
+    render: (text, record) => (
+      <div name="remove" title="remove">
+        <Button
+          type="primary"
+          size="small"
+          onClick={() => props.removeRecord("water_supply.details", record.index)}
+          ghost
+        >
+          <img name="remove" src={TRASHCAN} alt="Remove Activity" />
+        </Button>
+      </div>
+    ),
+  };
+
+  const columns = (isViewMode) =>
+    !isViewMode ? [...standardColumns, removeColumn] : standardColumns;
+
   const transformData = (activities) =>
-    activities.map((activity) => ({
-      source: activity.supply_source_description || Strings.EMPTY_FIELD,
-      type: activity.activity_type_description || Strings.EMPTY_FIELD,
-      water: activity.water_use_description || Strings.EMPTY_FIELD,
-      estimate: activity.estimate_rate || Strings.EMPTY_FIELD,
+    activities.map((activity, index) => ({
+      supply_source_description: activity.supply_source_description || "",
+      activity_type_description: activity.activity_type_description || "",
+      water_use_description: activity.water_use_description || "",
+      estimate_rate: activity.estimate_rate || "",
+      index,
     }));
 
   return (
@@ -57,12 +147,17 @@ export const WaterSupply = (props) => {
       <Table
         align="left"
         pagination={false}
-        columns={columns}
-        dataSource={transformData(props.initialValues.details ? props.initialValues.details : [])}
+        columns={columns(props.isViewMode)}
+        dataSource={transformData(props.details || [])}
         locale={{
           emptyText: "No data",
         }}
       />
+      {!props.isViewMode && (
+        <Button type="primary" onClick={() => addActivity()}>
+          Add Activity
+        </Button>
+      )}
       <br />
       <h4>Reclamation Program</h4>
       <Row gutter={16}>
@@ -93,7 +188,13 @@ export const WaterSupply = (props) => {
   );
 };
 
+const selector = formValueSelector(FORM.EDIT_NOTICE_OF_WORK);
 WaterSupply.propTypes = propTypes;
 WaterSupply.defaultProps = defaultProps;
 
-export default WaterSupply;
+export default connect(
+  (state) => ({
+    details: selector(state, "water_supply.details"),
+  }),
+  null
+)(WaterSupply);

@@ -1,48 +1,125 @@
 import React from "react";
 import { PropTypes } from "prop-types";
-import { Field } from "redux-form";
-import { Row, Col, Table } from "antd";
-import * as Strings from "@/constants/strings";
+import { Field, formValueSelector } from "redux-form";
+import { connect } from "react-redux";
+import { Row, Col, Table, Button } from "antd";
+import * as FORM from "@/constants/forms";
+import { TRASHCAN } from "@/constants/assets";
 import RenderField from "@/components/common/RenderField";
 import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
 import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
   isViewMode: PropTypes.bool.isRequired,
-  initialValues: CustomPropTypes.defaultActivity,
+  details: CustomPropTypes.activityDetails.isRequired,
+  // removeRecord is being passed into conditionally rendered button but eslint assumes it isn't being used
+  // eslint-disable-next-line
+  removeRecord: PropTypes.func.isRequired,
+  editRecord: PropTypes.func.isRequired,
+  addRecord: PropTypes.func.isRequired,
 };
 
-const defaultProps = {
-  initialValues: {},
-};
+const defaultProps = {};
 
 export const CutLines = (props) => {
-  const columns = [
+  const editActivity = (event, rowIndex) => {
+    const activityToChange = props.details[rowIndex];
+    activityToChange[event.target.name] = event.target.value;
+    props.editRecord(activityToChange, "cut_lines_polarization_survey.details", rowIndex);
+  };
+
+  const addActivity = () => {
+    const newActivity = {
+      cut_line_length: "",
+      disturbed_area: "",
+      timber_volume: "",
+    };
+    props.addRecord("cut_lines_polarization_survey.details", newActivity);
+  };
+
+  const standardColumns = [
     {
       title: "Total Line(km)",
-      dataIndex: "total",
-      key: "total",
-      render: (text) => <div title="Access Type">{text}</div>,
+      dataIndex: "cut_line_length",
+      key: "cut_line_length",
+      render: (text, record) => (
+        <div title="Access Type">
+          <div className="inline-flex">
+            <input
+              name="cut_line_length"
+              type="text"
+              disabled={props.isViewMode}
+              value={text}
+              onChange={(e) => editActivity(e, record.index)}
+            />
+          </div>
+        </div>
+      ),
     },
     {
       title: "Disturbed Area (ha)",
-      dataIndex: "disturbedArea",
-      key: "disturbedArea",
-      render: (text) => <div title="Disturbed Area (ha)">{text}</div>,
+      dataIndex: "disturbed_area",
+      key: "disturbed_area",
+      render: (text, record) => (
+        <div title="Disturbed Area (ha)">
+          <div className="inline-flex">
+            <input
+              name="disturbed_area"
+              type="text"
+              disabled={props.isViewMode}
+              value={text}
+              onChange={(e) => editActivity(e, record.index)}
+            />
+          </div>
+        </div>
+      ),
     },
     {
       title: "Merchantable timber volume (m3)",
-      dataIndex: "timberVolume",
-      key: "timberVolume",
-      render: (text) => <div title="Merchantable timber volume (m3)">{text}</div>,
+      dataIndex: "timber_volume",
+      key: "timber_volume",
+      render: (text, record) => (
+        <div title="Merchantable timber volume (m3)">
+          <div className="inline-flex">
+            <input
+              name="timber_volume"
+              type="text"
+              disabled={props.isViewMode}
+              value={text}
+              onChange={(e) => editActivity(e, record.index)}
+            />
+          </div>
+        </div>
+      ),
     },
   ];
 
+  const removeColumn = {
+    dataIndex: "remove",
+    key: "remove",
+    render: (text, record) => (
+      <div name="remove" title="remove">
+        <Button
+          type="primary"
+          size="small"
+          onClick={() => props.removeRecord("cut_lines_polarization_survey.details", record.index)}
+          ghost
+        >
+          <img name="remove" src={TRASHCAN} alt="Remove Activity" />
+        </Button>
+      </div>
+    ),
+  };
+
+  const columns = (isViewMode) =>
+    !isViewMode ? [...standardColumns, removeColumn] : standardColumns;
+
   const transformData = (activities) =>
-    activities.map((activity) => ({
-      total: activity.cut_line_length || Strings.EMPTY_FIELD,
-      disturbedArea: activity.disturbed_area || Strings.EMPTY_FIELD,
-      timberVolume: activity.timber_volume || Strings.EMPTY_FIELD,
+    activities.map((activity, index) => ({
+      cut_line_length: activity.cut_line_length || "",
+      disturbed_area: activity.disturbed_area || "",
+      timber_volume: activity.timber_volume || "",
+      index,
     }));
 
   return (
@@ -52,12 +129,17 @@ export const CutLines = (props) => {
       <Table
         align="left"
         pagination={false}
-        columns={columns}
-        dataSource={transformData(props.initialValues.details ? props.initialValues.details : [])}
+        columns={columns(props.isViewMode)}
+        dataSource={transformData(props.details || [])}
         locale={{
           emptyText: "No data",
         }}
       />
+      {!props.isViewMode && (
+        <Button type="primary" onClick={() => addActivity()}>
+          Add Activity
+        </Button>
+      )}
       <br />
       <h4>Reclamation Program</h4>
       <Row gutter={16}>
@@ -88,7 +170,13 @@ export const CutLines = (props) => {
   );
 };
 
+const selector = formValueSelector(FORM.EDIT_NOTICE_OF_WORK);
 CutLines.propTypes = propTypes;
 CutLines.defaultProps = defaultProps;
 
-export default CutLines;
+export default connect(
+  (state) => ({
+    details: selector(state, "cut_lines_polarization_survey.details"),
+  }),
+  null
+)(CutLines);

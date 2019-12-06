@@ -1,89 +1,239 @@
 import React from "react";
 import { PropTypes } from "prop-types";
-import { Field } from "redux-form";
-import { Row, Col, Table } from "antd";
-import * as Strings from "@/constants/strings";
+import { Field, formValueSelector } from "redux-form";
+import { connect } from "react-redux";
+import { Row, Col, Table, Button } from "antd";
+import * as FORM from "@/constants/forms";
+import { TRASHCAN } from "@/constants/assets";
 import RenderField from "@/components/common/RenderField";
 import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
   isViewMode: PropTypes.bool.isRequired,
-  initialValues: CustomPropTypes.defaultActivity,
+  details: CustomPropTypes.activityDetails.isRequired,
+  // removeRecord is being passed into conditionally rendered button but eslint assumes it isn't being used
+  // eslint-disable-next-line
+  removeRecord: PropTypes.func.isRequired,
+  editRecord: PropTypes.func.isRequired,
+  addRecord: PropTypes.func.isRequired,
 };
 
-const defaultProps = {
-  initialValues: {},
-};
+const defaultProps = {};
 
 export const UndergroundExploration = (props) => {
-  const columns = [
+  const editActivity = (event, rowIndex) => {
+    const activityToChange = props.details[rowIndex];
+    activityToChange[event.target.name] = event.target.value;
+    props.editRecord(activityToChange, "underground_exploration.details", rowIndex);
+  };
+
+  const addActivity = () => {
+    const newActivity = {
+      activity_type_description: "",
+      quantity: "",
+      disturbed_area: "",
+      timber_volume: "",
+    };
+    props.addRecord("underground_exploration.details", newActivity);
+  };
+
+  const standardColumns = [
     {
       title: "Activity",
-      dataIndex: "type",
-      key: "type",
-      render: (text) => <div title="Activity">{text}</div>,
+      dataIndex: "activity_type_description",
+      key: "activity_type_description",
+      render: (text, record) => (
+        <div title="Activity">
+          <div className="inline-flex">
+            <input
+              name="activity_type_description"
+              type="text"
+              disabled={props.isViewMode}
+              value={text}
+              onChange={(e) => editActivity(e, record.index)}
+            />
+          </div>
+        </div>
+      ),
     },
     {
       title: "Quantity",
       dataIndex: "quantity",
       key: "quantity",
-      render: (text) => <div title="Quantity">{text}</div>,
+      render: (text, record) => (
+        <div title="Quantity">
+          <div className="inline-flex">
+            <input
+              name="quantity"
+              type="text"
+              disabled={props.isViewMode}
+              value={text}
+              onChange={(e) => editActivity(e, record.index)}
+            />
+          </div>
+        </div>
+      ),
     },
     {
       title: "Incline",
-      dataIndex: "incline",
-      key: "incline",
-      render: (text) => <div title="Incline">{text}</div>,
+      dataIndex: "incline_unit_type_code",
+      key: "incline_unit_type_code",
+      render: (text, record) => (
+        <div title="Incline">
+          <div className="inline-flex">
+            <input
+              name="incline_unit_type_code"
+              type="text"
+              disabled={props.isViewMode}
+              value={text}
+              onChange={(e) => editActivity(e, record.index)}
+            />
+          </div>
+        </div>
+      ),
     },
     {
       title: "Units",
       dataIndex: "units",
       key: "units",
-      render: (text) => <div title="Units">{text}</div>,
+      render: (text, record) => (
+        <div title="Units">
+          <div className="inline-flex">
+            <input
+              name="units"
+              type="text"
+              disabled={props.isViewMode}
+              value={text}
+              onChange={(e) => editActivity(e, record.index)}
+            />
+          </div>
+        </div>
+      ),
     },
     {
       title: "Width(m)",
       dataIndex: "width",
       key: "width",
-      render: (text) => <div title="Width(m)">{text}</div>,
+      render: (text, record) => (
+        <div title="Width(m)">
+          <div className="inline-flex">
+            <input
+              name="width"
+              type="text"
+              disabled={props.isViewMode}
+              value={text}
+              onChange={(e) => editActivity(e, record.index)}
+            />
+          </div>
+        </div>
+      ),
     },
     {
       title: "Length(km)",
       dataIndex: "length",
       key: "length",
-      render: (text) => <div title="Length(km)">{text}</div>,
+      render: (text, record) => (
+        <div title="Length(km)">
+          <div className="inline-flex">
+            <input
+              name="length"
+              type="text"
+              disabled={props.isViewMode}
+              value={text}
+              onChange={(e) => editActivity(e, record.index)}
+            />
+          </div>
+        </div>
+      ),
     },
     {
       title: "Height(m)",
       dataIndex: "height",
       key: "height",
-      render: (text) => <div title="Height(m)">{text}</div>,
+      render: (text, record) => (
+        <div title="Height(m)">
+          <div className="inline-flex">
+            <input
+              name="height"
+              type="text"
+              disabled={props.isViewMode}
+              value={text}
+              onChange={(e) => editActivity(e, record.index)}
+            />
+          </div>
+        </div>
+      ),
     },
     {
       title: "Disturbed Area (ha)",
-      dataIndex: "disturbedArea",
-      key: "disturbedArea",
-      render: (text) => <div title="Disturbed Area (ha)">{text}</div>,
+      dataIndex: "disturbed_area",
+      key: "disturbed_area",
+      render: (text, record) => (
+        <div title="Disturbed Area (ha)">
+          <div className="inline-flex">
+            <input
+              name="disturbed_area"
+              type="text"
+              disabled={props.isViewMode}
+              value={text}
+              onChange={(e) => editActivity(e, record.index)}
+            />
+          </div>
+        </div>
+      ),
     },
     {
       title: "Merchantable timber volume (m3)",
-      dataIndex: "timberVolume",
-      key: "timberVolume",
-      render: (text) => <div title="Merchantable timber volume (m3)">{text}</div>,
+      dataIndex: "timber_volume",
+      key: "timber_volume",
+      render: (text, record) => (
+        <div title="Merchantable timber volume (m3)">
+          <div className="inline-flex">
+            <input
+              name="timber_volume"
+              type="text"
+              disabled={props.isViewMode}
+              value={text}
+              onChange={(e) => editActivity(e, record.index)}
+            />
+          </div>
+        </div>
+      ),
     },
   ];
 
+  const removeColumn = {
+    dataIndex: "remove",
+    key: "remove",
+    render: (text, record) => (
+      <div name="remove" title="remove">
+        <Button
+          type="primary"
+          size="small"
+          onClick={() => props.removeRecord("underground_exploration.details", record.index)}
+          ghost
+        >
+          <img name="remove" src={TRASHCAN} alt="Remove Activity" />
+        </Button>
+      </div>
+    ),
+  };
+
+  const columns = (isViewMode) =>
+    !isViewMode ? [...standardColumns, removeColumn] : standardColumns;
+
   const transformData = (activities) =>
-    activities.map((activity) => ({
-      type: activity.activity_type_description || Strings.EMPTY_FIELD,
-      quantity: activity.quantity || Strings.EMPTY_FIELD,
-      incline: activity.incline_unit_type_code || Strings.EMPTY_FIELD,
-      units: activity.units || Strings.EMPTY_FIELD,
-      length: activity.length || Strings.EMPTY_FIELD,
-      width: activity.width || Strings.EMPTY_FIELD,
-      height: activity.height || Strings.EMPTY_FIELD,
-      disturbedArea: activity.disturbed_area || Strings.EMPTY_FIELD,
-      timberVolume: activity.timber_volume || Strings.EMPTY_FIELD,
+    activities.map((activity, index) => ({
+      activity_type_description: activity.activity_type_description || "",
+      quantity: activity.quantity || "",
+      incline_unit_type_code: activity.incline_unit_type_code || "",
+      units: activity.units || "",
+      length: activity.length || "",
+      width: activity.width || "",
+      height: activity.height || "",
+      disturbed_area: activity.disturbed_area || "",
+      timber_volume: activity.timber_volume || "",
+      index,
     }));
 
   return (
@@ -91,12 +241,17 @@ export const UndergroundExploration = (props) => {
       <Table
         align="left"
         pagination={false}
-        columns={columns}
-        dataSource={transformData(props.initialValues.details ? props.initialValues.details : [])}
+        columns={columns(props.isViewMode)}
+        dataSource={transformData(props.details || [])}
         locale={{
           emptyText: "No data",
         }}
       />
+      {!props.isViewMode && (
+        <Button type="primary" onClick={() => addActivity()}>
+          Add Activity
+        </Button>
+      )}
       <br />
       <Row gutter={16}>
         <Col md={12} sm={24}>
@@ -128,7 +283,13 @@ export const UndergroundExploration = (props) => {
   );
 };
 
+const selector = formValueSelector(FORM.EDIT_NOTICE_OF_WORK);
 UndergroundExploration.propTypes = propTypes;
 UndergroundExploration.defaultProps = defaultProps;
 
-export default UndergroundExploration;
+export default connect(
+  (state) => ({
+    details: selector(state, "underground_exploration.details"),
+  }),
+  null
+)(UndergroundExploration);

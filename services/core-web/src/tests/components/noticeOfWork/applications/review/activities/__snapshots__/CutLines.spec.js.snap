@@ -11,20 +11,20 @@ exports[`CutLines renders properly 1`] = `
     columns={
       Array [
         Object {
-          "dataIndex": "total",
-          "key": "total",
+          "dataIndex": "cut_line_length",
+          "key": "cut_line_length",
           "render": [Function],
           "title": "Total Line(km)",
         },
         Object {
-          "dataIndex": "disturbedArea",
-          "key": "disturbedArea",
+          "dataIndex": "disturbed_area",
+          "key": "disturbed_area",
           "render": [Function],
           "title": "Disturbed Area (ha)",
         },
         Object {
-          "dataIndex": "timberVolume",
-          "key": "timberVolume",
+          "dataIndex": "timber_volume",
+          "key": "timber_volume",
           "render": [Function],
           "title": "Merchantable timber volume (m3)",
         },

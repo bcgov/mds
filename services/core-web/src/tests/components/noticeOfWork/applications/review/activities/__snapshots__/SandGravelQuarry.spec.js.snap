@@ -243,16 +243,11 @@ exports[`SandGravelQuarry renders properly 1`] = `
     }
     pagination={false}
   />
-  <Button
-    block={false}
-    ghost={false}
-    htmlType="button"
-    loading={false}
-    onClick={[Function]}
-    type="primary"
-  >
-    Add Activity
-  </Button>
   <br />
+  <Equipment
+    activity="sand_and_gravel"
+    equipment={Array []}
+    isViewMode={true}
+  />
 </div>
 `;

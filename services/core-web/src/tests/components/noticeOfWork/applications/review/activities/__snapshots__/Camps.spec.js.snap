@@ -7,20 +7,20 @@ exports[`Camps renders properly 1`] = `
     columns={
       Array [
         Object {
-          "dataIndex": "name",
-          "key": "name",
+          "dataIndex": "activity_type_description",
+          "key": "activity_type_description",
           "render": [Function],
           "title": "Name",
         },
         Object {
-          "dataIndex": "disturbedArea",
-          "key": "disturbedArea",
+          "dataIndex": "disturbed_area",
+          "key": "disturbed_area",
           "render": [Function],
           "title": "Disturbed Area (ha)",
         },
         Object {
-          "dataIndex": "timberVolume",
-          "key": "timberVolume",
+          "dataIndex": "timber_volume",
+          "key": "timber_volume",
           "render": [Function],
           "title": "Merchantable timber volume (m3)",
         },

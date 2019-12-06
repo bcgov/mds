@@ -1,7 +1,6 @@
 import React from "react";
 import { PropTypes } from "prop-types";
-import { bindActionCreators } from "redux";
-import { Field, formValueSelector, arrayInsert, arrayRemove, arrayPush } from "redux-form";
+import { Field, formValueSelector } from "redux-form";
 import { connect } from "react-redux";
 import { Row, Col, Table, Button } from "antd";
 import * as FORM from "@/constants/forms";
@@ -16,29 +15,27 @@ const propTypes = {
   isViewMode: PropTypes.bool.isRequired,
   details: CustomPropTypes.activityDetails.isRequired,
   equipment: CustomPropTypes.activityEquipment.isRequired,
-  arrayInsert: PropTypes.func.isRequired,
-  arrayRemove: PropTypes.func.isRequired,
-  arrayPush: PropTypes.func.isRequired,
+  removeRecord: PropTypes.func.isRequired,
+  editRecord: PropTypes.func.isRequired,
+  addRecord: PropTypes.func.isRequired,
 };
 
 const defaultProps = {};
 
 export const SandGravelQuarry = (props) => {
-  const removeRecord = (event, rowIndex) => {
-    event.preventDefault();
-    props.arrayRemove(FORM.EDIT_NOTICE_OF_WORK, "sand_and_gravel.details", rowIndex);
-  };
-
-  const editRecord = (event, rowIndex) => {
+  const editActivity = (event, rowIndex) => {
     const activityToChange = props.details[rowIndex];
     activityToChange[event.target.name] = event.target.value;
-    props.arrayRemove(FORM.EDIT_NOTICE_OF_WORK, "sand_and_gravel.details", rowIndex);
-    props.arrayInsert(
-      FORM.EDIT_NOTICE_OF_WORK,
-      "sand_and_gravel.details",
-      rowIndex,
-      activityToChange
-    );
+    props.editRecord(activityToChange, "sand_and_gravel.details", rowIndex);
+  };
+
+  const addActivity = () => {
+    const newActivity = {
+      activity_type_description: "",
+      disturbed_area: "",
+      timber_volume: "",
+    };
+    props.addRecord("sand_and_gravel.details", newActivity);
   };
 
   const standardColumns = [
@@ -54,7 +51,7 @@ export const SandGravelQuarry = (props) => {
               type="text"
               disabled={props.isViewMode}
               value={text}
-              onChange={(e) => editRecord(e, record.index)}
+              onChange={(e) => editActivity(e, record.index)}
             />
           </div>
         </div>
@@ -72,7 +69,7 @@ export const SandGravelQuarry = (props) => {
               type="text"
               disabled={props.isViewMode}
               value={text}
-              onChange={(e) => editRecord(e, record.index)}
+              onChange={(e) => editActivity(e, record.index)}
             />
           </div>
         </div>
@@ -90,7 +87,7 @@ export const SandGravelQuarry = (props) => {
               type="text"
               disabled={props.isViewMode}
               value={text}
-              onChange={(e) => editRecord(e, record.index)}
+              onChange={(e) => editActivity(e, record.index)}
             />
           </div>
         </div>
@@ -103,7 +100,12 @@ export const SandGravelQuarry = (props) => {
     key: "remove",
     render: (text, record) => (
       <div name="remove" title="remove">
-        <Button type="primary" size="small" onClick={(e) => removeRecord(e, record.index)} ghost>
+        <Button
+          type="primary"
+          size="small"
+          onClick={() => props.removeRecord("sand_and_gravel.details", record.index)}
+          ghost
+        >
           <img name="remove" src={TRASHCAN} alt="Remove Activity" />
         </Button>
       </div>
@@ -113,20 +115,11 @@ export const SandGravelQuarry = (props) => {
   const columns = (isViewMode) =>
     !isViewMode ? [...standardColumns, removeColumn] : standardColumns;
 
-  const addActivity = () => {
-    const newActivity = {
-      activity_type_description: null,
-      disturbed_area: null,
-      timber_volume: null,
-    };
-    props.arrayPush(FORM.EDIT_NOTICE_OF_WORK, "sand_and_gravel.details", newActivity);
-  };
-
   const transformData = (activityDetails) => {
     return activityDetails.map((activity, index) => ({
-      activity_type_description: activity.activity_type_description,
-      disturbed_area: activity.disturbed_area,
-      timber_volume: activity.timber_volume,
+      activity_type_description: activity.activity_type_description || "",
+      disturbed_area: activity.disturbed_area || "",
+      timber_volume: activity.timber_volume || "",
       index,
     }));
   };
@@ -264,7 +257,14 @@ export const SandGravelQuarry = (props) => {
         </Button>
       )}
       <br />
-      {props.equipment && <Equipment equipment={props.equipment} />}
+      <Equipment
+        equipment={props.equipment}
+        isViewMode={props.isViewMode}
+        activity="sand_and_gravel"
+        removeRecord={props.removeRecord}
+        editRecord={props.editRecord}
+        addRecord={props.addRecord}
+      />
     </div>
   );
 };
@@ -273,20 +273,10 @@ const selector = formValueSelector(FORM.EDIT_NOTICE_OF_WORK);
 SandGravelQuarry.propTypes = propTypes;
 SandGravelQuarry.defaultProps = defaultProps;
 
-const mapDispatchToProps = (dispatch) =>
-  bindActionCreators(
-    {
-      arrayInsert,
-      arrayRemove,
-      arrayPush,
-    },
-    dispatch
-  );
-
 export default connect(
   (state) => ({
     details: selector(state, "sand_and_gravel.details"),
     equipment: selector(state, "sand_and_gravel.equipment"),
   }),
-  mapDispatchToProps
+  null
 )(SandGravelQuarry);
