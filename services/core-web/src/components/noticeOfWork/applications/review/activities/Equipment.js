@@ -24,7 +24,6 @@ export const Equipment = (props) => {
 
   const editEquipment = (event, rowIndex) => {
     const equipmentToChange = props.equipment[rowIndex];
-    console.log(rowIndex);
     equipmentToChange[event.target.name] = event.target.value;
     props.editRecord(equipmentToChange, targetActivity, rowIndex);
   };
