@@ -188,8 +188,8 @@ export class NoticeOfWorkApplication extends Component {
               {/* update to use application_guid for link once guid is persisted */}
               {/* commenting out for now as we no longer have the correct application_guid  */}
               {/* <Link
-                to={routes.NOTICE_OF_WORK_INITIAL_APPLICATION.dynamicRoute(
-                  this.props.originalNoticeOfWork.application_guid
+                to={routes.VIEW_NOTICE_OF_WORK_APPLICATION.dynamicRoute(
+                  this.props.originalNoticeOfWork.now_application_guid
                 )}
               >
                 Open Original NoW

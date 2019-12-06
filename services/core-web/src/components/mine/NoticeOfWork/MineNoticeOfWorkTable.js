@@ -113,7 +113,7 @@ export class MineNoticeOfWorkTable extends Component {
       dataIndex: "nowNum",
       sortField: "tracking_number",
       render: (text, record) => (
-        <Link to={router.NOTICE_OF_WORK_INITIAL_APPLICATION.dynamicRoute(record.key)}>{text}</Link>
+        <Link to={router.VIEW_NOTICE_OF_WORK_APPLICATION.dynamicRoute(record.key)}>{text}</Link>
       ),
       sorter: true,
       ...this.filterProperties("NoW No.", "tracking_number"),

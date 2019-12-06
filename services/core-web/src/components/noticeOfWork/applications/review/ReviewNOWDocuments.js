@@ -66,7 +66,7 @@ export const ReviewNOWDocuments = (props) => {
   return (
     <div>
       <br />
-      <h3>Submission Documents</h3>
+      <h3>Original Submission Files</h3>
       <Divider />
       <div className="padding-large--sides">
         {props.documents.length >= 1 ? (
@@ -82,7 +82,7 @@ export const ReviewNOWDocuments = (props) => {
         )}
       </div>
       <br />
-      <h3>Spatial Files</h3>
+      <h3>Original Submission Spatial Files</h3>
       <Divider />
       <div className="padding-large--sides">
         {props.documents.length >= 1 ? (
