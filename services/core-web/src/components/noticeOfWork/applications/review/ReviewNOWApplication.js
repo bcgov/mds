@@ -124,7 +124,7 @@ export const ReviewNOWApplication = (props) => {
       </Row>
       <Row gutter={16}>
         <Col md={12} sm={24}>
-          <div className="field-title">Permit Type**</div>
+          <div className="field-title">Permit Type</div>
           <Field
             id="application_permit_type_code"
             name="application_permit_type_code"
