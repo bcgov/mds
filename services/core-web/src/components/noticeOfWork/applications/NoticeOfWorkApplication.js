@@ -184,7 +184,7 @@ export class NoticeOfWorkApplication extends Component {
         <div className={this.state.fixedTop ? "steps--header fixed-scroll" : "steps--header"}>
           <div className="inline-flex between">
             <div>
-              <h1>NoW Number: {Strings.EMPTY_FIELD}</h1>
+              <h1>NoW Number: {this.props.noticeOfWork.now_number || Strings.EMPTY_FIELD}</h1>
               {/* update to use application_guid for link once guid is persisted */}
               {/* commenting out for now as we no longer have the correct application_guid  */}
               {/* <Link

@@ -28,7 +28,8 @@ class NOWApplication(Base, AuditMixin):
     mine_name = association_proxy('now_application_identity', 'mine.mine_name')
     mine_no = association_proxy('now_application_identity', 'mine.mine_no')
     mine_region = association_proxy('now_application_identity', 'mine.mine_region')
-
+    now_number = association_proxy('now_application_identity', 'now_number')
+    
     now_tracking_number = db.Column(db.Integer)
     notice_of_work_type_code = db.Column(
         db.String, db.ForeignKey('notice_of_work_type.notice_of_work_type_code'), nullable=False)

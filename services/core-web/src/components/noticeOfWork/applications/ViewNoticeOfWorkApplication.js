@@ -19,6 +19,7 @@ import CustomPropTypes from "@/customPropTypes";
 import ReviewNOWApplication from "@/components/noticeOfWork/applications/review/ReviewNOWApplication";
 import NOWSideMenu from "@/components/noticeOfWork/applications/NOWSideMenu";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
+import * as Strings from "@/constants/strings";
 
 /**
  * @class ViewNoticeOfWorkApplication- contains all information regarding a CORE notice of work application
@@ -74,7 +75,7 @@ export class ViewNoticeOfWorkApplication extends Component {
       <div className="steps--header">
         <div className="inline-flex between padding-xxl--bottom">
           <div>
-            <h1>NoW Number: </h1>
+            <h1>NoW Number: {this.props.noticeOfWork.now_number || Strings.EMPTY_FIELD}</h1>
           </div>
         </div>
         <LoadingWrapper condition={this.state.isLoaded}>

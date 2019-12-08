@@ -22,7 +22,7 @@ exports[`MineNoticeOfWorkTable renders properly 1`] = `
           "filterDropdown": [Function],
           "filterIcon": [Function],
           "render": [Function],
-          "sortField": "tracking_number",
+          "sortField": "now_number",
           "sortOrder": "ascend",
           "sorter": true,
           "title": "NoW No.",
