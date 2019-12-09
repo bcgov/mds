@@ -108,3 +108,20 @@ export const fetchOriginalNoticeOfWorkApplication = (applicationGuid) => (dispat
     .catch(() => dispatch(error(reducerTypes.GET_ORIGINAL_NOTICE_OF_WORK_APPLICATION)))
     .finally(() => dispatch(hideLoading()));
 };
+
+export const updateNoticeOfWorkApplication = (payload, nowApplicationGuid) => (dispatch) => {
+  dispatch(request(reducerTypes.UPDATE_NOTICE_OF_WORK_APPLICATION));
+  dispatch(showLoading());
+  return CustomAxios()
+    .put(
+      `${ENVIRONMENT.apiUrl}${API.NOTICE_OF_WORK_APPLICATION_UPDATE(nowApplicationGuid)}`,
+      payload,
+      createRequestHeader()
+    )
+    .then((response) => {
+      dispatch(success(reducerTypes.UPDATE_NOTICE_OF_WORK_APPLICATION));
+      return response;
+    })
+    .catch(() => dispatch(error(reducerTypes.UPDATE_NOTICE_OF_WORK_APPLICATION)))
+    .finally(() => dispatch(hideLoading()));
+};

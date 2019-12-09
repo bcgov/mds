@@ -9,6 +9,7 @@ import {
   createNoticeOfWorkApplication,
   fetchImportedNoticeOfWorkApplication,
   fetchOriginalNoticeOfWorkApplication,
+  updateNoticeOfWorkApplication,
 } from "@/actionCreators/noticeOfWorkActionCreator";
 import { fetchMineRecordById } from "@/actionCreators/mineActionCreator";
 import {
@@ -37,6 +38,7 @@ const propTypes = {
   noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
   originalNoticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
   createNoticeOfWorkApplication: PropTypes.func.isRequired,
+  updateNoticeOfWorkApplication: PropTypes.func.isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
   fetchImportedNoticeOfWorkApplication: PropTypes.func.isRequired,
   fetchOriginalNoticeOfWorkApplication: PropTypes.func.isRequired,
@@ -98,6 +100,18 @@ export class NoticeOfWorkApplication extends Component {
 
   setMineGuid = (mineGuid) => {
     this.setState({ associatedMineGuid: mineGuid });
+  };
+
+  handleNOWFormSubmit = () => {
+    console.log(this.props.formValues);
+    this.props
+      .updateNoticeOfWorkApplication(
+        this.props.formValues,
+        this.props.noticeOfWork.now_application_guid
+      )
+      .then(() => {
+        this.setState((prevState) => ({ isViewMode: !prevState.isViewMode }));
+      });
   };
 
   handleScroll = () => {
@@ -193,20 +207,18 @@ export class NoticeOfWorkApplication extends Component {
               </Link> */}
             </div>
             {/* hiding the edit button until fully functionality is implemented */}
-            {false && (
-              <div>
-                {this.state.isViewMode && (
-                  <Button onClick={this.toggleShowOriginalValues}>
-                    {this.state.showOriginalValues ? `Show Current` : `Show Original`}
-                  </Button>
-                )}
-                {!this.state.showOriginalValues && (
-                  <Button onClick={this.toggleEditMode}>
-                    {this.state.isViewMode ? "Edit" : "Save"}
-                  </Button>
-                )}
-              </div>
-            )}
+
+            <div>
+              {this.state.isViewMode && (
+                <Button onClick={this.toggleShowOriginalValues}>
+                  {this.state.showOriginalValues ? `Show Current` : `Show Original`}
+                </Button>
+              )}
+              {!this.state.showOriginalValues && this.state.isViewMode && (
+                <Button onClick={this.toggleEditMode}>Edit</Button>
+              )}
+              {!this.state.isViewMode && <Button onClick={this.handleNOWFormSubmit}>Save</Button>}
+            </div>
           </div>
           <br />
           <Steps current={this.state.currentStep} onChange={this.onChange}>
@@ -244,6 +256,7 @@ const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
       createNoticeOfWorkApplication,
+      updateNoticeOfWorkApplication,
       fetchImportedNoticeOfWorkApplication,
       fetchOriginalNoticeOfWorkApplication,
       fetchMineRecordById,
