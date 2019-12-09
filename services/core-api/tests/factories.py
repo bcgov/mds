@@ -398,7 +398,7 @@ class MinePartyAppointmentFactory(BaseFactory):
     mine = factory.SubFactory('tests.factories.MineFactory')
     party = factory.SubFactory(PartyFactory, person=True)
     mine_party_appt_type_code = factory.LazyFunction(RandomMinePartyAppointmentTypeCode)
-    start_date = TODAY
+    start_date = factory.LazyFunction(datetime.utcnow().date)
     end_date = None
     processed_by = factory.Faker('first_name')
     processed_on = TODAY
@@ -558,13 +558,6 @@ class PermitFactory(BaseFactory):
     permit_status_code = factory.LazyFunction(RandomPermitStatusCode)
     permit_amendments = []
     mine = factory.SubFactory('tests.factories.MineFactory', minimal=True)
-
-    permitee = factory.RelatedFactory(
-        'tests.factories.MinePartyAppointmentFactory',
-        mine=factory.SelfAttribute('mine'),
-        permit_guid=factory.SelfAttribute('permit_guid'),
-        mine_party_appt_type_code='PMT',
-        party__company=True)
 
     @factory.post_generation
     def permit_amendments(obj, create, extracted, **kwargs):
