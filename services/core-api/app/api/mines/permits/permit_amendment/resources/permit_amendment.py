@@ -67,6 +67,8 @@ class PermitAmendmentListResource(Resource, UserMixin):
             raise NotFound('Party appointments not found')
 
         permit_issue_datetime = data.get('issue_date')
+        # convert permit_issue_date to a date object to compare with permittee start_date,
+        #Both dates are stored in the DB as Dates, and are being converted to SQLAlchemy dateTimes in the modals, but for some reason being returned as Python Dates.
         permit_issue_date = datetime.date(permit_issue_datetime)
         is_historical_permit = False
 
