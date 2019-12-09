@@ -319,7 +319,7 @@ def _transmogrify_placer_operations(now_app, now_sub, mms_now_sub):
                 activity_type_description=proposed.type,
                 disturbed_area=proposed.disturbedarea,
                 timber_volume=proposed.timbervolume,
-                width=proposed.width,
+                width=getattr(proposed, 'width', None),
                 length=proposed.length,
                 depth=proposed.depth,
                 quantity=proposed.quantity)
@@ -346,7 +346,7 @@ def _transmogrify_placer_operations(now_app, now_sub, mms_now_sub):
                     activity_type_description=existing.type,
                     disturbed_area=existing.disturbedarea,
                     timber_volume=existing.timbervolume,
-                    width=existing.width,
+                    width=getattr(existing, 'width', None),
                     length=existing.length,
                     depth=existing.depth,
                     quantity=existing.quantity)

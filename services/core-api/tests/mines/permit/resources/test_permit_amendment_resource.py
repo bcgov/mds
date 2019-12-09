@@ -5,7 +5,7 @@ from app.api.mines.permits.permit_amendment.models.permit_amendment import Permi
 from app.api.mines.permits.permit.models.permit import Permit
 from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
 
-from tests.factories import PermitFactory, PermitAmendmentFactory, PartyFactory
+from tests.factories import PermitFactory, PermitAmendmentFactory, PartyFactory, MinePartyAppointmentFactory
 
 
 # GET
@@ -55,8 +55,10 @@ def test_post_permit_amendment_no_params(test_client, db_session, auth_headers):
 def test_post_permit_amendment_with_date_params(test_client, db_session, auth_headers):
     permit = PermitFactory()
     permit_guid = permit.permit_guid
+    #TODO Figure out how to make permit factory make it's own initial permittee
+    permittee = MinePartyAppointmentFactory(
+        permit_guid=permit_guid, mine_party_appt_type_code='PMT', mine=permit.mine)
     party_guid = PartyFactory(company=True).party_guid
-
     data = {
         'permittee_party_guid': party_guid,
         'received_date': datetime.today().date().isoformat(),
@@ -70,15 +72,13 @@ def test_post_permit_amendment_with_date_params(test_client, db_session, auth_he
         headers=auth_headers['full_auth_header'])
     post_data = json.loads(post_resp.data.decode())
 
-    permittees = MinePartyAppointment.find_by_permit_guid(permit_guid)
-
     assert post_resp.status_code == 200, post_resp.response
     #assert post_data['permit_guid'] == str(permit_guid), str(post_data)
     assert parser.parse(post_data['received_date']) == parser.parse(data['received_date'])
     assert parser.parse(post_data['issue_date']) == parser.parse(data['issue_date'])
     assert parser.parse(post_data['authorization_end_date']) == parser.parse(
         data['authorization_end_date'])
-    assert permittees[0].party_guid == party_guid
+    assert permit.permittee_appointments[0].party_guid == party_guid
 
     #permit_amdendment is actually in db
     assert PermitAmendment.find_by_permit_amendment_guid(post_data['permit_amendment_guid'])

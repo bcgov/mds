@@ -28,7 +28,7 @@ PERMIT_SEARCH_MODEL = api.model(
         'mine_guid': fields.String,
         'permit_no': fields.String,
         'mine_name': fields.String,
-        'permitee': fields.String,
+        'current_permittee': fields.String,
     })
 
 MINE_SEARCH_MODEL = api.model(
