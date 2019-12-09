@@ -17,8 +17,12 @@ import {
   getOriginalNoticeOfWork,
   getNOWReclamationSummary,
 } from "@/selectors/noticeOfWorkSelectors";
-import { fetchNoticeOFWorkActivityTypeOptions } from "@/actionCreators/staticContentActionCreator";
+import {
+  fetchNoticeOFWorkActivityTypeOptions,
+  fetchNoticeOFWorkApplicationProgressStatusCodes,
+} from "@/actionCreators/staticContentActionCreator";
 import { getMines } from "@/selectors/mineSelectors";
+import { getNoticeOfWorkApplicationProgressStatusCodeOptions } from "@/selectors/staticContentSelectors";
 import VerifyNOWMine from "@/components/noticeOfWork/applications/verification/VerifyNOWMine";
 import * as Strings from "@/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
@@ -37,6 +41,7 @@ const { Step } = Steps;
 const propTypes = {
   noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
   originalNoticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
+  fetchNoticeOFWorkApplicationProgressStatusCodes: PropTypes.func.isRequired,
   createNoticeOfWorkApplicationProgress: CustomPropTypes.importedNOWApplication.isRequired,
   createNoticeOfWorkApplication: PropTypes.func.isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
@@ -59,6 +64,7 @@ const propTypes = {
 export class NoticeOfWorkApplication extends Component {
   state = {
     currentStep: 0,
+    current: "VER",
     isLoaded: false,
     isNoWLoaded: false,
     associatedMineGuid: "",
@@ -71,9 +77,11 @@ export class NoticeOfWorkApplication extends Component {
     const { id } = this.props.match.params;
     const currentStep = 0;
     this.props.fetchNoticeOFWorkActivityTypeOptions();
+    this.props.fetchNoticeOFWorkApplicationProgressStatusCodes();
     this.props.fetchImportedNoticeOfWorkApplication(id).then(({ data }) => {
       const associatedMineGuid = data.mine_guid ? data.mine_guid : "";
       this.props.fetchMineRecordById(associatedMineGuid).then(() => {
+        //
         if (data.application_progress.length === 0) {
           this.props.createNoticeOfWorkApplicationProgress(data.now_application_guid, {
             application_progress_status_code: "VER",
@@ -223,6 +231,12 @@ export class NoticeOfWorkApplication extends Component {
               <Step key={item.title} title={item.title} />
             ))}
           </Steps>
+          <Steps current={this.state.current} onChange={this.onChange} type="navigation">
+            <Step status="VER" title="Verification" />
+            <Step status="REV" title="Technical Review" />
+            <Step status="REF" title="Referral / Consultation" />
+            <Step title="DEC" disabled />
+          </Steps>
         </div>
         <LoadingWrapper condition={this.state.isNoWLoaded}>
           <div>
@@ -247,6 +261,7 @@ const mapStateToProps = (state) => ({
   formValues: getFormValues(FORM.EDIT_NOTICE_OF_WORK)(state),
   mines: getMines(state),
   reclamationSummary: getNOWReclamationSummary(state),
+  applicationProgressStatusCodes: getNoticeOfWorkApplicationProgressStatusCodeOptions(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
@@ -258,6 +273,7 @@ const mapDispatchToProps = (dispatch) =>
       fetchMineRecordById,
       fetchNoticeOFWorkActivityTypeOptions,
       createNoticeOfWorkApplicationProgress,
+      fetchNoticeOFWorkApplicationProgressStatusCodes,
     },
     dispatch
   );
