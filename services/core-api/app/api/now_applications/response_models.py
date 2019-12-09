@@ -219,6 +219,25 @@ NOW_SUBMISSION_DOCUMENT = api.model(
         'description': fields.String,
     })
 
+NOW_PARTY = api.model(
+    'NOW_PARTY', {
+        'party_name': fields.String,
+        'first_name': fields.String,
+        'party_type_code': fields.String,
+        'phone_no': fields.String,
+        'phone_ext': fields.String,
+        'email': fields.String,
+    }
+)
+
+NOW_PARTY_APPOINTMENT = api.model(
+    'NOW_PARTY_APPOINTMENT', {
+        'now_party_appointment_id': fields.Integer,
+        'mine_party_appt_type_code': fields.String,
+        'party': fields.Nested(NOW_PARTY),
+    }
+)
+
 NOW_APPLICATION_MODEL = api.model(
     'NOWApplication',
     {
@@ -258,6 +277,7 @@ NOW_APPLICATION_MODEL = api.model(
         'underground_exploration': fields.Nested(NOW_APPLICATION_UNDERGROUND_EXPLORATION, skip_none=True),
         'water_supply': fields.Nested(NOW_APPLICATION_WATER_SUPPLY, skip_none=True),
         'submission_documents': fields.List(fields.Nested(NOW_SUBMISSION_DOCUMENT), skip_none=True),
+        'contacts': fields.List(fields.Nested(NOW_PARTY_APPOINTMENT), skip_none=True)
     })
 
 NOW_VIEW_MODEL = api.model(

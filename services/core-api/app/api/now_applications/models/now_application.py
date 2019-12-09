@@ -29,7 +29,7 @@ class NOWApplication(Base, AuditMixin):
     mine_no = association_proxy('now_application_identity', 'mine.mine_no')
     mine_region = association_proxy('now_application_identity', 'mine.mine_region')
     now_number = association_proxy('now_application_identity', 'now_number')
-    
+
     now_tracking_number = db.Column(db.Integer)
     notice_of_work_type_code = db.Column(
         db.String, db.ForeignKey('notice_of_work_type.notice_of_work_type_code'), nullable=False)
@@ -72,11 +72,13 @@ class NOWApplication(Base, AuditMixin):
     submission_documents = db.relationship(
         'Document',
         lazy='selectin',
-        uselist=False,
         secondary="join(NOWApplication, NOWApplicationIdentity, NOWApplication.now_application_id == NOWApplicationIdentity.now_application_id).join(Application, NOWApplicationIdentity.messageid == Application.messageid)",
         primaryjoin='and_(NOWApplication.now_application_id==NOWApplicationIdentity.now_application_id, NOWApplicationIdentity.messageid==Application.messageid)',
         secondaryjoin='Application.messageid==Document.messageid',
         viewonly=True)
+
+    # Contacts
+    contacts = db.relationship('NOWPartyAppointment', lazy='selectin')
 
     def __repr__(self):
         return '<NOWApplication %r>' % self.now_application_guid
