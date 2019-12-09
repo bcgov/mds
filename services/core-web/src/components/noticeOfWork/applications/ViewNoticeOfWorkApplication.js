@@ -91,7 +91,7 @@ export class ViewNoticeOfWorkApplication extends Component {
             this.props.noticeOfWork.submission_documents.filter(
               (x) => x.filename === "ApplicationForm.pdf"
             ).length && (
-              <Button onClick={this.showApplicationForm}>Open Application Form PDF</Button>
+              <Button onClick={this.showApplicationForm}>Open Original Application Form</Button>
             )}
         </div>
       </div>
