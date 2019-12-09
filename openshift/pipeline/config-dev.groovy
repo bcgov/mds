@@ -272,6 +272,8 @@ environments {
         vars {
             DB_PVC_SIZE = '1Gi'
             DOCUMENT_PVC_SIZE = '1Gi'
+            
+            SCHEDULER_PVC_SIZE = '2Gi'
 
             LOG_PVC_SIZE = '1Gi'
             git {
