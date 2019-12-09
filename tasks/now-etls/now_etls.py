@@ -2,6 +2,7 @@ import click
 import os
 from dotenv import load_dotenv, find_dotenv
 import psycopg2
+import cx_Oracle
 
 from NOW_import import NOW_submissions_ETL
 from mms_now_import import mms_now_submissions_ETL
@@ -15,6 +16,9 @@ DB_USER = os.environ.get('DB_USER')
 DB_PASS = os.environ.get('DB_PASS')
 DB_PORT = os.environ.get('DB_PORT')
 DB_NAME = os.environ.get('DB_NAME')
+ORACLE_DB_USER = os.environ.get('ORACLE_DB_USER')
+ORACLE_DB_PASS = os.environ.get('ORACLE_DB_PASS')
+CONNECTION_STRING = cx_Oracle.makedsn('response.bcgov', 1521, 'memprd.env.gov.bc.ca')
 
 
 def etl_now_submission_data():
@@ -29,11 +33,14 @@ def etl_now_submission_data():
 
 def etl_mms_now_submission_data():
 
-    connection = psycopg2.connect(
-        host=DB_HOST, port=DB_PORT, user=DB_USER, password=DB_PASS, dbname=DB_NAME)
+    print('Beginning MMS Now ETL')
+
     try:
-        print('Beginning MMS Now ETL')
-        mms_now_submissions_ETL(connection)
+        connection = psycopg2.connect(
+            host=DB_HOST, port=DB_PORT, user=DB_USER, password=DB_PASS, dbname=DB_NAME)
+        oracle_connection = cx_Oracle.connect(
+            user=ORACLE_DB_USER, password=ORACLE_DB_PASS, dsn=CONNECTION_STRING)
+        mms_now_submissions_ETL(connection, oracle_connection)
     finally:
         connection.close()
 
