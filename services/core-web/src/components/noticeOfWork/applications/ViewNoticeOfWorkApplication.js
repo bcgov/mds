@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
+import { Button } from "antd";
 import * as routes from "@/constants/routes";
 import {
   fetchImportedNoticeOfWorkApplication,
@@ -20,6 +21,7 @@ import ReviewNOWApplication from "@/components/noticeOfWork/applications/review/
 import NOWSideMenu from "@/components/noticeOfWork/applications/NOWSideMenu";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
 import * as Strings from "@/constants/strings";
+import { downloadNowDocument } from "@/utils/actionlessNetworkCalls";
 
 /**
  * @class ViewNoticeOfWorkApplication- contains all information regarding a CORE notice of work application
@@ -44,6 +46,7 @@ export class ViewNoticeOfWorkApplication extends Component {
   state = {
     isLoaded: false,
     showOriginalValues: false,
+    fixedTop: false,
   };
 
   componentDidMount() {
@@ -58,50 +61,63 @@ export class ViewNoticeOfWorkApplication extends Component {
     this.props.fetchOriginalNoticeOfWorkApplication(id);
   }
 
-  toggleShowOriginalValues = () => {
-    this.setState((prevState) => ({ showOriginalValues: !prevState.showOriginalValues }));
+  showApplicationForm = () => {
+    const document = this.props.noticeOfWork.submission_documents.filter(
+      (x) => x.filename === "ApplicationForm.pdf"
+    )[0];
+    downloadNowDocument(
+      document.id,
+      this.props.noticeOfWork.now_application_guid,
+      document.filename
+    );
   };
 
   handleScroll = () => {
-    if (window.pageYOffset > "100" && !this.state.fixedTop) {
+    if (window.pageYOffset > "20" && !this.state.fixedTop) {
       this.setState({ fixedTop: true });
-    } else if (window.pageYOffset < "100" && this.state.fixedTop) {
+    } else if (window.pageYOffset < "20" && this.state.fixedTop) {
       this.setState({ fixedTop: false });
     }
   };
 
   render = () => (
     <div className="page" onScroll={this.handleScroll()}>
-      <div className="steps--header">
-        <div className="inline-flex between padding-xxl--bottom">
+      <div className={this.state.fixedTop ? "steps--header fixed-scroll-view" : "steps--header"}>
+        <div className="inline-flex between">
           <div>
             <h1>NoW Number: {this.props.noticeOfWork.now_number || Strings.EMPTY_FIELD}</h1>
           </div>
+          {this.state.isLoaded &&
+            this.props.noticeOfWork.submission_documents.filter(
+              (x) => x.filename === "ApplicationForm.pdf"
+            ).length && (
+              <Button onClick={this.showApplicationForm}>Open Application Form PDF</Button>
+            )}
         </div>
-        <LoadingWrapper condition={this.state.isLoaded}>
-          <div>
-            <div className="side-menu">
-              <NOWSideMenu route={routes.VIEW_NOTICE_OF_WORK_APPLICATION} />
-            </div>
-            <div className="steps--content">
-              <ReviewNOWApplication
-                reclamationSummary={this.props.reclamationSummary}
-                isViewMode
-                initialValues={
-                  this.state.showOriginalValues
-                    ? this.props.originalNoticeOfWork
-                    : this.props.noticeOfWork
-                }
-                noticeOfWork={
-                  this.state.showOriginalValues
-                    ? this.props.originalNoticeOfWork
-                    : this.props.noticeOfWork
-                }
-              />
-            </div>
-          </div>
-        </LoadingWrapper>
       </div>
+      <LoadingWrapper condition={this.state.isLoaded}>
+        <div>
+          <div className={this.state.fixedTop ? "side-menu--fixed" : "side-menu"}>
+            <NOWSideMenu route={routes.VIEW_NOTICE_OF_WORK_APPLICATION} />
+          </div>
+          <div className={this.state.fixedTop ? "steps--content with-fixed-top" : "steps--content"}>
+            <ReviewNOWApplication
+              reclamationSummary={this.props.reclamationSummary}
+              isViewMode
+              initialValues={
+                this.state.showOriginalValues
+                  ? this.props.originalNoticeOfWork
+                  : this.props.noticeOfWork
+              }
+              noticeOfWork={
+                this.state.showOriginalValues
+                  ? this.props.originalNoticeOfWork
+                  : this.props.noticeOfWork
+              }
+            />
+          </div>
+        </div>
+      </LoadingWrapper>
     </div>
   );
 }

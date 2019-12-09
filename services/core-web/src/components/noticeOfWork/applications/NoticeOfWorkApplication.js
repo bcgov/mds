@@ -226,7 +226,9 @@ export class NoticeOfWorkApplication extends Component {
               )}
             </div>
             <div
-              className={this.state.fixedTop ? "steps--content with-fixed-top" : "steps--content"}
+              className={
+                this.state.fixedTop ? "steps--content with-fixed-top-small" : "steps--content"
+              }
             >
               {steps[this.state.currentStep].content}
             </div>
