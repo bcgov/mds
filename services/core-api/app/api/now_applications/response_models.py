@@ -1,6 +1,7 @@
 from app.extensions import api
 from flask_restplus import fields
 
+from app.api.parties.response_models import PARTY
 
 class DateTime(fields.Raw):
     def format(self, value):
@@ -219,22 +220,12 @@ NOW_SUBMISSION_DOCUMENT = api.model(
         'description': fields.String,
     })
 
-NOW_PARTY = api.model(
-    'NOW_PARTY', {
-        'party_name': fields.String,
-        'first_name': fields.String,
-        'party_type_code': fields.String,
-        'phone_no': fields.String,
-        'phone_ext': fields.String,
-        'email': fields.String,
-    }
-)
-
 NOW_PARTY_APPOINTMENT = api.model(
     'NOW_PARTY_APPOINTMENT', {
         'now_party_appointment_id': fields.Integer,
         'mine_party_appt_type_code': fields.String,
-        'party': fields.Nested(NOW_PARTY),
+        'mine_party_appt_type_code_description': fields.String,
+        'party': fields.Nested(PARTY),
     }
 )
 
