@@ -245,6 +245,23 @@ app {
                             'ENVIRONMENT_NAME':"${app.deployment.env.name}",
                             'API_URL': "https://${vars.modules.'mds-nginx'.HOST_CORE}${vars.modules.'mds-nginx'.PATH}/nris_api",
                     ]
+                ],
+                [
+                    'file':'openshift/templates/digdag/digdag.dc.json',
+                    'params':[
+                            'NAME':"digdag",
+                            'VERSION':"${app.deployment.version}",
+                            'NAMESPACE':"${vars.deployment.namespace}",
+                            'SUFFIX': "${vars.deployment.suffix}",
+                            'SCHEDULER_PVC_SIZE':"${vars.SCHEDULER_PVC_SIZE}",
+                            'ENVIRONMENT_NAME':"${app.deployment.env.name}",
+                            'KEYCLOAK_DISCOVERY_URL':"${vars.keycloak.known_config_url}",
+                            'APPLICATION_DOMAIN': "${vars.modules.'digdag'.HOST}",
+                            'CPU_REQUEST':"${vars.resources.digdag.cpu_request}",
+                            'CPU_LIMIT':"${vars.resources.digdag.cpu_limit}",
+                            'MEMORY_REQUEST':"${vars.resources.digdag.memory_request}",
+                            'MEMORY_LIMIT':"${vars.resources.digdag.memory_limit}"
+                    ]
                 ]
         ]
     }
@@ -319,6 +336,12 @@ environments {
                     memory_request = "16Mi"
                     memory_limit = "32Mi"
                 }
+                digdag {
+                    cpu_request = "100m"
+                    cpu_limit = "200m"
+                    memory_request = "512Mi"
+                    memory_limit = "1Gi"
+                }
             }
             deployment {
                 env {
@@ -365,6 +388,9 @@ environments {
                 }
                 'mds-redis' {
                     HOST = "http://mds-redis${vars.deployment.suffix}"
+                }
+                'digdag' {
+                    HOST = "mds-digdag-${vars.deployment.suffix}.pathfinder.gov.bc.ca"
                 }
 
             }
