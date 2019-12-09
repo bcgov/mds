@@ -111,10 +111,9 @@ class MinePartyAppointment(AuditMixin, Base):
 # return the all appointment start_dates in order
 
     @classmethod
-    def find_appointment_end_dates(cls, _id, date):
-        start_dates = [date]
+    def find_appointment_end_dates(cls, _id, issue_datetime):
+        start_dates = [issue_datetime]
         appointments = cls.find_by(permit_guid=_id)
-
         for appointment in appointments:
             start_dates.append(appointment.start_date)
         ordered_dates = sorted(start_dates, reverse=True)

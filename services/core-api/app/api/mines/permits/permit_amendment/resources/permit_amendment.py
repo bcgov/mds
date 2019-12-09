@@ -66,7 +66,8 @@ class PermitAmendmentListResource(Resource, UserMixin):
         if not permittees:
             raise NotFound('Party appointments not found')
 
-        permit_issue_date = data.get('issue_date')
+        permit_issue_datetime = data.get('issue_date')
+        permit_issue_date = datetime.date(permit_issue_datetime)
         is_historical_permit = False
 
         new_end_dates = MinePartyAppointment.find_appointment_end_dates(
