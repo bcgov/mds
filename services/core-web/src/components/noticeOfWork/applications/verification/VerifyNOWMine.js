@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { AutoComplete, Button, Col, Row } from "antd";
@@ -18,6 +19,7 @@ import * as Strings from "@/constants/strings";
 const propTypes = {
   mineNameList: PropTypes.arrayOf(CustomPropTypes.mineName).isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
+  handleProgressChange: PropTypes.func.isRequired,
   fetchMineNameList: PropTypes.func.isRequired,
   handleSave: PropTypes.func.isRequired,
   setMineGuid: PropTypes.func.isRequired,
@@ -149,9 +151,14 @@ export class VerifyNOWMine extends Component {
               </div>
             </div>
             <div className="right">
-              <Button type="primary" onClick={() => this.props.handleSave(1)}>
+              <Button type="primary" onClick={() => this.props.handleSave()}>
                 Save
               </Button>
+              {this.props.isImported && (
+                <Button type="primary" onClick={() => this.props.handleProgressChange("REV")}>
+                  Proceed to Technical Review
+                </Button>
+              )}
             </div>
           </div>
         </LoadingWrapper>

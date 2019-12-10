@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { Component } from "react";
 import { Steps, Button } from "antd";
 import PropTypes from "prop-types";
@@ -63,9 +64,9 @@ const propTypes = {
 
 export class NoticeOfWorkApplication extends Component {
   state = {
-    currentStep: 0,
-    current: "VER",
+    currentStep: "VER",
     isLoaded: false,
+    isImported: false,
     isNoWLoaded: false,
     associatedMineGuid: "",
     isViewMode: true,
@@ -73,26 +74,71 @@ export class NoticeOfWorkApplication extends Component {
     fixedTop: false,
   };
 
+  // componentDidMount() {
+  //   const { id } = this.props.match.params;
+  //   this.props.  ();
+  //   this.props.fetchNoticeOFWorkApplicationProgressStatusCodes();
+  //   this.props.fetchOriginalNoticeOfWorkApplication(id);
+  //   let currentStep = "VER";
+  //   let isImported = false;
+  //   let isNowLoaded = false;
+  //   this.props.fetchImportedNoticeOfWorkApplication(id).then(({ data }) => {
+  //     console.log(data);
+  //     const associatedMineGuid = data.mine_guid ? data.mine_guid : "";
+  //     // CHECK ASSOCIATED MINE GUID LOGIC
+  //     if (data.imported_to_core) {
+  //       // this.props.history.push(
+  //       //   routes.NOTICE_OF_WORK_APPLICATION.hashRoute(id, "#application-info")
+  //       // );
+  //       isImported = true;
+  //       isNowLoaded = true;
+  //       if (data.application_progress.length > 1) {
+  //         const recentStatus =
+  //           data.application_progress[data.application_progress.length - 1]
+  //             .application_progress_status_code;
+  //         console.log(recentStatus);
+  //         currentStep = recentStatus;
+  //       }
+  //     }
+
+  //     this.props.fetchMineRecordById(associatedMineGuid).then(() => {
+  //       return this.setState({
+  //         isLoaded: true,
+  //         associatedMineGuid,
+  //         currentStep,
+  //         isNoWLoaded,
+  //         isImported,
+  //       });
+  //       console.log("fetched a thing???");
+  //     });
+  //   });
+  // }
   componentDidMount() {
     const { id } = this.props.match.params;
-    const currentStep = 0;
+    let currentStep = "VER";
     this.props.fetchNoticeOFWorkActivityTypeOptions();
     this.props.fetchNoticeOFWorkApplicationProgressStatusCodes();
     this.props.fetchImportedNoticeOfWorkApplication(id).then(({ data }) => {
       const associatedMineGuid = data.mine_guid ? data.mine_guid : "";
+      const isImported = data.imported_to_core;
       this.props.fetchMineRecordById(associatedMineGuid).then(() => {
-        //
-        if (data.application_progress.length === 0) {
-          this.props.createNoticeOfWorkApplicationProgress(data.now_application_guid, {
-            application_progress_status_code: "VER",
-          });
-
-          // this.props.history.push(
-          //   router.NOTICE_OF_WORK_APPLICATION.hashRoute(id, "#application-info")
-          // );
-          // currentStep = 1;
+        if (isImported) {
+          currentStep = "REV";
         }
-        this.setState({ isLoaded: true, associatedMineGuid, currentStep, isNoWLoaded: true });
+        if (data.application_progress.length > 1) {
+          const recentStatus =
+            data.application_progress[data.application_progress.length - 1]
+              .application_progress_status_code;
+          console.log(recentStatus);
+          currentStep = recentStatus;
+        }
+        this.setState({
+          isLoaded: true,
+          associatedMineGuid,
+          currentStep,
+          isNoWLoaded: true,
+          isImported,
+        });
       });
     });
     this.props.fetchOriginalNoticeOfWorkApplication(id);
@@ -107,7 +153,10 @@ export class NoticeOfWorkApplication extends Component {
   };
 
   onChange = (currentStep) => {
-    this.setState({ currentStep });
+    this.setState({
+      currentStep: this.props.applicationProgressStatusCodes[currentStep]
+        .application_progress_status_code,
+    });
   };
 
   setMineGuid = (mineGuid) => {
@@ -124,6 +173,7 @@ export class NoticeOfWorkApplication extends Component {
 
   handleUpdateNOW = (currentStep) => {
     const { id } = this.props.match.params;
+    this.setState({ isLoaded: false });
     this.props
       .createNoticeOfWorkApplication(
         this.state.associatedMineGuid,
@@ -135,24 +185,35 @@ export class NoticeOfWorkApplication extends Component {
           .then(() => {
             this.props.fetchMineRecordById(this.state.associatedMineGuid);
             // updates route to include active section
-            this.props.history.push(
-              router.NOTICE_OF_WORK_APPLICATION.hashRoute(id, "#application-info")
-            );
-            this.setState({ currentStep, isNoWLoaded: true });
+            // this.props.history.push(
+            //   router.NOTICE_OF_WORK_APPLICATION.hashRoute(id, "#application-info")
+            // );
+            this.setState({ isNoWLoaded: true, isLoaded: true, isImported: true });
           });
       });
   };
 
+  handleProgressChange = (status) => {
+    const { id } = this.props.match.params;
+    this.props.createNoticeOfWorkApplicationProgress(id, {
+      application_progress_status_code: status,
+    });
+    this.setState({ currentStep: status });
+  };
+
   renderStepOne = () => {
     const mine = this.props.mines ? this.props.mines[this.state.associatedMineGuid] : {};
+    console.log(this.state.isLoaded);
     return (
       this.state.isLoaded && (
         <VerifyNOWMine
           noticeOfWork={this.props.noticeOfWork}
           isNoWLoaded={this.state.isLoaded}
           handleSave={this.handleUpdateNOW}
+          handleProgressChange={this.handleProgressChange}
           setMineGuid={this.setMineGuid}
           currentMine={mine}
+          isImported={this.state.isImported}
         />
       )
     );
@@ -174,24 +235,30 @@ export class NoticeOfWorkApplication extends Component {
   };
 
   render() {
-    const steps = [
-      {
-        title: "Verification",
-        content: this.renderStepOne(),
-      },
-      {
-        title: "Technical Review",
-        content: this.renderStepTwo(),
-      },
-      {
-        title: "Referral / Consultation",
-        content: <NullScreen type="next-stage" />,
-      },
-      {
-        title: "Decision",
-        content: <NullScreen type="next-stage" />,
-      },
-    ];
+    const steps = {
+      VER: this.renderStepOne(),
+      REV: this.renderStepTwo(),
+      REF: <NullScreen type="next-stage" />,
+      DEC: <NullScreen type="next-stage" />,
+    };
+    // const steps = [
+    //   {
+    //     title: "Verification",
+    //     content: this.renderStepOne(),
+    //   },
+    //   {
+    //     title: "Technical Review",
+    //     content: this.renderStepTwo(),
+    //   },
+    //   {
+    //     title: "Referral / Consultation",
+    //     content: <NullScreen type="next-stage" />,
+    //   },
+    //   {
+    //     title: "Decision",
+    //     content: <NullScreen type="next-stage" />,
+    //   },
+    // ];
 
     return (
       <div className="page" onScroll={this.handleScroll()}>
@@ -226,27 +293,27 @@ export class NoticeOfWorkApplication extends Component {
             )}
           </div>
           <br />
-          <Steps current={this.state.currentStep} onChange={this.onChange}>
+          {/* <Steps current={this.state.currentStep} onChange={this.onChange}>
             {steps.map((item) => (
               <Step key={item.title} title={item.title} />
             ))}
-          </Steps>
-          <Steps current={this.state.current} onChange={this.onChange} type="navigation">
+          </Steps> */}
+          <Steps current={this.state.currentStep} onChange={this.onChange}>
             <Step status="VER" title="Verification" />
             <Step status="REV" title="Technical Review" />
             <Step status="REF" title="Referral / Consultation" />
-            <Step title="DEC" disabled />
+            <Step title="DEC" title="Decision" disabled />
           </Steps>
         </div>
         <LoadingWrapper condition={this.state.isNoWLoaded}>
           <div>
             <div className={this.state.fixedTop ? "side-menu--fixed" : "side-menu"}>
-              {this.state.currentStep === 1 && <NOWSideMenu />}
+              {this.state.currentStep === "REV" && <NOWSideMenu />}
             </div>
             <div
               className={this.state.fixedTop ? "steps--content with-fixed-top" : "steps--content"}
             >
-              {steps[this.state.currentStep].content}
+              {steps[this.state.currentStep]}
             </div>
           </div>
         </LoadingWrapper>
