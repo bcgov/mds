@@ -1,19 +1,18 @@
 import React from "react";
 import { PropTypes } from "prop-types";
 import { Field, reduxForm, FormSection } from "redux-form";
-import { Form, Divider, Row, Col, Card } from "antd";
+import { Form, Divider, Row, Col } from "antd";
 import CustomPropTypes from "@/customPropTypes";
 import RenderField from "@/components/common/RenderField";
 import RenderDate from "@/components/common/RenderDate";
 import RenderRadioButtons from "@/components/common/RenderRadioButtons";
 import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
 import * as FORM from "@/constants/forms";
-import * as Strings from "@/constants/strings";
 import ScrollContentWrapper from "@/components/common/wrappers/ScrollContentWrapper";
 import ReviewActivities from "@/components/noticeOfWork/applications/review/ReviewActivities";
-import NullScreen from "@/components/common/NullScreen";
-import Address from "@/components/common/Address";
 import ReclamationSummary from "./activities/ReclamationSummary";
+import ReviewNOWDocuments from "./ReviewNOWDocuments";
+import ReviewNOWContacts from "./ReviewNOWContacts";
 
 /**
  * @constant ReviewNOWApplication renders edit/view for the NoW Application review step
@@ -124,8 +123,13 @@ export const ReviewNOWApplication = (props) => {
       </Row>
       <Row gutter={16}>
         <Col md={12} sm={24}>
-          <div className="field-title">Permit Type**</div>
-          <Field id="" name="" component={RenderField} disabled={props.isViewMode} />
+          <div className="field-title">Permit Type</div>
+          <Field
+            id="application_permit_type_code"
+            name="application_permit_type_code"
+            component={RenderField}
+            disabled={props.isViewMode}
+          />
         </Col>
         <Col md={12} sm={24}>
           <div className="field-title">Proposed Start Date</div>
@@ -158,51 +162,11 @@ export const ReviewNOWApplication = (props) => {
           <Field
             id="tenure_number"
             name="tenure_number"
-            component={RenderField}
+            component={RenderAutoSizeField}
             disabled={props.isViewMode}
           />
         </Col>
       </Row>
-    </div>
-  );
-
-  const renderContacts = () => (
-    <div>
-      {props.noticeOfWork.contacts && props.noticeOfWork.contacts.length >= 1 ? (
-        <Row gutter={16}>
-          {props.noticeOfWork.contacts.map((contact) => {
-            const formattedPhoneNo = contact.phone_ext
-              ? `${contact.phone_no} ext: ${contact.phone_ext}`
-              : contact.phone_no;
-            return (
-              <Col sm={24} lg={12} key={contact.party_guid}>
-                <Card
-                  title={
-                    <div className="inline-flex between wrap">
-                      <div>
-                        <h3>{contact.type || Strings.EMPTY_FIELD}</h3>
-                      </div>
-                    </div>
-                  }
-                  bordered={false}
-                >
-                  <div className="contact-card--long">
-                    <h3>{contact.name}</h3>
-                    <h6>Email Address</h6>
-                    {contact.email || Strings.EMPTY_FIELD}
-                    <h6>Phone Number</h6>
-                    {formattedPhoneNo || Strings.EMPTY_FIELD}
-                    <h6>Mailing Address</h6>
-                    <Address address={contact.address} />
-                  </div>
-                </Card>
-              </Col>
-            );
-          })}
-        </Row>
-      ) : (
-        <NullScreen type="now-contacts" />
-      )}
     </div>
   );
 
@@ -372,12 +336,22 @@ export const ReviewNOWApplication = (props) => {
     <div>
       <Row gutter={16}>
         <Col md={12} sm={24}>
-          <div className="field-title">Proposed First Aid equipment on site**</div>
-          <Field id="" name="" component={RenderField} disabled={props.isViewMode} />
+          <div className="field-title">Proposed First Aid equipment on site</div>
+          <Field
+            id="first_aid_equipment_on_site"
+            name="first_aid_equipment_on_site"
+            component={RenderAutoSizeField}
+            disabled={props.isViewMode}
+          />
         </Col>
         <Col md={12} sm={24}>
-          <div className="field-title">Level of First Aid Certificate held by attendant**</div>
-          <Field id="" name="" component={RenderField} disabled={props.isViewMode} />
+          <div className="field-title">Level of First Aid Certificate held by attendant</div>
+          <Field
+            id="first_aid_cert_level"
+            name="first_aid_cert_level"
+            component={RenderField}
+            disabled={props.isViewMode}
+          />
         </Col>
       </Row>
     </div>
@@ -405,21 +379,6 @@ export const ReviewNOWApplication = (props) => {
     </div>
   );
 
-  const renderDocuments = () => {
-    return (
-      <div>
-        <br />
-        <h4>Documents</h4>
-        <Divider />
-        <NullScreen type="documents" />
-        <br />
-        <h4>Spatial Files</h4>
-        <Divider />
-        <NullScreen type="documents" />
-      </div>
-    );
-  };
-
   return (
     <div>
       <Form layout="vertical" onSubmit={() => console.log("submitting form")}>
@@ -430,7 +389,7 @@ export const ReviewNOWApplication = (props) => {
             {renderApplicationInfo()}
           </ScrollContentWrapper>
           <ScrollContentWrapper id="contacts" title="Contacts">
-            {renderContacts()}
+            <ReviewNOWContacts contacts={props.noticeOfWork.contacts} />
           </ScrollContentWrapper>
           <ScrollContentWrapper id="access" title="Access">
             {renderAccess()}
@@ -455,7 +414,10 @@ export const ReviewNOWApplication = (props) => {
             noticeOfWork={props.noticeOfWork}
           />
           <ScrollContentWrapper id="documents" title="Documents">
-            {renderDocuments()}
+            <ReviewNOWDocuments
+              now_application_guid={props.noticeOfWork.now_application_guid}
+              documents={props.noticeOfWork.submission_documents}
+            />
           </ScrollContentWrapper>
         </div>
       </Form>

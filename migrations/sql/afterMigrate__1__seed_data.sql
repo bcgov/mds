@@ -561,13 +561,22 @@ ON CONFLICT DO NOTHING;
 
 INSERT INTO now_application_progress_status (
     application_progress_status_code,
+    )
+VALUES 
+    ('VER', 'Verification', 'system-mds', 'system-mds'),
+    ('REV', 'Technical Review', 'system-mds', 'system-mds'),
+    ('REF', 'Referral / Consultation', 'system-mds', 'system-mds'),
+    ('DEC', 'Decision', 'system-mds', 'system-mds')
+ON CONFLICT DO NOTHING;
+
+INSERT INTO now_application_permit_type(
+    now_application_permit_type_code,
     description,
     create_user,
     update_user
     )
 VALUES
-    ('VER', 'Verification', 'system-mds', 'system-mds'),
-    ('REV', 'Technical Review', 'system-mds', 'system-mds'),
-    ('REF', 'Referral / Consultation', 'system-mds', 'system-mds'),
-    ('DEC', 'Decision', 'system-mds', 'system-mds')
+    ('MY-ABP', 'Multi-Year, Area Based Permit', 'system-mds', 'system-mds'),
+    ('OYP', 'One Year Permit', 'system-mds', 'system-mds'),
+    ('MYP', 'Multi-Year Permit', 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
