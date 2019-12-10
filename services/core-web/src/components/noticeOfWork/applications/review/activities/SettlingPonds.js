@@ -293,7 +293,7 @@ export const SettlingPonds = (props) => {
       <Row gutter={16}>
         <Col md={12} sm={24}>
           <div className="field-title">
-            Proposed reclamation and timing for this specific activity**
+            Proposed reclamation and timing for this specific activity
           </div>
           <Field
             id="reclamation_description"
@@ -304,7 +304,7 @@ export const SettlingPonds = (props) => {
         </Col>
         <Col md={12} sm={24}>
           <div className="field-title">
-            Estimated Cost of reclamation activities described above**
+            Estimated Cost of reclamation activities described above
           </div>
           <Field
             id="reclamation_cost"

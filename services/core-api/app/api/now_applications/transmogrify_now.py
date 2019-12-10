@@ -18,6 +18,13 @@ unit_type_map = {
     None: None
 }
 
+type_of_permit_map = {
+    'I would like to apply for a Multi-Year permit': 'MYP',
+    'I would like to apply for a one year permit': 'OYP',
+    'I would like to apply for a Multi-Year, Area Based permit': 'MY-ABP',
+    None: None
+}
+
 
 def code_lookup(model, description, code_column_name):
     if description:
@@ -67,6 +74,8 @@ def _transmogrify_now_details(now_app, now_sub, mms_now_sub):
         'notice_of_work_type_code')
     now_app.now_application_status_code = code_lookup(app_models.NOWApplicationStatus,
                                                       now_sub.status, 'now_application_status_code')
+    now_app.application_permit_type_code = type_of_permit_map[now_sub.typeofpermit]
+
     now_app.submitted_date = mms_now_sub.submitteddate or now_sub.submitteddate
     now_app.received_date = mms_now_sub.receiveddate or now_sub.receiveddate
     now_app.latitude = mms_now_sub.latitude or now_sub.latitude
@@ -75,6 +84,9 @@ def _transmogrify_now_details(now_app, now_sub, mms_now_sub):
     now_app.tenure_number = mms_now_sub.tenurenumbers or now_sub.tenurenumbers
     now_app.proposed_start_date = mms_now_sub.proposedstartdate or now_sub.proposedstartdate
     now_app.proposed_end_date = mms_now_sub.proposedenddate or now_sub.proposedenddate
+    now_app.directions_to_site = mms_now_sub.sitedirections or now_sub.sitedirections
+    now_app.first_aid_equipment_on_site = mms_now_sub.firstaidequipmentonsite or now_sub.firstaidequipmentonsite
+    now_app.first_aid_cert_level = mms_now_sub.firstaidcertlevel or now_sub.firstaidcertlevel
     now_app.submission_documents = now_sub.documents
     return
 
@@ -228,6 +240,7 @@ def _transmogrify_exploration_surface_drilling(now_app, now_sub, mms_now_sub):
         for sd in exp_surface_drill_activity:
             esd_detail = app_models.ExplorationSurfaceDrillingDetail(
                 activity_type_description=sd.type,
+                number_of_sites=sd.numberofsites,
                 disturbed_area=sd.disturbedarea,
                 timber_volume=sd.timbervolume)
             esd.details.append(esd_detail)
@@ -294,6 +307,20 @@ def _transmogrify_exploration_access(now_app, now_sub, mms_now_sub):
 
         now_app.exploration_access = exploration_access
 
+        if (len(mms_now_sub.exp_access_activity) > 0):
+            exp_access_activity = mms_now_sub.exp_access_activity
+        else:
+            exp_access_activity = now_sub.exp_access_activity
+
+        for detail in exp_access_activity:
+            now_app.exploration_access.details.append(
+                app_models.ExplorationAccessDetail(
+                    activity_type_description=detail.type,
+                    length=detail.length,
+                    disturbed_area=detail.disturbedarea,
+                    timber_volume=detail.timbervolume,
+                ))
+
 
 def _transmogrify_placer_operations(now_app, now_sub, mms_now_sub):
     placerundergroundoperations = now_sub.placerundergroundoperations
@@ -323,7 +350,7 @@ def _transmogrify_placer_operations(now_app, now_sub, mms_now_sub):
                 timber_volume=proposed.timbervolume,
                 width=getattr(proposed, 'width', None),
                 length=getattr(proposed, 'length', None),
-                depth=proposed.depth,
+                depth=getattr(proposed, 'depth', None),
                 quantity=proposed.quantity)
 
             etl_detail = app_models.ETLActivityDetail(placeractivityid=proposed.placeractivityid)
@@ -350,7 +377,7 @@ def _transmogrify_placer_operations(now_app, now_sub, mms_now_sub):
                     timber_volume=existing.timbervolume,
                     width=getattr(existing, 'width', None),
                     length=getattr(existing, 'length', None),
-                    depth=existing.depth,
+                    depth=getattr(existing, 'depth', None),
                     quantity=existing.quantity)
 
                 etl_detail = app_models.ETLActivityDetail(

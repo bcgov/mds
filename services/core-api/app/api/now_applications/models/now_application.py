@@ -44,9 +44,14 @@ class NOWApplication(Base, AuditMixin):
     property_name = db.Column(db.String)
     tenure_number = db.Column(db.String)
     description_of_land = db.Column(db.String)
+    application_permit_type_code = db.Column(
+        db.String, db.ForeignKey('now_application_permit_type.now_application_permit_type_code'))
     proposed_start_date = db.Column(db.Date)
     proposed_end_date = db.Column(db.Date)
     directions_to_site = db.Column(db.String)
+
+    first_aid_equipment_on_site = db.Column(db.String)
+    first_aid_cert_level = db.Column(db.String)
 
     blasting_operation = db.relationship('BlastingOperation', lazy='joined', uselist=False)
     state_of_land = db.relationship('StateOfLand', lazy='joined', uselist=False)

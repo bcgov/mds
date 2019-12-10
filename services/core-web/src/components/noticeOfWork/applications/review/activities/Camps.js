@@ -143,7 +143,7 @@ export const Camps = (props) => {
       <h4>Fuel</h4>
       <Row gutter={16}>
         <Col md={12} sm={24}>
-          <div className="field-title">Do you propose to store fuel?**</div>
+          <div className="field-title">Do you propose to store fuel?</div>
           <Field
             id="has_fuel_stored"
             name="has_fuel_stored"
@@ -152,7 +152,7 @@ export const Camps = (props) => {
           />
         </Col>
         <Col md={12} sm={24}>
-          <div className="field-title">Storage Method**</div>
+          <div className="field-title">Storage Method</div>
           <Row gutter={16}>
             <Col md={12} sm={24}>
               <Field
@@ -180,7 +180,7 @@ export const Camps = (props) => {
       <Row gutter={16}>
         <Col md={12} sm={24}>
           <div className="field-title">
-            Proposed reclamation and timing for this specific activity**
+            Proposed reclamation and timing for this specific activity
           </div>
           <Field
             id="reclamation_description"
@@ -191,7 +191,7 @@ export const Camps = (props) => {
         </Col>
         <Col md={12} sm={24}>
           <div className="field-title">
-            Estimated Cost of reclamation activities described above**
+            Estimated Cost of reclamation activities described above
           </div>
           <Field
             id="reclamation_cost"
