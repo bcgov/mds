@@ -62,25 +62,47 @@ class PermitAmendmentListResource(Resource, UserMixin):
         if not party:
             raise NotFound('Party not found')
 
-        party_is_active_permittee = False
-
         permittees = MinePartyAppointment.find_by_permit_guid(permit_guid)
+        if not permittees:
+            raise NotFound('Party appointments not found')
+
+        permit_issue_datetime = data.get('issue_date')
+        # convert permit_issue_date to a date object to compare with permittee start_date,
+        #Both dates are stored in the DB as Dates, and are being converted to SQLAlchemy dateTimes in the modals, but for some reason being returned as Python Dates.
+        permit_issue_date = datetime.date(permit_issue_datetime)
+        is_historical_permit = False
+
+        new_end_dates = MinePartyAppointment.find_appointment_end_dates(
+            permit_guid, permit_issue_date)
 
         for permittee in permittees:
-            if permittee.end_date is None:
-                if permittee.party_guid == party.party_guid:
-                    party_is_active_permittee = True
-                else:     # inactive old permittees
-                    permittee.end_date = datetime.utcnow()
+            # check if the new appointment is older than the current appointment, if so create a new permittee appointment
+            if permittee.start_date > permit_issue_date:
+                is_historical_permit = True
+            else:
+                # if the amendment is the newest, change the end dates of the other appointments
+                position = new_end_dates.index(permittee.start_date)
+                if new_end_dates.index(permittee.start_date) == 0:
+                    permittee.save()
+                else:
+                    permittee.end_date = new_end_dates[position - 1]
                     permittee.save()
 
-        if not party_is_active_permittee:
-            new_permittee = MinePartyAppointment.create(permit.mine_guid,
-                                                        data.get('permittee_party_guid'), 'PMT',
-                                                        datetime.utcnow(), None,
-                                                        self.get_user_info(), permit_guid, True)
-            new_permittee.save()
+        permittee_start_date = permit_issue_date
+        position = new_end_dates.index(permit_issue_date)
+        permittee_end_date = new_end_dates[position - 1] if is_historical_permit else None
 
+        # create a new appointment, so every amendment is associated with a permittee
+        new_permittee = MinePartyAppointment.create(
+            permit.mine_guid,
+            data.get('permittee_party_guid'),
+            'PMT',
+            self.get_user_info(),
+            start_date=permittee_start_date,
+            end_date=permittee_end_date,
+            permit_guid=permit_guid)
+
+        new_permittee.save()
         new_pa = PermitAmendment.create(
             permit,
             data.get('received_date'),
@@ -97,6 +119,7 @@ class PermitAmendmentListResource(Resource, UserMixin):
                 mine_guid=permit.mine_guid,
             )
             new_pa.related_documents.append(new_pa_doc)
+
         new_pa.save()
         return new_pa
 

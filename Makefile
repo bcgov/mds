@@ -122,7 +122,7 @@ frontend-run:
 
 database-dump:
 	@echo "+\n++ Getting database dump from test environment...\n+"
-	@sh ./openshift/scripts/database-dump.sh empr-mds-test pgDump-test
+	@sh ./bin/database-dump.sh empr-mds-test pgDump-test
 
 database-dump-seed:
 	@echo "+\n++ Seeding docker database...\n+"

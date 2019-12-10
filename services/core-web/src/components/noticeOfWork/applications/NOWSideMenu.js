@@ -2,7 +2,6 @@ import React from "react";
 import { withRouter } from "react-router-dom";
 import { PropTypes } from "prop-types";
 import { Anchor } from "antd";
-import * as routes from "@/constants/routes";
 
 const { Link } = Anchor;
 
@@ -18,12 +17,13 @@ const propTypes = {
       id: PropTypes.string,
     },
   }).isRequired,
+  route: PropTypes.shape({ route: PropTypes.string, hashRoute: PropTypes.func }).isRequired,
 };
 
 export const NOWSideMenu = (props) => {
   const onChange = (link) => {
     const { id } = props.match.params;
-    return props.history.push(routes.NOTICE_OF_WORK_APPLICATION.hashRoute(id, link));
+    return props.history.push(props.route.hashRoute(id, link));
   };
 
   return (

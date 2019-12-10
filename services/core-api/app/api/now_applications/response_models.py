@@ -1,6 +1,7 @@
 from app.extensions import api
 from flask_restplus import fields
 
+from app.api.parties.response_models import PARTY
 
 class DateTime(fields.Raw):
     def format(self, value):
@@ -210,10 +211,29 @@ NOW_APPLCATION_STATE_OF_LAND = api.model(
     }
 )
 
+NOW_SUBMISSION_DOCUMENT = api.model(
+    'DOCUMENT', {
+        'id': fields.Integer,
+        'documenturl': fields.String,
+        'filename': fields.String,
+        'documenttype': fields.String,
+        'description': fields.String,
+    })
+
+NOW_PARTY_APPOINTMENT = api.model(
+    'NOW_PARTY_APPOINTMENT', {
+        'now_party_appointment_id': fields.Integer,
+        'mine_party_appt_type_code': fields.String,
+        'mine_party_appt_type_code_description': fields.String,
+        'party': fields.Nested(PARTY),
+    }
+)
+
 NOW_APPLICATION_MODEL = api.model(
     'NOWApplication',
     {
         'now_application_guid': fields.String,
+        'now_number': fields.String,
         'mine_guid': fields.String,
         'mine_name': fields.String,
         'mine_no': fields.String,
@@ -246,7 +266,9 @@ NOW_APPLICATION_MODEL = api.model(
         'settling_pond': fields.Nested(NOW_APPLICATION_SETTLING_POND, skip_none=True),
         'surface_bulk_sample': fields.Nested(NOW_APPLICATION_SURFACE_BULK, skip_none=True),
         'underground_exploration': fields.Nested(NOW_APPLICATION_UNDERGROUND_EXPLORATION, skip_none=True),
-        'water_supply': fields.Nested(NOW_APPLICATION_WATER_SUPPLY, skip_none=True)
+        'water_supply': fields.Nested(NOW_APPLICATION_WATER_SUPPLY, skip_none=True),
+        'submission_documents': fields.List(fields.Nested(NOW_SUBMISSION_DOCUMENT), skip_none=True),
+        'contacts': fields.List(fields.Nested(NOW_PARTY_APPOINTMENT), skip_none=True)
     })
 
 NOW_VIEW_MODEL = api.model(
@@ -257,7 +279,7 @@ NOW_VIEW_MODEL = api.model(
         'mine_no': fields.String,
         'mine_name':fields.String,
         'mine_region':fields.String,
-        'tracking_number': fields.String,
+        'now_number': fields.String,
         'notice_of_work_type_description': fields.String,
         'now_application_status_description': fields.String,
         'received_date': Date
@@ -280,6 +302,47 @@ NOW_ACTIVITY_TYPES = api.model(
     'ActivityType', 
     {
         'activity_type_code': fields.String,
+        'description': fields.String
+    }
+)
+
+NOW_APPLICATION_TYPES = api.model(
+    'ApplicationType', 
+    {
+        'notice_of_work_type_code': fields.String,
+        'description': fields.String
+    }
+)
+
+NOW_APPLICATION_STATUS_CODES = api.model(
+    'ActivityStatusCodes', 
+    {
+        'now_application_status_code': fields.String,
+        'description': fields.String
+    }
+)
+
+
+UNIT_TYPES = api.model(
+    'UnitTypeCodes', 
+    {
+        'unit_type_code': fields.String,
+        'description': fields.String
+    }
+)
+
+NOW_APPLICATION_DOCUMENT_TYPES = api.model(
+    'ApplicationDocumentTypes', 
+    {
+        'now_application_document_type_code': fields.String,
+        'description': fields.String
+    }
+)
+
+UNDERGROUND_EXPLORATION_TYPES = api.model(
+    'UndergroundExplorationTypes', 
+    {
+        'underground_exploration_type_code': fields.String,
         'description': fields.String
     }
 )
