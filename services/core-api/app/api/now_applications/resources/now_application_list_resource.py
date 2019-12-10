@@ -26,7 +26,7 @@ class NoticeOfWorkListResource(Resource, UserMixin ):
             'status': 'Comma-separated list of statuses to include in results. Default: All statuses.',
             'notice_of_work_type_search': 'Substring to match with a NoW\s type',
             'mine_region': 'Mine region code to match with a NoW. Default: All regions.',
-            'tracking_number': 'Number of the NoW',
+            'now_number': 'Number of the NoW',
             'mine_search': 'Substring to match against a NoW mine number or mine name',
             'submissions_only': 'Boolean to filter based on NROS/VFCBC submissions only',
         })
@@ -43,7 +43,7 @@ class NoticeOfWorkListResource(Resource, UserMixin ):
             status=request.args.get('status', type=str),
             notice_of_work_type_search=request.args.get('notice_of_work_type_search', type=str),
             mine_region=request.args.get('mine_region', type=str),
-            tracking_number=request.args.get('tracking_number', type=int),
+            now_number=request.args.get('now_number', type=str),
             mine_search=request.args.get('mine_search', type=str),
             submissions_only=request.args.get('submissions_only', type=str) in ['true', 'True'])
 
@@ -66,7 +66,7 @@ class NoticeOfWorkListResource(Resource, UserMixin ):
                                       status=None,
                                       notice_of_work_type_search=None,
                                       mine_region=None,
-                                      tracking_number=None,
+                                      now_number=None,
                                       mine_search=None,
                                       submissions_only=None):
         filters = []
@@ -80,8 +80,8 @@ class NoticeOfWorkListResource(Resource, UserMixin ):
 
         if notice_of_work_type_search is not None:
             filters.append(func.lower(NoticeOfWorkView.notice_of_work_type_description).contains(func.lower(notice_of_work_type_search)))
-        if tracking_number is not None:
-            filters.append(NoticeOfWorkView.tracking_number == tracking_number)
+        if now_number is not None:
+            filters.append(NoticeOfWorkView.now_number == now_number)
 
         if mine_region is not None or mine_search is not None:
             base_query = base_query.join(Mine)

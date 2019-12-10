@@ -112,13 +112,13 @@ exports[`SandGravelQuarry renders properly 1`] = `
       <div
         className="field-title--light"
       >
-        Permit Application Number**
+        Permit Application Number
       </div>
       <Field
         component={[Function]}
         disabled={true}
-        id=""
-        name=""
+        id="agri_lnd_rsrv_permit_application_number"
+        name="agri_lnd_rsrv_permit_application_number"
       />
     </Col>
     <Col

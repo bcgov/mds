@@ -15,7 +15,7 @@ class NoticeOfWorkView(Base):
     mine_no = db.Column(db.String)
     mine_name = association_proxy('mine', 'mine_name')
     mine_region = association_proxy('mine', 'mine_region')
-    tracking_number = db.Column(db.String)
+    now_number = db.Column(db.String)
     notice_of_work_type_description =  db.Column(db.String)
     now_application_status_description =  db.Column(db.String)
     received_date = db.Column(db.Date)

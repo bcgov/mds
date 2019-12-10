@@ -93,6 +93,7 @@ class MMSApplication(Base):
     existingpondstotaldistarea = db.Column(db.Numeric(14, 2))
     proposedpondstotaldistarea = db.Column(db.Numeric(14, 2))
     proposedpondstimbervolume = db.Column(db.Numeric(14, 2))
+    mmsnownumber = db.Column(db.String)
 
     sand_grv_qry_activity = db.relationship('MMSSandGrvQryActivity', lazy='select')
     surface_bulk_sample_activity = db.relationship('MMSSurfaceBulkSampleActivity', lazy='select')

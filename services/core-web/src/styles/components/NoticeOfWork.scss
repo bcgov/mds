@@ -94,6 +94,15 @@
       background-color: white;
       z-index: 120;
     }
+    &.fixed-scroll-view {
+      padding: 20px;
+      padding-bottom: 10px;
+      position: fixed;
+      width: 100vw;
+      top: 50px;
+      background-color: white;
+      z-index: 120;
+    }
   }
 
   &--content {

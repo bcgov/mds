@@ -96,10 +96,15 @@ class PermitListResource(Resource, UserMixin):
             amendment.related_documents.append(new_pa_doc)
         db.session.commit()
 
-        permittee = MinePartyAppointment.create(mine.mine_guid,
-                                                data.get('permittee_party_guid'), 'PMT',
-                                                datetime.utcnow(), None, self.get_user_info(),
-                                                permit.permit_guid, True)
+        permittee_start_date = data.get('issue_date'),
+        permittee = MinePartyAppointment.create(
+            mine.mine_guid,
+            data.get('permittee_party_guid'),
+            'PMT',
+            start_date=permittee_start_date,
+            processed_by=self.get_user_info(),
+            permit_guid=permit.permit_guid)
+        db.session.add(permittee)
         db.session.commit()
 
         return permit

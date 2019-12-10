@@ -113,7 +113,7 @@ export const SandGravelQuarry = (props) => {
   };
 
   const columns = (isViewMode) =>
-    !isViewMode ? [...standardColumns, removeColumn] : standardColumns;
+    false && !isViewMode ? [...standardColumns, removeColumn] : standardColumns;
 
   const transformData = (activityDetails) => {
     return activityDetails.map((activity, index) => ({
@@ -186,8 +186,13 @@ export const SandGravelQuarry = (props) => {
       </Row>
       <Row gutter={16}>
         <Col md={12} sm={24}>
-          <div className="field-title--light">Permit Application Number**</div>
-          <Field id="" name="" component={RenderField} disabled={props.isViewMode} />
+          <div className="field-title--light">Permit Application Number</div>
+          <Field
+            id="agri_lnd_rsrv_permit_application_number"
+            name="agri_lnd_rsrv_permit_application_number"
+            component={RenderField}
+            disabled={props.isViewMode}
+          />
         </Col>
         <Col md={12} sm={24}>
           <div className="field-title">Proposed land use</div>
@@ -251,7 +256,7 @@ export const SandGravelQuarry = (props) => {
           emptyText: "No data",
         }}
       />
-      {!props.isViewMode && (
+      {false && !props.isViewMode && (
         <Button type="primary" onClick={() => addActivity()}>
           Add Activity
         </Button>

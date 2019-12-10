@@ -12,6 +12,7 @@ from .now_application_status import NOWApplicationStatus
 from .now_application_identity import NOWApplicationIdentity
 from app.api.constants import *
 
+from app.api.now_submissions.models.document import Document
 
 class NOWApplication(Base, AuditMixin):
     __tablename__ = "now_application"
@@ -20,13 +21,14 @@ class NOWApplication(Base, AuditMixin):
 
     now_application_id = db.Column(db.Integer, primary_key=True, server_default=FetchedValue())
     now_application_identity = db.relationship(
-        'NOWApplicationIdentity', lazy='joined', uselist=False)
+        'NOWApplicationIdentity', lazy='selectin', uselist=False)
     now_application_guid = association_proxy('now_application_identity', 'now_application_guid')
 
     mine_guid = association_proxy('now_application_identity', 'mine_guid')
     mine_name = association_proxy('now_application_identity', 'mine.mine_name')
     mine_no = association_proxy('now_application_identity', 'mine.mine_no')
     mine_region = association_proxy('now_application_identity', 'mine.mine_region')
+    now_number = association_proxy('now_application_identity', 'now_number')
 
     now_tracking_number = db.Column(db.Integer)
     notice_of_work_type_code = db.Column(
@@ -42,9 +44,14 @@ class NOWApplication(Base, AuditMixin):
     property_name = db.Column(db.String)
     tenure_number = db.Column(db.String)
     description_of_land = db.Column(db.String)
+    application_permit_type_code = db.Column(
+        db.String, db.ForeignKey('now_application_permit_type.now_application_permit_type_code'))
     proposed_start_date = db.Column(db.Date)
     proposed_end_date = db.Column(db.Date)
     directions_to_site = db.Column(db.String)
+
+    first_aid_equipment_on_site = db.Column(db.String)
+    first_aid_cert_level = db.Column(db.String)
 
     blasting_operation = db.relationship('BlastingOperation', lazy='joined', uselist=False)
     state_of_land = db.relationship('StateOfLand', lazy='joined', uselist=False)
@@ -65,6 +72,18 @@ class NOWApplication(Base, AuditMixin):
     underground_exploration = db.relationship(
         'UndergroundExploration', lazy='selectin', uselist=False)
     water_supply = db.relationship('WaterSupply', lazy='selectin', uselist=False)
+
+    # Documents
+    submission_documents = db.relationship(
+        'Document',
+        lazy='selectin',
+        secondary="join(NOWApplication, NOWApplicationIdentity, NOWApplication.now_application_id == NOWApplicationIdentity.now_application_id).join(Application, NOWApplicationIdentity.messageid == Application.messageid)",
+        primaryjoin='and_(NOWApplication.now_application_id==NOWApplicationIdentity.now_application_id, NOWApplicationIdentity.messageid==Application.messageid)',
+        secondaryjoin='Application.messageid==Document.messageid',
+        viewonly=True)
+
+    # Contacts
+    contacts = db.relationship('NOWPartyAppointment', lazy='selectin')
 
     def __repr__(self):
         return '<NOWApplication %r>' % self.now_application_guid

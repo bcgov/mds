@@ -170,7 +170,7 @@ export const Placer = (props) => {
   };
 
   const columns = (isViewMode) =>
-    !isViewMode ? [...standardColumns, removeColumn] : standardColumns;
+    false && !isViewMode ? [...standardColumns, removeColumn] : standardColumns;
 
   const transformData = (activities) =>
     activities.map((activity, index) => ({
@@ -217,7 +217,7 @@ export const Placer = (props) => {
           emptyText: "No data",
         }}
       />
-      {!props.isViewMode && (
+      {false && !props.isViewMode && (
         <Button type="primary" onClick={() => addActivity()}>
           Add Activity
         </Button>

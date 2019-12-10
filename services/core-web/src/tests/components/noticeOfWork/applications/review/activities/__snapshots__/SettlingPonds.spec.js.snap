@@ -165,7 +165,7 @@ exports[`SettlingPonds renders properly 1`] = `
       <div
         className="field-title"
       >
-        Proposed reclamation and timing for this specific activity**
+        Proposed reclamation and timing for this specific activity
       </div>
       <Field
         component={[Function]}
@@ -181,7 +181,7 @@ exports[`SettlingPonds renders properly 1`] = `
       <div
         className="field-title"
       >
-        Estimated Cost of reclamation activities described above**
+        Estimated Cost of reclamation activities described above
       </div>
       <Field
         component={[Function]}

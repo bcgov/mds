@@ -1,6 +1,7 @@
 from app.extensions import api
 from flask_restplus import fields
 
+from app.api.parties.response_models import PARTY
 
 class DateTime(fields.Raw):
     def format(self, value):
@@ -87,7 +88,9 @@ NOW_APPLICATION_EXP_ACCESS = api.inherit(
 
 NOW_APPLICATION_EXP_SURFACE_DRILL = api.inherit('NOWApplicationExpSurfaceDrill',
                                                 NOW_APPLICATION_ACTIVITY_SUMMARY_BASE,
-                                                {'reclamation_core_storage': fields.String})
+                                                {'reclamation_core_storage': fields.String,
+                                                'details': fields.List(fields.Nested(NOW_APPLICATION_ACTIVITY_DETAIL_BASE,skip_none=True))
+                                                })
 
 
 NOW_APPLICATION_MECH_TRENCHING = api.inherit(
@@ -210,10 +213,29 @@ NOW_APPLCATION_STATE_OF_LAND = api.model(
     }
 )
 
+NOW_SUBMISSION_DOCUMENT = api.model(
+    'DOCUMENT', {
+        'id': fields.Integer,
+        'documenturl': fields.String,
+        'filename': fields.String,
+        'documenttype': fields.String,
+        'description': fields.String,
+    })
+
+NOW_PARTY_APPOINTMENT = api.model(
+    'NOW_PARTY_APPOINTMENT', {
+        'now_party_appointment_id': fields.Integer,
+        'mine_party_appt_type_code': fields.String,
+        'mine_party_appt_type_code_description': fields.String,
+        'party': fields.Nested(PARTY),
+    }
+)
+
 NOW_APPLICATION_MODEL = api.model(
     'NOWApplication',
     {
         'now_application_guid': fields.String,
+        'now_number': fields.String,
         'mine_guid': fields.String,
         'mine_name': fields.String,
         'mine_no': fields.String,
@@ -231,9 +253,12 @@ NOW_APPLICATION_MODEL = api.model(
         'property_name': fields.String,
         'tenure_number': fields.String,
         'description_of_land': fields.String,
+        'application_permit_type_code': fields.String,
         'proposed_start_date': Date,
         'proposed_end_date': Date,
         'directions_to_site':fields.String,
+        'first_aid_equipment_on_site': fields.String,
+        'first_aid_cert_level': fields.String, 
         'state_of_land': fields.Nested(NOW_APPLCATION_STATE_OF_LAND,skip_none=True),
         'blasting_operation': fields.Nested(NOW_APPLICATION_BLASTING_OPERATION, skip_none=True),
         'camps': fields.Nested(NOW_APPLICATION_CAMP, skip_none=True),
@@ -246,7 +271,9 @@ NOW_APPLICATION_MODEL = api.model(
         'settling_pond': fields.Nested(NOW_APPLICATION_SETTLING_POND, skip_none=True),
         'surface_bulk_sample': fields.Nested(NOW_APPLICATION_SURFACE_BULK, skip_none=True),
         'underground_exploration': fields.Nested(NOW_APPLICATION_UNDERGROUND_EXPLORATION, skip_none=True),
-        'water_supply': fields.Nested(NOW_APPLICATION_WATER_SUPPLY, skip_none=True)
+        'water_supply': fields.Nested(NOW_APPLICATION_WATER_SUPPLY, skip_none=True),
+        'submission_documents': fields.List(fields.Nested(NOW_SUBMISSION_DOCUMENT), skip_none=True),
+        'contacts': fields.List(fields.Nested(NOW_PARTY_APPOINTMENT), skip_none=True)
     })
 
 NOW_VIEW_MODEL = api.model(
@@ -257,13 +284,13 @@ NOW_VIEW_MODEL = api.model(
         'mine_no': fields.String,
         'mine_name':fields.String,
         'mine_region':fields.String,
-        'tracking_number': fields.String,
+        'now_number': fields.String,
         'notice_of_work_type_description': fields.String,
         'now_application_status_description': fields.String,
         'received_date': Date
     }
 )
-
+ 
 PAGINATED_LIST = api.model(
     'List', {
         'current_page': fields.Integer,

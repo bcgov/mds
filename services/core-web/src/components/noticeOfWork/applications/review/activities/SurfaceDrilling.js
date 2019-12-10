@@ -131,7 +131,7 @@ export const SurfaceDrilling = (props) => {
   };
 
   const columns = (isViewMode) =>
-    !isViewMode ? [...standardColumns, removeColumn] : standardColumns;
+    false && !isViewMode ? [...standardColumns, removeColumn] : standardColumns;
 
   const transformData = (activities) =>
     activities.map((activity, index) => ({
@@ -155,7 +155,7 @@ export const SurfaceDrilling = (props) => {
           emptyText: "No data",
         }}
       />
-      {!props.isViewMode && (
+      {false && !props.isViewMode && (
         <Button type="primary" onClick={() => addActivity()}>
           Add Activity
         </Button>
@@ -192,8 +192,8 @@ export const SurfaceDrilling = (props) => {
             Estimated Cost of reclamation activities described above
           </div>
           <Field
-            id="reclamation_description"
-            name="reclamation_description"
+            id="reclamation_cost"
+            name="reclamation_cost"
             component={RenderField}
             disabled={props.isViewMode}
           />

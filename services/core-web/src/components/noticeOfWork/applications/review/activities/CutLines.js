@@ -112,7 +112,7 @@ export const CutLines = (props) => {
   };
 
   const columns = (isViewMode) =>
-    !isViewMode ? [...standardColumns, removeColumn] : standardColumns;
+    false && !isViewMode ? [...standardColumns, removeColumn] : standardColumns;
 
   const transformData = (activities) =>
     activities.map((activity, index) => ({
@@ -135,7 +135,7 @@ export const CutLines = (props) => {
           emptyText: "No data",
         }}
       />
-      {!props.isViewMode && (
+      {false && !props.isViewMode && (
         <Button type="primary" onClick={() => addActivity()}>
           Add Activity
         </Button>
@@ -145,7 +145,7 @@ export const CutLines = (props) => {
       <Row gutter={16}>
         <Col md={12} sm={24}>
           <div className="field-title">
-            Proposed reclamation and timing for this specific activity**
+            Proposed reclamation and timing for this specific activity
           </div>
           <Field
             id="reclamation_description"
@@ -156,7 +156,7 @@ export const CutLines = (props) => {
         </Col>
         <Col md={12} sm={24}>
           <div className="field-title">
-            Estimated Cost of reclamation activities described above**
+            Estimated Cost of reclamation activities described above
           </div>
           <Field
             id="reclamation_cost"
