@@ -123,8 +123,13 @@ export const ReviewNOWApplication = (props) => {
       </Row>
       <Row gutter={16}>
         <Col md={12} sm={24}>
-          <div className="field-title">Permit Type**</div>
-          <Field id="" name="" component={RenderField} disabled={props.isViewMode} />
+          <div className="field-title">Permit Type</div>
+          <Field
+            id="application_permit_type_code"
+            name="application_permit_type_code"
+            component={RenderField}
+            disabled={props.isViewMode}
+          />
         </Col>
         <Col md={12} sm={24}>
           <div className="field-title">Proposed Start Date</div>
@@ -157,7 +162,7 @@ export const ReviewNOWApplication = (props) => {
           <Field
             id="tenure_number"
             name="tenure_number"
-            component={RenderField}
+            component={RenderAutoSizeField}
             disabled={props.isViewMode}
           />
         </Col>
@@ -331,12 +336,22 @@ export const ReviewNOWApplication = (props) => {
     <div>
       <Row gutter={16}>
         <Col md={12} sm={24}>
-          <div className="field-title">Proposed First Aid equipment on site**</div>
-          <Field id="" name="" component={RenderField} disabled={props.isViewMode} />
+          <div className="field-title">Proposed First Aid equipment on site</div>
+          <Field
+            id="first_aid_equipment_on_site"
+            name="first_aid_equipment_on_site"
+            component={RenderAutoSizeField}
+            disabled={props.isViewMode}
+          />
         </Col>
         <Col md={12} sm={24}>
-          <div className="field-title">Level of First Aid Certificate held by attendant**</div>
-          <Field id="" name="" component={RenderField} disabled={props.isViewMode} />
+          <div className="field-title">Level of First Aid Certificate held by attendant</div>
+          <Field
+            id="first_aid_cert_level"
+            name="first_aid_cert_level"
+            component={RenderField}
+            disabled={props.isViewMode}
+          />
         </Col>
       </Row>
     </div>
