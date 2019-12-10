@@ -54,7 +54,7 @@ const applySortIndicator = (_columns, field, dir) =>
 const transformRowData = (applications) =>
   applications.map((application) => ({
     key: application.now_application_guid,
-    nowNum: application.tracking_number || Strings.EMPTY_FIELD,
+    nowNum: application.now_number || Strings.EMPTY_FIELD,
     mineGuid: application.mine_guid || Strings.EMPTY_FIELD,
     mineName: application.mine_name || Strings.EMPTY_FIELD,
     nowType: application.notice_of_work_type_description || Strings.EMPTY_FIELD,
@@ -111,12 +111,12 @@ export class MineNoticeOfWorkTable extends Component {
     {
       title: "NoW No.",
       dataIndex: "nowNum",
-      sortField: "tracking_number",
+      sortField: "now_number",
       render: (text, record) => (
-        <Link to={router.NOTICE_OF_WORK_INITIAL_APPLICATION.dynamicRoute(record.key)}>{text}</Link>
+        <Link to={router.VIEW_NOTICE_OF_WORK_APPLICATION.dynamicRoute(record.key)}>{text}</Link>
       ),
       sorter: true,
-      ...this.filterProperties("NoW No.", "tracking_number"),
+      ...this.filterProperties("NoW No.", "now_number"),
     },
     {
       title: "NoW Type",
@@ -147,16 +147,17 @@ export class MineNoticeOfWorkTable extends Component {
       width: 150,
       render: (text, record) =>
         record.key && (
-          <div title="">
+          <div title="" className="btn--middle flex">
             <AuthorizationWrapper inTesting>
               <AuthorizationWrapper permission={Permission.ADMIN}>
-                <Link
-                  to={router.NOTICE_OF_WORK_APPLICATION.dynamicRoute(record.nowApplicationGuid)}
-                >
-                  <img src={EDIT_OUTLINE_VIOLET} alt="Edit NoW" />
+                <Link to={router.NOTICE_OF_WORK_APPLICATION.dynamicRoute(record.key)}>
+                  <img src={EDIT_OUTLINE_VIOLET} alt="Edit NoW" className="padding-large--right" />
                 </Link>
               </AuthorizationWrapper>
             </AuthorizationWrapper>
+            <Link to={router.VIEW_NOTICE_OF_WORK_APPLICATION.dynamicRoute(record.key)}>
+              <Icon type="eye" className="icon-lg icon-svg-filter padding-large--left" />
+            </Link>
           </div>
         ),
     },
