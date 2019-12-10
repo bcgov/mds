@@ -19,6 +19,8 @@ services:
       - "8443:8443"
     networks:
       - mds
+    logging:
+        driver: none
 
   ####################### Postgres Definition #######################
   postgres:

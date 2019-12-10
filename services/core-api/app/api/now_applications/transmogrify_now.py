@@ -1,6 +1,10 @@
+import re
 from app.api.now_applications import models as app_models
 from app.api.now_submissions import models as sub_models
 from app.api.mms_now_submissions import models as mms_sub_models
+from app.api.parties.party.models.party import Party
+from app.api.parties.party.models.address import Address
+from app.api.parties.party_appt.models.mine_party_appt_type import MinePartyAppointmentType
 
 from flask import current_app
 
@@ -45,6 +49,7 @@ def transmogrify_now(now_application_identity):
     _transmogrify_now_details(now_app, now_sub, mms_now_sub)
     _transmogrify_blasting_activities(now_app, now_sub, mms_now_sub)
     _transmogrify_state_of_land(now_app, now_sub, mms_now_sub)
+    _transmogrify_contacts(now_app, now_sub, mms_now_sub)
 
     #Activities
     _transmogrify_camp_activities(now_app, now_sub, mms_now_sub)
@@ -82,6 +87,7 @@ def _transmogrify_now_details(now_app, now_sub, mms_now_sub):
     now_app.directions_to_site = mms_now_sub.sitedirections or now_sub.sitedirections
     now_app.first_aid_equipment_on_site = mms_now_sub.firstaidequipmentonsite or now_sub.firstaidequipmentonsite
     now_app.first_aid_cert_level = mms_now_sub.firstaidcertlevel or now_sub.firstaidcertlevel
+    now_app.submission_documents = now_sub.documents
     return
 
 
@@ -93,7 +99,52 @@ def _transmogrify_state_of_land(now_app, now_sub, mms_now_sub):
             has_community_water_shed=landcommunitywatershed == 'Yes',
             has_archaeology_sites_affected=archsitesaffected == 'Yes')
     return
+ 
+def _map_contact_type(submission_type):
+    if submission_type == 'Mine manager': return 'MMG'
+    if submission_type == 'Permittee': return 'PMT'
+    if submission_type == 'Site operator': return 'MOR'
+    if submission_type == 'Tenure Holder': return 'THD'
+    raise Exception(submission_type + ' is not a valid contact type')
 
+def _transmogrify_contacts(now_app, now_sub, mms_now_sub):
+    for c in now_sub.contacts:
+        now_party_appt = None
+        if c.type == 'Individual' and c.contacttype and c.ind_lastname and c.ind_firstname and c.ind_phonenumber:
+            now_party = Party(
+                party_name=c.ind_lastname,
+                first_name=c.ind_firstname,
+                party_type_code='PER',
+                phone_no=c.ind_phonenumber[:3] + "-" + c.ind_phonenumber[3:6] + "-" + c.ind_phonenumber[6:],
+                email=c.email,
+                )
+            now_party_mine_party_appt_type=MinePartyAppointmentType.find_by_mine_party_appt_type_code(_map_contact_type(c.contacttype))
+            now_party_appt = app_models.NOWPartyAppointment(mine_party_appt_type_code=now_party_mine_party_appt_type.mine_party_appt_type_code, mine_party_appt_type=now_party_mine_party_appt_type, party=now_party)
+        if c.type == 'Organization' and c.contacttype and c.org_legalname and c.dayphonenumber:
+            now_party = Party(
+                party_name=c.org_legalname,
+                party_type_code='ORG',
+                phone_no=c.dayphonenumber[:3] + "-" + c.dayphonenumber[3:6] + "-" + c.dayphonenumber[6:],
+                phone_ext=c.dayphonenumberext,
+                email=c.email,
+                )
+            now_party_mine_party_appt_type=MinePartyAppointmentType.find_by_mine_party_appt_type_code(_map_contact_type(c.contacttype))
+            now_party_appt = app_models.NOWPartyAppointment(mine_party_appt_type_code=now_party_mine_party_appt_type.mine_party_appt_type_code, mine_party_appt_type=now_party_mine_party_appt_type, party=now_party)
+        
+        if now_party_appt:
+            validPostalCode = re.compile(r"\s*([a-zA-Z]\s*\d\s*){3}$")
+            post_code = c.mailingaddresspostalzip.replace(" ", "") if c.mailingaddresspostalzip and validPostalCode.match(c.mailingaddresspostalzip.replace(" ", "")) else None
+            if c.mailingaddressline1 and c.mailingaddresscity and c.mailingaddressprovstate and c.mailingaddresscountry:
+                now_address = Address(
+                    address_line_1=c.mailingaddressline1, 
+                    address_line_2=c.mailingaddressline2, 
+                    city=c.mailingaddresscity, 
+                    sub_division_code=c.mailingaddressprovstate.replace(" ", ""), 
+                    post_code=post_code, 
+                    address_type_code='CAN' if c.mailingaddresscountry == 'Canada' else 'USA')
+                now_party_appt.party.address.append(now_address)
+            now_app.contacts.append(now_party_appt)
+    return
 
 #Activities
 def _transmogrify_camp_activities(now_app, now_sub, mms_now_sub):
@@ -298,7 +349,7 @@ def _transmogrify_placer_operations(now_app, now_sub, mms_now_sub):
                 disturbed_area=proposed.disturbedarea,
                 timber_volume=proposed.timbervolume,
                 width=getattr(proposed, 'width', None),
-                length=proposed.length,
+                length=getattr(proposed, 'length', None),
                 depth=proposed.depth,
                 quantity=proposed.quantity)
 
@@ -325,7 +376,7 @@ def _transmogrify_placer_operations(now_app, now_sub, mms_now_sub):
                     disturbed_area=existing.disturbedarea,
                     timber_volume=existing.timbervolume,
                     width=getattr(existing, 'width', None),
-                    length=existing.length,
+                    length=getattr(existing, 'length', None),
                     depth=existing.depth,
                     quantity=existing.quantity)
 

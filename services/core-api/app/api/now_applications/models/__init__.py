@@ -14,3 +14,4 @@ from .state_of_land import StateOfLand
 from .equipment import Equipment
 from .etl_equipment import ETLEquipment
 from .activity_equipment_xref import ActivityEquipmentXref
+from .now_party_appointment import NOWPartyAppointment
