@@ -97,6 +97,7 @@ def _map_contact_type(submission_type):
 
 def _transmogrify_contacts(now_app, now_sub, mms_now_sub):
     for c in now_sub.contacts:
+        now_party_appt = None
         if c.type == 'Individual' and c.contacttype and c.ind_lastname and c.ind_firstname and c.ind_phonenumber:
             now_party = Party(
                 party_name=c.ind_lastname,
@@ -118,19 +119,18 @@ def _transmogrify_contacts(now_app, now_sub, mms_now_sub):
             now_party_mine_party_appt_type=MinePartyAppointmentType.find_by_mine_party_appt_type_code(_map_contact_type(c.contacttype))
             now_party_appt = app_models.NOWPartyAppointment(mine_party_appt_type_code=now_party_mine_party_appt_type.mine_party_appt_type_code, mine_party_appt_type=now_party_mine_party_appt_type, party=now_party)
         
-        validPostalCode = re.compile(r"\s*([a-zA-Z]\s*\d\s*){3}$")
-        post_code = c.mailingaddresspostalzip.replace(" ", "") if c.mailingaddresspostalzip and validPostalCode.match(c.mailingaddresspostalzip.replace(" ", "")) else None
-        if c.mailingaddressline1 and c.mailingaddresscity and c.mailingaddressprovstate and c.mailingaddresscountry:
-            now_address = Address(
-                address_line_1=c.mailingaddressline1, 
-                address_line_2=c.mailingaddressline2, 
-                city=c.mailingaddresscity, 
-                sub_division_code=c.mailingaddressprovstate.replace(" ", ""), 
-                post_code=post_code, 
-                address_type_code='CAN' if c.mailingaddresscountry == 'Canada' else 'USA')
-            now_party_appt.party.address.append(now_address)
-            
         if now_party_appt:
+            validPostalCode = re.compile(r"\s*([a-zA-Z]\s*\d\s*){3}$")
+            post_code = c.mailingaddresspostalzip.replace(" ", "") if c.mailingaddresspostalzip and validPostalCode.match(c.mailingaddresspostalzip.replace(" ", "")) else None
+            if c.mailingaddressline1 and c.mailingaddresscity and c.mailingaddressprovstate and c.mailingaddresscountry:
+                now_address = Address(
+                    address_line_1=c.mailingaddressline1, 
+                    address_line_2=c.mailingaddressline2, 
+                    city=c.mailingaddresscity, 
+                    sub_division_code=c.mailingaddressprovstate.replace(" ", ""), 
+                    post_code=post_code, 
+                    address_type_code='CAN' if c.mailingaddresscountry == 'Canada' else 'USA')
+                now_party_appt.party.address.append(now_address)
             now_app.contacts.append(now_party_appt)
     return
 
