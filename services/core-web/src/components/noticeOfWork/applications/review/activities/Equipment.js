@@ -112,7 +112,7 @@ export const Equipment = (props) => {
   };
 
   const columns = (isViewMode) =>
-    !isViewMode ? [...standardColumns, removeColumn] : standardColumns;
+    false && !isViewMode ? [...standardColumns, removeColumn] : standardColumns;
 
   const transformData = (equipmentList) =>
     equipmentList.map((equipment, index) => ({
@@ -134,7 +134,7 @@ export const Equipment = (props) => {
           emptyText: "No equipment related to this activity",
         }}
       />
-      {!props.isViewMode && (
+      {false && !props.isViewMode && (
         <Button type="primary" onClick={() => addEquipment()}>
           Add Equipment
         </Button>

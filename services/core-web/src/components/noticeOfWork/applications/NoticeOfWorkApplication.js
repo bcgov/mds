@@ -203,19 +203,20 @@ export class NoticeOfWorkApplication extends Component {
                 <Button onClick={this.showApplicationForm}>Open Original Application Form</Button>
               )}
             {/* hiding the edit button until fully functionality is implemented */}
-
-            <div>
-              {this.state.isViewMode && (
-                <Button onClick={this.toggleShowOriginalValues}>
-                  {this.state.showOriginalValues ? `Show Current` : `Show Original`}
-                </Button>
-              )}
-              {!this.state.showOriginalValues && (
-                <Button onClick={this.toggleEditMode}>
-                  {this.state.isViewMode ? "Edit" : "Save"}
-                </Button>
-              )}
-            </div>
+            {false && (
+              <div>
+                {this.state.isViewMode && (
+                  <Button onClick={this.toggleShowOriginalValues}>
+                    {this.state.showOriginalValues ? `Show Current` : `Show Original`}
+                  </Button>
+                )}
+                {!this.state.showOriginalValues && (
+                  <Button onClick={this.toggleEditMode}>
+                    {this.state.isViewMode ? "Edit" : "Save"}
+                  </Button>
+                )}
+              </div>
+            )}
           </div>
           <br />
           <Steps current={this.state.currentStep} onChange={this.onChange}>
