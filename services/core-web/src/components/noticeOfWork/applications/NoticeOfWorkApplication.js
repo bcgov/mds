@@ -298,11 +298,11 @@ export class NoticeOfWorkApplication extends Component {
               <Step key={item.title} title={item.title} />
             ))}
           </Steps> */}
-          <Steps current={this.state.currentStep} onChange={this.onChange}>
+          <Steps current={this.state.currentStep} onChange={this.onChange} type="navigation">
             <Step status="VER" title="Verification" />
             <Step status="REV" title="Technical Review" />
             <Step status="REF" title="Referral / Consultation" />
-            <Step title="DEC" title="Decision" disabled />
+            <Step status="DEC" title="Decision" disabled />
           </Steps>
         </div>
         <LoadingWrapper condition={this.state.isNoWLoaded}>
