@@ -334,11 +334,9 @@ exports[`ReviewNOWApplication renders properly 1`] = `
         id="contacts"
         title="Contacts"
       >
-        <div>
-          <NullScreen
-            type="now-contacts"
-          />
-        </div>
+        <ReviewNOWContacts
+          contacts={Array []}
+        />
       </withRouter(ScrollContentWrapper)>
       <withRouter(ScrollContentWrapper)
         id="access"
