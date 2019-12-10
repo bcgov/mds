@@ -350,7 +350,7 @@ def _transmogrify_placer_operations(now_app, now_sub, mms_now_sub):
                 timber_volume=proposed.timbervolume,
                 width=getattr(proposed, 'width', None),
                 length=getattr(proposed, 'length', None),
-                depth=proposed.depth,
+                depth=getattr(proposed, 'depth', None),
                 quantity=proposed.quantity)
 
             etl_detail = app_models.ETLActivityDetail(placeractivityid=proposed.placeractivityid)
@@ -377,7 +377,7 @@ def _transmogrify_placer_operations(now_app, now_sub, mms_now_sub):
                     timber_volume=existing.timbervolume,
                     width=getattr(existing, 'width', None),
                     length=getattr(existing, 'length', None),
-                    depth=existing.depth,
+                    depth=getattr(existing, 'depth', None),
                     quantity=existing.quantity)
 
                 etl_detail = app_models.ETLActivityDetail(
