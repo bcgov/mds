@@ -43,17 +43,17 @@ def ETL_MMS_NOW_schema(connection, oracle_connection, tables):
 
         applications = etl.fromdb(
             oracle_connection,
-            f'SELECT msg_id as messageid, cid as mms_cid, mine_no as minenumber, apl_dt as submitteddate, lat_dec, lon_dec, multi_year_ind, multi_year_area_ind, str_Dt as ProposedStartDate, end_dt as ProposedEndDate, site_desc as SiteDirections, prpty_nm as NameOfProperty, apl_typ from mms.mmsnow'
+            f'SELECT msg_id as messageid, cid as mms_cid, mine_no as minenumber, apl_dt as submitteddate, lat_dec, lon_dec, multi_year_ind, multi_year_area_ind, str_Dt as ProposedStartDate, end_dt as ProposedEndDate, site_desc as SiteDirections, prpty_nm as NameOfProperty, apl_typ from mmsadmin.mmsnow'
         )
         # grab the coal and mineral now numbers.
         now_number_mineral = etl.fromdb(
             oracle_connection,
-            'SELECT cid as mms_cid, upd_no as mmsnownumber from mms.mmsmnw'
+            'SELECT cid as mms_cid, upd_no as mmsnownumber from mmsadmin.mmsmnw'
         )
         # grab all the other now bumbers
         now_number_placer = etl.fromdb(
             oracle_connection,
-            'SELECT cid as mms_cid, upd_no as mmsnownumber from mms.mmspnw'
+            'SELECT cid as mms_cid, upd_no as mmsnownumber from mmsadmin.mmspnw'
         )
         # Convert the columns back to the NROS/vFCBC form.
         applications = etl.addfield(
@@ -83,7 +83,7 @@ def ETL_MMS_NOW_schema(connection, oracle_connection, tables):
     
         sand_grv_qry_activity = etl.fromdb(
             oracle_connection,
-            f'SELECT b.msg_id as messageid, b.cid as mms_cid, recl_desc as sandgrvqryreclamation, recl_dol as sandgrvqryreclamationcost, backslope as sandgrvqryreclamationbackfill, oper1_ind, oper2_ind, oper3_ind, alr_ind as sandgrvqrywithinaglandres, srb_ind as sandgrvqrylocalgovsoilrembylaw, pdist_ar as sandgrvqrydisturbedarea, t_vol as sandgrvqrytimbervolume, edist_Ar as sandgrvqrytotalexistdistarea, act1_ind, act2_ind, act3_ind, act4_ind, act1_ar, act2_ar, act3_ar, act4_ar, act1_vol, act2_vol, act3_vol, act4_vol from mms.mmssci_n a inner join mms.mmsnow b on a.cid = b.cid {SANDGRVQRYEXCLUDE}'
+            f'SELECT b.msg_id as messageid, b.cid as mms_cid, recl_desc as sandgrvqryreclamation, recl_dol as sandgrvqryreclamationcost, backslope as sandgrvqryreclamationbackfill, oper1_ind, oper2_ind, oper3_ind, alr_ind as sandgrvqrywithinaglandres, srb_ind as sandgrvqrylocalgovsoilrembylaw, pdist_ar as sandgrvqrydisturbedarea, t_vol as sandgrvqrytimbervolume, edist_Ar as sandgrvqrytotalexistdistarea, act1_ind, act2_ind, act3_ind, act4_ind, act1_ar, act2_ar, act3_ar, act4_ar, act1_vol, act2_vol, act3_vol, act4_vol from mmsadmin.mmssci_n a inner join mmsadmin.mmsnow b on a.cid = b.cid {SANDGRVQRYEXCLUDE}'
         )
         # Split out the application table columns from the sand gravel quary table.
         sand_grv_qry_activity_app_cols = etl.cut(sand_grv_qry_activity, 
@@ -165,7 +165,7 @@ def ETL_MMS_NOW_schema(connection, oracle_connection, tables):
 
         surface_bulk_activity = etl.fromdb(
             oracle_connection,
-            f'SELECT b.msg_id as messageid, b.cid as mms_cid, recl_desc as surfacebulksamplereclamation, recl_dol as surfacebulksamplereclcost, material_desc as surfacebulksamplereclsephandl, drainage_desc as surfacebulksamplerecldrainmiti, act1_ind, act2_ind, act3_ind, act4_ind, act5_ind, act6_ind, act1_ar, act2_ar, act3_ar, act4_ar, act5_ar, act6_ar, act1_vol, act2_vol, act3_vol, act4_vol, act5_vol, act6_vol from mms.mmsscf_n a inner join mms.mmsnow b on a.cid = b.cid'
+            f'SELECT b.msg_id as messageid, b.cid as mms_cid, recl_desc as surfacebulksamplereclamation, recl_dol as surfacebulksamplereclcost, material_desc as surfacebulksamplereclsephandl, drainage_desc as surfacebulksamplerecldrainmiti, act1_ind, act2_ind, act3_ind, act4_ind, act5_ind, act6_ind, act1_ar, act2_ar, act3_ar, act4_ar, act5_ar, act6_ar, act1_vol, act2_vol, act3_vol, act4_vol, act5_vol, act6_vol from mmsadmin.mmsscf_n a inner join mmsadmin.mmsnow b on a.cid = b.cid'
         )
 
         surface_bulk_activity_app_cols = etl.cut(surface_bulk_activity, 'mms_cid', 'surfacebulksamplereclamation', 'surfacebulksamplereclcost', 'surfacebulksamplereclsephandl', 'surfacebulksamplerecldrainmiti')
@@ -250,7 +250,7 @@ def ETL_MMS_NOW_schema(connection, oracle_connection, tables):
 
         cut_lines = etl.fromdb(
             oracle_connection,
-            f'SELECT b.cid as mms_cid, line_km as cutlinesexplgridtotallinekms, t_vol as cutlinesexplgridtimbervolume, recl_desc as cutlinesreclamation, recl_dol as cutlinesreclamationcost, t_ar as cutlinesexplgriddisturbedarea from mms.mmssco_n a inner join mms.mmsnow b on a.cid = b.cid'
+            f'SELECT b.cid as mms_cid, line_km as cutlinesexplgridtotallinekms, t_vol as cutlinesexplgridtimbervolume, recl_desc as cutlinesreclamation, recl_dol as cutlinesreclamationcost, t_ar as cutlinesexplgriddisturbedarea from mmsadmin.mmssco_n a inner join mmsadmin.mmsnow b on a.cid = b.cid'
         )
 
         applications = etl.leftjoin(applications, cut_lines, key='mms_cid')
@@ -259,7 +259,7 @@ def ETL_MMS_NOW_schema(connection, oracle_connection, tables):
 
         exploration_access = etl.fromdb(
             oracle_connection,
-            f'SELECT b.msg_id as messageid, b.cid as mms_cid, recl_desc as expaccessreclamation, recl_dol as expaccessreclamationcost, act1_ind, act2_ind, act3_ind, act4_ind, act5_ind, act6_ind, act7_ind, act1_len, act2_len, act3_len, act4_len, act5_len, act6_len, act7_len, act1_ar, act2_ar, act3_ar, act4_ar, act5_ar, act6_ar, act7_ar, act1_vol, act2_vol, act3_vol, act4_vol, act5_vol, act6_vol, act7_vol from mms.mmssce_n a inner join mms.mmsnow b on a.cid = b.cid'
+            f'SELECT b.msg_id as messageid, b.cid as mms_cid, recl_desc as expaccessreclamation, recl_dol as expaccessreclamationcost, act1_ind, act2_ind, act3_ind, act4_ind, act5_ind, act6_ind, act7_ind, act1_len, act2_len, act3_len, act4_len, act5_len, act6_len, act7_len, act1_ar, act2_ar, act3_ar, act4_ar, act5_ar, act6_ar, act7_ar, act1_vol, act2_vol, act3_vol, act4_vol, act5_vol, act6_vol, act7_vol from mmsadmin.mmssce_n a inner join mmsadmin.mmsnow b on a.cid = b.cid'
         )
 
         exploration_access_app_cols = etl.cut(exploration_access, 'mms_cid', 'expaccessreclamation', 'expaccessreclamationcost')
@@ -359,7 +359,7 @@ def ETL_MMS_NOW_schema(connection, oracle_connection, tables):
         #Surface drilling exploration activity------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         exploration_surface_drill = etl.fromdb(
             oracle_connection,
-            f'SELECT b.msg_id as messageid, b.cid as mms_cid, recl_desc as expsurfacedrillreclamation, recl_dol as expsurfacedrillreclamationcost, storage_desc as expsurfacedrillreclcorestorage, act1_ind, act2_ind, act3_ind, act4_ind, act5_ind, act6_ind, act7_ind, act8_ind, act1_cnt, act2_cnt, act3_cnt, act4_cnt, act5_cnt, act6_cnt, act7_cnt, act8_cnt, act1_ar, act2_ar, act3_ar, act4_ar, act5_ar, act6_ar, act7_ar, act8_ar, act1_vol, act2_vol, act3_vol, act4_vol, act5_vol, act6_vol, act7_vol, act8_vol from mms.mmsscd_n a inner join mms.mmsnow b on a.cid = b.cid {SURFACEEXPEXCLUDE}'
+            f'SELECT b.msg_id as messageid, b.cid as mms_cid, recl_desc as expsurfacedrillreclamation, recl_dol as expsurfacedrillreclamationcost, storage_desc as expsurfacedrillreclcorestorage, act1_ind, act2_ind, act3_ind, act4_ind, act5_ind, act6_ind, act7_ind, act8_ind, act1_cnt, act2_cnt, act3_cnt, act4_cnt, act5_cnt, act6_cnt, act7_cnt, act8_cnt, act1_ar, act2_ar, act3_ar, act4_ar, act5_ar, act6_ar, act7_ar, act8_ar, act1_vol, act2_vol, act3_vol, act4_vol, act5_vol, act6_vol, act7_vol, act8_vol from mmsadmin.mmsscd_n a inner join mmsadmin.mmsnow b on a.cid = b.cid {SURFACEEXPEXCLUDE}'
         )
 
         exploration_surface_drill_app_cols = etl.cut(exploration_surface_drill, 'mms_cid', 'expsurfacedrillreclamation', 'expsurfacedrillreclamationcost', 'expsurfacedrillreclcorestorage')
@@ -472,7 +472,7 @@ def ETL_MMS_NOW_schema(connection, oracle_connection, tables):
 
         mech_trenching = etl.fromdb(
             oracle_connection,
-            f'SELECT b.msg_id as messageid, b.cid as mms_cid, recl_desc as mechtrenchingreclamation, recl_dol as mechtrenchingreclamationcost, act1_ind, act2_ind, act1_cnt, act2_cnt, act1_ar, act2_ar, act1_vol, act2_vol from mms.mmsscb_n a inner join mms.mmsnow b on a.cid = b.cid'
+            f'SELECT b.msg_id as messageid, b.cid as mms_cid, recl_desc as mechtrenchingreclamation, recl_dol as mechtrenchingreclamationcost, act1_ind, act2_ind, act1_cnt, act2_cnt, act1_ar, act2_ar, act1_vol, act2_vol from mmsadmin.mmsscb_n a inner join mmsadmin.mmsnow b on a.cid = b.cid'
         )
 
         mech_trenching_app_cols = etl.cut(mech_trenching, 'mms_cid', 'mechtrenchingreclamation', 'mechtrenchingreclamationcost')
@@ -518,7 +518,7 @@ def ETL_MMS_NOW_schema(connection, oracle_connection, tables):
         
         under_exp_activity = etl.fromdb(
             oracle_connection,
-            f'SELECT b.msg_id as messageid, b.cid as mms_cid, recl_desc as underexpreclamation, recl_dol as underexpreclamationcost, t_ar as underexpsurfacetotaldistarea, t_vol as underexpsurfacetimbervolume, devr1_ind, devr2_ind, devr3_ind, devr4_ind, devr5_ind, devr6_ind, devr7_ind, devr8_ind, devr1_ct, devr2_ct, devr3_ct, devr4_ct, devr5_ct, devr6_ct, devr7_ct, devr8_ct, devn1_ind, devn2_ind, devn3_ind, devn4_ind, devn5_ind, devn6_ind, devn7_ind, devn8_ind, devn1_ct, devn2_ct, devn3_ct, devn4_ct, devn5_ct, devn6_ct, devn7_ct, devn8_ct, surf1_ind, surf2_ind, surf3_ind, surf4_ind, surf7_ind, surf8_ind, surf9_ind, surf10_ind, surf1_ct, surf2_ct, surf3_ct, surf4_ct, surf7_ct, surf8_ct, surf9_ct, surf10_ct, surf1_ar, surf2_ar, surf3_ar, surf4_ar, surf7_ar, surf8_ar, surf9_ar, surf10_ar, surf1_vol, surf2_vol, surf3_vol, surf4_vol, surf7_vol, surf8_vol, surf9_vol, surf10_vol from mms.mmsscg_n a inner join mms.mmsnow b on a.cid = b.cid'
+            f'SELECT b.msg_id as messageid, b.cid as mms_cid, recl_desc as underexpreclamation, recl_dol as underexpreclamationcost, t_ar as underexpsurfacetotaldistarea, t_vol as underexpsurfacetimbervolume, devr1_ind, devr2_ind, devr3_ind, devr4_ind, devr5_ind, devr6_ind, devr7_ind, devr8_ind, devr1_ct, devr2_ct, devr3_ct, devr4_ct, devr5_ct, devr6_ct, devr7_ct, devr8_ct, devn1_ind, devn2_ind, devn3_ind, devn4_ind, devn5_ind, devn6_ind, devn7_ind, devn8_ind, devn1_ct, devn2_ct, devn3_ct, devn4_ct, devn5_ct, devn6_ct, devn7_ct, devn8_ct, surf1_ind, surf2_ind, surf3_ind, surf4_ind, surf7_ind, surf8_ind, surf9_ind, surf10_ind, surf1_ct, surf2_ct, surf3_ct, surf4_ct, surf7_ct, surf8_ct, surf9_ct, surf10_ct, surf1_ar, surf2_ar, surf3_ar, surf4_ar, surf7_ar, surf8_ar, surf9_ar, surf10_ar, surf1_vol, surf2_vol, surf3_vol, surf4_vol, surf7_vol, surf8_vol, surf9_vol, surf10_vol from mmsadmin.mmsscg_n a inner join mmsadmin.mmsnow b on a.cid = b.cid'
         )
 
         under_exp_activity_app_cols = etl.cut(under_exp_activity, 'mms_cid', 'underexpreclamation', 'underexpreclamationcost', 'underexpsurfacetotaldistarea', 'underexpsurfacetimbervolume')
@@ -802,14 +802,14 @@ def ETL_MMS_NOW_schema(connection, oracle_connection, tables):
 
         camps = etl.fromdb(
             oracle_connection,
-            f'SELECT b.cid as mms_cid, act1_ar as campdisturbedarea, act1_vol as camptimbervolume, act2_ar as bldgdisturbedarea, act2_vol as bldgtimbervolume, act3_ar as stgedisturbedarea, act3_vol as stgetimbervolume, recl_desc as cbsfreclamation, recl_dol as cbsfreclamationcost from mms.mmssca_n a inner join mms.mmsnow b on a.cid = b.cid'
+            f'SELECT b.cid as mms_cid, act1_ar as campdisturbedarea, act1_vol as camptimbervolume, act2_ar as bldgdisturbedarea, act2_vol as bldgtimbervolume, act3_ar as stgedisturbedarea, act3_vol as stgetimbervolume, recl_desc as cbsfreclamation, recl_dol as cbsfreclamationcost from mmsadmin.mmssca_n a inner join mmsadmin.mmsnow b on a.cid = b.cid'
         )
 
         applications = etl.leftjoin(applications, camps, key='mms_cid')
 
         timber_cutting = etl.fromdb(
             oracle_connection,
-            f'SELECT b.cid as mms_cid, tot_bol as timbertotalvolume, fup_ind, ltc_ind from mms.mmssck_n a inner join mms.mmsnow b on a.cid = b.cid'
+            f'SELECT b.cid as mms_cid, tot_bol as timbertotalvolume, fup_ind, ltc_ind from mmsadmin.mmssck_n a inner join mmsadmin.mmsnow b on a.cid = b.cid'
         )
         
         # Convert the columns back to the NROS/vFCBC form.
@@ -821,7 +821,7 @@ def ETL_MMS_NOW_schema(connection, oracle_connection, tables):
 
         explosive_permits = etl.fromdb(
             oracle_connection,
-            f'SELECT b.cid as mms_cid, perm_ind, perm_no as bcexplosivespermitnumber, expry_dt as bcexplosivespermitexpiry from mms.mmsscc_n a inner join mms.mmsnow b on a.cid = b.cid'
+            f'SELECT b.cid as mms_cid, perm_ind, perm_no as bcexplosivespermitnumber, expry_dt as bcexplosivespermitexpiry from mmsadmin.mmsscc_n a inner join mmsadmin.mmsnow b on a.cid = b.cid'
         )
 
         # Convert the columns back to the NROS/vFCBC form.
@@ -833,12 +833,12 @@ def ETL_MMS_NOW_schema(connection, oracle_connection, tables):
     #Existing Placer------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         proposed_placer_activity = etl.fromdb(
             oracle_connection,
-            f'SELECT b.msg_id as messageid, b.cid as mms_cid, recl_desc as placerreclamation, recl_dol as placerreclamationcost, edist_ar as placertotalexistdistarea, pdist_ar as placerdisturbedarea, t_vol as placertimbervolume, edist1_ind, edist2_ind, edist3_ind, edist4_ind, edist5_ind, edist6_ind, edist7_ind, edist8_ind, edist1_cnt, edist2_cnt, edist3_cnt, edist4_cnt, edist5_cnt, edist6_cnt, edist7_cnt, edist8_cnt, edist1_ar, edist2_ar, edist3_ar, edist4_ar, edist5_ar, edist6_ar, edist7_ar, edist8_ar, pdist2_ind, pdist3_ind, pdist4_ind, pdist8_ind, pdist9_ind, pdist2_cnt, pdist3_cnt, pdist4_cnt, pdist8_cnt, pdist9_cnt, pdist2_ar, pdist3_ar, pdist9_ar, pdist4_ar, pdist8_ar from mms.mmssch_n a inner join mms.mmsnow b on a.cid = b.cid'
+            f'SELECT b.msg_id as messageid, b.cid as mms_cid, recl_desc as placerreclamation, recl_dol as placerreclamationcost, edist_ar as placertotalexistdistarea, pdist_ar as placerdisturbedarea, t_vol as placertimbervolume, edist1_ind, edist2_ind, edist3_ind, edist4_ind, edist5_ind, edist6_ind, edist7_ind, edist8_ind, edist1_cnt, edist2_cnt, edist3_cnt, edist4_cnt, edist5_cnt, edist6_cnt, edist7_cnt, edist8_cnt, edist1_ar, edist2_ar, edist3_ar, edist4_ar, edist5_ar, edist6_ar, edist7_ar, edist8_ar, pdist2_ind, pdist3_ind, pdist4_ind, pdist8_ind, pdist9_ind, pdist2_cnt, pdist3_cnt, pdist4_cnt, pdist8_cnt, pdist9_cnt, pdist2_ar, pdist3_ar, pdist9_ar, pdist4_ar, pdist8_ar from mmsadmin.mmssch_n a inner join mmsadmin.mmsnow b on a.cid = b.cid'
         )
 
         existing_placer_activity = etl.fromdb(
             oracle_connection,
-            f'SELECT b.msg_id as messageid, b.cid as mms_cid, recl_desc as placerreclamation, recl_dol as placerreclamationcost, edist_ar as placertotalexistdistarea, pdist_ar as placerdisturbedarea, t_vol as placertimbervolume, edist1_ind, edist2_ind, edist3_ind, edist4_ind, edist5_ind, edist6_ind, edist7_ind, edist8_ind, edist1_cnt, edist2_cnt, edist3_cnt, edist4_cnt, edist5_cnt, edist6_cnt, edist7_cnt, edist8_cnt, edist1_ar, edist2_ar, edist3_ar, edist4_ar, edist5_ar, edist6_ar, edist7_ar, edist8_ar, pdist2_ind, pdist3_ind, pdist4_ind, pdist8_ind, pdist9_ind, pdist2_cnt, pdist3_cnt, pdist4_cnt, pdist8_cnt, pdist9_cnt, pdist2_ar, pdist3_ar, pdist9_ar, pdist4_ar, pdist8_ar from mms.mmssch_n a inner join mms.mmsnow b on a.cid = b.cid'
+            f'SELECT b.msg_id as messageid, b.cid as mms_cid, recl_desc as placerreclamation, recl_dol as placerreclamationcost, edist_ar as placertotalexistdistarea, pdist_ar as placerdisturbedarea, t_vol as placertimbervolume, edist1_ind, edist2_ind, edist3_ind, edist4_ind, edist5_ind, edist6_ind, edist7_ind, edist8_ind, edist1_cnt, edist2_cnt, edist3_cnt, edist4_cnt, edist5_cnt, edist6_cnt, edist7_cnt, edist8_cnt, edist1_ar, edist2_ar, edist3_ar, edist4_ar, edist5_ar, edist6_ar, edist7_ar, edist8_ar, pdist2_ind, pdist3_ind, pdist4_ind, pdist8_ind, pdist9_ind, pdist2_cnt, pdist3_cnt, pdist4_cnt, pdist8_cnt, pdist9_cnt, pdist2_ar, pdist3_ar, pdist9_ar, pdist4_ar, pdist8_ar from mmsadmin.mmssch_n a inner join mmsadmin.mmsnow b on a.cid = b.cid'
         )
 
         placer_activity_app_cols = etl.cut(proposed_placer_activity, 'mms_cid', 'placerreclamation', 'placerreclamationcost', 'placertotalexistdistarea', 'placerdisturbedarea', 'placertimbervolume')
@@ -1018,7 +1018,7 @@ def ETL_MMS_NOW_schema(connection, oracle_connection, tables):
         applications = etl.leftjoin(applications, placer_activity_app_cols, key='mms_cid')
 
     #Contacts----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-        contacts = etl.fromdb(oracle_connection, 'SELECT c.msg_id as messageid, c.cid as mms_cid, b.type_ind as type_ind, a.name as ind_firstname, l_name as ind_lastname, phone as ind_phonenumber, tel_ext as dayphonenumberext, fax as faxnumber, email, street as mailingaddressline1, city as mailingaddresscity, prov as mailingaddressprovstate, post_cd as mailingaddresspostalzip from mms.mmsccn a inner join mms.mmsccc b on a.cid = b.cid_ccn inner join mms.mmsnow c on c.cid = b.cid')
+        contacts = etl.fromdb(oracle_connection, 'SELECT c.msg_id as messageid, c.cid as mms_cid, b.type_ind as type_ind, a.name as ind_firstname, l_name as ind_lastname, phone as ind_phonenumber, tel_ext as dayphonenumberext, fax as faxnumber, email, street as mailingaddressline1, city as mailingaddresscity, prov as mailingaddressprovstate, post_cd as mailingaddresspostalzip from mmsadmin.mmsccn a inner join mmsadmin.mmsccc b on a.cid = b.cid_ccn inner join mmsadmin.mmsnow c on c.cid = b.cid')
 
         # Grab all of the contacts of each type mine managers, permitees, etc.
         tenure_holders = etl.select(contacts, lambda v: True if len(v['type_ind']) >= 1 and v['type_ind'][0] == 'Y' else False)
@@ -1053,7 +1053,7 @@ def ETL_MMS_NOW_schema(connection, oracle_connection, tables):
 
         # streamline_application = etl.fromdb(
         #     connection,
-        #     f'SELECT cid as mms_cid, recv_dt as receiveddate, pmt_typ, comm_desc, exp_desc as descexplorationprogram, ten_nos1, ten_nos2, cg_clms1, cg_clms2, legal_desc1, legal_desc2, priv_ind, water_ind, culture_ind, fuel_ind, ltr_amt as fuellubstored, barrel_ind, bulk_ind from mms.mmsstream_now'
+        #     f'SELECT cid as mms_cid, recv_dt as receiveddate, pmt_typ, comm_desc, exp_desc as descexplorationprogram, ten_nos1, ten_nos2, cg_clms1, cg_clms2, legal_desc1, legal_desc2, priv_ind, water_ind, culture_ind, fuel_ind, ltr_amt as fuellubstored, barrel_ind, bulk_ind from mmsadmin.mmsstream_now'
         # )
 
         # streamline_application = etl.addfield(
@@ -1110,17 +1110,17 @@ def ETL_MMS_NOW_schema(connection, oracle_connection, tables):
 
         water_source_activity = etl.fromdb(
             oracle_connection,
-            f'SELECT b.msg_id as messageid, b.cid as mms_cid, water_nm as sourcewatersupply, activity as type, water_use as useofwater, water_vol as estimateratewater, pump_size as pumpsizeinwater, water_intake as locationwaterintake from mms.mmsscp_n_d a inner join mms.mmsnow b on a.cid = b.cid'
+            f'SELECT b.msg_id as messageid, b.cid as mms_cid, water_nm as sourcewatersupply, activity as type, water_use as useofwater, water_vol as estimateratewater, pump_size as pumpsizeinwater, water_intake as locationwaterintake from mmsadmin.mmsscp_n_d a inner join mmsadmin.mmsnow b on a.cid = b.cid'
         )
 
         application_nda = etl.fromdb(
             oracle_connection,
-            f'SELECT messageid, trackingnumber, applicationtype, status, submitteddate, receiveddate, applicantclientid, submitterclientid, typedeemedauthorization, permitnumber, minenumber, nownumber, planactivitiesdrillprogram, planactivitiesipsurvey, proposedstartdate, proposedenddate, totallinekilometers, descplannedactivities, proposednewenddate, reasonforextension, anyotherinformation, vfcbcapplicationurl from mms.mmsnda'
+            f'SELECT messageid, trackingnumber, applicationtype, status, submitteddate, receiveddate, applicantclientid, submitterclientid, typedeemedauthorization, permitnumber, minenumber, nownumber, planactivitiesdrillprogram, planactivitiesipsurvey, proposedstartdate, proposedenddate, totallinekilometers, descplannedactivities, proposednewenddate, reasonforextension, anyotherinformation, vfcbcapplicationurl from mmsadmin.mmsnda'
         )
         
         settling_ponds = etl.fromdb(
             oracle_connection,
-            f'SELECT cid as mms_cid, edist_ar as settlingpondtotalexistdistarea, pdist_ar as settlingponddisturbedarea, pdist_vol as settlingpondtimbervolume, water1_ind, water2_ind, water3_ind, recl_desc as pondsreclamation, recl_dol as pondsreclamationcost from mms.mmsscj_n'
+            f'SELECT cid as mms_cid, edist_ar as settlingpondtotalexistdistarea, pdist_ar as settlingponddisturbedarea, pdist_vol as settlingpondtimbervolume, water1_ind, water2_ind, water3_ind, recl_desc as pondsreclamation, recl_dol as pondsreclamationcost from mmsadmin.mmsscj_n'
         )
 
         settling_ponds = etl.addfield(

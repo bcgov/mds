@@ -18,7 +18,7 @@ DB_PORT = os.environ.get('DB_PORT')
 DB_NAME = os.environ.get('DB_NAME')
 ORACLE_DB_USER = os.environ.get('ORACLE_DB_USER')
 ORACLE_DB_PASS = os.environ.get('ORACLE_DB_PASS')
-CONNECTION_STRING = cx_Oracle.makedsn('response.bcgov', 1521, 'memprd.env.gov.bc.ca')
+CONNECTION_STRING = os.environ.get('ORACLE_CONNECTION')
 
 
 def etl_now_submission_data():
