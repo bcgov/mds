@@ -1,5 +1,6 @@
 from sqlalchemy.dialects.postgresql import UUID
 
+from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.orm import validates
 from sqlalchemy.schema import FetchedValue
@@ -34,12 +35,22 @@ class Permit(AuditMixin, Base):
         order_by='desc(PermitAmendment.issue_date), desc(PermitAmendment.permit_amendment_id)',
         lazy='select')
 
-    mine_party_appointment = db.relationship('MinePartyAppointment', lazy='select', uselist=False)
+    permittee_appointments = db.relationship(
+        'MinePartyAppointment',
+        lazy='select',
+        order_by=
+        'desc(MinePartyAppointment.start_date), desc(MinePartyAppointment.mine_party_appt_id)')
     permit_status_code_relationship = db.relationship('PermitStatusCode', lazy='select')
     permit_status_code_description = association_proxy('permit_status_code_relationship',
                                                        'description')
-    permitee = association_proxy('mine_party_appointment', 'party.name')
     mine_name = association_proxy('mine', 'mine_name')
+
+    @hybrid_property
+    def current_permittee(self):
+        if len(self.permittee_appointments) > 0:
+            return self.permittee_appointments[0].party.name
+        else:
+            return ""
 
     def __repr__(self):
         return '<Permit %r>' % self.permit_guid
@@ -86,21 +97,3 @@ class Permit(AuditMixin, Base):
         if len(permit_no) > 16:
             raise AssertionError('Permit number must not exceed 16 characters.')
         return permit_no
-
-
-from marshmallow_sqlalchemy import ModelConversionError, ModelSchema, ModelConverter, fields
-
-
-class PermitSchema(ModelSchema):
-    class Meta(object):
-        model = Permit
-        ordered = True
-        include_fk = True
-        sqla_session = db.session
-        #model_converter = CoreConverter
-        exclude = ('create_user', 'create_timestamp', 'update_user', 'update_timestamp')
-
-    permit_amendments = fields.Nested(PermitAmendment._schema, many=True, exclude=['permit_id'])
-
-
-Permit._schema = PermitSchema
