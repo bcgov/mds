@@ -334,9 +334,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
         id="contacts"
         title="Contacts"
       >
-        <ReviewNOWContacts
-          contacts={Array []}
-        />
+        <ReviewNOWContacts />
       </withRouter(ScrollContentWrapper)>
       <withRouter(ScrollContentWrapper)
         id="access"
@@ -877,9 +875,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
         id="documents"
         title="Documents"
       >
-        <ReviewNOWDocuments
-          now_application_guid=""
-        />
+        <ReviewNOWDocuments />
       </withRouter(ScrollContentWrapper)>
     </div>
   </Form>

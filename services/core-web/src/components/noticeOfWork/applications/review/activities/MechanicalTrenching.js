@@ -130,7 +130,7 @@ export const MechanicalTrenching = (props) => {
   };
 
   const columns = (isViewMode) =>
-    false && !isViewMode ? [...standardColumns, removeColumn] : standardColumns;
+    !isViewMode ? [...standardColumns, removeColumn] : standardColumns;
 
   const transformData = (activities) =>
     activities.map((activity, index) => ({
@@ -152,7 +152,7 @@ export const MechanicalTrenching = (props) => {
           emptyText: "No data",
         }}
       />
-      {false && !props.isViewMode && (
+      {!props.isViewMode && (
         <Button type="primary" onClick={() => addActivity()}>
           Add Activity
         </Button>

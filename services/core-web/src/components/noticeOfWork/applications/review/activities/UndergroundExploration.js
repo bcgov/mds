@@ -220,7 +220,7 @@ export const UndergroundExploration = (props) => {
   };
 
   const columns = (isViewMode) =>
-    false && !isViewMode ? [...standardColumns, removeColumn] : standardColumns;
+    !isViewMode ? [...standardColumns, removeColumn] : standardColumns;
 
   const transformData = (activities) =>
     activities.map((activity, index) => ({
@@ -247,7 +247,7 @@ export const UndergroundExploration = (props) => {
           emptyText: "No data",
         }}
       />
-      {false && !props.isViewMode && (
+      {!props.isViewMode && (
         <Button type="primary" onClick={() => addActivity()}>
           Add Activity
         </Button>

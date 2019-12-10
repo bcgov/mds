@@ -208,7 +208,7 @@ export const SettlingPonds = (props) => {
   };
 
   const columns = (isViewMode) =>
-    false && !isViewMode ? [...standardColumns, removeColumn] : standardColumns;
+    !isViewMode ? [...standardColumns, removeColumn] : standardColumns;
 
   const transformData = (activities) =>
     activities.map((activity, index) => ({
@@ -244,7 +244,7 @@ export const SettlingPonds = (props) => {
           emptyText: "No data",
         }}
       />
-      {false && !props.isViewMode && (
+      {!props.isViewMode && (
         <Button type="primary" onClick={() => addActivity()}>
           Add Activity
         </Button>

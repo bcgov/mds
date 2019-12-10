@@ -113,7 +113,7 @@ export const SandGravelQuarry = (props) => {
   };
 
   const columns = (isViewMode) =>
-    false && !isViewMode ? [...standardColumns, removeColumn] : standardColumns;
+    !isViewMode ? [...standardColumns, removeColumn] : standardColumns;
 
   const transformData = (activityDetails) => {
     return activityDetails.map((activity, index) => ({
@@ -251,7 +251,7 @@ export const SandGravelQuarry = (props) => {
           emptyText: "No data",
         }}
       />
-      {false && !props.isViewMode && (
+      {!props.isViewMode && (
         <Button type="primary" onClick={() => addActivity()}>
           Add Activity
         </Button>
