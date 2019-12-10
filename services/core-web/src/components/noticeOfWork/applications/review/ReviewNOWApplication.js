@@ -1,8 +1,9 @@
 import React from "react";
 import { PropTypes } from "prop-types";
-import { Field, reduxForm, FormSection } from "redux-form";
+import { compose } from "redux";
+import { connect } from "react-redux";
+import { Field, reduxForm, FormSection, formValueSelector } from "redux-form";
 import { Form, Divider, Row, Col } from "antd";
-import CustomPropTypes from "@/customPropTypes";
 import RenderField from "@/components/common/RenderField";
 import RenderDate from "@/components/common/RenderDate";
 import RenderRadioButtons from "@/components/common/RenderRadioButtons";
@@ -22,10 +23,14 @@ const propTypes = {
   // isViewMode is being passed into field Component, thus ReviewNOWApplication.js assumes it isn't being used
   // eslint-disable-next-line
   isViewMode: PropTypes.bool.isRequired,
-  noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
+  // contacts is being passed into field Component, thus ReviewNOWApplication.js assumes it isn't being used
+  // eslint-disable-next-line
+  contacts: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
   // reclamationSummary is being passed into field Component, thus ReviewNOWApplication.js assumes it isn't being used
   // eslint-disable-next-line
   reclamationSummary: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.strings)).isRequired,
+  now_application_guid: PropTypes.string.isRequired,
+  submission_documents: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
 };
 
 export const ReviewNOWApplication = (props) => {
@@ -381,6 +386,7 @@ export const ReviewNOWApplication = (props) => {
 
   return (
     <div>
+      {/* eslint-disable-next-line */}
       <Form layout="vertical" onSubmit={() => console.log("submitting form")}>
         <div className="side-menu--content">
           <h2>General Information</h2>
@@ -389,7 +395,7 @@ export const ReviewNOWApplication = (props) => {
             {renderApplicationInfo()}
           </ScrollContentWrapper>
           <ScrollContentWrapper id="contacts" title="Contacts">
-            <ReviewNOWContacts contacts={props.noticeOfWork.contacts} />
+            <ReviewNOWContacts contacts={props.contacts} />
           </ScrollContentWrapper>
           <ScrollContentWrapper id="access" title="Access">
             {renderAccess()}
@@ -408,15 +414,11 @@ export const ReviewNOWApplication = (props) => {
           <ScrollContentWrapper id="reclamation" title="Summary of Reclamation">
             {renderReclamation()}
           </ScrollContentWrapper>
-          <ReviewActivities
-            isViewMode={props.isViewMode}
-            initialValues={props.noticeOfWork}
-            noticeOfWork={props.noticeOfWork}
-          />
+          <ReviewActivities isViewMode={props.isViewMode} />
           <ScrollContentWrapper id="documents" title="Documents">
             <ReviewNOWDocuments
-              now_application_guid={props.noticeOfWork.now_application_guid}
-              documents={props.noticeOfWork.submission_documents}
+              now_application_guid={props.now_application_guid}
+              documents={props.submission_documents}
             />
           </ScrollContentWrapper>
         </div>
@@ -426,9 +428,17 @@ export const ReviewNOWApplication = (props) => {
 };
 
 ReviewNOWApplication.propTypes = propTypes;
+const selector = formValueSelector(FORM.EDIT_NOTICE_OF_WORK);
 
-export default reduxForm({
-  form: FORM.EDIT_NOTICE_OF_WORK,
-  touchOnBlur: true,
-  enableReinitialize: true,
-})(ReviewNOWApplication);
+export default compose(
+  connect((state) => ({
+    contacts: selector(state, "contacts"),
+    now_application_guid: selector(state, "now_application_guid"),
+    submission_documents: selector(state, "submission_documents"),
+  })),
+  reduxForm({
+    form: FORM.EDIT_NOTICE_OF_WORK,
+    touchOnBlur: true,
+    enableReinitialize: true,
+  })
+)(ReviewNOWApplication);

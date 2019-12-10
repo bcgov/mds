@@ -7,8 +7,8 @@ exports[`UndergroundExploration renders properly 1`] = `
     columns={
       Array [
         Object {
-          "dataIndex": "type",
-          "key": "type",
+          "dataIndex": "activity_type_description",
+          "key": "activity_type_description",
           "render": [Function],
           "title": "Activity",
         },
@@ -19,8 +19,8 @@ exports[`UndergroundExploration renders properly 1`] = `
           "title": "Quantity",
         },
         Object {
-          "dataIndex": "incline",
-          "key": "incline",
+          "dataIndex": "incline_unit_type_code",
+          "key": "incline_unit_type_code",
           "render": [Function],
           "title": "Incline",
         },
@@ -49,14 +49,14 @@ exports[`UndergroundExploration renders properly 1`] = `
           "title": "Height(m)",
         },
         Object {
-          "dataIndex": "disturbedArea",
-          "key": "disturbedArea",
+          "dataIndex": "disturbed_area",
+          "key": "disturbed_area",
           "render": [Function],
           "title": "Disturbed Area (ha)",
         },
         Object {
-          "dataIndex": "timberVolume",
-          "key": "timberVolume",
+          "dataIndex": "timber_volume",
+          "key": "timber_volume",
           "render": [Function],
           "title": "Merchantable timber volume (m3)",
         },

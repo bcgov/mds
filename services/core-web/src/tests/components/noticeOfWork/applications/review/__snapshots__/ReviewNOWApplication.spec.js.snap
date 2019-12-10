@@ -246,13 +246,13 @@ exports[`ReviewNOWApplication renders properly 1`] = `
               <div
                 className="field-title"
               >
-                Permit Type**
+                Permit Type
               </div>
               <Field
                 component={[Function]}
                 disabled={true}
-                id=""
-                name=""
+                id="application_permit_type_code"
+                name="application_permit_type_code"
               />
             </Col>
             <Col
@@ -334,9 +334,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
         id="contacts"
         title="Contacts"
       >
-        <ReviewNOWContacts
-          contacts={Array []}
-        />
+        <ReviewNOWContacts />
       </withRouter(ScrollContentWrapper)>
       <withRouter(ScrollContentWrapper)
         id="access"
@@ -772,13 +770,13 @@ exports[`ReviewNOWApplication renders properly 1`] = `
               <div
                 className="field-title"
               >
-                Proposed First Aid equipment on site**
+                Proposed First Aid equipment on site
               </div>
               <Field
                 component={[Function]}
                 disabled={true}
-                id=""
-                name=""
+                id="first_aid_equipment_on_site"
+                name="first_aid_equipment_on_site"
               />
             </Col>
             <Col
@@ -788,13 +786,13 @@ exports[`ReviewNOWApplication renders properly 1`] = `
               <div
                 className="field-title"
               >
-                Level of First Aid Certificate held by attendant**
+                Level of First Aid Certificate held by attendant
               </div>
               <Field
                 component={[Function]}
                 disabled={true}
-                id=""
-                name=""
+                id="first_aid_cert_level"
+                name="first_aid_cert_level"
               />
             </Col>
           </Row>
@@ -870,126 +868,14 @@ exports[`ReviewNOWApplication renders properly 1`] = `
           />
         </div>
       </withRouter(ScrollContentWrapper)>
-      <ReviewActivities
-        initialValues={
-          Object {
-            "blasting_operation": Object {},
-            "camps": Object {
-              "details": Array [],
-            },
-            "contacts": Array [],
-            "cut_lines_polarization_survey": Object {
-              "details": Array [],
-            },
-            "description_of_land": "",
-            "exploration_access": Object {
-              "details": Array [],
-            },
-            "exploration_surface_drilling": Object {
-              "details": Array [],
-            },
-            "latitude": "",
-            "longitude": "",
-            "mechanical_trenching": Object {
-              "details": Array [],
-            },
-            "mine_guid": "",
-            "notice_of_work_type_code": "",
-            "now_application_guid": "",
-            "now_application_id": "",
-            "now_message_id": 47284,
-            "now_tracking_number": 47284,
-            "placer_operation": Object {
-              "details": Array [],
-            },
-            "property_name": "",
-            "proposed_end_date": "",
-            "proposed_start_date": "",
-            "received_date": "",
-            "sand_and_gravel": Object {
-              "details": Array [],
-            },
-            "settling_pond": Object {
-              "details": Array [],
-            },
-            "state_of_land": Object {},
-            "submitted_date": "",
-            "surface_bulk_sample": Object {
-              "details": Array [],
-            },
-            "tenure_number": "",
-            "underground_exploration": Object {
-              "details": Array [],
-            },
-            "water_supply": Object {
-              "details": Array [],
-            },
-          }
-        }
+      <Connect(ReviewActivities)
         isViewMode={true}
-        noticeOfWork={
-          Object {
-            "blasting_operation": Object {},
-            "camps": Object {
-              "details": Array [],
-            },
-            "contacts": Array [],
-            "cut_lines_polarization_survey": Object {
-              "details": Array [],
-            },
-            "description_of_land": "",
-            "exploration_access": Object {
-              "details": Array [],
-            },
-            "exploration_surface_drilling": Object {
-              "details": Array [],
-            },
-            "latitude": "",
-            "longitude": "",
-            "mechanical_trenching": Object {
-              "details": Array [],
-            },
-            "mine_guid": "",
-            "notice_of_work_type_code": "",
-            "now_application_guid": "",
-            "now_application_id": "",
-            "now_message_id": 47284,
-            "now_tracking_number": 47284,
-            "placer_operation": Object {
-              "details": Array [],
-            },
-            "property_name": "",
-            "proposed_end_date": "",
-            "proposed_start_date": "",
-            "received_date": "",
-            "sand_and_gravel": Object {
-              "details": Array [],
-            },
-            "settling_pond": Object {
-              "details": Array [],
-            },
-            "state_of_land": Object {},
-            "submitted_date": "",
-            "surface_bulk_sample": Object {
-              "details": Array [],
-            },
-            "tenure_number": "",
-            "underground_exploration": Object {
-              "details": Array [],
-            },
-            "water_supply": Object {
-              "details": Array [],
-            },
-          }
-        }
       />
       <withRouter(ScrollContentWrapper)
         id="documents"
         title="Documents"
       >
-        <ReviewNOWDocuments
-          now_application_guid=""
-        />
+        <ReviewNOWDocuments />
       </withRouter(ScrollContentWrapper)>
     </div>
   </Form>

@@ -66,7 +66,7 @@ export const ReviewNOWDocuments = (props) => (
     <h3>Original Submission Files</h3>
     <Divider />
     <div className="padding-large--sides">
-      {props.documents.length >= 1 ? (
+      {props.documents && props.documents.length >= 1 ? (
         <Table
           align="left"
           pagination={false}
@@ -82,7 +82,7 @@ export const ReviewNOWDocuments = (props) => (
     <h3>Original Submission Spatial Files</h3>
     <Divider />
     <div className="padding-large--sides">
-      {props.documents.length >= 1 ? (
+      {props.documents && props.documents.length >= 1 ? (
         <Table
           align="left"
           pagination={false}

@@ -9,13 +9,11 @@ exports[`ReviewActivities renders properly 1`] = `
     <FormSection
       name="exploration_access"
     >
-      <AccessRoads
-        initialValues={
-          Object {
-            "details": Array [],
-          }
-        }
+      <Connect(AccessRoads)
+        addRecord={[Function]}
+        editRecord={[Function]}
         isViewMode={true}
+        removeRecord={[Function]}
       />
     </FormSection>
   </withRouter(ScrollContentWrapper)>
@@ -27,7 +25,6 @@ exports[`ReviewActivities renders properly 1`] = `
       name="blasting_operation"
     >
       <Blasting
-        initialValues={Object {}}
         isViewMode={true}
       />
     </FormSection>
@@ -39,13 +36,11 @@ exports[`ReviewActivities renders properly 1`] = `
     <FormSection
       name="camps"
     >
-      <Camps
-        initialValues={
-          Object {
-            "details": Array [],
-          }
-        }
+      <Connect(Camps)
+        addRecord={[Function]}
+        editRecord={[Function]}
         isViewMode={true}
+        removeRecord={[Function]}
       />
     </FormSection>
   </withRouter(ScrollContentWrapper)>
@@ -56,13 +51,11 @@ exports[`ReviewActivities renders properly 1`] = `
     <FormSection
       name="cut_lines_polarization_survey"
     >
-      <CutLines
-        initialValues={
-          Object {
-            "details": Array [],
-          }
-        }
+      <Connect(CutLines)
+        addRecord={[Function]}
+        editRecord={[Function]}
         isViewMode={true}
+        removeRecord={[Function]}
       />
     </FormSection>
   </withRouter(ScrollContentWrapper)>
@@ -73,13 +66,11 @@ exports[`ReviewActivities renders properly 1`] = `
     <FormSection
       name="exploration_surface_drilling"
     >
-      <SurfaceDrilling
-        initialValues={
-          Object {
-            "details": Array [],
-          }
-        }
+      <Connect(SurfaceDrilling)
+        addRecord={[Function]}
+        editRecord={[Function]}
         isViewMode={true}
+        removeRecord={[Function]}
       />
     </FormSection>
   </withRouter(ScrollContentWrapper)>
@@ -90,13 +81,11 @@ exports[`ReviewActivities renders properly 1`] = `
     <FormSection
       name="mechanical_trenching"
     >
-      <MechanicalTrenching
-        initialValues={
-          Object {
-            "details": Array [],
-          }
-        }
+      <Connect(MechanicalTrenching)
+        addRecord={[Function]}
+        editRecord={[Function]}
         isViewMode={true}
+        removeRecord={[Function]}
       />
     </FormSection>
   </withRouter(ScrollContentWrapper)>
@@ -107,13 +96,11 @@ exports[`ReviewActivities renders properly 1`] = `
     <FormSection
       name="settling_pond"
     >
-      <SettlingPonds
-        initialValues={
-          Object {
-            "details": Array [],
-          }
-        }
+      <Connect(SettlingPonds)
+        addRecord={[Function]}
+        editRecord={[Function]}
         isViewMode={true}
+        removeRecord={[Function]}
       />
     </FormSection>
   </withRouter(ScrollContentWrapper)>
@@ -124,13 +111,11 @@ exports[`ReviewActivities renders properly 1`] = `
     <FormSection
       name="surface_bulk_sample"
     >
-      <SurfaceBulkSamples
-        initialValues={
-          Object {
-            "details": Array [],
-          }
-        }
+      <Connect(SurfaceBulkSamples)
+        addRecord={[Function]}
+        editRecord={[Function]}
         isViewMode={true}
+        removeRecord={[Function]}
       />
     </FormSection>
   </withRouter(ScrollContentWrapper)>
@@ -141,13 +126,11 @@ exports[`ReviewActivities renders properly 1`] = `
     <FormSection
       name="underground_exploration"
     >
-      <UndergroundExploration
-        initialValues={
-          Object {
-            "details": Array [],
-          }
-        }
+      <Connect(UndergroundExploration)
+        addRecord={[Function]}
+        editRecord={[Function]}
         isViewMode={true}
+        removeRecord={[Function]}
       />
     </FormSection>
   </withRouter(ScrollContentWrapper)>
@@ -158,13 +141,11 @@ exports[`ReviewActivities renders properly 1`] = `
     <FormSection
       name="sand_and_gravel"
     >
-      <SandGravelQuarry
-        initialValues={
-          Object {
-            "details": Array [],
-          }
-        }
+      <Connect(SandGravelQuarry)
+        addRecord={[Function]}
+        editRecord={[Function]}
         isViewMode={true}
+        removeRecord={[Function]}
       />
     </FormSection>
   </withRouter(ScrollContentWrapper)>
@@ -175,13 +156,11 @@ exports[`ReviewActivities renders properly 1`] = `
     <FormSection
       name="placer_operation"
     >
-      <Placer
-        initialValues={
-          Object {
-            "details": Array [],
-          }
-        }
+      <Connect(Placer)
+        addRecord={[Function]}
+        editRecord={[Function]}
         isViewMode={true}
+        removeRecord={[Function]}
       />
     </FormSection>
   </withRouter(ScrollContentWrapper)>
@@ -192,13 +171,11 @@ exports[`ReviewActivities renders properly 1`] = `
     <FormSection
       name="water_supply"
     >
-      <WaterSupply
-        initialValues={
-          Object {
-            "details": Array [],
-          }
-        }
+      <Connect(WaterSupply)
+        addRecord={[Function]}
+        editRecord={[Function]}
         isViewMode={true}
+        removeRecord={[Function]}
       />
     </FormSection>
   </withRouter(ScrollContentWrapper)>
