@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import { getFormValues } from "redux-form";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import * as router from "@/constants/routes";
+import * as routes from "@/constants/routes";
 import {
   createNoticeOfWorkApplication,
   fetchImportedNoticeOfWorkApplication,
@@ -26,6 +26,7 @@ import NullScreen from "@/components/common/NullScreen";
 import NOWSideMenu from "@/components/noticeOfWork/applications/NOWSideMenu";
 import * as FORM from "@/constants/forms";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
+import { downloadNowDocument } from "@/utils/actionlessNetworkCalls";
 
 const { Step } = Steps;
 
@@ -74,7 +75,7 @@ export class NoticeOfWorkApplication extends Component {
       this.props.fetchMineRecordById(associatedMineGuid).then(() => {
         if (data.imported_to_core) {
           this.props.history.push(
-            router.NOTICE_OF_WORK_APPLICATION.hashRoute(id, "#application-info")
+            routes.NOTICE_OF_WORK_APPLICATION.hashRoute(id, "#application-info")
           );
           currentStep = 1;
         }
@@ -83,6 +84,17 @@ export class NoticeOfWorkApplication extends Component {
     });
     this.props.fetchOriginalNoticeOfWorkApplication(id);
   }
+
+  showApplicationForm = () => {
+    const document = this.props.noticeOfWork.submission_documents.filter(
+      (x) => x.filename === "ApplicationForm.pdf"
+    )[0];
+    downloadNowDocument(
+      document.id,
+      this.props.noticeOfWork.now_application_guid,
+      document.filename
+    );
+  };
 
   toggleEditMode = () => {
     this.setState((prevState) => ({ isViewMode: !prevState.isViewMode }));
@@ -122,7 +134,7 @@ export class NoticeOfWorkApplication extends Component {
             this.props.fetchMineRecordById(this.state.associatedMineGuid);
             // updates route to include active section
             this.props.history.push(
-              router.NOTICE_OF_WORK_APPLICATION.hashRoute(id, "#application-info")
+              routes.NOTICE_OF_WORK_APPLICATION.hashRoute(id, "#application-info")
             );
             this.setState({ currentStep, isNoWLoaded: true });
           });
@@ -181,17 +193,15 @@ export class NoticeOfWorkApplication extends Component {
         <div className={this.state.fixedTop ? "steps--header fixed-scroll" : "steps--header"}>
           <div className="inline-flex between">
             <div>
-              <h1>NoW Number: {Strings.EMPTY_FIELD}</h1>
-              {/* update to use application_guid for link once guid is persisted */}
-              {/* commenting out for now as we no longer have the correct application_guid  */}
-              {/* <Link
-                to={router.NOTICE_OF_WORK_INITIAL_APPLICATION.dynamicRoute(
-                  this.props.originalNoticeOfWork.application_guid
-                )}
-              >
-                Open Original NoW
-              </Link> */}
+              <h1>NoW Number: {this.props.noticeOfWork.now_number || Strings.EMPTY_FIELD}</h1>
             </div>
+
+            {this.state.isLoaded &&
+              this.props.noticeOfWork.submission_documents.filter(
+                (x) => x.filename === "ApplicationForm.pdf"
+              ).length > 0 && (
+                <Button onClick={this.showApplicationForm}>Open Original Application Form</Button>
+              )}
             {/* hiding the edit button until fully functionality is implemented */}
             {false && (
               <div>
@@ -218,7 +228,9 @@ export class NoticeOfWorkApplication extends Component {
         <LoadingWrapper condition={this.state.isNoWLoaded}>
           <div>
             <div className={this.state.fixedTop ? "side-menu--fixed" : "side-menu"}>
-              {this.state.currentStep === 1 && <NOWSideMenu />}
+              {this.state.currentStep === 1 && (
+                <NOWSideMenu route={routes.NOTICE_OF_WORK_APPLICATION} />
+              )}
             </div>
             <div
               className={this.state.fixedTop ? "steps--content with-fixed-top" : "steps--content"}

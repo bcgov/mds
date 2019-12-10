@@ -407,6 +407,7 @@ class NOWApplicationIdentityFactory(BaseFactory):
     messageid = factory.SelfAttribute('now_submission.messageid')
     mms_cid = factory.Sequence(lambda n: n)
     mine_guid = factory.SelfAttribute('mine.mine_guid')
+    now_number = factory.Sequence(lambda n: n)
 
     now_application = factory.SubFactory('tests.now_application_factories.NOWApplicationFactory')
     now_submission = factory.SubFactory('tests.now_submission_factories.NOWSubmissionFactory')

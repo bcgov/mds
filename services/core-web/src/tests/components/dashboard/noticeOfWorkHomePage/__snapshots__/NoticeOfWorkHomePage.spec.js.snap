@@ -43,8 +43,8 @@ exports[`NoticeOfWorkHomePage renders properly 1`] = `
                 "notice_of_work_type_description": "choice",
                 "now_application_guid": "07e801a0-fa33-4c3b-abcc-ac6df628d483",
                 "now_application_status_description": "Approved",
+                "now_number": 44,
                 "received_date": "2019-08-14",
-                "tracking_number": 44,
               },
               Object {
                 "mine_guid": "60300a07-376c-46f1-a984-88a813f91438",
@@ -53,8 +53,8 @@ exports[`NoticeOfWorkHomePage renders properly 1`] = `
                 "notice_of_work_type_description": "technology",
                 "now_application_guid": "8e1536da-644c-4961-976b-b1326fa75825",
                 "now_application_status_description": "Approved",
+                "now_number": 52,
                 "received_date": "2019-07-21",
-                "tracking_number": 52,
               },
             ]
           }

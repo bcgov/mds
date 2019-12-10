@@ -3,18 +3,17 @@ import { PropTypes } from "prop-types";
 import { compose } from "redux";
 import { connect } from "react-redux";
 import { Field, reduxForm, FormSection, formValueSelector } from "redux-form";
-import { Form, Divider, Row, Col, Card } from "antd";
+import { Form, Divider, Row, Col } from "antd";
 import RenderField from "@/components/common/RenderField";
 import RenderDate from "@/components/common/RenderDate";
 import RenderRadioButtons from "@/components/common/RenderRadioButtons";
 import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
 import * as FORM from "@/constants/forms";
-import * as Strings from "@/constants/strings";
 import ScrollContentWrapper from "@/components/common/wrappers/ScrollContentWrapper";
 import ReviewActivities from "@/components/noticeOfWork/applications/review/ReviewActivities";
-import NullScreen from "@/components/common/NullScreen";
-import Address from "@/components/common/Address";
 import ReclamationSummary from "./activities/ReclamationSummary";
+import ReviewNOWDocuments from "./ReviewNOWDocuments";
+import ReviewNOWContacts from "./ReviewNOWContacts";
 
 /**
  * @constant ReviewNOWApplication renders edit/view for the NoW Application review step
@@ -30,6 +29,8 @@ const propTypes = {
   // reclamationSummary is being passed into field Component, thus ReviewNOWApplication.js assumes it isn't being used
   // eslint-disable-next-line
   reclamationSummary: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.strings)).isRequired,
+  now_application_guid: PropTypes.string.isRequired,
+  submission_documents: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
 };
 
 export const ReviewNOWApplication = (props) => {
@@ -166,46 +167,6 @@ export const ReviewNOWApplication = (props) => {
           />
         </Col>
       </Row>
-    </div>
-  );
-
-  const renderContacts = () => (
-    <div>
-      {props.contacts && props.contacts.length >= 1 ? (
-        <Row gutter={16}>
-          {props.contacts.map((contact) => {
-            const formattedPhoneNo = contact.phone_ext
-              ? `${contact.phone_no} ext: ${contact.phone_ext}`
-              : contact.phone_no;
-            return (
-              <Col sm={24} lg={12} key={contact.party_guid}>
-                <Card
-                  title={
-                    <div className="inline-flex between wrap">
-                      <div>
-                        <h3>{contact.type || Strings.EMPTY_FIELD}</h3>
-                      </div>
-                    </div>
-                  }
-                  bordered={false}
-                >
-                  <div className="contact-card--long">
-                    <h3>{contact.name}</h3>
-                    <h6>Email Address</h6>
-                    {contact.email || Strings.EMPTY_FIELD}
-                    <h6>Phone Number</h6>
-                    {formattedPhoneNo || Strings.EMPTY_FIELD}
-                    <h6>Mailing Address</h6>
-                    <Address address={contact.address} />
-                  </div>
-                </Card>
-              </Col>
-            );
-          })}
-        </Row>
-      ) : (
-        <NullScreen type="now-contacts" />
-      )}
     </div>
   );
 
@@ -408,21 +369,6 @@ export const ReviewNOWApplication = (props) => {
     </div>
   );
 
-  const renderDocuments = () => {
-    return (
-      <div>
-        <br />
-        <h4>Documents</h4>
-        <Divider />
-        <NullScreen type="documents" />
-        <br />
-        <h4>Spatial Files</h4>
-        <Divider />
-        <NullScreen type="documents" />
-      </div>
-    );
-  };
-
   return (
     <div>
       {/* eslint-disable-next-line */}
@@ -434,7 +380,7 @@ export const ReviewNOWApplication = (props) => {
             {renderApplicationInfo()}
           </ScrollContentWrapper>
           <ScrollContentWrapper id="contacts" title="Contacts">
-            {renderContacts()}
+            <ReviewNOWContacts contacts={props.contacts} />
           </ScrollContentWrapper>
           <ScrollContentWrapper id="access" title="Access">
             {renderAccess()}
@@ -455,7 +401,10 @@ export const ReviewNOWApplication = (props) => {
           </ScrollContentWrapper>
           <ReviewActivities isViewMode={props.isViewMode} />
           <ScrollContentWrapper id="documents" title="Documents">
-            {renderDocuments()}
+            <ReviewNOWDocuments
+              now_application_guid={props.now_application_guid}
+              documents={props.submission_documents}
+            />
           </ScrollContentWrapper>
         </div>
       </Form>
@@ -469,6 +418,8 @@ const selector = formValueSelector(FORM.EDIT_NOTICE_OF_WORK);
 export default compose(
   connect((state) => ({
     contacts: selector(state, "contacts"),
+    now_application_guid: selector(state, "now_application_guid"),
+    submission_documents: selector(state, "submission_documents"),
   })),
   reduxForm({
     form: FORM.EDIT_NOTICE_OF_WORK,

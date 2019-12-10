@@ -292,7 +292,7 @@ export class MineIncidentTable extends Component {
         title: "",
         dataIndex: "handleEditModal",
         render: (text, record) => (
-          <div title="" align="right">
+          <div title="" align="right" className="btn--middle flex">
             <AuthorizationWrapper permission={Permission.EDIT_DO}>
               <Button
                 type="primary"
@@ -316,7 +316,7 @@ export class MineIncidentTable extends Component {
               ghost
               onClick={(event) => record.openViewMineIncidentModal(event, record.incident)}
             >
-              <Icon type="eye" className="icon-sm" />
+              <Icon type="eye" className="icon-lg icon-svg-filter" />
             </Button>
           </div>
         ),
