@@ -558,3 +558,16 @@ VALUES
     ('RHB', 'Rehabilitation', 'system-mds', 'system-mds'),
     ('SUR', 'Surface', 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
+
+
+INSERT INTO now_application_permit_type(
+    now_application_permit_type_code,
+    description,
+    create_user,
+    update_user
+    )
+VALUES
+    ('MY-ABP', 'Multi-Year, Area Based Permit', 'system-mds', 'system-mds'),
+    ('OYP', 'One Year Permit', 'system-mds', 'system-mds'),
+    ('MYP', 'Multi-Year Permit', 'system-mds', 'system-mds')
+ON CONFLICT DO NOTHING;

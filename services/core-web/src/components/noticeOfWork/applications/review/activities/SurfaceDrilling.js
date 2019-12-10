@@ -46,7 +46,7 @@ export const SurfaceDrilling = (props) => {
 
   const transformData = (activities) =>
     activities.map((activity) => ({
-      type: activity.activity_type_description || Strings.EMPTY_FIELD,
+      activity: activity.activity_type_description || Strings.EMPTY_FIELD,
       numSites: activity.number_of_sites || Strings.EMPTY_FIELD,
       disturbedArea: activity.disturbed_area || Strings.EMPTY_FIELD,
       timberVolume: activity.timber_volume || Strings.EMPTY_FIELD,
@@ -97,8 +97,8 @@ export const SurfaceDrilling = (props) => {
             Estimated Cost of reclamation activities described above
           </div>
           <Field
-            id="reclamation_description"
-            name="reclamation_description"
+            id="reclamation_cost"
+            name="reclamation_cost"
             component={RenderField}
             disabled={props.isViewMode}
           />
