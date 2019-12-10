@@ -54,16 +54,6 @@ app {
                     ]
                 ],
                 [
-                    'file':'openshift/templates/tasks/now_etl.bc.json',
-                    'params':[
-                            'NAME':"mds-now-etl",
-                            'SUFFIX': "${app.build.suffix}",
-                            'VERSION':"${app.build.version}",
-                            'SOURCE_CONTEXT_DIR': "tasks/now-etls",
-                            'SOURCE_REPOSITORY_URL': "${app.git.uri}"
-                    ]
-                ],
-                [
                     'file':'openshift/templates/nris-api/_python36_oracle.bc.json',
                     'params':[
                             'NAME':"mds-nris-backend",
@@ -184,6 +174,27 @@ app {
                             'SUFFIX': "${app.build.suffix}",
                             'VERSION':"${app.build.version}",
                             'SOURCE_CONTEXT_DIR': "services/elastic/logstash",
+                            'SOURCE_REPOSITORY_URL': "${app.git.uri}"
+                    ]
+                ],
+                // TASKS
+                [
+                    'file':'openshift/templates/tasks/now_etl.bc.json',
+                    'params':[
+                            'NAME':"mds-now-etl",
+                            'SUFFIX': "${app.build.suffix}",
+                            'VERSION':"${app.build.version}",
+                            'SOURCE_CONTEXT_DIR': "tasks/now-etls",
+                            'SOURCE_REPOSITORY_URL': "${app.git.uri}"
+                    ]
+                ],
+                [
+                    'file':'openshift/templates/tasks/sample.bc.json',
+                    'params':[
+                            'NAME':"mds-sample-task",
+                            'SUFFIX': "${app.build.suffix}",
+                            'VERSION':"${app.build.version}",
+                            'SOURCE_CONTEXT_DIR': "tasks/sample",
                             'SOURCE_REPOSITORY_URL': "${app.git.uri}"
                     ]
                 ]
