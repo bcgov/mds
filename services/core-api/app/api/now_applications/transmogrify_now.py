@@ -129,7 +129,9 @@ def _transmogrify_contacts(now_app, now_sub, mms_now_sub):
                 post_code=post_code, 
                 address_type_code='CAN' if c.mailingaddresscountry == 'Canada' else 'USA')
             now_party_appt.party.address.append(now_address)
-        now_app.contacts.append(now_party_appt)
+            
+        if now_party_appt:
+            now_app.contacts.append(now_party_appt)
     return
 
 #Activities
