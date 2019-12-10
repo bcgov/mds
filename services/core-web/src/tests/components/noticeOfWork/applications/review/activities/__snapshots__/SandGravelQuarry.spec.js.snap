@@ -112,13 +112,13 @@ exports[`SandGravelQuarry renders properly 1`] = `
       <div
         className="field-title--light"
       >
-        Permit Application Number**
+        Permit Application Number
       </div>
       <Field
         component={[Function]}
         disabled={true}
-        id=""
-        name=""
+        id="agri_lnd_rsrv_permit_application_number"
+        name="agri_lnd_rsrv_permit_application_number"
       />
     </Col>
     <Col
@@ -216,26 +216,20 @@ exports[`SandGravelQuarry renders properly 1`] = `
     columns={
       Array [
         Object {
-          "dataIndex": "type",
-          "key": "type",
+          "dataIndex": "activity_type_description",
+          "key": "activity_type_description",
           "render": [Function],
           "title": "Activity",
         },
         Object {
-          "dataIndex": "length",
-          "key": "length",
-          "render": [Function],
-          "title": "Length(km)",
-        },
-        Object {
-          "dataIndex": "disturbedArea",
-          "key": "disturbedArea",
+          "dataIndex": "disturbed_area",
+          "key": "disturbed_area",
           "render": [Function],
           "title": "Disturbed Area (ha)",
         },
         Object {
-          "dataIndex": "timberVolume",
-          "key": "timberVolume",
+          "dataIndex": "timber_volume",
+          "key": "timber_volume",
           "render": [Function],
           "title": "Merchantable timber volume (m3)",
         },
@@ -250,5 +244,10 @@ exports[`SandGravelQuarry renders properly 1`] = `
     pagination={false}
   />
   <br />
+  <Equipment
+    activity="sand_and_gravel"
+    equipment={Array []}
+    isViewMode={true}
+  />
 </div>
 `;

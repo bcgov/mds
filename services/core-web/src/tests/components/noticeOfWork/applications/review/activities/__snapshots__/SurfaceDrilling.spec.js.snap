@@ -11,26 +11,26 @@ exports[`SurfaceDrilling renders properly 1`] = `
     columns={
       Array [
         Object {
-          "dataIndex": "activity",
-          "key": "activity",
+          "dataIndex": "activity_type_description",
+          "key": "activity_type_description",
           "render": [Function],
           "title": "Activity",
         },
         Object {
-          "dataIndex": "numSites",
-          "key": "numSites",
+          "dataIndex": "number_of_sites",
+          "key": "number_of_sites",
           "render": [Function],
           "title": "Number of Sites",
         },
         Object {
-          "dataIndex": "disturbedArea",
-          "key": "disturbedArea",
+          "dataIndex": "disturbed_area",
+          "key": "disturbed_area",
           "render": [Function],
           "title": "Disturbed Area (ha)",
         },
         Object {
-          "dataIndex": "timberVolume",
-          "key": "timberVolume",
+          "dataIndex": "timber_volume",
+          "key": "timber_volume",
           "render": [Function],
           "title": "Merchantable timber volume (m3)",
         },
@@ -103,8 +103,8 @@ exports[`SurfaceDrilling renders properly 1`] = `
       <Field
         component={[Function]}
         disabled={true}
-        id="reclamation_description"
-        name="reclamation_description"
+        id="reclamation_cost"
+        name="reclamation_cost"
       />
     </Col>
   </Row>
