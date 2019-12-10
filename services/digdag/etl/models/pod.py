@@ -21,7 +21,6 @@ class POD():
 
     kube_config = os.getenv("KUBECONFIG", "/root/.kube/config")
     namespace = os.getenv("NAMESPACE", "empr-mds-dev")
-    image_tag = os.getenv("IMAGE_TAG", "dev-pr-NUM")
     suffix = os.getenv("SUFFIX", "-pr-NUM")
 
     def __init__(self,
@@ -37,10 +36,13 @@ class POD():
         self.command = command if command else ["flask", "test-cli-command"]
         self.env_container_id = env_container_id
 
+        if (image_tag is None):
+            image_tag = os.getenv("IMAGE_TAG", "dev-pr-NUM")
+
         # If env, creating container from scratch, pull from tools build suffix
         if (env):
             self.env = env
-            self.image = f"docker-registry.default.svc:5000/{image_namespace}/{self.env_pod}:build{self.suffix}"
+            self.image = f"docker-registry.default.svc:5000/{image_namespace}/{self.env_pod}:build{image_tag}"
 
         # Else creating based on existing image and pod, requires tag
         else:

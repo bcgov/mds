@@ -5,7 +5,14 @@ from util.env_builder import EnvBuilder
 
 def run_job():
 
+    env = os.getenv("ENV", "dev")
     suffix = os.getenv("SUFFIX", "-pr-NUM")
+
+    image_tag = ""
+    if (env == "dev"):
+        image_tag = suffix
+    else:
+        image_tag = f"-{env}"
 
     builder = EnvBuilder()
 
@@ -51,6 +58,7 @@ def run_job():
         env_pod='mds-now-etl',
         env=env,
         image_namespace='empr-mds-tools',
+        image_tag=f'build{image_tag}'
         command=["python", "now_etls.py"])
 
     pod.create_pod()
