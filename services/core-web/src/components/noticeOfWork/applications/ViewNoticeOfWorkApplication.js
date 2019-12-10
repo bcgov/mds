@@ -46,7 +46,6 @@ export class ViewNoticeOfWorkApplication extends Component {
   state = {
     isLoaded: false,
     showOriginalValues: false,
-    fixedTop: false,
   };
 
   componentDidMount() {
@@ -72,17 +71,9 @@ export class ViewNoticeOfWorkApplication extends Component {
     );
   };
 
-  handleScroll = () => {
-    if (window.pageYOffset > "20" && !this.state.fixedTop) {
-      this.setState({ fixedTop: true });
-    } else if (window.pageYOffset < "20" && this.state.fixedTop) {
-      this.setState({ fixedTop: false });
-    }
-  };
-
   render = () => (
-    <div className="page" onScroll={this.handleScroll()}>
-      <div className={this.state.fixedTop ? "steps--header fixed-scroll-view" : "steps--header"}>
+    <div className="page">
+      <div className="steps--header fixed-scroll-view">
         <div className="inline-flex between">
           <div>
             <h1>NoW Number: {this.props.noticeOfWork.now_number || Strings.EMPTY_FIELD}</h1>
@@ -90,17 +81,17 @@ export class ViewNoticeOfWorkApplication extends Component {
           {this.state.isLoaded &&
             this.props.noticeOfWork.submission_documents.filter(
               (x) => x.filename === "ApplicationForm.pdf"
-            ).length && (
+            ).length > 0 && (
               <Button onClick={this.showApplicationForm}>Open Original Application Form</Button>
             )}
         </div>
       </div>
       <LoadingWrapper condition={this.state.isLoaded}>
         <div>
-          <div className={this.state.fixedTop ? "side-menu--fixed" : "side-menu"}>
+          <div className="side-menu--fixed">
             <NOWSideMenu route={routes.VIEW_NOTICE_OF_WORK_APPLICATION} />
           </div>
-          <div className={this.state.fixedTop ? "steps--content with-fixed-top" : "steps--content"}>
+          <div className="steps--content with-fixed-top">
             <ReviewNOWApplication
               reclamationSummary={this.props.reclamationSummary}
               isViewMode

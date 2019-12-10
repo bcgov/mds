@@ -26,6 +26,7 @@ import NullScreen from "@/components/common/NullScreen";
 import NOWSideMenu from "@/components/noticeOfWork/applications/NOWSideMenu";
 import * as FORM from "@/constants/forms";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
+import { downloadNowDocument } from "@/utils/actionlessNetworkCalls";
 
 const { Step } = Steps;
 
@@ -83,6 +84,17 @@ export class NoticeOfWorkApplication extends Component {
     });
     this.props.fetchOriginalNoticeOfWorkApplication(id);
   }
+
+  showApplicationForm = () => {
+    const document = this.props.noticeOfWork.submission_documents.filter(
+      (x) => x.filename === "ApplicationForm.pdf"
+    )[0];
+    downloadNowDocument(
+      document.id,
+      this.props.noticeOfWork.now_application_guid,
+      document.filename
+    );
+  };
 
   toggleEditMode = () => {
     this.setState((prevState) => ({ isViewMode: !prevState.isViewMode }));
@@ -185,16 +197,14 @@ export class NoticeOfWorkApplication extends Component {
           <div className="inline-flex between">
             <div>
               <h1>NoW Number: {this.props.noticeOfWork.now_number || Strings.EMPTY_FIELD}</h1>
-              {/* update to use application_guid for link once guid is persisted */}
-              {/* commenting out for now as we no longer have the correct application_guid  */}
-              {/* <Link
-                to={routes.VIEW_NOTICE_OF_WORK_APPLICATION.dynamicRoute(
-                  this.props.originalNoticeOfWork.now_application_guid
-                )}
-              >
-                Open Original NoW
-              </Link> */}
             </div>
+
+            {this.state.isLoaded &&
+              this.props.noticeOfWork.submission_documents.filter(
+                (x) => x.filename === "ApplicationForm.pdf"
+              ).length > 0 && (
+                <Button onClick={this.showApplicationForm}>Open Original Application Form</Button>
+              )}
             {/* hiding the edit button until fully functionality is implemented */}
             {false && (
               <div>
@@ -226,9 +236,7 @@ export class NoticeOfWorkApplication extends Component {
               )}
             </div>
             <div
-              className={
-                this.state.fixedTop ? "steps--content with-fixed-top-small" : "steps--content"
-              }
+              className={this.state.fixedTop ? "steps--content with-fixed-top" : "steps--content"}
             >
               {steps[this.state.currentStep].content}
             </div>
