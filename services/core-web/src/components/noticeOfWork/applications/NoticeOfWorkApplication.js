@@ -116,7 +116,7 @@ export class NoticeOfWorkApplication extends Component {
   // }
   componentDidMount() {
     const { id } = this.props.match.params;
-    let currentStep = "VER";
+    let currentStep = 0;
     this.props.fetchNoticeOFWorkActivityTypeOptions();
     this.props.fetchNoticeOFWorkApplicationProgressStatusCodes();
     this.props.fetchImportedNoticeOfWorkApplication(id).then(({ data }) => {
@@ -124,12 +124,10 @@ export class NoticeOfWorkApplication extends Component {
       const isImported = data.imported_to_core;
       this.props.fetchMineRecordById(associatedMineGuid).then(() => {
         if (isImported) {
-          currentStep = "REV";
+          currentStep = 1;
         }
         if (data.application_progress.length > 1) {
-          const recentStatus =
-            data.application_progress[data.application_progress.length - 1]
-              .application_progress_status_code;
+          const recentStatus = data.application_progress.length - 1;
           console.log(recentStatus);
           currentStep = recentStatus;
         }
@@ -183,7 +181,7 @@ export class NoticeOfWorkApplication extends Component {
     }
   };
 
-  handleUpdateNOW = (currentStep) => {
+  handleUpdateNOW = () => {
     const { id } = this.props.match.params;
     this.setState({ isLoaded: false });
     this.props
@@ -196,21 +194,17 @@ export class NoticeOfWorkApplication extends Component {
           .fetchImportedNoticeOfWorkApplication(this.props.noticeOfWork.now_application_guid)
           .then(() => {
             this.props.fetchMineRecordById(this.state.associatedMineGuid);
-            // updates route to include active section
-            // this.props.history.push(
-            //   router.NOTICE_OF_WORK_APPLICATION.hashRoute(id, "#application-info")
-            // );
             this.setState({ isNoWLoaded: true, isLoaded: true, isImported: true });
           });
       });
   };
 
-  handleProgressChange = (status) => {
+  handleProgressChange = (currentStep) => {
     const { id } = this.props.match.params;
     this.props.createNoticeOfWorkApplicationProgress(id, {
       application_progress_status_code: status,
     });
-    this.setState({ currentStep: status });
+    this.setState({ currentStep });
   };
 
   renderStepOne = () => {
@@ -243,32 +237,13 @@ export class NoticeOfWorkApplication extends Component {
     );
   };
 
+  steps = () => ({
+    1: this.renderStepOne(),
+    2: this.renderStepTwo(),
+    3: <NullScreen type="next-stage" />,
+    4: <NullScreen type="next-stage" />,
+  });
   render() {
-    const steps = {
-      VER: this.renderStepOne(),
-      REV: this.renderStepTwo(),
-      REF: <NullScreen type="next-stage" />,
-      DEC: <NullScreen type="next-stage" />,
-    };
-    // const steps = [
-    //   {
-    //     title: "Verification",
-    //     content: this.renderStepOne(),
-    //   },
-    //   {
-    //     title: "Technical Review",
-    //     content: this.renderStepTwo(),
-    //   },
-    //   {
-    //     title: "Referral / Consultation",
-    //     content: <NullScreen type="next-stage" />,
-    //   },
-    //   {
-    //     title: "Decision",
-    //     content: <NullScreen type="next-stage" />,
-    //   },
-    // ];
-
     return (
       <div className="page" onScroll={this.handleScroll()}>
         <div className={this.state.fixedTop ? "steps--header fixed-scroll" : "steps--header"}>
@@ -315,14 +290,14 @@ export class NoticeOfWorkApplication extends Component {
         <LoadingWrapper condition={this.state.isNoWLoaded}>
           <div>
             <div className={this.state.fixedTop ? "side-menu--fixed" : "side-menu"}>
-              {this.state.currentStep === "REV" && (
+              {this.state.currentStep === "1" && (
                 <NOWSideMenu route={routes.NOTICE_OF_WORK_APPLICATION} />
               )}
             </div>
             <div
               className={this.state.fixedTop ? "steps--content with-fixed-top" : "steps--content"}
             >
-              {steps[this.state.currentStep]}
+              {this.steps[this.state.currentStep]}
             </div>
           </div>
         </LoadingWrapper>
