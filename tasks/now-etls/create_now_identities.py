@@ -21,7 +21,7 @@ def create_and_update_now_identities(connection):
         print('UPDATE_MMS_CIDS_ON_EXISTING_NOW_IDENTITIES')
         UPDATE_MMS_CIDS_ON_EXISTING_NOW_IDENTITIES = """
         UPDATE public.now_application_identity SET mms_cid=(SELECT mms_cid FROM mms_now_submissions.application where messageid=now_application_identity.messageid),
-        now_number=(SELECT mmsnownumber FROM mms_now_submissions.application where messageid=now_application_identity.messageid)
+        now_number=(SELECT CONCAT(minenumber, mmsnownumber) FROM mms_now_submissions.application where messageid=now_application_identity.messageid)
         FROM mms_now_submissions.application
         WHERE public.now_application_identity.messageid = mms_now_submissions.application.messageid;
         """
