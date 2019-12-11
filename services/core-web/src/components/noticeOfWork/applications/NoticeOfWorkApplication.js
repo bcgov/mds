@@ -164,9 +164,6 @@ export class NoticeOfWorkApplication extends Component {
         initialValues={
           this.state.showOriginalValues ? this.props.originalNoticeOfWork : this.props.noticeOfWork
         }
-        noticeOfWork={
-          this.state.showOriginalValues ? this.props.originalNoticeOfWork : this.props.noticeOfWork
-        }
       />
     );
   };

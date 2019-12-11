@@ -7,26 +7,26 @@ exports[`WaterSupply renders properly 1`] = `
     columns={
       Array [
         Object {
-          "dataIndex": "source",
-          "key": "source",
+          "dataIndex": "supply_source_description",
+          "key": "supply_source_description",
           "render": [Function],
           "title": "Source",
         },
         Object {
-          "dataIndex": "type",
-          "key": "type",
+          "dataIndex": "activity_type_description",
+          "key": "activity_type_description",
           "render": [Function],
           "title": "Activity",
         },
         Object {
-          "dataIndex": "water",
-          "key": "water",
+          "dataIndex": "water_use_description",
+          "key": "water_use_description",
           "render": [Function],
           "title": "Water Use",
         },
         Object {
-          "dataIndex": "estimate",
-          "key": "estimate",
+          "dataIndex": "estimate_rate",
+          "key": "estimate_rate",
           "render": [Function],
           "title": "Estimate",
         },

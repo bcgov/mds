@@ -7,8 +7,8 @@ exports[`SurfaceBulkSamples renders properly 1`] = `
     columns={
       Array [
         Object {
-          "dataIndex": "type",
-          "key": "type",
+          "dataIndex": "activity_type_description",
+          "key": "activity_type_description",
           "render": [Function],
           "title": "Activity",
         },
@@ -19,14 +19,14 @@ exports[`SurfaceBulkSamples renders properly 1`] = `
           "title": "Quantity",
         },
         Object {
-          "dataIndex": "disturbedArea",
-          "key": "disturbedArea",
+          "dataIndex": "disturbed_area",
+          "key": "disturbed_area",
           "render": [Function],
           "title": "Disturbed Area (ha)",
         },
         Object {
-          "dataIndex": "timberVolume",
-          "key": "timberVolume",
+          "dataIndex": "timber_volume",
+          "key": "timber_volume",
           "render": [Function],
           "title": "Merchantable timber volume (m3)",
         },
@@ -77,6 +77,11 @@ exports[`SurfaceBulkSamples renders properly 1`] = `
       />
     </Col>
   </Row>
+  <Equipment
+    activity="surface_bulk_sample"
+    equipment={Array []}
+    isViewMode={true}
+  />
   <br />
   <h4>
     Reclamation Program
