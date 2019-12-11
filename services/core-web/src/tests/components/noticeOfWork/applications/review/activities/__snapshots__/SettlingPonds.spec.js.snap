@@ -28,8 +28,8 @@ exports[`SettlingPonds renders properly 1`] = `
     columns={
       Array [
         Object {
-          "dataIndex": "id",
-          "key": "id",
+          "dataIndex": "activity_type_description",
+          "key": "activity_type_description",
           "render": [Function],
           "title": "Pond ID",
         },
@@ -52,16 +52,28 @@ exports[`SettlingPonds renders properly 1`] = `
           "title": "Depth(m)",
         },
         Object {
-          "dataIndex": "disturbedArea",
-          "key": "disturbedArea",
+          "dataIndex": "disturbed_area",
+          "key": "disturbed_area",
           "render": [Function],
           "title": "Disturbed Area (ha)",
         },
         Object {
-          "dataIndex": "timberVolume",
-          "key": "timberVolume",
+          "dataIndex": "timber_volume",
+          "key": "timber_volume",
           "render": [Function],
           "title": "Merchantable timber volume (m3)",
+        },
+        Object {
+          "dataIndex": "water_source_description",
+          "key": "water_source_description",
+          "render": [Function],
+          "title": "Water Source",
+        },
+        Object {
+          "dataIndex": "construction_plan",
+          "key": "construction_plan",
+          "render": [Function],
+          "title": "Construction Method",
         },
       ]
     }
@@ -153,7 +165,7 @@ exports[`SettlingPonds renders properly 1`] = `
       <div
         className="field-title"
       >
-        Proposed reclamation and timing for this specific activity**
+        Proposed reclamation and timing for this specific activity
       </div>
       <Field
         component={[Function]}
@@ -169,7 +181,7 @@ exports[`SettlingPonds renders properly 1`] = `
       <div
         className="field-title"
       >
-        Estimated Cost of reclamation activities described above**
+        Estimated Cost of reclamation activities described above
       </div>
       <Field
         component={[Function]}

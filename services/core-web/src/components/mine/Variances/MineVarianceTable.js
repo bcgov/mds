@@ -279,7 +279,7 @@ export class MineVarianceTable extends Component {
         dataIndex: "variance",
         width: 150,
         render: (text, record) => (
-          <div title="" align="right" className="inline-flex">
+          <div title="" align="right" className="btn--middle flex">
             <AuthorizationWrapper permission={Permission.EDIT_VARIANCES}>
               <Button
                 type="primary"
@@ -296,7 +296,7 @@ export class MineVarianceTable extends Component {
               ghost
               onClick={() => this.props.openViewVarianceModal(record.variance)}
             >
-              <Icon type="eye" alt="View" className="icon-sm" />
+              <Icon type="eye" alt="View" className="icon-lg icon-svg-filter" />
             </Button>
           </div>
         ),

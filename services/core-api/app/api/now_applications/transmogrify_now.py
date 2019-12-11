@@ -1,6 +1,10 @@
+import re
 from app.api.now_applications import models as app_models
 from app.api.now_submissions import models as sub_models
 from app.api.mms_now_submissions import models as mms_sub_models
+from app.api.parties.party.models.party import Party
+from app.api.parties.party.models.address import Address
+from app.api.parties.party_appt.models.mine_party_appt_type import MinePartyAppointmentType
 
 from flask import current_app
 
@@ -11,6 +15,13 @@ unit_type_map = {
     'tonnes/year': 'Tonne (Metric Ton 1000Kg)',
     'Degrees': 'Degrees',
     'Percent': 'Grade (Percent)',
+    None: None
+}
+
+type_of_permit_map = {
+    'I would like to apply for a Multi-Year permit': 'MYP',
+    'I would like to apply for a one year permit': 'OYP',
+    'I would like to apply for a Multi-Year, Area Based permit': 'MY-ABP',
     None: None
 }
 
@@ -38,6 +49,7 @@ def transmogrify_now(now_application_identity):
     _transmogrify_now_details(now_app, now_sub, mms_now_sub)
     _transmogrify_blasting_activities(now_app, now_sub, mms_now_sub)
     _transmogrify_state_of_land(now_app, now_sub, mms_now_sub)
+    _transmogrify_contacts(now_app, now_sub, mms_now_sub)
 
     #Activities
     _transmogrify_camp_activities(now_app, now_sub, mms_now_sub)
@@ -62,6 +74,8 @@ def _transmogrify_now_details(now_app, now_sub, mms_now_sub):
         'notice_of_work_type_code')
     now_app.now_application_status_code = code_lookup(app_models.NOWApplicationStatus,
                                                       now_sub.status, 'now_application_status_code')
+    now_app.application_permit_type_code = type_of_permit_map[now_sub.typeofpermit]
+
     now_app.submitted_date = mms_now_sub.submitteddate or now_sub.submitteddate
     now_app.received_date = mms_now_sub.receiveddate or now_sub.receiveddate
     now_app.latitude = mms_now_sub.latitude or now_sub.latitude
@@ -70,6 +84,10 @@ def _transmogrify_now_details(now_app, now_sub, mms_now_sub):
     now_app.tenure_number = mms_now_sub.tenurenumbers or now_sub.tenurenumbers
     now_app.proposed_start_date = mms_now_sub.proposedstartdate or now_sub.proposedstartdate
     now_app.proposed_end_date = mms_now_sub.proposedenddate or now_sub.proposedenddate
+    now_app.directions_to_site = mms_now_sub.sitedirections or now_sub.sitedirections
+    now_app.first_aid_equipment_on_site = mms_now_sub.firstaidequipmentonsite or now_sub.firstaidequipmentonsite
+    now_app.first_aid_cert_level = mms_now_sub.firstaidcertlevel or now_sub.firstaidcertlevel
+    now_app.submission_documents = now_sub.documents
     return
 
 
@@ -81,7 +99,52 @@ def _transmogrify_state_of_land(now_app, now_sub, mms_now_sub):
             has_community_water_shed=landcommunitywatershed == 'Yes',
             has_archaeology_sites_affected=archsitesaffected == 'Yes')
     return
+ 
+def _map_contact_type(submission_type):
+    if submission_type == 'Mine manager': return 'MMG'
+    if submission_type == 'Permittee': return 'PMT'
+    if submission_type == 'Site operator': return 'MOR'
+    if submission_type == 'Tenure Holder': return 'THD'
+    raise Exception(submission_type + ' is not a valid contact type')
 
+def _transmogrify_contacts(now_app, now_sub, mms_now_sub):
+    for c in now_sub.contacts:
+        now_party_appt = None
+        if c.type == 'Individual' and c.contacttype and c.ind_lastname and c.ind_firstname and c.ind_phonenumber:
+            now_party = Party(
+                party_name=c.ind_lastname,
+                first_name=c.ind_firstname,
+                party_type_code='PER',
+                phone_no=c.ind_phonenumber[:3] + "-" + c.ind_phonenumber[3:6] + "-" + c.ind_phonenumber[6:],
+                email=c.email,
+                )
+            now_party_mine_party_appt_type=MinePartyAppointmentType.find_by_mine_party_appt_type_code(_map_contact_type(c.contacttype))
+            now_party_appt = app_models.NOWPartyAppointment(mine_party_appt_type_code=now_party_mine_party_appt_type.mine_party_appt_type_code, mine_party_appt_type=now_party_mine_party_appt_type, party=now_party)
+        if c.type == 'Organization' and c.contacttype and c.org_legalname and c.dayphonenumber:
+            now_party = Party(
+                party_name=c.org_legalname,
+                party_type_code='ORG',
+                phone_no=c.dayphonenumber[:3] + "-" + c.dayphonenumber[3:6] + "-" + c.dayphonenumber[6:],
+                phone_ext=c.dayphonenumberext,
+                email=c.email,
+                )
+            now_party_mine_party_appt_type=MinePartyAppointmentType.find_by_mine_party_appt_type_code(_map_contact_type(c.contacttype))
+            now_party_appt = app_models.NOWPartyAppointment(mine_party_appt_type_code=now_party_mine_party_appt_type.mine_party_appt_type_code, mine_party_appt_type=now_party_mine_party_appt_type, party=now_party)
+        
+        if now_party_appt:
+            validPostalCode = re.compile(r"\s*([a-zA-Z]\s*\d\s*){3}$")
+            post_code = c.mailingaddresspostalzip.replace(" ", "") if c.mailingaddresspostalzip and validPostalCode.match(c.mailingaddresspostalzip.replace(" ", "")) else None
+            if c.mailingaddressline1 and c.mailingaddresscity and c.mailingaddressprovstate and c.mailingaddresscountry:
+                now_address = Address(
+                    address_line_1=c.mailingaddressline1, 
+                    address_line_2=c.mailingaddressline2, 
+                    city=c.mailingaddresscity, 
+                    sub_division_code=c.mailingaddressprovstate.replace(" ", ""), 
+                    post_code=post_code, 
+                    address_type_code='CAN' if c.mailingaddresscountry == 'Canada' else 'USA')
+                now_party_appt.party.address.append(now_address)
+            now_app.contacts.append(now_party_appt)
+    return
 
 #Activities
 def _transmogrify_camp_activities(now_app, now_sub, mms_now_sub):
@@ -177,6 +240,7 @@ def _transmogrify_exploration_surface_drilling(now_app, now_sub, mms_now_sub):
         for sd in exp_surface_drill_activity:
             esd_detail = app_models.ExplorationSurfaceDrillingDetail(
                 activity_type_description=sd.type,
+                number_of_sites=sd.numberofsites,
                 disturbed_area=sd.disturbedarea,
                 timber_volume=sd.timbervolume)
             esd.details.append(esd_detail)
@@ -243,6 +307,20 @@ def _transmogrify_exploration_access(now_app, now_sub, mms_now_sub):
 
         now_app.exploration_access = exploration_access
 
+        if (len(mms_now_sub.exp_access_activity) > 0):
+            exp_access_activity = mms_now_sub.exp_access_activity
+        else:
+            exp_access_activity = now_sub.exp_access_activity
+
+        for detail in exp_access_activity:
+            now_app.exploration_access.details.append(
+                app_models.ExplorationAccessDetail(
+                    activity_type_description=detail.type,
+                    length=detail.length,
+                    disturbed_area=detail.disturbedarea,
+                    timber_volume=detail.timbervolume,
+                ))
+
 
 def _transmogrify_placer_operations(now_app, now_sub, mms_now_sub):
     placerundergroundoperations = now_sub.placerundergroundoperations
@@ -270,9 +348,9 @@ def _transmogrify_placer_operations(now_app, now_sub, mms_now_sub):
                 activity_type_description=proposed.type,
                 disturbed_area=proposed.disturbedarea,
                 timber_volume=proposed.timbervolume,
-                width=proposed.width,
-                length=proposed.length,
-                depth=proposed.depth,
+                width=getattr(proposed, 'width', None),
+                length=getattr(proposed, 'length', None),
+                depth=getattr(proposed, 'depth', None),
                 quantity=proposed.quantity)
 
             etl_detail = app_models.ETLActivityDetail(placeractivityid=proposed.placeractivityid)
@@ -297,9 +375,9 @@ def _transmogrify_placer_operations(now_app, now_sub, mms_now_sub):
                     activity_type_description=existing.type,
                     disturbed_area=existing.disturbedarea,
                     timber_volume=existing.timbervolume,
-                    width=existing.width,
-                    length=existing.length,
-                    depth=existing.depth,
+                    width=getattr(existing, 'width', None),
+                    length=getattr(existing, 'length', None),
+                    depth=getattr(existing, 'depth', None),
                     quantity=existing.quantity)
 
                 etl_detail = app_models.ETLActivityDetail(
