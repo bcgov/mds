@@ -10,9 +10,9 @@ CREATE TABLE IF NOT EXISTS application_progress_type (
 ALTER TABLE application_progress_type OWNER TO mds;
 
 CREATE TABLE IF NOT EXISTS application_progress (
-  application_progress_id SERIAL PRIMARY KEY,
+  application_progress_id SERIAL PRIMARY KEY REFERENCES now_application(now_application_id),
   now_application_id integer,
-  application_progress_type_code character varying(3),
+  application_progress_type_code character varying(3) REFERENCES application_progress_type(application_progress_type_code),
   active_ind boolean,
   end_date character varying(60),
   start_date character varying(60) NOT NULL,
@@ -21,13 +21,7 @@ CREATE TABLE IF NOT EXISTS application_progress (
   create_user character varying(60) NOT NULL,
   create_timestamp character varying(60) NOT NULL,
   update_user character varying(60) NOT NULL,
-  update_timestamp character varying(60) NOT NULL,
-  PRIMARY KEY (application_progress_id)
-
-  FOREIGN KEY (now_application_id) REFERENCES now_application(now_application_id)
-  DEFERRABLE INITIALLY DEFERRED,
-  FOREIGN KEY (application_progress_type_code) REFERENCES application_progress_type(application_progress_type_code)
-  DEFERRABLE INITIALLY DEFERRED,
+  update_timestamp character varying(60) NOT NULL
 );
 
 ALTER TABLE application_progress OWNER TO mds;

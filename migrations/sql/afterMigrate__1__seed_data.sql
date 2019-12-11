@@ -568,6 +568,6 @@ INSERT INTO application_progress_type (
 VALUES
     ('VER', 'Verification', 'system-mds', 'system-mds'),
     ('REV', 'Technical Review', 'system-mds', 'system-mds'),
-    ('REF', 'Referral / Consultation', 'system-mds', 'system-mds')
+    ('REF', 'Referral / Consultation', 'system-mds', 'system-mds'),
     ('DEC', 'Decision', 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
