@@ -34,6 +34,7 @@ import * as FORM from "@/constants/forms";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
 import { downloadNowDocument } from "@/utils/actionlessNetworkCalls";
 import { SUBSCRIBE, YELLOW_HAZARD, SUCCESS_CHECKMARK } from "@/constants/assets";
+import NOWProgressButtons from "@/components/noticeOfWork/applications/NOWProgressButtons";
 
 const { Step } = Steps;
 
@@ -61,6 +62,8 @@ const propTypes = {
   // eslint-disable-next-line
   formValues: CustomPropTypes.nowApplication.isRequired,
   mines: PropTypes.arrayOf(CustomPropTypes.mine).isRequired,
+  applicationProgressStatusCodes: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.strings))
+    .isRequired,
   reclamationSummary: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.strings)).isRequired,
 };
 
@@ -77,45 +80,6 @@ export class NoticeOfWorkApplication extends Component {
     menuVisible: false,
   };
 
-  // componentDidMount() {
-  //   const { id } = this.props.match.params;
-  //   this.props.  ();
-  //   this.props.fetchNoticeOFWorkApplicationProgressStatusCodes();
-  //   this.props.fetchOriginalNoticeOfWorkApplication(id);
-  //   let currentStep = "VER";
-  //   let isImported = false;
-  //   let isNowLoaded = false;
-  //   this.props.fetchImportedNoticeOfWorkApplication(id).then(({ data }) => {
-  //     console.log(data);
-  //     const associatedMineGuid = data.mine_guid ? data.mine_guid : "";
-  //     // CHECK ASSOCIATED MINE GUID LOGIC
-  //     if (data.imported_to_core) {
-  //       // this.props.history.push(
-  //       //   routes.NOTICE_OF_WORK_APPLICATION.hashRoute(id, "#application-info")
-  //       // );
-  //       isImported = true;
-  //       isNowLoaded = true;
-  //       if (data.application_progress.length > 1) {
-  //         const recentStatus =
-  //           data.application_progress[data.application_progress.length - 1]
-  //             .application_progress_status_code;
-  //         console.log(recentStatus);
-  //         currentStep = recentStatus;
-  //       }
-  //     }
-
-  //     this.props.fetchMineRecordById(associatedMineGuid).then(() => {
-  //       return this.setState({
-  //         isLoaded: true,
-  //         associatedMineGuid,
-  //         currentStep,
-  //         isNoWLoaded,
-  //         isImported,
-  //       });
-  //       console.log("fetched a thing???");
-  //     });
-  //   });
-  // }
   componentDidMount() {
     const { id } = this.props.match.params;
     let currentStep = 0;
@@ -126,12 +90,13 @@ export class NoticeOfWorkApplication extends Component {
       const isImported = data.imported_to_core;
       this.props.fetchMineRecordById(associatedMineGuid).then(() => {
         if (isImported) {
-          currentStep = 1;
-        }
-        if (data.application_progress.length > 1) {
-          const recentStatus = data.application_progress.length - 1;
-          console.log(recentStatus);
-          currentStep = recentStatus;
+          if (data.application_progress.length === 0) {
+            // force the user to proceed to Review
+            currentStep = 0;
+          } else {
+            const recentStatus = data.application_progress.length;
+            currentStep = recentStatus;
+          }
         }
         this.setState({
           isLoaded: true,
@@ -208,17 +173,45 @@ export class NoticeOfWorkApplication extends Component {
       });
   };
 
-  handleProgressChange = (currentStep) => {
+  // componentWillReceiveProps(nextProps) {
+  //   const hasProgressChanged =
+  //     nextProps.noticeOfWork.application_progress.length !==
+  //     this.props.noticeOfWork.application_progress.length;
+  //   if (hasProgressChanged) {
+  //     console.log(hasProgressChanged);
+  //     console.log(nextProps.noticeOfWork.application_progress.length);
+  //     // console.log(nextProps.noticeOfWork.application_progress);
+  //     const recentStatus = nextProps.application_progress.length;
+  //     // console.log(recentStatus);
+  //     this.setState({ current: recentStatus });
+  //   }
+  // }
+
+  handleProgressChange = (status) => {
     const { id } = this.props.match.params;
-    this.props.createNoticeOfWorkApplicationProgress(id, {
-      application_progress_status_code: "REV",
-    });
-    this.setState({ currentStep });
+    this.props
+      .createNoticeOfWorkApplicationProgress(id, {
+        application_progress_status_code: status,
+      })
+      .then(() => {
+        return this.props
+          .fetchImportedNoticeOfWorkApplication(this.props.noticeOfWork.now_application_guid)
+          .then(() => {
+            this.props.fetchMineRecordById(this.state.associatedMineGuid);
+            this.setState({ isNoWLoaded: true, isLoaded: true });
+          });
+      });
+
+    const statusIndex = {
+      REV: 1,
+      REF: 2,
+      DEC: 3,
+    };
+    this.setState({ currentStep: statusIndex[status] });
   };
 
   renderStepOne = () => {
     const mine = this.props.mines ? this.props.mines[this.state.associatedMineGuid] : {};
-    console.log(this.state.isLoaded);
     return (
       this.state.isLoaded && (
         <VerifyNOWMine
@@ -284,6 +277,13 @@ export class NoticeOfWorkApplication extends Component {
                   <span>Save</span>,
                 ]}
           </button>
+        </div>
+        <div className="custom-menu-item">
+          <NOWProgressButtons
+            handleProgressChange={this.handleProgressChange}
+            applicationProgressStatusCodes={this.props.applicationProgressStatusCodes}
+            applicationProgress={this.props.noticeOfWork.application_progress}
+          />
         </div>
       </Menu>
     );
