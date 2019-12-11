@@ -65,7 +65,7 @@ const propTypes = {
 
 export class NoticeOfWorkApplication extends Component {
   state = {
-    currentStep: "VER",
+    currentStep: 0,
     isLoaded: false,
     isImported: false,
     isNoWLoaded: false,
@@ -164,8 +164,7 @@ export class NoticeOfWorkApplication extends Component {
 
   onChange = (currentStep) => {
     this.setState({
-      currentStep: this.props.applicationProgressStatusCodes[currentStep]
-        .application_progress_status_code,
+      currentStep,
     });
   };
 
@@ -202,7 +201,7 @@ export class NoticeOfWorkApplication extends Component {
   handleProgressChange = (currentStep) => {
     const { id } = this.props.match.params;
     this.props.createNoticeOfWorkApplicationProgress(id, {
-      application_progress_status_code: status,
+      application_progress_status_code: "REV",
     });
     this.setState({ currentStep });
   };
@@ -237,13 +236,13 @@ export class NoticeOfWorkApplication extends Component {
     );
   };
 
-  steps = () => ({
-    1: this.renderStepOne(),
-    2: this.renderStepTwo(),
-    3: <NullScreen type="next-stage" />,
-    4: <NullScreen type="next-stage" />,
-  });
   render() {
+    const steps = {
+      0: this.renderStepOne(),
+      1: this.renderStepTwo(),
+      2: <NullScreen type="next-stage" />,
+      3: <NullScreen type="next-stage" />,
+    };
     return (
       <div className="page" onScroll={this.handleScroll()}>
         <div className={this.state.fixedTop ? "steps--header fixed-scroll" : "steps--header"}>
@@ -275,11 +274,6 @@ export class NoticeOfWorkApplication extends Component {
             )}
           </div>
           <br />
-          {/* <Steps current={this.state.currentStep} onChange={this.onChange}>
-            {steps.map((item) => (
-              <Step key={item.title} title={item.title} />
-            ))}
-          </Steps> */}
           <Steps current={this.state.currentStep} onChange={this.onChange} type="navigation">
             <Step status="VER" title="Verification" />
             <Step status="REV" title="Technical Review" />
@@ -290,14 +284,14 @@ export class NoticeOfWorkApplication extends Component {
         <LoadingWrapper condition={this.state.isNoWLoaded}>
           <div>
             <div className={this.state.fixedTop ? "side-menu--fixed" : "side-menu"}>
-              {this.state.currentStep === "1" && (
+              {this.state.currentStep === 1 && (
                 <NOWSideMenu route={routes.NOTICE_OF_WORK_APPLICATION} />
               )}
             </div>
             <div
               className={this.state.fixedTop ? "steps--content with-fixed-top" : "steps--content"}
             >
-              {this.steps[this.state.currentStep]}
+              {steps[this.state.currentStep]}
             </div>
           </div>
         </LoadingWrapper>

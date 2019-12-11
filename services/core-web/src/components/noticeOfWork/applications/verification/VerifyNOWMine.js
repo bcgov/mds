@@ -155,7 +155,7 @@ export class VerifyNOWMine extends Component {
                 Save
               </Button>
               {this.props.isImported && (
-                <Button type="primary" onClick={() => this.props.handleProgressChange("REV")}>
+                <Button type="primary" onClick={() => this.props.handleProgressChange(1)}>
                   Proceed to Technical Review
                 </Button>
               )}
