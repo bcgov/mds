@@ -31,7 +31,7 @@
 CREATE TABLE IF NOT EXISTS now_application_progress_status (
   application_progress_status_code character varying(3)PRIMARY KEY,
   description character varying(100) NOT NULL,
-  active_ind boolean,
+  active_ind boolean DEFAULT true NOT NULL,
   create_user character varying(60) NOT NULL,
   create_timestamp timestamp with time zone DEFAULT now() NOT NULL,
   update_user character varying(60) NOT NULL,
@@ -43,21 +43,17 @@ CREATE TABLE IF NOT EXISTS now_application_progress (
   application_progress_id SERIAL PRIMARY KEY,
   now_application_id integer,
   application_progress_status_code character varying(3),
-  active_ind boolean,
+  active_ind boolean DEFAULT true NOT NULL,
   end_date character varying(60),
-  start_date character varying(60) NOT NULL,
+  start_date timestamp with time zone DEFAULT now() NOT null,
   created_by character varying(60) NOT NULL,
-  updated_by character varying(60) NOT NULL,
   create_user character varying(60) NOT NULL,
-  create_timestamp character varying(60) NOT NULL,
+  create_timestamp timestamp with time zone DEFAULT now() NOT null,
   update_user character varying(60) NOT NULL,
-  update_timestamp character varying(60) NOT NULL,
-  PRIMARY KEY (application_progress_id)
+  update_timestamp timestamp with time zone DEFAULT now() NOT null,
 
-  FOREIGN KEY (now_application_id) REFERENCES now_application(now_application_id)
-  DEFERRABLE INITIALLY DEFERRED,
-  FOREIGN KEY (application_progress_status_code) REFERENCES now_application_progress_status(application_progress_status_code)
-  DEFERRABLE INITIALLY DEFERRED,
+  FOREIGN KEY (now_application_id) REFERENCES now_application(now_application_id) DEFERRABLE INITIALLY DEFERRED,
+  FOREIGN KEY (application_progress_status_code) REFERENCES now_application_progress_status(application_progress_status_code) DEFERRABLE INITIALLY DEFERRED
 );
 
 

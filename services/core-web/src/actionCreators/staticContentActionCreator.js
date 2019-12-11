@@ -308,6 +308,7 @@ export const fetchNoticeOFWorkApplicationProgressStatusCodes = () => (dispatch) 
       dispatch(
         staticContentActions.storeNoticeOfWorkApplicationProgressStatusCodeOptions(response.data)
       );
+      console.log(response);
       return response;
     })
     .catch(() => dispatch(error(reducerTypes.GET_NOW_APPLICATION_PROGRESS_STATUS_CODES)));
