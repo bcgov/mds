@@ -283,6 +283,7 @@ export class NoticeOfWorkApplication extends Component {
             handleProgressChange={this.handleProgressChange}
             applicationProgressStatusCodes={this.props.applicationProgressStatusCodes}
             applicationProgress={this.props.noticeOfWork.application_progress}
+            isImported={this.state.isImported}
           />
         </div>
       </Menu>
