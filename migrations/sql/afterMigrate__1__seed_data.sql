@@ -561,6 +561,9 @@ ON CONFLICT DO NOTHING;
 
 INSERT INTO now_application_progress_status (
     application_progress_status_code,
+    description,
+    create_user,
+    update_user
     )
 VALUES 
     ('VER', 'Verification', 'system-mds', 'system-mds'),
