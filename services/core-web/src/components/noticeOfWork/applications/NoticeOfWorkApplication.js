@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Steps, Button } from "antd";
+import { Steps, Button, Dropdown, Menu, Icon } from "antd";
 import PropTypes from "prop-types";
 import { getFormValues } from "redux-form";
 import { bindActionCreators } from "redux";
@@ -27,6 +27,7 @@ import NOWSideMenu from "@/components/noticeOfWork/applications/NOWSideMenu";
 import * as FORM from "@/constants/forms";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
 import { downloadNowDocument } from "@/utils/actionlessNetworkCalls";
+import { SUBSCRIBE, YELLOW_HAZARD, SUCCESS_CHECKMARK } from "@/constants/assets";
 
 const { Step } = Steps;
 
@@ -64,6 +65,7 @@ export class NoticeOfWorkApplication extends Component {
     isViewMode: true,
     showOriginalValues: false,
     fixedTop: false,
+    menuVisible: false,
   };
 
   componentDidMount() {
@@ -84,6 +86,14 @@ export class NoticeOfWorkApplication extends Component {
     });
     this.props.fetchOriginalNoticeOfWorkApplication(id);
   }
+
+  handleVisibleChange = (flag) => {
+    this.setState({ menuVisible: flag });
+  };
+
+  handleMenuClick = () => {
+    this.setState({ menuVisible: false });
+  };
 
   showApplicationForm = () => {
     const document = this.props.noticeOfWork.submission_documents.filter(
@@ -191,6 +201,40 @@ export class NoticeOfWorkApplication extends Component {
       },
     ];
 
+    const menu = (
+      <Menu>
+        {this.state.isLoaded &&
+          this.props.noticeOfWork.submission_documents.filter(
+            (x) => x.filename === "ApplicationForm.pdf"
+          ).length > 0 && (
+            <div className="custom-menu-item">
+              <button type="button" className="full" onClick={this.showApplicationForm}>
+                <img alt="checkmark" className="padding-small" src={SUBSCRIBE} width="30" />
+                Open Original Application Form
+              </button>
+            </div>
+          )}
+        <div className="custom-menu-item">
+          <button type="button" className="full" onClick={this.toggleEditMode}>
+            {this.state.isViewMode
+              ? [
+                  <img
+                    alt="checkmark"
+                    className="padding-small"
+                    src={SUCCESS_CHECKMARK}
+                    width="30"
+                  />,
+                  <span>Edit</span>,
+                ]
+              : [
+                  <img alt="checkmark" className="padding-small" src={YELLOW_HAZARD} width="30" />,
+                  <span>Save</span>,
+                ]}
+          </button>
+        </div>
+      </Menu>
+    );
+
     return (
       <div className="page" onScroll={this.handleScroll()}>
         <div className={this.state.fixedTop ? "steps--header fixed-scroll" : "steps--header"}>
@@ -199,27 +243,17 @@ export class NoticeOfWorkApplication extends Component {
               <h1>NoW Number: {this.props.noticeOfWork.now_number || Strings.EMPTY_FIELD}</h1>
             </div>
 
-            {this.state.isLoaded &&
-              this.props.noticeOfWork.submission_documents.filter(
-                (x) => x.filename === "ApplicationForm.pdf"
-              ).length > 0 && (
-                <Button onClick={this.showApplicationForm}>Open Original Application Form</Button>
-              )}
-            {/* hiding the edit button until fully functionality is implemented */}
-            {false && (
-              <div>
-                {this.state.isViewMode && (
-                  <Button onClick={this.toggleShowOriginalValues}>
-                    {this.state.showOriginalValues ? `Show Current` : `Show Original`}
-                  </Button>
-                )}
-                {!this.state.showOriginalValues && (
-                  <Button onClick={this.toggleEditMode}>
-                    {this.state.isViewMode ? "Edit" : "Save"}
-                  </Button>
-                )}
-              </div>
-            )}
+            <Dropdown
+              overlay={menu}
+              placement="bottomLeft"
+              onVisibleChange={this.handleVisibleChange}
+              visible={this.state.menuVisible}
+            >
+              <Button type="secondary">
+                Actions
+                <Icon type="down" />
+              </Button>
+            </Dropdown>
           </div>
           <br />
           <Steps current={this.state.currentStep} onChange={this.onChange}>
