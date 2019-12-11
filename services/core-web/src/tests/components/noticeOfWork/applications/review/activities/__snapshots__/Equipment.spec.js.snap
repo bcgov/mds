@@ -34,6 +34,7 @@ exports[`Equipment renders properly 1`] = `
         Object {
           "capacity": "John Deere 690",
           "description": "Excavator",
+          "index": 0,
           "quantity": 1,
         },
       ]

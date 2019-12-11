@@ -56,6 +56,11 @@ def ETL_MMS_NOW_schema(connection, oracle_connection, tables):
             oracle_connection,
             'SELECT cid as mms_cid, upd_no as mmsnownumber from mmsadmin.mmspnw'
         )
+        # grab the other now numbers.
+        now_number_other = etl.fromdb(
+            connection,
+            'SELECT cid as mms_cid, upd_no as mmsnownumber from mms.mmssnw'
+        )
         # Convert the columns back to the NROS/vFCBC form.
         applications = etl.addfield(
             applications, 'noticeofworktype',
@@ -77,6 +82,7 @@ def ETL_MMS_NOW_schema(connection, oracle_connection, tables):
         applications = etl.cutout(applications, 'multi_year_area_ind', 'apl_typ', 'lat_dec', 'lon_dec', 'multi_year_ind')
 
         now_numbers = etl.cat(now_number_placer, now_number_mineral)
+        now_numbers = etl.cat(now_numbers, now_number_other)
         # add the nownumber to the application.
         applications = etl.leftjoin(applications, now_numbers, key='mms_cid')
     

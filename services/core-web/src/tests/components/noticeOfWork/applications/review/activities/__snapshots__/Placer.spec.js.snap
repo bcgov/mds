@@ -44,8 +44,8 @@ exports[`Placer renders properly 1`] = `
     columns={
       Array [
         Object {
-          "dataIndex": "type",
-          "key": "type",
+          "dataIndex": "activity_type_description",
+          "key": "activity_type_description",
           "render": [Function],
           "title": "Activity",
         },
@@ -68,14 +68,14 @@ exports[`Placer renders properly 1`] = `
           "title": "Length(km)",
         },
         Object {
-          "dataIndex": "disturbedArea",
-          "key": "disturbedArea",
+          "dataIndex": "disturbed_area",
+          "key": "disturbed_area",
           "render": [Function],
           "title": "Disturbed Area (ha)",
         },
         Object {
-          "dataIndex": "timberVolume",
-          "key": "timberVolume",
+          "dataIndex": "timber_volume",
+          "key": "timber_volume",
           "render": [Function],
           "title": "Merchantable timber volume (m3)",
         },
@@ -111,6 +111,11 @@ exports[`Placer renders properly 1`] = `
     </Col>
   </Row>
   <br />
+  <Equipment
+    activity="placer_operation"
+    equipment={Array []}
+    isViewMode={true}
+  />
   <h4>
     Reclamation Program
   </h4>
