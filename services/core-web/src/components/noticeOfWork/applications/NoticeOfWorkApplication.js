@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, { Component } from "react";
 import { Steps, Button, Dropdown, Menu, Icon } from "antd";
 import PropTypes from "prop-types";
@@ -34,8 +33,6 @@ import NOWSideMenu from "@/components/noticeOfWork/applications/NOWSideMenu";
 import * as FORM from "@/constants/forms";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
 import { downloadNowDocument } from "@/utils/actionlessNetworkCalls";
-import { SUBSCRIBE, YELLOW_HAZARD, SUCCESS_CHECKMARK } from "@/constants/assets";
-import NOWProgressButtons from "@/components/noticeOfWork/applications/NOWProgressButtons";
 
 const { Step } = Steps;
 
@@ -100,10 +97,7 @@ export class NoticeOfWorkApplication extends Component {
       this.handleProgressButtonLabels(data.application_progress);
       this.props.fetchMineRecordById(associatedMineGuid).then(() => {
         if (isImported) {
-          if (data.application_progress.length === 0) {
-            // force the user to proceed to Review
-            currentStep = 0;
-          } else {
+          if (data.application_progress.length > 0) {
             const recentStatus = data.application_progress.length;
             currentStep = recentStatus;
           }
@@ -120,6 +114,16 @@ export class NoticeOfWorkApplication extends Component {
     this.props.fetchOriginalNoticeOfWorkApplication(id);
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (
+      this.props.noticeOfWork.application_progress &&
+      nextProps.noticeOfWork.application_progress.length !==
+        this.props.noticeOfWork.application_progress.length
+    ) {
+      this.handleProgressButtonLabels(nextProps.noticeOfWork.application_progress);
+    }
+  }
+
   handleProgressButtonLabels = (applicationProgress) => {
     const currentStep = applicationProgress.length;
     if (currentStep < 3 && this.props.applicationProgressStatusCodes.length !== 0) {
@@ -131,16 +135,6 @@ export class NoticeOfWorkApplication extends Component {
       this.setState({ isDecision: true });
     }
   };
-
-  componentWillReceiveProps(nextProps) {
-    if (
-      this.props.noticeOfWork.application_progress &&
-      nextProps.noticeOfWork.application_progress.length !==
-        this.props.noticeOfWork.application_progress.length
-    ) {
-      this.handleProgressButtonLabels(nextProps.noticeOfWork.application_progress);
-    }
-  }
 
   handleVisibleChange = (flag) => {
     this.setState({ menuVisible: flag });
@@ -199,7 +193,6 @@ export class NoticeOfWorkApplication extends Component {
   };
 
   handleUpdateNOW = () => {
-    const { id } = this.props.match.params;
     this.setState({ isLoaded: false });
     this.props
       .createNoticeOfWorkApplication(
@@ -218,6 +211,7 @@ export class NoticeOfWorkApplication extends Component {
   };
 
   handleProgressChange = (status) => {
+    this.setState({ isNoWLoaded: false, isLoaded: false });
     const { id } = this.props.match.params;
     this.props
       .createNoticeOfWorkApplicationProgress(id, {
@@ -274,17 +268,20 @@ export class NoticeOfWorkApplication extends Component {
       const progressLength = this.props.noticeOfWork.application_progress.length;
       if (progressLength === stepIndex) {
         return "process";
-      } else if (progressLength > stepIndex) {
+      }
+      if (progressLength > stepIndex) {
         return "finish";
       }
-      return "wait";
     }
+    return "wait";
   };
 
   isStepDisabled = (stepIndex) => {
+    let isDisabled = true;
     if (this.props.noticeOfWork.application_progress) {
-      return this.props.noticeOfWork.application_progress.length < stepIndex;
+      isDisabled = this.props.noticeOfWork.application_progress.length < stepIndex;
     }
+    return isDisabled;
   };
 
   render() {
@@ -303,7 +300,6 @@ export class NoticeOfWorkApplication extends Component {
           ).length > 0 && (
             <div className="custom-menu-item">
               <button type="button" className="full" onClick={this.showApplicationForm}>
-                <img alt="checkmark" className="padding-small" src={SUBSCRIBE} width="30" />
                 Open Original Application Form
               </button>
             </div>
@@ -312,26 +308,21 @@ export class NoticeOfWorkApplication extends Component {
           <span>
             {this.state.isViewMode ? (
               <button type="button" className="full" onClick={this.toggleEditMode}>
-                <img alt="checkmark" className="padding-small" src={SUCCESS_CHECKMARK} width="30" />
-                <span>Edit</span>
+                Edit
               </button>
             ) : (
               <button type="button" className="full" onClick={this.handleNOWFormSubmit}>
-                <img alt="checkmark" className="padding-small" src={YELLOW_HAZARD} width="30" />
-                <span>Save</span>
+                Save
               </button>
             )}
           </span>
         </div>
-        {false && (
+        {this.state.isImported && !this.state.isDecision && (
           <div className="custom-menu-item">
-            <NOWProgressButtons
-              handleProgressChange={this.handleProgressChange}
-              applicationProgressStatusCodes={this.props.applicationProgressStatusCodes}
-              applicationProgress={this.props.noticeOfWork.application_progress}
-              value={this.state.buttonValue}
-              label={this.state.buttonLabel}
-            />
+            <button
+              type="button"
+              onClick={() => this.handleProgressChange(this.state.buttonValue)}
+            >{`Ready for ${this.state.buttonLabel}`}</button>
           </div>
         )}
       </Menu>

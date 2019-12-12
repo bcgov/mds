@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { AutoComplete, Button, Col, Row } from "antd";
@@ -26,6 +25,7 @@ const propTypes = {
   noticeOfWork: CustomPropTypes.nowApplication.isRequired,
   mineRegionHash: PropTypes.objectOf(PropTypes.string).isRequired,
   currentMine: CustomPropTypes.mine.isRequired,
+  isImported: PropTypes.bool.isRequired,
 };
 
 export class VerifyNOWMine extends Component {
@@ -89,6 +89,7 @@ export class VerifyNOWMine extends Component {
                 defaultValue={`${this.props.noticeOfWork.mine_name} - ${this.props.noticeOfWork.mine_no}`}
                 data={this.transformData(this.props.mineNameList)}
                 handleChange={this.handleChange}
+                disabled={this.props.isImported}
               />
             </Col>
           </Row>
@@ -151,12 +152,14 @@ export class VerifyNOWMine extends Component {
               </div>
             </div>
             <div className="right">
-              <Button type="primary" onClick={() => this.props.handleSave()}>
-                Save
-              </Button>
-              {this.props.isImported && (
+              {!this.props.isImported && (
+                <Button type="primary" onClick={() => this.props.handleSave()}>
+                  Confirm Details
+                </Button>
+              )}
+              {this.props.isImported && this.props.noticeOfWork.application_progress.length === 0 && (
                 <Button type="primary" onClick={() => this.props.handleProgressChange("REV")}>
-                  Proceed to Technical Review
+                  Ready for Technical Review
                 </Button>
               )}
             </div>
