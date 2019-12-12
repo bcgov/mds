@@ -11,6 +11,7 @@ import {
   fetchImportedNoticeOfWorkApplication,
   fetchOriginalNoticeOfWorkApplication,
   createNoticeOfWorkApplicationProgress,
+  updateNoticeOfWorkApplication,
 } from "@/actionCreators/noticeOfWorkActionCreator";
 import { fetchMineRecordById } from "@/actionCreators/mineActionCreator";
 import {
@@ -43,11 +44,12 @@ const { Step } = Steps;
  */
 
 const propTypes = {
-  noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
+  noticeOfWork: CustomPropTypes.importedNOWApplication,
   originalNoticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
   fetchNoticeOFWorkApplicationProgressStatusCodes: PropTypes.func.isRequired,
   createNoticeOfWorkApplicationProgress: CustomPropTypes.importedNOWApplication.isRequired,
   createNoticeOfWorkApplication: PropTypes.func.isRequired,
+  updateNoticeOfWorkApplication: PropTypes.func.isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
   fetchImportedNoticeOfWorkApplication: PropTypes.func.isRequired,
   fetchOriginalNoticeOfWorkApplication: PropTypes.func.isRequired,
@@ -67,6 +69,10 @@ const propTypes = {
   reclamationSummary: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.strings)).isRequired,
 };
 
+const defaultProps = {
+  noticeOfWork: { application_progress: [] },
+};
+
 export class NoticeOfWorkApplication extends Component {
   state = {
     currentStep: 0,
@@ -78,6 +84,9 @@ export class NoticeOfWorkApplication extends Component {
     showOriginalValues: false,
     fixedTop: false,
     menuVisible: false,
+    isDecision: false,
+    buttonValue: "REV",
+    buttonLabel: "Technical Review",
   };
 
   componentDidMount() {
@@ -88,6 +97,7 @@ export class NoticeOfWorkApplication extends Component {
     this.props.fetchImportedNoticeOfWorkApplication(id).then(({ data }) => {
       const associatedMineGuid = data.mine_guid ? data.mine_guid : "";
       const isImported = data.imported_to_core;
+      this.handleProgressButtonLabels(data.application_progress);
       this.props.fetchMineRecordById(associatedMineGuid).then(() => {
         if (isImported) {
           if (data.application_progress.length === 0) {
@@ -108,6 +118,28 @@ export class NoticeOfWorkApplication extends Component {
       });
     });
     this.props.fetchOriginalNoticeOfWorkApplication(id);
+  }
+
+  handleProgressButtonLabels = (applicationProgress) => {
+    const currentStep = applicationProgress.length;
+    if (currentStep < 3 && this.props.applicationProgressStatusCodes.length !== 0) {
+      const buttonLabel = this.props.applicationProgressStatusCodes[currentStep + 1].description;
+      const buttonValue = this.props.applicationProgressStatusCodes[currentStep + 1]
+        .application_progress_status_code;
+      this.setState({ buttonLabel, buttonValue });
+    } else {
+      this.setState({ isDecision: true });
+    }
+  };
+
+  componentWillReceiveProps(nextProps) {
+    if (
+      this.props.noticeOfWork.application_progress &&
+      nextProps.noticeOfWork.application_progress.length !==
+        this.props.noticeOfWork.application_progress.length
+    ) {
+      this.handleProgressButtonLabels(nextProps.noticeOfWork.application_progress);
+    }
   }
 
   handleVisibleChange = (flag) => {
@@ -147,6 +179,17 @@ export class NoticeOfWorkApplication extends Component {
     this.setState({ associatedMineGuid: mineGuid });
   };
 
+  handleNOWFormSubmit = () => {
+    this.props
+      .updateNoticeOfWorkApplication(
+        this.props.formValues,
+        this.props.noticeOfWork.now_application_guid
+      )
+      .then(() => {
+        this.setState((prevState) => ({ isViewMode: !prevState.isViewMode }));
+      });
+  };
+
   handleScroll = () => {
     if (window.pageYOffset > "100" && !this.state.fixedTop) {
       this.setState({ fixedTop: true });
@@ -164,28 +207,15 @@ export class NoticeOfWorkApplication extends Component {
         this.props.noticeOfWork.now_application_guid
       )
       .then(() => {
+        this.setState({ isImported: true });
         return this.props
           .fetchImportedNoticeOfWorkApplication(this.props.noticeOfWork.now_application_guid)
           .then(() => {
             this.props.fetchMineRecordById(this.state.associatedMineGuid);
-            this.setState({ isNoWLoaded: true, isLoaded: true, isImported: true });
+            this.setState({ isNoWLoaded: true, isLoaded: true });
           });
       });
   };
-
-  // componentWillReceiveProps(nextProps) {
-  //   const hasProgressChanged =
-  //     nextProps.noticeOfWork.application_progress.length !==
-  //     this.props.noticeOfWork.application_progress.length;
-  //   if (hasProgressChanged) {
-  //     console.log(hasProgressChanged);
-  //     console.log(nextProps.noticeOfWork.application_progress.length);
-  //     // console.log(nextProps.noticeOfWork.application_progress);
-  //     const recentStatus = nextProps.application_progress.length;
-  //     // console.log(recentStatus);
-  //     this.setState({ current: recentStatus });
-  //   }
-  // }
 
   handleProgressChange = (status) => {
     const { id } = this.props.match.params;
@@ -239,6 +269,24 @@ export class NoticeOfWorkApplication extends Component {
     );
   };
 
+  renderProgressStatus = (stepIndex) => {
+    if (this.props.noticeOfWork.application_progress) {
+      const progressLength = this.props.noticeOfWork.application_progress.length;
+      if (progressLength === stepIndex) {
+        return "process";
+      } else if (progressLength > stepIndex) {
+        return "finish";
+      }
+      return "wait";
+    }
+  };
+
+  isStepDisabled = (stepIndex) => {
+    if (this.props.noticeOfWork.application_progress) {
+      return this.props.noticeOfWork.application_progress.length < stepIndex;
+    }
+  };
+
   render() {
     const steps = {
       0: this.renderStepOne(),
@@ -261,31 +309,31 @@ export class NoticeOfWorkApplication extends Component {
             </div>
           )}
         <div className="custom-menu-item">
-          <button type="button" className="full" onClick={this.toggleEditMode}>
-            {this.state.isViewMode
-              ? [
-                  <img
-                    alt="checkmark"
-                    className="padding-small"
-                    src={SUCCESS_CHECKMARK}
-                    width="30"
-                  />,
-                  <span>Edit</span>,
-                ]
-              : [
-                  <img alt="checkmark" className="padding-small" src={YELLOW_HAZARD} width="30" />,
-                  <span>Save</span>,
-                ]}
-          </button>
+          <span>
+            {this.state.isViewMode ? (
+              <button type="button" className="full" onClick={this.toggleEditMode}>
+                <img alt="checkmark" className="padding-small" src={SUCCESS_CHECKMARK} width="30" />
+                <span>Edit</span>
+              </button>
+            ) : (
+              <button type="button" className="full" onClick={this.handleNOWFormSubmit}>
+                <img alt="checkmark" className="padding-small" src={YELLOW_HAZARD} width="30" />
+                <span>Save</span>
+              </button>
+            )}
+          </span>
         </div>
-        <div className="custom-menu-item">
-          <NOWProgressButtons
-            handleProgressChange={this.handleProgressChange}
-            applicationProgressStatusCodes={this.props.applicationProgressStatusCodes}
-            applicationProgress={this.props.noticeOfWork.application_progress}
-            isImported={this.state.isImported}
-          />
-        </div>
+        {false && (
+          <div className="custom-menu-item">
+            <NOWProgressButtons
+              handleProgressChange={this.handleProgressChange}
+              applicationProgressStatusCodes={this.props.applicationProgressStatusCodes}
+              applicationProgress={this.props.noticeOfWork.application_progress}
+              value={this.state.buttonValue}
+              label={this.state.buttonLabel}
+            />
+          </div>
+        )}
       </Menu>
     );
 
@@ -311,10 +359,22 @@ export class NoticeOfWorkApplication extends Component {
           </div>
           <br />
           <Steps current={this.state.currentStep} onChange={this.onChange} type="navigation">
-            <Step status="VER" title="Verification" />
-            <Step status="REV" title="Technical Review" />
-            <Step status="REF" title="Referral / Consultation" />
-            <Step status="DEC" title="Decision" disabled />
+            <Step status={this.renderProgressStatus(0)} title="Verification" />
+            <Step
+              status={this.renderProgressStatus(1)}
+              title="Technical Review"
+              disabled={this.isStepDisabled(1)}
+            />
+            <Step
+              status={this.renderProgressStatus(2)}
+              title="Referral / Consultation"
+              disabled={this.isStepDisabled(2)}
+            />
+            <Step
+              status={this.renderProgressStatus(3)}
+              title="Decision"
+              disabled={this.isStepDisabled(3)}
+            />
           </Steps>
         </div>
         <LoadingWrapper condition={this.state.isNoWLoaded}>
@@ -349,6 +409,7 @@ const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
       createNoticeOfWorkApplication,
+      updateNoticeOfWorkApplication,
       fetchImportedNoticeOfWorkApplication,
       fetchOriginalNoticeOfWorkApplication,
       fetchMineRecordById,
@@ -360,6 +421,7 @@ const mapDispatchToProps = (dispatch) =>
   );
 
 NoticeOfWorkApplication.propTypes = propTypes;
+NoticeOfWorkApplication.defaultProps = defaultProps;
 
 export default connect(
   mapStateToProps,

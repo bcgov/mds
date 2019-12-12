@@ -27,6 +27,11 @@ exports[`Equipment renders properly 1`] = `
           "render": [Function],
           "title": "Capacity",
         },
+        Object {
+          "dataIndex": "remove",
+          "key": "remove",
+          "render": [Function],
+        },
       ]
     }
     dataSource={
@@ -46,6 +51,16 @@ exports[`Equipment renders properly 1`] = `
     }
     pagination={false}
   />
+  <Button
+    block={false}
+    ghost={false}
+    htmlType="button"
+    loading={false}
+    onClick={[Function]}
+    type="primary"
+  >
+    Add Equipment
+  </Button>
   <br />
 </div>
 `;

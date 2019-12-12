@@ -156,6 +156,8 @@ export const NOTICE_OF_WORK_APPLICATION_IMPORT = (applicationGuid) =>
   `/now-applications/${applicationGuid}/import`;
 export const NOTICE_OF_WORK_IMPORTED_APPLICATION = (applicationGuid) =>
   `/now-applications/${applicationGuid}`;
+export const NOTICE_OF_WORK_APPLICATION_UPDATE = (applicationGuid) =>
+  `/now-applications/${applicationGuid}`;
 export const NOTICE_OF_WORK_ACTIVITY_TYPE_OPTIONS = "/now-applications/activity-types";
 export const NOTICE_OF_WORK_UNIT_TYPE_OPTIONS = "/now-applications/unit-types";
 export const NOTICE_OF_WORK_APPLICATION_TYPE_OPTIONS = "/now-applications/application-types";
