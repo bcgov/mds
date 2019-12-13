@@ -53,6 +53,9 @@ class DictLoadingError(Exception):
     pass
 
 
+SPECIAL_DELETE_JSON_KEY = "DELETE_ON_PUT"
+
+
 class Base(db.Model):
     __abstract__ = True
     _edit_groups = []
@@ -138,6 +141,9 @@ class Base(db.Model):
                             depth * ' ' +
                             f'found existing{existing_obj} with pks {[(pk_name,getattr(existing_obj, pk_name)) for pk_name in pk_names]}'
                         )
+                        #if SPECIAL_DELETE_JSON_KEY:True in json, delete object
+                        if i.get(SPECIAL_DELETE_JSON_KEY, False):
+                            db.session.delete(existing_obj)
                         existing_obj.deep_update_from_dict(
                             i, depth=(depth + 1), _edit_key=_edit_key)
                     elif False:
