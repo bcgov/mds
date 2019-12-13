@@ -133,7 +133,6 @@ export class MinePermitInfo extends Component {
   };
 
   // Permit Handlers
-
   handleAddPermit = (values) => {
     const permit_no = values.permit_is_exploration
       ? `${values.permit_type}X-${values.permit_no}`
@@ -165,7 +164,6 @@ export class MinePermitInfo extends Component {
         onSubmit,
         title,
         mine_guid: permit.mine_guid,
-        isMajorMine: this.props.mines[this.props.mineGuid].major_mine_ind,
         amendments: permit.permit_amendments,
       },
       widthSize: "50vw",
