@@ -15,6 +15,7 @@ import {
   storeNoticeOfWorkApplicationStatusOptions,
   storeNoticeOfWorkApplicationDocumentTypeOptions,
   storeNoticeOfWorkUndergroundExplorationTypeOptions,
+  storeNoticeOfWorkApplicationProgressStatusCodeOptions,
 } from "@/actions/staticContentActions";
 import * as MOCK from "@/tests/mocks/dataMocks";
 import * as NOW_MOCK from "@/tests/mocks/noticeOfWorkMocks";
@@ -185,6 +186,19 @@ describe("staticContentReducer", () => {
     const result = staticContentReducer(
       undefined,
       storeNoticeOfWorkUndergroundExplorationTypeOptions(NOW_MOCK.UNDERGROUND_EXPLORATION_TYPES)
+    );
+    expect(result).toEqual(expectedValue);
+  });
+
+  it("receives STORE_NOW_APPLICATION_PROGRESS_STATUS_CODES", () => {
+    const expectedValue = getBaseExpectedValue();
+    expectedValue.noticeOfWorkApplicationProgressStatusCodeOptions =
+      NOW_MOCK.APPLICATION_PROGRESS_STATUS_CODES.records;
+    const result = staticContentReducer(
+      undefined,
+      storeNoticeOfWorkApplicationProgressStatusCodeOptions(
+        NOW_MOCK.APPLICATION_PROGRESS_STATUS_CODES
+      )
     );
     expect(result).toEqual(expectedValue);
   });
