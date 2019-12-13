@@ -1,6 +1,10 @@
 ALTER TABLE now_application_document_xref ADD COLUMN description CHARACTER VARYING;
 ALTER TABLE now_application_document_xref ADD COLUMN is_final_package BOOLEAN;
 ALTER TABLE now_application_document_type ALTER COLUMN description TYPE CHARACTER VARYING(255);
+ALTER TABLE now_application_document_xref ADD COLUMN create_user character varying NOT NULL;
+ALTER TABLE now_application_document_xref ADD COLUMN create_timestamp timestamp with time zone DEFAULT now() NOT NULL;
+ALTER TABLE now_application_document_xref ADD COLUMN update_user character varying NOT NULL;
+ALTER TABLE now_application_document_xref ADD COLUMN update_timestamp timestamp with time zone DEFAULT now() NOT NULL;
 
 INSERT INTO now_application_document_type
 (now_application_document_type_code, description, active_ind, create_user, update_user)
