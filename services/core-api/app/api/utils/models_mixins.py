@@ -70,15 +70,6 @@ class Base(db.Model):
                 db.session.rollback()
                 raise e
 
-    # def delete(self):
-    #     if hasattr(self, 'deleted_ind'):
-    #         self.deleted_ind = True
-    #     else:
-    #         current_app.logger.warn(f'no deleted_ind, hard deleting {self}')
-    #         db.session.delete(self)
-    #         mapper = inspect(self.__class__)
-    #             for rel in mapper.relationships:
-
     def marshmallow_post_generate():
         pass
 
