@@ -14,7 +14,6 @@ CREATE TABLE IF NOT EXISTS now_application_progress (
   now_application_id integer,
   application_progress_status_code character varying(3),
   active_ind boolean DEFAULT true NOT NULL,
-  end_date character varying(60),
   start_date timestamp with time zone DEFAULT now() NOT null,
   created_by character varying(60) NOT NULL,
   create_user character varying(60) NOT NULL,

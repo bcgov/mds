@@ -25,7 +25,6 @@ class NOWApplicationProgress(Base, AuditMixin):
     @classmethod
     def create(cls, now_application, application_progress_status_code, add_to_session=True):
         progress = cls(
-                                                                               # now_application_id=now_application.now_application_id,
             application_progress_status_code=application_progress_status_code,
             start_date=datetime.utcnow(),
             created_by=User().get_user_username(),
