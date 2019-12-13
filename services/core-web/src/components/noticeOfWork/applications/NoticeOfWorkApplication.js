@@ -304,19 +304,22 @@ export class NoticeOfWorkApplication extends Component {
               </button>
             </div>
           )}
-        <div className="custom-menu-item">
-          <span>
-            {this.state.isViewMode ? (
-              <button type="button" className="full" onClick={this.toggleEditMode}>
-                Edit
-              </button>
-            ) : (
-              <button type="button" className="full" onClick={this.handleNOWFormSubmit}>
-                Save
-              </button>
-            )}
-          </span>
-        </div>
+        {/* only show the edit button during technical review stage */}
+        {this.state.currentStep === 1 && (
+          <div className="custom-menu-item">
+            <span>
+              {this.state.isViewMode ? (
+                <button type="button" className="full" onClick={this.toggleEditMode}>
+                  Edit
+                </button>
+              ) : (
+                <button type="button" className="full" onClick={this.handleNOWFormSubmit}>
+                  Save
+                </button>
+              )}
+            </span>
+          </div>
+        )}
         {this.state.isImported && !this.state.isDecision && (
           <div className="custom-menu-item">
             <button
