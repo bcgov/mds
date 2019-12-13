@@ -8,6 +8,8 @@ from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.ext.declarative import declarative_base
 
 from app.extensions import db
+from app.api.constants import DELETE_ITEM_FROM_LIST_JSON_KEY
+
 from .include.user_info import User
 
 from sqlalchemy.inspection import inspect
@@ -53,9 +55,6 @@ class DictLoadingError(Exception):
     pass
 
 
-SPECIAL_DELETE_JSON_KEY = "DELETE_ON_PUT"
-
-
 class Base(db.Model):
     __abstract__ = True
     _edit_groups = []
@@ -70,6 +69,15 @@ class Base(db.Model):
             except SQLAlchemyError as e:
                 db.session.rollback()
                 raise e
+
+    # def delete(self):
+    #     if hasattr(self, 'deleted_ind'):
+    #         self.deleted_ind = True
+    #     else:
+    #         current_app.logger.warn(f'no deleted_ind, hard deleting {self}')
+    #         db.session.delete(self)
+    #         mapper = inspect(self.__class__)
+    #             for rel in mapper.relationships:
 
     def marshmallow_post_generate():
         pass
@@ -141,8 +149,10 @@ class Base(db.Model):
                             depth * ' ' +
                             f'found existing{existing_obj} with pks {[(pk_name,getattr(existing_obj, pk_name)) for pk_name in pk_names]}'
                         )
-                        #if SPECIAL_DELETE_JSON_KEY:True in json, delete object
-                        if i.get(SPECIAL_DELETE_JSON_KEY, False):
+                        #if DELETE_ITEM_FROM_LIST_JSON_KEY:True in json, delete object
+                        if i.get(DELETE_ITEM_FROM_LIST_JSON_KEY, False):
+                            current_app.logger.debug(depth * ' ' + f'deleting {existing_obj}')
+                            #FIXME Caller is responsible for marking all child records.
                             db.session.delete(existing_obj)
                         existing_obj.deep_update_from_dict(
                             i, depth=(depth + 1), _edit_key=_edit_key)
@@ -187,7 +197,11 @@ class Base(db.Model):
                         setattr(self, k, v)
         if depth == 0:
             current_app.logger.debug('DONE UPDATING AND SAVING')
-            self.save()
+            try:
+                db.session.commit()
+                self.save()
+            except:
+                db.session.rollback()
         return
 
 

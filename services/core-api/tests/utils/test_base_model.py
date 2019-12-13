@@ -9,7 +9,7 @@ from flask_restplus import marshal, fields
 
 from app.api.mines.mine.models.mine import Mine
 from app.api.mines.response_models import PERMIT_MODEL
-from app.api.constants import *
+from app.api.constants import DELETE_ITEM_FROM_LIST_JSON_KEY, PERMIT_EDIT_GROUP
 
 
 def test_update_first_level_info(db_session):
@@ -72,6 +72,51 @@ def test_update_field_in_nested_item(db_session):
 
     mine = Mine.query.filter_by(mine_guid=mine.mine_guid).first()
     assert mine.mine_permit[1].permit_no == new_permit_no
+
+
+@pytest.mark.xfail(
+    reason='didn\'t mark child records, will violate not null constraint (orphan permit amendment)')
+def test_delete_flag_in_nested_item_fail_orphan(db_session):
+    init_length = 5
+    mine = MineFactory(mine_permit=init_length)
+    partial_mine_permit_dict = marshal(
+        {'mine_permit': mine.mine_permit},
+        api.model('test_list', {'mine_permit': fields.List(fields.Nested(PERMIT_MODEL))}))
+    partial_mine_permit_dict['mine_permit'][1][DELETE_ITEM_FROM_LIST_JSON_KEY] = True
+    print(partial_mine_permit_dict)
+    mine.deep_update_from_dict(partial_mine_permit_dict, _edit_key=PERMIT_EDIT_GROUP)
+
+    mine = Mine.query.filter_by(mine_guid=mine.mine_guid).first()
+    assert len(mine.mine_permit) == init_length - 1
+
+
+def test_delete_flag_in_nested_item_success_nested(db_session):
+    init_length = 5
+    mine = MineFactory(mine_permit=init_length)
+    partial_mine_permit_dict = marshal(
+        {'mine_permit': mine.mine_permit},
+        api.model('test_list', {'mine_permit': fields.List(fields.Nested(PERMIT_MODEL))}))
+    partial_mine_permit_dict['mine_permit'][1][DELETE_ITEM_FROM_LIST_JSON_KEY] = True
+    partial_mine_permit_dict['mine_permit'][1]['permit_amendments'][0][
+        DELETE_ITEM_FROM_LIST_JSON_KEY] = True
+    mine.deep_update_from_dict(partial_mine_permit_dict, _edit_key=PERMIT_EDIT_GROUP)
+    mine = Mine.query.filter_by(mine_guid=mine.mine_guid).first()
+    assert len(mine.mine_permit) == init_length - 1
+
+
+def test_missing_nested_item_not_deleted(db_session):
+    init_length = 5
+    mine = MineFactory(mine_permit=init_length)
+
+    partial_mine_permit_dict = marshal(
+        {'mine_permit': mine.mine_permit},
+        api.model('test_list', {'mine_permit': fields.List(fields.Nested(PERMIT_MODEL))}))
+    partial_mine_permit_dict['mine_permit'] = partial_mine_permit_dict['mine_permit'][:2]
+    assert len(partial_mine_permit_dict['mine_permit']) < init_length
+    mine.deep_update_from_dict(partial_mine_permit_dict, _edit_key=PERMIT_EDIT_GROUP)
+
+    mine = Mine.query.filter_by(mine_guid=mine.mine_guid).first()
+    assert len(mine.mine_permit) == init_length
 
 
 @pytest.mark.xfail(

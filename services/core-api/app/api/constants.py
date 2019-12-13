@@ -83,6 +83,9 @@ def DOWNLOAD_TOKEN(token_guid):
     return f'document-manager:download-token:{token_guid}'
 
 
+#Deep Update Special Flag
+DELETE_ITEM_FROM_LIST_JSON_KEY = "DELETE_ON_PUT"
+
 #Cache Timeouts
 TIMEOUT_5_MINUTES = 300
 TIMEOUT_60_MINUTES = 3600
