@@ -21,6 +21,9 @@ class NOWApplicationDocumentXref(AuditMixin, Base):
         db.String,
         db.ForeignKey('now_application_document_type.now_application_document_type_code'))
 
+    description = db.Column(db.String)
+    is_final_package = db.Column(db.Boolean)
+
     mine_document = db.relationship('MineDocument', lazy='joined')
     now_application_document_type = db.relationship('NOWApplicationDocumentType', lazy='joined')
 
