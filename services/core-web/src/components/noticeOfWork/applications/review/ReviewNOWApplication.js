@@ -389,10 +389,7 @@ export const ReviewNOWApplication = (props) => {
       {/* eslint-disable-next-line */}
       <Form layout="vertical" onSubmit={() => console.log("submitting form")}>
         <div className="side-menu--content">
-          {/* <div className="inline-flex between block-tablet"> */}
           <h2>General Information</h2>
-          {/* <p className="p-light">** Field is unavailable from MMS, NROS, and vFCBC</p>
-          </div> */}
           <div className="right">
             <p className="p-light">** Field is unavailable from MMS, NROS, and vFCBC</p>
           </div>
