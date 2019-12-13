@@ -9,7 +9,7 @@ from flask_restplus import marshal, fields
 
 from app.api.mines.mine.models.mine import Mine
 from app.api.mines.response_models import PERMIT_MODEL
-from app.api.constants import DELETE_ITEM_FROM_LIST_JSON_KEY, PERMIT_EDIT_GROUP
+from app.api.constants import STATE_MODIFIED_DELETE_ON_PUT, PERMIT_EDIT_GROUP
 
 
 def test_update_first_level_info(db_session):
@@ -82,7 +82,7 @@ def test_delete_flag_in_nested_item_fail_orphan(db_session):
     partial_mine_permit_dict = marshal(
         {'mine_permit': mine.mine_permit},
         api.model('test_list', {'mine_permit': fields.List(fields.Nested(PERMIT_MODEL))}))
-    partial_mine_permit_dict['mine_permit'][1][DELETE_ITEM_FROM_LIST_JSON_KEY] = True
+    partial_mine_permit_dict['mine_permit'][1]['state_modified'] = STATE_MODIFIED_DELETE_ON_PUT
     print(partial_mine_permit_dict)
     mine.deep_update_from_dict(partial_mine_permit_dict, _edit_key=PERMIT_EDIT_GROUP)
 
@@ -96,9 +96,9 @@ def test_delete_flag_in_nested_item_success_nested(db_session):
     partial_mine_permit_dict = marshal(
         {'mine_permit': mine.mine_permit},
         api.model('test_list', {'mine_permit': fields.List(fields.Nested(PERMIT_MODEL))}))
-    partial_mine_permit_dict['mine_permit'][1][DELETE_ITEM_FROM_LIST_JSON_KEY] = True
+    partial_mine_permit_dict['mine_permit'][1]['state_modified'] = STATE_MODIFIED_DELETE_ON_PUT
     partial_mine_permit_dict['mine_permit'][1]['permit_amendments'][0][
-        DELETE_ITEM_FROM_LIST_JSON_KEY] = True
+        'state_modified'] = STATE_MODIFIED_DELETE_ON_PUT
     mine.deep_update_from_dict(partial_mine_permit_dict, _edit_key=PERMIT_EDIT_GROUP)
     mine = Mine.query.filter_by(mine_guid=mine.mine_guid).first()
     assert len(mine.mine_permit) == init_length - 1

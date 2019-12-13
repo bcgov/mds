@@ -8,7 +8,7 @@ from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.ext.declarative import declarative_base
 
 from app.extensions import db
-from app.api.constants import DELETE_ITEM_FROM_LIST_JSON_KEY
+from app.api.constants import STATE_MODIFIED_DELETE_ON_PUT
 
 from .include.user_info import User
 
@@ -141,7 +141,7 @@ class Base(db.Model):
                             f'found existing{existing_obj} with pks {[(pk_name,getattr(existing_obj, pk_name)) for pk_name in pk_names]}'
                         )
                         #if DELETE_ITEM_FROM_LIST_JSON_KEY:True in json, delete object
-                        if i.get(DELETE_ITEM_FROM_LIST_JSON_KEY, False):
+                        if i.get('state_modified', False) == STATE_MODIFIED_DELETE_ON_PUT:
                             current_app.logger.debug(depth * ' ' + f'deleting {existing_obj}')
                             #FIXME Caller is responsible for marking all child records.
                             db.session.delete(existing_obj)

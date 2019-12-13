@@ -84,7 +84,7 @@ def DOWNLOAD_TOKEN(token_guid):
 
 
 #Deep Update Special Flag
-DELETE_ITEM_FROM_LIST_JSON_KEY = "DELETE_ON_PUT"
+STATE_MODIFIED_DELETE_ON_PUT = "delete"
 
 #Cache Timeouts
 TIMEOUT_5_MINUTES = 300
