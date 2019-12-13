@@ -74,6 +74,9 @@ class NOWApplication(Base, AuditMixin):
     water_supply = db.relationship('WaterSupply', lazy='selectin', uselist=False)
 
     # Documents
+    documents = db.relationship(
+        'NOWApplicationDocumentXref', lazy='selectin'
+    )
     submission_documents = db.relationship(
         'Document',
         lazy='selectin',

@@ -24,12 +24,16 @@ class NOWApplicationDocumentXref(AuditMixin, Base):
     description = db.Column(db.String)
     is_final_package = db.Column(db.Boolean)
 
-    mine_document = db.relationship('MineDocument', lazy='joined')
+    # NOWApplicationDocumentType
     now_application_document_type = db.relationship('NOWApplicationDocumentType', lazy='joined')
+    now_application_document_type_code_description = association_proxy('now_application_document_type_code', 'description')
 
+    # MineDocument
+    mine_document = db.relationship('MineDocument', lazy='joined')
     mine_guid = association_proxy('mine_document', 'mine_guid')
     document_manager_guid = association_proxy('mine_document', 'document_manager_guid')
     document_name = association_proxy('mine_document', 'document_name')
+    upload_date = association_proxy('mine_document', 'upload_date')
 
     def __repr__(self):
         return '<ApplicationDocumentXref %r>' % self.application_document_xref_guid
