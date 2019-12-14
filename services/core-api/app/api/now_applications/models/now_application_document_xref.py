@@ -26,7 +26,7 @@ class NOWApplicationDocumentXref(AuditMixin, Base):
 
     # NOWApplicationDocumentType
     now_application_document_type = db.relationship('NOWApplicationDocumentType', lazy='joined')
-    now_application_document_type_code_description = association_proxy('now_application_document_type_code', 'description')
+    now_application_document_type_code_description = association_proxy('now_application_document_type', 'description')
 
     # MineDocument
     mine_document = db.relationship('MineDocument', lazy='joined')
