@@ -49,7 +49,7 @@ else
 	@copy /Y .\services\core-api\.env-dev-local-keycloak .\services\core-api\.env
 	@if exist .\services\nris-api/backend\.env copy .\services\nris-api\backend\.env .\services\nris-api\backend\.env-last-backup
 	@copy /Y .\services\nris-api\backend\.env-dev-local-keycloak .\services\nris-api\backend\.env
-	@if exist .\services\document-manager/backend\.env copy .\services\document-manager\backend\.env .\services\document-manager\backend\.env-last-backup
+	@if exist .\services\document-manager\backend\.env copy .\services\document-manager\backend\.env .\services\document-manager\backend\.env-last-backup
 	@copy /Y .\services\document-manager\backend\.env-dev-local-keycloak .\services\document-manager\backend\.env
 endif
 	@echo "+"
@@ -59,8 +59,8 @@ restore-last-env:
 	@cp ./services/core-web/.env-last-backup ./services/core-web/.env
 	@cp ./services/core-web/src/constants/environment.js ./services/core-web/src/constants/environment.js-last-backup
 	@cp ./services/core-api/.env-last-backup ./services/core-api/.env
-	@cp ./services/nris-api/.env-last-backup ./services/nris-api/.env
-	@cp ./services/document-manager/.env-last-backup ./services/document-manager/.env
+	@cp ./services/nris-api/backend/.env-last-backup ./services/nris-api/backend/.env
+	@cp ./services/document-manager/backend/.env-last-backup ./services/document-manager/backend/.env
 
 pause-30:
 	@echo "+\n++ Pausing 30 seconds\n+"
