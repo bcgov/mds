@@ -29,6 +29,7 @@ const initialState = {
   noticeOfWorkApplicationStatusOptions: [],
   noticeOfWorkApplicationDocumentTypeOptions: [],
   noticeOfWorkUndergroundExplorationTypeOptions: [],
+  noticeOfWorkApplicationProgressStatusCodeOptions: [],
 };
 
 const staticContentReducer = (state = initialState, action) => {
@@ -148,6 +149,11 @@ const staticContentReducer = (state = initialState, action) => {
         ...state,
         noticeOfWorkUndergroundExplorationTypeOptions: action.payload.records,
       };
+    case actionTypes.STORE_NOW_APPLICATION_PROGRESS_STATUS_CODES:
+      return {
+        ...state,
+        noticeOfWorkApplicationProgressStatusCodeOptions: action.payload.records,
+      };
     default:
       return state;
   }
@@ -189,5 +195,7 @@ export const getNoticeOfWorkApplicationDocumentTypeOptions = (state) =>
   state[STATIC_CONTENT].noticeOfWorkApplicationDocumentTypeOptions;
 export const getNoticeOfWorkUndergroundExplorationTypeOptions = (state) =>
   state[STATIC_CONTENT].noticeOfWorkUndergroundExplorationTypeOptions;
+export const getNoticeOfWorkApplicationProgressStatusCodeOptions = (state) =>
+  state[STATIC_CONTENT].noticeOfWorkApplicationProgressStatusCodeOptions;
 
 export default staticContentReducer;

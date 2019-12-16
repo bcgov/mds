@@ -15,12 +15,14 @@ const propTypes = {
   placeholder: PropTypes.string,
   iconColor: PropTypes.string,
   defaultValue: PropTypes.string,
+  disabled: PropTypes.bool,
 };
 
 const defaultProps = {
   placeholder: "",
   defaultValue: "",
   iconColor: Styles.COLOR.violet,
+  disabled: false,
 };
 
 const RenderAutoComplete = (props) => (
@@ -39,6 +41,7 @@ const RenderAutoComplete = (props) => (
     }
     onSelect={props.handleSelect}
     onChange={props.handleChange}
+    disabled={props.disabled}
   >
     <Input
       autoComplete="off"
