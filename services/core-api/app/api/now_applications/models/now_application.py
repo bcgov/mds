@@ -72,6 +72,7 @@ class NOWApplication(Base, AuditMixin):
     underground_exploration = db.relationship(
         'UndergroundExploration', lazy='selectin', uselist=False)
     water_supply = db.relationship('WaterSupply', lazy='selectin', uselist=False)
+    application_progress = db.relationship('NOWApplicationProgress', lazy='selectin', uselist=True)
 
     # Documents
     submission_documents = db.relationship(
@@ -91,8 +92,8 @@ class NOWApplication(Base, AuditMixin):
     @classmethod
     def find_by_application_guid(cls, guid):
         cls.validate_guid(guid)
-        now_application_id = NOWApplicationIdentity.filter_by(
-            application_guid=guid).first().now_application_id
+        now_application_id = NOWApplicationIdentity.query.filter_by(
+            now_application_guid=guid).first().now_application_id
         if not now_application_id:
             raise NotFound('Could not find an application for this id')
         return cls.query.filter_by(now_application_id=now_application_id).first()

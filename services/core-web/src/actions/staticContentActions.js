@@ -119,3 +119,7 @@ export const storeNoticeOfWorkUndergroundExplorationTypeOptions = (payload) => (
   type: ActionTypes.STORE_NOW_UNDERGROUND_EXPLORATION_TYPE_OPTIONS,
   payload,
 });
+export const storeNoticeOfWorkApplicationProgressStatusCodeOptions = (payload) => ({
+  type: ActionTypes.STORE_NOW_APPLICATION_PROGRESS_STATUS_CODES,
+  payload,
+});

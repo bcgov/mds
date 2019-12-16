@@ -5,7 +5,7 @@ from sqlalchemy import desc, cast, NUMERIC, func, or_
 
 from app.extensions import api
 from app.api.utils.access_decorators import requires_any_of, VIEW_ALL
-from app.api.utils.resources_mixins import UserMixin 
+from app.api.utils.resources_mixins import UserMixin
 
 from app.api.compliance.models.compliance_article import ComplianceArticle
 from app.api.mines.mine.models.mine import Mine
@@ -18,7 +18,7 @@ PAGE_DEFAULT = 1
 PER_PAGE_DEFAULT = 25
 
 
-class VarianceResource(Resource, UserMixin ):
+class VarianceResource(Resource, UserMixin):
     @api.doc(
         description='Get a list of variances. Order: received_date DESC',
         params={
@@ -139,16 +139,18 @@ class VarianceResource(Resource, UserMixin ):
             if args['sort_field'] == "compliance_article_id":
                 if args['sort_dir'] == 'desc':
                     filtered_query = apply_filters(
-                        query.order_by(desc(cast(ComplianceArticle.section, NUMERIC)),
-                                       desc(cast(ComplianceArticle.sub_section, NUMERIC)),
-                                       desc(cast(ComplianceArticle.paragraph, NUMERIC)),
-                                       desc(ComplianceArticle.sub_paragraph)), conditions)
+                        query.order_by(
+                            desc(cast(ComplianceArticle.section, NUMERIC)),
+                            desc(cast(ComplianceArticle.sub_section, NUMERIC)),
+                            desc(cast(ComplianceArticle.paragraph, NUMERIC)),
+                            desc(ComplianceArticle.sub_paragraph)), conditions)
                 elif args['sort_dir'] == 'asc':
                     filtered_query = apply_filters(
-                        query.order_by(cast(ComplianceArticle.section, NUMERIC),
-                                       cast(ComplianceArticle.sub_section, NUMERIC),
-                                       cast(ComplianceArticle.paragraph, NUMERIC),
-                                       ComplianceArticle.sub_paragraph), conditions)
+                        query.order_by(
+                            cast(ComplianceArticle.section, NUMERIC),
+                            cast(ComplianceArticle.sub_section, NUMERIC),
+                            cast(ComplianceArticle.paragraph, NUMERIC),
+                            ComplianceArticle.sub_paragraph), conditions)
             elif args['sort_field'] == "lead_inspector":
                 query = query.outerjoin(Party, Variance.inspector_party_guid == Party.party_guid)
                 filtered_query = apply_filters(query, conditions)
