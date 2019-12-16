@@ -20,7 +20,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
         <p
           className="p-light"
         >
-          ** Not available from MMS, NROS, and vFCBC
+          ** Field is unavailable from MMS, NROS, and vFCBC
         </p>
       </div>
       <Divider
