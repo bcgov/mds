@@ -180,12 +180,14 @@ export class NoticeOfWorkApplication extends Component {
   };
 
   handleNOWFormSubmit = () => {
+    const { id } = this.props.match.params;
     this.props
       .updateNoticeOfWorkApplication(
         this.props.formValues,
         this.props.noticeOfWork.now_application_guid
       )
       .then(() => {
+        this.props.fetchImportedNoticeOfWorkApplication(id);
         this.setState((prevState) => ({
           isViewMode: !prevState.isViewMode,
           isEditing: !prevState.isEditing,
