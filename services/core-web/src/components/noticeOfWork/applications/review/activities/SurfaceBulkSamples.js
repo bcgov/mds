@@ -172,7 +172,7 @@ export const SurfaceBulkSamples = (props) => {
         </Col>
         <Col md={12} sm={24}>
           <div className="field-title">Bed rock expansion**</div>
-          <Field id="" name="" component={RenderRadioButtons} disabled={props.isViewMode} />
+          <Field id="" name="" component={RenderRadioButtons} disabled />
         </Col>
       </Row>
       <Equipment
@@ -212,11 +212,11 @@ export const SurfaceBulkSamples = (props) => {
       <Row gutter={16}>
         <Col md={12} sm={24}>
           <div className="field-title">Surface water damage**</div>
-          <Field id="" name="" component={RenderAutoSizeField} disabled={props.isViewMode} />
+          <Field id="" name="" component={RenderAutoSizeField} disabled />
         </Col>
         <Col md={12} sm={24}>
           <div className="field-title">Spontaneous Combustion**</div>
-          <Field id="" name="" component={RenderField} disabled={props.isViewMode} />
+          <Field id="" name="" component={RenderField} disabled />
         </Col>
       </Row>
     </div>
