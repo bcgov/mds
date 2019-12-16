@@ -8,6 +8,8 @@ from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.ext.declarative import declarative_base
 
 from app.extensions import db
+from app.api.constants import STATE_MODIFIED_DELETE_ON_PUT
+
 from .include.user_info import User
 
 from sqlalchemy.inspection import inspect
@@ -143,6 +145,11 @@ class Base(db.Model):
                             depth * ' ' +
                             f'found existing{existing_obj} with pks {[(pk_name,getattr(existing_obj, pk_name)) for pk_name in pk_names]}'
                         )
+                        #if DELETE_ITEM_FROM_LIST_JSON_KEY:True in json, delete object
+                        if i.get('state_modified', False) == STATE_MODIFIED_DELETE_ON_PUT:
+                            current_app.logger.debug(depth * ' ' + f'deleting {existing_obj}')
+                            #FIXME Caller is responsible for marking all child records.
+                            db.session.delete(existing_obj)
                         existing_obj.deep_update_from_dict(
                             i, depth=(depth + 1), _edit_key=_edit_key)
                     elif False:
@@ -150,7 +157,10 @@ class Base(db.Model):
                         #unsure if we want this behaviour, could be done in second pass as well
                         pass
                     else:
-                        raise Exception("Marshmallow schemas don't exist yet, it will soon ")
+                        if not hasattr(obj_list_class, '_schema'):
+                            raise Exception(
+                                "Marshmallow schema model._schema doesn't exist on this model ")
+
                         #THIS BLOCK MAKES PUT NON-IDEMPOTENT... may need to be reconsidered
                         #no existing obj with PK match, so create  item in related list
                         current_app.logger.debug(depth * ' ' + f'add new item to {self}.{k}')
@@ -186,7 +196,11 @@ class Base(db.Model):
                         setattr(self, k, v)
         if depth == 0:
             current_app.logger.debug('DONE UPDATING AND SAVING')
-            self.save()
+            try:
+                db.session.commit()
+                self.save()
+            except:
+                db.session.rollback()
         return
 
 
