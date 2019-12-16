@@ -205,7 +205,7 @@ NOW_APPLICATION_WATER_SUPPLY = api.inherit(
         'details': fields.List(fields.Nested(NOW_APPLICATION_WATER_SUPPLY_DETAIL,skip_none=True))
     })
 
-NOW_APPLCATION_STATE_OF_LAND = api.model(
+NOW_APPLICATION_STATE_OF_LAND = api.model(
     'NOWStateOfLand',
     {
         'has_community_water_shed': fields.Boolean,
@@ -213,6 +213,14 @@ NOW_APPLCATION_STATE_OF_LAND = api.model(
     }
 )
 
+NOW_APPLICATION_PROGRESS = api.model(
+    'NOWApplicationProgress',
+    {
+        'start_date': fields.Date,
+        'created_by': fields.String,
+        'application_progress_status_code': fields.String
+    })
+    
 NOW_SUBMISSION_DOCUMENT = api.model(
     'DOCUMENT', {
         'id': fields.Integer,
@@ -257,9 +265,10 @@ NOW_APPLICATION_MODEL = api.model(
         'proposed_start_date': Date,
         'proposed_end_date': Date,
         'directions_to_site':fields.String,
+        'application_progress': fields.Nested(NOW_APPLICATION_PROGRESS,skip_none=True),
+        'state_of_land': fields.Nested(NOW_APPLICATION_STATE_OF_LAND,skip_none=True),
         'first_aid_equipment_on_site': fields.String,
         'first_aid_cert_level': fields.String, 
-        'state_of_land': fields.Nested(NOW_APPLCATION_STATE_OF_LAND,skip_none=True),
         'blasting_operation': fields.Nested(NOW_APPLICATION_BLASTING_OPERATION, skip_none=True),
         'camps': fields.Nested(NOW_APPLICATION_CAMP, skip_none=True),
         'cut_lines_polarization_survey': fields.Nested(NOW_APPLICATION_CUT_LINES, skip_none=True),
@@ -348,6 +357,14 @@ UNDERGROUND_EXPLORATION_TYPES = api.model(
     'UndergroundExplorationTypes', 
     {
         'underground_exploration_type_code': fields.String,
+        'description': fields.String
+    }
+)
+
+APPLICATION_PROGRESS_STATUS_CODES = api.model(
+    'ApplicationProgressStatusCodes',
+    {
+        'application_progress_status_code': fields.String,
         'description': fields.String
     }
 )

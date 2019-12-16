@@ -624,3 +624,24 @@ export const UNIT_TYPES_HASH = {
 export const APPLICATION_DOCUMENT_TYPES = {
   records: [],
 };
+
+export const APPLICATION_PROGRESS_STATUS_CODES = {
+  records: [
+    {
+      application_progress_status_code: "VER",
+      description: "Verification",
+    },
+    {
+      application_progress_status_code: "REV",
+      description: "Technical Review",
+    },
+    {
+      application_progress_status_code: "REF",
+      description: "Referral / Consultation",
+    },
+    {
+      application_progress_status_code: "DEC",
+      description: "Decision",
+    },
+  ],
+};

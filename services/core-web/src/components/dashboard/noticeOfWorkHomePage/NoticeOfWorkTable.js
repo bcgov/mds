@@ -11,7 +11,6 @@ import TableLoadingWrapper from "@/components/common/wrappers/TableLoadingWrappe
 import { formatDate, optionsFilterAdapter, getTableHeaders } from "@/utils/helpers";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import { EDIT_OUTLINE_VIOLET } from "@/constants/assets";
-import * as Permission from "@/constants/permissions";
 
 /**
  * @class NoticeOfWorkTable - paginated list of notice of work applications
@@ -185,11 +184,9 @@ export class NoticeOfWorkTable extends Component {
         record.key && (
           <div title="" className="btn--middle flex">
             <AuthorizationWrapper inTesting>
-              <AuthorizationWrapper permission={Permission.ADMIN}>
-                <Link to={router.NOTICE_OF_WORK_APPLICATION.dynamicRoute(record.key)}>
-                  <img src={EDIT_OUTLINE_VIOLET} alt="Edit NoW" className="padding-md--right" />
-                </Link>
-              </AuthorizationWrapper>
+              <Link to={router.NOTICE_OF_WORK_APPLICATION.dynamicRoute(record.key)}>
+                <img src={EDIT_OUTLINE_VIOLET} alt="Edit NoW" className="padding-md--right" />
+              </Link>
             </AuthorizationWrapper>
             <Link to={router.VIEW_NOTICE_OF_WORK_APPLICATION.dynamicRoute(record.key)}>
               <Icon type="eye" className="icon-lg icon-svg-filter padding-large--left" />

@@ -102,6 +102,8 @@ class Base(db.Model):
         for k, v in data_dict.items():
             current_app.logger.debug(depth * '>' + f'{type(v)}-{k}')
             if isinstance(v, dict):
+                if len(v.keys()) < 1:
+                    continue
                 rel = getattr(self.__class__, k)
                 rel_class = rel.property.entity.class_
                 if _edit_key not in rel_class._edit_groups:
@@ -110,6 +112,9 @@ class Base(db.Model):
                     )
                     continue
                 current_app.logger.debug(depth * ' ' + f'recursivly updating {k}')
+                existing_obj = getattr(self, k)
+                if existing_obj is None:
+                    setattr(self, k, rel_class())
                 getattr(self, k).deep_update_from_dict(v, depth=(depth + 1), _edit_key=_edit_key)
 
             if isinstance(v, list):

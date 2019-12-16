@@ -27,6 +27,7 @@ export const {
   getNoticeOfWorkApplicationStatusOptions,
   getNoticeOfWorkApplicationDocumentTypeOptions,
   getNoticeOfWorkUndergroundExplorationTypeOptions,
+  getNoticeOfWorkApplicationProgressStatusCodeOptions,
 } = staticContentReducer;
 
 // removes all expired compliance codes from the array
@@ -395,5 +396,15 @@ export const getDropdownNoticeOfWorkUndergroundExplorationTypeOptions = createSe
 
 export const getNoticeOfWorkUndergroundExplorationTypeOptionsHash = createSelector(
   [getDropdownNoticeOfWorkUndergroundExplorationTypeOptions],
+  createLabelHash
+);
+
+export const getDropdownNticeOfWorkApplicationStatusCodeOptions = createSelector(
+  [getNoticeOfWorkApplicationProgressStatusCodeOptions],
+  (options) => createDropDownList(options, "description", "application_progress_status_code")
+);
+
+export const getNoticeOfWorkApplicationProgressStatusCodeOptionsHash = createSelector(
+  [getDropdownNticeOfWorkApplicationStatusCodeOptions],
   createLabelHash
 );

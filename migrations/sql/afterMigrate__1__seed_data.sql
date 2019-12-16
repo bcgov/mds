@@ -559,6 +559,18 @@ VALUES
     ('SUR', 'Surface', 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
 
+INSERT INTO now_application_progress_status (
+    application_progress_status_code,
+    description,
+    create_user,
+    update_user
+    )
+VALUES 
+    ('VER', 'Verification', 'system-mds', 'system-mds'),
+    ('REV', 'Technical Review', 'system-mds', 'system-mds'),
+    ('REF', 'Referral / Consultation', 'system-mds', 'system-mds'),
+    ('DEC', 'Decision', 'system-mds', 'system-mds')
+ON CONFLICT DO NOTHING;
 
 INSERT INTO now_application_permit_type(
     now_application_permit_type_code,
