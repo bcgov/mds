@@ -233,7 +233,7 @@ const childColumns = [
     key: "amendmentEdit",
     align: "right",
     render: (text, record) => (
-      <AuthorizationWrapper permission={Permission.EDIT_PERMITS} isMajorMine={text.major_mine_ind}>
+      <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
         <Button
           className="permit-table-button"
           type="ghost"
