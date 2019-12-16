@@ -107,7 +107,7 @@ export class NavBar extends Component {
       </Dropdown>
       <Tooltip title="Feedback" placement="LB">
         <a href="https://mdsfider.pathfinder.gov.bc.ca/" target="_blank">
-          <Icon type="message" theme="outlined" className="icon-sm" />
+          <Icon type="message" theme="outlined" className="menu__btn padding-small--right icon-sm" />
         </a>
       </Tooltip>
       <AuthorizationWrapper permission={Permission.ADMIN}>
