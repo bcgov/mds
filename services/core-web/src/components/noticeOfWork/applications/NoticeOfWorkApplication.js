@@ -79,7 +79,6 @@ export class NoticeOfWorkApplication extends Component {
     isNoWLoaded: false,
     associatedMineGuid: "",
     isViewMode: true,
-    isEditing: false,
     showOriginalValues: false,
     fixedTop: false,
     menuVisible: false,
@@ -160,7 +159,6 @@ export class NoticeOfWorkApplication extends Component {
   toggleEditMode = () => {
     this.setState((prevState) => ({
       isViewMode: !prevState.isViewMode,
-      isEditing: !prevState.isEditing,
       menuVisible: false,
     }));
   };
@@ -190,7 +188,6 @@ export class NoticeOfWorkApplication extends Component {
         this.props.fetchImportedNoticeOfWorkApplication(id);
         this.setState((prevState) => ({
           isViewMode: !prevState.isViewMode,
-          isEditing: !prevState.isEditing,
         }));
       });
   };
@@ -199,7 +196,6 @@ export class NoticeOfWorkApplication extends Component {
     this.props.reset(FORM.EDIT_NOTICE_OF_WORK);
     this.setState((prevState) => ({
       isViewMode: !prevState.isViewMode,
-      isEditing: !prevState.isEditing,
     }));
   };
 
@@ -353,7 +349,7 @@ export class NoticeOfWorkApplication extends Component {
             <div>
               <h1>NoW Number: {this.props.noticeOfWork.now_number || Strings.EMPTY_FIELD}</h1>
             </div>
-            {!this.state.isEditing && (
+            {this.state.isViewMode && (
               <Dropdown
                 overlay={menu}
                 placement="bottomLeft"
@@ -368,7 +364,7 @@ export class NoticeOfWorkApplication extends Component {
             )}
           </div>
           <br />
-          {!this.state.isEditing ? (
+          {this.state.isViewMode ? (
             <Steps current={this.state.currentStep} onChange={this.onChange} type="navigation">
               <Step status={this.renderProgressStatus(0)} title="Verification" />
               <Step
