@@ -118,7 +118,7 @@ export class NoticeOfWorkApplication extends Component {
     if (
       this.props.noticeOfWork.application_progress &&
       nextProps.noticeOfWork.application_progress.length !==
-        this.props.noticeOfWork.application_progress.length
+      this.props.noticeOfWork.application_progress.length
     ) {
       this.handleProgressButtonLabels(nextProps.noticeOfWork.application_progress);
     }
@@ -313,10 +313,10 @@ export class NoticeOfWorkApplication extends Component {
                   Edit
                 </button>
               ) : (
-                <button type="button" className="full" onClick={this.handleNOWFormSubmit}>
-                  Save
+                  <button type="button" className="full" onClick={this.handleNOWFormSubmit}>
+                    Save
                 </button>
-              )}
+                )}
             </span>
           </div>
         )}
@@ -337,6 +337,10 @@ export class NoticeOfWorkApplication extends Component {
           <div className="inline-flex between">
             <div>
               <h1>NoW Number: {this.props.noticeOfWork.now_number || Strings.EMPTY_FIELD}</h1>
+              <LinkButton onClick={this.resetAddPartyForm}>
+                <Icon type="arrow-left" style={{ paddingRight: "5px" }} />
+                Back to: {this.props.childProps.title}
+              </LinkButton>
             </div>
 
             <Dropdown
