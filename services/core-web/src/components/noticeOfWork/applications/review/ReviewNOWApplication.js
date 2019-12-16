@@ -390,7 +390,7 @@ export const ReviewNOWApplication = (props) => {
         <div className="side-menu--content">
           <h2>General Information</h2>
           <div className="right">
-            <p className="p-light">** Field is unavailable from MMS, NROS, and vFCBC</p>
+            <p className="p-light">** Not available from MMS, NROS, and vFCBC</p>
           </div>
           <Divider style={{ marginTop: "0" }} />
           <ScrollContentWrapper id="application-info" title="Application Info">
