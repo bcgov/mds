@@ -157,7 +157,10 @@ class Base(db.Model):
                         #unsure if we want this behaviour, could be done in second pass as well
                         pass
                     else:
-                        raise Exception("Marshmallow schemas don't exist yet, it will soon ")
+                        if not hasattr(obj_list_class, '_schema'):
+                            raise Exception(
+                                "Marshmallow schema model._schema doesn't exist on this model ")
+
                         #THIS BLOCK MAKES PUT NON-IDEMPOTENT... may need to be reconsidered
                         #no existing obj with PK match, so create  item in related list
                         current_app.logger.debug(depth * ' ' + f'add new item to {self}.{k}')
