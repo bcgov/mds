@@ -11,7 +11,7 @@ import CustomAxios from "@/customAxios";
 
 export const createMinespaceUser = (payload) => (dispatch) => {
   dispatch(request(reducerTypes.CREATE_MINESPACE_USER));
-  dispatch(showLoading("modal"));
+  dispatch(showLoading());
   return CustomAxios()
     .post(ENVIRONMENT.apiUrl + API.MINESPACE_USER, payload, createRequestHeader())
     .then((response) => {
@@ -23,7 +23,7 @@ export const createMinespaceUser = (payload) => (dispatch) => {
       return response;
     })
     .catch(() => dispatch(error(reducerTypes.CREATE_MINESPACE_USER)))
-    .finally(() => dispatch(hideLoading("modal")));
+    .finally(() => dispatch(hideLoading()));
 };
 
 export const fetchMinespaceUsers = () => (dispatch) => {
