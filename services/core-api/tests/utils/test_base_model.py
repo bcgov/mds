@@ -2,13 +2,18 @@ import uuid, pytest, decimal
 
 from app.extensions import jwt, api
 from app.api.utils.models_mixins import DictLoadingError
+from app.api.now_applications.models.activity_detail.camp_detail import CampDetail
 from tests.constants import VIEW_ONLY_AUTH_CLAIMS, TOKEN_HEADER
 from tests.factories import MineFactory, PermitFactory
+from tests.now_application_factories import NOWApplicationIdentityFactory
 
 from flask_restplus import marshal, fields
 
+import app.api.now_applications.models
+from app.api.now_applications.models.now_application import NOWApplication
 from app.api.mines.mine.models.mine import Mine
 from app.api.mines.response_models import PERMIT_MODEL
+from app.api.now_applications.response_models import NOW_APPLICATION_MODEL, NOW_APPLICATION_ACTIVITY_DETAIL_BASE
 from app.api.constants import *
 
 
@@ -72,6 +77,25 @@ def test_update_field_in_nested_item(db_session):
 
     mine = Mine.query.filter_by(mine_guid=mine.mine_guid).first()
     assert mine.mine_permit[1].permit_no == new_permit_no
+
+
+#schema implemented for now_application_activity_details only
+def test_update_new_now_application_activity_detail(db_session):
+    now_app = NOWApplicationIdentityFactory()
+    assert len(now_app.now_application.camps.details) == 0
+
+    now_app_dict = marshal(now_app.now_application, NOW_APPLICATION_MODEL)
+    new_camp_detail = CampDetail(length=10)
+    new_camp_detail_dict = marshal(new_camp_detail, NOW_APPLICATION_ACTIVITY_DETAIL_BASE)
+
+    del new_camp_detail_dict['activity_detail_id']
+
+    now_app_dict['camps']['details'].append(new_camp_detail_dict)
+
+    now_app.now_application.deep_update_from_dict(now_app_dict)
+
+    na = NOWApplication.query.filter_by(now_application_id=now_app.now_application_id).first()
+    assert len(na.camps.details) == 1
 
 
 @pytest.mark.xfail(
