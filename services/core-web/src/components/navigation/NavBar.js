@@ -105,6 +105,11 @@ export class NavBar extends Component {
           <Icon type="down" />
         </button>
       </Dropdown>
+      <Tooltip title="Feedback" placement="LB">
+        <a href="https://mdsfider.pathfinder.gov.bc.ca/" target="_blank">
+          <Icon type="message" theme="outlined" className="icon-sm" />
+        </a>
+      </Tooltip>
       <AuthorizationWrapper permission={Permission.ADMIN}>
         <Dropdown
           overlay={this.unverifiedMinesMenu()}
