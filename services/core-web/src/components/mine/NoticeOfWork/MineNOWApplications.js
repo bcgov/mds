@@ -42,7 +42,6 @@ export class MineNOWApplications extends Component {
   componentDidMount() {
     this.props.fetchRegionOptions();
     const params = this.props.location.search;
-    console.log(params);
     const parsedParams = queryString.parse(params);
     const {
       page = this.state.params.page,
