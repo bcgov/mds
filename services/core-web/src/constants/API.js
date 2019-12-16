@@ -156,6 +156,8 @@ export const NOTICE_OF_WORK_APPLICATION_IMPORT = (applicationGuid) =>
   `/now-applications/${applicationGuid}/import`;
 export const NOTICE_OF_WORK_IMPORTED_APPLICATION = (applicationGuid) =>
   `/now-applications/${applicationGuid}`;
+export const NOTICE_OF_WORK_APPLICATION_UPDATE = (applicationGuid) =>
+  `/now-applications/${applicationGuid}`;
 export const NOTICE_OF_WORK_ACTIVITY_TYPE_OPTIONS = "/now-applications/activity-types";
 export const NOTICE_OF_WORK_UNIT_TYPE_OPTIONS = "/now-applications/unit-types";
 export const NOTICE_OF_WORK_APPLICATION_TYPE_OPTIONS = "/now-applications/application-types";
@@ -164,6 +166,10 @@ export const NOTICE_OF_WORK_APPLICATION_STATUS_OPTIONS =
 export const NOW_APPLICATION_DOCUMENT_TYPE_OPTIONS = "/now-applications/application-document-types";
 export const NOW_UNDERGROUND_EXPLORATION_TYPE_OPTIONS =
   "/now-applications/underground-exploration-types";
+export const NOTICE_OF_WORK_APPLICATION_PROGRESS = (applicationGuid) =>
+  `/now-applications/${applicationGuid}/progress`;
+export const NOW_APPLICATION_PROGRESS_STATUS_CODES =
+  "/now-applications/application-progress-status-codes";
 
 // Mine Party Appointments
 export const MINE_PARTY_APPOINTMENT_DOCUMENTS = (mineGuid, minePartyAppointmentGuid) =>

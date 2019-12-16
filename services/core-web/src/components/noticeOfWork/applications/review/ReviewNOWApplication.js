@@ -386,8 +386,7 @@ export const ReviewNOWApplication = (props) => {
 
   return (
     <div>
-      {/* eslint-disable-next-line */}
-      <Form layout="vertical" onSubmit={() => console.log("submitting form")}>
+      <Form layout="vertical">
         <div className="side-menu--content">
           <h2>General Information</h2>
           <div className="right">
