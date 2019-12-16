@@ -2,14 +2,19 @@ import uuid, pytest, decimal
 
 from app.extensions import jwt, api
 from app.api.utils.models_mixins import DictLoadingError
+from app.api.now_applications.models.activity_detail.camp_detail import CampDetail
 from tests.constants import VIEW_ONLY_AUTH_CLAIMS, TOKEN_HEADER
 from tests.factories import MineFactory, PermitFactory
+from tests.now_application_factories import NOWApplicationIdentityFactory
 
 from flask_restplus import marshal, fields
 
+import app.api.now_applications.models
+from app.api.now_applications.models.now_application import NOWApplication
 from app.api.mines.mine.models.mine import Mine
 from app.api.mines.response_models import PERMIT_MODEL
-from app.api.constants import *
+from app.api.constants import STATE_MODIFIED_DELETE_ON_PUT, PERMIT_EDIT_GROUP
+from app.api.now_applications.response_models import NOW_APPLICATION_MODEL, NOW_APPLICATION_ACTIVITY_DETAIL_BASE
 
 
 def test_update_first_level_info(db_session):
@@ -72,6 +77,70 @@ def test_update_field_in_nested_item(db_session):
 
     mine = Mine.query.filter_by(mine_guid=mine.mine_guid).first()
     assert mine.mine_permit[1].permit_no == new_permit_no
+
+
+#schema implemented for now_application_activity_details only
+def test_update_new_now_application_activity_detail(db_session):
+    now_app = NOWApplicationIdentityFactory()
+    assert len(now_app.now_application.camps.details) == 0
+
+    now_app_dict = marshal(now_app.now_application, NOW_APPLICATION_MODEL)
+    new_camp_detail = CampDetail(length=10)
+    new_camp_detail_dict = marshal(new_camp_detail, NOW_APPLICATION_ACTIVITY_DETAIL_BASE)
+
+    del new_camp_detail_dict['activity_detail_id']
+
+    now_app_dict['camps']['details'].append(new_camp_detail_dict)
+
+    now_app.now_application.deep_update_from_dict(now_app_dict)
+
+    na = NOWApplication.query.filter_by(now_application_id=now_app.now_application_id).first()
+    assert len(na.camps.details) == 1
+
+
+@pytest.mark.xfail(
+    reason='didn\'t mark child records, will violate not null constraint (orphan permit amendment)')
+def test_delete_flag_in_nested_item_fail_orphan(db_session):
+    init_length = 5
+    mine = MineFactory(mine_permit=init_length)
+    partial_mine_permit_dict = marshal(
+        {'mine_permit': mine.mine_permit},
+        api.model('test_list', {'mine_permit': fields.List(fields.Nested(PERMIT_MODEL))}))
+    partial_mine_permit_dict['mine_permit'][1]['state_modified'] = STATE_MODIFIED_DELETE_ON_PUT
+    print(partial_mine_permit_dict)
+    mine.deep_update_from_dict(partial_mine_permit_dict, _edit_key=PERMIT_EDIT_GROUP)
+
+    mine = Mine.query.filter_by(mine_guid=mine.mine_guid).first()
+    assert len(mine.mine_permit) == init_length - 1
+
+
+def test_delete_flag_in_nested_item_success_nested(db_session):
+    init_length = 5
+    mine = MineFactory(mine_permit=init_length)
+    partial_mine_permit_dict = marshal(
+        {'mine_permit': mine.mine_permit},
+        api.model('test_list', {'mine_permit': fields.List(fields.Nested(PERMIT_MODEL))}))
+    partial_mine_permit_dict['mine_permit'][1]['state_modified'] = STATE_MODIFIED_DELETE_ON_PUT
+    partial_mine_permit_dict['mine_permit'][1]['permit_amendments'][0][
+        'state_modified'] = STATE_MODIFIED_DELETE_ON_PUT
+    mine.deep_update_from_dict(partial_mine_permit_dict, _edit_key=PERMIT_EDIT_GROUP)
+    mine = Mine.query.filter_by(mine_guid=mine.mine_guid).first()
+    assert len(mine.mine_permit) == init_length - 1
+
+
+def test_missing_nested_item_not_deleted(db_session):
+    init_length = 5
+    mine = MineFactory(mine_permit=init_length)
+
+    partial_mine_permit_dict = marshal(
+        {'mine_permit': mine.mine_permit},
+        api.model('test_list', {'mine_permit': fields.List(fields.Nested(PERMIT_MODEL))}))
+    partial_mine_permit_dict['mine_permit'] = partial_mine_permit_dict['mine_permit'][:2]
+    assert len(partial_mine_permit_dict['mine_permit']) < init_length
+    mine.deep_update_from_dict(partial_mine_permit_dict, _edit_key=PERMIT_EDIT_GROUP)
+
+    mine = Mine.query.filter_by(mine_guid=mine.mine_guid).first()
+    assert len(mine.mine_permit) == init_length
 
 
 @pytest.mark.xfail(
