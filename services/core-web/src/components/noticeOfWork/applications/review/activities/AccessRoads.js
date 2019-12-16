@@ -166,8 +166,8 @@ export const AccessRoads = (props) => {
           <div className="field-title">
             Are you proposing any bridges, culverts, and crossings?**
           </div>
-          <Field id="" name="" component={RenderRadioButtons} disabled={props.isViewMode} />
-          <Field id="" name="" component={RenderField} disabled={props.isViewMode} />
+          <Field id="" name="" component={RenderRadioButtons} disabled />
+          <Field id="" name="" component={RenderField} disabled />
         </Col>
       </Row>
       <br />
