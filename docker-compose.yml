@@ -12,15 +12,15 @@ services:
       - KEYCLOAK_IMPORT=/tmp/keycloak-local-realm.json
       - DB_VENDOR=h2
     volumes:
-      - ./openshift/scripts/keycloak-local-realm.json:/tmp/keycloak-local-realm.json
-      - ./openshift/scripts/keycloak-local-user.sh:/tmp/keycloak-local-user.sh
+      - ./settings/keycloak/keycloak-local-realm.json:/tmp/keycloak-local-realm.json
+      - ./settings/keycloak/keycloak-local-user.sh:/tmp/keycloak-local-user.sh
     ports:
       - "8080:8080"
       - "8443:8443"
     networks:
       - mds
-    logging:
-        driver: none
+    # logging:
+    #     driver: none
 
   ####################### Postgres Definition #######################
   postgres:
