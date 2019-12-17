@@ -34,6 +34,7 @@ exports[`RenderAutoComplete renders properly 1`] = `
   }
   defaultActiveFirstOption={false}
   defaultValue=""
+  disabled={false}
   dropdownMatchSelectWidth={true}
   filterOption={[Function]}
   notFoundContent="Not Found"

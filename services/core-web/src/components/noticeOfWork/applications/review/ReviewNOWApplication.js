@@ -47,7 +47,7 @@ export const ReviewNOWApplication = (props) => {
           />
         </Col>
         <Col md={12} sm={24}>
-          <div className="field-title">Permit Status**</div>
+          <div className="field-title">Permit Status</div>
           <Field
             id="permit_status_code"
             name="permit_status_code"
@@ -63,7 +63,7 @@ export const ReviewNOWApplication = (props) => {
         </Col>
         <Col md={12} sm={24}>
           <div className="field-title">Individual or Company/Organization?**</div>
-          <Field id="" name="" component={RenderField} disabled={props.isViewMode} />
+          <Field id="" name="" component={RenderField} disabled />
         </Col>
       </Row>
       <Row gutter={16}>
@@ -73,7 +73,7 @@ export const ReviewNOWApplication = (props) => {
         </Col>
         <Col md={12} sm={24}>
           <div className="field-title">Relationship to Individual or Company/Organization?**</div>
-          <Field id="" name="" component={RenderField} disabled={props.isViewMode} />
+          <Field id="" name="" component={RenderField} disabled />
         </Col>
       </Row>
       <Row gutter={16}>
@@ -108,7 +108,7 @@ export const ReviewNOWApplication = (props) => {
         </Col>
         <Col md={12} sm={24}>
           <div className="field-title">Type of Application**</div>
-          <Field id="" name="" component={RenderField} disabled={props.isViewMode} />
+          <Field id="" name="" component={RenderField} disabled />
         </Col>
       </Row>
       <Row gutter={16}>
@@ -123,7 +123,7 @@ export const ReviewNOWApplication = (props) => {
         </Col>
         <Col md={12} sm={24}>
           <div className="field-title">Term of Application**</div>
-          <Field id="" name="" component={RenderField} disabled={props.isViewMode} />
+          <Field id="" name="" component={RenderField} disabled />
         </Col>
       </Row>
       <Row gutter={16}>
@@ -149,7 +149,7 @@ export const ReviewNOWApplication = (props) => {
       <Row gutter={16}>
         <Col md={12} sm={24}>
           <div className="field-title">Crown Grant / District Lot Numbers**</div>
-          <Field id="" name="" component={RenderField} disabled={props.isViewMode} />
+          <Field id="" name="" component={RenderField} disabled />
         </Col>
         <Col md={12} sm={24}>
           <div className="field-title">Proposed End Date</div>
@@ -191,7 +191,7 @@ export const ReviewNOWApplication = (props) => {
           <div className="field-title">
             Do you have the required access authorizations in place?**
           </div>
-          <Field id="" name="" component={RenderRadioButtons} disabled={props.isViewMode} />
+          <Field id="" name="" component={RenderRadioButtons} disabled />
         </Col>
       </Row>
       <Row gutter={16}>
@@ -200,20 +200,20 @@ export const ReviewNOWApplication = (props) => {
             Do you need to build a road, create stream crossings or other surface disturbance that
             will not be on your tenure?**
           </div>
-          <Field id="" name="" component={RenderRadioButtons} disabled={props.isViewMode} />
+          <Field id="" name="" component={RenderRadioButtons} disabled />
         </Col>
         <Col md={12} sm={24}>
           <div className="field-title">Access presently gated**</div>
-          <Field id="" name="" component={RenderRadioButtons} disabled={props.isViewMode} />
+          <Field id="" name="" component={RenderRadioButtons} disabled />
         </Col>
       </Row>
       <Row gutter={16}>
         <Col md={12} sm={24}>
-          <Field id="" name="" component={RenderField} disabled={props.isViewMode} />
+          <Field id="" name="" component={RenderField} disabled />
         </Col>
         <Col md={12} sm={24}>
           <div className="field-title">Key provided to the inspector**</div>
-          <Field id="" name="" component={RenderRadioButtons} disabled={props.isViewMode} />
+          <Field id="" name="" component={RenderRadioButtons} disabled />
         </Col>
       </Row>
     </div>
@@ -226,31 +226,31 @@ export const ReviewNOWApplication = (props) => {
         <Row gutter={16}>
           <Col md={12} sm={24}>
             <div className="field-title">Present condition of the land**</div>
-            <Field id="" name="" component={RenderField} disabled={props.isViewMode} />
+            <Field id="" name="" component={RenderField} disabled />
           </Col>
           <Col md={12} sm={24}>
             <div className="field-title">Current means of access**</div>
-            <Field id="" name="" component={RenderField} disabled={props.isViewMode} />
+            <Field id="" name="" component={RenderField} disabled />
           </Col>
         </Row>
         <Row gutter={16}>
           <Col md={12} sm={24}>
             <div className="field-title">Physiography**</div>
-            <Field id="" name="" component={RenderField} disabled={props.isViewMode} />
+            <Field id="" name="" component={RenderField} disabled />
           </Col>
           <Col md={12} sm={24}>
             <div className="field-title">Old Equipment**</div>
-            <Field id="" name="" component={RenderField} disabled={props.isViewMode} />
+            <Field id="" name="" component={RenderField} disabled />
           </Col>
         </Row>
         <Row gutter={16}>
           <Col md={12} sm={24}>
             <div className="field-title">Type of vegetation**</div>
-            <Field id="" name="" component={RenderField} disabled={props.isViewMode} />
+            <Field id="" name="" component={RenderField} disabled />
           </Col>
           <Col md={12} sm={24}>
             <div className="field-title">Recreational trail/use**</div>
-            <Field id="" name="" component={RenderField} disabled={props.isViewMode} />
+            <Field id="" name="" component={RenderField} disabled />
           </Col>
         </Row>
 
@@ -268,19 +268,19 @@ export const ReviewNOWApplication = (props) => {
           </Col>
           <Col md={12} sm={24}>
             <div className="field-title">Activities in park**</div>
-            <Field id="" name="" component={RenderRadioButtons} disabled={props.isViewMode} />
+            <Field id="" name="" component={RenderRadioButtons} disabled />
           </Col>
         </Row>
         <Row gutter={16}>
           <Col md={12} sm={24}>
             <div className="field-title">Proposed activities on private land**</div>
-            <Field id="" name="" component={RenderRadioButtons} disabled={props.isViewMode} />
+            <Field id="" name="" component={RenderRadioButtons} disabled />
           </Col>
           <Col md={12} sm={24}>
             <div className="field-title--light">
               Do you have authorization by the Lieutenant Governor in Council?**
             </div>
-            <Field id="" name="" component={RenderRadioButtons} disabled={props.isViewMode} />
+            <Field id="" name="" component={RenderRadioButtons} disabled />
           </Col>
         </Row>
 
@@ -299,7 +299,7 @@ export const ReviewNOWApplication = (props) => {
               disabled={props.isViewMode}
             />
             <div className="field-title--light">Plan to protect the archaeological site**</div>
-            <Field id="" name="" component={RenderField} disabled={props.isViewMode} />
+            <Field id="" name="" component={RenderField} disabled />
           </Col>
         </Row>
 
@@ -311,26 +311,26 @@ export const ReviewNOWApplication = (props) => {
               Have you shared information and engaged with First Nations in the area of the proposed
               activity?**
             </div>
-            <Field id="" name="" component={RenderRadioButtons} disabled={props.isViewMode} />
+            <Field id="" name="" component={RenderRadioButtons} disabled />
           </Col>
           <Col md={12} sm={24}>
             <div className="field-title">
               As a result of the engagement, are you aware of any cultural heritage resources in the
               area where the work is proposed?**
             </div>
-            <Field id="" name="" component={RenderRadioButtons} disabled={props.isViewMode} />
+            <Field id="" name="" component={RenderRadioButtons} disabled />
           </Col>
         </Row>
         <Row gutter={16}>
           <Col md={12} sm={24}>
             <div className="field-title">Describe your First Nations engagement activities**</div>
-            <Field id="" name="" component={RenderField} disabled={props.isViewMode} />
+            <Field id="" name="" component={RenderField} disabled />
           </Col>
           <Col md={12} sm={24}>
             <div className="field-title">
               Describe any cultural heritage resources in the area**
             </div>
-            <Field id="" name="" component={RenderField} disabled={props.isViewMode} />
+            <Field id="" name="" component={RenderField} disabled />
           </Col>
         </Row>
       </FormSection>
@@ -386,11 +386,13 @@ export const ReviewNOWApplication = (props) => {
 
   return (
     <div>
-      {/* eslint-disable-next-line */}
-      <Form layout="vertical" onSubmit={() => console.log("submitting form")}>
+      <Form layout="vertical">
         <div className="side-menu--content">
           <h2>General Information</h2>
-          <Divider />
+          <div className="right">
+            <p className="p-light">** Not available from MMS, NROS, and vFCBC</p>
+          </div>
+          <Divider style={{ marginTop: "0" }} />
           <ScrollContentWrapper id="application-info" title="Application Info">
             {renderApplicationInfo()}
           </ScrollContentWrapper>

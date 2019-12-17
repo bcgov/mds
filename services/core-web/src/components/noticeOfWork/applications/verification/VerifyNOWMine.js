@@ -18,12 +18,14 @@ import * as Strings from "@/constants/strings";
 const propTypes = {
   mineNameList: PropTypes.arrayOf(CustomPropTypes.mineName).isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
+  handleProgressChange: PropTypes.func.isRequired,
   fetchMineNameList: PropTypes.func.isRequired,
   handleSave: PropTypes.func.isRequired,
   setMineGuid: PropTypes.func.isRequired,
   noticeOfWork: CustomPropTypes.nowApplication.isRequired,
   mineRegionHash: PropTypes.objectOf(PropTypes.string).isRequired,
   currentMine: CustomPropTypes.mine.isRequired,
+  isImported: PropTypes.bool.isRequired,
 };
 
 export class VerifyNOWMine extends Component {
@@ -87,6 +89,7 @@ export class VerifyNOWMine extends Component {
                 defaultValue={`${this.props.noticeOfWork.mine_name} - ${this.props.noticeOfWork.mine_no}`}
                 data={this.transformData(this.props.mineNameList)}
                 handleChange={this.handleChange}
+                disabled={this.props.isImported}
               />
             </Col>
           </Row>
@@ -149,9 +152,16 @@ export class VerifyNOWMine extends Component {
               </div>
             </div>
             <div className="right">
-              <Button type="primary" onClick={() => this.props.handleSave(1)}>
-                Save
-              </Button>
+              {!this.props.isImported && (
+                <Button type="primary" onClick={() => this.props.handleSave()}>
+                  Confirm Details
+                </Button>
+              )}
+              {this.props.isImported && this.props.noticeOfWork.application_progress.length === 0 && (
+                <Button type="primary" onClick={() => this.props.handleProgressChange("REV")}>
+                  Ready for Technical Review
+                </Button>
+              )}
             </div>
           </div>
         </LoadingWrapper>
