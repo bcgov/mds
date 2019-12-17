@@ -337,10 +337,10 @@ export class NoticeOfWorkApplication extends Component {
           <div className="inline-flex between">
             <div>
               <h1>NoW Number: {this.props.noticeOfWork.now_number || Strings.EMPTY_FIELD}</h1>
-              <LinkButton onClick={this.resetAddPartyForm}>
+              <a href={this.props.history}>
                 <Icon type="arrow-left" style={{ paddingRight: "5px" }} />
                 Back to: {this.props.childProps.title}
-              </LinkButton>
+              </a>
             </div>
 
             <Dropdown
