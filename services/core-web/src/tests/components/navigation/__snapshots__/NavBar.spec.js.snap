@@ -22,11 +22,7 @@ exports[`NavBar renders properly 1`] = `
       className="inline-flex"
     >
       <div
-        style={
-          Object {
-            "marginTop": "6px",
-          }
-        }
+        className="menu--search"
       >
         <Connect(withRouter(SearchBar))
           containerId="navBar"
