@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
-import { Icon, Dropdown, Menu, Button, Row, Col } from "antd";
+import { Tooltip, Icon, Dropdown, Menu, Button, Row, Col } from "antd";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
@@ -105,6 +105,13 @@ export class NavBar extends Component {
           <Icon type="down" />
         </button>
       </Dropdown>
+      <a href="https://mdsfider.pathfinder.gov.bc.ca/" target="_blank" rel="noopener noreferrer">
+        <Tooltip title="Feedback" placement="bottom">
+          <Button type="link" className="menu__btn--link">
+            <Icon type="message" className="icon-sm" />
+          </Button>
+        </Tooltip>
+      </a>
       <AuthorizationWrapper permission={Permission.ADMIN}>
         <Dropdown
           overlay={this.unverifiedMinesMenu()}
@@ -267,6 +274,19 @@ export class NavBar extends Component {
           </Row>
           <Row>
             <Col span={24}>
+              <a
+                href="https://mdsfider.pathfinder.gov.bc.ca/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Button id="feedback-btn" type="button" className="menu--hamburger__btn--link">
+                  Feedback
+                </Button>
+              </a>
+            </Col>
+          </Row>
+          <Row>
+            <Col span={24}>
               <Link to={router.LOGOUT.route}>
                 <Button id="logout-btn" type="button" className="menu--hamburger__btn--link">
                   Log Out
@@ -339,7 +359,7 @@ export class NavBar extends Component {
             <img alt="Home" className="menu__img" src={LOGO} />
           </Link>
           <div className="inline-flex">
-            <div style={{ marginTop: "6px" }}>
+            <div className="menu--search">
               <SearchBar containerId="navBar" />
             </div>
             <MediaQuery maxWidth={979}>

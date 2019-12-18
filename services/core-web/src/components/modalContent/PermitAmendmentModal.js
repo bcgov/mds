@@ -7,7 +7,6 @@ const propTypes = {
   handleRemovePermitAmendmentDocument: PropTypes.func.isRequired,
   title: PropTypes.string,
   mine_guid: PropTypes.string.isRequired,
-  isMajorMine: PropTypes.bool.isRequired,
 };
 
 const defaultProps = {

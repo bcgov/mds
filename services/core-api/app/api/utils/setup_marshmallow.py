@@ -57,7 +57,7 @@ def setup_schema(Base, session):
     inspired by: https://marshmallow-sqlalchemy.readthedocs.io/en/latest/recipes.html#automatically-generating-schemas-for-sqlalchemy-models
     """
     def setup_schema_fn():
-        for class_ in Base._decl_class_registry.values():
+        for class_ in ActivityDetailBase._decl_class_registry.values():
             if hasattr(class_, "__tablename__"):
                 try:
                     if class_.__name__.endswith("Schema"):
@@ -85,23 +85,23 @@ def setup_schema(Base, session):
                 except Exception as e:
                     raise e
 
-        for class_ in Base._decl_class_registry.values():
-            if hasattr(class_, "_schema"):
-                pprint(class_.__name__)
-                try:
-                    mapper = inspect(class_)
+        # for class_ in Base._decl_class_registry.values():
+        #     if hasattr(class_, "_schema"):
+        #         pprint(class_.__name__)
+        #         try:
+        #             mapper = inspect(class_)
 
-                    for rel in mapper.relationships:
-                        pprint(rel.foreign_keys)
-                        if rel.property:
-                            pprint('  ' + rel.key)
+        #             for rel in mapper.relationships:
+        #                 pprint(rel.foreign_keys)
+        #                 if rel.property:
+        #                     pprint('  ' + rel.key)
 
-                            #raise Exception()
-                            class_._schema._declared_fields[rel.key] = fields.Nested(
-                                rel.entity.class_._schema, many=rel.uselist, dump_only=True)
-                            #exclude=[rel.backref.key] + [pk.name for pk in mapper.primary_keys])
-                except Exception as e:
-                    raise e
+        #                     #raise Exception()
+        #                     class_._schema._declared_fields[rel.key] = fields.Nested(
+        #                         rel.entity.class_._schema, many=rel.uselist, dump_only=True)
+        #                     #exclude=[rel.backref.key] + [pk.name for pk in mapper.primary_keys])
+        #         except Exception as e:
+        #             raise e
 
     return setup_schema_fn
 
@@ -109,5 +109,5 @@ def setup_schema(Base, session):
 # TODO: finish this and resolve errors now_application/activity_detail_base.activity_type_code to all for programatic generation of schema
 # TODO: add call to model method to execute post_generation of schema.
 
-#event.listen(mapper, "after_configured", setup_schema(BaseModel, db.session))
+event.listen(mapper, "after_configured", setup_schema(ActivityDetailBase, db.session))
 # Base.metadata.create_all(db.engine.connect()) # i think this is not used

@@ -3,6 +3,7 @@ import uuid, re
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import validates
 from sqlalchemy.schema import FetchedValue
+from sqlalchemy.ext.hybrid import hybrid_property
 from app.extensions import db
 
 from app.api.utils.models_mixins import AuditMixin, Base
@@ -17,7 +18,11 @@ class MinespaceUser(Base):
     email = db.Column(db.String(100), nullable=False)
     deleted_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
 
-    mines = db.relationship('MinespaceUserMine', backref='user', lazy='joined')
+    minespace_user_mines = db.relationship('MinespaceUserMine', backref='user', lazy='joined')
+
+    @hybrid_property
+    def mines(self):
+        return [x.mine_guid for x in self.minespace_user_mines]
 
     @classmethod
     def get_all(cls):
