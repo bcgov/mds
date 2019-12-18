@@ -15,7 +15,6 @@ const propTypes = {
   isViewMode: PropTypes.bool.isRequired,
   details: CustomPropTypes.activityDetails.isRequired,
   equipment: CustomPropTypes.activityEquipment.isRequired,
-  removeRecord: PropTypes.func.isRequired,
   editRecord: PropTypes.func.isRequired,
   addRecord: PropTypes.func.isRequired,
 };
@@ -23,10 +22,10 @@ const propTypes = {
 const defaultProps = {};
 
 export const AccessRoads = (props) => {
-  const editActivity = (event, rowIndex) => {
+  const editActivity = (event, rowIndex, isDelete) => {
     const activityToChange = props.details[rowIndex];
     activityToChange[event.target.name] = event.target.value;
-    props.editRecord(activityToChange, "exploration_access.details", rowIndex);
+    props.editRecord(activityToChange, "exploration_access.details", rowIndex, isDelete);
   };
 
   const addActivity = () => {
@@ -52,7 +51,7 @@ export const AccessRoads = (props) => {
               type="text"
               disabled={props.isViewMode}
               value={text}
-              onChange={(e) => editActivity(e, record.index)}
+              onChange={(e) => editActivity(e, record.index, false)}
             />
           </div>
         </div>
@@ -67,10 +66,11 @@ export const AccessRoads = (props) => {
           <div className="inline-flex">
             <input
               name="length"
-              type="text"
+              type="number"
               disabled={props.isViewMode}
               value={text}
-              onChange={(e) => editActivity(e, record.index)}
+              onChange={(e) => editActivity(e, record.index, false)}
+              parse={(value) => parseInt(value, 10)}
             />
           </div>
         </div>
@@ -85,10 +85,10 @@ export const AccessRoads = (props) => {
           <div className="inline-flex">
             <input
               name="disturbed_area"
-              type="text"
+              type="number"
               disabled={props.isViewMode}
               value={text}
-              onChange={(e) => editActivity(e, record.index)}
+              onChange={(e) => editActivity(e, record.index, false)}
             />
           </div>
         </div>
@@ -103,10 +103,10 @@ export const AccessRoads = (props) => {
           <div className="inline-flex">
             <input
               name="timber_volume"
-              type="text"
+              type="number"
               disabled={props.isViewMode}
               value={text}
-              onChange={(e) => editActivity(e, record.index)}
+              onChange={(e) => editActivity(e, record.index, false)}
             />
           </div>
         </div>
@@ -122,7 +122,7 @@ export const AccessRoads = (props) => {
         <Button
           type="primary"
           size="small"
-          onClick={() => props.removeRecord("exploration_access.details", record.index)}
+          onClick={(event) => editActivity(event, record.index, true)}
           ghost
         >
           <img name="remove" src={TRASHCAN} alt="Remove Activity" />
@@ -132,16 +132,18 @@ export const AccessRoads = (props) => {
   };
 
   const columns = (isViewMode) =>
-    false && !isViewMode ? [...standardColumns, removeColumn] : standardColumns;
+    !isViewMode ? [...standardColumns, removeColumn] : standardColumns;
 
   const transformData = (activities) =>
-    activities.map((activity, index) => ({
-      type: activity.activity_type_description || "",
-      length: activity.length || "",
-      disturbedArea: activity.disturbed_area || "",
-      timberVolume: activity.timber_volume || "",
-      index,
-    }));
+    activities
+      .filter((activity) => !activity.state_modified)
+      .map((activity, index) => ({
+        activity_type_description: activity.activity_type_description || "",
+        length: activity.length || "",
+        disturbed_area: activity.disturbed_area || "",
+        timber_volume: activity.timber_volume || "",
+        index,
+      }));
 
   return (
     <div>
@@ -154,7 +156,7 @@ export const AccessRoads = (props) => {
           emptyText: "No data",
         }}
       />
-      {false && !props.isViewMode && (
+      {!props.isViewMode && (
         <Button type="primary" onClick={() => addActivity()}>
           Add Activity
         </Button>
@@ -201,7 +203,6 @@ export const AccessRoads = (props) => {
         equipment={props.equipment}
         isViewMode={props.isViewMode}
         activity="exploration_access"
-        removeRecord={props.removeRecord}
         editRecord={props.editRecord}
         addRecord={props.addRecord}
       />

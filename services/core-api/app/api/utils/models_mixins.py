@@ -138,7 +138,8 @@ class Base(db.Model):
 
                     #see if object list holds a child that has the same values as the json dict for all primary key values of class
                     existing_obj = next((x for x in obj_list if all(
-                        i.get(pk_name, None) == getattr(x, pk_name) for pk_name in pk_names)), None)
+                        i.get(pk_name, None) == getattr(x, pk_name)
+                        and getattr(x, pk_name) is not None for pk_name in pk_names)), None)
                     #ALWAYS NONE for new obj, except tests
                     if existing_obj:
                         current_app.logger.debug(
@@ -188,10 +189,10 @@ class Base(db.Model):
                         #don't care about anything more precise, procection if incoming data is float
                         setattr(self, k, dec.quantize(decimal.Decimal('.0000001')))
                         continue
-                    elif (v is not None) and not isinstance(v, py_type):
-                        #type safety (don't coalese empty string to false if it's targetting a boolean column)
-                        raise DictLoadingError(
-                            f"cannot assign '{k}':{v}{type(v)} to column of type {py_type}")
+                    # elif (v is not None) and not isinstance(v, py_type):
+                    #     #type safety (don't coalese empty string to false if it's targetting a boolean column)
+                    #     raise DictLoadingError(
+                    #         f"cannot assign '{k}':{v}{type(v)} to column of type {py_type}")
                     else:
                         setattr(self, k, v)
         if depth == 0:

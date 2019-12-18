@@ -12,9 +12,6 @@ import CustomPropTypes from "@/customPropTypes";
 const propTypes = {
   isViewMode: PropTypes.bool.isRequired,
   details: CustomPropTypes.activityDetails.isRequired,
-  // removeRecord is being passed into conditionally rendered button but eslint assumes it isn't being used
-  // eslint-disable-next-line
-  removeRecord: PropTypes.func.isRequired,
   editRecord: PropTypes.func.isRequired,
   addRecord: PropTypes.func.isRequired,
 };
@@ -22,10 +19,10 @@ const propTypes = {
 const defaultProps = {};
 
 export const SurfaceDrilling = (props) => {
-  const editActivity = (event, rowIndex) => {
+  const editActivity = (event, rowIndex, isDelete) => {
     const activityToChange = props.details[rowIndex];
     activityToChange[event.target.name] = event.target.value;
-    props.editRecord(activityToChange, "exploration_surface_drilling.details", rowIndex);
+    props.editRecord(activityToChange, "exploration_surface_drilling.details", rowIndex, isDelete);
   };
 
   const addActivity = () => {
@@ -51,7 +48,7 @@ export const SurfaceDrilling = (props) => {
               type="text"
               disabled={props.isViewMode}
               value={text}
-              onChange={(e) => editActivity(e, record.index)}
+              onChange={(e) => editActivity(e, record.index, false)}
             />
           </div>
         </div>
@@ -66,10 +63,10 @@ export const SurfaceDrilling = (props) => {
           <div className="inline-flex">
             <input
               name="number_of_sites"
-              type="text"
+              type="number"
               disabled={props.isViewMode}
               value={text}
-              onChange={(e) => editActivity(e, record.index)}
+              onChange={(e) => editActivity(e, record.index, false)}
             />
           </div>
         </div>
@@ -84,10 +81,10 @@ export const SurfaceDrilling = (props) => {
           <div className="inline-flex">
             <input
               name="disturbed_area"
-              type="text"
+              type="number"
               disabled={props.isViewMode}
               value={text}
-              onChange={(e) => editActivity(e, record.index)}
+              onChange={(e) => editActivity(e, record.index, false)}
             />
           </div>
         </div>
@@ -102,10 +99,10 @@ export const SurfaceDrilling = (props) => {
           <div className="inline-flex">
             <input
               name="timber_volume"
-              type="text"
+              type="number"
               disabled={props.isViewMode}
               value={text}
-              onChange={(e) => editActivity(e, record.index)}
+              onChange={(e) => editActivity(e, record.index, false)}
             />
           </div>
         </div>
@@ -121,7 +118,7 @@ export const SurfaceDrilling = (props) => {
         <Button
           type="primary"
           size="small"
-          onClick={() => props.removeRecord("exploration_surface_drilling.details", record.index)}
+          onClick={(event) => editActivity(event, record.index, true)}
           ghost
         >
           <img name="remove" src={TRASHCAN} alt="Remove Activity" />
@@ -131,16 +128,18 @@ export const SurfaceDrilling = (props) => {
   };
 
   const columns = (isViewMode) =>
-    false && !isViewMode ? [...standardColumns, removeColumn] : standardColumns;
+    !isViewMode ? [...standardColumns, removeColumn] : standardColumns;
 
   const transformData = (activities) =>
-    activities.map((activity, index) => ({
-      activity_type_description: activity.activity_type_description || "",
-      number_of_sites: activity.number_of_sites || "",
-      disturbed_area: activity.disturbed_area || "",
-      timber_volume: activity.timber_volume || "",
-      index,
-    }));
+    activities
+      .filter((activity) => !activity.state_modified)
+      .map((activity, index) => ({
+        activity_type_description: activity.activity_type_description || "",
+        number_of_sites: activity.number_of_sites || "",
+        disturbed_area: activity.disturbed_area || "",
+        timber_volume: activity.timber_volume || "",
+        index,
+      }));
 
   return (
     <div>
@@ -155,7 +154,7 @@ export const SurfaceDrilling = (props) => {
           emptyText: "No data",
         }}
       />
-      {false && !props.isViewMode && (
+      {!props.isViewMode && (
         <Button type="primary" onClick={() => addActivity()}>
           Add Activity
         </Button>

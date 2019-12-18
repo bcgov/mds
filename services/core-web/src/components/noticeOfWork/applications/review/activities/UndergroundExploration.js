@@ -11,9 +11,6 @@ import CustomPropTypes from "@/customPropTypes";
 const propTypes = {
   isViewMode: PropTypes.bool.isRequired,
   details: CustomPropTypes.activityDetails.isRequired,
-  // removeRecord is being passed into conditionally rendered button but eslint assumes it isn't being used
-  // eslint-disable-next-line
-  removeRecord: PropTypes.func.isRequired,
   editRecord: PropTypes.func.isRequired,
   addRecord: PropTypes.func.isRequired,
 };
@@ -21,10 +18,10 @@ const propTypes = {
 const defaultProps = {};
 
 export const UndergroundExploration = (props) => {
-  const editActivity = (event, rowIndex) => {
+  const editActivity = (event, rowIndex, isDelete) => {
     const activityToChange = props.details[rowIndex];
     activityToChange[event.target.name] = event.target.value;
-    props.editRecord(activityToChange, "underground_exploration.details", rowIndex);
+    props.editRecord(activityToChange, "underground_exploration.details", rowIndex, isDelete);
   };
 
   const addActivity = () => {
@@ -50,7 +47,7 @@ export const UndergroundExploration = (props) => {
               type="text"
               disabled={props.isViewMode}
               value={text}
-              onChange={(e) => editActivity(e, record.index)}
+              onChange={(e) => editActivity(e, record.index, false)}
             />
           </div>
         </div>
@@ -65,10 +62,10 @@ export const UndergroundExploration = (props) => {
           <div className="inline-flex">
             <input
               name="quantity"
-              type="text"
+              type="number"
               disabled={props.isViewMode}
               value={text}
-              onChange={(e) => editActivity(e, record.index)}
+              onChange={(e) => editActivity(e, record.index, false)}
             />
           </div>
         </div>
@@ -86,7 +83,7 @@ export const UndergroundExploration = (props) => {
               type="text"
               disabled={props.isViewMode}
               value={text}
-              onChange={(e) => editActivity(e, record.index)}
+              onChange={(e) => editActivity(e, record.index, false)}
             />
           </div>
         </div>
@@ -104,7 +101,7 @@ export const UndergroundExploration = (props) => {
               type="text"
               disabled={props.isViewMode}
               value={text}
-              onChange={(e) => editActivity(e, record.index)}
+              onChange={(e) => editActivity(e, record.index, false)}
             />
           </div>
         </div>
@@ -119,10 +116,10 @@ export const UndergroundExploration = (props) => {
           <div className="inline-flex">
             <input
               name="width"
-              type="text"
+              type="number"
               disabled={props.isViewMode}
               value={text}
-              onChange={(e) => editActivity(e, record.index)}
+              onChange={(e) => editActivity(e, record.index, false)}
             />
           </div>
         </div>
@@ -137,10 +134,10 @@ export const UndergroundExploration = (props) => {
           <div className="inline-flex">
             <input
               name="length"
-              type="text"
+              type="number"
               disabled={props.isViewMode}
               value={text}
-              onChange={(e) => editActivity(e, record.index)}
+              onChange={(e) => editActivity(e, record.index, false)}
             />
           </div>
         </div>
@@ -155,10 +152,10 @@ export const UndergroundExploration = (props) => {
           <div className="inline-flex">
             <input
               name="height"
-              type="text"
+              type="number"
               disabled={props.isViewMode}
               value={text}
-              onChange={(e) => editActivity(e, record.index)}
+              onChange={(e) => editActivity(e, record.index, false)}
             />
           </div>
         </div>
@@ -173,10 +170,10 @@ export const UndergroundExploration = (props) => {
           <div className="inline-flex">
             <input
               name="disturbed_area"
-              type="text"
+              type="number"
               disabled={props.isViewMode}
               value={text}
-              onChange={(e) => editActivity(e, record.index)}
+              onChange={(e) => editActivity(e, record.index, false)}
             />
           </div>
         </div>
@@ -191,10 +188,10 @@ export const UndergroundExploration = (props) => {
           <div className="inline-flex">
             <input
               name="timber_volume"
-              type="text"
+              type="number"
               disabled={props.isViewMode}
               value={text}
-              onChange={(e) => editActivity(e, record.index)}
+              onChange={(e) => editActivity(e, record.index, false)}
             />
           </div>
         </div>
@@ -210,7 +207,7 @@ export const UndergroundExploration = (props) => {
         <Button
           type="primary"
           size="small"
-          onClick={() => props.removeRecord("underground_exploration.details", record.index)}
+          onClick={(event) => editActivity(event, record.index, true)}
           ghost
         >
           <img name="remove" src={TRASHCAN} alt="Remove Activity" />
@@ -220,21 +217,23 @@ export const UndergroundExploration = (props) => {
   };
 
   const columns = (isViewMode) =>
-    false && !isViewMode ? [...standardColumns, removeColumn] : standardColumns;
+    !isViewMode ? [...standardColumns, removeColumn] : standardColumns;
 
   const transformData = (activities) =>
-    activities.map((activity, index) => ({
-      activity_type_description: activity.activity_type_description || "",
-      quantity: activity.quantity || "",
-      incline_unit_type_code: activity.incline_unit_type_code || "",
-      units: activity.units || "",
-      length: activity.length || "",
-      width: activity.width || "",
-      height: activity.height || "",
-      disturbed_area: activity.disturbed_area || "",
-      timber_volume: activity.timber_volume || "",
-      index,
-    }));
+    activities
+      .filter((activity) => !activity.state_modified)
+      .map((activity, index) => ({
+        activity_type_description: activity.activity_type_description || "",
+        quantity: activity.quantity || "",
+        incline_unit_type_code: activity.incline_unit_type_code || "",
+        units: activity.units || "",
+        length: activity.length || "",
+        width: activity.width || "",
+        height: activity.height || "",
+        disturbed_area: activity.disturbed_area || "",
+        timber_volume: activity.timber_volume || "",
+        index,
+      }));
 
   return (
     <div>
@@ -247,7 +246,7 @@ export const UndergroundExploration = (props) => {
           emptyText: "No data",
         }}
       />
-      {false && !props.isViewMode && (
+      {!props.isViewMode && (
         <Button type="primary" onClick={() => addActivity()}>
           Add Activity
         </Button>
