@@ -440,7 +440,7 @@ export class ViewPartyRelationships extends Component {
               placement="topRight"
               {...this.confirmationProps(this.state.selectedPartyRelationshipType)}
             >
-              <input
+              <button
                 type="button"
                 ref={this.RoleConfirmation}
                 style={{ width: "1px", height: "1px" }}

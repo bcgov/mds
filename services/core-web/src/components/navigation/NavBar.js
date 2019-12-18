@@ -344,7 +344,7 @@ export class NavBar extends Component {
             <img alt="Home" className="menu__img" src={LOGO} />
           </Link>
           <div className="inline-flex">
-            <div style={{ marginTop: "6px" }}>
+            <div className="menu--search">
               <SearchBar containerId="navBar" />
             </div>
             <MediaQuery maxWidth={979}>

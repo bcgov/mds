@@ -14,7 +14,22 @@ exports[`ReviewNOWApplication renders properly 1`] = `
       <h2>
         General Information
       </h2>
-      <Divider />
+      <div
+        className="right"
+      >
+        <p
+          className="p-light"
+        >
+          ** Not available from MMS, NROS, and vFCBC
+        </p>
+      </div>
+      <Divider
+        style={
+          Object {
+            "marginTop": "0",
+          }
+        }
+      />
       <withRouter(ScrollContentWrapper)
         id="application-info"
         title="Application Info"
@@ -46,7 +61,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
               <div
                 className="field-title"
               >
-                Permit Status**
+                Permit Status
               </div>
               <Field
                 component={[Function]}
