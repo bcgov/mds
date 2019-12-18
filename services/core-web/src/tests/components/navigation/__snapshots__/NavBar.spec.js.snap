@@ -22,11 +22,7 @@ exports[`NavBar renders properly 1`] = `
       className="inline-flex"
     >
       <div
-        style={
-          Object {
-            "marginTop": "6px",
-          }
-        }
+        className="menu--search"
       >
         <Connect(withRouter(SearchBar))
           containerId="navBar"
@@ -154,6 +150,35 @@ exports[`NavBar renders properly 1`] = `
               />
             </button>
           </Dropdown>
+          <a
+            href="https://mdsfider.pathfinder.gov.bc.ca/"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            <Tooltip
+              arrowPointAtCenter={false}
+              autoAdjustOverflow={true}
+              mouseEnterDelay={0.1}
+              mouseLeaveDelay={0.1}
+              placement="bottom"
+              title="Feedback"
+              transitionName="zoom-big-fast"
+            >
+              <Button
+                block={false}
+                className="menu__btn--link"
+                ghost={false}
+                htmlType="button"
+                loading={false}
+                type="link"
+              >
+                <Icon
+                  className="icon-sm"
+                  type="message"
+                />
+              </Button>
+            </Tooltip>
+          </a>
           <Connect(AuthorizationWrapper)
             permission="role_admin"
           >
