@@ -8,10 +8,13 @@ from sqlalchemy.dialects.postgresql import UUID
 from app.api.utils.models_mixins import AuditMixin, Base
 
 from app.extensions import db
+from app.api.constants import *
 
 
 class PermitAmendmentDocument(AuditMixin, Base):
     __tablename__ = "permit_amendment_document"
+    _edit_groups = [PERMIT_EDIT_GROUP, PERMIT_AMENDMENT_EDIT_GROUP]
+
     permit_amendment_document_guid = db.Column(
         UUID(as_uuid=True), primary_key=True, server_default=FetchedValue())
     permit_amendment_id = db.Column(

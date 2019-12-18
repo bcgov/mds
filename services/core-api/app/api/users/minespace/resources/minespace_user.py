@@ -32,11 +32,10 @@ class MinespaceUserListResource(Resource, UserMixin):
     @requires_role_mine_admin
     def post(self):
         data = self.parser.parse_args()
-
         new_user = MinespaceUser.create_minespace_user(data.get('email'))
         new_user.save()
         for guid in data.get('mine_guids'):
-            guid = uuid.UUID(guid)  #ensure good formatting
+            guid = uuid.UUID(guid)               #ensure good formatting
             new_mum = MinespaceUserMine.create(new_user.user_id, guid)
             new_mum.save()
         return new_user
@@ -56,7 +55,7 @@ class MinespaceUserResource(Resource, UserMixin):
         user = MinespaceUser.find_by_id(user_id)
         if not user:
             raise NotFound("user not found")
-        for um in user.mines:
+        for um in user.minespace_user_mines:
             db.session.delete(um)
         db.session.commit()
         db.session.delete(user)
