@@ -14,6 +14,7 @@ const propTypes = {
   label: PropTypes.string,
   meta: CustomPropTypes.formMeta,
   data: CustomPropTypes.options,
+  filterOption: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
   disabled: PropTypes.bool,
   onSearch: PropTypes.func,
 };
@@ -25,6 +26,7 @@ const defaultProps = {
   disabled: false,
   meta: {},
   onSearch: () => {},
+  filterOption: false,
 };
 
 export const RenderMultiSelect = (props) => (
@@ -49,9 +51,14 @@ export const RenderMultiSelect = (props) => (
         onSearch={props.onSearch}
         {...props.input}
         filterOption={props.filterOption || caseInsensitiveLabelFilter}
+        showArrow
       >
         {props.data &&
-          props.data.map(({ value, label, tooltip }) => <Select.Option key={value} title={tooltip}>{label}</Select.Option>)}
+          props.data.map(({ value, label, tooltip }) => (
+            <Select.Option key={value} title={tooltip}>
+              {label}
+            </Select.Option>
+          ))}
       </Select>
     </Form.Item>
   </div>
