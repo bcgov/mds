@@ -31,7 +31,7 @@ exports[`NoticeOfWorkHomePage renders properly 1`] = `
         }
       />
       <div>
-        <NoticeOfWorkTable
+        <withRouter(NoticeOfWorkTable)
           handleSearch={[Function]}
           isLoaded={false}
           noticeOfWorkApplications={
@@ -63,8 +63,6 @@ exports[`NoticeOfWorkHomePage renders properly 1`] = `
               "mine_region": "SW,NE",
             }
           }
-          sortDir={null}
-          sortField={null}
         />
         <div
           className="center"
