@@ -17,6 +17,7 @@ exports[`RenderMultiSelect renders properly 1`] = `
       mode="multiple"
       onSearch={[Function]}
       placeholder=""
+      showArrow={true}
       showSearch={false}
       transitionName="slide-up"
     >
