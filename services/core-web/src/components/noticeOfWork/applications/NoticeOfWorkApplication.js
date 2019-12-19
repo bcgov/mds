@@ -21,9 +21,17 @@ import {
 import {
   fetchNoticeOFWorkActivityTypeOptions,
   fetchNoticeOFWorkApplicationProgressStatusCodes,
+  fetchRegionOptions,
+  fetchNoticeOFWorkApplicationStatusOptions,
+  fetchNoticeOFWorkApplicationTypeOptions,
 } from "@/actionCreators/staticContentActionCreator";
 import { getMines } from "@/selectors/mineSelectors";
-import { getNoticeOfWorkApplicationProgressStatusCodeOptions } from "@/selectors/staticContentSelectors";
+import {
+  getDropdownNoticeOfWorkApplicationStatusOptions,
+  getNoticeOfWorkApplicationProgressStatusCodeOptions,
+  getMineRegionDropdownOptions,
+  getDropdownNoticeOfWorkApplicationTypeOptions,
+} from "@/selectors/staticContentSelectors";
 import VerifyNOWMine from "@/components/noticeOfWork/applications/verification/VerifyNOWMine";
 import * as Strings from "@/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
@@ -51,6 +59,10 @@ const propTypes = {
   fetchImportedNoticeOfWorkApplication: PropTypes.func.isRequired,
   fetchOriginalNoticeOfWorkApplication: PropTypes.func.isRequired,
   fetchNoticeOFWorkActivityTypeOptions: PropTypes.func.isRequired,
+  fetchNoticeOFWorkApplicationStatusOptions: PropTypes.func.isRequired,
+  fetchRegionOptions: PropTypes.func.isRequired,
+  applicationStatusOptions: CustomPropTypes.options.isRequired,
+  applicationTypeOptions: CustomPropTypes.options.isRequired,
   reset: PropTypes.func.isRequired,
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
   match: PropTypes.shape({
@@ -58,6 +70,7 @@ const propTypes = {
       id: PropTypes.string,
     },
   }).isRequired,
+  regionDropdownOptions: CustomPropTypes.options.isRequired,
   // the following prop will be used in the future
   // eslint-disable-next-line
   formValues: CustomPropTypes.nowApplication.isRequired,
@@ -91,7 +104,10 @@ export class NoticeOfWorkApplication extends Component {
     const { id } = this.props.match.params;
     let currentStep = 0;
     this.props.fetchNoticeOFWorkActivityTypeOptions();
+    this.props.fetchRegionOptions();
+    this.props.fetchNoticeOFWorkApplicationStatusOptions();
     this.props.fetchNoticeOFWorkApplicationProgressStatusCodes();
+    this.props.fetchNoticeOFWorkApplicationTypeOptions();
     this.props.fetchImportedNoticeOfWorkApplication(id).then(({ data }) => {
       const associatedMineGuid = data.mine_guid ? data.mine_guid : "";
       const isImported = data.imported_to_core;
@@ -271,6 +287,8 @@ export class NoticeOfWorkApplication extends Component {
       <ReviewNOWApplication
         reclamationSummary={this.props.reclamationSummary}
         isViewMode={this.state.isViewMode}
+        regionDropdownOptions={this.props.regionDropdownOptions}
+        applicationTypeOptions={this.props.applicationTypeOptions}
         initialValues={
           this.state.showOriginalValues ? this.props.originalNoticeOfWork : this.props.noticeOfWork
         }
@@ -419,6 +437,9 @@ const mapStateToProps = (state) => ({
   formValues: getFormValues(FORM.EDIT_NOTICE_OF_WORK)(state),
   mines: getMines(state),
   reclamationSummary: getNOWReclamationSummary(state),
+  regionDropdownOptions: getMineRegionDropdownOptions(state),
+  applicationStatusOptions: getDropdownNoticeOfWorkApplicationStatusOptions(state),
+  applicationTypeOptions: getDropdownNoticeOfWorkApplicationTypeOptions(state),
   applicationProgressStatusCodes: getNoticeOfWorkApplicationProgressStatusCodeOptions(state),
 });
 
@@ -433,7 +454,10 @@ const mapDispatchToProps = (dispatch) =>
       fetchNoticeOFWorkActivityTypeOptions,
       createNoticeOfWorkApplicationProgress,
       fetchNoticeOFWorkApplicationProgressStatusCodes,
+      fetchNoticeOFWorkApplicationStatusOptions,
       reset,
+      fetchRegionOptions,
+      fetchNoticeOFWorkApplicationTypeOptions,
     },
     dispatch
   );

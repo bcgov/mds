@@ -312,3 +312,17 @@ export const fetchNoticeOFWorkApplicationProgressStatusCodes = () => (dispatch) 
     })
     .catch(() => dispatch(error(reducerTypes.GET_NOW_APPLICATION_PROGRESS_STATUS_CODES)));
 };
+
+export const fetchNoticeOFWorkApplicationPermitTypes = () => (dispatch) => {
+  dispatch(request(reducerTypes.GET_NOW_APPLICATION_PROGRESS_STATUS_CODES));
+  return CustomAxios()
+    .get(`${ENVIRONMENT.apiUrl + API.NOW_APPLICATION_PROGRESS_STATUS_CODES}`, createRequestHeader())
+    .then((response) => {
+      dispatch(success(reducerTypes.GET_NOW_APPLICATION_PROGRESS_STATUS_CODES));
+      dispatch(
+        staticContentActions.storeNoticeOfWorkApplicationProgressStatusCodeOptions(response.data)
+      );
+      return response;
+    })
+    .catch(() => dispatch(error(reducerTypes.GET_NOW_APPLICATION_PROGRESS_STATUS_CODES)));
+};

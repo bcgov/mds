@@ -3,7 +3,7 @@ import { STATIC_CONTENT } from "@/constants/reducerTypes";
 
 /**
  * @file staticContentReducer.js
- * all data associated with static content to populate form inputs is handled witnin this reducer.
+ * all data associated with static content to populate form inputs is handled withnin this reducer.
  */
 
 const initialState = {
