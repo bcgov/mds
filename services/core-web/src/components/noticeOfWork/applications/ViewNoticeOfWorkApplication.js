@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { Button } from "antd";
+import { Button, Icon } from "antd";
+import { Link } from "react-router-dom";
 import * as routes from "@/constants/routes";
 import {
   fetchImportedNoticeOfWorkApplication,
@@ -35,6 +36,7 @@ const propTypes = {
   fetchNoticeOFWorkActivityTypeOptions: PropTypes.func.isRequired,
   reclamationSummary: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.strings)).isRequired,
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
+  location: CustomPropTypes.location,
   match: PropTypes.shape({
     params: {
       id: PropTypes.string,
@@ -42,10 +44,16 @@ const propTypes = {
   }).isRequired,
 };
 
+const defaultProps = {
+  location: {},
+};
+
 export class ViewNoticeOfWorkApplication extends Component {
   state = {
     isLoaded: false,
     showOriginalValues: false,
+    fromTitle: "",
+    fromRoute: "",
   };
 
   componentDidMount() {
@@ -58,6 +66,22 @@ export class ViewNoticeOfWorkApplication extends Component {
       this.setState({ isLoaded: true });
     });
     this.props.fetchOriginalNoticeOfWorkApplication(id);
+    this.setState({
+      fromTitle:
+        this.props &&
+        this.props.location &&
+        this.props.location.state &&
+        this.props.location.state.fromTitle
+          ? this.props.location.state.fromTitle
+          : "",
+      fromRoute:
+        this.props &&
+        this.props.location &&
+        this.props.location.state &&
+        this.props.location.state.fromRoute
+          ? this.props.location.state.fromRoute
+          : "",
+    });
   }
 
   showApplicationForm = () => {
@@ -71,46 +95,54 @@ export class ViewNoticeOfWorkApplication extends Component {
     );
   };
 
-  render = () => (
-    <div className="page">
-      <div className="steps--header fixed-scroll-view">
-        <div className="inline-flex between">
+  render() {
+    return (
+      <div className="page">
+        <div className="steps--header fixed-scroll-view">
+          <div className="inline-flex between">
+            <div>
+              <h1>NoW Number: {this.props.noticeOfWork.now_number || Strings.EMPTY_FIELD}</h1>
+              {this.state && this.state.fromRoute && (
+                <Link to={this.state.fromRoute}>
+                  <Icon type="arrow-left" style={{ paddingRight: "5px" }} />
+                  Back to: {this.state.fromTitle}
+                </Link>
+              )}
+            </div>
+            {this.state.isLoaded &&
+              this.props.noticeOfWork.submission_documents.filter(
+                (x) => x.filename === "ApplicationForm.pdf"
+              ).length > 0 && (
+                <Button onClick={this.showApplicationForm}>Open Original Application Form</Button>
+              )}
+          </div>
+        </div>
+        <LoadingWrapper condition={this.state.isLoaded}>
           <div>
-            <h1>NoW Number: {this.props.noticeOfWork.now_number || Strings.EMPTY_FIELD}</h1>
+            <div className="side-menu--fixed">
+              <NOWSideMenu route={routes.VIEW_NOTICE_OF_WORK_APPLICATION} />
+            </div>
+            <div className="steps--content with-fixed-top">
+              <ReviewNOWApplication
+                reclamationSummary={this.props.reclamationSummary}
+                isViewMode
+                initialValues={
+                  this.state.showOriginalValues
+                    ? this.props.originalNoticeOfWork
+                    : this.props.noticeOfWork
+                }
+                noticeOfWork={
+                  this.state.showOriginalValues
+                    ? this.props.originalNoticeOfWork
+                    : this.props.noticeOfWork
+                }
+              />
+            </div>
           </div>
-          {this.state.isLoaded &&
-            this.props.noticeOfWork.submission_documents.filter(
-              (x) => x.filename === "ApplicationForm.pdf"
-            ).length > 0 && (
-              <Button onClick={this.showApplicationForm}>Open Original Application Form</Button>
-            )}
-        </div>
+        </LoadingWrapper>
       </div>
-      <LoadingWrapper condition={this.state.isLoaded}>
-        <div>
-          <div className="side-menu--fixed">
-            <NOWSideMenu route={routes.VIEW_NOTICE_OF_WORK_APPLICATION} />
-          </div>
-          <div className="steps--content with-fixed-top">
-            <ReviewNOWApplication
-              reclamationSummary={this.props.reclamationSummary}
-              isViewMode
-              initialValues={
-                this.state.showOriginalValues
-                  ? this.props.originalNoticeOfWork
-                  : this.props.noticeOfWork
-              }
-              noticeOfWork={
-                this.state.showOriginalValues
-                  ? this.props.originalNoticeOfWork
-                  : this.props.noticeOfWork
-              }
-            />
-          </div>
-        </div>
-      </LoadingWrapper>
-    </div>
-  );
+    );
+  }
 }
 
 const mapStateToProps = (state) => ({
@@ -132,6 +164,7 @@ const mapDispatchToProps = (dispatch) =>
   );
 
 ViewNoticeOfWorkApplication.propTypes = propTypes;
+ViewNoticeOfWorkApplication.defaultProps = defaultProps;
 
 export default connect(
   mapStateToProps,

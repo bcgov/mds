@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Steps, Button, Dropdown, Menu, Icon } from "antd";
+import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { getFormValues } from "redux-form";
 import { bindActionCreators } from "redux";
@@ -52,6 +53,7 @@ const propTypes = {
   fetchOriginalNoticeOfWorkApplication: PropTypes.func.isRequired,
   fetchNoticeOFWorkActivityTypeOptions: PropTypes.func.isRequired,
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
+  location: CustomPropTypes.location,
   match: PropTypes.shape({
     params: {
       id: PropTypes.string,
@@ -68,6 +70,7 @@ const propTypes = {
 
 const defaultProps = {
   noticeOfWork: { application_progress: [] },
+  location: {},
 };
 
 export class NoticeOfWorkApplication extends Component {
@@ -84,6 +87,8 @@ export class NoticeOfWorkApplication extends Component {
     isDecision: false,
     buttonValue: "REV",
     buttonLabel: "Technical Review",
+    fromTitle: "",
+    fromRoute: "",
   };
 
   componentDidMount() {
@@ -112,13 +117,29 @@ export class NoticeOfWorkApplication extends Component {
       });
     });
     this.props.fetchOriginalNoticeOfWorkApplication(id);
+    this.setState({
+      fromTitle:
+        this.props &&
+        this.props.location &&
+        this.props.location.state &&
+        this.props.location.state.fromTitle
+          ? this.props.location.state.fromTitle
+          : "",
+      fromRoute:
+        this.props &&
+        this.props.location &&
+        this.props.location.state &&
+        this.props.location.state.fromRoute
+          ? this.props.location.state.fromRoute
+          : "",
+    });
   }
 
   componentWillReceiveProps(nextProps) {
     if (
       this.props.noticeOfWork.application_progress &&
       nextProps.noticeOfWork.application_progress.length !==
-      this.props.noticeOfWork.application_progress.length
+        this.props.noticeOfWork.application_progress.length
     ) {
       this.handleProgressButtonLabels(nextProps.noticeOfWork.application_progress);
     }
@@ -313,10 +334,10 @@ export class NoticeOfWorkApplication extends Component {
                   Edit
                 </button>
               ) : (
-                  <button type="button" className="full" onClick={this.handleNOWFormSubmit}>
-                    Save
+                <button type="button" className="full" onClick={this.handleNOWFormSubmit}>
+                  Save
                 </button>
-                )}
+              )}
             </span>
           </div>
         )}
@@ -337,12 +358,13 @@ export class NoticeOfWorkApplication extends Component {
           <div className="inline-flex between">
             <div>
               <h1>NoW Number: {this.props.noticeOfWork.now_number || Strings.EMPTY_FIELD}</h1>
-              <a href={this.props.history}>
-                <Icon type="arrow-left" style={{ paddingRight: "5px" }} />
-                Back to: {this.props.childProps.title}
-              </a>
+              {this.state && this.state.fromRoute && (
+                <Link to={this.state.fromRoute}>
+                  <Icon type="arrow-left" style={{ paddingRight: "5px" }} />
+                  Back to: {this.state.fromTitle}
+                </Link>
+              )}
             </div>
-
             <Dropdown
               overlay={menu}
               placement="bottomLeft"
