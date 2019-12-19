@@ -119,10 +119,16 @@ export class ViewNoticeOfWorkApplication extends Component {
         </div>
         <LoadingWrapper condition={this.state.isLoaded}>
           <div>
-            <div className="side-menu--fixed">
+            <div
+              className="side-menu--fixed"
+              style={this.state && this.state.fromRoute ? { paddingTop: "20px" } : {}}
+            >
               <NOWSideMenu route={routes.VIEW_NOTICE_OF_WORK_APPLICATION} />
             </div>
-            <div className="steps--content with-fixed-top">
+            <div
+              className="steps--content with-fixed-top"
+              style={this.state && this.state.fromRoute ? { paddingTop: "20px" } : {}}
+            >
               <ReviewNOWApplication
                 reclamationSummary={this.props.reclamationSummary}
                 isViewMode
