@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Table, Icon, Input, Button } from "antd";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import { isEmpty } from "lodash";
 import PropTypes from "prop-types";
 import CustomPropTypes from "@/customPropTypes";
@@ -25,6 +25,7 @@ const propTypes = {
   mineRegionHash: PropTypes.objectOf(PropTypes.string).isRequired,
   mineRegionOptions: CustomPropTypes.options.isRequired,
   isLoaded: PropTypes.bool.isRequired,
+  location: CustomPropTypes.location,
 };
 
 const defaultProps = {
@@ -32,6 +33,7 @@ const defaultProps = {
   sortDir: null,
   noticeOfWorkApplications: [],
   searchParams: {},
+  location: {},
 };
 
 const handleTableChange = (updateApplicationList) => (pagination, { mine_region } = {}, sorter) => {
@@ -62,6 +64,8 @@ const applySortIndicator = (_columns, field, dir) =>
     ...column,
     sortOrder: column.sortField === field ? dir.concat("end") : false,
   }));
+
+const pageTitle = "Browse Notice of Work";
 
 export class NoticeOfWorkTable extends Component {
   transformRowData = (applications) =>
@@ -138,7 +142,17 @@ export class NoticeOfWorkTable extends Component {
       dataIndex: "nowNum",
       sortField: "now_number",
       render: (text, record) => (
-        <Link to={router.VIEW_NOTICE_OF_WORK_APPLICATION.dynamicRoute(record.key)}>{text}</Link>
+        <Link
+          to={{
+            pathname: router.VIEW_NOTICE_OF_WORK_APPLICATION.dynamicRoute(record.key),
+            state: {
+              fromRoute: this.props.location.pathname + this.props.location.search,
+              fromTitle: pageTitle,
+            },
+          }}
+        >
+          {text}
+        </Link>
       ),
       sorter: true,
       ...this.filterProperties("NoW No.", "now_number"),
@@ -184,11 +198,27 @@ export class NoticeOfWorkTable extends Component {
         record.key && (
           <div title="" className="btn--middle flex">
             <AuthorizationWrapper inTesting>
-              <Link to={router.NOTICE_OF_WORK_APPLICATION.dynamicRoute(record.key)}>
+              <Link
+                to={{
+                  pathname: router.NOTICE_OF_WORK_APPLICATION.dynamicRoute(record.key),
+                  state: {
+                    fromRoute: this.props.location.pathname + this.props.location.search,
+                    fromTitle: pageTitle,
+                  },
+                }}
+              >
                 <img src={EDIT_OUTLINE_VIOLET} alt="Edit NoW" className="padding-md--right" />
               </Link>
             </AuthorizationWrapper>
-            <Link to={router.VIEW_NOTICE_OF_WORK_APPLICATION.dynamicRoute(record.key)}>
+            <Link
+              to={{
+                pathname: router.VIEW_NOTICE_OF_WORK_APPLICATION.dynamicRoute(record.key),
+                state: {
+                  fromRoute: this.props.location.pathname + this.props.location.search,
+                  fromTitle: pageTitle,
+                },
+              }}
+            >
               <Icon type="eye" className="icon-lg icon-svg-filter padding-large--left" />
             </Link>
           </div>
@@ -223,4 +253,4 @@ export class NoticeOfWorkTable extends Component {
 NoticeOfWorkTable.propTypes = propTypes;
 NoticeOfWorkTable.defaultProps = defaultProps;
 
-export default NoticeOfWorkTable;
+export default withRouter(NoticeOfWorkTable);
