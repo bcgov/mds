@@ -314,15 +314,13 @@ export const fetchNoticeOFWorkApplicationProgressStatusCodes = () => (dispatch) 
 };
 
 export const fetchNoticeOFWorkApplicationPermitTypes = () => (dispatch) => {
-  dispatch(request(reducerTypes.GET_NOW_APPLICATION_PROGRESS_STATUS_CODES));
+  dispatch(request(reducerTypes.GET_NOW_APPLICATION_PERMIT_TYPES));
   return CustomAxios()
-    .get(`${ENVIRONMENT.apiUrl + API.NOW_APPLICATION_PROGRESS_STATUS_CODES}`, createRequestHeader())
+    .get(`${ENVIRONMENT.apiUrl + API.NOW_APPLICATION_PERMIT_TYPES}`, createRequestHeader())
     .then((response) => {
-      dispatch(success(reducerTypes.GET_NOW_APPLICATION_PROGRESS_STATUS_CODES));
-      dispatch(
-        staticContentActions.storeNoticeOfWorkApplicationProgressStatusCodeOptions(response.data)
-      );
+      dispatch(success(reducerTypes.GET_NOW_APPLICATION_PERMIT_TYPES));
+      dispatch(staticContentActions.storeNoticeOfWorkApplicationPermitTypesOptions(response.data));
       return response;
     })
-    .catch(() => dispatch(error(reducerTypes.GET_NOW_APPLICATION_PROGRESS_STATUS_CODES)));
+    .catch(() => dispatch(error(reducerTypes.GET_NOW_APPLICATION_PERMIT_TYPES)));
 };
