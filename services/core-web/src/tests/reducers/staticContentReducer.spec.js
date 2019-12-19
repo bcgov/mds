@@ -16,6 +16,7 @@ import {
   storeNoticeOfWorkApplicationDocumentTypeOptions,
   storeNoticeOfWorkUndergroundExplorationTypeOptions,
   storeNoticeOfWorkApplicationProgressStatusCodeOptions,
+  storeNoticeOfWorkApplicationPermitTypesOptions,
 } from "@/actions/staticContentActions";
 import * as MOCK from "@/tests/mocks/dataMocks";
 import * as NOW_MOCK from "@/tests/mocks/noticeOfWorkMocks";
@@ -210,7 +211,7 @@ describe("staticContentReducer", () => {
       NOW_MOCK.APPLICATION_PERMIT_TYPES.records;
     const result = staticContentReducer(
       undefined,
-      storeNoticeOfWorkApplicationProgressStatusCodeOptions(NOW_MOCK.APPLICATION_PERMIT_TYPES)
+      storeNoticeOfWorkApplicationPermitTypesOptions(NOW_MOCK.APPLICATION_PERMIT_TYPES)
     );
     expect(result).toEqual(expectedValue);
   });
