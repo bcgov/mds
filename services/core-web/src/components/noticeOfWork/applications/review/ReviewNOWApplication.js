@@ -16,6 +16,13 @@ import ReclamationSummary from "./activities/ReclamationSummary";
 import ReviewNOWDocuments from "./ReviewNOWDocuments";
 import ReviewNOWContacts from "./ReviewNOWContacts";
 import CustomPropTypes from "@/customPropTypes";
+import {
+  getDropdownNoticeOfWorkApplicationStatusOptions,
+  getNoticeOfWorkApplicationProgressStatusCodeOptions,
+  getMineRegionDropdownOptions,
+  getDropdownNoticeOfWorkApplicationTypeOptions,
+  getDropdownNoticeOfWorkApplicationPermitTypeOptions,
+} from "@/selectors/staticContentSelectors";
 
 /**
  * @constant ReviewNOWApplication renders edit/view for the NoW Application review step
@@ -33,6 +40,7 @@ const propTypes = {
   reclamationSummary: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.strings)).isRequired,
   now_application_guid: PropTypes.string.isRequired,
   applicationTypeOptions: CustomPropTypes.options.isRequired,
+  permitTypeOptions: CustomPropTypes.options.isRequired,
   submission_documents: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
 };
 
@@ -142,7 +150,8 @@ export const ReviewNOWApplication = (props) => {
           <Field
             id="application_permit_type_code"
             name="application_permit_type_code"
-            component={RenderField}
+            component={RenderSelect}
+            data={props.permitTypeOptions}
             disabled={props.isViewMode}
           />
         </Col>
@@ -447,6 +456,10 @@ export default compose(
     contacts: selector(state, "contacts"),
     now_application_guid: selector(state, "now_application_guid"),
     submission_documents: selector(state, "submission_documents"),
+    regionDropdownOptions: getMineRegionDropdownOptions(state),
+    applicationTypeOptions: getDropdownNoticeOfWorkApplicationTypeOptions(state),
+    applicationProgressStatusCodes: getNoticeOfWorkApplicationProgressStatusCodeOptions(state),
+    permitTypeOptions: getDropdownNoticeOfWorkApplicationPermitTypeOptions(state),
   })),
   reduxForm({
     form: FORM.EDIT_NOTICE_OF_WORK,

@@ -24,13 +24,12 @@ import {
   fetchRegionOptions,
   fetchNoticeOFWorkApplicationStatusOptions,
   fetchNoticeOFWorkApplicationTypeOptions,
+  fetchNoticeOFWorkApplicationPermitTypes,
 } from "@/actionCreators/staticContentActionCreator";
 import { getMines } from "@/selectors/mineSelectors";
 import {
   getDropdownNoticeOfWorkApplicationStatusOptions,
   getNoticeOfWorkApplicationProgressStatusCodeOptions,
-  getMineRegionDropdownOptions,
-  getDropdownNoticeOfWorkApplicationTypeOptions,
 } from "@/selectors/staticContentSelectors";
 import VerifyNOWMine from "@/components/noticeOfWork/applications/verification/VerifyNOWMine";
 import * as Strings from "@/constants/strings";
@@ -55,6 +54,7 @@ const propTypes = {
   createNoticeOfWorkApplicationProgress: CustomPropTypes.importedNOWApplication.isRequired,
   createNoticeOfWorkApplication: PropTypes.func.isRequired,
   updateNoticeOfWorkApplication: PropTypes.func.isRequired,
+  fetchNoticeOFWorkApplicationPermitTypes: PropTypes.func.isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
   fetchImportedNoticeOfWorkApplication: PropTypes.func.isRequired,
   fetchOriginalNoticeOfWorkApplication: PropTypes.func.isRequired,
@@ -71,6 +71,7 @@ const propTypes = {
     },
   }).isRequired,
   regionDropdownOptions: CustomPropTypes.options.isRequired,
+  permitTypeOptions: CustomPropTypes.options.isRequired,
   // the following prop will be used in the future
   // eslint-disable-next-line
   formValues: CustomPropTypes.nowApplication.isRequired,
@@ -106,6 +107,7 @@ export class NoticeOfWorkApplication extends Component {
     this.props.fetchNoticeOFWorkActivityTypeOptions();
     this.props.fetchRegionOptions();
     this.props.fetchNoticeOFWorkApplicationStatusOptions();
+    this.props.fetchNoticeOFWorkApplicationPermitTypes();
     this.props.fetchNoticeOFWorkApplicationProgressStatusCodes();
     this.props.fetchNoticeOFWorkApplicationTypeOptions();
     this.props.fetchImportedNoticeOfWorkApplication(id).then(({ data }) => {
@@ -287,8 +289,6 @@ export class NoticeOfWorkApplication extends Component {
       <ReviewNOWApplication
         reclamationSummary={this.props.reclamationSummary}
         isViewMode={this.state.isViewMode}
-        regionDropdownOptions={this.props.regionDropdownOptions}
-        applicationTypeOptions={this.props.applicationTypeOptions}
         initialValues={
           this.state.showOriginalValues ? this.props.originalNoticeOfWork : this.props.noticeOfWork
         }
@@ -437,9 +437,7 @@ const mapStateToProps = (state) => ({
   formValues: getFormValues(FORM.EDIT_NOTICE_OF_WORK)(state),
   mines: getMines(state),
   reclamationSummary: getNOWReclamationSummary(state),
-  regionDropdownOptions: getMineRegionDropdownOptions(state),
   applicationStatusOptions: getDropdownNoticeOfWorkApplicationStatusOptions(state),
-  applicationTypeOptions: getDropdownNoticeOfWorkApplicationTypeOptions(state),
   applicationProgressStatusCodes: getNoticeOfWorkApplicationProgressStatusCodeOptions(state),
 });
 
@@ -458,6 +456,7 @@ const mapDispatchToProps = (dispatch) =>
       reset,
       fetchRegionOptions,
       fetchNoticeOFWorkApplicationTypeOptions,
+      fetchNoticeOFWorkApplicationPermitTypes,
     },
     dispatch
   );
