@@ -19,7 +19,7 @@ const propTypes = {
   route: PropTypes.shape({ route: PropTypes.string, hashRoute: PropTypes.func }).isRequired,
 };
 
-class NOWSideMenu extends Component {
+export class NOWSideMenu extends Component {
   static onClickRoute = "";
 
   handleAnchorOnClick = (event, link) => {
