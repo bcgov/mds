@@ -223,7 +223,7 @@ export class NoticeOfWorkApplication extends Component {
           mine_guid: noticeOfWork.mine_guid,
         },
         onSubmit: this.handleChangeNOWMine,
-        title: `Transfer NOW away from ${noticeOfWork.mine_name}`,
+        title: `Transfer Notice of Work`,
         noticeOfWork,
       },
       widthSize: "75vw",

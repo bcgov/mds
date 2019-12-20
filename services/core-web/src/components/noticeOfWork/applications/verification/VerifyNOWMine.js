@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { AutoComplete, Button, Col, Row } from "antd";
-import { uniqBy } from "lodash";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { fetchMineNameList, fetchMineRecordById } from "@/actionCreators/mineActionCreator";
