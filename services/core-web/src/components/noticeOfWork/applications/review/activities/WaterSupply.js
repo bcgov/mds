@@ -139,14 +139,15 @@ export const WaterSupply = (props) => {
 
   const transformData = (activities) =>
     activities
-      .filter((activity) => !activity.state_modified)
       .map((activity, index) => ({
         supply_source_description: activity.supply_source_description || "",
         activity_type_description: activity.activity_type_description || "",
         water_use_description: activity.water_use_description || "",
         estimate_rate: activity.estimate_rate || "",
+        state_modified: activity.state_modified || "",
         index,
-      }));
+      }))
+      .filter((activity) => !activity.state_modified);
 
   return (
     <div>

@@ -216,7 +216,6 @@ export const SettlingPonds = (props) => {
 
   const transformData = (activities) =>
     activities
-      .filter((activity) => !activity.state_modified)
       .map((activity, index) => ({
         activity_type_description: activity.activity_type_description || "",
         width: activity.width || "",
@@ -226,8 +225,10 @@ export const SettlingPonds = (props) => {
         timber_volume: activity.timber_volume || "",
         water_source_description: activity.water_source_description || "",
         construction_plan: activity.construction_plan || "",
+        state_modified: activity.state_modified || "",
         index,
-      }));
+      }))
+      .filter((activity) => !activity.state_modified);
 
   return (
     <div>

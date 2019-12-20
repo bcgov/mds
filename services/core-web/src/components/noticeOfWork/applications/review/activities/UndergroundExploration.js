@@ -41,6 +41,11 @@ export const UndergroundExploration = (props) => {
     const newActivity = {
       activity_type_description: "",
       quantity: "",
+      incline: "",
+      incline_unit_type_code: "",
+      width: "",
+      length: "",
+      height: "",
       disturbed_area: "",
       timber_volume: "",
     };
@@ -86,13 +91,13 @@ export const UndergroundExploration = (props) => {
     },
     {
       title: "Incline",
-      dataIndex: "incline_unit_type_code",
-      key: "incline_unit_type_code",
+      dataIndex: "incline",
+      key: "incline",
       render: (text, record) => (
         <div title="Incline">
           <div className="inline-flex">
             <input
-              name="incline_unit_type_code"
+              name="incline"
               type="text"
               disabled={props.isViewMode}
               value={text}
@@ -104,13 +109,13 @@ export const UndergroundExploration = (props) => {
     },
     {
       title: "Units",
-      dataIndex: "units",
-      key: "units",
+      dataIndex: "incline_unit_type_code",
+      key: "incline_unit_type_code",
       render: (text, record) => (
         <div title="Units">
           <div className="inline-flex">
             <input
-              name="units"
+              name="incline_unit_type_code"
               type="text"
               disabled={props.isViewMode}
               value={text}
@@ -234,19 +239,20 @@ export const UndergroundExploration = (props) => {
 
   const transformData = (activities) =>
     activities
-      .filter((activity) => !activity.state_modified)
       .map((activity, index) => ({
         activity_type_description: activity.activity_type_description || "",
         quantity: activity.quantity || "",
+        incline: activity.incline || "",
         incline_unit_type_code: activity.incline_unit_type_code || "",
-        units: activity.units || "",
         length: activity.length || "",
         width: activity.width || "",
         height: activity.height || "",
         disturbed_area: activity.disturbed_area || "",
         timber_volume: activity.timber_volume || "",
+        state_modified: activity.state_modified || "",
         index,
-      }));
+      }))
+      .filter((activity) => !activity.state_modified);
 
   return (
     <div>

@@ -149,14 +149,15 @@ export const AccessRoads = (props) => {
 
   const transformData = (activities) =>
     activities
-      .filter((activity) => !activity.state_modified)
       .map((activity, index) => ({
         activity_type_description: activity.activity_type_description || "",
         length: activity.length || "",
         disturbed_area: activity.disturbed_area || "",
         timber_volume: activity.timber_volume || "",
+        state_modified: activity.state_modified || "",
         index,
-      }));
+      }))
+      .filter((activity) => !activity.state_modified);
 
   return (
     <div>
@@ -164,7 +165,7 @@ export const AccessRoads = (props) => {
         align="left"
         pagination={false}
         columns={columns(props.isViewMode)}
-        dataSource={transformData(props.details ? props.details : [])}
+        dataSource={transformData(props.details || [])}
         locale={{
           emptyText: "No data",
         }}

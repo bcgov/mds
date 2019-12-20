@@ -126,13 +126,14 @@ export const CutLines = (props) => {
 
   const transformData = (activities) =>
     activities
-      .filter((activity) => !activity.state_modified)
       .map((activity, index) => ({
         cut_line_length: activity.cut_line_length || "",
         disturbed_area: activity.disturbed_area || "",
         timber_volume: activity.timber_volume || "",
+        state_modified: activity.state_modified || "",
         index,
-      }));
+      }))
+      .filter((activity) => !activity.state_modified);
 
   return (
     <div>
