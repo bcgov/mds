@@ -212,9 +212,14 @@ export class NoticeOfWorkApplication extends Component {
   };
 
   handleChangeNOWMine = (values) => {
+    console.log(values);
     this.props
       .updateNoticeOfWorkApplication(values, this.props.noticeOfWork.now_application_guid)
-      .then(() => {});
+      .then(() => {
+        this.props.fetchImportedNoticeOfWorkApplication(
+          this.props.noticeOfWork.now_application_guid
+        );
+      });
     this.props.closeModal();
   };
 
