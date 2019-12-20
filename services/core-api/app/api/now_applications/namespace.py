@@ -11,13 +11,15 @@ from app.api.now_applications.resources.now_application_document_type_resource i
 from app.api.now_applications.resources.underground_exploration_type_resource import UndergroundExplorationTypeResource
 from app.api.now_applications.resources.now_application_progress_resource import NOWApplicationProgressResource
 from app.api.now_applications.resources.now_application_progress_status_resource import NOWApplicationProgressStatusResource
+from app.api.now_applications.resources.now_application_document_resource import NOWApplicationDocumentResource
 
 api = Namespace('now-applications', description='Party related operations')
 
 api.add_resource(NoticeOfWorkListResource, '')
-api.add_resource(NOWApplicationImportResource, '/<string:application_guid>/import')
-api.add_resource(NOWApplicationResource, '/<string:application_guid>')
-api.add_resource(NOWApplicationProgressResource, '/<string:application_guid>/progress')
+api.add_resource(NOWApplicationImportResource, '/<string:now_application_guid>/import')
+api.add_resource(NOWApplicationResource, '/<string:now_application_guid>')
+api.add_resource(NOWApplicationProgressResource, '/<string:now_application_guid>/progress')
+api.add_resource(NOWApplicationDocumentResource, '/<string:now_application_guid>/document')
 
 # now static content
 api.add_resource(NOWActivityTypeResource, '/activity-types')

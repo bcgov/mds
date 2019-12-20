@@ -890,7 +890,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
         id="documents"
         title="Documents"
       >
-        <ReviewNOWDocuments />
+        <NOWDocuments />
       </withRouter(ScrollContentWrapper)>
     </div>
   </Form>

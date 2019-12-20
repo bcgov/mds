@@ -12,7 +12,8 @@ import * as FORM from "@/constants/forms";
 import ScrollContentWrapper from "@/components/common/wrappers/ScrollContentWrapper";
 import ReviewActivities from "@/components/noticeOfWork/applications/review/ReviewActivities";
 import ReclamationSummary from "./activities/ReclamationSummary";
-import ReviewNOWDocuments from "./ReviewNOWDocuments";
+import NOWDocuments from "@/components/noticeOfWork/applications//NOWDocuments";
+import NOWSubmissionDocuments from "@/components/noticeOfWork/applications//NOWSubmissionDocuments";
 import ReviewNOWContacts from "./ReviewNOWContacts";
 
 /**
@@ -30,6 +31,7 @@ const propTypes = {
   // eslint-disable-next-line
   reclamationSummary: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.strings)).isRequired,
   now_application_guid: PropTypes.string.isRequired,
+  documents: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
   submission_documents: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
 };
 
@@ -384,6 +386,11 @@ export const ReviewNOWApplication = (props) => {
     </div>
   );
 
+  const addDocumentToNoticeOfWork = (document) => {
+    JSON.stringify(document);
+    // alert(JSON.stringify(document));
+  };
+
   return (
     <div>
       <Form layout="vertical">
@@ -417,10 +424,17 @@ export const ReviewNOWApplication = (props) => {
             {renderReclamation()}
           </ScrollContentWrapper>
           <ReviewActivities isViewMode={props.isViewMode} />
-          <ScrollContentWrapper id="documents" title="Documents">
-            <ReviewNOWDocuments
+          <ScrollContentWrapper id="submission_documents" title="Submission Documents (VFCBC/NROS)">
+            <NOWSubmissionDocuments
               now_application_guid={props.now_application_guid}
               documents={props.submission_documents}
+            />
+          </ScrollContentWrapper>
+          <ScrollContentWrapper id="additional_documents" title="Additional Documents">
+            <NOWDocuments
+              now_application_guid={props.now_application_guid}
+              documents={props.documents}
+              addDocumentToNoticeOfWork={addDocumentToNoticeOfWork}
             />
           </ScrollContentWrapper>
         </div>
@@ -436,6 +450,7 @@ export default compose(
   connect((state) => ({
     contacts: selector(state, "contacts"),
     now_application_guid: selector(state, "now_application_guid"),
+    documents: selector(state, "documents"),
     submission_documents: selector(state, "submission_documents"),
   })),
   reduxForm({

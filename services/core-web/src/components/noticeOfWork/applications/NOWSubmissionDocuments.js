@@ -1,6 +1,6 @@
 import React from "react";
 import { PropTypes } from "prop-types";
-import { Divider, Table } from "antd";
+import { Table } from "antd";
 import LinkButton from "@/components/common/LinkButton";
 import { downloadNowDocument } from "@/utils/actionlessNetworkCalls";
 import { UNIQUELY_SPATIAL } from "@/constants/fileTypes";
@@ -14,7 +14,7 @@ const propTypes = {
 
 const columns = [
   {
-    title: "File name",
+    title: "File Name",
     dataIndex: "filename",
     key: "filename",
     render: (text, record) => (
@@ -48,7 +48,7 @@ const isSpatialFile = (document) =>
   (document.filename &&
     Object.keys(UNIQUELY_SPATIAL).includes(document.filename.substr(document.filename.length - 4)));
 
-const transfromData = (documents, now_application_guid, spatial = false) =>
+const transformDocuments = (documents, now_application_guid, spatial = false) =>
   documents
     .filter((document) => (spatial ? isSpatialFile(document) : !isSpatialFile(document)))
     .map((document) => ({
@@ -60,34 +60,32 @@ const transfromData = (documents, now_application_guid, spatial = false) =>
       description: document.description || Strings.EMPTY_FIELD,
     }));
 
-export const ReviewNOWDocuments = (props) => (
+export const NOWSubmissionDocuments = (props) => (
   <div>
-    <br />
-    <h3>Original Submission Files</h3>
-    <Divider />
-    <div className="padding-large--sides">
+    <div>
       {props.documents && props.documents.length >= 1 ? (
         <Table
           align="left"
           pagination={false}
           columns={columns}
-          dataSource={transfromData(props.documents, props.now_application_guid)}
-          locale={{ emptyText: "There are no documents associated with this Notice of Work" }}
+          dataSource={transformDocuments(props.documents, props.now_application_guid)}
+          locale={{
+            emptyText: "There are no submission documents associated with this Notice of Work",
+          }}
         />
       ) : (
         <NullScreen type="documents" />
       )}
     </div>
     <br />
-    <h3>Original Submission Spatial Files</h3>
-    <Divider />
-    <div className="padding-large--sides">
+    <h4>Submission Spatial Files</h4>
+    <div>
       {props.documents && props.documents.length >= 1 ? (
         <Table
           align="left"
           pagination={false}
           columns={columns}
-          dataSource={transfromData(props.documents, props.now_application_guid, true)}
+          dataSource={transformDocuments(props.documents, props.now_application_guid, true)}
           locale={{
             emptyText: "There are no spacial files associated with this Notice of Work",
           }}
@@ -99,6 +97,6 @@ export const ReviewNOWDocuments = (props) => (
   </div>
 );
 
-ReviewNOWDocuments.propTypes = propTypes;
+NOWSubmissionDocuments.propTypes = propTypes;
 
-export default ReviewNOWDocuments;
+export default NOWSubmissionDocuments;

@@ -21,6 +21,7 @@ import {
 import {
   fetchNoticeOFWorkActivityTypeOptions,
   fetchNoticeOFWorkApplicationProgressStatusCodes,
+  fetchNoticeOFWorkApplicationDocumentTypeOptions,
 } from "@/actionCreators/staticContentActionCreator";
 import { getMines } from "@/selectors/mineSelectors";
 import { getNoticeOfWorkApplicationProgressStatusCodeOptions } from "@/selectors/staticContentSelectors";
@@ -44,6 +45,7 @@ const propTypes = {
   noticeOfWork: CustomPropTypes.importedNOWApplication,
   originalNoticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
   fetchNoticeOFWorkApplicationProgressStatusCodes: PropTypes.func.isRequired,
+  fetchNoticeOFWorkApplicationDocumentTypeOptions: PropTypes.func.isRequired,
   createNoticeOfWorkApplicationProgress: CustomPropTypes.importedNOWApplication.isRequired,
   createNoticeOfWorkApplication: PropTypes.func.isRequired,
   updateNoticeOfWorkApplication: PropTypes.func.isRequired,
@@ -92,6 +94,7 @@ export class NoticeOfWorkApplication extends Component {
     let currentStep = 0;
     this.props.fetchNoticeOFWorkActivityTypeOptions();
     this.props.fetchNoticeOFWorkApplicationProgressStatusCodes();
+    this.props.fetchNoticeOFWorkApplicationDocumentTypeOptions();
     this.props.fetchImportedNoticeOfWorkApplication(id).then(({ data }) => {
       const associatedMineGuid = data.mine_guid ? data.mine_guid : "";
       const isImported = data.imported_to_core;
@@ -433,6 +436,7 @@ const mapDispatchToProps = (dispatch) =>
       fetchNoticeOFWorkActivityTypeOptions,
       createNoticeOfWorkApplicationProgress,
       fetchNoticeOFWorkApplicationProgressStatusCodes,
+      fetchNoticeOFWorkApplicationDocumentTypeOptions,
       reset,
     },
     dispatch
