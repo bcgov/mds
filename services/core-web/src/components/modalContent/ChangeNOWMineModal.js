@@ -38,6 +38,7 @@ export class ChangeNOWMineModal extends Component {
   };
 
   updateMine = (value) => {
+    this.setState({ isMineLoaded: false });
     this.props.fetchMineRecordById(value).then((data) => {
       this.setState({ isMineLoaded: true, mine: data.data });
     });
@@ -52,17 +53,15 @@ export class ChangeNOWMineModal extends Component {
 
   render() {
     return (
-      this.state.isMineLoaded && (
-        <div>
-          <ChangeNOWMineForm
-            {...this.props}
-            handleChange={this.handleChange}
-            handleSelect={this.updateMine}
-            data={this.transformData(this.props.mineNameList)}
-          />
-          <MineCard mine={this.state.mine} />
-        </div>
-      )
+      <div>
+        <ChangeNOWMineForm
+          {...this.props}
+          handleChange={this.handleChange}
+          handleSelect={this.updateMine}
+          data={this.transformData(this.props.mineNameList)}
+        />
+        {this.state.isMineLoaded && <MineCard mine={this.state.mine} />}
+      </div>
     );
   }
 }
