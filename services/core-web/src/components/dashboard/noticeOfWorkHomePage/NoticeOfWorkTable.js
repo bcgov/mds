@@ -65,7 +65,7 @@ const applySortIndicator = (_columns, field, dir) =>
     sortOrder: column.sortField === field ? dir.concat("end") : false,
   }));
 
-const pageTitle = "Browse Notice of Work";
+const pageTitle = "Browse Notices of Work";
 
 export class NoticeOfWorkTable extends Component {
   transformRowData = (applications) =>

@@ -9,7 +9,7 @@ exports[`NoticeOfWorkHomePage renders properly 1`] = `
   >
     <div>
       <h1>
-        Browse Notice of Work
+        Browse Notices of Work
       </h1>
       <p>
         Applications shown are from NROS and vFCBC only

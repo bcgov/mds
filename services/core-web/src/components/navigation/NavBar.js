@@ -244,7 +244,7 @@ export class NavBar extends Component {
                   id={this.ifActiveButton(router.NOTICE_OF_WORK_APPLICATIONS.route)}
                   className="menu--hamburger__btn--link"
                 >
-                  Browse Notice of Work
+                  Browse Notices of Work
                 </Button>
               </Link>
             </Col>
@@ -325,7 +325,7 @@ export class NavBar extends Component {
       </div>
       <div className="custom-menu-item">
         <Link to={router.NOTICE_OF_WORK_APPLICATIONS.route}>
-          <button type="button">Browse Notice of Work</button>
+          <button type="button">Browse Notices of Work</button>
         </Link>
       </div>
     </Menu>
