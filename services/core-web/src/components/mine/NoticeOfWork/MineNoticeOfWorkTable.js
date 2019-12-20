@@ -23,7 +23,13 @@ const propTypes = {
   sortDir: PropTypes.string,
   searchParams: PropTypes.objectOf(PropTypes.string),
   isLoaded: PropTypes.bool.isRequired,
-  location: CustomPropTypes.location,
+  location: PropTypes.shape({
+    pathname: PropTypes.string,
+    search: PropTypes.string,
+    state: PropTypes.shape({
+      noticeOfWorkPageFromRoute: CustomPropTypes.noticeOfWorkPageFromRoute,
+    }),
+  }).isRequired,
 };
 
 const defaultProps = {
@@ -31,7 +37,6 @@ const defaultProps = {
   sortDir: null,
   noticeOfWorkApplications: [],
   searchParams: {},
-  location: {},
 };
 
 const handleTableChange = (updateApplicationList) => (pagination, filters, sorter) => {
@@ -122,8 +127,10 @@ export class MineNoticeOfWorkTable extends Component {
           to={{
             pathname: router.VIEW_NOTICE_OF_WORK_APPLICATION.dynamicRoute(record.key),
             state: {
-              fromRoute: this.props.location.pathname + this.props.location.search,
-              fromTitle: pageTitle(record.mineName),
+              noticeOfWorkPageFromRoute: {
+                route: this.props.location.pathname + this.props.location.search,
+                title: pageTitle(record.mineName),
+              },
             },
           }}
         >
@@ -169,8 +176,10 @@ export class MineNoticeOfWorkTable extends Component {
                   to={{
                     pathname: router.NOTICE_OF_WORK_APPLICATION.dynamicRoute(record.key),
                     state: {
-                      fromRoute: this.props.location.pathname + this.props.location.search,
-                      fromTitle: pageTitle(record.mineName),
+                      noticeOfWorkPageFromRoute: {
+                        route: this.props.location.pathname + this.props.location.search,
+                        title: pageTitle(record.mineName),
+                      },
                     },
                   }}
                 >
@@ -182,8 +191,10 @@ export class MineNoticeOfWorkTable extends Component {
               to={{
                 pathname: router.VIEW_NOTICE_OF_WORK_APPLICATION.dynamicRoute(record.key),
                 state: {
-                  fromRoute: this.props.location.pathname + this.props.location.search,
-                  fromTitle: pageTitle(record.mineName),
+                  noticeOfWorkPageFromRoute: {
+                    route: this.props.location.pathname + this.props.location.search,
+                    title: pageTitle(record.mineName),
+                  },
                 },
               }}
             >

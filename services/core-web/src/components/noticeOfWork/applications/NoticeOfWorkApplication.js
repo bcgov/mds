@@ -53,7 +53,11 @@ const propTypes = {
   fetchOriginalNoticeOfWorkApplication: PropTypes.func.isRequired,
   fetchNoticeOFWorkActivityTypeOptions: PropTypes.func.isRequired,
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
-  location: CustomPropTypes.location,
+  location: PropTypes.shape({
+    state: PropTypes.shape({
+      noticeOfWorkPageFromRoute: CustomPropTypes.noticeOfWorkPageFromRoute,
+    }),
+  }).isRequired,
   match: PropTypes.shape({
     params: {
       id: PropTypes.string,
@@ -70,26 +74,28 @@ const propTypes = {
 
 const defaultProps = {
   noticeOfWork: { application_progress: [] },
-  location: {},
 };
 
 export class NoticeOfWorkApplication extends Component {
-  state = {
-    currentStep: 0,
-    isLoaded: false,
-    isImported: false,
-    isNoWLoaded: false,
-    associatedMineGuid: "",
-    isViewMode: true,
-    showOriginalValues: false,
-    fixedTop: false,
-    menuVisible: false,
-    isDecision: false,
-    buttonValue: "REV",
-    buttonLabel: "Technical Review",
-    fromTitle: "",
-    fromRoute: "",
-  };
+  static noticeOfWorkPageFromRoute = {};
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      currentStep: 0,
+      isLoaded: false,
+      isImported: false,
+      isNoWLoaded: false,
+      associatedMineGuid: "",
+      isViewMode: true,
+      showOriginalValues: false,
+      fixedTop: false,
+      menuVisible: false,
+      isDecision: false,
+      buttonValue: "REV",
+      buttonLabel: "Technical Review",
+    };
+  }
 
   componentDidMount() {
     const { id } = this.props.match.params;
@@ -117,22 +123,12 @@ export class NoticeOfWorkApplication extends Component {
       });
     });
     this.props.fetchOriginalNoticeOfWorkApplication(id);
-    this.setState({
-      fromTitle:
-        this.props &&
-        this.props.location &&
-        this.props.location.state &&
-        this.props.location.state.fromTitle
-          ? this.props.location.state.fromTitle
-          : "",
-      fromRoute:
-        this.props &&
-        this.props.location &&
-        this.props.location.state &&
-        this.props.location.state.fromRoute
-          ? this.props.location.state.fromRoute
-          : "",
-    });
+    this.noticeOfWorkPageFromRoute =
+      this.props.location &&
+      this.props.location.state &&
+      this.props.location.state.noticeOfWorkPageFromRoute
+        ? this.props.location.state.noticeOfWorkPageFromRoute
+        : this.noticeOfWorkPageFromRoute;
   }
 
   componentWillReceiveProps(nextProps) {
@@ -358,10 +354,10 @@ export class NoticeOfWorkApplication extends Component {
           <div className="inline-flex between">
             <div>
               <h1>NoW Number: {this.props.noticeOfWork.now_number || Strings.EMPTY_FIELD}</h1>
-              {this.state && this.state.fromRoute && (
-                <Link to={this.state.fromRoute}>
+              {this.noticeOfWorkPageFromRoute && (
+                <Link to={this.noticeOfWorkPageFromRoute.route}>
                   <Icon type="arrow-left" style={{ paddingRight: "5px" }} />
-                  Back to: {this.state.fromTitle}
+                  Back to: {this.noticeOfWorkPageFromRoute.title}
                 </Link>
               )}
             </div>
