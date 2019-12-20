@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
-import { AutoComplete, Button, Col, Row } from "antd";
+import { AutoComplete } from "antd";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import ChangeNOWMineForm from "@/components/Forms/noticeOfWork/ChangeNOWMineForm";

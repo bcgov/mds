@@ -211,7 +211,10 @@ export class NoticeOfWorkApplication extends Component {
     }
   };
 
-  handleChangeNOWMine = () => {
+  handleChangeNOWMine = (values) => {
+    this.props
+      .updateNoticeOfWorkApplication(values, this.props.noticeOfWork.now_application_guid)
+      .then(() => {});
     this.props.closeModal();
   };
 
