@@ -91,26 +91,26 @@ export class ViewNoticeOfWorkApplication extends Component {
   render() {
     return (
       <div className="page">
-        <div className="steps--header fixed-scroll-view">
-          <div className="inline-flex between">
-            <div>
-              <h1>NoW Number: {this.props.noticeOfWork.now_number || Strings.EMPTY_FIELD}</h1>
-              {this.noticeOfWorkPageFromRoute && (
-                <Link to={this.noticeOfWorkPageFromRoute.route}>
-                  <Icon type="arrow-left" style={{ paddingRight: "5px" }} />
-                  Back to: {this.noticeOfWorkPageFromRoute.title}
-                </Link>
-              )}
-            </div>
-            {this.state.isLoaded &&
-              this.props.noticeOfWork.submission_documents.filter(
-                (x) => x.filename === "ApplicationForm.pdf"
-              ).length > 0 && (
-                <Button onClick={this.showApplicationForm}>Open Original Application Form</Button>
-              )}
-          </div>
-        </div>
         <LoadingWrapper condition={this.state.isLoaded}>
+          <div className="steps--header fixed-scroll-view">
+            <div className="inline-flex between">
+              <div>
+                <h1>NoW Number: {this.props.noticeOfWork.now_number || Strings.EMPTY_FIELD}</h1>
+                {this.noticeOfWorkPageFromRoute && (
+                  <Link to={this.noticeOfWorkPageFromRoute.route}>
+                    <Icon type="arrow-left" style={{ paddingRight: "5px" }} />
+                    Back to: {this.noticeOfWorkPageFromRoute.title}
+                  </Link>
+                )}
+              </div>
+              {this.state.isLoaded &&
+                this.props.noticeOfWork.submission_documents.filter(
+                  (x) => x.filename === "ApplicationForm.pdf"
+                ).length > 0 && (
+                  <Button onClick={this.showApplicationForm}>Open Original Application Form</Button>
+                )}
+            </div>
+          </div>
           <div>
             <div
               className="side-menu--fixed"
