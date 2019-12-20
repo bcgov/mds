@@ -6,12 +6,18 @@ import RenderField from "@/components/common/RenderField";
 import * as FORM from "@/constants/forms";
 import { required } from "@/utils/Validate";
 import { resetForm } from "@/utils/helpers";
+import RenderAutoComplete from "@/components/common/RenderAutoComplete";
+import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
+  handleChange: PropTypes.func.isRequired,
+  handleSelect: PropTypes.func.isRequired,
+  noticeOfWork: CustomPropTypes.nowApplication.isRequired,
   closeModal: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
   submitting: PropTypes.bool.isRequired,
+  data: PropTypes.arrayOf(PropTypes.any).isRequired,
 };
 
 export const ChangeNOWMineForm = (props) => (
@@ -19,7 +25,14 @@ export const ChangeNOWMineForm = (props) => (
     <Row gutter={16}>
       <Col>
         <Form.Item>
-          <Field id="" name="" label="Mine" component={RenderField} validate={[required]} />
+          <RenderAutoComplete
+            placeholder="Search for a mine by name"
+            handleSelect={props.handleSelect}
+            defaultValue={`${props.noticeOfWork.mine_name} - ${props.noticeOfWork.mine_no}`}
+            data={props.data}
+            handleChange={props.handleChange}
+            disabled={props.isImported}
+          />
         </Form.Item>
       </Col>
     </Row>

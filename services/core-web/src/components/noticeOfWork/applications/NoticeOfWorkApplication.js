@@ -215,18 +215,18 @@ export class NoticeOfWorkApplication extends Component {
     this.props.closeModal();
   };
 
-  openChangeNOWMineModal = (event, NOW) => {
+  openChangeNOWMineModal = (event, noticeOfWork) => {
     event.preventDefault();
     this.props.openModal({
       props: {
         initialValues: {
-          mine_guid: NOW.mine_guid,
+          mine_guid: noticeOfWork.mine_guid,
         },
         onSubmit: this.handleChangeNOWMine,
-        title: `Transfer NOW away from ${NOW.mine_name}`,
-        now_application_guid: NOW.application_guid,
+        title: `Transfer NOW away from ${noticeOfWork.mine_name}`,
+        noticeOfWork,
       },
-      widthSize: "50vw",
+      widthSize: "75vw",
       content: modalConfig.CHANGE_NOW_MINE,
     });
   };
