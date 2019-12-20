@@ -10,17 +10,16 @@ import { PropTypes } from "prop-types";
 const propTypes = {
   id: PropTypes.string.isRequired,
   children: PropTypes.element.isRequired,
-  history: PropTypes.shape({ location: PropTypes.object }).isRequired,
   title: PropTypes.string.isRequired,
+  history: PropTypes.shape({
+    location: PropTypes.shape({ state: PropTypes.shape({ activeRoute: PropTypes.string }) }),
+  }).isRequired,
 };
 
 class ScrollContentWrapper extends Component {
   isActive = () => {
     const activeRoute =
-      this.props &&
-      this.props.history &&
-      this.props.history.location &&
-      this.props.history.location.state
+      this.props.history && this.props.history.location && this.props.history.location.state
         ? this.props.history.location.state.activeRoute
         : undefined;
     const isActiveRoute = includes(activeRoute, this.props.id);
