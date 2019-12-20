@@ -10,7 +10,6 @@ import { PropTypes } from "prop-types";
 const propTypes = {
   id: PropTypes.string.isRequired,
   children: PropTypes.element.isRequired,
-  // location: PropTypes.shape({ hash: PropTypes.string }).isRequired,
   history: PropTypes.shape({ location: PropTypes.object }).isRequired,
   title: PropTypes.string.isRequired,
 };
@@ -25,7 +24,6 @@ class ScrollContentWrapper extends Component {
         ? this.props.history.location.state.activeRoute
         : undefined;
     const isActiveRoute = includes(activeRoute, this.props.id);
-    // console.log(`isActive: activeRoute = ${activeRoute} isActiveRoute = ${isActiveRoute}`);
     return isActiveRoute ? "circle purple" : "circle grey";
   };
 
