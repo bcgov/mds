@@ -144,7 +144,7 @@ export const ReviewActivities = (props) => {
       </ScrollContentWrapper>
       <ScrollContentWrapper
         id="sand-gravel-quarry-operations"
-        title="Sand and Gravel / Quary Operations"
+        title="Sand and Gravel / Quarry Operations"
       >
         <FormSection name="sand_and_gravel">
           <SandGravelQuarry
