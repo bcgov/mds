@@ -10,7 +10,6 @@ const { Link } = Anchor;
  */
 
 const propTypes = {
-  // location: PropTypes.shape({ hash: PropTypes.string }).isRequired,
   history: PropTypes.shape({ push: PropTypes.func, replace: PropTypes.func }).isRequired,
   match: PropTypes.shape({
     params: {
@@ -29,12 +28,10 @@ class NOWSideMenu extends Component {
     const route = this.props.route.hashRoute(id, link.href);
     this.onClickRoute = route;
     this.props.history.push(route, { activeRoute: route });
-    // console.log(`handleAnchorOnClick: route = ${route}`);
   };
 
   handleAnchorOnChange = (route) => {
     this.props.history.replace(this.onClickRoute, { activeRoute: route });
-    // console.log(`handleAnchorOnChange: route = ${route}`);
   };
 
   render() {
