@@ -33,14 +33,18 @@ const propTypes = {
 };
 
 export const ReviewActivities = (props) => {
-  const editRecord = (newActivity, activity, rowIndex, isDelete) => {
+  const editRecord = (newActivity, activity, rowIndex, isDelete, removeOnly) => {
     props.arrayRemove(FORM.EDIT_NOTICE_OF_WORK, activity, rowIndex);
-    props.arrayInsert(
-      FORM.EDIT_NOTICE_OF_WORK,
-      activity,
-      rowIndex,
-      isDelete ? { ...newActivity, state_modified: "delete" } : newActivity
-    );
+    if (isDelete) {
+      if (!removeOnly) {
+        props.arrayPush(FORM.EDIT_NOTICE_OF_WORK, activity, {
+          ...newActivity,
+          state_modified: "delete",
+        });
+      }
+    } else {
+      props.arrayInsert(FORM.EDIT_NOTICE_OF_WORK, activity, rowIndex, newActivity);
+    }
   };
 
   const addRecord = (activity, newActivity) => {

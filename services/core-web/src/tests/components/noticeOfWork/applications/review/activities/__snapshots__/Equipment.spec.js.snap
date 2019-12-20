@@ -41,6 +41,7 @@ exports[`Equipment renders properly 1`] = `
           "description": "Excavator",
           "index": 0,
           "quantity": 1,
+          "state_modified": "",
         },
       ]
     }

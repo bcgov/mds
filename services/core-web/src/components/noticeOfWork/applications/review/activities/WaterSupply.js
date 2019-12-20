@@ -21,8 +21,15 @@ const defaultProps = {};
 export const WaterSupply = (props) => {
   const editActivity = (event, rowIndex, isDelete) => {
     const activityToChange = props.details[rowIndex];
-    activityToChange[event.target.name] = event.target.value;
-    props.editRecord(activityToChange, "water_supply.details", rowIndex, isDelete);
+    let removeOnly = false;
+    if (isDelete) {
+      if (!activityToChange.activity_detail_id) {
+        removeOnly = true;
+      }
+    } else {
+      activityToChange[event.target.name] = event.target.value;
+    }
+    props.editRecord(activityToChange, "water_supply.details", rowIndex, isDelete, removeOnly);
   };
 
   const addActivity = () => {

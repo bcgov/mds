@@ -21,8 +21,15 @@ export const Equipment = (props) => {
 
   const editEquipment = (event, rowIndex, isDelete) => {
     const equipmentToChange = props.equipment[rowIndex];
-    equipmentToChange[event.target.name] = event.target.value;
-    props.editRecord(equipmentToChange, targetActivity, rowIndex, isDelete);
+    let removeOnly = false;
+    if (isDelete) {
+      if (!equipmentToChange.equipment_id) {
+        removeOnly = true;
+      }
+    } else {
+      equipmentToChange[event.target.name] = event.target.value;
+    }
+    props.editRecord(equipmentToChange, targetActivity, rowIndex, isDelete, removeOnly);
   };
 
   const addEquipment = () => {
@@ -113,14 +120,14 @@ export const Equipment = (props) => {
 
   const transformData = (equipmentList) =>
     equipmentList
-      .filter((equipment) => !equipment.state_modified)
       .map((equipment, index) => ({
         quantity: equipment.quantity || "",
         description: equipment.description || "",
         capacity: equipment.capacity || "",
+        state_modified: equipment.state_modified || "",
         index,
-      }));
-
+      }))
+      .filter((equipment) => !equipment.state_modified);
   return (
     <div>
       <h4>Equipment</h4>
