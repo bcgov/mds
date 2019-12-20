@@ -4,10 +4,12 @@ from sqlalchemy.ext.associationproxy import association_proxy
 
 from app.api.utils.models_mixins import AuditMixin, Base
 from app.extensions import db
+from app.api.constants import *
 
 
 class NOWApplicationDocumentXref(AuditMixin, Base):
     __tablename__ = "now_application_document_xref"
+    _edit_groups = [NOW_APPLICATION_EDIT_GROUP]
 
     now_application_document_xref_guid = db.Column(UUID(as_uuid=True),
                                                    primary_key=True,
@@ -36,4 +38,4 @@ class NOWApplicationDocumentXref(AuditMixin, Base):
     upload_date = association_proxy('mine_document', 'upload_date')
 
     def __repr__(self):
-        return '<ApplicationDocumentXref %r>' % self.application_document_xref_guid
+        return '<ApplicationDocumentXref %r>' % self.now_application_document_xref_guid

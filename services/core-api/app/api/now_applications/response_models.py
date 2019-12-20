@@ -215,6 +215,7 @@ NOW_APPLICATION_STATE_OF_LAND = api.model(
 
 NOW_APPLICATION_DOCUMENT = api.model(
     'NOW_DOCUMENT', {
+        'now_application_document_xref_guid': fields.String,
         'mine_document_guid': fields.String,
         'mine_guid': fields.String,
         'document_manager_guid': fields.String,

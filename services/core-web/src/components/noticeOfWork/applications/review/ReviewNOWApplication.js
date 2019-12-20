@@ -386,11 +386,6 @@ export const ReviewNOWApplication = (props) => {
     </div>
   );
 
-  const addDocumentToNoticeOfWork = (document) => {
-    JSON.stringify(document);
-    // alert(JSON.stringify(document));
-  };
-
   return (
     <div>
       <Form layout="vertical">
@@ -434,7 +429,7 @@ export const ReviewNOWApplication = (props) => {
             <NOWDocuments
               now_application_guid={props.now_application_guid}
               documents={props.documents}
-              addDocumentToNoticeOfWork={addDocumentToNoticeOfWork}
+              isViewMode={props.isViewMode}
             />
           </ScrollContentWrapper>
         </div>
