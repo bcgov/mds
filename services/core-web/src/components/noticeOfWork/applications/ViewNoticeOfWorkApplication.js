@@ -63,9 +63,6 @@ export class ViewNoticeOfWorkApplication extends Component {
     const { id } = this.props.match.params;
     this.props.fetchNoticeOFWorkActivityTypeOptions();
     this.props.fetchImportedNoticeOfWorkApplication(id).then(() => {
-      this.props.history.push(
-        routes.VIEW_NOTICE_OF_WORK_APPLICATION.hashRoute(id, "#application-info")
-      );
       this.setState({ isLoaded: true });
     });
     this.props.fetchOriginalNoticeOfWorkApplication(id);
