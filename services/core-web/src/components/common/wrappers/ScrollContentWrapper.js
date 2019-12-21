@@ -12,18 +12,18 @@ const propTypes = {
   children: PropTypes.element.isRequired,
   title: PropTypes.string.isRequired,
   history: PropTypes.shape({
-    location: PropTypes.shape({ state: PropTypes.shape({ activeRoute: PropTypes.string }) }),
+    location: PropTypes.shape({ state: PropTypes.shape({ currentActiveLink: PropTypes.string }) }),
   }).isRequired,
 };
 
 class ScrollContentWrapper extends Component {
   isActive = () => {
-    const activeRoute =
+    const currentActiveLink =
       this.props.history && this.props.history.location && this.props.history.location.state
-        ? this.props.history.location.state.activeRoute
+        ? this.props.history.location.state.currentActiveLink
         : undefined;
-    const isActiveRoute = includes(activeRoute, this.props.id);
-    return isActiveRoute ? "circle purple" : "circle grey";
+    const isActiveLink = includes(currentActiveLink, this.props.id);
+    return isActiveLink ? "circle purple" : "circle grey";
   };
 
   render() {
