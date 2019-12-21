@@ -10,29 +10,63 @@ const { Link } = Anchor;
  */
 
 const propTypes = {
-  history: PropTypes.shape({ push: PropTypes.func, replace: PropTypes.func }).isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func,
+    replace: PropTypes.func,
+    action: PropTypes.string,
+  }).isRequired,
+  location: PropTypes.shape({ hash: PropTypes.string }).isRequired,
   match: PropTypes.shape({
     params: {
       id: PropTypes.string,
     },
   }).isRequired,
-  route: PropTypes.shape({ route: PropTypes.string, hashRoute: PropTypes.func }).isRequired,
+  route: PropTypes.shape({ hashRoute: PropTypes.func }).isRequired,
 };
 
 export class NOWSideMenu extends Component {
-  static onClickRoute = "";
+  static onClickRoute = undefined;
 
-  handleAnchorOnClick = (event, link) => {
-    event.preventDefault();
+  componentDidMount() {
+    // Notes:
+    // 1) Because of Keycloak authorization/redirection, props.location.hash will have extra params that we don't need, so ignore them.
+    // e.g.: #blasting&state=bd74ea1c-09e5-4d7e-810f-d3558969293a&session_state=1c577088-15a8-4ae2-b1b7-12c424477364&code=2b...
+    // 2) If the hash starts with "#state", it means there are no URL fragments (see params above in #1).
+    // 3) If we want to start the user on the first section (the Application Info section), change "undefined" to "#application-info".
+    let link =
+      this.props.location &&
+      this.props.location.hash &&
+      !this.props.location.hash.startsWith("#state")
+        ? this.props.location.hash
+        : undefined;
+    if (!link) {
+      return;
+    }
+    link = link.substr(0, link.indexOf("&"));
+    this.anchor.handleScrollTo(link);
+    this.updateActiveLink(link);
+  }
+
+  handleAnchorOnClick = (e, link) => {
+    e.preventDefault();
+    this.updateActiveLink(link.href);
+  };
+
+  handleAnchorOnChange = (currentActiveLink) => {
+    if (
+      this.onClickRoute === undefined ||
+      (this.props.history && this.props.history.action === "POP")
+    ) {
+      return;
+    }
+    this.props.history.replace(this.onClickRoute, { currentActiveLink });
+  };
+
+  updateActiveLink(link) {
     const { id } = this.props.match.params;
-    const route = this.props.route.hashRoute(id, link.href);
-    this.onClickRoute = route;
-    this.props.history.push(route, { activeRoute: route });
-  };
-
-  handleAnchorOnChange = (route) => {
-    this.props.history.replace(this.onClickRoute, { activeRoute: route });
-  };
+    this.onClickRoute = this.props.route.hashRoute(id, link);
+    this.props.history.push(this.onClickRoute, { currentActiveLink: link });
+  }
 
   render() {
     return (
@@ -42,6 +76,9 @@ export class NOWSideMenu extends Component {
           offsetTop={195}
           onChange={this.handleAnchorOnChange}
           onClick={this.handleAnchorOnClick}
+          ref={function(anchor) {
+            this.anchor = anchor;
+          }}
         >
           <Link href="#application-info" title="Application Info" />
           <Link href="#contacts" title="Contacts" />
