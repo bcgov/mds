@@ -229,6 +229,14 @@
   }
 }
 
+.custom-menu-item-first {
+  padding-top: 9px;
+}
+
+.custom-menu-item-last {
+  padding-bottom: 9px;
+}
+
 // removes small border on NaveBar search drop-down
 .ant-menu-vertical {
   border-right: none;
