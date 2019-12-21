@@ -98,7 +98,7 @@ export class NavBar extends Component {
           </Button>
         </Link>
       </AuthorizationWrapper>
-      <Dropdown overlay={this.menu} placement="bottomLeft">
+      <Dropdown overlay={this.userMenu} placement="bottomLeft">
         <button type="button" className="menu__btn" id={this.ifActiveButton("my-dashboard")}>
           <Icon className="padding-small--right icon-sm" type="user" />
           <span className="padding-small--right">{this.props.userInfo.preferred_username}</span>
@@ -284,14 +284,14 @@ export class NavBar extends Component {
     </div>
   );
 
-  menu = () => (
+  userMenu = () => (
     <Menu id="menu__dropdown">
-      <Menu.Item key="1">
+      <Menu.Item key="my-dashboard" className="custom-menu-item custom-menu-item-first">
         <Link to={router.CUSTOM_HOME_PAGE.route}>
           <button type="button">My Dashboard</button>
         </Link>
       </Menu.Item>
-      <Menu.Item key="2">
+      <Menu.Item key="log-out" className="custom-menu-item custom-menu-item-last">
         <Link to={router.LOGOUT.route}>
           <button type="button">Log Out</button>
         </Link>
@@ -301,33 +301,33 @@ export class NavBar extends Component {
 
   reportingDropdown = () => (
     <Menu id="menu__dropdown">
-      <div className="custom-menu-item">
+      <Menu.Item key="dashboard" className="custom-menu-item custom-menu-item-first">
         <Link to={router.REPORTING_DASHBOARD.route}>
           <button type="button">Dashboard</button>
         </Link>
-      </div>
+      </Menu.Item>
       <AuthorizationWrapper permission={Permission.EXECUTIVE}>
-        <div className="custom-menu-item">
+        <Menu.Item key="executive-dashboard" className="custom-menu-item">
           <Link to={router.EXECUTIVE_REPORTING_DASHBOARD.route}>
             <button type="button">Executive Dashboard</button>
           </Link>
-        </div>
+        </Menu.Item>
       </AuthorizationWrapper>
-      <div className="custom-menu-item">
+      <Menu.Item key="browse-variances" className="custom-menu-item">
         <Link to={router.VARIANCE_DASHBOARD.route}>
           <button type="button">Browse Variances</button>
         </Link>
-      </div>
-      <div className="custom-menu-item">
+      </Menu.Item>
+      <Menu.Item key="browse-incidents" className="custom-menu-item">
         <Link to={router.INCIDENTS_DASHBOARD.route}>
           <button type="button">Browse Incidents</button>
         </Link>
-      </div>
-      <div className="custom-menu-item">
+      </Menu.Item>
+      <Menu.Item key="browse-notices-of-work" className="custom-menu-item custom-menu-item-last">
         <Link to={router.NOTICE_OF_WORK_APPLICATIONS.route}>
           <button type="button">Browse Notices of Work</button>
         </Link>
-      </div>
+      </Menu.Item>
     </Menu>
   );
 
