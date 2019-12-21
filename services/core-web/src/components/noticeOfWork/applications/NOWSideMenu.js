@@ -76,7 +76,7 @@ export class NOWSideMenu extends Component {
           offsetTop={195}
           onChange={this.handleAnchorOnChange}
           onClick={this.handleAnchorOnClick}
-          ref={function(anchor) {
+          ref={(anchor) => {
             this.anchor = anchor;
           }}
         >
