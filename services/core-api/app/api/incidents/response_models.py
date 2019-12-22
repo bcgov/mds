@@ -1,15 +1,17 @@
 from app.extensions import api
 from flask_restplus import fields
 
-MINE_INCIDENT_CATEGORY_MODEL = api.model('Mine Incident Category', {
-    'mine_incident_category_code': fields.List(fields.String),
-    'description': fields.String
-})
+MINE_INCIDENT_CATEGORY_MODEL = api.model(
+    'Mine Incident Category', {
+        'mine_incident_category_code': fields.String,
+        'description': fields.String
+    })
 
-MINE_INCIDENT_DETERMINATION_TYPE_MODEL = api.model('Mine Incident Determination Type', {
-    'mine_incident_determination_type_code': fields.String,
-    'description': fields.String
-})
+MINE_INCIDENT_DETERMINATION_TYPE_MODEL = api.model(
+    'Mine Incident Determination Type', {
+        'mine_incident_determination_type_code': fields.String,
+        'description': fields.String
+    })
 
 MINE_INCIDENT_FOLLOWUP_INVESTIGATION_TYPE_MODEL = api.model(
     'Mine Incident Followup Investigation Type', {
@@ -17,15 +19,18 @@ MINE_INCIDENT_FOLLOWUP_INVESTIGATION_TYPE_MODEL = api.model(
         'description': fields.String
     })
 
-MINE_INCIDENT_STATUS_CODE_MODEL = api.model('Mine Incident Status Codes', {
-    'mine_incident_status_code': fields.String,
-    'description': fields.String
-})
+MINE_INCIDENT_STATUS_CODE_MODEL = api.model(
+    'Mine Incident Status Codes', {
+        'mine_incident_status_code': fields.String,
+        'description': fields.String
+    })
 
-MINE_INCIDENT_DOCUMENT_TYPE_CODE_MODEL = api.model('Mine Incident Document Type Codes', {
-    'mine_incident_document_type_code': fields.String,
-    'description': fields.String
-})
+MINE_INCIDENT_DOCUMENT_TYPE_CODE_MODEL = api.model(
+    'Mine Incident Document Type Codes', {
+        'mine_incident_document_type_code': fields.String,
+        'description': fields.String
+    })
+
 
 MINE_INCIDENT_DOCUMENT_MODEL = api.model(
     'Mine Incident Document', {
@@ -33,12 +38,16 @@ MINE_INCIDENT_DOCUMENT_MODEL = api.model(
         'document_manager_guid': fields.String,
         'document_name': fields.String,
         'mine_incident_document_type_code': fields.String
-    })
 
-MINE_INCIDENT_RECOMMENDATION_MODEL = api.model('Mine Incident Recommendation', {
-    'recommendation': fields.String,
-    'mine_incident_recommendation_guid': fields.String
-})
+    }
+)
+
+MINE_INCIDENT_RECOMMENDATION_MODEL = api.model(
+    'Mine Incident Recommendation', {
+        'recommendation': fields.String,
+        'mine_incident_recommendation_guid': fields.String
+    }
+)
 
 MINE_INCIDENT_MODEL = api.model(
     'Mine Incident', {
@@ -49,7 +58,7 @@ MINE_INCIDENT_MODEL = api.model(
         'mine_guid': fields.String,
         'mine_name': fields.String,
         'mine_region': fields.String,
-        'major_mine_ind': fields.Boolean,
+        'major_mine_ind':fields.Boolean,
         'incident_timestamp': fields.DateTime,
         'incident_description': fields.String,
         'reported_timestamp': fields.DateTime,
@@ -73,7 +82,8 @@ MINE_INCIDENT_MODEL = api.model(
         'proponent_incident_no': fields.String,
         'mine_incident_no': fields.String,
         'documents': fields.List(fields.Nested(MINE_INCIDENT_DOCUMENT_MODEL)),
-        'recommendations': fields.List(fields.Nested(MINE_INCIDENT_RECOMMENDATION_MODEL))
+        'recommendations': fields.List(fields.Nested(
+            MINE_INCIDENT_RECOMMENDATION_MODEL))
     })
 
 PAGINATED_LIST = api.model(
