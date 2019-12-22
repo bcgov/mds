@@ -88,9 +88,7 @@ class MineIncident(AuditMixin, Base):
         backref='mine_incidents',
         lazy='joined',
         uselist=False)
-    mine_incident_category_code = db.Column(
-        db.String, db.ForeignKey('mine_incident_category.mine_incident_category_code'))
-    mine_incident_category = db.relationship('MineIncidentCategory', lazy='joined')
+    mine_incident_category_code = db.Column(db.String)
 
     recommendations = db.relationship(
         'MineIncidentRecommendation',
