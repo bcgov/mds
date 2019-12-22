@@ -230,7 +230,7 @@ class MineIncidentResource(Resource, UserMixin):
     parser.add_argument(
         'mine_determination_representative', type=str, location='json', store_missing=False)
     parser.add_argument(
-        'mine_incident_category_code', type=str, location='json', store_missing=False)
+        'mine_incident_category_code', type=list, location='json', store_missing=False)
 
     @api.marshal_with(MINE_INCIDENT_MODEL, code=200)
     @requires_role_view_all

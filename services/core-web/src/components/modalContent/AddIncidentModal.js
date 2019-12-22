@@ -276,7 +276,7 @@ export class AddIncidentModal extends Component {
             <div className="right center-mobile">
               <Popconfirm
                 placement="top"
-                title="Are you sure you want to cancel?"
+                title="Are you sure you want to fuck?"
                 okText="Yes"
                 cancelText="No"
                 onConfirm={this.close}
