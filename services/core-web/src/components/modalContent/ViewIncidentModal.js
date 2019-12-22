@@ -43,11 +43,14 @@ export class ViewIncidentModal extends Component {
         <h5>Initial Report</h5>
         <div className="content--light-grey padding-small">
           <div className="inline-flex padding-small">
-            <p className="field-title">Incident type</p>
+            <p className="field-title">Incident type(s)</p>
             <p>
-              {this.props.incidentCategoryCodeHash[
-                this.props.incident.mine_incident_category_code
-              ] || Strings.EMPTY_FIELD}
+              {this.props.incident.mine_incident_category_code &&
+              this.props.incident.mine_incident_category_code !== Strings.EMPTY_ARRAY
+                ? JSON.parse(this.props.incident.mine_incident_category_code)
+                    .map((c) => this.props.incidentCategoryCodeHash[c])
+                    .join(", ")
+                : Strings.EMPTY_FIELD}
             </p>
           </div>
           <div className="inline-flex padding-small">
