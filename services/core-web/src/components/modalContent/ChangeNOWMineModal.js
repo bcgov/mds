@@ -12,6 +12,7 @@ import CustomPropTypes from "@/customPropTypes";
 const propTypes = {
   onSubmit: PropTypes.func.isRequired,
   fetchMineNameList: PropTypes.func.isRequired,
+  setMineGuid: PropTypes.func.isRequired,
   title: PropTypes.string,
   noticeOfWork: CustomPropTypes.nowApplication.isRequired,
   mineNameList: PropTypes.arrayOf(CustomPropTypes.mineName).isRequired,
@@ -23,7 +24,10 @@ const defaultProps = {
 };
 
 export class ChangeNOWMineModal extends Component {
-  state = { isMineLoaded: false, mine: { mine_location: { latitude: "", longitude: "" } } };
+  state = {
+    isMineLoaded: false,
+    mine: { mine_location: { latitude: "", longitude: "" } },
+  };
 
   componentDidMount() {
     this.updateMine(this.props.noticeOfWork.mine_guid);
@@ -38,6 +42,7 @@ export class ChangeNOWMineModal extends Component {
   };
 
   updateMine = (value) => {
+    this.props.setMineGuid(value);
     this.setState({ isMineLoaded: false });
     this.props.fetchMineRecordById(value).then((data) => {
       this.setState({ isMineLoaded: true, mine: data.data });

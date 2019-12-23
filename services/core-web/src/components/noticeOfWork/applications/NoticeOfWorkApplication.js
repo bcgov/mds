@@ -211,10 +211,12 @@ export class NoticeOfWorkApplication extends Component {
     }
   };
 
-  handleChangeNOWMine = (values) => {
-    console.log(values);
+  handleChangeNOWMine = () => {
     this.props
-      .updateNoticeOfWorkApplication(values, this.props.noticeOfWork.now_application_guid)
+      .updateNoticeOfWorkApplication(
+        { mine_guid: this.state.associatedMineGuid },
+        this.props.noticeOfWork.now_application_guid
+      )
       .then(() => {
         this.props.fetchImportedNoticeOfWorkApplication(
           this.props.noticeOfWork.now_application_guid
@@ -230,6 +232,7 @@ export class NoticeOfWorkApplication extends Component {
         initialValues: {
           mine_guid: noticeOfWork.mine_guid,
         },
+        setMineGuid: this.setMineGuid,
         onSubmit: this.handleChangeNOWMine,
         title: `Transfer Notice of Work`,
         noticeOfWork,
