@@ -42,10 +42,10 @@ export class ChangeNOWMineModal extends Component {
   };
 
   updateMine = (value) => {
-    this.props.setMineGuid(value);
     this.setState({ isMineLoaded: false });
     this.props.fetchMineRecordById(value).then((data) => {
       this.setState({ isMineLoaded: true, mine: data.data });
+      this.props.setMineGuid(value, data.data.mine_name);
     });
   };
 
