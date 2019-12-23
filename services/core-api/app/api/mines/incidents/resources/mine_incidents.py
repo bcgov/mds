@@ -78,8 +78,6 @@ class MineIncidentListResource(Resource, UserMixin):
         mine = Mine.find_by_mine_guid(mine_guid)
         if not mine:
             raise NotFound("Mine not found")
-        print('**************************', file=sys.stderr)
-        print(mine, file=sys.stderr)
         return mine.mine_incidents
 
     @api.expect(MINE_INCIDENT_MODEL)
@@ -243,8 +241,10 @@ class MineIncidentResource(Resource, UserMixin):
         'mine_determination_type_code', type=str, location='json', store_missing=False)
     parser.add_argument(
         'mine_determination_representative', type=str, location='json', store_missing=False)
+    print('*************GOT HERE 0*************', file=sys.stderr)
     parser.add_argument(
-        'mine_incident_category_codes', type=str, location='json', store_missing=False)
+        'mine_incident_category_codes', type=list, location='json', store_missing=False)
+    print('*************GOT HERE 1*************', file=sys.stderr)
 
     @api.marshal_with(MINE_INCIDENT_MODEL, code=200)
     @requires_role_view_all
@@ -264,15 +264,25 @@ class MineIncidentResource(Resource, UserMixin):
 
         data = self.parser.parse_args()
 
+        print('**********DATA****************', file=sys.stderr)
+        print(data, file=sys.stderr)
+        category_codes = data.get('mine_incident_category_codes')
+        print('**********C CODES****************', file=sys.stderr)
+        print(category_codes, file=sys.stderr)
+        print('*************GOT HERE 2*************', file=sys.stderr)
+
         do_sub_codes = []
         if data['determination_type_code'] == 'DO':
             do_sub_codes = data['dangerous_occurrence_subparagraph_ids']
             if not do_sub_codes:
                 raise BadRequest(
                     'Dangerous occurrences require one or more cited sections of HSRC code 1.7.3')
-
+        print('*************GOT HERE 3*************', file=sys.stderr)
         for key, value in data.items():
-            if key in ['dangerous_occurrence_subparagraph_ids', 'recommendations']:
+            if key in [
+                    'dangerous_occurrence_subparagraph_ids', 'recommendations',
+                    'mine_incident_category_codes'
+            ]:
                 continue
             if key in [
                     'reported_to_inspector_party_guid', 'responsible_inspector_party_guid',
@@ -283,14 +293,16 @@ class MineIncidentResource(Resource, UserMixin):
                     setattr(incident, key, value)
             else:
                 setattr(incident, key, value)
-
+        print('*************GOT HERE 4*************', file=sys.stderr)
         recommendations = data.get('recommendations')
         if recommendations is not None:
             self._handle_recommendations(incident, recommendations)
 
-        # category_codes = data.get('category_codes')
-        # if category_codes is not None:
-        #     self._handle_category_codes(incident, category_codes)
+        # category_codes = data.get('mine_incident_category_codes')
+        # print('**********C CODES****************', file=sys.stderr)
+        # print(category_codes, file=sys.stderr)
+        #if category_codes is not None:
+        #    self._handle_category_codes(incident, category_codes)
 
         incident.dangerous_occurrence_subparagraphs = []
         for id in do_sub_codes:
@@ -300,7 +312,7 @@ class MineIncidentResource(Resource, UserMixin):
                     'One of the provided compliance articles is not a sub-paragraph of section 1.7.3 (dangerous occurrences)'
                 )
             incident.dangerous_occurrence_subparagraphs.append(sub)
-
+        print('*************GOT HERE 5*************', file=sys.stderr)
         updated_documents = data.get('updated_documents')
         if updated_documents is not None:
             for updated_document in updated_documents:
@@ -366,3 +378,34 @@ class MineIncidentResource(Resource, UserMixin):
             new_recommendation = MineIncidentRecommendation.create(
                 recommendation['recommendation'], mine_incident_id=incident.mine_incident_id)
             new_recommendation.save()
+
+    @classmethod
+    def _handle_category_codes(cls, incident, category_codes):
+        pass
+        # for recommendation in recommendations:
+        #     edited_rec_guid = recommendation.get('mine_incident_recommendation_guid')
+        #     rec_string = recommendation.get('recommendation')
+        #     if rec_string is None or rec_string == '':
+        #         if recommendation.get('mine_incident_recommendation_guid') is not None:
+        #             # Remove existing empty recommendations
+        #             rec = MineIncidentRecommendation.find_by_mine_incident_recommendation_guid(
+        #                 edited_rec_guid)
+        #             rec.deleted_ind = True
+        #             rec.save()
+
+        #         # Skip new empty recommendations
+        #         continue
+
+        #     # Update recommendations
+        #     if edited_rec_guid is not None:
+        #         rec = MineIncidentRecommendation.find_by_mine_incident_recommendation_guid(
+        #             edited_rec_guid)
+        #         if rec is not None:
+        #             rec.recommendation = rec_string
+        #             rec.save()
+        #             continue
+
+        #     # Create new_recommendations
+        #     new_recommendation = MineIncidentRecommendation.create(
+        #         recommendation['recommendation'], mine_incident_id=incident.mine_incident_id)
+        #     new_recommendation.save()

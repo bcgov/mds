@@ -88,6 +88,8 @@ export class MineIncidents extends Component {
   }
 
   handleAddMineIncident = (values) => {
+    console.log("ADD:");
+    console.log(values);
     const { number_of_fatalities = 0, number_of_injuries = 0, ...otherValues } = values;
     this.props
       .createMineIncident(this.props.mineGuid, {
@@ -102,6 +104,8 @@ export class MineIncidents extends Component {
   };
 
   handleEditMineIncident = (values) => {
+    console.log("EDIT:");
+    console.log(values);
     this.props
       .updateMineIncident(this.props.mineGuid, values.mine_incident_guid, values)
       .then(() => {
