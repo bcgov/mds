@@ -191,6 +191,10 @@ class Base(db.Model):
                     assert isinstance(v, (UUID, str))
                 else:
                     py_type = col.type.python_type
+                    if py_type == bool and not isinstance(v, bool):
+                        raise DictLoadingError(
+                            f"cannot assign '{k}':{v}{type(v)} to column of type {py_type}")
+
                     if py_type == datetime or py_type == date:
                         #json value is string, if expecting datetime in that column, convert here
                         setattr(self, k, parser.parse(v))
