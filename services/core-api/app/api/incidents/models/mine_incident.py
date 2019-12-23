@@ -81,7 +81,7 @@ class MineIncident(AuditMixin, Base):
         foreign_keys=[determination_type_code])
     dangerous_occurrence_subparagraphs = db.relationship(
         'ComplianceArticle',
-        backref='mine_incidents',
+        backref='mine_incident',
         lazy='joined',
         secondary='mine_incident_do_subparagraph')
     followup_investigation_type = db.relationship(
