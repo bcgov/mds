@@ -31,18 +31,12 @@ export const AddIncidentReportingForm = (props) => (
           )}
           <Form.Item>
             <Field
-              id="mine_incident_category_code"
-              name="mine_incident_category_code"
+              id="mine_incident_category_codes"
+              name="mine_incident_category_codes"
               label="Incident type(s)*"
               placeholder="Select the incident type(s)"
               component={renderConfig.MULTI_SELECT}
               data={props.incidentCategoryCodeOptions}
-              format={(value) => {
-                return value ? JSON.parse(value) : undefined;
-              }}
-              parse={(value) => {
-                return value ? JSON.stringify(value) : undefined;
-              }}
             />
           </Form.Item>
           <Form.Item>
