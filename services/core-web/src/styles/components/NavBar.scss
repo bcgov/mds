@@ -129,10 +129,10 @@
   }
 }
 
-.navbar-dropdown-menu-item-first {
+.navbar-dropdown-menu > :first-child {
   padding-top: 9px;
 }
 
-.navbar-dropdown-menu-item-last {
+.navbar-dropdown-menu > :last-child {
   padding-bottom: 9px;
 }
