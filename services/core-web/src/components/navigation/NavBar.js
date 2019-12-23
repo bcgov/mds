@@ -285,13 +285,16 @@ export class NavBar extends Component {
   );
 
   userMenu = () => (
-    <Menu id="menu__dropdown">
-      <Menu.Item key="my-dashboard" className="custom-menu-item custom-menu-item-first">
+    <Menu id="menu__dropdown" className="navbar-dropdown-menu">
+      <Menu.Item
+        key="my-dashboard"
+        className="navbar-dropdown-menu-item navbar-dropdown-menu-item-first"
+      >
         <Link to={router.CUSTOM_HOME_PAGE.route}>
           <button type="button">My Dashboard</button>
         </Link>
       </Menu.Item>
-      <Menu.Item key="log-out" className="custom-menu-item custom-menu-item-last">
+      <Menu.Item key="log-out" className="navbar-dropdown-menu-item navbar-dropdown-menu-item-last">
         <Link to={router.LOGOUT.route}>
           <button type="button">Log Out</button>
         </Link>
@@ -300,30 +303,36 @@ export class NavBar extends Component {
   );
 
   reportingDropdown = () => (
-    <Menu id="menu__dropdown">
-      <Menu.Item key="dashboard" className="custom-menu-item custom-menu-item-first">
+    <Menu id="menu__dropdown" className="navbar-dropdown-menu">
+      <Menu.Item
+        key="dashboard"
+        className="navbar-dropdown-menu-item navbar-dropdown-menu-item-first"
+      >
         <Link to={router.REPORTING_DASHBOARD.route}>
           <button type="button">Dashboard</button>
         </Link>
       </Menu.Item>
       <AuthorizationWrapper permission={Permission.EXECUTIVE}>
-        <Menu.Item key="executive-dashboard" className="custom-menu-item">
+        <Menu.Item key="executive-dashboard" className="navbar-dropdown-menu-item">
           <Link to={router.EXECUTIVE_REPORTING_DASHBOARD.route}>
             <button type="button">Executive Dashboard</button>
           </Link>
         </Menu.Item>
       </AuthorizationWrapper>
-      <Menu.Item key="browse-variances" className="custom-menu-item">
+      <Menu.Item key="browse-variances" className="navbar-dropdown-menu-item">
         <Link to={router.VARIANCE_DASHBOARD.route}>
           <button type="button">Browse Variances</button>
         </Link>
       </Menu.Item>
-      <Menu.Item key="browse-incidents" className="custom-menu-item">
+      <Menu.Item key="browse-incidents" className="navbar-dropdown-menu-item">
         <Link to={router.INCIDENTS_DASHBOARD.route}>
           <button type="button">Browse Incidents</button>
         </Link>
       </Menu.Item>
-      <Menu.Item key="browse-notices-of-work" className="custom-menu-item custom-menu-item-last">
+      <Menu.Item
+        key="browse-notices-of-work"
+        className="navbar-dropdown-menu-item navbar-dropdown-menu-item-last"
+      >
         <Link to={router.NOTICE_OF_WORK_APPLICATIONS.route}>
           <button type="button">Browse Notices of Work</button>
         </Link>
