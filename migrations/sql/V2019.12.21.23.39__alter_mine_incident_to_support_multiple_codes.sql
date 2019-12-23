@@ -1,2 +1,0 @@
-ALTER TABLE mine_incident DROP CONSTRAINT mine_incident_mine_incident_category_code_fkey;
--- TODO: create procedure that triggers on before create/update to ensure that each code exists in mine_incident_category table
