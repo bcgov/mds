@@ -202,11 +202,6 @@
   margin: 0;
 }
 
-.ant-dropdown-menu {
-  padding: 0;
-  overflow: hidden;
-}
-
 // MENU.ITEM
 // Same styling as the default for .ant-dropdown-menu-item,
 // included the ant design class in this CSS block our custom class stays insync with .ant-dropdowm-menu-item updates.
@@ -227,14 +222,6 @@
   &:hover {
     background-color: $light-grey;
   }
-}
-
-.custom-menu-item-first {
-  padding-top: 9px;
-}
-
-.custom-menu-item-last {
-  padding-bottom: 9px;
 }
 
 // removes small border on NaveBar search drop-down
