@@ -17,11 +17,9 @@ exports[`AddIncidentReportingForm renders properly 1`] = `
         >
           <Field
             component={[Function]}
-            format={[Function]}
-            id="mine_incident_category_code"
+            id="mine_incident_category_codes"
             label="Incident type(s)*"
-            name="mine_incident_category_code"
-            parse={[Function]}
+            name="mine_incident_category_codes"
             placeholder="Select the incident type(s)"
           />
         </FormItem>
