@@ -86,13 +86,14 @@
 .steps {
   &--header {
     padding: 30px;
+    box-shadow: $default-box-shadow;
     &.fixed-scroll {
       padding: 10px;
       position: fixed;
       width: 100vw;
       top: -20px;
       background-color: white;
-      z-index: 120;
+      z-index: 50;
     }
     &.fixed-scroll-view {
       padding: 20px;
@@ -101,7 +102,7 @@
       width: 100vw;
       top: 50px;
       background-color: white;
-      z-index: 120;
+      z-index: 50;
     }
   }
 
@@ -120,14 +121,15 @@
 }
 
 .side-menu {
-  margin-top: 10px;
   width: 240px;
   position: absolute;
   left: 0;
 
   &--fixed {
+    top: 134px;
     position: fixed;
     width: 240px;
+    z-index: 50;
 
     @include tablet {
       display: none;

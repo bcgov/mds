@@ -65,6 +65,11 @@
     color: $danger-btn-color-hover;
   }
 }
+.ant-btn-link {
+  &:focus {
+    color: $pure-white;
+  }
+}
 .btn-danger--icon {
   &:hover {
     color: $danger-btn-color-hover;

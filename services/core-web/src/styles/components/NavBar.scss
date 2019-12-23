@@ -9,6 +9,11 @@
   border-bottom: 8px solid $nav-border-color;
   padding: 0 $default-padding-lg 0 $default-padding-md;
 
+  &--search {
+    margin-top: 6px;
+    padding: $default-padding-sm;
+  }
+
   &__img {
     margin: $default-margin-sm;
   }

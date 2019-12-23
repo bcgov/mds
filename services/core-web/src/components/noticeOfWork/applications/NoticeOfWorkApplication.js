@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Steps, Button, Dropdown, Menu, Icon } from "antd";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
-import { getFormValues } from "redux-form";
+import { getFormValues, reset } from "redux-form";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import * as routes from "@/constants/routes";
@@ -52,6 +52,7 @@ const propTypes = {
   fetchImportedNoticeOfWorkApplication: PropTypes.func.isRequired,
   fetchOriginalNoticeOfWorkApplication: PropTypes.func.isRequired,
   fetchNoticeOFWorkActivityTypeOptions: PropTypes.func.isRequired,
+  reset: PropTypes.func.isRequired,
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
   location: PropTypes.shape({
     state: PropTypes.shape({
@@ -173,7 +174,10 @@ export class NoticeOfWorkApplication extends Component {
   };
 
   toggleEditMode = () => {
-    this.setState((prevState) => ({ isViewMode: !prevState.isViewMode }));
+    this.setState((prevState) => ({
+      isViewMode: !prevState.isViewMode,
+      menuVisible: false,
+    }));
   };
 
   toggleShowOriginalValues = () => {
@@ -191,14 +195,25 @@ export class NoticeOfWorkApplication extends Component {
   };
 
   handleNOWFormSubmit = () => {
+    const { id } = this.props.match.params;
     this.props
       .updateNoticeOfWorkApplication(
         this.props.formValues,
         this.props.noticeOfWork.now_application_guid
       )
       .then(() => {
-        this.setState((prevState) => ({ isViewMode: !prevState.isViewMode }));
+        this.props.fetchImportedNoticeOfWorkApplication(id);
+        this.setState((prevState) => ({
+          isViewMode: !prevState.isViewMode,
+        }));
       });
+  };
+
+  handleCancelNOWEdit = () => {
+    this.props.reset(FORM.EDIT_NOTICE_OF_WORK);
+    this.setState((prevState) => ({
+      isViewMode: !prevState.isViewMode,
+    }));
   };
 
   handleScroll = () => {
@@ -325,13 +340,9 @@ export class NoticeOfWorkApplication extends Component {
         {this.state.currentStep === 1 && (
           <div className="custom-menu-item">
             <span>
-              {this.state.isViewMode ? (
+              {this.state.isViewMode && (
                 <button type="button" className="full" onClick={this.toggleEditMode}>
                   Edit
-                </button>
-              ) : (
-                <button type="button" className="full" onClick={this.handleNOWFormSubmit}>
-                  Save
                 </button>
               )}
             </span>
@@ -361,37 +372,50 @@ export class NoticeOfWorkApplication extends Component {
                 </Link>
               )}
             </div>
-            <Dropdown
-              overlay={menu}
-              placement="bottomLeft"
-              onVisibleChange={this.handleVisibleChange}
-              visible={this.state.menuVisible}
-            >
-              <Button type="secondary">
-                Actions
-                <Icon type="down" />
-              </Button>
-            </Dropdown>
+            {this.state.isViewMode && (
+              <Dropdown
+                overlay={menu}
+                placement="bottomLeft"
+                onVisibleChange={this.handleVisibleChange}
+                visible={this.state.menuVisible}
+              >
+                <Button type="secondary">
+                  Actions
+                  <Icon type="down" />
+                </Button>
+              </Dropdown>
+            )}
           </div>
           <br />
-          <Steps current={this.state.currentStep} onChange={this.onChange} type="navigation">
-            <Step status={this.renderProgressStatus(0)} title="Verification" />
-            <Step
-              status={this.renderProgressStatus(1)}
-              title="Technical Review"
-              disabled={this.isStepDisabled(1)}
-            />
-            <Step
-              status={this.renderProgressStatus(2)}
-              title="Referral / Consultation"
-              disabled={this.isStepDisabled(2)}
-            />
-            <Step
-              status={this.renderProgressStatus(3)}
-              title="Decision"
-              disabled={this.isStepDisabled(3)}
-            />
-          </Steps>
+          {this.state.isViewMode ? (
+            <Steps current={this.state.currentStep} onChange={this.onChange} type="navigation">
+              <Step status={this.renderProgressStatus(0)} title="Verification" />
+              <Step
+                status={this.renderProgressStatus(1)}
+                title="Technical Review"
+                disabled={this.isStepDisabled(1)}
+              />
+              <Step
+                status={this.renderProgressStatus(2)}
+                title="Referral / Consultation"
+                disabled={this.isStepDisabled(2)}
+              />
+              <Step
+                status={this.renderProgressStatus(3)}
+                title="Decision"
+                disabled={this.isStepDisabled(3)}
+              />
+            </Steps>
+          ) : (
+            <div className="inline-flex flex-center block-mobile">
+              <Button type="secondary" className="full-mobile" onClick={this.handleCancelNOWEdit}>
+                Cancel
+              </Button>
+              <Button type="primary" className="full-mobile" onClick={this.handleNOWFormSubmit}>
+                Save
+              </Button>
+            </div>
+          )}
         </div>
         <LoadingWrapper condition={this.state.isNoWLoaded}>
           <div>
@@ -432,6 +456,7 @@ const mapDispatchToProps = (dispatch) =>
       fetchNoticeOFWorkActivityTypeOptions,
       createNoticeOfWorkApplicationProgress,
       fetchNoticeOFWorkApplicationProgressStatusCodes,
+      reset,
     },
     dispatch
   );
