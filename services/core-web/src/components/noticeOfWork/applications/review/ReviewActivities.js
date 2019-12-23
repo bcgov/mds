@@ -33,13 +33,18 @@ const propTypes = {
 };
 
 export const ReviewActivities = (props) => {
-  const removeRecord = (activity, rowIndex) => {
+  const editRecord = (newActivity, activity, rowIndex, isDelete, removeOnly) => {
     props.arrayRemove(FORM.EDIT_NOTICE_OF_WORK, activity, rowIndex);
-  };
-
-  const editRecord = (newActivity, activity, rowIndex) => {
-    props.arrayRemove(FORM.EDIT_NOTICE_OF_WORK, activity, rowIndex);
-    props.arrayInsert(FORM.EDIT_NOTICE_OF_WORK, activity, rowIndex, newActivity);
+    if (isDelete) {
+      if (!removeOnly) {
+        props.arrayPush(FORM.EDIT_NOTICE_OF_WORK, activity, {
+          ...newActivity,
+          state_modified: "delete",
+        });
+      }
+    } else {
+      props.arrayInsert(FORM.EDIT_NOTICE_OF_WORK, activity, rowIndex, newActivity);
+    }
   };
 
   const addRecord = (activity, newActivity) => {
@@ -55,7 +60,6 @@ export const ReviewActivities = (props) => {
         <FormSection name="exploration_access">
           <AccessRoads
             isViewMode={props.isViewMode}
-            removeRecord={removeRecord}
             editRecord={editRecord}
             addRecord={addRecord}
           />
@@ -71,12 +75,7 @@ export const ReviewActivities = (props) => {
         title="Camps, Buildings, Staging Areas, Fuel/Lubricant Storage"
       >
         <FormSection name="camps">
-          <Camps
-            isViewMode={props.isViewMode}
-            removeRecord={removeRecord}
-            editRecord={editRecord}
-            addRecord={addRecord}
-          />
+          <Camps isViewMode={props.isViewMode} editRecord={editRecord} addRecord={addRecord} />
         </FormSection>
       </ScrollContentWrapper>
       <ScrollContentWrapper
@@ -84,19 +83,13 @@ export const ReviewActivities = (props) => {
         title="Cut Lines and Induced Polarization Survey"
       >
         <FormSection name="cut_lines_polarization_survey">
-          <CutLines
-            isViewMode={props.isViewMode}
-            removeRecord={removeRecord}
-            editRecord={editRecord}
-            addRecord={addRecord}
-          />
+          <CutLines isViewMode={props.isViewMode} editRecord={editRecord} addRecord={addRecord} />
         </FormSection>
       </ScrollContentWrapper>
       <ScrollContentWrapper id="surface-drilling" title="Exploration Surface Drilling">
         <FormSection name="exploration_surface_drilling">
           <SurfaceDrilling
             isViewMode={props.isViewMode}
-            removeRecord={removeRecord}
             editRecord={editRecord}
             addRecord={addRecord}
           />
@@ -106,7 +99,6 @@ export const ReviewActivities = (props) => {
         <FormSection name="mechanical_trenching">
           <MechanicalTrenching
             isViewMode={props.isViewMode}
-            removeRecord={removeRecord}
             editRecord={editRecord}
             addRecord={addRecord}
           />
@@ -116,7 +108,6 @@ export const ReviewActivities = (props) => {
         <FormSection name="settling_pond">
           <SettlingPonds
             isViewMode={props.isViewMode}
-            removeRecord={removeRecord}
             editRecord={editRecord}
             addRecord={addRecord}
           />
@@ -126,7 +117,6 @@ export const ReviewActivities = (props) => {
         <FormSection name="surface_bulk_sample">
           <SurfaceBulkSamples
             isViewMode={props.isViewMode}
-            removeRecord={removeRecord}
             editRecord={editRecord}
             addRecord={addRecord}
           />
@@ -136,7 +126,6 @@ export const ReviewActivities = (props) => {
         <FormSection name="underground_exploration">
           <UndergroundExploration
             isViewMode={props.isViewMode}
-            removeRecord={removeRecord}
             editRecord={editRecord}
             addRecord={addRecord}
           />
@@ -149,7 +138,6 @@ export const ReviewActivities = (props) => {
         <FormSection name="sand_and_gravel">
           <SandGravelQuarry
             isViewMode={props.isViewMode}
-            removeRecord={removeRecord}
             editRecord={editRecord}
             addRecord={addRecord}
           />
@@ -157,19 +145,13 @@ export const ReviewActivities = (props) => {
       </ScrollContentWrapper>
       <ScrollContentWrapper id="placer-operations" title="Placer Operations">
         <FormSection name="placer_operation">
-          <Placer
-            isViewMode={props.isViewMode}
-            removeRecord={removeRecord}
-            editRecord={editRecord}
-            addRecord={addRecord}
-          />
+          <Placer isViewMode={props.isViewMode} editRecord={editRecord} addRecord={addRecord} />
         </FormSection>
       </ScrollContentWrapper>
       <ScrollContentWrapper id="water-supply" title="Water Supply">
         <FormSection name="water_supply">
           <WaterSupply
             isViewMode={props.isViewMode}
-            removeRecord={removeRecord}
             editRecord={editRecord}
             addRecord={addRecord}
           />
