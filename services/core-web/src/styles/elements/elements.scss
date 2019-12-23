@@ -205,3 +205,10 @@ hr {
   padding-top: 5px;
   padding-bottom: 5px;
 }
+
+// removes the increment/decrement buttons from number type inputs.
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}

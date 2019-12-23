@@ -1,9 +1,10 @@
 # import json
 
+import sqlalchemy as sa
+import itertools
+
 from uuid import UUID as py_uuid
 from flask import current_app
-
-import sqlalchemy as sa
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import scoped_session, sessionmaker, mapper
 from sqlalchemy import event
@@ -16,6 +17,7 @@ from app.extensions import db
 from geoalchemy2 import Geometry
 
 from app.api.now_applications.models.activity_detail.activity_detail_base import ActivityDetailBase
+from app.api.now_applications.models.equipment import Equipment
 from sqlalchemy.dialects.postgresql import UUID
 
 
@@ -57,7 +59,7 @@ def setup_schema(Base, session):
     inspired by: https://marshmallow-sqlalchemy.readthedocs.io/en/latest/recipes.html#automatically-generating-schemas-for-sqlalchemy-models
     """
     def setup_schema_fn():
-        for class_ in ActivityDetailBase._decl_class_registry.values():
+        for class_ in ActivityDetailBase.__subclasses__() + [Equipment]:
             if hasattr(class_, "__tablename__"):
                 try:
                     if class_.__name__.endswith("Schema"):
@@ -77,6 +79,7 @@ def setup_schema(Base, session):
 
                     class ModelSchema2(ModelSchema):
                         activity_type_code = fields.String(dump_only=True)
+                        activity_detail_id = fields.Integer(dump_only=True)
 
                     schema_class = type(schema_class_name, (ModelSchema2, ), {"Meta": Meta})
 

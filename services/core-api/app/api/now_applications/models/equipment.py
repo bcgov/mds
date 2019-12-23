@@ -1,6 +1,7 @@
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
 from sqlalchemy.ext.associationproxy import association_proxy
+from flask import current_app
 
 from app.api.utils.models_mixins import AuditMixin, Base
 from app.extensions import db
@@ -16,6 +17,14 @@ class Equipment(AuditMixin, Base):
     quantity = db.Column(db.Integer)
     capacity = db.Column(db.String)
     _etl_equipment = db.relationship('ETLEquipment', load_on_pending=True)
+    activity_equipment_xref = db.relationship('ActivityEquipmentXref', load_on_pending=True)
 
     def __repr__(self):
         return '<Equipment %r>' % self.equipment_id
+
+    def delete(self, commit=True):
+        for item in self.activity_equipment_xref:
+            item.delete(commit)
+        for item in self._etl_equipment:
+            item.delete(commit)
+        super(Equipment, self).delete(commit)
