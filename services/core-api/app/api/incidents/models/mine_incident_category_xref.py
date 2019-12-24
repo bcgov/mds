@@ -12,7 +12,7 @@ class MineIncidentCategoryXref(Base):
         primary_key=True,
         nullable=False)
     mine_incident_category_code = db.Column(
-        db.String,
+        db.String(3),
         db.ForeignKey('mine_incident_category.mine_incident_category_code'),
         primary_key=True,
         nullable=False)

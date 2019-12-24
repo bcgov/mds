@@ -1,10 +1,12 @@
 ALTER TABLE mine_incident DROP CONSTRAINT IF EXISTS mine_incident_mine_incident_category_code_fkey;
 ALTER TABLE mine_incident DROP COLUMN IF EXISTS mine_incident_category_code;
 
+ALTER TABLE mine_incident_category ALTER COLUMN mine_incident_category_code TYPE varchar(3);
+
 DROP TABLE IF EXISTS mine_incident_category_xref;
 CREATE TABLE mine_incident_category_xref (
     mine_incident_id integer NOT NULL,
-    mine_incident_category_code character varying NOT NULL,
+    mine_incident_category_code varchar(3) NOT NULL,
     PRIMARY KEY(mine_incident_id, mine_incident_category_code)
 );
 

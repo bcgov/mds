@@ -9,7 +9,7 @@ from app.api.utils.models_mixins import AuditMixin, Base
 
 class MineIncidentCategory(AuditMixin, Base):
     __tablename__ = 'mine_incident_category'
-    mine_incident_category_code = db.Column(db.String, primary_key=True)
+    mine_incident_category_code = db.Column(db.String(3), primary_key=True)
     description = db.Column(db.String, nullable=False)
     active_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
 
