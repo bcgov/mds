@@ -38,7 +38,7 @@ export class ViewIncidentModal extends Component {
     const formattedPhoneNo = this.props.incident.reported_by_phone_ext
       ? `${this.props.incident.reported_by_phone_no} ext: ${this.props.incident.reported_by_phone_ext}`
       : this.props.incident.reported_by_phone_no;
-
+    console.log(this.props);
     return (
       <div>
         <h5>Initial Report</h5>
@@ -46,8 +46,7 @@ export class ViewIncidentModal extends Component {
           <div className="inline-flex padding-small">
             <p className="field-title">Incident type(s)</p>
             <p>
-              {this.props.incident.mine_incident_category_xref &&
-              this.props.incident.mine_incident_category_xref !== Strings.EMPTY_ARRAY
+              {this.props.incident.mine_incident_category_xref.length > 0
                 ? this.props.incident.mine_incident_category_xref
                     .map((c) => this.props.incidentCategoryCodeHash[c.mine_incident_category_code])
                     .join(", ")
