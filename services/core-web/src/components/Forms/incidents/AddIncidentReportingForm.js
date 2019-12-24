@@ -31,8 +31,8 @@ export const AddIncidentReportingForm = (props) => (
           )}
           <Form.Item>
             <Field
-              id="mine_incident_category_codes"
-              name="mine_incident_category_codes"
+              id="mine_incident_category_xref"
+              name="mine_incident_category_xref"
               label="Incident type(s)*"
               placeholder="Select the incident type(s)"
               component={renderConfig.MULTI_SELECT}

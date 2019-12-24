@@ -47,9 +47,8 @@ MINE_INCIDENT_RECOMMENDATION_MODEL = api.model(
     }
 )
 
-MINE_INCIDENT_CATEGORY_CODES_MODEL = api.model(
+MINE_INCIDENT_CATEGORY_XREF_MODEL = api.model(
     'Mine Incident Category Code', {
-        'mine_incident_category_codes_id': fields.Integer,
         'mine_incident_id': fields.Integer,
         'mine_incident_category_code': fields.String
     }
@@ -89,8 +88,8 @@ MINE_INCIDENT_MODEL = api.model(
         'documents': fields.List(fields.Nested(MINE_INCIDENT_DOCUMENT_MODEL)),
         'recommendations': fields.List(fields.Nested(
             MINE_INCIDENT_RECOMMENDATION_MODEL)),
-        'mine_incident_category_codes': fields.List(fields.Nested(
-            MINE_INCIDENT_CATEGORY_CODES_MODEL))
+        'mine_incident_category_xref': fields.List(fields.Nested(
+            MINE_INCIDENT_CATEGORY_XREF_MODEL))
     })
 
 PAGINATED_LIST = api.model(

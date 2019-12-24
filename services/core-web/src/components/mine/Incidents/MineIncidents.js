@@ -88,8 +88,6 @@ export class MineIncidents extends Component {
   }
 
   handleAddMineIncident = (values) => {
-    console.log("ADD:");
-    console.log(values);
     const { number_of_fatalities = 0, number_of_injuries = 0, ...otherValues } = values;
     this.props
       .createMineIncident(this.props.mineGuid, {
@@ -104,8 +102,6 @@ export class MineIncidents extends Component {
   };
 
   handleEditMineIncident = (values) => {
-    console.log("EDIT:");
-    console.log(values);
     this.props
       .updateMineIncident(this.props.mineGuid, values.mine_incident_guid, values)
       .then(() => {
@@ -160,10 +156,8 @@ export class MineIncidents extends Component {
           dangerous_occurrence_subparagraph_ids: existingIncident.dangerous_occurrence_subparagraph_ids.map(
             String
           ),
-          mine_incident_category_codes: existingIncident.mine_incident_category_codes
-            ? existingIncident.mine_incident_category_codes.map(
-                (c) => c.mine_incident_category_code
-              )
+          mine_incident_category_xref: existingIncident.mine_incident_category_xref
+            ? existingIncident.mine_incident_category_xref.map((c) => c.mine_incident_category_code)
             : [],
         },
         onSubmit,
