@@ -80,23 +80,20 @@ const defaultProps = {
 export class NoticeOfWorkApplication extends Component {
   static noticeOfWorkPageFromRoute = {};
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      currentStep: 0,
-      isLoaded: false,
-      isImported: false,
-      isNoWLoaded: false,
-      associatedMineGuid: "",
-      isViewMode: true,
-      showOriginalValues: false,
-      fixedTop: false,
-      menuVisible: false,
-      isDecision: false,
-      buttonValue: "REV",
-      buttonLabel: "Technical Review",
-    };
-  }
+  state = {
+    currentStep: 0,
+    isLoaded: false,
+    isImported: false,
+    isNoWLoaded: false,
+    associatedMineGuid: "",
+    isViewMode: true,
+    showOriginalValues: false,
+    fixedTop: false,
+    menuVisible: false,
+    isDecision: false,
+    buttonValue: "REV",
+    buttonLabel: "Technical Review",
+  };
 
   componentDidMount() {
     const { id } = this.props.match.params;

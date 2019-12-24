@@ -51,13 +51,10 @@ const propTypes = {
 export class ViewNoticeOfWorkApplication extends Component {
   static noticeOfWorkPageFromRoute = {};
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      isLoaded: false,
-      showOriginalValues: false,
-    };
-  }
+  state = {
+    isLoaded: false,
+    showOriginalValues: false,
+  };
 
   componentDidMount() {
     const { id } = this.props.match.params;
