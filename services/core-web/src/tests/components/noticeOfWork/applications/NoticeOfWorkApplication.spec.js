@@ -14,6 +14,7 @@ const setupDispatchProps = () => {
   dispatchProps.fetchOriginalNoticeOfWorkApplication = jest.fn();
   dispatchProps.fetchNoticeOFWorkActivityTypeOptions = jest.fn();
   dispatchProps.fetchNoticeOFWorkApplicationProgressStatusCodes = jest.fn();
+  dispatchProps.fetchImportedNoticeOfWorkApplication = jest.fn(() => Promise.resolve());
 };
 
 const setupReducerProps = () => {
