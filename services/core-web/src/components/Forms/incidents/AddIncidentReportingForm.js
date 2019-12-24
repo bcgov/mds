@@ -36,6 +36,7 @@ export const AddIncidentReportingForm = (props) => (
               label="Incident type(s)*"
               placeholder="Select the incident type(s)"
               component={renderConfig.MULTI_SELECT}
+              validate={[required]}
               data={props.incidentCategoryCodeOptions}
             />
           </Form.Item>
