@@ -21,6 +21,11 @@ exports[`AddIncidentReportingForm renders properly 1`] = `
             label="Incident type(s)*"
             name="mine_incident_category_xref"
             placeholder="Select the incident type(s)"
+            validate={
+              Array [
+                [Function],
+              ]
+            }
           />
         </FormItem>
         <FormItem
