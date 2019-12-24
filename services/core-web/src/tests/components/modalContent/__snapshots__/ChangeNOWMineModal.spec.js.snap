@@ -41,7 +41,7 @@ exports[`ChangeNOWMineModal renders properly 1`] = `
       }
     }
     forceUnregisterOnUnmount={false}
-    form="ADD_TAILINGS"
+    form="CHANGE_NOW_MINE"
     getFormState={[Function]}
     handleChange={[Function]}
     handleSelect={[Function]}
