@@ -3,7 +3,15 @@ import PropTypes from "prop-types";
 import { Field, reduxForm } from "redux-form";
 import { Form, Col, Row } from "antd";
 import * as FORM from "@/constants/forms";
-import { required, email, number, phoneNumber, maxLength, dateNotInFuture } from "@/utils/Validate";
+import {
+  required,
+  requiredList,
+  email,
+  number,
+  phoneNumber,
+  maxLength,
+  dateNotInFuture,
+} from "@/utils/Validate";
 import { normalizePhone } from "@/utils/helpers";
 import { renderConfig } from "@/components/common/config";
 import CustomPropTypes from "@/customPropTypes";
@@ -36,7 +44,7 @@ export const AddIncidentReportingForm = (props) => (
               label="Incident type(s)*"
               placeholder="Select the incident type(s)"
               component={renderConfig.MULTI_SELECT}
-              validate={[required]}
+              validate={[requiredList]}
               data={props.incidentCategoryCodeOptions}
             />
           </Form.Item>
