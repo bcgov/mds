@@ -19,14 +19,14 @@ exports[`UndergroundExploration renders properly 1`] = `
           "title": "Quantity",
         },
         Object {
-          "dataIndex": "incline_unit_type_code",
-          "key": "incline_unit_type_code",
+          "dataIndex": "incline",
+          "key": "incline",
           "render": [Function],
           "title": "Incline",
         },
         Object {
-          "dataIndex": "units",
-          "key": "units",
+          "dataIndex": "incline_unit_type_code",
+          "key": "incline_unit_type_code",
           "render": [Function],
           "title": "Units",
         },

@@ -15,7 +15,6 @@ const propTypes = {
   isViewMode: PropTypes.bool.isRequired,
   details: CustomPropTypes.activityDetails.isRequired,
   equipment: CustomPropTypes.activityEquipment.isRequired,
-  removeRecord: PropTypes.func.isRequired,
   editRecord: PropTypes.func.isRequired,
   addRecord: PropTypes.func.isRequired,
 };
@@ -23,10 +22,17 @@ const propTypes = {
 const defaultProps = {};
 
 export const Placer = (props) => {
-  const editActivity = (event, rowIndex) => {
+  const editActivity = (event, rowIndex, isDelete) => {
     const activityToChange = props.details[rowIndex];
-    activityToChange[event.target.name] = event.target.value;
-    props.editRecord(activityToChange, "placer_operation.details", rowIndex);
+    let removeOnly = false;
+    if (isDelete) {
+      if (!activityToChange.activity_detail_id) {
+        removeOnly = true;
+      }
+    } else {
+      activityToChange[event.target.name] = event.target.value;
+    }
+    props.editRecord(activityToChange, "placer_operation.details", rowIndex, isDelete, removeOnly);
   };
 
   const addActivity = () => {
@@ -54,7 +60,7 @@ export const Placer = (props) => {
               type="text"
               disabled={props.isViewMode}
               value={text}
-              onChange={(e) => editActivity(e, record.index)}
+              onChange={(e) => editActivity(e, record.index, false)}
             />
           </div>
         </div>
@@ -69,10 +75,10 @@ export const Placer = (props) => {
           <div className="inline-flex">
             <input
               name="quantity"
-              type="text"
+              type="number"
               disabled={props.isViewMode}
               value={text}
-              onChange={(e) => editActivity(e, record.index)}
+              onChange={(e) => editActivity(e, record.index, false)}
             />
           </div>
         </div>
@@ -87,10 +93,10 @@ export const Placer = (props) => {
           <div className="inline-flex">
             <input
               name="width"
-              type="text"
+              type="number"
               disabled={props.isViewMode}
               value={text}
-              onChange={(e) => editActivity(e, record.index)}
+              onChange={(e) => editActivity(e, record.index, false)}
             />
           </div>
         </div>
@@ -105,10 +111,10 @@ export const Placer = (props) => {
           <div className="inline-flex">
             <input
               name="length"
-              type="text"
+              type="number"
               disabled={props.isViewMode}
               value={text}
-              onChange={(e) => editActivity(e, record.index)}
+              onChange={(e) => editActivity(e, record.index, false)}
             />
           </div>
         </div>
@@ -123,10 +129,10 @@ export const Placer = (props) => {
           <div className="inline-flex">
             <input
               name="disturbed_area"
-              type="text"
+              type="number"
               disabled={props.isViewMode}
               value={text}
-              onChange={(e) => editActivity(e, record.index)}
+              onChange={(e) => editActivity(e, record.index, false)}
             />
           </div>
         </div>
@@ -141,10 +147,10 @@ export const Placer = (props) => {
           <div className="inline-flex">
             <input
               name="timber_volume"
-              type="text"
+              type="number"
               disabled={props.isViewMode}
               value={text}
-              onChange={(e) => editActivity(e, record.index)}
+              onChange={(e) => editActivity(e, record.index, false)}
             />
           </div>
         </div>
@@ -160,7 +166,7 @@ export const Placer = (props) => {
         <Button
           type="primary"
           size="small"
-          onClick={() => props.removeRecord("placer_operation.details", record.index)}
+          onClick={(event) => editActivity(event, record.index, true)}
           ghost
         >
           <img name="remove" src={TRASHCAN} alt="Remove Activity" />
@@ -170,18 +176,21 @@ export const Placer = (props) => {
   };
 
   const columns = (isViewMode) =>
-    false && !isViewMode ? [...standardColumns, removeColumn] : standardColumns;
+    !isViewMode ? [...standardColumns, removeColumn] : standardColumns;
 
   const transformData = (activities) =>
-    activities.map((activity, index) => ({
-      activity_type_description: activity.activity_type_description || "",
-      width: activity.width || "",
-      quantity: activity.quantity || "",
-      length: activity.length || "",
-      disturbed_area: activity.disturbed_area || "",
-      timber_volume: activity.timber_volume || "",
-      index,
-    }));
+    activities
+      .map((activity, index) => ({
+        activity_type_description: activity.activity_type_description || "",
+        width: activity.width || "",
+        quantity: activity.quantity || "",
+        length: activity.length || "",
+        disturbed_area: activity.disturbed_area || "",
+        timber_volume: activity.timber_volume || "",
+        state_modified: activity.state_modified || "",
+        index,
+      }))
+      .filter((activity) => !activity.state_modified);
 
   return (
     <div>
@@ -217,7 +226,7 @@ export const Placer = (props) => {
           emptyText: "No data",
         }}
       />
-      {false && !props.isViewMode && (
+      {!props.isViewMode && (
         <Button type="primary" onClick={() => addActivity()}>
           Add Activity
         </Button>
@@ -234,7 +243,6 @@ export const Placer = (props) => {
         equipment={props.equipment}
         isViewMode={props.isViewMode}
         activity="placer_operation"
-        removeRecord={props.removeRecord}
         editRecord={props.editRecord}
         addRecord={props.addRecord}
       />
