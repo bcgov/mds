@@ -55,7 +55,7 @@ export const ChangeNOWMineForm = (props) => (
 ChangeNOWMineForm.propTypes = propTypes;
 
 export default reduxForm({
-  form: FORM.ADD_TAILINGS,
+  form: FORM.CHANGE_NOW_MINE,
   touchOnBlur: false,
   onSubmitSuccess: resetForm(FORM.CHANGE_NOW_MINE),
 })(ChangeNOWMineForm);
