@@ -48,7 +48,7 @@ MINE_INCIDENT_RECOMMENDATION_MODEL = api.model(
 )
 
 MINE_INCIDENT_CATEGORY_XREF_MODEL = api.model(
-    'Mine Incident Category Code', {
+    'Mine Incident Category Xref', {
         'mine_incident_id': fields.Integer,
         'mine_incident_category_code': fields.String
     }
