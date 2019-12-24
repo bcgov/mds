@@ -14,4 +14,4 @@ class ActivityEquipmentXref(Base):
     equipment_id = db.Column(db.Integer, db.ForeignKey('equipment.equipment_id'), primary_key=True)
 
     def __repr__(self):
-        return '<EquipmentAssignment now_application_id=%r, equipment_id=%r>' % self.now_application_id, equipment_id
+        return f'<ActivityEquipmentXref activity_summary_id={self.activity_summary_id}, equipment_id={self.equipment_id}>'

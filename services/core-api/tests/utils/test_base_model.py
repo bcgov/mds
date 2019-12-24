@@ -114,18 +114,37 @@ def test_delete_flag_in_nested_item_fail_orphan(db_session):
     assert len(mine.mine_permit) == init_length - 1
 
 
-def test_delete_flag_in_nested_item_success_nested(db_session):
+@pytest.mark.xfail(reason='do not allow delete method on soft delete models')
+def test_delete_flag_in_nested_item_fail_deleted_ind(db_session):
     init_length = 5
     mine = MineFactory(mine_permit=init_length)
     partial_mine_permit_dict = marshal(
         {'mine_permit': mine.mine_permit},
         api.model('test_list', {'mine_permit': fields.List(fields.Nested(PERMIT_MODEL))}))
+
     partial_mine_permit_dict['mine_permit'][1]['state_modified'] = STATE_MODIFIED_DELETE_ON_PUT
     partial_mine_permit_dict['mine_permit'][1]['permit_amendments'][0][
         'state_modified'] = STATE_MODIFIED_DELETE_ON_PUT
+
     mine.deep_update_from_dict(partial_mine_permit_dict, _edit_key=PERMIT_EDIT_GROUP)
     mine = Mine.query.filter_by(mine_guid=mine.mine_guid).first()
     assert len(mine.mine_permit) == init_length - 1
+
+
+def test_delete_flag_in_nested_item_success_nested(db_session):
+    now_app = NOWApplicationIdentityFactory()
+    assert len(now_app.now_application.camps.details) == 0
+    new_camp_detail = CampDetail(length=10)
+    now_app.now_application.camps.details.append(new_camp_detail)
+    assert len(now_app.now_application.camps.details) == 1
+
+    now_app_dict = marshal(now_app.now_application, NOW_APPLICATION_MODEL)
+    now_app_dict['camps']['details'][0]['state_modified'] = STATE_MODIFIED_DELETE_ON_PUT
+
+    now_app.now_application.deep_update_from_dict(now_app_dict)
+
+    na = NOWApplication.query.filter_by(now_application_id=now_app.now_application_id).first()
+    assert len(na.camps.details) == 0
 
 
 def test_missing_nested_item_not_deleted(db_session):
