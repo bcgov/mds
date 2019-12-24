@@ -39,7 +39,6 @@ export class ViewIncidentModal extends Component {
       ? `${this.props.incident.reported_by_phone_no} ext: ${this.props.incident.reported_by_phone_ext}`
       : this.props.incident.reported_by_phone_no;
 
-    console.log(this.props);
     return (
       <div>
         <h5>Initial Report</h5>
