@@ -358,7 +358,7 @@ export class NoticeOfWorkApplication extends Component {
     );
 
     return (
-      <div className="page" onScroll={this.handleScroll()}>
+      <div className="page" onScroll={this.handleScroll()} onLoad={this.handleScroll()}>
         <div className={this.state.fixedTop ? "steps--header fixed-scroll" : "steps--header"}>
           <div className="inline-flex between">
             <div>
