@@ -335,7 +335,6 @@ exports[`DashboardRoutes  renders properly 1`] = `
         "WrappedComponent": [Function],
         "compare": null,
         "displayName": "Connect(NoticeOfWorkApplication)",
-        "noticeOfWorkPageFromRoute": Object {},
         "type": [Function],
       }
     }
@@ -349,7 +348,6 @@ exports[`DashboardRoutes  renders properly 1`] = `
         "WrappedComponent": [Function],
         "compare": null,
         "displayName": "Connect(ViewNoticeOfWorkApplication)",
-        "noticeOfWorkPageFromRoute": Object {},
         "type": [Function],
       }
     }
