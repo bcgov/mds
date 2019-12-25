@@ -14,6 +14,7 @@ const propTypes = {
     push: PropTypes.func,
     replace: PropTypes.func,
     action: PropTypes.string,
+    location: PropTypes.shape({ hash: PropTypes.string }),
   }).isRequired,
   location: PropTypes.shape({ hash: PropTypes.string }).isRequired,
   match: PropTypes.shape({
@@ -25,7 +26,7 @@ const propTypes = {
 };
 
 export class NOWSideMenu extends Component {
-  static onClickRoute = undefined;
+  static urlRoute = undefined;
 
   componentDidMount() {
     // Notes:
@@ -39,34 +40,43 @@ export class NOWSideMenu extends Component {
       !this.props.location.hash.startsWith("#state")
         ? this.props.location.hash
         : undefined;
+
     if (!link) {
       return;
     }
+
     link = link.substr(0, link.indexOf("&"));
+    this.updateUrlRoute(link);
     this.anchor.handleScrollTo(link);
-    this.updateActiveLink(link);
+    this.anchor.setCurrentActiveLink(link);
   }
 
   handleAnchorOnClick = (e, link) => {
     e.preventDefault();
-    this.updateActiveLink(link.href);
+    this.updateUrlRoute(link.href);
   };
 
   handleAnchorOnChange = (currentActiveLink) => {
     if (
-      this.onClickRoute === undefined ||
-      (this.props.history && this.props.history.action === "POP")
+      this.props.history.action === "POP" &&
+      currentActiveLink === this.props.history.location.hash
     ) {
       return;
     }
-    this.props.history.replace(this.onClickRoute, { currentActiveLink });
+
+    this.props.history.replace(this.urlRoute, { currentActiveLink });
   };
 
-  updateActiveLink(link) {
-    const { id } = this.props.match.params;
-    this.onClickRoute = this.props.route.hashRoute(id, link);
-    this.props.history.push(this.onClickRoute, { currentActiveLink: link });
-  }
+  updateUrlRoute = (route) => {
+    const nowGuid = this.props.match.params.id;
+    this.urlRoute = this.props.route.hashRoute(nowGuid, route);
+
+    if (route === this.props.history.location.hash) {
+      return;
+    }
+
+    this.props.history.push(this.urlRoute, { currentActiveLink: route });
+  };
 
   render() {
     return (
