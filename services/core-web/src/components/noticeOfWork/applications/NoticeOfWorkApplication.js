@@ -78,8 +78,6 @@ const defaultProps = {
 };
 
 export class NoticeOfWorkApplication extends Component {
-  static noticeOfWorkPageFromRoute = {};
-
   state = {
     currentStep: 0,
     isLoaded: false,
@@ -93,6 +91,7 @@ export class NoticeOfWorkApplication extends Component {
     isDecision: false,
     buttonValue: "REV",
     buttonLabel: "Technical Review",
+    noticeOfWorkPageFromRoute: undefined,
   };
 
   componentDidMount() {
@@ -121,12 +120,14 @@ export class NoticeOfWorkApplication extends Component {
       });
     });
     this.props.fetchOriginalNoticeOfWorkApplication(id);
-    this.noticeOfWorkPageFromRoute =
-      this.props.location &&
-      this.props.location.state &&
-      this.props.location.state.noticeOfWorkPageFromRoute
-        ? this.props.location.state.noticeOfWorkPageFromRoute
-        : this.noticeOfWorkPageFromRoute;
+    this.setState((prevState) => ({
+      noticeOfWorkPageFromRoute:
+        this.props.location &&
+        this.props.location.state &&
+        this.props.location.state.noticeOfWorkPageFromRoute
+          ? this.props.location.state.noticeOfWorkPageFromRoute
+          : prevState.noticeOfWorkPageFromRoute,
+    }));
   }
 
   componentWillReceiveProps(nextProps) {
@@ -362,10 +363,10 @@ export class NoticeOfWorkApplication extends Component {
           <div className="inline-flex between">
             <div>
               <h1>NoW Number: {this.props.noticeOfWork.now_number || Strings.EMPTY_FIELD}</h1>
-              {this.noticeOfWorkPageFromRoute && (
-                <Link to={this.noticeOfWorkPageFromRoute.route}>
+              {this.state.noticeOfWorkPageFromRoute && (
+                <Link to={this.state.noticeOfWorkPageFromRoute.route}>
                   <Icon type="arrow-left" style={{ paddingRight: "5px" }} />
-                  Back to: {this.noticeOfWorkPageFromRoute.title}
+                  Back to: {this.state.noticeOfWorkPageFromRoute.title}
                 </Link>
               )}
             </div>
