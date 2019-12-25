@@ -109,13 +109,13 @@ export class ViewNoticeOfWorkApplication extends Component {
           <div>
             <div
               className="side-menu--fixed"
-              style={this.noticeOfWorkPageFromRoute ? { paddingTop: "20px" } : {}}
+              style={this.state.noticeOfWorkPageFromRoute ? { paddingTop: "24px" } : {}}
             >
               <NOWSideMenu route={routes.VIEW_NOTICE_OF_WORK_APPLICATION} />
             </div>
             <div
               className="steps--content with-fixed-top"
-              style={this.noticeOfWorkPageFromRoute ? { paddingTop: "20px" } : {}}
+              style={this.state.noticeOfWorkPageFromRoute ? { paddingTop: "24px" } : {}}
             >
               <ReviewNOWApplication
                 reclamationSummary={this.props.reclamationSummary}

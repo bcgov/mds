@@ -417,7 +417,10 @@ export class NoticeOfWorkApplication extends Component {
         </div>
         <LoadingWrapper condition={this.state.isNoWLoaded}>
           <div>
-            <div className={this.state.fixedTop ? "side-menu--fixed" : "side-menu"}>
+            <div
+              className={this.state.fixedTop ? "side-menu--fixed" : "side-menu"}
+              style={this.state.noticeOfWorkPageFromRoute ? { paddingTop: "24px" } : {}}
+            >
               {this.state.currentStep === 1 && (
                 <NOWSideMenu route={routes.NOTICE_OF_WORK_APPLICATION} />
               )}
