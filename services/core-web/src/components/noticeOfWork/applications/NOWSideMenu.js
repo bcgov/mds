@@ -48,7 +48,6 @@ export class NOWSideMenu extends Component {
     link = link.substr(0, link.indexOf("&"));
     this.updateUrlRoute(link);
     this.anchor.handleScrollTo(link);
-    this.anchor.setCurrentActiveLink(link);
   }
 
   handleAnchorOnClick = (e, link) => {
