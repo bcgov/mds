@@ -28,9 +28,6 @@ const propTypes = {
   location: PropTypes.shape({
     pathname: PropTypes.string,
     search: PropTypes.string,
-    state: PropTypes.shape({
-      noticeOfWorkPageFromRoute: CustomPropTypes.noticeOfWorkPageFromRoute,
-    }),
   }).isRequired,
 };
 
