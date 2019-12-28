@@ -29,11 +29,11 @@ export class NOWSideMenu extends Component {
   static urlRoute = undefined;
 
   componentDidMount() {
-    // Notes:
-    // 1) Because of Keycloak authorization/redirection, props.location.hash will have extra params that we don't need, so ignore them.
-    // e.g.: #blasting&state=bd74ea1c-09e5-4d7e-810f-d3558969293a&session_state=1c577088-15a8-4ae2-b1b7-12c424477364&code=2b...
-    // 2) If the hash starts with "#state", it means there are no URL fragments (see params above in #1).
-    // 3) If we want to start the user on the first section (the Application Info section), change "undefined" to "#application-info".
+    // If the user loads the page with a hash in the URL, start them off at the corresponding NoW section.
+    // Note: Because Keycloak authorization adds params to the URL when it redirects, props.location.hash
+    // will be contaminated with extra params that we don't need. All we want is the hash that corresponds
+    // to the NoW section, so we must parse it out. If the hash is "#state", we must ignore it (see example).
+    // For example: #blasting&state=bd74ea1c-09e5-4d7e-810f-d3558969293a&session_state=1c577088-15a8-4ae2-...
     let link =
       this.props.location &&
       this.props.location.hash &&
@@ -45,7 +45,9 @@ export class NOWSideMenu extends Component {
       return;
     }
 
+    // Extracts "#blasting" from "#blasting&state=bd74ea1c-09e5-4d7e-810f-d...", for example.
     link = link.substr(0, link.indexOf("&"));
+
     this.updateUrlRoute(link);
     this.anchor.handleScrollTo(link);
   }
