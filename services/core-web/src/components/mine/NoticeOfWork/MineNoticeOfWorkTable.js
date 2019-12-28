@@ -69,6 +69,18 @@ const transformRowData = (applications) =>
 
 const pageTitle = (mineName) => `${mineName} Notice of Work Applications`;
 
+const createLinkTo = (route, record) => {
+  return {
+    pathname: route.dynamicRoute(record.key),
+    state: {
+      noticeOfWorkPageFromRoute: {
+        route: this.props.location.pathname + this.props.location.search,
+        title: pageTitle(record.mineName),
+      },
+    },
+  };
+};
+
 export class MineNoticeOfWorkTable extends Component {
   filterProperties = (name, field) => ({
     filterDropdown: ({ setSelectedKeys, selectedKeys }) => {
@@ -120,19 +132,7 @@ export class MineNoticeOfWorkTable extends Component {
       dataIndex: "nowNum",
       sortField: "now_number",
       render: (text, record) => (
-        <Link
-          to={{
-            pathname: router.VIEW_NOTICE_OF_WORK_APPLICATION.dynamicRoute(record.key),
-            state: {
-              noticeOfWorkPageFromRoute: {
-                route: this.props.location.pathname + this.props.location.search,
-                title: pageTitle(record.mineName),
-              },
-            },
-          }}
-        >
-          {text}
-        </Link>
+        <Link to={createLinkTo(router.VIEW_NOTICE_OF_WORK_APPLICATION, record)}>{text}</Link>
       ),
       sorter: true,
       ...this.filterProperties("NoW No.", "now_number"),
@@ -169,32 +169,12 @@ export class MineNoticeOfWorkTable extends Component {
           <div title="" className="btn--middle flex">
             <AuthorizationWrapper inTesting>
               <AuthorizationWrapper permission={Permission.ADMIN}>
-                <Link
-                  to={{
-                    pathname: router.NOTICE_OF_WORK_APPLICATION.dynamicRoute(record.key),
-                    state: {
-                      noticeOfWorkPageFromRoute: {
-                        route: this.props.location.pathname + this.props.location.search,
-                        title: pageTitle(record.mineName),
-                      },
-                    },
-                  }}
-                >
+                <Link to={createLinkTo(router.NOTICE_OF_WORK_APPLICATION, record)}>
                   <img src={EDIT_OUTLINE_VIOLET} alt="Edit NoW" className="padding-large--right" />
                 </Link>
               </AuthorizationWrapper>
             </AuthorizationWrapper>
-            <Link
-              to={{
-                pathname: router.VIEW_NOTICE_OF_WORK_APPLICATION.dynamicRoute(record.key),
-                state: {
-                  noticeOfWorkPageFromRoute: {
-                    route: this.props.location.pathname + this.props.location.search,
-                    title: pageTitle(record.mineName),
-                  },
-                },
-              }}
-            >
+            <Link to={createLinkTo(router.VIEW_NOTICE_OF_WORK_APPLICATION, record)}>
               <Icon type="eye" className="icon-lg icon-svg-filter padding-large--left" />
             </Link>
           </div>
