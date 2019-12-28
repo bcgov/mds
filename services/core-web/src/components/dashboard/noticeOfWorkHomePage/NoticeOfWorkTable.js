@@ -69,19 +69,19 @@ const applySortIndicator = (_columns, field, dir) =>
 
 const pageTitle = "Browse Notices of Work";
 
-const createLinkTo = (route, record) => {
-  return {
-    pathname: route.dynamicRoute(record.key),
-    state: {
-      noticeOfWorkPageFromRoute: {
-        route: this.props.location.pathname + this.props.location.search,
-        title: pageTitle,
-      },
-    },
-  };
-};
-
 export class NoticeOfWorkTable extends Component {
+  createLinkTo = (route, record) => {
+    return {
+      pathname: route.dynamicRoute(record.key),
+      state: {
+        noticeOfWorkPageFromRoute: {
+          route: this.props.location.pathname + this.props.location.search,
+          title: pageTitle,
+        },
+      },
+    };
+  };
+
   transformRowData = (applications) =>
     applications.map((application) => ({
       key: application.now_application_guid,
@@ -156,7 +156,7 @@ export class NoticeOfWorkTable extends Component {
       dataIndex: "nowNum",
       sortField: "now_number",
       render: (text, record) => (
-        <Link to={createLinkTo(router.VIEW_NOTICE_OF_WORK_APPLICATION, record)}>{text}</Link>
+        <Link to={this.createLinkTo(router.VIEW_NOTICE_OF_WORK_APPLICATION, record)}>{text}</Link>
       ),
       sorter: true,
       ...this.filterProperties("NoW No.", "now_number"),
@@ -202,11 +202,11 @@ export class NoticeOfWorkTable extends Component {
         record.key && (
           <div title="" className="btn--middle flex">
             <AuthorizationWrapper inTesting>
-              <Link to={createLinkTo(router.NOTICE_OF_WORK_APPLICATION, record)}>
+              <Link to={this.createLinkTo(router.NOTICE_OF_WORK_APPLICATION, record)}>
                 <img src={EDIT_OUTLINE_VIOLET} alt="Edit NoW" className="padding-md--right" />
               </Link>
             </AuthorizationWrapper>
-            <Link to={createLinkTo(router.VIEW_NOTICE_OF_WORK_APPLICATION, record)}>
+            <Link to={this.createLinkTo(router.VIEW_NOTICE_OF_WORK_APPLICATION, record)}>
               <Icon type="eye" className="icon-lg icon-svg-filter padding-large--left" />
             </Link>
           </div>
