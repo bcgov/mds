@@ -95,12 +95,14 @@ class MineIncident(AuditMixin, Base):
         primaryjoin=
         "and_(MineIncidentRecommendation.mine_incident_id == MineIncident.mine_incident_id, MineIncidentRecommendation.deleted_ind==False)",
         lazy='selectin')
+
     documents = db.relationship('MineIncidentDocumentXref', lazy='joined')
     mine_documents = db.relationship(
         'MineDocument', lazy='joined', secondary='mine_incident_document_xref')
 
-    mine_incident_category_xref = db.relationship(
-        'MineIncidentCategoryXref', backref='mine_incident', lazy='select')
+    categories = db.relationship('MineIncidentCategoryXref', lazy='joined')
+    mine_categories = db.relationship(
+        'MineIncidentCategory', lazy='joined', secondary='mine_incident_category_xref')
 
     mine_table = db.relationship('Mine', lazy='joined')
     mine_name = association_proxy('mine_table', 'mine_name')

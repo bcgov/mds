@@ -66,8 +66,7 @@ class MineIncidentListResource(Resource, UserMixin):
     parser.add_argument('dangerous_occurrence_subparagraph_ids', type=list, location='json')
     parser.add_argument('updated_documents', type=list, location='json', store_missing=False)
     parser.add_argument('recommendations', type=list, location='json', store_missing=False)
-    parser.add_argument(
-        'mine_incident_category_xref', type=list, location='json', store_missing=False)
+    parser.add_argument('categories', type=list, location='json', store_missing=False)
 
     @api.marshal_with(MINE_INCIDENT_MODEL, envelope='records', code=200)
     @api.doc(description='returns the incidents for a given mine.')
@@ -164,11 +163,6 @@ class MineIncidentListResource(Resource, UserMixin):
 
                 incident.documents.append(mine_incident_doc)
 
-        try:
-            incident.save()
-        except Exception as e:
-            raise InternalServerError(f'Error when saving: {e}')
-
         recommendations = data.get('recommendations')
         if recommendations is not None:
             for recommendation in recommendations:
@@ -179,9 +173,20 @@ class MineIncidentListResource(Resource, UserMixin):
                     rec_string, mine_incident_id=incident.mine_incident_id)
                 new_recommendation.save()
 
-        mine_incident_category_codes = data.get('mine_incident_category_xref')
-        MineIncidentCategoryXref.create_batch(incident.mine_incident_id,
-                                              mine_incident_category_codes)
+        categories = data.get('categories')
+        if categories is not None:
+            for category in categories:
+                if category is None:
+                    continue
+                new_category = MineIncidentCategoryXref(
+                    mine_incident_id=incident.mine_incident_id,
+                    mine_incident_category_code=category)
+                incident.categories.append(new_category)
+
+        try:
+            incident.save()
+        except Exception as e:
+            raise InternalServerError(f'Error when saving: {e}')
 
         return incident, 201
 
@@ -234,8 +239,7 @@ class MineIncidentResource(Resource, UserMixin):
         'mine_determination_type_code', type=str, location='json', store_missing=False)
     parser.add_argument(
         'mine_determination_representative', type=str, location='json', store_missing=False)
-    parser.add_argument(
-        'mine_incident_category_xref', type=list, location='json', store_missing=False)
+    parser.add_argument('categories', type=list, location='json', store_missing=False)
 
     @api.marshal_with(MINE_INCIDENT_MODEL, code=200)
     @requires_role_view_all
@@ -263,10 +267,7 @@ class MineIncidentResource(Resource, UserMixin):
                     'Dangerous occurrences require one or more cited sections of HSRC code 1.7.3')
 
         for key, value in data.items():
-            if key in [
-                    'dangerous_occurrence_subparagraph_ids', 'recommendations',
-                    'mine_incident_category_xref'
-            ]:
+            if key in ['dangerous_occurrence_subparagraph_ids', 'recommendations', 'categories']:
                 continue
             if key in [
                     'reported_to_inspector_party_guid', 'responsible_inspector_party_guid',
@@ -282,10 +283,16 @@ class MineIncidentResource(Resource, UserMixin):
         if recommendations is not None:
             self._handle_recommendations(incident, recommendations)
 
-        mine_incident_category_codes = data.get('mine_incident_category_xref')
-        if mine_incident_category_codes is not None:
-            self._handle_mine_incident_category_codes(incident.mine_incident_id,
-                                                      mine_incident_category_codes)
+        categories = data.get('categories')
+        MineIncidentCategoryXref.delete(incident.mine_incident_id)
+        if categories is not None:
+            for category in categories:
+                if category is None:
+                    continue
+                new_category = MineIncidentCategoryXref(
+                    mine_incident_id=incident.mine_incident_id,
+                    mine_incident_category_code=category)
+                incident.categories.append(new_category)
 
         incident.dangerous_occurrence_subparagraphs = []
         for id in do_sub_codes:
@@ -361,8 +368,3 @@ class MineIncidentResource(Resource, UserMixin):
             new_recommendation = MineIncidentRecommendation.create(
                 recommendation['recommendation'], mine_incident_id=incident.mine_incident_id)
             new_recommendation.save()
-
-    @classmethod
-    def _handle_mine_incident_category_codes(cls, mine_incident_id, mine_incident_category_codes):
-        MineIncidentCategoryXref.delete(mine_incident_id)
-        MineIncidentCategoryXref.create_batch(mine_incident_id, mine_incident_category_codes)
