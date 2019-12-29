@@ -75,18 +75,18 @@ class MineIncident(AuditMixin, Base):
 
     determination_type = db.relationship(
         'MineIncidentDeterminationType',
-        backref='mine_incident',
+        backref='mine_incidents',
         lazy='joined',
         uselist=False,
         foreign_keys=[determination_type_code])
     dangerous_occurrence_subparagraphs = db.relationship(
         'ComplianceArticle',
-        backref='mine_incident',
+        backref='mine_incidents',
         lazy='joined',
         secondary='mine_incident_do_subparagraph')
     followup_investigation_type = db.relationship(
         'MineIncidentFollowupInvestigationType',
-        backref='mine_incident',
+        backref='mine_incidents',
         lazy='joined',
         uselist=False)
 
@@ -94,7 +94,7 @@ class MineIncident(AuditMixin, Base):
         'MineIncidentRecommendation',
         primaryjoin=
         "and_(MineIncidentRecommendation.mine_incident_id == MineIncident.mine_incident_id, MineIncidentRecommendation.deleted_ind==False)",
-        lazy='select')
+        lazy='selectin')
     documents = db.relationship('MineIncidentDocumentXref', lazy='joined')
     mine_documents = db.relationship(
         'MineDocument', lazy='joined', secondary='mine_incident_document_xref')
