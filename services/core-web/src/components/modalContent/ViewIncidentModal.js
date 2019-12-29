@@ -46,9 +46,8 @@ export class ViewIncidentModal extends Component {
           <div className="inline-flex padding-small">
             <p className="field-title">Incident type(s)</p>
             <p>
-              {this.props.incident.mine_incident_category_xref &&
-              this.props.incident.mine_incident_category_xref.length > 0
-                ? this.props.incident.mine_incident_category_xref
+              {this.props.incident.categories && this.props.incident.categories.length > 0
+                ? this.props.incident.categories
                     .map((c) => this.props.incidentCategoryCodeHash[c.mine_incident_category_code])
                     .join(", ")
                 : Strings.EMPTY_FIELD}
