@@ -214,10 +214,11 @@ MINE_INCIDENT_RECOMMENDATION_MODEL = api.model('Mine Incident Recommendation', {
     'mine_incident_recommendation_guid': fields.String
 })
 
-MINE_INCIDENT_CATEGORY_XREF_MODEL = api.model('Mine Incident Category Xref', {
-    'mine_incident_id': fields.Integer,
-    'mine_incident_category_code': fields.String
-})
+MINE_INCIDENT_CATEGORY_MODEL = api.model(
+    'Mine Incident Category', {
+        'mine_incident_category_code': fields.String,
+        'description': fields.String
+    })
 
 MINE_INCIDENT_MODEL = api.model(
     'Mine Incident', {
@@ -251,8 +252,7 @@ MINE_INCIDENT_MODEL = api.model(
         'mine_incident_no': fields.String,
         'documents': fields.List(fields.Nested(MINE_INCIDENT_DOCUMENT_MODEL)),
         'recommendations': fields.List(fields.Nested(MINE_INCIDENT_RECOMMENDATION_MODEL)),
-        'mine_incident_category_xref': fields.List(
-            fields.Nested(MINE_INCIDENT_CATEGORY_XREF_MODEL))
+        'mine_incident_category_xref': fields.List(fields.Nested(MINE_INCIDENT_CATEGORY_MODEL))
     })
 
 VARIANCE_DOCUMENT_MODEL = api.inherit('VarianceDocumentModel', MINE_DOCUMENT_MODEL, {

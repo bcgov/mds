@@ -47,13 +47,6 @@ MINE_INCIDENT_RECOMMENDATION_MODEL = api.model(
     }
 )
 
-MINE_INCIDENT_CATEGORY_XREF_MODEL = api.model(
-    'Mine Incident Category Xref', {
-        'mine_incident_id': fields.Integer,
-        'mine_incident_category_code': fields.String
-    }
-)
-
 MINE_INCIDENT_MODEL = api.model(
     'Mine Incident', {
         'mine_incident_guid': fields.String,
@@ -88,8 +81,7 @@ MINE_INCIDENT_MODEL = api.model(
         'documents': fields.List(fields.Nested(MINE_INCIDENT_DOCUMENT_MODEL)),
         'recommendations': fields.List(fields.Nested(
             MINE_INCIDENT_RECOMMENDATION_MODEL)),
-        'mine_incident_category_xref': fields.List(fields.Nested(
-            MINE_INCIDENT_CATEGORY_XREF_MODEL))
+        'mine_incident_category_xref': fields.List(fields.Nested(MINE_INCIDENT_CATEGORY_MODEL))
     })
 
 PAGINATED_LIST = api.model(
