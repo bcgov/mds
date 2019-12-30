@@ -13,6 +13,8 @@ import {
   createNoticeOfWorkApplicationProgress,
   updateNoticeOfWorkApplication,
 } from "@/actionCreators/noticeOfWorkActionCreator";
+import { openModal, closeModal } from "@/actions/modalActions";
+import { modalConfig } from "@/components/modalContent/config";
 import { fetchMineRecordById } from "@/actionCreators/mineActionCreator";
 import {
   getNoticeOfWork,
@@ -52,7 +54,6 @@ const propTypes = {
   fetchImportedNoticeOfWorkApplication: PropTypes.func.isRequired,
   fetchOriginalNoticeOfWorkApplication: PropTypes.func.isRequired,
   fetchNoticeOFWorkActivityTypeOptions: PropTypes.func.isRequired,
-  reset: PropTypes.func.isRequired,
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
   location: PropTypes.shape({
     state: PropTypes.shape({
@@ -71,6 +72,9 @@ const propTypes = {
   applicationProgressStatusCodes: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.strings))
     .isRequired,
   reclamationSummary: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.strings)).isRequired,
+  reset: PropTypes.func.isRequired,
+  openModal: PropTypes.func.isRequired,
+  closeModal: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
@@ -84,6 +88,7 @@ export class NoticeOfWorkApplication extends Component {
     isImported: false,
     isNoWLoaded: false,
     associatedMineGuid: "",
+    associatedMineName: "",
     isViewMode: true,
     showOriginalValues: false,
     fixedTop: false,
@@ -188,8 +193,8 @@ export class NoticeOfWorkApplication extends Component {
     });
   };
 
-  setMineGuid = (mineGuid) => {
-    this.setState({ associatedMineGuid: mineGuid });
+  setMineGuid = (mineGuid, mineName = "") => {
+    this.setState({ associatedMineGuid: mineGuid, associatedMineName: mineName });
   };
 
   handleNOWFormSubmit = () => {
@@ -220,6 +225,38 @@ export class NoticeOfWorkApplication extends Component {
     } else if (window.pageYOffset < "100" && this.state.fixedTop) {
       this.setState({ fixedTop: false });
     }
+  };
+
+  handleChangeNOWMine = () => {
+    this.props
+      .updateNoticeOfWorkApplication(
+        { mine_guid: this.state.associatedMineGuid },
+        this.props.noticeOfWork.now_application_guid,
+        `Successfully transfered Notice of Work to ${this.state.associatedMineName}`
+      )
+      .then(() => {
+        this.props.fetchImportedNoticeOfWorkApplication(
+          this.props.noticeOfWork.now_application_guid
+        );
+      });
+    this.props.closeModal();
+  };
+
+  openChangeNOWMineModal = (event, noticeOfWork) => {
+    event.preventDefault();
+    this.props.openModal({
+      props: {
+        initialValues: {
+          mine_guid: noticeOfWork.mine_guid,
+        },
+        setMineGuid: this.setMineGuid,
+        onSubmit: this.handleChangeNOWMine,
+        title: `Transfer Notice of Work`,
+        noticeOfWork,
+      },
+      widthSize: "75vw",
+      content: modalConfig.CHANGE_NOW_MINE,
+    });
   };
 
   handleUpdateNOW = () => {
@@ -350,6 +387,16 @@ export class NoticeOfWorkApplication extends Component {
           <div className="custom-menu-item">
             <button
               type="button"
+              onClick={(event) => this.openChangeNOWMineModal(event, this.props.noticeOfWork)}
+            >
+              Transfer to a different mine
+            </button>
+          </div>
+        )}
+        {this.state.isImported && !this.state.isDecision && (
+          <div className="custom-menu-item">
+            <button
+              type="button"
               onClick={() => this.handleProgressChange(this.state.buttonValue)}
             >{`Ready for ${this.state.buttonLabel}`}</button>
           </div>
@@ -458,6 +505,8 @@ const mapDispatchToProps = (dispatch) =>
       createNoticeOfWorkApplicationProgress,
       fetchNoticeOFWorkApplicationProgressStatusCodes,
       reset,
+      openModal,
+      closeModal,
     },
     dispatch
   );
