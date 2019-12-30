@@ -109,6 +109,7 @@ def _map_contact_type(submission_type):
 
 def _transmogrify_contacts(now_app, now_sub, mms_now_sub):
     for c in now_sub.contacts:
+        emailValidator = re.compile(r'[^@]+@[^@]+\.[^@]+')
         now_party_appt = None
         if c.type == 'Individual' and c.contacttype and c.ind_lastname and c.ind_firstname and c.ind_phonenumber:
             now_party = Party(
@@ -116,7 +117,7 @@ def _transmogrify_contacts(now_app, now_sub, mms_now_sub):
                 first_name=c.ind_firstname,
                 party_type_code='PER',
                 phone_no=c.ind_phonenumber[:3] + "-" + c.ind_phonenumber[3:6] + "-" + c.ind_phonenumber[6:],
-                email=c.email,
+                email=c.email if c.email and emailValidator.match(c.email) else None,
                 )
             now_party_mine_party_appt_type=MinePartyAppointmentType.find_by_mine_party_appt_type_code(_map_contact_type(c.contacttype))
             now_party_appt = app_models.NOWPartyAppointment(mine_party_appt_type_code=now_party_mine_party_appt_type.mine_party_appt_type_code, mine_party_appt_type=now_party_mine_party_appt_type, party=now_party)
@@ -126,7 +127,7 @@ def _transmogrify_contacts(now_app, now_sub, mms_now_sub):
                 party_type_code='ORG',
                 phone_no=c.dayphonenumber[:3] + "-" + c.dayphonenumber[3:6] + "-" + c.dayphonenumber[6:],
                 phone_ext=c.dayphonenumberext,
-                email=c.email,
+                email=c.email if c.email and emailValidator.match(c.email) else None,
                 )
             now_party_mine_party_appt_type=MinePartyAppointmentType.find_by_mine_party_appt_type_code(_map_contact_type(c.contacttype))
             now_party_appt = app_models.NOWPartyAppointment(mine_party_appt_type_code=now_party_mine_party_appt_type.mine_party_appt_type_code, mine_party_appt_type=now_party_mine_party_appt_type, party=now_party)
