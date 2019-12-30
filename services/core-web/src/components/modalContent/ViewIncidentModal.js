@@ -12,7 +12,6 @@ import {
   getIncidentDeterminationHash,
   getIncidentFollowupActionHash,
   getIncidentStatusCodeHash,
-  getIncidentCategoryCodeHash,
 } from "@/selectors/staticContentSelectors";
 import { formatTime, formatDate } from "@/utils/helpers";
 
@@ -20,7 +19,6 @@ const propTypes = {
   closeModal: PropTypes.func.isRequired,
   incident: CustomPropTypes.incident.isRequired,
   incidentStatusCodeHash: PropTypes.objectOf(PropTypes.string).isRequired,
-  incidentCategoryCodeHash: PropTypes.objectOf(PropTypes.string).isRequired,
   inspectorsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   incidentDeterminationHash: PropTypes.objectOf(PropTypes.string).isRequired,
   complianceCodesHash: PropTypes.objectOf(PropTypes.string).isRequired,
@@ -49,7 +47,7 @@ export class ViewIncidentModal extends Component {
               {this.props.incident.categories && this.props.incident.categories.length > 0
                 ? this.props.incident.categories
                     .sort((a, b) => (a.display_order > b.display_order ? 1 : -1))
-                    .map((c) => this.props.incidentCategoryCodeHash[c.mine_incident_category_code])
+                    .map((c) => c.description)
                     .join(", ")
                 : Strings.EMPTY_FIELD}
             </p>
@@ -311,7 +309,6 @@ const mapStateToProps = (state) => ({
   inspectorsHash: getInspectorsHash(state),
   incidentFollowupActionHash: getIncidentFollowupActionHash(state),
   incidentStatusCodeHash: getIncidentStatusCodeHash(state),
-  incidentCategoryCodeHash: getIncidentCategoryCodeHash(state),
 });
 
 export default connect(mapStateToProps)(ViewIncidentModal);
