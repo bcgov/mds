@@ -218,7 +218,8 @@ MINE_INCIDENT_CATEGORY_MODEL = api.model(
     'Mine Incident Category', {
         'mine_incident_category_code': fields.String,
         'description': fields.String,
-        'display_order': fields.Integer
+        'display_order': fields.Integer,
+        'active_ind': fields.Boolean
     })
 
 MINE_INCIDENT_MODEL = api.model(
