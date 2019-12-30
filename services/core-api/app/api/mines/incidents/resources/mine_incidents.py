@@ -14,7 +14,7 @@ from app.api.compliance.models.compliance_article import ComplianceArticle
 from app.api.incidents.models.mine_incident_document_type_code import MineIncidentDocumentTypeCode
 from app.api.incidents.models.mine_incident import MineIncident
 from app.api.incidents.models.mine_incident_recommendation import MineIncidentRecommendation
-from app.api.incidents.models.mine_incident_category_xref import MineIncidentCategoryXref
+from app.api.incidents.models.mine_incident_category import MineIncidentCategory
 from app.api.parties.party.models.party import Party
 
 from app.api.mines.response_models import MINE_INCIDENT_MODEL
@@ -174,14 +174,11 @@ class MineIncidentListResource(Resource, UserMixin):
                 new_recommendation.save()
 
         categories = data.get('categories')
-        if categories is not None:
-            for category in categories:
-                if category is None:
-                    continue
-                new_category = MineIncidentCategoryXref(
-                    mine_incident_id=incident.mine_incident_id,
-                    mine_incident_category_code=category)
-                incident.categories.append(new_category)
+        for category in categories:
+            code = MineIncidentCategory.find_by_code(category)
+            if not code:
+                raise BadRequest(f'Incident category code is not found: {code}')
+            incident.categories.append(code)
 
         try:
             incident.save()
@@ -284,15 +281,12 @@ class MineIncidentResource(Resource, UserMixin):
             self._handle_recommendations(incident, recommendations)
 
         categories = data.get('categories')
-        MineIncidentCategoryXref.delete(incident.mine_incident_id)
-        if categories is not None:
-            for category in categories:
-                if category is None:
-                    continue
-                new_category = MineIncidentCategoryXref(
-                    mine_incident_id=incident.mine_incident_id,
-                    mine_incident_category_code=category)
-                incident.categories.append(new_category)
+        incident.categories = []
+        for category in categories:
+            code = MineIncidentCategory.find_by_code(category)
+            if not code:
+                raise BadRequest(f'Incident category code is not found: {code}')
+            incident.categories.append(code)
 
         incident.dangerous_occurrence_subparagraphs = []
         for id in do_sub_codes:
