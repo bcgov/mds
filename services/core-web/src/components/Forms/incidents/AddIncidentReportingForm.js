@@ -45,9 +45,13 @@ export const AddIncidentReportingForm = (props) => (
               placeholder="Select the incident type(s)"
               component={renderConfig.MULTI_SELECT}
               validate={[requiredList]}
-              data={props.incidentCategoryCodeOptions.sort((a, b) =>
-                a.display_order > b.display_order ? 1 : -1
-              )}
+              data={
+                props.incidentCategoryCodeOptions
+                  ? props.incidentCategoryCodeOptions.sort((a, b) =>
+                      a.display_order > b.display_order ? 1 : -1
+                    )
+                  : []
+              }
             />
           </Form.Item>
           <Form.Item>

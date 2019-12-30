@@ -17,6 +17,7 @@ exports[`AddIncidentReportingForm renders properly 1`] = `
         >
           <Field
             component={[Function]}
+            data={Array []}
             id="categories"
             label="Incident type(s)*"
             name="categories"
