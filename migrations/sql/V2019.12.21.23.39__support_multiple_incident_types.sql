@@ -7,19 +7,19 @@ ALTER TABLE mine_incident_category DROP COLUMN IF EXISTS display_order;
 ALTER TABLE mine_incident_category ADD COLUMN display_order integer NOT NULL DEFAULT 0;
 
 UPDATE mine_incident_category
-SET display_order = 0
+SET display_order = 10
 WHERE mine_incident_category_code = 'ENV';
 
 UPDATE mine_incident_category
-SET display_order = 1
+SET display_order = 20
 WHERE mine_incident_category_code = 'GTC';
 
 UPDATE mine_incident_category
-SET display_order = 2
+SET display_order = 30
 WHERE mine_incident_category_code = 'H&S';
 
 UPDATE mine_incident_category
-SET display_order = 3
+SET display_order = 40
 WHERE mine_incident_category_code = 'SPI';
 
 ALTER TABLE mine_incident_category ALTER COLUMN display_order DROP DEFAULT;
