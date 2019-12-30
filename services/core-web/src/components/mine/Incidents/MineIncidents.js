@@ -157,7 +157,9 @@ export class MineIncidents extends Component {
             String
           ),
           categories: existingIncident.categories
-            ? existingIncident.categories.map((c) => c.mine_incident_category_code)
+            ? existingIncident.categories
+                .sort((a, b) => (a.display_order > b.display_order ? 1 : -1))
+                .map((c) => c.mine_incident_category_code)
             : [],
         },
         onSubmit,

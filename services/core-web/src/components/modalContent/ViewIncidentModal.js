@@ -48,6 +48,7 @@ export class ViewIncidentModal extends Component {
             <p>
               {this.props.incident.categories && this.props.incident.categories.length > 0
                 ? this.props.incident.categories
+                    .sort((a, b) => (a.display_order > b.display_order ? 1 : -1))
                     .map((c) => this.props.incidentCategoryCodeHash[c.mine_incident_category_code])
                     .join(", ")
                 : Strings.EMPTY_FIELD}
