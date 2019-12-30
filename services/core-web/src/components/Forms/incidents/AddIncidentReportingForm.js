@@ -45,7 +45,6 @@ export const AddIncidentReportingForm = (props) => (
               placeholder="Select the incident type(s)"
               component={renderConfig.MULTI_SELECT}
               validate={[requiredList]}
-              parse={console.log("parse:", props)}
               data={props.incidentCategoryCodeOptions}
             />
           </Form.Item>
