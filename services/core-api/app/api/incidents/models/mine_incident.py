@@ -14,7 +14,6 @@ from app.api.utils.models_mixins import AuditMixin, Base
 from app.api.incidents.models.mine_incident_determination_type import MineIncidentDeterminationType
 from app.api.incidents.models.mine_incident_do_subparagraph import MineIncidentDoSubparagraph
 from app.api.incidents.models.mine_incident_recommendation import MineIncidentRecommendation
-from app.api.incidents.models.mine_incident_category_xref import MineIncidentCategoryXref
 from app.api.compliance.models.compliance_article import ComplianceArticle
 
 
@@ -100,8 +99,7 @@ class MineIncident(AuditMixin, Base):
     mine_documents = db.relationship(
         'MineDocument', lazy='joined', secondary='mine_incident_document_xref')
 
-    categories = db.relationship('MineIncidentCategoryXref', lazy='joined')
-    mine_categories = db.relationship(
+    categories = db.relationship(
         'MineIncidentCategory', lazy='joined', secondary='mine_incident_category_xref')
 
     mine_table = db.relationship('Mine', lazy='joined')
