@@ -17,3 +17,7 @@ class MineIncidentCategory(AuditMixin, Base):
     @classmethod
     def active(cls):
         return cls.query.filter_by(active_ind=True).order_by(cls.display_order).all()
+
+    @classmethod
+    def find_by_code(cls, code):
+        return cls.query.get(code)
