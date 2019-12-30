@@ -173,7 +173,7 @@ class MineIncidentListResource(Resource, UserMixin):
                     rec_string, mine_incident_id=incident.mine_incident_id)
                 new_recommendation.save()
 
-        categories = data.get('categories')
+        categories = data.get('categories', [])
         for category in categories:
             code = MineIncidentCategory.find_by_code(category)
             if not code:
@@ -280,7 +280,7 @@ class MineIncidentResource(Resource, UserMixin):
         if recommendations is not None:
             self._handle_recommendations(incident, recommendations)
 
-        categories = data.get('categories')
+        categories = data.get('categories', [])
         incident.categories = []
         for category in categories:
             code = MineIncidentCategory.find_by_code(category)
