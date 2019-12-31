@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Steps, Button, Dropdown, Menu, Icon } from "antd";
+import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { getFormValues, reset } from "redux-form";
 import { bindActionCreators } from "redux";
@@ -54,6 +55,11 @@ const propTypes = {
   fetchOriginalNoticeOfWorkApplication: PropTypes.func.isRequired,
   fetchNoticeOFWorkActivityTypeOptions: PropTypes.func.isRequired,
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
+  location: PropTypes.shape({
+    state: PropTypes.shape({
+      noticeOfWorkPageFromRoute: CustomPropTypes.noticeOfWorkPageFromRoute,
+    }),
+  }).isRequired,
   match: PropTypes.shape({
     params: {
       id: PropTypes.string,
@@ -90,6 +96,7 @@ export class NoticeOfWorkApplication extends Component {
     isDecision: false,
     buttonValue: "REV",
     buttonLabel: "Technical Review",
+    noticeOfWorkPageFromRoute: undefined,
   };
 
   componentDidMount() {
@@ -118,6 +125,14 @@ export class NoticeOfWorkApplication extends Component {
       });
     });
     this.props.fetchOriginalNoticeOfWorkApplication(id);
+    this.setState((prevState) => ({
+      noticeOfWorkPageFromRoute:
+        this.props.location &&
+        this.props.location.state &&
+        this.props.location.state.noticeOfWorkPageFromRoute
+          ? this.props.location.state.noticeOfWorkPageFromRoute
+          : prevState.noticeOfWorkPageFromRoute,
+    }));
   }
 
   componentWillReceiveProps(nextProps) {
@@ -390,11 +405,17 @@ export class NoticeOfWorkApplication extends Component {
     );
 
     return (
-      <div className="page" onScroll={this.handleScroll()}>
+      <div className="page" onScroll={this.handleScroll()} onLoad={this.handleScroll()}>
         <div className={this.state.fixedTop ? "steps--header fixed-scroll" : "steps--header"}>
           <div className="inline-flex between">
             <div>
               <h1>NoW Number: {this.props.noticeOfWork.now_number || Strings.EMPTY_FIELD}</h1>
+              {this.state.noticeOfWorkPageFromRoute && (
+                <Link to={this.state.noticeOfWorkPageFromRoute.route}>
+                  <Icon type="arrow-left" style={{ paddingRight: "5px" }} />
+                  Back to: {this.state.noticeOfWorkPageFromRoute.title}
+                </Link>
+              )}
             </div>
             {this.state.isViewMode && (
               <Dropdown
@@ -443,7 +464,14 @@ export class NoticeOfWorkApplication extends Component {
         </div>
         <LoadingWrapper condition={this.state.isNoWLoaded}>
           <div>
-            <div className={this.state.fixedTop ? "side-menu--fixed" : "side-menu"}>
+            <div
+              className={this.state.fixedTop ? "side-menu--fixed" : "side-menu"}
+              style={
+                this.state.noticeOfWorkPageFromRoute && this.state.fixedTop
+                  ? { paddingTop: "24px" }
+                  : {}
+              }
+            >
               {this.state.currentStep === 1 && (
                 <NOWSideMenu route={routes.NOTICE_OF_WORK_APPLICATION} />
               )}
