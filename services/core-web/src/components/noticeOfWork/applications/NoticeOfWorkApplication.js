@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { getFormValues, reset } from "redux-form";
 import { bindActionCreators } from "redux";
+import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import * as routes from "@/constants/routes";
 import {
@@ -417,19 +418,25 @@ export class NoticeOfWorkApplication extends Component {
                 </Link>
               )}
             </div>
-            {this.state.isViewMode && (
-              <Dropdown
-                overlay={menu}
-                placement="bottomLeft"
-                onVisibleChange={this.handleVisibleChange}
-                visible={this.state.menuVisible}
-              >
-                <Button type="secondary">
-                  Actions
-                  <Icon type="down" />
-                </Button>
-              </Dropdown>
-            )}
+            <div>
+              <Link to={routes.MINE_SUMMARY.dynamicRoute(this.props.noticeOfWork.mine_guid)}>
+                {this.props.noticeOfWork.mine_name}{" "}
+              </Link>
+              <br />
+              {this.state.isViewMode && (
+                <Dropdown
+                  overlay={menu}
+                  placement="bottomLeft"
+                  onVisibleChange={this.handleVisibleChange}
+                  visible={this.state.menuVisible}
+                >
+                  <Button type="secondary">
+                    Actions
+                    <Icon type="down" />
+                  </Button>
+                </Dropdown>
+              )}
+            </div>
           </div>
           <br />
           {this.state.isViewMode ? (
