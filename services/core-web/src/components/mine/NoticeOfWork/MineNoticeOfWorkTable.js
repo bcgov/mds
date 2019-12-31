@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Table, Icon, Input, Button } from "antd";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import { isEmpty } from "lodash";
 import PropTypes from "prop-types";
 import CustomPropTypes from "@/customPropTypes";
@@ -23,6 +23,10 @@ const propTypes = {
   sortDir: PropTypes.string,
   searchParams: PropTypes.objectOf(PropTypes.string),
   isLoaded: PropTypes.bool.isRequired,
+  location: PropTypes.shape({
+    pathname: PropTypes.string,
+    search: PropTypes.string,
+  }).isRequired,
 };
 
 const defaultProps = {
@@ -60,9 +64,24 @@ const transformRowData = (applications) =>
     nowType: application.notice_of_work_type_description || Strings.EMPTY_FIELD,
     status: application.now_application_status_description || Strings.EMPTY_FIELD,
     date: formatDate(application.received_date) || Strings.EMPTY_FIELD,
+    location: PropTypes.object,
   }));
 
+const pageTitle = (mineName) => `${mineName} Notice of Work Applications`;
+
 export class MineNoticeOfWorkTable extends Component {
+  createLinkTo = (route, record) => {
+    return {
+      pathname: route.dynamicRoute(record.key),
+      state: {
+        noticeOfWorkPageFromRoute: {
+          route: this.props.location.pathname + this.props.location.search,
+          title: pageTitle(record.mineName),
+        },
+      },
+    };
+  };
+
   filterProperties = (name, field) => ({
     filterDropdown: ({ setSelectedKeys, selectedKeys }) => {
       return (
@@ -113,7 +132,7 @@ export class MineNoticeOfWorkTable extends Component {
       dataIndex: "nowNum",
       sortField: "now_number",
       render: (text, record) => (
-        <Link to={router.VIEW_NOTICE_OF_WORK_APPLICATION.dynamicRoute(record.key)}>{text}</Link>
+        <Link to={this.createLinkTo(router.VIEW_NOTICE_OF_WORK_APPLICATION, record)}>{text}</Link>
       ),
       sorter: true,
       ...this.filterProperties("NoW No.", "now_number"),
@@ -150,12 +169,12 @@ export class MineNoticeOfWorkTable extends Component {
           <div title="" className="btn--middle flex">
             <AuthorizationWrapper inTesting>
               <AuthorizationWrapper permission={Permission.ADMIN}>
-                <Link to={router.NOTICE_OF_WORK_APPLICATION.dynamicRoute(record.key)}>
+                <Link to={this.createLinkTo(router.NOTICE_OF_WORK_APPLICATION, record)}>
                   <img src={EDIT_OUTLINE_VIOLET} alt="Edit NoW" className="padding-large--right" />
                 </Link>
               </AuthorizationWrapper>
             </AuthorizationWrapper>
-            <Link to={router.VIEW_NOTICE_OF_WORK_APPLICATION.dynamicRoute(record.key)}>
+            <Link to={this.createLinkTo(router.VIEW_NOTICE_OF_WORK_APPLICATION, record)}>
               <Icon type="eye" className="icon-lg icon-svg-filter padding-large--left" />
             </Link>
           </div>
@@ -191,4 +210,4 @@ export class MineNoticeOfWorkTable extends Component {
 MineNoticeOfWorkTable.propTypes = propTypes;
 MineNoticeOfWorkTable.defaultProps = defaultProps;
 
-export default MineNoticeOfWorkTable;
+export default withRouter(MineNoticeOfWorkTable);
