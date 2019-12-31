@@ -393,6 +393,25 @@ export class Dashboard extends Component {
                     handleCoordinateSearch={this.handleCoordinateSearch}
                     isMapView
                   />
+                  <div>
+                    <br />
+                    <a
+                      href="https://governmentofbc.maps.arcgis.com/apps/webappviewer/index.html?id=f024193c07a04a28b678170e1e2046f6"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      EMPR Inspection Mapper
+                    </a>
+                    <span> - Not set up to use this? Contact the GIS team.</span>
+                    <br />
+                    <a
+                      href="https://nrm.sp.gov.bc.ca/sites/EMPR/mtb/_layouts/15/start.aspx#/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      EMPR Sharepoint Requests Portal
+                    </a>
+                  </div>
                 </Col>
                 <Col md={2} sm={0} xs={0}>
                   <div className="center">
