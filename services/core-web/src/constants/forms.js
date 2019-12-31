@@ -31,3 +31,4 @@ export const FILTER_REPORTS = "FILTER_REPORTS";
 // Notice Of Work
 export const NOTICE_OF_WORK_SEARCH = "NOTICE_OF_WORK_SEARCH";
 export const EDIT_NOTICE_OF_WORK = "EDIT_NOTICE_OF_WORK";
+export const CHANGE_NOW_MINE = "CHANGE_NOW_MINE";

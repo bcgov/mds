@@ -10,7 +10,7 @@ exports[`MineNOWApplications renders properly 1`] = `
     </h2>
     <Divider />
   </div>
-  <MineNoticeOfWorkTable
+  <withRouter(MineNoticeOfWorkTable)
     handleSearch={[Function]}
     isLoaded={false}
     mineRegionHash={
@@ -51,8 +51,6 @@ exports[`MineNOWApplications renders properly 1`] = `
         "submissions_only": true,
       }
     }
-    sortDir={null}
-    sortField={null}
   />
 </div>
 `;

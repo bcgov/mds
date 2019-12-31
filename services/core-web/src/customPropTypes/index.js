@@ -10,6 +10,7 @@ import * as ComplianceTypes from "@/customPropTypes/compliance";
 import * as IncidentTypes from "@/customPropTypes/incidents";
 import * as ReportTypes from "@/customPropTypes/reports";
 import * as NoticeOfWorkTypes from "@/customPropTypes/noticeOfWork";
+import * as NoticeOfWorkPageFromRouteTypes from "@/customPropTypes/noticeOfWorkPageFromRoute";
 
 export default {
   ...CommonTypes,
@@ -23,4 +24,5 @@ export default {
   ...IncidentTypes,
   ...ReportTypes,
   ...NoticeOfWorkTypes,
+  ...NoticeOfWorkPageFromRouteTypes,
 };

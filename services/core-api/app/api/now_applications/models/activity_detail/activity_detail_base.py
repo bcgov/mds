@@ -46,3 +46,8 @@ class ActivityDetailBase(AuditMixin, Base):
                           1).as_scalar())
 
     __mapper_args__ = {'polymorphic_on': activity_type_code}
+
+    def delete(self, commit=True):
+        for item in self.detail_associations:
+            item.delete(commit)
+        super(ActivityDetailBase, self).delete(commit)

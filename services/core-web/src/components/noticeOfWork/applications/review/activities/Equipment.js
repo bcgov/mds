@@ -8,9 +8,6 @@ const propTypes = {
   isViewMode: PropTypes.bool.isRequired,
   equipment: CustomPropTypes.activityEquipment,
   activity: PropTypes.string.isRequired,
-  // removeRecord is being passed into conditionally rendered button but eslint assumes it isn't being used
-  // eslint-disable-next-line
-  removeRecord: PropTypes.func.isRequired,
   editRecord: PropTypes.func.isRequired,
   addRecord: PropTypes.func.isRequired,
 };
@@ -22,10 +19,17 @@ const defaultProps = {
 export const Equipment = (props) => {
   const targetActivity = `${props.activity}.equipment`;
 
-  const editEquipment = (event, rowIndex) => {
+  const editEquipment = (event, rowIndex, isDelete) => {
     const equipmentToChange = props.equipment[rowIndex];
-    equipmentToChange[event.target.name] = event.target.value;
-    props.editRecord(equipmentToChange, targetActivity, rowIndex);
+    let removeOnly = false;
+    if (isDelete) {
+      if (!equipmentToChange.equipment_id) {
+        removeOnly = true;
+      }
+    } else {
+      equipmentToChange[event.target.name] = event.target.value;
+    }
+    props.editRecord(equipmentToChange, targetActivity, rowIndex, isDelete, removeOnly);
   };
 
   const addEquipment = () => {
@@ -47,10 +51,10 @@ export const Equipment = (props) => {
           <div className="inline-flex">
             <input
               name="quantity"
-              type="text"
+              type="number"
               disabled={props.isViewMode}
               value={text}
-              onChange={(e) => editEquipment(e, record.index)}
+              onChange={(e) => editEquipment(e, record.index, false)}
             />
           </div>
         </div>
@@ -68,7 +72,7 @@ export const Equipment = (props) => {
               type="text"
               disabled={props.isViewMode}
               value={text}
-              onChange={(e) => editEquipment(e, record.index)}
+              onChange={(e) => editEquipment(e, record.index, false)}
             />
           </div>
         </div>
@@ -86,7 +90,7 @@ export const Equipment = (props) => {
               type="text"
               disabled={props.isViewMode}
               value={text}
-              onChange={(e) => editEquipment(e, record.index)}
+              onChange={(e) => editEquipment(e, record.index, false)}
             />
           </div>
         </div>
@@ -102,7 +106,7 @@ export const Equipment = (props) => {
         <Button
           type="primary"
           size="small"
-          onClick={() => props.removeRecord(targetActivity, record.index)}
+          onClick={(e) => editEquipment(e, record.index, true)}
           ghost
         >
           <img name="remove" src={TRASHCAN} alt="Remove Activity" />
@@ -112,16 +116,18 @@ export const Equipment = (props) => {
   };
 
   const columns = (isViewMode) =>
-    false && !isViewMode ? [...standardColumns, removeColumn] : standardColumns;
+    !isViewMode ? [...standardColumns, removeColumn] : standardColumns;
 
   const transformData = (equipmentList) =>
-    equipmentList.map((equipment, index) => ({
-      quantity: equipment.quantity || "",
-      description: equipment.description || "",
-      capacity: equipment.capacity || "",
-      index,
-    }));
-
+    equipmentList
+      .map((equipment, index) => ({
+        quantity: equipment.quantity || "",
+        description: equipment.description || "",
+        capacity: equipment.capacity || "",
+        state_modified: equipment.state_modified || "",
+        index,
+      }))
+      .filter((equipment) => !equipment.state_modified);
   return (
     <div>
       <h4>Equipment</h4>
@@ -134,7 +140,7 @@ export const Equipment = (props) => {
           emptyText: "No equipment related to this activity",
         }}
       />
-      {false && !props.isViewMode && (
+      {!props.isViewMode && (
         <Button type="primary" onClick={() => addEquipment()}>
           Add Equipment
         </Button>

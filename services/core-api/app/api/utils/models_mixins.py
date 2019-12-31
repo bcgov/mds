@@ -70,10 +70,19 @@ class Base(db.Model):
                 db.session.rollback()
                 raise e
 
-    def marshmallow_post_generate():
-        pass
+    def delete(self, commit=True):
+        if hasattr(self, 'deleted_ind'):
+            raise Exception("Not implemented for soft deletion.")
+        db.session.delete(self)
+        current_app.logger.debug(f'Deleting object: {self}')
+        if commit:
+            try:
+                db.session.commit()
+            except SQLAlchemyError as e:
+                db.session.rollback()
+                raise e
 
-    def deep_update_from_dict(self, data_dict, depth=0, _edit_key=None):
+    def _deep_update_from_dict(self, data_dict, depth=0, _edit_key=None):
         """
         This function takes a python dictionary and assigns all present key value pairs to 
         the attributes of this SQLALchemy model (self). If the value type is a dict, update 
@@ -115,7 +124,7 @@ class Base(db.Model):
                 existing_obj = getattr(self, k)
                 if existing_obj is None:
                     setattr(self, k, rel_class())
-                getattr(self, k).deep_update_from_dict(v, depth=(depth + 1), _edit_key=_edit_key)
+                getattr(self, k)._deep_update_from_dict(v, depth=(depth + 1), _edit_key=_edit_key)
 
             if isinstance(v, list):
                 rel = getattr(self.__class__, k) #SA.relationship definition
@@ -138,7 +147,8 @@ class Base(db.Model):
 
                     #see if object list holds a child that has the same values as the json dict for all primary key values of class
                     existing_obj = next((x for x in obj_list if all(
-                        i.get(pk_name, None) == getattr(x, pk_name) for pk_name in pk_names)), None)
+                        i.get(pk_name, None) == getattr(x, pk_name)
+                        and getattr(x, pk_name) is not None for pk_name in pk_names)), None)
                     #ALWAYS NONE for new obj, except tests
                     if existing_obj:
                         current_app.logger.debug(
@@ -149,8 +159,11 @@ class Base(db.Model):
                         if i.get('state_modified', False) == STATE_MODIFIED_DELETE_ON_PUT:
                             current_app.logger.debug(depth * ' ' + f'deleting {existing_obj}')
                             #FIXME Caller is responsible for marking all child records.
-                            db.session.delete(existing_obj)
-                        existing_obj.deep_update_from_dict(
+                            existing_obj.delete(commit=False)
+                            current_app.logger.debug(
+                                f'session objects marked as deleted: {db.session.deleted}')
+
+                        existing_obj._deep_update_from_dict(
                             i, depth=(depth + 1), _edit_key=_edit_key)
                     elif False:
                         #TODO check if this item is in the db, but not in json set should be removed
@@ -178,6 +191,10 @@ class Base(db.Model):
                     assert isinstance(v, (UUID, str))
                 else:
                     py_type = col.type.python_type
+                    if py_type == bool and not isinstance(v, bool):
+                        raise DictLoadingError(
+                            f"cannot assign '{k}':{v}{type(v)} to column of type {py_type}")
+
                     if py_type == datetime or py_type == date:
                         #json value is string, if expecting datetime in that column, convert here
                         setattr(self, k, parser.parse(v))
@@ -188,19 +205,26 @@ class Base(db.Model):
                         #don't care about anything more precise, procection if incoming data is float
                         setattr(self, k, dec.quantize(decimal.Decimal('.0000001')))
                         continue
-                    elif (v is not None) and not isinstance(v, py_type):
-                        #type safety (don't coalese empty string to false if it's targetting a boolean column)
-                        raise DictLoadingError(
-                            f"cannot assign '{k}':{v}{type(v)} to column of type {py_type}")
+                    # elif (v is not None) and not isinstance(v, py_type):
+                    #     #type safety (don't coalese empty string to false if it's targetting a boolean column)
+                    #     raise DictLoadingError(
+                    #         f"cannot assign '{k}':{v}{type(v)} to column of type {py_type}")
                     else:
                         setattr(self, k, v)
-        if depth == 0:
+
+        return
+
+    def deep_update_from_dict(self, data_dict, _edit_key=None):
+        with db.session.no_autoflush:
+            self._deep_update_from_dict(data_dict, _edit_key=_edit_key)
+
             current_app.logger.debug('DONE UPDATING AND SAVING')
             try:
                 db.session.commit()
                 self.save()
-            except:
+            except Exception as e:
                 db.session.rollback()
+                raise (e)
         return
 
 

@@ -98,7 +98,7 @@ export class NavBar extends Component {
           </Button>
         </Link>
       </AuthorizationWrapper>
-      <Dropdown overlay={this.menu} placement="bottomLeft">
+      <Dropdown overlay={this.userMenu} placement="bottomLeft">
         <button type="button" className="menu__btn" id={this.ifActiveButton("my-dashboard")}>
           <Icon className="padding-small--right icon-sm" type="user" />
           <span className="padding-small--right">{this.props.userInfo.preferred_username}</span>
@@ -251,7 +251,7 @@ export class NavBar extends Component {
                   id={this.ifActiveButton(router.NOTICE_OF_WORK_APPLICATIONS.route)}
                   className="menu--hamburger__btn--link"
                 >
-                  Browse Notice of Work
+                  Browse Notices of Work
                 </Button>
               </Link>
             </Col>
@@ -304,14 +304,14 @@ export class NavBar extends Component {
     </div>
   );
 
-  menu = () => (
-    <Menu id="menu__dropdown">
-      <Menu.Item key="1">
+  userMenu = () => (
+    <Menu id="menu__dropdown" className="navbar-dropdown-menu">
+      <Menu.Item key="my-dashboard" className="navbar-dropdown-menu-item">
         <Link to={router.CUSTOM_HOME_PAGE.route}>
           <button type="button">My Dashboard</button>
         </Link>
       </Menu.Item>
-      <Menu.Item key="2">
+      <Menu.Item key="log-out" className="navbar-dropdown-menu-item">
         <Link to={router.LOGOUT.route}>
           <button type="button">Log Out</button>
         </Link>
@@ -320,34 +320,34 @@ export class NavBar extends Component {
   );
 
   reportingDropdown = () => (
-    <Menu id="menu__dropdown">
-      <div className="custom-menu-item">
+    <Menu id="menu__dropdown" className="navbar-dropdown-menu">
+      <Menu.Item key="dashboard" className="navbar-dropdown-menu-item">
         <Link to={router.REPORTING_DASHBOARD.route}>
           <button type="button">Dashboard</button>
         </Link>
-      </div>
+      </Menu.Item>
       <AuthorizationWrapper permission={Permission.EXECUTIVE}>
-        <div className="custom-menu-item">
+        <Menu.Item key="executive-dashboard" className="navbar-dropdown-menu-item">
           <Link to={router.EXECUTIVE_REPORTING_DASHBOARD.route}>
             <button type="button">Executive Dashboard</button>
           </Link>
-        </div>
+        </Menu.Item>
       </AuthorizationWrapper>
-      <div className="custom-menu-item">
+      <Menu.Item key="browse-variances" className="navbar-dropdown-menu-item">
         <Link to={router.VARIANCE_DASHBOARD.route}>
           <button type="button">Browse Variances</button>
         </Link>
-      </div>
-      <div className="custom-menu-item">
+      </Menu.Item>
+      <Menu.Item key="browse-incidents" className="navbar-dropdown-menu-item">
         <Link to={router.INCIDENTS_DASHBOARD.route}>
           <button type="button">Browse Incidents</button>
         </Link>
-      </div>
-      <div className="custom-menu-item">
+      </Menu.Item>
+      <Menu.Item key="browse-notices-of-work" className="navbar-dropdown-menu-item">
         <Link to={router.NOTICE_OF_WORK_APPLICATIONS.route}>
-          <button type="button">Browse Notice of Work</button>
+          <button type="button">Browse Notices of Work</button>
         </Link>
-      </div>
+      </Menu.Item>
     </Menu>
   );
 
