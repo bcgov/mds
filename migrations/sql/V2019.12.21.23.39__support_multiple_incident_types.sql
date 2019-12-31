@@ -34,7 +34,7 @@ ALTER TABLE mine_incident_category_xref OWNER TO mds;
 COMMENT ON TABLE mine_incident_category_xref IS 'Contains the references to the one or many mine incident category codes that have been attached to a mine incident record.';
 
 INSERT INTO mine_incident_category_xref
-    SELECT mi.mine_incident_category_code, mi.mine_incident_id FROM mine_incident mi;
+    SELECT  mi.mine_incident_id, mi.mine_incident_category_code FROM mine_incident mi where mi.mine_incident_category_code is not null;
 
 
 
