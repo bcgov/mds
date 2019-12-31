@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { getFormValues, reset } from "redux-form";
 import { bindActionCreators } from "redux";
-import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import * as routes from "@/constants/routes";
 import {
@@ -268,12 +267,12 @@ export class NoticeOfWorkApplication extends Component {
         this.props.noticeOfWork.now_application_guid
       )
       .then(() => {
-        this.setState({ isImported: true });
+        this.setState({});
         return this.props
           .fetchImportedNoticeOfWorkApplication(this.props.noticeOfWork.now_application_guid)
-          .then(() => {
+          .then(({ data }) => {
             this.props.fetchMineRecordById(this.state.associatedMineGuid);
-            this.setState({ isNoWLoaded: true, isLoaded: true });
+            this.setState({ isNoWLoaded: true, isLoaded: true, isImported: data.imported_to_core });
           });
       });
   };
@@ -288,9 +287,9 @@ export class NoticeOfWorkApplication extends Component {
       .then(() => {
         return this.props
           .fetchImportedNoticeOfWorkApplication(this.props.noticeOfWork.now_application_guid)
-          .then(() => {
+          .then(({ data }) => {
             this.props.fetchMineRecordById(this.state.associatedMineGuid);
-            this.setState({ isNoWLoaded: true, isLoaded: true });
+            this.setState({ isNoWLoaded: true, isLoaded: true, isImported: data.imported_to_core });
           });
       });
 
@@ -419,8 +418,9 @@ export class NoticeOfWorkApplication extends Component {
               )}
             </div>
             <div>
+              <span>Current Mine:&nbsp;</span>
               <Link to={routes.MINE_SUMMARY.dynamicRoute(this.props.noticeOfWork.mine_guid)}>
-                {this.props.noticeOfWork.mine_name}{" "}
+                {this.props.noticeOfWork.mine_name}
               </Link>
               <br />
               {this.state.isViewMode && (
@@ -430,7 +430,7 @@ export class NoticeOfWorkApplication extends Component {
                   onVisibleChange={this.handleVisibleChange}
                   visible={this.state.menuVisible}
                 >
-                  <Button type="secondary">
+                  <Button type="secondary" style={{ float: "right" }}>
                     Actions
                     <Icon type="down" />
                   </Button>
