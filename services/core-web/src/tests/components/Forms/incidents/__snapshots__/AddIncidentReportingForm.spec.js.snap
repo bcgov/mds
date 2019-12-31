@@ -17,9 +17,15 @@ exports[`AddIncidentReportingForm renders properly 1`] = `
         >
           <Field
             component={[Function]}
-            id="mine_incident_category_code"
-            label="Incident type*"
-            name="mine_incident_category_code"
+            id="categories"
+            label="Incident type(s)*"
+            name="categories"
+            placeholder="Select the incident type(s)"
+            validate={
+              Array [
+                [Function],
+              ]
+            }
           />
         </FormItem>
         <FormItem
@@ -28,7 +34,7 @@ exports[`AddIncidentReportingForm renders properly 1`] = `
           <Field
             component={[Function]}
             id="reported_to_inspector_party_guid"
-            label="Incident reported to*:"
+            label="Incident reported to*"
             name="reported_to_inspector_party_guid"
             placeholder="Start typing inspector name"
             validate={
@@ -44,7 +50,7 @@ exports[`AddIncidentReportingForm renders properly 1`] = `
           <Field
             component={[Function]}
             id="responsible_inspector_party_guid"
-            label="Inspector responsible:*"
+            label="Inspector responsible*"
             name="responsible_inspector_party_guid"
             placeholder="Start typing inspector name"
             validate={
