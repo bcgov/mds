@@ -25,6 +25,9 @@ exports[`MineTailingsInfo renders properly 1`] = `
       <h3>
         MockTSF
       </h3>
+      <p>
+        No TSF registry data available
+      </p>
     </Col>
   </Row>
   <br />
