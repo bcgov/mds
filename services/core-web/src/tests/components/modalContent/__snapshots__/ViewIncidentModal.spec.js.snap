@@ -15,7 +15,7 @@ exports[`ViewIncidentModal renders properly 1`] = `
         <p
           className="field-title"
         >
-          Incident type(s)
+          Incident type
         </p>
         <p>
           N/A

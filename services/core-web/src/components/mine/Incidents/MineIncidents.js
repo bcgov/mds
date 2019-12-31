@@ -156,11 +156,6 @@ export class MineIncidents extends Component {
           dangerous_occurrence_subparagraph_ids: existingIncident.dangerous_occurrence_subparagraph_ids.map(
             String
           ),
-          categories: existingIncident.categories
-            ? existingIncident.categories
-                .sort((a, b) => (a.display_order > b.display_order ? 1 : -1))
-                .map((c) => c.mine_incident_category_code)
-            : [],
         },
         onSubmit,
         afterClose: this.handleCancelMineIncident,
