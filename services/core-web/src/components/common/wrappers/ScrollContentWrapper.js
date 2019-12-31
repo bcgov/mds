@@ -10,13 +10,21 @@ import { PropTypes } from "prop-types";
 const propTypes = {
   id: PropTypes.string.isRequired,
   children: PropTypes.element.isRequired,
-  location: PropTypes.shape({ hash: PropTypes.string }).isRequired,
   title: PropTypes.string.isRequired,
+  history: PropTypes.shape({
+    location: PropTypes.shape({ state: PropTypes.shape({ currentActiveLink: PropTypes.string }) }),
+  }).isRequired,
 };
 
 export const ScrollContentWrapper = (props) => {
-  const isActive = () =>
-    includes(props.location.hash, props.id) ? "circle purple" : "circle grey";
+  const isActive = () => {
+    const currentActiveLink =
+      props.history && props.history.location && props.history.location.state
+        ? props.history.location.state.currentActiveLink
+        : undefined;
+    const isActiveLink = includes(currentActiveLink, props.id);
+    return isActiveLink ? "circle purple" : "circle grey";
+  };
 
   return (
     <div className="scroll-wrapper">
