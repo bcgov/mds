@@ -12,6 +12,7 @@ import {
   getIncidentDeterminationHash,
   getIncidentFollowupActionHash,
   getIncidentStatusCodeHash,
+  getIncidentCategoryCodeHash,
 } from "@/selectors/staticContentSelectors";
 import { formatTime, formatDate } from "@/utils/helpers";
 
@@ -19,6 +20,7 @@ const propTypes = {
   closeModal: PropTypes.func.isRequired,
   incident: CustomPropTypes.incident.isRequired,
   incidentStatusCodeHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  incidentCategoryCodeHash: PropTypes.objectOf(PropTypes.string).isRequired,
   inspectorsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   incidentDeterminationHash: PropTypes.objectOf(PropTypes.string).isRequired,
   complianceCodesHash: PropTypes.objectOf(PropTypes.string).isRequired,
@@ -36,20 +38,16 @@ export class ViewIncidentModal extends Component {
     const formattedPhoneNo = this.props.incident.reported_by_phone_ext
       ? `${this.props.incident.reported_by_phone_no} ext: ${this.props.incident.reported_by_phone_ext}`
       : this.props.incident.reported_by_phone_no;
-
     return (
       <div>
         <h5>Initial Report</h5>
         <div className="content--light-grey padding-small">
           <div className="inline-flex padding-small">
-            <p className="field-title">Incident type(s)</p>
+            <p className="field-title">Incident type</p>
             <p>
-              {this.props.incident.categories && this.props.incident.categories.length > 0
-                ? this.props.incident.categories
-                    .sort((a, b) => (a.display_order > b.display_order ? 1 : -1))
-                    .map((c) => c.description)
-                    .join(", ")
-                : Strings.EMPTY_FIELD}
+              {this.props.incidentCategoryCodeHash[
+                this.props.incident.mine_incident_category_code
+              ] || Strings.EMPTY_FIELD}
             </p>
           </div>
           <div className="inline-flex padding-small">
@@ -309,6 +307,7 @@ const mapStateToProps = (state) => ({
   inspectorsHash: getInspectorsHash(state),
   incidentFollowupActionHash: getIncidentFollowupActionHash(state),
   incidentStatusCodeHash: getIncidentStatusCodeHash(state),
+  incidentCategoryCodeHash: getIncidentCategoryCodeHash(state),
 });
 
 export default connect(mapStateToProps)(ViewIncidentModal);
