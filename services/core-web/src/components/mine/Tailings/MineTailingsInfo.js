@@ -99,7 +99,6 @@ export class MineTailingsInfo extends Component {
           >
             <Col span={6}>
               <h3>{facility.mine_tailings_storage_facility_name}</h3>
-              <p>No TSF registry data available</p>
             </Col>
           </Row>
         ))}
