@@ -121,3 +121,23 @@
     background-color: $violet;
   }
 }
+
+.navbar-dropdown-menu {
+  padding: 0;
+  overflow: hidden;
+}
+
+.navbar-dropdown-menu-item {
+  @extend .ant-dropdown-menu-item;
+  &:hover {
+    background-color: $primary-btn-color-hover;
+  }
+}
+
+.navbar-dropdown-menu > :first-child {
+  padding-top: 9px;
+}
+
+.navbar-dropdown-menu > :last-child {
+  padding-bottom: 9px;
+}
