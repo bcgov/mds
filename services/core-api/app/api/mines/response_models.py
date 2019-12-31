@@ -8,17 +8,15 @@ class DateTime(fields.Raw):
     def format(self, value):
         return value.strftime("%Y-%m-%d %H:%M") if value else None
 
-
-BASIC_MINE_LOCATION_MODEL = api.model(
-    'BasicMineLocation', {
-        'latitude': fields.String,
-        'longitude': fields.String,
-        'utm_easting': fields.String,
-        'utm_northing': fields.String,
-        'utm_zone_number': fields.String,
-        'utm_zone_letter': fields.String,
-        'mine_location_description': fields.String,
-    })
+BASIC_MINE_LOCATION_MODEL = api.model('BasicMineLocation', {
+    'latitude': fields.String,
+    'longitude': fields.String,
+    'utm_easting': fields.String,
+    'utm_northing': fields.String,
+    'utm_zone_number': fields.String,
+    'utm_zone_letter': fields.String,
+    'mine_location_description': fields.String,
+})
 
 BASIC_MINE_LIST = api.model(
     'BasicMineList', {
@@ -47,12 +45,14 @@ MINE_DISTURBANCE_CODE_MODEL = api.model(
         'description': fields.String,
         'active_ind': fields.Boolean,
         'mine_tenure_type_codes': fields.List(fields.String)
-    })
+    })    
 
 MINE_LOCATION_MODEL = api.model(
     'MineLocation', {
-        'latitude': fields.Fixed(description='fixed precision decimal.', decimals=7),
-        'longitude': fields.Fixed(description='fixed precision decimal.', decimals=7),
+        'latitude': fields.Fixed(description='fixed precision decimal.',
+                                 decimals=7),
+        'longitude': fields.Fixed(description='fixed precision decimal.',
+                                  decimals=7),
         'utm_easting': fields.String,
         'utm_northing': fields.String,
         'utm_zone_number': fields.String,
@@ -69,9 +69,10 @@ MINE_DOCUMENT_MODEL = api.model(
         'upload_date': fields.DateTime,
     })
 
+
 PERMIT_AMENDMENT_DOCUMENT_MODEL = api.model(
     'PermitAmendmentDocument', {
-        'permit_id': fields.Integer,
+        'permit_id':fields.Integer,
         'permit_amendment_document_guid': fields.String,
         'mine_guid': fields.String,
         'document_manager_guid': fields.String,
@@ -80,31 +81,29 @@ PERMIT_AMENDMENT_DOCUMENT_MODEL = api.model(
     })
 
 PERMIT_AMENDMENT_MODEL = api.model(
-    'PermitAmendment',
-    {
-                                                                                         #'permit_guid':fields.String,
-        'permit_amendment_id': fields.Integer,
+    'PermitAmendment', {
+        #'permit_guid':fields.String,
+        'permit_amendment_id':fields.Integer,
         'permit_amendment_guid': fields.String,
         'permit_amendment_status_code': fields.String,
         'permit_amendment_type_code': fields.String,
         'received_date': fields.DateTime(dt_format='iso8601'),
         'issue_date': fields.DateTime(dt_format='iso8601'),
         'authorization_end_date': fields.DateTime(dt_format='iso8601'),
-                                                                                         #'permit_amendment_status_description': fields.String,
-                                                                                         #'permit_amendment_type_description': fields.String,
+        #'permit_amendment_status_description': fields.String,
+        #'permit_amendment_type_description': fields.String,
         'description': fields.String,
         'related_documents': fields.List(fields.Nested(PERMIT_AMENDMENT_DOCUMENT_MODEL))
     })
 
 PERMIT_MODEL = api.model(
-    'Permit',
-    {
-        'permit_id': fields.Integer,
+    'Permit', {
+        'permit_id' : fields.Integer,
         'permit_guid': fields.String,
         'mine_guid': fields.String,
         'permit_no': fields.String,
         'permit_status_code': fields.String,
-                                                                                 # 'permit_status_code_description': fields.String,
+        # 'permit_status_code_description': fields.String,
         'permit_amendments': fields.List(fields.Nested(PERMIT_AMENDMENT_MODEL)),
     })
 
@@ -120,7 +119,7 @@ PERMIT_AMENDEMENT_STATUS_CODE_MODEL = api.model(
         'description': fields.String,
         'display_order': fields.Integer
     })
-
+    
 STATUS_MODEL = api.model(
     'MineStatus', {
         'mine_status_guid': fields.String,
@@ -133,9 +132,10 @@ STATUS_MODEL = api.model(
         'status_date': fields.DateTime,
         'status_description': fields.String,
     })
-MINE_REPORT_SUBMISSION_STATUS = api.model('MineReportSubmissionStatus', {
-    'mine_report_submission_status_code': fields.String,
-    'description': fields.String,
+MINE_REPORT_SUBMISSION_STATUS = api.model(
+    'MineReportSubmissionStatus', {
+        'mine_report_submission_status_code': fields.String,
+        'description': fields.String,
 })
 
 MINE_TSF_MODEL = api.model(
@@ -183,14 +183,16 @@ MINES_MODEL = api.model(
         'union_ind': fields.Boolean,
         'mine_permit': fields.List(fields.Nested(PERMIT_MODEL)),
         'mine_status': fields.List(fields.Nested(STATUS_MODEL)),
-        'mine_tailings_storage_facilities': fields.List(fields.Nested(MINE_TSF_MODEL)),
+        'mine_tailings_storage_facilities': fields.List(
+            fields.Nested(MINE_TSF_MODEL)),
         'mine_type': fields.List(fields.Nested(MINE_TYPE_MODEL)),
         'verified_status': fields.Nested(MINE_VERIFIED_MODEL)
     })
 
-MINE_MODEL = api.inherit('Mine', MINES_MODEL, {
-    'mine_location': fields.Nested(MINE_LOCATION_MODEL),
-})
+MINE_MODEL = api.inherit(
+    'Mine', MINES_MODEL, {
+        'mine_location': fields.Nested(MINE_LOCATION_MODEL),
+    })
 
 MINE_LIST_MODEL = api.model(
     'MineList', {
@@ -207,26 +209,23 @@ MINE_INCIDENT_DOCUMENT_MODEL = api.model(
         'document_manager_guid': fields.String,
         'document_name': fields.String,
         'mine_incident_document_type_code': fields.String
-    })
 
-MINE_INCIDENT_RECOMMENDATION_MODEL = api.model('Mine Incident Recommendation', {
-    'recommendation': fields.String,
-    'mine_incident_recommendation_guid': fields.String
-})
+    }
+)
 
-MINE_INCIDENT_CATEGORY_MODEL = api.model(
-    'Mine Incident Category', {
-        'mine_incident_category_code': fields.String,
-        'description': fields.String,
-        'display_order': fields.Integer,
-        'active_ind': fields.Boolean
-    })
+MINE_INCIDENT_RECOMMENDATION_MODEL = api.model(
+    'Mine Incident Recommendation', {
+        'recommendation': fields.String,
+        'mine_incident_recommendation_guid': fields.String
+    }
+)
 
 MINE_INCIDENT_MODEL = api.model(
     'Mine Incident', {
         'mine_incident_guid': fields.String,
         'mine_incident_report_no': fields.String,
         'mine_incident_id_year': fields.Integer,
+        'mine_incident_category_code': fields.String,
         'mine_guid': fields.String,
         'incident_timestamp': DateTime,
         'incident_description': fields.String,
@@ -253,14 +252,15 @@ MINE_INCIDENT_MODEL = api.model(
         'proponent_incident_no': fields.String,
         'mine_incident_no': fields.String,
         'documents': fields.List(fields.Nested(MINE_INCIDENT_DOCUMENT_MODEL)),
-        'recommendations': fields.List(fields.Nested(MINE_INCIDENT_RECOMMENDATION_MODEL)),
-        'categories': fields.List(fields.Nested(MINE_INCIDENT_CATEGORY_MODEL))
+        'recommendations': fields.List(fields.Nested(
+            MINE_INCIDENT_RECOMMENDATION_MODEL))
     })
 
-VARIANCE_DOCUMENT_MODEL = api.inherit('VarianceDocumentModel', MINE_DOCUMENT_MODEL, {
-    'created_at': fields.Date,
-    'variance_document_category_code': fields.String
-})
+VARIANCE_DOCUMENT_MODEL = api.inherit(
+    'VarianceDocumentModel', MINE_DOCUMENT_MODEL, {
+        'created_at': fields.Date,
+        'variance_document_category_code': fields.String
+    })
 
 VARIANCE_MODEL = api.model(
     'Variance', {
@@ -279,15 +279,17 @@ VARIANCE_MODEL = api.model(
         'documents': fields.Nested(VARIANCE_DOCUMENT_MODEL)
     })
 
-MINE_OPERATION_STATUS_CODE_MODEL = api.model('MineOperationStatusCode', {
-    'mine_operation_status_code': fields.String,
-    'description': fields.String
-})
+MINE_OPERATION_STATUS_CODE_MODEL = api.model(
+    'MineOperationStatusCode', {
+        'mine_operation_status_code': fields.String,
+        'description': fields.String
+    })
 
-MINE_OPERATION_STATUS_REASON_CODE_MODEL = api.model('MineOperationStatusReasonCode', {
-    'mine_operation_status_reason_code': fields.String,
-    'description': fields.String
-})
+MINE_OPERATION_STATUS_REASON_CODE_MODEL = api.model(
+    'MineOperationStatusReasonCode', {
+        'mine_operation_status_reason_code': fields.String,
+        'description': fields.String
+    })
 
 MINE_OPERATION_STATUS_SUB_REASON_CODE_MODEL = api.model(
     'MineOperationStatusSubReasonCode', {
@@ -298,10 +300,12 @@ MINE_OPERATION_STATUS_SUB_REASON_CODE_MODEL = api.model(
 MINE_STATUS_CODE_MODEL = api.model(
     'MineStatusCode', {
         'mine_status_xref_guid': fields.String,
-        'mine_operation_status': fields.Nested(MINE_OPERATION_STATUS_CODE_MODEL),
-        'mine_operation_status_reason': fields.Nested(MINE_OPERATION_STATUS_REASON_CODE_MODEL),
-        'mine_operation_status_sub_reason':
-        fields.Nested(MINE_OPERATION_STATUS_SUB_REASON_CODE_MODEL),
+        'mine_operation_status': fields.Nested(
+            MINE_OPERATION_STATUS_CODE_MODEL),
+        'mine_operation_status_reason': fields.Nested(
+            MINE_OPERATION_STATUS_REASON_CODE_MODEL),
+        'mine_operation_status_sub_reason': fields.Nested(
+            MINE_OPERATION_STATUS_SUB_REASON_CODE_MODEL),
         'description': fields.String,
     })
 
@@ -313,7 +317,8 @@ MINE_REPORT_COMMENT_MODEL = api.model(
         'comment_user': fields.String,
         'comment_datetime': fields.DateTime,
         'from_latest_submission': fields.Boolean
-    })
+    }
+)
 
 MINE_REPORT_SUBMISSION_MODEL = api.model(
     'MineReportSubmission', {
@@ -322,7 +327,8 @@ MINE_REPORT_SUBMISSION_MODEL = api.model(
         'mine_report_submission_status_code': fields.String,
         'documents': fields.List(fields.Nested(MINE_DOCUMENT_MODEL)),
         'comments': fields.List(fields.Nested(MINE_REPORT_COMMENT_MODEL))
-    })
+    }
+)
 
 MINE_REPORT_MODEL = api.model(
     'MineReportModel', {
@@ -333,13 +339,17 @@ MINE_REPORT_MODEL = api.model(
         'received_date': fields.Date,
         'submission_year': fields.Integer,
         'permit_guid': fields.String,
-        'mine_report_submissions': fields.List(fields.Nested(MINE_REPORT_SUBMISSION_MODEL))
+        'mine_report_submissions': fields.List(
+            fields.Nested(MINE_REPORT_SUBMISSION_MODEL))
     })
 
-MINE_REPORT_DEFINITION_CATEGORIES = api.model('MineReportDefinitionCategoriesModel', {
-    'mine_report_category': fields.String,
-    'description': fields.String
-})
+
+MINE_REPORT_DEFINITION_CATEGORIES = api.model(
+    'MineReportDefinitionCategoriesModel', {
+        'mine_report_category': fields.String,
+        'description': fields.String
+    }
+)
 
 MINE_REPORT_DEFINITION_MODEL = api.model(
     'MineReportDefinition', {
@@ -351,7 +361,8 @@ MINE_REPORT_DEFINITION_MODEL = api.model(
         'default_due_date': fields.Date,
         'categories': fields.List(fields.Nested(MINE_REPORT_DEFINITION_CATEGORIES)),
         'compliance_articles': fields.List(fields.Nested(COMPLIANCE_ARTICLE_MODEL)),
-    })
+    }
+)
 
 ORDER_DOCUMENT_MODEL = api.model(
     'MineComplianceOrderDocument', {
@@ -360,7 +371,8 @@ ORDER_DOCUMENT_MODEL = api.model(
         "document_type": fields.String,
         "file_name": fields.String,
         "comment": fields.String
-    })
+    }
+)
 
 ORDER_MODEL = api.model(
     'MineComplianceOrder', {
