@@ -4,7 +4,9 @@ from flask_restplus import fields
 MINE_INCIDENT_CATEGORY_MODEL = api.model(
     'Mine Incident Category', {
         'mine_incident_category_code': fields.String,
-        'description': fields.String
+        'description': fields.String,
+        'display_order': fields.Integer,
+        'active_ind': fields.Boolean
     })
 
 MINE_INCIDENT_DETERMINATION_TYPE_MODEL = api.model(
@@ -31,14 +33,12 @@ MINE_INCIDENT_DOCUMENT_TYPE_CODE_MODEL = api.model(
         'description': fields.String
     })
 
-
 MINE_INCIDENT_DOCUMENT_MODEL = api.model(
     'Mine Incident Document', {
         'mine_document_guid': fields.String,
         'document_manager_guid': fields.String,
         'document_name': fields.String,
         'mine_incident_document_type_code': fields.String
-
     }
 )
 
@@ -54,7 +54,6 @@ MINE_INCIDENT_MODEL = api.model(
         'mine_incident_guid': fields.String,
         'mine_incident_report_no': fields.String,
         'mine_incident_id_year': fields.Integer,
-        'mine_incident_cateogry_code': fields.String,
         'mine_guid': fields.String,
         'mine_name': fields.String,
         'mine_region': fields.String,
@@ -83,7 +82,8 @@ MINE_INCIDENT_MODEL = api.model(
         'mine_incident_no': fields.String,
         'documents': fields.List(fields.Nested(MINE_INCIDENT_DOCUMENT_MODEL)),
         'recommendations': fields.List(fields.Nested(
-            MINE_INCIDENT_RECOMMENDATION_MODEL))
+            MINE_INCIDENT_RECOMMENDATION_MODEL)),
+        'categories': fields.List(fields.Nested(MINE_INCIDENT_CATEGORY_MODEL))
     })
 
 PAGINATED_LIST = api.model(
