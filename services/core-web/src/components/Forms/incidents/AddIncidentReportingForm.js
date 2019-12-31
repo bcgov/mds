@@ -3,7 +3,15 @@ import PropTypes from "prop-types";
 import { Field, reduxForm } from "redux-form";
 import { Form, Col, Row } from "antd";
 import * as FORM from "@/constants/forms";
-import { required, email, number, phoneNumber, maxLength, dateNotInFuture } from "@/utils/Validate";
+import {
+  required,
+  requiredList,
+  email,
+  number,
+  phoneNumber,
+  maxLength,
+  dateNotInFuture,
+} from "@/utils/Validate";
 import { normalizePhone } from "@/utils/helpers";
 import { renderConfig } from "@/components/common/config";
 import CustomPropTypes from "@/customPropTypes";
@@ -20,21 +28,23 @@ export const AddIncidentReportingForm = (props) => (
       <Row gutter={48}>
         <Col>
           {props.initialValues.mine_incident_id_year && (
-            <h4>{`Ministry Incident No. :  ${props.initialValues.mine_incident_report_no}`}</h4>
+            <h4>{`Ministry Incident No. ${props.initialValues.mine_incident_report_no}`}</h4>
           )}
           {props.initialValues.mms_inspector_initials ? (
             <span style={{ float: "right" }}>
-              {`MMS Inspector Initials: ${props.initialValues.mms_inspector_initials}`}
+              {`MMS Inspector Initials ${props.initialValues.mms_inspector_initials}`}
             </span>
           ) : (
             ""
           )}
           <Form.Item>
             <Field
-              id="mine_incident_category_code"
-              name="mine_incident_category_code"
-              label="Incident type*"
-              component={renderConfig.SELECT}
+              id="categories"
+              name="categories"
+              label="Incident type(s)*"
+              placeholder="Select the incident type(s)"
+              component={renderConfig.MULTI_SELECT}
+              validate={[requiredList]}
               data={props.incidentCategoryCodeOptions}
             />
           </Form.Item>
@@ -42,7 +52,7 @@ export const AddIncidentReportingForm = (props) => (
             <Field
               id="reported_to_inspector_party_guid"
               name="reported_to_inspector_party_guid"
-              label="Incident reported to*:"
+              label="Incident reported to*"
               placeholder="Start typing inspector name"
               component={renderConfig.GROUPED_SELECT}
               validate={[required]}
@@ -53,7 +63,7 @@ export const AddIncidentReportingForm = (props) => (
             <Field
               id="responsible_inspector_party_guid"
               name="responsible_inspector_party_guid"
-              label="Inspector responsible:*"
+              label="Inspector responsible*"
               component={renderConfig.GROUPED_SELECT}
               placeholder="Start typing inspector name"
               validate={[required]}

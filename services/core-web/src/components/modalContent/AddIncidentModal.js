@@ -43,7 +43,9 @@ const invalidReportingPayload = (values) =>
     values.reported_time &&
     values.reported_by_name &&
     values.reported_to_inspector_party_guid &&
-    values.responsible_inspector_party_guid
+    values.responsible_inspector_party_guid &&
+    values.categories &&
+    values.categories.length > 0
   );
 
 const invalidDetailPayload = (values) =>
