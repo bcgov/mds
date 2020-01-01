@@ -410,7 +410,7 @@ export class NoticeOfWorkApplication extends Component {
           <div className="inline-flex between">
             <div>
               <h1>NoW Number: {this.props.noticeOfWork.now_number || Strings.EMPTY_FIELD}</h1>
-              {this.state.noticeOfWorkPageFromRoute && (
+              {this.state.noticeOfWorkPageFromRoute && !this.state.fixedTop && (
                 <Link to={this.state.noticeOfWorkPageFromRoute.route}>
                   <Icon type="arrow-left" style={{ paddingRight: "5px" }} />
                   Back to: {this.state.noticeOfWorkPageFromRoute.title}
@@ -464,14 +464,7 @@ export class NoticeOfWorkApplication extends Component {
         </div>
         <LoadingWrapper condition={this.state.isNoWLoaded}>
           <div>
-            <div
-              className={this.state.fixedTop ? "side-menu--fixed" : "side-menu"}
-              style={
-                this.state.noticeOfWorkPageFromRoute && this.state.fixedTop
-                  ? { paddingTop: "24px" }
-                  : {}
-              }
-            >
+            <div className={this.state.fixedTop ? "side-menu--fixed" : "side-menu"}>
               {this.state.currentStep === 1 && (
                 <NOWSideMenu route={routes.NOTICE_OF_WORK_APPLICATION} />
               )}
