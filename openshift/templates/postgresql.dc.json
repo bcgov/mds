@@ -149,11 +149,7 @@
       "apiVersion": "v1",
       "kind": "PersistentVolumeClaim",
       "metadata": {
-        "name": "${NAME}${SUFFIX}",
-        "annotations": {
-          "volume.beta.kubernetes.io/storage-class": "gluster-file-db",
-          "volume.beta.kubernetes.io/storage-provisioner": "kubernetes.io/glusterfs"
-        }
+        "name": "${NAME}${SUFFIX}"
       },
       "spec": {
         "accessModes": ["ReadWriteMany"],

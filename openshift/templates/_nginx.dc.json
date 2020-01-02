@@ -92,11 +92,7 @@
       "apiVersion": "v1",
       "kind": "PersistentVolumeClaim",
       "metadata": {
-        "name": "mds-logs${SUFFIX}",
-        "annotations": {
-          "volume.beta.kubernetes.io/storage-class": "gluster-file",
-          "volume.beta.kubernetes.io/storage-provisioner": "kubernetes.io/glusterfs"
-        }
+        "name": "mds-logs${SUFFIX}"
       },
       "spec": {
         "accessModes": ["ReadWriteMany"],
