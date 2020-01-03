@@ -14,6 +14,7 @@ import ReviewActivities from "@/components/noticeOfWork/applications/review/Revi
 import ReclamationSummary from "./activities/ReclamationSummary";
 import ReviewNOWDocuments from "./ReviewNOWDocuments";
 import ReviewNOWContacts from "./ReviewNOWContacts";
+import { required, lat, lon, maxLength, number } from "@/utils/Validate";
 
 /**
  * @constant ReviewNOWApplication renders edit/view for the NoW Application review step
@@ -44,16 +45,12 @@ export const ReviewNOWApplication = (props) => {
             name="property_name"
             component={RenderField}
             disabled={props.isViewMode}
+            validate={[required, maxLength(4000)]}
           />
         </Col>
         <Col md={12} sm={24}>
-          <div className="field-title">Permit Status</div>
-          <Field
-            id="permit_status_code"
-            name="permit_status_code"
-            component={RenderField}
-            disabled={props.isViewMode}
-          />
+          <div className="field-title">Permit Status**</div>
+          <Field id="" name="" component={RenderField} disabled />
         </Col>
       </Row>
       <Row gutter={16}>
@@ -84,6 +81,7 @@ export const ReviewNOWApplication = (props) => {
             name="latitude"
             component={RenderField}
             disabled={props.isViewMode}
+            validate={[lat]}
           />
         </Col>
         <Col md={12} sm={24}>
@@ -93,6 +91,7 @@ export const ReviewNOWApplication = (props) => {
             name="description_of_land"
             component={RenderField}
             disabled={props.isViewMode}
+            validate={[maxLength(4000)]}
           />
         </Col>
       </Row>
@@ -104,6 +103,7 @@ export const ReviewNOWApplication = (props) => {
             name="longitude"
             component={RenderField}
             disabled={props.isViewMode}
+            validate={[lon]}
           />
         </Col>
         <Col md={12} sm={24}>
@@ -119,11 +119,18 @@ export const ReviewNOWApplication = (props) => {
             name="notice_of_work_type_code"
             component={RenderField}
             disabled={props.isViewMode}
+            validate={[required]}
           />
         </Col>
         <Col md={12} sm={24}>
-          <div className="field-title">Term of Application**</div>
-          <Field id="" name="" component={RenderField} disabled />
+          <div className="field-title">Term of Application</div>
+          <Field
+            id="application_permit_term"
+            name="application_permit_term"
+            component={RenderField}
+            disabled={props.isViewMode}
+            validate={[number]}
+          />
         </Col>
       </Row>
       <Row gutter={16}>
@@ -169,6 +176,7 @@ export const ReviewNOWApplication = (props) => {
             name="tenure_number"
             component={RenderAutoSizeField}
             disabled={props.isViewMode}
+            validate={[maxLength(4000)]}
           />
         </Col>
       </Row>
@@ -185,6 +193,7 @@ export const ReviewNOWApplication = (props) => {
             name="directions_to_site"
             component={RenderAutoSizeField}
             disabled={props.isViewMode}
+            validate={[maxLength(4000)]}
           />
         </Col>
         <Col md={12} sm={24}>
@@ -264,6 +273,7 @@ export const ReviewNOWApplication = (props) => {
               name="has_community_water_shed"
               component={RenderRadioButtons}
               disabled={props.isViewMode}
+              validate={[required]}
             />
           </Col>
           <Col md={12} sm={24}>
@@ -297,6 +307,7 @@ export const ReviewNOWApplication = (props) => {
               name="has_archaeology_sites_affected"
               component={RenderRadioButtons}
               disabled={props.isViewMode}
+              validate={[required]}
             />
             <div className="field-title--light">Plan to protect the archaeological site**</div>
             <Field id="" name="" component={RenderField} disabled />
