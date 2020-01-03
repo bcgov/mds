@@ -13,7 +13,6 @@ exports[`ReviewActivities renders properly 1`] = `
         addRecord={[Function]}
         editRecord={[Function]}
         isViewMode={true}
-        removeRecord={[Function]}
       />
     </FormSection>
   </withRouter(ScrollContentWrapper)>
@@ -40,7 +39,6 @@ exports[`ReviewActivities renders properly 1`] = `
         addRecord={[Function]}
         editRecord={[Function]}
         isViewMode={true}
-        removeRecord={[Function]}
       />
     </FormSection>
   </withRouter(ScrollContentWrapper)>
@@ -55,7 +53,6 @@ exports[`ReviewActivities renders properly 1`] = `
         addRecord={[Function]}
         editRecord={[Function]}
         isViewMode={true}
-        removeRecord={[Function]}
       />
     </FormSection>
   </withRouter(ScrollContentWrapper)>
@@ -70,7 +67,6 @@ exports[`ReviewActivities renders properly 1`] = `
         addRecord={[Function]}
         editRecord={[Function]}
         isViewMode={true}
-        removeRecord={[Function]}
       />
     </FormSection>
   </withRouter(ScrollContentWrapper)>
@@ -85,7 +81,6 @@ exports[`ReviewActivities renders properly 1`] = `
         addRecord={[Function]}
         editRecord={[Function]}
         isViewMode={true}
-        removeRecord={[Function]}
       />
     </FormSection>
   </withRouter(ScrollContentWrapper)>
@@ -100,7 +95,6 @@ exports[`ReviewActivities renders properly 1`] = `
         addRecord={[Function]}
         editRecord={[Function]}
         isViewMode={true}
-        removeRecord={[Function]}
       />
     </FormSection>
   </withRouter(ScrollContentWrapper)>
@@ -115,7 +109,6 @@ exports[`ReviewActivities renders properly 1`] = `
         addRecord={[Function]}
         editRecord={[Function]}
         isViewMode={true}
-        removeRecord={[Function]}
       />
     </FormSection>
   </withRouter(ScrollContentWrapper)>
@@ -130,7 +123,6 @@ exports[`ReviewActivities renders properly 1`] = `
         addRecord={[Function]}
         editRecord={[Function]}
         isViewMode={true}
-        removeRecord={[Function]}
       />
     </FormSection>
   </withRouter(ScrollContentWrapper)>
@@ -145,7 +137,6 @@ exports[`ReviewActivities renders properly 1`] = `
         addRecord={[Function]}
         editRecord={[Function]}
         isViewMode={true}
-        removeRecord={[Function]}
       />
     </FormSection>
   </withRouter(ScrollContentWrapper)>
@@ -160,7 +151,6 @@ exports[`ReviewActivities renders properly 1`] = `
         addRecord={[Function]}
         editRecord={[Function]}
         isViewMode={true}
-        removeRecord={[Function]}
       />
     </FormSection>
   </withRouter(ScrollContentWrapper)>
@@ -175,7 +165,6 @@ exports[`ReviewActivities renders properly 1`] = `
         addRecord={[Function]}
         editRecord={[Function]}
         isViewMode={true}
-        removeRecord={[Function]}
       />
     </FormSection>
   </withRouter(ScrollContentWrapper)>
