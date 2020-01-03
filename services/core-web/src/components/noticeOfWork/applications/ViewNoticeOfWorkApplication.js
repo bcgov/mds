@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { Button } from "antd";
+import { Button, Icon } from "antd";
+import { Link } from "react-router-dom";
 import * as routes from "@/constants/routes";
 import {
   fetchImportedNoticeOfWorkApplication,
@@ -45,6 +46,11 @@ const propTypes = {
   fetchNoticeOFWorkApplicationPermitTypes: PropTypes.func.isRequired,
   reclamationSummary: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.strings)).isRequired,
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
+  location: PropTypes.shape({
+    state: PropTypes.shape({
+      noticeOfWorkPageFromRoute: CustomPropTypes.noticeOfWorkPageFromRoute,
+    }),
+  }).isRequired,
   match: PropTypes.shape({
     params: {
       id: PropTypes.string,
@@ -56,6 +62,7 @@ export class ViewNoticeOfWorkApplication extends Component {
   state = {
     isLoaded: false,
     showOriginalValues: false,
+    noticeOfWorkPageFromRoute: undefined,
   };
 
   componentDidMount() {
@@ -66,12 +73,17 @@ export class ViewNoticeOfWorkApplication extends Component {
     this.props.fetchNoticeOFWorkActivityTypeOptions();
     this.props.fetchRegionOptions();
     this.props.fetchImportedNoticeOfWorkApplication(id).then(() => {
-      this.props.history.push(
-        routes.VIEW_NOTICE_OF_WORK_APPLICATION.hashRoute(id, "#application-info")
-      );
       this.setState({ isLoaded: true });
     });
     this.props.fetchOriginalNoticeOfWorkApplication(id);
+    this.setState((prevState) => ({
+      noticeOfWorkPageFromRoute:
+        this.props.location &&
+        this.props.location.state &&
+        this.props.location.state.noticeOfWorkPageFromRoute
+          ? this.props.location.state.noticeOfWorkPageFromRoute
+          : prevState.noticeOfWorkPageFromRoute,
+    }));
   }
 
   showApplicationForm = () => {
@@ -85,46 +97,60 @@ export class ViewNoticeOfWorkApplication extends Component {
     );
   };
 
-  render = () => (
-    <div className="page">
-      <div className="steps--header fixed-scroll-view">
-        <div className="inline-flex between">
+  render() {
+    return (
+      <div className="page">
+        <LoadingWrapper condition={this.state.isLoaded}>
+          <div className="steps--header fixed-scroll-view">
+            <div className="inline-flex between">
+              <div>
+                <h1>NoW Number: {this.props.noticeOfWork.now_number || Strings.EMPTY_FIELD}</h1>
+                {this.state.noticeOfWorkPageFromRoute && (
+                  <Link to={this.state.noticeOfWorkPageFromRoute.route}>
+                    <Icon type="arrow-left" style={{ paddingRight: "5px" }} />
+                    Back to: {this.state.noticeOfWorkPageFromRoute.title}
+                  </Link>
+                )}
+              </div>
+              {this.state.isLoaded &&
+                this.props.noticeOfWork.submission_documents.filter(
+                  (x) => x.filename === "ApplicationForm.pdf"
+                ).length > 0 && (
+                  <Button onClick={this.showApplicationForm}>Open Original Application Form</Button>
+                )}
+            </div>
+          </div>
           <div>
-            <h1>NoW Number: {this.props.noticeOfWork.now_number || Strings.EMPTY_FIELD}</h1>
+            <div
+              className="side-menu--fixed"
+              style={this.state.noticeOfWorkPageFromRoute ? { paddingTop: "24px" } : {}}
+            >
+              <NOWSideMenu route={routes.VIEW_NOTICE_OF_WORK_APPLICATION} />
+            </div>
+            <div
+              className="steps--content with-fixed-top"
+              style={this.state.noticeOfWorkPageFromRoute ? { paddingTop: "24px" } : {}}
+            >
+              <ReviewNOWApplication
+                reclamationSummary={this.props.reclamationSummary}
+                isViewMode
+                initialValues={
+                  this.state.showOriginalValues
+                    ? this.props.originalNoticeOfWork
+                    : this.props.noticeOfWork
+                }
+                noticeOfWork={
+                  this.state.showOriginalValues
+                    ? this.props.originalNoticeOfWork
+                    : this.props.noticeOfWork
+                }
+              />
+            </div>
           </div>
-          {this.state.isLoaded &&
-            this.props.noticeOfWork.submission_documents.filter(
-              (x) => x.filename === "ApplicationForm.pdf"
-            ).length > 0 && (
-              <Button onClick={this.showApplicationForm}>Open Original Application Form</Button>
-            )}
-        </div>
+        </LoadingWrapper>
       </div>
-      <LoadingWrapper condition={this.state.isLoaded}>
-        <div>
-          <div className="side-menu--fixed">
-            <NOWSideMenu route={routes.VIEW_NOTICE_OF_WORK_APPLICATION} />
-          </div>
-          <div className="steps--content with-fixed-top">
-            <ReviewNOWApplication
-              reclamationSummary={this.props.reclamationSummary}
-              isViewMode
-              initialValues={
-                this.state.showOriginalValues
-                  ? this.props.originalNoticeOfWork
-                  : this.props.noticeOfWork
-              }
-              noticeOfWork={
-                this.state.showOriginalValues
-                  ? this.props.originalNoticeOfWork
-                  : this.props.noticeOfWork
-              }
-            />
-          </div>
-        </div>
-      </LoadingWrapper>
-    </div>
-  );
+    );
+  }
 }
 
 const mapStateToProps = (state) => ({

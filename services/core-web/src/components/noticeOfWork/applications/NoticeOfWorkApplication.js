@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Steps, Button, Dropdown, Menu, Icon } from "antd";
+import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { getFormValues, reset } from "redux-form";
 import { bindActionCreators } from "redux";
@@ -12,6 +13,8 @@ import {
   createNoticeOfWorkApplicationProgress,
   updateNoticeOfWorkApplication,
 } from "@/actionCreators/noticeOfWorkActionCreator";
+import { openModal, closeModal } from "@/actions/modalActions";
+import { modalConfig } from "@/components/modalContent/config";
 import { fetchMineRecordById } from "@/actionCreators/mineActionCreator";
 import {
   getNoticeOfWork,
@@ -65,6 +68,11 @@ const propTypes = {
   applicationTypeOptions: CustomPropTypes.options.isRequired,
   reset: PropTypes.func.isRequired,
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
+  location: PropTypes.shape({
+    state: PropTypes.shape({
+      noticeOfWorkPageFromRoute: CustomPropTypes.noticeOfWorkPageFromRoute,
+    }),
+  }).isRequired,
   match: PropTypes.shape({
     params: {
       id: PropTypes.string,
@@ -79,6 +87,9 @@ const propTypes = {
   applicationProgressStatusCodes: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.strings))
     .isRequired,
   reclamationSummary: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.strings)).isRequired,
+  reset: PropTypes.func.isRequired,
+  openModal: PropTypes.func.isRequired,
+  closeModal: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
@@ -92,6 +103,7 @@ export class NoticeOfWorkApplication extends Component {
     isImported: false,
     isNoWLoaded: false,
     associatedMineGuid: "",
+    associatedMineName: "",
     isViewMode: true,
     showOriginalValues: false,
     fixedTop: false,
@@ -99,6 +111,7 @@ export class NoticeOfWorkApplication extends Component {
     isDecision: false,
     buttonValue: "REV",
     buttonLabel: "Technical Review",
+    noticeOfWorkPageFromRoute: undefined,
   };
 
   componentDidMount() {
@@ -131,6 +144,14 @@ export class NoticeOfWorkApplication extends Component {
       });
     });
     this.props.fetchOriginalNoticeOfWorkApplication(id);
+    this.setState((prevState) => ({
+      noticeOfWorkPageFromRoute:
+        this.props.location &&
+        this.props.location.state &&
+        this.props.location.state.noticeOfWorkPageFromRoute
+          ? this.props.location.state.noticeOfWorkPageFromRoute
+          : prevState.noticeOfWorkPageFromRoute,
+    }));
   }
 
   componentWillReceiveProps(nextProps) {
@@ -191,8 +212,8 @@ export class NoticeOfWorkApplication extends Component {
     });
   };
 
-  setMineGuid = (mineGuid) => {
-    this.setState({ associatedMineGuid: mineGuid });
+  setMineGuid = (mineGuid, mineName = "") => {
+    this.setState({ associatedMineGuid: mineGuid, associatedMineName: mineName });
   };
 
   handleNOWFormSubmit = () => {
@@ -223,6 +244,38 @@ export class NoticeOfWorkApplication extends Component {
     } else if (window.pageYOffset < "100" && this.state.fixedTop) {
       this.setState({ fixedTop: false });
     }
+  };
+
+  handleChangeNOWMine = () => {
+    this.props
+      .updateNoticeOfWorkApplication(
+        { mine_guid: this.state.associatedMineGuid },
+        this.props.noticeOfWork.now_application_guid,
+        `Successfully transfered Notice of Work to ${this.state.associatedMineName}`
+      )
+      .then(() => {
+        this.props.fetchImportedNoticeOfWorkApplication(
+          this.props.noticeOfWork.now_application_guid
+        );
+      });
+    this.props.closeModal();
+  };
+
+  openChangeNOWMineModal = (event, noticeOfWork) => {
+    event.preventDefault();
+    this.props.openModal({
+      props: {
+        initialValues: {
+          mine_guid: noticeOfWork.mine_guid,
+        },
+        setMineGuid: this.setMineGuid,
+        onSubmit: this.handleChangeNOWMine,
+        title: `Transfer Notice of Work`,
+        noticeOfWork,
+      },
+      widthSize: "75vw",
+      content: modalConfig.CHANGE_NOW_MINE,
+    });
   };
 
   handleUpdateNOW = () => {
@@ -353,6 +406,16 @@ export class NoticeOfWorkApplication extends Component {
           <div className="custom-menu-item">
             <button
               type="button"
+              onClick={(event) => this.openChangeNOWMineModal(event, this.props.noticeOfWork)}
+            >
+              Transfer to a different mine
+            </button>
+          </div>
+        )}
+        {this.state.isImported && !this.state.isDecision && (
+          <div className="custom-menu-item">
+            <button
+              type="button"
               onClick={() => this.handleProgressChange(this.state.buttonValue)}
             >{`Ready for ${this.state.buttonLabel}`}</button>
           </div>
@@ -361,11 +424,17 @@ export class NoticeOfWorkApplication extends Component {
     );
 
     return (
-      <div className="page" onScroll={this.handleScroll()}>
+      <div className="page" onScroll={this.handleScroll()} onLoad={this.handleScroll()}>
         <div className={this.state.fixedTop ? "steps--header fixed-scroll" : "steps--header"}>
           <div className="inline-flex between">
             <div>
               <h1>NoW Number: {this.props.noticeOfWork.now_number || Strings.EMPTY_FIELD}</h1>
+              {this.state.noticeOfWorkPageFromRoute && (
+                <Link to={this.state.noticeOfWorkPageFromRoute.route}>
+                  <Icon type="arrow-left" style={{ paddingRight: "5px" }} />
+                  Back to: {this.state.noticeOfWorkPageFromRoute.title}
+                </Link>
+              )}
             </div>
             {this.state.isViewMode && (
               <Dropdown
@@ -414,7 +483,14 @@ export class NoticeOfWorkApplication extends Component {
         </div>
         <LoadingWrapper condition={this.state.isNoWLoaded}>
           <div>
-            <div className={this.state.fixedTop ? "side-menu--fixed" : "side-menu"}>
+            <div
+              className={this.state.fixedTop ? "side-menu--fixed" : "side-menu"}
+              style={
+                this.state.noticeOfWorkPageFromRoute && this.state.fixedTop
+                  ? { paddingTop: "24px" }
+                  : {}
+              }
+            >
               {this.state.currentStep === 1 && (
                 <NOWSideMenu route={routes.NOTICE_OF_WORK_APPLICATION} />
               )}
@@ -457,6 +533,8 @@ const mapDispatchToProps = (dispatch) =>
       fetchRegionOptions,
       fetchNoticeOFWorkApplicationTypeOptions,
       fetchNoticeOFWorkApplicationPermitTypes,
+      openModal,
+      closeModal,
     },
     dispatch
   );

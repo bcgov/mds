@@ -14,6 +14,7 @@ from app.api.compliance.models.compliance_article import ComplianceArticle
 from app.api.incidents.models.mine_incident_document_type_code import MineIncidentDocumentTypeCode
 from app.api.incidents.models.mine_incident import MineIncident
 from app.api.incidents.models.mine_incident_recommendation import MineIncidentRecommendation
+from app.api.incidents.models.mine_incident_category import MineIncidentCategory
 from app.api.parties.party.models.party import Party
 
 from app.api.mines.response_models import MINE_INCIDENT_MODEL
@@ -65,7 +66,7 @@ class MineIncidentListResource(Resource, UserMixin):
     parser.add_argument('dangerous_occurrence_subparagraph_ids', type=list, location='json')
     parser.add_argument('updated_documents', type=list, location='json', store_missing=False)
     parser.add_argument('recommendations', type=list, location='json', store_missing=False)
-    parser.add_argument('mine_incident_category_code', type=str, location='json')
+    parser.add_argument('categories', type=list, location='json', store_missing=False)
 
     @api.marshal_with(MINE_INCIDENT_MODEL, envelope='records', code=200)
     @api.doc(description='returns the incidents for a given mine.')
@@ -104,7 +105,6 @@ class MineIncidentListResource(Resource, UserMixin):
             followup_investigation_type_code=data['followup_investigation_type_code'],
             reported_timestamp=data['reported_timestamp'],
             reported_by_name=data['reported_by_name'],
-            mine_incident_category_code=data['mine_incident_category_code'],
         )
 
         incident.reported_by_email = data.get('reported_by_email')
@@ -163,11 +163,6 @@ class MineIncidentListResource(Resource, UserMixin):
 
                 incident.documents.append(mine_incident_doc)
 
-        try:
-            incident.save()
-        except Exception as e:
-            raise InternalServerError(f'Error when saving: {e}')
-
         recommendations = data.get('recommendations')
         if recommendations is not None:
             for recommendation in recommendations:
@@ -177,6 +172,18 @@ class MineIncidentListResource(Resource, UserMixin):
                 new_recommendation = MineIncidentRecommendation.create(
                     rec_string, mine_incident_id=incident.mine_incident_id)
                 new_recommendation.save()
+
+        categories = data.get('categories', [])
+        for category in categories:
+            code = MineIncidentCategory.find_by_code(category)
+            if not code:
+                raise BadRequest(f'Incident category code is not found: {code}')
+            incident.categories.append(code)
+
+        try:
+            incident.save()
+        except Exception as e:
+            raise InternalServerError(f'Error when saving: {e}')
 
         return incident, 201
 
@@ -229,8 +236,7 @@ class MineIncidentResource(Resource, UserMixin):
         'mine_determination_type_code', type=str, location='json', store_missing=False)
     parser.add_argument(
         'mine_determination_representative', type=str, location='json', store_missing=False)
-    parser.add_argument(
-        'mine_incident_category_code', type=str, location='json', store_missing=False)
+    parser.add_argument('categories', type=list, location='json', store_missing=False)
 
     @api.marshal_with(MINE_INCIDENT_MODEL, code=200)
     @requires_role_view_all
@@ -258,7 +264,7 @@ class MineIncidentResource(Resource, UserMixin):
                     'Dangerous occurrences require one or more cited sections of HSRC code 1.7.3')
 
         for key, value in data.items():
-            if key in ['dangerous_occurrence_subparagraph_ids', 'recommendations']:
+            if key in ['dangerous_occurrence_subparagraph_ids', 'recommendations', 'categories']:
                 continue
             if key in [
                     'reported_to_inspector_party_guid', 'responsible_inspector_party_guid',
@@ -273,6 +279,14 @@ class MineIncidentResource(Resource, UserMixin):
         recommendations = data.get('recommendations')
         if recommendations is not None:
             self._handle_recommendations(incident, recommendations)
+
+        categories = data.get('categories', [])
+        incident.categories = []
+        for category in categories:
+            code = MineIncidentCategory.find_by_code(category)
+            if not code:
+                raise BadRequest(f'Incident category code is not found: {code}')
+            incident.categories.append(code)
 
         incident.dangerous_occurrence_subparagraphs = []
         for id in do_sub_codes:

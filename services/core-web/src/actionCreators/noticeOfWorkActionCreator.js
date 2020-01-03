@@ -1,3 +1,4 @@
+import { notification } from "antd";
 import { showLoading, hideLoading } from "react-redux-loading-bar";
 import { error, request, success } from "@/actions/genericActions";
 import * as API from "@/constants/API";
@@ -109,7 +110,11 @@ export const fetchOriginalNoticeOfWorkApplication = (applicationGuid) => (dispat
     .finally(() => dispatch(hideLoading()));
 };
 
-export const updateNoticeOfWorkApplication = (payload, nowApplicationGuid) => (dispatch) => {
+export const updateNoticeOfWorkApplication = (
+  payload,
+  nowApplicationGuid,
+  message = "Successsfully updated Notice of Work"
+) => (dispatch) => {
   dispatch(request(reducerTypes.UPDATE_NOTICE_OF_WORK_APPLICATION));
   dispatch(showLoading());
   return CustomAxios()
@@ -119,6 +124,10 @@ export const updateNoticeOfWorkApplication = (payload, nowApplicationGuid) => (d
       createRequestHeader()
     )
     .then((response) => {
+      notification.success({
+        message,
+        duration: 10,
+      });
       dispatch(success(reducerTypes.UPDATE_NOTICE_OF_WORK_APPLICATION));
       return response;
     })

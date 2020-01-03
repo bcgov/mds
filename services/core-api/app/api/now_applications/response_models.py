@@ -16,6 +16,7 @@ class Date(fields.Raw):
 NOW_APPLICATION_EQUIPMENT = api.model(
     'NOWEquipment',
     {
+        'equipment_id':fields.Integer,
         'description':fields.String,
         'quantity':fields.Integer,
         'capacity':fields.String,
