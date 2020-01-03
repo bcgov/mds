@@ -14,6 +14,7 @@ import ReviewActivities from "@/components/noticeOfWork/applications/review/Revi
 import ReclamationSummary from "./activities/ReclamationSummary";
 import ReviewNOWDocuments from "./ReviewNOWDocuments";
 import ReviewNOWContacts from "./ReviewNOWContacts";
+import { required, lat, lon } from "@/utils/Validate";
 
 /**
  * @constant ReviewNOWApplication renders edit/view for the NoW Application review step
@@ -44,6 +45,7 @@ export const ReviewNOWApplication = (props) => {
             name="property_name"
             component={RenderField}
             disabled={props.isViewMode}
+            validate={[required]}
           />
         </Col>
         <Col md={12} sm={24}>
@@ -84,6 +86,7 @@ export const ReviewNOWApplication = (props) => {
             name="latitude"
             component={RenderField}
             disabled={props.isViewMode}
+            validate={[lat]}
           />
         </Col>
         <Col md={12} sm={24}>
@@ -104,6 +107,7 @@ export const ReviewNOWApplication = (props) => {
             name="longitude"
             component={RenderField}
             disabled={props.isViewMode}
+            validate={[lon]}
           />
         </Col>
         <Col md={12} sm={24}>
@@ -119,11 +123,17 @@ export const ReviewNOWApplication = (props) => {
             name="notice_of_work_type_code"
             component={RenderField}
             disabled={props.isViewMode}
+            validate={[required]}
           />
         </Col>
         <Col md={12} sm={24}>
-          <div className="field-title">Term of Application**</div>
-          <Field id="" name="" component={RenderField} disabled />
+          <div className="field-title">Term of Application</div>
+          <Field
+            id="application_permit_term"
+            name="application_permit_term"
+            component={RenderField}
+            disabled={props.isViewMode}
+          />
         </Col>
       </Row>
       <Row gutter={16}>
