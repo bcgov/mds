@@ -28,6 +28,7 @@ import {
 import { getMines } from "@/selectors/mineSelectors";
 import { getNoticeOfWorkApplicationProgressStatusCodeOptions } from "@/selectors/staticContentSelectors";
 import VerifyNOWMine from "@/components/noticeOfWork/applications/verification/VerifyNOWMine";
+// import SuccessNOWConfirmation from "@/components/noticeOfWork/applications/verification/SuccessNOWConfirmation";
 import * as Strings from "@/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
 import ReviewNOWApplication from "@/components/noticeOfWork/applications/review/ReviewNOWApplication";
@@ -304,7 +305,8 @@ export class NoticeOfWorkApplication extends Component {
   renderStepOne = () => {
     const mine = this.props.mines ? this.props.mines[this.state.associatedMineGuid] : {};
     return (
-      this.state.isLoaded && (
+      this.state.isLoaded &&
+      ((this.state.isImported && <div>{/* <SuccessNOWConfirmation /> */}</div>) || (
         <VerifyNOWMine
           noticeOfWork={this.props.noticeOfWork}
           isNoWLoaded={this.state.isLoaded}
@@ -314,7 +316,7 @@ export class NoticeOfWorkApplication extends Component {
           currentMine={mine}
           isImported={this.state.isImported}
         />
-      )
+      ))
     );
   };
 
