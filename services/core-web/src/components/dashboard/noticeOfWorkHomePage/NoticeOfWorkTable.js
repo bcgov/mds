@@ -92,6 +92,7 @@ export class NoticeOfWorkTable extends Component {
       nowNum: application.now_number || Strings.EMPTY_FIELD,
       mineGuid: application.mine_guid || Strings.EMPTY_FIELD,
       mineName: application.mine_name || Strings.EMPTY_FIELD,
+      leadInspector: application.lead_inspector_name || Strings.EMPTY_FIELD,
       nowType: application.notice_of_work_type_description || Strings.EMPTY_FIELD,
       status: application.now_application_status_description || Strings.EMPTY_FIELD,
       date: formatDate(application.received_date) || Strings.EMPTY_FIELD,
@@ -180,6 +181,14 @@ export class NoticeOfWorkTable extends Component {
       ...this.filterProperties("NoW Type", "notice_of_work_type_description"),
     },
     {
+      title: "Lead Inspector",
+      dataIndex: "leadInspector",
+      sortField: "lead_inspector_name",
+      render: (text) => <div title="Lead Inspector Name">{text}</div>,
+      sorter: true,
+      ...this.filterProperties("Lead Inspector", "lead_inspector_name"),
+    },
+    {
       title: "Application Status",
       dataIndex: "status",
       sortField: "now_application_status_description",
@@ -220,6 +229,7 @@ export class NoticeOfWorkTable extends Component {
         condition={this.props.isLoaded}
         tableHeaders={getTableHeaders(this.columns())}
       >
+        {console.log(this.props.noticeOfWorkApplications)}
         <Table
           rowClassName="fade-in"
           align="left"
