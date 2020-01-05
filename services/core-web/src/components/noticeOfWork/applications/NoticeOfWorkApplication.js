@@ -111,7 +111,9 @@ export class NoticeOfWorkApplication extends Component {
     let currentStep = 0;
     this.props.fetchNoticeOFWorkActivityTypeOptions();
     this.props.fetchNoticeOFWorkApplicationProgressStatusCodes();
-    this.props.fetchInspectors();
+    if (typeof this.props.fetchInspectors === "function") {
+      this.props.fetchInspectors();
+    }
     this.props.fetchImportedNoticeOfWorkApplication(id).then(({ data }) => {
       const associatedMineGuid = data.mine_guid ? data.mine_guid : "";
       const isImported = data.imported_to_core;
