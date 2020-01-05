@@ -12,8 +12,18 @@ exports[`NoticeOfWorkApplication renders properly 1`] = `
     >
       <div>
         <h1>
-          NoW Number: 
+          NoW Number: 
           N/A
+           
+          <Tag
+            closable={false}
+          >
+            <Icon
+              type="user"
+            />
+             
+            Unassigned
+          </Tag>
         </h1>
       </div>
       <Dropdown
