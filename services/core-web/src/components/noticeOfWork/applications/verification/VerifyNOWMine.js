@@ -15,7 +15,7 @@ const propTypes = {
   fetchMineRecordById: PropTypes.func.isRequired,
   handleProgressChange: PropTypes.func.isRequired,
   fetchMineNameList: PropTypes.func.isRequired,
-  handleSave: PropTypes.func.isRequired,
+  handleConfirmMine: PropTypes.func.isRequired,
   setMineGuid: PropTypes.func.isRequired,
   noticeOfWork: CustomPropTypes.nowApplication.isRequired,
   currentMine: CustomPropTypes.mine.isRequired,
@@ -92,8 +92,8 @@ export class VerifyNOWMine extends Component {
           {this.state.isLoaded && <MineCard mine={this.state.mine} />}
           <div className="right">
             {!this.props.isImported && (
-              <Button type="primary" onClick={() => this.props.handleSave()}>
-                Confirm Details
+              <Button type="primary" onClick={() => this.props.handleConfirmMine()}>
+                Confirm Mine
               </Button>
             )}
             {this.props.isImported && this.props.noticeOfWork.application_progress.length === 0 && (

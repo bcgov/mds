@@ -14,6 +14,7 @@ from app.api.constants import *
 
 from app.api.now_submissions.models.document import Document
 
+
 class NOWApplication(Base, AuditMixin):
     __tablename__ = "now_application"
     _edit_groups = [NOW_APPLICATION_EDIT_GROUP]
@@ -82,8 +83,10 @@ class NOWApplication(Base, AuditMixin):
     submission_documents = db.relationship(
         'Document',
         lazy='selectin',
-        secondary="join(NOWApplication, NOWApplicationIdentity, NOWApplication.now_application_id == NOWApplicationIdentity.now_application_id).join(Application, NOWApplicationIdentity.messageid == Application.messageid)",
-        primaryjoin='and_(NOWApplication.now_application_id==NOWApplicationIdentity.now_application_id, NOWApplicationIdentity.messageid==Application.messageid)',
+        secondary=
+        "join(NOWApplication, NOWApplicationIdentity, NOWApplication.now_application_id == NOWApplicationIdentity.now_application_id).join(Application, NOWApplicationIdentity.messageid == Application.messageid)",
+        primaryjoin=
+        'and_(NOWApplication.now_application_id==NOWApplicationIdentity.now_application_id, NOWApplicationIdentity.messageid==Application.messageid)',
         secondaryjoin='Application.messageid==Document.messageid',
         viewonly=True)
 

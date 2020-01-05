@@ -229,7 +229,6 @@ export class NoticeOfWorkTable extends Component {
         condition={this.props.isLoaded}
         tableHeaders={getTableHeaders(this.columns())}
       >
-        {console.log(this.props.noticeOfWorkApplications)}
         <Table
           rowClassName="fade-in"
           align="left"
