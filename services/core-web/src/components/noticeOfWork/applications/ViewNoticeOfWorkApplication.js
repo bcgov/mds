@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { Button, Icon } from "antd";
+import { Button, Icon, Tag } from "antd";
 import { Link } from "react-router-dom";
 import * as routes from "@/constants/routes";
 import {
@@ -17,6 +17,8 @@ import {
 } from "@/selectors/noticeOfWorkSelectors";
 import { fetchNoticeOFWorkActivityTypeOptions } from "@/actionCreators/staticContentActionCreator";
 import { getMines } from "@/selectors/mineSelectors";
+import { fetchInspectors } from "@/actionCreators/partiesActionCreator";
+import { getInspectorsHash } from "@/selectors/partiesSelectors";
 import CustomPropTypes from "@/customPropTypes";
 import ReviewNOWApplication from "@/components/noticeOfWork/applications/review/ReviewNOWApplication";
 import NOWSideMenu from "@/components/noticeOfWork/applications/NOWSideMenu";
@@ -34,6 +36,8 @@ const propTypes = {
   fetchImportedNoticeOfWorkApplication: PropTypes.func.isRequired,
   fetchOriginalNoticeOfWorkApplication: PropTypes.func.isRequired,
   fetchNoticeOFWorkActivityTypeOptions: PropTypes.func.isRequired,
+  fetchInspectors: PropTypes.func.isRequired,
+  inspectorsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   reclamationSummary: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.strings)).isRequired,
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
   location: PropTypes.shape({
@@ -58,6 +62,7 @@ export class ViewNoticeOfWorkApplication extends Component {
   componentDidMount() {
     const { id } = this.props.match.params;
     this.props.fetchNoticeOFWorkActivityTypeOptions();
+    this.props.fetchInspectors();
     this.props.fetchImportedNoticeOfWorkApplication(id).then(() => {
       this.setState({ isLoaded: true });
     });
@@ -90,7 +95,15 @@ export class ViewNoticeOfWorkApplication extends Component {
           <div className="steps--header fixed-scroll-view">
             <div className="inline-flex between">
               <div>
-                <h1>NoW Number: {this.props.noticeOfWork.now_number || Strings.EMPTY_FIELD}</h1>
+                <h1>
+                  NoW Number:&nbsp;{this.props.noticeOfWork.now_number || Strings.EMPTY_FIELD}&nbsp;
+                  <Tag>
+                    <Icon type="user" />
+                    &nbsp;
+                    {this.props.inspectorsHash[this.props.noticeOfWork.lead_inspector_party_guid] ||
+                      "Unassigned"}
+                  </Tag>
+                </h1>
                 {this.state.noticeOfWorkPageFromRoute && (
                   <Link to={this.state.noticeOfWorkPageFromRoute.route}>
                     <Icon type="arrow-left" style={{ paddingRight: "5px" }} />
@@ -143,6 +156,7 @@ const mapStateToProps = (state) => ({
   noticeOfWork: getNoticeOfWork(state),
   originalNoticeOfWork: getOriginalNoticeOfWork(state),
   mines: getMines(state),
+  inspectorsHash: getInspectorsHash(state),
   reclamationSummary: getNOWReclamationSummary(state),
 });
 
@@ -153,6 +167,7 @@ const mapDispatchToProps = (dispatch) =>
       fetchOriginalNoticeOfWorkApplication,
       fetchMineRecordById,
       fetchNoticeOFWorkActivityTypeOptions,
+      fetchInspectors,
     },
     dispatch
   );
