@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Steps, Button, Dropdown, Menu, Icon } from "antd";
+import { Alert, Steps, Result, Button, Dropdown, Tag, Menu, Icon, Row, Col } from "antd";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { getFormValues, reset } from "redux-form";
@@ -16,6 +16,8 @@ import {
 import { openModal, closeModal } from "@/actions/modalActions";
 import { modalConfig } from "@/components/modalContent/config";
 import { fetchMineRecordById } from "@/actionCreators/mineActionCreator";
+import { fetchInspectors } from "@/actionCreators/partiesActionCreator";
+import { getDropdownInspectors, getInspectorsHash } from "@/selectors/partiesSelectors";
 import {
   getNoticeOfWork,
   getOriginalNoticeOfWork,
@@ -28,7 +30,7 @@ import {
 import { getMines } from "@/selectors/mineSelectors";
 import { getNoticeOfWorkApplicationProgressStatusCodeOptions } from "@/selectors/staticContentSelectors";
 import VerifyNOWMine from "@/components/noticeOfWork/applications/verification/VerifyNOWMine";
-// import SuccessNOWConfirmation from "@/components/noticeOfWork/applications/verification/SuccessNOWConfirmation";
+import VerifyNOWMineConfirmation from "@/components/noticeOfWork/applications/verification/VerifyNOWMineConfirmation";
 import * as Strings from "@/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
 import ReviewNOWApplication from "@/components/noticeOfWork/applications/review/ReviewNOWApplication";
@@ -52,6 +54,7 @@ const propTypes = {
   createNoticeOfWorkApplication: PropTypes.func.isRequired,
   updateNoticeOfWorkApplication: PropTypes.func.isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
+  fetchInspectors: PropTypes.func.isRequired,
   fetchImportedNoticeOfWorkApplication: PropTypes.func.isRequired,
   fetchOriginalNoticeOfWorkApplication: PropTypes.func.isRequired,
   fetchNoticeOFWorkActivityTypeOptions: PropTypes.func.isRequired,
@@ -70,6 +73,8 @@ const propTypes = {
   // eslint-disable-next-line
   formValues: CustomPropTypes.nowApplication.isRequired,
   mines: PropTypes.arrayOf(CustomPropTypes.mine).isRequired,
+  inspectors: CustomPropTypes.groupOptions.isRequired,
+  inspectorsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   applicationProgressStatusCodes: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.strings))
     .isRequired,
   reclamationSummary: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.strings)).isRequired,
@@ -90,6 +95,7 @@ export class NoticeOfWorkApplication extends Component {
     isNoWLoaded: false,
     associatedMineGuid: "",
     associatedMineName: "",
+    associatedLeadInspectorPartyGuid: "",
     isViewMode: true,
     showOriginalValues: false,
     fixedTop: false,
@@ -126,6 +132,7 @@ export class NoticeOfWorkApplication extends Component {
       });
     });
     this.props.fetchOriginalNoticeOfWorkApplication(id);
+    this.props.fetchInspectors();
     this.setState((prevState) => ({
       noticeOfWorkPageFromRoute:
         this.props.location &&
@@ -198,7 +205,13 @@ export class NoticeOfWorkApplication extends Component {
     this.setState({ associatedMineGuid: mineGuid, associatedMineName: mineName });
   };
 
-  handleNOWFormSubmit = () => {
+  setLeadInspectorPartyGuid = (leadInspectorPartyGuid) => {
+    this.setState({
+      associatedLeadInspectorPartyGuid: leadInspectorPartyGuid,
+    });
+  };
+
+  handleSaveNOWEdit = () => {
     const { id } = this.props.match.params;
     this.props
       .updateNoticeOfWorkApplication(
@@ -243,6 +256,38 @@ export class NoticeOfWorkApplication extends Component {
     this.props.closeModal();
   };
 
+  handleUpdateLeadInspector = (finalThen) => {
+    this.props
+      .updateNoticeOfWorkApplication(
+        { lead_inspector_party_guid: this.state.associatedLeadInspectorPartyGuid },
+        this.props.noticeOfWork.now_application_guid,
+        `Successfully assigned ${
+          this.props.inspectorsHash[this.state.associatedLeadInspectorPartyGuid]
+        } as the Lead Inspector`
+      )
+      .then(() => {
+        this.props.fetchImportedNoticeOfWorkApplication(
+          this.props.noticeOfWork.now_application_guid
+        );
+      })
+      .then(() => finalThen());
+  };
+
+  openUpdateLeadInspectorModal = (event) => {
+    event.preventDefault();
+    this.props.openModal({
+      props: {
+        title: "Change Lead Inspector",
+        inspectors: this.props.inspectors,
+        noticeOfWork: this.props.noticeOfWork,
+        setLeadInspectorPartyGuid: this.setLeadInspectorPartyGuid,
+        handleUpdateLeadInspector: (e) => this.handleUpdateLeadInspector(this.props.closeModal, e),
+      },
+      widthSize: "75vw",
+      content: modalConfig.UPDATE_NOW_LEAD_INSPECTOR,
+    });
+  };
+
   openChangeNOWMineModal = (event, noticeOfWork) => {
     event.preventDefault();
     this.props.openModal({
@@ -260,7 +305,7 @@ export class NoticeOfWorkApplication extends Component {
     });
   };
 
-  handleUpdateNOW = () => {
+  handleConfirmMine = () => {
     this.setState({ isLoaded: false });
     this.props
       .createNoticeOfWorkApplication(
@@ -303,20 +348,62 @@ export class NoticeOfWorkApplication extends Component {
   };
 
   renderStepOne = () => {
-    const mine = this.props.mines ? this.props.mines[this.state.associatedMineGuid] : {};
-    return (
-      this.state.isLoaded &&
-      ((this.state.isImported && <div>{/* <SuccessNOWConfirmation /> */}</div>) || (
+    if (!this.state.isLoaded) {
+      return null;
+    }
+
+    if (!this.state.isImported) {
+      const mine = this.props.mines ? this.props.mines[this.state.associatedMineGuid] : {};
+      return (
         <VerifyNOWMine
           noticeOfWork={this.props.noticeOfWork}
           isNoWLoaded={this.state.isLoaded}
-          handleSave={this.handleUpdateNOW}
+          handleConfirmMine={this.handleConfirmMine}
           handleProgressChange={this.handleProgressChange}
           setMineGuid={this.setMineGuid}
           currentMine={mine}
           isImported={this.state.isImported}
         />
-      ))
+      );
+    }
+
+    if (!this.props.noticeOfWork.lead_inspector_party_guid) {
+      return (
+        <VerifyNOWMineConfirmation
+          inspectors={this.props.inspectors}
+          noticeOfWork={this.props.noticeOfWork}
+          setLeadInspectorPartyGuid={this.setLeadInspectorPartyGuid}
+          handleUpdateLeadInspector={(e) =>
+            this.handleUpdateLeadInspector(() => this.handleProgressChange("REV"), e)
+          }
+        />
+      );
+    }
+
+    return (
+      <Result
+        status="success"
+        title="All Done!"
+        subTitle="You've already completed the Verification step."
+        extra={[
+          <Row>
+            <Col
+              lg={{ span: 8, offset: 8 }}
+              md={{ span: 10, offset: 7 }}
+              sm={{ span: 12, offset: 6 }}
+            >
+              <Alert
+                message="Need to change something?"
+                description="You can transfer the Notice of Work to a different mine or change its Lead Inspector by using the Actions dropdown menu above."
+                type="info"
+                showIcon
+                closable
+                banner
+              />
+            </Col>
+          </Row>,
+        ]}
+      />
     );
   };
 
@@ -395,14 +482,30 @@ export class NoticeOfWorkApplication extends Component {
             </button>
           </div>
         )}
-        {this.state.isImported && !this.state.isDecision && (
-          <div className="custom-menu-item">
-            <button
-              type="button"
-              onClick={() => this.handleProgressChange(this.state.buttonValue)}
-            >{`Ready for ${this.state.buttonLabel}`}</button>
-          </div>
-        )}
+        {this.state.isImported &&
+          this.props.noticeOfWork.lead_inspector_party_guid &&
+          !this.state.isDecision && (
+            <div className="custom-menu-item">
+              <button
+                type="button"
+                onClick={(event) =>
+                  this.openUpdateLeadInspectorModal(event, this.props.noticeOfWork)
+                }
+              >
+                Change the Lead Inspector
+              </button>
+            </div>
+          )}
+        {this.state.isImported &&
+          this.props.noticeOfWork.lead_inspector_party_guid &&
+          !this.state.isDecision && (
+            <div className="custom-menu-item">
+              <button
+                type="button"
+                onClick={() => this.handleProgressChange(this.state.buttonValue)}
+              >{`Ready for ${this.state.buttonLabel}`}</button>
+            </div>
+          )}
       </Menu>
     );
 
@@ -411,7 +514,15 @@ export class NoticeOfWorkApplication extends Component {
         <div className={this.state.fixedTop ? "steps--header fixed-scroll" : "steps--header"}>
           <div className="inline-flex between">
             <div>
-              <h1>NoW Number: {this.props.noticeOfWork.now_number || Strings.EMPTY_FIELD}</h1>
+              <h1>
+                NoW Number:&nbsp;{this.props.noticeOfWork.now_number || Strings.EMPTY_FIELD}&nbsp;
+                <Tag>
+                  <Icon type="user" />
+                  &nbsp;
+                  {this.props.inspectorsHash[this.props.noticeOfWork.lead_inspector_party_guid] ||
+                    "Unassigned"}
+                </Tag>
+              </h1>
               {this.state.noticeOfWorkPageFromRoute && (
                 <Link to={this.state.noticeOfWorkPageFromRoute.route}>
                   <Icon type="arrow-left" style={{ paddingRight: "5px" }} />
@@ -458,7 +569,7 @@ export class NoticeOfWorkApplication extends Component {
               <Button type="secondary" className="full-mobile" onClick={this.handleCancelNOWEdit}>
                 Cancel
               </Button>
-              <Button type="primary" className="full-mobile" onClick={this.handleNOWFormSubmit}>
+              <Button type="primary" className="full-mobile" onClick={this.handleSaveNOWEdit}>
                 Save
               </Button>
             </div>
@@ -495,6 +606,8 @@ const mapStateToProps = (state) => ({
   originalNoticeOfWork: getOriginalNoticeOfWork(state),
   formValues: getFormValues(FORM.EDIT_NOTICE_OF_WORK)(state),
   mines: getMines(state),
+  inspectors: getDropdownInspectors(state),
+  inspectorsHash: getInspectorsHash(state),
   reclamationSummary: getNOWReclamationSummary(state),
   applicationProgressStatusCodes: getNoticeOfWorkApplicationProgressStatusCodeOptions(state),
 });
@@ -507,6 +620,7 @@ const mapDispatchToProps = (dispatch) =>
       fetchImportedNoticeOfWorkApplication,
       fetchOriginalNoticeOfWorkApplication,
       fetchMineRecordById,
+      fetchInspectors,
       fetchNoticeOFWorkActivityTypeOptions,
       createNoticeOfWorkApplicationProgress,
       fetchNoticeOFWorkApplicationProgressStatusCodes,
