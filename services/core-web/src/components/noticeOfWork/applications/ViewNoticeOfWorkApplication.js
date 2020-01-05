@@ -2,8 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { Button, Icon, Tag } from "antd";
-import { Link } from "react-router-dom";
+import { Button } from "antd";
 import * as routes from "@/constants/routes";
 import {
   fetchImportedNoticeOfWorkApplication,
@@ -22,8 +21,8 @@ import { getInspectorsHash } from "@/selectors/partiesSelectors";
 import CustomPropTypes from "@/customPropTypes";
 import ReviewNOWApplication from "@/components/noticeOfWork/applications/review/ReviewNOWApplication";
 import NOWSideMenu from "@/components/noticeOfWork/applications/NOWSideMenu";
+import NoticeOfWorkPageHeader from "@/components/noticeOfWork/applications/NoticeOfWorkPageHeader";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
-import * as Strings from "@/constants/strings";
 import { downloadNowDocument } from "@/utils/actionlessNetworkCalls";
 
 /**
@@ -94,23 +93,11 @@ export class ViewNoticeOfWorkApplication extends Component {
         <LoadingWrapper condition={this.state.isLoaded}>
           <div className="steps--header fixed-scroll-view">
             <div className="inline-flex between">
-              <div>
-                <h1>
-                  NoW Number:&nbsp;{this.props.noticeOfWork.now_number || Strings.EMPTY_FIELD}&nbsp;
-                  <Tag>
-                    <Icon type="user" />
-                    &nbsp;
-                    {this.props.inspectorsHash[this.props.noticeOfWork.lead_inspector_party_guid] ||
-                      "Unassigned"}
-                  </Tag>
-                </h1>
-                {this.state.noticeOfWorkPageFromRoute && (
-                  <Link to={this.state.noticeOfWorkPageFromRoute.route}>
-                    <Icon type="arrow-left" style={{ paddingRight: "5px" }} />
-                    Back to: {this.state.noticeOfWorkPageFromRoute.title}
-                  </Link>
-                )}
-              </div>
+              <NoticeOfWorkPageHeader
+                noticeOfWork={this.props.noticeOfWork}
+                inspectorsHash={this.props.inspectorsHash}
+                noticeOfWorkPageFromRoute={this.state.noticeOfWorkPageFromRoute}
+              />
               {this.state.isLoaded &&
                 this.props.noticeOfWork.submission_documents.filter(
                   (x) => x.filename === "ApplicationForm.pdf"

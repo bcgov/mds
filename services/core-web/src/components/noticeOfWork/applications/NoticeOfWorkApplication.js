@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import { Alert, Steps, Result, Button, Dropdown, Tag, Menu, Icon, Row, Col } from "antd";
-import { Link } from "react-router-dom";
+import { Alert, Steps, Result, Button, Dropdown, Menu, Icon, Row, Col } from "antd";
 import PropTypes from "prop-types";
 import { getFormValues, reset } from "redux-form";
 import { bindActionCreators } from "redux";
@@ -31,11 +30,11 @@ import { getMines } from "@/selectors/mineSelectors";
 import { getNoticeOfWorkApplicationProgressStatusCodeOptions } from "@/selectors/staticContentSelectors";
 import VerifyNOWMine from "@/components/noticeOfWork/applications/verification/VerifyNOWMine";
 import VerifyNOWMineConfirmation from "@/components/noticeOfWork/applications/verification/VerifyNOWMineConfirmation";
-import * as Strings from "@/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
 import ReviewNOWApplication from "@/components/noticeOfWork/applications/review/ReviewNOWApplication";
 import NullScreen from "@/components/common/NullScreen";
 import NOWSideMenu from "@/components/noticeOfWork/applications/NOWSideMenu";
+import NoticeOfWorkPageHeader from "@/components/noticeOfWork/applications/NoticeOfWorkPageHeader";
 import * as FORM from "@/constants/forms";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
 import { downloadNowDocument } from "@/utils/actionlessNetworkCalls";
@@ -515,24 +514,11 @@ export class NoticeOfWorkApplication extends Component {
       <div className="page" onScroll={this.handleScroll()} onLoad={this.handleScroll()}>
         <div className={this.state.fixedTop ? "steps--header fixed-scroll" : "steps--header"}>
           <div className="inline-flex between">
-            <div>
-              <h1>
-                NoW Number:&nbsp;{this.props.noticeOfWork.now_number || Strings.EMPTY_FIELD}&nbsp;
-                <Tag>
-                  <Icon type="user" />
-                  &nbsp;
-                  {this.props.noticeOfWork.lead_inspector_party_guid
-                    ? this.props.inspectorsHash[this.props.noticeOfWork.lead_inspector_party_guid]
-                    : "Unassigned"}
-                </Tag>
-              </h1>
-              {this.state.noticeOfWorkPageFromRoute && (
-                <Link to={this.state.noticeOfWorkPageFromRoute.route}>
-                  <Icon type="arrow-left" style={{ paddingRight: "5px" }} />
-                  Back to: {this.state.noticeOfWorkPageFromRoute.title}
-                </Link>
-              )}
-            </div>
+            <NoticeOfWorkPageHeader
+              noticeOfWork={this.props.noticeOfWork}
+              inspectorsHash={this.props.inspectorsHash}
+              noticeOfWorkPageFromRoute={this.state.noticeOfWorkPageFromRoute}
+            />
             {this.state.isViewMode && (
               <Dropdown
                 overlay={menu}

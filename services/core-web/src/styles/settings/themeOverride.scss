@@ -175,7 +175,15 @@
 .ant-tag {
   @extend p;
   padding: 0 7px !important;
+  margin-right: 8px !important;
+  line-height: 1.5 !important;
 }
+
+// RESULTS
+
+// .ant-result-success .ant-result-icon > .anticon {
+//    color: $primary-color;
+// }
 
 // FORMS
 .ant-form-vertical .ant-form-item {
