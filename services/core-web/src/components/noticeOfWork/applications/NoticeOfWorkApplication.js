@@ -111,6 +111,7 @@ export class NoticeOfWorkApplication extends Component {
     let currentStep = 0;
     this.props.fetchNoticeOFWorkActivityTypeOptions();
     this.props.fetchNoticeOFWorkApplicationProgressStatusCodes();
+    this.props.fetchInspectors();
     this.props.fetchImportedNoticeOfWorkApplication(id).then(({ data }) => {
       const associatedMineGuid = data.mine_guid ? data.mine_guid : "";
       const isImported = data.imported_to_core;
@@ -132,7 +133,6 @@ export class NoticeOfWorkApplication extends Component {
       });
     });
     this.props.fetchOriginalNoticeOfWorkApplication(id);
-    this.props.fetchInspectors();
     this.setState((prevState) => ({
       noticeOfWorkPageFromRoute:
         this.props.location &&
@@ -519,8 +519,9 @@ export class NoticeOfWorkApplication extends Component {
                 <Tag>
                   <Icon type="user" />
                   &nbsp;
-                  {this.props.inspectorsHash[this.props.noticeOfWork.lead_inspector_party_guid] ||
-                    "Unassigned"}
+                  {this.props.noticeOfWork.lead_inspector_party_guid
+                    ? this.props.inspectorsHash[this.props.noticeOfWork.lead_inspector_party_guid]
+                    : "Unassigned"}
                 </Tag>
               </h1>
               {this.state.noticeOfWorkPageFromRoute && (
@@ -620,13 +621,13 @@ const mapDispatchToProps = (dispatch) =>
       fetchImportedNoticeOfWorkApplication,
       fetchOriginalNoticeOfWorkApplication,
       fetchMineRecordById,
-      fetchInspectors,
       fetchNoticeOFWorkActivityTypeOptions,
       createNoticeOfWorkApplicationProgress,
       fetchNoticeOFWorkApplicationProgressStatusCodes,
       reset,
       openModal,
       closeModal,
+      fetchInspectors,
     },
     dispatch
   );
