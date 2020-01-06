@@ -14,6 +14,7 @@ from app.api.constants import *
 
 from app.api.now_submissions.models.document import Document
 
+
 class NOWApplication(Base, AuditMixin):
     __tablename__ = "now_application"
     _edit_groups = [NOW_APPLICATION_EDIT_GROUP]
@@ -53,6 +54,8 @@ class NOWApplication(Base, AuditMixin):
     first_aid_equipment_on_site = db.Column(db.String)
     first_aid_cert_level = db.Column(db.String)
 
+    reviews = db.relationship('NOWApplicationReview', lazy='select', backref='now_application')
+
     blasting_operation = db.relationship('BlastingOperation', lazy='joined', uselist=False)
     state_of_land = db.relationship('StateOfLand', lazy='joined', uselist=False)
 
@@ -78,8 +81,10 @@ class NOWApplication(Base, AuditMixin):
     submission_documents = db.relationship(
         'Document',
         lazy='selectin',
-        secondary="join(NOWApplication, NOWApplicationIdentity, NOWApplication.now_application_id == NOWApplicationIdentity.now_application_id).join(Application, NOWApplicationIdentity.messageid == Application.messageid)",
-        primaryjoin='and_(NOWApplication.now_application_id==NOWApplicationIdentity.now_application_id, NOWApplicationIdentity.messageid==Application.messageid)',
+        secondary=
+        "join(NOWApplication, NOWApplicationIdentity, NOWApplication.now_application_id == NOWApplicationIdentity.now_application_id).join(Application, NOWApplicationIdentity.messageid == Application.messageid)",
+        primaryjoin=
+        'and_(NOWApplication.now_application_id==NOWApplicationIdentity.now_application_id, NOWApplicationIdentity.messageid==Application.messageid)',
         secondaryjoin='Application.messageid==Document.messageid',
         viewonly=True)
 
@@ -88,15 +93,6 @@ class NOWApplication(Base, AuditMixin):
 
     def __repr__(self):
         return '<NOWApplication %r>' % self.now_application_guid
-
-    @classmethod
-    def find_by_application_guid(cls, guid):
-        cls.validate_guid(guid)
-        now_application_id = NOWApplicationIdentity.query.filter_by(
-            now_application_guid=guid).first().now_application_id
-        if not now_application_id:
-            raise NotFound('Could not find an application for this id')
-        return cls.query.filter_by(now_application_id=now_application_id).first()
 
     @classmethod
     def find_by_application_id(cls, now_application_id):
