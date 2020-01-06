@@ -26,6 +26,7 @@ import {
   fetchNoticeOFWorkApplicationProgressStatusCodes,
   fetchRegionOptions,
   fetchNoticeOFWorkApplicationStatusOptions,
+  fetchNoticeOFWorkUndergroundExplorationTypeOptions,
   fetchNoticeOFWorkApplicationTypeOptions,
   fetchNoticeOFWorkApplicationPermitTypes,
 } from "@/actionCreators/staticContentActionCreator";
@@ -60,6 +61,7 @@ const propTypes = {
   fetchNoticeOFWorkApplicationPermitTypes: PropTypes.func.isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
   fetchImportedNoticeOfWorkApplication: PropTypes.func.isRequired,
+  fetchNoticeOFWorkUndergroundExplorationTypeOptions: PropTypes.func.isRequired,
   fetchOriginalNoticeOfWorkApplication: PropTypes.func.isRequired,
   fetchNoticeOFWorkActivityTypeOptions: PropTypes.func.isRequired,
   fetchNoticeOFWorkApplicationStatusOptions: PropTypes.func.isRequired,
@@ -123,6 +125,7 @@ export class NoticeOfWorkApplication extends Component {
     this.props.fetchNoticeOFWorkApplicationPermitTypes();
     this.props.fetchNoticeOFWorkApplicationProgressStatusCodes();
     this.props.fetchNoticeOFWorkApplicationTypeOptions();
+    this.props.fetchNoticeOFWorkUndergroundExplorationTypeOptions();
     this.props.fetchImportedNoticeOfWorkApplication(id).then(({ data }) => {
       const associatedMineGuid = data.mine_guid ? data.mine_guid : "";
       const isImported = data.imported_to_core;
@@ -525,6 +528,7 @@ const mapDispatchToProps = (dispatch) =>
       reset,
       fetchRegionOptions,
       fetchNoticeOFWorkApplicationTypeOptions,
+      fetchNoticeOFWorkUndergroundExplorationTypeOptions,
       fetchNoticeOFWorkApplicationPermitTypes,
       openModal,
       closeModal,

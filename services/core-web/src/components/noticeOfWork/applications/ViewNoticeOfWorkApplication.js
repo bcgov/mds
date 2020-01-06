@@ -19,6 +19,7 @@ import {
   fetchNoticeOFWorkActivityTypeOptions,
   fetchNoticeOFWorkApplicationStatusOptions,
   fetchNoticeOFWorkApplicationTypeOptions,
+  fetchNoticeOFWorkUndergroundExplorationTypeOptions,
   fetchNoticeOFWorkApplicationPermitTypes,
   fetchRegionOptions,
 } from "@/actionCreators/staticContentActionCreator";
@@ -40,6 +41,7 @@ const propTypes = {
   fetchImportedNoticeOfWorkApplication: PropTypes.func.isRequired,
   fetchOriginalNoticeOfWorkApplication: PropTypes.func.isRequired,
   fetchNoticeOFWorkActivityTypeOptions: PropTypes.func.isRequired,
+  fetchNoticeOFWorkUndergroundExplorationTypeOptions: PropTypes.func.isRequired,
   fetchRegionOptions: PropTypes.func.isRequired,
   fetchNoticeOFWorkApplicationStatusOptions: PropTypes.func.isRequired,
   fetchNoticeOFWorkApplicationTypeOptions: PropTypes.func.isRequired,
@@ -70,6 +72,7 @@ export class ViewNoticeOfWorkApplication extends Component {
     this.props.fetchNoticeOFWorkApplicationStatusOptions();
     this.props.fetchNoticeOFWorkApplicationTypeOptions();
     this.props.fetchNoticeOFWorkApplicationPermitTypes();
+    this.props.fetchNoticeOFWorkUndergroundExplorationTypeOptions();
     this.props.fetchNoticeOFWorkActivityTypeOptions();
     this.props.fetchRegionOptions();
     this.props.fetchImportedNoticeOfWorkApplication(id).then(() => {
@@ -166,6 +169,7 @@ const mapDispatchToProps = (dispatch) =>
       fetchNoticeOFWorkApplicationStatusOptions,
       fetchRegionOptions,
       fetchNoticeOFWorkApplicationTypeOptions,
+      fetchNoticeOFWorkUndergroundExplorationTypeOptions,
       fetchNoticeOFWorkApplicationPermitTypes,
       fetchImportedNoticeOfWorkApplication,
       fetchOriginalNoticeOfWorkApplication,

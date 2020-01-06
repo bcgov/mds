@@ -320,6 +320,37 @@ input {
   }
 }
 
-.ant-select-selection-selected-value {
-  color: rgba(0, 0, 0, 0.65);
+// .ant-select-selection-selected-value,
+// select {
+//   color: rgba(0, 0, 0, 0.65);
+// }
+.ant-.ant-select-selection,
+select {
+  display: block;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  background-color: #fff;
+  border: 1px solid #d9d9d9;
+  border-top-width: 1.02px;
+  border-radius: 4px;
+  outline: none;
+  -webkit-transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+  transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  padding: 4px 11px;
+}
+
+// update HTML select component to look like the ant design select. This block of code changes the default icon
+select {
+  width: inherit;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background: transparent;
+  background-image: url("data:image/svg+xml;utf8,<svg height='0.8em' viewBox='64 64 896 896' width='0.8em' aria-hidden='true' xmlns='http://www.w3.org/2000/svg'><path d='M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z'/><path d='M0 0h24v24H0z' fill='none'/></svg>");
+  background-repeat: no-repeat;
+  background-position-x: 95%;
+  background-position-y: 10px;
 }

@@ -2,8 +2,9 @@ import React from "react";
 import { PropTypes } from "prop-types";
 import { Field, formValueSelector } from "redux-form";
 import { connect } from "react-redux";
-import { Row, Col, Table, Button } from "antd";
+import { Row, Col, Table, Button, Select } from "antd";
 import * as FORM from "@/constants/forms";
+import { getDropdownNoticeOfWorkUndergroundExplorationTypeOptions } from "@/selectors/staticContentSelectors";
 import { TRASHCAN } from "@/constants/assets";
 import RenderField from "@/components/common/RenderField";
 import CustomPropTypes from "@/customPropTypes";
@@ -18,6 +19,7 @@ const propTypes = {
 const defaultProps = {};
 
 export const UndergroundExploration = (props) => {
+  console.log(props);
   const editActivity = (event, rowIndex, isDelete) => {
     const activityToChange = props.details[rowIndex];
     let removeOnly = false;
@@ -59,15 +61,24 @@ export const UndergroundExploration = (props) => {
       key: "activity_type_description",
       render: (text, record) => (
         <div title="Activity">
-          <div className="inline-flex">
-            <input
+          <select
+            style={{ width: "150px" }}
+            name="activity_type_description"
+            value={text}
+            disabled={props.isViewMode}
+            onChange={(e) => editActivity(e, record.index, false)}
+          >
+            {props.undergroundExplorationTypeOptions.map((type) => (
+              <option value={type.value}>{type.label}</option>
+            ))}
+          </select>
+          {/* <input
               name="activity_type_description"
               type="text"
               disabled={props.isViewMode}
               value={text}
               onChange={(e) => editActivity(e, record.index, false)}
-            />
-          </div>
+            /> */}
         </div>
       ),
     },
@@ -308,6 +319,9 @@ UndergroundExploration.defaultProps = defaultProps;
 export default connect(
   (state) => ({
     details: selector(state, "underground_exploration.details"),
+    undergroundExplorationTypeOptions: getDropdownNoticeOfWorkUndergroundExplorationTypeOptions(
+      state
+    ),
   }),
   null
 )(UndergroundExploration);
