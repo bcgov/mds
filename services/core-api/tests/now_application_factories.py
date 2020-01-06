@@ -11,8 +11,6 @@ from tests.factories import *
 from app.api.now_applications import models as app_models
 from app.api.now_submissions import models as sub_models
 
-SEQUENCE = factory.Sequence(lambda n: n)
-
 
 class BlastingOperationFactory(BaseFactory):
     class Meta:
@@ -57,7 +55,6 @@ class ActivitySummaryBaseFactory(BaseFactory):
         now_application = factory.SubFactory('tests.factories.NOWApplicationFactory')
 
     now_application_id = factory.SelfAttribute('now_application.now_application_id')
-    activity_summary_id = SEQUENCE
 
     reclamation_description = factory.Faker('sentence', nb_words=40, variable_nb_words=True)
     reclamation_cost = factory.Faker('pydecimal', right_digits=2, positive=True, max_value=500000)
@@ -370,8 +367,6 @@ class NOWApplicationReviewFactory(BaseFactory):
 class NOWApplicationFactory(BaseFactory):
     class Meta:
         model = app_models.NOWApplication
-
-    now_application_id = factory.Sequence(lambda n: n)
 
     now_tracking_number = factory.fuzzy.FuzzyInteger(1, 100)
     notice_of_work_type_code = factory.LazyFunction(RandomNOWTypeCode)
