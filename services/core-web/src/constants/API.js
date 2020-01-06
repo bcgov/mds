@@ -170,6 +170,7 @@ export const NOTICE_OF_WORK_APPLICATION_PROGRESS = (applicationGuid) =>
   `/now-applications/${applicationGuid}/progress`;
 export const NOW_APPLICATION_PROGRESS_STATUS_CODES =
   "/now-applications/application-progress-status-codes";
+export const NOW_APPLICATION_PERMIT_TYPES = "/now-applications/application-permit-types";
 
 // Mine Party Appointments
 export const MINE_PARTY_APPOINTMENT_DOCUMENTS = (mineGuid, minePartyAppointmentGuid) =>
