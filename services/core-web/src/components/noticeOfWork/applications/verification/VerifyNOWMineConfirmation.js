@@ -1,6 +1,6 @@
 import React from "react";
 import { bindActionCreators } from "redux";
-import { Button, Result, Col, Row } from "antd";
+import { Button, Icon, Result, Col, Row } from "antd";
 import { connect } from "react-redux";
 import { getFormValues } from "redux-form";
 import PropTypes from "prop-types";
@@ -28,7 +28,7 @@ const VerifyNOWMineConfirmation = (props) => {
       <Row>
         <Col lg={{ span: 12, offset: 6 }} md={{ span: 16, offset: 4 }} xs={{ span: 20, offset: 2 }}>
           <Result
-            type="info"
+            icon={<Icon type="like" />}
             title="You're almost done..."
             subTitle="Please assign a Lead Inspector to continue to Technical Review."
             extra={[
