@@ -3,7 +3,7 @@ import { STATIC_CONTENT } from "@/constants/reducerTypes";
 
 /**
  * @file staticContentReducer.js
- * all data associated with static content to populate form inputs is handled witnin this reducer.
+ * all data associated with static content to populate form inputs is handled within this reducer.
  */
 
 const initialState = {
@@ -30,6 +30,7 @@ const initialState = {
   noticeOfWorkApplicationDocumentTypeOptions: [],
   noticeOfWorkUndergroundExplorationTypeOptions: [],
   noticeOfWorkApplicationProgressStatusCodeOptions: [],
+  noticeOfWorkApplicationPermitTypeOptions: [],
 };
 
 const staticContentReducer = (state = initialState, action) => {
@@ -154,6 +155,11 @@ const staticContentReducer = (state = initialState, action) => {
         ...state,
         noticeOfWorkApplicationProgressStatusCodeOptions: action.payload.records,
       };
+    case actionTypes.STORE_NOW_APPLICATION_PERMIT_TYPES:
+      return {
+        ...state,
+        noticeOfWorkApplicationPermitTypeOptions: action.payload.records,
+      };
     default:
       return state;
   }
@@ -197,5 +203,7 @@ export const getNoticeOfWorkUndergroundExplorationTypeOptions = (state) =>
   state[STATIC_CONTENT].noticeOfWorkUndergroundExplorationTypeOptions;
 export const getNoticeOfWorkApplicationProgressStatusCodeOptions = (state) =>
   state[STATIC_CONTENT].noticeOfWorkApplicationProgressStatusCodeOptions;
+export const getNoticeOfWorkApplicationPermitTypeOptions = (state) =>
+  state[STATIC_CONTENT].noticeOfWorkApplicationPermitTypeOptions;
 
 export default staticContentReducer;
