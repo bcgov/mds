@@ -32,12 +32,12 @@ CREATE TABLE IF NOT EXISTS now_application_review (
 
 CREATE TABLE IF NOT EXISTS now_application_review_document_xref(
   now_application_review_id integer NOT NULL,
-  mine_document_id integer NOT NULL, 
-  PRIMARY KEY(now_application_review_id, mine_document_id),
+  mine_document_guid uuid NOT NULL, 
+  PRIMARY KEY(now_application_review_id, mine_document_guid),
   
   FOREIGN KEY (now_application_review_id) REFERENCES now_application_review(now_application_review_id) DEFERRABLE INITIALLY DEFERRED,
-  FOREIGN KEY (mine_document_id) REFERENCES mine_document(mine_document_id) DEFERRABLE INITIALLY DEFERRED
-)
+  FOREIGN KEY (mine_document_guid) REFERENCES mine_document(mine_document_guid) DEFERRABLE INITIALLY DEFERRED
+);
 
 
 ALTER TABLE now_application_review OWNER TO mds;

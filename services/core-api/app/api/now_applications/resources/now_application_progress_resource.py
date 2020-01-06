@@ -18,7 +18,7 @@ class NOWApplicationProgressResource(Resource, UserMixin):
         'Track progress of a Notice of Work application as it moves through its stages, track who progressed the application and when.'
     )
     @requires_role_edit_permit
-    @api.marshal_with(NOW_APPLICATION_PROGRESS, code=200)
+    @api.marshal_with(NOW_APPLICATION_PROGRESS, code=201)
     def post(self, application_guid):
         data = self.parser.parse_args()
         application_progress_status_code = data.get('application_progress_status_code')
@@ -36,4 +36,4 @@ class NOWApplicationProgressResource(Resource, UserMixin):
         except Exception as e:
             raise InternalServerError(f'Error when saving: {e}')
 
-        return now_progress
+        return now_progress, 201

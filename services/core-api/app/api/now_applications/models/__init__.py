@@ -7,7 +7,8 @@ from .now_application_type import NOWApplicationType
 from .now_application_status import NOWApplicationStatus
 from .now_application_permit_type import NOWApplicationPermitType
 from .now_application_document_type import NOWApplicationDocumentType
-from .now_application_document_xref import NOWApplicationDocumentXref
+from .now_application_review import NOWApplicationReview, NOWApplicationReviewDocumentXref
+
 from .blasting_operation import BlastingOperation
 from .unit_type import UnitType
 from .state_of_land import StateOfLand
