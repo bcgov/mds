@@ -27,10 +27,6 @@ class NoticeOfWorkView(Base):
     notice_of_work_type_description = db.Column(db.String)
     now_application_status_description = db.Column(db.String)
 
-    #now_application_identity = db.relationship('NOWApplicationIdentity', lazy='joined')
-    #now_application = db.relationship('NOWApplication', lazy='joined')
-    #now_application_status_code = association_proxy('now_application',
-    #                                                'now_application_status_code')
     received_date = db.Column(db.Date)
     originating_system = db.Column(db.String)
 
