@@ -4,7 +4,7 @@ DROP VIEW notice_of_work_view;
 CREATE OR REPLACE VIEW notice_of_work_view
 	AS
 SELECT nid.now_application_guid,
-m.mine_guid, 
+m.mine_guid,
 m.mine_no,
 nid.now_number,
 app.lead_inspector_party_guid,
