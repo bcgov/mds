@@ -286,12 +286,11 @@ export class NoticeOfWorkApplication extends Component {
         this.props.noticeOfWork.now_application_guid
       )
       .then(() => {
-        this.setState({ isImported: true });
         return this.props
           .fetchImportedNoticeOfWorkApplication(this.props.noticeOfWork.now_application_guid)
-          .then(() => {
+          .then(({ data }) => {
             this.props.fetchMineRecordById(this.state.associatedMineGuid);
-            this.setState({ isNoWLoaded: true, isLoaded: true });
+            this.setState({ isNoWLoaded: true, isLoaded: true, isImported: data.imported_to_core });
           });
       });
   };
@@ -306,9 +305,9 @@ export class NoticeOfWorkApplication extends Component {
       .then(() => {
         return this.props
           .fetchImportedNoticeOfWorkApplication(this.props.noticeOfWork.now_application_guid)
-          .then(() => {
+          .then(({ data }) => {
             this.props.fetchMineRecordById(this.state.associatedMineGuid);
-            this.setState({ isNoWLoaded: true, isLoaded: true });
+            this.setState({ isNoWLoaded: true, isLoaded: true, isImported: data.imported_to_core });
           });
       });
 
@@ -436,19 +435,26 @@ export class NoticeOfWorkApplication extends Component {
                 </Link>
               )}
             </div>
-            {this.state.isViewMode && (
-              <Dropdown
-                overlay={menu}
-                placement="bottomLeft"
-                onVisibleChange={this.handleVisibleChange}
-                visible={this.state.menuVisible}
-              >
-                <Button type="secondary">
-                  Actions
-                  <Icon type="down" />
-                </Button>
-              </Dropdown>
-            )}
+            <div>
+              <span>Current Mine:&nbsp;</span>
+              <Link to={routes.MINE_SUMMARY.dynamicRoute(this.props.noticeOfWork.mine_guid)}>
+                {this.props.noticeOfWork.mine_name}
+              </Link>
+              <br />
+              {this.state.isViewMode && (
+                <Dropdown
+                  overlay={menu}
+                  placement="bottomLeft"
+                  onVisibleChange={this.handleVisibleChange}
+                  visible={this.state.menuVisible}
+                >
+                  <Button type="secondary" style={{ float: "right" }}>
+                    Actions
+                    <Icon type="down" />
+                  </Button>
+                </Dropdown>
+              )}
+            </div>
           </div>
           <br />
           {this.state.isViewMode ? (
