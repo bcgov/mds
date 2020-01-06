@@ -78,11 +78,6 @@ class NoticeOfWorkListResource(Resource, UserMixin):
         filters = []
         base_query = NoticeOfWorkView.query
 
-        print("**************************", file=sys.stderr)
-        print(sort_field, file=sys.stderr)
-        print(sort_dir, file=sys.stderr)
-        #print(now_application_status_description, file=sys.stderr)
-
         if submissions_only:
             filters.append(NoticeOfWorkView.originating_system != None)
 
@@ -121,14 +116,6 @@ class NoticeOfWorkListResource(Resource, UserMixin):
                     now_application_status_description))
 
         base_query = base_query.filter(*filters)
-
-        # if sort_field and sort_dir:
-        #     sort_criteria = [{
-        #         'model': 'NoticeOfWorkView',
-        #         'field': sort_field,
-        #         'direction': sort_dir
-        #     }]
-        #     base_query = apply_sort(base_query, sort_criteria)
 
         if sort_field and sort_dir:
             sort_criteria = None
