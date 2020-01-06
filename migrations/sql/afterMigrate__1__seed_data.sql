@@ -583,3 +583,15 @@ VALUES
     ('OYP', 'One Year Permit', 'system-mds', 'system-mds'),
     ('MYP', 'Multi-Year Permit', 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
+
+INSERT INTO now_application_review_type_code(
+    now_application_review_type_code,
+    description,
+    create_user,
+    update_user
+    )
+VALUES
+    ('REF', 'Referal', 'system-mds', 'system-mds'),
+    ('FNC', 'First Nations Consulation', 'system-mds', 'system-mds'),
+    ('PUB', 'Public Consultation', 'system-mds', 'system-mds')
+ON CONFLICT DO NOTHING;

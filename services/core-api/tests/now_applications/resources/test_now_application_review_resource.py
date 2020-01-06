@@ -21,3 +21,14 @@ class TestPostApplicationReviewResource:
         post_data = json.loads(post_resp.data.decode())
         assert post_data['now_application_review_type_code'] == test_progress_data[
             'now_application_review_type_code']
+
+    def test_get_now_application_review_success(self, test_client, db_session, auth_headers):
+        now_application = NOWApplicationFactory()
+        now_application_identity = NOWApplicationIdentityFactory(now_application=now_application)
+
+        post_resp = test_client.get(
+            f'/now-applications/{now_application_identity.now_application_guid}/review',
+            headers=auth_headers['full_auth_header'])
+        assert post_resp.status_code == 200, post_resp.response
+        post_data = json.loads(post_resp.data.decode())
+        assert len(post_data['records']) > 0

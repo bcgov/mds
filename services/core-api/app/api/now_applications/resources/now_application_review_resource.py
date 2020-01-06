@@ -2,7 +2,7 @@ from flask import current_app
 from flask_restplus import Resource, reqparse, fields, inputs
 
 from app.extensions import api
-from app.api.utils.access_decorators import requires_role_edit_permit
+from app.api.utils.access_decorators import requires_role_edit_permit, requires_role_view_all
 from werkzeug.exceptions import BadRequest, NotFound, InternalServerError
 
 from app.api.utils.resources_mixins import UserMixin
@@ -13,7 +13,7 @@ from app.api.now_applications.models.now_application_identity import NOWApplicat
 from app.api.now_applications.response_models import NOW_APPLICATION_REVIEW_MDOEL
 
 
-class NOWApplicationReviewResource(Resource, UserMixin):
+class NOWApplicationReviewListResource(Resource, UserMixin):
     parser = CustomReqparser()
     parser.add_argument(
         'now_application_review_type_code', type=str, help='guid of the mine.', required=True)
@@ -38,3 +38,15 @@ class NOWApplicationReviewResource(Resource, UserMixin):
                                                  data.get('referee_name'))
 
         return new_review, 201
+
+    @api.doc(description='Add new Review to Now Application', params={})
+    @requires_role_view_all
+    @api.marshal_with(NOW_APPLICATION_REVIEW_MDOEL, envelope='records', code=201)
+    def get(self, application_guid):
+        now_application = NOWApplicationIdentity.find_by_guid(application_guid)
+        if not now_application:
+            raise NotFound('No now_application found')
+        if not now_application.now_application_id:
+            raise BadRequest('Now Application not imported, call import endpoint first')
+
+        return now_application.now_application.reviews

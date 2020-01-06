@@ -22,6 +22,7 @@ from app.api.now_applications.models.now_application_type import NOWApplicationT
 from app.api.now_applications.models.now_application_status import NOWApplicationStatus
 from app.api.now_applications.models.unit_type import UnitType
 from app.api.now_applications.models.activity_detail.underground_exploration_type import UndergroundExplorationType
+from app.api.now_applications.models.now_application_review_type import NOWApplicationReviewType
 
 
 def RandomMineRegionCode():
@@ -134,6 +135,13 @@ def RandomNOWTypeCode():
 def RandomNOWStatusCode():
     return random.choice(
         [x.now_application_status_code for x in db.session.query(NOWApplicationStatus).all()])
+
+
+def RandomNOWReviewCode():
+    return random.choice([
+        x.now_application_review_type_code
+        for x in db.session.query(NOWApplicationReviewType).all()
+    ])
 
 
 def RandomUnitTypeCode():
