@@ -13,41 +13,34 @@ const propTypes = {
 };
 
 const NoticeOfWorkPageHeader = (props) => {
-  const getNumber = () => {
-    return props.noticeOfWork.now_number || Strings.EMPTY_FIELD;
-  };
-
-  const getLeadInspectorName = () => {
-    return props.inspectorsHash[props.noticeOfWork.lead_inspector_party_guid] || Strings.UNASSIGNED;
-  };
-
-  const getMineName = () => {
-    return props.noticeOfWork.mine_name || Strings.UNASSIGNED;
-  };
+  const nowNumber = props.noticeOfWork.now_number || Strings.EMPTY_FIELD;
+  const nowLeadInspectorName =
+    props.inspectorsHash[props.noticeOfWork.lead_inspector_party_guid] || Strings.UNASSIGNED;
+  const nowMineName = props.noticeOfWork.mine_name || Strings.UNASSIGNED;
 
   return (
     <div>
       <h1>
-        NoW Number:&nbsp;{getNumber()}
-        <span className="padding-md--left">
-          <Tag title={`Mine: ${getMineName()}`}>
+        NoW Number:&nbsp;{nowNumber}&nbsp;
+        <span>
+          <Tag title={`Mine: ${nowMineName}`}>
             <Link
               style={{ textDecoration: "none" }}
               to={router.MINE_GENERAL.dynamicRoute(props.noticeOfWork.mine_guid)}
               disabled={!props.noticeOfWork.mine_guid}
             >
               <Icon type="environment" className="padding-small--right" />
-              {getMineName()}
+              {nowMineName}
             </Link>
           </Tag>
-          <Tag title={`Lead Inspector: ${getLeadInspectorName()}`}>
+          <Tag title={`Lead Inspector: ${nowLeadInspectorName}`}>
             <Link
               style={{ textDecoration: "none" }}
               to={router.PARTY_PROFILE.dynamicRoute(props.noticeOfWork.lead_inspector_party_guid)}
               disabled={!props.noticeOfWork.lead_inspector_party_guid}
             >
               <Icon type="user" className="padding-small--right" />
-              {getLeadInspectorName()}
+              {nowLeadInspectorName}
             </Link>
           </Tag>
         </span>

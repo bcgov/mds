@@ -124,9 +124,9 @@ export class NoticeOfWorkApplication extends Component {
     this.props.fetchNoticeOFWorkApplicationStatusOptions();
     this.props.fetchNoticeOFWorkApplicationPermitTypes();
     this.props.fetchNoticeOFWorkApplicationProgressStatusCodes();
-    if (typeof this.props.fetchInspectors === "function") {
-      this.props.fetchInspectors();
-    }
+    // doesn't think this is a function
+    // eslint-disable-next-line
+    this.props.fetchInspectors();
     this.props.fetchNoticeOFWorkApplicationTypeOptions();
     this.props.fetchImportedNoticeOfWorkApplication(id).then(({ data }) => {
       const associatedMineGuid = data.mine_guid ? data.mine_guid : "";
