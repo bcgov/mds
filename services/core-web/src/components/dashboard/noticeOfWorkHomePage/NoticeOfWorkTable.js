@@ -23,7 +23,6 @@ const propTypes = {
   searchParams: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
   mineRegionHash: PropTypes.objectOf(PropTypes.string).isRequired,
   mineRegionOptions: CustomPropTypes.options.isRequired,
-  // applicationStatusOptions: CustomPropTypes.options.isRequired,
   isLoaded: PropTypes.bool.isRequired,
   location: PropTypes.shape({
     pathname: PropTypes.string,
@@ -32,8 +31,8 @@ const propTypes = {
 };
 
 const defaultProps = {
-  sortField: undefined,
-  sortDir: undefined,
+  sortField: null,
+  sortDir: null,
   noticeOfWorkApplications: [],
 };
 
@@ -117,7 +116,7 @@ export class NoticeOfWorkTable extends Component {
           </Button>
           <Button
             onClick={() => {
-              this.props.handleSearch({ [field]: undefined });
+              this.props.handleSearch({ [field]: null });
             }}
             size="small"
             style={{ width: 90 }}
