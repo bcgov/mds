@@ -14,7 +14,7 @@ import {
 } from "@/selectors/staticContentSelectors";
 import {
   fetchRegionOptions,
-  fetchNoticeOFWorkApplicationStatusOptions,
+  fetchNoticeOfWorkApplicationStatusOptions,
 } from "@/actionCreators/staticContentActionCreator";
 import NoticeOfWorkTable from "@/components/dashboard/noticeOfWorkHomePage/NoticeOfWorkTable";
 import NoticeOfWorkSearch from "@/components/dashboard/noticeOfWorkHomePage/NoticeOfWorkSearch";
@@ -30,7 +30,7 @@ const propTypes = {
   pageData: CustomPropTypes.pageData.isRequired,
   noticeOfWorkApplications: PropTypes.arrayOf(CustomPropTypes.nowApplication).isRequired,
   fetchRegionOptions: PropTypes.func.isRequired,
-  fetchNoticeOFWorkApplicationStatusOptions: PropTypes.func.isRequired,
+  fetchNoticeOfWorkApplicationStatusOptions: PropTypes.func.isRequired,
   mineRegionHash: PropTypes.objectOf(PropTypes.string).isRequired,
   mineRegionOptions: CustomPropTypes.options.isRequired,
   applicationStatusOptions: CustomPropTypes.options.isRequired,
@@ -58,11 +58,7 @@ export class NoticeOfWorkHomePage extends Component {
 
   componentDidMount() {
     this.props.fetchRegionOptions();
-
-    if (typeof this.props.fetchNoticeOFWorkApplicationStatusOptions === "function") {
-      this.props.fetchNoticeOFWorkApplicationStatusOptions();
-    }
-
+    this.props.fetchNoticeOfWorkApplicationStatusOptions();
     const params = this.props.location.search;
     const parsedParams = queryString.parse(params);
     const {
@@ -195,7 +191,7 @@ const mapDispatchToProps = (dispatch) =>
     {
       fetchNoticeOfWorkApplications,
       fetchRegionOptions,
-      fetchNoticeOFWorkApplicationStatusOptions,
+      fetchNoticeOfWorkApplicationStatusOptions,
     },
     dispatch
   );

@@ -15,10 +15,10 @@ import {
   getNOWReclamationSummary,
 } from "@/selectors/noticeOfWorkSelectors";
 import {
-  fetchNoticeOFWorkActivityTypeOptions,
-  fetchNoticeOFWorkApplicationStatusOptions,
-  fetchNoticeOFWorkApplicationTypeOptions,
-  fetchNoticeOFWorkApplicationPermitTypes,
+  fetchNoticeOfWorkActivityTypeOptions,
+  fetchNoticeOfWorkApplicationStatusOptions,
+  fetchNoticeOfWorkApplicationTypeOptions,
+  fetchNoticeOfWorkApplicationPermitTypes,
   fetchRegionOptions,
 } from "@/actionCreators/staticContentActionCreator";
 import { getMines } from "@/selectors/mineSelectors";
@@ -40,13 +40,13 @@ const propTypes = {
   originalNoticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
   fetchImportedNoticeOfWorkApplication: PropTypes.func.isRequired,
   fetchOriginalNoticeOfWorkApplication: PropTypes.func.isRequired,
-  fetchNoticeOFWorkActivityTypeOptions: PropTypes.func.isRequired,
+  fetchNoticeOfWorkActivityTypeOptions: PropTypes.func.isRequired,
   fetchInspectors: PropTypes.func.isRequired,
   inspectorsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   fetchRegionOptions: PropTypes.func.isRequired,
-  fetchNoticeOFWorkApplicationStatusOptions: PropTypes.func.isRequired,
-  fetchNoticeOFWorkApplicationTypeOptions: PropTypes.func.isRequired,
-  fetchNoticeOFWorkApplicationPermitTypes: PropTypes.func.isRequired,
+  fetchNoticeOfWorkApplicationStatusOptions: PropTypes.func.isRequired,
+  fetchNoticeOfWorkApplicationTypeOptions: PropTypes.func.isRequired,
+  fetchNoticeOfWorkApplicationPermitTypes: PropTypes.func.isRequired,
   reclamationSummary: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.strings)).isRequired,
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
   location: PropTypes.shape({
@@ -70,10 +70,10 @@ export class ViewNoticeOfWorkApplication extends Component {
 
   componentDidMount() {
     const { id } = this.props.match.params;
-    this.props.fetchNoticeOFWorkApplicationStatusOptions();
-    this.props.fetchNoticeOFWorkApplicationTypeOptions();
-    this.props.fetchNoticeOFWorkApplicationPermitTypes();
-    this.props.fetchNoticeOFWorkActivityTypeOptions();
+    this.props.fetchNoticeOfWorkApplicationStatusOptions();
+    this.props.fetchNoticeOfWorkApplicationTypeOptions();
+    this.props.fetchNoticeOfWorkApplicationPermitTypes();
+    this.props.fetchNoticeOfWorkActivityTypeOptions();
     this.props.fetchInspectors();
     this.props.fetchRegionOptions();
     this.props.fetchImportedNoticeOfWorkApplication(id).then(() => {
@@ -164,14 +164,14 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
-      fetchNoticeOFWorkApplicationStatusOptions,
+      fetchNoticeOfWorkApplicationStatusOptions,
       fetchRegionOptions,
-      fetchNoticeOFWorkApplicationTypeOptions,
-      fetchNoticeOFWorkApplicationPermitTypes,
+      fetchNoticeOfWorkApplicationTypeOptions,
+      fetchNoticeOfWorkApplicationPermitTypes,
       fetchImportedNoticeOfWorkApplication,
       fetchOriginalNoticeOfWorkApplication,
       fetchMineRecordById,
-      fetchNoticeOFWorkActivityTypeOptions,
+      fetchNoticeOfWorkActivityTypeOptions,
       fetchInspectors,
     },
     dispatch

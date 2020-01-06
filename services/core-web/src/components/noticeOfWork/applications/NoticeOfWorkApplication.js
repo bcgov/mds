@@ -23,12 +23,12 @@ import {
   getNOWReclamationSummary,
 } from "@/selectors/noticeOfWorkSelectors";
 import {
-  fetchNoticeOFWorkActivityTypeOptions,
-  fetchNoticeOFWorkApplicationProgressStatusCodes,
+  fetchNoticeOfWorkActivityTypeOptions,
+  fetchNoticeOfWorkApplicationProgressStatusCodes,
   fetchRegionOptions,
-  fetchNoticeOFWorkApplicationStatusOptions,
-  fetchNoticeOFWorkApplicationTypeOptions,
-  fetchNoticeOFWorkApplicationPermitTypes,
+  fetchNoticeOfWorkApplicationStatusOptions,
+  fetchNoticeOfWorkApplicationTypeOptions,
+  fetchNoticeOfWorkApplicationPermitTypes,
 } from "@/actionCreators/staticContentActionCreator";
 import { getMines } from "@/selectors/mineSelectors";
 import {
@@ -55,18 +55,18 @@ const { Step } = Steps;
 const propTypes = {
   noticeOfWork: CustomPropTypes.importedNOWApplication,
   originalNoticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
-  fetchNoticeOFWorkApplicationProgressStatusCodes: PropTypes.func.isRequired,
+  fetchNoticeOfWorkApplicationProgressStatusCodes: PropTypes.func.isRequired,
   createNoticeOfWorkApplicationProgress: CustomPropTypes.importedNOWApplication.isRequired,
   createNoticeOfWorkApplication: PropTypes.func.isRequired,
   updateNoticeOfWorkApplication: PropTypes.func.isRequired,
-  fetchNoticeOFWorkApplicationPermitTypes: PropTypes.func.isRequired,
+  fetchNoticeOfWorkApplicationPermitTypes: PropTypes.func.isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
   fetchInspectors: PropTypes.func.isRequired,
   fetchImportedNoticeOfWorkApplication: PropTypes.func.isRequired,
   fetchOriginalNoticeOfWorkApplication: PropTypes.func.isRequired,
-  fetchNoticeOFWorkActivityTypeOptions: PropTypes.func.isRequired,
-  fetchNoticeOFWorkApplicationStatusOptions: PropTypes.func.isRequired,
-  fetchNoticeOFWorkApplicationTypeOptions: PropTypes.func.isRequired,
+  fetchNoticeOfWorkActivityTypeOptions: PropTypes.func.isRequired,
+  fetchNoticeOfWorkApplicationStatusOptions: PropTypes.func.isRequired,
+  fetchNoticeOfWorkApplicationTypeOptions: PropTypes.func.isRequired,
   fetchRegionOptions: PropTypes.func.isRequired,
   reset: PropTypes.func.isRequired,
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
@@ -119,15 +119,13 @@ export class NoticeOfWorkApplication extends Component {
   componentDidMount() {
     const { id } = this.props.match.params;
     let currentStep = 0;
-    this.props.fetchNoticeOFWorkActivityTypeOptions();
+    this.props.fetchNoticeOfWorkActivityTypeOptions();
     this.props.fetchRegionOptions();
-    this.props.fetchNoticeOFWorkApplicationStatusOptions();
-    this.props.fetchNoticeOFWorkApplicationPermitTypes();
-    this.props.fetchNoticeOFWorkApplicationProgressStatusCodes();
-    // doesn't think this is a function
-    // eslint-disable-next-line
+    this.props.fetchNoticeOfWorkApplicationStatusOptions();
+    this.props.fetchNoticeOfWorkApplicationPermitTypes();
+    this.props.fetchNoticeOfWorkApplicationProgressStatusCodes();
     this.props.fetchInspectors();
-    this.props.fetchNoticeOFWorkApplicationTypeOptions();
+    this.props.fetchNoticeOfWorkApplicationTypeOptions();
     this.props.fetchImportedNoticeOfWorkApplication(id).then(({ data }) => {
       const associatedMineGuid = data.mine_guid ? data.mine_guid : "";
       const isImported = data.imported_to_core;
@@ -618,14 +616,14 @@ const mapDispatchToProps = (dispatch) =>
       fetchImportedNoticeOfWorkApplication,
       fetchOriginalNoticeOfWorkApplication,
       fetchMineRecordById,
-      fetchNoticeOFWorkActivityTypeOptions,
+      fetchNoticeOfWorkActivityTypeOptions,
       createNoticeOfWorkApplicationProgress,
-      fetchNoticeOFWorkApplicationProgressStatusCodes,
-      fetchNoticeOFWorkApplicationStatusOptions,
+      fetchNoticeOfWorkApplicationProgressStatusCodes,
+      fetchNoticeOfWorkApplicationStatusOptions,
       reset,
       fetchRegionOptions,
-      fetchNoticeOFWorkApplicationTypeOptions,
-      fetchNoticeOFWorkApplicationPermitTypes,
+      fetchNoticeOfWorkApplicationTypeOptions,
+      fetchNoticeOfWorkApplicationPermitTypes,
       openModal,
       closeModal,
       fetchInspectors,

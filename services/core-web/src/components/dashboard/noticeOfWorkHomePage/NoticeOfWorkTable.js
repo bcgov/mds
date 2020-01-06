@@ -261,7 +261,7 @@ export class NoticeOfWorkTable extends Component {
           pagination={false}
           // size="middle"
           // scroll={{ y: 480 }}
-          expandedRowRender={(record) => <p style={{ margin: 0 }}>{record.now_application_guid}</p>}
+          // expandedRowRender={(record) => <p style={{ margin: 0 }}>{record.now_application_guid}</p>}
           columns={applySortIndicator(
             this.columns(this.props),
             this.props.sortField,
