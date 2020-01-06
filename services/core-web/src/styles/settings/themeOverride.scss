@@ -181,9 +181,10 @@
 
 // RESULTS
 
-// .ant-result-success .ant-result-icon > .anticon {
-//    color: $primary-color;
-// }
+.ant-result-info .ant-result-icon > .anticon {
+  color: $primary-color;
+  display: none;
+}
 
 // FORMS
 .ant-form-vertical .ant-form-item {

@@ -28,8 +28,8 @@ const VerifyNOWMineConfirmation = (props) => {
       <Row>
         <Col lg={{ span: 12, offset: 6 }} md={{ span: 16, offset: 4 }} xs={{ span: 20, offset: 2 }}>
           <Result
-            status="success"
-            title="Successfully Confirmed Mine"
+            type="info"
+            title="You're almost done..."
             subTitle="Please assign a Lead Inspector to continue to Technical Review."
             extra={[
               <UpdateNOWLeadInspectorForm

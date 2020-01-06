@@ -384,7 +384,7 @@ export class NoticeOfWorkApplication extends Component {
     return (
       <Result
         status="success"
-        title="All Done!"
+        title="Verification Complete!"
         subTitle="You've already completed the Verification step."
         extra={[
           <Row>
