@@ -58,7 +58,10 @@ export class NoticeOfWorkHomePage extends Component {
 
   componentDidMount() {
     this.props.fetchRegionOptions();
-    this.props.fetchNoticeOFWorkApplicationStatusOptions();
+
+    if (typeof this.props.fetchNoticeOFWorkApplicationStatusOptions === "function") {
+      this.props.fetchNoticeOFWorkApplicationStatusOptions();
+    }
 
     const params = this.props.location.search;
     const parsedParams = queryString.parse(params);
