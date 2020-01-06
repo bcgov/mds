@@ -32,3 +32,4 @@ class TestPostApplicationReviewResource:
         assert post_resp.status_code == 200, post_resp.response
         post_data = json.loads(post_resp.data.decode())
         assert len(post_data['records']) > 0
+        assert 'response_date' in post_data['records'][0]
