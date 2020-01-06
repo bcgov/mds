@@ -46,6 +46,7 @@ class NoticeOfWorkListResource(Resource, UserMixin):
             notice_of_work_type_description=request.args.getlist(
                 'notice_of_work_type_description', type=str),
             mine_region=request.args.getlist('mine_region', type=str),
+            mine_name=request.args.get('mine_name', type=str),
             now_number=request.args.get('now_number', type=str),
             mine_search=request.args.get('mine_search', type=str),
             lead_inspector_name=request.args.get('lead_inspector_name', type=str),
@@ -70,6 +71,7 @@ class NoticeOfWorkListResource(Resource, UserMixin):
                                       lead_inspector_name=None,
                                       notice_of_work_type_description=[],
                                       mine_region=[],
+                                      mine_name=None,
                                       now_number=None,
                                       mine_search=None,
                                       now_application_status_description=[],
@@ -97,11 +99,14 @@ class NoticeOfWorkListResource(Resource, UserMixin):
         if now_number:
             filters.append(NoticeOfWorkView.now_number == now_number)
 
-        if mine_region or mine_search:
+        if mine_region or mine_search or mine_name:
             base_query = base_query.join(Mine)
 
         if mine_region:
             filters.append(Mine.mine_region.in_(mine_region))
+
+        if mine_name:
+            filters.append(func.lower(Mine.mine_name).contains(func.lower(mine_name)))
 
         if mine_search:
             filters.append(
