@@ -300,7 +300,8 @@ NOW_VIEW_MODEL = api.model(
         'lead_inspector_name': fields.String,
         'notice_of_work_type_description': fields.String,
         'now_application_status_description': fields.String,
-        'received_date': Date
+        'received_date': Date,
+        'originating_system': fields.String,
     }
 )
  

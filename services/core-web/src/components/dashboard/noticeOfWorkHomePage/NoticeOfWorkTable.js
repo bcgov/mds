@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { Table, Icon, Input, Button } from "antd";
 import { Link, withRouter } from "react-router-dom";
-import { isEmpty } from "lodash";
 import PropTypes from "prop-types";
 import CustomPropTypes from "@/customPropTypes";
 import * as Strings from "@/constants/strings";
@@ -21,9 +20,10 @@ const propTypes = {
   noticeOfWorkApplications: PropTypes.arrayOf(CustomPropTypes.nowApplication),
   sortField: PropTypes.string,
   sortDir: PropTypes.string,
-  searchParams: PropTypes.shape({ mine_region: PropTypes.arrayOf(PropTypes.string) }),
+  searchParams: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
   mineRegionHash: PropTypes.objectOf(PropTypes.string).isRequired,
   mineRegionOptions: CustomPropTypes.options.isRequired,
+  // applicationStatusOptions: CustomPropTypes.options.isRequired,
   isLoaded: PropTypes.bool.isRequired,
   location: PropTypes.shape({
     pathname: PropTypes.string,
@@ -35,36 +35,23 @@ const defaultProps = {
   sortField: null,
   sortDir: null,
   noticeOfWorkApplications: [],
-  searchParams: {},
 };
 
-const handleTableChange = (updateApplicationList) => (pagination, { mine_region } = {}, sorter) => {
-  const sortParams = isEmpty(sorter)
-    ? {
-        sort_field: undefined,
-        sort_dir: undefined,
-      }
-    : {
-        sort_field: sorter.column.sortField,
-        sort_dir: sorter.order.replace("end", ""),
-      };
-  const params = isEmpty(mine_region)
-    ? {
-        ...sortParams,
-        mine_region: undefined,
-      }
-    : {
-        ...sortParams,
-        mine_region,
-      };
-
+const handleTableChange = (updateApplicationList) => (pagination, filters, sorter) => {
+  const params = {
+    results: pagination.pageSize,
+    page: pagination.current,
+    sort_field: sorter.field,
+    sort_dir: sorter.order ? sorter.order.replace("end", "") : sorter.order,
+    ...filters,
+  };
   updateApplicationList(params);
 };
 
 const applySortIndicator = (_columns, field, dir) =>
   _columns.map((column) => ({
     ...column,
-    sortOrder: column.sortField === field ? dir.concat("end") : false,
+    sortOrder: dir && column.sortField === field ? dir.concat("end") : false,
   }));
 
 const pageTitle = "Browse Notices of Work";
@@ -84,18 +71,20 @@ export class NoticeOfWorkTable extends Component {
 
   transformRowData = (applications) =>
     applications.map((application) => ({
-      key: application.now_application_guid,
-      source: Strings.EMPTY_FIELD,
-      mineRegion: application.mine_region
+      now_application_guid: application.now_application_guid || Strings.EMPTY_FIELD,
+      originating_system: application.originating_system || Strings.EMPTY_FIELD,
+      mine_region: application.mine_region
         ? this.props.mineRegionHash[application.mine_region]
         : Strings.EMPTY_FIELD,
-      nowNum: application.now_number || Strings.EMPTY_FIELD,
-      mineGuid: application.mine_guid || Strings.EMPTY_FIELD,
-      mineName: application.mine_name || Strings.EMPTY_FIELD,
-      leadInspector: application.lead_inspector_name || Strings.EMPTY_FIELD,
-      nowType: application.notice_of_work_type_description || Strings.EMPTY_FIELD,
-      status: application.now_application_status_description || Strings.EMPTY_FIELD,
-      date: formatDate(application.received_date) || Strings.EMPTY_FIELD,
+      now_number: application.now_number || Strings.EMPTY_FIELD,
+      mine_guid: application.mine_guid || Strings.EMPTY_FIELD,
+      mine_name: application.mine_name || Strings.EMPTY_FIELD,
+      lead_inspector_name: application.lead_inspector_name || Strings.EMPTY_FIELD,
+      notice_of_work_type_description:
+        application.notice_of_work_type_description || Strings.EMPTY_FIELD,
+      now_application_status_description:
+        application.now_application_status_description || Strings.EMPTY_FIELD,
+      received_date: formatDate(application.received_date) || Strings.EMPTY_FIELD,
     }));
 
   filterProperties = (name, field) => ({
@@ -145,26 +134,34 @@ export class NoticeOfWorkTable extends Component {
   columns = () => [
     {
       title: "Region",
-      dataIndex: "mineRegion",
-      render: (text) => <div title="Region">{text}</div>,
-      filteredValue: this.props.searchParams.mine_region,
-      filters: this.props.mineRegionOptions
-        ? optionsFilterAdapter(this.props.mineRegionOptions)
+      dataIndex: "mine_region",
+      sortField: "mine_region",
+      sorter: true,
+      filteredValue: this.props.searchParams.mine_region
+        ? [this.props.searchParams.mine_region]
         : [],
+      filters: this.props.mineRegionOptions
+        ? optionsFilterAdapter(this.props.mineRegionOptions).sort((a, b) =>
+            a.value > b.value ? 1 : -1
+          )
+        : [],
+      render: (text) => <div title="Region">{text}</div>,
     },
     {
       title: "NoW No.",
-      dataIndex: "nowNum",
+      dataIndex: "now_number",
       sortField: "now_number",
+      sorter: true,
+      ...this.filterProperties("NoW No.", "now_number"),
       render: (text, record) => (
         <Link to={this.createLinkTo(router.VIEW_NOTICE_OF_WORK_APPLICATION, record)}>{text}</Link>
       ),
-      sorter: true,
-      ...this.filterProperties("NoW No.", "now_number"),
     },
     {
       title: "Mine",
-      dataIndex: "mineName",
+      dataIndex: "mine_name",
+      sortField: "mine_name",
+      sorter: true,
       render: (text, record) =>
         record.mineGuid ? (
           <Link to={router.MINE_NOW_APPLICATIONS.dynamicRoute(record.mineGuid)}>{text}</Link>
@@ -174,34 +171,52 @@ export class NoticeOfWorkTable extends Component {
     },
     {
       title: "NoW Type",
-      dataIndex: "nowType",
+      dataIndex: "notice_of_work_type_description",
       sortField: "notice_of_work_type_description",
-      render: (text) => <div title="NoW Mine Type">{text}</div>,
       sorter: true,
-      ...this.filterProperties("NoW Type", "notice_of_work_type_description"),
+      filteredValue: this.props.searchParams.notice_of_work_type_description
+        ? [this.props.searchParams.notice_of_work_type_description]
+        : [],
+      filters: [
+        { text: "Quarry - Construction Aggregate", value: "Quarry - Construction Aggregate" },
+        { text: "Coal", value: "Coal" },
+        { text: "Placer Operations", value: "Placer Operations" },
+        { text: "Mineral", value: "Mineral" },
+        { text: "Sand & Gravel", value: "Sand & Gravel" },
+        { text: "Quarry - Industrial Mineral", value: "Quarry - Industrial Mineral" },
+      ].sort((a, b) => (a.value > b.value ? 1 : -1)),
+      render: (text) => <div title="NoW Mine Type">{text}</div>,
     },
     {
       title: "Lead Inspector",
-      dataIndex: "leadInspector",
+      dataIndex: "lead_inspector_name",
       sortField: "lead_inspector_name",
-      render: (text) => <div title="Lead Inspector Name">{text}</div>,
       sorter: true,
       ...this.filterProperties("Lead Inspector", "lead_inspector_name"),
+      render: (text) => <div title="Lead Inspector Name">{text}</div>,
     },
     {
       title: "Application Status",
-      dataIndex: "status",
+      dataIndex: "now_application_status_description",
+
       sortField: "now_application_status_description",
-      render: (text) => <div title="Application Status">{text}</div>,
       sorter: true,
-      ...this.filterProperties("Status", "now_application_status_description"),
+      filteredValue: this.props.searchParams.now_application_status_description
+        ? [this.props.searchParams.now_application_status_description]
+        : [],
+      filters: [
+        { text: "Withdrawn", value: "Withdrawn" },
+        { text: "Accepted", value: "Accepted" },
+        { text: "Under Review", value: "Under Review" },
+      ].sort((a, b) => (a.value > b.value ? 1 : -1)),
+      render: (text) => <div title="Application Status">{text}</div>,
     },
     {
       title: "Import Date",
-      dataIndex: "date",
+      dataIndex: "received_date",
       sortField: "received_date",
-      render: (text) => <div title="Import Date">{text}</div>,
       sorter: true,
+      render: (text) => <div title="Import Date">{text}</div>,
     },
     {
       title: "",
