@@ -4,16 +4,24 @@ import { compose } from "redux";
 import { connect } from "react-redux";
 import { Field, reduxForm, FormSection, formValueSelector } from "redux-form";
 import { Form, Divider, Row, Col } from "antd";
+import CustomPropTypes from "@/customPropTypes";
 import RenderField from "@/components/common/RenderField";
 import RenderDate from "@/components/common/RenderDate";
 import RenderRadioButtons from "@/components/common/RenderRadioButtons";
 import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
+import RenderSelect from "@/components/common/RenderSelect";
 import * as FORM from "@/constants/forms";
 import ScrollContentWrapper from "@/components/common/wrappers/ScrollContentWrapper";
 import ReviewActivities from "@/components/noticeOfWork/applications/review/ReviewActivities";
 import ReclamationSummary from "./activities/ReclamationSummary";
 import ReviewNOWDocuments from "./ReviewNOWDocuments";
 import ReviewNOWContacts from "./ReviewNOWContacts";
+import {
+  getNoticeOfWorkApplicationProgressStatusCodeOptions,
+  getMineRegionDropdownOptions,
+  getDropdownNoticeOfWorkApplicationTypeOptions,
+  getDropdownNoticeOfWorkApplicationPermitTypeOptions,
+} from "@/selectors/staticContentSelectors";
 import { required, lat, lon, maxLength, number } from "@/utils/Validate";
 
 /**
@@ -32,6 +40,13 @@ const propTypes = {
   reclamationSummary: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.strings)).isRequired,
   now_application_guid: PropTypes.string.isRequired,
   submission_documents: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
+  // thinks it is never used
+  // eslint-disable-next-line
+  regionDropdownOptions: CustomPropTypes.options.isRequired,
+  // eslint-disable-next-line
+  applicationTypeOptions: CustomPropTypes.options.isRequired,
+  // eslint-disable-next-line
+  permitTypeOptions: CustomPropTypes.options.isRequired,
 };
 
 export const ReviewNOWApplication = (props) => {
@@ -66,7 +81,13 @@ export const ReviewNOWApplication = (props) => {
       <Row gutter={16}>
         <Col md={12} sm={24}>
           <div className="field-title">Region</div>
-          <Field id="mine_region" name="mine_region" component={RenderField} disabled />
+          <Field
+            id="mine_region"
+            name="mine_region"
+            component={RenderSelect}
+            data={props.regionDropdownOptions}
+            disabled={props.isViewMode}
+          />
         </Col>
         <Col md={12} sm={24}>
           <div className="field-title">Relationship to Individual or Company/Organization?**</div>
@@ -117,7 +138,8 @@ export const ReviewNOWApplication = (props) => {
           <Field
             id="notice_of_work_type_code"
             name="notice_of_work_type_code"
-            component={RenderField}
+            component={RenderSelect}
+            data={props.applicationTypeOptions}
             disabled={props.isViewMode}
             validate={[required]}
           />
@@ -139,7 +161,8 @@ export const ReviewNOWApplication = (props) => {
           <Field
             id="application_permit_type_code"
             name="application_permit_type_code"
-            component={RenderField}
+            component={RenderSelect}
+            data={props.permitTypeOptions}
             disabled={props.isViewMode}
           />
         </Col>
@@ -448,6 +471,10 @@ export default compose(
     contacts: selector(state, "contacts"),
     now_application_guid: selector(state, "now_application_guid"),
     submission_documents: selector(state, "submission_documents"),
+    regionDropdownOptions: getMineRegionDropdownOptions(state),
+    applicationTypeOptions: getDropdownNoticeOfWorkApplicationTypeOptions(state),
+    applicationProgressStatusCodes: getNoticeOfWorkApplicationProgressStatusCodeOptions(state),
+    permitTypeOptions: getDropdownNoticeOfWorkApplicationPermitTypeOptions(state),
   })),
   reduxForm({
     form: FORM.EDIT_NOTICE_OF_WORK,

@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { Element, scroller } from "react-scroll";
 import { debounce, isEmpty } from "lodash";
 import PropTypes from "prop-types";
-import { Tabs, Col, Divider, notification } from "antd";
+import { Tabs, Col, Divider, notification, Card } from "antd";
 import queryString from "query-string";
 import { openModal, closeModal } from "@/actions/modalActions";
 import CustomPropTypes from "@/customPropTypes";
@@ -393,6 +393,29 @@ export class Dashboard extends Component {
                     handleCoordinateSearch={this.handleCoordinateSearch}
                     isMapView
                   />
+                  <br />
+                  <br />
+                  <Card>
+                    <div>
+                      <h3>EMPR GIS Links</h3>
+                      <a
+                        href="https://governmentofbc.maps.arcgis.com/apps/webappviewer/index.html?id=f024193c07a04a28b678170e1e2046f6"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        Inspection Mapper
+                      </a>
+                      <span> - Not set up to use this? Contact the GIS team.</span>
+                      <br />
+                      <a
+                        href="https://nrm.sp.gov.bc.ca/sites/EMPR/mtb/_layouts/15/start.aspx#/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        Sharepoint Requests Portal
+                      </a>
+                    </div>
+                  </Card>
                 </Col>
                 <Col md={2} sm={0} xs={0}>
                   <div className="center">

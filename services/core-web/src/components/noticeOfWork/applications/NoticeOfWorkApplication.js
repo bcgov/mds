@@ -25,9 +25,16 @@ import {
 import {
   fetchNoticeOFWorkActivityTypeOptions,
   fetchNoticeOFWorkApplicationProgressStatusCodes,
+  fetchRegionOptions,
+  fetchNoticeOFWorkApplicationStatusOptions,
+  fetchNoticeOFWorkApplicationTypeOptions,
+  fetchNoticeOFWorkApplicationPermitTypes,
 } from "@/actionCreators/staticContentActionCreator";
 import { getMines } from "@/selectors/mineSelectors";
-import { getNoticeOfWorkApplicationProgressStatusCodeOptions } from "@/selectors/staticContentSelectors";
+import {
+  getDropdownNoticeOfWorkApplicationStatusOptions,
+  getNoticeOfWorkApplicationProgressStatusCodeOptions,
+} from "@/selectors/staticContentSelectors";
 import VerifyNOWMine from "@/components/noticeOfWork/applications/verification/VerifyNOWMine";
 import VerifyNOWMineConfirmation from "@/components/noticeOfWork/applications/verification/VerifyNOWMineConfirmation";
 import CustomPropTypes from "@/customPropTypes";
@@ -52,11 +59,16 @@ const propTypes = {
   createNoticeOfWorkApplicationProgress: CustomPropTypes.importedNOWApplication.isRequired,
   createNoticeOfWorkApplication: PropTypes.func.isRequired,
   updateNoticeOfWorkApplication: PropTypes.func.isRequired,
+  fetchNoticeOFWorkApplicationPermitTypes: PropTypes.func.isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
   fetchInspectors: PropTypes.func.isRequired,
   fetchImportedNoticeOfWorkApplication: PropTypes.func.isRequired,
   fetchOriginalNoticeOfWorkApplication: PropTypes.func.isRequired,
   fetchNoticeOFWorkActivityTypeOptions: PropTypes.func.isRequired,
+  fetchNoticeOFWorkApplicationStatusOptions: PropTypes.func.isRequired,
+  fetchNoticeOFWorkApplicationTypeOptions: PropTypes.func.isRequired,
+  fetchRegionOptions: PropTypes.func.isRequired,
+  reset: PropTypes.func.isRequired,
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
   location: PropTypes.shape({
     state: PropTypes.shape({
@@ -77,7 +89,6 @@ const propTypes = {
   applicationProgressStatusCodes: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.strings))
     .isRequired,
   reclamationSummary: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.strings)).isRequired,
-  reset: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
 };
@@ -109,10 +120,14 @@ export class NoticeOfWorkApplication extends Component {
     const { id } = this.props.match.params;
     let currentStep = 0;
     this.props.fetchNoticeOFWorkActivityTypeOptions();
+    this.props.fetchRegionOptions();
+    this.props.fetchNoticeOFWorkApplicationStatusOptions();
+    this.props.fetchNoticeOFWorkApplicationPermitTypes();
     this.props.fetchNoticeOFWorkApplicationProgressStatusCodes();
     if (typeof this.props.fetchInspectors === "function") {
       this.props.fetchInspectors();
     }
+    this.props.fetchNoticeOFWorkApplicationTypeOptions();
     this.props.fetchImportedNoticeOfWorkApplication(id).then(({ data }) => {
       const associatedMineGuid = data.mine_guid ? data.mine_guid : "";
       const isImported = data.imported_to_core;
@@ -566,14 +581,7 @@ export class NoticeOfWorkApplication extends Component {
         </div>
         <LoadingWrapper condition={this.state.isNoWLoaded}>
           <div>
-            <div
-              className={this.state.fixedTop ? "side-menu--fixed" : "side-menu"}
-              style={
-                this.state.noticeOfWorkPageFromRoute && this.state.fixedTop
-                  ? { paddingTop: "24px" }
-                  : {}
-              }
-            >
+            <div className={this.state.fixedTop ? "side-menu--fixed" : "side-menu"}>
               {this.state.currentStep === 1 && (
                 <NOWSideMenu route={routes.NOTICE_OF_WORK_APPLICATION} />
               )}
@@ -598,6 +606,7 @@ const mapStateToProps = (state) => ({
   inspectors: getDropdownInspectors(state),
   inspectorsHash: getInspectorsHash(state),
   reclamationSummary: getNOWReclamationSummary(state),
+  applicationStatusOptions: getDropdownNoticeOfWorkApplicationStatusOptions(state),
   applicationProgressStatusCodes: getNoticeOfWorkApplicationProgressStatusCodeOptions(state),
 });
 
@@ -612,7 +621,11 @@ const mapDispatchToProps = (dispatch) =>
       fetchNoticeOFWorkActivityTypeOptions,
       createNoticeOfWorkApplicationProgress,
       fetchNoticeOFWorkApplicationProgressStatusCodes,
+      fetchNoticeOFWorkApplicationStatusOptions,
       reset,
+      fetchRegionOptions,
+      fetchNoticeOFWorkApplicationTypeOptions,
+      fetchNoticeOFWorkApplicationPermitTypes,
       openModal,
       closeModal,
       fetchInspectors,
