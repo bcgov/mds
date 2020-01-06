@@ -41,9 +41,13 @@ const propTypes = {
   reclamationSummary: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.strings)).isRequired,
   now_application_guid: PropTypes.string.isRequired,
   documents: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
-  applicationTypeOptions: CustomPropTypes.options.isRequired,
-  permitTypeOptions: CustomPropTypes.options.isRequired,
   submission_documents: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
+  // eslint-disable-next-line
+  applicationTypeOptions: CustomPropTypes.options.isRequired,
+  // eslint-disable-next-line
+  permitTypeOptions: CustomPropTypes.options.isRequired,
+  // eslint-disable-next-line
+  regionDropdownOptions: CustomPropTypes.options.isRequired,
 };
 
 export const ReviewNOWApplication = (props) => {

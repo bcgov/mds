@@ -66,8 +66,6 @@ const propTypes = {
   fetchNoticeOFWorkActivityTypeOptions: PropTypes.func.isRequired,
   fetchNoticeOFWorkApplicationStatusOptions: PropTypes.func.isRequired,
   fetchRegionOptions: PropTypes.func.isRequired,
-  applicationStatusOptions: CustomPropTypes.options.isRequired,
-  applicationTypeOptions: CustomPropTypes.options.isRequired,
   reset: PropTypes.func.isRequired,
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
   location: PropTypes.shape({
@@ -80,8 +78,6 @@ const propTypes = {
       id: PropTypes.string,
     },
   }).isRequired,
-  regionDropdownOptions: CustomPropTypes.options.isRequired,
-  permitTypeOptions: CustomPropTypes.options.isRequired,
   // the following prop will be used in the future
   // eslint-disable-next-line
   formValues: CustomPropTypes.nowApplication.isRequired,
@@ -89,7 +85,6 @@ const propTypes = {
   applicationProgressStatusCodes: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.strings))
     .isRequired,
   reclamationSummary: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.strings)).isRequired,
-  reset: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
 };
@@ -125,7 +120,6 @@ export class NoticeOfWorkApplication extends Component {
     this.props.fetchNoticeOFWorkApplicationPermitTypes();
     this.props.fetchNoticeOFWorkApplicationProgressStatusCodes();
     this.props.fetchNoticeOFWorkApplicationDocumentTypeOptions();
-    this.props.fetchNoticeOFWorkApplicationTypeOptions();
     this.props.fetchImportedNoticeOfWorkApplication(id).then(({ data }) => {
       const associatedMineGuid = data.mine_guid ? data.mine_guid : "";
       const isImported = data.imported_to_core;
