@@ -16,6 +16,7 @@ import {
   storeNoticeOfWorkApplicationDocumentTypeOptions,
   storeNoticeOfWorkUndergroundExplorationTypeOptions,
   storeNoticeOfWorkApplicationProgressStatusCodeOptions,
+  storeNoticeOfWorkApplicationPermitTypesOptions,
 } from "@/actions/staticContentActions";
 import * as MOCK from "@/tests/mocks/dataMocks";
 import * as NOW_MOCK from "@/tests/mocks/noticeOfWorkMocks";
@@ -44,6 +45,7 @@ const baseExpectedValue = {
   noticeOfWorkApplicationDocumentTypeOptions: [],
   noticeOfWorkUndergroundExplorationTypeOptions: [],
   noticeOfWorkApplicationProgressStatusCodeOptions: [],
+  noticeOfWorkApplicationPermitTypeOptions: [],
 };
 
 // Creates deep copy of javascript object instead of setting a reference
@@ -199,6 +201,17 @@ describe("staticContentReducer", () => {
       storeNoticeOfWorkApplicationProgressStatusCodeOptions(
         NOW_MOCK.APPLICATION_PROGRESS_STATUS_CODES
       )
+    );
+    expect(result).toEqual(expectedValue);
+  });
+
+  it("receives STORE_NOW_APPLICATION_PERMIT_TYPES", () => {
+    const expectedValue = getBaseExpectedValue();
+    expectedValue.noticeOfWorkApplicationPermitTypeOptions =
+      NOW_MOCK.APPLICATION_PERMIT_TYPES.records;
+    const result = staticContentReducer(
+      undefined,
+      storeNoticeOfWorkApplicationPermitTypesOptions(NOW_MOCK.APPLICATION_PERMIT_TYPES)
     );
     expect(result).toEqual(expectedValue);
   });
