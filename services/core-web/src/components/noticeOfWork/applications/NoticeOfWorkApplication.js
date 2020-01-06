@@ -371,12 +371,9 @@ export class NoticeOfWorkApplication extends Component {
       return (
         <VerifyNOWMine
           noticeOfWork={this.props.noticeOfWork}
-          isNoWLoaded={this.state.isLoaded}
           handleConfirmMine={this.handleConfirmMine}
-          handleProgressChange={this.handleProgressChange}
           setMineGuid={this.setMineGuid}
           currentMine={mine}
-          isImported={this.state.isImported}
         />
       );
     }
@@ -412,7 +409,6 @@ export class NoticeOfWorkApplication extends Component {
                 type="info"
                 showIcon
                 closable
-                banner
               />
             </Col>
           </Row>,
