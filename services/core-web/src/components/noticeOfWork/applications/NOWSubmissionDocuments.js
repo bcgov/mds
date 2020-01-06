@@ -87,7 +87,7 @@ export const NOWSubmissionDocuments = (props) => (
           columns={columns}
           dataSource={transformDocuments(props.documents, props.now_application_guid, true)}
           locale={{
-            emptyText: "There are no spacial files associated with this Notice of Work",
+            emptyText: "There are no spatial files associated with this Notice of Work",
           }}
         />
       ) : (

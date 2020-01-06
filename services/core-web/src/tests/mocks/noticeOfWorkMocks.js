@@ -645,3 +645,29 @@ export const APPLICATION_PROGRESS_STATUS_CODES = {
     },
   ],
 };
+
+export const APPLICATION_PERMIT_TYPES = {
+  records: [
+    {
+      now_application_permit_type_code: "MY-ABP",
+      description: "Multi-Year, Area Based Permit",
+    },
+    {
+      now_application_permit_type_code: "OYP",
+      description: "One Year Permit",
+    },
+    {
+      now_application_permit_type_code: "MYP",
+      description: "Multi-Year Permit",
+    },
+  ],
+};
+
+export const DROPDOWN_APPLICATION_PERMIT_TYPES = [
+  {
+    value: "MY-ABP",
+    label: "Multi-Year, Area Based Permit",
+  },
+  { value: "OYP", label: "One Year Permit" },
+  { value: "MYP", label: "Multi-Year Permit" },
+];

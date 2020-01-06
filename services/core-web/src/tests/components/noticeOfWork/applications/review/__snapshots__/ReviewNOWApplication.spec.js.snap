@@ -52,6 +52,12 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 disabled={true}
                 id="property_name"
                 name="property_name"
+                validate={
+                  Array [
+                    [Function],
+                    [Function],
+                  ]
+                }
               />
             </Col>
             <Col
@@ -61,13 +67,13 @@ exports[`ReviewNOWApplication renders properly 1`] = `
               <div
                 className="field-title"
               >
-                Permit Status
+                Permit Status**
               </div>
               <Field
                 component={[Function]}
                 disabled={true}
-                id="permit_status_code"
-                name="permit_status_code"
+                id=""
+                name=""
               />
             </Col>
           </Row>
@@ -160,6 +166,11 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 disabled={true}
                 id="latitude"
                 name="latitude"
+                validate={
+                  Array [
+                    [Function],
+                  ]
+                }
               />
             </Col>
             <Col
@@ -176,6 +187,11 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 disabled={true}
                 id="description_of_land"
                 name="description_of_land"
+                validate={
+                  Array [
+                    [Function],
+                  ]
+                }
               />
             </Col>
           </Row>
@@ -196,6 +212,11 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 disabled={true}
                 id="longitude"
                 name="longitude"
+                validate={
+                  Array [
+                    [Function],
+                  ]
+                }
               />
             </Col>
             <Col
@@ -232,6 +253,11 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 disabled={true}
                 id="notice_of_work_type_code"
                 name="notice_of_work_type_code"
+                validate={
+                  Array [
+                    [Function],
+                  ]
+                }
               />
             </Col>
             <Col
@@ -241,13 +267,18 @@ exports[`ReviewNOWApplication renders properly 1`] = `
               <div
                 className="field-title"
               >
-                Term of Application**
+                Term of Application
               </div>
               <Field
                 component={[Function]}
                 disabled={true}
-                id=""
-                name=""
+                id="application_permit_term"
+                name="application_permit_term"
+                validate={
+                  Array [
+                    [Function],
+                  ]
+                }
               />
             </Col>
           </Row>
@@ -340,6 +371,11 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 disabled={true}
                 id="tenure_number"
                 name="tenure_number"
+                validate={
+                  Array [
+                    [Function],
+                  ]
+                }
               />
             </Col>
           </Row>
@@ -373,6 +409,11 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 disabled={true}
                 id="directions_to_site"
                 name="directions_to_site"
+                validate={
+                  Array [
+                    [Function],
+                  ]
+                }
               />
             </Col>
             <Col
@@ -601,6 +642,11 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                   disabled={true}
                   id="has_community_water_shed"
                   name="has_community_water_shed"
+                  validate={
+                    Array [
+                      [Function],
+                    ]
+                  }
                 />
               </Col>
               <Col
@@ -677,6 +723,11 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                   disabled={true}
                   id="has_archaeology_sites_affected"
                   name="has_archaeology_sites_affected"
+                  validate={
+                    Array [
+                      [Function],
+                    ]
+                  }
                 />
                 <div
                   className="field-title--light"

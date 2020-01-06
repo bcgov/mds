@@ -36,10 +36,6 @@
         "creationTimestamp": null,
         "labels": {
           "app": "jenkins"
-        },
-        "annotations": {
-          "volume.beta.kubernetes.io/storage-class": "gluster-block",
-          "volume.beta.kubernetes.io/storage-provisioner": "kubernetes.io/glusterfs"
         }
       },
       "spec": {

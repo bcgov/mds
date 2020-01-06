@@ -206,6 +206,7 @@
   padding: 0;
   margin: 0;
 }
+
 // MENU.ITEM
 // Same styling as the default for .ant-dropdown-menu-item,
 // included the ant design class in this CSS block our custom class stays insync with .ant-dropdowm-menu-item updates.
@@ -317,4 +318,8 @@ input {
     cursor: not-allowed;
     opacity: 1;
   }
+}
+
+.ant-select-selection-selected-value {
+  color: rgba(0, 0, 0, 0.65);
 }

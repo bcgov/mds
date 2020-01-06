@@ -8,6 +8,7 @@ import RenderField from "@/components/common/RenderField";
 import RenderDate from "@/components/common/RenderDate";
 import RenderRadioButtons from "@/components/common/RenderRadioButtons";
 import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
+import RenderSelect from "@/components/common/RenderSelect";
 import * as FORM from "@/constants/forms";
 import ScrollContentWrapper from "@/components/common/wrappers/ScrollContentWrapper";
 import ReviewActivities from "@/components/noticeOfWork/applications/review/ReviewActivities";
@@ -15,6 +16,14 @@ import ReclamationSummary from "./activities/ReclamationSummary";
 import NOWDocuments from "@/components/noticeOfWork/applications//NOWDocuments";
 import NOWSubmissionDocuments from "@/components/noticeOfWork/applications//NOWSubmissionDocuments";
 import ReviewNOWContacts from "./ReviewNOWContacts";
+import CustomPropTypes from "@/customPropTypes";
+import {
+  getNoticeOfWorkApplicationProgressStatusCodeOptions,
+  getMineRegionDropdownOptions,
+  getDropdownNoticeOfWorkApplicationTypeOptions,
+  getDropdownNoticeOfWorkApplicationPermitTypeOptions,
+} from "@/selectors/staticContentSelectors";
+import { required, lat, lon, maxLength, number } from "@/utils/Validate";
 
 /**
  * @constant ReviewNOWApplication renders edit/view for the NoW Application review step
@@ -32,6 +41,8 @@ const propTypes = {
   reclamationSummary: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.strings)).isRequired,
   now_application_guid: PropTypes.string.isRequired,
   documents: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
+  applicationTypeOptions: CustomPropTypes.options.isRequired,
+  permitTypeOptions: CustomPropTypes.options.isRequired,
   submission_documents: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
 };
 
@@ -46,16 +57,12 @@ export const ReviewNOWApplication = (props) => {
             name="property_name"
             component={RenderField}
             disabled={props.isViewMode}
+            validate={[required, maxLength(4000)]}
           />
         </Col>
         <Col md={12} sm={24}>
-          <div className="field-title">Permit Status</div>
-          <Field
-            id="permit_status_code"
-            name="permit_status_code"
-            component={RenderField}
-            disabled={props.isViewMode}
-          />
+          <div className="field-title">Permit Status**</div>
+          <Field id="" name="" component={RenderField} disabled />
         </Col>
       </Row>
       <Row gutter={16}>
@@ -71,7 +78,13 @@ export const ReviewNOWApplication = (props) => {
       <Row gutter={16}>
         <Col md={12} sm={24}>
           <div className="field-title">Region</div>
-          <Field id="mine_region" name="mine_region" component={RenderField} disabled />
+          <Field
+            id="mine_region"
+            name="mine_region"
+            component={RenderSelect}
+            data={props.regionDropdownOptions}
+            disabled={props.isViewMode}
+          />
         </Col>
         <Col md={12} sm={24}>
           <div className="field-title">Relationship to Individual or Company/Organization?**</div>
@@ -86,6 +99,7 @@ export const ReviewNOWApplication = (props) => {
             name="latitude"
             component={RenderField}
             disabled={props.isViewMode}
+            validate={[lat]}
           />
         </Col>
         <Col md={12} sm={24}>
@@ -95,6 +109,7 @@ export const ReviewNOWApplication = (props) => {
             name="description_of_land"
             component={RenderField}
             disabled={props.isViewMode}
+            validate={[maxLength(4000)]}
           />
         </Col>
       </Row>
@@ -106,6 +121,7 @@ export const ReviewNOWApplication = (props) => {
             name="longitude"
             component={RenderField}
             disabled={props.isViewMode}
+            validate={[lon]}
           />
         </Col>
         <Col md={12} sm={24}>
@@ -119,13 +135,21 @@ export const ReviewNOWApplication = (props) => {
           <Field
             id="notice_of_work_type_code"
             name="notice_of_work_type_code"
-            component={RenderField}
+            component={RenderSelect}
+            data={props.applicationTypeOptions}
             disabled={props.isViewMode}
+            validate={[required]}
           />
         </Col>
         <Col md={12} sm={24}>
-          <div className="field-title">Term of Application**</div>
-          <Field id="" name="" component={RenderField} disabled />
+          <div className="field-title">Term of Application</div>
+          <Field
+            id="application_permit_term"
+            name="application_permit_term"
+            component={RenderField}
+            disabled={props.isViewMode}
+            validate={[number]}
+          />
         </Col>
       </Row>
       <Row gutter={16}>
@@ -134,7 +158,8 @@ export const ReviewNOWApplication = (props) => {
           <Field
             id="application_permit_type_code"
             name="application_permit_type_code"
-            component={RenderField}
+            component={RenderSelect}
+            data={props.permitTypeOptions}
             disabled={props.isViewMode}
           />
         </Col>
@@ -171,6 +196,7 @@ export const ReviewNOWApplication = (props) => {
             name="tenure_number"
             component={RenderAutoSizeField}
             disabled={props.isViewMode}
+            validate={[maxLength(4000)]}
           />
         </Col>
       </Row>
@@ -187,6 +213,7 @@ export const ReviewNOWApplication = (props) => {
             name="directions_to_site"
             component={RenderAutoSizeField}
             disabled={props.isViewMode}
+            validate={[maxLength(4000)]}
           />
         </Col>
         <Col md={12} sm={24}>
@@ -266,6 +293,7 @@ export const ReviewNOWApplication = (props) => {
               name="has_community_water_shed"
               component={RenderRadioButtons}
               disabled={props.isViewMode}
+              validate={[required]}
             />
           </Col>
           <Col md={12} sm={24}>
@@ -299,6 +327,7 @@ export const ReviewNOWApplication = (props) => {
               name="has_archaeology_sites_affected"
               component={RenderRadioButtons}
               disabled={props.isViewMode}
+              validate={[required]}
             />
             <div className="field-title--light">Plan to protect the archaeological site**</div>
             <Field id="" name="" component={RenderField} disabled />
@@ -447,6 +476,10 @@ export default compose(
     now_application_guid: selector(state, "now_application_guid"),
     documents: selector(state, "documents"),
     submission_documents: selector(state, "submission_documents"),
+    regionDropdownOptions: getMineRegionDropdownOptions(state),
+    applicationTypeOptions: getDropdownNoticeOfWorkApplicationTypeOptions(state),
+    applicationProgressStatusCodes: getNoticeOfWorkApplicationProgressStatusCodeOptions(state),
+    permitTypeOptions: getDropdownNoticeOfWorkApplicationPermitTypeOptions(state),
   })),
   reduxForm({
     form: FORM.EDIT_NOTICE_OF_WORK,

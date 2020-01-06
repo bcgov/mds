@@ -12,7 +12,6 @@
         "name": "mds-db-backup-verification${SUFFIX}"
       },
       "spec": {
-        "storageClassName": "gluster-block",
         "accessModes": ["ReadWriteOnce"],
         "resources": {
           "requests": {

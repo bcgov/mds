@@ -59,6 +59,15 @@ class NOWApplicationResource(Resource, UserMixin):
                 'This application has not been imported. Please import an application before making changes.'
             )
         data = request.json
+
+        if data.get('mine_guid', None):
+            mine = Mine.find_by_mine_guid(data['mine_guid'])
+            if not mine:
+                raise BadRequest('mine not found')
+            current_app.logger.info(f'Assigning {now_application_identity} to {mine}')
+            now_application_identity.mine = mine
+        now_application_identity.save()
+
         now_application_identity.now_application.deep_update_from_dict(data)
 
         return now_application_identity.now_application
