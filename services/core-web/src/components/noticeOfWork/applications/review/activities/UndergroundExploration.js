@@ -252,6 +252,7 @@ export const UndergroundExploration = (props) => {
     activities
       .map((activity, index) => ({
         activity_type_description: activity.activity_type_description || "",
+        underground_exploration_type_code: activity.underground_exploration_type_code || "",
         quantity: activity.quantity || "",
         incline: activity.incline || "",
         incline_unit_type_code: activity.incline_unit_type_code || "",

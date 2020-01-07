@@ -185,7 +185,7 @@ NOW_APPLICATION_UNDERGROUND_EXPLORATION = api.inherit(
     'NOWApplicationUndergroundExploration',
     NOW_APPLICATION_ACTIVITY_SUMMARY_BASE,
     {
-        'details': fields.List(fields.Nested(NOW_APPLICATION_ACTIVITY_DETAIL_BASE,skip_none=True))
+        'details': fields.List(fields.Nested(NOW_APPLICATION_UNDERGROUND_EXPLORATION_DETAIL,skip_none=True))
     })
 
 NOW_APPLICATION_WATER_SUPPLY_DETAIL = api.inherit(

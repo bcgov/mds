@@ -81,7 +81,7 @@ export const ReviewNOWApplication = (props) => {
             name="mine_region"
             component={RenderSelect}
             data={props.regionDropdownOptions}
-            disabled={props.isViewMode}
+            disabled
           />
         </Col>
         <Col md={12} sm={24}>
@@ -135,7 +135,7 @@ export const ReviewNOWApplication = (props) => {
             name="notice_of_work_type_code"
             component={RenderSelect}
             data={props.applicationTypeOptions}
-            disabled={props.isViewMode}
+            disabled
             validate={[required]}
           />
         </Col>
