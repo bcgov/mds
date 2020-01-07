@@ -29,3 +29,5 @@ export const EDIT_INCIDENT = (mineName) => `Edit a Mine Incident at ${mineName}`
 
 export const EDIT_REPORT = "Edit a Mine Report";
 export const ADD_REPORT = "Add a Report";
+
+export const ADD_NOW_REVIEW = "Add a Notice of Work Review";

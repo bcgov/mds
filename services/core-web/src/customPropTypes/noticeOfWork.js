@@ -315,3 +315,9 @@ export const importedNOWApplication = shape({
   water_supply: waterSupply,
   placer_operation: placer,
 });
+
+export const NOWApplicationReview = shape({
+  now_application_review_type_code: PropTypes.string,
+  response_date: PropTypes.string,
+  referee_name: PropTypes.string,
+});
