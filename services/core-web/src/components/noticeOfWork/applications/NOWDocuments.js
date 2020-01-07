@@ -17,6 +17,17 @@ import { getNoticeOfWorkApplicationDocumentTypeOptionsHash } from "@/selectors/s
 import * as FORM from "@/constants/forms";
 import { downloadFileFromDocumentManager } from "@/utils/actionlessNetworkCalls";
 
+const propTypes = {
+  openModal: PropTypes.func.isRequired,
+  closeModal: PropTypes.func.isRequired,
+  now_application_guid: PropTypes.string.isRequired,
+  mine_guid: PropTypes.string.isRequired,
+  documents: PropTypes.arrayOf(PropTypes.any).isRequired,
+  noticeOfWorkApplicationDocumentTypeOptionsHash: PropTypes.objectOf(PropTypes.any).isRequired,
+  arrayPush: PropTypes.func.isRequired,
+  isViewMode: PropTypes.bool.isRequired,
+};
+
 const columns = (noticeOfWorkApplicationDocumentTypeOptionsHash) => {
   const categoryFilters = Object.values(noticeOfWorkApplicationDocumentTypeOptionsHash).map(
     (dt) => ({
@@ -126,17 +137,6 @@ const openAddDocumentModal = (
     },
     content: modalConfig.EDIT_NOTICE_OF_WORK_DOCUMENT,
   });
-};
-
-const propTypes = {
-  openModal: PropTypes.func.isRequired,
-  closeModal: PropTypes.func.isRequired,
-  now_application_guid: PropTypes.string.isRequired,
-  mine_guid: PropTypes.string.isRequired,
-  documents: PropTypes.arrayOf(PropTypes.any).isRequired,
-  noticeOfWorkApplicationDocumentTypeOptionsHash: PropTypes.objectOf(PropTypes.any).isRequired,
-  arrayPush: PropTypes.func.isRequired,
-  isViewMode: PropTypes.bool.isRequired,
 };
 
 export const NOWDocuments = (props) => (
