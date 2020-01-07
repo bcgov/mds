@@ -29,6 +29,7 @@ import {
   fetchNoticeOFWorkUndergroundExplorationTypeOptions,
   fetchNoticeOFWorkApplicationTypeOptions,
   fetchNoticeOFWorkApplicationPermitTypes,
+  fetchNoticeOFWorkUnitTypeOptions,
 } from "@/actionCreators/staticContentActionCreator";
 import { getMines } from "@/selectors/mineSelectors";
 import {
@@ -60,6 +61,7 @@ const propTypes = {
   updateNoticeOfWorkApplication: PropTypes.func.isRequired,
   fetchNoticeOFWorkApplicationPermitTypes: PropTypes.func.isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
+  fetchNoticeOFWorkUnitTypeOptions: PropTypes.func.isRequired,
   fetchImportedNoticeOfWorkApplication: PropTypes.func.isRequired,
   fetchNoticeOFWorkUndergroundExplorationTypeOptions: PropTypes.func.isRequired,
   fetchOriginalNoticeOfWorkApplication: PropTypes.func.isRequired,
@@ -126,6 +128,7 @@ export class NoticeOfWorkApplication extends Component {
     this.props.fetchNoticeOFWorkApplicationProgressStatusCodes();
     this.props.fetchNoticeOFWorkApplicationTypeOptions();
     this.props.fetchNoticeOFWorkUndergroundExplorationTypeOptions();
+    this.props.fetchNoticeOFWorkUnitTypeOptions();
     this.props.fetchImportedNoticeOfWorkApplication(id).then(({ data }) => {
       const associatedMineGuid = data.mine_guid ? data.mine_guid : "";
       const isImported = data.imported_to_core;
@@ -532,6 +535,7 @@ const mapDispatchToProps = (dispatch) =>
       fetchNoticeOFWorkApplicationPermitTypes,
       openModal,
       closeModal,
+      fetchNoticeOFWorkUnitTypeOptions,
     },
     dispatch
   );

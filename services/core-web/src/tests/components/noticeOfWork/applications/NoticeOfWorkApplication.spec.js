@@ -16,6 +16,7 @@ const setupDispatchProps = () => {
   dispatchProps.fetchNoticeOFWorkApplicationTypeOptions = jest.fn();
   dispatchProps.fetchNoticeOFWorkUndergroundExplorationTypeOptions = jest.fn();
   dispatchProps.updateNoticeOfWorkApplication = jest.fn();
+  dispatchProps.fetchNoticeOFWorkUnitTypeOptions = jest.fn();
   dispatchProps.fetchNoticeOFWorkApplicationPermitTypes = jest.fn();
   dispatchProps.fetchNoticeOFWorkApplicationStatusOptions = jest.fn();
   dispatchProps.fetchNoticeOFWorkApplicationProgressStatusCodes = jest.fn();

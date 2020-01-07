@@ -22,6 +22,7 @@ import {
   fetchNoticeOFWorkUndergroundExplorationTypeOptions,
   fetchNoticeOFWorkApplicationPermitTypes,
   fetchRegionOptions,
+  fetchNoticeOFWorkUnitTypeOptions,
 } from "@/actionCreators/staticContentActionCreator";
 import { getMines } from "@/selectors/mineSelectors";
 import CustomPropTypes from "@/customPropTypes";
@@ -43,6 +44,7 @@ const propTypes = {
   fetchNoticeOFWorkActivityTypeOptions: PropTypes.func.isRequired,
   fetchNoticeOFWorkUndergroundExplorationTypeOptions: PropTypes.func.isRequired,
   fetchRegionOptions: PropTypes.func.isRequired,
+  fetchNoticeOFWorkUnitTypeOptions: PropTypes.func.isRequired,
   fetchNoticeOFWorkApplicationStatusOptions: PropTypes.func.isRequired,
   fetchNoticeOFWorkApplicationTypeOptions: PropTypes.func.isRequired,
   fetchNoticeOFWorkApplicationPermitTypes: PropTypes.func.isRequired,
@@ -75,6 +77,7 @@ export class ViewNoticeOfWorkApplication extends Component {
     this.props.fetchNoticeOFWorkUndergroundExplorationTypeOptions();
     this.props.fetchNoticeOFWorkActivityTypeOptions();
     this.props.fetchRegionOptions();
+    this.props.fetchNoticeOFWorkUnitTypeOptions();
     this.props.fetchImportedNoticeOfWorkApplication(id).then(() => {
       this.setState({ isLoaded: true });
     });
@@ -175,6 +178,7 @@ const mapDispatchToProps = (dispatch) =>
       fetchOriginalNoticeOfWorkApplication,
       fetchMineRecordById,
       fetchNoticeOFWorkActivityTypeOptions,
+      fetchNoticeOFWorkUnitTypeOptions,
     },
     dispatch
   );

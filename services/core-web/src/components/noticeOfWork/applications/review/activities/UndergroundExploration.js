@@ -4,7 +4,10 @@ import { Field, formValueSelector } from "redux-form";
 import { connect } from "react-redux";
 import { Row, Col, Table, Button, Select } from "antd";
 import * as FORM from "@/constants/forms";
-import { getDropdownNoticeOfWorkUndergroundExplorationTypeOptions } from "@/selectors/staticContentSelectors";
+import {
+  getDropdownNoticeOfWorkUndergroundExplorationTypeOptions,
+  getDropdownNoticeOfWorkUnitTypeOptions,
+} from "@/selectors/staticContentSelectors";
 import { TRASHCAN } from "@/constants/assets";
 import RenderField from "@/components/common/RenderField";
 import CustomPropTypes from "@/customPropTypes";
@@ -56,14 +59,14 @@ export const UndergroundExploration = (props) => {
 
   const standardColumns = [
     {
-      title: "Activity",
-      dataIndex: "activity_type_description",
-      key: "activity_type_description",
+      title: "Exploration Type",
+      dataIndex: "underground_exploration_type_code",
+      key: "underground_exploration_type_code",
       render: (text, record) => (
-        <div title="Activity">
+        <div title="Exploration Type">
           <select
             style={{ width: "150px" }}
-            name="activity_type_description"
+            name="underground_exploration_type_code"
             value={text}
             disabled={props.isViewMode}
             onChange={(e) => editActivity(e, record.index, false)}
@@ -72,13 +75,22 @@ export const UndergroundExploration = (props) => {
               <option value={type.value}>{type.label}</option>
             ))}
           </select>
-          {/* <input
-              name="activity_type_description"
-              type="text"
-              disabled={props.isViewMode}
-              value={text}
-              onChange={(e) => editActivity(e, record.index, false)}
-            /> */}
+        </div>
+      ),
+    },
+    {
+      title: "Activity",
+      dataIndex: "activity_type_description",
+      key: "activity_type_description",
+      render: (text, record) => (
+        <div title="Activity">
+          <input
+            name="activity_type_description"
+            type="text"
+            disabled={props.isViewMode}
+            value={text}
+            onChange={(e) => editActivity(e, record.index, false)}
+          />
         </div>
       ),
     },
@@ -88,15 +100,13 @@ export const UndergroundExploration = (props) => {
       key: "quantity",
       render: (text, record) => (
         <div title="Quantity">
-          <div className="inline-flex">
-            <input
-              name="quantity"
-              type="number"
-              disabled={props.isViewMode}
-              value={text}
-              onChange={(e) => editActivity(e, record.index, false)}
-            />
-          </div>
+          <input
+            name="quantity"
+            type="number"
+            disabled={props.isViewMode}
+            value={text}
+            onChange={(e) => editActivity(e, record.index, false)}
+          />
         </div>
       ),
     },
@@ -106,33 +116,33 @@ export const UndergroundExploration = (props) => {
       key: "incline",
       render: (text, record) => (
         <div title="Incline">
-          <div className="inline-flex">
-            <input
-              name="incline"
-              type="text"
-              disabled={props.isViewMode}
-              value={text}
-              onChange={(e) => editActivity(e, record.index, false)}
-            />
-          </div>
+          <input
+            name="incline"
+            type="text"
+            disabled={props.isViewMode}
+            value={text}
+            onChange={(e) => editActivity(e, record.index, false)}
+          />
         </div>
       ),
     },
     {
-      title: "Units",
+      title: "Incline Units",
       dataIndex: "incline_unit_type_code",
       key: "incline_unit_type_code",
       render: (text, record) => (
         <div title="Units">
-          <div className="inline-flex">
-            <input
-              name="incline_unit_type_code"
-              type="text"
-              disabled={props.isViewMode}
-              value={text}
-              onChange={(e) => editActivity(e, record.index, false)}
-            />
-          </div>
+          <select
+            style={{ width: "160px" }}
+            name="incline_unit_type_code"
+            value={text}
+            disabled={props.isViewMode}
+            onChange={(e) => editActivity(e, record.index, false)}
+          >
+            {props.unitTypeOptions.map((type) => (
+              <option value={type.value}>{type.label}</option>
+            ))}
+          </select>
         </div>
       ),
     },
@@ -142,15 +152,13 @@ export const UndergroundExploration = (props) => {
       key: "width",
       render: (text, record) => (
         <div title="Width(m)">
-          <div className="inline-flex">
-            <input
-              name="width"
-              type="number"
-              disabled={props.isViewMode}
-              value={text}
-              onChange={(e) => editActivity(e, record.index, false)}
-            />
-          </div>
+          <input
+            name="width"
+            type="number"
+            disabled={props.isViewMode}
+            value={text}
+            onChange={(e) => editActivity(e, record.index, false)}
+          />
         </div>
       ),
     },
@@ -160,15 +168,13 @@ export const UndergroundExploration = (props) => {
       key: "length",
       render: (text, record) => (
         <div title="Length(km)">
-          <div className="inline-flex">
-            <input
-              name="length"
-              type="number"
-              disabled={props.isViewMode}
-              value={text}
-              onChange={(e) => editActivity(e, record.index, false)}
-            />
-          </div>
+          <input
+            name="length"
+            type="number"
+            disabled={props.isViewMode}
+            value={text}
+            onChange={(e) => editActivity(e, record.index, false)}
+          />
         </div>
       ),
     },
@@ -178,15 +184,13 @@ export const UndergroundExploration = (props) => {
       key: "height",
       render: (text, record) => (
         <div title="Height(m)">
-          <div className="inline-flex">
-            <input
-              name="height"
-              type="number"
-              disabled={props.isViewMode}
-              value={text}
-              onChange={(e) => editActivity(e, record.index, false)}
-            />
-          </div>
+          <input
+            name="height"
+            type="number"
+            disabled={props.isViewMode}
+            value={text}
+            onChange={(e) => editActivity(e, record.index, false)}
+          />
         </div>
       ),
     },
@@ -196,15 +200,13 @@ export const UndergroundExploration = (props) => {
       key: "disturbed_area",
       render: (text, record) => (
         <div title="Disturbed Area (ha)">
-          <div className="inline-flex">
-            <input
-              name="disturbed_area"
-              type="number"
-              disabled={props.isViewMode}
-              value={text}
-              onChange={(e) => editActivity(e, record.index, false)}
-            />
-          </div>
+          <input
+            name="disturbed_area"
+            type="number"
+            disabled={props.isViewMode}
+            value={text}
+            onChange={(e) => editActivity(e, record.index, false)}
+          />
         </div>
       ),
     },
@@ -214,15 +216,13 @@ export const UndergroundExploration = (props) => {
       key: "timber_volume",
       render: (text, record) => (
         <div title="Merchantable timber volume (m3)">
-          <div className="inline-flex">
-            <input
-              name="timber_volume"
-              type="number"
-              disabled={props.isViewMode}
-              value={text}
-              onChange={(e) => editActivity(e, record.index, false)}
-            />
-          </div>
+          <input
+            name="timber_volume"
+            type="number"
+            disabled={props.isViewMode}
+            value={text}
+            onChange={(e) => editActivity(e, record.index, false)}
+          />
         </div>
       ),
     },
@@ -322,6 +322,7 @@ export default connect(
     undergroundExplorationTypeOptions: getDropdownNoticeOfWorkUndergroundExplorationTypeOptions(
       state
     ),
+    unitTypeOptions: getDropdownNoticeOfWorkUnitTypeOptions(state),
   }),
   null
 )(UndergroundExploration);
