@@ -11,6 +11,7 @@ exports[`NoticeOfWorkApplication renders properly 1`] = `
       className="inline-flex between"
     >
       <NoticeOfWorkPageHeader
+        fixedTop={false}
         noticeOfWork={
           Object {
             "anyotherinformation": null,
