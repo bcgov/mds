@@ -14,7 +14,6 @@ from app.api.utils.resources_mixins import UserMixin
 
 PAGE_DEFAULT = 1
 PER_PAGE_DEFAULT = 25
-import sys
 
 
 class NoticeOfWorkListResource(Resource, UserMixin):
