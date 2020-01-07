@@ -111,8 +111,12 @@ export const formatQueryListParams = (method, listFields) => (fields) => {
 };
 
 // Adapt our { label, value } options arrays to work with AntDesign column filter
-export const optionsFilterAdapter = (options) =>
+export const optionsFilterLabelAndValue = (options) =>
   options.map(({ label, value }) => ({ text: label, value }));
+
+// Adapt our { label, value } options arrays to work with AntDesign column filter (value is label)
+export const optionsFilterLabelOnly = (options) =>
+  options.map(({ label }) => ({ text: label, value: label }));
 
 // This method sorts codes of the for '#.#.# - Lorem Ipsum'
 // where the number of integers is variable and the text is optional

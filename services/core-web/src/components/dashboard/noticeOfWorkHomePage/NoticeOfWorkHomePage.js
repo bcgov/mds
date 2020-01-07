@@ -11,10 +11,12 @@ import {
   getMineRegionHash,
   getMineRegionDropdownOptions,
   getDropdownNoticeOfWorkApplicationStatusOptions,
+  getDropdownNoticeOfWorkApplicationTypeOptions,
 } from "@/selectors/staticContentSelectors";
 import {
   fetchRegionOptions,
   fetchNoticeOfWorkApplicationStatusOptions,
+  fetchNoticeOfWorkApplicationTypeOptions,
 } from "@/actionCreators/staticContentActionCreator";
 import NoticeOfWorkTable from "@/components/dashboard/noticeOfWorkHomePage/NoticeOfWorkTable";
 import NoticeOfWorkSearch from "@/components/dashboard/noticeOfWorkHomePage/NoticeOfWorkSearch";
@@ -31,9 +33,11 @@ const propTypes = {
   noticeOfWorkApplications: PropTypes.arrayOf(CustomPropTypes.nowApplication).isRequired,
   fetchRegionOptions: PropTypes.func.isRequired,
   fetchNoticeOfWorkApplicationStatusOptions: PropTypes.func.isRequired,
+  fetchNoticeOfWorkApplicationTypeOptions: PropTypes.func.isRequired,
   mineRegionHash: PropTypes.objectOf(PropTypes.string).isRequired,
   mineRegionOptions: CustomPropTypes.options.isRequired,
   applicationStatusOptions: CustomPropTypes.options.isRequired,
+  applicationTypeOptions: CustomPropTypes.options.isRequired,
 };
 
 export class NoticeOfWorkHomePage extends Component {
@@ -59,6 +63,7 @@ export class NoticeOfWorkHomePage extends Component {
   componentDidMount() {
     this.props.fetchRegionOptions();
     this.props.fetchNoticeOfWorkApplicationStatusOptions();
+    this.props.fetchNoticeOfWorkApplicationTypeOptions();
     const params = this.props.location.search;
     const parsedParams = queryString.parse(params);
     const {
@@ -161,6 +166,7 @@ export class NoticeOfWorkHomePage extends Component {
                 mineRegionHash={this.props.mineRegionHash}
                 mineRegionOptions={this.props.mineRegionOptions}
                 applicationStatusOptions={this.props.applicationStatusOptions}
+                applicationTypeOptions={this.props.applicationTypeOptions}
               />
               <div className="center">
                 <ResponsivePagination
@@ -184,6 +190,7 @@ const mapStateToProps = (state) => ({
   mineRegionHash: getMineRegionHash(state),
   mineRegionOptions: getMineRegionDropdownOptions(state),
   applicationStatusOptions: getDropdownNoticeOfWorkApplicationStatusOptions(state),
+  applicationTypeOptions: getDropdownNoticeOfWorkApplicationTypeOptions(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
@@ -192,6 +199,7 @@ const mapDispatchToProps = (dispatch) =>
       fetchNoticeOfWorkApplications,
       fetchRegionOptions,
       fetchNoticeOfWorkApplicationStatusOptions,
+      fetchNoticeOfWorkApplicationTypeOptions,
     },
     dispatch
   );

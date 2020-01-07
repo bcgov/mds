@@ -7,7 +7,12 @@ import * as Strings from "@/constants/strings";
 import * as router from "@/constants/routes";
 import NullScreen from "@/components/common/NullScreen";
 import TableLoadingWrapper from "@/components/common/wrappers/TableLoadingWrapper";
-import { formatDate, optionsFilterAdapter, getTableHeaders } from "@/utils/helpers";
+import {
+  formatDate,
+  optionsFilterLabelAndValue,
+  optionsFilterLabelOnly,
+  getTableHeaders,
+} from "@/utils/helpers";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import { EDIT_OUTLINE_VIOLET } from "@/constants/assets";
 
@@ -23,6 +28,8 @@ const propTypes = {
   searchParams: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
   mineRegionHash: PropTypes.objectOf(PropTypes.string).isRequired,
   mineRegionOptions: CustomPropTypes.options.isRequired,
+  applicationStatusOptions: CustomPropTypes.options.isRequired,
+  applicationTypeOptions: CustomPropTypes.options.isRequired,
   isLoaded: PropTypes.bool.isRequired,
   location: PropTypes.shape({
     pathname: PropTypes.string,
@@ -168,7 +175,7 @@ export class NoticeOfWorkTable extends Component {
         ? [this.props.searchParams.mine_region]
         : [],
       filters: this.props.mineRegionOptions
-        ? optionsFilterAdapter(this.props.mineRegionOptions).sort((a, b) =>
+        ? optionsFilterLabelAndValue(this.props.mineRegionOptions).sort((a, b) =>
             a.value > b.value ? 1 : -1
           )
         : [],
@@ -184,14 +191,9 @@ export class NoticeOfWorkTable extends Component {
       filteredValue: this.props.searchParams.notice_of_work_type_description
         ? [this.props.searchParams.notice_of_work_type_description]
         : [],
-      filters: [
-        { text: "Quarry - Construction Aggregate", value: "Quarry - Construction Aggregate" },
-        { text: "Coal", value: "Coal" },
-        { text: "Placer Operations", value: "Placer Operations" },
-        { text: "Mineral", value: "Mineral" },
-        { text: "Sand & Gravel", value: "Sand & Gravel" },
-        { text: "Quarry - Industrial Mineral", value: "Quarry - Industrial Mineral" },
-      ].sort((a, b) => (a.value > b.value ? 1 : -1)),
+      filters: optionsFilterLabelOnly(this.props.applicationTypeOptions).sort((a, b) =>
+        a.value > b.value ? 1 : -1
+      ),
       render: (text) => <div title="NoW Mine Type">{text}</div>,
     },
     {
@@ -213,11 +215,9 @@ export class NoticeOfWorkTable extends Component {
       filteredValue: this.props.searchParams.now_application_status_description
         ? [this.props.searchParams.now_application_status_description]
         : [],
-      filters: [
-        { text: "Withdrawn", value: "Withdrawn" },
-        { text: "Accepted", value: "Accepted" },
-        { text: "Under Review", value: "Under Review" },
-      ].sort((a, b) => (a.value > b.value ? 1 : -1)),
+      filters: optionsFilterLabelOnly(this.props.applicationStatusOptions).sort((a, b) =>
+        a.value > b.value ? 1 : -1
+      ),
       render: (text) => <div title="Application Status">{text}</div>,
     },
     {
@@ -258,9 +258,6 @@ export class NoticeOfWorkTable extends Component {
           rowClassName="fade-in"
           align="left"
           pagination={false}
-          // size="middle"
-          // scroll={{ y: 480 }}
-          // expandedRowRender={(record) => <p style={{ margin: 0 }}>{record.now_application_guid}</p>}
           columns={applySortIndicator(
             this.columns(this.props),
             this.props.sortField,
