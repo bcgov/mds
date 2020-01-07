@@ -5,14 +5,14 @@ import ReviewNOWDocuments from "@/components/noticeOfWork/applications/review/Re
 
 const propTypes = {
   submissionDocuments: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
-  nowApplicationGuid: PropTypes.string.isRequired,
+  noticeOfWorkGuid: PropTypes.string.isRequired,
   onSubmit: PropTypes.func.isRequired,
 };
 
 export const DownloadDocumentPackageModal = (props) => (
   <div>
     <ReviewNOWDocuments
-      now_application_guid={props.nowApplicationGuid}
+      now_application_guid={props.noticeOfWorkGuid}
       documents={props.submissionDocuments}
     />
   </div>

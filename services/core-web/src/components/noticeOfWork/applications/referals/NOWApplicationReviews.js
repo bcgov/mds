@@ -14,7 +14,6 @@ import {
   createNoticeOfWorkApplicationReview,
   fetchNoticeOfWorkApplicationReviews,
 } from "@/actionCreators/noticeOfWorkActionCreator";
-import { modalConfig } from "@/components/modalContent/config";
 import { getNoticeOfWorkReviews } from "@/selectors/noticeOfWorkSelectors";
 import NOWApplicationReviewsTable from "@/components/noticeOfWork/applications/referals/NOWApplicationReviewsTable";
 
@@ -25,7 +24,6 @@ import NOWApplicationReviewsTable from "@/components/noticeOfWork/applications/r
 const propTypes = {
   // eslint-disable-next-line
   noticeOfWorkGuid: PropTypes.string.isRequired,
-  nowApplicationGuid: PropTypes.string.isRequired,
   // eslint-disable-next-line
   noticeOfWorkReviews: PropTypes.arrayOf(CustomPropTypes.NOWApplicationReview).isRequired,
   applicationDocuments: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
@@ -45,7 +43,7 @@ export class NOWApplicationReviews extends Component {
     event.preventDefault();
     this.props.openModal({
       props: {
-        nowApplicationGuid: this.props.nowApplicationGuid,
+        noticeOfWorkGuid: this.props.noticeOfWorkGuid,
         submissionDocuments: this.props.submissionDocuments,
         onSubmit: () => {
           true;
