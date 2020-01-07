@@ -75,20 +75,12 @@ export class Home extends Component {
             isMenuOpen={this.state.isMenuOpen}
             toggleHamburgerMenu={this.toggleHamburgerMenu}
           />
-          <div
-            style={{
-              width: "100%",
-              top: 53,
-              height: "8px",
-              backgroundColor: Styles.COLOR.mediumGrey,
-              position: "fixed",
-            }}
-          />
           <LoadingBar
             style={{
               backgroundColor: Styles.COLOR.violet,
               position: "fixed",
               top: 53,
+              zIndex: 1000,
               width: "100%",
               height: "8px",
             }}

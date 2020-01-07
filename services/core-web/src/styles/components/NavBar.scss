@@ -6,6 +6,7 @@
   width: 100%;
   justify-content: space-between;
   background-color: $nav-color;
+  border-bottom: 8px solid $nav-border-color;
   padding: 0 $default-padding-lg 0 $default-padding-md;
 
   &--search {
