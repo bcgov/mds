@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Steps, Button, Dropdown, Menu, Icon } from "antd";
 import { Link } from "react-router-dom";
-import PropTypes from "prop-types";
+import PropTypes, { any } from "prop-types";
 import { getFormValues, reset } from "redux-form";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
@@ -12,6 +12,8 @@ import {
   fetchOriginalNoticeOfWorkApplication,
   createNoticeOfWorkApplicationProgress,
   updateNoticeOfWorkApplication,
+  createNoticeOfWorkApplicationReview,
+  fetchNoticeOfWorkApplicationReviews,
 } from "@/actionCreators/noticeOfWorkActionCreator";
 import { openModal, closeModal } from "@/actions/modalActions";
 import { modalConfig } from "@/components/modalContent/config";
@@ -20,6 +22,7 @@ import {
   getNoticeOfWork,
   getOriginalNoticeOfWork,
   getNOWReclamationSummary,
+  getNoticeOfWorkReviews,
 } from "@/selectors/noticeOfWorkSelectors";
 import {
   fetchNoticeOFWorkActivityTypeOptions,
@@ -53,9 +56,13 @@ const { Step } = Steps;
 
 const propTypes = {
   noticeOfWork: CustomPropTypes.importedNOWApplication,
+  noticeOfWorkReviews: PropTypes.arrayOf(PropTypes.objectOf(any)),
+  fetchNoticeOfWorkApplicationReviews: PropTypes.func.isRequired,
+  createNoticeOfWorkApplicationReview: PropTypes.func.isRequired,
   originalNoticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
   fetchNoticeOFWorkApplicationProgressStatusCodes: PropTypes.func.isRequired,
-  createNoticeOfWorkApplicationProgress: CustomPropTypes.importedNOWApplication.isRequired,
+  createNoticeOfWorkApplicationProgress: PropTypes.func.isRequired,
+  createNoticeOfWorkApplicationStatus: PropTypes.func.isRequired,
   createNoticeOfWorkApplication: PropTypes.func.isRequired,
   updateNoticeOfWorkApplication: PropTypes.func.isRequired,
   fetchNoticeOFWorkApplicationPermitTypes: PropTypes.func.isRequired,
@@ -128,6 +135,7 @@ export class NoticeOfWorkApplication extends Component {
       const associatedMineGuid = data.mine_guid ? data.mine_guid : "";
       const isImported = data.imported_to_core;
       this.handleProgressButtonLabels(data.application_progress);
+      this.props.fetchNoticeOfWorkApplicationReviews(id);
       this.props.fetchMineRecordById(associatedMineGuid).then(() => {
         if (isImported) {
           if (data.application_progress.length > 0) {
@@ -513,6 +521,7 @@ export class NoticeOfWorkApplication extends Component {
 
 const mapStateToProps = (state) => ({
   noticeOfWork: getNoticeOfWork(state),
+  noticeOfWorkReviews: getNoticeOfWorkReviews(state),
   originalNoticeOfWork: getOriginalNoticeOfWork(state),
   formValues: getFormValues(FORM.EDIT_NOTICE_OF_WORK)(state),
   mines: getMines(state),
@@ -539,6 +548,8 @@ const mapDispatchToProps = (dispatch) =>
       fetchNoticeOFWorkApplicationPermitTypes,
       openModal,
       closeModal,
+      fetchNoticeOfWorkApplicationReviews,
+      createNoticeOfWorkApplicationReview,
     },
     dispatch
   );

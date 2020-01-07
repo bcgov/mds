@@ -1,10 +1,5 @@
 import React from "react";
 import { PropTypes } from "prop-types";
-import { compose } from "redux";
-import { connect } from "react-redux";
-import { Field, reduxForm, FormSection, formValueSelector } from "redux-form";
-import { Form, Divider, Row, Col } from "antd";
-import * as FORM from "@/constants/forms";
 import CustomPropTypes from "@/customPropTypes";
 
 /**
@@ -12,15 +7,16 @@ import CustomPropTypes from "@/customPropTypes";
  */
 
 const propTypes = {
-  noticeOfWork: CustomPropTypes.importedNOWApplication,
-  noticeOfWorkReviews: PropTypes.arrayOf(CustomPropTypes.importedNOWApplicationReview),
+  // eslint-disable-next-line
+  noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
+  // eslint-disable-next-line
+  noticeOfWorkReviews: PropTypes.arrayOf(CustomPropTypes.importedNOWApplicationReview).isRequired,
 };
 
 export const NOWApplicationReviews = (props) => {
-  return <div>HELPS</div>;
+  return <div>{props}</div>;
 };
 
 NOWApplicationReviews.propTypes = propTypes;
-const selector = formValueSelector(FORM.EDIT_NOTICE_OF_WORK);
 
 export default NOWApplicationReviews;

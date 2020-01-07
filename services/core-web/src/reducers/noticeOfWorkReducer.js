@@ -40,5 +40,5 @@ export const getNoticeOfWorkList = (state) => state[NOTICE_OF_WORK].noticeOfWork
 export const getNoticeOfWork = (state) => state[NOTICE_OF_WORK].noticeOfWork;
 export const getOriginalNoticeOfWork = (state) => state[NOTICE_OF_WORK].originalNoticeOfWork;
 export const getNoticeOfWorkPageData = (state) => state[NOTICE_OF_WORK].noticeOfWorkPageData;
-
+export const getNoticeOfWorkReviews = (state) => state[NOTICE_OF_WORK].noticeOfWorkReviews;
 export default noticeOfWorkReducer;

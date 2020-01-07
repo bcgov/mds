@@ -20,7 +20,7 @@ api.add_resource(NoticeOfWorkListResource, '')
 api.add_resource(NOWApplicationImportResource, '/<string:application_guid>/import')
 api.add_resource(NOWApplicationResource, '/<string:application_guid>')
 api.add_resource(NOWApplicationProgressResource, '/<string:application_guid>/progress')
-api.add_resource(NOWApplicationReviewListResource, '/<string:application_guid>/review')
+api.add_resource(NOWApplicationReviewListResource, '/<string:application_guid>/reviews')
 
 # now static content
 api.add_resource(NOWActivityTypeResource, '/activity-types')

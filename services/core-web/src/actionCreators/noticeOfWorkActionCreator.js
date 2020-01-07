@@ -152,7 +152,7 @@ export const createNoticeOfWorkApplicationProgress = (applicationGuid, payload) 
     .finally(() => dispatch(hideLoading()));
 };
 
-export const getNoticeOfWorkApplicationReviews = (applicationGuid) => (dispatch) => {
+export const fetchNoticeOfWorkApplicationReviews = (applicationGuid) => (dispatch) => {
   dispatch(request(reducerTypes.GET_NOTICE_OF_WORK_APPLICATION_REVIEW));
   dispatch(showLoading());
   return CustomAxios()
