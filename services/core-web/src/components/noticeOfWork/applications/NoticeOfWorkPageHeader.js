@@ -10,6 +10,7 @@ const propTypes = {
   noticeOfWork: CustomPropTypes.nowApplication.isRequired,
   inspectorsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   noticeOfWorkPageFromRoute: CustomPropTypes.noticeOfWorkPageFromRoute.isRequired,
+  fixedTop: PropTypes.bool.isRequired,
 };
 
 const NoticeOfWorkPageHeader = (props) => {
@@ -45,7 +46,7 @@ const NoticeOfWorkPageHeader = (props) => {
           </Tag>
         </span>
       </h1>
-      {props.noticeOfWorkPageFromRoute && (
+      {props.noticeOfWorkPageFromRoute && !props.fixedTop && (
         <Link to={props.noticeOfWorkPageFromRoute.route}>
           <Icon type="arrow-left" style={{ paddingRight: "5px" }} />
           Back to: {props.noticeOfWorkPageFromRoute.title}

@@ -524,6 +524,7 @@ export class NoticeOfWorkApplication extends Component {
               noticeOfWork={this.props.noticeOfWork}
               inspectorsHash={this.props.inspectorsHash}
               noticeOfWorkPageFromRoute={this.state.noticeOfWorkPageFromRoute}
+              fixedTop={this.state.fixedTop}
             />
             {this.state.isViewMode && (
               <Dropdown
