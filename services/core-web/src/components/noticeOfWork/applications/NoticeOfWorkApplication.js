@@ -12,8 +12,6 @@ import {
   fetchOriginalNoticeOfWorkApplication,
   createNoticeOfWorkApplicationProgress,
   updateNoticeOfWorkApplication,
-  createNoticeOfWorkApplicationReview,
-  fetchNoticeOfWorkApplicationReviews,
 } from "@/actionCreators/noticeOfWorkActionCreator";
 import { openModal, closeModal } from "@/actions/modalActions";
 import { modalConfig } from "@/components/modalContent/config";
@@ -22,7 +20,6 @@ import {
   getNoticeOfWork,
   getOriginalNoticeOfWork,
   getNOWReclamationSummary,
-  getNoticeOfWorkReviews,
 } from "@/selectors/noticeOfWorkSelectors";
 import {
   fetchNoticeOFWorkActivityTypeOptions,
@@ -56,7 +53,6 @@ const { Step } = Steps;
 
 const propTypes = {
   noticeOfWork: CustomPropTypes.importedNOWApplication,
-  noticeOfWorkReviews: PropTypes.arrayOf(PropTypes.objectOf(any)).isRequired,
   fetchNoticeOfWorkApplicationReviews: PropTypes.func.isRequired,
   createNoticeOfWorkApplicationReview: PropTypes.func.isRequired,
   originalNoticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
@@ -135,7 +131,6 @@ export class NoticeOfWorkApplication extends Component {
       const associatedMineGuid = data.mine_guid ? data.mine_guid : "";
       const isImported = data.imported_to_core;
       this.handleProgressButtonLabels(data.application_progress);
-      this.props.fetchNoticeOfWorkApplicationReviews(id);
       this.props.fetchMineRecordById(associatedMineGuid).then(() => {
         if (isImported) {
           if (data.application_progress.length > 0) {
@@ -358,7 +353,9 @@ export class NoticeOfWorkApplication extends Component {
   };
 
   renderStepThree = () => {
-    return <NOWApplicationReviews noticeOfWork={this.props.noticeOfWork} />;
+    return (
+      <NOWApplicationReviews noticeOfWorkGuid={this.props.noticeOfWork.now_application_guid} />
+    );
   };
 
   renderProgressStatus = (stepIndex) => {
@@ -521,7 +518,6 @@ export class NoticeOfWorkApplication extends Component {
 
 const mapStateToProps = (state) => ({
   noticeOfWork: getNoticeOfWork(state),
-  noticeOfWorkReviews: getNoticeOfWorkReviews(state),
   originalNoticeOfWork: getOriginalNoticeOfWork(state),
   formValues: getFormValues(FORM.EDIT_NOTICE_OF_WORK)(state),
   mines: getMines(state),
@@ -548,8 +544,6 @@ const mapDispatchToProps = (dispatch) =>
       fetchNoticeOFWorkApplicationPermitTypes,
       openModal,
       closeModal,
-      fetchNoticeOfWorkApplicationReviews,
-      createNoticeOfWorkApplicationReview,
     },
     dispatch
   );
