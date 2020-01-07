@@ -118,12 +118,24 @@ export class ViewNoticeOfWorkApplication extends Component {
                   </Link>
                 )}
               </div>
-              {this.state.isLoaded &&
-                this.props.noticeOfWork.submission_documents.filter(
-                  (x) => x.filename === "ApplicationForm.pdf"
-                ).length > 0 && (
-                  <Button onClick={this.showApplicationForm}>Open Original Application Form</Button>
-                )}
+              <div>
+                <Link
+                  style={{ float: "right" }}
+                  to={routes.MINE_SUMMARY.dynamicRoute(this.props.noticeOfWork.mine_guid)}
+                >
+                  {this.props.noticeOfWork.mine_name}
+                </Link>
+                <span style={{ float: "right" }}>Current Mine:&nbsp;</span>
+                <br />
+                {this.state.isLoaded &&
+                  this.props.noticeOfWork.submission_documents.filter(
+                    (x) => x.filename === "ApplicationForm.pdf"
+                  ).length > 0 && (
+                    <Button onClick={this.showApplicationForm}>
+                      Open Original Application Form
+                    </Button>
+                  )}
+              </div>
             </div>
           </div>
           <div>
