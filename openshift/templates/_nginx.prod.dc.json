@@ -1,0 +1,354 @@
+{
+  "kind": "Template",
+  "apiVersion": "v1",
+  "metadata": {
+    "name": "mds-nginx-dc",
+    "creationTimestamp": null
+  },
+  "parameters": [
+    {
+      "name": "NAME",
+      "displayName": "Name",
+      "description": "A name for all objects",
+      "required": true
+    },
+    {
+      "name": "SUFFIX",
+      "displayName": "Name Suffix",
+      "description": "A suffix appended to all objects",
+      "required": true
+    },
+    {
+      "name": "VERSION",
+      "required": true
+    },
+    {
+      "name": "LOG_PVC_SIZE",
+      "required": true
+    },
+    {
+      "name": "ROUTE",
+      "value": "/"
+    },
+    {
+      "name": "PATH_PREFIX",
+      "value": "/"
+    },
+    {
+      "name": "CORE_SERVICE_URL",
+      "value": "/"
+    },
+    {
+      "name": "NRIS_API_SERVICE_URL",
+      "value": "/"
+    },
+    {
+      "name": "DOCUMENT_MANAGER_SERVICE_URL",
+      "value": "/"
+    },
+    {
+      "name": "MINESPACE_SERVICE_URL",
+      "value": "/"
+    },
+    {
+      "name": "API_SERVICE_URL",
+      "value": "/"
+    },
+    {
+      "name": "CORE_DOMAIN",
+      "required": true
+    },
+    {
+      "name": "MINESPACE_DOMAIN",
+      "required": true
+    },
+    {
+      "name": "CPU_LIMIT",
+      "value": "200m"
+    },
+    {
+      "name": "MEMORY_LIMIT",
+      "value": "512Mi"
+    },
+    {
+      "name": "CPU_REQUEST",
+      "value": "150m"
+    },
+    {
+      "name": "MEMORY_REQUEST",
+      "value": "256Mi"
+    },
+    {
+      "name": "REPLICA_MIN",
+      "value": "1"
+    },
+    {
+      "name": "REPLICA_MAX",
+      "value": "1"
+    }
+  ],
+  "objects": [
+    {
+      "apiVersion": "v1",
+      "kind": "PersistentVolumeClaim",
+      "metadata": {
+        "name": "mds-logs${SUFFIX}",
+        "annotations": {
+          "volume.beta.kubernetes.io/storage-class": "gluster-file",
+          "volume.beta.kubernetes.io/storage-provisioner": "kubernetes.io/glusterfs"
+        }
+      },
+      "spec": {
+        "accessModes": ["ReadWriteMany"],
+        "resources": {
+          "requests": {
+            "storage": "${LOG_PVC_SIZE}"
+          }
+        }
+      }
+    },
+    {
+      "kind": "ImageStream",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "${NAME}",
+        "creationTimestamp": null,
+        "labels": {
+          "shared": "true"
+        },
+        "annotations": {
+          "description": "Keeps track of changes in the application image"
+        }
+      },
+      "spec": {
+        "lookupPolicy": {
+          "local": false
+        },
+        "tags": []
+      }
+    },
+    {
+      "kind": "DeploymentConfig",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "${NAME}${SUFFIX}",
+        "creationTimestamp": null,
+        "labels": null,
+        "annotations": {
+          "description": "Defines how to deploy the application server"
+        }
+      },
+      "spec": {
+        "strategy": {
+          "type": "Rolling",
+          "maxSurge": "50%",
+          "maxUnavailable": 0
+        },
+        "triggers": [
+          {
+            "type": "ImageChange",
+            "imageChangeParams": {
+              "automatic": true,
+              "containerNames": ["nginx"],
+              "from": {
+                "kind": "ImageStreamTag",
+                "name": "${NAME}:${VERSION}"
+              }
+            }
+          },
+          {
+            "type": "ConfigChange"
+          }
+        ],
+        "replicas": "${{REPLICA_MIN}}",
+        "selector": {
+          "name": "${NAME}${SUFFIX}"
+        },
+        "template": {
+          "metadata": {
+            "name": "${NAME}${SUFFIX}",
+            "labels": {
+              "name": "${NAME}${SUFFIX}"
+            }
+          },
+          "spec": {
+            "containers": [
+              {
+                "name": "nginx",
+                "image": " ",
+                "env": [
+                  {
+                    "name": "PATH_PREFIX",
+                    "value": "${PATH_PREFIX}"
+                  },
+                  {
+                    "name": "CORE_SERVICE_URL",
+                    "value": "${CORE_SERVICE_URL}"
+                  },
+                  {
+                    "name": "NRIS_API_SERVICE_URL",
+                    "value": "${NRIS_API_SERVICE_URL}"
+                  },
+                  {
+                    "name": "DOCUMENT_MANAGER_SERVICE_URL",
+                    "value": "${DOCUMENT_MANAGER_SERVICE_URL}"
+                  },
+                  {
+                    "name": "MINESPACE_SERVICE_URL",
+                    "value": "${MINESPACE_SERVICE_URL}"
+                  },
+                  {
+                    "name": "API_SERVICE_URL",
+                    "value": "${API_SERVICE_URL}"
+                  },
+                  {
+                    "name": "CORE_DOMAIN",
+                    "value": "${CORE_DOMAIN}"
+                  },
+                  {
+                    "name": "MINESPACE_DOMAIN",
+                    "value": "${MINESPACE_DOMAIN}"
+                  }
+                ],
+                "resources": {
+                  "limits": {
+                    "cpu": "${CPU_LIMIT}",
+                    "memory": "${MEMORY_LIMIT}"
+                  },
+                  "requests": {
+                    "cpu": "${CPU_REQUEST}",
+                    "memory": "${MEMORY_REQUEST}"
+                  }
+                },
+                "volumeMounts": [
+                  {
+                    "mountPath": "/var/log/nginx",
+                    "name": "${NAME}${SUFFIX}-log"
+                  }
+                ],
+                "ports": [
+                  {
+                    "containerPort": 8080
+                  }
+                ]
+              }
+            ],
+            "volumes": [
+              {
+                "name": "${NAME}${SUFFIX}-log",
+                "persistentVolumeClaim": {
+                  "claimName": "mds-logs${SUFFIX}"
+                }
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "apiVersion": "autoscaling/v1",
+      "kind": "HorizontalPodAutoscaler",
+      "metadata": {
+        "name": "${NAME}${SUFFIX}",
+        "labels": {
+          "name": "${NAME}${SUFFIX}"
+        }
+      },
+      "spec": {
+        "maxReplicas": "${{REPLICA_MAX}}",
+        "minReplicas": "${{REPLICA_MIN}}",
+        "scaleTargetRef": {
+          "apiVersion": "v1",
+          "kind": "DeploymentConfig",
+          "name": "${NAME}${SUFFIX}"
+        },
+        "targetCPUUtilizationPercentage": 95
+      }
+    },
+    {
+      "kind": "Service",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "${NAME}${SUFFIX}",
+        "creationTimestamp": null,
+        "labels": null,
+        "annotations": {
+          "description": "Exposes and load balances the application pods"
+        }
+      },
+      "spec": {
+        "ports": [
+          {
+            "name": "web",
+            "protocol": "TCP",
+            "port": 8080,
+            "targetPort": 8080
+          }
+        ],
+        "selector": {
+          "name": "${NAME}${SUFFIX}"
+        },
+        "type": "ClusterIP",
+        "sessionAffinity": "None"
+      }
+    },
+    {
+      "kind": "Route",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "${NAME}${SUFFIX}-core",
+        "creationTimestamp": null,
+        "labels": {
+          "component": "${NAME}",
+          "route": "core"
+        }
+      },
+      "spec": {
+        "host": "${CORE_DOMAIN}",
+        "path": "${ROUTE}",
+        "to": {
+          "kind": "Service",
+          "name": "${NAME}${SUFFIX}",
+          "weight": 100
+        },
+        "port": {
+          "targetPort": "web"
+        },
+        "tls": {
+          "termination": "edge",
+          "insecureEdgeTerminationPolicy": "Redirect"
+        },
+        "wildcardPolicy": "None"
+      }
+    },
+    {
+      "kind": "Route",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "${NAME}${SUFFIX}-minespace",
+        "creationTimestamp": null,
+        "labels": {
+          "component": "${NAME}",
+          "route": "minespace"
+        }
+      },
+      "spec": {
+        "host": "${MINESPACE_DOMAIN}",
+        "path": "${ROUTE}",
+        "to": {
+          "kind": "Service",
+          "name": "${NAME}${SUFFIX}",
+          "weight": 100
+        },
+        "port": {
+          "targetPort": "web"
+        },
+        "tls": {
+          "termination": "edge",
+          "insecureEdgeTerminationPolicy": "Redirect"
+        },
+        "wildcardPolicy": "None"
+      }
+    }
+  ]
+}
