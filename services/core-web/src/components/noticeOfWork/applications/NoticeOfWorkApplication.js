@@ -358,7 +358,13 @@ export class NoticeOfWorkApplication extends Component {
   };
 
   renderStepThree = () => {
-    return <NOWApplicationReviews noticeOfWork={this.props.noticeOfWork} />;
+    return (
+      <NOWApplicationReviews
+        nowApplicationGuid={this.props.noticeOfWork.now_application_guid}
+        applicationDocuments={{}}
+        submissionDocuments={this.props.noticeOfWork.submission_documents}
+      />
+    );
   };
 
   renderProgressStatus = (stepIndex) => {
