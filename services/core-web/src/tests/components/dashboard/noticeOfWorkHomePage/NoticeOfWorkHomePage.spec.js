@@ -10,6 +10,7 @@ const setupDispatchProps = () => {
   dispatchProps.fetchNoticeOfWorkApplications = jest.fn(() => Promise.resolve({}));
   dispatchProps.fetchRegionOptions = jest.fn();
   dispatchProps.fetchNoticeOfWorkApplicationStatusOptions = jest.fn();
+  dispatchProps.fetchNoticeOfWorkApplicationTypeOptions = jest.fn();
 };
 
 const setupReducerProps = () => {
