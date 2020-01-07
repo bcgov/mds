@@ -56,7 +56,7 @@ const { Step } = Steps;
 
 const propTypes = {
   noticeOfWork: CustomPropTypes.importedNOWApplication,
-  noticeOfWorkReviews: PropTypes.arrayOf(PropTypes.objectOf(any)),
+  noticeOfWorkReviews: PropTypes.arrayOf(PropTypes.objectOf(any)).isRequired,
   fetchNoticeOfWorkApplicationReviews: PropTypes.func.isRequired,
   createNoticeOfWorkApplicationReview: PropTypes.func.isRequired,
   originalNoticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
