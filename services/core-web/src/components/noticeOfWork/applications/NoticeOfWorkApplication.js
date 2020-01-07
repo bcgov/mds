@@ -35,6 +35,7 @@ import {
   getNoticeOfWorkApplicationProgressStatusCodeOptions,
 } from "@/selectors/staticContentSelectors";
 import VerifyNOWMine from "@/components/noticeOfWork/applications/verification/VerifyNOWMine";
+import NOWApplicationReviews from "@/components/noticeOfWork/applications/referals/NOWApplicationReviews";
 import * as Strings from "@/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
 import ReviewNOWApplication from "@/components/noticeOfWork/applications/review/ReviewNOWApplication";
@@ -348,6 +349,10 @@ export class NoticeOfWorkApplication extends Component {
     );
   };
 
+  renderStepThree = () => {
+    return <NOWApplicationReviews noticeOfWork={this.props.noticeOfWork} />;
+  };
+
   renderProgressStatus = (stepIndex) => {
     if (this.props.noticeOfWork.application_progress) {
       const progressLength = this.props.noticeOfWork.application_progress.length;
@@ -373,7 +378,7 @@ export class NoticeOfWorkApplication extends Component {
     const steps = {
       0: this.renderStepOne(),
       1: this.renderStepTwo(),
-      2: <NullScreen type="next-stage" />,
+      2: this.renderStepThree(),
       3: <NullScreen type="next-stage" />,
     };
 

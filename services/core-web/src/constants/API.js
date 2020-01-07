@@ -168,6 +168,8 @@ export const NOW_UNDERGROUND_EXPLORATION_TYPE_OPTIONS =
   "/now-applications/underground-exploration-types";
 export const NOTICE_OF_WORK_APPLICATION_PROGRESS = (applicationGuid) =>
   `/now-applications/${applicationGuid}/progress`;
+export const NOTICE_OF_WORK_APPLICATION_REVIEW = (applicationGuid) =>
+  `/now-applications/${applicationGuid}/reviews`;
 export const NOW_APPLICATION_PROGRESS_STATUS_CODES =
   "/now-applications/application-progress-status-codes";
 export const NOW_APPLICATION_PERMIT_TYPES = "/now-applications/application-permit-types";

@@ -26,6 +26,11 @@ const noticeOfWorkReducer = (state = initialState, action) => {
         ...state,
         originalNoticeOfWork: action.payload,
       };
+    case actionTypes.STORE_NOTICE_OF_WORK_APPLICATION_REVIEWS:
+      return {
+        ...state,
+        noticeOfWorkReviews: action.payload,
+      };
     default:
       return state;
   }

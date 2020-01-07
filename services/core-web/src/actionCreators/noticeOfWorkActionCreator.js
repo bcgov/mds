@@ -151,3 +151,37 @@ export const createNoticeOfWorkApplicationProgress = (applicationGuid, payload) 
     .catch(() => dispatch(error(reducerTypes.CREATE_NOTICE_OF_WORK_APPLICATION_PROGRESS)))
     .finally(() => dispatch(hideLoading()));
 };
+
+export const getNoticeOfWorkApplicationReviews = (applicationGuid) => (dispatch) => {
+  dispatch(request(reducerTypes.GET_NOTICE_OF_WORK_APPLICATION_REVIEW));
+  dispatch(showLoading());
+  return CustomAxios()
+    .get(
+      `${ENVIRONMENT.apiUrl}${API.NOTICE_OF_WORK_APPLICATION_REVIEW(applicationGuid)}`,
+      createRequestHeader()
+    )
+    .then((response) => {
+      dispatch(success(reducerTypes.GET_NOTICE_OF_WORK_APPLICATION_REVIEW));
+      dispatch(noticeOfWorkActions.storeNoticeOfWorkApplicationReviews(response.data));
+      return response;
+    })
+    .catch(() => dispatch(error(reducerTypes.GET_NOTICE_OF_WORK_APPLICATION_REVIEW)))
+    .finally(() => dispatch(hideLoading()));
+};
+
+export const createNoticeOfWorkApplicationReview = (applicationGuid, payload) => (dispatch) => {
+  dispatch(request(reducerTypes.CREATE_NOTICE_OF_WORK_APPLICATION_REVIEW));
+  dispatch(showLoading());
+  return CustomAxios()
+    .post(
+      `${ENVIRONMENT.apiUrl}${API.NOTICE_OF_WORK_APPLICATION_REVIEW(applicationGuid)}`,
+      payload,
+      createRequestHeader()
+    )
+    .then((response) => {
+      dispatch(success(reducerTypes.CREATE_NOTICE_OF_WORK_APPLICATION_REVIEW));
+      return response;
+    })
+    .catch(() => dispatch(error(reducerTypes.CREATE_NOTICE_OF_WORK_APPLICATION_REVIEW)))
+    .finally(() => dispatch(hideLoading()));
+};

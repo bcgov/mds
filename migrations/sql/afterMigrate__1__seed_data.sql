@@ -584,7 +584,7 @@ VALUES
     ('MYP', 'Multi-Year Permit', 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
 
-INSERT INTO now_application_review_type_code(
+INSERT INTO now_application_review_type(
     now_application_review_type_code,
     description,
     create_user,
