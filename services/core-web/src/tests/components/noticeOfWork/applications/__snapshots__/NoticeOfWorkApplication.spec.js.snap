@@ -397,25 +397,12 @@ exports[`NoticeOfWorkApplication renders properly 1`] = `
           loading={false}
           type="secondary"
         >
-          <Button
-            block={false}
-            ghost={false}
-            htmlType="button"
-            loading={false}
-            style={
-              Object {
-                "float": "right",
-              }
-            }
-            type="secondary"
-          >
-            Actions
-            <Icon
-              type="down"
-            />
-          </Button>
-        </Dropdown>
-      </div>
+          Actions
+          <Icon
+            type="down"
+          />
+        </Button>
+      </Dropdown>
     </div>
     <br />
     <Steps
