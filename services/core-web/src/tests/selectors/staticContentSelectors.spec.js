@@ -34,6 +34,8 @@ import {
   getNoticeOfWorkUndergroundExplorationTypeOptions,
   getDropdownNoticeOfWorkUndergroundExplorationTypeOptions,
   getNoticeOfWorkUndergroundExplorationTypeOptionsHash,
+  getNoticeOfWorkApplicationPermitTypeOptions,
+  getDropdownNoticeOfWorkApplicationPermitTypeOptions,
 } from "@/selectors/staticContentSelectors";
 import staticContentReducer from "@/reducers/staticContentReducer";
 import {
@@ -52,6 +54,7 @@ import {
   storeNoticeOfWorkApplicationStatusOptions,
   storeNoticeOfWorkApplicationDocumentTypeOptions,
   storeNoticeOfWorkUndergroundExplorationTypeOptions,
+  storeNoticeOfWorkApplicationPermitTypesOptions,
 } from "@/actions/staticContentActions";
 import { STATIC_CONTENT } from "@/constants/reducerTypes";
 import * as Mock from "@/tests/mocks/dataMocks";
@@ -73,6 +76,7 @@ const mockState = {
   noticeOfWorkApplicationStatusOptions: NOW_MOCK.APPLICATION_STATUS_CODES.records,
   noticeOfWorkApplicationDocumentTypeOptions: NOW_MOCK.APPLICATION_DOCUMENT_TYPES.records,
   noticeOfWorkUndergroundExplorationTypeOptions: NOW_MOCK.UNDERGROUND_EXPLORATION_TYPES.records,
+  noticeOfWorkApplicationPermitTypeOptions: NOW_MOCK.APPLICATION_PERMIT_TYPES.records,
 };
 
 describe("staticContentSelectors", () => {
@@ -89,6 +93,7 @@ describe("staticContentSelectors", () => {
     noticeOfWorkApplicationStatusOptions,
     noticeOfWorkApplicationDocumentTypeOptions,
     noticeOfWorkUndergroundExplorationTypeOptions,
+    noticeOfWorkApplicationPermitTypeOptions,
   } = mockState;
 
   it("`getMineStatusDropDownOptions` calls `staticContentReducer.getMineStatusDropDownOptions`", () => {
@@ -478,6 +483,33 @@ describe("staticContentSelectors", () => {
     const mockOptionsHash = NOW_MOCK.UNDERGROUND_EXPLORATION_TYPES_HASH;
     expect(getNoticeOfWorkUndergroundExplorationTypeOptionsHash(localMockState)).toEqual(
       mockOptionsHash
+    );
+  });
+
+  it("`getNoticeOfWorkApplicationPermitTypeOptions` calls `staticContentReducer.getNoticeOfWorkApplicationPermitTypeOptions`", () => {
+    const storeAction = storeNoticeOfWorkApplicationPermitTypesOptions(
+      NOW_MOCK.APPLICATION_PERMIT_TYPES
+    );
+    const storeState = staticContentReducer({}, storeAction);
+    const localMockState = {
+      [STATIC_CONTENT]: storeState,
+    };
+    expect(getNoticeOfWorkApplicationPermitTypeOptions(localMockState)).toEqual(
+      noticeOfWorkApplicationPermitTypeOptions
+    );
+  });
+
+  it("`getDropdownNoticeOfWorkApplicationPermitTypeOptions` calls `staticContentReducer.getNoticeOfWorkUndergroundExplorationTypeOptions`", () => {
+    const storeAction = storeNoticeOfWorkApplicationPermitTypesOptions(
+      NOW_MOCK.APPLICATION_PERMIT_TYPES
+    );
+    const storeState = staticContentReducer({}, storeAction);
+    const localMockState = {
+      [STATIC_CONTENT]: storeState,
+    };
+    const mockDropdownOptions = NOW_MOCK.DROPDOWN_APPLICATION_PERMIT_TYPES;
+    expect(getDropdownNoticeOfWorkApplicationPermitTypeOptions(localMockState)).toEqual(
+      mockDropdownOptions
     );
   });
 });

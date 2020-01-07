@@ -24,9 +24,16 @@ import {
 import {
   fetchNoticeOFWorkActivityTypeOptions,
   fetchNoticeOFWorkApplicationProgressStatusCodes,
+  fetchRegionOptions,
+  fetchNoticeOFWorkApplicationStatusOptions,
+  fetchNoticeOFWorkApplicationTypeOptions,
+  fetchNoticeOFWorkApplicationPermitTypes,
 } from "@/actionCreators/staticContentActionCreator";
 import { getMines } from "@/selectors/mineSelectors";
-import { getNoticeOfWorkApplicationProgressStatusCodeOptions } from "@/selectors/staticContentSelectors";
+import {
+  getDropdownNoticeOfWorkApplicationStatusOptions,
+  getNoticeOfWorkApplicationProgressStatusCodeOptions,
+} from "@/selectors/staticContentSelectors";
 import VerifyNOWMine from "@/components/noticeOfWork/applications/verification/VerifyNOWMine";
 import * as Strings from "@/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
@@ -50,10 +57,16 @@ const propTypes = {
   createNoticeOfWorkApplicationProgress: CustomPropTypes.importedNOWApplication.isRequired,
   createNoticeOfWorkApplication: PropTypes.func.isRequired,
   updateNoticeOfWorkApplication: PropTypes.func.isRequired,
+  fetchNoticeOFWorkApplicationPermitTypes: PropTypes.func.isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
   fetchImportedNoticeOfWorkApplication: PropTypes.func.isRequired,
   fetchOriginalNoticeOfWorkApplication: PropTypes.func.isRequired,
   fetchNoticeOFWorkActivityTypeOptions: PropTypes.func.isRequired,
+  fetchNoticeOFWorkApplicationStatusOptions: PropTypes.func.isRequired,
+  fetchRegionOptions: PropTypes.func.isRequired,
+  applicationStatusOptions: CustomPropTypes.options.isRequired,
+  applicationTypeOptions: CustomPropTypes.options.isRequired,
+  reset: PropTypes.func.isRequired,
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
   location: PropTypes.shape({
     state: PropTypes.shape({
@@ -65,6 +78,8 @@ const propTypes = {
       id: PropTypes.string,
     },
   }).isRequired,
+  regionDropdownOptions: CustomPropTypes.options.isRequired,
+  permitTypeOptions: CustomPropTypes.options.isRequired,
   // the following prop will be used in the future
   // eslint-disable-next-line
   formValues: CustomPropTypes.nowApplication.isRequired,
@@ -103,7 +118,11 @@ export class NoticeOfWorkApplication extends Component {
     const { id } = this.props.match.params;
     let currentStep = 0;
     this.props.fetchNoticeOFWorkActivityTypeOptions();
+    this.props.fetchRegionOptions();
+    this.props.fetchNoticeOFWorkApplicationStatusOptions();
+    this.props.fetchNoticeOFWorkApplicationPermitTypes();
     this.props.fetchNoticeOFWorkApplicationProgressStatusCodes();
+    this.props.fetchNoticeOFWorkApplicationTypeOptions();
     this.props.fetchImportedNoticeOfWorkApplication(id).then(({ data }) => {
       const associatedMineGuid = data.mine_guid ? data.mine_guid : "";
       const isImported = data.imported_to_core;
@@ -267,12 +286,11 @@ export class NoticeOfWorkApplication extends Component {
         this.props.noticeOfWork.now_application_guid
       )
       .then(() => {
-        this.setState({ isImported: true });
         return this.props
           .fetchImportedNoticeOfWorkApplication(this.props.noticeOfWork.now_application_guid)
-          .then(() => {
+          .then(({ data }) => {
             this.props.fetchMineRecordById(this.state.associatedMineGuid);
-            this.setState({ isNoWLoaded: true, isLoaded: true });
+            this.setState({ isNoWLoaded: true, isLoaded: true, isImported: data.imported_to_core });
           });
       });
   };
@@ -287,9 +305,9 @@ export class NoticeOfWorkApplication extends Component {
       .then(() => {
         return this.props
           .fetchImportedNoticeOfWorkApplication(this.props.noticeOfWork.now_application_guid)
-          .then(() => {
+          .then(({ data }) => {
             this.props.fetchMineRecordById(this.state.associatedMineGuid);
-            this.setState({ isNoWLoaded: true, isLoaded: true });
+            this.setState({ isNoWLoaded: true, isLoaded: true, isImported: data.imported_to_core });
           });
       });
 
@@ -410,26 +428,33 @@ export class NoticeOfWorkApplication extends Component {
           <div className="inline-flex between">
             <div>
               <h1>NoW Number: {this.props.noticeOfWork.now_number || Strings.EMPTY_FIELD}</h1>
-              {this.state.noticeOfWorkPageFromRoute && (
+              {this.state.noticeOfWorkPageFromRoute && !this.state.fixedTop && (
                 <Link to={this.state.noticeOfWorkPageFromRoute.route}>
                   <Icon type="arrow-left" style={{ paddingRight: "5px" }} />
                   Back to: {this.state.noticeOfWorkPageFromRoute.title}
                 </Link>
               )}
             </div>
-            {this.state.isViewMode && (
-              <Dropdown
-                overlay={menu}
-                placement="bottomLeft"
-                onVisibleChange={this.handleVisibleChange}
-                visible={this.state.menuVisible}
-              >
-                <Button type="secondary">
-                  Actions
-                  <Icon type="down" />
-                </Button>
-              </Dropdown>
-            )}
+            <div>
+              <span>Current Mine:&nbsp;</span>
+              <Link to={routes.MINE_SUMMARY.dynamicRoute(this.props.noticeOfWork.mine_guid)}>
+                {this.props.noticeOfWork.mine_name}
+              </Link>
+              <br />
+              {this.state.isViewMode && (
+                <Dropdown
+                  overlay={menu}
+                  placement="bottomLeft"
+                  onVisibleChange={this.handleVisibleChange}
+                  visible={this.state.menuVisible}
+                >
+                  <Button type="secondary" style={{ float: "right" }}>
+                    Actions
+                    <Icon type="down" />
+                  </Button>
+                </Dropdown>
+              )}
+            </div>
           </div>
           <br />
           {this.state.isViewMode ? (
@@ -464,14 +489,7 @@ export class NoticeOfWorkApplication extends Component {
         </div>
         <LoadingWrapper condition={this.state.isNoWLoaded}>
           <div>
-            <div
-              className={this.state.fixedTop ? "side-menu--fixed" : "side-menu"}
-              style={
-                this.state.noticeOfWorkPageFromRoute && this.state.fixedTop
-                  ? { paddingTop: "24px" }
-                  : {}
-              }
-            >
+            <div className={this.state.fixedTop ? "side-menu--fixed" : "side-menu"}>
               {this.state.currentStep === 1 && (
                 <NOWSideMenu route={routes.NOTICE_OF_WORK_APPLICATION} />
               )}
@@ -494,6 +512,7 @@ const mapStateToProps = (state) => ({
   formValues: getFormValues(FORM.EDIT_NOTICE_OF_WORK)(state),
   mines: getMines(state),
   reclamationSummary: getNOWReclamationSummary(state),
+  applicationStatusOptions: getDropdownNoticeOfWorkApplicationStatusOptions(state),
   applicationProgressStatusCodes: getNoticeOfWorkApplicationProgressStatusCodeOptions(state),
 });
 
@@ -508,7 +527,11 @@ const mapDispatchToProps = (dispatch) =>
       fetchNoticeOFWorkActivityTypeOptions,
       createNoticeOfWorkApplicationProgress,
       fetchNoticeOFWorkApplicationProgressStatusCodes,
+      fetchNoticeOFWorkApplicationStatusOptions,
       reset,
+      fetchRegionOptions,
+      fetchNoticeOFWorkApplicationTypeOptions,
+      fetchNoticeOFWorkApplicationPermitTypes,
       openModal,
       closeModal,
     },

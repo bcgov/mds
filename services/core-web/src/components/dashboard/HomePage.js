@@ -117,6 +117,29 @@ export class HomePage extends Component {
                   </a>
                 </p>
               </li>
+              <li>
+                <p>
+                  <a
+                    href="https://governmentofbc.maps.arcgis.com/apps/webappviewer/index.html?id=f024193c07a04a28b678170e1e2046f6"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    title="Not set up to use this? Contact the GIS team."
+                  >
+                    EMPR Inspection Mapper
+                  </a>
+                </p>
+              </li>
+              <li>
+                <p>
+                  <a
+                    href="https://nrm.sp.gov.bc.ca/sites/EMPR/mtb/_layouts/15/start.aspx#/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    EMPR Sharepoint Requests Portal
+                  </a>
+                </p>
+              </li>
             </ul>
           </div>
           <div className="link-card">

@@ -153,7 +153,11 @@
       "apiVersion": "v1",
       "kind": "PersistentVolumeClaim",
       "metadata": {
-        "name": "mds-document-storage-${DOCUMENT_CAPACITY_LOWER}${SUFFIX}"
+        "name": "mds-document-storage-${DOCUMENT_CAPACITY_LOWER}${SUFFIX}",
+        "annotations": {
+          "volume.beta.kubernetes.io/storage-class": "gluster-file",
+          "volume.beta.kubernetes.io/storage-provisioner": "kubernetes.io/glusterfs"
+        }
       },
       "spec": {
         "accessModes": ["ReadWriteMany"],
