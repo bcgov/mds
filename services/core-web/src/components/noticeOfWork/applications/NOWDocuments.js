@@ -15,6 +15,7 @@ import { modalConfig } from "@/components/modalContent/config";
 import { openModal, closeModal } from "@/actions/modalActions";
 import { getNoticeOfWorkApplicationDocumentTypeOptionsHash } from "@/selectors/staticContentSelectors";
 import * as FORM from "@/constants/forms";
+import { downloadFileFromDocumentManager } from "@/utils/actionlessNetworkCalls";
 
 const columns = (noticeOfWorkApplicationDocumentTypeOptionsHash) => {
   const categoryFilters = Object.values(noticeOfWorkApplicationDocumentTypeOptionsHash).map(
@@ -29,9 +30,16 @@ const columns = (noticeOfWorkApplicationDocumentTypeOptionsHash) => {
       dataIndex: "filename",
       key: "filename",
       sorter: (a, b) => (a.filename > b.filename ? -1 : 1),
-      render: (text) => (
+      render: (text, record) => (
         <div title="File Name">
-          <LinkButton onClick={() => {}}>
+          <LinkButton
+            onClick={() =>
+              downloadFileFromDocumentManager({
+                document_manager_guid: record.document_manager_guid,
+                document_name: record.filename,
+              })
+            }
+          >
             <span>{text}</span>
           </LinkButton>
         </div>
@@ -73,8 +81,9 @@ const transfromDocuments = (
   documents.map((document) => ({
     key: document.id,
     now_application_guid,
-    filename: document.document_name || Strings.EMPTY_FIELD,
-    upload_date: document.upload_date,
+    filename: document.mine_document.document_name || Strings.EMPTY_FIELD,
+    document_manager_guid: document.mine_document.document_manager_guid,
+    upload_date: document.mine_document.upload_date,
     category:
       (noticeOfWorkApplicationDocumentTypeOptionsHash &&
         noticeOfWorkApplicationDocumentTypeOptionsHash[
@@ -85,7 +94,17 @@ const transfromDocuments = (
   }));
 
 const handleAddDocument = (closeDocumentModal, addDocument) => (values) => {
-  addDocument(FORM.EDIT_NOTICE_OF_WORK, "documents", values);
+  const document = {
+    now_application_document_type_code: values.now_application_document_type_code,
+    description: values.description,
+    is_final_package: values.is_final_package,
+    mine_document: {
+      document_manager_guid: values.document_manager_guid,
+      document_name: values.document_name,
+      mine_guid: values.mine_guid,
+    },
+  };
+  addDocument(FORM.EDIT_NOTICE_OF_WORK, "documents", document);
   closeDocumentModal();
 };
 
@@ -94,7 +113,8 @@ const openAddDocumentModal = (
   openDocumentModal,
   closeDocumentModal,
   addDocument,
-  now_application_guid
+  now_application_guid,
+  mine_guid
 ) => {
   event.preventDefault();
   openDocumentModal({
@@ -102,6 +122,7 @@ const openAddDocumentModal = (
       onSubmit: debounce(handleAddDocument(closeDocumentModal, addDocument), 2000),
       title: `Add Notice of Work document`,
       now_application_guid,
+      mine_guid,
     },
     content: modalConfig.EDIT_NOTICE_OF_WORK_DOCUMENT,
   });
@@ -111,6 +132,7 @@ const propTypes = {
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   now_application_guid: PropTypes.string.isRequired,
+  mine_guid: PropTypes.string.isRequired,
   documents: PropTypes.arrayOf(PropTypes.any).isRequired,
   noticeOfWorkApplicationDocumentTypeOptionsHash: PropTypes.objectOf(PropTypes.any).isRequired,
   arrayPush: PropTypes.func.isRequired,
@@ -144,7 +166,8 @@ export const NOWDocuments = (props) => (
           props.openModal,
           props.closeModal,
           props.arrayPush,
-          props.now_application_guid
+          props.now_application_guid,
+          props.mine_guid
         )
       }
     >

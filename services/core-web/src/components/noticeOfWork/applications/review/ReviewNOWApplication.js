@@ -40,6 +40,7 @@ const propTypes = {
   // eslint-disable-next-line
   reclamationSummary: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.strings)).isRequired,
   now_application_guid: PropTypes.string.isRequired,
+  mine_guid: PropTypes.string.isRequired,
   documents: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
   submission_documents: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
   // eslint-disable-next-line
@@ -461,6 +462,7 @@ export const ReviewNOWApplication = (props) => {
           <ScrollContentWrapper id="additional_documents" title="Additional Documents">
             <NOWDocuments
               now_application_guid={props.now_application_guid}
+              mine_guid={props.mine_guid}
               documents={props.documents}
               isViewMode={props.isViewMode}
             />
@@ -478,6 +480,7 @@ export default compose(
   connect((state) => ({
     contacts: selector(state, "contacts"),
     now_application_guid: selector(state, "now_application_guid"),
+    mine_guid: selector(state, "mine_guid"),
     documents: selector(state, "documents"),
     submission_documents: selector(state, "submission_documents"),
     regionDropdownOptions: getMineRegionDropdownOptions(state),

@@ -2,6 +2,7 @@ from app.extensions import api
 from flask_restplus import fields
 
 from app.api.parties.response_models import PARTY
+from app.api.mines.response_models import MINE_DOCUMENT_MODEL
 
 class DateTime(fields.Raw):
     def format(self, value):
@@ -217,15 +218,11 @@ NOW_APPLICATION_STATE_OF_LAND = api.model(
 NOW_APPLICATION_DOCUMENT = api.model(
     'NOW_DOCUMENT', {
         'now_application_document_xref_guid': fields.String,
-        'mine_document_guid': fields.String,
-        'mine_guid': fields.String,
-        'document_manager_guid': fields.String,
-        'document_name': fields.String,
-        'upload_date': fields.DateTime,
         'now_application_document_type_code': fields.String,
         'now_application_document_type_code_description': fields.String,
         'description': fields.String,
         'is_final_package': fields.Boolean,
+        'mine_document': fields.Nested(MINE_DOCUMENT_MODEL),
     }
 )
 
