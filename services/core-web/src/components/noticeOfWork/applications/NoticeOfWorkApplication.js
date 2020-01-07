@@ -326,12 +326,11 @@ export class NoticeOfWorkApplication extends Component {
         this.props.noticeOfWork.now_application_guid
       )
       .then(() => {
-        this.setState({ isImported: true });
         return this.props
           .fetchImportedNoticeOfWorkApplication(this.props.noticeOfWork.now_application_guid)
-          .then(() => {
+          .then(({ data }) => {
             this.props.fetchMineRecordById(this.state.associatedMineGuid);
-            this.setState({ isNoWLoaded: true, isLoaded: true });
+            this.setState({ isNoWLoaded: true, isLoaded: true, isImported: data.imported_to_core });
           });
       });
   };
@@ -346,9 +345,9 @@ export class NoticeOfWorkApplication extends Component {
       .then(() => {
         return this.props
           .fetchImportedNoticeOfWorkApplication(this.props.noticeOfWork.now_application_guid)
-          .then(() => {
+          .then(({ data }) => {
             this.props.fetchMineRecordById(this.state.associatedMineGuid);
-            this.setState({ isNoWLoaded: true, isLoaded: true });
+            this.setState({ isNoWLoaded: true, isLoaded: true, isImported: data.imported_to_core });
           });
       });
 
