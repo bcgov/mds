@@ -1,5 +1,4 @@
 import React from "react";
-import { bindActionCreators } from "redux";
 import { Button, Icon, Result, Col, Row } from "antd";
 import { connect } from "react-redux";
 import { getFormValues } from "redux-form";
@@ -58,13 +57,7 @@ const mapStateToProps = (state) => ({
   updateLeadInspectorFormValues: getFormValues(FORM.UPDATE_NOW_LEAD_INSPECTOR)(state) || {},
 });
 
-const mapDispatchToProps = (dispatch) => bindActionCreators({}, dispatch);
-
 VerifyNOWMineConfirmation.propTypes = propTypes;
-
 VerifyNOWMineConfirmation.defaultProps = defaultProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(VerifyNOWMineConfirmation);
+export default connect(mapStateToProps)(VerifyNOWMineConfirmation);

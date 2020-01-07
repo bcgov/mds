@@ -270,7 +270,7 @@ export class NoticeOfWorkApplication extends Component {
     this.props.closeModal();
   };
 
-  handleUpdateLeadInspector = (finalThen) => {
+  handleUpdateLeadInspector = (finalAction) => {
     this.props
       .updateNoticeOfWorkApplication(
         { lead_inspector_party_guid: this.state.associatedLeadInspectorPartyGuid },
@@ -284,7 +284,7 @@ export class NoticeOfWorkApplication extends Component {
           this.props.noticeOfWork.now_application_guid
         );
       })
-      .then(() => finalThen());
+      .then(() => finalAction());
   };
 
   openUpdateLeadInspectorModal = (event) => {
@@ -297,7 +297,6 @@ export class NoticeOfWorkApplication extends Component {
         setLeadInspectorPartyGuid: this.setLeadInspectorPartyGuid,
         handleUpdateLeadInspector: (e) => this.handleUpdateLeadInspector(this.props.closeModal, e),
       },
-      widthSize: "75vw",
       content: modalConfig.UPDATE_NOW_LEAD_INSPECTOR,
     });
   };

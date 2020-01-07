@@ -38,8 +38,4 @@ UpdateNOWLeadInspectorForm.propTypes = propTypes;
 
 export default reduxForm({
   form: FORM.UPDATE_NOW_LEAD_INSPECTOR,
-  destroyOnUnmount: false,
-  forceUnregisterOnUnmount: true,
-  touchOnBlur: true,
-  enableReinitialize: true,
 })(UpdateNOWLeadInspectorForm);
