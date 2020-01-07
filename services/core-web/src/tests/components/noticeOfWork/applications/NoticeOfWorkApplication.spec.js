@@ -18,6 +18,7 @@ const setupDispatchProps = () => {
   dispatchProps.fetchNoticeOFWorkApplicationPermitTypes = jest.fn();
   dispatchProps.fetchNoticeOFWorkApplicationStatusOptions = jest.fn();
   dispatchProps.fetchNoticeOFWorkApplicationProgressStatusCodes = jest.fn();
+  dispatchProps.fetchNoticeOFWorkApplicationDocumentTypeOptions = jest.fn();
   dispatchProps.fetchImportedNoticeOfWorkApplication = jest.fn(() => Promise.resolve());
 };
 

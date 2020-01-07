@@ -938,10 +938,18 @@ exports[`ReviewNOWApplication renders properly 1`] = `
         isViewMode={true}
       />
       <withRouter(ScrollContentWrapper)
-        id="documents"
-        title="Documents"
+        id="submission_documents"
+        title="Submission Documents (VFCBC/NROS)"
       >
-        <NOWDocuments />
+        <NOWSubmissionDocuments />
+      </withRouter(ScrollContentWrapper)>
+      <withRouter(ScrollContentWrapper)
+        id="additional_documents"
+        title="Additional Documents"
+      >
+        <Connect(NOWDocuments)
+          isViewMode={true}
+        />
       </withRouter(ScrollContentWrapper)>
     </div>
   </Form>
