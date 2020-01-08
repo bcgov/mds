@@ -388,3 +388,10 @@ NOW_APPLICATION_PERMIT_TYPES = api.model(
         'description': fields.String
     }
 )
+NOW_APPLICATION_REVIEW_TYPES= api.model(
+    'ApplicationReviewTypes', 
+    {
+        'now_application_review_type_code': fields.String,
+        'description': fields.String
+    } 
+)

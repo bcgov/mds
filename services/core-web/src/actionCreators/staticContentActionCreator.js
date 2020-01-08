@@ -324,3 +324,18 @@ export const fetchNoticeOFWorkApplicationPermitTypes = () => (dispatch) => {
     })
     .catch(() => dispatch(error(reducerTypes.GET_NOW_APPLICATION_PERMIT_TYPES)));
 };
+
+export const fetchNoticeOfWorkApplicationReviewTypes = () => (dispatch) => {
+  dispatch(request(reducerTypes.GET_NOTICE_OF_WORK_APPLICATION_REVIEW_TYPES));
+  return CustomAxios()
+    .get(
+      `${ENVIRONMENT.apiUrl}${API.NOTICE_OF_WORK_APPLICATION_REVIEW_TYPES}`,
+      createRequestHeader()
+    )
+    .then((response) => {
+      dispatch(success(reducerTypes.GET_NOTICE_OF_WORK_APPLICATION_REVIEW_TYPES));
+      dispatch(staticContentActions.storeNoticeOfWorkApplicationReviewTypes(response.data));
+      return response;
+    })
+    .catch(() => dispatch(error(reducerTypes.GET_NOTICE_OF_WORK_APPLICATION_REVIEW_TYPES)));
+};

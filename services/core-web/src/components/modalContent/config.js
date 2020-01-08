@@ -16,6 +16,7 @@ import AddReportModal from "./AddReportModal";
 import ViewIncidentModal from "./ViewIncidentModal";
 import ChangeNOWMineModal from "./ChangeNOWMineModal";
 import DownloadDocumentPackageModal from "./DownloadDocumentPackageModal";
+import AddNOWReviewModal from "./AddNOWReviewModal";
 
 // This file is anticipated to have multiple exports
 // eslint-disable-next-line import/prefer-default-export
@@ -39,4 +40,5 @@ export const modalConfig = {
   CHANGE_NOW_MINE: ChangeNOWMineModal,
   // NoW REVIEW
   DOWNLOAD_DOC_PACKAGE: DownloadDocumentPackageModal,
+  ADD_NOW_REVIEW: AddNOWReviewModal,
 };

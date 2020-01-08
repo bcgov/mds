@@ -13,6 +13,7 @@ from app.api.now_applications.resources.now_application_progress_resource import
 from app.api.now_applications.resources.now_application_progress_status_resource import NOWApplicationProgressStatusResource
 from app.api.now_applications.resources.now_application_permit_type_resource import NOWApplicationPermitTypeResource
 from app.api.now_applications.resources.now_application_review_resource import NOWApplicationReviewListResource
+from app.api.now_applications.resources.now_application_review_type_resource import NOWApplicationReviewTypeResource
 
 api = Namespace('now-applications', description='Party related operations')
 
@@ -31,3 +32,4 @@ api.add_resource(NOWApplicationDocumentTypeResource, '/application-document-type
 api.add_resource(UndergroundExplorationTypeResource, '/underground-exploration-types')
 api.add_resource(NOWApplicationProgressStatusResource, '/application-progress-status-codes')
 api.add_resource(NOWApplicationPermitTypeResource, '/application-permit-types')
+api.add_resource(NOWApplicationReviewTypeResource, '/review-types')

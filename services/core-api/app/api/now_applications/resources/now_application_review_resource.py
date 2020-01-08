@@ -36,7 +36,7 @@ class NOWApplicationReviewListResource(Resource, UserMixin):
                                                  data['now_application_review_type_code'],
                                                  data.get('response_date'),
                                                  data.get('referee_name'))
-
+        new_review.save()
         return new_review, 201
 
     @api.doc(description='Add new Review to Now Application', params={})

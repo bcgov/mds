@@ -31,6 +31,7 @@ const initialState = {
   noticeOfWorkUndergroundExplorationTypeOptions: [],
   noticeOfWorkApplicationProgressStatusCodeOptions: [],
   noticeOfWorkApplicationPermitTypeOptions: [],
+  noticeOfWorkApplicationReviewOptions: [],
 };
 
 const staticContentReducer = (state = initialState, action) => {
@@ -160,6 +161,11 @@ const staticContentReducer = (state = initialState, action) => {
         ...state,
         noticeOfWorkApplicationPermitTypeOptions: action.payload.records,
       };
+    case actionTypes.STORE_NOTICE_OF_WORK_APPLICATION_REVIEW_TYPES:
+      return {
+        ...state,
+        noticeOfWorkApplicationReviewOptions: action.payload.records,
+      };
     default:
       return state;
   }
@@ -205,5 +211,7 @@ export const getNoticeOfWorkApplicationProgressStatusCodeOptions = (state) =>
   state[STATIC_CONTENT].noticeOfWorkApplicationProgressStatusCodeOptions;
 export const getNoticeOfWorkApplicationPermitTypeOptions = (state) =>
   state[STATIC_CONTENT].noticeOfWorkApplicationPermitTypeOptions;
+export const getNoticeOfWorkApplicationReviewOptions = (state) =>
+  state[STATIC_CONTENT].noticeOfWorkApplicationReviewOptions;
 
 export default staticContentReducer;

@@ -179,6 +179,10 @@ export const createNoticeOfWorkApplicationReview = (applicationGuid, payload) =>
       createRequestHeader()
     )
     .then((response) => {
+      notification.success({
+        message: "Successfully added Review",
+        duration: 10,
+      });
       dispatch(success(reducerTypes.CREATE_NOTICE_OF_WORK_APPLICATION_REVIEW));
       return response;
     })

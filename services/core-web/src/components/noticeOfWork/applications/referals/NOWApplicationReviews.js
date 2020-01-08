@@ -14,7 +14,9 @@ import {
   createNoticeOfWorkApplicationReview,
   fetchNoticeOfWorkApplicationReviews,
 } from "@/actionCreators/noticeOfWorkActionCreator";
+import { fetchNoticeOfWorkApplicationReviewTypes } from "@/actionCreators/staticContentActionCreator";
 import { getNoticeOfWorkReviews } from "@/selectors/noticeOfWorkSelectors";
+import { getDropdownNoticeOfWorkApplicationReviewTypeOptions } from "@/selectors/staticContentSelectors";
 import NOWApplicationReviewsTable from "@/components/noticeOfWork/applications/referals/NOWApplicationReviewsTable";
 
 /**
@@ -28,10 +30,13 @@ const propTypes = {
   noticeOfWorkReviews: PropTypes.arrayOf(CustomPropTypes.NOWApplicationReview).isRequired,
   applicationDocuments: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
   submissionDocuments: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
+  noticeOfWorkReviewTypes: CustomPropTypes.options.isRequired,
+
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   createNoticeOfWorkApplicationReview: PropTypes.func.isRequired,
   fetchNoticeOfWorkApplicationReviews: PropTypes.func.isRequired,
+  fetchNoticeOfWorkApplicationReviewTypes: PropTypes.func.isRequired,
 };
 
 const defaultProps = {};
@@ -57,20 +62,24 @@ export class NOWApplicationReviews extends Component {
 
   componentDidMount() {
     this.props.fetchNoticeOfWorkApplicationReviews(this.props.noticeOfWorkGuid);
+    this.props.fetchNoticeOfWorkApplicationReviewTypes();
   }
 
-  // eslint-disable-next-line
   handleAddReview = (values) => {
     this.props.createNoticeOfWorkApplicationReview(this.props.noticeOfWorkGuid, values).then(() => {
+      this.props.fetchNoticeOfWorkApplicationReviews(this.props.noticeOfWorkGuid);
       this.props.closeModal();
     });
   };
 
-  // eslint-disable-next-line
-  openAddReviewModal = (event, onSubmit, noticeOfWorkGuid) => {
+  openAddReviewModal = (event, onSubmit) => {
+    event.preventDefault();
+    console.log(this.props.noticeOfWorkReviewTypes);
     this.props.openModal({
       props: {
+        onSubmit,
         title: "Add Review to Permit Application",
+        review_types: this.props.noticeOfWorkReviewTypes,
       },
       isViewOnly: true,
       content: modalConfig.ADD_NOW_REVIEW,
@@ -84,14 +93,15 @@ export class NOWApplicationReviews extends Component {
           Download Referral Package
         </Button>
         <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
-          <AddButton
-            onClick={(event) => this.openMineIncidentModal(event, this.handleAddMineIncident, true)}
-          >
+          <AddButton onClick={(event) => this.openAddReviewModal(event, this.handleAddReview)}>
             Add Review
           </AddButton>
         </AuthorizationWrapper>
         {this.props.noticeOfWorkReviews && (
-          <NOWApplicationReviewsTable noticeOfWorkReviews={this.props.noticeOfWorkReviews} />
+          <NOWApplicationReviewsTable
+            noticeOfWorkReviews={this.props.noticeOfWorkReviews}
+            noticeOfWorkReviewTypes={this.props.noticeOfWorkReviewTypes}
+          />
         )}
       </div>
     );
@@ -100,6 +110,7 @@ export class NOWApplicationReviews extends Component {
 
 const mapStateToProps = (state) => ({
   noticeOfWorkReviews: getNoticeOfWorkReviews(state),
+  noticeOfWorkReviewTypes: getDropdownNoticeOfWorkApplicationReviewTypeOptions(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
@@ -109,6 +120,7 @@ const mapDispatchToProps = (dispatch) =>
       closeModal,
       fetchNoticeOfWorkApplicationReviews,
       createNoticeOfWorkApplicationReview,
+      fetchNoticeOfWorkApplicationReviewTypes,
     },
     dispatch
   );
