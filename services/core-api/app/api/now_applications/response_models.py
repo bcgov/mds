@@ -185,6 +185,10 @@ NOW_APPLICATION_UNDERGROUND_EXPLORATION = api.inherit(
     'NOWApplicationUndergroundExploration',
     NOW_APPLICATION_ACTIVITY_SUMMARY_BASE,
     {
+        'total_ore_amount': fields.Integer,
+        'total_ore_unit_type_code': fields.String, 
+        'total_waste_amount': fields.Integer,
+        'total_waste_unit_type_code': fields.String, 
         'details': fields.List(fields.Nested(NOW_APPLICATION_UNDERGROUND_EXPLORATION_DETAIL,skip_none=True))
     })
 

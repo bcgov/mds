@@ -497,9 +497,7 @@ export class NoticeOfWorkApplication extends Component {
           <div>
             <div className={this.state.fixedTop ? "side-menu--fixed" : "side-menu"}>
               {this.state.currentStep === 1 && (
-                <div style={this.state.fixedTop ? { marginTop: "22px" } : {}}>
-                  <NOWSideMenu route={routes.NOTICE_OF_WORK_APPLICATION} />
-                </div>
+                <NOWSideMenu route={routes.NOTICE_OF_WORK_APPLICATION} />
               )}
             </div>
             <div

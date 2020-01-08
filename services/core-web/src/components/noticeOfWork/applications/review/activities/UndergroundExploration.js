@@ -10,7 +10,9 @@ import {
 } from "@/selectors/staticContentSelectors";
 import { TRASHCAN } from "@/constants/assets";
 import RenderField from "@/components/common/RenderField";
+import RenderSelect from "@/components/common/RenderSelect";
 import CustomPropTypes from "@/customPropTypes";
+import { number } from "@/utils/Validate";
 
 const propTypes = {
   isViewMode: PropTypes.bool.isRequired,
@@ -290,21 +292,43 @@ export const UndergroundExploration = (props) => {
         </Col>
       </Row>
       <Row gutter={16}>
-        <Col md={12} sm={24}>
+        <Col lg={7} md={12} sm={24}>
           <div className="field-title">Total Ore</div>
           <Field
             id="total_ore_amount"
             name="total_ore_amount"
             component={RenderField}
             disabled={props.isViewMode}
+            validate={[number]}
           />
         </Col>
-        <Col md={12} sm={24}>
+        <Col lg={5} md={12} sm={24}>
+          <div className="field-title">Ore Units</div>
+          <Field
+            id="total_ore_unit_type_code"
+            name="total_ore_unit_type_code"
+            component={RenderSelect}
+            data={props.unitTypeOptions}
+            disabled={props.isViewMode}
+          />
+        </Col>
+        <Col lg={7} md={12} sm={24}>
           <div className="field-title">Total Waste</div>
           <Field
             id="total_waste_amount"
             name="total_waste_amount"
             component={RenderField}
+            disabled={props.isViewMode}
+            validate={[number]}
+          />
+        </Col>
+        <Col lg={5} md={12} sm={24}>
+          <div className="field-title">Waste Units</div>
+          <Field
+            id="total_waste_unit_type_code"
+            name="total_waste_unit_type_code"
+            component={RenderSelect}
+            data={props.unitTypeOptions}
             disabled={props.isViewMode}
           />
         </Col>
