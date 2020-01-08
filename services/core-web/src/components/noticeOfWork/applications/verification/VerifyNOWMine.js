@@ -13,13 +13,11 @@ import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
 const propTypes = {
   mineNameList: PropTypes.arrayOf(CustomPropTypes.mineName).isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
-  handleProgressChange: PropTypes.func.isRequired,
   fetchMineNameList: PropTypes.func.isRequired,
-  handleSave: PropTypes.func.isRequired,
+  handleConfirmMine: PropTypes.func.isRequired,
   setMineGuid: PropTypes.func.isRequired,
   noticeOfWork: CustomPropTypes.nowApplication.isRequired,
   currentMine: CustomPropTypes.mine.isRequired,
-  isImported: PropTypes.bool.isRequired,
 };
 
 export class VerifyNOWMine extends Component {
@@ -73,7 +71,6 @@ export class VerifyNOWMine extends Component {
           is correct. Use the search to associate a different mine.
         </p>
         <br />
-
         <LoadingWrapper condition={this.state.isLoaded}>
           <Row>
             <Col md={{ span: 12, offset: 6 }} xs={{ span: 20, offset: 2 }}>
@@ -83,7 +80,6 @@ export class VerifyNOWMine extends Component {
                 defaultValue={`${this.props.noticeOfWork.mine_name} - ${this.props.noticeOfWork.mine_no}`}
                 data={this.transformData(this.props.mineNameList)}
                 handleChange={this.handleChange}
-                disabled={this.props.isImported}
               />
             </Col>
           </Row>
@@ -91,16 +87,9 @@ export class VerifyNOWMine extends Component {
         <LoadingWrapper condition={this.state.isMineLoaded}>
           {this.state.isLoaded && <MineCard mine={this.state.mine} />}
           <div className="right">
-            {!this.props.isImported && (
-              <Button type="primary" onClick={() => this.props.handleSave()}>
-                Confirm Details
-              </Button>
-            )}
-            {this.props.isImported && this.props.noticeOfWork.application_progress.length === 0 && (
-              <Button type="primary" onClick={() => this.props.handleProgressChange("REV")}>
-                Ready for Technical Review
-              </Button>
-            )}
+            <Button type="primary" onClick={() => this.props.handleConfirmMine()}>
+              Confirm Mine
+            </Button>
           </div>
         </LoadingWrapper>
       </div>
