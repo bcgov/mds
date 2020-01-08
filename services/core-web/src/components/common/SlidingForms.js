@@ -1,6 +1,4 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
 import PropTypes from "prop-types";
 // Ant design Carousel is based on react-slick and kind of sucks. Tabbing breaks it, dynamically rendering content breaks it,
 // and you need to use Refs to interact with it for a number of features. Brought in react-responsive-carousel instead.
@@ -55,8 +53,6 @@ export class SlidingForms extends Component {
   );
 }
 
-const mapDispatchToProps = (dispatch) => bindActionCreators({}, dispatch);
-
 SlidingForms.propTypes = propTypes;
 
-export default connect(mapDispatchToProps)(SlidingForms);
+export default SlidingForms;

@@ -253,12 +253,13 @@ NOW_APPLICATION_MODEL = api.model(
         'mine_name': fields.String,
         'mine_no': fields.String,
         'mine_region': fields.String,
+        'lead_inspector_party_guid': fields.String,
+        'lead_inspector': fields.Nested(PARTY),
         'imported_to_core' : fields.Boolean, #Just-in-time attribute
         'notice_of_work_type_code': fields.String,                  
         'now_application_status_code': fields.String,               
         'submitted_date': Date,
         'received_date': Date,
-        'now_application_guid': fields.String,
         'latitude': fields.Fixed(description='fixed precision decimal.',
                                  decimals=7),
         'longitude': fields.Fixed(description='fixed precision decimal.',
@@ -299,9 +300,12 @@ NOW_VIEW_MODEL = api.model(
         'mine_name':fields.String,
         'mine_region':fields.String,
         'now_number': fields.String,
+        'lead_inspector_party_guid': fields.String,
+        'lead_inspector_name': fields.String,
         'notice_of_work_type_description': fields.String,
         'now_application_status_description': fields.String,
-        'received_date': Date
+        'received_date': Date,
+        'originating_system': fields.String,
     }
 )
  

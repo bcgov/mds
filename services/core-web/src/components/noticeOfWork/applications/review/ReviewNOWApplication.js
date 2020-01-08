@@ -4,6 +4,7 @@ import { compose } from "redux";
 import { connect } from "react-redux";
 import { Field, reduxForm, FormSection, formValueSelector } from "redux-form";
 import { Form, Divider, Row, Col } from "antd";
+import CustomPropTypes from "@/customPropTypes";
 import RenderField from "@/components/common/RenderField";
 import RenderDate from "@/components/common/RenderDate";
 import RenderRadioButtons from "@/components/common/RenderRadioButtons";
@@ -15,7 +16,6 @@ import ReviewActivities from "@/components/noticeOfWork/applications/review/Revi
 import ReclamationSummary from "./activities/ReclamationSummary";
 import ReviewNOWDocuments from "./ReviewNOWDocuments";
 import ReviewNOWContacts from "./ReviewNOWContacts";
-import CustomPropTypes from "@/customPropTypes";
 import {
   getNoticeOfWorkApplicationProgressStatusCodeOptions,
   getMineRegionDropdownOptions,
@@ -39,9 +39,14 @@ const propTypes = {
   // eslint-disable-next-line
   reclamationSummary: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.strings)).isRequired,
   now_application_guid: PropTypes.string.isRequired,
-  applicationTypeOptions: CustomPropTypes.options.isRequired,
-  permitTypeOptions: CustomPropTypes.options.isRequired,
   submission_documents: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
+  // thinks it is never used
+  // eslint-disable-next-line
+  regionDropdownOptions: CustomPropTypes.options.isRequired,
+  // eslint-disable-next-line
+  applicationTypeOptions: CustomPropTypes.options.isRequired,
+  // eslint-disable-next-line
+  permitTypeOptions: CustomPropTypes.options.isRequired,
 };
 
 export const ReviewNOWApplication = (props) => {

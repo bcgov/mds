@@ -14,6 +14,7 @@ from app.api.constants import *
 
 from app.api.now_submissions.models.document import Document
 
+
 class NOWApplication(Base, AuditMixin):
     __tablename__ = "now_application"
     _edit_groups = [NOW_APPLICATION_EDIT_GROUP]
@@ -29,6 +30,10 @@ class NOWApplication(Base, AuditMixin):
     mine_no = association_proxy('now_application_identity', 'mine.mine_no')
     mine_region = association_proxy('now_application_identity', 'mine.mine_region')
     now_number = association_proxy('now_application_identity', 'now_number')
+
+    lead_inspector_party_guid = db.Column(
+        UUID(as_uuid=True), db.ForeignKey('party.party_guid'), nullable=True)
+    lead_inspector = db.relationship('Party', lazy='selectin', uselist=False)
 
     now_tracking_number = db.Column(db.Integer)
     notice_of_work_type_code = db.Column(
@@ -78,8 +83,10 @@ class NOWApplication(Base, AuditMixin):
     submission_documents = db.relationship(
         'Document',
         lazy='selectin',
-        secondary="join(NOWApplication, NOWApplicationIdentity, NOWApplication.now_application_id == NOWApplicationIdentity.now_application_id).join(Application, NOWApplicationIdentity.messageid == Application.messageid)",
-        primaryjoin='and_(NOWApplication.now_application_id==NOWApplicationIdentity.now_application_id, NOWApplicationIdentity.messageid==Application.messageid)',
+        secondary=
+        "join(NOWApplication, NOWApplicationIdentity, NOWApplication.now_application_id == NOWApplicationIdentity.now_application_id).join(Application, NOWApplicationIdentity.messageid == Application.messageid)",
+        primaryjoin=
+        'and_(NOWApplication.now_application_id==NOWApplicationIdentity.now_application_id, NOWApplicationIdentity.messageid==Application.messageid)',
         secondaryjoin='Application.messageid==Document.messageid',
         viewonly=True)
 
