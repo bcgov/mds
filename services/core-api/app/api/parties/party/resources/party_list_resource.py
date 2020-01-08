@@ -9,7 +9,7 @@ from app.extensions import api, cache
 from app.api.utils.access_decorators import requires_role_view_all, requires_role_edit_party, requires_any_of, VIEW_ALL, MINESPACE_PROPONENT
 from app.api.utils.resources_mixins import UserMixin
 from app.api.utils.custom_reqparser import CustomReqparser
-from app.api.constants import GET_ALL_INSPECTORS_KEY, TIMEOUT_60_MINUTES
+from app.api.constants import GET_ALL_INSPECTORS_KEY, TIMEOUT_12_HOURS
 
 from app.api.parties.party.models.party import Party
 from app.api.parties.party.models.address import Address
