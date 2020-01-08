@@ -3,7 +3,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
 import { getFormValues } from "redux-form";
 import { concat, reject } from "lodash";
 import { Steps, Button, Popconfirm } from "antd";
@@ -301,11 +300,7 @@ const mapStateToProps = (state) => ({
   addIncidentFormValues: getFormValues(FORM.MINE_INCIDENT)(state) || {},
 });
 
-const mapDispatchToProps = (dispatch) => bindActionCreators({}, dispatch);
 AddIncidentModal.propTypes = propTypes;
 AddIncidentModal.defaultProps = defaultProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(AddIncidentModal);
+export default connect(mapStateToProps)(AddIncidentModal);

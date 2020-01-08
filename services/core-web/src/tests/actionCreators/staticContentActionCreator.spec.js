@@ -10,14 +10,14 @@ import {
   fetchMineComplianceCodes,
   fetchVarianceStatusOptions,
   fetchVarianceDocumentCategoryOptions,
-  fetchNoticeOFWorkActivityTypeOptions,
-  fetchNoticeOFWorkUnitTypeOptions,
-  fetchNoticeOFWorkApplicationTypeOptions,
-  fetchNoticeOFWorkApplicationStatusOptions,
-  fetchNoticeOFWorkApplicationDocumentTypeOptions,
-  fetchNoticeOFWorkUndergroundExplorationTypeOptions,
-  fetchNoticeOFWorkApplicationProgressStatusCodes,
-  fetchNoticeOFWorkApplicationPermitTypes,
+  fetchNoticeOfWorkActivityTypeOptions,
+  fetchNoticeOfWorkUnitTypeOptions,
+  fetchNoticeOfWorkApplicationTypeOptions,
+  fetchNoticeOfWorkApplicationStatusOptions,
+  fetchNoticeOfWorkApplicationDocumentTypeOptions,
+  fetchNoticeOfWorkUndergroundExplorationTypeOptions,
+  fetchNoticeOfWorkApplicationProgressStatusCodes,
+  fetchNoticeOfWorkApplicationPermitTypes,
 } from "@/actionCreators/staticContentActionCreator";
 import * as genericActions from "@/actions/genericActions";
 import * as API from "@/constants/API";
@@ -232,12 +232,12 @@ describe("`fetchVarianceDocumentCategoryOptions` action creator", () => {
   });
 });
 
-describe("`fetchNoticeOFWorkActivityTypeOptions` action creator", () => {
+describe("`fetchNoticeOfWorkActivityTypeOptions` action creator", () => {
   const url = ENVIRONMENT.apiUrl + API.NOTICE_OF_WORK_ACTIVITY_TYPE_OPTIONS;
   it("Request successful, dispatches `success` with correct response", () => {
     const mockResponse = { data: { success: true } };
     mockAxios.onGet(url).reply(200, mockResponse);
-    return fetchNoticeOFWorkActivityTypeOptions()(dispatch).then(() => {
+    return fetchNoticeOfWorkActivityTypeOptions()(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(3);
@@ -245,7 +245,7 @@ describe("`fetchNoticeOFWorkActivityTypeOptions` action creator", () => {
   });
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onGet(url, MOCK.createMockHeader()).reply(400, MOCK.ERROR);
-    return fetchNoticeOFWorkActivityTypeOptions()(dispatch).then(() => {
+    return fetchNoticeOfWorkActivityTypeOptions()(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(2);
@@ -253,12 +253,12 @@ describe("`fetchNoticeOFWorkActivityTypeOptions` action creator", () => {
   });
 });
 
-describe("`fetchNoticeOFWorkUnitTypeOptions` action creator", () => {
+describe("`fetchNoticeOfWorkUnitTypeOptions` action creator", () => {
   const url = ENVIRONMENT.apiUrl + API.NOTICE_OF_WORK_UNIT_TYPE_OPTIONS;
   it("Request successful, dispatches `success` with correct response", () => {
     const mockResponse = { data: { success: true } };
     mockAxios.onGet(url).reply(200, mockResponse);
-    return fetchNoticeOFWorkUnitTypeOptions()(dispatch).then(() => {
+    return fetchNoticeOfWorkUnitTypeOptions()(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(3);
@@ -266,7 +266,7 @@ describe("`fetchNoticeOFWorkUnitTypeOptions` action creator", () => {
   });
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onGet(url, MOCK.createMockHeader()).reply(400, MOCK.ERROR);
-    return fetchNoticeOFWorkUnitTypeOptions()(dispatch).then(() => {
+    return fetchNoticeOfWorkUnitTypeOptions()(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(2);
@@ -274,12 +274,12 @@ describe("`fetchNoticeOFWorkUnitTypeOptions` action creator", () => {
   });
 });
 
-describe("`fetchNoticeOFWorkApplicationTypeOptions` action creator", () => {
+describe("`fetchNoticeOfWorkApplicationTypeOptions` action creator", () => {
   const url = ENVIRONMENT.apiUrl + API.NOTICE_OF_WORK_APPLICATION_TYPE_OPTIONS;
   it("Request successful, dispatches `success` with correct response", () => {
     const mockResponse = { data: { success: true } };
     mockAxios.onGet(url).reply(200, mockResponse);
-    return fetchNoticeOFWorkApplicationTypeOptions()(dispatch).then(() => {
+    return fetchNoticeOfWorkApplicationTypeOptions()(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(3);
@@ -287,7 +287,7 @@ describe("`fetchNoticeOFWorkApplicationTypeOptions` action creator", () => {
   });
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onGet(url, MOCK.createMockHeader()).reply(400, MOCK.ERROR);
-    return fetchNoticeOFWorkApplicationTypeOptions()(dispatch).then(() => {
+    return fetchNoticeOfWorkApplicationTypeOptions()(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(2);
@@ -295,12 +295,12 @@ describe("`fetchNoticeOFWorkApplicationTypeOptions` action creator", () => {
   });
 });
 
-describe("`fetchNoticeOFWorkApplicationStatusOptions` action creator", () => {
+describe("`fetchNoticeOfWorkApplicationStatusOptions` action creator", () => {
   const url = ENVIRONMENT.apiUrl + API.NOTICE_OF_WORK_APPLICATION_STATUS_OPTIONS;
   it("Request successful, dispatches `success` with correct response", () => {
     const mockResponse = { data: { success: true } };
     mockAxios.onGet(url).reply(200, mockResponse);
-    return fetchNoticeOFWorkApplicationStatusOptions()(dispatch).then(() => {
+    return fetchNoticeOfWorkApplicationStatusOptions()(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(3);
@@ -308,7 +308,7 @@ describe("`fetchNoticeOFWorkApplicationStatusOptions` action creator", () => {
   });
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onGet(url, MOCK.createMockHeader()).reply(400, MOCK.ERROR);
-    return fetchNoticeOFWorkApplicationStatusOptions()(dispatch).then(() => {
+    return fetchNoticeOfWorkApplicationStatusOptions()(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(2);
@@ -316,12 +316,12 @@ describe("`fetchNoticeOFWorkApplicationStatusOptions` action creator", () => {
   });
 });
 
-describe("`fetchNoticeOFWorkApplicationDocumentTypeOptions` action creator", () => {
+describe("`fetchNoticeOfWorkApplicationDocumentTypeOptions` action creator", () => {
   const url = ENVIRONMENT.apiUrl + API.NOW_APPLICATION_DOCUMENT_TYPE_OPTIONS;
   it("Request successful, dispatches `success` with correct response", () => {
     const mockResponse = { data: { success: true } };
     mockAxios.onGet(url).reply(200, mockResponse);
-    return fetchNoticeOFWorkApplicationDocumentTypeOptions()(dispatch).then(() => {
+    return fetchNoticeOfWorkApplicationDocumentTypeOptions()(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(3);
@@ -329,7 +329,7 @@ describe("`fetchNoticeOFWorkApplicationDocumentTypeOptions` action creator", () 
   });
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onGet(url, MOCK.createMockHeader()).reply(400, MOCK.ERROR);
-    return fetchNoticeOFWorkApplicationDocumentTypeOptions()(dispatch).then(() => {
+    return fetchNoticeOfWorkApplicationDocumentTypeOptions()(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(2);
@@ -337,12 +337,12 @@ describe("`fetchNoticeOFWorkApplicationDocumentTypeOptions` action creator", () 
   });
 });
 
-describe("`fetchNoticeOFWorkUndergroundExplorationTypeOptions` action creator", () => {
+describe("`fetchNoticeOfWorkUndergroundExplorationTypeOptions` action creator", () => {
   const url = ENVIRONMENT.apiUrl + API.NOW_UNDERGROUND_EXPLORATION_TYPE_OPTIONS;
   it("Request successful, dispatches `success` with correct response", () => {
     const mockResponse = { data: { success: true } };
     mockAxios.onGet(url).reply(200, mockResponse);
-    return fetchNoticeOFWorkUndergroundExplorationTypeOptions()(dispatch).then(() => {
+    return fetchNoticeOfWorkUndergroundExplorationTypeOptions()(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(3);
@@ -350,7 +350,7 @@ describe("`fetchNoticeOFWorkUndergroundExplorationTypeOptions` action creator", 
   });
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onGet(url, MOCK.createMockHeader()).reply(400, MOCK.ERROR);
-    return fetchNoticeOFWorkUndergroundExplorationTypeOptions()(dispatch).then(() => {
+    return fetchNoticeOfWorkUndergroundExplorationTypeOptions()(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(2);
@@ -358,12 +358,12 @@ describe("`fetchNoticeOFWorkUndergroundExplorationTypeOptions` action creator", 
   });
 });
 
-describe("`fetchNoticeOFWorkApplicationProgressStatusCodes` action creator", () => {
+describe("`fetchNoticeOfWorkApplicationProgressStatusCodes` action creator", () => {
   const url = ENVIRONMENT.apiUrl + API.NOW_APPLICATION_PROGRESS_STATUS_CODES;
   it("Request successful, dispatches `success` with correct response", () => {
     const mockResponse = { data: { success: true } };
     mockAxios.onGet(url).reply(200, mockResponse);
-    return fetchNoticeOFWorkApplicationProgressStatusCodes()(dispatch).then(() => {
+    return fetchNoticeOfWorkApplicationProgressStatusCodes()(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(3);
@@ -371,7 +371,7 @@ describe("`fetchNoticeOFWorkApplicationProgressStatusCodes` action creator", () 
   });
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onGet(url, MOCK.createMockHeader()).reply(400, MOCK.ERROR);
-    return fetchNoticeOFWorkApplicationProgressStatusCodes()(dispatch).then(() => {
+    return fetchNoticeOfWorkApplicationProgressStatusCodes()(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(2);
@@ -379,12 +379,12 @@ describe("`fetchNoticeOFWorkApplicationProgressStatusCodes` action creator", () 
   });
 });
 
-describe("`fetchNoticeOFWorkApplicationPermitTypes` action creator", () => {
+describe("`fetchNoticeOfWorkApplicationPermitTypes` action creator", () => {
   const url = ENVIRONMENT.apiUrl + API.NOW_APPLICATION_PERMIT_TYPES;
   it("Request successful, dispatches `success` with correct response", () => {
     const mockResponse = { data: { success: true } };
     mockAxios.onGet(url).reply(200, mockResponse);
-    return fetchNoticeOFWorkApplicationPermitTypes()(dispatch).then(() => {
+    return fetchNoticeOfWorkApplicationPermitTypes()(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(3);
@@ -393,7 +393,7 @@ describe("`fetchNoticeOFWorkApplicationPermitTypes` action creator", () => {
 
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onGet(url, MOCK.createMockHeader()).reply(400, MOCK.ERROR);
-    return fetchNoticeOFWorkApplicationPermitTypes()(dispatch).then(() => {
+    return fetchNoticeOfWorkApplicationPermitTypes()(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(2);

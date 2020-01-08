@@ -214,7 +214,7 @@ export const fetchMineReportStatusOptions = () => (dispatch) => {
 };
 
 // notice of work staticContent
-export const fetchNoticeOFWorkActivityTypeOptions = () => (dispatch) => {
+export const fetchNoticeOfWorkActivityTypeOptions = () => (dispatch) => {
   dispatch(request(reducerTypes.GET_NOTICE_OF_WORK_ACTIVITY_TYPE_OPTIONS));
   return CustomAxios()
     .get(`${ENVIRONMENT.apiUrl + API.NOTICE_OF_WORK_ACTIVITY_TYPE_OPTIONS}`, createRequestHeader())
@@ -226,7 +226,7 @@ export const fetchNoticeOFWorkActivityTypeOptions = () => (dispatch) => {
     .catch(() => dispatch(error(reducerTypes.GET_NOTICE_OF_WORK_ACTIVITY_TYPE_OPTIONS)));
 };
 
-export const fetchNoticeOFWorkUnitTypeOptions = () => (dispatch) => {
+export const fetchNoticeOfWorkUnitTypeOptions = () => (dispatch) => {
   dispatch(request(reducerTypes.GET_NOTICE_OF_WORK_UNIT_TYPE_OPTIONS));
   return CustomAxios()
     .get(`${ENVIRONMENT.apiUrl + API.NOTICE_OF_WORK_UNIT_TYPE_OPTIONS}`, createRequestHeader())
@@ -238,7 +238,7 @@ export const fetchNoticeOFWorkUnitTypeOptions = () => (dispatch) => {
     .catch(() => dispatch(error(reducerTypes.GET_NOTICE_OF_WORK_UNIT_TYPE_OPTIONS)));
 };
 
-export const fetchNoticeOFWorkApplicationTypeOptions = () => (dispatch) => {
+export const fetchNoticeOfWorkApplicationTypeOptions = () => (dispatch) => {
   dispatch(request(reducerTypes.GET_NOTICE_OF_WORK_APPLICATION_TYPE_OPTIONS));
   return CustomAxios()
     .get(
@@ -253,7 +253,7 @@ export const fetchNoticeOFWorkApplicationTypeOptions = () => (dispatch) => {
     .catch(() => dispatch(error(reducerTypes.GET_NOTICE_OF_WORK_APPLICATION_TYPE_OPTIONS)));
 };
 
-export const fetchNoticeOFWorkApplicationStatusOptions = () => (dispatch) => {
+export const fetchNoticeOfWorkApplicationStatusOptions = () => (dispatch) => {
   dispatch(request(reducerTypes.GET_NOTICE_OF_WORK_APPLICATION_STATUS_OPTIONS));
   return CustomAxios()
     .get(
@@ -268,7 +268,7 @@ export const fetchNoticeOFWorkApplicationStatusOptions = () => (dispatch) => {
     .catch(() => dispatch(error(reducerTypes.GET_NOTICE_OF_WORK_APPLICATION_STATUS_OPTIONS)));
 };
 
-export const fetchNoticeOFWorkApplicationDocumentTypeOptions = () => (dispatch) => {
+export const fetchNoticeOfWorkApplicationDocumentTypeOptions = () => (dispatch) => {
   dispatch(request(reducerTypes.GET_NOTICE_OF_WORK_APPLICATION_DOCUMENT_TYPE_OPTIONS));
   return CustomAxios()
     .get(`${ENVIRONMENT.apiUrl + API.NOW_APPLICATION_DOCUMENT_TYPE_OPTIONS}`, createRequestHeader())
@@ -282,7 +282,7 @@ export const fetchNoticeOFWorkApplicationDocumentTypeOptions = () => (dispatch) 
     );
 };
 
-export const fetchNoticeOFWorkUndergroundExplorationTypeOptions = () => (dispatch) => {
+export const fetchNoticeOfWorkUndergroundExplorationTypeOptions = () => (dispatch) => {
   dispatch(request(reducerTypes.GET_NOW_UNDERGROUND_EXPLORATION_TYPE_OPTIONS));
   return CustomAxios()
     .get(
@@ -299,7 +299,7 @@ export const fetchNoticeOFWorkUndergroundExplorationTypeOptions = () => (dispatc
     .catch(() => dispatch(error(reducerTypes.GET_NOW_UNDERGROUND_EXPLORATION_TYPE_OPTIONS)));
 };
 
-export const fetchNoticeOFWorkApplicationProgressStatusCodes = () => (dispatch) => {
+export const fetchNoticeOfWorkApplicationProgressStatusCodes = () => (dispatch) => {
   dispatch(request(reducerTypes.GET_NOW_APPLICATION_PROGRESS_STATUS_CODES));
   return CustomAxios()
     .get(`${ENVIRONMENT.apiUrl + API.NOW_APPLICATION_PROGRESS_STATUS_CODES}`, createRequestHeader())
@@ -313,7 +313,7 @@ export const fetchNoticeOFWorkApplicationProgressStatusCodes = () => (dispatch) 
     .catch(() => dispatch(error(reducerTypes.GET_NOW_APPLICATION_PROGRESS_STATUS_CODES)));
 };
 
-export const fetchNoticeOFWorkApplicationPermitTypes = () => (dispatch) => {
+export const fetchNoticeOfWorkApplicationPermitTypes = () => (dispatch) => {
   dispatch(request(reducerTypes.GET_NOW_APPLICATION_PERMIT_TYPES));
   return CustomAxios()
     .get(`${ENVIRONMENT.apiUrl + API.NOW_APPLICATION_PERMIT_TYPES}`, createRequestHeader())
