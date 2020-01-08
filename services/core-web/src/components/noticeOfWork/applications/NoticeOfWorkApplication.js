@@ -419,6 +419,25 @@ export class NoticeOfWorkApplication extends Component {
       </Menu>
     );
 
+    const headerSteps = [
+      <Step status={this.renderProgressStatus(0)} title="Verification" />,
+      <Step
+        status={this.renderProgressStatus(1)}
+        title="Technical Review"
+        disabled={this.isStepDisabled(1)}
+      />,
+      <Step
+        status={this.renderProgressStatus(2)}
+        title="Referral / Consultation"
+        disabled={this.isStepDisabled(2)}
+      />,
+      <Step
+        status={this.renderProgressStatus(3)}
+        title="Decision"
+        disabled={this.isStepDisabled(3)}
+      />,
+    ];
+
     return (
       <div className="page" onScroll={this.handleScroll()} onLoad={this.handleScroll()}>
         <div className={this.state.fixedTop ? "steps--header fixed-scroll" : "steps--header"}>
@@ -438,6 +457,14 @@ export class NoticeOfWorkApplication extends Component {
                 {this.props.noticeOfWork.mine_name}
               </Link>
               <br />
+            </div>
+          </div>
+          <br />
+          {this.state.isViewMode ? (
+            <div className="inline-flex flex-center block-mobile padding-md--right">
+              <Steps current={this.state.currentStep} onChange={this.onChange} type="navigation">
+                {headerSteps}
+              </Steps>
               {this.state.isViewMode && (
                 <Dropdown
                   overlay={menu}
@@ -452,27 +479,6 @@ export class NoticeOfWorkApplication extends Component {
                 </Dropdown>
               )}
             </div>
-          </div>
-          <br />
-          {this.state.isViewMode ? (
-            <Steps current={this.state.currentStep} onChange={this.onChange} type="navigation">
-              <Step status={this.renderProgressStatus(0)} title="Verification" />
-              <Step
-                status={this.renderProgressStatus(1)}
-                title="Technical Review"
-                disabled={this.isStepDisabled(1)}
-              />
-              <Step
-                status={this.renderProgressStatus(2)}
-                title="Referral / Consultation"
-                disabled={this.isStepDisabled(2)}
-              />
-              <Step
-                status={this.renderProgressStatus(3)}
-                title="Decision"
-                disabled={this.isStepDisabled(3)}
-              />
-            </Steps>
           ) : (
             <div className="inline-flex flex-center block-mobile">
               <Button type="secondary" className="full-mobile" onClick={this.handleCancelNOWEdit}>
