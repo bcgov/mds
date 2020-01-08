@@ -422,6 +422,6 @@ export const getDropdownNoticeOfWorkApplicationReviewTypeOptions = createSelecto
 );
 
 export const getNoticeOfWorkApplicationApplicationReviewTypeHash = createSelector(
-  [getNoticeOfWorkApplicationReviewOptions],
+  [getDropdownNoticeOfWorkApplicationReviewTypeOptions],
   createLabelHash
 );

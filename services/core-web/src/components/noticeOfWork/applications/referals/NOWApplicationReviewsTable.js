@@ -12,7 +12,7 @@ import { getNoticeOfWorkApplicationApplicationReviewTypeHash } from "@/selectors
 const propTypes = {
   // eslint-disable-next-line
   noticeOfWorkReviews: PropTypes.arrayOf(CustomPropTypes.NOWApplicationReview).isRequired,
-  noticeOfWorkReviewTypes: CustomPropTypes.options.isRequired,
+  noticeOfWorkReviewTypesHash: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
 const columns = [
@@ -33,9 +33,10 @@ const columns = [
   },
 ];
 
-const transformRowData = (reviews) => {
+const transformRowData = (reviews, reviewTypeHash) => {
+  console.log(reviewTypeHash);
   return reviews.map((review) => ({
-    now_application_review_type: review.now_application_review_type_code,
+    now_application_review_type: reviewTypeHash[review.now_application_review_type_code],
     response_date: review.response_date,
     referee_name: review.referee_name,
   }));
@@ -47,14 +48,14 @@ export const NOWApplicationReviewsTable = (props) => {
       <Table
         columns={columns}
         pagination={false}
-        dataSource={transformRowData(props.noticeOfWorkReviews)}
+        dataSource={transformRowData(props.noticeOfWorkReviews, props.noticeOfWorkReviewTypesHash)}
       />
     </div>
   );
 };
 
 const mapStateToProps = (state) => ({
-  noticeOfWorkReviewTypeHash: getNoticeOfWorkApplicationApplicationReviewTypeHash(state),
+  noticeOfWorkReviewTypesHash: getNoticeOfWorkApplicationApplicationReviewTypeHash(state),
 });
 
 NOWApplicationReviewsTable.propTypes = propTypes;
