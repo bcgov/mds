@@ -358,13 +358,19 @@ class NOWApplicationFactory(BaseFactory):
     class Meta:
         model = app_models.NOWApplication
 
+    class Params:
+        party = factory.SubFactory('tests.factories.PartyFactory', person=True)
+
+    lead_inspector_party_guid = factory.SelfAttribute('party.party_guid')
     now_tracking_number = factory.fuzzy.FuzzyInteger(1, 100)
     notice_of_work_type_code = factory.LazyFunction(RandomNOWTypeCode)
     now_application_status_code = factory.LazyFunction(RandomNOWStatusCode)
     submitted_date = factory.Faker('past_datetime')
     received_date = factory.Faker('past_datetime')
-    latitude = factory.Faker('latitude')         # or factory.fuzzy.FuzzyFloat(49, 60) for ~ inside BC
-    longitude = factory.Faker('longitude')       # or factory.fuzzy.FuzzyFloat(-132, -114.7) for ~ BC
+    # or factory.fuzzy.FuzzyFloat(49, 60) for ~ inside BC
+    latitude = factory.Faker('latitude')
+    # or factory.fuzzy.FuzzyFloat(-132, -114.7) for ~ BC
+    longitude = factory.Faker('longitude')
     property_name = factory.Faker('company')
     tenure_number = str(factory.Sequence(lambda n: n))
     description_of_land = factory.Faker('sentence', nb_words=6, variable_nb_words=True)
@@ -373,7 +379,6 @@ class NOWApplicationFactory(BaseFactory):
 
     blasting_operation = factory.RelatedFactory(BlastingOperationFactory, 'now_application')
     state_of_land = factory.RelatedFactory(StateOfLandFactory, 'now_application')
-
     camps = factory.RelatedFactory(CampFactory, 'now_application')
     cut_lines_polarization_survey = factory.RelatedFactory(CutLinesPolarizationSurveyFactory,
                                                            'now_application')
