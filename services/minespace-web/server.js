@@ -39,6 +39,7 @@ app.get(`${BASE_PATH}/env`, (req, res) => {
     keycloak_idpHint: process.env.KEYCLOAK_IDP_HINT,
     keycloak_url: process.env.KEYCLOAK_URL,
     siteminder_url: process.env.SITEMINDER_URL,
+    environment: process.env.NODE_ENV,
   });
 });
 
