@@ -17,7 +17,7 @@ export const AuthorizationGuard = (permission) => (WrappedComponent) => {
     ) {
       return <WrappedComponent {...props} />;
     }
-    return <NullScreen type="unauthorized-page" />;
+    return <NullScreen type="unauthorized" />;
   };
 
   hoistNonReactStatics(authorizationGuard, WrappedComponent);
