@@ -54,7 +54,13 @@ const renderMobileWarningBanner = () => (
 const WarningBanner = (props) => (
   <div>
     {props.type === "IE" && (
-      <Alert message={renderIEBanner()} type="warning" closable onClose={props.onClose} />
+      <Alert
+        style={{ backgroundColor: "#F3CD65" }}
+        message={renderIEBanner()}
+        type="warning"
+        closable
+        onClose={props.onClose}
+      />
     )}
     {props.type === "mobile" && (
       <Alert
