@@ -1,9 +1,9 @@
+import { ENVIRONMENT } from "@/constants/environment";
+
 /**
  * detect IE
  * @returns version of IE or false, if browser is not Internet Explorer
  */
-// This file is anticipated to have multiple exports
-// eslint-disable-next-line import/prefer-default-export
 export const detectIE = () => {
   const { userAgent } = window.navigator;
 
@@ -37,3 +37,7 @@ export const detectIE = () => {
   // other browser
   return false;
 };
+
+export const detectTestEnvironment = () => ENVIRONMENT.environment === "test";
+export const detectProdEnvironment = () => ENVIRONMENT.environment === "production";
+export const detectDevelopmentEnvironment = () => ENVIRONMENT.environment === "development";
