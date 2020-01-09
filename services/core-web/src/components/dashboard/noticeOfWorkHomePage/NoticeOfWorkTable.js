@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Table, Icon, Input, Button } from "antd";
+import { Table, Icon, Input, Button, Badge } from "antd";
 import { Link, withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import CustomPropTypes from "@/customPropTypes";
@@ -59,6 +59,13 @@ const applySortIndicator = (_columns, field, dir) =>
     ...column,
     sortOrder: dir && column.sortField === field ? dir.concat("end") : false,
   }));
+
+// TODO: Store this somewhere more appropriate where it can be accessed by other files
+const getApplicationStatusBadge = {
+  Accepted: "success",
+  "Under Review": "processing",
+  Withdrawn: "warning",
+};
 
 const pageTitle = "Browse Notices of Work";
 
@@ -218,7 +225,13 @@ export class NoticeOfWorkTable extends Component {
       filters: optionsFilterLabelOnly(this.props.applicationStatusOptions).sort((a, b) =>
         a.value > b.value ? 1 : -1
       ),
-      render: (text) => <div title="Application Status">{text}</div>,
+      render: (text) => (
+        <Badge
+          status={getApplicationStatusBadge[text]}
+          text={text}
+          title="Application Status"
+        ></Badge>
+      ),
     },
     {
       title: "Import Date",
@@ -241,7 +254,7 @@ export class NoticeOfWorkTable extends Component {
               </Link>
             </AuthorizationWrapper>
             <Link to={this.createLinkTo(router.VIEW_NOTICE_OF_WORK_APPLICATION, record)}>
-              <Icon type="eye" className="icon-lg icon-svg-filter padding-md--left" />
+              <Icon type="eye" className="icon-lg icon-svg-filter padding-large--left" />
             </Link>
           </div>
         ),
