@@ -8,6 +8,7 @@ const dispatchProps = {};
 const reducerProps = {};
 
 const setupDispatchProps = () => {
+  dispatchProps.fetchNoticeOfWorkApplicationDocumentTypeOptions = jest.fn();
   dispatchProps.fetchMineRecordById = jest.fn(() => Promise.resolve());
   dispatchProps.createNoticeOfWorkApplication = jest.fn();
   dispatchProps.fetchOriginalNoticeOfWorkApplication = jest.fn();
@@ -19,6 +20,7 @@ const setupDispatchProps = () => {
   dispatchProps.fetchNoticeOfWorkUnitTypeOptions = jest.fn();
   dispatchProps.fetchNoticeOfWorkApplicationPermitTypes = jest.fn();
   dispatchProps.fetchNoticeOfWorkApplicationStatusOptions = jest.fn();
+  dispatchProps.fetchNoticeOfWorkApplicationPermitTypes = jest.fn();
   dispatchProps.fetchNoticeOfWorkApplicationProgressStatusCodes = jest.fn();
   dispatchProps.fetchInspectors = jest.fn();
   dispatchProps.fetchImportedNoticeOfWorkApplication = jest.fn(() => Promise.resolve());

@@ -14,7 +14,8 @@ import * as FORM from "@/constants/forms";
 import ScrollContentWrapper from "@/components/common/wrappers/ScrollContentWrapper";
 import ReviewActivities from "@/components/noticeOfWork/applications/review/ReviewActivities";
 import ReclamationSummary from "./activities/ReclamationSummary";
-import ReviewNOWDocuments from "./ReviewNOWDocuments";
+import NOWDocuments from "@/components/noticeOfWork/applications//NOWDocuments";
+import NOWSubmissionDocuments from "@/components/noticeOfWork/applications//NOWSubmissionDocuments";
 import ReviewNOWContacts from "./ReviewNOWContacts";
 import {
   getNoticeOfWorkApplicationProgressStatusCodeOptions,
@@ -39,6 +40,8 @@ const propTypes = {
   // eslint-disable-next-line
   reclamationSummary: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.strings)).isRequired,
   now_application_guid: PropTypes.string.isRequired,
+  mine_guid: PropTypes.string.isRequired,
+  documents: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
   submission_documents: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
   // thinks it is never used
   // eslint-disable-next-line
@@ -451,10 +454,18 @@ export const ReviewNOWApplication = (props) => {
             {renderReclamation()}
           </ScrollContentWrapper>
           <ReviewActivities isViewMode={props.isViewMode} />
-          <ScrollContentWrapper id="documents" title="Documents">
-            <ReviewNOWDocuments
+          <ScrollContentWrapper id="submission_documents" title="Submission Documents (VFCBC/NROS)">
+            <NOWSubmissionDocuments
               now_application_guid={props.now_application_guid}
               documents={props.submission_documents}
+            />
+          </ScrollContentWrapper>
+          <ScrollContentWrapper id="additional_documents" title="Additional Documents">
+            <NOWDocuments
+              now_application_guid={props.now_application_guid}
+              mine_guid={props.mine_guid}
+              documents={props.documents}
+              isViewMode={props.isViewMode}
             />
           </ScrollContentWrapper>
         </div>
@@ -470,6 +481,8 @@ export default compose(
   connect((state) => ({
     contacts: selector(state, "contacts"),
     now_application_guid: selector(state, "now_application_guid"),
+    mine_guid: selector(state, "mine_guid"),
+    documents: selector(state, "documents"),
     submission_documents: selector(state, "submission_documents"),
     regionDropdownOptions: getMineRegionDropdownOptions(state),
     applicationTypeOptions: getDropdownNoticeOfWorkApplicationTypeOptions(state),
