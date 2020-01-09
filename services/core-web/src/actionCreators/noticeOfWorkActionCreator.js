@@ -236,3 +236,20 @@ export const deleteNoticeOfWorkApplicationReview = (applicationGuid, application
     .catch(() => dispatch(error(reducerTypes.REMOVE_NOTICE_OF_WORK_APPLICATION_REVIEW)))
     .finally(() => dispatch(hideLoading()));
 };
+
+export const addDocumentToNoticeOfWork = (now_application_guid, payload) => (dispatch) => {
+  dispatch(showLoading("modal"));
+  dispatch(request(reducerTypes.ADD_DOCUMENT_TO_NOTICE_OF_WORK));
+  return CustomAxios()
+    .put(
+      ENVIRONMENT.apiUrl + API.NOTICE_OF_WORK_DOCUMENT(now_application_guid),
+      payload,
+      createRequestHeader()
+    )
+    .then((response) => {
+      dispatch(success(reducerTypes.ADD_DOCUMENT_TO_NOTICE_OF_WORK));
+      return response;
+    })
+    .catch(() => dispatch(error(reducerTypes.ADD_DOCUMENT_TO_NOTICE_OF_WORK)))
+    .finally(() => dispatch(hideLoading("modal")));
+};

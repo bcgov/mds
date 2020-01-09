@@ -35,7 +35,7 @@ class UserSecurity(object):
 
 def get_mine_access():
     user = get_current_user()
-    return list(x.mine_guid for x in user.mines)
+    return list(x.mine_guid for x in user.minespace_user_mines)
 
 
 def get_current_user():

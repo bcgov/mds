@@ -11,6 +11,7 @@ from app.api.now_applications.resources.now_application_document_type_resource i
 from app.api.now_applications.resources.underground_exploration_type_resource import UndergroundExplorationTypeResource
 from app.api.now_applications.resources.now_application_progress_resource import NOWApplicationProgressResource
 from app.api.now_applications.resources.now_application_progress_status_resource import NOWApplicationProgressStatusResource
+from app.api.now_applications.resources.now_application_document_resource import NOWApplicationDocumentResource
 from app.api.now_applications.resources.now_application_permit_type_resource import NOWApplicationPermitTypeResource
 from app.api.now_applications.resources.now_application_review_resource import NOWApplicationReviewListResource, NOWApplicationReviewResource
 from app.api.now_applications.resources.now_application_review_type_resource import NOWApplicationReviewTypeResource
@@ -24,6 +25,7 @@ api.add_resource(NOWApplicationProgressResource, '/<string:application_guid>/pro
 api.add_resource(NOWApplicationReviewListResource, '/<string:application_guid>/reviews')
 api.add_resource(NOWApplicationReviewResource,
                  '/<string:application_guid>/reviews/<int:now_application_review_id>')
+api.add_resource(NOWApplicationDocumentResource, '/<string:now_application_guid>/document')
 
 # now static content
 api.add_resource(NOWActivityTypeResource, '/activity-types')

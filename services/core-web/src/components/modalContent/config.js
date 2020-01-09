@@ -14,6 +14,7 @@ import AddIncidentModal from "./AddIncidentModal";
 import AddReportModal from "./AddReportModal";
 // import EditReportModal from "./EditReportModal";
 import ViewIncidentModal from "./ViewIncidentModal";
+import EditNoticeOfWorkDocumentModal from "./EditNoticeOfWorkDocumentModal";
 import ChangeNOWMineModal from "./ChangeNOWMineModal";
 import UpdateNOWLeadInspectorModal from "./UpdateNOWLeadInspectorModal";
 import DownloadDocumentPackageModal from "./DownloadDocumentPackageModal";
@@ -38,6 +39,7 @@ export const modalConfig = {
   ADD_REPORT: AddReportModal,
   //  EDIT_REPORT:
   VIEW_MINE_INCIDENT: ViewIncidentModal,
+  EDIT_NOTICE_OF_WORK_DOCUMENT: EditNoticeOfWorkDocumentModal,
   CHANGE_NOW_MINE: ChangeNOWMineModal,
   // NoW REVIEW
   DOWNLOAD_DOC_PACKAGE: DownloadDocumentPackageModal,

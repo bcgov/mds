@@ -18,6 +18,7 @@ from geoalchemy2 import Geometry
 
 from app.api.now_applications.models.activity_detail.activity_detail_base import ActivityDetailBase
 from app.api.now_applications.models.equipment import Equipment
+from app.api.now_applications.models.now_application_document_xref import NOWApplicationDocumentXref
 from sqlalchemy.dialects.postgresql import UUID
 
 
@@ -59,7 +60,7 @@ def setup_schema(Base, session):
     inspired by: https://marshmallow-sqlalchemy.readthedocs.io/en/latest/recipes.html#automatically-generating-schemas-for-sqlalchemy-models
     """
     def setup_schema_fn():
-        for class_ in ActivityDetailBase.__subclasses__() + [Equipment]:
+        for class_ in ActivityDetailBase.__subclasses__() + [Equipment, NOWApplicationDocumentXref]:
             if hasattr(class_, "__tablename__"):
                 try:
                     if class_.__name__.endswith("Schema"):

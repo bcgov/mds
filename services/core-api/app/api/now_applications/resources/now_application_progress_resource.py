@@ -25,7 +25,7 @@ class NOWApplicationProgressResource(Resource, UserMixin):
         identity = NOWApplicationIdentity.find_by_guid(application_guid)
         if not identity.now_application:
             raise NotFound(
-                'There was no notice of work application found with the provided application_guid.')
+                'There was no notice of work application found with the provided now_application_guid.')
         if not application_progress_status_code:
             raise BadRequest('application_progress_status_code is required')
         now_progress = NOWApplicationProgress.create(identity.now_application,
