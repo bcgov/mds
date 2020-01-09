@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { Button } from "antd";
+import { Button, Row, Col } from "antd";
 import { openModal, closeModal } from "@/actions/modalActions";
 import * as ModalContent from "@/constants/modalContent";
 import { modalConfig } from "@/components/modalContent/config";
@@ -13,6 +13,7 @@ import AddButton from "@/components/common/AddButton";
 import {
   createNoticeOfWorkApplicationReview,
   fetchNoticeOfWorkApplicationReviews,
+  deleteNoticeOfWorkApplicationReview,
 } from "@/actionCreators/noticeOfWorkActionCreator";
 import { fetchNoticeOfWorkApplicationReviewTypes } from "@/actionCreators/staticContentActionCreator";
 import { getNoticeOfWorkReviews } from "@/selectors/noticeOfWorkSelectors";
@@ -37,6 +38,7 @@ const propTypes = {
   createNoticeOfWorkApplicationReview: PropTypes.func.isRequired,
   fetchNoticeOfWorkApplicationReviews: PropTypes.func.isRequired,
   fetchNoticeOfWorkApplicationReviewTypes: PropTypes.func.isRequired,
+  deleteNoticeOfWorkApplicationReview: PropTypes.func.isRequired,
 };
 
 const defaultProps = {};
@@ -72,6 +74,15 @@ export class NOWApplicationReviews extends Component {
     });
   };
 
+  handleDeleteReview = (now_application_review_id) => {
+    this.props
+      .deleteNoticeOfWorkApplicationReview(this.props.noticeOfWorkGuid, now_application_review_id)
+      .then(() => {
+        this.props.fetchNoticeOfWorkApplicationReviews(this.props.noticeOfWorkGuid);
+        this.props.closeModal();
+      });
+  };
+
   openAddReviewModal = (event, onSubmit) => {
     event.preventDefault();
     console.log(this.props.noticeOfWorkReviewTypes);
@@ -89,20 +100,34 @@ export class NOWApplicationReviews extends Component {
   render() {
     return (
       <div>
-        <Button type="secondary" className="full-mobile" onClick={this.openDownloadPackageModal}>
-          Download Referral Package
-        </Button>
-        <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
-          <AddButton onClick={(event) => this.openAddReviewModal(event, this.handleAddReview)}>
-            Add Review
-          </AddButton>
-        </AuthorizationWrapper>
-        {this.props.noticeOfWorkReviews && (
-          <NOWApplicationReviewsTable
-            noticeOfWorkReviews={this.props.noticeOfWorkReviews}
-            noticeOfWorkReviewTypes={this.props.noticeOfWorkReviewTypes}
-          />
-        )}
+        <Row type="flex" justify="center">
+          <Col sm={22} md={22} lg={22} className="padding-xxl--top">
+            <Button
+              type="secondary"
+              className="full-mobile"
+              onClick={this.openDownloadPackageModal}
+            >
+              Download Referral Package
+            </Button>
+            <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
+              <AddButton onClick={(event) => this.openAddReviewModal(event, this.handleAddReview)}>
+                Add Review
+              </AddButton>
+            </AuthorizationWrapper>
+          </Col>
+        </Row>
+
+        <Row type="flex" justify="center">
+          <Col sm={22} md={22} lg={22}>
+            {this.props.noticeOfWorkReviews && (
+              <NOWApplicationReviewsTable
+                noticeOfWorkReviews={this.props.noticeOfWorkReviews}
+                noticeOfWorkReviewTypes={this.props.noticeOfWorkReviewTypes}
+                handleDelete={this.handleDeleteReview}
+              />
+            )}
+          </Col>
+        </Row>
       </div>
     );
   }
@@ -121,6 +146,7 @@ const mapDispatchToProps = (dispatch) =>
       fetchNoticeOfWorkApplicationReviews,
       createNoticeOfWorkApplicationReview,
       fetchNoticeOfWorkApplicationReviewTypes,
+      deleteNoticeOfWorkApplicationReview,
     },
     dispatch
   );

@@ -50,3 +50,19 @@ class NOWApplicationReviewListResource(Resource, UserMixin):
             raise BadRequest('Now Application not imported, call import endpoint first')
 
         return now_application.now_application.reviews
+
+
+class NOWApplicationReviewResource(Resource, UserMixin):
+    @api.doc(description='Add new Review to Now Application', params={})
+    @requires_role_edit_permit
+    @api.response(204, 'Successfully deleted.')
+    def delete(self, application_guid, now_application_review_id):
+        now_app_review = NOWApplicationReview.query.get(now_application_review_id)
+        current_app.logger.debug(
+            f'{now_app_review.now_application_id} + {now_app_review.now_application.now_application_guid}'
+        )
+        if not now_app_review or str(
+                now_app_review.now_application.now_application_guid) != application_guid:
+            raise NotFound('No now_application found')
+        now_app_review.delete()
+        return ('', 204)

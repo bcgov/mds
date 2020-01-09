@@ -189,3 +189,23 @@ export const createNoticeOfWorkApplicationReview = (applicationGuid, payload) =>
     .catch(() => dispatch(error(reducerTypes.CREATE_NOTICE_OF_WORK_APPLICATION_REVIEW)))
     .finally(() => dispatch(hideLoading()));
 };
+
+export const deleteNoticeOfWorkApplicationReview = (applicationGuid, applicationReviewId) => (
+  dispatch
+) => {
+  dispatch(request(reducerTypes.REMOVE_NOTICE_OF_WORK_APPLICATION_REVIEW));
+  dispatch(showLoading());
+  return CustomAxios()
+    .delete(
+      `${ENVIRONMENT.apiUrl +
+        API.NOTICE_OF_WORK_APPLICATION_REVIEW(applicationGuid)}/${applicationReviewId}`,
+      createRequestHeader()
+    )
+    .then((response) => {
+      notification.success({ message: "Successfully removed the review", duration: 10 });
+      dispatch(success(reducerTypes.REMOVE_NOTICE_OF_WORK_APPLICATION_REVIEW));
+      return response;
+    })
+    .catch(() => dispatch(error(reducerTypes.REMOVE_NOTICE_OF_WORK_APPLICATION_REVIEW)))
+    .finally(() => dispatch(hideLoading()));
+};

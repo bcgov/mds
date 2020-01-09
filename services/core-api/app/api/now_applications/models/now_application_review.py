@@ -37,7 +37,7 @@ class NOWApplicationReview(Base, AuditMixin):
     documents = db.relationship('MineDocument', secondary='now_application_review_document_xref')
 
     def __repr__(self):
-        return '<NOWApplicationReview %r>' % self.applnow_application_review_idication_progress_id
+        return '<NOWApplicationReview %r>' % self.now_application_review_id
 
     @classmethod
     def create(cls,
