@@ -2,6 +2,7 @@ from app.extensions import api
 from flask_restplus import fields
 
 from app.api.parties.response_models import PARTY
+from app.api.mines.response_models import MINE_DOCUMENT_MODEL
 
 class DateTime(fields.Raw):
     def format(self, value):
@@ -214,6 +215,17 @@ NOW_APPLICATION_STATE_OF_LAND = api.model(
     }
 )
 
+NOW_APPLICATION_DOCUMENT = api.model(
+    'NOW_DOCUMENT', {
+        'now_application_document_xref_guid': fields.String,
+        'now_application_document_type_code': fields.String,
+        'now_application_document_type_code_description': fields.String,
+        'description': fields.String,
+        'is_final_package': fields.Boolean,
+        'mine_document': fields.Nested(MINE_DOCUMENT_MODEL),
+    }
+)
+
 NOW_APPLICATION_PROGRESS = api.model(
     'NOWApplicationProgress',
     {
@@ -223,7 +235,7 @@ NOW_APPLICATION_PROGRESS = api.model(
     })
     
 NOW_SUBMISSION_DOCUMENT = api.model(
-    'DOCUMENT', {
+    'SUBMISSION_DOCUMENT', {
         'id': fields.Integer,
         'documenturl': fields.String,
         'filename': fields.String,
@@ -283,6 +295,7 @@ NOW_APPLICATION_MODEL = api.model(
         'surface_bulk_sample': fields.Nested(NOW_APPLICATION_SURFACE_BULK, skip_none=True),
         'underground_exploration': fields.Nested(NOW_APPLICATION_UNDERGROUND_EXPLORATION, skip_none=True),
         'water_supply': fields.Nested(NOW_APPLICATION_WATER_SUPPLY, skip_none=True),
+        'documents': fields.List(fields.Nested(NOW_APPLICATION_DOCUMENT), skip_none=True),
         'submission_documents': fields.List(fields.Nested(NOW_SUBMISSION_DOCUMENT), skip_none=True),
         'contacts': fields.List(fields.Nested(NOW_PARTY_APPOINTMENT), skip_none=True)
     })
