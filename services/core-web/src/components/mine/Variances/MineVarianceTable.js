@@ -15,7 +15,7 @@ import { getInspectorsHash } from "@/selectors/partiesSelectors";
 import * as Permission from "@/constants/permissions";
 import { RED_CLOCK, EDIT_OUTLINE_VIOLET } from "@/constants/assets";
 import NullScreen from "@/components/common/NullScreen";
-import { formatDate, compareCodes, getTableHeaders } from "@/utils/helpers";
+import { formatDate, compareCodes, getTableHeaders, truncateFilename } from "@/utils/helpers";
 import { downloadFileFromDocumentManager } from "@/utils/actionlessNetworkCalls";
 import * as Strings from "@/constants/strings";
 import { COLOR } from "@/constants/styles";
@@ -261,12 +261,12 @@ export class MineVarianceTable extends Component {
           <div title="Documents">
             {record.documents.length > 0
               ? record.documents.map((file) => (
-                  <div key={file.mine_document_guid}>
+                  <div key={file.mine_document_guid} title={file.document_name}>
                     <LinkButton
                       key={file.mine_document_guid}
                       onClick={() => downloadFileFromDocumentManager(file)}
                     >
-                      {file.document_name}
+                      {truncateFilename(file.document_name)}
                     </LinkButton>
                   </div>
                 ))
