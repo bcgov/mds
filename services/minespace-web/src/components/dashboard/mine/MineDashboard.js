@@ -10,6 +10,7 @@ import { getMine } from "@/selectors/userMineSelectors";
 import CustomPropTypes from "@/customPropTypes";
 import { SINGLE_DOCUMENT, DOCUMENTS } from "@/constants/assets";
 import Loading from "@/components/common/Loading";
+import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 
 const propTypes = {
   fetchMineRecordById: PropTypes.func.isRequired,
@@ -43,19 +44,16 @@ export class MineDashboard extends Component {
           </div>
         </Link>
       </div>
-      {/* feature-flagging has not been implemented in MineSpace yet, hiding until released to users */}
-      {false && (
-        <div>
-          <Link to={routes.VARIANCES.dynamicRoute(id)}>
-            <div className="link-container">
-              <div className="link-container--content">
-                <img src={SINGLE_DOCUMENT} alt="document" />
-                <h4>Variances</h4>
-              </div>
+      <AuthorizationWrapper inTesting>
+        <Link to={routes.VARIANCES.dynamicRoute(id)}>
+          <div className="link-container">
+            <div className="link-container--content">
+              <img src={SINGLE_DOCUMENT} alt="document" />
+              <h4>Variances</h4>
             </div>
-          </Link>
-        </div>
-      )}
+          </div>
+        </Link>
+      </AuthorizationWrapper>
     </div>
   );
 
