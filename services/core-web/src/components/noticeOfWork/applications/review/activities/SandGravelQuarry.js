@@ -142,7 +142,7 @@ export const SandGravelQuarry = (props) => {
       <h4>Soil Conservation</h4>
       <Row gutter={16}>
         <Col lg={8} md={12} sm={24}>
-          <div className="field-title">Average Depth Overburden(m)</div>
+          <div className="field-title">Average Depth Overburden</div>
           <Field
             id="average_overburden_depth"
             name="average_overburden_depth"
@@ -161,7 +161,7 @@ export const SandGravelQuarry = (props) => {
           />
         </Col>
         <Col lg={8} md={12} sm={24}>
-          <div className="field-title">Average Depth of top soil(m)</div>
+          <div className="field-title">Average Depth of top soil</div>
           <Field
             id="average_top_soil_depth"
             name="average_top_soil_depth"
