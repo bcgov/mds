@@ -115,7 +115,8 @@ export class NOWSideMenu extends Component {
           <Link href="#sand-gravel-quarry-operations" title="Sand and Gravel / Quarry Operations" />
           <Link href="#placer-operations" title="Placer Operations" />
           <Link href="#water-supply" title="Water Supply" />
-          <Link href="#documents" title="Documents" />
+          <Link href="#submission_documents" title="Submission Documents" />
+          <Link href="#additional_documents" title="Additional Documents" />
         </Anchor>
       </div>
     );
