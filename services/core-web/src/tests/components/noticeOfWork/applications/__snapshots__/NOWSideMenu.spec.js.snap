@@ -83,8 +83,12 @@ exports[`NOWSideMenu renders properly 1`] = `
       title="Water Supply"
     />
     <AnchorLink
-      href="#documents"
-      title="Documents"
+      href="#submission_documents"
+      title="Submission Documents"
+    />
+    <AnchorLink
+      href="#additional_documents"
+      title="Additional Documents"
     />
   </Anchor>
 </div>

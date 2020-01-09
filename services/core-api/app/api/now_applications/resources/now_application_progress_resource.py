@@ -19,13 +19,13 @@ class NOWApplicationProgressResource(Resource, UserMixin):
     )
     @requires_role_edit_permit
     @api.marshal_with(NOW_APPLICATION_PROGRESS, code=200)
-    def post(self, application_guid):
+    def post(self, now_application_guid):
         data = self.parser.parse_args()
         application_progress_status_code = data.get('application_progress_status_code')
-        application = NOWApplication.find_by_application_guid(application_guid)
+        application = NOWApplication.find_by_application_guid(now_application_guid)
         if not application:
             raise NotFound(
-                'There was no notice of work application found with the provided application_guid.')
+                'There was no notice of work application found with the provided now_application_guid.')
         if not application_progress_status_code:
             raise BadRequest('application_progress_status_code is required')
         now_progress = NOWApplicationProgress.create(application, application_progress_status_code)
