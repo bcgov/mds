@@ -26,11 +26,11 @@ import {
   fetchNoticeOfWorkActivityTypeOptions,
   fetchNoticeOfWorkApplicationProgressStatusCodes,
   fetchRegionOptions,
-  fetchNoticeOFWorkApplicationStatusOptions,
-  fetchNoticeOFWorkUndergroundExplorationTypeOptions,
-  fetchNoticeOFWorkApplicationTypeOptions,
-  fetchNoticeOFWorkApplicationPermitTypes,
-  fetchNoticeOFWorkUnitTypeOptions,
+  fetchNoticeOfWorkApplicationStatusOptions,
+  fetchNoticeOfWorkUndergroundExplorationTypeOptions,
+  fetchNoticeOfWorkApplicationTypeOptions,
+  fetchNoticeOfWorkApplicationPermitTypes,
+  fetchNoticeOfWorkUnitTypeOptions,
 } from "@/actionCreators/staticContentActionCreator";
 import { getMines } from "@/selectors/mineSelectors";
 import {
@@ -63,10 +63,10 @@ const propTypes = {
   updateNoticeOfWorkApplication: PropTypes.func.isRequired,
   fetchNoticeOfWorkApplicationPermitTypes: PropTypes.func.isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
-  fetchNoticeOFWorkUnitTypeOptions: PropTypes.func.isRequired,
+  fetchNoticeOfWorkUnitTypeOptions: PropTypes.func.isRequired,
   fetchInspectors: PropTypes.func.isRequired,
   fetchImportedNoticeOfWorkApplication: PropTypes.func.isRequired,
-  fetchNoticeOFWorkUndergroundExplorationTypeOptions: PropTypes.func.isRequired,
+  fetchNoticeOfWorkUndergroundExplorationTypeOptions: PropTypes.func.isRequired,
   fetchOriginalNoticeOfWorkApplication: PropTypes.func.isRequired,
   fetchNoticeOfWorkActivityTypeOptions: PropTypes.func.isRequired,
   fetchNoticeOfWorkApplicationStatusOptions: PropTypes.func.isRequired,
@@ -125,12 +125,12 @@ export class NoticeOfWorkApplication extends Component {
     let currentStep = 0;
     this.props.fetchNoticeOfWorkActivityTypeOptions();
     this.props.fetchRegionOptions();
-    this.props.fetchNoticeOFWorkApplicationStatusOptions();
-    this.props.fetchNoticeOFWorkApplicationPermitTypes();
-    this.props.fetchNoticeOFWorkApplicationProgressStatusCodes();
-    this.props.fetchNoticeOFWorkApplicationTypeOptions();
-    this.props.fetchNoticeOFWorkUndergroundExplorationTypeOptions();
-    this.props.fetchNoticeOFWorkUnitTypeOptions();
+    this.props.fetchNoticeOfWorkApplicationStatusOptions();
+    this.props.fetchNoticeOfWorkApplicationPermitTypes();
+    this.props.fetchNoticeOfWorkApplicationProgressStatusCodes();
+    this.props.fetchNoticeOfWorkApplicationTypeOptions();
+    this.props.fetchNoticeOfWorkUndergroundExplorationTypeOptions();
+    this.props.fetchNoticeOfWorkUnitTypeOptions();
     this.props.fetchInspectors();
     this.props.fetchImportedNoticeOfWorkApplication(id).then(({ data }) => {
       const associatedMineGuid = data.mine_guid ? data.mine_guid : "";
@@ -622,12 +622,12 @@ const mapDispatchToProps = (dispatch) =>
       fetchNoticeOfWorkApplicationStatusOptions,
       reset,
       fetchRegionOptions,
-      fetchNoticeOFWorkApplicationTypeOptions,
-      fetchNoticeOFWorkUndergroundExplorationTypeOptions,
-      fetchNoticeOFWorkApplicationPermitTypes,
+      fetchNoticeOfWorkApplicationTypeOptions,
+      fetchNoticeOfWorkUndergroundExplorationTypeOptions,
+      fetchNoticeOfWorkApplicationPermitTypes,
       openModal,
       closeModal,
-      fetchNoticeOFWorkUnitTypeOptions,
+      fetchNoticeOfWorkUnitTypeOptions,
       fetchInspectors,
     },
     dispatch

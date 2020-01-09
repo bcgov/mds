@@ -2,7 +2,7 @@ import React from "react";
 import { PropTypes } from "prop-types";
 import { Field, formValueSelector } from "redux-form";
 import { connect } from "react-redux";
-import { Row, Col, Table, Button, Select } from "antd";
+import { Row, Col, Table, Button } from "antd";
 import * as FORM from "@/constants/forms";
 import {
   getDropdownNoticeOfWorkUndergroundExplorationTypeOptions,
@@ -19,12 +19,13 @@ const propTypes = {
   details: CustomPropTypes.activityDetails.isRequired,
   editRecord: PropTypes.func.isRequired,
   addRecord: PropTypes.func.isRequired,
+  unitTypeOptions: CustomPropTypes.options.isRequired,
+  undergroundExplorationTypeOptions: CustomPropTypes.options.isRequired,
 };
 
 const defaultProps = {};
 
 export const UndergroundExploration = (props) => {
-  console.log(props);
   const editActivity = (event, rowIndex, isDelete) => {
     const activityToChange = props.details[rowIndex];
     let removeOnly = false;
@@ -46,6 +47,7 @@ export const UndergroundExploration = (props) => {
 
   const addActivity = () => {
     const newActivity = {
+      underground_exploration_type_code: "",
       activity_type_description: "",
       quantity: "",
       incline: "",

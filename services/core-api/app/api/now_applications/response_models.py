@@ -39,7 +39,14 @@ NOW_APPLICATION_ACTIVITY_DETAIL_BASE = api.model('NOWApplicationActivityDetailBa
         'incline_unit_type_code': fields.String,
         'cut_line_length' : fields.Integer,
         'water_quantity' : fields.Integer,
-        'water_quantity_unit_type_code': fields.String
+        'water_quantity_unit_type_code': fields.String,
+        'cut_line_length_unit_type_code': fields.String,
+        'length_unit_type_code': fields.String,
+        'width_unit_type_code': fields.String,
+        'height_unit_type_code': fields.String,
+        'depth_unit_type_code': fields.String,
+        'timber_volume_unit_type_code': fields.String,
+        'disturbed_area_unit_type_code': fields.String,
     }
 )
 
@@ -116,6 +123,8 @@ NOW_APPLICATION_SAND_AND_GRAVEL = api.inherit(
     NOW_APPLICATION_ACTIVITY_SUMMARY_BASE,
     {
         'average_overburden_depth': fields.Fixed,
+        'average_overburden_depth_unit_type_code': fields.String, 
+        'average_top_soil_depth': fields.String, 
         'average_top_soil_depth': fields.Fixed,
         'stability_measures_description': fields.String,
         'is_agricultural_land_reserve': fields.Boolean,

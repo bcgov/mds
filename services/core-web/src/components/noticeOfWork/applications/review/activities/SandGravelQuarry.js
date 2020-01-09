@@ -8,8 +8,10 @@ import { TRASHCAN } from "@/constants/assets";
 import RenderField from "@/components/common/RenderField";
 import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
 import RenderRadioButtons from "@/components/common/RenderRadioButtons";
+import RenderSelect from "@/components/common/RenderSelect";
 import Equipment from "@/components/noticeOfWork/applications/review/activities/Equipment";
 import CustomPropTypes from "@/customPropTypes";
+import { getDropdownNoticeOfWorkUnitTypeOptions } from "@/selectors/staticContentSelectors";
 
 const propTypes = {
   isViewMode: PropTypes.bool.isRequired,
@@ -17,6 +19,7 @@ const propTypes = {
   equipment: CustomPropTypes.activityEquipment.isRequired,
   editRecord: PropTypes.func.isRequired,
   addRecord: PropTypes.func.isRequired,
+  unitTypeOptions: CustomPropTypes.options.isRequired,
 };
 
 const defaultProps = {};
@@ -138,7 +141,7 @@ export const SandGravelQuarry = (props) => {
       <br />
       <h4>Soil Conservation</h4>
       <Row gutter={16}>
-        <Col md={12} sm={24}>
+        <Col lg={8} md={12} sm={24}>
           <div className="field-title">Average Depth Overburden(m)</div>
           <Field
             id="average_overburden_depth"
@@ -147,6 +150,37 @@ export const SandGravelQuarry = (props) => {
             disabled={props.isViewMode}
           />
         </Col>
+        <Col lg={4} md={12} sm={24}>
+          <div className="field-title">Units</div>
+          <Field
+            id="average_overburden_depth_unit_type_code"
+            name="average_overburden_depth_unit_type_code"
+            component={RenderSelect}
+            data={props.unitTypeOptions}
+            disabled={props.isViewMode}
+          />
+        </Col>
+        <Col lg={8} md={12} sm={24}>
+          <div className="field-title">Average Depth of top soil(m)</div>
+          <Field
+            id="average_top_soil_depth"
+            name="average_top_soil_depth"
+            component={RenderField}
+            disabled={props.isViewMode}
+          />
+        </Col>
+        <Col lg={4} md={12} sm={24}>
+          <div className="field-title">Units</div>
+          <Field
+            id="average_top_soil_depth_unit_type_code"
+            name="average_top_soil_depth_unit_type_code"
+            component={RenderSelect}
+            data={props.unitTypeOptions}
+            disabled={props.isViewMode}
+          />
+        </Col>
+      </Row>
+      <Row gutter={16}>
         <Col md={12} sm={24}>
           <div className="field-title">
             Measures to stabilize soil overburden stockpiles and control noxious weeds
@@ -155,17 +189,6 @@ export const SandGravelQuarry = (props) => {
             id="stability_measures_description"
             name="stability_measures_description"
             component={RenderAutoSizeField}
-            disabled={props.isViewMode}
-          />
-        </Col>
-      </Row>
-      <Row gutter={16}>
-        <Col md={12} sm={24}>
-          <div className="field-title">Average Depth of top soil(m)</div>
-          <Field
-            id="average_top_soil_depth"
-            name="average_top_soil_depth"
-            component={RenderField}
             disabled={props.isViewMode}
           />
         </Col>
@@ -215,28 +238,6 @@ export const SandGravelQuarry = (props) => {
       </Row>
       <Row gutter={16}>
         <Col md={12} sm={24}>
-          <div className="field-title">Does the local government have a soil removal bylaw?</div>
-          <Field
-            id="has_local_soil_removal_bylaw"
-            name="has_local_soil_removal_bylaw"
-            component={RenderRadioButtons}
-            disabled={props.isViewMode}
-          />
-        </Col>
-        <Col md={12} sm={24}>
-          <div className="field-title">
-            Estimate total mineable reserves over the life of the mine(m3)
-          </div>
-          <Field
-            id="total_mineable_reserves"
-            name="total_mineable_reserves"
-            component={RenderAutoSizeField}
-            disabled={props.isViewMode}
-          />
-        </Col>
-      </Row>
-      <Row gutter={16}>
-        <Col md={12} sm={24}>
           <div className="field-title">Official community plan for the site</div>
           <Field
             id="community_plan"
@@ -246,11 +247,51 @@ export const SandGravelQuarry = (props) => {
           />
         </Col>
         <Col md={12} sm={24}>
-          <div className="field-title">Estimate annual extraction from site (tonnes/year)</div>
+          <div className="field-title">Does the local government have a soil removal bylaw?</div>
+          <Field
+            id="has_local_soil_removal_bylaw"
+            name="has_local_soil_removal_bylaw"
+            component={RenderRadioButtons}
+            disabled={props.isViewMode}
+          />
+        </Col>
+      </Row>
+      <Row gutter={16}>
+        <Col lg={8} md={12} sm={24}>
+          <div className="field-title">Total mineable reserves over the life of the mine</div>
+          <Field
+            id="total_mineable_reserves"
+            name="total_mineable_reserves"
+            component={RenderAutoSizeField}
+            disabled={props.isViewMode}
+          />
+        </Col>
+        <Col lg={4} md={12} sm={24}>
+          <div className="field-title">Units</div>
+          <Field
+            id="total_mineable_reserves_unit_type_code"
+            name="total_mineable_reserves_unit_type_code"
+            component={RenderSelect}
+            data={props.unitTypeOptions}
+            disabled={props.isViewMode}
+          />
+        </Col>
+        <Col lg={8} md={12} sm={24}>
+          <div className="field-title">Annual extraction from site</div>
           <Field
             id="total_annual_extraction"
             name="total_annual_extraction"
             component={RenderAutoSizeField}
+            disabled={props.isViewMode}
+          />
+        </Col>
+        <Col lg={4} md={12} sm={24}>
+          <div className="field-title">Units</div>
+          <Field
+            id="total_annual_extraction_unit_type_code"
+            name="total_annual_extraction_unit_type_code"
+            component={RenderSelect}
+            data={props.unitTypeOptions}
             disabled={props.isViewMode}
           />
         </Col>
@@ -290,6 +331,7 @@ export default connect(
   (state) => ({
     details: selector(state, "sand_and_gravel.details"),
     equipment: selector(state, "sand_and_gravel.equipment"),
+    unitTypeOptions: getDropdownNoticeOfWorkUnitTypeOptions(state),
   }),
   null
 )(SandGravelQuarry);

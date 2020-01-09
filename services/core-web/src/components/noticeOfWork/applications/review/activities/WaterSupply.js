@@ -3,6 +3,7 @@ import { PropTypes } from "prop-types";
 import { Field, formValueSelector } from "redux-form";
 import { connect } from "react-redux";
 import { Row, Col, Table, Button } from "antd";
+import { getDropdownNoticeOfWorkUnitTypeOptions } from "@/selectors/staticContentSelectors";
 import * as FORM from "@/constants/forms";
 import { TRASHCAN } from "@/constants/assets";
 import RenderField from "@/components/common/RenderField";
@@ -14,6 +15,7 @@ const propTypes = {
   details: CustomPropTypes.activityDetails.isRequired,
   editRecord: PropTypes.func.isRequired,
   addRecord: PropTypes.func.isRequired,
+  getDropdownNoticeOfWorkUnitTypeOptions: CustomPropTypes.options.isRequired,
 };
 
 const defaultProps = {};
@@ -202,6 +204,7 @@ WaterSupply.defaultProps = defaultProps;
 export default connect(
   (state) => ({
     details: selector(state, "water_supply.details"),
+    unitTypeOptions: getDropdownNoticeOfWorkUnitTypeOptions(state),
   }),
   null
 )(WaterSupply);

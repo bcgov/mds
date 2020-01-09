@@ -495,7 +495,7 @@ VALUES
 	('HA', 'Hectares', true, 'system-mds', 'system-mds'),
 	('DEG', 'Degrees', true, 'system-mds', 'system-mds'),
     ('PER', 'Grade (Percent)', true, 'system-mds', 'system-mds'),
-	('MTR', 'Meters', true, 'system-mds', 'system-mds')
+	('MTR', 'Meters', true, 'system-mds', 'system-mds'),
 on conflict do nothing;
 
 INSERT INTO notice_of_work_type

@@ -17,7 +17,11 @@ class SandGravelQuarryOperation(ActivitySummaryBase):
         db.Integer, db.ForeignKey('activity_summary.activity_summary_id'), primary_key=True)
 
     average_overburden_depth = db.Column(db.Numeric(14, 2))
+    average_overburden_depth_unit_type_code = db.Column(
+        db.String, db.ForeignKey('unit_type.unit_type_code'), nullable=False)
     average_top_soil_depth = db.Column(db.Numeric(14, 2))
+    average_top_soil_depth_unit_type_code = db.Column(
+        db.String, db.ForeignKey('unit_type.unit_type_code'), nullable=False)
     stability_measures_description = db.Column(db.String)
     is_agricultural_land_reserve = db.Column(db.Boolean)
     agri_lnd_rsrv_permit_application_number = db.Column(db.String)
