@@ -13,6 +13,7 @@ class UnitType(AuditMixin, Base):
     __tablename__ = 'unit_type'
     unit_type_code = db.Column(db.String, primary_key=True)
     description = db.Column(db.String, nullable=False)
+    unit = db.Column(db.String, nullable=False)
     active_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
 
     @classmethod
