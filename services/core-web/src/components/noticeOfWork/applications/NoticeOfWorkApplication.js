@@ -24,11 +24,12 @@ import {
 } from "@/selectors/noticeOfWorkSelectors";
 import {
   fetchNoticeOfWorkActivityTypeOptions,
-  fetchNoticeOfWorkApplicationProgressStatusCodes,
   fetchRegionOptions,
   fetchNoticeOfWorkApplicationStatusOptions,
   fetchNoticeOfWorkApplicationTypeOptions,
   fetchNoticeOfWorkApplicationPermitTypes,
+  fetchNoticeOfWorkApplicationDocumentTypeOptions,
+  fetchNoticeOfWorkApplicationProgressStatusCodes,
 } from "@/actionCreators/staticContentActionCreator";
 import { getMines } from "@/selectors/mineSelectors";
 import {
@@ -56,6 +57,7 @@ const propTypes = {
   noticeOfWork: CustomPropTypes.importedNOWApplication,
   originalNoticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
   fetchNoticeOfWorkApplicationProgressStatusCodes: PropTypes.func.isRequired,
+  fetchNoticeOfWorkApplicationDocumentTypeOptions: PropTypes.func.isRequired,
   createNoticeOfWorkApplicationProgress: CustomPropTypes.importedNOWApplication.isRequired,
   createNoticeOfWorkApplication: PropTypes.func.isRequired,
   updateNoticeOfWorkApplication: PropTypes.func.isRequired,
@@ -80,8 +82,6 @@ const propTypes = {
       id: PropTypes.string,
     },
   }).isRequired,
-  // the following prop will be used in the future
-  // eslint-disable-next-line
   formValues: CustomPropTypes.nowApplication.isRequired,
   mines: PropTypes.arrayOf(CustomPropTypes.mine).isRequired,
   inspectors: CustomPropTypes.groupOptions.isRequired,
@@ -121,6 +121,7 @@ export class NoticeOfWorkApplication extends Component {
     let currentStep = 0;
     this.props.fetchNoticeOfWorkActivityTypeOptions();
     this.props.fetchRegionOptions();
+    this.props.fetchNoticeOfWorkApplicationDocumentTypeOptions();
     this.props.fetchNoticeOfWorkApplicationStatusOptions();
     this.props.fetchNoticeOfWorkApplicationPermitTypes();
     this.props.fetchNoticeOfWorkApplicationProgressStatusCodes();
@@ -516,6 +517,25 @@ export class NoticeOfWorkApplication extends Component {
       </Menu>
     );
 
+    const headerSteps = [
+      <Step status={this.renderProgressStatus(0)} title="Verification" />,
+      <Step
+        status={this.renderProgressStatus(1)}
+        title="Technical Review"
+        disabled={this.isStepDisabled(1)}
+      />,
+      <Step
+        status={this.renderProgressStatus(2)}
+        title="Referral / Consultation"
+        disabled={this.isStepDisabled(2)}
+      />,
+      <Step
+        status={this.renderProgressStatus(3)}
+        title="Decision"
+        disabled={this.isStepDisabled(3)}
+      />,
+    ];
+
     return (
       <div className="page" onScroll={this.handleScroll()} onLoad={this.handleScroll()}>
         <div className={this.state.fixedTop ? "steps--header fixed-scroll" : "steps--header"}>
@@ -526,40 +546,27 @@ export class NoticeOfWorkApplication extends Component {
               noticeOfWorkPageFromRoute={this.state.noticeOfWorkPageFromRoute}
               fixedTop={this.state.fixedTop}
             />
-            {this.state.isViewMode && (
-              <Dropdown
-                overlay={menu}
-                placement="bottomLeft"
-                onVisibleChange={this.handleVisibleChange}
-                visible={this.state.menuVisible}
-              >
-                <Button type="secondary">
-                  Actions
-                  <Icon type="down" />
-                </Button>
-              </Dropdown>
-            )}
           </div>
           <br />
           {this.state.isViewMode ? (
-            <Steps current={this.state.currentStep} onChange={this.onChange} type="navigation">
-              <Step status={this.renderProgressStatus(0)} title="Verification" />
-              <Step
-                status={this.renderProgressStatus(1)}
-                title="Technical Review"
-                disabled={this.isStepDisabled(1)}
-              />
-              <Step
-                status={this.renderProgressStatus(2)}
-                title="Referral / Consultation"
-                disabled={this.isStepDisabled(2)}
-              />
-              <Step
-                status={this.renderProgressStatus(3)}
-                title="Decision"
-                disabled={this.isStepDisabled(3)}
-              />
-            </Steps>
+            <div className="inline-flex flex-center block-mobile padding-md--right">
+              <Steps current={this.state.currentStep} onChange={this.onChange} type="navigation">
+                {headerSteps}
+              </Steps>
+              {this.state.isViewMode && (
+                <Dropdown
+                  overlay={menu}
+                  placement="bottomLeft"
+                  onVisibleChange={this.handleVisibleChange}
+                  visible={this.state.menuVisible}
+                >
+                  <Button type="secondary" className="full-mobile">
+                    Actions
+                    <Icon type="down" />
+                  </Button>
+                </Dropdown>
+              )}
+            </div>
           ) : (
             <div className="inline-flex flex-center block-mobile">
               <Button type="secondary" className="full-mobile" onClick={this.handleCancelNOWEdit}>
@@ -610,9 +617,10 @@ const mapDispatchToProps = (dispatch) =>
       fetchImportedNoticeOfWorkApplication,
       fetchOriginalNoticeOfWorkApplication,
       fetchMineRecordById,
-      fetchNoticeOfWorkActivityTypeOptions,
       createNoticeOfWorkApplicationProgress,
       fetchNoticeOfWorkApplicationProgressStatusCodes,
+      fetchNoticeOfWorkActivityTypeOptions,
+      fetchNoticeOfWorkApplicationDocumentTypeOptions,
       fetchNoticeOfWorkApplicationStatusOptions,
       reset,
       fetchRegionOptions,

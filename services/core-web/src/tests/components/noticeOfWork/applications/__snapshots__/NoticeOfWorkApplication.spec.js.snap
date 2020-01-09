@@ -383,6 +383,36 @@ exports[`NoticeOfWorkApplication renders properly 1`] = `
           }
         }
       />
+    </div>
+    <br />
+    <div
+      className="inline-flex flex-center block-mobile padding-md--right"
+    >
+      <Steps
+        current={0}
+        onChange={[Function]}
+        type="navigation"
+      >
+        <Step
+          status="wait"
+          title="Verification"
+        />
+        <Step
+          disabled={true}
+          status="wait"
+          title="Technical Review"
+        />
+        <Step
+          disabled={true}
+          status="wait"
+          title="Referral / Consultation"
+        />
+        <Step
+          disabled={true}
+          status="wait"
+          title="Decision"
+        />
+      </Steps>
       <Dropdown
         mouseEnterDelay={0.15}
         mouseLeaveDelay={0.1}
@@ -393,6 +423,7 @@ exports[`NoticeOfWorkApplication renders properly 1`] = `
       >
         <Button
           block={false}
+          className="full-mobile"
           ghost={false}
           htmlType="button"
           loading={false}
@@ -405,32 +436,6 @@ exports[`NoticeOfWorkApplication renders properly 1`] = `
         </Button>
       </Dropdown>
     </div>
-    <br />
-    <Steps
-      current={0}
-      onChange={[Function]}
-      type="navigation"
-    >
-      <Step
-        status="wait"
-        title="Verification"
-      />
-      <Step
-        disabled={true}
-        status="wait"
-        title="Technical Review"
-      />
-      <Step
-        disabled={true}
-        status="wait"
-        title="Referral / Consultation"
-      />
-      <Step
-        disabled={true}
-        status="wait"
-        title="Decision"
-      />
-    </Steps>
   </div>
   <LoadingWrapper
     condition={false}
