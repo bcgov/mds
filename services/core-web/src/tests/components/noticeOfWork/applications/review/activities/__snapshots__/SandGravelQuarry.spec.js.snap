@@ -10,6 +10,7 @@ exports[`SandGravelQuarry renders properly 1`] = `
     gutter={16}
   >
     <Col
+      lg={8}
       md={12}
       sm={24}
     >
@@ -26,26 +27,24 @@ exports[`SandGravelQuarry renders properly 1`] = `
       />
     </Col>
     <Col
+      lg={4}
       md={12}
       sm={24}
     >
       <div
         className="field-title"
       >
-        Measures to stabilize soil overburden stockpiles and control noxious weeds
+        Units
       </div>
       <Field
         component={[Function]}
         disabled={true}
-        id="stability_measures_description"
-        name="stability_measures_description"
+        id="average_overburden_depth_unit_type_code"
+        name="average_overburden_depth_unit_type_code"
       />
     </Col>
-  </Row>
-  <Row
-    gutter={16}
-  >
     <Col
+      lg={8}
       md={12}
       sm={24}
     >
@@ -59,6 +58,43 @@ exports[`SandGravelQuarry renders properly 1`] = `
         disabled={true}
         id="average_top_soil_depth"
         name="average_top_soil_depth"
+      />
+    </Col>
+    <Col
+      lg={4}
+      md={12}
+      sm={24}
+    >
+      <div
+        className="field-title"
+      >
+        Units
+      </div>
+      <Field
+        component={[Function]}
+        disabled={true}
+        id="average_top_soil_depth_unit_type_code"
+        name="average_top_soil_depth_unit_type_code"
+      />
+    </Col>
+  </Row>
+  <Row
+    gutter={16}
+  >
+    <Col
+      md={12}
+      sm={24}
+    >
+      <div
+        className="field-title"
+      >
+        Measures to stabilize soil overburden stockpiles and control noxious weeds
+      </div>
+      <Field
+        component={[Function]}
+        disabled={true}
+        id="stability_measures_description"
+        name="stability_measures_description"
       />
     </Col>
   </Row>
@@ -148,42 +184,6 @@ exports[`SandGravelQuarry renders properly 1`] = `
       <div
         className="field-title"
       >
-        Does the local government have a soil removal bylaw?
-      </div>
-      <Field
-        component={[Function]}
-        disabled={true}
-        id="has_local_soil_removal_bylaw"
-        name="has_local_soil_removal_bylaw"
-      />
-    </Col>
-    <Col
-      md={12}
-      sm={24}
-    >
-      <div
-        className="field-title"
-      >
-        Estimate total mineable reserves over the life of the mine(m3)
-      </div>
-      <Field
-        component={[Function]}
-        disabled={true}
-        id="total_mineable_reserves"
-        name="total_mineable_reserves"
-      />
-    </Col>
-  </Row>
-  <Row
-    gutter={16}
-  >
-    <Col
-      md={12}
-      sm={24}
-    >
-      <div
-        className="field-title"
-      >
         Official community plan for the site
       </div>
       <Field
@@ -200,13 +200,85 @@ exports[`SandGravelQuarry renders properly 1`] = `
       <div
         className="field-title"
       >
-        Estimate annual extraction from site (tonnes/year)
+        Does the local government have a soil removal bylaw?
+      </div>
+      <Field
+        component={[Function]}
+        disabled={true}
+        id="has_local_soil_removal_bylaw"
+        name="has_local_soil_removal_bylaw"
+      />
+    </Col>
+  </Row>
+  <Row
+    gutter={16}
+  >
+    <Col
+      lg={8}
+      md={12}
+      sm={24}
+    >
+      <div
+        className="field-title"
+      >
+        Total mineable reserves over the life of the mine
+      </div>
+      <Field
+        component={[Function]}
+        disabled={true}
+        id="total_mineable_reserves"
+        name="total_mineable_reserves"
+      />
+    </Col>
+    <Col
+      lg={4}
+      md={12}
+      sm={24}
+    >
+      <div
+        className="field-title"
+      >
+        Units
+      </div>
+      <Field
+        component={[Function]}
+        disabled={true}
+        id="total_mineable_reserves_unit_type_code"
+        name="total_mineable_reserves_unit_type_code"
+      />
+    </Col>
+    <Col
+      lg={8}
+      md={12}
+      sm={24}
+    >
+      <div
+        className="field-title"
+      >
+        Annual extraction from site
       </div>
       <Field
         component={[Function]}
         disabled={true}
         id="total_annual_extraction"
         name="total_annual_extraction"
+      />
+    </Col>
+    <Col
+      lg={4}
+      md={12}
+      sm={24}
+    >
+      <div
+        className="field-title"
+      >
+        Units
+      </div>
+      <Field
+        component={[Function]}
+        disabled={true}
+        id="total_annual_extraction_unit_type_code"
+        name="total_annual_extraction_unit_type_code"
       />
     </Col>
   </Row>

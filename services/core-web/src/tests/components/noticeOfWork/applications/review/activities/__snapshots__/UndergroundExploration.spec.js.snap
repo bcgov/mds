@@ -7,6 +7,12 @@ exports[`UndergroundExploration renders properly 1`] = `
     columns={
       Array [
         Object {
+          "dataIndex": "underground_exploration_type_code",
+          "key": "underground_exploration_type_code",
+          "render": [Function],
+          "title": "Exploration Type",
+        },
+        Object {
           "dataIndex": "activity_type_description",
           "key": "activity_type_description",
           "render": [Function],
@@ -28,7 +34,7 @@ exports[`UndergroundExploration renders properly 1`] = `
           "dataIndex": "incline_unit_type_code",
           "key": "incline_unit_type_code",
           "render": [Function],
-          "title": "Units",
+          "title": "Incline Units",
         },
         Object {
           "dataIndex": "width",
@@ -95,6 +101,7 @@ exports[`UndergroundExploration renders properly 1`] = `
     gutter={16}
   >
     <Col
+      lg={7}
       md={12}
       sm={24}
     >
@@ -108,9 +115,32 @@ exports[`UndergroundExploration renders properly 1`] = `
         disabled={true}
         id="total_ore_amount"
         name="total_ore_amount"
+        validate={
+          Array [
+            [Function],
+          ]
+        }
       />
     </Col>
     <Col
+      lg={5}
+      md={12}
+      sm={24}
+    >
+      <div
+        className="field-title"
+      >
+        Ore Units
+      </div>
+      <Field
+        component={[Function]}
+        disabled={true}
+        id="total_ore_unit_type_code"
+        name="total_ore_unit_type_code"
+      />
+    </Col>
+    <Col
+      lg={7}
       md={12}
       sm={24}
     >
@@ -124,6 +154,28 @@ exports[`UndergroundExploration renders properly 1`] = `
         disabled={true}
         id="total_waste_amount"
         name="total_waste_amount"
+        validate={
+          Array [
+            [Function],
+          ]
+        }
+      />
+    </Col>
+    <Col
+      lg={5}
+      md={12}
+      sm={24}
+    >
+      <div
+        className="field-title"
+      >
+        Waste Units
+      </div>
+      <Field
+        component={[Function]}
+        disabled={true}
+        id="total_waste_unit_type_code"
+        name="total_waste_unit_type_code"
       />
     </Col>
   </Row>
