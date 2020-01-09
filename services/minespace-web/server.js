@@ -2,7 +2,7 @@ const express = require("express");
 const cacheControl = require("express-cache-controller");
 const dotenv = require("dotenv").config({ path: `${__dirname}/.env` });
 
-let BASE_PATH = process.env.BASE_PATH;
+let { BASE_PATH } = process.env;
 let BUILD_DIR = process.env.BUILD_DIR || "build";
 let PORT = process.env.PORT || 3020;
 if (dotenv.parsed) {
@@ -39,6 +39,7 @@ app.get(`${BASE_PATH}/env`, (req, res) => {
     keycloak_idpHint: process.env.KEYCLOAK_IDP_HINT,
     keycloak_url: process.env.KEYCLOAK_URL,
     siteminder_url: process.env.SITEMINDER_URL,
+    environment: process.env.NODE_ENV,
   });
 });
 

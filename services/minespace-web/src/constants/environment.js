@@ -12,6 +12,7 @@ export const DEFAULT_ENVIRONMENT = {
 export const ENVIRONMENT = {
   apiUrl: "<API_URL>",
   docManUrl: "<DOCUMENT_MANAGER_URL>",
+  environment: "development",
 };
 
 export const KEYCLOAK = {
