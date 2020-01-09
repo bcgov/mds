@@ -13,6 +13,7 @@ const propTypes = {
   label: PropTypes.string.isRequired,
   meta: PropTypes.objectOf(PropTypes.any).isRequired,
   placeholder: PropTypes.string,
+  onBlur: PropTypes.func,
   onChange: PropTypes.func,
   format: PropTypes.string,
   defaultOpenValue: PropTypes.string,
@@ -21,6 +22,7 @@ const propTypes = {
 
 const defaultProps = {
   placeholder: "Select a time",
+  onBlur: () => {},
   onChange: () => {},
   format: "HH:mm",
   defaultOpenValue: "00:00",
@@ -44,7 +46,7 @@ const RenderDate = (props) => (
       {...props.input}
       placeholder={props.placeholder}
       onChange={props.input.onChange}
-      onBlur={() => {}}
+      onBlur={props.onBlur}
       value={props.input.value ? moment(props.input.value, props.format) : null}
       defaultOpenValue={moment(props.defaultOpenValue, props.format)}
       format={props.format}
