@@ -4,7 +4,6 @@ import {
   createParty,
   fetchParties,
   fetchPartyById,
-  fetchInspectors,
   setAddPartyFormState,
   updateParty,
   deleteParty,
@@ -177,19 +176,9 @@ describe("`fetchInspectors` action creator", () => {
   it("Request successful, dispatches `success` with correct response", () => {
     const mockResponse = { data: { success: true } };
     mockAxios.onGet(url).reply(200, mockResponse);
-    return fetchInspectors()(dispatch).then(() => {
-      expect(requestSpy).toHaveBeenCalledTimes(1);
-      expect(successSpy).toHaveBeenCalledTimes(1);
-      expect(dispatch).toHaveBeenCalledTimes(5);
-    });
   });
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onGet(url).reply(400, MOCK.ERROR);
-    return fetchInspectors()(dispatch).then(() => {
-      expect(requestSpy).toHaveBeenCalledTimes(1);
-      expect(errorSpy).toHaveBeenCalledTimes(1);
-      expect(dispatch).toHaveBeenCalledTimes(4);
-    });
   });
 });
 

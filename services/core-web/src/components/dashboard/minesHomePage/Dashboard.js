@@ -17,16 +17,6 @@ import {
   fetchMineRecordById,
 } from "@/actionCreators/mineActionCreator";
 import {
-  fetchStatusOptions,
-  fetchRegionOptions,
-  fetchMineTenureTypes,
-  fetchMineDisturbanceOptions,
-  fetchMineCommodityOptions,
-  fetchPermitStatusOptions,
-  fetchMineReportStatusOptions,
-} from "@/actionCreators/staticContentActionCreator";
-import { fetchPartyRelationshipTypes } from "@/actionCreators/partiesActionCreator";
-import {
   getMines,
   getMineIds,
   getMinesPageData,
@@ -54,7 +44,6 @@ import * as Permission from "@/constants/permissions";
 import * as ModalContent from "@/constants/modalContent";
 import AddButton from "@/components/common/AddButton";
 import RefreshButton from "@/components/common/RefreshButton";
-import { storeRegionOptions, storeTenureTypes } from "@/actions/staticContentActions";
 
 /**
  * @class Dashboard is the main landing page of the application, currently contains a List and Map View, ability to create a new mine, and search for a mine by name or lat/long.
@@ -68,12 +57,6 @@ const propTypes = {
   fetchMineRecordsForMap: PropTypes.func.isRequired,
   createMineRecord: PropTypes.func.isRequired,
   createMineTypes: PropTypes.func.isRequired,
-  fetchStatusOptions: PropTypes.func.isRequired,
-  fetchMineCommodityOptions: PropTypes.func.isRequired,
-  fetchMineDisturbanceOptions: PropTypes.func.isRequired,
-  fetchRegionOptions: PropTypes.func.isRequired,
-  fetchPermitStatusOptions: PropTypes.func.isRequired,
-  fetchMineTenureTypes: PropTypes.func.isRequired,
   mineRegionHash: PropTypes.objectOf(PropTypes.string).isRequired,
   mineTenureHash: PropTypes.objectOf(PropTypes.string).isRequired,
   mineCommodityOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
@@ -85,8 +68,6 @@ const propTypes = {
   transformedMineTypes: CustomPropTypes.transformedMineTypes.isRequired,
   mineIds: PropTypes.arrayOf(PropTypes.string).isRequired,
   pageData: CustomPropTypes.minePageData.isRequired,
-  fetchPartyRelationshipTypes: PropTypes.func.isRequired,
-  fetchMineReportStatusOptions: PropTypes.func.isRequired,
 };
 
 const joinOrRemove = (param, key) => (isEmpty(param) ? {} : { [key]: param.join(",") });
@@ -141,14 +122,6 @@ export class Dashboard extends Component {
         })
       );
     }
-    this.props.fetchStatusOptions();
-    this.props.fetchRegionOptions();
-    this.props.fetchMineTenureTypes();
-    this.props.fetchMineDisturbanceOptions();
-    this.props.fetchMineCommodityOptions();
-    this.props.fetchPartyRelationshipTypes();
-    this.props.fetchPermitStatusOptions();
-    this.props.fetchMineReportStatusOptions();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -493,10 +466,7 @@ export class Dashboard extends Component {
               <p>To find a mine summary, search in the list or map section below.</p>
             </div>
             <div>
-              <RefreshButton
-                listActions={[storeRegionOptions, storeTenureTypes]}
-                requests={[this.props.fetchRegionOptions, this.props.fetchMineTenureTypes]}
-              />
+              <RefreshButton />
               <AuthorizationWrapper permission={Permission.EDIT_MINES}>
                 <AddButton
                   onClick={(event) =>
@@ -535,18 +505,10 @@ const mapDispatchToProps = (dispatch) =>
       fetchMineRecordById,
       fetchMineRecords,
       fetchMineRecordsForMap,
-      fetchStatusOptions,
-      fetchRegionOptions,
       createMineRecord,
       createMineTypes,
-      fetchMineTenureTypes,
-      fetchMineCommodityOptions,
-      fetchMineDisturbanceOptions,
-      fetchPermitStatusOptions,
       openModal,
       closeModal,
-      fetchPartyRelationshipTypes,
-      fetchMineReportStatusOptions,
     },
     dispatch
   );

@@ -22,38 +22,8 @@ exports[`Dashboard renders properly 1`] = `
         <RefreshButton
           actions={Array []}
           isNestedButton={false}
-          listActions={
-            Array [
-              [Function],
-              [Function],
-            ]
-          }
-          requests={
-            Array [
-              [MockFunction] {
-                "calls": Array [
-                  Array [],
-                ],
-                "results": Array [
-                  Object {
-                    "type": "return",
-                    "value": undefined,
-                  },
-                ],
-              },
-              [MockFunction] {
-                "calls": Array [
-                  Array [],
-                ],
-                "results": Array [
-                  Object {
-                    "type": "return",
-                    "value": undefined,
-                  },
-                ],
-              },
-            ]
-          }
+          listActions={Array []}
+          requests={Array []}
         />
         <Connect(AuthorizationWrapper)
           permission="role_edit_mines"
@@ -93,32 +63,8 @@ exports[`Dashboard renders properly 1`] = `
             closeModal={[MockFunction]}
             createMineRecord={[MockFunction]}
             fetchApplicationStatusOptions={[MockFunction]}
-            fetchMineCommodityOptions={
-              [MockFunction] {
-                "calls": Array [
-                  Array [],
-                ],
-                "results": Array [
-                  Object {
-                    "type": "return",
-                    "value": undefined,
-                  },
-                ],
-              }
-            }
-            fetchMineDisturbanceOptions={
-              [MockFunction] {
-                "calls": Array [
-                  Array [],
-                ],
-                "results": Array [
-                  Object {
-                    "type": "return",
-                    "value": undefined,
-                  },
-                ],
-              }
-            }
+            fetchMineCommodityOptions={[MockFunction]}
+            fetchMineDisturbanceOptions={[MockFunction]}
             fetchMineRecords={
               [MockFunction] {
                 "calls": Array [
@@ -134,84 +80,12 @@ exports[`Dashboard renders properly 1`] = `
                 ],
               }
             }
-            fetchMineReportStatusOptions={
-              [MockFunction] {
-                "calls": Array [
-                  Array [],
-                ],
-                "results": Array [
-                  Object {
-                    "type": "return",
-                    "value": undefined,
-                  },
-                ],
-              }
-            }
-            fetchMineTenureTypes={
-              [MockFunction] {
-                "calls": Array [
-                  Array [],
-                ],
-                "results": Array [
-                  Object {
-                    "type": "return",
-                    "value": undefined,
-                  },
-                ],
-              }
-            }
-            fetchPartyRelationshipTypes={
-              [MockFunction] {
-                "calls": Array [
-                  Array [],
-                ],
-                "results": Array [
-                  Object {
-                    "type": "return",
-                    "value": undefined,
-                  },
-                ],
-              }
-            }
-            fetchPermitStatusOptions={
-              [MockFunction] {
-                "calls": Array [
-                  Array [],
-                ],
-                "results": Array [
-                  Object {
-                    "type": "return",
-                    "value": undefined,
-                  },
-                ],
-              }
-            }
-            fetchRegionOptions={
-              [MockFunction] {
-                "calls": Array [
-                  Array [],
-                ],
-                "results": Array [
-                  Object {
-                    "type": "return",
-                    "value": undefined,
-                  },
-                ],
-              }
-            }
-            fetchStatusOptions={
-              [MockFunction] {
-                "calls": Array [
-                  Array [],
-                ],
-                "results": Array [
-                  Object {
-                    "type": "return",
-                    "value": undefined,
-                  },
-                ],
-              }
-            }
+            fetchMineReportStatusOptions={[MockFunction]}
+            fetchMineTenureTypes={[MockFunction]}
+            fetchPartyRelationshipTypes={[MockFunction]}
+            fetchPermitStatusOptions={[MockFunction]}
+            fetchRegionOptions={[MockFunction]}
+            fetchStatusOptions={[MockFunction]}
             handleMineSearch={[Function]}
             history={
               Object {

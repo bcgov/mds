@@ -1,8 +1,9 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import { Layout, BackTop, Button, Icon } from "antd";
 import PropTypes from "prop-types";
 import MediaQuery from "react-responsive";
-import LoadingBar from "react-redux-loading-bar";
+import LoadingBar, { showLoading, hideLoading } from "react-redux-loading-bar";
 import DashboardRoutes from "@/routes/DashboardRoutes";
 import { AuthenticationGuard } from "@/HOC/AuthenticationGuard";
 import NavBar from "./navigation/NavBar";
@@ -13,6 +14,9 @@ import {
   detectTestEnvironment,
   detectDevelopmentEnvironment,
 } from "@/utils/environmentUtils";
+
+import * as staticContent from "@/actionCreators/staticContentActionCreator";
+
 /**
  * @class Home contains the navigation and wraps the Dashboard routes. Home should not contain any redux logic/state.
  * Home is wrapped in AuthenticationGuard which checks keycloak authorization.
@@ -20,6 +24,7 @@ import {
 
 const propTypes = {
   location: PropTypes.shape({ pathname: PropTypes.string }).isRequired,
+  dispatch: PropTypes.func.isRequired,
 };
 
 export class Home extends Component {
@@ -39,6 +44,7 @@ export class Home extends Component {
       isDev: detectDevelopmentEnvironment(),
     });
     this.handleActiveButton(this.props.location.pathname);
+    this.loadStaticContent();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -63,6 +69,15 @@ export class Home extends Component {
 
   toggleHamburgerMenu = () => {
     this.setState((prevState) => ({ isMenuOpen: !prevState.isMenuOpen }));
+  };
+
+  loadStaticContent = () => {
+    this.props.dispatch(showLoading("modal"));
+    const staticContentActionCreators = Object.getOwnPropertyNames(staticContent).filter(
+      (property) => typeof staticContent[property] === "function"
+    );
+    staticContentActionCreators.forEach((action) => this.props.dispatch(staticContent[action]()));
+    this.props.dispatch(hideLoading("modal"));
   };
 
   render() {
@@ -109,4 +124,4 @@ export class Home extends Component {
 
 Home.propTypes = propTypes;
 
-export default AuthenticationGuard(Home);
+export default connect(null)(AuthenticationGuard(Home));

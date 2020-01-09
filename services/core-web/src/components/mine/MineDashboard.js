@@ -18,25 +18,8 @@ import {
   setMineVerifiedStatus,
   fetchMineVerifiedStatuses,
 } from "@/actionCreators/mineActionCreator";
-import {
-  fetchStatusOptions,
-  fetchRegionOptions,
-  fetchMineTenureTypes,
-  fetchMineDisturbanceOptions,
-  fetchMineCommodityOptions,
-  fetchPermitStatusOptions,
-  fetchMineComplianceCodes,
-  fetchVarianceDocumentCategoryOptions,
-  fetchVarianceStatusOptions,
-  fetchMineReportDefinitionOptions,
-  fetchMineReportStatusOptions,
-} from "@/actionCreators/staticContentActionCreator";
 import { getMines, getIsUserSubscribed } from "@/selectors/mineSelectors";
-import {
-  fetchPartyRelationshipTypes,
-  fetchPartyRelationships,
-  fetchInspectors,
-} from "@/actionCreators/partiesActionCreator";
+import { fetchPartyRelationships } from "@/actionCreators/partiesActionCreator";
 import { fetchVariancesByMine } from "@/actionCreators/varianceActionCreator";
 import { fetchMineComplianceInfo } from "@/actionCreators/complianceActionCreator";
 import CustomPropTypes from "@/customPropTypes";
@@ -66,24 +49,11 @@ const propTypes = {
   fetchSubscribedMinesByUser: PropTypes.func.isRequired,
   subscribe: PropTypes.func.isRequired,
   unSubscribe: PropTypes.func.isRequired,
-  fetchStatusOptions: PropTypes.func.isRequired,
-  fetchMineTenureTypes: PropTypes.func.isRequired,
-  fetchMineComplianceCodes: PropTypes.func.isRequired,
-  fetchPartyRelationshipTypes: PropTypes.func.isRequired,
   fetchPartyRelationships: PropTypes.func.isRequired,
   fetchMineComplianceInfo: PropTypes.func.isRequired,
-  fetchVarianceStatusOptions: PropTypes.func.isRequired,
   fetchVariancesByMine: PropTypes.func.isRequired,
-  fetchRegionOptions: PropTypes.func.isRequired,
-  fetchMineDisturbanceOptions: PropTypes.func.isRequired,
-  fetchMineCommodityOptions: PropTypes.func.isRequired,
-  fetchPermitStatusOptions: PropTypes.func.isRequired,
-  fetchVarianceDocumentCategoryOptions: PropTypes.func.isRequired,
-  fetchMineReportDefinitionOptions: PropTypes.func.isRequired,
-  fetchInspectors: PropTypes.func.isRequired,
   setMineVerifiedStatus: PropTypes.func.isRequired,
   fetchMineVerifiedStatuses: PropTypes.func.isRequired,
-  fetchMineReportStatusOptions: PropTypes.func.isRequired,
 };
 
 export class MineDashboard extends Component {
@@ -98,21 +68,8 @@ export class MineDashboard extends Component {
     const { id } = this.props.match.params;
     this.handleActiveButton(this.props.location.pathname);
     this.loadMineData(id);
-    this.props.fetchStatusOptions();
-    this.props.fetchRegionOptions();
-    this.props.fetchMineTenureTypes();
-    this.props.fetchMineDisturbanceOptions();
-    this.props.fetchMineCommodityOptions();
-    this.props.fetchPartyRelationshipTypes();
-    this.props.fetchPermitStatusOptions();
-    this.props.fetchMineComplianceCodes();
     this.props.fetchPartyRelationships({ mine_guid: id, relationships: "party" });
     this.props.fetchSubscribedMinesByUser();
-    this.props.fetchVarianceDocumentCategoryOptions();
-    this.props.fetchMineReportDefinitionOptions();
-    this.props.fetchVarianceStatusOptions();
-    this.props.fetchInspectors();
-    this.props.fetchMineReportStatusOptions();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -228,8 +185,6 @@ export class MineDashboard extends Component {
             actions={[storeMine]}
             listActions={[storeRegionOptions, storeTenureTypes, storeVariances, storePermits]}
             requests={[
-              this.props.fetchRegionOptions,
-              this.props.fetchMineTenureTypes,
               () => this.props.fetchVariancesByMine({ mineGuid: id }),
               () => this.props.fetchPermits(mine.mine_guid),
               () => this.props.fetchMineRecordById(id),
@@ -344,31 +299,18 @@ const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
       fetchMineRecordById,
-      fetchStatusOptions,
-      fetchRegionOptions,
-      fetchMineTenureTypes,
-      fetchMineDisturbanceOptions,
-      fetchMineCommodityOptions,
       updateMineRecord,
       createTailingsStorageFacility,
       removeMineType,
       fetchPartyRelationships,
-      fetchPartyRelationshipTypes,
-      fetchPermitStatusOptions,
       fetchMineComplianceInfo,
       fetchSubscribedMinesByUser,
       unSubscribe,
       subscribe,
       fetchPermits,
-      fetchVarianceDocumentCategoryOptions,
-      fetchMineReportDefinitionOptions,
-      fetchMineComplianceCodes,
-      fetchInspectors,
-      fetchVarianceStatusOptions,
       setMineVerifiedStatus,
       fetchMineVerifiedStatuses,
       fetchVariancesByMine,
-      fetchMineReportStatusOptions,
     },
     dispatch
   );
