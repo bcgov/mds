@@ -29,16 +29,7 @@ export const NOWReviewForm = (props) => (
             data={props.review_types}
             validate={[required]}
           />
-        </Form.Item>{" "}
-        <Form.Item>
-          <Field
-            id="response_date"
-            name="response_date"
-            label="Response Date"
-            component={renderConfig.DATE}
-            validate={[required, dateNotInFuture]}
-          />
-        </Form.Item>{" "}
+        </Form.Item>
         <Form.Item>
           <Field
             id="referee_name"
@@ -48,6 +39,15 @@ export const NOWReviewForm = (props) => (
             validate={[required]}
           />
         </Form.Item>
+        <Form.Item>
+          <Field
+            id="response_date"
+            name="response_date"
+            label="Response Recieved"
+            component={renderConfig.DATE}
+            validate={[required, dateNotInFuture]}
+          />
+        </Form.Item>{" "}
       </Col>
     </Row>
     <div className="right center-mobile">

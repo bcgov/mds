@@ -112,5 +112,5 @@ def setup_schema(Base, session):
 # TODO: finish this and resolve errors now_application/activity_detail_base.activity_type_code to all for programatic generation of schema
 # TODO: add call to model method to execute post_generation of schema.
 
-event.listen(mapper, "after_configured", setup_schema(ActivityDetailBase, db.session))
+event.listen(mapper, "after_configured", setup_schema(BaseModel, db.session))
 # Base.metadata.create_all(db.engine.connect()) # i think this is not used

@@ -29,14 +29,14 @@ const columns = [
     key: "now_application_review_type",
   },
   {
-    title: "Response Date",
-    dataIndex: "response_date",
-    key: "response_date",
-  },
-  {
     title: "Referee Name",
     dataIndex: "referee_name",
     key: "referee_name",
+  },
+  {
+    title: "Response Recieved",
+    dataIndex: "response_date",
+    key: "response_date",
   },
   {
     title: "",

@@ -58,6 +58,7 @@ class DictLoadingError(Exception):
 class Base(db.Model):
     __abstract__ = True
     _edit_groups = []
+    _edit_key = None
     # Set default query_class on base class.
     query_class = UserBoundQuery
 

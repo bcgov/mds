@@ -1,4 +1,4 @@
-from flask import current_app
+from flask import current_app, request
 from flask_restplus import Resource, reqparse, fields, inputs
 
 from app.extensions import api
@@ -53,16 +53,34 @@ class NOWApplicationReviewListResource(Resource, UserMixin):
 
 
 class NOWApplicationReviewResource(Resource, UserMixin):
-    @api.doc(description='Add new Review to Now Application', params={})
+    parser = CustomReqparser()
+    parser.add_argument(
+        'now_application_review_type_code', type=str, help='guid of the mine.', required=True)
+    parser.add_argument(
+        'response_date', type=inputs.datetime_from_iso8601, help='guid of the mine.')
+    parser.add_argument('referee_name', type=str, help='guid of the mine.')
+
+    @api.doc(description='delete review from Now Application', params={})
     @requires_role_edit_permit
     @api.response(204, 'Successfully deleted.')
     def delete(self, application_guid, now_application_review_id):
         now_app_review = NOWApplicationReview.query.get(now_application_review_id)
-        current_app.logger.debug(
-            f'{now_app_review.now_application_id} + {now_app_review.now_application.now_application_guid}'
-        )
+
         if not now_app_review or str(
                 now_app_review.now_application.now_application_guid) != application_guid:
             raise NotFound('No now_application found')
         now_app_review.delete()
         return ('', 204)
+
+    @api.doc(description='Update Review to Now Application', params={})
+    @requires_role_edit_permit
+    @api.marshal_with(NOW_APPLICATION_REVIEW_MDOEL, code=201)
+    def put(self, application_guid, now_application_review_id):
+        now_app_review = NOWApplicationReview.query.get(now_application_review_id)
+        if not now_app_review or str(
+                now_app_review.now_application.now_application_guid) != application_guid:
+            raise NotFound('No now_application found')
+
+        now_app_review.deep_update_from_dict(request.json)
+
+        return now_app_review, 200

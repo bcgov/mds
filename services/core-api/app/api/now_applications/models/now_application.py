@@ -58,6 +58,8 @@ class NOWApplication(Base, AuditMixin):
     first_aid_equipment_on_site = db.Column(db.String)
     first_aid_cert_level = db.Column(db.String)
 
+    ready_for_review_date = db.Column(db.Date)
+    review_closed_on_date = db.Column(db.Date)
     reviews = db.relationship('NOWApplicationReview', lazy='select', backref='now_application')
 
     blasting_operation = db.relationship('BlastingOperation', lazy='joined', uselist=False)

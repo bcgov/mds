@@ -14,6 +14,7 @@ import {
   createNoticeOfWorkApplicationReview,
   fetchNoticeOfWorkApplicationReviews,
   deleteNoticeOfWorkApplicationReview,
+  updateNoticeOfWorkApplicationReview,
 } from "@/actionCreators/noticeOfWorkActionCreator";
 import { fetchNoticeOfWorkApplicationReviewTypes } from "@/actionCreators/staticContentActionCreator";
 import { getNoticeOfWorkReviews } from "@/selectors/noticeOfWorkSelectors";
@@ -74,9 +75,20 @@ export class NOWApplicationReviews extends Component {
     });
   };
 
-  handleEditReview = (now_application_review_id) => {
+  handleEditReview = (values) => {
+    console.log(values);
+    const now_application_review_id = values.now_application_review_id;
+    const form_values = {
+      now_application_review_type_code: values.now_application_review_type_code,
+      response_date: values.response_date,
+      referee_name: values.referee_name,
+    };
     this.props
-      .updateNoticeOfWorkApplicationReview(this.props.noticeOfWorkGuid, now_application_review_id)
+      .updateNoticeOfWorkApplicationReview(
+        this.props.noticeOfWorkGuid,
+        now_application_review_id,
+        form_values
+      )
       .then(() => {
         this.props.fetchNoticeOfWorkApplicationReviews(this.props.noticeOfWorkGuid);
         this.props.closeModal();
@@ -171,6 +183,7 @@ const mapDispatchToProps = (dispatch) =>
       createNoticeOfWorkApplicationReview,
       fetchNoticeOfWorkApplicationReviewTypes,
       deleteNoticeOfWorkApplicationReview,
+      updateNoticeOfWorkApplicationReview,
     },
     dispatch
   );
