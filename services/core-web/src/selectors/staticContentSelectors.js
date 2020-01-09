@@ -352,7 +352,7 @@ export const getNoticeOfWorkActivityTypeOptionsHash = createSelector(
 
 export const getDropdownNoticeOfWorkUnitTypeOptions = createSelector(
   [getNoticeOfWorkUnitTypeOptions],
-  (options) => createDropDownList(options, "description", "unit_type_code")
+  (options) => createDropDownList(options, "unit", "unit_type_code")
 );
 
 export const getNoticeOfWorkUnitTypeOptionsHash = createSelector(
