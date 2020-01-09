@@ -74,6 +74,15 @@ export class NOWApplicationReviews extends Component {
     });
   };
 
+  handleEditReview = (now_application_review_id) => {
+    this.props
+      .updateNoticeOfWorkApplicationReview(this.props.noticeOfWorkGuid, now_application_review_id)
+      .then(() => {
+        this.props.fetchNoticeOfWorkApplicationReviews(this.props.noticeOfWorkGuid);
+        this.props.closeModal();
+      });
+  };
+
   handleDeleteReview = (now_application_review_id) => {
     this.props
       .deleteNoticeOfWorkApplicationReview(this.props.noticeOfWorkGuid, now_application_review_id)
@@ -85,7 +94,6 @@ export class NOWApplicationReviews extends Component {
 
   openAddReviewModal = (event, onSubmit) => {
     event.preventDefault();
-    console.log(this.props.noticeOfWorkReviewTypes);
     this.props.openModal({
       props: {
         onSubmit,
@@ -93,7 +101,21 @@ export class NOWApplicationReviews extends Component {
         review_types: this.props.noticeOfWorkReviewTypes,
       },
       isViewOnly: true,
-      content: modalConfig.ADD_NOW_REVIEW,
+      content: modalConfig.NOW_REVIEW,
+    });
+  };
+
+  openEditReviewModal = (event, initialValues, onSubmit) => {
+    event.preventDefault();
+    this.props.openModal({
+      props: {
+        initialValues,
+        onSubmit,
+        title: "Edit Review",
+        review_types: this.props.noticeOfWorkReviewTypes,
+      },
+      isViewOnly: true,
+      content: modalConfig.NOW_REVIEW,
     });
   };
 
@@ -124,6 +146,8 @@ export class NOWApplicationReviews extends Component {
                 noticeOfWorkReviews={this.props.noticeOfWorkReviews}
                 noticeOfWorkReviewTypes={this.props.noticeOfWorkReviewTypes}
                 handleDelete={this.handleDeleteReview}
+                openEditModal={this.openEditReviewModal}
+                handleEdit={this.handleEditReview}
               />
             )}
           </Col>

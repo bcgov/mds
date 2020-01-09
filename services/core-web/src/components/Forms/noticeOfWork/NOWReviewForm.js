@@ -16,7 +16,7 @@ const propTypes = {
   review_types: CustomPropTypes.options.isRequired,
 };
 
-export const AddNOWReviewForm = (props) => (
+export const NOWReviewForm = (props) => (
   <Form layout="vertical" onSubmit={props.handleSubmit}>
     <Row gutter={16}>
       <Col>
@@ -69,10 +69,10 @@ export const AddNOWReviewForm = (props) => (
   </Form>
 );
 
-AddNOWReviewForm.propTypes = propTypes;
+NOWReviewForm.propTypes = propTypes;
 
 export default reduxForm({
   form: FORM.ADD_NOW_REVIEW,
   touchOnBlur: false,
   onSubmitSuccess: resetForm(FORM.ADD_NOW_REVIEW),
-})(AddNOWReviewForm);
+})(NOWReviewForm);
