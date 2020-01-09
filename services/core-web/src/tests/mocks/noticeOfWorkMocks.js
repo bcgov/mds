@@ -572,27 +572,27 @@ export const UNIT_TYPES = {
   records: [
     {
       unit_type_code: "MTN",
-      description: "Tonne (Metric Ton 1000Kg)",
+      unit: "Tonne (Metric Ton 1000Kg)",
     },
     {
       unit_type_code: "MEC",
-      description: "Meters cubed",
+      unit: "Meters cubed",
     },
     {
       unit_type_code: "HA",
-      description: "Hectares",
+      unit: "Hectares",
     },
     {
       unit_type_code: "DEG",
-      description: "Degrees",
+      unit: "Degrees",
     },
     {
       unit_type_code: "PER",
-      description: "Grade (Percent)",
+      unit: "Grade (Percent)",
     },
     {
       unit_type_code: "MTR",
-      description: "Meters",
+      unit: "Meters",
     },
   ],
 };

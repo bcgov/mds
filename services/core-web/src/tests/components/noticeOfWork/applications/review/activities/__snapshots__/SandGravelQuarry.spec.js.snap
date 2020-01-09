@@ -17,7 +17,7 @@ exports[`SandGravelQuarry renders properly 1`] = `
       <div
         className="field-title"
       >
-        Average Depth Overburden(m)
+        Average Depth Overburden
       </div>
       <Field
         component={[Function]}
@@ -51,7 +51,7 @@ exports[`SandGravelQuarry renders properly 1`] = `
       <div
         className="field-title"
       >
-        Average Depth of top soil(m)
+        Average Depth of top soil
       </div>
       <Field
         component={[Function]}
