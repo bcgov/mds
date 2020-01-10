@@ -12,7 +12,7 @@ export const DOCUMENT_MANAGER_TOKEN_GET_URL = (documentManagerGuid) =>
   `/download-token/${documentManagerGuid}`;
 
 // variances
-export const COMPLIANCE_CODES = "/mines/compliance/codes";
+export const COMPLIANCE_CODES = "/compliance/codes";
 export const VARIANCES = (mineGuid) => `/mines/${mineGuid}/variances`;
 export const VARIANCE = (mineGuid, varianceGuid) => `/mines/${mineGuid}/variances/${varianceGuid}`;
 export const VARIANCE_DOCUMENTS = (mineGuid, varianceGuid) =>
