@@ -397,7 +397,7 @@ export const ReviewNOWApplication = (props) => {
     <Row gutter={16}>
       <Col md={12} sm={24}>
         <div className="field-title">Description of Work**</div>
-        <Field id="" name="" component={RenderField} disabled={props.isViewMode} />
+        <Field id="" name="" component={RenderField} disabled />
       </Col>
     </Row>
   );
@@ -407,7 +407,7 @@ export const ReviewNOWApplication = (props) => {
       <Row gutter={16}>
         <Col md={12} sm={24}>
           <div className="field-title">Total merchantable timber volume**</div>
-          <Field id="" name="" component={RenderField} disabled={props.isViewMode} />
+          <Field id="" name="" component={RenderField} disabled />
         </Col>
       </Row>
       <br />
