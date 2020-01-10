@@ -15,6 +15,7 @@ import {
 } from "@/utils/helpers";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import { EDIT_OUTLINE_VIOLET } from "@/constants/assets";
+import { getNoticeOfWorkApplicationStatusStyleType } from "@/constants/styles";
 
 /**
  * @class NoticeOfWorkTable - paginated list of notice of work applications
@@ -59,13 +60,6 @@ const applySortIndicator = (_columns, field, dir) =>
     ...column,
     sortOrder: dir && column.sortField === field ? dir.concat("end") : false,
   }));
-
-// TODO: Store this somewhere more appropriate where it can be accessed by other files
-const getApplicationStatusBadge = {
-  Accepted: "success",
-  "Under Review": "processing",
-  Withdrawn: "warning",
-};
 
 const pageTitle = "Browse Notices of Work";
 
@@ -226,7 +220,9 @@ export class NoticeOfWorkTable extends Component {
         a.value > b.value ? 1 : -1
       ),
       render: (text) => (
-        <Badge status={getApplicationStatusBadge[text]} text={text} title="Application Status" />
+        <div title="Application Status">
+          <Badge status={getNoticeOfWorkApplicationStatusStyleType(text)} text={text} />
+        </div>
       ),
     },
     {

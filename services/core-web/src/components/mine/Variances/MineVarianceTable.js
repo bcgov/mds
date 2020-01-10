@@ -21,6 +21,7 @@ import * as Strings from "@/constants/strings";
 import LinkButton from "@/components/common/LinkButton";
 import * as router from "@/constants/routes";
 import TableLoadingWrapper from "@/components/common/wrappers/TableLoadingWrapper";
+import { getVarianceApplicationStatusStyleType } from "@/constants/styles";
 
 const propTypes = {
   handleVarianceSearch: PropTypes.func,
@@ -51,16 +52,6 @@ const defaultProps = {
   sortField: null,
   sortDir: null,
   isPaginated: false,
-};
-
-// TODO: Store this somewhere more appropriate where it can be accessed by other files
-const getApplicationStatusBadge = {
-  Approved: "success",
-  Denied: "error",
-  "Not Applicable": "default",
-  "In Review": "processing",
-  "Ready for Decision": "processing",
-  Withdrawn: "warning",
 };
 
 const hideColumn = (condition) => (condition ? "column-hide" : "");
@@ -126,7 +117,7 @@ export class MineVarianceTable extends Component {
         dataIndex: "varianceNumber",
         sortField: "variance_id",
         width: 150,
-        render: (text, record) => <div title="Variance Number">{text}</div>,
+        render: (text) => <div title="Variance Number">{text}</div>,
         sorter: this.props.isDashboardView,
       },
       {
@@ -134,7 +125,7 @@ export class MineVarianceTable extends Component {
         dataIndex: "compliance_article_id",
         sortField: "compliance_article_id",
         width: 150,
-        render: (text, record) => <div title="Code Section">{text}</div>,
+        render: (text) => <div title="Code Section">{text}</div>,
         sorter: !this.props.isDashboardView
           ? (a, b) => compareCodes(a.compliance_article_id, b.compliance_article_id)
           : true,
@@ -158,7 +149,7 @@ export class MineVarianceTable extends Component {
         sortField: "lead_inspector",
         width: 150,
         className: hideColumn(!this.props.isDashboardView),
-        render: (text, record) => (
+        render: (text) => (
           <div title="Mine Name" className={hideColumn(!this.props.isDashboardView)}>
             {text}
           </div>
@@ -187,13 +178,10 @@ export class MineVarianceTable extends Component {
         sortField: "variance_application_status_code",
         width: 150,
         className: hideColumn(!this.props.isApplication),
-        render: (text, record) => (
-          <Badge
-            className={hideColumn(!this.props.isApplication)}
-            status={getApplicationStatusBadge[text]}
-            text={text}
-            title="Application Status"
-          />
+        render: (text) => (
+          <div className={hideColumn(!this.props.isApplication)} title="Application Status">
+            <Badge status={getVarianceApplicationStatusStyleType(text)} text={text} />
+          </div>
         ),
         sorter: !this.props.isDashboardView ? (a, b) => (a.status > b.status ? -1 : 1) : true,
       },
@@ -202,7 +190,7 @@ export class MineVarianceTable extends Component {
         dataIndex: "issue_date",
         width: 150,
         className: hideColumn(this.props.isApplication),
-        render: (text, record) => (
+        render: (text) => (
           <div className={hideColumn(this.props.isApplication)} title="Issue Date">
             {text}
           </div>
@@ -214,7 +202,7 @@ export class MineVarianceTable extends Component {
         dataIndex: "expiry_date",
         width: 150,
         className: hideColumn(this.props.isApplication),
-        render: (text, record) => (
+        render: (text) => (
           <div className={hideColumn(this.props.isApplication)} title="Expiry Date">
             {text}
           </div>

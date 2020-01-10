@@ -1,5 +1,4 @@
-// This file is anticipated to have multiple exports
-// eslint-disable-next-line import/prefer-default-export
+// Colours
 export const COLOR = {
   violet: "#5e46a1",
   errorRed: "#D40D0D",
@@ -10,3 +9,28 @@ export const COLOR = {
   dangerButtonRed: "#BC2929",
   backgroundWhite: "#ffffff",
 };
+
+// Styling types for various document/application status codes
+
+const undefinedStatusStyleType = "default";
+
+const noticeOfWorkStatusStyleTypes = {
+  Accepted: "success",
+  "Under Review": "processing",
+  Withdrawn: "warning",
+};
+
+const varianceApplicationStatusStyleType = {
+  Approved: "success",
+  Denied: "error",
+  "Not Applicable": "default",
+  "In Review": "processing",
+  "Ready for Decision": "processing",
+  Withdrawn: "warning",
+};
+
+export const getNoticeOfWorkApplicationStatusStyleType = (status) =>
+  noticeOfWorkStatusStyleTypes[status] || undefinedStatusStyleType;
+
+export const getVarianceApplicationStatusStyleType = (status) =>
+  varianceApplicationStatusStyleType[status] || undefinedStatusStyleType;
