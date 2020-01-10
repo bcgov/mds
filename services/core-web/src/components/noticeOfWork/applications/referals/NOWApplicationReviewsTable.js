@@ -7,7 +7,8 @@ import { getNoticeOfWorkApplicationApplicationReviewTypeHash } from "@/selectors
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
 import { EDIT_OUTLINE_VIOLET } from "@/constants/assets";
-
+import LinkButton from "@/components/common/LinkButton";
+import { downloadFileFromDocumentManager } from "@/utils/actionlessNetworkCalls";
 /**
  * @constant ReviewNOWApplication renders edit/view for the NoW Application review step
  */
@@ -37,6 +38,30 @@ const columns = [
     title: "Response Recieved",
     dataIndex: "response_date",
     key: "response_date",
+  },
+  {
+    title: "Documents",
+    dataIndex: "documents",
+    key: "documents",
+    render: (text, record) => (
+      <div title="Documents">
+        <ul>
+          {text.length > 0 &&
+            text.map((doc) => (
+              <li key={doc.mine_document.mine_document_guid}>
+                <div>
+                  <LinkButton
+                    key={doc.mine_document.mine_document_guid}
+                    onClick={() => downloadFileFromDocumentManager(doc.mine_document)}
+                  >
+                    {doc.mine_document.document_name}
+                  </LinkButton>
+                </div>
+              </li>
+            ))}
+        </ul>
+      </div>
+    ),
   },
   {
     title: "",
