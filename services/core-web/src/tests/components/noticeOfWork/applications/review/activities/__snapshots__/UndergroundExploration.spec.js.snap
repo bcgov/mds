@@ -31,12 +31,6 @@ exports[`UndergroundExploration renders properly 1`] = `
           "title": "Incline",
         },
         Object {
-          "dataIndex": "incline_unit_type_code",
-          "key": "incline_unit_type_code",
-          "render": [Function],
-          "title": "Incline Units",
-        },
-        Object {
           "dataIndex": "width",
           "key": "width",
           "render": [Function],
@@ -101,7 +95,6 @@ exports[`UndergroundExploration renders properly 1`] = `
     gutter={16}
   >
     <Col
-      lg={7}
       md={12}
       sm={24}
     >
@@ -110,11 +103,17 @@ exports[`UndergroundExploration renders properly 1`] = `
       >
         Total Ore
       </div>
-      <Field
+      <Fields
         component={[Function]}
         disabled={true}
+        dropdownID="total_ore_unit_type_code"
         id="total_ore_amount"
-        name="total_ore_amount"
+        names={
+          Array [
+            "total_ore_amount",
+            "total_ore_unit_type_code",
+          ]
+        }
         validate={
           Array [
             [Function],
@@ -123,24 +122,6 @@ exports[`UndergroundExploration renders properly 1`] = `
       />
     </Col>
     <Col
-      lg={5}
-      md={12}
-      sm={24}
-    >
-      <div
-        className="field-title"
-      >
-        Ore Units
-      </div>
-      <Field
-        component={[Function]}
-        disabled={true}
-        id="total_ore_unit_type_code"
-        name="total_ore_unit_type_code"
-      />
-    </Col>
-    <Col
-      lg={7}
       md={12}
       sm={24}
     >
@@ -149,33 +130,22 @@ exports[`UndergroundExploration renders properly 1`] = `
       >
         Total Waste
       </div>
-      <Field
+      <Fields
         component={[Function]}
         disabled={true}
+        dropdownID="total_waste_unit_type_code"
         id="total_waste_amount"
-        name="total_waste_amount"
+        names={
+          Array [
+            "total_waste_amount",
+            "total_waste_unit_type_code",
+          ]
+        }
         validate={
           Array [
             [Function],
           ]
         }
-      />
-    </Col>
-    <Col
-      lg={5}
-      md={12}
-      sm={24}
-    >
-      <div
-        className="field-title"
-      >
-        Waste Units
-      </div>
-      <Field
-        component={[Function]}
-        disabled={true}
-        id="total_waste_unit_type_code"
-        name="total_waste_unit_type_code"
       />
     </Col>
   </Row>
