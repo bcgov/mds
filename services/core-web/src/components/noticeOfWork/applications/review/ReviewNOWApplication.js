@@ -100,13 +100,7 @@ export const ReviewNOWApplication = (props) => {
       <Row gutter={16}>
         <Col md={12} sm={24}>
           <div className="field-title">Lat</div>
-          <Field
-            id="latitude"
-            name="latitude"
-            component={RenderField}
-            disabled={props.isViewMode}
-            validate={[lat]}
-          />
+          <Field id="latitude" name="latitude" component={RenderField} disabled validate={[lat]} />
         </Col>
         <Col md={12} sm={24}>
           <div className="field-title">Description of Land</div>
@@ -126,7 +120,7 @@ export const ReviewNOWApplication = (props) => {
             id="longitude"
             name="longitude"
             component={RenderField}
-            disabled={props.isViewMode}
+            disabled
             validate={[lon]}
           />
         </Col>

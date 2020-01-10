@@ -345,6 +345,13 @@ input {
   }
 }
 
+// when selects are disabled, remove border to match styling of other disabled inputs
+.ant-select-disabled .ant-select-selection {
+  border: none;
+  color: rgba(0, 0, 0, 0.65);
+  background-color: #f5f5f5 !important;
+}
+
 .ant-.ant-select-selection,
 select {
   display: block;
