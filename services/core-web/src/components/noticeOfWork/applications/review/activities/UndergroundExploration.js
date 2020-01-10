@@ -128,17 +128,6 @@ export const UndergroundExploration = (props) => {
             value={text}
             onChange={(e) => editActivity(e, record.index, false)}
           />
-          {/* <select
-            style={{ width: "55px" }}
-            name="incline_unit_type_code"
-            value={text}
-            disabled={props.isViewMode}
-            onChange={(e) => editActivity(e, record.index, false)}
-          >
-            {props.unitTypeOptions.map((type) => (
-              <option value={type.value}>{type.label}</option>
-            ))}
-          </select> */}
         </div>
       ),
     },
