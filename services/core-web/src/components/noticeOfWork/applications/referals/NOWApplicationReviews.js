@@ -5,6 +5,7 @@ import { bindActionCreators } from "redux";
 import { Button, Row, Col } from "antd";
 import { openModal, closeModal } from "@/actions/modalActions";
 import * as ModalContent from "@/constants/modalContent";
+import { getDocumentDownloadToken } from "@/utils/actionlessNetworkCalls";
 import { modalConfig } from "@/components/modalContent/config";
 import CustomPropTypes from "@/customPropTypes";
 import * as Permission from "@/constants/permissions";
@@ -45,24 +46,6 @@ const propTypes = {
 const defaultProps = {};
 
 export class NOWApplicationReviews extends Component {
-  state = {};
-
-  openDownloadPackageModal = (event) => {
-    event.preventDefault();
-    this.props.openModal({
-      props: {
-        noticeOfWorkGuid: this.props.noticeOfWorkGuid,
-        submissionDocuments: this.props.submissionDocuments,
-        onSubmit: () => {
-          true;
-        },
-        title: `Download Files`,
-      },
-      // widthSize: "50vw",
-      content: modalConfig.DOWNLOAD_DOC_PACKAGE,
-    });
-  };
-
   componentDidMount() {
     this.props.fetchNoticeOfWorkApplicationReviews(this.props.noticeOfWorkGuid);
     this.props.fetchNoticeOfWorkApplicationReviewTypes();
@@ -77,7 +60,7 @@ export class NOWApplicationReviews extends Component {
 
   handleEditReview = (values) => {
     console.log(values);
-    const now_application_review_id = values.now_application_review_id;
+    const { now_application_review_id } = values;
     const form_values = {
       now_application_review_type_code: values.now_application_review_type_code,
       response_date: values.response_date,
@@ -104,6 +87,27 @@ export class NOWApplicationReviews extends Component {
       });
   };
 
+  waitFor = (conditionFunction) => {
+    const poll = (resolve) => {
+      if (conditionFunction()) resolve();
+      else setTimeout((_) => poll(resolve), 400);
+    };
+
+    return new Promise(poll);
+  };
+
+  downloadDocument = (url) => {
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "url";
+    a.style.display = "none";
+    document.body.append(a);
+    console.log("clicking the link.");
+    a.click();
+    console.log("NEXT");
+    a.remove();
+  };
+
   openAddReviewModal = (event, onSubmit) => {
     event.preventDefault();
     this.props.openModal({
@@ -128,6 +132,42 @@ export class NOWApplicationReviews extends Component {
       },
       isViewOnly: true,
       content: modalConfig.NOW_REVIEW,
+    });
+  };
+
+  downloadDocumentPackage = (selectedRows) => {
+    const docURLS = [];
+    const documents = this.props.submissionDocuments
+      .map((document) => ({
+        key: document.id,
+        filename: document.filename,
+      }))
+      .filter((item) => selectedRows.includes(item.key));
+
+    for (const doc of documents) {
+      getDocumentDownloadToken(doc.key, this.props.noticeOfWorkGuid, docURLS);
+    }
+    this.waitFor((_) => docURLS.length === documents.length).then(async () => {
+      console.log(docURLS);
+      for (const url of docURLS) {
+        this.downloadDocument(url);
+        await new Promise((resolve) => setTimeout(resolve, 2000));
+      }
+      this.props.closeModal();
+    });
+  };
+
+  openDownloadPackageModal = (event) => {
+    event.preventDefault();
+    this.props.openModal({
+      props: {
+        noticeOfWorkGuid: this.props.noticeOfWorkGuid,
+        submissionDocuments: this.props.submissionDocuments,
+        onSubmit: this.downloadDocumentPackage,
+        title: `Download Files`,
+      },
+      // widthSize: "50vw",
+      content: modalConfig.DOWNLOAD_DOC_PACKAGE,
     });
   };
 

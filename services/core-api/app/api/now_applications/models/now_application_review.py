@@ -34,7 +34,7 @@ class NOWApplicationReview(Base, AuditMixin):
     response_date = db.Column(db.DateTime)
     referee_name = db.Column(db.String)
 
-    documents = db.relationship('MineDocument', secondary='now_application_review_document_xref')
+    documents = db.relationship('MineDocument', secondary='now_application_document_xref')
 
     def __repr__(self):
         return '<NOWApplicationReview %r>' % self.now_application_review_id

@@ -30,14 +30,13 @@ CREATE TABLE IF NOT EXISTS now_application_review (
   FOREIGN KEY (now_application_review_type_code) REFERENCES now_application_review_type(now_application_review_type_code) DEFERRABLE INITIALLY DEFERRED
 );
 
-CREATE TABLE IF NOT EXISTS now_application_review_document_xref(
-  now_application_review_id integer NOT NULL,
-  mine_document_guid uuid NOT NULL, 
-  PRIMARY KEY(now_application_review_id, mine_document_guid),
-  
-  FOREIGN KEY (now_application_review_id) REFERENCES now_application_review(now_application_review_id) DEFERRABLE INITIALLY DEFERRED,
-  FOREIGN KEY (mine_document_guid) REFERENCES mine_document(mine_document_guid) DEFERRABLE INITIALLY DEFERRED
-);
+ALTER TABLE now_application_document_xref
+    ADD COLUMN now_application_review_id integer;
+
+
+ALTER TABLE now_application_document_xref
+    ADD CONSTRAINT now_application_document_xref_now_application_review_id_fkey
+    FOREIGN KEY (now_application_review_id) REFERENCES now_application_review(now_application_review_id) DEFERRABLE INITIALLY DEFERRED;
 
 
 ALTER TABLE now_application_review OWNER TO mds;

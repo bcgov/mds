@@ -10,8 +10,9 @@ import NullScreen from "@/components/common/NullScreen";
 const propTypes = {
   now_application_guid: PropTypes.string.isRequired,
   documents: PropTypes.arrayOf(PropTypes.any).isRequired,
+  selectedRows: PropTypes.objectOf(PropTypes.any),
 };
-
+const defaultProps = { selectedRows: null };
 const columns = [
   {
     title: "File Name",
@@ -89,6 +90,16 @@ export const NOWSubmissionDocuments = (props) => (
           locale={{
             emptyText: "There are no spatial files associated with this Notice of Work",
           }}
+          rowSelection={
+            props.selectedRows
+              ? {
+                  selectedRowKeys: props.selectedRows.selectedRows,
+                  onChange: (selectedRowKeys) => {
+                    props.selectedRows.setSelectedRows(selectedRowKeys);
+                  },
+                }
+              : null
+          }
         />
       ) : (
         <NullScreen type="documents" />
@@ -98,5 +109,6 @@ export const NOWSubmissionDocuments = (props) => (
 );
 
 NOWSubmissionDocuments.propTypes = propTypes;
+NOWSubmissionDocuments.defaultProps = defaultProps;
 
 export default NOWSubmissionDocuments;

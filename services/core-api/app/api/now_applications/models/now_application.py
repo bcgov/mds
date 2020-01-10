@@ -83,9 +83,12 @@ class NOWApplication(Base, AuditMixin):
     water_supply = db.relationship('WaterSupply', lazy='selectin', uselist=False)
     application_progress = db.relationship('NOWApplicationProgress', lazy='selectin', uselist=True)
 
-    # Documents
+    # Documents that are not associated with a review
     documents = db.relationship(
-        'NOWApplicationDocumentXref', lazy='selectin'
+        'NOWApplicationDocumentXref',
+        lazy='selectin',
+        primaryjoin=
+        'and_(NOWApplicationDocumentXref.now_application_id==NOWApplication.now_application_id, NOWApplicationDocumentXref.now_application_review is None)'
     )
     submission_documents = db.relationship(
         'Document',
