@@ -12,7 +12,6 @@ import { PermitResultsTable } from "@/components/search/PermitResultsTable";
 import { ContactResultsTable } from "@/components/search/ContactResultsTable";
 import { DocumentResultsTable } from "@/components/search/DocumentResultsTable";
 import { getPartyRelationshipTypeHash } from "@/selectors/partiesSelectors";
-import { fetchPartyRelationshipTypes } from "@/actionCreators/partiesActionCreator";
 import { fetchSearchOptions, fetchSearchResults } from "@/actionCreators/searchActionCreator";
 import Loading from "@/components/common/Loading";
 import * as router from "@/constants/routes";
@@ -28,7 +27,6 @@ const propTypes = {
   searchResults: PropTypes.objectOf(PropTypes.any),
   searchTerms: PropTypes.arrayOf(PropTypes.string),
   partyRelationshipTypeHash: PropTypes.objectOf(PropTypes.strings).isRequired,
-  fetchPartyRelationshipTypes: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
@@ -122,9 +120,6 @@ export class SearchResults extends Component {
   };
 
   componentDidMount = () => {
-    if (!this.props.partyRelationshipTypeHash.PMT) {
-      this.props.fetchPartyRelationshipTypes();
-    }
     if (!this.props.searchOptions.length) {
       this.props.fetchSearchOptions();
     }
@@ -263,7 +258,6 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
-      fetchPartyRelationshipTypes,
       fetchSearchOptions,
       fetchSearchResults,
     },

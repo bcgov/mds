@@ -2,12 +2,6 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import PropTypes from "prop-types";
-import {
-  fetchRegionOptions,
-  fetchMineTenureTypes,
-  fetchMineCommodityOptions,
-  fetchMineComplianceCodes,
-} from "@/actionCreators/staticContentActionCreator";
 import { openModal, closeModal } from "@/actions/modalActions";
 import {
   getMineRegionHash,
@@ -27,10 +21,6 @@ import { SubscriptionTable } from "./SubscriptionTable";
 
 const propTypes = {
   fetchSubscribedMinesByUser: PropTypes.func.isRequired,
-  fetchMineTenureTypes: PropTypes.func.isRequired,
-  fetchMineComplianceCodes: PropTypes.func.isRequired,
-  fetchRegionOptions: PropTypes.func.isRequired,
-  fetchMineCommodityOptions: PropTypes.func.isRequired,
   unSubscribe: PropTypes.func.isRequired,
   subscribedMines: PropTypes.arrayOf(CustomPropTypes.mine).isRequired,
   mineRegionHash: PropTypes.objectOf(PropTypes.string).isRequired,
@@ -45,10 +35,6 @@ export class CustomHomePage extends Component {
     this.props.fetchSubscribedMinesByUser().then(() => {
       this.setState({ isLoaded: true });
     });
-    this.props.fetchMineTenureTypes();
-    this.props.fetchMineComplianceCodes();
-    this.props.fetchRegionOptions();
-    this.props.fetchMineCommodityOptions();
   }
 
   handleUnSubscribe = (event, mineGuid, mineName) => {
@@ -98,10 +84,6 @@ const mapDispatchToProps = (dispatch) =>
       unSubscribe,
       openModal,
       closeModal,
-      fetchRegionOptions,
-      fetchMineTenureTypes,
-      fetchMineComplianceCodes,
-      fetchMineCommodityOptions,
     },
     dispatch
   );

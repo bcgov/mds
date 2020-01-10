@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
@@ -14,11 +13,6 @@ import {
   getIncidentCategoryCodeHash,
   getHSRCMComplianceCodesHash,
 } from "@/selectors/staticContentSelectors";
-import {
-  fetchMineIncidentDeterminationOptions,
-  fetchMineIncidentStatusCodeOptions,
-  fetchMineIncidentCategoryCodeOptions,
-} from "@/actionCreators/staticContentActionCreator";
 import * as Permission from "@/constants/permissions";
 import { downloadFileFromDocumentManager } from "@/utils/actionlessNetworkCalls";
 import CustomPropTypes from "@/customPropTypes";
@@ -39,9 +33,6 @@ const propTypes = {
   isDashboardView: PropTypes.bool,
   sortField: PropTypes.string,
   sortDir: PropTypes.string,
-  fetchMineIncidentDeterminationOptions: PropTypes.func,
-  fetchMineIncidentStatusCodeOptions: PropTypes.func,
-  fetchMineIncidentCategoryCodeOptions: PropTypes.func,
   handleIncidentSearch: PropTypes.func,
   incidentDeterminationHash: PropTypes.objectOf(PropTypes.string),
   complianceCodesHash: PropTypes.objectOf(PropTypes.string),
@@ -51,9 +42,6 @@ const propTypes = {
 };
 
 const defaultProps = {
-  fetchMineIncidentDeterminationOptions: () => {},
-  fetchMineIncidentStatusCodeOptions: () => {},
-  fetchMineIncidentCategoryCodeOptions: () => {},
   handleIncidentSearch: () => {},
   incidentDeterminationHash: {},
   complianceCodesHash: {},
@@ -102,12 +90,6 @@ const renderDownloadLinks = (files, mine_incident_document_type_code) =>
     ));
 
 export class MineIncidentTable extends Component {
-  componentDidMount() {
-    this.props.fetchMineIncidentDeterminationOptions();
-    this.props.fetchMineIncidentStatusCodeOptions();
-    this.props.fetchMineIncidentCategoryCodeOptions();
-  }
-
   transformRowData = (
     incidents,
     actions,
@@ -371,17 +353,4 @@ const mapStateToProps = (state) => ({
   complianceCodesHash: getHSRCMComplianceCodesHash(state),
 });
 
-const mapDispatchToProps = (dispatch) =>
-  bindActionCreators(
-    {
-      fetchMineIncidentDeterminationOptions,
-      fetchMineIncidentStatusCodeOptions,
-      fetchMineIncidentCategoryCodeOptions,
-    },
-    dispatch
-  );
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(MineIncidentTable);
+export default connect(mapStateToProps)(MineIncidentTable);
