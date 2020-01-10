@@ -125,7 +125,7 @@ NOW_APPLICATION_SAND_AND_GRAVEL = api.inherit(
     {
         'average_overburden_depth': fields.Fixed,
         'average_overburden_depth_unit_type_code': fields.String, 
-        'average_top_soil_depth': fields.String, 
+        'average_top_soil_depth_unit_type_code': fields.String, 
         'average_top_soil_depth': fields.Fixed,
         'stability_measures_description': fields.String,
         'is_agricultural_land_reserve': fields.Boolean,

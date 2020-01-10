@@ -1,6 +1,6 @@
 import React from "react";
 import { PropTypes } from "prop-types";
-import { Field, formValueSelector } from "redux-form";
+import { Field, Fields, formValueSelector } from "redux-form";
 import { connect } from "react-redux";
 import { Row, Col, Table, Button } from "antd";
 import * as FORM from "@/constants/forms";
@@ -10,7 +10,7 @@ import {
 } from "@/selectors/staticContentSelectors";
 import { TRASHCAN } from "@/constants/assets";
 import RenderField from "@/components/common/RenderField";
-import RenderSelect from "@/components/common/RenderSelect";
+import RenderFieldWithDropdown from "@/components/common/RenderFieldWithDropdown";
 import CustomPropTypes from "@/customPropTypes";
 import { number } from "@/utils/Validate";
 
@@ -20,6 +20,7 @@ const propTypes = {
   editRecord: PropTypes.func.isRequired,
   addRecord: PropTypes.func.isRequired,
   unitTypeOptions: CustomPropTypes.options.isRequired,
+  // eslint-disable-next-line
   undergroundExplorationTypeOptions: CustomPropTypes.options.isRequired,
 };
 
@@ -119,7 +120,7 @@ export const UndergroundExploration = (props) => {
       dataIndex: "incline",
       key: "incline",
       render: (text, record) => (
-        <div title="Incline">
+        <div title="Incline" className="inline-flex">
           <input
             name="incline"
             type="text"
@@ -127,17 +128,8 @@ export const UndergroundExploration = (props) => {
             value={text}
             onChange={(e) => editActivity(e, record.index, false)}
           />
-        </div>
-      ),
-    },
-    {
-      title: "Incline Units",
-      dataIndex: "incline_unit_type_code",
-      key: "incline_unit_type_code",
-      render: (text, record) => (
-        <div title="Units">
-          <select
-            style={{ width: "160px" }}
+          {/* <select
+            style={{ width: "55px" }}
             name="incline_unit_type_code"
             value={text}
             disabled={props.isViewMode}
@@ -146,7 +138,7 @@ export const UndergroundExploration = (props) => {
             {props.unitTypeOptions.map((type) => (
               <option value={type.value}>{type.label}</option>
             ))}
-          </select>
+          </select> */}
         </div>
       ),
     },
@@ -294,44 +286,28 @@ export const UndergroundExploration = (props) => {
         </Col>
       </Row>
       <Row gutter={16}>
-        <Col lg={7} md={12} sm={24}>
+        <Col md={12} sm={24}>
           <div className="field-title">Total Ore</div>
-          <Field
+          <Fields
+            names={["total_ore_amount", "total_ore_unit_type_code"]}
             id="total_ore_amount"
-            name="total_ore_amount"
-            component={RenderField}
+            dropdownID="total_ore_unit_type_code"
+            component={RenderFieldWithDropdown}
             disabled={props.isViewMode}
             validate={[number]}
-          />
-        </Col>
-        <Col lg={5} md={12} sm={24}>
-          <div className="field-title">Ore Units</div>
-          <Field
-            id="total_ore_unit_type_code"
-            name="total_ore_unit_type_code"
-            component={RenderSelect}
             data={props.unitTypeOptions}
-            disabled={props.isViewMode}
           />
         </Col>
-        <Col lg={7} md={12} sm={24}>
+        <Col md={12} sm={24}>
           <div className="field-title">Total Waste</div>
-          <Field
+          <Fields
+            names={["total_waste_amount", "total_waste_unit_type_code"]}
             id="total_waste_amount"
-            name="total_waste_amount"
-            component={RenderField}
+            dropdownID="total_waste_unit_type_code"
+            component={RenderFieldWithDropdown}
             disabled={props.isViewMode}
             validate={[number]}
-          />
-        </Col>
-        <Col lg={5} md={12} sm={24}>
-          <div className="field-title">Waste Units</div>
-          <Field
-            id="total_waste_unit_type_code"
-            name="total_waste_unit_type_code"
-            component={RenderSelect}
             data={props.unitTypeOptions}
-            disabled={props.isViewMode}
           />
         </Col>
       </Row>

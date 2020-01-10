@@ -1,6 +1,6 @@
 import React from "react";
 import { PropTypes } from "prop-types";
-import { Field, formValueSelector } from "redux-form";
+import { Field, Fields, formValueSelector } from "redux-form";
 import { connect } from "react-redux";
 import { Row, Col, Table, Button } from "antd";
 import * as FORM from "@/constants/forms";
@@ -8,9 +8,10 @@ import { TRASHCAN } from "@/constants/assets";
 import RenderField from "@/components/common/RenderField";
 import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
 import RenderRadioButtons from "@/components/common/RenderRadioButtons";
-import RenderSelect from "@/components/common/RenderSelect";
+import RenderFieldWithDropdown from "@/components/common/RenderFieldWithDropdown";
 import Equipment from "@/components/noticeOfWork/applications/review/activities/Equipment";
 import CustomPropTypes from "@/customPropTypes";
+import { number } from "@/utils/Validate";
 import { getDropdownNoticeOfWorkUnitTypeOptions } from "@/selectors/staticContentSelectors";
 
 const propTypes = {
@@ -141,42 +142,28 @@ export const SandGravelQuarry = (props) => {
       <br />
       <h4>Soil Conservation</h4>
       <Row gutter={16}>
-        <Col lg={8} md={12} sm={24}>
+        <Col md={12} sm={24}>
           <div className="field-title">Average Depth Overburden</div>
-          <Field
+          <Fields
+            names={["average_overburden_depth", "average_overburden_depth_unit_type_code"]}
             id="average_overburden_depth"
-            name="average_overburden_depth"
-            component={RenderField}
+            dropdownID="average_overburden_depth_unit_type_code"
+            component={RenderFieldWithDropdown}
             disabled={props.isViewMode}
-          />
-        </Col>
-        <Col lg={4} md={12} sm={24}>
-          <div className="field-title">Units</div>
-          <Field
-            id="average_overburden_depth_unit_type_code"
-            name="average_overburden_depth_unit_type_code"
-            component={RenderSelect}
+            validate={[number]}
             data={props.unitTypeOptions}
-            disabled={props.isViewMode}
           />
         </Col>
-        <Col lg={8} md={12} sm={24}>
+        <Col md={12} sm={24}>
           <div className="field-title">Average Depth of top soil</div>
-          <Field
+          <Fields
+            names={["average_top_soil_depth", "average_top_soil_depth_unit_type_code"]}
             id="average_top_soil_depth"
-            name="average_top_soil_depth"
-            component={RenderField}
+            dropdownID="average_top_soil_depth_unit_type_code"
+            component={RenderFieldWithDropdown}
             disabled={props.isViewMode}
-          />
-        </Col>
-        <Col lg={4} md={12} sm={24}>
-          <div className="field-title">Units</div>
-          <Field
-            id="average_top_soil_depth_unit_type_code"
-            name="average_top_soil_depth_unit_type_code"
-            component={RenderSelect}
+            validate={[number]}
             data={props.unitTypeOptions}
-            disabled={props.isViewMode}
           />
         </Col>
       </Row>
@@ -257,42 +244,28 @@ export const SandGravelQuarry = (props) => {
         </Col>
       </Row>
       <Row gutter={16}>
-        <Col lg={8} md={12} sm={24}>
+        <Col md={12} sm={24}>
           <div className="field-title">Total mineable reserves over the life of the mine</div>
-          <Field
+          <Fields
+            names={["total_mineable_reserves", "total_mineable_reserves_unit_type_code"]}
             id="total_mineable_reserves"
-            name="total_mineable_reserves"
-            component={RenderAutoSizeField}
+            dropdownID="total_mineable_reserves_unit_type_code"
+            component={RenderFieldWithDropdown}
             disabled={props.isViewMode}
-          />
-        </Col>
-        <Col lg={4} md={12} sm={24}>
-          <div className="field-title">Units</div>
-          <Field
-            id="total_mineable_reserves_unit_type_code"
-            name="total_mineable_reserves_unit_type_code"
-            component={RenderSelect}
+            validate={[number]}
             data={props.unitTypeOptions}
-            disabled={props.isViewMode}
           />
         </Col>
-        <Col lg={8} md={12} sm={24}>
+        <Col md={12} sm={24}>
           <div className="field-title">Annual extraction from site</div>
-          <Field
+          <Fields
+            names={["total_annual_extraction", "total_annual_extraction_unit_type_code"]}
             id="total_annual_extraction"
-            name="total_annual_extraction"
-            component={RenderAutoSizeField}
+            dropdownID="total_annual_extraction_unit_type_code"
+            component={RenderFieldWithDropdown}
             disabled={props.isViewMode}
-          />
-        </Col>
-        <Col lg={4} md={12} sm={24}>
-          <div className="field-title">Units</div>
-          <Field
-            id="total_annual_extraction_unit_type_code"
-            name="total_annual_extraction_unit_type_code"
-            component={RenderSelect}
+            validate={[number]}
             data={props.unitTypeOptions}
-            disabled={props.isViewMode}
           />
         </Col>
       </Row>
