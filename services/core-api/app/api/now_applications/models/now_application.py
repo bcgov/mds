@@ -80,6 +80,9 @@ class NOWApplication(Base, AuditMixin):
     application_progress = db.relationship('NOWApplicationProgress', lazy='selectin', uselist=True)
 
     # Documents
+    documents = db.relationship(
+        'NOWApplicationDocumentXref', lazy='selectin'
+    )
     submission_documents = db.relationship(
         'Document',
         lazy='selectin',

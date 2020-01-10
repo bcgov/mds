@@ -53,7 +53,7 @@ def register_extensions(app):
     if app.config['ELASTIC_ENABLED'] == '1':
         apm.init_app(app)
     else:
-        app.logger.debug('ELASTIC_ENABLED: FALSE, set ELASTIC_ENABLED=1 to enable')
+        app.logger.info('ELASTIC_ENABLED: FALSE, set ELASTIC_ENABLED=1 to enable')
 
     try:
         jwt.init_app(app)
