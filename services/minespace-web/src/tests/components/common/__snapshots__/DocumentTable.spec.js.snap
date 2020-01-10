@@ -14,6 +14,11 @@ exports[`DocumentTable renders properly 1`] = `
         "title": "File name",
       },
       Object {
+        "dataIndex": "category",
+        "render": [Function],
+        "title": "Category",
+      },
+      Object {
         "dataIndex": "created_at",
         "render": [Function],
         "title": "Upload date",
@@ -30,6 +35,7 @@ exports[`DocumentTable renders properly 1`] = `
   dataSource={
     Array [
       Object {
+        "category": "N/A",
         "created_at": "May 02 2019",
         "key": "33e6b965-2402-4229-a213-23bbe7fd3e99",
         "name": "test.pdf",
