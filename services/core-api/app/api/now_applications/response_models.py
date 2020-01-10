@@ -241,7 +241,8 @@ NOW_APPLICATION_REVIEW_MDOEL = api.model(
         'now_application_guid':fields.String(attribute='now_application.now_application_guid'),
         'now_application_review_type_code':fields.String, 
         'response_date':fields.Date, 
-        'referee_name':fields.String
+        'referee_name':fields.String,
+        'documents':fields.List(fields.Nested(NOW_APPLICATION_DOCUMENT))
     }
 )
 

@@ -62,7 +62,7 @@ export class NOWApplicationReviews extends Component {
     console.log(values);
     const { now_application_review_id } = values;
     const form_values = {
-      //documents: values.uploadedFiles,
+      documents: values.uploadedFiles,
       now_application_review_type_code: values.now_application_review_type_code,
       response_date: values.response_date,
       referee_name: values.referee_name,

@@ -36,7 +36,8 @@ class NOWApplicationDocumentXref(AuditMixin, Base):
     # MineDocument
     mine_document = db.relationship('MineDocument', lazy='joined')
     # Is this a review document?
-    now_application_review = db.relationship('NOWApplicationReview', lazy='select')
+    now_application_review = db.relationship(
+        'NOWApplicationReview', lazy='select', backref='document_xrefs')
 
     def __repr__(self):
         return '<ApplicationDocumentXref %r>' % self.now_application_document_xref_guid

@@ -8,6 +8,7 @@ from werkzeug.exceptions import BadRequest, NotFound, InternalServerError
 from app.api.utils.resources_mixins import UserMixin
 from app.api.utils.custom_reqparser import CustomReqparser
 
+from app.api.mines.documents.models.mine_document import MineDocument
 from app.api.now_applications.models.now_application_review import NOWApplicationReview
 from app.api.now_applications.models.now_application_identity import NOWApplicationIdentity
 from app.api.now_applications.models.now_application_document_xref import NOWApplicationDocumentXref
@@ -82,6 +83,24 @@ class NOWApplicationReviewResource(Resource, UserMixin):
                 now_app_review.now_application.now_application_guid) != application_guid:
             raise NotFound('No now_application found')
 
+        new_documents = request.json['documents']
+        del request.json['documents']
         now_app_review.deep_update_from_dict(request.json)
+
+        for doc in new_documents:
+            new_mine_doc = MineDocument(
+                mine_guid=now_app_review.now_application.mine_guid,
+                document_manager_guid=doc[0],
+                document_name=doc[1])
+
+            new_now_mine_doc = NOWApplicationDocumentXref(
+                mine_document=new_mine_doc,
+                now_application_document_type_code='REV',
+                now_application_id=now_app_review.now_application_id,
+            )
+
+            now_app_review.document_xrefs.append(new_now_mine_doc)
+
+        now_app_review.save()
 
         return now_app_review, 200
