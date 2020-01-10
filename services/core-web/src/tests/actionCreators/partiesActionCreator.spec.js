@@ -45,7 +45,7 @@ describe("`createParty` action creator", () => {
   });
 
   it("Request failure, dispatches `error` with correct response", () => {
-    mockAxios.onPost(url).reply(400, MOCK.ERROR);
+    mockAxios.onPost(url).reply(418, MOCK.ERROR);
     return createParty(mockPayload)(dispatch).catch(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
@@ -72,7 +72,7 @@ describe("`updateParty` action creator", () => {
   });
 
   it("Request failure, dispatches `error` with correct response", () => {
-    mockAxios.onPut(url).reply(400, MOCK.ERROR);
+    mockAxios.onPut(url).reply(418, MOCK.ERROR);
     return updateParty(mockPayload, partyGuid)(dispatch).catch(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
@@ -95,7 +95,7 @@ describe("'deleteParties' action creator", () => {
   });
 
   it("Request failure, dispatches `error` with correct response", () => {
-    mockAxios.onDelete(url).reply(400, MOCK.ERROR);
+    mockAxios.onDelete(url).reply(418, MOCK.ERROR);
     return deleteParty(partyGuid)(dispatch).catch(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
@@ -130,7 +130,7 @@ describe("`fetchParties` action creator", () => {
   });
 
   it("Request failure, dispatches `error` with correct response", () => {
-    mockAxios.onGet(url).reply(400, MOCK.ERROR);
+    mockAxios.onGet(url).reply(418, MOCK.ERROR);
     return fetchParties(value)(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
@@ -153,7 +153,7 @@ describe("`fetchPartyById` action creator", () => {
   });
 
   it("Request failure, dispatches `error` with correct response", () => {
-    mockAxios.onGet(url).reply(400, MOCK.ERROR);
+    mockAxios.onGet(url).reply(418, MOCK.ERROR);
     return fetchPartyById(mockPayload)(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
@@ -178,7 +178,7 @@ describe("`fetchInspectors` action creator", () => {
     mockAxios.onGet(url).reply(200, mockResponse);
   });
   it("Request failure, dispatches `error` with correct response", () => {
-    mockAxios.onGet(url).reply(400, MOCK.ERROR);
+    mockAxios.onGet(url).reply(418, MOCK.ERROR);
   });
 });
 
@@ -204,7 +204,7 @@ describe("`addDocumentToRelationship` action creator", () => {
   });
 
   it("Request failure, dispatches `error` with correct response", () => {
-    mockAxios.onPut(url).reply(400, MOCK.ERROR);
+    mockAxios.onPut(url).reply(418, MOCK.ERROR);
     return addDocumentToRelationship({ mineGuid, minePartyApptGuid }, mockPayload)(dispatch).then(
       () => {
         expect(requestSpy).toHaveBeenCalledTimes(1);
