@@ -52,7 +52,6 @@ export const UndergroundExploration = (props) => {
       activity_type_description: "",
       quantity: "",
       incline: "",
-      incline_unit_type_code: "",
       width: "",
       length: "",
       height: "",
