@@ -103,12 +103,8 @@ export class MineVarianceTable extends Component {
         dataIndex: "isOverdue",
         width: 10,
         render: (isOverdue) => (
-          <div title="">
-            {isOverdue ? (
-              <img className="padding-small" src={RED_CLOCK} title="Expired" alt="Expired" />
-            ) : (
-              ""
-            )}
+          <div title="Expired">
+            {isOverdue ? <img className="padding-small" src={RED_CLOCK} alt="Expired" /> : ""}
           </div>
         ),
       },
