@@ -19,12 +19,6 @@ exports[`Dashboard renders properly 1`] = `
         </p>
       </div>
       <div>
-        <RefreshButton
-          actions={Array []}
-          isNestedButton={false}
-          listActions={Array []}
-          requests={Array []}
-        />
         <Connect(AuthorizationWrapper)
           permission="role_edit_mines"
         >

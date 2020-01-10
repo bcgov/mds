@@ -45,7 +45,7 @@ const CustomAxios = ({ errorToastMessage, selector, envelope = defaultEnvelope }
 
       errorCount[error.config.url] = errorCount[error.config.url]
         ? errorCount[error.config.url] + 1
-        : 0;
+        : 1;
       const numberOfErrors = errorCount[error.config.url];
 
       const status = error.response ? error.response.status : null;

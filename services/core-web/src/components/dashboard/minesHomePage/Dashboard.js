@@ -43,7 +43,6 @@ import * as Strings from "@/constants/strings";
 import * as Permission from "@/constants/permissions";
 import * as ModalContent from "@/constants/modalContent";
 import AddButton from "@/components/common/AddButton";
-import RefreshButton from "@/components/common/RefreshButton";
 
 /**
  * @class Dashboard is the main landing page of the application, currently contains a List and Map View, ability to create a new mine, and search for a mine by name or lat/long.
@@ -466,7 +465,6 @@ export class Dashboard extends Component {
               <p>To find a mine summary, search in the list or map section below.</p>
             </div>
             <div>
-              <RefreshButton />
               <AuthorizationWrapper permission={Permission.EDIT_MINES}>
                 <AddButton
                   onClick={(event) =>
