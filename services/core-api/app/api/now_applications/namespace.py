@@ -25,7 +25,7 @@ api.add_resource(NOWApplicationProgressResource, '/<string:application_guid>/pro
 api.add_resource(NOWApplicationReviewListResource, '/<string:application_guid>/reviews')
 api.add_resource(NOWApplicationReviewResource,
                  '/<string:application_guid>/reviews/<int:now_application_review_id>')
-api.add_resource(NOWApplicationDocumentResource, '/<string:now_application_guid>/document')
+api.add_resource(NOWApplicationDocumentResource, '/<string:application_guid>/document')
 
 # now static content
 api.add_resource(NOWActivityTypeResource, '/activity-types')
