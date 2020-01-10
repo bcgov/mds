@@ -66,7 +66,7 @@ const CustomAxios = ({ errorToastMessage, selector, envelope = defaultEnvelope }
           message: `${errorMessage} Retrying... (${numberOfErrors} times)`,
           duration: 10,
         });
-        return sleepRequest(instance, 1000, error.config);
+        return sleepRequest(instance, 1000 * numberOfErrors ** 2, error.config);
       }
 
       return Promise.reject(error);
