@@ -51,7 +51,7 @@ export class VarianceTable extends Component {
 
   columns = (isApplication) => [
     {
-      title: "",
+      title: "Expired",
       dataIndex: "isOverdue",
       width: 10,
       render: (isOverdue) => (
