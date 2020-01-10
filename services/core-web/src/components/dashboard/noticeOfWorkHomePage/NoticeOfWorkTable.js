@@ -226,11 +226,7 @@ export class NoticeOfWorkTable extends Component {
         a.value > b.value ? 1 : -1
       ),
       render: (text) => (
-        <Badge
-          status={getApplicationStatusBadge[text]}
-          text={text}
-          title="Application Status"
-        ></Badge>
+        <Badge status={getApplicationStatusBadge[text]} text={text} title="Application Status" />
       ),
     },
     {
