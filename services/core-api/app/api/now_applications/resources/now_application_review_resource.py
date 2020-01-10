@@ -38,6 +38,27 @@ class NOWApplicationReviewListResource(Resource, UserMixin):
                                                  data['now_application_review_type_code'],
                                                  data.get('response_date'),
                                                  data.get('referee_name'))
+
+        new_documents = request.json.get('documents', [])
+        if 'documents' in request.json.keys():
+            del request.json['documents']
+
+        for doc in new_documents:
+            new_mine_doc = MineDocument(
+                mine_guid=now_application.mine_guid,
+                document_manager_guid=doc[0],
+                document_name=doc[1])
+
+            new_now_mine_doc = NOWApplicationDocumentXref(
+                mine_document=new_mine_doc,
+                now_application_document_type_code='REV',
+                now_application_id=now_application.now_application.now_application_id,
+            )
+
+            new_review.documents.append(new_now_mine_doc)
+
+        new_review.save()
+
         new_review.save()
         return new_review, 201
 
@@ -99,7 +120,7 @@ class NOWApplicationReviewResource(Resource, UserMixin):
                 now_application_id=now_app_review.now_application_id,
             )
 
-            now_app_review.document_xrefs.append(new_now_mine_doc)
+            now_app_review.documents.append(new_now_mine_doc)
 
         now_app_review.save()
 

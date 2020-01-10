@@ -34,7 +34,7 @@ export class NOWReviewForm extends Component {
     this.setState((prevState) => ({
       uploadedFiles: [[document_manager_guid, documentName], ...prevState.uploadedFiles],
     }));
-    this.props.change("uploadedFiles", this.state.uploadedFiles);
+    this.props.change("documents", this.state.uploadedFiles);
   };
 
   onRemoveFile = (err, fileItem) => {
@@ -42,7 +42,7 @@ export class NOWReviewForm extends Component {
       uploadedFiles: prevState.uploadedFiles.filter((fileArr) => fileArr[0] !== fileItem.serverId),
     }));
 
-    this.props.change("uploadedFiles", this.state.uploadedFiles);
+    this.props.change("documents", this.state.uploadedFiles);
   };
 
   render() {
