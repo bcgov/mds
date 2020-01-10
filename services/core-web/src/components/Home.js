@@ -15,6 +15,8 @@ import {
   detectDevelopmentEnvironment,
 } from "@/utils/environmentUtils";
 
+import { getStaticContentLoadingIsComplete } from "@/selectors/staticContentSelectors";
+
 import * as staticContent from "@/actionCreators/staticContentActionCreator";
 
 /**
@@ -23,6 +25,7 @@ import * as staticContent from "@/actionCreators/staticContentActionCreator";
  */
 
 const propTypes = {
+  staticContentLoadingIsComplete: PropTypes.bool.isRequired,
   location: PropTypes.shape({ pathname: PropTypes.string }).isRequired,
   dispatch: PropTypes.func.isRequired,
 };
@@ -53,6 +56,12 @@ export class Home extends Component {
       // close Menu when link is clicked
       this.setState({ isMenuOpen: false });
     }
+    if (
+      this.props.staticContentLoadingIsComplete !== nextProps.staticContentLoadingIsComplete &&
+      nextProps.staticContentLoadingIsComplete
+    ) {
+      this.props.dispatch(hideLoading());
+    }
   }
 
   handleActiveButton = (path) => {
@@ -72,12 +81,11 @@ export class Home extends Component {
   };
 
   loadStaticContent = () => {
-    this.props.dispatch(showLoading("modal"));
+    this.props.dispatch(showLoading());
     const staticContentActionCreators = Object.getOwnPropertyNames(staticContent).filter(
       (property) => typeof staticContent[property] === "function"
     );
     staticContentActionCreators.forEach((action) => this.props.dispatch(staticContent[action]()));
-    this.props.dispatch(hideLoading("modal"));
   };
 
   render() {
@@ -124,4 +132,8 @@ export class Home extends Component {
 
 Home.propTypes = propTypes;
 
-export default connect(null)(AuthenticationGuard(Home));
+const mapStateToProps = (state) => ({
+  staticContentLoadingIsComplete: getStaticContentLoadingIsComplete(state),
+});
+
+export default connect(mapStateToProps)(AuthenticationGuard(Home));
