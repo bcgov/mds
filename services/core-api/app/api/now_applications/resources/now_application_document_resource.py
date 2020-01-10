@@ -18,17 +18,19 @@ from app.api.now_applications.models.now_application_identity import NOWApplicat
 class NOWApplicationDocumentResource(Resource, UserMixin):
     @api.doc(description='Request a document_manager_guid for uploading a document')
     @requires_role_edit_permit
-    def post(self, now_application_guid):
-        now_application_identity = NOWApplicationIdentity.find_by_guid(now_application_guid)
+    def post(self, application_guid):
+        now_application_identity = NOWApplicationIdentity.find_by_guid(application_guid)
         if not now_application_identity:
             raise NotFound('No identity record for this application guid.')
 
         return DocumentManagerService.initializeFileUploadWithDocumentManager(
             request, now_application_identity.mine, 'noticeofwork')
+
+
 """
     @api.doc(description='Associate an uploaded file with a variance.',
              params={
-                 'now_application_guid': 'GUID for the notice of work to which the document should be associated'
+                 'application_guid': 'GUID for the notice of work to which the document should be associated'
              })
     @api.marshal_with(VARIANCE_MODEL, code=200)
     @requires_any_of([EDIT_VARIANCE, MINESPACE_PROPONENT])

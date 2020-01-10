@@ -88,7 +88,7 @@ class NOWApplication(Base, AuditMixin):
         'NOWApplicationDocumentXref',
         lazy='selectin',
         primaryjoin=
-        'and_(NOWApplicationDocumentXref.now_application_id==NOWApplication.now_application_id, NOWApplicationDocumentXref.now_application_review is None)'
+        'and_(NOWApplicationDocumentXref.now_application_id==NOWApplication.now_application_id, NOWApplicationDocumentXref.now_application_review_id==None)'
     )
     submission_documents = db.relationship(
         'Document',

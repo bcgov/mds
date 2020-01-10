@@ -62,6 +62,7 @@ export class NOWApplicationReviews extends Component {
     console.log(values);
     const { now_application_review_id } = values;
     const form_values = {
+      //documents: values.uploadedFiles,
       now_application_review_type_code: values.now_application_review_type_code,
       response_date: values.response_date,
       referee_name: values.referee_name,
@@ -110,8 +111,10 @@ export class NOWApplicationReviews extends Component {
 
   openAddReviewModal = (event, onSubmit) => {
     event.preventDefault();
+    const initialValues = { now_application_guid: this.props.noticeOfWorkGuid };
     this.props.openModal({
       props: {
+        initialValues,
         onSubmit,
         title: "Add Review to Permit Application",
         review_types: this.props.noticeOfWorkReviewTypes,
@@ -123,6 +126,7 @@ export class NOWApplicationReviews extends Component {
 
   openEditReviewModal = (event, initialValues, onSubmit) => {
     event.preventDefault();
+    console.log(initialValues);
     this.props.openModal({
       props: {
         initialValues,

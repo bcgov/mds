@@ -237,8 +237,8 @@ NOW_APPLICATION_PROGRESS = api.model(
 NOW_APPLICATION_REVIEW_MDOEL = api.model(
     'NOWApplicationReview',
     {
-        'now_application_review_id':fields.Integer,
-        'now_application_id':fields.Integer,
+        'now_application_review_id':fields.Integer, 
+        'now_application_guid':fields.String(attribute='now_application.now_application_guid'),
         'now_application_review_type_code':fields.String, 
         'response_date':fields.Date, 
         'referee_name':fields.String

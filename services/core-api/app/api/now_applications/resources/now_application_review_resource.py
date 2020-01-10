@@ -10,6 +10,7 @@ from app.api.utils.custom_reqparser import CustomReqparser
 
 from app.api.now_applications.models.now_application_review import NOWApplicationReview
 from app.api.now_applications.models.now_application_identity import NOWApplicationIdentity
+from app.api.now_applications.models.now_application_document_xref import NOWApplicationDocumentXref
 from app.api.now_applications.response_models import NOW_APPLICATION_REVIEW_MDOEL
 
 
