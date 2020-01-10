@@ -92,6 +92,13 @@ class NOWApplicationReviewResource(Resource, UserMixin):
         if not now_app_review or str(
                 now_app_review.now_application.now_application_guid) != application_guid:
             raise NotFound('No now_application found')
+
+        if len(now_app_review.documents) > 0:
+            raise BadRequest('Cannot delete review with documents attached')
+
+        # for doc in now_app_review.documents:
+        #     doc.delete()
+
         now_app_review.delete()
         return ('', 204)
 
