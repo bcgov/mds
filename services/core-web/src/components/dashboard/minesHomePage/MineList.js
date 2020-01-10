@@ -2,7 +2,7 @@ import React from "react";
 import { func, objectOf, arrayOf, string, bool } from "prop-types";
 import { Link } from "react-router-dom";
 import { Table } from "antd";
-import { uniqBy, isEmpty } from "lodash";
+import { isEmpty } from "lodash";
 import * as router from "@/constants/routes";
 import * as Strings from "@/constants/strings";
 import NullScreen from "@/components/common/NullScreen";
@@ -76,10 +76,7 @@ const columns = [
     render: (text, record) => (
       <div title="Permit Number">
         <ul className="mine-list__permits">
-          {text &&
-            uniqBy(text, "permit_no").map(({ permit_no, permit_guid }) => (
-              <li key={permit_guid}>{permit_no}</li>
-            ))}
+          {text && text.map((permit_no) => <li>{permit_no}</li>)}
           {!text && <li>{record.emptyField}</li>}
         </ul>
       </div>
@@ -152,7 +149,7 @@ const transformRowData = (mines, mineIds, mineRegionHash, mineTenureHash, mineCo
     operationalStatus: mines[id].mine_status[0]
       ? mines[id].mine_status[0].status_labels[0]
       : Strings.EMPTY_FIELD,
-    permit: mines[id].mine_permit[0] ? mines[id].mine_permit : null,
+    permit: mines[id].mine_permit_numbers[0] ? mines[id].mine_permit_numbers : null,
     region: mines[id].mine_region ? mineRegionHash[mines[id].mine_region] : Strings.EMPTY_FIELD,
     commodity: mines[id].mine_type[0] ? mines[id].mine_type : null,
     commodityHash: mineCommodityHash,

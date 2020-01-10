@@ -1,11 +1,11 @@
 import uuid
 import utm
+from flask import current_app
 
-from sqlalchemy.orm import validates
+from sqlalchemy.orm import validates, reconstructor, load_only
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
 from sqlalchemy.ext.hybrid import hybrid_property
-from sqlalchemy.orm import reconstructor
 from geoalchemy2 import Geometry
 from app.extensions import db
 from app.api.utils.models_mixins import AuditMixin, Base
@@ -53,6 +53,7 @@ class Mine(AuditMixin, Base):
     #Almost always used, but faster to use selectin to load related data
     mine_permit = db.relationship(
         'Permit', backref='mine', order_by='desc(Permit.create_timestamp)', lazy='selectin')
+
     mine_type = db.relationship(
         'MineType',
         backref='mine',
@@ -108,6 +109,13 @@ class Mine(AuditMixin, Base):
             'utm_zone_letter': self.utm_zone_letter,
             'mine_location_description': self.mine_location_description
         }
+
+    @hybrid_property
+    def mine_permit_numbers(self):
+        rows = db.session.query(
+            Permit.permit_no).filter(Permit.mine_guid == self.mine_guid).distinct().all()
+        p_numbers = [permit_no for permit_no, in rows]
+        return p_numbers
 
     @staticmethod
     def active(records):
