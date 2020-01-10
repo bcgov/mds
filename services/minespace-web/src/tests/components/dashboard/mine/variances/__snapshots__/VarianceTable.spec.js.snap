@@ -71,7 +71,7 @@ exports[`VarianceTable renders properly 1`] = `
     dataSource={
       Array [
         Object {
-          "compliance_article_id": "-",
+          "compliance_article_id": "N/A",
           "documents": Array [
             Object {
               "created_at": "2019-05-02",
