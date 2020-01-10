@@ -185,11 +185,12 @@ export class VarianceTable extends Component {
             size="small"
             ghost
             onClick={(event) => this.handleOpenModal(event, record.isEditable, record.variance)}
+            style={this.errorStyle(record.isOverdue)}
           >
             {record.isEditable ? (
               <img src={EDIT_PENCIL} alt="Edit/View" className="icon-svg-filter" />
             ) : (
-              <Icon type="eye" className="icon-sm" style={this.errorStyle(record.isOverdue)} />
+              <Icon type="eye" className="icon-sm" />
             )}
           </Button>
         </div>
