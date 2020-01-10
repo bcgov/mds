@@ -28,13 +28,13 @@ class Party(AuditMixin, Base):
     party_type_code = db.Column(db.String, db.ForeignKey('party_type_code.party_type_code'))
     deleted_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
 
-    mine_party_appt = db.relationship('MinePartyAppointment', lazy='select')
-    address = db.relationship('Address', lazy='select')
+    mine_party_appt = db.relationship('MinePartyAppointment', lazy='joined')
+    address = db.relationship('Address', lazy='joined')
     job_title = db.Column(db.String, nullable=True)
     postnominal_letters = db.Column(db.String, nullable=True)
     idir_username = db.Column(db.String, nullable=True)
 
-    business_role_appts = db.relationship('PartyBusinessRoleAppointment', lazy='select')
+    business_role_appts = db.relationship('PartyBusinessRoleAppointment', lazy='joined')
 
     @hybrid_property
     def name(self):
