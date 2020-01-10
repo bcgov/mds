@@ -60,7 +60,7 @@ const CustomAxios = ({ errorToastMessage, selector, envelope = defaultEnvelope }
           duration: 10,
         });
         errorCount[error.config.url] = 0;
-        return Promise.resolve(error.message);
+        return Promise.reject(error);
       } else {
         notification.error({
           message: `${errorMessage} Retrying... (${numberOfErrors} times)`,
