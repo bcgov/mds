@@ -10,6 +10,7 @@ const propTypes = {
   documents: PropTypes.arrayOf(CustomPropTypes.mineDocument),
   removeDocument: PropTypes.func,
   isViewOnly: PropTypes.bool.isRequired,
+  documentCategoryOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
 const defaultProps = {
@@ -22,10 +23,17 @@ export class DocumentTable extends Component {
     documents.map((document) => ({
       key: document.mine_document_guid,
       name: document.document_name,
+      category: document.variance_document_category_code
+        ? this.props.documentCategoryOptionsHash[document.variance_document_category_code]
+        : Strings.EMPTY_FIELD,
       created_at: formatDate(document.created_at) || Strings.EMPTY_FIELD,
     }));
 
   render() {
+    // {
+    //   console.log(this.props.documents);
+    // }
+
     const columns = [
       {
         title: "File name",
@@ -46,6 +54,11 @@ export class DocumentTable extends Component {
             </div>
           </div>
         ),
+      },
+      {
+        title: "Category",
+        dataIndex: "category",
+        render: (text) => <div title="Category">{text}</div>,
       },
       {
         title: "Upload date",
