@@ -165,6 +165,7 @@ export class VarianceTable extends Component {
                     onKeyPress={() => downloadFileFromDocumentManager(file.document_manager_guid)}
                     // Accessibility: Focusable element
                     tabIndex="0"
+                    style={this.errorStyle(record.isOverdue)}
                   >
                     {file.document_name}
                   </a>
@@ -188,7 +189,7 @@ export class VarianceTable extends Component {
             {record.isEditable ? (
               <img src={EDIT_PENCIL} alt="Edit/View" className="icon-svg-filter" />
             ) : (
-              <Icon type="eye" className="icon-sm" />
+              <Icon type="eye" className="icon-sm" style={this.errorStyle(record.isOverdue)} />
             )}
           </Button>
         </div>
