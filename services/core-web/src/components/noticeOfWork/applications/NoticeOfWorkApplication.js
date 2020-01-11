@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Prompt } from "react-router-dom";
 import { Alert, Steps, Result, Button, Dropdown, Menu, Icon, Row, Col } from "antd";
 import PropTypes from "prop-types";
 import { getFormValues, reset } from "redux-form";
@@ -55,6 +56,7 @@ const propTypes = {
   reset: PropTypes.func.isRequired,
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
   location: PropTypes.shape({
+    pathname: PropTypes.string,
     state: PropTypes.shape({
       noticeOfWorkPageFromRoute: CustomPropTypes.noticeOfWorkPageFromRoute,
     }),
@@ -511,62 +513,77 @@ export class NoticeOfWorkApplication extends Component {
     ];
 
     return (
-      <div className="page" onScroll={this.handleScroll()} onLoad={this.handleScroll()}>
-        <div className={this.state.fixedTop ? "steps--header fixed-scroll" : "steps--header"}>
-          <div className="inline-flex between">
-            <NoticeOfWorkPageHeader
-              noticeOfWork={this.props.noticeOfWork}
-              inspectorsHash={this.props.inspectorsHash}
-              noticeOfWorkPageFromRoute={this.state.noticeOfWorkPageFromRoute}
-              fixedTop={this.state.fixedTop}
-            />
+      <React.Fragment>
+        <Prompt
+          when={!this.state.isViewMode}
+          message={(location) => {
+            return this.props.location.pathname === location.pathname
+              ? true
+              : "You have unsaved changes. Are you sure you want to leave without saving?";
+          }}
+        />
+        {/* <Prompt
+          when={!this.state.isViewMode}
+          message="You have unsaved changes, are you sure you want to leave?"
+        /> */}
+        {/* Component JSX */}
+        <div className="page" onScroll={this.handleScroll()} onLoad={this.handleScroll()}>
+          <div className={this.state.fixedTop ? "steps--header fixed-scroll" : "steps--header"}>
+            <div className="inline-flex between">
+              <NoticeOfWorkPageHeader
+                noticeOfWork={this.props.noticeOfWork}
+                inspectorsHash={this.props.inspectorsHash}
+                noticeOfWorkPageFromRoute={this.state.noticeOfWorkPageFromRoute}
+                fixedTop={this.state.fixedTop}
+              />
+            </div>
+            <br />
+            {this.state.isViewMode ? (
+              <div className="inline-flex flex-center block-mobile padding-md--right">
+                <Steps current={this.state.currentStep} onChange={this.onChange} type="navigation">
+                  {headerSteps}
+                </Steps>
+                {this.state.isViewMode && (
+                  <Dropdown
+                    overlay={menu}
+                    placement="bottomLeft"
+                    onVisibleChange={this.handleVisibleChange}
+                    visible={this.state.menuVisible}
+                  >
+                    <Button type="secondary" className="full-mobile">
+                      Actions
+                      <Icon type="down" />
+                    </Button>
+                  </Dropdown>
+                )}
+              </div>
+            ) : (
+              <div className="inline-flex flex-center block-mobile">
+                <Button type="secondary" className="full-mobile" onClick={this.handleCancelNOWEdit}>
+                  Cancel
+                </Button>
+                <Button type="primary" className="full-mobile" onClick={this.handleSaveNOWEdit}>
+                  Save
+                </Button>
+              </div>
+            )}
           </div>
-          <br />
-          {this.state.isViewMode ? (
-            <div className="inline-flex flex-center block-mobile padding-md--right">
-              <Steps current={this.state.currentStep} onChange={this.onChange} type="navigation">
-                {headerSteps}
-              </Steps>
-              {this.state.isViewMode && (
-                <Dropdown
-                  overlay={menu}
-                  placement="bottomLeft"
-                  onVisibleChange={this.handleVisibleChange}
-                  visible={this.state.menuVisible}
-                >
-                  <Button type="secondary" className="full-mobile">
-                    Actions
-                    <Icon type="down" />
-                  </Button>
-                </Dropdown>
-              )}
+          <LoadingWrapper condition={this.state.isNoWLoaded}>
+            <div>
+              <div className={this.state.fixedTop ? "side-menu--fixed" : "side-menu"}>
+                {this.state.currentStep === 1 && (
+                  <NOWSideMenu route={routes.NOTICE_OF_WORK_APPLICATION} />
+                )}
+              </div>
+              <div
+                className={this.state.fixedTop ? "steps--content with-fixed-top" : "steps--content"}
+              >
+                {steps[this.state.currentStep]}
+              </div>
             </div>
-          ) : (
-            <div className="inline-flex flex-center block-mobile">
-              <Button type="secondary" className="full-mobile" onClick={this.handleCancelNOWEdit}>
-                Cancel
-              </Button>
-              <Button type="primary" className="full-mobile" onClick={this.handleSaveNOWEdit}>
-                Save
-              </Button>
-            </div>
-          )}
+          </LoadingWrapper>
         </div>
-        <LoadingWrapper condition={this.state.isNoWLoaded}>
-          <div>
-            <div className={this.state.fixedTop ? "side-menu--fixed" : "side-menu"}>
-              {this.state.currentStep === 1 && (
-                <NOWSideMenu route={routes.NOTICE_OF_WORK_APPLICATION} />
-              )}
-            </div>
-            <div
-              className={this.state.fixedTop ? "steps--content with-fixed-top" : "steps--content"}
-            >
-              {steps[this.state.currentStep]}
-            </div>
-          </div>
-        </LoadingWrapper>
-      </div>
+      </React.Fragment>
     );
   }
 }
