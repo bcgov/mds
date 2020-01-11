@@ -522,11 +522,6 @@ export class NoticeOfWorkApplication extends Component {
               : "You have unsaved changes. Are you sure you want to leave without saving?";
           }}
         />
-        {/* <Prompt
-          when={!this.state.isViewMode}
-          message="You have unsaved changes, are you sure you want to leave?"
-        /> */}
-        {/* Component JSX */}
         <div className="page" onScroll={this.handleScroll()} onLoad={this.handleScroll()}>
           <div className={this.state.fixedTop ? "steps--header fixed-scroll" : "steps--header"}>
             <div className="inline-flex between">
