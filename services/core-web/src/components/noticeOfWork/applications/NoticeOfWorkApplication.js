@@ -15,24 +15,12 @@ import {
 import { openModal, closeModal } from "@/actions/modalActions";
 import { modalConfig } from "@/components/modalContent/config";
 import { fetchMineRecordById } from "@/actionCreators/mineActionCreator";
-import { fetchInspectors } from "@/actionCreators/partiesActionCreator";
 import { getDropdownInspectors, getInspectorsHash } from "@/selectors/partiesSelectors";
 import {
   getNoticeOfWork,
   getOriginalNoticeOfWork,
   getNOWReclamationSummary,
 } from "@/selectors/noticeOfWorkSelectors";
-import {
-  fetchNoticeOfWorkActivityTypeOptions,
-  fetchRegionOptions,
-  fetchNoticeOfWorkApplicationStatusOptions,
-  fetchNoticeOfWorkUndergroundExplorationTypeOptions,
-  fetchNoticeOfWorkApplicationTypeOptions,
-  fetchNoticeOfWorkApplicationPermitTypes,
-  fetchNoticeOfWorkUnitTypeOptions,
-  fetchNoticeOfWorkApplicationDocumentTypeOptions,
-  fetchNoticeOfWorkApplicationProgressStatusCodes,
-} from "@/actionCreators/staticContentActionCreator";
 import { getMines } from "@/selectors/mineSelectors";
 import {
   getDropdownNoticeOfWorkApplicationStatusOptions,
@@ -58,22 +46,12 @@ const { Step } = Steps;
 const propTypes = {
   noticeOfWork: CustomPropTypes.importedNOWApplication,
   originalNoticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
-  fetchNoticeOfWorkApplicationProgressStatusCodes: PropTypes.func.isRequired,
-  fetchNoticeOfWorkApplicationDocumentTypeOptions: PropTypes.func.isRequired,
   createNoticeOfWorkApplicationProgress: CustomPropTypes.importedNOWApplication.isRequired,
   createNoticeOfWorkApplication: PropTypes.func.isRequired,
   updateNoticeOfWorkApplication: PropTypes.func.isRequired,
-  fetchNoticeOfWorkApplicationPermitTypes: PropTypes.func.isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
-  fetchNoticeOfWorkUnitTypeOptions: PropTypes.func.isRequired,
-  fetchInspectors: PropTypes.func.isRequired,
   fetchImportedNoticeOfWorkApplication: PropTypes.func.isRequired,
-  fetchNoticeOfWorkUndergroundExplorationTypeOptions: PropTypes.func.isRequired,
   fetchOriginalNoticeOfWorkApplication: PropTypes.func.isRequired,
-  fetchNoticeOfWorkActivityTypeOptions: PropTypes.func.isRequired,
-  fetchNoticeOfWorkApplicationStatusOptions: PropTypes.func.isRequired,
-  fetchNoticeOfWorkApplicationTypeOptions: PropTypes.func.isRequired,
-  fetchRegionOptions: PropTypes.func.isRequired,
   reset: PropTypes.func.isRequired,
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
   location: PropTypes.shape({
@@ -123,16 +101,6 @@ export class NoticeOfWorkApplication extends Component {
   componentDidMount() {
     const { id } = this.props.match.params;
     let currentStep = 0;
-    this.props.fetchNoticeOfWorkActivityTypeOptions();
-    this.props.fetchRegionOptions();
-    this.props.fetchNoticeOfWorkApplicationDocumentTypeOptions();
-    this.props.fetchNoticeOfWorkApplicationStatusOptions();
-    this.props.fetchNoticeOfWorkApplicationPermitTypes();
-    this.props.fetchNoticeOfWorkApplicationProgressStatusCodes();
-    this.props.fetchNoticeOfWorkApplicationTypeOptions();
-    this.props.fetchNoticeOfWorkUndergroundExplorationTypeOptions();
-    this.props.fetchNoticeOfWorkUnitTypeOptions();
-    this.props.fetchInspectors();
     this.props.fetchImportedNoticeOfWorkApplication(id).then(({ data }) => {
       const associatedMineGuid = data.mine_guid ? data.mine_guid : "";
       const isImported = data.imported_to_core;
@@ -624,19 +592,9 @@ const mapDispatchToProps = (dispatch) =>
       fetchOriginalNoticeOfWorkApplication,
       fetchMineRecordById,
       createNoticeOfWorkApplicationProgress,
-      fetchNoticeOfWorkApplicationProgressStatusCodes,
-      fetchNoticeOfWorkActivityTypeOptions,
-      fetchNoticeOfWorkApplicationDocumentTypeOptions,
-      fetchNoticeOfWorkApplicationStatusOptions,
       reset,
-      fetchRegionOptions,
-      fetchNoticeOfWorkApplicationTypeOptions,
-      fetchNoticeOfWorkUndergroundExplorationTypeOptions,
-      fetchNoticeOfWorkApplicationPermitTypes,
       openModal,
       closeModal,
-      fetchNoticeOfWorkUnitTypeOptions,
-      fetchInspectors,
     },
     dispatch
   );
