@@ -30,10 +30,6 @@ export class DocumentTable extends Component {
     }));
 
   render() {
-    // {
-    //   console.log(this.props.documents);
-    // }
-
     const columns = [
       {
         title: "File name",

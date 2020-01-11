@@ -43,13 +43,15 @@ export class UserDashboard extends Component {
                 </p>
               </div>
               <ul className="user-mine-list">
-                {mines.map((mine) => (
-                  <li key={mine.mine_guid}>
-                    <Link to={routes.MINE_DASHBOARD.dynamicRoute(mine.mine_guid)}>
-                      {mine.mine_name}
-                    </Link>
-                  </li>
-                ))}
+                {mines
+                  .sort((a, b) => (a.mine_name > b.mine_name ? 1 : -1))
+                  .map((mine) => (
+                    <li key={mine.mine_guid}>
+                      <Link to={routes.MINE_DASHBOARD.dynamicRoute(mine.mine_guid)}>
+                        {mine.mine_name}
+                      </Link>
+                    </li>
+                  ))}
               </ul>
               <p className="large-padding-top">
                 Don&#39;t see the mine you&#39;re looking for? Contact&nbsp;

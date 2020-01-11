@@ -14,11 +14,12 @@ const propTypes = {
   closeModal: PropTypes.func.isRequired,
   removeDocument: PropTypes.func.isRequired,
   mineName: PropTypes.string.isRequired,
+  mineGuid: PropTypes.string.isRequired,
   variance: CustomPropTypes.variance.isRequired,
   submitting: PropTypes.bool.isRequired,
   varianceStatusOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
-  mineGuid: PropTypes.string.isRequired,
   complianceCodesHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  documentCategoryOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
 export class EditVarianceForm extends Component {
@@ -61,10 +62,11 @@ export class EditVarianceForm extends Component {
           variance={this.props.variance}
           removeDocument={this.props.removeDocument}
           varianceStatusOptionsHash={this.props.varianceStatusOptionsHash}
+          documentCategoryOptionsHash={this.props.documentCategoryOptionsHash}
           complianceCodesHash={this.props.complianceCodesHash}
         />
         <Form.Item label="Attached Files">
-          <p>Please upload all the required documents here for the variance application</p>
+          <p>Please upload all the required documents here for the variance application.</p>
           <Field
             id="uploadedFiles"
             name="uploadedFiles"
