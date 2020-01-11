@@ -20,6 +20,7 @@ export const VARIANCE_DOCUMENTS = (mineGuid, varianceGuid) =>
 export const VARIANCE_DOCUMENT = (mineGuid, varianceGuid, documentManagerGuid) =>
   `/mines/${mineGuid}/variances/${varianceGuid}/documents/${documentManagerGuid}`;
 export const VARIANCE_STATUS_CODES = "/variances/status-codes";
+export const VARIANCE_DOCUMENT_CATEGORY_OPTIONS = "/variances/document-categories";
 
 // Reports
 export const MINE_REPORT_DEFINITIONS = () => `/mines/reports/definitions`;
