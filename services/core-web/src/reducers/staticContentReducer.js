@@ -20,7 +20,7 @@ const initialState = {
   incidentStatusCodeOptions: [],
   incidentCategoryCodeOptions: [],
   varianceStatusOptions: [],
-  varianceDocumentCategoryOptions: [],
+  documentCategoryOptions: [],
   mineReportDefinitionOptions: [],
   mineReportStatusOptions: [],
   noticeOfWorkActivityTypeOptions: [],
@@ -107,7 +107,7 @@ const staticContentReducer = (state = initialState, action) => {
     case actionTypes.STORE_VARIANCE_DOCUMENT_CATEGORY_OPTIONS:
       return {
         ...state,
-        varianceDocumentCategoryOptions: action.payload.records,
+        documentCategoryOptions: action.payload.records,
       };
     case actionTypes.STORE_MINE_REPORT_DEFINITION_OPTIONS:
       return {
@@ -184,7 +184,7 @@ export const getIncidentCategoryCodeOptions = (state) =>
   state[STATIC_CONTENT].incidentCategoryCodeOptions;
 export const getVarianceStatusOptions = (state) => state[STATIC_CONTENT].varianceStatusOptions;
 export const getVarianceDocumentCategoryOptions = (state) =>
-  state[STATIC_CONTENT].varianceDocumentCategoryOptions;
+  state[STATIC_CONTENT].documentCategoryOptions;
 export const getMineReportDefinitionOptions = (state) =>
   state[STATIC_CONTENT].mineReportDefinitionOptions;
 export const getMineReportStatusOptions = (state) => state[STATIC_CONTENT].mineReportStatusOptions;

@@ -5,7 +5,7 @@ const initialState = {
   mineVariances: [],
   complianceCodes: [],
   varianceStatusOptions: [],
-  varianceDocumentCategoryOptions: [],
+  documentCategoryOptions: [],
   variance: {},
 };
 
@@ -34,7 +34,7 @@ const varianceReducer = (state = initialState, action) => {
     case actionTypes.STORE_VARIANCE_DOCUMENT_CATEGORY_OPTIONS:
       return {
         ...state,
-        varianceDocumentCategoryOptions: action.payload.records,
+        documentCategoryOptions: action.payload.records,
       };
     default:
       return state;
@@ -48,6 +48,6 @@ export const getIncidentFollowupActionOptions = (state) =>
   state[VARIANCES].incidentFollowupActionOptions;
 export const getVarianceStatusOptions = (state) => state[VARIANCES].varianceStatusOptions;
 export const getVarianceDocumentCategoryOptions = (state) =>
-  state[VARIANCES].varianceDocumentCategoryOptions;
+  state[VARIANCES].documentCategoryOptions;
 
 export default varianceReducer;

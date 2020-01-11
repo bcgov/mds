@@ -2,6 +2,7 @@ import varianceReducer from "@/reducers/varianceReducer";
 import {
   storeVariances,
   storeVarianceStatusOptions,
+  storeVarianceDocumentCategoryOptions,
   storeComplianceCodes,
   storeVariance,
 } from "@/actions/varianceActions";
@@ -10,6 +11,7 @@ import * as MOCK from "@/tests/mocks/dataMocks";
 const baseExpectedValue = {
   mineVariances: [],
   varianceStatusOptions: [],
+  documentCategoryOptions: [],
   complianceCodes: [],
   variance: {},
 };
@@ -51,6 +53,16 @@ describe("varianceReducer", () => {
     const result = varianceReducer(
       undefined,
       storeVarianceStatusOptions(MOCK.VARIANCE_STATUS_OPTIONS)
+    );
+    expect(result).toEqual(expectedValue);
+  });
+
+  it("receives STORE_VARIANCE_DOCUMENT_CATEGORY_OPTIONS", () => {
+    const expectedValue = getBaseExpectedValue();
+    expectedValue.documentCategoryOptions = MOCK.VARIANCE_DOCUMENT_CATEGORY_OPTIONS.records;
+    const result = varianceReducer(
+      undefined,
+      storeVarianceDocumentCategoryOptions(MOCK.VARIANCE_DOCUMENT_CATEGORY_OPTIONS)
     );
     expect(result).toEqual(expectedValue);
   });
