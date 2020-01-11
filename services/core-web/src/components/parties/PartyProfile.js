@@ -8,13 +8,11 @@ import { uniq } from "lodash";
 import * as Strings from "@/constants/strings";
 import {
   fetchPartyById,
-  fetchPartyRelationshipTypes,
   fetchPartyRelationships,
   updateParty,
   deleteParty,
 } from "@/actionCreators/partiesActionCreator";
 import { getDropdownProvinceOptions } from "@/selectors/staticContentSelectors";
-import { fetchProvinceCodes } from "@/actionCreators/staticContentActionCreator";
 import { EDIT } from "@/constants/assets";
 import { openModal, closeModal } from "@/actions/modalActions";
 import { modalConfig } from "@/components/modalContent/config";
@@ -43,7 +41,6 @@ const { TabPane } = Tabs;
 
 const propTypes = {
   fetchPartyById: PropTypes.func.isRequired,
-  fetchPartyRelationshipTypes: PropTypes.func.isRequired,
   fetchPartyRelationships: PropTypes.func.isRequired,
   fetchMineBasicInfoList: PropTypes.func.isRequired,
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
@@ -51,7 +48,6 @@ const propTypes = {
   deleteParty: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
-  fetchProvinceCodes: PropTypes.func.isRequired,
   parties: PropTypes.arrayOf(CustomPropTypes.party).isRequired,
   partyRelationships: PropTypes.arrayOf(CustomPropTypes.partyRelationship),
   partyRelationshipTypeHash: PropTypes.objectOf(PropTypes.strings),
@@ -72,11 +68,9 @@ export class PartyProfile extends Component {
   componentDidMount() {
     const { id } = this.props.match.params;
     this.props.fetchPartyById(id);
-    this.props.fetchProvinceCodes();
     this.props.fetchPartyRelationships({ party_guid: id, relationships: "party" }).then(() => {
       const mine_guids = uniq(this.props.partyRelationships.map(({ mine_guid }) => mine_guid));
       this.props.fetchMineBasicInfoList(mine_guids).then(() => {
-        this.props.fetchPartyRelationshipTypes();
         this.setState({ isLoaded: true });
       });
     });
@@ -273,10 +267,8 @@ const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
       fetchPartyById,
-      fetchPartyRelationshipTypes,
       fetchPartyRelationships,
       fetchMineBasicInfoList,
-      fetchProvinceCodes,
       deleteParty,
       updateParty,
       openModal,

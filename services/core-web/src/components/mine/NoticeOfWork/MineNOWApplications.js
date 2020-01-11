@@ -7,7 +7,6 @@ import queryString from "query-string";
 import * as router from "@/constants/routes";
 import CustomPropTypes from "@/customPropTypes";
 import { getMineRegionHash } from "@/selectors/staticContentSelectors";
-import { fetchRegionOptions } from "@/actionCreators/staticContentActionCreator";
 import MineNoticeOfWorkTable from "@/components/mine/NoticeOfWork/MineNoticeOfWorkTable";
 import { fetchMineNoticeOfWorkApplications } from "@/actionCreators/noticeOfWorkActionCreator";
 import { getNoticeOfWorkList } from "@/selectors/noticeOfWorkSelectors";
@@ -20,7 +19,6 @@ const propTypes = {
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
   location: PropTypes.shape({ search: PropTypes.string }).isRequired,
   noticeOfWorkApplications: PropTypes.arrayOf(CustomPropTypes.nowApplication).isRequired,
-  fetchRegionOptions: PropTypes.func.isRequired,
   mineRegionHash: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
@@ -40,7 +38,6 @@ export class MineNOWApplications extends Component {
   };
 
   componentDidMount() {
-    this.props.fetchRegionOptions();
     const params = this.props.location.search;
     const parsedParams = queryString.parse(params);
     const {
@@ -135,7 +132,6 @@ const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
       fetchMineNoticeOfWorkApplications,
-      fetchRegionOptions,
     },
     dispatch
   );
