@@ -32,6 +32,7 @@ import {
 } from "@/selectors/partiesSelectors";
 import { getUserAccessData } from "@/selectors/authenticationSelectors";
 import { USER_ROLES } from "@/constants/environment";
+import { getPermits } from "../../../reducers/permitReducer";
 
 const propTypes = {
   mine: CustomPropTypes.mine.isRequired,
@@ -50,12 +51,14 @@ const propTypes = {
   addDocumentToRelationship: PropTypes.func.isRequired,
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
   userRoles: PropTypes.arrayOf(PropTypes.string).isRequired,
+  permits: PropTypes.arrayOf(CustomPropTypes.permit),
 };
 
 const defaultProps = {
   partyRelationshipTypes: [],
   partyRelationshipTypesList: [],
   partyRelationships: [],
+  permits: [],
 };
 
 export class ViewPartyRelationships extends Component {
@@ -325,6 +328,7 @@ export class ViewPartyRelationships extends Component {
           partyRelationshipTitle={partyRelationshipTitle}
           handleChange={this.props.handleChange}
           mine={this.props.mine}
+          permits={this.props.permits}
           openEditPartyRelationshipModal={this.openEditPartyRelationshipModal}
           onSubmitEditPartyRelationship={this.onSubmitEditPartyRelationship}
           removePartyRelationship={this.removePartyRelationship}
@@ -343,7 +347,7 @@ export class ViewPartyRelationships extends Component {
       )
       .filter((partyRelationship) => partyRelationship.mine_party_appt_type_code !== "PMT")
       .concat(
-        this.props.mine.mine_permit
+        this.props.permits
           .map(
             (permit) =>
               partyRelationships
@@ -487,6 +491,7 @@ const mapStateToProps = (state) => ({
   partyRelationshipTypes: getPartyRelationshipTypes(state),
   partyRelationships: getPartyRelationships(state),
   userRoles: getUserAccessData(state),
+  permits: getPermits(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
