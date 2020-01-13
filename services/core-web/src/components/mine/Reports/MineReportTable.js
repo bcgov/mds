@@ -14,7 +14,7 @@ import { MineReportActions } from "@/components/mine/Reports/MineReportActions";
 import LinkButton from "@/components/common/LinkButton";
 import { downloadFileFromDocumentManager } from "@/utils/actionlessNetworkCalls";
 import TableLoadingWrapper from "@/components/common/wrappers/TableLoadingWrapper";
-import { getTableHeaders } from "@/utils/helpers";
+import { getTableHeaders, truncateFilename } from "@/utils/helpers";
 
 const { errorRed } = COLOR;
 
@@ -91,12 +91,12 @@ const columns = [
                 record.report.mine_report_submissions.length - 1
               ].documents.map((file) => (
                 <li key={file.mine_document_guid}>
-                  <div>
+                  <div title={file.document_name}>
                     <LinkButton
                       key={file.mine_document_guid}
                       onClick={() => downloadFileFromDocumentManager(file)}
                     >
-                      {file.document_name}
+                      {truncateFilename(file.document_name)}
                     </LinkButton>
                   </div>
                 </li>
