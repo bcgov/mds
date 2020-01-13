@@ -144,7 +144,6 @@ export class ViewPartyRelationships extends Component {
         return;
       }
     }
-
     this.props.openModal({
       props: {
         onSubmit,
@@ -154,6 +153,7 @@ export class ViewPartyRelationships extends Component {
         partyRelationships,
         partyRelationshipType: value,
         mine,
+        mine_permits: this.props.permits,
         onFileLoad: this.onFileLoad,
         onRemoveFile: this.onRemoveFile,
       },

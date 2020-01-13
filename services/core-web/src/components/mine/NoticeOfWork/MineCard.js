@@ -1,6 +1,5 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { uniqBy } from "lodash";
 import { connect } from "react-redux";
 import MineHeaderMapLeaflet from "@/components/maps/MineHeaderMapLeaflet";
 import CustomPropTypes from "@/customPropTypes";
@@ -35,10 +34,8 @@ export const MineCard = (props) => {
           <div className="inline-flex padding-small">
             <p className="field-title">Permit Number</p>
             <ul className="mine-list__permits">
-              {props.mine.mine_permit && props.mine.mine_permit.length > 0
-                ? uniqBy(props.mine.mine_permit, "permit_no").map(({ permit_no, permit_guid }) => (
-                    <li key={permit_guid}>{permit_no}</li>
-                  ))
+              {props.mine.mine_permit_numbers && props.mine.mine_permit_numbers.length > 0
+                ? props.mine.mine_permit_numbers.map((permit_no) => <li>{permit_no}</li>)
                 : Strings.EMPTY_FIELD}
             </ul>
           </div>

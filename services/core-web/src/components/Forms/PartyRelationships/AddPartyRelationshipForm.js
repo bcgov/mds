@@ -26,6 +26,7 @@ const propTypes = {
   related_guid: PropTypes.string,
   start_date: PropTypes.date,
   mine: CustomPropTypes.mine,
+  mine_permits: PropTypes.arrayOf(CustomPropTypes.permit).isRequired,
   submitting: PropTypes.bool.isRequired,
 };
 
@@ -189,7 +190,7 @@ export class AddPartyRelationshipForm extends Component {
         options = <EngineerOfRecordOptions mine={this.props.mine} />;
         break;
       case "PMT":
-        options = <PermitteeOptions mine={this.props.mine} />;
+        options = <PermitteeOptions mine_permits={this.props.mine_permits} />;
         break;
       default:
         options = <div />;
