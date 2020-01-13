@@ -12,7 +12,7 @@ const propTypes = {
   removeFileHandler: PropTypes.func,
 };
 
-const defaultProps = { showRemove: true, removeFileHandler: () => {} };
+const defaultProps = { showRemove: false, removeFileHandler: () => {} };
 
 const fileColumn = {
   title: "File Name",
@@ -69,8 +69,8 @@ const transformRowData = (file, showRemove, updateDocumentHandler) => ({
   key: file.mine_document_guid,
   file,
   file_name: file.document_name,
-  showRemove: showRemove,
-  updateDocumentHandler: updateDocumentHandler,
+  showRemove,
+  updateDocumentHandler,
 });
 
 export const UploadedDocumentsTable = (props) => (

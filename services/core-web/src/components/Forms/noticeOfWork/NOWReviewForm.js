@@ -1,19 +1,21 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { reduxForm } from "redux-form";
+import { reduxForm, change, Field } from "redux-form";
 import { Form, Button, Col, Row, Popconfirm } from "antd";
-import { change } from "redux-form";
+
 import * as FORM from "@/constants/forms";
 import { resetForm } from "@/utils/helpers";
 import { renderConfig } from "@/components/common/config";
 import { required, dateNotInFuture } from "@/utils/Validate";
 import CustomPropTypes from "@/customPropTypes";
-import { Field } from "redux-form";
+
 import { NOTICE_OF_WORK_DOCUMENT } from "@/constants/API";
 import FileUpload from "@/components/common/FileUpload";
+import { UploadedDocumentsTable } from "@/components/common/UploadedDocumentTable";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
+  handleDocumentDelete: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
   review_types: CustomPropTypes.options.isRequired,
@@ -34,7 +36,7 @@ export class NOWReviewForm extends Component {
     this.setState((prevState) => ({
       uploadedFiles: [[document_manager_guid, documentName], ...prevState.uploadedFiles],
     }));
-    this.props.change("documents", this.state.uploadedFiles);
+    this.props.change("uploadedFiles", this.state.uploadedFiles);
   };
 
   onRemoveFile = (err, fileItem) => {
@@ -42,7 +44,7 @@ export class NOWReviewForm extends Component {
       uploadedFiles: prevState.uploadedFiles.filter((fileArr) => fileArr[0] !== fileItem.serverId),
     }));
 
-    this.props.change("documents", this.state.uploadedFiles);
+    this.props.change("uploadedFiles", this.state.uploadedFiles);
   };
 
   render() {
@@ -90,6 +92,13 @@ export class NOWReviewForm extends Component {
                 allowMultiple
               />
             </Form.Item>
+            {this.props.initialValues && this.props.initialValues.documents && (
+              <UploadedDocumentsTable
+                files={this.props.initialValues.documents.map((doc) => doc.mine_document)}
+                showRemove
+                removeFileHandler={this.props.handleDocumentDelete}
+              />
+            )}{" "}
           </Col>
         </Row>
         <div className="right center-mobile">
@@ -104,12 +113,7 @@ export class NOWReviewForm extends Component {
               Cancel
             </Button>
           </Popconfirm>
-          <Button
-            className="full-mobile"
-            type="primary"
-            htmlType="submit"
-            disabled={this.props.submitting}
-          >
+          <Button className="full-mobile" type="primary" htmlType="submit">
             {this.props.title}
           </Button>
         </div>

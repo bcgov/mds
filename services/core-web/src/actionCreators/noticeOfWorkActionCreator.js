@@ -253,3 +253,22 @@ export const addDocumentToNoticeOfWork = (now_application_guid, payload) => (dis
     .catch(() => dispatch(error(reducerTypes.ADD_DOCUMENT_TO_NOTICE_OF_WORK)))
     .finally(() => dispatch(hideLoading("modal")));
 };
+
+export const deleteNoticeOfWorkApplicationReviewDocument = (applicationGuid, mineDocumentGuid) => (
+  dispatch
+) => {
+  dispatch(request(reducerTypes.REMOVE_NOTICE_OF_WORK_APPLICATION_REVIEW_DOCUMENT));
+  dispatch(showLoading());
+  return CustomAxios()
+    .delete(
+      `${ENVIRONMENT.apiUrl + API.NOTICE_OF_WORK_DOCUMENT(applicationGuid)}/${mineDocumentGuid}`,
+      createRequestHeader()
+    )
+    .then((response) => {
+      notification.success({ message: "Successfully removed the document", duration: 10 });
+      dispatch(success(reducerTypes.REMOVE_NOTICE_OF_WORK_APPLICATION_REVIEW_DOCUMENT));
+      return response;
+    })
+    .catch(() => dispatch(error(reducerTypes.REMOVE_NOTICE_OF_WORK_APPLICATION_REVIEW_DOCUMENT)))
+    .finally(() => dispatch(hideLoading()));
+};
