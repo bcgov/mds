@@ -109,7 +109,7 @@ export const getDocumentDownloadToken = (document_manager_guid, filename, URLArr
       const token = { token: response.data.token_guid };
       const URL = `${ENVIRONMENT.docManUrl +
         DOCUMENT_MANAGER_FILE_GET_URL(token) +
-        "&as_attachement=false"}`;
+        "&as_attachment=true"}`;
       URLArray.push({ filename, url: URL });
     });
 };

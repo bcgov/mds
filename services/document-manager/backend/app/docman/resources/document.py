@@ -92,22 +92,26 @@ class DocumentListResource(Resource):
 
     def get(self):
         token_guid = request.args.get('token', '')
-        attachment = request.args.get('as_attachment', False)
+        attachment = request.args.get('as_attachment', None)
         doc_guid = cache.get(DOWNLOAD_TOKEN(token_guid))
         cache.delete(DOWNLOAD_TOKEN(token_guid))
 
         if not doc_guid:
-            raise BadRequest('Valid token requred for download')
+            raise BadRequest('Valid token required for download')
 
         doc = Document.query.filter_by(document_guid=doc_guid).first()
         if not doc:
             raise NotFound('Could not find the document corresponding to the token')
+        current_app.logger.debug(attachment)
+        if attachment is not None:
+            attach_style = True if attachment == 'true' else False
+        else:
+            attach_style = '.pdf' not in doc.file_display_name.lower()
 
-        not_pdf = '.pdf' not in doc.file_display_name.lower()
         return send_file(
             filename_or_fp=doc.full_storage_path,
             attachment_filename=doc.file_display_name,
-            as_attachment=attachment if attachment else not_pdf)
+            as_attachment=attach_style)
 
 
 @api.route(f'/documents/<string:document_guid>')

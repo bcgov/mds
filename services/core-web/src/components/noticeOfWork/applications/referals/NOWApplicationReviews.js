@@ -63,7 +63,6 @@ export class NOWApplicationReviews extends Component {
   };
 
   handleEditReview = (values) => {
-    console.log(values);
     const { now_application_review_id } = values;
     const form_values = {
       now_application_review_type_code: values.now_application_review_type_code,
@@ -106,9 +105,7 @@ export class NOWApplicationReviews extends Component {
     a.download = url.filename;
     a.style.display = "none";
     document.body.append(a);
-    console.log("clicking the link.");
     a.click();
-    console.log("NEXT");
     a.remove();
   };
 
@@ -140,8 +137,6 @@ export class NOWApplicationReviews extends Component {
   };
 
   downloadDocumentPackage = (selectedCoreRows, selectedSubmissionRows) => {
-    console.log(selectedCoreRows);
-
     const docURLS = [];
     const submissionDocs = this.props.submissionDocuments
       .map((document) => ({
@@ -166,10 +161,9 @@ export class NOWApplicationReviews extends Component {
 
     this.waitFor((_) => docURLS.length === submissionDocs.length + coreDocs.length).then(
       async () => {
-        console.log(JSON.stringify(docURLS));
         for (const url of docURLS) {
           this.downloadDocument(url);
-          await new Promise((resolve) => setTimeout(resolve, 2000));
+          await new Promise((resolve) => setTimeout(resolve, 1000));
         }
         this.props.closeModal();
       }
