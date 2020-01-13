@@ -6,6 +6,7 @@ const props = {};
 
 const setupReducerProps = () => {
   props.location = { pathname: " " };
+  props.dispatch = jest.fn();
 };
 
 beforeEach(() => {

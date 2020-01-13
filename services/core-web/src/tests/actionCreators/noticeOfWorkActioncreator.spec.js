@@ -44,7 +44,7 @@ describe("`fetchNoticeOfWorkApplication` action creator", () => {
   });
 
   it("Request failure, dispatches `error` with correct response", () => {
-    mockAxios.onGet(url, MOCK.createMockHeader()).reply(400, MOCK.ERROR);
+    mockAxios.onGet(url, MOCK.createMockHeader()).reply(418, MOCK.ERROR);
     return fetchNoticeOfWorkApplication(appliactionGuid)(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
@@ -66,7 +66,7 @@ describe("`fetchNoticeOfWorkApplications` action creator", () => {
   });
 
   it("Request failure, dispatches `error` with correct response", () => {
-    mockAxios.onGet(url, MOCK.createMockHeader()).reply(400, MOCK.ERROR);
+    mockAxios.onGet(url, MOCK.createMockHeader()).reply(418, MOCK.ERROR);
     return fetchNoticeOfWorkApplications()(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
@@ -89,7 +89,7 @@ describe("`fetchMineNoticeOfWorkApplications` action creator", () => {
   });
 
   it("Request failure, dispatches `error` with correct response", () => {
-    mockAxios.onGet(url, MOCK.createMockHeader()).reply(400, MOCK.ERROR);
+    mockAxios.onGet(url, MOCK.createMockHeader()).reply(418, MOCK.ERROR);
     return fetchMineNoticeOfWorkApplications(mineGuid)(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
@@ -113,7 +113,7 @@ describe("`createNoticeOfWorkApplication` action creator", () => {
   });
 
   it("Request failure, dispatches `error` with correct response", () => {
-    mockAxios.onPost(url, MOCK.createMockHeader()).reply(400, MOCK.ERROR);
+    mockAxios.onPost(url, MOCK.createMockHeader()).reply(418, MOCK.ERROR);
     return createNoticeOfWorkApplication(mineGuid, appliactionGuid)(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
@@ -136,7 +136,7 @@ describe("`fetchImportedNoticeOfWorkApplication` action creator", () => {
   });
 
   it("Request failure, dispatches `error` with correct response", () => {
-    mockAxios.onGet(url, MOCK.createMockHeader()).reply(400, MOCK.ERROR);
+    mockAxios.onGet(url, MOCK.createMockHeader()).reply(418, MOCK.ERROR);
     return fetchImportedNoticeOfWorkApplication(appliactionGuid)(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
@@ -161,7 +161,7 @@ describe("`fetchOriginalNoticeOfWorkApplication` action creator", () => {
   });
 
   it("Request failure, dispatches `error` with correct response", () => {
-    mockAxios.onGet(url, MOCK.createMockHeader()).reply(400, MOCK.ERROR);
+    mockAxios.onGet(url, MOCK.createMockHeader()).reply(418, MOCK.ERROR);
     return fetchOriginalNoticeOfWorkApplication(appliactionGuid)(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
@@ -185,7 +185,7 @@ describe("`updateNoticeOfWorkApplication` action creator", () => {
   });
 
   it("Request failure, dispatches `error` with correct response", () => {
-    mockAxios.onPut(url, MOCK.createMockHeader()).reply(400, MOCK.ERROR);
+    mockAxios.onPut(url, MOCK.createMockHeader()).reply(418, MOCK.ERROR);
     return updateNoticeOfWorkApplication(payload, appliactionGuid)(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
@@ -209,7 +209,7 @@ describe("`createNoticeOfWorkApplicationProgress` action creator", () => {
   });
 
   it("Request failure, dispatches `error` with correct response", () => {
-    mockAxios.onPost(url, MOCK.createMockHeader()).reply(400, MOCK.ERROR);
+    mockAxios.onPost(url, MOCK.createMockHeader()).reply(418, MOCK.ERROR);
     return createNoticeOfWorkApplicationProgress(appliactionGuid, payload)(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);

@@ -61,8 +61,6 @@ describe("Dashboard", () => {
       const params = reducerProps.location.search;
       instance.renderDataFromURL(params);
       expect(renderDataFromURLSpy).toHaveBeenCalledWith(params);
-      expect(dispatchProps.fetchStatusOptions).toHaveBeenCalled();
-      expect(dispatchProps.fetchRegionOptions).toHaveBeenCalled();
     });
 
     it("componentDidMount without `params` from the URL", () => {
@@ -80,8 +78,6 @@ describe("Dashboard", () => {
           per_page: String.DEFAULT_PER_PAGE,
         })
       );
-      expect(dispatchProps.fetchStatusOptions).toHaveBeenCalled();
-      expect(dispatchProps.fetchRegionOptions).toHaveBeenCalled();
     });
   });
 });

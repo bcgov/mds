@@ -38,7 +38,7 @@ describe("`fetchSearchResults` action creator", () => {
   });
 
   it("Request failure, dispatches `error` with correct response", () => {
-    mockAxios.onGet(url).reply(400, MOCK.ERROR);
+    mockAxios.onGet(url).reply(418, MOCK.ERROR);
     return fetchSearchResults(searchTerm, null)(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
@@ -61,7 +61,7 @@ describe("`fetchSearchBarResults` action creator", () => {
   });
 
   it("Request failure, dispatches `error` with correct response", () => {
-    mockAxios.onGet(url).reply(400, MOCK.ERROR);
+    mockAxios.onGet(url).reply(418, MOCK.ERROR);
     return fetchSearchBarResults(searchTerm)(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
@@ -83,7 +83,7 @@ describe("`fetchSearchOptions` action creator", () => {
   });
 
   it("Request failure, dispatches `error` with correct response", () => {
-    mockAxios.onGet(url).reply(400, MOCK.ERROR);
+    mockAxios.onGet(url).reply(418, MOCK.ERROR);
     return fetchSearchOptions()(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);

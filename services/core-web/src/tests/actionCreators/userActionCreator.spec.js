@@ -33,7 +33,7 @@ describe("`fetchCoreUsers` action creator", () => {
   });
 
   it("Request failure, dispatches `error` with correct response", () => {
-    mockAxios.onGet(url, MOCK.createMockHeader()).reply(400, MOCK.ERROR);
+    mockAxios.onGet(url, MOCK.createMockHeader()).reply(418, MOCK.ERROR);
     return fetchCoreUsers()(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
