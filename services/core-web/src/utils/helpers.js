@@ -1,5 +1,6 @@
 import moment from "moment";
 import { reset } from "redux-form";
+
 /**
  * Helper function to clear redux form after submission
  *
@@ -85,6 +86,34 @@ export const normalizePhone = (value, previousValue) => {
 };
 
 export const upperCase = (value) => value && value.toUpperCase();
+
+export const truncateFilename = (filename, max = 40) => {
+  if (filename.length <= max) {
+    return filename;
+  }
+
+  // String to use to represent that a string has been truncated
+  const trunc = "[...]";
+
+  // Extract the parts (name and extension) of the filename
+  const parts = /(^.+)\.([^.]+)$/.exec(filename);
+
+  // If the filename has no extension (e.g., the filename is "foo", not "foo.txt")
+  if (!parts) {
+    return `${filename.substring(0, max)}${trunc}`;
+  }
+
+  // Get the name of the filename (e.g., "foo.txt" will give "foo")
+  const name = parts[1].length > max ? `${parts[1].substring(0, max)}${trunc}` : parts[1];
+
+  // Get the extension of the filename (e.g., "foo.txt" will give "txt")
+  // Extensions can be very long too, so limit their length as well
+  const extMax = 5;
+  const ext = parts[2].length > extMax ? `${parts[2].substring(0, extMax)}${trunc}` : parts[2];
+
+  // Return the formatted shortened version of the filename
+  return `${name}.${ext}`;
+};
 
 export const getFiscalYear = () => {
   const today = new Date();

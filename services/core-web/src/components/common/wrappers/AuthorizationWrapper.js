@@ -1,4 +1,3 @@
-import React from "react";
 import { PropTypes } from "prop-types";
 import { connect } from "react-redux";
 import { getUserAccessData } from "@/selectors/authenticationSelectors";
@@ -54,19 +53,13 @@ const defaultProps = {
   permission: "",
 };
 
-// Disabling this rule because I don't feel comfortable refactoring this critical component at this point
-// eslint-disable-next-line react/destructuring-assignment
-export const AuthorizationWrapper = ({ children: Children, ...props }) => (
-  <span>
-    {props.inDevelopment && detectDevelopmentEnvironment() && <span>{Children}</span>}
-    {props.inTesting && !detectProdEnvironment() && <span>{Children}</span>}
-    {props.permission &&
+export const AuthorizationWrapper = (props) =>
+  ((props.inDevelopment && detectDevelopmentEnvironment()) ||
+    (props.inTesting && !detectProdEnvironment()) ||
+    (props.permission &&
       props.userRoles.includes(USER_ROLES[props.permission]) &&
-      (props.isMajorMine || props.userRoles.includes(USER_ROLES[Permission.ADMIN])) && (
-        <span>{Children}</span>
-      )}
-  </span>
-);
+      (props.isMajorMine || props.userRoles.includes(USER_ROLES[Permission.ADMIN])))) &&
+  props.children;
 
 AuthorizationWrapper.propTypes = propTypes;
 AuthorizationWrapper.defaultProps = defaultProps;
