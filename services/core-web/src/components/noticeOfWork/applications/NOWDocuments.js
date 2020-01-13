@@ -16,6 +16,8 @@ import { openModal, closeModal } from "@/actions/modalActions";
 import { getNoticeOfWorkApplicationDocumentTypeOptionsHash } from "@/selectors/staticContentSelectors";
 import * as FORM from "@/constants/forms";
 import { downloadFileFromDocumentManager } from "@/utils/actionlessNetworkCalls";
+import TableLoadingWrapper from "@/components/common/wrappers/TableLoadingWrapper";
+import { getTableHeaders } from "@/utils/helpers";
 
 const propTypes = {
   openModal: PropTypes.func.isRequired,
@@ -151,20 +153,30 @@ export const NOWDocuments = (props) => {
       description: document.description || Strings.EMPTY_FIELD,
     }));
 
+  const columnsByType = columns(props.noticeOfWorkApplicationDocumentTypeOptionsHash);
+
   return (
     <div>
-      {props.documents && props.documents.length >= 1 ? (
+      <TableLoadingWrapper
+        condition={props.documents}
+        tableHeaders={getTableHeaders(columnsByType)}
+      >
         <Table
+          rowClassName="fade-in"
           align="left"
           pagination={false}
-          columns={columns(props.noticeOfWorkApplicationDocumentTypeOptionsHash)}
+          columns={columnsByType}
           dataSource={transfromDocuments(
             props.documents,
             props.now_application_guid,
             props.noticeOfWorkApplicationDocumentTypeOptionsHash
           )}
           locale={{
-            emptyText: "There are no additional documents associated with this Notice of Work",
+            emptyText: (
+              <div>
+                <NullScreen type="documents" />
+              </div>
+            ),
           }}
           rowSelection={
             props.selectedRows
@@ -179,9 +191,7 @@ export const NOWDocuments = (props) => {
               : null
           }
         />
-      ) : (
-        <NullScreen type="documents" />
-      )}
+      </TableLoadingWrapper>
       {!props.selectedRows && (
         <AddButton
           disabled={props.isViewMode}
