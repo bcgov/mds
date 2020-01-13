@@ -371,7 +371,7 @@ NOW_APPLICATION_STATUS_CODES = api.model(
 UNIT_TYPES = api.model(
     'UnitTypeCodes', 
     {
-        'unit': fields.String,
+        'short_description': fields.String,
         'unit_type_code': fields.String,
         'description': fields.String
     }
