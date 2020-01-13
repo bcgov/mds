@@ -1,6 +1,8 @@
 import React from "react";
 // reusable messages for error handling, validations, null-screens, etc.
-export const ERROR = "Error!";
+export const ERROR = "Error.";
+export const ERROR_CANCELED =
+  "Can't complete this request. Please notify mds@gov.bc.ca if this problem persists.";
 export const LOADING = "Loading...";
 export const TRY_AGAIN = "Please try again later";
 export const NO_DATA = "No data available";

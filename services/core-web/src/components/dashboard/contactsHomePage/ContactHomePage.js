@@ -7,13 +7,8 @@ import queryString from "query-string";
 import * as Strings from "@/constants/strings";
 import { openModal, closeModal } from "@/actions/modalActions";
 import CustomPropTypes from "@/customPropTypes";
-import {
-  fetchParties,
-  createParty,
-  fetchPartyRelationshipTypes,
-} from "@/actionCreators/partiesActionCreator";
+import { fetchParties, createParty } from "@/actionCreators/partiesActionCreator";
 import * as FORM from "@/constants/forms";
-import { fetchProvinceCodes } from "@/actionCreators/staticContentActionCreator";
 import * as Permission from "@/constants/permissions";
 import { getDropdownProvinceOptions } from "@/selectors/staticContentSelectors";
 import {
@@ -38,9 +33,7 @@ import AddButton from "@/components/common/AddButton";
 
 const propTypes = {
   fetchParties: PropTypes.func.isRequired,
-  fetchProvinceCodes: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
-  fetchPartyRelationshipTypes: PropTypes.func.isRequired,
   change: PropTypes.func.isRequired,
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
   location: PropTypes.shape({ search: PropTypes.string }).isRequired,
@@ -63,12 +56,6 @@ export class ContactHomePage extends Component {
       ...this.params,
     },
   };
-
-  componentWillMount() {
-    // Fetch dependencies from API
-    this.props.fetchPartyRelationshipTypes();
-    this.props.fetchProvinceCodes();
-  }
 
   componentDidMount() {
     const params = this.props.location.search;
@@ -254,9 +241,7 @@ const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
       fetchParties,
-      fetchProvinceCodes,
       createParty,
-      fetchPartyRelationshipTypes,
       openModal,
       closeModal,
       change,
