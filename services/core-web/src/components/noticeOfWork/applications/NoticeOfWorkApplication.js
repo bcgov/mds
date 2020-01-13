@@ -270,7 +270,7 @@ export class NoticeOfWorkApplication extends Component {
       props: {
         title: "Change Lead Inspector",
         inspectors: this.props.inspectors,
-        noticeOfWork: this.props.noticeOfWork,
+        lead_inspector_party_guid: this.props.noticeOfWork.lead_inspector_party_guid,
         setLeadInspectorPartyGuid: this.setLeadInspectorPartyGuid,
         handleUpdateLeadInspector: (e) => this.handleUpdateLeadInspector(this.props.closeModal, e),
       },
@@ -470,12 +470,7 @@ export class NoticeOfWorkApplication extends Component {
           this.props.noticeOfWork.lead_inspector_party_guid &&
           !this.state.isDecision && (
             <div className="custom-menu-item">
-              <button
-                type="button"
-                onClick={(event) =>
-                  this.openUpdateLeadInspectorModal(event, this.props.noticeOfWork)
-                }
-              >
+              <button type="button" onClick={(event) => this.openUpdateLeadInspectorModal(event)}>
                 Change the Lead Inspector
               </button>
             </div>

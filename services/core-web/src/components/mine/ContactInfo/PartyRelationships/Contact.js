@@ -11,6 +11,7 @@ const propTypes = {
   partyRelationshipTitle: PropTypes.string.isRequired,
   handleChange: PropTypes.func,
   mine: CustomPropTypes.mine.isRequired,
+  permits: PropTypes.arrayOf(CustomPropTypes.permit).isRequired,
   openEditPartyRelationshipModal: PropTypes.func,
   onSubmitEditPartyRelationship: PropTypes.func,
   removePartyRelationship: PropTypes.func,
