@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { reduxForm, change, Field } from "redux-form";
+import { reduxForm, Field } from "redux-form";
 import { Form, Button, Col, Row, Popconfirm } from "antd";
 
 import * as FORM from "@/constants/forms";
@@ -19,7 +19,9 @@ const propTypes = {
   closeModal: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
   review_types: CustomPropTypes.options.isRequired,
-  initialValues: PropTypes.object,
+  // eslint-disable-next-line react/forbid-prop-types
+  initialValues: PropTypes.any,
+  // eslint-disable-next-line
   change: PropTypes.func,
 };
 const defaultProps = {
@@ -30,7 +32,12 @@ const defaultProps = {
 export class NOWReviewForm extends Component {
   state = {
     uploadedFiles: [],
+    existingDocuments: [],
   };
+
+  componentDidMount() {
+    this.setState({ existingDocuments: this.props.initialValues.documents });
+  }
 
   onFileLoad = (documentName, document_manager_guid) => {
     this.setState((prevState) => ({
@@ -94,9 +101,16 @@ export class NOWReviewForm extends Component {
             </Form.Item>
             {this.props.initialValues && this.props.initialValues.documents && (
               <UploadedDocumentsTable
-                files={this.props.initialValues.documents.map((doc) => doc.mine_document)}
+                files={this.state.existingDocuments.map((doc) => doc.mine_document)}
                 showRemove
-                removeFileHandler={this.props.handleDocumentDelete}
+                removeFileHandler={(doc_guid) => {
+                  this.props.handleDocumentDelete(doc_guid);
+                  this.setState((prevState) => ({
+                    existingDocuments: prevState.existingDocuments.filter(
+                      (obj) => obj.mine_document.mine_document_guid !== doc_guid
+                    ),
+                  }));
+                }}
               />
             )}{" "}
           </Col>
