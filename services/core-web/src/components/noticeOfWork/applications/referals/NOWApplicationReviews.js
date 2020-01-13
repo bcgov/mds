@@ -4,7 +4,6 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { Button, Row, Col } from "antd";
 import { openModal, closeModal } from "@/actions/modalActions";
-import * as ModalContent from "@/constants/modalContent";
 import {
   getNowDocumentDownloadToken,
   getDocumentDownloadToken,
@@ -44,6 +43,7 @@ const propTypes = {
   createNoticeOfWorkApplicationReview: PropTypes.func.isRequired,
   fetchNoticeOfWorkApplicationReviews: PropTypes.func.isRequired,
   fetchNoticeOfWorkApplicationReviewTypes: PropTypes.func.isRequired,
+  updateNoticeOfWorkApplicationReview: PropTypes.func.isRequired,
   deleteNoticeOfWorkApplicationReview: PropTypes.func.isRequired,
 };
 
@@ -94,7 +94,7 @@ export class NOWApplicationReviews extends Component {
   waitFor = (conditionFunction) => {
     const poll = (resolve) => {
       if (conditionFunction()) resolve();
-      else setTimeout((_) => poll(resolve), 400);
+      else setTimeout(() => poll(resolve), 400);
     };
 
     return new Promise(poll);
@@ -127,7 +127,6 @@ export class NOWApplicationReviews extends Component {
 
   openEditReviewModal = (event, initialValues, onSubmit) => {
     event.preventDefault();
-    console.log(initialValues);
     this.props.openModal({
       props: {
         initialValues,
@@ -156,17 +155,19 @@ export class NOWApplicationReviews extends Component {
       }))
       .filter((item) => selectedCoreRows.includes(item.key));
 
-    for (const doc of submissionDocs) {
-      getNowDocumentDownloadToken(doc.key, this.props.noticeOfWorkGuid, doc.filename, docURLS);
-    }
-    for (const doc of coreDocs) {
-      getDocumentDownloadToken(doc.documentManagerGuid, doc.filename, docURLS);
-    }
+    submissionDocs.forEach((doc) =>
+      getNowDocumentDownloadToken(doc.key, this.props.noticeOfWorkGuid, doc.filename, docURLS)
+    );
+    coreDocs.forEach((doc) =>
+      getDocumentDownloadToken(doc.documentManagerGuid, doc.filename, docURLS)
+    );
 
-    this.waitFor((_) => docURLS.length === submissionDocs.length + coreDocs.length).then(
+    this.waitFor(() => docURLS.length === submissionDocs.length + coreDocs.length).then(
       async () => {
+        // eslint-disable-next-line
         for (const url of docURLS) {
           this.downloadDocument(url);
+          // eslint-disable-next-line
           await new Promise((resolve) => setTimeout(resolve, 1000));
         }
         this.props.closeModal();
