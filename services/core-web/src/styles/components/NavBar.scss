@@ -38,6 +38,12 @@
         border: none;
         border-radius: 0;
       }
+      &:focus {
+        color: $pure-white;
+        background-color: $primary-btn-color-hover;
+        border: none;
+        border-radius: 0;
+      }
     }
   }
 }
