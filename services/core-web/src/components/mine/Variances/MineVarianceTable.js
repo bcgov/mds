@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Table, Button, Icon } from "antd";
+import { Table, Button, Icon, Badge } from "antd";
 import { isEmpty } from "lodash";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
@@ -15,15 +15,13 @@ import { getInspectorsHash } from "@/selectors/partiesSelectors";
 import * as Permission from "@/constants/permissions";
 import { RED_CLOCK, EDIT_OUTLINE_VIOLET } from "@/constants/assets";
 import NullScreen from "@/components/common/NullScreen";
-import { formatDate, compareCodes, getTableHeaders } from "@/utils/helpers";
+import { formatDate, compareCodes, getTableHeaders, truncateFilename } from "@/utils/helpers";
 import { downloadFileFromDocumentManager } from "@/utils/actionlessNetworkCalls";
 import * as Strings from "@/constants/strings";
-import { COLOR } from "@/constants/styles";
 import LinkButton from "@/components/common/LinkButton";
 import * as router from "@/constants/routes";
 import TableLoadingWrapper from "@/components/common/wrappers/TableLoadingWrapper";
-
-const { errorRed } = COLOR;
+import { getVarianceApplicationBadgeStatusType } from "@/constants/theme";
 
 const propTypes = {
   handleVarianceSearch: PropTypes.func,
@@ -55,8 +53,6 @@ const defaultProps = {
   sortDir: null,
   isPaginated: false,
 };
-
-const errorStyle = (isOverdue) => (isOverdue ? { color: errorRed } : {});
 
 const hideColumn = (condition) => (condition ? "column-hide" : "");
 
@@ -107,8 +103,8 @@ export class MineVarianceTable extends Component {
         dataIndex: "isOverdue",
         width: 10,
         render: (isOverdue) => (
-          <div title="">
-            {isOverdue ? <img className="padding-small" src={RED_CLOCK} alt="expired" /> : ""}
+          <div title="Expired">
+            {isOverdue ? <img className="padding-small" src={RED_CLOCK} alt="Expired" /> : ""}
           </div>
         ),
       },
@@ -117,11 +113,7 @@ export class MineVarianceTable extends Component {
         dataIndex: "varianceNumber",
         sortField: "variance_id",
         width: 150,
-        render: (text, record) => (
-          <div title="Variance Number" style={errorStyle(record.isOverdue)}>
-            {text}
-          </div>
-        ),
+        render: (text) => <div title="Variance Number">{text}</div>,
         sorter: this.props.isDashboardView,
       },
       {
@@ -129,11 +121,7 @@ export class MineVarianceTable extends Component {
         dataIndex: "compliance_article_id",
         sortField: "compliance_article_id",
         width: 150,
-        render: (text, record) => (
-          <div title="Code Section" style={errorStyle(record.isOverdue)}>
-            {text}
-          </div>
-        ),
+        render: (text) => <div title="Code Section">{text}</div>,
         sorter: !this.props.isDashboardView
           ? (a, b) => compareCodes(a.compliance_article_id, b.compliance_article_id)
           : true,
@@ -145,11 +133,7 @@ export class MineVarianceTable extends Component {
         width: 150,
         className: hideColumn(!this.props.isDashboardView),
         render: (text, record) => (
-          <div
-            title="Mine Name"
-            style={errorStyle(record.isOverdue)}
-            className={hideColumn(!this.props.isDashboardView)}
-          >
+          <div title="Mine Name" className={hideColumn(!this.props.isDashboardView)}>
             <Link to={router.MINE_SUMMARY.dynamicRoute(record.mineGuid)}>{text}</Link>
           </div>
         ),
@@ -161,12 +145,8 @@ export class MineVarianceTable extends Component {
         sortField: "lead_inspector",
         width: 150,
         className: hideColumn(!this.props.isDashboardView),
-        render: (text, record) => (
-          <div
-            title="Mine Name"
-            style={errorStyle(record.isOverdue)}
-            className={hideColumn(!this.props.isDashboardView)}
-          >
+        render: (text) => (
+          <div title="Mine Name" className={hideColumn(!this.props.isDashboardView)}>
             {text}
           </div>
         ),
@@ -194,13 +174,9 @@ export class MineVarianceTable extends Component {
         sortField: "variance_application_status_code",
         width: 150,
         className: hideColumn(!this.props.isApplication),
-        render: (text, record) => (
-          <div
-            className={hideColumn(!this.props.isApplication)}
-            title="Application Status"
-            style={errorStyle(record.isOverdue)}
-          >
-            {text}
+        render: (text) => (
+          <div className={hideColumn(!this.props.isApplication)} title="Application Status">
+            <Badge status={getVarianceApplicationBadgeStatusType(text)} text={text} />
           </div>
         ),
         sorter: !this.props.isDashboardView ? (a, b) => (a.status > b.status ? -1 : 1) : true,
@@ -210,12 +186,8 @@ export class MineVarianceTable extends Component {
         dataIndex: "issue_date",
         width: 150,
         className: hideColumn(this.props.isApplication),
-        render: (text, record) => (
-          <div
-            className={hideColumn(this.props.isApplication)}
-            title="Issue Date"
-            style={errorStyle(record.isOverdue)}
-          >
+        render: (text) => (
+          <div className={hideColumn(this.props.isApplication)} title="Issue Date">
             {text}
           </div>
         ),
@@ -226,12 +198,8 @@ export class MineVarianceTable extends Component {
         dataIndex: "expiry_date",
         width: 150,
         className: hideColumn(this.props.isApplication),
-        render: (text, record) => (
-          <div
-            className={hideColumn(this.props.isApplication)}
-            title="Expiry Date"
-            style={errorStyle(record.isOverdue)}
-          >
+        render: (text) => (
+          <div className={hideColumn(this.props.isApplication)} title="Expiry Date">
             {text}
           </div>
         ),
@@ -244,11 +212,7 @@ export class MineVarianceTable extends Component {
         width: 150,
         className: hideColumn(this.props.isApplication),
         render: (text, record) => (
-          <div
-            className={hideColumn(this.props.isApplication)}
-            title="Approval Status"
-            style={errorStyle(record.isOverdue)}
-          >
+          <div className={hideColumn(this.props.isApplication)} title="Approval Status">
             {record.isOverdue ? "Expired" : "Active"}
           </div>
         ),
@@ -261,12 +225,12 @@ export class MineVarianceTable extends Component {
           <div title="Documents">
             {record.documents.length > 0
               ? record.documents.map((file) => (
-                  <div key={file.mine_document_guid}>
+                  <div key={file.mine_document_guid} title={file.document_name}>
                     <LinkButton
                       key={file.mine_document_guid}
                       onClick={() => downloadFileFromDocumentManager(file)}
                     >
-                      {file.document_name}
+                      {truncateFilename(file.document_name)}
                     </LinkButton>
                   </div>
                 ))
