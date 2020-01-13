@@ -9,6 +9,7 @@ const propTypes = {
   partyRelationshipTitle: PropTypes.string.isRequired,
   handleChange: PropTypes.func.isRequired,
   mine: CustomPropTypes.mine.isRequired,
+  permits: PropTypes.arrayOf(CustomPropTypes.permit).isRequired,
   openEditPartyRelationshipModal: PropTypes.func.isRequired,
   onSubmitEditPartyRelationship: PropTypes.func.isRequired,
   removePartyRelationship: PropTypes.func.isRequired,
@@ -18,9 +19,9 @@ const propTypes = {
 };
 
 export const Permittee = (props) => {
-  const permit = props.mine.mine_permit.find(
-    ({ permit_guid }) => permit_guid === props.partyRelationship.related_guid
-  );
+  const permit =
+    props.permits &&
+    props.permits.find(({ permit_guid }) => permit_guid === props.partyRelationship.related_guid);
   const subtitle = `${permit && permit.permit_no}`;
 
   return (
