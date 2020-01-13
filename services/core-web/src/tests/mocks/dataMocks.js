@@ -92,7 +92,7 @@ export const SUBSCRIBED_MINES = {
       mine_name: "mine3",
       mine_no: "BLAH9091",
       region_code: "NE",
-      mine_permit: [],
+      mine_permit_numbers: [],
       mine_location: { longitude: null, latitude: null },
       mine_tailings_storage_facility: [
         {
@@ -150,16 +150,7 @@ export const MINES = {
       mine_no: "BLAH9091",
       major_mine_ind: true,
       mine_region: "NE",
-      mine_permit: [
-        {
-          permit_guid: "2ec66cff-dbf0-4e4b-b9b8-9c7740ba8c81",
-          permit_no: "KNaaWwVdiJ40",
-        },
-        {
-          permit_guid: "1877097f-bf9d-40c8-a5fa-53d9a79623c9",
-          permit_no: "xfM0c0ZKEw7B",
-        },
-      ],
+      mine_permit_numbers: ["KNaaWwVdiJ40", "xfM0c0ZKEw7B"],
       mine_status: {
         statusvalue: ["CLD", "CM"],
         status_labels: ["Closed", "Care & Maintenance"],
