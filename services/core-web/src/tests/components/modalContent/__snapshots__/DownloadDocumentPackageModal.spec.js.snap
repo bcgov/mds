@@ -1,0 +1,45 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DownloadDocumentPackageModal renders properly 1`] = `
+<div>
+  <h4>
+    Submission Documents (VFCBC/NROS)
+  </h4>
+  <NOWSubmissionDocuments
+    documents={Array []}
+    now_application_guid=""
+    selectedRows={
+      Object {
+        "selectedSubmissionRows": Array [],
+        "setSelectedSubmissionRows": [Function],
+      }
+    }
+  />
+  <br />
+  <h4>
+    Additional Documents
+  </h4>
+  <Connect(NOWDocuments)
+    documents={Array []}
+    isViewMode={true}
+    mine_guid=""
+    now_application_guid=""
+    selectedRows={
+      Object {
+        "selectedCoreRows": Array [],
+        "setSelectedCoreRows": [Function],
+      }
+    }
+  />
+  <Button
+    block={false}
+    ghost={false}
+    htmlType="button"
+    loading={false}
+    onClick={[Function]}
+    type="secondary"
+  >
+    Download
+  </Button>
+</div>
+`;
