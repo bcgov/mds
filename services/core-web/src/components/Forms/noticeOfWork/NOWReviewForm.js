@@ -99,7 +99,7 @@ export class NOWReviewForm extends Component {
                 allowMultiple
               />
             </Form.Item>
-            {this.props.initialValues && this.props.initialValues.documents && (
+            {this.state.existingDocuments && this.state.existingDocuments.length > 0 && (
               <UploadedDocumentsTable
                 files={this.state.existingDocuments.map((doc) => doc.mine_document)}
                 showRemove
