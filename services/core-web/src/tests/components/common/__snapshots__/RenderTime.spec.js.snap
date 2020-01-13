@@ -22,6 +22,7 @@ exports[`RenderTime renders properly 1`] = `
     format="HH:mm"
     hideDisabledOptions={false}
     id={1}
+    onBlur={[Function]}
     placeholder="Select a time"
     placement="bottomLeft"
     transitionName="slide-up"
