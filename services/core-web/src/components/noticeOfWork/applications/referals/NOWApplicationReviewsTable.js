@@ -18,6 +18,7 @@ const propTypes = {
   noticeOfWorkReviews: PropTypes.arrayOf(CustomPropTypes.NOWApplicationReview).isRequired,
   noticeOfWorkReviewTypesHash: PropTypes.objectOf(PropTypes.string).isRequired,
 
+  handleDocumentDelete: PropTypes.func.isRequired,
   handleDelete: PropTypes.func.isRequired,
   openEditModal: PropTypes.func.isRequired,
   handleEdit: PropTypes.func.isRequired,
@@ -43,7 +44,7 @@ const columns = [
     title: "Documents",
     dataIndex: "documents",
     key: "documents",
-    render: (text, record) => (
+    render: (text) => (
       <div title="Documents">
         <ul>
           {text.length > 0 &&
@@ -74,7 +75,9 @@ const columns = [
           ghost
           type="primary"
           size="small"
-          onClick={(event) => record.openEditModal(event, record, record.handleEdit)}
+          onClick={(event) =>
+            record.openEditModal(event, record, record.handleEdit, record.handleDocumentDelete)
+          }
         >
           <img src={EDIT_OUTLINE_VIOLET} alt="Edit Review" />
         </Button>
@@ -94,12 +97,20 @@ const columns = [
   },
 ];
 
-const transformRowData = (reviews, reviewTypeHash, handleDelete, openEditModal, handleEdit) => {
+const transformRowData = (
+  reviews,
+  reviewTypeHash,
+  handleDelete,
+  openEditModal,
+  handleEdit,
+  handleDocumentDelete
+) => {
   return reviews.map((review) => ({
     now_application_review_type: reviewTypeHash[review.now_application_review_type_code],
     handleDelete,
     openEditModal,
     handleEdit,
+    handleDocumentDelete,
     ...review,
   }));
 };
@@ -115,7 +126,8 @@ export const NOWApplicationReviewsTable = (props) => {
           props.noticeOfWorkReviewTypesHash,
           props.handleDelete,
           props.openEditModal,
-          props.handleEdit
+          props.handleEdit,
+          props.handleDocumentDelete
         )}
       />
     </div>

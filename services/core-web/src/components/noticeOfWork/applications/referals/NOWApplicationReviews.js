@@ -18,6 +18,7 @@ import {
   fetchNoticeOfWorkApplicationReviews,
   deleteNoticeOfWorkApplicationReview,
   updateNoticeOfWorkApplicationReview,
+  deleteNoticeOfWorkApplicationReviewDocument,
 } from "@/actionCreators/noticeOfWorkActionCreator";
 import { fetchNoticeOfWorkApplicationReviewTypes } from "@/actionCreators/staticContentActionCreator";
 import { getNoticeOfWorkReviews } from "@/selectors/noticeOfWorkSelectors";
@@ -45,6 +46,7 @@ const propTypes = {
   fetchNoticeOfWorkApplicationReviewTypes: PropTypes.func.isRequired,
   updateNoticeOfWorkApplicationReview: PropTypes.func.isRequired,
   deleteNoticeOfWorkApplicationReview: PropTypes.func.isRequired,
+  deleteNoticeOfWorkApplicationReviewDocument: PropTypes.func.isRequired,
 };
 
 const defaultProps = {};
@@ -65,7 +67,7 @@ export class NOWApplicationReviews extends Component {
   handleEditReview = (values) => {
     const { now_application_review_id } = values;
     const form_values = {
-      documents: values.documents,
+      uploadedFiles: values.uploadedFiles,
       now_application_review_type_code: values.now_application_review_type_code,
       response_date: values.response_date,
       referee_name: values.referee_name,
@@ -79,6 +81,14 @@ export class NOWApplicationReviews extends Component {
       .then(() => {
         this.props.fetchNoticeOfWorkApplicationReviews(this.props.noticeOfWorkGuid);
         this.props.closeModal();
+      });
+  };
+
+  handleDocumentDelete = (mine_document) => {
+    this.props
+      .deleteNoticeOfWorkApplicationReviewDocument(this.props.noticeOfWorkGuid, mine_document)
+      .then(() => {
+        this.props.fetchNoticeOfWorkApplicationReviews(this.props.noticeOfWorkGuid);
       });
   };
 
@@ -125,12 +135,13 @@ export class NOWApplicationReviews extends Component {
     });
   };
 
-  openEditReviewModal = (event, initialValues, onSubmit) => {
+  openEditReviewModal = (event, initialValues, onSubmit, handleDocumentDelete) => {
     event.preventDefault();
     this.props.openModal({
       props: {
         initialValues,
         onSubmit,
+        handleDocumentDelete,
         title: "Edit Review",
         review_types: this.props.noticeOfWorkReviewTypes,
       },
@@ -220,6 +231,7 @@ export class NOWApplicationReviews extends Component {
                 handleDelete={this.handleDeleteReview}
                 openEditModal={this.openEditReviewModal}
                 handleEdit={this.handleEditReview}
+                handleDocumentDelete={this.handleDocumentDelete}
               />
             )}
           </Col>
@@ -244,6 +256,7 @@ const mapDispatchToProps = (dispatch) =>
       fetchNoticeOfWorkApplicationReviewTypes,
       deleteNoticeOfWorkApplicationReview,
       updateNoticeOfWorkApplicationReview,
+      deleteNoticeOfWorkApplicationReviewDocument,
     },
     dispatch
   );

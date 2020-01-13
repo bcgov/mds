@@ -39,9 +39,9 @@ class NOWApplicationReviewListResource(Resource, UserMixin):
                                                  data.get('response_date'),
                                                  data.get('referee_name'))
 
-        new_documents = request.json.get('documents', [])
-        if 'documents' in request.json.keys():
-            del request.json['documents']
+        new_documents = request.json.get('uploadedFiles', [])
+        if 'uploadedFiles' in request.json.keys():
+            del request.json['uploadedFiles']
 
         for doc in new_documents:
             new_mine_doc = MineDocument(
@@ -111,8 +111,10 @@ class NOWApplicationReviewResource(Resource, UserMixin):
                 now_app_review.now_application.now_application_guid) != application_guid:
             raise NotFound('No now_application found')
 
-        new_documents = request.json['documents']
-        del request.json['documents']
+        new_documents = request.json.get('uploadedFiles', [])
+        if 'uploadedFiles' in request.json.keys():
+            del request.json['uploadedFiles']
+
         now_app_review.deep_update_from_dict(request.json)
 
         for doc in new_documents:
