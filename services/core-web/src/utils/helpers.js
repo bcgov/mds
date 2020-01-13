@@ -104,19 +104,12 @@ export const truncateFilename = (filename, max = 40) => {
   }
 
   // Get the name of the filename (e.g., "foo.txt" will give "foo")
-  let name = parts[1];
-  if (name.length > max) {
-    name = `${name.substring(0, max)}${trunc}`;
-  }
+  const name = parts[1].length > max ? `${parts[1].substring(0, max)}${trunc}` : parts[1];
 
   // Get the extension of the filename (e.g., "foo.txt" will give "txt")
-  let ext = parts[2];
-
   // Extensions can be very long too, so limit their length as well
   const extMax = 5;
-  if (ext.length > extMax) {
-    ext = `${ext.substring(0, extMax)}${trunc}`;
-  }
+  const ext = parts[2].length > extMax ? `${parts[2].substring(0, extMax)}${trunc}` : parts[2];
 
   // Return the formatted shortened version of the filename
   return `${name}.${ext}`;
