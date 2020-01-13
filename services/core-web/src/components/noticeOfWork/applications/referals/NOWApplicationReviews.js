@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { Button, Row, Col } from "antd";
+import { Button, Row, Col, notification } from "antd";
 import { openModal, closeModal } from "@/actions/modalActions";
 import {
   getNowDocumentDownloadToken,
@@ -179,8 +179,13 @@ export class NOWApplicationReviews extends Component {
         for (const url of docURLS) {
           this.downloadDocument(url);
           // eslint-disable-next-line
-          await new Promise((resolve) => setTimeout(resolve, 1000));
+          await new Promise((resolve) => setTimeout(resolve, 2000));
         }
+        // dispatch toast message
+        notification.success({
+          message: `Successfully Downloaded: ${submissionDocs.length + coreDocs.length} files.`,
+          duration: 10,
+        });
         this.props.closeModal();
       }
     );
