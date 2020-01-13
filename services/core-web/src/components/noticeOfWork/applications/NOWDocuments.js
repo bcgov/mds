@@ -26,83 +26,9 @@ const propTypes = {
   noticeOfWorkApplicationDocumentTypeOptionsHash: PropTypes.objectOf(PropTypes.any).isRequired,
   arrayPush: PropTypes.func.isRequired,
   isViewMode: PropTypes.bool.isRequired,
+  selectedRows: PropTypes.objectOf(PropTypes.any),
 };
-
-const columns = (noticeOfWorkApplicationDocumentTypeOptionsHash) => {
-  const categoryFilters = Object.values(noticeOfWorkApplicationDocumentTypeOptionsHash).map(
-    (dt) => ({
-      text: dt,
-      value: dt,
-    })
-  );
-  return [
-    {
-      title: "File Name",
-      dataIndex: "filename",
-      key: "filename",
-      sorter: (a, b) => (a.filename > b.filename ? -1 : 1),
-      render: (text, record) => (
-        <div title="File Name">
-          <LinkButton
-            onClick={() =>
-              downloadFileFromDocumentManager({
-                document_manager_guid: record.document_manager_guid,
-                document_name: record.filename,
-              })
-            }
-          >
-            <span>{text}</span>
-          </LinkButton>
-        </div>
-      ),
-    },
-    {
-      title: "Category",
-      dataIndex: "category",
-      key: "category",
-      filters: categoryFilters,
-      onFilter: (value, record) => record.category.includes(value),
-      sorter: (a, b) => (a.category > b.category ? -1 : 1),
-      render: (text) => <div title="Category">{text}</div>,
-    },
-    {
-      title: "Description",
-      dataIndex: "description",
-      key: "description",
-      sorter: (a, b) => (a.description > b.description ? -1 : 1),
-      render: (text) => <div title="Proponent Description">{text}</div>,
-    },
-    {
-      title: "Upload Date/Time",
-      dataIndex: "upload_date",
-      key: "upload_date",
-      sorter: (a, b) => (moment(a.upload_date) > moment(b.upload_date) ? -1 : 1),
-      render: (text, record) => (
-        <div title="Due">{formatDateTime(record.upload_date) || "Pending"}</div>
-      ),
-    },
-  ];
-};
-
-const transfromDocuments = (
-  documents,
-  now_application_guid,
-  noticeOfWorkApplicationDocumentTypeOptionsHash
-) =>
-  documents.map((document) => ({
-    key: document.id,
-    now_application_guid,
-    filename: document.mine_document.document_name || Strings.EMPTY_FIELD,
-    document_manager_guid: document.mine_document.document_manager_guid,
-    upload_date: document.mine_document.upload_date,
-    category:
-      (noticeOfWorkApplicationDocumentTypeOptionsHash &&
-        noticeOfWorkApplicationDocumentTypeOptionsHash[
-          document.now_application_document_type_code
-        ]) ||
-      Strings.EMPTY_FIELD,
-    description: document.description || Strings.EMPTY_FIELD,
-  }));
+const defaultProps = { selectedRows: null };
 
 const handleAddDocument = (closeDocumentModal, addDocument) => (values) => {
   const document = {
@@ -139,44 +65,146 @@ const openAddDocumentModal = (
   });
 };
 
-export const NOWDocuments = (props) => (
-  <div>
-    {props.documents && props.documents.length >= 1 ? (
-      <Table
-        align="left"
-        pagination={false}
-        columns={columns(props.noticeOfWorkApplicationDocumentTypeOptionsHash)}
-        dataSource={transfromDocuments(
-          props.documents,
-          props.now_application_guid,
-          props.noticeOfWorkApplicationDocumentTypeOptionsHash
-        )}
-        locale={{
-          emptyText: "There are no additional documents associated with this Notice of Work",
-        }}
-      />
-    ) : (
-      <NullScreen type="documents" />
-    )}
-    <AddButton
-      disabled={props.isViewMode}
-      onClick={(event) =>
-        openAddDocumentModal(
-          event,
-          props.openModal,
-          props.closeModal,
-          props.arrayPush,
-          props.now_application_guid,
-          props.mine_guid
-        )
-      }
-    >
-      Add a Document
-    </AddButton>
-  </div>
-);
+export const NOWDocuments = (props) => {
+  const columns = (noticeOfWorkApplicationDocumentTypeOptionsHash) => {
+    const categoryFilters = Object.values(noticeOfWorkApplicationDocumentTypeOptionsHash).map(
+      (dt) => ({
+        text: dt,
+        value: dt,
+      })
+    );
+    const fileNameColumn = props.selectedRows
+      ? {
+          title: "File Name",
+          dataIndex: "filename",
+          key: "filename",
+          sorter: (a, b) => (a.filename > b.filename ? -1 : 1),
+          render: (text, record) => <div title="File Name">{text}</div>,
+        }
+      : {
+          title: "File Name",
+          dataIndex: "filename",
+          key: "filename",
+          sorter: (a, b) => (a.filename > b.filename ? -1 : 1),
+          render: (text, record) => (
+            <div title="File Name">
+              <LinkButton
+                onClick={() =>
+                  downloadFileFromDocumentManager({
+                    document_manager_guid: record.document_manager_guid,
+                    document_name: record.filename,
+                  })
+                }
+              >
+                <span>{text}</span>
+              </LinkButton>
+            </div>
+          ),
+        };
+    return [
+      fileNameColumn,
+      {
+        title: "Category",
+        dataIndex: "category",
+        key: "category",
+        filters: categoryFilters,
+        onFilter: (value, record) => record.category.includes(value),
+        sorter: (a, b) => (a.category > b.category ? -1 : 1),
+        render: (text) => <div title="Category">{text}</div>,
+      },
+      {
+        title: "Description",
+        dataIndex: "description",
+        key: "description",
+        sorter: (a, b) => (a.description > b.description ? -1 : 1),
+        render: (text) => <div title="Proponent Description">{text}</div>,
+      },
+      {
+        title: "Upload Date/Time",
+        dataIndex: "upload_date",
+        key: "upload_date",
+        sorter: (a, b) => (moment(a.upload_date) > moment(b.upload_date) ? -1 : 1),
+        render: (text, record) => (
+          <div title="Due">{formatDateTime(record.upload_date) || "Pending"}</div>
+        ),
+      },
+    ];
+  };
+
+  const transfromDocuments = (
+    documents,
+    now_application_guid,
+    noticeOfWorkApplicationDocumentTypeOptionsHash
+  ) =>
+    documents.map((document) => ({
+      key: document.now_application_document_xref_guid,
+      now_application_guid,
+      filename: document.mine_document.document_name || Strings.EMPTY_FIELD,
+      document_manager_guid: document.mine_document.document_manager_guid,
+      upload_date: document.mine_document.upload_date,
+      category:
+        (noticeOfWorkApplicationDocumentTypeOptionsHash &&
+          noticeOfWorkApplicationDocumentTypeOptionsHash[
+            document.now_application_document_type_code
+          ]) ||
+        Strings.EMPTY_FIELD,
+      description: document.description || Strings.EMPTY_FIELD,
+    }));
+
+  return (
+    <div>
+      {props.documents && props.documents.length >= 1 ? (
+        <Table
+          align="left"
+          pagination={false}
+          columns={columns(props.noticeOfWorkApplicationDocumentTypeOptionsHash)}
+          dataSource={transfromDocuments(
+            props.documents,
+            props.now_application_guid,
+            props.noticeOfWorkApplicationDocumentTypeOptionsHash
+          )}
+          locale={{
+            emptyText: "There are no additional documents associated with this Notice of Work",
+          }}
+          rowSelection={
+            props.selectedRows
+              ? {
+                  selectedRowKeys: props.selectedRows.selectedCoreRows,
+                  onChange: (selectedRowKeys) => {
+                    console.log(selectedRowKeys);
+                    props.selectedRows.setSelectedCoreRows(selectedRowKeys);
+                    console.log(props.selectedRows.selectedCoreRows);
+                  },
+                }
+              : null
+          }
+        />
+      ) : (
+        <NullScreen type="documents" />
+      )}
+      {!props.selectedRows && (
+        <AddButton
+          disabled={props.isViewMode}
+          onClick={(event) =>
+            openAddDocumentModal(
+              event,
+              props.openModal,
+              props.closeModal,
+              props.arrayPush,
+              props.now_application_guid,
+              props.mine_guid
+            )
+          }
+        >
+          Add a Document
+        </AddButton>
+      )}
+    </div>
+  );
+};
 
 NOWDocuments.propTypes = propTypes;
+NOWDocuments.defaultProps = defaultProps;
 
 const mapStateToProps = (state) => ({
   noticeOfWorkApplicationDocumentTypeOptionsHash: getNoticeOfWorkApplicationDocumentTypeOptionsHash(

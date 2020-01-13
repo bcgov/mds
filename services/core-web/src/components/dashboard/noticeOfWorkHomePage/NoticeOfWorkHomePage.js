@@ -13,11 +13,6 @@ import {
   getDropdownNoticeOfWorkApplicationStatusOptions,
   getDropdownNoticeOfWorkApplicationTypeOptions,
 } from "@/selectors/staticContentSelectors";
-import {
-  fetchRegionOptions,
-  fetchNoticeOfWorkApplicationStatusOptions,
-  fetchNoticeOfWorkApplicationTypeOptions,
-} from "@/actionCreators/staticContentActionCreator";
 import NoticeOfWorkTable from "@/components/dashboard/noticeOfWorkHomePage/NoticeOfWorkTable";
 import NoticeOfWorkSearch from "@/components/dashboard/noticeOfWorkHomePage/NoticeOfWorkSearch";
 import ResponsivePagination from "@/components/common/ResponsivePagination";
@@ -31,9 +26,6 @@ const propTypes = {
   location: PropTypes.shape({ search: PropTypes.string }).isRequired,
   pageData: CustomPropTypes.pageData.isRequired,
   noticeOfWorkApplications: PropTypes.arrayOf(CustomPropTypes.nowApplication).isRequired,
-  fetchRegionOptions: PropTypes.func.isRequired,
-  fetchNoticeOfWorkApplicationStatusOptions: PropTypes.func.isRequired,
-  fetchNoticeOfWorkApplicationTypeOptions: PropTypes.func.isRequired,
   mineRegionHash: PropTypes.objectOf(PropTypes.string).isRequired,
   mineRegionOptions: CustomPropTypes.options.isRequired,
   applicationStatusOptions: CustomPropTypes.options.isRequired,
@@ -61,9 +53,6 @@ export class NoticeOfWorkHomePage extends Component {
   };
 
   componentDidMount() {
-    this.props.fetchRegionOptions();
-    this.props.fetchNoticeOfWorkApplicationStatusOptions();
-    this.props.fetchNoticeOfWorkApplicationTypeOptions();
     const params = this.props.location.search;
     const parsedParams = queryString.parse(params);
     const {
@@ -197,9 +186,6 @@ const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
       fetchNoticeOfWorkApplications,
-      fetchRegionOptions,
-      fetchNoticeOfWorkApplicationStatusOptions,
-      fetchNoticeOfWorkApplicationTypeOptions,
     },
     dispatch
   );

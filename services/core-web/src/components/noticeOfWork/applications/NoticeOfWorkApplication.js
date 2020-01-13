@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Prompt } from "react-router-dom";
 import { Alert, Steps, Result, Button, Dropdown, Menu, Icon, Row, Col } from "antd";
 import PropTypes from "prop-types";
 import { getFormValues, reset } from "redux-form";
@@ -15,22 +16,12 @@ import {
 import { openModal, closeModal } from "@/actions/modalActions";
 import { modalConfig } from "@/components/modalContent/config";
 import { fetchMineRecordById } from "@/actionCreators/mineActionCreator";
-import { fetchInspectors } from "@/actionCreators/partiesActionCreator";
 import { getDropdownInspectors, getInspectorsHash } from "@/selectors/partiesSelectors";
 import {
   getNoticeOfWork,
   getOriginalNoticeOfWork,
   getNOWReclamationSummary,
 } from "@/selectors/noticeOfWorkSelectors";
-import {
-  fetchNoticeOfWorkActivityTypeOptions,
-  fetchRegionOptions,
-  fetchNoticeOfWorkApplicationStatusOptions,
-  fetchNoticeOfWorkApplicationTypeOptions,
-  fetchNoticeOfWorkApplicationPermitTypes,
-  fetchNoticeOfWorkApplicationDocumentTypeOptions,
-  fetchNoticeOfWorkApplicationProgressStatusCodes,
-} from "@/actionCreators/staticContentActionCreator";
 import { getMines } from "@/selectors/mineSelectors";
 import {
   getDropdownNoticeOfWorkApplicationStatusOptions,
@@ -60,24 +51,17 @@ const propTypes = {
   fetchNoticeOfWorkApplicationReviews: PropTypes.func.isRequired,
   createNoticeOfWorkApplicationReview: PropTypes.func.isRequired,
   originalNoticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
-  fetchNoticeOfWorkApplicationProgressStatusCodes: PropTypes.func.isRequired,
-  fetchNoticeOfWorkApplicationDocumentTypeOptions: PropTypes.func.isRequired,
   createNoticeOfWorkApplicationProgress: CustomPropTypes.importedNOWApplication.isRequired,
   createNoticeOfWorkApplicationStatus: PropTypes.func.isRequired,
   createNoticeOfWorkApplication: PropTypes.func.isRequired,
   updateNoticeOfWorkApplication: PropTypes.func.isRequired,
-  fetchNoticeOfWorkApplicationPermitTypes: PropTypes.func.isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
-  fetchInspectors: PropTypes.func.isRequired,
   fetchImportedNoticeOfWorkApplication: PropTypes.func.isRequired,
   fetchOriginalNoticeOfWorkApplication: PropTypes.func.isRequired,
-  fetchNoticeOfWorkActivityTypeOptions: PropTypes.func.isRequired,
-  fetchNoticeOfWorkApplicationStatusOptions: PropTypes.func.isRequired,
-  fetchNoticeOfWorkApplicationTypeOptions: PropTypes.func.isRequired,
-  fetchRegionOptions: PropTypes.func.isRequired,
   reset: PropTypes.func.isRequired,
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
   location: PropTypes.shape({
+    pathname: PropTypes.string,
     state: PropTypes.shape({
       noticeOfWorkPageFromRoute: CustomPropTypes.noticeOfWorkPageFromRoute,
     }),
@@ -124,14 +108,6 @@ export class NoticeOfWorkApplication extends Component {
   componentDidMount() {
     const { id } = this.props.match.params;
     let currentStep = 0;
-    this.props.fetchNoticeOfWorkActivityTypeOptions();
-    this.props.fetchRegionOptions();
-    this.props.fetchNoticeOfWorkApplicationDocumentTypeOptions();
-    this.props.fetchNoticeOfWorkApplicationStatusOptions();
-    this.props.fetchNoticeOfWorkApplicationPermitTypes();
-    this.props.fetchNoticeOfWorkApplicationProgressStatusCodes();
-    this.props.fetchInspectors();
-    this.props.fetchNoticeOfWorkApplicationTypeOptions();
     this.props.fetchImportedNoticeOfWorkApplication(id).then(({ data }) => {
       const associatedMineGuid = data.mine_guid ? data.mine_guid : "";
       const isImported = data.imported_to_core;
@@ -435,8 +411,9 @@ export class NoticeOfWorkApplication extends Component {
   renderStepThree = () => {
     return (
       <NOWApplicationReviews
+        mineGuid={this.props.noticeOfWork.mine_guid}
         noticeOfWorkGuid={this.props.noticeOfWork.now_application_guid}
-        applicationDocuments={{}}
+        coreDocuments={this.props.noticeOfWork.documents}
         submissionDocuments={this.props.noticeOfWork.submission_documents}
       />
     );
@@ -552,62 +529,72 @@ export class NoticeOfWorkApplication extends Component {
     ];
 
     return (
-      <div className="page" onScroll={this.handleScroll()} onLoad={this.handleScroll()}>
-        <div className={this.state.fixedTop ? "steps--header fixed-scroll" : "steps--header"}>
-          <div className="inline-flex between">
-            <NoticeOfWorkPageHeader
-              noticeOfWork={this.props.noticeOfWork}
-              inspectorsHash={this.props.inspectorsHash}
-              noticeOfWorkPageFromRoute={this.state.noticeOfWorkPageFromRoute}
-              fixedTop={this.state.fixedTop}
-            />
+      <React.Fragment>
+        <Prompt
+          when={!this.state.isViewMode}
+          message={(location) => {
+            return this.props.location.pathname === location.pathname
+              ? true
+              : "You have unsaved changes. Are you sure you want to leave without saving?";
+          }}
+        />
+        <div className="page" onScroll={this.handleScroll()} onLoad={this.handleScroll()}>
+          <div className={this.state.fixedTop ? "steps--header fixed-scroll" : "steps--header"}>
+            <div className="inline-flex between">
+              <NoticeOfWorkPageHeader
+                noticeOfWork={this.props.noticeOfWork}
+                inspectorsHash={this.props.inspectorsHash}
+                noticeOfWorkPageFromRoute={this.state.noticeOfWorkPageFromRoute}
+                fixedTop={this.state.fixedTop}
+              />
+            </div>
+            <br />
+            {this.state.isViewMode ? (
+              <div className="inline-flex flex-center block-mobile padding-md--right">
+                <Steps current={this.state.currentStep} onChange={this.onChange} type="navigation">
+                  {headerSteps}
+                </Steps>
+                {this.state.isViewMode && (
+                  <Dropdown
+                    overlay={menu}
+                    placement="bottomLeft"
+                    onVisibleChange={this.handleVisibleChange}
+                    visible={this.state.menuVisible}
+                  >
+                    <Button type="secondary" className="full-mobile">
+                      Actions
+                      <Icon type="down" />
+                    </Button>
+                  </Dropdown>
+                )}
+              </div>
+            ) : (
+              <div className="inline-flex flex-center block-mobile">
+                <Button type="secondary" className="full-mobile" onClick={this.handleCancelNOWEdit}>
+                  Cancel
+                </Button>
+                <Button type="primary" className="full-mobile" onClick={this.handleSaveNOWEdit}>
+                  Save
+                </Button>
+              </div>
+            )}
           </div>
-          <br />
-          {this.state.isViewMode ? (
-            <div className="inline-flex flex-center block-mobile padding-md--right">
-              <Steps current={this.state.currentStep} onChange={this.onChange} type="navigation">
-                {headerSteps}
-              </Steps>
-              {this.state.isViewMode && (
-                <Dropdown
-                  overlay={menu}
-                  placement="bottomLeft"
-                  onVisibleChange={this.handleVisibleChange}
-                  visible={this.state.menuVisible}
-                >
-                  <Button type="secondary" className="full-mobile">
-                    Actions
-                    <Icon type="down" />
-                  </Button>
-                </Dropdown>
-              )}
+          <LoadingWrapper condition={this.state.isNoWLoaded}>
+            <div>
+              <div className={this.state.fixedTop ? "side-menu--fixed" : "side-menu"}>
+                {this.state.currentStep === 1 && (
+                  <NOWSideMenu route={routes.NOTICE_OF_WORK_APPLICATION} />
+                )}
+              </div>
+              <div
+                className={this.state.fixedTop ? "steps--content with-fixed-top" : "steps--content"}
+              >
+                {steps[this.state.currentStep]}
+              </div>
             </div>
-          ) : (
-            <div className="inline-flex flex-center block-mobile">
-              <Button type="secondary" className="full-mobile" onClick={this.handleCancelNOWEdit}>
-                Cancel
-              </Button>
-              <Button type="primary" className="full-mobile" onClick={this.handleSaveNOWEdit}>
-                Save
-              </Button>
-            </div>
-          )}
+          </LoadingWrapper>
         </div>
-        <LoadingWrapper condition={this.state.isNoWLoaded}>
-          <div>
-            <div className={this.state.fixedTop ? "side-menu--fixed" : "side-menu"}>
-              {this.state.currentStep === 1 && (
-                <NOWSideMenu route={routes.NOTICE_OF_WORK_APPLICATION} />
-              )}
-            </div>
-            <div
-              className={this.state.fixedTop ? "steps--content with-fixed-top" : "steps--content"}
-            >
-              {steps[this.state.currentStep]}
-            </div>
-          </div>
-        </LoadingWrapper>
-      </div>
+      </React.Fragment>
     );
   }
 }
@@ -633,17 +620,9 @@ const mapDispatchToProps = (dispatch) =>
       fetchOriginalNoticeOfWorkApplication,
       fetchMineRecordById,
       createNoticeOfWorkApplicationProgress,
-      fetchNoticeOfWorkApplicationProgressStatusCodes,
-      fetchNoticeOfWorkActivityTypeOptions,
-      fetchNoticeOfWorkApplicationDocumentTypeOptions,
-      fetchNoticeOfWorkApplicationStatusOptions,
       reset,
-      fetchRegionOptions,
-      fetchNoticeOfWorkApplicationTypeOptions,
-      fetchNoticeOfWorkApplicationPermitTypes,
       openModal,
       closeModal,
-      fetchInspectors,
     },
     dispatch
   );
