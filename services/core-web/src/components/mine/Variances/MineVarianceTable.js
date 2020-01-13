@@ -21,7 +21,7 @@ import * as Strings from "@/constants/strings";
 import LinkButton from "@/components/common/LinkButton";
 import * as router from "@/constants/routes";
 import TableLoadingWrapper from "@/components/common/wrappers/TableLoadingWrapper";
-import { getVarianceApplicationStatusStyleType } from "@/constants/theme";
+import { getVarianceApplicationBadgeStatusType } from "@/constants/theme";
 
 const propTypes = {
   handleVarianceSearch: PropTypes.func,
@@ -176,7 +176,7 @@ export class MineVarianceTable extends Component {
         className: hideColumn(!this.props.isApplication),
         render: (text) => (
           <div className={hideColumn(!this.props.isApplication)} title="Application Status">
-            <Badge status={getVarianceApplicationStatusStyleType(text)} text={text} />
+            <Badge status={getVarianceApplicationBadgeStatusType(text)} text={text} />
           </div>
         ),
         sorter: !this.props.isDashboardView ? (a, b) => (a.status > b.status ? -1 : 1) : true,

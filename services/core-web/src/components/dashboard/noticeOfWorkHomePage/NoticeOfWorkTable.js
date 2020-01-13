@@ -15,7 +15,7 @@ import {
 } from "@/utils/helpers";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import { EDIT_OUTLINE_VIOLET } from "@/constants/assets";
-import { getNoticeOfWorkApplicationStatusStyleType } from "@/constants/theme";
+import { getNoticeOfWorkApplicationBadgeStatusType } from "@/constants/theme";
 
 /**
  * @class NoticeOfWorkTable - paginated list of notice of work applications
@@ -221,7 +221,7 @@ export class NoticeOfWorkTable extends Component {
       ),
       render: (text) => (
         <div title="Application Status">
-          <Badge status={getNoticeOfWorkApplicationStatusStyleType(text)} text={text} />
+          <Badge status={getNoticeOfWorkApplicationBadgeStatusType(text)} text={text} />
         </div>
       ),
     },
