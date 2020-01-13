@@ -16,6 +16,8 @@ const successSpy = jest.spyOn(genericActions, "success");
 const errorSpy = jest.spyOn(genericActions, "error");
 const mockAxios = new MockAdapter(axios);
 
+jest.setTimeout(30000);
+
 beforeEach(() => {
   mockAxios.reset();
   dispatch.mockClear();
@@ -37,7 +39,7 @@ describe("`fetchMinespaceUsers` action creator", () => {
   });
 
   it("Request failure, dispatches `error` with correct response", () => {
-    mockAxios.onGet(url, MOCK.createMockHeader()).reply(400, MOCK.ERROR);
+    mockAxios.onGet(url, MOCK.createMockHeader()).reply(418, MOCK.ERROR);
     return fetchMinespaceUsers()(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
@@ -62,7 +64,7 @@ describe("`createMinespaceUser` action creator", () => {
   });
 
   it("Request failure, dispatches `error` with correct response", () => {
-    mockAxios.onPost(url).reply(400, MOCK.ERROR);
+    mockAxios.onPost(url).reply(418, MOCK.ERROR);
     return createMinespaceUser({})(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
@@ -85,7 +87,7 @@ describe("`deleteMinespaceUser` action creator", () => {
   });
 
   it("Request failure, dispatches `error` with correct response", () => {
-    mockAxios.onDelete(url).reply(400, MOCK.ERROR);
+    mockAxios.onDelete(url).reply(418, MOCK.ERROR);
     return deleteMinespaceUser("")(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);

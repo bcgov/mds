@@ -1,6 +1,7 @@
 import { request, success, error } from "@/actions/genericActions";
 import * as reducerTypes from "@/constants/reducerTypes";
 import * as staticContentActions from "@/actions/staticContentActions";
+import * as partyActions from "@/actions/partyActions";
 import * as String from "@/constants/strings";
 import * as API from "@/constants/API";
 import { ENVIRONMENT } from "@/constants/environment";
@@ -338,4 +339,33 @@ export const fetchNoticeOfWorkApplicationReviewTypes = () => (dispatch) => {
       return response;
     })
     .catch(() => dispatch(error(reducerTypes.GET_NOTICE_OF_WORK_APPLICATION_REVIEW_TYPES)));
+};
+
+export const fetchInspectors = () => (dispatch) => {
+  dispatch(request(reducerTypes.GET_INSPECTORS));
+  return CustomAxios()
+    .get(
+      ENVIRONMENT.apiUrl +
+        API.PARTIES_LIST_QUERY({
+          per_page: "all",
+          business_role: String.INCIDENT_FOLLOWUP_ACTIONS.inspector,
+        }),
+      createRequestHeader()
+    )
+    .then((response) => {
+      dispatch(success(reducerTypes.GET_INSPECTORS));
+      dispatch(partyActions.storeInspectors(response.data));
+    })
+    .catch(() => dispatch(error(reducerTypes.GET_INSPECTORS)));
+};
+
+export const fetchPartyRelationshipTypes = () => (dispatch) => {
+  dispatch(request(reducerTypes.GET_PARTY_RELATIONSHIP_TYPES));
+  return CustomAxios()
+    .get(`${ENVIRONMENT.apiUrl + API.PARTY}/mines/relationship-types`, createRequestHeader())
+    .then((response) => {
+      dispatch(success(reducerTypes.GET_PARTY_RELATIONSHIP_TYPES));
+      dispatch(partyActions.storePartyRelationshipTypes(response.data));
+    })
+    .catch(() => dispatch(error(reducerTypes.GET_PARTY_RELATIONSHIP_TYPES)));
 };

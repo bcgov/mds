@@ -181,8 +181,8 @@ MINES_MODEL = api.model(
         'mine_region': fields.String,
         'ohsc_ind': fields.Boolean,
         'union_ind': fields.Boolean,
-        'mine_permit': fields.List(fields.Nested(PERMIT_MODEL)),
         'mine_status': fields.List(fields.Nested(STATUS_MODEL)),
+        'mine_permit_numbers': fields.List(fields.String),
         'mine_tailings_storage_facilities': fields.List(fields.Nested(MINE_TSF_MODEL)),
         'mine_type': fields.List(fields.Nested(MINE_TYPE_MODEL)),
         'verified_status': fields.Nested(MINE_VERIFIED_MODEL)

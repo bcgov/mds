@@ -47,7 +47,9 @@ export const MineResultsTable = (props) => {
             <p>Permit No.</p>
           </Col>
           <Col xs={24} md={12}>
-            <p>{record.mine_permit.map((permit) => [<span>{permit.permit_no}</span>, <br />])}</p>
+            <p>
+              {record.mine_permit_numbers.map((permit_no) => [<span>{permit_no}</span>, <br />])}
+            </p>
           </Col>
           <Col xs={24} md={4}>
             <p>Region</p>

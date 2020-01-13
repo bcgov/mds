@@ -76,19 +76,6 @@ export const fetchPartyById = (id) => (dispatch) => {
     .finally(() => dispatch(hideLoading()));
 };
 
-export const fetchPartyRelationshipTypes = () => (dispatch) => {
-  dispatch(request(reducerTypes.GET_PARTY_RELATIONSHIP_TYPES));
-  dispatch(showLoading());
-  return CustomAxios()
-    .get(`${ENVIRONMENT.apiUrl + API.PARTY}/mines/relationship-types`, createRequestHeader())
-    .then((response) => {
-      dispatch(success(reducerTypes.GET_PARTY_RELATIONSHIP_TYPES));
-      dispatch(partyActions.storePartyRelationshipTypes(response.data));
-    })
-    .catch(() => dispatch(error(reducerTypes.GET_PARTY_RELATIONSHIP_TYPES)))
-    .finally(() => dispatch(hideLoading()));
-};
-
 export const addPartyRelationship = (payload) => (dispatch) => {
   dispatch(request(reducerTypes.ADD_PARTY_RELATIONSHIP));
   dispatch(showLoading());
@@ -177,26 +164,6 @@ export const deleteParty = (party_guid) => (dispatch) => {
 export const setAddPartyFormState = (addPartyFormState) => (dispatch) => {
   dispatch(partyActions.storeAddPartyFormState(addPartyFormState));
   return addPartyFormState;
-};
-
-export const fetchInspectors = () => (dispatch) => {
-  dispatch(request(reducerTypes.GET_INSPECTORS));
-  dispatch(showLoading("modal"));
-  return CustomAxios()
-    .get(
-      ENVIRONMENT.apiUrl +
-        API.PARTIES_LIST_QUERY({
-          per_page: "all",
-          business_role: Strings.INCIDENT_FOLLOWUP_ACTIONS.inspector,
-        }),
-      createRequestHeader()
-    )
-    .then((response) => {
-      dispatch(success(reducerTypes.GET_INSPECTORS));
-      dispatch(partyActions.storeInspectors(response.data));
-    })
-    .catch(() => dispatch(error(reducerTypes.GET_INSPECTORS)))
-    .finally(() => dispatch(hideLoading("modal")));
 };
 
 export const addDocumentToRelationship = ({ mineGuid, minePartyApptGuid }, payload) => (
