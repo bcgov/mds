@@ -1,6 +1,7 @@
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
 from sqlalchemy.ext.associationproxy import association_proxy
+from sqlalchemy.orm import backref
 
 from app.api.utils.models_mixins import AuditMixin, Base
 from app.extensions import db
@@ -32,9 +33,12 @@ class NOWApplicationDocumentXref(AuditMixin, Base):
     now_application_document_type = db.relationship('NOWApplicationDocumentType', lazy='joined')
     now_application_document_type_code_description = association_proxy(
         'now_application_document_type', 'description')
-
+    now_application = db.relationship('NOWApplication', lazy='select')
     # MineDocument
-    mine_document = db.relationship('MineDocument', lazy='joined')
+    mine_document = db.relationship(
+        'MineDocument',
+        lazy='joined',
+        backref=backref('now_application_document_xref', uselist=False))
 
     def __repr__(self):
         return '<ApplicationDocumentXref %r>' % self.now_application_document_xref_guid
