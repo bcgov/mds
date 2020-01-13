@@ -32,13 +32,6 @@ import {
 import { getDropdownInspectors } from "@/selectors/partiesSelectors";
 
 import MineIncidentTable from "./MineIncidentTable";
-import {
-  fetchIncidentDocumentTypeOptions,
-  fetchMineIncidentFollowActionOptions,
-  fetchMineIncidentDeterminationOptions,
-  fetchMineIncidentStatusCodeOptions,
-  fetchMineIncidentCategoryCodeOptions,
-} from "@/actionCreators/staticContentActionCreator";
 
 /**
  * @class  MineIncidents - all incident information related to the mine.
@@ -61,11 +54,6 @@ const propTypes = {
   fetchMineIncidents: PropTypes.func.isRequired,
   createMineIncident: PropTypes.func.isRequired,
   updateMineIncident: PropTypes.func.isRequired,
-  fetchIncidentDocumentTypeOptions: PropTypes.func.isRequired,
-  fetchMineIncidentFollowActionOptions: PropTypes.func.isRequired,
-  fetchMineIncidentDeterminationOptions: PropTypes.func.isRequired,
-  fetchMineIncidentStatusCodeOptions: PropTypes.func.isRequired,
-  fetchMineIncidentCategoryCodeOptions: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
@@ -80,11 +68,6 @@ export class MineIncidents extends Component {
     this.props.fetchMineIncidents(this.props.mineGuid).then(() => {
       this.setState({ isLoaded: true });
     });
-    this.props.fetchIncidentDocumentTypeOptions();
-    this.props.fetchMineIncidentFollowActionOptions();
-    this.props.fetchMineIncidentDeterminationOptions();
-    this.props.fetchMineIncidentStatusCodeOptions();
-    this.props.fetchMineIncidentCategoryCodeOptions();
   }
 
   handleAddMineIncident = (values) => {
@@ -227,11 +210,6 @@ const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
       fetchMineIncidents,
-      fetchIncidentDocumentTypeOptions,
-      fetchMineIncidentFollowActionOptions,
-      fetchMineIncidentDeterminationOptions,
-      fetchMineIncidentStatusCodeOptions,
-      fetchMineIncidentCategoryCodeOptions,
       createMineIncident,
       updateMineIncident,
       destroy,

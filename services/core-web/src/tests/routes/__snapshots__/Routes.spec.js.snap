@@ -27,7 +27,7 @@ exports[`Routes  renders properly 1`] = `
           "$$typeof": Symbol(react.memo),
           "WrappedComponent": [Function],
           "compare": null,
-          "displayName": "Connect(authenticationGuard)",
+          "displayName": "Connect(Connect(authenticationGuard))",
           "type": [Function],
         }
       }

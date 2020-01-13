@@ -1,5 +1,4 @@
 import React from "react";
-import { bindActionCreators } from "redux";
 import PropTypes from "prop-types";
 import { uniqBy } from "lodash";
 import { connect } from "react-redux";
@@ -7,7 +6,6 @@ import MineHeaderMapLeaflet from "@/components/maps/MineHeaderMapLeaflet";
 import CustomPropTypes from "@/customPropTypes";
 import * as Strings from "@/constants/strings";
 import { getMineRegionHash } from "@/selectors/staticContentSelectors";
-import { fetchRegionOptions } from "@/actionCreators/staticContentActionCreator";
 
 /**
  * @class MineHeader.js contains header section of MineDashboard before the tabs. Including map, mineName, mineNumber.
@@ -81,17 +79,6 @@ const mapStateToProps = (state) => ({
   mineRegionHash: getMineRegionHash(state),
 });
 
-const mapDispatchToProps = (dispatch) =>
-  bindActionCreators(
-    {
-      fetchRegionOptions,
-    },
-    dispatch
-  );
-
 MineCard.propTypes = propTypes;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(MineCard);
+export default connect(mapStateToProps)(MineCard);
