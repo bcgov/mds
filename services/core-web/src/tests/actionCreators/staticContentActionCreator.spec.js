@@ -18,6 +18,7 @@ import {
   fetchNoticeOfWorkUndergroundExplorationTypeOptions,
   fetchNoticeOfWorkApplicationProgressStatusCodes,
   fetchNoticeOfWorkApplicationPermitTypes,
+  fetchNoticeOfWorkApplicationReviewTypes,
 } from "@/actionCreators/staticContentActionCreator";
 import * as genericActions from "@/actions/genericActions";
 import * as API from "@/constants/API";
@@ -414,7 +415,7 @@ describe("`fetchNoticeOfWorkApplicationReviewTypes` action creator", () => {
   });
 
   it("Request failure, dispatches `error` with correct response", () => {
-    mockAxios.onGet(url, MOCK.createMockHeader()).reply(400, MOCK.ERROR);
+    mockAxios.onGet(url, MOCK.createMockHeader()).reply(418, MOCK.ERROR);
     return fetchNoticeOfWorkApplicationReviewTypes()(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
