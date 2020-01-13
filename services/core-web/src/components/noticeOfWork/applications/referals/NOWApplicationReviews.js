@@ -5,7 +5,10 @@ import { bindActionCreators } from "redux";
 import { Button, Row, Col } from "antd";
 import { openModal, closeModal } from "@/actions/modalActions";
 import * as ModalContent from "@/constants/modalContent";
-import { getDocumentDownloadToken } from "@/utils/actionlessNetworkCalls";
+import {
+  getNowDocumentDownloadToken,
+  getDocumentDownloadToken,
+} from "@/utils/actionlessNetworkCalls";
 import { modalConfig } from "@/components/modalContent/config";
 import CustomPropTypes from "@/customPropTypes";
 import * as Permission from "@/constants/permissions";
@@ -29,9 +32,10 @@ import NOWApplicationReviewsTable from "@/components/noticeOfWork/applications/r
 const propTypes = {
   // eslint-disable-next-line
   noticeOfWorkGuid: PropTypes.string.isRequired,
+  mineGuid: PropTypes.string.isRequired,
   // eslint-disable-next-line
   noticeOfWorkReviews: PropTypes.arrayOf(CustomPropTypes.NOWApplicationReview).isRequired,
-  applicationDocuments: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
+  coreDocuments: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
   submissionDocuments: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
   noticeOfWorkReviewTypes: CustomPropTypes.options.isRequired,
 
@@ -98,8 +102,8 @@ export class NOWApplicationReviews extends Component {
 
   downloadDocument = (url) => {
     const a = document.createElement("a");
-    a.href = url;
-    a.download = "url";
+    a.href = url.url;
+    a.download = url.filename;
     a.style.display = "none";
     document.body.append(a);
     console.log("clicking the link.");
@@ -135,34 +139,51 @@ export class NOWApplicationReviews extends Component {
     });
   };
 
-  downloadDocumentPackage = (selectedRows) => {
+  downloadDocumentPackage = (selectedCoreRows, selectedSubmissionRows) => {
+    console.log(selectedCoreRows);
+
     const docURLS = [];
-    const documents = this.props.submissionDocuments
+    const submissionDocs = this.props.submissionDocuments
       .map((document) => ({
         key: document.id,
         filename: document.filename,
       }))
-      .filter((item) => selectedRows.includes(item.key));
+      .filter((item) => selectedSubmissionRows.includes(item.key));
+    const coreDocs = this.props.coreDocuments
+      .map((document) => ({
+        key: document.now_application_document_xref_guid,
+        documentManagerGuid: document.mine_document.document_manager_guid,
+        filename: document.mine_document.document_name,
+      }))
+      .filter((item) => selectedCoreRows.includes(item.key));
 
-    for (const doc of documents) {
-      getDocumentDownloadToken(doc.key, this.props.noticeOfWorkGuid, docURLS);
+    for (const doc of submissionDocs) {
+      getNowDocumentDownloadToken(doc.key, this.props.noticeOfWorkGuid, doc.filename, docURLS);
     }
-    this.waitFor((_) => docURLS.length === documents.length).then(async () => {
-      console.log(docURLS);
-      for (const url of docURLS) {
-        this.downloadDocument(url);
-        await new Promise((resolve) => setTimeout(resolve, 2000));
+    for (const doc of coreDocs) {
+      getDocumentDownloadToken(doc.documentManagerGuid, doc.filename, docURLS);
+    }
+
+    this.waitFor((_) => docURLS.length === submissionDocs.length + coreDocs.length).then(
+      async () => {
+        console.log(JSON.stringify(docURLS));
+        for (const url of docURLS) {
+          this.downloadDocument(url);
+          await new Promise((resolve) => setTimeout(resolve, 2000));
+        }
+        this.props.closeModal();
       }
-      this.props.closeModal();
-    });
+    );
   };
 
   openDownloadPackageModal = (event) => {
     event.preventDefault();
     this.props.openModal({
       props: {
+        mineGuid: this.props.mineGuid,
         noticeOfWorkGuid: this.props.noticeOfWorkGuid,
         submissionDocuments: this.props.submissionDocuments,
+        coreDocuments: this.props.coreDocuments,
         onSubmit: this.downloadDocumentPackage,
         title: `Download Files`,
       },

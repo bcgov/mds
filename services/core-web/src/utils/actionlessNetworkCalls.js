@@ -95,7 +95,26 @@ export const downloadFileFromDocumentManager = ({ document_manager_guid, documen
     });
 };
 
-export const getDocumentDownloadToken = (id, applicationGuid, URLArray) => {
+export const getDocumentDownloadToken = (document_manager_guid, filename, URLArray) => {
+  if (!document_manager_guid) {
+    throw new Error("Must provide docManagerGuid");
+  }
+
+  CustomAxios()
+    .get(
+      `${ENVIRONMENT.apiUrl + DOCUMENT_MANAGER_TOKEN_GET_URL(document_manager_guid)}`,
+      createRequestHeader()
+    )
+    .then((response) => {
+      const token = { token: response.data.token_guid };
+      const URL = `${ENVIRONMENT.docManUrl +
+        DOCUMENT_MANAGER_FILE_GET_URL(token) +
+        "&as_attachement=false"}`;
+      URLArray.push({ filename, url: URL });
+    });
+};
+
+export const getNowDocumentDownloadToken = (id, applicationGuid, filename, URLArray) => {
   if (!id) {
     throw new Error("Must provide id");
   }
@@ -113,6 +132,6 @@ export const getDocumentDownloadToken = (id, applicationGuid, URLArray) => {
       const token = { token: response.data.token_guid };
       const URL = `${ENVIRONMENT.apiUrl +
         NOTICE_OF_WORK_DOCUMENT_FILE_GET_URL(id, applicationGuid, token)}`;
-      URLArray.push(URL);
+      URLArray.push({ filename, url: URL });
     });
 };

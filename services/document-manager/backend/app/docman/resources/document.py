@@ -15,10 +15,8 @@ from app.constants import FILE_UPLOAD_SIZE, FILE_UPLOAD_OFFSET, FILE_UPLOAD_PATH
 @api.route('/documents')
 class DocumentListResource(Resource):
     parser = reqparse.RequestParser(trim=True)
-    parser.add_argument('folder',
-                        type=str,
-                        required=True,
-                        help='The sub folder path to store the document in.')
+    parser.add_argument(
+        'folder', type=str, required=True, help='The sub folder path to store the document in.')
     parser.add_argument(
         'pretty_folder',
         type=str,
@@ -26,10 +24,8 @@ class DocumentListResource(Resource):
         help=
         'The sub folder path to store the document in with the guids replaced for more readable names.'
     )
-    parser.add_argument('filename',
-                        type=str,
-                        required=True,
-                        help='File name + extension of the document.')
+    parser.add_argument(
+        'filename', type=str, required=True, help='File name + extension of the document.')
 
     @requires_any_of(
         [MINE_EDIT, EDIT_PARTY, EDIT_PERMIT, EDIT_DO, EDIT_VARIANCE, MINESPACE_PROPONENT])
@@ -96,6 +92,7 @@ class DocumentListResource(Resource):
 
     def get(self):
         token_guid = request.args.get('token', '')
+        attachment = request.args.get('as_attachment', False)
         doc_guid = cache.get(DOWNLOAD_TOKEN(token_guid))
         cache.delete(DOWNLOAD_TOKEN(token_guid))
 
@@ -107,18 +104,17 @@ class DocumentListResource(Resource):
             raise NotFound('Could not find the document corresponding to the token')
 
         not_pdf = '.pdf' not in doc.file_display_name.lower()
-        return send_file(filename_or_fp=doc.full_storage_path,
-                         attachment_filename=doc.file_display_name,
-                         as_attachment=not_pdf)
+        return send_file(
+            filename_or_fp=doc.full_storage_path,
+            attachment_filename=doc.file_display_name,
+            as_attachment=attachment if attachment else not_pdf)
 
 
 @api.route(f'/documents/<string:document_guid>')
 class DocumentResource(Resource):
     parser = reqparse.RequestParser(trim=True)
-    parser.add_argument('folder',
-                        type=str,
-                        required=True,
-                        help='The sub folder path to store the document in.')
+    parser.add_argument(
+        'folder', type=str, required=True, help='The sub folder path to store the document in.')
     parser.add_argument(
         'pretty_folder',
         type=str,
@@ -126,10 +122,8 @@ class DocumentResource(Resource):
         help=
         'The sub folder path to store the document in with the guids replaced for more readable names.'
     )
-    parser.add_argument('filename',
-                        type=str,
-                        required=True,
-                        help='File name + extension of the document.')
+    parser.add_argument(
+        'filename', type=str, required=True, help='File name + extension of the document.')
 
     @requires_any_of(
         [MINE_EDIT, EDIT_PARTY, EDIT_PERMIT, EDIT_DO, EDIT_VARIANCE, MINESPACE_PROPONENT])
