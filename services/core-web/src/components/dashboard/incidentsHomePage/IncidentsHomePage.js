@@ -19,6 +19,7 @@ import {
   getDropdownIncidentDeterminationOptions,
   getDropdownIncidentStatusCodeOptions,
   getIncidentFollowupActionOptions,
+  getDropdownIncidentCategoryCodeOptions,
 } from "@/selectors/staticContentSelectors";
 import { getDropdownInspectors } from "@/selectors/partiesSelectors";
 import CustomPropTypes from "@/customPropTypes";
@@ -53,6 +54,7 @@ const propTypes = {
   followupActionsOptions: CustomPropTypes.options.isRequired,
   incidentDeterminationOptions: CustomPropTypes.options.isRequired,
   incidentStatusCodeOptions: CustomPropTypes.options.isRequired,
+  incidentCategoryCodeOptions: CustomPropTypes.options.isRequired,
   doSubparagraphOptions: CustomPropTypes.options.isRequired,
 };
 
@@ -267,6 +269,7 @@ export class IncidentsHomePage extends Component {
         followupActionOptions: this.props.followupActionsOptions,
         incidentDeterminationOptions: this.props.incidentDeterminationOptions,
         incidentStatusCodeOptions: this.props.incidentStatusCodeOptions,
+        incidentCategoryCodeOptions: this.props.incidentCategoryCodeOptions,
         doSubparagraphOptions: this.props.doSubparagraphOptions,
         inspectors: this.props.inspectors,
         clearOnSubmit: true,
@@ -345,6 +348,7 @@ const mapStateToProps = (state) => ({
   incidentStatusCodeOptions: getDropdownIncidentStatusCodeOptions(state),
   inspectors: getDropdownInspectors(state),
   doSubparagraphOptions: getDangerousOccurrenceSubparagraphOptions(state),
+  incidentCategoryCodeOptions: getDropdownIncidentCategoryCodeOptions(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
