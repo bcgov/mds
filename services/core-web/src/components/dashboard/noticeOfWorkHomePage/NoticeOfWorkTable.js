@@ -15,7 +15,7 @@ import {
 } from "@/utils/helpers";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import { EDIT_OUTLINE_VIOLET } from "@/constants/assets";
-import { getNoticeOfWorkApplicationStatusStyleType } from "@/constants/styles";
+import { getNoticeOfWorkApplicationStatusStyleType } from "@/constants/theme";
 
 /**
  * @class NoticeOfWorkTable - paginated list of notice of work applications

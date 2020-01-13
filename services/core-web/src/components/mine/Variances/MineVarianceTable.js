@@ -21,7 +21,7 @@ import * as Strings from "@/constants/strings";
 import LinkButton from "@/components/common/LinkButton";
 import * as router from "@/constants/routes";
 import TableLoadingWrapper from "@/components/common/wrappers/TableLoadingWrapper";
-import { getVarianceApplicationStatusStyleType } from "@/constants/styles";
+import { getVarianceApplicationStatusStyleType } from "@/constants/theme";
 
 const propTypes = {
   handleVarianceSearch: PropTypes.func,
