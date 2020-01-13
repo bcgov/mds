@@ -7,11 +7,11 @@ import { createDropDownList } from "@/utils/helpers";
 import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
-  mine_permits: CustomPropTypes.mine.isRequired,
+  minePermits: CustomPropTypes.mine.isRequired,
 };
 
 export const PermitteeOptions = (props) => {
-  const permitDropdown = createDropDownList(props.mine_permits, "permit_no", "permit_guid");
+  const permitDropdown = createDropDownList(props.minePermits, "permit_no", "permit_guid");
 
   return (
     <Row gutter={16}>

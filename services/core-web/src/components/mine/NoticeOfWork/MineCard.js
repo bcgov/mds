@@ -35,7 +35,9 @@ export const MineCard = (props) => {
             <p className="field-title">Permit Number</p>
             <ul className="mine-list__permits">
               {props.mine.mine_permit_numbers && props.mine.mine_permit_numbers.length > 0
-                ? props.mine.mine_permit_numbers.map((permit_no) => <li>{permit_no}</li>)
+                ? props.mine.mine_permit_numbers.map((permit_no) => (
+                    <li key={permit_no}>{permit_no}</li>
+                  ))
                 : Strings.EMPTY_FIELD}
             </ul>
           </div>

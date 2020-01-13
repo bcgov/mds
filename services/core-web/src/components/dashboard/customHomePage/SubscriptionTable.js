@@ -70,7 +70,7 @@ export class SubscriptionTable extends Component {
         render: (text, record) => (
           <div title="Permit Number">
             <ul className="mine-list__permits">
-              <p>{text.map((permit_no) => [<span>{permit_no}</span>, <br />])}</p>
+              {text && text.map((permit_no) => <li key={permit_no}>{permit_no}</li>)}
               {!text && <li>{record.emptyField}</li>}
             </ul>
           </div>
