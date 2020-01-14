@@ -88,14 +88,16 @@ export class EditVarianceForm extends Component {
               Cancel
             </Button>
           </Popconfirm>
-          <Button
-            className="full-mobile"
-            type="primary"
-            htmlType="submit"
-            disabled={this.props.submitting}
-          >
-            Submit
-          </Button>
+          {false && (
+            <Button
+              className="full-mobile"
+              type="primary"
+              htmlType="submit"
+              disabled={this.props.submitting}
+            >
+              Submit
+            </Button>
+          )}
         </div>
       </Form>
     );
