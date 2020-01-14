@@ -10,7 +10,7 @@ const setupDispatchProps = () => {};
 
 const setupProps = () => {
   props.mine = MOCK.MINES.mines[MOCK.MINES.mineIds[0]];
-  props.permits = MOCK.MINES.mines[MOCK.MINES.mineIds[0]].mine_permit;
+  props.permits = MOCK.MINES.mines[MOCK.MINES.mineIds[0]].mine_permit_numbers;
   props.partyRelationships = MOCK.PARTYRELATIONSHIPS;
 };
 

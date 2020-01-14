@@ -37,7 +37,7 @@ const defaultProps = {
   mineComplianceInfo: {},
 };
 
-const renderPartyRelationship = (mine, partyRelationship, partyRelationshipTypes) => {
+const renderPartyRelationship = (mine, permits, partyRelationship, partyRelationshipTypes) => {
   if (partyRelationshipTypes.length === 0) return <div>{String.LOADING}</div>;
 
   const partyRelationshipTitle = partyRelationshipTypes.find(
@@ -49,6 +49,7 @@ const renderPartyRelationship = (mine, partyRelationship, partyRelationshipTypes
     <Col md={24} lg={12} xl={8} xxl={6} key={partyRelationship.mine_party_appt_guid}>
       <Contact
         mine={mine}
+        permits={permits}
         partyRelationship={partyRelationship}
         partyRelationshipTitle={partyRelationshipTitle}
         compact
@@ -104,6 +105,7 @@ export class MineSummary extends Component {
                 .map((partyRelationship) =>
                   renderPartyRelationship(
                     mine,
+                    this.props.minePermits,
                     partyRelationship,
                     this.props.partyRelationshipTypes
                   )
@@ -114,7 +116,12 @@ export class MineSummary extends Component {
                   .sort((a, b) => new Date(b.start_date) - new Date(a.start_date))[0];
                 return (
                   latestPermittee &&
-                  renderPartyRelationship(mine, latestPermittee, this.props.partyRelationshipTypes)
+                  renderPartyRelationship(
+                    mine,
+                    this.props.minePermits,
+                    latestPermittee,
+                    this.props.partyRelationshipTypes
+                  )
                 );
               })}
             </Row>

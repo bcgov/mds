@@ -76,7 +76,7 @@ const columns = [
     render: (text, record) => (
       <div title="Permit Number">
         <ul className="mine-list__permits">
-          {text && text.map((permit_no) => <li>{permit_no}</li>)}
+          {text && text.map((permit_no) => <li key={permit_no}>{permit_no}</li>)}
           {!text && <li>{record.emptyField}</li>}
         </ul>
       </div>

@@ -452,7 +452,7 @@ exports[`Dashboard renders properly 1`] = `
                   },
                   "mine_name": "mine3",
                   "mine_no": "BLAH9091",
-                  "mine_permit": Array [],
+                  "mine_permit_numbers": Array [],
                   "mine_region": "NE",
                   "mine_status": Object {
                     "effective_date": "2018-10-16",
@@ -498,15 +498,9 @@ exports[`Dashboard renders properly 1`] = `
                   },
                   "mine_name": "mine2",
                   "mine_no": "BLAH9091",
-                  "mine_permit": Array [
-                    Object {
-                      "permit_guid": "2ec66cff-dbf0-4e4b-b9b8-9c7740ba8c81",
-                      "permit_no": "KNaaWwVdiJ40",
-                    },
-                    Object {
-                      "permit_guid": "1877097f-bf9d-40c8-a5fa-53d9a79623c9",
-                      "permit_no": "xfM0c0ZKEw7B",
-                    },
+                  "mine_permit_numbers": Array [
+                    "KNaaWwVdiJ40",
+                    "xfM0c0ZKEw7B",
                   ],
                   "mine_region": "NE",
                   "mine_status": Object {
@@ -602,7 +596,7 @@ exports[`Dashboard renders properly 1`] = `
                       },
                       "mine_name": "mine3",
                       "mine_no": "BLAH9091",
-                      "mine_permit": Array [],
+                      "mine_permit_numbers": Array [],
                       "mine_region": "NE",
                       "mine_status": Object {
                         "effective_date": "2018-10-16",
@@ -648,15 +642,9 @@ exports[`Dashboard renders properly 1`] = `
                       },
                       "mine_name": "mine2",
                       "mine_no": "BLAH9091",
-                      "mine_permit": Array [
-                        Object {
-                          "permit_guid": "2ec66cff-dbf0-4e4b-b9b8-9c7740ba8c81",
-                          "permit_no": "KNaaWwVdiJ40",
-                        },
-                        Object {
-                          "permit_guid": "1877097f-bf9d-40c8-a5fa-53d9a79623c9",
-                          "permit_no": "xfM0c0ZKEw7B",
-                        },
+                      "mine_permit_numbers": Array [
+                        "KNaaWwVdiJ40",
+                        "xfM0c0ZKEw7B",
                       ],
                       "mine_region": "NE",
                       "mine_status": Object {
@@ -856,7 +844,7 @@ exports[`Dashboard renders properly 1`] = `
                           },
                           "mine_name": "mine3",
                           "mine_no": "BLAH9091",
-                          "mine_permit": Array [],
+                          "mine_permit_numbers": Array [],
                           "mine_region": "NE",
                           "mine_status": Object {
                             "effective_date": "2018-10-16",
@@ -902,15 +890,9 @@ exports[`Dashboard renders properly 1`] = `
                           },
                           "mine_name": "mine2",
                           "mine_no": "BLAH9091",
-                          "mine_permit": Array [
-                            Object {
-                              "permit_guid": "2ec66cff-dbf0-4e4b-b9b8-9c7740ba8c81",
-                              "permit_no": "KNaaWwVdiJ40",
-                            },
-                            Object {
-                              "permit_guid": "1877097f-bf9d-40c8-a5fa-53d9a79623c9",
-                              "permit_no": "xfM0c0ZKEw7B",
-                            },
+                          "mine_permit_numbers": Array [
+                            "KNaaWwVdiJ40",
+                            "xfM0c0ZKEw7B",
                           ],
                           "mine_region": "NE",
                           "mine_status": Object {
