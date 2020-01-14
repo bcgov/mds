@@ -11,12 +11,11 @@ from app.api.now_applications.models.activity_detail.activity_detail_base import
 class UndergroundExplorationDetail(ActivityDetailBase):
     __tablename__ = 'underground_exploration_detail'
     __mapper_args__ = {
-        'polymorphic_identity': 'underground_exploration',  ## type code
+        'polymorphic_identity': 'underground_exploration', ## type code
     }
 
-    activity_detail_id = db.Column(db.Integer,
-                                   db.ForeignKey('activity_detail.activity_detail_id'),
-                                   primary_key=True)
+    activity_detail_id = db.Column(
+        db.Integer, db.ForeignKey('activity_detail.activity_detail_id'), primary_key=True)
 
     underground_exploration_type_code = db.Column(
         db.String, db.ForeignKey('underground_exploration_type.underground_exploration_type_code'))

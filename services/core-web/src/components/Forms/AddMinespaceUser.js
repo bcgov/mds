@@ -4,7 +4,7 @@ import { Field, reduxForm } from "redux-form";
 import { Form, Button, Col, Row } from "antd";
 import RenderField from "@/components/common/RenderField";
 import * as FORM from "@/constants/forms";
-import { required, email } from "@/utils/Validate";
+import { required, email, requiredList } from "@/utils/Validate";
 import { resetForm } from "@/utils/helpers";
 import { renderConfig } from "@/components/common/config";
 import CustomPropTypes from "@/customPropTypes";
@@ -47,6 +47,7 @@ export const AddMinespaceUser = (props) => (
               data={props.mines}
               onChange={props.handleChange}
               onSearch={props.handleSearch}
+              validate={[requiredList]}
             />
           </Form.Item>
         </Col>

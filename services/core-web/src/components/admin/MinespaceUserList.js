@@ -33,7 +33,13 @@ const columns = [
     dataIndex: "mineNames",
     render: (text) => (
       <div title="Mines">
-        {text && text.map(({ mine_guid, mine_name }) => <span key={mine_guid}> {mine_name} </span>)}
+        {text &&
+          text.map(({ mine_guid, mine_name }) => (
+            <span key={mine_guid}>
+              {mine_name}
+              <br />
+            </span>
+          ))}
       </div>
     ),
   },
