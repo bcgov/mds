@@ -12,9 +12,10 @@ class TestPostApplicationReviewResource:
 
         test_progress_data = {
             'now_application_review_type_code': 'REF',
+            'referee_name': 'Fred',
         }
         post_resp = test_client.post(
-            f'/now-applications/{now_application_identity.now_application_guid}/review',
+            f'/now-applications/{now_application_identity.now_application_guid}/reviews',
             json=test_progress_data,
             headers=auth_headers['full_auth_header'])
         assert post_resp.status_code == 201, post_resp.response
@@ -27,7 +28,7 @@ class TestPostApplicationReviewResource:
         now_application_identity = NOWApplicationIdentityFactory(now_application=now_application)
 
         post_resp = test_client.get(
-            f'/now-applications/{now_application_identity.now_application_guid}/review',
+            f'/now-applications/{now_application_identity.now_application_guid}/reviews',
             headers=auth_headers['full_auth_header'])
         assert post_resp.status_code == 200, post_resp.response
         post_data = json.loads(post_resp.data.decode())

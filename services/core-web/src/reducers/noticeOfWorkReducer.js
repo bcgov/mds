@@ -6,6 +6,7 @@ const initialState = {
   noticeOfWork: {},
   originalNoticeOfWork: {},
   noticeOfWorkPageData: {},
+  noticeOfWorkReviews: [],
 };
 
 const noticeOfWorkReducer = (state = initialState, action) => {
