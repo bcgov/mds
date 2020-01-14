@@ -3,6 +3,7 @@ import { notification } from "antd";
 import { isEmpty } from "lodash";
 import * as String from "@/constants/strings";
 import { store } from "@/App";
+import { detectDevelopmentEnvironment } from "@/utils/environmentUtils";
 
 // https://stackoverflow.com/questions/39696007/axios-with-promise-prototype-finally-doesnt-work
 const promiseFinally = require("promise.prototype.finally");
@@ -55,8 +56,12 @@ const CustomAxios = ({ errorToastMessage, selector, envelope = defaultEnvelope }
 
       if (status === UNAUTHORIZED || status === MAINTENANCE) {
         window.location.reload(false);
-      } else if (status === TEAPOT) {
-        // Do not retry for test axios calls
+      } else if (status === TEAPOT || detectDevelopmentEnvironment()) {
+        // Do not retry in dev env, or for axios calls made in frontend tests, which are configured to return status code 418
+        notification.error({
+          message: `${errorMessage}`,
+          duration: 10,
+        });
         return Promise.reject(error);
       } else if (numberOfErrors > 3) {
         notification.error({
