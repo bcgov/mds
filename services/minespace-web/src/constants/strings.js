@@ -9,7 +9,7 @@ export const RETURN_PAGE_TYPE = {
   LOGOUT: "logout",
 };
 
-export const EMPTY_FIELD = "N/A";
+export const EMPTY_FIELD = "-";
 
 // variances
 export const VARIANCE_APPROVED_CODE = "APP";
