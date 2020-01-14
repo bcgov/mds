@@ -11,7 +11,7 @@ import * as MOCK from "@/tests/mocks/dataMocks";
 const baseExpectedValue = {
   mineVariances: [],
   varianceStatusOptions: [],
-  documentCategoryOptions: [],
+  varianceDocumentCategoryOptions: [],
   complianceCodes: [],
   variance: {},
 };
@@ -59,7 +59,7 @@ describe("varianceReducer", () => {
 
   it("receives STORE_VARIANCE_DOCUMENT_CATEGORY_OPTIONS", () => {
     const expectedValue = getBaseExpectedValue();
-    expectedValue.documentCategoryOptions = MOCK.VARIANCE_DOCUMENT_CATEGORY_OPTIONS.records;
+    expectedValue.varianceDocumentCategoryOptions = MOCK.VARIANCE_DOCUMENT_CATEGORY_OPTIONS.records;
     const result = varianceReducer(
       undefined,
       storeVarianceDocumentCategoryOptions(MOCK.VARIANCE_DOCUMENT_CATEGORY_OPTIONS)
