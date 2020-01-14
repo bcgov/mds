@@ -599,5 +599,18 @@ VALUES
 	('RFE', 'Record of First Nations Engagement', true, 'system-mds', 'system-mds'),
 	('TAL', 'Tenure Authorization Letter', true, 'system-mds', 'system-mds'),
 	('TMP', 'Tenure Map / Property Map', true, 'system-mds', 'system-mds'),
-	('MPW', 'Map of Proposed Work', true, 'system-mds', 'system-mds')
+	('MPW', 'Map of Proposed Work', true, 'system-mds', 'system-mds'),
+    ('REV', 'Review',true,'system-mds','system-mds')
 on conflict do nothing;
+
+INSERT INTO now_application_review_type(
+    now_application_review_type_code,
+    description,
+    create_user,
+    update_user
+    )
+VALUES
+    ('REF', 'Referral', 'system-mds', 'system-mds'),
+    ('FNC', 'First Nations Consulation', 'system-mds', 'system-mds'),
+    ('PUB', 'Public Comment', 'system-mds', 'system-mds')
+ON CONFLICT DO NOTHING;

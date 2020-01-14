@@ -27,10 +27,10 @@ class NOWApplicationResource(Resource, UserMixin):
         })
     @requires_role_view_all
     @api.marshal_with(NOW_APPLICATION_MODEL, code=200)
-    def get(self, now_application_guid):
+    def get(self, application_guid):
         original = request.args.get('original', False, type=bool)
 
-        now_application_identity = NOWApplicationIdentity.find_by_guid(now_application_guid)
+        now_application_identity = NOWApplicationIdentity.find_by_guid(application_guid)
         if not now_application_identity:
             raise NotFound('No identity record for this application guid.')
 
@@ -49,8 +49,8 @@ class NOWApplicationResource(Resource, UserMixin):
     )
     @requires_role_edit_permit
     @api.marshal_with(NOW_APPLICATION_MODEL, code=200)
-    def put(self, now_application_guid):
-        now_application_identity = NOWApplicationIdentity.find_by_guid(now_application_guid)
+    def put(self, application_guid):
+        now_application_identity = NOWApplicationIdentity.find_by_guid(application_guid)
         if not now_application_identity:
             raise NotFound('No identity record for this application guid.')
 

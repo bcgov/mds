@@ -232,7 +232,6 @@ NOW_APPLICATION_DOCUMENT = api.model(
     'NOW_DOCUMENT', {
         'now_application_document_xref_guid': fields.String,
         'now_application_document_type_code': fields.String,
-        'now_application_document_type_code_description': fields.String,
         'description': fields.String,
         'is_final_package': fields.Boolean,
         'mine_document': fields.Nested(MINE_DOCUMENT_MODEL),
@@ -247,6 +246,18 @@ NOW_APPLICATION_PROGRESS = api.model(
         'application_progress_status_code': fields.String
     })
     
+NOW_APPLICATION_REVIEW_MDOEL = api.model(
+    'NOWApplicationReview',
+    {
+        'now_application_review_id':fields.Integer, 
+        'now_application_guid':fields.String(attribute='now_application.now_application_guid'),
+        'now_application_review_type_code':fields.String, 
+        'response_date':fields.Date, 
+        'referee_name':fields.String,
+        'documents':fields.List(fields.Nested(NOW_APPLICATION_DOCUMENT))
+    }
+)
+
 NOW_SUBMISSION_DOCUMENT = api.model(
     'SUBMISSION_DOCUMENT', {
         'id': fields.Integer,
@@ -407,4 +418,11 @@ NOW_APPLICATION_PERMIT_TYPES = api.model(
         'now_application_permit_type_code': fields.String,
         'description': fields.String
     }
+)
+NOW_APPLICATION_REVIEW_TYPES= api.model(
+    'ApplicationReviewTypes', 
+    {
+        'now_application_review_type_code': fields.String,
+        'description': fields.String
+    } 
 )

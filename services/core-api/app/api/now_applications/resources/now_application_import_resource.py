@@ -28,7 +28,7 @@ class NOWApplicationImportResource(Resource, UserMixin):
 
     @requires_role_edit_permit
     @api.expect(parser)
-    def post(self, now_application_guid):
+    def post(self, application_guid):
         data = self.parser.parse_args()
         mine_guid = data.get('mine_guid')
         mine = Mine.find_by_mine_guid(mine_guid)
@@ -36,13 +36,13 @@ class NOWApplicationImportResource(Resource, UserMixin):
             raise NotFound('Mine not found')
 
         now_application_identity = NOWApplicationIdentity.query.filter_by(
-            now_application_guid=now_application_guid).first()
+            now_application_guid=application_guid).first()
         if not now_application_identity:
             raise NotFound('No identity record for this application guid.')
 
         application = transmogrify_now(now_application_identity)
         application.mine_guid = mine_guid
-        application.now_application_guid = now_application_guid
+        application.now_application_guid = application_guid
         application.save()
 
         return {'now_application_guid': str(application.now_application_guid)}
