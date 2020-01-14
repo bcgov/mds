@@ -7,6 +7,12 @@ exports[`UndergroundExploration renders properly 1`] = `
     columns={
       Array [
         Object {
+          "dataIndex": "underground_exploration_type_code",
+          "key": "underground_exploration_type_code",
+          "render": [Function],
+          "title": "Exploration Type",
+        },
+        Object {
           "dataIndex": "activity_type_description",
           "key": "activity_type_description",
           "render": [Function],
@@ -23,12 +29,6 @@ exports[`UndergroundExploration renders properly 1`] = `
           "key": "incline",
           "render": [Function],
           "title": "Incline",
-        },
-        Object {
-          "dataIndex": "incline_unit_type_code",
-          "key": "incline_unit_type_code",
-          "render": [Function],
-          "title": "Units",
         },
         Object {
           "dataIndex": "width",
@@ -103,11 +103,22 @@ exports[`UndergroundExploration renders properly 1`] = `
       >
         Total Ore
       </div>
-      <Field
+      <Fields
         component={[Function]}
         disabled={true}
+        dropdownID="total_ore_unit_type_code"
         id="total_ore_amount"
-        name="total_ore_amount"
+        names={
+          Array [
+            "total_ore_amount",
+            "total_ore_unit_type_code",
+          ]
+        }
+        validate={
+          Array [
+            [Function],
+          ]
+        }
       />
     </Col>
     <Col
@@ -119,11 +130,22 @@ exports[`UndergroundExploration renders properly 1`] = `
       >
         Total Waste
       </div>
-      <Field
+      <Fields
         component={[Function]}
         disabled={true}
+        dropdownID="total_waste_unit_type_code"
         id="total_waste_amount"
-        name="total_waste_amount"
+        names={
+          Array [
+            "total_waste_amount",
+            "total_waste_unit_type_code",
+          ]
+        }
+        validate={
+          Array [
+            [Function],
+          ]
+        }
       />
     </Col>
   </Row>

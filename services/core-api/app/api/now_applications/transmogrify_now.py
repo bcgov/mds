@@ -518,7 +518,9 @@ def _transmogrify_sand_and_gravel_activities(now_app, now_sub, mms_now_sub):
             or sandgrvqryimpactminvisual):
         now_app.sand_and_gravel = app_models.SandGravelQuarryOperation(
             average_overburden_depth=sandgrvqrydepthoverburden,
+            average_overburden_depth_unit_type_code='MTR',
             average_top_soil_depth=sandgrvqrydepthtopsoil,
+            average_top_soil_depth_unit_type_code='MTR',
             stability_measures_description=sandgrvqrystabilizemeasures,
             is_agricultural_land_reserve=sandgrvqrywithinaglandres == 'Yes',
             agri_lnd_rsrv_permit_application_number=sandgrvqryalrpermitnumber,

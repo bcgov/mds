@@ -488,14 +488,15 @@ VALUES
 on conflict do nothing;
 
 INSERT INTO unit_type
-(unit_type_code, description, active_ind, create_user, update_user)
+(unit_type_code, short_description, description, active_ind, create_user, update_user)
 VALUES
-	('MTN', 'Tonne (Metric Ton 1000Kg)', true, 'system-mds', 'system-mds'),
-	('MEC', 'Meters cubed', true, 'system-mds', 'system-mds'),
-	('HA', 'Hectares', true, 'system-mds', 'system-mds'),
-	('DEG', 'Degrees', true, 'system-mds', 'system-mds'),
-    ('PER', 'Grade (Percent)', true, 'system-mds', 'system-mds'),
-	('MTR', 'Meters', true, 'system-mds', 'system-mds')
+	('MTN', 't', 'Tonne (Metric Ton 1000Kg)', true, 'system-mds', 'system-mds'),
+	('MEC', 'm3', 'Meters cubed', true, 'system-mds', 'system-mds'),
+	('HA', 'ha', 'Hectares', true, 'system-mds', 'system-mds'),
+	('DEG',  'deg', 'Degrees', true, 'system-mds', 'system-mds'),
+    ('PER', '%', 'Grade (Percent)', true, 'system-mds', 'system-mds'),
+	('MTR', 'm', 'Meters', true, 'system-mds', 'system-mds'),
+    ('KMT', 'km', 'Kilometer ', true, 'system-mds', 'system-mds')
 on conflict do nothing;
 
 INSERT INTO notice_of_work_type
