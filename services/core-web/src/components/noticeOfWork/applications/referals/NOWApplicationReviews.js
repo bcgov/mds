@@ -19,6 +19,7 @@ import {
   deleteNoticeOfWorkApplicationReview,
   updateNoticeOfWorkApplicationReview,
   deleteNoticeOfWorkApplicationReviewDocument,
+  setNoticeOfWorkApplicationDocumentDownloadState,
 } from "@/actionCreators/noticeOfWorkActionCreator";
 import { fetchNoticeOfWorkApplicationReviewTypes } from "@/actionCreators/staticContentActionCreator";
 import { getNoticeOfWorkReviews } from "@/selectors/noticeOfWorkSelectors";
@@ -47,11 +48,13 @@ const propTypes = {
   updateNoticeOfWorkApplicationReview: PropTypes.func.isRequired,
   deleteNoticeOfWorkApplicationReview: PropTypes.func.isRequired,
   deleteNoticeOfWorkApplicationReviewDocument: PropTypes.func.isRequired,
+  setNoticeOfWorkApplicationDocumentDownloadState: PropTypes.func.isRequired,
 };
 
 const defaultProps = {};
 
 export class NOWApplicationReviews extends Component {
+  state = { cancelDownload: false };
   componentDidMount() {
     this.props.fetchNoticeOfWorkApplicationReviews(this.props.noticeOfWorkGuid);
     this.props.fetchNoticeOfWorkApplicationReviewTypes();
@@ -150,6 +153,10 @@ export class NOWApplicationReviews extends Component {
     });
   };
 
+  cancelDownload = () => {
+    this.setState({ cancelDownload: true });
+  };
+
   downloadDocumentPackage = (selectedCoreRows, selectedSubmissionRows) => {
     const docURLS = [];
     const submissionDocs = this.props.submissionDocuments
@@ -166,6 +173,10 @@ export class NOWApplicationReviews extends Component {
       }))
       .filter((item) => selectedCoreRows.includes(item.key));
 
+    let currentFile = 1;
+    const totalFiles = submissionDocs.length + coreDocs.length;
+    if (totalFiles === 0) return;
+
     submissionDocs.forEach((doc) =>
       getNowDocumentDownloadToken(doc.key, this.props.noticeOfWorkGuid, doc.filename, docURLS)
     );
@@ -177,6 +188,26 @@ export class NOWApplicationReviews extends Component {
       async () => {
         // eslint-disable-next-line
         for (const url of docURLS) {
+          if (this.state.cancelDownload) {
+            this.setState({ cancelDownload: false });
+            this.props.closeModal();
+            this.props.setNoticeOfWorkApplicationDocumentDownloadState({
+              downloading: false,
+              currentFile: 1,
+              totalFiles: 1,
+            });
+            notification.success({
+              message: `Cancelled file downloads.`,
+              duration: 10,
+            });
+            return;
+          }
+          currentFile = currentFile + 1;
+          this.props.setNoticeOfWorkApplicationDocumentDownloadState({
+            downloading: true,
+            currentFile: currentFile,
+            totalFiles: totalFiles,
+          });
           this.downloadDocument(url);
           // eslint-disable-next-line
           await new Promise((resolve) => setTimeout(resolve, 2000));
@@ -187,6 +218,11 @@ export class NOWApplicationReviews extends Component {
           duration: 10,
         });
         this.props.closeModal();
+        this.props.setNoticeOfWorkApplicationDocumentDownloadState({
+          downloading: false,
+          currentFile: 1,
+          totalFiles: 1,
+        });
       }
     );
   };
@@ -200,6 +236,7 @@ export class NOWApplicationReviews extends Component {
         submissionDocuments: this.props.submissionDocuments,
         coreDocuments: this.props.coreDocuments,
         onSubmit: this.downloadDocumentPackage,
+        cancelDownload: this.cancelDownload,
         title: `Download Files`,
       },
       // widthSize: "50vw",
@@ -212,18 +249,22 @@ export class NOWApplicationReviews extends Component {
       <div>
         <Row type="flex" justify="center">
           <Col sm={22} md={22} lg={22} className="padding-xxl--top">
-            <Button
-              type="secondary"
-              className="full-mobile"
-              onClick={this.openDownloadPackageModal}
-            >
-              Download Referral Package
-            </Button>
-            <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
-              <AddButton onClick={(event) => this.openAddReviewModal(event, this.handleAddReview)}>
-                Add Review
-              </AddButton>
-            </AuthorizationWrapper>
+            <div className="inline-flex flex-end">
+              <Button
+                type="secondary"
+                className="full-mobile"
+                onClick={this.openDownloadPackageModal}
+              >
+                Download Referral Package
+              </Button>
+              <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
+                <AddButton
+                  onClick={(event) => this.openAddReviewModal(event, this.handleAddReview)}
+                >
+                  Add Review
+                </AddButton>
+              </AuthorizationWrapper>
+            </div>
           </Col>
         </Row>
 
@@ -262,6 +303,7 @@ const mapDispatchToProps = (dispatch) =>
       deleteNoticeOfWorkApplicationReview,
       updateNoticeOfWorkApplicationReview,
       deleteNoticeOfWorkApplicationReviewDocument,
+      setNoticeOfWorkApplicationDocumentDownloadState,
     },
     dispatch
   );

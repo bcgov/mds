@@ -19,3 +19,8 @@ export const storeNoticeOfWorkApplicationReviews = (payload) => ({
   type: actionTypes.STORE_NOTICE_OF_WORK_APPLICATION_REVIEWS,
   payload,
 });
+
+export const storeNoticeOfWorkApplicationDocumentDownloadState = (payload) => ({
+  type: actionTypes.STORE_NOTICE_OF_WORK_APPLICATION_DOCUMENT_DOWNLOAD_STATE,
+  payload,
+});

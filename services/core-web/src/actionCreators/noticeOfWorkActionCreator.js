@@ -272,3 +272,7 @@ export const deleteNoticeOfWorkApplicationReviewDocument = (applicationGuid, min
     .catch(() => dispatch(error(reducerTypes.REMOVE_NOTICE_OF_WORK_APPLICATION_REVIEW_DOCUMENT)))
     .finally(() => dispatch(hideLoading()));
 };
+
+export const setNoticeOfWorkApplicationDocumentDownloadState = (payload) => (dispatch) => {
+  dispatch(noticeOfWorkActions.storeNoticeOfWorkApplicationDocumentDownloadState(payload));
+};

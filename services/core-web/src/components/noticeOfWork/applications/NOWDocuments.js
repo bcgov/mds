@@ -196,7 +196,7 @@ export const NOWDocuments = (props) => {
             )
           }
         >
-          Add a Document
+          Add Document
         </AddButton>
       )}
     </div>
