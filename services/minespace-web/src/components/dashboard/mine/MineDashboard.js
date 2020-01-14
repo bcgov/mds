@@ -9,6 +9,7 @@ import { fetchMineRecordById } from "@/actionCreators/userDashboardActionCreator
 import { getMine } from "@/selectors/userMineSelectors";
 import CustomPropTypes from "@/customPropTypes";
 import { SINGLE_DOCUMENT, DOCUMENTS } from "@/constants/assets";
+import * as Strings from "@/constants/strings";
 import Loading from "@/components/common/Loading";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 
@@ -65,7 +66,7 @@ export class MineDashboard extends Component {
           <div className="inline-flex between block-tablet">
             <div>
               <h1 className="mine-title">{this.props.mine.mine_name}</h1>
-              <p>Mine No. {this.props.mine.mine_no}</p>
+              <p>Mine No. {this.props.mine.mine_no || Strings.EMPTY_FIELD}</p>
               <br />
               {this.renderLinkCards(id)}
             </div>
