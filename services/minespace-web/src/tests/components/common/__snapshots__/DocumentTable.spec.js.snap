@@ -35,7 +35,7 @@ exports[`DocumentTable renders properly 1`] = `
   dataSource={
     Array [
       Object {
-        "category": "N/A",
+        "category": "-",
         "created_at": "May 02 2019",
         "key": "33e6b965-2402-4229-a213-23bbe7fd3e99",
         "name": "test.pdf",
