@@ -12,6 +12,7 @@ const baseExpectedValue = {
   noticeOfWorkPageData: {},
   originalNoticeOfWork: {},
   noticeOfWorkReviews: [],
+  documentDownloadState: { downloading: false, currentFile: 1, totalFiles: 1 },
 };
 
 // Creates deep copy of javascript object instead of setting a reference

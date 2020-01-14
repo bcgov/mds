@@ -31,15 +31,21 @@ exports[`DownloadDocumentPackageModal renders properly 1`] = `
       }
     }
   />
-  <Button
-    block={false}
-    ghost={false}
-    htmlType="button"
-    loading={false}
-    onClick={[Function]}
-    type="secondary"
+  <br />
+  <div
+    className="right center-mobile padding-md--top"
   >
-    Download
-  </Button>
+    <Button
+      block={false}
+      className="full-mobile"
+      ghost={false}
+      htmlType="button"
+      loading={false}
+      onClick={[Function]}
+      type="primary"
+    >
+      Download
+    </Button>
+  </div>
 </div>
 `;

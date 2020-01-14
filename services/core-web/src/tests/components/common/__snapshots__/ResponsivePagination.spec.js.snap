@@ -2,7 +2,7 @@
 
 exports[`ResponsivePagination renders properly 1`] = `
 <div>
-  <MediaQueryContextConsumer
+  <MediaQuery
     maxWidth={500}
   >
     <Pagination
@@ -23,8 +23,8 @@ exports[`ResponsivePagination renders properly 1`] = `
       size="small"
       total={1000}
     />
-  </MediaQueryContextConsumer>
-  <MediaQueryContextConsumer
+  </MediaQuery>
+  <MediaQuery
     minWidth={501}
   >
     <Pagination
@@ -45,6 +45,6 @@ exports[`ResponsivePagination renders properly 1`] = `
       showTotal={[Function]}
       total={1000}
     />
-  </MediaQueryContextConsumer>
+  </MediaQuery>
 </div>
 `;
