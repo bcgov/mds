@@ -488,7 +488,7 @@ VALUES
 on conflict do nothing;
 
 INSERT INTO unit_type
-(unit_type_code, unit, description, active_ind, create_user, update_user)
+(unit_type_code, short_description, description, active_ind, create_user, update_user)
 VALUES
 	('MTN', 't', 'Tonne (Metric Ton 1000Kg)', true, 'system-mds', 'system-mds'),
 	('MEC', 'm3', 'Meters cubed', true, 'system-mds', 'system-mds'),
