@@ -57,7 +57,7 @@ describe("noticeOfWorkReducer", () => {
 
   it("receives STORE_NOTICE_OF_WORK_APPLICATION_REVIEWS", () => {
     const expectedValue = getBaseExpectedValue();
-    expectedValue.noticeOfWork = MOCK.NOTICE_OF_WORK_REVIEW_RESPONSE.records;
+    expectedValue.noticeOfWorkReviews = MOCK.NOTICE_OF_WORK_REVIEW_RESPONSE.records;
     const result = noticeOfWorkReducer(
       undefined,
       storeNoticeOfWorkApplicationReviews(MOCK.NOTICE_OF_WORK_REVIEW_RESPONSE)
