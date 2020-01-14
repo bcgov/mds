@@ -15,6 +15,7 @@ import {
   fetchVariancesByMine,
   fetchMineComplianceCodes,
   fetchVarianceStatusOptions,
+  fetchVarianceDocumentCategoryOptions,
   createVariance,
   addDocumentToVariance,
   updateVariance,
@@ -23,6 +24,7 @@ import {
   getVarianceApplications,
   getApprovedVariances,
   getVarianceStatusOptionsHash,
+  getVarianceDocumentCategoryOptionsHash,
   getHSRCMComplianceCodesHash,
   getDropdownHSRCMComplianceCodes,
 } from "@/selectors/varianceSelectors";
@@ -40,9 +42,11 @@ const propTypes = {
   fetchVariancesByMine: PropTypes.func.isRequired,
   fetchMineComplianceCodes: PropTypes.func.isRequired,
   fetchVarianceStatusOptions: PropTypes.func.isRequired,
+  fetchVarianceDocumentCategoryOptions: PropTypes.func.isRequired,
   complianceCodesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   complianceCodes: CustomPropTypes.options.isRequired,
   varianceStatusOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  documentCategoryOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   approvedVariances: PropTypes.arrayOf(CustomPropTypes.variance).isRequired,
   varianceApplications: PropTypes.arrayOf(CustomPropTypes.variance).isRequired,
   openModal: PropTypes.func.isRequired,
@@ -66,6 +70,7 @@ export class Variances extends Component {
     this.props.fetchVariancesByMine({ mineGuid: id });
     this.props.fetchMineComplianceCodes();
     this.props.fetchVarianceStatusOptions();
+    this.props.fetchVarianceDocumentCategoryOptions();
   }
 
   handleAddDocuments = (files, varianceGuid) =>
@@ -115,6 +120,7 @@ export class Variances extends Component {
         varianceGuid: variance.variance_guid,
         varianceStatusOptionsHash: this.props.varianceStatusOptionsHash,
         complianceCodesHash: this.props.complianceCodesHash,
+        documentCategoryOptionsHash: this.props.documentCategoryOptionsHash,
       },
       content: modalConfig.EDIT_VARIANCE,
     });
@@ -128,6 +134,7 @@ export class Variances extends Component {
         mineName: this.props.mine.mine_name,
         varianceStatusOptionsHash: this.props.varianceStatusOptionsHash,
         complianceCodesHash: this.props.complianceCodesHash,
+        documentCategoryOptionsHash: this.props.documentCategoryOptionsHash,
       },
       content: modalConfig.VIEW_VARIANCE,
     });
@@ -198,6 +205,7 @@ const mapStateToProps = (state) => ({
   complianceCodesHash: getHSRCMComplianceCodesHash(state),
   complianceCodes: getDropdownHSRCMComplianceCodes(state),
   varianceStatusOptionsHash: getVarianceStatusOptionsHash(state),
+  documentCategoryOptionsHash: getVarianceDocumentCategoryOptionsHash(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
@@ -209,6 +217,7 @@ const mapDispatchToProps = (dispatch) =>
       fetchVariancesByMine,
       fetchMineComplianceCodes,
       fetchVarianceStatusOptions,
+      fetchVarianceDocumentCategoryOptions,
       createVariance,
       updateVariance,
       addDocumentToVariance,

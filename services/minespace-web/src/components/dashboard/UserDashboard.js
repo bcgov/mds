@@ -11,6 +11,7 @@ import CustomPropTypes from "@/customPropTypes";
 import QuestionSidebar from "@/components/common/QuestionsSidebar";
 import Loading from "@/components/common/Loading";
 import * as routes from "@/constants/routes";
+import * as Strings from "@/constants/strings";
 
 const propTypes = {
   userInfo: PropTypes.objectOf(PropTypes.string).isRequired,
@@ -32,7 +33,7 @@ export class UserDashboard extends Component {
     const { mines } = this.props.userMineInfo;
     return (
       <div className="user-dashboard-padding">
-        {mines && mines.length > 0 && (
+        {(mines && mines.length > 0 && (
           <div className="inline-flex between block-tablet">
             <div>
               <div>
@@ -42,26 +43,27 @@ export class UserDashboard extends Component {
                 </p>
               </div>
               <ul className="user-mine-list">
-                {mines.map((mine) => (
-                  <li key={mine.mine_guid}>
-                    <Link to={routes.MINE_DASHBOARD.dynamicRoute(mine.mine_guid)}>
-                      {mine.mine_name}
-                    </Link>
-                  </li>
-                ))}
+                {mines
+                  .sort((a, b) => (a.mine_name > b.mine_name ? 1 : -1))
+                  .map((mine) => (
+                    <li key={mine.mine_guid}>
+                      <Link to={routes.MINE_DASHBOARD.dynamicRoute(mine.mine_guid)}>
+                        {mine.mine_name}
+                      </Link>
+                    </li>
+                  ))}
               </ul>
               <p className="large-padding-top">
-                Don&#39;t see the mine you are looking for? Contact{" "}
-                <a className="underline" href="mailto:MDS@gov.bc.ca">
-                  mds@gov.bc.ca
-                </a>{" "}
-                for assistance.
+                Don&#39;t see the mine you&#39;re looking for? Contact&nbsp;
+                <a className="underline" href={`mailto:${Strings.MDS_EMAIL}`}>
+                  {Strings.MDS_EMAIL}
+                </a>
+                &nbsp;for assistance.
               </p>
             </div>
             <QuestionSidebar />
           </div>
-        )}
-        {mines && mines.length === 0 && <NullScreen type="no-mines" />}
+        )) || <NullScreen type="no-mines" />}
       </div>
     );
   }

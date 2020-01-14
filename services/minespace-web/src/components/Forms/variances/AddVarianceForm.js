@@ -66,7 +66,7 @@ export class AddVarianceForm extends Component {
         />
 
         <Form.Item label="Attached Files">
-          <p>Please upload all the required documents here for the variance application</p>
+          <p>Please upload all the required documents here for the variance application.</p>
           <Field
             id="uploadedFiles"
             name="uploadedFiles"
