@@ -6,6 +6,7 @@ const initialState = {
   noticeOfWork: {},
   originalNoticeOfWork: {},
   noticeOfWorkPageData: {},
+  noticeOfWorkReviews: [],
   documentDownloadState: { downloading: false, currentFile: 1, totalFiles: 1 },
 };
 

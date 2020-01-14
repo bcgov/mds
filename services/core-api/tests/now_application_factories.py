@@ -353,6 +353,19 @@ class UndergroundExplorationDetailFactory(ActivityDetailBaseFactory):
 
     underground_exploration_type_code = factory.LazyFunction(RandomUndergroundExplorationTypeCode)
 
+class NOWApplicationProgressFactory(BaseFactory):
+    class Meta:
+        model = app_models.NOWApplicationProgress
+
+    class Params:
+        now_application = factory.SubFactory('tests.factories.NOWApplicationFactory')
+
+    now_application_id = factory.SelfAttribute('now_application.now_application_id')
+    #application_progress_id = factory.Sequence(lambda n: n)
+    application_progress_status_code = factory.LazyFunction(RandomNOWProgressStatusCode)
+    start_date = factory.Faker('past_datetime')
+    created_by = factory.Faker('company')
+    active_ind = True
 
 class NOWApplicationReviewFactory(BaseFactory):
     class Meta:
@@ -369,9 +382,10 @@ class NOWApplicationFactory(BaseFactory):
         model = app_models.NOWApplication
 
     class Params:
-        party = factory.SubFactory('tests.factories.PartyFactory', person=True)
+        inspector = factory.SubFactory('tests.factories.PartyBusinessRoleFactory')
 
-    lead_inspector_party_guid = factory.SelfAttribute('party.party_guid')
+    application_progress = factory.RelatedFactory(NOWApplicationProgressFactory, 'now_application')
+    lead_inspector_party_guid = factory.SelfAttribute('inspector.party.party_guid')
     now_tracking_number = factory.fuzzy.FuzzyInteger(1, 100)
     notice_of_work_type_code = factory.LazyFunction(RandomNOWTypeCode)
     now_application_status_code = factory.LazyFunction(RandomNOWStatusCode)

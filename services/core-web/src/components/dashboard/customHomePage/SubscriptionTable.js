@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { Table, Popconfirm, Tooltip } from "antd";
-import { uniqBy } from "lodash";
 import * as router from "@/constants/routes";
 import * as Strings from "@/constants/strings";
 import NullScreen from "@/components/common/NullScreen";
@@ -35,7 +34,7 @@ export class SubscriptionTable extends Component {
       operationalStatus: mine.mine_status.length
         ? mine.mine_status[0].status_labels[0]
         : Strings.EMPTY_FIELD,
-      permit: mine.mine_permit.length ? mine.mine_permit : null,
+      permit: mine.mine_permit_numbers.length ? mine.mine_permit_numbers : null,
       region: mine.region_code ? mineRegionHash[mine.region_code] : Strings.EMPTY_FIELD,
       commodity: mine.mine_type.length ? mine.mine_type : null,
       commodityHash: mineCommodityHash,
@@ -71,10 +70,7 @@ export class SubscriptionTable extends Component {
         render: (text, record) => (
           <div title="Permit Number">
             <ul className="mine-list__permits">
-              {text &&
-                uniqBy(text, "permit_no").map(({ permit_no, permit_guid }) => (
-                  <li key={permit_guid}>{permit_no}</li>
-                ))}
+              {text && text.map((permit_no) => <li key={permit_no}>{permit_no}</li>)}
               {!text && <li>{record.emptyField}</li>}
             </ul>
           </div>

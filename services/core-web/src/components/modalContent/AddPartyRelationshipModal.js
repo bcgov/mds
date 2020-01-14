@@ -13,10 +13,12 @@ const propTypes = {
   partyRelationships: PropTypes.arrayOf(CustomPropTypes.partyRelationship),
   partyRelationshipType: CustomPropTypes.partyRelationshipType.isRequired,
   mine: CustomPropTypes.mine.isRequired,
+  minePermits: CustomPropTypes.permits,
 };
 
 const defaultProps = {
   partyRelationships: [],
+  minePermits: [],
 };
 
 export const AddPartyRelationshipModal = (props) => (
@@ -29,6 +31,7 @@ export const AddPartyRelationshipModal = (props) => (
       partyRelationships={props.partyRelationships}
       partyRelationshipType={props.partyRelationshipType}
       mine={props.mine}
+      minePermits={props.minePermits}
       onFileLoad={props.onFileLoad}
       onRemoveFile={props.onRemoveFile}
     />
