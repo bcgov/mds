@@ -111,6 +111,22 @@ services:
     networks:
       - mds
 
+  minespace:
+    restart: always
+    container_name: mds_minespace
+    build:
+      context: services/minespace-web
+    command: ["npm", "run", "serve"]
+    volumes:
+      - ./services/minespace-web/src/:/app/src/
+    ports:
+      - 3020:3020
+    depends_on:
+      - backend
+    env_file: ./services/minespace-web/.env
+    networks:
+      - mds
+
   ####################### NRIS_BACKEND Definition #######################
   nris_backend:
     restart: always

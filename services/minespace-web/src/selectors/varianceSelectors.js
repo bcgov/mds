@@ -7,6 +7,7 @@ export const {
   getMineVariances,
   getComplianceCodes,
   getVarianceStatusOptions,
+  getVarianceDocumentCategoryOptions,
   getVariance,
 } = varianceReducer;
 
@@ -77,5 +78,19 @@ export const getDropdownVarianceStatusOptions = createSelector(
 
 export const getVarianceStatusOptionsHash = createSelector(
   [getDropdownVarianceStatusOptions],
+  createLabelHash
+);
+
+export const getDropdownVarianceDocumentCategoryOptions = createSelector(
+  [getVarianceDocumentCategoryOptions],
+  (options) =>
+    options.map((option) => {
+      const composedLabel = `${option.description} Document`;
+      return { value: option.variance_document_category_code, label: composedLabel };
+    })
+);
+
+export const getVarianceDocumentCategoryOptionsHash = createSelector(
+  [getDropdownVarianceDocumentCategoryOptions],
   createLabelHash
 );

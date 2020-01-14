@@ -15,6 +15,11 @@ export const storeVarianceStatusOptions = (payload) => ({
   payload,
 });
 
+export const storeVarianceDocumentCategoryOptions = (payload) => ({
+  type: actionTypes.STORE_VARIANCE_DOCUMENT_CATEGORY_OPTIONS,
+  payload,
+});
+
 export const storeComplianceCodes = (payload) => ({
   type: actionTypes.STORE_COMPLIANCE_CODES,
   payload,

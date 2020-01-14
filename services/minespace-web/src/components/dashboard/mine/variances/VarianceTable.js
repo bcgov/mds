@@ -6,6 +6,9 @@ import { formatDate } from "@/utils/helpers";
 import { RED_CLOCK, EDIT_PENCIL } from "@/constants/assets";
 import downloadFileFromDocumentManager from "@/utils/actionlessNetworkCalls";
 import * as Strings from "@/constants/strings";
+import { COLOR } from "@/constants/styles";
+
+const { errorRed } = COLOR;
 
 const propTypes = {
   variances: PropTypes.arrayOf(CustomPropTypes.variance).isRequired,
@@ -23,6 +26,8 @@ const defaultProps = {
 };
 
 export class VarianceTable extends Component {
+  getOverdueStyle = (isOverdue) => (isOverdue ? { color: errorRed } : {});
+
   handleConditionalEdit = (code) => code === Strings.VARIANCE_APPLICATION_CODE;
 
   transformRowData = (variances, codeHash, statusHash) =>
@@ -54,16 +59,20 @@ export class VarianceTable extends Component {
       title: "",
       dataIndex: "isOverdue",
       width: 10,
-      render: (isOverdue) => (
-        <div title="">
-          {isOverdue ? <img className="padding-small" src={RED_CLOCK} alt="expired" /> : ""}
+      render: (text, record) => (
+        <div title="Overdue">
+          {record.isOverdue ? <img className="padding-small" src={RED_CLOCK} alt="expired" /> : ""}
         </div>
       ),
     },
     {
       title: "Code Section",
       dataIndex: "compliance_article_id",
-      render: (text) => <div title="Code Section">{text}</div>,
+      render: (text, record) => (
+        <div style={this.getOverdueStyle(record.isOverdue)} title="Code Section">
+          {text}
+        </div>
+      ),
     },
     {
       title: "Submission Date",
@@ -72,8 +81,13 @@ export class VarianceTable extends Component {
           This attribute has no effect on the responsive view, same class is added to the div to handle responsive views
       */
       className: !isApplication ? "column-hide" : "",
-      render: (text) => (
-        <div className={!isApplication ? "column-hide" : ""} title="Submission Date">
+
+      render: (text, record) => (
+        <div
+          title="Submission Date"
+          className={!isApplication ? "column-hide" : ""}
+          style={this.getOverdueStyle(record.isOverdue)}
+        >
           {text}
         </div>
       ),
@@ -84,8 +98,12 @@ export class VarianceTable extends Component {
       title: "Application  Status",
       dataIndex: "status",
       className: !isApplication ? "column-hide" : "",
-      render: (text) => (
-        <div title="Application Status" className={!isApplication ? "column-hide" : ""}>
+      render: (text, record) => (
+        <div
+          title="Application Status"
+          className={!isApplication ? "column-hide" : ""}
+          style={this.getOverdueStyle(record.isOverdue)}
+        >
           {text}
         </div>
       ),
@@ -95,8 +113,12 @@ export class VarianceTable extends Component {
       title: "Issue Date",
       dataIndex: "issue_date",
       className: isApplication ? "column-hide" : "",
-      render: (text) => (
-        <div title="Issue Date" className={isApplication ? "column-hide" : ""}>
+      render: (text, record) => (
+        <div
+          title="Issue Date"
+          className={isApplication ? "column-hide" : ""}
+          style={this.getOverdueStyle(record.isOverdue)}
+        >
           {text}
         </div>
       ),
@@ -106,8 +128,12 @@ export class VarianceTable extends Component {
       title: "Expiry Date",
       dataIndex: "expiry_date",
       className: isApplication ? "column-hide" : "",
-      render: (text) => (
-        <div className={isApplication ? "column-hide" : ""} title="Expiry Date">
+      render: (text, record) => (
+        <div
+          title="Expiry Date"
+          className={isApplication ? "column-hide" : ""}
+          style={this.getOverdueStyle(record.isOverdue)}
+        >
           {text}
         </div>
       ),
@@ -119,7 +145,11 @@ export class VarianceTable extends Component {
       dataIndex: "",
       className: isApplication ? "column-hide" : "",
       render: (text, record) => (
-        <div className={isApplication ? "column-hide" : ""} title="Approval Status">
+        <div
+          title="Approval Status"
+          className={isApplication ? "column-hide" : ""}
+          style={this.getOverdueStyle(record.isOverdue)}
+        >
           {record.isOverdue ? "Expired" : "Active"}
         </div>
       ),
@@ -140,6 +170,7 @@ export class VarianceTable extends Component {
                     onKeyPress={() => downloadFileFromDocumentManager(file.document_manager_guid)}
                     // Accessibility: Focusable element
                     tabIndex="0"
+                    style={this.getOverdueStyle(record.isOverdue)}
                   >
                     {file.document_name}
                   </a>
@@ -153,12 +184,13 @@ export class VarianceTable extends Component {
       title: "",
       dataIndex: "variance",
       render: (text, record) => (
-        <div title="" align="right">
+        <div title={record.isEditable ? "Edit" : "View"} align="right">
           <Button
             type="primary"
             size="small"
             ghost
             onClick={(event) => this.handleOpenModal(event, record.isEditable, record.variance)}
+            style={this.getOverdueStyle(record.isOverdue)}
           >
             {record.isEditable ? (
               <img src={EDIT_PENCIL} alt="Edit/View" className="icon-svg-filter" />
