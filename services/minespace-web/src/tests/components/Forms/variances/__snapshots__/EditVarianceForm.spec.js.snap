@@ -92,17 +92,6 @@ exports[`EditVarianceForm renders properly 1`] = `
         Cancel
       </Button>
     </Popconfirm>
-    <Button
-      block={false}
-      className="full-mobile"
-      disabled={false}
-      ghost={false}
-      htmlType="submit"
-      loading={false}
-      type="primary"
-    >
-      Submit
-    </Button>
   </div>
 </Form>
 `;
