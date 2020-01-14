@@ -21,14 +21,9 @@ import {
   deleteNoticeOfWorkApplicationReviewDocument,
   setNoticeOfWorkApplicationDocumentDownloadState,
 } from "@/actionCreators/noticeOfWorkActionCreator";
-import { fetchNoticeOfWorkApplicationReviewTypes } from "@/actionCreators/staticContentActionCreator";
 import { getNoticeOfWorkReviews } from "@/selectors/noticeOfWorkSelectors";
 import { getDropdownNoticeOfWorkApplicationReviewTypeOptions } from "@/selectors/staticContentSelectors";
 import NOWApplicationReviewsTable from "@/components/noticeOfWork/applications/referals/NOWApplicationReviewsTable";
-
-/**
- * @constant ReviewNOWApplication renders edit/view for the NoW Application review step
- */
 
 const propTypes = {
   // eslint-disable-next-line
@@ -44,7 +39,6 @@ const propTypes = {
   closeModal: PropTypes.func.isRequired,
   createNoticeOfWorkApplicationReview: PropTypes.func.isRequired,
   fetchNoticeOfWorkApplicationReviews: PropTypes.func.isRequired,
-  fetchNoticeOfWorkApplicationReviewTypes: PropTypes.func.isRequired,
   updateNoticeOfWorkApplicationReview: PropTypes.func.isRequired,
   deleteNoticeOfWorkApplicationReview: PropTypes.func.isRequired,
   deleteNoticeOfWorkApplicationReviewDocument: PropTypes.func.isRequired,
@@ -54,10 +48,12 @@ const propTypes = {
 const defaultProps = {};
 
 export class NOWApplicationReviews extends Component {
-  state = { cancelDownload: false };
+  state = { cancelDownload: false, isLoaded: false };
+
   componentDidMount() {
-    this.props.fetchNoticeOfWorkApplicationReviews(this.props.noticeOfWorkGuid);
-    this.props.fetchNoticeOfWorkApplicationReviewTypes();
+    this.props
+      .fetchNoticeOfWorkApplicationReviews(this.props.noticeOfWorkGuid)
+      .then(() => this.setState({ isLoaded: true }));
   }
 
   handleAddReview = (values) => {
@@ -69,7 +65,7 @@ export class NOWApplicationReviews extends Component {
 
   handleEditReview = (values) => {
     const { now_application_review_id } = values;
-    const form_values = {
+    const formValues = {
       uploadedFiles: values.uploadedFiles,
       now_application_review_type_code: values.now_application_review_type_code,
       response_date: values.response_date,
@@ -79,7 +75,7 @@ export class NOWApplicationReviews extends Component {
       .updateNoticeOfWorkApplicationReview(
         this.props.noticeOfWorkGuid,
         now_application_review_id,
-        form_values
+        formValues
       )
       .then(() => {
         this.props.fetchNoticeOfWorkApplicationReviews(this.props.noticeOfWorkGuid);
@@ -202,11 +198,11 @@ export class NOWApplicationReviews extends Component {
             });
             return;
           }
-          currentFile = currentFile + 1;
+          currentFile += 1;
           this.props.setNoticeOfWorkApplicationDocumentDownloadState({
             downloading: true,
-            currentFile: currentFile,
-            totalFiles: totalFiles,
+            currentFile,
+            totalFiles,
           });
           this.downloadDocument(url);
           // eslint-disable-next-line
@@ -272,6 +268,7 @@ export class NOWApplicationReviews extends Component {
           <Col sm={22} md={22} lg={22}>
             {this.props.noticeOfWorkReviews && (
               <NOWApplicationReviewsTable
+                isLoaded={this.state.isLoaded}
                 noticeOfWorkReviews={this.props.noticeOfWorkReviews}
                 noticeOfWorkReviewTypes={this.props.noticeOfWorkReviewTypes}
                 handleDelete={this.handleDeleteReview}
@@ -299,7 +296,6 @@ const mapDispatchToProps = (dispatch) =>
       closeModal,
       fetchNoticeOfWorkApplicationReviews,
       createNoticeOfWorkApplicationReview,
-      fetchNoticeOfWorkApplicationReviewTypes,
       deleteNoticeOfWorkApplicationReview,
       updateNoticeOfWorkApplicationReview,
       deleteNoticeOfWorkApplicationReviewDocument,

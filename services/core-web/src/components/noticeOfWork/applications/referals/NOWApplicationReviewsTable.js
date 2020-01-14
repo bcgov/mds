@@ -9,9 +9,8 @@ import * as Permission from "@/constants/permissions";
 import { EDIT_OUTLINE_VIOLET } from "@/constants/assets";
 import LinkButton from "@/components/common/LinkButton";
 import { downloadFileFromDocumentManager } from "@/utils/actionlessNetworkCalls";
-/**
- * @constant ReviewNOWApplication renders edit/view for the NoW Application review step
- */
+import TableLoadingWrapper from "@/components/common/wrappers/TableLoadingWrapper";
+import { getTableHeaders } from "@/utils/helpers";
 
 const propTypes = {
   // eslint-disable-next-line
@@ -22,6 +21,7 @@ const propTypes = {
   handleDelete: PropTypes.func.isRequired,
   openEditModal: PropTypes.func.isRequired,
   handleEdit: PropTypes.func.isRequired,
+  isLoaded: PropTypes.bool.isRequired,
 };
 
 const columns = [
@@ -29,16 +29,19 @@ const columns = [
     title: "Type",
     dataIndex: "now_application_review_type",
     key: "now_application_review_type",
+    render: (text) => <div title="Type">{text}</div>,
   },
   {
     title: "Referee Name",
     dataIndex: "referee_name",
     key: "referee_name",
+    render: (text) => <div title="Type">{text}</div>,
   },
   {
     title: "Response Recieved",
     dataIndex: "response_date",
     key: "response_date",
+    render: (text) => <div title="Type">{text}</div>,
   },
   {
     title: "Documents",
@@ -71,27 +74,29 @@ const columns = [
     align: "right",
     render: (text, record) => (
       <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
-        <Button
-          ghost
-          type="primary"
-          size="small"
-          onClick={(event) =>
-            record.openEditModal(event, record, record.handleEdit, record.handleDocumentDelete)
-          }
-        >
-          <img src={EDIT_OUTLINE_VIOLET} alt="Edit Review" />
-        </Button>
-        <Popconfirm
-          placement="topLeft"
-          title="Are you sure you want to delete this?"
-          onConfirm={() => record.handleDelete(record.now_application_review_id)}
-          okText="Delete"
-          cancelText="Cancel"
-        >
-          <Button ghost type="primary" size="small">
-            <Icon type="minus-circle" theme="outlined" />
+        <div>
+          <Button
+            ghost
+            type="primary"
+            size="small"
+            onClick={(event) =>
+              record.openEditModal(event, record, record.handleEdit, record.handleDocumentDelete)
+            }
+          >
+            <img src={EDIT_OUTLINE_VIOLET} alt="Edit Review" />
           </Button>
-        </Popconfirm>
+          <Popconfirm
+            placement="topLeft"
+            title="Are you sure you want to delete this?"
+            onConfirm={() => record.handleDelete(record.now_application_review_id)}
+            okText="Delete"
+            cancelText="Cancel"
+          >
+            <Button ghost type="primary" size="small">
+              <Icon type="minus-circle" theme="outlined" />
+            </Button>
+          </Popconfirm>
+        </div>
       </AuthorizationWrapper>
     ),
   },
@@ -117,7 +122,7 @@ const transformRowData = (
 
 export const NOWApplicationReviewsTable = (props) => {
   return (
-    <div>
+    <TableLoadingWrapper condition={props.isLoaded} tableHeaders={getTableHeaders(columns)}>
       <Table
         columns={columns}
         pagination={false}
@@ -130,7 +135,7 @@ export const NOWApplicationReviewsTable = (props) => {
           props.handleDocumentDelete
         )}
       />
-    </div>
+    </TableLoadingWrapper>
   );
 };
 

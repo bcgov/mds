@@ -1,5 +1,5 @@
 import React from "react";
-import { objectOf, string, func, bool } from "prop-types";
+import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { Table } from "antd";
 import { uniqBy, map, toArray, isEmpty } from "lodash";
@@ -15,12 +15,12 @@ import { getTableHeaders } from "@/utils/helpers";
  */
 
 const propTypes = {
-  parties: objectOf(CustomPropTypes.party).isRequired,
-  relationshipTypeHash: objectOf(string).isRequired,
-  handleSearch: func.isRequired,
-  sortField: string,
-  sortDir: string,
-  isLoaded: bool.isRequired,
+  parties: PropTypes.objectOf(CustomPropTypes.party).isRequired,
+  relationshipTypeHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  handleSearch: PropTypes.func.isRequired,
+  sortField: PropTypes.string,
+  sortDir: PropTypes.string,
+  isLoaded: PropTypes.bool.isRequired,
 };
 
 const defaultProps = {
