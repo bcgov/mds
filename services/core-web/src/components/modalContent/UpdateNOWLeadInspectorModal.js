@@ -9,7 +9,7 @@ import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
   title: PropTypes.string.isRequired,
-  noticeOfWork: CustomPropTypes.nowApplication.isRequired,
+  lead_inspector_party_guid: PropTypes.string.isRequired,
   inspectors: CustomPropTypes.groupOptions.isRequired,
   updateLeadInspectorFormValues: PropTypes.objectOf(PropTypes.any),
   setLeadInspectorPartyGuid: PropTypes.func.isRequired,
@@ -41,7 +41,7 @@ export class UpdateNOWLeadInspectorModal extends Component {
           <Col>
             <UpdateNOWLeadInspectorForm
               initialValues={{
-                lead_inspector_party_guid: this.props.noticeOfWork.lead_inspector_party_guid,
+                lead_inspector_party_guid: this.props.lead_inspector_party_guid,
               }}
               inspectors={this.props.inspectors}
               setLeadInspectorPartyGuid={this.props.setLeadInspectorPartyGuid}

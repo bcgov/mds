@@ -10,7 +10,7 @@ export const mine = shape({
   ohsc_ind: PropTypes.bool,
   union_ind: PropTypes.bool,
   major_mine_ind: PropTypes.bool,
-  mine_permit_numbers: arrayOf(PropTypes.string),
+  mine_permit_numbers: PropTypes.arrayOf(PropTypes.string),
   mine_tailings_storage_facilities: arrayOf(tailingsStorageFacility),
 });
 

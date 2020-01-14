@@ -55,7 +55,7 @@ exports[`CustomHomePage renders properly 1`] = `
             },
             "mine_name": "mine3",
             "mine_no": "BLAH9091",
-            "mine_permit": Array [],
+            "mine_permit_numbers": Array [],
             "mine_status": Object {
               "effective_date": "2018-10-16",
               "expiry_date": null,
