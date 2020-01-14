@@ -383,6 +383,7 @@ export class NoticeOfWorkApplication extends Component {
                 description="You can transfer the Notice of Work to a different mine or change its Lead Inspector by using the Actions dropdown menu above."
                 type="info"
                 showIcon
+                style={{ textAlign: "left" }}
               />
             </Col>
           </Row>,
