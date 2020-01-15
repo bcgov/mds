@@ -93,9 +93,10 @@
   }
 
   &--footer {
-    color: gray;
+    color: $medium-grey;
     text-align: center;
     width: 100%;
+    padding-top: 50px;
   }
 }
 
