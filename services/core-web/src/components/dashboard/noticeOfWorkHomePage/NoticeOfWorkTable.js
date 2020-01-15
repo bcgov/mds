@@ -141,14 +141,16 @@ export class NoticeOfWorkTable extends Component {
 
   columns = () => [
     {
-      title: "NoW No.",
+      title: "Number",
       key: "now_number",
       dataIndex: "now_number",
       sortField: "now_number",
       sorter: true,
-      ...this.filterProperties("NoW No.", "now_number"),
+      ...this.filterProperties("Number", "now_number"),
       render: (text, record) => (
-        <Link to={this.createLinkTo(router.VIEW_NOTICE_OF_WORK_APPLICATION, record)}>{text}</Link>
+        <Link to={this.createLinkTo(router.VIEW_NOTICE_OF_WORK_APPLICATION, record)} title="Number">
+          {text}
+        </Link>
       ),
     },
     {
@@ -183,7 +185,7 @@ export class NoticeOfWorkTable extends Component {
       render: (text) => <div title="Region">{text}</div>,
     },
     {
-      title: "NoW Type",
+      title: "Type",
       key: "notice_of_work_type_description",
       dataIndex: "notice_of_work_type_description",
       sortField: "notice_of_work_type_description",
@@ -195,7 +197,7 @@ export class NoticeOfWorkTable extends Component {
       filters: optionsFilterLabelOnly(this.props.applicationTypeOptions).sort((a, b) =>
         a.value > b.value ? 1 : -1
       ),
-      render: (text) => <div title="NoW Mine Type">{text}</div>,
+      render: (text) => <div title="Type">{text}</div>,
     },
     {
       title: "Lead Inspector",
@@ -204,10 +206,10 @@ export class NoticeOfWorkTable extends Component {
       sortField: "lead_inspector_name",
       sorter: true,
       ...this.filterProperties("Lead Inspector", "lead_inspector_name"),
-      render: (text) => <div title="Lead Inspector Name">{text}</div>,
+      render: (text) => <div title="Lead Inspector">{text}</div>,
     },
     {
-      title: "Application Status",
+      title: "Status",
       key: "now_application_status_description",
       dataIndex: "now_application_status_description",
       sortField: "now_application_status_description",
@@ -220,18 +222,18 @@ export class NoticeOfWorkTable extends Component {
         a.value > b.value ? 1 : -1
       ),
       render: (text) => (
-        <div title="Application Status">
+        <div title="Status">
           <Badge status={getNoticeOfWorkApplicationBadgeStatusType(text)} text={text} />
         </div>
       ),
     },
     {
-      title: "Import Date",
+      title: "Received",
       key: "received_date",
       dataIndex: "received_date",
       sortField: "received_date",
       sorter: true,
-      render: (text) => <div title="Import Date">{text}</div>,
+      render: (text) => <div title="Received">{text}</div>,
     },
     {
       title: "",
@@ -242,11 +244,20 @@ export class NoticeOfWorkTable extends Component {
           <div title="" className="btn--middle flex">
             <AuthorizationWrapper inTesting>
               <Link to={this.createLinkTo(router.NOTICE_OF_WORK_APPLICATION, record)}>
-                <img src={EDIT_OUTLINE_VIOLET} alt="Edit NoW" className="padding-md--right" />
+                <img
+                  src={EDIT_OUTLINE_VIOLET}
+                  title="Edit"
+                  alt="Edit"
+                  className="padding-md--right"
+                />
               </Link>
             </AuthorizationWrapper>
             <Link to={this.createLinkTo(router.VIEW_NOTICE_OF_WORK_APPLICATION, record)}>
-              <Icon type="eye" className="icon-lg icon-svg-filter padding-large--left" />
+              <Icon
+                type="eye"
+                title="View"
+                className="icon-lg icon-svg-filter padding-large--left"
+              />
             </Link>
           </div>
         ),
