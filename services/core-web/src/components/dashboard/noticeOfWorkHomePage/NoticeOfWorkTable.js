@@ -82,12 +82,14 @@ export class NoticeOfWorkTable extends Component {
       now_application_guid: application.now_application_guid,
       now_number: application.now_number || Strings.EMPTY_FIELD,
       mine_name: application.mine_name || Strings.EMPTY_FIELD,
+      mine_guid: application.mine_guid,
       mine_region: application.mine_region
         ? this.props.mineRegionHash[application.mine_region]
         : Strings.EMPTY_FIELD,
       notice_of_work_type_description:
         application.notice_of_work_type_description || Strings.EMPTY_FIELD,
       lead_inspector_name: application.lead_inspector_name || Strings.EMPTY_FIELD,
+      lead_inspector_party_guid: application.lead_inspector_party_guid,
       now_application_status_description:
         application.now_application_status_description || Strings.EMPTY_FIELD,
       received_date: formatDate(application.received_date) || Strings.EMPTY_FIELD,
@@ -147,11 +149,15 @@ export class NoticeOfWorkTable extends Component {
       sortField: "now_number",
       sorter: true,
       ...this.filterProperties("Number", "now_number"),
-      render: (text, record) => (
-        <Link to={this.createLinkTo(router.VIEW_NOTICE_OF_WORK_APPLICATION, record)} title="Number">
-          {text}
-        </Link>
-      ),
+      render: (text, record) =>
+        (record.key && (
+          <Link
+            to={this.createLinkTo(router.VIEW_NOTICE_OF_WORK_APPLICATION, record)}
+            title="Number"
+          >
+            {text}
+          </Link>
+        )) || <div title="Number">{Strings.EMPTY_FIELD}</div>,
     },
     {
       title: "Mine",
@@ -161,11 +167,11 @@ export class NoticeOfWorkTable extends Component {
       sorter: true,
       ...this.filterProperties("Mine", "mine_name"),
       render: (text, record) =>
-        record.mineGuid ? (
-          <Link to={router.MINE_NOW_APPLICATIONS.dynamicRoute(record.mineGuid)}>{text}</Link>
-        ) : (
-          <div title="Mine">{text}</div>
-        ),
+        (record.mine_guid && (
+          <Link to={router.MINE_NOW_APPLICATIONS.dynamicRoute(record.mine_guid)} title="Mine">
+            {text}
+          </Link>
+        )) || <div title="Mine">{Strings.UNASSIGNED}</div>,
     },
     {
       title: "Region",
@@ -206,7 +212,15 @@ export class NoticeOfWorkTable extends Component {
       sortField: "lead_inspector_name",
       sorter: true,
       ...this.filterProperties("Lead Inspector", "lead_inspector_name"),
-      render: (text) => <div title="Lead Inspector">{text}</div>,
+      render: (text, record) =>
+        (record.lead_inspector_party_guid && (
+          <Link
+            to={router.PARTY_PROFILE.dynamicRoute(record.lead_inspector_party_guid)}
+            title="Lead Inspector"
+          >
+            {text}
+          </Link>
+        )) || <div title="Lead Inspector">{Strings.UNASSIGNED}</div>,
     },
     {
       title: "Status",
