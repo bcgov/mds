@@ -10,6 +10,7 @@ const propTypes = {
   mineName: PropTypes.string.isRequired,
   varianceStatusOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   complianceCodesHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  documentCategoryOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
 export const ViewVarianceModal = (props) => (
@@ -20,6 +21,7 @@ export const ViewVarianceModal = (props) => (
       isViewOnly
       varianceStatusOptionsHash={props.varianceStatusOptionsHash}
       complianceCodesHash={props.complianceCodesHash}
+      documentCategoryOptionsHash={props.documentCategoryOptionsHash}
     />
     <div className="right center-mobile">
       <Button className="full-mobile" type="secondary" onClick={props.closeModal}>

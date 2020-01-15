@@ -151,3 +151,128 @@ export const createNoticeOfWorkApplicationProgress = (applicationGuid, payload) 
     .catch(() => dispatch(error(reducerTypes.CREATE_NOTICE_OF_WORK_APPLICATION_PROGRESS)))
     .finally(() => dispatch(hideLoading()));
 };
+
+export const fetchNoticeOfWorkApplicationReviews = (applicationGuid) => (dispatch) => {
+  dispatch(request(reducerTypes.GET_NOTICE_OF_WORK_APPLICATION_REVIEW));
+  dispatch(showLoading());
+  return CustomAxios()
+    .get(
+      `${ENVIRONMENT.apiUrl}${API.NOTICE_OF_WORK_APPLICATION_REVIEW(applicationGuid)}`,
+      createRequestHeader()
+    )
+    .then((response) => {
+      dispatch(success(reducerTypes.GET_NOTICE_OF_WORK_APPLICATION_REVIEW));
+      dispatch(noticeOfWorkActions.storeNoticeOfWorkApplicationReviews(response.data));
+      return response;
+    })
+    .catch(() => dispatch(error(reducerTypes.GET_NOTICE_OF_WORK_APPLICATION_REVIEW)))
+    .finally(() => dispatch(hideLoading()));
+};
+
+export const createNoticeOfWorkApplicationReview = (applicationGuid, payload) => (dispatch) => {
+  dispatch(request(reducerTypes.CREATE_NOTICE_OF_WORK_APPLICATION_REVIEW));
+  dispatch(showLoading());
+  return CustomAxios()
+    .post(
+      `${ENVIRONMENT.apiUrl}${API.NOTICE_OF_WORK_APPLICATION_REVIEW(applicationGuid)}`,
+      payload,
+      createRequestHeader()
+    )
+    .then((response) => {
+      notification.success({
+        message: "Successfully added Review",
+        duration: 10,
+      });
+      dispatch(success(reducerTypes.CREATE_NOTICE_OF_WORK_APPLICATION_REVIEW));
+      return response;
+    })
+    .catch(() => dispatch(error(reducerTypes.CREATE_NOTICE_OF_WORK_APPLICATION_REVIEW)))
+    .finally(() => dispatch(hideLoading()));
+};
+
+export const updateNoticeOfWorkApplicationReview = (
+  applicationGuid,
+  applicationReviewId,
+  payload
+) => (dispatch) => {
+  dispatch(request(reducerTypes.UPDATE_NOTICE_OF_WORK_APPLICATION_REVIEW));
+  dispatch(showLoading());
+  return CustomAxios()
+    .put(
+      `${ENVIRONMENT.apiUrl}${API.NOTICE_OF_WORK_APPLICATION_REVIEW(
+        applicationGuid
+      )}/${applicationReviewId}`,
+      payload,
+      createRequestHeader()
+    )
+    .then((response) => {
+      notification.success({
+        message: "Successfully updated Review",
+        duration: 10,
+      });
+      dispatch(success(reducerTypes.UPDATE_NOTICE_OF_WORK_APPLICATION_REVIEW));
+      return response;
+    })
+    .catch(() => dispatch(error(reducerTypes.UPDATE_NOTICE_OF_WORK_APPLICATION_REVIEW)))
+    .finally(() => dispatch(hideLoading()));
+};
+
+export const deleteNoticeOfWorkApplicationReview = (applicationGuid, applicationReviewId) => (
+  dispatch
+) => {
+  dispatch(request(reducerTypes.REMOVE_NOTICE_OF_WORK_APPLICATION_REVIEW));
+  dispatch(showLoading());
+  return CustomAxios()
+    .delete(
+      `${ENVIRONMENT.apiUrl +
+        API.NOTICE_OF_WORK_APPLICATION_REVIEW(applicationGuid)}/${applicationReviewId}`,
+      createRequestHeader()
+    )
+    .then((response) => {
+      notification.success({ message: "Successfully removed the review", duration: 10 });
+      dispatch(success(reducerTypes.REMOVE_NOTICE_OF_WORK_APPLICATION_REVIEW));
+      return response;
+    })
+    .catch(() => dispatch(error(reducerTypes.REMOVE_NOTICE_OF_WORK_APPLICATION_REVIEW)))
+    .finally(() => dispatch(hideLoading()));
+};
+
+export const addDocumentToNoticeOfWork = (now_application_guid, payload) => (dispatch) => {
+  dispatch(showLoading("modal"));
+  dispatch(request(reducerTypes.ADD_DOCUMENT_TO_NOTICE_OF_WORK));
+  return CustomAxios()
+    .put(
+      ENVIRONMENT.apiUrl + API.NOTICE_OF_WORK_DOCUMENT(now_application_guid),
+      payload,
+      createRequestHeader()
+    )
+    .then((response) => {
+      dispatch(success(reducerTypes.ADD_DOCUMENT_TO_NOTICE_OF_WORK));
+      return response;
+    })
+    .catch(() => dispatch(error(reducerTypes.ADD_DOCUMENT_TO_NOTICE_OF_WORK)))
+    .finally(() => dispatch(hideLoading("modal")));
+};
+
+export const deleteNoticeOfWorkApplicationReviewDocument = (applicationGuid, mineDocumentGuid) => (
+  dispatch
+) => {
+  dispatch(request(reducerTypes.REMOVE_NOTICE_OF_WORK_APPLICATION_REVIEW_DOCUMENT));
+  dispatch(showLoading());
+  return CustomAxios()
+    .delete(
+      `${ENVIRONMENT.apiUrl + API.NOTICE_OF_WORK_DOCUMENT(applicationGuid)}/${mineDocumentGuid}`,
+      createRequestHeader()
+    )
+    .then((response) => {
+      notification.success({ message: "Successfully removed the document", duration: 10 });
+      dispatch(success(reducerTypes.REMOVE_NOTICE_OF_WORK_APPLICATION_REVIEW_DOCUMENT));
+      return response;
+    })
+    .catch(() => dispatch(error(reducerTypes.REMOVE_NOTICE_OF_WORK_APPLICATION_REVIEW_DOCUMENT)))
+    .finally(() => dispatch(hideLoading()));
+};
+
+export const setNoticeOfWorkApplicationDocumentDownloadState = (payload) => (dispatch) => {
+  dispatch(noticeOfWorkActions.storeNoticeOfWorkApplicationDocumentDownloadState(payload));
+};

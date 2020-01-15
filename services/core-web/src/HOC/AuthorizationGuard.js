@@ -4,6 +4,7 @@ import hoistNonReactStatics from "hoist-non-react-statics";
 import { getUserAccessData } from "@/selectors/authenticationSelectors";
 import { USER_ROLES } from "@/constants/environment";
 import NullScreen from "@/components/common/NullScreen";
+import * as Permission from "@/constants/permissions";
 import { detectDevelopmentEnvironment, detectProdEnvironment } from "@/utils/environmentUtils";
 
 /**
@@ -17,8 +18,8 @@ export const AuthorizationGuard = (permission) => (WrappedComponent) => {
       return <WrappedComponent {...props} />;
     }
     if (
-      (permission === "inDevelopment" && detectDevelopmentEnvironment()) ||
-      (permission === "inTesting" && !detectProdEnvironment())
+      (permission === Permission.IN_DEVELOPMENT && detectDevelopmentEnvironment()) ||
+      (permission === Permission.IN_TESTING && !detectProdEnvironment())
     ) {
       return <WrappedComponent {...props} />;
     }

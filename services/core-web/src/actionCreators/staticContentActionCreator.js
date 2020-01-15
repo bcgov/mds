@@ -1,6 +1,7 @@
 import { request, success, error } from "@/actions/genericActions";
 import * as reducerTypes from "@/constants/reducerTypes";
 import * as staticContentActions from "@/actions/staticContentActions";
+import * as partyActions from "@/actions/partyActions";
 import * as String from "@/constants/strings";
 import * as API from "@/constants/API";
 import { ENVIRONMENT } from "@/constants/environment";
@@ -214,7 +215,7 @@ export const fetchMineReportStatusOptions = () => (dispatch) => {
 };
 
 // notice of work staticContent
-export const fetchNoticeOFWorkActivityTypeOptions = () => (dispatch) => {
+export const fetchNoticeOfWorkActivityTypeOptions = () => (dispatch) => {
   dispatch(request(reducerTypes.GET_NOTICE_OF_WORK_ACTIVITY_TYPE_OPTIONS));
   return CustomAxios()
     .get(`${ENVIRONMENT.apiUrl + API.NOTICE_OF_WORK_ACTIVITY_TYPE_OPTIONS}`, createRequestHeader())
@@ -226,7 +227,7 @@ export const fetchNoticeOFWorkActivityTypeOptions = () => (dispatch) => {
     .catch(() => dispatch(error(reducerTypes.GET_NOTICE_OF_WORK_ACTIVITY_TYPE_OPTIONS)));
 };
 
-export const fetchNoticeOFWorkUnitTypeOptions = () => (dispatch) => {
+export const fetchNoticeOfWorkUnitTypeOptions = () => (dispatch) => {
   dispatch(request(reducerTypes.GET_NOTICE_OF_WORK_UNIT_TYPE_OPTIONS));
   return CustomAxios()
     .get(`${ENVIRONMENT.apiUrl + API.NOTICE_OF_WORK_UNIT_TYPE_OPTIONS}`, createRequestHeader())
@@ -238,7 +239,7 @@ export const fetchNoticeOFWorkUnitTypeOptions = () => (dispatch) => {
     .catch(() => dispatch(error(reducerTypes.GET_NOTICE_OF_WORK_UNIT_TYPE_OPTIONS)));
 };
 
-export const fetchNoticeOFWorkApplicationTypeOptions = () => (dispatch) => {
+export const fetchNoticeOfWorkApplicationTypeOptions = () => (dispatch) => {
   dispatch(request(reducerTypes.GET_NOTICE_OF_WORK_APPLICATION_TYPE_OPTIONS));
   return CustomAxios()
     .get(
@@ -253,7 +254,7 @@ export const fetchNoticeOFWorkApplicationTypeOptions = () => (dispatch) => {
     .catch(() => dispatch(error(reducerTypes.GET_NOTICE_OF_WORK_APPLICATION_TYPE_OPTIONS)));
 };
 
-export const fetchNoticeOFWorkApplicationStatusOptions = () => (dispatch) => {
+export const fetchNoticeOfWorkApplicationStatusOptions = () => (dispatch) => {
   dispatch(request(reducerTypes.GET_NOTICE_OF_WORK_APPLICATION_STATUS_OPTIONS));
   return CustomAxios()
     .get(
@@ -268,7 +269,7 @@ export const fetchNoticeOFWorkApplicationStatusOptions = () => (dispatch) => {
     .catch(() => dispatch(error(reducerTypes.GET_NOTICE_OF_WORK_APPLICATION_STATUS_OPTIONS)));
 };
 
-export const fetchNoticeOFWorkApplicationDocumentTypeOptions = () => (dispatch) => {
+export const fetchNoticeOfWorkApplicationDocumentTypeOptions = () => (dispatch) => {
   dispatch(request(reducerTypes.GET_NOTICE_OF_WORK_APPLICATION_DOCUMENT_TYPE_OPTIONS));
   return CustomAxios()
     .get(`${ENVIRONMENT.apiUrl + API.NOW_APPLICATION_DOCUMENT_TYPE_OPTIONS}`, createRequestHeader())
@@ -282,7 +283,7 @@ export const fetchNoticeOFWorkApplicationDocumentTypeOptions = () => (dispatch) 
     );
 };
 
-export const fetchNoticeOFWorkUndergroundExplorationTypeOptions = () => (dispatch) => {
+export const fetchNoticeOfWorkUndergroundExplorationTypeOptions = () => (dispatch) => {
   dispatch(request(reducerTypes.GET_NOW_UNDERGROUND_EXPLORATION_TYPE_OPTIONS));
   return CustomAxios()
     .get(
@@ -299,7 +300,7 @@ export const fetchNoticeOFWorkUndergroundExplorationTypeOptions = () => (dispatc
     .catch(() => dispatch(error(reducerTypes.GET_NOW_UNDERGROUND_EXPLORATION_TYPE_OPTIONS)));
 };
 
-export const fetchNoticeOFWorkApplicationProgressStatusCodes = () => (dispatch) => {
+export const fetchNoticeOfWorkApplicationProgressStatusCodes = () => (dispatch) => {
   dispatch(request(reducerTypes.GET_NOW_APPLICATION_PROGRESS_STATUS_CODES));
   return CustomAxios()
     .get(`${ENVIRONMENT.apiUrl + API.NOW_APPLICATION_PROGRESS_STATUS_CODES}`, createRequestHeader())
@@ -313,7 +314,7 @@ export const fetchNoticeOFWorkApplicationProgressStatusCodes = () => (dispatch) 
     .catch(() => dispatch(error(reducerTypes.GET_NOW_APPLICATION_PROGRESS_STATUS_CODES)));
 };
 
-export const fetchNoticeOFWorkApplicationPermitTypes = () => (dispatch) => {
+export const fetchNoticeOfWorkApplicationPermitTypes = () => (dispatch) => {
   dispatch(request(reducerTypes.GET_NOW_APPLICATION_PERMIT_TYPES));
   return CustomAxios()
     .get(`${ENVIRONMENT.apiUrl + API.NOW_APPLICATION_PERMIT_TYPES}`, createRequestHeader())
@@ -323,4 +324,48 @@ export const fetchNoticeOFWorkApplicationPermitTypes = () => (dispatch) => {
       return response;
     })
     .catch(() => dispatch(error(reducerTypes.GET_NOW_APPLICATION_PERMIT_TYPES)));
+};
+
+export const fetchNoticeOfWorkApplicationReviewTypes = () => (dispatch) => {
+  dispatch(request(reducerTypes.GET_NOTICE_OF_WORK_APPLICATION_REVIEW_TYPES));
+  return CustomAxios()
+    .get(
+      `${ENVIRONMENT.apiUrl}${API.NOTICE_OF_WORK_APPLICATION_REVIEW_TYPES}`,
+      createRequestHeader()
+    )
+    .then((response) => {
+      dispatch(success(reducerTypes.GET_NOTICE_OF_WORK_APPLICATION_REVIEW_TYPES));
+      dispatch(staticContentActions.storeNoticeOfWorkApplicationReviewTypes(response.data));
+      return response;
+    })
+    .catch(() => dispatch(error(reducerTypes.GET_NOTICE_OF_WORK_APPLICATION_REVIEW_TYPES)));
+};
+
+export const fetchInspectors = () => (dispatch) => {
+  dispatch(request(reducerTypes.GET_INSPECTORS));
+  return CustomAxios()
+    .get(
+      ENVIRONMENT.apiUrl +
+        API.PARTIES_LIST_QUERY({
+          per_page: "all",
+          business_role: String.INCIDENT_FOLLOWUP_ACTIONS.inspector,
+        }),
+      createRequestHeader()
+    )
+    .then((response) => {
+      dispatch(success(reducerTypes.GET_INSPECTORS));
+      dispatch(partyActions.storeInspectors(response.data));
+    })
+    .catch(() => dispatch(error(reducerTypes.GET_INSPECTORS)));
+};
+
+export const fetchPartyRelationshipTypes = () => (dispatch) => {
+  dispatch(request(reducerTypes.GET_PARTY_RELATIONSHIP_TYPES));
+  return CustomAxios()
+    .get(`${ENVIRONMENT.apiUrl + API.PARTY}/mines/relationship-types`, createRequestHeader())
+    .then((response) => {
+      dispatch(success(reducerTypes.GET_PARTY_RELATIONSHIP_TYPES));
+      dispatch(partyActions.storePartyRelationshipTypes(response.data));
+    })
+    .catch(() => dispatch(error(reducerTypes.GET_PARTY_RELATIONSHIP_TYPES)));
 };

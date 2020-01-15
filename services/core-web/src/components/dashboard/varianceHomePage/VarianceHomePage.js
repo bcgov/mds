@@ -5,14 +5,6 @@ import { debounce, isEmpty } from "lodash";
 import queryString from "query-string";
 import moment from "moment";
 import PropTypes from "prop-types";
-import {
-  fetchRegionOptions,
-  fetchMineTenureTypes,
-  fetchMineCommodityOptions,
-  fetchMineComplianceCodes,
-  fetchVarianceStatusOptions,
-  fetchVarianceDocumentCategoryOptions,
-} from "@/actionCreators/staticContentActionCreator";
 import { modalConfig } from "@/components/modalContent/config";
 import { openModal, closeModal } from "@/actions/modalActions";
 import {
@@ -34,7 +26,6 @@ import { getVariances, getVariancePageData } from "@/selectors/varianceSelectors
 import { VarianceTable } from "@/components/dashboard/customHomePage/VarianceTable";
 import * as router from "@/constants/routes";
 import * as Strings from "@/constants/strings";
-import { fetchInspectors } from "@/actionCreators/partiesActionCreator";
 import VarianceSearch from "./VarianceSearch";
 import { formatParamStringToArray } from "@/utils/helpers";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
@@ -45,17 +36,10 @@ import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrap
  */
 
 const propTypes = {
-  fetchMineTenureTypes: PropTypes.func.isRequired,
-  fetchVarianceDocumentCategoryOptions: PropTypes.func.isRequired,
   addDocumentToVariance: PropTypes.func.isRequired,
   updateVariance: PropTypes.func.isRequired,
-  fetchMineComplianceCodes: PropTypes.func.isRequired,
-  fetchRegionOptions: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
-  fetchInspectors: PropTypes.func.isRequired,
-  fetchMineCommodityOptions: PropTypes.func.isRequired,
-  fetchVarianceStatusOptions: PropTypes.func.isRequired,
   fetchVariances: PropTypes.func.isRequired,
   location: PropTypes.shape({ search: PropTypes.string }).isRequired,
   variances: PropTypes.arrayOf(CustomPropTypes.variance).isRequired,
@@ -141,13 +125,6 @@ export class VarianceHomePage extends Component {
     this.props.fetchVariances(this.state.params).then(() => {
       this.setState({ variancesLoaded: true });
     });
-    this.props.fetchInspectors();
-    this.props.fetchMineTenureTypes();
-    this.props.fetchMineComplianceCodes();
-    this.props.fetchRegionOptions();
-    this.props.fetchMineCommodityOptions();
-    this.props.fetchVarianceStatusOptions();
-    this.props.fetchVarianceDocumentCategoryOptions();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -328,31 +305,33 @@ export class VarianceHomePage extends Component {
           <h1>Browse Variances</h1>
         </div>
         <div className="landing-page__content">
-          <AuthorizationWrapper inTesting>
-            <VarianceSearch
-              handleNameFieldReset={this.handleNameFieldReset}
-              initialValues={this.state.params}
-              fetchVariances={this.props.fetchVariances}
-              handleVarianceSearch={this.handleVarianceSearchDebounced}
-              mineRegionOptions={this.props.mineRegionOptions}
-              complianceCodes={this.props.getDropdownHSRCMComplianceCodes}
-              filterVarianceStatusOptions={this.props.filterVarianceStatusOptions}
+          <div className="page__content">
+            <AuthorizationWrapper inTesting>
+              <VarianceSearch
+                handleNameFieldReset={this.handleNameFieldReset}
+                initialValues={this.state.params}
+                fetchVariances={this.props.fetchVariances}
+                handleVarianceSearch={this.handleVarianceSearchDebounced}
+                mineRegionOptions={this.props.mineRegionOptions}
+                complianceCodes={this.props.getDropdownHSRCMComplianceCodes}
+                filterVarianceStatusOptions={this.props.filterVarianceStatusOptions}
+              />
+            </AuthorizationWrapper>
+            <VarianceTable
+              isLoaded={this.state.variancesLoaded}
+              isApplication={this.state.isApplication}
+              handleFilterChange={this.handleFilterChange}
+              variances={this.props.variances}
+              pageData={this.props.variancePageData}
+              handlePageChange={this.handleVariancePageChange}
+              handleVarianceSearch={this.handleVarianceSearch}
+              params={this.state.params}
+              openEditVarianceModal={this.openEditVarianceModal}
+              openViewVarianceModal={this.openViewVarianceModal}
+              sortField={this.state.params.sort_field}
+              sortDir={this.state.params.sort_dir}
             />
-          </AuthorizationWrapper>
-          <VarianceTable
-            isLoaded={this.state.variancesLoaded}
-            isApplication={this.state.isApplication}
-            handleFilterChange={this.handleFilterChange}
-            variances={this.props.variances}
-            pageData={this.props.variancePageData}
-            handlePageChange={this.handleVariancePageChange}
-            handleVarianceSearch={this.handleVarianceSearch}
-            params={this.state.params}
-            openEditVarianceModal={this.openEditVarianceModal}
-            openViewVarianceModal={this.openViewVarianceModal}
-            sortField={this.state.params.sort_field}
-            sortDir={this.state.params.sort_dir}
-          />
+          </div>
         </div>
       </div>
     );
@@ -380,14 +359,7 @@ const mapDispatchToProps = (dispatch) =>
       updateVariance,
       openModal,
       closeModal,
-      fetchRegionOptions,
       addDocumentToVariance,
-      fetchMineTenureTypes,
-      fetchMineComplianceCodes,
-      fetchMineCommodityOptions,
-      fetchVarianceStatusOptions,
-      fetchVarianceDocumentCategoryOptions,
-      fetchInspectors,
     },
     dispatch
   );

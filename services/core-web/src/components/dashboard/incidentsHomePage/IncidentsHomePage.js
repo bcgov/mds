@@ -5,12 +5,6 @@ import { destroy } from "redux-form";
 import { debounce, isEmpty } from "lodash";
 import queryString from "query-string";
 import PropTypes from "prop-types";
-import {
-  fetchRegionOptions,
-  fetchMineComplianceCodes,
-  fetchMineIncidentStatusCodeOptions,
-  fetchMineIncidentCategoryCodeOptions,
-} from "@/actionCreators/staticContentActionCreator";
 import { modalConfig } from "@/components/modalContent/config";
 import { openModal, closeModal } from "@/actions/modalActions";
 import {
@@ -25,6 +19,7 @@ import {
   getDropdownIncidentDeterminationOptions,
   getDropdownIncidentStatusCodeOptions,
   getIncidentFollowupActionOptions,
+  getDropdownIncidentCategoryCodeOptions,
 } from "@/selectors/staticContentSelectors";
 import { getDropdownInspectors } from "@/selectors/partiesSelectors";
 import CustomPropTypes from "@/customPropTypes";
@@ -32,7 +27,6 @@ import { fetchIncidents, updateMineIncident } from "@/actionCreators/incidentAct
 import { getIncidents, getIncidentPageData } from "@/selectors/incidentSelectors";
 import { IncidentsTable } from "./IncidentsTable";
 import * as router from "@/constants/routes";
-import { fetchInspectors } from "@/actionCreators/partiesActionCreator";
 import IncidentsSearch from "./IncidentsSearch";
 import { formatParamStringToArray } from "@/utils/helpers";
 import * as ModalContent from "@/constants/modalContent";
@@ -45,19 +39,14 @@ import * as Strings from "@/constants/strings";
  */
 
 const propTypes = {
-  fetchMineComplianceCodes: PropTypes.func.isRequired,
-  fetchRegionOptions: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   destroy: PropTypes.func.isRequired,
-  fetchInspectors: PropTypes.func.isRequired,
   fetchIncidents: PropTypes.func.isRequired,
   inspectors: CustomPropTypes.groupOptions.isRequired,
   incidentPageData: CustomPropTypes.incidentPageData.isRequired,
   incidents: PropTypes.arrayOf(CustomPropTypes.incident).isRequired,
   updateMineIncident: PropTypes.func.isRequired,
-  fetchMineIncidentStatusCodeOptions: PropTypes.func.isRequired,
-  fetchMineIncidentCategoryCodeOptions: PropTypes.func.isRequired,
   location: PropTypes.shape({ search: PropTypes.string }).isRequired,
   mineRegionOptions: CustomPropTypes.options.isRequired,
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
@@ -65,6 +54,7 @@ const propTypes = {
   followupActionsOptions: CustomPropTypes.options.isRequired,
   incidentDeterminationOptions: CustomPropTypes.options.isRequired,
   incidentStatusCodeOptions: CustomPropTypes.options.isRequired,
+  incidentCategoryCodeOptions: CustomPropTypes.options.isRequired,
   doSubparagraphOptions: CustomPropTypes.options.isRequired,
 };
 
@@ -140,11 +130,6 @@ export class IncidentsHomePage extends Component {
     this.props.fetchIncidents(this.state.params).then(() => {
       this.setState({ incidentsLoaded: true });
     });
-    this.props.fetchInspectors();
-    this.props.fetchMineComplianceCodes();
-    this.props.fetchRegionOptions();
-    this.props.fetchMineIncidentStatusCodeOptions();
-    this.props.fetchMineIncidentCategoryCodeOptions();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -284,6 +269,7 @@ export class IncidentsHomePage extends Component {
         followupActionOptions: this.props.followupActionsOptions,
         incidentDeterminationOptions: this.props.incidentDeterminationOptions,
         incidentStatusCodeOptions: this.props.incidentStatusCodeOptions,
+        incidentCategoryCodeOptions: this.props.incidentCategoryCodeOptions,
         doSubparagraphOptions: this.props.doSubparagraphOptions,
         inspectors: this.props.inspectors,
         clearOnSubmit: true,
@@ -362,6 +348,7 @@ const mapStateToProps = (state) => ({
   incidentStatusCodeOptions: getDropdownIncidentStatusCodeOptions(state),
   inspectors: getDropdownInspectors(state),
   doSubparagraphOptions: getDangerousOccurrenceSubparagraphOptions(state),
+  incidentCategoryCodeOptions: getDropdownIncidentCategoryCodeOptions(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
@@ -372,11 +359,6 @@ const mapDispatchToProps = (dispatch) =>
       destroy,
       openModal,
       closeModal,
-      fetchRegionOptions,
-      fetchMineComplianceCodes,
-      fetchMineIncidentStatusCodeOptions,
-      fetchMineIncidentCategoryCodeOptions,
-      fetchInspectors,
     },
     dispatch
   );

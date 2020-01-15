@@ -23,6 +23,7 @@ const propTypes = {
   removeDocumentFromVariance: PropTypes.func.isRequired,
   varianceStatusOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   complianceCodesHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  documentCategoryOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   fetchVariancesByMine: PropTypes.func.isRequired,
 };
 
@@ -68,10 +69,11 @@ export class EditVarianceModal extends Component {
             mineGuid={this.props.mineGuid}
             mineName={this.props.mineName}
             variance={this.props.variance}
-            varianceStatusOptionsHash={this.props.varianceStatusOptionsHash}
             initialValues={this.props.variance}
             removeDocument={this.handleRemoveDocument}
+            varianceStatusOptionsHash={this.props.varianceStatusOptionsHash}
             complianceCodesHash={this.props.complianceCodesHash}
+            documentCategoryOptionsHash={this.props.documentCategoryOptionsHash}
           />
         </LoadingWrapper>
       </div>

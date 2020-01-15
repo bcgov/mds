@@ -7,7 +7,7 @@ import * as Strings from "@/constants/strings";
 
 const propTypes = {
   mine: PropTypes.shape({
-    mine_permit: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)),
+    mine_permit_numbers: PropTypes.arrayOf(PropTypes.string),
     mine_name: PropTypes.string,
     mine_no: PropTypes.string,
     mine_guid: PropTypes.string,
@@ -20,8 +20,8 @@ const defaultProps = {};
 
 export const LeafletPopup = (props) => {
   const permitNo =
-    props.mine.mine_permit && props.mine.mine_permit[0]
-      ? props.mine.mine_permit[0].permit_no
+    props.mine.mine_permit_numbers && props.mine.mine_permit_numbers[0]
+      ? props.mine.mine_permit_numbers
       : Strings.EMPTY_FIELD;
   return (
     <div style={{ height: "130px", width: "220px" }}>

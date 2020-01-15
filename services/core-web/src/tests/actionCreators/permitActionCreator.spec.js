@@ -44,7 +44,7 @@ describe("`createPermit` action creator", () => {
   });
 
   it("Request failure, dispatches `error` with correct response", () => {
-    mockAxios.onPost(url).reply(400, MOCK.ERROR);
+    mockAxios.onPost(url).reply(418, MOCK.ERROR);
     return createPermit(mine_guid)(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
@@ -67,7 +67,7 @@ describe("`fetchPermits` action creator", () => {
   });
 
   it("Request failure, dispatches `error` with correct response", () => {
-    mockAxios.onGet(url, MOCK.createMockHeader()).reply(400, MOCK.ERROR);
+    mockAxios.onGet(url, MOCK.createMockHeader()).reply(418, MOCK.ERROR);
     return fetchPermits(mine_guid)(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
@@ -96,7 +96,7 @@ describe("`updatePermit` action creator", () => {
   });
 
   it("Request failure, dispatches `error` with correct response", () => {
-    mockAxios.onPut(url).reply(400, MOCK.ERROR);
+    mockAxios.onPut(url).reply(418, MOCK.ERROR);
     return updatePermit(mine_guid, permit_guid, mockPayload)(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
@@ -123,7 +123,7 @@ describe("`createPermitAmendment` action creator", () => {
   });
 
   it("Request failure, dispatches `error` with correct response", () => {
-    mockAxios.onPost(url).reply(400, MOCK.ERROR);
+    mockAxios.onPost(url).reply(418, MOCK.ERROR);
     return createPermitAmendment(mine_guid, permit_guid, mockPayload)(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
@@ -158,7 +158,7 @@ describe("`updatePermitAmendment` action creator", () => {
   });
 
   it("Request failure, dispatches `error` with correct response", () => {
-    mockAxios.onPut(url).reply(400, MOCK.ERROR);
+    mockAxios.onPut(url).reply(418, MOCK.ERROR);
     return updatePermitAmendment(mineGuid, permitGuid, permitAmdendmentGuid, mockPayload)(
       dispatch
     ).then(() => {
@@ -194,7 +194,7 @@ describe("`removePermitAmendmentDocument` action creator", () => {
   });
 
   it("Request failure, dispatches `error` with correct response", () => {
-    mockAxios.onDelete(url).reply(400, MOCK.ERROR);
+    mockAxios.onDelete(url).reply(418, MOCK.ERROR);
     return removePermitAmendmentDocument(mineGuid, permitGuid, permitAmdendmentGuid, documentGuid)(
       dispatch
     ).then(() => {

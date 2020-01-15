@@ -45,4 +45,4 @@ class NOWApplicationImportResource(Resource, UserMixin):
         application.now_application_guid = application_guid
         application.save()
 
-        return {'application_guid': str(application.now_application_guid)}
+        return {'now_application_guid': str(application.now_application_guid)}

@@ -4,6 +4,7 @@ import { compose } from "redux";
 import { connect } from "react-redux";
 import { Field, reduxForm, FormSection, formValueSelector } from "redux-form";
 import { Form, Divider, Row, Col } from "antd";
+import CustomPropTypes from "@/customPropTypes";
 import RenderField from "@/components/common/RenderField";
 import RenderDate from "@/components/common/RenderDate";
 import RenderRadioButtons from "@/components/common/RenderRadioButtons";
@@ -13,9 +14,9 @@ import * as FORM from "@/constants/forms";
 import ScrollContentWrapper from "@/components/common/wrappers/ScrollContentWrapper";
 import ReviewActivities from "@/components/noticeOfWork/applications/review/ReviewActivities";
 import ReclamationSummary from "./activities/ReclamationSummary";
-import ReviewNOWDocuments from "./ReviewNOWDocuments";
+import NOWDocuments from "@/components/noticeOfWork/applications//NOWDocuments";
+import NOWSubmissionDocuments from "@/components/noticeOfWork/applications//NOWSubmissionDocuments";
 import ReviewNOWContacts from "./ReviewNOWContacts";
-import CustomPropTypes from "@/customPropTypes";
 import {
   getNoticeOfWorkApplicationProgressStatusCodeOptions,
   getMineRegionDropdownOptions,
@@ -39,9 +40,16 @@ const propTypes = {
   // eslint-disable-next-line
   reclamationSummary: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.strings)).isRequired,
   now_application_guid: PropTypes.string.isRequired,
-  applicationTypeOptions: CustomPropTypes.options.isRequired,
-  permitTypeOptions: CustomPropTypes.options.isRequired,
+  mine_guid: PropTypes.string.isRequired,
+  documents: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
   submission_documents: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
+  // thinks it is never used
+  // eslint-disable-next-line
+  regionDropdownOptions: CustomPropTypes.options.isRequired,
+  // eslint-disable-next-line
+  applicationTypeOptions: CustomPropTypes.options.isRequired,
+  // eslint-disable-next-line
+  permitTypeOptions: CustomPropTypes.options.isRequired,
 };
 
 export const ReviewNOWApplication = (props) => {
@@ -81,7 +89,7 @@ export const ReviewNOWApplication = (props) => {
             name="mine_region"
             component={RenderSelect}
             data={props.regionDropdownOptions}
-            disabled={props.isViewMode}
+            disabled
           />
         </Col>
         <Col md={12} sm={24}>
@@ -92,13 +100,7 @@ export const ReviewNOWApplication = (props) => {
       <Row gutter={16}>
         <Col md={12} sm={24}>
           <div className="field-title">Lat</div>
-          <Field
-            id="latitude"
-            name="latitude"
-            component={RenderField}
-            disabled={props.isViewMode}
-            validate={[lat]}
-          />
+          <Field id="latitude" name="latitude" component={RenderField} disabled validate={[lat]} />
         </Col>
         <Col md={12} sm={24}>
           <div className="field-title">Description of Land</div>
@@ -118,7 +120,7 @@ export const ReviewNOWApplication = (props) => {
             id="longitude"
             name="longitude"
             component={RenderField}
-            disabled={props.isViewMode}
+            disabled
             validate={[lon]}
           />
         </Col>
@@ -135,7 +137,7 @@ export const ReviewNOWApplication = (props) => {
             name="notice_of_work_type_code"
             component={RenderSelect}
             data={props.applicationTypeOptions}
-            disabled={props.isViewMode}
+            disabled
             validate={[required]}
           />
         </Col>
@@ -395,7 +397,7 @@ export const ReviewNOWApplication = (props) => {
     <Row gutter={16}>
       <Col md={12} sm={24}>
         <div className="field-title">Description of Work**</div>
-        <Field id="" name="" component={RenderField} disabled={props.isViewMode} />
+        <Field id="" name="" component={RenderField} disabled />
       </Col>
     </Row>
   );
@@ -405,7 +407,7 @@ export const ReviewNOWApplication = (props) => {
       <Row gutter={16}>
         <Col md={12} sm={24}>
           <div className="field-title">Total merchantable timber volume**</div>
-          <Field id="" name="" component={RenderField} disabled={props.isViewMode} />
+          <Field id="" name="" component={RenderField} disabled />
         </Col>
       </Row>
       <br />
@@ -446,10 +448,18 @@ export const ReviewNOWApplication = (props) => {
             {renderReclamation()}
           </ScrollContentWrapper>
           <ReviewActivities isViewMode={props.isViewMode} />
-          <ScrollContentWrapper id="documents" title="Documents">
-            <ReviewNOWDocuments
+          <ScrollContentWrapper id="submission_documents" title="Submission Documents (VFCBC/NROS)">
+            <NOWSubmissionDocuments
               now_application_guid={props.now_application_guid}
               documents={props.submission_documents}
+            />
+          </ScrollContentWrapper>
+          <ScrollContentWrapper id="additional_documents" title="Additional Documents">
+            <NOWDocuments
+              now_application_guid={props.now_application_guid}
+              mine_guid={props.mine_guid}
+              documents={props.documents}
+              isViewMode={props.isViewMode}
             />
           </ScrollContentWrapper>
         </div>
@@ -465,6 +475,8 @@ export default compose(
   connect((state) => ({
     contacts: selector(state, "contacts"),
     now_application_guid: selector(state, "now_application_guid"),
+    mine_guid: selector(state, "mine_guid"),
+    documents: selector(state, "documents"),
     submission_documents: selector(state, "submission_documents"),
     regionDropdownOptions: getMineRegionDropdownOptions(state),
     applicationTypeOptions: getDropdownNoticeOfWorkApplicationTypeOptions(state),

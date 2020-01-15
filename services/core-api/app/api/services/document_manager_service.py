@@ -4,7 +4,7 @@ import base64
 from flask import Response
 from app.config import Config
 
-ALLOWED_DOCUMENT_CATEGORIES = ['tailings', 'permits', 'variances', 'incidents', 'reports', 'mine_party_appts']
+ALLOWED_DOCUMENT_CATEGORIES = ['tailings', 'permits', 'variances', 'incidents', 'reports', 'mine_party_appts','noticeofwork']
 
 
 class DocumentManagerService():

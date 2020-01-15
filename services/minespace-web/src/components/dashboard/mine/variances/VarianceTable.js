@@ -26,7 +26,7 @@ const defaultProps = {
 };
 
 export class VarianceTable extends Component {
-  errorStyle = (isOverdue) => (isOverdue ? { color: errorRed } : {});
+  getOverdueStyle = (isOverdue) => (isOverdue ? { color: errorRed } : {});
 
   handleConditionalEdit = (code) => code === Strings.VARIANCE_APPLICATION_CODE;
 
@@ -59,9 +59,9 @@ export class VarianceTable extends Component {
       title: "",
       dataIndex: "isOverdue",
       width: 10,
-      render: (isOverdue) => (
-        <div title="">
-          {isOverdue ? <img className="padding-small" src={RED_CLOCK} alt="expired" /> : ""}
+      render: (text, record) => (
+        <div title="Overdue">
+          {record.isOverdue ? <img className="padding-small" src={RED_CLOCK} alt="expired" /> : ""}
         </div>
       ),
     },
@@ -69,7 +69,7 @@ export class VarianceTable extends Component {
       title: "Code Section",
       dataIndex: "compliance_article_id",
       render: (text, record) => (
-        <div title="Code Section" style={this.errorStyle(record.isOverdue)}>
+        <div style={this.getOverdueStyle(record.isOverdue)} title="Code Section">
           {text}
         </div>
       ),
@@ -81,8 +81,13 @@ export class VarianceTable extends Component {
           This attribute has no effect on the responsive view, same class is added to the div to handle responsive views
       */
       className: !isApplication ? "column-hide" : "",
-      render: (text) => (
-        <div className={!isApplication ? "column-hide" : ""} title="Submission Date">
+
+      render: (text, record) => (
+        <div
+          title="Submission Date"
+          className={!isApplication ? "column-hide" : ""}
+          style={this.getOverdueStyle(record.isOverdue)}
+        >
           {text}
         </div>
       ),
@@ -97,7 +102,7 @@ export class VarianceTable extends Component {
         <div
           title="Application Status"
           className={!isApplication ? "column-hide" : ""}
-          style={this.errorStyle(record.isOverdue)}
+          style={this.getOverdueStyle(record.isOverdue)}
         >
           {text}
         </div>
@@ -112,7 +117,7 @@ export class VarianceTable extends Component {
         <div
           title="Issue Date"
           className={isApplication ? "column-hide" : ""}
-          style={this.errorStyle(record.isOverdue)}
+          style={this.getOverdueStyle(record.isOverdue)}
         >
           {text}
         </div>
@@ -125,9 +130,9 @@ export class VarianceTable extends Component {
       className: isApplication ? "column-hide" : "",
       render: (text, record) => (
         <div
-          className={isApplication ? "column-hide" : ""}
           title="Expiry Date"
-          style={this.errorStyle(record.isOverdue)}
+          className={isApplication ? "column-hide" : ""}
+          style={this.getOverdueStyle(record.isOverdue)}
         >
           {text}
         </div>
@@ -141,9 +146,9 @@ export class VarianceTable extends Component {
       className: isApplication ? "column-hide" : "",
       render: (text, record) => (
         <div
-          className={isApplication ? "column-hide" : ""}
           title="Approval Status"
-          style={this.errorStyle(record.isOverdue)}
+          className={isApplication ? "column-hide" : ""}
+          style={this.getOverdueStyle(record.isOverdue)}
         >
           {record.isOverdue ? "Expired" : "Active"}
         </div>
@@ -165,6 +170,7 @@ export class VarianceTable extends Component {
                     onKeyPress={() => downloadFileFromDocumentManager(file.document_manager_guid)}
                     // Accessibility: Focusable element
                     tabIndex="0"
+                    style={this.getOverdueStyle(record.isOverdue)}
                   >
                     {file.document_name}
                   </a>
@@ -178,12 +184,13 @@ export class VarianceTable extends Component {
       title: "",
       dataIndex: "variance",
       render: (text, record) => (
-        <div title="" align="right">
+        <div title={record.isEditable ? "Edit" : "View"} align="right">
           <Button
             type="primary"
             size="small"
             ghost
             onClick={(event) => this.handleOpenModal(event, record.isEditable, record.variance)}
+            style={this.getOverdueStyle(record.isOverdue)}
           >
             {record.isEditable ? (
               <img src={EDIT_PENCIL} alt="Edit/View" className="icon-svg-filter" />

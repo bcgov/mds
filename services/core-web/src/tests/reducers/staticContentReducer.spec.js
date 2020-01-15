@@ -45,6 +45,7 @@ const baseExpectedValue = {
   noticeOfWorkApplicationDocumentTypeOptions: [],
   noticeOfWorkUndergroundExplorationTypeOptions: [],
   noticeOfWorkApplicationProgressStatusCodeOptions: [],
+  noticeOfWorkApplicationReviewOptions: [],
   noticeOfWorkApplicationPermitTypeOptions: [],
 };
 

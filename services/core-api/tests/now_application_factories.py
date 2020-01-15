@@ -11,8 +11,6 @@ from tests.factories import *
 from app.api.now_applications import models as app_models
 from app.api.now_submissions import models as sub_models
 
-SEQUENCE = factory.Sequence(lambda n: n)
-
 
 class BlastingOperationFactory(BaseFactory):
     class Meta:
@@ -57,7 +55,6 @@ class ActivitySummaryBaseFactory(BaseFactory):
         now_application = factory.SubFactory('tests.factories.NOWApplicationFactory')
 
     now_application_id = factory.SelfAttribute('now_application.now_application_id')
-    activity_summary_id = SEQUENCE
 
     reclamation_description = factory.Faker('sentence', nb_words=40, variable_nb_words=True)
     reclamation_cost = factory.Faker('pydecimal', right_digits=2, positive=True, max_value=500000)
@@ -356,20 +353,48 @@ class UndergroundExplorationDetailFactory(ActivityDetailBaseFactory):
 
     underground_exploration_type_code = factory.LazyFunction(RandomUndergroundExplorationTypeCode)
 
+class NOWApplicationProgressFactory(BaseFactory):
+    class Meta:
+        model = app_models.NOWApplicationProgress
+
+    class Params:
+        now_application = factory.SubFactory('tests.factories.NOWApplicationFactory')
+
+    now_application_id = factory.SelfAttribute('now_application.now_application_id')
+    #application_progress_id = factory.Sequence(lambda n: n)
+    application_progress_status_code = factory.LazyFunction(RandomNOWProgressStatusCode)
+    start_date = factory.Faker('past_datetime')
+    created_by = factory.Faker('company')
+    active_ind = True
+
+class NOWApplicationReviewFactory(BaseFactory):
+    class Meta:
+        model = app_models.NOWApplicationReview
+
+    now_application_id = factory.SelfAttribute('now_application.now_application_id')
+    now_application_review_type_code = factory.LazyFunction(RandomNOWReviewCode)
+    response_date = factory.Faker('past_datetime')
+    referee_name = factory.Faker('name')
+
 
 class NOWApplicationFactory(BaseFactory):
     class Meta:
         model = app_models.NOWApplication
 
-    now_application_id = factory.Sequence(lambda n: n)
+    class Params:
+        inspector = factory.SubFactory('tests.factories.PartyBusinessRoleFactory')
 
+    application_progress = factory.RelatedFactory(NOWApplicationProgressFactory, 'now_application')
+    lead_inspector_party_guid = factory.SelfAttribute('inspector.party.party_guid')
     now_tracking_number = factory.fuzzy.FuzzyInteger(1, 100)
     notice_of_work_type_code = factory.LazyFunction(RandomNOWTypeCode)
     now_application_status_code = factory.LazyFunction(RandomNOWStatusCode)
     submitted_date = factory.Faker('past_datetime')
     received_date = factory.Faker('past_datetime')
-    latitude = factory.Faker('latitude')         # or factory.fuzzy.FuzzyFloat(49, 60) for ~ inside BC
-    longitude = factory.Faker('longitude')       # or factory.fuzzy.FuzzyFloat(-132, -114.7) for ~ BC
+    # or factory.fuzzy.FuzzyFloat(49, 60) for ~ inside BC
+    latitude = factory.Faker('latitude')
+    # or factory.fuzzy.FuzzyFloat(-132, -114.7) for ~ BC
+    longitude = factory.Faker('longitude')
     property_name = factory.Faker('company')
     tenure_number = str(factory.Sequence(lambda n: n))
     description_of_land = factory.Faker('sentence', nb_words=6, variable_nb_words=True)
@@ -378,7 +403,6 @@ class NOWApplicationFactory(BaseFactory):
 
     blasting_operation = factory.RelatedFactory(BlastingOperationFactory, 'now_application')
     state_of_land = factory.RelatedFactory(StateOfLandFactory, 'now_application')
-
     camps = factory.RelatedFactory(CampFactory, 'now_application')
     cut_lines_polarization_survey = factory.RelatedFactory(CutLinesPolarizationSurveyFactory,
                                                            'now_application')
@@ -393,6 +417,16 @@ class NOWApplicationFactory(BaseFactory):
     settling_pond = factory.RelatedFactory(SettlingPondFactory, 'now_application')
     underground_exploration = factory.RelatedFactory(UndergroundExplorationFactory,
                                                      'now_application')
+
+    @factory.post_generation
+    def reviews(obj, create, extracted, **kwargs):
+        if not create:
+            return
+
+        if not isinstance(extracted, int):
+            extracted = 1
+
+        NOWApplicationReviewFactory.create_batch(size=extracted, now_application=obj, **kwargs)
 
 
 class NOWApplicationIdentityFactory(BaseFactory):

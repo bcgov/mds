@@ -1,13 +1,10 @@
 import React from "react";
-import { bindActionCreators } from "redux";
 import PropTypes from "prop-types";
-import { uniqBy } from "lodash";
 import { connect } from "react-redux";
 import MineHeaderMapLeaflet from "@/components/maps/MineHeaderMapLeaflet";
 import CustomPropTypes from "@/customPropTypes";
 import * as Strings from "@/constants/strings";
 import { getMineRegionHash } from "@/selectors/staticContentSelectors";
-import { fetchRegionOptions } from "@/actionCreators/staticContentActionCreator";
 
 /**
  * @class MineHeader.js contains header section of MineDashboard before the tabs. Including map, mineName, mineNumber.
@@ -37,9 +34,9 @@ export const MineCard = (props) => {
           <div className="inline-flex padding-small">
             <p className="field-title">Permit Number</p>
             <ul className="mine-list__permits">
-              {props.mine.mine_permit && props.mine.mine_permit.length > 0
-                ? uniqBy(props.mine.mine_permit, "permit_no").map(({ permit_no, permit_guid }) => (
-                    <li key={permit_guid}>{permit_no}</li>
+              {props.mine.mine_permit_numbers && props.mine.mine_permit_numbers.length > 0
+                ? props.mine.mine_permit_numbers.map((permit_no) => (
+                    <li key={permit_no}>{permit_no}</li>
                   ))
                 : Strings.EMPTY_FIELD}
             </ul>
@@ -81,17 +78,6 @@ const mapStateToProps = (state) => ({
   mineRegionHash: getMineRegionHash(state),
 });
 
-const mapDispatchToProps = (dispatch) =>
-  bindActionCreators(
-    {
-      fetchRegionOptions,
-    },
-    dispatch
-  );
-
 MineCard.propTypes = propTypes;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(MineCard);
+export default connect(mapStateToProps)(MineCard);

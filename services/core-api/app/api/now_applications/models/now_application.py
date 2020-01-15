@@ -14,6 +14,7 @@ from app.api.constants import *
 
 from app.api.now_submissions.models.document import Document
 
+
 class NOWApplication(Base, AuditMixin):
     __tablename__ = "now_application"
     _edit_groups = [NOW_APPLICATION_EDIT_GROUP]
@@ -29,6 +30,10 @@ class NOWApplication(Base, AuditMixin):
     mine_no = association_proxy('now_application_identity', 'mine.mine_no')
     mine_region = association_proxy('now_application_identity', 'mine.mine_region')
     now_number = association_proxy('now_application_identity', 'now_number')
+
+    lead_inspector_party_guid = db.Column(
+        UUID(as_uuid=True), db.ForeignKey('party.party_guid'), nullable=True)
+    lead_inspector = db.relationship('Party', lazy='selectin', uselist=False)
 
     now_tracking_number = db.Column(db.Integer)
     notice_of_work_type_code = db.Column(
@@ -53,6 +58,10 @@ class NOWApplication(Base, AuditMixin):
     first_aid_equipment_on_site = db.Column(db.String)
     first_aid_cert_level = db.Column(db.String)
 
+    ready_for_review_date = db.Column(db.Date)
+    review_closed_on_date = db.Column(db.Date)
+    reviews = db.relationship('NOWApplicationReview', lazy='select', backref='now_application')
+
     blasting_operation = db.relationship('BlastingOperation', lazy='joined', uselist=False)
     state_of_land = db.relationship('StateOfLand', lazy='joined', uselist=False)
 
@@ -74,12 +83,20 @@ class NOWApplication(Base, AuditMixin):
     water_supply = db.relationship('WaterSupply', lazy='selectin', uselist=False)
     application_progress = db.relationship('NOWApplicationProgress', lazy='selectin', uselist=True)
 
-    # Documents
+    # Documents that are not associated with a review
+    documents = db.relationship(
+        'NOWApplicationDocumentXref',
+        lazy='selectin',
+        primaryjoin=
+        'and_(NOWApplicationDocumentXref.now_application_id==NOWApplication.now_application_id, NOWApplicationDocumentXref.now_application_review_id==None)'
+    )
     submission_documents = db.relationship(
         'Document',
         lazy='selectin',
-        secondary="join(NOWApplication, NOWApplicationIdentity, NOWApplication.now_application_id == NOWApplicationIdentity.now_application_id).join(Application, NOWApplicationIdentity.messageid == Application.messageid)",
-        primaryjoin='and_(NOWApplication.now_application_id==NOWApplicationIdentity.now_application_id, NOWApplicationIdentity.messageid==Application.messageid)',
+        secondary=
+        "join(NOWApplication, NOWApplicationIdentity, NOWApplication.now_application_id == NOWApplicationIdentity.now_application_id).join(Application, NOWApplicationIdentity.messageid == Application.messageid)",
+        primaryjoin=
+        'and_(NOWApplication.now_application_id==NOWApplicationIdentity.now_application_id, NOWApplicationIdentity.messageid==Application.messageid)',
         secondaryjoin='Application.messageid==Document.messageid',
         viewonly=True)
 
@@ -88,15 +105,6 @@ class NOWApplication(Base, AuditMixin):
 
     def __repr__(self):
         return '<NOWApplication %r>' % self.now_application_guid
-
-    @classmethod
-    def find_by_application_guid(cls, guid):
-        cls.validate_guid(guid)
-        now_application_id = NOWApplicationIdentity.query.filter_by(
-            now_application_guid=guid).first().now_application_id
-        if not now_application_id:
-            raise NotFound('Could not find an application for this id')
-        return cls.query.filter_by(now_application_id=now_application_id).first()
 
     @classmethod
     def find_by_application_id(cls, now_application_id):

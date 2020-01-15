@@ -2,6 +2,7 @@ from app.extensions import api
 from flask_restplus import fields
 
 from app.api.parties.response_models import PARTY
+from app.api.mines.response_models import MINE_DOCUMENT_MODEL
 
 class DateTime(fields.Raw):
     def format(self, value):
@@ -39,7 +40,14 @@ NOW_APPLICATION_ACTIVITY_DETAIL_BASE = api.model('NOWApplicationActivityDetailBa
         'incline_unit_type_code': fields.String,
         'cut_line_length' : fields.Integer,
         'water_quantity' : fields.Integer,
-        'water_quantity_unit_type_code': fields.String
+        'water_quantity_unit_type_code': fields.String,
+        'cut_line_length_unit_type_code': fields.String,
+        'length_unit_type_code': fields.String,
+        'width_unit_type_code': fields.String,
+        'height_unit_type_code': fields.String,
+        'depth_unit_type_code': fields.String,
+        'timber_volume_unit_type_code': fields.String,
+        'disturbed_area_unit_type_code': fields.String,
     }
 )
 
@@ -116,6 +124,8 @@ NOW_APPLICATION_SAND_AND_GRAVEL = api.inherit(
     NOW_APPLICATION_ACTIVITY_SUMMARY_BASE,
     {
         'average_overburden_depth': fields.Fixed,
+        'average_overburden_depth_unit_type_code': fields.String, 
+        'average_top_soil_depth_unit_type_code': fields.String, 
         'average_top_soil_depth': fields.Fixed,
         'stability_measures_description': fields.String,
         'is_agricultural_land_reserve': fields.Boolean,
@@ -185,7 +195,11 @@ NOW_APPLICATION_UNDERGROUND_EXPLORATION = api.inherit(
     'NOWApplicationUndergroundExploration',
     NOW_APPLICATION_ACTIVITY_SUMMARY_BASE,
     {
-        'details': fields.List(fields.Nested(NOW_APPLICATION_ACTIVITY_DETAIL_BASE,skip_none=True))
+        'total_ore_amount': fields.Integer,
+        'total_ore_unit_type_code': fields.String, 
+        'total_waste_amount': fields.Integer,
+        'total_waste_unit_type_code': fields.String, 
+        'details': fields.List(fields.Nested(NOW_APPLICATION_UNDERGROUND_EXPLORATION_DETAIL,skip_none=True))
     })
 
 NOW_APPLICATION_WATER_SUPPLY_DETAIL = api.inherit(
@@ -214,6 +228,16 @@ NOW_APPLICATION_STATE_OF_LAND = api.model(
     }
 )
 
+NOW_APPLICATION_DOCUMENT = api.model(
+    'NOW_DOCUMENT', {
+        'now_application_document_xref_guid': fields.String,
+        'now_application_document_type_code': fields.String,
+        'description': fields.String,
+        'is_final_package': fields.Boolean,
+        'mine_document': fields.Nested(MINE_DOCUMENT_MODEL),
+    }
+)
+
 NOW_APPLICATION_PROGRESS = api.model(
     'NOWApplicationProgress',
     {
@@ -222,8 +246,20 @@ NOW_APPLICATION_PROGRESS = api.model(
         'application_progress_status_code': fields.String
     })
     
+NOW_APPLICATION_REVIEW_MDOEL = api.model(
+    'NOWApplicationReview',
+    {
+        'now_application_review_id':fields.Integer, 
+        'now_application_guid':fields.String(attribute='now_application.now_application_guid'),
+        'now_application_review_type_code':fields.String, 
+        'response_date':fields.Date, 
+        'referee_name':fields.String,
+        'documents':fields.List(fields.Nested(NOW_APPLICATION_DOCUMENT))
+    }
+)
+
 NOW_SUBMISSION_DOCUMENT = api.model(
-    'DOCUMENT', {
+    'SUBMISSION_DOCUMENT', {
         'id': fields.Integer,
         'documenturl': fields.String,
         'filename': fields.String,
@@ -249,12 +285,13 @@ NOW_APPLICATION_MODEL = api.model(
         'mine_name': fields.String,
         'mine_no': fields.String,
         'mine_region': fields.String,
+        'lead_inspector_party_guid': fields.String,
+        'lead_inspector': fields.Nested(PARTY),
         'imported_to_core' : fields.Boolean, #Just-in-time attribute
         'notice_of_work_type_code': fields.String,                  
         'now_application_status_code': fields.String,               
         'submitted_date': Date,
         'received_date': Date,
-        'now_application_guid': fields.String,
         'latitude': fields.Fixed(description='fixed precision decimal.',
                                  decimals=7),
         'longitude': fields.Fixed(description='fixed precision decimal.',
@@ -282,6 +319,7 @@ NOW_APPLICATION_MODEL = api.model(
         'surface_bulk_sample': fields.Nested(NOW_APPLICATION_SURFACE_BULK, skip_none=True),
         'underground_exploration': fields.Nested(NOW_APPLICATION_UNDERGROUND_EXPLORATION, skip_none=True),
         'water_supply': fields.Nested(NOW_APPLICATION_WATER_SUPPLY, skip_none=True),
+        'documents': fields.List(fields.Nested(NOW_APPLICATION_DOCUMENT), skip_none=True),
         'submission_documents': fields.List(fields.Nested(NOW_SUBMISSION_DOCUMENT), skip_none=True),
         'contacts': fields.List(fields.Nested(NOW_PARTY_APPOINTMENT), skip_none=True)
     })
@@ -295,9 +333,12 @@ NOW_VIEW_MODEL = api.model(
         'mine_name':fields.String,
         'mine_region':fields.String,
         'now_number': fields.String,
+        'lead_inspector_party_guid': fields.String,
+        'lead_inspector_name': fields.String,
         'notice_of_work_type_description': fields.String,
         'now_application_status_description': fields.String,
-        'received_date': Date
+        'received_date': Date,
+        'originating_system': fields.String,
     }
 )
  
@@ -341,6 +382,7 @@ NOW_APPLICATION_STATUS_CODES = api.model(
 UNIT_TYPES = api.model(
     'UnitTypeCodes', 
     {
+        'short_description': fields.String,
         'unit_type_code': fields.String,
         'description': fields.String
     }
@@ -376,4 +418,11 @@ NOW_APPLICATION_PERMIT_TYPES = api.model(
         'now_application_permit_type_code': fields.String,
         'description': fields.String
     }
+)
+NOW_APPLICATION_REVIEW_TYPES= api.model(
+    'ApplicationReviewTypes', 
+    {
+        'now_application_review_type_code': fields.String,
+        'description': fields.String
+    } 
 )

@@ -2,8 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { Button, Icon } from "antd";
-import { Link } from "react-router-dom";
+import { Button } from "antd";
 import * as routes from "@/constants/routes";
 import {
   fetchImportedNoticeOfWorkApplication,
@@ -15,19 +14,13 @@ import {
   getOriginalNoticeOfWork,
   getNOWReclamationSummary,
 } from "@/selectors/noticeOfWorkSelectors";
-import {
-  fetchNoticeOFWorkActivityTypeOptions,
-  fetchNoticeOFWorkApplicationStatusOptions,
-  fetchNoticeOFWorkApplicationTypeOptions,
-  fetchNoticeOFWorkApplicationPermitTypes,
-  fetchRegionOptions,
-} from "@/actionCreators/staticContentActionCreator";
 import { getMines } from "@/selectors/mineSelectors";
+import { getInspectorsHash } from "@/selectors/partiesSelectors";
 import CustomPropTypes from "@/customPropTypes";
 import ReviewNOWApplication from "@/components/noticeOfWork/applications/review/ReviewNOWApplication";
 import NOWSideMenu from "@/components/noticeOfWork/applications/NOWSideMenu";
+import NoticeOfWorkPageHeader from "@/components/noticeOfWork/applications/NoticeOfWorkPageHeader";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
-import * as Strings from "@/constants/strings";
 import { downloadNowDocument } from "@/utils/actionlessNetworkCalls";
 
 /**
@@ -39,11 +32,7 @@ const propTypes = {
   originalNoticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
   fetchImportedNoticeOfWorkApplication: PropTypes.func.isRequired,
   fetchOriginalNoticeOfWorkApplication: PropTypes.func.isRequired,
-  fetchNoticeOFWorkActivityTypeOptions: PropTypes.func.isRequired,
-  fetchRegionOptions: PropTypes.func.isRequired,
-  fetchNoticeOFWorkApplicationStatusOptions: PropTypes.func.isRequired,
-  fetchNoticeOFWorkApplicationTypeOptions: PropTypes.func.isRequired,
-  fetchNoticeOFWorkApplicationPermitTypes: PropTypes.func.isRequired,
+  inspectorsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   reclamationSummary: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.strings)).isRequired,
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
   location: PropTypes.shape({
@@ -67,11 +56,6 @@ export class ViewNoticeOfWorkApplication extends Component {
 
   componentDidMount() {
     const { id } = this.props.match.params;
-    this.props.fetchNoticeOFWorkApplicationStatusOptions();
-    this.props.fetchNoticeOFWorkApplicationTypeOptions();
-    this.props.fetchNoticeOFWorkApplicationPermitTypes();
-    this.props.fetchNoticeOFWorkActivityTypeOptions();
-    this.props.fetchRegionOptions();
     this.props.fetchImportedNoticeOfWorkApplication(id).then(() => {
       this.setState({ isLoaded: true });
     });
@@ -103,33 +87,17 @@ export class ViewNoticeOfWorkApplication extends Component {
         <LoadingWrapper condition={this.state.isLoaded}>
           <div className="steps--header fixed-scroll-view">
             <div className="inline-flex between">
-              <div>
-                <h1>NoW Number: {this.props.noticeOfWork.now_number || Strings.EMPTY_FIELD}</h1>
-                {this.state.noticeOfWorkPageFromRoute && (
-                  <Link to={this.state.noticeOfWorkPageFromRoute.route}>
-                    <Icon type="arrow-left" style={{ paddingRight: "5px" }} />
-                    Back to: {this.state.noticeOfWorkPageFromRoute.title}
-                  </Link>
+              <NoticeOfWorkPageHeader
+                noticeOfWork={this.props.noticeOfWork}
+                inspectorsHash={this.props.inspectorsHash}
+                noticeOfWorkPageFromRoute={this.state.noticeOfWorkPageFromRoute}
+              />
+              {this.state.isLoaded &&
+                this.props.noticeOfWork.submission_documents.filter(
+                  (x) => x.filename === "ApplicationForm.pdf"
+                ).length > 0 && (
+                  <Button onClick={this.showApplicationForm}>Open Original Application Form</Button>
                 )}
-              </div>
-              <div>
-                <Link
-                  style={{ float: "right" }}
-                  to={routes.MINE_SUMMARY.dynamicRoute(this.props.noticeOfWork.mine_guid)}
-                >
-                  {this.props.noticeOfWork.mine_name}
-                </Link>
-                <span style={{ float: "right" }}>Current Mine:&nbsp;</span>
-                <br />
-                {this.state.isLoaded &&
-                  this.props.noticeOfWork.submission_documents.filter(
-                    (x) => x.filename === "ApplicationForm.pdf"
-                  ).length > 0 && (
-                    <Button onClick={this.showApplicationForm}>
-                      Open Original Application Form
-                    </Button>
-                  )}
-              </div>
             </div>
           </div>
           <div>
@@ -169,20 +137,16 @@ const mapStateToProps = (state) => ({
   noticeOfWork: getNoticeOfWork(state),
   originalNoticeOfWork: getOriginalNoticeOfWork(state),
   mines: getMines(state),
+  inspectorsHash: getInspectorsHash(state),
   reclamationSummary: getNOWReclamationSummary(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
-      fetchNoticeOFWorkApplicationStatusOptions,
-      fetchRegionOptions,
-      fetchNoticeOFWorkApplicationTypeOptions,
-      fetchNoticeOFWorkApplicationPermitTypes,
       fetchImportedNoticeOfWorkApplication,
       fetchOriginalNoticeOfWorkApplication,
       fetchMineRecordById,
-      fetchNoticeOFWorkActivityTypeOptions,
     },
     dispatch
   );

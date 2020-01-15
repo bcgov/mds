@@ -31,8 +31,8 @@ const initialState = {
   noticeOfWorkUndergroundExplorationTypeOptions: [],
   noticeOfWorkApplicationProgressStatusCodeOptions: [],
   noticeOfWorkApplicationPermitTypeOptions: [],
+  noticeOfWorkApplicationReviewOptions: [],
 };
-
 const staticContentReducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.STORE_STATUS_OPTIONS:
@@ -160,6 +160,11 @@ const staticContentReducer = (state = initialState, action) => {
         ...state,
         noticeOfWorkApplicationPermitTypeOptions: action.payload.records,
       };
+    case actionTypes.STORE_NOTICE_OF_WORK_APPLICATION_REVIEW_TYPES:
+      return {
+        ...state,
+        noticeOfWorkApplicationReviewOptions: action.payload.records,
+      };
     default:
       return state;
   }
@@ -205,5 +210,16 @@ export const getNoticeOfWorkApplicationProgressStatusCodeOptions = (state) =>
   state[STATIC_CONTENT].noticeOfWorkApplicationProgressStatusCodeOptions;
 export const getNoticeOfWorkApplicationPermitTypeOptions = (state) =>
   state[STATIC_CONTENT].noticeOfWorkApplicationPermitTypeOptions;
+export const getNoticeOfWorkApplicationReviewOptions = (state) =>
+  state[STATIC_CONTENT].noticeOfWorkApplicationReviewOptions;
+
+const isStaticContentLoaded = (state) =>
+  Object.keys(state)
+    // eslint-disable-next-line no-prototype-builtins
+    .filter((p) => state.hasOwnProperty(p) && Array.isArray(state[p]))
+    .every((p) => state[p].length > 0);
+
+export const getStaticContentLoadingIsComplete = (state) =>
+  isStaticContentLoaded(state[STATIC_CONTENT]);
 
 export default staticContentReducer;

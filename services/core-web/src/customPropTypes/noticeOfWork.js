@@ -3,10 +3,12 @@ import { PropTypes, shape } from "prop-types";
 // This file is anticipated to have multiple exports
 // eslint-disable-next-line import/prefer-default-export
 export const nowApplication = shape({
-  application_guid: PropTypes.string.isRequired,
+  now_application_guid: PropTypes.string.isRequired,
   mine_guid: PropTypes.string,
   mine_name: PropTypes.string,
   minenumber: PropTypes.string,
+  lead_inspector_party_guid: PropTypes.string,
+  lead_inspector: PropTypes.objectOf(PropTypes.any),
   trackingnumber: PropTypes.number,
   applicationtype: PropTypes.string,
   status: PropTypes.string,
@@ -314,4 +316,10 @@ export const importedNOWApplication = shape({
   underground_exploration: defaultActivity,
   water_supply: waterSupply,
   placer_operation: placer,
+});
+
+export const NOWApplicationReview = shape({
+  now_application_review_type_code: PropTypes.string,
+  response_date: PropTypes.string,
+  referee_name: PropTypes.string,
 });

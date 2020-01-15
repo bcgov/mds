@@ -572,27 +572,27 @@ export const UNIT_TYPES = {
   records: [
     {
       unit_type_code: "MTN",
-      description: "Tonne (Metric Ton 1000Kg)",
+      short_description: "Tonne (Metric Ton 1000Kg)",
     },
     {
       unit_type_code: "MEC",
-      description: "Meters cubed",
+      short_description: "Meters cubed",
     },
     {
       unit_type_code: "HA",
-      description: "Hectares",
+      short_description: "Hectares",
     },
     {
       unit_type_code: "DEG",
-      description: "Degrees",
+      short_description: "Degrees",
     },
     {
       unit_type_code: "PER",
-      description: "Grade (Percent)",
+      short_description: "Grade (Percent)",
     },
     {
       unit_type_code: "MTR",
-      description: "Meters",
+      short_description: "Meters",
     },
   ],
 };
@@ -671,3 +671,68 @@ export const DROPDOWN_APPLICATION_PERMIT_TYPES = [
   { value: "OYP", label: "One Year Permit" },
   { value: "MYP", label: "Multi-Year Permit" },
 ];
+
+export const NOTICE_OF_WORK_REVIEW_RESPONSE = {
+  records: [
+    {
+      now_application_review_id: 2,
+      now_application_guid: "587507c0-cafd-43d5-ae40-26934e039893",
+      now_application_review_type_code: "FNC",
+      response_date: "2019-12-16",
+      referee_name: "William Davila",
+      documents: [
+        {
+          now_application_document_xref_guid: "35a7c16b-32d6-4265-93c4-304e9b3e2e8c",
+          now_application_document_type_code: "REV",
+          now_application_document_type_code_description: "Review",
+          description: null,
+          is_final_package: null,
+          mine_document: {
+            mine_document_guid: "8157b615-4522-4121-ab02-0ba1f1e0a4b4",
+            mine_guid: "f66e6fdc-9bad-4cf0-baae-6665721ca4ba",
+            document_manager_guid: "338ab757-572c-40ec-be71-c9620daad86e",
+            document_name: "0101581201901_APPLICATION_FORM (1).pdf",
+            upload_date: "2020-01-13T23:50:06.287515+00:00",
+          },
+        },
+        {
+          now_application_document_xref_guid: "bede5549-e8b4-40c7-bb73-abb3bc41098d",
+          now_application_document_type_code: "REV",
+          now_application_document_type_code_description: "Review",
+          description: null,
+          is_final_package: null,
+          mine_document: {
+            mine_document_guid: "eeeb6f1e-9f34-490f-a240-947f2a59eb0f",
+            mine_guid: "f66e6fdc-9bad-4cf0-baae-6665721ca4ba",
+            document_manager_guid: "6749bf0c-4640-487e-8cde-0b9ac972e214",
+            document_name: "0101581201901_APPLICATION_FORM (2).pdf",
+            upload_date: "2020-01-13T23:50:06.289240+00:00",
+          },
+        },
+      ],
+    },
+    {
+      now_application_review_id: 7,
+      now_application_guid: "587507c0-cafd-43d5-ae40-26934e039893",
+      now_application_review_type_code: "FNC",
+      response_date: "2020-01-01",
+      referee_name: "asdasdwdq",
+      documents: [
+        {
+          now_application_document_xref_guid: "a9e83a40-9030-4c36-a2b8-b5897123083a",
+          now_application_document_type_code: "REV",
+          now_application_document_type_code_description: "Review",
+          description: null,
+          is_final_package: null,
+          mine_document: {
+            mine_document_guid: "5cf78f22-4d7d-4cd6-8ce8-80e01ed71e1a",
+            mine_guid: "f66e6fdc-9bad-4cf0-baae-6665721ca4ba",
+            document_manager_guid: "d98d09e1-2780-4e32-b62d-b5f496c098af",
+            document_name: "0101581201901_APPLICATION_FORM.pdf",
+            upload_date: "2020-01-13T23:50:27.039598+00:00",
+          },
+        },
+      ],
+    },
+  ],
+};

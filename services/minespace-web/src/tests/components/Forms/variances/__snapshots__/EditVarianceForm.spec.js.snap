@@ -50,7 +50,7 @@ exports[`EditVarianceForm renders properly 1`] = `
     label="Attached Files"
   >
     <p>
-      Please upload all the required documents here for the variance application
+      Please upload all the required documents here for the variance application.
     </p>
     <Field
       component={[Function]}
@@ -92,17 +92,6 @@ exports[`EditVarianceForm renders properly 1`] = `
         Cancel
       </Button>
     </Popconfirm>
-    <Button
-      block={false}
-      className="full-mobile"
-      disabled={false}
-      ghost={false}
-      htmlType="submit"
-      loading={false}
-      type="primary"
-    >
-      Submit
-    </Button>
   </div>
 </Form>
 `;
