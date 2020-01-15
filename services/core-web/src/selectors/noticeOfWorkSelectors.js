@@ -8,6 +8,8 @@ export const {
   getNoticeOfWorkPageData,
   getNoticeOfWork,
   getOriginalNoticeOfWork,
+  getNoticeOfWorkReviews,
+  getDocumentDownloadState,
 } = noticeOfWorkReducer;
 
 export const getNOWReclamationSummary = createSelector(

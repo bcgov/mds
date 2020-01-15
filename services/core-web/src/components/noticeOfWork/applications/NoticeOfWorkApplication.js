@@ -29,6 +29,7 @@ import {
 } from "@/selectors/staticContentSelectors";
 import VerifyNOWMine from "@/components/noticeOfWork/applications/verification/VerifyNOWMine";
 import VerifyNOWMineConfirmation from "@/components/noticeOfWork/applications/verification/VerifyNOWMineConfirmation";
+import NOWApplicationReviews from "@/components/noticeOfWork/applications/referals/NOWApplicationReviews";
 import CustomPropTypes from "@/customPropTypes";
 import ReviewNOWApplication from "@/components/noticeOfWork/applications/review/ReviewNOWApplication";
 import NullScreen from "@/components/common/NullScreen";
@@ -404,6 +405,17 @@ export class NoticeOfWorkApplication extends Component {
     );
   };
 
+  renderStepThree = () => {
+    return (
+      <NOWApplicationReviews
+        mineGuid={this.props.noticeOfWork.mine_guid}
+        noticeOfWorkGuid={this.props.noticeOfWork.now_application_guid}
+        coreDocuments={this.props.noticeOfWork.documents}
+        submissionDocuments={this.props.noticeOfWork.submission_documents}
+      />
+    );
+  };
+
   renderProgressStatus = (stepIndex) => {
     if (this.props.noticeOfWork.application_progress) {
       const progressLength = this.props.noticeOfWork.application_progress.length;
@@ -429,7 +441,7 @@ export class NoticeOfWorkApplication extends Component {
     const steps = {
       0: this.renderStepOne(),
       1: this.renderStepTwo(),
-      2: <NullScreen type="next-stage" />,
+      2: this.renderStepThree(),
       3: <NullScreen type="next-stage" />,
     };
 

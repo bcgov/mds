@@ -367,6 +367,16 @@ class NOWApplicationProgressFactory(BaseFactory):
     created_by = factory.Faker('company')
     active_ind = True
 
+class NOWApplicationReviewFactory(BaseFactory):
+    class Meta:
+        model = app_models.NOWApplicationReview
+
+    now_application_id = factory.SelfAttribute('now_application.now_application_id')
+    now_application_review_type_code = factory.LazyFunction(RandomNOWReviewCode)
+    response_date = factory.Faker('past_datetime')
+    referee_name = factory.Faker('name')
+
+
 class NOWApplicationFactory(BaseFactory):
     class Meta:
         model = app_models.NOWApplication
@@ -407,6 +417,16 @@ class NOWApplicationFactory(BaseFactory):
     settling_pond = factory.RelatedFactory(SettlingPondFactory, 'now_application')
     underground_exploration = factory.RelatedFactory(UndergroundExplorationFactory,
                                                      'now_application')
+
+    @factory.post_generation
+    def reviews(obj, create, extracted, **kwargs):
+        if not create:
+            return
+
+        if not isinstance(extracted, int):
+            extracted = 1
+
+        NOWApplicationReviewFactory.create_batch(size=extracted, now_application=obj, **kwargs)
 
 
 class NOWApplicationIdentityFactory(BaseFactory):

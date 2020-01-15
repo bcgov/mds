@@ -16,15 +16,57 @@ exports[`SandGravelQuarry renders properly 1`] = `
       <div
         className="field-title"
       >
-        Average Depth Overburden(m)
+        Average Depth Overburden
       </div>
-      <Field
+      <Fields
         component={[Function]}
         disabled={true}
+        dropdownID="average_overburden_depth_unit_type_code"
         id="average_overburden_depth"
-        name="average_overburden_depth"
+        names={
+          Array [
+            "average_overburden_depth",
+            "average_overburden_depth_unit_type_code",
+          ]
+        }
+        validate={
+          Array [
+            [Function],
+          ]
+        }
       />
     </Col>
+    <Col
+      md={12}
+      sm={24}
+    >
+      <div
+        className="field-title"
+      >
+        Average Depth of top soil
+      </div>
+      <Fields
+        component={[Function]}
+        disabled={true}
+        dropdownID="average_top_soil_depth_unit_type_code"
+        id="average_top_soil_depth"
+        names={
+          Array [
+            "average_top_soil_depth",
+            "average_top_soil_depth_unit_type_code",
+          ]
+        }
+        validate={
+          Array [
+            [Function],
+          ]
+        }
+      />
+    </Col>
+  </Row>
+  <Row
+    gutter={16}
+  >
     <Col
       md={12}
       sm={24}
@@ -39,26 +81,6 @@ exports[`SandGravelQuarry renders properly 1`] = `
         disabled={true}
         id="stability_measures_description"
         name="stability_measures_description"
-      />
-    </Col>
-  </Row>
-  <Row
-    gutter={16}
-  >
-    <Col
-      md={12}
-      sm={24}
-    >
-      <div
-        className="field-title"
-      >
-        Average Depth of top soil(m)
-      </div>
-      <Field
-        component={[Function]}
-        disabled={true}
-        id="average_top_soil_depth"
-        name="average_top_soil_depth"
       />
     </Col>
   </Row>
@@ -148,42 +170,6 @@ exports[`SandGravelQuarry renders properly 1`] = `
       <div
         className="field-title"
       >
-        Does the local government have a soil removal bylaw?
-      </div>
-      <Field
-        component={[Function]}
-        disabled={true}
-        id="has_local_soil_removal_bylaw"
-        name="has_local_soil_removal_bylaw"
-      />
-    </Col>
-    <Col
-      md={12}
-      sm={24}
-    >
-      <div
-        className="field-title"
-      >
-        Estimate total mineable reserves over the life of the mine(m3)
-      </div>
-      <Field
-        component={[Function]}
-        disabled={true}
-        id="total_mineable_reserves"
-        name="total_mineable_reserves"
-      />
-    </Col>
-  </Row>
-  <Row
-    gutter={16}
-  >
-    <Col
-      md={12}
-      sm={24}
-    >
-      <div
-        className="field-title"
-      >
         Official community plan for the site
       </div>
       <Field
@@ -200,13 +186,71 @@ exports[`SandGravelQuarry renders properly 1`] = `
       <div
         className="field-title"
       >
-        Estimate annual extraction from site (tonnes/year)
+        Does the local government have a soil removal bylaw?
       </div>
       <Field
         component={[Function]}
         disabled={true}
+        id="has_local_soil_removal_bylaw"
+        name="has_local_soil_removal_bylaw"
+      />
+    </Col>
+  </Row>
+  <Row
+    gutter={16}
+  >
+    <Col
+      md={12}
+      sm={24}
+    >
+      <div
+        className="field-title"
+      >
+        Total mineable reserves over the life of the mine
+      </div>
+      <Fields
+        component={[Function]}
+        disabled={true}
+        dropdownID="total_mineable_reserves_unit_type_code"
+        id="total_mineable_reserves"
+        names={
+          Array [
+            "total_mineable_reserves",
+            "total_mineable_reserves_unit_type_code",
+          ]
+        }
+        validate={
+          Array [
+            [Function],
+          ]
+        }
+      />
+    </Col>
+    <Col
+      md={12}
+      sm={24}
+    >
+      <div
+        className="field-title"
+      >
+        Annual extraction from site
+      </div>
+      <Fields
+        component={[Function]}
+        disabled={true}
+        dropdownID="total_annual_extraction_unit_type_code"
         id="total_annual_extraction"
-        name="total_annual_extraction"
+        names={
+          Array [
+            "total_annual_extraction",
+            "total_annual_extraction_unit_type_code",
+          ]
+        }
+        validate={
+          Array [
+            [Function],
+          ]
+        }
       />
     </Col>
   </Row>

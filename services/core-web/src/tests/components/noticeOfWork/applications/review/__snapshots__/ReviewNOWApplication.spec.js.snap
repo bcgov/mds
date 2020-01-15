@@ -941,7 +941,9 @@ exports[`ReviewNOWApplication renders properly 1`] = `
         id="submission_documents"
         title="Submission Documents (VFCBC/NROS)"
       >
-        <NOWSubmissionDocuments />
+        <NOWSubmissionDocuments
+          selectedRows={null}
+        />
       </withRouter(ScrollContentWrapper)>
       <withRouter(ScrollContentWrapper)
         id="additional_documents"

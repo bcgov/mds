@@ -13,22 +13,37 @@ from app.api.services.document_manager_service import DocumentManagerService
 from app.api.mines.documents.models.mine_document import MineDocument
 
 from app.api.now_applications.models.now_application_identity import NOWApplicationIdentity
+from app.api.mines.documents.models.mine_document import MineDocument
 
 
-class NOWApplicationDocumentResource(Resource, UserMixin):
+class NOWApplicationDocumentUploadResource(Resource, UserMixin):
     @api.doc(description='Request a document_manager_guid for uploading a document')
     @requires_role_edit_permit
-    def post(self, now_application_guid):
-        now_application_identity = NOWApplicationIdentity.find_by_guid(now_application_guid)
+    def post(self, application_guid):
+        now_application_identity = NOWApplicationIdentity.find_by_guid(application_guid)
         if not now_application_identity:
             raise NotFound('No identity record for this application guid.')
 
         return DocumentManagerService.initializeFileUploadWithDocumentManager(
             request, now_application_identity.mine, 'noticeofwork')
+
+
+class NOWApplicationDocumentResource(Resource, UserMixin):
+    @api.response(204, 'Successfully deleted.')
+    def delete(self, application_guid, mine_document_guid):
+        mine_document = MineDocument.find_by_mine_document_guid(mine_document_guid)
+        if not mine_document or application_guid != str(
+                mine_document.now_application_document_xref.now_application.now_application_guid):
+            raise NotFound('No mine_document found for this application guid.')
+
+        mine_document.now_application_document_xref.delete()
+        return None, 204
+
+
 """
     @api.doc(description='Associate an uploaded file with a variance.',
              params={
-                 'now_application_guid': 'GUID for the notice of work to which the document should be associated'
+                 'application_guid': 'GUID for the notice of work to which the document should be associated'
              })
     @api.marshal_with(VARIANCE_MODEL, code=200)
     @requires_any_of([EDIT_VARIANCE, MINESPACE_PROPONENT])

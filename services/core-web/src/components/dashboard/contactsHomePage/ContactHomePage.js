@@ -39,7 +39,7 @@ const propTypes = {
   location: PropTypes.shape({ search: PropTypes.string }).isRequired,
   pageData: PropTypes.objectOf(CustomPropTypes.partyPageData).isRequired,
   provinceOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
-  parties: PropTypes.arrayOf(CustomPropTypes.party).isRequired,
+  parties: PropTypes.objectOf(CustomPropTypes.party).isRequired,
   partyRelationshipTypesList: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
   relationshipTypeHash: PropTypes.objectOf(PropTypes.string).isRequired,
 };
