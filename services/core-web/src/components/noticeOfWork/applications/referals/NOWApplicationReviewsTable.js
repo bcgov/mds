@@ -38,7 +38,7 @@ const columns = [
     render: (text) => <div title="Type">{text}</div>,
   },
   {
-    title: "Response Recieved",
+    title: "Response Received",
     dataIndex: "response_date",
     key: "response_date",
     render: (text) => <div title="Type">{text}</div>,

@@ -611,6 +611,6 @@ INSERT INTO now_application_review_type(
     )
 VALUES
     ('REF', 'Referral', 'system-mds', 'system-mds'),
-    ('FNC', 'First Nations Consulation', 'system-mds', 'system-mds'),
+    ('FNC', 'First Nations Consultation', 'system-mds', 'system-mds'),
     ('PUB', 'Public Comment', 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;

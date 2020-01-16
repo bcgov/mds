@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { Button, Row, Col, notification, Divider, Badge, Icon, Tag } from "antd";
+import { Button, Row, Col, notification, Divider, Badge, Icon, Tag, Popconfirm } from "antd";
 import { formatDate } from "@/utils/helpers";
 
 import { openModal, closeModal } from "@/actions/modalActions";
@@ -81,12 +81,15 @@ const ApplicationReview = (props) => (
       {props.readyForReview && !props.completeDate && (
         <div className="inline-flex flex-end">
           <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
-            <Button
-              onClick={(event) => props.completeHandler(event, props.reviewType.value)}
-              type="primary"
+            <Popconfirm
+              placement="topRight"
+              title={`Are you sure you want to complete ${props.reviewType.label}?`}
+              onConfirm={(event) => props.completeHandler(event, props.reviewType.value)}
+              okText="Yes"
+              cancelText="No"
             >
-              {`Set ${props.reviewType.label} as Completed`}
-            </Button>
+              <Button type="primary">{`Complete ${props.reviewType.label}`}</Button>
+            </Popconfirm>
           </AuthorizationWrapper>
         </div>
       )}
@@ -346,14 +349,39 @@ export class NOWApplicationReviews extends Component {
                 )}
               </div>
               <div>
-                <Button
-                  type="secondary"
-                  className="full-mobile"
-                  onClick={this.openDownloadPackageModal}
-                >
-                  <Icon type="download" theme="outlined" className="padding-small--right icon-sm" />
-                  Download Referral Package
-                </Button>
+                {!this.props.noticeOfWork.ready_for_review_date && (
+                  <Popconfirm
+                    placement="topRight"
+                    title="By downloading the Referral Package you are indicating that Reviews are ready to begin. Do you want to continue?"
+                    onConfirm={this.openDownloadPackageModal}
+                    okText="Yes"
+                    cancelText="No"
+                  >
+                    <Button type="secondary" className="full-mobile">
+                      <Icon
+                        type="download"
+                        theme="outlined"
+                        className="padding-small--right icon-sm"
+                      />
+                      Download Referral Package
+                    </Button>
+                  </Popconfirm>
+                )}
+                {this.props.noticeOfWork.ready_for_review_date && (
+                  <Button
+                    type="secondary"
+                    className="full-mobile"
+                    onClick={this.openDownloadPackageModal}
+                  >
+                    <Icon
+                      type="download"
+                      theme="outlined"
+                      className="padding-small--right icon-sm"
+                    />
+                    Download Referral Package
+                  </Button>
+                )}
+
                 <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
                   <AddButton
                     onClick={(event) => this.openAddReviewModal(event, this.handleAddReview)}

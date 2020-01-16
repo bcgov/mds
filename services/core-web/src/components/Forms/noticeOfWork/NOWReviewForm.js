@@ -73,7 +73,7 @@ export class NOWReviewForm extends Component {
               <Field
                 id="referee_name"
                 name="referee_name"
-                label="Referee Name"
+                label="Name"
                 component={renderConfig.FIELD}
                 validate={[required]}
               />
@@ -82,7 +82,7 @@ export class NOWReviewForm extends Component {
               <Field
                 id="response_date"
                 name="response_date"
-                label="Response Recieved"
+                label="Response Received"
                 component={renderConfig.DATE}
                 validate={[required, dateNotInFuture]}
               />
