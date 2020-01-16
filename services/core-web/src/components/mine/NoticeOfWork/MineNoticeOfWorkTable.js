@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Table, Icon, Input, Button } from "antd";
+import { Table, Icon, Input, Button, Badge } from "antd";
 import { Link, withRouter } from "react-router-dom";
 import { isEmpty } from "lodash";
 import PropTypes from "prop-types";
@@ -12,6 +12,7 @@ import { formatDate, getTableHeaders } from "@/utils/helpers";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import { EDIT_OUTLINE_VIOLET } from "@/constants/assets";
 import * as Permission from "@/constants/permissions";
+import { getNoticeOfWorkApplicationBadgeStatusType } from "@/constants/theme";
 
 /**
  * @class MineNoticeOfWorkTable - list of mine notice of work applications
@@ -128,36 +129,40 @@ export class MineNoticeOfWorkTable extends Component {
 
   columns = () => [
     {
-      title: "NoW No.",
+      title: "Number",
       dataIndex: "nowNum",
       sortField: "now_number",
       render: (text, record) => (
         <Link to={this.createLinkTo(router.VIEW_NOTICE_OF_WORK_APPLICATION, record)}>{text}</Link>
       ),
       sorter: true,
-      ...this.filterProperties("NoW No.", "now_number"),
+      ...this.filterProperties("Number", "now_number"),
     },
     {
-      title: "NoW Type",
+      title: "Type",
       dataIndex: "nowType",
       sortField: "notice_of_work_type_description",
-      render: (text) => <div title="NoW Mine Type">{text}</div>,
+      render: (text) => <div title="Type">{text}</div>,
       sorter: true,
-      ...this.filterProperties("NoW Type", "notice_of_work_type_description"),
+      ...this.filterProperties("Type", "notice_of_work_type_description"),
     },
     {
-      title: "Application Status",
+      title: "Status",
       dataIndex: "status",
       sortField: "status",
-      render: (text) => <div title="Application Status">{text}</div>,
+      render: (text) => (
+        <div title="Status">
+          <Badge status={getNoticeOfWorkApplicationBadgeStatusType(text)} text={text} />
+        </div>
+      ),
       sorter: true,
       ...this.filterProperties("Status", "status"),
     },
     {
-      title: "Import Date",
+      title: "Received",
       dataIndex: "date",
       sortField: "received_date",
-      render: (text) => <div title="Import Date">{text}</div>,
+      render: (text) => <div title="Received">{text}</div>,
       sorter: true,
     },
     {
