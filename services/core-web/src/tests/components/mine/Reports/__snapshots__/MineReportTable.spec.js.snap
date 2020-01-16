@@ -63,6 +63,7 @@ exports[`MineReportTable renders properly 1`] = `
     locale={
       Object {
         "emptyText": <NullScreen
+          message=""
           type="reports"
         />,
       }
