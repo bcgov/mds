@@ -45,7 +45,7 @@ export const fetchMineNoticeOfWorkApplications = (mineGuid) => (dispatch) => {
   dispatch(showLoading());
   return CustomAxios()
     .get(
-      `${ENVIRONMENT.apiUrl}${API.MINE_NOTICE_OF_WORK_APPLICATIONS(mineGuid)}`,
+      `${ENVIRONMENT.apiUrl}${API.NOTICE_OF_WORK_APPLICATIONS({ mineGuid })}`,
       createRequestHeader()
     )
     .then((response) => {
