@@ -57,13 +57,13 @@ export const fetchMineNoticeOfWorkApplications = (mineGuid) => (dispatch) => {
     .finally(() => dispatch(hideLoading()));
 };
 
-export const createNoticeOfWorkApplication = (mine_guid, applicationGuid) => (dispatch) => {
+export const createNoticeOfWorkApplication = (payload) => (dispatch) => {
   dispatch(request(reducerTypes.CREATE_NOTICE_OF_WORK_APPLICATION));
   dispatch(showLoading());
   return CustomAxios()
     .post(
-      `${ENVIRONMENT.apiUrl}${API.NOTICE_OF_WORK_APPLICATION_IMPORT(applicationGuid)}`,
-      { mine_guid },
+      `${ENVIRONMENT.apiUrl}${API.NOTICE_OF_WORK_APPLICATIONS()}`,
+      { payload },
       createRequestHeader()
     )
     .then((response) => {
@@ -74,12 +74,29 @@ export const createNoticeOfWorkApplication = (mine_guid, applicationGuid) => (di
     .finally(() => dispatch(hideLoading()));
 };
 
+export const importNoticeOfWorkApplication = (mine_guid, applicationGuid) => (dispatch) => {
+  dispatch(request(reducerTypes.IMPORT_NOTICE_OF_WORK_APPLICATION));
+  dispatch(showLoading());
+  return CustomAxios()
+    .post(
+      `${ENVIRONMENT.apiUrl}${API.NOTICE_OF_WORK_APPLICATION_IMPORT(applicationGuid)}`,
+      { mine_guid },
+      createRequestHeader()
+    )
+    .then((response) => {
+      dispatch(success(reducerTypes.IMPORT_NOTICE_OF_WORK_APPLICATION));
+      return response;
+    })
+    .catch(() => dispatch(error(reducerTypes.IMPORT_NOTICE_OF_WORK_APPLICATION)))
+    .finally(() => dispatch(hideLoading()));
+};
+
 export const fetchImportedNoticeOfWorkApplication = (applicationGuid) => (dispatch) => {
   dispatch(request(reducerTypes.GET_IMPORTED_NOTICE_OF_WORK_APPLICATION));
   dispatch(showLoading());
   return CustomAxios()
     .get(
-      `${ENVIRONMENT.apiUrl}${API.NOTICE_OF_WORK_IMPORTED_APPLICATION(applicationGuid)}`,
+      `${ENVIRONMENT.apiUrl}${API.NOTICE_OF_WORK_APPLICATION(applicationGuid)}`,
       createRequestHeader()
     )
     .then((response) => {
@@ -96,9 +113,7 @@ export const fetchOriginalNoticeOfWorkApplication = (applicationGuid) => (dispat
   dispatch(showLoading());
   return CustomAxios()
     .get(
-      `${ENVIRONMENT.apiUrl}${API.NOTICE_OF_WORK_IMPORTED_APPLICATION(
-        applicationGuid
-      )}?original=True`,
+      `${ENVIRONMENT.apiUrl}${API.NOTICE_OF_WORK_APPLICATION(applicationGuid)}?original=True`,
       createRequestHeader()
     )
     .then((response) => {
@@ -119,7 +134,7 @@ export const updateNoticeOfWorkApplication = (
   dispatch(showLoading());
   return CustomAxios()
     .put(
-      `${ENVIRONMENT.apiUrl}${API.NOTICE_OF_WORK_APPLICATION_UPDATE(nowApplicationGuid)}`,
+      `${ENVIRONMENT.apiUrl}${API.NOTICE_OF_WORK_APPLICATION(nowApplicationGuid)}`,
       payload,
       createRequestHeader()
     )

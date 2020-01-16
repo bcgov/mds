@@ -7,7 +7,7 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import * as routes from "@/constants/routes";
 import {
-  createNoticeOfWorkApplication,
+  importNoticeOfWorkApplication,
   fetchImportedNoticeOfWorkApplication,
   fetchOriginalNoticeOfWorkApplication,
   createNoticeOfWorkApplicationProgress,
@@ -49,7 +49,7 @@ const propTypes = {
   noticeOfWork: CustomPropTypes.importedNOWApplication,
   originalNoticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
   createNoticeOfWorkApplicationProgress: CustomPropTypes.importedNOWApplication.isRequired,
-  createNoticeOfWorkApplication: PropTypes.func.isRequired,
+  importNoticeOfWorkApplication: PropTypes.func.isRequired,
   updateNoticeOfWorkApplication: PropTypes.func.isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
   fetchImportedNoticeOfWorkApplication: PropTypes.func.isRequired,
@@ -299,7 +299,7 @@ export class NoticeOfWorkApplication extends Component {
   handleConfirmMine = () => {
     this.setState({ isLoaded: false });
     this.props
-      .createNoticeOfWorkApplication(
+      .importNoticeOfWorkApplication(
         this.state.associatedMineGuid,
         this.props.noticeOfWork.now_application_guid
       )
@@ -605,7 +605,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
-      createNoticeOfWorkApplication,
+      importNoticeOfWorkApplication,
       updateNoticeOfWorkApplication,
       fetchImportedNoticeOfWorkApplication,
       fetchOriginalNoticeOfWorkApplication,
