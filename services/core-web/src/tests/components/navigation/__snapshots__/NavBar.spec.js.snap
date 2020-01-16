@@ -28,8 +28,8 @@ exports[`NavBar renders properly 1`] = `
           containerId="navBar"
         />
       </div>
-      <MediaQueryContextConsumer
-        maxWidth={979}
+      <MediaQuery
+        maxWidth={1079}
       >
         <Button
           block={false}
@@ -55,9 +55,9 @@ exports[`NavBar renders properly 1`] = `
             }
           />
         </Button>
-      </MediaQueryContextConsumer>
-      <MediaQueryContextConsumer
-        minWidth={980}
+      </MediaQuery>
+      <MediaQuery
+        minWidth={1080}
       >
         <div>
           <Dropdown
@@ -219,13 +219,13 @@ exports[`NavBar renders properly 1`] = `
             </Dropdown>
           </Connect(AuthorizationWrapper)>
         </div>
-      </MediaQueryContextConsumer>
+      </MediaQuery>
     </div>
   </div>
-  <MediaQueryContextConsumer
-    maxWidth={979}
+  <MediaQuery
+    maxWidth={1079}
   >
     <div />
-  </MediaQueryContextConsumer>
+  </MediaQuery>
 </div>
 `;
