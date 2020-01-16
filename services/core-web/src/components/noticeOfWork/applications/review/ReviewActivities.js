@@ -17,6 +17,12 @@ import SurfaceBulkSamples from "@/components/noticeOfWork/applications/review/ac
 import WaterSupply from "@/components/noticeOfWork/applications/review/activities/WaterSupply";
 import UndergroundExploration from "@/components/noticeOfWork/applications/review/activities/UndergroundExploration";
 import Placer from "@/components/noticeOfWork/applications/review/activities/Placer";
+import {
+  isMineralOrCoal,
+  isPlacer,
+  isSandAndGravelOrQuarry,
+  isMineralOrPlacerOrCoal,
+} from "@/constants/NOWConditions";
 
 /**
  * @constant ReviewActivities renders edit/view for the NoW Application review step
@@ -25,11 +31,11 @@ import Placer from "@/components/noticeOfWork/applications/review/activities/Pla
 const propTypes = {
   // isViewMode is being passed into field Component, thus ReviewActivities.js assumes it isn't being used
   // eslint-disable-next-line
+  noticeOFWorkType: PropTypes.string.isRequired,
   isViewMode: PropTypes.bool.isRequired,
   arrayInsert: PropTypes.func.isRequired,
   arrayRemove: PropTypes.func.isRequired,
   arrayPush: PropTypes.func.isRequired,
-  // noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
 };
 
 export const ReviewActivities = (props) => {
@@ -50,7 +56,6 @@ export const ReviewActivities = (props) => {
   const addRecord = (activity, newActivity) => {
     props.arrayPush(FORM.EDIT_NOTICE_OF_WORK, activity, newActivity);
   };
-
   return (
     <div>
       <ScrollContentWrapper
@@ -81,6 +86,7 @@ export const ReviewActivities = (props) => {
       <ScrollContentWrapper
         id="cut-lines-polarization-survey"
         title="Cut Lines and Induced Polarization Survey"
+        showContent={isMineralOrPlacerOrCoal(props.noticeOFWorkType)}
       >
         <FormSection name="cut_lines_polarization_survey">
           <CutLines isViewMode={props.isViewMode} editRecord={editRecord} addRecord={addRecord} />
@@ -113,7 +119,11 @@ export const ReviewActivities = (props) => {
           />
         </FormSection>
       </ScrollContentWrapper>
-      <ScrollContentWrapper id="surface-bulk-samples" title="Surface Bulk Sample">
+      <ScrollContentWrapper
+        id="surface-bulk-samples"
+        title="Surface Bulk Sample"
+        showContent={isMineralOrCoal(props.noticeOFWorkType)}
+      >
         <FormSection name="surface_bulk_sample">
           <SurfaceBulkSamples
             isViewMode={props.isViewMode}
@@ -122,7 +132,11 @@ export const ReviewActivities = (props) => {
           />
         </FormSection>
       </ScrollContentWrapper>
-      <ScrollContentWrapper id="underground-exploration" title="Underground Exploration">
+      <ScrollContentWrapper
+        id="underground-exploration"
+        title="Underground Exploration"
+        showContent={isMineralOrPlacerOrCoal(props.noticeOFWorkType)}
+      >
         <FormSection name="underground_exploration">
           <UndergroundExploration
             isViewMode={props.isViewMode}
@@ -134,6 +148,7 @@ export const ReviewActivities = (props) => {
       <ScrollContentWrapper
         id="sand-gravel-quarry-operations"
         title="Sand and Gravel / Quarry Operations"
+        showContent={isSandAndGravelOrQuarry(props.noticeOFWorkType)}
       >
         <FormSection name="sand_and_gravel">
           <SandGravelQuarry
@@ -143,7 +158,11 @@ export const ReviewActivities = (props) => {
           />
         </FormSection>
       </ScrollContentWrapper>
-      <ScrollContentWrapper id="placer-operations" title="Placer Operations">
+      <ScrollContentWrapper
+        id="placer-operations"
+        title="Placer Operations"
+        showContent={isPlacer(props.noticeOFWorkType)}
+      >
         <FormSection name="placer_operation">
           <Placer isViewMode={props.isViewMode} editRecord={editRecord} addRecord={addRecord} />
         </FormSection>

@@ -1,5 +1,7 @@
+/* eslint-disable */
+
 import React from "react";
-import { PropTypes } from "prop-types";
+import PropTypes from "prop-types";
 import { compose } from "redux";
 import { connect } from "react-redux";
 import { Field, reduxForm, FormSection, formValueSelector } from "redux-form";
@@ -30,26 +32,16 @@ import { required, lat, lon, maxLength, number } from "@/utils/Validate";
  */
 
 const propTypes = {
-  // isViewMode is being passed into field Component, thus ReviewNOWApplication.js assumes it isn't being used
-  // eslint-disable-next-line
   isViewMode: PropTypes.bool.isRequired,
-  // contacts is being passed into field Component, thus ReviewNOWApplication.js assumes it isn't being used
-  // eslint-disable-next-line
   contacts: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
-  // reclamationSummary is being passed into field Component, thus ReviewNOWApplication.js assumes it isn't being used
-  // eslint-disable-next-line
   reclamationSummary: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.strings)).isRequired,
   now_application_guid: PropTypes.string.isRequired,
   mine_guid: PropTypes.string.isRequired,
   documents: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
   submission_documents: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
-  // thinks it is never used
-  // eslint-disable-next-line
   regionDropdownOptions: CustomPropTypes.options.isRequired,
-  // eslint-disable-next-line
   applicationTypeOptions: CustomPropTypes.options.isRequired,
-  // eslint-disable-next-line
-  permitTypeOptions: CustomPropTypes.options.isRequired,
+  noticeOfWorkType: PropTypes.string.isRequired,
 };
 
 export const ReviewNOWApplication = (props) => {
@@ -447,7 +439,10 @@ export const ReviewNOWApplication = (props) => {
           <ScrollContentWrapper id="reclamation" title="Summary of Reclamation">
             {renderReclamation()}
           </ScrollContentWrapper>
-          <ReviewActivities isViewMode={props.isViewMode} />
+          <ReviewActivities
+            isViewMode={props.isViewMode}
+            noticeOFWorkType={props.noticeOFWorkType}
+          />
           <ScrollContentWrapper id="submission_documents" title="Submission Documents (VFCBC/NROS)">
             <NOWSubmissionDocuments
               now_application_guid={props.now_application_guid}
