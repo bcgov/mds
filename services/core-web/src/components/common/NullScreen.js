@@ -168,7 +168,7 @@ const NullScreen = (props) => (
         <img alt="mine_img" src={NO_MINE} />
         <h3>{String.NO_DATA}</h3>
         <p>
-          <i>{props.message}</i> is not an activity on this Notice of Work
+          <i>{props.message}</i> does not apply to this type of permit application.
         </p>
       </div>
     )}
