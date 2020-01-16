@@ -44,7 +44,6 @@ const propTypes = {
   closeModal: PropTypes.func.isRequired,
   createNoticeOfWorkApplicationReview: PropTypes.func.isRequired,
   fetchNoticeOfWorkApplicationReviews: PropTypes.func.isRequired,
-  fetchNoticeOfWorkApplicationReviewTypes: PropTypes.func.isRequired,
   updateNoticeOfWorkApplicationReview: PropTypes.func.isRequired,
   deleteNoticeOfWorkApplicationReview: PropTypes.func.isRequired,
   deleteNoticeOfWorkApplicationReviewDocument: PropTypes.func.isRequired,
@@ -69,6 +68,7 @@ const ApplicationReview = (props) => (
         )}
       </div>
       <NOWApplicationReviewsTable
+        isLoaded={props.isLoaded}
         noticeOfWorkReviews={props.noticeOfWorkReviews.filter(
           (review) => review.now_application_review_type_code === props.reviewType.value
         )}
@@ -96,11 +96,12 @@ const ApplicationReview = (props) => (
 );
 
 export class NOWApplicationReviews extends Component {
-  state = { cancelDownload: false };
+  state = { cancelDownload: false, isLoaded: false };
 
   componentDidMount() {
-    this.props.fetchNoticeOfWorkApplicationReviews(this.props.noticeOfWork.now_application_guid);
-    this.props.fetchNoticeOfWorkApplicationReviewTypes();
+    this.props
+      .fetchNoticeOfWorkApplicationReviews(this.props.noticeOfWork.now_application_guid)
+      .then(() => this.setState({ isLoaded: true }));
   }
 
   handleAddReview = (values) => {
@@ -313,6 +314,16 @@ export class NOWApplicationReviews extends Component {
   };
 
   render() {
+    const commonApplicationReviewProps = {
+      isLoaded: this.state.isLoaded,
+      readyForReview: this.props.noticeOfWork.ready_for_review_date,
+      noticeOfWorkReviews: this.props.noticeOfWorkReviews,
+      noticeOfWorkReviewTypes: this.props.noticeOfWorkReviewTypes,
+      handleDelete: this.handleDeleteReview,
+      openEditModal: this.openEditReviewModal,
+      handleEdit: this.handleEditReview,
+      handleDocumentDelete: this.handleDocumentDelete,
+    };
     return (
       <div>
         <Row type="flex" justify="center">
@@ -360,10 +371,10 @@ export class NOWApplicationReviews extends Component {
               (reviewType) => reviewType.value === "REF"
             ) && (
               <ApplicationReview
+                {...commonApplicationReviewProps}
                 reviewType={this.props.noticeOfWorkReviewTypes.find(
                   (reviewType) => reviewType.value === "REF"
                 )}
-                readyForReview={this.props.noticeOfWork.ready_for_review_date}
                 completeDate={this.props.noticeOfWork.referral_closed_on_date}
                 completeHandler={() =>
                   this.updateNoticeOfWork({
@@ -371,22 +382,16 @@ export class NOWApplicationReviews extends Component {
                     referral_closed_on_date: new Date(),
                   })
                 }
-                noticeOfWorkReviews={this.props.noticeOfWorkReviews}
-                noticeOfWorkReviewTypes={this.props.noticeOfWorkReviewTypes}
-                handleDelete={this.handleDeleteReview}
-                openEditModal={this.openEditReviewModal}
-                handleEdit={this.handleEditReview}
-                handleDocumentDelete={this.handleDocumentDelete}
               />
             )}
             {this.props.noticeOfWorkReviewTypes.some(
               (reviewType) => reviewType.value === "FNC"
             ) && (
               <ApplicationReview
+                {...commonApplicationReviewProps}
                 reviewType={this.props.noticeOfWorkReviewTypes.find(
                   (reviewType) => reviewType.value === "FNC"
                 )}
-                readyForReview={this.props.noticeOfWork.ready_for_review_date}
                 completeDate={this.props.noticeOfWork.consultation_closed_on_date}
                 completeHandler={() =>
                   this.updateNoticeOfWork({
@@ -394,22 +399,16 @@ export class NOWApplicationReviews extends Component {
                     consultation_closed_on_date: new Date(),
                   })
                 }
-                noticeOfWorkReviews={this.props.noticeOfWorkReviews}
-                noticeOfWorkReviewTypes={this.props.noticeOfWorkReviewTypes}
-                handleDelete={this.handleDeleteReview}
-                openEditModal={this.openEditReviewModal}
-                handleEdit={this.handleEditReview}
-                handleDocumentDelete={this.handleDocumentDelete}
               />
             )}
             {this.props.noticeOfWorkReviewTypes.some(
               (reviewType) => reviewType.value === "PUB"
             ) && (
               <ApplicationReview
+                {...commonApplicationReviewProps}
                 reviewType={this.props.noticeOfWorkReviewTypes.find(
                   (reviewType) => reviewType.value === "PUB"
                 )}
-                readyForReview={this.props.noticeOfWork.ready_for_review_date}
                 completeDate={this.props.noticeOfWork.public_comment_closed_on_date}
                 completeHandler={() =>
                   this.updateNoticeOfWork({
@@ -417,12 +416,6 @@ export class NOWApplicationReviews extends Component {
                     public_comment_closed_on_date: new Date(),
                   })
                 }
-                noticeOfWorkReviews={this.props.noticeOfWorkReviews}
-                noticeOfWorkReviewTypes={this.props.noticeOfWorkReviewTypes}
-                handleDelete={this.handleDeleteReview}
-                openEditModal={this.openEditReviewModal}
-                handleEdit={this.handleEditReview}
-                handleDocumentDelete={this.handleDocumentDelete}
               />
             )}
           </React.Fragment>
@@ -444,7 +437,6 @@ const mapDispatchToProps = (dispatch) =>
       closeModal,
       fetchNoticeOfWorkApplicationReviews,
       createNoticeOfWorkApplicationReview,
-      fetchNoticeOfWorkApplicationReviewTypes,
       deleteNoticeOfWorkApplicationReview,
       updateNoticeOfWorkApplicationReview,
       deleteNoticeOfWorkApplicationReviewDocument,
