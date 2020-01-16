@@ -2,21 +2,31 @@ from flask_restplus import Resource
 from flask import request
 from sqlalchemy_filters import apply_pagination, apply_sort
 from sqlalchemy import desc, func, or_
+from werkzeug.exceptions import BadRequest, NotFound, InternalServerError
 
 from app.extensions import api
 from app.api.mines.mine.models.mine import Mine
+from app.api.mines.permits.permit.models.permit import Permit
 from app.api.mines.region.models.region import MineRegionCode
 from app.api.now_applications.models.notice_of_work_view import NoticeOfWorkView
 from app.api.now_applications.models.now_application_status import NOWApplicationStatus
-from app.api.now_applications.response_models import NOW_VIEW_LIST
-from app.api.utils.access_decorators import requires_role_view_all
+from app.api.now_applications.models.now_application_identity import NOWApplicationIdentity
+from app.api.now_applications.response_models import NOW_VIEW_LIST, NOW_APPLICATION_MODEL
+from app.api.utils.access_decorators import requires_role_view_all, requires_role_edit_permit
 from app.api.utils.resources_mixins import UserMixin
+from app.api.utils.custom_reqparser import CustomReqparser
+from app.api import utils
 
 PAGE_DEFAULT = 1
 PER_PAGE_DEFAULT = 25
 
 
-class NoticeOfWorkListResource(Resource, UserMixin):
+class NOWApplicationListResource(Resource, UserMixin):
+    parser = utils.custom_reqparser.CustomReqparser()
+    parser.add_argument('permit_guid', type=str, required=True)
+    #required because only allowed on Major Mine Permit Amendment Application
+    parser.add_argument('mine_guid', type=str, required=True)
+
     @api.doc(
         description='Get a list of Core now applications. Order: received_date DESC',
         params={
@@ -32,14 +42,14 @@ class NoticeOfWorkListResource(Resource, UserMixin):
         })
     @requires_role_view_all
     @api.marshal_with(NOW_VIEW_LIST, code=200)
-    def get(self, mine_guid=None):
+    def get(self):
         records, pagination_details = self._apply_filters_and_pagination(
             page_number=request.args.get('page', PAGE_DEFAULT, type=int),
             page_size=request.args.get('per_page', PER_PAGE_DEFAULT, type=int),
             sort_field=request.args.get('sort_field', 'received_date', type=str),
             sort_dir=request.args.get('sort_dir', 'desc', type=str),
             originating_system=request.args.get('originating_system', 'desc', type=str),
-            mine_guid=mine_guid,
+            mine_guid=request.args.get('mine_guid', type=str),
             now_application_status_description=request.args.getlist(
                 'now_application_status_description', type=str),
             notice_of_work_type_description=request.args.getlist(
@@ -134,3 +144,25 @@ class NoticeOfWorkListResource(Resource, UserMixin):
             base_query = apply_sort(base_query, sort_criteria)
 
         return apply_pagination(base_query, page_number, page_size)
+
+    @api.doc(description='Adds a notice of work to a mine/permit.', params={})
+    @requires_role_edit_permit
+    @api.marshal_with(NOW_APPLICATION_MODEL, code=201)
+    def post(self):
+        data = self.parser.parse_args()
+        mine = Mine.find_by_mine_guid(data['mine_guid'])
+        permit = Permit.find_by_permit_guid(data['permit_guid'])
+        err_str = ''
+        if not mine:
+            err_str += 'Mine not Found. '
+        if not permit:
+            err_str += 'Permit not Found. '
+        if mine and not mine.major_mine_ind:
+            err_str += 'Permit Applications can only be created on mines where major_mine_ind=True'
+        if err_str:
+            raise BadRequest(err_str)
+
+        new_now = NOWApplicationIdentity(mine_guid=data['mine_guid'], permit=permit)
+
+        new_now.save()
+        return new_now, 201

@@ -353,6 +353,7 @@ class UndergroundExplorationDetailFactory(ActivityDetailBaseFactory):
 
     underground_exploration_type_code = factory.LazyFunction(RandomUndergroundExplorationTypeCode)
 
+
 class NOWApplicationProgressFactory(BaseFactory):
     class Meta:
         model = app_models.NOWApplicationProgress
@@ -366,6 +367,7 @@ class NOWApplicationProgressFactory(BaseFactory):
     start_date = factory.Faker('past_datetime')
     created_by = factory.Faker('company')
     active_ind = True
+
 
 class NOWApplicationReviewFactory(BaseFactory):
     class Meta:
@@ -434,7 +436,7 @@ class NOWApplicationIdentityFactory(BaseFactory):
         model = app_models.NOWApplicationIdentity
 
     class Params:
-        mine = factory.SubFactory('tests.factories.MineFactory', minimal=True)
+        mine = factory.SubFactory('tests.factories.MineFactory')
 
     now_application_guid = GUID
     now_application_id = factory.SelfAttribute('now_application.now_application_id')

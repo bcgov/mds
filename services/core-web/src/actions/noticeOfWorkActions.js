@@ -5,6 +5,11 @@ export const storeNoticeOfWorkApplications = (payload) => ({
   payload,
 });
 
+export const storeMineNoticeOfWorkApplications = (payload) => ({
+  type: actionTypes.STORE_MINE_NOTICE_OF_WORK_APPLICATIONS,
+  payload,
+});
+
 export const storeNoticeOfWorkApplication = (payload) => ({
   type: actionTypes.STORE_NOTICE_OF_WORK_APPLICATION,
   payload,
