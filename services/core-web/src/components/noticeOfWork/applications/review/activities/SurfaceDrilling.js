@@ -181,7 +181,7 @@ export const SurfaceDrilling = (props) => {
           <Field
             id="reclamation_core_storage"
             name="reclamation_core_storage"
-            component={RenderField}
+            component={RenderAutoSizeField}
             disabled={props.isViewMode}
           />
         </Col>

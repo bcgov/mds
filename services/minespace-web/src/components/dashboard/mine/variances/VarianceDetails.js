@@ -12,6 +12,7 @@ const propTypes = {
   removeDocument: PropTypes.func,
   complianceCodesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   varianceStatusOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  documentCategoryOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   isViewOnly: PropTypes.bool,
 };
 
@@ -70,6 +71,7 @@ export const VarianceDetails = (props) => {
         documents={props.variance.documents}
         removeDocument={props.removeDocument}
         isViewOnly={props.isViewOnly}
+        documentCategoryOptionsHash={props.documentCategoryOptionsHash}
       />
     </div>
   );

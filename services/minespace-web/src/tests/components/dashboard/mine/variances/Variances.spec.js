@@ -13,6 +13,7 @@ const setupProps = () => {
   props.varianceApplications = MOCK.VARIANCES.records;
   props.complianceCodesHash = MOCK.HSRCM_HASH;
   props.varianceStatusOptionsHash = MOCK.VARIANCE_STATUS_OPTIONS_HASH;
+  props.documentCategoryOptionsHash = MOCK.VARIANCE_DOCUMENT_CATEGORY_OPTIONS_HASH;
 };
 
 const setupDispatchProps = () => {
@@ -20,6 +21,7 @@ const setupDispatchProps = () => {
   dispatchProps.fetchVariancesByMine = jest.fn();
   dispatchProps.fetchMineComplianceCodes = jest.fn();
   dispatchProps.fetchVarianceStatusOptions = jest.fn();
+  dispatchProps.fetchVarianceDocumentCategoryOptions = jest.fn();
 };
 
 beforeEach(() => {

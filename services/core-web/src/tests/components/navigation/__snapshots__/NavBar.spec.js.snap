@@ -29,7 +29,7 @@ exports[`NavBar renders properly 1`] = `
         />
       </div>
       <MediaQuery
-        maxWidth={979}
+        maxWidth={1079}
       >
         <Button
           block={false}
@@ -57,7 +57,7 @@ exports[`NavBar renders properly 1`] = `
         </Button>
       </MediaQuery>
       <MediaQuery
-        minWidth={980}
+        minWidth={1080}
       >
         <div>
           <Dropdown
@@ -223,7 +223,7 @@ exports[`NavBar renders properly 1`] = `
     </div>
   </div>
   <MediaQuery
-    maxWidth={979}
+    maxWidth={1079}
   >
     <div />
   </MediaQuery>

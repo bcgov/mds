@@ -38,6 +38,12 @@
         border: none;
         border-radius: 0;
       }
+      &:focus {
+        color: $pure-white;
+        background-color: $primary-btn-color-hover;
+        border: none;
+        border-radius: 0;
+      }
     }
   }
 }
@@ -87,9 +93,10 @@
   }
 
   &--footer {
-    color: gray;
+    color: $medium-grey;
     text-align: center;
     width: 100%;
+    padding-top: 50px;
   }
 }
 

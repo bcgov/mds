@@ -116,7 +116,7 @@ export class NOWApplicationReviews extends Component {
 
   handleEditReview = (values) => {
     const { now_application_review_id } = values;
-    const form_values = {
+    const formValues = {
       uploadedFiles: values.uploadedFiles,
       now_application_review_type_code: values.now_application_review_type_code,
       response_date: values.response_date,
@@ -124,41 +124,29 @@ export class NOWApplicationReviews extends Component {
     };
     this.props
       .updateNoticeOfWorkApplicationReview(
-        this.props.noticeOfWork.now_application_guid,
+        this.props.noticeOfWorkGuid,
         now_application_review_id,
-        form_values
+        formValues
       )
       .then(() => {
-        this.props.fetchNoticeOfWorkApplicationReviews(
-          this.props.noticeOfWork.now_application_guid
-        );
+        this.props.fetchNoticeOfWorkApplicationReviews(this.props.noticeOfWorkGuid);
         this.props.closeModal();
       });
   };
 
   handleDocumentDelete = (mine_document) => {
     this.props
-      .deleteNoticeOfWorkApplicationReviewDocument(
-        this.props.noticeOfWork.now_application_guid,
-        mine_document
-      )
+      .deleteNoticeOfWorkApplicationReviewDocument(this.props.noticeOfWorkGuid, mine_document)
       .then(() => {
-        this.props.fetchNoticeOfWorkApplicationReviews(
-          this.props.noticeOfWork.now_application_guid
-        );
+        this.props.fetchNoticeOfWorkApplicationReviews(this.props.noticeOfWorkGuid);
       });
   };
 
   handleDeleteReview = (now_application_review_id) => {
     this.props
-      .deleteNoticeOfWorkApplicationReview(
-        this.props.noticeOfWork.now_application_guid,
-        now_application_review_id
-      )
+      .deleteNoticeOfWorkApplicationReview(this.props.noticeOfWorkGuid, now_application_review_id)
       .then(() => {
-        this.props.fetchNoticeOfWorkApplicationReviews(
-          this.props.noticeOfWork.now_application_guid
-        );
+        this.props.fetchNoticeOfWorkApplicationReviews(this.props.noticeOfWorkGuid);
         this.props.closeModal();
       });
   };
@@ -184,7 +172,7 @@ export class NOWApplicationReviews extends Component {
 
   openAddReviewModal = (event, onSubmit) => {
     event.preventDefault();
-    const initialValues = { now_application_guid: this.props.noticeOfWork.now_application_guid };
+    const initialValues = { now_application_guid: this.props.noticeOfWorkGuid };
     this.props.openModal({
       props: {
         initialValues,

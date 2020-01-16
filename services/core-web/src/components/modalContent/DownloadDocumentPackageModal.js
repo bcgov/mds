@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import { Button, Progress, Icon, Popconfirm } from "antd";
 import NOWSubmissionDocuments from "@/components/noticeOfWork/applications/NOWSubmissionDocuments";
 import NOWDocuments from "../noticeOfWork/applications/NOWDocuments";
-
+import { COLOR } from "@/constants/styles";
 import { getDocumentDownloadState } from "@/selectors/noticeOfWorkSelectors";
 
 const propTypes = {
@@ -28,6 +28,7 @@ export const DownloadDocumentPackageModal = (props) => {
       <h4>Downloading Selected Files...</h4>
       <Progress
         className="padding-md--top padding-large--bottom"
+        strokeColor={COLOR.violet}
         type="circle"
         percent={Math.round(
           (props.documentDownloadState.currentFile / props.documentDownloadState.totalFiles) * 100
@@ -51,7 +52,7 @@ export const DownloadDocumentPackageModal = (props) => {
         now_application_guid={props.noticeOfWorkGuid}
         mine_guid={props.mineGuid}
         documents={props.coreDocuments}
-        isViewMode={true}
+        isViewMode
         selectedRows={{ selectedCoreRows, setSelectedCoreRows }}
       />
       <br />

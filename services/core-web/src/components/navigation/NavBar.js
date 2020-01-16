@@ -294,11 +294,13 @@ export class NavBar extends Component {
               </Link>
             </Col>
           </Row>
-          <div className="menu--hamburger--footer">
-            <p style={{ color: Styles.COLOR.mediumGrey }}>
-              Signed in as: {this.props.userInfo.preferred_username}
-            </p>
-          </div>
+          <Row>
+            <Col span={24}>
+              <p className="menu--hamburger--footer">
+                Signed in as: {this.props.userInfo.preferred_username}
+              </p>
+            </Col>
+          </Row>
         </div>
       )}
     </div>
@@ -352,6 +354,7 @@ export class NavBar extends Component {
   );
 
   render() {
+    const fullNavMinWidth = 1080;
     return (
       <div>
         <div className="menu">
@@ -362,7 +365,7 @@ export class NavBar extends Component {
             <div className="menu--search">
               <SearchBar containerId="navBar" />
             </div>
-            <MediaQuery maxWidth={979}>
+            <MediaQuery maxWidth={fullNavMinWidth - 1}>
               <Button
                 ghost
                 type="button"
@@ -377,10 +380,10 @@ export class NavBar extends Component {
                 />
               </Button>
             </MediaQuery>
-            <MediaQuery minWidth={980}>{this.renderFullNav()}</MediaQuery>
+            <MediaQuery minWidth={fullNavMinWidth}>{this.renderFullNav()}</MediaQuery>
           </div>
         </div>
-        <MediaQuery maxWidth={979}>{this.renderHamburgerNav()}</MediaQuery>
+        <MediaQuery maxWidth={fullNavMinWidth - 1}>{this.renderHamburgerNav()}</MediaQuery>
       </div>
     );
   }

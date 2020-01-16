@@ -89,7 +89,7 @@ export const ReviewNOWApplication = (props) => {
             name="mine_region"
             component={RenderSelect}
             data={props.regionDropdownOptions}
-            disabled={props.isViewMode}
+            disabled
           />
         </Col>
         <Col md={12} sm={24}>
@@ -100,13 +100,7 @@ export const ReviewNOWApplication = (props) => {
       <Row gutter={16}>
         <Col md={12} sm={24}>
           <div className="field-title">Lat</div>
-          <Field
-            id="latitude"
-            name="latitude"
-            component={RenderField}
-            disabled={props.isViewMode}
-            validate={[lat]}
-          />
+          <Field id="latitude" name="latitude" component={RenderField} disabled validate={[lat]} />
         </Col>
         <Col md={12} sm={24}>
           <div className="field-title">Description of Land</div>
@@ -126,7 +120,7 @@ export const ReviewNOWApplication = (props) => {
             id="longitude"
             name="longitude"
             component={RenderField}
-            disabled={props.isViewMode}
+            disabled
             validate={[lon]}
           />
         </Col>
@@ -143,7 +137,7 @@ export const ReviewNOWApplication = (props) => {
             name="notice_of_work_type_code"
             component={RenderSelect}
             data={props.applicationTypeOptions}
-            disabled={props.isViewMode}
+            disabled
             validate={[required]}
           />
         </Col>
@@ -403,7 +397,7 @@ export const ReviewNOWApplication = (props) => {
     <Row gutter={16}>
       <Col md={12} sm={24}>
         <div className="field-title">Description of Work**</div>
-        <Field id="" name="" component={RenderField} disabled={props.isViewMode} />
+        <Field id="" name="" component={RenderField} disabled />
       </Col>
     </Row>
   );
@@ -413,7 +407,7 @@ export const ReviewNOWApplication = (props) => {
       <Row gutter={16}>
         <Col md={12} sm={24}>
           <div className="field-title">Total merchantable timber volume**</div>
-          <Field id="" name="" component={RenderField} disabled={props.isViewMode} />
+          <Field id="" name="" component={RenderField} disabled />
         </Col>
       </Row>
       <br />
