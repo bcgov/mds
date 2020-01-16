@@ -398,7 +398,7 @@ export class NoticeOfWorkApplication extends Component {
       <ReviewNOWApplication
         reclamationSummary={this.props.reclamationSummary}
         isViewMode={this.state.isViewMode}
-        noticeOFWorkType={this.props.noticeOfWork.notice_of_work_type_code}
+        noticeOfWorkType={this.props.noticeOfWork.notice_of_work_type_code}
         initialValues={
           this.state.showOriginalValues ? this.props.originalNoticeOfWork : this.props.noticeOfWork
         }

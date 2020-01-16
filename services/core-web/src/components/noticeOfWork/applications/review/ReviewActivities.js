@@ -29,9 +29,7 @@ import {
  */
 
 const propTypes = {
-  // isViewMode is being passed into field Component, thus ReviewActivities.js assumes it isn't being used
-  // eslint-disable-next-line
-  noticeOFWorkType: PropTypes.string.isRequired,
+  noticeOfWorkType: PropTypes.string.isRequired,
   isViewMode: PropTypes.bool.isRequired,
   arrayInsert: PropTypes.func.isRequired,
   arrayRemove: PropTypes.func.isRequired,
@@ -86,7 +84,7 @@ export const ReviewActivities = (props) => {
       <ScrollContentWrapper
         id="cut-lines-polarization-survey"
         title="Cut Lines and Induced Polarization Survey"
-        showContent={isMineralOrPlacerOrCoal(props.noticeOFWorkType)}
+        showContent={isMineralOrPlacerOrCoal(props.noticeOfWorkType)}
       >
         <FormSection name="cut_lines_polarization_survey">
           <CutLines isViewMode={props.isViewMode} editRecord={editRecord} addRecord={addRecord} />
@@ -122,7 +120,7 @@ export const ReviewActivities = (props) => {
       <ScrollContentWrapper
         id="surface-bulk-samples"
         title="Surface Bulk Sample"
-        showContent={isMineralOrCoal(props.noticeOFWorkType)}
+        showContent={isMineralOrCoal(props.noticeOfWorkType)}
       >
         <FormSection name="surface_bulk_sample">
           <SurfaceBulkSamples
@@ -135,7 +133,7 @@ export const ReviewActivities = (props) => {
       <ScrollContentWrapper
         id="underground-exploration"
         title="Underground Exploration"
-        showContent={isMineralOrPlacerOrCoal(props.noticeOFWorkType)}
+        showContent={isMineralOrPlacerOrCoal(props.noticeOfWorkType)}
       >
         <FormSection name="underground_exploration">
           <UndergroundExploration
@@ -148,7 +146,7 @@ export const ReviewActivities = (props) => {
       <ScrollContentWrapper
         id="sand-gravel-quarry-operations"
         title="Sand and Gravel / Quarry Operations"
-        showContent={isSandAndGravelOrQuarry(props.noticeOFWorkType)}
+        showContent={isSandAndGravelOrQuarry(props.noticeOfWorkType)}
       >
         <FormSection name="sand_and_gravel">
           <SandGravelQuarry
@@ -161,7 +159,7 @@ export const ReviewActivities = (props) => {
       <ScrollContentWrapper
         id="placer-operations"
         title="Placer Operations"
-        showContent={isPlacer(props.noticeOFWorkType)}
+        showContent={isPlacer(props.noticeOfWorkType)}
       >
         <FormSection name="placer_operation">
           <Placer isViewMode={props.isViewMode} editRecord={editRecord} addRecord={addRecord} />
