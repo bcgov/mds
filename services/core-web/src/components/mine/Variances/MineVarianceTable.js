@@ -109,11 +109,11 @@ export class MineVarianceTable extends Component {
         ),
       },
       {
-        title: "Variance Number",
+        title: "Number",
         dataIndex: "varianceNumber",
         sortField: "variance_id",
         width: 150,
-        render: (text) => <div title="Variance Number">{text}</div>,
+        render: (text) => <div title="Number">{text}</div>,
         sorter: this.props.isDashboardView,
       },
       {
@@ -127,13 +127,13 @@ export class MineVarianceTable extends Component {
           : true,
       },
       {
-        title: "Mine Name",
+        title: "Mine",
         dataIndex: "mineName",
         sortField: "mine_name",
         width: 150,
         className: hideColumn(!this.props.isDashboardView),
         render: (text, record) => (
-          <div title="Mine Name" className={hideColumn(!this.props.isDashboardView)}>
+          <div title="Mine" className={hideColumn(!this.props.isDashboardView)}>
             <Link to={router.MINE_SUMMARY.dynamicRoute(record.mineGuid)}>{text}</Link>
           </div>
         ),
