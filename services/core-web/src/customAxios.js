@@ -11,6 +11,7 @@ const promiseFinally = require("promise.prototype.finally");
 promiseFinally.shim();
 
 const UNAUTHORIZED = 401;
+const NOTFOUND = 404;
 const MAINTENANCE = 503;
 const TEAPOT = 418;
 
@@ -56,7 +57,7 @@ const CustomAxios = ({ errorToastMessage, selector, envelope = defaultEnvelope }
 
       if (status === UNAUTHORIZED || status === MAINTENANCE) {
         window.location.reload(false);
-      } else if (status === TEAPOT || detectDevelopmentEnvironment()) {
+      } else if (status === TEAPOT || status === NOTFOUND || detectDevelopmentEnvironment()) {
         // Do not retry in dev env, or for axios calls made in frontend tests, which are configured to return status code 418
         notification.error({
           message: `${errorMessage}`,
