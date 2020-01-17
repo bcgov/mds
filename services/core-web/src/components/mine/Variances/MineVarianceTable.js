@@ -89,6 +89,7 @@ export class MineVarianceTable extends Component {
       is_overdue: variance.expiry_date && Date.parse(variance.expiry_date) < new Date(),
       lead_inspector:
         this.props.inspectorsHash[variance.inspector_party_guid] || Strings.EMPTY_FIELD,
+      inspector_party_guid: variance.inspector_party_guid,
       documents: variance.documents,
       variance_id: variance.variance_no || Strings.EMPTY_FIELD,
     }));
@@ -145,7 +146,15 @@ export class MineVarianceTable extends Component {
         sorter: this.props.isDashboardView,
         width: 150,
         className: hideColumn(!this.props.isDashboardView),
-        render: (text) => <div title="Lead Inspector">{text}</div>,
+        render: (text, record) =>
+          (record.inspector_party_guid && (
+            <Link
+              to={router.PARTY_PROFILE.dynamicRoute(record.inspector_party_guid)}
+              title="Lead Inspector"
+            >
+              {text}
+            </Link>
+          )) || <div title="Lead Inspector">{text}</div>,
       },
       {
         title: "Submission Date",
