@@ -384,19 +384,6 @@ select {
 }
 
 // STEPS
-// When full screen, show the entire title of the step
-.ant-steps-navigation .ant-steps-item-container .ant-steps-item-title {
-  overflow: visible;
-
-  @media (max-width: 1020px) {
-    overflow: hidden;
-  }
-}
-// every item has a flex: 1, this will make the two in the middle 1.5,
-// it is a very subtle difference on the UI and gives the larger words more real estate
-.ant-steps-horizontal:not(.ant-steps-label-vertical) .ant-steps-item:nth-child(2) {
-  flex: 1.5;
-}
-.ant-steps-horizontal:not(.ant-steps-label-vertical) .ant-steps-item:nth-child(3) {
-  flex: 1.5;
+.ant-steps-item-content {
+  max-width: 200px !important; //140 by default
 }

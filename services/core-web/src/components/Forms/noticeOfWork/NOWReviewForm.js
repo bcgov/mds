@@ -1,6 +1,9 @@
+/* eslint-disable */
 import React, { Component } from "react";
+import { compose } from "redux";
+import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { reduxForm, Field } from "redux-form";
+import { reduxForm, Field, formValueSelector } from "redux-form";
 import { Form, Button, Col, Row, Popconfirm } from "antd";
 
 import * as FORM from "@/constants/forms";
@@ -13,20 +16,25 @@ import { NOTICE_OF_WORK_DOCUMENT } from "@/constants/API";
 import FileUpload from "@/components/common/FileUpload";
 import { UploadedDocumentsTable } from "@/components/common/UploadedDocumentTable";
 
+const selector = formValueSelector(FORM.ADD_NOW_REVIEW);
+
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   handleDocumentDelete: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
-  review_types: CustomPropTypes.options.isRequired,
+  reviewTypes: CustomPropTypes.options.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   initialValues: PropTypes.any,
   // eslint-disable-next-line
   change: PropTypes.func,
+  reviewerLabels: PropTypes.object.isRequired,
+  selectedNowApplicationReviewTypeCode: PropTypes.string,
 };
 const defaultProps = {
   initialValues: {},
   change: () => {},
+  selectedNowApplicationReviewTypeCode: "",
 };
 
 export class NOWReviewForm extends Component {
@@ -65,7 +73,7 @@ export class NOWReviewForm extends Component {
                 name="now_application_review_type_code"
                 label="Review Type"
                 component={renderConfig.SELECT}
-                data={this.props.review_types}
+                data={this.props.reviewTypes}
                 validate={[required]}
               />
             </Form.Item>
@@ -73,7 +81,11 @@ export class NOWReviewForm extends Component {
               <Field
                 id="referee_name"
                 name="referee_name"
-                label="Referee Name"
+                label={
+                  this.props.selectedNowApplicationReviewTypeCode
+                    ? this.props.reviewerLabels[this.props.selectedNowApplicationReviewTypeCode]
+                    : "Name"
+                }
                 component={renderConfig.FIELD}
                 validate={[required]}
               />
@@ -82,7 +94,7 @@ export class NOWReviewForm extends Component {
               <Field
                 id="response_date"
                 name="response_date"
-                label="Response Recieved"
+                label="Response Received"
                 component={renderConfig.DATE}
                 validate={[required, dateNotInFuture]}
               />
@@ -138,8 +150,14 @@ export class NOWReviewForm extends Component {
 NOWReviewForm.propTypes = propTypes;
 NOWReviewForm.defaultProps = defaultProps;
 
-export default reduxForm({
-  form: FORM.ADD_NOW_REVIEW,
-  touchOnBlur: false,
-  onSubmitSuccess: resetForm(FORM.ADD_NOW_REVIEW),
-})(NOWReviewForm);
+export default compose(
+  connect((state) => ({
+    selectedNowApplicationReviewTypeCode: selector(state, "now_application_review_type_code"),
+  })),
+
+  reduxForm({
+    form: FORM.ADD_NOW_REVIEW,
+    touchOnBlur: false,
+    onSubmitSuccess: resetForm(FORM.ADD_NOW_REVIEW),
+  })
+)(NOWReviewForm);

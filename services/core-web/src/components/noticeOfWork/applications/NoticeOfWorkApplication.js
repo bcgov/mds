@@ -410,9 +410,7 @@ export class NoticeOfWorkApplication extends Component {
     return (
       <NOWApplicationReviews
         mineGuid={this.props.noticeOfWork.mine_guid}
-        noticeOfWorkGuid={this.props.noticeOfWork.now_application_guid}
-        coreDocuments={this.props.noticeOfWork.documents}
-        submissionDocuments={this.props.noticeOfWork.submission_documents}
+        noticeOfWork={this.props.noticeOfWork}
       />
     );
   };

@@ -1,8 +1,11 @@
+/* eslint-disable */
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { Button, Row, Col, notification } from "antd";
+import { Button, Row, Col, notification, Divider, Badge, Icon, Tag, Popconfirm } from "antd";
+import { formatDate } from "@/utils/helpers";
+
 import { openModal, closeModal } from "@/actions/modalActions";
 import {
   getNowDocumentDownloadToken,
@@ -20,19 +23,22 @@ import {
   updateNoticeOfWorkApplicationReview,
   deleteNoticeOfWorkApplicationReviewDocument,
   setNoticeOfWorkApplicationDocumentDownloadState,
+  updateNoticeOfWorkApplication,
+  fetchImportedNoticeOfWorkApplication,
 } from "@/actionCreators/noticeOfWorkActionCreator";
+import { fetchNoticeOfWorkApplicationReviewTypes } from "@/actionCreators/staticContentActionCreator";
 import { getNoticeOfWorkReviews } from "@/selectors/noticeOfWorkSelectors";
 import { getDropdownNoticeOfWorkApplicationReviewTypeOptions } from "@/selectors/staticContentSelectors";
 import NOWApplicationReviewsTable from "@/components/noticeOfWork/applications/referals/NOWApplicationReviewsTable";
 
+/**
+ * @constant ReviewNOWApplication renders edit/view for the NoW Application review step
+ */
+
 const propTypes = {
-  // eslint-disable-next-line
-  noticeOfWorkGuid: PropTypes.string.isRequired,
   mineGuid: PropTypes.string.isRequired,
-  // eslint-disable-next-line
+  noticeOfWork: CustomPropTypes.nowApplication.isRequired,
   noticeOfWorkReviews: PropTypes.arrayOf(CustomPropTypes.NOWApplicationReview).isRequired,
-  coreDocuments: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
-  submissionDocuments: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
   noticeOfWorkReviewTypes: CustomPropTypes.options.isRequired,
 
   openModal: PropTypes.func.isRequired,
@@ -43,24 +49,81 @@ const propTypes = {
   deleteNoticeOfWorkApplicationReview: PropTypes.func.isRequired,
   deleteNoticeOfWorkApplicationReviewDocument: PropTypes.func.isRequired,
   setNoticeOfWorkApplicationDocumentDownloadState: PropTypes.func.isRequired,
+  updateNoticeOfWorkApplication: PropTypes.func.isRequired,
+  fetchImportedNoticeOfWorkApplication: PropTypes.func.isRequired,
 };
 
 const defaultProps = {};
+
+const ReviewerLabels = {
+  FNC: "First Nations Advisor",
+  PUB: "Uploaded By",
+  REF: "Referee Name",
+};
+
+const ApplicationReview = (props) => (
+  <Row type="flex" justify="center">
+    <Col sm={22} md={22} lg={22} className="padding-large--bottom">
+      <div className="padding-large--bottom">
+        <h3>{props.reviewType.label}</h3>
+        {!props.readyForReview && <Badge status="default" text="Not started" />}
+        {props.readyForReview && !props.completeDate && (
+          <Badge status="processing" text="In progress" />
+        )}
+        {props.readyForReview && props.completeDate && (
+          <Badge status="success" text={`Completed on ${formatDate(props.completeDate)}`} />
+        )}
+      </div>
+      <NOWApplicationReviewsTable
+        isLoaded={props.isLoaded}
+        noticeOfWorkReviews={props.noticeOfWorkReviews.filter(
+          (review) => review.now_application_review_type_code === props.reviewType.value
+        )}
+        noticeOfWorkReviewTypes={props.noticeOfWorkReviewTypes}
+        handleDelete={props.handleDelete}
+        openEditModal={props.openEditModal}
+        handleEdit={props.handleEdit}
+        handleDocumentDelete={props.handleDocumentDelete}
+        reviewerLabel={ReviewerLabels[props.reviewType.value]}
+      />
+      {props.readyForReview && !props.completeDate && (
+        <div className="inline-flex flex-end">
+          <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
+            <Popconfirm
+              placement="topRight"
+              title={`Are you sure you want to complete ${props.reviewType.label}?`}
+              onConfirm={(event) => props.completeHandler(event, props.reviewType.value)}
+              okText="Yes"
+              cancelText="No"
+            >
+              <Button type="primary">{`${props.reviewType.label} Completed`}</Button>
+            </Popconfirm>
+          </AuthorizationWrapper>
+        </div>
+      )}
+      <Divider />
+    </Col>
+  </Row>
+);
 
 export class NOWApplicationReviews extends Component {
   state = { cancelDownload: false, isLoaded: false };
 
   componentDidMount() {
     this.props
-      .fetchNoticeOfWorkApplicationReviews(this.props.noticeOfWorkGuid)
+      .fetchNoticeOfWorkApplicationReviews(this.props.noticeOfWork.now_application_guid)
       .then(() => this.setState({ isLoaded: true }));
   }
 
   handleAddReview = (values) => {
-    this.props.createNoticeOfWorkApplicationReview(this.props.noticeOfWorkGuid, values).then(() => {
-      this.props.fetchNoticeOfWorkApplicationReviews(this.props.noticeOfWorkGuid);
-      this.props.closeModal();
-    });
+    this.props
+      .createNoticeOfWorkApplicationReview(this.props.noticeOfWork.now_application_guid, values)
+      .then(() => {
+        this.props.fetchNoticeOfWorkApplicationReviews(
+          this.props.noticeOfWork.now_application_guid
+        );
+        this.props.closeModal();
+      });
   };
 
   handleEditReview = (values) => {
@@ -121,13 +184,14 @@ export class NOWApplicationReviews extends Component {
 
   openAddReviewModal = (event, onSubmit) => {
     event.preventDefault();
-    const initialValues = { now_application_guid: this.props.noticeOfWorkGuid };
+    const initialValues = { now_application_guid: this.props.noticeOfWork.now_application_guid };
     this.props.openModal({
       props: {
         initialValues,
         onSubmit,
-        title: "Add Review to Permit Application",
-        review_types: this.props.noticeOfWorkReviewTypes,
+        title: "Add Reviewer to Application",
+        reviewTypes: this.props.noticeOfWorkReviewTypes,
+        reviewerLabels: ReviewerLabels,
       },
       isViewOnly: true,
       content: modalConfig.NOW_REVIEW,
@@ -142,7 +206,8 @@ export class NOWApplicationReviews extends Component {
         onSubmit,
         handleDocumentDelete,
         title: "Edit Review",
-        review_types: this.props.noticeOfWorkReviewTypes,
+        reviewTypes: this.props.noticeOfWorkReviewTypes,
+        reviewerLabels: ReviewerLabels,
       },
       isViewOnly: true,
       content: modalConfig.NOW_REVIEW,
@@ -155,13 +220,13 @@ export class NOWApplicationReviews extends Component {
 
   downloadDocumentPackage = (selectedCoreRows, selectedSubmissionRows) => {
     const docURLS = [];
-    const submissionDocs = this.props.submissionDocuments
+    const submissionDocs = this.props.noticeOfWork.submission_documents
       .map((document) => ({
         key: document.id,
         filename: document.filename,
       }))
       .filter((item) => selectedSubmissionRows.includes(item.key));
-    const coreDocs = this.props.coreDocuments
+    const coreDocs = this.props.noticeOfWork.documents
       .map((document) => ({
         key: document.now_application_document_xref_guid,
         documentManagerGuid: document.mine_document.document_manager_guid,
@@ -169,12 +234,17 @@ export class NOWApplicationReviews extends Component {
       }))
       .filter((item) => selectedCoreRows.includes(item.key));
 
-    let currentFile = 1;
+    let currentFile = 0;
     const totalFiles = submissionDocs.length + coreDocs.length;
     if (totalFiles === 0) return;
 
     submissionDocs.forEach((doc) =>
-      getNowDocumentDownloadToken(doc.key, this.props.noticeOfWorkGuid, doc.filename, docURLS)
+      getNowDocumentDownloadToken(
+        doc.key,
+        this.props.noticeOfWork.now_application_guid,
+        doc.filename,
+        docURLS
+      )
     );
     coreDocs.forEach((doc) =>
       getDocumentDownloadToken(doc.documentManagerGuid, doc.filename, docURLS)
@@ -182,14 +252,13 @@ export class NOWApplicationReviews extends Component {
 
     this.waitFor(() => docURLS.length === submissionDocs.length + coreDocs.length).then(
       async () => {
-        // eslint-disable-next-line
         for (const url of docURLS) {
           if (this.state.cancelDownload) {
             this.setState({ cancelDownload: false });
             this.props.closeModal();
             this.props.setNoticeOfWorkApplicationDocumentDownloadState({
               downloading: false,
-              currentFile: 1,
+              currentFile: 0,
               totalFiles: 1,
             });
             notification.success({
@@ -213,6 +282,14 @@ export class NOWApplicationReviews extends Component {
           message: `Successfully Downloaded: ${submissionDocs.length + coreDocs.length} files.`,
           duration: 10,
         });
+
+        if (!this.props.noticeOfWork.ready_for_review_date) {
+          this.updateNoticeOfWork({
+            ...this.props.noticeOfWork,
+            ready_for_review_date: new Date(),
+          });
+        }
+
         this.props.closeModal();
         this.props.setNoticeOfWorkApplicationDocumentDownloadState({
           downloading: false,
@@ -228,57 +305,160 @@ export class NOWApplicationReviews extends Component {
     this.props.openModal({
       props: {
         mineGuid: this.props.mineGuid,
-        noticeOfWorkGuid: this.props.noticeOfWorkGuid,
-        submissionDocuments: this.props.submissionDocuments,
-        coreDocuments: this.props.coreDocuments,
+        noticeOfWorkGuid: this.props.noticeOfWork.now_application_guid,
+        submissionDocuments: this.props.noticeOfWork.submission_documents,
+        coreDocuments: this.props.noticeOfWork.documents,
         onSubmit: this.downloadDocumentPackage,
         cancelDownload: this.cancelDownload,
-        title: `Download Files`,
+        title: `Download Referral Package`,
       },
-      // widthSize: "50vw",
       content: modalConfig.DOWNLOAD_DOC_PACKAGE,
     });
   };
 
+  updateNoticeOfWork = (updatedNow) => {
+    const id = this.props.noticeOfWork.now_application_guid;
+    this.props
+      .updateNoticeOfWorkApplication(updatedNow, this.props.noticeOfWork.now_application_guid)
+      .then(() => {
+        this.props.fetchImportedNoticeOfWorkApplication(id);
+      });
+  };
+
   render() {
+    const commonApplicationReviewProps = {
+      isLoaded: this.state.isLoaded,
+      readyForReview: this.props.noticeOfWork.ready_for_review_date,
+      noticeOfWorkReviews: this.props.noticeOfWorkReviews,
+      noticeOfWorkReviewTypes: this.props.noticeOfWorkReviewTypes,
+      handleDelete: this.handleDeleteReview,
+      openEditModal: this.openEditReviewModal,
+      handleEdit: this.handleEditReview,
+      handleDocumentDelete: this.handleDocumentDelete,
+    };
     return (
       <div>
         <Row type="flex" justify="center">
-          <Col sm={22} md={22} lg={22} className="padding-xxl--top">
-            <div className="inline-flex flex-end">
-              <Button
-                type="secondary"
-                className="full-mobile"
-                onClick={this.openDownloadPackageModal}
-              >
-                Download Referral Package
-              </Button>
-              <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
-                <AddButton
-                  onClick={(event) => this.openAddReviewModal(event, this.handleAddReview)}
-                >
-                  Add Review
-                </AddButton>
-              </AuthorizationWrapper>
+          <Col sm={22} md={22} lg={22} className="padding-large--top">
+            <div className="inline-flex between">
+              <div>
+                {!this.props.noticeOfWork.ready_for_review_date && (
+                  <Tag className="ant-disabled">
+                    <Icon type="info-circle" className="padding-small--right" />
+                    Referral package not downloaded
+                  </Tag>
+                )}
+                {this.props.noticeOfWork.ready_for_review_date && (
+                  <Tag className="ant-disabled">
+                    <Icon type="clock-circle" className="padding-small--right" />
+                    {`Ready for review since: ${formatDate(
+                      this.props.noticeOfWork.ready_for_review_date
+                    )}`}
+                  </Tag>
+                )}
+              </div>
+              <div>
+                <div className="inline-flex">
+                  {!this.props.noticeOfWork.ready_for_review_date && (
+                    <Popconfirm
+                      placement="topRight"
+                      title="By downloading the Referral Package you are indicating that Reviews are ready to begin. Do you want to continue?"
+                      onConfirm={this.openDownloadPackageModal}
+                      okText="Yes"
+                      cancelText="No"
+                    >
+                      <Button type="secondary" className="full-mobile">
+                        <Icon
+                          type="download"
+                          theme="outlined"
+                          className="padding-small--right icon-sm"
+                        />
+                        Download Referral Package
+                      </Button>
+                    </Popconfirm>
+                  )}
+                  {this.props.noticeOfWork.ready_for_review_date && (
+                    <Button
+                      type="secondary"
+                      className="full-mobile"
+                      onClick={this.openDownloadPackageModal}
+                    >
+                      <Icon
+                        type="download"
+                        theme="outlined"
+                        className="padding-small--right icon-sm"
+                      />
+                      Download Referral Package
+                    </Button>
+                  )}
+
+                  <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
+                    <AddButton
+                      onClick={(event) => this.openAddReviewModal(event, this.handleAddReview)}
+                    >
+                      Add Reviewer
+                    </AddButton>
+                  </AuthorizationWrapper>
+                </div>
+              </div>
             </div>
           </Col>
         </Row>
-
-        <Row type="flex" justify="center">
-          <Col sm={22} md={22} lg={22}>
-            {this.props.noticeOfWorkReviews && (
-              <NOWApplicationReviewsTable
-                isLoaded={this.state.isLoaded}
-                noticeOfWorkReviews={this.props.noticeOfWorkReviews}
-                noticeOfWorkReviewTypes={this.props.noticeOfWorkReviewTypes}
-                handleDelete={this.handleDeleteReview}
-                openEditModal={this.openEditReviewModal}
-                handleEdit={this.handleEditReview}
-                handleDocumentDelete={this.handleDocumentDelete}
+        {this.props.noticeOfWorkReviews && (
+          <React.Fragment>
+            {this.props.noticeOfWorkReviewTypes.some(
+              (reviewType) => reviewType.value === "REF"
+            ) && (
+              <ApplicationReview
+                {...commonApplicationReviewProps}
+                reviewType={this.props.noticeOfWorkReviewTypes.find(
+                  (reviewType) => reviewType.value === "REF"
+                )}
+                completeDate={this.props.noticeOfWork.referral_closed_on_date}
+                completeHandler={() =>
+                  this.updateNoticeOfWork({
+                    ...this.props.noticeOfWork,
+                    referral_closed_on_date: new Date(),
+                  })
+                }
               />
             )}
-          </Col>
-        </Row>
+            {this.props.noticeOfWorkReviewTypes.some(
+              (reviewType) => reviewType.value === "FNC"
+            ) && (
+              <ApplicationReview
+                {...commonApplicationReviewProps}
+                reviewType={this.props.noticeOfWorkReviewTypes.find(
+                  (reviewType) => reviewType.value === "FNC"
+                )}
+                completeDate={this.props.noticeOfWork.consultation_closed_on_date}
+                completeHandler={() =>
+                  this.updateNoticeOfWork({
+                    ...this.props.noticeOfWork,
+                    consultation_closed_on_date: new Date(),
+                  })
+                }
+              />
+            )}
+            {this.props.noticeOfWorkReviewTypes.some(
+              (reviewType) => reviewType.value === "PUB"
+            ) && (
+              <ApplicationReview
+                {...commonApplicationReviewProps}
+                reviewType={this.props.noticeOfWorkReviewTypes.find(
+                  (reviewType) => reviewType.value === "PUB"
+                )}
+                completeDate={this.props.noticeOfWork.public_comment_closed_on_date}
+                completeHandler={() =>
+                  this.updateNoticeOfWork({
+                    ...this.props.noticeOfWork,
+                    public_comment_closed_on_date: new Date(),
+                  })
+                }
+              />
+            )}
+          </React.Fragment>
+        )}
       </div>
     );
   }
@@ -300,6 +480,8 @@ const mapDispatchToProps = (dispatch) =>
       updateNoticeOfWorkApplicationReview,
       deleteNoticeOfWorkApplicationReviewDocument,
       setNoticeOfWorkApplicationDocumentDownloadState,
+      updateNoticeOfWorkApplication,
+      fetchImportedNoticeOfWorkApplication,
     },
     dispatch
   );
