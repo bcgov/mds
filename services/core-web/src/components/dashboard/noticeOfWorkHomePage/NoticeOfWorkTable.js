@@ -171,7 +171,7 @@ export class NoticeOfWorkTable extends Component {
           <Link to={router.MINE_NOW_APPLICATIONS.dynamicRoute(record.mine_guid)} title="Mine">
             {text}
           </Link>
-        )) || <div title="Mine">{Strings.UNASSIGNED}</div>,
+        )) || <div title="Mine">{text}</div>,
     },
     {
       title: "Region",
@@ -220,7 +220,7 @@ export class NoticeOfWorkTable extends Component {
           >
             {text}
           </Link>
-        )) || <div title="Lead Inspector">{Strings.UNASSIGNED}</div>,
+        )) || <div title="Lead Inspector">{text}</div>,
     },
     {
       title: "Status",
