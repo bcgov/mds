@@ -44,7 +44,7 @@ exports[`ReviewActivities renders properly 1`] = `
   </withRouter(ScrollContentWrapper)>
   <withRouter(ScrollContentWrapper)
     id="cut-lines-polarization-survey"
-    showContent={false}
+    showContent={true}
     title="Cut Lines and Induced Polarization Survey"
   >
     <FormSection
@@ -101,7 +101,7 @@ exports[`ReviewActivities renders properly 1`] = `
   </withRouter(ScrollContentWrapper)>
   <withRouter(ScrollContentWrapper)
     id="surface-bulk-samples"
-    showContent={false}
+    showContent={true}
     title="Surface Bulk Sample"
   >
     <FormSection
@@ -116,7 +116,7 @@ exports[`ReviewActivities renders properly 1`] = `
   </withRouter(ScrollContentWrapper)>
   <withRouter(ScrollContentWrapper)
     id="underground-exploration"
-    showContent={false}
+    showContent={true}
     title="Underground Exploration"
   >
     <FormSection
