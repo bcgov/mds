@@ -6,6 +6,8 @@ const initialState = {
   noticeOfWork: {},
   originalNoticeOfWork: {},
   noticeOfWorkPageData: {},
+  noticeOfWorkReviews: [],
+  documentDownloadState: { downloading: false, currentFile: 1, totalFiles: 1 },
 };
 
 const noticeOfWorkReducer = (state = initialState, action) => {
@@ -26,6 +28,16 @@ const noticeOfWorkReducer = (state = initialState, action) => {
         ...state,
         originalNoticeOfWork: action.payload,
       };
+    case actionTypes.STORE_NOTICE_OF_WORK_APPLICATION_REVIEWS:
+      return {
+        ...state,
+        noticeOfWorkReviews: action.payload.records,
+      };
+    case actionTypes.STORE_NOTICE_OF_WORK_APPLICATION_DOCUMENT_DOWNLOAD_STATE:
+      return {
+        ...state,
+        documentDownloadState: action.payload,
+      };
     default:
       return state;
   }
@@ -35,5 +47,6 @@ export const getNoticeOfWorkList = (state) => state[NOTICE_OF_WORK].noticeOfWork
 export const getNoticeOfWork = (state) => state[NOTICE_OF_WORK].noticeOfWork;
 export const getOriginalNoticeOfWork = (state) => state[NOTICE_OF_WORK].originalNoticeOfWork;
 export const getNoticeOfWorkPageData = (state) => state[NOTICE_OF_WORK].noticeOfWorkPageData;
-
+export const getNoticeOfWorkReviews = (state) => state[NOTICE_OF_WORK].noticeOfWorkReviews;
+export const getDocumentDownloadState = (state) => state[NOTICE_OF_WORK].documentDownloadState;
 export default noticeOfWorkReducer;

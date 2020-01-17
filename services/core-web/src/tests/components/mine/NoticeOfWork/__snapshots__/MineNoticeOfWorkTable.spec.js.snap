@@ -5,10 +5,10 @@ exports[`MineNoticeOfWorkTable renders properly 1`] = `
   isPaginated={false}
   tableHeaders={
     Array [
-      "NoW No.",
-      "NoW Type",
-      "Application Status",
-      "Import Date",
+      "Number",
+      "Type",
+      "Status",
+      "Received",
       "",
     ]
   }
@@ -25,7 +25,7 @@ exports[`MineNoticeOfWorkTable renders properly 1`] = `
           "sortField": "now_number",
           "sortOrder": "ascend",
           "sorter": true,
-          "title": "NoW No.",
+          "title": "Number",
         },
         Object {
           "dataIndex": "nowType",
@@ -35,7 +35,7 @@ exports[`MineNoticeOfWorkTable renders properly 1`] = `
           "sortField": "notice_of_work_type_description",
           "sortOrder": false,
           "sorter": true,
-          "title": "NoW Type",
+          "title": "Type",
         },
         Object {
           "dataIndex": "status",
@@ -45,7 +45,7 @@ exports[`MineNoticeOfWorkTable renders properly 1`] = `
           "sortField": "status",
           "sortOrder": false,
           "sorter": true,
-          "title": "Application Status",
+          "title": "Status",
         },
         Object {
           "dataIndex": "date",
@@ -53,7 +53,7 @@ exports[`MineNoticeOfWorkTable renders properly 1`] = `
           "sortField": "received_date",
           "sortOrder": false,
           "sorter": true,
-          "title": "Import Date",
+          "title": "Received",
         },
         Object {
           "dataIndex": "verify",

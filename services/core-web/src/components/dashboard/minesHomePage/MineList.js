@@ -117,7 +117,7 @@ const columns = [
     width: 150,
     render: (text, record) => (
       <div title="Commodity">
-        {text &&
+        {(text &&
           text
             .map(({ mine_type_detail }) =>
               mine_type_detail
@@ -128,7 +128,8 @@ const columns = [
                 .filter(Boolean)
                 .join(", ")
             )
-            .join(", ")}
+            .join(", ")) ||
+          record.emptyField}
       </div>
     ),
   },

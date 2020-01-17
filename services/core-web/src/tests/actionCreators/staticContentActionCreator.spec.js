@@ -18,6 +18,7 @@ import {
   fetchNoticeOfWorkUndergroundExplorationTypeOptions,
   fetchNoticeOfWorkApplicationProgressStatusCodes,
   fetchNoticeOfWorkApplicationPermitTypes,
+  fetchNoticeOfWorkApplicationReviewTypes,
 } from "@/actionCreators/staticContentActionCreator";
 import * as genericActions from "@/actions/genericActions";
 import * as API from "@/constants/API";
@@ -394,6 +395,28 @@ describe("`fetchNoticeOfWorkApplicationPermitTypes` action creator", () => {
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onGet(url, MOCK.createMockHeader()).reply(418, MOCK.ERROR);
     return fetchNoticeOfWorkApplicationPermitTypes()(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(errorSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(2);
+    });
+  });
+});
+
+describe("`fetchNoticeOfWorkApplicationReviewTypes` action creator", () => {
+  const url = ENVIRONMENT.apiUrl + API.NOTICE_OF_WORK_APPLICATION_REVIEW_TYPES;
+  it("Request successful, dispatches `success` with correct response", () => {
+    const mockResponse = { data: { success: true } };
+    mockAxios.onGet(url).reply(200, mockResponse);
+    return fetchNoticeOfWorkApplicationReviewTypes()(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(successSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(3);
+    });
+  });
+
+  it("Request failure, dispatches `error` with correct response", () => {
+    mockAxios.onGet(url, MOCK.createMockHeader()).reply(418, MOCK.ERROR);
+    return fetchNoticeOfWorkApplicationReviewTypes()(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(2);

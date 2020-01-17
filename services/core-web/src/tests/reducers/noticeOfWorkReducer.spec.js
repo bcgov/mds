@@ -2,6 +2,7 @@ import noticeOfWorkReducer from "@/reducers/noticeOfWorkReducer";
 import {
   storeNoticeOfWorkApplications,
   storeNoticeOfWorkApplication,
+  storeNoticeOfWorkApplicationReviews,
 } from "@/actions/noticeOfWorkActions";
 import * as MOCK from "@/tests/mocks/noticeOfWorkMocks";
 
@@ -10,6 +11,8 @@ const baseExpectedValue = {
   noticeOfWork: {},
   noticeOfWorkPageData: {},
   originalNoticeOfWork: {},
+  noticeOfWorkReviews: [],
+  documentDownloadState: { downloading: false, currentFile: 1, totalFiles: 1 },
 };
 
 // Creates deep copy of javascript object instead of setting a reference
@@ -49,6 +52,16 @@ describe("noticeOfWorkReducer", () => {
     const result = noticeOfWorkReducer(
       undefined,
       storeNoticeOfWorkApplication(MOCK.NOTICE_OF_WORK)
+    );
+    expect(result).toEqual(expectedValue);
+  });
+
+  it("receives STORE_NOTICE_OF_WORK_APPLICATION_REVIEWS", () => {
+    const expectedValue = getBaseExpectedValue();
+    expectedValue.noticeOfWorkReviews = MOCK.NOTICE_OF_WORK_REVIEW_RESPONSE.records;
+    const result = noticeOfWorkReducer(
+      undefined,
+      storeNoticeOfWorkApplicationReviews(MOCK.NOTICE_OF_WORK_REVIEW_RESPONSE)
     );
     expect(result).toEqual(expectedValue);
   });

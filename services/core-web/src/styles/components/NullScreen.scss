@@ -1,6 +1,11 @@
 .null-screen {
   text-align: center;
   margin-top: $default-margin-lg;
+  div {
+    img {
+      max-width: 150px;
+    }
+  }
 
   @include mobile {
     margin: 0;

@@ -129,3 +129,8 @@ export const storeNoticeOfWorkApplicationPermitTypesOptions = (payload) => ({
   type: ActionTypes.STORE_NOW_APPLICATION_PERMIT_TYPES,
   payload,
 });
+
+export const storeNoticeOfWorkApplicationReviewTypes = (payload) => ({
+  type: ActionTypes.STORE_NOTICE_OF_WORK_APPLICATION_REVIEW_TYPES,
+  payload,
+});
