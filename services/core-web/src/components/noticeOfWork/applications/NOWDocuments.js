@@ -171,9 +171,7 @@ export const NOWDocuments = (props) => {
               ? {
                   selectedRowKeys: props.selectedRows.selectedCoreRows,
                   onChange: (selectedRowKeys) => {
-                    console.log(selectedRowKeys);
                     props.selectedRows.setSelectedCoreRows(selectedRowKeys);
-                    console.log(props.selectedRows.selectedCoreRows);
                   },
                 }
               : null
