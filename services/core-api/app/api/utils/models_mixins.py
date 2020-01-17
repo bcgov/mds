@@ -198,7 +198,8 @@ class Base(db.Model):
 
                     if py_type == datetime or py_type == date:
                         #json value is string, if expecting datetime in that column, convert here
-                        setattr(self, k, parser.parse(v))
+                        if v is not None:
+                            setattr(self, k, parser.parse(v) )
                         continue
                     if py_type == decimal.Decimal:
                         #if Decimal column, cast whatever you get to Decimal

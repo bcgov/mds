@@ -35,6 +35,32 @@ exports[`DownloadDocumentPackageModal renders properly 1`] = `
   <div
     className="right center-mobile padding-md--top"
   >
+    <Popconfirm
+      cancelText="No"
+      disabled={false}
+      icon={
+        <Icon
+          theme="filled"
+          type="exclamation-circle"
+        />
+      }
+      okText="Yes"
+      okType="primary"
+      placement="topRight"
+      title="Are you sure you want to cancel?"
+      transitionName="zoom-big"
+      trigger="click"
+    >
+      <Button
+        block={false}
+        className="full-mobile"
+        ghost={false}
+        htmlType="button"
+        loading={false}
+      >
+        Cancel
+      </Button>
+    </Popconfirm>
     <Button
       block={false}
       className="full-mobile"
@@ -44,7 +70,12 @@ exports[`DownloadDocumentPackageModal renders properly 1`] = `
       onClick={[Function]}
       type="primary"
     >
-      Download
+      <Icon
+        className="padding-small--right icon-sm"
+        theme="outlined"
+        type="download"
+      />
+      Download Referral Package
     </Button>
   </div>
 </div>

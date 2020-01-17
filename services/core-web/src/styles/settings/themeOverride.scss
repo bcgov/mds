@@ -382,3 +382,8 @@ select {
   background-position-x: 95%;
   background-position-y: 10px;
 }
+
+// STEPS
+.ant-steps-item-content {
+  max-width: 200px !important; //140 by default
+}
