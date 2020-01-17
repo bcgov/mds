@@ -55,23 +55,20 @@ const defaultProps = {
 
 const hideColumn = (condition) => (condition ? "column-hide" : "");
 
-const applySortIndicator = (_columns, field, dir) => {
-  return _columns.map((column) => ({
+const applySortIndicator = (_columns, field, dir) =>
+  _columns.map((column) => ({
     ...column,
-    sortOrder: column.sortField === field ? dir.concat("end") : false,
+    sortOrder: dir && column.sortField === field ? dir.concat("end") : false,
   }));
-};
 
 const handleTableChange = (updateIncidentList) => (pagination, filters, sorter) => {
-  const params = isEmpty(sorter)
-    ? {
-        sort_field: undefined,
-        sort_dir: undefined,
-      }
-    : {
-        sort_field: sorter.column.sortField,
-        sort_dir: sorter.order.replace("end", ""),
-      };
+  const params = {
+    results: pagination.pageSize,
+    page: pagination.current,
+    sort_field: sorter.field,
+    sort_dir: sorter.order ? sorter.order.replace("end", "") : sorter.order,
+    ...filters,
+  };
   updateIncidentList(params);
 };
 
@@ -99,87 +96,81 @@ export class MineIncidentTable extends Component {
     determinationHash,
     statusHash
   ) =>
-    incidents
-      .map((incident) => {
-        return {
-          key: incident.incident_id,
-          mine_incident_report_no: incident.mine_incident_report_no,
-          incident_timestamp: formatDate(incident.incident_timestamp),
-          reported_timestamp: formatDate(incident.reported_timestamp),
-          reported_by: incident.reported_by_name,
-          mine_name: incident.mine_name,
-          incident_status: statusHash[incident.status_code] || Strings.EMPTY_FIELD,
-          determination: determinationHash[incident.determination_type_code] || Strings.EMPTY_FIELD,
-          code: incident.dangerous_occurrence_subparagraph_ids || Strings.EMPTY_FIELD,
-          docs: incident.documents,
-          followup_action: actions.find(
-            (x) =>
-              x.mine_incident_followup_investigation_type_code ===
-              incident.followup_investigation_type_code
-          ),
-          handleEditMineIncident,
-          openMineIncidentModal,
-          openViewMineIncidentModal,
-          incident,
-        };
-      })
-      .sort((a, b) => (a.mine_incident_report_no > b.mine_incident_report_no ? -1 : 1));
+    incidents.map((incident) => {
+      return {
+        key: incident.incident_id,
+        mine_incident_report_no: incident.mine_incident_report_no,
+        incident_timestamp: formatDate(incident.incident_timestamp),
+        reported_timestamp: formatDate(incident.reported_timestamp),
+        reported_by: incident.reported_by_name || Strings.EMPTY_FIELD,
+        mine_name: incident.mine_name || Strings.EMPTY_FIELD,
+        incident_status: statusHash[incident.status_code] || Strings.EMPTY_FIELD,
+        determination: determinationHash[incident.determination_type_code] || Strings.EMPTY_FIELD,
+        code: incident.dangerous_occurrence_subparagraph_ids || Strings.EMPTY_FIELD,
+        docs: incident.documents,
+        followup_action: actions.find(
+          (x) =>
+            x.mine_incident_followup_investigation_type_code ===
+            incident.followup_investigation_type_code
+        ),
+        handleEditMineIncident,
+        openMineIncidentModal,
+        openViewMineIncidentModal,
+        incident,
+      };
+    });
 
   render() {
     const columns = [
       {
-        title: "Incident Report No.",
+        title: "Number",
         dataIndex: "mine_incident_report_no",
         sortField: "mine_incident_report_no",
-        render: (text) => <div title="Incident Report No">{text}</div>,
-        sorter: !this.props.isDashboardView
-          ? (a, b) => a.mine_incident_report_no.localeCompare(b.mine_incident_report_no)
-          : false, // Sorting not implemented on the backend due to ambiguity in the model
+        sorter: true,
+        render: (text) => <div title="Number">{text}</div>,
       },
       {
         title: "Date",
         dataIndex: "incident_timestamp",
         sortField: "incident_timestamp",
+        sorter: true,
         render: (text) => <span title="Date">{text}</span>,
-        sorter: !this.props.isDashboardView
-          ? (a, b) => moment(a.incident_timestamp) > moment(b.incident_timestamp)
-          : true,
       },
       {
-        title: "Mine Name",
+        title: "Mine",
         dataIndex: "mine_name",
         sortField: "mine_name",
+        sorter: true,
         className: hideColumn(!this.props.isDashboardView),
         render: (text, record) => (
-          <div title="Mine Name" className={hideColumn(!this.props.isDashboardView)}>
+          <div title="Mine" className={hideColumn(!this.props.isDashboardView)}>
             <Link to={router.MINE_SUMMARY.dynamicRoute(record.incident.mine_guid)}>{text}</Link>
           </div>
         ),
-        sorter: true,
       },
       {
         title: "Incident Status",
         dataIndex: "incident_status",
         sortField: "incident_status",
+        sorter: true,
         className: hideColumn(!this.props.isDashboardView),
         render: (text) => (
           <span title="Incident Status" className={hideColumn(!this.props.isDashboardView)}>
             {text}
           </span>
         ),
-        sorter: true,
       },
       {
         title: "Determination",
         dataIndex: "determination",
         sortField: "determination",
+        sorter: true,
         className: hideColumn(!this.props.isDashboardView),
         render: (text) => (
           <span title="Determination" className={hideColumn(!this.props.isDashboardView)}>
             {text}
           </span>
         ),
-        sorter: true,
       },
       {
         title: "Code",
