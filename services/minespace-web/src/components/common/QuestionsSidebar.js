@@ -8,8 +8,11 @@ const QuestionSidebar = () => (
     </div>
     <div className="sidebar-block-content">
       <p>
-        We encourage your feedback and would like to hear from you. If you have any questions,
-        feedback, or other concerns, please send us an email at&nbsp;
+        Please let us know about any questions or comments you have regarding your experience using
+        MineSpace.
+        <br />
+        <br />
+        Email us at&nbsp;
         <a className="underline" href={`mailto:${Strings.MDS_EMAIL}`}>
           {Strings.MDS_EMAIL}
         </a>

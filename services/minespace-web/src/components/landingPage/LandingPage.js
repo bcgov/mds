@@ -8,7 +8,7 @@ import { USER_GUIDE, TAILINGS_DOCUMENT } from "@/constants/assets";
 export const LandingPage = () => (
   <div>
     <div>
-      <h1 className="landing-page-title"> Welcome to MineSpace, an online portal for BC mines</h1>
+      <h1 className="landing-page-title">Welcome to MineSpace, an online portal for mines in BC</h1>
       <p>
         The Mines Digital Service (MDS) is a digital product being iteratively developed and
         designed to hold mine-related data that is user-friendly, trustworthy and reliable. The
@@ -91,7 +91,7 @@ export const LandingPage = () => (
       <div className="flex-1">
         <div className="sidebar-block">
           <div className="sidebar-block-title">
-            <h2 className="side-bar-title">Do you have a Business BCeID?</h2>
+            <h2 className="side-bar-title">Do you have a BCeID?</h2>
           </div>
           <div className="sidebar-block-content">
             <p>
