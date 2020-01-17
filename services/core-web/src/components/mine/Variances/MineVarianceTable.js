@@ -146,7 +146,7 @@ export class MineVarianceTable extends Component {
         width: 150,
         className: hideColumn(!this.props.isDashboardView),
         render: (text) => (
-          <div title="Mine Name" className={hideColumn(!this.props.isDashboardView)}>
+          <div title="Lead Inspector" className={hideColumn(!this.props.isDashboardView)}>
             {text}
           </div>
         ),
