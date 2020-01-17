@@ -3,8 +3,7 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { Table, Button, Icon } from "antd";
-import moment from "moment";
-import _, { isEmpty } from "lodash";
+import _ from "lodash";
 import { EDIT_OUTLINE_VIOLET } from "@/constants/assets";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import {
@@ -149,13 +148,13 @@ export class MineIncidentTable extends Component {
         ),
       },
       {
-        title: "Incident Status",
+        title: "Status",
         dataIndex: "incident_status",
         sortField: "incident_status",
         sorter: true,
         className: hideColumn(!this.props.isDashboardView),
         render: (text) => (
-          <span title="Incident Status" className={hideColumn(!this.props.isDashboardView)}>
+          <span title="Status" className={hideColumn(!this.props.isDashboardView)}>
             {text}
           </span>
         ),
