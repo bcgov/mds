@@ -600,7 +600,8 @@ VALUES
 	('TAL', 'Tenure Authorization Letter', true, 'system-mds', 'system-mds'),
 	('TMP', 'Tenure Map / Property Map', true, 'system-mds', 'system-mds'),
 	('MPW', 'Map of Proposed Work', true, 'system-mds', 'system-mds'),
-    ('REV', 'Review',true,'system-mds','system-mds')
+    ('REV', 'Review',true,'system-mds','system-mds'),
+    ('PUB', 'Public Comment',true,'system-mds','system-mds')
 on conflict do nothing;
 
 INSERT INTO now_application_review_type(

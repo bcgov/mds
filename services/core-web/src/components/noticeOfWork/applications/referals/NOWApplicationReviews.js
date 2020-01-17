@@ -73,9 +73,9 @@ const ApplicationReview = (props) => (
           (review) => review.now_application_review_type_code === props.reviewType.value
         )}
         noticeOfWorkReviewTypes={props.noticeOfWorkReviewTypes}
-        handleDelete={props.handleDeleteReview}
-        openEditModal={props.openEditReviewModal}
-        handleEdit={props.handleEditReview}
+        handleDelete={props.handleDelete}
+        openEditModal={props.openEditModal}
+        handleEdit={props.handleEdit}
         handleDocumentDelete={props.handleDocumentDelete}
       />
       {props.readyForReview && !props.completeDate && (
@@ -176,7 +176,7 @@ export class NOWApplicationReviews extends Component {
 
   openAddReviewModal = (event, onSubmit) => {
     event.preventDefault();
-    const initialValues = { now_application_guid: this.props.noticeOfWorkGuid };
+    const initialValues = { now_application_guid: this.props.noticeOfWork.now_application_guid };
     this.props.openModal({
       props: {
         initialValues,
