@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Table, Button, Icon, Badge } from "antd";
-import { isEmpty } from "lodash";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import moment from "moment";
@@ -15,7 +14,7 @@ import { getInspectorsHash } from "@/selectors/partiesSelectors";
 import * as Permission from "@/constants/permissions";
 import { RED_CLOCK, EDIT_OUTLINE_VIOLET } from "@/constants/assets";
 import NullScreen from "@/components/common/NullScreen";
-import { formatDate, compareCodes, getTableHeaders, truncateFilename } from "@/utils/helpers";
+import { formatDate, getTableHeaders, truncateFilename } from "@/utils/helpers";
 import { downloadFileFromDocumentManager } from "@/utils/actionlessNetworkCalls";
 import * as Strings from "@/constants/strings";
 import LinkButton from "@/components/common/LinkButton";
@@ -59,48 +58,46 @@ const hideColumn = (condition) => (condition ? "column-hide" : "");
 const applySortIndicator = (_columns, field, dir) =>
   _columns.map((column) => ({
     ...column,
-    sortOrder: column.sortField === field ? dir.concat("end") : false,
+    sortOrder: dir && column.sortField === field ? dir.concat("end") : false,
   }));
 
 const handleTableChange = (updateVarianceList) => (pagination, filters, sorter) => {
-  const params = isEmpty(sorter)
-    ? {
-        sort_field: undefined,
-        sort_dir: undefined,
-      }
-    : {
-        sort_field: sorter.column.sortField,
-        sort_dir: sorter.order.replace("end", ""),
-      };
+  const params = {
+    results: pagination.pageSize,
+    page: pagination.current,
+    sort_field: sorter.field,
+    sort_dir: sorter.order ? sorter.order.replace("end", "") : sorter.order,
+    ...filters,
+  };
   updateVarianceList(params);
 };
 
 export class MineVarianceTable extends Component {
-  transformRowData = (variances, codeHash, statusHash) =>
+  transformRowData = (variances) =>
     variances.map((variance) => ({
       key: variance.variance_guid,
       variance,
-      mineName: variance.mine_name || Strings.EMPTY_FIELD,
-      mineGuid: variance.mine_guid,
-      status: statusHash[variance.variance_application_status_code],
-      compliance_article_id: codeHash[variance.compliance_article_id] || Strings.EMPTY_FIELD,
+      mine_name: variance.mine_name || Strings.EMPTY_FIELD,
+      mine_guid: variance.mine_guid,
+      variance_application_status_code: variance.variance_application_status_code,
+      compliance_article_id: variance.compliance_article_id,
       expiry_date:
         (variance.expiry_date && formatDate(variance.expiry_date)) || Strings.EMPTY_FIELD,
       issue_date: formatDate(variance.issue_date) || Strings.EMPTY_FIELD,
       note: variance.note,
       received_date: formatDate(variance.received_date) || Strings.EMPTY_FIELD,
-      isOverdue: variance.expiry_date && Date.parse(variance.expiry_date) < new Date(),
-      leadInspector:
+      is_overdue: variance.expiry_date && Date.parse(variance.expiry_date) < new Date(),
+      lead_inspector:
         this.props.inspectorsHash[variance.inspector_party_guid] || Strings.EMPTY_FIELD,
       documents: variance.documents,
-      varianceNumber: variance.variance_no || Strings.EMPTY_FIELD,
+      variance_id: variance.variance_no || Strings.EMPTY_FIELD,
     }));
 
   render() {
     const columns = [
       {
         title: "",
-        dataIndex: "isOverdue",
+        dataIndex: "is_overdue",
         width: 10,
         render: (isOverdue) => (
           <div title="Expired">
@@ -110,80 +107,78 @@ export class MineVarianceTable extends Component {
       },
       {
         title: "Number",
-        dataIndex: "varianceNumber",
+        dataIndex: "variance_id",
         sortField: "variance_id",
+        sorter: this.props.isDashboardView,
         width: 150,
         render: (text) => <div title="Number">{text}</div>,
-        sorter: this.props.isDashboardView,
       },
       {
         title: "Code Section",
         dataIndex: "compliance_article_id",
         sortField: "compliance_article_id",
+        sorter: this.props.isDashboardView,
         width: 150,
-        render: (text) => <div title="Code Section">{text}</div>,
-        sorter: !this.props.isDashboardView
-          ? (a, b) => compareCodes(a.compliance_article_id, b.compliance_article_id)
-          : true,
+        render: (text) => (
+          <div title="Code Section">
+            {this.props.complianceCodesHash[text] || Strings.EMPTY_FIELD}
+          </div>
+        ),
       },
       {
         title: "Mine",
-        dataIndex: "mineName",
+        dataIndex: "mine_name",
         sortField: "mine_name",
+        sorter: this.props.isDashboardView,
         width: 150,
         className: hideColumn(!this.props.isDashboardView),
         render: (text, record) => (
           <div title="Mine" className={hideColumn(!this.props.isDashboardView)}>
-            <Link to={router.MINE_SUMMARY.dynamicRoute(record.mineGuid)}>{text}</Link>
+            <Link to={router.MINE_SUMMARY.dynamicRoute(record.mine_guid)}>{text}</Link>
           </div>
         ),
-        sorter: this.props.isDashboardView,
       },
       {
         title: "Lead Inspector",
-        dataIndex: "leadInspector",
+        dataIndex: "lead_inspector",
         sortField: "lead_inspector",
+        sorter: this.props.isDashboardView,
         width: 150,
         className: hideColumn(!this.props.isDashboardView),
-        render: (text) => (
-          <div title="Lead Inspector" className={hideColumn(!this.props.isDashboardView)}>
-            {text}
-          </div>
-        ),
-        sorter: this.props.isDashboardView,
+        render: (text) => <div title="Lead Inspector">{text}</div>,
       },
       {
         title: "Submission Date",
         dataIndex: "received_date",
         sortField: "received_date",
+        sorter: this.props.isDashboardView,
         width: 150,
         className: hideColumn(!this.props.isApplication),
-        render: (text) => (
-          <div className={hideColumn(!this.props.isApplication)} title="Submission Date">
-            {text}
-          </div>
-        ),
-        sorter: !this.props.isDashboardView
-          ? (a, b) => (moment(a.received_date) > moment(b.received_date) ? -1 : 1)
-          : true,
-        defaultSortOrder: "ascend",
+        render: (text) => <div title="Submission Date">{text}</div>,
       },
       {
         title: "Application Status",
-        dataIndex: "status",
+        dataIndex: "variance_application_status_code",
         sortField: "variance_application_status_code",
+        sorter: this.props.isDashboardView,
         width: 150,
         className: hideColumn(!this.props.isApplication),
         render: (text) => (
           <div className={hideColumn(!this.props.isApplication)} title="Application Status">
-            <Badge status={getVarianceApplicationBadgeStatusType(text)} text={text} />
+            <Badge
+              status={getVarianceApplicationBadgeStatusType(
+                this.props.varianceStatusOptionsHash[text]
+              )}
+              text={this.props.varianceStatusOptionsHash[text]}
+            />
           </div>
         ),
-        sorter: !this.props.isDashboardView ? (a, b) => (a.status > b.status ? -1 : 1) : true,
       },
       {
         title: "Issue Date",
         dataIndex: "issue_date",
+        sortField: "issue_date",
+        sorter: this.props.isDashboardView,
         width: 150,
         className: hideColumn(this.props.isApplication),
         render: (text) => (
@@ -191,11 +186,12 @@ export class MineVarianceTable extends Component {
             {text}
           </div>
         ),
-        sorter: (a, b) => (moment(a.issue_date) > moment(b.issue_date) ? -1 : 1),
       },
       {
         title: "Expiry Date",
         dataIndex: "expiry_date",
+        sortField: "expiry_date",
+        sorter: this.props.isDashboardView,
         width: 150,
         className: hideColumn(this.props.isApplication),
         render: (text) => (
@@ -203,8 +199,6 @@ export class MineVarianceTable extends Component {
             {text}
           </div>
         ),
-        sorter: (a, b) => (moment(a.expiry_date || 0) > moment(b.expiry_date || 0) ? -1 : 1),
-        defaultSortOrder: "ascend",
       },
       {
         title: "Approval Status",
@@ -213,7 +207,7 @@ export class MineVarianceTable extends Component {
         className: hideColumn(this.props.isApplication),
         render: (text, record) => (
           <div className={hideColumn(this.props.isApplication)} title="Approval Status">
-            {record.isOverdue ? "Expired" : "Active"}
+            {record.is_overdue ? "Expired" : "Active"}
           </div>
         ),
       },
@@ -275,9 +269,7 @@ export class MineVarianceTable extends Component {
       >
         <Table
           rowClassName="fade-in"
-          onChange={
-            this.props.isDashboardView ? handleTableChange(this.props.handleVarianceSearch) : null
-          }
+          onChange={handleTableChange(this.props.handleVarianceSearch)}
           align="left"
           pagination={false}
           columns={
@@ -292,11 +284,7 @@ export class MineVarianceTable extends Component {
               />
             ),
           }}
-          dataSource={this.transformRowData(
-            this.props.variances,
-            this.props.complianceCodesHash,
-            this.props.varianceStatusOptionsHash
-          )}
+          dataSource={this.transformRowData(this.props.variances)}
         />
       </TableLoadingWrapper>
     );
