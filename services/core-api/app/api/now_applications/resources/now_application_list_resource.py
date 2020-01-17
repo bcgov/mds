@@ -11,6 +11,8 @@ from app.api.mines.region.models.region import MineRegionCode
 from app.api.now_applications.models.notice_of_work_view import NoticeOfWorkView
 from app.api.now_applications.models.now_application_status import NOWApplicationStatus
 from app.api.now_applications.models.now_application_identity import NOWApplicationIdentity
+from app.api.now_applications.models.now_application_progress import NOWApplicationProgress
+from app.api.now_applications.models.now_application import NOWApplication
 from app.api.now_applications.response_models import NOW_VIEW_LIST, NOW_APPLICATION_MODEL
 from app.api.utils.access_decorators import requires_role_view_all, requires_role_edit_permit
 from app.api.utils.resources_mixins import UserMixin
@@ -163,6 +165,8 @@ class NOWApplicationListResource(Resource, UserMixin):
             raise BadRequest(err_str)
 
         new_now = NOWApplicationIdentity(mine_guid=data['mine_guid'], permit=permit)
+        # new_now.now_application = NOWApplication()
+        # now_progress = NOWApplicationProgress.create(new_now.now_application, 'VER')
 
         new_now.save()
         return new_now, 201

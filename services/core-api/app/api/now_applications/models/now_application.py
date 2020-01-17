@@ -31,8 +31,7 @@ class NOWApplication(Base, AuditMixin):
     mine_region = association_proxy('now_application_identity', 'mine.mine_region')
     now_number = association_proxy('now_application_identity', 'now_number')
 
-    lead_inspector_party_guid = db.Column(
-        UUID(as_uuid=True), db.ForeignKey('party.party_guid'), nullable=True)
+    lead_inspector_party_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('party.party_guid'))
     lead_inspector = db.relationship('Party', lazy='selectin', uselist=False)
 
     now_tracking_number = db.Column(db.Integer)
