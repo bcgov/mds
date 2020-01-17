@@ -63,7 +63,7 @@ export const createNoticeOfWorkApplication = (payload) => (dispatch) => {
   return CustomAxios()
     .post(
       `${ENVIRONMENT.apiUrl}${API.NOTICE_OF_WORK_APPLICATIONS()}`,
-      { payload },
+      payload,
       createRequestHeader()
     )
     .then((response) => {
