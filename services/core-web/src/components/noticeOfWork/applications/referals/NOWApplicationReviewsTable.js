@@ -11,20 +11,20 @@ import LinkButton from "@/components/common/LinkButton";
 import { downloadFileFromDocumentManager } from "@/utils/actionlessNetworkCalls";
 import TableLoadingWrapper from "@/components/common/wrappers/TableLoadingWrapper";
 import { getTableHeaders } from "@/utils/helpers";
+import NullScreen from "@/components/common/NullScreen";
 
 const propTypes = {
-  // eslint-disable-next-line
   noticeOfWorkReviews: PropTypes.arrayOf(CustomPropTypes.NOWApplicationReview).isRequired,
   noticeOfWorkReviewTypesHash: PropTypes.objectOf(PropTypes.string).isRequired,
-
   handleDocumentDelete: PropTypes.func.isRequired,
   handleDelete: PropTypes.func.isRequired,
   openEditModal: PropTypes.func.isRequired,
   handleEdit: PropTypes.func.isRequired,
   isLoaded: PropTypes.bool.isRequired,
+  reviewerLabel: PropTypes.string.isRequired,
 };
 
-const columns = [
+const columns = (reviewerLabel) => [
   {
     title: "Type",
     dataIndex: "now_application_review_type",
@@ -32,7 +32,7 @@ const columns = [
     render: (text) => <div title="Type">{text}</div>,
   },
   {
-    title: "Referee Name",
+    title: reviewerLabel,
     dataIndex: "referee_name",
     key: "referee_name",
     render: (text) => <div title="Type">{text}</div>,
@@ -121,10 +121,11 @@ const transformRowData = (
 };
 
 export const NOWApplicationReviewsTable = (props) => {
+  const columnValues = columns(props.reviewerLabel);
   return (
-    <TableLoadingWrapper condition={props.isLoaded} tableHeaders={getTableHeaders(columns)}>
+    <TableLoadingWrapper condition={props.isLoaded} tableHeaders={getTableHeaders(columnValues)}>
       <Table
-        columns={columns}
+        columns={columnValues}
         pagination={false}
         dataSource={transformRowData(
           props.noticeOfWorkReviews,
@@ -134,6 +135,7 @@ export const NOWApplicationReviewsTable = (props) => {
           props.handleEdit,
           props.handleDocumentDelete
         )}
+        locale={{ emptyText: <NullScreen type="no-results" /> }}
       />
     </TableLoadingWrapper>
   );

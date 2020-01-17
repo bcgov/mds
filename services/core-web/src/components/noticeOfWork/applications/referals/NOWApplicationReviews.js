@@ -54,6 +54,12 @@ const propTypes = {
 
 const defaultProps = {};
 
+const ReviewerLabels = {
+  FNC: "First Nations Advisor",
+  PUB: "Uploaded By",
+  REF: "Referee Name",
+};
+
 const ApplicationReview = (props) => (
   <Row type="flex" justify="center">
     <Col sm={22} md={22} lg={22} className="padding-large--bottom">
@@ -77,6 +83,7 @@ const ApplicationReview = (props) => (
         openEditModal={props.openEditModal}
         handleEdit={props.handleEdit}
         handleDocumentDelete={props.handleDocumentDelete}
+        reviewerLabel={ReviewerLabels[props.reviewType.value]}
       />
       {props.readyForReview && !props.completeDate && (
         <div className="inline-flex flex-end">
@@ -88,7 +95,7 @@ const ApplicationReview = (props) => (
               okText="Yes"
               cancelText="No"
             >
-              <Button type="primary">{`Complete ${props.reviewType.label}`}</Button>
+              <Button type="primary">{`${props.reviewType.label} Completed`}</Button>
             </Popconfirm>
           </AuthorizationWrapper>
         </div>
@@ -181,8 +188,9 @@ export class NOWApplicationReviews extends Component {
       props: {
         initialValues,
         onSubmit,
-        title: "Add Review to Permit Application",
-        review_types: this.props.noticeOfWorkReviewTypes,
+        title: "Add Reviewer to Application",
+        reviewTypes: this.props.noticeOfWorkReviewTypes,
+        reviewerLabels: ReviewerLabels,
       },
       isViewOnly: true,
       content: modalConfig.NOW_REVIEW,
@@ -197,7 +205,8 @@ export class NOWApplicationReviews extends Component {
         onSubmit,
         handleDocumentDelete,
         title: "Edit Review",
-        review_types: this.props.noticeOfWorkReviewTypes,
+        reviewTypes: this.props.noticeOfWorkReviewTypes,
+        reviewerLabels: ReviewerLabels,
       },
       isViewOnly: true,
       content: modalConfig.NOW_REVIEW,
@@ -302,7 +311,6 @@ export class NOWApplicationReviews extends Component {
         cancelDownload: this.cancelDownload,
         title: `Download Referral Package`,
       },
-      // widthSize: "50vw",
       content: modalConfig.DOWNLOAD_DOC_PACKAGE,
     });
   };
@@ -342,22 +350,38 @@ export class NOWApplicationReviews extends Component {
                 {this.props.noticeOfWork.ready_for_review_date && (
                   <Tag className="ant-disabled">
                     <Icon type="clock-circle" className="padding-small--right" />
-                    {`Reviews started on ${formatDate(
+                    {`Ready for review since: ${formatDate(
                       this.props.noticeOfWork.ready_for_review_date
                     )}`}
                   </Tag>
                 )}
               </div>
               <div>
-                {!this.props.noticeOfWork.ready_for_review_date && (
-                  <Popconfirm
-                    placement="topRight"
-                    title="By downloading the Referral Package you are indicating that Reviews are ready to begin. Do you want to continue?"
-                    onConfirm={this.openDownloadPackageModal}
-                    okText="Yes"
-                    cancelText="No"
-                  >
-                    <Button type="secondary" className="full-mobile">
+                <div className="inline-flex">
+                  {!this.props.noticeOfWork.ready_for_review_date && (
+                    <Popconfirm
+                      placement="topRight"
+                      title="By downloading the Referral Package you are indicating that Reviews are ready to begin. Do you want to continue?"
+                      onConfirm={this.openDownloadPackageModal}
+                      okText="Yes"
+                      cancelText="No"
+                    >
+                      <Button type="secondary" className="full-mobile">
+                        <Icon
+                          type="download"
+                          theme="outlined"
+                          className="padding-small--right icon-sm"
+                        />
+                        Download Referral Package
+                      </Button>
+                    </Popconfirm>
+                  )}
+                  {this.props.noticeOfWork.ready_for_review_date && (
+                    <Button
+                      type="secondary"
+                      className="full-mobile"
+                      onClick={this.openDownloadPackageModal}
+                    >
                       <Icon
                         type="download"
                         theme="outlined"
@@ -365,30 +389,16 @@ export class NOWApplicationReviews extends Component {
                       />
                       Download Referral Package
                     </Button>
-                  </Popconfirm>
-                )}
-                {this.props.noticeOfWork.ready_for_review_date && (
-                  <Button
-                    type="secondary"
-                    className="full-mobile"
-                    onClick={this.openDownloadPackageModal}
-                  >
-                    <Icon
-                      type="download"
-                      theme="outlined"
-                      className="padding-small--right icon-sm"
-                    />
-                    Download Referral Package
-                  </Button>
-                )}
+                  )}
 
-                <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
-                  <AddButton
-                    onClick={(event) => this.openAddReviewModal(event, this.handleAddReview)}
-                  >
-                    Add Review
-                  </AddButton>
-                </AuthorizationWrapper>
+                  <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
+                    <AddButton
+                      onClick={(event) => this.openAddReviewModal(event, this.handleAddReview)}
+                    >
+                      Add Reviewer
+                    </AddButton>
+                  </AuthorizationWrapper>
+                </div>
               </div>
             </div>
           </Col>
