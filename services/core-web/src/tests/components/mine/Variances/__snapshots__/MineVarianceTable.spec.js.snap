@@ -6,9 +6,9 @@ exports[`MineVarianceTable renders properly 1`] = `
   tableHeaders={
     Array [
       "",
-      "Variance Number",
-      "Code Section",
-      "Mine Name",
+      "Number",
+      "Mine",
+      "Code",
       "Lead Inspector",
       "Submission Date",
       "Application Status",
@@ -25,39 +25,39 @@ exports[`MineVarianceTable renders properly 1`] = `
     columns={
       Array [
         Object {
-          "dataIndex": "isOverdue",
+          "dataIndex": "is_overdue",
           "render": [Function],
           "title": "",
           "width": 10,
         },
         Object {
-          "dataIndex": "varianceNumber",
+          "dataIndex": "variance_id",
           "render": [Function],
           "sortField": "variance_id",
           "sorter": false,
-          "title": "Variance Number",
+          "title": "Number",
+          "width": 150,
+        },
+        Object {
+          "className": "column-hide",
+          "dataIndex": "mine_name",
+          "render": [Function],
+          "sortField": "mine_name",
+          "sorter": false,
+          "title": "Mine",
           "width": 150,
         },
         Object {
           "dataIndex": "compliance_article_id",
           "render": [Function],
           "sortField": "compliance_article_id",
-          "sorter": [Function],
-          "title": "Code Section",
-          "width": 150,
-        },
-        Object {
-          "className": "column-hide",
-          "dataIndex": "mineName",
-          "render": [Function],
-          "sortField": "mine_name",
           "sorter": false,
-          "title": "Mine Name",
+          "title": "Code",
           "width": 150,
         },
         Object {
           "className": "column-hide",
-          "dataIndex": "leadInspector",
+          "dataIndex": "lead_inspector",
           "render": [Function],
           "sortField": "lead_inspector",
           "sorter": false,
@@ -67,19 +67,18 @@ exports[`MineVarianceTable renders properly 1`] = `
         Object {
           "className": "column-hide",
           "dataIndex": "received_date",
-          "defaultSortOrder": "ascend",
           "render": [Function],
           "sortField": "received_date",
-          "sorter": [Function],
+          "sorter": false,
           "title": "Submission Date",
           "width": 150,
         },
         Object {
           "className": "column-hide",
-          "dataIndex": "status",
+          "dataIndex": "variance_application_status_code",
           "render": [Function],
           "sortField": "variance_application_status_code",
-          "sorter": [Function],
+          "sorter": false,
           "title": "Application Status",
           "width": 150,
         },
@@ -87,16 +86,17 @@ exports[`MineVarianceTable renders properly 1`] = `
           "className": "",
           "dataIndex": "issue_date",
           "render": [Function],
-          "sorter": [Function],
+          "sortField": "issue_date",
+          "sorter": false,
           "title": "Issue Date",
           "width": 150,
         },
         Object {
           "className": "",
           "dataIndex": "expiry_date",
-          "defaultSortOrder": "ascend",
           "render": [Function],
-          "sorter": [Function],
+          "sortField": "expiry_date",
+          "sorter": false,
           "title": "Expiry Date",
           "width": 150,
         },
@@ -124,7 +124,7 @@ exports[`MineVarianceTable renders properly 1`] = `
     dataSource={
       Array [
         Object {
-          "compliance_article_id": "N/A",
+          "compliance_article_id": 1,
           "documents": Array [
             Object {
               "created_at": "2019-05-02",
@@ -135,15 +135,15 @@ exports[`MineVarianceTable renders properly 1`] = `
             },
           ],
           "expiry_date": "Mar 30 2019",
-          "isOverdue": true,
+          "inspector_party_guid": undefined,
+          "is_overdue": true,
           "issue_date": "Mar 01 2019",
           "key": "0d3ec917-179f-4dbc-80a3-4c993fdfe596",
-          "leadInspector": "N/A",
-          "mineGuid": undefined,
-          "mineName": "N/A",
+          "lead_inspector": "N/A",
+          "mine_guid": undefined,
+          "mine_name": "N/A",
           "note": "notesss",
           "received_date": "Mar 01 2019",
-          "status": undefined,
           "variance": Object {
             "compliance_article_id": 1,
             "documents": Array [
@@ -162,7 +162,8 @@ exports[`MineVarianceTable renders properly 1`] = `
             "variance_guid": "0d3ec917-179f-4dbc-80a3-4c993fdfe596",
             "variance_no": 1,
           },
-          "varianceNumber": 1,
+          "variance_application_status_code": undefined,
+          "variance_id": 1,
         },
       ]
     }
@@ -173,7 +174,7 @@ exports[`MineVarianceTable renders properly 1`] = `
         />,
       }
     }
-    onChange={null}
+    onChange={[Function]}
     pagination={false}
     rowClassName="fade-in"
   />

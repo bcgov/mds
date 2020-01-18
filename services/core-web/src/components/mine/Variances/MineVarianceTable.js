@@ -115,18 +115,6 @@ export class MineVarianceTable extends Component {
         render: (text) => <div title="Number">{text}</div>,
       },
       {
-        title: "Code Section",
-        dataIndex: "compliance_article_id",
-        sortField: "compliance_article_id",
-        sorter: this.props.isDashboardView,
-        width: 150,
-        render: (text) => (
-          <div title="Code Section">
-            {this.props.complianceCodesHash[text] || Strings.EMPTY_FIELD}
-          </div>
-        ),
-      },
-      {
         title: "Mine",
         dataIndex: "mine_name",
         sortField: "mine_name",
@@ -137,6 +125,16 @@ export class MineVarianceTable extends Component {
           <div title="Mine" className={hideColumn(!this.props.isDashboardView)}>
             <Link to={router.MINE_SUMMARY.dynamicRoute(record.mine_guid)}>{text}</Link>
           </div>
+        ),
+      },
+      {
+        title: "Code",
+        dataIndex: "compliance_article_id",
+        sortField: "compliance_article_id",
+        sorter: this.props.isDashboardView,
+        width: 150,
+        render: (text) => (
+          <div title="Code">{this.props.complianceCodesHash[text] || Strings.EMPTY_FIELD}</div>
         ),
       },
       {

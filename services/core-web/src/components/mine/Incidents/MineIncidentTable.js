@@ -71,8 +71,8 @@ const handleTableChange = (updateIncidentList) => (pagination, filters, sorter) 
   updateIncidentList(params);
 };
 
-const renderDownloadLinks = (files, mine_incident_document_type_code) =>
-  files
+const renderDownloadLinks = (files, mine_incident_document_type_code) => {
+  const links = files
     .filter((file) => file.mine_incident_document_type_code === mine_incident_document_type_code)
     .map((file) => (
       <div key={file.mine_document_guid}>
@@ -84,6 +84,8 @@ const renderDownloadLinks = (files, mine_incident_document_type_code) =>
         </LinkButton>
       </div>
     ));
+  return links && links.length > 0 ? links : false;
+};
 
 export class MineIncidentTable extends Component {
   transformRowData = (
@@ -125,21 +127,21 @@ export class MineIncidentTable extends Component {
         title: "Number",
         dataIndex: "mine_incident_report_no",
         sortField: "mine_incident_report_no",
-        sorter: true,
+        sorter: this.props.isDashboardView,
         render: (text) => <div title="Number">{text}</div>,
       },
       {
-        title: "Date",
+        title: "Incident Date",
         dataIndex: "incident_timestamp",
         sortField: "incident_timestamp",
-        sorter: true,
-        render: (text) => <span title="Date">{text}</span>,
+        sorter: this.props.isDashboardView,
+        render: (text) => <span title="Incident Date">{text}</span>,
       },
       {
         title: "Mine",
         dataIndex: "mine_name",
         sortField: "mine_name",
-        sorter: true,
+        sorter: this.props.isDashboardView,
         className: hideColumn(!this.props.isDashboardView),
         render: (text, record) => (
           <div title="Mine" className={hideColumn(!this.props.isDashboardView)}>
@@ -151,7 +153,7 @@ export class MineIncidentTable extends Component {
         title: "Status",
         dataIndex: "incident_status",
         sortField: "incident_status",
-        sorter: true,
+        sorter: this.props.isDashboardView,
         className: hideColumn(!this.props.isDashboardView),
         render: (text) => (
           <span title="Status" className={hideColumn(!this.props.isDashboardView)}>
@@ -163,7 +165,7 @@ export class MineIncidentTable extends Component {
         title: "Determination",
         dataIndex: "determination",
         sortField: "determination",
-        sorter: true,
+        sorter: this.props.isDashboardView,
         className: hideColumn(!this.props.isDashboardView),
         render: (text) => (
           <span title="Determination" className={hideColumn(!this.props.isDashboardView)}>
@@ -220,7 +222,7 @@ export class MineIncidentTable extends Component {
         dataIndex: "followup_action",
         className: hideColumn(this.props.isDashboardView),
         render: (action, record) => (
-          <div title="followup_action" className={hideColumn(this.props.isDashboardView)}>
+          <div title="EMPR Action" className={hideColumn(this.props.isDashboardView)}>
             {action ? action.description : record.incident.followup_type_code}
           </div>
         ),
@@ -237,11 +239,10 @@ export class MineIncidentTable extends Component {
         width: 200,
         render: (text, record) => (
           <div title="Initial Report Documents" className={hideColumn(this.props.isDashboardView)}>
-            {record.docs.length === 0 ? (
-              <span>--</span>
-            ) : (
-              renderDownloadLinks(record.docs, Strings.INCIDENT_DOCUMENT_TYPES.initial)
-            )}
+            {(record.docs &&
+              record.docs.length > 0 &&
+              renderDownloadLinks(record.docs, Strings.INCIDENT_DOCUMENT_TYPES.initial)) ||
+              Strings.EMPTY_FIELD}
           </div>
         ),
       },
@@ -251,12 +252,11 @@ export class MineIncidentTable extends Component {
         className: hideColumn(this.props.isDashboardView),
         width: 200,
         render: (text, record) => (
-          <div title="Final Report Documents" className={hideColumn(this.props.isDashboardView)}>
-            {record.docs.length === 0 ? (
-              <span>--</span>
-            ) : (
-              renderDownloadLinks(record.docs, Strings.INCIDENT_DOCUMENT_TYPES.final)
-            )}
+          <div title="Final Report Documents">
+            {(record.docs &&
+              record.docs.length > 0 &&
+              renderDownloadLinks(record.docs, Strings.INCIDENT_DOCUMENT_TYPES.final)) ||
+              Strings.EMPTY_FIELD}
           </div>
         ),
       },
