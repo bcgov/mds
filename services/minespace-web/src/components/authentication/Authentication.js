@@ -33,15 +33,13 @@ export class Authentication extends Component {
     const hamburgerMenu = (
       <Menu>
         <Menu.Item>
-          <Button type="tertiary">
+          <Button>
             <Link to={route.DASHBOARD.route}>My Mines</Link>
           </Button>
         </Menu.Item>
         <Divider style={{ margin: "0" }} />
         <Menu.Item>
-          <Button type="tertiary" onClick={this.handleLogout}>
-            Log out
-          </Button>
+          <Button onClick={this.handleLogout}>Log out</Button>
         </Menu.Item>
       </Menu>
     );
@@ -49,22 +47,16 @@ export class Authentication extends Component {
     const menu = (
       <Menu>
         <Menu.Item>
-          <Button type="tertiary" onClick={this.handleLogout}>
-            Log out
-          </Button>
+          <Button onClick={this.handleLogout}>Log out</Button>
         </Menu.Item>
       </Menu>
     );
     if (!this.props.isAuthenticated) {
       return (
         <a
-          href={`${ENV.KEYCLOAK.loginURL}${ENV.BCEID_LOGIN_REDIRECT_URI}&kc_idp_hint=${
-            ENV.KEYCLOAK.idpHint
-          }`}
+          href={`${ENV.KEYCLOAK.loginURL}${ENV.BCEID_LOGIN_REDIRECT_URI}&kc_idp_hint=${ENV.KEYCLOAK.idpHint}`}
         >
-          <Button type="tertiary" className="login-btn">
-            Log in
-          </Button>
+          <Button className="login-btn">Log in</Button>
         </a>
       );
     }
