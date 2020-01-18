@@ -6,7 +6,7 @@ exports[`MineIncidentTable renders properly 1`] = `
   tableHeaders={
     Array [
       "Number",
-      "Date",
+      "Incident Date",
       "Mine",
       "Status",
       "Determination",
@@ -35,7 +35,7 @@ exports[`MineIncidentTable renders properly 1`] = `
           "render": [Function],
           "sortField": "incident_timestamp",
           "sorter": false,
-          "title": "Date",
+          "title": "Incident Date",
         },
         Object {
           "className": "column-hide",
