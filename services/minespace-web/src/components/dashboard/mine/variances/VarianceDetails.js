@@ -44,7 +44,7 @@ export const VarianceDetails = (props) => {
       <p className="field-title margin--bottom">
         {isApproved ? "Variance details" : "Application details"}
       </p>
-      <div className="lightest-grey-bg padding-small margin--bottom">
+      <div className="background-bg padding-small margin--bottom">
         <div className="inline-flex padding-small">
           <p className="field-title">Mine</p>
           <p> {props.mineName || Strings.EMPTY_FIELD}</p>

@@ -4,14 +4,18 @@
 // SETTINGS - Used with pre-processors. Global settings that contain font, colors definitions, etc.
 @import "./settings/variables.scss";
 @import "./settings/theme.scss";
-@import "./settings/themeOverride.scss";
+@import "./settings/antd-overrides.scss";
+
 // TOOLS - globally used mixins and functions. (ie gradient mixins, font-sizing mixins)
 @import "./tools/mixins.scss";
+
 // GENERIC - Very high level, far-reaching styles. Contains Normalize.css, Box-sizing rules, CSS resets etc.
 @import "./generic/Normalize.scss";
 @import "./generic/layout.scss";
+
 // ELEMENTS - Bare, un-classed HTML elements (like H1, A, etc.). This layer is rarely touched after initial setup.
 @import "./elements/elements.scss";
+
 // OBJECTS - layouts (CSS Grid or flexbox)
 
 // COMPONENTS - specific UI components.
@@ -23,4 +27,5 @@
 @import "./components/NullScreen.scss";
 @import "./components/Loading.scss";
 @import "./components/Tables.scss";
+
 // UTILITIES - utilities and helper classes. This layer has the highest specificity.

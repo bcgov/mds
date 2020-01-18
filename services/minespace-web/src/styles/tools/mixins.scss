@@ -75,6 +75,7 @@ $x-large-width: 90em;
     opacity: 1;
   }
 }
+
 @-moz-keyframes fadein {
   /* Firefox */
   from {
@@ -84,6 +85,7 @@ $x-large-width: 90em;
     opacity: 1;
   }
 }
+
 @-webkit-keyframes fadein {
   /* Safari and Chrome */
   from {
@@ -93,6 +95,7 @@ $x-large-width: 90em;
     opacity: 1;
   }
 }
+
 @-o-keyframes fadein {
   /* Opera */
   from {

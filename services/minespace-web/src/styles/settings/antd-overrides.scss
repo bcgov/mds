@@ -1,7 +1,7 @@
 // BUTTON
 .ant-btn-secondary {
   color: $secondary-btn-color;
-  background-color: $pure-white;
+  background-color: $white;
   border-color: $secondary-btn-color;
   &:hover {
     border: 1px solid $secondary-btn-border-color-hover;
@@ -13,7 +13,7 @@
 }
 
 .ant-btn-primary {
-  color: $pure-white;
+  color: $white;
   background-color: $primary-btn-color;
   border-color: $primary-btn-color;
   &:hover {

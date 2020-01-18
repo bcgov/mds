@@ -22,7 +22,7 @@ exports[`VarianceDetails renders properly 1`] = `
     Application details
   </p>
   <div
-    className="lightest-grey-bg padding-small margin--bottom"
+    className="background-bg padding-small margin--bottom"
   >
     <div
       className="inline-flex padding-small"

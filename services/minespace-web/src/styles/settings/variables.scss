@@ -1,46 +1,36 @@
-/*
- * Brand Colour Palette
- */
+// Use for colours that are needed
+$need-colour: red;
 
-// Primary Colours
-$dark-grey: #161616;
+// Brand colours
 $gov-blue: #003366;
-$secondary-link-blue: #1a5a96;
-$link-hover: #0007ff;
-$nav-blue: #38598a;
-
-// Accent Colours
 $gov-yellow: #fcba19;
-$light-yellow: #f3cd65;
-$light-blue: #5091cd;
-$cool-medium-grey: #8a9198;
-$icon-grey: #a2a2a2;
-$dark-blue: #002663;
+$gov-red: #d8292f;
+$gov-green: #2e8540;
+$font-colour: #494949;
+$link-normal: #007bff;
+$link-hover: $need-colour;
+$nav-blue: #38598a;
+$background: #f2f2f2;
+$input-color: #606060;
 
-// Background Colours
-$lightest-grey: #f2f2f2;
-$pure-white: #ffffff;
+// Generic colours
+$white: #ffffff;
+
+// card background
 $off-white: #f7f8fa;
 
-// Special Colours
-$alert-red: #d40d0d;
-$ok-green: #45a766;
-
-//font colour
-$font-colour: #494949;
-
-//Button colour
-$primary-btn-color: $nav-blue;
+// Button colours
+$primary-btn-color: $gov-blue;
 $primary-btn-color-hover: darken($primary-btn-color, 20%);
 $primary-btn-border-color-hover: $primary-btn-color-hover;
 
-$secondary-btn-color: $nav-blue;
-$secondary-btn-color-hover: darken($nav-blue, 20%);
-$secondary-btn-border-color-hover: $nav-blue;
+$secondary-btn-color: $gov-blue;
+$secondary-btn-color-hover: darken($secondary-btn-color, 20%);
+$secondary-btn-border-color-hover: $secondary-btn-color-hover;
 
-$tertiary-btn-color: $pure-white;
+$tertiary-btn-color: $white;
 $tertiary-btn-color-hover: darken($gov-yellow, 20%);
-$tertiary-btn-border-color: $pure-white;
+$tertiary-btn-border-color: $white;
 $tertiary-btn-border-color-hover: darken($gov-yellow, 20%);
 
 // Font Size
@@ -63,12 +53,12 @@ $bold-regular: 500;
 $semi-bold: 600;
 $bold: 700;
 $h1-color: $gov-blue;
-$title-color: $pure-white;
+$title-color: $white;
 $h2-color: $font-colour;
 $h3-color: $font-colour;
-$h4-color: $pure-white;
+$h4-color: $white;
 $p-color: $font-colour;
-$a-color: $secondary-link-blue;
+$a-color: $link-normal;
 $a-color-hover: $link-hover;
 
 // Margins

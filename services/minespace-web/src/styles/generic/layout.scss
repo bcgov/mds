@@ -1,11 +1,11 @@
 body {
   font-family: $default-font;
   width: 100vw;
-  background-color: $pure-white;
+  background-color: $white;
 }
 
 .layout {
-  background-color: $pure-white;
+  background-color: $white;
   width: 100%;
   min-height: 100vh;
 }
@@ -146,8 +146,8 @@ body {
   }
 }
 
-.lightest-grey-bg {
-  background: $lightest-grey;
+.background-bg {
+  background: $background;
 }
 
 .uploaded-file {
