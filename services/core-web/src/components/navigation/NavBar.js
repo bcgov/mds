@@ -10,7 +10,6 @@ import CustomPropTypes from "@/customPropTypes";
 import { getUserInfo } from "@/selectors/authenticationSelectors";
 import * as router from "@/constants/routes";
 import * as Strings from "@/constants/strings";
-import * as Styles from "@/constants/styles";
 import * as Permission from "@/constants/permissions";
 import SearchBar from "@/components/search/SearchBar";
 import { LOGO, HAMBURGER, CLOSE, SUCCESS_CHECKMARK, YELLOW_HAZARD } from "@/constants/assets";
