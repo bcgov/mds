@@ -233,12 +233,12 @@ export class NoticeOfWorkApplication extends Component {
     }
   };
 
-  handleChangeNOWMine = () => {
+  handleChangeNOWMine = (values) => {
     this.props
       .updateNoticeOfWorkApplication(
-        { mine_guid: this.state.associatedMineGuid },
+        values,
         this.props.noticeOfWork.now_application_guid,
-        `Successfully transferred Notice of Work to ${this.state.associatedMineName}`
+        `Successfully transferred Notice of Work to ${values.mine_guid}`
       )
       .then(() => {
         this.props.fetchImportedNoticeOfWorkApplication(

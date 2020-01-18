@@ -4,7 +4,6 @@ import { AutoComplete } from "antd";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import ChangeNOWMineForm from "@/components/Forms/noticeOfWork/ChangeNOWMineForm";
-import MineCard from "@/components/mine/NoticeOfWork/MineCard";
 import { fetchMineNameList, fetchMineRecordById } from "@/actionCreators/mineActionCreator";
 import { getMineNames } from "@/selectors/mineSelectors";
 import CustomPropTypes from "@/customPropTypes";
@@ -29,43 +28,12 @@ export class ChangeNOWMineModal extends Component {
     mine: { mine_location: { latitude: "", longitude: "" } },
   };
 
-  componentDidMount() {
-    this.updateMine(this.props.noticeOfWork.mine_guid);
-  }
-
-  handleChange = (name) => {
-    if (name.length > 2) {
-      this.props.fetchMineNameList({ name });
-    } else if (name.length === 0) {
-      this.props.fetchMineNameList();
-    }
-  };
-
-  updateMine = (value) => {
-    this.setState({ isMineLoaded: false });
-    this.props.fetchMineRecordById(value).then((data) => {
-      this.setState({ isMineLoaded: true, mine: data.data });
-      this.props.setMineGuid(value, data.data.mine_name);
-    });
-  };
-
-  transformData = (data) =>
-    data.map(({ mine_guid, mine_name, mine_no }) => (
-      <AutoComplete.Option key={mine_guid} value={mine_guid}>
-        {`${mine_name} - ${mine_no}`}
-      </AutoComplete.Option>
-    ));
+  componentDidMount() {}
 
   render() {
     return (
       <div>
-        <ChangeNOWMineForm
-          {...this.props}
-          handleChange={this.handleChange}
-          handleSelect={this.updateMine}
-          data={this.transformData(this.props.mineNameList)}
-        />
-        {this.state.isMineLoaded && <MineCard mine={this.state.mine} />}
+        <ChangeNOWMineForm {...this.props} />
       </div>
     );
   }

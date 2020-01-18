@@ -2,11 +2,12 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
 import { Icon, Input, AutoComplete } from "antd";
+import { connect } from "react-redux";
 import * as Styles from "@/constants/styles";
 import RenderAutoComplete from "@/components/common/RenderAutoComplete";
 import { fetchMineNameList } from "@/actionCreators/mineActionCreator";
-import { connect } from "react-redux";
 import MineCard from "@/components/mine/NoticeOfWork/MineCard";
+import CustomPropTypes from "@/customPropTypes";
 
 import { getMineWithoutStore } from "@/utils/actionlessNetworkCalls";
 import { getMineNames } from "@/selectors/mineSelectors";
@@ -16,10 +17,13 @@ import { getMineNames } from "@/selectors/mineSelectors";
  */
 
 const propTypes = {
-  //redux-form value id
+  // redux-form value id
   id: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
-
+  input: PropTypes.objectOf(PropTypes.any).isRequired,
+  meta: PropTypes.objectOf(PropTypes.any).isRequired,
+  fetchMineNameList: PropTypes.func.isRequired,
+  mineNameList: PropTypes.arrayOf(CustomPropTypes.mineName).isRequired,
   placeholder: PropTypes.string,
   disabled: PropTypes.bool,
 };
@@ -31,17 +35,17 @@ const defaultProps = {
   disabled: false,
 };
 
-const handleChange = (name) => {
-  console.log("handle change" + name);
+const handleChange = (name, fetchMineNameList) => {
+  console.log(`handle change${name}`);
   if (name.length > 2) {
-    this.props.fetchMineNameList({ name });
+    fetchMineNameList({ name });
   } else if (name.length === 0) {
-    this.props.fetchMineNameList();
+    fetchMineNameList();
   }
 };
 
 const handleSelect = (value, setMine) => {
-  console.log("handle select" + value);
+  console.log(`handle select${value}`);
   getMineWithoutStore(value).then((data) => {
     setMine(data.data);
   });
@@ -60,10 +64,11 @@ export const RenderMineSelect = (props) => {
   return (
     <div>
       <RenderAutoComplete
+        {...props}
         placeholder="Search for a mine by name"
         handleSelect={(value) => handleSelect(value, setMine)}
         data={transformData(props.mineNameList)}
-        handleChange={handleChange}
+        handleChange={(name) => handleChange(name, props.fetchMineNameList)}
       />
       {mine && <MineCard mine={mine} />}
     </div>
