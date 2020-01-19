@@ -64,11 +64,11 @@ exports[`Authentication renders properly 1`] = `
               htmlType="button"
               loading={false}
             >
-              <Link
+              <ForwardRef
                 to="/dashboard"
               >
                 My Mines
-              </Link>
+              </ForwardRef>
             </Button>
           </MenuItem>
           <Divider
