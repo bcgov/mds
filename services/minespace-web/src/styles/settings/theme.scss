@@ -27,13 +27,13 @@ $ant-prefix: ant;
 $html-selector: html;
 
 // -------- Colors -----------
-$primary-color: $gov-blue;
-$info-color: $gov-blue;
-$success-color: $gov-green;
-$processing-color: $gov-blue;
-$error-color: $gov-red;
-$highlight-color: $gov-red;
-$warning-color: $gov-yellow;
+$primary-color: $gov-blue; //$blue-6
+$info-color: $gov-blue; //$blue-6
+$success-color: $gov-green; //$green-6
+$processing-color: $gov-blue; //$blue-6
+$error-color: $gov-red; //$red-5
+$highlight-color: $gov-red; //$red-5
+$warning-color: $gov-yellow; //$gold-6
 $normal-color: #d9d9d9;
 $white: #fff;
 $black: #000;
@@ -56,15 +56,13 @@ $primary-7: shade($primary-color, 5%); //color(~`colorPalette('${primary-color}'
 
 // Background color for `<body>`
 $body-background: #fff;
+
 // Base background color for most components
 $component-background: #fff;
+
 // Popover background color
 $popover-background: $component-background;
-$font-family: "Myriad Pro, Sans Serif";
-
-// $font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
-//   'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
-//   'Noto Color Emoji';
+$font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',   'Noto Color Emoji';
 $code-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
 $text-color: fade($black, 65%);
 $text-color-secondary: fade($black, 45%);
