@@ -146,31 +146,31 @@ body {
   }
 }
 
-.background-bg {
-  background: $background;
-}
+// .background-bg {
+//   background: $background;
+// }
 
-.uploaded-file {
-  font-size: $default-p;
-  font-weight: $semi-bold;
-  color: $p-color;
-}
+// .uploaded-file {
+//   font-size: $default-p;
+//   font-weight: $semi-bold;
+//   color: $p-color;
+// }
 
 // reusable icon classes
 // using important to override any existing styling from ant design.
-.icon {
-  &-sm {
-    font-size: 20px !important;
-    &--img {
-      width: 15px;
-      height: 26px;
-    }
-  }
+// .icon {
+//   &-sm {
+//     font-size: 20px !important;
+//     &--img {
+//       width: 15px;
+//       height: 26px;
+//     }
+//   }
 
-  &-md {
-    &--img {
-      width: 30px;
-      height: 20px;
-    }
-  }
-}
+//   &-md {
+//     &--img {
+//       width: 30px;
+//       height: 20px;
+//     }
+//   }
+// }

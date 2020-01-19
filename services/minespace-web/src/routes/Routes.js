@@ -10,6 +10,7 @@ const Routes = () => (
       {/* PUBLIC ROUTES */}
       <Route exact path={routes.HOME.route} component={routes.HOME.component} />
       <Route exact path={routes.RETURN_PAGE.route} component={routes.RETURN_PAGE.component} />
+      <Route exact path={routes.MOCKUP.route} component={routes.MOCKUP.component} />
 
       {/* PRIVATE ROUTES */}
       <Route

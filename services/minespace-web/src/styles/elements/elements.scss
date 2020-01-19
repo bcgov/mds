@@ -24,6 +24,7 @@ h1 {
     font-size: $mobile-h1;
   }
 }
+
 h2 {
   &.blue-heading-bar {
     background: $gov-blue;
@@ -40,6 +41,7 @@ h2 {
     font-size: $mobile-h2;
   }
 }
+
 h3 {
   font-size: $default-h3;
   font-weight: $bold-regular;
@@ -49,6 +51,7 @@ h3 {
     font-size: $mobile-h3;
   }
 }
+
 h4 {
   font-size: $default-h4;
   font-weight: $bold;
@@ -72,6 +75,7 @@ p {
 
 a {
   color: $a-color;
+
   &:hover {
     color: $a-color-hover;
   }
@@ -79,6 +83,7 @@ a {
   &.underline {
     text-decoration: underline;
   }
+
   & .header-link {
     margin-top: 20px;
     color: $white;
@@ -96,6 +101,7 @@ li {
 .bold {
   font-weight: $bold;
 }
+
 .field-title {
   font-size: $default-p;
   color: $p-color;
