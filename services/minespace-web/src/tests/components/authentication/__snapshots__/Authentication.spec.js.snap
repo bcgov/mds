@@ -28,7 +28,6 @@ exports[`Authentication renders properly 1`] = `
               htmlType="button"
               loading={false}
               onClick={[Function]}
-              type="tertiary"
             >
               Log out
             </Button>
@@ -64,7 +63,6 @@ exports[`Authentication renders properly 1`] = `
               ghost={false}
               htmlType="button"
               loading={false}
-              type="tertiary"
             >
               <Link
                 to="/dashboard"
@@ -87,7 +85,6 @@ exports[`Authentication renders properly 1`] = `
               htmlType="button"
               loading={false}
               onClick={[Function]}
-              type="tertiary"
             >
               Log out
             </Button>
