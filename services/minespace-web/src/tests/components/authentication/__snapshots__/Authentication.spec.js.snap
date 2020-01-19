@@ -1,29 +1,27 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Authentication renders properly 1`] = `
-<div
-  className="inline align-bot"
->
+<div>
   <MediaQueryContextConsumer
     minWidth={701}
   >
     <Link
+      className="header-link"
       to="/dashboard"
     >
-      <span
-        className="header-link"
-      >
-        My Mines
-      </span>
+      My Mines
     </Link>
     <Dropdown
       mouseEnterDelay={0.15}
       mouseLeaveDelay={0.1}
       overlay={
-        <Menu>
+        <Menu
+          className="header-dropdown-menu"
+        >
           <MenuItem>
             <Button
               block={false}
+              className="header-dropdown-item-button"
               ghost={false}
               htmlType="button"
               loading={false}
@@ -38,13 +36,13 @@ exports[`Authentication renders properly 1`] = `
     >
       <Button
         block={false}
-        className="header-dropdown"
-        ghost={true}
+        className="header-dropdown-button"
+        ghost={false}
         htmlType="button"
         loading={false}
       >
         <Icon
-          type="down"
+          type="caret-down"
         />
       </Button>
     </Dropdown>
@@ -95,8 +93,8 @@ exports[`Authentication renders properly 1`] = `
     >
       <Button
         block={false}
-        className="header-dropdown"
-        ghost={true}
+        className="header-dropdown-button"
+        ghost={false}
         htmlType="button"
         loading={false}
       >

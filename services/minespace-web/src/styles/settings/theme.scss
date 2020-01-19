@@ -9,12 +9,14 @@ $gov-blue: #003366;
 $gov-yellow: #fcba19;
 $gov-red: #d8292f;
 $gov-green: #2e8540;
+$gov-grey: #bbbbbb;
 $font-colour: #494949;
 $link-normal: #007bff;
 $nav-blue: #38598a;
 $background: #f2f2f2;
-$input-color: #606060;
+$font-input-color: #606060;
 $card-bg: #f7f8fa;
+$table-highlight: #f0f6fd;
 
 // -------- Brand Fonts -----------
 // @font-face {
@@ -50,7 +52,7 @@ $primary-1: tint($primary-color, 90%); //color(~`colorPalette('${primary-color}'
 $primary-2: tint($primary-color, 80%); //color(~`colorPalette('${primary-color}', 2) `); // replace tint($primary-color, 80%)
 $primary-3: tint($primary-color, 70%); //color(~`colorPalette('${primary-color}', 3) `); // unused
 $primary-4: tint($primary-color, 60%); //color(~`colorPalette('${primary-color}', 4) `); // unused
-$primary-5: replace tint($primary-color, 20%); //color(~`colorPalette('${primary-color}', 5) `); // color used to control the text color in many active and hover states, replace tint($primary-color, 20%)
+$primary-5: tint($primary-color, 20%); //color(~`colorPalette('${primary-color}', 5) `); // color used to control the text color in many active and hover states, replace tint($primary-color, 20%)
 $primary-6: $primary-color; // color used to control the text color of active buttons, don't use, use $primary-color
 $primary-7: shade($primary-color, 5%); //color(~`colorPalette('${primary-color}', 7) `); // replace shade($primary-color, 5%)
 //$primary-8: color(~`colorPalette('${primary-color}', 8) `); // unused
@@ -78,14 +80,14 @@ $text-color-secondary: fade($black, 45%);
 $text-color-inverse: $white;
 $icon-color: inherit;
 $icon-color-hover: fade($black, 75%);
-$heading-color: fade(#000, 85%);
+$heading-color: $primary-color; //fade(#000, 85%);
 $heading-color-dark: fade($white, 100%);
 $text-color-dark: fade($white, 85%);
 $text-color-secondary-dark: fade($white, 65%);
 $text-selection-bg: $primary-color;
 $font-variant-base: tabular-nums;
 $font-feature-settings-base: 'tnum';
-$font-size-base: 14px;
+$font-size-base: 16px; //14px;
 $font-size-lg: $font-size-base + 2px;
 $font-size-sm: 12px;
 $heading-1-size: ceil($font-size-base * 2.71);
@@ -94,7 +96,7 @@ $heading-3-size: ceil($font-size-base * 1.71);
 $heading-4-size: ceil($font-size-base * 1.42);
 // https://github.com/ant-design/ant-design/issues/20210
 $line-height-base: 1.5715;
-$border-radius-base: 2px;
+$border-radius-base: 5px;
 $border-radius-sm: $border-radius-base;
 
 // vertical paddings
@@ -110,13 +112,13 @@ $control-padding-horizontal-sm: $padding-xs;
 // The background colors for active and hover states for things like
 // list items or table cells.
 $item-active-bg: $primary-1;
-$item-hover-bg: #f5f5f5;
+$item-hover-bg: $table-highlight; //#f5f5f5;
 
 // ICONFONT
 $iconfont-css-prefix: anticon;
 
 // LINK
-$link-color: $primary-color;
+$link-color: $link-normal; //$primary-color;
 $link-hover-color: tint($link-color, 20%); //color(~`colorPalette('${link-color}', 5) `);
 $link-active-color: shade($link-color, 5%); //color(~`colorPalette('${link-color}', 7) `);
 $link-decoration: underline; //none;
@@ -139,10 +141,10 @@ $ease-in-quint: cubic-bezier(0.755, 0.05, 0.855, 0.06);
 $ease-in-out-quint: cubic-bezier(0.86, 0, 0.07, 1);
 
 // Border color
-$border-color-base: #D9D9D9; //hsv(0, 0, 85%); // base border outline a component
+$border-color-base: $primary-color; //#D9D9D9; //hsv(0, 0, 85%); // base border outline a component
 $border-color-split: #F0F0F0; //hsv(0, 0, 94%); // split border inside a component
 $border-color-inverse: $white;
-$border-width-base: 1px; // width of the border for a component
+$border-width-base: 2px; //1px; // width of the border for a component
 $border-style-base: solid; // style of a components border
 
 // Outline
@@ -170,22 +172,22 @@ $shadow-1-right: 6px 0 16px -8px rgba(0, 0, 0, 0.08), 9px 0 28px 0 rgba(0, 0, 0,
 
 // Buttons
 $btn-font-weight: 400;
-$btn-border-radius-base: $border-radius-base + 3px; //$border-radius-base;
-$btn-border-radius-sm: $border-radius-base + 3px; //$border-radius-base;
+$btn-border-radius-base: $border-radius-base;
+$btn-border-radius-sm: $border-radius-base;
 $btn-border-width: $border-width-base;
 $btn-border-style: $border-style-base;
 $btn-shadow: 0 2px 0 rgba(0, 0, 0, 0.015);
 $btn-primary-shadow: 0 2px 0 rgba(0, 0, 0, 0.045);
 $btn-text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.12);
 
-$btn-primary-color: #fff;
+$btn-primary-color: $white; //#fff;
 $btn-primary-bg: $primary-color;
 
-$btn-default-color: $white; //$text-color;
+$btn-default-color: $btn-primary-bg; //$text-color;
 $btn-default-bg: transparent; //$component-background;
-$btn-default-border: $border-color-base;
+$btn-default-border: $btn-primary-bg; //$border-color-base;
 
-$btn-danger-color: #fff;
+$btn-danger-color: $white; //#fff;
 $btn-danger-bg: $error-color;
 $btn-danger-border: $error-color;
 
@@ -199,6 +201,7 @@ $btn-default-ghost-border: $component-background;
 
 $btn-font-size-lg: $font-size-lg;
 $btn-font-size-sm: $font-size-base;
+// TODO: Bug (not being read). Update accordingly when fixed.
 $btn-padding-horizontal-base: $padding-md - 1px;
 $btn-padding-horizontal-lg: $btn-padding-horizontal-base;
 $btn-padding-horizontal-sm: $padding-xs - 1px;
@@ -289,10 +292,10 @@ $grid-columns: 24;
 $grid-gutter-width: 0;
 
 // Layout
-$layout-body-background: #f0f2f5;
-$layout-header-background: #001529;
+$layout-body-background: $white; //#f0f2f5;
+$layout-header-background: $gov-blue; //#001529;
 $layout-footer-background: $layout-body-background;
-$layout-header-height: 64px;
+$layout-header-height: 70px; //64px;
 $layout-header-padding: 0 50px;
 $layout-footer-padding: 24px 50px;
 $layout-sider-background: $layout-header-background;
@@ -349,8 +352,8 @@ $input-padding-horizontal-lg: $input-padding-horizontal;
 $input-padding-vertical-base: round(($input-height-base - $font-size-base * $line-height-base) / 2 * 10) / 10 - $border-width-base;
 $input-padding-vertical-sm: round(($input-height-sm - $font-size-base * $line-height-base) / 2 * 10) / 10 - $border-width-base;
 $input-padding-vertical-lg: round(($input-height-lg - $font-size-lg * $line-height-base) / 2 * 10) / 10 - $border-width-base;
-$input-placeholder-color: #BFBFBF; //hsv(0, 0, 75%);
-$input-color: $text-color;
+$input-color: $primary-color; //$text-color;
+$input-placeholder-color: fade($input-color, 25%); //#BFBFBF; //hsv(0, 0, 75%);
 $input-icon-color: $input-color;
 $input-border-color: $border-color-base;
 $input-bg: $component-background;
@@ -509,7 +512,7 @@ $spin-dot-size-lg: 32px;
 // Table
 // --
 $table-bg: $component-background;
-$table-header-bg: $background-color-light;
+$table-header-bg: transparent; //$background-color-light;
 $table-header-color: $heading-color;
 $table-header-sort-bg: $background-color-base;
 $table-body-sort-bg: rgba(0, 0, 0, 0.01);
@@ -591,7 +594,7 @@ $card-skeleton-bg: #cfd8dc;
 // NOTE: This doesn't work, bug?
 $card-background: $card-bg;//$component-background;
 $card-shadow: 0 1px 2px -2px rgba(0, 0, 0, 0.16), 0 3px 6px 0 rgba(0, 0, 0, 0.12), 0 5px 12px 4px rgba(0, 0, 0, 0.09);
-$card-radius: $border-radius-base * 0; //$border-radius-base;
+$card-radius: 0; //$border-radius-base;
 
 // Comment
 // ---
@@ -608,9 +611,9 @@ $comment-action-hover-color: #595959;
 // Tabs
 // ---
 // NOTE: This doesn't work, bug?
-$tabs-card-head-background: red;//$background-color-light;
+$tabs-card-head-background: $gov-grey; //$background-color-light;
 $tabs-card-height: 40px;
-$tabs-card-active-color: $primary-color;
+$tabs-card-active-color: $white; //$primary-color;
 $tabs-title-font-size: $font-size-base;
 $tabs-title-font-size-lg: $font-size-lg;
 $tabs-title-font-size-sm: $font-size-base;
@@ -627,14 +630,14 @@ $tabs-scrolling-size: 32px;
 $tabs-highlight-color: $primary-color;
 $tabs-hover-color: $primary-5;
 $tabs-active-color: $primary-7;
-$tabs-card-gutter: 2px;
-$tabs-card-tab-active-border-top: 2px solid transparent;
+$tabs-card-gutter: $padding-sm; //2px;
+$tabs-card-tab-active-border-top: none; //2px solid transparent;
 
 // BackTop
 // ---
-$back-top-color: #fff;
-$back-top-bg: $text-color-secondary;
-$back-top-hover-bg: $text-color;
+$back-top-color: $white; //#fff;
+$back-top-bg: $primary-color; //$text-color-secondary;
+$back-top-hover-bg: $primary-5; //$text-color;
 
 // Avatar
 // ---

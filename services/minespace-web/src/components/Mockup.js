@@ -1,13 +1,16 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Button, Card, Tabs, Table } from "antd";
+import { Button, Card, Tabs, Table, Typography, Input, Select, Icon } from "antd";
+// import { Field, reduxForm, change } from "redux-form";
 import * as routes from "@/constants/routes";
 
 const { TabPane } = Tabs;
+const { Text, Title } = Typography;
+const { Option } = Select;
 
 const columns = [
   { title: "Name", dataIndex: "name", key: "name" },
-  { title: "Age", dataIndex: "age", key: "age" },
+  { title: "Age", dataIndex: "age", key: "age", sorter: true },
   { title: "Address", dataIndex: "address", key: "address" },
   {
     title: "Action",
@@ -41,8 +44,46 @@ const data = [
   },
 ];
 
+const children = [];
+for (let i = 10; i < 36; i += 1) {
+  children.push(<Option key={i.toString(36) + i}>{i.toString(36) + i}</Option>);
+}
+
 export const Mockup = () => (
   <div>
+    <br />
+    <br />
+    <div>
+      <Title>h1. Ant Design</Title>
+      <Title level={2}>h2. Ant Design</Title>
+      <Title level={3}>h3. Ant Design</Title>
+      <Title level={4}>h4. Ant Design</Title>
+    </div>
+    <br />
+    <br />
+    <div>
+      Nothing.
+      <br />
+      <Text>Normal Ant Design</Text>
+      <br />
+      <Text type="secondary">Secondary Ant Design</Text>
+      <br />
+      <Text type="warning">Warning Ant Design</Text>
+      <br />
+      <Text type="danger">Danger Ant Design</Text>
+      <br />
+      <Text disabled>Disabled Ant Design</Text>
+      <br />
+      <Text mark>Mark Ant Design</Text>
+      <br />
+      <Text code>Code Ant Design</Text>
+      <br />
+      <Text underline>Underline Ant Design</Text>
+      <br />
+      <Text delete>Delete Ant Design</Text>
+      <br />
+      <Text strong>Strong Ant Design</Text>
+    </div>
     <br />
     <br />
     <Link to={routes.HOME.route}>Link to Home</Link>
@@ -57,12 +98,28 @@ export const Mockup = () => (
     <Button type="link">Link Button</Button>
     <br />
     <br />
+    <div style={{ width: 300 }}>
+      <Input placeholder="Basic usage" />
+      <br />
+      <br />
+      <Select
+        mode="multiple"
+        style={{ width: "100%" }}
+        placeholder="Please select"
+        defaultValue={["a10", "c12"]}
+        menuItemSelectedIcon={<Icon type="check-circle" theme="filled" />}
+      >
+        {children}
+      </Select>
+    </div>
+    <br />
+    <br />
     <Card title="Card Title" bordered={false} style={{ width: 300 }}>
       <p>Card content.</p>
     </Card>
     <br />
     <br />
-    <Tabs defaultActiveKey="1">
+    <Tabs defaultActiveKey="1" type="card">
       <TabPane tab="Tab 1" key="1">
         Content of Tab Pane 1
       </TabPane>

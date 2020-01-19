@@ -1,176 +1,170 @@
-body {
-  font-family: $font-family;
-  width: 100vw;
-  background-color: $white;
-}
+// // body {
+// //   font-family: $font-family;
+// //   width: 100vw;
+// //   background-color: $white;
+// // }
 
-.layout {
-  background-color: $white;
-  width: 100%;
-  min-height: 100vh;
-}
+// // .content {
+// //   padding: 60px 0;
+// //   width: 80%;
+// //   min-height: 100%;
+// //   margin: auto;
+// //   overflow: initial;
 
-.content {
-  padding: 60px 0;
-  width: 80%;
-  min-height: 100%;
-  margin: auto;
-  overflow: initial;
+// //   @include mobile {
+// //     width: 100vw;
+// //     padding: 10px;
+// //   }
+// // }
 
-  @include mobile {
-    width: 100vw;
-    padding: 10px;
-  }
-}
-
-.center {
-  text-align: center;
-}
-
-.right {
-  text-align: right;
-}
-
-.left {
-  text-align: left;
-}
-
-.inline {
-  display: inline-block;
-}
-
-.nowrap {
-  white-space: nowrap;
-}
-
-.flex {
-  display: flex;
-  &-mobile {
-    @include mobile {
-      @include flex;
-    }
-  }
-
-  &-tablet {
-    @include tablet {
-      @include flex;
-    }
-  }
-}
-
-.inline-flex {
-  @include flex;
-}
-
-.block-tablet {
-  @include tablet {
-    display: block;
-  }
-}
-
-.flex-start {
-  justify-content: flex-start;
-}
-
-.flex-center {
-  justify-content: center;
-}
-
-.between {
-  justify-content: space-between;
-}
-
-.full {
-  width: 100%;
-  height: 100%;
-  text-align: left;
-}
-
-.full-mobile {
-  @include mobile {
-    width: 100% !important;
-    margin: 5px 0;
-  }
-}
-
-.full-height {
-  height: inherit !important;
-}
-
-.small-margin-bot {
-  margin-bottom: $default-margin-md;
-}
-
-.medium-margin-bot {
-  margin-bottom: $default-margin-lg;
-}
-
-.large-margin-bot {
-  margin-bottom: $default-margin-xl;
-}
-
-.large-margin-top {
-  margin-top: $default-margin-xl;
-}
-
-.align-bot {
-  vertical-align: bottom;
-}
-
-.large-padding-bot {
-  padding-bottom: $default-padding-lg;
-}
-
-.large-padding-top {
-  padding-top: $default-padding-lg;
-}
-
-.large-padding-right {
-  padding-right: $default-padding-lg;
-}
-
-.padding-small {
-  padding: $default-padding-sm;
-}
-
-.gov-blue {
-  background: $gov-blue;
-}
-
-.margin {
-  &-small {
-    margin: $default-margin-sm;
-  }
-  &--bottom {
-    margin-bottom: $default-margin-md;
-  }
-}
-
-// .background-bg {
-//   background: $background;
+// .center {
+//   text-align: center;
 // }
 
-// .uploaded-file {
-//   font-size: $default-p;
-//   font-weight: $semi-bold;
-//   color: $p-color;
+// .right {
+//   text-align: right;
 // }
 
-// reusable icon classes
-// using important to override any existing styling from ant design.
-// .icon {
-//   &-sm {
-//     font-size: 20px !important;
-//     &--img {
-//       width: 15px;
-//       height: 26px;
+// .left {
+//   text-align: left;
+// }
+
+// .inline {
+//   display: inline-block;
+// }
+
+// .nowrap {
+//   white-space: nowrap;
+// }
+
+// .flex {
+//   display: flex;
+//   &-mobile {
+//     @include mobile {
+//       @include flex;
 //     }
 //   }
 
-//   &-md {
-//     &--img {
-//       width: 30px;
-//       height: 20px;
+//   &-tablet {
+//     @include tablet {
+//       @include flex;
 //     }
 //   }
 // }
+
+// .inline-flex {
+//   @include flex;
+// }
+
+// .block-tablet {
+//   @include tablet {
+//     display: block;
+//   }
+// }
+
+// .flex-start {
+//   justify-content: flex-start;
+// }
+
+// .flex-center {
+//   justify-content: center;
+// }
+
+// .between {
+//   justify-content: space-between;
+// }
+
+// .full {
+//   width: 100%;
+//   height: 100%;
+//   text-align: left;
+// }
+
+// .full-mobile {
+//   @include mobile {
+//     width: 100% !important;
+//     margin: 5px 0;
+//   }
+// }
+
+// .full-height {
+//   height: inherit !important;
+// }
+
+// .small-margin-bot {
+//   margin-bottom: $default-margin-md;
+// }
+
+// .medium-margin-bot {
+//   margin-bottom: $default-margin-lg;
+// }
+
+// .large-margin-bot {
+//   margin-bottom: $default-margin-xl;
+// }
+
+// .large-margin-top {
+//   margin-top: $default-margin-xl;
+// }
+
+// .align-bot {
+//   vertical-align: bottom;
+// }
+
+// .large-padding-bot {
+//   padding-bottom: $default-padding-lg;
+// }
+
+// .large-padding-top {
+//   padding-top: $default-padding-lg;
+// }
+
+// .large-padding-right {
+//   padding-right: $default-padding-lg;
+// }
+
+// .padding-small {
+//   padding: $default-padding-sm;
+// }
+
+// .gov-blue {
+//   background: $gov-blue;
+// }
+
+// .margin {
+//   &-small {
+//     margin: $default-margin-sm;
+//   }
+//   &--bottom {
+//     margin-bottom: $default-margin-md;
+//   }
+// }
+
+// // .background-bg {
+// //   background: $background;
+// // }
+
+// // .uploaded-file {
+// //   font-size: $default-p;
+// //   font-weight: $semi-bold;
+// //   color: $p-color;
+// // }
+
+// // reusable icon classes
+// // using important to override any existing styling from ant design.
+// // .icon {
+// //   &-sm {
+// //     font-size: 20px !important;
+// //     &--img {
+// //       width: 15px;
+// //       height: 26px;
+// //     }
+// //   }
+
+// //   &-md {
+// //     &--img {
+// //       width: 30px;
+// //       height: 20px;
+// //     }
+// //   }
+// // }

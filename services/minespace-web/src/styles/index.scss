@@ -3,12 +3,12 @@
 
 // SETTINGS - Used with pre-processors. Global settings that contain font, colors definitions, etc.
 @import "./settings/theme.scss";
-@import "./settings/antd-overrides.scss";
 
 // TOOLS - globally used mixins and functions. (ie gradient mixins, font-sizing mixins)
 @import "./tools/mixins.scss";
 
 // GENERIC - Very high level, far-reaching styles. Contains Normalize.css, Box-sizing rules, CSS resets etc.
+@import "./antd-overrides/antd-overrides.scss";
 @import "./generic/Normalize.scss";
 @import "./generic/layout.scss";
 
@@ -18,8 +18,8 @@
 // OBJECTS - layouts (CSS Grid or flexbox)
 
 // COMPONENTS - specific UI components.
-@import "./components/Header.scss";
-@import "./components/Footer.scss";
+@import "./components/HeaderContent.scss";
+@import "./components/FooterContent.scss";
 @import "./components/LandingPage.scss";
 @import "./components/UserDashboard.scss";
 @import "./components/MineInfo.scss";

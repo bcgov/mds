@@ -32,50 +32,54 @@ export class Authentication extends Component {
   render() {
     const hamburgerMenu = (
       <Menu>
-        <Menu.Item>
+        <Menu.Item key="my-mines">
           <Button>
             <Link to={route.DASHBOARD.route}>My Mines</Link>
           </Button>
         </Menu.Item>
         <Divider style={{ margin: "0" }} />
-        <Menu.Item>
+        <Menu.Item key="logout">
           <Button onClick={this.handleLogout}>Log out</Button>
         </Menu.Item>
       </Menu>
     );
 
     const menu = (
-      <Menu>
-        <Menu.Item>
-          <Button onClick={this.handleLogout}>Log out</Button>
+      <Menu className="header-dropdown-menu">
+        <Menu.Item key="logout">
+          <Button onClick={this.handleLogout} className="header-dropdown-item-button">
+            Log out
+          </Button>
         </Menu.Item>
       </Menu>
     );
+
     if (!this.props.isAuthenticated) {
       return (
-        <a
-          href={`${ENV.KEYCLOAK.loginURL}${ENV.BCEID_LOGIN_REDIRECT_URI}&kc_idp_hint=${ENV.KEYCLOAK.idpHint}`}
+        <Link
+          to={`${ENV.KEYCLOAK.loginURL}${ENV.BCEID_LOGIN_REDIRECT_URI}&kc_idp_hint=${ENV.KEYCLOAK.idpHint}`}
         >
           <Button className="login-btn">Log in</Button>
-        </a>
+        </Link>
       );
     }
+
     return (
-      <div className="inline align-bot">
+      <div>
         <MediaQuery minWidth={701}>
-          <Link to={route.DASHBOARD.route}>
-            <span className="header-link">My Mines</span>
+          <Link to={route.DASHBOARD.route} className="header-link">
+            My Mines
           </Link>
           <Dropdown overlay={menu}>
-            <Button ghost className="header-dropdown">
+            <Button className="header-dropdown-button">
               {this.props.userInfo.email}
-              <Icon type="down" />
+              <Icon type="caret-down" />
             </Button>
           </Dropdown>
         </MediaQuery>
         <MediaQuery maxWidth={700}>
           <Dropdown overlay={hamburgerMenu}>
-            <Button ghost className="header-dropdown">
+            <Button className="header-dropdown-button">
               <img src={MENU} alt="menu" />
             </Button>
           </Dropdown>
