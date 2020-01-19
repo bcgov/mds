@@ -181,8 +181,8 @@ $btn-text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.12);
 $btn-primary-color: #fff;
 $btn-primary-bg: $primary-color;
 
-$btn-default-color: $text-color;
-$btn-default-bg: $component-background;
+$btn-default-color: $white; //$text-color;
+$btn-default-bg: transparent; //$component-background;
 $btn-default-border: $border-color-base;
 
 $btn-danger-color: #fff;
@@ -589,7 +589,7 @@ $card-padding-base: 24px;
 $card-actions-background: $background-color-light;
 $card-skeleton-bg: #cfd8dc;
 // NOTE: This doesn't work, bug?
-$card-background: red;//$card-bg;//$component-background;
+$card-background: $card-bg;//$component-background;
 $card-shadow: 0 1px 2px -2px rgba(0, 0, 0, 0.16), 0 3px 6px 0 rgba(0, 0, 0, 0.12), 0 5px 12px 4px rgba(0, 0, 0, 0.09);
 $card-radius: $border-radius-base * 0; //$border-radius-base;
 
