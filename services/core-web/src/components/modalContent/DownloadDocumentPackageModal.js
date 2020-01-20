@@ -19,6 +19,7 @@ const propTypes = {
     currentFile: PropTypes.number.isRequired,
     totalFiles: PropTypes.number.isRequired,
   }).isRequired,
+  closeModal: PropTypes.func.isRequired,
 };
 export const DownloadDocumentPackageModal = (props) => {
   const [selectedCoreRows, setSelectedCoreRows] = useState([]);

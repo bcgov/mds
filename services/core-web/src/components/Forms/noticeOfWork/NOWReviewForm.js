@@ -23,15 +23,12 @@ const propTypes = {
   closeModal: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
   reviewTypes: CustomPropTypes.options.isRequired,
-  // eslint-disable-next-line react/forbid-prop-types
-  initialValues: PropTypes.any,
-  // eslint-disable-next-line
+  initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
   change: PropTypes.func,
-  reviewerLabels: PropTypes.object.isRequired,
+  reviewerLabels: PropTypes.objectOf(PropTypes.any).isRequired,
   selectedNowApplicationReviewTypeCode: PropTypes.string,
 };
 const defaultProps = {
-  initialValues: {},
   change: () => {},
   selectedNowApplicationReviewTypeCode: "",
 };
