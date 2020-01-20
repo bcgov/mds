@@ -6,7 +6,7 @@ exports[`LandingPage renders properly 1`] = `
     <h1
       className="landing-page-title"
     >
-       Welcome to MineSpace, an online portal for BC mines
+      Welcome to MineSpace, an online portal for mines in BC
     </h1>
     <p>
       The Mines Digital Service (MDS) is a digital product being iteratively developed and designed to hold mine-related data that is user-friendly, trustworthy and reliable. The product will eventually replace the existing internal Mine Management System used by the Ministry and be used to surface information to the BC Mine Information website. The MDS project was started in July 2018 to help inspectors manage the mines they work with by replacing existing legacy systems and adding new functionality.
@@ -117,7 +117,7 @@ exports[`LandingPage renders properly 1`] = `
           <h2
             className="side-bar-title"
           >
-            Do you have a Business BCeID?
+            Do you have a BCeID?
           </h2>
         </div>
         <div
