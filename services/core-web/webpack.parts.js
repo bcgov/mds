@@ -138,21 +138,21 @@ exports.loadImages = ({
   module: {
     rules: [
       {
-        test: /\.(gif|png|jpe?g)$/,
+        test: /\.(png|jpe?g)$/,
         include,
         exclude,
         loader: "url-loader",
         options: urlLoaderOptions,
       },
       {
-        test: /\.svg$/,
+        test: /\.(gif|svg)$/,
         include,
         exclude,
         loader: "file-loader",
         options: fileLoaderOptions,
       },
       {
-        test: /\.(gif|png|jpe?g|svg)$/,
+        test: /\.(png|jpe?g)$/,
         include,
         exclude,
         loader: "image-webpack-loader",
@@ -169,7 +169,7 @@ exports.loadFiles = ({ include, exclude } = {}) => ({
   module: {
     rules: [
       {
-        test: /\.(xls?m|pdf|doc?x)$/,
+        test: /\.(xls?m|pdf|doc?x|mp3)$/,
         include,
         exclude,
         loader: "file-loader",

@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
@@ -25,7 +26,6 @@ import {
   updateNoticeOfWorkApplication,
   fetchImportedNoticeOfWorkApplication,
 } from "@/actionCreators/noticeOfWorkActionCreator";
-import { fetchNoticeOfWorkApplicationReviewTypes } from "@/actionCreators/staticContentActionCreator";
 import { getNoticeOfWorkReviews } from "@/selectors/noticeOfWorkSelectors";
 import { getDropdownNoticeOfWorkApplicationReviewTypeOptions } from "@/selectors/staticContentSelectors";
 import NOWApplicationReviewsTable from "@/components/noticeOfWork/applications/referals/NOWApplicationReviewsTable";
@@ -135,29 +135,41 @@ export class NOWApplicationReviews extends Component {
     };
     this.props
       .updateNoticeOfWorkApplicationReview(
-        this.props.noticeOfWorkGuid,
+        this.props.noticeOfWork.now_application_guid,
         now_application_review_id,
         formValues
       )
       .then(() => {
-        this.props.fetchNoticeOfWorkApplicationReviews(this.props.noticeOfWorkGuid);
+        this.props.fetchNoticeOfWorkApplicationReviews(
+          this.props.noticeOfWork.now_application_guid
+        );
         this.props.closeModal();
       });
   };
 
   handleDocumentDelete = (mine_document) => {
     this.props
-      .deleteNoticeOfWorkApplicationReviewDocument(this.props.noticeOfWorkGuid, mine_document)
+      .deleteNoticeOfWorkApplicationReviewDocument(
+        this.props.noticeOfWork.now_application_guid,
+        mine_document
+      )
       .then(() => {
-        this.props.fetchNoticeOfWorkApplicationReviews(this.props.noticeOfWorkGuid);
+        this.props.fetchNoticeOfWorkApplicationReviews(
+          this.props.noticeOfWork.now_application_guid
+        );
       });
   };
 
   handleDeleteReview = (now_application_review_id) => {
     this.props
-      .deleteNoticeOfWorkApplicationReview(this.props.noticeOfWorkGuid, now_application_review_id)
+      .deleteNoticeOfWorkApplicationReview(
+        this.props.noticeOfWork.now_application_guid,
+        now_application_review_id
+      )
       .then(() => {
-        this.props.fetchNoticeOfWorkApplicationReviews(this.props.noticeOfWorkGuid);
+        this.props.fetchNoticeOfWorkApplicationReviews(
+          this.props.noticeOfWork.now_application_guid
+        );
         this.props.closeModal();
       });
   };
@@ -251,6 +263,7 @@ export class NOWApplicationReviews extends Component {
 
     this.waitFor(() => docURLS.length === submissionDocs.length + coreDocs.length).then(
       async () => {
+        // eslint-disable-next-line no-restricted-syntax
         for (const url of docURLS) {
           if (this.state.cancelDownload) {
             this.setState({ cancelDownload: false });
@@ -266,7 +279,7 @@ export class NOWApplicationReviews extends Component {
             });
             return;
           }
-          currentFile = currentFile + 1;
+          currentFile += 1;
           this.props.setNoticeOfWorkApplicationDocumentDownloadState({
             downloading: true,
             currentFile,
