@@ -146,9 +146,7 @@ exports[`LandingPage renders properly 1`] = `
                 size="large"
                 type="primary"
               >
-                <span>
-                  Get a BCeID
-                </span>
+                Get a BCeID
               </Button>
             </a>
           </div>

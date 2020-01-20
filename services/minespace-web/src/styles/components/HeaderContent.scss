@@ -1,0 +1,52 @@
+.header-content {
+  padding-left: 100px;
+  padding-right: 50px;
+}
+
+.header-logo {
+  float: left;
+}
+
+.header-title {
+  padding-left: 50px;
+  color: $white;
+  font-size: $heading-4-size;
+  vertical-align: text-top;
+  line-height: $layout-header-height / 2;
+}
+
+.header-menu {
+  float: right;
+}
+
+.login-btn {
+  color: $white;
+  border-color: $white;
+  background-color: transparent !important;
+}
+
+.header-link {
+  color: $white;
+  &:hover {
+    color: $white;
+  }
+  text-decoration: none !important;
+}
+
+.header-dropdown-menu {
+  text-align: center;
+}
+
+.header-dropdown-button {
+  color: $gov-yellow;
+  border: none;
+  background-color: transparent !important;
+  &:hover {
+    color: $gov-yellow;
+  }
+}
+
+.header-dropdown-item-button {
+  border: none;
+  background-color: transparent !important;
+}

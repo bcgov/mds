@@ -22,7 +22,7 @@
     display: inline;
     padding: $default-padding-sm $default-padding-lg;
     &:not(:last-child) {
-      border-right: 1px solid $pure-white;
+      border-right: 1px solid $white;
     }
     @include tablet {
       text-align: center;
@@ -35,7 +35,7 @@
 }
 
 .footer-link {
-  color: $pure-white;
+  color: $white;
   text-decoration: none;
   font-size: $default-p;
   &:hover {

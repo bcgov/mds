@@ -157,6 +157,10 @@
   }
 }
 
+.ant-disabled {
+  color: rgba(0, 0, 0, 0.65);
+}
+
 .ant-input[disabled] {
   border: none;
   color: rgba(0, 0, 0, 0.65);

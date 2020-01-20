@@ -22,6 +22,11 @@ exports[`PrivateRoutes  renders properly 1`] = `
       path="/return-page"
     />
     <Route
+      component={[Function]}
+      exact={true}
+      path="/mockup"
+    />
+    <Route
       component={
         Object {
           "$$typeof": Symbol(react.memo),

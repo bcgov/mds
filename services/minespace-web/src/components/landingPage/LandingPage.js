@@ -111,7 +111,7 @@ export const LandingPage = () => (
                 rel="noopener noreferrer"
               >
                 <Button type="primary" size="large" block>
-                  <span>Get a BCeID</span>
+                  Get a BCeID
                 </Button>
               </a>
             </div>

@@ -4,6 +4,7 @@ import Reports from "@/components/dashboard/mine/reports/Reports";
 import Variances from "@/components/dashboard/mine/variances/Variances";
 import MineDashboard from "@/components/dashboard/mine/MineDashboard";
 import ReturnPage from "@/components/ReturnPage";
+import Mockup from "@/components/Mockup";
 
 export const HOME = {
   route: "/",
@@ -36,4 +37,9 @@ export const REPORTS = {
   route: "/dashboard/mine/:id/reports",
   dynamicRoute: (id) => `/dashboard/mine/${id}/reports`,
   component: Reports,
+};
+
+export const MOCKUP = {
+  route: "/mockup",
+  component: Mockup,
 };

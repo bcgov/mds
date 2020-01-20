@@ -1,12 +1,13 @@
 import React, { Fragment, Component } from "react";
 import { compose } from "redux";
 import { BrowserRouter } from "react-router-dom";
+// eslint-disable-next-line
 import { hot } from "react-hot-loader";
-import { Layout, BackTop, Button, Icon } from "antd";
+import { Layout, BackTop } from "antd";
 import MediaQuery from "react-responsive";
 import Routes from "./routes/Routes";
-import { Header } from "@/components/Header";
-import { Footer } from "@/components/Footer";
+import { HeaderContent } from "@/components/HeaderContent";
+// import { FooterContent } from "@/components/FooterContent";
 import ModalWrapper from "@/components/common/wrappers/ModalWrapper";
 import AuthenticationGuard from "@/HOC/AuthenticationGuard";
 import WarningBanner from "@/components/common/WarningBanner";
@@ -31,28 +32,26 @@ class App extends Component {
   };
 
   render() {
-    const { Content } = Layout;
+    const { Header, Content } = Layout;
     return (
       <BrowserRouter basename={process.env.BASE_PATH}>
         <Fragment>
-          <Layout className="layout">
-            <Header />
+          <Layout>
+            <Header>
+              <HeaderContent />
+            </Header>
             {this.state.isIE && <WarningBanner type="IE" onClose={this.handleBannerClose} />}
             <MediaQuery maxWidth={500}>
               {this.state.isMobile && (
                 <WarningBanner type="mobile" onClose={this.handleMobileWarningClose} />
               )}
             </MediaQuery>
-            <Content className="content">
+            <Content>
               <Routes />
               <ModalWrapper />
-              <BackTop>
-                <Button type="primary">
-                  <Icon type="arrow-up" theme="outlined" />
-                </Button>
-              </BackTop>
+              <BackTop />
             </Content>
-            <Footer />
+            {/* <Footer><FooterContent /></Footer> */}
           </Layout>
         </Fragment>
       </BrowserRouter>

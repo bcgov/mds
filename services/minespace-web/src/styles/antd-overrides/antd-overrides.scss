@@ -1,0 +1,200 @@
+// When new variable overrides are added to Ant Design's default.less as they upgrade their framework,
+// override variables there first (in theme.scss). Ant Design variable overrides are only done here as
+// a last resort.
+
+// Layout
+
+.ant-layout-header {
+  position: fixed;
+  z-index: 1;
+  width: 100%;
+}
+
+.ant-layout {
+  width: 100%;
+  min-height: 100vh;
+}
+
+.ant-layout-content {
+  padding: $layout-header-height 0;
+  width: 80%;
+  min-height: 100%;
+  margin: auto;
+  overflow: initial;
+
+  @include mobile {
+    width: 100%;
+    padding: $padding-sm;
+  }
+}
+
+// Divider
+
+.ant-divider {
+  background-color: $primary-color;
+}
+
+// Buttons
+
+.ant-btn {
+  // TODO: When associated bug is fixed, remove this line and change applicable var in theme.scss.
+  padding: 0 $padding-lg;
+}
+
+// Typography
+
+.ant-typography mark {
+  background-color: $gov-yellow;
+}
+
+// Tabs
+
+.ant-tabs-bar {
+  border-bottom: 2px solid $primary-color;
+  // NOTE: Ant Design has a bug in their UI? This makes it look way better.
+  padding-bottom: 1px;
+}
+
+.ant-tabs-tab {
+  padding: 0 $padding-lg 0 $padding-lg !important;
+}
+
+.ant-tabs.ant-tabs-card .ant-tabs-card-bar .ant-tabs-tab {
+  color: $white;
+  border: 2px solid transparent;
+}
+
+.ant-tabs.ant-tabs-card .ant-tabs-card-bar .ant-tabs-tab-active {
+  background-color: $primary-color;
+}
+
+// Tables
+
+.ant-table {
+  border: none !important;
+  border-radius: 0 !important;
+}
+
+.ant-table-thead {
+  box-shadow: none !important;
+}
+
+.ant-table-thead > tr:first-child > th:first-child {
+  border-top-left-radius: 0;
+}
+
+.ant-table-thead > tr:first-child > th:last-child {
+  border-top-right-radius: 0;
+}
+
+.ant-table-thead > tr > th {
+  border-top: 2px solid $primary-color;
+  border-bottom: 2px solid $primary-color;
+  border-radius: 0;
+}
+
+.ant-table-column-title {
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.ant-table-row-expand-icon {
+  background-color: $primary-color;
+  color: $white;
+  border: 2px solid $primary-color;
+  border-radius: $border-radius-base * 2;
+
+  &:focus,
+  &:hover {
+    color: $white;
+    border: 2px solid $primary-color;
+  }
+}
+
+td > a {
+  text-decoration: none !important;
+}
+
+// Descriptions
+
+.ant-descriptions-item-label {
+  font-weight: 600;
+}
+
+// Modals
+
+.ant-modal {
+  &-content {
+    border-radius: 0;
+  }
+  &-header {
+    // TODO: When associated bug is fixed, remove this line and change applicable var in theme.scss.
+    border-bottom: 2px solid transparent;
+  }
+  &-title {
+    font-weight: 600;
+  }
+}
+
+// .ant-form-item-label {
+//   label {
+//     font-size: $default-p;
+//     color: $p-color;
+//     font-weight: $semi-bold;
+//   }
+// }
+
+// .ant-form-vertical .ant-form-item {
+//   padding-bottom: 0;
+// }
+
+// .ant-modal-title {
+//   font-size: $default-h2;
+//   color: $p-color;
+//   font-weight: $semi-bold;
+// }
+
+// .ant-radio-button-wrapper {
+//   border-color: $font-colour !important;
+//   color: $font-colour;
+//   box-shadow: none;
+//   s &:hover {
+//     color: $primary-btn-color-hover;
+//     border: 1px solid $primary-btn-border-color-hover;
+//     box-shadow: none;
+//   }
+// }
+// .ant-radio-button-wrapper-checked {
+//   border-color: $primary-btn-color !important;
+//   color: $primary-btn-color;
+//   box-shadow: none;
+//   &:hover {
+//     color: $primary-btn-color-hover;
+//     border: 1px solid $primary-btn-border-color-hover;
+//     box-shadow: none;
+//   }
+// }
+
+// .ant-dropdown-menu {
+//   background-color: $nav-blue;
+//   border-radius: 0;
+//   top: 14px;
+// }
+
+// .ant-dropdown-menu-item {
+//   & .ant-btn-tertiary {
+//     width: 100%;
+//     border: none;
+//     text-align: right;
+//   }
+// }
+
+// .ant-alert-warning {
+//   background-color: $gov-yellow;
+//   top: 70px;
+// }
+
+// // DATE PICKER
+// .ant-calendar-picker {
+//   width: 100%;
+// }
