@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import SearchBar from "@/components/search/SearchBar";
-import { BACKGROUND, HSRC_PDF } from "@/constants/assets";
+import { BACKGROUND } from "@/constants/assets";
 import { fetchMetabaseDashboard } from "@/actionCreators/reportingActionCreator";
 
 const propTypes = {
@@ -147,7 +147,11 @@ export class HomePage extends Component {
               <li className="uppercase violet">Documents</li>
               <li>
                 <p>
-                  <a href={HSRC_PDF} target="_blank" rel="noopener noreferrer">
+                  <a
+                    href="/src/assets/downloads/HSRC.pdf"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
                     Health, Safety and Reclamation Code
                   </a>
                 </p>
