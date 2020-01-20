@@ -32,7 +32,7 @@ class App extends Component {
   };
 
   render() {
-    const { Header, Content } = Layout;
+    const { Header, /* Footer, */ Content } = Layout;
     return (
       <BrowserRouter basename={process.env.BASE_PATH}>
         <Fragment>
@@ -51,7 +51,9 @@ class App extends Component {
               <ModalWrapper />
               <BackTop />
             </Content>
-            {/* <Footer><FooterContent /></Footer> */}
+            {/* <Footer>
+              <FooterContent />
+            </Footer> */}
           </Layout>
         </Fragment>
       </BrowserRouter>
@@ -59,7 +61,4 @@ class App extends Component {
   }
 }
 
-export default compose(
-  hot(module),
-  AuthenticationGuard(true) // isPublic === true
-)(App);
+export default compose(hot(module), AuthenticationGuard(true))(App);
