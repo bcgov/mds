@@ -1,4 +1,6 @@
-// TODO: When new variable overrides are added to Ant Design's default.less as they upgrade their framework, override variables there instead.
+// When new variable overrides are added to Ant Design's default.less as they upgrade their framework,
+// override variables there first (in theme.scss). Ant Design variable overrides are only done here as
+// a last resort.
 
 // Layout
 
@@ -27,6 +29,7 @@
 }
 
 // Divider
+
 .ant-divider {
   background-color: $primary-color;
 }
@@ -45,6 +48,7 @@
 }
 
 // Tabs
+
 .ant-tabs-bar {
   border-bottom: 2px solid $primary-color;
   // NOTE: Ant Design has a bug in their UI? This makes it look way better.
@@ -66,9 +70,13 @@
 
 // Tables
 
+.ant-table {
+  border: none !important;
+  border-radius: 0 !important;
+}
+
 .ant-table-thead {
   box-shadow: none !important;
-  border-radius: 0;
 }
 
 .ant-table-thead > tr:first-child > th:first-child {
@@ -95,6 +103,37 @@
   color: $white;
   border: 2px solid $primary-color;
   border-radius: $border-radius-base * 2;
+
+  &:focus,
+  &:hover {
+    color: $white;
+    border: 2px solid $primary-color;
+  }
+}
+
+td > a {
+  text-decoration: none !important;
+}
+
+// Descriptions
+
+.ant-descriptions-item-label {
+  font-weight: 600;
+}
+
+// Modals
+
+.ant-modal {
+  &-content {
+    border-radius: 0;
+  }
+  &-header {
+    // TODO: When associated bug is fixed, remove this line and change applicable var in theme.scss.
+    border-bottom: 2px solid transparent;
+  }
+  &-title {
+    font-weight: 600;
+  }
 }
 
 // .ant-form-item-label {

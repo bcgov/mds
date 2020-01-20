@@ -56,11 +56,11 @@ export class Authentication extends Component {
 
     if (!this.props.isAuthenticated) {
       return (
-        <Link
-          to={`${ENV.KEYCLOAK.loginURL}${ENV.BCEID_LOGIN_REDIRECT_URI}&kc_idp_hint=${ENV.KEYCLOAK.idpHint}`}
+        <a
+          href={`${ENV.KEYCLOAK.loginURL}${ENV.BCEID_LOGIN_REDIRECT_URI}&kc_idp_hint=${ENV.KEYCLOAK.idpHint}`}
         >
           <Button className="login-btn">Log in</Button>
-        </Link>
+        </a>
       );
     }
 

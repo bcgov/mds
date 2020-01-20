@@ -22,7 +22,7 @@
 .login-btn {
   color: $white;
   border-color: $white;
-  background-color: transparent;
+  background-color: transparent !important;
 }
 
 .header-link {
@@ -40,6 +40,7 @@
 .header-dropdown-button {
   color: $gov-yellow;
   border: none;
+  background-color: transparent !important;
   &:hover {
     color: $gov-yellow;
   }
@@ -47,4 +48,5 @@
 
 .header-dropdown-item-button {
   border: none;
+  background-color: transparent !important;
 }
