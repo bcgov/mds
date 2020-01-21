@@ -287,7 +287,7 @@ $grid-gutter-width: 0;
 // Layout
 $layout-body-background: $white; //#f0f2f5;
 $layout-header-background: $gov-blue; //#001529;
-$layout-footer-background: $layout-body-background;
+$layout-footer-background: $gov-blue; //$layout-body-background;
 $layout-header-height: 70px; //64px;
 $layout-header-padding: 0 50px;
 $layout-footer-padding: 24px 50px;

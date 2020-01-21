@@ -7,7 +7,7 @@ import { Layout, BackTop } from "antd";
 import MediaQuery from "react-responsive";
 import Routes from "./routes/Routes";
 import { HeaderContent } from "@/components/HeaderContent";
-// import { FooterContent } from "@/components/FooterContent";
+import { FooterContent } from "@/components/FooterContent";
 import ModalWrapper from "@/components/common/wrappers/ModalWrapper";
 import AuthenticationGuard from "@/HOC/AuthenticationGuard";
 import WarningBanner from "@/components/common/WarningBanner";
@@ -32,7 +32,7 @@ class App extends Component {
   };
 
   render() {
-    const { Header, /* Footer, */ Content } = Layout;
+    const { Header, Footer, Content } = Layout;
     return (
       <BrowserRouter basename={process.env.BASE_PATH}>
         <Fragment>
@@ -51,9 +51,9 @@ class App extends Component {
               <ModalWrapper />
               <BackTop />
             </Content>
-            {/* <Footer>
+            <Footer>
               <FooterContent />
-            </Footer> */}
+            </Footer>
           </Layout>
         </Fragment>
       </BrowserRouter>
