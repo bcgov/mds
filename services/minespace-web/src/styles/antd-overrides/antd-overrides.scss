@@ -151,6 +151,19 @@ td > a {
   }
 }
 
+// Various Inputs
+
+// Unfortuntalely, there's not a more general method of applying this style to disabled data entry components.
+.ant-input[disabled],
+.ant-select-disabled .ant-select-selection,
+.ant-input-number-disabled,
+.ant-radio-disabled .ant-radio-inner {
+  border-color: $disabled-bg !important;
+  &:hover {
+    border-color: $disabled-bg !important;
+  }
+}
+
 // .ant-form-item-label {
 //   label {
 //     font-size: $default-p;

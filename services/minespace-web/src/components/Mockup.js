@@ -19,6 +19,7 @@ import {
   Switch,
   Checkbox,
   Tag,
+  Radio,
 } from "antd";
 import moment from "moment";
 // import { Field, reduxForm, change } from "redux-form";
@@ -85,7 +86,7 @@ function showConfirm() {
 }
 
 class Mockup extends Component {
-  state = { modalVisible: false };
+  state = { modalVisible: false, radioValue: 1 };
 
   showModal = () => {
     this.setState({
@@ -102,6 +103,12 @@ class Mockup extends Component {
   handleModalCancel = () => {
     this.setState({
       modalVisible: false,
+    });
+  };
+
+  onRadioChange = (e) => {
+    this.setState({
+      radioValue: e.target.value,
     });
   };
 
@@ -248,7 +255,9 @@ class Mockup extends Component {
         <div style={{ width: 300 }}>
           {/* https://ant.design/components/input/ */}
           <Input placeholder="Placeholder text..." />
-
+          <br />
+          <br />
+          <Input placeholder="Placeholder text..." disabled />
           <br />
           <br />
           {/* https://ant.design/components/select/ */}
@@ -261,11 +270,26 @@ class Mockup extends Component {
           >
             {children}
           </Select>
+          <br />
+          <br />
+          <Select
+            mode="multiple"
+            style={{ width: "100%" }}
+            placeholder="Please select"
+            defaultValue={["a10", "c12"]}
+            menuItemSelectedIcon={<Icon type="check-circle" theme="filled" />}
+            disabled
+          >
+            {children}
+          </Select>
         </div>
 
         <br />
         {/* https://ant.design/components/input-number/ */}
         <InputNumber min={1} max={10} defaultValue={3} />
+        <br />
+        <br />
+        <InputNumber min={1} max={10} defaultValue={3} disabled />
 
         <br />
         <br />
@@ -276,6 +300,19 @@ class Mockup extends Component {
         <br />
         {/* https://ant.design/components/checkbox/ */}
         <Checkbox>Checkbox</Checkbox>
+
+        <br />
+        <br />
+        {/* https://ant.design/components/radio/ */}
+        <Radio.Group onChange={this.onRadioChange} value={this.state.radioValue}>
+          <Radio value={1}>A</Radio>
+          <Radio value={2}>B</Radio>
+          <Radio value={3}>C</Radio>
+          <Radio value={4}>D</Radio>
+          <Radio value={5} disabled>
+            E
+          </Radio>
+        </Radio.Group>
 
         <br />
         <br />
