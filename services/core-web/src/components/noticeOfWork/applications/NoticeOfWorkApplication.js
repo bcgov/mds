@@ -89,7 +89,6 @@ export class NoticeOfWorkApplication extends Component {
     isImported: false,
     isNoWLoaded: false,
     associatedMineGuid: "",
-    associatedMineName: "",
     associatedLeadInspectorPartyGuid: "",
     isViewMode: true,
     showOriginalValues: false,
@@ -193,10 +192,6 @@ export class NoticeOfWorkApplication extends Component {
     });
   };
 
-  setMineGuid = (mineGuid, mineName = "") => {
-    this.setState({ associatedMineGuid: mineGuid, associatedMineName: mineName });
-  };
-
   setLeadInspectorPartyGuid = (leadInspectorPartyGuid) => {
     this.setState({
       associatedLeadInspectorPartyGuid: leadInspectorPartyGuid,
@@ -238,7 +233,7 @@ export class NoticeOfWorkApplication extends Component {
       .updateNoticeOfWorkApplication(
         values,
         this.props.noticeOfWork.now_application_guid,
-        `Successfully transferred Notice of Work to ${values.mine_guid}`
+        `Successfully transferred Notice of Work`
       )
       .then(() => {
         this.props.fetchImportedNoticeOfWorkApplication(
@@ -286,7 +281,6 @@ export class NoticeOfWorkApplication extends Component {
         initialValues: {
           mine_guid: noticeOfWork.mine_guid,
         },
-        setMineGuid: this.setMineGuid,
         onSubmit: this.handleChangeNOWMine,
         title: `Transfer Notice of Work`,
         noticeOfWork,
