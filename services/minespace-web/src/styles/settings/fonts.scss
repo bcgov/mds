@@ -1,0 +1,23 @@
+// -------- Brand Fonts -----------
+
+// BC Sans
+@font-face {
+  font-family: "BCSans";
+  src: url("/src/assets/fonts/bc-sans/BCSans-Regular.woff");
+}
+@font-face {
+    font-family: "BCSans";
+    src: url("/src/assets/fonts/bc-sans/BCSans-Bold.woff");
+    font-weight: bold;
+}
+@font-face {
+    font-family: "BCSans";
+    src: url("/src/assets/fonts/bc-sans/BCSans-Italic.woff");
+    font-style: italic;
+}
+@font-face {
+    font-family: "BCSans";
+    src: url("/src/assets/fonts/bc-sans/BCSans-BoldItalic.woff");
+    font-weight: bold;
+    font-style: italic;
+}

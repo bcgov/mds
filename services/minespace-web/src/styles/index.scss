@@ -2,6 +2,7 @@
 // most styling will be found in the Components and Objects folder.
 
 // SETTINGS - Used with pre-processors. Global settings that contain font, colors definitions, etc.
+@import "./settings/fonts.scss";
 @import "./settings/theme.scss";
 
 // TOOLS - globally used mixins and functions. (ie gradient mixins, font-sizing mixins)
