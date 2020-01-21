@@ -91,6 +91,7 @@ exports[`MineNoticeOfWorkTable renders properly 1`] = `
     locale={
       Object {
         "emptyText": <NullScreen
+          message=""
           type="notice-of-work"
         />,
       }
