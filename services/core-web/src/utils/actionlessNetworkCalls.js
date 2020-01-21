@@ -8,7 +8,12 @@ import {
   NOTICE_OF_WORK_DOCUMENT_TOKEN_GET_URL,
   NRIS_DOCUMENT_FILE_GET_URL,
   NRIS_DOCUMENT_TOKEN_GET_URL,
+  MINE,
 } from "@/constants/API";
+
+export const getMineWithoutStore = (mine_guid) => {
+  return CustomAxios().get(`${ENVIRONMENT.apiUrl + MINE}/${mine_guid}`, createRequestHeader());
+};
 
 export const downloadNRISDocument = (externalId, inspectionId, fileName) => {
   if (!externalId) {

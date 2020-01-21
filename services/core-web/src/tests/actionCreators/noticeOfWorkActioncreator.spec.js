@@ -2,8 +2,8 @@ import MockAdapter from "axios-mock-adapter";
 import axios from "axios";
 import {
   fetchNoticeOfWorkApplications,
-  fetchMineNoticeOfWorkApplications,
   importNoticeOfWorkApplication,
+  fetchMineNoticeOfWorkApplications,
   fetchImportedNoticeOfWorkApplication,
   fetchOriginalNoticeOfWorkApplication,
   updateNoticeOfWorkApplication,

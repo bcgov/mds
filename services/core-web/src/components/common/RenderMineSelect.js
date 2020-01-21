@@ -1,12 +1,12 @@
-import React, { useState } from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
-import { Icon, Input, AutoComplete } from "antd";
-import * as Styles from "@/constants/styles";
+import { AutoComplete } from "antd";
+import { connect } from "react-redux";
 import RenderAutoComplete from "@/components/common/RenderAutoComplete";
 import { fetchMineNameList } from "@/actionCreators/mineActionCreator";
-import { connect } from "react-redux";
 import MineCard from "@/components/mine/NoticeOfWork/MineCard";
+import CustomPropTypes from "@/customPropTypes";
 
 import { getMineWithoutStore } from "@/utils/actionlessNetworkCalls";
 import { getMineNames } from "@/selectors/mineSelectors";
@@ -16,60 +16,72 @@ import { getMineNames } from "@/selectors/mineSelectors";
  */
 
 const propTypes = {
-  //redux-form value id
+  // redux-form value id
   id: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
-
+  input: PropTypes.objectOf(PropTypes.any).isRequired,
+  meta: PropTypes.objectOf(PropTypes.any).isRequired,
+  fetchMineNameList: PropTypes.func.isRequired,
+  mineNameList: PropTypes.arrayOf(CustomPropTypes.mineName).isRequired,
   placeholder: PropTypes.string,
   disabled: PropTypes.bool,
+  showCard: PropTypes.bool,
 };
 
 const defaultProps = {
   placeholder: "Search for a mine by name",
-  defaultValue: "",
-  iconColor: Styles.COLOR.violet,
   disabled: false,
+  showCard: false,
 };
 
-const handleChange = (name) => {
-  console.log("handle change" + name);
-  if (name.length > 2) {
-    this.props.fetchMineNameList({ name });
-  } else if (name.length === 0) {
-    this.props.fetchMineNameList();
+export class RenderMineSelect extends Component {
+  state = {
+    selectedMine: false,
+  };
+
+  componentDidMount() {
+    getMineWithoutStore(this.props.input.value).then((data) => {
+      this.setState({ selectedMine: data.data });
+      this.handleChange(data.data.mine_name);
+    });
   }
-};
 
-const handleSelect = (value, setMine) => {
-  console.log("handle select" + value);
-  getMineWithoutStore(value).then((data) => {
-    setMine(data.data);
-  });
-};
+  handleChange = (name) => {
+    if (name.length > 2) {
+      this.props.fetchMineNameList({ name });
+    } else if (name.length === 0) {
+      this.props.fetchMineNameList();
+    }
+  };
 
-const transformData = (data) =>
-  data.map(({ mine_guid, mine_name, mine_no }) => (
-    <AutoComplete.Option key={mine_guid} value={mine_guid}>
-      {`${mine_name} - ${mine_no}`}
-    </AutoComplete.Option>
-  ));
+  handleSelect = (value) => {
+    getMineWithoutStore(value).then((data) => {
+      this.setState({ selectedMine: data.data });
+    });
+  };
 
-export const RenderMineSelect = (props) => {
-  const [mine, setMine] = useState(undefined);
-  console.log("RENDER");
-  return (
-    <div>
-      <RenderAutoComplete
-        placeholder="Search for a mine by name"
-        handleSelect={(value) => handleSelect(value, setMine)}
-        data={transformData(props.mineNameList)}
-        handleChange={handleChange}
-      />
-      {mine && <MineCard mine={mine} />}
-    </div>
-  );
-};
+  transformData = (data) =>
+    data.map(({ mine_guid, mine_name, mine_no }) => (
+      <AutoComplete.Option key={mine_guid} value={mine_guid}>
+        {`${mine_name} - ${mine_no}`}
+      </AutoComplete.Option>
+    ));
 
+  render() {
+    return (
+      <div>
+        <RenderAutoComplete
+          {...this.props}
+          placeholder="Search for a mine by name"
+          handleSelect={this.handleSelect}
+          data={this.transformData(this.props.mineNameList)}
+          handleChange={this.handleChange}
+        />
+        {this.state.selectedMine && <MineCard mine={this.state.selectedMine} />}
+      </div>
+    );
+  }
+}
 const mapStateToProps = (state) => ({
   mineNameList: getMineNames(state),
 });
