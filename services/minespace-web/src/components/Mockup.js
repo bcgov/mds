@@ -20,6 +20,7 @@ import {
   Checkbox,
   Tag,
   Radio,
+  notification,
 } from "antd";
 import moment from "moment";
 // import { Field, reduxForm, change } from "redux-form";
@@ -42,6 +43,14 @@ const columns = [
     render: () => <a>Delete</a>,
   },
 ];
+
+const openNotificationWithIcon = (type) => {
+  notification[type]({
+    message: "Notification Title",
+    description:
+      "This is the content of the notification. This is the content of the notification. This is the content of the notification.",
+  });
+};
 
 const data = [
   {
@@ -117,12 +126,13 @@ class Mockup extends Component {
       <div>
         <br />
         <br />
+        <h1>Various Typography (Title, Text, etc)</h1>
         <div>
           {/* https://ant.design/components/typography/ */}
-          <Title>h1. Ant Design</Title>
-          <Title level={2}>h2. Ant Design</Title>
-          <Title level={3}>h3. Ant Design</Title>
-          <Title level={4}>h4. Ant Design</Title>
+          <Title>h1. Ant Design Title</Title>
+          <Title level={2}>h2. Ant Design Title</Title>
+          <Title level={3}>h3. Ant Design Title</Title>
+          <Title level={4}>h4. Ant Design Title</Title>
         </div>
         <br />
         <br />
@@ -167,6 +177,7 @@ class Mockup extends Component {
         <br />
         <br />
         {/* https://ant.design/components/tag/ */}
+        <h1>Tags</h1>
         <div>
           <Tag>Tag</Tag>
           <Tag>
@@ -180,6 +191,7 @@ class Mockup extends Component {
 
         <br />
         <br />
+        <h1>Links</h1>
         {/* https://github.com/ReactTraining/react-router/blob/master/packages/react-router-dom/docs/api/Link.md */}
         <Link to={{}}>Link to Home</Link>
         <span style={{ paddingRight: 12 }} />
@@ -190,6 +202,7 @@ class Mockup extends Component {
         <br />
         <br />
         {/* https://ant.design/components/button/ */}
+        <h1>Buttons</h1>
         <Button type="primary">Primary Button</Button>
         <span style={{ paddingRight: 12 }} />
         <Button type="primary" disabled>
@@ -240,6 +253,7 @@ class Mockup extends Component {
         <br />
         <br />
         {/* https://ant.design/components/descriptions/ */}
+        <h1>Descriptions</h1>
         <Descriptions title="User Info" colon={false}>
           <Descriptions.Item label="UserName">Zhou Maomao</Descriptions.Item>
           <Descriptions.Item label="Telephone">1810000000</Descriptions.Item>
@@ -252,6 +266,7 @@ class Mockup extends Component {
 
         <br />
         <br />
+        <h1>Data Entry (Various Components)</h1>
         <div style={{ width: 300 }}>
           {/* https://ant.design/components/input/ */}
           <Input placeholder="Placeholder text..." />
@@ -322,6 +337,7 @@ class Mockup extends Component {
         <br />
         <br />
         <br />
+        <h1>Cards</h1>
         <div
           style={{
             display: "flex",
@@ -355,6 +371,7 @@ class Mockup extends Component {
         <br />
         <br />
         {/* https://ant.design/components/tabs/ */}
+        <h1>Tabs</h1>
         <Tabs defaultActiveKey="1" type="card">
           <TabPane tab="Tab 1" key="1">
             Content of Tab Pane 1
@@ -379,6 +396,7 @@ class Mockup extends Component {
         <br />
         <br />
         {/* https://ant.design/components/table/ */}
+        <h1>Tables</h1>
         <Table
           // title={() => "Table Title"}
           size="small"
@@ -391,6 +409,7 @@ class Mockup extends Component {
         <br />
         <br />
         {/* https://ant.design/components/spin/ */}
+        <h1>Spins</h1>
         <div
           style={{
             display: "flex",
@@ -417,6 +436,7 @@ class Mockup extends Component {
         <br />
         <br />
         {/* https://ant.design/components/modal/ */}
+        <h1>Modals</h1>
         <div>
           <Button type="primary" onClick={this.showModal}>
             Open Modal
@@ -434,6 +454,20 @@ class Mockup extends Component {
         </div>
         <br />
         <Button onClick={showConfirm}>Confirm</Button>
+
+        <br />
+        <br />
+        {/* https://ant.design/components/modal/ */}
+        <h1>Notifications</h1>
+        <div>
+          <Button onClick={() => openNotificationWithIcon("success")}>Success</Button>
+          <span style={{ paddingRight: 12 }} />
+          <Button onClick={() => openNotificationWithIcon("info")}>Info</Button>
+          <span style={{ paddingRight: 12 }} />
+          <Button onClick={() => openNotificationWithIcon("warning")}>Warning</Button>
+          <span style={{ paddingRight: 12 }} />
+          <Button onClick={() => openNotificationWithIcon("error")}>Error</Button>
+        </div>
       </div>
     );
   }
