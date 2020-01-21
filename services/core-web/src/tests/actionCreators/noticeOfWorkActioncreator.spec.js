@@ -2,7 +2,6 @@ import MockAdapter from "axios-mock-adapter";
 import axios from "axios";
 import {
   fetchNoticeOfWorkApplications,
-  fetchMineNoticeOfWorkApplications,
   importNoticeOfWorkApplication,
   fetchImportedNoticeOfWorkApplication,
   fetchOriginalNoticeOfWorkApplication,
@@ -44,29 +43,6 @@ describe("`fetchNoticeOfWorkApplications` action creator", () => {
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onGet(url, MOCK.createMockHeader()).reply(418, MOCK.ERROR);
     return fetchNoticeOfWorkApplications()(dispatch).then(() => {
-      expect(requestSpy).toHaveBeenCalledTimes(1);
-      expect(errorSpy).toHaveBeenCalledTimes(1);
-      expect(dispatch).toHaveBeenCalledTimes(4);
-    });
-  });
-});
-
-describe("`fetchMineNoticeOfWorkApplications` action creator", () => {
-  const mineGuid = "14514315";
-  const url = ENVIRONMENT.apiUrl + API.MINE_NOTICE_OF_WORK_APPLICATIONS(mineGuid);
-  it("Request successful, dispatches `success` with correct response", () => {
-    const mockResponse = { data: { success: true } };
-    mockAxios.onGet(url).reply(200, mockResponse);
-    return fetchMineNoticeOfWorkApplications(mineGuid)(dispatch).then(() => {
-      expect(requestSpy).toHaveBeenCalledTimes(1);
-      expect(successSpy).toHaveBeenCalledTimes(1);
-      expect(dispatch).toHaveBeenCalledTimes(5);
-    });
-  });
-
-  it("Request failure, dispatches `error` with correct response", () => {
-    mockAxios.onGet(url, MOCK.createMockHeader()).reply(418, MOCK.ERROR);
-    return fetchMineNoticeOfWorkApplications(mineGuid)(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
