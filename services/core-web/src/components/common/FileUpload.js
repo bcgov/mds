@@ -102,8 +102,8 @@ class FileUpload extends React.Component {
           checked={this.state.showWhirlpool}
           onChange={() => {
             if (!this.waterSound) {
-              this.waterSound = new Audio("/src/assets/downloads/water.mp3");
-              this.flushSound = new Audio("/src/assets/downloads/flush.mp3");
+              this.waterSound = new Audio("/assets/downloads/water.mp3");
+              this.flushSound = new Audio("/assets/downloads/flush.mp3");
             }
             this.setState((prevState) => ({ showWhirlpool: !prevState.showWhirlpool }));
             if (!this.state.showWhirlpool) {
