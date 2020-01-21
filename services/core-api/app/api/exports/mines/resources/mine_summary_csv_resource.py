@@ -26,8 +26,6 @@ class MineSummaryCSVResource(Resource):
 
             rows = MineSummaryCSVView.query.all()
 
-            current_app.logger.debug(rows)
-
             csv_string += '\n'.join([r.csv_row() for r in rows])
             cache.set(MINE_DETAILS_CSV, csv_string, timeout=TIMEOUT_60_MINUTES)
 
