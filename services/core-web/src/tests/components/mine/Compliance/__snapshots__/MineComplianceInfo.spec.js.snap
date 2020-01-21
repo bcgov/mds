@@ -24,6 +24,7 @@ exports[`MineComplianceInfo renders properly 1`] = `
         >
           <div>
             <NullScreen
+              message=""
               type="compliance"
             />
           </div>

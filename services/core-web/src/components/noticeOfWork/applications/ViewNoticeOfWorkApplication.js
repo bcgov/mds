@@ -124,6 +124,7 @@ export class ViewNoticeOfWorkApplication extends Component {
                     ? this.props.originalNoticeOfWork
                     : this.props.noticeOfWork
                 }
+                noticeOfWorkType={this.props.noticeOfWork.notice_of_work_type_code}
               />
             </div>
           </div>
