@@ -26,7 +26,6 @@ const defaultProps = {
 };
 
 const RenderField = (props) => {
-  console.log(props);
   return (
     <Form.Item
       label={props.label}

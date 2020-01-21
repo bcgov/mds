@@ -1,17 +1,15 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { reduxForm } from "redux-form";
+import { reduxForm, Field } from "redux-form";
 import { Form, Button, Col, Row, Popconfirm } from "antd";
 import * as FORM from "@/constants/forms";
-import { required, email, requiredList } from "@/utils/Validate";
-import { Field } from "redux-form";
+import { required } from "@/utils/Validate";
+
 import { resetForm } from "@/utils/helpers";
 import RenderMineSelect from "@/components/common/RenderMineSelect";
-import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
-  noticeOfWork: CustomPropTypes.nowApplication.isRequired,
   closeModal: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
   submitting: PropTypes.bool.isRequired,
@@ -27,6 +25,7 @@ export const ChangeNOWMineForm = (props) => (
             name="mine_guid"
             component={RenderMineSelect}
             validate={[required]}
+            showCard
           />
         </Form.Item>
       </Col>

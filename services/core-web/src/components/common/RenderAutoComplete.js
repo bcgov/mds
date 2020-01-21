@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Form, Icon, Input, AutoComplete } from "antd";
+import { Form, AutoComplete } from "antd";
 import * as Styles from "@/constants/styles";
 
 /**
@@ -19,6 +19,7 @@ const propTypes = {
   iconColor: PropTypes.string,
   defaultValue: PropTypes.string,
   disabled: PropTypes.bool,
+  label: PropTypes.string,
 };
 
 const defaultProps = {
@@ -27,10 +28,10 @@ const defaultProps = {
   defaultValue: "",
   iconColor: Styles.COLOR.violet,
   disabled: false,
+  label: "Select a mine",
 };
 
 const RenderAutoComplete = (props) => {
-  console.log(props);
   return (
     <Form.Item
       label={props.label}
@@ -49,7 +50,7 @@ const RenderAutoComplete = (props) => {
         allowClear
         dropdownMatchSelectWidth
         backfill
-        defaultValue={props.defaultValue}
+        //        defaultValue={props.defaultValue}
         style={{ width: "100%" }}
         dataSource={props.data}
         placeholder={props.placeholder}
@@ -58,9 +59,8 @@ const RenderAutoComplete = (props) => {
         }
         // disabled={props.disabled}
         {...props.input}
-        // onSelect={props.handleSelect}
+        onSelect={props.handleSelect}
         onChange={(event) => {
-          //console.log(evet);
           props.handleChange(event);
           props.input.onChange(event);
         }}
