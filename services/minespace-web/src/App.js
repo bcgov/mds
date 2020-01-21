@@ -40,13 +40,13 @@ class App extends Component {
             <Header>
               <HeaderContent />
             </Header>
-            {this.state.isIE && <WarningBanner type="IE" onClose={this.handleBannerClose} />}
-            <MediaQuery maxWidth={500}>
-              {this.state.isMobile && (
-                <WarningBanner type="mobile" onClose={this.handleMobileWarningClose} />
-              )}
-            </MediaQuery>
             <Content>
+              {this.state.isIE && <WarningBanner type="IE" onClose={this.handleBannerClose} />}
+              <MediaQuery maxWidth={500}>
+                {this.state.isMobile && (
+                  <WarningBanner type="mobile" onClose={this.handleMobileWarningClose} />
+                )}
+              </MediaQuery>
               <Routes />
               <ModalWrapper />
               <BackTop />
