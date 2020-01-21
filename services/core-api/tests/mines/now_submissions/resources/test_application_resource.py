@@ -67,13 +67,17 @@ class TestGetMineApplicationResource:
 
         mine = MineFactory(minimal=True)
         now_submission_1 = NOWSubmissionFactory(mine=mine, noticeofworktype='dog')
-        identity_1 = NOWApplicationIdentityFactory(now_submission=now_submission_1, mine=mine)
+        identity_1 = NOWApplicationIdentityFactory(
+            now_submission=now_submission_1, mine=mine, submission_only=True)
         now_submission_2 = NOWSubmissionFactory(mine=mine, noticeofworktype='dog')
-        identity_2 = NOWApplicationIdentityFactory(now_submission=now_submission_2, mine=mine)
+        identity_2 = NOWApplicationIdentityFactory(
+            now_submission=now_submission_2, mine=mine, submission_only=True)
         now_submission_3 = NOWSubmissionFactory(mine=mine, noticeofworktype='cat')
-        identity_3 = NOWApplicationIdentityFactory(now_submission=now_submission_3, mine=mine)
+        identity_3 = NOWApplicationIdentityFactory(
+            now_submission=now_submission_3, mine=mine, submission_only=True)
         now_submission_4 = NOWSubmissionFactory(mine=mine, noticeofworktype='parrot')
-        identity_4 = NOWApplicationIdentityFactory(now_submission=now_submission_4, mine=mine)
+        identity_4 = NOWApplicationIdentityFactory(
+            now_submission=now_submission_4, mine=mine, submission_only=True)
 
         get_resp = test_client.get(
             f'mines/{mine.mine_guid}/now-applications?notice_of_work_type_description=dog',
@@ -98,16 +102,20 @@ class TestGetMineApplicationResource:
         mine = MineFactory(minimal=True)
         now_submission_1 = NOWSubmissionFactory(
             mine=mine, status='Rejected', noticeofworktype='dog', trackingnumber=1)
-        identity_1 = NOWApplicationIdentityFactory(now_submission=now_submission_1, mine=mine)
+        identity_1 = NOWApplicationIdentityFactory(
+            now_submission=now_submission_1, mine=mine, submission_only=True)
         now_submission_2 = NOWSubmissionFactory(
             mine=mine, status='Received', noticeofworktype='cat', trackingnumber=1)
-        identity_2 = NOWApplicationIdentityFactory(now_submission=now_submission_2, mine=mine)
+        identity_2 = NOWApplicationIdentityFactory(
+            now_submission=now_submission_2, mine=mine, submission_only=True)
         now_submission_3 = NOWSubmissionFactory(
             mine=mine, status='Rejected', noticeofworktype='dog', trackingnumber=12)
-        identity_3 = NOWApplicationIdentityFactory(now_submission=now_submission_3, mine=mine)
+        identity_3 = NOWApplicationIdentityFactory(
+            now_submission=now_submission_3, mine=mine, submission_only=True)
         now_submission_4 = NOWSubmissionFactory(
             mine=mine, status='Approved', noticeofworktype='cat', trackingnumber=10305)
-        identity_4 = NOWApplicationIdentityFactory(now_submission=now_submission_4, mine=mine)
+        identity_4 = NOWApplicationIdentityFactory(
+            now_submission=now_submission_4, mine=mine, submission_only=True)
 
         get_resp = test_client.get(
             f'mines/{mine.mine_guid}/now-applications?now_application_status_description=Approved&now_application_status_description=Rejected&notice_of_work_type_description=dog',
