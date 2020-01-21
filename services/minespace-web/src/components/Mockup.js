@@ -21,7 +21,7 @@ import {
 } from "antd";
 import moment from "moment";
 // import { Field, reduxForm, change } from "redux-form";
-import * as routes from "@/constants/routes";
+// import * as routes from "@/constants/routes";
 import * as Strings from "@/constants/strings";
 
 const { TabPane } = Tabs;
@@ -77,7 +77,7 @@ function showConfirm() {
     onOk() {
       return new Promise((resolve, reject) => {
         setTimeout(Math.random() > 0.5 ? resolve : reject, 1000);
-      }).catch(() => console.log("Oops errors!"));
+      }).catch(() => {});
     },
     onCancel() {},
   });
@@ -92,15 +92,13 @@ class Mockup extends Component {
     });
   };
 
-  handleModalOk = (e) => {
-    console.log(e);
+  handleModalOk = () => {
     this.setState({
       modalVisible: false,
     });
   };
 
-  handleModalCancel = (e) => {
-    console.log(e);
+  handleModalCancel = () => {
     this.setState({
       modalVisible: false,
     });
@@ -161,24 +159,51 @@ class Mockup extends Component {
         <br />
         <br />
         {/* https://github.com/ReactTraining/react-router/blob/master/packages/react-router-dom/docs/api/Link.md */}
-        <Link to={routes.HOME.route}>Link to Home</Link>
+        <Link to={{}}>Link to Home</Link>
+        <span style={{ paddingRight: 12 }} />
+        <Link to={{}} disabled>
+          Link to Home
+        </Link>
 
         <br />
         <br />
         {/* https://ant.design/components/button/ */}
         <Button type="primary">Primary Button</Button>
+        <span style={{ paddingRight: 12 }} />
+        <Button type="primary" disabled>
+          Primary Button
+        </Button>
         <br />
         <br />
         <Button>Default Button</Button>
+        <span style={{ paddingRight: 12 }} />
+        <Button disabled>Default Button</Button>
+        <br />
+        <br />
+        <Button type="danger">Danger Button</Button>
+        <span style={{ paddingRight: 12 }} />
+        <Button type="danger" disabled>
+          Danger Button
+        </Button>
         <br />
         <br />
         <Button type="primary">
           <Icon type="plus-circle" theme="filled" />
           Add Stuff
         </Button>
+        <span style={{ paddingRight: 12 }} />
+        <Button type="primary" disabled>
+          <Icon type="plus-circle" theme="filled" />
+          Add Stuff
+        </Button>
         <br />
         <br />
         <Button>
+          <Icon type="minus-circle" theme="filled" />
+          Remove Stuff
+        </Button>
+        <span style={{ paddingRight: 12 }} />
+        <Button disabled>
           <Icon type="minus-circle" theme="filled" />
           Remove Stuff
         </Button>

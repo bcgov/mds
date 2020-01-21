@@ -8,7 +8,7 @@ export const HeaderContent = () => (
   <div className="header-content">
     <span className="header-logo">
       <Link to={routes.HOME.route}>
-        <img alt="BC Government Logo" src={BC_GOV} height={60} />
+        <img alt="BC Government Logo" src={BC_GOV} height={50} />
       </Link>
     </span>
     <span className="header-title">BC MineSpace</span>

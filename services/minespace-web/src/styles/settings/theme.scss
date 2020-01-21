@@ -1,7 +1,7 @@
 // For more info on how to use this file, visit these links:
 // https://intoli.com/blog/antd-scss-theme-plugin/
 // https://github.com/intoli/antd-scss-theme-plugin
-// https://github.com/ant-design/ant-design/blob/master/components/style/themes/default.less 
+// https://github.com/ant-design/ant-design/blob/master/components/style/themes/default.less
 // https://github.com/ant-design/ant-design/blob/master/components/style/color/colors.less
 
 // -------- Brand Colours -----------
@@ -58,10 +58,10 @@ $primary-7: shade($primary-color, 5%); //color(~`colorPalette('${primary-color}'
 // ---
 
 // Background color for `<body>`
-$body-background: #fff;
+$body-background: $white; //#fff;
 
 // Base background color for most components
-$component-background: #fff;
+$component-background: $white; //#fff;
 
 // Popover background color
 $popover-background: $component-background;
@@ -78,17 +78,16 @@ $heading-color: $primary-color; //fade(#000, 85%);
 $heading-color-dark: fade($white, 100%);
 $text-color-dark: fade($white, 85%);
 $text-color-secondary-dark: fade($white, 65%);
-$text-selection-bg: $primary-color;
+$text-selection-bg: $gov-yellow; //$primary-color;
 $font-variant-base: tabular-nums;
-$font-feature-settings-base: 'tnum';
+$font-feature-settings-base: "tnum";
 $font-size-base: 16px; //14px;
-$font-size-lg: $font-size-base + 4px; //$font-size-base + 2px;
-$font-size-sm: 12px;
+$font-size-lg: $font-size-base + 4; //$font-size-base + 2px;
+$font-size-sm: $font-size-base - 4; //12px;
 $heading-1-size: ceil($font-size-base * 2.71);
 $heading-2-size: ceil($font-size-base * 2.14);
 $heading-3-size: ceil($font-size-base * 1.71);
 $heading-4-size: ceil($font-size-base * 1.42);
-// https://github.com/ant-design/ant-design/issues/20210
 $line-height-base: 1.5715;
 $border-radius-base: 5px;
 $border-radius-sm: $border-radius-base;
@@ -146,12 +145,12 @@ $outline-blur-size: 0;
 $outline-width: 2px;
 $outline-color: $primary-color;
 
-$background-color-light: #FAFAFA; //hsv(0, 0, 98%); // background of header and selected item
-$background-color-base: #F5F5F5; //hsv(0, 0, 96%); // Default grey background color
+$background-color-light: $card-bg; //#fafafa; //hsv(0, 0, 98%); // background of header and selected item
+$background-color-base: #f5f5f5; //hsv(0, 0, 96%); // Default grey background color
 
 // Disabled states
-$disabled-color: fade(#000, 25%);
-$disabled-bg: $background-color-base;
+$disabled-color: $gov-grey; //fade(#000, 25%);
+$disabled-bg: $gov-grey; //$background-color-base;
 $disabled-color-dark: fade(#fff, 35%);
 
 // Shadow
@@ -178,16 +177,16 @@ $btn-primary-color: $white; //#fff;
 $btn-primary-bg: $primary-color;
 
 $btn-default-color: $btn-primary-bg; //$text-color;
-$btn-default-bg: $white; //$component-background;
+$btn-default-bg: $btn-primary-color; //$component-background;
 $btn-default-border: $btn-primary-bg; //$border-color-base;
 
-$btn-danger-color: $white; //#fff;
+$btn-danger-color: $btn-primary-color; //#fff;
 $btn-danger-bg: $error-color;
 $btn-danger-border: $error-color;
 
-$btn-disable-color: $disabled-color;
+$btn-disable-color: $btn-primary-color; //$disabled-color;
 $btn-disable-bg: $disabled-bg;
-$btn-disable-border: $border-color-base;
+$btn-disable-border: $disabled-bg; //$border-color-base;
 
 $btn-default-ghost-color: $component-background;
 $btn-default-ghost-bg: transparent;
@@ -343,7 +342,7 @@ $input-padding-horizontal: $control-padding-horizontal - 1px;
 $input-padding-horizontal-base: $input-padding-horizontal;
 $input-padding-horizontal-sm: $control-padding-horizontal-sm - 1px;
 $input-padding-horizontal-lg: $input-padding-horizontal;
-$input-padding-vertical-base: round(($input-height-base - $font-size-base * $line-height-base) / 2 * 10) / 10 - $border-width-base;
+$input-padding-vertical-base: round( ($input-height-base - $font-size-base * $line-height-base) / 2 * 10 ) / 10 - $border-width-base;
 $input-padding-vertical-sm: round(($input-height-sm - $font-size-base * $line-height-base) / 2 * 10) / 10 - $border-width-base;
 $input-padding-vertical-lg: round(($input-height-lg - $font-size-lg * $line-height-base) / 2 * 10) / 10 - $border-width-base;
 $input-color: $primary-color; //$text-color;
@@ -491,9 +490,9 @@ $menu-item-boundary-margin: 8px;
 // dark theme
 $menu-dark-color: $text-color-secondary-dark;
 $menu-dark-bg: $layout-header-background;
-$menu-dark-arrow-color: #fff;
+$menu-dark-arrow-color: $white; //#fff;
 $menu-dark-submenu-bg: #000c17;
-$menu-dark-highlight-color: #fff;
+$menu-dark-highlight-color: $white; //#fff;
 $menu-dark-item-active-bg: $primary-color;
 $menu-dark-selected-item-icon-color: $white;
 $menu-dark-selected-item-text-color: $white;
@@ -535,7 +534,7 @@ $table-filter-dropdown-bg: $component-background;
 // Tag
 // --
 $tag-default-bg: $background-color-light;
-$tag-default-color: $text-color;
+$tag-default-color: $primary-color; //$text-color;
 $tag-font-size: $font-size-sm;
 
 // TimePicker
@@ -818,6 +817,8 @@ $steps-nav-arrow-color: fade($black, 25%);
 $notification-bg: $component-background;
 
 // -------- Custom Variables (not Ant Design overrides) below -----------
+// NOTE: I want to get rid of these as much as possible as things should be dictated by Ant Design
+// and they have similar variables to some of these.
 
 // Font sizes
 $title-h1: 36px;
