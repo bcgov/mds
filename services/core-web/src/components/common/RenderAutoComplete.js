@@ -50,14 +50,14 @@ const RenderAutoComplete = (props) => {
         allowClear
         dropdownMatchSelectWidth
         backfill
-        //        defaultValue={props.defaultValue}
+        defaultValue={props.defaultValue}
         style={{ width: "100%" }}
         dataSource={props.data}
         placeholder={props.placeholder}
         filterOption={(input, option) =>
           option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
         }
-        // disabled={props.disabled}
+        disabled={props.disabled}
         {...props.input}
         onSelect={props.handleSelect}
         onChange={(event) => {
