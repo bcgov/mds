@@ -18,6 +18,7 @@ import {
   Alert,
   Switch,
   Checkbox,
+  Tag,
 } from "antd";
 import moment from "moment";
 // import { Field, reduxForm, change } from "redux-form";
@@ -154,6 +155,20 @@ class Mockup extends Component {
             ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Phasellus
             fringilla ornare justo, at commodo mauris euismod vitae.
           </Text>
+        </div>
+
+        <br />
+        <br />
+        {/* https://ant.design/components/tag/ */}
+        <div>
+          <Tag>Tag</Tag>
+          <Tag>
+            <a href="https://github.com/ant-design/ant-design/issues/1862">Link</a>
+          </Tag>
+          <Tag closable>Closable</Tag>
+          <Tag closable onClose={(e) => e.preventDefault()}>
+            Prevent Default
+          </Tag>
         </div>
 
         <br />

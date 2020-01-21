@@ -115,6 +115,13 @@ td > a {
   text-decoration: none !important;
 }
 
+// Tags
+
+.ant-tag,
+.ant-select-selection--multiple .ant-select-selection__choice {
+  border: 1px solid $table-seperator;
+}
+
 // Descriptions
 
 .ant-descriptions-item-label {
