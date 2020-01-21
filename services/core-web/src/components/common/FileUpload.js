@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React from "react";
 import PropTypes from "prop-types";
 import "filepond-polyfill";
@@ -37,6 +38,7 @@ const defaultProps = {
 
 class FileUpload extends React.Component {
   state = { showWhirlpool: false };
+
   constructor(props) {
     super(props);
 

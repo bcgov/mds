@@ -2,6 +2,7 @@ import React from "react";
 import { withRouter } from "react-router-dom";
 import { includes } from "lodash";
 import { PropTypes } from "prop-types";
+import NullScreen from "@/components/common/NullScreen";
 
 /**
  * @constant ScrollContentWrapper renders react children with an active indicator if the id is in the url.
@@ -14,6 +15,11 @@ const propTypes = {
   history: PropTypes.shape({
     location: PropTypes.shape({ state: PropTypes.shape({ currentActiveLink: PropTypes.string }) }),
   }).isRequired,
+  showContent: PropTypes.bool,
+};
+
+const defaultProps = {
+  showContent: true,
 };
 
 export const ScrollContentWrapper = (props) => {
@@ -37,12 +43,19 @@ export const ScrollContentWrapper = (props) => {
         </div>
       </div>
       <div className="scroll-wrapper--border">
-        <div className="scroll-wrapper--body">{props.children}</div>
+        <div className="scroll-wrapper--body">
+          {props.showContent ? (
+            <span>{props.children}</span>
+          ) : (
+            <NullScreen type="now-activity" message={props.title} />
+          )}
+        </div>
       </div>
     </div>
   );
 };
 
 ScrollContentWrapper.propTypes = propTypes;
+ScrollContentWrapper.defaultProps = defaultProps;
 
 export default withRouter(ScrollContentWrapper);

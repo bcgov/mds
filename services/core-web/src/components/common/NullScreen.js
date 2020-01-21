@@ -33,11 +33,14 @@ const propTypes = {
     "documents",
     "now-equipment",
     "now-contacts",
+    "now-activity",
   ]),
+  message: PropTypes.string,
 };
 
 const defaultProps = {
   type: "generic",
+  message: "",
 };
 
 const NullScreen = (props) => (
@@ -158,6 +161,15 @@ const NullScreen = (props) => (
       <div>
         <img alt="mine_img" src={GROUP_MINERS} />
         <h3>No contacts associated with this Notice of Work</h3>
+      </div>
+    )}
+    {props.type === "now-activity" && (
+      <div>
+        <img alt="mine_img" src={NO_MINE} />
+        <h3>{String.NO_DATA}</h3>
+        <p>
+          <i>{props.message}</i> does not apply to this type of permit application.
+        </p>
       </div>
     )}
     {props.type === "incidents" && (
