@@ -72,6 +72,7 @@ exports[`MinePermitTable renders properly 1`] = `
     locale={
       Object {
         "emptyText": <NullScreen
+          message=""
           type="permit"
         />,
       }

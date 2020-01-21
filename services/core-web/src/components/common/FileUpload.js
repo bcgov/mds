@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React from "react";
 import PropTypes from "prop-types";
 import "filepond-polyfill";
@@ -37,6 +38,7 @@ const defaultProps = {
 
 class FileUpload extends React.Component {
   state = { showWhirlpool: false };
+
   constructor(props) {
     super(props);
 
@@ -102,10 +104,13 @@ class FileUpload extends React.Component {
             if (!this.waterSound) {
               this.waterSound = new Audio("/src/assets/downloads/water.mp3");
               this.flushSound = new Audio("/src/assets/downloads/flush.mp3");
-              this.flushSound.addEventListener("ended", () => this.setState({ play: false }));
             }
             this.setState((prevState) => ({ showWhirlpool: !prevState.showWhirlpool }));
-            !this.state.showWhirlpool ? this.waterSound.play() : this.waterSound.pause();
+            if (!this.state.showWhirlpool) {
+              this.waterSound.play();
+            } else {
+              this.waterSound.pause();
+            }
           }}
         />
         <FilePond

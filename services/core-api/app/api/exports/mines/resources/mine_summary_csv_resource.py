@@ -1,4 +1,4 @@
-from flask import Response
+from flask import Response, current_app
 from flask_restplus import Resource
 from sqlalchemy.inspection import inspect
 
@@ -24,8 +24,8 @@ class MineSummaryCSVResource(Resource):
 
             csv_string = "\"" + '","'.join([c.name or "" for c in model.columns]) + "\"\n"
 
-            rows = MineSummaryCSVView.query.distinct(MineSummaryCSVView.mine_name,
-                                                     MineSummaryCSVView.permit_no).all()
+            rows = MineSummaryCSVView.query.all()
+
             csv_string += '\n'.join([r.csv_row() for r in rows])
             cache.set(MINE_DETAILS_CSV, csv_string, timeout=TIMEOUT_60_MINUTES)
 

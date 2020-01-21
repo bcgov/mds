@@ -41,3 +41,7 @@ GRANT USAGE ON SCHEMA public TO metabase;
 GRANT SELECT ON ALL TABLES IN SCHEMA public TO metabase;
 GRANT USAGE ON SCHEMA nris TO metabase;
 GRANT SELECT ON ALL TABLES IN SCHEMA nris TO metabase;
+GRANT USAGE ON SCHEMA now_submissions TO metabase;
+GRANT SELECT ON ALL TABLES IN SCHEMA now_submissions TO metabase;
+GRANT USAGE ON SCHEMA mms_now_submissions TO metabase;
+GRANT SELECT ON ALL TABLES IN SCHEMA mms_now_submissions TO metabase;
