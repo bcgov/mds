@@ -79,6 +79,12 @@ class FileUpload extends React.Component {
     };
   }
 
+  componentWillUnmount() {
+    if (this.flushSound) {
+      this.flushSound.removeEventListener("ended", () => this.setState({ play: false }));
+    }
+  }
+
   render() {
     const acceptedFileTypes = Object.values(this.props.acceptedFileTypesMap);
 
