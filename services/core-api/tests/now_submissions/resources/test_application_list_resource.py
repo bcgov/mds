@@ -70,13 +70,17 @@ class TestGetApplicationListResource:
         """Should return the records filtered by noticeofworktype"""
 
         now_submission_1 = NOWSubmissionFactory(noticeofworktype='dog')
-        identity_1 = NOWApplicationIdentityFactory(now_submission=now_submission_1)
+        identity_1 = NOWApplicationIdentityFactory(
+            now_submission=now_submission_1, submission_only=True)
         now_submission_2 = NOWSubmissionFactory(noticeofworktype='dog')
-        identity_2 = NOWApplicationIdentityFactory(now_submission=now_submission_2)
+        identity_2 = NOWApplicationIdentityFactory(
+            now_submission=now_submission_2, submission_only=True)
         now_submission_3 = NOWSubmissionFactory(noticeofworktype='cat')
-        identity_3 = NOWApplicationIdentityFactory(now_submission=now_submission_3)
+        identity_3 = NOWApplicationIdentityFactory(
+            now_submission=now_submission_3, submission_only=True)
         now_submission_4 = NOWSubmissionFactory(noticeofworktype='parrot')
-        identity_4 = NOWApplicationIdentityFactory(now_submission=now_submission_4)
+        identity_4 = NOWApplicationIdentityFactory(
+            now_submission=now_submission_4, submission_only=True)
 
         get_resp = test_client.get(
             f'now-applications?notice_of_work_type_description=dog',
@@ -130,19 +134,24 @@ class TestGetApplicationListResource:
         """Should return the records filtered by status, noticeofworktype, and tracking email"""
 
         now_submission_1 = NOWSubmissionFactory(status='Rejected', noticeofworktype='dog')
-        identity_1 = NOWApplicationIdentityFactory(now_submission=now_submission_1)
+        identity_1 = NOWApplicationIdentityFactory(
+            now_submission=now_submission_1, submission_only=True)
         now_submission_2 = NOWSubmissionFactory(status='Received', noticeofworktype='cat')
-        identity_2 = NOWApplicationIdentityFactory(now_submission=now_submission_2)
+        identity_2 = NOWApplicationIdentityFactory(
+            now_submission=now_submission_2, submission_only=True)
         now_submission_3 = NOWSubmissionFactory(status='Rejected', noticeofworktype='dog')
-        identity_3 = NOWApplicationIdentityFactory(now_submission=now_submission_3)
+        identity_3 = NOWApplicationIdentityFactory(
+            now_submission=now_submission_3, submission_only=True)
         now_submission_4 = NOWSubmissionFactory(status='Approved', noticeofworktype='cat')
-        identity_4 = NOWApplicationIdentityFactory(now_submission=now_submission_4)
+        identity_4 = NOWApplicationIdentityFactory(
+            now_submission=now_submission_4, submission_only=True)
 
         get_resp = test_client.get(
             f'now-applications?now_application_status_description=Approved&now_application_status_description=Rejected&notice_of_work_type_description=dog',
             headers=auth_headers['full_auth_header'])
         get_data = json.loads(get_resp.data.decode())
-
+        # raise Exception(identity_1.__dict__)
+        # print(identity_1.__dict__)
         assert get_resp.status_code == 200
         assert len(get_data['records']) == 2
         assert all(

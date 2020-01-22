@@ -147,11 +147,7 @@ export class HomePage extends Component {
               <li className="uppercase violet">Documents</li>
               <li>
                 <p>
-                  <a
-                    href="/src/assets/downloads/HSRC.pdf"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
+                  <a href="/assets/downloads/HSRC.pdf" target="_blank" rel="noopener noreferrer">
                     Health, Safety and Reclamation Code
                   </a>
                 </p>
