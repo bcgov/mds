@@ -6,7 +6,7 @@ exports[`LandingPage renders properly 1`] = `
     gutter={0}
   >
     <Title>
-      Welcome to BC Minespace, an online portal for mines in BC
+      Welcome to BC MineSpace, an online portal for mines in BC
     </Title>
     <Paragraph>
       The 

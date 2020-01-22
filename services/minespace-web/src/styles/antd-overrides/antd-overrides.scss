@@ -157,8 +157,17 @@ td > a {
 // Cards
 
 .ant-card {
-  &-head-title {
-    text-align: center;
+  &-head {
+    border-bottom: none;
+    &-title {
+      text-align: center;
+    }
+  }
+
+  // For the sake of us never wanting borders on our cards, I thought it'd just be nice to have to
+  // specify <Card /> rather than <Card bordered={false} /> all of the time.
+  &-bordered {
+    border: none;
   }
 }
 

@@ -7,7 +7,7 @@ const { Paragraph, Text, Title } = Typography;
 export const LandingPage = () => (
   <div>
     <Row>
-      <Title>Welcome to BC Minespace, an online portal for mines in BC</Title>
+      <Title>Welcome to BC MineSpace, an online portal for mines in BC</Title>
       <Paragraph>
         The <Text strong>Ministry of Energy Mines and Petroleum Resources</Text> is developing a
         system to make it easier for the public, industry and government to see what’s happening in
@@ -57,7 +57,7 @@ export const LandingPage = () => (
         </Paragraph>
       </Col>
       <Col lg={{ offset: 1, span: 7 }}>
-        <Card title="Do you have a BCeID?" bordered={false}>
+        <Card title="Do you have a BCeID?">
           <Row>
             <Paragraph>
               In order to access BC MineSpace, you need to register for a Business BCeID. It can
@@ -80,7 +80,7 @@ export const LandingPage = () => (
             </a>
           </Row>
         </Card>
-        <Card title="Questions?" bordered={false}>
+        <Card title="Questions?">
           <Row>
             <Paragraph>
               Please let us know about any questions or comments you have regarding your experience
