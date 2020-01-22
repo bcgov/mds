@@ -39,7 +39,7 @@ export class AdvancedMineSearchForm extends Component {
               name="search"
               component={renderConfig.FIELD}
               defaultValue={this.props.searchValue ? this.props.searchValue : undefined}
-              placeholder="Search for a mine using name, ID, or permit number"
+              placeholder="Search by mine name, ID, or permit number"
             />
           </Col>
         </Row>

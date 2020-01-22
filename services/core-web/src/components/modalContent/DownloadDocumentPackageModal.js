@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { Button, Progress } from "antd";
+import { Button, Progress, Icon, Popconfirm } from "antd";
 import NOWSubmissionDocuments from "@/components/noticeOfWork/applications/NOWSubmissionDocuments";
 import NOWDocuments from "../noticeOfWork/applications/NOWDocuments";
 import { COLOR } from "@/constants/styles";
@@ -19,6 +19,7 @@ const propTypes = {
     currentFile: PropTypes.number.isRequired,
     totalFiles: PropTypes.number.isRequired,
   }).isRequired,
+  closeModal: PropTypes.func.isRequired,
 };
 export const DownloadDocumentPackageModal = (props) => {
   const [selectedCoreRows, setSelectedCoreRows] = useState([]);
@@ -57,12 +58,22 @@ export const DownloadDocumentPackageModal = (props) => {
       />
       <br />
       <div className="right center-mobile padding-md--top">
+        <Popconfirm
+          placement="topRight"
+          title="Are you sure you want to cancel?"
+          onConfirm={props.closeModal}
+          okText="Yes"
+          cancelText="No"
+        >
+          <Button className="full-mobile">Cancel</Button>
+        </Popconfirm>
         <Button
           className="full-mobile"
           type="primary"
           onClick={() => props.onSubmit(selectedCoreRows, selectedSubmissionRows)}
         >
-          Download
+          <Icon type="download" theme="outlined" className="padding-small--right icon-sm" />
+          Download Referral Package
         </Button>
       </div>
     </div>

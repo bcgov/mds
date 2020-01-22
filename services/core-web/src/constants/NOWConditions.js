@@ -1,21 +1,12 @@
-const MINERAL_EX = "Mineral";
-const PLACER_OP = "Placer Operations";
-const COAL_EX = "Coal";
-const QUARRY_IND = "Quarry - Industrial Mineral";
-const QUARRY_AGG = "Quarry - Construction Aggregate";
-const SAND_GRAVEL = "Sand & Gravel";
-export const isMineralOrPlacerOrCoal = (type) =>
-  type === MINERAL_EX || type === PLACER_OP || type === COAL_EX;
-
-// Activities are rendered based on NoW type: there are 3 categories activities fall into, outlined below:
-export const isMineralOrCoal = (type) => type === MINERAL_EX || type === COAL_EX;
-export const isPlacer = (type) => type === PLACER_OP;
-export const isSandAndGravelOrQuarry = (type) =>
-  type === QUARRY_IND || type === SAND_GRAVEL || type === QUARRY_AGG;
-
-const MULTI_YR_PERMIT = "I would like to apply for a Multi-Year permit";
-const MULTI_YR_AREA_PERMIT = "I would like to apply for a Multi-Year, Area Based permit";
-export const isMultiYearPermit = (type) =>
-  type === MULTI_YR_PERMIT || type === MULTI_YR_AREA_PERMIT;
-
-export const isConditionTrue = (condition) => condition === "Yes";
+/* eslint-disable */
+// The following activities can exist on every NoW
+// ["access-roads", "camps", "blasting_operation", "exploration_surface_drilling", "mechanical_trenching", "settling_pond", "water_supply"]
+// below outlines what activities are present on specific Now Types
+export const activityConditions = {
+  QCA: ["sand_and_gravel"],
+  SAG: ["sand_and_gravel"],
+  QIM: ["sand_and_gravel"],
+  COL: ["surface_bulk_sample", "cut_lines_polarization_survey", "underground_exploration"],
+  MIN: ["surface_bulk_sample", "cut_lines_polarization_survey", "underground_exploration"],
+  PLA: ["placer_operation", "cut_lines_polarization_survey", "underground_exploration"],
+};

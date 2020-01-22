@@ -384,6 +384,7 @@ export class NoticeOfWorkApplication extends Component {
                 description="You can transfer the Notice of Work to a different mine or change its Lead Inspector by using the Actions dropdown menu above."
                 type="info"
                 showIcon
+                style={{ textAlign: "left" }}
               />
             </Col>
           </Row>,
@@ -397,6 +398,7 @@ export class NoticeOfWorkApplication extends Component {
       <ReviewNOWApplication
         reclamationSummary={this.props.reclamationSummary}
         isViewMode={this.state.isViewMode}
+        noticeOfWorkType={this.props.noticeOfWork.notice_of_work_type_code}
         initialValues={
           this.state.showOriginalValues ? this.props.originalNoticeOfWork : this.props.noticeOfWork
         }
@@ -408,9 +410,7 @@ export class NoticeOfWorkApplication extends Component {
     return (
       <NOWApplicationReviews
         mineGuid={this.props.noticeOfWork.mine_guid}
-        noticeOfWorkGuid={this.props.noticeOfWork.now_application_guid}
-        coreDocuments={this.props.noticeOfWork.documents}
-        submissionDocuments={this.props.noticeOfWork.submission_documents}
+        noticeOfWork={this.props.noticeOfWork}
       />
     );
   };

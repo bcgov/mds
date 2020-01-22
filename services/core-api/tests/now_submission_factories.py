@@ -67,7 +67,7 @@ class NOWSubmissionFactory(BaseFactory):
             cbsfreclamationcost=factory.fuzzy.FuzzyDecimal(100),
             campbuildstgetotaldistarea=factory.fuzzy.FuzzyDecimal(100),
             fuellubstoreonsite=factory.LazyFunction(randomYesNo)
-        )  #details=factory.SubFactory('tests.now_submission_factories.NOWCampDetails'))
+        )                                                               #details=factory.SubFactory('tests.now_submission_factories.NOWCampDetails'))
 
         blasting_operation = factory.Trait(
             bcexplosivespermitissued=factory.LazyFunction(randomYesNo),

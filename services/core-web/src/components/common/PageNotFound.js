@@ -6,11 +6,14 @@ import * as route from "@/constants/routes";
 const PageNotFound = () => (
   <div className="null-screen">
     <div className="no-nav-bar">
-      <img alt="mine_img" src={COMPUTER_404} />
+      <img src={COMPUTER_404} alt="Page Not Found (Error 404)" />
       <h1>Uh Oh!</h1>
-      <p>The page you’re looking for can’t be found. It may have moved, or it no longer exists.</p>
       <p>
-        <Link to={route.MINE_HOME_PAGE.route}>Return to the home page</Link> to get back on track.
+        The page you&#39;re looking for can&#39;t be found. It may have moved, or it no longer
+        exists.
+      </p>
+      <p>
+        Return to the <Link to={route.HOME_PAGE.route}>home page</Link> to get back on track.
       </p>
     </div>
   </div>
