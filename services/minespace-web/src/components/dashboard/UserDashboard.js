@@ -8,7 +8,6 @@ import { getUserMineInfo } from "@/selectors/userMineSelectors";
 import { fetchUserMineInfo } from "@/actionCreators/userDashboardActionCreator";
 import NullScreen from "@/components/common/NullScreen";
 import CustomPropTypes from "@/customPropTypes";
-import QuestionSidebar from "@/components/common/QuestionsSidebar";
 import Loading from "@/components/common/Loading";
 import * as routes from "@/constants/routes";
 import * as Strings from "@/constants/strings";
@@ -61,7 +60,6 @@ export class UserDashboard extends Component {
                 &nbsp;for assistance.
               </p>
             </div>
-            <QuestionSidebar />
           </div>
         )) || <NullScreen type="no-mines" />}
       </div>
@@ -84,7 +82,4 @@ const mapDispatchToProps = (dispatch) =>
 
 UserDashboard.propTypes = propTypes;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(UserDashboard);
+export default connect(mapStateToProps, mapDispatchToProps)(UserDashboard);

@@ -152,7 +152,6 @@ exports[`LandingPage renders properly 1`] = `
           </div>
         </div>
       </div>
-      <QuestionSidebar />
     </div>
   </div>
 </div>

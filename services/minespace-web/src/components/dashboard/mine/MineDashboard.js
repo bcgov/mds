@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { Link } from "react-router-dom";
-import QuestionSidebar from "@/components/common/QuestionsSidebar";
 import * as routes from "@/constants/routes";
 import { fetchMineRecordById } from "@/actionCreators/userDashboardActionCreator";
 import { getMine } from "@/selectors/userMineSelectors";
@@ -70,7 +69,6 @@ export class MineDashboard extends Component {
               <br />
               {this.renderLinkCards(id)}
             </div>
-            <QuestionSidebar />
           </div>
         ) : (
           <Loading />
@@ -94,7 +92,4 @@ const mapDispatchToProps = (dispatch) =>
 
 MineDashboard.propTypes = propTypes;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(MineDashboard);
+export default connect(mapStateToProps, mapDispatchToProps)(MineDashboard);
