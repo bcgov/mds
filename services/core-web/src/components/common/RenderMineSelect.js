@@ -47,6 +47,7 @@ export class RenderMineSelect extends Component {
   }
 
   handleChange = (name) => {
+    console.log(name);
     if (name.length > 2) {
       this.props.fetchMineNameList({ name });
     } else if (name.length === 0) {
