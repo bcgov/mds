@@ -40,6 +40,9 @@
 
 .ant-divider {
   background-color: $primary-color;
+  &-horizontal {
+    height: 3px;
+  }
 }
 
 // Buttons
@@ -148,6 +151,14 @@ td > a {
   }
   &-title {
     font-weight: 600;
+  }
+}
+
+// Cards
+
+.ant-card {
+  &-head-title {
+    text-align: center;
   }
 }
 

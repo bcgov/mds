@@ -28,7 +28,7 @@ import moment from "moment";
 import * as Strings from "@/constants/strings";
 
 const { TabPane } = Tabs;
-const { Text, Title } = Typography;
+const { Text, Title, Paragraph } = Typography;
 const { Option } = Select;
 const { confirm } = Modal;
 
@@ -160,7 +160,7 @@ class Mockup extends Component {
           <Text strong>Strong Ant Design</Text>
           <br />
           <br />
-          <Text>
+          <Paragraph>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas sed erat faucibus,
             eleifend enim et, faucibus ligula. Maecenas lorem ex, dignissim sit amet maximus vel,
             gravida imperdiet velit. Morbi consequat, augue et pulvinar condimentum, nunc urna
@@ -171,7 +171,7 @@ class Mockup extends Component {
             Suspendisse potenti. Vestibulum porta velit suscipit vehicula hendrerit. Vestibulum ante
             ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Phasellus
             fringilla ornare justo, at commodo mauris euismod vitae.
-          </Text>
+          </Paragraph>
         </div>
 
         <br />

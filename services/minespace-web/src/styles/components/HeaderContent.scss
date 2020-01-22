@@ -41,6 +41,8 @@
   color: $gov-yellow;
   border: none;
   background-color: transparent !important;
+  &:active,
+  &:focus,
   &:hover {
     color: $gov-yellow;
   }
