@@ -108,7 +108,6 @@ exports[`LandingPage renders properly 1`] = `
       }
     >
       <Card
-        bordered={false}
         title="Do you have a BCeID?"
       >
         <Row
@@ -145,7 +144,6 @@ exports[`LandingPage renders properly 1`] = `
         </Row>
       </Card>
       <Card
-        bordered={false}
         title="Questions?"
       >
         <Row

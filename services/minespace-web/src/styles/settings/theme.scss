@@ -216,14 +216,14 @@ $btn-group-border: $primary-5;
 $btn-link-ghost-color: $component-background;
 
 // Checkbox
-$checkbox-size: 16px;
+$checkbox-size: $font-size-base; //16px;
 $checkbox-color: $primary-color;
-$checkbox-check-color: #fff;
+$checkbox-check-color: $white; //#fff;
 $checkbox-check-bg: $checkbox-check-color;
 $checkbox-border-width: $border-width-base;
 
 // Descriptions
-$descriptions-bg: #fafafa;
+$descriptions-bg: $card-bg; //#fafafa;
 
 // Dropdown
 $dropdown-selected-color: $primary-color;
@@ -233,7 +233,7 @@ $dropdown-menu-submenu-disabled-bg: $component-background;
 $empty-font-size: $font-size-base;
 
 // Radio
-$radio-size: 16px;
+$radio-size: $font-size-base; //16px;
 $radio-dot-color: $primary-color;
 $radio-dot-disabled-color: $disabled-bg; //fade($black, 20%);
 // solid text-color

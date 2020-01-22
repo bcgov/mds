@@ -164,8 +164,8 @@ td > a {
     }
   }
 
-  // For the sake of us never wanting borders on our cards, I thought it'd just be nice to have to
-  // specify <Card /> rather than <Card bordered={false} /> all of the time.
+  // For the sake of us never wanting borders on our cards, I thought it'd be nice to
+  // just have to specify <Card /> rather than <Card bordered={false} />.
   &-bordered {
     border: none;
   }
@@ -173,14 +173,31 @@ td > a {
 
 // Various Inputs
 
+// Disabled inputs
 // Unfortuntalely, there's not a more general method of applying this style to disabled data entry components.
 .ant-input[disabled],
 .ant-select-disabled .ant-select-selection,
 .ant-input-number-disabled,
-.ant-radio-disabled .ant-radio-inner {
+.ant-radio-disabled .ant-radio-inner,
+.ant-checkbox-disabled .ant-checkbox-inner {
   border-color: $disabled-bg !important;
   &:hover {
     border-color: $disabled-bg !important;
+  }
+}
+
+// InputNumber
+
+.ant-input-number-handler-down {
+  border-color: inherit;
+}
+
+// Radio
+.ant-radio .ant-radio-inner {
+  border: 2px solid $primary-color;
+  &::after {
+    top: 2px;
+    left: 2px;
   }
 }
 

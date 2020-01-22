@@ -310,11 +310,17 @@ class Mockup extends Component {
         <br />
         {/* https://ant.design/components/switch/ */}
         <Switch defaultChecked />
+        <br />
+        <br />
+        <Switch defaultChecked disabled />
 
         <br />
         <br />
         {/* https://ant.design/components/checkbox/ */}
         <Checkbox>Checkbox</Checkbox>
+        <br />
+        <br />
+        <Checkbox disabled>Checkbox</Checkbox>
 
         <br />
         <br />
@@ -345,26 +351,21 @@ class Mockup extends Component {
           }}
         >
           {/* https://ant.design/components/card/ */}
-          <Card title="Card Title" bordered={false} style={{ width: 300 }}>
-            <p>
+          <Card title="Card Title" style={{ width: 300 }}>
+            <Paragraph>
               Vivamus auctor vitae tortor eget sodales. Nunc elementum, neque non semper accumsan,
               enim risus pellentesque enim, ut vulputate risus diam sed neque.
-            </p>
+            </Paragraph>
           </Card>
-          <Card
-            title="Questions?"
-            bordered={false}
-            style={{ width: 300 }}
-            headStyle={{ textAlign: "center" }}
-          >
-            <p>
+          <Card title="Questions?" style={{ width: 300 }} headStyle={{ textAlign: "center" }}>
+            <Paragraph>
               We encourage your feedback and would like to hear from you. If you have any questions,
               feedback, or other concerns, please send us an email at&nbsp;
               <a className="underline" href={`mailto:${Strings.MDS_EMAIL}`}>
                 {Strings.MDS_EMAIL}
               </a>
               .
-            </p>
+            </Paragraph>
           </Card>
         </div>
 
@@ -447,9 +448,9 @@ class Mockup extends Component {
             onOk={this.handleModalOk}
             onCancel={this.handleModalCancel}
           >
-            <p>Some contents...</p>
-            <p>Some contents...</p>
-            <p>Some contents...</p>
+            <Paragraph>Some contents...</Paragraph>
+            <Paragraph>Some contents...</Paragraph>
+            <Paragraph>Some contents...</Paragraph>
           </Modal>
         </div>
         <br />
