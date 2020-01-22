@@ -252,7 +252,7 @@ export class MineIncidentTable extends Component {
         className: hideColumn(this.props.isDashboardView),
         width: 200,
         render: (text, record) => (
-          <div title="Final Report Documents">
+          <div title="Final Report Documents" className={hideColumn(this.props.isDashboardView)}>
             {(record.docs &&
               record.docs.length > 0 &&
               renderDownloadLinks(record.docs, Strings.INCIDENT_DOCUMENT_TYPES.final)) ||

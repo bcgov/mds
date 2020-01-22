@@ -56,7 +56,6 @@ exports[`MineVarianceTable renders properly 1`] = `
           "width": 150,
         },
         Object {
-          "className": "column-hide",
           "dataIndex": "lead_inspector",
           "render": [Function],
           "sortField": "lead_inspector",

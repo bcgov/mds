@@ -143,12 +143,11 @@ export class MineVarianceTable extends Component {
         sortField: "lead_inspector",
         sorter: this.props.isDashboardView,
         width: 150,
-        className: hideColumn(!this.props.isDashboardView),
         render: (text, record) =>
           (record.inspector_party_guid && (
             <Link
-              to={router.PARTY_PROFILE.dynamicRoute(record.inspector_party_guid)}
               title="Lead Inspector"
+              to={router.PARTY_PROFILE.dynamicRoute(record.inspector_party_guid)}
             >
               {text}
             </Link>
@@ -161,7 +160,11 @@ export class MineVarianceTable extends Component {
         sorter: this.props.isDashboardView,
         width: 150,
         className: hideColumn(!this.props.isApplication),
-        render: (text) => <div title="Submission Date">{text}</div>,
+        render: (text) => (
+          <div title="Submission Date" className={hideColumn(!this.props.isApplication)}>
+            {text}
+          </div>
+        ),
       },
       {
         title: "Application Status",
@@ -171,7 +174,7 @@ export class MineVarianceTable extends Component {
         width: 150,
         className: hideColumn(!this.props.isApplication),
         render: (text) => (
-          <div className={hideColumn(!this.props.isApplication)} title="Application Status">
+          <div title="Application Status" className={hideColumn(!this.props.isApplication)}>
             <Badge
               status={getVarianceApplicationBadgeStatusType(
                 this.props.varianceStatusOptionsHash[text]
@@ -189,7 +192,7 @@ export class MineVarianceTable extends Component {
         width: 150,
         className: hideColumn(this.props.isApplication),
         render: (text) => (
-          <div className={hideColumn(this.props.isApplication)} title="Issue Date">
+          <div title="Issue Date" className={hideColumn(this.props.isApplication)}>
             {text}
           </div>
         ),
@@ -202,7 +205,7 @@ export class MineVarianceTable extends Component {
         width: 150,
         className: hideColumn(this.props.isApplication),
         render: (text) => (
-          <div className={hideColumn(this.props.isApplication)} title="Expiry Date">
+          <div title="Expiry Date" className={hideColumn(this.props.isApplication)}>
             {text}
           </div>
         ),
@@ -213,7 +216,7 @@ export class MineVarianceTable extends Component {
         width: 150,
         className: hideColumn(this.props.isApplication),
         render: (text, record) => (
-          <div className={hideColumn(this.props.isApplication)} title="Approval Status">
+          <div title="Approval Status" className={hideColumn(this.props.isApplication)}>
             {record.is_overdue ? "Expired" : "Active"}
           </div>
         ),
