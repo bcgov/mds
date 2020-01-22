@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
-import { AutoComplete, Button, Col, Row } from "antd";
+import { Col, Row } from "antd";
 import { connect } from "react-redux";
-import { reset } from "redux-form";
+import { change } from "redux-form";
 import PropTypes from "prop-types";
 import * as FORM from "@/constants/forms";
 import { getMineNames } from "@/selectors/mineSelectors";
@@ -11,32 +11,29 @@ import CustomPropTypes from "@/customPropTypes";
 import { fetchPermits } from "@/actionCreators/permitActionCreator";
 import MMPermitApplicationInitForm from "@/components/Forms/noticeOfWork/MMPermitApplicationInitForm";
 import { createDropDownList } from "@/utils/helpers";
+import { createNoticeOfWorkApplication } from "@/actionCreators/noticeOfWorkActionCreator";
 
 const propTypes = {
   noticeOfWork: CustomPropTypes.nowApplication.isRequired,
   fetchPermits: PropTypes.func.isRequired,
   minePermits: PropTypes.arrayOf(CustomPropTypes.permit).isRequired,
+  change: PropTypes.func.isRequired,
+  createNoticeOfWorkApplication: PropTypes.func.isRequired,
 };
 
 export class MMPermitApplicationInit extends Component {
-  state = {
-    isLoaded: false,
-    submitting: false,
-  };
-
-  componentDidMount() {}
+  componentDidMount() {
+    this.props.fetchPermits(this.props.noticeOfWork.mine_guid);
+  }
 
   fetchMinePermits = (mineGuid) => {
-    console.log(this.props);
     this.props.fetchPermits(mineGuid);
-    reset(FORM.MM_PERMIT_APPLICATION_CREATE);
+    this.props.change(FORM.MM_PERMIT_APPLICATION_CREATE, "permit_guid", null);
   };
 
-  handleCreate() {
-    this.setState({ submitting: true });
-    console.log("POST HERE");
-    this.setState({ submitting: false });
-  }
+  handleAddPermitApplication = (values) => {
+    this.props.createNoticeOfWorkApplication(values);
+  };
 
   render() {
     return (
@@ -48,10 +45,9 @@ export class MMPermitApplicationInit extends Component {
             <MMPermitApplicationInitForm
               initialValues={{ mine_guid: this.props.noticeOfWork.mine_guid }}
               title="Create Permit Application"
-              handleSubmit={this.handleCreate}
+              onSubmit={this.handleAddPermitApplication}
               handleMineSelect={this.fetchMinePermits}
               minePermits={createDropDownList(this.props.minePermits, "permit_no", "permit_guid")}
-              submitting={this.state.submitting}
             />
           </Col>
         </Row>
@@ -68,7 +64,9 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
+      createNoticeOfWorkApplication,
       fetchPermits,
+      change,
     },
     dispatch
   );

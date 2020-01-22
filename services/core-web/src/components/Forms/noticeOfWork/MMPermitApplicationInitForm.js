@@ -11,15 +11,12 @@ import { renderConfig } from "@/components/common/config";
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
-  submitting: PropTypes.bool.isRequired,
   minePermits: PropTypes.arrayOf(CustomPropTypes.permit),
   handleMineSelect: PropTypes.func.isRequired,
-  initialValues: PropTypes.object,
 };
 
 const defaultProps = {
   minePermits: [],
-  initialValues: {},
 };
 
 export const MMPermitApplicationInitForm = (props) => (
@@ -54,7 +51,7 @@ export const MMPermitApplicationInitForm = (props) => (
       </Col>
     </Row>
     <div className="right center-mobile">
-      <Button className="full-mobile" type="primary" htmlType="submit" disabled={props.submitting}>
+      <Button className="full-mobile" type="primary" htmlType="submit">
         {props.title}
       </Button>
     </div>
