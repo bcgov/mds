@@ -11,7 +11,7 @@ export const HeaderContent = () => (
         <img alt="BC Government Logo" src={BC_GOV} height={50} />
       </Link>
     </span>
-    <span className="header-title">BC MineSpace</span>
+    <span className="header-title">MineSpace</span>
     <span className="header-menu">
       <Authentication />
     </span>

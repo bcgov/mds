@@ -53,7 +53,7 @@ export class UserDashboard extends Component {
                   ))}
               </ul>
               <p className="large-padding-top">
-                Don&#39;t see the mine you&#39;re looking for? Contact&nbsp;
+                Don&apos;t see the mine you&apos;re looking for? Contact&nbsp;
                 <a className="underline" href={`mailto:${Strings.MDS_EMAIL}`}>
                   {Strings.MDS_EMAIL}
                 </a>
