@@ -204,7 +204,7 @@ export class ContactHomePage extends Component {
             handleSearch={this.handleSearch}
           />
           <div>
-            <div className="tab__content ">
+            <div className="tab__content">
               <ContactList
                 isLoaded={this.state.isLoaded}
                 parties={this.props.parties}

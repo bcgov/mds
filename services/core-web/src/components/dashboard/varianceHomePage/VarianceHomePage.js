@@ -305,33 +305,31 @@ export class VarianceHomePage extends Component {
           <h1>Browse Variances</h1>
         </div>
         <div className="landing-page__content">
-          <div className="page__content">
-            <AuthorizationWrapper inTesting>
-              <VarianceSearch
-                handleNameFieldReset={this.handleNameFieldReset}
-                initialValues={this.state.params}
-                fetchVariances={this.props.fetchVariances}
-                handleVarianceSearch={this.handleVarianceSearchDebounced}
-                mineRegionOptions={this.props.mineRegionOptions}
-                complianceCodes={this.props.getDropdownHSRCMComplianceCodes}
-                filterVarianceStatusOptions={this.props.filterVarianceStatusOptions}
-              />
-            </AuthorizationWrapper>
-            <VarianceTable
-              isLoaded={this.state.variancesLoaded}
-              isApplication={this.state.isApplication}
-              handleFilterChange={this.handleFilterChange}
-              variances={this.props.variances}
-              pageData={this.props.variancePageData}
-              handlePageChange={this.handleVariancePageChange}
-              handleVarianceSearch={this.handleVarianceSearch}
-              params={this.state.params}
-              openEditVarianceModal={this.openEditVarianceModal}
-              openViewVarianceModal={this.openViewVarianceModal}
-              sortField={this.state.params.sort_field}
-              sortDir={this.state.params.sort_dir}
+          <AuthorizationWrapper inTesting>
+            <VarianceSearch
+              handleNameFieldReset={this.handleNameFieldReset}
+              initialValues={this.state.params}
+              fetchVariances={this.props.fetchVariances}
+              handleVarianceSearch={this.handleVarianceSearchDebounced}
+              mineRegionOptions={this.props.mineRegionOptions}
+              complianceCodes={this.props.getDropdownHSRCMComplianceCodes}
+              filterVarianceStatusOptions={this.props.filterVarianceStatusOptions}
             />
-          </div>
+          </AuthorizationWrapper>
+          <VarianceTable
+            isLoaded={this.state.variancesLoaded}
+            isApplication={this.state.isApplication}
+            handleFilterChange={this.handleFilterChange}
+            variances={this.props.variances}
+            pageData={this.props.variancePageData}
+            handlePageChange={this.handleVariancePageChange}
+            handleVarianceSearch={this.handleVarianceSearch}
+            params={this.state.params}
+            openEditVarianceModal={this.openEditVarianceModal}
+            openViewVarianceModal={this.openViewVarianceModal}
+            sortField={this.state.params.sort_field}
+            sortDir={this.state.params.sort_dir}
+          />
         </div>
       </div>
     );

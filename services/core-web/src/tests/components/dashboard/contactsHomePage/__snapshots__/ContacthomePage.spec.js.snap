@@ -179,7 +179,7 @@ exports[`ContactHomePage renders properly 1`] = `
     />
     <div>
       <div
-        className="tab__content "
+        className="tab__content"
       >
         <ContactList
           handleSearch={[Function]}

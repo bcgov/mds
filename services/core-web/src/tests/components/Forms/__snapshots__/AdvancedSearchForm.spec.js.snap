@@ -19,7 +19,7 @@ exports[`AdvancedMineSearchForm renders properly 1`] = `
         component={[Function]}
         id="search"
         name="search"
-        placeholder="Search for a mine using name, ID, or permit number"
+        placeholder="Search by mine name, ID, or permit number"
       />
     </Col>
   </Row>

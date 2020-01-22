@@ -19,7 +19,7 @@ exports[`VarianceSearchForm form renders properly 1`] = `
         component={[Function]}
         id="search"
         name="search"
-        placeholder="Search by mine name, or mine number"
+        placeholder="Search by mine name or number"
       />
     </Col>
   </Row>
