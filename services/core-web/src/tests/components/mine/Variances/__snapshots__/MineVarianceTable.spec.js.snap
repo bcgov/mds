@@ -170,6 +170,7 @@ exports[`MineVarianceTable renders properly 1`] = `
     locale={
       Object {
         "emptyText": <NullScreen
+          message=""
           type="approved-variances"
         />,
       }

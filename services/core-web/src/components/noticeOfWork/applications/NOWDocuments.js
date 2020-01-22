@@ -79,7 +79,7 @@ export const NOWDocuments = (props) => {
           dataIndex: "filename",
           key: "filename",
           sorter: (a, b) => (a.filename > b.filename ? -1 : 1),
-          render: (text, record) => <div title="File Name">{text}</div>,
+          render: (text) => <div title="File Name">{text}</div>,
         }
       : {
           title: "File Name",
@@ -180,7 +180,7 @@ export const NOWDocuments = (props) => {
       ) : (
         <NullScreen type="documents" />
       )}
-      {!props.selectedRows && (
+      {!props.selectedRows && !props.isViewMode && (
         <AddButton
           disabled={props.isViewMode}
           onClick={(event) =>

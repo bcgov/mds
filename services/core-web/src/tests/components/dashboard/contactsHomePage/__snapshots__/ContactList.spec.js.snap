@@ -77,6 +77,7 @@ exports[`ContactList renders properly 1`] = `
     locale={
       Object {
         "emptyText": <NullScreen
+          message=""
           type="no-results"
         />,
       }
