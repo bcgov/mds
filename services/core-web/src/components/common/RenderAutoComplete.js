@@ -10,7 +10,7 @@ import * as Styles from "@/constants/styles";
 
 const propTypes = {
   id: PropTypes.string,
-  meta: PropTypes.objectOf(PropTypes.any).isRequired,
+  meta: PropTypes.objectOf(PropTypes.any),
   input: PropTypes.objectOf(PropTypes.any).isRequired,
   handleChange: PropTypes.func.isRequired,
   handleSelect: PropTypes.func.isRequired,
@@ -28,7 +28,7 @@ const defaultProps = {
   defaultValue: "",
   iconColor: Styles.COLOR.violet,
   disabled: false,
-  label: "Select a mine",
+  meta: {},
 };
 
 const RenderAutoComplete = (props) => {

@@ -38,6 +38,7 @@ import NoticeOfWorkPageHeader from "@/components/noticeOfWork/applications/Notic
 import * as FORM from "@/constants/forms";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
 import { downloadNowDocument } from "@/utils/actionlessNetworkCalls";
+import MMPermitApplicationInit from "@/components/noticeOfWork/applications/MMPermitApplicationInit";
 
 const { Step } = Steps;
 
@@ -107,7 +108,7 @@ export class NoticeOfWorkApplication extends Component {
       const associatedMineGuid = data.mine_guid ? data.mine_guid : "";
       const isImported = data.imported_to_core;
       this.handleProgressButtonLabels(data.application_progress);
-      this.props.fetchMineRecordById(associatedMineGuid).then(() => {
+      this.props.fetchMineRecordById(associatedMineGuid).then((mineData) => {
         if (isImported) {
           if (data.application_progress.length > 0) {
             const recentStatus = data.application_progress.length;
@@ -334,9 +335,10 @@ export class NoticeOfWorkApplication extends Component {
   renderStepOne = () => {
     if (!this.state.isLoaded) {
       return null;
-    }
-
-    if (!this.state.isImported) {
+    } if (this.props.mines[this.state.associatedMineGuid].major_mine_ind) {
+      console.log("RENDER MAJOR MINE PERMIT APPLICATION INIT");
+      return <MMPermitApplicationInit noticeOfWork={this.props.noticeOfWork} />;
+    } if (!this.state.isImported) {
       const mine = this.props.mines ? this.props.mines[this.state.associatedMineGuid] : {};
       return (
         <VerifyNOWMine
@@ -346,9 +348,7 @@ export class NoticeOfWorkApplication extends Component {
           currentMine={mine}
         />
       );
-    }
-
-    if (!this.props.noticeOfWork.lead_inspector_party_guid) {
+    } if (!this.props.noticeOfWork.lead_inspector_party_guid) {
       return (
         <VerifyNOWMineConfirmation
           inspectors={this.props.inspectors}
