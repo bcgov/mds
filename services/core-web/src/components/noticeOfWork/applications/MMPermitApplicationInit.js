@@ -2,10 +2,9 @@ import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { Col, Row } from "antd";
 import { connect } from "react-redux";
-import { change } from "redux-form";
 import PropTypes from "prop-types";
-import * as FORM from "@/constants/forms";
-import { getMineNames } from "@/selectors/mineSelectors";
+import { getMines } from "@/selectors/mineSelectors";
+import MineCard from "@/components/mine/NoticeOfWork/MineCard";
 import { getPermits } from "@/reducers/permitReducer";
 import CustomPropTypes from "@/customPropTypes";
 import { fetchPermits } from "@/actionCreators/permitActionCreator";
@@ -14,39 +13,34 @@ import { createDropDownList } from "@/utils/helpers";
 import { createNoticeOfWorkApplication } from "@/actionCreators/noticeOfWorkActionCreator";
 
 const propTypes = {
-  noticeOfWork: CustomPropTypes.nowApplication.isRequired,
+  mine_guid: PropTypes.string.isRequired,
   fetchPermits: PropTypes.func.isRequired,
   minePermits: PropTypes.arrayOf(CustomPropTypes.permit).isRequired,
-  change: PropTypes.func.isRequired,
   createNoticeOfWorkApplication: PropTypes.func.isRequired,
+  mines: PropTypes.arrayOf(CustomPropTypes.mine).isRequired,
 };
 
 export class MMPermitApplicationInit extends Component {
   componentDidMount() {
-    this.props.fetchPermits(this.props.noticeOfWork.mine_guid);
+    this.props.fetchPermits(this.props.mine_guid);
   }
 
-  fetchMinePermits = (mineGuid) => {
-    this.props.fetchPermits(mineGuid);
-    this.props.change(FORM.MM_PERMIT_APPLICATION_CREATE, "permit_guid", null);
-  };
-
   handleAddPermitApplication = (values) => {
-    this.props.createNoticeOfWorkApplication(values);
+    const newValues = { mine_guid: this.props.mine_guid, ...values };
+    this.props.createNoticeOfWorkApplication(newValues);
   };
 
   render() {
     return (
       <div className="tab__content">
-        <h4>Start Permit Application:</h4>
+        <h4>Start Permit Application for {this.props.mines[this.props.mine_guid].mine_name}:</h4>
         <br />
         <Row>
           <Col md={{ span: 20, offset: 2 }} xs={{ span: 20, offset: 2 }}>
+            <MineCard mine={this.props.mines[this.props.mine_guid]} />
             <MMPermitApplicationInitForm
-              initialValues={{ mine_guid: this.props.noticeOfWork.mine_guid }}
               title="Create Permit Application"
               onSubmit={this.handleAddPermitApplication}
-              handleMineSelect={this.fetchMinePermits}
               minePermits={createDropDownList(this.props.minePermits, "permit_no", "permit_guid")}
             />
           </Col>
@@ -57,8 +51,8 @@ export class MMPermitApplicationInit extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  mineNameList: getMineNames(state),
   minePermits: getPermits(state),
+  mines: getMines(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
@@ -66,7 +60,6 @@ const mapDispatchToProps = (dispatch) =>
     {
       createNoticeOfWorkApplication,
       fetchPermits,
-      change,
     },
     dispatch
   );

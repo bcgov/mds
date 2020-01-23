@@ -11,31 +11,11 @@ import { renderConfig } from "@/components/common/config";
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
-  minePermits: PropTypes.arrayOf(CustomPropTypes.permit),
-  handleMineSelect: PropTypes.func.isRequired,
-};
-
-const defaultProps = {
-  minePermits: [],
+  minePermits: PropTypes.arrayOf(CustomPropTypes.permit).isRequired,
 };
 
 export const MMPermitApplicationInitForm = (props) => (
   <Form layout="vertical" onSubmit={props.handleSubmit}>
-    <Row gutter={16}>
-      <Col>
-        <Form.Item>
-          <Field
-            id="mine_guid"
-            name="mine_guid"
-            component={renderConfig.MINE_SELECT}
-            majorMineOnly
-            validate={[required]}
-            onMineSelect={props.handleMineSelect}
-            showCard
-          />
-        </Form.Item>
-      </Col>
-    </Row>
     <Row>
       <Col>
         <Form.Item>
@@ -59,7 +39,6 @@ export const MMPermitApplicationInitForm = (props) => (
 );
 
 MMPermitApplicationInitForm.propTypes = propTypes;
-MMPermitApplicationInitForm.defaultProps = defaultProps;
 
 export default reduxForm({
   form: FORM.MM_PERMIT_APPLICATION_CREATE,
