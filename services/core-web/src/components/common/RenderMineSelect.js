@@ -7,11 +7,12 @@ import RenderAutoComplete from "@/components/common/RenderAutoComplete";
 import { fetchMineNameList } from "@/actionCreators/mineActionCreator";
 import MineCard from "@/components/mine/NoticeOfWork/MineCard";
 import CustomPropTypes from "@/customPropTypes";
+import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
 
 import { getMineWithoutStore } from "@/utils/actionlessNetworkCalls";
 import { getMineNames } from "@/selectors/mineSelectors";
 /**
- * @constant RenderMineSelect - Ant Design `AutoComplete` component for redux-form.
+ * @constant RenderMineSelect - Ant Design `AutoComplete` component for redux-form that handles all the state for selecting a mine and updating a content card with that mines tombstone data.
  *
  */
 
@@ -47,7 +48,6 @@ export class RenderMineSelect extends Component {
   }
 
   handleChange = (name) => {
-    console.log(name);
     if (name.length > 2) {
       this.props.fetchMineNameList({ name });
     } else if (name.length === 0) {
@@ -56,6 +56,7 @@ export class RenderMineSelect extends Component {
   };
 
   handleSelect = (value) => {
+    this.setState({ selectedMine: false });
     getMineWithoutStore(value).then((data) => {
       this.setState({ selectedMine: data.data });
     });
@@ -78,7 +79,11 @@ export class RenderMineSelect extends Component {
           data={this.transformData(this.props.mineNameList)}
           handleChange={this.handleChange}
         />
-        {this.state.selectedMine && <MineCard mine={this.state.selectedMine} />}
+        <div style={{ position: "relative", height: "inherit" }}>
+          <LoadingWrapper condition={this.state.selectedMine}>
+            <MineCard mine={this.state.selectedMine} />
+          </LoadingWrapper>
+        </div>
       </div>
     );
   }
