@@ -1,16 +1,21 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+import { Row, Col, Tabs, Typography } from "antd";
 import { bindActionCreators } from "redux";
-import { Link } from "react-router-dom";
-import * as routes from "@/constants/routes";
 import { fetchMineRecordById } from "@/actionCreators/userDashboardActionCreator";
 import { getMine } from "@/selectors/userMineSelectors";
-import CustomPropTypes from "@/customPropTypes";
-import { SINGLE_DOCUMENT, DOCUMENTS } from "@/constants/assets";
-import * as Strings from "@/constants/strings";
 import Loading from "@/components/common/Loading";
-import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
+import CustomPropTypes from "@/customPropTypes";
+import Overview from "@/components/dashboard/mine/overview/Overview";
+import Permits from "@/components/dashboard/mine/permits/Permits";
+import Variances from "@/components/dashboard/mine/variances/Variances";
+import Inspections from "@/components/dashboard/mine/inspections/Inspections";
+import Incidents from "@/components/dashboard/mine/incidents/Incidents";
+import Reports from "@/components/dashboard/mine/reports/Reports";
+
+const { Title } = Typography;
+const { TabPane } = Tabs;
 
 const propTypes = {
   fetchMineRecordById: PropTypes.func.isRequired,
@@ -32,48 +37,41 @@ export class MineDashboard extends Component {
     });
   }
 
-  renderLinkCards = (id) => (
-    <div className="inline-flex flex-start">
-      <div>
-        <Link to={routes.REPORTS.dynamicRoute(id)}>
-          <div className="link-container">
-            <div className="link-container--content">
-              <img src={DOCUMENTS} alt="document" />
-              <h4>Reporting</h4>
-            </div>
-          </div>
-        </Link>
-      </div>
-      <AuthorizationWrapper inTesting>
-        <Link to={routes.VARIANCES.dynamicRoute(id)}>
-          <div className="link-container">
-            <div className="link-container--content">
-              <img src={SINGLE_DOCUMENT} alt="document" />
-              <h4>Variances</h4>
-            </div>
-          </div>
-        </Link>
-      </AuthorizationWrapper>
-    </div>
-  );
-
   render() {
-    const { id } = this.props.match.params;
     return (
-      <div className="user-dashboard-padding">
-        {this.state.isLoaded ? (
-          <div className="inline-flex between block-tablet">
-            <div>
-              <h1 className="mine-title">{this.props.mine.mine_name}</h1>
-              <p>Mine No. {this.props.mine.mine_no || Strings.EMPTY_FIELD}</p>
-              <br />
-              {this.renderLinkCards(id)}
-            </div>
-          </div>
-        ) : (
-          <Loading />
-        )}
-      </div>
+      (this.state.isLoaded && (
+        <div>
+          <Row gutter={[0, 48]}>
+            <Col>
+              <Title>{this.props.mine.mine_name}</Title>
+            </Col>
+          </Row>
+          <Row gutter={[0, 48]}>
+            <Col>
+              <Tabs defaultActiveKey="overview" type="card">
+                <TabPane tab="Overview" key="overview">
+                  <Overview mine={this.props.mine} />
+                </TabPane>
+                <TabPane tab="Permits" key="permits">
+                  <Permits mine={this.props.mine} />
+                </TabPane>
+                <TabPane tab="Variances" key="variances">
+                  <Variances mine={this.props.mine} />
+                </TabPane>
+                <TabPane tab="Inspections" key="inspections">
+                  <Inspections mine={this.props.mine} />
+                </TabPane>
+                <TabPane tab="Incidents" key="incidents">
+                  <Incidents mine={this.props.mine} />
+                </TabPane>
+                <TabPane tab="Reports" key="reports">
+                  <Reports mine={this.props.mine} />
+                </TabPane>
+              </Tabs>
+            </Col>
+          </Row>
+        </div>
+      )) || <Loading />
     );
   }
 }

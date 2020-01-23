@@ -31,12 +31,7 @@ import {
 import VarianceTable from "@/components/dashboard/mine/variances/VarianceTable";
 
 const propTypes = {
-  mine: CustomPropTypes.mine,
-  match: PropTypes.shape({
-    params: {
-      id: PropTypes.string,
-    },
-  }).isRequired,
+  mine: CustomPropTypes.mine.isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
   updateVariance: PropTypes.func.isRequired,
   fetchVariancesByMine: PropTypes.func.isRequired,
@@ -55,19 +50,17 @@ const propTypes = {
   addDocumentToVariance: PropTypes.func.isRequired,
 };
 
-const defaultProps = {
-  mine: {},
-};
+const defaultProps = {};
 
 export class Variances extends Component {
   state = { isLoaded: false };
 
   componentDidMount() {
-    const { id } = this.props.match.params;
-    this.props.fetchMineRecordById(id).then(() => {
+    const { mine_guid } = this.props.mine;
+    this.props.fetchMineRecordById(mine_guid).then(() => {
       this.setState({ isLoaded: true });
     });
-    this.props.fetchVariancesByMine({ mineGuid: id });
+    this.props.fetchVariancesByMine({ mineGuid: mine_guid });
     this.props.fetchMineComplianceCodes();
     this.props.fetchVarianceStatusOptions();
     this.props.fetchVarianceDocumentCategoryOptions();
@@ -228,7 +221,4 @@ const mapDispatchToProps = (dispatch) =>
 Variances.propTypes = propTypes;
 Variances.defaultProps = defaultProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Variances);
+export default connect(mapStateToProps, mapDispatchToProps)(Variances);

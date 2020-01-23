@@ -20,8 +20,8 @@
 }
 
 .login-btn {
-  color: $white;
-  border-color: $white;
+  color: $white !important;
+  border-color: $white !important;
   background-color: transparent !important;
 }
 
@@ -51,4 +51,5 @@
 .header-dropdown-item-button {
   border: none;
   background-color: transparent !important;
+  box-shadow: none;
 }

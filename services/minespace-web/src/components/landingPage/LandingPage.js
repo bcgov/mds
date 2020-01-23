@@ -7,25 +7,25 @@ const { Paragraph, Text, Title } = Typography;
 export const LandingPage = () => (
   <div>
     <Row>
-      <Title>Welcome to MineSpace, an online portal for mines in BC</Title>
-      <Paragraph>
-        The <Text strong>Ministry of Energy Mines and Petroleum Resources</Text> is developing a
-        system to make it easier for the public, industry and government to see what&apos;s
-        happening in the mining industry across British Columbia. The system is called Mines Digital
-        Services.
-      </Paragraph>
-      <Paragraph>
-        MineSpace is the industry-facing piece of the system. It is intended to make it easier for
-        businesses to manage applications, see their inspection history, and submit reports.
-      </Paragraph>
-      <Paragraph>
-        This system is being developed iteratively and with input from people who operate mines
-        across B.C.
-      </Paragraph>
+      <Col>
+        <Title>Welcome to MineSpace, an online portal for mines in BC</Title>
+        <Paragraph>
+          The <Text strong>Ministry of Energy Mines and Petroleum Resources</Text> is developing a
+          system to make it easier for the public, industry and government to see what&apos;s
+          happening in the mining industry across British Columbia. The system is called Mines
+          Digital Services.
+        </Paragraph>
+        <Paragraph>
+          MineSpace is the industry-facing piece of the system. It is intended to make it easier for
+          businesses to manage applications, see their inspection history, and submit reports.
+        </Paragraph>
+        <Paragraph>
+          This system is being developed iteratively and with input from people who operate mines
+          across B.C.
+        </Paragraph>
+        <Divider />
+      </Col>
     </Row>
-
-    <Divider />
-
     <Row>
       <Col lg={{ span: 16 }}>
         <Title level={2}>What can I do in MineSpace?</Title>
