@@ -69,6 +69,23 @@ app {
                     ]
                 ],
                 [
+                    'file':'openshift/templates/postgresql.dc.json',
+                    'params':[
+                            'NAME':"mds-reporting-postgresql",
+                            'SUFFIX':"${vars.deployment.suffix}",
+                            'DATABASE_SERVICE_NAME':"mds-postgresql${vars.deployment.suffix}",
+                            'CPU_REQUEST':"${vars.resources.postgres.cpu_request}",
+                            'CPU_LIMIT':"${vars.resources.postgres.cpu_limit}",
+                            'MEMORY_REQUEST':"${vars.resources.postgres.memory_request}",
+                            'MEMORY_LIMIT':"${vars.resources.postgres.memory_limit}",
+                            'IMAGE_STREAM_NAMESPACE':'',
+                            'IMAGE_STREAM_NAME':"mds-postgresql",
+                            'IMAGE_STREAM_VERSION':"${app.deployment.version}",
+                            'POSTGRESQL_DATABASE':'mds',
+                            'VOLUME_CAPACITY':"${vars.DB_PVC_SIZE}"
+                    ]
+                ],
+                [
                     'file':'openshift/templates/redis.dc.json',
                     'params':[
                             'NAME':"mds-redis",
