@@ -257,13 +257,7 @@ export class MinePermitInfo extends Component {
       });
 
   handleAddPermitAmendmentApplication = (permitGuid) =>
-    this.props
-      .createNoticeOfWorkApplication({ mine_guid: this.props.mineGuid, permit_guid: permitGuid })
-      .then((result) => {
-        this.props.history.push(
-          router.NOTICE_OF_WORK_APPLICATION.dynamicRoute(result.data.now_application_guid)
-        );
-      });
+    this.props.history.push(router.NOTICE_OF_WORK_APPLICATION.dynamicRoute());
 
   onExpand = (expanded, record) =>
     this.setState((prevState) => {

@@ -28,6 +28,10 @@ class NOWApplicationListResource(Resource, UserMixin):
     parser.add_argument('permit_guid', type=str, required=True)
     #required because only allowed on Major Mine Permit Amendment Application
     parser.add_argument('mine_guid', type=str, required=True)
+    parser.add_argument('notice_of_work_type_code', type=str, required=True)
+    parser.add_argument('submitted_date', type=str, required=True)
+    parser.add_argument('received_date', type=str, required=True)
+    parser.add_argument('mine_guid', type=str, required=True)
 
     @api.doc(
         description='Get a list of Core now applications. Order: received_date DESC',
@@ -91,8 +95,8 @@ class NOWApplicationListResource(Resource, UserMixin):
         filters = []
         base_query = NoticeOfWorkView.query
 
-        if submissions_only:
-            filters.append(NoticeOfWorkView.originating_system != None)
+        # if submissions_only:
+        #     filters.append(NoticeOfWorkView.originating_system != None)
 
         if mine_guid:
             filters.append(NoticeOfWorkView.mine_guid == mine_guid)
@@ -165,8 +169,11 @@ class NOWApplicationListResource(Resource, UserMixin):
             raise BadRequest(err_str)
 
         new_now = NOWApplicationIdentity(mine_guid=data['mine_guid'], permit=permit)
-        # new_now.now_application = NOWApplication()
-        # now_progress = NOWApplicationProgress.create(new_now.now_application, 'VER')
+        new_now.now_application = NOWApplication(
+            notice_of_work_type_code=data['notice_of_work_type_code'],
+            now_application_status_code='UNR',
+            submitted_date=data['submitted_date'],
+            received_date=data['received_date'])
 
         new_now.save()
         return new_now, 201

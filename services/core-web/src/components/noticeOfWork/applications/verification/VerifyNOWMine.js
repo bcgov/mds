@@ -16,7 +16,7 @@ const propTypes = {
   fetchMineNameList: PropTypes.func.isRequired,
   handleConfirmMine: PropTypes.func.isRequired,
   setMineGuid: PropTypes.func.isRequired,
-  noticeOfWork: CustomPropTypes.nowApplication.isRequired,
+  noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
   currentMine: CustomPropTypes.mine.isRequired,
 };
 

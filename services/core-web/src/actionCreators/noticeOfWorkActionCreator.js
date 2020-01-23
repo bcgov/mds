@@ -68,6 +68,10 @@ export const createNoticeOfWorkApplication = (payload) => (dispatch) => {
     )
     .then((response) => {
       dispatch(success(reducerTypes.CREATE_NOTICE_OF_WORK_APPLICATION));
+      notification.success({
+        message: "Successfully created Permit Amendment Application",
+        duration: 10,
+      });
       return response;
     })
     .catch(() => dispatch(error(reducerTypes.CREATE_NOTICE_OF_WORK_APPLICATION)))

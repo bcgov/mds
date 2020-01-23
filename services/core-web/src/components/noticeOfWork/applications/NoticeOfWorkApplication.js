@@ -68,11 +68,11 @@ const propTypes = {
       id: PropTypes.string,
     },
   }).isRequired,
-  formValues: CustomPropTypes.nowApplication.isRequired,
+  formValues: CustomPropTypes.importedNOWApplication.isRequired,
   mines: PropTypes.arrayOf(CustomPropTypes.mine).isRequired,
   inspectors: CustomPropTypes.groupOptions.isRequired,
   inspectorsHash: PropTypes.objectOf(PropTypes.string).isRequired,
-  applicationProgressStatusCodes: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.strings))
+  applicationProgressStatusCodes: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string))
     .isRequired,
   reclamationSummary: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.strings)).isRequired,
   openModal: PropTypes.func.isRequired,
@@ -137,6 +137,7 @@ export class NoticeOfWorkApplication extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (
+      nextProps.noticeOfWork &&
       this.props.noticeOfWork.application_progress &&
       nextProps.noticeOfWork.application_progress.length !==
         this.props.noticeOfWork.application_progress.length
@@ -336,9 +337,16 @@ export class NoticeOfWorkApplication extends Component {
     if (!this.state.isLoaded) {
       return null;
     }
-    if (this.props.mines[this.state.associatedMineGuid].major_mine_ind) {
-      return <MMPermitApplicationInit mine_guid={this.state.associatedMineGuid} />;
+
+    if (!this.state.isImported && this.props.mines[this.state.associatedMineGuid].major_mine_ind) {
+      return (
+        <MMPermitApplicationInit
+          mine_guid={this.state.associatedMineGuid}
+          handleProgressChange={this.handleProgressChange}
+        />
+      );
     }
+
     if (!this.state.isImported) {
       const mine = this.props.mines ? this.props.mines[this.state.associatedMineGuid] : {};
       return (

@@ -1,7 +1,8 @@
 import React, { Component } from "react";
-import { bindActionCreators } from "redux";
 import { Col, Row } from "antd";
 import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import { getMines } from "@/selectors/mineSelectors";
 import MineCard from "@/components/mine/NoticeOfWork/MineCard";
@@ -16,18 +17,36 @@ const propTypes = {
   mine_guid: PropTypes.string.isRequired,
   fetchPermits: PropTypes.func.isRequired,
   minePermits: PropTypes.arrayOf(CustomPropTypes.permit).isRequired,
+  history: PropTypes.shape({ push: PropTypes.func }).isRequired,
   createNoticeOfWorkApplication: PropTypes.func.isRequired,
+  handleProgressChange: PropTypes.func.isRequired,
   mines: PropTypes.arrayOf(CustomPropTypes.mine).isRequired,
 };
 
 export class MMPermitApplicationInit extends Component {
+  state = {
+    isSubmitting: false,
+  };
+
   componentDidMount() {
     this.props.fetchPermits(this.props.mine_guid);
   }
 
   handleAddPermitApplication = (values) => {
     const newValues = { mine_guid: this.props.mine_guid, ...values };
-    this.props.createNoticeOfWorkApplication(newValues);
+    this.setState({ isSubmitting: true });
+    this.props.createNoticeOfWorkApplication(newValues).then((response) => {
+      if (response) {
+        console.log(response);
+        this.props.handleProgressChange("REV").then(() => {
+          this.props.history.push(
+            router.NOTICE_OF_WORK_APPLICATION.dynamicRoute(response.data.data.now_application_guid)
+          );
+        });
+      } else {
+        this.setState({ isSubmitting: false });
+      }
+    });
   };
 
   render() {
@@ -42,6 +61,7 @@ export class MMPermitApplicationInit extends Component {
               title="Create Permit Application"
               onSubmit={this.handleAddPermitApplication}
               minePermits={createDropDownList(this.props.minePermits, "permit_no", "permit_guid")}
+              isSubmitting={this.state.isSubmitting}
             />
           </Col>
         </Row>
