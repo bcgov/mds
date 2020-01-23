@@ -86,6 +86,23 @@ app {
                     ]
                 ],
                 [
+                    'file':'openshift/templates/dbbackup.dc.json',
+                    'params':[
+                            'NAME':"mds-database-backup",
+                            'SUFFIX': "${vars.deployment.suffix}",
+                            'VERSION':"${app.deployment.version}",
+                            'ENVIRONMENT_NAME':"${vars.deployment.namespace}",
+                            'ENVIRONMENT_FRIENDLY_NAME':"BC Mines Digital Services (DEV)",
+                            'DATABASE_SERVICE_NAME':"mds-postgresql${vars.deployment.suffix}",
+                            'NFS_VOLUME_IDENTIFIER':"bk-empr-mds-prod-x7ux0bwhqnsa",
+                            'CPU_REQUEST':"${vars.resources.backup.cpu_request}",
+                            'CPU_LIMIT':"${vars.resources.backup.cpu_limit}",
+                            'MEMORY_REQUEST':"${vars.resources.backup.memory_request}",
+                            'MEMORY_LIMIT':"${vars.resources.backup.memory_limit}",
+                            'VERIFICATION_VOLUME_SIZE':"${vars.BACKUP_VERIFICATION_PVC_SIZE}"
+                    ]
+                ],
+                [
                     'file':'openshift/templates/redis.dc.json',
                     'params':[
                             'NAME':"mds-redis",
@@ -148,23 +165,6 @@ app {
                             'API_URL': "https://${vars.modules.'mds-nginx'.HOST_CORE}${vars.modules.'mds-nginx'.PATH}/api",
                             'DOCUMENT_MANAGER_URL': "https://${vars.modules.'mds-nginx'.HOST_CORE}${vars.modules.'mds-nginx'.PATH}/document-manager"
 
-                    ]
-                ],
-                [
-                    'file':'openshift/templates/dbbackup.dc.json',
-                    'params':[
-                            'NAME':"mds-database-backup",
-                            'SUFFIX': "${vars.deployment.suffix}",
-                            'VERSION':"${app.deployment.version}",
-                            'ENVIRONMENT_NAME':"${vars.deployment.namespace}",
-                            'ENVIRONMENT_FRIENDLY_NAME':"BC Mines Digital Services (DEV)",
-                            'DATABASE_SERVICE_NAME':"mds-postgresql${vars.deployment.suffix}",
-                            'NFS_VOLUME_IDENTIFIER':"bk-empr-mds-prod-x7ux0bwhqnsa",
-                            'CPU_REQUEST':"${vars.resources.backup.cpu_request}",
-                            'CPU_LIMIT':"${vars.resources.backup.cpu_limit}",
-                            'MEMORY_REQUEST':"${vars.resources.backup.memory_request}",
-                            'MEMORY_LIMIT':"${vars.resources.backup.memory_limit}",
-                            'VERIFICATION_VOLUME_SIZE':"${vars.BACKUP_VERIFICATION_PVC_SIZE}"
                     ]
                 ],
                 [
@@ -289,7 +289,7 @@ environments {
         vars {
             DB_PVC_SIZE = '1Gi'
             DOCUMENT_PVC_SIZE = '1Gi'
-
+            BACKUP_VERIFICATION_PVC_SIZE = '1Gi'
             LOG_PVC_SIZE = '1Gi'
             git {
                 changeId = "${opt.'pr'}"
