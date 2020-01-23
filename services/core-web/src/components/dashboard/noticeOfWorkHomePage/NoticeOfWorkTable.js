@@ -149,15 +149,7 @@ export class NoticeOfWorkTable extends Component {
       sortField: "now_number",
       sorter: true,
       ...this.filterProperties("Number", "now_number"),
-      render: (text, record) =>
-        (record.key && (
-          <Link
-            to={this.createLinkTo(router.VIEW_NOTICE_OF_WORK_APPLICATION, record)}
-            title="Number"
-          >
-            {text}
-          </Link>
-        )) || <div title="Number">{Strings.EMPTY_FIELD}</div>,
+      render: (text) => <div title="Number">{text}</div>,
     },
     {
       title: "Mine",
@@ -171,7 +163,7 @@ export class NoticeOfWorkTable extends Component {
           <Link to={router.MINE_NOW_APPLICATIONS.dynamicRoute(record.mine_guid)} title="Mine">
             {text}
           </Link>
-        )) || <div title="Mine">{Strings.UNASSIGNED}</div>,
+        )) || <div title="Mine">{text}</div>,
     },
     {
       title: "Region",
@@ -220,7 +212,7 @@ export class NoticeOfWorkTable extends Component {
           >
             {text}
           </Link>
-        )) || <div title="Lead Inspector">{Strings.UNASSIGNED}</div>,
+        )) || <div title="Lead Inspector">{text}</div>,
     },
     {
       title: "Status",

@@ -30,7 +30,7 @@ const defaultProps = {
 
 const columns = [
   {
-    title: "Contact Name",
+    title: "Name",
     dataIndex: "name",
     sortField: "party_name",
     width: 150,
