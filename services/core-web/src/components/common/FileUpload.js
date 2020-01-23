@@ -10,6 +10,7 @@ import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type";
 import tus from "tus-js-client";
 import { ENVIRONMENT } from "@/constants/environment";
 import { createRequestHeader } from "@/utils/RequestHeaders";
+import { FLUSH_SOUND, WATER_SOUND } from "@/constants/assets";
 
 registerPlugin(FilePondPluginFileValidateSize, FilePondPluginFileValidateType);
 
@@ -102,8 +103,8 @@ class FileUpload extends React.Component {
           checked={this.state.showWhirlpool}
           onChange={() => {
             if (!this.waterSound) {
-              this.waterSound = new Audio("/src/assets/downloads/water.mp3");
-              this.flushSound = new Audio("/src/assets/downloads/flush.mp3");
+              this.waterSound = new Audio(WATER_SOUND);
+              this.flushSound = new Audio(FLUSH_SOUND);
             }
             this.setState((prevState) => ({ showWhirlpool: !prevState.showWhirlpool }));
             if (!this.state.showWhirlpool) {
