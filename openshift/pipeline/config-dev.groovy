@@ -151,6 +151,23 @@ app {
                     ]
                 ],
                 [
+                    'file':'openshift/templates/dbbackup.dc.json',
+                    'params':[
+                            'NAME':"mds-database-backup",
+                            'SUFFIX': "${vars.deployment.suffix}",
+                            'VERSION':"${app.deployment.version}",
+                            'ENVIRONMENT_NAME':"${vars.deployment.namespace}",
+                            'ENVIRONMENT_FRIENDLY_NAME':"BC Mines Digital Services (DEV)",
+                            'DATABASE_SERVICE_NAME':"mds-postgresql${vars.deployment.suffix}",
+                            'NFS_VOLUME_IDENTIFIER':"bk-empr-mds-prod-x7ux0bwhqnsa",
+                            'CPU_REQUEST':"${vars.resources.backup.cpu_request}",
+                            'CPU_LIMIT':"${vars.resources.backup.cpu_limit}",
+                            'MEMORY_REQUEST':"${vars.resources.backup.memory_request}",
+                            'MEMORY_LIMIT':"${vars.resources.backup.memory_limit}",
+                            'VERIFICATION_VOLUME_SIZE':"${vars.BACKUP_VERIFICATION_PVC_SIZE}"
+                    ]
+                ],
+                [
                     'file':'openshift/templates/_nginx.dc.json',
                     'params':[
                             'NAME':"mds-nginx",
@@ -335,6 +352,12 @@ environments {
                     cpu_limit = "20m"
                     memory_request = "16Mi"
                     memory_limit = "32Mi"
+                }
+                backup {
+                    cpu_request = "0"
+                    cpu_limit = "0"
+                    memory_request = "0"
+                    memory_limit = "0"
                 }
             }
             deployment {
