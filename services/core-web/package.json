@@ -55,6 +55,7 @@
     "regenerator-runtime": "^0.13.3",
     "reselect": "^4.0.0",
     "string-similarity": "^3.0.0",
+    "test-reducer-package": "^1.0.14",
     "tus-js-client": "^1.7.1"
   },
   "devDependencies": {

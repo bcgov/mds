@@ -1,3 +1,4 @@
+import testReducerPackage from "test-reducer-package";
 import { combineReducers } from "redux";
 import { reducer as formReducer } from "redux-form";
 import { loadingBarReducer } from "react-redux-loading-bar";
@@ -22,6 +23,8 @@ import noticeOfWorkReducer from "@/reducers/noticeOfWorkReducer";
 export const reducerObject = {
   form: formReducer,
   loadingBar: loadingBarReducer,
+  testReducer: testReducerPackage.testRootReducer,
+  ...testReducerPackage.testRootReducer,
   [reducerTypes.AUTHENTICATION]: authenticationReducer,
   [reducerTypes.MINES]: mineReducer,
   [reducerTypes.PARTIES]: partiesReducer,
