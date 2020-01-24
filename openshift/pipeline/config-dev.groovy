@@ -71,7 +71,7 @@ app {
                 [
                     'file':'openshift/templates/postgresql.dc.json',
                     'params':[
-                            'NAME':"mds-reporting-postgresql",
+                            'NAME':"mds-postgresql-reporting",
                             'SUFFIX':"${vars.deployment.suffix}",
                             'DATABASE_SERVICE_NAME':"mds-postgresql${vars.deployment.suffix}",
                             'CPU_REQUEST':"${vars.resources.postgres.cpu_request}",

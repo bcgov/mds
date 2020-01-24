@@ -48,6 +48,24 @@
       }
     },
     {
+      "kind": "ImageStream",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "${FLYWAY_NAME}",
+        "generation": 1,
+        "creationTimestamp": null,
+        "labels": {
+          "shared": "true"
+        },
+        "annotations": {}
+      },
+      "spec": {
+        "lookupPolicy": {
+          "local": false
+        }
+      }
+    },
+    {
       "kind": "DeploymentConfig",
       "apiVersion": "v1",
       "metadata": {
@@ -58,7 +76,23 @@
       },
       "spec": {
         "strategy": {
-          "type": "Recreate"
+          "type": "Recreate",
+          "recreateParams": {
+            "pre": {
+              "failurePolicy": "Retry",
+              "execNewPod": {
+                "containerName": "flyway-migration",
+                "command": [
+                  "bash",
+                  "-c",
+                  "$FLYWAY_HOME/scripts/run_migrations.sh"
+                ]
+              }
+            },
+            "maxSurge": "50%",
+            "maxUnavailable": 0,
+            "timeoutSeconds": 1200
+          }
         },
         "triggers": [
           {
@@ -72,6 +106,17 @@
               "from": {
                 "kind": "ImageStreamTag",
                 "name": "${NAME}:${VERSION}"
+              }
+            }
+          },
+          {
+            "type": "ImageChange",
+            "imageChangeParams": {
+              "automatic": true,
+              "containerNames": ["flyway-migration"],
+              "from": {
+                "kind": "ImageStreamTag",
+                "name": "${FLYWAY_NAME}:${VERSION}"
               }
             }
           }
@@ -204,6 +249,134 @@
                     "subPath": "backup.conf"
                   }
                 ]
+              },
+              {
+                "name": "flyway-migration",
+                "command": ["cat"],
+                "stdin": true,
+                "image": " ",
+                "env": [
+                  {
+                    "name": "FLYWAY_USER",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${DB_CONFIG_NAME}",
+                        "key": "database-admin-user"
+                      }
+                    }
+                  },
+                  {
+                    "name": "FLYWAY_PASSWORD",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${DB_CONFIG_NAME}",
+                        "key": "database-admin-password"
+                      }
+                    }
+                  },
+                  {
+                    "name": "FLYWAY_DB_NAME",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${DB_CONFIG_NAME}",
+                        "key": "database-name"
+                      }
+                    }
+                  },
+                  {
+                    "name": "FLYWAY_DB_HOST",
+                    "value": "${DB_CONFIG_NAME}"
+                  },
+                  {
+                    "name": "FLYWAY_URL",
+                    "value": "jdbc:postgresql://${DB_CONFIG_NAME}/mds"
+                  },
+                  {
+                    "name": "PGUSER",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${DB_CONFIG_NAME}",
+                        "key": "database-user"
+                      }
+                    }
+                  },
+                  {
+                    "name": "PGHOST",
+                    "value": "${DB_CONFIG_NAME}"
+                  },
+                  {
+                    "name": "PGPASSWORD",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${DB_CONFIG_NAME}",
+                        "key": "database-password"
+                      }
+                    }
+                  },
+                  {
+                    "name": "PGDATABASE",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${DB_CONFIG_NAME}",
+                        "key": "database-name"
+                      }
+                    }
+                  },
+                  {
+                    "name": "NRIS_USER_PASSWORD",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${DB_NRIS_CONFIG_NAME}",
+                        "key": "database-nris-password"
+                      }
+                    }
+                  },
+                  {
+                    "name": "LOGSTASH_USER_PASSWORD",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${DB_CONFIG_NAME}",
+                        "key": "logstash-user-password"
+                      }
+                    }
+                  },
+                  {
+                    "name": "METABASE_USER_PASSWORD",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${DB_CONFIG_NAME}",
+                        "key": "metabase-user-password"
+                      }
+                    }
+                  },
+                  {
+                    "name": "DOCMAN_USER_PASSWORD",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${DB_CONFIG_NAME}",
+                        "key": "docman-user-password"
+                      }
+                    }
+                  },
+                  {
+                    "name": "FLYWAY_OUT_OF_ORDER",
+                    "value": "true"
+                  },
+                  {
+                    "name": "FLYWAY_CONNECT_RETRIES",
+                    "value": "300"
+                  }
+                ],
+                "resources": {
+                  "limits": {
+                    "cpu": "100m",
+                    "memory": "384Mi"
+                  },
+                  "requests": {
+                    "cpu": "50m",
+                    "memory": "128Mi"
+                  }
+                }
               }
             ]
           }
