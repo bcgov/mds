@@ -1,17 +1,21 @@
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
-import { AutoComplete, Button, Col, Row } from "antd";
+import { Col, Row, Result, Alert } from "antd";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { fetchMineNameList, fetchMineRecordById } from "@/actionCreators/mineActionCreator";
+import { fetchMineRecordById } from "@/actionCreators/mineActionCreator";
 import { getMineNames } from "@/selectors/mineSelectors";
-import MineCard from "@/components/mine/NoticeOfWork/MineCard";
+import {
+  createNoticeOfWorkApplication,
+  fetchImportedNoticeOfWorkApplication,
+} from "@/actionCreators/noticeOfWorkActionCreator";
+import { getDropdownInspectors } from "@/selectors/partiesSelectors";
+import VerifyNOWMineConfirmation from "@/components/noticeOfWork/applications/verification/VerifyNOWMineConfirmation";
 import CustomPropTypes from "@/customPropTypes";
-import RenderAutoComplete from "@/components/common/RenderAutoComplete";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
+import ChangeNOWMineForm from "@/components/Forms/noticeOfWork/ChangeNOWMineForm";
 
 const propTypes = {
-  mineNameList: PropTypes.arrayOf(CustomPropTypes.mineName).isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
   fetchMineNameList: PropTypes.func.isRequired,
   handleConfirmMine: PropTypes.func.isRequired,
@@ -23,88 +27,115 @@ const propTypes = {
 export class VerifyNOWMine extends Component {
   state = {
     isLoaded: false,
-    isMineLoaded: false,
-    mine: { mine_location: { latitude: "", longitude: "" } },
+    isImported: false,
   };
 
   componentDidMount() {
-    this.props.fetchMineNameList().then(() => {
-      this.setState({ isLoaded: true });
-    });
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.currentMine && nextProps.currentMine !== this.state.mine) {
-      this.setState({ isMineLoaded: true, mine: nextProps.currentMine });
+    if (this.props.noticeOfWork) {
+      this.setState({ isLoaded: true, isImported: this.props.noticeOfWork.imported_to_core });
     }
   }
 
-  handleChange = (name) => {
-    if (name.length > 2) {
-      this.props.fetchMineNameList({ name });
-    } else if (name.length === 0) {
-      this.props.fetchMineNameList();
-    }
+  handleConfirmMine = (values) => {
+    this.setState({ isLoaded: false });
+    this.props
+      .createNoticeOfWorkApplication(values.mine_guid, this.props.noticeOfWork.now_application_guid)
+      .then(() => {
+        return this.props
+          .fetchImportedNoticeOfWorkApplication(this.props.noticeOfWork.now_application_guid)
+          .then(({ data }) => {
+            this.props.fetchMineRecordById(values.mine_guid);
+            this.setState({ isImported: data.imported_to_core, isLoaded: true });
+          });
+      });
   };
 
-  handleMineSearch = (value) => {
-    this.props.setMineGuid(value);
-    this.setState({ isMineLoaded: false });
-    this.props.fetchMineRecordById(value).then((data) => {
-      this.setState({ isMineLoaded: true, mine: data.data });
-    });
-  };
-
-  transformData = (data) =>
-    data.map(({ mine_guid, mine_name, mine_no }) => (
-      <AutoComplete.Option key={mine_guid} value={mine_guid}>
-        {`${mine_name} - ${mine_no}`}
-      </AutoComplete.Option>
-    ));
-
-  render() {
+  renderVerification = () => {
+    const values = { mine_guid: this.props.noticeOfWork.mine_guid };
     return (
-      <div className="tab__content">
+      <div>
         <h4>Verify Mine</h4>
         <p>
           Review the information below and verify that the mine associated with the notice of work
           is correct. Use the search to associate a different mine.
         </p>
         <br />
-        <LoadingWrapper condition={this.state.isLoaded}>
+        <ChangeNOWMineForm
+          initialValues={values}
+          onSubmit={this.handleConfirmMine}
+          title="Confirm Mine"
+        />
+      </div>
+    );
+  };
+
+  renderInspectorAssignment = () => {
+    return (
+      <VerifyNOWMineConfirmation
+        inspectors={this.props.inspectors}
+        noticeOfWork={this.props.noticeOfWork}
+        setLeadInspectorPartyGuid={this.props.setLeadInspectorPartyGuid}
+        handleUpdateLeadInspector={(e) =>
+          this.props.handleUpdateLeadInspector(() => this.props.handleProgressChange("REV"), e)
+        }
+      />
+    );
+  };
+
+  renderResult = () => {
+    return (
+      <Result
+        status="success"
+        title="Verification Complete!"
+        subTitle="You've already completed the Verification step."
+        extra={[
           <Row>
-            <Col md={{ span: 12, offset: 6 }} xs={{ span: 20, offset: 2 }}>
-              <RenderAutoComplete
-                placeholder="Search for a mine by name"
-                handleSelect={this.handleMineSearch}
-                defaultValue={`${this.props.noticeOfWork.mine_name} - ${this.props.noticeOfWork.mine_no}`}
-                data={this.transformData(this.props.mineNameList)}
-                handleChange={this.handleChange}
+            <Col
+              lg={{ span: 8, offset: 8 }}
+              md={{ span: 10, offset: 7 }}
+              sm={{ span: 12, offset: 6 }}
+            >
+              <Alert
+                message="Need to change something?"
+                description="You can transfer the Notice of Work to a different mine or change its Lead Inspector by using the Actions dropdown menu above."
+                type="info"
+                showIcon
+                style={{ textAlign: "left" }}
               />
             </Col>
-          </Row>
-        </LoadingWrapper>
-        <LoadingWrapper condition={this.state.isMineLoaded}>
-          {this.state.isLoaded && <MineCard mine={this.state.mine} />}
-          <div className="right">
-            <Button type="primary" onClick={() => this.props.handleConfirmMine()}>
-              Confirm Mine
-            </Button>
-          </div>
-        </LoadingWrapper>
-      </div>
+          </Row>,
+        ]}
+      />
+    );
+  };
+
+  render() {
+    return (
+      <LoadingWrapper condition={this.state.isLoaded}>
+        <div className="tab__content">
+          {!this.state.isImported && <div>{this.renderVerification()}</div>}
+          {this.state.isImported && !this.props.noticeOfWork.lead_inspector_party_guid && (
+            <div>{this.renderInspectorAssignment()}</div>
+          )}
+          {this.state.isImported && this.props.noticeOfWork.application_progress[0] && (
+            <div>{this.renderResult()}</div>
+          )}
+        </div>
+      </LoadingWrapper>
     );
   }
 }
 
 const mapStateToProps = (state) => ({
   mineNameList: getMineNames(state),
+  inspectors: getDropdownInspectors(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
-      fetchMineNameList,
+      createNoticeOfWorkApplication,
+      fetchImportedNoticeOfWorkApplication,
       fetchMineRecordById,
     },
     dispatch

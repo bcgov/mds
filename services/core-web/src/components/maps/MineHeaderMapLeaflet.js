@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import L from "leaflet";
+import PropTypes from "prop-types";
 
 import "leaflet.markercluster";
 import "leaflet/dist/leaflet.css";
@@ -8,7 +9,7 @@ import "leaflet.markercluster/dist/MarkerCluster.Default.css";
 
 import CustomPropTypes from "@/customPropTypes";
 import * as Strings from "@/constants/strings";
-import { SMALL_PIN } from "@/constants/assets";
+import { SMALL_PIN, SMALL_PIN_SELECTED } from "@/constants/assets";
 
 /**
  * @class MineHeaderMapLeaflet.js is a Leaflet Map component.
@@ -16,9 +17,13 @@ import { SMALL_PIN } from "@/constants/assets";
 
 const propTypes = {
   mine: CustomPropTypes.mine.isRequired,
+  // eslint-disable-next-line react/no-unused-prop-types
+  additionalLocation: PropTypes.arrayOf(PropTypes.string),
 };
 
-const defaultProps = {};
+const defaultProps = {
+  additionalLocation: [],
+};
 
 class MineHeaderMapLeaflet extends Component {
   // if mine does not have a location, set a default to center the map
@@ -33,6 +38,7 @@ class MineHeaderMapLeaflet extends Component {
     if (this.props.mine.mine_location.latitude && this.props.mine.mine_location.longitude) {
       // only add mine Pin if location exists
       this.createPin();
+      // this.createAdditionalPin();
     }
     // Add MinePins to the top of LayerList and add the LayerList widget
     L.control.layers(this.getBaseMaps(), {}, { position: "topright" }).addTo(this.map);
@@ -62,6 +68,15 @@ class MineHeaderMapLeaflet extends Component {
     });
 
     L.marker(this.latLong, { icon: customIcon }).addTo(this.map);
+  };
+
+  createAdditionalPin = () => {
+    const customIcon = L.icon({
+      iconUrl: SMALL_PIN_SELECTED,
+      iconSize: [60, 60],
+    });
+
+    L.marker([54.5043313, -121.2030303], { icon: customIcon }).addTo(this.map);
   };
 
   createMap() {
