@@ -7,6 +7,7 @@ const props = {};
 
 const setupProps = () => {
   props.mineGuid = MOCK.NOW.applications[0].mine_guid;
+  props.mines = { [MOCK.NOW.applications[0].mine_guid]: { major_mine_ind: true } };
   props.history = { push: jest.fn() };
   props.location = { search: "" };
   props.noticeOfWorkApplications = MOCK.NOW.applications;

@@ -8,8 +8,14 @@ exports[`MineNOWApplications renders properly 1`] = `
     <h2>
       Notice of Work Applications
     </h2>
-    <Divider />
+     
+    <AddButton
+      onClick={[Function]}
+    >
+      Add a Permit Application
+    </AddButton>
   </div>
+  <Divider />
   <withRouter(MineNoticeOfWorkTable)
     handleSearch={[Function]}
     isLoaded={false}
