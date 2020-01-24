@@ -94,7 +94,6 @@ app {
                             'ENVIRONMENT_NAME':"${vars.deployment.namespace}",
                             'ENVIRONMENT_FRIENDLY_NAME':"BC Mines Digital Services (DEV)",
                             'DATABASE_SERVICE_NAME':"mds-postgresql${vars.deployment.suffix}",
-                            'NFS_VOLUME_IDENTIFIER':"bk-empr-mds-prod-x7ux0bwhqnsa",
                             'CPU_REQUEST':"${vars.resources.backup.cpu_request}",
                             'CPU_LIMIT':"${vars.resources.backup.cpu_limit}",
                             'MEMORY_REQUEST':"${vars.resources.backup.memory_request}",
