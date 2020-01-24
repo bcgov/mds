@@ -119,9 +119,11 @@ export class ApplicationStepOne extends Component {
             loadNoticeOfWork={this.props.loadNoticeOfWork}
           />
         )}
-        {this.state.isImported && !this.props.noticeOfWork.lead_inspector_party_guid && (
-          <div>{this.renderInspectorAssignment()}</div>
-        )}
+        {this.state.isImported &&
+          !this.props.mines[this.props.mineGuid].major_mine_ind &&
+          !this.props.noticeOfWork.lead_inspector_party_guid && (
+            <div>{this.renderInspectorAssignment()}</div>
+          )}
         {this.state.isImported && this.props.noticeOfWork.application_progress[0] && (
           <div>{this.renderResult()}</div>
         )}
