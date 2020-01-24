@@ -66,6 +66,7 @@ export class Overview extends Component {
 
           <Title level={4}>Details</Title>
           <Descriptions column={1} colon={false}>
+            <Descriptions.Item label="Region">{this.props.mine.mine_region}</Descriptions.Item>
             <Descriptions.Item label="Coordinate">
               {`${this.props.mine.mine_location.latitude || Strings.NOT_APPLICABLE},${this.props
                 .mine.mine_location.longitude || Strings.NOT_APPLICABLE}`}

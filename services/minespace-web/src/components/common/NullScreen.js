@@ -31,7 +31,8 @@ const NullScreen = (props) => (
       <div className="no-nav-bar">
         <h1>Uh Oh!</h1>
         <p>
-          The page you're looking for can't be found. It may have moved, or it no longer exists.
+          The page you&apos;re looking for can&apos;t be found. It may have moved, or it no longer
+          exists.
         </p>
         <p>
           {" "}
@@ -43,11 +44,11 @@ const NullScreen = (props) => (
       <div className="no-nav-bar">
         <h3>You are not authorized to manage information for any mines.</h3>
         <p>
-          Please contact your MDS administrator at{" "}
+          Please contact your MDS administrator at&nbsp;
           <a className="underline" href="mailto:MDS@gov.bc.ca">
             MDS@gov.bc.ca
-          </a>{" "}
-          for assistance.
+          </a>
+          &nbsp; for assistance.
         </p>
       </div>
     )}

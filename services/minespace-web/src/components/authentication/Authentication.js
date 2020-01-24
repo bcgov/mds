@@ -77,7 +77,7 @@ export class Authentication extends Component {
               My Mines
             </Link>
             <Link to={route.DASHBOARD.route} className="header-link">
-              Manage Users
+              My Users
             </Link>
           </span>
           <Dropdown overlay={menu}>

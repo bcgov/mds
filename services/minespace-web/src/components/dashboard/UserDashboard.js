@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
+import { Row, Col, Divider, Typography } from "antd";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { getUserInfo } from "@/selectors/authenticationSelectors";
@@ -11,6 +12,8 @@ import CustomPropTypes from "@/customPropTypes";
 import Loading from "@/components/common/Loading";
 import * as routes from "@/constants/routes";
 import * as Strings from "@/constants/strings";
+
+const { Paragraph, Title } = Typography;
 
 const propTypes = {
   userInfo: PropTypes.objectOf(PropTypes.string).isRequired,
@@ -29,40 +32,41 @@ export class UserDashboard extends Component {
     if (!this.state.isLoaded) {
       return <Loading />;
     }
+
     const { mines } = this.props.userMineInfo;
     return (
-      <div className="user-dashboard-padding">
-        {(mines && mines.length > 0 && (
-          <div className="inline-flex between block-tablet">
-            <div>
-              <div>
-                <h1 className="user-title"> Welcome, {this.props.userInfo.preferred_username}.</h1>
-                <p className="large-padding-bot">
-                  You are authorized to submit information for the following mines:
-                </p>
-              </div>
-              <ul className="user-mine-list">
-                {mines
-                  .sort((a, b) => (a.mine_name > b.mine_name ? 1 : -1))
-                  .map((mine) => (
-                    <li key={mine.mine_guid}>
-                      <Link to={routes.MINE_DASHBOARD.dynamicRoute(mine.mine_guid)}>
-                        {mine.mine_name}
-                      </Link>
-                    </li>
-                  ))}
-              </ul>
-              <p className="large-padding-top">
+      <Row>
+        <Col>
+          <Title>My Mines</Title>
+          <Divider />
+          <Title level={2}>Welcome, {this.props.userInfo.preferred_username}.</Title>
+          {(mines && mines.length > 0 && (
+            <span>
+              <Paragraph>
+                You are authorized to submit information for the following mines:
+              </Paragraph>
+              <Paragraph>
+                <ul>
+                  {mines
+                    .sort((a, b) => (a.mine_name > b.mine_name ? 1 : -1))
+                    .map((mine) => (
+                      <li key={mine.mine_guid}>
+                        <Link to={routes.MINE_DASHBOARD.dynamicRoute(mine.mine_guid)}>
+                          {mine.mine_name}
+                        </Link>
+                      </li>
+                    ))}
+                </ul>
+              </Paragraph>
+              <Paragraph>
                 Don&apos;t see the mine you&apos;re looking for? Contact&nbsp;
-                <a className="underline" href={`mailto:${Strings.MDS_EMAIL}`}>
-                  {Strings.MDS_EMAIL}
-                </a>
+                <a href={`mailto:${Strings.MDS_EMAIL}`}>{Strings.MDS_EMAIL}</a>
                 &nbsp;for assistance.
-              </p>
-            </div>
-          </div>
-        )) || <NullScreen type="no-mines" />}
-      </div>
+              </Paragraph>
+            </span>
+          )) || <NullScreen type="no-mines" />}
+        </Col>
+      </Row>
     );
   }
 }
