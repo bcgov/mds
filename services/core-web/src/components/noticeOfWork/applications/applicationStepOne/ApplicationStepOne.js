@@ -46,11 +46,12 @@ export class ApplicationStepOne extends Component {
     }
   }
 
-  // componentWillReceiveProps(nextProps) {
-  //   if (this.props.noticeOfWork.imported_to_core !== nextProps.noticeOfWork.imported_to_core) {
-  //     this.setState({ isImported: nextProps.noticeOfWork.imported_to_core });
-  //   }
-  // }
+  componentWillReceiveProps(nextProps) {
+    if (this.props.noticeOfWork.imported_to_core !== nextProps.noticeOfWork.imported_to_core) {
+      this.setState({ isImported: nextProps.noticeOfWork.imported_to_core });
+    }
+  }
+
   handleNOWImport = (values) => {
     this.setState({ isLoaded: false });
     this.props

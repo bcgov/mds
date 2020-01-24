@@ -106,6 +106,15 @@ export class NoticeOfWorkApplication extends Component {
 
   componentDidMount() {
     const { id } = this.props.match.params;
+    this.setState((prevState) => ({
+      noticeOfWorkPageFromRoute:
+        this.props.location &&
+        this.props.location.state &&
+        this.props.location.state.noticeOfWorkPageFromRoute
+          ? this.props.location.state.noticeOfWorkPageFromRoute
+          : prevState.noticeOfWorkPageFromRoute,
+    }));
+
     if (id) {
       this.loadNoticeOfWork(id);
     } else if (this.props.history.location.state) {
@@ -144,35 +153,11 @@ export class NoticeOfWorkApplication extends Component {
   }
 
   loadNoticeOfWork = (id) => {
-    let currentStep = 0;
     this.props.fetchImportedNoticeOfWorkApplication(id).then(({ data }) => {
-      const associatedMineGuid = data.mine_guid ? data.mine_guid : "";
-      const isImported = data.imported_to_core;
+      this.props.fetchMineRecordById(data.mine_guid);
       this.handleProgressButtonLabels(data.application_progress);
-      this.props.fetchMineRecordById(associatedMineGuid).then(() => {
-        if (isImported) {
-          if (data.application_progress.length > 0) {
-            const recentStatus = data.application_progress.length;
-            currentStep = recentStatus;
-          }
-        }
-        this.setState({
-          isLoaded: true,
-          associatedMineGuid,
-          currentStep,
-          isNoWLoaded: true,
-        });
-      });
+      this.props.fetchOriginalNoticeOfWorkApplication(id);
     });
-    this.props.fetchOriginalNoticeOfWorkApplication(id);
-    this.setState((prevState) => ({
-      noticeOfWorkPageFromRoute:
-        this.props.location &&
-        this.props.location.state &&
-        this.props.location.state.noticeOfWorkPageFromRoute
-          ? this.props.location.state.noticeOfWorkPageFromRoute
-          : prevState.noticeOfWorkPageFromRoute,
-    }));
   };
 
   handleProgressButtonLabels = (applicationProgress) => {
@@ -218,6 +203,8 @@ export class NoticeOfWorkApplication extends Component {
   };
 
   onChange = (currentStep) => {
+    console.log(currentStep);
+    console.log(this.props);
     this.setState({
       currentStep,
     });
@@ -323,7 +310,7 @@ export class NoticeOfWorkApplication extends Component {
 
   handleProgressChange = (status) => {
     this.setState({ isNoWLoaded: false, isLoaded: false });
-    const {id} = this.props.match.params;
+    const { id } = this.props.match.params;
     this.props
       .createNoticeOfWorkApplicationProgress(id, {
         application_progress_status_code: status,
