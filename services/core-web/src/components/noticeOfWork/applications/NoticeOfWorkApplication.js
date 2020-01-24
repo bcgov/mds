@@ -53,7 +53,11 @@ const propTypes = {
   fetchImportedNoticeOfWorkApplication: PropTypes.func.isRequired,
   fetchOriginalNoticeOfWorkApplication: PropTypes.func.isRequired,
   reset: PropTypes.func.isRequired,
-  history: PropTypes.shape({ push: PropTypes.func }).isRequired,
+  history: PropTypes.shape({
+    location: PropTypes.shape({
+      state: PropTypes.shape({ mineGuid: PropTypes.string, permitGuid: PropTypes.string }),
+    }),
+  }).isRequired,
   location: PropTypes.shape({
     pathname: PropTypes.string,
     state: PropTypes.shape({
@@ -95,10 +99,45 @@ export class NoticeOfWorkApplication extends Component {
     buttonValue: "REV",
     buttonLabel: "Technical Review",
     noticeOfWorkPageFromRoute: undefined,
+    showNullScreen: false,
+    initialPermitGuid: "",
   };
 
   componentDidMount() {
     const { id } = this.props.match.params;
+
+    if (id) {
+      this.loadNoticeOfWork(id);
+    } else if (this.props.history.location.state) {
+      const { mineGuid, permitGuid } = this.props.history.location.state;
+      this.loadCreatePermitApplication(mineGuid, permitGuid);
+    } else {
+      this.setState({ showNullScreen: true });
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (
+      nextProps.noticeOfWork &&
+      this.props.noticeOfWork.application_progress &&
+      nextProps.noticeOfWork.application_progress.length !==
+        this.props.noticeOfWork.application_progress.length
+    ) {
+      this.handleProgressButtonLabels(nextProps.noticeOfWork.application_progress);
+    }
+  }
+
+  // eslint-disable-next-line react/sort-comp
+  loadCreatePermitApplication(mineGuid, permitGuid) {
+    this.setState({
+      associatedMineGuid: mineGuid,
+      initialPermitGuid: permitGuid,
+      showCreatePermitApplication: true,
+      isLoaded: true,
+    });
+  }
+
+  loadNoticeOfWork = (id) => {
     let currentStep = 0;
     this.props.fetchImportedNoticeOfWorkApplication(id).then(({ data }) => {
       const associatedMineGuid = data.mine_guid ? data.mine_guid : "";
@@ -128,18 +167,7 @@ export class NoticeOfWorkApplication extends Component {
           ? this.props.location.state.noticeOfWorkPageFromRoute
           : prevState.noticeOfWorkPageFromRoute,
     }));
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (
-      nextProps.noticeOfWork &&
-      this.props.noticeOfWork.application_progress &&
-      nextProps.noticeOfWork.application_progress.length !==
-        this.props.noticeOfWork.application_progress.length
-    ) {
-      this.handleProgressButtonLabels(nextProps.noticeOfWork.application_progress);
-    }
-  }
+  };
 
   handleProgressButtonLabels = (applicationProgress) => {
     const currentStep = applicationProgress.length;
@@ -287,9 +315,9 @@ export class NoticeOfWorkApplication extends Component {
     });
   };
 
-  handleProgressChange = (status) => {
+  handleProgressChange = (status, nowGuid) => {
     this.setState({ isNoWLoaded: false, isLoaded: false });
-    const { id } = this.props.match.params;
+    const id = nowGuid || this.props.match.params.id;
     this.props
       .createNoticeOfWorkApplicationProgress(id, {
         application_progress_status_code: status,
@@ -315,6 +343,16 @@ export class NoticeOfWorkApplication extends Component {
     if (!this.state.isLoaded) {
       return null;
     }
+    if (this.state.showCreatePermitApplication) {
+      return (
+        <MMPermitApplicationInit
+          initialPermitGuid={this.state.initialPermitGuid}
+          mineGuid={this.state.associatedMineGuid}
+          handleProgressChange={this.handleProgressChange}
+        />
+      );
+    }
+
     const mine = this.props.mines ? this.props.mines[this.state.associatedMineGuid] : {};
     return (
       <VerifyNOWMine
@@ -371,6 +409,9 @@ export class NoticeOfWorkApplication extends Component {
   };
 
   render() {
+    if (this.state.showNullScreen) {
+      return <NullScreen type="unauthorized" />;
+    }
     const isImported = this.props.noticeOfWork.imported_to_core;
     const steps = {
       0: this.renderStepOne(),
@@ -378,10 +419,9 @@ export class NoticeOfWorkApplication extends Component {
       2: this.renderStepThree(),
       3: <NullScreen type="next-stage" />,
     };
-
     const menu = (
       <Menu>
-        {this.state.isLoaded &&
+        {this.state.isNoWLoaded &&
           this.props.noticeOfWork.submission_documents.filter(
             (x) => x.filename === "ApplicationForm.pdf"
           ).length > 0 && (
@@ -501,7 +541,7 @@ export class NoticeOfWorkApplication extends Component {
               </div>
             )}
           </div>
-          <LoadingWrapper condition={this.state.isNoWLoaded}>
+          <LoadingWrapper condition={this.state.isLoaded}>
             <div>
               <div className={this.state.fixedTop ? "side-menu--fixed" : "side-menu"}>
                 {this.state.currentStep === 1 && (

@@ -15,7 +15,6 @@ import {
   createPermitAmendment,
   removePermitAmendmentDocument,
 } from "@/actionCreators/permitActionCreator";
-import { createNoticeOfWorkApplication } from "@/actionCreators/noticeOfWorkActionCreator";
 
 import { openModal, closeModal } from "@/actions/modalActions";
 import { fetchPartyRelationships } from "@/actionCreators/partiesActionCreator";
@@ -45,6 +44,7 @@ const propTypes = {
   partyRelationships: PropTypes.arrayOf(CustomPropTypes.partyRelationship),
   fetchPartyRelationships: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
+  history: PropTypes.shape({ push: PropTypes.func }).isRequired,
   closeModal: PropTypes.func.isRequired,
   createPermit: PropTypes.func.isRequired,
   fetchPermits: PropTypes.func.isRequired,
@@ -53,7 +53,6 @@ const propTypes = {
   createPermitAmendment: PropTypes.func.isRequired,
   removePermitAmendmentDocument: PropTypes.func.isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
-  createNoticeOfWorkApplication: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
@@ -257,7 +256,10 @@ export class MinePermitInfo extends Component {
       });
 
   handleAddPermitAmendmentApplication = (permitGuid) =>
-    this.props.history.push(router.NOTICE_OF_WORK_APPLICATION.dynamicRoute());
+    this.props.history.push(router.CREATE_NOTICE_OF_WORK_APPLICATION.route, {
+      mineGuid: this.props.mineGuid,
+      permitGuid,
+    });
 
   onExpand = (expanded, record) =>
     this.setState((prevState) => {
@@ -336,7 +338,6 @@ const mapDispatchToProps = (dispatch) =>
       fetchMineRecordById,
       openModal,
       closeModal,
-      createNoticeOfWorkApplication,
     },
     dispatch
   );

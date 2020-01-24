@@ -116,7 +116,9 @@ export class MineNOWApplications extends Component {
           >
             <AddButton
               onClick={() =>
-                this.props.history.push(router.CREATE_NOTICE_OF_WORK_APPLICATION.route)
+                this.props.history.push(router.CREATE_NOTICE_OF_WORK_APPLICATION.route, {
+                  mineGuid: this.props.mineGuid,
+                })
               }
             >
               Add a Permit Application
