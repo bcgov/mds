@@ -16,7 +16,7 @@ exports[`Authentication renders properly 1`] = `
         className="header-link"
         to="/dashboard"
       >
-        Manage Users
+        My Users
       </Link>
     </span>
     <Dropdown
