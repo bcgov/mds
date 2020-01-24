@@ -3,7 +3,6 @@
 exports[`RenderAutoComplete renders properly 1`] = `
 <FormItem
   hasFeedback={false}
-  label="Select a mine"
   validateStatus=""
 >
   <AutoComplete

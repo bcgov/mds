@@ -15,6 +15,10 @@ export const storeNoticeOfWorkApplication = (payload) => ({
   payload,
 });
 
+export const clearNoticeOfWorkApplication = () => ({
+  type: actionTypes.CLEAR_NOTICE_OF_WORK_APPLICATION,
+});
+
 export const storeOriginalNoticeOfWorkApplication = (payload) => ({
   type: actionTypes.STORE_ORIGINAL_NOTICE_OF_WORK_APPLICATION,
   payload,

@@ -26,7 +26,8 @@ import {
   getDropdownNoticeOfWorkApplicationStatusOptions,
   getNoticeOfWorkApplicationProgressStatusCodeOptions,
 } from "@/selectors/staticContentSelectors";
-import VerifyNOWMine from "@/components/noticeOfWork/applications/verification/VerifyNOWMine";
+import { clearNoticeOfWorkApplication } from "@/actions/noticeOfWorkActions";
+import ApplicationStepOne from "@/components/noticeOfWork/applications/applicationStepOne/ApplicationStepOne";
 import NOWApplicationReviews from "@/components/noticeOfWork/applications/referals/NOWApplicationReviews";
 import CustomPropTypes from "@/customPropTypes";
 import ReviewNOWApplication from "@/components/noticeOfWork/applications/review/ReviewNOWApplication";
@@ -36,7 +37,6 @@ import NoticeOfWorkPageHeader from "@/components/noticeOfWork/applications/Notic
 import * as FORM from "@/constants/forms";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
 import { downloadNowDocument } from "@/utils/actionlessNetworkCalls";
-import MMPermitApplicationInit from "@/components/noticeOfWork/applications/MMPermitApplicationInit";
 
 const { Step } = Steps;
 
@@ -47,13 +47,14 @@ const { Step } = Steps;
 const propTypes = {
   noticeOfWork: CustomPropTypes.importedNOWApplication,
   originalNoticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
-  createNoticeOfWorkApplicationProgress: CustomPropTypes.importedNOWApplication.isRequired,
+  createNoticeOfWorkApplicationProgress: PropTypes.func.isRequired,
   updateNoticeOfWorkApplication: PropTypes.func.isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
   fetchImportedNoticeOfWorkApplication: PropTypes.func.isRequired,
   fetchOriginalNoticeOfWorkApplication: PropTypes.func.isRequired,
   reset: PropTypes.func.isRequired,
   history: PropTypes.shape({
+    push: PropTypes.func,
     location: PropTypes.shape({
       state: PropTypes.shape({ mineGuid: PropTypes.string, permitGuid: PropTypes.string }),
     }),
@@ -70,7 +71,6 @@ const propTypes = {
     },
   }).isRequired,
   formValues: CustomPropTypes.importedNOWApplication.isRequired,
-  mines: PropTypes.arrayOf(CustomPropTypes.mine).isRequired,
   inspectors: CustomPropTypes.groupOptions.isRequired,
   inspectorsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   applicationProgressStatusCodes: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string))
@@ -78,6 +78,7 @@ const propTypes = {
   reclamationSummary: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.strings)).isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
+  clearNoticeOfWorkApplication: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
@@ -105,7 +106,6 @@ export class NoticeOfWorkApplication extends Component {
 
   componentDidMount() {
     const { id } = this.props.match.params;
-
     if (id) {
       this.loadNoticeOfWork(id);
     } else if (this.props.history.location.state) {
@@ -117,6 +117,9 @@ export class NoticeOfWorkApplication extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    if (nextProps.location !== this.props.location) {
+      this.loadNoticeOfWork(nextProps.match.params.id);
+    }
     if (
       nextProps.noticeOfWork &&
       this.props.noticeOfWork.application_progress &&
@@ -127,12 +130,15 @@ export class NoticeOfWorkApplication extends Component {
     }
   }
 
+  componentWillUnmount() {
+    this.props.clearNoticeOfWorkApplication();
+  }
+
   // eslint-disable-next-line react/sort-comp
   loadCreatePermitApplication(mineGuid, permitGuid) {
     this.setState({
       associatedMineGuid: mineGuid,
       initialPermitGuid: permitGuid,
-      showCreatePermitApplication: true,
       isLoaded: true,
     });
   }
@@ -315,20 +321,22 @@ export class NoticeOfWorkApplication extends Component {
     });
   };
 
-  handleProgressChange = (status, nowGuid) => {
+  handleProgressChange = (status, newNoWGuid) => {
     this.setState({ isNoWLoaded: false, isLoaded: false });
-    const id = nowGuid || this.props.match.params.id;
+    const id = newNoWGuid || this.props.match.params.id;
     this.props
       .createNoticeOfWorkApplicationProgress(id, {
         application_progress_status_code: status,
       })
       .then(() => {
-        return this.props
-          .fetchImportedNoticeOfWorkApplication(this.props.noticeOfWork.now_application_guid)
-          .then(() => {
+        if (newNoWGuid) {
+          this.props.history.push(routes.NOTICE_OF_WORK_APPLICATION.dynamicRoute(newNoWGuid));
+        } else {
+          this.props.fetchImportedNoticeOfWorkApplication(id).then(() => {
             this.props.fetchMineRecordById(this.state.associatedMineGuid);
             this.setState({ isNoWLoaded: true, isLoaded: true });
           });
+        }
       });
 
     const statusIndex = {
@@ -343,24 +351,15 @@ export class NoticeOfWorkApplication extends Component {
     if (!this.state.isLoaded) {
       return null;
     }
-    if (this.state.showCreatePermitApplication) {
-      return (
-        <MMPermitApplicationInit
-          initialPermitGuid={this.state.initialPermitGuid}
-          mineGuid={this.state.associatedMineGuid}
-          handleProgressChange={this.handleProgressChange}
-        />
-      );
-    }
-
-    const mine = this.props.mines ? this.props.mines[this.state.associatedMineGuid] : {};
     return (
-      <VerifyNOWMine
+      <ApplicationStepOne
         noticeOfWork={this.props.noticeOfWork}
-        currentMine={mine}
+        mineGuid={this.state.associatedMineGuid}
         setLeadInspectorPartyGuid={this.setLeadInspectorPartyGuid}
         handleUpdateLeadInspector={this.handleUpdateLeadInspector}
         handleProgressChange={this.handleProgressChange}
+        loadNoticeOfWork={this.loadNoticeOfWork}
+        initialPermitGuid={this.state.initialPermitGuid}
       />
     );
   };
@@ -584,6 +583,7 @@ const mapDispatchToProps = (dispatch) =>
       reset,
       openModal,
       closeModal,
+      clearNoticeOfWorkApplication,
     },
     dispatch
   );

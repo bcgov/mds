@@ -3,7 +3,6 @@ import { Col, Row } from "antd";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import PropTypes from "prop-types";
-import * as router from "@/constants/routes";
 import { getMines } from "@/selectors/mineSelectors";
 import MineCard from "@/components/mine/NoticeOfWork/MineCard";
 import { getPermits } from "@/reducers/permitReducer";
@@ -18,7 +17,6 @@ const propTypes = {
   initialPermitGuid: PropTypes.string,
   fetchPermits: PropTypes.func.isRequired,
   minePermits: PropTypes.arrayOf(CustomPropTypes.permit).isRequired,
-  history: PropTypes.shape({ push: PropTypes.func }).isRequired,
   createNoticeOfWorkApplication: PropTypes.func.isRequired,
   handleProgressChange: PropTypes.func.isRequired,
   mines: PropTypes.arrayOf(CustomPropTypes.mine).isRequired,
@@ -42,14 +40,9 @@ export class MMPermitApplicationInit extends Component {
     this.setState({ isSubmitting: true });
     this.props.createNoticeOfWorkApplication(newValues).then((response) => {
       if (response) {
-        this.props.handleProgressChange("REV", response.data.now_application_guid).then(() => {
-          this.props.history.push(
-            router.NOTICE_OF_WORK_APPLICATION.dynamicRoute(response.data.now_application_guid)
-          );
-        });
-      } else {
-        this.setState({ isSubmitting: false });
+        this.props.handleProgressChange("REV", response.data.now_application_guid);
       }
+      this.setState({ isSubmitting: false });
     });
   };
 

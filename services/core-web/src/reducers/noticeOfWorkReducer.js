@@ -28,6 +28,11 @@ const noticeOfWorkReducer = (state = initialState, action) => {
         ...state,
         noticeOfWork: action.payload,
       };
+    case actionTypes.CLEAR_NOTICE_OF_WORK_APPLICATION:
+      return {
+        ...state,
+        noticeOfWork: {},
+      };
     case actionTypes.STORE_ORIGINAL_NOTICE_OF_WORK_APPLICATION:
       return {
         ...state,

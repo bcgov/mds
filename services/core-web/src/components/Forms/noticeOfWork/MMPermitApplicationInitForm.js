@@ -15,7 +15,6 @@ const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
   isSubmitting: PropTypes.bool,
-  handleMineSelect: PropTypes.func.isRequired,
   applicationTypeOptions: PropTypes.arrayOf(CustomPropTypes.options).isRequired,
   minePermits: PropTypes.arrayOf(CustomPropTypes.permit).isRequired,
 };

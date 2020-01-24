@@ -339,6 +339,19 @@ exports[`DashboardRoutes  renders properly 1`] = `
       }
     }
     exact={true}
+    path="/dashboard/notice-of-work/application/"
+  />
+  <Route
+    component={
+      Object {
+        "$$typeof": Symbol(react.memo),
+        "WrappedComponent": [Function],
+        "compare": null,
+        "displayName": "Connect(NoticeOfWorkApplication)",
+        "type": [Function],
+      }
+    }
+    exact={true}
     path="/dashboard/notice-of-work/application/:id/"
   />
   <Route
