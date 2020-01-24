@@ -8,13 +8,13 @@ exports[`Authentication renders properly 1`] = `
     <span>
       <Link
         className="header-link"
-        to="/dashboard"
+        to="/mines"
       >
         My Mines
       </Link>
       <Link
         className="header-link"
-        to="/dashboard"
+        to="/users"
       >
         My Users
       </Link>
@@ -71,7 +71,7 @@ exports[`Authentication renders properly 1`] = `
               loading={false}
             >
               <ForwardRef
-                to="/dashboard"
+                to="/mines"
               >
                 My Mines
               </ForwardRef>
@@ -85,7 +85,7 @@ exports[`Authentication renders properly 1`] = `
               loading={false}
             >
               <ForwardRef
-                to="/dashboard"
+                to="/mines"
               >
                 Manage Users
               </ForwardRef>
