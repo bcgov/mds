@@ -7,6 +7,7 @@
 
 // TOOLS - globally used mixins and functions. (ie gradient mixins, font-sizing mixins)
 @import "./tools/mixins.scss";
+@import "./tools/filepond-overrides.scss";
 
 // GENERIC - Very high level, far-reaching styles. Contains Normalize.css, Box-sizing rules, CSS resets etc.
 @import "./antd-overrides/antd-overrides.scss";
