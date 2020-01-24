@@ -76,7 +76,7 @@ class VarianceResource(Resource, UserMixin):
     def _apply_filters_and_pagination(self, args):
         sort_models = {
             'variance_id': 'Variance',
-            'compliance_code': 'Variance',
+            'compliance_article_id': 'Variance',
             'lead_inspector': 'Variance',
             'received_date': 'Variance',
             'mine_name': 'Mine',
@@ -170,5 +170,9 @@ class VarianceResource(Resource, UserMixin):
                 filtered_query = apply_sort(filtered_query, sort_criteria)
         else:
             filtered_query = apply_filters(query, conditions)
+
+            # default sorting is by submission date descending
+            sort_criteria = [{'model': 'Variance', 'field': 'received_date', 'direction': 'desc'}]
+            filtered_query = apply_sort(filtered_query, sort_criteria)
 
         return apply_pagination(filtered_query, args["page_number"], args["page_size"])

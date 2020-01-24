@@ -53,7 +53,7 @@ export class IncidentSearchForm extends Component {
               id="search"
               name="search"
               component={renderConfig.FIELD}
-              placeholder="Search by mine name, or mine number"
+              placeholder="Search by mine name or number"
             />
           </Col>
         </Row>
