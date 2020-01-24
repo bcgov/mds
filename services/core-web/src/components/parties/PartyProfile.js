@@ -159,13 +159,13 @@ export class PartyProfile extends Component {
       }));
 
     if (this.state.isLoaded && parties) {
-      const formatedName = formatTitleString(parties.name);
+      const formattedName = formatTitleString(parties.name);
       const isPerson = parties.party_type_code === ModalContent.PERSON;
       return (
         <div className="profile">
           <div className="profile__header">
             <div className="inline-flex between">
-              <h1>{formatedName}</h1>
+              <h1>{formattedName}</h1>
               <div>
                 <AuthorizationWrapper inTesting>
                   <AuthorizationWrapper permission={Permission.ADMIN}>
@@ -175,7 +175,7 @@ export class PartyProfile extends Component {
                       title={
                         <div>
                           <p>
-                            Are you sure you want to delete the party &apos;{formatedName}&apos;?
+                            Are you sure you want to delete the party &apos;{formattedName}&apos;?
                           </p>
                           <p>
                             Doing so will permanently remove the party and all associated roles.
@@ -201,7 +201,7 @@ export class PartyProfile extends Component {
                         event,
                         parties,
                         this.editParty,
-                        ModalContent.EDIT_PARTY(formatedName),
+                        ModalContent.EDIT_PARTY(formattedName),
                         isPerson,
                         this.props.provinceOptions
                       )
