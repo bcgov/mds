@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Table, Button, Icon } from "antd";
@@ -15,6 +17,7 @@ const propTypes = {
   complianceCodesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   varianceStatusOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   isApplication: PropTypes.bool,
+  isLoaded: PropTypes.bool,
   openEditVarianceModal: PropTypes.func,
   openViewVarianceModal: PropTypes.func,
 };
@@ -25,7 +28,7 @@ const defaultProps = {
   openViewVarianceModal: () => {},
 };
 
-export class VarianceTable extends Component {
+export class VariancesTable extends Component {
   getOverdueStyle = (isOverdue) => (isOverdue ? { color: errorRed } : {});
 
   handleConditionalEdit = (code) => code === Strings.VARIANCE_APPLICATION_CODE;
@@ -34,6 +37,7 @@ export class VarianceTable extends Component {
     variances.map((variance) => ({
       key: variance.variance_guid,
       variance,
+      variance_no: variance.variance_no,
       isEditable: this.handleConditionalEdit(variance.variance_application_status_code),
       status: statusHash[variance.variance_application_status_code],
       compliance_article_id: codeHash[variance.compliance_article_id] || Strings.EMPTY_FIELD,
@@ -62,6 +66,15 @@ export class VarianceTable extends Component {
       render: (text, record) => (
         <div title="Overdue">
           {record.isOverdue ? <img className="padding-small" src={RED_CLOCK} alt="expired" /> : ""}
+        </div>
+      ),
+    },
+    {
+      title: "Variance No.",
+      dataIndex: "variance_no",
+      render: (text, record) => (
+        <div style={this.getOverdueStyle(record.isOverdue)} title="Variance No.">
+          {text}
         </div>
       ),
     },
@@ -95,7 +108,7 @@ export class VarianceTable extends Component {
       defaultSortOrder: "ascend",
     },
     {
-      title: "Application  Status",
+      title: "Application Status",
       dataIndex: "status",
       className: !isApplication ? "column-hide" : "",
       render: (text, record) => (
@@ -186,9 +199,7 @@ export class VarianceTable extends Component {
       render: (text, record) => (
         <div title={record.isEditable ? "Edit" : "View"} align="right">
           <Button
-            type="primary"
-            size="small"
-            ghost
+            type="link"
             onClick={(event) => this.handleOpenModal(event, record.isEditable, record.variance)}
             style={this.getOverdueStyle(record.isOverdue)}
           >
@@ -207,14 +218,10 @@ export class VarianceTable extends Component {
     return (
       <div>
         <Table
-          align="left"
+          loading={this.props.isLoaded}
+          size="small"
           pagination={false}
           columns={this.columns(this.props.isApplication)}
-          locale={{
-            emptyText: this.props.isApplication
-              ? "No pending variance applications"
-              : "No approved variances",
-          }}
           dataSource={this.transformRowData(
             this.props.variances,
             this.props.complianceCodesHash,
@@ -226,7 +233,7 @@ export class VarianceTable extends Component {
   }
 }
 
-VarianceTable.propTypes = propTypes;
-VarianceTable.defaultProps = defaultProps;
+VariancesTable.propTypes = propTypes;
+VariancesTable.defaultProps = defaultProps;
 
-export default VarianceTable;
+export default VariancesTable;

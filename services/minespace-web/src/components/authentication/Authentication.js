@@ -37,6 +37,11 @@ export class Authentication extends Component {
             <Link to={route.DASHBOARD.route}>My Mines</Link>
           </Button>
         </Menu.Item>
+        <Menu.Item key="manage-users">
+          <Button>
+            <Link to={route.DASHBOARD.route}>Manage Users</Link>
+          </Button>
+        </Menu.Item>
         <Divider style={{ margin: "0" }} />
         <Menu.Item key="logout">
           <Button onClick={this.handleLogout}>Log out</Button>
@@ -67,9 +72,14 @@ export class Authentication extends Component {
     return (
       <div>
         <MediaQuery minWidth={701}>
-          <Link to={route.DASHBOARD.route} className="header-link">
-            My Mines
-          </Link>
+          <span>
+            <Link to={route.DASHBOARD.route} className="header-link">
+              My Mines
+            </Link>
+            <Link to={route.DASHBOARD.route} className="header-link">
+              Manage Users
+            </Link>
+          </span>
           <Dropdown overlay={menu}>
             <Button className="header-dropdown-button">
               {this.props.userInfo.email}

@@ -58,78 +58,73 @@ const partyPermittee = {
 
 export class Overview extends Component {
   render() {
-    console.log(this.props);
     return (
-      <div>
-        <Row>
-          <Col lg={{ span: 16 }}>
-            <Title level={4}>Description</Title>
-            <Paragraph>{this.props.mine.mine_note || Strings.NOT_APPLICABLE}</Paragraph>
+      <Row>
+        <Col lg={{ span: 16 }}>
+          <Title level={4}>Description</Title>
+          <Paragraph>{this.props.mine.mine_note || Strings.NOT_APPLICABLE}</Paragraph>
 
-            <Title level={4}>Details</Title>
-            <Descriptions column={1} colon={false}>
-              <Descriptions.Item label="Coordinate">
-                {`${this.props.mine.mine_location.latitude || Strings.NOT_APPLICABLE},${this.props
-                  .mine.mine_location.longitude || Strings.NOT_APPLICABLE}`}
-              </Descriptions.Item>
-              <Descriptions.Item label="Commodity">{Strings.NOT_APPLICABLE}</Descriptions.Item>
-              <Descriptions.Item label="Operating Status">
-                {Strings.NOT_APPLICABLE}
-              </Descriptions.Item>
-              <Descriptions.Item label="Disturbance">{Strings.NOT_APPLICABLE}</Descriptions.Item>
-            </Descriptions>
+          <Title level={4}>Details</Title>
+          <Descriptions column={1} colon={false}>
+            <Descriptions.Item label="Coordinate">
+              {`${this.props.mine.mine_location.latitude || Strings.NOT_APPLICABLE},${this.props
+                .mine.mine_location.longitude || Strings.NOT_APPLICABLE}`}
+            </Descriptions.Item>
+            <Descriptions.Item label="Commodity">{Strings.NOT_APPLICABLE}</Descriptions.Item>
+            <Descriptions.Item label="Operating Status">{Strings.NOT_APPLICABLE}</Descriptions.Item>
+            <Descriptions.Item label="Disturbance">{Strings.NOT_APPLICABLE}</Descriptions.Item>
+          </Descriptions>
 
-            <Title level={4}>Contacts</Title>
-            <Row>
-              <Col xl={{ span: 10 }}>
-                <ContactCard
-                  title="Mine Manager"
-                  party={partyMineManager}
-                  dateLabel="Mine Manager Since"
-                />
-              </Col>
-              <Col xl={{ offset: 2, span: 10 }}>
-                <ContactCard title="Permittee" party={partyPermittee} dateLabel="Permittee Since" />
-              </Col>
-            </Row>
-          </Col>
-          <Col lg={{ offset: 1, span: 7 }}>
-            <Card title="Ministry Contacts">
-              <Paragraph>
-                <Text strong>Regional Health and Safety:</Text>
-                <br />
-                <Text>{Strings.MINISTRY_CONTACTS.REGIONAL_HEALTH_AND_SAFETY.NAME}</Text>
-                <br />
-                <Text>{Strings.MINISTRY_CONTACTS.REGIONAL_HEALTH_AND_SAFETY.PHONE}</Text>
-                <br />
-                <Text>
-                  <a href={`mailto:${Strings.MINISTRY_CONTACTS.REGIONAL_HEALTH_AND_SAFETY.EMAIL}`}>
-                    {Strings.MINISTRY_CONTACTS.REGIONAL_HEALTH_AND_SAFETY.EMAIL}
-                  </a>
-                </Text>
-              </Paragraph>
-              <Paragraph>
-                <Text strong>Regional Mine General:</Text>
-                <br />
-                <Text>
-                  <a href={`mailto:${Strings.MINISTRY_CONTACTS.REGIONAL_MINE_GENERAL.EMAIL}`}>
-                    {Strings.MINISTRY_CONTACTS.REGIONAL_MINE_GENERAL.EMAIL}
-                  </a>
-                </Text>
-              </Paragraph>
-              <Paragraph>
-                <Text strong>Major Mine General:</Text>
-                <br />
-                <Text>
-                  <a href={`mailto:${Strings.MINISTRY_CONTACTS.MAJOR_MINE_GENERAL.EMAIL}`}>
-                    {Strings.MINISTRY_CONTACTS.MAJOR_MINE_GENERAL.EMAIL}
-                  </a>
-                </Text>
-              </Paragraph>
-            </Card>
-          </Col>
-        </Row>
-      </div>
+          <Title level={4}>Contacts</Title>
+          <Row>
+            <Col xl={{ span: 10 }}>
+              <ContactCard
+                title="Mine Manager"
+                party={partyMineManager}
+                dateLabel="Mine Manager Since"
+              />
+            </Col>
+            <Col xl={{ offset: 2, span: 10 }}>
+              <ContactCard title="Permittee" party={partyPermittee} dateLabel="Permittee Since" />
+            </Col>
+          </Row>
+        </Col>
+        <Col lg={{ offset: 1, span: 7 }}>
+          <Card title="Ministry Contacts">
+            <Paragraph>
+              <Text strong>Regional Health and Safety</Text>
+              <br />
+              <Text>{Strings.MINISTRY_CONTACTS.REGIONAL_HEALTH_AND_SAFETY.NAME}</Text>
+              <br />
+              <Text>{Strings.MINISTRY_CONTACTS.REGIONAL_HEALTH_AND_SAFETY.PHONE}</Text>
+              <br />
+              <Text>
+                <a href={`mailto:${Strings.MINISTRY_CONTACTS.REGIONAL_HEALTH_AND_SAFETY.EMAIL}`}>
+                  {Strings.MINISTRY_CONTACTS.REGIONAL_HEALTH_AND_SAFETY.EMAIL}
+                </a>
+              </Text>
+            </Paragraph>
+            <Paragraph>
+              <Text strong>Regional Mine General</Text>
+              <br />
+              <Text>
+                <a href={`mailto:${Strings.MINISTRY_CONTACTS.REGIONAL_MINE_GENERAL.EMAIL}`}>
+                  {Strings.MINISTRY_CONTACTS.REGIONAL_MINE_GENERAL.EMAIL}
+                </a>
+              </Text>
+            </Paragraph>
+            <Paragraph>
+              <Text strong>Major Mine General</Text>
+              <br />
+              <Text>
+                <a href={`mailto:${Strings.MINISTRY_CONTACTS.MAJOR_MINE_GENERAL.EMAIL}`}>
+                  {Strings.MINISTRY_CONTACTS.MAJOR_MINE_GENERAL.EMAIL}
+                </a>
+              </Text>
+            </Paragraph>
+          </Card>
+        </Col>
+      </Row>
     );
   }
 }

@@ -5,9 +5,8 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import CustomPropTypes from "@/customPropTypes";
 import { Row, Col, Table, Typography } from "antd";
-import * as Strings from "@/constants/strings";
 
-const { Paragraph, Text, Title } = Typography;
+const { Paragraph, Title } = Typography;
 
 const propTypes = {
   mine: CustomPropTypes.mine.isRequired,
@@ -53,19 +52,21 @@ const data = [
 export class Permits extends Component {
   render() {
     return (
-      <div>
-        <Row>
-          <Col>
-            <Title level={4}>Permit Details</Title>
-            <Table
-              size="small"
-              columns={columns}
-              expandedRowRender={(record) => <p style={{ margin: 0 }}>{record.description}</p>}
-              dataSource={data}
-            />
-          </Col>
-        </Row>
-      </div>
+      <Row>
+        <Col>
+          <Title level={4}>Permit Details</Title>
+          <Paragraph>
+            Morbi consequat, augue et pulvinar condimentum, nunc urna congue diam, at tempus justo
+            eros non leo.
+          </Paragraph>
+          <Table
+            size="small"
+            columns={columns}
+            expandedRowRender={(record) => <p>{record.description}</p>}
+            dataSource={data}
+          />
+        </Col>
+      </Row>
     );
   }
 }

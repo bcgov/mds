@@ -1,28 +1,27 @@
+/* eslint-disable */
+
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
+import { Row, Col, Icon, Typography } from "antd";
 import PropTypes from "prop-types";
 import { getMine } from "@/selectors/userMineSelectors";
 import CustomPropTypes from "@/customPropTypes";
-import Loading from "@/components/common/Loading";
 import { fetchMineRecordById } from "@/actionCreators/userDashboardActionCreator";
 import { fetchMineReports, updateMineReport } from "@/actionCreators/reportActionCreator";
 import { modalConfig } from "@/components/modalContent/config";
 import { openModal, closeModal } from "@/actions/modalActions";
 import { getMineReports } from "@/selectors/reportSelectors";
-import MineReportTable from "@/components/dashboard/mine/reports/MineReportTable";
+import ReportsTable from "@/components/dashboard/mine/reports/ReportsTable";
 import { fetchMineReportDefinitionOptions } from "@/actionCreators/staticContentActionCreator";
 import { getMineReportDefinitionOptions } from "@/reducers/staticContentReducer";
+
+const { Paragraph, Title } = Typography;
 
 const propTypes = {
   mine: CustomPropTypes.mine.isRequired,
   mineReports: PropTypes.arrayOf(CustomPropTypes.mineReport).isRequired,
   mineReportDefinitionOptions: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
-  match: PropTypes.shape({
-    params: {
-      id: PropTypes.string,
-    },
-  }).isRequired,
   fetchMineReportDefinitionOptions: PropTypes.func.isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
   updateMineReport: PropTypes.func.isRequired,
@@ -31,14 +30,24 @@ const propTypes = {
   closeModal: PropTypes.func.isRequired,
 };
 
+const TableSummaryCard = (props) => (
+  <div className="table-summary-card">
+    <div>
+      <Icon className={`table-summary-card-icon color-${props.type}`} type={props.icon} />
+      <span className="table-summary-card-title">{props.title}</span>
+    </div>
+    <div className="table-summary-card-content">{props.content}</div>
+  </div>
+);
+
 export class Reports extends Component {
   state = { isLoaded: false };
 
   componentDidMount() {
     this.props.fetchMineReportDefinitionOptions();
-    const { id } = this.props.match.params;
-    this.props.fetchMineReports(id);
-    this.props.fetchMineRecordById(id).then(() => {
+    const { mine_guid } = this.props.mine;
+    this.props.fetchMineReports(mine_guid);
+    this.props.fetchMineRecordById(mine_guid).then(() => {
       this.setState({ isLoaded: true });
     });
   }
@@ -64,10 +73,6 @@ export class Reports extends Component {
   };
 
   render() {
-    if (!this.state.isLoaded) {
-      return <Loading />;
-    }
-
     const filteredReportDefinitionGuids =
       this.props.mineReportDefinitionOptions &&
       this.props.mineReportDefinitionOptions
@@ -83,20 +88,54 @@ export class Reports extends Component {
       );
 
     return (
-      <div className="mine-info-padding">
-        {this.props.mineReports && (
-          <div>
-            <h1 className="mine-title">{this.props.mine.mine_name}</h1>
-            <p>Mine No. {this.props.mine.mine_no}</p>
-            <h2>Reports</h2>
-            <MineReportTable
-              openEditReportModal={this.openEditReportModal}
-              handleEditReport={this.handleEditReport}
-              mineReports={filteredReports}
-            />
-          </div>
-        )}
-      </div>
+      <Row>
+        <Col>
+          <Row>
+            <Col>
+              <Title level={4}>Report Details</Title>
+              <Paragraph>
+                Morbi consequat, augue et pulvinar condimentum, nunc urna congue diam, at tempus
+                justo eros non leo.
+              </Paragraph>
+            </Col>
+          </Row>
+          <Row gutter={[48, 48]}>
+            <Col lg={{ span: 7, offset: 1 }}>
+              <TableSummaryCard
+                title="Reports Submitted"
+                content="6"
+                icon="check-circle"
+                type="success"
+              />
+            </Col>
+            <Col lg={7}>
+              <TableSummaryCard
+                title="Reports Overdue"
+                content="6"
+                icon="clock-circle"
+                type="error"
+              />
+            </Col>
+            <Col lg={7}>
+              <TableSummaryCard
+                title="Reports Due"
+                content="6"
+                icon="exclamation-circle"
+                type="warning"
+              />
+            </Col>
+          </Row>
+          <Row>
+            <Col>
+              <ReportsTable
+                openEditReportModal={this.openEditReportModal}
+                handleEditReport={this.handleEditReport}
+                mineReports={filteredReports}
+              />
+            </Col>
+          </Row>
+        </Col>
+      </Row>
     );
   }
 }
@@ -122,7 +161,4 @@ const mapDispatchToProps = (dispatch) =>
 
 Reports.propTypes = propTypes;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Reports);
+export default connect(mapStateToProps, mapDispatchToProps)(Reports);

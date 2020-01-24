@@ -1,14 +1,15 @@
 /* eslint-disable */
+
 import React from "react";
-import { Table } from "antd";
+import { Table, Button } from "antd";
 import moment from "moment";
 import PropTypes from "prop-types";
 import NullScreen from "@/components/common/NullScreen";
 import * as Strings from "@/constants/strings";
 import { formatDate } from "@/utils/helpers";
 import { COLOR } from "@/constants/styles";
+import { EDIT_PENCIL } from "@/constants/assets";
 import CustomPropTypes from "@/customPropTypes";
-import { MineReportActions } from "@/components/dashboard/mine/reports/MineReportActions";
 
 const { errorRed } = COLOR;
 
@@ -75,11 +76,14 @@ const columns = [
     render: (text, record) => {
       return (
         <div title="" align="right">
-          <MineReportActions
-            mineReport={record.report}
-            openEditReportModal={record.openEditReportModal}
-            handleEditReport={record.handleEditReport}
-          />
+          <Button
+            type="link"
+            onClick={(event) =>
+              record.openEditReportModal(event, record.handleEditReport, record.mineReport)
+            }
+          >
+            <img src={EDIT_PENCIL} alt="Edit" />
+          </Button>
         </div>
       );
     },
@@ -98,8 +102,9 @@ const transformRowData = (report, openEditReportModal, handleEditReport, handleR
   handleRemoveReport,
 });
 
-export const MineReportTable = (props) => (
+export const ReportsTable = (props) => (
   <Table
+    size="small"
     align="left"
     pagination={false}
     columns={columns}
@@ -115,7 +120,7 @@ export const MineReportTable = (props) => (
   />
 );
 
-MineReportTable.propTypes = propTypes;
-MineReportTable.defaultProps = defaultProps;
+ReportsTable.propTypes = propTypes;
+ReportsTable.defaultProps = defaultProps;
 
-export default MineReportTable;
+export default ReportsTable;

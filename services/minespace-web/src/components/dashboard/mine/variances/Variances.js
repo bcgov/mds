@@ -1,7 +1,9 @@
+/* eslint-disable */
+
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { Button } from "antd";
+import { Button, Row, Col, Table, Icon, Typography } from "antd";
 import moment from "moment";
 import PropTypes from "prop-types";
 import { getMine } from "@/selectors/userMineSelectors";
@@ -28,7 +30,9 @@ import {
   getHSRCMComplianceCodesHash,
   getDropdownHSRCMComplianceCodes,
 } from "@/selectors/varianceSelectors";
-import VarianceTable from "@/components/dashboard/mine/variances/VarianceTable";
+import VariancesTable from "@/components/dashboard/mine/variances/VariancesTable";
+
+const { Paragraph, Text, Title } = Typography;
 
 const propTypes = {
   mine: CustomPropTypes.mine.isRequired,
@@ -147,46 +151,31 @@ export class Variances extends Component {
   }
 
   render() {
-    if (!this.state.isLoaded) {
-      return <Loading />;
-    }
-
     return (
-      <div className="mine-info-padding">
-        {this.props.mine && (
-          <div>
-            <h1 className="mine-title">{this.props.mine.mine_name}</h1>
-            <p>Mine No. {this.props.mine.mine_no}</p>
-            <br />
-            <div className="inline-flex between">
-              <h2>Variance Applications</h2>
-              <Button
-                type="primary"
-                onClick={(event) => this.openVarianceModal(event, this.props.mine.mine_name)}
-              >
-                Apply for Variance
-              </Button>
-            </div>
-            <VarianceTable
-              variances={this.props.varianceApplications}
-              isApplication
-              mine={this.props.mine}
-              varianceStatusOptionsHash={this.props.varianceStatusOptionsHash}
-              complianceCodesHash={this.props.complianceCodesHash}
-              openViewVarianceModal={this.openViewVarianceModal}
-              openEditVarianceModal={this.openEditVarianceModal}
-            />
-            <h2>Approved Variances</h2>
-            <VarianceTable
-              variances={this.props.approvedVariances}
-              mine={this.props.mine}
-              varianceStatusOptionsHash={this.props.varianceStatusOptionsHash}
-              complianceCodesHash={this.props.complianceCodesHash}
-              openViewVarianceModal={this.openViewVarianceModal}
-            />
-          </div>
-        )}
-      </div>
+      <Row>
+        <Col>
+          {/* <Button
+            type="primary"
+            onClick={(event) => this.openVarianceModal(event, this.props.mine.mine_name)}
+          >
+            Apply for Variance
+          </Button> */}
+          <Title level={4}>Variance Details</Title>
+          <Paragraph>
+            Morbi consequat, augue et pulvinar condimentum, nunc urna congue diam, at tempus justo
+            eros non leo.
+          </Paragraph>
+          <VariancesTable
+            variances={this.props.varianceApplications}
+            mine={this.props.mine}
+            isApplication
+            varianceStatusOptionsHash={this.props.varianceStatusOptionsHash}
+            complianceCodesHash={this.props.complianceCodesHash}
+            openViewVarianceModal={this.openViewVarianceModal}
+            openEditVarianceModal={this.openEditVarianceModal}
+          />
+        </Col>
+      </Row>
     );
   }
 }

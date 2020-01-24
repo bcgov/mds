@@ -1,6 +1,6 @@
 import React from "react";
 import { shallow } from "enzyme";
-import { VarianceTable } from "@/components/dashboard/mine/variances/VarianceTable";
+import { VariancesTable } from "@/components/dashboard/mine/variances/VariancesTable";
 import * as MOCK from "@/tests/mocks/dataMocks";
 
 const props = {};
@@ -23,9 +23,9 @@ beforeEach(() => {
   setupDispatchProps();
 });
 
-describe("VarianceTable", () => {
+describe("VariancesTable", () => {
   it("renders properly", () => {
-    const component = shallow(<VarianceTable {...props} {...dispatchProps} />);
+    const component = shallow(<VariancesTable {...props} {...dispatchProps} />);
     expect(component).toMatchSnapshot();
   });
 });

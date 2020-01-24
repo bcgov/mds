@@ -1,3 +1,78 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Reports renders properly 1`] = `<Loading />`;
+exports[`Reports renders properly 1`] = `
+<Row
+  gutter={0}
+>
+  <Col>
+    <Row
+      gutter={0}
+    >
+      <Col>
+        <Title
+          level={4}
+        >
+          Report Details
+        </Title>
+        <Paragraph>
+          Morbi consequat, augue et pulvinar condimentum, nunc urna congue diam, at tempus justo eros non leo.
+        </Paragraph>
+      </Col>
+    </Row>
+    <Row
+      gutter={
+        Array [
+          48,
+          48,
+        ]
+      }
+    >
+      <Col
+        lg={
+          Object {
+            "offset": 1,
+            "span": 7,
+          }
+        }
+      >
+        <TableSummaryCard
+          content="6"
+          icon="check-circle"
+          title="Reports Submitted"
+          type="success"
+        />
+      </Col>
+      <Col
+        lg={7}
+      >
+        <TableSummaryCard
+          content="6"
+          icon="clock-circle"
+          title="Reports Overdue"
+          type="error"
+        />
+      </Col>
+      <Col
+        lg={7}
+      >
+        <TableSummaryCard
+          content="6"
+          icon="exclamation-circle"
+          title="Reports Due"
+          type="warning"
+        />
+      </Col>
+    </Row>
+    <Row
+      gutter={0}
+    >
+      <Col>
+        <ReportsTable
+          handleEditReport={[Function]}
+          openEditReportModal={[Function]}
+        />
+      </Col>
+    </Row>
+  </Col>
+</Row>
+`;

@@ -1,9 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`VarianceTable renders properly 1`] = `
+exports[`VariancesTable renders properly 1`] = `
 <div>
   <withStore(Table)
-    align="left"
     columns={
       Array [
         Object {
@@ -11,6 +10,11 @@ exports[`VarianceTable renders properly 1`] = `
           "render": [Function],
           "title": "",
           "width": 10,
+        },
+        Object {
+          "dataIndex": "variance_no",
+          "render": [Function],
+          "title": "Variance No.",
         },
         Object {
           "dataIndex": "compliance_article_id",
@@ -30,7 +34,7 @@ exports[`VarianceTable renders properly 1`] = `
           "dataIndex": "status",
           "render": [Function],
           "sorter": [Function],
-          "title": "Application  Status",
+          "title": "Application Status",
         },
         Object {
           "className": "",
@@ -103,15 +107,12 @@ exports[`VarianceTable renders properly 1`] = `
             "received_date": "2019-03-01",
             "variance_guid": "0d3ec917-179f-4dbc-80a3-4c993fdfe596",
           },
+          "variance_no": undefined,
         },
       ]
     }
-    locale={
-      Object {
-        "emptyText": "No approved variances",
-      }
-    }
     pagination={false}
+    size="small"
   />
 </div>
 `;
