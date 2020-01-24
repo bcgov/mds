@@ -17,7 +17,8 @@ class NOWApplicationIdentity(Base, AuditMixin):
     _edit_groups = [NOW_APPLICATION_EDIT_GROUP]
     _edit_key = NOW_APPLICATION_EDIT_GROUP
 
-    now_application_guid = db.Column(UUID(as_uuid=True), primary_key=True)
+    now_application_guid = db.Column(
+        UUID(as_uuid=True), primary_key=True, server_default=FetchedValue())
     now_number = db.Column(db.String)
     now_application_id = db.Column(db.Integer, db.ForeignKey('now_application.now_application_id'))
     messageid = db.Column(db.Integer)
@@ -25,6 +26,9 @@ class NOWApplicationIdentity(Base, AuditMixin):
 
     mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine.mine_guid'))
     mine = db.relationship('Mine', lazy='joined')
+
+    permit_id = db.Column(db.Integer, db.ForeignKey('permit.permit_id'))
+    permit = db.relationship('Permit', lazy='select')
 
     now_application = db.relationship('NOWApplication')
 

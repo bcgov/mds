@@ -8,7 +8,12 @@ import {
   NOTICE_OF_WORK_DOCUMENT_TOKEN_GET_URL,
   NRIS_DOCUMENT_FILE_GET_URL,
   NRIS_DOCUMENT_TOKEN_GET_URL,
+  MINE,
 } from "@/constants/API";
+
+export const getMineWithoutStore = (mine_guid) => {
+  return CustomAxios().get(`${ENVIRONMENT.apiUrl + MINE}/${mine_guid}`, createRequestHeader());
+};
 
 export const downloadNRISDocument = (externalId, inspectionId, fileName) => {
   if (!externalId) {
@@ -107,9 +112,9 @@ export const getDocumentDownloadToken = (document_manager_guid, filename, URLArr
     )
     .then((response) => {
       const token = { token: response.data.token_guid };
-      const URL = `${ENVIRONMENT.docManUrl +
-        DOCUMENT_MANAGER_FILE_GET_URL(token) +
-        "&as_attachment=true"}`;
+      const URL = `${`${ENVIRONMENT.docManUrl +
+        DOCUMENT_MANAGER_FILE_GET_URL(token) 
+        }&as_attachment=true`}`;
       URLArray.push({ filename, url: URL });
     });
 };

@@ -36,7 +36,7 @@ import NOWApplicationReviewsTable from "@/components/noticeOfWork/applications/r
 
 const propTypes = {
   mineGuid: PropTypes.string.isRequired,
-  noticeOfWork: CustomPropTypes.nowApplication.isRequired,
+  noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
   noticeOfWorkReviews: PropTypes.arrayOf(CustomPropTypes.NOWApplicationReview).isRequired,
   noticeOfWorkReviewTypes: CustomPropTypes.options.isRequired,
 

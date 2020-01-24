@@ -18,7 +18,7 @@ const propTypes = {
   fetchMineNoticeOfWorkApplications: PropTypes.func.isRequired,
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
   location: PropTypes.shape({ search: PropTypes.string }).isRequired,
-  noticeOfWorkApplications: PropTypes.arrayOf(CustomPropTypes.nowApplication).isRequired,
+  noticeOfWorkApplications: PropTypes.arrayOf(CustomPropTypes.importedNOWApplication).isRequired,
   mineRegionHash: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
