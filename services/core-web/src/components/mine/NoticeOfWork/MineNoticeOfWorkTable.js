@@ -19,7 +19,7 @@ import { getNoticeOfWorkApplicationBadgeStatusType } from "@/constants/theme";
  */
 const propTypes = {
   handleSearch: PropTypes.func.isRequired,
-  noticeOfWorkApplications: PropTypes.arrayOf(CustomPropTypes.nowApplication),
+  noticeOfWorkApplications: PropTypes.arrayOf(CustomPropTypes.importedNOWApplication),
   sortField: PropTypes.string,
   sortDir: PropTypes.string,
   searchParams: PropTypes.objectOf(PropTypes.string),

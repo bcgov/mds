@@ -17,13 +17,11 @@ import ChangeNOWMineForm from "@/components/Forms/noticeOfWork/ChangeNOWMineForm
 
 const propTypes = {
   fetchMineRecordById: PropTypes.func.isRequired,
-  noticeOfWork: CustomPropTypes.nowApplication.isRequired,
-  handleUpdateLeadInspector: PropTypes.func.isRequired,
-  handleProgressChange: PropTypes.func.isRequired,
-  inspectors: CustomPropTypes.groupOptions.isRequired,
-  setLeadInspectorPartyGuid: PropTypes.func.isRequired,
-  createNoticeOfWorkApplication: PropTypes.func.isRequired,
-  fetchImportedNoticeOfWorkApplication: PropTypes.func.isRequired,
+  fetchMineNameList: PropTypes.func.isRequired,
+  handleConfirmMine: PropTypes.func.isRequired,
+  setMineGuid: PropTypes.func.isRequired,
+  noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
+  currentMine: CustomPropTypes.mine.isRequired,
 };
 
 export class VerifyNOWMine extends Component {

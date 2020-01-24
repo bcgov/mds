@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import { Table, Button, Icon, Badge } from "antd";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import moment from "moment";
 import CustomPropTypes from "@/customPropTypes";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import {

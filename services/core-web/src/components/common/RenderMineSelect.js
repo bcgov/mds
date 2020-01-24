@@ -21,18 +21,25 @@ const propTypes = {
   id: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   input: PropTypes.objectOf(PropTypes.any).isRequired,
-  meta: PropTypes.objectOf(PropTypes.any).isRequired,
+  meta: PropTypes.objectOf(PropTypes.any),
+  label: PropTypes.String,
   fetchMineNameList: PropTypes.func.isRequired,
   mineNameList: PropTypes.arrayOf(CustomPropTypes.mineName).isRequired,
   placeholder: PropTypes.string,
   disabled: PropTypes.bool,
   showCard: PropTypes.bool,
+  majorMineOnly: PropTypes.bool,
+  onMineSelect: PropTypes.func,
 };
 
 const defaultProps = {
   placeholder: "Search for a mine by name",
   disabled: false,
   showCard: false,
+  majorMineOnly: undefined,
+  onMineSelect: () => {},
+  meta: {},
+  label: "Select a mine",
 };
 
 export class RenderMineSelect extends Component {
@@ -48,10 +55,15 @@ export class RenderMineSelect extends Component {
   }
 
   handleChange = (name) => {
+    let params = { name };
+    if (this.props.majorMineOnly) {
+      params = { major: true, ...params };
+    }
+
     if (name.length > 2) {
-      this.props.fetchMineNameList({ name });
+      this.props.fetchMineNameList(params);
     } else if (name.length === 0) {
-      this.props.fetchMineNameList();
+      this.props.fetchMineNameList({ major: true });
     }
   };
 
@@ -59,6 +71,7 @@ export class RenderMineSelect extends Component {
     this.setState({ selectedMine: false });
     getMineWithoutStore(value).then((data) => {
       this.setState({ selectedMine: data.data });
+      this.props.onMineSelect(value);
     });
   };
 

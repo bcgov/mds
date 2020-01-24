@@ -36,6 +36,7 @@ import NoticeOfWorkPageHeader from "@/components/noticeOfWork/applications/Notic
 import * as FORM from "@/constants/forms";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
 import { downloadNowDocument } from "@/utils/actionlessNetworkCalls";
+import MMPermitApplicationInit from "@/components/noticeOfWork/applications/MMPermitApplicationInit";
 
 const { Step } = Steps;
 
@@ -64,11 +65,11 @@ const propTypes = {
       id: PropTypes.string,
     },
   }).isRequired,
-  formValues: CustomPropTypes.nowApplication.isRequired,
+  formValues: CustomPropTypes.importedNOWApplication.isRequired,
   mines: PropTypes.arrayOf(CustomPropTypes.mine).isRequired,
   inspectors: CustomPropTypes.groupOptions.isRequired,
   inspectorsHash: PropTypes.objectOf(PropTypes.string).isRequired,
-  applicationProgressStatusCodes: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.strings))
+  applicationProgressStatusCodes: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string))
     .isRequired,
   reclamationSummary: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.strings)).isRequired,
   openModal: PropTypes.func.isRequired,
@@ -131,6 +132,7 @@ export class NoticeOfWorkApplication extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (
+      nextProps.noticeOfWork &&
       this.props.noticeOfWork.application_progress &&
       nextProps.noticeOfWork.application_progress.length !==
         this.props.noticeOfWork.application_progress.length

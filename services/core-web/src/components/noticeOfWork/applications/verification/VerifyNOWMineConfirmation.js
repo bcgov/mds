@@ -8,7 +8,7 @@ import CustomPropTypes from "@/customPropTypes";
 import UpdateNOWLeadInspectorForm from "@/components/Forms/noticeOfWork/UpdateNOWLeadInspectorForm";
 
 const propTypes = {
-  noticeOfWork: CustomPropTypes.nowApplication.isRequired,
+  noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
   inspectors: CustomPropTypes.groupOptions.isRequired,
   updateLeadInspectorFormValues: PropTypes.objectOf(PropTypes.any),
   setLeadInspectorPartyGuid: PropTypes.func.isRequired,

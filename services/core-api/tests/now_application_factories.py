@@ -436,7 +436,7 @@ class NOWApplicationIdentityFactory(BaseFactory):
         model = app_models.NOWApplicationIdentity
 
     class Params:
-        mine = factory.SubFactory('tests.factories.MineFactory', minimal=True)
+        mine = factory.SubFactory('tests.factories.MineFactory')
         submission_only = factory.Trait(now_application=None, now_application_id=None, mms_cid=None)
 
     now_application_guid = GUID

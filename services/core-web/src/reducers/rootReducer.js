@@ -106,9 +106,9 @@ export const reducerObject = {
     networkReducer,
     reducerTypes.GET_NOTICE_OF_WORK_APPLICATIONS
   ),
-  [reducerTypes.CREATE_NOTICE_OF_WORK_APPLICATION]: createReducer(
+  [reducerTypes.IMPORT_NOTICE_OF_WORK_APPLICATION]: createReducer(
     networkReducer,
-    reducerTypes.CREATE_NOTICE_OF_WORK_APPLICATION
+    reducerTypes.IMPORT_NOTICE_OF_WORK_APPLICATION
   ),
   [reducerTypes.GET_NOTICE_OF_WORK_ACTIVITY_TYPE_OPTIONS]: createReducer(
     networkReducer,

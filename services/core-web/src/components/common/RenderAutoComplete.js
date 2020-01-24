@@ -28,7 +28,6 @@ const defaultProps = {
   defaultValue: "",
   iconColor: Styles.COLOR.violet,
   disabled: false,
-  label: "Select a mine",
   meta: {},
 };
 
