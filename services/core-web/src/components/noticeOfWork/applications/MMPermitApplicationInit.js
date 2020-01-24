@@ -44,7 +44,7 @@ export class MMPermitApplicationInit extends Component {
       if (response) {
         this.props.handleProgressChange("REV", response.data.now_application_guid).then(() => {
           this.props.history.push(
-            router.NOTICE_OF_WORK_APPLICATION.dynamicRoute(response.data.data.now_application_guid)
+            router.NOTICE_OF_WORK_APPLICATION.dynamicRoute(response.data.now_application_guid)
           );
         });
       } else {
