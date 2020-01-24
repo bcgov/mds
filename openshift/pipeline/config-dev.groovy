@@ -89,6 +89,8 @@ app {
                     'file':'openshift/templates/dbbackup.dc.json',
                     'params':[
                             'NAME':"mds-database-backup",
+                            'FLYWAY_NAME':"mds-flyway-migration-backup-client",
+                            'DB_CONFIG_NAME': "mds-postgresql-reporting${vars.deployment.suffix}",
                             'SUFFIX': "${vars.deployment.suffix}",
                             'VERSION':"${app.deployment.version}",
                             'ENVIRONMENT_NAME':"${vars.deployment.namespace}",
