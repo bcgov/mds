@@ -100,7 +100,8 @@ app {
                             'CPU_LIMIT':"${vars.resources.backup.cpu_limit}",
                             'MEMORY_REQUEST':"${vars.resources.backup.memory_request}",
                             'MEMORY_LIMIT':"${vars.resources.backup.memory_limit}",
-                            'VERIFICATION_VOLUME_SIZE':"${vars.BACKUP_VERIFICATION_PVC_SIZE}"
+                            'VERIFICATION_VOLUME_SIZE':"${vars.BACKUP_VERIFICATION_PVC_SIZE}",
+                            'DB_NRIS_CONFIG_NAME': "mds-postgresql${vars.deployment.suffix}-nris"
                     ]
                 ],
                 [

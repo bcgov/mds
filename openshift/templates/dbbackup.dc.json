@@ -464,6 +464,11 @@
       "displayName": "Database Config Name",
       "description": "Configuration name for the database",
       "required": true
+    },
+    {
+      "name": "DB_NRIS_CONFIG_NAME",
+      "description": "Configuration name for the nris database",
+      "required": true
     }
   ]
 }
