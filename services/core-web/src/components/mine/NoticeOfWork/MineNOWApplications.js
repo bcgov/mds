@@ -4,11 +4,9 @@ import { connect } from "react-redux";
 import { Divider } from "antd";
 import PropTypes from "prop-types";
 import queryString from "query-string";
-import * as Permission from "@/constants/permissions";
 import * as router from "@/constants/routes";
 import AddButton from "@/components/common/AddButton";
 import CustomPropTypes from "@/customPropTypes";
-import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import { getMineRegionHash } from "@/selectors/staticContentSelectors";
 import MineNoticeOfWorkTable from "@/components/mine/NoticeOfWork/MineNoticeOfWorkTable";
 import { fetchMineNoticeOfWorkApplications } from "@/actionCreators/noticeOfWorkActionCreator";
@@ -109,11 +107,8 @@ export class MineNOWApplications extends Component {
     return (
       <div className="tab__content">
         <div>
-          <h2>Notice of Work Applications</h2>
-          <AuthorizationWrapper
-            permission={Permission.EDIT_PERMITS}
-            isMajorMine={this.props.mines[this.props.mineGuid].major_mine_ind}
-          >
+          <h2>Notice of Work Applications</h2>{" "}
+          {this.props.mines[this.props.mineGuid].major_mine_ind && (
             <AddButton
               onClick={() =>
                 this.props.history.push(router.CREATE_NOTICE_OF_WORK_APPLICATION.route, {
@@ -123,7 +118,7 @@ export class MineNOWApplications extends Component {
             >
               Add a Permit Application
             </AddButton>
-          </AuthorizationWrapper>
+          )}
         </div>
         <Divider />
 
