@@ -89,14 +89,12 @@ export class NoticeOfWorkApplication extends Component {
   state = {
     currentStep: 0,
     isLoaded: false,
-    isNoWLoaded: false,
     associatedMineGuid: "",
     associatedLeadInspectorPartyGuid: "",
     isViewMode: true,
     showOriginalValues: false,
     fixedTop: false,
     menuVisible: false,
-    isDecision: false,
     buttonValue: "REV",
     buttonLabel: "Technical Review",
     noticeOfWorkPageFromRoute: undefined,
@@ -126,7 +124,7 @@ export class NoticeOfWorkApplication extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.location !== this.props.location) {
+    if (nextProps.location.pathname !== this.props.location.pathname) {
       this.loadNoticeOfWork(nextProps.match.params.id);
     }
     if (
@@ -162,13 +160,11 @@ export class NoticeOfWorkApplication extends Component {
 
   handleProgressButtonLabels = (applicationProgress) => {
     const currentStep = applicationProgress.length;
-    if (currentStep < 3 && this.props.applicationProgressStatusCodes.length !== 0) {
+    if (this.props.applicationProgressStatusCodes.length !== 0) {
       const buttonLabel = this.props.applicationProgressStatusCodes[currentStep + 1].description;
       const buttonValue = this.props.applicationProgressStatusCodes[currentStep + 1]
         .application_progress_status_code;
       this.setState({ buttonLabel, buttonValue });
-    } else {
-      this.setState({ isDecision: true });
     }
   };
 
@@ -203,8 +199,6 @@ export class NoticeOfWorkApplication extends Component {
   };
 
   onChange = (currentStep) => {
-    console.log(currentStep);
-    console.log(this.props);
     this.setState({
       currentStep,
     });
@@ -309,7 +303,7 @@ export class NoticeOfWorkApplication extends Component {
   };
 
   handleProgressChange = (status) => {
-    this.setState({ isNoWLoaded: false, isLoaded: false });
+    this.setState({ isLoaded: false });
     const { id } = this.props.match.params;
     this.props
       .createNoticeOfWorkApplicationProgress(id, {
@@ -318,7 +312,7 @@ export class NoticeOfWorkApplication extends Component {
       .then(() => {
         this.props.fetchImportedNoticeOfWorkApplication(id).then(() => {
           this.props.fetchMineRecordById(this.state.associatedMineGuid);
-          this.setState({ isNoWLoaded: true, isLoaded: true });
+          this.setState({ isLoaded: true });
         });
       });
 
@@ -395,6 +389,9 @@ export class NoticeOfWorkApplication extends Component {
       return <NullScreen type="unauthorized" />;
     }
     const isImported = this.props.noticeOfWork.imported_to_core;
+    const isDecision =
+      this.props.noticeOfWork.application_progress &&
+      this.props.noticeOfWork.application_progress.length === 3;
     const steps = {
       0: this.renderStepOne(),
       1: this.renderStepTwo(),
@@ -403,7 +400,7 @@ export class NoticeOfWorkApplication extends Component {
     };
     const menu = (
       <Menu>
-        {this.state.isNoWLoaded &&
+        {isImported &&
           this.props.noticeOfWork.submission_documents.filter(
             (x) => x.filename === "ApplicationForm.pdf"
           ).length > 0 && (
@@ -425,7 +422,7 @@ export class NoticeOfWorkApplication extends Component {
             </span>
           </div>
         )}
-        {isImported && !this.state.isDecision && (
+        {isImported && !isDecision && (
           <div className="custom-menu-item">
             <button
               type="button"
@@ -435,14 +432,14 @@ export class NoticeOfWorkApplication extends Component {
             </button>
           </div>
         )}
-        {isImported && this.props.noticeOfWork.lead_inspector_party_guid && !this.state.isDecision && (
+        {isImported && this.props.noticeOfWork.lead_inspector_party_guid && !isDecision && (
           <div className="custom-menu-item">
             <button type="button" onClick={(event) => this.openUpdateLeadInspectorModal(event)}>
               Change the Lead Inspector
             </button>
           </div>
         )}
-        {isImported && this.props.noticeOfWork.lead_inspector_party_guid && !this.state.isDecision && (
+        {isImported && this.props.noticeOfWork.lead_inspector_party_guid && !isDecision && (
           <div className="custom-menu-item">
             <button
               type="button"
