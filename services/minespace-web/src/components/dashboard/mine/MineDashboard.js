@@ -13,6 +13,7 @@ import Variances from "@/components/dashboard/mine/variances/Variances";
 import Inspections from "@/components/dashboard/mine/inspections/Inspections";
 import Incidents from "@/components/dashboard/mine/incidents/Incidents";
 import Reports from "@/components/dashboard/mine/reports/Reports";
+import * as router from "@/constants/routes";
 
 const { Title } = Typography;
 const { TabPane } = Tabs;
@@ -25,17 +26,36 @@ const propTypes = {
       id: PropTypes.string,
     },
   }).isRequired,
+  history: PropTypes.shape({ push: PropTypes.func }).isRequired,
 };
 
 export class MineDashboard extends Component {
-  state = { isLoaded: false };
+  state = { isLoaded: false, activeTab: "overview" };
 
   componentDidMount() {
-    const { id } = this.props.match.params;
+    const { id, activeTab } = this.props.match.params;
+    if (activeTab) {
+      this.setState({ activeTab });
+    }
     this.props.fetchMineRecordById(id).then(() => {
       this.setState({ isLoaded: true });
     });
   }
+
+  componentWillReceiveProps(nextProps) {
+    const { activeTab } = nextProps.match.params;
+    if (activeTab !== this.state.activeTab) {
+      this.setState({ activeTab });
+    }
+  }
+
+  handleTabChange = (activeTab) => {
+    this.setState({ activeTab });
+    this.props.history.push(
+      router.MINE_DASHBOARD.dynamicRoute(this.props.match.params.id, activeTab),
+      activeTab
+    );
+  };
 
   render() {
     return (
@@ -48,7 +68,12 @@ export class MineDashboard extends Component {
           </Row>
           <Row gutter={[0, 48]}>
             <Col>
-              <Tabs defaultActiveKey="overview" type="card">
+              <Tabs
+                activeKey={this.state.activeTab}
+                defaultActiveKey="overview"
+                onChange={this.handleTabChange}
+                type="card"
+              >
                 <TabPane tab="Overview" key="overview">
                   <Overview mine={this.props.mine} />
                 </TabPane>

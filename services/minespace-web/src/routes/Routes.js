@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, Switch } from "react-router-dom";
+import { Redirect, Route, Switch } from "react-router-dom";
 import * as routes from "@/constants/routes";
 import AuthenticationGuard from "@/HOC/AuthenticationGuard";
 import NullScreen from "@/components/common/NullScreen";
@@ -18,20 +18,15 @@ const Routes = () => (
         path={routes.DASHBOARD.route}
         component={AuthenticationGuard()(routes.DASHBOARD.component)}
       />
+      <Redirect
+        exact
+        from={routes.MINE_DASHBOARD_OLD.route}
+        to={routes.MINE_DASHBOARD.dynamicRoute(":id")}
+      />
       <Route
         exact
         path={routes.MINE_DASHBOARD.route}
         component={AuthenticationGuard()(routes.MINE_DASHBOARD.component)}
-      />
-      <Route
-        exact
-        path={routes.VARIANCES.route}
-        component={AuthenticationGuard()(routes.VARIANCES.component)}
-      />
-      <Route
-        exact
-        path={routes.REPORTS.route}
-        component={AuthenticationGuard()(routes.REPORTS.component)}
       />
 
       {/* 404 - ROUTE NOT FOUND */}
