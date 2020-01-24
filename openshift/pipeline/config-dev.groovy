@@ -71,8 +71,8 @@ app {
                 [
                     'file':'openshift/templates/postgresql.dc.json',
                     'params':[
-                            'NAME':"mds-postgresql-reporting",
-                            'SUFFIX':"${vars.deployment.suffix}",
+                            'NAME':"mds-postgresql",
+                            'SUFFIX':"${vars.deployment.suffix}-reporting",
                             'DATABASE_SERVICE_NAME':"mds-postgresql${vars.deployment.suffix}",
                             'CPU_REQUEST':"${vars.resources.postgres.cpu_request}",
                             'CPU_LIMIT':"${vars.resources.postgres.cpu_limit}",
@@ -90,7 +90,6 @@ app {
                     'params':[
                             'NAME':"mds-database-backup",
                             'FLYWAY_NAME':"mds-flyway-migration-client",
-                            'DB_CONFIG_NAME': "mds-postgresql-reporting${vars.deployment.suffix}",
                             'SUFFIX': "${vars.deployment.suffix}",
                             'VERSION':"${app.deployment.version}",
                             'ENVIRONMENT_NAME':"${vars.deployment.namespace}",
