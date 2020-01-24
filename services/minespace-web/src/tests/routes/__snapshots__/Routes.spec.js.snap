@@ -39,18 +39,10 @@ exports[`PrivateRoutes  renders properly 1`] = `
       exact={true}
       path="/dashboard"
     />
-    <Route
-      component={
-        Object {
-          "$$typeof": Symbol(react.memo),
-          "WrappedComponent": [Function],
-          "compare": null,
-          "displayName": "Connect(authenticationGuard)",
-          "type": [Function],
-        }
-      }
+    <Redirect
       exact={true}
-      path="/dashboard/mine/:id"
+      from="/dashboard/mine/:id"
+      to="/dashboard/mine/:id/overview?"
     />
     <Route
       component={
@@ -63,20 +55,7 @@ exports[`PrivateRoutes  renders properly 1`] = `
         }
       }
       exact={true}
-      path="/dashboard/mine/:id/variances"
-    />
-    <Route
-      component={
-        Object {
-          "$$typeof": Symbol(react.memo),
-          "WrappedComponent": [Function],
-          "compare": null,
-          "displayName": "Connect(authenticationGuard)",
-          "type": [Function],
-        }
-      }
-      exact={true}
-      path="/dashboard/mine/:id/reports"
+      path="/dashboard/mine/:id/:activeTab"
     />
     <Route
       render={[Function]}
