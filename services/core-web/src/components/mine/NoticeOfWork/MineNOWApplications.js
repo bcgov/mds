@@ -4,21 +4,25 @@ import { connect } from "react-redux";
 import { Divider } from "antd";
 import PropTypes from "prop-types";
 import queryString from "query-string";
+import * as Permission from "@/constants/permissions";
 import * as router from "@/constants/routes";
+import AddButton from "@/components/common/AddButton";
 import CustomPropTypes from "@/customPropTypes";
+import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import { getMineRegionHash } from "@/selectors/staticContentSelectors";
 import MineNoticeOfWorkTable from "@/components/mine/NoticeOfWork/MineNoticeOfWorkTable";
 import { fetchMineNoticeOfWorkApplications } from "@/actionCreators/noticeOfWorkActionCreator";
 import { getNoticeOfWorkList } from "@/selectors/noticeOfWorkSelectors";
-import { getMineGuid } from "@/selectors/mineSelectors";
+import { getMineGuid, getMines } from "@/selectors/mineSelectors";
 import { formatQueryListParams } from "@/utils/helpers";
 
 const propTypes = {
   mineGuid: PropTypes.string.isRequired,
+  mines: PropTypes.objectOf(CustomPropTypes.mine).isRequired,
   fetchMineNoticeOfWorkApplications: PropTypes.func.isRequired,
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
   location: PropTypes.shape({ search: PropTypes.string }).isRequired,
-  noticeOfWorkApplications: PropTypes.arrayOf(CustomPropTypes.nowApplication).isRequired,
+  noticeOfWorkApplications: PropTypes.arrayOf(CustomPropTypes.importedNOWApplication).isRequired,
   mineRegionHash: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
@@ -106,8 +110,23 @@ export class MineNOWApplications extends Component {
       <div className="tab__content">
         <div>
           <h2>Notice of Work Applications</h2>
-          <Divider />
+          <AuthorizationWrapper
+            permission={Permission.EDIT_PERMITS}
+            isMajorMine={this.props.mines[this.props.mineGuid].major_mine_ind}
+          >
+            <AddButton
+              onClick={() =>
+                this.props.history.push(router.CREATE_NOTICE_OF_WORK_APPLICATION.route, {
+                  mineGuid: this.props.mineGuid,
+                })
+              }
+            >
+              Add a Permit Application
+            </AddButton>
+          </AuthorizationWrapper>
         </div>
+        <Divider />
+
         <MineNoticeOfWorkTable
           isLoaded={this.state.isLoaded}
           handleSearch={this.handleSearch}
@@ -124,6 +143,7 @@ export class MineNOWApplications extends Component {
 
 const mapStateToProps = (state) => ({
   mineGuid: getMineGuid(state),
+  mines: getMines(state),
   noticeOfWorkApplications: getNoticeOfWorkList(state),
   mineRegionHash: getMineRegionHash(state),
 });

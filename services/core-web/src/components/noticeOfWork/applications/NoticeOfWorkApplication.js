@@ -1,13 +1,12 @@
 import React, { Component } from "react";
 import { Prompt } from "react-router-dom";
-import { Alert, Steps, Result, Button, Dropdown, Menu, Icon, Row, Col } from "antd";
+import { Steps, Button, Dropdown, Menu, Icon } from "antd";
 import PropTypes from "prop-types";
 import { getFormValues, reset } from "redux-form";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import * as routes from "@/constants/routes";
 import {
-  createNoticeOfWorkApplication,
   fetchImportedNoticeOfWorkApplication,
   fetchOriginalNoticeOfWorkApplication,
   createNoticeOfWorkApplicationProgress,
@@ -27,8 +26,8 @@ import {
   getDropdownNoticeOfWorkApplicationStatusOptions,
   getNoticeOfWorkApplicationProgressStatusCodeOptions,
 } from "@/selectors/staticContentSelectors";
-import VerifyNOWMine from "@/components/noticeOfWork/applications/verification/VerifyNOWMine";
-import VerifyNOWMineConfirmation from "@/components/noticeOfWork/applications/verification/VerifyNOWMineConfirmation";
+import { clearNoticeOfWorkApplication } from "@/actions/noticeOfWorkActions";
+import ApplicationStepOne from "@/components/noticeOfWork/applications/applicationStepOne/ApplicationStepOne";
 import NOWApplicationReviews from "@/components/noticeOfWork/applications/referals/NOWApplicationReviews";
 import CustomPropTypes from "@/customPropTypes";
 import ReviewNOWApplication from "@/components/noticeOfWork/applications/review/ReviewNOWApplication";
@@ -48,14 +47,18 @@ const { Step } = Steps;
 const propTypes = {
   noticeOfWork: CustomPropTypes.importedNOWApplication,
   originalNoticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
-  createNoticeOfWorkApplicationProgress: CustomPropTypes.importedNOWApplication.isRequired,
-  createNoticeOfWorkApplication: PropTypes.func.isRequired,
+  createNoticeOfWorkApplicationProgress: PropTypes.func.isRequired,
   updateNoticeOfWorkApplication: PropTypes.func.isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
   fetchImportedNoticeOfWorkApplication: PropTypes.func.isRequired,
   fetchOriginalNoticeOfWorkApplication: PropTypes.func.isRequired,
   reset: PropTypes.func.isRequired,
-  history: PropTypes.shape({ push: PropTypes.func }).isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func,
+    location: PropTypes.shape({
+      state: PropTypes.shape({ mineGuid: PropTypes.string, permitGuid: PropTypes.string }),
+    }),
+  }).isRequired,
   location: PropTypes.shape({
     pathname: PropTypes.string,
     state: PropTypes.shape({
@@ -67,15 +70,15 @@ const propTypes = {
       id: PropTypes.string,
     },
   }).isRequired,
-  formValues: CustomPropTypes.nowApplication.isRequired,
-  mines: PropTypes.arrayOf(CustomPropTypes.mine).isRequired,
+  formValues: CustomPropTypes.importedNOWApplication.isRequired,
   inspectors: CustomPropTypes.groupOptions.isRequired,
   inspectorsHash: PropTypes.objectOf(PropTypes.string).isRequired,
-  applicationProgressStatusCodes: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.strings))
+  applicationProgressStatusCodes: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string))
     .isRequired,
   reclamationSummary: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.strings)).isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
+  clearNoticeOfWorkApplication: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
@@ -86,10 +89,8 @@ export class NoticeOfWorkApplication extends Component {
   state = {
     currentStep: 0,
     isLoaded: false,
-    isImported: false,
     isNoWLoaded: false,
     associatedMineGuid: "",
-    associatedMineName: "",
     associatedLeadInspectorPartyGuid: "",
     isViewMode: true,
     showOriginalValues: false,
@@ -99,10 +100,50 @@ export class NoticeOfWorkApplication extends Component {
     buttonValue: "REV",
     buttonLabel: "Technical Review",
     noticeOfWorkPageFromRoute: undefined,
+    showNullScreen: false,
+    initialPermitGuid: "",
   };
 
   componentDidMount() {
     const { id } = this.props.match.params;
+    if (id) {
+      this.loadNoticeOfWork(id);
+    } else if (this.props.history.location.state) {
+      const { mineGuid, permitGuid } = this.props.history.location.state;
+      this.loadCreatePermitApplication(mineGuid, permitGuid);
+    } else {
+      this.setState({ showNullScreen: true });
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.location !== this.props.location) {
+      this.loadNoticeOfWork(nextProps.match.params.id);
+    }
+    if (
+      nextProps.noticeOfWork &&
+      this.props.noticeOfWork.application_progress &&
+      nextProps.noticeOfWork.application_progress.length !==
+        this.props.noticeOfWork.application_progress.length
+    ) {
+      this.handleProgressButtonLabels(nextProps.noticeOfWork.application_progress);
+    }
+  }
+
+  componentWillUnmount() {
+    this.props.clearNoticeOfWorkApplication();
+  }
+
+  // eslint-disable-next-line react/sort-comp
+  loadCreatePermitApplication(mineGuid, permitGuid) {
+    this.setState({
+      associatedMineGuid: mineGuid,
+      initialPermitGuid: permitGuid,
+      isLoaded: true,
+    });
+  }
+
+  loadNoticeOfWork = (id) => {
     let currentStep = 0;
     this.props.fetchImportedNoticeOfWorkApplication(id).then(({ data }) => {
       const associatedMineGuid = data.mine_guid ? data.mine_guid : "";
@@ -120,7 +161,6 @@ export class NoticeOfWorkApplication extends Component {
           associatedMineGuid,
           currentStep,
           isNoWLoaded: true,
-          isImported,
         });
       });
     });
@@ -133,17 +173,7 @@ export class NoticeOfWorkApplication extends Component {
           ? this.props.location.state.noticeOfWorkPageFromRoute
           : prevState.noticeOfWorkPageFromRoute,
     }));
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (
-      this.props.noticeOfWork.application_progress &&
-      nextProps.noticeOfWork.application_progress.length !==
-        this.props.noticeOfWork.application_progress.length
-    ) {
-      this.handleProgressButtonLabels(nextProps.noticeOfWork.application_progress);
-    }
-  }
+  };
 
   handleProgressButtonLabels = (applicationProgress) => {
     const currentStep = applicationProgress.length;
@@ -193,10 +223,6 @@ export class NoticeOfWorkApplication extends Component {
     });
   };
 
-  setMineGuid = (mineGuid, mineName = "") => {
-    this.setState({ associatedMineGuid: mineGuid, associatedMineName: mineName });
-  };
-
   setLeadInspectorPartyGuid = (leadInspectorPartyGuid) => {
     this.setState({
       associatedLeadInspectorPartyGuid: leadInspectorPartyGuid,
@@ -233,12 +259,12 @@ export class NoticeOfWorkApplication extends Component {
     }
   };
 
-  handleChangeNOWMine = () => {
+  handleChangeNOWMine = (values) => {
     this.props
       .updateNoticeOfWorkApplication(
-        { mine_guid: this.state.associatedMineGuid },
+        values,
         this.props.noticeOfWork.now_application_guid,
-        `Successfully transferred Notice of Work to ${this.state.associatedMineName}`
+        `Successfully transferred Notice of Work`
       )
       .then(() => {
         this.props.fetchImportedNoticeOfWorkApplication(
@@ -286,7 +312,6 @@ export class NoticeOfWorkApplication extends Component {
         initialValues: {
           mine_guid: noticeOfWork.mine_guid,
         },
-        setMineGuid: this.setMineGuid,
         onSubmit: this.handleChangeNOWMine,
         title: `Transfer Notice of Work`,
         noticeOfWork,
@@ -296,37 +321,22 @@ export class NoticeOfWorkApplication extends Component {
     });
   };
 
-  handleConfirmMine = () => {
-    this.setState({ isLoaded: false });
-    this.props
-      .createNoticeOfWorkApplication(
-        this.state.associatedMineGuid,
-        this.props.noticeOfWork.now_application_guid
-      )
-      .then(() => {
-        return this.props
-          .fetchImportedNoticeOfWorkApplication(this.props.noticeOfWork.now_application_guid)
-          .then(({ data }) => {
-            this.props.fetchMineRecordById(this.state.associatedMineGuid);
-            this.setState({ isNoWLoaded: true, isLoaded: true, isImported: data.imported_to_core });
-          });
-      });
-  };
-
-  handleProgressChange = (status) => {
+  handleProgressChange = (status, newNoWGuid) => {
     this.setState({ isNoWLoaded: false, isLoaded: false });
-    const { id } = this.props.match.params;
+    const id = newNoWGuid || this.props.match.params.id;
     this.props
       .createNoticeOfWorkApplicationProgress(id, {
         application_progress_status_code: status,
       })
       .then(() => {
-        return this.props
-          .fetchImportedNoticeOfWorkApplication(this.props.noticeOfWork.now_application_guid)
-          .then(({ data }) => {
+        if (newNoWGuid) {
+          this.props.history.push(routes.NOTICE_OF_WORK_APPLICATION.dynamicRoute(newNoWGuid));
+        } else {
+          this.props.fetchImportedNoticeOfWorkApplication(id).then(() => {
             this.props.fetchMineRecordById(this.state.associatedMineGuid);
-            this.setState({ isNoWLoaded: true, isLoaded: true, isImported: data.imported_to_core });
+            this.setState({ isNoWLoaded: true, isLoaded: true });
           });
+        }
       });
 
     const statusIndex = {
@@ -341,54 +351,15 @@ export class NoticeOfWorkApplication extends Component {
     if (!this.state.isLoaded) {
       return null;
     }
-
-    if (!this.state.isImported) {
-      const mine = this.props.mines ? this.props.mines[this.state.associatedMineGuid] : {};
-      return (
-        <VerifyNOWMine
-          noticeOfWork={this.props.noticeOfWork}
-          handleConfirmMine={this.handleConfirmMine}
-          setMineGuid={this.setMineGuid}
-          currentMine={mine}
-        />
-      );
-    }
-
-    if (!this.props.noticeOfWork.lead_inspector_party_guid) {
-      return (
-        <VerifyNOWMineConfirmation
-          inspectors={this.props.inspectors}
-          noticeOfWork={this.props.noticeOfWork}
-          setLeadInspectorPartyGuid={this.setLeadInspectorPartyGuid}
-          handleUpdateLeadInspector={(e) =>
-            this.handleUpdateLeadInspector(() => this.handleProgressChange("REV"), e)
-          }
-        />
-      );
-    }
-
     return (
-      <Result
-        status="success"
-        title="Verification Complete!"
-        subTitle="You've already completed the Verification step."
-        extra={[
-          <Row>
-            <Col
-              lg={{ span: 8, offset: 8 }}
-              md={{ span: 10, offset: 7 }}
-              sm={{ span: 12, offset: 6 }}
-            >
-              <Alert
-                message="Need to change something?"
-                description="You can transfer the Notice of Work to a different mine or change its Lead Inspector by using the Actions dropdown menu above."
-                type="info"
-                showIcon
-                style={{ textAlign: "left" }}
-              />
-            </Col>
-          </Row>,
-        ]}
+      <ApplicationStepOne
+        noticeOfWork={this.props.noticeOfWork}
+        mineGuid={this.state.associatedMineGuid}
+        setLeadInspectorPartyGuid={this.setLeadInspectorPartyGuid}
+        handleUpdateLeadInspector={this.handleUpdateLeadInspector}
+        handleProgressChange={this.handleProgressChange}
+        loadNoticeOfWork={this.loadNoticeOfWork}
+        initialPermitGuid={this.state.initialPermitGuid}
       />
     );
   };
@@ -437,16 +408,19 @@ export class NoticeOfWorkApplication extends Component {
   };
 
   render() {
+    if (this.state.showNullScreen) {
+      return <NullScreen type="unauthorized" />;
+    }
+    const isImported = this.props.noticeOfWork.imported_to_core;
     const steps = {
       0: this.renderStepOne(),
       1: this.renderStepTwo(),
       2: this.renderStepThree(),
       3: <NullScreen type="next-stage" />,
     };
-
     const menu = (
       <Menu>
-        {this.state.isLoaded &&
+        {this.state.isNoWLoaded &&
           this.props.noticeOfWork.submission_documents.filter(
             (x) => x.filename === "ApplicationForm.pdf"
           ).length > 0 && (
@@ -468,7 +442,7 @@ export class NoticeOfWorkApplication extends Component {
             </span>
           </div>
         )}
-        {this.state.isImported && !this.state.isDecision && (
+        {isImported && !this.state.isDecision && (
           <div className="custom-menu-item">
             <button
               type="button"
@@ -478,25 +452,21 @@ export class NoticeOfWorkApplication extends Component {
             </button>
           </div>
         )}
-        {this.state.isImported &&
-          this.props.noticeOfWork.lead_inspector_party_guid &&
-          !this.state.isDecision && (
-            <div className="custom-menu-item">
-              <button type="button" onClick={(event) => this.openUpdateLeadInspectorModal(event)}>
-                Change the Lead Inspector
-              </button>
-            </div>
-          )}
-        {this.state.isImported &&
-          this.props.noticeOfWork.lead_inspector_party_guid &&
-          !this.state.isDecision && (
-            <div className="custom-menu-item">
-              <button
-                type="button"
-                onClick={() => this.handleProgressChange(this.state.buttonValue)}
-              >{`Ready for ${this.state.buttonLabel}`}</button>
-            </div>
-          )}
+        {isImported && this.props.noticeOfWork.lead_inspector_party_guid && !this.state.isDecision && (
+          <div className="custom-menu-item">
+            <button type="button" onClick={(event) => this.openUpdateLeadInspectorModal(event)}>
+              Change the Lead Inspector
+            </button>
+          </div>
+        )}
+        {isImported && this.props.noticeOfWork.lead_inspector_party_guid && !this.state.isDecision && (
+          <div className="custom-menu-item">
+            <button
+              type="button"
+              onClick={() => this.handleProgressChange(this.state.buttonValue)}
+            >{`Ready for ${this.state.buttonLabel}`}</button>
+          </div>
+        )}
       </Menu>
     );
 
@@ -570,7 +540,7 @@ export class NoticeOfWorkApplication extends Component {
               </div>
             )}
           </div>
-          <LoadingWrapper condition={this.state.isNoWLoaded}>
+          <LoadingWrapper condition={this.state.isLoaded}>
             <div>
               <div className={this.state.fixedTop ? "side-menu--fixed" : "side-menu"}>
                 {this.state.currentStep === 1 && (
@@ -605,7 +575,6 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
-      createNoticeOfWorkApplication,
       updateNoticeOfWorkApplication,
       fetchImportedNoticeOfWorkApplication,
       fetchOriginalNoticeOfWorkApplication,
@@ -614,6 +583,7 @@ const mapDispatchToProps = (dispatch) =>
       reset,
       openModal,
       closeModal,
+      clearNoticeOfWorkApplication,
     },
     dispatch
   );

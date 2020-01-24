@@ -21,7 +21,7 @@ const propTypes = {
 
 const defaultProps = {
   placeholder: "",
-  label: "",
+  label: "Select a Mine",
   data: [],
   disabled: false,
   meta: {},

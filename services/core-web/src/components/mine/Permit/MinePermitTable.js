@@ -21,7 +21,7 @@ import TableLoadingWrapper from "@/components/common/wrappers/TableLoadingWrappe
  * @class  MinePermitTable - displays a table of permits and permit amendments
  */
 
-const amalgamtedPermit = "ALG";
+const amalgamatedPermit = "ALG";
 
 const propTypes = {
   permits: PropTypes.arrayOf(CustomPropTypes.permit).isRequired,
@@ -36,6 +36,7 @@ const propTypes = {
   expandedRowKeys: PropTypes.arrayOf(PropTypes.string).isRequired,
   onExpand: PropTypes.func.isRequired,
   isLoaded: PropTypes.bool.isRequired,
+  handleAddPermitAmendmentApplication: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
@@ -51,7 +52,7 @@ const renderDocumentLink = (file, text) => (
 const renderPermitNo = (permit) => {
   const permitNoShouldLinkToDocument =
     permit.permit_amendments[0] &&
-    permit.permit_amendments[0].permit_amendment_type_code === amalgamtedPermit &&
+    permit.permit_amendments[0].permit_amendment_type_code === amalgamatedPermit &&
     permit.permit_amendments[0].related_documents[0];
   return permitNoShouldLinkToDocument
     ? renderDocumentLink(permit.permit_amendments[0].related_documents[0], permit.permit_no)
@@ -157,6 +158,23 @@ const columns = [
                 style={{ paddingRight: "15px" }}
               />
               Edit permit status
+            </button>
+          </Menu.Item>{" "}
+          <Menu.Item key="3">
+            <button
+              type="button"
+              className="full"
+              onClick={(event) => {
+                record.handleAddPermitAmendmentApplication(record.key);
+              }}
+            >
+              <img
+                alt="document"
+                className="padding-small"
+                src={EDIT_OUTLINE_VIOLET}
+                style={{ paddingRight: "15px" }}
+              />
+              Initiate Permit Amendment Application
             </button>
           </Menu.Item>
         </Menu>
@@ -273,6 +291,7 @@ const transformRowData = (
   openEditPermitModal,
   openAddPermitAmendmentModal,
   openAddAmalgamatedPermitModal,
+  handleAddPermitAmendmentApplication,
   permitStatusOptions
 ) => {
   const latestAmendment = permit.permit_amendments[0];
@@ -281,7 +300,7 @@ const transformRowData = (
   const permittees = getPermittees(partyRelationships, permit);
   const permitteeName = partyRelationships.length === 0 ? "" : getPermitteeName(permittees);
   const hasAmalgamated = permit.permit_amendments.find(
-    (pa) => pa.permit_amendment_type_code === amalgamtedPermit
+    (pa) => pa.permit_amendment_type_code === amalgamatedPermit
   );
 
   return {
@@ -302,6 +321,7 @@ const transformRowData = (
     openEditPermitModal,
     openAddPermitAmendmentModal,
     openAddAmalgamatedPermitModal,
+    handleAddPermitAmendmentApplication,
     permitStatusOptions,
     permit,
   };
@@ -374,6 +394,7 @@ export const MinePermitTable = (props) => {
       props.openEditPermitModal,
       props.openAddPermitAmendmentModal,
       props.openAddAmalgamatedPermitModal,
+      props.handleAddPermitAmendmentApplication,
       props.permitStatusOptions
     )
   );
