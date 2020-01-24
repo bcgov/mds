@@ -21,7 +21,7 @@ const defaultProps = {
 
 const invalidUpdateLeadInspectorPayload = (values) => !values.lead_inspector_party_guid;
 
-const VerifyNOWMineConfirmation = (props) => {
+const AssignLeadInspector = (props) => {
   return (
     <div className="tab__content">
       <Row>
@@ -57,7 +57,7 @@ const mapStateToProps = (state) => ({
   updateLeadInspectorFormValues: getFormValues(FORM.UPDATE_NOW_LEAD_INSPECTOR)(state) || {},
 });
 
-VerifyNOWMineConfirmation.propTypes = propTypes;
-VerifyNOWMineConfirmation.defaultProps = defaultProps;
+AssignLeadInspector.propTypes = propTypes;
+AssignLeadInspector.defaultProps = defaultProps;
 
-export default connect(mapStateToProps)(VerifyNOWMineConfirmation);
+export default connect(mapStateToProps)(AssignLeadInspector);

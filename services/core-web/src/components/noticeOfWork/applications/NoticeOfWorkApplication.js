@@ -26,7 +26,7 @@ import {
   getDropdownNoticeOfWorkApplicationStatusOptions,
   getNoticeOfWorkApplicationProgressStatusCodeOptions,
 } from "@/selectors/staticContentSelectors";
-import VerifyNOWMine from "@/components/noticeOfWork/applications/verification/VerifyNOWMine";
+import ApplciationStepOne from "@/components/noticeOfWork/applications/applicationStepOne/ApplicationStepOne";
 import NOWApplicationReviews from "@/components/noticeOfWork/applications/referals/NOWApplicationReviews";
 import CustomPropTypes from "@/customPropTypes";
 import ReviewNOWApplication from "@/components/noticeOfWork/applications/review/ReviewNOWApplication";
@@ -36,7 +36,7 @@ import NoticeOfWorkPageHeader from "@/components/noticeOfWork/applications/Notic
 import * as FORM from "@/constants/forms";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
 import { downloadNowDocument } from "@/utils/actionlessNetworkCalls";
-import MMPermitApplicationInit from "@/components/noticeOfWork/applications/MMPermitApplicationInit";
+// import MMPermitApplicationInit from "@/components/noticeOfWork/applications/MMPermitApplicationInit";
 
 const { Step } = Steps;
 
@@ -317,7 +317,7 @@ export class NoticeOfWorkApplication extends Component {
     }
     const mine = this.props.mines ? this.props.mines[this.state.associatedMineGuid] : {};
     return (
-      <VerifyNOWMine
+      <ApplciationStepOne
         noticeOfWork={this.props.noticeOfWork}
         currentMine={mine}
         setLeadInspectorPartyGuid={this.setLeadInspectorPartyGuid}
