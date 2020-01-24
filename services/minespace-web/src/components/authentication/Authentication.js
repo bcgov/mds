@@ -34,12 +34,12 @@ export class Authentication extends Component {
       <Menu>
         <Menu.Item key="my-mines">
           <Button>
-            <Link to={route.DASHBOARD.route}>My Mines</Link>
+            <Link to={route.MINES.route}>My Mines</Link>
           </Button>
         </Menu.Item>
         <Menu.Item key="manage-users">
           <Button>
-            <Link to={route.DASHBOARD.route}>Manage Users</Link>
+            <Link to={route.MINES.route}>Manage Users</Link>
           </Button>
         </Menu.Item>
         <Divider style={{ margin: "0" }} />
@@ -73,10 +73,10 @@ export class Authentication extends Component {
       <div>
         <MediaQuery minWidth={701}>
           <span>
-            <Link to={route.DASHBOARD.route} className="header-link">
+            <Link to={route.MINES.route} className="header-link">
               My Mines
             </Link>
-            <Link to={route.DASHBOARD.route} className="header-link">
+            <Link to={route.USERS.route} className="header-link">
               My Users
             </Link>
           </span>

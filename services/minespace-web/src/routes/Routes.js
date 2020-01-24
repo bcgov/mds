@@ -15,12 +15,17 @@ const Routes = () => (
       {/* PRIVATE ROUTES */}
       <Route
         exact
-        path={routes.DASHBOARD.route}
-        component={AuthenticationGuard()(routes.DASHBOARD.component)}
+        path={routes.MINES.route}
+        component={AuthenticationGuard()(routes.MINES.component)}
+      />
+      <Route
+        exact
+        path={routes.USERS.route}
+        component={AuthenticationGuard()(routes.USERS.component)}
       />
       <Redirect
         exact
-        from={routes.MINE_DASHBOARD_OLD.route}
+        from={routes.MINE_DASHBOARD_NO_TAB.route}
         to={routes.MINE_DASHBOARD.dynamicRoute(":id")}
       />
       <Route

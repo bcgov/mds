@@ -21,7 +21,7 @@ const propTypes = {
   userMineInfo: CustomPropTypes.userMines.isRequired,
 };
 
-export class UserDashboard extends Component {
+export class MinesPage extends Component {
   state = { isLoaded: false };
 
   componentDidMount() {
@@ -84,6 +84,6 @@ const mapDispatchToProps = (dispatch) =>
     dispatch
   );
 
-UserDashboard.propTypes = propTypes;
+MinesPage.propTypes = propTypes;
 
-export default connect(mapStateToProps, mapDispatchToProps)(UserDashboard);
+export default connect(mapStateToProps, mapDispatchToProps)(MinesPage);
