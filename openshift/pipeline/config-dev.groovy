@@ -287,7 +287,7 @@ app {
 environments {
     'dev' {
         vars {
-            DB_PVC_SIZE = '1Gi'
+            DB_PVC_SIZE = '200Mi'
             DOCUMENT_PVC_SIZE = '100Mi'
             BACKUP_VERIFICATION_PVC_SIZE = '200Mi'
             LOG_PVC_SIZE = '200Mi'
@@ -354,10 +354,10 @@ environments {
                     memory_limit = "32Mi"
                 }
                 backup {
-                    cpu_request = "0"
-                    cpu_limit = "0"
-                    memory_request = "0"
-                    memory_limit = "0"
+                    cpu_request = "10m"
+                    cpu_limit = "20m"
+                    memory_request = "64Mi"
+                    memory_limit = "256Mi"
                 }
             }
             deployment {
