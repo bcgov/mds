@@ -1,13 +1,16 @@
+/* eslint-disable */
 import React from "react";
 import PropTypes from "prop-types";
 import "filepond-polyfill";
 import { FilePond, registerPlugin } from "react-filepond";
+import { Switch, Icon } from "antd";
 import "filepond/dist/filepond.min.css";
 import FilePondPluginFileValidateSize from "filepond-plugin-file-validate-size";
 import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type";
 import tus from "tus-js-client";
 import { ENVIRONMENT } from "@/constants/environment";
 import { createRequestHeader } from "@/utils/RequestHeaders";
+import { FLUSH_SOUND, WATER_SOUND } from "@/constants/assets";
 
 registerPlugin(FilePondPluginFileValidateSize, FilePondPluginFileValidateType);
 
@@ -35,6 +38,8 @@ const defaultProps = {
 };
 
 class FileUpload extends React.Component {
+  state = { showWhirlpool: false };
+
   constructor(props) {
     super(props);
 
@@ -59,6 +64,9 @@ class FileUpload extends React.Component {
             const documentGuid = upload.url.split("/").pop();
             load(documentGuid);
             this.props.onFileLoad(file.name, documentGuid);
+            if (this.state.showWhirlpool) {
+              this.flushSound.play();
+            }
           },
         });
         // Start the upload
@@ -73,21 +81,51 @@ class FileUpload extends React.Component {
     };
   }
 
+  componentWillUnmount() {
+    if (this.flushSound) {
+      this.flushSound.removeEventListener("ended", () => this.setState({ play: false }));
+    }
+  }
+
   render() {
     const acceptedFileTypes = Object.values(this.props.acceptedFileTypesMap);
 
     return (
-      <FilePond
-        server={this.server}
-        name="file"
-        allowRevert={this.props.allowRevert}
-        onremovefile={this.props.onRemoveFile}
-        allowMultiple={this.props.allowMultiple}
-        maxFileSize={this.props.maxFileSize}
-        allowFileTypeValidation={acceptedFileTypes.length > 0}
-        acceptedFileTypes={acceptedFileTypes}
-        fileValidateTypeLabelExpectedTypesMap={this.props.acceptedFileTypesMap}
-      />
+      <div
+        className={
+          this.state.showWhirlpool ? "whirlpool-container whirlpool-on" : "whirlpool-container"
+        }
+      >
+        <Switch
+          className="ant-switch-overlay"
+          checkedChildren={<Icon type="funnel-plot" />}
+          unCheckedChildren={<Icon type="funnel-plot" />}
+          checked={this.state.showWhirlpool}
+          onChange={() => {
+            if (!this.waterSound) {
+              this.waterSound = new Audio(WATER_SOUND);
+              this.flushSound = new Audio(FLUSH_SOUND);
+            }
+            this.setState((prevState) => ({ showWhirlpool: !prevState.showWhirlpool }));
+            if (!this.state.showWhirlpool) {
+              this.waterSound.play();
+            } else {
+              this.waterSound.pause();
+            }
+          }}
+        />
+        <FilePond
+          server={this.server}
+          name="file"
+          allowRevert={this.props.allowRevert}
+          onremovefile={this.props.onRemoveFile}
+          allowMultiple={this.props.allowMultiple}
+          maxFileSize={this.props.maxFileSize}
+          allowFileTypeValidation={acceptedFileTypes.length > 0}
+          acceptedFileTypes={acceptedFileTypes}
+          fileValidateTypeLabelExpectedTypesMap={this.props.acceptedFileTypesMap}
+        />
+      </div>
     );
   }
 }

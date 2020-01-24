@@ -321,7 +321,11 @@ NOW_APPLICATION_MODEL = api.model(
         'water_supply': fields.Nested(NOW_APPLICATION_WATER_SUPPLY, skip_none=True),
         'documents': fields.List(fields.Nested(NOW_APPLICATION_DOCUMENT), skip_none=True),
         'submission_documents': fields.List(fields.Nested(NOW_SUBMISSION_DOCUMENT), skip_none=True),
-        'contacts': fields.List(fields.Nested(NOW_PARTY_APPOINTMENT), skip_none=True)
+        'contacts': fields.List(fields.Nested(NOW_PARTY_APPOINTMENT), skip_none=True),
+        'ready_for_review_date': Date,
+        'referral_closed_on_date': Date,
+        'consultation_closed_on_date': Date,
+        'public_comment_closed_on_date': Date
     })
 
 NOW_VIEW_MODEL = api.model(

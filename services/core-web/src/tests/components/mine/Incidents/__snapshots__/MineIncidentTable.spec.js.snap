@@ -5,10 +5,10 @@ exports[`MineIncidentTable renders properly 1`] = `
   isPaginated={false}
   tableHeaders={
     Array [
-      "Incident Report No.",
-      "Date",
-      "Mine Name",
-      "Incident Status",
+      "Number",
+      "Incident Date",
+      "Mine",
+      "Status",
       "Determination",
       "Code",
       "Reported By",
@@ -27,38 +27,38 @@ exports[`MineIncidentTable renders properly 1`] = `
           "dataIndex": "mine_incident_report_no",
           "render": [Function],
           "sortField": "mine_incident_report_no",
-          "sorter": [Function],
-          "title": "Incident Report No.",
+          "sorter": false,
+          "title": "Number",
         },
         Object {
           "dataIndex": "incident_timestamp",
           "render": [Function],
           "sortField": "incident_timestamp",
-          "sorter": [Function],
-          "title": "Date",
+          "sorter": false,
+          "title": "Incident Date",
         },
         Object {
           "className": "column-hide",
           "dataIndex": "mine_name",
           "render": [Function],
           "sortField": "mine_name",
-          "sorter": true,
-          "title": "Mine Name",
+          "sorter": false,
+          "title": "Mine",
         },
         Object {
           "className": "column-hide",
           "dataIndex": "incident_status",
           "render": [Function],
           "sortField": "incident_status",
-          "sorter": true,
-          "title": "Incident Status",
+          "sorter": false,
+          "title": "Status",
         },
         Object {
           "className": "column-hide",
           "dataIndex": "determination",
           "render": [Function],
           "sortField": "determination",
-          "sorter": true,
+          "sorter": false,
           "title": "Determination",
         },
         Object {
@@ -145,10 +145,10 @@ exports[`MineIncidentTable renders properly 1`] = `
           "incident_timestamp": "Apr 06 2019",
           "key": undefined,
           "mine_incident_report_no": "2019-70",
-          "mine_name": undefined,
+          "mine_name": "N/A",
           "openMineIncidentModal": [MockFunction],
           "openViewMineIncidentModal": [MockFunction],
-          "reported_by": undefined,
+          "reported_by": "N/A",
           "reported_timestamp": "Mar 17 2019",
         },
       ]
@@ -156,6 +156,7 @@ exports[`MineIncidentTable renders properly 1`] = `
     locale={
       Object {
         "emptyText": <NullScreen
+          message=""
           type="incidents"
         />,
       }

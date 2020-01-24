@@ -24,6 +24,7 @@
 *.[sS][vV][gG] binary
 *.[tT][iI][fF] binary
 *.[tT][iI][fF][fF] binary
+*.[gG][iI][fF] binary
 
 # Binary text files
 # ============
@@ -33,3 +34,7 @@
 *.[xX][lL][sS][xX] binary
 *.[pP][dD][fF] binary
 *.[xX][lL][sS][mM] binary
+
+# Binary other files
+# ============
+*.[mM][pP][3] binary

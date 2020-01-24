@@ -111,7 +111,8 @@ class PartyListResource(Resource, UserMixin):
                 'total': pagination_details.total_results,
             }, PAGINATED_PARTY_LIST)
 
-        if dict(request.args) == ALL_INSPECTORS_QUERY_PARAMS:
+        if dict(request.args
+                ) == ALL_INSPECTORS_QUERY_PARAMS and pagination_details.total_results > 0:
             current_app.logger.debug(f'SET CACHE - {GET_ALL_INSPECTORS_KEY}')
             cache.set(GET_ALL_INSPECTORS_KEY, result, timeout=TIMEOUT_12_HOURS)
         return result

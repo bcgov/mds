@@ -51,7 +51,7 @@ class NOWApplicationReviewListResource(Resource, UserMixin):
 
             new_now_mine_doc = NOWApplicationDocumentXref(
                 mine_document=new_mine_doc,
-                now_application_document_type_code='REV',
+                now_application_document_type_code='PUB' if new_review.now_application_review_type_code == 'PUB' else 'REV',
                 now_application_id=now_application.now_application.now_application_id,
             )
 
@@ -125,7 +125,7 @@ class NOWApplicationReviewResource(Resource, UserMixin):
 
             new_now_mine_doc = NOWApplicationDocumentXref(
                 mine_document=new_mine_doc,
-                now_application_document_type_code='REV',
+                now_application_document_type_code='PUB' if now_app_review.now_application_review_type_code == 'PUB' else 'REV',
                 now_application_id=now_app_review.now_application_id,
             )
 

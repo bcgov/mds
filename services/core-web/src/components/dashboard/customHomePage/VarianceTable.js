@@ -36,6 +36,7 @@ const defaultProps = {
   sortField: null,
   sortDir: null,
 };
+
 export const VarianceTable = (props) => (
   <div className="tab__content">
     <MineVarianceTable
