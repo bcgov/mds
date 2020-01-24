@@ -3,6 +3,7 @@ import { Col, Row } from "antd";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import PropTypes from "prop-types";
+import { withRouter } from "react-router-dom";
 import { getMines } from "@/selectors/mineSelectors";
 import MineCard from "@/components/mine/NoticeOfWork/MineCard";
 import { getPermits } from "@/reducers/permitReducer";
@@ -11,14 +12,15 @@ import { fetchPermits } from "@/actionCreators/permitActionCreator";
 import MMPermitApplicationInitForm from "@/components/Forms/noticeOfWork/MMPermitApplicationInitForm";
 import { createDropDownList } from "@/utils/helpers";
 import { createNoticeOfWorkApplication } from "@/actionCreators/noticeOfWorkActionCreator";
+import * as routes from "@/constants/routes";
 
 const propTypes = {
   mineGuid: PropTypes.string.isRequired,
   initialPermitGuid: PropTypes.string,
   fetchPermits: PropTypes.func.isRequired,
+  history: PropTypes.shape({ push: PropTypes.func }).isRequired,
   minePermits: PropTypes.arrayOf(CustomPropTypes.permit).isRequired,
   createNoticeOfWorkApplication: PropTypes.func.isRequired,
-  handleProgressChange: PropTypes.func.isRequired,
   mines: PropTypes.arrayOf(CustomPropTypes.mine).isRequired,
 };
 
@@ -40,9 +42,12 @@ export class MMPermitApplicationInit extends Component {
     this.setState({ isSubmitting: true });
     this.props.createNoticeOfWorkApplication(newValues).then((response) => {
       if (response) {
-        this.props.handleProgressChange("REV", response.data.now_application_guid);
+        this.props.history.push(
+          routes.NOTICE_OF_WORK_APPLICATION.dynamicRoute(response.data.now_application_guid)
+        );
+      } else {
+        this.setState({ isSubmitting: false });
       }
-      this.setState({ isSubmitting: false });
     });
   };
 
@@ -88,4 +93,4 @@ MMPermitApplicationInit.defaultProps = defaultProps;
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(MMPermitApplicationInit);
+)(withRouter(MMPermitApplicationInit));

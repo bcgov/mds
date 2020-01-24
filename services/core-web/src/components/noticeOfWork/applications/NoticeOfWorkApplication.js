@@ -321,22 +321,18 @@ export class NoticeOfWorkApplication extends Component {
     });
   };
 
-  handleProgressChange = (status, newNoWGuid) => {
+  handleProgressChange = (status) => {
     this.setState({ isNoWLoaded: false, isLoaded: false });
-    const id = newNoWGuid || this.props.match.params.id;
+    const {id} = this.props.match.params;
     this.props
       .createNoticeOfWorkApplicationProgress(id, {
         application_progress_status_code: status,
       })
       .then(() => {
-        if (newNoWGuid) {
-          this.props.history.push(routes.NOTICE_OF_WORK_APPLICATION.dynamicRoute(newNoWGuid));
-        } else {
-          this.props.fetchImportedNoticeOfWorkApplication(id).then(() => {
-            this.props.fetchMineRecordById(this.state.associatedMineGuid);
-            this.setState({ isNoWLoaded: true, isLoaded: true });
-          });
-        }
+        this.props.fetchImportedNoticeOfWorkApplication(id).then(() => {
+          this.props.fetchMineRecordById(this.state.associatedMineGuid);
+          this.setState({ isNoWLoaded: true, isLoaded: true });
+        });
       });
 
     const statusIndex = {

@@ -46,6 +46,11 @@ export class ApplicationStepOne extends Component {
     }
   }
 
+  // componentWillReceiveProps(nextProps) {
+  //   if (this.props.noticeOfWork.imported_to_core !== nextProps.noticeOfWork.imported_to_core) {
+  //     this.setState({ isImported: nextProps.noticeOfWork.imported_to_core });
+  //   }
+  // }
   handleNOWImport = (values) => {
     this.setState({ isLoaded: false });
     this.props
@@ -119,11 +124,9 @@ export class ApplicationStepOne extends Component {
             loadNoticeOfWork={this.props.loadNoticeOfWork}
           />
         )}
-        {this.state.isImported &&
-          !this.props.mines[this.props.mineGuid].major_mine_ind &&
-          !this.props.noticeOfWork.lead_inspector_party_guid && (
-            <div>{this.renderInspectorAssignment()}</div>
-          )}
+        {this.state.isImported && !this.props.noticeOfWork.lead_inspector_party_guid && (
+          <div>{this.renderInspectorAssignment()}</div>
+        )}
         {this.state.isImported && this.props.noticeOfWork.application_progress[0] && (
           <div>{this.renderResult()}</div>
         )}
