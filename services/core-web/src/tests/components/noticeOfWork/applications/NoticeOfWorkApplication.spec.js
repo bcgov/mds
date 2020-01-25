@@ -19,7 +19,6 @@ const setupDispatchProps = () => {
   dispatchProps.updateNoticeOfWorkApplication = jest.fn();
   dispatchProps.fetchNoticeOfWorkUnitTypeOptions = jest.fn();
   dispatchProps.fetchNoticeOfWorkApplicationPermitTypes = jest.fn();
-  dispatchProps.fetchNoticeOfWorkApplicationStatusOptions = jest.fn();
   dispatchProps.fetchNoticeOfWorkApplicationPermitTypes = jest.fn();
   dispatchProps.fetchNoticeOfWorkApplicationProgressStatusCodes = jest.fn();
   dispatchProps.fetchInspectors = jest.fn();
@@ -28,11 +27,12 @@ const setupDispatchProps = () => {
 
 const setupReducerProps = () => {
   reducerProps.match = {};
-  reducerProps.history = { push: jest.fn() };
+  reducerProps.history = { push: jest.fn(), location: { state: {} } };
   reducerProps.noticeOfWork = NOW_MOCK.NOTICE_OF_WORK;
   reducerProps.formValues = NOW_MOCK.NOTICE_OF_WORK;
   reducerProps.reclamationSummary = NOW_MOCK.RECLAMATION_SUMMARY;
   reducerProps.mines = MOCK.MINES;
+  [reducerProps.mineGuid] = MOCK.MINES.mineIds;
   reducerProps.location = { state: {} };
 };
 

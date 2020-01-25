@@ -165,7 +165,7 @@ exports[`DashboardRoutes  renders properly 1`] = `
       }
     }
     exact={true}
-    path="/mine-dashboard/:id/permits-and-approvals/notice-of-work"
+    path="/mine-dashboard/:id/permits-and-approvals/applications"
   />
   <Route
     component={
