@@ -4,7 +4,6 @@ import React from "react";
 import { Table, Button } from "antd";
 import moment from "moment";
 import PropTypes from "prop-types";
-import NullScreen from "@/components/common/NullScreen";
 import * as Strings from "@/constants/strings";
 import { formatDate } from "@/utils/helpers";
 import { EDIT_PENCIL } from "@/constants/assets";
@@ -105,7 +104,7 @@ export const ReportsTable = (props) => (
     align="left"
     pagination={false}
     columns={columns}
-    locale={{ emptyText: <NullScreen type="reports" /> }}
+    locale={{ emptyText: "This mine has no report data." }}
     dataSource={props.mineReports.map((r) =>
       transformRowData(
         r,

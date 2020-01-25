@@ -1,12 +1,11 @@
 .loading-screen {
   z-index: 99999;
   position: fixed;
-  background: rgba(65, 58, 58, 0.9);
+  background: $modal-mask-bg;
   top: 0;
   left: 0;
   bottom: 0;
   right: 0;
-  opacity: 0.9;
 
   #loader {
     width: 300px;

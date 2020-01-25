@@ -5,24 +5,41 @@ exports[`Variances renders properly 1`] = `
   gutter={0}
 >
   <Col>
-    <Title
-      level={4}
-    >
-      Variance Details
-    </Title>
-    <Paragraph>
-      Morbi consequat, augue et pulvinar condimentum, nunc urna congue diam, at tempus justo eros non leo.
-    </Paragraph>
     <Button
       block={false}
       ghost={false}
       htmlType="button"
       loading={false}
       onClick={[Function]}
+      style={
+        Object {
+          "display": "inline",
+          "float": "right",
+        }
+      }
       type="primary"
     >
+      <Icon
+        theme="filled"
+        type="plus-circle"
+      />
       Create Variance
     </Button>
+    <Title
+      level={4}
+    >
+      Variances
+    </Title>
+    <Paragraph>
+      The following table lists all of the 
+      <Text
+        className="color-primary"
+        strong={true}
+      >
+        variance applications
+      </Text>
+       associated with this mine.
+    </Paragraph>
     <VariancesTable
       complianceCodesHash={
         Object {

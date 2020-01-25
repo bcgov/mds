@@ -65,10 +65,19 @@ export class MineDashboard extends Component {
         <div>
           <Row gutter={[0, 48]}>
             <Col>
-              <Title>{this.props.mine.mine_name}</Title>
+              <Title>
+                {this.props.mine.mine_name || "Unnamed Mine"}
+                <Title
+                  className="color-gov-grey"
+                  level={4}
+                  style={{ display: "inline", paddingLeft: 20 }}
+                >
+                  {this.props.mine.mine_no || "Unnumbered Mine"}
+                </Title>
+              </Title>
             </Col>
           </Row>
-          <Row gutter={[0, 48]}>
+          <Row>
             <Col>
               <Tabs
                 activeKey={this.state.activeTab}
@@ -116,6 +125,6 @@ const mapDispatchToProps = (dispatch) =>
   );
 
 MineDashboard.propTypes = propTypes;
-Overview.defaultProps = defaultProps;
+MineDashboard.defaultProps = defaultProps;
 
 export default connect(mapStateToProps, mapDispatchToProps)(MineDashboard);

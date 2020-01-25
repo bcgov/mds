@@ -1,78 +1,76 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`PrivateRoutes  renders properly 1`] = `
-<div>
-  <Switch>
-    <Route
-      component={[Function]}
-      exact={true}
-      path="/"
-    />
-    <Route
-      component={
-        Object {
-          "$$typeof": Symbol(react.memo),
-          "WrappedComponent": [Function],
-          "compare": null,
-          "displayName": "Connect(ReturnPage)",
-          "type": [Function],
-        }
+<Switch>
+  <Route
+    component={[Function]}
+    exact={true}
+    path="/"
+  />
+  <Route
+    component={
+      Object {
+        "$$typeof": Symbol(react.memo),
+        "WrappedComponent": [Function],
+        "compare": null,
+        "displayName": "Connect(ReturnPage)",
+        "type": [Function],
       }
-      exact={true}
-      path="/return-page"
-    />
-    <Route
-      component={[Function]}
-      exact={true}
-      path="/mockup"
-    />
-    <Route
-      component={
-        Object {
-          "$$typeof": Symbol(react.memo),
-          "WrappedComponent": [Function],
-          "compare": null,
-          "displayName": "Connect(authenticationGuard)",
-          "type": [Function],
-        }
+    }
+    exact={true}
+    path="/return-page"
+  />
+  <Route
+    component={[Function]}
+    exact={true}
+    path="/mockup"
+  />
+  <Route
+    component={
+      Object {
+        "$$typeof": Symbol(react.memo),
+        "WrappedComponent": [Function],
+        "compare": null,
+        "displayName": "Connect(authenticationGuard)",
+        "type": [Function],
       }
-      exact={true}
-      path="/mines"
-    />
-    <Route
-      component={
-        Object {
-          "$$typeof": Symbol(react.memo),
-          "WrappedComponent": [Function],
-          "compare": null,
-          "displayName": "Connect(authenticationGuard)",
-          "type": [Function],
-        }
+    }
+    exact={true}
+    path="/mines"
+  />
+  <Route
+    component={
+      Object {
+        "$$typeof": Symbol(react.memo),
+        "WrappedComponent": [Function],
+        "compare": null,
+        "displayName": "Connect(authenticationGuard)",
+        "type": [Function],
       }
-      exact={true}
-      path="/users"
-    />
-    <Redirect
-      exact={true}
-      from="/mines/:id"
-      to="/mines/:id/overview?"
-    />
-    <Route
-      component={
-        Object {
-          "$$typeof": Symbol(react.memo),
-          "WrappedComponent": [Function],
-          "compare": null,
-          "displayName": "Connect(authenticationGuard)",
-          "type": [Function],
-        }
+    }
+    exact={true}
+    path="/users"
+  />
+  <Redirect
+    exact={true}
+    from="/mines/:id"
+    to="/mines/:id/overview?"
+  />
+  <Route
+    component={
+      Object {
+        "$$typeof": Symbol(react.memo),
+        "WrappedComponent": [Function],
+        "compare": null,
+        "displayName": "Connect(authenticationGuard)",
+        "type": [Function],
       }
-      exact={true}
-      path="/mines/:id/:activeTab"
-    />
-    <Route
-      render={[Function]}
-    />
-  </Switch>
-</div>
+    }
+    exact={true}
+    path="/mines/:id/:activeTab"
+  />
+  <Route
+    render={[Function]}
+  />
+</Switch>
 `;

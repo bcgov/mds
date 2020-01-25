@@ -8,7 +8,7 @@ import { Row, Col, Table, Typography } from "antd";
 // import * as Strings from "@/constants/strings";
 // import IncidentsTable from "@/components/dashboard/mine/incidents/IncidentsTable";
 
-const { Paragraph, Title } = Typography;
+const { Paragraph, Title, Text } = Typography;
 
 const propTypes = {
   mine: CustomPropTypes.mine.isRequired,
@@ -30,16 +30,20 @@ export class Incidents extends Component {
     return (
       <Row>
         <Col>
-          <Title level={4}>Incident Details</Title>
+          <Title level={4}>Incidents</Title>
           <Paragraph>
-            Morbi consequat, augue et pulvinar condimentum, nunc urna congue diam, at tempus justo
-            eros non leo.
+            The following table lists all of the{" "}
+            <Text className="color-primary" strong>
+              reported incidents
+            </Text>{" "}
+            associated with this mine.
           </Paragraph>
           <Table
             size="small"
             columns={columns}
             expandedRowRender={(record) => <p style={{ margin: 0 }}>{record.description}</p>}
             dataSource={data}
+            locale={{ emptyText: "This mine has no incident data." }}
           />
         </Col>
       </Row>

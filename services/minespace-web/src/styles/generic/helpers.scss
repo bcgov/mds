@@ -1,0 +1,41 @@
+.color {
+  // Theme Colours
+  &-primary {
+    color: $primary-color !important;
+  }
+  &-info {
+    color: $info-color !important;
+  }
+  &-success {
+    color: $success-color !important;
+  }
+  &-processing {
+    color: $processing-color !important;
+  }
+  &-error {
+    color: $error-color !important;
+  }
+  &-warning {
+    color: $warning-color !important;
+  }
+  &-highlight {
+    color: $highlight-color !important;
+  }
+  &-normal {
+    color: $normal-color !important;
+  }
+  &-white {
+    color: $white !important;
+  }
+  &-black {
+    color: $black !important;
+  }
+  &-text {
+    color: $text-color !important;
+  }
+
+  // Brand Colours
+  &-gov-grey {
+    color: $gov-grey !important;
+  }
+}

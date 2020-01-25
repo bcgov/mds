@@ -229,6 +229,7 @@ export class VariancesTable extends Component {
             this.props.complianceCodesHash,
             this.props.varianceStatusOptionsHash
           )}
+          locale={{ emptyText: "This mine has no variance data." }}
         />
       </div>
     );

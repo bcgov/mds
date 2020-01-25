@@ -11,8 +11,7 @@
 
 // GENERIC - Very high level, far-reaching styles. Contains Normalize.css, Box-sizing rules, CSS resets etc.
 @import "./antd-overrides/antd-overrides.scss";
-@import "./generic/Normalize.scss";
-@import "./generic/layout.scss";
+@import "./generic/helpers.scss";
 
 // ELEMENTS - Bare, un-classed HTML elements (like H1, A, etc.). This layer is rarely touched after initial setup.
 @import "./elements/elements.scss";
@@ -22,8 +21,6 @@
 // COMPONENTS - specific UI components.
 @import "./components/HeaderContent.scss";
 @import "./components/FooterContent.scss";
-@import "./components/MineInfo.scss";
-@import "./components/NullScreen.scss";
 @import "./components/Loading.scss";
 @import "./components/Tables.scss";
 

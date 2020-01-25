@@ -16,7 +16,7 @@ import ReportsTable from "@/components/dashboard/mine/reports/ReportsTable";
 import { fetchMineReportDefinitionOptions } from "@/actionCreators/staticContentActionCreator";
 import { getMineReportDefinitionOptions } from "@/reducers/staticContentReducer";
 
-const { Paragraph, Title } = Typography;
+const { Paragraph, Title, Text } = Typography;
 
 const propTypes = {
   mine: CustomPropTypes.mine.isRequired,
@@ -92,17 +92,21 @@ export class Reports extends Component {
         <Col>
           <Row>
             <Col>
-              <Title level={4}>Report Details</Title>
+              <Title level={4}>Reports</Title>
               <Paragraph>
-                Morbi consequat, augue et pulvinar condimentum, nunc urna congue diam, at tempus
-                justo eros non leo.
+                The following table lists all of the{" "}
+                <Text className="color-primary" strong>
+                  reports
+                </Text>{" "}
+                associated with this mine.
               </Paragraph>
             </Col>
           </Row>
-          <Row gutter={[48, 48]}>
+          <Row gutter={[32, 32]}>
             <Col lg={{ span: 7, offset: 1 }}>
               <TableSummaryCard
                 title="Reports Submitted"
+                // TODO: Display the amount of submitted reports.
                 content="6"
                 icon="check-circle"
                 type="success"
@@ -111,6 +115,7 @@ export class Reports extends Component {
             <Col lg={7}>
               <TableSummaryCard
                 title="Reports Overdue"
+                // TODO: Display the amount of reports that are overdue.
                 content="6"
                 icon="clock-circle"
                 type="error"
@@ -119,6 +124,7 @@ export class Reports extends Component {
             <Col lg={7}>
               <TableSummaryCard
                 title="Reports Due"
+                // TODO: Display the amount of reports that are due.
                 content="6"
                 icon="exclamation-circle"
                 type="warning"

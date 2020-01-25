@@ -12,18 +12,25 @@ exports[`Reports renders properly 1`] = `
         <Title
           level={4}
         >
-          Report Details
+          Reports
         </Title>
         <Paragraph>
-          Morbi consequat, augue et pulvinar condimentum, nunc urna congue diam, at tempus justo eros non leo.
+          The following table lists all of the 
+          <Text
+            className="color-primary"
+            strong={true}
+          >
+            reports
+          </Text>
+           associated with this mine.
         </Paragraph>
       </Col>
     </Row>
     <Row
       gutter={
         Array [
-          48,
-          48,
+          32,
+          32,
         ]
       }
     >

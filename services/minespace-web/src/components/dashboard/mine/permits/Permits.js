@@ -6,7 +6,7 @@ import { bindActionCreators } from "redux";
 import CustomPropTypes from "@/customPropTypes";
 import { Row, Col, Table, Typography } from "antd";
 
-const { Paragraph, Title } = Typography;
+const { Paragraph, Title, Text } = Typography;
 
 const propTypes = {
   mine: CustomPropTypes.mine.isRequired,
@@ -54,16 +54,20 @@ export class Permits extends Component {
     return (
       <Row>
         <Col>
-          <Title level={4}>Permit Details</Title>
+          <Title level={4}>Permits</Title>
           <Paragraph>
-            Morbi consequat, augue et pulvinar condimentum, nunc urna congue diam, at tempus justo
-            eros non leo.
+            The following table lists all of the{" "}
+            <Text className="color-primary" strong>
+              permit applications
+            </Text>{" "}
+            associated with this mine.
           </Paragraph>
           <Table
             size="small"
             columns={columns}
             expandedRowRender={(record) => <p>{record.description}</p>}
             dataSource={data}
+            locale={{ emptyText: "This mine has no permit data." }}
           />
         </Col>
       </Row>

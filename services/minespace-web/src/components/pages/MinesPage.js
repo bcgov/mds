@@ -7,7 +7,6 @@ import { Link } from "react-router-dom";
 import { getUserInfo } from "@/selectors/authenticationSelectors";
 import { getUserMineInfo } from "@/selectors/userMineSelectors";
 import { fetchUserMineInfo } from "@/actionCreators/userDashboardActionCreator";
-import NullScreen from "@/components/common/NullScreen";
 import CustomPropTypes from "@/customPropTypes";
 import Loading from "@/components/common/Loading";
 import * as routes from "@/constants/routes";
@@ -40,31 +39,46 @@ export class MinesPage extends Component {
           <Title>My Mines</Title>
           <Divider />
           <Title level={2}>Welcome, {this.props.userInfo.preferred_username}.</Title>
+
           {(mines && mines.length > 0 && (
-            <span>
-              <Paragraph>
-                You are authorized to submit information for the following mines:
-              </Paragraph>
-              <Paragraph>
-                <ul>
-                  {mines
-                    .sort((a, b) => (a.mine_name > b.mine_name ? 1 : -1))
-                    .map((mine) => (
-                      <li key={mine.mine_guid}>
-                        <Link to={routes.MINE_DASHBOARD.dynamicRoute(mine.mine_guid)}>
-                          {mine.mine_name}
-                        </Link>
-                      </li>
-                    ))}
-                </ul>
-              </Paragraph>
-              <Paragraph>
-                Don&apos;t see the mine you&apos;re looking for? Contact&nbsp;
-                <a href={`mailto:${Strings.MDS_EMAIL}`}>{Strings.MDS_EMAIL}</a>
-                &nbsp;for assistance.
-              </Paragraph>
-            </span>
-          )) || <NullScreen type="no-mines" />}
+            <Row>
+              <Col>
+                <Paragraph>
+                  You are authorized to submit information for the following mines:
+                </Paragraph>
+                <Paragraph>
+                  <ul>
+                    {mines
+                      .sort((a, b) => (a.mine_name > b.mine_name ? 1 : -1))
+                      .map((mine) => (
+                        <li key={mine.mine_guid}>
+                          <Link to={routes.MINE_DASHBOARD.dynamicRoute(mine.mine_guid)}>
+                            {mine.mine_name}
+                          </Link>
+                        </li>
+                      ))}
+                  </ul>
+                </Paragraph>
+                <Paragraph>
+                  Don&apos;t see the mine you&apos;re looking for? Contact&nbsp;
+                  <a href={`mailto:${Strings.MDS_EMAIL}`}>{Strings.MDS_EMAIL}</a>
+                  &nbsp;for assistance.
+                </Paragraph>
+              </Col>
+            </Row>
+          )) || (
+            <Row>
+              <Col>
+                <Paragraph>
+                  You are not authorized to manage information for any mines. Please contact&nbsp;
+                  <a className="underline" href={Strings.MDS_EMAIL}>
+                    {Strings.MDS_EMAIL}
+                  </a>
+                  &nbsp;for assistance.
+                </Paragraph>
+              </Col>
+            </Row>
+          )}
         </Col>
       </Row>
     );

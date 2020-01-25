@@ -61,10 +61,7 @@ export class Overview extends Component {
     return (
       <Row>
         <Col lg={{ span: 16 }}>
-          <Title level={4}>Description</Title>
-          <Paragraph>{this.props.mine.mine_note || Strings.NOT_APPLICABLE}</Paragraph>
-
-          <Title level={4}>Details</Title>
+          <Title level={4}>Overview</Title>
           <Descriptions column={1} colon={false}>
             <Descriptions.Item label="Region">{this.props.mine.mine_region}</Descriptions.Item>
             <Descriptions.Item label="Coordinate">
@@ -74,9 +71,10 @@ export class Overview extends Component {
             <Descriptions.Item label="Commodity">{Strings.NOT_APPLICABLE}</Descriptions.Item>
             <Descriptions.Item label="Operating Status">{Strings.NOT_APPLICABLE}</Descriptions.Item>
             <Descriptions.Item label="Disturbance">{Strings.NOT_APPLICABLE}</Descriptions.Item>
+            <Descriptions.Item label="Notes">
+              {this.props.mine.mine_note || Strings.NOT_APPLICABLE}
+            </Descriptions.Item>
           </Descriptions>
-
-          <Title level={4}>Contacts</Title>
           <Row>
             <Col xl={{ span: 10 }}>
               <ContactCard
