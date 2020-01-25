@@ -2,7 +2,6 @@
 
 exports[`DocumentTable renders properly 1`] = `
 <withStore(Table)
-  align="left"
   columns={
     Array [
       Object {
@@ -25,7 +24,6 @@ exports[`DocumentTable renders properly 1`] = `
         "dataIndex": "updateEdit",
         "render": [Function],
         "title": "",
-        "width": 10,
       },
     ]
   }
@@ -45,5 +43,7 @@ exports[`DocumentTable renders properly 1`] = `
     }
   }
   pagination={false}
+  size="small"
+  tableLayout="auto"
 />
 `;

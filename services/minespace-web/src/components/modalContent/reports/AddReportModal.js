@@ -13,15 +13,13 @@ const propTypes = {
 const defaultProps = { initialValues: {} };
 
 export const AddReportModal = (props) => (
-  <div>
-    <AddReportForm
-      onSubmit={props.onSubmit}
-      closeModal={props.closeModal}
-      title={props.title}
-      mineGuid={props.mineGuid}
-      initialValues={props.initialValues}
-    />
-  </div>
+  <AddReportForm
+    onSubmit={props.onSubmit}
+    closeModal={props.closeModal}
+    title={props.title}
+    mineGuid={props.mineGuid}
+    initialValues={props.initialValues}
+  />
 );
 
 AddReportModal.propTypes = propTypes;

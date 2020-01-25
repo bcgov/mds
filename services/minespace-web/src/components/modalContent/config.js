@@ -7,7 +7,7 @@ import EditVarianceModal from "@/components/modalContent/variances/EditVarianceM
 // eslint-disable-next-line import/prefer-default-export
 export const modalConfig = {
   ADD_REPORT: AddReportModal,
-  ADD_VARIANCE: AddVarianceModal,
+  CREATE_VARIANCE: AddVarianceModal,
   VIEW_VARIANCE: ViewVarianceModal,
   EDIT_VARIANCE: EditVarianceModal,
 };

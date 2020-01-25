@@ -150,13 +150,30 @@ td > a {
 .ant-modal {
   &-content {
     border-radius: 0;
+    background-clip: border-box;
   }
   &-header {
-    // TODO: When associated bug is fixed, remove this line and change applicable var in theme.scss.
-    border-bottom: 2px solid transparent;
+    border: none;
   }
   &-title {
     font-weight: 600;
+    font-size: $heading-4-size;
+  }
+  // Because we only use a modal wrapper and provide the ok/cancel buttons inside the modal body
+  // we need to apply this styling.
+  &-body {
+    padding-bottom: 16px;
+  }
+  &-footer {
+    padding-bottom: 0;
+    padding-right: 0;
+  }
+}
+
+// Forms
+.ant-form-item-required {
+  &::before {
+    font-family: $font-family;
   }
 }
 
@@ -175,6 +192,12 @@ td > a {
   &-bordered {
     border: none;
   }
+}
+
+// Lists
+
+.ant-list-bordered {
+  border: 2px solid $primary-color;
 }
 
 // Various Inputs
@@ -205,6 +228,12 @@ td > a {
     top: 2px;
     left: 2px;
   }
+}
+
+// Select
+
+.ant-select {
+  color: $primary-color;
 }
 
 // TimePicker

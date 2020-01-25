@@ -21,7 +21,6 @@ import {
   Switch,
   Checkbox,
   Tag,
-  Skeleton,
   Radio,
   notification,
 } from "antd";
@@ -34,6 +33,7 @@ const { TabPane } = Tabs;
 const { Text, Title, Paragraph } = Typography;
 const { Option } = Select;
 const { confirm } = Modal;
+const { TextArea } = Input;
 
 const columns = [
   { title: "Name", dataIndex: "name", key: "name" },
@@ -278,7 +278,35 @@ class Mockup extends Component {
           <Input placeholder="Placeholder text..." disabled />
           <br />
           <br />
+          {/* https://ant.design/components/input/#components-input-demo-textarea */}
+          <TextArea rows={4} />
+          <br />
+          <br />
+          <TextArea rows={4} disabled />
+          <br />
+          <br />
           {/* https://ant.design/components/select/ */}
+          <Select
+            style={{ width: "100%" }}
+            placeholder="Please select"
+            defaultValue={["a10"]}
+            menuItemSelectedIcon={<Icon type="check-circle" theme="filled" />}
+          >
+            {children}
+          </Select>
+          <br />
+          <br />
+          <Select
+            style={{ width: "100%" }}
+            placeholder="Please select"
+            defaultValue={["a10"]}
+            menuItemSelectedIcon={<Icon type="check-circle" theme="filled" />}
+            disabled
+          >
+            {children}
+          </Select>
+          <br />
+          <br />
           <Select
             mode="multiple"
             style={{ width: "100%" }}

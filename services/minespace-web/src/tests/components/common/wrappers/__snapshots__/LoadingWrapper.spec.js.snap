@@ -9,10 +9,10 @@ exports[`LoadingWrapper renders properly 1`] = `
       id="spinner"
       indicator={
         <Icon
+          className="color-primary"
           spin={true}
           style={
             Object {
-              "color": undefined,
               "fontSize": 80,
             }
           }

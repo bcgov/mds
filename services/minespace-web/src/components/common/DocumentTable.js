@@ -64,7 +64,6 @@ export class DocumentTable extends Component {
       {
         title: "",
         dataIndex: "updateEdit",
-        width: 10,
         className: this.props.isViewOnly ? "column-hide" : "",
         render: (text, record) => (
           <div title="" align="right">
@@ -75,7 +74,7 @@ export class DocumentTable extends Component {
               okText="Delete"
               cancelText="Cancel"
             >
-              <Button ghost type="primary" size="small">
+              <Button type="link">
                 <Icon type="minus-circle" theme="outlined" />
               </Button>
             </Popconfirm>
@@ -86,7 +85,8 @@ export class DocumentTable extends Component {
 
     return (
       <Table
-        align="left"
+        size="small"
+        tableLayout="auto"
         pagination={false}
         columns={columns}
         locale={{ emptyText: "This variance does not contain any documents" }}

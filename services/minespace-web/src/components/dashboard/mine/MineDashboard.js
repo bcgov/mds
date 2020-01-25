@@ -29,6 +29,8 @@ const propTypes = {
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
 };
 
+const defaultProps = {};
+
 export class MineDashboard extends Component {
   state = { isLoaded: false, activeTab: "overview" };
 
@@ -114,5 +116,6 @@ const mapDispatchToProps = (dispatch) =>
   );
 
 MineDashboard.propTypes = propTypes;
+Overview.defaultProps = defaultProps;
 
 export default connect(mapStateToProps, mapDispatchToProps)(MineDashboard);

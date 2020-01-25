@@ -2,12 +2,14 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Field, reduxForm, change } from "redux-form";
 import { remove } from "lodash";
-import { Form, Button, Popconfirm } from "antd";
+import { Form, Button, Popconfirm, Typography } from "antd";
 import * as FORM from "@/constants/forms";
 import CustomPropTypes from "@/customPropTypes";
 import { resetForm } from "@/utils/helpers";
 import { VarianceDetails } from "@/components/dashboard/mine/variances/VarianceDetails";
 import VarianceFileUpload from "@/components/Forms/variances/VarianceFileUpload";
+
+const { Paragraph } = Typography;
 
 const propTypes = {
   onSubmit: PropTypes.func.isRequired,
@@ -66,7 +68,7 @@ export class EditVarianceForm extends Component {
           complianceCodesHash={this.props.complianceCodesHash}
         />
         <Form.Item label="Attached Files">
-          <p>Please upload all the required documents here for the variance application.</p>
+          <Paragraph>Please upload all of the required documents.</Paragraph>
           <Field
             id="uploadedFiles"
             name="uploadedFiles"
@@ -76,7 +78,7 @@ export class EditVarianceForm extends Component {
             component={VarianceFileUpload}
           />
         </Form.Item>
-        <div className="right center-mobile">
+        <div className="ant-modal-footer">
           <Popconfirm
             placement="topRight"
             title="Are you sure you want to cancel?"
@@ -84,20 +86,11 @@ export class EditVarianceForm extends Component {
             okText="Yes"
             cancelText="No"
           >
-            <Button className="full-mobile" type="secondary">
-              Cancel
-            </Button>
+            <Button>Cancel</Button>
           </Popconfirm>
-          {false && (
-            <Button
-              className="full-mobile"
-              type="primary"
-              htmlType="submit"
-              disabled={this.props.submitting}
-            >
-              Submit
-            </Button>
-          )}
+          <Button type="primary" htmlType="submit" disabled={this.props.submitting}>
+            Submit
+          </Button>
         </div>
       </Form>
     );

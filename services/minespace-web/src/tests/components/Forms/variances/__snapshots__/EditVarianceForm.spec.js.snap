@@ -49,9 +49,9 @@ exports[`EditVarianceForm renders properly 1`] = `
     hasFeedback={false}
     label="Attached Files"
   >
-    <p>
-      Please upload all the required documents here for the variance application.
-    </p>
+    <Paragraph>
+      Please upload all of the required documents.
+    </Paragraph>
     <Field
       component={[Function]}
       id="uploadedFiles"
@@ -62,7 +62,7 @@ exports[`EditVarianceForm renders properly 1`] = `
     />
   </FormItem>
   <div
-    className="right center-mobile"
+    className="ant-modal-footer"
   >
     <Popconfirm
       cancelText="No"
@@ -83,15 +83,23 @@ exports[`EditVarianceForm renders properly 1`] = `
     >
       <Button
         block={false}
-        className="full-mobile"
         ghost={false}
         htmlType="button"
         loading={false}
-        type="secondary"
       >
         Cancel
       </Button>
     </Popconfirm>
+    <Button
+      block={false}
+      disabled={false}
+      ghost={false}
+      htmlType="submit"
+      loading={false}
+      type="primary"
+    >
+      Submit
+    </Button>
   </div>
 </Form>
 `;

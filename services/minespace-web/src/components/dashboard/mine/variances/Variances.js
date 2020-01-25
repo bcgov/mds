@@ -3,14 +3,12 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { Button, Row, Col, Table, Icon, Typography } from "antd";
+import { Button, Row, Col, Typography } from "antd";
 import moment from "moment";
 import PropTypes from "prop-types";
 import { getMine } from "@/selectors/userMineSelectors";
 import CustomPropTypes from "@/customPropTypes";
-import Loading from "@/components/common/Loading";
 import { openModal, closeModal } from "@/actions/modalActions";
-import * as ModalContent from "@/constants/modalContent";
 import { modalConfig } from "@/components/modalContent/config";
 import { fetchMineRecordById } from "@/actionCreators/userDashboardActionCreator";
 import {
@@ -32,7 +30,7 @@ import {
 } from "@/selectors/varianceSelectors";
 import VariancesTable from "@/components/dashboard/mine/variances/VariancesTable";
 
-const { Paragraph, Text, Title } = Typography;
+const { Paragraph, Title } = Typography;
 
 const propTypes = {
   mine: CustomPropTypes.mine.isRequired,
@@ -83,7 +81,7 @@ export class Variances extends Component {
       )
     );
 
-  handleAddVariances = (files) => (values) => {
+  handleCreateVariances = (files) => (values) => {
     const received_date = moment().format("YYYY-MM-DD");
     const newValues = { received_date, ...values };
     return this.props
@@ -118,6 +116,7 @@ export class Variances extends Component {
         varianceStatusOptionsHash: this.props.varianceStatusOptionsHash,
         complianceCodesHash: this.props.complianceCodesHash,
         documentCategoryOptionsHash: this.props.documentCategoryOptionsHash,
+        width: 650,
       },
       content: modalConfig.EDIT_VARIANCE,
     });
@@ -132,21 +131,22 @@ export class Variances extends Component {
         varianceStatusOptionsHash: this.props.varianceStatusOptionsHash,
         complianceCodesHash: this.props.complianceCodesHash,
         documentCategoryOptionsHash: this.props.documentCategoryOptionsHash,
+        width: 650,
       },
       content: modalConfig.VIEW_VARIANCE,
     });
   };
 
-  openVarianceModal(event, mineName) {
+  openCreateVarianceModal(event, mineName) {
     event.preventDefault();
     this.props.openModal({
       props: {
-        onSubmit: this.handleAddVariances,
-        title: ModalContent.ADD_VARIANCE(mineName),
+        onSubmit: this.handleCreateVariances,
+        title: "Create Variance Application",
         mineGuid: this.props.mine.mine_guid,
         complianceCodes: this.props.complianceCodes,
       },
-      content: modalConfig.ADD_VARIANCE,
+      content: modalConfig.CREATE_VARIANCE,
     });
   }
 
@@ -154,17 +154,17 @@ export class Variances extends Component {
     return (
       <Row>
         <Col>
-          {/* <Button
-            type="primary"
-            onClick={(event) => this.openVarianceModal(event, this.props.mine.mine_name)}
-          >
-            Apply for Variance
-          </Button> */}
           <Title level={4}>Variance Details</Title>
           <Paragraph>
             Morbi consequat, augue et pulvinar condimentum, nunc urna congue diam, at tempus justo
             eros non leo.
           </Paragraph>
+          <Button
+            type="primary"
+            onClick={(event) => this.openCreateVarianceModal(event, this.props.mine.mine_name)}
+          >
+            Create Variance
+          </Button>
           <VariancesTable
             variances={this.props.varianceApplications}
             mine={this.props.mine}

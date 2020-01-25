@@ -1,7 +1,6 @@
 import React from "react";
 import { PropTypes } from "prop-types";
 import { Spin, Icon } from "antd";
-import * as Style from "@/constants/styles";
 
 /**
  * @constant LoadingWrapper renders react children || or loading view
@@ -13,9 +12,7 @@ const propTypes = {
 };
 
 export const LoadingWrapper = (props) => {
-  const antIcon = (
-    <Icon type="loading" style={{ fontSize: 80, color: Style.COLOR.mediumGrey }} spin />
-  );
+  const antIcon = <Icon type="loading" className="color-primary" style={{ fontSize: 80 }} spin />;
   return (
     <div>
       {props.condition ? (

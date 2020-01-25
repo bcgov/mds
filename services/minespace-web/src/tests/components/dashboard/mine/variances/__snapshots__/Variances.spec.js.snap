@@ -13,6 +13,16 @@ exports[`Variances renders properly 1`] = `
     <Paragraph>
       Morbi consequat, augue et pulvinar condimentum, nunc urna congue diam, at tempus justo eros non leo.
     </Paragraph>
+    <Button
+      block={false}
+      ghost={false}
+      htmlType="button"
+      loading={false}
+      onClick={[Function]}
+      type="primary"
+    >
+      Create Variance
+    </Button>
     <VariancesTable
       complianceCodesHash={
         Object {

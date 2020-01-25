@@ -7,11 +7,8 @@ import PropTypes from "prop-types";
 import NullScreen from "@/components/common/NullScreen";
 import * as Strings from "@/constants/strings";
 import { formatDate } from "@/utils/helpers";
-import { COLOR } from "@/constants/styles";
 import { EDIT_PENCIL } from "@/constants/assets";
 import CustomPropTypes from "@/customPropTypes";
-
-const { errorRed } = COLOR;
 
 /**
  * @class  MinePermitInfo - contains all permit information
@@ -32,7 +29,7 @@ const columns = [
     key: "report_name",
     sorter: (a, b) => a.report_name.localeCompare(b.report_name),
     render: (text, record) => (
-      <div title="Report Name" style={record.isOverdue ? { color: errorRed } : {}}>
+      <div title="Report Name" className={record.isOverdue ? "color-error" : ""}>
         {record.report_name}
       </div>
     ),
@@ -43,7 +40,7 @@ const columns = [
     key: "submission_year",
     sorter: (a, b) => (a.submission_year > b.submission_year ? -1 : 1),
     render: (text, record) => (
-      <div title="Year" style={record.isOverdue ? { color: errorRed } : {}}>
+      <div title="Year" className={record.isOverdue ? "color-error" : ""}>
         {record.submission_year}
       </div>
     ),
@@ -54,7 +51,7 @@ const columns = [
     key: "due_date",
     sorter: (a, b) => (moment(a.due_date) > moment(b.due_date) ? -1 : 1),
     render: (text, record) => (
-      <div title="Due" style={record.isOverdue ? { color: errorRed } : {}}>
+      <div title="Due" className={record.isOverdue ? "color-error" : ""}>
         {formatDate(record.due_date) || Strings.EMPTY_FIELD}
       </div>
     ),
@@ -65,7 +62,7 @@ const columns = [
     key: "received_date",
     sorter: (a, b) => (moment(a.received_date) > moment(b.received_date) ? -1 : 1),
     render: (text, record) => (
-      <div title="Received" style={record.isOverdue ? { color: errorRed } : {}}>
+      <div title="Received" className={record.isOverdue ? "color-error" : ""}>
         {formatDate(record.received_date) || Strings.EMPTY_FIELD}
       </div>
     ),

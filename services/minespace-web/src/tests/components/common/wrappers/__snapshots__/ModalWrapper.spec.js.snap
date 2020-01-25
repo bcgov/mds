@@ -2,6 +2,7 @@
 
 exports[`ModalWrapper renders properly 1`] = `
 <Modal
+  centered={true}
   closable={false}
   confirmLoading={false}
   footer={null}
@@ -10,19 +11,19 @@ exports[`ModalWrapper renders properly 1`] = `
   title="mockTitle"
   transitionName="zoom"
   visible={false}
-  width={810}
+  width={520}
 >
   <Connect(LoadingBar)
+    className="color-primary"
     scope="modal"
     style={
       Object {
-        "backgroundColor": "#6b6363",
         "height": "8px",
         "left": 0,
         "position": "absolute",
         "top": "50px",
         "width": "100%",
-        "zIndex": 100,
+        "zIndex": 1001,
       }
     }
   />

@@ -2,95 +2,56 @@
 
 exports[`VarianceDetails renders properly 1`] = `
 <div>
-  <div
-    className="inline-flex between block-tablet margin--bottom"
+  <Descriptions
+    colon={false}
+    column={1}
+    size="default"
   >
-    <div
-      className="flex-tablet"
+    <DescriptionsItem
+      label="Application Status"
+    />
+    <DescriptionsItem
+      label="Approval Status"
     >
-      <p
-        className="field-title"
-      >
-        Application Status
-      </p>
-      <p />
-    </div>
-  </div>
-  <p
-    className="field-title margin--bottom"
-  >
-    Application details
-  </p>
-  <div
-    className="background-bg padding-small margin--bottom"
-  >
-    <div
-      className="inline-flex padding-small"
+      Expired
+    </DescriptionsItem>
+    <DescriptionsItem
+      label="Submission Date"
     >
-      <p
-        className="field-title"
-      >
-        Mine
-      </p>
-      <p>
-         
-        mockMineName
-      </p>
-    </div>
-    <div
-      className="inline-flex padding-small"
+      Mar 01 2019
+    </DescriptionsItem>
+    <DescriptionsItem
+      label="Mine"
     >
-      <p
-        className="field-title"
-      >
-        Part of Code
-      </p>
-      <p />
-    </div>
-    <div
-      className="inline-flex padding-small"
+      mockMineName
+    </DescriptionsItem>
+    <DescriptionsItem
+      label="Code Section"
+    />
+    <DescriptionsItem
+      label="Description"
     >
-      <p
-        className="field-title"
-      >
-        Submission date
-      </p>
-      <p>
-        Mar 01 2019
-      </p>
-    </div>
-    <div
-      className="inline-flex padding-small"
+      notesss
+    </DescriptionsItem>
+    <DescriptionsItem
+      label="Documents"
     >
-      <p
-        className="field-title"
-      >
-        Description
-      </p>
-      <p>
-        notesss
-      </p>
-    </div>
-  </div>
-  <p
-    className="field-title"
-  >
-    Documents
-  </p>
-  <DocumentTable
-    documents={
-      Array [
-        Object {
-          "created_at": "2019-05-02",
-          "document_manager_guid": "d7f64a25-6eaf-4bed-97fe-fd63ac347c70",
-          "document_name": "test.pdf",
-          "mine_document_guid": "33e6b965-2402-4229-a213-23bbe7fd3e99",
-          "mine_guid": "59e73109-48f7-4ad2-977c-3005b5bff010",
-        },
-      ]
-    }
-    isViewOnly={false}
-    removeDocument={[MockFunction]}
-  />
+      <DocumentTable
+        documents={
+          Array [
+            Object {
+              "created_at": "2019-05-02",
+              "document_manager_guid": "d7f64a25-6eaf-4bed-97fe-fd63ac347c70",
+              "document_name": "test.pdf",
+              "mine_document_guid": "33e6b965-2402-4229-a213-23bbe7fd3e99",
+              "mine_guid": "59e73109-48f7-4ad2-977c-3005b5bff010",
+            },
+          ]
+        }
+        isViewOnly={false}
+        removeDocument={[MockFunction]}
+      />
+    </DescriptionsItem>
+  </Descriptions>
 </div>
 `;

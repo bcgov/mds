@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import React from "react";
 import PropTypes from "prop-types";
 import { Form, Select } from "antd";
@@ -10,6 +12,7 @@ import CustomPropTypes from "@/customPropTypes";
 const propTypes = {
   id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   input: PropTypes.any,
+  required: PropTypes.bool,
   placeholder: PropTypes.string,
   label: PropTypes.string,
   meta: CustomPropTypes.formMeta,
@@ -20,11 +23,12 @@ const propTypes = {
 
 const defaultProps = {
   placeholder: "",
+  required: false,
   label: "",
   data: [],
   disabled: false,
   meta: {},
-  onSelect: ()=> {}
+  onSelect: () => {},
 };
 
 const RenderSelect = (props) => (
@@ -38,11 +42,13 @@ const RenderSelect = (props) => (
       ((props.meta.error && <span>{props.meta.error}</span>) ||
         (props.meta.warning && <span>{props.meta.warning}</span>))
     }
+    required={props.required}
   >
     <Select
       disabled={props.disabled}
       getPopupContainer={() => document.getElementById(props.id)}
       showSearch
+      showArrow
       placeholder={props.placeholder}
       optionFilterProp="children"
       filterOption={(input, option) =>

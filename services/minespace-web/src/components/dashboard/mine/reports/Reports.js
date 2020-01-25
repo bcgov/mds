@@ -65,7 +65,7 @@ export class Reports extends Component {
       props: {
         initialValues: report,
         onSubmit,
-        title: `Edit report for ${this.props.mine.mine_name}`,
+        title: "Edit Report",
         mineGuid: this.props.mine.mine_guid,
       },
       content: modalConfig.ADD_REPORT,
