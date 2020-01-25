@@ -125,6 +125,7 @@ export class MineNOWApplications extends Component {
         <Divider />
 
         <MineNoticeOfWorkTable
+          isMajorMine={isMajorMine}
           isLoaded={this.state.isLoaded}
           handleSearch={this.handleSearch}
           noticeOfWorkApplications={this.props.noticeOfWorkApplications}

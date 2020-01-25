@@ -33,6 +33,7 @@ const setupReducerProps = () => {
   reducerProps.formValues = NOW_MOCK.NOTICE_OF_WORK;
   reducerProps.reclamationSummary = NOW_MOCK.RECLAMATION_SUMMARY;
   reducerProps.mines = MOCK.MINES;
+  reducerProps.location = { state: {} };
 };
 
 beforeEach(() => {
