@@ -104,11 +104,13 @@ export class MineNOWApplications extends Component {
   };
 
   render() {
+    const isMajorMine = this.props.mines[this.props.mineGuid].major_mine_ind;
+    const title = isMajorMine ? "Permit Applications" : "Notice of Work Applications";
     return (
       <div className="tab__content">
         <div>
-          <h2>Notice of Work Applications</h2>{" "}
-          {this.props.mines[this.props.mineGuid].major_mine_ind && (
+          <h2>{title}</h2>
+          {isMajorMine && (
             <AddButton
               onClick={() =>
                 this.props.history.push(router.CREATE_NOTICE_OF_WORK_APPLICATION.route, {

@@ -89,7 +89,7 @@ export class NoticeOfWorkApplication extends Component {
   state = {
     currentStep: 0,
     isLoaded: false,
-    associatedMineGuid: "",
+    isMajorMine: null,
     associatedLeadInspectorPartyGuid: "",
     isViewMode: true,
     showOriginalValues: false,
@@ -100,25 +100,26 @@ export class NoticeOfWorkApplication extends Component {
     noticeOfWorkPageFromRoute: undefined,
     showNullScreen: false,
     initialPermitGuid: "",
+    isNewApplication: false,
+    mineGuid: "",
   };
 
   componentDidMount() {
-    const { id } = this.props.match.params;
-    this.setState((prevState) => ({
-      noticeOfWorkPageFromRoute:
-        this.props.location &&
-        this.props.location.state &&
-        this.props.location.state.noticeOfWorkPageFromRoute
-          ? this.props.location.state.noticeOfWorkPageFromRoute
-          : prevState.noticeOfWorkPageFromRoute,
-    }));
+    if (this.props.location.state && this.props.location.state.noticeOfWorkPageFromRoute) {
+      this.setState({
+        noticeOfWorkPageFromRoute: this.props.location.state.noticeOfWorkPageFromRoute,
+      });
+    }
+    const isNewApplication = !!this.props.history.location.state;
+    if (this.props.match.params.id) {
+      this.loadNoticeOfWork(this.props.match.params.id);
+    } else if (isNewApplication) {
+      this.loadCreatePermitApplication();
+      this.setState({ isNewApplication });
+    }
 
-    if (id) {
-      this.loadNoticeOfWork(id);
-    } else if (this.props.history.location.state) {
-      const { mineGuid, permitGuid } = this.props.history.location.state;
-      this.loadCreatePermitApplication(mineGuid, permitGuid);
-    } else {
+    // if users navigate to the route from a hard refresh, or without a mineGuid - show nulllScreen
+    if (!this.props.history.location.state && !this.props.match.params.id) {
       this.setState({ showNullScreen: true });
     }
   }
@@ -141,18 +142,25 @@ export class NoticeOfWorkApplication extends Component {
     this.props.clearNoticeOfWorkApplication();
   }
 
-  // eslint-disable-next-line react/sort-comp
-  loadCreatePermitApplication(mineGuid, permitGuid) {
+  loadMineInfo = (mineGuid) => {
+    this.props.fetchMineRecordById(mineGuid).then(({ data }) => {
+      this.setState({ isMajorMine: data.major_mine_ind, mineGuid: data.mine_guid });
+    });
+  };
+
+  loadCreatePermitApplication = () => {
+    const { mineGuid, permitGuid } = this.props.history.location.state;
+    this.loadMineInfo(mineGuid);
     this.setState({
-      associatedMineGuid: mineGuid,
       initialPermitGuid: permitGuid,
       isLoaded: true,
     });
-  }
+  };
 
   loadNoticeOfWork = (id) => {
     this.props.fetchImportedNoticeOfWorkApplication(id).then(({ data }) => {
-      this.props.fetchMineRecordById(data.mine_guid);
+      this.setState({ isLoaded: true });
+      this.loadMineInfo(data.mine_guid);
       this.handleProgressButtonLabels(data.application_progress);
       this.props.fetchOriginalNoticeOfWorkApplication(id);
     });
@@ -160,11 +168,13 @@ export class NoticeOfWorkApplication extends Component {
 
   handleProgressButtonLabels = (applicationProgress) => {
     const currentStep = applicationProgress.length;
-    if (this.props.applicationProgressStatusCodes.length !== 0) {
+    if (currentStep !== 3 && this.props.applicationProgressStatusCodes.length !== 0) {
       const buttonLabel = this.props.applicationProgressStatusCodes[currentStep + 1].description;
       const buttonValue = this.props.applicationProgressStatusCodes[currentStep + 1]
         .application_progress_status_code;
-      this.setState({ buttonLabel, buttonValue });
+      this.setState({ buttonLabel, buttonValue, currentStep });
+    } else {
+      this.setState({ currentStep });
     }
   };
 
@@ -198,10 +208,16 @@ export class NoticeOfWorkApplication extends Component {
     this.setState((prevState) => ({ showOriginalValues: !prevState.showOriginalValues }));
   };
 
-  onChange = (currentStep) => {
-    this.setState({
-      currentStep,
-    });
+  handleStepChange = (currentStep) => {
+    this.setState(
+      {
+        isLoaded: false,
+        currentStep,
+      },
+      () => {
+        this.setState({ isLoaded: true });
+      }
+    );
   };
 
   setLeadInspectorPartyGuid = (leadInspectorPartyGuid) => {
@@ -256,6 +272,7 @@ export class NoticeOfWorkApplication extends Component {
   };
 
   handleUpdateLeadInspector = (finalAction) => {
+    this.setState({ isLoaded: false });
     this.props
       .updateNoticeOfWorkApplication(
         { lead_inspector_party_guid: this.state.associatedLeadInspectorPartyGuid },
@@ -268,6 +285,7 @@ export class NoticeOfWorkApplication extends Component {
         this.props.fetchImportedNoticeOfWorkApplication(
           this.props.noticeOfWork.now_application_guid
         );
+        this.setState({ isLoaded: true });
       })
       .then(() => finalAction());
   };
@@ -311,7 +329,6 @@ export class NoticeOfWorkApplication extends Component {
       })
       .then(() => {
         this.props.fetchImportedNoticeOfWorkApplication(id).then(() => {
-          this.props.fetchMineRecordById(this.state.associatedMineGuid);
           this.setState({ isLoaded: true });
         });
       });
@@ -325,13 +342,13 @@ export class NoticeOfWorkApplication extends Component {
   };
 
   renderStepOne = () => {
-    if (!this.state.isLoaded) {
-      return null;
-    }
     return (
       <ApplicationStepOne
+        isNewApplication={this.state.isNewApplication}
+        loadMineData={this.loadMineData}
+        isMajorMine={this.state.isMajorMine}
         noticeOfWork={this.props.noticeOfWork}
-        mineGuid={this.state.associatedMineGuid}
+        mineGuid={this.state.mineGuid}
         setLeadInspectorPartyGuid={this.setLeadInspectorPartyGuid}
         handleUpdateLeadInspector={this.handleUpdateLeadInspector}
         handleProgressChange={this.handleProgressChange}
@@ -386,7 +403,7 @@ export class NoticeOfWorkApplication extends Component {
 
   render() {
     if (this.state.showNullScreen) {
-      return <NullScreen type="unauthorized" />;
+      return <NullScreen type="unauthorized-page" />;
     }
     const isImported = this.props.noticeOfWork.imported_to_core;
     const isDecision =
@@ -451,7 +468,10 @@ export class NoticeOfWorkApplication extends Component {
     );
 
     const headerSteps = [
-      <Step status={this.renderProgressStatus(0)} title="Verification" />,
+      <Step
+        status={this.renderProgressStatus(0)}
+        title={this.state.isMajorMine ? "Initialization" : "Verification"}
+      />,
       <Step
         status={this.renderProgressStatus(1)}
         title="Technical Review"
@@ -492,7 +512,11 @@ export class NoticeOfWorkApplication extends Component {
             <br />
             {this.state.isViewMode ? (
               <div className="inline-flex flex-center block-mobile padding-md--right">
-                <Steps current={this.state.currentStep} onChange={this.onChange} type="navigation">
+                <Steps
+                  current={this.state.currentStep}
+                  onChange={this.handleStepChange}
+                  type="navigation"
+                >
                   {headerSteps}
                 </Steps>
                 {this.state.isViewMode && (

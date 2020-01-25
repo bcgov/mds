@@ -94,9 +94,9 @@ export const MINE_VARIANCES = {
 };
 
 export const MINE_NOW_APPLICATIONS = {
-  route: "/mine-dashboard/:id/permits-and-approvals/notice-of-work",
+  route: "/mine-dashboard/:id/permits-and-approvals/applications",
   dynamicRoute: (id, params) =>
-    `/mine-dashboard/${id}/permits-and-approvals/notice-of-work?${queryString.stringify(params)}`,
+    `/mine-dashboard/${id}/permits-and-approvals/applications?${queryString.stringify(params)}`,
   component: MineNOWApplications,
 };
 

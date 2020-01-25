@@ -3,7 +3,6 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { Result, Alert, Row, Col } from "antd";
 import PropTypes from "prop-types";
-import { fetchMineRecordById } from "@/actionCreators/mineActionCreator";
 import {
   createNoticeOfWorkApplication,
   fetchImportedNoticeOfWorkApplication,
@@ -14,12 +13,9 @@ import AssignLeadInspector from "@/components/noticeOfWork/applications/applicat
 import VerifyNOWMineInformation from "@/components/noticeOfWork/applications/applicationStepOne/verification/VerifyNOWMineInformation";
 import CustomPropTypes from "@/customPropTypes";
 import MMPermitApplicationInit from "@/components/noticeOfWork/applications/applicationStepOne/MMPermitApplicationInit";
-import { getMines } from "@/selectors/mineSelectors";
 
 const propTypes = {
   mineGuid: PropTypes.string.isRequired,
-  mines: PropTypes.arrayOf(CustomPropTypes.mine).isRequired,
-  fetchMineRecordById: PropTypes.func.isRequired,
   importNoticeOfWorkApplication: PropTypes.func.isRequired,
   noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
   fetchImportedNoticeOfWorkApplication: PropTypes.func.isRequired,
@@ -29,6 +25,9 @@ const propTypes = {
   setLeadInspectorPartyGuid: PropTypes.func.isRequired,
   loadNoticeOfWork: PropTypes.func.isRequired,
   initialPermitGuid: PropTypes.string,
+  loadMineData: PropTypes.func.isRequired,
+  isMajorMine: PropTypes.bool.isRequired,
+  isNewApplication: PropTypes.bool.isRequired,
 };
 
 const defaultProps = {
@@ -36,14 +35,11 @@ const defaultProps = {
 };
 export class ApplicationStepOne extends Component {
   state = {
-    isLoaded: false,
     isImported: false,
   };
 
   componentDidMount() {
-    if (this.props.noticeOfWork !== {}) {
-      this.setState({ isLoaded: true, isImported: this.props.noticeOfWork.imported_to_core });
-    }
+    this.setState({ isImported: this.props.noticeOfWork.imported_to_core });
   }
 
   componentWillReceiveProps(nextProps) {
@@ -53,15 +49,14 @@ export class ApplicationStepOne extends Component {
   }
 
   handleNOWImport = (values) => {
-    this.setState({ isLoaded: false });
     this.props
       .importNoticeOfWorkApplication(values.mine_guid, this.props.noticeOfWork.now_application_guid)
       .then(() => {
         return this.props
           .fetchImportedNoticeOfWorkApplication(this.props.noticeOfWork.now_application_guid)
           .then(({ data }) => {
-            this.props.fetchMineRecordById(values.mine_guid);
-            this.setState({ isImported: data.imported_to_core, isLoaded: true });
+            this.props.loadMineData(values.mine_guid);
+            this.setState({ isImported: data.imported_to_core });
           });
       });
   };
@@ -80,11 +75,12 @@ export class ApplicationStepOne extends Component {
   };
 
   renderResult = () => {
+    const title = this.props.isMajorMine ? "Initialization" : "Verification";
     return (
       <Result
         status="success"
-        title="Verification Complete!"
-        subTitle="You've already completed the Verification step."
+        title={`${title} Complete!`}
+        subTitle={`You've already completed the ${title} step.`}
         extra={[
           <Row>
             <Col
@@ -106,25 +102,26 @@ export class ApplicationStepOne extends Component {
     );
   };
 
+  renderContent = () => {
+    const values = { mine_guid: this.props.mineGuid };
+    if (this.props.isNewApplication) {
+      return (
+        <MMPermitApplicationInit
+          initialPermitGuid={this.props.initialPermitGuid}
+          mineGuid={this.props.mineGuid}
+          handleProgressChange={this.props.handleProgressChange}
+          loadNoticeOfWork={this.props.loadNoticeOfWork}
+        />
+      );
+    }
+    return <VerifyNOWMineInformation values={values} handleNOWImport={this.handleNOWImport} />;
+  };
+
   render() {
-    const values = { mine_guid: this.props.noticeOfWork.mine_guid };
     return (
       <div className="tab__content">
-        {!this.state.isImported && !this.props.mines[this.props.mineGuid].major_mine_ind && (
-          <VerifyNOWMineInformation
-            values={values}
-            isLoaded={this.state.isLoaded}
-            handleNOWImport={this.handleNOWImport}
-          />
-        )}
-        {!this.state.isImported && this.props.mines[this.props.mineGuid].major_mine_ind && (
-          <MMPermitApplicationInit
-            initialPermitGuid={this.props.initialPermitGuid}
-            mineGuid={this.props.mineGuid}
-            handleProgressChange={this.props.handleProgressChange}
-            loadNoticeOfWork={this.props.loadNoticeOfWork}
-          />
-        )}
+        {!this.state.isImported && this.props.mineGuid && this.renderContent()}
+
         {this.state.isImported && !this.props.noticeOfWork.lead_inspector_party_guid && (
           <div>{this.renderInspectorAssignment()}</div>
         )}
@@ -138,7 +135,6 @@ export class ApplicationStepOne extends Component {
 
 const mapStateToProps = (state) => ({
   inspectors: getDropdownInspectors(state),
-  mines: getMines(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
@@ -146,7 +142,6 @@ const mapDispatchToProps = (dispatch) =>
     {
       createNoticeOfWorkApplication,
       fetchImportedNoticeOfWorkApplication,
-      fetchMineRecordById,
       importNoticeOfWorkApplication,
     },
     dispatch
