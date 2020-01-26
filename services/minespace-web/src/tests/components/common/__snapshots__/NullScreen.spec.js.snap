@@ -8,7 +8,7 @@ exports[`NullScreen renders properly 1`] = `
     <Result
       extra={
         <Paragraph>
-          Please contact 
+          You may have to log in. Otherwise, please contact 
           <a
             href="mds@gov.bc.ca"
           >

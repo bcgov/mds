@@ -65,15 +65,15 @@ export class MineDashboard extends Component {
         <div>
           <Row gutter={[0, 48]}>
             <Col>
-              <Title>
+              <Title style={{ display: "inline-block" }}>
                 {this.props.mine.mine_name || "Unnamed Mine"}
-                <Title
-                  className="color-gov-grey"
-                  level={4}
-                  style={{ display: "inline", paddingLeft: 20 }}
-                >
-                  {this.props.mine.mine_no || "Unnumbered Mine"}
-                </Title>
+              </Title>
+              <Title
+                className="color-gov-grey"
+                level={4}
+                style={{ display: "inline-block", paddingLeft: 20 }}
+              >
+                #{this.props.mine.mine_no || "Unnumbered Mine"}
               </Title>
             </Col>
           </Row>

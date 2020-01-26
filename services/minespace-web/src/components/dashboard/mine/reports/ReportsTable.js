@@ -17,6 +17,7 @@ const propTypes = {
   mineReports: PropTypes.arrayOf(CustomPropTypes.mineReport).isRequired,
   openEditReportModal: PropTypes.func.isRequired,
   handleEditReport: PropTypes.func.isRequired,
+  isLoaded: PropTypes.bool.isRequired,
 };
 
 const defaultProps = {};
@@ -101,8 +102,8 @@ const transformRowData = (report, openEditReportModal, handleEditReport, handleR
 export const ReportsTable = (props) => (
   <Table
     size="small"
-    align="left"
     pagination={false}
+    loading={!props.isLoaded}
     columns={columns}
     locale={{ emptyText: "This mine has no report data." }}
     dataSource={props.mineReports.map((r) =>

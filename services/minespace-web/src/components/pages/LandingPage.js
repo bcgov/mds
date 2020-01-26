@@ -26,71 +26,89 @@ export const LandingPage = () => (
         <Divider />
       </Col>
     </Row>
-    <Row>
-      <Col lg={{ span: 16 }}>
-        <Title level={2}>What can I do in MineSpace?</Title>
-        <Paragraph>
-          <ul>
-            <li>Upload any report specified in the Health, Safety and Reclamation Code</li>
-            <li>View all code variances granted to and incidents reported by your mine</li>
-            <li>View your mine permit and amendment history</li>
-            <li>See all the contacts the Ministry has on file for your mine</li>
-            <li>Find important Ministry contacts</li>
-          </ul>
-        </Paragraph>
-        <Title level={2}>How do I get access?</Title>
-        <Paragraph>
-          You must have a <Text strong>Business BCeID</Text> and then email us to request access to
-          MineSpace.
-        </Paragraph>
-        <Title level={2}>If you have a BCeID</Title>
-        <Paragraph>
-          Contact us at&nbsp;
-          <a href={`mailto:${Strings.MDS_EMAIL}`}>{Strings.MDS_EMAIL}</a>
-          &nbsp;to request access to MineSpace.
-        </Paragraph>
-        <Paragraph>
-          If you have multiple employees who need to use MineSpace:
-          <ol>
-            <li>Add them to your Business BCeID</li>
-            <li>Let us know you want them to be able to access MineSpace</li>
-          </ol>
-        </Paragraph>
+    <Row gutter={[{ lg: 64 }, { sm: 16, lg: 0 }]}>
+      <Col sm={{ span: 24 }} lg={{ span: 12 }}>
+        <Row>
+          <Col>
+            <Title level={2}>What can I do in MineSpace?</Title>
+            <Paragraph>
+              <ul>
+                <li>Upload any report specified in the Health, Safety and Reclamation Code</li>
+                <li>View all code variances granted to and incidents reported by your mine</li>
+                <li>View your mine permit and amendment history</li>
+                <li>See all the contacts the Ministry has on file for your mine</li>
+                <li>Find important Ministry contacts</li>
+              </ul>
+            </Paragraph>
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            <Title level={2}>How do I get access?</Title>
+            <Paragraph>
+              You must have a <Text strong>Business BCeID</Text> and then email us to request access
+              to MineSpace.
+            </Paragraph>
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            <Title level={2}>If you have a BCeID</Title>
+            <Paragraph>
+              Contact us at&nbsp;
+              <a href={`mailto:${Strings.MDS_EMAIL}`}>{Strings.MDS_EMAIL}</a>
+              &nbsp;to request access to MineSpace.
+            </Paragraph>
+            <Paragraph>
+              If you have multiple employees who need to use MineSpace:
+              <ol>
+                <li>Add them to your Business BCeID</li>
+                <li>Let us know you want them to be able to access MineSpace</li>
+              </ol>
+            </Paragraph>
+          </Col>
+        </Row>
       </Col>
-      <Col lg={{ offset: 1, span: 7 }}>
+      <Col sm={{ span: 24 }} lg={{ span: 10, offset: 2 }}>
         <Card title="Do you have a BCeID?">
           <Row>
-            <Paragraph>
-              In order to access MineSpace, you need to register for a Business BCeID. It can take
-              several weeks to process the request, so give yourself plenty of lead time.
-            </Paragraph>
-            <Paragraph>
-              Once you have your BCeID, you can add employees and delegates. You can request that
-              anyone added to your Business BCeID account be given access to MineSpace.
-            </Paragraph>
+            <Col>
+              <Paragraph>
+                In order to access MineSpace, you need to register for a Business BCeID. It can take
+                several weeks to process the request, so give yourself plenty of lead time.
+              </Paragraph>
+              <Paragraph>
+                Once you have your BCeID, you can add employees and delegates. You can request that
+                anyone added to your Business BCeID account be given access to MineSpace.
+              </Paragraph>
+            </Col>
           </Row>
           <Row type="flex" justify="center">
-            <a
-              href="https://www.bceid.ca/register/business/getting_started/getting_started.aspx"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <Button type="primary" size="large">
-                Get a BCeID
-              </Button>
-            </a>
+            <Col>
+              <a
+                href="https://www.bceid.ca/register/business/getting_started/getting_started.aspx"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Button type="primary" size="large">
+                  Get a BCeID
+                </Button>
+              </a>
+            </Col>
           </Row>
         </Card>
         <Card title="Questions?">
           <Row>
-            <Paragraph>
-              Please let us know about any questions or comments you have regarding your experience
-              using MineSpace.
-            </Paragraph>
-            <Paragraph>
-              Email us at&nbsp;
-              <a href={`mailto:${Strings.MDS_EMAIL}`}>{Strings.MDS_EMAIL}</a>.
-            </Paragraph>
+            <Col>
+              <Paragraph>
+                Please let us know about any questions or comments you have regarding your
+                experience using MineSpace.
+              </Paragraph>
+              <Paragraph>
+                Email us at&nbsp;
+                <a href={`mailto:${Strings.MDS_EMAIL}`}>{Strings.MDS_EMAIL}</a>.
+              </Paragraph>
+            </Col>
           </Row>
         </Card>
       </Col>

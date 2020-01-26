@@ -15,7 +15,7 @@ exports[`Reports renders properly 1`] = `
           Reports
         </Title>
         <Paragraph>
-          The following table lists all of the
+          The below table displays all of the
            
           <Text
             className="color-primary"
@@ -78,6 +78,7 @@ exports[`Reports renders properly 1`] = `
       <Col>
         <ReportsTable
           handleEditReport={[Function]}
+          isLoaded={false}
           openEditReportModal={[Function]}
         />
       </Col>

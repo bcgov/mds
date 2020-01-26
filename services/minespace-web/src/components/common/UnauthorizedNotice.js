@@ -14,7 +14,7 @@ const UnauthorizedNotice = () => (
         icon={<Icon type="stop" />}
         extra={
           <Paragraph>
-            Please contact&nbsp;
+            You may have to log in. Otherwise, please contact&nbsp;
             <a href={Strings.MDS_EMAIL}>{Strings.MDS_EMAIL}</a>
             &nbsp;for assistance.
           </Paragraph>

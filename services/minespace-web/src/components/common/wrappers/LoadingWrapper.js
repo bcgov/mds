@@ -1,31 +1,46 @@
 import React from "react";
 import { PropTypes } from "prop-types";
-import { Spin, Icon } from "antd";
-
-/**
- * @constant LoadingWrapper renders react children || or loading view
- */
+import { Icon, Spin } from "antd";
 
 const propTypes = {
-  condition: PropTypes.bool.isRequired,
+  isLoaded: PropTypes.bool.isRequired,
   children: PropTypes.element.isRequired,
+  iconSize: PropTypes.number,
+  delay: PropTypes.number,
+  tip: PropTypes.string,
+};
+
+const defaultProps = {
+  iconSize: 80,
+  delay: 500,
+  tip: "",
 };
 
 export const LoadingWrapper = (props) => {
-  const antIcon = <Icon type="loading" className="color-primary" style={{ fontSize: 80 }} spin />;
   return (
-    <div>
-      {props.condition ? (
-        <div className="fade-in">{props.children}</div>
-      ) : (
-        <div className="loading-screen--small">
-          <Spin id="spinner" indicator={antIcon} />
-        </div>
-      )}
-    </div>
+    <Spin
+      tip={props.tip}
+      large
+      spinning={!props.isLoaded}
+      delay={props.delay}
+      indicator={
+        <Icon
+          type="loading"
+          className="color-primary"
+          style={{
+            fontSize: props.iconSize,
+            marginTop: props.iconSize / 2,
+            marginLeft: -(props.iconSize / 2),
+          }}
+        />
+      }
+    >
+      {props.children}
+    </Spin>
   );
 };
 
 LoadingWrapper.propTypes = propTypes;
+LoadingWrapper.defaultProps = defaultProps;
 
 export default LoadingWrapper;

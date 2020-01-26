@@ -32,7 +32,7 @@ export class Incidents extends Component {
         <Col>
           <Title level={4}>Incidents</Title>
           <Paragraph>
-            The following table lists all of the{" "}
+            The below table displays all of the{" "}
             <Text className="color-primary" strong>
               reported incidents
             </Text>{" "}

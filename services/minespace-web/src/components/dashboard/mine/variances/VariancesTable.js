@@ -13,8 +13,8 @@ const propTypes = {
   variances: PropTypes.arrayOf(CustomPropTypes.variance).isRequired,
   complianceCodesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   varianceStatusOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  isLoaded: PropTypes.bool.isRequired,
   isApplication: PropTypes.bool,
-  isLoaded: PropTypes.bool,
   openEditVarianceModal: PropTypes.func,
   openViewVarianceModal: PropTypes.func,
 };
@@ -220,9 +220,9 @@ export class VariancesTable extends Component {
     return (
       <div>
         <Table
-          loading={this.props.isLoaded}
           size="small"
           pagination={false}
+          loading={!this.props.isLoaded}
           columns={this.columns(this.props.isApplication)}
           dataSource={this.transformRowData(
             this.props.variances,

@@ -16,12 +16,12 @@ const propTypes = {
 const defaultProps = {};
 
 const ContactCardRow = (props) => (
-  <Row>
-    <Col span={4}>
+  <Row gutter={[32, 16]}>
+    <Col span={3}>
       <Icon type={props.icon} style={{ fontSize: "2em" }} />
     </Col>
-    <Col span={20}>
-      <Text strong style={{ textTransform: "capitalize" }}>
+    <Col span={20} offset={1}>
+      <Text strong style={{ textTransform: "uppercase" }}>
         {props.label}
       </Text>
       <br />
@@ -34,7 +34,11 @@ const ContactCard = (props) => (
   <Card title={props.title}>
     <ContactCardRow icon="user" label="Name" value={props.party.name} />
     <br />
-    <ContactCardRow icon="mail" label="Email" value={props.party.email} />
+    <ContactCardRow
+      icon="mail"
+      label="Email"
+      value={<a href={`mailto:${props.party.email}`}>{props.party.email}</a>}
+    />
     <br />
     <ContactCardRow icon="phone" label="Phone" value={props.party.phone} />
     <br />

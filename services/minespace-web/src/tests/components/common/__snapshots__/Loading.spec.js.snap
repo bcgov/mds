@@ -7,6 +7,9 @@ exports[`Loading renders properly 1`] = `
   <div
     id="loader"
   >
+    <span>
+      Foo
+    </span>
     <Lottie
       ariaLabel="animation"
       ariaRole="button"

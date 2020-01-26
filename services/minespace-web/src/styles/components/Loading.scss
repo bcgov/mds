@@ -13,17 +13,3 @@
     @include center(true, true);
   }
 }
-
-.loading-screen--small {
-  min-height: 500px;
-  width: 100%;
-  #spinner {
-    // offset size of spinner to center
-    left: 45% !important;
-    @include center(true, true);
-  }
-}
-
-.fade-in {
-  @include fade-in;
-}

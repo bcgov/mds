@@ -7,7 +7,7 @@ exports[`DocumentTable renders properly 1`] = `
       Object {
         "dataIndex": "name",
         "render": [Function],
-        "title": "File name",
+        "title": "File Name",
       },
       Object {
         "dataIndex": "category",
@@ -17,7 +17,7 @@ exports[`DocumentTable renders properly 1`] = `
       Object {
         "dataIndex": "created_at",
         "render": [Function],
-        "title": "Upload date",
+        "title": "Upload Date",
       },
       Object {
         "className": "column-hide",
@@ -39,7 +39,7 @@ exports[`DocumentTable renders properly 1`] = `
   }
   locale={
     Object {
-      "emptyText": "This variance does not contain any documents",
+      "emptyText": undefined,
     }
   }
   pagination={false}

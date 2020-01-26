@@ -31,7 +31,7 @@ exports[`Variances renders properly 1`] = `
       Variances
     </Title>
     <Paragraph>
-      The following table lists all of the
+      The below table displays all of the
        
       <Text
         className="color-primary"
@@ -50,6 +50,7 @@ exports[`Variances renders properly 1`] = `
         }
       }
       isApplication={true}
+      isLoaded={false}
       mine={
         Object {
           "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",

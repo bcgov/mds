@@ -7,10 +7,11 @@ import downloadFileFromDocumentManager from "@/utils/actionlessNetworkCalls";
 import * as Strings from "@/constants/strings";
 
 const propTypes = {
+  isViewOnly: PropTypes.bool.isRequired,
+  noDataMessage: PropTypes.string.isRequired,
+  documentCategoryOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   documents: PropTypes.arrayOf(CustomPropTypes.mineDocument),
   removeDocument: PropTypes.func,
-  isViewOnly: PropTypes.bool.isRequired,
-  documentCategoryOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
 const defaultProps = {
@@ -32,7 +33,7 @@ export class DocumentTable extends Component {
   render() {
     const columns = [
       {
-        title: "File name",
+        title: "File Name",
         dataIndex: "name",
         render: (text, record) => (
           <div title="File name">
@@ -57,7 +58,7 @@ export class DocumentTable extends Component {
         render: (text) => <div title="Category">{text}</div>,
       },
       {
-        title: "Upload date",
+        title: "Upload Date",
         dataIndex: "created_at",
         render: (text) => <div title="Upload date">{text}</div>,
       },
@@ -89,7 +90,7 @@ export class DocumentTable extends Component {
         tableLayout="auto"
         pagination={false}
         columns={columns}
-        locale={{ emptyText: "This variance does not contain any documents" }}
+        locale={{ emptyText: this.props.noDataMessage }}
         dataSource={this.transformRowData(this.props.documents)}
       />
     );

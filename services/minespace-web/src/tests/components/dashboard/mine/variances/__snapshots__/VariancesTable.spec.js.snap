@@ -111,6 +111,7 @@ exports[`VariancesTable renders properly 1`] = `
         },
       ]
     }
+    loading={true}
     locale={
       Object {
         "emptyText": "This mine has no variance data.",

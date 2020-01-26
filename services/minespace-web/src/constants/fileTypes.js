@@ -2,9 +2,11 @@ export const EXCEL = {
   "application/vnd.ms-excel": ".xls",
   "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": ".xlsx",
 };
+
 export const PDF = {
   "application/pdf": ".pdf",
 };
+
 export const DOC = {
   "application/msword": ".doc",
   "application/vnd.openxmlformats-officedocument.wordprocessingml.document": ".docx",

@@ -164,7 +164,7 @@ export class Variances extends Component {
           </Button>
           <Title level={4}>Variances</Title>
           <Paragraph>
-            The following table lists all of the{" "}
+            The below table displays all of the{" "}
             <Text className="color-primary" strong>
               variance applications
             </Text>{" "}
@@ -174,6 +174,7 @@ export class Variances extends Component {
             variances={this.props.varianceApplications}
             mine={this.props.mine}
             isApplication
+            isLoaded={this.state.isLoaded}
             varianceStatusOptionsHash={this.props.varianceStatusOptionsHash}
             complianceCodesHash={this.props.complianceCodesHash}
             openViewVarianceModal={this.openViewVarianceModal}

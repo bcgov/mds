@@ -56,7 +56,7 @@ export class Permits extends Component {
         <Col>
           <Title level={4}>Permits</Title>
           <Paragraph>
-            The following table lists all of the{" "}
+            The below table displays all of the{" "}
             <Text className="color-primary" strong>
               permit applications
             </Text>{" "}

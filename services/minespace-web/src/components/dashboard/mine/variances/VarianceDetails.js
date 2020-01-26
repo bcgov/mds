@@ -53,6 +53,7 @@ export const VarianceDetails = (props) => {
             documents={props.variance.documents}
             removeDocument={props.removeDocument}
             isViewOnly={props.isViewOnly}
+            noDataMessage="This variance does not contain any documents"
             documentCategoryOptionsHash={props.documentCategoryOptionsHash}
           />
         </Descriptions.Item>
