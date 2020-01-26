@@ -33,7 +33,12 @@ import VariancesTable from "@/components/dashboard/mine/variances/VariancesTable
 const { Paragraph, Title, Text } = Typography;
 
 const propTypes = {
-  mine: CustomPropTypes.mine.isRequired,
+  mine: CustomPropTypes.mine,
+  match: PropTypes.shape({
+    params: {
+      id: PropTypes.string,
+    },
+  }).isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
   updateVariance: PropTypes.func.isRequired,
   fetchVariancesByMine: PropTypes.func.isRequired,
@@ -52,17 +57,19 @@ const propTypes = {
   addDocumentToVariance: PropTypes.func.isRequired,
 };
 
-const defaultProps = {};
+const defaultProps = {
+  mine: {},
+};
 
 export class Variances extends Component {
   state = { isLoaded: false };
 
   componentDidMount() {
-    const { mine_guid } = this.props.mine;
-    this.props.fetchMineRecordById(mine_guid).then(() => {
+    const { id } = this.props.match.params;
+    this.props.fetchMineRecordById(id).then(() => {
       this.setState({ isLoaded: true });
     });
-    this.props.fetchVariancesByMine({ mineGuid: mine_guid });
+    this.props.fetchVariancesByMine({ mineGuid: id });
     this.props.fetchMineComplianceCodes();
     this.props.fetchVarianceStatusOptions();
     this.props.fetchVarianceDocumentCategoryOptions();

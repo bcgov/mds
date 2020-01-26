@@ -85,22 +85,22 @@ export class MineDashboard extends Component {
               type="card"
             >
               <TabPane tab="Overview" key="overview">
-                <Overview mine={this.props.mine} isLoaded={this.state.isLoaded} />
+                <Overview mine={this.props.mine} match={this.props.match} />
               </TabPane>
               <TabPane tab="Permits" key="permits">
-                <Permits mine={this.props.mine} isLoaded={this.state.isLoaded} />
+                <Permits mine={this.props.mine} match={this.props.match} />
               </TabPane>
               <TabPane tab="Variances" key="variances">
-                <Variances mine={this.props.mine} isLoaded={this.state.isLoaded} />
+                <Variances mine={this.props.mine} match={this.props.match} />
               </TabPane>
               <TabPane tab="Inspections" key="inspections">
-                <Inspections mine={this.props.mine} isLoaded={this.state.isLoaded} />
+                <Inspections mine={this.props.mine} match={this.props.match} />
               </TabPane>
               <TabPane tab="Incidents" key="incidents">
-                <Incidents mine={this.props.mine} isLoaded={this.state.isLoaded} />
+                <Incidents mine={this.props.mine} match={this.props.match} />
               </TabPane>
               <TabPane tab="Reports" key="reports">
-                <Reports mine={this.props.mine} isLoaded={this.state.isLoaded} />
+                <Reports mine={this.props.mine} match={this.props.match} />
               </TabPane>
             </Tabs>
           </Col>

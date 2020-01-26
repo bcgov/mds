@@ -199,7 +199,7 @@ export class VariancesTable extends Component {
       title: "",
       dataIndex: "variance",
       render: (text, record) => (
-        <div title={record.isEditable ? "Edit" : "View"} align="right">
+        <div title="" align="right">
           <Button
             type="link"
             onClick={(event) => this.handleOpenModal(event, record.isEditable, record.variance)}

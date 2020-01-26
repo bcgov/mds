@@ -19,7 +19,12 @@ import { getMineReportDefinitionOptions } from "@/reducers/staticContentReducer"
 const { Paragraph, Title, Text } = Typography;
 
 const propTypes = {
-  mine: CustomPropTypes.mine.isRequired,
+  mine: CustomPropTypes.mine,
+  match: PropTypes.shape({
+    params: {
+      id: PropTypes.string,
+    },
+  }).isRequired,
   mineReports: PropTypes.arrayOf(CustomPropTypes.mineReport).isRequired,
   mineReportDefinitionOptions: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
   fetchMineReportDefinitionOptions: PropTypes.func.isRequired,
@@ -28,6 +33,10 @@ const propTypes = {
   fetchMineReports: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
+};
+
+const defaultProps = {
+  mine: {},
 };
 
 const TableSummaryCard = (props) => (
@@ -45,9 +54,9 @@ export class Reports extends Component {
 
   componentDidMount() {
     this.props.fetchMineReportDefinitionOptions();
-    const { mine_guid } = this.props.mine;
-    this.props.fetchMineReports(mine_guid);
-    this.props.fetchMineRecordById(mine_guid).then(() => {
+    const { id } = this.props.match.params;
+    this.props.fetchMineReports(id);
+    this.props.fetchMineRecordById(id).then(() => {
       this.setState({ isLoaded: true });
     });
   }
@@ -167,5 +176,6 @@ const mapDispatchToProps = (dispatch) =>
   );
 
 Reports.propTypes = propTypes;
+Reports.defaultProps = defaultProps;
 
 export default connect(mapStateToProps, mapDispatchToProps)(Reports);
