@@ -1,9 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Authentication renders properly 1`] = `
-<div>
+<span>
   <MediaQueryContextConsumer
-    minWidth={701}
+    minWidth={1280}
   >
     <span>
       <Link
@@ -56,21 +56,25 @@ exports[`Authentication renders properly 1`] = `
     </Dropdown>
   </MediaQueryContextConsumer>
   <MediaQueryContextConsumer
-    maxWidth={700}
+    maxWidth={1279}
   >
     <Dropdown
       mouseEnterDelay={0.15}
       mouseLeaveDelay={0.1}
       overlay={
-        <Menu>
+        <Menu
+          className="header-dropdown-menu"
+        >
           <MenuItem>
             <Button
               block={false}
+              className="header-dropdown-item-button"
               ghost={false}
               htmlType="button"
               loading={false}
             >
               <ForwardRef
+                className="header-link"
                 to="/mines"
               >
                 My Mines
@@ -80,27 +84,30 @@ exports[`Authentication renders properly 1`] = `
           <MenuItem>
             <Button
               block={false}
+              className="header-dropdown-item-button"
               ghost={false}
               htmlType="button"
               loading={false}
             >
               <ForwardRef
-                to="/mines"
+                className="header-link"
+                to="/users"
               >
-                Manage Users
+                My Users
               </ForwardRef>
             </Button>
           </MenuItem>
           <Divider
             style={
               Object {
-                "margin": "0",
+                "margin": 0,
               }
             }
           />
           <MenuItem>
             <Button
               block={false}
+              className="header-dropdown-item-button"
               ghost={false}
               htmlType="button"
               loading={false}
@@ -118,10 +125,11 @@ exports[`Authentication renders properly 1`] = `
         className="header-dropdown-button"
         ghost={false}
         htmlType="button"
+        id="dropdown-menu-mobile-trigger"
         loading={false}
       >
         <img
-          alt="menu"
+          alt="Menu Button"
           src={
             Object {
               "process": [Function],
@@ -131,5 +139,5 @@ exports[`Authentication renders properly 1`] = `
       </Button>
     </Dropdown>
   </MediaQueryContextConsumer>
-</div>
+</span>
 `;
