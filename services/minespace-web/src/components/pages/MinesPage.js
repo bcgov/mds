@@ -28,59 +28,56 @@ export class MinesPage extends Component {
   }
 
   render() {
-    if (!this.state.isLoaded) {
-      return <Loading />;
-    }
-
     const { mines } = this.props.userMineInfo;
     return (
-      <Row>
-        <Col>
-          <Title>My Mines</Title>
-          <Divider />
-          <Title level={2}>Welcome, {this.props.userInfo.preferred_username}.</Title>
-
-          {(mines && mines.length > 0 && (
-            <Row>
-              <Col>
-                <Paragraph>
-                  You are authorized to submit information for the following mines:
-                </Paragraph>
-                <Paragraph>
-                  <ul>
-                    {mines
-                      .sort((a, b) => (a.mine_name > b.mine_name ? 1 : -1))
-                      .map((mine) => (
-                        <li key={mine.mine_guid}>
-                          <Link to={routes.MINE_DASHBOARD.dynamicRoute(mine.mine_guid)}>
-                            {mine.mine_name}
-                          </Link>
-                        </li>
-                      ))}
-                  </ul>
-                </Paragraph>
-                <Paragraph>
-                  Don&apos;t see the mine you&apos;re looking for? Contact&nbsp;
-                  <a href={`mailto:${Strings.MDS_EMAIL}`}>{Strings.MDS_EMAIL}</a>
-                  &nbsp;for assistance.
-                </Paragraph>
-              </Col>
-            </Row>
-          )) || (
-            <Row>
-              <Col>
-                <Paragraph>
-                  You are not authorized to manage information for any mines. Please contact&nbsp;
-                  <a className="underline" href={Strings.MDS_EMAIL}>
-                    {Strings.MDS_EMAIL}
-                  </a>
-                  &nbsp;for assistance.
-                </Paragraph>
-              </Col>
-            </Row>
-          )}
-        </Col>
-      </Row>
+      (this.state.isLoaded && (
+        <Row>
+          <Col>
+            <Title>My Mines</Title>
+            <Divider />
+            <Title level={2}>Welcome, {this.props.userInfo.preferred_username}.</Title>
+            {(mines && mines.length > 0 && (
+              <Row>
+                <Col>
+                  <Paragraph>
+                    You are authorized to submit information for the following mines:
+                  </Paragraph>
+                  <Paragraph>
+                    <ul>
+                      {mines
+                        .sort((a, b) => (a.mine_name > b.mine_name ? 1 : -1))
+                        .map((mine) => (
+                          <li key={mine.mine_guid}>
+                            <Link to={routes.MINE_DASHBOARD.dynamicRoute(mine.mine_guid)}>
+                              {mine.mine_name}
+                            </Link>
+                          </li>
+                        ))}
+                    </ul>
+                  </Paragraph>
+                  <Paragraph>
+                    Don&apos;t see the mine you&apos;re looking for? Contact&nbsp;
+                    <a href={`mailto:${Strings.MDS_EMAIL}`}>{Strings.MDS_EMAIL}</a>
+                    &nbsp;for assistance.
+                  </Paragraph>
+                </Col>
+              </Row>
+            )) || (
+              <Row>
+                <Col>
+                  <Paragraph>
+                    You are not authorized to manage information for any mines. Please contact&nbsp;
+                    <a className="underline" href={Strings.MDS_EMAIL}>
+                      {Strings.MDS_EMAIL}
+                    </a>
+                    &nbsp;for assistance.
+                  </Paragraph>
+                </Col>
+              </Row>
+            )}
+          </Col>
+        </Row>
+      )) || <Loading />
     );
   }
 }

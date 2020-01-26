@@ -6,8 +6,8 @@ import { hot } from "react-hot-loader";
 import { Layout, BackTop, Row, Col, Spin, Icon } from "antd";
 import MediaQuery from "react-responsive";
 import Routes from "./routes/Routes";
-import { Header } from "@/components/Header";
-import { Footer } from "@/components/Footer";
+import { Header } from "@/components/layout/Header";
+import { Footer } from "@/components/layout/Footer";
 import ModalWrapper from "@/components/common/wrappers/ModalWrapper";
 import AuthenticationGuard from "@/HOC/AuthenticationGuard";
 import WarningBanner from "@/components/common/WarningBanner";
@@ -35,11 +35,15 @@ class App extends Component {
 
   render() {
     const { Content } = Layout;
+    const xs = 24;
+    const sm = 22;
+    const md = 20;
+    const lg = 16;
     return (
       <BrowserRouter basename={process.env.BASE_PATH}>
         <Fragment>
           <Layout>
-            <Header />
+            <Header xs={xs} sm={sm} md={md} lg={lg} />
             <Layout>
               <Content>
                 {this.state.isIE && <WarningBanner type="IE" onClose={this.handleBannerClose} />}
@@ -49,7 +53,7 @@ class App extends Component {
                   )}
                 </MediaQuery>
                 <Row type="flex" justify="center" align="top">
-                  <Col xs={24} sm={22} md={20} lg={16}>
+                  <Col xs={xs} sm={sm} md={md} lg={lg}>
                     <Routes />
                   </Col>
                 </Row>
@@ -57,7 +61,7 @@ class App extends Component {
                 <BackTop />
               </Content>
             </Layout>
-            <Footer />
+            <Footer xs={xs} sm={sm} md={md} lg={lg} />
           </Layout>
         </Fragment>
       </BrowserRouter>

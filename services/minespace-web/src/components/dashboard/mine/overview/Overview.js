@@ -69,8 +69,10 @@ export class Overview extends Component {
           <Descriptions column={1} colon={false}>
             <Descriptions.Item label="Region">{this.props.mine.mine_region}</Descriptions.Item>
             <Descriptions.Item label="Coordinate">
-              {`${this.props.mine.mine_location.latitude || Strings.NOT_APPLICABLE},${this.props
-                .mine.mine_location.longitude || Strings.NOT_APPLICABLE}`}
+              {`${(this.props.mine.mine_location && this.props.mine.mine_location.latitude) ||
+                Strings.NOT_APPLICABLE},${(this.props.mine.mine_location &&
+                this.props.mine.mine_location.longitude) ||
+                Strings.NOT_APPLICABLE}`}
             </Descriptions.Item>
             <Descriptions.Item label="Commodity">{Strings.NOT_APPLICABLE}</Descriptions.Item>
             <Descriptions.Item label="Operating Status">{Strings.NOT_APPLICABLE}</Descriptions.Item>

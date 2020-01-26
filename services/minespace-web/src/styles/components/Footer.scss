@@ -1,12 +1,13 @@
-.footer-content {
-  display: flex;
-  justify-content: space-evenly;
-}
-
 .footer-link {
   color: $white;
   &:hover {
     color: $white;
   }
-  text-decoration: none !important;
+  text-decoration: none;
+  display: flex;
+  justify-content: center;
+  @include screen-md {
+    padding-bottom: $padding-sm;
+    padding-top: $padding-sm;
+  }
 }

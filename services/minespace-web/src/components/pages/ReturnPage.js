@@ -7,7 +7,7 @@ import queryString from "query-string";
 import { getRedirect } from "@/selectors/authenticationSelectors";
 import { authenticateUser, unAuthenticateUser } from "@/actionCreators/authenticationActionCreator";
 import { signOutFromSSO } from "@/utils/authenticationHelpers";
-import { RETURN_PAGE_TYPE } from "../constants/strings";
+import { RETURN_PAGE_TYPE } from "@/constants/strings";
 import Loading from "@/components/common/Loading";
 import * as route from "@/constants/routes";
 
@@ -33,7 +33,7 @@ export class ReturnPage extends Component {
       signOutFromSSO();
     } else if (type === RETURN_PAGE_TYPE.LOGOUT) {
       // finished logging out from SSO, clear redux & token and redirect home
-      this.props.unAuthenticateUser("You have successfully logged out");
+      this.props.unAuthenticateUser();
     }
 
     // if a user manually navigates to this route, (thus type would not exist), they will be redirected home
@@ -67,7 +67,4 @@ const mapDispatchToProps = (dispatch) =>
     dispatch
   );
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ReturnPage);
+export default connect(mapStateToProps, mapDispatchToProps)(ReturnPage);

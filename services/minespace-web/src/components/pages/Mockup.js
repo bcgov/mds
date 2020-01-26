@@ -1,5 +1,3 @@
-/* eslint-disable */
-
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import {
@@ -25,8 +23,6 @@ import {
   notification,
 } from "antd";
 import moment from "moment";
-// import { Field, reduxForm, change } from "redux-form";
-// import * as routes from "@/constants/routes";
 import * as Strings from "@/constants/strings";
 
 const { TabPane } = Tabs;

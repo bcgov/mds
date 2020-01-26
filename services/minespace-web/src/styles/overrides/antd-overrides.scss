@@ -9,13 +9,17 @@
   z-index: 8;
   width: 100%;
   top: 0;
+  padding-left: 0;
+  padding-right: 0;
 }
 
 .ant-layout-footer {
   z-index: 8;
   width: 100%;
-  height: 80px;
+  min-height: 80px;
   bottom: 0;
+  padding-left: 0;
+  padding-right: 0;
 }
 
 .ant-layout {
@@ -25,15 +29,10 @@
 
 .ant-layout-content {
   padding: $layout-header-height 0;
-  // width: 80%;
-  // min-height: 100%;
-  // margin: auto;
-  // overflow: initial;
 
-  // @include mobile {
-  //   width: 100%;
-  //   padding: $layout-header-height $padding-sm;
-  // }
+  @include screen-md {
+    padding: $layout-header-height $padding-sm;
+  }
 }
 
 // Divider

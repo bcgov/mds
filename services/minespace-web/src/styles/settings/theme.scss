@@ -295,13 +295,13 @@ $layout-header-padding: 0 50px;
 $layout-footer-padding: 24px 50px;
 $layout-sider-background: $layout-header-background;
 $layout-trigger-height: 48px;
-$layout-trigger-background: #002140;
-$layout-trigger-color: #fff;
+$layout-trigger-background: $black ;//#002140;
+$layout-trigger-color: $white; //#fff;
 $layout-zero-trigger-width: 36px;
 $layout-zero-trigger-height: 42px;
 // Layout light theme
-$layout-sider-background-light: #fff;
-$layout-trigger-background-light: #fff;
+$layout-sider-background-light: $white; //#fff;
+$layout-trigger-background-light: $white; //#fff;
 $layout-trigger-color-light: $text-color;
 
 // z-index list, order by `z-index`

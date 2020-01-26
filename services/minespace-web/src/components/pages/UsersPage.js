@@ -18,19 +18,17 @@ export class UsersPage extends Component {
   componentDidMount() {}
 
   render() {
-    if (!this.state.isLoaded) {
-      return <Loading />;
-    }
-
     return (
-      <Row>
-        <Col>
-          <Title>My Users</Title>
-          <Divider />
-          <Title level={2}>Welcome, {this.props.userInfo.preferred_username}.</Title>
-          <Paragraph>This page is under construction.</Paragraph>
-        </Col>
-      </Row>
+      (this.state.isLoaded && (
+        <Row>
+          <Col>
+            <Title>My Users</Title>
+            <Divider />
+            <Title level={2}>Welcome, {this.props.userInfo.preferred_username}.</Title>
+            <Paragraph>This page is under construction.</Paragraph>
+          </Col>
+        </Row>
+      )) || <Loading />
     );
   }
 }

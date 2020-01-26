@@ -69,7 +69,7 @@ export const LandingPage = () => (
           </Col>
         </Row>
       </Col>
-      <Col sm={{ span: 24 }} lg={{ span: 10, offset: 2 }}>
+      <Col sm={{ span: 24 }} lg={{ span: 9, offset: 3 }}>
         <Card title="Do you have a BCeID?">
           <Row>
             <Col>

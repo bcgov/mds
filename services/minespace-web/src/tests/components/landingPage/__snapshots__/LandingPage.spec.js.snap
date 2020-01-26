@@ -137,8 +137,8 @@ exports[`LandingPage renders properly 1`] = `
     <Col
       lg={
         Object {
-          "offset": 2,
-          "span": 10,
+          "offset": 3,
+          "span": 9,
         }
       }
       sm={

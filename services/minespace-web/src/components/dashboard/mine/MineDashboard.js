@@ -5,8 +5,8 @@ import { Row, Col, Tabs, Typography } from "antd";
 import { bindActionCreators } from "redux";
 import { fetchMineRecordById } from "@/actionCreators/userDashboardActionCreator";
 import { getMine } from "@/selectors/userMineSelectors";
-import Loading from "@/components/common/Loading";
 import CustomPropTypes from "@/customPropTypes";
+import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
 import Overview from "@/components/dashboard/mine/overview/Overview";
 import Permits from "@/components/dashboard/mine/permits/Permits";
 import Variances from "@/components/dashboard/mine/variances/Variances";
@@ -61,53 +61,51 @@ export class MineDashboard extends Component {
 
   render() {
     return (
-      (this.state.isLoaded && (
-        <div>
-          <Row gutter={[0, 48]}>
-            <Col>
-              <Title style={{ display: "inline-block" }}>
-                {this.props.mine.mine_name || "Unnamed Mine"}
-              </Title>
-              <Title
-                className="color-gov-grey"
-                level={4}
-                style={{ display: "inline-block", paddingLeft: 20 }}
-              >
-                #{this.props.mine.mine_no || "Unnumbered Mine"}
-              </Title>
-            </Col>
-          </Row>
-          <Row>
-            <Col>
-              <Tabs
-                activeKey={this.state.activeTab}
-                defaultActiveKey="overview"
-                onChange={this.handleTabChange}
-                type="card"
-              >
-                <TabPane tab="Overview" key="overview">
-                  <Overview mine={this.props.mine} />
-                </TabPane>
-                <TabPane tab="Permits" key="permits">
-                  <Permits mine={this.props.mine} />
-                </TabPane>
-                <TabPane tab="Variances" key="variances">
-                  <Variances mine={this.props.mine} />
-                </TabPane>
-                <TabPane tab="Inspections" key="inspections">
-                  <Inspections mine={this.props.mine} />
-                </TabPane>
-                <TabPane tab="Incidents" key="incidents">
-                  <Incidents mine={this.props.mine} />
-                </TabPane>
-                <TabPane tab="Reports" key="reports">
-                  <Reports mine={this.props.mine} />
-                </TabPane>
-              </Tabs>
-            </Col>
-          </Row>
-        </div>
-      )) || <Loading />
+      <LoadingWrapper isLoaded={this.state.isLoaded}>
+        <Row gutter={[0, 48]}>
+          <Col>
+            <Title style={{ display: "inline-block" }}>
+              {this.props.mine.mine_name || "Mine Name"}
+            </Title>
+            <Title
+              className="color-gov-grey"
+              level={4}
+              style={{ display: "inline-block", paddingLeft: 20 }}
+            >
+              #{this.props.mine.mine_no || "Mine Number"}
+            </Title>
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            <Tabs
+              activeKey={this.state.activeTab}
+              defaultActiveKey="overview"
+              onChange={this.handleTabChange}
+              type="card"
+            >
+              <TabPane tab="Overview" key="overview">
+                <Overview mine={this.props.mine} isLoaded={this.state.isLoaded} />
+              </TabPane>
+              <TabPane tab="Permits" key="permits">
+                <Permits mine={this.props.mine} isLoaded={this.state.isLoaded} />
+              </TabPane>
+              <TabPane tab="Variances" key="variances">
+                <Variances mine={this.props.mine} isLoaded={this.state.isLoaded} />
+              </TabPane>
+              <TabPane tab="Inspections" key="inspections">
+                <Inspections mine={this.props.mine} isLoaded={this.state.isLoaded} />
+              </TabPane>
+              <TabPane tab="Incidents" key="incidents">
+                <Incidents mine={this.props.mine} isLoaded={this.state.isLoaded} />
+              </TabPane>
+              <TabPane tab="Reports" key="reports">
+                <Reports mine={this.props.mine} isLoaded={this.state.isLoaded} />
+              </TabPane>
+            </Tabs>
+          </Col>
+        </Row>
+      </LoadingWrapper>
     );
   }
 }

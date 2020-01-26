@@ -5,8 +5,6 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import CustomPropTypes from "@/customPropTypes";
 import { Row, Col, Table, Typography } from "antd";
-// import * as Strings from "@/constants/strings";
-// import IncidentsTable from "@/components/dashboard/mine/incidents/IncidentsTable";
 
 const { Paragraph, Title, Text } = Typography;
 

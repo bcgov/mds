@@ -4,7 +4,7 @@ import { Icon, Spin } from "antd";
 
 const propTypes = {
   isLoaded: PropTypes.bool.isRequired,
-  children: PropTypes.element.isRequired,
+  children: PropTypes.arrayOf(PropTypes.element).isRequired,
   iconSize: PropTypes.number,
   delay: PropTypes.number,
   tip: PropTypes.string,
@@ -20,7 +20,6 @@ export const LoadingWrapper = (props) => {
   return (
     <Spin
       tip={props.tip}
-      large
       spinning={!props.isLoaded}
       delay={props.delay}
       indicator={
