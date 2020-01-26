@@ -58,7 +58,13 @@ exports[`MineDashboard renders properly 1`] = `
           tab="Overview"
         >
           <Connect(Overview)
-            isLoaded={false}
+            match={
+              Object {
+                "params": Object {
+                  "id": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                },
+              }
+            }
             mine={
               Object {
                 "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
@@ -107,7 +113,13 @@ exports[`MineDashboard renders properly 1`] = `
           tab="Permits"
         >
           <Connect(Permits)
-            isLoaded={false}
+            match={
+              Object {
+                "params": Object {
+                  "id": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                },
+              }
+            }
             mine={
               Object {
                 "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
@@ -156,7 +168,13 @@ exports[`MineDashboard renders properly 1`] = `
           tab="Variances"
         >
           <Connect(Variances)
-            isLoaded={false}
+            match={
+              Object {
+                "params": Object {
+                  "id": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                },
+              }
+            }
             mine={
               Object {
                 "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
@@ -205,7 +223,13 @@ exports[`MineDashboard renders properly 1`] = `
           tab="Inspections"
         >
           <Connect(Inspections)
-            isLoaded={false}
+            match={
+              Object {
+                "params": Object {
+                  "id": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                },
+              }
+            }
             mine={
               Object {
                 "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
@@ -254,7 +278,13 @@ exports[`MineDashboard renders properly 1`] = `
           tab="Incidents"
         >
           <Connect(Incidents)
-            isLoaded={false}
+            match={
+              Object {
+                "params": Object {
+                  "id": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                },
+              }
+            }
             mine={
               Object {
                 "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
@@ -303,7 +333,13 @@ exports[`MineDashboard renders properly 1`] = `
           tab="Reports"
         >
           <Connect(Reports)
-            isLoaded={false}
+            match={
+              Object {
+                "params": Object {
+                  "id": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                },
+              }
+            }
             mine={
               Object {
                 "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
