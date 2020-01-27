@@ -5,26 +5,6 @@ exports[`Variances renders properly 1`] = `
   gutter={0}
 >
   <Col>
-    <Button
-      block={false}
-      ghost={false}
-      htmlType="button"
-      loading={false}
-      onClick={[Function]}
-      style={
-        Object {
-          "display": "inline",
-          "float": "right",
-        }
-      }
-      type="primary"
-    >
-      <Icon
-        theme="filled"
-        type="plus-circle"
-      />
-      Create Variance
-    </Button>
     <Title
       level={4}
     >
