@@ -58,7 +58,7 @@ export class HeaderDropdown extends Component {
         <Menu.Item key="users">
           <Button className="header-dropdown-item-button">{linkUsers}</Button>
         </Menu.Item>
-        <Divider style={{ margin: 0 }} />
+        <Divider className="bg-color-table-seperator" style={{ margin: 0 }} />
         {menuItemLogout}
       </Menu>
     );
@@ -93,9 +93,9 @@ export class HeaderDropdown extends Component {
           </Dropdown>
         </MediaQuery>
         <MediaQuery maxWidth={smallestDesktopWidth - 1}>
-          <Dropdown overlay={dropdownMenuMobile}>
+          <Dropdown overlay={dropdownMenuMobile} placement="bottomRight">
             <Button id="dropdown-menu-mobile-trigger" className="header-dropdown-button">
-              <img src={MENU} alt="Menu Button" />
+              <img src={MENU} alt="Menu" />
             </Button>
           </Dropdown>
         </MediaQuery>

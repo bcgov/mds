@@ -6,8 +6,9 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import hoistNonReactStatics from "hoist-non-react-statics";
 import { isAuthenticated } from "@/selectors/authenticationSelectors";
-import UnauthorizedNotice from "@/components/common/UnauthorizedNotice";
+import UnauthenticatedNotice from "@/components/common/UnauthenticatedNotice";
 import { getUserInfoFromToken } from "@/actionCreators/authenticationActionCreator";
+import Loading from "@/components/common/Loading";
 
 /**
  * @constant authenticationGuard - a Higher Order Component Thats checks for user authorization and returns the App component if the user is Authenticated.
@@ -20,12 +21,27 @@ const propTypes = {
 
 export const AuthenticationGuard = (isPublic) => (WrappedComponent) => {
   class authenticationGuard extends Component {
+    state = {
+      authComplete: false,
+    };
+
     componentDidMount() {
+      this.setState({ authComplete: false });
+      this.authenticate();
+    }
+
+    async authenticate() {
       const token = localStorage.getItem("jwt");
       if (token && !this.props.isAuthenticated) {
-        this.props.getUserInfoFromToken(token).catch(() => {
-          // Silently fail
-        });
+        await this.props
+          .getUserInfoFromToken(token)
+          .then(() => this.setState({ authComplete: true }))
+          .catch(() => {
+            this.setState({ authComplete: true });
+            // TODO: Handle errors
+          });
+      } else {
+        this.setState({ authComplete: true });
       }
     }
 
@@ -33,7 +49,10 @@ export const AuthenticationGuard = (isPublic) => (WrappedComponent) => {
       if (this.props.isAuthenticated || isPublic) {
         return <WrappedComponent {...this.props} />;
       }
-      return <UnauthorizedNotice />;
+      if (!this.props.isAuthenticated && this.state.authComplete) {
+        return <UnauthenticatedNotice />;
+      }
+      return <Loading />;
     }
   }
 

@@ -49,6 +49,18 @@
 .ant-btn {
   // TODO: When associated bug is fixed, remove this line and change applicable var in theme.scss.
   padding: 0 $padding-lg;
+
+  // &-primary {
+  //   &:hover {
+  //     color: $white !important;
+  //     background-color: $nav-blue;
+  //     border-color: $nav-blue !important;
+  //   }
+  // }
+  // &:hover {
+  //   color: $nav-blue;
+  //   border-color: $nav-blue;
+  // }
 }
 
 // Typography

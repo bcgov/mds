@@ -72,7 +72,7 @@ export class MineDashboard extends Component {
               level={4}
               style={{ display: "inline-block", paddingLeft: 20 }}
             >
-              #{this.props.mine.mine_no || "Mine Number"}
+              #{this.props.mine.mine_no || "000"}
             </Title>
           </Col>
         </Row>

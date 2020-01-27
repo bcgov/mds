@@ -97,7 +97,9 @@ export class Overview extends Component {
         <Col lg={{ offset: 1, span: 7 }}>
           <Card title="Ministry Contacts">
             <Paragraph>
-              <Text strong>Regional Health and Safety</Text>
+              <Text strong style={{ textTransform: "uppercase" }}>
+                Regional Health and Safety
+              </Text>
               <br />
               <Text>{Strings.MINISTRY_CONTACTS.REGIONAL_HEALTH_AND_SAFETY.NAME}</Text>
               <br />
@@ -110,7 +112,9 @@ export class Overview extends Component {
               </Text>
             </Paragraph>
             <Paragraph>
-              <Text strong>Regional Mine General</Text>
+              <Text strong style={{ textTransform: "uppercase" }}>
+                Regional Mine General
+              </Text>
               <br />
               <Text>
                 <a href={`mailto:${Strings.MINISTRY_CONTACTS.REGIONAL_MINE_GENERAL.EMAIL}`}>
@@ -119,7 +123,9 @@ export class Overview extends Component {
               </Text>
             </Paragraph>
             <Paragraph>
-              <Text strong>Major Mine General</Text>
+              <Text strong style={{ textTransform: "uppercase" }}>
+                Major Mine General
+              </Text>
               <br />
               <Text>
                 <a href={`mailto:${Strings.MINISTRY_CONTACTS.MAJOR_MINE_GENERAL.EMAIL}`}>

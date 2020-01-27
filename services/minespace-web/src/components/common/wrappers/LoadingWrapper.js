@@ -12,7 +12,7 @@ const propTypes = {
 
 const defaultProps = {
   iconSize: 80,
-  delay: 500,
+  delay: 1000,
   tip: "",
 };
 

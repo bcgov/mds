@@ -4,7 +4,7 @@ import * as Strings from "@/constants/strings";
 
 const { Paragraph, Text } = Typography;
 
-const UnauthorizedNotice = () => (
+const UnauthenticatedNotice = () => (
   <Row>
     <Col>
       <Result
@@ -24,4 +24,4 @@ const UnauthorizedNotice = () => (
   </Row>
 );
 
-export default UnauthorizedNotice;
+export default UnauthenticatedNotice;
