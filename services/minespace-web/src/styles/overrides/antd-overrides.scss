@@ -82,8 +82,8 @@ h1.ant-typography,
 
 .ant-tabs-bar {
   border-bottom: 4px solid $primary-color;
-  // NOTE: Ant Design has a bug in their UI? This makes it look way better.
-  padding-bottom: 1px;
+  // NOTE: Ant Design has a bug in their UI? This makes the bottom border not overlap the tabs.
+  padding-bottom: 2px;
 }
 
 .ant-tabs-tab {
