@@ -31,7 +31,6 @@ class NOWApplicationListResource(Resource, UserMixin):
     parser.add_argument('notice_of_work_type_code', type=str, required=True)
     parser.add_argument('submitted_date', type=str, required=True)
     parser.add_argument('received_date', type=str, required=True)
-    parser.add_argument('mine_guid', type=str, required=True)
 
     @api.doc(
         description='Get a list of Core now applications. Order: received_date DESC',
@@ -167,7 +166,6 @@ class NOWApplicationListResource(Resource, UserMixin):
             err_str += 'Permit Applications can only be created on mines where major_mine_ind=True'
         if err_str:
             raise BadRequest(err_str)
-
         new_now = NOWApplicationIdentity(mine_guid=data['mine_guid'], permit=permit)
         new_now.now_application = NOWApplication(
             notice_of_work_type_code=data['notice_of_work_type_code'],

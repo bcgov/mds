@@ -363,7 +363,7 @@ class NOWApplicationProgressFactory(BaseFactory):
 
     now_application_id = factory.SelfAttribute('now_application.now_application_id')
     #application_progress_id = factory.Sequence(lambda n: n)
-    application_progress_status_code = factory.LazyFunction(RandomNOWProgressStatusCode)
+    application_progress_status_code = 'REV'
     start_date = factory.Faker('past_datetime')
     created_by = factory.Faker('company')
     active_ind = True
