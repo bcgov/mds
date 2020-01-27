@@ -2,7 +2,7 @@
 
 exports[`LoadingWrapper renders properly 1`] = `
 <Spin
-  delay={500}
+  delay={1000}
   indicator={
     <Icon
       className="color-primary"
