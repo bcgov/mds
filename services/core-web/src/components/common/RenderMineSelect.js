@@ -20,7 +20,7 @@ const propTypes = {
   // redux-form value id
   id: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
-  input: PropTypes.objectOf(PropTypes.any).isRequired,
+  input: PropTypes.objectOf(PropTypes.any),
   meta: PropTypes.objectOf(PropTypes.any),
   label: PropTypes.String,
   fetchMineNameList: PropTypes.func.isRequired,
@@ -40,6 +40,7 @@ const defaultProps = {
   onMineSelect: () => {},
   meta: {},
   label: "Select a mine",
+  input: { value: "" },
 };
 
 export class RenderMineSelect extends Component {
@@ -48,10 +49,12 @@ export class RenderMineSelect extends Component {
   };
 
   componentDidMount() {
-    getMineWithoutStore(this.props.input.value).then((data) => {
-      this.setState({ selectedMine: data.data });
-      this.handleChange(data.data.mine_name);
-    });
+    if (this.props.input.value) {
+      getMineWithoutStore(this.props.input.value).then((data) => {
+        this.setState({ selectedMine: data.data });
+        this.handleChange(data.data.mine_name);
+      });
+    }
   }
 
   handleChange = (name) => {
