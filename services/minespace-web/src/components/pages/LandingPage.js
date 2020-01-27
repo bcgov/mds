@@ -75,8 +75,9 @@ export const LandingPage = () => (
           <Row>
             <Col>
               <Paragraph>
-                In order to access MineSpace, you need to register for a Business BCeID. It can take
-                several weeks to process the request, so give yourself plenty of lead time.
+                In order to access MineSpace, you need to register for a Business or Personal BCeID.
+                It can take several weeks to process the request, so give yourself plenty of lead
+                time.
               </Paragraph>
               <Paragraph>
                 Once you have your BCeID, you can add employees and delegates. You can request that
