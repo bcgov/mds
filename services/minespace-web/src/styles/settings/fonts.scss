@@ -4,21 +4,21 @@
 @font-face {
   font-family: "BCSans";
   font-style: normal;
-  text-rendering: optimizeLegibility;
+  //text-rendering: optimizeLegibility;
   src: url("/src/assets/fonts/BCSans/BCSans-Regular.woff2") format("woff2"),
     url("/src/assets/fonts/BCSans/BCSans-Regular.woff") format("woff");
 }
 @font-face {
   font-family: "BCSans";
   font-style: italic;
-  text-rendering: optimizeLegibility;
+  //text-rendering: optimizeLegibility;
   src: url("/src/assets/fonts/BCSans/BCSans-Italic.woff2") format("woff2"),
     url("/src/assets/fonts/BCSans/BCSans-Italic.woff") format("woff");
 }
 @font-face {
   font-family: "BCSans";
   font-weight: bold;
-  text-rendering: optimizeLegibility;
+  //text-rendering: optimizeLegibility;
   src: url("/src/assets/fonts/BCSans/BCSans-Bold.woff2") format("woff2"),
     url("/src/assets/fonts/BCSans/BCSans-Bold.woff") format("woff");
 }
@@ -26,7 +26,7 @@
   font-family: "BCSans";
   font-style: italic;
   font-weight: bold;
-  text-rendering: optimizeLegibility;
+  //text-rendering: optimizeLegibility;
   src: url("/src/assets/fonts/BCSans/BCSans-BoldItalic.woff2") format("woff2"),
     url("/src/assets/fonts/BCSans/BCSans-BoldItalic.woff") format("woff");
 }
