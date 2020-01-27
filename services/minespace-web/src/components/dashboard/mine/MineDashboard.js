@@ -65,12 +65,12 @@ export class MineDashboard extends Component {
         <Row gutter={[0, 48]}>
           <Col>
             <Title style={{ marginBottom: 8 }}>{this.props.mine.mine_name || "Mine Name"}</Title>
-            <Title level={4} style={{ marginTop: 0, marginBottom: 22 }}>
+            <Title level={4} style={{ margin: 0 }}>
               Mine Number: {this.props.mine.mine_no || "000"}
             </Title>
           </Col>
         </Row>
-        <Row>
+        <Row gutter={[0, 48]}>
           <Col>
             <Tabs
               activeKey={this.state.activeTab}
