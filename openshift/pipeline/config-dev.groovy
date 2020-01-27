@@ -430,7 +430,9 @@ environments {
                 'mds-redis' {
                     HOST = "http://mds-redis${vars.deployment.suffix}"
                 }
-
+                'digdag' {
+                    HOST = "mds-digdag-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
+                }
             }
         }
     }
