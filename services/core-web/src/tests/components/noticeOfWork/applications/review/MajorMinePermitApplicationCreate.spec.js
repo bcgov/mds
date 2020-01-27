@@ -1,6 +1,6 @@
 import React from "react";
 import { shallow } from "enzyme";
-import { MMPermitApplicationInit } from "@/components/noticeOfWork/applications/applicationStepOne/MMPermitApplicationInit";
+import { MajorMinePermitApplicationCreate } from "@/components/noticeOfWork/applications/applicationStepOne/MajorMinePermitApplicationCreate";
 import * as MOCK from "@/tests/mocks/dataMocks";
 
 const dispatchProps = {};
@@ -23,9 +23,11 @@ beforeEach(() => {
   setupReducerProps();
 });
 
-describe("MMPermitApplicationInit", () => {
+describe("MajorMinePermitApplicationCreate", () => {
   it("renders properly", () => {
-    const component = shallow(<MMPermitApplicationInit {...reducerProps} {...dispatchProps} />);
+    const component = shallow(
+      <MajorMinePermitApplicationCreate {...reducerProps} {...dispatchProps} />
+    );
     expect(component).toMatchSnapshot();
   });
 });
