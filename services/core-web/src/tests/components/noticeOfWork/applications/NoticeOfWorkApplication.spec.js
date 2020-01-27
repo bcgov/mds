@@ -32,7 +32,8 @@ const setupReducerProps = () => {
   reducerProps.formValues = NOW_MOCK.NOTICE_OF_WORK;
   reducerProps.reclamationSummary = NOW_MOCK.RECLAMATION_SUMMARY;
   reducerProps.mines = MOCK.MINES;
-  [reducerProps.mineGuid] = MOCK.MINES.mineIds;
+  // eslint-disable-next-line prefer-destructuring
+  reducerProps.mineGuid = MOCK.MINES.mineIds[0];
   reducerProps.location = { state: {} };
 };
 

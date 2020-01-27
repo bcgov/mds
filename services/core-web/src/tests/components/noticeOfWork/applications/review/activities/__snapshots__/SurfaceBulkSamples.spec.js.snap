@@ -79,6 +79,8 @@ exports[`SurfaceBulkSamples renders properly 1`] = `
   </Row>
   <Equipment
     activity="surface_bulk_sample"
+    addRecord={[MockFunction]}
+    editRecord={[MockFunction]}
     equipment={Array []}
     isViewMode={true}
   />
