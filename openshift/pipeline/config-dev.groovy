@@ -288,7 +288,7 @@ app {
                             'VERSION':"${app.deployment.version}",
                             'NAMESPACE':"${vars.deployment.namespace}",
                             'SUFFIX': "${vars.deployment.suffix}",
-                            'SCHEDULER_PVC_SIZE':"100Mi",
+                            'SCHEDULER_PVC_SIZE':"200Mi",
                             'ENVIRONMENT_NAME':"${app.deployment.env.name}",
                             'KEYCLOAK_DISCOVERY_URL':"${vars.keycloak.known_config_url}",
                             'APPLICATION_DOMAIN': "${vars.modules.'digdag'.HOST}",
@@ -305,10 +305,10 @@ app {
 environments {
     'dev' {
         vars {
-            DB_PVC_SIZE = '100Mi'
+            DB_PVC_SIZE = '200Mi'
             DOCUMENT_PVC_SIZE = '100Mi'
-            BACKUP_VERIFICATION_PVC_SIZE = '100Mi'
-            LOG_PVC_SIZE = '50Mi'
+            BACKUP_VERIFICATION_PVC_SIZE = '200Mi'
+            LOG_PVC_SIZE = '200Mi'
             git {
                 changeId = "${opt.'pr'}"
             }
