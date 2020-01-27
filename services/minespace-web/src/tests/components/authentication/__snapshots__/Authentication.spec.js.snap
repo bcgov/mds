@@ -98,6 +98,7 @@ exports[`Authentication renders properly 1`] = `
             </Button>
           </MenuItem>
           <Divider
+            className="bg-color-table-seperator"
             style={
               Object {
                 "margin": 0,
@@ -118,7 +119,7 @@ exports[`Authentication renders properly 1`] = `
           </MenuItem>
         </Menu>
       }
-      placement="bottomLeft"
+      placement="bottomRight"
     >
       <Button
         block={false}
@@ -129,7 +130,7 @@ exports[`Authentication renders properly 1`] = `
         loading={false}
       >
         <img
-          alt="Menu Button"
+          alt="Menu"
           src={
             Object {
               "process": [Function],

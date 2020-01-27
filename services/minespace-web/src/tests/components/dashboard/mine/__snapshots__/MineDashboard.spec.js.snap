@@ -2,7 +2,7 @@
 
 exports[`MineDashboard renders properly 1`] = `
 <LoadingWrapper
-  delay={500}
+  delay={1000}
   iconSize={80}
   isLoaded={false}
   tip=""
