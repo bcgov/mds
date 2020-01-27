@@ -29,8 +29,7 @@ exports[`MineDashboard renders properly 1`] = `
         level={4}
         style={
           Object {
-            "marginBottom": 22,
-            "marginTop": 0,
+            "margin": 0,
           }
         }
       >
@@ -40,7 +39,12 @@ exports[`MineDashboard renders properly 1`] = `
     </Col>
   </Row>
   <Row
-    gutter={0}
+    gutter={
+      Array [
+        0,
+        48,
+      ]
+    }
   >
     <Col>
       <Tabs
