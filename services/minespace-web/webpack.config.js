@@ -79,6 +79,9 @@ const commonConfig = merge([
   }),
   parts.loadFonts({
     include: path.join(PATHS.src, "assets", "fonts"),
+    options: {
+      name: BUILD_FILE_NAMES.assets,
+    },
   }),
   parts.loadFiles({
     include: path.join(PATHS.src, "assets", "downloads"),
