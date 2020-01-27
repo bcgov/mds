@@ -9,7 +9,7 @@ import MineCard from "@/components/mine/NoticeOfWork/MineCard";
 import { getPermits } from "@/reducers/permitReducer";
 import CustomPropTypes from "@/customPropTypes";
 import { fetchPermits } from "@/actionCreators/permitActionCreator";
-import MMPermitApplicationInitForm from "@/components/Forms/noticeOfWork/MMPermitApplicationInitForm";
+import MajorMinePermitApplicationCreateForm from "@/components/Forms/noticeOfWork/MajorMinePermitApplicationCreateForm";
 import { createDropDownList } from "@/utils/helpers";
 import { createNoticeOfWorkApplication } from "@/actionCreators/noticeOfWorkActionCreator";
 import * as routes from "@/constants/routes";
@@ -28,7 +28,7 @@ const defaultProps = {
   initialPermitGuid: "",
 };
 
-export class MMPermitApplicationInit extends Component {
+export class MajorMinePermitApplicationCreate extends Component {
   state = {
     isSubmitting: false,
   };
@@ -59,7 +59,7 @@ export class MMPermitApplicationInit extends Component {
         <Row>
           <Col md={{ span: 20, offset: 2 }} xs={{ span: 20, offset: 2 }}>
             <MineCard mine={this.props.mines[this.props.mineGuid]} />
-            <MMPermitApplicationInitForm
+            <MajorMinePermitApplicationCreateForm
               title="Create Permit Application"
               initialValues={{ permit_guid: this.props.initialPermitGuid }}
               onSubmit={this.handleAddPermitApplication}
@@ -87,10 +87,10 @@ const mapDispatchToProps = (dispatch) =>
     dispatch
   );
 
-MMPermitApplicationInit.propTypes = propTypes;
-MMPermitApplicationInit.defaultProps = defaultProps;
+MajorMinePermitApplicationCreate.propTypes = propTypes;
+MajorMinePermitApplicationCreate.defaultProps = defaultProps;
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withRouter(MMPermitApplicationInit));
+)(withRouter(MajorMinePermitApplicationCreate));

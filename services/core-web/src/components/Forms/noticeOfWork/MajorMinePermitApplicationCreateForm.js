@@ -22,7 +22,7 @@ const propTypes = {
 const defaultProps = {
   isSubmitting: false,
 };
-export const MMPermitApplicationInitForm = (props) => (
+export const MajorMinePermitApplicationCreateForm = (props) => (
   <Form layout="vertical" onSubmit={props.handleSubmit}>
     <Row>
       <Col>
@@ -89,14 +89,14 @@ const mapStateToProps = (state) => ({
   applicationTypeOptions: getDropdownNoticeOfWorkApplicationTypeOptions(state),
 });
 
-MMPermitApplicationInitForm.propTypes = propTypes;
-MMPermitApplicationInitForm.defaultProps = defaultProps;
+MajorMinePermitApplicationCreateForm.propTypes = propTypes;
+MajorMinePermitApplicationCreateForm.defaultProps = defaultProps;
 
 export default compose(
   connect(mapStateToProps),
   reduxForm({
-    form: FORM.MM_PERMIT_APPLICATION_CREATE,
+    form: FORM.MAJOR_MINE_PERMIT_APPLICATION_CREATE,
     touchOnBlur: false,
-    onSubmitSuccess: resetForm(FORM.MM_PERMIT_APPLICATION_CREATE),
+    onSubmitSuccess: resetForm(FORM.MAJOR_MINE_PERMIT_APPLICATION_CREATE),
   })
-)(MMPermitApplicationInitForm);
+)(MajorMinePermitApplicationCreateForm);
