@@ -19,9 +19,9 @@ export const Header = (props) => (
       <Col xs={props.xs} sm={props.sm} md={props.md} lg={props.lg}>
         <div className="header-content">
           <span className="header-logo">
-            <Link to={routes.HOME.route}>
+            <a href="https://gov.bc.ca/">
               <img alt="BC Government Logo" src={BC_GOV} width={154} />
-            </Link>
+            </a>
           </span>
           <span className="header-title">
             <Link to={routes.HOME.route}>MineSpace</Link>

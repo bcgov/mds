@@ -10,14 +10,15 @@ export const LandingPage = () => (
       <Col>
         <Title>Welcome to MineSpace, an online portal for mines in BC</Title>
         <Paragraph>
-          The <Text strong>Ministry of Energy Mines and Petroleum Resources</Text> is developing a
+          The <Text strong>Ministry of Energy, Mines and Petroleum Resources</Text> is developing a
           system to make it easier for the public, industry and government to see what&apos;s
-          happening in the mining industry across British Columbia. The system is called Mines
-          Digital Services.
+          happening in the mining industry across British Columbia. The system is called&nbsp;
+          <Text strong>Mines Digital Services (MDS)</Text>.
         </Paragraph>
         <Paragraph>
-          MineSpace is the industry-facing piece of the system. It is intended to make it easier for
-          businesses to manage applications, see their inspection history, and submit reports.
+          <Text strong>MineSpace</Text> is part of the MDS system, developed specifically for
+          industry. It is intended to make it easier for businesses to manage applications, see
+          their inspection history, and submit reports.
         </Paragraph>
         <Paragraph>
           This system is being developed iteratively and with input from people who operate mines
@@ -46,8 +47,8 @@ export const LandingPage = () => (
           <Col>
             <Title level={2}>How do I get access?</Title>
             <Paragraph>
-              You must have a <Text strong>Business BCeID</Text> and then email us to request access
-              to MineSpace.
+              You must have a <Text strong>Business or Personal BCeID</Text> and then contact us to
+              request access to MineSpace.
             </Paragraph>
           </Col>
         </Row>
