@@ -1,5 +1,5 @@
 // all static files
-export { default as BC_GOV } from "../assets/images/logo-banner.svg";
+export { default as BC_GOV } from "../assets/images/logo.png";
 export { default as RED_CLOCK } from "../assets/images/late-clock-red.svg";
 export { default as WARNING } from "../assets/images/warning.svg";
 export { default as MENU } from "../assets/images/Menu.svg";

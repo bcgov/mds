@@ -38,7 +38,7 @@ class App extends Component {
     const xs = 24;
     const sm = 22;
     const md = 20;
-    const lg = 16;
+    const lg = 18;
     return (
       <BrowserRouter basename={process.env.BASE_PATH}>
         <Fragment>

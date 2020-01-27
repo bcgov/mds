@@ -68,7 +68,7 @@ $component-background: $white; //#fff;
 $popover-background: $component-background;
 
 // font, headings, etc
-$font-family: "BCSans", sans-serif; //"Myriad Pro", sans-serif; //-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',   'Noto Color Emoji';
+$font-family: "BCSans", "Noto Sans", Verdana, Arial, sans-serif; //"Myriad Pro", sans-serif; //-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',   'Noto Color Emoji';
 $code-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
 $text-color: $font-colour; //fade($black, 65%);
 $text-color-secondary: fade($text-color, 20%); //fade($black, 45%);
@@ -290,9 +290,9 @@ $grid-gutter-width: 0;
 $layout-body-background: $white; //#f0f2f5;
 $layout-header-background: $gov-blue; //#001529;
 $layout-footer-background: $gov-blue; //$layout-body-background;
-$layout-header-height: 70px; //64px;
+$layout-header-height: 80px; //64px;
 $layout-header-padding: 0 50px;
-$layout-footer-padding: 24px 50px;
+$layout-footer-padding: 0px 0px;
 $layout-sider-background: $layout-header-background;
 $layout-trigger-height: 48px;
 $layout-trigger-background: $black ;//#002140;

@@ -1,24 +1,20 @@
 .header-logo {
   float: left;
+  margin-right: 32px;
 
   @include screen-md {
     padding-left: $padding-sm;
+    margin-right: 16px;
   }
 }
 
 .header-title {
-  padding-left: 50px;
   color: $white;
-  font-size: $heading-4-size;
-  vertical-align: text-top;
-  line-height: $layout-header-height / 2;
+  font-size: $font-size-lg;
+  font-weight: bold;
   & a {
     color: $white !important;
     text-decoration: none !important;
-  }
-
-  @include screen-md {
-    padding-left: $padding-lg;
   }
 }
 
@@ -49,6 +45,7 @@
     color: $white;
   }
   text-decoration: none;
+  font-weight: bold;
 }
 
 .header-dropdown-menu {
@@ -60,6 +57,8 @@
   color: $gov-yellow;
   border: none;
   background-color: transparent !important;
+  font-weight: bold;
+
   &:active,
   &:focus,
   &:hover {
@@ -74,5 +73,5 @@
   & .header-link {
     text-decoration: none;
   }
-  font-weight: 600 !important;
+  font-weight: bold !important;
 }

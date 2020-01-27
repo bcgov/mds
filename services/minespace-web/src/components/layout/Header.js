@@ -20,7 +20,7 @@ export const Header = (props) => (
         <div className="header-content">
           <span className="header-logo">
             <Link to={routes.HOME.route}>
-              <img alt="BC Government Logo" src={BC_GOV} height={50} />
+              <img alt="BC Government Logo" src={BC_GOV} width={154} />
             </Link>
           </span>
           <span className="header-title">
