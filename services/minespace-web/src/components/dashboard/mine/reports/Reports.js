@@ -111,8 +111,8 @@ export class Reports extends Component {
               </Paragraph>
             </Col>
           </Row>
-          <Row gutter={[32, 32]}>
-            <Col lg={{ span: 7, offset: 1 }}>
+          <Row type="flex" justify="space-around" gutter={[{ lg: 0, xl: 32 }, 32]}>
+            <Col lg={24} xl={8} xxl={6}>
               <TableSummaryCard
                 title="Reports Submitted"
                 // TODO: Display the amount of submitted reports.
@@ -121,7 +121,7 @@ export class Reports extends Component {
                 type="success"
               />
             </Col>
-            <Col lg={7}>
+            <Col lg={24} xl={8} xxl={6}>
               <TableSummaryCard
                 title="Reports Overdue"
                 // TODO: Display the amount of reports that are overdue.
@@ -130,7 +130,7 @@ export class Reports extends Component {
                 type="error"
               />
             </Col>
-            <Col lg={7}>
+            <Col lg={24} xl={8} xxl={6}>
               <TableSummaryCard
                 title="Reports Due"
                 // TODO: Display the amount of reports that are due.

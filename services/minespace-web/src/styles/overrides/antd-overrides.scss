@@ -83,7 +83,7 @@ h1.ant-typography,
 .ant-tabs-bar {
   border-bottom: 4px solid $primary-color;
   // NOTE: Ant Design has a bug in their UI? This makes the bottom border not overlap the tabs.
-  padding-bottom: 2px;
+  padding-bottom: 1px;
 }
 
 .ant-tabs-tab {
@@ -93,6 +93,7 @@ h1.ant-typography,
 .ant-tabs.ant-tabs-card .ant-tabs-card-bar .ant-tabs-tab {
   color: $white;
   border: 2px solid transparent;
+  font-weight: bold;
 }
 
 .ant-tabs-tab:not(.ant-tabs-tab-active) {

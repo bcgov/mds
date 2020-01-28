@@ -64,7 +64,7 @@ export class Overview extends Component {
   render() {
     return (
       <Row>
-        <Col lg={{ span: 16 }}>
+        <Col lg={{ span: 14 }} xl={{ span: 16 }}>
           <Title level={4}>Overview</Title>
           <Descriptions column={1} colon={false}>
             <Descriptions.Item label="Region">{this.props.mine.mine_region}</Descriptions.Item>
@@ -82,19 +82,19 @@ export class Overview extends Component {
             </Descriptions.Item>
           </Descriptions>
           <Row>
-            <Col xl={{ span: 10 }}>
+            <Col xl={{ span: 11 }} xxl={{ span: 10 }}>
               <ContactCard
                 title="Mine Manager"
                 party={partyMineManager}
                 dateLabel="Mine Manager Since"
               />
             </Col>
-            <Col xl={{ offset: 2, span: 10 }}>
+            <Col xl={{ span: 11, offset: 2 }} xxl={{ span: 10, offset: 2 }}>
               <ContactCard title="Permittee" party={partyPermittee} dateLabel="Permittee Since" />
             </Col>
           </Row>
         </Col>
-        <Col lg={{ offset: 1, span: 7 }}>
+        <Col lg={{ span: 9, offset: 1 }} xl={{ offset: 1, span: 7 }}>
           <Card title="Ministry Contacts">
             <Paragraph>
               <Text strong style={{ textTransform: "uppercase" }}>

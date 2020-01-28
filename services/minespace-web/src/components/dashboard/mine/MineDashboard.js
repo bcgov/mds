@@ -8,7 +8,7 @@ import { getMine } from "@/selectors/userMineSelectors";
 import CustomPropTypes from "@/customPropTypes";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
 import Overview from "@/components/dashboard/mine/overview/Overview";
-import Permits from "@/components/dashboard/mine/permits/Permits";
+// import Permits from "@/components/dashboard/mine/permits/Permits";
 import Variances from "@/components/dashboard/mine/variances/Variances";
 import Inspections from "@/components/dashboard/mine/inspections/Inspections";
 import Incidents from "@/components/dashboard/mine/incidents/Incidents";
@@ -81,9 +81,10 @@ export class MineDashboard extends Component {
               <TabPane tab="Overview" key="overview">
                 <Overview mine={this.props.mine} match={this.props.match} />
               </TabPane>
-              <TabPane tab="Permits" key="permits">
+              {/* Disabled until we are ready for permit management */}
+              {/* <TabPane tab="Permits" key="permits">
                 <Permits mine={this.props.mine} match={this.props.match} />
-              </TabPane>
+              </TabPane> */}
               <TabPane tab="Variances" key="variances">
                 <Variances mine={this.props.mine} match={this.props.match} />
               </TabPane>
