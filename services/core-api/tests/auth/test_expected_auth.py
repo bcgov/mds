@@ -34,7 +34,7 @@ from app.api.mines.reports.resources.mine_reports import MineReportResource, Min
 
 from app.api.now_applications.resources.now_activity_type_resource import NOWActivityTypeResource
 from app.api.now_applications.resources.now_application_import_resource import NOWApplicationImportResource
-from app.api.now_applications.resources.now_application_list_resource import NoticeOfWorkListResource
+from app.api.now_applications.resources.now_application_list_resource import NOWApplicationListResource
 from app.api.now_applications.resources.now_application_resource import NOWApplicationResource
 
 
