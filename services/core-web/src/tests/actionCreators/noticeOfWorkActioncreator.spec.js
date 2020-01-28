@@ -50,14 +50,14 @@ describe("`fetchNoticeOfWorkApplications` action creator", () => {
   });
 });
 
-describe("`createNoticeOfWorkApplication` action creator", () => {
+describe("`importNoticeOfWorkApplication` action creator", () => {
   const applicationGuid = NOW_MOCK.NOTICE_OF_WORK.application_guid;
-  const mineGuid = "14514315";
+  const payload = { mine_guid: "14514315", latitude: "", longitude: "" };
   const url = ENVIRONMENT.apiUrl + API.NOTICE_OF_WORK_APPLICATION_IMPORT(applicationGuid);
   it("Request successful, dispatches `success` with correct response", () => {
     const mockResponse = { data: { success: true } };
     mockAxios.onPost(url).reply(200, mockResponse);
-    return importNoticeOfWorkApplication(mineGuid, applicationGuid)(dispatch).then(() => {
+    return importNoticeOfWorkApplication(applicationGuid, payload)(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
@@ -66,7 +66,7 @@ describe("`createNoticeOfWorkApplication` action creator", () => {
 
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onPost(url, MOCK.createMockHeader()).reply(418, MOCK.ERROR);
-    return importNoticeOfWorkApplication(mineGuid, applicationGuid)(dispatch).then(() => {
+    return importNoticeOfWorkApplication(applicationGuid, payload)(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
