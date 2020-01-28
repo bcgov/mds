@@ -61,12 +61,11 @@ export const MineCard = (props) => {
                 </p>
               </div>
               <div className="inline-flex padding-small">
-                <p className="field-title">
+                <div style={{ position: "absolute", left: "0px" }}>
                   <Badge color={Styles.COLOR.fuschia} />
-                  Mine Latitude
-                </p>
+                </div>
+                <p className="field-title">Mine Latitude</p>
                 <p>
-                  {" "}
                   {props.mine.mine_location && props.mine.mine_location.latitude
                     ? props.mine.mine_location.latitude
                     : Strings.EMPTY_FIELD}
@@ -75,7 +74,6 @@ export const MineCard = (props) => {
               <div className="inline-flex padding-small">
                 <p className="field-title">Mine Longitude</p>
                 <p>
-                  {" "}
                   {props.mine.mine_location && props.mine.mine_location.longitude
                     ? props.mine.mine_location.longitude
                     : Strings.EMPTY_FIELD}
@@ -90,31 +88,6 @@ export const MineCard = (props) => {
             noticeOfWork={props.noticeOfWork}
             additionalPin={props.additionalPin}
           />
-          {/* <div className="mine-content__card-left--footer">
-            <div className="inline-flex between">
-              <p className="p-white">
-                <Badge color={Styles.COLOR.fuschia} />
-                Lat:
-                {props.mine.mine_location && props.mine.mine_location.latitude
-                  ? props.mine.mine_location.latitude
-                  : Strings.EMPTY_FIELD}
-              </p>
-              <p className="p-white">
-                Long:
-                {props.mine.mine_location && props.mine.mine_location.longitude
-                  ? props.mine.mine_location.longitude
-                  : Strings.EMPTY_FIELD}
-              </p>
-            </div>
-            <div className="inline-flex between">
-              <p className="p-white">
-                Region:{" "}
-                {props.mine.mine_region
-                  ? props.mineRegionHash[props.mine.mine_region]
-                  : Strings.EMPTY_FIELD}
-              </p>
-            </div>
-          </div> */}
         </div>
       </div>
     )
