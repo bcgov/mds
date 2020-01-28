@@ -26,11 +26,11 @@ export class Inspections extends Component {
         <Col>
           <Title level={4}>Inspections</Title>
           <Paragraph>
-            The below table displays all of the&nbsp;
+            This table shows your mine's&nbsp;
             <Text className="color-primary" strong>
-              inspection orders
+              inspection history
             </Text>
-            &nbsp;associated with this mine.
+            &nbsp;since March 2018. Each row represents an individual order.
           </Paragraph>
           <InspectionsTable isLoaded={this.state.isLoaded} />
         </Col>

@@ -15,14 +15,14 @@ exports[`Reports renders properly 1`] = `
           Reports
         </Title>
         <Paragraph>
-          The below table displays all of the 
+          This table shows 
           <Text
             className="color-primary"
             strong={true}
           >
             reports
           </Text>
-           associated with this mine.
+           that have been submitted to the Ministry. If a report is listed but there are no files attached, it means the report has not been submitted.
         </Paragraph>
       </Col>
     </Row>

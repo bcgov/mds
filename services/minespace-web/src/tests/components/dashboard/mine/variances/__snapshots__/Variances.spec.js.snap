@@ -11,16 +11,14 @@ exports[`Variances renders properly 1`] = `
       Variances
     </Title>
     <Paragraph>
-      The below table displays all of the
-       
+      This table shows your mine's 
       <Text
         className="color-primary"
         strong={true}
       >
-        variance applications
+        variance history
       </Text>
-       
-      associated with this mine.
+      , including applications in progress and variances you may need to renew.
     </Paragraph>
     <VariancesTable
       complianceCodesHash={

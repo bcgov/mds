@@ -104,11 +104,12 @@ export class Reports extends Component {
             <Col>
               <Title level={4}>Reports</Title>
               <Paragraph>
-                The below table displays all of the&nbsp;
+                This table shows&nbsp;
                 <Text className="color-primary" strong>
                   reports
                 </Text>
-                &nbsp;associated with this mine.
+                &nbsp;that have been submitted to the Ministry. If a report is listed but there are
+                no files attached, it means the report has not been submitted.
               </Paragraph>
             </Col>
           </Row>

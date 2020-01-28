@@ -26,11 +26,11 @@ export class Incidents extends Component {
         <Col>
           <Title level={4}>Incidents</Title>
           <Paragraph>
-            The below table displays all of the&nbsp;
+            This table shows your mine's history of&nbsp;
             <Text className="color-primary" strong>
               reported incidents
             </Text>
-            &nbsp;associated with this mine.
+            . The <i>Documents</i> column includes reports filed by your mine.
           </Paragraph>
           <IncidentsTable isLoaded={this.state.isLoaded} />
         </Col>

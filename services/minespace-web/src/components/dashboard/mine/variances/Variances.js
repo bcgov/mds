@@ -172,11 +172,11 @@ export class Variances extends Component {
           </Button> */}
           <Title level={4}>Variances</Title>
           <Paragraph>
-            The below table displays all of the{" "}
+            This table shows your mine's&nbsp;
             <Text className="color-primary" strong>
-              variance applications
-            </Text>{" "}
-            associated with this mine.
+              variance history
+            </Text>
+            , including applications in progress and variances you may need to renew.
           </Paragraph>
           <VariancesTable
             variances={this.props.varianceApplications}
