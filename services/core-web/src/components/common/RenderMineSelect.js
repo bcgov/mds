@@ -30,6 +30,8 @@ const propTypes = {
   showCard: PropTypes.bool,
   majorMineOnly: PropTypes.bool,
   onMineSelect: PropTypes.func,
+  fullWidth: PropTypes.bool,
+  additionalPin: PropTypes.arrayOf(PropTypes.string),
 };
 
 const defaultProps = {
@@ -41,6 +43,8 @@ const defaultProps = {
   meta: {},
   label: "Select a mine",
   input: { value: "" },
+  fullWidth: false,
+  additionalPin: [],
 };
 
 export class RenderMineSelect extends Component {
@@ -86,6 +90,7 @@ export class RenderMineSelect extends Component {
     ));
 
   render() {
+    const width = this.props.fullWidth ? "95vw" : "100%";
     return (
       <div>
         <RenderAutoComplete
@@ -95,9 +100,9 @@ export class RenderMineSelect extends Component {
           data={this.transformData(this.props.mineNameList)}
           handleChange={this.handleChange}
         />
-        <div style={{ position: "relative", height: "inherit" }}>
+        <div style={{ position: "relative", height: "inherit", width }}>
           <LoadingWrapper condition={this.state.selectedMine}>
-            <MineCard mine={this.state.selectedMine} />
+            <MineCard mine={this.state.selectedMine} additionalPin={this.props.additionalPin} />
           </LoadingWrapper>
         </div>
       </div>

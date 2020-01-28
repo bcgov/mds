@@ -18,11 +18,11 @@ import { SMALL_PIN, SMALL_PIN_SELECTED } from "@/constants/assets";
 const propTypes = {
   mine: CustomPropTypes.mine.isRequired,
   // eslint-disable-next-line react/no-unused-prop-types
-  additionalLocation: PropTypes.arrayOf(PropTypes.string),
+  additionalPin: PropTypes.arrayOf(PropTypes.string),
 };
 
 const defaultProps = {
-  additionalLocation: [],
+  additionalPin: [],
 };
 
 class MineHeaderMapLeaflet extends Component {
@@ -38,7 +38,11 @@ class MineHeaderMapLeaflet extends Component {
     if (this.props.mine.mine_location.latitude && this.props.mine.mine_location.longitude) {
       // only add mine Pin if location exists
       this.createPin();
-      // this.createAdditionalPin();
+    }
+    // additional Pin in this situation is related to the coordinates of a permit application
+    if (this.props.additionalPin.length === 2) {
+      this.createAdditionalPin();
+      // L.marker.setLatLng(this.props.additionalPin);
     }
     // Add MinePins to the top of LayerList and add the LayerList widget
     L.control.layers(this.getBaseMaps(), {}, { position: "topright" }).addTo(this.map);
@@ -76,12 +80,12 @@ class MineHeaderMapLeaflet extends Component {
       iconSize: [60, 60],
     });
 
-    L.marker([54.5043313, -121.2030303], { icon: customIcon }).addTo(this.map);
+    L.marker(this.props.additionalPin, { icon: customIcon }).addTo(this.map);
   };
 
   createMap() {
     this.map = L.map("leaflet-map", { attributionControl: false })
-      .setView(this.latLong, Strings.HIGH_ZOOM)
+      .setView(this.latLong, Strings.DEFAULT_ZOOM)
       .setMaxZoom(20);
   }
 

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Prompt } from "react-router-dom";
-import { Steps, Button, Dropdown, Menu, Icon } from "antd";
+import { Steps, Button, Dropdown, Menu, Icon, Popconfirm } from "antd";
 import PropTypes from "prop-types";
 import { getFormValues, reset } from "redux-form";
 import { bindActionCreators } from "redux";
@@ -257,12 +257,11 @@ export class NoticeOfWorkApplication extends Component {
   };
 
   handleChangeNOWMine = (values) => {
+    const message = values.latitude
+      ? "Successfully updated location of this Notice of Work"
+      : "Successfully transferred Notice of Work";
     this.props
-      .updateNoticeOfWorkApplication(
-        values,
-        this.props.noticeOfWork.now_application_guid,
-        `Successfully transferred Notice of Work`
-      )
+      .updateNoticeOfWorkApplication(values, this.props.noticeOfWork.now_application_guid, message)
       .then(() => {
         this.props.fetchImportedNoticeOfWorkApplication(
           this.props.noticeOfWork.now_application_guid
@@ -317,6 +316,25 @@ export class NoticeOfWorkApplication extends Component {
       },
       widthSize: "75vw",
       content: modalConfig.CHANGE_NOW_MINE,
+    });
+  };
+
+  openChangeNOWLocationModal = (event, noticeOfWork) => {
+    event.preventDefault();
+    this.props.openModal({
+      props: {
+        initialValues: {
+          mine_guid: noticeOfWork.mine_guid,
+          latitude: noticeOfWork.latitude,
+          longitude: noticeOfWork.longitude,
+        },
+        mineGuid: noticeOfWork.mine_guid,
+        onSubmit: this.handleChangeNOWMine,
+        title: `Edit Location`,
+        noticeOfWork,
+      },
+      widthSize: "75vw",
+      content: modalConfig.CHANGE_NOW_LOCATION,
     });
   };
 
@@ -449,6 +467,16 @@ export class NoticeOfWorkApplication extends Component {
             </button>
           </div>
         )}
+        {isImported && !isDecision && (
+          <div className="custom-menu-item">
+            <button
+              type="button"
+              onClick={(event) => this.openChangeNOWLocationModal(event, this.props.noticeOfWork)}
+            >
+              Edit Application Lat/Long
+            </button>
+          </div>
+        )}
         {isImported && this.props.noticeOfWork.lead_inspector_party_guid && !isDecision && (
           <div className="custom-menu-item">
             <button type="button" onClick={(event) => this.openUpdateLeadInspectorModal(event)}>
@@ -535,9 +563,17 @@ export class NoticeOfWorkApplication extends Component {
               </div>
             ) : (
               <div className="inline-flex flex-center block-mobile">
-                <Button type="secondary" className="full-mobile" onClick={this.handleCancelNOWEdit}>
-                  Cancel
-                </Button>
+                <Popconfirm
+                  placement="bottomRight"
+                  title="You have unsaved changes, Are you sure you want to cancel?"
+                  onConfirm={this.handleCancelNOWEdit}
+                  okText="Yes"
+                  cancelText="No"
+                >
+                  <Button type="secondary" className="full-mobile">
+                    Cancel
+                  </Button>
+                </Popconfirm>
                 <Button type="primary" className="full-mobile" onClick={this.handleSaveNOWEdit}>
                   Save
                 </Button>
