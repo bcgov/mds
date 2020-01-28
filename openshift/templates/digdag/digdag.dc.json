@@ -208,6 +208,14 @@
                   {
                     "name": "KEYCLOAK_REDIRECT_URL",
                     "value": "https://${APPLICATION_DOMAIN}"
+                  },
+                  {
+                    "name": "BACKUP_MANAGER",
+                    "value": "${BACKUP_MANAGER}"
+                  },
+                  {
+                    "name": "REPORTING_DATABASE",
+                    "value": "${REPORTING_DATABASE}"
                   }
                 ],
                 "volumeMounts": [
@@ -308,6 +316,14 @@
     },
     {
       "name": "SCHEDULER_PVC_SIZE",
+      "required": true
+    },
+    {
+      "name": "BACKUP_MANAGER",
+      "required": true
+    },
+    {
+      "name": "REPORTING_DATABASE",
       "required": true
     }
   ]
