@@ -256,7 +256,7 @@ export class NoticeOfWorkApplication extends Component {
     }
   };
 
-  handleChangeNOWMine = (values) => {
+  handleChangeNOWMineAndLocation = (values) => {
     const message = values.latitude
       ? "Successfully updated location of this Notice of Work"
       : "Successfully transferred Notice of Work";
@@ -310,7 +310,7 @@ export class NoticeOfWorkApplication extends Component {
         initialValues: {
           mine_guid: noticeOfWork.mine_guid,
         },
-        onSubmit: this.handleChangeNOWMine,
+        onSubmit: this.handleChangeNOWMineAndLocation,
         title: `Transfer Notice of Work`,
         noticeOfWork,
       },
@@ -329,7 +329,7 @@ export class NoticeOfWorkApplication extends Component {
           longitude: noticeOfWork.longitude,
         },
         mineGuid: noticeOfWork.mine_guid,
-        onSubmit: this.handleChangeNOWMine,
+        onSubmit: this.handleChangeNOWMineAndLocation,
         title: `Edit Location`,
         noticeOfWork,
       },
@@ -427,6 +427,7 @@ export class NoticeOfWorkApplication extends Component {
     const isDecision =
       this.props.noticeOfWork.application_progress &&
       this.props.noticeOfWork.application_progress.length === 3;
+
     const steps = {
       0: this.renderStepOne(),
       1: this.renderStepTwo(),
@@ -457,7 +458,7 @@ export class NoticeOfWorkApplication extends Component {
             </span>
           </div>
         )}
-        {isImported && !isDecision && (
+        {!isDecision && (
           <div className="custom-menu-item">
             <button
               type="button"
@@ -467,7 +468,7 @@ export class NoticeOfWorkApplication extends Component {
             </button>
           </div>
         )}
-        {isImported && !isDecision && (
+        {!isDecision && (
           <div className="custom-menu-item">
             <button
               type="button"
@@ -477,14 +478,14 @@ export class NoticeOfWorkApplication extends Component {
             </button>
           </div>
         )}
-        {isImported && this.props.noticeOfWork.lead_inspector_party_guid && !isDecision && (
+        {this.props.noticeOfWork.lead_inspector_party_guid && !isDecision && (
           <div className="custom-menu-item">
             <button type="button" onClick={(event) => this.openUpdateLeadInspectorModal(event)}>
               Change the Lead Inspector
             </button>
           </div>
         )}
-        {isImported && this.props.noticeOfWork.lead_inspector_party_guid && !isDecision && (
+        {this.props.noticeOfWork.lead_inspector_party_guid && !isDecision && (
           <div className="custom-menu-item">
             <button
               type="button"
@@ -547,7 +548,7 @@ export class NoticeOfWorkApplication extends Component {
                 >
                   {headerSteps}
                 </Steps>
-                {this.state.isViewMode && (
+                {this.state.isViewMode && isImported && (
                   <Dropdown
                     overlay={menu}
                     placement="bottomLeft"
