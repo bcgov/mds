@@ -160,23 +160,25 @@ const columns = [
               Edit permit status
             </button>
           </Menu.Item>{" "}
-          <Menu.Item key="3">
-            <button
-              type="button"
-              className="full"
-              onClick={(event) => {
-                record.handleAddPermitAmendmentApplication(record.key);
-              }}
-            >
-              <img
-                alt="document"
-                className="padding-small"
-                src={EDIT_OUTLINE_VIOLET}
-                style={{ paddingRight: "15px" }}
-              />
-              Initiate Permit Amendment Application
-            </button>
-          </Menu.Item>
+          <AuthorizationWrapper isMajorMine={text.major_mine_ind}>
+            <Menu.Item key="3">
+              <button
+                type="button"
+                className="full"
+                onClick={() => {
+                  record.handleAddPermitAmendmentApplication(record.key);
+                }}
+              >
+                <img
+                  alt="document"
+                  className="padding-small"
+                  src={EDIT_OUTLINE_VIOLET}
+                  style={{ paddingRight: "15px" }}
+                />
+                Initiate Permit Amendment Application
+              </button>
+            </Menu.Item>
+          </AuthorizationWrapper>
         </Menu>
       );
       return (

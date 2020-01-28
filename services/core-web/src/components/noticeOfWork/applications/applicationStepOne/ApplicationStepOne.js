@@ -12,7 +12,7 @@ import { getDropdownInspectors } from "@/selectors/partiesSelectors";
 import AssignLeadInspector from "@/components/noticeOfWork/applications/applicationStepOne/AssignLeadInspector";
 import VerifyNOWMineInformation from "@/components/noticeOfWork/applications/applicationStepOne/verification/VerifyNOWMineInformation";
 import CustomPropTypes from "@/customPropTypes";
-import MMPermitApplicationInit from "@/components/noticeOfWork/applications/applicationStepOne/MMPermitApplicationInit";
+import MajorMinePermitApplicationCreate from "@/components/noticeOfWork/applications/applicationStepOne/MajorMinePermitApplicationCreate";
 
 const propTypes = {
   mineGuid: PropTypes.string.isRequired,
@@ -110,7 +110,7 @@ export class ApplicationStepOne extends Component {
     };
     if (this.props.isNewApplication) {
       return (
-        <MMPermitApplicationInit
+        <MajorMinePermitApplicationCreate
           initialPermitGuid={this.props.initialPermitGuid}
           mineGuid={this.props.mineGuid}
           handleProgressChange={this.props.handleProgressChange}

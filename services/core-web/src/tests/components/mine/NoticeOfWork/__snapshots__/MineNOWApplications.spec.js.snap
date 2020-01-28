@@ -6,13 +6,19 @@ exports[`MineNOWApplications renders properly 1`] = `
 >
   <div>
     <h2>
-      Notice of Work Applications
+      Permit Applications
     </h2>
-    <Divider />
+    <AddButton
+      onClick={[Function]}
+    >
+      Add a Permit Application
+    </AddButton>
   </div>
+  <Divider />
   <withRouter(MineNoticeOfWorkTable)
     handleSearch={[Function]}
     isLoaded={false}
+    isMajorMine={true}
     mineRegionHash={
       Object {
         "NE": "North East",

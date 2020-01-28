@@ -7,8 +7,8 @@ const props = {};
 const dispatchProps = {};
 
 const setupProps = () => {
-  props.mines = MOCK.MINES;
-  [props.mineGuid] = MOCK.MINES.mineIds;
+  props.mineGuid = MOCK.NOW.applications[0].mine_guid;
+  props.mines = { [MOCK.NOW.applications[0].mine_guid]: { major_mine_ind: true } };
   props.history = { push: jest.fn() };
   props.location = { search: "" };
   props.noticeOfWorkApplications = MOCK.NOW.applications;

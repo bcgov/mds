@@ -1,6 +1,7 @@
 import json, pytest
 
 from tests.now_application_factories import NOWApplicationIdentityFactory
+from tests.factories import MineFactory
 
 
 class TestApplicationResource:
@@ -29,10 +30,13 @@ class TestApplicationResource:
     """POST /now-applications/"""
     def test_post_major_mine_now_application_success(self, test_client, db_session, auth_headers):
         num_created = 3
-        NOWApplicationlist = NOWApplicationIdentityFactory.create_batch(size=num_created)
+        mine = MineFactory(major_mine_ind=True)
         payload = {
-            'mine_guid': NOWApplicationlist[0].mine_guid,
-            'permit_guid': NOWApplicationlist[0].mine.mine_permit[0].permit_guid
+            'mine_guid': mine.mine_guid,
+            'permit_guid': mine.mine_permit[0].permit_guid,
+            'notice_of_work_type_code': "COL",
+            'submitted_date': "2020-01-04",
+            'received_date': "2020-01-02"
         }
 
         post_resp = test_client.post(
