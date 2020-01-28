@@ -296,8 +296,7 @@ app {
                             'CPU_LIMIT':"${vars.resources.digdag.cpu_limit}",
                             'MEMORY_REQUEST':"${vars.resources.digdag.memory_request}",
                             'MEMORY_LIMIT':"${vars.resources.digdag.memory_limit}",
-                            'REPORTING_DATABASE':"mds-postgresql${vars.deployment.suffix}-reporting",
-                            'BACKUP_MANAGER':"mds-database-backup${vars.deployment.suffix}"
+                            'DATABASE_SERVICE_NAME':"mds-postgresql${vars.deployment.suffix}"
                     ]
                 ]
         ]

@@ -210,12 +210,13 @@
                     "value": "https://${APPLICATION_DOMAIN}"
                   },
                   {
-                    "name": "BACKUP_MANAGER",
-                    "value": "${BACKUP_MANAGER}"
-                  },
-                  {
-                    "name": "REPORTING_DATABASE",
-                    "value": "${REPORTING_DATABASE}"
+                    "name": "PGPASSWORD",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${DATABASE_SERVICE_NAME}",
+                        "key": "database-password"
+                      }
+                    }
                   }
                 ],
                 "volumeMounts": [
@@ -319,11 +320,7 @@
       "required": true
     },
     {
-      "name": "BACKUP_MANAGER",
-      "required": true
-    },
-    {
-      "name": "REPORTING_DATABASE",
+      "name": "DATABASE_SERVICE_NAME",
       "required": true
     }
   ]
