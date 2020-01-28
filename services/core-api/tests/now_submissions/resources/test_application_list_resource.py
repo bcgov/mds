@@ -13,9 +13,9 @@ class TestGetApplicationListResource:
         submissions = NOWApplicationIdentityFactory.create_batch(size=batch_size)
 
         get_resp = test_client.get('/now-applications', headers=auth_headers['full_auth_header'])
+        assert get_resp.status_code == 200, get_resp.response
         get_data = json.loads(get_resp.data.decode())
 
-        assert get_resp.status_code == 200
         assert len(get_data['records']) == batch_size
         assert get_data['total'] == batch_size
         assert all(
@@ -30,9 +30,9 @@ class TestGetApplicationListResource:
         NOWApplicationIdentityFactory.create_batch(size=batch_size)
 
         get_resp = test_client.get('/now-applications', headers=auth_headers['full_auth_header'])
+        assert get_resp.status_code == 200, get_resp.response
         get_data = json.loads(get_resp.data.decode())
 
-        assert get_resp.status_code == 200
         assert len(get_data['records']) == PER_PAGE_DEFAULT
         assert get_data['current_page'] == PAGE_DEFAULT
         assert get_data['total'] == batch_size
@@ -52,9 +52,9 @@ class TestGetApplicationListResource:
         get_resp = test_client.get(
             f'now-applications?now_application_status_description=Approved&now_application_status_description=Received',
             headers=auth_headers['full_auth_header'])
+        assert get_resp.status_code == 200, get_resp.response
         get_data = json.loads(get_resp.data.decode())
 
-        assert get_resp.status_code == 200
         assert len(get_data['records']) == 2
         assert all(
             str(submission.now_application_guid) in map(lambda x: x['now_application_guid'],
@@ -85,9 +85,9 @@ class TestGetApplicationListResource:
         get_resp = test_client.get(
             f'now-applications?notice_of_work_type_description=dog',
             headers=auth_headers['full_auth_header'])
+        assert get_resp.status_code == 200, get_resp.response
         get_data = json.loads(get_resp.data.decode())
 
-        assert get_resp.status_code == 200
         assert len(get_data['records']) == 2
         assert all(
             str(submission.now_application_guid) in map(lambda x: x['now_application_guid'],
@@ -116,9 +116,9 @@ class TestGetApplicationListResource:
         get_resp = test_client.get(
             f'now-applications?mine_region={mine.mine_region}',
             headers=auth_headers['full_auth_header'])
+        assert get_resp.status_code == 200, get_resp.response
         get_data = json.loads(get_resp.data.decode())
 
-        assert get_resp.status_code == 200
         assert len(get_data['records']) == 2
         assert all(
             str(submission.now_application_guid) in map(lambda x: x['now_application_guid'],
@@ -149,10 +149,8 @@ class TestGetApplicationListResource:
         get_resp = test_client.get(
             f'now-applications?now_application_status_description=Approved&now_application_status_description=Rejected&notice_of_work_type_description=dog',
             headers=auth_headers['full_auth_header'])
+        assert get_resp.status_code == 200, get_resp.response
         get_data = json.loads(get_resp.data.decode())
-        # raise Exception(identity_1.__dict__)
-        # print(identity_1.__dict__)
-        assert get_resp.status_code == 200
         assert len(get_data['records']) == 2
         assert all(
             str(submission.now_application_guid) in map(lambda x: x['now_application_guid'],
