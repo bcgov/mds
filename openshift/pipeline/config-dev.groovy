@@ -378,8 +378,8 @@ environments {
                     memory_limit = "0"
                 }
                 digdag {
-                    cpu_request = "10m"
-                    cpu_limit = "100m"
+                    cpu_request = "100m"
+                    cpu_limit = "200m"
                     memory_request = "512Mi"
                     memory_limit = "1Gi"
                 }

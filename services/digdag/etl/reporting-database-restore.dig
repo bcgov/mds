@@ -18,11 +18,8 @@ _export:
   sh>: oc login https://console.pathfinder.gov.bc.ca:8443 --token=$OC_TOKEN
 
 +run_reporting_database_restore:
-  _retry:
-    limit: 3
-    interval: 20
-    interval_type: exponential
-  py>: tasks.reporting_database_restore.run_job
+  sh>: POD=$(oc get pods --selector name=mds-database-backup-pr-1153 -o name | cut -c5-)
+  sh>: oc exec $POD -it -- bash -c "printf 'ywa1isgMrliBhW6ag\n' | ./backup.sh -r mds-postgresql-pr-1153-reporting/mds -f mds-postgres"
 
 +teardown:
   echo>: finish ${session_time}
