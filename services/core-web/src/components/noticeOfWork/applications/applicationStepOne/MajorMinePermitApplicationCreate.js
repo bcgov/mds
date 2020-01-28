@@ -57,7 +57,7 @@ export class MajorMinePermitApplicationCreate extends Component {
         <h4>Start Permit Application for {this.props.mines[this.props.mineGuid].mine_name}:</h4>
         <br />
         <Row>
-          <Col md={{ span: 20, offset: 2 }} xs={{ span: 20, offset: 2 }}>
+          <Col md={24}>
             <MineCard mine={this.props.mines[this.props.mineGuid]} />
             <MajorMinePermitApplicationCreateForm
               title="Create Permit Application"
