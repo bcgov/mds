@@ -117,10 +117,6 @@ class Mine(AuditMixin, Base):
         p_numbers = [permit_no for permit_no, in rows]
         return p_numbers
 
-    @staticmethod
-    def active(records):
-        return list(filter(lambda x: x.active_ind, records))
-
     @classmethod
     def find_by_mine_guid(cls, _id):
         try:
