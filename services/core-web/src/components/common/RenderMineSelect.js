@@ -90,7 +90,7 @@ export class RenderMineSelect extends Component {
     ));
 
   render() {
-    const width = this.props.fullWidth ? "95vw" : "100%";
+    const width = this.props.fullWidth ? "93vw" : "100%";
     return (
       <div>
         <RenderAutoComplete
