@@ -407,6 +407,8 @@ export class NoticeOfWorkApplication extends Component {
       if (progressLength > stepIndex) {
         return "finish";
       }
+    } else if (this.state.isNewApplication && stepIndex === 0) {
+      return "process";
     }
     return "wait";
   };
@@ -420,6 +422,7 @@ export class NoticeOfWorkApplication extends Component {
   };
 
   render() {
+    console.log(this.state.currentStep);
     if (this.state.showNullScreen) {
       return <NullScreen type="unauthorized-page" />;
     }
