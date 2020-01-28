@@ -40,9 +40,12 @@
 
 .header-link {
   color: $white;
-  padding: 0 $padding-md 0 $padding-md;
-  &:hover {
+  padding: 29px $padding-md 29px $padding-md;
+  &:hover,
+  &:active {
     color: $white;
+    background-color: $primary-5;
+    text-decoration: none;
   }
   text-decoration: none;
   font-weight: bold;
