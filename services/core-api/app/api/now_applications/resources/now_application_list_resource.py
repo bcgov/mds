@@ -43,7 +43,8 @@ class NOWApplicationListResource(Resource, UserMixin):
             'mine_region': 'Mine region code to match with a NoW. Default: All regions.',
             'now_number': 'Number of the NoW',
             'mine_search': 'Substring to match against a NoW mine number or mine name',
-            'submissions_only': 'Boolean to filter based on NROS/VFCBC submissions only'
+            'submissions_only': 'Boolean to filter based on NROS/VFCBC submissions only',
+            'mine_guid': 'filter by a given mine guid'
         })
     @requires_role_view_all
     @api.marshal_with(NOW_VIEW_LIST, code=200)

@@ -17,10 +17,10 @@ class TestGetMineApplicationResource:
         identity_2 = NOWApplicationIdentityFactory(now_submission=now_submission_2, mine=mine)
 
         get_resp = test_client.get(
-            f'mines/{mine.mine_guid}/now-applications', headers=auth_headers['full_auth_header'])
+            f'now-applications?mine_guid{mine.mine_guid}', headers=auth_headers['full_auth_header'])
+        assert get_resp.status_code == 200, get_resp.response
         get_data = json.loads(get_resp.data.decode())
 
-        assert get_resp.status_code == 200
         assert len(get_data['records']) == 2
         assert all(
             str(submission.now_application_guid) not in map(lambda x: x['now_application_guid'],
@@ -46,11 +46,11 @@ class TestGetMineApplicationResource:
         identity_4 = NOWApplicationIdentityFactory(now_submission=now_submission_4, mine=mine)
 
         get_resp = test_client.get(
-            f'mines/{mine.mine_guid}/now-applications?now_application_status_description=Approved&now_application_status_description=Received',
+            f'now-applications?mine_guid{mine.mine_guid}&now_application_status_description=Approved&now_application_status_description=Received',
             headers=auth_headers['full_auth_header'])
+        assert get_resp.status_code == 200, get_resp.response
         get_data = json.loads(get_resp.data.decode())
 
-        assert get_resp.status_code == 200
         assert len(get_data['records']) == 2
         assert all(
             str(submission.now_application_guid) in map(lambda x: x['now_application_guid'],
@@ -80,11 +80,11 @@ class TestGetMineApplicationResource:
             now_submission=now_submission_4, mine=mine, submission_only=True)
 
         get_resp = test_client.get(
-            f'mines/{mine.mine_guid}/now-applications?notice_of_work_type_description=dog',
+            f'now-applications?mine_guid{mine.mine_guid}&notice_of_work_type_description=dog',
             headers=auth_headers['full_auth_header'])
+        assert get_resp.status_code == 200, get_resp.response
         get_data = json.loads(get_resp.data.decode())
 
-        assert get_resp.status_code == 200
         assert len(get_data['records']) == 2
         assert all(
             str(submission.now_application_guid) in map(lambda x: x['now_application_guid'],
@@ -118,11 +118,11 @@ class TestGetMineApplicationResource:
             now_submission=now_submission_4, mine=mine, submission_only=True)
 
         get_resp = test_client.get(
-            f'mines/{mine.mine_guid}/now-applications?now_application_status_description=Approved&now_application_status_description=Rejected&notice_of_work_type_description=dog',
+            f'now-applications?mine_guid{mine.mine_guid}&now_application_status_description=Approved&now_application_status_description=Rejected&notice_of_work_type_description=dog',
             headers=auth_headers['full_auth_header'])
+        assert get_resp.status_code == 200, get_resp.response
         get_data = json.loads(get_resp.data.decode())
 
-        assert get_resp.status_code == 200
         assert len(get_data['records']) == 2
         assert all(
             str(submission.now_application_guid) in map(lambda x: x['now_application_guid'],

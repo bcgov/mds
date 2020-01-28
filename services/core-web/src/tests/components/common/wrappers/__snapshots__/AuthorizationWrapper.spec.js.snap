@@ -1,7 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AuthorizationWrapper renders properly 1`] = `
-<div>
-  helo
-</div>
-`;

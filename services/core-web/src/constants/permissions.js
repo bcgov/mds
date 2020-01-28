@@ -1,3 +1,4 @@
+export const VIEW_ALL = "role_view";
 export const ADMIN = "role_admin";
 export const CONTACT_ADMIN = "role_contact_admin";
 export const EDIT_PARTIES = "role_edit_parties";
