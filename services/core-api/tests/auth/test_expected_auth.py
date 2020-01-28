@@ -99,7 +99,8 @@ from app.api.now_applications.resources.now_application_resource import NOWAppli
     (MinespaceUserMineResource, 'delete', [MINE_ADMIN]),
     (NOWActivityTypeResource, 'get', [VIEW_ALL]),
     (NOWApplicationImportResource, 'post', [EDIT_PERMIT]),
-    (NoticeOfWorkListResource, 'get', [VIEW_ALL]),
+    (NOWApplicationListResource, 'get', [VIEW_ALL]),
+    (NOWApplicationListResource, 'post', [EDIT_PERMIT]),
     (NOWApplicationResource, 'get', [VIEW_ALL]),
     (NOWApplicationResource, 'put', [EDIT_PERMIT]),
 ])
