@@ -18,7 +18,7 @@ _export:
   sh>: oc login https://console.pathfinder.gov.bc.ca:8443 --token=$OC_TOKEN
 
 +run_reporting_database_restore:
-  sh>: oc exec $(oc get pods --selector name=mds-database-backup$SUFFIX -o name | cut -c5-) -it -- bash -c "printf 'ywa1isgMrliBhW6ag\n' | ./backup.sh -r mds-postgresql$SUFFIX-reporting/mds -f mds-postgres"
+  sh>: oc exec $(oc get pods --selector name=mds-database-backup$SUFFIX -o name | cut -c5-) -it -- bash -c "printf '$PGPASSWORD\n' | ./backup.sh -r mds-postgresql$SUFFIX-reporting/mds -f mds-postgres"
 
 +teardown:
   echo>: finish ${session_time}
