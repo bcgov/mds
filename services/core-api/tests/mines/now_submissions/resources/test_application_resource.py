@@ -17,7 +17,8 @@ class TestGetMineApplicationResource:
         identity_2 = NOWApplicationIdentityFactory(now_submission=now_submission_2, mine=mine)
 
         get_resp = test_client.get(
-            f'now-applications?mine_guid{mine.mine_guid}', headers=auth_headers['full_auth_header'])
+            f'now-applications?mine_guid={mine.mine_guid}',
+            headers=auth_headers['full_auth_header'])
         assert get_resp.status_code == 200, get_resp.response
         get_data = json.loads(get_resp.data.decode())
 
@@ -46,7 +47,7 @@ class TestGetMineApplicationResource:
         identity_4 = NOWApplicationIdentityFactory(now_submission=now_submission_4, mine=mine)
 
         get_resp = test_client.get(
-            f'now-applications?mine_guid{mine.mine_guid}&now_application_status_description=Approved&now_application_status_description=Received',
+            f'now-applications?mine_guid={mine.mine_guid}&now_application_status_description=Approved&now_application_status_description=Received',
             headers=auth_headers['full_auth_header'])
         assert get_resp.status_code == 200, get_resp.response
         get_data = json.loads(get_resp.data.decode())
@@ -80,7 +81,7 @@ class TestGetMineApplicationResource:
             now_submission=now_submission_4, mine=mine, submission_only=True)
 
         get_resp = test_client.get(
-            f'now-applications?mine_guid{mine.mine_guid}&notice_of_work_type_description=dog',
+            f'now-applications?mine_guid={mine.mine_guid}&notice_of_work_type_description=dog',
             headers=auth_headers['full_auth_header'])
         assert get_resp.status_code == 200, get_resp.response
         get_data = json.loads(get_resp.data.decode())
@@ -118,7 +119,7 @@ class TestGetMineApplicationResource:
             now_submission=now_submission_4, mine=mine, submission_only=True)
 
         get_resp = test_client.get(
-            f'now-applications?mine_guid{mine.mine_guid}&now_application_status_description=Approved&now_application_status_description=Rejected&notice_of_work_type_description=dog',
+            f'now-applications?mine_guid={mine.mine_guid}&now_application_status_description=Approved&now_application_status_description=Rejected&notice_of_work_type_description=dog',
             headers=auth_headers['full_auth_header'])
         assert get_resp.status_code == 200, get_resp.response
         get_data = json.loads(get_resp.data.decode())
