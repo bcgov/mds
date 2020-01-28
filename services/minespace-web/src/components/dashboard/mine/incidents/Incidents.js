@@ -1,10 +1,12 @@
+// TODO: Remove this when the file is more fully implemented.
 /* eslint-disable */
 
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
+import { Row, Col, Typography } from "antd";
 import CustomPropTypes from "@/customPropTypes";
-import { Row, Col, Table, Typography } from "antd";
+import IncidentsTable from "@/components/dashboard/mine/incidents/IncidentsTable";
 
 const { Paragraph, Title, Text } = Typography;
 
@@ -14,35 +16,23 @@ const propTypes = {
 
 const defaultProps = {};
 
-const columns = [
-  { title: "Incident No.", dataIndex: "incident_no", key: "incident_no", sorter: true },
-  { title: "Occurred On", dataIndex: "occured_on", key: "occured_on", sorter: true },
-  { title: "Reported By", dataIndex: "reported_by", key: "reported_by", sorter: true },
-  { title: "Documents", dataIndex: "documents", key: "documents", sorter: true },
-];
-
-const data = [];
-
 export class Incidents extends Component {
+  // TODO: Accurately set isLoaded when file is more properly implemented.
+  state = { isLoaded: true };
+
   render() {
     return (
       <Row>
         <Col>
           <Title level={4}>Incidents</Title>
           <Paragraph>
-            The below table displays all of the{" "}
+            The below table displays all of the&nbsp;
             <Text className="color-primary" strong>
               reported incidents
-            </Text>{" "}
-            associated with this mine.
+            </Text>
+            &nbsp;associated with this mine.
           </Paragraph>
-          <Table
-            size="small"
-            columns={columns}
-            expandedRowRender={(record) => <p style={{ margin: 0 }}>{record.description}</p>}
-            dataSource={data}
-            locale={{ emptyText: "This mine has no incident data." }}
-          />
+          <IncidentsTable isLoaded={this.state.isLoaded} />
         </Col>
       </Row>
     );

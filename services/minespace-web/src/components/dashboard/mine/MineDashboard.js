@@ -66,7 +66,7 @@ export class MineDashboard extends Component {
           <Col>
             <Title style={{ marginBottom: 8 }}>{this.props.mine.mine_name || "Mine Name"}</Title>
             <Title level={4} style={{ margin: 0 }}>
-              Mine Number: {this.props.mine.mine_no || "000"}
+              Mine Number: {this.props.mine.mine_no || "000000"}
             </Title>
           </Col>
         </Row>
@@ -85,14 +85,14 @@ export class MineDashboard extends Component {
               {/* <TabPane tab="Permits" key="permits">
                 <Permits mine={this.props.mine} match={this.props.match} />
               </TabPane> */}
-              <TabPane tab="Variances" key="variances">
-                <Variances mine={this.props.mine} match={this.props.match} />
-              </TabPane>
               <TabPane tab="Inspections" key="inspections">
                 <Inspections mine={this.props.mine} match={this.props.match} />
               </TabPane>
               <TabPane tab="Incidents" key="incidents">
                 <Incidents mine={this.props.mine} match={this.props.match} />
+              </TabPane>
+              <TabPane tab="Variances" key="variances">
+                <Variances mine={this.props.mine} match={this.props.match} />
               </TabPane>
               <TabPane tab="Reports" key="reports">
                 <Reports mine={this.props.mine} match={this.props.match} />

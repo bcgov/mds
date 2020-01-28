@@ -111,61 +111,6 @@ exports[`MineDashboard renders properly 1`] = `
           />
         </TabPane>
         <TabPane
-          key="variances"
-          placeholder={null}
-          tab="Variances"
-        >
-          <Connect(Variances)
-            match={
-              Object {
-                "params": Object {
-                  "id": "18133c75-49ad-4101-85f3-a43e35ae989a",
-                },
-              }
-            }
-            mine={
-              Object {
-                "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-                "mine_location": Object {
-                  "latitude": null,
-                  "longitude": null,
-                },
-                "mine_name": "mine3",
-                "mine_no": "BLAH9091",
-                "mine_permit": Array [],
-                "mine_region": "NE",
-                "mine_status": Object {
-                  "effective_date": "2018-10-16",
-                  "expiry_date": "9999-12-31",
-                  "status_labels": Array [
-                    "Closed",
-                    "Care & Maintenance",
-                  ],
-                  "statusvalue": Array [
-                    "CLD",
-                    "CM",
-                  ],
-                },
-                "mine_tailings_storage_facilities": Array [
-                  Object {
-                    "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-                    "mine_tailings_storage_facility_guid": "e2629897-053e-4218-9299-479375e47f78",
-                    "mine_tailings_storage_facility_name": "MockTSF",
-                  },
-                ],
-                "mine_type": Array [
-                  Object {
-                    "mine_tenure_type_code": "PLR",
-                  },
-                  Object {
-                    "mine_tenure_type_code": "MIN",
-                  },
-                ],
-              }
-            }
-          />
-        </TabPane>
-        <TabPane
           key="inspections"
           placeholder={null}
           tab="Inspections"
@@ -226,6 +171,61 @@ exports[`MineDashboard renders properly 1`] = `
           tab="Incidents"
         >
           <Connect(Incidents)
+            match={
+              Object {
+                "params": Object {
+                  "id": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                },
+              }
+            }
+            mine={
+              Object {
+                "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                "mine_location": Object {
+                  "latitude": null,
+                  "longitude": null,
+                },
+                "mine_name": "mine3",
+                "mine_no": "BLAH9091",
+                "mine_permit": Array [],
+                "mine_region": "NE",
+                "mine_status": Object {
+                  "effective_date": "2018-10-16",
+                  "expiry_date": "9999-12-31",
+                  "status_labels": Array [
+                    "Closed",
+                    "Care & Maintenance",
+                  ],
+                  "statusvalue": Array [
+                    "CLD",
+                    "CM",
+                  ],
+                },
+                "mine_tailings_storage_facilities": Array [
+                  Object {
+                    "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                    "mine_tailings_storage_facility_guid": "e2629897-053e-4218-9299-479375e47f78",
+                    "mine_tailings_storage_facility_name": "MockTSF",
+                  },
+                ],
+                "mine_type": Array [
+                  Object {
+                    "mine_tenure_type_code": "PLR",
+                  },
+                  Object {
+                    "mine_tenure_type_code": "MIN",
+                  },
+                ],
+              }
+            }
+          />
+        </TabPane>
+        <TabPane
+          key="variances"
+          placeholder={null}
+          tab="Variances"
+        >
+          <Connect(Variances)
             match={
               Object {
                 "params": Object {

@@ -218,20 +218,18 @@ export class VariancesTable extends Component {
 
   render() {
     return (
-      <div>
-        <Table
-          size="small"
-          pagination={false}
-          loading={!this.props.isLoaded}
-          columns={this.columns(this.props.isApplication)}
-          dataSource={this.transformRowData(
-            this.props.variances,
-            this.props.complianceCodesHash,
-            this.props.varianceStatusOptionsHash
-          )}
-          locale={{ emptyText: "This mine has no variance data." }}
-        />
-      </div>
+      <Table
+        size="small"
+        pagination={false}
+        loading={!this.props.isLoaded}
+        columns={this.columns(this.props.isApplication)}
+        dataSource={this.transformRowData(
+          this.props.variances,
+          this.props.complianceCodesHash,
+          this.props.varianceStatusOptionsHash
+        )}
+        locale={{ emptyText: "This mine has no variance data." }}
+      />
     );
   }
 }

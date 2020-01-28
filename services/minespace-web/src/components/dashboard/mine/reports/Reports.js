@@ -1,3 +1,4 @@
+// TODO: Remove this when the file is more fully implemented.
 /* eslint-disable */
 
 import React, { Component } from "react";
@@ -103,11 +104,11 @@ export class Reports extends Component {
             <Col>
               <Title level={4}>Reports</Title>
               <Paragraph>
-                The below table displays all of the{" "}
+                The below table displays all of the&nbsp;
                 <Text className="color-primary" strong>
                   reports
-                </Text>{" "}
-                associated with this mine.
+                </Text>
+                &nbsp;associated with this mine.
               </Paragraph>
             </Col>
           </Row>

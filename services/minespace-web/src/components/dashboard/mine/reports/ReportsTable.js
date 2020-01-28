@@ -9,10 +9,6 @@ import { formatDate } from "@/utils/helpers";
 import { EDIT_PENCIL } from "@/constants/assets";
 import CustomPropTypes from "@/customPropTypes";
 
-/**
- * @class  MinePermitInfo - contains all permit information
- */
-
 const propTypes = {
   mineReports: PropTypes.arrayOf(CustomPropTypes.mineReport).isRequired,
   openEditReportModal: PropTypes.func.isRequired,
@@ -106,9 +102,9 @@ export const ReportsTable = (props) => (
     loading={!props.isLoaded}
     columns={columns}
     locale={{ emptyText: "This mine has no report data." }}
-    dataSource={props.mineReports.map((r) =>
+    dataSource={props.mineReports.map((record) =>
       transformRowData(
-        r,
+        record,
         props.openEditReportModal,
         props.handleEditReport,
         props.handleRemoveReport
