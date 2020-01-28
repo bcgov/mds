@@ -1,0 +1,11 @@
+{
+  "name": "common-actions",
+  "version": "1.0.0",
+  "description": "A group of common actions, reducers, action creators and selectors to be used by MDS and Minespace.",
+  "main": "reducers.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "MDS Team",
+  "license": "MIT"
+}
