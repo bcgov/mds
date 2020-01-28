@@ -161,7 +161,7 @@ const columns = [
             </button>
           </Menu.Item>{" "}
           <AuthorizationWrapper isMajorMine={text.major_mine_ind}>
-            <Menu.Item key="3">
+            <div className="custom-menu-item" key="3">
               <button
                 type="button"
                 className="full"
@@ -177,7 +177,7 @@ const columns = [
                 />
                 Initiate Permit Amendment Application
               </button>
-            </Menu.Item>
+            </div>
           </AuthorizationWrapper>
         </Menu>
       );
