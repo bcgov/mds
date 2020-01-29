@@ -1,8 +1,8 @@
 import configureMockStore from "redux-mock-store";
 import thunk from "redux-thunk";
 import { request, success, error } from "@common/actions/genericActions";
-import * as ReducerTypes from "@/constants/reducerTypes";
-import * as ActionTypes from "@/constants/actionTypes";
+import * as ReducerTypes from "@common/constants/reducerTypes";
+import * as ActionTypes from "@common/constants/actionTypes";
 
 /*
 Testing against action `createMineRecord` arbitrarily.

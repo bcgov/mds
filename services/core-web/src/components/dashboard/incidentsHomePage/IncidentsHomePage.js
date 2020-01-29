@@ -24,6 +24,7 @@ import { getDropdownInspectors } from "@common/selectors/partiesSelectors";
 import { getIncidents, getIncidentPageData } from "@common/selectors/incidentSelectors";
 import { fetchIncidents, updateMineIncident } from "@common/actionCreators/incidentActionCreator";
 import { formatParamStringToArray } from "@common/utils/helpers";
+import * as Strings from "@common/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
 import { IncidentsTable } from "./IncidentsTable";
 import * as router from "@/constants/routes";
@@ -31,7 +32,6 @@ import IncidentsSearch from "./IncidentsSearch";
 import { modalConfig } from "@/components/modalContent/config";
 import * as ModalContent from "@/constants/modalContent";
 import * as FORM from "@/constants/forms";
-import * as Strings from "@/constants/strings";
 
 /**
  * @class Incidents page is a landing page for all incidents in the system

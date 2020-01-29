@@ -9,7 +9,7 @@ import {
   storeNoticeOfWorkApplication,
   storeOriginalNoticeOfWorkApplication,
 } from "@common/actions/noticeOfWorkActions";
-import { NOTICE_OF_WORK } from "@/constants/reducerTypes";
+import { NOTICE_OF_WORK } from "@common/constants/reducerTypes";
 import * as MOCKS from "@/tests/mocks/noticeOfWorkMocks";
 
 const mockState = {

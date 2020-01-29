@@ -11,7 +11,7 @@ import {
 } from "@common/actionCreators/varianceActionCreator";
 import * as genericActions from "@common/actions/genericActions";
 import { ENVIRONMENT } from "@common/constants/environment";
-import * as API from "@/constants/API";
+import * as API from "@common/constants/API";
 import * as MOCK from "@/tests/mocks/dataMocks";
 
 const dispatch = jest.fn();

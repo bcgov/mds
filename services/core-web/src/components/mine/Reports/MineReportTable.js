@@ -4,7 +4,7 @@ import { Table } from "antd";
 import moment from "moment";
 import PropTypes from "prop-types";
 import NullScreen from "@/components/common/NullScreen";
-import * as Strings from "@/constants/strings";
+import * as Strings from "@common/constants/strings";
 import { formatDate, getTableHeaders, truncateFilename } from "@common/utils/helpers";
 import { COLOR } from "@/constants/styles";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";

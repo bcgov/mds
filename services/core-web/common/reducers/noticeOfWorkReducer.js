@@ -1,5 +1,5 @@
-import * as actionTypes from "@/constants/actionTypes";
-import { NOTICE_OF_WORK } from "@/constants/reducerTypes";
+import * as actionTypes from "../constants/actionTypes";
+import { NOTICE_OF_WORK } from "../constants/reducerTypes";
 
 const initialState = {
   noticeOfWorkList: [],

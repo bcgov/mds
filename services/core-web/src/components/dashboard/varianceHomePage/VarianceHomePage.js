@@ -22,11 +22,11 @@ import {
   addDocumentToVariance,
 } from "@common/actionCreators/varianceActionCreator";
 import { formatParamStringToArray } from "@common/utils/helpers";
+import * as Strings from "@common/constants/strings";
 import { modalConfig } from "@/components/modalContent/config";
 import CustomPropTypes from "@/customPropTypes";
 import { VarianceTable } from "@/components/dashboard/customHomePage/VarianceTable";
 import * as router from "@/constants/routes";
-import * as Strings from "@/constants/strings";
 import VarianceSearch from "./VarianceSearch";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 

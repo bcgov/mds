@@ -8,8 +8,8 @@ import {
   getHSRCMComplianceCodesHash,
   getVarianceDocumentCategoryOptionsHash,
 } from "@common/selectors/staticContentSelectors";
+import * as Strings from "@common/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
-import * as Strings from "@/constants/strings";
 import { VarianceDetails } from "../mine/Variances/VarianceDetails";
 
 const propTypes = {

@@ -11,8 +11,8 @@ import {
   getIncidentStatusCodeHash,
 } from "@common/selectors/staticContentSelectors";
 import { formatTime, formatDate } from "@common/utils/helpers";
+import * as Strings from "@common/constants/strings";
 import LinkButton from "@/components/common/LinkButton";
-import * as Strings from "@/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {

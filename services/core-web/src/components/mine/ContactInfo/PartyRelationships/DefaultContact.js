@@ -4,11 +4,11 @@ import { Button, Card } from "antd";
 import { Link } from "react-router-dom";
 import { formatTitleString, formatDate } from "@common/utils/helpers";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
+import * as Strings from "@common/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as router from "@/constants/routes";
 import * as Permission from "@/constants/permissions";
-import * as Strings from "@/constants/strings";
 import LinkButton from "@/components/common/LinkButton";
 
 const propTypes = {

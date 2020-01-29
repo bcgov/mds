@@ -1,9 +1,9 @@
 import React from "react";
 import { shallow } from "enzyme";
+import * as String from "@common/constants/strings";
 import { Dashboard } from "@/components/dashboard/minesHomePage/Dashboard";
 import * as MOCK from "@/tests/mocks/dataMocks";
 import * as router from "@/constants/routes";
-import * as String from "@/constants/strings";
 
 const dispatchProps = {};
 const reducerProps = {};

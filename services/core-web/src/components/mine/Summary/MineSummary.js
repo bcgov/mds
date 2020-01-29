@@ -12,9 +12,9 @@ import {
 import { getMineComplianceInfo } from "@common/selectors/complianceSelectors";
 import { getMines } from "@common/selectors/mineSelectors";
 import { getPermits } from "@common/reducers/permitReducer";
+import * as String from "@common/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
 import { Contact } from "@/components/mine/ContactInfo/PartyRelationships/Contact";
-import * as String from "@/constants/strings";
 import * as router from "@/constants/routes";
 import { PermitCard } from "@/components/mine/Permit/MinePermitCard";
 import { TSFCard } from "@/components/mine/Tailings/MineTSFCard";

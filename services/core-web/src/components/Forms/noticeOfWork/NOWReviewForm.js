@@ -12,7 +12,7 @@ import { renderConfig } from "@/components/common/config";
 import { required, dateNotInFuture } from "@common/utils/Validate";
 import CustomPropTypes from "@/customPropTypes";
 
-import { NOTICE_OF_WORK_DOCUMENT } from "@/constants/API";
+import { NOTICE_OF_WORK_DOCUMENT } from "@common/constants/API";
 import FileUpload from "@/components/common/FileUpload";
 import { UploadedDocumentsTable } from "@/components/common/UploadedDocumentTable";
 

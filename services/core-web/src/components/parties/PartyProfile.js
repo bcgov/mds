@@ -21,7 +21,7 @@ import {
 import { getMineBasicInfoListHash } from "@common/selectors/mineSelectors";
 import { getDropdownProvinceOptions } from "@common/selectors/staticContentSelectors";
 import { formatTitleString, formatDate } from "@common/utils/helpers";
-import * as Strings from "@/constants/strings";
+import * as Strings from "@common/constants/strings";
 import { EDIT } from "@/constants/assets";
 import { modalConfig } from "@/components/modalContent/config";
 import Loading from "@/components/common/Loading";

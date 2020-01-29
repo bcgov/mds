@@ -1,5 +1,5 @@
-import * as actionTypes from "@/constants/actionTypes";
-import { USERS } from "@/constants/reducerTypes";
+import * as actionTypes from "../constants/actionTypes";
+import { USERS } from "../constants/reducerTypes";
 
 const initialState = {
   coreUsers: [],

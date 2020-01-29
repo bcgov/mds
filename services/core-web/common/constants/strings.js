@@ -1,3 +1,4 @@
+import React from "react";
 // reusable messages for error handling, validations, null-screens, etc.
 export const ERROR = "Error.";
 export const ERROR_CANCELED =
@@ -17,14 +18,31 @@ export const ADD_MINE_MANAGER = "Please add mine manager below";
 export const ADD_PARTY = "Please create party below";
 export const NO_RESULTS = "No results found";
 export const NO_NRIS_INSPECTIONS = "No inspections in NRIS";
+export const MAP_UNAVAILABLE = [
+  "The BC Geographic Warehouse (BCGW) map layers used in this application are unavailable at this time.",
+  "Please notify ",
+  <b>mds@gov.bc.ca</b>,
+  " if this problem persists.",
+];
 
 export const UNAUTHORIZED = "You do not have permission to access this site";
 export const UNAUTHORIZED_PAGE = "You do not have permission to access this page";
-
+// to get HTML to render in a React String you send the string as a list of its parts, a mix of HTML and strings.
+export const CONTACT_ADMIN = [
+  "Contact your system administrator at ",
+  <b>mds@gov.bc.ca</b>,
+  " to request access",
+];
 export const EMPTY_FIELD = "N/A";
 export const EMPTY = "";
 export const ZERO = "0.00";
 export const UNASSIGNED = "Unassigned";
+
+// default coordinates for center of BC
+export const DEFAULT_LAT = 53.7267;
+export const DEFAULT_LONG = -127.6476;
+export const DEFAULT_ZOOM = 6;
+export const HIGH_ZOOM = 14;
 
 // default url values
 export const DEFAULT_PAGE = "1";

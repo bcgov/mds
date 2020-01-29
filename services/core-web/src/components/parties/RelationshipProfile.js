@@ -16,10 +16,10 @@ import {
 } from "@common/selectors/partiesSelectors";
 import { getMines } from "@common/selectors/mineSelectors";
 import { formatDate } from "@common/utils/helpers";
+import * as String from "@common/constants/strings";
 import Loading from "@/components/common/Loading";
 import * as router from "@/constants/routes";
 import CustomPropTypes from "@/customPropTypes";
-import * as String from "@/constants/strings";
 import NullScreen from "@/components/common/NullScreen";
 
 /**

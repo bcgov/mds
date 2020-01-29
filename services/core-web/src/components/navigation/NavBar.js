@@ -12,9 +12,9 @@ import {
   getCurrentUserVerifiedMines,
   getCurrentUserUnverifiedMines,
 } from "@common/reducers/mineReducer";
+import * as Strings from "@common/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
 import * as router from "@/constants/routes";
-import * as Strings from "@/constants/strings";
 import * as Permission from "@/constants/permissions";
 import SearchBar from "@/components/search/SearchBar";
 import { LOGO, HAMBURGER, CLOSE, SUCCESS_CHECKMARK, YELLOW_HAZARD } from "@/constants/assets";

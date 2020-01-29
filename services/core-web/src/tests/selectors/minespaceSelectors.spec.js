@@ -1,7 +1,7 @@
 import { getMinespaceUsers } from "@common/selectors/minespaceSelector";
 import { minespaceReducer } from "@common/reducers/minespaceReducer";
 import { storeMinespaceUserList } from "@common/actions/minespaceActions";
-import { MINESPACE } from "@/constants/reducerTypes";
+import { MINESPACE } from "@common/constants/reducerTypes";
 import * as Mock from "@/tests/mocks/dataMocks";
 
 const mockResponse = Mock.MINESPACE_RESPONSE;

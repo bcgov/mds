@@ -7,11 +7,11 @@ import { Form, Button, Col, Row, Popconfirm } from "antd";
 import { required, maxLength } from "@common/utils/Validate";
 import { resetForm } from "@common/utils/helpers";
 import { getDropdownNoticeOfWorkApplicationDocumentTypeOptions } from "@common/selectors/staticContentSelectors";
+import { NOTICE_OF_WORK_DOCUMENT } from "@common/constants/API";
 import { renderConfig } from "@/components/common/config";
 import * as FORM from "@/constants/forms";
 import CustomPropTypes from "@/customPropTypes";
 import FileUpload from "@/components/common/FileUpload";
-import { NOTICE_OF_WORK_DOCUMENT } from "@/constants/API";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,

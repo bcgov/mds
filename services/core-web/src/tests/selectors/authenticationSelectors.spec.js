@@ -11,7 +11,7 @@ import {
   storeKeycloakData,
   storeUserAccessData,
 } from "@common/actions/authenticationActions";
-import { AUTHENTICATION } from "@/constants/reducerTypes";
+import { AUTHENTICATION } from "@common/constants/reducerTypes";
 
 const mockData = {
   userAccessData: ["role1"],

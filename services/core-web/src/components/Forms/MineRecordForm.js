@@ -25,8 +25,8 @@ import {
   getMineTenureTypeDropdownOptions,
   getMineTenureTypesHash,
 } from "@common/selectors/staticContentSelectors";
+import * as Strings from "@common/constants/strings";
 import * as FORM from "@/constants/forms";
-import * as Strings from "@/constants/strings";
 import * as Styles from "@/constants/styles";
 import CustomPropTypes from "@/customPropTypes";
 import { renderConfig } from "@/components/common/config";

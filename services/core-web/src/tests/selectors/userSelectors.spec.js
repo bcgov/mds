@@ -5,7 +5,7 @@ import {
 } from "@common/selectors/userSelectors";
 import { userReducer } from "@common/reducers/userReducer";
 import { storeCoreUserList } from "@common/actions/userActions";
-import { USERS } from "@/constants/reducerTypes";
+import { USERS } from "@common/constants/reducerTypes";
 import * as Mock from "@/tests/mocks/dataMocks";
 
 const mockState = {

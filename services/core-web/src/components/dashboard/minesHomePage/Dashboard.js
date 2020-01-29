@@ -29,6 +29,7 @@ import {
   getMineTenureTypeDropdownOptions,
   getDropdownCommodityOptions,
 } from "@common/selectors/staticContentSelectors";
+import * as Strings from "@common/constants/strings";
 import ResponsivePagination from "@/components/common/ResponsivePagination";
 import CustomPropTypes from "@/customPropTypes";
 import MineList from "@/components/dashboard/minesHomePage/MineList";
@@ -39,7 +40,6 @@ import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrap
 import * as router from "@/constants/routes";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
 import MineMapLeaflet from "@/components/maps/MineMapLeaflet";
-import * as Strings from "@/constants/strings";
 import * as Permission from "@/constants/permissions";
 import * as ModalContent from "@/constants/modalContent";
 import AddButton from "@/components/common/AddButton";

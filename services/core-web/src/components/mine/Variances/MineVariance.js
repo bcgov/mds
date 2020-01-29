@@ -22,11 +22,11 @@ import {
 } from "@common/selectors/staticContentSelectors";
 import { getVarianceApplications, getApprovedVariances } from "@common/selectors/varianceSelectors";
 import { getDropdownInspectors, getInspectorsHash } from "@common/selectors/partiesSelectors";
+import * as Strings from "@common/constants/strings";
 import MineVarianceTable from "./MineVarianceTable";
 import * as ModalContent from "@/constants/modalContent";
 import { modalConfig } from "@/components/modalContent/config";
 import * as Permission from "@/constants/permissions";
-import * as Strings from "@/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
 import AddButton from "@/components/common/AddButton";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";

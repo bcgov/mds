@@ -18,7 +18,7 @@ import {
   storeMineBasicInfoList,
   storeMineDocuments,
 } from "@common/actions/mineActions";
-import { MINES } from "@/constants/reducerTypes";
+import { MINES } from "@common/constants/reducerTypes";
 import * as Mock from "@/tests/mocks/dataMocks";
 
 const mockResponse = Mock.MINE_RESPONSE;

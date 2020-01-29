@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import { Table, Button, Icon, Badge } from "antd";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import moment from "moment";
 import {
   getVarianceStatusOptionsHash,
   getHSRCMComplianceCodesHash,
@@ -11,12 +10,12 @@ import {
 import { getInspectorsHash } from "@common/selectors/partiesSelectors";
 import { formatDate, getTableHeaders, truncateFilename } from "@common/utils/helpers";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
+import * as Strings from "@common/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
 import { RED_CLOCK, EDIT_OUTLINE_VIOLET } from "@/constants/assets";
 import NullScreen from "@/components/common/NullScreen";
-import * as Strings from "@/constants/strings";
 import LinkButton from "@/components/common/LinkButton";
 import * as router from "@/constants/routes";
 import TableLoadingWrapper from "@/components/common/wrappers/TableLoadingWrapper";
