@@ -140,7 +140,6 @@ class Mine(AuditMixin, Base):
 
         if major is not None:
             mines_q = mines_q.filter_by(major_mine_ind=major)
-            current_app.logger.debug(f'FILTER BY MAJOR = {major}')
         return mines_q.limit(MINE_LIST_RESULT_LIMIT).all()
 
     @classmethod
