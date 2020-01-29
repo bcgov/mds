@@ -38,8 +38,8 @@ export const LandingPage = () => (
         <Divider />
       </Col>
     </Row>
-    <Row gutter={[{ lg: 64 }, { sm: 16, lg: 0 }]}>
-      <Col sm={{ span: 24 }} lg={{ span: 12 }}>
+    <Row gutter={[{ xl: 64 }, { sm: 16, xl: 0 }]}>
+      <Col sm={{ span: 24 }} xl={{ span: 14 }} xxl={{ span: 13 }}>
         <Row>
           <Col>
             <Title level={2}>What can I do in MineSpace?</Title>
@@ -81,7 +81,7 @@ export const LandingPage = () => (
           </Col>
         </Row>
       </Col>
-      <Col sm={{ span: 24 }} lg={{ span: 9, offset: 3 }}>
+      <Col sm={{ span: 24 }} xl={{ span: 9, offset: 1 }} xxl={{ span: 8, offset: 3 }}>
         <Card title="Do you have a BCeID?">
           <Row>
             <Col>
