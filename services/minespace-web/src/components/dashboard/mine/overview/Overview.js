@@ -5,7 +5,8 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import CustomPropTypes from "@/customPropTypes";
-import { Row, Col, Card, Descriptions, Typography, Icon } from "antd";
+import { Row, Col, Card, Descriptions, Typography } from "antd";
+import ContactCard from "@/components/common/ContactCard";
 import * as Strings from "@/constants/strings";
 import * as Contacts from "@/constants/ministryContacts";
 
@@ -16,37 +17,6 @@ const propTypes = {
 };
 
 const defaultProps = {};
-
-const ContactCardRow = (props) => (
-  <Row gutter={[32, 16]}>
-    <Col span={3}>
-      <Icon type={props.icon} style={{ fontSize: "2em" }} />
-    </Col>
-    <Col span={20} offset={1}>
-      <Text strong style={{ textTransform: "uppercase" }}>
-        {props.label}
-      </Text>
-      <br />
-      <Text>{props.value}</Text>
-    </Col>
-  </Row>
-);
-
-const ContactCard = (props) => (
-  <Card title={props.title}>
-    <ContactCardRow icon="user" label="Name" value={props.party.name} />
-    <br />
-    <ContactCardRow
-      icon="mail"
-      label="Email"
-      value={<a href={`mailto:${props.party.email}`}>{props.party.email}</a>}
-    />
-    <br />
-    <ContactCardRow icon="phone" label="Phone" value={props.party.phone} />
-    <br />
-    <ContactCardRow icon="calendar" label={props.dateLabel} value={props.party.date} />
-  </Card>
-);
 
 // Test data
 const partyMineManager = {
