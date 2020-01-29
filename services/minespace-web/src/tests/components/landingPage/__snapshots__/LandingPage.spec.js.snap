@@ -58,24 +58,29 @@ exports[`LandingPage renders properly 1`] = `
     gutter={
       Array [
         Object {
-          "lg": 64,
+          "xl": 64,
         },
         Object {
-          "lg": 0,
           "sm": 16,
+          "xl": 0,
         },
       ]
     }
   >
     <Col
-      lg={
-        Object {
-          "span": 12,
-        }
-      }
       sm={
         Object {
           "span": 24,
+        }
+      }
+      xl={
+        Object {
+          "span": 14,
+        }
+      }
+      xxl={
+        Object {
+          "span": 13,
         }
       }
     >
@@ -159,15 +164,21 @@ exports[`LandingPage renders properly 1`] = `
       </Row>
     </Col>
     <Col
-      lg={
-        Object {
-          "offset": 3,
-          "span": 9,
-        }
-      }
       sm={
         Object {
           "span": 24,
+        }
+      }
+      xl={
+        Object {
+          "offset": 1,
+          "span": 9,
+        }
+      }
+      xxl={
+        Object {
+          "offset": 3,
+          "span": 8,
         }
       }
     >
