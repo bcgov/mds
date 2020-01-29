@@ -1,5 +1,5 @@
-import * as actionTypes from "@/constants/actionTypes";
-import { VARIANCES } from "@/constants/reducerTypes";
+import * as actionTypes from "../constants/actionTypes";
+import { VARIANCES } from "../constants/reducerTypes";
 
 const initialState = {
   variances: [],
