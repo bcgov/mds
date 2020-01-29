@@ -87,8 +87,7 @@
       "metadata": {
         "name": "${NAME_DATABASE}${SUFFIX}",
         "annotations": {
-          "volume.beta.kubernetes.io/storage-class": "gluster-block",
-          "volume.beta.kubernetes.io/storage-provisioner": "kubernetes.io/glusterfs"
+          "volume.beta.kubernetes.io/storage-provisioner": "netapp.io/trident"
         }
       },
       "spec": {
