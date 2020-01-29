@@ -22,6 +22,7 @@ const PATHS = {
   template: path.join(__dirname, "public", "index.html"),
   build: path.join(__dirname, BUILD_DIR),
   node_modules: path.join(__dirname, "node_modules"),
+  commonPackage: path.join(__dirname, "common"),
 };
 
 const BUILD_FILE_NAMES = {
@@ -33,6 +34,7 @@ const BUILD_FILE_NAMES = {
 
 const PATH_ALIASES = {
   "@": PATHS.src,
+  "@common": PATHS.commonPackage,
   // Put your aliases here
 };
 
@@ -75,7 +77,7 @@ const commonConfig = merge([
   },
   parts.setEnvironmentVariable(envFile),
   parts.loadJS({
-    include: PATHS.src,
+    include: [PATHS.src, PATHS.commonPackage],
   }),
   parts.loadFonts({
     exclude: path.join(PATHS.src, "assets", "images"),

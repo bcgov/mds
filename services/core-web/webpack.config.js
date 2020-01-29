@@ -23,7 +23,7 @@ const PATHS = {
   build: path.join(__dirname, BUILD_DIR),
   node_modules: path.join(__dirname, "node_modules"),
   vendor: path.join(__dirname, "vendor"),
-  reducerPackage: path.join(__dirname, "../common-actions"),
+  commonPackage: path.join(__dirname, "common"),
 };
 
 const BUILD_FILE_NAMES = {
@@ -36,7 +36,7 @@ const BUILD_FILE_NAMES = {
 const PATH_ALIASES = {
   "@": PATHS.src,
   vendor: PATHS.vendor,
-  "@common": PATHS.reducerPackage,
+  "@common": PATHS.commonPackage,
 };
 
 const envFile = {};
@@ -81,7 +81,7 @@ const commonConfig = merge([
   },
   parts.setEnvironmentVariable(envFile),
   parts.loadJS({
-    include: [PATHS.src, PATHS.reducerPackage],
+    include: [PATHS.src, PATHS.commonPackage],
   }),
   parts.loadFonts({
     exclude: path.join(PATHS.src, "assets", "images"),
