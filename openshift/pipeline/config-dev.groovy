@@ -68,7 +68,7 @@ app {
                             'VOLUME_CAPACITY':"${vars.DB_PVC_SIZE}"
                     ]
                 ],
-                [
+                /*[
                     'file':'openshift/templates/postgresql.dc.json',
                     'params':[
                             'NAME':"mds-postgresql",
@@ -84,8 +84,8 @@ app {
                             'POSTGRESQL_DATABASE':'mds',
                             'VOLUME_CAPACITY':"${vars.DB_PVC_SIZE}"
                     ]
-                ],
-                [
+                ],*/
+                /*[
                     'file':'openshift/templates/dbbackup.dc.json',
                     'params':[
                             'NAME':"mds-database-backup",
@@ -102,7 +102,7 @@ app {
                             'VERIFICATION_VOLUME_SIZE':"${vars.BACKUP_VERIFICATION_PVC_SIZE}",
                             'DB_NRIS_CONFIG_NAME': "mds-postgresql${vars.deployment.suffix}-nris"
                     ]
-                ],
+                ],*/
                 [
                     'file':'openshift/templates/redis.dc.json',
                     'params':[
@@ -280,7 +280,7 @@ app {
                             'ENVIRONMENT_NAME':"${app.deployment.env.name}",
                             'API_URL': "https://${vars.modules.'mds-nginx'.HOST_CORE}${vars.modules.'mds-nginx'.PATH}/nris_api",
                     ]
-                ],
+                ]/*,
                 [
                     'file':'openshift/templates/digdag/digdag.dc.json',
                     'params':[
@@ -297,7 +297,7 @@ app {
                             'MEMORY_REQUEST':"${vars.resources.digdag.memory_request}",
                             'MEMORY_LIMIT':"${vars.resources.digdag.memory_limit}"
                     ]
-                ]
+                ]*/
         ]
     }
 }
@@ -370,7 +370,7 @@ environments {
                     cpu_limit = "20m"
                     memory_request = "16Mi"
                     memory_limit = "32Mi"
-                }
+                }/*
                 backup {
                     cpu_request = "0"
                     cpu_limit = "0"
@@ -382,7 +382,7 @@ environments {
                     cpu_limit = "200m"
                     memory_request = "512Mi"
                     memory_limit = "1Gi"
-                }
+                }*/
             }
             deployment {
                 env {
@@ -430,9 +430,9 @@ environments {
                 'mds-redis' {
                     HOST = "http://mds-redis${vars.deployment.suffix}"
                 }
-                'digdag' {
+                /*'digdag' {
                     HOST = "mds-digdag-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
-                }
+                }*/
             }
         }
     }
