@@ -290,6 +290,8 @@ exports[`SandGravelQuarry renders properly 1`] = `
   <br />
   <Equipment
     activity="sand_and_gravel"
+    addRecord={[MockFunction]}
+    editRecord={[MockFunction]}
     equipment={Array []}
     isViewMode={true}
   />

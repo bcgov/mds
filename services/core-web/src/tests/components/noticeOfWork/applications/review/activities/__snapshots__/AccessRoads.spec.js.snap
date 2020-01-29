@@ -113,6 +113,8 @@ exports[`AccessRoads renders properly 1`] = `
   <br />
   <Equipment
     activity="exploration_access"
+    addRecord={[MockFunction]}
+    editRecord={[MockFunction]}
     equipment={Array []}
     isViewMode={true}
   />

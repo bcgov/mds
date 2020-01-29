@@ -1,4 +1,3 @@
-import React from "react";
 import { PropTypes } from "prop-types";
 import { detectDevelopmentEnvironment, detectProdEnvironment } from "@/utils/environmentUtils";
 
@@ -41,12 +40,10 @@ const defaultProps = {
   inTesting: false,
 };
 
-export const AuthorizationWrapper = (props) => (
-  <span>
-    {props.inDevelopment && detectDevelopmentEnvironment() && <span>{props.children}</span>}
-    {props.inTesting && !detectProdEnvironment() && <span>{props.children}</span>}
-  </span>
-);
+export const AuthorizationWrapper = (props) =>
+  ((props.inDevelopment && detectDevelopmentEnvironment()) ||
+    (props.inTesting && !detectProdEnvironment())) &&
+  props.children;
 
 AuthorizationWrapper.propTypes = propTypes;
 AuthorizationWrapper.defaultProps = defaultProps;

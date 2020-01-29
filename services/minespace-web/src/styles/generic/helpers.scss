@@ -1,0 +1,88 @@
+// Colours
+.color {
+  // Theme Colours
+  &-primary {
+    color: $primary-color !important;
+  }
+  &-info {
+    color: $info-color !important;
+  }
+  &-success {
+    color: $success-color !important;
+  }
+  &-processing {
+    color: $processing-color !important;
+  }
+  &-error {
+    color: $error-color !important;
+  }
+  &-warning {
+    color: $warning-color !important;
+  }
+  &-highlight {
+    color: $highlight-color !important;
+  }
+  &-normal {
+    color: $normal-color !important;
+  }
+  &-white {
+    color: $white !important;
+  }
+  &-black {
+    color: $black !important;
+  }
+  &-text {
+    color: $text-color !important;
+  }
+
+  // Brand Colours
+  &-gov-grey {
+    color: $gov-grey !important;
+  }
+}
+
+// Background Colours
+.bg-color {
+  // Theme Colours
+  &-primary {
+    background-color: $primary-color !important;
+  }
+  &-info {
+    background-color: $info-color !important;
+  }
+  &-success {
+    background-color: $success-color !important;
+  }
+  &-processing {
+    background-color: $processing-color !important;
+  }
+  &-error {
+    background-color: $error-color !important;
+  }
+  &-warning {
+    background-color: $warning-color !important;
+  }
+  &-highlight {
+    background-color: $highlight-color !important;
+  }
+  &-normal {
+    background-color: $normal-color !important;
+  }
+  &-white {
+    background-color: $white !important;
+  }
+  &-black {
+    background-color: $black !important;
+  }
+  &-text {
+    background-color: $text-color !important;
+  }
+
+  // Brand Colours
+  &-gov-grey {
+    background-color: $gov-grey !important;
+  }
+  &-table-seperator {
+    background-color: $table-seperator !important;
+  }
+}

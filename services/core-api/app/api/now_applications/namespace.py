@@ -2,7 +2,7 @@ from flask_restplus import Namespace
 
 from app.api.now_applications.resources.now_application_import_resource import NOWApplicationImportResource
 from app.api.now_applications.resources.now_application_resource import NOWApplicationResource
-from app.api.now_applications.resources.now_application_list_resource import NoticeOfWorkListResource
+from app.api.now_applications.resources.now_application_list_resource import NOWApplicationListResource
 from app.api.now_applications.resources.now_activity_type_resource import NOWActivityTypeResource
 from app.api.now_applications.resources.now_application_type_resource import NOWApplicationTypeResource
 from app.api.now_applications.resources.now_application_status_code_resource import NOWApplicationStatusCodeResource
@@ -18,7 +18,7 @@ from app.api.now_applications.resources.now_application_review_type_resource imp
 
 api = Namespace('now-applications', description='Party related operations')
 
-api.add_resource(NoticeOfWorkListResource, '')
+api.add_resource(NOWApplicationListResource, '')
 api.add_resource(NOWApplicationImportResource, '/<string:application_guid>/import')
 api.add_resource(NOWApplicationResource, '/<string:application_guid>')
 api.add_resource(NOWApplicationProgressResource, '/<string:application_guid>/progress')

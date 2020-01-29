@@ -2,13 +2,15 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Field, reduxForm, change } from "redux-form";
 import { remove } from "lodash";
-import { Form, Button, Popconfirm } from "antd";
+import { Form, Button, Popconfirm, Typography } from "antd";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
 import { required, maxLength } from "@/utils/Validate";
 import { resetForm } from "@/utils/helpers";
 import CustomPropTypes from "@/customPropTypes";
 import VarianceFileUpload from "@/components/Forms/variances/VarianceFileUpload";
+
+const { Paragraph } = Typography;
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
@@ -50,13 +52,13 @@ export class AddVarianceForm extends Component {
         <Field
           id="compliance_article_id"
           name="compliance_article_id"
-          label="Part of Code*"
+          label="Part of Code"
+          required
           placeholder="Select a part of the code"
           component={renderConfig.SELECT}
           validate={[required]}
           data={this.props.complianceCodes}
         />
-
         <Field
           id="note"
           name="note"
@@ -64,9 +66,8 @@ export class AddVarianceForm extends Component {
           component={renderConfig.AUTO_SIZE_FIELD}
           validate={[maxLength(300)]}
         />
-
         <Form.Item label="Attached Files">
-          <p>Please upload all the required documents here for the variance application.</p>
+          <Paragraph>Please upload all of the required documents.</Paragraph>
           <Field
             id="uploadedFiles"
             name="uploadedFiles"
@@ -76,7 +77,7 @@ export class AddVarianceForm extends Component {
             component={VarianceFileUpload}
           />
         </Form.Item>
-        <div className="right center-mobile">
+        <div className="ant-modal-footer">
           <Popconfirm
             placement="topRight"
             title="Are you sure you want to cancel?"
@@ -84,16 +85,9 @@ export class AddVarianceForm extends Component {
             okText="Yes"
             cancelText="No"
           >
-            <Button className="full-mobile" type="secondary">
-              Cancel
-            </Button>
+            <Button>Cancel</Button>
           </Popconfirm>
-          <Button
-            className="full-mobile"
-            type="primary"
-            htmlType="submit"
-            disabled={this.props.submitting}
-          >
+          <Button type="primary" htmlType="submit" loading={this.props.submitting}>
             Submit
           </Button>
         </div>

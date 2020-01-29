@@ -1,34 +1,44 @@
+// TODO: Remove this when the file is more fully implemented.
+/* eslint-disable */
+
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
+import { Row, Col, Typography, Button, Icon } from "antd";
 import PropTypes from "prop-types";
 import { getMine } from "@/selectors/userMineSelectors";
 import CustomPropTypes from "@/customPropTypes";
-import Loading from "@/components/common/Loading";
 import { fetchMineRecordById } from "@/actionCreators/userDashboardActionCreator";
 import { fetchMineReports, updateMineReport } from "@/actionCreators/reportActionCreator";
 import { modalConfig } from "@/components/modalContent/config";
 import { openModal, closeModal } from "@/actions/modalActions";
 import { getMineReports } from "@/selectors/reportSelectors";
-import MineReportTable from "@/components/dashboard/mine/reports/MineReportTable";
+import ReportsTable from "@/components/dashboard/mine/reports/ReportsTable";
+import TableSummaryCard from "@/components/common/TableSummaryCard";
 import { fetchMineReportDefinitionOptions } from "@/actionCreators/staticContentActionCreator";
 import { getMineReportDefinitionOptions } from "@/reducers/staticContentReducer";
 
+const { Paragraph, Title, Text } = Typography;
+
 const propTypes = {
-  mine: CustomPropTypes.mine.isRequired,
-  mineReports: PropTypes.arrayOf(CustomPropTypes.mineReport).isRequired,
-  mineReportDefinitionOptions: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
+  mine: CustomPropTypes.mine,
   match: PropTypes.shape({
     params: {
       id: PropTypes.string,
     },
   }).isRequired,
+  mineReports: PropTypes.arrayOf(CustomPropTypes.mineReport).isRequired,
+  mineReportDefinitionOptions: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
   fetchMineReportDefinitionOptions: PropTypes.func.isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
   updateMineReport: PropTypes.func.isRequired,
   fetchMineReports: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
+};
+
+const defaultProps = {
+  mine: {},
 };
 
 export class Reports extends Component {
@@ -56,7 +66,7 @@ export class Reports extends Component {
       props: {
         initialValues: report,
         onSubmit,
-        title: `Edit report for ${this.props.mine.mine_name}`,
+        title: "Edit Report",
         mineGuid: this.props.mine.mine_guid,
       },
       content: modalConfig.ADD_REPORT,
@@ -64,10 +74,6 @@ export class Reports extends Component {
   };
 
   render() {
-    if (!this.state.isLoaded) {
-      return <Loading />;
-    }
-
     const filteredReportDefinitionGuids =
       this.props.mineReportDefinitionOptions &&
       this.props.mineReportDefinitionOptions
@@ -83,20 +89,70 @@ export class Reports extends Component {
       );
 
     return (
-      <div className="mine-info-padding">
-        {this.props.mineReports && (
-          <div>
-            <h1 className="mine-title">{this.props.mine.mine_name}</h1>
-            <p>Mine No. {this.props.mine.mine_no}</p>
-            <h2>Reports</h2>
-            <MineReportTable
-              openEditReportModal={this.openEditReportModal}
-              handleEditReport={this.handleEditReport}
-              mineReports={filteredReports}
-            />
-          </div>
-        )}
-      </div>
+      <Row>
+        <Col>
+          <Row>
+            <Col>
+              <Button
+                style={{ display: "inline", float: "right" }}
+                type="primary"
+                onClick={(event) => this.openEditReportModal(event, this.props.mine.mine_name)}
+              >
+                <Icon type="plus-circle" theme="filled" />
+                Submit Report
+              </Button>
+              <Title level={4}>Reports</Title>
+              <Paragraph>
+                This table shows&nbsp;
+                <Text className="color-primary" strong>
+                  reports
+                </Text>
+                &nbsp;that have been submitted to the Ministry. If a report is listed but there are
+                no files attached, it means the report has not been submitted.
+              </Paragraph>
+            </Col>
+          </Row>
+          <Row type="flex" justify="space-around" gutter={[{ lg: 0, xl: 32 }, 32]}>
+            <Col lg={24} xl={8} xxl={6}>
+              <TableSummaryCard
+                title="Inspections YTD"
+                // TODO: Display the amount of submitted reports.
+                content="6"
+                icon="check-circle"
+                type="success"
+              />
+            </Col>
+            <Col lg={24} xl={8} xxl={6}>
+              <TableSummaryCard
+                title="Overdue Orders"
+                // TODO: Display the amount of reports that are overdue.
+                content="6"
+                icon="clock-circle"
+                type="error"
+              />
+            </Col>
+            <Col lg={24} xl={8} xxl={6}>
+              <TableSummaryCard
+                title="Responses Due"
+                // TODO: Display the amount of reports that are due.
+                content="6"
+                icon="exclamation-circle"
+                type="warning"
+              />
+            </Col>
+          </Row>
+          <Row>
+            <Col>
+              <ReportsTable
+                openEditReportModal={this.openEditReportModal}
+                handleEditReport={this.handleEditReport}
+                mineReports={filteredReports}
+                isLoaded={this.state.isLoaded}
+              />
+            </Col>
+          </Row>
+        </Col>
+      </Row>
     );
   }
 }
@@ -121,8 +177,6 @@ const mapDispatchToProps = (dispatch) =>
   );
 
 Reports.propTypes = propTypes;
+Reports.defaultProps = defaultProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Reports);
+export default connect(mapStateToProps, mapDispatchToProps)(Reports);

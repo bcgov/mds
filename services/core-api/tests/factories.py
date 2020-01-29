@@ -552,7 +552,6 @@ class PermitFactory(BaseFactory):
     class Meta:
         model = Permit
 
-    permit_id = factory.Sequence(lambda n: n)
     permit_guid = GUID
     permit_no = factory.LazyFunction(RandomPermitNumber)
     permit_status_code = factory.LazyFunction(RandomPermitStatusCode)

@@ -117,10 +117,6 @@ class Mine(AuditMixin, Base):
         p_numbers = [permit_no for permit_no, in rows]
         return p_numbers
 
-    @staticmethod
-    def active(records):
-        return list(filter(lambda x: x.active_ind, records))
-
     @classmethod
     def find_by_mine_guid(cls, _id):
         try:
@@ -134,18 +130,20 @@ class Mine(AuditMixin, Base):
         return cls.query.filter_by(mine_no=_id).filter_by(deleted_ind=False).first()
 
     @classmethod
-    def find_by_mine_name(cls, term=None):
+    def find_by_mine_name(cls, term=None, major=None):
         MINE_LIST_RESULT_LIMIT = 50
         if term:
             name_filter = Mine.mine_name.ilike('%{}%'.format(term))
             mines_q = Mine.query.filter(name_filter).filter_by(deleted_ind=False)
-            mines = mines_q.limit(MINE_LIST_RESULT_LIMIT).all()
         else:
-            mines = Mine.query.limit(MINE_LIST_RESULT_LIMIT).all()
-        return mines
+            mines_q = Mine.query
+
+        if major is not None:
+            mines_q = mines_q.filter_by(major_mine_ind=major)
+        return mines_q.limit(MINE_LIST_RESULT_LIMIT).all()
 
     @classmethod
-    def find_by_name_no_permit(cls, term=None):
+    def find_by_name_no_permit(cls, term=None, major=None):
         MINE_LIST_RESULT_LIMIT = 50
         if term:
             name_filter = Mine.mine_name.ilike('%{}%'.format(term))
@@ -153,10 +151,14 @@ class Mine(AuditMixin, Base):
             permit_filter = Permit.permit_no.ilike('%{}%'.format(term))
             mines_q = Mine.query.filter(name_filter | number_filter).filter_by(deleted_ind=False)
             permit_q = Mine.query.join(Permit).filter(permit_filter)
-            mines = mines_q.union(permit_q).limit(MINE_LIST_RESULT_LIMIT).all()
+            mines_q = mines_q.union(permit_q)
         else:
-            mines = Mine.query.limit(MINE_LIST_RESULT_LIMIT).all()
-        return mines
+            mines_q = Mine.query
+
+        if major is not None:
+            mines_q = mines_q.filter_by(major_mine_ind=major)
+
+        return mines_q.limit(MINE_LIST_RESULT_LIMIT).all()
 
     @classmethod
     def find_all_major_mines(cls):

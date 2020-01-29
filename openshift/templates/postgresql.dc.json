@@ -152,7 +152,7 @@
         "name": "${NAME}${SUFFIX}"
       },
       "spec": {
-        "accessModes": ["ReadWriteMany"],
+        "accessModes": ["ReadWriteOnce"],
         "resources": {
           "requests": {
             "storage": "${VOLUME_CAPACITY}"
