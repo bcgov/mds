@@ -1,0 +1,13 @@
+name: Label PRs based on files changed
+on: [pull_request]
+
+jobs:
+  label:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: unsplash/comment-on-pr@develop
+        env:
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+        with:
+          msg: "Review Reminders \n- [ ] Are there new endpoints? test_expected_auth.py tests \n- [ ] Are there new React components? Snapshot tests"
