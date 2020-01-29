@@ -5,6 +5,8 @@ import { Divider } from "antd";
 import PropTypes from "prop-types";
 import queryString from "query-string";
 import * as router from "@/constants/routes";
+import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
+import * as Permission from "@/constants/permissions";
 import AddButton from "@/components/common/AddButton";
 import CustomPropTypes from "@/customPropTypes";
 import { getMineRegionHash } from "@/selectors/staticContentSelectors";
@@ -110,7 +112,7 @@ export class MineNOWApplications extends Component {
       <div className="tab__content">
         <div>
           <h2>{title}</h2>
-          {isMajorMine && (
+          <AuthorizationWrapper isMajorMine={isMajorMine} permission={Permission.EDIT_PERMITS}>
             <AddButton
               onClick={() =>
                 this.props.history.push(router.CREATE_NOTICE_OF_WORK_APPLICATION.route, {
@@ -120,7 +122,7 @@ export class MineNOWApplications extends Component {
             >
               Add a Permit Application
             </AddButton>
-          )}
+          </AuthorizationWrapper>
         </div>
         <Divider />
 
