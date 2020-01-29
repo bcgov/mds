@@ -70,7 +70,9 @@ const columns = [
     key: "submitted_by",
     // sorter: (a, b) => (moment(a.received_date) > moment(b.received_date) ? -1 : 1),
     render: (text, record) => (
-      <div title="Submitted By" className={record.isOverdue ? "color-error" : ""}></div>
+      <div title="Submitted By" className={record.isOverdue ? "color-error" : ""}>
+        {text || Strings.EMPTY_FIELD}
+      </div>
     ),
   },
   // NOTE: This is a newly requested column. Brian: "Update table to include this for both
@@ -81,7 +83,9 @@ const columns = [
     key: "requested_by",
     // sorter: (a, b) => (moment(a.received_date) > moment(b.received_date) ? -1 : 1),
     render: (text, record) => (
-      <div title="Requested By" className={record.isOverdue ? "color-error" : ""}></div>
+      <div title="Requested By" className={record.isOverdue ? "color-error" : ""}>
+        {text || Strings.EMPTY_FIELD}
+      </div>
     ),
   },
   // NOTE: This is a newly requested column.
@@ -91,7 +95,9 @@ const columns = [
     key: "documents",
     // sorter: (a, b) => (moment(a.received_date) > moment(b.received_date) ? -1 : 1),
     render: (text, record) => (
-      <div title="Documents" className={record.isOverdue ? "color-error" : ""}></div>
+      <div title="Documents" className={record.isOverdue ? "color-error" : ""}>
+        {text || Strings.EMPTY_FIELD}
+      </div>
     ),
   },
   {
