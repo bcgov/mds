@@ -12,7 +12,7 @@ const initialState = {
   keycloak: {},
 };
 
-const authenticationReducer = (state = initialState, action) => {
+export const authenticationReducer = (state = initialState, action) => {
   switch (action.type) {
     case ActionTypes.AUTHENTICATE_USER:
       return {

@@ -1,22 +1,24 @@
 import { combineReducers } from "redux";
 import { reducer as formReducer } from "redux-form";
 import { loadingBarReducer } from "react-redux-loading-bar";
+import {
+  mineReducer,
+  complianceReducer,
+  partiesReducer,
+  modalReducer,
+  authenticationReducer,
+  staticContentReducer,
+  minespaceReducer,
+  permitReducer,
+  searchReducer,
+  varianceReducer,
+  incidentReducer,
+  userReducer,
+  reportReducer,
+  noticeOfWorkReducer,
+} from "@common/reducers";
 import * as reducerTypes from "@common/constants/reducerTypes";
-import mineReducer from "@common/reducers/mineReducer";
-import complianceReducer from "@common/reducers/complianceReducer";
-import partiesReducer from "@common/reducers/partiesReducer";
-import modalReducer from "@common/reducers/modalReducer";
-import authenticationReducer from "@common/reducers/authenticationReducer";
 import { createReducer } from "@common/utils/helpers";
-import staticContentReducer from "@common/reducers/staticContentReducer";
-import minespaceReducer from "@common/reducers/minespaceReducer";
-import permitReducer from "@common/reducers/permitReducer";
-import searchReducer from "@common/reducers/searchReducer";
-import varianceReducer from "@common/reducers/varianceReducer";
-import incidentReducer from "@common/reducers/incidentReducer";
-import userReducer from "@common/reducers/userReducer";
-import reportReducer from "@common/reducers/reportReducer";
-import noticeOfWorkReducer from "@common/reducers/noticeOfWorkReducer";
 import networkReducer from "./networkReducer";
 
 export const reducerObject = {

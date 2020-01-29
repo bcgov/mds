@@ -6,5 +6,5 @@ export const {
   getContent,
   getClearOnSubmit,
   getWidthSize,
-  getIsViewOnly
+  getIsViewOnly,
 } = modalReducer;

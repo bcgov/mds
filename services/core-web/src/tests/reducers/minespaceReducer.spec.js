@@ -1,4 +1,4 @@
-import minespaceReducer from "@common/reducers/minespaceReducer";
+import { minespaceReducer } from "@common/reducers/minespaceReducer";
 import {
   storeMinespaceUserList,
   storeMinespaceUserMineList,

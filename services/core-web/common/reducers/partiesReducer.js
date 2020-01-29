@@ -19,7 +19,7 @@ const initialState = {
   inspectors: [],
 };
 
-const partiesReducer = (state = initialState, action) => {
+export const partiesReducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.STORE_PARTIES:
       return {

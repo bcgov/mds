@@ -8,11 +8,11 @@ import CustomAxios from "../customAxios";
 
 // This file is anticipated to have multiple exports
 // eslint-disable-next-line import/prefer-default-export
-export const fetchCoreUsers = () => dispatch => {
+export const fetchCoreUsers = () => (dispatch) => {
   dispatch(request(reducerTypes.GET_CORE_USERS));
   return CustomAxios()
     .get(ENVIRONMENT.apiUrl + API.CORE_USER, createRequestHeader())
-    .then(response => {
+    .then((response) => {
       dispatch(success(reducerTypes.GET_CORE_USERS));
       dispatch(userActions.storeCoreUserList(response.data));
     })

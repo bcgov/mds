@@ -146,6 +146,7 @@
       "jest-canvas-mock"
     ],
     "collectCoverageFrom": [
+      "**/common/**/*.js",
       "**/src/**/*.js",
       "!src/index.js",
       "!src/App.js",
@@ -155,6 +156,7 @@
     ],
     "moduleNameMapper": {
       "^@/(.*)$": "<rootDir>/src/$1",
+      "^@common/(.*)$": "<rootDir>/common/$1",
       "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga|pdf)$": "<rootDir>/src/assetsTransformer.js",
       "\\.(css|less)$": "<rootDir>/src/assetsTransformer.js",
       "^vendor/(.*)$": "<rootDir>/vendor/$1"

@@ -4,10 +4,10 @@ const initialState = {
   isFetching: false,
   isSuccessful: false,
   error: null,
-  requestType: null
+  requestType: null,
 };
 
-const networkReducer = (state = initialState, action) => {
+export const networkReducer = (state = initialState, action) => {
   switch (action.type) {
     case REQUEST:
       return {
@@ -15,7 +15,7 @@ const networkReducer = (state = initialState, action) => {
         isFetching: true,
         isSuccessful: false,
         error: null,
-        requestType: action.type
+        requestType: action.type,
       };
     case SUCCESS:
       return {
@@ -23,7 +23,7 @@ const networkReducer = (state = initialState, action) => {
         isFetching: false,
         isSuccessful: true,
         error: false,
-        requestType: action.type
+        requestType: action.type,
       };
     case ERROR:
       return {
@@ -31,7 +31,7 @@ const networkReducer = (state = initialState, action) => {
         isFetching: false,
         isSuccessful: false,
         error: action.errorMessage,
-        requestType: action.type
+        requestType: action.type,
       };
     default:
       return state;

@@ -1,4 +1,4 @@
-import searchReducer from "@common/reducers/searchReducer";
+import { searchReducer } from "@common/reducers/searchReducer";
 import {
   storeSearchOptions,
   storeSearchResults,

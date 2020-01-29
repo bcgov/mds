@@ -4,5 +4,5 @@ export const {
   isAuthenticated,
   getUserAccessData,
   getUserInfo,
-  getKeycloak
+  getKeycloak,
 } = authenticationReducer;

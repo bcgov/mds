@@ -2,15 +2,15 @@ import * as actionTypes from "../constants/actionTypes";
 import { PERMITS } from "../constants/reducerTypes";
 
 const initialState = {
-  permits: []
+  permits: [],
 };
 
-const permitReducer = (state = initialState, action) => {
+export const permitReducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.STORE_PERMITS:
       return {
         ...state,
-        permits: action.payload.records
+        permits: action.payload.records,
       };
     default:
       return state;
@@ -18,9 +18,9 @@ const permitReducer = (state = initialState, action) => {
 };
 
 const permitReducerObject = {
-  [PERMITS]: permitReducer
+  [PERMITS]: permitReducer,
 };
 
-export const getPermits = state => state[PERMITS].permits;
+export const getPermits = (state) => state[PERMITS].permits;
 
 export default permitReducerObject;

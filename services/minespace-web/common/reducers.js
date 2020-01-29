@@ -1,4 +1,4 @@
-//Reducers
+// Reducers
 import complianceReducerObject from "./reducers/complianceReducer";
 import authenticationReducerObject from "./reducers/authenticationReducer";
 import incidentReducerObject from "./reducers/incidentReducer";

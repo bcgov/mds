@@ -22,7 +22,7 @@ module.exports = {
         map: [
           ["@", path.join(__dirname, "src")],
           ["vendor", path.join(__dirname, "vendor")],
-          ["@common", path.join(__dirname, "../common-actions")],
+          ["@common", path.join(__dirname, "common")],
         ],
         extensions: [".js", ".json"],
       },

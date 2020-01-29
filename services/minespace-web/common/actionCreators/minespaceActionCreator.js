@@ -9,19 +9,15 @@ import { ENVIRONMENT } from "../constants/environment";
 import { createRequestHeader } from "../utils/RequestHeaders";
 import CustomAxios from "../customAxios";
 
-export const createMinespaceUser = payload => dispatch => {
+export const createMinespaceUser = (payload) => (dispatch) => {
   dispatch(request(reducerTypes.CREATE_MINESPACE_USER));
   dispatch(showLoading());
   return CustomAxios()
-    .post(
-      ENVIRONMENT.apiUrl + API.MINESPACE_USER,
-      payload,
-      createRequestHeader()
-    )
-    .then(response => {
+    .post(ENVIRONMENT.apiUrl + API.MINESPACE_USER, payload, createRequestHeader())
+    .then((response) => {
       notification.success({
         message: `Successfully created MineSpace user.`,
-        duration: 10
+        duration: 10,
       });
       dispatch(success(reducerTypes.CREATE_MINESPACE_USER));
       return response;
@@ -30,12 +26,12 @@ export const createMinespaceUser = payload => dispatch => {
     .finally(() => dispatch(hideLoading()));
 };
 
-export const fetchMinespaceUsers = () => dispatch => {
+export const fetchMinespaceUsers = () => (dispatch) => {
   dispatch(showLoading());
   dispatch(request(reducerTypes.GET_MINESPACE_USER));
   return CustomAxios()
     .get(ENVIRONMENT.apiUrl + API.MINESPACE_USER, createRequestHeader())
-    .then(response => {
+    .then((response) => {
       dispatch(success(reducerTypes.GET_MINESPACE_USER));
       dispatch(minespaceActions.storeMinespaceUserList(response.data));
     })
@@ -43,16 +39,12 @@ export const fetchMinespaceUsers = () => dispatch => {
     .finally(() => dispatch(hideLoading()));
 };
 
-export const fetchMinespaceUserMines = mine_guids => dispatch => {
+export const fetchMinespaceUserMines = (mine_guids) => (dispatch) => {
   dispatch(showLoading());
   dispatch(request(reducerTypes.GET_MINESPACE_USER_MINES));
   return CustomAxios()
-    .post(
-      ENVIRONMENT.apiUrl + API.MINE_BASIC_INFO_LIST,
-      { mine_guids },
-      createRequestHeader()
-    )
-    .then(response => {
+    .post(ENVIRONMENT.apiUrl + API.MINE_BASIC_INFO_LIST, { mine_guids }, createRequestHeader())
+    .then((response) => {
       dispatch(success(reducerTypes.GET_MINESPACE_USER_MINES));
       dispatch(minespaceActions.storeMinespaceUserMineList(response.data));
     })
@@ -60,14 +52,11 @@ export const fetchMinespaceUserMines = mine_guids => dispatch => {
     .finally(() => dispatch(hideLoading()));
 };
 
-export const deleteMinespaceUser = minespaceUserId => dispatch => {
+export const deleteMinespaceUser = (minespaceUserId) => (dispatch) => {
   dispatch(showLoading());
   dispatch(request(reducerTypes.DELETE_MINESPACE_USER));
   return CustomAxios({ errorToastMessage: String.ERROR })
-    .delete(
-      `${ENVIRONMENT.apiUrl}${API.MINESPACE_USER}/${minespaceUserId}`,
-      createRequestHeader()
-    )
+    .delete(`${ENVIRONMENT.apiUrl}${API.MINESPACE_USER}/${minespaceUserId}`, createRequestHeader())
     .then(() => {
       dispatch(success(reducerTypes.DELETE_MINESPACE_USER));
     })

@@ -14,15 +14,13 @@ export const {
   getAddPartyFormState,
   getLastCreatedParty,
   getInspectors,
-  getInspectorsList
+  getInspectorsList,
 } = partiesReducer;
 
 export const getSummaryPartyRelationships = createSelector(
   [getPartyRelationships],
-  partyRelationships =>
-    partyRelationships.filter(pr =>
-      ["MMG", "PMT"].includes(pr.mine_party_appt_type_code)
-    )
+  (partyRelationships) =>
+    partyRelationships.filter((pr) => ["MMG", "PMT"].includes(pr.mine_party_appt_type_code))
 );
 
 export const getPartyRelationshipTypeHash = createSelector(
@@ -32,26 +30,24 @@ export const getPartyRelationshipTypeHash = createSelector(
 
 export const getDropdownInspectors = createSelector(
   [getInspectors],
-  parties => {
+  (parties) => {
     const activeInspectors = parties
       .filter(
-        inspector =>
-          moment(inspector.expiry_date) >= moment() ||
-          inspector.expiry_date === null
+        (inspector) => moment(inspector.expiry_date) >= moment() || inspector.expiry_date === null
       )
-      .map(inspector => ({
+      .map((inspector) => ({
         value: inspector.party_guid,
-        label: inspector.name
+        label: inspector.name,
       }));
     const inactiveInspectors = parties
-      .filter(inspector => moment(inspector.expiry_date) < moment())
-      .map(inspector => ({
+      .filter((inspector) => moment(inspector.expiry_date) < moment())
+      .map((inspector) => ({
         value: inspector.party_guid,
-        label: inspector.name
+        label: inspector.name,
       }));
     return [
       { groupName: "Active", opt: activeInspectors },
-      { groupName: "Inactive", opt: inactiveInspectors }
+      { groupName: "Inactive", opt: inactiveInspectors },
     ];
   }
 );

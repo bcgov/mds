@@ -47,31 +47,14 @@ exports.loadJS = ({ include, exclude } = {}) => ({
         exclude,
         loader: [
           {
-            loader: "babel-loader",
+            loader: "thread-loader",
             options: {
-              presets: [
-                [
-                  "@babel/preset-env",
-                  {
-                    useBuiltIns: "entry",
-                    corejs: 3,
-                    targets: { node: "current", ie: "8" },
-                  },
-                ],
-                ["@babel/preset-react"],
-              ],
-              plugins: [
-                [
-                  "@babel/transform-runtime",
-                  {
-                    corejs: 3,
-                  },
-                ],
-                ["@babel/plugin-proposal-class-properties"],
-                ["react-hot-loader/babel"],
-              ],
+              workers: 1,
+              workerParallelJobs: 50,
+              workerNodeArgs: ["--max-old-space-size=1024"],
             },
           },
+          "babel-loader?cacheDirectory",
         ],
       },
     ],

@@ -1,4 +1,4 @@
-import authenticationReducer from "@common/reducers/authenticationReducer";
+import { authenticationReducer } from "@common/reducers/authenticationReducer";
 import {
   authenticateUser,
   logoutUser,

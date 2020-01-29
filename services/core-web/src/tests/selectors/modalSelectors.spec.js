@@ -1,5 +1,5 @@
 import { getIsModalOpen, getProps, getContent } from "@common/selectors/modalSelectors";
-import modalReducer from "@common/reducers/modalReducer";
+import { modalReducer } from "@common/reducers/modalReducer";
 import { openModal, closeModal } from "@common/actions/modalActions";
 import { MODAL } from "@/constants/reducerTypes";
 import * as Mock from "@/tests/mocks/dataMocks";

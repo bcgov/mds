@@ -9,19 +9,15 @@ import { ENVIRONMENT } from "../constants/environment";
 import { createRequestHeader } from "../utils/RequestHeaders";
 import CustomAxios from "../customAxios";
 
-export const createPermit = (mineGuid, payload) => dispatch => {
+export const createPermit = (mineGuid, payload) => (dispatch) => {
   dispatch(request(reducerTypes.CREATE_PERMIT));
   dispatch(showLoading("modal"));
   return CustomAxios()
-    .post(
-      ENVIRONMENT.apiUrl + API.PERMITS(mineGuid),
-      payload,
-      createRequestHeader()
-    )
-    .then(response => {
+    .post(ENVIRONMENT.apiUrl + API.PERMITS(mineGuid), payload, createRequestHeader())
+    .then((response) => {
       notification.success({
         message: "Successfully created a new permit",
-        duration: 10
+        duration: 10,
       });
       dispatch(success(reducerTypes.CREATE_PERMIT));
       return response;
@@ -30,12 +26,12 @@ export const createPermit = (mineGuid, payload) => dispatch => {
     .finally(() => dispatch(hideLoading("modal")));
 };
 
-export const fetchPermits = mineGuid => dispatch => {
+export const fetchPermits = (mineGuid) => (dispatch) => {
   dispatch(request(reducerTypes.GET_PERMITS));
   dispatch(showLoading("modal"));
   return CustomAxios({ errorToastMessage: String.ERROR })
     .get(ENVIRONMENT.apiUrl + API.PERMITS(mineGuid), createRequestHeader())
-    .then(response => {
+    .then((response) => {
       dispatch(success(reducerTypes.GET_PERMITS));
       dispatch(permitActions.storePermits(response.data));
     })
@@ -43,7 +39,7 @@ export const fetchPermits = mineGuid => dispatch => {
     .finally(() => dispatch(hideLoading("modal")));
 };
 
-export const updatePermit = (mineGuid, permitGuid, payload) => dispatch => {
+export const updatePermit = (mineGuid, permitGuid, payload) => (dispatch) => {
   dispatch(request(reducerTypes.UPDATE_PERMIT));
   dispatch(showLoading());
   return CustomAxios()
@@ -52,10 +48,10 @@ export const updatePermit = (mineGuid, permitGuid, payload) => dispatch => {
       payload,
       createRequestHeader()
     )
-    .then(response => {
+    .then((response) => {
       notification.success({
         message: `Successfully updated permit`,
-        duration: 10
+        duration: 10,
       });
       dispatch(success(reducerTypes.UPDATE_PERMIT));
       return response;
@@ -64,11 +60,7 @@ export const updatePermit = (mineGuid, permitGuid, payload) => dispatch => {
     .finally(() => dispatch(hideLoading()));
 };
 
-export const createPermitAmendment = (
-  mineGuid,
-  permitGuid,
-  payload
-) => dispatch => {
+export const createPermitAmendment = (mineGuid, permitGuid, payload) => (dispatch) => {
   dispatch(request(reducerTypes.CREATE_PERMIT_AMENDMENT));
   dispatch(showLoading("modal"));
   return CustomAxios()
@@ -77,10 +69,10 @@ export const createPermitAmendment = (
       payload,
       createRequestHeader()
     )
-    .then(response => {
+    .then((response) => {
       notification.success({
         message: "Successfully created a new amendment",
-        duration: 10
+        duration: 10,
       });
       dispatch(success(reducerTypes.CREATE_PERMIT_AMENDMENT));
       return response;
@@ -89,28 +81,21 @@ export const createPermitAmendment = (
     .finally(() => dispatch(hideLoading("modal")));
 };
 
-export const updatePermitAmendment = (
-  mineGuid,
-  permitGuid,
-  permitAmdendmentGuid,
-  payload
-) => dispatch => {
+export const updatePermitAmendment = (mineGuid, permitGuid, permitAmdendmentGuid, payload) => (
+  dispatch
+) => {
   dispatch(request(reducerTypes.UPDATE_PERMIT_AMENDMENT));
   dispatch(showLoading());
   return CustomAxios()
     .put(
-      `${ENVIRONMENT.apiUrl}${API.PERMITAMENDMENT(
-        mineGuid,
-        permitGuid,
-        permitAmdendmentGuid
-      )}`,
+      `${ENVIRONMENT.apiUrl}${API.PERMITAMENDMENT(mineGuid, permitGuid, permitAmdendmentGuid)}`,
       payload,
       createRequestHeader()
     )
-    .then(response => {
+    .then((response) => {
       notification.success({
         message: `Successfully updated permit amendment`,
-        duration: 10
+        duration: 10,
       });
       dispatch(success(reducerTypes.UPDATE_PERMIT_AMENDMENT));
       return response;
@@ -124,7 +109,7 @@ export const removePermitAmendmentDocument = (
   permitGuid,
   permitAmdendmentGuid,
   documentGuid
-) => dispatch => {
+) => (dispatch) => {
   dispatch(request(reducerTypes.UPDATE_PERMIT_AMENDMENT_DOCUMENT));
   dispatch(showLoading());
   return CustomAxios()
@@ -137,10 +122,10 @@ export const removePermitAmendmentDocument = (
       )}`,
       createRequestHeader()
     )
-    .then(response => {
+    .then((response) => {
       notification.success({
         message: `Successfully removed attached document`,
-        duration: 10
+        duration: 10,
       });
       dispatch(success(reducerTypes.UPDATE_PERMIT_AMENDMENT_DOCUMENT));
       return response;

@@ -6,16 +6,16 @@
 
 import * as actionTypes from "../constants/actionTypes";
 
-export const openModal = payload => ({
+export const openModal = (payload) => ({
   type: actionTypes.OPEN_MODAL,
-  payload
+  payload,
 });
 
 export const closeModal = () => ({
-  type: actionTypes.CLOSE_MODAL
+  type: actionTypes.CLOSE_MODAL,
 });
 
-export const changeModalTitle = payload => ({
+export const changeModalTitle = (payload) => ({
   type: actionTypes.UPDATE_MODAL_TITLE,
-  payload
+  payload,
 });

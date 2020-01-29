@@ -3,7 +3,7 @@ import {
   getNoticeOfWork,
   getOriginalNoticeOfWork,
 } from "@common/selectors/noticeOfWorkSelectors";
-import noticeOfWorkReducer from "@common/reducers/noticeOfWorkReducer";
+import { noticeOfWorkReducer } from "@common/reducers/noticeOfWorkReducer";
 import {
   storeNoticeOfWorkApplications,
   storeNoticeOfWorkApplication,

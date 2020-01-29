@@ -10,31 +10,31 @@ const initialState = {
   searchOptions: [],
   searchResults: [],
   searchBarResults: [],
-  searchTerms: []
+  searchTerms: [],
 };
 
-const searchReducer = (state = initialState, action) => {
+export const searchReducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.STORE_SEARCH_OPTIONS:
       return {
         ...state,
-        searchOptions: action.payload
+        searchOptions: action.payload,
       };
     case actionTypes.STORE_SEARCH_RESULTS:
       return {
         ...state,
         searchResults: action.payload.search_results,
-        searchTerms: action.payload.search_terms
+        searchTerms: action.payload.search_terms,
       };
     case actionTypes.STORE_SEARCH_BAR_RESULTS:
       return {
         ...state,
-        searchBarResults: action.payload.search_results
+        searchBarResults: action.payload.search_results,
       };
     case actionTypes.CLEAR_SEARCH_BAR_RESULTS:
       return {
         ...state,
-        searchBarResults: []
+        searchBarResults: [],
       };
     default:
       return state;
@@ -42,12 +42,12 @@ const searchReducer = (state = initialState, action) => {
 };
 
 const searchReducerObject = {
-  [SEARCH]: searchReducer
+  [SEARCH]: searchReducer,
 };
 
-export const getSearchOptions = state => state[SEARCH].searchOptions;
-export const getSearchResults = state => state[SEARCH].searchResults;
-export const getSearchBarResults = state => state[SEARCH].searchBarResults;
-export const getSearchTerms = state => state[SEARCH].searchTerms;
+export const getSearchOptions = (state) => state[SEARCH].searchOptions;
+export const getSearchResults = (state) => state[SEARCH].searchResults;
+export const getSearchBarResults = (state) => state[SEARCH].searchBarResults;
+export const getSearchTerms = (state) => state[SEARCH].searchTerms;
 
 export default searchReducerObject;

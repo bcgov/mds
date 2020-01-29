@@ -1,4 +1,4 @@
-import complianceReducer from "@common/reducers/complianceReducer";
+import { complianceReducer } from "@common/reducers/complianceReducer";
 import { storeMineComplianceInfo } from "@common/actions/complianceActions";
 
 const baseExpectedValue = {

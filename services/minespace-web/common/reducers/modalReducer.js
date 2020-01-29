@@ -7,10 +7,10 @@ const initialState = {
   content: null,
   clearOnSubmit: true,
   widthSize: 810,
-  isViewOnly: false
+  isViewOnly: false,
 };
 
-const modalReducer = (state = initialState, action) => {
+export const modalReducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.OPEN_MODAL:
       const {
@@ -18,7 +18,7 @@ const modalReducer = (state = initialState, action) => {
         content,
         widthSize = initialState.widthSize,
         isViewOnly = initialState.isViewOnly,
-        clearOnSubmit = initialState.clearOnSubmit
+        clearOnSubmit = initialState.clearOnSubmit,
       } = action.payload;
       return {
         ...state,
@@ -27,20 +27,20 @@ const modalReducer = (state = initialState, action) => {
         content,
         widthSize,
         isViewOnly,
-        clearOnSubmit
+        clearOnSubmit,
       };
     case actionTypes.CLOSE_MODAL:
       return {
         ...state,
-        ...initialState
+        ...initialState,
       };
     case actionTypes.UPDATE_MODAL_TITLE:
       return {
         ...state,
         props: {
           ...state.props,
-          title: action.payload
-        }
+          title: action.payload,
+        },
       };
     default:
       return state;
@@ -48,14 +48,14 @@ const modalReducer = (state = initialState, action) => {
 };
 
 const modalReducerObject = {
-  [MODAL]: modalReducer
+  [MODAL]: modalReducer,
 };
 
-export const getIsModalOpen = state => state[MODAL].isModalOpen;
-export const getProps = state => state[MODAL].props;
-export const getContent = state => state[MODAL].content;
-export const getWidthSize = state => state[MODAL].widthSize;
-export const getIsViewOnly = state => state[MODAL].isViewOnly;
-export const getClearOnSubmit = state => state[MODAL].clearOnSubmit;
+export const getIsModalOpen = (state) => state[MODAL].isModalOpen;
+export const getProps = (state) => state[MODAL].props;
+export const getContent = (state) => state[MODAL].content;
+export const getWidthSize = (state) => state[MODAL].widthSize;
+export const getIsViewOnly = (state) => state[MODAL].isViewOnly;
+export const getClearOnSubmit = (state) => state[MODAL].clearOnSubmit;
 
 export default modalReducerObject;

@@ -1,4 +1,4 @@
-import staticContentReducer from "@common/reducers/staticContentReducer";
+import { staticContentReducer } from "@common/reducers/staticContentReducer";
 import {
   storeStatusOptions,
   storeRegionOptions,

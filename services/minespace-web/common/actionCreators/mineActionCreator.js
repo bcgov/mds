@@ -9,24 +9,24 @@ import { ENVIRONMENT } from "../constants/environment";
 import { createRequestHeader } from "../utils/RequestHeaders";
 import CustomAxios from "../customAxios";
 
-const handleError = (dispatch, reducer) => err => {
+const handleError = (dispatch, reducer) => (err) => {
   notification.error({
     message: err.response ? err.response.data.message : String.ERROR,
-    duration: 10
+    duration: 10,
   });
   dispatch(error(reducer));
   dispatch(hideLoading("modal"));
 };
 
-export const createMineRecord = payload => dispatch => {
+export const createMineRecord = (payload) => (dispatch) => {
   dispatch(request(reducerTypes.CREATE_MINE_RECORD));
   dispatch(showLoading("modal"));
   return CustomAxios()
     .post(ENVIRONMENT.apiUrl + API.MINE, payload, createRequestHeader())
-    .then(response => {
+    .then((response) => {
       notification.success({
         message: `Successfully created: ${payload.mine_name}`,
-        duration: 10
+        duration: 10,
       });
       dispatch(success(reducerTypes.CREATE_MINE_RECORD));
       return response;
@@ -35,19 +35,15 @@ export const createMineRecord = payload => dispatch => {
     .finally(() => dispatch(hideLoading("modal")));
 };
 
-export const updateMineRecord = (id, payload, mineName) => dispatch => {
+export const updateMineRecord = (id, payload, mineName) => (dispatch) => {
   dispatch(request(reducerTypes.UPDATE_MINE_RECORD));
   dispatch(showLoading("modal"));
   return CustomAxios()
-    .put(
-      `${ENVIRONMENT.apiUrl + API.MINE}/${id}`,
-      payload,
-      createRequestHeader()
-    )
-    .then(response => {
+    .put(`${ENVIRONMENT.apiUrl + API.MINE}/${id}`, payload, createRequestHeader())
+    .then((response) => {
       notification.success({
         message: `Successfully updated: ${mineName}`,
-        duration: 10
+        duration: 10,
       });
       dispatch(success(reducerTypes.UPDATE_MINE_RECORD));
       return response;
@@ -56,22 +52,18 @@ export const updateMineRecord = (id, payload, mineName) => dispatch => {
     .finally(() => dispatch(hideLoading("modal")));
 };
 
-export const createMineTypes = (mineGuid, mineTypes) => dispatch => {
+export const createMineTypes = (mineGuid, mineTypes) => (dispatch) => {
   dispatch(request(reducerTypes.CREATE_MINE_TYPE));
   if (mineTypes === undefined) return Promise.resolve([]);
-  const mineTypeResponses = mineTypes.map(mineType =>
+  const mineTypeResponses = mineTypes.map((mineType) =>
     CustomAxios()
-      .post(
-        `${ENVIRONMENT.apiUrl}${API.MINE_TYPES(mineGuid)}`,
-        mineType,
-        createRequestHeader()
-      )
+      .post(`${ENVIRONMENT.apiUrl}${API.MINE_TYPES(mineGuid)}`, mineType, createRequestHeader())
       .catch(handleError(dispatch, reducerTypes.CREATE_MINE_TYPE))
   );
   return Promise.all(mineTypeResponses);
 };
 
-export const removeMineType = (mineGuid, mineTypeGuid, tenure) => dispatch => {
+export const removeMineType = (mineGuid, mineTypeGuid, tenure) => (dispatch) => {
   dispatch(request(reducerTypes.REMOVE_MINE_TYPE));
   dispatch(showLoading("modal"));
   return CustomAxios()
@@ -82,7 +74,7 @@ export const removeMineType = (mineGuid, mineTypeGuid, tenure) => dispatch => {
     .then(() => {
       notification.success({
         message: `Successfully removed Tenure: ${tenure}`,
-        duration: 10
+        duration: 10,
       });
       dispatch(success(reducerTypes.REMOVE_MINE_TYPE));
     })
@@ -90,22 +82,15 @@ export const removeMineType = (mineGuid, mineTypeGuid, tenure) => dispatch => {
     .finally(() => dispatch(hideLoading("modal")));
 };
 
-export const createTailingsStorageFacility = (
-  mine_guid,
-  payload
-) => dispatch => {
+export const createTailingsStorageFacility = (mine_guid, payload) => (dispatch) => {
   dispatch(request(reducerTypes.CREATE_TSF));
   dispatch(showLoading("modal"));
   return CustomAxios()
-    .post(
-      ENVIRONMENT.apiUrl + API.MINE_TSF(mine_guid),
-      payload,
-      createRequestHeader()
-    )
-    .then(response => {
+    .post(ENVIRONMENT.apiUrl + API.MINE_TSF(mine_guid), payload, createRequestHeader())
+    .then((response) => {
       notification.success({
         message: "Successfully added the TSF.",
-        duration: 10
+        duration: 10,
       });
       dispatch(success(reducerTypes.CREATE_TSF));
       return response;
@@ -114,16 +99,13 @@ export const createTailingsStorageFacility = (
     .finally(() => dispatch(hideLoading("modal")));
 };
 
-export const fetchMineRecords = params => dispatch => {
+export const fetchMineRecords = (params) => (dispatch) => {
   const defaultParams = params || String.DEFAULT_DASHBOARD_PARAMS;
   dispatch(request(reducerTypes.GET_MINE_RECORDS));
   dispatch(showLoading());
   return CustomAxios()
-    .get(
-      ENVIRONMENT.apiUrl + API.MINE_LIST_QUERY(defaultParams),
-      createRequestHeader()
-    )
-    .then(response => {
+    .get(ENVIRONMENT.apiUrl + API.MINE_LIST_QUERY(defaultParams), createRequestHeader())
+    .then((response) => {
       dispatch(success(reducerTypes.GET_MINE_RECORDS));
       dispatch(mineActions.storeMineList(response.data));
       return response;
@@ -132,12 +114,12 @@ export const fetchMineRecords = params => dispatch => {
     .finally(() => dispatch(hideLoading()));
 };
 
-export const fetchMineRecordsForMap = () => dispatch => {
+export const fetchMineRecordsForMap = () => (dispatch) => {
   dispatch(request(reducerTypes.GET_MINE_RECORDS));
   dispatch(showLoading());
   return CustomAxios()
     .get(ENVIRONMENT.apiUrl + API.MINE_MAP_LIST, createRequestHeader())
-    .then(response => {
+    .then((response) => {
       dispatch(success(reducerTypes.GET_MINE_RECORDS));
       dispatch(mineActions.storeMineList(response.data));
       dispatch(hideLoading());
@@ -147,12 +129,12 @@ export const fetchMineRecordsForMap = () => dispatch => {
     .finally(() => dispatch(hideLoading()));
 };
 
-export const fetchMineRecordById = mineNo => dispatch => {
+export const fetchMineRecordById = (mineNo) => (dispatch) => {
   dispatch(showLoading());
   dispatch(request(reducerTypes.GET_MINE_RECORD));
   return CustomAxios()
     .get(`${ENVIRONMENT.apiUrl + API.MINE}/${mineNo}`, createRequestHeader())
-    .then(response => {
+    .then((response) => {
       dispatch(success(reducerTypes.GET_MINE_RECORD));
       dispatch(mineActions.storeMine(response.data, mineNo));
       return response;
@@ -161,12 +143,12 @@ export const fetchMineRecordById = mineNo => dispatch => {
     .finally(() => dispatch(hideLoading()));
 };
 
-export const fetchMineNameList = (params = {}) => dispatch => {
+export const fetchMineNameList = (params = {}) => (dispatch) => {
   dispatch(showLoading());
   dispatch(request(reducerTypes.GET_MINE_NAME_LIST));
   return CustomAxios()
     .get(ENVIRONMENT.apiUrl + API.MINE_NAME_LIST(params), createRequestHeader())
-    .then(response => {
+    .then((response) => {
       dispatch(success(reducerTypes.GET_MINE_NAME_LIST));
       dispatch(mineActions.storeMineNameList(response.data));
     })
@@ -174,16 +156,12 @@ export const fetchMineNameList = (params = {}) => dispatch => {
     .finally(() => dispatch(hideLoading()));
 };
 
-export const fetchMineBasicInfoList = mine_guids => dispatch => {
+export const fetchMineBasicInfoList = (mine_guids) => (dispatch) => {
   dispatch(showLoading());
   dispatch(request(reducerTypes.GET_MINE_BASIC_INFO_LIST));
   return CustomAxios()
-    .post(
-      ENVIRONMENT.apiUrl + API.MINE_BASIC_INFO_LIST,
-      { mine_guids },
-      createRequestHeader()
-    )
-    .then(response => {
+    .post(ENVIRONMENT.apiUrl + API.MINE_BASIC_INFO_LIST, { mine_guids }, createRequestHeader())
+    .then((response) => {
       dispatch(success(reducerTypes.GET_MINE_BASIC_INFO_LIST));
       dispatch(mineActions.storeMineBasicInfoList(response.data));
     })
@@ -191,15 +169,12 @@ export const fetchMineBasicInfoList = mine_guids => dispatch => {
     .finally(() => dispatch(hideLoading()));
 };
 
-export const fetchMineDocuments = mineGuid => dispatch => {
+export const fetchMineDocuments = (mineGuid) => (dispatch) => {
   dispatch(request(reducerTypes.GET_MINE_DOCUMENTS));
   dispatch(showLoading());
   return CustomAxios()
-    .get(
-      `${ENVIRONMENT.apiUrl}${API.MINE_DOCUMENTS(mineGuid)}`,
-      createRequestHeader()
-    )
-    .then(response => {
+    .get(`${ENVIRONMENT.apiUrl}${API.MINE_DOCUMENTS(mineGuid)}`, createRequestHeader())
+    .then((response) => {
       dispatch(success(reducerTypes.GET_MINE_DOCUMENTS));
       dispatch(mineActions.storeMineDocuments(response.data));
       return response;
@@ -209,21 +184,16 @@ export const fetchMineDocuments = mineGuid => dispatch => {
 };
 
 // MineVerifcationStatus
-export const fetchMineVerifiedStatuses = user_id => dispatch => {
+export const fetchMineVerifiedStatuses = (user_id) => (dispatch) => {
   const params = user_id ? { user_id } : null;
   dispatch(request(reducerTypes.GET_MINE_VERIFIED_STATUS));
   dispatch(showLoading());
   return CustomAxios()
-    .get(
-      `${ENVIRONMENT.apiUrl}${API.MINE_VERIFIED_STATUSES(params)}`,
-      createRequestHeader()
-    )
-    .then(response => {
+    .get(`${ENVIRONMENT.apiUrl}${API.MINE_VERIFIED_STATUSES(params)}`, createRequestHeader())
+    .then((response) => {
       dispatch(success(reducerTypes.GET_MINE_VERIFIED_STATUS));
       if (params) {
-        dispatch(
-          mineActions.storeCurrentUserMineVerifiedStatuses(response.data)
-        );
+        dispatch(mineActions.storeCurrentUserMineVerifiedStatuses(response.data));
       }
       return response;
     })
@@ -231,7 +201,7 @@ export const fetchMineVerifiedStatuses = user_id => dispatch => {
     .finally(() => dispatch(hideLoading()));
 };
 
-export const setMineVerifiedStatus = (mine_guid, payload) => dispatch => {
+export const setMineVerifiedStatus = (mine_guid, payload) => (dispatch) => {
   dispatch(request(reducerTypes.SET_MINE_VERIFIED_STATUS));
   return CustomAxios()
     .put(
@@ -239,7 +209,7 @@ export const setMineVerifiedStatus = (mine_guid, payload) => dispatch => {
       payload,
       createRequestHeader()
     )
-    .then(response => {
+    .then((response) => {
       dispatch(success(reducerTypes.SET_MINE_VERIFIED_STATUS));
       return response;
     })
@@ -247,19 +217,15 @@ export const setMineVerifiedStatus = (mine_guid, payload) => dispatch => {
 };
 
 // mine subscription
-export const subscribe = (mineGuid, mineName) => dispatch => {
+export const subscribe = (mineGuid, mineName) => (dispatch) => {
   dispatch(request(reducerTypes.SUBSCRIBE));
   dispatch(showLoading());
   return CustomAxios()
-    .post(
-      ENVIRONMENT.apiUrl + API.SUBSCRIPTION(mineGuid),
-      {},
-      createRequestHeader()
-    )
+    .post(ENVIRONMENT.apiUrl + API.SUBSCRIPTION(mineGuid), {}, createRequestHeader())
     .then(() => {
       notification.success({
         message: `Successfully subscribed ${mineName}`,
-        duration: 10
+        duration: 10,
       });
       dispatch(success(reducerTypes.SUBSCRIBE));
     })
@@ -267,18 +233,15 @@ export const subscribe = (mineGuid, mineName) => dispatch => {
     .finally(() => dispatch(hideLoading()));
 };
 
-export const unSubscribe = (mineGuid, mineName) => dispatch => {
+export const unSubscribe = (mineGuid, mineName) => (dispatch) => {
   dispatch(request(reducerTypes.UNSUBSCRIBE));
   dispatch(showLoading());
   return CustomAxios()
-    .delete(
-      ENVIRONMENT.apiUrl + API.SUBSCRIPTION(mineGuid),
-      createRequestHeader()
-    )
+    .delete(ENVIRONMENT.apiUrl + API.SUBSCRIPTION(mineGuid), createRequestHeader())
     .then(() => {
       notification.success({
         message: `Successfully unsubscribed ${mineName}`,
-        duration: 10
+        duration: 10,
       });
       dispatch(success(reducerTypes.UNSUBSCRIBE));
     })
@@ -286,12 +249,12 @@ export const unSubscribe = (mineGuid, mineName) => dispatch => {
     .finally(() => dispatch(hideLoading()));
 };
 
-export const fetchSubscribedMinesByUser = () => dispatch => {
+export const fetchSubscribedMinesByUser = () => (dispatch) => {
   dispatch(request(reducerTypes.GET_SUBSCRIBED_MINES));
   dispatch(showLoading());
   return CustomAxios()
     .get(ENVIRONMENT.apiUrl + API.MINE_SUBSCRIPTION, createRequestHeader())
-    .then(response => {
+    .then((response) => {
       dispatch(success(reducerTypes.GET_SUBSCRIBED_MINES));
       dispatch(mineActions.storeSubscribedMines(response.data));
       return response;

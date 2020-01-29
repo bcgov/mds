@@ -8,17 +8,17 @@ import { ENVIRONMENT } from "../constants/environment";
 import { createRequestHeader } from "../utils/RequestHeaders";
 import CustomAxios from "../customAxios";
 
-export const deleteMineReport = (mineGuid, mineReportGuid) => dispatch => {
+export const deleteMineReport = (mineGuid, mineReportGuid) => (dispatch) => {
   dispatch(request(reducerTypes.DELETE_MINE_REPORT));
   return CustomAxios()
     .delete(
       `${ENVIRONMENT.apiUrl}${API.MINE_REPORT(mineGuid, mineReportGuid)}`,
       createRequestHeader()
     )
-    .then(response => {
+    .then((response) => {
       notification.success({
         message: "Successfully removed the report.",
-        duration: 10
+        duration: 10,
       });
       dispatch(success(reducerTypes.DELETE_MINE_REPORT));
       return response;
@@ -26,18 +26,14 @@ export const deleteMineReport = (mineGuid, mineReportGuid) => dispatch => {
     .catch(() => dispatch(error(reducerTypes.DELETE_MINE_REPORT)));
 };
 
-export const createMineReport = (mineGuid, payload) => dispatch => {
+export const createMineReport = (mineGuid, payload) => (dispatch) => {
   dispatch(request(reducerTypes.CREATE_MINE_REPORT));
   return CustomAxios()
-    .post(
-      `${ENVIRONMENT.apiUrl}${API.MINE_REPORTS(mineGuid)}`,
-      payload,
-      createRequestHeader()
-    )
-    .then(response => {
+    .post(`${ENVIRONMENT.apiUrl}${API.MINE_REPORTS(mineGuid)}`, payload, createRequestHeader())
+    .then((response) => {
       notification.success({
         message: "Successfully created report.",
-        duration: 10
+        duration: 10,
       });
       dispatch(success(reducerTypes.CREATE_MINE_REPORT));
       return response;
@@ -45,15 +41,12 @@ export const createMineReport = (mineGuid, payload) => dispatch => {
     .catch(() => dispatch(error(reducerTypes.CREATE_MINE_REPORT)));
 };
 
-export const fetchMineReports = mineGuid => dispatch => {
+export const fetchMineReports = (mineGuid) => (dispatch) => {
   dispatch(request(reducerTypes.GET_MINE_REPORTS));
   dispatch(showLoading());
   return CustomAxios()
-    .get(
-      `${ENVIRONMENT.apiUrl}${API.MINE_REPORTS(mineGuid)}`,
-      createRequestHeader()
-    )
-    .then(response => {
+    .get(`${ENVIRONMENT.apiUrl}${API.MINE_REPORTS(mineGuid)}`, createRequestHeader())
+    .then((response) => {
       dispatch(success(reducerTypes.GET_MINE_REPORTS));
       dispatch(mineReportActions.storeMineReports(response.data));
       return response;
@@ -62,11 +55,7 @@ export const fetchMineReports = mineGuid => dispatch => {
     .finally(() => dispatch(hideLoading()));
 };
 
-export const updateMineReport = (
-  mineGuid,
-  mineReportGuid,
-  payload
-) => dispatch => {
+export const updateMineReport = (mineGuid, mineReportGuid, payload) => (dispatch) => {
   dispatch(request(reducerTypes.UPDATE_MINE_REPORT));
   return CustomAxios()
     .put(
@@ -74,10 +63,10 @@ export const updateMineReport = (
       payload,
       createRequestHeader()
     )
-    .then(response => {
+    .then((response) => {
       notification.success({
         message: "Successfully updated report.",
-        duration: 10
+        duration: 10,
       });
       dispatch(success(reducerTypes.UPDATE_MINE_REPORT));
       return response;

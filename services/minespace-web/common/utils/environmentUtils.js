@@ -24,27 +24,19 @@ export const detectIE = () => {
   const msie = userAgent.indexOf("MSIE ");
   if (msie > 0) {
     // IE 10 or older => return version number
-    return parseInt(
-      userAgent.substring(msie + 5, userAgent.indexOf(".", msie)),
-      10
-    );
+    return parseInt(userAgent.substring(msie + 5, userAgent.indexOf(".", msie)), 10);
   }
 
   const trident = userAgent.indexOf("Trident/");
   if (trident > 0) {
     // IE 11 => return version number
     const rv = userAgent.indexOf("rv:");
-    return parseInt(
-      userAgent.substring(rv + 3, userAgent.indexOf(".", rv)),
-      10
-    );
+    return parseInt(userAgent.substring(rv + 3, userAgent.indexOf(".", rv)), 10);
   }
   // other browser
   return false;
 };
 
 export const detectTestEnvironment = () => ENVIRONMENT.environment === "test";
-export const detectProdEnvironment = () =>
-  ENVIRONMENT.environment === "production";
-export const detectDevelopmentEnvironment = () =>
-  ENVIRONMENT.environment === "development";
+export const detectProdEnvironment = () => ENVIRONMENT.environment === "production";
+export const detectDevelopmentEnvironment = () => ENVIRONMENT.environment === "development";

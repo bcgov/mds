@@ -37,7 +37,7 @@ import {
   getNoticeOfWorkApplicationPermitTypeOptions,
   getDropdownNoticeOfWorkApplicationPermitTypeOptions,
 } from "@common/selectors/staticContentSelectors";
-import staticContentReducer from "@common/reducers/staticContentReducer";
+import { staticContentReducer } from "@common/reducers/staticContentReducer";
 import {
   storeStatusOptions,
   storeRegionOptions,

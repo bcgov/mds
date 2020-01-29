@@ -4,21 +4,21 @@ import { VARIANCES } from "@/constants/reducerTypes";
 const initialState = {
   variances: [],
   variance: {},
-  variancePageData: {}
+  variancePageData: {},
 };
 
-const varianceReducer = (state = initialState, action) => {
+export const varianceReducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.STORE_VARIANCES:
       return {
         ...state,
         variances: action.payload.records,
-        variancePageData: action.payload
+        variancePageData: action.payload,
       };
     case actionTypes.STORE_VARIANCE:
       return {
         ...state,
-        variance: action.payload
+        variance: action.payload,
       };
     default:
       return state;
@@ -26,11 +26,11 @@ const varianceReducer = (state = initialState, action) => {
 };
 
 const varianceReducerObject = {
-  [VARIANCES]: varianceReducer
+  [VARIANCES]: varianceReducer,
 };
 
-export const getVariances = state => state[VARIANCES].variances;
-export const getVariance = state => state[VARIANCES].variance;
-export const getVariancePageData = state => state[VARIANCES].variancePageData;
+export const getVariances = (state) => state[VARIANCES].variances;
+export const getVariance = (state) => state[VARIANCES].variance;
+export const getVariancePageData = (state) => state[VARIANCES].variancePageData;
 
 export default varianceReducerObject;

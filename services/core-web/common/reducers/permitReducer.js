@@ -5,7 +5,7 @@ const initialState = {
   permits: [],
 };
 
-const permitReducer = (state = initialState, action) => {
+export const permitReducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.STORE_PERMITS:
       return {

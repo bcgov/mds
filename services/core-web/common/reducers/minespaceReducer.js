@@ -6,7 +6,7 @@ const initialState = {
   minespaceUserMines: [],
 };
 
-const minespaceReducer = (state = initialState, action) => {
+export const minespaceReducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.STORE_MINESPACE_USERS:
       return {

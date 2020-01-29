@@ -1,4 +1,4 @@
-import mineReducer from "@common/reducers/mineReducer";
+import { mineReducer } from "@common/reducers/mineReducer";
 import {
   storeMine,
   storeMineList,

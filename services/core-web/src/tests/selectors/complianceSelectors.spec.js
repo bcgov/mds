@@ -1,5 +1,5 @@
 import { getMineComplianceInfo } from "@common/selectors/complianceSelectors";
-import complianceReducer from "@common/reducers/complianceReducer";
+import { complianceReducer } from "@common/reducers/complianceReducer";
 import { storeMineComplianceInfo } from "@common/actions/complianceActions";
 import { COMPLIANCE } from "@/constants/reducerTypes";
 import * as Mock from "@/tests/mocks/dataMocks";

@@ -9,18 +9,14 @@ import { ENVIRONMENT } from "../constants/environment";
 import { createRequestHeader } from "../utils/RequestHeaders";
 import CustomAxios from "../customAxios";
 
-export const createMineIncident = (mine_guid, payload) => dispatch => {
+export const createMineIncident = (mine_guid, payload) => (dispatch) => {
   dispatch(request(reducerTypes.CREATE_MINE_INCIDENT));
   return CustomAxios()
-    .post(
-      `${ENVIRONMENT.apiUrl}${API.MINE_INCIDENTS(mine_guid)}`,
-      payload,
-      createRequestHeader()
-    )
-    .then(response => {
+    .post(`${ENVIRONMENT.apiUrl}${API.MINE_INCIDENTS(mine_guid)}`, payload, createRequestHeader())
+    .then((response) => {
       notification.success({
         message: "Successfully created incident.",
-        duration: 10
+        duration: 10,
       });
       dispatch(success(reducerTypes.CREATE_MINE_INCIDENT));
       return response;
@@ -28,15 +24,12 @@ export const createMineIncident = (mine_guid, payload) => dispatch => {
     .catch(() => dispatch(error(reducerTypes.CREATE_MINE_INCIDENT)));
 };
 
-export const fetchMineIncidents = mine_guid => dispatch => {
+export const fetchMineIncidents = (mine_guid) => (dispatch) => {
   dispatch(request(reducerTypes.GET_MINE_INCIDENTS));
   dispatch(showLoading());
   return CustomAxios()
-    .get(
-      `${ENVIRONMENT.apiUrl}${API.MINE_INCIDENTS(mine_guid)}`,
-      createRequestHeader()
-    )
-    .then(response => {
+    .get(`${ENVIRONMENT.apiUrl}${API.MINE_INCIDENTS(mine_guid)}`, createRequestHeader())
+    .then((response) => {
       dispatch(success(reducerTypes.GET_MINE_INCIDENTS));
       dispatch(incidentActions.storeMineIncidents(response.data));
       return response;
@@ -45,11 +38,7 @@ export const fetchMineIncidents = mine_guid => dispatch => {
     .finally(() => dispatch(hideLoading()));
 };
 
-export const updateMineIncident = (
-  mineGuid,
-  mineIncidentGuid,
-  payload
-) => dispatch => {
+export const updateMineIncident = (mineGuid, mineIncidentGuid, payload) => (dispatch) => {
   dispatch(request(reducerTypes.UPDATE_MINE_INCIDENT));
   return CustomAxios()
     .put(
@@ -57,10 +46,10 @@ export const updateMineIncident = (
       payload,
       createRequestHeader()
     )
-    .then(response => {
+    .then((response) => {
       notification.success({
         message: "Successfully updated incident.",
-        duration: 10
+        duration: 10,
       });
       dispatch(success(reducerTypes.UPDATE_MINE_INCIDENT));
       return response;
@@ -68,12 +57,12 @@ export const updateMineIncident = (
     .catch(() => dispatch(error(reducerTypes.UPDATE_MINE_INCIDENT)));
 };
 
-export const fetchIncidents = payload => dispatch => {
+export const fetchIncidents = (payload) => (dispatch) => {
   dispatch(request(reducerTypes.GET_INCIDENTS));
   dispatch(showLoading());
   return CustomAxios({ errorToastMessage: Strings.ERROR })
     .get(ENVIRONMENT.apiUrl + API.INCIDENTS(payload), createRequestHeader())
-    .then(response => {
+    .then((response) => {
       dispatch(success(reducerTypes.GET_INCIDENTS));
       dispatch(incidentActions.storeIncidents(response.data));
     })

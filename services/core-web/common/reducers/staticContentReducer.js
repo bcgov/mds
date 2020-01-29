@@ -33,7 +33,7 @@ const initialState = {
   noticeOfWorkApplicationPermitTypeOptions: [],
   noticeOfWorkApplicationReviewOptions: [],
 };
-const staticContentReducer = (state = initialState, action) => {
+export const staticContentReducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.STORE_STATUS_OPTIONS:
       return {

@@ -1,6 +1,6 @@
 import { getMineIncidents, getIncidents } from "@common/selectors/incidentSelectors";
 import { storeMineIncidents, storeIncidents } from "@common/actions/incidentActions";
-import incidentReducer from "@common/reducers/incidentReducer";
+import { incidentReducer } from "@common/reducers/incidentReducer";
 import { INCIDENTS } from "@/constants/reducerTypes";
 import * as Mock from "@/tests/mocks/dataMocks";
 

@@ -10,7 +10,7 @@ const initialState = {
   mineComplianceInfo: {},
 };
 
-const complianceReducer = (state = initialState, action) => {
+export const complianceReducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.STORE_MINE_COMPLIANCE_INFO:
       return {

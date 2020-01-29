@@ -1,7 +1,7 @@
 import { isEmpty } from "lodash";
 import { createSelector } from "reselect";
 import * as noticeOfWorkReducer from "../reducers/noticeOfWorkReducer";
-import { getDropdownNoticeOfWorkActivityTypeOptions } from "../selectors/staticContentSelectors";
+import { getDropdownNoticeOfWorkActivityTypeOptions } from "./staticContentSelectors";
 
 export const {
   getNoticeOfWorkList,
@@ -9,7 +9,7 @@ export const {
   getNoticeOfWork,
   getOriginalNoticeOfWork,
   getNoticeOfWorkReviews,
-  getDocumentDownloadState
+  getDocumentDownloadState,
 } = noticeOfWorkReducer;
 
 export const getNOWReclamationSummary = createSelector(
@@ -32,7 +32,7 @@ export const getNOWReclamationSummary = createSelector(
               : "0.00",
             cost: noticeOfWork[value].reclamation_cost
               ? noticeOfWork[value].reclamation_cost
-              : "0.00"
+              : "0.00",
           });
         }
       });

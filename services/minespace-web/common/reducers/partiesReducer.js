@@ -1,10 +1,6 @@
 import * as actionTypes from "../constants/actionTypes";
 import { PARTIES } from "../constants/reducerTypes";
-import {
-  createItemMap,
-  createItemIdsArray,
-  createDropDownList
-} from "../utils/helpers";
+import { createItemMap, createItemIdsArray, createDropDownList } from "../utils/helpers";
 
 /**
  * @file partiesReducer.js
@@ -20,10 +16,10 @@ const initialState = {
   partyPageData: {},
   addPartyFormState: {},
   lastCreatedParty: {},
-  inspectors: []
+  inspectors: [],
 };
 
-const partiesReducer = (state = initialState, action) => {
+export const partiesReducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.STORE_PARTIES:
       return {
@@ -31,40 +27,40 @@ const partiesReducer = (state = initialState, action) => {
         rawParties: action.payload.records,
         parties: createItemMap(action.payload.records, "party_guid"),
         partyIds: createItemIdsArray(action.payload.records, "party_guid"),
-        partyPageData: action.payload
+        partyPageData: action.payload,
       };
     case actionTypes.STORE_PARTY:
       return {
         ...state,
         rawParties: [action.payload],
         parties: createItemMap([action.payload], "party_guid"),
-        partyIds: createItemIdsArray([action.payload], "party_guid")
+        partyIds: createItemIdsArray([action.payload], "party_guid"),
       };
     case actionTypes.STORE_PARTY_RELATIONSHIP_TYPES:
       return {
         ...state,
-        partyRelationshipTypes: action.payload
+        partyRelationshipTypes: action.payload,
       };
     case actionTypes.STORE_PARTY_RELATIONSHIPS:
       return {
         ...state,
-        partyRelationships: action.payload
+        partyRelationships: action.payload,
       };
     case actionTypes.STORE_ADD_PARTY_FORM_STATE:
       return {
         ...state,
-        addPartyFormState: action.payload
+        addPartyFormState: action.payload,
       };
     case actionTypes.STORE_LAST_CREATED_PARTY:
       return {
         ...state,
         lastCreatedParty: action.payload,
-        rawParties: [action.payload]
+        rawParties: [action.payload],
       };
     case actionTypes.STORE_INSPECTORS:
       return {
         ...state,
-        inspectors: action.payload.records
+        inspectors: action.payload.records,
       };
     default:
       return state;
@@ -72,26 +68,25 @@ const partiesReducer = (state = initialState, action) => {
 };
 
 const partiesReducerObject = {
-  [PARTIES]: partiesReducer
+  [PARTIES]: partiesReducer,
 };
 
-export const getParties = state => state[PARTIES].parties;
-export const getRawParties = state => state[PARTIES].rawParties;
-export const getPartyIds = state => state[PARTIES].partyIds;
-export const getPartyRelationshipTypes = state =>
-  state[PARTIES].partyRelationshipTypes;
-export const getPartyRelationshipTypesList = state =>
+export const getParties = (state) => state[PARTIES].parties;
+export const getRawParties = (state) => state[PARTIES].rawParties;
+export const getPartyIds = (state) => state[PARTIES].partyIds;
+export const getPartyRelationshipTypes = (state) => state[PARTIES].partyRelationshipTypes;
+export const getPartyRelationshipTypesList = (state) =>
   createDropDownList(
     state[PARTIES].partyRelationshipTypes,
     "description",
     "mine_party_appt_type_code"
   );
-export const getPartyRelationships = state => state[PARTIES].partyRelationships;
-export const getPartyPageData = state => state[PARTIES].partyPageData;
-export const getAddPartyFormState = state => state[PARTIES].addPartyFormState;
-export const getLastCreatedParty = state => state[PARTIES].lastCreatedParty;
-export const getInspectors = state => state[PARTIES].inspectors;
-export const getInspectorsList = state =>
+export const getPartyRelationships = (state) => state[PARTIES].partyRelationships;
+export const getPartyPageData = (state) => state[PARTIES].partyPageData;
+export const getAddPartyFormState = (state) => state[PARTIES].addPartyFormState;
+export const getLastCreatedParty = (state) => state[PARTIES].lastCreatedParty;
+export const getInspectors = (state) => state[PARTIES].inspectors;
+export const getInspectorsList = (state) =>
   createDropDownList(state[PARTIES].inspectors, "name", "party_guid");
 
 export default partiesReducerObject;

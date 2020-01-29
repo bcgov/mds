@@ -4,7 +4,7 @@ import {
   getPartyPageData,
   getLastCreatedParty,
 } from "@common/selectors/partiesSelectors";
-import partiesReducer from "@common/reducers/partiesReducer";
+import { partiesReducer } from "@common/reducers/partiesReducer";
 import { storeParties, storeLastCreatedParty } from "@common/actions/partyActions";
 import { PARTIES } from "@/constants/reducerTypes";
 

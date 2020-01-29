@@ -13,7 +13,7 @@ const initialState = {
   searchTerms: [],
 };
 
-const searchReducer = (state = initialState, action) => {
+export const searchReducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.STORE_SEARCH_OPTIONS:
       return {

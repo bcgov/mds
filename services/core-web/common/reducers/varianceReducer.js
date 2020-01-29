@@ -7,7 +7,7 @@ const initialState = {
   variancePageData: {},
 };
 
-const varianceReducer = (state = initialState, action) => {
+export const varianceReducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.STORE_VARIANCES:
       return {

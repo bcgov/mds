@@ -7,7 +7,7 @@ const initialState = {
   mineIncidents: [],
 };
 
-const incidentReducer = (state = initialState, action) => {
+export const incidentReducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.STORE_INCIDENTS:
       return {

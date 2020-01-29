@@ -1,4 +1,4 @@
-import varianceReducer from "@common/reducers/varianceReducer";
+import { varianceReducer } from "@common/reducers/varianceReducer";
 import { storeVariances, storeVariance } from "@common/actions/varianceActions";
 import * as MOCK from "@/tests/mocks/dataMocks";
 

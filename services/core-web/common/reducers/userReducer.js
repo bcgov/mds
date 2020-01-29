@@ -5,7 +5,7 @@ const initialState = {
   coreUsers: [],
 };
 
-const userReducer = (state = initialState, action) => {
+export const userReducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.STORE_CORE_USERS:
       return {

@@ -7,16 +7,15 @@ import { ENVIRONMENT } from "../constants/environment";
 import { createRequestHeader } from "../utils/RequestHeaders";
 import CustomAxios from "../customAxios";
 
-export const fetchSearchResults = (searchTerm, searchTypes) => dispatch => {
+export const fetchSearchResults = (searchTerm, searchTypes) => (dispatch) => {
   dispatch(request(reducerTypes.GET_SEARCH_RESULTS));
   dispatch(showLoading());
   return CustomAxios()
     .get(
-      ENVIRONMENT.apiUrl +
-        API.SEARCH({ search_term: searchTerm, search_types: searchTypes }),
+      ENVIRONMENT.apiUrl + API.SEARCH({ search_term: searchTerm, search_types: searchTypes }),
       createRequestHeader()
     )
-    .then(response => {
+    .then((response) => {
       dispatch(success(reducerTypes.GET_SEARCH_RESULTS));
       dispatch(searchActions.storeSearchResults(response.data));
       dispatch(hideLoading());
@@ -25,7 +24,7 @@ export const fetchSearchResults = (searchTerm, searchTypes) => dispatch => {
     .finally(() => dispatch(hideLoading()));
 };
 
-export const fetchSearchBarResults = searchTerm => dispatch => {
+export const fetchSearchBarResults = (searchTerm) => (dispatch) => {
   dispatch(request(reducerTypes.GET_SEARCH_BAR_RESULTS));
   dispatch(showLoading());
   return CustomAxios()
@@ -33,7 +32,7 @@ export const fetchSearchBarResults = searchTerm => dispatch => {
       `${ENVIRONMENT.apiUrl + API.SIMPLE_SEARCH}?search_term=${searchTerm}`,
       createRequestHeader()
     )
-    .then(response => {
+    .then((response) => {
       dispatch(success(reducerTypes.GET_SEARCH_BAR_RESULTS));
       dispatch(searchActions.storeSearchBarResults(response.data));
       dispatch(hideLoading());
@@ -42,12 +41,12 @@ export const fetchSearchBarResults = searchTerm => dispatch => {
     .finally(() => dispatch(hideLoading()));
 };
 
-export const fetchSearchOptions = () => dispatch => {
+export const fetchSearchOptions = () => (dispatch) => {
   dispatch(request(reducerTypes.GET_SEARCH_OPTIONS));
   dispatch(showLoading());
   return CustomAxios()
     .get(ENVIRONMENT.apiUrl + API.SEARCH_OPTIONS, createRequestHeader())
-    .then(response => {
+    .then((response) => {
       dispatch(success(reducerTypes.GET_SEARCH_OPTIONS));
       dispatch(searchActions.storeSearchOptions(response.data));
       dispatch(hideLoading());
@@ -56,7 +55,7 @@ export const fetchSearchOptions = () => dispatch => {
     .finally(() => dispatch(hideLoading()));
 };
 
-export const clearSearchBarResults = () => dispatch => {
+export const clearSearchBarResults = () => (dispatch) => {
   dispatch(clear(reducerTypes.CLEAR_SEARCH_BAR_RESULTS));
   dispatch(searchActions.clearSearchBarResults());
   dispatch(success(reducerTypes.CLEAR_SEARCH_BAR_RESULTS));

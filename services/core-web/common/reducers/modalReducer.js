@@ -10,7 +10,7 @@ const initialState = {
   isViewOnly: false,
 };
 
-const modalReducer = (state = initialState, action) => {
+export const modalReducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.OPEN_MODAL:
       const {

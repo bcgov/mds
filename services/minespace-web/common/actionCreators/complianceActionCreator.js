@@ -9,18 +9,15 @@ import CustomAxios from "../customAxios";
 
 // This file is anticipated to have multiple exports
 // eslint-disable-next-line import/prefer-default-export
-export const fetchMineComplianceInfo = (mineNo, silent = false) => dispatch => {
+export const fetchMineComplianceInfo = (mineNo, silent = false) => (dispatch) => {
   dispatch(showLoading());
   dispatch(request(reducerTypes.GET_MINE_COMPLIANCE_INFO));
   dispatch(complianceActions.storeMineComplianceInfo({}));
 
   const errorToastMessage = silent ? "" : undefined;
   return CustomAxios({ errorToastMessage })
-    .get(
-      `${ENVIRONMENT.apiUrl}${API.MINE_COMPLIANCE_SUMMARY(mineNo)}`,
-      createRequestHeader()
-    )
-    .then(response => {
+    .get(`${ENVIRONMENT.apiUrl}${API.MINE_COMPLIANCE_SUMMARY(mineNo)}`, createRequestHeader())
+    .then((response) => {
       dispatch(success(reducerTypes.GET_MINE_COMPLIANCE_INFO));
       dispatch(complianceActions.storeMineComplianceInfo(response.data));
       return response.data;

@@ -2,15 +2,15 @@ import * as actionTypes from "@/constants/actionTypes";
 import { USERS } from "@/constants/reducerTypes";
 
 const initialState = {
-  coreUsers: []
+  coreUsers: [],
 };
 
-const userReducer = (state = initialState, action) => {
+export const userReducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.STORE_CORE_USERS:
       return {
         ...state,
-        coreUsers: action.payload.results
+        coreUsers: action.payload.results,
       };
     default:
       return state;
@@ -18,9 +18,9 @@ const userReducer = (state = initialState, action) => {
 };
 
 const userReducerObject = {
-  [USERS]: userReducer
+  [USERS]: userReducer,
 };
 
-export const getCoreUsers = state => state[USERS].coreUsers;
+export const getCoreUsers = (state) => state[USERS].coreUsers;
 
 export default userReducerObject;

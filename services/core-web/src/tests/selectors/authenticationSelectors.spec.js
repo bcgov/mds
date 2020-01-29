@@ -4,7 +4,7 @@ import {
   getUserAccessData,
   getUserInfo,
 } from "@common/selectors/authenticationSelectors";
-import authenticationReducer from "@common/reducers/authenticationReducer";
+import { authenticationReducer } from "@common/reducers/authenticationReducer";
 import {
   authenticateUser,
   logoutUser,

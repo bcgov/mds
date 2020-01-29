@@ -7,7 +7,7 @@ const initialState = {
   requestType: null,
 };
 
-const networkReducer = (state = initialState, action) => {
+export const networkReducer = (state = initialState, action) => {
   switch (action.type) {
     case REQUEST:
       return {

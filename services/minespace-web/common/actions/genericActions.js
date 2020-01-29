@@ -3,21 +3,21 @@ import * as ActionTypes from "../constants/actionTypes";
 export const success = (reducer, data) => ({
   name: reducer,
   type: ActionTypes.SUCCESS,
-  data
+  data,
 });
 
-export const request = reducer => ({
+export const request = (reducer) => ({
   name: reducer,
-  type: ActionTypes.REQUEST
+  type: ActionTypes.REQUEST,
 });
 
 export const error = (reducer, err) => ({
   name: reducer,
   type: ActionTypes.ERROR,
-  errorMessage: err
+  errorMessage: err,
 });
 
-export const clear = reducer => ({
+export const clear = (reducer) => ({
   name: reducer,
-  type: ActionTypes.CLEAR
+  type: ActionTypes.CLEAR,
 });

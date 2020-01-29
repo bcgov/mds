@@ -1,4 +1,4 @@
-import networkReducer from "@common/reducers/networkReducer";
+import { networkReducer } from "@common/reducers/networkReducer";
 import { request, success, error } from "@common/actions/genericActions";
 
 const baseExpectedValue = {

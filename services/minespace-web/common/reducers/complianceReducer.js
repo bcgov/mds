@@ -7,19 +7,19 @@ import { COMPLIANCE } from "../constants/reducerTypes";
  */
 
 const initialState = {
-  mineComplianceInfo: {}
+  mineComplianceInfo: {},
 };
 
-const complianceReducer = (state = initialState, action) => {
+export const complianceReducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.STORE_MINE_COMPLIANCE_INFO:
       return {
         ...state,
-        mineComplianceInfo: action.payload
+        mineComplianceInfo: action.payload,
       };
     case actionTypes.CLEAR:
       return {
-        mineComplianceInfo: null
+        mineComplianceInfo: null,
       };
     default:
       return state;
@@ -27,10 +27,9 @@ const complianceReducer = (state = initialState, action) => {
 };
 
 const complianceReducerObject = {
-  [COMPLIANCE]: complianceReducer
+  [COMPLIANCE]: complianceReducer,
 };
 
-export const getMineComplianceInfo = state =>
-  state[COMPLIANCE].mineComplianceInfo;
+export const getMineComplianceInfo = (state) => state[COMPLIANCE].mineComplianceInfo;
 
 export default complianceReducerObject;

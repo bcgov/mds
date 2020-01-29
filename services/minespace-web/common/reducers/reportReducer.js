@@ -5,20 +5,20 @@ const initialState = {
   mineReports: [],
   reportComments: [],
   commentsLoading: true,
-  commentSubmitting: false
+  commentSubmitting: false,
 };
 
-const reportReducer = (state = initialState, action) => {
+export const reportReducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.STORE_MINE_REPORTS:
       return {
         ...state,
-        mineReports: action.payload.records
+        mineReports: action.payload.records,
       };
     case actionTypes.STORE_MINE_REPORT_COMMENTS:
       return {
         ...state,
-        reportComments: action.payload.records
+        reportComments: action.payload.records,
       };
     default:
       return state;
@@ -26,11 +26,11 @@ const reportReducer = (state = initialState, action) => {
 };
 
 const reportReducerObject = {
-  [REPORTS]: reportReducer
+  [REPORTS]: reportReducer,
 };
 
-export const getMineReports = state => state[REPORTS].mineReports;
+export const getMineReports = (state) => state[REPORTS].mineReports;
 
-export const getMineReportComments = state => state[REPORTS].reportComments;
+export const getMineReportComments = (state) => state[REPORTS].reportComments;
 
 export default reportReducerObject;

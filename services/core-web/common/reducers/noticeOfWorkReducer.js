@@ -10,7 +10,7 @@ const initialState = {
   documentDownloadState: { downloading: false, currentFile: 1, totalFiles: 1 },
 };
 
-const noticeOfWorkReducer = (state = initialState, action) => {
+export const noticeOfWorkReducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.STORE_NOTICE_OF_WORK_APPLICATIONS:
       return {

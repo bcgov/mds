@@ -9,7 +9,7 @@ import {
   getMineBasicInfoList,
   getMineDocuments,
 } from "@common/selectors/mineSelectors";
-import mineReducer from "@common/reducers/mineReducer";
+import { mineReducer } from "@common/reducers/mineReducer";
 import {
   storeMineList,
   storeMineNameList,

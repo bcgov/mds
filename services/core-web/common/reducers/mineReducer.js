@@ -18,7 +18,7 @@ const initialState = {
   subscribedMines: [],
 };
 
-const mineReducer = (state = initialState, action) => {
+export const mineReducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.STORE_MINE_LIST:
       return {

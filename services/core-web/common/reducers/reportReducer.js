@@ -8,7 +8,7 @@ const initialState = {
   commentSubmitting: false,
 };
 
-const reportReducer = (state = initialState, action) => {
+export const reportReducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.STORE_MINE_REPORTS:
       return {

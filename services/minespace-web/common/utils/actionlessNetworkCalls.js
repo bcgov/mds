@@ -7,7 +7,7 @@ import {
   NOTICE_OF_WORK_DOCUMENT_FILE_GET_URL,
   NOTICE_OF_WORK_DOCUMENT_TOKEN_GET_URL,
   NRIS_DOCUMENT_FILE_GET_URL,
-  NRIS_DOCUMENT_TOKEN_GET_URL
+  NRIS_DOCUMENT_TOKEN_GET_URL,
 } from "../constants/API";
 
 export const downloadNRISDocument = (externalId, inspectionId, fileName) => {
@@ -25,16 +25,14 @@ export const downloadNRISDocument = (externalId, inspectionId, fileName) => {
 
   CustomAxios()
     .get(
-      `${ENVIRONMENT.apiUrl +
-        NRIS_DOCUMENT_TOKEN_GET_URL(externalId, inspectionId, fileName)}`,
+      `${ENVIRONMENT.apiUrl + NRIS_DOCUMENT_TOKEN_GET_URL(externalId, inspectionId, fileName)}`,
       createRequestHeader()
     )
-    .then(response => {
+    .then((response) => {
       const token = { token: response.data.token_guid };
       if (fileName.toLowerCase().includes(".pdf")) {
         window.open(
-          `${ENVIRONMENT.apiUrl +
-            NRIS_DOCUMENT_FILE_GET_URL(externalId, inspectionId, token)}`,
+          `${ENVIRONMENT.apiUrl + NRIS_DOCUMENT_FILE_GET_URL(externalId, inspectionId, token)}`,
           "_blank"
         );
       } else {
@@ -59,11 +57,10 @@ export const downloadNowDocument = (id, applicationGuid, fileName) => {
 
   CustomAxios()
     .get(
-      `${ENVIRONMENT.apiUrl +
-        NOTICE_OF_WORK_DOCUMENT_TOKEN_GET_URL(id, applicationGuid)}`,
+      `${ENVIRONMENT.apiUrl + NOTICE_OF_WORK_DOCUMENT_TOKEN_GET_URL(id, applicationGuid)}`,
       createRequestHeader()
     )
-    .then(response => {
+    .then((response) => {
       const token = { token: response.data.token_guid };
       if (fileName.toLowerCase().includes(".pdf")) {
         window.open(
@@ -78,64 +75,45 @@ export const downloadNowDocument = (id, applicationGuid, fileName) => {
     });
 };
 
-export const downloadFileFromDocumentManager = ({
-  document_manager_guid,
-  document_name = ""
-}) => {
+export const downloadFileFromDocumentManager = ({ document_manager_guid, document_name = "" }) => {
   if (!document_manager_guid) {
     throw new Error("Must provide docManagerGuid");
   }
 
   CustomAxios()
     .get(
-      `${ENVIRONMENT.apiUrl +
-        DOCUMENT_MANAGER_TOKEN_GET_URL(document_manager_guid)}`,
+      `${ENVIRONMENT.apiUrl + DOCUMENT_MANAGER_TOKEN_GET_URL(document_manager_guid)}`,
       createRequestHeader()
     )
-    .then(response => {
+    .then((response) => {
       const token = { token: response.data.token_guid };
       if (document_name.toLowerCase().includes(".pdf")) {
-        window.open(
-          `${ENVIRONMENT.docManUrl + DOCUMENT_MANAGER_FILE_GET_URL(token)}`,
-          "_blank"
-        );
+        window.open(`${ENVIRONMENT.docManUrl + DOCUMENT_MANAGER_FILE_GET_URL(token)}`, "_blank");
       } else {
-        window.location = `${ENVIRONMENT.docManUrl +
-          DOCUMENT_MANAGER_FILE_GET_URL(token)}`;
+        window.location = `${ENVIRONMENT.docManUrl + DOCUMENT_MANAGER_FILE_GET_URL(token)}`;
       }
     });
 };
 
-export const getDocumentDownloadToken = (
-  document_manager_guid,
-  filename,
-  URLArray
-) => {
+export const getDocumentDownloadToken = (document_manager_guid, filename, URLArray) => {
   if (!document_manager_guid) {
     throw new Error("Must provide docManagerGuid");
   }
 
   CustomAxios()
     .get(
-      `${ENVIRONMENT.apiUrl +
-        DOCUMENT_MANAGER_TOKEN_GET_URL(document_manager_guid)}`,
+      `${ENVIRONMENT.apiUrl + DOCUMENT_MANAGER_TOKEN_GET_URL(document_manager_guid)}`,
       createRequestHeader()
     )
-    .then(response => {
+    .then((response) => {
       const token = { token: response.data.token_guid };
-      const URL = `${ENVIRONMENT.docManUrl +
-        DOCUMENT_MANAGER_FILE_GET_URL(token) +
-        "&as_attachment=true"}`;
+      const URL = `${`${ENVIRONMENT.docManUrl +
+        DOCUMENT_MANAGER_FILE_GET_URL(token)}&as_attachment=true`}`;
       URLArray.push({ filename, url: URL });
     });
 };
 
-export const getNowDocumentDownloadToken = (
-  id,
-  applicationGuid,
-  filename,
-  URLArray
-) => {
+export const getNowDocumentDownloadToken = (id, applicationGuid, filename, URLArray) => {
   if (!id) {
     throw new Error("Must provide id");
   }
@@ -146,11 +124,10 @@ export const getNowDocumentDownloadToken = (
 
   CustomAxios()
     .get(
-      `${ENVIRONMENT.apiUrl +
-        NOTICE_OF_WORK_DOCUMENT_TOKEN_GET_URL(id, applicationGuid)}`,
+      `${ENVIRONMENT.apiUrl + NOTICE_OF_WORK_DOCUMENT_TOKEN_GET_URL(id, applicationGuid)}`,
       createRequestHeader()
     )
-    .then(response => {
+    .then((response) => {
       const token = { token: response.data.token_guid };
       const URL = `${ENVIRONMENT.apiUrl +
         NOTICE_OF_WORK_DOCUMENT_FILE_GET_URL(id, applicationGuid, token)}`;
