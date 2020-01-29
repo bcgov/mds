@@ -10,4 +10,4 @@ jobs:
         env:
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
         with:
-          msg: "Review Reminders \n- [ ] Are there new endpoints? test_expected_auth.py tests \n- [ ] Are there new React components? Snapshot tests"
+          msg: "Review Reminders \n- [ ] Are there auth tests for new endpoints? \n- [ ] Are there snapshot tests for new React components?"
