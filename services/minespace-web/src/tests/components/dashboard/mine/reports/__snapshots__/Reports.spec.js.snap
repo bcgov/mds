@@ -9,6 +9,26 @@ exports[`Reports renders properly 1`] = `
       gutter={0}
     >
       <Col>
+        <Button
+          block={false}
+          ghost={false}
+          htmlType="button"
+          loading={false}
+          onClick={[Function]}
+          style={
+            Object {
+              "display": "inline",
+              "float": "right",
+            }
+          }
+          type="primary"
+        >
+          <Icon
+            theme="filled"
+            type="plus-circle"
+          />
+          Submit Report
+        </Button>
         <Title
           level={4}
         >
@@ -47,7 +67,7 @@ exports[`Reports renders properly 1`] = `
         <TableSummaryCard
           content="6"
           icon="check-circle"
-          title="Reports Submitted"
+          title="Inspections YTD"
           type="success"
         />
       </Col>
@@ -59,7 +79,7 @@ exports[`Reports renders properly 1`] = `
         <TableSummaryCard
           content="6"
           icon="clock-circle"
-          title="Reports Overdue"
+          title="Overdue Orders"
           type="error"
         />
       </Col>
@@ -71,7 +91,7 @@ exports[`Reports renders properly 1`] = `
         <TableSummaryCard
           content="6"
           icon="exclamation-circle"
-          title="Reports Due"
+          title="Responses Due"
           type="warning"
         />
       </Col>

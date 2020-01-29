@@ -13,6 +13,7 @@ exports[`VariancesTable renders properly 1`] = `
       Object {
         "dataIndex": "variance_no",
         "render": [Function],
+        "sorter": true,
         "title": "Variance No.",
       },
       Object {
@@ -26,7 +27,7 @@ exports[`VariancesTable renders properly 1`] = `
         "defaultSortOrder": "ascend",
         "render": [Function],
         "sorter": [Function],
-        "title": "Submission Date",
+        "title": "Submitted On",
       },
       Object {
         "className": "column-hide",
@@ -36,14 +37,12 @@ exports[`VariancesTable renders properly 1`] = `
         "title": "Application Status",
       },
       Object {
-        "className": "",
         "dataIndex": "issue_date",
         "render": [Function],
         "sorter": [Function],
         "title": "Issue Date",
       },
       Object {
-        "className": "",
         "dataIndex": "expiry_date",
         "defaultSortOrder": "descend",
         "render": [Function],
@@ -51,7 +50,11 @@ exports[`VariancesTable renders properly 1`] = `
         "title": "Expiry Date",
       },
       Object {
-        "className": "",
+        "dataIndex": "lead_inspector",
+        "render": [Function],
+        "title": "Lead Inspector",
+      },
+      Object {
         "dataIndex": "",
         "render": [Function],
         "title": "Approval Status",

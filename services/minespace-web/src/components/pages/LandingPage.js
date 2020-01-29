@@ -8,7 +8,7 @@ export const LandingPage = () => (
   <div>
     <Row>
       <Col>
-        <Title>Welcome to MineSpace, an online portal for mines in BC</Title>
+        <Title>Welcome to MineSpace</Title>
         <Paragraph>
           The <Text strong>Ministry of Energy, Mines and Petroleum Resources</Text> is developing a
           system to make it easier for the public, industry and government to see what&apos;s
@@ -36,7 +36,7 @@ export const LandingPage = () => (
               <ul>
                 <li>Upload any report specified in the Health, Safety and Reclamation Code</li>
                 <li>View all code variances granted to and incidents reported by your mine</li>
-                <li>View your mine permit and amendment history</li>
+                {/* <li>View your mine permit and amendment history</li> */}
                 <li>See all the contacts the Ministry has on file for your mine</li>
                 <li>Find important Ministry contacts</li>
               </ul>

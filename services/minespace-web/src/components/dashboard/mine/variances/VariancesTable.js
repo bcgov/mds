@@ -1,3 +1,4 @@
+// TODO: Remove this when the file is more fully implemented.
 /* eslint-disable */
 
 import React, { Component } from "react";
@@ -55,6 +56,11 @@ export class VariancesTable extends Component {
     }
   };
 
+  // NOTE: Luke/Brian: The expired "all red" styling is to be REMOVED.
+  // NOTE: Luke: They've requested a lot of columns for this table... Maybe some of it
+  // can be added in an "expanded" column as there might not be enough room to fit all of these
+  // columns nicely on the screen. Also, the three tables (for in-review, approved, and rejected)
+  // have been combined into one, so there will be some refactoring to do, of course.
   columns = (isApplication) => [
     {
       title: "",
@@ -69,6 +75,7 @@ export class VariancesTable extends Component {
     {
       title: "Variance No.",
       dataIndex: "variance_no",
+      sorter: true,
       render: (text, record) => (
         <div className={this.getOverdueClassName(record.isOverdue)} title="Variance No.">
           {text}
@@ -85,16 +92,12 @@ export class VariancesTable extends Component {
       ),
     },
     {
-      title: "Submission Date",
+      title: "Submitted On",
       dataIndex: "received_date",
-      /*  className on the column - applies to the entire column when full size
-          This attribute has no effect on the responsive view, same class is added to the div to handle responsive views
-      */
       className: !isApplication ? "column-hide" : "",
-
       render: (text, record) => (
         <div
-          title="Submission Date"
+          title="Submitted On"
           className={
             (!isApplication ? "column-hide " : " ") + this.getOverdueClassName(record.isOverdue)
           }
@@ -124,51 +127,44 @@ export class VariancesTable extends Component {
     {
       title: "Issue Date",
       dataIndex: "issue_date",
-      className: isApplication ? "column-hide" : "",
-      render: (text, record) => (
-        <div
-          title="Issue Date"
-          className={
-            (isApplication ? "column-hide " : " ") + this.getOverdueClassName(record.isOverdue)
-          }
-        >
-          {text}
-        </div>
-      ),
+      render: (text, record) => <div title="Issue Date">{text}</div>,
       sorter: (a, b) => ((a.issue_date || 0) > (b.issue_date || 0) ? -1 : 1),
     },
     {
       title: "Expiry Date",
       dataIndex: "expiry_date",
-      className: isApplication ? "column-hide" : "",
-      render: (text, record) => (
-        <div
-          title="Expiry Date"
-          className={
-            (isApplication ? "column-hide " : " ") + this.getOverdueClassName(record.isOverdue)
-          }
-        >
-          {text}
-        </div>
-      ),
+      render: (text, record) => <div title="Expiry Date">{text}</div>,
       sorter: (a, b) => ((a.expiry_date || 0) > (b.expiry_date || 0) ? -1 : 1),
       defaultSortOrder: "descend",
     },
+
+    // NOTE: This is a newly requested column.
+    {
+      title: "Lead Inspector",
+      dataIndex: "lead_inspector",
+      render: (text, record) => <div title="Lead Inspector">{text}</div>,
+    },
+
+    // NOTE: This is a newly requested column. Brian: Remove it?
+    // {
+    //   title: "Lead Inspector Assigned Date",
+    //   dataIndex: "lead_inspector_assigned_date",
+    //   render: (text, record) => <div title="Lead Inspector Assigned Date">{text}</div>,
+    // },
     {
       title: "Approval Status",
       dataIndex: "",
-      className: isApplication ? "column-hide" : "",
       render: (text, record) => (
-        <div
-          title="Approval Status"
-          className={
-            (isApplication ? "column-hide " : " ") + this.getOverdueClassName(record.isOverdue)
-          }
-        >
-          {record.isOverdue ? "Expired" : "Active"}
-        </div>
+        <div title="Approval Status">{record.isOverdue ? "Expired" : "Active"}</div>
       ),
     },
+
+    // NOTE: This is a newly requested column. Brian: Remove it?
+    // {
+    //   title: "Status Last Updated",
+    //   dataIndex: "",
+    //   render: () => <div title="Status Last Updated">{null}</div>,
+    // },
     {
       title: "Documents",
       dataIndex: "documents",
@@ -206,9 +202,9 @@ export class VariancesTable extends Component {
             className={this.getOverdueClassName(record.isOverdue)}
           >
             {record.isEditable ? (
-              <img src={EDIT_PENCIL} alt="Edit/View" className="icon-svg-filter" />
+              <img src={EDIT_PENCIL} alt="Edit/View" className="icon-svg-filter color-primary" />
             ) : (
-              <Icon type="eye" className="icon-sm" />
+              <Icon type="eye" className="color-primary" style={{ fontSize: "1.5em" }} />
             )}
           </Button>
         </div>

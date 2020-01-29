@@ -7,7 +7,7 @@ exports[`LandingPage renders properly 1`] = `
   >
     <Col>
       <Title>
-        Welcome to MineSpace, an online portal for mines in BC
+        Welcome to MineSpace
       </Title>
       <Paragraph>
         The 
@@ -79,9 +79,6 @@ exports[`LandingPage renders properly 1`] = `
               </li>
               <li>
                 View all code variances granted to and incidents reported by your mine
-              </li>
-              <li>
-                View your mine permit and amendment history
               </li>
               <li>
                 See all the contacts the Ministry has on file for your mine

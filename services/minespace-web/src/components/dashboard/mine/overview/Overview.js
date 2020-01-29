@@ -68,14 +68,7 @@ export class Overview extends Component {
         <Col lg={{ span: 14 }} xl={{ span: 16 }}>
           <Title level={4}>Overview</Title>
           <Paragraph>
-            This tab contains basic information about your mine. For more detailed information,
-            check the other tabs.
-            <ul style={{ listStylePosition: "inside" }}>
-              <li>Inspection history, including open and overdue orders</li>
-              <li>Incident history</li>
-              <li>Variance application history</li>
-              <li>Report submission history and report upload</li>
-            </ul>
+            This tab contains general information about your mine and important contacts at EMPR.
           </Paragraph>
           <Descriptions column={1} colon={false}>
             <Descriptions.Item label="Region">{this.props.mine.mine_region}</Descriptions.Item>
@@ -88,9 +81,6 @@ export class Overview extends Component {
             <Descriptions.Item label="Commodity">{Strings.NOT_APPLICABLE}</Descriptions.Item>
             <Descriptions.Item label="Operating Status">{Strings.NOT_APPLICABLE}</Descriptions.Item>
             <Descriptions.Item label="Disturbance">{Strings.NOT_APPLICABLE}</Descriptions.Item>
-            <Descriptions.Item label="Notes">
-              {this.props.mine.mine_note || Strings.NOT_APPLICABLE}
-            </Descriptions.Item>
           </Descriptions>
           <Row>
             <Col xl={{ span: 11 }} xxl={{ span: 10 }}>

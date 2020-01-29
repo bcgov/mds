@@ -14,8 +14,6 @@ import {
   Descriptions,
   TimePicker,
   Tooltip,
-  Spin,
-  Alert,
   Switch,
   Checkbox,
   Tag,
@@ -436,33 +434,6 @@ class Mockup extends Component {
 
         <br />
         <br />
-        {/* https://ant.design/components/spin/ */}
-        <h1>Spins</h1>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-evenly",
-          }}
-        >
-          <Spin size="small" />
-          <Spin />
-          <Spin size="large" />
-        </div>
-        <br />
-        <br />
-        <Icon type="loading" style={{ fontSize: 64, color: "#036", display: "block" }} spin />
-        <br />
-        <br />
-        <Spin tip="Loading...">
-          <Alert
-            message="Alert message title"
-            description="Further details about the context of this alert."
-            type="info"
-          />
-        </Spin>
-
-        <br />
-        <br />
         {/* https://ant.design/components/modal/ */}
         <h1>Modals</h1>
         <div>
@@ -477,7 +448,9 @@ class Mockup extends Component {
           >
             <Paragraph>Some contents...</Paragraph>
             <Paragraph>Some contents...</Paragraph>
-            <Paragraph>Some contents...</Paragraph>
+            <Paragraph>
+              The buttons look weird for now due to how we use a modal wrapper...
+            </Paragraph>
           </Modal>
         </div>
         <br />

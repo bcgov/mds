@@ -181,7 +181,7 @@ td a {
     border: none;
   }
   &-title {
-    font-weight: 600;
+    font-weight: bold;
     font-size: $heading-4-size;
   }
   // Because we only use a modal wrapper and provide the ok/cancel buttons inside the modal body

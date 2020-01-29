@@ -4,7 +4,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { Row, Col, Icon, Typography } from "antd";
+import { Row, Col, Typography, Button, Icon } from "antd";
 import PropTypes from "prop-types";
 import { getMine } from "@/selectors/userMineSelectors";
 import CustomPropTypes from "@/customPropTypes";
@@ -14,6 +14,7 @@ import { modalConfig } from "@/components/modalContent/config";
 import { openModal, closeModal } from "@/actions/modalActions";
 import { getMineReports } from "@/selectors/reportSelectors";
 import ReportsTable from "@/components/dashboard/mine/reports/ReportsTable";
+import TableSummaryCard from "@/components/common/TableSummaryCard";
 import { fetchMineReportDefinitionOptions } from "@/actionCreators/staticContentActionCreator";
 import { getMineReportDefinitionOptions } from "@/reducers/staticContentReducer";
 
@@ -39,16 +40,6 @@ const propTypes = {
 const defaultProps = {
   mine: {},
 };
-
-const TableSummaryCard = (props) => (
-  <div className="table-summary-card">
-    <div>
-      <Icon className={`table-summary-card-icon color-${props.type}`} type={props.icon} />
-      <span className="table-summary-card-title">{props.title}</span>
-    </div>
-    <div className="table-summary-card-content">{props.content}</div>
-  </div>
-);
 
 export class Reports extends Component {
   state = { isLoaded: false };
@@ -102,6 +93,14 @@ export class Reports extends Component {
         <Col>
           <Row>
             <Col>
+              <Button
+                style={{ display: "inline", float: "right" }}
+                type="primary"
+                onClick={(event) => this.openEditReportModal(event, this.props.mine.mine_name)}
+              >
+                <Icon type="plus-circle" theme="filled" />
+                Submit Report
+              </Button>
               <Title level={4}>Reports</Title>
               <Paragraph>
                 This table shows&nbsp;
@@ -116,7 +115,7 @@ export class Reports extends Component {
           <Row type="flex" justify="space-around" gutter={[{ lg: 0, xl: 32 }, 32]}>
             <Col lg={24} xl={8} xxl={6}>
               <TableSummaryCard
-                title="Reports Submitted"
+                title="Inspections YTD"
                 // TODO: Display the amount of submitted reports.
                 content="6"
                 icon="check-circle"
@@ -125,7 +124,7 @@ export class Reports extends Component {
             </Col>
             <Col lg={24} xl={8} xxl={6}>
               <TableSummaryCard
-                title="Reports Overdue"
+                title="Overdue Orders"
                 // TODO: Display the amount of reports that are overdue.
                 content="6"
                 icon="clock-circle"
@@ -134,7 +133,7 @@ export class Reports extends Component {
             </Col>
             <Col lg={24} xl={8} xxl={6}>
               <TableSummaryCard
-                title="Reports Due"
+                title="Responses Due"
                 // TODO: Display the amount of reports that are due.
                 content="6"
                 icon="exclamation-circle"

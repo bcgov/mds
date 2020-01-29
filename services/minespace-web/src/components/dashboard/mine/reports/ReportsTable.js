@@ -31,12 +31,12 @@ const columns = [
     ),
   },
   {
-    title: "Compliance Year/Period",
+    title: "Compliance Period",
     dataIndex: "submission_year",
     key: "submission_year",
     sorter: (a, b) => (a.submission_year > b.submission_year ? -1 : 1),
     render: (text, record) => (
-      <div title="Year" className={record.isOverdue ? "color-error" : ""}>
+      <div title="Compliance Period" className={record.isOverdue ? "color-error" : ""}>
         {record.submission_year}
       </div>
     ),
@@ -53,14 +53,45 @@ const columns = [
     ),
   },
   {
-    title: "Received",
+    title: "Submitted On",
     dataIndex: "received_date",
     key: "received_date",
     sorter: (a, b) => (moment(a.received_date) > moment(b.received_date) ? -1 : 1),
     render: (text, record) => (
-      <div title="Received" className={record.isOverdue ? "color-error" : ""}>
+      <div title="Submitted On" className={record.isOverdue ? "color-error" : ""}>
         {formatDate(record.received_date) || Strings.EMPTY_FIELD}
       </div>
+    ),
+  },
+  // NOTE: This is a newly requested column.
+  {
+    title: "Submitted By",
+    dataIndex: "submitted_by",
+    key: "submitted_by",
+    // sorter: (a, b) => (moment(a.received_date) > moment(b.received_date) ? -1 : 1),
+    render: (text, record) => (
+      <div title="Submitted By" className={record.isOverdue ? "color-error" : ""}></div>
+    ),
+  },
+  // NOTE: This is a newly requested column. Brian: "Update table to include this for both
+  // gov and industry - this is available data MM"
+  {
+    title: "Requested By",
+    dataIndex: "requested_by",
+    key: "requested_by",
+    // sorter: (a, b) => (moment(a.received_date) > moment(b.received_date) ? -1 : 1),
+    render: (text, record) => (
+      <div title="Requested By" className={record.isOverdue ? "color-error" : ""}></div>
+    ),
+  },
+  // NOTE: This is a newly requested column.
+  {
+    title: "Documents",
+    dataIndex: "documents",
+    key: "documents",
+    // sorter: (a, b) => (moment(a.received_date) > moment(b.received_date) ? -1 : 1),
+    render: (text, record) => (
+      <div title="Documents" className={record.isOverdue ? "color-error" : ""}></div>
     ),
   },
   {
