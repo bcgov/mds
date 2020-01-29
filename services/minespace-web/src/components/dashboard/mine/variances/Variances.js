@@ -154,7 +154,7 @@ export class Variances extends Component {
         mineGuid: this.props.mine.mine_guid,
         complianceCodes: this.props.complianceCodes,
       },
-      content: modalConfig.CREATE_VARIANCE,
+      content: modalConfig.ADD_VARIANCE,
     });
   }
 
