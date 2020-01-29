@@ -7,6 +7,7 @@ from sqlalchemy.ext.associationproxy import association_proxy
 
 from app.api.utils.models_mixins import Base, AuditMixin
 from app.extensions import db
+from app.api.utils.include.user_info import User
 
 
 class MineReport(Base, AuditMixin):
@@ -29,6 +30,8 @@ class MineReport(Base, AuditMixin):
         lazy='joined',
         order_by='asc(MineReportSubmission.mine_report_submission_id)',
     )
+
+    created_by_idir = db.Column(db.String, nullable=False, default=User().get_user_username)
 
     mine_report_definition_guid = association_proxy('mine_report_definition',
                                                     'mine_report_definition_guid')

@@ -67,6 +67,12 @@ const columns = [
     ),
   },
   {
+    title: "Requested By",
+    dataIndex: "created_by_idir",
+    key: "created_by_idir",
+    render: (text, record) => <div title="Due">{text}</div>,
+  },
+  {
     title: "Received",
     dataIndex: "received_date",
     key: "received_date",
@@ -132,6 +138,7 @@ const transformRowData = (report, openEditReportModal, handleEditReport, handleR
   report,
   report_name: report.report_name,
   due_date: report.due_date,
+  created_by_idir: report.created_by_idir,
   received_date: report.received_date,
   submission_year: report.submission_year,
   openEditReportModal,
