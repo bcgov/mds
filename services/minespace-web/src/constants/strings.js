@@ -16,20 +16,5 @@ export const NOT_APPLICABLE = "N/A";
 export const VARIANCE_APPROVED_CODE = "APP";
 export const VARIANCE_APPLICATION_CODE = "REV";
 
-// MDS Contact
+// MDS email
 export const MDS_EMAIL = "mds@gov.bc.ca";
-
-// Ministry Contacts
-export const MINISTRY_CONTACTS = {
-  REGIONAL_HEALTH_AND_SAFETY: {
-    NAME: "John Doe",
-    PHONE: "(250) 479-2546",
-    EMAIL: "john.doe@gov.bc.ca",
-  },
-  REGIONAL_MINE_GENERAL: {
-    EMAIL: "inforegionalmines@gov.bc.ca",
-  },
-  MAJOR_MINE_GENERAL: {
-    EMAIL: "infomajormines@gov.bc.ca",
-  },
-};

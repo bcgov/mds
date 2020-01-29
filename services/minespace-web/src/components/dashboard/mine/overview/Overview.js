@@ -7,6 +7,7 @@ import { bindActionCreators } from "redux";
 import CustomPropTypes from "@/customPropTypes";
 import { Row, Col, Card, Descriptions, Typography, Icon } from "antd";
 import * as Strings from "@/constants/strings";
+import * as Contacts from "@/constants/ministryContacts";
 
 const { Paragraph, Text, Title } = Typography;
 
@@ -102,13 +103,13 @@ export class Overview extends Component {
                 Regional Health and Safety
               </Text>
               <br />
-              <Text>{Strings.MINISTRY_CONTACTS.REGIONAL_HEALTH_AND_SAFETY.NAME}</Text>
+              <Text>{Contacts.MINISTRY_CONTACTS.REGIONAL_HEALTH_AND_SAFETY.NAME}</Text>
               <br />
-              <Text>{Strings.MINISTRY_CONTACTS.REGIONAL_HEALTH_AND_SAFETY.PHONE}</Text>
+              <Text>{Contacts.MINISTRY_CONTACTS.REGIONAL_HEALTH_AND_SAFETY.PHONE}</Text>
               <br />
               <Text>
-                <a href={`mailto:${Strings.MINISTRY_CONTACTS.REGIONAL_HEALTH_AND_SAFETY.EMAIL}`}>
-                  {Strings.MINISTRY_CONTACTS.REGIONAL_HEALTH_AND_SAFETY.EMAIL}
+                <a href={`mailto:${Contacts.MINISTRY_CONTACTS.REGIONAL_HEALTH_AND_SAFETY.EMAIL}`}>
+                  {Contacts.MINISTRY_CONTACTS.REGIONAL_HEALTH_AND_SAFETY.EMAIL}
                 </a>
               </Text>
             </Paragraph>
@@ -118,8 +119,8 @@ export class Overview extends Component {
               </Text>
               <br />
               <Text>
-                <a href={`mailto:${Strings.MINISTRY_CONTACTS.REGIONAL_MINE_GENERAL.EMAIL}`}>
-                  {Strings.MINISTRY_CONTACTS.REGIONAL_MINE_GENERAL.EMAIL}
+                <a href={`mailto:${Contacts.MINISTRY_CONTACTS.REGIONAL_MINE_GENERAL.EMAIL}`}>
+                  {Contacts.MINISTRY_CONTACTS.REGIONAL_MINE_GENERAL.EMAIL}
                 </a>
               </Text>
             </Paragraph>
@@ -129,8 +130,8 @@ export class Overview extends Component {
               </Text>
               <br />
               <Text>
-                <a href={`mailto:${Strings.MINISTRY_CONTACTS.MAJOR_MINE_GENERAL.EMAIL}`}>
-                  {Strings.MINISTRY_CONTACTS.MAJOR_MINE_GENERAL.EMAIL}
+                <a href={`mailto:${Contacts.MINISTRY_CONTACTS.MAJOR_MINE_GENERAL.EMAIL}`}>
+                  {Contacts.MINISTRY_CONTACTS.MAJOR_MINE_GENERAL.EMAIL}
                 </a>
               </Text>
             </Paragraph>
