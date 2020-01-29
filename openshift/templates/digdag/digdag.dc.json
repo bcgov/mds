@@ -208,15 +208,6 @@
                   {
                     "name": "KEYCLOAK_REDIRECT_URL",
                     "value": "https://${APPLICATION_DOMAIN}"
-                  },
-                  {
-                    "name": "PGPASSWORD",
-                    "valueFrom": {
-                      "secretKeyRef": {
-                        "name": "${DATABASE_SERVICE_NAME}",
-                        "key": "database-password"
-                      }
-                    }
                   }
                 ],
                 "volumeMounts": [
@@ -317,10 +308,6 @@
     },
     {
       "name": "SCHEDULER_PVC_SIZE",
-      "required": true
-    },
-    {
-      "name": "DATABASE_SERVICE_NAME",
       "required": true
     }
   ]
