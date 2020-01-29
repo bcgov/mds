@@ -1,3 +1,4 @@
+// I'm not sure how to set up props validation for this file at the moment (e.g., are some required or optional).
 /* eslint-disable */
 
 import React from "react";

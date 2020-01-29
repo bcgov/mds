@@ -5,7 +5,7 @@ import EditVarianceModal from "@/components/modalContent/variances/EditVarianceM
 
 export const modalConfig = {
   ADD_REPORT: AddReportModal,
-  CREATE_VARIANCE: AddVarianceModal,
+  ADD_VARIANCE: AddVarianceModal,
   VIEW_VARIANCE: ViewVarianceModal,
   EDIT_VARIANCE: EditVarianceModal,
 };

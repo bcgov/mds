@@ -22,8 +22,10 @@ const defaultProps = {
 };
 
 export const VarianceDetails = (props) => {
-  // const isApproved =
-  //   props.variance.variance_application_status_code === Strings.VARIANCE_APPROVED_CODE;
+  // Figured this might be used in the future
+  // eslint-disable-next-line no-unused-vars
+  const isApproved =
+    props.variance.variance_application_status_code === Strings.VARIANCE_APPROVED_CODE;
   const isOverdue =
     props.variance.expiry_date && Date.parse(props.variance.expiry_date) < new Date();
 
