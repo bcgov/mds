@@ -1,5 +1,5 @@
 import React from "react";
-import { Row, Col, Divider, Card, Button, Typography } from "antd";
+import { Row, Col, Divider, Card, Button, Typography, Alert } from "antd";
 import * as Strings from "@/constants/strings";
 
 const { Paragraph, Text, Title } = Typography;
@@ -8,6 +8,17 @@ export const LandingPage = () => (
   <div>
     <Row>
       <Col>
+        <Alert
+          message="MineSpace will launch on February 14, 2020."
+          description={
+            <Text>
+              Please contact <a href={`mailto:${Strings.MDS_EMAIL}`}>{Strings.MDS_EMAIL}</a>
+              &nbsp;if you have any questions or concerns.
+            </Text>
+          }
+          type="warning"
+          banner
+        />
         <Title>Welcome to MineSpace</Title>
         <Paragraph>
           The <Text strong>Ministry of Energy, Mines and Petroleum Resources</Text> is developing a
