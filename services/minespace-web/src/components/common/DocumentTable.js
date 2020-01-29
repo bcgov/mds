@@ -7,10 +7,11 @@ import downloadFileFromDocumentManager from "@/utils/actionlessNetworkCalls";
 import * as Strings from "@/constants/strings";
 
 const propTypes = {
+  isViewOnly: PropTypes.bool.isRequired,
+  noDataMessage: PropTypes.string.isRequired,
+  documentCategoryOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   documents: PropTypes.arrayOf(CustomPropTypes.mineDocument),
   removeDocument: PropTypes.func,
-  isViewOnly: PropTypes.bool.isRequired,
-  documentCategoryOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
 const defaultProps = {
@@ -32,7 +33,7 @@ export class DocumentTable extends Component {
   render() {
     const columns = [
       {
-        title: "File name",
+        title: "File Name",
         dataIndex: "name",
         render: (text, record) => (
           <div title="File name">
@@ -57,14 +58,13 @@ export class DocumentTable extends Component {
         render: (text) => <div title="Category">{text}</div>,
       },
       {
-        title: "Upload date",
+        title: "Upload Date",
         dataIndex: "created_at",
         render: (text) => <div title="Upload date">{text}</div>,
       },
       {
         title: "",
         dataIndex: "updateEdit",
-        width: 10,
         className: this.props.isViewOnly ? "column-hide" : "",
         render: (text, record) => (
           <div title="" align="right">
@@ -75,7 +75,7 @@ export class DocumentTable extends Component {
               okText="Delete"
               cancelText="Cancel"
             >
-              <Button ghost type="primary" size="small">
+              <Button type="link">
                 <Icon type="minus-circle" theme="outlined" />
               </Button>
             </Popconfirm>
@@ -86,10 +86,11 @@ export class DocumentTable extends Component {
 
     return (
       <Table
-        align="left"
+        size="small"
+        tableLayout="auto"
         pagination={false}
         columns={columns}
-        locale={{ emptyText: "This variance does not contain any documents" }}
+        locale={{ emptyText: this.props.noDataMessage }}
         dataSource={this.transformRowData(this.props.documents)}
       />
     );

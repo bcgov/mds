@@ -1,9 +1,337 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`MineDashboard renders properly 1`] = `
-<div
-  className="user-dashboard-padding"
+<LoadingWrapper
+  delay={1000}
+  iconSize={80}
+  isLoaded={false}
+  tip=""
 >
-  <Loading />
-</div>
+  <Row
+    gutter={
+      Array [
+        0,
+        48,
+      ]
+    }
+  >
+    <Col>
+      <Title
+        style={
+          Object {
+            "marginBottom": 8,
+          }
+        }
+      >
+        mine3
+      </Title>
+      <Title
+        level={4}
+        style={
+          Object {
+            "margin": 0,
+          }
+        }
+      >
+        Mine Number: 
+        BLAH9091
+      </Title>
+    </Col>
+  </Row>
+  <Row
+    gutter={
+      Array [
+        0,
+        48,
+      ]
+    }
+  >
+    <Col>
+      <Tabs
+        activeKey="overview"
+        defaultActiveKey="overview"
+        hideAdd={false}
+        onChange={[Function]}
+        tabPosition="top"
+        type="card"
+      >
+        <TabPane
+          key="overview"
+          placeholder={null}
+          tab="Overview"
+        >
+          <Connect(Overview)
+            match={
+              Object {
+                "params": Object {
+                  "id": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                },
+              }
+            }
+            mine={
+              Object {
+                "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                "mine_location": Object {
+                  "latitude": null,
+                  "longitude": null,
+                },
+                "mine_name": "mine3",
+                "mine_no": "BLAH9091",
+                "mine_permit": Array [],
+                "mine_region": "NE",
+                "mine_status": Object {
+                  "effective_date": "2018-10-16",
+                  "expiry_date": "9999-12-31",
+                  "status_labels": Array [
+                    "Closed",
+                    "Care & Maintenance",
+                  ],
+                  "statusvalue": Array [
+                    "CLD",
+                    "CM",
+                  ],
+                },
+                "mine_tailings_storage_facilities": Array [
+                  Object {
+                    "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                    "mine_tailings_storage_facility_guid": "e2629897-053e-4218-9299-479375e47f78",
+                    "mine_tailings_storage_facility_name": "MockTSF",
+                  },
+                ],
+                "mine_type": Array [
+                  Object {
+                    "mine_tenure_type_code": "PLR",
+                  },
+                  Object {
+                    "mine_tenure_type_code": "MIN",
+                  },
+                ],
+              }
+            }
+          />
+        </TabPane>
+        <TabPane
+          key="inspections"
+          placeholder={null}
+          tab="Inspections"
+        >
+          <Connect(Inspections)
+            match={
+              Object {
+                "params": Object {
+                  "id": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                },
+              }
+            }
+            mine={
+              Object {
+                "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                "mine_location": Object {
+                  "latitude": null,
+                  "longitude": null,
+                },
+                "mine_name": "mine3",
+                "mine_no": "BLAH9091",
+                "mine_permit": Array [],
+                "mine_region": "NE",
+                "mine_status": Object {
+                  "effective_date": "2018-10-16",
+                  "expiry_date": "9999-12-31",
+                  "status_labels": Array [
+                    "Closed",
+                    "Care & Maintenance",
+                  ],
+                  "statusvalue": Array [
+                    "CLD",
+                    "CM",
+                  ],
+                },
+                "mine_tailings_storage_facilities": Array [
+                  Object {
+                    "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                    "mine_tailings_storage_facility_guid": "e2629897-053e-4218-9299-479375e47f78",
+                    "mine_tailings_storage_facility_name": "MockTSF",
+                  },
+                ],
+                "mine_type": Array [
+                  Object {
+                    "mine_tenure_type_code": "PLR",
+                  },
+                  Object {
+                    "mine_tenure_type_code": "MIN",
+                  },
+                ],
+              }
+            }
+          />
+        </TabPane>
+        <TabPane
+          key="incidents"
+          placeholder={null}
+          tab="Incidents"
+        >
+          <Connect(Incidents)
+            match={
+              Object {
+                "params": Object {
+                  "id": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                },
+              }
+            }
+            mine={
+              Object {
+                "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                "mine_location": Object {
+                  "latitude": null,
+                  "longitude": null,
+                },
+                "mine_name": "mine3",
+                "mine_no": "BLAH9091",
+                "mine_permit": Array [],
+                "mine_region": "NE",
+                "mine_status": Object {
+                  "effective_date": "2018-10-16",
+                  "expiry_date": "9999-12-31",
+                  "status_labels": Array [
+                    "Closed",
+                    "Care & Maintenance",
+                  ],
+                  "statusvalue": Array [
+                    "CLD",
+                    "CM",
+                  ],
+                },
+                "mine_tailings_storage_facilities": Array [
+                  Object {
+                    "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                    "mine_tailings_storage_facility_guid": "e2629897-053e-4218-9299-479375e47f78",
+                    "mine_tailings_storage_facility_name": "MockTSF",
+                  },
+                ],
+                "mine_type": Array [
+                  Object {
+                    "mine_tenure_type_code": "PLR",
+                  },
+                  Object {
+                    "mine_tenure_type_code": "MIN",
+                  },
+                ],
+              }
+            }
+          />
+        </TabPane>
+        <TabPane
+          key="variances"
+          placeholder={null}
+          tab="Variances"
+        >
+          <Connect(Variances)
+            match={
+              Object {
+                "params": Object {
+                  "id": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                },
+              }
+            }
+            mine={
+              Object {
+                "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                "mine_location": Object {
+                  "latitude": null,
+                  "longitude": null,
+                },
+                "mine_name": "mine3",
+                "mine_no": "BLAH9091",
+                "mine_permit": Array [],
+                "mine_region": "NE",
+                "mine_status": Object {
+                  "effective_date": "2018-10-16",
+                  "expiry_date": "9999-12-31",
+                  "status_labels": Array [
+                    "Closed",
+                    "Care & Maintenance",
+                  ],
+                  "statusvalue": Array [
+                    "CLD",
+                    "CM",
+                  ],
+                },
+                "mine_tailings_storage_facilities": Array [
+                  Object {
+                    "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                    "mine_tailings_storage_facility_guid": "e2629897-053e-4218-9299-479375e47f78",
+                    "mine_tailings_storage_facility_name": "MockTSF",
+                  },
+                ],
+                "mine_type": Array [
+                  Object {
+                    "mine_tenure_type_code": "PLR",
+                  },
+                  Object {
+                    "mine_tenure_type_code": "MIN",
+                  },
+                ],
+              }
+            }
+          />
+        </TabPane>
+        <TabPane
+          key="reports"
+          placeholder={null}
+          tab="Reports"
+        >
+          <Connect(Reports)
+            match={
+              Object {
+                "params": Object {
+                  "id": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                },
+              }
+            }
+            mine={
+              Object {
+                "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                "mine_location": Object {
+                  "latitude": null,
+                  "longitude": null,
+                },
+                "mine_name": "mine3",
+                "mine_no": "BLAH9091",
+                "mine_permit": Array [],
+                "mine_region": "NE",
+                "mine_status": Object {
+                  "effective_date": "2018-10-16",
+                  "expiry_date": "9999-12-31",
+                  "status_labels": Array [
+                    "Closed",
+                    "Care & Maintenance",
+                  ],
+                  "statusvalue": Array [
+                    "CLD",
+                    "CM",
+                  ],
+                },
+                "mine_tailings_storage_facilities": Array [
+                  Object {
+                    "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                    "mine_tailings_storage_facility_guid": "e2629897-053e-4218-9299-479375e47f78",
+                    "mine_tailings_storage_facility_name": "MockTSF",
+                  },
+                ],
+                "mine_type": Array [
+                  Object {
+                    "mine_tenure_type_code": "PLR",
+                  },
+                  Object {
+                    "mine_tenure_type_code": "MIN",
+                  },
+                ],
+              }
+            }
+          />
+        </TabPane>
+      </Tabs>
+    </Col>
+  </Row>
+</LoadingWrapper>
 `;

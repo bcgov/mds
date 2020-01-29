@@ -1,55 +1,37 @@
-$mobile-width: 500px;
-$tablet-width: 868px;
-$large-width: 1024px;
-$desktop-width: 75em;
-$x-large-width: 90em;
-
-@mixin mobile {
-  @media (max-width: #{$mobile-width}) {
+@mixin screen-xs {
+  @media (max-width: #{$screen-xs}) {
     @content;
   }
 }
 
-@mixin tablet {
-  @media (max-width: #{$tablet-width}) {
+@mixin screen-sm {
+  @media (max-width: #{$screen-sm}) {
     @content;
   }
 }
 
-@mixin large {
-  @media (max-width: #{$large-width}) {
+@mixin screen-md {
+  @media (max-width: #{$screen-md}) {
     @content;
   }
 }
 
-@mixin only-large {
-  @media (min-width: #{$tablet-width}) {
+@mixin screen-lg {
+  @media (max-width: #{$screen-lg}) {
     @content;
   }
 }
 
-@mixin desktop {
-  @media (min-width: #{$desktop-width}) {
+@mixin screen-xl {
+  @media (max-width: #{$screen-xl}) {
     @content;
   }
 }
 
-@mixin desktop-width {
-  @media (max-width: #{$desktop-width}) {
+@mixin screen-xxl {
+  @media (max-width: #{$screen-xxl}) {
     @content;
   }
-}
-
-@mixin x-large {
-  @media (min-width: #{$x-large-width}) {
-    @content;
-  }
-}
-
-@mixin flex() {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
 }
 
 @mixin center($horizontal: true, $vertical: true) {
@@ -65,48 +47,4 @@ $x-large-width: 90em;
     top: 50%;
     transform: translate(0, -50%);
   }
-}
-
-@keyframes fadein {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-@-moz-keyframes fadein {
-  /* Firefox */
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-@-webkit-keyframes fadein {
-  /* Safari and Chrome */
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-@-o-keyframes fadein {
-  /* Opera */
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@mixin fade-in {
-  -webkit-animation: fadein 1s; /* Safari, Chrome and Opera > 12.1 */
-  -moz-animation: fadein 1s; /* Firefox < 16 */
-  -ms-animation: fadein 1s; /* Internet Explorer */
-  -o-animation: fadein 1s; /* Opera < 12.1 */
-  animation: fadein 1s;
 }

@@ -4,8 +4,8 @@ import { connect } from "react-redux";
 import { compose } from "redux";
 import PropTypes from "prop-types";
 import { flatMap, uniqBy } from "lodash";
-import { Field, reduxForm, formValueSelector, change } from "redux-form";
-import { Form, Button, Col, Row, Popconfirm, List } from "antd";
+import { Field, reduxForm, formValueSelector } from "redux-form";
+import { Form, Button, Popconfirm, List, Typography } from "antd";
 import { renderConfig } from "@/components/common/config";
 import * as FORM from "@/constants/forms";
 import { required } from "@/utils/Validate";
@@ -16,6 +16,8 @@ import {
 } from "@/selectors/staticContentSelectors";
 import CustomPropTypes from "@/customPropTypes";
 import { ReportSubmissions } from "@/components/Forms/reports/ReportSubmissions";
+
+const { Paragraph } = Typography;
 
 const propTypes = {
   mineGuid: PropTypes.string.isRequired,
@@ -136,60 +138,56 @@ export class AddReportForm extends Component {
   render() {
     return (
       <Form layout="vertical" onSubmit={this.props.handleSubmit}>
-        <Row gutter={16}>
-          <Col>
-            {!this.props.initialValues.mine_report_definition_guid && (
-              <Form.Item>
-                <Field
-                  id="mine_report_category"
-                  name="mine_report_category"
-                  label="Report Type*"
-                  placeholder="Select"
-                  data={this.props.dropdownMineReportCategoryOptions}
-                  doNotPinDropdown
-                  component={renderConfig.SELECT}
-                  validate={[required]}
-                />
-              </Form.Item>
-            )}
-            <Form.Item>
-              <Field
-                id="mine_report_definition_guid"
-                name="mine_report_definition_guid"
-                label="Report Name*"
-                placeholder={
-                  this.props.selectedMineReportCategory ? "Select" : "Select a category above"
-                }
-                data={this.state.dropdownMineReportDefinitionOptionsFiltered}
-                doNotPinDropdown
-                component={renderConfig.SELECT}
-                validate={[required]}
-                onChange={this.updateDueDateWithDefaultDueDate}
-                props={{ disabled: !this.props.selectedMineReportCategory }}
-              />
-            </Form.Item>
-            <Form.Item label="Report Code Requirements">
-              <List
-                bordered
-                size={
-                  this.state.selectedMineReportComplianceArticles.length > 0 ? "small" : "large"
-                }
-              >
-                {this.state.selectedMineReportComplianceArticles.length
-                  ? this.state.selectedMineReportComplianceArticles.map((opt) => (
-                      <List.Item>{formatComplianceCodeValueOrLabel(opt, true)}</List.Item>
-                    ))
-                  : [<List.Item />]}
-              </List>
-            </Form.Item>
-            <ReportSubmissions
-              mineGuid={this.props.mineGuid}
-              mineReportSubmissions={this.state.mineReportSubmissions}
-              updateMineReportSubmissions={this.updateMineReportSubmissions}
+        {!this.props.initialValues.mine_report_definition_guid && (
+          <Form.Item>
+            <Field
+              id="mine_report_category"
+              name="mine_report_category"
+              label="Report Type"
+              required
+              placeholder="Select"
+              data={this.props.dropdownMineReportCategoryOptions}
+              doNotPinDropdown
+              component={renderConfig.SELECT}
+              validate={[required]}
             />
-          </Col>
-        </Row>
-        <div className="right center-mobile">
+          </Form.Item>
+        )}
+        <Form.Item>
+          <Field
+            id="mine_report_definition_guid"
+            name="mine_report_definition_guid"
+            label="Report Name"
+            required
+            placeholder={
+              this.props.selectedMineReportCategory ? "Select" : "Select a category above"
+            }
+            data={this.state.dropdownMineReportDefinitionOptionsFiltered}
+            doNotPinDropdown
+            component={renderConfig.SELECT}
+            validate={[required]}
+            onChange={this.updateDueDateWithDefaultDueDate}
+            props={{ disabled: !this.props.selectedMineReportCategory }}
+          />
+        </Form.Item>
+
+        <Form.Item label="Report Code Requirements">
+          {this.state.selectedMineReportComplianceArticles.length > 0 ? (
+            <List bordered size="small" className="color-primary">
+              {this.state.selectedMineReportComplianceArticles.map((opt) => (
+                <List.Item>{formatComplianceCodeValueOrLabel(opt, true)}</List.Item>
+              ))}
+            </List>
+          ) : (
+            <Paragraph>Select the report type and name to view the required codes.</Paragraph>
+          )}
+        </Form.Item>
+        <ReportSubmissions
+          mineGuid={this.props.mineGuid}
+          mineReportSubmissions={this.state.mineReportSubmissions}
+          updateMineReportSubmissions={this.updateMineReportSubmissions}
+        />
+        <div className="ant-modal-footer">
           <Popconfirm
             placement="topRight"
             title="Are you sure you want to cancel?"
@@ -197,11 +195,9 @@ export class AddReportForm extends Component {
             okText="Yes"
             cancelText="No"
           >
-            <Button className="full-mobile" type="secondary">
-              Cancel
-            </Button>
+            <Button>Cancel</Button>
           </Popconfirm>
-          <Button className="full-mobile" type="primary" htmlType="submit">
+          <Button type="primary" htmlType="submit">
             {this.props.title}
           </Button>
         </div>

@@ -1,14 +1,15 @@
+// TODO: Remove this when the file is more fully implemented.
+/* eslint-disable */
+
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { Button } from "antd";
+import { Button, Row, Col, Typography, Icon } from "antd";
 import moment from "moment";
 import PropTypes from "prop-types";
 import { getMine } from "@/selectors/userMineSelectors";
 import CustomPropTypes from "@/customPropTypes";
-import Loading from "@/components/common/Loading";
 import { openModal, closeModal } from "@/actions/modalActions";
-import * as ModalContent from "@/constants/modalContent";
 import { modalConfig } from "@/components/modalContent/config";
 import { fetchMineRecordById } from "@/actionCreators/userDashboardActionCreator";
 import {
@@ -28,7 +29,9 @@ import {
   getHSRCMComplianceCodesHash,
   getDropdownHSRCMComplianceCodes,
 } from "@/selectors/varianceSelectors";
-import VarianceTable from "@/components/dashboard/mine/variances/VarianceTable";
+import VariancesTable from "@/components/dashboard/mine/variances/VariancesTable";
+
+const { Paragraph, Title, Text } = Typography;
 
 const propTypes = {
   mine: CustomPropTypes.mine,
@@ -86,13 +89,13 @@ export class Variances extends Component {
       )
     );
 
-  handleAddVariances = (files) => (values) => {
+  handleCreateVariances = (files) => (values) => {
     const received_date = moment().format("YYYY-MM-DD");
-    const newValues = { received_date, ...values };
+    const payload = { received_date, ...values };
     return this.props
       .createVariance(
         { mineGuid: this.props.mine.mine_guid, mineName: this.props.mine.mine_name },
-        newValues
+        payload
       )
       .then(async ({ data: { variance_guid } }) => {
         await this.handleAddDocuments(files, variance_guid);
@@ -114,13 +117,14 @@ export class Variances extends Component {
     this.props.openModal({
       props: {
         onSubmit: this.handleUpdateVariance,
-        title: this.props.complianceCodesHash[variance.compliance_article_id],
+        title: "Edit Variance Application",
         mineGuid: this.props.mine.mine_guid,
         mineName: this.props.mine.mine_name,
         varianceGuid: variance.variance_guid,
         varianceStatusOptionsHash: this.props.varianceStatusOptionsHash,
         complianceCodesHash: this.props.complianceCodesHash,
         documentCategoryOptionsHash: this.props.documentCategoryOptionsHash,
+        width: 650,
       },
       content: modalConfig.EDIT_VARIANCE,
     });
@@ -130,22 +134,23 @@ export class Variances extends Component {
     this.props.openModal({
       props: {
         variance,
-        title: this.props.complianceCodesHash[variance.compliance_article_id],
+        title: "View Variance Application",
         mineName: this.props.mine.mine_name,
         varianceStatusOptionsHash: this.props.varianceStatusOptionsHash,
         complianceCodesHash: this.props.complianceCodesHash,
         documentCategoryOptionsHash: this.props.documentCategoryOptionsHash,
+        width: 650,
       },
       content: modalConfig.VIEW_VARIANCE,
     });
   };
 
-  openVarianceModal(event, mineName) {
+  openCreateVarianceModal(event, mineName) {
     event.preventDefault();
     this.props.openModal({
       props: {
-        onSubmit: this.handleAddVariances,
-        title: ModalContent.ADD_VARIANCE(mineName),
+        onSubmit: this.handleCreateVariances,
+        title: "Create Variance Application",
         mineGuid: this.props.mine.mine_guid,
         complianceCodes: this.props.complianceCodes,
       },
@@ -154,46 +159,38 @@ export class Variances extends Component {
   }
 
   render() {
-    if (!this.state.isLoaded) {
-      return <Loading />;
-    }
-
     return (
-      <div className="mine-info-padding">
-        {this.props.mine && (
-          <div>
-            <h1 className="mine-title">{this.props.mine.mine_name}</h1>
-            <p>Mine No. {this.props.mine.mine_no}</p>
-            <br />
-            <div className="inline-flex between">
-              <h2>Variance Applications</h2>
-              <Button
-                type="primary"
-                onClick={(event) => this.openVarianceModal(event, this.props.mine.mine_name)}
-              >
-                Apply for Variance
-              </Button>
-            </div>
-            <VarianceTable
-              variances={this.props.varianceApplications}
-              isApplication
-              mine={this.props.mine}
-              varianceStatusOptionsHash={this.props.varianceStatusOptionsHash}
-              complianceCodesHash={this.props.complianceCodesHash}
-              openViewVarianceModal={this.openViewVarianceModal}
-              openEditVarianceModal={this.openEditVarianceModal}
-            />
-            <h2>Approved Variances</h2>
-            <VarianceTable
-              variances={this.props.approvedVariances}
-              mine={this.props.mine}
-              varianceStatusOptionsHash={this.props.varianceStatusOptionsHash}
-              complianceCodesHash={this.props.complianceCodesHash}
-              openViewVarianceModal={this.openViewVarianceModal}
-            />
-          </div>
-        )}
-      </div>
+      <Row>
+        <Col>
+          {/* Disabled for now, until we want variance creation enabled. */}
+          {/* <Button
+            style={{ display: "inline", float: "right" }}
+            type="primary"
+            onClick={(event) => this.openCreateVarianceModal(event, this.props.mine.mine_name)}
+          >
+            <Icon type="plus-circle" theme="filled" />
+            Create Variance
+          </Button> */}
+          <Title level={4}>Variances</Title>
+          <Paragraph>
+            This table shows your mine's&nbsp;
+            <Text className="color-primary" strong>
+              variance history
+            </Text>
+            , including applications in progress and variances you may need to renew.
+          </Paragraph>
+          <VariancesTable
+            variances={this.props.varianceApplications}
+            mine={this.props.mine}
+            isApplication
+            isLoaded={this.state.isLoaded}
+            varianceStatusOptionsHash={this.props.varianceStatusOptionsHash}
+            complianceCodesHash={this.props.complianceCodesHash}
+            openViewVarianceModal={this.openViewVarianceModal}
+            openEditVarianceModal={this.openEditVarianceModal}
+          />
+        </Col>
+      </Row>
     );
   }
 }
@@ -228,7 +225,4 @@ const mapDispatchToProps = (dispatch) =>
 Variances.propTypes = propTypes;
 Variances.defaultProps = defaultProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Variances);
+export default connect(mapStateToProps, mapDispatchToProps)(Variances);
