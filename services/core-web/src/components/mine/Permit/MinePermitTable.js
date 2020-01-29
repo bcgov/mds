@@ -190,7 +190,7 @@ const columns = [
                 <img className="padding-small--right icon-svg-filter" src={EDIT} alt="Add/Edit" />
                 Add/Edit
                 <img
-                  className="padding-small--right icon-svg-filt"
+                  className="padding-small--right icon-svg-filter"
                   src={CARAT}
                   alt="Menu"
                   style={{ paddingLeft: "5px" }}
