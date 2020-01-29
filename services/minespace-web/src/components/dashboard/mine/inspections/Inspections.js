@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import CustomPropTypes from "@/customPropTypes";
 import { Row, Col, Typography } from "antd";
-import InspectionsTable from "@/components/dashboard/mine/Inspections/InspectionsTable";
+import InspectionsTable from "@/components/dashboard/mine/inspections/InspectionsTable";
 
 const { Paragraph, Title, Text } = Typography;
 

@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import CustomPropTypes from "@/customPropTypes";
 import { Row, Col, Typography } from "antd";
-import PermitsTable from "@/components/dashboard/mine/Permits/PermitsTable";
+import PermitsTable from "@/components/dashboard/mine/permits/PermitsTable";
 
 const { Paragraph, Title, Text } = Typography;
 
