@@ -2,7 +2,7 @@
 
 exports[`Loading renders properly 1`] = `
 <div
-  className="loading-screen"
+  id="loading-screen"
 >
   <div
     id="loader"

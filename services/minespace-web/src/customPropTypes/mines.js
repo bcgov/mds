@@ -4,6 +4,7 @@ export const mine = shape({
   mine_guid: PropTypes.string.isRequired,
   mine_no: PropTypes.string,
   mine_name: PropTypes.string,
+  mine_location: PropTypes.object,
   ohsc_ind: PropTypes.bool,
   union_ind: PropTypes.bool,
 });

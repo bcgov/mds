@@ -1,27 +1,35 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`NullScreen renders properly 1`] = `
-<div
-  className="null-screen"
+<Row
+  gutter={0}
 >
-  <div
-    className="no-nav-bar"
-  >
-    <h3>
-      You do not have permission to access this page
-    </h3>
-    <p>
-      Contact your system administrator at
-      <b>
-         mds@gov.bc.ca
-      </b>
-       to request access
-    </p>
-    <Link
-      to="/"
-    >
-      Go Back
-    </Link>
-  </div>
-</div>
+  <Col>
+    <Result
+      extra={
+        <Paragraph>
+          You may have to log in. Otherwise, please contact 
+          <a
+            href="mds@gov.bc.ca"
+          >
+            mds@gov.bc.ca
+          </a>
+           for assistance.
+        </Paragraph>
+      }
+      icon={
+        <Icon
+          type="stop"
+        />
+      }
+      status="error"
+      subTitle={
+        <Text>
+          You are not authorized to access this page.
+        </Text>
+      }
+      title="Access Denied"
+    />
+  </Col>
+</Row>
 `;

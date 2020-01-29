@@ -1,6 +1,6 @@
 import React from "react";
 import { shallow } from "enzyme";
-import { Authentication } from "@/components/authentication/Authentication";
+import { HeaderDropdown } from "@/components/layout/HeaderDropdown";
 
 const dispatchProps = {};
 const props = {};
@@ -21,7 +21,7 @@ beforeEach(() => {
 
 describe("Authentication", () => {
   it("renders properly", () => {
-    const wrapper = shallow(<Authentication {...props} {...dispatchProps} />);
+    const wrapper = shallow(<HeaderDropdown {...props} {...dispatchProps} />);
     expect(wrapper).toMatchSnapshot();
   });
 });

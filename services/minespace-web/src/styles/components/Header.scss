@@ -1,53 +1,80 @@
-.header {
-  position: fixed;
-  z-index: 1000;
-  width: 100%;
-  min-height: 70px;
-  background-color: $gov-blue;
-  border-bottom: 1px solid $gov-yellow;
-  padding: 0 $default-padding-lg $default-margin-md $default-padding-xxl;
-  top: 0;
-  @include tablet {
-    padding: 10px;
-    min-height: 80px;
-  }
-}
+.header-logo {
+  float: left;
+  margin-right: 32px;
 
-.header-title-bc {
-  padding-left: $default-margin-lg;
-  color: $gov-yellow;
-  font-style: italic;
-  font-weight: $regular;
-  @include tablet {
-    font-size: $default-p;
-    padding-left: $default-margin-sm;
+  @include screen-md {
+    padding-left: $padding-sm;
+    margin-right: 16px;
   }
 }
 
 .header-title {
-  color: $pure-white;
-  font-style: italic;
-  font-weight: $regular;
-  @include tablet {
-    font-size: $default-p;
+  color: $white;
+  font-size: $heading-4-size;
+  font-weight: bold;
+  & a {
+    color: $white !important;
+    text-decoration: none !important;
   }
 }
 
-.header-dropdown {
-  margin-top: 20px;
-  color: $gov-yellow;
-  font-style: italic;
-  font-size: $default-h4;
-  font-weight: $regular;
+.header-menu {
+  float: right;
+}
+
+#dropdown-menu-mobile-trigger {
+  @include screen-md {
+    padding-left: 0;
+    padding-right: $padding-sm;
+  }
 }
 
 .login-btn {
-  font-weight: $light;
-  margin: $default-margin-md;
-  position: absolute;
-  right: $default-padding-xxl;
-  top: $default-margin-md;
-  @include tablet {
-    right: 0;
+  color: $white !important;
+  border-color: $white !important;
+  background-color: transparent !important;
+  & a {
+    text-decoration: none;
   }
+}
+
+.header-link {
+  color: $white;
+  padding: 29px $padding-md 29px $padding-md;
+  &:hover,
+  &:active {
+    color: $white;
+    background-color: $primary-5;
+    text-decoration: none;
+  }
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.header-dropdown-menu {
+  text-align: center;
+  z-index: 1001;
+}
+
+.header-dropdown-button {
+  color: $gov-yellow;
+  border: none;
+  background-color: transparent !important;
+  font-weight: bold;
+
+  &:active,
+  &:focus,
+  &:hover {
+    color: $gov-yellow;
+  }
+}
+
+.header-dropdown-item-button {
+  border: none !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+  & .header-link {
+    text-decoration: none;
+  }
+  font-weight: bold !important;
 }
