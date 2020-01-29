@@ -27,27 +27,27 @@ from app.api.mines.status.models.mine_status_xref import MineStatusXref
 
 from .mine_map import MineMapResource
 
+
 class MineListResource(Resource, UserMixin):
     parser = reqparse.RequestParser()
-    parser.add_argument('mine_name',
-                        type=str,
-                        help='Name of the mine.',
-                        trim=True,
-                        required=True,
-                        location='json')
-    parser.add_argument('mine_note',
-                        type=str,
-                        help='Any additional notes to be added to the mine.',
-                        trim=True,
-                        location='json')
-    parser.add_argument('longitude',
-                        type=lambda x: Decimal(x) if x else None,
-                        help='Longitude point for the mine.',
-                        location='json')
-    parser.add_argument('latitude',
-                        type=lambda x: Decimal(x) if x else None,
-                        help='Latitude point for the mine.',
-                        location='json')
+    parser.add_argument(
+        'mine_name', type=str, help='Name of the mine.', trim=True, required=True, location='json')
+    parser.add_argument(
+        'mine_note',
+        type=str,
+        help='Any additional notes to be added to the mine.',
+        trim=True,
+        location='json')
+    parser.add_argument(
+        'longitude',
+        type=lambda x: Decimal(x) if x else None,
+        help='Longitude point for the mine.',
+        location='json')
+    parser.add_argument(
+        'latitude',
+        type=lambda x: Decimal(x) if x else None,
+        help='Latitude point for the mine.',
+        location='json')
     parser.add_argument(
         'mine_status',
         action='split',
@@ -55,44 +55,41 @@ class MineListResource(Resource, UserMixin):
         'Status of the mine, to be given as a comma separated string value. Ex: status_code, status_reason_code, status_sub_reason_code ',
         required=True,
         location='json')
-    parser.add_argument('status_date',
-                        help='The date when the current status took effect',
-                        location='json')
+    parser.add_argument(
+        'status_date', help='The date when the current status took effect', location='json')
     parser.add_argument(
         'major_mine_ind',
         type=inputs.boolean,
         help='Indication if mine is major_mine_ind or regional. Accepts "true", "false", "1", "0".',
         location='json')
-    parser.add_argument('mine_region',
-                        type=str,
-                        help='Region for the mine.',
-                        trim=True,
-                        required=True,
-                        location='json')
-    parser.add_argument('ohsc_ind',
-                        type=bool,
-                        store_missing=False,
-                        help='Indicates if the mine has an OHSC.')
-    parser.add_argument('union_ind',
-                        type=bool,
-                        store_missing=False,
-                        help='Indicates if the mine has a union.')
+    parser.add_argument(
+        'mine_region',
+        type=str,
+        help='Region for the mine.',
+        trim=True,
+        required=True,
+        location='json')
+    parser.add_argument(
+        'ohsc_ind', type=bool, store_missing=False, help='Indicates if the mine has an OHSC.')
+    parser.add_argument(
+        'union_ind', type=bool, store_missing=False, help='Indicates if the mine has a union.')
 
-    @api.doc(params={
-        'per_page': 'The number of results to be returned per page.',
-        'page': 'The current page number to be displayed.',
-        'search': 'The search term.',
-        'commodity': 'A specific commodity to filter the mine list on.',
-        'status': 'A specific mine status to filter the mine list on.',
-        'tenure': 'A specific mine tenure type to filter the mine list on.',
-        'region': 'A specific mine region to filter the mine list on.',
-        'major': 'Filters the mine list by major mines or regional mines.',
-        'tsf': 'Filters the mine list by mines with or without a TSF.',
-        'sort_field':
-        'enum[mine_name, mine_no, mine_operation_status_code, mine_region] Default: mine_name',
-        'sort_dir': 'enum[asc, desc] Default: asc'
-    },
-             description='Returns a list of filtered mines.')
+    @api.doc(
+        params={
+            'per_page': 'The number of results to be returned per page.',
+            'page': 'The current page number to be displayed.',
+            'search': 'The search term.',
+            'commodity': 'A specific commodity to filter the mine list on.',
+            'status': 'A specific mine status to filter the mine list on.',
+            'tenure': 'A specific mine tenure type to filter the mine list on.',
+            'region': 'A specific mine region to filter the mine list on.',
+            'major': 'Filters the mine list by major mines or regional mines.',
+            'tsf': 'Filters the mine list by mines with or without a TSF.',
+            'sort_field':
+            'enum[mine_name, mine_no, mine_operation_status_code, mine_region] Default: mine_name',
+            'sort_dir': 'enum[asc, desc] Default: asc'
+        },
+        description='Returns a list of filtered mines.')
     @api.marshal_with(MINE_LIST_MODEL, code=200)
     @requires_any_of([VIEW_ALL, MINESPACE_PROPONENT])
     def get(self):
@@ -120,15 +117,16 @@ class MineListResource(Resource, UserMixin):
 
         # query the mine tables and check if that mine name exists
         _throw_error_if_mine_exists(data.get('mine_name'))
-        mine = Mine(mine_no=generate_mine_no(),
-                    mine_name=data.get('mine_name'),
-                    mine_note=data.get('mine_note'),
-                    major_mine_ind=data.get('major_mine_ind'),
-                    mine_region=data.get('mine_region'),
-                    ohsc_ind=data.get('ohsc_ind'),
-                    union_ind=data.get('union_ind'),
-                    latitude=lat,
-                    longitude=lon)
+        mine = Mine(
+            mine_no=generate_mine_no(),
+            mine_name=data.get('mine_name'),
+            mine_note=data.get('mine_note'),
+            major_mine_ind=data.get('major_mine_ind'),
+            mine_region=data.get('mine_region'),
+            ohsc_ind=data.get('ohsc_ind'),
+            union_ind=data.get('union_ind'),
+            latitude=lat,
+            longitude=lon)
 
         mine_status = _mine_status_processor(data.get('mine_status'), data.get('status_date'), mine)
         mine.save()
@@ -232,28 +230,32 @@ class MineListResource(Resource, UserMixin):
 
 class MineResource(Resource, UserMixin):
     parser = reqparse.RequestParser()
-    parser.add_argument('mine_name',
-                        type=str,
-                        help='Name of the mine.',
-                        trim=True,
-                        store_missing=False,
-                        location='json')
-    parser.add_argument('mine_note',
-                        type=str,
-                        help='Any additional notes to be added to the mine.',
-                        trim=True,
-                        store_missing=False,
-                        location='json')
-    parser.add_argument('longitude',
-                        type=lambda x: Decimal(x) if x else None,
-                        help='Longitude point for the mine.',
-                        store_missing=False,
-                        location='json')
-    parser.add_argument('latitude',
-                        type=lambda x: Decimal(x) if x else None,
-                        help='Latitude point for the mine.',
-                        store_missing=False,
-                        location='json')
+    parser.add_argument(
+        'mine_name',
+        type=str,
+        help='Name of the mine.',
+        trim=True,
+        store_missing=False,
+        location='json')
+    parser.add_argument(
+        'mine_note',
+        type=str,
+        help='Any additional notes to be added to the mine.',
+        trim=True,
+        store_missing=False,
+        location='json')
+    parser.add_argument(
+        'longitude',
+        type=lambda x: Decimal(x) if x else None,
+        help='Longitude point for the mine.',
+        store_missing=False,
+        location='json')
+    parser.add_argument(
+        'latitude',
+        type=lambda x: Decimal(x) if x else None,
+        help='Latitude point for the mine.',
+        store_missing=False,
+        location='json')
     parser.add_argument(
         'mine_status',
         action='split',
@@ -261,29 +263,25 @@ class MineResource(Resource, UserMixin):
         'Status of the mine, to be given as a comma separated string value. Ex: status_code, status_reason_code, status_sub_reason_code ',
         store_missing=False,
         location='json')
-    parser.add_argument('status_date',
-                        help='The date when the current status took effect',
-                        location='json')
+    parser.add_argument(
+        'status_date', help='The date when the current status took effect', location='json')
     parser.add_argument(
         'major_mine_ind',
         type=inputs.boolean,
         help='Indication if mine is major_mine_ind or regional. Accepts "true", "false", "1", "0".',
         store_missing=False,
         location='json')
-    parser.add_argument('mine_region',
-                        type=str,
-                        help='Region for the mine.',
-                        trim=True,
-                        store_missing=False,
-                        location='json')
-    parser.add_argument('ohsc_ind',
-                        type=bool,
-                        store_missing=False,
-                        help='Indicates if the mine has an OHSC.')
-    parser.add_argument('union_ind',
-                        type=bool,
-                        store_missing=False,
-                        help='Indicates if the mine has a union.')
+    parser.add_argument(
+        'mine_region',
+        type=str,
+        help='Region for the mine.',
+        trim=True,
+        store_missing=False,
+        location='json')
+    parser.add_argument(
+        'ohsc_ind', type=bool, store_missing=False, help='Indicates if the mine has an OHSC.')
+    parser.add_argument(
+        'union_ind', type=bool, store_missing=False, help='Indicates if the mine has a union.')
 
     @api.doc(description='Returns the specific mine from the mine_guid or mine_no provided.')
     @api.marshal_with(MINE_MODEL, code=200)
@@ -354,10 +352,15 @@ class MineListSearch(Resource):
     def get(self):
         name_search = request.args.get('name')
         search_term = request.args.get('term')
+        major = None
+        if 'major' in request.args:
+            major = request.args.get('major')
+
         if search_term:
-            mines = Mine.find_by_name_no_permit(search_term)
+            mines = Mine.find_by_name_no_permit(search_term, major=major)
+
         else:
-            mines = Mine.find_by_mine_name(name_search)
+            mines = Mine.find_by_mine_name(name_search, major=major)
         result = list(
             map(
                 lambda x: {
@@ -397,9 +400,10 @@ def _mine_status_processor(mine_status, status_date, mine):
         mine.save(commit=False)
         return new_status
 
-    mine_status_xref = MineStatusXref.find_by_codes(_mine_operation_code_processor(mine_status, 0),
-                                                    _mine_operation_code_processor(mine_status, 1),
-                                                    _mine_operation_code_processor(mine_status, 2))
+    mine_status_xref = MineStatusXref.find_by_codes(
+        _mine_operation_code_processor(mine_status, 0),
+        _mine_operation_code_processor(mine_status, 1),
+        _mine_operation_code_processor(mine_status, 2))
     if not mine_status_xref:
         raise BadRequest('Invalid status_code, reason_code, and sub_reason_code combination.')
     existing_status = mine.mine_status[0] if mine.mine_status else None
@@ -414,8 +418,8 @@ def _mine_status_processor(mine_status, status_date, mine):
     if status_date == '':
         new_status = MineStatus(mine_status_xref_guid=mine_status_xref.mine_status_xref_guid)
     else:
-        new_status = MineStatus(mine_status_xref_guid=mine_status_xref.mine_status_xref_guid,
-                                status_date=status_date)
+        new_status = MineStatus(
+            mine_status_xref_guid=mine_status_xref.mine_status_xref_guid, status_date=status_date)
     mine.mine_status.append(new_status)
     new_status.save()
     mine.save(commit=False)

@@ -18,10 +18,20 @@ const noticeOfWorkReducer = (state = initialState, action) => {
         noticeOfWorkList: action.payload.records,
         noticeOfWorkPageData: action.payload,
       };
+    case actionTypes.STORE_MINE_NOTICE_OF_WORK_APPLICATIONS:
+      return {
+        ...state,
+        noticeOfWorkList: action.payload.records,
+      };
     case actionTypes.STORE_NOTICE_OF_WORK_APPLICATION:
       return {
         ...state,
         noticeOfWork: action.payload,
+      };
+    case actionTypes.CLEAR_NOTICE_OF_WORK_APPLICATION:
+      return {
+        ...state,
+        noticeOfWork: {},
       };
     case actionTypes.STORE_ORIGINAL_NOTICE_OF_WORK_APPLICATION:
       return {

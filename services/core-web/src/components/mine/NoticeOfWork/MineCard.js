@@ -43,7 +43,7 @@ export const MineCard = (props) => {
           </div>
         </div>
         <div className="mine-content__card-left">
-          <MineHeaderMapLeaflet mine={props.mine} />
+          <MineHeaderMapLeaflet mine={props.mine} noticeOfWork={props.noticeOfWork} />
           <div className="mine-content__card-left--footer">
             <div className="inline-flex between">
               <p className="p-white">

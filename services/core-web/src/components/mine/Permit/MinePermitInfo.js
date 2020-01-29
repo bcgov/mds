@@ -5,6 +5,7 @@ import { Divider } from "antd";
 import PropTypes from "prop-types";
 import CustomPropTypes from "@/customPropTypes";
 import * as Permission from "@/constants/permissions";
+import * as router from "@/constants/routes";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import {
   fetchPermits,
@@ -14,6 +15,7 @@ import {
   createPermitAmendment,
   removePermitAmendmentDocument,
 } from "@/actionCreators/permitActionCreator";
+
 import { openModal, closeModal } from "@/actions/modalActions";
 import { fetchPartyRelationships } from "@/actionCreators/partiesActionCreator";
 import { fetchMineRecordById } from "@/actionCreators/mineActionCreator";
@@ -27,7 +29,7 @@ import { getMines, getMineGuid } from "@/selectors/mineSelectors";
  * @class  MinePermitInfo - contains all permit information
  */
 
-const amalgamtedPermit = "ALG";
+const amalgamatedPermit = "ALG";
 const originalPermit = "OGP";
 
 const propTypes = {
@@ -42,6 +44,7 @@ const propTypes = {
   partyRelationships: PropTypes.arrayOf(CustomPropTypes.partyRelationship),
   fetchPartyRelationships: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
+  history: PropTypes.shape({ push: PropTypes.func }).isRequired,
   closeModal: PropTypes.func.isRequired,
   createPermit: PropTypes.func.isRequired,
   fetchPermits: PropTypes.func.isRequired,
@@ -200,7 +203,7 @@ export class MinePermitInfo extends Component {
       this.handleAddAmalgamatedPermit,
       `Add amalgamated permit to ${permit.permit_no}`,
       permit,
-      amalgamtedPermit
+      amalgamatedPermit
     );
 
   openAddPermitAmendmentModal = (event, permit) =>
@@ -235,22 +238,28 @@ export class MinePermitInfo extends Component {
     return this.props
       .createPermitAmendment(this.props.mineGuid, values.permit_guid, {
         ...values,
-        permit_amendment_type_code: amalgamtedPermit,
+        permit_amendment_type_code: amalgamatedPermit,
       })
       .then(this.closePermitModal);
   };
 
-  handleRemovePermitAmendmentDocument = (permitGuid, permitAmdendmentGuid, documentGuid) =>
+  handleRemovePermitAmendmentDocument = (permitGuid, permitAmendmentGuid, documentGuid) =>
     this.props
       .removePermitAmendmentDocument(
         this.props.mineGuid,
         permitGuid,
-        permitAmdendmentGuid,
+        permitAmendmentGuid,
         documentGuid
       )
       .then(() => {
         this.props.fetchPermits(this.props.mineGuid);
       });
+
+  handleAddPermitAmendmentApplication = (permitGuid) =>
+    this.props.history.push(router.CREATE_NOTICE_OF_WORK_APPLICATION.route, {
+      mineGuid: this.props.mineGuid,
+      permitGuid,
+    });
 
   onExpand = (expanded, record) =>
     this.setState((prevState) => {
@@ -301,6 +310,7 @@ export class MinePermitInfo extends Component {
           openEditAmendmentModal={this.openEditAmendmentModal}
           openAddPermitAmendmentModal={this.openAddPermitAmendmentModal}
           openAddAmalgamatedPermitModal={this.openAddAmalgamatedPermitModal}
+          handleAddPermitAmendmentApplication={this.handleAddPermitAmendmentApplication}
           expandedRowKeys={this.state.expandedRowKeys}
           onExpand={this.onExpand}
         />

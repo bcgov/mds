@@ -43,6 +43,8 @@ exports[`MechanicalTrenching renders properly 1`] = `
   <br />
   <Equipment
     activity="mechanical_trenching"
+    addRecord={[MockFunction]}
+    editRecord={[MockFunction]}
     equipment={Array []}
     isViewMode={true}
   />
