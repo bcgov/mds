@@ -4,9 +4,11 @@ import { MineNOWApplications } from "@/components/mine/NoticeOfWork/MineNOWAppli
 import * as MOCK from "@/tests/mocks/dataMocks";
 
 const props = {};
+const dispatchProps = {};
 
 const setupProps = () => {
   props.mineGuid = MOCK.NOW.applications[0].mine_guid;
+  props.mines = { [MOCK.NOW.applications[0].mine_guid]: { major_mine_ind: true } };
   props.history = { push: jest.fn() };
   props.location = { search: "" };
   props.noticeOfWorkApplications = MOCK.NOW.applications;
@@ -14,8 +16,8 @@ const setupProps = () => {
 };
 
 const setupDispatchProps = () => {
-  props.fetchRegionOptions = jest.fn(() => Promise.resolve());
-  props.fetchMineNoticeOfWorkApplications = jest.fn(() => Promise.resolve());
+  dispatchProps.fetchRegionOptions = jest.fn(() => Promise.resolve());
+  dispatchProps.fetchMineNoticeOfWorkApplications = jest.fn(() => Promise.resolve());
 };
 
 beforeEach(() => {
@@ -25,7 +27,7 @@ beforeEach(() => {
 
 describe("MineNOWApplications", () => {
   it("renders properly", () => {
-    const component = shallow(<MineNOWApplications {...props} />);
+    const component = shallow(<MineNOWApplications {...props} {...dispatchProps} />);
     expect(component).toMatchSnapshot();
   });
 });

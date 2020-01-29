@@ -1,70 +1,58 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`RenderAutoComplete renders properly 1`] = `
-<AutoComplete
-  allowClear={true}
-  backfill={true}
-  choiceTransitionName="zoom"
-  dataSource={
-    Object {
-      "mines": Array [
-        Object {
-          "latitude": "51.4961750",
-          "longitude": "-119.6963833",
-          "mine_guid": "fc72863d-83e8-46ba-90f9-87b0ed78823f",
-          "mine_name": "New Mine",
-          "mine_no": "BLAH6194",
-        },
-        Object {
-          "latitude": "51.4961750",
-          "longitude": "-119.6963833",
-          "mine_guid": "89a65274-581d-4862-8630-99f5f7687089",
-          "mine_name": "Mine Two",
-          "mine_no": "BLAH0502",
-        },
-        Object {
-          "latitude": "51.4961750",
-          "longitude": "-119.6963833",
-          "mine_guid": "75692b61-7ab9-406b-b1f5-8c9b857404ac",
-          "mine_name": "Legit Mine",
-          "mine_no": "BLAH6734",
-        },
-      ],
-    }
-  }
-  defaultActiveFirstOption={false}
-  defaultValue=""
-  disabled={false}
-  dropdownMatchSelectWidth={true}
-  filterOption={[Function]}
-  notFoundContent="Not Found"
-  onChange={[MockFunction]}
-  onSelect={[MockFunction]}
-  optionLabelProp="children"
-  placeholder=""
-  showSearch={false}
-  style={
-    Object {
-      "width": "100%",
-    }
-  }
-  transitionName="slide-up"
+<FormItem
+  hasFeedback={false}
+  validateStatus=""
 >
-  <Input
-    autoComplete="off"
-    id="search"
-    suffix={
-      <Icon
-        className="icon-sm"
-        style={
+  <AutoComplete
+    allowClear={true}
+    backfill={true}
+    choiceTransitionName="zoom"
+    dataSource={
+      Object {
+        "mines": Array [
           Object {
-            "color": "#5e46a1",
-          }
-        }
-        type="search"
-      />
+            "latitude": "51.4961750",
+            "longitude": "-119.6963833",
+            "mine_guid": "fc72863d-83e8-46ba-90f9-87b0ed78823f",
+            "mine_name": "New Mine",
+            "mine_no": "BLAH6194",
+          },
+          Object {
+            "latitude": "51.4961750",
+            "longitude": "-119.6963833",
+            "mine_guid": "89a65274-581d-4862-8630-99f5f7687089",
+            "mine_name": "Mine Two",
+            "mine_no": "BLAH0502",
+          },
+          Object {
+            "latitude": "51.4961750",
+            "longitude": "-119.6963833",
+            "mine_guid": "75692b61-7ab9-406b-b1f5-8c9b857404ac",
+            "mine_name": "Legit Mine",
+            "mine_no": "BLAH6734",
+          },
+        ],
+      }
     }
-    type="text"
+    defaultActiveFirstOption={false}
+    defaultValue=""
+    disabled={false}
+    dropdownMatchSelectWidth={true}
+    filterOption={[Function]}
+    notFoundContent="Not Found"
+    onChange={[Function]}
+    onSelect={[MockFunction]}
+    optionLabelProp="children"
+    placeholder=""
+    showSearch={false}
+    style={
+      Object {
+        "width": "100%",
+      }
+    }
+    transitionName="slide-up"
   />
-</AutoComplete>
+</FormItem>
 `;

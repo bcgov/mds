@@ -1,6 +1,10 @@
+// TODO: Revisit the responsive styling for tables and ensure it is acceptable.
+// There were no clear designs for this so I didn't worry about it too much.
+
 .ant-table-body {
   overflow-x: auto;
 }
+
 .ant-table table {
   margin: 20px 0;
 }
@@ -9,7 +13,7 @@
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);
 }
 
-@include tablet {
+@include screen-md {
   .ant-table table {
     min-width: 100%;
     margin: 20px 0;
@@ -21,7 +25,7 @@
 
   .ant-table-tbody > tr {
     display: block;
-    border-top: 2px solid $lightest-grey;
+    border-top: 2px solid $background;
   }
 
   .ant-table-tbody > tr > td {

@@ -7,7 +7,7 @@ import CustomPropTypes from "@/customPropTypes";
 import * as Strings from "@/constants/strings";
 
 const propTypes = {
-  noticeOfWork: CustomPropTypes.nowApplication.isRequired,
+  noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
   inspectorsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   noticeOfWorkPageFromRoute: CustomPropTypes.noticeOfWorkPageFromRoute.isRequired,
   fixedTop: PropTypes.bool.isRequired,

@@ -337,6 +337,8 @@ NOW_VIEW_MODEL = api.model(
         'mine_name':fields.String,
         'mine_region':fields.String,
         'now_number': fields.String,
+        'permit_guid': fields.String(attribute='permit.permit_guid'),
+        'permit_no':fields.String(attribute='permit.permit_no'),
         'lead_inspector_party_guid': fields.String,
         'lead_inspector_name': fields.String,
         'notice_of_work_type_description': fields.String,

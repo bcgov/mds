@@ -32,8 +32,6 @@ from app.api.mines.variances.resources.variance_document_upload import MineVaria
 from app.api.mines.variances.resources.variance_uploaded_documents import MineVarianceUploadedDocumentsResource
 from app.api.parties.party_appt.resources.mine_party_appt_document_upload_resource import MinePartyApptDocumentUploadResource
 
-from app.api.now_applications.resources.now_application_list_resource import NoticeOfWorkListResource
-
 api = Namespace('mines', description='Mine related operations')
 
 api.add_resource(MineResource, '/<string:mine_no_or_guid>')
@@ -116,8 +114,6 @@ api.add_resource(
     PermitAmendmentDocumentResource,
     '/<string:mine_guid>/permits/<string:permit_guid>/amendments/<string:permit_amendment_guid>/documents/<string:permit_amendment_document_guid>',
 )
-
-api.add_resource(NoticeOfWorkListResource, '/<string:mine_guid>/now-applications')
 
 api.add_resource(MinePartyApptDocumentUploadResource,
                  '/<string:mine_guid>/party-appts/<string:mine_party_appt_guid>/documents')

@@ -1,3 +1,112 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Reports renders properly 1`] = `<Loading />`;
+exports[`Reports renders properly 1`] = `
+<Row
+  gutter={0}
+>
+  <Col>
+    <Row
+      gutter={0}
+    >
+      <Col>
+        <Button
+          block={false}
+          ghost={false}
+          htmlType="button"
+          loading={false}
+          onClick={[Function]}
+          style={
+            Object {
+              "display": "inline",
+              "float": "right",
+            }
+          }
+          type="primary"
+        >
+          <Icon
+            theme="filled"
+            type="plus-circle"
+          />
+          Submit Report
+        </Button>
+        <Title
+          level={4}
+        >
+          Reports
+        </Title>
+        <Paragraph>
+          This table shows 
+          <Text
+            className="color-primary"
+            strong={true}
+          >
+            reports
+          </Text>
+           that have been submitted to the Ministry. If a report is listed but there are no files attached, it means the report has not been submitted.
+        </Paragraph>
+      </Col>
+    </Row>
+    <Row
+      gutter={
+        Array [
+          Object {
+            "lg": 0,
+            "xl": 32,
+          },
+          32,
+        ]
+      }
+      justify="space-around"
+      type="flex"
+    >
+      <Col
+        lg={24}
+        xl={8}
+        xxl={6}
+      >
+        <TableSummaryCard
+          content="6"
+          icon="check-circle"
+          title="Inspections YTD"
+          type="success"
+        />
+      </Col>
+      <Col
+        lg={24}
+        xl={8}
+        xxl={6}
+      >
+        <TableSummaryCard
+          content="6"
+          icon="clock-circle"
+          title="Overdue Orders"
+          type="error"
+        />
+      </Col>
+      <Col
+        lg={24}
+        xl={8}
+        xxl={6}
+      >
+        <TableSummaryCard
+          content="6"
+          icon="exclamation-circle"
+          title="Responses Due"
+          type="warning"
+        />
+      </Col>
+    </Row>
+    <Row
+      gutter={0}
+    >
+      <Col>
+        <ReportsTable
+          handleEditReport={[Function]}
+          isLoaded={false}
+          openEditReportModal={[Function]}
+        />
+      </Col>
+    </Row>
+  </Col>
+</Row>
+`;

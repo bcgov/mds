@@ -8,6 +8,8 @@ const reducerProps = {};
 const setupReducerProps = () => {
   reducerProps.isViewMode = true;
   reducerProps.initialValues = NOW_MOCK.IMPORTED_NOTICE_OF_WORK.surface_bulk_sample;
+  reducerProps.editRecord = jest.fn();
+  reducerProps.addRecord = jest.fn();
 };
 
 beforeEach(() => {

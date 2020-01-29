@@ -14,13 +14,24 @@ exports[`ChangeNOWMineForm renders properly 1`] = `
       <FormItem
         hasFeedback={false}
       >
-        <RenderAutoComplete
-          defaultValue="Hamilton, Herrera and Mccormick - brother"
-          disabled={false}
-          handleChange={[MockFunction]}
-          handleSelect={[MockFunction]}
-          iconColor="#5e46a1"
-          placeholder="Search for a mine by name"
+        <Field
+          component={
+            Object {
+              "$$typeof": Symbol(react.memo),
+              "WrappedComponent": [Function],
+              "compare": null,
+              "displayName": "Connect(RenderMineSelect)",
+              "type": [Function],
+            }
+          }
+          id="mine_guid"
+          name="mine_guid"
+          showCard={true}
+          validate={
+            Array [
+              [Function],
+            ]
+          }
         />
       </FormItem>
     </Col>
