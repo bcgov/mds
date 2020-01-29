@@ -9,7 +9,7 @@ const propTypes = {
 // NOTE: Brian: Discuss adding an "expanded" column for the inspection's recommendations.
 const columns = [
   { title: "Incident No.", dataIndex: "incident_no", key: "incident_no", sorter: true },
-  { title: "Incident Types", dataIndex: "incident_types", key: "incident_types", sorter: true },
+  { title: "Incident Type", dataIndex: "incident_type", key: "incident_type", sorter: true },
   { title: "Occurred On", dataIndex: "occured_on", key: "occured_on", sorter: true },
   { title: "Reported By", dataIndex: "reported_by", key: "reported_by", sorter: true },
 
@@ -18,9 +18,6 @@ const columns = [
 
   // NOTE: Brian: Possible values: Preliminary, Final
   { title: "Status", dataIndex: "status", key: "status", sorter: true },
-
-  // NOTE: Brian: If possible.
-  { title: "Status Updated", dataIndex: "status_updated", key: "status_updated", sorter: true },
 
   { title: "Documents", dataIndex: "documents", key: "documents", sorter: true },
 ];
