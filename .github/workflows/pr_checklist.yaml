@@ -1,4 +1,4 @@
-name: Label PRs based on files changed
+name: Add Dev team review checklist
 on: [pull_request]
 
 jobs:
