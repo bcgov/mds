@@ -2,7 +2,7 @@ name: Add Dev team review checklist
 on: [pull_request]
 
 jobs:
-  label:
+  pr-checklist-comment:
     runs-on: ubuntu-latest
 
     steps:
