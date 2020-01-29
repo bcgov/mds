@@ -92,7 +92,7 @@
       "apiVersion": "v1",
       "kind": "PersistentVolumeClaim",
       "metadata": {
-        "name": "mds-logs${SUFFIX}"
+        "name": "mds-access-logs${SUFFIX}"
       },
       "spec": {
         "accessModes": ["ReadWriteMany"],
@@ -233,7 +233,7 @@
               {
                 "name": "${NAME}${SUFFIX}-log",
                 "persistentVolumeClaim": {
-                  "claimName": "mds-logs${SUFFIX}"
+                  "claimName": "mds-access-logs${SUFFIX}"
                 }
               }
             ]
