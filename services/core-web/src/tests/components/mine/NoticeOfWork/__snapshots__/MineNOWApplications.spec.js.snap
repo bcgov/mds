@@ -8,11 +8,16 @@ exports[`MineNOWApplications renders properly 1`] = `
     <h2>
       Permit Applications
     </h2>
-    <AddButton
-      onClick={[Function]}
+    <Connect(AuthorizationWrapper)
+      isMajorMine={true}
+      permission="role_edit_permits"
     >
-      Add a Permit Application
-    </AddButton>
+      <AddButton
+        onClick={[Function]}
+      >
+        Add a Permit Application
+      </AddButton>
+    </Connect(AuthorizationWrapper)>
   </div>
   <Divider />
   <withRouter(MineNoticeOfWorkTable)
