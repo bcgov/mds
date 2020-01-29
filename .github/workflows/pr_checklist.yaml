@@ -1,0 +1,13 @@
+name: Add Dev team review checklist
+on: [pull_request]
+
+jobs:
+  pr-checklist-comment:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: unsplash/comment-on-pr@master
+        env:
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+        with:
+          msg: "Review Reminders \n- [ ] Are there auth tests for new endpoints? \n- [ ] Are there snapshot tests for new React components?"

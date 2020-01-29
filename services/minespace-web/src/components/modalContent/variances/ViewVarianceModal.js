@@ -23,10 +23,8 @@ export const ViewVarianceModal = (props) => (
       complianceCodesHash={props.complianceCodesHash}
       documentCategoryOptionsHash={props.documentCategoryOptionsHash}
     />
-    <div className="right center-mobile">
-      <Button className="full-mobile" type="secondary" onClick={props.closeModal}>
-        Close
-      </Button>
+    <div className="ant-modal-footer">
+      <Button onClick={props.closeModal}>Close</Button>
     </div>
   </div>
 );

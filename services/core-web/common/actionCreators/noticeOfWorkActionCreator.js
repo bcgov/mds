@@ -40,25 +40,46 @@ export const fetchNoticeOfWorkApplications = (params = {}) => (dispatch) => {
     .finally(() => dispatch(hideLoading()));
 };
 
-export const fetchMineNoticeOfWorkApplications = (mineGuid, params = {}) => (dispatch) => {
+export const fetchMineNoticeOfWorkApplications = (mineGuid) => (dispatch) => {
   dispatch(request(reducerTypes.GET_MINE_NOTICE_OF_WORK_APPLICATIONS));
   dispatch(showLoading());
   return CustomAxios()
     .get(
-      `${ENVIRONMENT.apiUrl}${API.MINE_NOTICE_OF_WORK_APPLICATIONS(mineGuid, params)}`,
+      `${ENVIRONMENT.apiUrl}${API.NOTICE_OF_WORK_APPLICATIONS({ mine_guid: mineGuid })}`,
       createRequestHeader()
     )
     .then((response) => {
       dispatch(success(reducerTypes.GET_MINE_NOTICE_OF_WORK_APPLICATIONS));
-      dispatch(noticeOfWorkActions.storeNoticeOfWorkApplications(response.data));
+      dispatch(noticeOfWorkActions.storeMineNoticeOfWorkApplications(response.data));
       return response;
     })
     .catch(() => dispatch(error(reducerTypes.GET_MINE_NOTICE_OF_WORK_APPLICATIONS)))
     .finally(() => dispatch(hideLoading()));
 };
 
-export const createNoticeOfWorkApplication = (mine_guid, applicationGuid) => (dispatch) => {
+export const createNoticeOfWorkApplication = (payload) => (dispatch) => {
   dispatch(request(reducerTypes.CREATE_NOTICE_OF_WORK_APPLICATION));
+  dispatch(showLoading());
+  return CustomAxios()
+    .post(
+      `${ENVIRONMENT.apiUrl}${API.NOTICE_OF_WORK_APPLICATIONS()}`,
+      payload,
+      createRequestHeader()
+    )
+    .then((response) => {
+      dispatch(success(reducerTypes.CREATE_NOTICE_OF_WORK_APPLICATION));
+      notification.success({
+        message: "Successfully created Permit Amendment Application",
+        duration: 10,
+      });
+      return response;
+    })
+    .catch(() => dispatch(error(reducerTypes.CREATE_NOTICE_OF_WORK_APPLICATION)))
+    .finally(() => dispatch(hideLoading()));
+};
+
+export const importNoticeOfWorkApplication = (mine_guid, applicationGuid) => (dispatch) => {
+  dispatch(request(reducerTypes.IMPORT_NOTICE_OF_WORK_APPLICATION));
   dispatch(showLoading());
   return CustomAxios()
     .post(
@@ -67,10 +88,10 @@ export const createNoticeOfWorkApplication = (mine_guid, applicationGuid) => (di
       createRequestHeader()
     )
     .then((response) => {
-      dispatch(success(reducerTypes.CREATE_NOTICE_OF_WORK_APPLICATION));
+      dispatch(success(reducerTypes.IMPORT_NOTICE_OF_WORK_APPLICATION));
       return response;
     })
-    .catch(() => dispatch(error(reducerTypes.CREATE_NOTICE_OF_WORK_APPLICATION)))
+    .catch(() => dispatch(error(reducerTypes.IMPORT_NOTICE_OF_WORK_APPLICATION)))
     .finally(() => dispatch(hideLoading()));
 };
 
@@ -79,7 +100,7 @@ export const fetchImportedNoticeOfWorkApplication = (applicationGuid) => (dispat
   dispatch(showLoading());
   return CustomAxios()
     .get(
-      `${ENVIRONMENT.apiUrl}${API.NOTICE_OF_WORK_IMPORTED_APPLICATION(applicationGuid)}`,
+      `${ENVIRONMENT.apiUrl}${API.NOTICE_OF_WORK_APPLICATION(applicationGuid)}`,
       createRequestHeader()
     )
     .then((response) => {
@@ -96,9 +117,7 @@ export const fetchOriginalNoticeOfWorkApplication = (applicationGuid) => (dispat
   dispatch(showLoading());
   return CustomAxios()
     .get(
-      `${ENVIRONMENT.apiUrl}${API.NOTICE_OF_WORK_IMPORTED_APPLICATION(
-        applicationGuid
-      )}?original=True`,
+      `${ENVIRONMENT.apiUrl}${API.NOTICE_OF_WORK_APPLICATION(applicationGuid)}?original=True`,
       createRequestHeader()
     )
     .then((response) => {
@@ -119,7 +138,7 @@ export const updateNoticeOfWorkApplication = (
   dispatch(showLoading());
   return CustomAxios()
     .put(
-      `${ENVIRONMENT.apiUrl}${API.NOTICE_OF_WORK_APPLICATION_UPDATE(nowApplicationGuid)}`,
+      `${ENVIRONMENT.apiUrl}${API.NOTICE_OF_WORK_APPLICATION(nowApplicationGuid)}`,
       payload,
       createRequestHeader()
     )

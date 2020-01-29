@@ -61,22 +61,20 @@ export class EditVarianceModal extends Component {
 
   render() {
     return (
-      <div>
-        <LoadingWrapper condition={this.state.isLoaded}>
-          <EditVarianceForm
-            onSubmit={this.props.onSubmit}
-            closeModal={this.props.closeModal}
-            mineGuid={this.props.mineGuid}
-            mineName={this.props.mineName}
-            variance={this.props.variance}
-            initialValues={this.props.variance}
-            removeDocument={this.handleRemoveDocument}
-            varianceStatusOptionsHash={this.props.varianceStatusOptionsHash}
-            complianceCodesHash={this.props.complianceCodesHash}
-            documentCategoryOptionsHash={this.props.documentCategoryOptionsHash}
-          />
-        </LoadingWrapper>
-      </div>
+      <LoadingWrapper isLoaded={this.state.isLoaded}>
+        <EditVarianceForm
+          onSubmit={this.props.onSubmit}
+          closeModal={this.props.closeModal}
+          mineGuid={this.props.mineGuid}
+          mineName={this.props.mineName}
+          variance={this.props.variance}
+          initialValues={this.props.variance}
+          removeDocument={this.handleRemoveDocument}
+          varianceStatusOptionsHash={this.props.varianceStatusOptionsHash}
+          complianceCodesHash={this.props.complianceCodesHash}
+          documentCategoryOptionsHash={this.props.documentCategoryOptionsHash}
+        />
+      </LoadingWrapper>
     );
   }
 }
@@ -98,7 +96,4 @@ const mapDispatchToProps = (dispatch) =>
 EditVarianceModal.propTypes = propTypes;
 EditVarianceModal.defaultProps = defaultProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(EditVarianceModal);
+export default connect(mapStateToProps, mapDispatchToProps)(EditVarianceModal);

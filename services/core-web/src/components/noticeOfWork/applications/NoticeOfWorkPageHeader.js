@@ -7,7 +7,7 @@ import * as router from "@/constants/routes";
 import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
-  noticeOfWork: CustomPropTypes.nowApplication.isRequired,
+  noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
   inspectorsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   noticeOfWorkPageFromRoute: CustomPropTypes.noticeOfWorkPageFromRoute.isRequired,
   fixedTop: PropTypes.bool.isRequired,

@@ -1,6 +1,6 @@
 import React from "react";
 import { shallow } from "enzyme";
-import { ReturnPage } from "@/components/ReturnPage";
+import { ReturnPage } from "@/components/pages/ReturnPage";
 
 const props = {};
 const dispatchProps = {};

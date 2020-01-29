@@ -7,6 +7,10 @@ const reducerProps = {};
 
 const setupReducerProps = () => {
   reducerProps.equipment = NOW_MOCK.EQUIPMENT;
+  reducerProps.isViewMode = false;
+  reducerProps.activity = "TEST ACTIVITY";
+  reducerProps.editRecord = jest.fn();
+  reducerProps.addRecord = jest.fn();
 };
 
 beforeEach(() => {
@@ -14,8 +18,15 @@ beforeEach(() => {
 });
 
 describe("Equipment", () => {
-  it("renders properly", () => {
+  it("renders view properly", () => {
     const component = shallow(<Equipment {...reducerProps} />);
+    expect(component).toMatchSnapshot();
+  });
+});
+
+describe("Equipment", () => {
+  it("renders edit properly", () => {
+    const component = shallow(<Equipment isViewMode {...reducerProps} />);
     expect(component).toMatchSnapshot();
   });
 });

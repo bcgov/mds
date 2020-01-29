@@ -10,10 +10,11 @@ export const RETURN_PAGE_TYPE = {
 };
 
 export const EMPTY_FIELD = "-";
+export const NOT_APPLICABLE = "N/A";
 
 // variances
 export const VARIANCE_APPROVED_CODE = "APP";
 export const VARIANCE_APPLICATION_CODE = "REV";
 
-// email
+// MDS email
 export const MDS_EMAIL = "mds@gov.bc.ca";

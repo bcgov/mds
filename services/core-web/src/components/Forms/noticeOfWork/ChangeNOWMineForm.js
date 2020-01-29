@@ -1,21 +1,17 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { reduxForm } from "redux-form";
+import { reduxForm, Field } from "redux-form";
 import { Form, Button, Col, Row, Popconfirm } from "antd";
 import { resetForm } from "@common/utils/helpers";
+import { required } from "@common/utils/Validate";
 import * as FORM from "@/constants/forms";
-import RenderAutoComplete from "@/components/common/RenderAutoComplete";
-import CustomPropTypes from "@/customPropTypes";
+import RenderMineSelect from "@/components/common/RenderMineSelect";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
-  handleChange: PropTypes.func.isRequired,
-  handleSelect: PropTypes.func.isRequired,
-  noticeOfWork: CustomPropTypes.nowApplication.isRequired,
   closeModal: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
   submitting: PropTypes.bool.isRequired,
-  data: PropTypes.arrayOf(PropTypes.any).isRequired,
 };
 
 export const ChangeNOWMineForm = (props) => (
@@ -23,12 +19,12 @@ export const ChangeNOWMineForm = (props) => (
     <Row gutter={16}>
       <Col>
         <Form.Item>
-          <RenderAutoComplete
-            placeholder="Search for a mine by name"
-            handleSelect={props.handleSelect}
-            defaultValue={`${props.noticeOfWork.mine_name} - ${props.noticeOfWork.mine_no}`}
-            data={props.data}
-            handleChange={props.handleChange}
+          <Field
+            id="mine_guid"
+            name="mine_guid"
+            component={RenderMineSelect}
+            validate={[required]}
+            showCard
           />
         </Form.Item>
       </Col>
