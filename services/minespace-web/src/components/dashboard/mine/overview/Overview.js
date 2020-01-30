@@ -8,7 +8,7 @@ import { Row, Col, Card, Descriptions, Typography, Alert } from "antd";
 import CustomPropTypes from "@/customPropTypes";
 import ContactCard from "@/components/common/ContactCard";
 import * as Strings from "@/constants/strings";
-import * as Contacts from "@/constants/ministryContacts";
+import * as Contacts from "@/constants/contacts";
 
 const { Paragraph, Text, Title } = Typography;
 
