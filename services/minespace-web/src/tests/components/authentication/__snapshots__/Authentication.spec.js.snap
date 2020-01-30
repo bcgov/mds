@@ -5,20 +5,18 @@ exports[`Authentication renders properly 1`] = `
   <MediaQueryContextConsumer
     minWidth={1280}
   >
-    <span>
-      <Link
-        className="header-link"
-        to="/mines"
-      >
-        My Mines
-      </Link>
-      <Link
-        className="header-link"
-        to="/users"
-      >
-        My Users
-      </Link>
-    </span>
+    <Link
+      className="header-link"
+      to="/mines"
+    >
+      My Mines
+    </Link>
+    <Link
+      className="header-link"
+      to="/users"
+    >
+      My Users
+    </Link>
     <Dropdown
       mouseEnterDelay={0.15}
       mouseLeaveDelay={0.1}
@@ -74,7 +72,6 @@ exports[`Authentication renders properly 1`] = `
               loading={false}
             >
               <ForwardRef
-                className="header-link"
                 to="/mines"
               >
                 My Mines
@@ -90,7 +87,6 @@ exports[`Authentication renders properly 1`] = `
               loading={false}
             >
               <ForwardRef
-                className="header-link"
                 to="/users"
               >
                 My Users
