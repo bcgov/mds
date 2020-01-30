@@ -71,13 +71,14 @@ export class Overview extends Component {
                 dateLabel="Mine Manager Since"
               />
             </Col>
-            <Col xl={{ span: 11, offset: 2 }} xxl={{ span: 10, offset: 2 }}>
+            {/* Disabled until we find a replacement contact to fill this card */}
+            {/* <Col xl={{ span: 11, offset: 2 }} xxl={{ span: 10, offset: 2 }}>
               <ContactCard title="Permittee" party={partyPermittee} dateLabel="Permittee Since" />
-            </Col>
+            </Col> */}
           </Row>
         </Col>
         <Col lg={{ span: 9, offset: 1 }} xl={{ offset: 1, span: 7 }}>
-          <Card title="Ministry Contacts">
+          <Card title="Regional Ministry Contacts">
             <Paragraph>
               <Text strong className="ministry-contact-title">
                 Senior Health, Safety and Environment Inspector
@@ -136,17 +137,8 @@ export class Overview extends Component {
                 </a>
               </Text>
             </Paragraph>
-            {this.props.mine.major_mine_ind && (
-              <Paragraph>
-                <Text strong className="ministry-contact-title">
-                  Major Mines Office
-                </Text>
-                <br />
-                <Text>
-                  <a href={`mailto:${Contacts.MM_OFFICE.email}`}>{Contacts.MM_OFFICE.email}</a>
-                </Text>
-              </Paragraph>
-            )}
+          </Card>
+          <Card title="General Ministry Contacts">
             <Paragraph>
               <Text strong className="ministry-contact-title">
                 Chief Inspector of Mines
