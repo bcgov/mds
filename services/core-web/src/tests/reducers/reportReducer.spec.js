@@ -1,5 +1,5 @@
-import reportReducer from "@/reducers/reportReducer";
-import { storeMineReports } from "@/actions/mineReportActions";
+import reportReducer from "@common/reducers/reportReducer";
+import { storeMineReports } from "@common/actions/mineReportActions";
 import * as Mocks from "@/tests/mocks/dataMocks";
 
 const baseExpectedValue = {
