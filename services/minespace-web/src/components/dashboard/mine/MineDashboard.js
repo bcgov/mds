@@ -8,7 +8,7 @@ import { getMine } from "@/selectors/userMineSelectors";
 import CustomPropTypes from "@/customPropTypes";
 import Loading from "@/components/common/Loading";
 import Overview from "@/components/dashboard/mine/overview/Overview";
-// import Permits from "@/components/dashboard/mine/permits/Permits";
+import Permits from "@/components/dashboard/mine/permits/Permits";
 import Variances from "@/components/dashboard/mine/variances/Variances";
 import Inspections from "@/components/dashboard/mine/inspections/Inspections";
 import Incidents from "@/components/dashboard/mine/incidents/Incidents";
@@ -31,8 +31,10 @@ const propTypes = {
 
 const defaultProps = {};
 
+const initialTab = "overview";
+
 export class MineDashboard extends Component {
-  state = { isLoaded: false, activeTab: "overview" };
+  state = { isLoaded: false, activeTab: initialTab };
 
   componentDidMount() {
     const { id, activeTab } = this.props.match.params;
@@ -78,17 +80,18 @@ export class MineDashboard extends Component {
               <Col>
                 <Tabs
                   activeKey={this.state.activeTab}
-                  defaultActiveKey="overview"
+                  defaultActiveKey={initialTab}
                   onChange={this.handleTabChange}
                   type="card"
                 >
-                  <TabPane tab="Overview" key="overview">
+                  <TabPane tab="Overview" key={initialTab}>
                     <Overview mine={this.props.mine} match={this.props.match} />
                   </TabPane>
-                  {/* Disabled until we are ready for permit management */}
-                  {/* <TabPane tab="Permits" key="permits">
-                    <Permits mine={this.props.mine} match={this.props.match} />
-                  </TabPane> */}
+                  {this.props.mine.major_mine_ind && (
+                    <TabPane tab="Permits" key="permits">
+                      <Permits mine={this.props.mine} match={this.props.match} />
+                    </TabPane>
+                  )}
                   <TabPane tab="Inspections" key="inspections">
                     <Inspections mine={this.props.mine} match={this.props.match} />
                   </TabPane>
