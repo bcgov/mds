@@ -1,4 +1,4 @@
-import reportReducer from "@common/reducers/reportReducer";
+import { reportReducer } from "@common/reducers/reportReducer";
 import { storeMineReports } from "@common/actions/mineReportActions";
 import * as Mocks from "@/tests/mocks/dataMocks";
 
