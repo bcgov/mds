@@ -4,12 +4,12 @@ import { compose } from "redux";
 import PropTypes from "prop-types";
 import { Field, reduxForm, formValueSelector } from "redux-form";
 import { Form, Button, Col, Row } from "antd";
-import * as FORM from "@/constants/forms";
 import {
   getDropdownMineReportCategoryOptions,
   getMineReportDefinitionOptions,
-} from "@/selectors/staticContentSelectors";
-import { createDropDownList } from "@/utils/helpers";
+} from "@common/selectors/staticContentSelectors";
+import { createDropDownList } from "@common/utils/helpers";
+import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
 import CustomPropTypes from "@/customPropTypes";
 

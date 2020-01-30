@@ -7,15 +7,15 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Field, reduxForm, FieldArray } from "redux-form";
 import { Form, Col, Row, Icon } from "antd";
+import { required, dateNotInFuture } from "@common/utils/Validate";
+import { MINE_INCIDENT_DOCUMENT } from "@common/constants/API";
+import * as Strings from "@common/constants/strings";
 import * as FORM from "@/constants/forms";
 import CustomPropTypes from "@/customPropTypes";
 import { renderConfig } from "@/components/common/config";
-import { required, dateNotInFuture } from "@/utils/Validate";
 import LinkButton from "@/components/common/LinkButton";
 import FileUpload from "@/components/common/FileUpload";
-import { MINE_INCIDENT_DOCUMENT } from "@/constants/API";
 import { IncidentsUploadedFilesList } from "@/components/Forms/incidents/IncidentsUploadedFilesList";
-import * as Strings from "@/constants/strings";
 
 const propTypes = {
   followupActionOptions: CustomPropTypes.options.isRequired,

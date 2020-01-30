@@ -2,10 +2,10 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Field, reduxForm } from "redux-form";
 import { Form, Button, Col, Row, Popconfirm } from "antd";
+import { required } from "@common/utils/Validate";
+import { resetForm } from "@common/utils/helpers";
 import RenderField from "@/components/common/RenderField";
 import * as FORM from "@/constants/forms";
-import { required } from "@/utils/Validate";
-import { resetForm } from "@/utils/helpers";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,

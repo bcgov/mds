@@ -3,16 +3,16 @@ import { PropTypes } from "prop-types";
 import { Field, Fields, formValueSelector } from "redux-form";
 import { connect } from "react-redux";
 import { Row, Col, Table, Button } from "antd";
-import * as FORM from "@/constants/forms";
 import {
   getDropdownNoticeOfWorkUndergroundExplorationTypeOptions,
   getDropdownNoticeOfWorkUnitTypeOptions,
-} from "@/selectors/staticContentSelectors";
+} from "@common/selectors/staticContentSelectors";
+import { number } from "@common/utils/Validate";
+import * as FORM from "@/constants/forms";
 import { TRASHCAN } from "@/constants/assets";
 import RenderField from "@/components/common/RenderField";
 import RenderFieldWithDropdown from "@/components/common/RenderFieldWithDropdown";
 import CustomPropTypes from "@/customPropTypes";
-import { number } from "@/utils/Validate";
 
 const propTypes = {
   isViewMode: PropTypes.bool.isRequired,

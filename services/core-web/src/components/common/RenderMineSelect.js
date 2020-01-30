@@ -3,14 +3,13 @@ import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
 import { AutoComplete } from "antd";
 import { connect } from "react-redux";
+import { fetchMineNameList } from "@common/actionCreators/mineActionCreator";
+import { getMineWithoutStore } from "@common/utils/actionlessNetworkCalls";
+import { getMineNames } from "@common/selectors/mineSelectors";
 import RenderAutoComplete from "@/components/common/RenderAutoComplete";
-import { fetchMineNameList } from "@/actionCreators/mineActionCreator";
 import MineCard from "@/components/mine/NoticeOfWork/MineCard";
 import CustomPropTypes from "@/customPropTypes";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
-
-import { getMineWithoutStore } from "@/utils/actionlessNetworkCalls";
-import { getMineNames } from "@/selectors/mineSelectors";
 /**
  * @constant RenderMineSelect - Ant Design `AutoComplete` component for redux-form that handles all the state for selecting a mine and updating a content card with that mines tombstone data.
  *

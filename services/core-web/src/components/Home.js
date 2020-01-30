@@ -4,20 +4,18 @@ import { Layout, BackTop, Button, Icon } from "antd";
 import PropTypes from "prop-types";
 import MediaQuery from "react-responsive";
 import LoadingBar, { showLoading, hideLoading } from "react-redux-loading-bar";
+import {
+  detectIE,
+  detectTestEnvironment,
+  detectDevelopmentEnvironment,
+} from "@common/utils/environmentUtils";
+import { getStaticContentLoadingIsComplete } from "@common/selectors/staticContentSelectors";
+import * as staticContent from "@common/actionCreators/staticContentActionCreator";
 import DashboardRoutes from "@/routes/DashboardRoutes";
 import { AuthenticationGuard } from "@/HOC/AuthenticationGuard";
 import NavBar from "./navigation/NavBar";
 import WarningBanner from "@/components/common/WarningBanner";
 import * as Styles from "@/constants/styles";
-import {
-  detectIE,
-  detectTestEnvironment,
-  detectDevelopmentEnvironment,
-} from "@/utils/environmentUtils";
-
-import { getStaticContentLoadingIsComplete } from "@/selectors/staticContentSelectors";
-
-import * as staticContent from "@/actionCreators/staticContentActionCreator";
 
 /**
  * @class Home contains the navigation and wraps the Dashboard routes. Home should not contain any redux logic/state.

@@ -3,10 +3,10 @@ import PropTypes from "prop-types";
 import { isEmpty } from "lodash";
 import { Field, reduxForm } from "redux-form";
 import { Form, Button, Col, Row, Popconfirm } from "antd";
+import { resetForm } from "@common/utils/helpers";
+import { validateDateRanges } from "@common/utils/Validate";
 import { renderConfig } from "@/components/common/config";
 import * as FORM from "@/constants/forms";
-import { resetForm } from "@/utils/helpers";
-import { validateDateRanges } from "@/utils/Validate";
 import EngineerOfRecordOptions from "@/components/Forms/PartyRelationships/EngineerOfRecordOptions";
 import CustomPropTypes from "@/customPropTypes";
 

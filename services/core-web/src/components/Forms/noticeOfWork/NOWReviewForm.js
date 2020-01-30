@@ -7,12 +7,12 @@ import { reduxForm, Field, formValueSelector } from "redux-form";
 import { Form, Button, Col, Row, Popconfirm } from "antd";
 
 import * as FORM from "@/constants/forms";
-import { resetForm } from "@/utils/helpers";
+import { resetForm } from "@common/utils/helpers";
 import { renderConfig } from "@/components/common/config";
-import { required, dateNotInFuture } from "@/utils/Validate";
+import { required, dateNotInFuture } from "@common/utils/Validate";
 import CustomPropTypes from "@/customPropTypes";
 
-import { NOTICE_OF_WORK_DOCUMENT } from "@/constants/API";
+import { NOTICE_OF_WORK_DOCUMENT } from "@common/constants/API";
 import FileUpload from "@/components/common/FileUpload";
 import { UploadedDocumentsTable } from "@/components/common/UploadedDocumentTable";
 

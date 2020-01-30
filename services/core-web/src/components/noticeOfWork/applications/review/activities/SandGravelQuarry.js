@@ -3,6 +3,8 @@ import { PropTypes } from "prop-types";
 import { Field, Fields, formValueSelector } from "redux-form";
 import { connect } from "react-redux";
 import { Row, Col, Table, Button } from "antd";
+import { number } from "@common/utils/Validate";
+import { getDropdownNoticeOfWorkUnitTypeOptions } from "@common/selectors/staticContentSelectors";
 import * as FORM from "@/constants/forms";
 import { TRASHCAN } from "@/constants/assets";
 import RenderField from "@/components/common/RenderField";
@@ -11,8 +13,6 @@ import RenderRadioButtons from "@/components/common/RenderRadioButtons";
 import RenderFieldWithDropdown from "@/components/common/RenderFieldWithDropdown";
 import Equipment from "@/components/noticeOfWork/applications/review/activities/Equipment";
 import CustomPropTypes from "@/customPropTypes";
-import { number } from "@/utils/Validate";
-import { getDropdownNoticeOfWorkUnitTypeOptions } from "@/selectors/staticContentSelectors";
 
 const propTypes = {
   isViewMode: PropTypes.bool.isRequired,

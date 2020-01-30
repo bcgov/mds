@@ -3,19 +3,19 @@ import PropTypes from "prop-types";
 import { Table, Button, Icon, Badge } from "antd";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import CustomPropTypes from "@/customPropTypes";
-import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import {
   getVarianceStatusOptionsHash,
   getHSRCMComplianceCodesHash,
-} from "@/selectors/staticContentSelectors";
-import { getInspectorsHash } from "@/selectors/partiesSelectors";
+} from "@common/selectors/staticContentSelectors";
+import { getInspectorsHash } from "@common/selectors/partiesSelectors";
+import { formatDate, getTableHeaders, truncateFilename } from "@common/utils/helpers";
+import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
+import * as Strings from "@common/constants/strings";
+import CustomPropTypes from "@/customPropTypes";
+import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
 import { RED_CLOCK, EDIT_OUTLINE_VIOLET } from "@/constants/assets";
 import NullScreen from "@/components/common/NullScreen";
-import { formatDate, getTableHeaders, truncateFilename } from "@/utils/helpers";
-import { downloadFileFromDocumentManager } from "@/utils/actionlessNetworkCalls";
-import * as Strings from "@/constants/strings";
 import LinkButton from "@/components/common/LinkButton";
 import * as router from "@/constants/routes";
 import TableLoadingWrapper from "@/components/common/wrappers/TableLoadingWrapper";

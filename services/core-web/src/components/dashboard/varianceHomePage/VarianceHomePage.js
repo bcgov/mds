@@ -5,8 +5,7 @@ import { debounce, isEmpty } from "lodash";
 import queryString from "query-string";
 import moment from "moment";
 import PropTypes from "prop-types";
-import { modalConfig } from "@/components/modalContent/config";
-import { openModal, closeModal } from "@/actions/modalActions";
+import { openModal, closeModal } from "@common/actions/modalActions";
 import {
   getMineRegionHash,
   getMineTenureTypesHash,
@@ -15,19 +14,20 @@ import {
   getFilterVarianceStatusOptions,
   getDropdownHSRCMComplianceCodes,
   getMineRegionDropdownOptions,
-} from "@/selectors/staticContentSelectors";
-import CustomPropTypes from "@/customPropTypes";
+} from "@common/selectors/staticContentSelectors";
+import { getVariances, getVariancePageData } from "@common/selectors/varianceSelectors";
 import {
   fetchVariances,
   updateVariance,
   addDocumentToVariance,
-} from "@/actionCreators/varianceActionCreator";
-import { getVariances, getVariancePageData } from "@/selectors/varianceSelectors";
+} from "@common/actionCreators/varianceActionCreator";
+import { formatParamStringToArray } from "@common/utils/helpers";
+import * as Strings from "@common/constants/strings";
+import { modalConfig } from "@/components/modalContent/config";
+import CustomPropTypes from "@/customPropTypes";
 import { VarianceTable } from "@/components/dashboard/customHomePage/VarianceTable";
 import * as router from "@/constants/routes";
-import * as Strings from "@/constants/strings";
 import VarianceSearch from "./VarianceSearch";
-import { formatParamStringToArray } from "@/utils/helpers";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 
 /**

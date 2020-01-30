@@ -1,4 +1,4 @@
-import staticContentReducer from "@/reducers/staticContentReducer";
+import { staticContentReducer } from "@common/reducers/staticContentReducer";
 import {
   storeStatusOptions,
   storeRegionOptions,
@@ -17,7 +17,7 @@ import {
   storeNoticeOfWorkUndergroundExplorationTypeOptions,
   storeNoticeOfWorkApplicationProgressStatusCodeOptions,
   storeNoticeOfWorkApplicationPermitTypesOptions,
-} from "@/actions/staticContentActions";
+} from "@common/actions/staticContentActions";
 import * as MOCK from "@/tests/mocks/dataMocks";
 import * as NOW_MOCK from "@/tests/mocks/noticeOfWorkMocks";
 

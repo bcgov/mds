@@ -1,5 +1,5 @@
-import partiesReducer from "@/reducers/partiesReducer";
-import { storeParty, storeParties } from "@/actions/partyActions";
+import { partiesReducer } from "@common/reducers/partiesReducer";
+import { storeParty, storeParties } from "@common/actions/partyActions";
 
 const baseExpectedValue = {
   parties: [],
