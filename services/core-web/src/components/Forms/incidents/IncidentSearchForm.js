@@ -2,10 +2,10 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Field, reduxForm } from "redux-form";
 import { Form, Button, Col, Row, Icon } from "antd";
+import { yearNotInFuture } from "@common/utils/Validate";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
 import CustomPropTypes from "@/customPropTypes";
-import { yearNotInFuture } from "@/utils/Validate";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,

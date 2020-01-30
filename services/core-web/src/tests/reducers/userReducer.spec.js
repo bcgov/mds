@@ -1,5 +1,5 @@
-import userReducer from "@/reducers/userReducer";
-import { storeCoreUserList } from "@/actions/userActions";
+import { userReducer } from "@common/reducers/userReducer";
+import { storeCoreUserList } from "@common/actions/userActions";
 import * as MOCK from "@/tests/mocks/dataMocks";
 
 const baseExpectedValue = {

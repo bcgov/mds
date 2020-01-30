@@ -1,7 +1,11 @@
-import { getCoreUsers, getDropdownCoreUsers, getCoreUsersHash } from "@/selectors/userSelectors";
-import userReducer from "@/reducers/userReducer";
-import { storeCoreUserList } from "@/actions/userActions";
-import { USERS } from "@/constants/reducerTypes";
+import {
+  getCoreUsers,
+  getDropdownCoreUsers,
+  getCoreUsersHash,
+} from "@common/selectors/userSelectors";
+import { userReducer } from "@common/reducers/userReducer";
+import { storeCoreUserList } from "@common/actions/userActions";
+import { USERS } from "@common/constants/reducerTypes";
 import * as Mock from "@/tests/mocks/dataMocks";
 
 const mockState = {

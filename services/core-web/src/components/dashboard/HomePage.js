@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { fetchMetabaseDashboard } from "@common/actionCreators/reportingActionCreator";
 import ReactIframeResizer from "react-iframe-resizer-super";
 import SearchBar from "@/components/search/SearchBar";
 import { BACKGROUND, HSRC_PDF } from "@/constants/assets";
-import { fetchMetabaseDashboard } from "@/actionCreators/reportingActionCreator";
 
 const iframeResizerOptions = { checkOrigin: false };
 

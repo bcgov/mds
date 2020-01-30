@@ -6,16 +6,19 @@ import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import MediaQuery from "react-responsive";
 import { includes } from "lodash";
+import { getUserInfo } from "@common/selectors/authenticationSelectors";
+import { fetchMineVerifiedStatuses } from "@common/actionCreators/mineActionCreator";
+import {
+  getCurrentUserVerifiedMines,
+  getCurrentUserUnverifiedMines,
+} from "@common/reducers/mineReducer";
+import * as Strings from "@common/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
-import { getUserInfo } from "@/selectors/authenticationSelectors";
 import * as router from "@/constants/routes";
-import * as Strings from "@/constants/strings";
 import * as Permission from "@/constants/permissions";
 import SearchBar from "@/components/search/SearchBar";
 import { LOGO, HAMBURGER, CLOSE, SUCCESS_CHECKMARK, YELLOW_HAZARD } from "@/constants/assets";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
-import { fetchMineVerifiedStatuses } from "@/actionCreators/mineActionCreator";
-import { getCurrentUserVerifiedMines, getCurrentUserUnverifiedMines } from "@/reducers/mineReducer";
 
 /**
  * @class NavBar - fixed and responsive navigation

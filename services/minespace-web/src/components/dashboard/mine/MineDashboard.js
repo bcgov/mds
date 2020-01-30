@@ -6,7 +6,7 @@ import { bindActionCreators } from "redux";
 import { fetchMineRecordById } from "@/actionCreators/userDashboardActionCreator";
 import { getMine } from "@/selectors/userMineSelectors";
 import CustomPropTypes from "@/customPropTypes";
-import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
+import Loading from "@/components/common/Loading";
 import Overview from "@/components/dashboard/mine/overview/Overview";
 // import Permits from "@/components/dashboard/mine/permits/Permits";
 import Variances from "@/components/dashboard/mine/variances/Variances";
@@ -61,46 +61,52 @@ export class MineDashboard extends Component {
 
   render() {
     return (
-      <LoadingWrapper isLoaded={this.state.isLoaded}>
-        <Row gutter={[0, 48]}>
+      (this.state.isLoaded && (
+        <Row>
           <Col>
-            <Title style={{ marginBottom: 8 }}>{this.props.mine.mine_name || "Mine Name"}</Title>
-            <Title level={4} style={{ margin: 0 }}>
-              Mine Number: {this.props.mine.mine_no || "000000"}
-            </Title>
+            <Row gutter={[0, 48]}>
+              <Col>
+                <Title style={{ marginBottom: 8 }}>
+                  {this.props.mine.mine_name || "Mine Name"}
+                </Title>
+                <Title level={4} style={{ margin: 0 }}>
+                  Mine Number: {this.props.mine.mine_no || "000000"}
+                </Title>
+              </Col>
+            </Row>
+            <Row gutter={[0, 48]}>
+              <Col>
+                <Tabs
+                  activeKey={this.state.activeTab}
+                  defaultActiveKey="overview"
+                  onChange={this.handleTabChange}
+                  type="card"
+                >
+                  <TabPane tab="Overview" key="overview">
+                    <Overview mine={this.props.mine} match={this.props.match} />
+                  </TabPane>
+                  {/* Disabled until we are ready for permit management */}
+                  {/* <TabPane tab="Permits" key="permits">
+                    <Permits mine={this.props.mine} match={this.props.match} />
+                  </TabPane> */}
+                  <TabPane tab="Inspections" key="inspections">
+                    <Inspections mine={this.props.mine} match={this.props.match} />
+                  </TabPane>
+                  <TabPane tab="Incidents" key="incidents">
+                    <Incidents mine={this.props.mine} match={this.props.match} />
+                  </TabPane>
+                  <TabPane tab="Variances" key="variances">
+                    <Variances mine={this.props.mine} match={this.props.match} />
+                  </TabPane>
+                  <TabPane tab="Reports" key="reports">
+                    <Reports mine={this.props.mine} match={this.props.match} />
+                  </TabPane>
+                </Tabs>
+              </Col>
+            </Row>
           </Col>
         </Row>
-        <Row gutter={[0, 48]}>
-          <Col>
-            <Tabs
-              activeKey={this.state.activeTab}
-              defaultActiveKey="overview"
-              onChange={this.handleTabChange}
-              type="card"
-            >
-              <TabPane tab="Overview" key="overview">
-                <Overview mine={this.props.mine} match={this.props.match} />
-              </TabPane>
-              {/* Disabled until we are ready for permit management */}
-              {/* <TabPane tab="Permits" key="permits">
-                <Permits mine={this.props.mine} match={this.props.match} />
-              </TabPane> */}
-              <TabPane tab="Inspections" key="inspections">
-                <Inspections mine={this.props.mine} match={this.props.match} />
-              </TabPane>
-              <TabPane tab="Incidents" key="incidents">
-                <Incidents mine={this.props.mine} match={this.props.match} />
-              </TabPane>
-              <TabPane tab="Variances" key="variances">
-                <Variances mine={this.props.mine} match={this.props.match} />
-              </TabPane>
-              <TabPane tab="Reports" key="reports">
-                <Reports mine={this.props.mine} match={this.props.match} />
-              </TabPane>
-            </Tabs>
-          </Col>
-        </Row>
-      </LoadingWrapper>
+      )) || <Loading />
     );
   }
 }

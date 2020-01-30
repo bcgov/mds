@@ -115,7 +115,7 @@ export class Reports extends Component {
           <Row type="flex" justify="space-around" gutter={[{ lg: 0, xl: 32 }, 32]}>
             <Col lg={24} xl={8} xxl={6}>
               <TableSummaryCard
-                title="Inspections YTD"
+                title="Reports Submitted"
                 // TODO: Display the amount of submitted reports.
                 content="6"
                 icon="check-circle"
@@ -124,7 +124,7 @@ export class Reports extends Component {
             </Col>
             <Col lg={24} xl={8} xxl={6}>
               <TableSummaryCard
-                title="Overdue Orders"
+                title="Reports Due"
                 // TODO: Display the amount of reports that are overdue.
                 content="6"
                 icon="clock-circle"
@@ -133,7 +133,7 @@ export class Reports extends Component {
             </Col>
             <Col lg={24} xl={8} xxl={6}>
               <TableSummaryCard
-                title="Responses Due"
+                title="Reports Overdue"
                 // TODO: Display the amount of reports that are due.
                 content="6"
                 icon="exclamation-circle"

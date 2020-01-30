@@ -5,18 +5,18 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Divider } from "antd";
 import { isEmpty } from "lodash";
+import { formatParamStringToArray, formatDate, getFiscalYear } from "@common/utils/helpers";
+import { fetchMineComplianceInfo } from "@common/actionCreators/complianceActionCreator";
+import { getMultiSelectComplianceCodes } from "@common/selectors/staticContentSelectors";
+import { getMines, getMineGuid } from "@common/selectors/mineSelectors";
+import { getMineComplianceInfo } from "@common/selectors/complianceSelectors";
 import { OVERDUEDOC, DOC } from "@/constants/assets";
-import { formatParamStringToArray, formatDate, getFiscalYear } from "@/utils/helpers";
 import NullScreen from "@/components/common/NullScreen";
 import CustomPropTypes from "@/customPropTypes";
-import { getMineComplianceInfo } from "@/selectors/complianceSelectors";
-import { fetchMineComplianceInfo } from "@/actionCreators/complianceActionCreator";
 import * as routes from "@/constants/routes";
 import ComplianceOrdersTable from "@/components/mine/Compliance/ComplianceOrdersTable";
 import MineComplianceCard from "@/components/mine/Compliance/MineComplianceCard";
 import MineComplianceFilterForm from "@/components/mine/Compliance/MineComplianceFilterForm";
-import { getMultiSelectComplianceCodes } from "@/selectors/staticContentSelectors";
-import { getMines, getMineGuid } from "@/selectors/mineSelectors";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
 
 /**

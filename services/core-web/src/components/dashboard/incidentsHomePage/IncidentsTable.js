@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import CustomPropTypes from "@/customPropTypes";
 import ResponsivePagination from "@/components/common/ResponsivePagination";
 import MineIncidentTable from "@/components/mine/Incidents/MineIncidentTable";
-import * as Strings from "@/constants/strings";
+import * as Strings from "@common/constants/strings";
 
 /**
  * @class Incidents Tables

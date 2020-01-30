@@ -2,8 +2,8 @@ import React from "react";
 import { Field, reduxForm } from "redux-form";
 import { Form } from "antd";
 import PropTypes from "prop-types";
+import { required } from "@common/utils/Validate";
 import * as FORM from "@/constants/forms";
-import { required } from "@/utils/Validate";
 import { renderConfig } from "@/components/common/config";
 import CustomPropTypes from "@/customPropTypes";
 

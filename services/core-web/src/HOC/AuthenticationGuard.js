@@ -8,14 +8,14 @@ import {
   isAuthenticated,
   getKeycloak,
   getUserAccessData,
-} from "@/selectors/authenticationSelectors";
+} from "@common/selectors/authenticationSelectors";
 import {
   authenticateUser,
   storeKeycloakData,
   storeUserAccessData,
-} from "@/actions/authenticationActions";
+} from "@common/actions/authenticationActions";
+import { KEYCLOAK, USER_ROLES } from "@common/constants/environment";
 import Loading from "@/components/common/Loading";
-import { KEYCLOAK, USER_ROLES } from "@/constants/environment";
 import NullScreen from "@/components/common/NullScreen";
 
 const propTypes = {

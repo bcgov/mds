@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
+import * as String from "@common/constants/strings";
 import { NO_MINE, MINER_TWO, PERMIT, GROUP_MINERS } from "@/constants/assets";
-import * as String from "@/constants/strings";
 
 /**
  * @constant NullScreen is a reusable view for when there is no data to display, add more views when required.

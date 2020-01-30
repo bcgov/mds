@@ -1,10 +1,10 @@
 import React from "react";
 import { PropTypes } from "prop-types";
 import { Table } from "antd";
+import { downloadNowDocument } from "@common/utils/actionlessNetworkCalls";
+import * as Strings from "@common/constants/strings";
 import LinkButton from "@/components/common/LinkButton";
-import { downloadNowDocument } from "@/utils/actionlessNetworkCalls";
 import { UNIQUELY_SPATIAL } from "@/constants/fileTypes";
-import * as Strings from "@/constants/strings";
 import NullScreen from "@/components/common/NullScreen";
 
 const propTypes = {
@@ -37,7 +37,7 @@ export const NOWSubmissionDocuments = (props) => {
         title: "File Name",
         dataIndex: "filename",
         key: "filename",
-        render: (text, record) => <div title="File Name">{text}</div>,
+        render: (text) => <div title="File Name">{text}</div>,
       }
     : {
         title: "File Name",

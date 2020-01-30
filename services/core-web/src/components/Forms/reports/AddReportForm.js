@@ -8,13 +8,13 @@ import { Field, reduxForm, formValueSelector } from "redux-form";
 import { Form, Button, Col, Row, Popconfirm, List } from "antd";
 import { renderConfig } from "@/components/common/config";
 import * as FORM from "@/constants/forms";
-import { required } from "@/utils/Validate";
-import { resetForm, createDropDownList, formatComplianceCodeValueOrLabel } from "@/utils/helpers";
+import { required } from "@common/utils/Validate";
+import { resetForm, createDropDownList, formatComplianceCodeValueOrLabel } from "@common/utils/helpers";
 import {
   getDropdownMineReportCategoryOptions,
   getMineReportDefinitionOptions,
   getDropdownMineReportStatusOptions,
-} from "@/selectors/staticContentSelectors";
+} from "@common/selectors/staticContentSelectors";
 import CustomPropTypes from "@/customPropTypes";
 import { ReportSubmissions } from "@/components/Forms/reports/ReportSubmissions";
 import ReportComments from "@/components/Forms/reports/ReportComments";
