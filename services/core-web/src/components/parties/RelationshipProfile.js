@@ -6,17 +6,20 @@ import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { Tabs, Table } from "antd";
 import { isEmpty } from "lodash";
-import { fetchPartyRelationships } from "@/actionCreators/partiesActionCreator";
-import { fetchPermits } from "@/actionCreators/permitActionCreator";
-import { fetchMineRecordById } from "@/actionCreators/mineActionCreator";
-import { getPartyRelationshipTypesList, getPartyRelationships } from "@/selectors/partiesSelectors";
-import { getPermits } from "@/reducers/permitReducer";
-import { getMines } from "@/selectors/mineSelectors";
+import { fetchPartyRelationships } from "@common/actionCreators/partiesActionCreator";
+import { fetchPermits } from "@common/actionCreators/permitActionCreator";
+import { fetchMineRecordById } from "@common/actionCreators/mineActionCreator";
+import { getPermits } from "@common/reducers/permitReducer";
+import {
+  getPartyRelationshipTypesList,
+  getPartyRelationships,
+} from "@common/selectors/partiesSelectors";
+import { getMines } from "@common/selectors/mineSelectors";
+import { formatDate } from "@common/utils/helpers";
+import * as String from "@common/constants/strings";
 import Loading from "@/components/common/Loading";
 import * as router from "@/constants/routes";
-import { formatDate } from "@/utils/helpers";
 import CustomPropTypes from "@/customPropTypes";
-import * as String from "@/constants/strings";
 import NullScreen from "@/components/common/NullScreen";
 
 /**

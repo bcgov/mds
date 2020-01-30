@@ -1,10 +1,10 @@
-import mineReducer from "@/reducers/mineReducer";
+import { mineReducer } from "@common/reducers/mineReducer";
 import {
   storeMine,
   storeMineList,
   storeMineNameList,
   storeSubscribedMines,
-} from "@/actions/mineActions";
+} from "@common/actions/mineActions";
 
 const baseExpectedValue = {
   mines: {},

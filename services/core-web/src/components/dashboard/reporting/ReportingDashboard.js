@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { fetchMetabaseDashboard } from "@/actionCreators/reportingActionCreator";
+import { fetchMetabaseDashboard } from "@common/actionCreators/reportingActionCreator";
 
 export class ReportingDashboard extends Component {
   state = {};

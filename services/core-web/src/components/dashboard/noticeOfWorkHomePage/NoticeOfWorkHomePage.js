@@ -4,7 +4,7 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import queryString from "query-string";
-import * as Strings from "@/constants/strings";
+import * as Strings from "@common/constants/strings";
 import * as router from "@/constants/routes";
 import CustomPropTypes from "@/customPropTypes";
 import {
@@ -12,13 +12,16 @@ import {
   getMineRegionDropdownOptions,
   getDropdownNoticeOfWorkApplicationStatusOptions,
   getDropdownNoticeOfWorkApplicationTypeOptions,
-} from "@/selectors/staticContentSelectors";
+} from "@common/selectors/staticContentSelectors";
 import NoticeOfWorkTable from "@/components/dashboard/noticeOfWorkHomePage/NoticeOfWorkTable";
 import NoticeOfWorkSearch from "@/components/dashboard/noticeOfWorkHomePage/NoticeOfWorkSearch";
 import ResponsivePagination from "@/components/common/ResponsivePagination";
-import { fetchNoticeOfWorkApplications } from "@/actionCreators/noticeOfWorkActionCreator";
-import { getNoticeOfWorkList, getNoticeOfWorkPageData } from "@/selectors/noticeOfWorkSelectors";
-import { formatQueryListParams } from "@/utils/helpers";
+import { fetchNoticeOfWorkApplications } from "@common/actionCreators/noticeOfWorkActionCreator";
+import {
+  getNoticeOfWorkList,
+  getNoticeOfWorkPageData,
+} from "@common/selectors/noticeOfWorkSelectors";
+import { formatQueryListParams } from "@common/utils/helpers";
 
 const propTypes = {
   fetchNoticeOfWorkApplications: PropTypes.func.isRequired,

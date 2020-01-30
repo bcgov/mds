@@ -19,7 +19,11 @@ module.exports = {
   settings: {
     "import/resolver": {
       alias: {
-        map: [["@", path.join(__dirname, "src")], ["vendor", path.join(__dirname, "vendor")]],
+        map: [
+          ["@", path.join(__dirname, "src")],
+          ["vendor", path.join(__dirname, "vendor")],
+          ["@common", path.join(__dirname, "common")],
+        ],
         extensions: [".js", ".json"],
       },
     },

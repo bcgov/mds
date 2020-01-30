@@ -2,17 +2,17 @@ import React, { Component } from "react";
 import { Table, Icon, Input, Button, Badge } from "antd";
 import { Link, withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
-import CustomPropTypes from "@/customPropTypes";
-import * as Strings from "@/constants/strings";
-import * as router from "@/constants/routes";
-import NullScreen from "@/components/common/NullScreen";
-import TableLoadingWrapper from "@/components/common/wrappers/TableLoadingWrapper";
 import {
   formatDate,
   optionsFilterLabelAndValue,
   optionsFilterLabelOnly,
   getTableHeaders,
-} from "@/utils/helpers";
+} from "@common/utils/helpers";
+import * as Strings from "@common/constants/strings";
+import CustomPropTypes from "@/customPropTypes";
+import * as router from "@/constants/routes";
+import NullScreen from "@/components/common/NullScreen";
+import TableLoadingWrapper from "@/components/common/wrappers/TableLoadingWrapper";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import { EDIT_OUTLINE_VIOLET } from "@/constants/assets";
 import { getNoticeOfWorkApplicationBadgeStatusType } from "@/constants/theme";

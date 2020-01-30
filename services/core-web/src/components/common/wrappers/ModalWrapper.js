@@ -4,8 +4,7 @@ import LoadingBar from "react-redux-loading-bar";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Modal, Icon, Button, Popconfirm } from "antd";
-import * as Styles from "@/constants/styles";
-import { closeModal } from "@/actions/modalActions";
+import { closeModal } from "@common/actions/modalActions";
 import {
   getIsModalOpen,
   getProps,
@@ -13,7 +12,8 @@ import {
   getClearOnSubmit,
   getWidthSize,
   getIsViewOnly,
-} from "@/selectors/modalSelectors";
+} from "@common/selectors/modalSelectors";
+import * as Styles from "@/constants/styles";
 import AddPartyComponentWrapper from "./AddPartyComponentWrapper";
 
 const propTypes = {

@@ -5,10 +5,6 @@ import { compose } from "redux";
 import { Field, reduxForm, FieldArray, formValueSelector } from "redux-form";
 import { Form, Button, Col, Row, Popconfirm, Icon, Collapse, notification, Tag, Radio } from "antd";
 import { difference, map, isEmpty, uniq } from "lodash";
-import * as FORM from "@/constants/forms";
-import * as Strings from "@/constants/strings";
-import * as Styles from "@/constants/styles";
-import CustomPropTypes from "@/customPropTypes";
 import {
   required,
   maxLength,
@@ -17,9 +13,8 @@ import {
   number,
   lat,
   lon,
-} from "@/utils/Validate";
-import { renderConfig } from "@/components/common/config";
-import { getCurrentMineTypes } from "@/selectors/mineSelectors";
+} from "@common/utils/Validate";
+import { getCurrentMineTypes } from "@common/selectors/mineSelectors";
 import {
   getConditionalDisturbanceOptionsHash,
   getConditionalCommodityOptions,
@@ -29,7 +24,12 @@ import {
   getMineRegionDropdownOptions,
   getMineTenureTypeDropdownOptions,
   getMineTenureTypesHash,
-} from "@/selectors/staticContentSelectors";
+} from "@common/selectors/staticContentSelectors";
+import * as Strings from "@common/constants/strings";
+import * as FORM from "@/constants/forms";
+import * as Styles from "@/constants/styles";
+import CustomPropTypes from "@/customPropTypes";
+import { renderConfig } from "@/components/common/config";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,

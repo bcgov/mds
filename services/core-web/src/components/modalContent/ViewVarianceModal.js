@@ -2,15 +2,15 @@ import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Button } from "antd";
-import CustomPropTypes from "@/customPropTypes";
-import * as Strings from "@/constants/strings";
-import { VarianceDetails } from "../mine/Variances/VarianceDetails";
-import { getInspectorsHash } from "@/selectors/partiesSelectors";
+import { getInspectorsHash } from "@common/selectors/partiesSelectors";
 import {
   getVarianceStatusOptionsHash,
   getHSRCMComplianceCodesHash,
   getVarianceDocumentCategoryOptionsHash,
-} from "@/selectors/staticContentSelectors";
+} from "@common/selectors/staticContentSelectors";
+import * as Strings from "@common/constants/strings";
+import CustomPropTypes from "@/customPropTypes";
+import { VarianceDetails } from "../mine/Variances/VarianceDetails";
 
 const propTypes = {
   closeModal: PropTypes.func.isRequired,

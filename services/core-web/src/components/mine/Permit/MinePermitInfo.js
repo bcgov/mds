@@ -3,10 +3,6 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { Divider } from "antd";
 import PropTypes from "prop-types";
-import CustomPropTypes from "@/customPropTypes";
-import * as Permission from "@/constants/permissions";
-import * as router from "@/constants/routes";
-import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import {
   fetchPermits,
   createPermit,
@@ -14,17 +10,20 @@ import {
   updatePermitAmendment,
   createPermitAmendment,
   removePermitAmendmentDocument,
-} from "@/actionCreators/permitActionCreator";
-
-import { openModal, closeModal } from "@/actions/modalActions";
-import { fetchPartyRelationships } from "@/actionCreators/partiesActionCreator";
-import { fetchMineRecordById } from "@/actionCreators/mineActionCreator";
+} from "@common/actionCreators/permitActionCreator";
+import { fetchPartyRelationships } from "@common/actionCreators/partiesActionCreator";
+import { fetchMineRecordById } from "@common/actionCreators/mineActionCreator";
+import { openModal, closeModal } from "@common/actions/modalActions";
+import { getPermits } from "@common/reducers/permitReducer";
+import { getMines, getMineGuid } from "@common/selectors/mineSelectors";
+import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
+import * as router from "@/constants/routes";
+import * as Permission from "@/constants/permissions";
+import CustomPropTypes from "@/customPropTypes";
 import AddButton from "@/components/common/AddButton";
 import MinePermitTable from "@/components/mine/Permit/MinePermitTable";
 import * as ModalContent from "@/constants/modalContent";
 import { modalConfig } from "@/components/modalContent/config";
-import { getPermits } from "../../../reducers/permitReducer";
-import { getMines, getMineGuid } from "@/selectors/mineSelectors";
 /**
  * @class  MinePermitInfo - contains all permit information
  */

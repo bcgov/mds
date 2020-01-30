@@ -5,9 +5,9 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { Button, notification } from "antd";
 
+import { getKeycloak } from "@common/selectors/authenticationSelectors";
+import { logoutUser } from "@common/actions/authenticationActions";
 import * as router from "@/constants/routes";
-import { getKeycloak } from "@/selectors/authenticationSelectors";
-import { logoutUser } from "@/actions/authenticationActions";
 
 import { LOGO_PURPLE } from "@/constants/assets";
 
