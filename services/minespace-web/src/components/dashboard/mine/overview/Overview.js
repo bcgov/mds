@@ -4,8 +4,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
+import { Row, Col, Card, Descriptions, Typography, Alert } from "antd";
 import CustomPropTypes from "@/customPropTypes";
-import { Row, Col, Card, Descriptions, Typography, Alert, Divider } from "antd";
 import ContactCard from "@/components/common/ContactCard";
 import * as Strings from "@/constants/strings";
 import * as Contacts from "@/constants/ministryContacts";
@@ -34,16 +34,11 @@ const partyPermittee = {
 
 export class Overview extends Component {
   state = {
-    ministryContacts: {},
+    contacts: {},
   };
 
-  componentDidMount() {
-    // this.setState({ ministryContacts: Contacts.MINISTRY_CONTACTS[this.props.mine.mine_region] });
-    console.log(this.props.mine);
-    console.log(this.props.mine.mine_region);
-    console.log(Contacts.MINISTRY_CONTACTS.NE);
-    console.log(Contacts.MINISTRY_CONTACTS[this.props.mine.mine_region]);
-    console.log(this.state.ministryContacts);
+  componentWillMount() {
+    this.setState({ contacts: Contacts.MINISTRY_CONTACTS[this.props.mine.mine_region] });
   }
 
   render() {
@@ -59,7 +54,7 @@ export class Overview extends Component {
             incorrect, please notify one of the Ministry contacts shown."
             type="info"
             banner
-          ></Alert>
+          />
           <br />
           <Descriptions column={1} colon={false}>
             <Descriptions.Item label="Region">{this.props.mine.mine_region}</Descriptions.Item>
@@ -87,94 +82,104 @@ export class Overview extends Component {
           </Row>
         </Col>
         <Col lg={{ span: 9, offset: 1 }} xl={{ offset: 1, span: 7 }}>
-          {/* TODO: Replace region code with full name */}
-          <Card title={`Ministry Contacts (${this.props.mine.mine_region})`}>
+          <Card title="Ministry Contacts">
             <Paragraph>
-              <Text strong style={{ textTransform: "uppercase" }}>
+              <Text strong className="ministry-contact-title">
                 Senior Health, Safety and Environment Inspector
               </Text>
               <br />
-              <Text>
-                {this.state.ministryContacts && this.state.ministryContacts.safety
-                  ? this.state.ministryContacts.safety.name
-                  : ""}
-              </Text>
+              <Text>{this.state.contacts.safety.name}</Text>
+              <br />
+              <Text>{this.state.contacts.safety.phone}</Text>
               <br />
               <Text>
-                {this.state.ministryContacts && this.state.ministryContacts.safety
-                  ? this.state.ministryContacts.safety.phone
-                  : ""}
-              </Text>
-              <br />
-              <Text>
-                <a
-                  href={`mailto:${
-                    this.state.ministryContacts && this.state.ministryContacts.safety
-                      ? this.state.ministryContacts.safety.email
-                      : ""
-                  }`}
-                >
-                  {this.state.ministryContacts && this.state.ministryContacts.safety
-                    ? this.state.ministryContacts.safety.email
-                    : ""}
+                <a href={`mailto:${this.state.contacts.safety.email}`}>
+                  {this.state.contacts.safety.email}
                 </a>
               </Text>
             </Paragraph>
             <Paragraph>
-              <Text strong style={{ textTransform: "uppercase" }}>
+              <Text strong className="ministry-contact-title">
                 Senior Permitting Inspector
               </Text>
               <br />
-              <Text>{null}</Text>
+              <Text>{this.state.contacts.permitting.name}</Text>
               <br />
-              <Text>{null}</Text>
+              <Text>{this.state.contacts.permitting.phone}</Text>
               <br />
               <Text>
-                <a href={`mailto:${null}`}>{null}</a>
+                <a href={`mailto:${this.state.contacts.permitting.email}`}>
+                  {this.state.contacts.permitting.email}
+                </a>
               </Text>
             </Paragraph>
             <Paragraph>
-              <Text strong style={{ textTransform: "uppercase" }}>
+              <Text strong className="ministry-contact-title">
                 Regional Director
               </Text>
               <br />
-              <Text>{null}</Text>
+              <Text>{this.state.contacts.director.name}</Text>
               <br />
-              <Text>{null}</Text>
+              <Text>{this.state.contacts.director.phone}</Text>
               <br />
               <Text>
-                <a href={`mailto:${null}`}>{null}</a>
+                <a href={`mailto:${this.state.contacts.director.email}`}>
+                  {this.state.contacts.director.email}
+                </a>
               </Text>
             </Paragraph>
             <Paragraph>
-              <Text strong style={{ textTransform: "uppercase" }}>
+              <Text strong className="ministry-contact-title">
                 Regional Office
               </Text>
               <br />
-              <Text>{null}</Text>
-              <br />
-              <Text>{null}</Text>
+              <Text>{this.state.contacts.office.phone}</Text>
               <br />
               <Text>
-                <a href={`mailto:${null}`}>{null}</a>
+                <a href={`mailto:${this.state.contacts.office.email}`}>
+                  {this.state.contacts.office.email}
+                </a>
+              </Text>
+            </Paragraph>
+            {this.props.mine.major_mine_ind && (
+              <Paragraph>
+                <Text strong className="ministry-contact-title">
+                  Major Mines Office
+                </Text>
+                <br />
+                <Text>
+                  <a href={`mailto:${Contacts.MM_OFFICE.email}`}>{Contacts.MM_OFFICE.email}</a>
+                </Text>
+              </Paragraph>
+            )}
+            <Paragraph>
+              <Text strong className="ministry-contact-title">
+                Chief Inspector of Mines
+              </Text>
+              <br />
+              <Text>{Contacts.CHIEF_INSPECTOR.name}</Text>
+              <br />
+              <Text>{Contacts.CHIEF_INSPECTOR.phone}</Text>
+              <br />
+              <Text>
+                <a href={`mailto:${Contacts.CHIEF_INSPECTOR.email}`}>
+                  {Contacts.CHIEF_INSPECTOR.email}
+                </a>
               </Text>
             </Paragraph>
             <Paragraph>
-              <Text strong style={{ textTransform: "uppercase" }}>
-                Regional Mine General
+              <Text strong className="ministry-contact-title">
+                Executive Lead (Authorizations)
               </Text>
               <br />
-              <Text>
-                <a href={`mailto:${null}`}>{null}</a>
-              </Text>
-            </Paragraph>
-            <Paragraph>
-              <Text strong style={{ textTransform: "uppercase" }}>
-                Major Mine General
-              </Text>
+              <Text>{Contacts.EXEC_LEAD_AUTH.name}</Text>
+              <br />
+              <Text>{Contacts.EXEC_LEAD_AUTH.phone}</Text>
               <br />
               <Text>
-                <a href={`mailto:${null}`}>{null}</a>
+                <a href={`mailto:${Contacts.EXEC_LEAD_AUTH.email}`}>
+                  {Contacts.EXEC_LEAD_AUTH.email}
+                </a>
               </Text>
             </Paragraph>
           </Card>
