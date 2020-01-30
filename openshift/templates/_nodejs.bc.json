@@ -223,6 +223,10 @@
                 "value": "${BASE_PATH}"
               },
               {
+                "name": "APP_ROOT",
+                "value": "${BASE_PATH}"
+              },
+              {
                 "name": "ASSET_PATH",
                 "value": "${BASE_PATH}/"
               },
