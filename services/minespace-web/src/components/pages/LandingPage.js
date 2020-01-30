@@ -47,6 +47,7 @@ export const LandingPage = () => (
               <ul>
                 <li>Upload any report specified in the Health, Safety and Reclamation Code</li>
                 <li>View all code variances granted to and incidents reported by your mine</li>
+                {/* This bullet is commented out until we display permits for major mines */}
                 {/* <li>View your mine permit and amendment history</li> */}
                 <li>See all the contacts the Ministry has on file for your mine</li>
                 <li>Find important Ministry contacts</li>

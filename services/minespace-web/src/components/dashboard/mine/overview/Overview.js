@@ -139,6 +139,17 @@ export class Overview extends Component {
             </Paragraph>
           </Card>
           <Card title="General Ministry Contacts">
+            {this.props.mine.major_mine_ind && (
+              <Paragraph>
+                <Text strong className="ministry-contact-title">
+                  Major Mines Office
+                </Text>
+                <br />
+                <Text>
+                  <a href={`mailto:${Contacts.MM_OFFICE.email}`}>{Contacts.MM_OFFICE.email}</a>
+                </Text>
+              </Paragraph>
+            )}
             <Paragraph>
               <Text strong className="ministry-contact-title">
                 Chief Inspector of Mines
