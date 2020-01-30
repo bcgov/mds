@@ -4,7 +4,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { Row, Col, Card, Descriptions, Typography, Alert } from "antd";
+import { Row, Col, Card, Descriptions, Typography } from "antd";
 import CustomPropTypes from "@/customPropTypes";
 import ContactCard from "@/components/common/ContactCard";
 import * as Strings from "@/constants/strings";
@@ -48,14 +48,9 @@ export class Overview extends Component {
           <Title level={4}>Overview</Title>
           <Paragraph>
             This tab contains general information about your mine and important contacts at EMPR.
+            The information is pulled from current Ministry resources. If anything is incorrect,
+            please notify one of the Ministry contacts.
           </Paragraph>
-          <Alert
-            message="Information on this tab is pulled from current Ministry resources. If anything is
-            incorrect, please notify one of the Ministry contacts shown."
-            type="info"
-            banner
-          />
-          <br />
           <Descriptions column={1} colon={false}>
             <Descriptions.Item label="Region">{this.props.mine.mine_region}</Descriptions.Item>
             <Descriptions.Item label="Coordinate">
