@@ -43,7 +43,7 @@ const SC = new RegionalContacts(
 
 const SE = new RegionalContacts(
   "SE",
-  new Contact("Michael Dailge", "(250) 417-6141", "Michael.Daigle@gov.bc.ca"),
+  new Contact("Michael Daigle", "(250) 417-6141", "Michael.Daigle@gov.bc.ca"),
   new Contact("Glen Hendrickson", "(250) 417-6033", "Glen.Hendrickson@gov.bc.ca"),
   new Contact("Kathie Wagar", "(250) 417-6011", "Kathie.Wagar@gov.bc.ca"),
   new Contact(null, "(250) 417-6134", "MMD-Cranbrook@gov.bc.ca")
