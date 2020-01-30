@@ -29,7 +29,7 @@ export const LandingPage = () => (
         <Paragraph>
           <Text strong>MineSpace</Text> is part of the MDS system, developed specifically for
           industry. It is intended to make it easier for businesses to manage applications, see
-          their inspection history, and submit reports.
+          their inspection history and submit reports.
         </Paragraph>
         <Paragraph>
           This system is being developed iteratively and with input from people who operate mines
