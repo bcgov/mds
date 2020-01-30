@@ -7,6 +7,10 @@ import "leaflet/dist/leaflet.css";
 import "leaflet.markercluster/dist/MarkerCluster.css";
 import "leaflet.markercluster/dist/MarkerCluster.Default.css";
 
+import "vendor/leaflet/leaflet-measure/leaflet-measure.css";
+import "vendor/leaflet/mouse-coordinates/leaflet.mousecoordinate";
+import "vendor/leaflet/grouped-layer-control/leaflet.groupedlayercontrol.min";
+
 import CustomPropTypes from "@/customPropTypes";
 import * as Strings from "@/constants/strings";
 import { SMALL_PIN, SMALL_PIN_SELECTED } from "@/constants/assets";
@@ -26,26 +30,36 @@ const defaultProps = {
 };
 
 class MineHeaderMapLeaflet extends Component {
+  state = { containsAdditionalPin: false };
+
   // if mine does not have a location, set a default to center the map
   latLong =
     this.props.mine.mine_location.latitude && this.props.mine.mine_location.longitude
-      ? [this.props.mine.mine_location.latitude, this.props.mine.mine_location.longitude]
+      ? // only add mine Pin if location exists
+        [this.props.mine.mine_location.latitude, this.props.mine.mine_location.longitude]
       : [Number(Strings.DEFAULT_LAT), Number(Strings.DEFAULT_LONG)];
 
   componentDidMount() {
     // Create the base map with layers
     this.createMap();
     if (this.props.mine.mine_location.latitude && this.props.mine.mine_location.longitude) {
-      // only add mine Pin if location exists
       this.createPin();
-    }
-    // additional Pin in this situation is related to the coordinates of a permit application
-    if (this.props.additionalPin.length === 2) {
-      this.createAdditionalPin();
-      // L.marker.setLatLng(this.props.additionalPin);
     }
     // Add MinePins to the top of LayerList and add the LayerList widget
     L.control.layers(this.getBaseMaps(), {}, { position: "topright" }).addTo(this.map);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (
+      nextProps.additionalPin.length === 2 &&
+      nextProps.additionalPin !== this.props.additionalPin
+    ) {
+      if (this.state.containsAdditionalPin) {
+        this.x.setLatLng(nextProps.additionalPin);
+      } else {
+        this.createNewPin(nextProps.additionalPin);
+      }
+    }
   }
 
   getBaseMaps() {
@@ -74,19 +88,20 @@ class MineHeaderMapLeaflet extends Component {
     L.marker(this.latLong, { icon: customIcon }).addTo(this.map);
   };
 
-  createAdditionalPin = () => {
+  createNewPin(pin) {
     const customIcon = L.icon({
       iconUrl: SMALL_PIN_SELECTED,
       iconSize: [60, 60],
     });
-
-    L.marker(this.props.additionalPin, { icon: customIcon }).addTo(this.map);
-  };
+    this.x = L.marker(pin, { icon: customIcon, draggable: true }).addTo(this.layerGroup);
+    this.setState({ containsAdditionalPin: true });
+  }
 
   createMap() {
     this.map = L.map("leaflet-map", { attributionControl: false })
       .setView(this.latLong, Strings.DEFAULT_ZOOM)
-      .setMaxZoom(20);
+      .setMaxZoom(10);
+    this.layerGroup = new L.FeatureGroup().addTo(this.map);
   }
 
   render() {

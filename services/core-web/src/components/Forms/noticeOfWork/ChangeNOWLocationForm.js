@@ -20,13 +20,15 @@ const propTypes = {
   submitting: PropTypes.bool.isRequired,
   locationOnly: PropTypes.bool,
   mine: CustomPropTypes.mine,
-  latitude: PropTypes.string.isRequired,
-  longitude: PropTypes.string.isRequired,
+  latitude: PropTypes.string,
+  longitude: PropTypes.string,
 };
 
 const defaultProps = {
   locationOnly: false,
   mine: {},
+  latitude: "",
+  longitude: "",
 };
 
 const selector = formValueSelector(FORM.CHANGE_NOW_LOCATION);
@@ -105,7 +107,6 @@ export default compose(
   })),
   reduxForm({
     form: FORM.CHANGE_NOW_LOCATION,
-    touchOnBlur: false,
     onSubmitSuccess: resetForm(FORM.CHANGE_NOW_LOCATION),
   })
 )(ChangeNOWLocationForm);

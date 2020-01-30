@@ -422,7 +422,6 @@ export class NoticeOfWorkApplication extends Component {
   };
 
   render() {
-    console.log(this.state.currentStep);
     if (this.state.showNullScreen) {
       return <NullScreen type="unauthorized-page" />;
     }
