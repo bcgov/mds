@@ -99,10 +99,9 @@ app {
                             'NAME':"mds-frontend",
                             'SUFFIX': "${app.build.suffix}",
                             'APPLICATION_SUFFIX': "-${app.build.env.id}",
-                            'BASE_PATH': "/${app.git.changeId}",
+                            'BASE_PATH': "/core-web/${app.git.changeId}",
                             'VERSION':"${app.build.version}",
                             'SOURCE_CONTEXT_DIR': "services/web",
-                            'BASE_PATH': "core-web",
                             'DOCKER_IMAGE_DIRECTORY': "openshift/docker-images/nodejs-10",
                             'SOURCE_REPOSITORY_URL': "${app.git.uri}",
                             'NODE_ENV': "production"
@@ -114,10 +113,9 @@ app {
                             'NAME':"mds-frontend-public",
                             'SUFFIX': "${app.build.suffix}",
                             'APPLICATION_SUFFIX': "-${app.build.env.id}",
-                            'BASE_PATH': "/${app.git.changeId}",
+                            'BASE_PATH': "/minespace-web/${app.git.changeId}",
                             'VERSION':"${app.build.version}",
                             'SOURCE_CONTEXT_DIR': "services/web",
-                            'BASE_PATH': "minespace-web",
                             'DOCKER_IMAGE_DIRECTORY': "openshift/docker-images/nodejs-10-public",
                             'SOURCE_REPOSITORY_URL': "${app.git.uri}",
                             'NODE_ENV': "production"

@@ -28,7 +28,8 @@
     },
     {
       "name": "BASE_PATH",
-      "required": true
+      "required": true,
+      "value": "/"
     },
     {
       "name": "DOCKER_IMAGE_DIRECTORY",
