@@ -30,18 +30,6 @@ export class HeaderDropdown extends Component {
   };
 
   render() {
-    const linkMines = (
-      <Link to={route.MINES.route} className="header-link">
-        My Mines
-      </Link>
-    );
-
-    const linkUsers = (
-      <Link to={route.USERS.route} className="header-link">
-        My Users
-      </Link>
-    );
-
     const menuItemLogout = (
       <Menu.Item key="logout">
         <Button className="header-dropdown-item-button" onClick={this.handleLogout}>
@@ -53,10 +41,14 @@ export class HeaderDropdown extends Component {
     const dropdownMenuMobile = (
       <Menu className="header-dropdown-menu">
         <Menu.Item key="mines">
-          <Button className="header-dropdown-item-button">{linkMines}</Button>
+          <Button className="header-dropdown-item-button">
+            <Link to={route.MINES.route}>My Mines</Link>
+          </Button>
         </Menu.Item>
         <Menu.Item key="users">
-          <Button className="header-dropdown-item-button">{linkUsers}</Button>
+          <Button className="header-dropdown-item-button">
+            <Link to={route.USERS.route}>My Users</Link>
+          </Button>
         </Menu.Item>
         <Divider className="bg-color-table-seperator" style={{ margin: 0 }} />
         {menuItemLogout}
@@ -81,10 +73,12 @@ export class HeaderDropdown extends Component {
     return (
       <span>
         <MediaQuery minWidth={smallestDesktopWidth}>
-          <span>
-            {linkMines}
-            {linkUsers}
-          </span>
+          <Link to={route.MINES.route} className="header-link">
+            My Mines
+          </Link>
+          <Link to={route.USERS.route} className="header-link">
+            My Users
+          </Link>
           <Dropdown overlay={dropdownMenuDesktop}>
             <Button className="header-dropdown-button">
               {this.props.userInfo.email}
