@@ -70,7 +70,7 @@ const columns = [
     title: "Requested By",
     dataIndex: "created_by_idir",
     key: "created_by_idir",
-    render: (text, record) => <div title="Due">{text}</div>,
+    render: (text, record) => <div title="requested_by">{text}</div>,
   },
   {
     title: "Received",
