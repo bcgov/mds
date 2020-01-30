@@ -73,7 +73,7 @@ exports[`Reports renders properly 1`] = `
         <TableSummaryCard
           content="6"
           icon="check-circle"
-          title="Inspections YTD"
+          title="Reports Submitted"
           type="success"
         />
       </Col>
@@ -85,7 +85,7 @@ exports[`Reports renders properly 1`] = `
         <TableSummaryCard
           content="6"
           icon="clock-circle"
-          title="Overdue Orders"
+          title="Reports Due"
           type="error"
         />
       </Col>
@@ -97,7 +97,7 @@ exports[`Reports renders properly 1`] = `
         <TableSummaryCard
           content="6"
           icon="exclamation-circle"
-          title="Responses Due"
+          title="Reports Overdue"
           type="warning"
         />
       </Col>
