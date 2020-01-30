@@ -4,7 +4,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { Row, Col, Typography, Button, Icon } from "antd";
+import { Row, Col, Typography, Button, Icon, Alert } from "antd";
 import PropTypes from "prop-types";
 import { getMine } from "@/selectors/userMineSelectors";
 import CustomPropTypes from "@/customPropTypes";
@@ -110,6 +110,12 @@ export class Reports extends Component {
                 &nbsp;that have been submitted to the Ministry. If a report is listed but there are
                 no files attached, it means the report has not been submitted.
               </Paragraph>
+              <Alert
+                message="This table may not show all reports that your mine is required to submit to the Ministry. If you have any questions, please check with an EMPR representative."
+                type="info"
+                banner
+              ></Alert>
+              <br />
             </Col>
           </Row>
           <Row type="flex" justify="space-around" gutter={[{ lg: 0, xl: 32 }, 32]}>

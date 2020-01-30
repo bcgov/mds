@@ -5,7 +5,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import CustomPropTypes from "@/customPropTypes";
-import { Row, Col, Card, Descriptions, Typography } from "antd";
+import { Row, Col, Card, Descriptions, Typography, Alert, Divider } from "antd";
 import ContactCard from "@/components/common/ContactCard";
 import * as Strings from "@/constants/strings";
 import * as Contacts from "@/constants/ministryContacts";
@@ -33,6 +33,19 @@ const partyPermittee = {
 };
 
 export class Overview extends Component {
+  state = {
+    ministryContacts: {},
+  };
+
+  componentDidMount() {
+    // this.setState({ ministryContacts: Contacts.MINISTRY_CONTACTS[this.props.mine.mine_region] });
+    console.log(this.props.mine);
+    console.log(this.props.mine.mine_region);
+    console.log(Contacts.MINISTRY_CONTACTS.NE);
+    console.log(Contacts.MINISTRY_CONTACTS[this.props.mine.mine_region]);
+    console.log(this.state.ministryContacts);
+  }
+
   render() {
     return (
       <Row>
@@ -41,6 +54,13 @@ export class Overview extends Component {
           <Paragraph>
             This tab contains general information about your mine and important contacts at EMPR.
           </Paragraph>
+          <Alert
+            message="Information on this tab is pulled from current Ministry resources. If anything is
+            incorrect, please notify one of the Ministry contacts shown."
+            type="info"
+            banner
+          ></Alert>
+          <br />
           <Descriptions column={1} colon={false}>
             <Descriptions.Item label="Region">{this.props.mine.mine_region}</Descriptions.Item>
             <Descriptions.Item label="Coordinate">
@@ -67,20 +87,76 @@ export class Overview extends Component {
           </Row>
         </Col>
         <Col lg={{ span: 9, offset: 1 }} xl={{ offset: 1, span: 7 }}>
-          <Card title="Ministry Contacts">
+          {/* TODO: Replace region code with full name */}
+          <Card title={`Ministry Contacts (${this.props.mine.mine_region})`}>
             <Paragraph>
               <Text strong style={{ textTransform: "uppercase" }}>
-                Regional Health and Safety
+                Senior Health, Safety and Environment Inspector
               </Text>
               <br />
-              <Text>{Contacts.MINISTRY_CONTACTS.REGIONAL_HEALTH_AND_SAFETY.NAME}</Text>
-              <br />
-              <Text>{Contacts.MINISTRY_CONTACTS.REGIONAL_HEALTH_AND_SAFETY.PHONE}</Text>
+              <Text>
+                {this.state.ministryContacts && this.state.ministryContacts.safety
+                  ? this.state.ministryContacts.safety.name
+                  : ""}
+              </Text>
               <br />
               <Text>
-                <a href={`mailto:${Contacts.MINISTRY_CONTACTS.REGIONAL_HEALTH_AND_SAFETY.EMAIL}`}>
-                  {Contacts.MINISTRY_CONTACTS.REGIONAL_HEALTH_AND_SAFETY.EMAIL}
+                {this.state.ministryContacts && this.state.ministryContacts.safety
+                  ? this.state.ministryContacts.safety.phone
+                  : ""}
+              </Text>
+              <br />
+              <Text>
+                <a
+                  href={`mailto:${
+                    this.state.ministryContacts && this.state.ministryContacts.safety
+                      ? this.state.ministryContacts.safety.email
+                      : ""
+                  }`}
+                >
+                  {this.state.ministryContacts && this.state.ministryContacts.safety
+                    ? this.state.ministryContacts.safety.email
+                    : ""}
                 </a>
+              </Text>
+            </Paragraph>
+            <Paragraph>
+              <Text strong style={{ textTransform: "uppercase" }}>
+                Senior Permitting Inspector
+              </Text>
+              <br />
+              <Text>{null}</Text>
+              <br />
+              <Text>{null}</Text>
+              <br />
+              <Text>
+                <a href={`mailto:${null}`}>{null}</a>
+              </Text>
+            </Paragraph>
+            <Paragraph>
+              <Text strong style={{ textTransform: "uppercase" }}>
+                Regional Director
+              </Text>
+              <br />
+              <Text>{null}</Text>
+              <br />
+              <Text>{null}</Text>
+              <br />
+              <Text>
+                <a href={`mailto:${null}`}>{null}</a>
+              </Text>
+            </Paragraph>
+            <Paragraph>
+              <Text strong style={{ textTransform: "uppercase" }}>
+                Regional Office
+              </Text>
+              <br />
+              <Text>{null}</Text>
+              <br />
+              <Text>{null}</Text>
+              <br />
+              <Text>
+                <a href={`mailto:${null}`}>{null}</a>
               </Text>
             </Paragraph>
             <Paragraph>
@@ -89,9 +165,7 @@ export class Overview extends Component {
               </Text>
               <br />
               <Text>
-                <a href={`mailto:${Contacts.MINISTRY_CONTACTS.REGIONAL_MINE_GENERAL.EMAIL}`}>
-                  {Contacts.MINISTRY_CONTACTS.REGIONAL_MINE_GENERAL.EMAIL}
-                </a>
+                <a href={`mailto:${null}`}>{null}</a>
               </Text>
             </Paragraph>
             <Paragraph>
@@ -100,9 +174,7 @@ export class Overview extends Component {
               </Text>
               <br />
               <Text>
-                <a href={`mailto:${Contacts.MINISTRY_CONTACTS.MAJOR_MINE_GENERAL.EMAIL}`}>
-                  {Contacts.MINISTRY_CONTACTS.MAJOR_MINE_GENERAL.EMAIL}
-                </a>
+                <a href={`mailto:${null}`}>{null}</a>
               </Text>
             </Paragraph>
           </Card>
