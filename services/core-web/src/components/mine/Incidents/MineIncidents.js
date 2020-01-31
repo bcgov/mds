@@ -30,7 +30,6 @@ import { modalConfig } from "@/components/modalContent/config";
 import AddButton from "@/components/common/AddButton";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 
-
 import MineIncidentTable from "./MineIncidentTable";
 
 /**

@@ -10,7 +10,6 @@ import NullScreen from "@/components/common/NullScreen";
 import TableLoadingWrapper from "@/components/common/wrappers/TableLoadingWrapper";
 import LinkButton from "@/components/common/LinkButton";
 
-
 const propTypes = {
   filteredOrders: CustomPropTypes.complianceOrders,
   isLoaded: PropTypes.bool.isRequired,
