@@ -73,8 +73,8 @@
   border: none !important;
   background-color: transparent !important;
   box-shadow: none !important;
-  & .header-link {
+  font-weight: bold !important;
+  & a {
     text-decoration: none;
   }
-  font-weight: bold !important;
 }

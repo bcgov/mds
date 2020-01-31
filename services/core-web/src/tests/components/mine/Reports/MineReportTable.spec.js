@@ -8,7 +8,7 @@ const props = {};
 
 const setupProps = () => {
   props.mine = MOCK.MINES.mines[MOCK.MINES.mineIds[0]];
-  props.mineReports = [];
+  props.mineReports = MOCK.MINE_REPORTS;
 };
 
 beforeEach(() => {
