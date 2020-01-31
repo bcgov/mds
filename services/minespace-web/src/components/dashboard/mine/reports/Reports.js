@@ -108,8 +108,11 @@ export class Reports extends Component {
                   reports
                 </Text>
                 &nbsp;that have been submitted to the Ministry. If a report is listed but there are
-                no files attached, it means the report has not been submitted.
+                no files attached, it means the report has not been submitted. This table may not
+                show all reports that your mine is required to submit to the Ministry. If you have
+                any questions, please check with an EMPR representative.
               </Paragraph>
+              <br />
             </Col>
           </Row>
           <Row type="flex" justify="space-around" gutter={[{ lg: 0, xl: 32 }, 32]}>
