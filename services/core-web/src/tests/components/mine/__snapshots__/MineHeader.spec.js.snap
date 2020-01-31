@@ -190,7 +190,7 @@ exports[`MineHeader renders dispatchProperly 1`] = `
     className="dashboard__header--card__map"
   >
     <MineHeaderMapLeaflet
-      additionalLocation={Array []}
+      additionalPin={Array []}
       mine={
         Object {
           "major_mine_ind": true,

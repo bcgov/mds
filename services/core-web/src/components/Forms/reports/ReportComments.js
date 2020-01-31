@@ -12,7 +12,6 @@ import {
 import CommentPanel from "@/components/common/comments/CommentPanel";
 import FormItemLabel from "@/components/common/FormItemLabel";
 
-
 const propTypes = {
   mineGuid: PropTypes.string.isRequired,
   mineReportGuid: PropTypes.string.isRequired,
