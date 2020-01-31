@@ -28,7 +28,7 @@
     },
     {
       "name": "BASE_PATH",
-      "required": true,
+      "required": false,
       "value": "/"
     },
     {
@@ -220,10 +220,6 @@
             "env": [
               {
                 "name": "BASE_PATH",
-                "value": "${BASE_PATH}"
-              },
-              {
-                "name": "APP_ROOT",
                 "value": "${BASE_PATH}"
               },
               {
