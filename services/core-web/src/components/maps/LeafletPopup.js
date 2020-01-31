@@ -2,8 +2,8 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Link, StaticRouter } from "react-router-dom";
 import { Button } from "antd";
+import * as Strings from "@common/constants/strings";
 import * as router from "@/constants/routes";
-import * as Strings from "@/constants/strings";
 
 const propTypes = {
   mine: PropTypes.shape({

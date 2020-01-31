@@ -42,8 +42,9 @@ exports[`Reports renders properly 1`] = `
           >
             reports
           </Text>
-           that have been submitted to the Ministry. If a report is listed but there are no files attached, it means the report has not been submitted.
+           that have been submitted to the Ministry. If a report is listed but there are no files attached, it means the report has not been submitted. This table may not show all reports that your mine is required to submit to the Ministry. If you have any questions, please check with an EMPR representative.
         </Paragraph>
+        <br />
       </Col>
     </Row>
     <Row
@@ -67,7 +68,7 @@ exports[`Reports renders properly 1`] = `
         <TableSummaryCard
           content="6"
           icon="check-circle"
-          title="Inspections YTD"
+          title="Reports Submitted"
           type="success"
         />
       </Col>
@@ -79,7 +80,7 @@ exports[`Reports renders properly 1`] = `
         <TableSummaryCard
           content="6"
           icon="clock-circle"
-          title="Overdue Orders"
+          title="Reports Due"
           type="error"
         />
       </Col>
@@ -91,7 +92,7 @@ exports[`Reports renders properly 1`] = `
         <TableSummaryCard
           content="6"
           icon="exclamation-circle"
-          title="Responses Due"
+          title="Reports Overdue"
           type="warning"
         />
       </Col>

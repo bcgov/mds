@@ -2,10 +2,10 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Field, reduxForm } from "redux-form";
 import { AutoComplete, Collapse, Button, Icon, Popconfirm, Form, Col, Row } from "antd";
+import { required } from "@common/utils/Validate";
 import CustomPropTypes from "@/customPropTypes";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
-import { required } from "@/utils/Validate";
 import { COLOR } from "@/constants/styles";
 
 const { mediumGrey, antIconGrey } = COLOR;

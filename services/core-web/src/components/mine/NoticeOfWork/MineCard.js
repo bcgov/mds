@@ -1,10 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+import { getMineRegionHash } from "@common/selectors/staticContentSelectors";
+import * as Strings from "@common/constants/strings";
 import MineHeaderMapLeaflet from "@/components/maps/MineHeaderMapLeaflet";
 import CustomPropTypes from "@/customPropTypes";
-import * as Strings from "@/constants/strings";
-import { getMineRegionHash } from "@/selectors/staticContentSelectors";
 
 /**
  * @class MineHeader.js contains header section of MineDashboard before the tabs. Including map, mineName, mineNumber.

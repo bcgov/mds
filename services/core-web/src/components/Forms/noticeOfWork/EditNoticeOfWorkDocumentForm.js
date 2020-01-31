@@ -4,14 +4,14 @@ import { compose } from "redux";
 import PropTypes from "prop-types";
 import { Field, reduxForm } from "redux-form";
 import { Form, Button, Col, Row, Popconfirm } from "antd";
+import { required, maxLength } from "@common/utils/Validate";
+import { resetForm } from "@common/utils/helpers";
+import { getDropdownNoticeOfWorkApplicationDocumentTypeOptions } from "@common/selectors/staticContentSelectors";
+import { NOTICE_OF_WORK_DOCUMENT } from "@common/constants/API";
 import { renderConfig } from "@/components/common/config";
 import * as FORM from "@/constants/forms";
-import { required, maxLength } from "@/utils/Validate";
-import { resetForm } from "@/utils/helpers";
 import CustomPropTypes from "@/customPropTypes";
 import FileUpload from "@/components/common/FileUpload";
-import { NOTICE_OF_WORK_DOCUMENT } from "@/constants/API";
-import { getDropdownNoticeOfWorkApplicationDocumentTypeOptions } from "@/selectors/staticContentSelectors";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,

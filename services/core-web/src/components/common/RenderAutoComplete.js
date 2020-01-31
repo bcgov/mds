@@ -29,6 +29,7 @@ const defaultProps = {
   iconColor: Styles.COLOR.violet,
   disabled: false,
   meta: {},
+  label: "",
 };
 
 const RenderAutoComplete = (props) => {

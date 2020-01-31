@@ -5,31 +5,31 @@ import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { Tabs, Icon, Table, Button, Popconfirm } from "antd";
 import { uniq } from "lodash";
-import * as Strings from "@/constants/strings";
 import {
   fetchPartyById,
   fetchPartyRelationships,
   updateParty,
   deleteParty,
-} from "@/actionCreators/partiesActionCreator";
-import { getDropdownProvinceOptions } from "@/selectors/staticContentSelectors";
-import { EDIT } from "@/constants/assets";
-import { openModal, closeModal } from "@/actions/modalActions";
-import { modalConfig } from "@/components/modalContent/config";
-import { fetchMineBasicInfoList } from "@/actionCreators/mineActionCreator";
+} from "@common/actionCreators/partiesActionCreator";
+import { fetchMineBasicInfoList } from "@common/actionCreators/mineActionCreator";
+import { openModal, closeModal } from "@common/actions/modalActions";
 import {
   getParties,
   getPartyRelationships,
   getPartyRelationshipTypeHash,
-} from "@/selectors/partiesSelectors";
-import { getMineBasicInfoListHash } from "@/selectors/mineSelectors";
+} from "@common/selectors/partiesSelectors";
+import { getMineBasicInfoListHash } from "@common/selectors/mineSelectors";
+import { getDropdownProvinceOptions } from "@common/selectors/staticContentSelectors";
+import { formatTitleString, formatDate } from "@common/utils/helpers";
+import * as Strings from "@common/constants/strings";
+import { EDIT } from "@/constants/assets";
+import { modalConfig } from "@/components/modalContent/config";
 import Loading from "@/components/common/Loading";
 import * as router from "@/constants/routes";
 import * as ModalContent from "@/constants/modalContent";
 import * as Permission from "@/constants/permissions";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import CustomPropTypes from "@/customPropTypes";
-import { formatTitleString, formatDate } from "@/utils/helpers";
 import NullScreen from "@/components/common/NullScreen";
 import Address from "@/components/common/Address";
 

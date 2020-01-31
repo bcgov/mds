@@ -1,9 +1,12 @@
 import { PropTypes } from "prop-types";
 import { connect } from "react-redux";
-import { getUserAccessData } from "@/selectors/authenticationSelectors";
-import { USER_ROLES } from "@/constants/environment";
+import { getUserAccessData } from "@common/selectors/authenticationSelectors";
+import { USER_ROLES } from "@common/constants/environment";
+import {
+  detectDevelopmentEnvironment,
+  detectProdEnvironment,
+} from "@common/utils/environmentUtils";
 import * as Permission from "@/constants/permissions";
-import { detectDevelopmentEnvironment, detectProdEnvironment } from "@/utils/environmentUtils";
 
 /**
  * @constant AuthorizationWrapper conditionally renders react children depending

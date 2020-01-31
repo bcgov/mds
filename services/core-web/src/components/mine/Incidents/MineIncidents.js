@@ -5,22 +5,14 @@ import { destroy } from "redux-form";
 import PropTypes from "prop-types";
 import { Divider } from "antd";
 import moment from "moment";
-import * as FORM from "@/constants/forms";
-import CustomPropTypes from "@/customPropTypes";
-import * as Permission from "@/constants/permissions";
-import * as ModalContent from "@/constants/modalContent";
-import { modalConfig } from "@/components/modalContent/config";
-import { openModal, closeModal } from "@/actions/modalActions";
-import AddButton from "@/components/common/AddButton";
-import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
-
+import { openModal, closeModal } from "@common/actions/modalActions";
 import {
   fetchMineIncidents,
   createMineIncident,
   updateMineIncident,
-} from "@/actionCreators/incidentActionCreator";
-import { getMineIncidents } from "@/selectors/incidentSelectors";
-import { getMines, getMineGuid } from "@/selectors/mineSelectors";
+} from "@common/actionCreators/incidentActionCreator";
+import { getMineIncidents } from "@common/selectors/incidentSelectors";
+import { getMines, getMineGuid } from "@common/selectors/mineSelectors";
 import {
   getDropdownIncidentFollowupActionOptions,
   getDangerousOccurrenceSubparagraphOptions,
@@ -28,8 +20,16 @@ import {
   getDropdownIncidentStatusCodeOptions,
   getIncidentFollowupActionOptions,
   getDropdownIncidentCategoryCodeOptions,
-} from "@/selectors/staticContentSelectors";
-import { getDropdownInspectors } from "@/selectors/partiesSelectors";
+} from "@common/selectors/staticContentSelectors";
+import { getDropdownInspectors } from "@common/selectors/partiesSelectors";
+import * as FORM from "@/constants/forms";
+import CustomPropTypes from "@/customPropTypes";
+import * as Permission from "@/constants/permissions";
+import * as ModalContent from "@/constants/modalContent";
+import { modalConfig } from "@/components/modalContent/config";
+import AddButton from "@/components/common/AddButton";
+import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
+
 
 import MineIncidentTable from "./MineIncidentTable";
 

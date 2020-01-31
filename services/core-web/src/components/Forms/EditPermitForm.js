@@ -4,11 +4,11 @@ import { compose } from "redux";
 import PropTypes from "prop-types";
 import { Field, reduxForm } from "redux-form";
 import { Form, Button, Col, Row, Popconfirm } from "antd";
-import RenderSelect from "@/components/common/RenderSelect";
+import { required } from "@common/utils/Validate";
+import { resetForm } from "@common/utils/helpers";
+import { getDropdownPermitStatusOptions } from "@common/selectors/staticContentSelectors";
 import * as FORM from "@/constants/forms";
-import { required } from "@/utils/Validate";
-import { resetForm } from "@/utils/helpers";
-import { getDropdownPermitStatusOptions } from "@/selectors/staticContentSelectors";
+import RenderSelect from "@/components/common/RenderSelect";
 import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {

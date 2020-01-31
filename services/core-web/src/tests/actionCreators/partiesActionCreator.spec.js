@@ -8,11 +8,11 @@ import {
   updateParty,
   deleteParty,
   addDocumentToRelationship,
-} from "@/actionCreators/partiesActionCreator";
-import * as genericActions from "@/actions/genericActions";
-import * as API from "@/constants/API";
+} from "@common/actionCreators/partiesActionCreator";
+import * as genericActions from "@common/actions/genericActions";
+import { ENVIRONMENT } from "@common/constants/environment";
+import * as API from "@common/constants/API";
 import * as MOCK from "../mocks/dataMocks";
-import { ENVIRONMENT } from "@/constants/environment";
 
 const dispatch = jest.fn();
 const requestSpy = jest.spyOn(genericActions, "request");

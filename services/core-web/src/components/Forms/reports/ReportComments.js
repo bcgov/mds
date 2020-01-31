@@ -3,15 +3,15 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 
-import CommentPanel from "@/components/common/comments/CommentPanel";
-import { getMineReportComments } from "@/selectors/reportSelectors";
-import FormItemLabel from "@/components/common/FormItemLabel";
-
+import { getMineReportComments } from "@common/selectors/reportSelectors";
 import {
   fetchMineReportComments,
   createMineReportComment,
   deleteMineReportComment,
-} from "@/actionCreators/reportCommentActionCreator";
+} from "@common/actionCreators/reportCommentActionCreator";
+import CommentPanel from "@/components/common/comments/CommentPanel";
+import FormItemLabel from "@/components/common/FormItemLabel";
+
 
 const propTypes = {
   mineGuid: PropTypes.string.isRequired,

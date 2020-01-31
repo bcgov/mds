@@ -4,17 +4,17 @@ import { connect } from "react-redux";
 import { Divider } from "antd";
 import PropTypes from "prop-types";
 import queryString from "query-string";
+import { getMineRegionHash } from "@common/selectors/staticContentSelectors";
+import { fetchMineNoticeOfWorkApplications } from "@common/actionCreators/noticeOfWorkActionCreator";
+import { getNoticeOfWorkList } from "@common/selectors/noticeOfWorkSelectors";
+import { getMineGuid, getMines } from "@common/selectors/mineSelectors";
+import { formatQueryListParams } from "@common/utils/helpers";
 import * as router from "@/constants/routes";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
 import AddButton from "@/components/common/AddButton";
 import CustomPropTypes from "@/customPropTypes";
-import { getMineRegionHash } from "@/selectors/staticContentSelectors";
 import MineNoticeOfWorkTable from "@/components/mine/NoticeOfWork/MineNoticeOfWorkTable";
-import { fetchMineNoticeOfWorkApplications } from "@/actionCreators/noticeOfWorkActionCreator";
-import { getNoticeOfWorkList } from "@/selectors/noticeOfWorkSelectors";
-import { getMineGuid, getMines } from "@/selectors/mineSelectors";
-import { formatQueryListParams } from "@/utils/helpers";
 
 const propTypes = {
   mineGuid: PropTypes.string.isRequired,

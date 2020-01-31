@@ -3,25 +3,25 @@ import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { Button } from "antd";
-import * as routes from "@/constants/routes";
 import {
   fetchImportedNoticeOfWorkApplication,
   fetchOriginalNoticeOfWorkApplication,
-} from "@/actionCreators/noticeOfWorkActionCreator";
-import { fetchMineRecordById } from "@/actionCreators/mineActionCreator";
+} from "@common/actionCreators/noticeOfWorkActionCreator";
+import { fetchMineRecordById } from "@common/actionCreators/mineActionCreator";
 import {
   getNoticeOfWork,
   getOriginalNoticeOfWork,
   getNOWReclamationSummary,
-} from "@/selectors/noticeOfWorkSelectors";
-import { getMines } from "@/selectors/mineSelectors";
-import { getInspectorsHash } from "@/selectors/partiesSelectors";
+} from "@common/selectors/noticeOfWorkSelectors";
+import { getMines } from "@common/selectors/mineSelectors";
+import { getInspectorsHash } from "@common/selectors/partiesSelectors";
+import { downloadNowDocument } from "@common/utils/actionlessNetworkCalls";
+import * as routes from "@/constants/routes";
 import CustomPropTypes from "@/customPropTypes";
 import ReviewNOWApplication from "@/components/noticeOfWork/applications/review/ReviewNOWApplication";
 import NOWSideMenu from "@/components/noticeOfWork/applications/NOWSideMenu";
 import NoticeOfWorkPageHeader from "@/components/noticeOfWork/applications/NoticeOfWorkPageHeader";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
-import { downloadNowDocument } from "@/utils/actionlessNetworkCalls";
 
 /**
  * @class ViewNoticeOfWorkApplication- contains all information regarding a CORE notice of work application

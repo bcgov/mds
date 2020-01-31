@@ -36,8 +36,8 @@ import {
   getNoticeOfWorkUndergroundExplorationTypeOptionsHash,
   getNoticeOfWorkApplicationPermitTypeOptions,
   getDropdownNoticeOfWorkApplicationPermitTypeOptions,
-} from "@/selectors/staticContentSelectors";
-import staticContentReducer from "@/reducers/staticContentReducer";
+} from "@common/selectors/staticContentSelectors";
+import { staticContentReducer } from "@common/reducers/staticContentReducer";
 import {
   storeStatusOptions,
   storeRegionOptions,
@@ -55,8 +55,8 @@ import {
   storeNoticeOfWorkApplicationDocumentTypeOptions,
   storeNoticeOfWorkUndergroundExplorationTypeOptions,
   storeNoticeOfWorkApplicationPermitTypesOptions,
-} from "@/actions/staticContentActions";
-import { STATIC_CONTENT } from "@/constants/reducerTypes";
+} from "@common/actions/staticContentActions";
+import { STATIC_CONTENT } from "@common/constants/reducerTypes";
 import * as Mock from "@/tests/mocks/dataMocks";
 import * as NOW_MOCK from "@/tests/mocks/noticeOfWorkMocks";
 

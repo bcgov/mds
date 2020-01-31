@@ -4,21 +4,21 @@ import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { Table, Button, Icon } from "antd";
 import _ from "lodash";
-import { EDIT_OUTLINE_VIOLET } from "@/constants/assets";
-import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import {
   getIncidentDeterminationHash,
   getIncidentStatusCodeHash,
   getIncidentCategoryCodeHash,
   getHSRCMComplianceCodesHash,
-} from "@/selectors/staticContentSelectors";
+} from "@common/selectors/staticContentSelectors";
+import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
+import { formatDate, getTableHeaders } from "@common/utils/helpers";
+import * as Strings from "@common/constants/strings";
+import { EDIT_OUTLINE_VIOLET } from "@/constants/assets";
+import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
-import { downloadFileFromDocumentManager } from "@/utils/actionlessNetworkCalls";
 import CustomPropTypes from "@/customPropTypes";
 import NullScreen from "@/components/common/NullScreen";
-import { formatDate, getTableHeaders } from "@/utils/helpers";
 import LinkButton from "@/components/common/LinkButton";
-import * as Strings from "@/constants/strings";
 import TableLoadingWrapper from "@/components/common/wrappers/TableLoadingWrapper";
 import * as router from "@/constants/routes";
 

@@ -8,8 +8,8 @@ import {
   getIsUserSubscribed,
   getMineBasicInfoList,
   getMineDocuments,
-} from "@/selectors/mineSelectors";
-import mineReducer from "@/reducers/mineReducer";
+} from "@common/selectors/mineSelectors";
+import { mineReducer } from "@common/reducers/mineReducer";
 import {
   storeMineList,
   storeMineNameList,
@@ -17,8 +17,8 @@ import {
   storeSubscribedMines,
   storeMineBasicInfoList,
   storeMineDocuments,
-} from "@/actions/mineActions";
-import { MINES } from "@/constants/reducerTypes";
+} from "@common/actions/mineActions";
+import { MINES } from "@common/constants/reducerTypes";
 import * as Mock from "@/tests/mocks/dataMocks";
 
 const mockResponse = Mock.MINE_RESPONSE;

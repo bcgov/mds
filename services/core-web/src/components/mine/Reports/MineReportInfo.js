@@ -6,25 +6,25 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Row } from "antd";
 import { isEmpty, debounce } from "lodash";
-import CustomPropTypes from "@/customPropTypes";
-import * as Permission from "@/constants/permissions";
-import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import {
   fetchMineReports,
   updateMineReport,
   createMineReport,
   deleteMineReport,
-} from "@/actionCreators/reportActionCreator";
-import { changeModalTitle, openModal, closeModal } from "@/actions/modalActions";
+} from "@common/actionCreators/reportActionCreator";
+import { changeModalTitle, openModal, closeModal } from "@common/actions/modalActions";
+import { getMineReports } from "@common/selectors/reportSelectors";
+import { getMineReportDefinitionOptions } from "@common/selectors/staticContentSelectors";
+import { getMines, getMineGuid } from "@common/selectors/mineSelectors";
+import CustomPropTypes from "@/customPropTypes";
+import * as Permission from "@/constants/permissions";
+import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import AddButton from "@/components/common/AddButton";
 import MineReportTable from "@/components/mine/Reports/MineReportTable";
 import ReportFilterForm from "@/components/Forms/reports/ReportFilterForm";
 import * as ModalContent from "@/constants/modalContent";
 import * as routes from "@/constants/routes";
 import { modalConfig } from "@/components/modalContent/config";
-import { getMineReports } from "@/selectors/reportSelectors";
-import { getMineReportDefinitionOptions } from "@/selectors/staticContentSelectors";
-import { getMines, getMineGuid } from "@/selectors/mineSelectors";
 
 /**
  * @class  MineReportInfo - contains all permit information

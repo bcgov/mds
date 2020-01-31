@@ -2,14 +2,14 @@ import {
   getNoticeOfWorkList,
   getNoticeOfWork,
   getOriginalNoticeOfWork,
-} from "@/selectors/noticeOfWorkSelectors";
-import noticeOfWorkReducer from "@/reducers/noticeOfWorkReducer";
+} from "@common/selectors/noticeOfWorkSelectors";
+import { noticeOfWorkReducer } from "@common/reducers/noticeOfWorkReducer";
 import {
   storeNoticeOfWorkApplications,
   storeNoticeOfWorkApplication,
   storeOriginalNoticeOfWorkApplication,
-} from "@/actions/noticeOfWorkActions";
-import { NOTICE_OF_WORK } from "@/constants/reducerTypes";
+} from "@common/actions/noticeOfWorkActions";
+import { NOTICE_OF_WORK } from "@common/constants/reducerTypes";
 import * as MOCKS from "@/tests/mocks/noticeOfWorkMocks";
 
 const mockState = {

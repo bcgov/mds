@@ -4,11 +4,11 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { getFormValues, submit, reset, change } from "redux-form";
 import { Row, Col, Steps, Button, Popconfirm } from "antd";
-import * as FORM from "@/constants/forms";
+import { createParty, addPartyRelationship } from "@common/actionCreators/partiesActionCreator";
+import { fetchMineNameList } from "@common/actionCreators/mineActionCreator";
+import { getMineNames } from "@common/selectors/mineSelectors";
 import CustomPropTypes from "@/customPropTypes";
-import { createParty, addPartyRelationship } from "@/actionCreators/partiesActionCreator";
-import { fetchMineNameList } from "@/actionCreators/mineActionCreator";
-import { getMineNames } from "@/selectors/mineSelectors";
+import * as FORM from "@/constants/forms";
 import AddFullPartyForm from "@/components/Forms/parties/AddFullPartyForm";
 import AddRolesForm from "@/components/Forms/parties/AddRolesForm";
 
