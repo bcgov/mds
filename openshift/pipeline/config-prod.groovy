@@ -68,6 +68,23 @@ app {
                     ]
                 ],
                 [
+                    'file':'openshift/templates/postgresql.dc.json',
+                    'params':[
+                            'NAME':"mds-postgresql",
+                            'SUFFIX':"${vars.deployment.suffix}-reporting",
+                            'DATABASE_SERVICE_NAME':"mds-postgresql${vars.deployment.suffix}",
+                            'CPU_REQUEST':"${vars.resources.postgres.cpu_request}",
+                            'CPU_LIMIT':"${vars.resources.postgres.cpu_limit}",
+                            'MEMORY_REQUEST':"${vars.resources.postgres.memory_request}",
+                            'MEMORY_LIMIT':"${vars.resources.postgres.memory_limit}",
+                            'IMAGE_STREAM_NAMESPACE':'',
+                            'IMAGE_STREAM_NAME':"mds-postgresql",
+                            'IMAGE_STREAM_VERSION':"${app.deployment.version}",
+                            'POSTGRESQL_DATABASE':'mds',
+                            'VOLUME_CAPACITY':"${vars.DB_PVC_SIZE}"
+                    ]
+                ],
+                [
                     'file':'openshift/templates/dbbackup.dc.json',
                     'params':[
                             'NAME':"mds-database-backup",
@@ -81,7 +98,9 @@ app {
                             'CPU_LIMIT':"${vars.resources.backup.cpu_limit}",
                             'MEMORY_REQUEST':"${vars.resources.backup.memory_request}",
                             'MEMORY_LIMIT':"${vars.resources.backup.memory_limit}",
-                            'VERIFICATION_VOLUME_SIZE':"${vars.BACKUP_VERIFICATION_PVC_SIZE}"
+                            'VERIFICATION_VOLUME_SIZE':"${vars.BACKUP_VERIFICATION_PVC_SIZE}",
+                            'FLYWAY_NAME':"mds-flyway-migration-client",
+                            'DB_NRIS_CONFIG_NAME': "mds-postgresql${vars.deployment.suffix}-nris"
                     ]
                 ],
                 [
