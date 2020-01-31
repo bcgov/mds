@@ -9,6 +9,7 @@ jobs:
       - uses: actions/checkout@v1
       - name: compare-folders
         run: |
+          pwd
           CORE_COMMON_HASH=$(tar cf - services/core-web/common | md5sum)
           echo $CORE_COMMON_HASH
           MINESPACE_COMMON_HASH=$(tar cf - services/minespace-web/common | md5sum)
