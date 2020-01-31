@@ -78,13 +78,13 @@ export const createNoticeOfWorkApplication = (payload) => (dispatch) => {
     .finally(() => dispatch(hideLoading()));
 };
 
-export const importNoticeOfWorkApplication = (mine_guid, applicationGuid) => (dispatch) => {
+export const importNoticeOfWorkApplication = (applicationGuid, payload) => (dispatch) => {
   dispatch(request(reducerTypes.IMPORT_NOTICE_OF_WORK_APPLICATION));
   dispatch(showLoading());
   return CustomAxios()
     .post(
       `${ENVIRONMENT.apiUrl}${API.NOTICE_OF_WORK_APPLICATION_IMPORT(applicationGuid)}`,
-      { mine_guid },
+      payload,
       createRequestHeader()
     )
     .then((response) => {

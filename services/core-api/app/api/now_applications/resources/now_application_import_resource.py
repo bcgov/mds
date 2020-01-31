@@ -1,5 +1,6 @@
 import uuid
 from datetime import datetime
+from decimal import Decimal
 
 from flask import request, current_app
 from flask_restplus import Resource
@@ -25,12 +26,24 @@ from app.api.now_applications.transmogrify_now import transmogrify_now
 class NOWApplicationImportResource(Resource, UserMixin):
     parser = CustomReqparser()
     parser.add_argument('mine_guid', type=str, help='guid of the mine.', required=True)
+    parser.add_argument(
+        'longitude',
+        type=lambda x: Decimal(x) if x else None,
+        help='Longitude point for the Notice of Work.',
+        location='json')
+    parser.add_argument(
+        'latitude',
+        type=lambda x: Decimal(x) if x else None,
+        help='Latitude point for the Notice of Work.',
+        location='json')
 
     @requires_role_edit_permit
     @api.expect(parser)
     def post(self, application_guid):
         data = self.parser.parse_args()
         mine_guid = data.get('mine_guid')
+        latitude = data.get('latitude')
+        longitude = data.get('longitude')
         mine = Mine.find_by_mine_guid(mine_guid)
         if not mine:
             raise NotFound('Mine not found')
@@ -42,6 +55,8 @@ class NOWApplicationImportResource(Resource, UserMixin):
 
         application = transmogrify_now(now_application_identity)
         application.mine_guid = mine_guid
+        application.latitude = latitude
+        application.longitude = longitude
         application.now_application_guid = application_guid
         application.save()
 
