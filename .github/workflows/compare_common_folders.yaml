@@ -9,12 +9,13 @@ jobs:
       - uses: actions/checkout@v1
       - name: compare-folders
         run: |
-          pwd
-          CORE_COMMON_HASH=$(tar cf - services/core-web/common | md5sum)
-          echo $CORE_COMMON_HASH
-          MINESPACE_COMMON_HASH=$(tar cf - services/minespace-web/common | md5sum)
-          echo $MINESPACE_COMMON_HASH
-          if [ "$CORE_COMMON_HASH" != "$MINESPACE_COMMON_HASH" ]
+          # pwd
+          # CORE_COMMON_HASH=$(tar cf - services/core-web/common | md5sum)
+          # echo $CORE_COMMON_HASH
+          # MINESPACE_COMMON_HASH=$(tar cf - services/minespace-web/common | md5sum)
+          # echo $MINESPACE_COMMON_HASH
+          echo diff services/core-web/common services/minespace-web/common
+          if [ diff services/core-web/common services/minespace-web/common ]
             then 
             echo "'/services/core-web/common' does not match '/services/minespace-web/common'"
             exit 1
