@@ -9,7 +9,11 @@ import PropTypes from "prop-types";
 import { getMine } from "@/selectors/userMineSelectors";
 import CustomPropTypes from "@/customPropTypes";
 import { fetchMineRecordById } from "@/actionCreators/userDashboardActionCreator";
-import { fetchMineReports, updateMineReport } from "@/actionCreators/reportActionCreator";
+import {
+  createMineReport,
+  fetchMineReports,
+  updateMineReport,
+} from "@common/actionCreators/reportActionCreator";
 import { modalConfig } from "@/components/modalContent/config";
 import { openModal, closeModal } from "@/actions/modalActions";
 import { getMineReports } from "@/selectors/reportSelectors";
@@ -32,6 +36,7 @@ const propTypes = {
   fetchMineReportDefinitionOptions: PropTypes.func.isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
   updateMineReport: PropTypes.func.isRequired,
+  createMineReport: PropTypes.func.isRequired,
   fetchMineReports: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
@@ -60,16 +65,29 @@ export class Reports extends Component {
       .then(() => this.props.fetchMineReports(this.props.mine.mine_guid));
   };
 
-  openEditReportModal = (event, onSubmit, report) => {
+  openAddReportModal = (event, report) => {
     event.preventDefault();
     this.props.openModal({
       props: {
         initialValues: report,
-        onSubmit,
-        title: "Edit Report",
+        onSubmit: this.props.createMineReport,
+        title: "Add Report",
         mineGuid: this.props.mine.mine_guid,
       },
       content: modalConfig.ADD_REPORT,
+    });
+  };
+
+  openEditReportModal = (event, report) => {
+    event.preventDefault();
+    this.props.openModal({
+      props: {
+        initialValues: report,
+        onSubmit: this.props.updateMineReport,
+        title: "Edit Report",
+        mineGuid: this.props.mine.mine_guid,
+      },
+      content: modalConfig.EDIT_REPORT,
     });
   };
 
@@ -96,7 +114,7 @@ export class Reports extends Component {
               <Button
                 style={{ display: "inline", float: "right" }}
                 type="primary"
-                onClick={(event) => this.openEditReportModal(event, this.props.mine.mine_name)}
+                onClick={(event) => this.openAddReportModal(event, this.props.mine.mine_name)}
               >
                 <Icon type="plus-circle" theme="filled" />
                 Submit Report
@@ -172,6 +190,7 @@ const mapDispatchToProps = (dispatch) =>
       fetchMineReportDefinitionOptions,
       fetchMineRecordById,
       fetchMineReports,
+      createMineReport,
       updateMineReport,
       openModal,
       closeModal,
