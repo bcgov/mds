@@ -9,8 +9,8 @@ RUN curl -sLo /tmp/sonar-scanner-cli.zip https://dl.bintray.com/sonarsource/Sona
     chmod -R 755 ${APP_ROOT}/sonar-scanner-cli
 
 # Copy project dependencies
-COPY package.json ${BASE_PATH}/src
-COPY package-lock.json ${BASE_PATH}/src
+COPY package.json ${APP_ROOT}/core-web/src
+COPY package-lock.json ${APP_ROOT}/core-web/src
 
 # Install dependencies
-RUN cd ${APP_ROOT}/src && npm set progress=false && npm ci
+RUN cd ${APP_ROOT}/core-web/src && npm set progress=false && npm ci
