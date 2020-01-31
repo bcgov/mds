@@ -1,4 +1,4 @@
-name: Ensures redux common folders are the same
+name: Compare Common Redux folder
 on: [pull_request]
 
 jobs:
@@ -13,5 +13,5 @@ jobs:
           if [ $? != 0 ]
             then 
             echo "'/services/core-web/common' does not match '/services/minespace-web/common'"
-            exit 1
+            exit 7
           fi
