@@ -2,7 +2,14 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Field, reduxForm } from "redux-form";
 import { Form, Col, Row, Button, Popconfirm } from "antd";
-import { required, email, phoneNumber, postalCode, maxLength, number } from "@common/utils/Validate";
+import {
+  required,
+  email,
+  phoneNumber,
+  postalCode,
+  maxLength,
+  number,
+} from "@common/utils/Validate";
 import { normalizePhone, upperCase, resetForm } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
 import CustomPropTypes from "@/customPropTypes";

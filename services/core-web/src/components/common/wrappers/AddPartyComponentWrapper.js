@@ -99,7 +99,7 @@ export class AddPartyComponentWrapper extends Component {
           <Radio.Group
             defaultValue
             size="large"
-            value={this.props.isPerson}
+            value={this.state.isPerson}
             onChange={this.togglePartyChange}
             style={{ paddingBottom: "20px" }}
           >

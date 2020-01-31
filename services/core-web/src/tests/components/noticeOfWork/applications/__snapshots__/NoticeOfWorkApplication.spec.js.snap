@@ -418,28 +418,6 @@ exports[`NoticeOfWorkApplication renders properly 1`] = `
             title="Decision"
           />
         </Steps>
-        <Dropdown
-          mouseEnterDelay={0.15}
-          mouseLeaveDelay={0.1}
-          onVisibleChange={[Function]}
-          overlay={<Menu />}
-          placement="bottomLeft"
-          visible={false}
-        >
-          <Button
-            block={false}
-            className="full-mobile"
-            ghost={false}
-            htmlType="button"
-            loading={false}
-            type="secondary"
-          >
-            Actions
-            <Icon
-              type="down"
-            />
-          </Button>
-        </Dropdown>
       </div>
     </div>
     <LoadingWrapper

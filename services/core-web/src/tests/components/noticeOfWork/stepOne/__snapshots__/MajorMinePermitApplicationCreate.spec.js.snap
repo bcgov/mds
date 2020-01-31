@@ -14,18 +14,7 @@ exports[`MajorMinePermitApplicationCreate renders properly 1`] = `
     gutter={0}
   >
     <Col
-      md={
-        Object {
-          "offset": 2,
-          "span": 20,
-        }
-      }
-      xs={
-        Object {
-          "offset": 2,
-          "span": 20,
-        }
-      }
+      md={24}
     >
       <Connect(MineCard)
         mine={
