@@ -4,20 +4,23 @@ export const SUCCESS = "SUCCESS";
 export const ERROR = "ERROR";
 export const CLEAR = "CLEAR";
 
+// Stores
 export const STORE_USER_MINE_INFO = "STORE_USER_MINE_INFO";
 export const STORE_MINE = "STORE_MINE";
 export const STORE_MINE_DOCUMENTS = "STORE_MINE_DOCUMENTS";
 export const STORE_MINE_REPORT_DEFINITION_OPTIONS = "STORE_MINE_REPORT_DEFINITION_OPTIONS";
 
+// Authentication
 export const AUTHENTICATE_USER = "AUTHENTICATE_USER";
 export const LOGOUT = "LOGOUT";
 export const STORE_KEYCLOAK_DATA = "STORE_KEYCLOAK_DATA";
 
+// Modals
 export const OPEN_MODAL = "OPEN_MODAL";
 export const CLOSE_MODAL = "CLOSE_MODAL";
 export const CHANGE_MODAL_TITLE = "CHANGE_MODAL_TITLE";
 
-// variances
+// Variances
 export const STORE_VARIANCES = "STORE_VARIANCES";
 export const STORE_VARIANCE = "STORE_VARIANCE";
 export const STORE_COMPLIANCE_CODES = "STORE_COMPLIANCE_CODES";

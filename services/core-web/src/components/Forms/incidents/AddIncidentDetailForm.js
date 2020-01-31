@@ -2,15 +2,14 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Field, reduxForm } from "redux-form";
 import { Form, Col, Row } from "antd";
+import { required, maxLength, number, dateNotInFuture } from "@common/utils/Validate";
+import { MINE_INCIDENT_DOCUMENT } from "@common/constants/API";
+import * as Strings from "@common/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
 import FileUpload from "@/components/common/FileUpload";
-import { MINE_INCIDENT_DOCUMENT } from "@/constants/API";
 import { IncidentsUploadedFilesList } from "@/components/Forms/incidents/IncidentsUploadedFilesList";
-import * as Strings from "@/constants/strings";
-
-import { required, maxLength, number, dateNotInFuture } from "@/utils/Validate";
 
 const propTypes = {
   incidentDeterminationOptions: CustomPropTypes.options.isRequired,

@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Table, Icon, Popconfirm, Button } from "antd";
+import { formatDate } from "@common/utils/helpers";
+import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
+import * as Strings from "@common/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
-import { formatDate } from "@/utils/helpers";
-import { downloadFileFromDocumentManager } from "@/utils/actionlessNetworkCalls";
-import * as Strings from "@/constants/strings";
 import LinkButton from "@/components/common/LinkButton";
 
 const propTypes = {

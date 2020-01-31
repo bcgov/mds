@@ -1,28 +1,24 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`LoadingWrapper renders properly 1`] = `
-<div>
-  <div
-    className="loading-screen--small"
-  >
-    <Spin
-      id="spinner"
-      indicator={
-        <Icon
-          spin={true}
-          style={
-            Object {
-              "color": undefined,
-              "fontSize": 80,
-            }
-          }
-          type="loading"
-        />
+<Spin
+  delay={1000}
+  indicator={
+    <Icon
+      className="color-primary"
+      style={
+        Object {
+          "fontSize": 80,
+          "marginLeft": -40,
+          "marginTop": 40,
+        }
       }
-      size="default"
-      spinning={true}
-      wrapperClassName=""
+      type="loading"
     />
-  </div>
-</div>
+  }
+  size="default"
+  spinning={true}
+  tip=""
+  wrapperClassName=""
+/>
 `;

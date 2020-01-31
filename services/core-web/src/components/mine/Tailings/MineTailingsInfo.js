@@ -3,18 +3,18 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Row, Col, Divider } from "antd";
-import CustomPropTypes from "@/customPropTypes";
-import { modalConfig } from "@/components/modalContent/config";
 import {
   fetchMineReports,
   updateMineReport,
   deleteMineReport,
-} from "@/actionCreators/reportActionCreator";
-import { getMineReports } from "@/selectors/reportSelectors";
+} from "@common/actionCreators/reportActionCreator";
+import { getMineReports } from "@common/selectors/reportSelectors";
+import { getMines, getMineGuid } from "@common/selectors/mineSelectors";
+import { openModal, closeModal } from "@common/actions/modalActions";
+import { getMineReportDefinitionOptions } from "@common/reducers/staticContentReducer";
 import MineReportTable from "@/components/mine/Reports/MineReportTable";
-import { getMines, getMineGuid } from "@/selectors/mineSelectors";
-import { openModal, closeModal } from "@/actions/modalActions";
-import { getMineReportDefinitionOptions } from "@/reducers/staticContentReducer";
+import { modalConfig } from "@/components/modalContent/config";
+import CustomPropTypes from "@/customPropTypes";
 
 /**
  * @class  MineTailingsInfo - all tenure information related to the mine.

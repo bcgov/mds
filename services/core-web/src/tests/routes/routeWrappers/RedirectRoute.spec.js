@@ -1,8 +1,8 @@
 import React from "react";
 import { shallow } from "enzyme";
+import * as String from "@common/constants/strings";
 import RedirectRoute from "@/routes/routeWrappers/RedirectRoute";
 import * as routes from "@/constants/routes";
-import * as String from "@/constants/strings";
 
 const props = {};
 

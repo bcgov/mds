@@ -5,17 +5,15 @@ import { throttle } from "lodash";
 import PropTypes from "prop-types";
 import { Icon, Divider, AutoComplete } from "antd";
 import { Field } from "redux-form";
-import CustomPropTypes from "@/customPropTypes";
-import LinkButton from "@/components/common/LinkButton";
-
+import { getSearchResults } from "@common/selectors/searchSelectors";
+import { getLastCreatedParty } from "@common/selectors/partiesSelectors";
+import { fetchSearchResults } from "@common/actionCreators/searchActionCreator";
+import { setAddPartyFormState } from "@common/actionCreators/partiesActionCreator";
+import { createItemMap, createItemIdsArray } from "@common/utils/helpers";
+import { Validate } from "@common/utils/Validate";
 import RenderLargeSelect from "./RenderLargeSelect";
-
-import { fetchSearchResults } from "@/actionCreators/searchActionCreator";
-import { getSearchResults } from "@/selectors/searchSelectors";
-import { setAddPartyFormState } from "@/actionCreators/partiesActionCreator";
-import { getLastCreatedParty } from "@/selectors/partiesSelectors";
-import { createItemMap, createItemIdsArray } from "@/utils/helpers";
-import { Validate } from "@/utils/Validate";
+import LinkButton from "@/components/common/LinkButton";
+import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
   id: PropTypes.string,

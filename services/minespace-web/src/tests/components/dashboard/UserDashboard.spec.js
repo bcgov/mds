@@ -1,6 +1,6 @@
 import React from "react";
 import { shallow } from "enzyme";
-import { UserDashboard } from "@/components/dashboard/UserDashboard";
+import { MinesPage } from "@/components/pages/MinesPage";
 
 const props = {};
 const dispatchProps = {};
@@ -25,7 +25,7 @@ beforeEach(() => {
 
 describe("UserDashboard", () => {
   it("renders properly", () => {
-    const wrapper = shallow(<UserDashboard {...props} {...dispatchProps} />);
+    const wrapper = shallow(<MinesPage {...props} {...dispatchProps} />);
     expect(wrapper).toMatchSnapshot();
   });
 });

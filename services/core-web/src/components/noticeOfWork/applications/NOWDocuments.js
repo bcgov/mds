@@ -6,16 +6,16 @@ import { debounce } from "lodash";
 import { PropTypes } from "prop-types";
 import { Table } from "antd";
 import moment from "moment";
+import { formatDateTime } from "@common/utils/helpers";
+import { openModal, closeModal } from "@common/actions/modalActions";
+import { getNoticeOfWorkApplicationDocumentTypeOptionsHash } from "@common/selectors/staticContentSelectors";
+import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
+import * as Strings from "@common/constants/strings";
 import LinkButton from "@/components/common/LinkButton";
 import AddButton from "@/components/common/AddButton";
-import * as Strings from "@/constants/strings";
 import NullScreen from "@/components/common/NullScreen";
-import { formatDateTime } from "@/utils/helpers";
 import { modalConfig } from "@/components/modalContent/config";
-import { openModal, closeModal } from "@/actions/modalActions";
-import { getNoticeOfWorkApplicationDocumentTypeOptionsHash } from "@/selectors/staticContentSelectors";
 import * as FORM from "@/constants/forms";
-import { downloadFileFromDocumentManager } from "@/utils/actionlessNetworkCalls";
 
 const propTypes = {
   openModal: PropTypes.func.isRequired,

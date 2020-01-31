@@ -206,7 +206,7 @@
               {
                 "name": "${NAME}${SUFFIX}-log",
                 "persistentVolumeClaim": {
-                  "claimName": "mds-logs${SUFFIX}"
+                  "claimName": "mds-access-logs${SUFFIX}"
                 }
               }
             ],

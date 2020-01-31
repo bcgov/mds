@@ -3,18 +3,18 @@ import { flatMap, uniq } from "lodash";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import MinespaceUserList from "@/components/admin/MinespaceUserList";
-import NewMinespaceUser from "@/components/admin/NewMinespaceUser";
-import CustomPropTypes from "@/customPropTypes";
-import { getMineNames } from "@/selectors/mineSelectors";
-import { getMinespaceUsers } from "@/selectors/minespaceSelector";
-import { fetchMineNameList } from "@/actionCreators/mineActionCreator";
+import { getMineNames } from "@common/selectors/mineSelectors";
+import { getMinespaceUsers } from "@common/selectors/minespaceSelector";
+import { fetchMineNameList } from "@common/actionCreators/mineActionCreator";
 import {
   fetchMinespaceUsers,
   deleteMinespaceUser,
   fetchMinespaceUserMines,
-} from "@/actionCreators/minespaceActionCreator";
-import { getMinespaceUserMines } from "../../reducers/minespaceReducer";
+} from "@common/actionCreators/minespaceActionCreator";
+import { getMinespaceUserMines } from "@common/reducers/minespaceReducer";
+import CustomPropTypes from "@/customPropTypes";
+import NewMinespaceUser from "@/components/admin/NewMinespaceUser";
+import MinespaceUserList from "@/components/admin/MinespaceUserList";
 
 /**
  * @class AdminDashboard houses everything related to admin tasks, this is a permission-based route.

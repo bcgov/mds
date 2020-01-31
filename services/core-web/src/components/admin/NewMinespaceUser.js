@@ -2,11 +2,11 @@ import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import AddMinespaceUser from "@/components/Forms/AddMinespaceUser";
+import { getMineNames } from "@common/selectors/mineSelectors";
+import { fetchMineNameList } from "@common/actionCreators/mineActionCreator";
+import { createMinespaceUser } from "@common/actionCreators/minespaceActionCreator";
 import CustomPropTypes from "@/customPropTypes";
-import { fetchMineNameList } from "@/actionCreators/mineActionCreator";
-import { getMineNames } from "@/selectors/mineSelectors";
-import { createMinespaceUser } from "@/actionCreators/minespaceActionCreator";
+import AddMinespaceUser from "@/components/Forms/AddMinespaceUser";
 
 const propTypes = {
   fetchMineNameList: PropTypes.func.isRequired,

@@ -3,11 +3,11 @@ import PropTypes from "prop-types";
 import { remove } from "lodash";
 import { Field, reduxForm, change } from "redux-form";
 import { Form, Button, Col, Row, Popconfirm } from "antd";
+import { required, maxLength, dateNotInFuture } from "@common/utils/Validate";
+import { resetForm } from "@common/utils/helpers";
 import { renderConfig } from "@/components/common/config";
 import PartySelectField from "@/components/common/PartySelectField";
 import * as FORM from "@/constants/forms";
-import { required, maxLength, dateNotInFuture } from "@/utils/Validate";
-import { resetForm } from "@/utils/helpers";
 import PermitAmendmentUploadedFilesList from "@/components/mine/Permit/PermitAmendmentUploadedFilesList";
 import PermitAmendmentFileUpload from "@/components/mine/Permit/PermitAmendmentFileUpload";
 

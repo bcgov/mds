@@ -3,13 +3,13 @@ import { func, objectOf, arrayOf, string, bool } from "prop-types";
 import { Link } from "react-router-dom";
 import { Table } from "antd";
 import { isEmpty } from "lodash";
+import { getTableHeaders } from "@common/utils/helpers";
+import * as Strings from "@common/constants/strings";
 import * as router from "@/constants/routes";
-import * as Strings from "@/constants/strings";
 import NullScreen from "@/components/common/NullScreen";
 import TableLoadingWrapper from "@/components/common/wrappers/TableLoadingWrapper";
 import CustomPropTypes from "@/customPropTypes";
 import { SUCCESS_CHECKMARK } from "@/constants/assets";
-import { getTableHeaders } from "@/utils/helpers";
 
 /**
  * @class MineList - paginated list of mines

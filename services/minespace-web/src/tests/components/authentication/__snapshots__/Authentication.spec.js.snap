@@ -1,34 +1,37 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Authentication renders properly 1`] = `
-<div
-  className="inline align-bot"
->
+<span>
   <MediaQueryContextConsumer
-    minWidth={701}
+    minWidth={1280}
   >
     <Link
-      to="/dashboard"
+      className="header-link"
+      to="/mines"
     >
-      <span
-        className="header-link"
-      >
-        My Mines
-      </span>
+      My Mines
+    </Link>
+    <Link
+      className="header-link"
+      to="/users"
+    >
+      My Users
     </Link>
     <Dropdown
       mouseEnterDelay={0.15}
       mouseLeaveDelay={0.1}
       overlay={
-        <Menu>
+        <Menu
+          className="header-dropdown-menu"
+        >
           <MenuItem>
             <Button
               block={false}
+              className="header-dropdown-item-button"
               ghost={false}
               htmlType="button"
               loading={false}
               onClick={[Function]}
-              type="tertiary"
             >
               Log out
             </Button>
@@ -39,72 +42,91 @@ exports[`Authentication renders properly 1`] = `
     >
       <Button
         block={false}
-        className="header-dropdown"
-        ghost={true}
+        className="header-dropdown-button"
+        ghost={false}
         htmlType="button"
         loading={false}
       >
         <Icon
-          type="down"
+          type="caret-down"
         />
       </Button>
     </Dropdown>
   </MediaQueryContextConsumer>
   <MediaQueryContextConsumer
-    maxWidth={700}
+    maxWidth={1279}
   >
     <Dropdown
       mouseEnterDelay={0.15}
       mouseLeaveDelay={0.1}
       overlay={
-        <Menu>
+        <Menu
+          className="header-dropdown-menu"
+        >
           <MenuItem>
             <Button
               block={false}
+              className="header-dropdown-item-button"
               ghost={false}
               htmlType="button"
               loading={false}
-              type="tertiary"
             >
-              <Link
-                to="/dashboard"
+              <ForwardRef
+                to="/mines"
               >
                 My Mines
-              </Link>
+              </ForwardRef>
+            </Button>
+          </MenuItem>
+          <MenuItem>
+            <Button
+              block={false}
+              className="header-dropdown-item-button"
+              ghost={false}
+              htmlType="button"
+              loading={false}
+            >
+              <ForwardRef
+                to="/users"
+              >
+                My Users
+              </ForwardRef>
             </Button>
           </MenuItem>
           <Divider
+            className="bg-color-table-seperator"
             style={
               Object {
-                "margin": "0",
+                "margin": 0,
               }
             }
           />
           <MenuItem>
             <Button
               block={false}
+              className="header-dropdown-item-button"
               ghost={false}
               htmlType="button"
               loading={false}
               onClick={[Function]}
-              type="tertiary"
             >
               Log out
             </Button>
           </MenuItem>
         </Menu>
       }
-      placement="bottomLeft"
+      placement="bottomRight"
     >
       <Button
         block={false}
-        className="header-dropdown"
-        ghost={true}
+        className="header-dropdown-button"
+        ghost={false}
         htmlType="button"
+        id="dropdown-menu-mobile-trigger"
         loading={false}
       >
         <img
-          alt="menu"
+          alt="Menu"
           src={
             Object {
               "process": [Function],
@@ -114,5 +136,5 @@ exports[`Authentication renders properly 1`] = `
       </Button>
     </Dropdown>
   </MediaQueryContextConsumer>
-</div>
+</span>
 `;

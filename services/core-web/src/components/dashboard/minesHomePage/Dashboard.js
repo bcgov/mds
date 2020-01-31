@@ -6,22 +6,20 @@ import { debounce, isEmpty } from "lodash";
 import PropTypes from "prop-types";
 import { Tabs, Col, Divider, notification, Card } from "antd";
 import queryString from "query-string";
-import { openModal, closeModal } from "@/actions/modalActions";
-import CustomPropTypes from "@/customPropTypes";
-import ResponsivePagination from "@/components/common/ResponsivePagination";
+import { openModal, closeModal } from "@common/actions/modalActions";
 import {
   fetchMineRecords,
   createMineRecord,
   createMineTypes,
   fetchMineRecordsForMap,
   fetchMineRecordById,
-} from "@/actionCreators/mineActionCreator";
+} from "@common/actionCreators/mineActionCreator";
 import {
   getMines,
   getMineIds,
   getMinesPageData,
   getTransformedMineTypes,
-} from "@/selectors/mineSelectors";
+} from "@common/selectors/mineSelectors";
 import {
   getMineRegionHash,
   getMineTenureTypesHash,
@@ -30,7 +28,10 @@ import {
   getMineRegionDropdownOptions,
   getMineTenureTypeDropdownOptions,
   getDropdownCommodityOptions,
-} from "@/selectors/staticContentSelectors";
+} from "@common/selectors/staticContentSelectors";
+import * as Strings from "@common/constants/strings";
+import ResponsivePagination from "@/components/common/ResponsivePagination";
+import CustomPropTypes from "@/customPropTypes";
 import MineList from "@/components/dashboard/minesHomePage/MineList";
 import MineSearch from "@/components/dashboard/minesHomePage/MineSearch";
 import SearchCoordinatesForm from "@/components/Forms/SearchCoordinatesForm";
@@ -39,7 +40,6 @@ import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrap
 import * as router from "@/constants/routes";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
 import MineMapLeaflet from "@/components/maps/MineMapLeaflet";
-import * as Strings from "@/constants/strings";
 import * as Permission from "@/constants/permissions";
 import * as ModalContent from "@/constants/modalContent";
 import AddButton from "@/components/common/AddButton";

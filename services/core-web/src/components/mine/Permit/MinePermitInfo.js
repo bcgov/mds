@@ -3,9 +3,6 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { Divider } from "antd";
 import PropTypes from "prop-types";
-import CustomPropTypes from "@/customPropTypes";
-import * as Permission from "@/constants/permissions";
-import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import {
   fetchPermits,
   createPermit,
@@ -13,21 +10,25 @@ import {
   updatePermitAmendment,
   createPermitAmendment,
   removePermitAmendmentDocument,
-} from "@/actionCreators/permitActionCreator";
-import { openModal, closeModal } from "@/actions/modalActions";
-import { fetchPartyRelationships } from "@/actionCreators/partiesActionCreator";
-import { fetchMineRecordById } from "@/actionCreators/mineActionCreator";
+} from "@common/actionCreators/permitActionCreator";
+import { fetchPartyRelationships } from "@common/actionCreators/partiesActionCreator";
+import { fetchMineRecordById } from "@common/actionCreators/mineActionCreator";
+import { openModal, closeModal } from "@common/actions/modalActions";
+import { getPermits } from "@common/reducers/permitReducer";
+import { getMines, getMineGuid } from "@common/selectors/mineSelectors";
+import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
+import * as router from "@/constants/routes";
+import * as Permission from "@/constants/permissions";
+import CustomPropTypes from "@/customPropTypes";
 import AddButton from "@/components/common/AddButton";
 import MinePermitTable from "@/components/mine/Permit/MinePermitTable";
 import * as ModalContent from "@/constants/modalContent";
 import { modalConfig } from "@/components/modalContent/config";
-import { getPermits } from "../../../reducers/permitReducer";
-import { getMines, getMineGuid } from "@/selectors/mineSelectors";
 /**
  * @class  MinePermitInfo - contains all permit information
  */
 
-const amalgamtedPermit = "ALG";
+const amalgamatedPermit = "ALG";
 const originalPermit = "OGP";
 
 const propTypes = {
@@ -42,6 +43,7 @@ const propTypes = {
   partyRelationships: PropTypes.arrayOf(CustomPropTypes.partyRelationship),
   fetchPartyRelationships: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
+  history: PropTypes.shape({ push: PropTypes.func }).isRequired,
   closeModal: PropTypes.func.isRequired,
   createPermit: PropTypes.func.isRequired,
   fetchPermits: PropTypes.func.isRequired,
@@ -200,7 +202,7 @@ export class MinePermitInfo extends Component {
       this.handleAddAmalgamatedPermit,
       `Add amalgamated permit to ${permit.permit_no}`,
       permit,
-      amalgamtedPermit
+      amalgamatedPermit
     );
 
   openAddPermitAmendmentModal = (event, permit) =>
@@ -235,22 +237,28 @@ export class MinePermitInfo extends Component {
     return this.props
       .createPermitAmendment(this.props.mineGuid, values.permit_guid, {
         ...values,
-        permit_amendment_type_code: amalgamtedPermit,
+        permit_amendment_type_code: amalgamatedPermit,
       })
       .then(this.closePermitModal);
   };
 
-  handleRemovePermitAmendmentDocument = (permitGuid, permitAmdendmentGuid, documentGuid) =>
+  handleRemovePermitAmendmentDocument = (permitGuid, permitAmendmentGuid, documentGuid) =>
     this.props
       .removePermitAmendmentDocument(
         this.props.mineGuid,
         permitGuid,
-        permitAmdendmentGuid,
+        permitAmendmentGuid,
         documentGuid
       )
       .then(() => {
         this.props.fetchPermits(this.props.mineGuid);
       });
+
+  handleAddPermitAmendmentApplication = (permitGuid) =>
+    this.props.history.push(router.CREATE_NOTICE_OF_WORK_APPLICATION.route, {
+      mineGuid: this.props.mineGuid,
+      permitGuid,
+    });
 
   onExpand = (expanded, record) =>
     this.setState((prevState) => {
@@ -301,6 +309,7 @@ export class MinePermitInfo extends Component {
           openEditAmendmentModal={this.openEditAmendmentModal}
           openAddPermitAmendmentModal={this.openAddPermitAmendmentModal}
           openAddAmalgamatedPermitModal={this.openAddAmalgamatedPermitModal}
+          handleAddPermitAmendmentApplication={this.handleAddPermitAmendmentApplication}
           expandedRowKeys={this.state.expandedRowKeys}
           onExpand={this.onExpand}
         />

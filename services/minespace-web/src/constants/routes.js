@@ -1,9 +1,10 @@
-import LandingPage from "@/components/landingPage/LandingPage";
-import UserDashboard from "@/components/dashboard/UserDashboard";
-import Reports from "@/components/dashboard/mine/reports/Reports";
-import Variances from "@/components/dashboard/mine/variances/Variances";
+import queryString from "query-string";
+import LandingPage from "@/components/pages/LandingPage";
+import MinesPage from "@/components/pages/MinesPage";
+import UsersPage from "@/components/pages/UsersPage";
 import MineDashboard from "@/components/dashboard/mine/MineDashboard";
-import ReturnPage from "@/components/ReturnPage";
+import ReturnPage from "@/components/pages/ReturnPage";
+import Mockup from "@/components/pages/Mockup";
 
 export const HOME = {
   route: "/",
@@ -15,25 +16,30 @@ export const RETURN_PAGE = {
   component: ReturnPage,
 };
 
-export const DASHBOARD = {
-  route: "/dashboard",
-  component: UserDashboard,
+export const MINES = {
+  route: "/mines",
+  component: MinesPage,
 };
 
-export const MINE_DASHBOARD = {
-  route: "/dashboard/mine/:id",
-  dynamicRoute: (id) => `/dashboard/mine/${id}`,
+export const USERS = {
+  route: "/users",
+  component: UsersPage,
+};
+
+export const MINE_DASHBOARD_NO_TAB = {
+  route: "/mines/:id",
+  dynamicRoute: (id) => `/mines/${id}/overview`,
   component: MineDashboard,
 };
 
-export const VARIANCES = {
-  route: "/dashboard/mine/:id/variances",
-  dynamicRoute: (id) => `/dashboard/mine/${id}/variances`,
-  component: Variances,
+export const MINE_DASHBOARD = {
+  route: "/mines/:id/:activeTab",
+  dynamicRoute: (id, activeTab = "overview", filterParams) =>
+    `/mines/${id}/${activeTab}?${queryString.stringify(filterParams)}`,
+  component: MineDashboard,
 };
 
-export const REPORTS = {
-  route: "/dashboard/mine/:id/reports",
-  dynamicRoute: (id) => `/dashboard/mine/${id}/reports`,
-  component: Reports,
+export const MOCKUP = {
+  route: "/mockup",
+  component: Mockup,
 };

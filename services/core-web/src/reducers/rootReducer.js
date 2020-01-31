@@ -1,41 +1,43 @@
 import { combineReducers } from "redux";
 import { reducer as formReducer } from "redux-form";
 import { loadingBarReducer } from "react-redux-loading-bar";
-import * as reducerTypes from "@/constants/reducerTypes";
+import {
+  mineReducer,
+  complianceReducer,
+  partiesReducer,
+  modalReducer,
+  authenticationReducer,
+  staticContentReducer,
+  minespaceReducer,
+  permitReducer,
+  searchReducer,
+  varianceReducer,
+  incidentReducer,
+  userReducer,
+  reportReducer,
+  noticeOfWorkReducer,
+} from "@common/reducers";
+import * as reducerTypes from "@common/constants/reducerTypes";
+import { createReducer } from "@common/utils/helpers";
 import networkReducer from "./networkReducer";
-import mineReducer from "@/reducers/mineReducer";
-import complianceReducer from "@/reducers/complianceReducer";
-import partiesReducer from "@/reducers/partiesReducer";
-import modalReducer from "@/reducers/modalReducer";
-import authenticationReducer from "@/reducers/authenticationReducer";
-import { createReducer } from "@/utils/helpers";
-import staticContentReducer from "@/reducers/staticContentReducer";
-import minespaceReducer from "@/reducers/minespaceReducer";
-import permitReducer from "@/reducers/permitReducer";
-import searchReducer from "@/reducers/searchReducer";
-import varianceReducer from "@/reducers/varianceReducer";
-import incidentReducer from "@/reducers/incidentReducer";
-import userReducer from "@/reducers/userReducer";
-import reportReducer from "@/reducers/reportReducer";
-import noticeOfWorkReducer from "@/reducers/noticeOfWorkReducer";
 
 export const reducerObject = {
   form: formReducer,
   loadingBar: loadingBarReducer,
-  [reducerTypes.AUTHENTICATION]: authenticationReducer,
-  [reducerTypes.MINES]: mineReducer,
-  [reducerTypes.PARTIES]: partiesReducer,
-  [reducerTypes.PERMITS]: permitReducer,
-  [reducerTypes.MODAL]: modalReducer,
-  [reducerTypes.COMPLIANCE]: complianceReducer,
-  [reducerTypes.STATIC_CONTENT]: staticContentReducer,
-  [reducerTypes.MINESPACE]: minespaceReducer,
-  [reducerTypes.SEARCH]: searchReducer,
-  [reducerTypes.VARIANCES]: varianceReducer,
-  [reducerTypes.INCIDENTS]: incidentReducer,
-  [reducerTypes.REPORTS]: reportReducer,
-  [reducerTypes.USERS]: userReducer,
-  [reducerTypes.NOTICE_OF_WORK]: noticeOfWorkReducer,
+  ...authenticationReducer,
+  ...mineReducer,
+  ...partiesReducer,
+  ...permitReducer,
+  ...modalReducer,
+  ...complianceReducer,
+  ...staticContentReducer,
+  ...minespaceReducer,
+  ...searchReducer,
+  ...varianceReducer,
+  ...incidentReducer,
+  ...reportReducer,
+  ...userReducer,
+  ...noticeOfWorkReducer,
   [reducerTypes.CREATE_PARTY]: createReducer(networkReducer, reducerTypes.CREATE_PARTY),
   [reducerTypes.UPDATE_PARTY]: createReducer(networkReducer, reducerTypes.UPDATE_PARTY),
   [reducerTypes.GET_PARTIES]: createReducer(networkReducer, reducerTypes.GET_PARTIES),
@@ -106,9 +108,9 @@ export const reducerObject = {
     networkReducer,
     reducerTypes.GET_NOTICE_OF_WORK_APPLICATIONS
   ),
-  [reducerTypes.CREATE_NOTICE_OF_WORK_APPLICATION]: createReducer(
+  [reducerTypes.IMPORT_NOTICE_OF_WORK_APPLICATION]: createReducer(
     networkReducer,
-    reducerTypes.CREATE_NOTICE_OF_WORK_APPLICATION
+    reducerTypes.IMPORT_NOTICE_OF_WORK_APPLICATION
   ),
   [reducerTypes.GET_NOTICE_OF_WORK_ACTIVITY_TYPE_OPTIONS]: createReducer(
     networkReducer,

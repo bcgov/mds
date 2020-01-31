@@ -2,14 +2,14 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Table } from "antd";
 import moment from "moment";
+import { formatDate, compareCodes, getTableHeaders, formatDateTime } from "@common/utils/helpers";
+import { downloadNRISDocument } from "@common/utils/actionlessNetworkCalls";
 import { RED_CLOCK } from "@/constants/assets";
-import { formatDate, compareCodes, getTableHeaders, formatDateTime } from "@/utils/helpers";
 import CustomPropTypes from "@/customPropTypes";
 import NullScreen from "@/components/common/NullScreen";
 import TableLoadingWrapper from "@/components/common/wrappers/TableLoadingWrapper";
 import LinkButton from "@/components/common/LinkButton";
 
-import { downloadNRISDocument } from "@/utils/actionlessNetworkCalls";
 
 const propTypes = {
   filteredOrders: CustomPropTypes.complianceOrders,

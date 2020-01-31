@@ -4,13 +4,13 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { Button, Row, Col, notification, Divider, Badge, Icon, Tag, Popconfirm } from "antd";
-import { formatDate } from "@/utils/helpers";
+import { formatDate } from "@common/utils/helpers";
 
-import { openModal, closeModal } from "@/actions/modalActions";
+import { openModal, closeModal } from "@common/actions/modalActions";
 import {
   getNowDocumentDownloadToken,
   getDocumentDownloadToken,
-} from "@/utils/actionlessNetworkCalls";
+} from "@common/utils/actionlessNetworkCalls";
 import { modalConfig } from "@/components/modalContent/config";
 import CustomPropTypes from "@/customPropTypes";
 import * as Permission from "@/constants/permissions";
@@ -25,9 +25,9 @@ import {
   setNoticeOfWorkApplicationDocumentDownloadState,
   updateNoticeOfWorkApplication,
   fetchImportedNoticeOfWorkApplication,
-} from "@/actionCreators/noticeOfWorkActionCreator";
-import { getNoticeOfWorkReviews } from "@/selectors/noticeOfWorkSelectors";
-import { getDropdownNoticeOfWorkApplicationReviewTypeOptions } from "@/selectors/staticContentSelectors";
+} from "@common/actionCreators/noticeOfWorkActionCreator";
+import { getNoticeOfWorkReviews } from "@common/selectors/noticeOfWorkSelectors";
+import { getDropdownNoticeOfWorkApplicationReviewTypeOptions } from "@common/selectors/staticContentSelectors";
 import NOWApplicationReviewsTable from "@/components/noticeOfWork/applications/referals/NOWApplicationReviewsTable";
 
 /**
@@ -36,7 +36,7 @@ import NOWApplicationReviewsTable from "@/components/noticeOfWork/applications/r
 
 const propTypes = {
   mineGuid: PropTypes.string.isRequired,
-  noticeOfWork: CustomPropTypes.nowApplication.isRequired,
+  noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
   noticeOfWorkReviews: PropTypes.arrayOf(CustomPropTypes.NOWApplicationReview).isRequired,
   noticeOfWorkReviewTypes: CustomPropTypes.options.isRequired,
 

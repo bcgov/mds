@@ -3,12 +3,12 @@ import { Table, Icon, Input, Button, Badge } from "antd";
 import { Link, withRouter } from "react-router-dom";
 import { isEmpty } from "lodash";
 import PropTypes from "prop-types";
+import { formatDate, getTableHeaders } from "@common/utils/helpers";
+import * as Strings from "@common/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
-import * as Strings from "@/constants/strings";
 import * as router from "@/constants/routes";
 import NullScreen from "@/components/common/NullScreen";
 import TableLoadingWrapper from "@/components/common/wrappers/TableLoadingWrapper";
-import { formatDate, getTableHeaders } from "@/utils/helpers";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import { EDIT_OUTLINE_VIOLET } from "@/constants/assets";
 import * as Permission from "@/constants/permissions";
@@ -19,7 +19,7 @@ import { getNoticeOfWorkApplicationBadgeStatusType } from "@/constants/theme";
  */
 const propTypes = {
   handleSearch: PropTypes.func.isRequired,
-  noticeOfWorkApplications: PropTypes.arrayOf(CustomPropTypes.nowApplication),
+  noticeOfWorkApplications: PropTypes.arrayOf(CustomPropTypes.importedNOWApplication),
   sortField: PropTypes.string,
   sortDir: PropTypes.string,
   searchParams: PropTypes.objectOf(PropTypes.string),
@@ -28,6 +28,7 @@ const propTypes = {
     pathname: PropTypes.string,
     search: PropTypes.string,
   }).isRequired,
+  isMajorMine: PropTypes.bool.isRequired,
 };
 
 const defaultProps = {
@@ -68,8 +69,10 @@ const transformRowData = (applications) =>
     location: PropTypes.object,
   }));
 
-const pageTitle = (mineName) => `${mineName} Notice of Work Applications`;
-
+const pageTitle = (mineName, isMajorMine) => {
+  const applicationType = isMajorMine ? "Permit Applications" : " Notice of Work Applications";
+  return `${mineName} ${applicationType}`;
+};
 export class MineNoticeOfWorkTable extends Component {
   createLinkTo = (route, record) => {
     return {
@@ -77,7 +80,7 @@ export class MineNoticeOfWorkTable extends Component {
       state: {
         noticeOfWorkPageFromRoute: {
           route: this.props.location.pathname + this.props.location.search,
-          title: pageTitle(record.mineName),
+          title: pageTitle(record.mineName, this.props.isMajorMine),
         },
       },
     };

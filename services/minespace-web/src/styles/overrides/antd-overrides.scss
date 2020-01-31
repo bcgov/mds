@@ -1,0 +1,275 @@
+// When new variable overrides are added to Ant Design's default.less as they upgrade their framework,
+// override variables there first (in theme.scss). Ant Design variable overrides are only done here as
+// a last resort.
+
+// Layout
+
+.ant-layout-header {
+  position: fixed;
+  z-index: 8;
+  width: 100%;
+  top: 0;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.ant-layout-footer {
+  z-index: 8;
+  width: 100%;
+  min-height: 80px;
+  bottom: 0;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.ant-layout {
+  width: 100%;
+  min-height: 100vh;
+}
+
+.ant-layout-content {
+  padding: $layout-header-height 0;
+
+  @include screen-md {
+    padding: $layout-header-height $padding-sm;
+  }
+}
+
+// Divider
+
+.ant-divider {
+  background-color: $primary-color;
+  &-horizontal {
+    height: 3px;
+  }
+}
+
+// Buttons
+
+.ant-btn {
+  // TODO: When associated bug is fixed, remove this line and change applicable var in theme.scss.
+  padding: 0 $padding-lg;
+
+  // &-primary {
+  //   &:hover {
+  //     color: $white !important;
+  //     background-color: $nav-blue;
+  //     border-color: $nav-blue !important;
+  //   }
+  // }
+  // &:hover {
+  //   color: $nav-blue;
+  //   border-color: $nav-blue;
+  // }
+}
+
+// Typography
+
+.ant-typography mark {
+  background-color: $gov-yellow;
+}
+
+h1.ant-typography,
+.ant-typography h1 {
+  margin-top: 0.5em;
+}
+
+.ant-typography a {
+  text-decoration: underline;
+}
+
+// Tabs
+
+.ant-tabs-bar {
+  border-bottom: 4px solid $primary-color;
+  // NOTE: Ant Design has a bug in their UI? This makes the bottom border not overlap the tabs.
+  padding-bottom: 1px;
+}
+
+.ant-tabs-tab {
+  padding: 0 $padding-lg 0 $padding-lg !important;
+}
+
+.ant-tabs.ant-tabs-card .ant-tabs-card-bar .ant-tabs-tab {
+  color: $white;
+  border: 2px solid transparent;
+  font-weight: bold;
+}
+
+.ant-tabs-tab:not(.ant-tabs-tab-active) {
+  &:hover {
+    background-color: $gov-grey-dark !important;
+  }
+}
+
+.ant-tabs.ant-tabs-card .ant-tabs-card-bar .ant-tabs-tab-active {
+  background-color: $primary-color;
+}
+
+// Tables
+
+.ant-table {
+  border: none !important;
+  border-radius: 0 !important;
+}
+
+.ant-table-thead {
+  box-shadow: none !important;
+}
+
+.ant-table-thead > tr:first-child > th:first-child {
+  border-top-left-radius: 0;
+}
+
+.ant-table-thead > tr:first-child > th:last-child {
+  border-top-right-radius: 0;
+}
+
+.ant-table-thead > tr > th {
+  border-top: 2px solid $primary-color;
+  border-bottom: 2px solid $primary-color;
+  border-radius: 0;
+}
+
+.ant-table-header-column {
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.ant-table-row-expand-icon {
+  background-color: $primary-color;
+  color: $white;
+  border: 2px solid $primary-color;
+  border-radius: $border-radius-base * 2;
+
+  &:focus,
+  &:hover {
+    color: $white;
+    border: 2px solid $primary-color;
+  }
+}
+
+td a {
+  text-decoration: none !important;
+}
+
+.ant-pagination-item {
+  border: none;
+}
+
+// Tags
+
+.ant-tag,
+.ant-select-selection--multiple .ant-select-selection__choice {
+  border: 1px solid $table-seperator;
+}
+
+// Descriptions
+
+.ant-descriptions-item-label {
+  font-weight: 600;
+}
+
+// Modals
+
+.ant-modal {
+  &-content {
+    border-radius: 0;
+    background-clip: border-box;
+  }
+  &-header {
+    border: none;
+  }
+  &-title {
+    font-weight: bold;
+    font-size: $heading-4-size;
+  }
+  // Because we only use a modal wrapper and provide the ok/cancel buttons inside the modal body
+  // we need to apply this styling.
+  &-body {
+    padding-top: 16px;
+    padding-bottom: 16px;
+  }
+  &-footer {
+    border: none;
+    padding: 0;
+  }
+}
+
+// Forms
+.ant-form-item-required {
+  &::before {
+    font-family: $font-family;
+  }
+}
+
+// Cards
+
+.ant-card {
+  &-head {
+    border-bottom: none;
+    &-title {
+      text-align: center;
+    }
+  }
+
+  // For the sake of us never wanting borders on our cards, I thought it'd be nice to
+  // just have to specify <Card /> rather than <Card bordered={false} />.
+  &-bordered {
+    border: none;
+  }
+}
+
+// Lists
+
+.ant-list-bordered {
+  border: 2px solid $primary-color;
+}
+
+// Various Inputs
+
+// Disabled inputs
+// Unfortuntalely, there's not a more general method of applying this style to disabled data entry components.
+.ant-input[disabled],
+.ant-select-disabled .ant-select-selection,
+.ant-input-number-disabled,
+.ant-radio-disabled .ant-radio-inner,
+.ant-checkbox-disabled .ant-checkbox-inner {
+  border-color: $disabled-bg !important;
+  &:hover {
+    border-color: $disabled-bg !important;
+  }
+}
+
+// InputNumber
+
+.ant-input-number-handler-down {
+  border-color: inherit;
+}
+
+// Radio
+.ant-radio .ant-radio-inner {
+  border: 2px solid $primary-color;
+  &::after {
+    top: 2px;
+    left: 2px;
+  }
+}
+
+// Select
+
+.ant-select {
+  color: $primary-color;
+}
+
+// TimePicker
+
+// .ant-time-picker-icon .ant-time-picker-clock-icon, .ant-time-picker-clear .ant-time-picker-clock-icon {
+//   color: $input-color;
+// }
+
+// Alerts
+
+.ant-alert-info {
+  background-color: $card-bg;
+}

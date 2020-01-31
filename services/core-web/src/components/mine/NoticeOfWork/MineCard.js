@@ -1,10 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+import { getMineRegionHash } from "@common/selectors/staticContentSelectors";
+import * as Strings from "@common/constants/strings";
 import MineHeaderMapLeaflet from "@/components/maps/MineHeaderMapLeaflet";
 import CustomPropTypes from "@/customPropTypes";
-import * as Strings from "@/constants/strings";
-import { getMineRegionHash } from "@/selectors/staticContentSelectors";
 
 /**
  * @class MineHeader.js contains header section of MineDashboard before the tabs. Including map, mineName, mineNumber.
@@ -43,7 +43,7 @@ export const MineCard = (props) => {
           </div>
         </div>
         <div className="mine-content__card-left">
-          <MineHeaderMapLeaflet mine={props.mine} />
+          <MineHeaderMapLeaflet mine={props.mine} noticeOfWork={props.noticeOfWork} />
           <div className="mine-content__card-left--footer">
             <div className="inline-flex between">
               <p className="p-white">

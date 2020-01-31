@@ -33,7 +33,7 @@ const RenderAutoSizeField = (props) => (
         (props.meta.warning && <span>{props.meta.warning}</span>))
     }
   >
-    <TextArea id={props.id} {...props.input} autosize />
+    <TextArea id={props.id} {...props.input} autoSize />
   </Form.Item>
 );
 

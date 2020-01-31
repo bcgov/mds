@@ -52,7 +52,7 @@ app {
         timeoutInSeconds = 60*20 // 20 minutes
         templates = [
                 [
-                    'file':'openshift/templates/postgresql.prod.dc.json',
+                    'file':'openshift/templates/postgresql.dc.json',
                     'params':[
                             'NAME':"mds-postgresql",
                             'SUFFIX':"${vars.deployment.suffix}",
@@ -133,7 +133,7 @@ app {
                     ]
                 ],
                 [
-                    'file':'openshift/templates/_nginx.prod.dc.json',
+                    'file':'openshift/templates/_nginx.dc.json',
                     'params':[
                             'NAME':"mds-nginx",
                             'SUFFIX': "${vars.deployment.suffix}",
@@ -188,7 +188,7 @@ app {
                     ]
                 ],
                 [
-                    'file':'openshift/templates/document-manager/docman.prod.dc.json',
+                    'file':'openshift/templates/document-manager/docman.dc.json',
                     'params':[
                             'NAME':"mds-docman-backend",
                             'SUFFIX': "${vars.deployment.suffix}",

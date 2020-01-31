@@ -6,11 +6,11 @@ import { connect } from "react-redux";
 import { getFormValues } from "redux-form";
 import { concat, reject } from "lodash";
 import { Steps, Button, Popconfirm } from "antd";
+import * as Strings from "@common/constants/strings";
 import * as FORM from "@/constants/forms";
 import AddIncidentReportingForm from "@/components/Forms/incidents/AddIncidentReportingForm";
 import AddIncidentDetailForm from "@/components/Forms/incidents/AddIncidentDetailForm";
 import AddIncidentFollowUpForm from "@/components/Forms/incidents/AddIncidentFollowUpForm";
-import * as Strings from "@/constants/strings";
 
 import CustomPropTypes from "@/customPropTypes";
 

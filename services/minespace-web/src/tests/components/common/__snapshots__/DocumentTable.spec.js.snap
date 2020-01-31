@@ -1,17 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`DocumentTable renders properly 1`] = `
-<Table
-  align="left"
-  bordered={false}
-  childrenColumnName="children"
-  className=""
+<withStore(Table)
   columns={
     Array [
       Object {
         "dataIndex": "name",
         "render": [Function],
-        "title": "File name",
+        "title": "File Name",
       },
       Object {
         "dataIndex": "category",
@@ -21,14 +17,13 @@ exports[`DocumentTable renders properly 1`] = `
       Object {
         "dataIndex": "created_at",
         "render": [Function],
-        "title": "Upload date",
+        "title": "Upload Date",
       },
       Object {
         "className": "column-hide",
         "dataIndex": "updateEdit",
         "render": [Function],
         "title": "",
-        "width": 10,
       },
     ]
   }
@@ -42,23 +37,13 @@ exports[`DocumentTable renders properly 1`] = `
       },
     ]
   }
-  indentSize={20}
-  loading={false}
   locale={
     Object {
-      "emptyText": "This variance does not contain any documents",
+      "emptyText": undefined,
     }
   }
   pagination={false}
-  rowKey="key"
-  showHeader={true}
-  size="default"
-  sortDirections={
-    Array [
-      "ascend",
-      "descend",
-    ]
-  }
-  useFixedHeader={false}
+  size="small"
+  tableLayout="auto"
 />
 `;

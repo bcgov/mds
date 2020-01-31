@@ -24,6 +24,15 @@ class NOWApplicationProgress(Base, AuditMixin):
 
     @classmethod
     def create(cls, now_application, application_progress_status_code, add_to_session=True):
+
+        existing_progress = next(
+            (na for na in now_application.application_progress
+             if na.application_progress_status_code == application_progress_status_code), None)
+        if existing_progress:
+            raise AssertionError(
+                f'{now_application} already has application progress of {application_progress_status_code}'
+            )
+
         progress = cls(
             application_progress_status_code=application_progress_status_code,
             start_date=datetime.utcnow(),

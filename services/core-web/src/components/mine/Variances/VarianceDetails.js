@@ -1,10 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { formatDate } from "@common/utils/helpers";
+import * as Strings from "@common/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
 
-import { formatDate } from "@/utils/helpers";
 import DocumentTable from "@/components/common/DocumentTable";
-import * as Strings from "@/constants/strings";
 
 const propTypes = {
   variance: CustomPropTypes.variance.isRequired,

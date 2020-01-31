@@ -1,6 +1,6 @@
 import React from "react";
 import hoistNonReactStatics from "hoist-non-react-statics";
-import NullScreen from "@/components/common/NullScreen";
+import UnauthenticatedNotice from "@/components/common/UnauthenticatedNotice";
 import * as Permission from "@/constants/permissions";
 import { detectDevelopmentEnvironment, detectProdEnvironment } from "@/utils/environmentUtils";
 
@@ -17,7 +17,7 @@ export const AuthorizationGuard = (permission) => (WrappedComponent) => {
     ) {
       return <WrappedComponent {...props} />;
     }
-    return <NullScreen type="unauthorized" />;
+    return <UnauthenticatedNotice />;
   };
 
   hoistNonReactStatics(authorizationGuard, WrappedComponent);

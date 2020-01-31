@@ -4,11 +4,11 @@ import {
   fetchSearchResults,
   fetchSearchBarResults,
   fetchSearchOptions,
-} from "@/actionCreators/searchActionCreator";
-import * as genericActions from "@/actions/genericActions";
-import * as API from "@/constants/API";
+} from "@common/actionCreators/searchActionCreator";
+import * as genericActions from "@common/actions/genericActions";
+import { ENVIRONMENT } from "@common/constants/environment";
+import * as API from "@common/constants/API";
 import * as MOCK from "@/tests/mocks/dataMocks";
-import { ENVIRONMENT } from "@/constants/environment";
 
 const dispatch = jest.fn();
 const requestSpy = jest.spyOn(genericActions, "request");

@@ -7,7 +7,7 @@ import * as route from "@/constants/routes";
 const mockData = {
   isAuthenticated: true,
   userInfo: { name: "test" },
-  redirectLogin: route.DASHBOARD.route,
+  redirectLogin: route.MINES.route,
   redirectLogout: route.HOME.route,
 };
 

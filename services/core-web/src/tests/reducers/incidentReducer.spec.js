@@ -1,5 +1,5 @@
-import incidentReducer from "@/reducers/incidentReducer";
-import { storeIncidents, storeMineIncidents } from "@/actions/incidentActions";
+import { incidentReducer } from "@common/reducers/incidentReducer";
+import { storeIncidents, storeMineIncidents } from "@common/actions/incidentActions";
 import * as Mocks from "@/tests/mocks/dataMocks";
 
 const baseExpectedValue = {

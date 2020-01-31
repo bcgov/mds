@@ -11,7 +11,7 @@ import {
   validateStartDate,
   validateDateRanges,
   validateIncidentDate,
-} from "@/utils/Validate";
+} from "@common/utils/Validate";
 
 describe("Validate class", () => {
   describe("`required` function", () => {

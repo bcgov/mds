@@ -1,9 +1,12 @@
 import { PropTypes } from "prop-types";
 import { connect } from "react-redux";
-import { getUserAccessData } from "@/selectors/authenticationSelectors";
-import { USER_ROLES } from "@/constants/environment";
+import { getUserAccessData } from "@common/selectors/authenticationSelectors";
+import { USER_ROLES } from "@common/constants/environment";
+import {
+  detectDevelopmentEnvironment,
+  detectProdEnvironment,
+} from "@common/utils/environmentUtils";
 import * as Permission from "@/constants/permissions";
-import { detectDevelopmentEnvironment, detectProdEnvironment } from "@/utils/environmentUtils";
 
 /**
  * @constant AuthorizationWrapper conditionally renders react children depending
@@ -47,20 +50,26 @@ const propTypes = {
 };
 
 const defaultProps = {
-  isMajorMine: true,
-  inDevelopment: false,
-  inTesting: false,
-  permission: "",
+  isMajorMine: undefined,
+  inDevelopment: undefined,
+  inTesting: undefined,
+  permission: undefined,
 };
 
-export const AuthorizationWrapper = (props) =>
-  ((props.inDevelopment && detectDevelopmentEnvironment()) ||
-    (props.inTesting && !detectProdEnvironment()) ||
-    (props.permission &&
-      props.userRoles.includes(USER_ROLES[props.permission]) &&
-      (props.isMajorMine || props.userRoles.includes(USER_ROLES[Permission.ADMIN])))) &&
-  props.children;
+export const AuthorizationWrapper = (props) => {
+  const inDevCheck =
+    props.inDevelopment === undefined || (props.inDevelopment && detectDevelopmentEnvironment());
+  const inTestCheck =
+    props.inTesting === undefined || (props.inTesting && !detectProdEnvironment());
+  const permissionCheck =
+    props.permission === undefined || props.userRoles.includes(USER_ROLES[props.permission]);
+  const isMajorMine = props.isMajorMine === undefined || props.isMajorMine;
+  const isAdmin = props.userRoles.includes(USER_ROLES[Permission.ADMIN]);
 
+  return (
+    (isAdmin || (inDevCheck && inTestCheck && permissionCheck && isMajorMine)) && props.children
+  );
+};
 AuthorizationWrapper.propTypes = propTypes;
 AuthorizationWrapper.defaultProps = defaultProps;
 
