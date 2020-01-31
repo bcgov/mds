@@ -83,9 +83,7 @@ export const MineCard = (props) => {
           </Row>
         </div>
         <div className="mine-content__card-left">
-          {props.additionalPin && (
-            <MineHeaderMapLeaflet mine={props.mine} additionalPin={props.additionalPin} />
-          )}
+          <MineHeaderMapLeaflet mine={props.mine} additionalPin={props.additionalPin} />
         </div>
       </div>
     )

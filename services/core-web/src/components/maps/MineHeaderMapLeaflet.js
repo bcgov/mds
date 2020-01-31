@@ -21,7 +21,6 @@ import { SMALL_PIN, SMALL_PIN_SELECTED } from "@/constants/assets";
 
 const propTypes = {
   mine: CustomPropTypes.mine.isRequired,
-  // eslint-disable-next-line react/no-unused-prop-types
   additionalPin: PropTypes.arrayOf(PropTypes.string),
 };
 
@@ -45,25 +44,24 @@ class MineHeaderMapLeaflet extends Component {
     if (this.props.mine.mine_location.latitude && this.props.mine.mine_location.longitude) {
       this.createPin();
     }
+    if (this.checkValidityOfCoordinateInput(this.props.additionalPin)) {
+      this.createAdditionalPin(this.props.additionalPin);
+    }
     // Add MinePins to the top of LayerList and add the LayerList widget
     L.control.layers(this.getBaseMaps(), {}, { position: "topright" }).addTo(this.map);
   }
 
   componentWillReceiveProps(nextProps) {
     if (
-      nextProps.additionalPin.length === 2 &&
-      nextProps.additionalPin !== this.props.additionalPin
+      nextProps.additionalPin !== this.props.additionalPin &&
+      this.checkValidityOfCoordinateInput(nextProps.additionalPin)
     ) {
-      // check that the given coordinates are in the correct format before passing to the map
-      if (
-        Validate.checkLat(nextProps.additionalPin[0]) &&
-        Validate.checkLon(nextProps.additionalPin[1])
-      ) {
-        if (this.state.containsAdditionalPin) {
-          this.additionalPin.setLatLng(nextProps.additionalPin);
-        } else {
-          this.createAdditionalPin(nextProps.additionalPin);
-        }
+      if (this.state.containsAdditionalPin) {
+        this.additionalPin.setLatLng(nextProps.additionalPin);
+        this.map.fitBounds(this.layerGroup.getBounds());
+      } else {
+        this.setState({ containsAdditionalPin: false });
+        this.createAdditionalPin(nextProps.additionalPin);
       }
     }
   }
@@ -85,13 +83,17 @@ class MineHeaderMapLeaflet extends Component {
     };
   }
 
+  checkValidityOfCoordinateInput = (coordinates) =>
+    coordinates.length === 2 &&
+    Validate.checkLat(coordinates[0]) &&
+    Validate.checkLon(coordinates[1]);
+
   createPin = () => {
     const customIcon = L.icon({
       iconUrl: SMALL_PIN,
       iconSize: [60, 60],
     });
-
-    L.marker(this.latLong, { icon: customIcon }).addTo(this.map);
+    L.marker(this.latLong, { icon: customIcon }).addTo(this.layerGroup);
   };
 
   createAdditionalPin = (pin) => {
@@ -100,6 +102,8 @@ class MineHeaderMapLeaflet extends Component {
       iconSize: [60, 60],
     });
     this.additionalPin = L.marker(pin, { icon: customIcon }).addTo(this.layerGroup);
+    // re-size map to include all pins
+    this.map.fitBounds(this.layerGroup.getBounds());
     this.setState({ containsAdditionalPin: true });
   };
 
@@ -107,11 +111,11 @@ class MineHeaderMapLeaflet extends Component {
     this.map = L.map("leaflet-map", { attributionControl: false })
       .setView(this.latLong, Strings.DEFAULT_ZOOM)
       .setMaxZoom(10);
-    this.layerGroup = new L.LayerGroup().addTo(this.map);
+    this.layerGroup = new L.FeatureGroup().addTo(this.map);
   }
 
   render() {
-    return <div style={{ height: "inherit", width: "inherit", zIndex: 0 }} id="leaflet-map" />;
+    return <div style={{ height: "100%", width: "100%", zIndex: 0 }} id="leaflet-map" />;
   }
 }
 

@@ -89,6 +89,7 @@ export class RenderMineSelect extends Component {
     ));
 
   render() {
+    const isLoaded = this.state.selectedMine || false;
     const width = this.props.fullWidth ? "93vw" : "100%";
     return (
       <div>
@@ -100,7 +101,7 @@ export class RenderMineSelect extends Component {
           handleChange={this.handleChange}
         />
         <div style={{ position: "relative", height: "inherit", width }}>
-          <LoadingWrapper condition={this.state.selectedMine}>
+          <LoadingWrapper condition={isLoaded}>
             <MineCard mine={this.state.selectedMine} additionalPin={this.props.additionalPin} />
           </LoadingWrapper>
         </div>
