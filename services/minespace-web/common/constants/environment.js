@@ -19,13 +19,18 @@ export const ENVIRONMENT = {
 
 export const KEYCLOAK = {
   realm: "mds",
+  "ssl-required": "external",
   url: "<URL>",
   idpHint: "idir",
-  "ssl-required": "external",
   resource: "<RESOURCE>",
   "public-client": true,
   "confidential-port": 0,
   clientId: "<CLIENT_ID>",
+  loginURL: "<URL>",
+  tokenURL: "<URL>",
+  userInfoURL: "<URL>",
+  keycloakLogoutURL: "<URL>",
+  siteMinderLogoutURL: "<URL>",
 };
 
 export const USER_ROLES = {
