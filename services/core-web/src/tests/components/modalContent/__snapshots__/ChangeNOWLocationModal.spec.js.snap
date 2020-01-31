@@ -1,0 +1,44 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ChangeNOWLocationModal renders properly 1`] = `
+<div>
+  <LoadingWrapper
+    condition={false}
+  >
+    <Connect(ReduxForm)
+      fetchMineRecordById={
+        [MockFunction] {
+          "calls": Array [
+            Array [
+              "18133c75-49ad-4101-85f3-a43e35ae989a",
+            ],
+          ],
+          "results": Array [
+            Object {
+              "type": "return",
+              "value": Promise {},
+            },
+          ],
+        }
+      }
+      locationOnly={true}
+      mine={Object {}}
+      mineGuid="18133c75-49ad-4101-85f3-a43e35ae989a"
+      noticeOfWork={
+        Object {
+          "mine_guid": "6e9d3426-ebf1-413f-9e5f-c3a71ab56797",
+          "mine_name": "Hamilton, Herrera and Mccormick",
+          "mine_no": "brother",
+          "notice_of_work_type_description": "choice",
+          "now_application_guid": "07e801a0-fa33-4c3b-abcc-ac6df628d483",
+          "now_application_status_description": "Approved",
+          "now_number": 44,
+          "received_date": "2019-08-14",
+        }
+      }
+      onSubmit={[MockFunction]}
+      title="mockTitle"
+    />
+  </LoadingWrapper>
+</div>
+`;

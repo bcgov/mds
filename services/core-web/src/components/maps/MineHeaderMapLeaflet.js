@@ -6,9 +6,6 @@ import "leaflet.markercluster";
 import "leaflet/dist/leaflet.css";
 import "leaflet.markercluster/dist/MarkerCluster.css";
 import "leaflet.markercluster/dist/MarkerCluster.Default.css";
-// import "vendor/leaflet/leaflet-measure/leaflet-measure.css";
-// import "vendor/leaflet/mouse-coordinates/leaflet.mousecoordinate";
-// import "vendor/leaflet/grouped-layer-control/leaflet.groupedlayercontrol.min";
 
 import * as Strings from "@common/constants/strings";
 import { Validate } from "@common/utils/Validate";
