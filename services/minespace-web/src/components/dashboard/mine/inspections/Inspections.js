@@ -8,6 +8,7 @@ import CustomPropTypes from "@/customPropTypes";
 import { Row, Col, Typography } from "antd";
 import InspectionsTable from "@/components/dashboard/mine/inspections/InspectionsTable";
 import TableSummaryCard from "@/components/common/TableSummaryCard";
+import { fetchMineComplianceInfo } from "@common/actionCreators/complianceActionCreator";
 
 const { Paragraph, Title, Text } = Typography;
 
@@ -20,6 +21,15 @@ const defaultProps = {};
 export class Inspections extends Component {
   // TODO: Accurately set isLoaded when file is more properly implemented.
   state = { isLoaded: true };
+
+  componentDidMount = () => {
+    this.props.fetchMineComplianceInfo(this.props.mine.mine_no, true).then((data) => {
+      this.setState({
+        isLoaded: true,
+        orders: data && data.orders ? data.orders : [],
+      });
+    });
+  };
 
   render() {
     return (

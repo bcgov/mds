@@ -41,3 +41,8 @@ export const USER_ROLES = {
   role_close_permits: "core_close_permits",
   role_executive_view: "core_executive_view",
 };
+
+const WINDOW_LOCATION = `${window.location.origin}${process.env.BASE_PATH}`;
+export const BCEID_LOGIN_REDIRECT_URI = `${WINDOW_LOCATION}/return-page?type=login`;
+export const KEYCLOAK_LOGOUT_REDIRECT_URI = `${WINDOW_LOCATION}/return-page?type=logout`;
+export const SITEMINDER_LOGOUT_REDIRECT_URI = `${WINDOW_LOCATION}/return-page?type=smlogout&retnow=1`;
