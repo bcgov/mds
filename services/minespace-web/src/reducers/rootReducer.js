@@ -1,13 +1,13 @@
 import { combineReducers } from "redux";
 import { reducer as formReducer } from "redux-form";
 import { loadingBarReducer } from "react-redux-loading-bar";
+import { reportReducer } from "@common/reducers";
 import networkReducer from "./networkReducer";
 import * as reducerTypes from "@/constants/reducerTypes";
 import authenticationReducer from "@/reducers/authenticationReducer";
 import userMineReducer from "@/reducers/userMineReducer";
 import modalReducer from "@/reducers/modalReducer";
 import varianceReducer from "@/reducers/varianceReducer";
-import reportReducer from "./reportReducer";
 import staticContentReducer from "./staticContentReducer";
 
 // Function to create a reusable reducer (used in src/reducers/rootReducer)
@@ -25,7 +25,7 @@ export const reducerObject = {
   [reducerTypes.USER_MINE_INFO]: userMineReducer,
   [reducerTypes.VARIANCES]: varianceReducer,
   [reducerTypes.MODAL]: modalReducer,
-  [reducerTypes.REPORTS]: reportReducer,
+  ...reportReducer,
   [reducerTypes.STATIC_CONTENT]: staticContentReducer,
   [reducerTypes.GET_USER_MINE_INFO]: createReducer(networkReducer, reducerTypes.GET_USER_MINE_INFO),
   [reducerTypes.AUTHENTICATE_USER]: createReducer(networkReducer, reducerTypes.AUTHENTICATE_USER),

@@ -132,23 +132,27 @@ const transformRowData = (report, openEditReportModal, handleEditReport, handleR
   handleRemoveReport,
 });
 
-export const ReportsTable = (props) => (
-  <Table
-    size="small"
-    pagination={false}
-    loading={!props.isLoaded}
-    columns={columns}
-    locale={{ emptyText: "This mine has no report data." }}
-    dataSource={props.mineReports.map((record) =>
-      transformRowData(
-        record,
-        props.openEditReportModal,
-        props.handleEditReport,
-        props.handleRemoveReport
-      )
-    )}
-  />
-);
+export const ReportsTable = (props) => {
+  console.log(props);
+
+  return (
+    <Table
+      size="small"
+      pagination={false}
+      loading={!props.isLoaded}
+      columns={columns}
+      locale={{ emptyText: "This mine has no report data." }}
+      dataSource={props.mineReports.map((record) =>
+        transformRowData(
+          record,
+          props.openEditReportModal,
+          props.handleEditReport,
+          props.handleRemoveReport
+        )
+      )}
+    />
+  );
+};
 
 ReportsTable.propTypes = propTypes;
 ReportsTable.defaultProps = defaultProps;

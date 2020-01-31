@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Row, Col, Tabs, Typography } from "antd";
 import { bindActionCreators } from "redux";
-import { fetchMineRecordById } from "@/actionCreators/userDashboardActionCreator";
+import { fetchMineRecordById } from "@common/actionCreators/mineActionCreator";
 import { getMine } from "@/selectors/userMineSelectors";
 import CustomPropTypes from "@/customPropTypes";
 import Loading from "@/components/common/Loading";
