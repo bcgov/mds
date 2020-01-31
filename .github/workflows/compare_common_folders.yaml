@@ -14,7 +14,7 @@ jobs:
           echo $CORE_COMMON_HASH
           MINESPACE_COMMON_HASH=$(tar cf - services/minespace-web/common | md5sum)
           echo $MINESPACE_COMMON_HASH
-          if [ "$CORE_COMMON_HASH" == "$MINESPACE_COMMON_HASH" ]
+          if [ "$CORE_COMMON_HASH" != "$MINESPACE_COMMON_HASH" ]
             then 
             echo "'/services/core-web/common' does not match '/services/minespace-web/common'"
             exit 1
