@@ -11,14 +11,12 @@ const propTypes = {
 };
 
 export const AddVarianceModal = (props) => (
-  <div>
-    <AddVarianceForm
-      onSubmit={props.onSubmit}
-      closeModal={props.closeModal}
-      mineGuid={props.mineGuid}
-      complianceCodes={props.complianceCodes}
-    />
-  </div>
+  <AddVarianceForm
+    onSubmit={props.onSubmit}
+    closeModal={props.closeModal}
+    mineGuid={props.mineGuid}
+    complianceCodes={props.complianceCodes}
+  />
 );
 
 AddVarianceModal.propTypes = propTypes;

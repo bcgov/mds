@@ -17,6 +17,7 @@ const propTypes = {
   maxFileSize: PropTypes.string,
   acceptedFileTypesMap: PropTypes.objectOf(PropTypes.string),
   onFileLoad: PropTypes.func,
+  onRemoveFile: PropTypes.func,
   allowRevert: PropTypes.bool,
   chunkSize: PropTypes.number,
 };
@@ -26,6 +27,7 @@ const defaultProps = {
   acceptedFileTypesMap: {},
   allowRevert: false,
   onFileLoad: () => {},
+  onRemoveFile: () => {},
   chunkSize: 1048576, // 1MB
 };
 

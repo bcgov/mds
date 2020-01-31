@@ -117,10 +117,6 @@ class Mine(AuditMixin, Base):
         p_numbers = [permit_no for permit_no, in rows]
         return p_numbers
 
-    @staticmethod
-    def active(records):
-        return list(filter(lambda x: x.active_ind, records))
-
     @classmethod
     def find_by_mine_guid(cls, _id):
         try:
@@ -144,7 +140,6 @@ class Mine(AuditMixin, Base):
 
         if major is not None:
             mines_q = mines_q.filter_by(major_mine_ind=major)
-            current_app.logger.debug(f'FILTER BY MAJOR = {major}')
         return mines_q.limit(MINE_LIST_RESULT_LIMIT).all()
 
     @classmethod

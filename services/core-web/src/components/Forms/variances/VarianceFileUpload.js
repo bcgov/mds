@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Field } from "redux-form";
 import { Form } from "antd";
-import { VARIANCE_DOCUMENTS } from "@/constants/API";
+import { VARIANCE_DOCUMENTS } from "@common/constants/API";
 import FileUpload from "@/components/common/FileUpload";
 import { DOCUMENT, EXCEL } from "@/constants/fileTypes";
 

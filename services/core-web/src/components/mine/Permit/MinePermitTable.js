@@ -4,16 +4,16 @@ import moment from "moment";
 import { orderBy } from "lodash";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+import { formatDate, getTableHeaders } from "@common/utils/helpers";
+import { getPartyRelationships } from "@common/selectors/partiesSelectors";
+import { getDropdownPermitStatusOptions } from "@common/selectors/staticContentSelectors";
+import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
+import * as Strings from "@common/constants/strings";
 import NullScreen from "@/components/common/NullScreen";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
-import * as Strings from "@/constants/strings";
 import * as Permission from "@/constants/permissions";
 import CustomPropTypes from "@/customPropTypes";
-import { formatDate, getTableHeaders } from "@/utils/helpers";
-import { getPartyRelationships } from "@/selectors/partiesSelectors";
-import { getDropdownPermitStatusOptions } from "@/selectors/staticContentSelectors";
 import { EDIT_OUTLINE, EDIT_OUTLINE_VIOLET, EDIT, CARAT } from "@/constants/assets";
-import { downloadFileFromDocumentManager } from "@/utils/actionlessNetworkCalls";
 import LinkButton from "@/components/common/LinkButton";
 import TableLoadingWrapper from "@/components/common/wrappers/TableLoadingWrapper";
 
@@ -160,25 +160,23 @@ const columns = [
               Edit permit status
             </button>
           </Menu.Item>{" "}
-          <AuthorizationWrapper isMajorMine={text.major_mine_ind}>
-            <div className="custom-menu-item" key="3">
-              <button
-                type="button"
-                className="full"
-                onClick={() => {
-                  record.handleAddPermitAmendmentApplication(record.key);
-                }}
-              >
-                <img
-                  alt="document"
-                  className="padding-small"
-                  src={EDIT_OUTLINE_VIOLET}
-                  style={{ paddingRight: "15px" }}
-                />
-                Initiate Permit Amendment Application
-              </button>
-            </div>
-          </AuthorizationWrapper>
+          <div className="custom-menu-item" key="3">
+            <button
+              type="button"
+              className="full"
+              onClick={() => {
+                record.handleAddPermitAmendmentApplication(record.key);
+              }}
+            >
+              <img
+                alt="document"
+                className="padding-small"
+                src={EDIT_OUTLINE_VIOLET}
+                style={{ paddingRight: "15px" }}
+              />
+              Initiate Permit Amendment Application
+            </button>
+          </div>
         </Menu>
       );
       return (

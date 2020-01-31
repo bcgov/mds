@@ -1,7 +1,7 @@
-import { getMineIncidents, getIncidents } from "@/selectors/incidentSelectors";
-import { storeMineIncidents, storeIncidents } from "@/actions/incidentActions";
-import incidentReducer from "@/reducers/incidentReducer";
-import { INCIDENTS } from "@/constants/reducerTypes";
+import { getMineIncidents, getIncidents } from "@common/selectors/incidentSelectors";
+import { storeMineIncidents, storeIncidents } from "@common/actions/incidentActions";
+import { incidentReducer } from "@common/reducers/incidentReducer";
+import { INCIDENTS } from "@common/constants/reducerTypes";
 import * as Mock from "@/tests/mocks/dataMocks";
 
 const mockState = {

@@ -5,28 +5,28 @@ import PropTypes from "prop-types";
 import { getFormValues, reset } from "redux-form";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import * as routes from "@/constants/routes";
 import {
   fetchImportedNoticeOfWorkApplication,
   fetchOriginalNoticeOfWorkApplication,
   createNoticeOfWorkApplicationProgress,
   updateNoticeOfWorkApplication,
-} from "@/actionCreators/noticeOfWorkActionCreator";
-import { openModal, closeModal } from "@/actions/modalActions";
-import { modalConfig } from "@/components/modalContent/config";
-import { fetchMineRecordById } from "@/actionCreators/mineActionCreator";
-import { getDropdownInspectors, getInspectorsHash } from "@/selectors/partiesSelectors";
+} from "@common/actionCreators/noticeOfWorkActionCreator";
+import { fetchMineRecordById } from "@common/actionCreators/mineActionCreator";
+import { openModal, closeModal } from "@common/actions/modalActions";
+import { getDropdownInspectors, getInspectorsHash } from "@common/selectors/partiesSelectors";
 import {
   getNoticeOfWork,
   getOriginalNoticeOfWork,
   getNOWReclamationSummary,
-} from "@/selectors/noticeOfWorkSelectors";
-import { getMines } from "@/selectors/mineSelectors";
+} from "@common/selectors/noticeOfWorkSelectors";
+import { getMines } from "@common/selectors/mineSelectors";
 import {
   getDropdownNoticeOfWorkApplicationStatusOptions,
   getNoticeOfWorkApplicationProgressStatusCodeOptions,
-} from "@/selectors/staticContentSelectors";
-import { clearNoticeOfWorkApplication } from "@/actions/noticeOfWorkActions";
+} from "@common/selectors/staticContentSelectors";
+import { clearNoticeOfWorkApplication } from "@common/actions/noticeOfWorkActions";
+import { downloadNowDocument } from "@common/utils/actionlessNetworkCalls";
+import * as routes from "@/constants/routes";
 import ApplicationStepOne from "@/components/noticeOfWork/applications/applicationStepOne/ApplicationStepOne";
 import NOWApplicationReviews from "@/components/noticeOfWork/applications/referals/NOWApplicationReviews";
 import CustomPropTypes from "@/customPropTypes";
@@ -36,7 +36,7 @@ import NOWSideMenu from "@/components/noticeOfWork/applications/NOWSideMenu";
 import NoticeOfWorkPageHeader from "@/components/noticeOfWork/applications/NoticeOfWorkPageHeader";
 import * as FORM from "@/constants/forms";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
-import { downloadNowDocument } from "@/utils/actionlessNetworkCalls";
+import { modalConfig } from "@/components/modalContent/config";
 
 const { Step } = Steps;
 
@@ -429,7 +429,6 @@ export class NoticeOfWorkApplication extends Component {
     const isDecision =
       this.props.noticeOfWork.application_progress &&
       this.props.noticeOfWork.application_progress.length === 3;
-
     const steps = {
       0: this.renderStepOne(),
       1: this.renderStepTwo(),

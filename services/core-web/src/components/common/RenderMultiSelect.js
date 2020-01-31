@@ -1,8 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Form, Select } from "antd";
+import { caseInsensitiveLabelFilter } from "@common/utils/helpers";
 import CustomPropTypes from "@/customPropTypes";
-import { caseInsensitiveLabelFilter } from "@/utils/helpers";
 
 /**
  * @constant RenderSelect - Ant Design `Select` component for redux-form - used for small data sets that (< 100);

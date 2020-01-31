@@ -2,7 +2,6 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Field, reduxForm } from "redux-form";
 import { Form, Col, Row } from "antd";
-import * as FORM from "@/constants/forms";
 import {
   required,
   requiredList,
@@ -11,8 +10,9 @@ import {
   phoneNumber,
   maxLength,
   dateNotInFuture,
-} from "@/utils/Validate";
-import { normalizePhone } from "@/utils/helpers";
+} from "@common/utils/Validate";
+import { normalizePhone } from "@common/utils/helpers";
+import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
 import CustomPropTypes from "@/customPropTypes";
 

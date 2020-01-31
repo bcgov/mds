@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
+import { fetchMineRecordById } from "@common/actionCreators/mineActionCreator";
 import ChangeNOWLocationForm from "@/components/Forms/noticeOfWork/ChangeNOWLocationForm";
-import { fetchMineRecordById } from "@/actionCreators/mineActionCreator";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
 
 const propTypes = {

@@ -4,32 +4,32 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { Menu, Divider, Button, Dropdown, Tag, Popover } from "antd";
-import { openModal, closeModal } from "@/actions/modalActions";
-import MineHeaderMapLeaflet from "@/components/maps/MineHeaderMapLeaflet";
-import { EDIT_OUTLINE_VIOLET, BRAND_DOCUMENT, EDIT, INFO_CIRCLE } from "@/constants/assets";
-import * as route from "@/constants/routes";
-import { getUserInfo } from "@/selectors/authenticationSelectors";
-import * as String from "@/constants/strings";
-import * as ModalContent from "@/constants/modalContent";
-import { modalConfig } from "@/components/modalContent/config";
-import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
-import CustomPropTypes from "@/customPropTypes";
-import * as Permission from "@/constants/permissions";
+import { openModal, closeModal } from "@common/actions/modalActions";
 import {
   updateMineRecord,
   createMineTypes,
   removeMineType,
   fetchMineRecordById,
   createTailingsStorageFacility,
-} from "@/actionCreators/mineActionCreator";
-import { formatDate } from "@/utils/helpers";
+} from "@common/actionCreators/mineActionCreator";
+import { formatDate } from "@common/utils/helpers";
 import {
   getMineRegionHash,
   getMineTenureTypesHash,
   getDisturbanceOptionHash,
   getCommodityOptionHash,
-} from "@/selectors/staticContentSelectors";
-import { getCurrentMineTypes, getTransformedMineTypes } from "@/selectors/mineSelectors";
+} from "@common/selectors/staticContentSelectors";
+import { getCurrentMineTypes, getTransformedMineTypes } from "@common/selectors/mineSelectors";
+import { getUserInfo } from "@common/selectors/authenticationSelectors";
+import * as String from "@common/constants/strings";
+import MineHeaderMapLeaflet from "@/components/maps/MineHeaderMapLeaflet";
+import { EDIT_OUTLINE_VIOLET, BRAND_DOCUMENT, EDIT, INFO_CIRCLE } from "@/constants/assets";
+import * as route from "@/constants/routes";
+import * as ModalContent from "@/constants/modalContent";
+import { modalConfig } from "@/components/modalContent/config";
+import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
+import CustomPropTypes from "@/customPropTypes";
+import * as Permission from "@/constants/permissions";
 
 /**
  * @class MineHeader.js contains header section of MineDashboard before the tabs. Including map, mineName, mineNumber.

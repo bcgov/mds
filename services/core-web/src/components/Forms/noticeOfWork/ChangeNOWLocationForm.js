@@ -4,11 +4,11 @@ import { compose } from "redux";
 import { connect } from "react-redux";
 import { reduxForm, Field, formValueSelector } from "redux-form";
 import { Form, Button, Col, Row, Popconfirm, Badge } from "antd";
+import { required, lat, lon } from "@common/utils/Validate";
+import { resetForm } from "@common/utils/helpers";
 import CustomPropTypes from "@/customPropTypes";
 import * as FORM from "@/constants/forms";
-import { required, lat, lon } from "@/utils/Validate";
 import MineCard from "@/components/mine/NoticeOfWork/MineCard";
-import { resetForm } from "@/utils/helpers";
 import RenderMineSelect from "@/components/common/RenderMineSelect";
 import RenderField from "@/components/common/RenderField";
 import * as Styles from "@/constants/styles";
@@ -35,7 +35,10 @@ const selector = formValueSelector(FORM.CHANGE_NOW_LOCATION);
 // eslint-disable-next-line react/prefer-stateless-function
 export class ChangeNOWLocationForm extends Component {
   render() {
-    const additionalPin = this.props.latitude ? [this.props.latitude, this.props.longitude] : [];
+    const additionalPin =
+      this.props.latitude && this.props.longitude
+        ? [this.props.latitude, this.props.longitude]
+        : [];
     const span = this.props.locationOnly ? 12 : 6;
     return (
       <Form layout="vertical" onSubmit={this.props.handleSubmit}>

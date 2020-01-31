@@ -2,15 +2,15 @@ import React from "react";
 import { Table, Button, Icon, Popconfirm } from "antd";
 import { PropTypes } from "prop-types";
 import { connect } from "react-redux";
+import { getNoticeOfWorkApplicationApplicationReviewTypeHash } from "@common/selectors/staticContentSelectors";
+import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
+import { getTableHeaders } from "@common/utils/helpers";
 import CustomPropTypes from "@/customPropTypes";
-import { getNoticeOfWorkApplicationApplicationReviewTypeHash } from "@/selectors/staticContentSelectors";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
 import { EDIT_OUTLINE_VIOLET } from "@/constants/assets";
 import LinkButton from "@/components/common/LinkButton";
-import { downloadFileFromDocumentManager } from "@/utils/actionlessNetworkCalls";
 import TableLoadingWrapper from "@/components/common/wrappers/TableLoadingWrapper";
-import { getTableHeaders } from "@/utils/helpers";
 import NullScreen from "@/components/common/NullScreen";
 
 const propTypes = {

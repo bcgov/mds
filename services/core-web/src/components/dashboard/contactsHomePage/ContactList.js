@@ -3,12 +3,12 @@ import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { Table } from "antd";
 import { uniqBy, map, toArray, isEmpty } from "lodash";
+import { getTableHeaders } from "@common/utils/helpers";
+import * as Strings from "@common/constants/strings";
 import * as router from "@/constants/routes";
-import * as Strings from "@/constants/strings";
 import NullScreen from "@/components/common/NullScreen";
 import CustomPropTypes from "@/customPropTypes";
 import TableLoadingWrapper from "@/components/common/wrappers/TableLoadingWrapper";
-import { getTableHeaders } from "@/utils/helpers";
 
 /**
  * @class ContactList - paginated list of contacts

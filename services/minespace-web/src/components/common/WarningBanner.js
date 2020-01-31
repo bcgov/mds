@@ -41,31 +41,19 @@ const renderIEBanner = () => (
   </div>
 );
 
-const renderMobileWarningBanner = () => (
-  <div className="inline-flex flex-center">
-    <img src={WARNING} alt="warning" className="padding-large--right" />
-    <div>
-      <h2>You are currently using a mobile device to access this content.</h2>
-      <p> Be aware that the system may not work as expected in a mobile environment.</p>
-    </div>
-  </div>
-);
-
-const WarningBanner = (props) => (
-  <div>
-    {props.type === "IE" && (
-      <Alert message={renderIEBanner()} type="warning" closable onClose={props.onClose} />
-    )}
-    {props.type === "mobile" && (
-      <Alert
-        message={renderMobileWarningBanner()}
-        type="warning"
-        closable
-        onClose={props.onClose}
-      />
-    )}
-  </div>
-);
+const WarningBanner = (props) =>
+  (props.type === "IE" && (
+    <Alert message={renderIEBanner()} type="warning" banner closable onClose={props.onClose} />
+  )) ||
+  (props.type === "mobile" && (
+    <Alert
+      message="You are currently using a mobile device to access this content. Be aware that the system may not work as expected in a mobile environment."
+      type="warning"
+      banner
+      closable
+      onClose={props.onClose}
+    />
+  ));
 
 WarningBanner.propTypes = propTypes;
 WarningBanner.defaultProps = defaultProps;

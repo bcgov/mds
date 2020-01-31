@@ -6,16 +6,16 @@ import queryString from "query-string";
 import { Row, Col, Icon } from "antd";
 import { Link } from "react-router-dom";
 import { sumBy, map, mapValues, keyBy } from "lodash";
-import { getSearchResults, getSearchTerms } from "@/selectors/searchSelectors";
+import { getSearchResults, getSearchTerms } from "@common/selectors/searchSelectors";
+import { getPartyRelationshipTypeHash } from "@common/selectors/partiesSelectors";
+import { fetchSearchOptions, fetchSearchResults } from "@common/actionCreators/searchActionCreator";
+import { getSearchOptions } from "@common/reducers/searchReducer";
 import { MineResultsTable } from "@/components/search/MineResultsTable";
 import { PermitResultsTable } from "@/components/search/PermitResultsTable";
 import { ContactResultsTable } from "@/components/search/ContactResultsTable";
 import { DocumentResultsTable } from "@/components/search/DocumentResultsTable";
-import { getPartyRelationshipTypeHash } from "@/selectors/partiesSelectors";
-import { fetchSearchOptions, fetchSearchResults } from "@/actionCreators/searchActionCreator";
 import Loading from "@/components/common/Loading";
 import * as router from "@/constants/routes";
-import { getSearchOptions } from "../../reducers/searchReducer";
 
 const propTypes = {
   location: PropTypes.shape({ search: PropTypes.string }).isRequired,

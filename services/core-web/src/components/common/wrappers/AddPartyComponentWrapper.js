@@ -2,14 +2,14 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import PropTypes from "prop-types";
+import { Radio, Icon, Divider } from "antd";
 // Ant design Carousel is based on react-slick and kind of sucks. Tabbing breaks it, dynamically rendering content breaks it,
 // and you need to use Refs to interact with it for a number of features. Brought in react-responsive-carousel instead.
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
-import { Radio, Icon, Divider } from "antd";
+import { createParty, setAddPartyFormState } from "@common/actionCreators/partiesActionCreator";
+import { getAddPartyFormState } from "@common/selectors/partiesSelectors";
 import AddQuickPartyForm from "@/components/Forms/parties/AddQuickPartyForm";
-import { createParty, setAddPartyFormState } from "@/actionCreators/partiesActionCreator";
-import { getAddPartyFormState } from "@/selectors/partiesSelectors";
 import LinkButton from "../LinkButton";
 
 const propTypes = {
@@ -99,7 +99,7 @@ export class AddPartyComponentWrapper extends Component {
           <Radio.Group
             defaultValue
             size="large"
-            value={this.props.isPerson}
+            value={this.state.isPerson}
             onChange={this.togglePartyChange}
             style={{ paddingBottom: "20px" }}
           >
