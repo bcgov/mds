@@ -17,3 +17,4 @@ jobs:
             then 
             echo "'/services/core-web/common' does not match '/services/minespace-web/common'"
             exit 1
+          fi
