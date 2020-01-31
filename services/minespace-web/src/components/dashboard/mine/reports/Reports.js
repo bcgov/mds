@@ -19,7 +19,7 @@ import { openModal, closeModal } from "@/actions/modalActions";
 import { getMineReports } from "@/selectors/reportSelectors";
 import ReportsTable from "@/components/dashboard/mine/reports/ReportsTable";
 import TableSummaryCard from "@/components/common/TableSummaryCard";
-import { fetchMineReportDefinitionOptions } from "@/actionCreators/staticContentActionCreator";
+import { fetchMineReportDefinitionOptions } from "@common/actionCreators/staticContentActionCreator";
 import { getMineReportDefinitionOptions } from "@/reducers/staticContentReducer";
 
 const { Paragraph, Title, Text } = Typography;
