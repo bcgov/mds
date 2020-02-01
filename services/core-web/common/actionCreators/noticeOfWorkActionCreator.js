@@ -88,6 +88,10 @@ export const importNoticeOfWorkApplication = (applicationGuid, payload) => (disp
       createRequestHeader()
     )
     .then((response) => {
+      notification.success({
+        message: "Successfully verified the Notice of Works location",
+        duration: 10,
+      });
       dispatch(success(reducerTypes.IMPORT_NOTICE_OF_WORK_APPLICATION));
       return response;
     })
