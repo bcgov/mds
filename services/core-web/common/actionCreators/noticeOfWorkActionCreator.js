@@ -78,7 +78,11 @@ export const createNoticeOfWorkApplication = (payload) => (dispatch) => {
     .finally(() => dispatch(hideLoading()));
 };
 
-export const importNoticeOfWorkApplication = (applicationGuid, payload) => (dispatch) => {
+export const importNoticeOfWorkApplication = (
+  applicationGuid,
+  payload,
+  message = "Successfully verified the Notice of Work's location"
+) => (dispatch) => {
   dispatch(request(reducerTypes.IMPORT_NOTICE_OF_WORK_APPLICATION));
   dispatch(showLoading());
   return CustomAxios()
@@ -89,7 +93,7 @@ export const importNoticeOfWorkApplication = (applicationGuid, payload) => (disp
     )
     .then((response) => {
       notification.success({
-        message: "Successfully verified the Notice of Works location",
+        message,
         duration: 10,
       });
       dispatch(success(reducerTypes.IMPORT_NOTICE_OF_WORK_APPLICATION));
