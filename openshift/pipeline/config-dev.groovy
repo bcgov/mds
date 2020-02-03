@@ -68,6 +68,41 @@ app {
                             'VOLUME_CAPACITY':"${vars.DB_PVC_SIZE}"
                     ]
                 ],
+                /*[
+                    'file':'openshift/templates/postgresql.dc.json',
+                    'params':[
+                            'NAME':"mds-postgresql",
+                            'SUFFIX':"${vars.deployment.suffix}-reporting",
+                            'DATABASE_SERVICE_NAME':"mds-postgresql${vars.deployment.suffix}",
+                            'CPU_REQUEST':"${vars.resources.postgres.cpu_request}",
+                            'CPU_LIMIT':"${vars.resources.postgres.cpu_limit}",
+                            'MEMORY_REQUEST':"${vars.resources.postgres.memory_request}",
+                            'MEMORY_LIMIT':"${vars.resources.postgres.memory_limit}",
+                            'IMAGE_STREAM_NAMESPACE':'',
+                            'IMAGE_STREAM_NAME':"mds-postgresql",
+                            'IMAGE_STREAM_VERSION':"${app.deployment.version}",
+                            'POSTGRESQL_DATABASE':'mds',
+                            'VOLUME_CAPACITY':"${vars.DB_PVC_SIZE}"
+                    ]
+                ],*/
+                /*[
+                    'file':'openshift/templates/dbbackup.dc.json',
+                    'params':[
+                            'NAME':"mds-database-backup",
+                            'FLYWAY_NAME':"mds-flyway-migration-client",
+                            'SUFFIX': "${vars.deployment.suffix}",
+                            'VERSION':"${app.deployment.version}",
+                            'ENVIRONMENT_NAME':"${vars.deployment.namespace}",
+                            'ENVIRONMENT_FRIENDLY_NAME':"BC Mines Digital Services (DEV)",
+                            'DATABASE_SERVICE_NAME':"mds-postgresql${vars.deployment.suffix}",
+                            'CPU_REQUEST':"${vars.resources.backup.cpu_request}",
+                            'CPU_LIMIT':"${vars.resources.backup.cpu_limit}",
+                            'MEMORY_REQUEST':"${vars.resources.backup.memory_request}",
+                            'MEMORY_LIMIT':"${vars.resources.backup.memory_limit}",
+                            'VERIFICATION_VOLUME_SIZE':"${vars.BACKUP_VERIFICATION_PVC_SIZE}",
+                            'DB_NRIS_CONFIG_NAME': "mds-postgresql${vars.deployment.suffix}-nris"
+                    ]
+                ],*/
                 [
                     'file':'openshift/templates/redis.dc.json',
                     'params':[
@@ -245,7 +280,24 @@ app {
                             'ENVIRONMENT_NAME':"${app.deployment.env.name}",
                             'API_URL': "https://${vars.modules.'mds-nginx'.HOST_CORE}${vars.modules.'mds-nginx'.PATH}/nris_api",
                     ]
-                ]
+                ]/*,
+                [
+                    'file':'openshift/templates/digdag/digdag.dc.json',
+                    'params':[
+                            'NAME':"digdag",
+                            'VERSION':"${app.deployment.version}",
+                            'NAMESPACE':"${vars.deployment.namespace}",
+                            'SUFFIX': "${vars.deployment.suffix}",
+                            'SCHEDULER_PVC_SIZE':"200Mi",
+                            'ENVIRONMENT_NAME':"${app.deployment.env.name}",
+                            'KEYCLOAK_DISCOVERY_URL':"${vars.keycloak.known_config_url}",
+                            'APPLICATION_DOMAIN': "${vars.modules.'digdag'.HOST}",
+                            'CPU_REQUEST':"${vars.resources.digdag.cpu_request}",
+                            'CPU_LIMIT':"${vars.resources.digdag.cpu_limit}",
+                            'MEMORY_REQUEST':"${vars.resources.digdag.memory_request}",
+                            'MEMORY_LIMIT':"${vars.resources.digdag.memory_limit}"
+                    ]
+                ]*/
         ]
     }
 }
@@ -255,7 +307,7 @@ environments {
         vars {
             DB_PVC_SIZE = '1Gi'
             DOCUMENT_PVC_SIZE = '1Gi'
-
+            BACKUP_VERIFICATION_PVC_SIZE = '200Mi'
             LOG_PVC_SIZE = '1Gi'
             git {
                 changeId = "${opt.'pr'}"
@@ -318,7 +370,19 @@ environments {
                     cpu_limit = "20m"
                     memory_request = "16Mi"
                     memory_limit = "32Mi"
+                }/*
+                backup {
+                    cpu_request = "0"
+                    cpu_limit = "0"
+                    memory_request = "0"
+                    memory_limit = "0"
                 }
+                digdag {
+                    cpu_request = "100m"
+                    cpu_limit = "200m"
+                    memory_request = "512Mi"
+                    memory_limit = "1Gi"
+                }*/
             }
             deployment {
                 env {
@@ -366,7 +430,9 @@ environments {
                 'mds-redis' {
                     HOST = "http://mds-redis${vars.deployment.suffix}"
                 }
-
+                /*'digdag' {
+                    HOST = "mds-digdag-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
+                }*/
             }
         }
     }

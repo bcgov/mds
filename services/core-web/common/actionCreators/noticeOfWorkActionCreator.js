@@ -78,16 +78,24 @@ export const createNoticeOfWorkApplication = (payload) => (dispatch) => {
     .finally(() => dispatch(hideLoading()));
 };
 
-export const importNoticeOfWorkApplication = (mine_guid, applicationGuid) => (dispatch) => {
+export const importNoticeOfWorkApplication = (
+  applicationGuid,
+  payload,
+  message = "Successfully verified the Notice of Work's location"
+) => (dispatch) => {
   dispatch(request(reducerTypes.IMPORT_NOTICE_OF_WORK_APPLICATION));
   dispatch(showLoading());
   return CustomAxios()
     .post(
       `${ENVIRONMENT.apiUrl}${API.NOTICE_OF_WORK_APPLICATION_IMPORT(applicationGuid)}`,
-      { mine_guid },
+      payload,
       createRequestHeader()
     )
     .then((response) => {
+      notification.success({
+        message,
+        duration: 10,
+      });
       dispatch(success(reducerTypes.IMPORT_NOTICE_OF_WORK_APPLICATION));
       return response;
     })
@@ -132,7 +140,7 @@ export const fetchOriginalNoticeOfWorkApplication = (applicationGuid) => (dispat
 export const updateNoticeOfWorkApplication = (
   payload,
   nowApplicationGuid,
-  message = "Successsfully updated Notice of Work"
+  message = "Successfully updated Notice of Work"
 ) => (dispatch) => {
   dispatch(request(reducerTypes.UPDATE_NOTICE_OF_WORK_APPLICATION));
   dispatch(showLoading());

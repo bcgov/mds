@@ -5,9 +5,18 @@ export const storeNoticeOfWorkApplications = (payload) => ({
   payload,
 });
 
+export const storeMineNoticeOfWorkApplications = (payload) => ({
+  type: actionTypes.STORE_MINE_NOTICE_OF_WORK_APPLICATIONS,
+  payload,
+});
+
 export const storeNoticeOfWorkApplication = (payload) => ({
   type: actionTypes.STORE_NOTICE_OF_WORK_APPLICATION,
   payload,
+});
+
+export const clearNoticeOfWorkApplication = () => ({
+  type: actionTypes.CLEAR_NOTICE_OF_WORK_APPLICATION,
 });
 
 export const storeOriginalNoticeOfWorkApplication = (payload) => ({

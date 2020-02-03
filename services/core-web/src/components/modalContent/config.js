@@ -12,13 +12,13 @@ import ViewVarianceModal from "./ViewVarianceModal";
 import EditVarianceModal from "./EditVarianceModal";
 import AddIncidentModal from "./AddIncidentModal";
 import AddReportModal from "./AddReportModal";
-// import EditReportModal from "./EditReportModal";
 import ViewIncidentModal from "./ViewIncidentModal";
 import EditNoticeOfWorkDocumentModal from "./EditNoticeOfWorkDocumentModal";
 import ChangeNOWMineModal from "./ChangeNOWMineModal";
 import UpdateNOWLeadInspectorModal from "./UpdateNOWLeadInspectorModal";
 import DownloadDocumentPackageModal from "./DownloadDocumentPackageModal";
 import NOWReviewModal from "./NOWReviewModal";
+import ChangeNOWLocationModal from "./ChangeNOWLocationModal";
 
 // This file is anticipated to have multiple exports
 // eslint-disable-next-line import/prefer-default-export
@@ -45,4 +45,5 @@ export const modalConfig = {
   DOWNLOAD_DOC_PACKAGE: DownloadDocumentPackageModal,
   NOW_REVIEW: NOWReviewModal,
   UPDATE_NOW_LEAD_INSPECTOR: UpdateNOWLeadInspectorModal,
+  CHANGE_NOW_LOCATION: ChangeNOWLocationModal,
 };
