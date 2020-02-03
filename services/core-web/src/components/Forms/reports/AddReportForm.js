@@ -9,7 +9,11 @@ import { Form, Button, Col, Row, Popconfirm, List } from "antd";
 import { renderConfig } from "@/components/common/config";
 import * as FORM from "@/constants/forms";
 import { required } from "@common/utils/Validate";
-import { resetForm, createDropDownList, formatComplianceCodeValueOrLabel } from "@common/utils/helpers";
+import {
+  resetForm,
+  createDropDownList,
+  formatComplianceCodeValueOrLabel,
+} from "@common/utils/helpers";
 import {
   getDropdownMineReportCategoryOptions,
   getMineReportDefinitionOptions,

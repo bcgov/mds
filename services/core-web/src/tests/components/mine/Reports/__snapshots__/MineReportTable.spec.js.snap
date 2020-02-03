@@ -8,6 +8,7 @@ exports[`MineReportTable renders properly 1`] = `
       "Report Name",
       "Compliance Year/Period",
       "Due",
+      "Requested By",
       "Received",
       "Documents",
       "",
@@ -40,6 +41,12 @@ exports[`MineReportTable renders properly 1`] = `
           "title": "Due",
         },
         Object {
+          "dataIndex": "created_by_idir",
+          "key": "created_by_idir",
+          "render": [Function],
+          "title": "Requested By",
+        },
+        Object {
           "dataIndex": "received_date",
           "key": "received_date",
           "render": [Function],
@@ -59,7 +66,111 @@ exports[`MineReportTable renders properly 1`] = `
         },
       ]
     }
-    dataSource={Array []}
+    dataSource={
+      Array [
+        Object {
+          "created_by_idir": "idir\\\\TEST",
+          "documents_key": "undefined_documents",
+          "due_date": "2020-01-02",
+          "handleEditReport": undefined,
+          "handleRemoveReport": undefined,
+          "key": undefined,
+          "openEditReportModal": undefined,
+          "received_date": "2020-01-10",
+          "report": Object {
+            "created_by_idir": "idir\\\\TEST",
+            "due_date": "2020-01-02",
+            "mine_report_definition_guid": "baa01f9f-c9b2-485d-96f3-12a9c8fe637b",
+            "mine_report_guid": "9f98a719-720a-40a5-ac5b-e91e8a526fad",
+            "mine_report_submissions": Array [
+              Object {
+                "comments": Array [],
+                "documents": Array [
+                  Object {
+                    "document_manager_guid": "b660371a-d3fa-41ff-99ed-f9b86dff72f7",
+                    "document_name": "0101581201901_APPLICATION_FORM (3) (2) (1).pdf",
+                    "mine_document_guid": "98a9d9de-4feb-41a7-adda-842421462657",
+                    "mine_guid": "abed555d-7391-49e7-bc04-e2c6062432c6",
+                    "upload_date": "2020-01-29T20:50:51.439631+00:00",
+                  },
+                ],
+                "mine_report_submission_guid": "fed32646-5db7-495a-acbb-b6b8ad333ee1",
+                "mine_report_submission_status_code": "NRQ",
+                "submission_date": "2020-01-29",
+              },
+            ],
+            "permit_guid": null,
+            "received_date": "2020-01-10",
+            "report_name": "Underground Oil and Grease Storage Area Report",
+            "submission_year": 2020,
+          },
+          "report_name": "Underground Oil and Grease Storage Area Report",
+          "submission_year": 2020,
+        },
+        Object {
+          "created_by_idir": "idir\\\\TEST",
+          "documents_key": "undefined_documents",
+          "due_date": "2020-03-31",
+          "handleEditReport": undefined,
+          "handleRemoveReport": undefined,
+          "key": undefined,
+          "openEditReportModal": undefined,
+          "received_date": "2020-01-02",
+          "report": Object {
+            "created_by_idir": "idir\\\\TEST",
+            "due_date": "2020-03-31",
+            "mine_report_definition_guid": "5f4f4727-4ecd-4a04-8929-2e8a5e03996d",
+            "mine_report_guid": "b59a166e-749e-4e6c-a232-d4c55f1f227c",
+            "mine_report_submissions": Array [
+              Object {
+                "comments": Array [],
+                "documents": Array [
+                  Object {
+                    "document_manager_guid": "dde0b5bf-a14d-4272-8a65-467440b01294",
+                    "document_name": "0101581201901_APPLICATION_FORM (1) (1).pdf",
+                    "mine_document_guid": "3d4e420f-3f0a-4c54-ad07-e3aeb74cbe89",
+                    "mine_guid": "abed555d-7391-49e7-bc04-e2c6062432c6",
+                    "upload_date": "2020-01-29T20:51:53.466101+00:00",
+                  },
+                ],
+                "mine_report_submission_guid": "d0149d1b-845d-4011-a731-3f951c7d8219",
+                "mine_report_submission_status_code": "NRQ",
+                "submission_date": "2020-01-29",
+              },
+            ],
+            "permit_guid": null,
+            "received_date": "2020-01-02",
+            "report_name": "TSF, WSF or Dam As-built Report",
+            "submission_year": 2020,
+          },
+          "report_name": "TSF, WSF or Dam As-built Report",
+          "submission_year": 2020,
+        },
+        Object {
+          "created_by_idir": "idir\\\\TEST",
+          "documents_key": "undefined_documents",
+          "due_date": "2020-03-31",
+          "handleEditReport": undefined,
+          "handleRemoveReport": undefined,
+          "key": undefined,
+          "openEditReportModal": undefined,
+          "received_date": null,
+          "report": Object {
+            "created_by_idir": "idir\\\\TEST",
+            "due_date": "2020-03-31",
+            "mine_report_definition_guid": "6eda0c36-8748-4072-83c9-0fcdf270d36f",
+            "mine_report_guid": "92327cd3-eec0-4e18-b898-25539ac408e9",
+            "mine_report_submissions": Array [],
+            "permit_guid": null,
+            "received_date": null,
+            "report_name": "Annual DSI",
+            "submission_year": 2020,
+          },
+          "report_name": "Annual DSI",
+          "submission_year": 2020,
+        },
+      ]
+    }
     locale={
       Object {
         "emptyText": <NullScreen
