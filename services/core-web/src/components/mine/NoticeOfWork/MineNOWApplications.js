@@ -44,7 +44,7 @@ export class MineNOWApplications extends Component {
   componentDidMount() {
     const params = this.props.location.search;
     const parsedParams = queryString.parse(params);
-    // for the time being, set submissions_only to true if a regional mine, false is a major mine
+    // for the time being, set submissions_only to true if a regional mine, false if a major mine
     const submissionsOnly = !this.props.mines[this.props.mineGuid].major_mine_ind;
     const {
       page = this.state.params.page,
