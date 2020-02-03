@@ -136,7 +136,7 @@ export const fetchOriginalNoticeOfWorkApplication = (applicationGuid) => (dispat
 export const updateNoticeOfWorkApplication = (
   payload,
   nowApplicationGuid,
-  message = "Successsfully updated Notice of Work"
+  message = "Successfully updated Notice of Work"
 ) => (dispatch) => {
   dispatch(request(reducerTypes.UPDATE_NOTICE_OF_WORK_APPLICATION));
   dispatch(showLoading());
