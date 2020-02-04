@@ -4,7 +4,28 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
+import PropTypes from "prop-types";
 import { Row, Col, Card, Descriptions, Typography } from "antd";
+import {
+  updateMineRecord,
+  createMineTypes,
+  removeMineType,
+  fetchMineRecordById,
+} from "@common/actionCreators/mineActionCreator";
+import { fetchPermits } from "@common/actionCreators/permitActionCreator";
+import {
+  getPartyRelationshipTypes,
+  getPartyRelationships,
+} from "@common/selectors/partiesSelectors";
+import { getPermits } from "@common/reducers/permitReducer";
+import {
+  getMineRegionHash,
+  getMineTenureTypesHash,
+  getDisturbanceOptionHash,
+  getCommodityOptionHash,
+} from "@common/selectors/staticContentSelectors";
+import { getCurrentMineTypes, getTransformedMineTypes } from "@common/selectors/mineSelectors";
+import { getUserInfo } from "@/selectors/authenticationSelectors";
 import CustomPropTypes from "@/customPropTypes";
 import ContactCard from "@/components/common/ContactCard";
 import * as Strings from "@/constants/strings";
@@ -14,23 +35,29 @@ const { Paragraph, Text, Title } = Typography;
 
 const propTypes = {
   mine: CustomPropTypes.mine.isRequired,
+  updateMineRecord: PropTypes.func.isRequired,
+  createMineTypes: PropTypes.func.isRequired,
+  removeMineType: PropTypes.func.isRequired,
+  fetchMineRecordById: PropTypes.func.isRequired,
+  partyRelationshipTypes: PropTypes.arrayOf(CustomPropTypes.partyRelationshipType),
+  partyRelationships: PropTypes.arrayOf(CustomPropTypes.partyRelationship),
+  minePermits: PropTypes.arrayOf(CustomPropTypes.permit).isRequired,
+  mineRegionHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  mineTenureHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  mineDisturbanceOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  mineCommodityOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  transformedMineTypes: CustomPropTypes.transformedMineTypes.isRequired,
+  userInfo: PropTypes.shape({ preferred_username: PropTypes.string.isRequired }).isRequired,
 };
 
-const defaultProps = {};
+const defaultProps = {
+  partyRelationshipTypes: [],
+  partyRelationships: [],
+};
 
-// Test data
-const partyMineManager = {
-  name: "John Bernard Smith",
-  email: "j.b.smith@gmail.com",
-  phone: "(250) 938-2948",
-  date: "December 10, 2019",
-};
-const partyPermittee = {
-  name: "Abe Jimmy Jones",
-  email: "a.j.jones@gmail.com",
-  phone: "(250) 479-2535",
-  date: "September 12, 2018",
-};
+const isActive = (pr) =>
+  (!pr.end_date || moment(pr.end_date).add(1, "days") > new Date()) &&
+  (!pr.start_date || Date.parse(pr.start_date) <= new Date());
 
 export class Overview extends Component {
   state = {
@@ -39,9 +66,19 @@ export class Overview extends Component {
 
   componentWillMount() {
     this.setState({ contacts: Contacts.MINISTRY_CONTACTS[this.props.mine.mine_region] });
+    this.props.fetchPermits(this.props.mine.mine_guid);
   }
 
   render() {
+    console.log(this.props);
+    // Get the mine's mine manager.
+    const mineManagers = this.props.partyRelationships
+      ? this.props.partyRelationships.filter(
+          (pr) => pr.mine_party_appt_type_code === "MMG" && isActive(pr)
+        )
+      : null;
+    const mineManager = mineManagers && mineManagers.length > 0 ? mineManagers[0].party : null;
+
     return (
       <Row>
         <Col lg={{ span: 14 }} xl={{ span: 16 }}>
@@ -51,29 +88,62 @@ export class Overview extends Component {
             The information is pulled from current Ministry resources. If anything is incorrect,
             please notify one of the Ministry contacts.
           </Paragraph>
-          <Descriptions column={1} colon={false}>
-            <Descriptions.Item label="Region">{this.props.mine.mine_region}</Descriptions.Item>
-            <Descriptions.Item label="Coordinate">
-              {`${(this.props.mine.mine_location && this.props.mine.mine_location.latitude) ||
-                Strings.NOT_APPLICABLE},${(this.props.mine.mine_location &&
-                this.props.mine.mine_location.longitude) ||
-                Strings.NOT_APPLICABLE}`}
+          <Descriptions column={2} colon={false}>
+            <Descriptions.Item span={2} label="Region">
+              {this.props.mineRegionHash[this.props.mine.mine_region] || Strings.UNKNOWN}
             </Descriptions.Item>
-            <Descriptions.Item label="Commodity">{Strings.NOT_APPLICABLE}</Descriptions.Item>
-            <Descriptions.Item label="Operating Status">{Strings.NOT_APPLICABLE}</Descriptions.Item>
-            <Descriptions.Item label="Disturbance">{Strings.NOT_APPLICABLE}</Descriptions.Item>
+            {/* <Descriptions.Item label="Coordinate">
+              {(this.props.mine.mine_location &&
+                `${this.props.mine.mine_location.latitude},${this.props.mine.mine_location.longitude}`) ||
+                Strings.UNKNOWN}
+            </Descriptions.Item> */}
+            <Descriptions.Item label="Latitude">
+              {(this.props.mine.mine_location && this.props.mine.mine_location.latitude) ||
+                Strings.UNKNOWN}
+            </Descriptions.Item>
+            <Descriptions.Item label="Longitude">
+              {(this.props.mine.mine_location && this.props.mine.mine_location.longitude) ||
+                Strings.UNKNOWN}
+            </Descriptions.Item>
+            <Descriptions.Item span={2} label="Operating Status">
+              {(this.props.mine.mine_status &&
+                this.props.mine.mine_status.length > 0 &&
+                this.props.mine.mine_status[0].status_labels.join(", ")) ||
+                Strings.UNKNOWN}
+            </Descriptions.Item>
+            <Descriptions.Item span={2} label="Commodity">
+              {this.props.transformedMineTypes.mine_commodity_code &&
+              this.props.transformedMineTypes.mine_commodity_code.length > 0
+                ? this.props.transformedMineTypes.mine_commodity_code
+                    .map((code) => this.props.mineCommodityOptionsHash[code])
+                    .join(", ")
+                : Strings.UNKNOWN}
+            </Descriptions.Item>
+            <Descriptions.Item span={2} label="Disturbance">
+              {this.props.transformedMineTypes.mine_disturbance_code &&
+              this.props.transformedMineTypes.mine_disturbance_code.length > 0
+                ? this.props.transformedMineTypes.mine_disturbance_code
+                    .map((code) => this.props.mineDisturbanceOptionsHash[code])
+                    .join(", ")
+                : Strings.UNKNOWN}
+            </Descriptions.Item>
+            <Descriptions.Item span={2} label="Permits">
+              {this.props.minePermits && this.props.minePermits.length > 0
+                ? this.props.minePermits.map((permit) => permit.permit_no).join(", ")
+                : Strings.UNKNOWN}
+            </Descriptions.Item>
           </Descriptions>
           <Row>
             <Col xl={{ span: 11 }} xxl={{ span: 10 }}>
               <ContactCard
                 title="Mine Manager"
-                party={partyMineManager}
+                party={mineManager}
                 dateLabel="Mine Manager Since"
               />
             </Col>
             {/* Disabled until we find a replacement contact to fill this card */}
             {/* <Col xl={{ span: 11, offset: 2 }} xxl={{ span: 10, offset: 2 }}>
-              <ContactCard title="Permittee" party={partyPermittee} dateLabel="Permittee Since" />
+              <ContactCard title="Permittee" party={null} dateLabel="Permittee Since" />
             </Col> */}
           </Row>
         </Col>
@@ -187,9 +257,30 @@ export class Overview extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({});
+const mapStateToProps = (state) => ({
+  userInfo: getUserInfo(state),
+  mineRegionHash: getMineRegionHash(state),
+  mineTenureHash: getMineTenureTypesHash(state),
+  mineCommodityOptionsHash: getCommodityOptionHash(state),
+  mineDisturbanceOptionsHash: getDisturbanceOptionHash(state),
+  partyRelationships: getPartyRelationships(state),
+  partyRelationshipTypes: getPartyRelationshipTypes(state),
+  minePermits: getPermits(state),
+  currentMineTypes: getCurrentMineTypes(state),
+  transformedMineTypes: getTransformedMineTypes(state),
+});
 
-const mapDispatchToProps = (dispatch) => bindActionCreators({}, dispatch);
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators(
+    {
+      updateMineRecord,
+      createMineTypes,
+      removeMineType,
+      fetchMineRecordById,
+      fetchPermits,
+    },
+    dispatch
+  );
 
 Overview.propTypes = propTypes;
 Overview.defaultProps = defaultProps;

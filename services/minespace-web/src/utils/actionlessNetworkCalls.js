@@ -1,7 +1,7 @@
 import axios from "axios";
 import { notification } from "antd";
+import { ENVIRONMENT } from "@common/constants/environment";
 import { createRequestHeader } from "@/utils/RequestHeaders";
-import { ENVIRONMENT } from "@/constants/environment";
 import { DOCUMENT_MANAGER_FILE_GET_URL, DOCUMENT_MANAGER_TOKEN_GET_URL } from "@/constants/API";
 
 const downloadFileFromDocumentManager = (docManagerGuid) => {

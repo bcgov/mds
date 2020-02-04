@@ -11,6 +11,7 @@ export const RETURN_PAGE_TYPE = {
 
 export const EMPTY_FIELD = "-";
 export const NOT_APPLICABLE = "N/A";
+export const UNKNOWN = "Unknown";
 
 // variances
 export const VARIANCE_APPROVED_CODE = "APP";

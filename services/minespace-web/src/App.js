@@ -1,10 +1,14 @@
 import React, { Fragment, Component } from "react";
+import { connect } from "react-redux";
 import { compose } from "redux";
 import { BrowserRouter } from "react-router-dom";
 // eslint-disable-next-line
 import { hot } from "react-hot-loader";
 import { Layout, BackTop, Row, Col, Spin, Icon } from "antd";
 import MediaQuery from "react-responsive";
+import PropTypes from "prop-types";
+import { getStaticContentLoadingIsComplete } from "@common/selectors/staticContentSelectors";
+import * as staticContent from "@common/actionCreators/staticContentActionCreator";
 import Routes from "./routes/Routes";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
@@ -18,12 +22,30 @@ export const store = configureStore();
 
 Spin.setDefaultIndicator(<Icon type="loading" style={{ fontSize: 40 }} />);
 
+const propTypes = {
+  staticContentLoadingIsComplete: PropTypes.bool.isRequired,
+  dispatch: PropTypes.func.isRequired,
+};
+
 class App extends Component {
   state = { isIE: true, isMobile: true };
 
   componentDidMount() {
     this.setState({ isIE: detectIE() });
   }
+
+  componentWillReceiveProps(nextProps) {
+    if (!nextProps.staticContentLoadingIsComplete) {
+      this.loadStaticContent();
+    }
+  }
+
+  loadStaticContent = () => {
+    const staticContentActionCreators = Object.getOwnPropertyNames(staticContent).filter(
+      (property) => typeof staticContent[property] === "function"
+    );
+    staticContentActionCreators.forEach((action) => this.props.dispatch(staticContent[action]()));
+  };
 
   handleMobileWarningClose = () => {
     this.setState({ isMobile: false });
@@ -69,4 +91,10 @@ class App extends Component {
   }
 }
 
-export default compose(hot(module), AuthenticationGuard(true))(App);
+App.propTypes = propTypes;
+
+const mapStateToProps = (state) => ({
+  staticContentLoadingIsComplete: getStaticContentLoadingIsComplete(state),
+});
+
+export default compose(connect(mapStateToProps), hot(module), AuthenticationGuard(true))(App);

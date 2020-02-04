@@ -3,7 +3,8 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Row, Col, Tabs, Typography } from "antd";
 import { bindActionCreators } from "redux";
-import { fetchMineRecordById } from "@/actionCreators/userDashboardActionCreator";
+import { fetchMineRecordById } from "@common/actionCreators/mineActionCreator";
+import { fetchPartyRelationships } from "@common/actionCreators/partiesActionCreator";
 import { getMine } from "@/selectors/userMineSelectors";
 import CustomPropTypes from "@/customPropTypes";
 import Loading from "@/components/common/Loading";
@@ -20,6 +21,7 @@ const { TabPane } = Tabs;
 
 const propTypes = {
   fetchMineRecordById: PropTypes.func.isRequired,
+  fetchPartyRelationships: PropTypes.func.isRequired,
   mine: CustomPropTypes.mine.isRequired,
   match: PropTypes.shape({
     params: {
@@ -38,6 +40,7 @@ export class MineDashboard extends Component {
 
   componentDidMount() {
     const { id, activeTab } = this.props.match.params;
+    this.props.fetchPartyRelationships({ mine_guid: id, relationships: "party" });
     if (activeTab) {
       this.setState({ activeTab });
     }
@@ -122,6 +125,7 @@ const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
       fetchMineRecordById,
+      fetchPartyRelationships,
     },
     dispatch
   );

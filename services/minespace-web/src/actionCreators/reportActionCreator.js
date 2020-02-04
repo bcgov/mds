@@ -5,7 +5,7 @@ import { request, success, error } from "@/actions/genericActions";
 import * as reducerTypes from "@/constants/reducerTypes";
 import * as mineReportActions from "@/actions/mineReportActions";
 import * as API from "@/constants/API";
-import { ENVIRONMENT } from "@/constants/environment";
+import { ENVIRONMENT } from "@common/constants/environment";
 import { createRequestHeader } from "@/utils/RequestHeaders";
 
 export const fetchMineReports = (mineGuid) => (dispatch) => {
