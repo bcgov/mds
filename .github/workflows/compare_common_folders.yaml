@@ -1,0 +1,17 @@
+name: Compare Common Redux folder
+on: [pull_request]
+
+jobs:
+  common-folder-compare:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: compare-folders
+        run: |
+          diff -r -C 5 services/core-web/common services/minespace-web/common
+          if [ $? != 0 ]
+            then 
+            echo "'/services/core-web/common' does not match '/services/minespace-web/common'"
+            exit 1
+          fi

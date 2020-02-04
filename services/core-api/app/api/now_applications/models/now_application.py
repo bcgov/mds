@@ -95,10 +95,10 @@ class NOWApplication(Base, AuditMixin):
         'Document',
         lazy='selectin',
         secondary=
-        "join(NOWApplication, NOWApplicationIdentity, NOWApplication.now_application_id == NOWApplicationIdentity.now_application_id).join(Application, NOWApplicationIdentity.messageid == Application.messageid)",
+        "join(NOWApplicationIdentity, Document, foreign(NOWApplicationIdentity.messageid)==remote(Document.messageid))",
         primaryjoin=
-        'and_(NOWApplication.now_application_id==NOWApplicationIdentity.now_application_id, NOWApplicationIdentity.messageid==Application.messageid)',
-        secondaryjoin='Application.messageid==Document.messageid',
+        'and_(NOWApplication.now_application_id==NOWApplicationIdentity.now_application_id, foreign(NOWApplicationIdentity.messageid)==remote(Document.messageid))',
+        secondaryjoin='foreign(NOWApplicationIdentity.messageid)==remote(Document.messageid)',
         viewonly=True)
 
     # Contacts
