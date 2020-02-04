@@ -16,11 +16,11 @@ import {
 } from "@common/actionCreators/reportActionCreator";
 import { modalConfig } from "@/components/modalContent/config";
 import { openModal, closeModal } from "@/actions/modalActions";
-import { getMineReports } from "@/selectors/reportSelectors";
+import { getMineReports } from "@common/selectors/reportSelectors";
 import ReportsTable from "@/components/dashboard/mine/reports/ReportsTable";
 import TableSummaryCard from "@/components/common/TableSummaryCard";
 import { fetchMineReportDefinitionOptions } from "@common/actionCreators/staticContentActionCreator";
-import { getMineReportDefinitionOptions } from "@/reducers/staticContentReducer";
+import { getMineReportDefinitionOptions } from "@common/reducers/staticContentReducer";
 
 const { Paragraph, Title, Text } = Typography;
 
@@ -58,6 +58,14 @@ export class Reports extends Component {
     });
   }
 
+  handleAddReport = (values) => {
+    console.log(values);
+    this.props
+      .createMineReport(this.props.mine.mine_guid, values)
+      .then(() => this.props.closeModal())
+      .then(() => this.props.fetchMineReports(this.props.mine.mine_guid));
+  };
+
   handleEditReport = (values) => {
     this.props
       .updateMineReport(this.props.mine.mine_guid, values.mine_report_guid, values)
@@ -65,12 +73,11 @@ export class Reports extends Component {
       .then(() => this.props.fetchMineReports(this.props.mine.mine_guid));
   };
 
-  openAddReportModal = (event, report) => {
+  openAddReportModal = (event) => {
     event.preventDefault();
     this.props.openModal({
       props: {
-        initialValues: report,
-        onSubmit: this.props.createMineReport,
+        onSubmit: this.handleAddReport,
         title: "Add Report",
         mineGuid: this.props.mine.mine_guid,
       },
@@ -92,20 +99,6 @@ export class Reports extends Component {
   };
 
   render() {
-    const filteredReportDefinitionGuids =
-      this.props.mineReportDefinitionOptions &&
-      this.props.mineReportDefinitionOptions
-        .filter((option) =>
-          option.categories.map((category) => category.mine_report_category).includes("TSF")
-        )
-        .map((definition) => definition.mine_report_definition_guid);
-
-    const filteredReports =
-      this.props.mineReports &&
-      this.props.mineReports.filter((report) =>
-        filteredReportDefinitionGuids.includes(report.mine_report_definition_guid.toLowerCase())
-      );
-
     return (
       <Row>
         <Col>
@@ -133,8 +126,8 @@ export class Reports extends Component {
               <br />
             </Col>
           </Row>
-          <Row type="flex" justify="space-around" gutter={[{ lg: 0, xl: 32 }, 32]}>
-            <Col lg={24} xl={8} xxl={6}>
+          <Row type="flex" justify="space-around" gutter={16}>
+            <Col md={24} lg={8}>
               <TableSummaryCard
                 title="Reports Submitted"
                 // TODO: Display the amount of submitted reports.
@@ -143,7 +136,7 @@ export class Reports extends Component {
                 type="success"
               />
             </Col>
-            <Col lg={24} xl={8} xxl={6}>
+            <Col md={24} lg={8}>
               <TableSummaryCard
                 title="Reports Due"
                 // TODO: Display the amount of reports that are overdue.
@@ -152,7 +145,7 @@ export class Reports extends Component {
                 type="error"
               />
             </Col>
-            <Col lg={24} xl={8} xxl={6}>
+            <Col md={24} lg={8}>
               <TableSummaryCard
                 title="Reports Overdue"
                 // TODO: Display the amount of reports that are due.
@@ -167,7 +160,7 @@ export class Reports extends Component {
               <ReportsTable
                 openEditReportModal={this.openEditReportModal}
                 handleEditReport={this.handleEditReport}
-                mineReports={filteredReports}
+                mineReports={this.props.mineReports}
                 isLoaded={this.state.isLoaded}
               />
             </Col>

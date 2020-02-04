@@ -133,8 +133,6 @@ const transformRowData = (report, openEditReportModal, handleEditReport, handleR
 });
 
 export const ReportsTable = (props) => {
-  console.log(props);
-
   return (
     <Table
       size="small"

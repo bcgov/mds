@@ -46,7 +46,6 @@ export class EditReportForm extends Component {
   state = {
     existingReport: Boolean(!this.props.initialValues.mine_report_definition_guid),
     mineReportDefinitionOptionsFiltered: [],
-    dropdownMineReportDefinitionOptionsFiltered: [],
     selectedMineReportComplianceArticles: [],
     mineReportSubmissions: this.props.initialValues.mine_report_submissions,
   };
@@ -82,17 +81,6 @@ export class EditReportForm extends Component {
   render() {
     return (
       <Form layout="vertical" onSubmit={this.props.handleSubmit}>
-        <Form.Item label="Report Code Requirements">
-          {this.state.selectedMineReportComplianceArticles.length > 0 ? (
-            <List bordered size="small" className="color-primary">
-              {this.state.selectedMineReportComplianceArticles.map((opt) => (
-                <List.Item>{formatComplianceCodeValueOrLabel(opt, true)}</List.Item>
-              ))}
-            </List>
-          ) : (
-            <Paragraph>Select the report type and name to view the required codes.</Paragraph>
-          )}
-        </Form.Item>
         <ReportSubmissions
           mineGuid={this.props.mineGuid}
           mineReportSubmissions={this.state.mineReportSubmissions}
