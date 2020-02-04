@@ -91,6 +91,7 @@ const columns = [
           {text.map((sub) =>
             sub.documents.map((doc) => (
               <div>
+                -{" "}
                 <LinkButton
                   key={doc.mine_document_guid}
                   onClick={() => {
@@ -108,16 +109,11 @@ const columns = [
   },
   {
     title: "",
-    dataIndex: "record",
+    dataIndex: "report",
     render: (text, record) => {
       return (
         <div title="" align="right">
-          <Button
-            type="link"
-            onClick={(event) =>
-              record.openEditReportModal(event, record.handleEditReport, record.mineReport)
-            }
-          >
+          <Button type="link" onClick={(event) => record.openEditReportModal(event, text)}>
             <img src={EDIT_PENCIL} alt="Edit" />
           </Button>
         </div>

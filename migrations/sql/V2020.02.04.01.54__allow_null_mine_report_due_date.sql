@@ -1,1 +1,1 @@
-ALTER TABLE mine_report ALTER COLUMN due_date SET NOT NULL;
+ALTER TABLE mine_report ALTER COLUMN due_date DROP NOT NULL;

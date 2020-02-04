@@ -48,7 +48,7 @@ const defaultProps = {
 };
 
 export class Reports extends Component {
-  state = { isLoaded: false };
+  state = { isLoaded: false, selectedMineReportGuid: null };
 
   componentDidMount() {
     this.props.fetchMineReportDefinitionOptions();
@@ -73,7 +73,7 @@ export class Reports extends Component {
 
   handleEditReport = (values) => {
     this.props
-      .updateMineReport(this.props.mine.mine_guid, values.mine_report_guid, values)
+      .updateMineReport(this.props.mine.mine_guid, this.state.selectedMineReportGuid, values)
       .then(() => this.props.closeModal())
       .then(() => this.props.fetchMineReports(this.props.mine.mine_guid));
   };
@@ -91,11 +91,12 @@ export class Reports extends Component {
   };
 
   openEditReportModal = (event, report) => {
+    this.setState({ selectedMineReportGuid: report.mine_report_guid });
     event.preventDefault();
     this.props.openModal({
       props: {
         initialValues: report,
-        onSubmit: this.props.updateMineReport,
+        onSubmit: this.handleEditReport,
         title: "Edit Report",
         mineGuid: this.props.mine.mine_guid,
       },

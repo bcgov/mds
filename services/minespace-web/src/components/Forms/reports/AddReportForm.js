@@ -117,7 +117,6 @@ export class AddReportForm extends Component {
   };
 
   render() {
-    console.log(this.props);
     return (
       <Form layout="vertical" onSubmit={this.props.handleSubmit}>
         {!this.props.initialValues.mine_report_definition_guid && (

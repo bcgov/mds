@@ -45,32 +45,7 @@ const defaultProps = {
 export class EditReportForm extends Component {
   state = {
     existingReport: Boolean(!this.props.initialValues.mine_report_definition_guid),
-    mineReportDefinitionOptionsFiltered: [],
-    selectedMineReportComplianceArticles: [],
     mineReportSubmissions: this.props.initialValues.mine_report_submissions,
-  };
-
-  componentDidMount = () => {
-    if (this.props.initialValues.mine_report_definition_guid) {
-      this.updateMineReportOptions(this.props.mineReportDefinitionOptions);
-
-      this.updateSelectedMineReportComplianceArticles(
-        this.props.initialValues.mine_report_definition_guid
-      );
-    }
-  };
-
-  componentWillReceiveProps = (nextProps) => {
-    if (nextProps.selectedMineReportCategory !== this.props.selectedMineReportCategory) {
-      this.updateMineReportOptions(
-        nextProps.mineReportDefinitionOptions,
-        nextProps.selectedMineReportCategory
-      );
-    }
-
-    if (nextProps.selectedMineReportDefinition !== this.props.selectedMineReportDefinition) {
-      this.updateSelectedMineReportComplianceArticles(nextProps.selectedMineReportDefinition);
-    }
   };
 
   updateMineReportSubmissions = (updatedSubmissions) => {
@@ -83,7 +58,6 @@ export class EditReportForm extends Component {
       <Form layout="vertical" onSubmit={this.props.handleSubmit}>
         <ReportSubmissions
           mineGuid={this.props.mineGuid}
-          mineReportSubmissions={this.state.mineReportSubmissions}
           updateMineReportSubmissions={this.updateMineReportSubmissions}
         />
         <div className="ant-modal-footer">
