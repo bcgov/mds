@@ -305,10 +305,10 @@ app {
 environments {
     'dev' {
         vars {
-            DB_PVC_SIZE = '200Mi'
-            DOCUMENT_PVC_SIZE = '100Mi'
+            DB_PVC_SIZE = '1Gi'
+            DOCUMENT_PVC_SIZE = '1Gi'
             BACKUP_VERIFICATION_PVC_SIZE = '200Mi'
-            LOG_PVC_SIZE = '200Mi'
+            LOG_PVC_SIZE = '1Gi'
             git {
                 changeId = "${opt.'pr'}"
             }
