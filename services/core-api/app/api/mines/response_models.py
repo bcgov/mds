@@ -369,6 +369,7 @@ ORDER_MODEL = api.model(
         "violation": fields.String,
         "report_no": fields.Integer,
         "inspector": fields.String,
+        "inspection_type": fields.String,
         "due_date": fields.Date,
         "order_status": fields.String,
         "overdue": fields.Boolean,
@@ -392,5 +393,6 @@ MINE_COMPLIANCE_RESPONSE_MODEL = api.model(
         'all_time': fields.Nested(COMPLAINCE_AGGREGATION_MODEL),
         'last_12_months': fields.Nested(COMPLAINCE_AGGREGATION_MODEL),
         'current_fiscal': fields.Nested(COMPLAINCE_AGGREGATION_MODEL),
+        'year_to_date': fields.Nested({'num_inspections': fields.Integer}),
         'orders': fields.List(fields.Nested(ORDER_MODEL)),
     })

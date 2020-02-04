@@ -9,7 +9,6 @@ export const DEFAULT_ENVIRONMENT = {
   keycloak_idpHint: "test",
   keycloak_url: "https://sso-test.pathfinder.gov.bc.ca/auth",
 };
-
 export const ENVIRONMENT = {
   apiUrl: "<API_URL>",
   docManUrl: "<DOCUMENT_MANAGER_URL>",
@@ -19,13 +18,18 @@ export const ENVIRONMENT = {
 
 export const KEYCLOAK = {
   realm: "mds",
+  "ssl-required": "external",
   url: "<URL>",
   idpHint: "idir",
-  "ssl-required": "external",
   resource: "<RESOURCE>",
   "public-client": true,
   "confidential-port": 0,
   clientId: "<CLIENT_ID>",
+  loginURL: "<URL>",
+  tokenURL: "<URL>",
+  userInfoURL: "<URL>",
+  keycloakLogoutURL: "<URL>",
+  siteMinderLogoutURL: "<URL>",
 };
 
 export const USER_ROLES = {
@@ -41,8 +45,3 @@ export const USER_ROLES = {
   role_close_permits: "core_close_permits",
   role_executive_view: "core_executive_view",
 };
-
-const WINDOW_LOCATION = `${window.location.origin}${process.env.BASE_PATH}`;
-export const BCEID_LOGIN_REDIRECT_URI = `${WINDOW_LOCATION}/return-page?type=login`;
-export const KEYCLOAK_LOGOUT_REDIRECT_URI = `${WINDOW_LOCATION}/return-page?type=logout`;
-export const SITEMINDER_LOGOUT_REDIRECT_URI = `${WINDOW_LOCATION}/return-page?type=smlogout&retnow=1`;

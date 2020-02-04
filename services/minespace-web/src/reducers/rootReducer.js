@@ -1,6 +1,7 @@
 import { combineReducers } from "redux";
 import { reducer as formReducer } from "redux-form";
 import { loadingBarReducer } from "react-redux-loading-bar";
+import { complianceReducer } from "@common/reducers";
 import networkReducer from "./networkReducer";
 import * as reducerTypes from "@/constants/reducerTypes";
 import authenticationReducer from "@/reducers/authenticationReducer";
@@ -21,6 +22,7 @@ export const createReducer = (reducer, name) => (state, action) => {
 export const reducerObject = {
   form: formReducer,
   loadingBar: loadingBarReducer,
+  ...complianceReducer,
   [reducerTypes.AUTHENTICATION]: authenticationReducer,
   [reducerTypes.USER_MINE_INFO]: userMineReducer,
   [reducerTypes.VARIANCES]: varianceReducer,
