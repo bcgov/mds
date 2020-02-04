@@ -17,6 +17,7 @@ import Inspections from "@/components/dashboard/mine/inspections/Inspections";
 import Incidents from "@/components/dashboard/mine/incidents/Incidents";
 import Reports from "@/components/dashboard/mine/reports/Reports";
 import * as router from "@/constants/routes";
+import * as Strings from "@/constants/strings";
 
 const { Title } = Typography;
 const { TabPane } = Tabs;
@@ -86,10 +87,10 @@ export class MineDashboard extends Component {
             <Row gutter={[0, 48]}>
               <Col>
                 <Title style={{ marginBottom: 8 }}>
-                  {this.props.mine.mine_name || "Mine Name"}
+                  {this.props.mine.mine_name || Strings.UNKNOWN}
                 </Title>
                 <Title level={4} style={{ margin: 0 }}>
-                  Mine Number: {this.props.mine.mine_no || "000000"}
+                  Mine Number: {this.props.mine.mine_no || Strings.UNKNOWN}
                 </Title>
               </Col>
             </Row>
