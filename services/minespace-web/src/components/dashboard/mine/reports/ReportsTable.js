@@ -10,7 +10,7 @@ import { EDIT_PENCIL } from "@/constants/assets";
 import CustomPropTypes from "@/customPropTypes";
 import LinkButton from "@/components/common/LinkButton";
 import { truncateFilename } from "@common/utils/helpers";
-import downloadFileFromDocumentManager from "@/utils/actionlessNetworkCalls";
+import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
 
 const propTypes = {
   mineReports: PropTypes.arrayOf(CustomPropTypes.mineReport).isRequired,
@@ -93,7 +93,9 @@ const columns = [
               <div>
                 <LinkButton
                   key={doc.mine_document_guid}
-                  onClick={() => downloadFileFromDocumentManager(file)}
+                  onClick={() => {
+                    downloadFileFromDocumentManager(doc);
+                  }}
                 >
                   {truncateFilename(doc.document_name)}
                 </LinkButton>
