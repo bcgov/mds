@@ -98,25 +98,6 @@ export class AddReportForm extends Component {
     }));
   };
 
-  updateDueDateWithDefaultDueDate = (mineReportDefinitionGuid) => {
-    let formMeta = this.props.formMeta;
-    if (
-      !(
-        formMeta &&
-        formMeta.fields &&
-        formMeta.fields.due_date &&
-        formMeta.fields.due_date.touched == true
-      )
-    ) {
-      this.props.change(
-        "due_date",
-        this.props.mineReportDefinitionOptions.find(
-          (x) => x.mine_report_definition_guid === mineReportDefinitionGuid
-        ).default_due_date
-      );
-    }
-  };
-
   componentWillReceiveProps = (nextProps) => {
     if (nextProps.selectedMineReportCategory !== this.props.selectedMineReportCategory) {
       this.updateMineReportOptions(
@@ -136,40 +117,36 @@ export class AddReportForm extends Component {
   };
 
   render() {
+    console.log(this.props);
     return (
       <Form layout="vertical" onSubmit={this.props.handleSubmit}>
         {!this.props.initialValues.mine_report_definition_guid && (
-          <Form.Item>
-            <Field
-              id="mine_report_category"
-              name="mine_report_category"
-              label="Report Type"
-              required
-              placeholder="Select"
-              data={this.props.dropdownMineReportCategoryOptions}
-              doNotPinDropdown
-              component={renderConfig.SELECT}
-              validate={[required]}
-            />
-          </Form.Item>
-        )}
-        <Form.Item>
           <Field
-            id="mine_report_definition_guid"
-            name="mine_report_definition_guid"
-            label="Report Name"
+            id="mine_report_category"
+            name="mine_report_category"
+            label="Report Type"
             required
-            placeholder={
-              this.props.selectedMineReportCategory ? "Select" : "Select a category above"
-            }
-            data={this.state.dropdownMineReportDefinitionOptionsFiltered}
+            placeholder="Select"
+            data={this.props.dropdownMineReportCategoryOptions}
             doNotPinDropdown
             component={renderConfig.SELECT}
             validate={[required]}
-            onChange={this.updateDueDateWithDefaultDueDate}
-            props={{ disabled: !this.props.selectedMineReportCategory }}
           />
-        </Form.Item>
+        )}
+
+        <Field
+          id="mine_report_definition_guid"
+          name="mine_report_definition_guid"
+          label="Report Name"
+          required
+          placeholder={this.props.selectedMineReportCategory ? "Select" : "Select a category above"}
+          data={this.state.dropdownMineReportDefinitionOptionsFiltered}
+          doNotPinDropdown
+          component={renderConfig.SELECT}
+          validate={[required]}
+          onChange={this.updateDueDateWithDefaultDueDate}
+          props={{ disabled: !this.props.selectedMineReportCategory }}
+        />
 
         <Form.Item label="Report Code Requirements">
           {this.state.selectedMineReportComplianceArticles.length > 0 ? (
@@ -182,6 +159,15 @@ export class AddReportForm extends Component {
             <Paragraph>Select the report type and name to view the required codes.</Paragraph>
           )}
         </Form.Item>
+        <Field
+          id="submission_year"
+          name="submission_year"
+          label="Report Compliance Year/Period*"
+          placeholder=""
+          component={renderConfig.YEAR}
+          validate={[required]}
+        />
+
         <ReportSubmissions
           mineGuid={this.props.mineGuid}
           mineReportSubmissions={this.state.mineReportSubmissions}

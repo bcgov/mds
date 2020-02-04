@@ -8,6 +8,9 @@ import * as Strings from "@/constants/strings";
 import { formatDate } from "@/utils/helpers";
 import { EDIT_PENCIL } from "@/constants/assets";
 import CustomPropTypes from "@/customPropTypes";
+import LinkButton from "@/components/common/LinkButton";
+import { truncateFilename } from "@common/utils/helpers";
+import downloadFileFromDocumentManager from "@/utils/actionlessNetworkCalls";
 
 const propTypes = {
   mineReports: PropTypes.arrayOf(CustomPropTypes.mineReport).isRequired,
@@ -63,24 +66,12 @@ const columns = [
       </div>
     ),
   },
-  // NOTE: This is a newly requested column.
-  {
-    title: "Submitted By",
-    dataIndex: "submitted_by",
-    key: "submitted_by",
-    // sorter: (a, b) => (moment(a.received_date) > moment(b.received_date) ? -1 : 1),
-    render: (text, record) => (
-      <div title="Submitted By" className={record.isOverdue ? "color-error" : ""}>
-        {text || Strings.EMPTY_FIELD}
-      </div>
-    ),
-  },
   // NOTE: This is a newly requested column. Brian: "Update table to include this for both
   // gov and industry - this is available data MM"
   {
     title: "Requested By",
-    dataIndex: "requested_by",
-    key: "requested_by",
+    dataIndex: "created_by_idir",
+    key: "created_by_idir",
     // sorter: (a, b) => (moment(a.received_date) > moment(b.received_date) ? -1 : 1),
     render: (text, record) => (
       <div title="Requested By" className={record.isOverdue ? "color-error" : ""}>
@@ -91,14 +82,27 @@ const columns = [
   // NOTE: This is a newly requested column.
   {
     title: "Documents",
-    dataIndex: "documents",
-    key: "documents",
+    dataIndex: "mine_report_submissions",
+    key: "mine_report_submissions",
     // sorter: (a, b) => (moment(a.received_date) > moment(b.received_date) ? -1 : 1),
-    render: (text, record) => (
-      <div title="Documents" className={record.isOverdue ? "color-error" : ""}>
-        {text || Strings.EMPTY_FIELD}
-      </div>
-    ),
+    render: (text, record) => {
+      return (
+        <div title="Documents" className={record.isOverdue ? "color-error" : ""}>
+          {text.map((sub) =>
+            sub.documents.map((doc) => (
+              <div>
+                <LinkButton
+                  key={doc.mine_document_guid}
+                  onClick={() => downloadFileFromDocumentManager(file)}
+                >
+                  {truncateFilename(doc.document_name)}
+                </LinkButton>
+              </div>
+            ))
+          ) || Strings.EMPTY_FIELD}
+        </div>
+      );
+    },
   },
   {
     title: "",
@@ -123,10 +127,7 @@ const columns = [
 const transformRowData = (report, openEditReportModal, handleEditReport, handleRemoveReport) => ({
   key: report.report_guid,
   report,
-  report_name: report.report_name,
-  due_date: report.due_date,
-  received_date: report.received_date,
-  submission_year: report.submission_year,
+  ...report,
   openEditReportModal,
   handleEditReport,
   handleRemoveReport,

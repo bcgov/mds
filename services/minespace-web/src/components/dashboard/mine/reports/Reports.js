@@ -9,6 +9,7 @@ import PropTypes from "prop-types";
 import { getMine } from "@/selectors/userMineSelectors";
 import CustomPropTypes from "@/customPropTypes";
 import { fetchMineRecordById } from "@/actionCreators/userDashboardActionCreator";
+import moment from "moment";
 import {
   createMineReport,
   fetchMineReports,
@@ -59,9 +60,13 @@ export class Reports extends Component {
   }
 
   handleAddReport = (values) => {
-    console.log(values);
+    const formValues = {
+      received_date: moment().format("YYYY-MM-DD"),
+      ...values,
+    };
+
     this.props
-      .createMineReport(this.props.mine.mine_guid, values)
+      .createMineReport(this.props.mine.mine_guid, formValues)
       .then(() => this.props.closeModal())
       .then(() => this.props.fetchMineReports(this.props.mine.mine_guid));
   };
