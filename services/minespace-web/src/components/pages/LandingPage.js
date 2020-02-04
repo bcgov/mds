@@ -83,48 +83,54 @@ export const LandingPage = () => (
         </Row>
       </Col>
       <Col sm={{ span: 24 }} xl={{ span: 9, offset: 1 }} xxl={{ span: 8, offset: 3 }}>
-        <Card title="Do you have a BCeID?">
-          <Row>
-            <Col>
-              <Paragraph>
-                In order to access MineSpace, you need to register for a Business or Personal BCeID.
-                It can take several weeks to process the request, so give yourself plenty of lead
-                time.
-              </Paragraph>
-              <Paragraph>
-                Once you have your BCeID, you can add employees and delegates. You can request that
-                anyone added to your Business BCeID account be given access to MineSpace.
-              </Paragraph>
-            </Col>
-          </Row>
-          <Row type="flex" justify="center">
-            <Col>
-              <a
-                href="https://www.bceid.ca/register/business/getting_started/getting_started.aspx"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Button type="primary" size="large">
-                  Get a BCeID
-                </Button>
-              </a>
-            </Col>
-          </Row>
-        </Card>
-        <Card title="Questions?">
-          <Row>
-            <Col>
-              <Paragraph>
-                Please let us know about any questions or comments you have regarding your
-                experience using MineSpace.
-              </Paragraph>
-              <Paragraph>
-                Email us at&nbsp;
-                <a href={`mailto:${Strings.MDS_EMAIL}`}>{Strings.MDS_EMAIL}</a>.
-              </Paragraph>
-            </Col>
-          </Row>
-        </Card>
+        <Row gutter={[0, 16]}>
+          <Col>
+            <Card title="Do you have a BCeID?">
+              <Row>
+                <Col>
+                  <Paragraph>
+                    In order to access MineSpace, you need to register for a Business or Personal
+                    BCeID. It can take several weeks to process the request, so give yourself plenty
+                    of lead time.
+                  </Paragraph>
+                  <Paragraph>
+                    Once you have your BCeID, you can add employees and delegates. You can request
+                    that anyone added to your Business BCeID account be given access to MineSpace.
+                  </Paragraph>
+                </Col>
+              </Row>
+              <Row type="flex" justify="center">
+                <Col>
+                  <a
+                    href="https://www.bceid.ca/register/business/getting_started/getting_started.aspx"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <Button type="primary" size="large">
+                      Get a BCeID
+                    </Button>
+                  </a>
+                </Col>
+              </Row>
+            </Card>
+          </Col>
+          <Col>
+            <Card title="Questions?">
+              <Row>
+                <Col>
+                  <Paragraph>
+                    Please let us know about any questions or comments you have regarding your
+                    experience using MineSpace.
+                  </Paragraph>
+                  <Paragraph>
+                    Email us at&nbsp;
+                    <a href={`mailto:${Strings.MDS_EMAIL}`}>{Strings.MDS_EMAIL}</a>.
+                  </Paragraph>
+                </Col>
+              </Row>
+            </Card>
+          </Col>
+        </Row>
       </Col>
     </Row>
   </div>
