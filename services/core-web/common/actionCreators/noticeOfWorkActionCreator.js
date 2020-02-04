@@ -40,14 +40,11 @@ export const fetchNoticeOfWorkApplications = (params = {}) => (dispatch) => {
     .finally(() => dispatch(hideLoading()));
 };
 
-export const fetchMineNoticeOfWorkApplications = (mineGuid) => (dispatch) => {
+export const fetchMineNoticeOfWorkApplications = (params = {}) => (dispatch) => {
   dispatch(request(reducerTypes.GET_MINE_NOTICE_OF_WORK_APPLICATIONS));
   dispatch(showLoading());
   return CustomAxios()
-    .get(
-      `${ENVIRONMENT.apiUrl}${API.NOTICE_OF_WORK_APPLICATIONS({ mine_guid: mineGuid })}`,
-      createRequestHeader()
-    )
+    .get(`${ENVIRONMENT.apiUrl}${API.NOTICE_OF_WORK_APPLICATIONS(params)}`, createRequestHeader())
     .then((response) => {
       dispatch(success(reducerTypes.GET_MINE_NOTICE_OF_WORK_APPLICATIONS));
       dispatch(noticeOfWorkActions.storeMineNoticeOfWorkApplications(response.data));
