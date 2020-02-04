@@ -6,6 +6,8 @@ import { bindActionCreators } from "redux";
 import { fetchMineRecordById } from "@common/actionCreators/mineActionCreator";
 import { fetchPartyRelationships } from "@common/actionCreators/partiesActionCreator";
 import { getMine } from "@/selectors/userMineSelectors";
+import { getStaticContentLoadingIsComplete } from "@common/selectors/staticContentSelectors";
+import * as staticContent from "@common/actionCreators/staticContentActionCreator";
 import CustomPropTypes from "@/customPropTypes";
 import Loading from "@/components/common/Loading";
 import Overview from "@/components/dashboard/mine/overview/Overview";
@@ -29,6 +31,8 @@ const propTypes = {
     },
   }).isRequired,
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
+  staticContentLoadingIsComplete: PropTypes.bool.isRequired,
+  dispatch: PropTypes.func.isRequired,
 };
 
 const defaultProps = {};
@@ -54,7 +58,17 @@ export class MineDashboard extends Component {
     if (activeTab !== this.state.activeTab) {
       this.setState({ activeTab });
     }
+    if (!nextProps.staticContentLoadingIsComplete) {
+      this.loadStaticContent();
+    }
   }
+
+  loadStaticContent = () => {
+    const staticContentActionCreators = Object.getOwnPropertyNames(staticContent).filter(
+      (property) => typeof staticContent[property] === "function"
+    );
+    staticContentActionCreators.forEach((action) => this.props.dispatch(staticContent[action]()));
+  };
 
   handleTabChange = (activeTab) => {
     this.setState({ activeTab });
@@ -66,7 +80,7 @@ export class MineDashboard extends Component {
 
   render() {
     return (
-      (this.state.isLoaded && (
+      (this.state.isLoaded && this.props.staticContentLoadingIsComplete && (
         <Row>
           <Col>
             <Row gutter={[0, 48]}>
@@ -119,16 +133,19 @@ export class MineDashboard extends Component {
 
 const mapStateToProps = (state) => ({
   mine: getMine(state),
+  staticContentLoadingIsComplete: getStaticContentLoadingIsComplete(state),
 });
 
-const mapDispatchToProps = (dispatch) =>
-  bindActionCreators(
+const mapDispatchToProps = (dispatch) => ({
+  dispatch,
+  ...bindActionCreators(
     {
       fetchMineRecordById,
       fetchPartyRelationships,
     },
     dispatch
-  );
+  ),
+});
 
 MineDashboard.propTypes = propTypes;
 MineDashboard.defaultProps = defaultProps;

@@ -4,6 +4,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
+import moment from "moment";
 import PropTypes from "prop-types";
 import { Row, Col, Card, Descriptions, Typography } from "antd";
 import {
@@ -70,8 +71,6 @@ export class Overview extends Component {
   }
 
   render() {
-    console.log(this.props);
-    // Get the mine's mine manager.
     const mineManagers = this.props.partyRelationships
       ? this.props.partyRelationships.filter(
           (pr) => pr.mine_party_appt_type_code === "MMG" && isActive(pr)
