@@ -324,53 +324,54 @@ environments {
             }
             resources {
                 node {
-                    cpu_request = "10m"
-                    cpu_limit = "20m"
-                    memory_request = "64Mi"
-                    memory_limit = "160Mi"
-                    replica_min = 1
-                    replica_max = 1
+                    cpu_request = "20m"
+                    cpu_limit = "100m"
+                    memory_request = "160Mi"
+                    memory_limit = "256Mi"
+                    replica_min = 2
+                    replica_max = 4
                 }
                 nginx {
                     cpu_request = "10m"
-                    cpu_limit = "20m"
-                    memory_request = "64Mi"
-                    memory_limit = "104Mi"
-                    replica_min = 1
-                    replica_max = 1
+                    cpu_limit = "50m"
+                    memory_request = "96Mi"
+                    memory_limit = "160Mi"
+                    replica_min = 3
+                    replica_max = 6
                 }
                 python {
-                    cpu_request = "50m"
-                    cpu_limit = "100m"
-                    memory_request = "256Mi"
-                    memory_limit = "512Mi"
-                    uwsgi_threads = 4
-                    uwsgi_processes = 2
-                    replica_min = 1
-                    replica_max = 1
+                    cpu_request = "100m"
+                    cpu_limit = "200m"
+                    memory_request = "512Mi"
+                    memory_limit = "2Gi"
+                    uwsgi_threads = 2
+                    uwsgi_processes = 4
+                    replica_min = 2
+                    replica_max = 4
                 }
                 python_lite {
                     cpu_request = "10m"
-                    cpu_limit = "100m"
-                    memory_request = "128Mi"
-                    memory_limit = "256Mi"
+                    cpu_limit = "200m"
+                    memory_request = "512Mi"
+                    memory_limit = "1Gi"
                     uwsgi_threads = 2
-                    uwsgi_processes = 1
-                    replica_min = 1
-                    replica_max = 1
+                    uwsgi_processes = 4
+                    replica_min = 2
+                    replica_max = 4
                 }
                 postgres {
-                    cpu_request = "50m"
-                    cpu_limit = "100m"
-                    memory_request = "256Mi"
-                    memory_limit = "512Mi"
+                    cpu_request = "200m"
+                    cpu_limit = "1"
+                    memory_request = "1.5Gi"
+                    memory_limit = "4Gi"
                 }
                 redis {
                     cpu_request = "10m"
-                    cpu_limit = "20m"
-                    memory_request = "16Mi"
-                    memory_limit = "32Mi"
-                }/*
+                    cpu_limit = "100m"
+                    memory_request = "64Mi"
+                    memory_limit = "512Mi"
+                }
+                /*
                 backup {
                     cpu_request = "0"
                     cpu_limit = "0"
