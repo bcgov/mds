@@ -48,22 +48,13 @@ exports[`Reports renders properly 1`] = `
       </Col>
     </Row>
     <Row
-      gutter={
-        Array [
-          Object {
-            "lg": 0,
-            "xl": 32,
-          },
-          32,
-        ]
-      }
+      gutter={16}
       justify="space-around"
       type="flex"
     >
       <Col
-        lg={24}
-        xl={8}
-        xxl={6}
+        lg={8}
+        md={24}
       >
         <TableSummaryCard
           content="6"
@@ -73,9 +64,8 @@ exports[`Reports renders properly 1`] = `
         />
       </Col>
       <Col
-        lg={24}
-        xl={8}
-        xxl={6}
+        lg={8}
+        md={24}
       >
         <TableSummaryCard
           content="6"
@@ -85,9 +75,8 @@ exports[`Reports renders properly 1`] = `
         />
       </Col>
       <Col
-        lg={24}
-        xl={8}
-        xxl={6}
+        lg={8}
+        md={24}
       >
         <TableSummaryCard
           content="6"
