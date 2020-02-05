@@ -60,11 +60,10 @@ export class Reports extends Component {
   }
 
   handleAddReport = (values) => {
-    const formValues = {
-      received_date: moment().format("YYYY-MM-DD"),
-      ...values,
-    };
-
+    let formValues = values;
+    if (values.mine_report_submissions !== undefined) {
+      formValues.received_date = moment().format("YYYY-MM-DD");
+    }
     this.props
       .createMineReport(this.props.mine.mine_guid, formValues)
       .then(() => this.props.closeModal())
