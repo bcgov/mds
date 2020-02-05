@@ -16,6 +16,14 @@ const columns = [
   { title: "Last Amended", dataIndex: "last_amended", key: "last_amended", sorter: true },
 ];
 
+const expandedColumns = [];
+
+const transformRowData = (permit) => {
+  key: permit.permit_guid;
+};
+
+const transformExpandedRowData = (permit) => {};
+
 export const PermitsTable = (props) => (
   <Table
     size="small"
