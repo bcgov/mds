@@ -1,9 +1,11 @@
 import React from "react";
 import { Table } from "antd";
 import PropTypes from "prop-types";
+import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
   isLoaded: PropTypes.bool.isRequired,
+  permits: PropTypes.arrayOf(CustomPropTypes.permit).isRequired,
 };
 
 const columns = [
@@ -14,16 +16,14 @@ const columns = [
   { title: "Last Amended", dataIndex: "last_amended", key: "last_amended", sorter: true },
 ];
 
-const data = [];
-
 export const PermitsTable = (props) => (
   <Table
     size="small"
     pagination={false}
     loading={!props.isLoaded}
     columns={columns}
-    expandedRowRender={(record) => <p>{record.description}</p>}
-    dataSource={data}
+    // expandedRowRender={(record) => <p>{record.description}</p>}
+    dataSource={props.permits}
     locale={{ emptyText: "This mine has no permit data." }}
   />
 );
