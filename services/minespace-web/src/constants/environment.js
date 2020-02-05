@@ -9,27 +9,6 @@ export const DEFAULT_ENVIRONMENT = {
   siteminder_url: "https://logontest.gov.bc.ca",
 };
 
-export const ENVIRONMENT = {
-  apiUrl: "<API_URL>",
-  docManUrl: "<DOCUMENT_MANAGER_URL>",
-  environment: "development",
-};
-
-export const KEYCLOAK = {
-  realm: "mds",
-  "ssl-required": "external",
-  resource: "<RESOURCE>",
-  "public-client": true,
-  "confidential-port": 0,
-  clientId: "<CLIENT_ID>",
-  idpHint: "local",
-  loginURL: "<URL>",
-  tokenURL: "<URL>",
-  userInfoURL: "<URL>",
-  keycloakLogoutURL: "<URL>",
-  siteMinderLogoutURL: "<URL>",
-};
-
 const WINDOW_LOCATION = `${window.location.origin}${process.env.BASE_PATH}`;
 export const BCEID_LOGIN_REDIRECT_URI = `${WINDOW_LOCATION}/return-page?type=login`;
 export const KEYCLOAK_LOGOUT_REDIRECT_URI = `${WINDOW_LOCATION}/return-page?type=logout`;

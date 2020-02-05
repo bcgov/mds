@@ -5,7 +5,7 @@ import { request, success, error } from "@/actions/genericActions";
 import * as userMineActions from "@/actions/userMineActions";
 import * as reducerTypes from "@/constants/reducerTypes";
 import * as API from "@/constants/API";
-import { ENVIRONMENT } from "@/constants/environment";
+import { ENVIRONMENT } from "@common/constants/environment";
 import { createRequestHeader } from "@/utils/RequestHeaders";
 
 export const fetchUserMineInfo = () => (dispatch) => {

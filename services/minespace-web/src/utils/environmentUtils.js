@@ -1,4 +1,4 @@
-import { ENVIRONMENT } from "@/constants/environment";
+import { ENVIRONMENT } from "@common/constants/environment";
 
 /**
  * detect IE
