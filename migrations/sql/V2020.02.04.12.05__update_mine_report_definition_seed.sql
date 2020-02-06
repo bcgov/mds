@@ -1,0 +1,1 @@
+UPDATE mine_report_definition SET active_ind='false' where report_name='Appeal to CIM Report';
