@@ -9,7 +9,7 @@ import PropTypes from "prop-types";
 import { getMine } from "@/selectors/userMineSelectors";
 import CustomPropTypes from "@/customPropTypes";
 import { fetchMineRecordById } from "@/actionCreators/userDashboardActionCreator";
-import moment, { months } from "moment";
+import moment from "moment";
 import {
   createMineReport,
   fetchMineReports,

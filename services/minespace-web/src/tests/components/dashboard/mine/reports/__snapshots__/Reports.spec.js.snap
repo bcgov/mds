@@ -48,45 +48,6 @@ exports[`Reports renders properly 1`] = `
       </Col>
     </Row>
     <Row
-      gutter={16}
-      justify="space-around"
-      type="flex"
-    >
-      <Col
-        lg={8}
-        md={24}
-      >
-        <TableSummaryCard
-          content="6"
-          icon="check-circle"
-          title="Reports Submitted"
-          type="success"
-        />
-      </Col>
-      <Col
-        lg={8}
-        md={24}
-      >
-        <TableSummaryCard
-          content="6"
-          icon="clock-circle"
-          title="Reports Due"
-          type="error"
-        />
-      </Col>
-      <Col
-        lg={8}
-        md={24}
-      >
-        <TableSummaryCard
-          content="6"
-          icon="exclamation-circle"
-          title="Reports Overdue"
-          type="warning"
-        />
-      </Col>
-    </Row>
-    <Row
       gutter={0}
     >
       <Col>
