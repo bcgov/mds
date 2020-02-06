@@ -1,5 +1,6 @@
 import MockAdapter from "axios-mock-adapter";
 import axios from "axios";
+import { ENVIRONMENT } from "@common/constants/environment";
 import {
   createVariance,
   fetchVariancesByMine,
@@ -13,7 +14,6 @@ import {
 import * as genericActions from "@/actions/genericActions";
 import * as API from "@/constants/API";
 import * as MOCK from "@/tests/mocks/dataMocks";
-import { ENVIRONMENT } from "@/constants/environment";
 
 const dispatch = jest.fn();
 const requestSpy = jest.spyOn(genericActions, "request");
@@ -40,7 +40,10 @@ describe("`createVariance` action creator", () => {
   it("Request successful, dispatches `success` with correct response", () => {
     const mockResponse = { data: { success: true } };
     mockAxios.onPost(url).reply(200, mockResponse);
-    return createVariance({ mineGuid, mineName }, mockPayload)(dispatch).then(() => {
+    return createVariance(
+      { mineGuid, mineName },
+      mockPayload
+    )(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
@@ -49,7 +52,10 @@ describe("`createVariance` action creator", () => {
 
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onPost(url).reply(400, MOCK.ERROR);
-    return createVariance({ mineGuid, mineName }, mockPayload)(dispatch).then(() => {
+    return createVariance(
+      { mineGuid, mineName },
+      mockPayload
+    )(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
@@ -118,7 +124,10 @@ describe("`updateVariance` action creator", () => {
   it("Request successful, dispatches `success` with correct response", () => {
     const mockResponse = { data: { success: true } };
     mockAxios.onPut(url).reply(200, mockResponse);
-    return updateVariance({ mineGuid, varianceGuid, codeLabel }, mockPayload)(dispatch).then(() => {
+    return updateVariance(
+      { mineGuid, varianceGuid, codeLabel },
+      mockPayload
+    )(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
@@ -127,7 +136,10 @@ describe("`updateVariance` action creator", () => {
 
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onPut(url).reply(400, MOCK.ERROR);
-    return updateVariance({ mineGuid, varianceGuid, codeLabel }, mockPayload)(dispatch).then(() => {
+    return updateVariance(
+      { mineGuid, varianceGuid, codeLabel },
+      mockPayload
+    )(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
@@ -146,7 +158,10 @@ describe("`addDocumentToVariance` action creator", () => {
   it("Request successful, dispatches `success` with correct response", () => {
     const mockResponse = { data: { success: true } };
     mockAxios.onPut(url).reply(200, mockResponse);
-    return addDocumentToVariance({ mineGuid, varianceGuid }, mockPayload)(dispatch).then(() => {
+    return addDocumentToVariance(
+      { mineGuid, varianceGuid },
+      mockPayload
+    )(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
@@ -155,7 +170,10 @@ describe("`addDocumentToVariance` action creator", () => {
 
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onPut(url).reply(400, MOCK.ERROR);
-    return addDocumentToVariance({ mineGuid, varianceGuid }, mockPayload)(dispatch).then(() => {
+    return addDocumentToVariance(
+      { mineGuid, varianceGuid },
+      mockPayload
+    )(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);

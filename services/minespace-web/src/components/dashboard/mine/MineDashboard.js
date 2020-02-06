@@ -3,7 +3,10 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Row, Col, Tabs, Typography } from "antd";
 import { bindActionCreators } from "redux";
-import { fetchMineRecordById } from "@/actionCreators/userDashboardActionCreator";
+import { fetchMineRecordById } from "@common/actionCreators/mineActionCreator";
+import { fetchPartyRelationships } from "@common/actionCreators/partiesActionCreator";
+import { getStaticContentLoadingIsComplete } from "@common/selectors/staticContentSelectors";
+import * as staticContent from "@common/actionCreators/staticContentActionCreator";
 import { getMine } from "@/selectors/userMineSelectors";
 import CustomPropTypes from "@/customPropTypes";
 import Loading from "@/components/common/Loading";
@@ -14,12 +17,14 @@ import Inspections from "@/components/dashboard/mine/inspections/Inspections";
 import Incidents from "@/components/dashboard/mine/incidents/Incidents";
 import Reports from "@/components/dashboard/mine/reports/Reports";
 import * as router from "@/constants/routes";
+import * as Strings from "@/constants/strings";
 
 const { Title } = Typography;
 const { TabPane } = Tabs;
 
 const propTypes = {
   fetchMineRecordById: PropTypes.func.isRequired,
+  fetchPartyRelationships: PropTypes.func.isRequired,
   mine: CustomPropTypes.mine.isRequired,
   match: PropTypes.shape({
     params: {
@@ -27,6 +32,8 @@ const propTypes = {
     },
   }).isRequired,
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
+  staticContentLoadingIsComplete: PropTypes.bool.isRequired,
+  dispatch: PropTypes.func.isRequired,
 };
 
 const defaultProps = {};
@@ -38,6 +45,7 @@ export class MineDashboard extends Component {
 
   componentDidMount() {
     const { id, activeTab } = this.props.match.params;
+    this.props.fetchPartyRelationships({ mine_guid: id, relationships: "party" });
     if (activeTab) {
       this.setState({ activeTab });
     }
@@ -51,7 +59,17 @@ export class MineDashboard extends Component {
     if (activeTab !== this.state.activeTab) {
       this.setState({ activeTab });
     }
+    if (!nextProps.staticContentLoadingIsComplete) {
+      this.loadStaticContent();
+    }
   }
+
+  loadStaticContent = () => {
+    const staticContentActionCreators = Object.getOwnPropertyNames(staticContent).filter(
+      (property) => typeof staticContent[property] === "function"
+    );
+    staticContentActionCreators.forEach((action) => this.props.dispatch(staticContent[action]()));
+  };
 
   handleTabChange = (activeTab) => {
     this.setState({ activeTab });
@@ -63,16 +81,16 @@ export class MineDashboard extends Component {
 
   render() {
     return (
-      (this.state.isLoaded && (
+      (this.state.isLoaded && this.props.staticContentLoadingIsComplete && (
         <Row>
           <Col>
             <Row gutter={[0, 48]}>
               <Col>
                 <Title style={{ marginBottom: 8 }}>
-                  {this.props.mine.mine_name || "Mine Name"}
+                  {this.props.mine.mine_name || Strings.UNKNOWN}
                 </Title>
                 <Title level={4} style={{ margin: 0 }}>
-                  Mine Number: {this.props.mine.mine_no || "000000"}
+                  Mine Number: {this.props.mine.mine_no || Strings.UNKNOWN}
                 </Title>
               </Col>
             </Row>
@@ -116,15 +134,19 @@ export class MineDashboard extends Component {
 
 const mapStateToProps = (state) => ({
   mine: getMine(state),
+  staticContentLoadingIsComplete: getStaticContentLoadingIsComplete(state),
 });
 
-const mapDispatchToProps = (dispatch) =>
-  bindActionCreators(
+const mapDispatchToProps = (dispatch) => ({
+  dispatch,
+  ...bindActionCreators(
     {
       fetchMineRecordById,
+      fetchPartyRelationships,
     },
     dispatch
-  );
+  ),
+});
 
 MineDashboard.propTypes = propTypes;
 MineDashboard.defaultProps = defaultProps;

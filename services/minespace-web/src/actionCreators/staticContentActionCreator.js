@@ -1,13 +1,14 @@
 import axios from "axios";
+import { notification } from "antd";
+import { ENVIRONMENT } from "@common/constants/environment";
 import { request, success, error } from "@/actions/genericActions";
 import * as reducerTypes from "@/constants/reducerTypes";
 import * as staticContentActions from "@/actions/staticContentActions";
 import * as String from "@/constants/strings";
 import * as API from "@/constants/API";
-import { ENVIRONMENT } from "@/constants/environment";
 import { createRequestHeader } from "@/utils/RequestHeaders";
-import { getMineReportDefinitionOptions } from "@/selectors/staticContentSelectors";
 
+// eslint-disable-next-line import/prefer-default-export
 export const fetchMineReportDefinitionOptions = () => (dispatch) => {
   dispatch(request(reducerTypes.GET_MINE_REPORT_DEFINITION_OPTIONS));
   return axios

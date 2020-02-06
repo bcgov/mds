@@ -40,14 +40,11 @@ export const fetchNoticeOfWorkApplications = (params = {}) => (dispatch) => {
     .finally(() => dispatch(hideLoading()));
 };
 
-export const fetchMineNoticeOfWorkApplications = (mineGuid) => (dispatch) => {
+export const fetchMineNoticeOfWorkApplications = (params = {}) => (dispatch) => {
   dispatch(request(reducerTypes.GET_MINE_NOTICE_OF_WORK_APPLICATIONS));
   dispatch(showLoading());
   return CustomAxios()
-    .get(
-      `${ENVIRONMENT.apiUrl}${API.NOTICE_OF_WORK_APPLICATIONS({ mine_guid: mineGuid })}`,
-      createRequestHeader()
-    )
+    .get(`${ENVIRONMENT.apiUrl}${API.NOTICE_OF_WORK_APPLICATIONS(params)}`, createRequestHeader())
     .then((response) => {
       dispatch(success(reducerTypes.GET_MINE_NOTICE_OF_WORK_APPLICATIONS));
       dispatch(noticeOfWorkActions.storeMineNoticeOfWorkApplications(response.data));
@@ -78,7 +75,11 @@ export const createNoticeOfWorkApplication = (payload) => (dispatch) => {
     .finally(() => dispatch(hideLoading()));
 };
 
-export const importNoticeOfWorkApplication = (applicationGuid, payload) => (dispatch) => {
+export const importNoticeOfWorkApplication = (
+  applicationGuid,
+  payload,
+  message = "Successfully verified the Notice of Work's location"
+) => (dispatch) => {
   dispatch(request(reducerTypes.IMPORT_NOTICE_OF_WORK_APPLICATION));
   dispatch(showLoading());
   return CustomAxios()
@@ -88,6 +89,10 @@ export const importNoticeOfWorkApplication = (applicationGuid, payload) => (disp
       createRequestHeader()
     )
     .then((response) => {
+      notification.success({
+        message,
+        duration: 10,
+      });
       dispatch(success(reducerTypes.IMPORT_NOTICE_OF_WORK_APPLICATION));
       return response;
     })
@@ -132,7 +137,7 @@ export const fetchOriginalNoticeOfWorkApplication = (applicationGuid) => (dispat
 export const updateNoticeOfWorkApplication = (
   payload,
   nowApplicationGuid,
-  message = "Successsfully updated Notice of Work"
+  message = "Successfully updated Notice of Work"
 ) => (dispatch) => {
   dispatch(request(reducerTypes.UPDATE_NOTICE_OF_WORK_APPLICATION));
   dispatch(showLoading());
