@@ -58,132 +58,108 @@ export class HomePage extends Component {
         <div className="inline-flex justify-center block-mobile">
           <div className="link-card">
             <ul>
-              <li className="uppercase violet">External Links</li>
+              <li>External Links</li>
               <li>
-                <p>
-                  <a
-                    href="https://a100.gov.bc.ca/int/cvis/nris/nris.html"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Inspections (NRIS)
-                  </a>
-                </p>
+                <a
+                  href="https://a100.gov.bc.ca/int/cvis/nris/nris.html"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Inspections (NRIS)
+                </a>
               </li>
               <li>
-                <p>
-                  <a
-                    href="https://www2.gov.bc.ca/gov/content/data/geographic-data-services/web-based-mapping/imapbc"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    iMapBC
-                  </a>
-                </p>
+                <a
+                  href="https://www2.gov.bc.ca/gov/content/data/geographic-data-services/web-based-mapping/imapbc"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  iMapBC
+                </a>
               </li>
               <li>
-                <p>
-                  <a
-                    href="https://www2.gov.bc.ca/gov/content/industry/mineral-exploration-mining/mineral-titles/mineral-placer-titles/mineraltitlesonline"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Mineral Titles Online (MTO)
-                  </a>
-                </p>
+                <a
+                  href="https://www2.gov.bc.ca/gov/content/industry/mineral-exploration-mining/mineral-titles/mineral-placer-titles/mineraltitlesonline"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Mineral Titles Online (MTO)
+                </a>
               </li>
               <li>
-                <p>
-                  <a href="https://mines.nrs.gov.bc.ca/" target="_blank" rel="noopener noreferrer">
-                    Public Transparency Website (MMTI)
-                  </a>
-                </p>
+                <a href="https://mines.nrs.gov.bc.ca/" target="_blank" rel="noopener noreferrer">
+                  Public Transparency Website (MMTI)
+                </a>
               </li>
               <li>
-                <p>
-                  <a
-                    href="https://gww.nrs.gov.bc.ca/empr/mines-and-mineral-resources/inspector-mines-training"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Inspector of Mines Training
-                  </a>
-                </p>
+                <a
+                  href="https://gww.nrs.gov.bc.ca/empr/mines-and-mineral-resources/inspector-mines-training"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Inspector of Mines Training
+                </a>
               </li>
               <li>
-                <p>
-                  <a href="https://minfile.gov.bc.ca/" target="_blank" rel="noopener noreferrer">
-                    Mineral Inventory (MINFILE)
-                  </a>
-                </p>
+                <a href="https://minfile.gov.bc.ca/" target="_blank" rel="noopener noreferrer">
+                  Mineral Inventory (MINFILE)
+                </a>
               </li>
               <li>
-                <p>
-                  <a
-                    href="https://gww.nrs.gov.bc.ca/empr/mines-and-mineral-resources-division/mds-employee-info-resource-hub"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Project Information & Resources
-                  </a>
-                </p>
+                <a
+                  href="https://gww.nrs.gov.bc.ca/empr/mines-and-mineral-resources-division/mds-employee-info-resource-hub"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Project Information & Resources
+                </a>
               </li>
               <li>
-                <p>
-                  <a
-                    href="https://governmentofbc.maps.arcgis.com/apps/webappviewer/index.html?id=f024193c07a04a28b678170e1e2046f6"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    title="Not set up to use this? Contact the GIS team."
-                  >
-                    EMPR Inspection Mapper
-                  </a>
-                </p>
+                <a
+                  href="https://governmentofbc.maps.arcgis.com/apps/webappviewer/index.html?id=f024193c07a04a28b678170e1e2046f6"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  title="Not set up to use this? Contact the GIS team."
+                >
+                  EMPR Inspection Mapper
+                </a>
               </li>
               <li>
-                <p>
-                  <a
-                    href="https://nrm.sp.gov.bc.ca/sites/EMPR/mtb/_layouts/15/start.aspx#/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    EMPR Sharepoint Requests Portal
-                  </a>
-                </p>
+                <a
+                  href="https://nrm.sp.gov.bc.ca/sites/EMPR/mtb/_layouts/15/start.aspx#/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  EMPR Sharepoint Requests Portal
+                </a>
               </li>
             </ul>
           </div>
           <div className="link-card">
             <ul>
-              <li className="uppercase violet">Documents</li>
+              <li>Documents</li>
               <li>
-                <p>
-                  <a href={HSRC_PDF} target="_blank" rel="noopener noreferrer">
-                    Health, Safety and Reclamation Code
-                  </a>
-                </p>
+                <a href={HSRC_PDF} target="_blank" rel="noopener noreferrer">
+                  Health, Safety and Reclamation Code
+                </a>
               </li>
               <li>
-                <p>
-                  <a
-                    href="https://www2.gov.bc.ca/gov/content/industry/mineral-exploration-mining/further-information/reports-publications/chief-inspector-s-annual-reports"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Chief Inspectors Annual Report
-                  </a>
-                </p>
+                <a
+                  href="https://www2.gov.bc.ca/gov/content/industry/mineral-exploration-mining/further-information/reports-publications/chief-inspector-s-annual-reports"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Chief Inspector&apos;s Annual Report
+                </a>
               </li>
               <li>
-                <p>
-                  <a
-                    href="https://www2.gov.bc.ca/gov/content/industry/mineral-exploration-mining/further-information/directives-alerts-incident-information/chief-inspector-directives"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Chief Inspectors Directives
-                  </a>
-                </p>
+                <a
+                  href="https://www2.gov.bc.ca/gov/content/industry/mineral-exploration-mining/further-information/directives-alerts-incident-information/chief-inspector-directives"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Chief Inspector&apos;s Directives
+                </a>
               </li>
             </ul>
           </div>
