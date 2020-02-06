@@ -51,11 +51,12 @@ export class HeaderDropdown extends Component {
             <Link to={route.MINES.route}>My Mines</Link>
           </Button>
         </Menu.Item>
-        <Menu.Item key="users">
+        {/* Disabled until we implement this */}
+        {/* <Menu.Item key="users">
           <Button className="header-dropdown-item-button">
             <Link to={route.USERS.route}>My Users</Link>
           </Button>
-        </Menu.Item>
+        </Menu.Item> */}
         <Divider className="bg-color-table-seperator" style={{ margin: 0 }} />
         {menuItemLogout}
       </Menu>
@@ -82,9 +83,10 @@ export class HeaderDropdown extends Component {
           <Link to={route.MINES.route} className={this.setActiveLink(route.MINES.route)}>
             My Mines
           </Link>
-          <Link to={route.USERS.route} className={this.setActiveLink(route.USERS.route)}>
+          {/* Disabled until we implement this */}
+          {/* <Link to={route.USERS.route} className="header-link">
             My Users
-          </Link>
+          </Link> */}
           <Dropdown overlay={dropdownMenuDesktop}>
             <Button className="header-dropdown-button">
               {this.props.userInfo.email}
