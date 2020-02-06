@@ -1,9 +1,9 @@
 import { KEYCLOAK } from "@common/constants/environment";
+import { signOutFromSSO, signOutFromSiteMinder } from "@/utils/authenticationHelpers";
 import {
   KEYCLOAK_LOGOUT_REDIRECT_URI,
   SITEMINDER_LOGOUT_REDIRECT_URI,
 } from "@/constants/environment";
-import { signOutFromSSO, signOutFromSiteMinder } from "@/utils/authenticationHelpers";
 
 describe("`signOutFromSSO` function", () => {
   jest.spyOn(window, "open");

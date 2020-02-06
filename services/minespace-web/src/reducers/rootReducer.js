@@ -7,6 +7,7 @@ import {
   partiesReducer,
   permitReducer,
   incidentReducer,
+  reportReducer,
   modalReducer,
 } from "@common/reducers";
 import networkReducer from "./networkReducer";
@@ -14,7 +15,6 @@ import * as reducerTypes from "@/constants/reducerTypes";
 import authenticationReducer from "@/reducers/authenticationReducer";
 import userMineReducer from "@/reducers/userMineReducer";
 import varianceReducer from "@/reducers/varianceReducer";
-import reportReducer from "./reportReducer";
 
 // Function to create a reusable reducer (used in src/reducers/rootReducer)
 export const createReducer = (reducer, name) => (state, action) => {
@@ -31,6 +31,7 @@ export const reducerObject = {
   [reducerTypes.USER_MINE_INFO]: userMineReducer,
   [reducerTypes.VARIANCES]: varianceReducer,
   [reducerTypes.REPORTS]: reportReducer,
+  ...reportReducer,
   ...staticContentReducer,
   ...modalReducer,
   ...mineReducer,

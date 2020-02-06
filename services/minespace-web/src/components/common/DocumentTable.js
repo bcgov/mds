@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Table, Icon, Popconfirm, Button } from "antd";
+import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
 import CustomPropTypes from "@/customPropTypes";
 import { formatDate } from "@/utils/helpers";
-import downloadFileFromDocumentManager from "@/utils/actionlessNetworkCalls";
 import * as Strings from "@/constants/strings";
 
 const propTypes = {
