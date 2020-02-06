@@ -2,7 +2,6 @@
 
 exports[`ModalWrapper renders properly 1`] = `
 <Modal
-  centered={true}
   closable={false}
   confirmLoading={false}
   footer={null}

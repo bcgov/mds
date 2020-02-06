@@ -28,7 +28,6 @@ exports[`MineVarianceTable renders properly 1`] = `
           "dataIndex": "is_overdue",
           "render": [Function],
           "title": "",
-          "width": 10,
         },
         Object {
           "dataIndex": "variance_id",
@@ -36,7 +35,6 @@ exports[`MineVarianceTable renders properly 1`] = `
           "sortField": "variance_id",
           "sorter": false,
           "title": "Number",
-          "width": 150,
         },
         Object {
           "className": "column-hide",
@@ -45,7 +43,6 @@ exports[`MineVarianceTable renders properly 1`] = `
           "sortField": "mine_name",
           "sorter": false,
           "title": "Mine",
-          "width": 150,
         },
         Object {
           "dataIndex": "compliance_article_id",
@@ -53,7 +50,6 @@ exports[`MineVarianceTable renders properly 1`] = `
           "sortField": "compliance_article_id",
           "sorter": false,
           "title": "Code",
-          "width": 150,
         },
         Object {
           "dataIndex": "lead_inspector",
@@ -61,7 +57,6 @@ exports[`MineVarianceTable renders properly 1`] = `
           "sortField": "lead_inspector",
           "sorter": false,
           "title": "Lead Inspector",
-          "width": 150,
         },
         Object {
           "className": "column-hide",
@@ -70,7 +65,6 @@ exports[`MineVarianceTable renders properly 1`] = `
           "sortField": "received_date",
           "sorter": false,
           "title": "Submission Date",
-          "width": 150,
         },
         Object {
           "className": "column-hide",
@@ -79,7 +73,6 @@ exports[`MineVarianceTable renders properly 1`] = `
           "sortField": "variance_application_status_code",
           "sorter": false,
           "title": "Application Status",
-          "width": 150,
         },
         Object {
           "className": "",
@@ -88,7 +81,6 @@ exports[`MineVarianceTable renders properly 1`] = `
           "sortField": "issue_date",
           "sorter": false,
           "title": "Issue Date",
-          "width": 150,
         },
         Object {
           "className": "",
@@ -97,26 +89,22 @@ exports[`MineVarianceTable renders properly 1`] = `
           "sortField": "expiry_date",
           "sorter": false,
           "title": "Expiry Date",
-          "width": 150,
         },
         Object {
           "className": "",
           "dataIndex": "",
           "render": [Function],
           "title": "Approval Status",
-          "width": 150,
         },
         Object {
           "dataIndex": "documents",
           "render": [Function],
           "title": "Documents",
-          "width": 150,
         },
         Object {
           "dataIndex": "variance",
           "render": [Function],
           "title": "",
-          "width": 150,
         },
       ]
     }

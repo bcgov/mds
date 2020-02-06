@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import { Menu, Dropdown, Button, Icon, Divider } from "antd";
 import MediaQuery from "react-responsive";
 import PropTypes from "prop-types";
@@ -19,6 +19,7 @@ import { MENU } from "@/constants/assets";
 const propTypes = {
   isAuthenticated: PropTypes.bool.isRequired,
   userInfo: PropTypes.objectOf(PropTypes.string),
+  location: PropTypes.shape({ pathname: PropTypes.string }).isRequired,
 };
 
 const defaultProps = {
@@ -28,6 +29,10 @@ const defaultProps = {
 export class HeaderDropdown extends Component {
   handleLogout = () => {
     signOutFromSiteMinder();
+  };
+
+  setActiveLink = (pathname) => {
+    return this.props.location.pathname === pathname ? "header-link active" : "header-link";
   };
 
   render() {
@@ -75,7 +80,7 @@ export class HeaderDropdown extends Component {
     return (
       <span>
         <MediaQuery minWidth={smallestDesktopWidth}>
-          <Link to={route.MINES.route} className="header-link">
+          <Link to={route.MINES.route} className={this.setActiveLink(route.MINES.route)}>
             My Mines
           </Link>
           {/* Disabled until we implement this */}
@@ -109,4 +114,4 @@ const mapStateToProps = (state) => ({
 HeaderDropdown.propTypes = propTypes;
 HeaderDropdown.defaultProps = defaultProps;
 
-export default connect(mapStateToProps)(HeaderDropdown);
+export default withRouter(connect(mapStateToProps)(HeaderDropdown));
