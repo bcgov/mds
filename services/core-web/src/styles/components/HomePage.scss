@@ -2,13 +2,12 @@
   background-size: cover;
   min-height: 100vh;
   height: 100%;
+  overflow: hidden;
 }
 
 .link-card {
-  margin: 20px;
   background-color: $pure-white;
   border-top: 6px solid $violet;
-  width: 390px;
   border-radius: 5px;
 
   ul {
@@ -41,30 +40,16 @@
       }
     }
   }
-
-  @include mobile {
-    width: 90vw;
-  }
 }
 
 .metabase-card {
-  margin: 20px;
-  padding: 0;
-  width: fit-content;
-  background-color: white;
+  background-color: $pure-white;
   border-top: 6px solid $violet;
   border-radius: 5px;
 }
 
 .search-container {
-  width: 50vw;
-  height: 300px;
-  position: relative;
-  top: 60px;
-  margin: 0 auto;
-  @include mobile {
-    top: 0;
-  }
+  padding-top: 60px;
 
   h1,
   p {
