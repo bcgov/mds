@@ -147,7 +147,6 @@ export class Reports extends Component {
               <Col md={24} lg={8}>
                 <TableSummaryCard
                   title="Reports Submitted"
-                  // TODO: Display the amount of submitted reports.
                   content={this.state.reportsSubmitted}
                   icon="check-circle"
                   type="success"
@@ -156,7 +155,6 @@ export class Reports extends Component {
               <Col md={24} lg={8}>
                 <TableSummaryCard
                   title="Reports Due"
-                  // TODO: Display the amount of reports that are overdue.
                   content={this.state.reportsDue}
                   icon="clock-circle"
                   type="error"

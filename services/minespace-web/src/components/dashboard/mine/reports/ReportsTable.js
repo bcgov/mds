@@ -66,25 +66,21 @@ const columns = [
       </div>
     ),
   },
-  // NOTE: This is a newly requested column. Brian: "Update table to include this for both
-  // gov and industry - this is available data MM"
   {
     title: "Requested By",
     dataIndex: "created_by_idir",
     key: "created_by_idir",
-    // sorter: (a, b) => (moment(a.received_date) > moment(b.received_date) ? -1 : 1),
+    sorter: (a, b) => a.created_by_idir.localeCompare(b.created_by_idir),
     render: (text, record) => (
       <div title="Requested By" className={record.isOverdue ? "color-error" : ""}>
         {text || Strings.EMPTY_FIELD}
       </div>
     ),
   },
-  // NOTE: This is a newly requested column.
   {
     title: "Documents",
     dataIndex: "mine_report_submissions",
     key: "mine_report_submissions",
-    // sorter: (a, b) => (moment(a.received_date) > moment(b.received_date) ? -1 : 1),
     render: (text, record) => {
       return (
         <div title="Documents" className={record.isOverdue ? "color-error" : ""}>
