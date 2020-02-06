@@ -120,14 +120,6 @@ export class Reports extends Component {
         <Col>
           <Row>
             <Col>
-              <Button
-                style={{ display: "inline", float: "right" }}
-                type="primary"
-                onClick={(event) => this.openAddReportModal(event, this.props.mine.mine_name)}
-              >
-                <Icon type="plus-circle" theme="filled" />
-                Submit Report
-              </Button>
               <Title level={4}>Reports</Title>
               <Paragraph>
                 This table shows&nbsp;
@@ -162,6 +154,19 @@ export class Reports extends Component {
               </Col>
             </Row>
           )}
+          <br />
+          <Row gutter={[16, 0]}>
+            <Col>
+              <Button
+                style={{ display: "inline", float: "right" }}
+                type="primary"
+                onClick={(event) => this.openAddReportModal(event, this.props.mine.mine_name)}
+              >
+                <Icon type="plus-circle" theme="filled" />
+                Submit Report
+              </Button>
+            </Col>
+          </Row>
           <Row>
             <Col>
               <ReportsTable
