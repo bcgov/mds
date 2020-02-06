@@ -48,6 +48,7 @@ const columns = [
     dataIndex: "lastAmended",
     key: "lastAmended",
     sorter: (a, b) => (moment(a.lastAmended) > moment(b.lastAmended) ? -1 : 1),
+    defaultSortOrder: "descend",
   },
 ];
 
