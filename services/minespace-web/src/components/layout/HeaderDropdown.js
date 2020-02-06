@@ -32,7 +32,6 @@ export class HeaderDropdown extends Component {
   };
 
   setActiveLink = (pathname) => {
-    console.log(this.props.location);
     return this.props.location.pathname === pathname ? "header-link active" : "header-link";
   };
 
@@ -80,10 +79,10 @@ export class HeaderDropdown extends Component {
     return (
       <span>
         <MediaQuery minWidth={smallestDesktopWidth}>
-          <Link to={route.MINES.route} className={this.setActiveLink("/mines")}>
+          <Link to={route.MINES.route} className={this.setActiveLink(route.MINES.route)}>
             My Mines
           </Link>
-          <Link to={route.USERS.route} className={this.setActiveLink("/users")}>
+          <Link to={route.USERS.route} className={this.setActiveLink(route.USERS.route)}>
             My Users
           </Link>
           <Dropdown overlay={dropdownMenuDesktop}>
