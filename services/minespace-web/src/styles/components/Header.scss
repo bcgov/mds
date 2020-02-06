@@ -42,9 +42,9 @@
   color: $white;
   padding: 29px $padding-md 29px $padding-md;
   &:hover,
-  &:active {
+  &.active {
     color: $white;
-    background-color: $primary-5;
+    background-color: $primary-5 !important;
     text-decoration: none;
   }
   text-decoration: none;
