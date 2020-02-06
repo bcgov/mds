@@ -170,6 +170,14 @@ td a {
   font-weight: 600;
 }
 
+.ant-descriptions-item {
+  margin-right: $padding-lg;
+}
+
+.ant-descriptions-row {
+  display: flex;
+}
+
 // Modals
 
 .ant-modal {
