@@ -71,9 +71,6 @@ exports[`AddReportForm renders properly 1`] = `
       </FormItem>
       <FormItem
         hasFeedback={false}
-      />
-      <FormItem
-        hasFeedback={false}
       >
         <Field
           component={[Function]}

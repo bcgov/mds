@@ -1,14 +1,19 @@
 import { combineReducers } from "redux";
 import { reducer as formReducer } from "redux-form";
 import { loadingBarReducer } from "react-redux-loading-bar";
-import { staticContentReducer, mineReducer, partiesReducer, permitReducer } from "@common/reducers";
+import {
+  staticContentReducer,
+  mineReducer,
+  partiesReducer,
+  permitReducer,
+  reportReducer,
+} from "@common/reducers";
 import networkReducer from "./networkReducer";
 import * as reducerTypes from "@/constants/reducerTypes";
 import authenticationReducer from "@/reducers/authenticationReducer";
 import userMineReducer from "@/reducers/userMineReducer";
 import modalReducer from "@/reducers/modalReducer";
 import varianceReducer from "@/reducers/varianceReducer";
-import reportReducer from "./reportReducer";
 
 // Function to create a reusable reducer (used in src/reducers/rootReducer)
 export const createReducer = (reducer, name) => (state, action) => {
@@ -25,7 +30,7 @@ export const reducerObject = {
   [reducerTypes.USER_MINE_INFO]: userMineReducer,
   [reducerTypes.VARIANCES]: varianceReducer,
   [reducerTypes.MODAL]: modalReducer,
-  [reducerTypes.REPORTS]: reportReducer,
+  ...reportReducer,
   ...staticContentReducer,
   ...mineReducer,
   ...permitReducer,
