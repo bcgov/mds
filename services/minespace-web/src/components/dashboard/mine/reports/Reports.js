@@ -11,7 +11,7 @@ import CustomPropTypes from "@/customPropTypes";
 import { fetchMineRecordById } from "@/actionCreators/userDashboardActionCreator";
 import { fetchMineReports, updateMineReport } from "@/actionCreators/reportActionCreator";
 import { modalConfig } from "@/components/modalContent/config";
-import { openModal, closeModal } from "@/actions/modalActions";
+import { openModal, closeModal } from "@common/actions/modalActions";
 import { getMineReports } from "@/selectors/reportSelectors";
 import ReportsTable from "@/components/dashboard/mine/reports/ReportsTable";
 import TableSummaryCard from "@/components/common/TableSummaryCard";

@@ -116,7 +116,7 @@ export class MinePermitInfo extends Component {
         title,
         mine_guid: this.props.mineGuid,
       },
-      widthSize: "50vw",
+      width: "50vw",
       content: modalConfig.ADD_PERMIT,
     });
   };
@@ -168,7 +168,7 @@ export class MinePermitInfo extends Component {
         mine_guid: permit.mine_guid,
         amendments: permit.permit_amendments,
       },
-      widthSize: "50vw",
+      width: "50vw",
       content: modalConfig.PERMIT_AMENDMENT,
     });
   };
@@ -191,7 +191,7 @@ export class MinePermitInfo extends Component {
         permit_guid: permit.permit_guid,
         handleRemovePermitAmendmentDocument: this.handleRemovePermitAmendmentDocument,
       },
-      widthSize: "50vw",
+      width: "50vw",
       content: modalConfig.PERMIT_AMENDMENT,
     });
   };
@@ -344,7 +344,4 @@ const mapDispatchToProps = (dispatch) =>
 MinePermitInfo.propTypes = propTypes;
 MinePermitInfo.defaultProps = defaultProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(MinePermitInfo);
+export default connect(mapStateToProps, mapDispatchToProps)(MinePermitInfo);

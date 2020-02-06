@@ -116,11 +116,12 @@ class AddIncidentDetailForm extends Component {
                 validate={[required]}
               />
             </Form.Item>
+            <h4>Dangerous Occurrence Determination</h4>
             <Form.Item>
               <Field
                 id="determination_type_code"
                 name="determination_type_code"
-                label="Inspector's Determination*"
+                label="Inspectors Determination*"
                 component={renderConfig.SELECT}
                 data={this.props.incidentDeterminationOptions}
                 validate={[required]}
