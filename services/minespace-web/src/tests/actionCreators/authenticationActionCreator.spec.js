@@ -9,7 +9,6 @@ import {
 } from "@/actionCreators/authenticationActionCreator";
 import * as genericActions from "@/actions/genericActions";
 import { BCEID_LOGIN_REDIRECT_URI } from "@/constants/environment";
-
 import * as MOCK from "@/tests/mocks/dataMocks";
 
 const dispatch = jest.fn();

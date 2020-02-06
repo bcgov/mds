@@ -4,21 +4,26 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Modal } from "antd";
 import LoadingBar from "react-redux-loading-bar";
-import { closeModal } from "@/actions/modalActions";
-import { getIsModalOpen, getProps, getContent, getClearOnSubmit } from "@/selectors/modalSelectors";
+import { closeModal } from "@common/actions/modalActions";
+import {
+  getIsModalOpen,
+  getProps,
+  getContent,
+  getClearOnSubmit,
+  getWidth,
+} from "@common/selectors/modalSelectors";
 
 const propTypes = {
   closeModal: PropTypes.func.isRequired,
   isModalOpen: PropTypes.bool.isRequired,
   clearOnSubmit: PropTypes.bool.isRequired,
   content: PropTypes.func,
-  width: PropTypes.number,
+  width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
   props: PropTypes.objectOf(PropTypes.any),
 };
 
 const defaultProps = {
   content: () => {},
-  width: 520,
   props: {
     title: "",
     onSubmit: () => {},
@@ -42,10 +47,9 @@ export class ModalWrapper extends Component {
       <Modal
         title={this.props.props.title}
         visible={this.props.isModalOpen}
-        width={this.props.props.width}
+        width={this.props.width}
         footer={null}
         closable={false}
-        centered
       >
         <LoadingBar
           scope="modal"
@@ -76,6 +80,7 @@ const mapStateToProps = (state) => ({
   props: getProps(state),
   content: getContent(state),
   clearOnSubmit: getClearOnSubmit(state),
+  width: getWidth(state),
 });
 
 const mapDispatchToProps = (dispatch) =>

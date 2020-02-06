@@ -156,7 +156,7 @@ export class MineIncidents extends Component {
         inspectors: this.props.inspectors,
         clearOnSubmit: true,
       },
-      widthSize: "50vw",
+      width: "50vw",
       content: modalConfig.MINE_INCIDENT,
     });
   };
@@ -221,7 +221,4 @@ const mapDispatchToProps = (dispatch) =>
 MineIncidents.propTypes = propTypes;
 MineIncidents.defaultProps = defaultProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(MineIncidents);
+export default connect(mapStateToProps, mapDispatchToProps)(MineIncidents);

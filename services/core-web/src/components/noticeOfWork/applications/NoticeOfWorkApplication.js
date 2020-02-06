@@ -314,7 +314,7 @@ export class NoticeOfWorkApplication extends Component {
         title: `Transfer Notice of Work`,
         noticeOfWork,
       },
-      widthSize: "75vw",
+      width: "75vw",
       content: modalConfig.CHANGE_NOW_MINE,
     });
   };
@@ -333,7 +333,7 @@ export class NoticeOfWorkApplication extends Component {
         title: `Edit Location`,
         noticeOfWork,
       },
-      widthSize: "75vw",
+      width: "75vw",
       content: modalConfig.CHANGE_NOW_LOCATION,
     });
   };
@@ -633,7 +633,4 @@ const mapDispatchToProps = (dispatch) =>
 NoticeOfWorkApplication.propTypes = propTypes;
 NoticeOfWorkApplication.defaultProps = defaultProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(NoticeOfWorkApplication);
+export default connect(mapStateToProps, mapDispatchToProps)(NoticeOfWorkApplication);

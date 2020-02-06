@@ -177,7 +177,6 @@ export class MineIncidentTable extends Component {
         title: "Code",
         dataIndex: "code",
         className: hideColumn(!this.props.isDashboardView),
-        width: 400,
         render: (text) => (
           <span title="Incident Codes" className={hideColumn(!this.props.isDashboardView)}>
             {text.length === 0 ? (
@@ -236,7 +235,6 @@ export class MineIncidentTable extends Component {
         title: "Initial Report Documents",
         dataIndex: "initialDocuments",
         className: hideColumn(this.props.isDashboardView),
-        width: 200,
         render: (text, record) => (
           <div title="Initial Report Documents" className={hideColumn(this.props.isDashboardView)}>
             {(record.docs &&
@@ -250,7 +248,6 @@ export class MineIncidentTable extends Component {
         title: "Final Report Documents",
         dataIndex: "finalDocuments",
         className: hideColumn(this.props.isDashboardView),
-        width: 200,
         render: (text, record) => (
           <div title="Final Report Documents" className={hideColumn(this.props.isDashboardView)}>
             {(record.docs &&

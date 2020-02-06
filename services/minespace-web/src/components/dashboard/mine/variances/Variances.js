@@ -9,7 +9,7 @@ import moment from "moment";
 import PropTypes from "prop-types";
 import { getMine } from "@/selectors/userMineSelectors";
 import CustomPropTypes from "@/customPropTypes";
-import { openModal, closeModal } from "@/actions/modalActions";
+import { openModal, closeModal } from "@common/actions/modalActions";
 import { modalConfig } from "@/components/modalContent/config";
 import { fetchMineRecordById } from "@/actionCreators/userDashboardActionCreator";
 import {
