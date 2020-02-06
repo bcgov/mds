@@ -116,30 +116,6 @@ export const IncidentsTable = (props) => {
         <span title="Status">{props.incidentStatusCodeHash[status_code]}</span>
       ),
     },
-    /*
-    {
-      title: "Documents",
-      dataIndex: "documents",
-      key: "documents",
-      sorter: false,
-      render: (documents) => {
-        const preliminaryDocuments = documents.filter(
-          (doc) => doc.mine_incident_document_type_code === "INI"
-        );
-        const finalDocuments = documents.filter(
-          (doc) => doc.mine_incident_document_type_code === "FIN"
-        );
-        return (
-          <div title="Documents">
-            {preliminaryDocuments.length === 0 && finalDocuments.length === 0 && (
-              <span>{Strings.EMPTY_FIELD}</span>
-            )}
-            <IncidentDocuments title="Preliminary:" documents={preliminaryDocuments} />
-            <IncidentDocuments title="Final:" documents={finalDocuments} />
-          </div>
-        );
-      },
-    }, */
     {
       render: (record) => (
         <Button

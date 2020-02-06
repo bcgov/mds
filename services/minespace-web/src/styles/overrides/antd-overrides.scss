@@ -111,6 +111,16 @@ h1.ant-typography,
   background-color: $primary-color;
 }
 
+.ant-tabs-tab-prev-icon > .anticon {
+  color: $primary-color;
+  font-size: 24px;
+}
+
+.ant-tabs-tab-next-icon > .anticon {
+  color: $primary-color;
+  font-size: 24px;
+}
+
 // Tables
 
 .ant-table {
