@@ -31,7 +31,6 @@ export class Permits extends Component {
   };
 
   render() {
-    console.log(this.props);
     return (
       (this.state.isLoaded && (
         <Row>
