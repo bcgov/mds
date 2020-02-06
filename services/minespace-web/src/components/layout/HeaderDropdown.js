@@ -4,9 +4,9 @@ import { Link } from "react-router-dom";
 import { Menu, Dropdown, Button, Icon, Divider } from "antd";
 import MediaQuery from "react-responsive";
 import PropTypes from "prop-types";
-import * as route from "@/constants/routes";
 import * as COMMON_ENV from "@common/constants/environment";
 import * as MINESPACE_ENV from "@/constants/environment";
+import * as route from "@/constants/routes";
 import { signOutFromSiteMinder } from "@/utils/authenticationHelpers";
 import { isAuthenticated, getUserInfo } from "@/selectors/authenticationSelectors";
 import { MENU } from "@/constants/assets";
@@ -46,11 +46,12 @@ export class HeaderDropdown extends Component {
             <Link to={route.MINES.route}>My Mines</Link>
           </Button>
         </Menu.Item>
-        <Menu.Item key="users">
+        {/* Disabled until we implement this */}
+        {/* <Menu.Item key="users">
           <Button className="header-dropdown-item-button">
             <Link to={route.USERS.route}>My Users</Link>
           </Button>
-        </Menu.Item>
+        </Menu.Item> */}
         <Divider className="bg-color-table-seperator" style={{ margin: 0 }} />
         {menuItemLogout}
       </Menu>
@@ -77,9 +78,10 @@ export class HeaderDropdown extends Component {
           <Link to={route.MINES.route} className="header-link">
             My Mines
           </Link>
-          <Link to={route.USERS.route} className="header-link">
+          {/* Disabled until we implement this */}
+          {/* <Link to={route.USERS.route} className="header-link">
             My Users
-          </Link>
+          </Link> */}
           <Dropdown overlay={dropdownMenuDesktop}>
             <Button className="header-dropdown-button">
               {this.props.userInfo.email}
