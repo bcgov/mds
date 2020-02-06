@@ -71,12 +71,15 @@ const expandedColumns = [
     dataIndex: "files",
     key: "files",
     render: (text) =>
-      text.map((file) => (
-        <Text>
-          {renderDocumentLink(file, file.document_name)}
-          <br />
-        </Text>
-      )),
+      (text &&
+        text.length > 0 &&
+        text.map((file) => (
+          <Text>
+            {renderDocumentLink(file, file.document_name)}
+            <br />
+          </Text>
+        ))) ||
+      Strings.NONE,
   },
 ];
 
@@ -104,10 +107,7 @@ const transformExpandedRowData = (amendment, amendmentNumber) => ({
   amendmentNumber,
   dateIssued: formatDate(amendment.issue_date) || Strings.EMPTY_FIELD,
   description: amendment.description || Strings.EMPTY_FIELD,
-  files:
-    amendment.related_documents && amendment.related_documents.length > 0
-      ? amendment.related_documents
-      : Strings.NONE,
+  files: amendment.related_documents,
 });
 
 export const PermitsTable = (props) => {
