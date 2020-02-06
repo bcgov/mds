@@ -1,12 +1,12 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Authentication renders properly 1`] = `
+exports[`HeaderDropdown renders properly 1`] = `
 <span>
   <MediaQueryContextConsumer
     minWidth={1280}
   >
     <Link
-      className="header-link"
+      className="header-link active"
       to="/mines"
     >
       My Mines
