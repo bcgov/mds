@@ -48,10 +48,10 @@ const columns = [
     title: "Due",
     dataIndex: "due_date",
     key: "due_date",
-    sorter: (a, b) => (moment(a.due_date) > moment(b.due_date) ? -1 : 1),
-    render: (text, record) => (
+    //FIXME sorter: (a, b) => (moment(a.due_date) > moment(b.due_date) ? -1 : 1),
+    render: (due_date, record) => (
       <div title="Due" className={record.isOverdue ? "color-error" : ""}>
-        {formatDate(record.due_date) || Strings.EMPTY_FIELD}
+        {formatDate(due_date) || Strings.EMPTY_FIELD}
       </div>
     ),
   },
@@ -59,10 +59,11 @@ const columns = [
     title: "Submitted On",
     dataIndex: "received_date",
     key: "received_date",
-    sorter: (a, b) => (moment(a.received_date) > moment(b.received_date) ? -1 : 1),
-    render: (text, record) => (
+    //FIXME sorter: (a, b) =>
+    //  moment(a.received_date) > moment(b.received_date) ? -1 : 1,
+    render: (received_date, record) => (
       <div title="Submitted On" className={record.isOverdue ? "color-error" : ""}>
-        {formatDate(record.received_date) || Strings.EMPTY_FIELD}
+        {formatDate(received_date) || Strings.EMPTY_FIELD}
       </div>
     ),
   },
