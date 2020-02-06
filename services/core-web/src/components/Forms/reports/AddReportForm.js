@@ -192,7 +192,6 @@ export class AddReportForm extends Component {
                   : [<List.Item key={1} />]}
               </List>
             </Form.Item>
-            <Form.Item />
             <Form.Item>
               <Field
                 id="submission_year"

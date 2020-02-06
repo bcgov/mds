@@ -1,5 +1,6 @@
 import MockAdapter from "axios-mock-adapter";
 import axios from "axios";
+import { ENVIRONMENT } from "@common/constants/environment";
 import {
   fetchMineRecordById,
   fetchUserMineInfo,
@@ -7,7 +8,6 @@ import {
 import * as genericActions from "@/actions/genericActions";
 import * as API from "@/constants/API";
 import * as MOCK from "@/tests/mocks/dataMocks";
-import { ENVIRONMENT } from "@common/constants/environment";
 
 const dispatch = jest.fn();
 const requestSpy = jest.spyOn(genericActions, "request");

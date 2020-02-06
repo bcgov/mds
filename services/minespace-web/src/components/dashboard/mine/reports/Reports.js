@@ -9,14 +9,19 @@ import PropTypes from "prop-types";
 import { getMine } from "@/selectors/userMineSelectors";
 import CustomPropTypes from "@/customPropTypes";
 import { fetchMineRecordById } from "@/actionCreators/userDashboardActionCreator";
-import { fetchMineReports, updateMineReport } from "@/actionCreators/reportActionCreator";
+import moment from "moment";
+import {
+  createMineReport,
+  fetchMineReports,
+  updateMineReport,
+} from "@common/actionCreators/reportActionCreator";
 import { modalConfig } from "@/components/modalContent/config";
 import { openModal, closeModal } from "@/actions/modalActions";
-import { getMineReports } from "@/selectors/reportSelectors";
+import { getMineReports } from "@common/selectors/reportSelectors";
 import ReportsTable from "@/components/dashboard/mine/reports/ReportsTable";
 import TableSummaryCard from "@/components/common/TableSummaryCard";
-import { fetchMineReportDefinitionOptions } from "@/actionCreators/staticContentActionCreator";
-import { getMineReportDefinitionOptions } from "@/reducers/staticContentReducer";
+import { fetchMineReportDefinitionOptions } from "@common/actionCreators/staticContentActionCreator";
+import { getMineReportDefinitionOptions } from "@common/reducers/staticContentReducer";
 
 const { Paragraph, Title, Text } = Typography;
 
@@ -32,6 +37,7 @@ const propTypes = {
   fetchMineReportDefinitionOptions: PropTypes.func.isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
   updateMineReport: PropTypes.func.isRequired,
+  createMineReport: PropTypes.func.isRequired,
   fetchMineReports: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
@@ -42,7 +48,7 @@ const defaultProps = {
 };
 
 export class Reports extends Component {
-  state = { isLoaded: false };
+  state = { isLoaded: false, selectedMineReportGuid: null, reportsDue: 0, reportsSubmitted: 0 };
 
   componentDidMount() {
     this.props.fetchMineReportDefinitionOptions();
@@ -53,41 +59,62 @@ export class Reports extends Component {
     });
   }
 
-  handleEditReport = (values) => {
+  componentWillReceiveProps(nextProps) {
+    const reportsSubmitted = nextProps.mineReports.filter(
+      (report) => report.mine_report_submissions.length > 0
+    ).length;
+    const reportsDue = nextProps.mineReports.filter(
+      (report) => report.mine_report_submissions.length === 0 && report.due_date
+    ).length;
+
+    this.setState({ reportsSubmitted, reportsDue });
+  }
+
+  handleAddReport = (values) => {
+    let formValues = values;
+    if (values.mine_report_submissions !== undefined) {
+      formValues.received_date = moment().format("YYYY-MM-DD");
+    }
     this.props
-      .updateMineReport(this.props.mine.mine_guid, values.mine_report_guid, values)
+      .createMineReport(this.props.mine.mine_guid, formValues)
       .then(() => this.props.closeModal())
       .then(() => this.props.fetchMineReports(this.props.mine.mine_guid));
   };
 
-  openEditReportModal = (event, onSubmit, report) => {
+  handleEditReport = (values) => {
+    this.props
+      .updateMineReport(this.props.mine.mine_guid, this.state.selectedMineReportGuid, values)
+      .then(() => this.props.closeModal())
+      .then(() => this.props.fetchMineReports(this.props.mine.mine_guid));
+  };
+
+  openAddReportModal = (event) => {
     event.preventDefault();
     this.props.openModal({
       props: {
-        initialValues: report,
-        onSubmit,
-        title: "Edit Report",
+        onSubmit: this.handleAddReport,
+        title: "Add Report",
         mineGuid: this.props.mine.mine_guid,
       },
       content: modalConfig.ADD_REPORT,
     });
   };
 
+  openEditReportModal = (event, report) => {
+    this.setState({ selectedMineReportGuid: report.mine_report_guid });
+    event.preventDefault();
+    this.props.openModal({
+      props: {
+        initialValues: report,
+        onSubmit: this.handleEditReport,
+        title: "Edit Report",
+        mineGuid: this.props.mine.mine_guid,
+      },
+      content: modalConfig.EDIT_REPORT,
+    });
+  };
+
   render() {
-    const filteredReportDefinitionGuids =
-      this.props.mineReportDefinitionOptions &&
-      this.props.mineReportDefinitionOptions
-        .filter((option) =>
-          option.categories.map((category) => category.mine_report_category).includes("TSF")
-        )
-        .map((definition) => definition.mine_report_definition_guid);
-
-    const filteredReports =
-      this.props.mineReports &&
-      this.props.mineReports.filter((report) =>
-        filteredReportDefinitionGuids.includes(report.mine_report_definition_guid.toLowerCase())
-      );
-
     return (
       <Row>
         <Col>
@@ -96,7 +123,7 @@ export class Reports extends Component {
               <Button
                 style={{ display: "inline", float: "right" }}
                 type="primary"
-                onClick={(event) => this.openEditReportModal(event, this.props.mine.mine_name)}
+                onClick={(event) => this.openAddReportModal(event, this.props.mine.mine_name)}
               >
                 <Icon type="plus-circle" theme="filled" />
                 Submit Report
@@ -115,41 +142,32 @@ export class Reports extends Component {
               <br />
             </Col>
           </Row>
-          <Row type="flex" justify="space-around" gutter={[{ lg: 0, xl: 32 }, 32]}>
-            <Col lg={24} xl={8} xxl={6}>
-              <TableSummaryCard
-                title="Reports Submitted"
-                // TODO: Display the amount of submitted reports.
-                content="6"
-                icon="check-circle"
-                type="success"
-              />
-            </Col>
-            <Col lg={24} xl={8} xxl={6}>
-              <TableSummaryCard
-                title="Reports Due"
-                // TODO: Display the amount of reports that are overdue.
-                content="6"
-                icon="clock-circle"
-                type="error"
-              />
-            </Col>
-            <Col lg={24} xl={8} xxl={6}>
-              <TableSummaryCard
-                title="Reports Overdue"
-                // TODO: Display the amount of reports that are due.
-                content="6"
-                icon="exclamation-circle"
-                type="warning"
-              />
-            </Col>
-          </Row>
+          {this.props.mineReports && this.props.mineReports.length > 0 && (
+            <Row type="flex" justify="space-around" gutter={16}>
+              <Col md={24} lg={8}>
+                <TableSummaryCard
+                  title="Reports Submitted"
+                  content={this.state.reportsSubmitted}
+                  icon="check-circle"
+                  type="success"
+                />
+              </Col>
+              <Col md={24} lg={8}>
+                <TableSummaryCard
+                  title="Reports Due"
+                  content={this.state.reportsDue}
+                  icon="clock-circle"
+                  type="error"
+                />
+              </Col>
+            </Row>
+          )}
           <Row>
             <Col>
               <ReportsTable
                 openEditReportModal={this.openEditReportModal}
                 handleEditReport={this.handleEditReport}
-                mineReports={filteredReports}
+                mineReports={this.props.mineReports}
                 isLoaded={this.state.isLoaded}
               />
             </Col>
@@ -172,6 +190,7 @@ const mapDispatchToProps = (dispatch) =>
       fetchMineReportDefinitionOptions,
       fetchMineRecordById,
       fetchMineReports,
+      createMineReport,
       updateMineReport,
       openModal,
       closeModal,
