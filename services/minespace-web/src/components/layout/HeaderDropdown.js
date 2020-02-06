@@ -7,7 +7,6 @@ import PropTypes from "prop-types";
 import * as COMMON_ENV from "@common/constants/environment";
 import * as route from "@/constants/routes";
 import * as MINESPACE_ENV from "@/constants/environment";
-import * as route from "@/constants/routes";
 import { signOutFromSiteMinder } from "@/utils/authenticationHelpers";
 import { isAuthenticated, getUserInfo } from "@/selectors/authenticationSelectors";
 import { MENU } from "@/constants/assets";
