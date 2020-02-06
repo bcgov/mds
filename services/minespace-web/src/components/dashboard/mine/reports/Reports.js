@@ -63,7 +63,6 @@ export class Reports extends Component {
     const reportsSubmitted = nextProps.mineReports.filter(
       (report) => report.mine_report_submissions.length > 0
     ).length;
-    console.log(nextProps);
     const reportsDue = nextProps.mineReports.filter(
       (report) => report.mine_report_submissions.length === 0 && report.due_date
     ).length;
