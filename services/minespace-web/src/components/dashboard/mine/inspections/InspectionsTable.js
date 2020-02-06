@@ -1,9 +1,10 @@
-import React from "react";
-import { Table } from "antd";
+import React, { useState } from "react";
+import { Table, Button } from "antd";
 import moment from "moment";
 import { formatDate, compareCodes } from "@common/utils/helpers";
 import PropTypes from "prop-types";
 import CustomPropTypes from "@/customPropTypes";
+import { RED_CLOCK } from "@/constants/assets";
 
 const propTypes = {
   orders: CustomPropTypes.complianceOrders,
@@ -15,6 +16,19 @@ const defaultProps = {
 };
 
 const columns = [
+  {
+    title: "",
+    dataIndex: "overdue",
+    render: (text, record) => (
+      <div title="Overdue">
+        {record.overdue && record.due_date !== null ? (
+          <img className="padding-small" src={RED_CLOCK} alt="Overdue Report" />
+        ) : (
+          ""
+        )}
+      </div>
+    ),
+  },
   {
     title: "Order No.",
     dataIndex: "order_no",
@@ -56,6 +70,7 @@ const columns = [
     key: "order_status",
     render: (text, record) => <div title="Order Status">{record.order_status || "-"}</div>,
     sorter: (a, b) => (a.order_status > b.order_status ? -1 : 1),
+    defaultSortOrder: "ascend",
   },
   {
     title: "Due",
@@ -73,16 +88,35 @@ const transformRowData = (orders) =>
     ...order,
   }));
 
-export const InspectionsTable = (props) => (
-  <Table
-    size="small"
-    pagination={false}
-    loading={!props.isLoaded}
-    columns={columns}
-    dataSource={transformRowData(props.orders)}
-    locale={{ emptyText: "This mine has no inspection data." }}
-  />
-);
+const filterClosedOrders = (orders, display) =>
+  display ? orders : orders.filter((order) => order.order_status !== "Closed");
+
+export const InspectionsTable = (props) => {
+  const [showClosedOrders, setShowClosedOrders] = useState(false);
+  return (
+    <div>
+      <Table
+        size="small"
+        pagination={false}
+        loading={!props.isLoaded}
+        columns={columns}
+        dataSource={transformRowData(filterClosedOrders(props.orders, showClosedOrders))}
+        locale={{ emptyText: "This mine has no inspection data." }}
+      />
+      {props.isLoaded && (
+        <div align="right">
+          <Button
+            onClick={() => setShowClosedOrders(!showClosedOrders)}
+            className="full-mobile"
+            type="primary"
+          >
+            {!showClosedOrders ? "Display Closed Orders" : "Hide Closed Orders"}
+          </Button>
+        </div>
+      )}
+    </div>
+  );
+};
 
 InspectionsTable.propTypes = propTypes;
 InspectionsTable.defaultProps = defaultProps;
