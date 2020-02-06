@@ -9,7 +9,7 @@ import PropTypes from "prop-types";
 import { getMine } from "@/selectors/userMineSelectors";
 import CustomPropTypes from "@/customPropTypes";
 import { fetchMineRecordById } from "@/actionCreators/userDashboardActionCreator";
-import moment from "moment";
+import moment, { months } from "moment";
 import {
   createMineReport,
   fetchMineReports,
@@ -48,7 +48,7 @@ const defaultProps = {
 };
 
 export class Reports extends Component {
-  state = { isLoaded: false, selectedMineReportGuid: null };
+  state = { isLoaded: false, selectedMineReportGuid: null, reportsDue: 0, reportsSubmitted: 0 };
 
   componentDidMount() {
     this.props.fetchMineReportDefinitionOptions();
@@ -57,6 +57,18 @@ export class Reports extends Component {
     this.props.fetchMineRecordById(id).then(() => {
       this.setState({ isLoaded: true });
     });
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const reportsSubmitted = nextProps.mineReports.filter(
+      (report) => report.mine_report_submissions.length > 0
+    ).length;
+    console.log(nextProps);
+    const reportsDue = nextProps.mineReports.filter(
+      (report) => report.mine_report_submissions.length === 0 && report.due_date
+    ).length;
+
+    this.setState({ reportsSubmitted, reportsDue });
   }
 
   handleAddReport = (values) => {
@@ -131,35 +143,28 @@ export class Reports extends Component {
               <br />
             </Col>
           </Row>
-          <Row type="flex" justify="space-around" gutter={16}>
-            <Col md={24} lg={8}>
-              <TableSummaryCard
-                title="Reports Submitted"
-                // TODO: Display the amount of submitted reports.
-                content="6"
-                icon="check-circle"
-                type="success"
-              />
-            </Col>
-            <Col md={24} lg={8}>
-              <TableSummaryCard
-                title="Reports Due"
-                // TODO: Display the amount of reports that are overdue.
-                content="6"
-                icon="clock-circle"
-                type="error"
-              />
-            </Col>
-            <Col md={24} lg={8}>
-              <TableSummaryCard
-                title="Reports Overdue"
-                // TODO: Display the amount of reports that are due.
-                content="6"
-                icon="exclamation-circle"
-                type="warning"
-              />
-            </Col>
-          </Row>
+          {this.props.mineReports && this.props.mineReports.length > 0 && (
+            <Row type="flex" justify="space-around" gutter={16}>
+              <Col md={24} lg={8}>
+                <TableSummaryCard
+                  title="Reports Submitted"
+                  // TODO: Display the amount of submitted reports.
+                  content={this.state.reportsSubmitted}
+                  icon="check-circle"
+                  type="success"
+                />
+              </Col>
+              <Col md={24} lg={8}>
+                <TableSummaryCard
+                  title="Reports Due"
+                  // TODO: Display the amount of reports that are overdue.
+                  content={this.state.reportsDue}
+                  icon="clock-circle"
+                  type="error"
+                />
+              </Col>
+            </Row>
+          )}
           <Row>
             <Col>
               <ReportsTable
