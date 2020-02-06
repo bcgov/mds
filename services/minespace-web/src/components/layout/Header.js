@@ -2,6 +2,7 @@ import React from "react";
 import { Layout, Row, Col } from "antd";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
+
 import HeaderDropdown from "@/components/layout/HeaderDropdown";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as routes from "@/constants/routes";
@@ -28,7 +29,7 @@ export const Header = (props) => (
             <Link to={routes.HOME.route}>MineSpace</Link>
           </span>
           <span className="header-menu">
-            <AuthorizationWrapper inDevelopment inTesting>
+            <AuthorizationWrapper inTesting>
               <HeaderDropdown />
             </AuthorizationWrapper>
           </span>

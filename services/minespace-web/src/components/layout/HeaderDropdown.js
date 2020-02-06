@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import { Menu, Dropdown, Button, Icon, Divider } from "antd";
 import MediaQuery from "react-responsive";
 import PropTypes from "prop-types";
-import * as route from "@/constants/routes";
 import * as COMMON_ENV from "@common/constants/environment";
+import * as route from "@/constants/routes";
 import * as MINESPACE_ENV from "@/constants/environment";
 import { signOutFromSiteMinder } from "@/utils/authenticationHelpers";
 import { isAuthenticated, getUserInfo } from "@/selectors/authenticationSelectors";
@@ -19,6 +19,7 @@ import { MENU } from "@/constants/assets";
 const propTypes = {
   isAuthenticated: PropTypes.bool.isRequired,
   userInfo: PropTypes.objectOf(PropTypes.string),
+  location: PropTypes.shape({ pathname: PropTypes.string }).isRequired,
 };
 
 const defaultProps = {
@@ -28,6 +29,11 @@ const defaultProps = {
 export class HeaderDropdown extends Component {
   handleLogout = () => {
     signOutFromSiteMinder();
+  };
+
+  setActiveLink = (pathname) => {
+    console.log(this.props.location);
+    return this.props.location.pathname === pathname ? "header-link active" : "header-link";
   };
 
   render() {
@@ -74,10 +80,10 @@ export class HeaderDropdown extends Component {
     return (
       <span>
         <MediaQuery minWidth={smallestDesktopWidth}>
-          <Link to={route.MINES.route} className="header-link">
+          <Link to={route.MINES.route} className={this.setActiveLink("/mines")}>
             My Mines
           </Link>
-          <Link to={route.USERS.route} className="header-link">
+          <Link to={route.USERS.route} className={this.setActiveLink("/users")}>
             My Users
           </Link>
           <Dropdown overlay={dropdownMenuDesktop}>
@@ -107,4 +113,4 @@ const mapStateToProps = (state) => ({
 HeaderDropdown.propTypes = propTypes;
 HeaderDropdown.defaultProps = defaultProps;
 
-export default connect(mapStateToProps)(HeaderDropdown);
+export default withRouter(connect(mapStateToProps)(HeaderDropdown));
