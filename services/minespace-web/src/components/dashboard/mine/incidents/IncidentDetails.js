@@ -118,81 +118,88 @@ const InitialReport = (props) => (
   </Row>
 );
 const Details = (props) => (
-  <Row>
-    <Col>
-      <Title level={4}>Incident Details</Title>
+  <React.Fragment>
+    <Row>
+      <Col>
+        <Title level={4}>Incident Details</Title>
 
-      <IncidentField
-        title="Incident date"
-        content={formatDate(props.incident.incident_timestamp)}
-      />
-
-      <IncidentField
-        title="Incident time"
-        content={formatTime(props.incident.incident_timestamp)}
-      />
-
-      <IncidentField title="Number of fatalities" content={props.incident.number_of_fatalities} />
-
-      <IncidentField title="Number of injuries" content={props.incident.number_of_injuries} />
-
-      <IncidentField
-        title="Were emergency services called?"
-        content={props.incident.emergency_services_called ? "Yes" : "No"}
-      />
-
-      <IncidentField
-        title="Brief description of incident"
-        content={props.incident.incident_description}
-      />
-
-      <IncidentField
-        title="Inspector's determination"
-        content={
-          props.incidentDeterminationHash[props.incident.determination_type_code] ||
-          Strings.EMPTY_FIELD
-        }
-      />
-
-      {props.incident.determination_type_code === "DO" && (
         <IncidentField
-          title="Which section(s) of the code applies to this dangerous occurrence?"
+          title="Incident date"
+          content={formatDate(props.incident.incident_timestamp)}
+        />
+
+        <IncidentField
+          title="Incident time"
+          content={formatTime(props.incident.incident_timestamp)}
+        />
+
+        <IncidentField title="Number of fatalities" content={props.incident.number_of_fatalities} />
+
+        <IncidentField title="Number of injuries" content={props.incident.number_of_injuries} />
+
+        <IncidentField
+          title="Were emergency services called?"
+          content={props.incident.emergency_services_called ? "Yes" : "No"}
+        />
+
+        <IncidentField
+          title="Brief description of incident"
+          content={props.incident.incident_description}
+        />
+      </Col>
+    </Row>
+
+    <Row>
+      <Col>
+        <Title level={4}>Dangerous Occurrence Determination</Title>
+        <IncidentField
+          title="Inspector's determination"
           content={
-            props.incident.dangerous_occurrence_subparagraph_ids.length >= 1 ? (
-              <div className="block">
-                {props.incident.dangerous_occurrence_subparagraph_ids.map((code) => (
-                  <Tag>{props.complianceCodesHash[code]}</Tag>
-                ))}
-              </div>
-            ) : (
-              Strings.EMPTY_FIELD
-            )
+            props.incidentDeterminationHash[props.incident.determination_type_code] ||
+            Strings.EMPTY_FIELD
           }
         />
-      )}
 
-      <IncidentField
-        title="Inspector who made the determination"
-        content={
-          props.inspectorsHash[props.incident.determination_inspector_party_guid] ||
-          Strings.EMPTY_FIELD
-        }
-      />
+        {props.incident.determination_type_code === "DO" && (
+          <IncidentField
+            title="Which section(s) of the code applies to this dangerous occurrence?"
+            content={
+              props.incident.dangerous_occurrence_subparagraph_ids.length >= 1 ? (
+                <div className="block">
+                  {props.incident.dangerous_occurrence_subparagraph_ids.map((code) => (
+                    <Tag>{props.complianceCodesHash[code]}</Tag>
+                  ))}
+                </div>
+              ) : (
+                Strings.EMPTY_FIELD
+              )
+            }
+          />
+        )}
 
-      <IncidentField
-        title="Mine's determination"
-        content={
-          props.incidentDeterminationHash[props.incident.mine_determination_type_code] ||
-          Strings.EMPTY_FIELD
-        }
-      />
+        <IncidentField
+          title="Inspector who made the determination"
+          content={
+            props.inspectorsHash[props.incident.determination_inspector_party_guid] ||
+            Strings.EMPTY_FIELD
+          }
+        />
 
-      <IncidentField
-        title="Mine representative who made determination"
-        content={props.incident.mine_determination_representative}
-      />
-    </Col>
-  </Row>
+        <IncidentField
+          title="Mine's determination"
+          content={
+            props.incidentDeterminationHash[props.incident.mine_determination_type_code] ||
+            Strings.EMPTY_FIELD
+          }
+        />
+
+        <IncidentField
+          title="Mine representative who made determination"
+          content={props.incident.mine_determination_representative}
+        />
+      </Col>
+    </Row>
+  </React.Fragment>
 );
 const InitialDocuments = (props) => (
   <Row>

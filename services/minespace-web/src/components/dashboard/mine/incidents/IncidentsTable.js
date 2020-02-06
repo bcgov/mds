@@ -116,7 +116,7 @@ export const IncidentsTable = (props) => {
         <span title="Status">{props.incidentStatusCodeHash[status_code]}</span>
       ),
     },
-
+    /*
     {
       title: "Documents",
       dataIndex: "documents",
@@ -139,7 +139,7 @@ export const IncidentsTable = (props) => {
           </div>
         );
       },
-    },
+    }, */
     {
       render: (record) => (
         <Button
@@ -168,7 +168,7 @@ export const IncidentsTable = (props) => {
       size="small"
       pagination={false}
       loading={!props.isLoaded}
-      columns={columns(props)}
+      columns={columns}
       dataSource={props.data}
       locale={{ emptyText: "This mine has no incident data." }}
     />
