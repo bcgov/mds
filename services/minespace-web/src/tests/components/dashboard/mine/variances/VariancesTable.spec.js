@@ -11,6 +11,7 @@ const setupProps = () => {
   props.complianceCodesHash = MOCK.HSRCM_HASH;
   props.varianceStatusOptionsHash = MOCK.VARIANCE_STATUS_OPTIONS_HASH;
   props.isApplication = false;
+  props.inspectorsHash = {};
 };
 
 const setupDispatchProps = () => {

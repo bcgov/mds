@@ -36,14 +36,14 @@ class App extends Component {
   render() {
     const { Content } = Layout;
     const xs = 24;
-    const sm = 22;
-    const md = 20;
-    const lg = 18;
+    const lg = 22;
+    const xl = 20;
+    const xxl = 18;
     return (
       <BrowserRouter basename={process.env.BASE_PATH}>
         <Fragment>
           <Layout>
-            <Header xs={xs} sm={sm} md={md} lg={lg} />
+            <Header xs={xs} lg={lg} xl={xl} xxl={xxl} />
             <Layout>
               <Content>
                 {this.state.isIE && <WarningBanner type="IE" onClose={this.handleBannerClose} />}
@@ -53,7 +53,7 @@ class App extends Component {
                   )}
                 </MediaQuery>
                 <Row type="flex" justify="center" align="top">
-                  <Col xs={xs} sm={sm} md={md} lg={lg}>
+                  <Col xs={xs} lg={lg} xl={xl} xxl={xxl}>
                     <Routes />
                   </Col>
                 </Row>
@@ -61,7 +61,7 @@ class App extends Component {
                 <BackTop />
               </Content>
             </Layout>
-            <Footer xs={xs} sm={sm} md={md} lg={lg} />
+            <Footer xs={xs} lg={lg} xl={xl} xxl={xxl} />
           </Layout>
         </Fragment>
       </BrowserRouter>

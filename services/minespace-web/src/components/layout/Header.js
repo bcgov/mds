@@ -10,15 +10,15 @@ import { BC_GOV } from "@/constants/assets";
 
 const propTypes = {
   xs: PropTypes.number.isRequired,
-  sm: PropTypes.number.isRequired,
-  md: PropTypes.number.isRequired,
   lg: PropTypes.number.isRequired,
+  xl: PropTypes.number.isRequired,
+  xxl: PropTypes.number.isRequired,
 };
 
 export const Header = (props) => (
   <Layout.Header>
     <Row type="flex" justify="center" align="top">
-      <Col xs={props.xs} sm={props.sm} md={props.md} lg={props.lg}>
+      <Col xs={props.xs} lg={props.lg} xl={props.xl} xxl={props.xxl}>
         <div className="header-content">
           <span className="header-logo">
             <a href="https://gov.bc.ca/">
