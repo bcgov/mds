@@ -130,7 +130,7 @@ export class VariancesTable extends Component {
       dataIndex: "documents",
       render: (text, record) => {
         return (
-          <div title="Documents">
+          <div title="Documents" className="cap-col-height">
             {record.documents.length > 0
               ? record.documents.map((file) => (
                   <div>
