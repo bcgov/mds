@@ -39,7 +39,7 @@ export class MinesPage extends Component {
             <Title level={4}>Welcome, {this.props.userInfo.preferred_username}.</Title>
             {(mines && mines.length > 0 && (
               <Row gutter={32}>
-                <Col span={16}>
+                <Col xl={12} lg={14} sm={24}>
                   <Paragraph>
                     You are authorized to submit information for the following mines:
                   </Paragraph>
@@ -61,7 +61,7 @@ export class MinesPage extends Component {
                     </ul>
                   </div>
                 </Col>
-                <Col span={8}>
+                <Col xl={12} lg={10} sm={0}>
                   <div style={{ height: "400px", marginTop: "-32px" }}>
                     <Map
                       controls={false}

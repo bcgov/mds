@@ -54,7 +54,6 @@ class Map extends Component {
     // Add MinePins to the top of LayerList and add the LayerList widget
     L.control.layers(this.getBaseMaps(), {}, { position: "topright" }).addTo(this.map);
     this.fitBounds();
-    // Note that this locks the zoom in place
     if (!this.props.controls) {
       this.disableControls();
     }
