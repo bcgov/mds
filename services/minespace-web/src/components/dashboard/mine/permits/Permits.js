@@ -13,6 +13,7 @@ const { Paragraph, Title, Text } = Typography;
 const propTypes = {
   mine: CustomPropTypes.mine.isRequired,
   fetchPermits: PropTypes.func.isRequired,
+  permits: PropTypes.arrayOf(CustomPropTypes.permit).isRequired,
 };
 
 const defaultProps = {};
