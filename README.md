@@ -6,9 +6,6 @@ The Mines Digital Services (MDS) will have a number of interconnections and rela
 
 ## Features
 
-- Core
-- Minespace
-
 The product is anticipated to include:
 
 1.	Support for integrated analysis and decision making across the process of mine oversight

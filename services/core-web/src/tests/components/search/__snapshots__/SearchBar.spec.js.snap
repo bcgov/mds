@@ -9,7 +9,9 @@ exports[`SearchBar renders properly 1`] = `
     mouseEnterDelay={0.15}
     mouseLeaveDelay={0.1}
     overlay={
-      <Card>
+      <Card
+        className="search-bar"
+      >
         <SearchBarDropdown
           history={
             Object {
