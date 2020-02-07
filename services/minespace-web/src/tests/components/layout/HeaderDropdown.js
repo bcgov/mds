@@ -12,6 +12,7 @@ const setupDispatchProps = () => {
 const setupProps = () => {
   props.keycloak = { logout: jest.fn() };
   props.isAuthenticated = true;
+  props.location = { pathname: "/mines" };
 };
 
 beforeEach(() => {
@@ -19,7 +20,7 @@ beforeEach(() => {
   setupProps();
 });
 
-describe("Authentication", () => {
+describe("HeaderDropdown", () => {
   it("renders properly", () => {
     const wrapper = shallow(<HeaderDropdown {...props} {...dispatchProps} />);
     expect(wrapper).toMatchSnapshot();

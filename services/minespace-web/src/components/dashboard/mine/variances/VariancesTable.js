@@ -7,7 +7,7 @@ import { Table, Button, Icon } from "antd";
 import CustomPropTypes from "@/customPropTypes";
 import { formatDate } from "@/utils/helpers";
 import { RED_CLOCK, EDIT_PENCIL } from "@/constants/assets";
-import downloadFileFromDocumentManager from "@/utils/actionlessNetworkCalls";
+import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
 import * as Strings from "@/constants/strings";
 
 const propTypes = {

@@ -71,7 +71,8 @@ export const Overview = (props) => (
             Strings.UNKNOWN}
         </Descriptions.Item>
         <Descriptions.Item span={2} label="Commodity">
-          {props.transformedMineTypes.mine_commodity_code &&
+          {props.transformedMineTypes &&
+          props.transformedMineTypes.mine_commodity_code &&
           props.transformedMineTypes.mine_commodity_code.length > 0
             ? props.transformedMineTypes.mine_commodity_code
                 .map((code) => props.mineCommodityOptionsHash[code])
@@ -79,7 +80,8 @@ export const Overview = (props) => (
             : Strings.UNKNOWN}
         </Descriptions.Item>
         <Descriptions.Item span={2} label="Disturbance">
-          {props.transformedMineTypes.mine_disturbance_code &&
+          {props.transformedMineTypes &&
+          props.transformedMineTypes.mine_disturbance_code &&
           props.transformedMineTypes.mine_disturbance_code.length > 0
             ? props.transformedMineTypes.mine_disturbance_code
                 .map((code) => props.mineDisturbanceOptionsHash[code])

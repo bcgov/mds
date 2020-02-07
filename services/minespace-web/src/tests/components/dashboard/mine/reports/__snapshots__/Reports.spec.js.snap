@@ -48,56 +48,6 @@ exports[`Reports renders properly 1`] = `
       </Col>
     </Row>
     <Row
-      gutter={
-        Array [
-          Object {
-            "lg": 0,
-            "xl": 32,
-          },
-          32,
-        ]
-      }
-      justify="space-around"
-      type="flex"
-    >
-      <Col
-        lg={24}
-        xl={8}
-        xxl={6}
-      >
-        <TableSummaryCard
-          content="6"
-          icon="check-circle"
-          title="Reports Submitted"
-          type="success"
-        />
-      </Col>
-      <Col
-        lg={24}
-        xl={8}
-        xxl={6}
-      >
-        <TableSummaryCard
-          content="6"
-          icon="clock-circle"
-          title="Reports Due"
-          type="error"
-        />
-      </Col>
-      <Col
-        lg={24}
-        xl={8}
-        xxl={6}
-      >
-        <TableSummaryCard
-          content="6"
-          icon="exclamation-circle"
-          title="Reports Overdue"
-          type="warning"
-        />
-      </Col>
-    </Row>
-    <Row
       gutter={0}
     >
       <Col>

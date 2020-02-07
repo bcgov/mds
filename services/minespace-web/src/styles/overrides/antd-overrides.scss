@@ -63,6 +63,11 @@
   // }
 }
 
+.ant-btn-background-ghost {
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
 // Typography
 
 .ant-typography mark {
@@ -104,6 +109,16 @@ h1.ant-typography,
 
 .ant-tabs.ant-tabs-card .ant-tabs-card-bar .ant-tabs-tab-active {
   background-color: $primary-color;
+}
+
+.ant-tabs-tab-prev-icon > .anticon {
+  color: $primary-color;
+  font-size: 24px;
+}
+
+.ant-tabs-tab-next-icon > .anticon {
+  color: $primary-color;
+  font-size: 24px;
 }
 
 // Tables
@@ -155,6 +170,17 @@ td a {
 
 .ant-pagination-item {
   border: none;
+}
+
+tr.ant-table-expanded-row {
+  & .ant-table-thead > tr > th {
+    border-top: none;
+  }
+
+  & table,
+  .ant-table-body {
+    margin: 0;
+  }
 }
 
 // Tags
