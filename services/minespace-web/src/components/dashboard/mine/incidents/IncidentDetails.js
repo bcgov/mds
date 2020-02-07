@@ -243,7 +243,7 @@ const FollowupInformation = (props) => {
           content={props.incidentStatusCodeHash[props.incident.status_code]}
         />
         <IncidentField
-          title="Mine managers recommendations"
+          title="Mine manager's recommendations"
           content={
             props.incident.recommendations.length >= 1 && (
               <React.Fragment>
