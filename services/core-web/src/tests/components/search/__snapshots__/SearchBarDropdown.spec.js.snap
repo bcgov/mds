@@ -25,6 +25,7 @@ exports[`SearchBarDropdown renders properly 1`] = `
       </p>
     </MenuItem>
   </MenuItemGroup>
+  0
   <Divider
     className=""
     disabled={true}
