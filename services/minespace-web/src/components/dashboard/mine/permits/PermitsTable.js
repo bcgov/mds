@@ -74,7 +74,7 @@ const transformExpandedRowData = (amendment, amendmentNumber) => ({
   amendmentNumber,
   dateIssued: formatDate(amendment.issue_date) || Strings.EMPTY_FIELD,
   description: amendment.description || Strings.EMPTY_FIELD,
-  files: amendment.related_documents,
+  documents: amendment.related_documents,
 });
 
 export const PermitsTable = (props) => {
@@ -99,9 +99,9 @@ export const PermitsTable = (props) => {
       { title: "Date Issued", dataIndex: "dateIssued", key: "dateIssued" },
       { title: "Description", dataIndex: "description", key: "description" },
       {
-        title: "Files",
-        dataIndex: "files",
-        key: "files",
+        title: "Documents",
+        dataIndex: "documents",
+        key: "documents",
         render: (text) =>
           (
             <div className="cap-col-height">
