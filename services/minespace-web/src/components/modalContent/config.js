@@ -4,7 +4,6 @@ import AddVarianceModal from "@/components/modalContent/variances/AddVarianceMod
 import ViewVarianceModal from "@/components/modalContent/variances/ViewVarianceModal";
 import EditVarianceModal from "@/components/modalContent/variances/EditVarianceModal";
 import ViewIncidentModal from "@/components/modalContent/incidents/ViewIncidentModal";
-import ViewPermitAmendmentFiles from "@/components/modalContent/permits/ViewPermitAmendmentFiles";
 
 export const modalConfig = {
   ADD_REPORT: AddReportModal,
@@ -13,7 +12,6 @@ export const modalConfig = {
   VIEW_VARIANCE: ViewVarianceModal,
   EDIT_VARIANCE: EditVarianceModal,
   VIEW_INCIDENT: ViewIncidentModal,
-  VIEW_PERMIT_AMENDMENT_FILES: ViewPermitAmendmentFiles,
 };
 
 export default modalConfig;

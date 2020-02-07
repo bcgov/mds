@@ -1,21 +1,21 @@
 import React from "react";
-import { Table, Button } from "antd";
-import { bindActionCreators } from "redux";
+import { Table, Typography } from "antd";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { formatDate } from "@common/utils/helpers";
 import moment from "moment";
 import { getDropdownPermitStatusOptions } from "@common/selectors/staticContentSelectors";
-import { openModal } from "@common/actions/modalActions";
-import { modalConfig } from "@/components/modalContent/config";
+import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
+import LinkButton from "@/components/common/LinkButton";
 import CustomPropTypes from "@/customPropTypes";
 import * as Strings from "@/constants/strings";
+
+const { Paragraph } = Typography;
 
 const propTypes = {
   isLoaded: PropTypes.bool.isRequired,
   permits: PropTypes.arrayOf(CustomPropTypes.permit).isRequired,
   permitStatusOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
-  openModal: PropTypes.func.isRequired,
 };
 
 const columns = [
@@ -101,29 +101,27 @@ export const PermitsTable = (props) => {
       { title: "Date Issued", dataIndex: "dateIssued", key: "dateIssued" },
       { title: "Description", dataIndex: "description", key: "description" },
       {
-        title: "",
+        title: "Files",
         dataIndex: "files",
         key: "files",
-        width: 10,
-        render: (text, record) => (
-          <Button
-            type="primary"
-            size="small"
-            style={{ paddingLeft: "5px", paddingRight: "5px" }}
-            disabled={!text || text.length === 0}
-            onClick={() => {
-              props.openModal({
-                props: {
-                  title: `View Amendment #${record.amendmentNumber} Files`,
-                  amendmentFiles: text,
-                },
-                content: modalConfig.VIEW_PERMIT_AMENDMENT_FILES,
-              });
-            }}
-          >
-            Files
-          </Button>
-        ),
+        render: (text) =>
+          (
+            <Paragraph className="cap-col-height">
+              {text &&
+                text.length > 0 &&
+                text
+                  .sort((a, b) => (a.document_name > b.document_name ? -1 : 1))
+                  .map((file) => (
+                    <LinkButton
+                      key={file.document_manager_guid}
+                      onClick={() => downloadFileFromDocumentManager(file)}
+                    >
+                      {file.document_name}
+                      <br />
+                    </LinkButton>
+                  ))}
+            </Paragraph>
+          ) || Strings.NONE,
       },
     ];
 
@@ -158,14 +156,4 @@ const mapStateToProps = (state) => ({
   permitStatusOptions: getDropdownPermitStatusOptions(state),
 });
 
-const mapDispatchToProps = (dispatch) =>
-  bindActionCreators(
-    {
-      openModal,
-    },
-    dispatch
-  );
-
-PermitsTable.propTypes = propTypes;
-
-export default connect(mapStateToProps, mapDispatchToProps)(PermitsTable);
+export default connect(mapStateToProps)(PermitsTable);
