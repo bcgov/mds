@@ -1,6 +1,6 @@
 import React from "react";
 import { Row, Col, Divider, Card, Button, Typography, Alert } from "antd";
-import * as Strings from "@/constants/strings";
+import * as Strings from "@common/constants/strings";
 
 const { Paragraph, Text, Title } = Typography;
 
