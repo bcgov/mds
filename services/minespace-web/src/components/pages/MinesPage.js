@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { Row, Col, Divider, Typography, Icon, List } from "antd";
+import { Row, Col, Divider, Typography, Icon } from "antd";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { getUserInfo } from "@/selectors/authenticationSelectors";
@@ -11,6 +11,7 @@ import CustomPropTypes from "@/customPropTypes";
 import Loading from "@/components/common/Loading";
 import * as routes from "@/constants/routes";
 import * as Strings from "@/constants/strings";
+import Map from "@/components/common/Map";
 
 const { Paragraph, Title, Text } = Typography;
 
@@ -37,8 +38,8 @@ export class MinesPage extends Component {
             <Divider />
             <Title level={4}>Welcome, {this.props.userInfo.preferred_username}.</Title>
             {(mines && mines.length > 0 && (
-              <Row>
-                <Col>
+              <Row gutter={32}>
+                <Col span={16}>
                   <Paragraph>
                     You are authorized to submit information for the following mines:
                   </Paragraph>
@@ -59,7 +60,15 @@ export class MinesPage extends Component {
                         ))}
                     </ul>
                   </div>
-                  <Paragraph>
+                </Col>
+                <Col span={8}>
+                  <div style={{ height: "400px", marginTop: "-32px" }}>
+                    <Map
+                      controls={false}
+                      additionalPins={mines.map((mine) => [mine.latitude, mine.longitude])}
+                    />
+                  </div>
+                  <Paragraph style={{ paddingTop: "16px" }}>
                     Don&apos;t see the mine you&apos;re looking for? Contact&nbsp;
                     <a href={`mailto:${Strings.MDS_EMAIL}`}>{Strings.MDS_EMAIL}</a>
                     &nbsp;for assistance.
