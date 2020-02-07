@@ -14,6 +14,7 @@ const propTypes = {
   isLoaded: PropTypes.bool.isRequired,
   openEditVarianceModal: PropTypes.func,
   openViewVarianceModal: PropTypes.func,
+  inspectorsHash: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
 const defaultProps = {
@@ -24,13 +25,22 @@ const defaultProps = {
 export class VariancesTable extends Component {
   getOverdueClassName = (isOverdue) => (isOverdue ? "color-error" : "");
 
+  getApprovalStatus = (expiry) => {
+    if (expiry) {
+      return expiry && Date.parse(expiry) < new Date() ? "Expired" : "Active";
+    } 
+      return Strings.EMPTY_FIELD;
+    
+  };
+
   transformRowData = (variances, codeHash, statusHash) =>
     variances &&
     variances.map((variance) => ({
       key: variance.variance_guid,
       variance,
       variance_no: variance.variance_no,
-      lead_inspector: variance.lead_inspector || Strings.EMPTY_FIELD,
+      lead_inspector:
+        this.props.inspectorsHash[variance.inspector_party_guid] || Strings.EMPTY_FIELD,
       status: statusHash[variance.variance_application_status_code],
       compliance_article_id: codeHash[variance.compliance_article_id] || Strings.EMPTY_FIELD,
       expiry_date: formatDate(variance.expiry_date) || Strings.EMPTY_FIELD,
@@ -38,6 +48,7 @@ export class VariancesTable extends Component {
       note: variance.note,
       received_date: formatDate(variance.received_date) || Strings.EMPTY_FIELD,
       isOverdue: variance.expiry_date && Date.parse(variance.expiry_date) < new Date(),
+      approval_status: this.getApprovalStatus(variance.expiry_date),
       documents: variance.documents,
     }));
 
@@ -68,7 +79,7 @@ export class VariancesTable extends Component {
     {
       title: "Variance No.",
       dataIndex: "variance_no",
-      sorter: true,
+      sorter: (a, b) => (a.variance_no > b.variance_no ? -1 : 1),
       render: (text) => <div title="Variance No.">{text}</div>,
     },
     {
@@ -81,7 +92,6 @@ export class VariancesTable extends Component {
       dataIndex: "received_date",
       render: (text) => <div title="Submitted On">{text}</div>,
       sorter: (a, b) => (a.received_date > b.received_date ? -1 : 1),
-      defaultSortOrder: "ascend",
     },
     {
       title: "Application Status",
@@ -100,7 +110,6 @@ export class VariancesTable extends Component {
       dataIndex: "expiry_date",
       render: (text) => <div title="Expiry Date">{text}</div>,
       sorter: (a, b) => ((a.expiry_date || 0) > (b.expiry_date || 0) ? -1 : 1),
-      defaultSortOrder: "descend",
     },
     {
       title: "Inspector",
@@ -110,10 +119,10 @@ export class VariancesTable extends Component {
     },
     {
       title: "Approval Status",
-      dataIndex: "",
-      render: (text, record) => (
-        <div title="Approval Status">{record.isOverdue ? "Expired" : "Active"}</div>
-      ),
+      dataIndex: "approval_status",
+      sorter: (a, b) => (a.approval_status > b.approval_status ? -1 : 1),
+      defaultSortOrder: "descend",
+      render: (text) => <div title="Approval Status">{text}</div>,
     },
     {
       title: "Documents",

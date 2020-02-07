@@ -25,6 +25,7 @@ import {
   getHSRCMComplianceCodesHash,
   getDropdownHSRCMComplianceCodes,
 } from "@common/selectors/staticContentSelectors";
+import { getInspectorsHash } from "@common/selectors/partiesSelectors";
 import { modalConfig } from "@/components/modalContent/config";
 import CustomPropTypes from "@/customPropTypes";
 import VariancesTable from "@/components/dashboard/mine/variances/VariancesTable";
@@ -53,6 +54,7 @@ const propTypes = {
   closeModal: PropTypes.func.isRequired,
   createVariance: PropTypes.func.isRequired,
   addDocumentToVariance: PropTypes.func.isRequired,
+  inspectorsHash: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
 const defaultProps = {
@@ -188,6 +190,7 @@ export class Variances extends Component {
             complianceCodesHash={this.props.complianceCodesHash}
             openViewVarianceModal={this.openViewVarianceModal}
             openEditVarianceModal={this.openEditVarianceModal}
+            inspectorsHash={this.props.inspectorsHash}
           />
         </Col>
       </Row>
@@ -198,6 +201,7 @@ export class Variances extends Component {
 const mapStateToProps = (state) => ({
   mines: getMines(state),
   variances: getVariances(state),
+  inspectorsHash: getInspectorsHash(state),
   complianceCodesHash: getHSRCMComplianceCodesHash(state),
   complianceCodes: getDropdownHSRCMComplianceCodes(state),
   varianceStatusOptionsHash: getVarianceStatusOptionsHash(state),
