@@ -32,7 +32,6 @@ export const reducerObject = {
   [reducerTypes.AUTHENTICATION]: authenticationReducer,
   [reducerTypes.USER_MINE_INFO]: userMineReducer,
   [reducerTypes.VARIANCES]: varianceReducer,
-  [reducerTypes.REPORTS]: reportReducer,
   ...reportReducer,
   ...staticContentReducer,
   ...modalReducer,
