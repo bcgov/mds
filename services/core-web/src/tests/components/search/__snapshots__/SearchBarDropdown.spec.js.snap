@@ -28,9 +28,13 @@ exports[`SearchBarDropdown renders properly 1`] = `
   <MenuItem
     key="/search?q=Abb"
   >
-    <h6>
-      See all results for "Abb"
-    </h6>
+    <p>
+      <Icon
+        className="icon-lg icon-svg-filter"
+        type="file-search"
+      />
+      See all results...
+    </p>
   </MenuItem>
 </Menu>
 `;
