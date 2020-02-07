@@ -280,4 +280,7 @@ const mapDispatchToProps = (dispatch) =>
 PartyProfile.propTypes = propTypes;
 PartyProfile.defaultProps = defaultProps;
 
-export default connect(mapStateToProps, mapDispatchToProps)(PartyProfile);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(PartyProfile);
