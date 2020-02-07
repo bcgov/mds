@@ -1,3 +1,42 @@
 .ministry-contact-title {
   text-transform: uppercase;
 }
+
+.link-card {
+  border-radius: 5px;
+
+  ul {
+    padding-left: 0;
+    margin-bottom: 20px;
+
+    li {
+      display: flex;
+
+      &:not(:last-child) {
+        border-bottom: 2px solid $table-highlight;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+        padding: 10px;
+        width: 100%;
+        border-radius: 5px;
+
+        &:hover {
+          background-color: $table-highlight !important;
+        }
+      }
+
+      h4 {
+        margin: 0px 10px 0px 10px;
+        font-size: 18px;
+      }
+
+      span {
+        padding-left: 34px;
+        font-size: 16px;
+      }
+    }
+  }
+}
