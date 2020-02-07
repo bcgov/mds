@@ -32,6 +32,7 @@ class Map extends Component {
   // if mine does not have a location, set a default to center the map
   latLong =
     this.props.mine &&
+    this.props.mine.mine_location &&
     this.props.mine.mine_location.latitude &&
     this.props.mine.mine_location.longitude
       ? // only add mine Pin if location exists
@@ -43,6 +44,7 @@ class Map extends Component {
     this.createMap();
     if (
       this.props.mine &&
+      this.props.mine.mine_location &&
       this.props.mine.mine_location.latitude &&
       this.props.mine.mine_location.longitude
     ) {
@@ -96,8 +98,6 @@ class Map extends Component {
           iconSize: [32, 32],
         });
         L.marker(pin, { icon: customIcon }).addTo(this.layerGroup);
-        // re-size map to include all pins
-        this.fitBounds();
       });
     this.fitBounds();
   }
