@@ -91,9 +91,8 @@ const columns = [
                 -{" "}
                 <LinkButton
                   key={doc.mine_document_guid}
-                  onClick={() => {
-                    downloadFileFromDocumentManager(doc);
-                  }}
+                  onClick={() => downloadFileFromDocumentManager(doc)}
+                  title={doc.document_name}
                 >
                   {truncateFilename(doc.document_name)}
                 </LinkButton>

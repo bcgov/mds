@@ -4,7 +4,6 @@ import PropTypes from "prop-types";
 const propTypes = {
   onClick: PropTypes.func.isRequired,
   tabIndex: PropTypes.number,
-  style: PropTypes.objectOf(PropTypes.any),
   children: PropTypes.oneOf(
     PropTypes.string,
     PropTypes.element,
@@ -14,7 +13,6 @@ const propTypes = {
 
 const defaultProps = {
   tabIndex: 0,
-  style: null,
   children: null,
 };
 
@@ -24,7 +22,7 @@ const LinkButton = (props) => (
     onClick={props.onClick}
     onKeyPress={props.onClick}
     tabIndex={props.tabIndex}
-    style={props.style}
+    {...props}
   >
     {props.children}
   </a>

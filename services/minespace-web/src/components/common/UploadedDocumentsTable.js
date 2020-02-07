@@ -4,7 +4,7 @@ import { Table } from "antd";
 import PropTypes from "prop-types";
 import moment from "moment";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
-import { formatDateTime } from "@common/utils/helpers";
+import { formatDateTime, truncateFilename } from "@common/utils/helpers";
 import CustomPropTypes from "@/customPropTypes";
 import LinkButton from "@/components/common/LinkButton";
 
@@ -27,8 +27,9 @@ const fileColumn = {
         <LinkButton
           key={record.file.mine_document_guid}
           onClick={() => downloadFileFromDocumentManager(record.file)}
+          title={record.file_name}
         >
-          {record.file_name}
+          {truncateFilename(record.file_name)}
         </LinkButton>
       </div>
     </div>

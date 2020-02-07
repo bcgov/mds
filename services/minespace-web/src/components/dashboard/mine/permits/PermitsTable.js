@@ -1,16 +1,14 @@
 import React from "react";
-import { Table, Typography } from "antd";
+import { Table } from "antd";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { formatDate } from "@common/utils/helpers";
+import { formatDate, truncateFilename } from "@common/utils/helpers";
 import moment from "moment";
 import { getDropdownPermitStatusOptions } from "@common/selectors/staticContentSelectors";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
 import LinkButton from "@/components/common/LinkButton";
 import CustomPropTypes from "@/customPropTypes";
 import * as Strings from "@/constants/strings";
-
-const { Paragraph } = Typography;
 
 const propTypes = {
   isLoaded: PropTypes.bool.isRequired,
@@ -106,7 +104,7 @@ export const PermitsTable = (props) => {
         key: "files",
         render: (text) =>
           (
-            <Paragraph className="cap-col-height">
+            <div className="cap-col-height">
               {text &&
                 text.length > 0 &&
                 text
@@ -115,12 +113,13 @@ export const PermitsTable = (props) => {
                     <LinkButton
                       key={file.document_manager_guid}
                       onClick={() => downloadFileFromDocumentManager(file)}
+                      title={file.document_name}
                     >
-                      {file.document_name}
+                      {truncateFilename(file.document_name)}
                       <br />
                     </LinkButton>
                   ))}
-            </Paragraph>
+            </div>
           ) || Strings.NONE,
       },
     ];
