@@ -137,9 +137,7 @@ export class VariancesTable extends Component {
                     <LinkButton
                       title={text}
                       key={file.mine_document_guid}
-                      onClick={() => {
-                        downloadFileFromDocumentManager(file);
-                      }}
+                      onClick={downloadFileFromDocumentManager(file)}
                     >
                       {truncateFilename(file.document_name)}
                     </LinkButton>
