@@ -1,11 +1,13 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Table, Button } from "antd";
+import { truncateFilename } from "@common/utils/helpers";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
 import CustomPropTypes from "@/customPropTypes";
 import { formatDate } from "@/utils/helpers";
 import { RED_CLOCK } from "@/constants/assets";
 import * as Strings from "@/constants/strings";
+import LinkButton from "@/components/common/LinkButton";
 
 const propTypes = {
   variances: PropTypes.arrayOf(CustomPropTypes.variance).isRequired,
@@ -28,9 +30,8 @@ export class VariancesTable extends Component {
   getApprovalStatus = (expiry) => {
     if (expiry) {
       return expiry && Date.parse(expiry) < new Date() ? "Expired" : "Active";
-    } 
-      return Strings.EMPTY_FIELD;
-    
+    }
+    return Strings.EMPTY_FIELD;
   };
 
   transformRowData = (variances, codeHash, statusHash) =>
@@ -127,27 +128,27 @@ export class VariancesTable extends Component {
     {
       title: "Documents",
       dataIndex: "documents",
-      render: (text, record) => (
-        <div title="Documents">
-          {record.documents.length > 0
-            ? record.documents.map((file) => (
-                <div key={file.mine_document_guid}>
-                  <a
-                    role="link"
-                    key={file.mine_document_guid}
-                    onClick={() => downloadFileFromDocumentManager(file.document_manager_guid)}
-                    // Accessibility: Event listener
-                    onKeyPress={() => downloadFileFromDocumentManager(file.document_manager_guid)}
-                    // Accessibility: Focusable element
-                    tabIndex="0"
-                  >
-                    {file.document_name}
-                  </a>
-                </div>
-              ))
-            : Strings.EMPTY_FIELD}
-        </div>
-      ),
+      render: (text, record) => {
+        return (
+          <div title="Documents">
+            {record.documents.length > 0
+              ? record.documents.map((file) => (
+                  <div>
+                    <LinkButton
+                      title={text}
+                      key={file.mine_document_guid}
+                      onClick={() => {
+                        downloadFileFromDocumentManager(file);
+                      }}
+                    >
+                      {truncateFilename(file.document_name)}
+                    </LinkButton>
+                  </div>
+                ))
+              : Strings.EMPTY_FIELD}
+          </div>
+        );
+      },
     },
     {
       title: "",
