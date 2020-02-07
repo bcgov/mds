@@ -68,7 +68,6 @@ exports[`InspectionsTable renders properly 1`] = `
         Object {
           "due_date": "",
           "inspector": "TEST",
-          "key": "1234-1",
           "order_no": "1234-1",
           "overdue": false,
           "report_no": "1234",
@@ -77,7 +76,6 @@ exports[`InspectionsTable renders properly 1`] = `
         Object {
           "due_date": "2019-12-31",
           "inspector": "TEST",
-          "key": "1234-2",
           "order_no": "1234-2",
           "overdue": true,
           "report_no": "1234",
@@ -86,7 +84,6 @@ exports[`InspectionsTable renders properly 1`] = `
         Object {
           "due_date": "",
           "inspector": "TEST",
-          "key": "1234-3",
           "order_no": "1234-3",
           "overdue": false,
           "report_no": "1234",
