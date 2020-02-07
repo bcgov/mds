@@ -84,7 +84,10 @@ const columns = [
     key: "mine_report_submissions",
     render: (text, record) => {
       return (
-        <div title="Documents" className={record.isOverdue ? "color-error" : ""}>
+        <div
+          title="Documents"
+          className={record.isOverdue ? "color-error cap-col-height" : "cap-col-height"}
+        >
           {text.map((sub) =>
             sub.documents.map((doc) => (
               <div>
