@@ -34,13 +34,13 @@
 
       &:hover {
         color: $pure-white;
-        background-color: $primary-btn-color-hover;
+        background-color: $primary-btn-color;
         border: none;
         border-radius: 0;
       }
       &:focus {
         color: $pure-white;
-        background-color: $primary-btn-color-hover;
+        background-color: $primary-btn-color;
         border: none;
         border-radius: 0;
       }
@@ -77,15 +77,14 @@
       color: $pure-white;
       background-color: transparent;
       width: 100%;
-      text-align: left;
-      padding-left: 30px;
+      text-align: center;
       height: 100px;
       margin: 0;
       border: none;
 
       &:hover {
         color: $pure-white;
-        background-color: $primary-btn-color-hover;
+        background-color: $primary-btn-color;
         border: none;
         border-radius: 0;
       }
@@ -138,7 +137,7 @@
 .navbar-dropdown-menu-item {
   @extend .ant-dropdown-menu-item;
   &:hover {
-    background-color: $primary-btn-color-hover;
+    background-color: $primary-btn-color;
   }
 }
 
