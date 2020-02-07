@@ -29,8 +29,6 @@ const defaultProps = {
 };
 
 class Map extends Component {
-  state = { containsAdditionalPins: false };
-
   // if mine does not have a location, set a default to center the map
   latLong =
     this.props.mine &&
@@ -56,9 +54,11 @@ class Map extends Component {
     // Add MinePins to the top of LayerList and add the LayerList widget
     L.control.layers(this.getBaseMaps(), {}, { position: "topright" }).addTo(this.map);
     this.fitBounds();
+    // Note that this locks the zoom in place
+    if (!this.props.controls) {
+      this.disableControls();
+    }
   }
-
-  componentWillReceiveProps(nextProps) {}
 
   getBaseMaps() {
     const topographicBasemap = L.tileLayer(
@@ -98,19 +98,14 @@ class Map extends Component {
         });
         L.marker(pin, { icon: customIcon }).addTo(this.layerGroup);
         // re-size map to include all pins
+        this.fitBounds();
       });
-    this.setState({ containsAdditionalPins: true });
+    this.fitBounds();
   }
 
   fitBounds() {
     this.map.invalidateSize();
     const bounds = this.layerGroup.getBounds();
-    alert(
-      JSON.stringify([
-        [bounds.getSouthWest().wrap().lat, bounds.getSouthWest().wrap().lng],
-        [bounds.getNorthEast().wrap().lat, bounds.getNorthEast().wrap().lng],
-      ])
-    );
     this.map.fitBounds([
       [bounds.getSouthWest().wrap().lat, bounds.getSouthWest().wrap().lng],
       [bounds.getNorthEast().wrap().lat, bounds.getNorthEast().wrap().lng],
@@ -122,9 +117,6 @@ class Map extends Component {
       .setView(this.latLong, Strings.DEFAULT_ZOOM)
       .setMaxZoom(10);
     this.layerGroup = new L.FeatureGroup().addTo(this.map);
-    if (!this.props.controls) {
-      this.disableControls();
-    }
   }
 
   disableControls() {
@@ -132,14 +124,6 @@ class Map extends Component {
     this.map.touchZoom.disable();
     this.map.doubleClickZoom.disable();
     this.map.scrollWheelZoom.disable();
-    const zoom = this.map.getZoom();
-
-    // reset zoom when clicked on zoom control
-    this.map.on("zoomend", () => {
-      if (zoom && this.map.getZoom() !== zoom) {
-        this.map.setZoom(zoom);
-      }
-    });
   }
 
   render() {

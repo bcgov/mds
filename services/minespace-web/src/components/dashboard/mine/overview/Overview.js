@@ -109,7 +109,7 @@ export const Overview = (props) => (
       <Row gutter={[0, 16]}>
         <Col>
           <div style={{ height: "200px" }}>
-            <Map mine={props.mine} controls />
+            <Map mine={props.mine} controls={false} />
           </div>
         </Col>
         <Col>
