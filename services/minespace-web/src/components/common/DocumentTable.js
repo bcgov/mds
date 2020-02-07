@@ -79,7 +79,7 @@ export const DocumentTable = (props) => {
         align="left"
         pagination={false}
         columns={columns}
-        locale={{ emptyText: "variance does not contain any documents" }}
+        locale={{ emptyText: "This variance does not contain any documents." }}
         dataSource={props.documents}
       />
     </div>

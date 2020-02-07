@@ -83,7 +83,7 @@ export class DocumentTable extends Component {
           align="left"
           pagination={false}
           columns={columns}
-          locale={{ emptyText: "This variance does not contain any documents" }}
+          locale={{ emptyText: "This variance does not contain any documents." }}
           dataSource={this.transformRowData(this.props.documents)}
         />
       </div>
