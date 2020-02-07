@@ -5,7 +5,11 @@ const propTypes = {
   onClick: PropTypes.func.isRequired,
   tabIndex: PropTypes.number,
   style: PropTypes.objectOf(PropTypes.any),
-  children: PropTypes.arrayOf(PropTypes.element),
+  children: PropTypes.oneOf(
+    PropTypes.string,
+    PropTypes.element,
+    PropTypes.arrayOf(PropTypes.element)
+  ),
 };
 
 const defaultProps = {

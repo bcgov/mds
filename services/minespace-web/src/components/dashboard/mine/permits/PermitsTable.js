@@ -1,21 +1,21 @@
 import React from "react";
-import { Table, Typography } from "antd";
+import { Table, Button } from "antd";
+import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { formatDate } from "@common/utils/helpers";
 import moment from "moment";
 import { getDropdownPermitStatusOptions } from "@common/selectors/staticContentSelectors";
-import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
+import { openModal } from "@common/actions/modalActions";
+import { modalConfig } from "@/components/modalContent/config";
 import CustomPropTypes from "@/customPropTypes";
-import LinkButton from "@/components/common/LinkButton";
 import * as Strings from "@/constants/strings";
-
-const { Text } = Typography;
 
 const propTypes = {
   isLoaded: PropTypes.bool.isRequired,
   permits: PropTypes.arrayOf(CustomPropTypes.permit).isRequired,
   permitStatusOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
+  openModal: PropTypes.func.isRequired,
 };
 
 const columns = [
@@ -49,38 +49,6 @@ const columns = [
     key: "lastAmended",
     sorter: (a, b) => (moment(a.lastAmended) > moment(b.lastAmended) ? -1 : 1),
     defaultSortOrder: "descend",
-  },
-];
-
-const renderDocumentLink = (file, text) => (
-  <LinkButton key={file.mine_document_guid} onClick={() => downloadFileFromDocumentManager(file)}>
-    {text}
-  </LinkButton>
-);
-
-const expandedColumns = [
-  {
-    title: "Amendment No.",
-    dataIndex: "amendmentNumber",
-    key: "amendmentNumber",
-    width: 180,
-  },
-  { title: "Date Issued", dataIndex: "dateIssued", key: "dateIssued" },
-  { title: "Description", dataIndex: "description", key: "description" },
-  {
-    title: "Files",
-    dataIndex: "files",
-    key: "files",
-    render: (text) =>
-      (text &&
-        text.length > 0 &&
-        text.map((file) => (
-          <Text>
-            {renderDocumentLink(file, file.document_name)}
-            <br />
-          </Text>
-        ))) ||
-      Strings.NONE,
   },
 ];
 
@@ -122,6 +90,43 @@ export const PermitsTable = (props) => {
           transformExpandedRowData(amendment, permit.permit_amendments.length - index)
         )
       : [];
+
+    const expandedColumns = [
+      {
+        title: "Amendment No.",
+        dataIndex: "amendmentNumber",
+        key: "amendmentNumber",
+        width: 180,
+      },
+      { title: "Date Issued", dataIndex: "dateIssued", key: "dateIssued" },
+      { title: "Description", dataIndex: "description", key: "description" },
+      {
+        title: "",
+        dataIndex: "files",
+        key: "files",
+        width: 10,
+        render: (text, record) => (
+          <Button
+            type="primary"
+            size="small"
+            style={{ paddingLeft: "5px", paddingRight: "5px" }}
+            disabled={!text || text.length === 0}
+            onClick={() => {
+              props.openModal({
+                props: {
+                  title: `View Amendment #${record.amendmentNumber} Files`,
+                  amendmentFiles: text,
+                },
+                content: modalConfig.VIEW_PERMIT_AMENDMENT_FILES,
+              });
+            }}
+          >
+            Files
+          </Button>
+        ),
+      },
+    ];
+
     return (
       <Table
         size="small"
@@ -153,6 +158,14 @@ const mapStateToProps = (state) => ({
   permitStatusOptions: getDropdownPermitStatusOptions(state),
 });
 
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators(
+    {
+      openModal,
+    },
+    dispatch
+  );
+
 PermitsTable.propTypes = propTypes;
 
-export default connect(mapStateToProps)(PermitsTable);
+export default connect(mapStateToProps, mapDispatchToProps)(PermitsTable);
