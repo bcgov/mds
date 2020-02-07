@@ -6,20 +6,25 @@ exports[`SearchBarDropdown renders properly 1`] = `
   onMouseDown={[Function]}
   selectable={false}
 >
-  <MenuItem
-    key="/mine-dashboard/aa3cb08a-ee1b-4dc9-8bf6-f54eb7484d4d/mine-information/general"
+  <MenuItemGroup
+    disabled={true}
+    title="Mines"
   >
-    <p>
-      Abbott Inc
-    </p>
-  </MenuItem>
-  <MenuItem
-    key="/mine-dashboard/5a993f02-1006-4a07-a448-f4064294de11/mine-information/general"
-  >
-    <p>
-      Abbott PLC
-    </p>
-  </MenuItem>
+    <MenuItem
+      key="/mine-dashboard/aa3cb08a-ee1b-4dc9-8bf6-f54eb7484d4d/mine-information/general"
+    >
+      <p>
+        Abbott Inc
+      </p>
+    </MenuItem>
+    <MenuItem
+      key="/mine-dashboard/5a993f02-1006-4a07-a448-f4064294de11/mine-information/general"
+    >
+      <p>
+        Abbott PLC
+      </p>
+    </MenuItem>
+  </MenuItemGroup>
   <Divider
     className=""
     disabled={true}
