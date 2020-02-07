@@ -126,6 +126,11 @@ h1.ant-typography,
 .ant-table {
   border: none !important;
   border-radius: 0 !important;
+
+  table {
+    overflow-x: auto;
+    margin: $padding-md 0;
+  }
 }
 
 .ant-table-thead {
