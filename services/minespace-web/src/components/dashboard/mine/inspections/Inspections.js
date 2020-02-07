@@ -25,7 +25,6 @@ const propTypes = {
 const defaultProps = {};
 
 export class Inspections extends Component {
-  // TODO: Accurately set isLoaded when file is more properly implemented.
   state = { isLoaded: false };
 
   componentDidMount = () => {

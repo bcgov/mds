@@ -5,6 +5,7 @@ import { formatDate, compareCodes } from "@common/utils/helpers";
 import PropTypes from "prop-types";
 import CustomPropTypes from "@/customPropTypes";
 import { RED_CLOCK } from "@/constants/assets";
+import * as STRINGS from "@/constants/strings";
 
 const propTypes = {
   orders: CustomPropTypes.complianceOrders,
@@ -33,42 +34,50 @@ const columns = [
     title: "Order No.",
     dataIndex: "order_no",
     key: "order_no",
-    render: (text, record) => <div title="Order #">{record.order_no || "-"}</div>,
+    render: (text, record) => <div title="Order #">{record.order_no || STRINGS.EMPTY_FIELD}</div>,
     sorter: (a, b) => (a.order_no > b.order_no ? -1 : 1),
   },
   {
     title: "Violation",
     dataIndex: "violation",
     key: "violation",
-    render: (text, record) => <div title="Violation">{record.violation || "-"}</div>,
+    render: (text, record) => (
+      <div title="Violation">{record.violation || STRINGS.EMPTY_FIELD}</div>
+    ),
     sorter: (a, b) => compareCodes(a.violation, b.violation),
   },
   {
     title: "Report No.",
     dataIndex: "report_no",
     key: "report_no",
-    render: (text, record) => <div title="Report #">{record.report_no || "-"}</div>,
+    render: (text, record) => <div title="Report #">{record.report_no || STRINGS.EMPTY_FIELD}</div>,
     sorter: (a, b) => (a.report_no > b.report_no ? -1 : 1),
   },
   {
     title: "Inspection Type",
     dataIndex: "inspection_type",
     key: "inspection_type",
-    render: (text, record) => <div title="Inspector Type">{record.inspection_type || "-"}</div>,
+    render: (text, record) => (
+      <div title="Inspector Type">{record.inspection_type || STRINGS.EMPTY_FIELD}</div>
+    ),
     sorter: (a, b) => (a.inspection_type > b.inspection_type ? -1 : 1),
   },
   {
     title: "Inspector",
     dataIndex: "inspector",
     key: "inspector",
-    render: (text, record) => <div title="Inspector Name">{record.inspector || "-"}</div>,
+    render: (text, record) => (
+      <div title="Inspector Name">{record.inspector || STRINGS.EMPTY_FIELD}</div>
+    ),
     sorter: (a, b) => (a.inspector > b.inspector ? -1 : 1),
   },
   {
     title: "Order Status",
     dataIndex: "order_status",
     key: "order_status",
-    render: (text, record) => <div title="Order Status">{record.order_status || "-"}</div>,
+    render: (text, record) => (
+      <div title="Order Status">{record.order_status || STRINGS.EMPTY_FIELD}</div>
+    ),
     sorter: (a, b) => (a.order_status > b.order_status ? -1 : 1),
     defaultSortOrder: "ascend",
   },
@@ -76,17 +85,13 @@ const columns = [
     title: "Due",
     dataIndex: "due",
     key: "due",
-    render: (text, record) => <div title="Due Date">{formatDate(record.due_date) || "-"}</div>,
+    render: (text, record) => (
+      <div title="Due Date">{formatDate(record.due_date) || STRINGS.EMPTY_FIELD}</div>
+    ),
     sorter: (a, b) => (moment(a.due_date) > moment(b.due_date) ? -1 : 1),
     defaultSortOrder: "descend",
   },
 ];
-
-const transformRowData = (orders) =>
-  orders.map((order) => ({
-    key: order.order_no,
-    ...order,
-  }));
 
 const filterClosedOrders = (orders, display) =>
   display ? orders : orders.filter((order) => order.order_status !== "Closed");
@@ -100,7 +105,7 @@ export const InspectionsTable = (props) => {
         pagination={false}
         loading={!props.isLoaded}
         columns={columns}
-        dataSource={transformRowData(filterClosedOrders(props.orders, showClosedOrders))}
+        dataSource={filterClosedOrders(props.orders, showClosedOrders)}
         locale={{ emptyText: "This mine has no inspection data." }}
       />
       {props.isLoaded && (

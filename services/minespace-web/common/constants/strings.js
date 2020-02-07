@@ -77,12 +77,6 @@ export const INCIDENT_FOLLOWUP_ACTIONS = {
   unknown: "HUK",
 };
 
-export const RETURN_PAGE_TYPE = {
-  LOGIN: "login",
-  SITEMINDER_LOGOUT: "smlogout",
-  LOGOUT: "logout",
-};
-
 export const NOT_APPLICABLE = "N/A";
 
 // MDS email
