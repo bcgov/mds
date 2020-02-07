@@ -9,6 +9,7 @@ export const DEFAULT_ENVIRONMENT = {
   keycloak_idpHint: "test",
   keycloak_url: "https://sso-test.pathfinder.gov.bc.ca/auth",
 };
+
 export const ENVIRONMENT = {
   apiUrl: "<API_URL>",
   docManUrl: "<DOCUMENT_MANAGER_URL>",
