@@ -1,16 +1,8 @@
-// TODO: Revisit the responsive styling for tables and ensure it is acceptable.
-// There were no clear designs for this so I didn't worry about it too much.
+// Responsive table styling
 
-.ant-table-body {
-  overflow-x: auto;
-}
-
-.ant-table table {
-  margin: 20px 0;
-}
-
-.ant-table-thead {
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);
+.cap-col-height {
+  max-height: 25px * 4;
+  overflow-y: auto;
 }
 
 @include screen-md {
@@ -60,29 +52,4 @@
   .ant-table-tbody > tr > td:last-child {
     border-bottom: 0;
   }
-}
-
-// Nested Table
-.nested-table {
-  tr {
-    &.ant-table-expanded-row {
-      background: #fff;
-    }
-  }
-
-  .ant-table-expanded-row:hover > td {
-    background: #fff;
-  }
-}
-
-.wrapped-text {
-  overflow-wrap: break-word;
-  word-wrap: break-word;
-  word-break: break-word;
-  white-space: normal;
-  font-size: 100%;
-}
-
-.column-hide {
-  display: none;
 }

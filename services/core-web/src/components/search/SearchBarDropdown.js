@@ -12,78 +12,71 @@ const propTypes = {
   searchBarResults: PropTypes.arrayOf(PropTypes.any).isRequired,
 };
 
-const staticMenuItems = [
-  <Menu.ItemGroup title="Lookup">
-    <Menu.Item key="/dashboard/mines">
+export const SearchBarDropdown = (props) => {
+  const createStaticMenuItem = (text, url, img) => (
+    <Menu.Item key={url}>
       <p>
-        <img
-          alt="Mine"
-          className="padding-small--right vertical-align-sm icon-svg-filter"
-          height="25px"
-          src={MINE}
-        />{" "}
-        Mines
+        <img className="icon-svg-filter" src={img} alt={text} height={25} />
+        {text}
       </p>
     </Menu.Item>
-    ,
-    <Menu.Item key="/dashboard/contacts">
-      <p>
-        <img
-          alt="team"
-          className="padding-small--right vertical-align-sm icon-svg-filter"
-          height="25px"
-          src={TEAM}
-        />{" "}
-        Contacts
-      </p>
-    </Menu.Item>
-  </Menu.ItemGroup>,
-];
+  );
 
-const URLFor = (item) =>
-  ({
-    mine: route.MINE_GENERAL.dynamicRoute(item.result.id),
-    party: route.PARTY_PROFILE.dynamicRoute(item.result.id),
-    permit: route.MINE_PERMITS.dynamicRoute(item.result.id),
-  }[item.type]);
+  const staticMenuItems = [
+    <Menu.ItemGroup title="Look up">
+      {createStaticMenuItem("Mines", route.MINE_HOME_PAGE.route, MINE)}
+      {createStaticMenuItem("Contacts", route.CONTACT_HOME_PAGE.route, TEAM)}
+    </Menu.ItemGroup>,
+  ];
 
-export const SearchBarDropdown = (props) => (
-  <Menu
-    onMouseDown={(e) => {
-      e.target.click(e);
-    }}
-    onClick={({ key }) => props.history.push(key)}
-    selectable={false}
-  >
-    {props.searchTerm.length && props.searchBarResults.length
-      ? [
-          props.searchBarResults.map((item) => (
-            <Menu.Item key={URLFor(item)}>
-              <p>{`${item.result.value || ""}`}</p>
-            </Menu.Item>
-          )),
-          <Menu.Divider />,
-          <Menu.Item key={`/search?q=${props.searchTerm}`}>
-            <h6>{`See all results for "${props.searchTerm}"`}</h6>
-          </Menu.Item>,
-        ]
-      : [
-          staticMenuItems,
-          props.searchTermHistory.length && [
+  const URLFor = (item) =>
+    ({
+      mine: route.MINE_GENERAL.dynamicRoute(item.result.id),
+      party: route.PARTY_PROFILE.dynamicRoute(item.result.id),
+      permit: route.MINE_PERMITS.dynamicRoute(item.result.id),
+    }[item.type]);
+
+  return (
+    <Menu
+      onMouseDown={(e) => {
+        e.target.click(e);
+      }}
+      onClick={({ key }) => props.history.push(key)}
+      selectable={false}
+    >
+      {props.searchTerm.length && props.searchBarResults.length
+        ? [
+            props.searchBarResults.map((item) => (
+              <Menu.Item key={URLFor(item)}>
+                <p>{`${item.result.value || ""}`}</p>
+              </Menu.Item>
+            )),
             <Menu.Divider />,
-            <Menu.ItemGroup title="Recent searches">
-              {props.searchTermHistory.map((pastSearchTerm) => (
-                <Menu.Item key={`/search?q=${pastSearchTerm}`}>
-                  <p style={{ fontStyle: "italic" }}>
-                    <Icon type="search" /> {pastSearchTerm}
-                  </p>
-                </Menu.Item>
-              ))}
-            </Menu.ItemGroup>,
-          ],
-        ]}
-  </Menu>
-);
+            <Menu.Item key={`/search?q=${props.searchTerm}`}>
+              <p>
+                <Icon className="icon-lg icon-svg-filter" type="file-search" />
+                See all results...
+              </p>
+            </Menu.Item>,
+          ]
+        : [
+            staticMenuItems,
+            props.searchTermHistory.length && [
+              <Menu.Divider />,
+              <Menu.ItemGroup title="Recent searches">
+                {props.searchTermHistory.map((pastSearchTerm) => (
+                  <Menu.Item key={`/search?q=${pastSearchTerm}`}>
+                    <p style={{ fontStyle: "italic" }}>
+                      <Icon type="search" /> {pastSearchTerm}
+                    </p>
+                  </Menu.Item>
+                ))}
+              </Menu.ItemGroup>,
+            ],
+          ]}
+    </Menu>
+  );
+};
 
 SearchBarDropdown.propTypes = propTypes;
 

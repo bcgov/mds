@@ -1,16 +1,14 @@
 import React from "react";
-import { Table, Typography } from "antd";
+import { Table } from "antd";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { formatDate } from "@common/utils/helpers";
+import { formatDate, truncateFilename } from "@common/utils/helpers";
 import moment from "moment";
 import { getDropdownPermitStatusOptions } from "@common/selectors/staticContentSelectors";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
-import CustomPropTypes from "@/customPropTypes";
 import LinkButton from "@/components/common/LinkButton";
+import CustomPropTypes from "@/customPropTypes";
 import * as Strings from "@/constants/strings";
-
-const { Text } = Typography;
 
 const propTypes = {
   isLoaded: PropTypes.bool.isRequired,
@@ -52,38 +50,6 @@ const columns = [
   },
 ];
 
-const renderDocumentLink = (file, text) => (
-  <LinkButton key={file.mine_document_guid} onClick={() => downloadFileFromDocumentManager(file)}>
-    {text}
-  </LinkButton>
-);
-
-const expandedColumns = [
-  {
-    title: "Amendment No.",
-    dataIndex: "amendmentNumber",
-    key: "amendmentNumber",
-    width: 180,
-  },
-  { title: "Date Issued", dataIndex: "dateIssued", key: "dateIssued" },
-  { title: "Description", dataIndex: "description", key: "description" },
-  {
-    title: "Files",
-    dataIndex: "files",
-    key: "files",
-    render: (text) =>
-      (text &&
-        text.length > 0 &&
-        text.map((file) => (
-          <Text>
-            {renderDocumentLink(file, file.document_name)}
-            <br />
-          </Text>
-        ))) ||
-      Strings.NONE,
-  },
-];
-
 const transformRowData = (permit, permitStatusOptions) => {
   const latestAmendment = permit.permit_amendments[0];
   const firstAmendment = permit.permit_amendments[permit.permit_amendments.length - 1];
@@ -108,7 +74,7 @@ const transformExpandedRowData = (amendment, amendmentNumber) => ({
   amendmentNumber,
   dateIssued: formatDate(amendment.issue_date) || Strings.EMPTY_FIELD,
   description: amendment.description || Strings.EMPTY_FIELD,
-  files: amendment.related_documents,
+  documents: amendment.related_documents,
 });
 
 export const PermitsTable = (props) => {
@@ -122,6 +88,42 @@ export const PermitsTable = (props) => {
           transformExpandedRowData(amendment, permit.permit_amendments.length - index)
         )
       : [];
+
+    const expandedColumns = [
+      {
+        title: "Amendment No.",
+        dataIndex: "amendmentNumber",
+        key: "amendmentNumber",
+        width: 180,
+      },
+      { title: "Date Issued", dataIndex: "dateIssued", key: "dateIssued" },
+      { title: "Description", dataIndex: "description", key: "description" },
+      {
+        title: "Documents",
+        dataIndex: "documents",
+        key: "documents",
+        render: (text) =>
+          (
+            <div className="cap-col-height">
+              {text &&
+                text.length > 0 &&
+                text
+                  .sort((a, b) => (a.document_name > b.document_name ? -1 : 1))
+                  .map((file) => (
+                    <LinkButton
+                      key={file.document_manager_guid}
+                      onClick={() => downloadFileFromDocumentManager(file)}
+                      title={file.document_name}
+                    >
+                      {truncateFilename(file.document_name)}
+                      <br />
+                    </LinkButton>
+                  ))}
+            </div>
+          ) || Strings.NONE,
+      },
+    ];
+
     return (
       <Table
         size="small"
@@ -152,7 +154,5 @@ PermitsTable.propTypes = propTypes;
 const mapStateToProps = (state) => ({
   permitStatusOptions: getDropdownPermitStatusOptions(state),
 });
-
-PermitsTable.propTypes = propTypes;
 
 export default connect(mapStateToProps)(PermitsTable);

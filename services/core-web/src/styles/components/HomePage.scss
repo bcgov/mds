@@ -24,7 +24,7 @@
       }
 
       &:not(:last-child) {
-        border-bottom: 2px solid $light-grey;
+        border-bottom: 1px solid $light-grey;
       }
 
       a {
@@ -55,5 +55,8 @@
   h1,
   p {
     color: $pure-white;
+  }
+  a:hover {
+    color: $light-grey;
   }
 }

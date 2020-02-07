@@ -166,7 +166,7 @@ export class HomePage extends Component {
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    Chief Inspector&apos;s Annual Report
+                    Chief Inspector&apos;s Annual Reports
                   </a>
                 </li>
                 <li>

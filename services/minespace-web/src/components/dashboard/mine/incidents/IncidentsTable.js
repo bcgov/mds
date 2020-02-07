@@ -39,6 +39,7 @@ const IncidentDocuments = (props) =>
         <LinkButton
           doc={file.mine_document_guid}
           onClick={() => downloadFileFromDocumentManager(file)}
+          title={file.document_name}
         >
           {truncateFilename(file.document_name)}
         </LinkButton>

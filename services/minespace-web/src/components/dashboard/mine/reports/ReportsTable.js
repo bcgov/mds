@@ -84,16 +84,18 @@ const columns = [
     key: "mine_report_submissions",
     render: (text, record) => {
       return (
-        <div title="Documents" className={record.isOverdue ? "color-error" : ""}>
+        <div
+          title="Documents"
+          className={record.isOverdue ? "color-error cap-col-height" : "cap-col-height"}
+        >
           {text.map((sub) =>
             sub.documents.map((doc) => (
               <div>
                 -{" "}
                 <LinkButton
                   key={doc.mine_document_guid}
-                  onClick={() => {
-                    downloadFileFromDocumentManager(doc);
-                  }}
+                  onClick={() => downloadFileFromDocumentManager(doc)}
+                  title={doc.document_name}
                 >
                   {truncateFilename(doc.document_name)}
                 </LinkButton>
