@@ -62,10 +62,10 @@ export const SearchBarDropdown = (props) => {
       onClick={({ key }) => props.history.push(key)}
       selectable={false}
     >
-      {props.searchTerm.length && props.searchBarResults.length > 0
+      {props.searchTerm.length && props.searchBarResults.length
         ? [
-            mineResults && mineResults.length > 0 && createResultGroup("Mines", mineResults),
-            partyResults && partyResults.length > 0 && createResultGroup("Contacts", partyResults),
+            mineResults && mineResults.length && createResultGroup("Mines", mineResults),
+            partyResults && partyResults.length && createResultGroup("Contacts", partyResults),
             <Menu.Divider />,
             <Menu.Item key={`/search?q=${props.searchTerm}`}>
               <p>
