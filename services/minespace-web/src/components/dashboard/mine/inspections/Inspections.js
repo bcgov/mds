@@ -4,24 +4,46 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import CustomPropTypes from "@/customPropTypes";
+import moment from "moment";
+import PropTypes from "prop-types";
 import { Row, Col, Typography } from "antd";
+import { formatDate } from "@common/utils/helpers";
+import CustomPropTypes from "@/customPropTypes";
 import InspectionsTable from "@/components/dashboard/mine/inspections/InspectionsTable";
 import TableSummaryCard from "@/components/common/TableSummaryCard";
+import { fetchMineComplianceInfo } from "@common/actionCreators/complianceActionCreator";
+import { getMineComplianceInfo } from "@common/selectors/complianceSelectors";
 
 const { Paragraph, Title, Text } = Typography;
 
 const propTypes = {
   mine: CustomPropTypes.mine.isRequired,
+  mineComplianceInfo: CustomPropTypes.mineComplianceInfo.isRequired,
+  fetchMineComplianceInfo: PropTypes.func.isRequired,
 };
 
 const defaultProps = {};
 
 export class Inspections extends Component {
-  // TODO: Accurately set isLoaded when file is more properly implemented.
-  state = { isLoaded: true };
+  state = { isLoaded: false };
+
+  componentDidMount = () => {
+    this.props.fetchMineComplianceInfo(this.props.mine.mine_no, true).then((data) => {
+      this.setState({
+        isLoaded: true,
+      });
+    });
+  };
 
   render() {
+    const sortedOrders = (orders) =>
+      orders.sort((a, b) => {
+        if (a.order_status > b.order_status) return -1;
+        if (a.order_status < b.order_status) return 1;
+        if (moment(a.due_date) < moment(b.due_date)) return -1;
+        if (moment(a.due_date) > moment(b.due_date)) return 1;
+        return 0;
+      });
     return (
       <Row>
         <Col>
@@ -33,45 +55,68 @@ export class Inspections extends Component {
             </Text>
             &nbsp;since March 2018. Each row represents an individual order.
           </Paragraph>
-          <Row type="flex" justify="space-around" gutter={[{ lg: 0, xl: 32 }, 32]}>
-            <Col lg={24} xl={8} xxl={6}>
-              <TableSummaryCard
-                title="Inspections YTD"
-                // TODO: Display the amount of inspections this year.
-                content="6"
-                icon="check-circle"
-                type="success"
-              />
-            </Col>
-            <Col lg={24} xl={8} xxl={6}>
-              <TableSummaryCard
-                title="Overdue Orders"
-                // TODO: Display the amount of overdue orders.
-                content="6"
-                icon="clock-circle"
-                type="error"
-              />
-            </Col>
-            <Col lg={24} xl={8} xxl={6}>
-              <TableSummaryCard
-                title="Responses Due"
-                // TODO: Display the amount of responses that are due.
-                content="6"
-                icon="exclamation-circle"
-                type="warning"
-              />
-            </Col>
-          </Row>
-          <InspectionsTable isLoaded={this.state.isLoaded} />
+          {this.state.isLoaded && (
+            <Row type="flex" justify="space-around" gutter={[16, 16]}>
+              <Col sm={24} md={10} lg={6}>
+                <TableSummaryCard
+                  title="Inspections YTD"
+                  content={this.props.mineComplianceInfo.year_to_date.num_inspections}
+                  icon="check-circle"
+                  type="success"
+                />
+              </Col>
+              <Col sm={24} md={10} lg={6}>
+                <TableSummaryCard
+                  title="Responses Due"
+                  content={this.props.mineComplianceInfo.num_open_orders}
+                  icon="exclamation-circle"
+                  type="warning"
+                />
+              </Col>
+              <Col sm={24} md={10} lg={6}>
+                <TableSummaryCard
+                  title="Overdue Orders"
+                  content={this.props.mineComplianceInfo.num_overdue_orders}
+                  icon="clock-circle"
+                  type="error"
+                />
+              </Col>
+              <Col sm={24} md={10} lg={6}>
+                <TableSummaryCard
+                  title="Last Inspection"
+                  content={
+                    <div className="table-summary-card-small-content">
+                      <span className="table-summary-card-small-content-title">
+                        {this.props.mineComplianceInfo.last_inspector}
+                      </span>
+                      <br />
+                      {formatDate(this.props.mineComplianceInfo.last_inspection)}
+                    </div>
+                  }
+                  icon="file-text"
+                />
+              </Col>
+            </Row>
+          )}
+          <InspectionsTable
+            isLoaded={this.state.isLoaded}
+            orders={
+              this.props.mineComplianceInfo.orders
+                ? sortedOrders(this.props.mineComplianceInfo.orders)
+                : []
+            }
+          />
         </Col>
       </Row>
     );
   }
 }
 
-const mapStateToProps = (state) => ({});
+const mapStateToProps = (state) => ({
+  mineComplianceInfo: getMineComplianceInfo(state),
+});
 
-const mapDispatchToProps = (dispatch) => bindActionCreators({}, dispatch);
+const mapDispatchToProps = (dispatch) => bindActionCreators({ fetchMineComplianceInfo }, dispatch);
 
 Inspections.propTypes = propTypes;
 Inspections.defaultProps = defaultProps;
