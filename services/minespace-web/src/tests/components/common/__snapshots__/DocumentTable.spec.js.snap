@@ -43,7 +43,7 @@ exports[`DocumentTable renders properly 1`] = `
     }
     locale={
       Object {
-        "emptyText": "variance does not contain any documents",
+        "emptyText": "This variance does not contain any documents.",
       }
     }
     pagination={false}
