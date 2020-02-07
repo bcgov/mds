@@ -36,24 +36,6 @@ export const SearchBarDropdown = (props) => {
       permit: route.MINE_PERMITS.dynamicRoute(item.result.id),
     }[item.type]);
 
-  const createResultGroup = (title, results) => (
-    <Menu.ItemGroup title={title}>
-      {results.map((item) => (
-        <Menu.Item key={URLFor(item)}>
-          <p>{`${item.result.value || ""}`}</p>
-        </Menu.Item>
-      ))}
-    </Menu.ItemGroup>
-  );
-
-  const mineResults = props.searchBarResults.length
-    ? props.searchBarResults.filter((result) => result.type === "mine")
-    : [];
-
-  const partyResults = props.searchBarResults.length
-    ? props.searchBarResults.filter((result) => result.type === "party")
-    : [];
-
   return (
     <Menu
       onMouseDown={(e) => {
@@ -64,8 +46,11 @@ export const SearchBarDropdown = (props) => {
     >
       {props.searchTerm.length && props.searchBarResults.length
         ? [
-            mineResults && mineResults.length && createResultGroup("Mines", mineResults),
-            partyResults && partyResults.length && createResultGroup("Contacts", partyResults),
+            props.searchBarResults.map((item) => (
+              <Menu.Item key={URLFor(item)}>
+                <p>{`${item.result.value || ""}`}</p>
+              </Menu.Item>
+            )),
             <Menu.Divider />,
             <Menu.Item key={`/search?q=${props.searchTerm}`}>
               <p>
