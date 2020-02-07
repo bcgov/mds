@@ -105,10 +105,14 @@ class Map extends Component {
   fitBounds() {
     this.map.invalidateSize();
     const bounds = this.layerGroup.getBounds();
-    this.map.fitBounds([
-      [bounds.getSouthWest().wrap().lat, bounds.getSouthWest().wrap().lng],
-      [bounds.getNorthEast().wrap().lat, bounds.getNorthEast().wrap().lng],
-    ]);
+    const sw = bounds.getSouthWest();
+    const ne = bounds.getNorthEast();
+    if (sw && ne) {
+      this.map.fitBounds([
+        [sw.wrap().lat, sw.wrap().lng],
+        [ne.wrap().lat, ne.wrap().lng],
+      ]);
+    }
   }
 
   createMap() {
