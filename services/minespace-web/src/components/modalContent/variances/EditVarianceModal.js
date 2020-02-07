@@ -2,14 +2,14 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import CustomPropTypes from "@/customPropTypes";
-import EditVarianceForm from "@/components/Forms/variances/EditVarianceForm";
 import {
   fetchVarianceById,
   removeDocumentFromVariance,
   fetchVariancesByMine,
-} from "@/actionCreators/varianceActionCreator";
-import { getVariance } from "@/selectors/varianceSelectors";
+} from "@common/actionCreators/varianceActionCreator";
+import { getVariance } from "@common/selectors/varianceSelectors";
+import CustomPropTypes from "@/customPropTypes";
+import EditVarianceForm from "@/components/Forms/variances/EditVarianceForm";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
 
 const propTypes = {

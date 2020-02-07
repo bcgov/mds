@@ -121,7 +121,6 @@ export const IncidentsTable = (props) => {
         <Button
           type="primary"
           size="small"
-          style={{ paddingLeft: "5px", paddingRight: "5px" }}
           onClick={() => {
             props.openModal({
               props: {

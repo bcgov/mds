@@ -1,40 +1,38 @@
-// TODO: Remove this when the file is more fully implemented.
-/* eslint-disable */
-
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { Button, Row, Col, Typography, Icon } from "antd";
+import { Row, Col, Typography } from "antd";
 import moment from "moment";
 import PropTypes from "prop-types";
-import { getMine } from "@/selectors/userMineSelectors";
-import CustomPropTypes from "@/customPropTypes";
+import { getMines } from "@common/selectors/mineSelectors";
 import { openModal, closeModal } from "@common/actions/modalActions";
-import { modalConfig } from "@/components/modalContent/config";
-import { fetchMineRecordById } from "@/actionCreators/userDashboardActionCreator";
+import { fetchMineRecordById } from "@common/actionCreators/mineActionCreator";
 import {
   fetchVariancesByMine,
-  fetchMineComplianceCodes,
-  fetchVarianceStatusOptions,
-  fetchVarianceDocumentCategoryOptions,
   createVariance,
   addDocumentToVariance,
   updateVariance,
-} from "@/actionCreators/varianceActionCreator";
+} from "@common/actionCreators/varianceActionCreator";
 import {
-  getVarianceApplications,
-  getApprovedVariances,
+  fetchMineComplianceCodes,
+  fetchVarianceStatusOptions,
+  fetchVarianceDocumentCategoryOptions,
+} from "@common/actionCreators/staticContentActionCreator";
+import { getVariances } from "@common/selectors/varianceSelectors";
+import {
   getVarianceStatusOptionsHash,
   getVarianceDocumentCategoryOptionsHash,
   getHSRCMComplianceCodesHash,
   getDropdownHSRCMComplianceCodes,
-} from "@/selectors/varianceSelectors";
+} from "@common/selectors/staticContentSelectors";
+import { modalConfig } from "@/components/modalContent/config";
+import CustomPropTypes from "@/customPropTypes";
 import VariancesTable from "@/components/dashboard/mine/variances/VariancesTable";
 
 const { Paragraph, Title, Text } = Typography;
 
 const propTypes = {
-  mine: CustomPropTypes.mine,
+  mines: PropTypes.objectOf(CustomPropTypes.mine),
   match: PropTypes.shape({
     params: {
       id: PropTypes.string,
@@ -50,8 +48,7 @@ const propTypes = {
   complianceCodes: CustomPropTypes.options.isRequired,
   varianceStatusOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   documentCategoryOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
-  approvedVariances: PropTypes.arrayOf(CustomPropTypes.variance).isRequired,
-  varianceApplications: PropTypes.arrayOf(CustomPropTypes.variance).isRequired,
+  variances: PropTypes.arrayOf(CustomPropTypes.variance).isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   createVariance: PropTypes.func.isRequired,
@@ -59,18 +56,19 @@ const propTypes = {
 };
 
 const defaultProps = {
-  mine: {},
+  mines: {},
 };
 
 export class Variances extends Component {
-  state = { isLoaded: false };
+  state = { isLoaded: false, mine: {} };
 
   componentDidMount() {
     const { id } = this.props.match.params;
     this.props.fetchMineRecordById(id).then(() => {
-      this.setState({ isLoaded: true });
+      this.props.fetchVariancesByMine({ mineGuid: id }).then(() => {
+        this.setState({ isLoaded: true, mine: this.props.mines[id] });
+      });
     });
-    this.props.fetchVariancesByMine({ mineGuid: id });
     this.props.fetchMineComplianceCodes();
     this.props.fetchVarianceStatusOptions();
     this.props.fetchVarianceDocumentCategoryOptions();
@@ -80,7 +78,7 @@ export class Variances extends Component {
     Promise.all(
       Object.entries(files).map(([document_manager_guid, document_name]) =>
         this.props.addDocumentToVariance(
-          { mineGuid: this.props.mine.mine_guid, varianceGuid },
+          { mineGuid: this.state.mine.mine_guid, varianceGuid },
           {
             document_manager_guid,
             document_name,
@@ -94,22 +92,25 @@ export class Variances extends Component {
     const payload = { received_date, ...values };
     return this.props
       .createVariance(
-        { mineGuid: this.props.mine.mine_guid, mineName: this.props.mine.mine_name },
+        {
+          mineGuid: this.state.mine.mine_guid,
+          mineName: this.state.mine.mine_name,
+        },
         payload
       )
       .then(async ({ data: { variance_guid } }) => {
         await this.handleAddDocuments(files, variance_guid);
         this.props.closeModal();
-        this.props.fetchVariancesByMine({ mineGuid: this.props.mine.mine_guid });
+        this.props.fetchVariancesByMine({ mineGuid: this.state.mine.mine_guid });
       });
   };
 
   handleUpdateVariance = (files, varianceGuid, codeLabel) =>
     this.props
-      .updateVariance({ mineGuid: this.props.mine.mine_guid, varianceGuid, codeLabel })
+      .updateVariance({ mineGuid: this.state.mine.mine_guid, varianceGuid, codeLabel })
       .then(async () => {
         await this.handleAddDocuments(files, varianceGuid);
-        this.props.fetchVariancesByMine({ mineGuid: this.props.mine.mine_guid });
+        this.props.fetchVariancesByMine({ mineGuid: this.state.mine.mine_guid });
         this.props.closeModal();
       });
 
@@ -118,8 +119,8 @@ export class Variances extends Component {
       props: {
         onSubmit: this.handleUpdateVariance,
         title: "Edit Variance Application",
-        mineGuid: this.props.mine.mine_guid,
-        mineName: this.props.mine.mine_name,
+        mineGuid: this.state.mine.mine_guid,
+        mineName: this.state.mine.mine_name,
         varianceGuid: variance.variance_guid,
         varianceStatusOptionsHash: this.props.varianceStatusOptionsHash,
         complianceCodesHash: this.props.complianceCodesHash,
@@ -135,7 +136,7 @@ export class Variances extends Component {
       props: {
         variance,
         title: "View Variance Application",
-        mineName: this.props.mine.mine_name,
+        mineName: this.state.mine.mine_name,
         varianceStatusOptionsHash: this.props.varianceStatusOptionsHash,
         complianceCodesHash: this.props.complianceCodesHash,
         documentCategoryOptionsHash: this.props.documentCategoryOptionsHash,
@@ -145,13 +146,13 @@ export class Variances extends Component {
     });
   };
 
-  openCreateVarianceModal(event, mineName) {
+  openCreateVarianceModal(event) {
     event.preventDefault();
     this.props.openModal({
       props: {
         onSubmit: this.handleCreateVariances,
         title: "Create Variance Application",
-        mineGuid: this.props.mine.mine_guid,
+        mineGuid: this.state.mine.mine_guid,
         complianceCodes: this.props.complianceCodes,
       },
       content: modalConfig.ADD_VARIANCE,
@@ -166,23 +167,22 @@ export class Variances extends Component {
           {/* <Button
             style={{ display: "inline", float: "right" }}
             type="primary"
-            onClick={(event) => this.openCreateVarianceModal(event, this.props.mine.mine_name)}
+            onClick={(event) => this.openCreateVarianceModal(event, this.state.mine.mine_name)}
           >
             <Icon type="plus-circle" theme="filled" />
             Create Variance
           </Button> */}
           <Title level={4}>Variances</Title>
           <Paragraph>
-            This table shows your mine's&nbsp;
+            This table shows your mine&apos;s&nbsp;
             <Text className="color-primary" strong>
               variance history
             </Text>
             , including applications in progress and variances you may need to renew.
           </Paragraph>
           <VariancesTable
-            variances={this.props.varianceApplications}
-            mine={this.props.mine}
-            isApplication
+            variances={this.props.variances}
+            mine={this.state.mine}
             isLoaded={this.state.isLoaded}
             varianceStatusOptionsHash={this.props.varianceStatusOptionsHash}
             complianceCodesHash={this.props.complianceCodesHash}
@@ -196,9 +196,8 @@ export class Variances extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  mine: getMine(state),
-  varianceApplications: getVarianceApplications(state),
-  approvedVariances: getApprovedVariances(state),
+  mines: getMines(state),
+  variances: getVariances(state),
   complianceCodesHash: getHSRCMComplianceCodesHash(state),
   complianceCodes: getDropdownHSRCMComplianceCodes(state),
   varianceStatusOptionsHash: getVarianceStatusOptionsHash(state),
