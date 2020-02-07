@@ -84,7 +84,7 @@ export class SearchBar extends Component {
       <div id={this.props.containerId}>
         <Dropdown
           overlay={
-            <Card>
+            <Card className="search-bar">
               <SearchBarDropdown
                 history={this.props.history}
                 searchTerm={this.state.searchTerm}
