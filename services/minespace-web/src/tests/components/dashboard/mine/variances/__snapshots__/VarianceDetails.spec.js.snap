@@ -48,7 +48,6 @@ exports[`VarianceDetails renders properly 1`] = `
             },
           ]
         }
-        isViewOnly={false}
         noDataMessage="This variance does not contain any documents"
         removeDocument={[MockFunction]}
       />
