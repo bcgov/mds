@@ -39,7 +39,7 @@ export const VarianceDetails = (props) => {
         <Descriptions.Item label="Description">
           {props.variance.note || Strings.EMPTY_FIELD}
         </Descriptions.Item>
-        <Descriptions.Item label="Documents">
+        <Descriptions.Item>
           <DocumentTable
             documents={props.variance.documents}
             documentCategoryOptionsHash={props.documentCategoryOptionsHash}

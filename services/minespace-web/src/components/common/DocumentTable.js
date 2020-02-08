@@ -43,7 +43,7 @@ export const DocumentTable = (props) => {
     },
     {
       title: "Upload date",
-      dataIndex: "upload_date",
+      dataIndex: "created_at",
       render: (text) => <div title="Upload date">{formatDate(text) || Strings.EMPTY_FIELD}</div>,
     },
   ];
