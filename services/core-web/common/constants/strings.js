@@ -76,3 +76,8 @@ export const INCIDENT_FOLLOWUP_ACTIONS = {
   none: "NO",
   unknown: "HUK",
 };
+
+export const NOT_APPLICABLE = "N/A";
+
+// MDS email
+export const MDS_EMAIL = "mds@gov.bc.ca";

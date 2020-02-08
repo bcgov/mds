@@ -7,6 +7,7 @@ import * as VarianceTypes from "@/customPropTypes/variances";
 import * as UserTypes from "@/customPropTypes/user";
 import * as DocumentTypes from "@/customPropTypes/documents";
 import * as ReportTypes from "@/customPropTypes/reports";
+import * as ComplianceTypes from "@/customPropTypes/compliance";
 
 export default {
   ...UserTypes,
@@ -17,4 +18,5 @@ export default {
   ...DocumentTypes,
   ...CommonTypes,
   ...ReportTypes,
+  ...ComplianceTypes,
 };

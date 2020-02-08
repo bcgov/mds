@@ -1,0 +1,119 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`InspectionsTable renders properly 1`] = `
+<div>
+  <withStore(Table)
+    columns={
+      Array [
+        Object {
+          "dataIndex": "overdue",
+          "render": [Function],
+          "title": "",
+        },
+        Object {
+          "dataIndex": "order_no",
+          "key": "order_no",
+          "render": [Function],
+          "sorter": [Function],
+          "title": "Order No.",
+        },
+        Object {
+          "dataIndex": "violation",
+          "key": "violation",
+          "render": [Function],
+          "sorter": [Function],
+          "title": "Violation",
+        },
+        Object {
+          "dataIndex": "report_no",
+          "key": "report_no",
+          "render": [Function],
+          "sorter": [Function],
+          "title": "Report No.",
+        },
+        Object {
+          "dataIndex": "inspection_type",
+          "key": "inspection_type",
+          "render": [Function],
+          "sorter": [Function],
+          "title": "Inspection Type",
+        },
+        Object {
+          "dataIndex": "inspector",
+          "key": "inspector",
+          "render": [Function],
+          "sorter": [Function],
+          "title": "Inspector",
+        },
+        Object {
+          "dataIndex": "order_status",
+          "defaultSortOrder": "ascend",
+          "key": "order_status",
+          "render": [Function],
+          "sorter": [Function],
+          "title": "Order Status",
+        },
+        Object {
+          "dataIndex": "due",
+          "defaultSortOrder": "descend",
+          "key": "due",
+          "render": [Function],
+          "sorter": [Function],
+          "title": "Due",
+        },
+      ]
+    }
+    dataSource={
+      Array [
+        Object {
+          "due_date": "",
+          "inspector": "TEST",
+          "order_no": "1234-1",
+          "overdue": false,
+          "report_no": "1234",
+          "violation": "2.2",
+        },
+        Object {
+          "due_date": "2019-12-31",
+          "inspector": "TEST",
+          "order_no": "1234-2",
+          "overdue": true,
+          "report_no": "1234",
+          "violation": "2.3",
+        },
+        Object {
+          "due_date": "",
+          "inspector": "TEST",
+          "order_no": "1234-3",
+          "overdue": false,
+          "report_no": "1234",
+          "violation": "1.1.1",
+        },
+      ]
+    }
+    loading={false}
+    locale={
+      Object {
+        "emptyText": "This mine has no inspection data.",
+      }
+    }
+    pagination={false}
+    size="small"
+  />
+  <div
+    align="right"
+  >
+    <Button
+      block={false}
+      className="full-mobile"
+      ghost={false}
+      htmlType="button"
+      loading={false}
+      onClick={[Function]}
+      type="primary"
+    >
+      Display Closed Orders
+    </Button>
+  </div>
+</div>
+`;

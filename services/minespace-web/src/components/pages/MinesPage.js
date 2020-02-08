@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { Row, Col, Divider, Typography } from "antd";
+import { Row, Col, Divider, Typography, Icon } from "antd";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { getUserInfo } from "@/selectors/authenticationSelectors";
@@ -11,8 +11,9 @@ import CustomPropTypes from "@/customPropTypes";
 import Loading from "@/components/common/Loading";
 import * as routes from "@/constants/routes";
 import * as Strings from "@/constants/strings";
+import Map from "@/components/common/Map";
 
-const { Paragraph, Title } = Typography;
+const { Paragraph, Title, Text } = Typography;
 
 const propTypes = {
   userInfo: PropTypes.objectOf(PropTypes.string).isRequired,
@@ -35,27 +36,39 @@ export class MinesPage extends Component {
           <Col>
             <Title>My Mines</Title>
             <Divider />
-            <Title level={2}>Welcome, {this.props.userInfo.preferred_username}.</Title>
+            <Title level={4}>Welcome, {this.props.userInfo.preferred_username}.</Title>
             {(mines && mines.length > 0 && (
-              <Row>
-                <Col>
+              <Row gutter={32}>
+                <Col xl={12} lg={14} sm={24}>
                   <Paragraph>
                     You are authorized to submit information for the following mines:
                   </Paragraph>
-                  <Paragraph>
+                  <div className="link-card">
                     <ul>
                       {mines
                         .sort((a, b) => (a.mine_name > b.mine_name ? 1 : -1))
                         .map((mine) => (
                           <li key={mine.mine_guid}>
                             <Link to={routes.MINE_DASHBOARD.dynamicRoute(mine.mine_guid)}>
-                              {mine.mine_name}
+                              <Title level={4}>
+                                <Icon type="environment" style={{ paddingRight: "5px" }} />
+                                {mine.mine_name}{" "}
+                              </Title>
+                              <Text>Mine Number: {mine.mine_no || Strings.EMPTY_FIELD}</Text>
                             </Link>
                           </li>
                         ))}
                     </ul>
-                  </Paragraph>
-                  <Paragraph>
+                  </div>
+                </Col>
+                <Col xl={12} lg={10} sm={0}>
+                  <div style={{ height: "400px", marginTop: "-32px" }}>
+                    <Map
+                      controls={false}
+                      additionalPins={mines.map((mine) => [mine.latitude, mine.longitude])}
+                    />
+                  </div>
+                  <Paragraph style={{ paddingTop: "16px" }}>
                     Don&apos;t see the mine you&apos;re looking for? Contact&nbsp;
                     <a href={`mailto:${Strings.MDS_EMAIL}`}>{Strings.MDS_EMAIL}</a>
                     &nbsp;for assistance.

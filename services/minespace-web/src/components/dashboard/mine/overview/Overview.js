@@ -16,6 +16,7 @@ import ContactCard from "@/components/common/ContactCard";
 import MinistryContactItem from "@/components/dashboard/mine/overview/MinistryContactItem";
 import * as Strings from "@/constants/strings";
 import * as Contacts from "@/constants/contacts";
+import Map from "@/components/common/Map";
 
 const { Paragraph, Title } = Typography;
 
@@ -106,6 +107,11 @@ export const Overview = (props) => (
     </Col>
     <Col lg={{ span: 9, offset: 1 }} xl={{ offset: 1, span: 7 }}>
       <Row gutter={[0, 16]}>
+        <Col>
+          <div style={{ height: "200px" }}>
+            <Map mine={props.mine} controls={false} />
+          </div>
+        </Col>
         <Col>
           <Card title="Regional Ministry Contacts">
             {getRegionalContacts(props.mine.mine_region).map((contact) => (
