@@ -33,9 +33,7 @@ exports[`VarianceDetails renders properly 1`] = `
     >
       notesss
     </DescriptionsItem>
-    <DescriptionsItem
-      label="Documents"
-    >
+    <DescriptionsItem>
       <DocumentTable
         documents={
           Array [

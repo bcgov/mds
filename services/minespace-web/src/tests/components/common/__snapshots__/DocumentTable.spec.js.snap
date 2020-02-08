@@ -17,7 +17,7 @@ exports[`DocumentTable renders properly 1`] = `
           "title": "Category",
         },
         Object {
-          "dataIndex": "upload_date",
+          "dataIndex": "created_at",
           "render": [Function],
           "title": "Upload date",
         },
