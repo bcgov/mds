@@ -1,5 +1,5 @@
 import React from "react";
-import { Row, Col, Divider, Card, Button, Typography, Alert } from "antd";
+import { Row, Col, Card, Button, Typography, Alert } from "antd";
 import * as Strings from "@common/constants/strings";
 import { MAP_LOGO } from "@/constants/assets";
 import * as COMMON_ENV from "@common/constants/environment";
@@ -9,6 +9,21 @@ const { Paragraph, Text, Title } = Typography;
 
 export const LandingPage = () => (
   <div>
+    <Row>
+      <Col>
+        <Alert
+          message="MineSpace will launch on February 14, 2020."
+          description={
+            <Text>
+              Please contact <a href={`mailto:${Strings.MDS_EMAIL}`}>{Strings.MDS_EMAIL}</a>
+              &nbsp;if you have any questions or concerns.
+            </Text>
+          }
+          type="warning"
+          banner
+        />
+      </Col>
+    </Row>
     <Row
       type="flex"
       justify="center"
