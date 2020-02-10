@@ -44,6 +44,7 @@ export const AuthenticationGuard = (isPublic) => (WrappedComponent) => {
       } else if (!this.props.isAuthenticated && this.state.authComplete) {
         return <UnauthenticatedNotice />;
       } else {
+        console.log("this is the section you're in");
         return <Loading />;
       }
     }
