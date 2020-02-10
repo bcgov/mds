@@ -36,9 +36,9 @@ export class Reports extends Component {
   state = { isLoaded: false, selectedMineReportGuid: null, reportsDue: 0, reportsSubmitted: 0 };
 
   componentDidMount() {
-    this.props
-      .fetchMineReports(this.props.mine.mine_guid)
-      .then(() => this.setState({ isLoaded: true }));
+    this.props.fetchMineReports(this.props.mine.mine_guid).then(() => {
+      this.setState({ isLoaded: true });
+    });
   }
 
   componentWillReceiveProps(nextProps) {
