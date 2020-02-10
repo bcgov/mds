@@ -36,8 +36,6 @@ const propTypes = {
   dispatch: PropTypes.func.isRequired,
 };
 
-const defaultProps = {};
-
 const initialTab = "overview";
 
 export class MineDashboard extends Component {
@@ -87,10 +85,10 @@ export class MineDashboard extends Component {
             <Row gutter={[0, 48]}>
               <Col>
                 <Title style={{ marginBottom: 8 }}>
-                  {this.props.mine.mine_name || Strings.UNKNOWN}
+                  {(this.props.mine && this.props.mine.mine_name) || Strings.UNKNOWN}
                 </Title>
                 <Title level={4} style={{ margin: 0 }}>
-                  Mine Number: {this.props.mine.mine_no || Strings.UNKNOWN}
+                  Mine Number: {(this.props.mine && this.props.mine.mine_no) || Strings.UNKNOWN}
                 </Title>
               </Col>
             </Row>
@@ -105,7 +103,7 @@ export class MineDashboard extends Component {
                   <TabPane tab="Overview" key={initialTab}>
                     <Overview mine={this.props.mine} match={this.props.match} />
                   </TabPane>
-                  {this.props.mine.major_mine_ind && (
+                  {this.props.mine && this.props.mine.major_mine_ind && (
                     <TabPane tab="Permits" key="permits">
                       <Permits mine={this.props.mine} match={this.props.match} />
                     </TabPane>
@@ -149,6 +147,5 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 MineDashboard.propTypes = propTypes;
-MineDashboard.defaultProps = defaultProps;
 
 export default connect(mapStateToProps, mapDispatchToProps)(MineDashboard);

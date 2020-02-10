@@ -86,6 +86,7 @@ const columns = [
       >
         {(text &&
           text.length > 0 &&
+          text.filter((sub) => sub.documents && sub.documents.length > 0).length > 0 &&
           text.map((sub) =>
             sub.documents.map((doc) => (
               <LinkButton

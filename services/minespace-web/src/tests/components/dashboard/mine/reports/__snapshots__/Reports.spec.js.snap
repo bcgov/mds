@@ -9,26 +9,6 @@ exports[`Reports renders properly 1`] = `
       gutter={0}
     >
       <Col>
-        <Button
-          block={false}
-          ghost={false}
-          htmlType="button"
-          loading={false}
-          onClick={[Function]}
-          style={
-            Object {
-              "display": "inline",
-              "float": "right",
-            }
-          }
-          type="primary"
-        >
-          <Icon
-            theme="filled"
-            type="plus-circle"
-          />
-          Submit Report
-        </Button>
         <Title
           level={4}
         >
@@ -48,7 +28,42 @@ exports[`Reports renders properly 1`] = `
       </Col>
     </Row>
     <Row
-      gutter={0}
+      gutter={
+        Array [
+          16,
+          32,
+        ]
+      }
+    >
+      <Col>
+        <Button
+          block={false}
+          ghost={false}
+          htmlType="button"
+          loading={false}
+          onClick={[Function]}
+          style={
+            Object {
+              "float": "right",
+            }
+          }
+          type="primary"
+        >
+          <Icon
+            theme="filled"
+            type="plus-circle"
+          />
+          Submit Report
+        </Button>
+      </Col>
+    </Row>
+    <Row
+      gutter={
+        Array [
+          16,
+          32,
+        ]
+      }
     >
       <Col>
         <ReportsTable
