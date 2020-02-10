@@ -146,6 +146,7 @@ export const IncidentsTable = (props) => {
       loading={!props.isLoaded}
       columns={columns}
       dataSource={props.data}
+      rowKey=""
       locale={{ emptyText: "This mine has no incident data." }}
     />
   );
