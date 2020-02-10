@@ -26,33 +26,26 @@ export const AuthenticationGuard = (isPublic) => (WrappedComponent) => {
     };
 
     componentDidMount() {
-      this.setState({ authComplete: false });
       this.authenticate();
     }
 
-    async authenticate() {
+    authenticate = () => {
       const token = localStorage.getItem("jwt");
       if (token && !this.props.isAuthenticated) {
-        await this.props
+        return this.props
           .getUserInfoFromToken(token)
-          .then(() => this.setState({ authComplete: true }))
-          .catch(() => {
-            this.setState({ authComplete: true });
-            // TODO: Handle errors
-          });
-      } else {
-        this.setState({ authComplete: true });
+          .then(() => this.setState({ authComplete: true }));
       }
-    }
+    };
 
     render() {
       if (this.props.isAuthenticated || isPublic) {
         return <WrappedComponent {...this.props} />;
-      }
-      if (!this.props.isAuthenticated && this.state.authComplete) {
+      } else if (!this.props.isAuthenticated && this.state.authComplete) {
         return <UnauthenticatedNotice />;
+      } else {
+        return <Loading />;
       }
-      return <Loading />;
     }
   }
 
