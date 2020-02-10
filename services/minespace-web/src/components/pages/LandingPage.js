@@ -1,13 +1,21 @@
 import React from "react";
+import { connect } from "react-redux";
 import { Row, Col, Card, Button, Typography, Alert } from "antd";
 import * as Strings from "@common/constants/strings";
-import { MAP_LOGO } from "@/constants/assets";
+import PropTypes from "prop-types";
 import * as COMMON_ENV from "@common/constants/environment";
+// Uncomment when image is re-introduced
+// import { MAP_LOGO } from "@/constants/assets";
 import * as MINESPACE_ENV from "@/constants/environment";
+import { isAuthenticated } from "@/selectors/authenticationSelectors";
 
 const { Paragraph, Text, Title } = Typography;
 
-export const LandingPage = () => (
+const propTypes = {
+  isAuthenticated: PropTypes.bool.isRequired,
+};
+
+export const LandingPage = (props) => (
   <div>
     <Row>
       <Col>
@@ -24,7 +32,8 @@ export const LandingPage = () => (
         />
       </Col>
     </Row>
-    <Row
+    {/* Use this instead and not the below Row when we want to display the image! */}
+    {/* <Row
       type="flex"
       justify="center"
       align="middle"
@@ -49,6 +58,29 @@ export const LandingPage = () => (
         </Button>
       </Col>
       <Col sm={1} xl={2} xxl={4} />
+    </Row> */}
+    <Row
+      type="flex"
+      justify="center"
+      align="top"
+      className="landing-header"
+      gutter={[{ sm: 0, xl: 64 }]}
+    >
+      <Col xl={{ span: 24 }} xxl={{ span: 20 }}>
+        <Title>Welcome to MineSpace</Title>
+        <Paragraph className="header-text">
+          Manage applications, see inspection histories, submit reports, and more.
+        </Paragraph>
+        {!props.isAuthenticated && (
+          <Button type="primary" size="large" className="login">
+            <a
+              href={`${COMMON_ENV.KEYCLOAK.loginURL}${MINESPACE_ENV.BCEID_LOGIN_REDIRECT_URI}&kc_idp_hint=${COMMON_ENV.KEYCLOAK.idpHint}`}
+            >
+              Log in
+            </a>
+          </Button>
+        )}
+      </Col>
     </Row>
     <Row
       gutter={[{ sm: 0, xl: 64 }]}
@@ -104,7 +136,7 @@ export const LandingPage = () => (
           <Text>Let us know you want them to be able to access MineSpace</Text>
         </Paragraph>
 
-        <Title level={4}>Don't have a BCeID?</Title>
+        <Title level={4}>Don&apos;t have a BCeID?</Title>
         <Paragraph>
           In order to access MineSpace, you need to register for a Business or Personal BCeID. It
           can take several weeks to process the request, so give yourself plenty of lead time.
@@ -142,4 +174,10 @@ export const LandingPage = () => (
   </div>
 );
 
-export default LandingPage;
+const mapStateToProps = (state) => ({
+  isAuthenticated: isAuthenticated(state),
+});
+
+LandingPage.propTypes = propTypes;
+
+export default connect(mapStateToProps)(LandingPage);

@@ -38,7 +38,7 @@
       "displayName": "Source Context Directory",
       "description": "The source context directory.",
       "required": false,
-      "value": "openshift/tools/jenkins"
+      "value": "openshift/templates/tools/jenkins"
     },
     {
       "name": "SOURCE_REPOSITORY_URL",
@@ -64,11 +64,11 @@
         },
         "tags": [
           {
-            "name": "v3.11",
+            "name": "v3.11.98",
             "annotations": null,
             "from": {
               "kind": "DockerImage",
-              "name": "registry.access.redhat.com/openshift3/jenkins-2-rhel7:v3.11"
+              "name": "registry.access.redhat.com/openshift3/jenkins-2-rhel7:v3.11.98"
             },
             "generation": 1,
             "importPolicy": {},
@@ -134,7 +134,7 @@
           "dockerStrategy": {
             "from": {
               "kind": "ImageStreamTag",
-              "name": "jenkins-2-rhel7:v3.11"
+              "name": "jenkins-2-rhel7:v3.11.98"
             }
           }
         },

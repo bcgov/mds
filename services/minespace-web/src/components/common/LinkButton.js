@@ -4,11 +4,8 @@ import PropTypes from "prop-types";
 const propTypes = {
   onClick: PropTypes.func.isRequired,
   tabIndex: PropTypes.number,
-  children: PropTypes.oneOf(
-    PropTypes.string,
-    PropTypes.element,
-    PropTypes.arrayOf(PropTypes.element)
-  ),
+  // eslint-disable-next-line  react/forbid-prop-types
+  children: PropTypes.any,
 };
 
 const defaultProps = {

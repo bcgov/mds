@@ -9,16 +9,9 @@ import * as Strings from "@/constants/strings";
 const propTypes = {
   variance: CustomPropTypes.variance.isRequired,
   mineName: PropTypes.string.isRequired,
-  removeDocument: PropTypes.func,
   complianceCodesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   varianceStatusOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   documentCategoryOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
-  isViewOnly: PropTypes.bool,
-};
-
-const defaultProps = {
-  removeDocument: () => {},
-  isViewOnly: false,
 };
 
 export const VarianceDetails = (props) => {
@@ -46,12 +39,9 @@ export const VarianceDetails = (props) => {
         <Descriptions.Item label="Description">
           {props.variance.note || Strings.EMPTY_FIELD}
         </Descriptions.Item>
-        <Descriptions.Item label="Documents">
+        <Descriptions.Item>
           <DocumentTable
             documents={props.variance.documents}
-            removeDocument={props.removeDocument}
-            isViewOnly={props.isViewOnly}
-            noDataMessage="This variance does not contain any documents"
             documentCategoryOptionsHash={props.documentCategoryOptionsHash}
           />
         </Descriptions.Item>
@@ -61,6 +51,5 @@ export const VarianceDetails = (props) => {
 };
 
 VarianceDetails.propTypes = propTypes;
-VarianceDetails.defaultProps = defaultProps;
 
 export default VarianceDetails;
