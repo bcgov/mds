@@ -46,7 +46,11 @@ const columns = [
     dataIndex: "due_date",
     key: "due_date",
     defaultSortOrder: "ascend",
-    sorter: (a, b) => (moment(a.due_date) > moment(b.due_date) ? -1 : 1),
+    sorter: (a, b) => {
+      const a_date = a.due_date == null ? moment().set("year", 2200) : moment(a.due_date);
+      const b_date = b.due_date == null ? moment().set("year", 2200) : moment(b.due_date);
+      return a_date - b_date;
+    },
     render: (due_date, record) => (
       <div title="Due" className={record.isOverdue ? "color-error" : ""}>
         {formatDate(due_date) || Strings.EMPTY_FIELD}
@@ -57,7 +61,11 @@ const columns = [
     title: "Submitted On",
     dataIndex: "received_date",
     key: "received_date",
-    sorter: (a, b) => (moment(a.received_date) > moment(b.received_date) ? -1 : 1),
+    sorter: (a, b) => {
+      const a_date = a.received_date == null ? moment().set("year", 2200) : moment(a.received_date);
+      const b_date = b.received_date == null ? moment().set("year", 2200) : moment(b.received_date);
+      return a_date - b_date;
+    },
     render: (received_date, record) => (
       <div title="Submitted On" className={record.isOverdue ? "color-error" : ""}>
         {formatDate(received_date) || Strings.EMPTY_FIELD}
