@@ -46,7 +46,7 @@ const columns = [
     dataIndex: "lastAmended",
     key: "lastAmended",
     sorter: (a, b) => (moment(a.lastAmended) > moment(b.lastAmended) ? -1 : 1),
-    defaultSortOrder: "descend",
+    defaultSortOrder: "ascend",
   },
 ];
 
@@ -102,25 +102,23 @@ export const PermitsTable = (props) => {
         title: "Documents",
         dataIndex: "documents",
         key: "documents",
-        render: (text) =>
-          (
-            <div className="cap-col-height">
-              {text &&
-                text.length > 0 &&
-                text
-                  .sort((a, b) => (a.document_name > b.document_name ? -1 : 1))
-                  .map((file) => (
-                    <LinkButton
-                      key={file.document_manager_guid}
-                      onClick={() => downloadFileFromDocumentManager(file)}
-                      title={file.document_name}
-                    >
-                      {truncateFilename(file.document_name)}
-                      <br />
-                    </LinkButton>
-                  ))}
-            </div>
-          ) || Strings.NONE,
+        render: (text) => (
+          <div className="cap-col-height">
+            {(text &&
+              text.length > 0 &&
+              text.map((file) => (
+                <LinkButton
+                  key={file.document_manager_guid}
+                  onClick={() => downloadFileFromDocumentManager(file)}
+                  title={file.document_name}
+                >
+                  {truncateFilename(file.document_name)}
+                  <br />
+                </LinkButton>
+              ))) ||
+              Strings.EMPTY_FIELD}
+          </div>
+        ),
       },
     ];
 

@@ -4,11 +4,11 @@ import PropTypes from "prop-types";
 const propTypes = {
   onClick: PropTypes.func.isRequired,
   tabIndex: PropTypes.number,
-  children: PropTypes.oneOf(
+  children: PropTypes.oneOf([
     PropTypes.string,
     PropTypes.element,
-    PropTypes.arrayOf(PropTypes.element)
-  ),
+    PropTypes.arrayOf(PropTypes.element),
+  ]),
 };
 
 const defaultProps = {

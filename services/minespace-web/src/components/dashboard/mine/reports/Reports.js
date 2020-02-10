@@ -95,6 +95,7 @@ export class Reports extends Component {
         onSubmit: this.handleAddReport,
         title: "Add Report",
         mineGuid: this.props.mine.mine_guid,
+        width: "40vw",
       },
       content: modalConfig.ADD_REPORT,
     });
@@ -107,8 +108,9 @@ export class Reports extends Component {
       props: {
         initialValues: report,
         onSubmit: this.handleEditReport,
-        title: "Edit Report",
+        title: `Add Documents to: ${report.report_name}`,
         mineGuid: this.props.mine.mine_guid,
+        width: "40vw",
       },
       content: modalConfig.EDIT_REPORT,
     });
@@ -120,14 +122,6 @@ export class Reports extends Component {
         <Col>
           <Row>
             <Col>
-              <Button
-                style={{ display: "inline", float: "right" }}
-                type="primary"
-                onClick={(event) => this.openAddReportModal(event, this.props.mine.mine_name)}
-              >
-                <Icon type="plus-circle" theme="filled" />
-                Submit Report
-              </Button>
               <Title level={4}>Reports</Title>
               <Paragraph>
                 This table shows&nbsp;
@@ -143,7 +137,7 @@ export class Reports extends Component {
             </Col>
           </Row>
           {this.props.mineReports && this.props.mineReports.length > 0 && (
-            <Row type="flex" justify="space-around" gutter={16}>
+            <Row type="flex" justify="space-around" gutter={[16, 32]}>
               <Col md={24} lg={8}>
                 <TableSummaryCard
                   title="Reports Submitted"
@@ -162,7 +156,19 @@ export class Reports extends Component {
               </Col>
             </Row>
           )}
-          <Row>
+          <Row gutter={[16, 32]}>
+            <Col>
+              <Button
+                style={{ float: "right" }}
+                type="primary"
+                onClick={(event) => this.openAddReportModal(event, this.props.mine.mine_name)}
+              >
+                <Icon type="plus-circle" theme="filled" />
+                Submit Report
+              </Button>
+            </Col>
+          </Row>
+          <Row gutter={[16, 32]}>
             <Col>
               <ReportsTable
                 openEditReportModal={this.openEditReportModal}

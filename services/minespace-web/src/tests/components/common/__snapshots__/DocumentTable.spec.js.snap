@@ -17,16 +17,9 @@ exports[`DocumentTable renders properly 1`] = `
           "title": "Category",
         },
         Object {
-          "dataIndex": "upload_date",
+          "dataIndex": "created_at",
           "render": [Function],
           "title": "Upload date",
-        },
-        Object {
-          "className": "column-hide",
-          "dataIndex": "updateEdit",
-          "render": [Function],
-          "title": "",
-          "width": 10,
         },
       ]
     }
