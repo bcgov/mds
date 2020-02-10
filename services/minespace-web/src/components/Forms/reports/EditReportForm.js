@@ -71,7 +71,7 @@ export class EditReportForm extends Component {
             <Button>Cancel</Button>
           </Popconfirm>
           <Button type="primary" htmlType="submit">
-            {this.props.title}
+            Add Documents
           </Button>
         </div>
       </Form>
