@@ -107,8 +107,8 @@ export class Home extends Component {
             }}
           />
         </div>
-        {this.state.isIE && <WarningBanner onClose={this.handleIEClose} type="IE" />}
         {this.state.isTest && <WarningBanner type="test" />}
+        {this.state.isIE && <WarningBanner type="IE" onClose={this.handleIEClose} />}
         <MediaQuery maxWidth={500}>
           {this.state.isMobile && !this.state.isDev && (
             <WarningBanner type="mobile" onClose={this.handleMobileWarningClose} />
