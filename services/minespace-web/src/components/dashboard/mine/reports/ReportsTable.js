@@ -47,8 +47,8 @@ const columns = [
     key: "due_date",
     defaultSortOrder: "ascend",
     sorter: (a, b) => {
-      const a_date = a.due_date == null ? moment().set("year", 2200) : moment(a.due_date);
-      const b_date = b.due_date == null ? moment().set("year", 2200) : moment(b.due_date);
+      const a_date = a.due_date == null ? moment().add(200, "y") : moment(a.due_date);
+      const b_date = b.due_date == null ? moment().add(200, "y") : moment(b.due_date);
       return a_date - b_date;
     },
     render: (due_date, record) => (
@@ -62,8 +62,8 @@ const columns = [
     dataIndex: "received_date",
     key: "received_date",
     sorter: (a, b) => {
-      const a_date = a.received_date == null ? moment().set("year", 2200) : moment(a.received_date);
-      const b_date = b.received_date == null ? moment().set("year", 2200) : moment(b.received_date);
+      const a_date = a.received_date == null ? moment().add(200, "y") : moment(a.received_date);
+      const b_date = b.received_date == null ? moment().add(200, "y") : moment(b.received_date);
       return a_date - b_date;
     },
     render: (received_date, record) => (
