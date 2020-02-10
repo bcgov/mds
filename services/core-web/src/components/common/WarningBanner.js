@@ -27,9 +27,9 @@ const ieWarningData = {
     <span>
       The application may not work as intended. Please use a supported browser (
       <a href="https://www.google.com/chrome" target="_blank" rel="noopener noreferrer">
-        Chrome,
+        Chrome
       </a>
-      &nbsp;
+      ,&nbsp;
       <a href="https://www.mozilla.org/en-US/firefox/new" target="_blank" rel="noopener noreferrer">
         Firefox
       </a>
