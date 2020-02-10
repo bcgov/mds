@@ -95,6 +95,7 @@ export class Reports extends Component {
         onSubmit: this.handleAddReport,
         title: "Add Report",
         mineGuid: this.props.mine.mine_guid,
+        width: "40vw",
       },
       content: modalConfig.ADD_REPORT,
     });
@@ -107,8 +108,9 @@ export class Reports extends Component {
       props: {
         initialValues: report,
         onSubmit: this.handleEditReport,
-        title: "Edit Report",
+        title: `Add Documents to: ${report.report_name}`,
         mineGuid: this.props.mine.mine_guid,
+        width: "40vw",
       },
       content: modalConfig.EDIT_REPORT,
     });

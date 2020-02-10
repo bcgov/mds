@@ -1,11 +1,10 @@
 import React from "react";
 import { Table, Button } from "antd";
 import PropTypes from "prop-types";
-import moment from "moment";
 import { truncateFilename } from "@common/utils/helpers";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
 import * as Strings from "@/constants/strings";
-import { formatDate } from "@/utils/helpers";
+import { formatDate, dateSorter } from "@/utils/helpers";
 import { EDIT_PENCIL } from "@/constants/assets";
 import CustomPropTypes from "@/customPropTypes";
 import LinkButton from "@/components/common/LinkButton";
@@ -46,7 +45,7 @@ const columns = [
     dataIndex: "due_date",
     key: "due_date",
     defaultSortOrder: "ascend",
-    sorter: (a, b) => (moment(a.due_date) > moment(b.due_date) ? -1 : 1),
+    sorter: dateSorter("due_date"),
     render: (due_date, record) => (
       <div title="Due" className={record.isOverdue ? "color-error" : ""}>
         {formatDate(due_date) || Strings.EMPTY_FIELD}
@@ -57,7 +56,7 @@ const columns = [
     title: "Submitted On",
     dataIndex: "received_date",
     key: "received_date",
-    sorter: (a, b) => (moment(a.received_date) > moment(b.received_date) ? -1 : 1),
+    sorter: dateSorter("received_date"),
     render: (received_date, record) => (
       <div title="Submitted On" className={record.isOverdue ? "color-error" : ""}>
         {formatDate(received_date) || Strings.EMPTY_FIELD}
