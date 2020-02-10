@@ -10,22 +10,18 @@ import * as MINESPACE_ENV from "@/constants/environment";
 import { signOutFromSiteMinder } from "@/utils/authenticationHelpers";
 import { isAuthenticated, getUserInfo } from "@/selectors/authenticationSelectors";
 import { MENU } from "@/constants/assets";
-
 /**
  * @class HeaderDropdown.js contains various authentication states, and available links for authenticated users,
  * MediaQueries are used to switch the menu to a hamburger menu when viewed on mobile.
  */
-
 const propTypes = {
   isAuthenticated: PropTypes.bool.isRequired,
   userInfo: PropTypes.objectOf(PropTypes.string),
   location: PropTypes.shape({ pathname: PropTypes.string }).isRequired,
 };
-
 const defaultProps = {
   userInfo: {},
 };
-
 export class HeaderDropdown extends Component {
   handleLogout = () => {
     signOutFromSiteMinder();
@@ -43,7 +39,6 @@ export class HeaderDropdown extends Component {
         </Button>
       </Menu.Item>
     );
-
     const dropdownMenuMobile = (
       <Menu className="header-dropdown-menu">
         <Menu.Item key="mines">
@@ -51,18 +46,17 @@ export class HeaderDropdown extends Component {
             <Link to={route.MINES.route}>My Mines</Link>
           </Button>
         </Menu.Item>
-        <Menu.Item key="users">
+        {/* Disabled until we implement this */}
+        {/* <Menu.Item key="users">
           <Button className="header-dropdown-item-button">
             <Link to={route.USERS.route}>My Users</Link>
           </Button>
-        </Menu.Item>
+        </Menu.Item> */}
         <Divider className="bg-color-table-seperator" style={{ margin: 0 }} />
         {menuItemLogout}
       </Menu>
     );
-
     const dropdownMenuDesktop = <Menu className="header-dropdown-menu">{menuItemLogout}</Menu>;
-
     if (!this.props.isAuthenticated) {
       return (
         <Button className="login-btn">
@@ -74,7 +68,6 @@ export class HeaderDropdown extends Component {
         </Button>
       );
     }
-
     const smallestDesktopWidth = 1280;
     return (
       <span>
@@ -82,9 +75,10 @@ export class HeaderDropdown extends Component {
           <Link to={route.MINES.route} className={this.setActiveLink(route.MINES.route)}>
             My Mines
           </Link>
-          <Link to={route.USERS.route} className={this.setActiveLink(route.USERS.route)}>
+          {/* Disabled until we implement this */}
+          {/* <Link to={route.USERS.route} className="header-link">
             My Users
-          </Link>
+          </Link> */}
           <Dropdown overlay={dropdownMenuDesktop}>
             <Button className="header-dropdown-button">
               {this.props.userInfo.email}
@@ -103,12 +97,10 @@ export class HeaderDropdown extends Component {
     );
   }
 }
-
 const mapStateToProps = (state) => ({
   userInfo: getUserInfo(state),
   isAuthenticated: isAuthenticated(state),
 });
-
 HeaderDropdown.propTypes = propTypes;
 HeaderDropdown.defaultProps = defaultProps;
 

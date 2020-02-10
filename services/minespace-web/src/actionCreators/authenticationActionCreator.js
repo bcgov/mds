@@ -17,7 +17,6 @@ export const unAuthenticateUser = (toastMessage) => (dispatch) => {
     });
   }
 };
-
 export const getUserInfoFromToken = (token, errorMessage) => (dispatch) => {
   dispatch(request(reducerTypes.GET_USER_INFO));
   return axios
@@ -43,7 +42,6 @@ export const getUserInfoFromToken = (token, errorMessage) => (dispatch) => {
       }
     });
 };
-
 export const authenticateUser = (code) => (dispatch) => {
   const data = {
     code,

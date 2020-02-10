@@ -633,4 +633,7 @@ const mapDispatchToProps = (dispatch) =>
 NoticeOfWorkApplication.propTypes = propTypes;
 NoticeOfWorkApplication.defaultProps = defaultProps;
 
-export default connect(mapStateToProps, mapDispatchToProps)(NoticeOfWorkApplication);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(NoticeOfWorkApplication);

@@ -137,7 +137,7 @@ export class Reports extends Component {
             </Col>
           </Row>
           {this.props.mineReports && this.props.mineReports.length > 0 && (
-            <Row type="flex" justify="space-around" gutter={16}>
+            <Row type="flex" justify="space-around" gutter={[16, 32]}>
               <Col md={24} lg={8}>
                 <TableSummaryCard
                   title="Reports Submitted"
@@ -156,11 +156,10 @@ export class Reports extends Component {
               </Col>
             </Row>
           )}
-          <br />
-          <Row gutter={[16, 0]}>
+          <Row gutter={[16, 32]}>
             <Col>
               <Button
-                style={{ display: "inline", float: "right" }}
+                style={{ float: "right" }}
                 type="primary"
                 onClick={(event) => this.openAddReportModal(event, this.props.mine.mine_name)}
               >
@@ -169,7 +168,7 @@ export class Reports extends Component {
               </Button>
             </Col>
           </Row>
-          <Row>
+          <Row gutter={[16, 32]}>
             <Col>
               <ReportsTable
                 openEditReportModal={this.openEditReportModal}

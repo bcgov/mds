@@ -33,9 +33,7 @@ exports[`VarianceDetails renders properly 1`] = `
     >
       notesss
     </DescriptionsItem>
-    <DescriptionsItem
-      label="Documents"
-    >
+    <DescriptionsItem>
       <DocumentTable
         documents={
           Array [
@@ -48,9 +46,6 @@ exports[`VarianceDetails renders properly 1`] = `
             },
           ]
         }
-        isViewOnly={false}
-        noDataMessage="This variance does not contain any documents"
-        removeDocument={[MockFunction]}
       />
     </DescriptionsItem>
   </Descriptions>

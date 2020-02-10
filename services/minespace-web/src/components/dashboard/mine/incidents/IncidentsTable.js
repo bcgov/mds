@@ -39,6 +39,7 @@ const IncidentDocuments = (props) =>
         <LinkButton
           doc={file.mine_document_guid}
           onClick={() => downloadFileFromDocumentManager(file)}
+          title={file.document_name}
         >
           {truncateFilename(file.document_name)}
         </LinkButton>
@@ -121,7 +122,6 @@ export const IncidentsTable = (props) => {
         <Button
           type="primary"
           size="small"
-          style={{ paddingLeft: "5px", paddingRight: "5px" }}
           onClick={() => {
             props.openModal({
               props: {

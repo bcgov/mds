@@ -1,25 +1,22 @@
-/* eslint-disable */
-
 import React from "react";
 import { Table, Button } from "antd";
-import moment from "moment";
 import PropTypes from "prop-types";
+import moment from "moment";
+import { truncateFilename } from "@common/utils/helpers";
+import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
 import * as Strings from "@/constants/strings";
 import { formatDate } from "@/utils/helpers";
 import { EDIT_PENCIL } from "@/constants/assets";
 import CustomPropTypes from "@/customPropTypes";
 import LinkButton from "@/components/common/LinkButton";
-import { truncateFilename } from "@common/utils/helpers";
-import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
 
 const propTypes = {
   mineReports: PropTypes.arrayOf(CustomPropTypes.mineReport).isRequired,
   openEditReportModal: PropTypes.func.isRequired,
   handleEditReport: PropTypes.func.isRequired,
+  handleRemoveReport: PropTypes.func.isRequired,
   isLoaded: PropTypes.bool.isRequired,
 };
-
-const defaultProps = {};
 
 const columns = [
   {
@@ -48,7 +45,8 @@ const columns = [
     title: "Due",
     dataIndex: "due_date",
     key: "due_date",
-    //FIXME sorter: (a, b) => (moment(a.due_date) > moment(b.due_date) ? -1 : 1),
+    defaultSortOrder: "ascend",
+    sorter: (a, b) => (moment(a.due_date) > moment(b.due_date) ? -1 : 1),
     render: (due_date, record) => (
       <div title="Due" className={record.isOverdue ? "color-error" : ""}>
         {formatDate(due_date) || Strings.EMPTY_FIELD}
@@ -59,8 +57,7 @@ const columns = [
     title: "Submitted On",
     dataIndex: "received_date",
     key: "received_date",
-    //FIXME sorter: (a, b) =>
-    //  moment(a.received_date) > moment(b.received_date) ? -1 : 1,
+    sorter: (a, b) => (moment(a.received_date) > moment(b.received_date) ? -1 : 1),
     render: (received_date, record) => (
       <div title="Submitted On" className={record.isOverdue ? "color-error" : ""}>
         {formatDate(received_date) || Strings.EMPTY_FIELD}
@@ -82,27 +79,29 @@ const columns = [
     title: "Documents",
     dataIndex: "mine_report_submissions",
     key: "mine_report_submissions",
-    render: (text, record) => {
-      return (
-        <div title="Documents" className={record.isOverdue ? "color-error" : ""}>
-          {text.map((sub) =>
+    render: (text, record) => (
+      <div
+        title="Documents"
+        className={record.isOverdue ? "color-error cap-col-height" : "cap-col-height"}
+      >
+        {(text &&
+          text.length > 0 &&
+          text.filter((sub) => sub.documents && sub.documents.length > 0).length > 0 &&
+          text.map((sub) =>
             sub.documents.map((doc) => (
-              <div>
-                -{" "}
-                <LinkButton
-                  key={doc.mine_document_guid}
-                  onClick={() => {
-                    downloadFileFromDocumentManager(doc);
-                  }}
-                >
-                  {truncateFilename(doc.document_name)}
-                </LinkButton>
-              </div>
+              <LinkButton
+                key={doc.mine_document_guid}
+                onClick={() => downloadFileFromDocumentManager(doc)}
+                title={doc.document_name}
+              >
+                {truncateFilename(doc.document_name)}
+                <br />
+              </LinkButton>
             ))
-          ) || Strings.EMPTY_FIELD}
-        </div>
-      );
-    },
+          )) ||
+          Strings.EMPTY_FIELD}
+      </div>
+    ),
   },
   {
     title: "",
@@ -149,6 +148,5 @@ export const ReportsTable = (props) => {
 };
 
 ReportsTable.propTypes = propTypes;
-ReportsTable.defaultProps = defaultProps;
 
 export default ReportsTable;

@@ -4,14 +4,15 @@ import PropTypes from "prop-types";
 const propTypes = {
   onClick: PropTypes.func.isRequired,
   tabIndex: PropTypes.number,
-  style: PropTypes.objectOf(PropTypes.any),
-  // eslint-disable-next-line react/forbid-prop-types
-  children: PropTypes.any,
+  children: PropTypes.oneOf([
+    PropTypes.string,
+    PropTypes.element,
+    PropTypes.arrayOf(PropTypes.element),
+  ]),
 };
 
 const defaultProps = {
   tabIndex: 0,
-  style: null,
   children: null,
 };
 
@@ -19,11 +20,9 @@ const LinkButton = (props) => (
   <a
     role="link"
     onClick={props.onClick}
-    // Accessibility: Event listener
     onKeyPress={props.onClick}
-    // Accessibility: Focusable element
     tabIndex={props.tabIndex}
-    style={props.style}
+    {...props}
   >
     {props.children}
   </a>

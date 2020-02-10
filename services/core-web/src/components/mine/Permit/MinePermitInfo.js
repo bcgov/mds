@@ -344,4 +344,7 @@ const mapDispatchToProps = (dispatch) =>
 MinePermitInfo.propTypes = propTypes;
 MinePermitInfo.defaultProps = defaultProps;
 
-export default connect(mapStateToProps, mapDispatchToProps)(MinePermitInfo);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(MinePermitInfo);
