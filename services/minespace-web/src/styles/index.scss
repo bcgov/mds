@@ -11,6 +11,7 @@
 // GENERIC - Very high level, far-reaching styles. Contains Normalize.css, Box-sizing rules, CSS resets etc.
 @import "./overrides/filepond-overrides.scss";
 @import "./overrides/antd-overrides.scss";
+@import "./generic/layout.scss";
 
 // ELEMENTS - Bare, un-classed HTML elements (like H1, A, etc.). This layer is rarely touched after initial setup.
 @import "./elements/elements.scss";
@@ -24,6 +25,7 @@
 @import "./components/Tables.scss";
 @import "./components/TableSummaryCard.scss";
 @import "./components/Overview.scss";
+@import "./components/LandingPage.scss";
 
 // UTILITIES - utilities and helper classes. This layer has the highest specificity.
 @import "./generic/helpers.scss";

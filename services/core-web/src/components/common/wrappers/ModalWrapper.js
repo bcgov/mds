@@ -10,7 +10,7 @@ import {
   getProps,
   getContent,
   getClearOnSubmit,
-  getWidthSize,
+  getWidth,
   getIsViewOnly,
 } from "@common/selectors/modalSelectors";
 import * as Styles from "@/constants/styles";
@@ -22,7 +22,7 @@ const propTypes = {
   content: PropTypes.func,
   props: PropTypes.objectOf(PropTypes.any),
   clearOnSubmit: PropTypes.bool.isRequired,
-  widthSize: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
+  width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
   isViewOnly: PropTypes.bool.isRequired,
 };
 
@@ -54,7 +54,7 @@ export class ModalWrapper extends Component {
   render() {
     return (
       <Modal
-        width={this.props.widthSize}
+        width={this.props.width}
         title={this.props.props.title}
         visible={this.props.isModalOpen}
         closable={false}
@@ -103,7 +103,7 @@ export class ModalWrapper extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  widthSize: getWidthSize(state),
+  width: getWidth(state),
   isModalOpen: getIsModalOpen(state),
   props: getProps(state),
   content: getContent(state),

@@ -23,6 +23,7 @@ class IncidentsResource(Resource, UserMixin):
         params={
             'page': f'The page number of paginated records to return. Default: {PAGE_DEFAULT}',
             'per_page': f'The number of records to return per page. Default: {PER_PAGE_DEFAULT}',
+            'mine_guid': 'The ID of a mine',
             'search': 'A string to be search in the incident number, mine name, or mine number',
             'incident_status': 'Comma-separated list of the incident status codes',
             'determination':
@@ -51,6 +52,7 @@ class IncidentsResource(Resource, UserMixin):
             'search_terms': request.args.get('search', type=str),
             'sort_field': request.args.get('sort_field', type=str),
             'sort_dir': request.args.get('sort_dir', type=str),
+            'mine_guid': request.args.get('mine_guid', type=str),
         }
 
         records, pagination_details = self._apply_filters_and_pagination(args)
@@ -87,6 +89,8 @@ class IncidentsResource(Resource, UserMixin):
 
         query = MineIncident.query.join(Mine)
         conditions = []
+        if args["mine_guid"] is not None:
+            conditions.append(self._build_filter('MineIncident', 'mine_guid', '==', args["mine_guid"]))
         if args["status"] is not None:
             status_values = args["status"].split(',')
             conditions.append(

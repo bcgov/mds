@@ -164,7 +164,7 @@ export class ContactHomePage extends Component {
         provinceOptions,
         partyRelationshipTypesList: this.props.partyRelationshipTypesList,
       },
-      widthSize: "75vw",
+      width: "75vw",
       content: modalConfig.ADD_CONTACT,
     });
   }

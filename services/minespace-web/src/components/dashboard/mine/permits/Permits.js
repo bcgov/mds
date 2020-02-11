@@ -1,24 +1,31 @@
-// TODO: Remove this when the file is more fully implemented.
-/* eslint-disable */
-
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import CustomPropTypes from "@/customPropTypes";
+import { fetchPermits } from "@common/actionCreators/permitActionCreator";
+import { getPermits } from "@common/reducers/permitReducer";
 import { Row, Col, Typography } from "antd";
+import PropTypes from "prop-types";
+import CustomPropTypes from "@/customPropTypes";
 import PermitsTable from "@/components/dashboard/mine/permits/PermitsTable";
 
 const { Paragraph, Title, Text } = Typography;
 
 const propTypes = {
   mine: CustomPropTypes.mine.isRequired,
+  fetchPermits: PropTypes.func.isRequired,
+  permits: PropTypes.arrayOf(CustomPropTypes.permit).isRequired,
 };
 
 const defaultProps = {};
 
 export class Permits extends Component {
-  // TODO: Accurately set isLoaded when file is more properly implemented.
-  state = { isLoaded: true };
+  state = { isLoaded: false };
+
+  componentWillMount = () => {
+    this.props.fetchPermits(this.props.mine.mine_guid).then(() => {
+      this.setState({ isLoaded: true });
+    });
+  };
 
   render() {
     return (
@@ -32,16 +39,18 @@ export class Permits extends Component {
             </Text>
             &nbsp;associated with this mine.
           </Paragraph>
-          <PermitsTable isLoaded={this.state.isLoaded} />
+          <PermitsTable isLoaded={this.state.isLoaded} permits={this.props.permits} />
         </Col>
       </Row>
     );
   }
 }
 
-const mapStateToProps = (state) => ({});
+const mapStateToProps = (state) => ({
+  permits: getPermits(state),
+});
 
-const mapDispatchToProps = (dispatch) => bindActionCreators({}, dispatch);
+const mapDispatchToProps = (dispatch) => bindActionCreators({ fetchPermits }, dispatch);
 
 Permits.propTypes = propTypes;
 Permits.defaultProps = defaultProps;

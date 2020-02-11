@@ -113,7 +113,7 @@ export class AddVarianceForm extends Component {
               <Field
                 id="inspector_party_guid"
                 name="inspector_party_guid"
-                label="Lead inspectors IDIR*"
+                label="Lead inspector*"
                 component={renderConfig.GROUPED_SELECT}
                 validate={[required]}
                 data={this.props.inspectors}

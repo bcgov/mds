@@ -370,7 +370,8 @@ environments {
                     cpu_limit = "20m"
                     memory_request = "16Mi"
                     memory_limit = "32Mi"
-                }/*
+                }
+                /*
                 backup {
                     cpu_request = "0"
                     cpu_limit = "0"

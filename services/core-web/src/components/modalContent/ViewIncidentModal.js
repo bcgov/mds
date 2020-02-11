@@ -121,7 +121,10 @@ export class ViewIncidentModal extends Component {
           <p className="field-title">Brief description of incident</p>
           <p>{this.props.incident.incident_description || Strings.EMPTY_FIELD}</p>
         </div>
+      </div>
 
+      <h5>Dangerous Occurance Determination</h5>
+      <div className="content--light-grey padding-small">
         <div className="inline-flex padding-small">
           <p className="field-title">Inspector&apos;s determination</p>
           <p>

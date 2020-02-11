@@ -1,10 +1,11 @@
 import axios from "axios";
 import { notification } from "antd";
 import queryString from "query-string";
+import * as COMMON_ENV from "@common/constants/environment";
 import { request, success, error } from "@/actions/genericActions";
 import * as reducerTypes from "@/constants/reducerTypes";
 import * as authenticationActions from "@/actions/authenticationActions";
-import * as ENV from "@/constants/environment";
+import * as MINESPACE_ENV from "@/constants/environment";
 
 export const unAuthenticateUser = (toastMessage) => (dispatch) => {
   dispatch(authenticationActions.logoutUser());
@@ -16,11 +17,10 @@ export const unAuthenticateUser = (toastMessage) => (dispatch) => {
     });
   }
 };
-
 export const getUserInfoFromToken = (token, errorMessage) => (dispatch) => {
   dispatch(request(reducerTypes.GET_USER_INFO));
   return axios
-    .get(ENV.KEYCLOAK.userInfoURL, {
+    .get(COMMON_ENV.KEYCLOAK.userInfoURL, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -42,17 +42,16 @@ export const getUserInfoFromToken = (token, errorMessage) => (dispatch) => {
       }
     });
 };
-
 export const authenticateUser = (code) => (dispatch) => {
   const data = {
     code,
     grant_type: "authorization_code",
-    redirect_uri: ENV.BCEID_LOGIN_REDIRECT_URI,
-    client_id: ENV.KEYCLOAK.clientId,
+    redirect_uri: MINESPACE_ENV.BCEID_LOGIN_REDIRECT_URI,
+    client_id: COMMON_ENV.KEYCLOAK.clientId,
   };
   dispatch(request(reducerTypes.AUTHENTICATE_USER));
   return axios
-    .post(ENV.KEYCLOAK.tokenURL, queryString.stringify(data))
+    .post(COMMON_ENV.KEYCLOAK.tokenURL, queryString.stringify(data))
     .then((response) => {
       dispatch(success(reducerTypes.AUTHENTICATE_USER));
       localStorage.setItem("jwt", response.data.access_token);

@@ -1,0 +1,21 @@
+.search-bar {
+  .ant-dropdown-menu-body {
+    margin-right: 0;
+  }
+
+  .ant-menu-item {
+    img,
+    i {
+      padding-right: $default-padding-md;
+      vertical-align: text-top;
+    }
+
+    i {
+      padding: 0;
+    }
+
+    &:hover {
+      background-color: $lightest-grey;
+    }
+  }
+}

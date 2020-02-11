@@ -3,7 +3,15 @@
 exports[`PrivateRoutes  renders properly 1`] = `
 <Switch>
   <Route
-    component={[Function]}
+    component={
+      Object {
+        "$$typeof": Symbol(react.memo),
+        "WrappedComponent": [Function],
+        "compare": null,
+        "displayName": "Connect(LandingPage)",
+        "type": [Function],
+      }
+    }
     exact={true}
     path="/"
   />
