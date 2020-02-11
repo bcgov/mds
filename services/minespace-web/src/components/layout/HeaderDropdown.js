@@ -17,8 +17,8 @@ import { MENU } from "@/constants/assets";
  */
 const propTypes = {
   isAuthenticated: PropTypes.bool.isRequired,
-  userInfo: PropTypes.objectOf(PropTypes.string),
   location: PropTypes.shape({ pathname: PropTypes.string }).isRequired,
+  userInfo: PropTypes.objectOf(PropTypes.string),
 };
 
 const defaultProps = {

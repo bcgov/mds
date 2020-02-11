@@ -60,3 +60,27 @@
     color: $light-grey;
   }
 }
+
+.warning-banner {
+  background-color: #f3cd65;
+  border-radius: 0;
+  border: none;
+  z-index: 999;
+
+  .ant-alert-icon {
+    width: 48px;
+  }
+
+  &.ant-alert-with-description {
+    // Original left-padding is 64px with an original icon size of 24px. The new icon size is 48px, so
+    // add 24px to maintain the original layout proportions.
+    padding-left: 64px + 24px;
+  }
+
+  .anticon-close {
+    color: rgba(0, 0, 0, 0.45);
+    &:hover {
+      color: rgba(0, 0, 0, 0.75);
+    }
+  }
+}
