@@ -1,5 +1,4 @@
 /* eslint-disable */
-
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
@@ -29,24 +28,25 @@ export const AuthenticationGuard = (isPublic) => (WrappedComponent) => {
       this.authenticate();
     }
 
-    authenticate = () => {
+    async authenticate() {
       const token = localStorage.getItem("jwt");
       if (token && !this.props.isAuthenticated) {
-        return this.props
+        await this.props
           .getUserInfoFromToken(token)
           .then(() => this.setState({ authComplete: true }));
+      } else {
+        this.setState({ authComplete: true });
       }
-    };
+    }
 
     render() {
       if (this.props.isAuthenticated || isPublic) {
         return <WrappedComponent {...this.props} />;
-      } else if (!this.props.isAuthenticated) {
-        return <UnauthenticatedNotice />;
-      } else {
-        console.log("this is the section you're in");
-        return <Loading />;
       }
+      if (!this.props.isAuthenticated && this.state.authComplete) {
+        return <UnauthenticatedNotice />;
+      }
+      return <Loading />;
     }
   }
 
