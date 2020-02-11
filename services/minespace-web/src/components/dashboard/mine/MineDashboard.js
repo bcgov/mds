@@ -25,7 +25,7 @@ const { TabPane } = Tabs;
 const propTypes = {
   fetchMineRecordById: PropTypes.func.isRequired,
   fetchPartyRelationships: PropTypes.func.isRequired,
-  mines: PropTypes.arrayOf(CustomPropTypes.mine),
+  mines: PropTypes.objectOf(CustomPropTypes.mine),
   match: PropTypes.shape({
     params: {
       id: PropTypes.string,

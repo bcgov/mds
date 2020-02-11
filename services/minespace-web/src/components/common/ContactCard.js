@@ -25,7 +25,11 @@ const ContactCardRow = (data) => (
 const propTypes = {
   title: PropTypes.string.isRequired,
   dateLabel: PropTypes.string.isRequired,
-  party: CustomPropTypes.party.isRequired,
+  party: CustomPropTypes.party,
+};
+
+const defaultProps = {
+  party: {},
 };
 
 export const ContactCard = (props) => (
@@ -60,5 +64,6 @@ export const ContactCard = (props) => (
 );
 
 ContactCard.propTypes = propTypes;
+ContactCard.defaultProps = defaultProps;
 
 export default ContactCard;
