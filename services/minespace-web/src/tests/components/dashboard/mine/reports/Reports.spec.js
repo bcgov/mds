@@ -7,13 +7,11 @@ const props = {};
 const dispatchProps = {};
 
 const setupProps = () => {
-  props.match = { params: { id: "18133c75-49ad-4101-85f3-a43e35ae989a" } };
   props.mine = MOCK.MINES.mines[MOCK.MINES.mineIds[0]];
 };
 
 const setupDispatchProps = () => {
-  dispatchProps.fetchMineRecordById = jest.fn(() => Promise.resolve());
-  dispatchProps.fetchMineReports = jest.fn();
+  dispatchProps.fetchMineReports = jest.fn(() => Promise.resolve());
   dispatchProps.updateMineReport = jest.fn();
   dispatchProps.fetchMineReportDefinitionOptions = jest.fn();
   dispatchProps.openModal = jest.fn();

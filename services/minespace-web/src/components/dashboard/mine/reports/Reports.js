@@ -1,41 +1,30 @@
-// TODO: Remove this when the file is more fully implemented.
-/* eslint-disable */
-
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { Row, Col, Typography, Button, Icon } from "antd";
-import PropTypes from "prop-types";
-import { getMine } from "@/selectors/userMineSelectors";
-import CustomPropTypes from "@/customPropTypes";
-import { fetchMineRecordById } from "@/actionCreators/userDashboardActionCreator";
 import moment from "moment";
+import PropTypes from "prop-types";
 import {
   createMineReport,
   fetchMineReports,
   updateMineReport,
 } from "@common/actionCreators/reportActionCreator";
-import { modalConfig } from "@/components/modalContent/config";
 import { openModal, closeModal } from "@common/actions/modalActions";
 import { getMineReports } from "@common/selectors/reportSelectors";
+import { getMineReportDefinitionOptions } from "@common/reducers/staticContentReducer";
+import CustomPropTypes from "@/customPropTypes";
 import ReportsTable from "@/components/dashboard/mine/reports/ReportsTable";
 import TableSummaryCard from "@/components/common/TableSummaryCard";
-import { fetchMineReportDefinitionOptions } from "@common/actionCreators/staticContentActionCreator";
-import { getMineReportDefinitionOptions } from "@common/reducers/staticContentReducer";
+import { modalConfig } from "@/components/modalContent/config";
 
 const { Paragraph, Title, Text } = Typography;
 
 const propTypes = {
-  mine: CustomPropTypes.mine,
-  match: PropTypes.shape({
-    params: {
-      id: PropTypes.string,
-    },
-  }).isRequired,
+  mine: CustomPropTypes.mine.isRequired,
   mineReports: PropTypes.arrayOf(CustomPropTypes.mineReport).isRequired,
+  // This IS being used.
+  // eslint-disable-next-line
   mineReportDefinitionOptions: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
-  fetchMineReportDefinitionOptions: PropTypes.func.isRequired,
-  fetchMineRecordById: PropTypes.func.isRequired,
   updateMineReport: PropTypes.func.isRequired,
   createMineReport: PropTypes.func.isRequired,
   fetchMineReports: PropTypes.func.isRequired,
@@ -43,18 +32,11 @@ const propTypes = {
   closeModal: PropTypes.func.isRequired,
 };
 
-const defaultProps = {
-  mine: {},
-};
-
 export class Reports extends Component {
   state = { isLoaded: false, selectedMineReportGuid: null, reportsDue: 0, reportsSubmitted: 0 };
 
   componentDidMount() {
-    this.props.fetchMineReportDefinitionOptions();
-    const { id } = this.props.match.params;
-    this.props.fetchMineReports(id);
-    this.props.fetchMineRecordById(id).then(() => {
+    this.props.fetchMineReports(this.props.mine.mine_guid).then(() => {
       this.setState({ isLoaded: true });
     });
   }
@@ -71,7 +53,7 @@ export class Reports extends Component {
   }
 
   handleAddReport = (values) => {
-    let formValues = values;
+    const formValues = values;
     if (values.mine_report_submissions !== undefined) {
       formValues.received_date = moment().format("YYYY-MM-DD");
     }
@@ -95,6 +77,7 @@ export class Reports extends Component {
         onSubmit: this.handleAddReport,
         title: "Add Report",
         mineGuid: this.props.mine.mine_guid,
+        width: "40vw",
       },
       content: modalConfig.ADD_REPORT,
     });
@@ -107,8 +90,9 @@ export class Reports extends Component {
       props: {
         initialValues: report,
         onSubmit: this.handleEditReport,
-        title: "Edit Report",
+        title: `Add Documents to: ${report.report_name}`,
         mineGuid: this.props.mine.mine_guid,
+        width: "40vw",
       },
       content: modalConfig.EDIT_REPORT,
     });
@@ -184,15 +168,12 @@ export class Reports extends Component {
 
 const mapStateToProps = (state) => ({
   mineReports: getMineReports(state),
-  mine: getMine(state),
   mineReportDefinitionOptions: getMineReportDefinitionOptions(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
-      fetchMineReportDefinitionOptions,
-      fetchMineRecordById,
       fetchMineReports,
       createMineReport,
       updateMineReport,
@@ -203,6 +184,5 @@ const mapDispatchToProps = (dispatch) =>
   );
 
 Reports.propTypes = propTypes;
-Reports.defaultProps = defaultProps;
 
 export default connect(mapStateToProps, mapDispatchToProps)(Reports);

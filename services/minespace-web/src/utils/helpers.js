@@ -49,6 +49,12 @@ export const formatDate = (dateString) =>
   dateString !== "None" &&
   moment(dateString, "YYYY-MM-DD").format("MMM DD YYYY");
 
+export const dateSorter = (key) => (a, b) => {
+  const a_date = a[key] == null ? moment().add(200, "y") : moment(a[key]);
+  const b_date = b[key] == null ? moment().add(200, "y") : moment(b[key]);
+  return a_date - b_date;
+};
+
 export const formatComplianceCodeValueOrLabel = (code, showDescription) => {
   const { section, sub_section, paragraph, sub_paragraph, description } = code;
   const formattedSubSection = sub_section ? `.${sub_section}` : "";

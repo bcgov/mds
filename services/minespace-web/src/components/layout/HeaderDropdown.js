@@ -10,6 +10,7 @@ import * as MINESPACE_ENV from "@/constants/environment";
 import { signOutFromSiteMinder } from "@/utils/authenticationHelpers";
 import { isAuthenticated, getUserInfo } from "@/selectors/authenticationSelectors";
 import { MENU } from "@/constants/assets";
+
 /**
  * @class HeaderDropdown.js contains various authentication states, and available links for authenticated users,
  * MediaQueries are used to switch the menu to a hamburger menu when viewed on mobile.
@@ -19,9 +20,11 @@ const propTypes = {
   userInfo: PropTypes.objectOf(PropTypes.string),
   location: PropTypes.shape({ pathname: PropTypes.string }).isRequired,
 };
+
 const defaultProps = {
   userInfo: {},
 };
+
 export class HeaderDropdown extends Component {
   handleLogout = () => {
     signOutFromSiteMinder();
@@ -97,10 +100,12 @@ export class HeaderDropdown extends Component {
     );
   }
 }
+
 const mapStateToProps = (state) => ({
   userInfo: getUserInfo(state),
   isAuthenticated: isAuthenticated(state),
 });
+
 HeaderDropdown.propTypes = propTypes;
 HeaderDropdown.defaultProps = defaultProps;
 
