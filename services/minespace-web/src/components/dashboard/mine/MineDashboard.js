@@ -39,7 +39,6 @@ const propTypes = {
 const defaultProps = {
   mines: {},
 };
-
 const initialTab = "overview";
 
 export class MineDashboard extends Component {

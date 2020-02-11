@@ -53,7 +53,6 @@ export class Reports extends Component {
   }
 
   handleAddReport = (values) => {
-    console.log(values);
     const formValues = values;
     if (values.mine_report_submissions !== undefined) {
       formValues.received_date = moment().format("YYYY-MM-DD");
