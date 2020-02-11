@@ -107,12 +107,10 @@ export class Home extends Component {
             }}
           />
         </div>
-        {(true || this.state.isTest) && <WarningBanner type={WARNING_TYPES.TEST} />}
-        {(true || this.state.isIE) && (
-          <WarningBanner type={WARNING_TYPES.IE} onClose={this.handleIEClose} />
-        )}
-        <MediaQuery maxWidth={5000}>
-          {(true || (this.state.isMobile && !this.state.isDev)) && (
+        {this.state.isTest && <WarningBanner type={WARNING_TYPES.TEST} />}
+        {this.state.isIE && <WarningBanner type={WARNING_TYPES.IE} onClose={this.handleIEClose} />}
+        <MediaQuery maxWidth={500}>
+          {this.state.isMobile && !this.state.isDev && (
             <WarningBanner type={WARNING_TYPES.MOBILE} onClose={this.handleMobileWarningClose} />
           )}
         </MediaQuery>
