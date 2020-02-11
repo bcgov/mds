@@ -5,15 +5,15 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { Table, Button } from "antd";
 import PropTypes from "prop-types";
-import { formatDate, truncateFilename } from "@common/utils/helpers";
+import { truncateFilename } from "@common/utils/helpers";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
 import {
   getIncidentDeterminationHash,
   getIncidentStatusCodeHash,
   getIncidentCategoryCodeHash,
 } from "@common/selectors/staticContentSelectors";
-import moment from "moment";
 import { openModal, closeModal } from "@common/actions/modalActions";
+import { formatDate, dateSorter } from "@/utils/helpers";
 import LinkButton from "@/components/common/LinkButton";
 import * as Strings from "@/constants/strings";
 import { modalConfig } from "@/components/modalContent/config";
@@ -46,6 +46,7 @@ const IncidentDocuments = (props) =>
       ))}
     </div>
   );
+
 IncidentDocuments.propTypes = {
   title: PropTypes.string.isRequired,
   documents: PropTypes.arrayOf(PropTypes.object).isRequired,
@@ -77,7 +78,7 @@ export const IncidentsTable = (props) => {
       title: "Occurred On",
       dataIndex: "incident_timestamp",
       sortField: "incident_timestamp",
-      sorter: (a, b) => (moment(a.incident_timestamp) > moment(b.incident_timestamp) ? -1 : 1),
+      sorter: dateSorter("incident_timestamp"),
       render: (incident_timestamp) => (
         <span title="Occurred On">{formatDate(incident_timestamp)}</span>
       ),

@@ -4,7 +4,7 @@ import { Table, Button } from "antd";
 import { truncateFilename } from "@common/utils/helpers";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
 import CustomPropTypes from "@/customPropTypes";
-import { formatDate } from "@/utils/helpers";
+import { formatDate, dateSorter } from "@/utils/helpers";
 import { RED_CLOCK } from "@/constants/assets";
 import * as Strings from "@/constants/strings";
 import LinkButton from "@/components/common/LinkButton";
@@ -92,7 +92,7 @@ export class VariancesTable extends Component {
       title: "Submitted On",
       dataIndex: "received_date",
       render: (text) => <div title="Submitted On">{text}</div>,
-      sorter: (a, b) => (a.received_date > b.received_date ? -1 : 1),
+      sorter: dateSorter("received_date"),
     },
     {
       title: "Application Status",
@@ -104,13 +104,13 @@ export class VariancesTable extends Component {
       title: "Issue Date",
       dataIndex: "issue_date",
       render: (text) => <div title="Issue Date">{text}</div>,
-      sorter: (a, b) => ((a.issue_date || 0) > (b.issue_date || 0) ? -1 : 1),
+      sorter: dateSorter("issue_date"),
     },
     {
       title: "Expiry Date",
       dataIndex: "expiry_date",
       render: (text) => <div title="Expiry Date">{text}</div>,
-      sorter: (a, b) => ((a.expiry_date || 0) > (b.expiry_date || 0) ? -1 : 1),
+      sorter: dateSorter("expiry_date"),
     },
     {
       title: "Inspector",

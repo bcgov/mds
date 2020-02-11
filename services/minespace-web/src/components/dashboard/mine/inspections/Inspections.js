@@ -22,8 +22,6 @@ const propTypes = {
   fetchMineComplianceInfo: PropTypes.func.isRequired,
 };
 
-const defaultProps = {};
-
 export class Inspections extends Component {
   state = { isLoaded: false };
 
@@ -119,6 +117,5 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => bindActionCreators({ fetchMineComplianceInfo }, dispatch);
 
 Inspections.propTypes = propTypes;
-Inspections.defaultProps = defaultProps;
 
 export default connect(mapStateToProps, mapDispatchToProps)(Inspections);
