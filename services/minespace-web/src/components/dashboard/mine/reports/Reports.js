@@ -53,6 +53,7 @@ export class Reports extends Component {
   }
 
   handleAddReport = (values) => {
+    console.log(values);
     const formValues = values;
     if (values.mine_report_submissions !== undefined) {
       formValues.received_date = moment().format("YYYY-MM-DD");
@@ -154,7 +155,6 @@ export class Reports extends Component {
             <Col>
               <ReportsTable
                 openEditReportModal={this.openEditReportModal}
-                handleEditReport={this.handleEditReport}
                 mineReports={this.props.mineReports}
                 isLoaded={this.state.isLoaded}
               />
