@@ -3,11 +3,21 @@ import PropTypes from "prop-types";
 import { Alert, Row, Col, Typography } from "antd";
 import { WARNING } from "@/constants/assets";
 
+export const WARNING_TYPES = {
+  TEST: "test",
+  IE: "IE",
+  MOBILE: "mobile",
+};
+
 const { Text } = Typography;
 
 const propTypes = {
-  type: PropTypes.oneOf(["IE", "test", "mobile"]).isRequired,
-  onClose: PropTypes.func.isRequired,
+  type: PropTypes.oneOf(Object.values(WARNING_TYPES)).isRequired,
+  onClose: PropTypes.func,
+};
+
+const defaultProps = {
+  onClose: () => {},
 };
 
 const testWarningData = {
@@ -45,13 +55,13 @@ const ieWarningData = {
 const WarningBanner = (props) => {
   let warningData;
   switch (props.type) {
-    case "test":
+    case WARNING_TYPES.TEST:
       warningData = testWarningData;
       break;
-    case "mobile":
+    case WARNING_TYPES.MOBILE:
       warningData = mobileWarningData;
       break;
-    case "IE":
+    case WARNING_TYPES.IE:
       warningData = ieWarningData;
       break;
   }
@@ -77,5 +87,6 @@ const WarningBanner = (props) => {
 };
 
 WarningBanner.propTypes = propTypes;
+WarningBanner.defaultProps = defaultProps;
 
 export default WarningBanner;

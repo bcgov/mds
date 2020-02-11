@@ -15,10 +15,11 @@ import { MENU } from "@/constants/assets";
  * @class HeaderDropdown.js contains various authentication states, and available links for authenticated users,
  * MediaQueries are used to switch the menu to a hamburger menu when viewed on mobile.
  */
+
 const propTypes = {
   isAuthenticated: PropTypes.bool.isRequired,
-  userInfo: PropTypes.objectOf(PropTypes.string),
   location: PropTypes.shape({ pathname: PropTypes.string }).isRequired,
+  userInfo: PropTypes.objectOf(PropTypes.string),
 };
 
 const defaultProps = {
@@ -42,6 +43,7 @@ export class HeaderDropdown extends Component {
         </Button>
       </Menu.Item>
     );
+
     const dropdownMenuMobile = (
       <Menu className="header-dropdown-menu">
         <Menu.Item key="mines">
@@ -59,6 +61,7 @@ export class HeaderDropdown extends Component {
         {menuItemLogout}
       </Menu>
     );
+
     const dropdownMenuDesktop = <Menu className="header-dropdown-menu">{menuItemLogout}</Menu>;
     if (!this.props.isAuthenticated) {
       return (
@@ -71,6 +74,7 @@ export class HeaderDropdown extends Component {
         </Button>
       );
     }
+
     const smallestDesktopWidth = 1280;
     return (
       <span>
