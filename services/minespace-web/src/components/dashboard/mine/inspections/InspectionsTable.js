@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Table, Button } from "antd";
-import moment from "moment";
-import { formatDate, compareCodes } from "@common/utils/helpers";
+import { compareCodes } from "@common/utils/helpers";
 import PropTypes from "prop-types";
+import { formatDate, dateSorter } from "@/utils/helpers";
 import CustomPropTypes from "@/customPropTypes";
 import { RED_CLOCK } from "@/constants/assets";
 import * as STRINGS from "@/constants/strings";
@@ -88,7 +88,7 @@ const columns = [
     render: (text, record) => (
       <div title="Due Date">{formatDate(record.due_date) || STRINGS.EMPTY_FIELD}</div>
     ),
-    sorter: (a, b) => (moment(a.due_date) > moment(b.due_date) ? -1 : 1),
+    sorter: dateSorter("due"),
     defaultSortOrder: "descend",
   },
 ];

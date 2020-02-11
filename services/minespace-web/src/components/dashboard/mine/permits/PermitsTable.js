@@ -2,10 +2,10 @@ import React from "react";
 import { Table } from "antd";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { formatDate, truncateFilename } from "@common/utils/helpers";
-import moment from "moment";
+import { truncateFilename } from "@common/utils/helpers";
 import { getDropdownPermitStatusOptions } from "@common/selectors/staticContentSelectors";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
+import { formatDate, dateSorter } from "@/utils/helpers";
 import LinkButton from "@/components/common/LinkButton";
 import CustomPropTypes from "@/customPropTypes";
 import * as Strings from "@/constants/strings";
@@ -33,19 +33,19 @@ const columns = [
     title: "Authorization End Date",
     dataIndex: "authorizationEndDate",
     key: "authorizationEndDate",
-    sorter: (a, b) => (moment(a.authorizationEndDate) > moment(b.authorizationEndDate) ? -1 : 1),
+    sorter: dateSorter("authorizationEndDate"),
   },
   {
     title: "First Issued",
     dataIndex: "firstIssued",
     key: "firstIssued",
-    sorter: (a, b) => (moment(a.firstIssued) > moment(b.firstIssued) ? -1 : 1),
+    sorter: dateSorter("firstIssued"),
   },
   {
     title: "Last Amended",
     dataIndex: "lastAmended",
     key: "lastAmended",
-    sorter: (a, b) => (moment(a.lastAmended) > moment(b.lastAmended) ? -1 : 1),
+    sorter: dateSorter("lastAmended"),
     defaultSortOrder: "ascend",
   },
 ];
