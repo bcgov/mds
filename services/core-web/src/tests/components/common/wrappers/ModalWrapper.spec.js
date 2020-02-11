@@ -16,7 +16,7 @@ const setupProps = () => {
     title: "mockTitle",
   };
   props.isModalOpen = false;
-  props.widthSize = 520;
+  props.width = 520;
 };
 
 beforeEach(() => {

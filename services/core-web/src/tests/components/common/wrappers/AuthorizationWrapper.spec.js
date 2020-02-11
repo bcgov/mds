@@ -1,9 +1,9 @@
 import React from "react";
 import { shallow } from "enzyme";
 import ReactDOMServer from "react-dom/server";
+import { USER_ROLES } from "@common/constants/environment";
 import { AuthorizationWrapper } from "@/components/common/wrappers/AuthorizationWrapper";
 import * as PERMISSIONS from "@/constants/permissions";
-import { USER_ROLES } from "@/constants/environment";
 
 let props = {};
 

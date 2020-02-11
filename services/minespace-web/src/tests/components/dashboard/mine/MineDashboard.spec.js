@@ -13,6 +13,7 @@ const setupProps = () => {
 
 const setupDispatchProps = () => {
   dispatchProps.fetchMineRecordById = jest.fn(() => Promise.resolve());
+  dispatchProps.fetchPartyRelationships = jest.fn(() => Promise.resolve());
 };
 
 beforeEach(() => {

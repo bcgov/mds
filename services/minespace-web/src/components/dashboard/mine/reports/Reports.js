@@ -1,106 +1,109 @@
-// TODO: Remove this when the file is more fully implemented.
-/* eslint-disable */
-
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { Row, Col, Typography, Button, Icon } from "antd";
+import moment from "moment";
 import PropTypes from "prop-types";
-import { getMine } from "@/selectors/userMineSelectors";
+import {
+  createMineReport,
+  fetchMineReports,
+  updateMineReport,
+} from "@common/actionCreators/reportActionCreator";
+import { openModal, closeModal } from "@common/actions/modalActions";
+import { getMineReports } from "@common/selectors/reportSelectors";
+import { getMineReportDefinitionOptions } from "@common/reducers/staticContentReducer";
 import CustomPropTypes from "@/customPropTypes";
-import { fetchMineRecordById } from "@/actionCreators/userDashboardActionCreator";
-import { fetchMineReports, updateMineReport } from "@/actionCreators/reportActionCreator";
-import { modalConfig } from "@/components/modalContent/config";
-import { openModal, closeModal } from "@/actions/modalActions";
-import { getMineReports } from "@/selectors/reportSelectors";
 import ReportsTable from "@/components/dashboard/mine/reports/ReportsTable";
 import TableSummaryCard from "@/components/common/TableSummaryCard";
-import { fetchMineReportDefinitionOptions } from "@/actionCreators/staticContentActionCreator";
-import { getMineReportDefinitionOptions } from "@/reducers/staticContentReducer";
+import { modalConfig } from "@/components/modalContent/config";
 
 const { Paragraph, Title, Text } = Typography;
 
 const propTypes = {
-  mine: CustomPropTypes.mine,
-  match: PropTypes.shape({
-    params: {
-      id: PropTypes.string,
-    },
-  }).isRequired,
+  mine: CustomPropTypes.mine.isRequired,
   mineReports: PropTypes.arrayOf(CustomPropTypes.mineReport).isRequired,
+  // This IS being used.
+  // eslint-disable-next-line
   mineReportDefinitionOptions: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
-  fetchMineReportDefinitionOptions: PropTypes.func.isRequired,
-  fetchMineRecordById: PropTypes.func.isRequired,
   updateMineReport: PropTypes.func.isRequired,
+  createMineReport: PropTypes.func.isRequired,
   fetchMineReports: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
 };
 
-const defaultProps = {
-  mine: {},
-};
-
 export class Reports extends Component {
-  state = { isLoaded: false };
+  state = { isLoaded: false, selectedMineReportGuid: null, reportsDue: 0, reportsSubmitted: 0 };
 
   componentDidMount() {
-    this.props.fetchMineReportDefinitionOptions();
-    const { id } = this.props.match.params;
-    this.props.fetchMineReports(id);
-    this.props.fetchMineRecordById(id).then(() => {
+    this.props.fetchMineReports(this.props.mine.mine_guid).then(() => {
       this.setState({ isLoaded: true });
     });
   }
 
-  handleEditReport = (values) => {
+  componentWillReceiveProps(nextProps) {
+    const reportsSubmitted = nextProps.mineReports.filter(
+      (report) => report.mine_report_submissions.length > 0
+    ).length;
+    const reportsDue = nextProps.mineReports.filter(
+      (report) => report.mine_report_submissions.length === 0 && report.due_date
+    ).length;
+
+    this.setState({ reportsSubmitted, reportsDue });
+  }
+
+  handleAddReport = (values) => {
+    const formValues = values;
+    if (values.mine_report_submissions !== undefined) {
+      formValues.received_date = moment().format("YYYY-MM-DD");
+    }
     this.props
-      .updateMineReport(this.props.mine.mine_guid, values.mine_report_guid, values)
+      .createMineReport(this.props.mine.mine_guid, formValues)
       .then(() => this.props.closeModal())
       .then(() => this.props.fetchMineReports(this.props.mine.mine_guid));
   };
 
-  openEditReportModal = (event, onSubmit, report) => {
+  handleEditReport = (values) => {
+    this.props
+      .updateMineReport(this.props.mine.mine_guid, this.state.selectedMineReportGuid, values)
+      .then(() => this.props.closeModal())
+      .then(() => this.props.fetchMineReports(this.props.mine.mine_guid));
+  };
+
+  openAddReportModal = (event) => {
     event.preventDefault();
     this.props.openModal({
       props: {
-        initialValues: report,
-        onSubmit,
-        title: "Edit Report",
+        onSubmit: this.handleAddReport,
+        title: "Add Report",
         mineGuid: this.props.mine.mine_guid,
+        width: "40vw",
       },
       content: modalConfig.ADD_REPORT,
     });
   };
 
+  openEditReportModal = (event, report) => {
+    this.setState({ selectedMineReportGuid: report.mine_report_guid });
+    event.preventDefault();
+    this.props.openModal({
+      props: {
+        initialValues: report,
+        onSubmit: this.handleEditReport,
+        title: `Add Documents to: ${report.report_name}`,
+        mineGuid: this.props.mine.mine_guid,
+        width: "40vw",
+      },
+      content: modalConfig.EDIT_REPORT,
+    });
+  };
+
   render() {
-    const filteredReportDefinitionGuids =
-      this.props.mineReportDefinitionOptions &&
-      this.props.mineReportDefinitionOptions
-        .filter((option) =>
-          option.categories.map((category) => category.mine_report_category).includes("TSF")
-        )
-        .map((definition) => definition.mine_report_definition_guid);
-
-    const filteredReports =
-      this.props.mineReports &&
-      this.props.mineReports.filter((report) =>
-        filteredReportDefinitionGuids.includes(report.mine_report_definition_guid.toLowerCase())
-      );
-
     return (
       <Row>
         <Col>
           <Row>
             <Col>
-              <Button
-                style={{ display: "inline", float: "right" }}
-                type="primary"
-                onClick={(event) => this.openEditReportModal(event, this.props.mine.mine_name)}
-              >
-                <Icon type="plus-circle" theme="filled" />
-                Submit Report
-              </Button>
               <Title level={4}>Reports</Title>
               <Paragraph>
                 This table shows&nbsp;
@@ -115,41 +118,44 @@ export class Reports extends Component {
               <br />
             </Col>
           </Row>
-          <Row type="flex" justify="space-around" gutter={[{ lg: 0, xl: 32 }, 32]}>
-            <Col lg={24} xl={8} xxl={6}>
-              <TableSummaryCard
-                title="Reports Submitted"
-                // TODO: Display the amount of submitted reports.
-                content="6"
-                icon="check-circle"
-                type="success"
-              />
-            </Col>
-            <Col lg={24} xl={8} xxl={6}>
-              <TableSummaryCard
-                title="Reports Due"
-                // TODO: Display the amount of reports that are overdue.
-                content="6"
-                icon="clock-circle"
-                type="error"
-              />
-            </Col>
-            <Col lg={24} xl={8} xxl={6}>
-              <TableSummaryCard
-                title="Reports Overdue"
-                // TODO: Display the amount of reports that are due.
-                content="6"
-                icon="exclamation-circle"
-                type="warning"
-              />
+          {this.props.mineReports && this.props.mineReports.length > 0 && (
+            <Row type="flex" justify="space-around" gutter={[16, 32]}>
+              <Col md={24} lg={8}>
+                <TableSummaryCard
+                  title="Reports Submitted"
+                  content={this.state.reportsSubmitted}
+                  icon="check-circle"
+                  type="success"
+                />
+              </Col>
+              <Col md={24} lg={8}>
+                <TableSummaryCard
+                  title="Reports Due"
+                  content={this.state.reportsDue}
+                  icon="clock-circle"
+                  type="error"
+                />
+              </Col>
+            </Row>
+          )}
+          <Row gutter={[16, 32]}>
+            <Col>
+              <Button
+                style={{ float: "right" }}
+                type="primary"
+                onClick={(event) => this.openAddReportModal(event, this.props.mine.mine_name)}
+              >
+                <Icon type="plus-circle" theme="filled" />
+                Submit Report
+              </Button>
             </Col>
           </Row>
-          <Row>
+          <Row gutter={[16, 32]}>
             <Col>
               <ReportsTable
                 openEditReportModal={this.openEditReportModal}
                 handleEditReport={this.handleEditReport}
-                mineReports={filteredReports}
+                mineReports={this.props.mineReports}
                 isLoaded={this.state.isLoaded}
               />
             </Col>
@@ -162,16 +168,14 @@ export class Reports extends Component {
 
 const mapStateToProps = (state) => ({
   mineReports: getMineReports(state),
-  mine: getMine(state),
   mineReportDefinitionOptions: getMineReportDefinitionOptions(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
-      fetchMineReportDefinitionOptions,
-      fetchMineRecordById,
       fetchMineReports,
+      createMineReport,
       updateMineReport,
       openModal,
       closeModal,
@@ -180,6 +184,5 @@ const mapDispatchToProps = (dispatch) =>
   );
 
 Reports.propTypes = propTypes;
-Reports.defaultProps = defaultProps;
 
 export default connect(mapStateToProps, mapDispatchToProps)(Reports);
