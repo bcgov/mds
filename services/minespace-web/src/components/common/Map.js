@@ -53,29 +53,10 @@ class Map extends Component {
     if (this.props.additionalPins.length > 0) {
       this.createAdditionalPins(this.props.additionalPins);
     }
-    // Add MinePins to the top of LayerList and add the LayerList widget
-    L.control.layers(this.getBaseMaps(), {}, { position: "topright" }).addTo(this.map);
     this.fitBounds();
     if (!this.props.controls) {
       this.disableControls();
     }
-  }
-
-  getBaseMaps() {
-    const topographicBasemap = L.tileLayer(
-      "https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}"
-    );
-    // Add default basemap to the map
-    topographicBasemap.addTo(this.map);
-
-    const worldImageryLayer = L.tileLayer(
-      "https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
-    );
-
-    return {
-      Topographic: topographicBasemap,
-      "World Imagery": worldImageryLayer,
-    };
   }
 
   checkValidityOfCoordinateInput = (coordinate) =>
@@ -120,6 +101,11 @@ class Map extends Component {
       .setView(this.latLong, Strings.DEFAULT_ZOOM)
       .setMaxZoom(10);
     this.layerGroup = new L.FeatureGroup().addTo(this.map);
+    const topographicBasemap = L.tileLayer(
+      "https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}"
+    );
+    // Add default basemap to the map
+    topographicBasemap.addTo(this.map);
   }
 
   disableControls() {
