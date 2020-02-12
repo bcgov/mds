@@ -8,27 +8,25 @@ import ReturnPage from "@/components/pages/ReturnPage";
 export const HOME = {
   route: "/",
   component: LandingPage,
+  isPublic: true,
 };
 
 export const RETURN_PAGE = {
   route: "/return-page",
   component: ReturnPage,
+  isPublic: true,
 };
 
 export const MINES = {
   route: "/mines",
   component: MinesPage,
+  isPublic: false,
 };
 
 export const USERS = {
   route: "/users",
   component: UsersPage,
-};
-
-export const MINE_DASHBOARD_NO_TAB = {
-  route: "/mines/:id",
-  dynamicRoute: (id) => `/mines/${id}/overview`,
-  component: MineDashboard,
+  isPublic: false,
 };
 
 export const MINE_DASHBOARD = {
@@ -36,4 +34,5 @@ export const MINE_DASHBOARD = {
   dynamicRoute: (id, activeTab = "overview", filterParams) =>
     `/mines/${id}/${activeTab}?${queryString.stringify(filterParams)}`,
   component: MineDashboard,
+  isPublic: false,
 };

@@ -9,30 +9,29 @@ const { Text } = Typography;
 const Routes = () => (
   <Switch>
     {/* PUBLIC ROUTES */}
-    <Route exact path={routes.HOME.route} component={routes.HOME.component} />
-    <Route exact path={routes.RETURN_PAGE.route} component={routes.RETURN_PAGE.component} />
+    {/* <Route exact path={routes.HOME.route} component={routes.HOME.component} />
+    <Route exact path={routes.RETURN_PAGE.route} component={routes.RETURN_PAGE.component} /> */}
 
     {/* PRIVATE ROUTES */}
-    <Route
+    {/* <Route
       exact
       path={routes.MINES.route}
       component={AuthenticationGuard()(routes.MINES.component)}
-    />
-    <Route
+    /> */}
+    {/* <Route
       exact
       path={routes.USERS.route}
       component={AuthenticationGuard()(routes.USERS.component)}
-    />
-    <Redirect
-      exact
-      from={routes.MINE_DASHBOARD_NO_TAB.route}
-      to={routes.MINE_DASHBOARD.dynamicRoute(":id")}
-    />
-    <Route
+    /> */}
+    {/* <Route
       exact
       path={routes.MINE_DASHBOARD.route}
       component={AuthenticationGuard()(routes.MINE_DASHBOARD.component)}
-    />
+    /> */}
+
+    {Object.values(routes).map((route) => (
+      <Route exact path={route.route} component={route.component} isPublic={route.isPublic} />
+    ))}
 
     {/* 404 - PAGE NOT FOUND */}
     <Route
