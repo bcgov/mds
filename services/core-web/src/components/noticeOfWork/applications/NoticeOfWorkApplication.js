@@ -477,6 +477,13 @@ export class NoticeOfWorkApplication extends Component {
             Change the Lead Inspector
           </Menu.Item>
         )}
+        {true && (
+          <Menu.SubMenu key="generate-letter-templates" title="Generate Letter Templates">
+            <Menu.Item key="client-acknowledgement">Client Acknowledgement Letter</Menu.Item>
+            <Menu.Item key="withdrawl-letter">Withdrawl Letter</Menu.Item>
+            <Menu.Item key="rejection-letter">Rejection Letter</Menu.Item>
+          </Menu.SubMenu>
+        )}
         {!isDecision && this.props.noticeOfWork.lead_inspector_party_guid && (
           <Menu.Item
             key="start-next-step"
