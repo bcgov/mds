@@ -2,15 +2,14 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Field, reduxForm } from "redux-form";
 import { Form, Col, Row } from "antd";
+import { required, maxLength, number, dateNotInFuture } from "@common/utils/Validate";
+import { MINE_INCIDENT_DOCUMENT } from "@common/constants/API";
+import * as Strings from "@common/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
 import FileUpload from "@/components/common/FileUpload";
-import { MINE_INCIDENT_DOCUMENT } from "@/constants/API";
 import { IncidentsUploadedFilesList } from "@/components/Forms/incidents/IncidentsUploadedFilesList";
-import * as Strings from "@/constants/strings";
-
-import { required, maxLength, number, dateNotInFuture } from "@/utils/Validate";
 
 const propTypes = {
   incidentDeterminationOptions: CustomPropTypes.options.isRequired,
@@ -117,11 +116,12 @@ class AddIncidentDetailForm extends Component {
                 validate={[required]}
               />
             </Form.Item>
+            <h4>Dangerous Occurrence Determination</h4>
             <Form.Item>
               <Field
                 id="determination_type_code"
                 name="determination_type_code"
-                label="Inspector's Determination*"
+                label="Inspectors Determination*"
                 component={renderConfig.SELECT}
                 data={this.props.incidentDeterminationOptions}
                 validate={[required]}

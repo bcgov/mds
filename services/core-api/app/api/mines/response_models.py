@@ -185,7 +185,8 @@ MINES_MODEL = api.model(
         'mine_permit_numbers': fields.List(fields.String),
         'mine_tailings_storage_facilities': fields.List(fields.Nested(MINE_TSF_MODEL)),
         'mine_type': fields.List(fields.Nested(MINE_TYPE_MODEL)),
-        'verified_status': fields.Nested(MINE_VERIFIED_MODEL)
+        'verified_status': fields.Nested(MINE_VERIFIED_MODEL),
+        'has_minespace_users': fields.Boolean,
     })
 
 MINE_MODEL = api.inherit('Mine', MINES_MODEL, {
@@ -206,7 +207,8 @@ MINE_INCIDENT_DOCUMENT_MODEL = api.model(
         'mine_document_guid': fields.String,
         'document_manager_guid': fields.String,
         'document_name': fields.String,
-        'mine_incident_document_type_code': fields.String
+        'mine_incident_document_type_code': fields.String,
+        'upload_date': fields.DateTime,
     })
 
 MINE_INCIDENT_RECOMMENDATION_MODEL = api.model('Mine Incident Recommendation', {
@@ -332,6 +334,7 @@ MINE_REPORT_MODEL = api.model(
         'due_date': fields.Date,
         'received_date': fields.Date,
         'submission_year': fields.Integer,
+        'created_by_idir': fields.String,
         'permit_guid': fields.String,
         'mine_report_submissions': fields.List(fields.Nested(MINE_REPORT_SUBMISSION_MODEL))
     })
@@ -368,6 +371,7 @@ ORDER_MODEL = api.model(
         "violation": fields.String,
         "report_no": fields.Integer,
         "inspector": fields.String,
+        "inspection_type": fields.String,
         "due_date": fields.Date,
         "order_status": fields.String,
         "overdue": fields.Boolean,
@@ -391,5 +395,6 @@ MINE_COMPLIANCE_RESPONSE_MODEL = api.model(
         'all_time': fields.Nested(COMPLAINCE_AGGREGATION_MODEL),
         'last_12_months': fields.Nested(COMPLAINCE_AGGREGATION_MODEL),
         'current_fiscal': fields.Nested(COMPLAINCE_AGGREGATION_MODEL),
+        'year_to_date': fields.Nested({'num_inspections': fields.Integer}),
         'orders': fields.List(fields.Nested(ORDER_MODEL)),
     })

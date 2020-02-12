@@ -1,32 +1,32 @@
 import React, { Component } from "react";
 import { Prompt } from "react-router-dom";
-import { Steps, Button, Dropdown, Menu, Icon } from "antd";
+import { Steps, Button, Dropdown, Menu, Icon, Popconfirm } from "antd";
 import PropTypes from "prop-types";
 import { getFormValues, reset } from "redux-form";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import * as routes from "@/constants/routes";
 import {
   fetchImportedNoticeOfWorkApplication,
   fetchOriginalNoticeOfWorkApplication,
   createNoticeOfWorkApplicationProgress,
   updateNoticeOfWorkApplication,
-} from "@/actionCreators/noticeOfWorkActionCreator";
-import { openModal, closeModal } from "@/actions/modalActions";
-import { modalConfig } from "@/components/modalContent/config";
-import { fetchMineRecordById } from "@/actionCreators/mineActionCreator";
-import { getDropdownInspectors, getInspectorsHash } from "@/selectors/partiesSelectors";
+} from "@common/actionCreators/noticeOfWorkActionCreator";
+import { fetchMineRecordById } from "@common/actionCreators/mineActionCreator";
+import { openModal, closeModal } from "@common/actions/modalActions";
+import { getDropdownInspectors, getInspectorsHash } from "@common/selectors/partiesSelectors";
 import {
   getNoticeOfWork,
   getOriginalNoticeOfWork,
   getNOWReclamationSummary,
-} from "@/selectors/noticeOfWorkSelectors";
-import { getMines } from "@/selectors/mineSelectors";
+} from "@common/selectors/noticeOfWorkSelectors";
+import { getMines } from "@common/selectors/mineSelectors";
 import {
   getDropdownNoticeOfWorkApplicationStatusOptions,
   getNoticeOfWorkApplicationProgressStatusCodeOptions,
-} from "@/selectors/staticContentSelectors";
-import { clearNoticeOfWorkApplication } from "@/actions/noticeOfWorkActions";
+} from "@common/selectors/staticContentSelectors";
+import { clearNoticeOfWorkApplication } from "@common/actions/noticeOfWorkActions";
+import { downloadNowDocument } from "@common/utils/actionlessNetworkCalls";
+import * as routes from "@/constants/routes";
 import ApplicationStepOne from "@/components/noticeOfWork/applications/applicationStepOne/ApplicationStepOne";
 import NOWApplicationReviews from "@/components/noticeOfWork/applications/referals/NOWApplicationReviews";
 import CustomPropTypes from "@/customPropTypes";
@@ -36,7 +36,7 @@ import NOWSideMenu from "@/components/noticeOfWork/applications/NOWSideMenu";
 import NoticeOfWorkPageHeader from "@/components/noticeOfWork/applications/NoticeOfWorkPageHeader";
 import * as FORM from "@/constants/forms";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
-import { downloadNowDocument } from "@/utils/actionlessNetworkCalls";
+import { modalConfig } from "@/components/modalContent/config";
 
 const { Step } = Steps;
 
@@ -256,13 +256,12 @@ export class NoticeOfWorkApplication extends Component {
     }
   };
 
-  handleChangeNOWMine = (values) => {
+  handleChangeNOWMineAndLocation = (values) => {
+    const message = values.latitude
+      ? "Successfully updated location of this Notice of Work"
+      : "Successfully transferred Notice of Work";
     this.props
-      .updateNoticeOfWorkApplication(
-        values,
-        this.props.noticeOfWork.now_application_guid,
-        `Successfully transferred Notice of Work`
-      )
+      .updateNoticeOfWorkApplication(values, this.props.noticeOfWork.now_application_guid, message)
       .then(() => {
         this.props.fetchImportedNoticeOfWorkApplication(
           this.props.noticeOfWork.now_application_guid
@@ -311,12 +310,31 @@ export class NoticeOfWorkApplication extends Component {
         initialValues: {
           mine_guid: noticeOfWork.mine_guid,
         },
-        onSubmit: this.handleChangeNOWMine,
+        onSubmit: this.handleChangeNOWMineAndLocation,
         title: `Transfer Notice of Work`,
         noticeOfWork,
       },
-      widthSize: "75vw",
+      width: "75vw",
       content: modalConfig.CHANGE_NOW_MINE,
+    });
+  };
+
+  openChangeNOWLocationModal = (event, noticeOfWork) => {
+    event.preventDefault();
+    this.props.openModal({
+      props: {
+        initialValues: {
+          mine_guid: noticeOfWork.mine_guid,
+          latitude: noticeOfWork.latitude,
+          longitude: noticeOfWork.longitude,
+        },
+        mineGuid: noticeOfWork.mine_guid,
+        onSubmit: this.handleChangeNOWMineAndLocation,
+        title: `Edit Location`,
+        noticeOfWork,
+      },
+      width: "75vw",
+      content: modalConfig.CHANGE_NOW_LOCATION,
     });
   };
 
@@ -389,6 +407,8 @@ export class NoticeOfWorkApplication extends Component {
       if (progressLength > stepIndex) {
         return "finish";
       }
+    } else if (this.state.isNewApplication && stepIndex === 0) {
+      return "process";
     }
     return "wait";
   };
@@ -439,7 +459,7 @@ export class NoticeOfWorkApplication extends Component {
             </span>
           </div>
         )}
-        {isImported && !isDecision && (
+        {!isDecision && (
           <div className="custom-menu-item">
             <button
               type="button"
@@ -449,14 +469,24 @@ export class NoticeOfWorkApplication extends Component {
             </button>
           </div>
         )}
-        {isImported && this.props.noticeOfWork.lead_inspector_party_guid && !isDecision && (
+        {!isDecision && (
+          <div className="custom-menu-item">
+            <button
+              type="button"
+              onClick={(event) => this.openChangeNOWLocationModal(event, this.props.noticeOfWork)}
+            >
+              Edit Application Lat/Long
+            </button>
+          </div>
+        )}
+        {this.props.noticeOfWork.lead_inspector_party_guid && !isDecision && (
           <div className="custom-menu-item">
             <button type="button" onClick={(event) => this.openUpdateLeadInspectorModal(event)}>
               Change the Lead Inspector
             </button>
           </div>
         )}
-        {isImported && this.props.noticeOfWork.lead_inspector_party_guid && !isDecision && (
+        {this.props.noticeOfWork.lead_inspector_party_guid && !isDecision && (
           <div className="custom-menu-item">
             <button
               type="button"
@@ -519,7 +549,7 @@ export class NoticeOfWorkApplication extends Component {
                 >
                   {headerSteps}
                 </Steps>
-                {this.state.isViewMode && (
+                {this.state.isViewMode && isImported && (
                   <Dropdown
                     overlay={menu}
                     placement="bottomLeft"
@@ -535,9 +565,17 @@ export class NoticeOfWorkApplication extends Component {
               </div>
             ) : (
               <div className="inline-flex flex-center block-mobile">
-                <Button type="secondary" className="full-mobile" onClick={this.handleCancelNOWEdit}>
-                  Cancel
-                </Button>
+                <Popconfirm
+                  placement="bottomRight"
+                  title="You have unsaved changes, Are you sure you want to cancel?"
+                  onConfirm={this.handleCancelNOWEdit}
+                  okText="Yes"
+                  cancelText="No"
+                >
+                  <Button type="secondary" className="full-mobile">
+                    Cancel
+                  </Button>
+                </Popconfirm>
                 <Button type="primary" className="full-mobile" onClick={this.handleSaveNOWEdit}>
                   Save
                 </Button>

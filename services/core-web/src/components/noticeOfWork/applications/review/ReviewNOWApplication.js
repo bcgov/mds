@@ -23,8 +23,8 @@ import {
   getMineRegionDropdownOptions,
   getDropdownNoticeOfWorkApplicationTypeOptions,
   getDropdownNoticeOfWorkApplicationPermitTypeOptions,
-} from "@/selectors/staticContentSelectors";
-import { required, lat, lon, maxLength, number } from "@/utils/Validate";
+} from "@common/selectors/staticContentSelectors";
+import { required, lat, lon, maxLength, number } from "@common/utils/Validate";
 
 /**
  * @constant ReviewNOWApplication renders edit/view for the NoW Application review step

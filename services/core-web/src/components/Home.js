@@ -4,20 +4,18 @@ import { Layout, BackTop, Button, Icon } from "antd";
 import PropTypes from "prop-types";
 import MediaQuery from "react-responsive";
 import LoadingBar, { showLoading, hideLoading } from "react-redux-loading-bar";
-import DashboardRoutes from "@/routes/DashboardRoutes";
-import { AuthenticationGuard } from "@/HOC/AuthenticationGuard";
-import NavBar from "./navigation/NavBar";
-import WarningBanner from "@/components/common/WarningBanner";
-import * as Styles from "@/constants/styles";
 import {
   detectIE,
   detectTestEnvironment,
   detectDevelopmentEnvironment,
-} from "@/utils/environmentUtils";
-
-import { getStaticContentLoadingIsComplete } from "@/selectors/staticContentSelectors";
-
-import * as staticContent from "@/actionCreators/staticContentActionCreator";
+} from "@common/utils/environmentUtils";
+import { getStaticContentLoadingIsComplete } from "@common/selectors/staticContentSelectors";
+import * as staticContent from "@common/actionCreators/staticContentActionCreator";
+import DashboardRoutes from "@/routes/DashboardRoutes";
+import { AuthenticationGuard } from "@/HOC/AuthenticationGuard";
+import NavBar from "./navigation/NavBar";
+import WarningBanner, { WARNING_TYPES } from "@/components/common/WarningBanner";
+import * as Styles from "@/constants/styles";
 
 /**
  * @class Home contains the navigation and wraps the Dashboard routes. Home should not contain any redux logic/state.
@@ -109,11 +107,11 @@ export class Home extends Component {
             }}
           />
         </div>
-        {this.state.isIE && <WarningBanner onClose={this.handleIEClose} type="IE" />}
-        {this.state.isTest && <WarningBanner type="test" />}
+        {this.state.isTest && <WarningBanner type={WARNING_TYPES.TEST} />}
+        {this.state.isIE && <WarningBanner type={WARNING_TYPES.IE} onClose={this.handleIEClose} />}
         <MediaQuery maxWidth={500}>
           {this.state.isMobile && !this.state.isDev && (
-            <WarningBanner type="mobile" onClose={this.handleMobileWarningClose} />
+            <WarningBanner type={WARNING_TYPES.MOBILE} onClose={this.handleMobileWarningClose} />
           )}
         </MediaQuery>
         <Content className="content">

@@ -4,12 +4,12 @@ import { reduxForm, Field } from "redux-form";
 import { Form, Button, Col, Row } from "antd";
 import { compose } from "redux";
 import { connect } from "react-redux";
+import { required } from "@common/utils/Validate";
+import { resetForm } from "@common/utils/helpers";
+import { getDropdownNoticeOfWorkApplicationTypeOptions } from "@common/selectors/staticContentSelectors";
 import * as FORM from "@/constants/forms";
-import { required } from "@/utils/Validate";
 import CustomPropTypes from "@/customPropTypes";
-import { resetForm } from "@/utils/helpers";
 import { renderConfig } from "@/components/common/config";
-import { getDropdownNoticeOfWorkApplicationTypeOptions } from "@/selectors/staticContentSelectors";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,

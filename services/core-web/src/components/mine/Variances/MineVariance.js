@@ -4,16 +4,14 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Divider } from "antd";
 import moment from "moment";
-import MineVarianceTable from "./MineVarianceTable";
-import * as ModalContent from "@/constants/modalContent";
-import { modalConfig } from "@/components/modalContent/config";
-import { openModal, closeModal } from "@/actions/modalActions";
-import * as Permission from "@/constants/permissions";
-import * as Strings from "@/constants/strings";
-import CustomPropTypes from "@/customPropTypes";
-import AddButton from "@/components/common/AddButton";
-import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
-import { getMines, getMineGuid } from "@/selectors/mineSelectors";
+import { openModal, closeModal } from "@common/actions/modalActions";
+import {
+  createVariance,
+  fetchVariancesByMine,
+  addDocumentToVariance,
+  updateVariance,
+} from "@common/actionCreators/varianceActionCreator";
+import { getMines, getMineGuid } from "@common/selectors/mineSelectors";
 import {
   getDropdownHSRCMComplianceCodes,
   getHSRCMComplianceCodesHash,
@@ -21,15 +19,17 @@ import {
   getVarianceStatusOptionsHash,
   getDropdownVarianceDocumentCategoryOptions,
   getVarianceDocumentCategoryOptionsHash,
-} from "@/selectors/staticContentSelectors";
-import {
-  createVariance,
-  fetchVariancesByMine,
-  addDocumentToVariance,
-  updateVariance,
-} from "@/actionCreators/varianceActionCreator";
-import { getVarianceApplications, getApprovedVariances } from "@/selectors/varianceSelectors";
-import { getDropdownInspectors, getInspectorsHash } from "@/selectors/partiesSelectors";
+} from "@common/selectors/staticContentSelectors";
+import { getVarianceApplications, getApprovedVariances } from "@common/selectors/varianceSelectors";
+import { getDropdownInspectors, getInspectorsHash } from "@common/selectors/partiesSelectors";
+import * as Strings from "@common/constants/strings";
+import MineVarianceTable from "./MineVarianceTable";
+import * as ModalContent from "@/constants/modalContent";
+import { modalConfig } from "@/components/modalContent/config";
+import * as Permission from "@/constants/permissions";
+import CustomPropTypes from "@/customPropTypes";
+import AddButton from "@/components/common/AddButton";
+import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 
 const propTypes = {
   mines: PropTypes.objectOf(CustomPropTypes.mine).isRequired,

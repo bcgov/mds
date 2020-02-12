@@ -2,11 +2,11 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { destroy } from "redux-form";
+import moment from "moment";
 import { debounce, isEmpty } from "lodash";
 import queryString from "query-string";
 import PropTypes from "prop-types";
-import { modalConfig } from "@/components/modalContent/config";
-import { openModal, closeModal } from "@/actions/modalActions";
+import { openModal, closeModal } from "@common/actions/modalActions";
 import {
   getMineRegionHash,
   getMineTenureTypesHash,
@@ -20,18 +20,19 @@ import {
   getDropdownIncidentStatusCodeOptions,
   getIncidentFollowupActionOptions,
   getDropdownIncidentCategoryCodeOptions,
-} from "@/selectors/staticContentSelectors";
-import { getDropdownInspectors } from "@/selectors/partiesSelectors";
+} from "@common/selectors/staticContentSelectors";
+import { getDropdownInspectors } from "@common/selectors/partiesSelectors";
+import { getIncidents, getIncidentPageData } from "@common/selectors/incidentSelectors";
+import { fetchIncidents, updateMineIncident } from "@common/actionCreators/incidentActionCreator";
+import { formatParamStringToArray } from "@common/utils/helpers";
+import * as Strings from "@common/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
-import { fetchIncidents, updateMineIncident } from "@/actionCreators/incidentActionCreator";
-import { getIncidents, getIncidentPageData } from "@/selectors/incidentSelectors";
 import { IncidentsTable } from "./IncidentsTable";
 import * as router from "@/constants/routes";
 import IncidentsSearch from "./IncidentsSearch";
-import { formatParamStringToArray } from "@/utils/helpers";
+import { modalConfig } from "@/components/modalContent/config";
 import * as ModalContent from "@/constants/modalContent";
 import * as FORM from "@/constants/forms";
-import * as Strings from "@/constants/strings";
 
 /**
  * @class Incidents page is a landing page for all incidents in the system
@@ -243,6 +244,14 @@ export class IncidentsHomePage extends Component {
     this.props.destroy(FORM.MINE_INCIDENT);
   };
 
+  parseIncidentIntoFormData = (existingIncident) => ({
+    ...existingIncident,
+    reported_date: moment(existingIncident.reported_timestamp).format("YYYY-MM-DD"),
+    reported_time: moment(existingIncident.reported_timestamp),
+    incident_date: moment(existingIncident.incident_timestamp).format("YYYY-MM-DD"),
+    incident_time: moment(existingIncident.incident_timestamp),
+  });
+
   openMineIncidentModal = (
     event,
     onSubmit,
@@ -257,10 +266,16 @@ export class IncidentsHomePage extends Component {
       props: {
         newIncident,
         initialValues: {
-          ...existingIncident,
+          status_code: "PRE",
+          ...this.parseIncidentIntoFormData(existingIncident),
           dangerous_occurrence_subparagraph_ids: existingIncident.dangerous_occurrence_subparagraph_ids.map(
             String
           ),
+          categories: existingIncident.categories
+            ? existingIncident.categories
+                .sort((a, b) => (a.display_order > b.display_order ? 1 : -1))
+                .map((c) => c.mine_incident_category_code)
+            : [],
         },
         onSubmit,
         afterClose: this.handleCancelMineIncident,
@@ -274,6 +289,7 @@ export class IncidentsHomePage extends Component {
         inspectors: this.props.inspectors,
         clearOnSubmit: true,
       },
+      width: "50vw",
       content: modalConfig.MINE_INCIDENT,
     });
   };
@@ -296,34 +312,40 @@ export class IncidentsHomePage extends Component {
     return (
       <div className="landing-page">
         <div className="landing-page__header">
-          <h1>Browse Incidents</h1>
+          <div>
+            <h1>Browse Incidents</h1>
+          </div>
         </div>
         <div className="landing-page__content">
-          <IncidentsSearch
-            handleNameFieldReset={this.handleNameFieldReset}
-            initialValues={this.state.params}
-            handleIncidentSearch={this.handleIncidentSearchDebounced}
-            mineRegionOptions={this.props.mineRegionOptions}
-            incidentStatusCodeOptions={this.props.incidentStatusCodeOptions}
-            incidentDeterminationOptions={this.props.incidentDeterminationOptions}
-            doSubparagraphOptions={this.props.doSubparagraphOptions}
-          />
-          <IncidentsTable
-            isLoaded={this.state.incidentsLoaded}
-            incidents={this.props.incidents}
-            isApplication={this.state.isApplication}
-            handleFilterChange={this.handleFilterChange}
-            pageData={this.props.incidentPageData}
-            handlePageChange={this.handleIncidentPageChange}
-            handleIncidentSearch={this.handleIncidentSearch}
-            params={this.state.params}
-            sortField={this.state.params.sort_field}
-            sortDir={this.state.params.sort_dir}
-            followupActions={this.props.followupActions}
-            openMineIncidentModal={this.openMineIncidentModal}
-            handleEditMineIncident={this.handleEditMineIncident}
-            openViewMineIncidentModal={this.openViewMineIncidentModal}
-          />
+          <div className="page__content">
+            <IncidentsSearch
+              handleNameFieldReset={this.handleNameFieldReset}
+              initialValues={this.state.params}
+              handleIncidentSearch={this.handleIncidentSearchDebounced}
+              mineRegionOptions={this.props.mineRegionOptions}
+              incidentStatusCodeOptions={this.props.incidentStatusCodeOptions}
+              incidentDeterminationOptions={this.props.incidentDeterminationOptions}
+              doSubparagraphOptions={this.props.doSubparagraphOptions}
+            />
+            <div>
+              <IncidentsTable
+                isLoaded={this.state.incidentsLoaded}
+                incidents={this.props.incidents}
+                isApplication={this.state.isApplication}
+                handleFilterChange={this.handleFilterChange}
+                pageData={this.props.incidentPageData}
+                handlePageChange={this.handleIncidentPageChange}
+                handleIncidentSearch={this.handleIncidentSearch}
+                params={this.state.params}
+                sortField={this.state.params.sort_field}
+                sortDir={this.state.params.sort_dir}
+                followupActions={this.props.followupActions}
+                openMineIncidentModal={this.openMineIncidentModal}
+                handleEditMineIncident={this.handleEditMineIncident}
+                openViewMineIncidentModal={this.openViewMineIncidentModal}
+              />
+            </div>
+          </div>
         </div>
       </div>
     );

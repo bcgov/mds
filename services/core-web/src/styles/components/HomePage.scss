@@ -1,0 +1,86 @@
+.background {
+  background-size: cover;
+  min-height: 100vh;
+  height: 100%;
+  overflow: hidden;
+}
+
+.link-card {
+  background-color: $pure-white;
+  border-top: 6px solid $violet;
+  border-radius: 5px;
+
+  ul {
+    margin-bottom: 0;
+
+    li {
+      display: flex;
+
+      &:first-child {
+        color: $violet;
+        font-weight: $semi-bold;
+        text-transform: uppercase;
+        padding: 10px;
+      }
+
+      &:not(:last-child) {
+        border-bottom: 1px solid $light-grey;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+        padding: 10px;
+        width: 100%;
+        border-radius: 5px;
+
+        &:hover {
+          background-color: $lightest-grey !important;
+        }
+      }
+    }
+  }
+}
+
+.metabase-card {
+  background-color: $pure-white;
+  border-top: 6px solid $violet;
+  border-radius: 5px;
+}
+
+.search-container {
+  padding-top: 60px;
+  padding-bottom: 20px;
+
+  h1,
+  p {
+    color: $pure-white;
+  }
+  a:hover {
+    color: $light-grey;
+  }
+}
+
+.warning-banner {
+  background-color: #f3cd65;
+  border-radius: 0;
+  border: none;
+  z-index: 999;
+
+  .ant-alert-icon {
+    width: 48px;
+  }
+
+  &.ant-alert-with-description {
+    // Original left-padding is 64px with an original icon size of 24px. The new icon size is 48px, so
+    // add 24px to maintain the original layout proportions.
+    padding-left: 64px + 24px;
+  }
+
+  .anticon-close {
+    color: rgba(0, 0, 0, 0.45);
+    &:hover {
+      color: rgba(0, 0, 0, 0.75);
+    }
+  }
+}

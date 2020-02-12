@@ -1,0 +1,26 @@
+.landing-header {
+  padding-top: 64px;
+  padding-bottom: 64px;
+
+  .login {
+    a {
+      text-decoration: none;
+    }
+  }
+}
+
+.header-text {
+  font-size: 24px;
+}
+
+.landing-section {
+  padding-bottom: 32px;
+  ul {
+    padding: 0;
+    margin: 0;
+  }
+  .ant-card {
+    margin-top: 50px;
+    margin-bottom: 22px;
+  }
+}

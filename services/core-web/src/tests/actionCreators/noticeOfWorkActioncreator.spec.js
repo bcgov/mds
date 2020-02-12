@@ -7,12 +7,12 @@ import {
   fetchOriginalNoticeOfWorkApplication,
   updateNoticeOfWorkApplication,
   createNoticeOfWorkApplicationProgress,
-} from "@/actionCreators/noticeOfWorkActionCreator";
-import * as genericActions from "@/actions/genericActions";
-import * as API from "@/constants/API";
+} from "@common/actionCreators/noticeOfWorkActionCreator";
+import * as genericActions from "@common/actions/genericActions";
+import { ENVIRONMENT } from "@common/constants/environment";
+import * as API from "@common/constants/API";
 import * as MOCK from "@/tests/mocks/dataMocks";
 import * as NOW_MOCK from "@/tests/mocks/noticeOfWorkMocks";
-import { ENVIRONMENT } from "@/constants/environment";
 
 const dispatch = jest.fn();
 const requestSpy = jest.spyOn(genericActions, "request");
@@ -50,23 +50,22 @@ describe("`fetchNoticeOfWorkApplications` action creator", () => {
   });
 });
 
-describe("`createNoticeOfWorkApplication` action creator", () => {
+describe("`importNoticeOfWorkApplication` action creator", () => {
   const applicationGuid = NOW_MOCK.NOTICE_OF_WORK.application_guid;
-  const mineGuid = "14514315";
+  const payload = { mine_guid: "14514315", latitude: "", longitude: "" };
   const url = ENVIRONMENT.apiUrl + API.NOTICE_OF_WORK_APPLICATION_IMPORT(applicationGuid);
   it("Request successful, dispatches `success` with correct response", () => {
     const mockResponse = { data: { success: true } };
     mockAxios.onPost(url).reply(200, mockResponse);
-    return importNoticeOfWorkApplication(mineGuid, applicationGuid)(dispatch).then(() => {
+    return importNoticeOfWorkApplication(applicationGuid, payload)(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
-      expect(successSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
     });
   });
 
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onPost(url, MOCK.createMockHeader()).reply(418, MOCK.ERROR);
-    return importNoticeOfWorkApplication(mineGuid, applicationGuid)(dispatch).then(() => {
+    return importNoticeOfWorkApplication(applicationGuid, payload)(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);

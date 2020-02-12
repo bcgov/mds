@@ -4,14 +4,14 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
-import { getMines } from "@/selectors/mineSelectors";
-import MineCard from "@/components/mine/NoticeOfWork/MineCard";
-import { getPermits } from "@/reducers/permitReducer";
-import CustomPropTypes from "@/customPropTypes";
-import { fetchPermits } from "@/actionCreators/permitActionCreator";
+import { getMines } from "@common/selectors/mineSelectors";
+import { getPermits } from "@common/reducers/permitReducer";
+import { fetchPermits } from "@common/actionCreators/permitActionCreator";
+import { createDropDownList } from "@common/utils/helpers";
+import { createNoticeOfWorkApplication } from "@common/actionCreators/noticeOfWorkActionCreator";
 import MajorMinePermitApplicationCreateForm from "@/components/Forms/noticeOfWork/MajorMinePermitApplicationCreateForm";
-import { createDropDownList } from "@/utils/helpers";
-import { createNoticeOfWorkApplication } from "@/actionCreators/noticeOfWorkActionCreator";
+import CustomPropTypes from "@/customPropTypes";
+import MineCard from "@/components/mine/NoticeOfWork/MineCard";
 import * as routes from "@/constants/routes";
 
 const propTypes = {
@@ -57,7 +57,7 @@ export class MajorMinePermitApplicationCreate extends Component {
         <h4>Start Permit Application for {this.props.mines[this.props.mineGuid].mine_name}:</h4>
         <br />
         <Row>
-          <Col md={{ span: 20, offset: 2 }} xs={{ span: 20, offset: 2 }}>
+          <Col md={24}>
             <MineCard mine={this.props.mines[this.props.mineGuid]} />
             <MajorMinePermitApplicationCreateForm
               title="Create Permit Application"

@@ -1,11 +1,15 @@
+/* eslint-disable */
 import React from "react";
 import { connect } from "react-redux";
 import hoistNonReactStatics from "hoist-non-react-statics";
-import { getUserAccessData } from "@/selectors/authenticationSelectors";
-import { USER_ROLES } from "@/constants/environment";
+import { getUserAccessData } from "@common/selectors/authenticationSelectors";
+import { USER_ROLES } from "@common/constants/environment";
+import {
+  detectDevelopmentEnvironment,
+  detectProdEnvironment,
+} from "@common/utils/environmentUtils";
 import NullScreen from "@/components/common/NullScreen";
 import * as Permission from "@/constants/permissions";
-import { detectDevelopmentEnvironment, detectProdEnvironment } from "@/utils/environmentUtils";
 
 /**
  * @constant AuthorizationGuard - Higher Order Component that checks if user has the has the correct permission, if so, render component, else render a NullScreen.

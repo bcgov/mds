@@ -4,18 +4,21 @@ import moment from "moment";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import { formatDate } from "@/utils/helpers";
+import { formatDate } from "@common/utils/helpers";
+import {
+  getPartyRelationshipTypes,
+  getPartyRelationships,
+} from "@common/selectors/partiesSelectors";
+import { getMineComplianceInfo } from "@common/selectors/complianceSelectors";
+import { getMines } from "@common/selectors/mineSelectors";
+import { getPermits } from "@common/reducers/permitReducer";
+import * as String from "@common/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
 import { Contact } from "@/components/mine/ContactInfo/PartyRelationships/Contact";
-import { getPartyRelationshipTypes, getPartyRelationships } from "@/selectors/partiesSelectors";
-import { getMineComplianceInfo } from "@/selectors/complianceSelectors";
-import { getMines } from "@/selectors/mineSelectors";
-import * as String from "@/constants/strings";
 import * as router from "@/constants/routes";
 import { PermitCard } from "@/components/mine/Permit/MinePermitCard";
 import { TSFCard } from "@/components/mine/Tailings/MineTSFCard";
 import { DOC, OVERDUEDOC } from "@/constants/assets";
-import { getPermits } from "@/reducers/permitReducer";
 import MineHeader from "@/components/mine/MineHeader";
 
 /**

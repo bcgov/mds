@@ -3,10 +3,7 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
 import { Menu, Icon, Button, Dropdown, Popconfirm, Tooltip } from "antd";
-import { fetchPermits } from "@/actionCreators/permitActionCreator";
-import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
-import { getUserInfo } from "@/selectors/authenticationSelectors";
-import * as Permission from "@/constants/permissions";
+import { fetchPermits } from "@common/actionCreators/permitActionCreator";
 import {
   fetchMineRecordById,
   updateMineRecord,
@@ -17,22 +14,27 @@ import {
   subscribe,
   setMineVerifiedStatus,
   fetchMineVerifiedStatuses,
-} from "@/actionCreators/mineActionCreator";
-import { getMines, getIsUserSubscribed } from "@/selectors/mineSelectors";
-import { fetchPartyRelationships } from "@/actionCreators/partiesActionCreator";
-import { fetchVariancesByMine } from "@/actionCreators/varianceActionCreator";
-import { fetchMineComplianceInfo } from "@/actionCreators/complianceActionCreator";
-import CustomPropTypes from "@/customPropTypes";
-import Loading from "@/components/common/Loading";
-import { formatDate } from "@/utils/helpers";
+} from "@common/actionCreators/mineActionCreator";
+import { fetchPartyRelationships } from "@common/actionCreators/partiesActionCreator";
+import { fetchVariancesByMine } from "@common/actionCreators/varianceActionCreator";
+import { fetchMineComplianceInfo } from "@common/actionCreators/complianceActionCreator";
+import { getUserInfo } from "@common/selectors/authenticationSelectors";
+import { getMines, getIsUserSubscribed } from "@common/selectors/mineSelectors";
+import { formatDate } from "@common/utils/helpers";
+import { storeRegionOptions, storeTenureTypes } from "@common/actions/staticContentActions";
+import { storeVariances } from "@common/actions/varianceActions";
+import { storePermits } from "@common/actions/permitActions";
+import { storeMine } from "@common/actions/mineActions";
+import * as Strings from "@common/constants/strings";
 import MineNavigation from "@/components/mine/MineNavigation";
-import { storeRegionOptions, storeTenureTypes } from "@/actions/staticContentActions";
-import { storeVariances } from "@/actions/varianceActions";
-import { storePermits } from "@/actions/permitActions";
-import { storeMine } from "@/actions/mineActions";
+import Loading from "@/components/common/Loading";
+import CustomPropTypes from "@/customPropTypes";
+import * as Permission from "@/constants/permissions";
+import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import MineDashboardRoutes from "@/routes/MineDashboardRoutes";
 import { SUBSCRIBE, UNSUBSCRIBE, YELLOW_HAZARD, SUCCESS_CHECKMARK } from "@/constants/assets";
 import RefreshButton from "@/components/common/RefreshButton";
+import { COLOR } from "@/constants/styles";
 
 /**
  * @class MineDashboard.js is an individual mines dashboard, gets Mine data from redux and passes into children.
@@ -241,12 +243,9 @@ export class MineDashboard extends Component {
               <div className="inline-flex block-mobile between">
                 <div className="inline-flex horizontal-center block-tablet">
                   <h1 className="padding-large--right">{mine.mine_name}</h1>
-                  <div id="mine-no">Mine No. {mine.mine_no}</div>
+                  <div id="mine-no">Mine No. {mine.mine_no || Strings.EMPTY_FIELD}</div>
                   {mine.verified_status.healthy_ind !== null && (
-                    <img
-                      alt=""
-                      className="padding-small"
-                      src={mine.verified_status.healthy_ind ? SUCCESS_CHECKMARK : YELLOW_HAZARD}
+                    <Tooltip
                       title={
                         mine.verified_status.healthy_ind
                           ? `Mine data verified by ${
@@ -254,12 +253,29 @@ export class MineDashboard extends Component {
                             } on ${formatDate(mine.verified_status.verifying_timestamp)}`
                           : "Please double-check this mine's data and re-verify"
                       }
-                      width="30"
-                    />
+                      placement="top"
+                      mouseEnterDelay={1}
+                    >
+                      <img
+                        alt=""
+                        className="padding-small"
+                        src={mine.verified_status.healthy_ind ? SUCCESS_CHECKMARK : YELLOW_HAZARD}
+                        width="30"
+                      />
+                    </Tooltip>
                   )}
                   {this.props.subscribed && (
                     <Tooltip title="Subscribed" placement="top" mouseEnterDelay={1}>
                       <img src={SUBSCRIBE} alt="SUBSCRIBE" />
+                    </Tooltip>
+                  )}
+                  {mine.has_minespace_users && (
+                    <Tooltip
+                      title="This mine is registered on MineSpace"
+                      placement="top"
+                      mouseEnterDelay={1}
+                    >
+                      <Icon type="user" className="icon-lg" style={{ color: COLOR.violet }} />
                     </Tooltip>
                   )}
                 </div>

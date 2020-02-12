@@ -2,18 +2,18 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Button, Tag, Table } from "antd";
-import CustomPropTypes from "@/customPropTypes";
-import * as Strings from "@/constants/strings";
-import { downloadFileFromDocumentManager } from "@/utils/actionlessNetworkCalls";
-import { getInspectorsHash } from "@/selectors/partiesSelectors";
-import LinkButton from "@/components/common/LinkButton";
+import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
+import { getInspectorsHash } from "@common/selectors/partiesSelectors";
 import {
   getHSRCMComplianceCodesHash,
   getIncidentDeterminationHash,
   getIncidentFollowupActionHash,
   getIncidentStatusCodeHash,
-} from "@/selectors/staticContentSelectors";
-import { formatTime, formatDate } from "@/utils/helpers";
+} from "@common/selectors/staticContentSelectors";
+import { formatTime, formatDate } from "@common/utils/helpers";
+import * as Strings from "@common/constants/strings";
+import LinkButton from "@/components/common/LinkButton";
+import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
   closeModal: PropTypes.func.isRequired,
@@ -121,7 +121,10 @@ export class ViewIncidentModal extends Component {
           <p className="field-title">Brief description of incident</p>
           <p>{this.props.incident.incident_description || Strings.EMPTY_FIELD}</p>
         </div>
+      </div>
 
+      <h5>Dangerous Occurance Determination</h5>
+      <div className="content--light-grey padding-small">
         <div className="inline-flex padding-small">
           <p className="field-title">Inspector&apos;s determination</p>
           <p>

@@ -2,13 +2,13 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { Table, Popconfirm, Tooltip } from "antd";
+import { getTableHeaders } from "@common/utils/helpers";
+import * as Strings from "@common/constants/strings";
 import * as router from "@/constants/routes";
-import * as Strings from "@/constants/strings";
 import NullScreen from "@/components/common/NullScreen";
 import CustomPropTypes from "@/customPropTypes";
 import TableLoadingWrapper from "@/components/common/wrappers/TableLoadingWrapper";
 import { UNSUBSCRIBE } from "@/constants/assets";
-import { getTableHeaders } from "@/utils/helpers";
 
 /**
  * @class SubscriptionTable is a user specific table of mines they have subscribed to with the ability to unsubscribe

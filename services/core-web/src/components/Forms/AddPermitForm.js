@@ -5,12 +5,12 @@ import { remove } from "lodash";
 import PropTypes from "prop-types";
 import { Field, reduxForm, change, formValueSelector } from "redux-form";
 import { Form, Button, Col, Row, Popconfirm } from "antd";
+import { required, dateNotInFuture, maxLength } from "@common/utils/Validate";
+import { resetForm } from "@common/utils/helpers";
+import { getDropdownPermitStatusOptions } from "@common/selectors/staticContentSelectors";
 import { renderConfig } from "@/components/common/config";
 import PartySelectField from "@/components/common/PartySelectField";
 import * as FORM from "@/constants/forms";
-import { required, dateNotInFuture, maxLength } from "@/utils/Validate";
-import { resetForm } from "@/utils/helpers";
-import { getDropdownPermitStatusOptions } from "@/selectors/staticContentSelectors";
 import CustomPropTypes from "@/customPropTypes";
 import PermitAmendmentFileUpload from "@/components/mine/Permit/PermitAmendmentFileUpload";
 

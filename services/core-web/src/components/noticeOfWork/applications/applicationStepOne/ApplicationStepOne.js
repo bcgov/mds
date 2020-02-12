@@ -7,8 +7,8 @@ import {
   createNoticeOfWorkApplication,
   fetchImportedNoticeOfWorkApplication,
   importNoticeOfWorkApplication,
-} from "@/actionCreators/noticeOfWorkActionCreator";
-import { getDropdownInspectors } from "@/selectors/partiesSelectors";
+} from "@common/actionCreators/noticeOfWorkActionCreator";
+import { getDropdownInspectors } from "@common/selectors/partiesSelectors";
 import AssignLeadInspector from "@/components/noticeOfWork/applications/applicationStepOne/AssignLeadInspector";
 import VerifyNOWMineInformation from "@/components/noticeOfWork/applications/applicationStepOne/verification/VerifyNOWMineInformation";
 import CustomPropTypes from "@/customPropTypes";
@@ -50,7 +50,7 @@ export class ApplicationStepOne extends Component {
 
   handleNOWImport = (values) => {
     this.props
-      .importNoticeOfWorkApplication(values.mine_guid, this.props.noticeOfWork.now_application_guid)
+      .importNoticeOfWorkApplication(this.props.noticeOfWork.now_application_guid, values)
       .then(() => {
         return this.props
           .fetchImportedNoticeOfWorkApplication(this.props.noticeOfWork.now_application_guid)
@@ -103,7 +103,11 @@ export class ApplicationStepOne extends Component {
   };
 
   renderContent = () => {
-    const values = { mine_guid: this.props.mineGuid };
+    const values = {
+      mine_guid: this.props.mineGuid,
+      longitude: this.props.noticeOfWork.longitude,
+      latitude: this.props.noticeOfWork.latitude,
+    };
     if (this.props.isNewApplication) {
       return (
         <MajorMinePermitApplicationCreate

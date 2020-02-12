@@ -15,10 +15,10 @@ import "vendor/leaflet/leaflet-measure/leaflet-measure.css";
 import "vendor/leaflet/mouse-coordinates/leaflet.mousecoordinate";
 import "vendor/leaflet/grouped-layer-control/leaflet.groupedlayercontrol.min";
 
+import { ENVIRONMENT } from "@common/constants/environment";
+import * as Strings from "@common/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
-import * as Strings from "@/constants/strings";
 import { SMALL_PIN, SMALL_PIN_SELECTED } from "@/constants/assets";
-import { ENVIRONMENT } from "@/constants/environment";
 import LeafletPopup from "@/components/maps/LeafletPopup";
 import {
   baseMapsArray,

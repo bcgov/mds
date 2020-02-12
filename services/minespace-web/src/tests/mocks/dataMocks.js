@@ -624,7 +624,32 @@ export const COMPLIANCE = {
   advisories: 5,
   warnings: 5,
   section_35_orders: 5,
-  open_orders: [],
+  orders: [
+    {
+      order_no: "1234-1",
+      report_no: "1234",
+      due_date: "",
+      inspector: "TEST",
+      violation: "2.2",
+      overdue: false,
+    },
+    {
+      order_no: "1234-2",
+      report_no: "1234",
+      due_date: "2019-12-31",
+      inspector: "TEST",
+      violation: "2.3",
+      overdue: true,
+    },
+    {
+      order_no: "1234-3",
+      report_no: "1234",
+      due_date: "",
+      inspector: "TEST",
+      violation: "1.1.1",
+      overdue: false,
+    },
+  ],
 };
 
 export const MINE_TYPES = [

@@ -66,7 +66,6 @@ exports[`MineIncidentTable renders properly 1`] = `
           "dataIndex": "code",
           "render": [Function],
           "title": "Code",
-          "width": 400,
         },
         Object {
           "className": "",
@@ -100,14 +99,12 @@ exports[`MineIncidentTable renders properly 1`] = `
           "dataIndex": "initialDocuments",
           "render": [Function],
           "title": "Initial Report Documents",
-          "width": 200,
         },
         Object {
           "className": "",
           "dataIndex": "finalDocuments",
           "render": [Function],
           "title": "Final Report Documents",
-          "width": 200,
         },
         Object {
           "dataIndex": "handleEditModal",

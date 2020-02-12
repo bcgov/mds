@@ -18,7 +18,6 @@ export const ViewVarianceModal = (props) => (
     <VarianceDetails
       variance={props.variance}
       mineName={props.mineName}
-      isViewOnly
       varianceStatusOptionsHash={props.varianceStatusOptionsHash}
       complianceCodesHash={props.complianceCodesHash}
       documentCategoryOptionsHash={props.documentCategoryOptionsHash}

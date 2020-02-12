@@ -13,7 +13,7 @@ exports[`VariancesTable renders properly 1`] = `
       Object {
         "dataIndex": "variance_no",
         "render": [Function],
-        "sorter": true,
+        "sorter": [Function],
         "title": "Variance No.",
       },
       Object {
@@ -22,15 +22,12 @@ exports[`VariancesTable renders properly 1`] = `
         "title": "Code Section",
       },
       Object {
-        "className": "column-hide",
         "dataIndex": "received_date",
-        "defaultSortOrder": "ascend",
         "render": [Function],
         "sorter": [Function],
         "title": "Submitted On",
       },
       Object {
-        "className": "column-hide",
         "dataIndex": "status",
         "render": [Function],
         "sorter": [Function],
@@ -44,7 +41,6 @@ exports[`VariancesTable renders properly 1`] = `
       },
       Object {
         "dataIndex": "expiry_date",
-        "defaultSortOrder": "descend",
         "render": [Function],
         "sorter": [Function],
         "title": "Expiry Date",
@@ -52,11 +48,14 @@ exports[`VariancesTable renders properly 1`] = `
       Object {
         "dataIndex": "lead_inspector",
         "render": [Function],
-        "title": "Lead Inspector",
+        "sorter": [Function],
+        "title": "Inspector",
       },
       Object {
-        "dataIndex": "",
+        "dataIndex": "approval_status",
+        "defaultSortOrder": "descend",
         "render": [Function],
+        "sorter": [Function],
         "title": "Approval Status",
       },
       Object {
@@ -74,6 +73,7 @@ exports[`VariancesTable renders properly 1`] = `
   dataSource={
     Array [
       Object {
+        "approval_status": "Expired",
         "compliance_article_id": "-",
         "documents": Array [
           Object {
@@ -85,10 +85,10 @@ exports[`VariancesTable renders properly 1`] = `
           },
         ],
         "expiry_date": "Mar 30 2019",
-        "isEditable": false,
         "isOverdue": true,
         "issue_date": "Mar 01 2019",
         "key": "0d3ec917-179f-4dbc-80a3-4c993fdfe596",
+        "lead_inspector": "-",
         "note": "notesss",
         "received_date": "Mar 01 2019",
         "status": undefined,

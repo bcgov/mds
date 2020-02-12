@@ -42,9 +42,9 @@
   color: $white;
   padding: 29px $padding-md 29px $padding-md;
   &:hover,
-  &:active {
+  &.active {
     color: $white;
-    background-color: $primary-5;
+    background-color: $primary-5 !important;
     text-decoration: none;
   }
   text-decoration: none;
@@ -73,8 +73,8 @@
   border: none !important;
   background-color: transparent !important;
   box-shadow: none !important;
-  & .header-link {
+  font-weight: bold !important;
+  & a {
     text-decoration: none;
   }
-  font-weight: bold !important;
 }

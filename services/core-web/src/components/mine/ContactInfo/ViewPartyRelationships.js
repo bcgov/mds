@@ -6,6 +6,22 @@ import { withRouter } from "react-router-dom";
 import { Row, Col, Menu, Popconfirm, Divider, Dropdown } from "antd";
 import moment from "moment";
 import { uniq, uniqBy } from "lodash";
+import {
+  addPartyRelationship,
+  removePartyRelationship,
+  updatePartyRelationship,
+  fetchPartyRelationships,
+  addDocumentToRelationship,
+} from "@common/actionCreators/partiesActionCreator";
+import { createTailingsStorageFacility } from "@common/actionCreators/mineActionCreator";
+import {
+  getPartyRelationshipTypes,
+  getPartyRelationshipTypesList,
+  getPartyRelationships,
+} from "@common/selectors/partiesSelectors";
+import { getUserAccessData } from "@common/selectors/authenticationSelectors";
+import { USER_ROLES } from "@common/constants/environment";
+import { getPermits } from "@common/reducers/permitReducer";
 import CustomPropTypes from "@/customPropTypes";
 import * as router from "@/constants/routes";
 import { modalConfig } from "@/components/modalContent/config";
@@ -17,22 +33,6 @@ import { InactiveContact } from "@/components/mine/ContactInfo/PartyRelationship
 import NullScreen from "@/components/common/NullScreen";
 import Loading from "@/components/common/Loading";
 import AddButton from "@/components/common/AddButton";
-import {
-  addPartyRelationship,
-  removePartyRelationship,
-  updatePartyRelationship,
-  fetchPartyRelationships,
-  addDocumentToRelationship,
-} from "@/actionCreators/partiesActionCreator";
-import { createTailingsStorageFacility } from "@/actionCreators/mineActionCreator";
-import {
-  getPartyRelationshipTypes,
-  getPartyRelationshipTypesList,
-  getPartyRelationships,
-} from "@/selectors/partiesSelectors";
-import { getUserAccessData } from "@/selectors/authenticationSelectors";
-import { USER_ROLES } from "@/constants/environment";
-import { getPermits } from "../../../reducers/permitReducer";
 
 const propTypes = {
   mine: CustomPropTypes.mine.isRequired,

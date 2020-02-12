@@ -4,19 +4,19 @@ import { change } from "redux-form";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import queryString from "query-string";
-import * as Strings from "@/constants/strings";
-import { openModal, closeModal } from "@/actions/modalActions";
-import CustomPropTypes from "@/customPropTypes";
-import { fetchParties, createParty } from "@/actionCreators/partiesActionCreator";
-import * as FORM from "@/constants/forms";
-import * as Permission from "@/constants/permissions";
-import { getDropdownProvinceOptions } from "@/selectors/staticContentSelectors";
+import { openModal, closeModal } from "@common/actions/modalActions";
+import { fetchParties, createParty } from "@common/actionCreators/partiesActionCreator";
+import { getDropdownProvinceOptions } from "@common/selectors/staticContentSelectors";
 import {
   getParties,
   getPartyPageData,
   getPartyRelationshipTypeHash,
   getPartyRelationshipTypesList,
-} from "@/selectors/partiesSelectors";
+} from "@common/selectors/partiesSelectors";
+import * as Strings from "@common/constants/strings";
+import CustomPropTypes from "@/customPropTypes";
+import * as FORM from "@/constants/forms";
+import * as Permission from "@/constants/permissions";
 import ContactSearch from "@/components/dashboard/contactsHomePage/ContactSearch";
 import ContactList from "@/components/dashboard/contactsHomePage/ContactList";
 import ResponsivePagination from "@/components/common/ResponsivePagination";
@@ -164,7 +164,7 @@ export class ContactHomePage extends Component {
         provinceOptions,
         partyRelationshipTypesList: this.props.partyRelationshipTypesList,
       },
-      widthSize: "75vw",
+      width: "75vw",
       content: modalConfig.ADD_CONTACT,
     });
   }

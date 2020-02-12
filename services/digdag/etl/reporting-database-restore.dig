@@ -1,0 +1,34 @@
+timezone: America/Vancouver
+
+schedule:
+  daily>: 23:59:99   # daily at 11:59 PM PDT/PST
+
+_export:
+  job_name: RESTORE REPORTING DATABASE 
+
++setup:
+  echo>: Starting ${job_name} ${session_time}
+
++notify_start:
+  py>: tasks.rocket_chat_webhook.send
+  job_name: ${job_name}
+  status: RUNNING
+
++login:
+  sh>: oc login https://console.pathfinder.gov.bc.ca:8443 --token=$OC_TOKEN
+
++run_reporting_database_restore:
+  sh>: oc exec $(oc get pods --selector name=mds-database-backup$SUFFIX -o name | cut -c5-) -it -- bash -c "printf ' $(oc get secret mds-postgresql$SUFFIX -o jsonpath='{.data.database-admin-password}' |base64 -d)\n' | ./backup.sh -r mds-postgresql$SUFFIX-reporting/mds -f mds-postgres"
+
++teardown:
+  echo>: finish ${session_time}
+
++notify_end:
+  py>: tasks.rocket_chat_webhook.send
+  job_name: ${job_name}
+  status: SUCCESS
+
+_error:
+  py>: tasks.rocket_chat_webhook.send
+  job_name: ${job_name}
+  status: FAIL

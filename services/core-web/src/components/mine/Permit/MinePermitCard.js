@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { formatTitleString, formatDate } from "@common/utils/helpers";
 import CustomPropTypes from "@/customPropTypes";
-import { formatTitleString, formatDate } from "@/utils/helpers";
 
 const propTypes = {
   permit: PropTypes.objectOf(CustomPropTypes.permit),

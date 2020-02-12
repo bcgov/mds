@@ -2,7 +2,7 @@ import React from "react";
 import { Table, Row, Col, Divider } from "antd";
 import PropTypes from "prop-types";
 import Highlight from "react-highlighter";
-import { downloadFileFromDocumentManager } from "@/utils/actionlessNetworkCalls";
+import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
 import LinkButton from "@/components/common/LinkButton";
 
 /**

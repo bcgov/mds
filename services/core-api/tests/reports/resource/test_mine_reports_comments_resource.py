@@ -19,7 +19,9 @@ def test_post_mine_report_comment(test_client, db_session, auth_headers):
     data = {'report_comment': 'Test comment', 'comment_visibility_ind': False}
 
     post_resp = test_client.post(
-        f'/mines/{mine_report.mine_guid}/reports/{mine_report.mine_report_guid}/comments', headers=auth_headers['full_auth_header'], json=data)
+        f'/mines/{mine_report.mine_guid}/reports/{mine_report.mine_report_guid}/comments',
+        headers=auth_headers['full_auth_header'],
+        json=data)
 
     updated_mine_report = MineReport.find_by_mine_report_guid(str(mine_report.mine_report_guid))
     comments = updated_mine_report.mine_report_submissions[-1].comments
@@ -33,6 +35,8 @@ def test_post_mine_report_comment_no_body(test_client, db_session, auth_headers)
     mine_report = MineReportFactory()
     data = {'comment_visibility_ind': False}
     post_resp = test_client.post(
-        f'/mines/{mine_report.mine_guid}/reports/{mine_report.mine_report_guid}/comments', headers=auth_headers['full_auth_header'], json=data)
+        f'/mines/{mine_report.mine_guid}/reports/{mine_report.mine_report_guid}/comments',
+        headers=auth_headers['full_auth_header'],
+        json=data)
 
     assert post_resp.status_code == 400

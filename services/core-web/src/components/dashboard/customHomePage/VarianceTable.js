@@ -1,9 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
+import * as Strings from "@common/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
 import ResponsivePagination from "@/components/common/ResponsivePagination";
 import MineVarianceTable from "@/components/mine/Variances/MineVarianceTable";
-import * as Strings from "@/constants/strings";
 
 /**
  * @class VarianceTables
@@ -38,7 +38,7 @@ const defaultProps = {
 };
 
 export const VarianceTable = (props) => (
-  <div className="tab__content">
+  <React.Fragment>
     <MineVarianceTable
       isLoaded={props.isLoaded}
       isPaginated
@@ -62,7 +62,7 @@ export const VarianceTable = (props) => (
         itemsPerPage={Number(props.pageData.items_per_page)}
       />
     </div>
-  </div>
+  </React.Fragment>
 );
 
 VarianceTable.propTypes = propTypes;

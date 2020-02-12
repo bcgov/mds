@@ -30,6 +30,7 @@ def _get_fiscal_year():
     #current_app.logger.debug(f'{fiscal_year_end} vs {current_date}')
     return current_year if current_date > fiscal_year_end else current_year - 1
 
+
 #def get_nris_download_token():
 
 
@@ -61,7 +62,7 @@ def _process_NRIS_data(raw_data):
         'last_inspector': None,
         'num_open_orders': 0,
         'num_overdue_orders': 0,
-        #'section_35_orders': 0, no aggregate, FE filters will show where violation = 35
+                                                                          #'section_35_orders': 0, no aggregate, FE filters will show where violation = 35
         'all_time': {
             'num_inspections': 0,
             'num_advisories': 0,
@@ -80,23 +81,31 @@ def _process_NRIS_data(raw_data):
             'num_warnings': 0,
             'num_requests': 0,
         },
+        'year_to_date': {
+            'num_inspections': 0,
+        },
         'orders': [],
     }
-    sorted_records = sorted(raw_data.get('records') or [],
-                            key=lambda k: _get_datetime_from_NRIS_data(k['inspection_date']),
-                            reverse=True)
+    sorted_records = sorted(
+        raw_data.get('records') or [],
+        key=lambda k: _get_datetime_from_NRIS_data(k['inspection_date']),
+        reverse=True)
 
     for inspection in sorted_records:
         inspection_date = _get_datetime_from_NRIS_data(inspection['inspection_date'])
         current_fiscal_bool = inspection_date > datetime(_get_fiscal_year(), 4, 1)
         last_12_months_bool = inspection_date > datetime.utcnow() - relativedelta(years=1)
+        year_to_date_bool = inspection_date > datetime(datetime.today().year, 1, 1)
 
         result['all_time']['num_inspections'] += 1
         if last_12_months_bool:
             result['last_12_months']['num_inspections'] += 1
-            if current_fiscal_bool:  #last Apr 1
+            if current_fiscal_bool:              #last Apr 1
                 result['current_fiscal']['num_inspections'] += 1
+            if year_to_date_bool:
+                result['year_to_date']['num_inspections'] += 1
 
+        inspection_type = inspection['inspection_type_code']
         inspector = _get_inspector_from_idir(inspection['inspector_idir'])
 
         if not result['last_inspection']:
@@ -130,6 +139,7 @@ def _process_NRIS_data(raw_data):
                     'violation': violation,
                     'report_no': inspection['external_id'],
                     'inspector': inspector,
+                    'inspection_type': inspection_type,
                     'order_status': stop['stop_status'],
                     'due_date': stop['completion_date'],
                     'overdue': False,
