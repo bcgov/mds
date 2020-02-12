@@ -82,3 +82,20 @@ def register_commands(app):
     def run_address_etl():
         from app.cli_jobs import ETL_jobs
         ETL_jobs.run_address_etl()
+
+    @app.cli.command()
+    @click.argument('level', default=0)
+    def set_logging_level(level):
+        level = int(level)
+        if level in range(10, 50, 10):
+            flask_logger = current_app.logger.setLevel(level)
+            print(f'Logging level updated to {level}')
+        else:
+            print("""
+            Set logging level via the following integers:
+            10 = DEBUG
+            20 = INFO
+            30 = WARN
+            40 = ERROR
+            50 = CRITICAL
+            """)

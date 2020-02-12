@@ -110,16 +110,6 @@ def register_routes(app):
     api.add_namespace(now_app_api)
     api.add_namespace(exports_api)
 
-    @api.route('/logging/<int:level>')
-    class LoggingSettings(Resource):
-        def post(self, level):
-            flask_logger = app.logger.setLevel(level)
-            app.logger.critical('CRITICAL')
-            app.logger.error('ERROR')
-            app.logger.warn('WARN')
-            app.logger.info('INFO')
-            app.logger.debug('DEBUG')
-
     # Healthcheck endpoint
     @api.route('/health')
     class Healthcheck(Resource):
