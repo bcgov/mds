@@ -88,7 +88,8 @@ def register_commands(app):
     @click.argument('level', default='')
     def set_logging_level(level):
         if level in _nameToLevel.keys():
-            flask_logger = current_app.logger.setLevel(_nameToLevel[level])
+            #set level for flask app logger stream
+            current_app.logger.setLevel(_nameToLevel[level])
             print(f'Logging level set to {_nameToLevel[level]}: {level}')
         else:
             print(f"""
