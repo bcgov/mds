@@ -14,7 +14,7 @@ import * as staticContent from "@common/actionCreators/staticContentActionCreato
 import DashboardRoutes from "@/routes/DashboardRoutes";
 import { AuthenticationGuard } from "@/HOC/AuthenticationGuard";
 import NavBar from "./navigation/NavBar";
-import WarningBanner from "@/components/common/WarningBanner";
+import WarningBanner, { WARNING_TYPES } from "@/components/common/WarningBanner";
 import * as Styles from "@/constants/styles";
 
 /**
@@ -107,11 +107,11 @@ export class Home extends Component {
             }}
           />
         </div>
-        {this.state.isIE && <WarningBanner onClose={this.handleIEClose} type="IE" />}
-        {this.state.isTest && <WarningBanner type="test" />}
+        {this.state.isTest && <WarningBanner type={WARNING_TYPES.TEST} />}
+        {this.state.isIE && <WarningBanner type={WARNING_TYPES.IE} onClose={this.handleIEClose} />}
         <MediaQuery maxWidth={500}>
           {this.state.isMobile && !this.state.isDev && (
-            <WarningBanner type="mobile" onClose={this.handleMobileWarningClose} />
+            <WarningBanner type={WARNING_TYPES.MOBILE} onClose={this.handleMobileWarningClose} />
           )}
         </MediaQuery>
         <Content className="content">
