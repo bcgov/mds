@@ -67,7 +67,6 @@ exports[`Reports renders properly 1`] = `
     >
       <Col>
         <ReportsTable
-          handleEditReport={[Function]}
           isLoaded={false}
           openEditReportModal={[Function]}
         />

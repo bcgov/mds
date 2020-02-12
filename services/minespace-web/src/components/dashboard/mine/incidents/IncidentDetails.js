@@ -287,7 +287,10 @@ const FinalDocuments = (props) => (
 IncidentField.propTypes = {
   title: PropTypes.string.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
-  content: PropTypes.any.isRequired,
+  content: PropTypes.any,
+};
+IncidentField.defaultProps = {
+  content: Strings.EMPTY_FIELD,
 };
 
 InitialReport.propTypes = propTypes;

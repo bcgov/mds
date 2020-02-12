@@ -62,10 +62,6 @@ export class VariancesTable extends Component {
     }
   };
 
-  // NOTE: Luke: They've requested a lot of columns for this table... Maybe some of it
-  // can be added in an "expanded" column as there might not be enough room to fit all of these
-  // columns nicely on the screen. Also, the three tables (for in-review, approved, and rejected)
-  // have been combined into one, so there will be some refactoring to do, of course.
   columns = () => [
     {
       title: "",
@@ -133,12 +129,8 @@ export class VariancesTable extends Component {
           <div title="Documents" className="cap-col-height">
             {record.documents.length > 0
               ? record.documents.map((file) => (
-                  <div>
-                    <LinkButton
-                      title={text}
-                      key={file.mine_document_guid}
-                      onClick={() => downloadFileFromDocumentManager(file)}
-                    >
+                  <div key={file.mine_document_guid}>
+                    <LinkButton title={text} onClick={() => downloadFileFromDocumentManager(file)}>
                       {truncateFilename(file.document_name)}
                     </LinkButton>
                   </div>

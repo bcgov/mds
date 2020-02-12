@@ -17,18 +17,17 @@ import { formatDate, dateSorter } from "@/utils/helpers";
 import LinkButton from "@/components/common/LinkButton";
 import * as Strings from "@/constants/strings";
 import { modalConfig } from "@/components/modalContent/config";
+import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
   isLoaded: PropTypes.bool.isRequired,
-  data: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.object)).isRequired,
+  data: PropTypes.arrayOf(CustomPropTypes.incident).isRequired,
   incidentDeterminationHash: PropTypes.objectOf(PropTypes.string).isRequired,
   incidentStatusCodeHash: PropTypes.objectOf(PropTypes.string).isRequired,
   incidentCategoryCodeHash: PropTypes.objectOf(PropTypes.string).isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
 };
-
-// NOTE: Brian: Discuss adding an "expanded" column for the inspection's recommendations.
 
 const IncidentDocuments = (props) =>
   props.documents.length > 0 && (
@@ -90,7 +89,6 @@ export const IncidentsTable = (props) => {
       sorter: (a, b) => (a.reported_by_name > b.reported_by_name ? -1 : 1),
       render: (text) => <span title="Reported By">{text}</span>,
     },
-    // NOTE: Brian: Possible values: Yes, No, Pending
     {
       title: "Dangerous Occurrence",
       dataIndex: "determination_type_code",
@@ -147,7 +145,7 @@ export const IncidentsTable = (props) => {
       loading={!props.isLoaded}
       columns={columns}
       dataSource={props.data}
-      rowKey=""
+      rowKey={(record) => record.mine_incident_guid}
       locale={{ emptyText: "This mine has no incident data." }}
     />
   );

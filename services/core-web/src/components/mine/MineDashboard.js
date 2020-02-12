@@ -275,7 +275,7 @@ export class MineDashboard extends Component {
                       placement="top"
                       mouseEnterDelay={1}
                     >
-                      <Icon type="user" className="icon-lg" style={{ color: COLOR.violet }} />
+                      <Icon type="team" className="icon-lg" style={{ color: COLOR.violet }} />
                     </Tooltip>
                   )}
                 </div>

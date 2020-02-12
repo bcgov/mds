@@ -1,5 +1,4 @@
 /* eslint-disable */
-
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
@@ -26,7 +25,6 @@ export const AuthenticationGuard = (isPublic) => (WrappedComponent) => {
     };
 
     componentDidMount() {
-      this.setState({ authComplete: false });
       this.authenticate();
     }
 
@@ -35,11 +33,7 @@ export const AuthenticationGuard = (isPublic) => (WrappedComponent) => {
       if (token && !this.props.isAuthenticated) {
         await this.props
           .getUserInfoFromToken(token)
-          .then(() => this.setState({ authComplete: true }))
-          .catch(() => {
-            this.setState({ authComplete: true });
-            // TODO: Handle errors
-          });
+          .then(() => this.setState({ authComplete: true }));
       } else {
         this.setState({ authComplete: true });
       }

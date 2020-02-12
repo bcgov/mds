@@ -4,7 +4,6 @@ import MinesPage from "@/components/pages/MinesPage";
 import UsersPage from "@/components/pages/UsersPage";
 import MineDashboard from "@/components/dashboard/mine/MineDashboard";
 import ReturnPage from "@/components/pages/ReturnPage";
-import Mockup from "@/components/pages/Mockup";
 
 export const HOME = {
   route: "/",
@@ -37,9 +36,4 @@ export const MINE_DASHBOARD = {
   dynamicRoute: (id, activeTab = "overview", filterParams) =>
     `/mines/${id}/${activeTab}?${queryString.stringify(filterParams)}`,
   component: MineDashboard,
-};
-
-export const MOCKUP = {
-  route: "/mockup",
-  component: Mockup,
 };
