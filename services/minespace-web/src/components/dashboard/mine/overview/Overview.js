@@ -115,7 +115,9 @@ export const Overview = (props) => (
         <Col>
           <Card title="Regional Ministry Contacts">
             {getRegionalContacts(props.mine.mine_region).map((contact) => (
-              <MinistryContactItem contact={contact} />
+              <span key={contact.name}>
+                <MinistryContactItem contact={contact} />
+              </span>
             ))}
           </Card>
         </Col>

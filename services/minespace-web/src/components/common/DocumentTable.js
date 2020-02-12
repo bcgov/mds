@@ -25,11 +25,7 @@ export const DocumentTable = (props) => {
       render: (text, record) => {
         return (
           <div title="File name">
-            <LinkButton
-              title={text}
-              key={record.mine_document_guid}
-              onClick={() => downloadFileFromDocumentManager(record)}
-            >
+            <LinkButton title={text} onClick={() => downloadFileFromDocumentManager(record)}>
               {truncateFilename(text)}
             </LinkButton>
           </div>
@@ -54,6 +50,7 @@ export const DocumentTable = (props) => {
         align="left"
         pagination={false}
         columns={columns}
+        rowKey={(record) => record.mine_document_guid}
         locale={{ emptyText: "This variance does not contain any documents." }}
         dataSource={props.documents}
       />

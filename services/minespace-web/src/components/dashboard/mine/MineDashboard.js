@@ -7,7 +7,7 @@ import { fetchMineRecordById } from "@common/actionCreators/mineActionCreator";
 import { fetchPartyRelationships } from "@common/actionCreators/partiesActionCreator";
 import { getStaticContentLoadingIsComplete } from "@common/selectors/staticContentSelectors";
 import * as staticContent from "@common/actionCreators/staticContentActionCreator";
-import { getMine } from "@/selectors/userMineSelectors";
+import { getMines } from "@common/selectors/mineSelectors";
 import CustomPropTypes from "@/customPropTypes";
 import Loading from "@/components/common/Loading";
 import Overview from "@/components/dashboard/mine/overview/Overview";
@@ -25,7 +25,7 @@ const { TabPane } = Tabs;
 const propTypes = {
   fetchMineRecordById: PropTypes.func.isRequired,
   fetchPartyRelationships: PropTypes.func.isRequired,
-  mine: CustomPropTypes.mine.isRequired,
+  mines: PropTypes.objectOf(CustomPropTypes.mine),
   match: PropTypes.shape({
     params: {
       id: PropTypes.string,
@@ -36,6 +36,9 @@ const propTypes = {
   dispatch: PropTypes.func.isRequired,
 };
 
+const defaultProps = {
+  mines: {},
+};
 const initialTab = "overview";
 
 export class MineDashboard extends Component {
@@ -78,17 +81,17 @@ export class MineDashboard extends Component {
   };
 
   render() {
+    const { id } = this.props.match.params;
+    const mine = this.props.mines[id];
     return (
       (this.state.isLoaded && this.props.staticContentLoadingIsComplete && (
         <Row>
           <Col>
             <Row gutter={[0, 48]}>
               <Col>
-                <Title style={{ marginBottom: 8 }}>
-                  {(this.props.mine && this.props.mine.mine_name) || Strings.UNKNOWN}
-                </Title>
+                <Title style={{ marginBottom: 8 }}>{mine.mine_name || Strings.UNKNOWN}</Title>
                 <Title level={4} style={{ margin: 0 }}>
-                  Mine Number: {(this.props.mine && this.props.mine.mine_no) || Strings.UNKNOWN}
+                  Mine Number: {mine.mine_no || Strings.UNKNOWN}
                 </Title>
               </Col>
             </Row>
@@ -101,24 +104,24 @@ export class MineDashboard extends Component {
                   type="card"
                 >
                   <TabPane tab="Overview" key={initialTab}>
-                    <Overview mine={this.props.mine} match={this.props.match} />
+                    <Overview mine={mine} match={this.props.match} />
                   </TabPane>
-                  {this.props.mine && this.props.mine.major_mine_ind && (
+                  {mine.major_mine_ind && (
                     <TabPane tab="Permits" key="permits">
-                      <Permits mine={this.props.mine} match={this.props.match} />
+                      <Permits mine={mine} match={this.props.match} />
                     </TabPane>
                   )}
                   <TabPane tab="Inspections" key="inspections">
-                    <Inspections mine={this.props.mine} match={this.props.match} />
+                    <Inspections mine={mine} match={this.props.match} />
                   </TabPane>
                   <TabPane tab="Incidents" key="incidents">
-                    <Incidents mine={this.props.mine} match={this.props.match} />
+                    <Incidents mine={mine} match={this.props.match} />
                   </TabPane>
                   <TabPane tab="Variances" key="variances">
-                    <Variances mine={this.props.mine} match={this.props.match} />
+                    <Variances mine={mine} match={this.props.match} />
                   </TabPane>
                   <TabPane tab="Reports" key="reports">
-                    <Reports mine={this.props.mine} match={this.props.match} />
+                    <Reports mine={mine} match={this.props.match} />
                   </TabPane>
                 </Tabs>
               </Col>
@@ -131,7 +134,7 @@ export class MineDashboard extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  mine: getMine(state),
+  mines: getMines(state),
   staticContentLoadingIsComplete: getStaticContentLoadingIsComplete(state),
 });
 
@@ -147,5 +150,6 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 MineDashboard.propTypes = propTypes;
+MineDashboard.defaultProps = defaultProps;
 
 export default connect(mapStateToProps, mapDispatchToProps)(MineDashboard);
