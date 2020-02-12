@@ -89,15 +89,11 @@ def register_routes(app):
     api.add_namespace(now_app_api)
     api.add_namespace(exports_api)
 
-    @api.route('logging/<int:level>')
-    def set_uwsgi_logging_level(level):
-        print(f"SET LOGGING LEVEL={level}")
-        if level == 1:
-            logging.handlers.wsgi.setLevel(logging.CRITICAL)
-        elif level == 2:
-            logging.handlers.wsgi.setLevel(logging.ERROR)
-        else:
-            logging.handlers.wsgi.setLevel(logging.DEBUG)
+    @api.route('/logging')
+    class LoggingSettings(Resource):
+        def set_uwsgi_logging_level(self):
+            app.logger.critical('CRITICAL LOGGING')
+            print(f"SET LOGGING LEVEL")
 
     # Healthcheck endpoint
     @api.route('/health')
