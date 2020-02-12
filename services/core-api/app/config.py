@@ -1,13 +1,34 @@
 import os
 
 from dotenv import load_dotenv, find_dotenv
-
 ENV_FILE = find_dotenv()
 if ENV_FILE:
     load_dotenv(ENV_FILE)
 
 
 class Config(object):
+
+    # Logging Config
+    logging_dictConfig = {
+        'version': 1,
+        'formatters': {
+            'default': {
+                'format': '[%(asctime)s] %(levelname)s in %(module)s: %(message)s',
+            }
+        },
+        'handlers': {
+            'wsgi': {
+                'class': 'logging.StreamHandler',
+                'stream': 'ext://flask.logging.wsgi_errors_stream',
+                'formatter': 'default'
+            }
+        },
+        'root': {
+            'level': 'INFO',
+            'handlers': ['wsgi']
+        }
+    }
+
     # Environment config
     SECRET_KEY = os.environ.get('SECRET_KEY', 'dev')
     BASE_PATH = os.environ.get('BASE_PATH', '')
