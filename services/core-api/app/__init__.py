@@ -1,4 +1,4 @@
-from flask import Flask, logging
+from flask import Flask
 from flask_cors import CORS
 from flask_restplus import Resource, apidoc
 from flask_compress import Compress
@@ -41,7 +41,7 @@ def create_app(test_config=None):
     register_routes(app)
     register_commands(app)
 
-    logging.config.dictConfig(Config.LOGGING_CONFIG)
+    Flask.logging.config.dictConfig(Config.LOGGING_CONFIG)
 
     return app
 
