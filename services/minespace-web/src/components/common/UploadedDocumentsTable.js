@@ -25,7 +25,6 @@ const fileColumn = {
     <div title="File Name">
       <div key={record.file.mine_document_guid}>
         <LinkButton
-          key={record.file.mine_document_guid}
           onClick={() => downloadFileFromDocumentManager(record.file)}
           title={record.file_name}
         >

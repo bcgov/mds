@@ -1,6 +1,3 @@
-// TODO: Remove this when the file is more fully implemented.
-/* eslint-disable */
-
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -8,11 +5,12 @@ import moment from "moment";
 import PropTypes from "prop-types";
 import { Row, Col, Typography } from "antd";
 import { formatDate } from "@common/utils/helpers";
+import { fetchMineComplianceInfo } from "@common/actionCreators/complianceActionCreator";
+import { getMineComplianceInfo } from "@common/selectors/complianceSelectors";
 import CustomPropTypes from "@/customPropTypes";
 import InspectionsTable from "@/components/dashboard/mine/inspections/InspectionsTable";
 import TableSummaryCard from "@/components/common/TableSummaryCard";
-import { fetchMineComplianceInfo } from "@common/actionCreators/complianceActionCreator";
-import { getMineComplianceInfo } from "@common/selectors/complianceSelectors";
+import * as Strings from "@/constants/strings";
 
 const { Paragraph, Title, Text } = Typography;
 
@@ -26,7 +24,7 @@ export class Inspections extends Component {
   state = { isLoaded: false };
 
   componentDidMount = () => {
-    this.props.fetchMineComplianceInfo(this.props.mine.mine_no, true).then((data) => {
+    this.props.fetchMineComplianceInfo(this.props.mine.mine_no, true).then(() => {
       this.setState({
         isLoaded: true,
       });
@@ -47,7 +45,7 @@ export class Inspections extends Component {
         <Col>
           <Title level={4}>Inspections</Title>
           <Paragraph>
-            This table shows your mine's&nbsp;
+            This table shows your mine&apos;s&nbsp;
             <Text className="color-primary" strong>
               inspection history
             </Text>
@@ -58,7 +56,10 @@ export class Inspections extends Component {
               <Col sm={24} md={10} lg={6}>
                 <TableSummaryCard
                   title="Inspections YTD"
-                  content={this.props.mineComplianceInfo.year_to_date.num_inspections}
+                  content={
+                    this.props.mineComplianceInfo.year_to_date.num_inspections ||
+                    Strings.EMPTY_FIELD
+                  }
                   icon="check-circle"
                   type="success"
                 />
@@ -83,15 +84,20 @@ export class Inspections extends Component {
                 <TableSummaryCard
                   title="Last Inspection"
                   content={
-                    <div className="table-summary-card-small-content">
-                      <span className="table-summary-card-small-content-title">
-                        {this.props.mineComplianceInfo.last_inspector}
-                      </span>
-                      <br />
-                      {formatDate(this.props.mineComplianceInfo.last_inspection)}
-                    </div>
+                    this.props.mineComplianceInfo.last_inspector ? (
+                      <div className="table-summary-card-small-content">
+                        <span className="table-summary-card-small-content-title">
+                          {this.props.mineComplianceInfo.last_inspector}
+                        </span>
+                        <br />
+                        {formatDate(this.props.mineComplianceInfo.last_inspection)}
+                      </div>
+                    ) : (
+                      Strings.EMPTY_FIELD
+                    )
                   }
                   icon="file-text"
+                  type="info"
                 />
               </Col>
             </Row>

@@ -154,7 +154,6 @@ export class Reports extends Component {
             <Col>
               <ReportsTable
                 openEditReportModal={this.openEditReportModal}
-                handleEditReport={this.handleEditReport}
                 mineReports={this.props.mineReports}
                 isLoaded={this.state.isLoaded}
               />

@@ -3,13 +3,10 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { compose } from "redux";
 import PropTypes from "prop-types";
-import { flatMap, uniqBy } from "lodash";
-import { Field, reduxForm, formValueSelector } from "redux-form";
-import { Form, Button, Popconfirm, List, Typography } from "antd";
-import { renderConfig } from "@/components/common/config";
+import { reduxForm, formValueSelector } from "redux-form";
+import { Form, Button, Popconfirm } from "antd";
 import * as FORM from "@/constants/forms";
-import { required } from "@/utils/Validate";
-import { resetForm, createDropDownList, formatComplianceCodeValueOrLabel } from "@/utils/helpers";
+import { resetForm } from "@/utils/helpers";
 import {
   getDropdownMineReportCategoryOptions,
   getMineReportDefinitionOptions,
@@ -17,13 +14,10 @@ import {
 import CustomPropTypes from "@/customPropTypes";
 import { ReportSubmissions } from "@/components/Forms/reports/ReportSubmissions";
 
-const { Paragraph } = Typography;
-
 const propTypes = {
   mineGuid: PropTypes.string.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
-  title: PropTypes.string.isRequired,
   mineReportDefinitionOptions: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
   dropdownMineReportCategoryOptions: PropTypes.arrayOf(
     PropTypes.objectOf(CustomPropTypes.dropdownListItem)
@@ -32,6 +26,7 @@ const propTypes = {
   selectedMineReportCategory: PropTypes.string,
   selectedMineReportDefinition: PropTypes.string,
   formMeta: PropTypes.any,
+  change: PropTypes.func.isRequired,
 };
 
 const selector = formValueSelector(FORM.ADD_REPORT);
