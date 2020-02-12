@@ -1,6 +1,8 @@
-from flask import Flask
-from flask.logging import default_handler
+import logging
 from logging.config import dictConfig
+
+from flask import Flask
+
 from flask_cors import CORS
 from flask_restplus import Resource, apidoc
 from flask_compress import Compress
@@ -30,6 +32,25 @@ import app.api.utils.setup_marshmallow
 
 def create_app(test_config=None):
     """Create and configure an instance of the Flask application."""
+    dictConfig({
+        'version': 1,
+        'formatters': {
+            'default': {
+                'format': '[%(asctime)s] %(levelname)s in %(module)s: %(message)s',
+            }
+        },
+        'handlers': {
+            'wsgi': {
+                'class': 'logging.StreamHandler',
+                'stream': 'ext://flask.logging.wsgi_errors_stream',
+                'formatter': 'default'
+            }
+        },
+        'root': {
+            'level': 'INFO',
+            'handlers': ['wsgi']
+        }
+    })
     app = Flask(__name__)
 
     if test_config is None:
@@ -44,10 +65,6 @@ def create_app(test_config=None):
     register_commands(app)
 
     return app
-
-
-def register_loggers(app):
-    print(app.logger.__dict__)
 
 
 def register_extensions(app):
