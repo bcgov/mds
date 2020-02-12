@@ -1,5 +1,6 @@
 import click
 import psycopg2
+from logging import _nameToLevel
 
 from sqlalchemy.exc import DBAPIError
 from multiprocessing.dummy import Pool as ThreadPool
@@ -84,18 +85,13 @@ def register_commands(app):
         ETL_jobs.run_address_etl()
 
     @app.cli.command()
-    @click.argument('level', default=0)
+    @click.argument('level', default='')
     def set_logging_level(level):
-        level = int(level)
-        if level in range(10, 50, 10):
-            flask_logger = current_app.logger.setLevel(level)
-            print(f'Logging level updated to {level}')
+        if level in _nameToLevel.keys():
+            flask_logger = current_app.logger.setLevel(_nameToLevel[level])
+            print(f'Logging level set to {_nameToLevel[level]}: {level}')
         else:
-            print("""
-            Set logging level via the following integers:
-            10 = DEBUG
-            20 = INFO
-            30 = WARN
-            40 = ERROR
-            50 = CRITICAL
+            print(f"""
+            Set logging level via the following strings:
+            {_nameToLevel}
             """)
