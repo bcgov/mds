@@ -1,4 +1,5 @@
 from flask import Flask
+from flask.logging import default_handler
 from logging.config import dictConfig
 from flask_cors import CORS
 from flask_restplus import Resource, apidoc
@@ -42,9 +43,11 @@ def create_app(test_config=None):
     register_routes(app)
     register_commands(app)
 
-    dictConfig(Config.LOGGING_CONFIG)
-
     return app
+
+
+def register_loggers(app):
+    print(app.logger.__dict__)
 
 
 def register_extensions(app):
