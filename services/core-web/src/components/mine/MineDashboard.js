@@ -249,48 +249,41 @@ export class MineDashboard extends Component {
                 <div className="inline-flex horizontal-center block-tablet">
                   <h1 className="padding-large--right">{mine.mine_name}</h1>
                   <div id="mine-no">Mine No. {mine.mine_no || Strings.EMPTY_FIELD}</div>
-                  <div style={{ verticleAlign: "center" }}>
-                    {mine.verified_status.healthy_ind !== null && (
-                      <Tooltip
-                        title={
-                          mine.verified_status.healthy_ind
-                            ? `Mine data verified by ${
-                                mine.verified_status.verifying_user
-                              } on ${formatDate(mine.verified_status.verifying_timestamp)}`
-                            : "Please double-check this mine's data and re-verify"
-                        }
-                        placement="top"
-                        mouseEnterDelay={1}
-                      >
-                        <img
-                          alt=""
-                          className="padding-small"
-                          src={mine.verified_status.healthy_ind ? SUCCESS_CHECKMARK : YELLOW_HAZARD}
-                          width="30"
-                        />
-                      </Tooltip>
-                    )}
-                    {this.props.subscribed && (
-                      <Tooltip title="Subscribed" placement="top" mouseEnterDelay={1}>
-                        <img src={SUBSCRIBE} alt="SUBSCRIBE" className="padding-small" />
-                      </Tooltip>
-                    )}
-                    {mine.has_minespace_users && (
-                      <Tooltip
-                        title="This mine is registered on MineSpace"
-                        placement="top"
-                        mouseEnterDelay={1}
-                      >
-                        <img
-                          src={MINESPACE_ICON}
-                          alt="mineSpace"
-                          width="33"
-                          height="33"
-                          className="padding-small"
-                        />
-                      </Tooltip>
-                    )}
-                  </div>
+
+                  {mine.verified_status.healthy_ind !== null && (
+                    <Tooltip
+                      title={
+                        mine.verified_status.healthy_ind
+                          ? `Mine data verified by ${
+                              mine.verified_status.verifying_user
+                            } on ${formatDate(mine.verified_status.verifying_timestamp)}`
+                          : "Please double-check this mine's data and re-verify"
+                      }
+                      placement="top"
+                      mouseEnterDelay={1}
+                    >
+                      <img
+                        alt=""
+                        className="padding-small"
+                        src={mine.verified_status.healthy_ind ? SUCCESS_CHECKMARK : YELLOW_HAZARD}
+                        width="30"
+                      />
+                    </Tooltip>
+                  )}
+                  {this.props.subscribed && (
+                    <Tooltip title="Subscribed" placement="top" mouseEnterDelay={1}>
+                      <img src={SUBSCRIBE} alt="SUBSCRIBE" className="padding-small" />
+                    </Tooltip>
+                  )}
+                  {mine.has_minespace_users && (
+                    <Tooltip
+                      title="This mine is registered on MineSpace"
+                      placement="top"
+                      mouseEnterDelay={1}
+                    >
+                      <img src={MINESPACE_ICON} alt="mineSpace" width="22" height="22" />
+                    </Tooltip>
+                  )}
                 </div>
                 <Dropdown
                   overlay={menu}
