@@ -32,7 +32,7 @@ export const AuthenticationGuard = (isPublic) => (WrappedComponent) => {
       const token = localStorage.getItem("jwt");
       if (token && !this.props.isAuthenticated) {
         await this.props
-          .getUserInfoFromToken(token, "Unable to authenticate, Please try again.")
+          .getUserInfoFromToken(token)
           .then(() => this.setState({ authComplete: true }));
       } else {
         this.setState({ authComplete: true });
