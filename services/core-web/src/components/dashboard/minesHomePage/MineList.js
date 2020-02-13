@@ -191,7 +191,6 @@ export const MineList = (props) => (
       props.mineCommodityOptionsHash
     )}
     tableProps={{
-      rowClassName: "fade-in",
       align: "left",
       pagination: false,
       locale: { emptyText: <NullScreen type="no-results" /> },

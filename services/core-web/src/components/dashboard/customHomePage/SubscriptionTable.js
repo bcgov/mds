@@ -155,7 +155,6 @@ export class SubscriptionTable extends Component {
           this.props.mineCommodityOptionsHash
         )}
         tableProps={{
-          rowClassName: "fade-in",
           align: "left",
           pagination: false,
           locale: { emptyText: <NullScreen type="subscription" /> },

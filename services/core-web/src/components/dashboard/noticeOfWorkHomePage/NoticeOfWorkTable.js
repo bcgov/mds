@@ -280,7 +280,6 @@ export class NoticeOfWorkTable extends Component {
         )}
         dataSource={this.transformRowData(this.props.noticeOfWorkApplications)}
         tableProps={{
-          rowClassName: "fade-in",
           align: "left",
           pagination: false,
           locale: { emptyText: <NullScreen type="no-results" /> },

@@ -23,7 +23,11 @@ const propTypes = {
 };
 
 const defaultProps = {
-  tableProps: { locale: { emptyText: <NullScreen type="no-results" /> }, pagination: false },
+  tableProps: {
+    locale: { emptyText: <NullScreen type="no-results" /> },
+    pagination: false,
+    rowClassName: "fade-in",
+  },
 };
 
 export const CoreTable = (props) => {

@@ -93,7 +93,6 @@ export const MinespaceUserList = (props) => (
       props.handleDelete
     )}
     tableProps={{
-      rowClassName: "fade-in",
       align: "center",
       pagination: false,
       locale: { emptyText: <NullScreen type="no-results" /> },

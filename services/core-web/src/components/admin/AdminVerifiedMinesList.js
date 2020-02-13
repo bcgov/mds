@@ -55,7 +55,6 @@ export const AdminVerifiedMinesList = (props) => (
       dataSource={transformRowData(props.minesVerifiedStatusList)}
       columns={columns}
       tableProps={{
-        rowClassName: "fade-in",
         align: "center",
         pagination: false,
         scroll: { y: 500 },

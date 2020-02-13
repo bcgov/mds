@@ -268,7 +268,6 @@ export class MineVarianceTable extends Component {
         }
         dataSource={this.transformRowData(this.props.variances)}
         tableProps={{
-          rowClassName: "fade-in",
           onChange: handleTableChange(this.props.handleVarianceSearch),
           align: "left",
           pagination: this.props.isPaginated,

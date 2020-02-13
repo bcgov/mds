@@ -110,7 +110,6 @@ export const ContactList = (props) => (
     columns={applySortIndicator(columns, props.sortField, props.sortDir)}
     dataSource={transformRowData(props.parties, props.relationshipTypeHash)}
     tableProps={{
-      rowClassName: "fade-in",
       align: "left",
       pagination: false,
       locale: {
