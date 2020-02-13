@@ -1,116 +1,117 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`MineVarianceTable renders properly 1`] = `
-<TableLoadingWrapper
-  isPaginated={false}
-  tableHeaders={
+<CoreTable
+  columns={
     Array [
-      "",
-      "Number",
-      "Mine",
-      "Code",
-      "Lead Inspector",
-      "Submission Date",
-      "Application Status",
-      "Issue Date",
-      "Expiry Date",
-      "Approval Status",
-      "Documents",
-      "",
+      Object {
+        "dataIndex": "is_overdue",
+        "render": [Function],
+        "title": "",
+      },
+      Object {
+        "dataIndex": "variance_id",
+        "render": [Function],
+        "sortField": "variance_id",
+        "sorter": false,
+        "title": "Number",
+      },
+      Object {
+        "className": "column-hide",
+        "dataIndex": "mine_name",
+        "render": [Function],
+        "sortField": "mine_name",
+        "sorter": false,
+        "title": "Mine",
+      },
+      Object {
+        "dataIndex": "compliance_article_id",
+        "render": [Function],
+        "sortField": "compliance_article_id",
+        "sorter": false,
+        "title": "Code",
+      },
+      Object {
+        "dataIndex": "lead_inspector",
+        "render": [Function],
+        "sortField": "lead_inspector",
+        "sorter": false,
+        "title": "Lead Inspector",
+      },
+      Object {
+        "className": "column-hide",
+        "dataIndex": "received_date",
+        "render": [Function],
+        "sortField": "received_date",
+        "sorter": false,
+        "title": "Submission Date",
+      },
+      Object {
+        "className": "column-hide",
+        "dataIndex": "variance_application_status_code",
+        "render": [Function],
+        "sortField": "variance_application_status_code",
+        "sorter": false,
+        "title": "Application Status",
+      },
+      Object {
+        "className": "",
+        "dataIndex": "issue_date",
+        "render": [Function],
+        "sortField": "issue_date",
+        "sorter": false,
+        "title": "Issue Date",
+      },
+      Object {
+        "className": "",
+        "dataIndex": "expiry_date",
+        "render": [Function],
+        "sortField": "expiry_date",
+        "sorter": false,
+        "title": "Expiry Date",
+      },
+      Object {
+        "className": "",
+        "dataIndex": "",
+        "render": [Function],
+        "title": "Approval Status",
+      },
+      Object {
+        "dataIndex": "documents",
+        "render": [Function],
+        "title": "Documents",
+      },
+      Object {
+        "dataIndex": "variance",
+        "render": [Function],
+        "title": "",
+      },
     ]
   }
->
-  <withStore(Table)
-    align="left"
-    columns={
-      Array [
-        Object {
-          "dataIndex": "is_overdue",
-          "render": [Function],
-          "title": "",
-        },
-        Object {
-          "dataIndex": "variance_id",
-          "render": [Function],
-          "sortField": "variance_id",
-          "sorter": false,
-          "title": "Number",
-        },
-        Object {
-          "className": "column-hide",
-          "dataIndex": "mine_name",
-          "render": [Function],
-          "sortField": "mine_name",
-          "sorter": false,
-          "title": "Mine",
-        },
-        Object {
-          "dataIndex": "compliance_article_id",
-          "render": [Function],
-          "sortField": "compliance_article_id",
-          "sorter": false,
-          "title": "Code",
-        },
-        Object {
-          "dataIndex": "lead_inspector",
-          "render": [Function],
-          "sortField": "lead_inspector",
-          "sorter": false,
-          "title": "Lead Inspector",
-        },
-        Object {
-          "className": "column-hide",
-          "dataIndex": "received_date",
-          "render": [Function],
-          "sortField": "received_date",
-          "sorter": false,
-          "title": "Submission Date",
-        },
-        Object {
-          "className": "column-hide",
-          "dataIndex": "variance_application_status_code",
-          "render": [Function],
-          "sortField": "variance_application_status_code",
-          "sorter": false,
-          "title": "Application Status",
-        },
-        Object {
-          "className": "",
-          "dataIndex": "issue_date",
-          "render": [Function],
-          "sortField": "issue_date",
-          "sorter": false,
-          "title": "Issue Date",
-        },
-        Object {
-          "className": "",
-          "dataIndex": "expiry_date",
-          "render": [Function],
-          "sortField": "expiry_date",
-          "sorter": false,
-          "title": "Expiry Date",
-        },
-        Object {
-          "className": "",
-          "dataIndex": "",
-          "render": [Function],
-          "title": "Approval Status",
-        },
-        Object {
-          "dataIndex": "documents",
-          "render": [Function],
-          "title": "Documents",
-        },
-        Object {
-          "dataIndex": "variance",
-          "render": [Function],
-          "title": "",
-        },
-      ]
-    }
-    dataSource={
-      Array [
-        Object {
+  dataSource={
+    Array [
+      Object {
+        "compliance_article_id": 1,
+        "documents": Array [
+          Object {
+            "created_at": "2019-05-02",
+            "document_manager_guid": "d7f64a25-6eaf-4bed-97fe-fd63ac347c70",
+            "document_name": "test.pdf",
+            "mine_document_guid": "33e6b965-2402-4229-a213-23bbe7fd3e99",
+            "mine_guid": "59e73109-48f7-4ad2-977c-3005b5bff010",
+          },
+        ],
+        "expiry_date": "Mar 30 2019",
+        "inspector_party_guid": undefined,
+        "is_overdue": true,
+        "issue_date": "Mar 01 2019",
+        "key": "0d3ec917-179f-4dbc-80a3-4c993fdfe596",
+        "lead_inspector": "N/A",
+        "mine_guid": undefined,
+        "mine_name": "N/A",
+        "note": "notesss",
+        "received_date": "Mar 01 2019",
+        "variance": Object {
           "compliance_article_id": 1,
           "documents": Array [
             Object {
@@ -121,50 +122,31 @@ exports[`MineVarianceTable renders properly 1`] = `
               "mine_guid": "59e73109-48f7-4ad2-977c-3005b5bff010",
             },
           ],
-          "expiry_date": "Mar 30 2019",
-          "inspector_party_guid": undefined,
-          "is_overdue": true,
-          "issue_date": "Mar 01 2019",
-          "key": "0d3ec917-179f-4dbc-80a3-4c993fdfe596",
-          "lead_inspector": "N/A",
-          "mine_guid": undefined,
-          "mine_name": "N/A",
+          "expiry_date": "2019-03-30",
+          "issue_date": "2019-03-01",
           "note": "notesss",
-          "received_date": "Mar 01 2019",
-          "variance": Object {
-            "compliance_article_id": 1,
-            "documents": Array [
-              Object {
-                "created_at": "2019-05-02",
-                "document_manager_guid": "d7f64a25-6eaf-4bed-97fe-fd63ac347c70",
-                "document_name": "test.pdf",
-                "mine_document_guid": "33e6b965-2402-4229-a213-23bbe7fd3e99",
-                "mine_guid": "59e73109-48f7-4ad2-977c-3005b5bff010",
-              },
-            ],
-            "expiry_date": "2019-03-30",
-            "issue_date": "2019-03-01",
-            "note": "notesss",
-            "received_date": "2019-03-01",
-            "variance_guid": "0d3ec917-179f-4dbc-80a3-4c993fdfe596",
-            "variance_no": 1,
-          },
-          "variance_application_status_code": undefined,
-          "variance_id": 1,
+          "received_date": "2019-03-01",
+          "variance_guid": "0d3ec917-179f-4dbc-80a3-4c993fdfe596",
+          "variance_no": 1,
         },
-      ]
-    }
-    locale={
-      Object {
+        "variance_application_status_code": undefined,
+        "variance_id": 1,
+      },
+    ]
+  }
+  tableProps={
+    Object {
+      "align": "left",
+      "locale": Object {
         "emptyText": <NullScreen
           message=""
           type="approved-variances"
         />,
-      }
+      },
+      "onChange": [Function],
+      "pagination": false,
+      "rowClassName": "fade-in",
     }
-    onChange={[Function]}
-    pagination={false}
-    rowClassName="fade-in"
-  />
-</TableLoadingWrapper>
+  }
+/>
 `;

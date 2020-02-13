@@ -1,13 +1,12 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
-import { Table, Popconfirm, Tooltip } from "antd";
-import { getTableHeaders } from "@common/utils/helpers";
+import { Popconfirm, Tooltip } from "antd";
 import * as Strings from "@common/constants/strings";
 import * as router from "@/constants/routes";
 import NullScreen from "@/components/common/NullScreen";
 import CustomPropTypes from "@/customPropTypes";
-import TableLoadingWrapper from "@/components/common/wrappers/TableLoadingWrapper";
+import CoreTable from "@/components/common/CoreTable";
 import { UNSUBSCRIBE } from "@/constants/assets";
 
 /**
@@ -146,21 +145,22 @@ export class SubscriptionTable extends Component {
     ];
 
     return (
-      <TableLoadingWrapper condition={this.props.isLoaded} tableHeaders={getTableHeaders(columns)}>
-        <Table
-          rowClassName="fade-in"
-          align="left"
-          pagination={false}
-          columns={columns}
-          dataSource={this.transformRowData(
-            this.props.subscribedMines,
-            this.props.mineRegionHash,
-            this.props.mineTenureHash,
-            this.props.mineCommodityOptionsHash
-          )}
-          locale={{ emptyText: <NullScreen type="subscription" /> }}
-        />
-      </TableLoadingWrapper>
+      <CoreTable
+        condition={this.props.isLoaded}
+        columns={columns}
+        dataSource={this.transformRowData(
+          this.props.subscribedMines,
+          this.props.mineRegionHash,
+          this.props.mineTenureHash,
+          this.props.mineCommodityOptionsHash
+        )}
+        tableProps={{
+          rowClassName: "fade-in",
+          align: "left",
+          pagination: false,
+          locale: { emptyText: <NullScreen type="subscription" /> },
+        }}
+      />
     );
   }
 }

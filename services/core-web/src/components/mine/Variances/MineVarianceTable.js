@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Table, Button, Icon, Badge } from "antd";
+import { Button, Icon, Badge } from "antd";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import {
@@ -8,7 +8,7 @@ import {
   getHSRCMComplianceCodesHash,
 } from "@common/selectors/staticContentSelectors";
 import { getInspectorsHash } from "@common/selectors/partiesSelectors";
-import { formatDate, getTableHeaders, truncateFilename } from "@common/utils/helpers";
+import { formatDate, truncateFilename } from "@common/utils/helpers";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
 import * as Strings from "@common/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
@@ -18,7 +18,7 @@ import { RED_CLOCK, EDIT_OUTLINE_VIOLET } from "@/constants/assets";
 import NullScreen from "@/components/common/NullScreen";
 import LinkButton from "@/components/common/LinkButton";
 import * as router from "@/constants/routes";
-import TableLoadingWrapper from "@/components/common/wrappers/TableLoadingWrapper";
+import CoreTable from "@/components/common/CoreTable";
 import { getVarianceApplicationBadgeStatusType } from "@/constants/theme";
 
 const propTypes = {
@@ -259,31 +259,28 @@ export class MineVarianceTable extends Component {
     ];
 
     return (
-      <TableLoadingWrapper
+      <CoreTable
         condition={this.props.isLoaded}
-        tableHeaders={getTableHeaders(columns)}
-        isPaginated={this.props.isPaginated}
-      >
-        <Table
-          rowClassName="fade-in"
-          onChange={handleTableChange(this.props.handleVarianceSearch)}
-          align="left"
-          pagination={false}
-          columns={
-            this.props.isDashboardView
-              ? applySortIndicator(columns, this.props.sortField, this.props.sortDir)
-              : columns
-          }
-          locale={{
+        columns={
+          this.props.isDashboardView
+            ? applySortIndicator(columns, this.props.sortField, this.props.sortDir)
+            : columns
+        }
+        dataSource={this.transformRowData(this.props.variances)}
+        tableProps={{
+          rowClassName: "fade-in",
+          onChange: handleTableChange(this.props.handleVarianceSearch),
+          align: "left",
+          pagination: this.props.isPaginated,
+          locale: {
             emptyText: (
               <NullScreen
                 type={this.props.isApplication ? "variance-applications" : "approved-variances"}
               />
             ),
-          }}
-          dataSource={this.transformRowData(this.props.variances)}
-        />
-      </TableLoadingWrapper>
+          },
+        }}
+      />
     );
   }
 }

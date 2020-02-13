@@ -1,12 +1,11 @@
 import React from "react";
-import { Table } from "antd";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
-import { formatDate, getTableHeaders } from "@common/utils/helpers";
+import { formatDate } from "@common/utils/helpers";
+import CoreTable from "@/components/common/CoreTable";
 import CustomPropTypes from "@/customPropTypes";
 import * as router from "@/constants/routes";
 import NullScreen from "@/components/common/NullScreen";
-import TableLoadingWrapper from "@/components/common/wrappers/TableLoadingWrapper";
 
 /**
  * @class AdminVerifiedMinesList displays list of mineVerifiedStatuses for the admin page.
@@ -51,17 +50,18 @@ const transformRowData = (verifiedMinesList) =>
 
 export const AdminVerifiedMinesList = (props) => (
   <div>
-    <TableLoadingWrapper condition={props.isLoaded} tableHeaders={getTableHeaders(columns)}>
-      <Table
-        rowClassName="fade-in"
-        align="center"
-        pagination={false}
-        columns={columns}
-        dataSource={transformRowData(props.minesVerifiedStatusList)}
-        scroll={{ y: 500 }}
-        locale={{ emptyText: <NullScreen type="no-results" /> }}
-      />
-    </TableLoadingWrapper>
+    <CoreTable
+      condition={props.isLoaded}
+      dataSource={transformRowData(props.minesVerifiedStatusList)}
+      columns={columns}
+      tableProps={{
+        rowClassName: "fade-in",
+        align: "center",
+        pagination: false,
+        scroll: { y: 500 },
+        locale: { emptyText: <NullScreen type="no-results" /> },
+      }}
+    />
   </div>
 );
 

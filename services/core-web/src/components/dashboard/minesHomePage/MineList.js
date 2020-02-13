@@ -1,13 +1,11 @@
 import React from "react";
 import { func, objectOf, arrayOf, string, bool } from "prop-types";
 import { Link } from "react-router-dom";
-import { Table } from "antd";
 import { isEmpty } from "lodash";
-import { getTableHeaders } from "@common/utils/helpers";
 import * as Strings from "@common/constants/strings";
 import * as router from "@/constants/routes";
 import NullScreen from "@/components/common/NullScreen";
-import TableLoadingWrapper from "@/components/common/wrappers/TableLoadingWrapper";
+import CoreTable from "@/components/common/CoreTable";
 import CustomPropTypes from "@/customPropTypes";
 import { SUCCESS_CHECKMARK } from "@/constants/assets";
 
@@ -181,33 +179,26 @@ const applySortIndicator = (_columns, field, dir) =>
     sortOrder: column.sortField === field ? dir.concat("end") : false,
   }));
 
-export const MineList = (props) => {
-  return (
-    <TableLoadingWrapper
-      condition={props.isLoaded}
-      tableHeaders={getTableHeaders(columns)}
-      isPaginated
-    >
-      {props.isLoaded && (
-        <Table
-          rowClassName="fade-in"
-          align="left"
-          pagination={false}
-          columns={applySortIndicator(columns, props.sortField, props.sortDir)}
-          dataSource={transformRowData(
-            props.mines,
-            props.mineIds,
-            props.mineRegionHash,
-            props.mineTenureHash,
-            props.mineCommodityOptionsHash
-          )}
-          locale={{ emptyText: <NullScreen type="no-results" /> }}
-          onChange={handleTableChange(props.handleMineSearch)}
-        />
-      )}
-    </TableLoadingWrapper>
-  );
-};
+export const MineList = (props) => (
+  <CoreTable
+    condition={props.isLoaded}
+    columns={applySortIndicator(columns, props.sortField, props.sortDir)}
+    dataSource={transformRowData(
+      props.mines,
+      props.mineIds,
+      props.mineRegionHash,
+      props.mineTenureHash,
+      props.mineCommodityOptionsHash
+    )}
+    tableProps={{
+      rowClassName: "fade-in",
+      align: "left",
+      pagination: false,
+      locale: { emptyText: <NullScreen type="no-results" /> },
+      onChange: handleTableChange(props.handleMineSearch),
+    }}
+  />
+);
 
 MineList.propTypes = propTypes;
 MineList.defaultProps = defaultProps;
