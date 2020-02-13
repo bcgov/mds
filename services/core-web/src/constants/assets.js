@@ -42,3 +42,4 @@ export { default as TRASHCAN } from "../assets/images/TrashCan.svg";
 export { default as HSRC_PDF } from "../assets/downloads/HSRC.pdf";
 export { default as FLUSH_SOUND } from "../assets/downloads/flush.mp3";
 export { default as WATER_SOUND } from "../assets/downloads/water.mp3";
+export { default as MINESPACE_ICON } from "../assets/images/minespaceIcon.svg";

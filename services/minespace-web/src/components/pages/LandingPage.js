@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Row, Col, Card, Button, Typography, Alert } from "antd";
+import { Row, Col, Card, Button, Typography } from "antd";
 import * as Strings from "@common/constants/strings";
 import PropTypes from "prop-types";
 import * as COMMON_ENV from "@common/constants/environment";
@@ -17,21 +17,6 @@ const propTypes = {
 
 export const LandingPage = (props) => (
   <div>
-    <Row>
-      <Col>
-        <Alert
-          message="MineSpace will launch on February 14, 2020."
-          description={
-            <Text>
-              Please contact <a href={`mailto:${Strings.MDS_EMAIL}`}>{Strings.MDS_EMAIL}</a>
-              &nbsp;if you have any questions or concerns.
-            </Text>
-          }
-          type="warning"
-          banner
-        />
-      </Col>
-    </Row>
     {/* Use this instead and not the below Row when we want to display the image! */}
     {/* <Row
       type="flex"

@@ -3,28 +3,6 @@
 exports[`LandingPage renders properly 1`] = `
 <div>
   <Row
-    gutter={0}
-  >
-    <Col>
-      <Alert
-        banner={true}
-        description={
-          <Text>
-            Please contact 
-            <a
-              href="mailto:mds@gov.bc.ca"
-            >
-              mds@gov.bc.ca
-            </a>
-             if you have any questions or concerns.
-          </Text>
-        }
-        message="MineSpace will launch on February 14, 2020."
-        type="warning"
-      />
-    </Col>
-  </Row>
-  <Row
     align="top"
     className="landing-header"
     gutter={
