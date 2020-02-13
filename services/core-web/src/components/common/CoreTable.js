@@ -23,14 +23,16 @@ const propTypes = {
 };
 
 const defaultProps = {
-  tableProps: {
-    locale: { emptyText: <NullScreen type="no-results" /> },
-    pagination: false,
-    rowClassName: "fade-in",
-  },
+  tableProps: {},
 };
 
 export const CoreTable = (props) => {
+  const baseProps = {
+    locale: { emptyText: <NullScreen type="no-results" /> },
+    pagination: false,
+    rowClassName: "fade-in",
+  };
+  const combinedProps = { ...baseProps, ...props.tableProps };
   const renderColumns = getTableHeaders(props.columns).map((title) => ({
     title,
     dataIndex: title,
@@ -41,7 +43,7 @@ export const CoreTable = (props) => {
     <div>
       {props.condition ? (
         <div>
-          <Table {...props.tableProps} columns={props.columns} dataSource={props.dataSource} />
+          <Table {...combinedProps} columns={props.columns} dataSource={props.dataSource} />
         </div>
       ) : (
         <div className="skeleton-table">

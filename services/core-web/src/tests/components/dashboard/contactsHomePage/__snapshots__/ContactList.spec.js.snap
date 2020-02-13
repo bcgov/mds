@@ -73,7 +73,6 @@ exports[`ContactList renders properly 1`] = `
       },
       "onChange": [Function],
       "pagination": false,
-      "rowClassName": "fade-in",
     }
   }
 />
