@@ -140,7 +140,6 @@ export const Overview = (props) => {
               <Map mine={props.mine} controls={false} />
             </div>
           </Col>
-
           {((!props.mine.major_mine_ind ||
             majorMineHasRegionalPermits(props.mine.mine_permit_numbers)) && [
             regionalMinistryContactsCardCol,
