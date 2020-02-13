@@ -38,6 +38,7 @@ import NoticeOfWorkPageHeader from "@/components/noticeOfWork/applications/Notic
 import * as FORM from "@/constants/forms";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
 import { modalConfig } from "@/components/modalContent/config";
+import LinkButton from "@/components/common/LinkButton";
 
 const { Step } = Steps;
 
@@ -360,15 +361,17 @@ export class NoticeOfWorkApplication extends Component {
     this.setState({ currentStep: statusIndex[status] });
   };
 
-  handleDocumentGeneration = (type) => {
-    const documentTypeCode = type.key;
+  handleDocumentGeneration = (event, data) => {
+    event.preventDefault();
+    console.log("handleDocumentGeneration params:", event, data);
+    const documentTypeCode = data.key;
     this.props
       .generateNoticeOfWorkApplicationDocument(documentTypeCode, {
-        foo: "bar",
+        now_application_guid: this.props.noticeOfWork.now_application_guid,
+        template_data: { foo: "bar", meow: "mix" },
       })
-      .then((res) => {
-        console.log("result:", res);
-        // window.open(res.data);
+      .then((response) => {
+        console.log("handleDocumentGeneration response:", response);
       });
   };
 
@@ -497,9 +500,12 @@ export class NoticeOfWorkApplication extends Component {
               Client Acknowledgement
             </Menu.Item>
             <Menu.Item key="withdrawl">
-              <button type="button" onClick={this.handleDocumentGeneration}>
+              <LinkButton
+                key="withdrawl"
+                onClick={(event) => this.handleDocumentGeneration(event, "WDL")}
+              >
                 Withdrawl
-              </button>
+              </LinkButton>
             </Menu.Item>
             <Menu.Item key="rejection" onClick={this.handleDocumentGeneration}>
               Rejection
@@ -654,7 +660,4 @@ const mapDispatchToProps = (dispatch) =>
 NoticeOfWorkApplication.propTypes = propTypes;
 NoticeOfWorkApplication.defaultProps = defaultProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(NoticeOfWorkApplication);
+export default connect(mapStateToProps, mapDispatchToProps)(NoticeOfWorkApplication);

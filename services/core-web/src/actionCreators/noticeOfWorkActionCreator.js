@@ -1,19 +1,20 @@
 import { notification } from "antd";
 import { showLoading, hideLoading } from "react-redux-loading-bar";
 import { error, request, success } from "@common/actions/genericActions";
-import * as API from "../constants/API";
 import { ENVIRONMENT } from "@common/constants/environment";
-import { createRequestHeader } from "@common/utils/RequestHeaders";
+// import { createRequestHeader } from "@common/utils/RequestHeaders";
 import CustomAxios from "@common/customAxios";
+import * as API from "../constants/API";
 import * as reducerTypes from "../constants/reducerTypes";
 
+// eslint-disable-next-line
 export const generateNoticeOfWorkApplicationDocument = (documentTypeCode, payload) => (
   dispatch
 ) => {
   dispatch(request(reducerTypes.GENERATE_NOTICE_OF_WORK_APPLICATION_DOCUMENT));
   dispatch(showLoading());
   return CustomAxios()
-    .get(
+    .post(
       `${ENVIRONMENT.apiUrl}${API.NOTICE_OF_WORK_APPLICATION_DOCUMENT_GENERATION(
         documentTypeCode
       )}`,
