@@ -1,6 +1,5 @@
 import click
 import psycopg2
-from logging import _nameToLevel
 
 from sqlalchemy.exc import DBAPIError
 from multiprocessing.dummy import Pool as ThreadPool
@@ -84,15 +83,18 @@ def register_commands(app):
         from app.cli_jobs import ETL_jobs
         ETL_jobs.run_address_etl()
 
-    @app.cli.command()
-    @click.argument('level', default='')
-    def set_logging_level(level):
-        if level in _nameToLevel.keys():
-            #set level for flask app logger stream
-            current_app.logger.setLevel(_nameToLevel[level])
-            print(f'Logging level set to {_nameToLevel[level]}: {level}')
-        else:
-            print(f"""
-            Set logging level via the following strings:
-            {_nameToLevel}
-            """)
+    #TODO: have this call affect the flask instance that serves requests. possibly through environment variable
+    # @app.cli.command()
+    # @click.argument('level', default='')
+    # def set_logging_level(level):
+    #     if level in _nameToLevel.keys():
+    #         current_app.logger.setLevel(_nameToLevel[level])
+    #         os.environ['FLASK_APP_LOGGING_LEVEL'] = str(_nameToLevel[level])
+    #         print(
+    #             f'FLASK_APP_LOGGING_LEVEL set to {os.environ.get("FLASK_APP_LOGGING_LEVEL")}: {level}'
+    #         )
+    #     else:
+    #         print(f"""
+    #         Set logging level via the following strings:
+    #         {_nameToLevel}
+    #         """)
