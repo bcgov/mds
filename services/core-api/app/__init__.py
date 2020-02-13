@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, url_for
 from flask_cors import CORS
 from flask_restplus import Resource, apidoc
 from flask_compress import Compress
@@ -18,6 +18,7 @@ from app.api.search.namespace import api as search_api
 from app.api.variances.namespace import api as variances_api
 from app.api.users.namespace import api as users_api
 from app.api.exports.namespace import api as exports_api
+from app.api.document_generation.namespace import api as doc_gen_api
 
 from app.commands import register_commands
 from app.config import Config
@@ -25,10 +26,15 @@ from app.extensions import db, jwt, api, cache, apm
 
 import app.api.utils.setup_marshmallow
 
+import sys
+
 
 def create_app(test_config=None):
     """Create and configure an instance of the Flask application."""
     app = Flask(__name__)
+    print('--------------------------------------', file=sys.stderr)
+    print(app.static_url_path, file=sys.stderr)
+    print(app.static_folder, file=sys.stderr)
 
     if test_config is None:
         # load the instance config, if it exists, when not testing
@@ -85,6 +91,7 @@ def register_routes(app):
     api.add_namespace(now_sub_api)
     api.add_namespace(now_app_api)
     api.add_namespace(exports_api)
+    api.add_namespace(doc_gen_api)
 
     # Healthcheck endpoint
     @api.route('/health')
