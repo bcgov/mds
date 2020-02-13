@@ -8,6 +8,7 @@ if ENV_FILE:
 
 class Config(object):
     # Environment config
+
     SECRET_KEY = os.environ.get('SECRET_KEY', 'dev')
     BASE_PATH = os.environ.get('BASE_PATH', '')
     DB_HOST = os.environ.get('DB_HOST', 'localhost')
