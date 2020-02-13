@@ -47,7 +47,7 @@ def create_app(test_config=None):
             }
         },
         'root': {
-            'level': 'INFO',
+            'level': Config.FLASK_LOGGING_LEVEL,
             'handlers': ['wsgi']
         }
     })
@@ -109,12 +109,6 @@ def register_routes(app):
     api.add_namespace(now_sub_api)
     api.add_namespace(now_app_api)
     api.add_namespace(exports_api)
-
-    # @api.route('/logging/<int:level>')
-    # class Logging(Resource):
-    #     def get(self, level):
-    #         app.logger.setLevel(level)
-    #         return {'success': level}
 
     # Healthcheck endpoint
     @api.route('/health')

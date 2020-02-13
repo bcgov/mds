@@ -83,19 +83,3 @@ def register_commands(app):
     def run_address_etl():
         from app.cli_jobs import ETL_jobs
         ETL_jobs.run_address_etl()
-
-    #TODO: have this call affect the flask instance that serves requests. possibly through environment variable
-    # @app.cli.command()
-    # @click.argument('level', default='')
-    # def set_logging_level(level):
-    #     if level in _nameToLevel.keys():
-    #         current_app.logger.setLevel(_nameToLevel[level])
-    #         os.environ['FLASK_APP_LOGGING_LEVEL'] = str(_nameToLevel[level])
-    #         print(
-    #             f'FLASK_APP_LOGGING_LEVEL set to {os.environ.get("FLASK_APP_LOGGING_LEVEL")}: {level}'
-    #         )
-    #     else:
-    #         print(f"""
-    #         Set logging level via the following strings:
-    #         {_nameToLevel}
-    #         """)

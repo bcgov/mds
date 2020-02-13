@@ -8,6 +8,8 @@ if ENV_FILE:
 
 class Config(object):
     # Environment config
+    FLASK_LOGGING_LEVEL = os.environ.get('FLASK_LOGGING_LEVEL',
+                                   'INFO')          # ['DEBUG','INFO','WARN','ERROR','CRITICAL']
 
     SECRET_KEY = os.environ.get('SECRET_KEY', 'dev')
     BASE_PATH = os.environ.get('BASE_PATH', '')

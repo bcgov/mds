@@ -427,6 +427,10 @@
                     "value": "5000"
                   },
                   {
+                    "name": "FLASK_LOGGING_LEVEL",
+                    "value": "INFO"
+                  },
+                  {
                     "name": "FLASK_RUN_HOST",
                     "value": "0.0.0.0"
                   },
