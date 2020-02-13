@@ -30,7 +30,11 @@ const Routes = () => (
     /> */}
 
     {Object.values(routes).map((route) => (
-      <Route exact path={route.route} component={route.component} isPublic={route.isPublic} />
+      <Route
+        exact
+        path={route.route}
+        component={(props) => <route.component {...props} isPublic={route.isPublic} />}
+      />
     ))}
 
     {/* 404 - PAGE NOT FOUND */}
