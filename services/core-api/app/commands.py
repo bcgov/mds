@@ -1,5 +1,6 @@
 import click
 import psycopg2
+#from logging import getLogger, _nameToLevel
 
 from sqlalchemy.exc import DBAPIError
 from multiprocessing.dummy import Pool as ThreadPool
