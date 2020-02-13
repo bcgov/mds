@@ -69,7 +69,7 @@ export const CHIEF_INSPECTOR = new Contact(
 
 export const EXEC_LEAD_AUTH = new Contact(
   "Executive Lead (Authorizations)",
-  "George Warnick",
+  "George Warnock",
   "(250) 649-4339",
   "brittanytownsend@gov.bc.ca"
 );
