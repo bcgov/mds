@@ -11,6 +11,7 @@ import {
   createNoticeOfWorkApplicationProgress,
   updateNoticeOfWorkApplication,
 } from "@common/actionCreators/noticeOfWorkActionCreator";
+import { generateNoticeOfWorkApplicationDocument } from "@/actionCreators/noticeOfWorkActionCreator";
 import { fetchMineRecordById } from "@common/actionCreators/mineActionCreator";
 import { openModal, closeModal } from "@common/actions/modalActions";
 import { getDropdownInspectors, getInspectorsHash } from "@common/selectors/partiesSelectors";
@@ -48,6 +49,7 @@ const propTypes = {
   noticeOfWork: CustomPropTypes.importedNOWApplication,
   originalNoticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
   createNoticeOfWorkApplicationProgress: PropTypes.func.isRequired,
+  generateNoticeOfWorkApplicationDocument: PropTypes.func.isRequired,
   updateNoticeOfWorkApplication: PropTypes.func.isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
   fetchImportedNoticeOfWorkApplication: PropTypes.func.isRequired,
@@ -358,6 +360,18 @@ export class NoticeOfWorkApplication extends Component {
     this.setState({ currentStep: statusIndex[status] });
   };
 
+  handleDocumentGeneration = (type) => {
+    const documentTypeCode = type.key;
+    this.props
+      .generateNoticeOfWorkApplicationDocument(documentTypeCode, {
+        foo: "bar",
+      })
+      .then((res) => {
+        console.log("result:", res);
+        // window.open(res.data);
+      });
+  };
+
   renderStepOne = () => {
     return (
       <ApplicationStepOne
@@ -458,7 +472,7 @@ export class NoticeOfWorkApplication extends Component {
             key="transfer-to-a-different-mine"
             onClick={() => this.openChangeNOWMineModal(this.props.noticeOfWork)}
           >
-            Transfer to a different mine
+            Transfer to a Different Mine
           </Menu.Item>
         )}
         {!isDecision && (
@@ -478,10 +492,18 @@ export class NoticeOfWorkApplication extends Component {
           </Menu.Item>
         )}
         {true && (
-          <Menu.SubMenu key="generate-letter-templates" title="Generate Letter Templates">
-            <Menu.Item key="client-acknowledgement">Client Acknowledgement Letter</Menu.Item>
-            <Menu.Item key="withdrawl-letter">Withdrawl Letter</Menu.Item>
-            <Menu.Item key="rejection-letter">Rejection Letter</Menu.Item>
+          <Menu.SubMenu key="generate-letters" title="Generate Letters">
+            <Menu.Item key="client-acknowledgement" onClick={this.handleDocumentGeneration}>
+              Client Acknowledgement
+            </Menu.Item>
+            <Menu.Item key="withdrawl">
+              <button type="button" onClick={this.handleDocumentGeneration}>
+                Withdrawl
+              </button>
+            </Menu.Item>
+            <Menu.Item key="rejection" onClick={this.handleDocumentGeneration}>
+              Rejection
+            </Menu.Item>
           </Menu.SubMenu>
         )}
         {!isDecision && this.props.noticeOfWork.lead_inspector_party_guid && (
@@ -620,6 +642,7 @@ const mapDispatchToProps = (dispatch) =>
       fetchOriginalNoticeOfWorkApplication,
       fetchMineRecordById,
       createNoticeOfWorkApplicationProgress,
+      generateNoticeOfWorkApplicationDocument,
       reset,
       openModal,
       closeModal,
