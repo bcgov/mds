@@ -33,12 +33,15 @@ class NoticeOfWorkDocumentGeneration(Resource, UserMixin):
         # def getFileContent(fileName):
         #     filePath = os.path.join(current_app.root_path, 'files', fileName)
         #     with open(filePath, 'rb') as f:
-        #         return f.read().decode('ISO-8859-1')
+        #         # return f.read().decode('ISO-8859-1')
+        #         return f.read()
 
         file_name = NoticeOfWorkDocumentGeneration.documents[document_type_code]
         # file_content = getFileContent(file_name)
 
-        # data = json.dumps({'file_name': file_name, 'file_content': file_content})
+        # # data = json.dumps({'file_name': file_name, 'file_content': file_content})
+        # data = file_content
         # return Response(data)
         return send_file(
-            os.path.join(current_app.root_path, 'files', file_name), mimetype='application/msword')
+            os.path.join(current_app.root_path, 'files', file_name),
+            mimetype='application/octet-stream')

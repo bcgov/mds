@@ -4,6 +4,7 @@ import { error, request, success } from "@common/actions/genericActions";
 import { ENVIRONMENT } from "@common/constants/environment";
 import { createRequestHeader } from "@common/utils/RequestHeaders";
 import CustomAxios from "@common/customAxios";
+import { saveAs } from "file-saver";
 import * as API from "../constants/API";
 import * as reducerTypes from "../constants/reducerTypes";
 
@@ -31,18 +32,22 @@ export const generateNoticeOfWorkApplicationDocument = (documentTypeCode, payloa
       dispatch(success(reducerTypes.GENERATE_NOTICE_OF_WORK_APPLICATION_DOCUMENT));
 
       console.log(response.data);
-      const downloadUrl = window.URL.createObjectURL(
-        new Blob(["\ufeff", response.data], {
-          type: "application/octet-stream",
-        })
-      );
 
-      const link = document.createElement("a");
-      link.href = downloadUrl;
-      link.setAttribute("download", "file.doc");
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
+      const blob = new Blob(["\ufeff", response.data], {
+        // type: "text/plain;charset=utf-8",
+        type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      });
+
+      saveAs(blob, "foo.docx");
+      // const downloadUrl = window.URL.createObjectURL(blob);
+
+      // const link = document.createElement("a");
+      // link.href = downloadUrl;
+      // link.setAttribute("download", "file.docx");
+      // document.body.appendChild(link);
+      // link.click();
+      // link.remove();
+
       // console.log(response.data.file_name);
       // console.log(response.data.file_content);
       // const downloadUrl = window.URL.createObjectURL(
