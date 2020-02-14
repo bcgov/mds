@@ -47,6 +47,7 @@ export const HIGH_ZOOM = 14;
 // default url values
 export const DEFAULT_PAGE = "1";
 export const DEFAULT_PER_PAGE = "25";
+export const MAX_PER_PAGE = 1000000000;
 export const DEFAULT_DASHBOARD_PARAMS = "?page=1&per_page=25";
 
 // mine types
@@ -75,3 +76,8 @@ export const INCIDENT_FOLLOWUP_ACTIONS = {
   none: "NO",
   unknown: "HUK",
 };
+
+export const NOT_APPLICABLE = "N/A";
+
+// MDS email
+export const MDS_EMAIL = "mds@gov.bc.ca";

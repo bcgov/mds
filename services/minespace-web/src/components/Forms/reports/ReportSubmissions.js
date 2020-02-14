@@ -26,6 +26,7 @@ export const ReportSubmissions = (props) => {
         <Field
           id="ReportAttachedFiles"
           name="ReportAttachedFiles"
+          label="Attached Files"
           component={ReportsUploadedFilesList}
           files={props.mineReportSubmissions[props.mineReportSubmissions.length - 1].documents}
           onRemoveFile={(fileToRemove) => {
@@ -45,30 +46,28 @@ export const ReportSubmissions = (props) => {
       </Form.Item>
     ),
     (!hasSubmissions || updateFilesClicked) && (
-      <Form.Item>
-        <Field
-          id="ReportFileUpload"
-          name="ReportFileUpload"
-          label="Upload Files"
-          onFileLoad={(document_name, document_manager_guid) => {
-            setUpdateFilesClicked(true);
-            const updatedSubmissions =
-              props.mineReportSubmissions && props.mineReportSubmissions.length > 0
-                ? props.mineReportSubmissions
-                : [{ documents: [] }];
-            updatedSubmissions[updatedSubmissions.length - 1].documents = concat(
-              updatedSubmissions[updatedSubmissions.length - 1].documents,
-              {
-                document_name,
-                document_manager_guid,
-              }
-            );
-            props.updateMineReportSubmissions(updatedSubmissions);
-          }}
-          uploadUrl={MINE_REPORT_DOCUMENT(props.mineGuid)}
-          component={FileUpload}
-        />
-      </Form.Item>
+      <Field
+        id="ReportFileUpload"
+        name="ReportFileUpload"
+        label="Upload Files"
+        onFileLoad={(document_name, document_manager_guid) => {
+          setUpdateFilesClicked(true);
+          const updatedSubmissions =
+            props.mineReportSubmissions && props.mineReportSubmissions.length > 0
+              ? props.mineReportSubmissions
+              : [{ documents: [] }];
+          updatedSubmissions[updatedSubmissions.length - 1].documents = concat(
+            updatedSubmissions[updatedSubmissions.length - 1].documents,
+            {
+              document_name,
+              document_manager_guid,
+            }
+          );
+          props.updateMineReportSubmissions(updatedSubmissions);
+        }}
+        uploadUrl={MINE_REPORT_DOCUMENT(props.mineGuid)}
+        component={FileUpload}
+      />
     ),
     hasSubmissions && !updateFilesClicked && (
       <Button

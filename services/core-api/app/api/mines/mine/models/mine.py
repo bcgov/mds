@@ -13,6 +13,7 @@ from app.api.utils.models_mixins import AuditMixin, Base
 # This breaks micro-service architecture and is done
 # for search performance until search can be refactored
 from app.api.mines.permits.permit.models.permit import Permit
+from app.api.users.minespace.models.minespace_user_mine import MinespaceUserMine
 from app.api.constants import *
 
 # NOTE: Be careful about relationships defined in the mine model. lazy='joined' will cause the relationship
@@ -116,6 +117,12 @@ class Mine(AuditMixin, Base):
             Permit.permit_no).filter(Permit.mine_guid == self.mine_guid).distinct().all()
         p_numbers = [permit_no for permit_no, in rows]
         return p_numbers
+
+    @hybrid_property
+    def has_minespace_users(self):
+        count = db.session.query(MinespaceUserMine).filter(
+            MinespaceUserMine.mine_guid == self.mine_guid).count()
+        return count > 0
 
     @classmethod
     def find_by_mine_guid(cls, _id):

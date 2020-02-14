@@ -94,7 +94,7 @@ export class PartyProfile extends Component {
     this.props.openModal({
       props: { onSubmit, title, isPerson, initialValues, provinceOptions },
       content: modalConfig.EDIT_PARTY,
-      widthSize: "75%",
+      width: "75vw",
       clearOnSubmit: false,
     });
   };

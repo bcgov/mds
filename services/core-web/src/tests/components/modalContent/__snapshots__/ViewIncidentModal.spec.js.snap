@@ -179,6 +179,13 @@ exports[`ViewIncidentModal renders properly 1`] = `
           sHDJGFJAS
         </p>
       </div>
+    </div>
+    <h5>
+      Dangerous Occurance Determination
+    </h5>
+    <div
+      className="content--light-grey padding-small"
+    >
       <div
         className="inline-flex padding-small"
       >

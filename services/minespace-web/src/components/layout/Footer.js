@@ -5,15 +5,15 @@ import * as Strings from "@/constants/strings";
 
 const propTypes = {
   xs: PropTypes.number.isRequired,
-  sm: PropTypes.number.isRequired,
-  md: PropTypes.number.isRequired,
   lg: PropTypes.number.isRequired,
+  xl: PropTypes.number.isRequired,
+  xxl: PropTypes.number.isRequired,
 };
 
 export const Footer = (props) => (
   <Layout.Footer>
     <Row type="flex" justify="center" align="middle">
-      <Col xs={props.xs} sm={props.sm} md={props.md} lg={props.lg}>
+      <Col xs={props.xs} lg={props.lg} xl={props.xl} xxl={props.xxl}>
         <Row className="footer-content" type="flex" justify="center" align="middle">
           <Col xs={24} lg={4}>
             <a className="footer-link" href="/">

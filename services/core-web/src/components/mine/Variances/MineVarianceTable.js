@@ -98,7 +98,6 @@ export class MineVarianceTable extends Component {
       {
         title: "",
         dataIndex: "is_overdue",
-        width: 10,
         render: (isOverdue) => (
           <div title="Expired">
             {isOverdue ? <img className="padding-small" src={RED_CLOCK} alt="Expired" /> : ""}
@@ -110,7 +109,6 @@ export class MineVarianceTable extends Component {
         dataIndex: "variance_id",
         sortField: "variance_id",
         sorter: this.props.isDashboardView,
-        width: 150,
         render: (text) => <div title="Number">{text}</div>,
       },
       {
@@ -118,7 +116,6 @@ export class MineVarianceTable extends Component {
         dataIndex: "mine_name",
         sortField: "mine_name",
         sorter: this.props.isDashboardView,
-        width: 150,
         className: hideColumn(!this.props.isDashboardView),
         render: (text, record) => (
           <div title="Mine" className={hideColumn(!this.props.isDashboardView)}>
@@ -131,7 +128,6 @@ export class MineVarianceTable extends Component {
         dataIndex: "compliance_article_id",
         sortField: "compliance_article_id",
         sorter: this.props.isDashboardView,
-        width: 150,
         render: (text) => (
           <div title="Code">{this.props.complianceCodesHash[text] || Strings.EMPTY_FIELD}</div>
         ),
@@ -141,7 +137,6 @@ export class MineVarianceTable extends Component {
         dataIndex: "lead_inspector",
         sortField: "lead_inspector",
         sorter: this.props.isDashboardView,
-        width: 150,
         render: (text, record) =>
           (record.inspector_party_guid && (
             <Link
@@ -157,7 +152,6 @@ export class MineVarianceTable extends Component {
         dataIndex: "received_date",
         sortField: "received_date",
         sorter: this.props.isDashboardView,
-        width: 150,
         className: hideColumn(!this.props.isApplication),
         render: (text) => (
           <div title="Submission Date" className={hideColumn(!this.props.isApplication)}>
@@ -170,7 +164,6 @@ export class MineVarianceTable extends Component {
         dataIndex: "variance_application_status_code",
         sortField: "variance_application_status_code",
         sorter: this.props.isDashboardView,
-        width: 150,
         className: hideColumn(!this.props.isApplication),
         render: (text) => (
           <div title="Application Status" className={hideColumn(!this.props.isApplication)}>
@@ -188,7 +181,6 @@ export class MineVarianceTable extends Component {
         dataIndex: "issue_date",
         sortField: "issue_date",
         sorter: this.props.isDashboardView,
-        width: 150,
         className: hideColumn(this.props.isApplication),
         render: (text) => (
           <div title="Issue Date" className={hideColumn(this.props.isApplication)}>
@@ -201,7 +193,6 @@ export class MineVarianceTable extends Component {
         dataIndex: "expiry_date",
         sortField: "expiry_date",
         sorter: this.props.isDashboardView,
-        width: 150,
         className: hideColumn(this.props.isApplication),
         render: (text) => (
           <div title="Expiry Date" className={hideColumn(this.props.isApplication)}>
@@ -212,7 +203,6 @@ export class MineVarianceTable extends Component {
       {
         title: "Approval Status",
         dataIndex: "",
-        width: 150,
         className: hideColumn(this.props.isApplication),
         render: (text, record) => (
           <div title="Approval Status" className={hideColumn(this.props.isApplication)}>
@@ -223,7 +213,6 @@ export class MineVarianceTable extends Component {
       {
         title: "Documents",
         dataIndex: "documents",
-        width: 150,
         render: (text, record) => (
           <div title="Documents">
             {record.documents.length > 0
@@ -244,7 +233,6 @@ export class MineVarianceTable extends Component {
       {
         title: "",
         dataIndex: "variance",
-        width: 150,
         render: (text, record) => (
           <div title="" align="right" className="btn--middle flex">
             <AuthorizationWrapper permission={Permission.EDIT_VARIANCES}>

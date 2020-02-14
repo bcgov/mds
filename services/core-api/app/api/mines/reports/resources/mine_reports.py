@@ -31,10 +31,7 @@ class MineReportListResource(Resource, UserMixin):
     parser.add_argument('submission_year', type=str, location='json', required=True)
     parser.add_argument('mine_report_definition_guid', type=str, location='json', required=True)
     parser.add_argument(
-        'due_date',
-        location='json',
-        required=True,
-        type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None)
+        'due_date', location='json', type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None)
 
     parser.add_argument('permit_guid', type=str, location='json')
     parser.add_argument('mine_report_submission_status', type=str, location='json')
@@ -56,7 +53,6 @@ class MineReportListResource(Resource, UserMixin):
 
         return mine_reports
 
-    @api.expect(MINE_REPORT_MODEL)
     @api.doc(description='creates a new report for the mine')
     @api.marshal_with(MINE_REPORT_MODEL, code=201)
     @requires_role_edit_report
@@ -78,7 +74,7 @@ class MineReportListResource(Resource, UserMixin):
         mine_report = MineReport.create(
             mine_report_definition_id=mine_report_definition.mine_report_definition_id,
             mine_guid=mine.mine_guid,
-            due_date=data['due_date'],
+            due_date=data.get('due_date'),
             received_date=data['received_date'],
             submission_year=data['submission_year'],
             permit_id=permit.permit_id if permit else None)
@@ -147,7 +143,7 @@ class MineReportResource(Resource, UserMixin):
         data = self.parser.parse_args()
 
         if 'due_date' in data:
-            mine_report.due_date = data['due_date']
+            mine_report.due_date = data.get('due_date')
 
         if 'received_date' in data:
             mine_report.received_date = data['received_date']

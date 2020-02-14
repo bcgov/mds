@@ -9,26 +9,6 @@ exports[`Reports renders properly 1`] = `
       gutter={0}
     >
       <Col>
-        <Button
-          block={false}
-          ghost={false}
-          htmlType="button"
-          loading={false}
-          onClick={[Function]}
-          style={
-            Object {
-              "display": "inline",
-              "float": "right",
-            }
-          }
-          type="primary"
-        >
-          <Icon
-            theme="filled"
-            type="plus-circle"
-          />
-          Submit Report
-        </Button>
         <Title
           level={4}
         >
@@ -50,59 +30,43 @@ exports[`Reports renders properly 1`] = `
     <Row
       gutter={
         Array [
-          Object {
-            "lg": 0,
-            "xl": 32,
-          },
+          16,
           32,
         ]
       }
-      justify="space-around"
-      type="flex"
     >
-      <Col
-        lg={24}
-        xl={8}
-        xxl={6}
-      >
-        <TableSummaryCard
-          content="6"
-          icon="check-circle"
-          title="Reports Submitted"
-          type="success"
-        />
-      </Col>
-      <Col
-        lg={24}
-        xl={8}
-        xxl={6}
-      >
-        <TableSummaryCard
-          content="6"
-          icon="clock-circle"
-          title="Reports Due"
-          type="error"
-        />
-      </Col>
-      <Col
-        lg={24}
-        xl={8}
-        xxl={6}
-      >
-        <TableSummaryCard
-          content="6"
-          icon="exclamation-circle"
-          title="Reports Overdue"
-          type="warning"
-        />
+      <Col>
+        <Button
+          block={false}
+          ghost={false}
+          htmlType="button"
+          loading={false}
+          onClick={[Function]}
+          style={
+            Object {
+              "float": "right",
+            }
+          }
+          type="primary"
+        >
+          <Icon
+            theme="filled"
+            type="plus-circle"
+          />
+          Submit Report
+        </Button>
       </Col>
     </Row>
     <Row
-      gutter={0}
+      gutter={
+        Array [
+          16,
+          32,
+        ]
+      }
     >
       <Col>
         <ReportsTable
-          handleEditReport={[Function]}
           isLoaded={false}
           openEditReportModal={[Function]}
         />
