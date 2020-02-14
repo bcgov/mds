@@ -31,7 +31,7 @@ import app.api.utils.setup_marshmallow
 
 def create_app(test_config=None):
     """Create and configure an instance of the Flask application."""
-    logging.config.dictConfig(Config.LOGGING_DICT_CONFIG)
+    dictConfig(Config.LOGGING_DICT_CONFIG)
     app = Flask(__name__)
 
     if test_config is None:
