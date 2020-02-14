@@ -1,3 +1,5 @@
+// TODO: Remove this line when the file is properly implemented.
+/* eslint-disable */
 import React, { Component } from "react";
 import { Prompt } from "react-router-dom";
 import { Steps, Button, Dropdown, Menu, Icon, Popconfirm } from "antd";
@@ -41,7 +43,6 @@ import NoticeOfWorkPageHeader from "@/components/noticeOfWork/applications/Notic
 import * as FORM from "@/constants/forms";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
 import { modalConfig } from "@/components/modalContent/config";
-import LinkButton from "@/components/common/LinkButton";
 
 const { Step } = Steps;
 
@@ -364,69 +365,9 @@ export class NoticeOfWorkApplication extends Component {
     this.setState({ currentStep: statusIndex[status] });
   };
 
-  downloadDocument = (url) => {
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = true;
-    a.style.display = "none";
-    document.body.append(a);
-    a.click();
-    a.remove();
-  };
-
-  downloadBlob(blob, filename) {
-    // Create an object URL for the blob object
-    const url = URL.createObjectURL(blob);
-
-    // Create a new anchor element
-    const a = document.createElement("a");
-
-    // Set the href and download attributes for the anchor element
-    // You can optionally set other attributes like `title`, etc
-    // Especially, if the anchor element will be attached to the DOM
-    a.href = url;
-    a.download = filename || "download";
-
-    // Click handler that releases the object URL after the element has been clicked
-    // This is required for one-off downloads of the blob content
-    const clickHandler = () => {
-      setTimeout(() => {
-        URL.revokeObjectURL(url);
-        this.removeEventListener("click", clickHandler);
-      }, 150);
-    };
-
-    // Add the click event listener on the anchor element
-    // Comment out this line if you don't want a one-off download of the blob content
-    a.addEventListener("click", clickHandler, false);
-
-    // Programmatically trigger a click on the anchor element
-    // Useful if you want the download to happen automatically
-    // Without attaching the anchor element to the DOM
-    // Comment out this line if you don't want an automatic download of the blob content
-    a.click();
-
-    // Return the anchor element
-    // Useful if you want a reference to the element
-    // in order to attach it to the DOM or use it in some other way
-    return a;
-  }
-
-  handleDocumentGeneration = (data) => {
+  handleGenerateDocument = (data) => {
     console.log("handleDocumentGeneration params:", data);
     const documentTypeCode = data.key;
-
-    // IFRAME METHOD (downloads file)
-    // this.Downloader.src = getNoticeOfWorkApplicationDocument(documentTypeCode);
-
-    // CREATE <a> TAG METHOD (downloads file)
-    // this.downloadDocument(getNoticeOfWorkApplicationDocument(documentTypeCode);
-
-    // Create BLOB URL METHOD
-    // const blob = new Blob("asdf123", { type: "text/plain" });
-    // this.downloadBlob(blob, "meow.txt");
-
-    // // BLOB METHOD WITH AXIOS
     this.props
       .generateNoticeOfWorkApplicationDocument(documentTypeCode, {
         now_application_guid: this.props.noticeOfWork.now_application_guid,
@@ -434,20 +375,7 @@ export class NoticeOfWorkApplication extends Component {
       })
       .then((response) => {
         console.log("handleDocumentGeneration response:", response);
-        const blob = new Blob([response.data], { type: "text/plain" });
-        this.downloadBlob(blob, "dnasdhaskdjhashda.txt");
       });
-
-    // AXIOS METHOD (doesn't download file)
-    // this.props
-    //   .generateNoticeOfWorkApplicationDocument(documentTypeCode, {
-    //     now_application_guid: this.props.noticeOfWork.now_application_guid,
-    //     template_data: { foo: "bar", meow: "mix" },
-    //   })
-    //   .then((response) => {
-    //     // this.Downloader.src = response;
-    //     console.log("handleDocumentGeneration response:", response);
-    //   });
   };
 
   renderStepOne = () => {
@@ -571,13 +499,13 @@ export class NoticeOfWorkApplication extends Component {
         )}
         {true && (
           <Menu.SubMenu key="generate-letters" title="Generate Letters">
-            <Menu.Item key="CAL" onClick={this.handleDocumentGeneration}>
+            <Menu.Item key="CAL" onClick={this.handleGenerateDocument}>
               Client Acknowledgement
             </Menu.Item>
-            <Menu.Item key="WDL" onClick={this.handleDocumentGeneration}>
+            <Menu.Item key="WDL" onClick={this.handleGenerateDocument}>
               Withdrawl
             </Menu.Item>
-            <Menu.Item key="RJL" onClick={this.handleDocumentGeneration}>
+            <Menu.Item key="RJL" onClick={this.handleGenerateDocument}>
               Rejection
             </Menu.Item>
           </Menu.SubMenu>
@@ -693,7 +621,6 @@ export class NoticeOfWorkApplication extends Component {
             </div>
           </LoadingWrapper>
         </div>
-        <iframe ref={(x) => (this.Downloader = x)} style={{ display: "none" }}></iframe>
       </React.Fragment>
     );
   }
@@ -731,7 +658,4 @@ const mapDispatchToProps = (dispatch) =>
 NoticeOfWorkApplication.propTypes = propTypes;
 NoticeOfWorkApplication.defaultProps = defaultProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(NoticeOfWorkApplication);
+export default connect(mapStateToProps, mapDispatchToProps)(NoticeOfWorkApplication);

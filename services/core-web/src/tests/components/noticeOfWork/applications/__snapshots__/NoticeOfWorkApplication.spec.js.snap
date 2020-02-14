@@ -814,5 +814,12 @@ exports[`NoticeOfWorkApplication renders properly 1`] = `
       </div>
     </LoadingWrapper>
   </div>
+  <iframe
+    style={
+      Object {
+        "display": "none",
+      }
+    }
+  />
 </Fragment>
 `;

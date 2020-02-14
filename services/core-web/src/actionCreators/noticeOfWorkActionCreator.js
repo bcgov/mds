@@ -28,14 +28,6 @@ export const generateNoticeOfWorkApplicationDocument = (documentTypeCode, payloa
         message: "Successfully generated Notice of Work document",
         duration: 10,
       });
-
-      //   window.open(
-      //     `${ENVIRONMENT.apiUrl}${API.NOTICE_OF_WORK_APPLICATION_DOCUMENT_GENERATION(
-      //       documentTypeCode
-      //     )}`,
-      //     "_blank"
-      //   );
-
       dispatch(success(reducerTypes.GENERATE_NOTICE_OF_WORK_APPLICATION_DOCUMENT));
       return response;
     })
