@@ -47,7 +47,7 @@ export const HIGH_ZOOM = 14;
 // default url values
 export const DEFAULT_PAGE = "1";
 export const DEFAULT_PER_PAGE = "25";
-export const MAX_PER_PAGE = Number.MAX_VALUE;
+export const MAX_PER_PAGE = 1000000000;
 export const DEFAULT_DASHBOARD_PARAMS = "?page=1&per_page=25";
 
 // mine types
