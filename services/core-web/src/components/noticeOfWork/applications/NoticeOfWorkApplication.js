@@ -1,5 +1,3 @@
-// TODO: Remove this line when the file is properly implemented.
-/* eslint-disable */
 import React, { Component } from "react";
 import { Prompt } from "react-router-dom";
 import { Steps, Button, Dropdown, Menu, Icon, Popconfirm } from "antd";
@@ -13,10 +11,6 @@ import {
   createNoticeOfWorkApplicationProgress,
   updateNoticeOfWorkApplication,
 } from "@common/actionCreators/noticeOfWorkActionCreator";
-import {
-  generateNoticeOfWorkApplicationDocument,
-  getNoticeOfWorkApplicationDocument,
-} from "@/actionCreators/noticeOfWorkActionCreator";
 import { fetchMineRecordById } from "@common/actionCreators/mineActionCreator";
 import { openModal, closeModal } from "@common/actions/modalActions";
 import { getDropdownInspectors, getInspectorsHash } from "@common/selectors/partiesSelectors";
@@ -32,6 +26,7 @@ import {
 } from "@common/selectors/staticContentSelectors";
 import { clearNoticeOfWorkApplication } from "@common/actions/noticeOfWorkActions";
 import { downloadNowDocument } from "@common/utils/actionlessNetworkCalls";
+import { getNoticeOfWorkApplicationDocument } from "@/actionCreators/noticeOfWorkActionCreator";
 import * as routes from "@/constants/routes";
 import ApplicationStepOne from "@/components/noticeOfWork/applications/applicationStepOne/ApplicationStepOne";
 import NOWApplicationReviews from "@/components/noticeOfWork/applications/referals/NOWApplicationReviews";
@@ -54,7 +49,6 @@ const propTypes = {
   noticeOfWork: CustomPropTypes.importedNOWApplication,
   originalNoticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
   createNoticeOfWorkApplicationProgress: PropTypes.func.isRequired,
-  generateNoticeOfWorkApplicationDocument: PropTypes.func.isRequired,
   updateNoticeOfWorkApplication: PropTypes.func.isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
   fetchImportedNoticeOfWorkApplication: PropTypes.func.isRequired,
@@ -491,7 +485,7 @@ export class NoticeOfWorkApplication extends Component {
         )}
         {// TODO: Determine the actual condition that determines whether or not to show this submenu.
         true && (
-          // TODO: Get document codes in a more correct fashion once they are properly implemented.
+          // TODO: Get document codes in a more correct fashion once document generation is more fully implemented.
           <Menu.SubMenu key="generate-letters" title="Generate Letters">
             <Menu.Item key="CAL" onClick={this.handleGenerateDocument}>
               Client Acknowledgement
@@ -640,7 +634,6 @@ const mapDispatchToProps = (dispatch) =>
       fetchOriginalNoticeOfWorkApplication,
       fetchMineRecordById,
       createNoticeOfWorkApplicationProgress,
-      generateNoticeOfWorkApplicationDocument,
       reset,
       openModal,
       closeModal,

@@ -339,4 +339,7 @@ const mapDispatchToProps = (dispatch) =>
 
 MineDashboard.propTypes = propTypes;
 
-export default connect(mapStateToProps, mapDispatchToProps)(MineDashboard);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(MineDashboard);
