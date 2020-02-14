@@ -365,6 +365,16 @@ export class NoticeOfWorkApplication extends Component {
     this.setState({ currentStep: statusIndex[status] });
   };
 
+  downloadDocument = (url) => {
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = true;
+    a.style.display = "none";
+    document.body.append(a);
+    a.click();
+    a.remove();
+  };
+
   handleGenerateDocument = (data) => {
     console.log("handleDocumentGeneration params:", data);
     const documentTypeCode = data.key;
@@ -497,7 +507,8 @@ export class NoticeOfWorkApplication extends Component {
             Change the Lead Inspector
           </Menu.Item>
         )}
-        {true && (
+        {// TODO: Get document codes in a more correct fashion once they are properly implemented.
+        true && (
           <Menu.SubMenu key="generate-letters" title="Generate Letters">
             <Menu.Item key="CAL" onClick={this.handleGenerateDocument}>
               Client Acknowledgement

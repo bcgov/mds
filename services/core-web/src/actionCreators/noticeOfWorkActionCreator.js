@@ -29,6 +29,33 @@ export const generateNoticeOfWorkApplicationDocument = (documentTypeCode, payloa
         duration: 10,
       });
       dispatch(success(reducerTypes.GENERATE_NOTICE_OF_WORK_APPLICATION_DOCUMENT));
+
+      console.log(response.data);
+      const downloadUrl = window.URL.createObjectURL(
+        new Blob(["\ufeff", response.data], {
+          type: "application/octet-stream",
+        })
+      );
+
+      const link = document.createElement("a");
+      link.href = downloadUrl;
+      link.setAttribute("download", "file.doc");
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      // console.log(response.data.file_name);
+      // console.log(response.data.file_content);
+      // const downloadUrl = window.URL.createObjectURL(
+      //   new Blob([response.data.file_content], {
+      //     type: "application/octet-stream;charset=utf-8",
+      //   })
+      // );
+      // const link = document.createElement("a");
+      // link.href = downloadUrl;
+      // link.setAttribute("download", response.data.file_name);
+      // document.body.appendChild(link);
+      // link.click();
+      // link.remove();
       return response;
     })
     .catch(() => dispatch(error(reducerTypes.GENERATE_NOTICE_OF_WORK_APPLICATION_DOCUMENT)))
