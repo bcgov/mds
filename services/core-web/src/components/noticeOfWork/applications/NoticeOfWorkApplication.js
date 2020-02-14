@@ -365,27 +365,9 @@ export class NoticeOfWorkApplication extends Component {
     this.setState({ currentStep: statusIndex[status] });
   };
 
-  downloadDocument = (url) => {
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = true;
-    a.style.display = "none";
-    document.body.append(a);
-    a.click();
-    a.remove();
-  };
-
   handleGenerateDocument = (data) => {
-    console.log("handleDocumentGeneration params:", data);
     const documentTypeCode = data.key;
-    this.props
-      .generateNoticeOfWorkApplicationDocument(documentTypeCode, {
-        now_application_guid: this.props.noticeOfWork.now_application_guid,
-        template_data: { foo: "bar", meow: "mix" },
-      })
-      .then((response) => {
-        console.log("handleDocumentGeneration response:", response);
-      });
+    getNoticeOfWorkApplicationDocument(documentTypeCode);
   };
 
   renderStepOne = () => {
@@ -507,8 +489,9 @@ export class NoticeOfWorkApplication extends Component {
             Change the Lead Inspector
           </Menu.Item>
         )}
-        {// TODO: Get document codes in a more correct fashion once they are properly implemented.
+        {// TODO: Determine the actual condition that determines whether or not to show this submenu.
         true && (
+          // TODO: Get document codes in a more correct fashion once they are properly implemented.
           <Menu.SubMenu key="generate-letters" title="Generate Letters">
             <Menu.Item key="CAL" onClick={this.handleGenerateDocument}>
               Client Acknowledgement
@@ -669,4 +652,7 @@ const mapDispatchToProps = (dispatch) =>
 NoticeOfWorkApplication.propTypes = propTypes;
 NoticeOfWorkApplication.defaultProps = defaultProps;
 
-export default connect(mapStateToProps, mapDispatchToProps)(NoticeOfWorkApplication);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(NoticeOfWorkApplication);

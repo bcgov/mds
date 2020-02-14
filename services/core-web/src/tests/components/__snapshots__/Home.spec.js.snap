@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Home renders properly 1`] = `
-<Layout
+<Adapter
   className="layout"
 >
   <div
@@ -33,7 +33,7 @@ exports[`Home renders properly 1`] = `
       type="mobile"
     />
   </MediaQuery>
-  <Content
+  <Adapter
     className="content"
   >
     <DashboardRoutes />
@@ -53,9 +53,9 @@ exports[`Home renders properly 1`] = `
         />
       </Button>
     </BackTop>
-  </Content>
+  </Adapter>
   <div
     className="footer"
   />
-</Layout>
+</Adapter>
 `;

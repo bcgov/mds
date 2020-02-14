@@ -4,12 +4,23 @@ import { error, request, success } from "@common/actions/genericActions";
 import { ENVIRONMENT } from "@common/constants/environment";
 import { createRequestHeader } from "@common/utils/RequestHeaders";
 import CustomAxios from "@common/customAxios";
-import { saveAs } from "file-saver";
 import * as API from "../constants/API";
 import * as reducerTypes from "../constants/reducerTypes";
 
-export const getNoticeOfWorkApplicationDocument = (documentTypeCode) =>
-  `${ENVIRONMENT.apiUrl}${API.NOTICE_OF_WORK_APPLICATION_DOCUMENT_GENERATION(documentTypeCode)}`;
+export const getNoticeOfWorkApplicationDocument = (documentTypeCode) => {
+  CustomAxios()
+    .get(
+      `${ENVIRONMENT.apiUrl + API.NOTICE_OF_WORK_APPLICATION_DOCUMENT_TOKEN(documentTypeCode)}`,
+      createRequestHeader()
+    )
+    .then((response) => {
+      const token = { token: response.data.token_guid };
+      window.open(
+        `${ENVIRONMENT.apiUrl + API.NOTICE_OF_WORK_APPLICATION_DOCUMENT(documentTypeCode, token)}`,
+        "_blank"
+      );
+    });
+};
 
 export const generateNoticeOfWorkApplicationDocument = (documentTypeCode, payload) => (
   dispatch
@@ -30,37 +41,6 @@ export const generateNoticeOfWorkApplicationDocument = (documentTypeCode, payloa
         duration: 10,
       });
       dispatch(success(reducerTypes.GENERATE_NOTICE_OF_WORK_APPLICATION_DOCUMENT));
-
-      console.log(response.data);
-
-      const blob = new Blob(["\ufeff", response.data], {
-        // type: "text/plain;charset=utf-8",
-        type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-      });
-
-      saveAs(blob, "foo.docx");
-      // const downloadUrl = window.URL.createObjectURL(blob);
-
-      // const link = document.createElement("a");
-      // link.href = downloadUrl;
-      // link.setAttribute("download", "file.docx");
-      // document.body.appendChild(link);
-      // link.click();
-      // link.remove();
-
-      // console.log(response.data.file_name);
-      // console.log(response.data.file_content);
-      // const downloadUrl = window.URL.createObjectURL(
-      //   new Blob([response.data.file_content], {
-      //     type: "application/octet-stream;charset=utf-8",
-      //   })
-      // );
-      // const link = document.createElement("a");
-      // link.href = downloadUrl;
-      // link.setAttribute("download", response.data.file_name);
-      // document.body.appendChild(link);
-      // link.click();
-      // link.remove();
       return response;
     })
     .catch(() => dispatch(error(reducerTypes.GENERATE_NOTICE_OF_WORK_APPLICATION_DOCUMENT)))
