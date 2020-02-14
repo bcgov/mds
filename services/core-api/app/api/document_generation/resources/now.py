@@ -8,8 +8,11 @@ from app.api.utils.include.user_info import User
 from app.api.utils.resources_mixins import UserMixin
 from app.api.utils.access_decorators import requires_role_edit_permit
 from app.api.utils.custom_reqparser import CustomReqparser
-
 import sys
+import os
+
+APP_ROOT = os.path.dirname(os.path.abspath(__file__)) # refers to application_top
+APP_STATIC = os.path.join(APP_ROOT, 'static')
 
 
 class NoticeOfWorkDocGen(Resource, UserMixin):
@@ -19,13 +22,13 @@ class NoticeOfWorkDocGen(Resource, UserMixin):
         'now_application_guid',
         type=str,
         location='json',
-        required=True,
+                                                 # required=False,
     )
     parser.add_argument(
         'template_data',
         type=str,
         location='json',
-        required=True,
+                                                 # required=False,
     )
 
     @api.doc(
@@ -37,41 +40,21 @@ class NoticeOfWorkDocGen(Resource, UserMixin):
         print("********************* NoticeOfWorkDocGen *********************", file=sys.stderr)
         print(data, file=sys.stderr)
 
-        # urlz = url_for('static', filename='meow.txt')
-        # print(urlz, file=sys.stderr)
+        return current_app.send_static_file("meow.txt")
+        # fileName = "meow.txt"
 
-        # file_name = '/static/meow.txt'
-        # f = open(file_name, "rb")
-        # output = f.read()
-        # self.set_header('Content-Disposition', 'attachment; filename=output.csv')
-        # self.set_header('Content-type', 'text/csv')
-        # self.write(output)
+        # def readFile(filename):
+        #     # with open(os.path.join(APP_STATIC, filename)) as f:
+        #     with current_app.open_resource('static/meow.txt') as f:
+        #         yield f.readline()
 
-        # def generate():
-        #     # create and return your data in small parts here
-        #     for i in range(10000):
-        #         yield str(i)
+        # file_download_req = requests.get(readFile("meow.txt"), stream=True)
 
-        # return Response(stream_with_context(generate()))
-        # r = requests.get(urlz, stream=True)
-        # x = send_from_directory(
-        #     current_app.static_folder,
-        #     filename="meow.txt",
-        #     as_attachment=True,
-        #     mimetype="text/event-stream")
+        # print(file_download_req, file=sys.stderr)
 
-        # filename = safe_join(current_app.static_folder, "meow.txt")
-        # with open(filename, 'rb') as fd:
-        #     content = fd.read()
+        # file_download_resp = Response(stream_with_context(readFile(fileName)))
+        # # stream_with_context(file_download_req.iter_content(chunk_size=2048)))
 
-        #     return Response(content.data.iter_content(chunk_size=10 * 1024))
-        # return send_from_directory(current_app.static_folder, "meow.txt", conditional=True)
-        # return current_app.send_static_file("meow.txt")
-        # return send_file(
-        #     "static/meow.txt",
-        #     mimetype="application/zip",
-        #     as_attachment=True,
-        #     attachment_filename="meow.txt")
-        # return send_from_directory(
-        #     current_app.static_folder, filename="meow.txt", as_attachment=True)
-        return flask.redirect(flask.url_for('static', filename='meow.txt'), code=301)
+        # # file_download_resp.headers['Content-Type'] = "application/octet-stream"
+        # # file_download_resp.headers['Content-Disposition'] = f'attachment; filename="{fileName}"'
+        # return file_download_resp

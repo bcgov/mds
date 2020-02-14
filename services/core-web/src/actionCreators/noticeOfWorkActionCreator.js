@@ -2,12 +2,14 @@ import { notification } from "antd";
 import { showLoading, hideLoading } from "react-redux-loading-bar";
 import { error, request, success } from "@common/actions/genericActions";
 import { ENVIRONMENT } from "@common/constants/environment";
-// import { createRequestHeader } from "@common/utils/RequestHeaders";
+import { createRequestHeader } from "@common/utils/RequestHeaders";
 import CustomAxios from "@common/customAxios";
 import * as API from "../constants/API";
 import * as reducerTypes from "../constants/reducerTypes";
 
-// eslint-disable-next-line
+export const getNoticeOfWorkApplicationDocument = (documentTypeCode) =>
+  `${ENVIRONMENT.apiUrl}${API.NOTICE_OF_WORK_APPLICATION_DOCUMENT_GENERATION(documentTypeCode)}`;
+
 export const generateNoticeOfWorkApplicationDocument = (documentTypeCode, payload) => (
   dispatch
 ) => {
@@ -19,20 +21,21 @@ export const generateNoticeOfWorkApplicationDocument = (documentTypeCode, payloa
         documentTypeCode
       )}`,
       payload,
-      {
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-          Authorization: `Bearer ${localStorage.getItem("jwt")}`,
-          //   "Content-Disposition": "attachment",
-          //   Accept: "application/event-stream",
-        },
-      }
+      createRequestHeader()
     )
     .then((response) => {
       notification.success({
         message: "Successfully generated Notice of Work document",
         duration: 10,
       });
+
+      //   window.open(
+      //     `${ENVIRONMENT.apiUrl}${API.NOTICE_OF_WORK_APPLICATION_DOCUMENT_GENERATION(
+      //       documentTypeCode
+      //     )}`,
+      //     "_blank"
+      //   );
+
       dispatch(success(reducerTypes.GENERATE_NOTICE_OF_WORK_APPLICATION_DOCUMENT));
       return response;
     })

@@ -1,4 +1,4 @@
-from flask import Flask, url_for
+from flask import Flask
 from flask_cors import CORS
 from flask_restplus import Resource, apidoc
 from flask_compress import Compress
@@ -26,15 +26,10 @@ from app.extensions import db, jwt, api, cache, apm
 
 import app.api.utils.setup_marshmallow
 
-import sys
-
 
 def create_app(test_config=None):
     """Create and configure an instance of the Flask application."""
     app = Flask(__name__)
-    print('--------------------------------------', file=sys.stderr)
-    print(app.static_url_path, file=sys.stderr)
-    print(app.static_folder, file=sys.stderr)
 
     if test_config is None:
         # load the instance config, if it exists, when not testing

@@ -46,90 +46,118 @@ const getMineManager = (partyRelationships) => {
 
 const getRegionalContacts = (region) => Object.values(Contacts.REGIONAL_MINISTRY_CONTACTS[region]);
 
-export const Overview = (props) => (
-  <Row gutter={[0, 16]}>
-    <Col lg={{ span: 14 }} xl={{ span: 16 }}>
-      <Title level={4}>Overview</Title>
-      <Paragraph>
-        This tab contains general information about your mine and important contacts at EMPR. The
-        information is pulled from current Ministry resources. If anything is incorrect, please
-        notify one of the Ministry contacts.
-      </Paragraph>
-      <Descriptions column={2} colon={false}>
-        <Descriptions.Item span={2} label="Region">
-          {props.mineRegionHash[props.mine.mine_region] || Strings.UNKNOWN}
-        </Descriptions.Item>
-        <Descriptions.Item label="Latitude">
-          {(props.mine.mine_location && props.mine.mine_location.latitude) || Strings.UNKNOWN}
-        </Descriptions.Item>
-        <Descriptions.Item label="Longitude">
-          {(props.mine.mine_location && props.mine.mine_location.longitude) || Strings.UNKNOWN}
-        </Descriptions.Item>
-        <Descriptions.Item span={2} label="Operating Status">
-          {(props.mine.mine_status &&
-            props.mine.mine_status.length > 0 &&
-            props.mine.mine_status[0].status_labels.join(", ")) ||
-            Strings.UNKNOWN}
-        </Descriptions.Item>
-        <Descriptions.Item span={2} label="Commodity">
-          {props.transformedMineTypes &&
-          props.transformedMineTypes.mine_commodity_code &&
-          props.transformedMineTypes.mine_commodity_code.length > 0
-            ? props.transformedMineTypes.mine_commodity_code
-                .map((code) => props.mineCommodityOptionsHash[code])
-                .join(", ")
-            : Strings.UNKNOWN}
-        </Descriptions.Item>
-        <Descriptions.Item span={2} label="Disturbance">
-          {props.transformedMineTypes &&
-          props.transformedMineTypes.mine_disturbance_code &&
-          props.transformedMineTypes.mine_disturbance_code.length > 0
-            ? props.transformedMineTypes.mine_disturbance_code
-                .map((code) => props.mineDisturbanceOptionsHash[code])
-                .join(", ")
-            : Strings.UNKNOWN}
-        </Descriptions.Item>
-        <Descriptions.Item span={2} label="Active Permits">
-          {props.mine.mine_permit_numbers && props.mine.mine_permit_numbers.length > 0
-            ? props.mine.mine_permit_numbers.join(", ")
-            : Strings.NONE}
-        </Descriptions.Item>
-      </Descriptions>
-      <Row gutter={[16, 16]}>
-        <Col xl={{ span: 11 }} xxl={{ span: 10 }}>
-          <ContactCard
-            title="Mine Manager"
-            party={getMineManager(props.partyRelationships)}
-            dateLabel="Mine Manager Since"
-          />
-        </Col>
-      </Row>
+// Currently, a major mine is considered to have regional permits if they have at least
+// one permit number whose second character is an "X". E.g., "MX-123456".
+const majorMineHasRegionalPermits = (permitNumbers) =>
+  permitNumbers &&
+  permitNumbers.length > 0 &&
+  permitNumbers.filter((permitNumber) => permitNumber.charAt(1) === "X").length > 0;
+
+export const Overview = (props) => {
+  console.log("MAJOR MINE:", props.mine.major_mine_ind);
+  console.log("PERMIT NUMBERS:", props.mine.mine_permit_numbers);
+  if (!props.mine.major_mine_ind || majorMineHasRegionalPermits(props.mine.mine_permit_numbers)) {
+    console.log("DISPLAY REGIONAL CARD FIRST");
+  } else {
+    console.log("DISPLAY GENERAL CARD FIRST");
+  }
+
+  const regionalMinistryContactsCardCol = (
+    <Col>
+      <Card title="Regional Ministry Contacts">
+        {getRegionalContacts(props.mine.mine_region).map((contact) => (
+          <MinistryContactItem contact={contact} />
+        ))}
+      </Card>
     </Col>
-    <Col lg={{ span: 9, offset: 1 }} xl={{ offset: 1, span: 7 }}>
-      <Row gutter={[0, 16]}>
-        <Col>
-          <div style={{ height: "200px" }}>
-            <Map mine={props.mine} controls={false} />
-          </div>
-        </Col>
-        <Col>
-          <Card title="Regional Ministry Contacts">
-            {getRegionalContacts(props.mine.mine_region).map((contact) => (
-              <MinistryContactItem contact={contact} />
-            ))}
-          </Card>
-        </Col>
-        <Col>
-          <Card title="General Ministry Contacts">
-            {props.mine.major_mine_ind && <MinistryContactItem contact={Contacts.MM_OFFICE} />}
-            <MinistryContactItem contact={Contacts.CHIEF_INSPECTOR} />
-            <MinistryContactItem contact={Contacts.EXEC_LEAD_AUTH} />
-          </Card>
-        </Col>
-      </Row>
+  );
+
+  const generalMinistryContactsCardCol = (
+    <Col>
+      <Card title="General Ministry Contacts">
+        {props.mine.major_mine_ind && <MinistryContactItem contact={Contacts.MM_OFFICE} />}
+        <MinistryContactItem contact={Contacts.CHIEF_INSPECTOR} />
+        <MinistryContactItem contact={Contacts.EXEC_LEAD_AUTH} />
+      </Card>
     </Col>
-  </Row>
-);
+  );
+
+  return (
+    <Row gutter={[0, 16]}>
+      <Col lg={{ span: 14 }} xl={{ span: 16 }}>
+        <Title level={4}>Overview</Title>
+        <Paragraph>
+          This tab contains general information about your mine and important contacts at EMPR. The
+          information is pulled from current Ministry resources. If anything is incorrect, please
+          notify one of the Ministry contacts.
+        </Paragraph>
+        <Descriptions column={2} colon={false}>
+          <Descriptions.Item span={2} label="Region">
+            {props.mineRegionHash[props.mine.mine_region] || Strings.UNKNOWN}
+          </Descriptions.Item>
+          <Descriptions.Item label="Latitude">
+            {(props.mine.mine_location && props.mine.mine_location.latitude) || Strings.UNKNOWN}
+          </Descriptions.Item>
+          <Descriptions.Item label="Longitude">
+            {(props.mine.mine_location && props.mine.mine_location.longitude) || Strings.UNKNOWN}
+          </Descriptions.Item>
+          <Descriptions.Item span={2} label="Operating Status">
+            {(props.mine.mine_status &&
+              props.mine.mine_status.length > 0 &&
+              props.mine.mine_status[0].status_labels.join(", ")) ||
+              Strings.UNKNOWN}
+          </Descriptions.Item>
+          <Descriptions.Item span={2} label="Commodity">
+            {props.transformedMineTypes &&
+            props.transformedMineTypes.mine_commodity_code &&
+            props.transformedMineTypes.mine_commodity_code.length > 0
+              ? props.transformedMineTypes.mine_commodity_code
+                  .map((code) => props.mineCommodityOptionsHash[code])
+                  .join(", ")
+              : Strings.UNKNOWN}
+          </Descriptions.Item>
+          <Descriptions.Item span={2} label="Disturbance">
+            {props.transformedMineTypes &&
+            props.transformedMineTypes.mine_disturbance_code &&
+            props.transformedMineTypes.mine_disturbance_code.length > 0
+              ? props.transformedMineTypes.mine_disturbance_code
+                  .map((code) => props.mineDisturbanceOptionsHash[code])
+                  .join(", ")
+              : Strings.UNKNOWN}
+          </Descriptions.Item>
+          <Descriptions.Item span={2} label="Active Permits">
+            {props.mine.mine_permit_numbers && props.mine.mine_permit_numbers.length > 0
+              ? props.mine.mine_permit_numbers.join(", ")
+              : Strings.NONE}
+          </Descriptions.Item>
+        </Descriptions>
+        <Row gutter={[16, 16]}>
+          <Col xl={{ span: 11 }} xxl={{ span: 10 }}>
+            <ContactCard
+              title="Mine Manager"
+              party={getMineManager(props.partyRelationships)}
+              dateLabel="Mine Manager Since"
+            />
+          </Col>
+        </Row>
+      </Col>
+      <Col lg={{ span: 9, offset: 1 }} xl={{ offset: 1, span: 7 }}>
+        <Row gutter={[0, 16]}>
+          <Col>
+            <div style={{ height: "200px" }}>
+              <Map mine={props.mine} controls={false} />
+            </div>
+          </Col>
+          {((!props.mine.major_mine_ind ||
+            majorMineHasRegionalPermits(props.mine.mine_permit_numbers)) && [
+            regionalMinistryContactsCardCol,
+            generalMinistryContactsCardCol,
+          ]) || [generalMinistryContactsCardCol, regionalMinistryContactsCardCol]}
+        </Row>
+      </Col>
+    </Row>
+  );
+};
 
 const mapStateToProps = (state) => ({
   userInfo: getUserInfo(state),
