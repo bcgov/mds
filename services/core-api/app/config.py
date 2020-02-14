@@ -9,7 +9,27 @@ if ENV_FILE:
 class Config(object):
     # Environment config
     FLASK_LOGGING_LEVEL = os.environ.get('FLASK_LOGGING_LEVEL',
-                                   'INFO')          # ['DEBUG','INFO','WARN','ERROR','CRITICAL']
+                                         'INFO')                # ['DEBUG','INFO','WARN','ERROR','CRITICAL']
+
+    LOGGING_DICT_CONFIG = {
+        'version': 1,
+        'formatters': {
+            'default': {
+                'format': '[%(asctime)s] %(levelname)s in %(module)s: %(message)s',
+            }
+        },
+        'handlers': {
+            'wsgi': {
+                'class': 'logging.StreamHandler',
+                'stream': 'ext://flask.logging.wsgi_errors_stream',
+                'formatter': 'default'
+            }
+        },
+        'root': {
+            'level': FLASK_LOGGING_LEVEL,
+            'handlers': ['wsgi']
+        }
+    }
 
     SECRET_KEY = os.environ.get('SECRET_KEY', 'dev')
     BASE_PATH = os.environ.get('BASE_PATH', '')

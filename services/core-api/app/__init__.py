@@ -1,4 +1,3 @@
-import logging
 from logging.config import dictConfig
 
 from flask import Flask
@@ -32,25 +31,7 @@ import app.api.utils.setup_marshmallow
 
 def create_app(test_config=None):
     """Create and configure an instance of the Flask application."""
-    dictConfig({
-        'version': 1,
-        'formatters': {
-            'default': {
-                'format': '[%(asctime)s] %(levelname)s in %(module)s: %(message)s',
-            }
-        },
-        'handlers': {
-            'wsgi': {
-                'class': 'logging.StreamHandler',
-                'stream': 'ext://flask.logging.wsgi_errors_stream',
-                'formatter': 'default'
-            }
-        },
-        'root': {
-            'level': Config.FLASK_LOGGING_LEVEL,
-            'handlers': ['wsgi']
-        }
-    })
+    logging.config.dictConfig(Config.LOGGING_DICT_CONFIG)
     app = Flask(__name__)
 
     if test_config is None:
