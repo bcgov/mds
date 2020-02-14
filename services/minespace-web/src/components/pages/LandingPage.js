@@ -130,6 +130,19 @@ export const LandingPage = (props) => (
           Once you have your BCeID, you can add employees and delegates. You can request that anyone
           added to your Business BCeID account be given access to MineSpace.
         </Paragraph>
+        <Row type="flex" justify="center">
+          <Col>
+            <a
+              href="https://www.bceid.ca/register/business/getting_started/getting_started.aspx"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Button type="primary" size="large">
+                Get a BCeID
+              </Button>
+            </a>
+          </Col>
+        </Row>
       </Col>
     </Row>
     <Row
