@@ -1,4 +1,7 @@
+from logging.config import dictConfig
+
 from flask import Flask
+
 from flask_cors import CORS
 from flask_restplus import Resource, apidoc
 from flask_compress import Compress
@@ -28,6 +31,7 @@ import app.api.utils.setup_marshmallow
 
 def create_app(test_config=None):
     """Create and configure an instance of the Flask application."""
+    dictConfig(Config.LOGGING_DICT_CONFIG)
     app = Flask(__name__)
 
     if test_config is None:
@@ -40,6 +44,7 @@ def create_app(test_config=None):
     register_extensions(app)
     register_routes(app)
     register_commands(app)
+
     return app
 
 
