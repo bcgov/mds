@@ -1,14 +1,12 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
-import { Table } from "antd";
 import { uniqBy, map, toArray, isEmpty } from "lodash";
-import { getTableHeaders } from "@common/utils/helpers";
 import * as Strings from "@common/constants/strings";
 import * as router from "@/constants/routes";
 import NullScreen from "@/components/common/NullScreen";
 import CustomPropTypes from "@/customPropTypes";
-import TableLoadingWrapper from "@/components/common/wrappers/TableLoadingWrapper";
+import CoreTable from "@/components/common/CoreTable";
 
 /**
  * @class ContactList - paginated list of contacts
@@ -107,23 +105,19 @@ const applySortIndicator = (_columns, field, dir) =>
   }));
 
 export const ContactList = (props) => (
-  <TableLoadingWrapper
+  <CoreTable
     condition={props.isLoaded}
-    tableHeaders={getTableHeaders(columns)}
-    isPaginated
-  >
-    <Table
-      rowClassName="fade-in"
-      align="left"
-      pagination={false}
-      columns={applySortIndicator(columns, props.sortField, props.sortDir)}
-      dataSource={transformRowData(props.parties, props.relationshipTypeHash)}
-      locale={{
+    columns={applySortIndicator(columns, props.sortField, props.sortDir)}
+    dataSource={transformRowData(props.parties, props.relationshipTypeHash)}
+    tableProps={{
+      align: "left",
+      pagination: false,
+      locale: {
         emptyText: <NullScreen type="no-results" />,
-      }}
-      onChange={handleTableChange(props.handleSearch)}
-    />
-  </TableLoadingWrapper>
+      },
+      onChange: handleTableChange(props.handleSearch),
+    }}
+  />
 );
 
 ContactList.propTypes = propTypes;
