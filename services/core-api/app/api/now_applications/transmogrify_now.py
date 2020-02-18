@@ -20,8 +20,8 @@ unit_type_map = {
 
 type_of_permit_map = {
     'I would like to apply for a Multi-Year permit': 'MYP',
-    'I would like to apply for a One-Year permit': 'OYP',
-    'I would like to apply for a Multi-Year, Area-Based permit': 'MY-ABP',
+    'I would like to apply for a one year permit': 'OYP',
+    'I would like to apply for a Multi-Year, Area Based permit': 'MY-ABP',
     None: None
 }
 
