@@ -1,124 +1,108 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`SubscriptionTable renders properly 1`] = `
-<TableLoadingWrapper
-  isPaginated={false}
-  tableHeaders={
+<CoreTable
+  columns={
     Array [
-      "Mine Name",
-      "Mine No.",
-      "Operational Status",
-      "Permit No.",
-      "Region",
-      "Tenure",
-      "Commodity",
-      "TSF",
-      "",
+      Object {
+        "dataIndex": "mineName",
+        "render": [Function],
+        "title": "Mine Name",
+      },
+      Object {
+        "dataIndex": "mineNo",
+        "render": [Function],
+        "title": "Mine No.",
+      },
+      Object {
+        "dataIndex": "operationalStatus",
+        "render": [Function],
+        "title": "Operational Status",
+      },
+      Object {
+        "dataIndex": "permit",
+        "render": [Function],
+        "title": "Permit No.",
+      },
+      Object {
+        "dataIndex": "region",
+        "render": [Function],
+        "title": "Region",
+      },
+      Object {
+        "dataIndex": "tenure",
+        "render": [Function],
+        "title": "Tenure",
+      },
+      Object {
+        "dataIndex": "commodity",
+        "render": [Function],
+        "title": "Commodity",
+      },
+      Object {
+        "dataIndex": "tsf",
+        "render": [Function],
+        "title": "TSF",
+      },
+      Object {
+        "dataIndex": "",
+        "render": [Function],
+        "title": "",
+      },
     ]
   }
->
-  <withStore(Table)
-    align="left"
-    columns={
-      Array [
-        Object {
-          "dataIndex": "mineName",
-          "render": [Function],
-          "title": "Mine Name",
-        },
-        Object {
-          "dataIndex": "mineNo",
-          "render": [Function],
-          "title": "Mine No.",
-        },
-        Object {
-          "dataIndex": "operationalStatus",
-          "render": [Function],
-          "title": "Operational Status",
-        },
-        Object {
-          "dataIndex": "permit",
-          "render": [Function],
-          "title": "Permit No.",
-        },
-        Object {
-          "dataIndex": "region",
-          "render": [Function],
-          "title": "Region",
-        },
-        Object {
-          "dataIndex": "tenure",
-          "render": [Function],
-          "title": "Tenure",
-        },
-        Object {
-          "dataIndex": "commodity",
-          "render": [Function],
-          "title": "Commodity",
-        },
-        Object {
-          "dataIndex": "tsf",
-          "render": [Function],
-          "title": "TSF",
-        },
-        Object {
-          "dataIndex": "",
-          "render": [Function],
-          "title": "",
-        },
-      ]
-    }
-    dataSource={
-      Array [
-        Object {
-          "commodity": Array [
-            Object {
-              "mine_tenure_type_code": "PLR",
-            },
-            Object {
-              "mine_tenure_type_code": "MIN",
-            },
-          ],
-          "commodityHash": Object {
-            "CG": "Construction Aggregate",
-            "MC": "Metallurgic",
-            "TO": "Thermal Coal",
-          },
-          "emptyField": "N/A",
-          "key": undefined,
-          "mineName": "mine3",
-          "mineNo": "BLAH9091",
-          "operationalStatus": "N/A",
-          "permit": null,
-          "region": "North East",
-          "tenure": Array [
-            Object {
-              "mine_tenure_type_code": "PLR",
-            },
-            Object {
-              "mine_tenure_type_code": "MIN",
-            },
-          ],
-          "tenureHash": Object {
-            "BCL": "BC Land",
-            "COL": "Coal",
-            "MIN": "Mineral",
-            "PLR": "Placer",
-          },
-          "tsf": 1,
-        },
-      ]
-    }
-    locale={
+  dataSource={
+    Array [
       Object {
+        "commodity": Array [
+          Object {
+            "mine_tenure_type_code": "PLR",
+          },
+          Object {
+            "mine_tenure_type_code": "MIN",
+          },
+        ],
+        "commodityHash": Object {
+          "CG": "Construction Aggregate",
+          "MC": "Metallurgic",
+          "TO": "Thermal Coal",
+        },
+        "emptyField": "N/A",
+        "key": undefined,
+        "mineName": "mine3",
+        "mineNo": "BLAH9091",
+        "operationalStatus": "N/A",
+        "permit": null,
+        "region": "North East",
+        "tenure": Array [
+          Object {
+            "mine_tenure_type_code": "PLR",
+          },
+          Object {
+            "mine_tenure_type_code": "MIN",
+          },
+        ],
+        "tenureHash": Object {
+          "BCL": "BC Land",
+          "COL": "Coal",
+          "MIN": "Mineral",
+          "PLR": "Placer",
+        },
+        "tsf": 1,
+      },
+    ]
+  }
+  tableProps={
+    Object {
+      "align": "left",
+      "locale": Object {
         "emptyText": <NullScreen
           message=""
           type="subscription"
         />,
-      }
+      },
+      "pagination": false,
     }
-    pagination={false}
-    rowClassName="fade-in"
-  />
-</TableLoadingWrapper>
+  }
+/>
 `;
