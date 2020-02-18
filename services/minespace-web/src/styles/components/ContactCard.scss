@@ -1,14 +1,23 @@
-.contact-card-icon {
-  font-size: 2em;
-}
+.contact-card-row {
+  margin-bottom: 1em;
 
-.contact-card-field {
-  display: inline-block;
-  vertical-align: top;
-  padding-left: $padding-sm;
-  margin-bottom: 0 !important;
+  &:last-child {
+    margin-bottom: 0 !important;
+  }
 
-  &-title {
-    text-transform: uppercase;
+  &-icon {
+    font-size: 2em;
+  }
+
+  &-field {
+    display: inline-block;
+    vertical-align: top;
+    padding-left: $padding-sm;
+    margin-bottom: 0 !important;
+
+    &-title {
+      display: block;
+      text-transform: uppercase;
+    }
   }
 }

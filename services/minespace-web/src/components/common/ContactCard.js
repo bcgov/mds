@@ -8,14 +8,13 @@ import * as Strings from "@/constants/strings";
 const { Paragraph, Text } = Typography;
 
 const ContactCardRow = (data) => (
-  <Row>
+  <Row className="contact-card-row">
     <Col>
-      <Icon type={data.icon} className="contact-card-icon" />
-      <Paragraph className="contact-card-field">
-        <Text strong className="contact-card-field-title">
+      <Icon type={data.icon} className="contact-card-row-icon" />
+      <Paragraph className="contact-card-row-field">
+        <Text strong className="contact-card-row-field-title">
           {data.label}
         </Text>
-        <br />
         <Text>{data.value}</Text>
       </Paragraph>
     </Col>
@@ -39,7 +38,6 @@ export const ContactCard = (props) => (
       label="Name"
       value={props.party ? props.party.name : Strings.UNKNOWN}
     />
-    <br />
     <ContactCardRow
       icon="mail"
       label="Email"
@@ -48,13 +46,11 @@ export const ContactCard = (props) => (
         Strings.UNKNOWN
       }
     />
-    <br />
     <ContactCardRow
       icon="phone"
       label="Phone"
       value={props.party ? props.party.phone_no : Strings.UNKNOWN}
     />
-    <br />
     <ContactCardRow
       icon="calendar"
       label={props.dateLabel}
