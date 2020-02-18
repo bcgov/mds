@@ -1,19 +1,163 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`MineList renders properly 1`] = `
-<TableLoadingWrapper
-  isPaginated={true}
-  tableHeaders={
+<CoreTable
+  columns={
     Array [
-      "Mine Name",
-      "Mine No.",
-      "Operational Status",
-      "Permit No.",
-      "Region",
-      "Tenure",
-      "Commodity",
-      "TSF",
+      Object {
+        "dataIndex": "mineName",
+        "render": [Function],
+        "sortField": "mine_name",
+        "sortOrder": false,
+        "sorter": true,
+        "title": "Mine Name",
+        "width": 150,
+      },
+      Object {
+        "dataIndex": "mineNo",
+        "render": [Function],
+        "sortField": "mine_no",
+        "sortOrder": false,
+        "sorter": true,
+        "title": "Mine No.",
+        "width": 150,
+      },
+      Object {
+        "dataIndex": "operationalStatus",
+        "render": [Function],
+        "sortField": "mine_operation_status_code",
+        "sortOrder": false,
+        "title": "Operational Status",
+        "width": 150,
+      },
+      Object {
+        "dataIndex": "permit",
+        "render": [Function],
+        "sortOrder": false,
+        "title": "Permit No.",
+        "width": 150,
+      },
+      Object {
+        "dataIndex": "region",
+        "render": [Function],
+        "sortField": "mine_region",
+        "sortOrder": false,
+        "sorter": true,
+        "title": "Region",
+        "width": 150,
+      },
+      Object {
+        "dataIndex": "tenure",
+        "render": [Function],
+        "sortOrder": false,
+        "title": "Tenure",
+        "width": 150,
+      },
+      Object {
+        "dataIndex": "commodity",
+        "render": [Function],
+        "sortOrder": false,
+        "title": "Commodity",
+        "width": 150,
+      },
+      Object {
+        "dataIndex": "tsf",
+        "render": [Function],
+        "sortOrder": false,
+        "title": "TSF",
+        "width": 150,
+      },
     ]
+  }
+  dataSource={
+    Array [
+      Object {
+        "commodity": Array [
+          Object {
+            "mine_tenure_type_code": "PLR",
+          },
+          Object {
+            "mine_tenure_type_code": "MIN",
+          },
+        ],
+        "commodityHash": undefined,
+        "emptyField": "N/A",
+        "key": "18133c75-49ad-4101-85f3-a43e35ae989a",
+        "mineName": "mine3",
+        "mineNo": "BLAH9091",
+        "operationalStatus": "N/A",
+        "permit": null,
+        "region": "North East",
+        "tenure": Array [
+          Object {
+            "mine_tenure_type_code": "PLR",
+          },
+          Object {
+            "mine_tenure_type_code": "MIN",
+          },
+        ],
+        "tenureHash": undefined,
+        "tsf": 1,
+        "verified_status": Object {
+          "healthy_ind": null,
+          "mine_guid": null,
+          "mine_name": null,
+          "verifying_timestamp": null,
+          "verifying_user": null,
+        },
+      },
+      Object {
+        "commodity": Array [
+          Object {
+            "mine_tenure_type_code": "PLR",
+          },
+          Object {
+            "mine_tenure_type_code": "MIN",
+          },
+        ],
+        "commodityHash": undefined,
+        "emptyField": "N/A",
+        "key": "18145c75-49ad-0101-85f3-a43e45ae989a",
+        "mineName": "mine2",
+        "mineNo": "BLAH9091",
+        "operationalStatus": "N/A",
+        "permit": Array [
+          "KNaaWwVdiJ40",
+          "xfM0c0ZKEw7B",
+        ],
+        "region": "North East",
+        "tenure": Array [
+          Object {
+            "mine_tenure_type_code": "PLR",
+          },
+          Object {
+            "mine_tenure_type_code": "MIN",
+          },
+        ],
+        "tenureHash": undefined,
+        "tsf": 1,
+        "verified_status": Object {
+          "healthy_ind": true,
+          "mine_guid": "18145c75-49ad-0101-85f3-a43e45ae989a",
+          "mine_name": "mine2",
+          "verifying_timestamp": null,
+          "verifying_user": null,
+        },
+      },
+    ]
+  }
+  tableProps={
+    Object {
+      "align": "left",
+      "locale": Object {
+        "emptyText": <NullScreen
+          message=""
+          type="no-results"
+        />,
+      },
+      "onChange": [Function],
+      "pagination": false,
+    }
   }
 />
 `;

@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
-import { Table, Button, Icon } from "antd";
+import { Button, Icon } from "antd";
 import _ from "lodash";
 import {
   getIncidentDeterminationHash,
@@ -11,7 +11,7 @@ import {
   getHSRCMComplianceCodesHash,
 } from "@common/selectors/staticContentSelectors";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
-import { formatDate, getTableHeaders } from "@common/utils/helpers";
+import { formatDate } from "@common/utils/helpers";
 import * as Strings from "@common/constants/strings";
 import { EDIT_OUTLINE_VIOLET } from "@/constants/assets";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
@@ -19,7 +19,7 @@ import * as Permission from "@/constants/permissions";
 import CustomPropTypes from "@/customPropTypes";
 import NullScreen from "@/components/common/NullScreen";
 import LinkButton from "@/components/common/LinkButton";
-import TableLoadingWrapper from "@/components/common/wrappers/TableLoadingWrapper";
+import CoreTable from "@/components/common/CoreTable";
 import * as router from "@/constants/routes";
 
 const propTypes = {
@@ -293,39 +293,36 @@ export class MineIncidentTable extends Component {
     ];
 
     return (
-      <TableLoadingWrapper
+      <CoreTable
         condition={this.props.isLoaded}
-        tableHeaders={getTableHeaders(columns)}
-        isPaginated={this.props.isPaginated}
-      >
-        <Table
-          onChange={
-            this.props.isDashboardView ? handleTableChange(this.props.handleIncidentSearch) : null
-          }
-          align="left"
-          pagination={false}
-          columns={
-            this.props.isDashboardView
-              ? applySortIndicator(columns, this.props.sortField, this.props.sortDir)
-              : columns
-          }
-          locale={{
+        columns={
+          this.props.isDashboardView
+            ? applySortIndicator(columns, this.props.sortField, this.props.sortDir)
+            : columns
+        }
+        dataSource={this.transformRowData(
+          this.props.incidents,
+          this.props.followupActions,
+          this.props.handleEditMineIncident,
+          this.props.openMineIncidentModal,
+          this.props.openViewMineIncidentModal,
+          this.props.incidentDeterminationHash,
+          this.props.incidentStatusCodeHash,
+          this.props.incidentCategoryCodeHash
+        )}
+        tableProps={{
+          onChange: this.props.isDashboardView
+            ? handleTableChange(this.props.handleIncidentSearch)
+            : null,
+          align: "left",
+          pagination: this.props.isPaginated,
+          locale: {
             emptyText: (
               <NullScreen type={this.props.isDashboardView ? "no-results" : "incidents"} />
             ),
-          }}
-          dataSource={this.transformRowData(
-            this.props.incidents,
-            this.props.followupActions,
-            this.props.handleEditMineIncident,
-            this.props.openMineIncidentModal,
-            this.props.openViewMineIncidentModal,
-            this.props.incidentDeterminationHash,
-            this.props.incidentStatusCodeHash,
-            this.props.incidentCategoryCodeHash
-          )}
-        />
-      </TableLoadingWrapper>
+          },
+        }}
+      />
     );
   }
 }
