@@ -5,19 +5,19 @@ import { formatDate } from "@common/utils/helpers";
 import CustomPropTypes from "@/customPropTypes";
 import * as Strings from "@/constants/strings";
 
-const { Text } = Typography;
+const { Paragraph, Text } = Typography;
 
 const ContactCardRow = (data) => (
-  <Row gutter={[32, 16]}>
-    <Col span={3}>
-      <Icon type={data.icon} style={{ fontSize: "2em" }} />
-    </Col>
-    <Col span={20} offset={1}>
-      <Text strong style={{ textTransform: "uppercase" }}>
-        {data.label}
-      </Text>
-      <br />
-      <Text>{data.value}</Text>
+  <Row>
+    <Col>
+      <Icon type={data.icon} className="contact-card-icon" />
+      <Paragraph className="contact-card-field">
+        <Text strong className="contact-card-field-title">
+          {data.label}
+        </Text>
+        <br />
+        <Text>{data.value}</Text>
+      </Paragraph>
     </Col>
   </Row>
 );
