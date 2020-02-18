@@ -26,6 +26,7 @@ import {
 } from "@common/selectors/staticContentSelectors";
 import { clearNoticeOfWorkApplication } from "@common/actions/noticeOfWorkActions";
 import { downloadNowDocument } from "@common/utils/actionlessNetworkCalls";
+import { generateNoticeOfWorkApplicationDocument } from "@/actionCreators/noticeOfWorkActionCreator";
 import * as routes from "@/constants/routes";
 import ApplicationStepOne from "@/components/noticeOfWork/applications/applicationStepOne/ApplicationStepOne";
 import NOWApplicationReviews from "@/components/noticeOfWork/applications/referals/NOWApplicationReviews";
@@ -52,6 +53,7 @@ const propTypes = {
   fetchMineRecordById: PropTypes.func.isRequired,
   fetchImportedNoticeOfWorkApplication: PropTypes.func.isRequired,
   fetchOriginalNoticeOfWorkApplication: PropTypes.func.isRequired,
+  generateNoticeOfWorkApplicationDocument: PropTypes.func.isRequired,
   reset: PropTypes.func.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func,
@@ -110,6 +112,7 @@ export class NoticeOfWorkApplication extends Component {
         noticeOfWorkPageFromRoute: this.props.location.state.noticeOfWorkPageFromRoute,
       });
     }
+
     const isNewApplication = !!this.props.history.location.state;
     if (this.props.match.params.id) {
       this.loadNoticeOfWork(this.props.match.params.id);
@@ -118,7 +121,6 @@ export class NoticeOfWorkApplication extends Component {
       this.setState({ isNewApplication });
     }
 
-    // if users navigate to the route from a hard refresh, or without a mineGuid - show nulllScreen
     if (!this.props.history.location.state && !this.props.match.params.id) {
       this.setState({ showNullScreen: true });
     }
@@ -258,7 +260,7 @@ export class NoticeOfWorkApplication extends Component {
 
   handleChangeNOWMineAndLocation = (values) => {
     const message = values.latitude
-      ? "Successfully updated location of this Notice of Work"
+      ? "Successfully updated Notice of Work location"
       : "Successfully transferred Notice of Work";
     this.props
       .updateNoticeOfWorkApplication(values, this.props.noticeOfWork.now_application_guid, message)
@@ -289,8 +291,7 @@ export class NoticeOfWorkApplication extends Component {
       .then(() => finalAction());
   };
 
-  openUpdateLeadInspectorModal = (event) => {
-    event.preventDefault();
+  openUpdateLeadInspectorModal = () => {
     this.props.openModal({
       props: {
         title: "Change Lead Inspector",
@@ -303,8 +304,7 @@ export class NoticeOfWorkApplication extends Component {
     });
   };
 
-  openChangeNOWMineModal = (event, noticeOfWork) => {
-    event.preventDefault();
+  openChangeNOWMineModal = (noticeOfWork) => {
     this.props.openModal({
       props: {
         initialValues: {
@@ -319,8 +319,7 @@ export class NoticeOfWorkApplication extends Component {
     });
   };
 
-  openChangeNOWLocationModal = (event, noticeOfWork) => {
-    event.preventDefault();
+  openChangeNOWLocationModal = (noticeOfWork) => {
     this.props.openModal({
       props: {
         initialValues: {
@@ -340,6 +339,7 @@ export class NoticeOfWorkApplication extends Component {
 
   handleProgressChange = (status) => {
     this.setState({ isLoaded: false });
+
     const { id } = this.props.match.params;
     this.props
       .createNoticeOfWorkApplicationProgress(id, {
@@ -356,7 +356,17 @@ export class NoticeOfWorkApplication extends Component {
       REF: 2,
       DEC: 3,
     };
+
     this.setState({ currentStep: statusIndex[status] });
+  };
+
+  handleGenerateDocument = (data) => {
+    const documentTypeCode = data.key;
+    const payload = {
+      now_application_guid: this.props.noticeOfWork.now_application_guid,
+      template_data: {},
+    };
+    this.props.generateNoticeOfWorkApplicationDocument(documentTypeCode, payload);
   };
 
   renderStepOne = () => {
@@ -425,74 +435,81 @@ export class NoticeOfWorkApplication extends Component {
     if (this.state.showNullScreen) {
       return <NullScreen type="unauthorized-page" />;
     }
+
     const isImported = this.props.noticeOfWork.imported_to_core;
+
     const isDecision =
       this.props.noticeOfWork.application_progress &&
       this.props.noticeOfWork.application_progress.length === 3;
+
     const steps = {
       0: this.renderStepOne(),
       1: this.renderStepTwo(),
       2: this.renderStepThree(),
       3: <NullScreen type="next-stage" />,
     };
+
     const menu = (
       <Menu>
         {isImported &&
           this.props.noticeOfWork.submission_documents.filter(
             (x) => x.filename === "ApplicationForm.pdf"
           ).length > 0 && (
-            <div className="custom-menu-item">
-              <button type="button" className="full" onClick={this.showApplicationForm}>
-                Open Original Application Form
-              </button>
-            </div>
+            <Menu.Item key="open-original-application-form" onClick={this.showApplicationForm}>
+              Open Original Application Form
+            </Menu.Item>
           )}
-        {/* only show the edit button during technical review stage */}
-        {this.state.currentStep === 1 && (
-          <div className="custom-menu-item">
-            <span>
-              {this.state.isViewMode && (
-                <button type="button" className="full" onClick={this.toggleEditMode}>
-                  Edit
-                </button>
-              )}
-            </span>
-          </div>
+        {this.state.currentStep === 1 && this.state.isViewMode && (
+          <Menu.Item key="edit" onClick={this.toggleEditMode}>
+            Edit
+          </Menu.Item>
         )}
         {!isDecision && (
-          <div className="custom-menu-item">
-            <button
-              type="button"
-              onClick={(event) => this.openChangeNOWMineModal(event, this.props.noticeOfWork)}
-            >
-              Transfer to a different mine
-            </button>
-          </div>
+          <Menu.Item
+            key="transfer-to-a-different-mine"
+            onClick={() => this.openChangeNOWMineModal(this.props.noticeOfWork)}
+          >
+            Transfer to a Different Mine
+          </Menu.Item>
         )}
         {!isDecision && (
-          <div className="custom-menu-item">
-            <button
-              type="button"
-              onClick={(event) => this.openChangeNOWLocationModal(event, this.props.noticeOfWork)}
-            >
-              Edit Application Lat/Long
-            </button>
-          </div>
+          <Menu.Item
+            key="edit-application-lat-long"
+            onClick={() => this.openChangeNOWLocationModal(this.props.noticeOfWork)}
+          >
+            Edit Application Lat/Long
+          </Menu.Item>
         )}
-        {this.props.noticeOfWork.lead_inspector_party_guid && !isDecision && (
-          <div className="custom-menu-item">
-            <button type="button" onClick={(event) => this.openUpdateLeadInspectorModal(event)}>
-              Change the Lead Inspector
-            </button>
-          </div>
+        {!isDecision && this.props.noticeOfWork.lead_inspector_party_guid && (
+          <Menu.Item
+            key="change-the-lead-inspector"
+            onClick={() => this.openUpdateLeadInspectorModal()}
+          >
+            Change the Lead Inspector
+          </Menu.Item>
         )}
-        {this.props.noticeOfWork.lead_inspector_party_guid && !isDecision && (
-          <div className="custom-menu-item">
-            <button
-              type="button"
-              onClick={() => this.handleProgressChange(this.state.buttonValue)}
-            >{`Ready for ${this.state.buttonLabel}`}</button>
-          </div>
+        {// TODO: Determine the actual condition that determines whether or not to show this submenu.
+        true && (
+          // TODO: Get document codes in a more correct fashion once document generation is more fully implemented.
+          <Menu.SubMenu key="generate-letters" title="Generate Letters">
+            <Menu.Item key="CAL" onClick={this.handleGenerateDocument}>
+              Client Acknowledgement
+            </Menu.Item>
+            <Menu.Item key="WDL" onClick={this.handleGenerateDocument}>
+              Withdrawl
+            </Menu.Item>
+            <Menu.Item key="RJL" onClick={this.handleGenerateDocument}>
+              Rejection
+            </Menu.Item>
+          </Menu.SubMenu>
+        )}
+        {!isDecision && this.props.noticeOfWork.lead_inspector_party_guid && (
+          <Menu.Item
+            key="start-next-step"
+            onClick={() => this.handleProgressChange(this.state.buttonValue)}
+          >
+            Ready for {this.state.buttonLabel}
+          </Menu.Item>
         )}
       </Menu>
     );
@@ -620,6 +637,7 @@ const mapDispatchToProps = (dispatch) =>
       updateNoticeOfWorkApplication,
       fetchImportedNoticeOfWorkApplication,
       fetchOriginalNoticeOfWorkApplication,
+      generateNoticeOfWorkApplicationDocument,
       fetchMineRecordById,
       createNoticeOfWorkApplicationProgress,
       reset,
