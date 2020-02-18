@@ -1,8 +1,7 @@
 from flask_restplus import Namespace
-from app.api.document_generation.resources.now_document import NoticeOfWorkDocumentResource, NoticeOfWorkDocumentTokenResource, NoticeOfWorkDocumentGenerationResource
+from app.api.document_generation.resources.now_document import NoticeOfWorkDocumentResource, NoticeOfWorkDocumentGenerationResource
 
-api = Namespace('now-document-types', description='Generate Notice of Work documents')
+api = Namespace('document-generation', description='Generate documents for business objects.')
 
-api.add_resource(NoticeOfWorkDocumentResource, '/<string:document_type_code>')
-api.add_resource(NoticeOfWorkDocumentGenerationResource, '/<string:document_type_code>/generate')
-api.add_resource(NoticeOfWorkDocumentTokenResource, '/<string:document_type_code>/token')
+api.add_resource(NoticeOfWorkDocumentResource, '/now')
+api.add_resource(NoticeOfWorkDocumentGenerationResource, '/now/<string:document_type_code>')

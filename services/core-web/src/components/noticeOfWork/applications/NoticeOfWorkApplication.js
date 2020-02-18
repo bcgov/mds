@@ -26,7 +26,7 @@ import {
 } from "@common/selectors/staticContentSelectors";
 import { clearNoticeOfWorkApplication } from "@common/actions/noticeOfWorkActions";
 import { downloadNowDocument } from "@common/utils/actionlessNetworkCalls";
-import { getNoticeOfWorkApplicationDocument } from "@/actionCreators/noticeOfWorkActionCreator";
+import { generateNoticeOfWorkApplicationDocument } from "@/actionCreators/noticeOfWorkActionCreator";
 import * as routes from "@/constants/routes";
 import ApplicationStepOne from "@/components/noticeOfWork/applications/applicationStepOne/ApplicationStepOne";
 import NOWApplicationReviews from "@/components/noticeOfWork/applications/referals/NOWApplicationReviews";
@@ -53,6 +53,7 @@ const propTypes = {
   fetchMineRecordById: PropTypes.func.isRequired,
   fetchImportedNoticeOfWorkApplication: PropTypes.func.isRequired,
   fetchOriginalNoticeOfWorkApplication: PropTypes.func.isRequired,
+  generateNoticeOfWorkApplicationDocument: PropTypes.func.isRequired,
   reset: PropTypes.func.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func,
@@ -361,7 +362,11 @@ export class NoticeOfWorkApplication extends Component {
 
   handleGenerateDocument = (data) => {
     const documentTypeCode = data.key;
-    getNoticeOfWorkApplicationDocument(documentTypeCode);
+    const payload = {
+      now_application_guid: this.props.noticeOfWork.now_application_guid,
+      template_data: {},
+    };
+    this.props.generateNoticeOfWorkApplicationDocument(documentTypeCode, payload);
   };
 
   renderStepOne = () => {
@@ -632,6 +637,7 @@ const mapDispatchToProps = (dispatch) =>
       updateNoticeOfWorkApplication,
       fetchImportedNoticeOfWorkApplication,
       fetchOriginalNoticeOfWorkApplication,
+      generateNoticeOfWorkApplicationDocument,
       fetchMineRecordById,
       createNoticeOfWorkApplicationProgress,
       reset,
