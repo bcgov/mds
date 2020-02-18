@@ -2,21 +2,19 @@ import os
 import uuid
 from flask import current_app, send_file, request
 from flask_restplus import Resource, fields
-from werkzeug.exceptions import NotFound, BadRequest, NotImplemented
+from werkzeug.exceptions import NotFound, BadRequest
 from app.extensions import api, cache
 from app.api.utils.resources_mixins import UserMixin
 from app.api.utils.access_decorators import requires_role_view_all, requires_role_edit_permit
 from app.api.utils.custom_reqparser import CustomReqparser
 from app.api.constants import TIMEOUT_5_MINUTES, NOW_DOCUMENT_TEMPLATE_TYPES
 
-import sys
-
 NOW_DOCUMENT_DOWNLOAD_TOKEN_MODEL = api.model('NoticeOfWorkDocumentDownloadToken',
                                               {'token_guid': fields.String})
 
 
 def NOW_DOCUMENT_DOWNLOAD_TOKEN(token_guid):
-    return f'now-document-types:download-token:{token_guid}'
+    return f'document-generation-now:download-token:{token_guid}'
 
 
 class NoticeOfWorkDocumentGenerationResource(Resource, UserMixin):
@@ -31,13 +29,11 @@ class NoticeOfWorkDocumentGenerationResource(Resource, UserMixin):
     @api.marshal_with(NOW_DOCUMENT_DOWNLOAD_TOKEN_MODEL, code=200)
     @requires_role_edit_permit
     def post(self, document_type_code):
-        data = self.parser.parse_args()
-
-        print('**************************************', file=sys.stderr)
-        print(data, file=sys.stderr)
-
         if document_type_code not in NOW_DOCUMENT_TEMPLATE_TYPES:
             raise NotFound('Document type code not found')
+
+        # TODO: Generate document using the provided data.
+        data = self.parser.parse_args()
 
         token_guid = uuid.uuid4()
         cache.set(
@@ -57,13 +53,7 @@ class NoticeOfWorkDocumentResource(Resource, UserMixin):
         if not token_data:
             raise BadRequest('Valid token required for download')
 
-        print(token_data, file=sys.stderr)
-
         document_type_code = token_data['document_type_code']
-
-        if document_type_code not in NOW_DOCUMENT_TEMPLATE_TYPES:
-            raise NotFound('Document type code not found')
-
         file_name = NOW_DOCUMENT_TEMPLATE_TYPES[document_type_code]
 
         return send_file(
