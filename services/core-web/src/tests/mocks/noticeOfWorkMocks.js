@@ -572,7 +572,7 @@ export const UNIT_TYPES = {
   records: [
     {
       unit_type_code: "MTN",
-      short_description: "Tonne (Metric Ton 1000Kg)",
+      short_description: "Tonne (Metric Ton 1,000 kg)",
     },
     {
       unit_type_code: "MEC",
@@ -600,7 +600,7 @@ export const UNIT_TYPES = {
 export const DROPDOWN_UNIT_TYPES = [
   {
     value: "MTN",
-    label: "Tonne (Metric Ton 1000Kg)",
+    label: "Tonne (Metric Ton 1,000 kg)",
   },
   { value: "MEC", label: "Meters cubed" },
   { value: "HA", label: "Hectares" },
@@ -613,7 +613,7 @@ export const DROPDOWN_UNIT_TYPES = [
 ];
 
 export const UNIT_TYPES_HASH = {
-  MTN: "Tonne (Metric Ton 1000Kg)",
+  MTN: "Tonne (Metric Ton 1,000 kg)",
   MEC: "Meters cubed",
   HA: "Hectares",
   DEG: "Degrees",
@@ -650,11 +650,11 @@ export const APPLICATION_PERMIT_TYPES = {
   records: [
     {
       now_application_permit_type_code: "MY-ABP",
-      description: "Multi-Year, Area Based Permit",
+      description: "Multi-Year, Area-Based Permit",
     },
     {
       now_application_permit_type_code: "OYP",
-      description: "One Year Permit",
+      description: "One-Year Permit",
     },
     {
       now_application_permit_type_code: "MYP",
@@ -666,9 +666,9 @@ export const APPLICATION_PERMIT_TYPES = {
 export const DROPDOWN_APPLICATION_PERMIT_TYPES = [
   {
     value: "MY-ABP",
-    label: "Multi-Year, Area Based Permit",
+    label: "Multi-Year, Area-Based Permit",
   },
-  { value: "OYP", label: "One Year Permit" },
+  { value: "OYP", label: "One-Year Permit" },
   { value: "MYP", label: "Multi-Year Permit" },
 ];
 
