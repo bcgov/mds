@@ -14,6 +14,10 @@ class NOWApplicationDocumentType(AuditMixin, Base):
     now_application_document_type_code = db.Column(db.String, primary_key=True)
     description = db.Column(db.String, nullable=False)
     active_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
+    document_template_code = db.Column(
+        UUID(as_uuid=True), db.ForeignKey('document_template.document_template_code'))
+
+    document_template = db.relationship("DocumentTemplate", backref="now_application_document_type")
 
     @classmethod
     def active(cls):

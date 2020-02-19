@@ -4,8 +4,9 @@ import { error, request, success } from "@common/actions/genericActions";
 import { ENVIRONMENT } from "@common/constants/environment";
 import { createRequestHeader } from "@common/utils/RequestHeaders";
 import CustomAxios from "@common/customAxios";
-import * as API from "../constants/API";
-import * as reducerTypes from "../constants/reducerTypes";
+import * as COMMON_API from "@common/constants/API";
+import * as API from "@/constants/API";
+import * as reducerTypes from "@/constants/reducerTypes";
 
 export const generateNoticeOfWorkApplicationDocument = (documentTypeCode, payload) => (
   dispatch
@@ -14,18 +15,13 @@ export const generateNoticeOfWorkApplicationDocument = (documentTypeCode, payloa
   dispatch(showLoading());
   return CustomAxios()
     .post(
-      `${ENVIRONMENT.apiUrl}${API.NOTICE_OF_WORK_APPLICATION_DOCUMENT_GENERATION(
-        documentTypeCode
-      )}`,
+      `${ENVIRONMENT.apiUrl}${COMMON_API.NOW_APPLICATION_DOCUMENT_TYPE_OPTIONS}/${documentTypeCode}/generate`,
       payload,
       createRequestHeader()
     )
     .then((response) => {
       const token = { token: response.data.token_guid };
-      window.open(
-        `${ENVIRONMENT.apiUrl + API.NOTICE_OF_WORK_APPLICATION_DOCUMENT(token)}`,
-        "_blank"
-      );
+      window.open(`${ENVIRONMENT.apiUrl + API.RETRIEVE_CORE_DOCUMENT(token)}`, "_blank");
       notification.success({
         message: "Successfully generated Notice of Work document",
         duration: 10,
