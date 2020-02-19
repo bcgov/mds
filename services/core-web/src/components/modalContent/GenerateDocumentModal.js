@@ -21,4 +21,5 @@ export const GenerateDocumentModal = (props) => (
 
 GenerateDocumentModal.propTypes = propTypes;
 GenerateDocumentModal.defaultProps = defaultProps;
+
 export default GenerateDocumentModal;

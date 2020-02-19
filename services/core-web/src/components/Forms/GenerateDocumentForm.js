@@ -20,17 +20,16 @@ const createFields = (fields) => (
     {fields &&
       fields.length > 0 &&
       fields.map((field) => (
-        <Row>
+        <Row key={field.id}>
           <Col>
             <Form.Item>
               <Field
-                id={field.code}
-                name={field.code}
+                id={field.id}
+                name={field.id}
                 label={field.label}
-                // placeholder={field.placeholder}
-                component={renderConfig[field.inputType]}
-                // data={props.permitStatusOptions}
-                validate={[required]}
+                placeholder={field.placeholder}
+                component={renderConfig[field.type]}
+                validate={field.required ? [required] : null}
               />
             </Form.Item>
           </Col>
@@ -67,7 +66,8 @@ GenerateDocumentForm.propTypes = propTypes;
 
 export default reduxForm({
   form: FORM.GENERATE_DOCUMENT,
-  // initialValues: { proponent_mine_access: [] },
+  // TODO: Handle form initial values.
+  // initialValues: {},
   touchOnBlur: false,
   onSubmitSuccess: resetForm(FORM.GENERATE_DOCUMENT),
 })(GenerateDocumentForm);

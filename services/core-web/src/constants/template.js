@@ -1,42 +1,89 @@
+// Template object property examples:
 // name: Rejection Letter
 // code: RJL
 // fields: <array of Field objects>
 class Template {
-  constructor(name, code, fields) {
-    this.name = name;
-    this.code = code;
-    this.fields = fields;
+  constructor(data) {
+    this.name = data.name;
+    this.code = data.code;
+    this.fields = data.fields;
   }
 }
 
-// label: Mine Name
-// code: <<mine name>> (or what ever Carbone uses to identify this field)
-// inputType: <the input type, i.e., the 'render config' type (see config.js)>
-// placeholder: Enter your mine name
-// value: <pre-existing value, if it exists>
+// Field object property examples:
+// id: address_1 (or what ever Carbone uses to identify this field)
+// label: Address
+// type: FIELD (the input type, i.e., the 'render config' type (see config.js))
+// placeholder: Enter the address
+// required: true (whether or not the field is required in order to submit the form)
 class Field {
-  constructor(code, label, inputType, inputProps) {
-    this.code = code;
-    this.label = label;
-    this.inputType = inputType;
-    this.inputProps = inputProps;
+  constructor(data) {
+    this.id = data.id;
+    this.label = data.label;
+    this.type = data.type;
+    this.placeholder = data.placeholder;
+    this.required = data.required;
   }
 }
 
-const FIELDS_REJECTION_LETTER = [
-  new Field("<<date>>", "Date", "DATE", null),
-  new Field("<<mine_no>>", "Mine Number", "FIELD", null),
-  new Field("<<addy1>>", "Address 1", "FIELD", null),
-  new Field("<<addy>>", "Address", "FIELD", null),
-  new Field("<<property>>", "Property", "FIELD", null),
-  new Field("<<apl_dt>>", "Application Date", "DATE", null),
-  new Field("<<inspector>>", "Inspector", "FIELD", null),
+const fieldsDataRejectionLetter = [
+  { id: "date", label: "Date", type: "DATE", placeholder: null, required: true },
+  {
+    id: "mine_no",
+    label: "Mine Number",
+    type: "FIELD",
+    placeholder: "Enter the mine number",
+    required: true,
+  },
+  {
+    id: "addy1",
+    label: "Address 1",
+    type: "FIELD",
+    placeholder: "Enter the address",
+    required: true,
+  },
+  {
+    id: "addy",
+    label: "Address",
+    type: "FIELD",
+    placeholder: "Enter the address",
+    required: false,
+  },
+  {
+    id: "property",
+    label: "Property",
+    type: "FIELD",
+    placeholder: "Enter the property name",
+    required: true,
+  },
+  {
+    id: "apl_dt",
+    label: "Application Date",
+    type: "DATE",
+    placeholder: null,
+    required: true,
+  },
+  {
+    id: "inspector",
+    label: "Inspector",
+    type: "SELECT",
+    placeholder: "Select the inspector",
+    required: false,
+  },
 ];
 
-const TEMPLATE_REJECTION_LETTER = new Template("Rejection Letter", "RJL", FIELDS_REJECTION_LETTER);
+const fieldsRejectionLetter = fieldsDataRejectionLetter.map((fieldData) => new Field(fieldData));
 
-// The templates, hard-coded for now. Data should be retrieved from DB then we use that data
-// to create these template objects which the front-end uses.
-export const TEMPLATES = { RJL: TEMPLATE_REJECTION_LETTER };
+const templateDataRejectionLetter = {
+  name: "Rejection Letter",
+  code: "RJL",
+  fields: fieldsRejectionLetter,
+};
+
+const TEMPLATE_REJECTION_LETTER = new Template(templateDataRejectionLetter);
+
+// The document templates (hard-coded for now). Data should be retrieved from the DB, then we use that data
+// to create the document template objects.
+export const TEMPLATES = { [TEMPLATE_REJECTION_LETTER.code]: TEMPLATE_REJECTION_LETTER };
 
 export default TEMPLATES;
