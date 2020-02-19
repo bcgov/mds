@@ -395,6 +395,7 @@ MINE_COMPLIANCE_RESPONSE_MODEL = api.model(
         'all_time': fields.Nested(COMPLAINCE_AGGREGATION_MODEL),
         'last_12_months': fields.Nested(COMPLAINCE_AGGREGATION_MODEL),
         'current_fiscal': fields.Nested(COMPLAINCE_AGGREGATION_MODEL),
-        'year_to_date': fields.Nested({'num_inspections': fields.Integer}),
+        'year_to_date': fields.Nested(
+            api.model('NUM_INSPECTIONS', {'num_inspections': fields.Integer})),
         'orders': fields.List(fields.Nested(ORDER_MODEL)),
     })
