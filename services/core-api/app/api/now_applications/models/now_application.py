@@ -57,6 +57,12 @@ class NOWApplication(Base, AuditMixin):
     first_aid_equipment_on_site = db.Column(db.String)
     first_aid_cert_level = db.Column(db.String)
 
+    work_plan = db.Column(db.String)
+    crown_grant_or_district_lot_numbers = db.Column(db.String)
+    has_building_outside_tenure = db.Column(db.Boolean, nullable=False, default=False)
+    is_access_gated = db.Column(db.Boolean, nullable=False, default=False)
+    has_key_for_inspector = db.Column(db.Boolean, nullable=False, default=False)
+
     ready_for_review_date = db.Column(db.Date)
     referral_closed_on_date = db.Column(db.Date)
     consultation_closed_on_date = db.Column(db.Date)
