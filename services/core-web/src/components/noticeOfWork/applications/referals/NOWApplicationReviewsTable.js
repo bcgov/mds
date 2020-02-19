@@ -1,16 +1,15 @@
 import React from "react";
-import { Table, Button, Icon, Popconfirm } from "antd";
+import { Button, Icon, Popconfirm } from "antd";
 import { PropTypes } from "prop-types";
 import { connect } from "react-redux";
 import { getNoticeOfWorkApplicationApplicationReviewTypeHash } from "@common/selectors/staticContentSelectors";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
-import { getTableHeaders } from "@common/utils/helpers";
 import CustomPropTypes from "@/customPropTypes";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
 import { EDIT_OUTLINE_VIOLET } from "@/constants/assets";
 import LinkButton from "@/components/common/LinkButton";
-import TableLoadingWrapper from "@/components/common/wrappers/TableLoadingWrapper";
+import CoreTable from "@/components/common/CoreTable";
 import NullScreen from "@/components/common/NullScreen";
 
 const propTypes = {
@@ -123,21 +122,22 @@ const transformRowData = (
 export const NOWApplicationReviewsTable = (props) => {
   const columnValues = columns(props.reviewerLabel);
   return (
-    <TableLoadingWrapper condition={props.isLoaded} tableHeaders={getTableHeaders(columnValues)}>
-      <Table
-        columns={columnValues}
-        pagination={false}
-        dataSource={transformRowData(
-          props.noticeOfWorkReviews,
-          props.noticeOfWorkReviewTypesHash,
-          props.handleDelete,
-          props.openEditModal,
-          props.handleEdit,
-          props.handleDocumentDelete
-        )}
-        locale={{ emptyText: <NullScreen type="no-results" /> }}
-      />
-    </TableLoadingWrapper>
+    <CoreTable
+      condition={props.isLoaded}
+      columns={columnValues}
+      dataSource={transformRowData(
+        props.noticeOfWorkReviews,
+        props.noticeOfWorkReviewTypesHash,
+        props.handleDelete,
+        props.openEditModal,
+        props.handleEdit,
+        props.handleDocumentDelete
+      )}
+      tableProps={{
+        pagination: false,
+        locale: { emptyText: <NullScreen type="no-results" /> },
+      }}
+    />
   );
 };
 

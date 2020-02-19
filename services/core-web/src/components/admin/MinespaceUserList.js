@@ -1,11 +1,10 @@
 import React from "react";
-import { Table, Button, Popconfirm, Icon } from "antd";
+import { Button, Popconfirm, Icon } from "antd";
 import PropTypes from "prop-types";
-import { getTableHeaders } from "@common/utils/helpers";
 import * as Strings from "@common/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
 import NullScreen from "@/components/common/NullScreen";
-import TableLoadingWrapper from "@/components/common/wrappers/TableLoadingWrapper";
+import CoreTable from "@/components/common/CoreTable";
 
 const propTypes = {
   minespaceUsers: PropTypes.arrayOf(CustomPropTypes.minespaceUser),
@@ -85,20 +84,20 @@ const transformRowData = (minespaceUsers, mines, deleteFunc) =>
   }));
 
 export const MinespaceUserList = (props) => (
-  <TableLoadingWrapper condition={props.isLoaded} tableHeaders={getTableHeaders(columns)}>
-    <Table
-      rowClassName="fade-in"
-      align="center"
-      pagination={false}
-      columns={columns}
-      dataSource={transformRowData(
-        props.minespaceUsers,
-        props.minespaceUserMines,
-        props.handleDelete
-      )}
-      locale={{ emptyText: <NullScreen type="no-results" /> }}
-    />
-  </TableLoadingWrapper>
+  <CoreTable
+    condition={props.isLoaded}
+    columns={columns}
+    dataSource={transformRowData(
+      props.minespaceUsers,
+      props.minespaceUserMines,
+      props.handleDelete
+    )}
+    tableProps={{
+      align: "center",
+      pagination: false,
+      locale: { emptyText: <NullScreen type="no-results" /> },
+    }}
+  />
 );
 MinespaceUserList.propTypes = propTypes;
 MinespaceUserList.defaultProps = defaultProps;
