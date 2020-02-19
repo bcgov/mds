@@ -26,6 +26,7 @@ import { storeVariances } from "@common/actions/varianceActions";
 import { storePermits } from "@common/actions/permitActions";
 import { storeMine } from "@common/actions/mineActions";
 import * as Strings from "@common/constants/strings";
+import { detectProdEnvironment } from "@common/utils/environmentUtils";
 import MineNavigation from "@/components/mine/MineNavigation";
 import Loading from "@/components/common/Loading";
 import CustomPropTypes from "@/customPropTypes";
@@ -40,7 +41,7 @@ import {
   MINESPACE_ICON,
 } from "@/constants/assets";
 import RefreshButton from "@/components/common/RefreshButton";
-
+import * as router from "@/constants/routes";
 /**
  * @class MineDashboard.js is an individual mines dashboard, gets Mine data from redux and passes into children.
  */
@@ -237,6 +238,25 @@ export class MineDashboard extends Component {
             </div>
           )}
         </AuthorizationWrapper>
+        {/* this is an external link to mineSpace, only available to users in production as its a prod URL, not using the AuthWrapper since the admin role overrides the wrapper. */}
+        {detectProdEnvironment() && (
+          <div className="custom-menu-item no_link_styling">
+            <a
+              href={router.VIEW_MINESPACE(mine.mine_guid)}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img
+                src={MINESPACE_ICON}
+                alt="mineSpace"
+                width="30"
+                height="30"
+                className="padding-small"
+              />
+              View on MineSpace
+            </a>
+          </div>
+        )}
       </Menu>
     );
 

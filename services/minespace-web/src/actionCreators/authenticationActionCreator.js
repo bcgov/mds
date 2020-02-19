@@ -18,6 +18,34 @@ export const unAuthenticateUser = (toastMessage) => (dispatch) => {
   }
 };
 
+export const getUserRoles = (token, response) => (dispatch) => {
+  dispatch(request(reducerTypes.GET_USER_INFO));
+  return axios
+    .get(MINESPACE_ENV.CLIENT_ROLES(response.data.sub), {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then((response) => {
+      console.log(response);
+      // dispatch(success(reducerTypes.GET_USER_INFO));
+      // dispatch(authenticationActions.authenticateUser(response.data));
+    })
+    .catch((err) => {
+      console.log(err);
+      // dispatch(error(reducerTypes.GET_USER_INFO));
+      // dispatch(unAuthenticateUser());
+      //   if (errorMessage) {
+      //     notification.error({
+      //       message: errorMessage,
+      //       duration: 10,
+      //     });
+      //   } else {
+      //     throw err;
+      //   }
+    });
+};
+
 export const getUserInfoFromToken = (token, errorMessage) => (dispatch) => {
   dispatch(request(reducerTypes.GET_USER_INFO));
   return axios
@@ -27,6 +55,8 @@ export const getUserInfoFromToken = (token, errorMessage) => (dispatch) => {
       },
     })
     .then((response) => {
+      console.log(response);
+      dispatch(getUserRoles(token, response));
       dispatch(success(reducerTypes.GET_USER_INFO));
       dispatch(authenticationActions.authenticateUser(response.data));
     })

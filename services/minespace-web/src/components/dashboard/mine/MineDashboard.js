@@ -18,6 +18,7 @@ import Incidents from "@/components/dashboard/mine/incidents/Incidents";
 import Reports from "@/components/dashboard/mine/reports/Reports";
 import * as router from "@/constants/routes";
 import * as Strings from "@/constants/strings";
+import NotFoundNotice from "@/components/common/NotFoundNotice";
 
 const { Title } = Typography;
 const { TabPane } = Tabs;
@@ -42,23 +43,24 @@ const defaultProps = {
 const initialTab = "overview";
 
 export class MineDashboard extends Component {
-  state = { isLoaded: false, activeTab: initialTab };
+  state = { isLoaded: false, activeTab: initialTab, mineNotFound: false };
 
   componentDidMount() {
     const { id, activeTab } = this.props.match.params;
-    console.log(this.props.history);
-    console.log(this.props.location);
-    console.log(this.props.match);
-    console.log(this.props);
     this.props.fetchPartyRelationships({ mine_guid: id, relationships: "party" });
     if (activeTab) {
       this.setState({ activeTab });
     } else {
       this.handleTabChange(initialTab);
     }
-    this.props.fetchMineRecordById(id).then(() => {
-      this.setState({ isLoaded: true });
-    });
+    this.props
+      .fetchMineRecordById(id)
+      .then(() => {
+        this.setState({ isLoaded: true });
+      })
+      .catch((err) => {
+        this.setState({ mineNotFound: true });
+      });
   }
 
   componentWillReceiveProps(nextProps) {
@@ -89,6 +91,9 @@ export class MineDashboard extends Component {
   render() {
     const { id } = this.props.match.params;
     const mine = this.props.mines[id];
+    if (this.state.mineNotFound) {
+      return <NotFoundNotice />;
+    }
     return (
       (this.state.isLoaded && this.props.staticContentLoadingIsComplete && (
         <Row>
