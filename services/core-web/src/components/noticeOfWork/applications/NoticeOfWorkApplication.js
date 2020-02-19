@@ -38,6 +38,7 @@ import NoticeOfWorkPageHeader from "@/components/noticeOfWork/applications/Notic
 import * as FORM from "@/constants/forms";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
 import { modalConfig } from "@/components/modalContent/config";
+import { TEMPLATES } from "@/constants/template";
 
 const { Step } = Steps;
 
@@ -360,13 +361,36 @@ export class NoticeOfWorkApplication extends Component {
     this.setState({ currentStep: statusIndex[status] });
   };
 
-  handleGenerateDocument = (data) => {
-    const documentTypeCode = data.key;
+  handleGenerateDocument = () => {
+    // TODO: Implement more templates. Right now, Rejection Letter (RJL) is the only one.
+    // const documentTypeCode = data.key;
+    // const template = TEMPLATES[documentTypeCode];
+
+    const template = TEMPLATES.RJL;
+
+    this.props.openModal({
+      props: {
+        template,
+        onSubmit: this.handleGenerateDocumentFormSubmit,
+        initialValues: {},
+        title: `Generate ${template.name}`,
+      },
+      width: "75vw",
+      content: modalConfig.GENERATE_DOCUMENT,
+    });
+  };
+
+  // TODO: Properly implement.
+  handleGenerateDocumentFormSubmit = (values) => {
+    // TODO: Pass in the associated template, or a way to identify it.
+    const template = { code: "RJL" };
     const payload = {
       now_application_guid: this.props.noticeOfWork.now_application_guid,
-      template_data: {},
+
+      // TODO: Correctly create the template data using the form values.
+      template_data: values,
     };
-    this.props.generateNoticeOfWorkApplicationDocument(documentTypeCode, payload);
+    this.props.generateNoticeOfWorkApplicationDocument(template.code, payload);
   };
 
   renderStepOne = () => {

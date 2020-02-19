@@ -19,6 +19,7 @@ import UpdateNOWLeadInspectorModal from "./UpdateNOWLeadInspectorModal";
 import DownloadDocumentPackageModal from "./DownloadDocumentPackageModal";
 import NOWReviewModal from "./NOWReviewModal";
 import ChangeNOWLocationModal from "./ChangeNOWLocationModal";
+import GenerateDocumentModal from "./GenerateDocumentModal";
 
 // This file is anticipated to have multiple exports
 // eslint-disable-next-line import/prefer-default-export
@@ -37,6 +38,7 @@ export const modalConfig = {
   EDIT_VARIANCE: EditVarianceModal,
   MINE_INCIDENT: AddIncidentModal,
   ADD_REPORT: AddReportModal,
+  GENERATE_DOCUMENT: GenerateDocumentModal,
   //  EDIT_REPORT:
   VIEW_MINE_INCIDENT: ViewIncidentModal,
   EDIT_NOTICE_OF_WORK_DOCUMENT: EditNoticeOfWorkDocumentModal,
