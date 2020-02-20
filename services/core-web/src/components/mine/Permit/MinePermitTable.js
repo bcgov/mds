@@ -4,7 +4,7 @@ import moment from "moment";
 import { orderBy } from "lodash";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { formatDate, getTableHeaders } from "@common/utils/helpers";
+import { formatDate } from "@common/utils/helpers";
 import { getPartyRelationships } from "@common/selectors/partiesSelectors";
 import { getDropdownPermitStatusOptions } from "@common/selectors/staticContentSelectors";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
@@ -15,7 +15,7 @@ import * as Permission from "@/constants/permissions";
 import CustomPropTypes from "@/customPropTypes";
 import { EDIT_OUTLINE, EDIT_OUTLINE_VIOLET, EDIT, CARAT } from "@/constants/assets";
 import LinkButton from "@/components/common/LinkButton";
-import TableLoadingWrapper from "@/components/common/wrappers/TableLoadingWrapper";
+import CoreTable from "@/components/common/CoreTable";
 
 /**
  * @class  MinePermitTable - displays a table of permits and permit amendments
@@ -400,22 +400,23 @@ export const MinePermitTable = (props) => {
   );
 
   return (
-    <TableLoadingWrapper condition={props.isLoaded} tableHeaders={getTableHeaders(columns)}>
-      <Table
-        className="nested-table"
-        rowClassName="table-row-align-middle pointer fade-in"
-        align="left"
-        pagination={false}
-        columns={columns}
-        dataSource={rowData}
-        locale={{ emptyText: <NullScreen type="permit" /> }}
-        expandIcon={RenderPermitTableExpandIcon}
-        expandRowByClick
-        expandedRowRender={amendmentHistory}
-        expandedRowKeys={props.expandedRowKeys}
-        onExpand={props.onExpand}
-      />
-    </TableLoadingWrapper>
+    <CoreTable
+      condition={props.isLoaded}
+      dataSource={rowData}
+      columns={columns}
+      tableProps={{
+        className: "nested-table",
+        rowClassName: "table-row-align-middle pointer fade-in",
+        align: "left",
+        pagination: false,
+        locale: { emptyText: <NullScreen type="permit" /> },
+        expandIcon: RenderPermitTableExpandIcon,
+        expandRowByClick: true,
+        expandedRowRender: amendmentHistory,
+        expandedRowKeys: props.expandedRowKeys,
+        onExpand: props.onExpand,
+      }}
+    />
   );
 };
 

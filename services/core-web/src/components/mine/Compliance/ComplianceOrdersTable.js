@@ -2,12 +2,12 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Table } from "antd";
 import moment from "moment";
-import { formatDate, compareCodes, getTableHeaders, formatDateTime } from "@common/utils/helpers";
+import { formatDate, compareCodes, formatDateTime } from "@common/utils/helpers";
 import { downloadNRISDocument } from "@common/utils/actionlessNetworkCalls";
 import { RED_CLOCK } from "@/constants/assets";
 import CustomPropTypes from "@/customPropTypes";
 import NullScreen from "@/components/common/NullScreen";
-import TableLoadingWrapper from "@/components/common/wrappers/TableLoadingWrapper";
+import CoreTable from "@/components/common/CoreTable";
 import LinkButton from "@/components/common/LinkButton";
 
 const propTypes = {
@@ -145,16 +145,17 @@ const pageCount = (orders) => {
 };
 
 const ComplianceOrdersTable = (props) => (
-  <TableLoadingWrapper condition={props.isLoaded} tableHeaders={getTableHeaders(columns)}>
-    <Table
-      align="left"
-      pagination
-      columns={columns}
-      dataSource={transformRowData(props.filteredOrders)}
-      locale={{ emptyText: <NullScreen type="no-results" /> }}
-      className={`center-pagination page-count-${pageCount(props.filteredOrders)}`}
-    />
-  </TableLoadingWrapper>
+  <CoreTable
+    condition={props.isLoaded}
+    columns={columns}
+    dataSource={transformRowData(props.filteredOrders)}
+    tableProps={{
+      align: "left",
+      pagination: true,
+      locale: { emptyText: <NullScreen type="no-results" /> },
+      className: `center-pagination page-count-${pageCount(props.filteredOrders)}`,
+    }}
+  />
 );
 
 ComplianceOrdersTable.propTypes = propTypes;

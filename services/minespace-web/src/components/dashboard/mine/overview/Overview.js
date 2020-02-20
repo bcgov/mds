@@ -44,7 +44,11 @@ const getMineManager = (partyRelationships) => {
   return mineManager;
 };
 
-const getRegionalContacts = (region) => Object.values(Contacts.REGIONAL_MINISTRY_CONTACTS[region]);
+const getRegionalMineRegionalContacts = (region) =>
+  Object.values(Contacts.REGIONAL_MINE_REGIONAL_CONTACTS[region]);
+
+const getMajorMineRegionalContacts = (region) =>
+  Object.values(Contacts.MAJOR_MINE_REGIONAL_CONTACTS[region]);
 
 export const Overview = (props) => (
   <Row gutter={[0, 16]}>
@@ -112,22 +116,32 @@ export const Overview = (props) => (
             <Map mine={props.mine} controls={false} />
           </div>
         </Col>
-        <Col>
-          <Card title="Regional Ministry Contacts">
-            {getRegionalContacts(props.mine.mine_region).map((contact) => (
-              <span key={contact.name}>
+        {(props.mine.major_mine_ind && (
+          <Col>
+            <Card title="Ministry Contacts">
+              <MinistryContactItem contact={Contacts.MM_OFFICE} />
+              <MinistryContactItem contact={Contacts.CHIEF_INSPECTOR} />
+              <MinistryContactItem contact={Contacts.EXEC_LEAD_AUTH} />
+              {getMajorMineRegionalContacts(props.mine.mine_region).map((contact) => (
                 <MinistryContactItem contact={contact} />
-              </span>
-            ))}
-          </Card>
-        </Col>
-        <Col>
-          <Card title="General Ministry Contacts">
-            {props.mine.major_mine_ind && <MinistryContactItem contact={Contacts.MM_OFFICE} />}
-            <MinistryContactItem contact={Contacts.CHIEF_INSPECTOR} />
-            <MinistryContactItem contact={Contacts.EXEC_LEAD_AUTH} />
-          </Card>
-        </Col>
+              ))}
+            </Card>
+          </Col>
+        )) || [
+          <Col>
+            <Card title="Regional Ministry Contacts">
+              {getRegionalMineRegionalContacts(props.mine.mine_region).map((contact) => (
+                <MinistryContactItem contact={contact} />
+              ))}
+            </Card>
+          </Col>,
+          <Col>
+            <Card title="General Ministry Contacts">
+              <MinistryContactItem contact={Contacts.CHIEF_INSPECTOR} />
+              <MinistryContactItem contact={Contacts.EXEC_LEAD_AUTH} />
+            </Card>
+          </Col>,
+        ]}
       </Row>
     </Col>
   </Row>
@@ -144,4 +158,4 @@ const mapStateToProps = (state) => ({
 
 Overview.propTypes = propTypes;
 
-export default connect(mapStateToProps, null)(Overview);
+export default connect(mapStateToProps)(Overview);

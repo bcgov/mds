@@ -1,90 +1,79 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ContactList renders properly 1`] = `
-<TableLoadingWrapper
-  isPaginated={true}
-  tableHeaders={
+<CoreTable
+  columns={
     Array [
-      "Name",
-      "Role",
-      "Email",
-      "Phone",
+      Object {
+        "dataIndex": "name",
+        "render": [Function],
+        "sortField": "party_name",
+        "sortOrder": false,
+        "sorter": true,
+        "title": "Name",
+        "width": 150,
+      },
+      Object {
+        "dataIndex": "role",
+        "render": [Function],
+        "sortOrder": false,
+        "title": "Role",
+        "width": 150,
+      },
+      Object {
+        "dataIndex": "email",
+        "render": [Function],
+        "sortOrder": false,
+        "title": "Email",
+        "width": 150,
+      },
+      Object {
+        "dataIndex": "phone",
+        "render": [Function],
+        "sortOrder": false,
+        "title": "Phone",
+        "width": 150,
+      },
     ]
   }
->
-  <withStore(Table)
-    align="left"
-    columns={
-      Array [
-        Object {
-          "dataIndex": "name",
-          "render": [Function],
-          "sortField": "party_name",
-          "sortOrder": false,
-          "sorter": true,
-          "title": "Name",
-          "width": 150,
-        },
-        Object {
-          "dataIndex": "role",
-          "render": [Function],
-          "sortOrder": false,
-          "title": "Role",
-          "width": 150,
-        },
-        Object {
-          "dataIndex": "email",
-          "render": [Function],
-          "sortOrder": false,
-          "title": "Email",
-          "width": 150,
-        },
-        Object {
-          "dataIndex": "phone",
-          "render": [Function],
-          "sortOrder": false,
-          "title": "Phone",
-          "width": 150,
-        },
-      ]
-    }
-    dataSource={
-      Array [
-        Object {
-          "email": undefined,
-          "emptyField": "N/A",
-          "key": undefined,
-          "name": Array [
-            "",
-            "mock name",
-          ],
-          "phone": "N/A",
-          "role": "N/A",
-        },
-        Object {
-          "email": undefined,
-          "emptyField": "N/A",
-          "key": undefined,
-          "name": Array [
-            "",
-            "mock Two",
-          ],
-          "phone": "N/A",
-          "role": "N/A",
-        },
-      ]
-    }
-    locale={
+  dataSource={
+    Array [
       Object {
+        "email": undefined,
+        "emptyField": "N/A",
+        "key": undefined,
+        "name": Array [
+          "",
+          "mock name",
+        ],
+        "phone": "N/A",
+        "role": "N/A",
+      },
+      Object {
+        "email": undefined,
+        "emptyField": "N/A",
+        "key": undefined,
+        "name": Array [
+          "",
+          "mock Two",
+        ],
+        "phone": "N/A",
+        "role": "N/A",
+      },
+    ]
+  }
+  tableProps={
+    Object {
+      "align": "left",
+      "locale": Object {
         "emptyText": <NullScreen
           message=""
           type="no-results"
         />,
-      }
+      },
+      "onChange": [Function],
+      "pagination": false,
     }
-    onChange={[Function]}
-    pagination={false}
-    rowClassName="fade-in"
-  />
-</TableLoadingWrapper>
+  }
+/>
 `;
