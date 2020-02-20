@@ -66,7 +66,7 @@ class Config(object):
     # Microservice URLs
     DOCUMENT_MANAGER_URL = os.environ.get('DOCUMENT_MANAGER_URL',
                                           'http://document_manager_backend:5001')
-    DOCUMENT_GENERATOR_URL = os.environ.get('DOCUMENT_GENERATOR_URL', 'http://localhost:3030')
+    DOCUMENT_GENERATOR_URL = os.environ.get('DOCUMENT_GENERATOR_URL', 'http://docgen-api:3030')
     NRIS_TOKEN_URL = os.environ.get('NRIS_TOKEN_URL', None)
     NRIS_API_URL = os.environ.get('NRIS_API_URL', 'http://nris_backend:5500')
     # Cache settings
