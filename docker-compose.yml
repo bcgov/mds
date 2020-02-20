@@ -191,6 +191,22 @@ services:
     env_file: ./services/document-manager/backend/.env
     networks:
       - mds
+      
+
+  ####################### DOCUMENT_GENERATION Definition #######################
+  docgen-api:
+    restart: always
+    container_name: docgen_api
+    build:
+      context: services/docgen-api
+    command: ["node", "index"]
+    #volumes:
+    #  - ./services/docgen-api/:/carbone-api/
+    ports:
+      - 3030:3030
+    env_file: ./services/docgen-api/.env
+    networks:
+      - mds
 
 ####################### Networks Definition #######################
 networks:
