@@ -14,3 +14,16 @@ class TestGetNOWApplicationDocumentTypeResource:
         get_data = json.loads(get_resp.data.decode())
         assert get_resp.status_code == 200
         assert len(get_data['records']) == len(NOWApplicationDocumentType.active())
+
+    def test_application_document_types_have_generation_spec(self, test_client, db_session,
+                                                             auth_headers):
+        """Should return the correct number of records with document_templates"""
+
+        get_resp = test_client.get(
+            f'/now-applications/application-document-types',
+            headers=auth_headers['full_auth_header'])
+        get_data = json.loads(get_resp.data.decode())
+        assert get_resp.status_code == 200
+        assert len([x for x in get_data['records'] if x['document_template']]) > 0
+        assert len([x for x in get_data['records'] if x['document_template']]) == len(
+            [x for x in NOWApplicationDocumentType.active() if x.document_template_code])
