@@ -21,6 +21,7 @@ from app.api.search.namespace import api as search_api
 from app.api.variances.namespace import api as variances_api
 from app.api.users.namespace import api as users_api
 from app.api.exports.namespace import api as exports_api
+from app.api.document_generation.namespace import api as doc_gen_api
 
 from app.commands import register_commands
 from app.config import Config
@@ -90,6 +91,7 @@ def register_routes(app):
     api.add_namespace(now_sub_api)
     api.add_namespace(now_app_api)
     api.add_namespace(exports_api)
+    api.add_namespace(doc_gen_api)
 
     # Healthcheck endpoint
     @api.route('/health')

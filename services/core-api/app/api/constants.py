@@ -67,6 +67,12 @@ MINE_OPERATION_STATUS_SUB_REASON = {
     }
 }
 
+NOW_DOCUMENT_TEMPLATE_TYPES = {
+    'CAL': 'Client Acknowledgment Letter Template (NoW).docx',
+    'RJL': 'Rejection Letter Template (NoW).docx',
+    'WDL': 'Withdrawl Letter Template (NoW).docx'
+}
+
 #Cache prefixes
 NRIS_MAJOR_MINE_LIST = "major_mine_list"
 NRIS_TOKEN = "nris:token"
