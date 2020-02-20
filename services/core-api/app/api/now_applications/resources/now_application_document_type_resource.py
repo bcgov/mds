@@ -12,7 +12,7 @@ from app.api.constants import TIMEOUT_5_MINUTES, NOW_DOCUMENT_DOWNLOAD_TOKEN
 from app.api.utils.custom_reqparser import CustomReqparser
 
 NOW_DOCUMENT_DOWNLOAD_TOKEN_MODEL = api.model('NoticeOfWorkDocumentDownloadToken',
-                                              {'token_guid': fields.String})
+                                              {'token': fields.String})
 
 
 class NOWApplicationDocumentTypeResource(Resource, UserMixin):
@@ -35,15 +35,19 @@ class NOWApplicationDocumentGenerateResource(Resource, UserMixin):
     @api.marshal_with(NOW_DOCUMENT_DOWNLOAD_TOKEN_MODEL, code=200)
     @requires_role_edit_permit
     def post(self, document_type_code):
-        if not document_type_code:
-            raise NotFound('Document type code not found')
+        document_type = NOWApplicationDocumentType.query.get(document_type_code)
+        if not document_type:
+            raise NotFound('Document type not found')
+
+        if not document_type.document_template:
+            raise BadRequest(f'Cannot generate a {document_type.description}')
 
         # TODO: Generate document using the provided data.
         data = self.parser.parse_args()
 
-        token_guid = uuid.uuid4()
+        token = uuid.uuid4()
         cache.set(
-            NOW_DOCUMENT_DOWNLOAD_TOKEN(token_guid), {'document_type_code': document_type_code},
+            NOW_DOCUMENT_DOWNLOAD_TOKEN(token), {'document_type_code': document_type_code},
             TIMEOUT_5_MINUTES)
 
-        return {'token_guid': token_guid}
+        return {'token': token}
