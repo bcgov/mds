@@ -34,8 +34,10 @@ export const {
 } = staticContentReducer;
 
 // removes all expired compliance codes from the array
-export const getCurrentComplianceCodes = createSelector([getComplianceCodes], (codes) =>
-  codes.filter((code) => code.expiry_date === null || new Date(code.expiry_date) > new Date())
+export const getCurrentComplianceCodes = createSelector(
+  [getComplianceCodes],
+  (codes) =>
+    codes.filter((code) => code.expiry_date === null || new Date(code.expiry_date) > new Date())
 );
 
 export const getMineTenureTypeDropdownOptions = createSelector(
@@ -48,11 +50,15 @@ export const getMineTenureTypesHash = createSelector(
   createLabelHash
 );
 
-export const getMineRegionDropdownOptions = createSelector([getMineRegionOptions], (options) =>
-  createDropDownList(options, "description", "mine_region_code")
+export const getMineRegionDropdownOptions = createSelector(
+  [getMineRegionOptions],
+  (options) => createDropDownList(options, "description", "mine_region_code")
 );
 
-export const getMineRegionHash = createSelector([getMineRegionDropdownOptions], createLabelHash);
+export const getMineRegionHash = createSelector(
+  [getMineRegionDropdownOptions],
+  createLabelHash
+);
 
 const createConditionalMineDetails = (key) => (options, tenureTypes) => {
   const newArr = {};
@@ -70,6 +76,7 @@ const createConditionalMineDetails = (key) => (options, tenureTypes) => {
   });
   return newArr;
 };
+
 export const getConditionalDisturbanceOptionsHash = createSelector(
   [getMineDisturbanceOptions, getMineTenureTypeOptions],
   createConditionalMineDetails("mine_disturbance_code")
@@ -80,36 +87,43 @@ export const getConditionalCommodityOptions = createSelector(
   createConditionalMineDetails("mine_commodity_code")
 );
 
-export const getDisturbanceOptionHash = createSelector([getMineDisturbanceOptions], (options) =>
-  options.reduce(
-    (map, { description, mine_disturbance_code }) => ({
-      [mine_disturbance_code]: description,
-      ...map,
-    }),
-    {}
-  )
+export const getDisturbanceOptionHash = createSelector(
+  [getMineDisturbanceOptions],
+  (options) =>
+    options.reduce(
+      (map, { description, mine_disturbance_code }) => ({
+        [mine_disturbance_code]: description,
+        ...map,
+      }),
+      {}
+    )
 );
 
-export const getCommodityOptionHash = createSelector([getMineCommodityOptions], (options) =>
-  options.reduce(
-    (map, { description, mine_commodity_code }) => ({
-      [mine_commodity_code]: description,
-      ...map,
-    }),
-    {}
-  )
+export const getCommodityOptionHash = createSelector(
+  [getMineCommodityOptions],
+  (options) =>
+    options.reduce(
+      (map, { description, mine_commodity_code }) => ({
+        [mine_commodity_code]: description,
+        ...map,
+      }),
+      {}
+    )
 );
 
-export const getDropdownCommodityOptions = createSelector([getMineCommodityOptions], (options) =>
-  createDropDownList(options, "description", "mine_commodity_code")
+export const getDropdownCommodityOptions = createSelector(
+  [getMineCommodityOptions],
+  (options) => createDropDownList(options, "description", "mine_commodity_code")
 );
 
-export const getDropdownProvinceOptions = createSelector([getProvinceOptions], (options) =>
-  createDropDownList(options, "sub_division_code", "sub_division_code")
+export const getDropdownProvinceOptions = createSelector(
+  [getProvinceOptions],
+  (options) => createDropDownList(options, "sub_division_code", "sub_division_code")
 );
 
-export const getDropdownPermitStatusOptions = createSelector([getPermitStatusOptions], (options) =>
-  createDropDownList(options, "description", "permit_status_code")
+export const getDropdownPermitStatusOptions = createSelector(
+  [getPermitStatusOptions],
+  (options) => createDropDownList(options, "description", "permit_status_code")
 );
 
 export const getDropdownIncidentDocumentTypeOptions = createSelector(
@@ -180,16 +194,18 @@ export const getDropdownHSRCMComplianceCodes = createSelector(
       .sort((a, b) => compareCodes(a.label, b.label))
 );
 
-export const getHSRCMComplianceCodesHash = createSelector([getCurrentComplianceCodes], (codes) =>
-  codes
-    .filter(({ article_act_code }) => article_act_code === "HSRCM")
-    .reduce((map, code) => {
-      const composedValue = formatComplianceCodeValueOrLabel(code, true);
-      return {
-        [code.compliance_article_id]: composedValue,
-        ...map,
-      };
-    }, {})
+export const getHSRCMComplianceCodesHash = createSelector(
+  [getCurrentComplianceCodes],
+  (codes) =>
+    codes
+      .filter(({ article_act_code }) => article_act_code === "HSRCM")
+      .reduce((map, code) => {
+        const composedValue = formatComplianceCodeValueOrLabel(code, true);
+        return {
+          [code.compliance_article_id]: composedValue,
+          ...map,
+        };
+      }, {})
 );
 
 export const getDangerousOccurrenceSubparagraphOptions = createSelector(
@@ -216,12 +232,14 @@ export const getDangerousOccurrenceSubparagraphOptions = createSelector(
 
 // FIXME:  this seems to double count compliance codes, particularly the dangerous occurences
 // this double counting should get removed
-export const getMultiSelectComplianceCodes = createSelector([getCurrentComplianceCodes], (codes) =>
-  codes.map((code) => {
-    const composedValue = formatComplianceCodeValueOrLabel(code);
-    const composedLabel = formatComplianceCodeValueOrLabel(code, true);
-    return { value: composedValue, label: composedLabel };
-  })
+export const getMultiSelectComplianceCodes = createSelector(
+  [getCurrentComplianceCodes],
+  (codes) =>
+    codes.map((code) => {
+      const composedValue = formatComplianceCodeValueOrLabel(code);
+      const composedLabel = formatComplianceCodeValueOrLabel(code, true);
+      return { value: composedValue, label: composedLabel };
+    })
 );
 
 export const getDropdownVarianceStatusOptions = createSelector(
@@ -376,6 +394,20 @@ export const getDropdownNoticeOfWorkApplicationDocumentTypeOptions = createSelec
 export const getNoticeOfWorkApplicationDocumentTypeOptionsHash = createSelector(
   [getDropdownNoticeOfWorkApplicationDocumentTypeOptions],
   createLabelHash
+);
+
+export const getGeneratableNoticeOfWorkApplicationDocumentTypeOptions = createSelector(
+  [getNoticeOfWorkApplicationDocumentTypeOptions],
+  (options) =>
+    options
+      .filter((option) => option.document_template.document_template_code)
+      .reduce(
+        (map, option) => ({
+          [option.now_application_document_type_code]: option,
+          ...map,
+        }),
+        {}
+      )
 );
 
 export const getDropdownNoticeOfWorkUndergroundExplorationTypeOptions = createSelector(

@@ -8,8 +8,7 @@ import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
 
 const propTypes = {
-  // TODO: Create a custom prop-type for document templates.
-  template: PropTypes.objectOf(PropTypes.any).isRequired,
+  documentType: PropTypes.objectOf(PropTypes.any).isRequired,
   handleSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   submitting: PropTypes.bool.isRequired,
@@ -41,7 +40,7 @@ const createFields = (fields) => (
 export const GenerateDocumentForm = (props) => (
   <Form layout="vertical" onSubmit={props.handleSubmit}>
     <Row gutter={16}>
-      <Col>{createFields(props.template.fields)}</Col>
+      <Col>{createFields(props.documentType.document_template.form_spec)}</Col>
     </Row>
     <div className="right center-mobile">
       <Popconfirm
@@ -56,7 +55,7 @@ export const GenerateDocumentForm = (props) => (
         </Button>
       </Popconfirm>
       <Button className="full-mobile" type="primary" htmlType="submit" disabled={props.submitting}>
-        Generate {props.template.name}
+        Generate {props.documentType.description}
       </Button>
     </div>
   </Form>

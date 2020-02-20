@@ -20,7 +20,7 @@ export const generateNoticeOfWorkApplicationDocument = (documentTypeCode, payloa
       createRequestHeader()
     )
     .then((response) => {
-      const token = { token: response.data.token_guid };
+      const token = { token: response.data.token };
       window.open(`${ENVIRONMENT.apiUrl + API.RETRIEVE_CORE_DOCUMENT(token)}`, "_blank");
       notification.success({
         message: "Successfully generated Notice of Work document",
