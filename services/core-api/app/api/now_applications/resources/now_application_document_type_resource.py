@@ -35,8 +35,12 @@ class NOWApplicationDocumentGenerateResource(Resource, UserMixin):
     @api.marshal_with(NOW_DOCUMENT_DOWNLOAD_TOKEN_MODEL, code=200)
     @requires_role_edit_permit
     def post(self, document_type_code):
-        if not document_type_code:
-            raise NotFound('Document type code not found')
+        document_type = NOWApplicationDocumentType.query.get(document_type_code)
+        if not document_type:
+            raise NotFound('Document type not found')
+
+        if not document_type.document_template:
+            raise BadRequest(f'Cannot generate a {document_type.description}')
 
         # TODO: Generate document using the provided data.
         data = self.parser.parse_args()
