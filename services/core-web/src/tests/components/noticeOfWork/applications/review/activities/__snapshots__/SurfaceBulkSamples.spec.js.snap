@@ -72,8 +72,8 @@ exports[`SurfaceBulkSamples renders properly 1`] = `
       <Field
         component={[Function]}
         disabled={true}
-        id=""
-        name=""
+        id="has_bedrock_expansion"
+        name="has_bedrock_expansion"
       />
     </Col>
   </Row>
@@ -139,8 +139,8 @@ exports[`SurfaceBulkSamples renders properly 1`] = `
       <Field
         component={[Function]}
         disabled={true}
-        id=""
-        name=""
+        id="surface_water_damage"
+        name="surface_water_damage"
       />
     </Col>
     <Col
@@ -150,13 +150,13 @@ exports[`SurfaceBulkSamples renders properly 1`] = `
       <div
         className="field-title"
       >
-        Spontaneous Combustion**
+        If the material has potential for spontaneous combustion, give details of separate handling.**
       </div>
       <Field
         component={[Function]}
         disabled={true}
-        id=""
-        name=""
+        id="spontaneous_combustion_handling"
+        name="spontaneous_combustion_handling"
       />
     </Col>
   </Row>

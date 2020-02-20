@@ -17,8 +17,8 @@ exports[`SettlingPonds renders properly 1`] = `
       <Field
         component={[Function]}
         disabled={true}
-        id=""
-        name=""
+        id="wastewater_facility_description"
+        name="wastewater_facility_description"
       />
     </Col>
   </Row>
@@ -101,8 +101,8 @@ exports[`SettlingPonds renders properly 1`] = `
       <Field
         component={[Function]}
         disabled={true}
-        id=""
-        name=""
+        id="disposal_from_clean_out"
+        name="disposal_from_clean_out"
       />
     </Col>
   </Row>

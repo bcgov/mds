@@ -59,14 +59,19 @@ exports[`AccessRoads renders properly 1`] = `
       <Field
         component={[Function]}
         disabled={true}
-        id=""
-        name=""
+        id="has_proposed_bridges_or_culverts"
+        name="has_proposed_bridges_or_culverts"
       />
+      <div
+        className="field-title"
+      >
+        Describe the changes and reference the locations need on map needed later in the application.**
+      </div>
       <Field
         component={[Function]}
         disabled={true}
-        id=""
-        name=""
+        id="bridge_culvert_crossing_description"
+        name="bridge_culvert_crossing_description"
       />
     </Col>
   </Row>

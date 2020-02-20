@@ -333,8 +333,8 @@ exports[`ReviewNOWApplication renders properly 1`] = `
               <Field
                 component={[Function]}
                 disabled={true}
-                id=""
-                name=""
+                id="crown_grant_or_district_lot_numbers"
+                name="crown_grant_or_district_lot_numbers"
               />
             </Col>
             <Col
@@ -428,8 +428,8 @@ exports[`ReviewNOWApplication renders properly 1`] = `
               <Field
                 component={[Function]}
                 disabled={true}
-                id=""
-                name=""
+                id="has_req_access_authorizations"
+                name="has_req_access_authorizations"
               />
             </Col>
           </Row>
@@ -448,10 +448,30 @@ exports[`ReviewNOWApplication renders properly 1`] = `
               <Field
                 component={[Function]}
                 disabled={true}
-                id=""
-                name=""
+                id="has_surface_disturbance_outside_tenure"
+                name="has_surface_disturbance_outside_tenure"
               />
             </Col>
+            <Col
+              md={12}
+              sm={24}
+            >
+              <div
+                className="field-title--light"
+              >
+                Please provide the type and authorization numbers for each access authorization application or exemption to use the road(s).**
+              </div>
+              <Field
+                component={[Function]}
+                disabled={true}
+                id="req_access_authorization_numbers"
+                name="req_access_authorization_numbers"
+              />
+            </Col>
+          </Row>
+          <Row
+            gutter={16}
+          >
             <Col
               md={12}
               sm={24}
@@ -464,23 +484,8 @@ exports[`ReviewNOWApplication renders properly 1`] = `
               <Field
                 component={[Function]}
                 disabled={true}
-                id=""
-                name=""
-              />
-            </Col>
-          </Row>
-          <Row
-            gutter={16}
-          >
-            <Col
-              md={12}
-              sm={24}
-            >
-              <Field
-                component={[Function]}
-                disabled={true}
-                id=""
-                name=""
+                id="is_access_gated"
+                name="is_access_gated"
               />
             </Col>
             <Col
@@ -495,8 +500,8 @@ exports[`ReviewNOWApplication renders properly 1`] = `
               <Field
                 component={[Function]}
                 disabled={true}
-                id=""
-                name=""
+                id="has_key_for_inspector"
+                name="has_key_for_inspector"
               />
             </Col>
           </Row>
@@ -528,8 +533,8 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 <Field
                   component={[Function]}
                   disabled={true}
-                  id=""
-                  name=""
+                  id="present_land_condition_description"
+                  name="present_land_condition_description"
                 />
               </Col>
               <Col
@@ -544,8 +549,8 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 <Field
                   component={[Function]}
                   disabled={true}
-                  id=""
-                  name=""
+                  id="means_of_access_description"
+                  name="means_of_access_description"
                 />
               </Col>
             </Row>
@@ -564,8 +569,8 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 <Field
                   component={[Function]}
                   disabled={true}
-                  id=""
-                  name=""
+                  id="physiography_description"
+                  name="physiography_description"
                 />
               </Col>
               <Col
@@ -580,8 +585,8 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 <Field
                   component={[Function]}
                   disabled={true}
-                  id=""
-                  name=""
+                  id="old_equipment_description"
+                  name="old_equipment_description"
                 />
               </Col>
             </Row>
@@ -600,8 +605,8 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 <Field
                   component={[Function]}
                   disabled={true}
-                  id=""
-                  name=""
+                  id="type_of_vegetation_description"
+                  name="type_of_vegetation_description"
                 />
               </Col>
               <Col
@@ -616,8 +621,8 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 <Field
                   component={[Function]}
                   disabled={true}
-                  id=""
-                  name=""
+                  id="recreational_trail_use_description"
+                  name="recreational_trail_use_description"
                 />
               </Col>
             </Row>
@@ -661,8 +666,8 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 <Field
                   component={[Function]}
                   disabled={true}
-                  id=""
-                  name=""
+                  id="has_activity_in_park"
+                  name="has_activity_in_park"
                 />
               </Col>
             </Row>
@@ -681,8 +686,8 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 <Field
                   component={[Function]}
                   disabled={true}
-                  id=""
-                  name=""
+                  id="is_on_private_land"
+                  name="is_on_private_land"
                 />
               </Col>
               <Col
@@ -697,8 +702,8 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 <Field
                   component={[Function]}
                   disabled={true}
-                  id=""
-                  name=""
+                  id="has_auth_lieutenant_gov_council"
+                  name="has_auth_lieutenant_gov_council"
                 />
               </Col>
             </Row>
@@ -737,8 +742,8 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 <Field
                   component={[Function]}
                   disabled={true}
-                  id=""
-                  name=""
+                  id="arch_site_protection_plan"
+                  name="arch_site_protection_plan"
                 />
               </Col>
             </Row>
@@ -761,8 +766,8 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 <Field
                   component={[Function]}
                   disabled={true}
-                  id=""
-                  name=""
+                  id="has_shared_info_with_fn"
+                  name="has_shared_info_with_fn"
                 />
               </Col>
               <Col
@@ -777,8 +782,8 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 <Field
                   component={[Function]}
                   disabled={true}
-                  id=""
-                  name=""
+                  id="has_fn_cultural_heritage_sites_in_area"
+                  name="has_fn_cultural_heritage_sites_in_area"
                 />
               </Col>
             </Row>
@@ -797,8 +802,8 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 <Field
                   component={[Function]}
                   disabled={true}
-                  id=""
-                  name=""
+                  id="fn_engagement_activities"
+                  name="fn_engagement_activities"
                 />
               </Col>
               <Col
@@ -813,8 +818,8 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 <Field
                   component={[Function]}
                   disabled={true}
-                  id=""
-                  name=""
+                  id="cultural_heritage_description"
+                  name="cultural_heritage_description"
                 />
               </Col>
             </Row>
@@ -884,8 +889,8 @@ exports[`ReviewNOWApplication renders properly 1`] = `
           <Field
             component={[Function]}
             disabled={true}
-            id=""
-            name=""
+            id="work_plan"
+            name="work_plan"
           />
         </Col>
       </Row>

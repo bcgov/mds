@@ -105,8 +105,8 @@ exports[`Placer renders properly 1`] = `
       <Field
         component={[Function]}
         disabled={true}
-        id=""
-        name=""
+        id="proposed_production"
+        name="proposed_production"
       />
     </Col>
   </Row>

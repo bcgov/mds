@@ -86,8 +86,8 @@ exports[`UndergroundExploration renders properly 1`] = `
       <Field
         component={[Function]}
         disabled={true}
-        id=""
-        name=""
+        id="proposed_activity"
+        name="proposed_activity"
       />
     </Col>
   </Row>
