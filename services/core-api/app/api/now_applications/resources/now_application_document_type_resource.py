@@ -3,13 +3,14 @@ from flask_restplus import Resource, fields
 from werkzeug.exceptions import NotFound, BadRequest
 
 from app.extensions import api, cache
-from app.api.utils.access_decorators import requires_role_view_all, requires_role_edit_permit
-
-from app.api.utils.resources_mixins import UserMixin
 from app.api.now_applications.models.now_application_document_type import NOWApplicationDocumentType
-from app.api.now_applications.response_models import NOW_APPLICATION_DOCUMENT_TYPES
-from app.api.constants import TIMEOUT_5_MINUTES, NOW_DOCUMENT_DOWNLOAD_TOKEN
+from app.api.services.document_generator_service import DocumentGeneratorService
+from app.api.utils.resources_mixins import UserMixin
+from app.api.utils.access_decorators import requires_role_view_all, requires_role_edit_permit
 from app.api.utils.custom_reqparser import CustomReqparser
+
+from app.api.constants import TIMEOUT_5_MINUTES, NOW_DOCUMENT_DOWNLOAD_TOKEN
+from app.api.now_applications.response_models import NOW_APPLICATION_DOCUMENT_TYPES
 
 NOW_DOCUMENT_DOWNLOAD_TOKEN_MODEL = api.model('NoticeOfWorkDocumentDownloadToken',
                                               {'token': fields.String})
@@ -47,7 +48,10 @@ class NOWApplicationDocumentGenerateResource(Resource, UserMixin):
 
         token = uuid.uuid4()
         cache.set(
-            NOW_DOCUMENT_DOWNLOAD_TOKEN(token), {'document_type_code': document_type_code},
-            TIMEOUT_5_MINUTES)
+            NOW_DOCUMENT_DOWNLOAD_TOKEN(token), {
+                'document_type_code': document_type_code,
+                'now_application_guid': data['now_application_guid'],
+                'template_data': data['template_data']
+            }, TIMEOUT_5_MINUTES)
 
         return {'token': token}
