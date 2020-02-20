@@ -52,6 +52,7 @@ export class ViewNoticeOfWorkApplication extends Component {
     isLoaded: false,
     showOriginalValues: false,
     noticeOfWorkPageFromRoute: undefined,
+    fixedTop: false,
   };
 
   componentDidMount() {
@@ -81,11 +82,21 @@ export class ViewNoticeOfWorkApplication extends Component {
     );
   };
 
+  handleScroll = () => {
+    if (window.pageYOffset > "100" && !this.state.fixedTop) {
+      this.setState({ fixedTop: true });
+    } else if (window.pageYOffset < "100" && this.state.fixedTop) {
+      this.setState({ fixedTop: false });
+    }
+  };
+
   render() {
     return (
-      <div className="page">
+      <div className="page" onScroll={this.handleScroll()} onLoad={this.handleScroll()}>
         <LoadingWrapper condition={this.state.isLoaded}>
-          <div className="steps--header fixed-scroll-view">
+          <div
+            className={this.state.fixedTop ? "steps--header fixed-scroll-view" : "steps--header"}
+          >
             <div className="inline-flex between">
               <NoticeOfWorkPageHeader
                 noticeOfWork={this.props.noticeOfWork}
@@ -102,14 +113,22 @@ export class ViewNoticeOfWorkApplication extends Component {
           </div>
           <div>
             <div
-              className="side-menu--fixed"
-              style={this.state.noticeOfWorkPageFromRoute ? { paddingTop: "24px" } : {}}
+              className={this.state.fixedTop ? "side-menu--fixed" : "side-menu"}
+              style={
+                this.state.fixedTop && this.state.noticeOfWorkPageFromRoute
+                  ? { paddingTop: "24px" }
+                  : {}
+              }
             >
               <NOWSideMenu route={routes.VIEW_NOTICE_OF_WORK_APPLICATION} />
             </div>
             <div
-              className="steps--content with-fixed-top"
-              style={this.state.noticeOfWorkPageFromRoute ? { paddingTop: "24px" } : {}}
+              className={this.state.fixedTop ? "steps--content with-fixed-top" : "steps--content"}
+              style={
+                this.state.fixedTop && this.state.noticeOfWorkPageFromRoute
+                  ? { paddingTop: "24px" }
+                  : {}
+              }
             >
               <ReviewNOWApplication
                 reclamationSummary={this.props.reclamationSummary}
