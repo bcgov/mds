@@ -39,7 +39,6 @@ import NoticeOfWorkPageHeader from "@/components/noticeOfWork/applications/Notic
 import * as FORM from "@/constants/forms";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
 import { modalConfig } from "@/components/modalContent/config";
-import { TEMPLATES } from "@/constants/template";
 
 const { Step } = Steps;
 
