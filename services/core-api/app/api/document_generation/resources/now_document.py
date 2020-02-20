@@ -13,9 +13,9 @@ from app.api.constants import NOW_DOCUMENT_DOWNLOAD_TOKEN
 class NoticeOfWorkDocumentResource(Resource, UserMixin):
     @api.doc(description='Returns the generated document associated with the received token.')
     def get(self):
-        token_guid = request.args.get('token', '')
-        token_data = cache.get(NOW_DOCUMENT_DOWNLOAD_TOKEN(token_guid))
-        cache.delete(NOW_DOCUMENT_DOWNLOAD_TOKEN(token_guid))
+        token = request.args.get('token', '')
+        token_data = cache.get(NOW_DOCUMENT_DOWNLOAD_TOKEN(token))
+        cache.delete(NOW_DOCUMENT_DOWNLOAD_TOKEN(token))
 
         if not token_data:
             raise BadRequest('Valid token required for download')
