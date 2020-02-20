@@ -92,7 +92,9 @@ NOW_APPLICATION_EXP_ACCESS = api.inherit(
     'NOWApplicationExplorationAccess',
     NOW_APPLICATION_ACTIVITY_SUMMARY_BASE,
     {
-       'details': fields.List(fields.Nested(NOW_APPLICATION_ACTIVITY_DETAIL_BASE,skip_none=True))
+        'has_proposed_bridges_or_culverts': fields.Boolean,
+        'bridge_culvert_crossing_description': fields.String,
+        'details': fields.List(fields.Nested(NOW_APPLICATION_ACTIVITY_DETAIL_BASE,skip_none=True))
     })
 
 NOW_APPLICATION_EXP_SURFACE_DRILL = api.inherit('NOWApplicationExpSurfaceDrill',
@@ -174,6 +176,7 @@ NOW_APPLICATION_SETTLING_POND = api.inherit(
      'is_ponds_discharged': fields.Boolean,
      'details': fields.List(fields.Nested(NOW_APPLICATION_SETTLING_POND_DETAIL,skip_none=True)),
      'wastewater_facility_description': fields.String,
+     'disposal_from_clean_out': fields.String,
     })
 
 NOW_APPLICATION_SURFACE_BULK = api.inherit(
@@ -186,7 +189,7 @@ NOW_APPLICATION_SURFACE_BULK = api.inherit(
         'details': fields.List(fields.Nested(NOW_APPLICATION_ACTIVITY_DETAIL_BASE,skip_none=True)),
         'has_bedrock_expansion': fields.Boolean,
         'surface_water_damage': fields.String,
-        'spontaneous_combustion': fields.String,
+        'spontaneous_combustion_handling': fields.String,
 
     })
 
@@ -243,7 +246,6 @@ NOW_APPLICATION_STATE_OF_LAND = api.model(
         'has_shared_info_with_fn': fields.Boolean,
         'has_fn_cultural_heritage_sites_in_area': fields.Boolean,
         'has_activity_in_park': fields.Boolean,
-        'has_required_access_authorizations': fields.Boolean,
         'is_on_private_land': fields.Boolean,
         'has_auth_lieutenant_gov_council': fields.Boolean,
     }
@@ -326,9 +328,11 @@ NOW_APPLICATION_MODEL = api.model(
         'directions_to_site': fields.String,
         'work_plan': fields.String,
         'crown_grant_or_district_lot_numbers': fields.String,
-        'has_building_outside_tenure': fields.Boolean,
+        'req_access_authorization_numbers': fields.String,
+        'has_surface_disturbance_outside_tenure': fields.Boolean,
         'is_access_gated': fields.Boolean,
         'has_key_for_inspector': fields.Boolean,
+        'has_req_access_authorizations': fields.Boolean,
         'application_progress': fields.Nested(NOW_APPLICATION_PROGRESS,skip_none=True),
         'state_of_land': fields.Nested(NOW_APPLICATION_STATE_OF_LAND,skip_none=True),
         'first_aid_equipment_on_site': fields.String,

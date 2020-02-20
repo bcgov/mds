@@ -182,8 +182,22 @@ export const AccessRoads = (props) => {
           <div className="field-title">
             Are you proposing any bridges, culverts, and crossings?**
           </div>
-          <Field id="" name="" component={RenderRadioButtons} disabled />
-          <Field id="" name="" component={RenderField} disabled />
+          <Field
+            id="has_proposed_bridges_or_culverts"
+            name="has_proposed_bridges_or_culverts"
+            component={RenderRadioButtons}
+            disabled={props.isViewMode}
+          />
+          <div className="field-title">
+            Describe the changes and reference the locations need on map needed later in the
+            application.**
+          </div>
+          <Field
+            id="bridge_culvert_crossing_description"
+            name="bridge_culvert_crossing_description"
+            component={RenderField}
+            disabled={props.isViewMode}
+          />
         </Col>
       </Row>
       <br />

@@ -238,7 +238,12 @@ export const SettlingPonds = (props) => {
             Describe the waste water treatment facility (settling pond design, recycling, distance
             from creek, etc.)**
           </div>
-          <Field id="" name="" component={RenderAutoSizeField} disabled />
+          <Field
+            id="wastewater_facility_description"
+            name="wastewater_facility_description"
+            component={RenderAutoSizeField}
+            disabled={props.isViewMode}
+          />
         </Col>
       </Row>
       <br />
@@ -262,7 +267,12 @@ export const SettlingPonds = (props) => {
           <div className="field-title">
             Disposal of fines from clean out (i.e. use as a subsoil material)**
           </div>
-          <Field id="" name="" component={RenderAutoSizeField} disabled />
+          <Field
+            id="disposal_from_clean_out"
+            name="disposal_from_clean_out"
+            component={RenderAutoSizeField}
+            disabled={props.isViewMode}
+          />
         </Col>
       </Row>
       <Row gutter={16}>

@@ -270,7 +270,12 @@ export const UndergroundExploration = (props) => {
       <Row gutter={16}>
         <Col md={12} sm={24}>
           <div className="field-title">Proposed Activities**</div>
-          <Field id="" name="" component={RenderField} disabled />
+          <Field
+            id="proposed_activity"
+            name="proposed_activity"
+            component={RenderField}
+            disabled={props.isViewMode}
+          />
         </Col>
       </Row>
       <Row gutter={16}>

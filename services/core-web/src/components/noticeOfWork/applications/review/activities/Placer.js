@@ -235,7 +235,12 @@ export const Placer = (props) => {
       <Row gutter={16}>
         <Col md={12} sm={24}>
           <div className="field-title">Proposed Production**</div>
-          <Field id="" name="" component={RenderField} disabled />
+          <Field
+            id="proposed_production"
+            name="proposed_production"
+            component={RenderField}
+            disabled={props.isViewMode}
+          />
         </Col>
       </Row>
       <br />

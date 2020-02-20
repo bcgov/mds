@@ -167,7 +167,12 @@ export const ReviewNOWApplication = (props) => {
       <Row gutter={16}>
         <Col md={12} sm={24}>
           <div className="field-title">Crown Grant / District Lot Numbers**</div>
-          <Field id="" name="" component={RenderField} disabled />
+          <Field
+            id="crown_grant_or_district_lot_numbers"
+            name="crown_grant_or_district_lot_numbers"
+            component={RenderField}
+            disabled={props.isViewMode}
+          />
         </Col>
         <Col md={12} sm={24}>
           <div className="field-title">Proposed End Date</div>
@@ -211,7 +216,12 @@ export const ReviewNOWApplication = (props) => {
           <div className="field-title">
             Do you have the required access authorizations in place?**
           </div>
-          <Field id="" name="" component={RenderRadioButtons} disabled />
+          <Field
+            id="has_req_access_authorizations"
+            name="has_req_access_authorizations"
+            component={RenderRadioButtons}
+            disabled={props.isViewMode}
+          />
         </Col>
       </Row>
       <Row gutter={16}>
@@ -220,20 +230,44 @@ export const ReviewNOWApplication = (props) => {
             Do you need to build a road, create stream crossings or other surface disturbance that
             will not be on your tenure?**
           </div>
-          <Field id="" name="" component={RenderRadioButtons} disabled />
+          <Field
+            id="has_surface_disturbance_outside_tenure"
+            name="has_surface_disturbance_outside_tenure"
+            component={RenderRadioButtons}
+            disabled={props.isViewMode}
+          />
         </Col>
         <Col md={12} sm={24}>
-          <div className="field-title">Access presently gated**</div>
-          <Field id="" name="" component={RenderRadioButtons} disabled />
+          <div className="field-title--light">
+            Please provide the type and authorization numbers for each access authorization
+            application or exemption to use the road(s).**
+          </div>
+          <Field
+            id="req_access_authorization_numbers"
+            name="req_access_authorization_numbers"
+            component={RenderField}
+            disabled={props.isViewMode}
+          />
         </Col>
       </Row>
       <Row gutter={16}>
         <Col md={12} sm={24}>
-          <Field id="" name="" component={RenderField} disabled />
+          <div className="field-title">Access presently gated**</div>
+          <Field
+            id="is_access_gated"
+            name="is_access_gated"
+            component={RenderRadioButtons}
+            disabled={props.isViewMode}
+          />
         </Col>
         <Col md={12} sm={24}>
           <div className="field-title">Key provided to the inspector**</div>
-          <Field id="" name="" component={RenderRadioButtons} disabled />
+          <Field
+            id="has_key_for_inspector"
+            name="has_key_for_inspector"
+            component={RenderRadioButtons}
+            disabled={props.isViewMode}
+          />
         </Col>
       </Row>
     </div>
@@ -246,31 +280,61 @@ export const ReviewNOWApplication = (props) => {
         <Row gutter={16}>
           <Col md={12} sm={24}>
             <div className="field-title">Present condition of the land**</div>
-            <Field id="" name="" component={RenderField} disabled />
+            <Field
+              id="present_land_condition_description"
+              name="present_land_condition_description"
+              component={RenderField}
+              disabled={props.isViewMode}
+            />
           </Col>
           <Col md={12} sm={24}>
             <div className="field-title">Current means of access**</div>
-            <Field id="" name="" component={RenderField} disabled />
+            <Field
+              id="means_of_access_description"
+              name="means_of_access_description"
+              component={RenderField}
+              disabled={props.isViewMode}
+            />
           </Col>
         </Row>
         <Row gutter={16}>
           <Col md={12} sm={24}>
             <div className="field-title">Physiography**</div>
-            <Field id="" name="" component={RenderField} disabled />
+            <Field
+              id="physiography_description"
+              name="physiography_description"
+              component={RenderField}
+              disabled={props.isViewMode}
+            />
           </Col>
           <Col md={12} sm={24}>
             <div className="field-title">Old Equipment**</div>
-            <Field id="" name="" component={RenderField} disabled />
+            <Field
+              id="old_equipment_description"
+              name="old_equipment_description"
+              component={RenderField}
+              disabled={props.isViewMode}
+            />
           </Col>
         </Row>
         <Row gutter={16}>
           <Col md={12} sm={24}>
             <div className="field-title">Type of vegetation**</div>
-            <Field id="" name="" component={RenderField} disabled />
+            <Field
+              id="type_of_vegetation_description"
+              name="type_of_vegetation_description"
+              component={RenderField}
+              disabled={props.isViewMode}
+            />
           </Col>
           <Col md={12} sm={24}>
             <div className="field-title">Recreational trail/use**</div>
-            <Field id="" name="" component={RenderField} disabled />
+            <Field
+              id="recreational_trail_use_description"
+              name="recreational_trail_use_description"
+              component={RenderField}
+              disabled={props.isViewMode}
+            />
           </Col>
         </Row>
 
@@ -289,19 +353,34 @@ export const ReviewNOWApplication = (props) => {
           </Col>
           <Col md={12} sm={24}>
             <div className="field-title">Activities in park**</div>
-            <Field id="" name="" component={RenderRadioButtons} disabled />
+            <Field
+              id="has_activity_in_park"
+              name="has_activity_in_park"
+              component={RenderRadioButtons}
+              disabled={props.isViewMode}
+            />
           </Col>
         </Row>
         <Row gutter={16}>
           <Col md={12} sm={24}>
             <div className="field-title">Proposed activities on private land**</div>
-            <Field id="" name="" component={RenderRadioButtons} disabled />
+            <Field
+              id="is_on_private_land"
+              name="is_on_private_land"
+              component={RenderRadioButtons}
+              disabled={props.isViewMode}
+            />
           </Col>
           <Col md={12} sm={24}>
             <div className="field-title--light">
               Do you have authorization by the Lieutenant Governor in Council?**
             </div>
-            <Field id="" name="" component={RenderRadioButtons} disabled />
+            <Field
+              id="has_auth_lieutenant_gov_council"
+              name="has_auth_lieutenant_gov_council"
+              component={RenderRadioButtons}
+              disabled={props.isViewMode}
+            />
           </Col>
         </Row>
 
@@ -321,7 +400,12 @@ export const ReviewNOWApplication = (props) => {
               validate={[required]}
             />
             <div className="field-title--light">Plan to protect the archaeological site**</div>
-            <Field id="" name="" component={RenderField} disabled />
+            <Field
+              id="arch_site_protection_plan"
+              name="arch_site_protection_plan"
+              component={RenderField}
+              disabled={props.isViewMode}
+            />
           </Col>
         </Row>
 
@@ -333,26 +417,46 @@ export const ReviewNOWApplication = (props) => {
               Have you shared information and engaged with First Nations in the area of the proposed
               activity?**
             </div>
-            <Field id="" name="" component={RenderRadioButtons} disabled />
+            <Field
+              id="has_shared_info_with_fn"
+              name="has_shared_info_with_fn"
+              component={RenderRadioButtons}
+              disabled={props.isViewMode}
+            />
           </Col>
           <Col md={12} sm={24}>
             <div className="field-title">
               As a result of the engagement, are you aware of any cultural heritage resources in the
               area where the work is proposed?**
             </div>
-            <Field id="" name="" component={RenderRadioButtons} disabled />
+            <Field
+              id="has_fn_cultural_heritage_sites_in_area"
+              name="has_fn_cultural_heritage_sites_in_area"
+              component={RenderRadioButtons}
+              disabled={props.isViewMode}
+            />
           </Col>
         </Row>
         <Row gutter={16}>
           <Col md={12} sm={24}>
             <div className="field-title">Describe your First Nations engagement activities**</div>
-            <Field id="" name="" component={RenderField} disabled />
+            <Field
+              id="fn_engagement_activities"
+              name="fn_engagement_activities"
+              component={RenderField}
+              disabled={props.isViewMode}
+            />
           </Col>
           <Col md={12} sm={24}>
             <div className="field-title">
               Describe any cultural heritage resources in the area**
             </div>
-            <Field id="" name="" component={RenderField} disabled />
+            <Field
+              id="cultural_heritage_description"
+              name="cultural_heritage_description"
+              component={RenderField}
+              disabled={props.isViewMode}
+            />
           </Col>
         </Row>
       </FormSection>
@@ -388,7 +492,12 @@ export const ReviewNOWApplication = (props) => {
     <Row gutter={16}>
       <Col md={12} sm={24}>
         <div className="field-title">Description of Work**</div>
-        <Field id="" name="" component={RenderField} disabled />
+        <Field
+          id="work_plan"
+          name="work_plan"
+          component={RenderField}
+          disabled={props.isViewMode}
+        />
       </Col>
     </Row>
   );

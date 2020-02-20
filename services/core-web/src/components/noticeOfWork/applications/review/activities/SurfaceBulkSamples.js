@@ -187,7 +187,12 @@ export const SurfaceBulkSamples = (props) => {
         </Col>
         <Col md={12} sm={24}>
           <div className="field-title">Bed rock expansion**</div>
-          <Field id="" name="" component={RenderRadioButtons} disabled />
+          <Field
+            id="has_bedrock_expansion"
+            name="has_bedrock_expansion"
+            component={RenderRadioButtons}
+            disabled={props.isViewMode}
+          />
         </Col>
       </Row>
       <Equipment
@@ -226,11 +231,24 @@ export const SurfaceBulkSamples = (props) => {
       <Row gutter={16}>
         <Col md={12} sm={24}>
           <div className="field-title">Surface water damage**</div>
-          <Field id="" name="" component={RenderAutoSizeField} disabled />
+          <Field
+            id="surface_water_damage"
+            name="surface_water_damage"
+            component={RenderAutoSizeField}
+            disabled={props.isViewMode}
+          />
         </Col>
         <Col md={12} sm={24}>
-          <div className="field-title">Spontaneous Combustion**</div>
-          <Field id="" name="" component={RenderField} disabled />
+          <div className="field-title">
+            If the material has potential for spontaneous combustion, give details of separate
+            handling.**
+          </div>
+          <Field
+            id="spontaneous_combustion_handling"
+            name="spontaneous_combustion_handling"
+            component={RenderField}
+            disabled={props.isViewMode}
+          />
         </Col>
       </Row>
     </div>

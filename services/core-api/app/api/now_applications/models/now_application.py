@@ -59,9 +59,12 @@ class NOWApplication(Base, AuditMixin):
 
     work_plan = db.Column(db.String)
     crown_grant_or_district_lot_numbers = db.Column(db.String)
-    has_building_outside_tenure = db.Column(db.Boolean, nullable=False, default=False)
+
+    req_access_authorization_numbers = db.Column(db.String)
+    has_surface_disturbance_outside_tenure = db.Column(db.Boolean, nullable=False, default=False)
     is_access_gated = db.Column(db.Boolean, nullable=False, default=False)
     has_key_for_inspector = db.Column(db.Boolean, nullable=False, default=False)
+    has_req_access_authorizations = db.Column(db.Boolean, nullable=False, default=False)
 
     ready_for_review_date = db.Column(db.Date)
     referral_closed_on_date = db.Column(db.Date)

@@ -23,7 +23,7 @@ class SurfaceBulkSample(ActivitySummaryBase):
 
     has_bedrock_expansion = db.Column(db.Boolean, nullable=False, default=False)
     surface_water_damage = db.Column(db.String)
-    spontaneous_combustion = db.Column(db.String)
+    spontaneous_combustion_handling = db.Column(db.String)
 
     details = db.relationship(
         'SurfaceBulkSampleDetail', secondary='activity_summary_detail_xref', load_on_pending=True)
