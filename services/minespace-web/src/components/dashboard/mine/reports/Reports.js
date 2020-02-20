@@ -16,6 +16,7 @@ import CustomPropTypes from "@/customPropTypes";
 import ReportsTable from "@/components/dashboard/mine/reports/ReportsTable";
 import TableSummaryCard from "@/components/common/TableSummaryCard";
 import { modalConfig } from "@/components/modalContent/config";
+import { AuthorizationWrapper } from "@/components/common/wrappers/AuthorizationWrapper";
 
 const { Paragraph, Title, Text } = Typography;
 
@@ -140,14 +141,16 @@ export class Reports extends Component {
           )}
           <Row gutter={[16, 32]}>
             <Col>
-              <Button
-                style={{ float: "right" }}
-                type="primary"
-                onClick={(event) => this.openAddReportModal(event, this.props.mine.mine_name)}
-              >
-                <Icon type="plus-circle" theme="filled" />
-                Submit Report
-              </Button>
+              <AuthorizationWrapper>
+                <Button
+                  style={{ float: "right" }}
+                  type="primary"
+                  onClick={(event) => this.openAddReportModal(event, this.props.mine.mine_name)}
+                >
+                  <Icon type="plus-circle" theme="filled" />
+                  Submit Report
+                </Button>
+              </AuthorizationWrapper>
             </Col>
           </Row>
           <Row gutter={[16, 32]}>

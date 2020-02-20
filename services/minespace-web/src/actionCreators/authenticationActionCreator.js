@@ -1,5 +1,6 @@
 import axios from "axios";
 import { notification } from "antd";
+import jwt from "jsonwebtoken";
 import queryString from "query-string";
 import * as COMMON_ENV from "@common/constants/environment";
 import { request, success, error } from "@/actions/genericActions";
@@ -18,32 +19,11 @@ export const unAuthenticateUser = (toastMessage) => (dispatch) => {
   }
 };
 
-export const getUserRoles = (token, response) => (dispatch) => {
-  dispatch(request(reducerTypes.GET_USER_INFO));
-  return axios
-    .get(MINESPACE_ENV.CLIENT_ROLES(response.data.sub), {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-    .then((response) => {
-      console.log(response);
-      // dispatch(success(reducerTypes.GET_USER_INFO));
-      // dispatch(authenticationActions.authenticateUser(response.data));
-    })
-    .catch((err) => {
-      console.log(err);
-      // dispatch(error(reducerTypes.GET_USER_INFO));
-      // dispatch(unAuthenticateUser());
-      //   if (errorMessage) {
-      //     notification.error({
-      //       message: errorMessage,
-      //       duration: 10,
-      //     });
-      //   } else {
-      //     throw err;
-      //   }
-    });
+export const getUserRoles = (token) => (dispatch) => {
+  const decodedToken = jwt.decode(token);
+  const isProponent = decodedToken.realm_access.roles.includes("minespace-proponent");
+  console.log(isProponent);
+  dispatch(authenticationActions.checkIdentityProvider(isProponent));
 };
 
 export const getUserInfoFromToken = (token, errorMessage) => (dispatch) => {
@@ -55,8 +35,7 @@ export const getUserInfoFromToken = (token, errorMessage) => (dispatch) => {
       },
     })
     .then((response) => {
-      console.log(response);
-      dispatch(getUserRoles(token, response));
+      dispatch(getUserRoles(token, response.data.sub));
       dispatch(success(reducerTypes.GET_USER_INFO));
       dispatch(authenticationActions.authenticateUser(response.data));
     })

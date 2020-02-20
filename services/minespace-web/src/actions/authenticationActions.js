@@ -17,3 +17,10 @@ export const storeKeycloakData = (data = {}) => ({
     data,
   },
 });
+
+export const checkIdentityProvider = (isProponent) => ({
+  type: ActionTypes.STORE_IDENTITY_PROVIDER,
+  payload: {
+    isProponent,
+  },
+});
