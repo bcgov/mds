@@ -25,57 +25,6 @@ INSERT INTO document_template
 VALUES
 	('NOW-RJL', '[
     {
-      "id": "date",
-      "label": "Date",
-      "type": "DATE",
-      "placeholder": null,
-      "required": true
-    },
-    {
-      "id": "mine_no",
-      "label": "Mine Number",
-      "type": "FIELD",
-      "placeholder": "Enter the mine number",
-      "required": true
-    },
-    {
-      "id": "addy1",
-      "label": "Address 1",
-      "type": "FIELD",
-      "placeholder": "Enter the address",
-      "required": true
-    },
-    {
-      "id": "addy",
-      "label": "Address",
-      "type": "FIELD",
-      "placeholder": "Enter the address",
-      "required": false
-    },
-    {
-      "id": "property",
-      "label": "Property",
-      "type": "FIELD",
-      "placeholder": "Enter the property",
-      "required": true
-    },
-    {
-      "id": "apl_date",
-      "label": "Application Date",
-      "type": "DATE",
-      "placeholder": null,
-      "required": true
-    },
-    {
-      "id": "inspector",
-      "label": "Inspector",
-      "type": "FIELD",
-      "placeholder": "Enter the inspector''s name",
-      "required": true
-    }
-  ]', 'templates/now/Rejection Letter Template (NoW).docx', true, 'system-mds', 'system-mds'),
-	('NOW-WDL', '[
-    {
       "id": "let_dt",
       "label": "Date",
       "type": "DATE",
@@ -124,7 +73,58 @@ VALUES
       "placeholder": "Enter the inspector''s name",
       "required": true
     }
-  ]', 'templates/now/Withdrawl Letter Template (NoW).docx', true, 'system-mds', 'system-mds'),
+  ]', 'templates/now/Rejection Letter Template (NoW).docx', true, 'system-mds', 'system-mds'),
+	('NOW-WDL', '[
+    {
+      "id": "date",
+      "label": "Date",
+      "type": "DATE",
+      "placeholder": null,
+      "required": true
+    },
+    {
+      "id": "mine_no",
+      "label": "Mine Number",
+      "type": "FIELD",
+      "placeholder": "Enter the mine number",
+      "required": true
+    },
+    {
+      "id": "addy1",
+      "label": "Address 1",
+      "type": "FIELD",
+      "placeholder": "Enter the address",
+      "required": true
+    },
+    {
+      "id": "addy",
+      "label": "Address",
+      "type": "FIELD",
+      "placeholder": "Enter the address",
+      "required": false
+    },
+    {
+      "id": "property",
+      "label": "Property",
+      "type": "FIELD",
+      "placeholder": "Enter the property",
+      "required": true
+    },
+    {
+      "id": "apl_date",
+      "label": "Application Date",
+      "type": "DATE",
+      "placeholder": null,
+      "required": true
+    },
+    {
+      "id": "inspector",
+      "label": "Inspector",
+      "type": "FIELD",
+      "placeholder": "Enter the inspector''s name",
+      "required": true
+    }
+  ]' , 'templates/now/Withdrawl Letter Template (NoW).docx', true, 'system-mds', 'system-mds'),
 	('NOW-CAL', '[
     {
       "id": "date",
