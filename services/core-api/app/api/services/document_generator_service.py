@@ -1,4 +1,4 @@
-import requests, hashlib, os, mimetypes
+import requests, hashlib, os, mimetypes, json
 from flask import Response, current_app, stream_with_context
 from app.config import Config
 
@@ -24,12 +24,14 @@ class DocumentGeneratorService():
 
         file_sha = sha256_checksum(file_path)
         file_name = os.path.basename(file_path)
-        resp = requests.post(
-            url=f'{cls.document_generator_url}/{file_sha}/render',
-            data={
-                'data': data,
-                'options': {}
-            })
+
+        # https://carbone.io/api-reference.html#native-api
+        current_app.logger.debug(data)
+        body = {'data': data, 'options': {'convertTo': 'pdf', 'reportName': file_name + '.pdf'}}
+        current_app.logger.debug(type(data))
+
+        current_app.logger.debug(body)
+        resp = requests.post(url=f'{cls.document_generator_url}/{file_sha}/render', data=body)
         if resp.status_code != 200:
             current_app.logger.warn(f'3 Docgen service replied with {str(resp.content)}')
 

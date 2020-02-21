@@ -21,7 +21,7 @@ const render = util.promisify(carbone.render);
 _.forEach(carbone.formatters, formatter => (formatter.$isDefault = true));
 
 app.post("/template/:uid/render", async (req, res) => {
-  console.log("template RENDER");
+  console.log("TEMPLATE RENDER");
   console.log(req.body);
   const targetPath = templatedir + req.params.uid;
   let templateFilePath;
@@ -51,16 +51,20 @@ app.post("/template/:uid/render", async (req, res) => {
   let options = {};
   let formatters = {};
 
-  // try {
-  //   options = req.body.options;
-  // } catch (e) {
-  //   return res
-  //     .status(500)
-  //     .send(`options not provided or formatted incorrectly`);
-  // }
+  try {
+    options = req.body.options;
+  } catch (e) {
+    return res
+      .status(500)
+      .send(`options not provided or formatted incorrectly`);
+  }
+  console.log(options);
+
   options.convertTo = options.convertTo || originalFormat;
   options.outputName =
     options.outputName || `${originalNameWOExt}.${options.convertTo}`;
+
+  console.log(options);
 
   if (typeof data !== `object` || data === null) {
     try {
@@ -110,7 +114,7 @@ app.get("/template/:uid", async (req, res) => {
   return res.send();
 });
 
-app.post("/template", upload.single(`template.docx`), async (req, res) => {
+app.post("/template", upload.single(`template`), async (req, res) => {
   console.log("template upload");
   console.log(req.file);
   const template = req.file;
