@@ -149,7 +149,7 @@ export const ReviewNOWApplication = (props) => {
             id="type_of_application"
             name="type_of_application"
             component={RenderField}
-            disabled={props.isViewMode}
+            disabled
           />
         </Col>
       </Row>
