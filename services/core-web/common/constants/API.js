@@ -151,9 +151,9 @@ export const NOTICE_OF_WORK_APPLICATION_LIST = (params = {}) =>
 export const NOTICE_OF_WORK_APPLICATION = (applicationGuid) =>
   `/now-applications/${applicationGuid}`;
 export const NOTICE_OF_WORK_DOCUMENT_FILE_GET_URL = (id, applicationGuid, token = {}) =>
-  `/now-submissions/${applicationGuid}/document/${id}?${queryString.stringify(token)}`;
+  `/now-submissions/applications/${applicationGuid}/document/${id}?${queryString.stringify(token)}`;
 export const NOTICE_OF_WORK_DOCUMENT_TOKEN_GET_URL = (id, applicationGuid) =>
-  `/now-submissions/${applicationGuid}/document/${id}/token`;
+  `/now-submissions/applications/${applicationGuid}/document/${id}/token`;
 export const NOTICE_OF_WORK_APPLICATION_IMPORT = (applicationGuid) =>
   `/now-applications/${applicationGuid}/import`;
 export const NOTICE_OF_WORK_ACTIVITY_TYPE_OPTIONS = "/now-applications/activity-types";
