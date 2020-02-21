@@ -1,8 +1,7 @@
 /* eslint-disable */
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { withRouter } from "react-router-dom";
-import { bindActionCreators, compose } from "redux";
+import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import hoistNonReactStatics from "hoist-non-react-statics";
 import { isAuthenticated } from "@/selectors/authenticationSelectors";
