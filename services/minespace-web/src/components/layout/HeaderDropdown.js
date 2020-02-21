@@ -10,7 +10,7 @@ import * as MINESPACE_ENV from "@/constants/environment";
 import { signOutFromSiteMinder } from "@/utils/authenticationHelpers";
 import { isAuthenticated, getUserInfo } from "@/selectors/authenticationSelectors";
 import { MENU } from "@/constants/assets";
-import { AuthorizationWrapper } from "../common/wrappers/AuthorizationWrapper";
+import AuthorizationWrapper from "../common/wrappers/AuthorizationWrapper";
 
 /**
  * @class HeaderDropdown.js contains various authentication states, and available links for authenticated users,

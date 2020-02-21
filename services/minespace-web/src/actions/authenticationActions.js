@@ -18,9 +18,13 @@ export const storeKeycloakData = (data = {}) => ({
   },
 });
 
-export const checkIdentityProvider = (isProponent) => ({
-  type: ActionTypes.STORE_IDENTITY_PROVIDER,
-  payload: {
-    isProponent,
-  },
-});
+export const storeIsProponent = (isProponent) => {
+  console.log("I AM GETTING CALLED HERE");
+  console.log(isProponent);
+  return {
+    type: ActionTypes.STORE_IS_PROPONENT,
+    payload: {
+      data: isProponent,
+    },
+  };
+};

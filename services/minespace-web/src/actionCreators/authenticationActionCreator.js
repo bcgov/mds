@@ -22,7 +22,7 @@ export const unAuthenticateUser = (toastMessage) => (dispatch) => {
 export const getUserRoles = (token) => (dispatch) => {
   const decodedToken = jwt.decode(token);
   const isProponent = decodedToken.realm_access.roles.includes("minespace-proponent");
-  dispatch(authenticationActions.checkIdentityProvider(isProponent));
+  dispatch(authenticationActions.storeIsProponent(isProponent));
 };
 
 export const getUserInfoFromToken = (token, errorMessage) => (dispatch) => {

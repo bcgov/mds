@@ -28,10 +28,10 @@ const authenticationReducer = (state = initialState, action) => {
         userInfo: {},
         redirect: route.HOME.route,
       };
-    case ActionTypes.STORE_IDENTITY_PROVIDER:
+    case ActionTypes.STORE_IS_PROPONENT:
       return {
         ...state,
-        isProponent: action.payload.isProponent,
+        isProponent: action.payload.data,
       };
     default:
       return state;

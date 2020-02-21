@@ -16,7 +16,7 @@ import CustomPropTypes from "@/customPropTypes";
 import ReportsTable from "@/components/dashboard/mine/reports/ReportsTable";
 import TableSummaryCard from "@/components/common/TableSummaryCard";
 import { modalConfig } from "@/components/modalContent/config";
-import { AuthorizationWrapper } from "@/components/common/wrappers/AuthorizationWrapper";
+import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 
 const { Paragraph, Title, Text } = Typography;
 

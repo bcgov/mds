@@ -45,16 +45,18 @@ const defaultProps = {
 };
 
 export const AuthorizationWrapper = (props) => {
-  const checkDev =
-    props.inDevelopment === undefined || (props.inDevelopment && detectDevelopmentEnvironment());
-  const checkTest = props.inTesting === undefined || (props.inTesting && !detectProdEnvironment());
-  // Do not show any actions if the user is not a Mine Proponent, unless the environment is development or test.
+  const checkDev = props.inDevelopment && detectDevelopmentEnvironment();
+  const checkTest = props.inTesting && !detectProdEnvironment();
+  // do not show any actions if the user is not a proponents, unless in the development/test environment
   if (!props.isProponent && detectProdEnvironment()) {
     return <div />;
-  } else if (checkDev || checkTest) {
-    return props.children;
+  } else {
+    if (props.inDevelopment === undefined && props.inTesting === undefined) {
+      return <div>{props.children}</div>;
+    } else if (checkDev || checkTest) {
+      return <div>{props.children}</div>;
+    }
   }
-  return props.children;
 };
 
 const mapStateToProps = (state) => ({
