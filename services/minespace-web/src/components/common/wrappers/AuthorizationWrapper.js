@@ -49,12 +49,12 @@ export const AuthorizationWrapper = (props) => {
   const checkTest = props.inTesting && !detectProdEnvironment();
   // do not show any actions if the user is not a proponents, unless in the development/test environment
   if (!props.isProponent && detectProdEnvironment()) {
-    return <div />;
+    return <span />;
   } else {
     if (props.inDevelopment === undefined && props.inTesting === undefined) {
-      return <div>{props.children}</div>;
+      return <span>{props.children}</span>;
     } else if (checkDev || checkTest) {
-      return <div>{props.children}</div>;
+      return <span>{props.children}</span>;
     }
   }
 };
