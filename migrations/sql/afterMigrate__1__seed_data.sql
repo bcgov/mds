@@ -75,8 +75,8 @@ INSERT INTO mine_operation_status_sub_reason_code
     update_user
     )
 VALUES
-    ('LTM', 'Long Term Maintenance', 10, 'system-mds', 'system-mds'),
-    ('LWT', 'Long Term Maintenance & Water Treatment', 20, 'system-mds', 'system-mds'),
+    ('LTM', 'Long-Term Maintenance', 10, 'system-mds', 'system-mds'),
+    ('LWT', 'Long-Term Maintenance & Water Treatment', 20, 'system-mds', 'system-mds'),
     ('PRP', 'Permit Release Pending', 30, 'system-mds', 'system-mds'),
     ('RNS', 'Reclamation Not Started', 40, 'system-mds', 'system-mds'),
     ('SVR', 'Site Visit Required', 50, 'system-mds', 'system-mds')
@@ -471,7 +471,7 @@ INSERT INTO public.mine_report_category
 (mine_report_category, description, display_order, active_ind, create_user, create_timestamp, update_user, update_timestamp)
 VALUES 
 	('H&S', 'Health and Safety', 10, true, 'system-mds', now(), 'system-mds', now()),
-	('GSE', 'GeoScience and Environmental', 20, true, 'system-mds', now(), 'system-mds', now()),
+	('GSE', 'Geoscience and Environmental', 20, true, 'system-mds', now(), 'system-mds', now()),
 	('GTC', 'Geotechnical', 30, true, 'system-mds', now(), 'system-mds', now()),
 	('OTH', 'Other', 40, true, 'system-mds', now(), 'system-mds', now())
 on conflict do nothing;
@@ -480,17 +480,17 @@ on conflict do nothing;
 INSERT INTO public.mine_report_due_date_type
 (mine_report_due_date_type, description, active_ind, create_user, update_user)
 VALUES
-	('FIS', 'Reports due on fiscal year end.', true, 'system-mds', 'system-mds'),
-	('ANV', 'Reports due on an aniversary of operation, permit, etc...', true, 'system-mds', 'system-mds'),
-	('AVA', 'Reports that are available on Request', true, 'system-mds', 'system-mds'),
-	('PMT', 'Reports that are indicated via Permit Requirements', true, 'system-mds', 'system-mds'),
-	('EVT', 'Reports that are related to an event that occured', true, 'system-mds', 'system-mds')
+	('FIS', 'Reports due on fiscal year-end', true, 'system-mds', 'system-mds'),
+	('ANV', 'Reports due on an anniversary of an operation, permit, etc.', true, 'system-mds', 'system-mds'),
+	('AVA', 'Reports that are available on request', true, 'system-mds', 'system-mds'),
+	('PMT', 'Reports that are indicated via permit requirements', true, 'system-mds', 'system-mds'),
+	('EVT', 'Reports that are related to an event that occurred', true, 'system-mds', 'system-mds')
 on conflict do nothing;
 
 INSERT INTO unit_type
 (unit_type_code, short_description, description, active_ind, create_user, update_user)
 VALUES
-	('MTN', 't', 'Tonne (Metric Ton 1000Kg)', true, 'system-mds', 'system-mds'),
+	('MTN', 't', 'Tonne (Metric Ton 1,000 kg)', true, 'system-mds', 'system-mds'),
 	('MEC', 'm3', 'Meters cubed', true, 'system-mds', 'system-mds'),
 	('HA', 'ha', 'Hectares', true, 'system-mds', 'system-mds'),
 	('DEG',  'deg', 'Degrees', true, 'system-mds', 'system-mds'),
@@ -539,7 +539,7 @@ VALUES
     ('settling_pond', 'Settling Ponds', 'system-mds', 'system-mds'),
     ('exploration_surface_drilling', 'Exploration Surface Drilling', 'system-mds', 'system-mds'),
     ('sand_gravel_quarry_operation', 'Sand and Gravel / Quarry Operations', 'system-mds', 'system-mds'),
-    ('exploration_access', 'Access Roads, trails, Help Pads, Air Strips, Boat Ramps', 'system-mds', 'system-mds'),
+    ('exploration_access', 'Access Roads, Trails, Helipads, Airstrips, Boat Ramps', 'system-mds', 'system-mds'),
     ('underground_exploration', 'Underground Exploration', 'system-mds', 'system-mds'),
     ('camp', 'Camps, Buildings, Staging Area, Fuel/Lubricant Storage', 'system-mds', 'system-mds'),
     ('mechanical_trenching', 'Mechanical Trenching / Test Pits', 'system-mds', 'system-mds'),
@@ -580,8 +580,8 @@ INSERT INTO now_application_permit_type(
     update_user
     )
 VALUES
-    ('MY-ABP', 'Multi-Year, Area Based Permit', 'system-mds', 'system-mds'),
-    ('OYP', 'One Year Permit', 'system-mds', 'system-mds'),
+    ('MY-ABP', 'Multi-Year, Area-Based Permit', 'system-mds', 'system-mds'),
+    ('OYP', 'One-Year Permit', 'system-mds', 'system-mds'),
     ('MYP', 'Multi-Year Permit', 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
 

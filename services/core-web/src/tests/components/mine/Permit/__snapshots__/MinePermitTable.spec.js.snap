@@ -1,84 +1,73 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`MinePermitTable renders properly 1`] = `
-<TableLoadingWrapper
-  isPaginated={false}
-  tableHeaders={
+<CoreTable
+  columns={
     Array [
-      "Permit No.",
-      "Status",
-      "Permittee",
-      "Authorization End Date",
-      "First Issued",
-      "Last Amended",
-      "",
+      Object {
+        "dataIndex": "permitNo",
+        "key": "permitNo",
+        "render": [Function],
+        "title": "Permit No.",
+      },
+      Object {
+        "dataIndex": "status",
+        "key": "status",
+        "render": [Function],
+        "title": "Status",
+      },
+      Object {
+        "dataIndex": "permittee",
+        "key": "permittee",
+        "render": [Function],
+        "title": "Permittee",
+      },
+      Object {
+        "dataIndex": "authorizationEndDate",
+        "key": "authorizationEndDate",
+        "render": [Function],
+        "title": "Authorization End Date",
+      },
+      Object {
+        "dataIndex": "firstIssued",
+        "key": "firstIssued",
+        "render": [Function],
+        "title": "First Issued",
+      },
+      Object {
+        "dataIndex": "lastAmended",
+        "key": "lastAmended",
+        "render": [Function],
+        "title": "Last Amended",
+      },
+      Object {
+        "align": "right",
+        "dataIndex": "addEditButton",
+        "key": "addEditButton",
+        "render": [Function],
+        "title": "",
+      },
     ]
   }
->
-  <withStore(Table)
-    align="left"
-    className="nested-table"
-    columns={
-      Array [
-        Object {
-          "dataIndex": "permitNo",
-          "key": "permitNo",
-          "render": [Function],
-          "title": "Permit No.",
-        },
-        Object {
-          "dataIndex": "status",
-          "key": "status",
-          "render": [Function],
-          "title": "Status",
-        },
-        Object {
-          "dataIndex": "permittee",
-          "key": "permittee",
-          "render": [Function],
-          "title": "Permittee",
-        },
-        Object {
-          "dataIndex": "authorizationEndDate",
-          "key": "authorizationEndDate",
-          "render": [Function],
-          "title": "Authorization End Date",
-        },
-        Object {
-          "dataIndex": "firstIssued",
-          "key": "firstIssued",
-          "render": [Function],
-          "title": "First Issued",
-        },
-        Object {
-          "dataIndex": "lastAmended",
-          "key": "lastAmended",
-          "render": [Function],
-          "title": "Last Amended",
-        },
-        Object {
-          "align": "right",
-          "dataIndex": "addEditButton",
-          "key": "addEditButton",
-          "render": [Function],
-          "title": "",
-        },
-      ]
-    }
-    dataSource={Array []}
-    expandIcon={[Function]}
-    expandRowByClick={true}
-    expandedRowRender={[Function]}
-    locale={
-      Object {
+  dataSource={Array []}
+  tableProps={
+    Object {
+      "align": "left",
+      "className": "nested-table",
+      "expandIcon": [Function],
+      "expandRowByClick": true,
+      "expandedRowKeys": undefined,
+      "expandedRowRender": [Function],
+      "locale": Object {
         "emptyText": <NullScreen
           message=""
           type="permit"
         />,
-      }
+      },
+      "onExpand": undefined,
+      "pagination": false,
+      "rowClassName": "table-row-align-middle pointer fade-in",
     }
-    pagination={false}
-    rowClassName="table-row-align-middle pointer fade-in"
-  />
-</TableLoadingWrapper>
+  }
+/>
 `;

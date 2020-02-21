@@ -10,7 +10,7 @@ const propTypes = {
 };
 
 export const MinistryContactItem = (props) => (
-  <Paragraph>
+  <Paragraph className="ministry-contact-item">
     <Text strong className="ministry-contact-title">
       {props.contact.title || Strings.UNKNOWN}
       <br />
