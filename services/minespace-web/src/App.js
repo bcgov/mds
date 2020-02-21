@@ -19,7 +19,6 @@ export const store = configureStore();
 Spin.setDefaultIndicator(<Icon type="loading" style={{ fontSize: 40 }} />);
 
 class App extends Component {
-  isPublic = false;
   state = { isIE: true, isMobile: true };
 
   componentDidMount() {
