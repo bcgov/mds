@@ -105,6 +105,7 @@ class ApplicationListResource(Resource, UserMixin ):
     @api.doc(description='Save an application')
     @requires_role_view_all
     @api.expect(APPLICATION)
+    @api.marshal_with(None, code=201)
     def post(self):
         raise NotImplemented('Not Implemented')
         return 

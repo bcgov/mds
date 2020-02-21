@@ -12,6 +12,7 @@ class ApplicationNDAListResource(Resource, UserMixin ):
     @api.doc(description='Save an application nda')
     @requires_role_view_all
     @api.expect(APPLICATIONNDA)
+    @api.marshal_with(None, code=201)
     def post(self):
         raise NotImplemented('Not Implemented')
         return 
