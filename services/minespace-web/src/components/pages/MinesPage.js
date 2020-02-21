@@ -13,7 +13,7 @@ import * as routes from "@/constants/routes";
 import * as Strings from "@/constants/strings";
 import Map from "@/components/common/Map";
 import UnauthenticatedNotice from "../common/UnauthenticatedNotice";
-import { detectProdEnvironment } from "@/utils/environmentUtils";
+import { detectDevelopmentEnvironment } from "@/utils/environmentUtils";
 
 const { Paragraph, Title, Text } = Typography;
 
@@ -32,8 +32,8 @@ export class MinesPage extends Component {
 
   render() {
     const { mines } = this.props.userMineInfo;
-    const isProd = detectProdEnvironment();
-    if (!this.props.isProponent && isProd) {
+    const isProdOrTest = !detectDevelopmentEnvironment();
+    if (!this.props.isProponent && isProdOrTest) {
       return <UnauthenticatedNotice />;
     } else {
       return (
