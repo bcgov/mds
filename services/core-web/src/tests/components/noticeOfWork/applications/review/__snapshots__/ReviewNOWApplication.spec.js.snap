@@ -333,8 +333,8 @@ exports[`ReviewNOWApplication renders properly 1`] = `
               <Field
                 component={[Function]}
                 disabled={true}
-                id="application_permit_term"
-                name="application_permit_term"
+                id=""
+                name=""
                 validate={
                   Array [
                     [Function],

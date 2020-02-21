@@ -176,13 +176,7 @@ export const ReviewNOWApplication = (props) => {
               <img src={INFO_CIRCLE} alt="INFO" className="info-tooltip" />
             </Tooltip>
           </div>
-          <Field
-            id="application_permit_term"
-            name="application_permit_term"
-            component={RenderField}
-            disabled={props.isViewMode}
-            validate={[number]}
-          />
+          <Field id="" name="" component={RenderField} disabled validate={[number]} />
         </Col>
       </Row>
       <Row gutter={16}>
