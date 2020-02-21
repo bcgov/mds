@@ -33,7 +33,7 @@ class DocumentGeneratorService():
             data=json.dumps(body),
             headers={'Content-Type': 'application/json'})
         if resp.status_code != 200:
-            current_app.logger.warn(f'3 Docgen service replied with {str(resp.content)}')
+            current_app.logger.warn(f'Docgen-api/generate replied with {str(resp.content)}')
 
         file_download_resp = Response(stream_with_context(resp.iter_content(chunk_size=2048)))
         file_download_resp.headers['Content-Type'] = resp.headers['Content-Type']
@@ -48,7 +48,7 @@ class DocumentGeneratorService():
         files = {'template': (file_name, file.read(), mimetypes.guess_type(file_name))}
         resp = requests.post(url=cls.document_generator_url, files=files)
         if resp.status_code != 200:
-            current_app.logger.warn(f'Docgen service replied with {str(resp.text)}')
+            current_app.logger.warn(f'Docgen-api/push-template replied with {str(resp.text)}')
             return False
         return True
 
@@ -58,6 +58,6 @@ class DocumentGeneratorService():
 
         resp = requests.get(url=f'{cls.document_generator_url}/{file_sha}')
         if resp.status_code != 200:
-            current_app.logger.warn(f'Docgen service replied with {str(resp.content)}')
+            current_app.logger.warn(f'Docgen-api/check-template replied with {str(resp.content)}')
             return False
         return True
