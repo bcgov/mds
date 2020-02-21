@@ -368,6 +368,9 @@ exports[`DashboardRoutes  renders properly 1`] = `
     path="/dashboard/notice-of-work/application/:id/view"
   />
   <Route
+    exact={true}
+  />
+  <Route
     component={[Function]}
   />
 </Switch>

@@ -141,7 +141,7 @@ export const fetchMineRecordById = (mineNo) => (dispatch) => {
     })
     .catch((err) => {
       dispatch(error(reducerTypes.GET_MINE_RECORD));
-      throw err;
+      throw new Error(err);
     })
     .finally(() => dispatch(hideLoading()));
 };
