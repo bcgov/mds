@@ -154,7 +154,6 @@ export const NOTICE_OF_WORK_DOCUMENT_FILE_GET_URL = (id, applicationGuid, token 
   `/now-submissions/applications/${applicationGuid}/document/${id}?${queryString.stringify(token)}`;
 export const NOTICE_OF_WORK_DOCUMENT_TOKEN_GET_URL = (id, applicationGuid) =>
   `/now-submissions/applications/${applicationGuid}/document/${id}/token`;
-s;
 export const NOTICE_OF_WORK_APPLICATION_IMPORT = (applicationGuid) =>
   `/now-applications/${applicationGuid}/import`;
 export const NOTICE_OF_WORK_ACTIVITY_TYPE_OPTIONS = "/now-applications/activity-types";
