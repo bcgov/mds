@@ -36,9 +36,9 @@ class DocumentGeneratorService():
             current_app.logger.warn(f'Docgen-api/generate replied with {str(resp.content)}')
 
         file_download_resp = Response(stream_with_context(resp.iter_content(chunk_size=2048)))
-        file_download_resp.headers['Content-Type'] = resp.headers['Content-Type']
-        file_download_resp.headers['Content-Disposition'] = f'attachment; filename="{file_name}"'
+        current_app.logger.info(f'Docgen-api/generate response headers {resp.headers}')
 
+        file_download_resp.headers = dict(resp.headers)
         return file_download_resp
 
     @classmethod
