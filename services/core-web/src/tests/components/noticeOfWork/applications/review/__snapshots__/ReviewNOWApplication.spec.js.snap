@@ -20,7 +20,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
         <p
           className="p-light"
         >
-          ** Not available from MMS, NROS, and vFCBC
+          ** This field is not being sent by NROS or vFCBC. Open the original PDF to to see the data.
         </p>
       </div>
       <Divider
