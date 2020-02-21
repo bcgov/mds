@@ -25,59 +25,8 @@ INSERT INTO document_template
 VALUES
 	('NOW-RJL', '[
     {
-      "id": "let_dt",
-      "label": "Date",
-      "type": "DATE",
-      "placeholder": null,
-      "required": true
-    },
-    {
-      "id": "file_no",
-      "label": "File Number",
-      "type": "FIELD",
-      "placeholder": "Enter the file number",
-      "required": true
-    },
-    {
-      "id": "addy1",
-      "label": "Address 1",
-      "type": "FIELD",
-      "placeholder": "Enter the address",
-      "required": true
-    },
-    {
-      "id": "addy",
-      "label": "Address",
-      "type": "FIELD",
-      "placeholder": "Enter the address",
-      "required": false
-    },
-    {
-      "id": "property",
-      "label": "Property",
-      "type": "FIELD",
-      "placeholder": "Enter the property",
-      "required": true
-    },
-    {
-      "id": "rej_dt",
-      "label": "Rejection Date",
-      "type": "DATE",
-      "placeholder": null,
-      "required": true
-    },
-    {
-      "id": "inspector",
-      "label": "Inspector",
-      "type": "FIELD",
-      "placeholder": "Enter the inspector''s name",
-      "required": true
-    }
-  ]', 'templates/now/Rejection Letter Template (NoW).docx', true, 'system-mds', 'system-mds'),
-	('NOW-WDL', '[
-    {
-      "id": "date",
-      "label": "Date",
+      "id": "letter_dt",
+      "label": "Letter Date",
       "type": "DATE",
       "placeholder": null,
       "required": true
@@ -90,17 +39,17 @@ VALUES
       "required": true
     },
     {
-      "id": "addy1",
-      "label": "Address 1",
+      "id": "proponent_address",
+      "label": "Proponent Address",
       "type": "FIELD",
-      "placeholder": "Enter the address",
+      "placeholder": "Enter the propnent''s address",
       "required": true
     },
     {
-      "id": "addy",
-      "label": "Address",
+      "id": "proponent_name",
+      "label": "Proponent Name",
       "type": "FIELD",
-      "placeholder": "Enter the address",
+      "placeholder": "Enter the propnent''s name",
       "required": false
     },
     {
@@ -124,11 +73,62 @@ VALUES
       "placeholder": "Enter the inspector''s name",
       "required": true
     }
+  ]' , 'templates/now/Rejection Letter Template (NoW).docx', true, 'system-mds', 'system-mds'),
+	('NOW-WDL', '[
+    {
+      "id": "letter_dt",
+      "label": "Letter Date",
+      "type": "DATE",
+      "placeholder": null,
+      "required": true
+    },
+    {
+      "id": "file_no",
+      "label": "File Number",
+      "type": "FIELD",
+      "placeholder": "Enter the file number",
+      "required": true
+    },
+    {
+      "id": "proponent_address",
+      "label": "Proponent Address",
+      "type": "FIELD",
+      "placeholder": "Enter the propnent''s address",
+      "required": true
+    },
+    {
+      "id": "proponent_name",
+      "label": "Proponent Name",
+      "type": "FIELD",
+      "placeholder": "Enter the propnent''s name",
+      "required": false
+    },
+    {
+      "id": "property",
+      "label": "Property",
+      "type": "FIELD",
+      "placeholder": "Enter the property",
+      "required": true
+    },
+    {
+      "id": "withdrawal_dt",
+      "label": "Withdrawal Date",
+      "type": "DATE",
+      "placeholder": null,
+      "required": true
+    },
+    {
+      "id": "inspector",
+      "label": "Inspector",
+      "type": "FIELD",
+      "placeholder": "Enter the inspector''s name",
+      "required": true
+    }
   ]' , 'templates/now/Withdrawl Letter Template (NoW).docx', true, 'system-mds', 'system-mds'),
 	('NOW-CAL', '[
     {
-      "id": "date",
-      "label": "Date",
+      "id": "letter_dt",
+      "label": "Letter Date",
       "type": "DATE",
       "placeholder": null,
       "required": true
@@ -141,17 +141,17 @@ VALUES
       "required": true
     },
     {
-      "id": "addy1",
-      "label": "Address 1",
+      "id": "proponent_address",
+      "label": "Proponent Address",
       "type": "FIELD",
-      "placeholder": "Enter the address",
+      "placeholder": "Enter the propnent''s address",
       "required": true
     },
     {
-      "id": "addy",
-      "label": "Address",
+      "id": "proponent_name",
+      "label": "Proponent Name",
       "type": "FIELD",
-      "placeholder": "Enter the address",
+      "placeholder": "Enter the propnent''s name",
       "required": false
     },
     {
