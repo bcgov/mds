@@ -334,7 +334,7 @@ APPLICATION = api.model(
     })
 
 APPLICATION_LIST = api.model(
-    'Application', {
+    'ApplicationList', {
         'application_guid': fields.String,
         'now_application_guid': fields.String,
         'mine_guid': fields.String,
@@ -355,6 +355,41 @@ PAGINATED_LIST = api.model(
         'total': fields.Integer,
     })
 
-PAGINATED_APPLICATION_LIST = api.inherit('ApplicationList', PAGINATED_LIST, {
+PAGINATED_APPLICATION_LIST = api.inherit('PaginatedApplicationList', PAGINATED_LIST, {
     'records': fields.List(fields.Nested(APPLICATION_LIST)),
+    })
+    
+
+APPLICATIONNDA = api.model(
+    'ApplicationNDA', {
+        'application_nda_guid': fields.String,
+        'originating_system': fields.String,
+        'mine_guid': fields.String,
+        'trackingnumber': fields.Integer,
+        'applicationtype': fields.String,
+        'status': fields.String,
+        'submitteddate': fields.DateTime,
+        'receiveddate': fields.DateTime,
+        'typedeemedauthorization': fields.String,
+        'permitnumber': fields.String,
+        'minenumber': fields.String,
+        'minenumber': fields.String,
+        'nownumber': fields.String,
+        'planactivitiesdrillprogram': fields.String,
+        'planactivitiesipsurvey': fields.String,
+        'proposedstartdate': fields.DateTime,
+        'proposedenddate': fields.DateTime,
+        'totallinekilometers': fields.Integer,
+        'descplannedactivities': fields.String,
+        'proposednewenddate': fields.DateTime,
+        'reasonforextension': fields.String,
+        'anyotherinformation': fields.String,
+        'vfcbcapplicationurl': fields.String,
+        'messagecreateddate': fields.DateTime,
+        'processed': fields.String,
+        'processeddate': fields.DateTime,
+        'nrsosapplicationid': fields.String,
+        'applicant': fields.Nested(CLIENT),
+        'submitter': fields.Nested(CLIENT),
+        'documents': fields.List(fields.Nested(DOCUMENT))
     })

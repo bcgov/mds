@@ -8,7 +8,7 @@ from app.extensions import api
 from app.api.mines.mine.models.mine import Mine
 from app.api.mines.region.models.region import MineRegionCode
 from app.api.now_submissions.models.application import Application
-from app.api.now_submissions.response_models import PAGINATED_APPLICATION_LIST
+from app.api.now_submissions.response_models import PAGINATED_APPLICATION_LIST, APPLICATION
 from app.api.utils.access_decorators import requires_role_view_all
 from app.api.utils.resources_mixins import UserMixin 
 
@@ -101,3 +101,10 @@ class ApplicationListResource(Resource, UserMixin ):
             base_query = apply_sort(base_query, sort_criteria)
 
         return apply_pagination(base_query, page_number, page_size)
+
+    @api.doc(description='Save an application')
+    @requires_role_view_all
+    @api.expect(APPLICATION)
+    def post(self):
+        raise NotImplemented('Not Implemented')
+        return 
