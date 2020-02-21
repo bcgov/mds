@@ -19,8 +19,6 @@ export const storeKeycloakData = (data = {}) => ({
 });
 
 export const storeIsProponent = (isProponent) => {
-  console.log("I AM GETTING CALLED HERE");
-  console.log(isProponent);
   return {
     type: ActionTypes.STORE_IS_PROPONENT,
     payload: {
