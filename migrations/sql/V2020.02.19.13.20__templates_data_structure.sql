@@ -3,6 +3,7 @@
 CREATE TABLE IF NOT EXISTS document_template (
   document_template_code varchar PRIMARY KEY,
   form_spec_json varchar NOT NULL,
+  template_file_path varchar NOT NULL,
   active_ind boolean DEFAULT true NOT NULL,
   create_user varchar NOT NULL,
   create_timestamp timestamp with time zone DEFAULT now() NOT NULL,
@@ -20,7 +21,7 @@ ALTER TABLE now_application_document_type
 
 
 INSERT INTO document_template
-(document_template_code,form_spec_json, active_ind, create_user, update_user)
+(document_template_code,form_spec_json, template_file_path, active_ind, create_user, update_user)
 VALUES
 	('NOW-RJL', '[
     {
@@ -72,7 +73,7 @@ VALUES
       "placeholder": "Enter the inspector''s name",
       "required": true
     }
-  ]', true, 'system-mds', 'system-mds'),
+  ]', 'templates/now/Rejection Letter Template (NoW).docx', true, 'system-mds', 'system-mds'),
 	('NOW-WDL', '[
     {
       "id": "let_dt",
@@ -123,7 +124,7 @@ VALUES
       "placeholder": "Enter the inspector''s name",
       "required": true
     }
-  ]', true, 'system-mds', 'system-mds'),
+  ]', 'templates/now/Withdrawl Letter Template (NoW).docx', true, 'system-mds', 'system-mds'),
 	('NOW-CAL', '[
     {
       "id": "date",
@@ -195,7 +196,8 @@ VALUES
       "placeholder": "Enter the inspector''s name",
       "required": true
     }
-  ]', true, 'system-mds', 'system-mds')
+  ]', 'templates/now/Client Acknowledgment Letter Template (NoW).docx', true, 'system-mds', 'system-mds')
+  
 ON CONFLICT DO NOTHING;
 
 UPDATE now_application_document_type

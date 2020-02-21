@@ -12,7 +12,8 @@ class DocumentTemplate(Base, AuditMixin):
     __tablename__ = 'document_template'
     document_template_code = db.Column(db.String, primary_key=True, server_default=FetchedValue())
     form_spec_json = db.Column(db.String, nullable=False)
-    active_ind = db.Column(db.String, nullable=False)
+    template_file_path = db.Column(db.String, nullable=False)
+    active_ind = db.Column(db.String, nullable=False, server_default=FetchedValue())
 
     @hybrid_property
     def form_spec(self):
