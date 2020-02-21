@@ -35,7 +35,6 @@ class DocumentGeneratorService():
         if resp.status_code != 200:
             current_app.logger.warn(f'Docgen-api/generate replied with {str(resp.content)}')
 
-        current_app.logger.info(f'Docgen-api/generate response headers {resp.headers}')
         file_download_resp = Response(
             stream_with_context(resp.iter_content(chunk_size=2048)), headers=dict(resp.headers))
 
