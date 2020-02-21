@@ -1,4 +1,4 @@
-import requests, hashlib, os
+import requests, hashlib, os, mimetypes
 from flask import Response, current_app, stream_with_context
 from app.config import Config
 
@@ -23,7 +23,7 @@ class DocumentGeneratorService():
             cls._push_template(file_path)
 
         file_sha = sha256_checksum(file_path)
-        file_name = "TESTFILE"
+        file_name = os.path.basename(file_path)
         resp = requests.post(
             url=f'{cls.document_generator_url}/{file_sha}/render',
             data={
@@ -42,7 +42,8 @@ class DocumentGeneratorService():
     @classmethod
     def _push_template(cls, file_path):
         file = open(file_path, 'rb')
-        files = {'template.docx': file.read()}
+        file_name = os.path.basename(file_path)
+        files = {'template': (file_name, file.read(), mimetypes.guess_type(file_name))}
         resp = requests.post(url=cls.document_generator_url, files=files)
         if resp.status_code != 200:
             current_app.logger.warn(f'Docgen service replied with {str(resp.text)}')
