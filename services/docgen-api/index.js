@@ -58,13 +58,10 @@ app.post("/template/:uid/render", async (req, res) => {
       .status(500)
       .send(`options not provided or formatted incorrectly`);
   }
-  console.log(options);
 
   options.convertTo = options.convertTo || originalFormat;
   options.outputName =
     options.outputName || `${originalNameWOExt}.${options.convertTo}`;
-
-  console.log(options);
 
   if (typeof data !== `object` || data === null) {
     try {

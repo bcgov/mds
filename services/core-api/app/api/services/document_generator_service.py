@@ -26,7 +26,7 @@ class DocumentGeneratorService():
         file_name = os.path.basename(file_path)
 
         # https://carbone.io/api-reference.html#native-api
-        body = {'data': data, 'options': {'convertTo': 'pdf', 'reportName': file_name + '.pdf'}}
+        body = {'data': data, 'options': {'convertTo': 'pdf'}}
 
         resp = requests.post(
             url=f'{cls.document_generator_url}/{file_sha}/render',
