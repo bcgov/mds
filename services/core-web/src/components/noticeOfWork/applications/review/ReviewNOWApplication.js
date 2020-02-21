@@ -144,17 +144,13 @@ export const ReviewNOWApplication = (props) => {
           />
         </Col>
         <Col md={12} sm={24}>
-          <div className="field-title">
-            Type of Application
-            <Tooltip
-              title="This field is not being sent by NROS or vFCBC. Open the original PDF to to see the data."
-              placement="right"
-              mouseEnterDelay={1}
-            >
-              <img src={INFO_CIRCLE} alt="INFO" className="info-tooltip" />
-            </Tooltip>
-          </div>
-          <Field id="" name="" component={RenderField} disabled />
+          <div className="field-title">Type of Application</div>
+          <Field
+            id="type_of_application"
+            name="type_of_application"
+            component={RenderField}
+            disabled={props.isViewMode}
+          />
         </Col>
       </Row>
       <Row gutter={16}>
@@ -170,7 +166,16 @@ export const ReviewNOWApplication = (props) => {
           />
         </Col>
         <Col md={12} sm={24}>
-          <div className="field-title">Term of Application</div>
+          <div className="field-title">
+            Term of Application
+            <Tooltip
+              title="This field is not being sent by NROS or vFCBC. Open the original PDF to to see the data."
+              placement="right"
+              mouseEnterDelay={1}
+            >
+              <img src={INFO_CIRCLE} alt="INFO" className="info-tooltip" />
+            </Tooltip>
+          </div>
           <Field
             id="application_permit_term"
             name="application_permit_term"
@@ -203,16 +208,7 @@ export const ReviewNOWApplication = (props) => {
       </Row>
       <Row gutter={16}>
         <Col md={12} sm={24}>
-          <div className="field-title">
-            Crown Grant / District Lot Number
-            <Tooltip
-              title="This field is not being sent by NROS or vFCBC. Open the original PDF to to see the data."
-              placement="right"
-              mouseEnterDelay={1}
-            >
-              <img src={INFO_CIRCLE} alt="INFO" className="info-tooltip" />
-            </Tooltip>
-          </div>
+          <div className="field-title">Crown Grant / District Lot Number</div>
           <Field
             id="crown_grant_or_district_lot_numbers"
             name="crown_grant_or_district_lot_numbers"

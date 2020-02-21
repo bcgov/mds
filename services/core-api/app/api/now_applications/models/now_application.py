@@ -53,6 +53,7 @@ class NOWApplication(Base, AuditMixin):
     proposed_start_date = db.Column(db.Date)
     proposed_end_date = db.Column(db.Date)
     directions_to_site = db.Column(db.String)
+    type_of_application = db.Column(db.String)
 
     first_aid_equipment_on_site = db.Column(db.String)
     first_aid_cert_level = db.Column(db.String)

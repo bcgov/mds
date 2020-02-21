@@ -327,6 +327,7 @@ NOW_APPLICATION_MODEL = api.model(
         'proposed_end_date': Date,
         'directions_to_site': fields.String,
         'work_plan': fields.String,
+        'type_of_application': fields.String,
         'crown_grant_or_district_lot_numbers': fields.String,
         'req_access_authorization_numbers': fields.String,
         'has_surface_disturbance_outside_tenure': fields.Boolean,

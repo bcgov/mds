@@ -9,6 +9,7 @@ CREATE TABLE IF NOT EXISTS exploration_access  (
 
 ALTER TABLE now_application ADD COLUMN crown_grant_or_district_lot_numbers varchar;
 ALTER TABLE now_application ADD COLUMN work_plan varchar;
+ALTER TABLE now_application ADD COLUMN type_of_application varchar;
 
 ALTER TABLE now_application ADD COLUMN has_surface_disturbance_outside_tenure boolean NOT NULL DEFAULT FALSE;
 ALTER TABLE now_application ADD COLUMN is_access_gated boolean NOT NULL DEFAULT FALSE;
