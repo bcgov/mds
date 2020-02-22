@@ -25,12 +25,6 @@ export const USERS = {
   component: UsersPage,
 };
 
-export const MINE_DASHBOARD_NO_TAB = {
-  route: "/mines/:id",
-  dynamicRoute: (id) => `/mines/${id}/overview`,
-  component: MineDashboard,
-};
-
 export const MINE_DASHBOARD = {
   route: "/mines/:id/:activeTab",
   dynamicRoute: (id, activeTab = "overview", filterParams) =>
