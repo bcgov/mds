@@ -9,6 +9,7 @@ const initialState = {
   isAuthenticated: false,
   userInfo: {},
   redirect: false,
+  isProponent: false,
 };
 
 const authenticationReducer = (state = initialState, action) => {
@@ -27,6 +28,11 @@ const authenticationReducer = (state = initialState, action) => {
         userInfo: {},
         redirect: route.HOME.route,
       };
+    case ActionTypes.STORE_IS_PROPONENT:
+      return {
+        ...state,
+        isProponent: action.payload.data,
+      };
     default:
       return state;
   }
@@ -35,5 +41,6 @@ const authenticationReducer = (state = initialState, action) => {
 export const isAuthenticated = (state) => state[ReducerTypes.AUTHENTICATION].isAuthenticated;
 export const getUserInfo = (state) => state[ReducerTypes.AUTHENTICATION].userInfo;
 export const getRedirect = (state) => state[ReducerTypes.AUTHENTICATION].redirect;
+export const isProponent = (state) => state[ReducerTypes.AUTHENTICATION].isProponent;
 
 export default authenticationReducer;

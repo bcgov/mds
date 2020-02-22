@@ -1,5 +1,6 @@
 import axios from "axios";
 import { notification } from "antd";
+import jwt from "jsonwebtoken";
 import queryString from "query-string";
 import * as COMMON_ENV from "@common/constants/environment";
 import { request, success, error } from "@/actions/genericActions";
@@ -18,6 +19,12 @@ export const unAuthenticateUser = (toastMessage) => (dispatch) => {
   }
 };
 
+export const getUserRoles = (token) => (dispatch) => {
+  const decodedToken = jwt.decode(token);
+  const isProponent = decodedToken.realm_access.roles.includes("minespace-proponent");
+  dispatch(authenticationActions.storeIsProponent(isProponent));
+};
+
 export const getUserInfoFromToken = (token, errorMessage) => (dispatch) => {
   dispatch(request(reducerTypes.GET_USER_INFO));
   return axios
@@ -27,6 +34,7 @@ export const getUserInfoFromToken = (token, errorMessage) => (dispatch) => {
       },
     })
     .then((response) => {
+      dispatch(getUserRoles(token, response.data.sub));
       dispatch(success(reducerTypes.GET_USER_INFO));
       dispatch(authenticationActions.authenticateUser(response.data));
     })
