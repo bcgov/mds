@@ -238,27 +238,24 @@ export class MineDashboard extends Component {
             </div>
           )}
         </AuthorizationWrapper>
-        {/* currently wrapping in Admin permissions to test in Prod before releasing to users */}
         {/* this is an external link to mineSpace, only available to users in production as its a prod URL, not using the AuthWrapper since the admin role overrides the wrapper. */}
         {detectProdEnvironment() && (
-          <AuthorizationWrapper permission={Permission.ADMIN}>
-            <div className="custom-menu-item no_link_styling">
-              <a
-                href={router.VIEW_MINESPACE(mine.mine_guid)}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <img
-                  src={MINESPACE_ICON}
-                  alt="mineSpace"
-                  width="30"
-                  height="30"
-                  className="padding-small"
-                />
-                View on MineSpace
-              </a>
-            </div>
-          </AuthorizationWrapper>
+          <div className="custom-menu-item no_link_styling">
+            <a
+              href={router.VIEW_MINESPACE(mine.mine_guid)}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img
+                src={MINESPACE_ICON}
+                alt="mineSpace"
+                width="30"
+                height="30"
+                className="padding-small"
+              />
+              View on MineSpace
+            </a>
+          </div>
         )}
       </Menu>
     );
