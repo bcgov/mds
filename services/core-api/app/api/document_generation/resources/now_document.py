@@ -8,17 +8,14 @@ from app.api.utils.resources_mixins import UserMixin
 from app.api.utils.access_decorators import requires_role_view_all, requires_role_edit_permit
 from app.api.utils.custom_reqparser import CustomReqparser
 from app.api.constants import NOW_DOCUMENT_DOWNLOAD_TOKEN
+from app.api.now_applications.models.now_application_document_type import NOWApplicationDocumentType
 from app.api.services.document_generator_service import DocumentGeneratorService
-
-NOW_DOCUMENT_TEMPLATE_TYPES = {
-    'CAL': 'Client Acknowledgment Letter Template (NoW).docx',
-    'RJL': 'Rejection Letter Template (NoW).docx',
-    'WDL': 'Withdrawl Letter Template (NoW).docx'
-}
 
 
 class NoticeOfWorkDocumentResource(Resource, UserMixin):
-    @api.doc(description='Returns the generated document associated with the received token.')
+    @api.doc(
+        description='Returns the generated document associated with the received token.',
+        params={'token': 'uuid4 token to execute the planned file generation for that token'})
     def get(self):
         token = request.args.get('token', '')
         token_data = cache.get(NOW_DOCUMENT_DOWNLOAD_TOKEN(token))
@@ -27,9 +24,11 @@ class NoticeOfWorkDocumentResource(Resource, UserMixin):
         if not token_data:
             raise BadRequest('Valid token required for download')
 
-        template_path = os.path.join(current_app.root_path, 'document_templates', 'now',
-                                     NOW_DOCUMENT_TEMPLATE_TYPES['CAL'])
-        current_app.logger.debug(template_path)
+        doc_type = NOWApplicationDocumentType.query.unbound_unsafe().get(
+            token_data['document_type_code'])
+        template_path = os.path.join(current_app.root_path,
+                                     doc_type.document_template.template_file_path)
+
         file_gen_resp = DocumentGeneratorService.generate_document_and_stream_response(
             template_path, data=token_data['template_data'])
 

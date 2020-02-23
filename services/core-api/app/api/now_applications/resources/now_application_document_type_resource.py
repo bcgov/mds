@@ -26,7 +26,7 @@ class NOWApplicationDocumentTypeResource(Resource, UserMixin):
 class NOWApplicationDocumentGenerateResource(Resource, UserMixin):
     parser = CustomReqparser()
     parser.add_argument('now_application_guid', type=str, location='json', required=True)
-    parser.add_argument('template_data', type=str, location='json', required=True)
+    parser.add_argument('template_data', type=dict, location='json', required=True)
 
     @api.doc(
         description=

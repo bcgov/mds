@@ -1,6 +1,6 @@
 from logging.config import dictConfig
 
-from flask import Flask
+from flask import Flask, request
 
 from flask_cors import CORS
 from flask_restplus import Resource, apidoc
@@ -102,6 +102,8 @@ def register_routes(app):
     @api.errorhandler(AuthError)
     def jwt_oidc_auth_error_handler(error):
         app.logger.error(str(error))
+        app.logger.error('REQUEST\n' + str(request))
+        app.logger.error('HEADERS\n ' + str(request.headers))
         return {
             'status': getattr(error, 'status_code', 401),
             'message': str(error),

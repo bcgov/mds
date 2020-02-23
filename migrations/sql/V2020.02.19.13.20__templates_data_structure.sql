@@ -3,6 +3,7 @@
 CREATE TABLE IF NOT EXISTS document_template (
   document_template_code varchar PRIMARY KEY,
   form_spec_json varchar NOT NULL,
+  template_file_path varchar NOT NULL,
   active_ind boolean DEFAULT true NOT NULL,
   create_user varchar NOT NULL,
   create_timestamp timestamp with time zone DEFAULT now() NOT NULL,
@@ -20,12 +21,12 @@ ALTER TABLE now_application_document_type
 
 
 INSERT INTO document_template
-(document_template_code,form_spec_json, active_ind, create_user, update_user)
+(document_template_code,form_spec_json, template_file_path, active_ind, create_user, update_user)
 VALUES
 	('NOW-RJL', '[
     {
-      "id": "date",
-      "label": "Date",
+      "id": "letter_dt",
+      "label": "Letter Date",
       "type": "DATE",
       "placeholder": null,
       "required": true
@@ -38,17 +39,17 @@ VALUES
       "required": true
     },
     {
-      "id": "addy1",
-      "label": "Address 1",
+      "id": "proponent_address",
+      "label": "Proponent Address",
       "type": "FIELD",
-      "placeholder": "Enter the address",
+      "placeholder": "Enter the propnent''s address",
       "required": true
     },
     {
-      "id": "addy",
-      "label": "Address",
+      "id": "proponent_name",
+      "label": "Proponent Name",
       "type": "FIELD",
-      "placeholder": "Enter the address",
+      "placeholder": "Enter the propnent''s name",
       "required": false
     },
     {
@@ -72,11 +73,11 @@ VALUES
       "placeholder": "Enter the inspector''s name",
       "required": true
     }
-  ]', true, 'system-mds', 'system-mds'),
+  ]' , 'templates/now/Rejection Letter Template (NoW).docx', true, 'system-mds', 'system-mds'),
 	('NOW-WDL', '[
     {
-      "id": "let_dt",
-      "label": "Date",
+      "id": "letter_dt",
+      "label": "Letter Date",
       "type": "DATE",
       "placeholder": null,
       "required": true
@@ -89,17 +90,17 @@ VALUES
       "required": true
     },
     {
-      "id": "addy1",
-      "label": "Address 1",
+      "id": "proponent_address",
+      "label": "Proponent Address",
       "type": "FIELD",
-      "placeholder": "Enter the address",
+      "placeholder": "Enter the propnent''s address",
       "required": true
     },
     {
-      "id": "addy",
-      "label": "Address",
+      "id": "proponent_name",
+      "label": "Proponent Name",
       "type": "FIELD",
-      "placeholder": "Enter the address",
+      "placeholder": "Enter the propnent''s name",
       "required": false
     },
     {
@@ -110,8 +111,8 @@ VALUES
       "required": true
     },
     {
-      "id": "rej_dt",
-      "label": "Rejection Date",
+      "id": "withdrawal_dt",
+      "label": "Withdrawal Date",
       "type": "DATE",
       "placeholder": null,
       "required": true
@@ -123,11 +124,11 @@ VALUES
       "placeholder": "Enter the inspector''s name",
       "required": true
     }
-  ]', true, 'system-mds', 'system-mds'),
+  ]' , 'templates/now/Withdrawl Letter Template (NoW).docx', true, 'system-mds', 'system-mds'),
 	('NOW-CAL', '[
     {
-      "id": "date",
-      "label": "Date",
+      "id": "letter_dt",
+      "label": "Letter Date",
       "type": "DATE",
       "placeholder": null,
       "required": true
@@ -140,17 +141,17 @@ VALUES
       "required": true
     },
     {
-      "id": "addy1",
-      "label": "Address 1",
+      "id": "proponent_address",
+      "label": "Proponent Address",
       "type": "FIELD",
-      "placeholder": "Enter the address",
+      "placeholder": "Enter the propnent''s address",
       "required": true
     },
     {
-      "id": "addy",
-      "label": "Address",
+      "id": "proponent_name",
+      "label": "Proponent Name",
       "type": "FIELD",
-      "placeholder": "Enter the address",
+      "placeholder": "Enter the propnent''s name",
       "required": false
     },
     {
@@ -195,7 +196,8 @@ VALUES
       "placeholder": "Enter the inspector''s name",
       "required": true
     }
-  ]', true, 'system-mds', 'system-mds')
+  ]', 'templates/now/Client Acknowledgment Letter Template (NoW).docx', true, 'system-mds', 'system-mds')
+  
 ON CONFLICT DO NOTHING;
 
 UPDATE now_application_document_type
