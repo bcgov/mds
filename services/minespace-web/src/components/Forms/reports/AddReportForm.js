@@ -161,8 +161,8 @@ export class AddReportForm extends Component {
         <Field
           id="submission_year"
           name="submission_year"
-          label="Report Compliance Year/Period*"
-          placeholder=""
+          label="Report Compliance Year/Period"
+          required
           component={renderConfig.YEAR}
           validate={[required]}
         />

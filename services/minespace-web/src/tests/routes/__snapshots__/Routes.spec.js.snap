@@ -28,6 +28,7 @@ exports[`PrivateRoutes  renders properly 1`] = `
     exact={true}
     path="/return-page"
   />
+   */}
   <Route
     component={
       Object {
@@ -53,11 +54,6 @@ exports[`PrivateRoutes  renders properly 1`] = `
     }
     exact={true}
     path="/users"
-  />
-  <Redirect
-    exact={true}
-    from="/mines/:id"
-    to="/mines/:id/overview?"
   />
   <Route
     component={

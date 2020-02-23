@@ -8,6 +8,7 @@ import * as Strings from "@/constants/strings";
 import { EDIT_PENCIL } from "@/constants/assets";
 import CustomPropTypes from "@/customPropTypes";
 import LinkButton from "@/components/common/LinkButton";
+import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 
 const propTypes = {
   mineReports: PropTypes.arrayOf(CustomPropTypes.mineReport).isRequired,
@@ -83,9 +84,11 @@ export const ReportsTable = (props) => {
       render: (text, record) => {
         return (
           <div title="" align="right">
-            <Button type="link" onClick={(event) => props.openEditReportModal(event, record)}>
-              <img src={EDIT_PENCIL} alt="Edit" />
-            </Button>
+            <AuthorizationWrapper>
+              <Button type="link" onClick={(event) => props.openEditReportModal(event, record)}>
+                <img src={EDIT_PENCIL} alt="Edit" />
+              </Button>
+            </AuthorizationWrapper>
           </div>
         );
       },

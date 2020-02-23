@@ -60,7 +60,7 @@ from app.api.now_applications.resources.now_application_resource import NOWAppli
     (MineReportResource, "get", [VIEW_ALL, MINESPACE_PROPONENT]),
     (MineReportResource, "put", [EDIT_REPORT, MINESPACE_PROPONENT]),
     (MineReportListResource, "get", [VIEW_ALL, MINESPACE_PROPONENT]),
-    (MineReportListResource, "post", [EDIT_REPORT]),
+    (MineReportListResource, "post", [EDIT_REPORT, MINESPACE_PROPONENT]),
     (MineStatusXrefListResource, "get", [VIEW_ALL]),
     (MineTailingsStorageFacilityListResource, "get", [VIEW_ALL]),
     (MineTailingsStorageFacilityListResource, "post", [MINE_EDIT]),
