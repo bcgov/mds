@@ -110,7 +110,7 @@ app.get("/template/:uid", async (req, res) => {
   return res.send();
 });
 
-app.post("/template", upload.single(`template.docx`), async (req, res) => {
+app.post("/template", upload.single(`template`), async (req, res) => {
   console.log("template upload");
   console.log(req.file);
   const template = req.file;
