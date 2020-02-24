@@ -10,6 +10,7 @@ from app.api.users.minespace.models.minespace_user import MinespaceUser
 from app.api.users.minespace.models.minespace_user_mine import MinespaceUserMine
 from tests.factories import MinespaceUserFactory
 
+
 class DummyAuthResource(Resource):
     @requires_any_of([VIEW_ALL, MINESPACE_PROPONENT])
     def get(self):
@@ -42,79 +43,79 @@ def setup_info(db_session):
     User._test_mode = False
     auth.clear_cache()
     MinespaceUserFactory(email='test-proponent-email@minespace.ca')
-    
+
     yield
-    
+
     User._test_mode = True
 
 
 # Test no role
-def test_get_no_auth(test_client, db_session, auth_headers, setup_info):
+def test_get_no_auth_user(test_client, db_session, auth_headers, setup_info):
     resp = test_client.get('/authtest', headers={})
-    assert resp.status_code == 401
+    assert resp.status_code == 403
 
 
 # Test view
-def test_get_view_auth_applies(test_client, db_session, auth_headers, setup_info):
+def test_get_view_auth_applies_user(test_client, db_session, auth_headers, setup_info):
     resp = test_client.get('/authtest', headers=auth_headers['view_only_auth_header'])
     assert json.loads(resp.data.decode()) == False
 
 
 # Test proponent
-def test_get_proponent_auth_applies(test_client, db_session, auth_headers, setup_info):
+def test_get_proponent_auth_applies_user(test_client, db_session, auth_headers, setup_info):
     resp = test_client.get('/authtest', headers=auth_headers['proponent_only_auth_header'])
     assert json.loads(resp.data.decode()) == True
 
 
 # Test no role
-def test_put_no_auth(test_client, db_session, auth_headers, setup_info):
+def test_put_no_auth_user(test_client, db_session, auth_headers, setup_info):
     resp = test_client.put('/authtest', headers={})
-    assert resp.status_code == 401
+    assert resp.status_code == 403
 
 
 # Test view
-def test_put_view_auth_applies(test_client, db_session, auth_headers, setup_info):
+def test_put_view_auth_applies_user(test_client, db_session, auth_headers, setup_info):
     resp = test_client.put('/authtest', headers=auth_headers['view_only_auth_header'])
     assert json.loads(resp.data.decode()) == False
 
 
 # Test proponent
-def test_put_proponent_auth_applies(test_client, db_session, auth_headers, setup_info):
+def test_put_proponent_auth_applies_user(test_client, db_session, auth_headers, setup_info):
     resp = test_client.put('/authtest', headers=auth_headers['proponent_only_auth_header'])
     assert json.loads(resp.data.decode()) == True
 
 
 # Test no role
-def test_post_no_auth(test_client, db_session, auth_headers, setup_info):
+def test_post_no_auth_user(test_client, db_session, auth_headers, setup_info):
     resp = test_client.post('/authtest', headers={})
-    assert resp.status_code == 401
+    assert resp.status_code == 403
 
 
 # Test view
-def test_post_view_auth_applies(test_client, db_session, auth_headers, setup_info):
+def test_post_view_auth_applies_user(test_client, db_session, auth_headers, setup_info):
     resp = test_client.post('/authtest', headers=auth_headers['view_only_auth_header'])
     assert json.loads(resp.data.decode()) == False
 
 
 # Test proponent
-def test_post_proponent_auth_applies(test_client, db_session, auth_headers, setup_info):
+def test_post_proponent_auth_applies_user(test_client, db_session, auth_headers, setup_info):
     resp = test_client.post('/authtest', headers=auth_headers['proponent_only_auth_header'])
     assert json.loads(resp.data.decode()) == True
 
 
 # Test no role
-def test_delete_no_auth(test_client, db_session, auth_headers, setup_info):
+def test_delete_no_auth_user(test_client, db_session, auth_headers, setup_info):
     resp = test_client.delete('/authtest', headers={})
-    assert resp.status_code == 401
+    assert resp.status_code == 403
 
 
 # Test view
-def test_delete_view_auth_applies(test_client, db_session, auth_headers, setup_info):
+def test_delete_view_auth_applies_user(test_client, db_session, auth_headers, setup_info):
     resp = test_client.delete('/authtest', headers=auth_headers['view_only_auth_header'])
     assert json.loads(resp.data.decode()) == False
 
 
 # Test proponent
-def test_delete_proponent_auth_applies(test_client, db_session, auth_headers, setup_info):
+def test_delete_proponent_auth_applies_user(test_client, db_session, auth_headers, setup_info):
     resp = test_client.delete('/authtest', headers=auth_headers['proponent_only_auth_header'])
     assert json.loads(resp.data.decode()) == True
