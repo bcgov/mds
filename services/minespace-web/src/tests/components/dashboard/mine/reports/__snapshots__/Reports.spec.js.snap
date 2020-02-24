@@ -36,25 +36,27 @@ exports[`Reports renders properly 1`] = `
       }
     >
       <Col>
-        <Button
-          block={false}
-          ghost={false}
-          htmlType="button"
-          loading={false}
-          onClick={[Function]}
-          style={
-            Object {
-              "float": "right",
+        <Connect(AuthorizationWrapper)>
+          <Button
+            block={false}
+            ghost={false}
+            htmlType="button"
+            loading={false}
+            onClick={[Function]}
+            style={
+              Object {
+                "float": "right",
+              }
             }
-          }
-          type="primary"
-        >
-          <Icon
-            theme="filled"
-            type="plus-circle"
-          />
-          Submit Report
-        </Button>
+            type="primary"
+          >
+            <Icon
+              theme="filled"
+              type="plus-circle"
+            />
+            Submit Report
+          </Button>
+        </Connect(AuthorizationWrapper)>
       </Col>
     </Row>
     <Row
