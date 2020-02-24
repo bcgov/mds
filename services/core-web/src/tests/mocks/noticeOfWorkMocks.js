@@ -737,7 +737,7 @@ export const NOTICE_OF_WORK_REVIEW_RESPONSE = {
   ],
 };
 
-export const GENERATABLE_APPLICAITON_DOCUMENTS = {
+export const GENERATABLE_APPLICATION_DOCUMENTS = {
   RJL: {
     now_application_document_type_code: "RJL",
     description: "Rejection Letter",

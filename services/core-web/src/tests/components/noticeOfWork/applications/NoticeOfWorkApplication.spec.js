@@ -31,7 +31,7 @@ const setupReducerProps = () => {
   reducerProps.noticeOfWork = NOW_MOCK.NOTICE_OF_WORK;
   reducerProps.formValues = NOW_MOCK.NOTICE_OF_WORK;
   reducerProps.reclamationSummary = NOW_MOCK.RECLAMATION_SUMMARY;
-  reducerProps.generatableApplicationDocuments = NOW_MOCK.GENERATABLE_APPLICAITON_DOCUMENTS;
+  reducerProps.generatableApplicationDocuments = NOW_MOCK.GENERATABLE_APPLICATION_DOCUMENTS;
   reducerProps.mines = MOCK.MINES;
   // eslint-disable-next-line prefer-destructuring
   reducerProps.mineGuid = MOCK.MINES.mineIds[0];
