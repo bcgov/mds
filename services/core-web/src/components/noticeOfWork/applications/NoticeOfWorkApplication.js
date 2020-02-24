@@ -127,6 +127,9 @@ export class NoticeOfWorkApplication extends Component {
     if (!this.props.history.location.state && !this.props.match.params.id) {
       this.setState({ showNullScreen: true });
     }
+
+    window.addEventListener("scroll", this.handleScroll);
+    this.handleScroll();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -145,6 +148,7 @@ export class NoticeOfWorkApplication extends Component {
 
   componentWillUnmount() {
     this.props.clearNoticeOfWorkApplication();
+    window.removeEventListener("scroll", this.handleScroll);
   }
 
   loadMineInfo = (mineGuid) => {
@@ -254,9 +258,9 @@ export class NoticeOfWorkApplication extends Component {
   };
 
   handleScroll = () => {
-    if (window.pageYOffset > "100" && !this.state.fixedTop) {
+    if (window.pageYOffset > 100 && !this.state.fixedTop) {
       this.setState({ fixedTop: true });
-    } else if (window.pageYOffset < "100" && this.state.fixedTop) {
+    } else if (window.pageYOffset <= 100 && this.state.fixedTop) {
       this.setState({ fixedTop: false });
     }
   };
@@ -569,7 +573,7 @@ export class NoticeOfWorkApplication extends Component {
               : "You have unsaved changes. Are you sure you want to leave without saving?";
           }}
         />
-        <div className="page" onScroll={this.handleScroll()} onLoad={this.handleScroll()}>
+        <div className="page">
           <div className={this.state.fixedTop ? "steps--header fixed-scroll" : "steps--header"}>
             <div className="inline-flex between">
               <NoticeOfWorkPageHeader
