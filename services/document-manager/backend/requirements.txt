@@ -22,3 +22,4 @@ SQLAlchemy==1.3.4
 uwsgi==2.0.18
 uwsgitop==0.11
 Werkzeug==0.15.4
+jaeger-client==4.3.0

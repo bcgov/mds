@@ -2,25 +2,25 @@ version: "2"
 
 services:
   ####################### Keycloak Definition #######################
-  keycloak:
-    restart: always
-    container_name: mds_keycloak
-    image: jboss/keycloak
-    environment:
-      - KEYCLOAK_USER=admin
-      - KEYCLOAK_PASSWORD=admin
-      - KEYCLOAK_IMPORT=/tmp/keycloak-local-realm.json
-      - DB_VENDOR=h2
-    volumes:
-      - ./settings/keycloak/keycloak-local-realm.json:/tmp/keycloak-local-realm.json
-      - ./settings/keycloak/keycloak-local-user.sh:/tmp/keycloak-local-user.sh
-    ports:
-      - "8080:8080"
-      - "8443:8443"
-    networks:
-      - mds
-    # logging:
-    #     driver: none
+  # keycloak:
+  #   restart: always
+  #   container_name: mds_keycloak
+  #   image: jboss/keycloak
+  #   environment:
+  #     - KEYCLOAK_USER=admin
+  #     - KEYCLOAK_PASSWORD=admin
+  #     - KEYCLOAK_IMPORT=/tmp/keycloak-local-realm.json
+  #     - DB_VENDOR=h2
+  #   volumes:
+  #     - ./settings/keycloak/keycloak-local-realm.json:/tmp/keycloak-local-realm.json
+  #     - ./settings/keycloak/keycloak-local-user.sh:/tmp/keycloak-local-user.sh
+  #   ports:
+  #     - "8080:8080"
+  #     - "8443:8443"
+  #   networks:
+  #     - mds
+  #   # logging:
+  #   #     driver: none
 
   ####################### Postgres Definition #######################
   postgres:
@@ -78,7 +78,7 @@ services:
     depends_on:
       - flyway
       - redis
-      - nris_backend
+      # - nris_backend
       - document_manager_backend
     networks:
       - mds
@@ -128,37 +128,37 @@ services:
       - mds
 
   ####################### NRIS_BACKEND Definition #######################
-  nris_backend:
-    restart: always
-    container_name: nris_python
-    build:
-      context: services/nris-api/backend
-    ports:
-      - 5500:5500
-    volumes:
-      - ./services/nris-api/backend/:/app/
-    depends_on:
-      - flyway
-      - redis
-      - nris_migrate
-    env_file: ./services/nris-api/backend/.env
-    networks:
-      - mds
+  # nris_backend:
+  #   restart: always
+  #   container_name: nris_python
+  #   build:
+  #     context: services/nris-api/backend
+  #   ports:
+  #     - 5500:5500
+  #   volumes:
+  #     - ./services/nris-api/backend/:/app/
+  #   depends_on:
+  #     - flyway
+  #     - redis
+  #     - nris_migrate
+  #   env_file: ./services/nris-api/backend/.env
+  #   networks:
+  #     - mds
 
-  nris_migrate:
-    restart: on-failure
-    container_name: nris_migrate
-    build:
-      context: services/nris-api/backend
-    volumes:
-      - ./services/nris-api/backend/:/app/
-    depends_on:
-      - flyway
-      - redis
-    command: flask db upgrade
-    env_file: ./services/nris-api/backend/.env
-    networks:
-      - mds
+  # nris_migrate:
+  #   restart: on-failure
+  #   container_name: nris_migrate
+  #   build:
+  #     context: services/nris-api/backend
+  #   volumes:
+  #     - ./services/nris-api/backend/:/app/
+  #   depends_on:
+  #     - flyway
+  #     - redis
+  #   command: flask db upgrade
+  #   env_file: ./services/nris-api/backend/.env
+  #   networks:
+  #     - mds
   ####################### DOCUMENT_MANAGER_BACKEND Definition #######################
   document_manager_backend:
     restart: always
@@ -189,6 +189,42 @@ services:
       - redis
     command: flask db upgrade
     env_file: ./services/document-manager/backend/.env
+    networks:
+      - mds
+
+  ####################### Logging and Monitoring #######################
+
+  loki:
+    image: grafana/loki:latest
+    ports:
+      - "3100:3100"
+    command: -config.file=/etc/loki/loki-local-config.yaml
+    volumes:
+      - ./settings/loki:/etc/loki/
+    networks:
+      - mds
+
+  promtail:
+    image: grafana/promtail:latest
+    volumes:
+      - /var/log
+      - ./settings/promtail:/etc/promtail
+    command: -config.file=/etc/promtail/promtail-docker-config.yaml
+    networks:
+      - mds
+
+  grafana:
+    image: grafana/grafana:master
+    ports:
+      - "3010:3000"
+    networks:
+      - mds
+
+  jaeger:
+    image: jaegertracing/all-in-one:latest
+    ports:
+      - "6831:6831/udp"
+      - "16686:16686"
     networks:
       - mds
 
