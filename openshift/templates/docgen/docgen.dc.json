@@ -2,7 +2,7 @@
   "kind": "Template",
   "apiVersion": "v1",
   "metadata": {
-    "name": "mds-nodejs-dc",
+    "name": "mds-docgen-dc",
     "annotations": {
       "template.openshift.io/bindable": "false"
     }
@@ -52,48 +52,6 @@
       "displayName": "Node Environment",
       "description": "Environment for running node",
       "value": "production"
-    },
-    {
-      "name": "KEYCLOAK_RESOURCE",
-      "displayName": "Resource ID",
-      "description": "Resource ID for keycloak",
-      "value": "mines-application-dev"
-    },
-    {
-      "name": "KEYCLOAK_CLIENT_ID",
-      "displayName": "Client ID",
-      "description": "Client ID for keycloak",
-      "value": "mines-application-dev"
-    },
-    {
-      "name": "KEYCLOAK_URL",
-      "displayName": "Keycloak URL",
-      "description": "URL of the keycloak server",
-      "value": "https://sso-test.pathfinder.gov.bc.ca/auth"
-    },
-    {
-      "name": "SITEMINDER_URL",
-      "value": "https://logontest.gov.bc.ca"
-    },
-    {
-      "name": "KEYCLOAK_IDP_HINT",
-      "value": "idir"
-    },
-    {
-      "name": "API_URL",
-      "displayName": "API Url",
-      "description": "URL for the backend API",
-      "value": "http://localhost:3000"
-    },
-    {
-      "name": "DOCUMENT_MANAGER_URL",
-      "displayName": "Document Manager Url",
-      "description": "URL for the document manager",
-      "value": "http://localhost:5001"
-    },
-    {
-      "name": "FN_LAYER_URL",
-      "value": "https://delivery.apps.gov.bc.ca/ext/sgw/geo.allgov"
     },
     {
       "name": "CPU_LIMIT",
@@ -209,18 +167,6 @@
                 "image": " ",
                 "env": [
                   {
-                    "name": "API_URL",
-                    "value": "${API_URL}"
-                  },
-                  {
-                    "name": "DOCUMENT_MANAGER_URL",
-                    "value": "${DOCUMENT_MANAGER_URL}"
-                  },
-                  {
-                    "name": "FN_LAYER_URL",
-                    "value": "${FN_LAYER_URL}"
-                  },
-                  {
                     "name": "NODE_ENV",
                     "value": "${NODE_ENV}"
                   },
@@ -231,26 +177,6 @@
                   {
                     "name": "ASSET_PATH",
                     "value": "${BASE_PATH}/"
-                  },
-                  {
-                    "name": "KEYCLOAK_RESOURCE",
-                    "value": "${KEYCLOAK_RESOURCE}"
-                  },
-                  {
-                    "name": "KEYCLOAK_CLIENT_ID",
-                    "value": "${KEYCLOAK_CLIENT_ID}"
-                  },
-                  {
-                    "name": "KEYCLOAK_URL",
-                    "value": "${KEYCLOAK_URL}"
-                  },
-                  {
-                    "name": "KEYCLOAK_IDP_HINT",
-                    "value": "${KEYCLOAK_IDP_HINT}"
-                  },
-                  {
-                    "name": "SITEMINDER_URL",
-                    "value": "${SITEMINDER_URL}"
                   }
                 ],
                 "resources": {
@@ -267,29 +193,7 @@
                   {
                     "containerPort": "${{PORT}}"
                   }
-                ],
-                "livenessProbe": {
-                  "failureThreshold": 30,
-                  "httpGet": {
-                    "path": "/health",
-                    "port": "${{PORT}}",
-                    "scheme": "HTTP"
-                  },
-                  "periodSeconds": 10,
-                  "successThreshold": 1,
-                  "timeoutSeconds": 3
-                },
-                "readinessProbe": {
-                  "failureThreshold": 30,
-                  "httpGet": {
-                    "path": "/health",
-                    "port": "${{PORT}}",
-                    "scheme": "HTTP"
-                  },
-                  "periodSeconds": 10,
-                  "successThreshold": 1,
-                  "timeoutSeconds": 3
-                }
+                ]
               }
             ]
           }
