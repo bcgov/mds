@@ -108,6 +108,19 @@ link {
   }
 }
 
+.no_link_styling {
+  a {
+    color: inherit;
+    font-size: inherit;
+    text-decoration: none;
+  }
+
+  a:hover {
+    text-decoration: none;
+    cursor: pointer;
+  }
+}
+
 .link-on-dark {
   @extend p;
   color: #ffffff;
