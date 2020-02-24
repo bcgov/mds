@@ -65,8 +65,6 @@ GenerateDocumentForm.propTypes = propTypes;
 
 export default reduxForm({
   form: FORM.GENERATE_DOCUMENT,
-  // TODO: Handle form initial values.
-  // initialValues: {},
   touchOnBlur: false,
   onSubmitSuccess: resetForm(FORM.GENERATE_DOCUMENT),
 })(GenerateDocumentForm);
