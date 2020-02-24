@@ -4,6 +4,7 @@ import { bindActionCreators } from "redux";
 import { FormSection, arrayInsert, arrayRemove, arrayPush } from "redux-form";
 import { connect } from "react-redux";
 import * as FORM from "@/constants/forms";
+import CustomPropTypes from "@/customPropTypes";
 import ScrollContentWrapper from "@/components/common/wrappers/ScrollContentWrapper";
 import AccessRoads from "@/components/noticeOfWork/applications/review/activities/AccessRoads";
 import Blasting from "@/components/noticeOfWork/applications/review/activities/Blasting";
@@ -29,6 +30,7 @@ const propTypes = {
   arrayInsert: PropTypes.func.isRequired,
   arrayRemove: PropTypes.func.isRequired,
   arrayPush: PropTypes.func.isRequired,
+  noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
 };
 
 export const ReviewActivities = (props) => {
@@ -54,11 +56,14 @@ export const ReviewActivities = (props) => {
     return activityConditions[type].includes(activity);
   };
 
+  const data = { test: "", details: {}, fake: [] };
   return (
     <div>
       <ScrollContentWrapper
         id="access-roads"
         title="Access Roads, Trails, Helipads, Air Strips, Boat Ramps"
+        // data={props.noticeOfWork.exploration_access}
+        data={data}
       >
         <FormSection name="exploration_access">
           <AccessRoads
@@ -68,7 +73,11 @@ export const ReviewActivities = (props) => {
           />
         </FormSection>
       </ScrollContentWrapper>
-      <ScrollContentWrapper id="blasting" title="Blasting">
+      <ScrollContentWrapper
+        id="blasting"
+        title="Blasting"
+        data={props.noticeOfWork.blasting_operation}
+      >
         <FormSection name="blasting_operation">
           <Blasting isViewMode={props.isViewMode} />
         </FormSection>
@@ -76,6 +85,7 @@ export const ReviewActivities = (props) => {
       <ScrollContentWrapper
         id="camps"
         title="Camps, Buildings, Staging Areas, Fuel/Lubricant Storage"
+        data={props.noticeOfWork.camps}
       >
         <FormSection name="camps">
           <Camps isViewMode={props.isViewMode} editRecord={editRecord} addRecord={addRecord} />
@@ -84,13 +94,18 @@ export const ReviewActivities = (props) => {
       <ScrollContentWrapper
         id="cut-lines-polarization-survey"
         title="Cut Lines and Induced Polarization Survey"
+        data={props.noticeOfWork.cut_lines_polarization_survey}
         showContent={renderActivities(props.noticeOfWorkType, "cut_lines_polarization_survey")}
       >
         <FormSection name="cut_lines_polarization_survey">
           <CutLines isViewMode={props.isViewMode} editRecord={editRecord} addRecord={addRecord} />
         </FormSection>
       </ScrollContentWrapper>
-      <ScrollContentWrapper id="surface-drilling" title="Exploration Surface Drilling">
+      <ScrollContentWrapper
+        id="surface-drilling"
+        title="Exploration Surface Drilling"
+        data={props.noticeOfWork.exploration_surface_drilling}
+      >
         <FormSection name="exploration_surface_drilling">
           <SurfaceDrilling
             isViewMode={props.isViewMode}
@@ -99,7 +114,11 @@ export const ReviewActivities = (props) => {
           />
         </FormSection>
       </ScrollContentWrapper>
-      <ScrollContentWrapper id="mechanical-trenching" title="Mechanical Trenching / Test Pits">
+      <ScrollContentWrapper
+        id="mechanical-trenching"
+        title="Mechanical Trenching / Test Pits"
+        data={props.noticeOfWork.mechanical_trenching}
+      >
         <FormSection name="mechanical_trenching">
           <MechanicalTrenching
             isViewMode={props.isViewMode}
@@ -108,7 +127,11 @@ export const ReviewActivities = (props) => {
           />
         </FormSection>
       </ScrollContentWrapper>
-      <ScrollContentWrapper id="settling-ponds" title="Settling Ponds">
+      <ScrollContentWrapper
+        id="settling-ponds"
+        title="Settling Ponds"
+        data={props.noticeOfWork.settling_pond}
+      >
         <FormSection name="settling_pond">
           <SettlingPonds
             isViewMode={props.isViewMode}
@@ -120,6 +143,7 @@ export const ReviewActivities = (props) => {
       <ScrollContentWrapper
         id="surface-bulk-samples"
         title="Surface Bulk Sample"
+        data={props.noticeOfWork.surface_bulk_sample}
         showContent={renderActivities(props.noticeOfWorkType, "surface_bulk_sample")}
       >
         <FormSection name="surface_bulk_sample">
@@ -133,6 +157,7 @@ export const ReviewActivities = (props) => {
       <ScrollContentWrapper
         id="underground-exploration"
         title="Underground Exploration"
+        data={props.noticeOfWork.underground_exploration}
         showContent={renderActivities(props.noticeOfWorkType, "underground_exploration")}
       >
         <FormSection name="underground_exploration">
@@ -146,6 +171,7 @@ export const ReviewActivities = (props) => {
       <ScrollContentWrapper
         id="sand-gravel-quarry-operations"
         title="Sand and Gravel / Quarry Operations"
+        data={props.noticeOfWork.sand_and_gravel}
         showContent={renderActivities(props.noticeOfWorkType, "sand_and_gravel")}
       >
         <FormSection name="sand_and_gravel">
@@ -159,13 +185,18 @@ export const ReviewActivities = (props) => {
       <ScrollContentWrapper
         id="placer-operations"
         title="Placer Operations"
+        data={props.noticeOfWork.placer_operation}
         showContent={renderActivities(props.noticeOfWorkType, "placer_operation")}
       >
         <FormSection name="placer_operation">
           <Placer isViewMode={props.isViewMode} editRecord={editRecord} addRecord={addRecord} />
         </FormSection>
       </ScrollContentWrapper>
-      <ScrollContentWrapper id="water-supply" title="Water Supply">
+      <ScrollContentWrapper
+        id="water-supply"
+        title="Water Supply"
+        data={props.noticeOfWork.water_supply}
+      >
         <FormSection name="water_supply">
           <WaterSupply
             isViewMode={props.isViewMode}

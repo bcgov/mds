@@ -184,8 +184,8 @@ export const WaterSupply = (props) => {
             Estimated Cost of reclamation activities described above
           </div>
           <Field
-            id="reclamation_description"
-            name="reclamation_description"
+            id="reclamation_cost"
+            name="reclamation_cost"
             component={RenderField}
             disabled={props.isViewMode}
           />

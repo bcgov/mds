@@ -441,6 +441,7 @@ export const ReviewNOWApplication = (props) => {
           <ReviewActivities
             isViewMode={props.isViewMode}
             noticeOfWorkType={props.noticeOfWorkType}
+            noticeOfWork={props.initialValues}
           />
           <ScrollContentWrapper id="submission_documents" title="Submission Documents (VFCBC/NROS)">
             <NOWSubmissionDocuments

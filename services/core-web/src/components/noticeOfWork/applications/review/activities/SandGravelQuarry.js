@@ -270,6 +270,32 @@ export const SandGravelQuarry = (props) => {
         </Col>
       </Row>
       <br />
+      <br />
+      <h4>Reclamation Program</h4>
+      <Row gutter={16}>
+        <Col md={12} sm={24}>
+          <div className="field-title">
+            Proposed reclamation and timing for this specific activity
+          </div>
+          <Field
+            id="reclamation_description"
+            name="reclamation_description"
+            component={RenderAutoSizeField}
+            disabled={props.isViewMode}
+          />
+        </Col>
+        <Col md={12} sm={24}>
+          <div className="field-title">
+            Estimated Cost of reclamation activities described above
+          </div>
+          <Field
+            id="reclamation_cost"
+            name="reclamation_cost"
+            component={RenderField}
+            disabled={props.isViewMode}
+          />
+        </Col>
+      </Row>
       <Table
         align="left"
         pagination={false}

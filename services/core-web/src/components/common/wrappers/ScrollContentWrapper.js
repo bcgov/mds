@@ -1,7 +1,9 @@
-import React from "react";
+/* eslint-disable */
+import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
-import { includes } from "lodash";
+import { includes, isEmpty } from "lodash";
 import { PropTypes } from "prop-types";
+
 import NullScreen from "@/components/common/NullScreen";
 
 /**
@@ -16,44 +18,67 @@ const propTypes = {
     location: PropTypes.shape({ state: PropTypes.shape({ currentActiveLink: PropTypes.string }) }),
   }).isRequired,
   showContent: PropTypes.bool,
+  data: PropTypes.objectOf(PropTypes.any),
 };
 
 const defaultProps = {
   showContent: true,
+  data: undefined,
 };
 
-export const ScrollContentWrapper = (props) => {
-  const isActive = () => {
-    const currentActiveLink =
-      props.history && props.history.location && props.history.location.state
-        ? props.history.location.state.currentActiveLink
-        : undefined;
-    const isActiveLink = includes(currentActiveLink, props.id);
-    return isActiveLink ? "circle purple" : "circle grey";
+export class ScrollContentWrapper extends Component {
+  state = { isEmpty: false, isVisible: true };
+
+  componentDidMount() {
+    if (this.props.data !== undefined && isEmpty(this.props.data)) {
+      this.setState({ isVisible: false });
+    }
+  }
+
+  toggleContent = () => {
+    this.setState({ isVisible: true });
   };
 
-  return (
-    <div className="scroll-wrapper">
-      <div className="inline-flex">
-        <div className={isActive()} />
-        <div id={props.id}>
-          <div className="scroll-wrapper--title">
-            <h3>{props.title}</h3>
+  renderCorrectView = () =>
+    this.state.isVisible ? (
+      this.props.showContent ? (
+        <span>{this.props.children}</span>
+      ) : (
+        <NullScreen type="now-activity" message={this.props.title} />
+      )
+    ) : (
+      <div>Not Visible</div>
+    );
+
+  render() {
+    const isActive = () => {
+      const currentActiveLink =
+        this.props.history && this.props.history.location && this.props.history.location.state
+          ? this.props.history.location.state.currentActiveLink
+          : undefined;
+      const isActiveLink = includes(currentActiveLink, this.props.id);
+      return isActiveLink ? "circle purple" : "circle grey";
+    };
+    console.log(this.props.data);
+    console.log(isEmpty(this.props.data));
+
+    return (
+      <div className="scroll-wrapper">
+        <div className="inline-flex">
+          <div className={isActive()} />
+          <div id={this.props.id}>
+            <div className="scroll-wrapper--title">
+              <h3>{this.props.title}</h3>
+            </div>
           </div>
         </div>
-      </div>
-      <div className="scroll-wrapper--border">
-        <div className="scroll-wrapper--body">
-          {props.showContent ? (
-            <span>{props.children}</span>
-          ) : (
-            <NullScreen type="now-activity" message={props.title} />
-          )}
+        <div className="scroll-wrapper--border">
+          <div className="scroll-wrapper--body">{this.renderCorrectView()}</div>
         </div>
       </div>
-    </div>
-  );
-};
+    );
+  }
+}
 
 ScrollContentWrapper.propTypes = propTypes;
 ScrollContentWrapper.defaultProps = defaultProps;
