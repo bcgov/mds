@@ -1,3 +1,4 @@
+import * as COMMON_ENV from "@common/constants/environment";
 // environment config variables for test/dev/prod
 export const DEFAULT_ENVIRONMENT = {
   apiUrl: "http://localhost:5000",

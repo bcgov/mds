@@ -139,7 +139,10 @@ export const fetchMineRecordById = (mineNo) => (dispatch) => {
       dispatch(mineActions.storeMine(response.data, mineNo));
       return response;
     })
-    .catch(() => dispatch(error(reducerTypes.GET_MINE_RECORD)))
+    .catch((err) => {
+      dispatch(error(reducerTypes.GET_MINE_RECORD));
+      throw new Error(err);
+    })
     .finally(() => dispatch(hideLoading()));
 };
 

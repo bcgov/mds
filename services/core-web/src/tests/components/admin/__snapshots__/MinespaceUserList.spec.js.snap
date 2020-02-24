@@ -1,51 +1,41 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`MinespaceUserList renders properly 1`] = `
-<TableLoadingWrapper
-  isPaginated={false}
-  tableHeaders={
+<CoreTable
+  columns={
     Array [
-      "User Email",
-      "Mines",
-      "",
+      Object {
+        "dataIndex": "email",
+        "render": [Function],
+        "title": "User Email",
+        "width": 150,
+      },
+      Object {
+        "dataIndex": "mineNames",
+        "render": [Function],
+        "title": "Mines",
+        "width": 150,
+      },
+      Object {
+        "dataIndex": "delete",
+        "render": [Function],
+        "title": "",
+        "width": 150,
+      },
     ]
   }
->
-  <withStore(Table)
-    align="center"
-    columns={
-      Array [
-        Object {
-          "dataIndex": "email",
-          "render": [Function],
-          "title": "User Email",
-          "width": 150,
-        },
-        Object {
-          "dataIndex": "mineNames",
-          "render": [Function],
-          "title": "Mines",
-          "width": 150,
-        },
-        Object {
-          "dataIndex": "delete",
-          "render": [Function],
-          "title": "",
-          "width": 150,
-        },
-      ]
-    }
-    dataSource={Array []}
-    locale={
-      Object {
+  dataSource={Array []}
+  tableProps={
+    Object {
+      "align": "center",
+      "locale": Object {
         "emptyText": <NullScreen
           message=""
           type="no-results"
         />,
-      }
+      },
+      "pagination": false,
     }
-    pagination={false}
-    rowClassName="fade-in"
-  />
-</TableLoadingWrapper>
+  }
+/>
 `;
