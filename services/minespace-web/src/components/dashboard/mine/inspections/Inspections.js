@@ -56,10 +56,7 @@ export class Inspections extends Component {
               <Col sm={24} md={10} lg={6}>
                 <TableSummaryCard
                   title="Inspections YTD"
-                  content={
-                    this.props.mineComplianceInfo.year_to_date.num_inspections ||
-                    Strings.EMPTY_FIELD
-                  }
+                  content={this.props.mineComplianceInfo.year_to_date.num_inspections}
                   icon="check-circle"
                   type="success"
                 />
