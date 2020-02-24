@@ -1,3 +1,4 @@
+#!/bin/bash
 [ -d "/usr/src/app" ] && exit 0
 
 set -e
@@ -12,7 +13,7 @@ safeLogging () {
 
 shopt -s dotglob
 echo "---> Installing application source ..."
-mv /tmp/* ./
+mv /tmp/src/* ./
 
 if [ ! -z $HTTP_PROXY ]; then
     echo "---> Setting npm http proxy to" $(safeLogging $HTTP_PROXY)
@@ -34,67 +35,14 @@ if [ ! -z $https_proxy ]; then
 	npm config set https-proxy $https_proxy
 fi
 
-# Change the npm registry mirror if provided
-if [ -n "$NPM_MIRROR" ]; then
-	npm config set registry $NPM_MIRROR
-fi
-
-# Set the DEV_MODE to false by default.
-if [ -z "$DEV_MODE" ]; then
-  export DEV_MODE=false
-fi
-
-# If NODE_ENV is not set by the user, then NODE_ENV is determined by whether
-# the container is run in development mode.
-if [ -z "$NODE_ENV" ]; then
-  if [ "$DEV_MODE" == true ]; then
-    export NODE_ENV=development
-  else
-    export NODE_ENV=production
-  fi
-fi
-
-PROD_BUILD_DIR=build
-DEV_BUILD_DIR=build-dev
-
-if [ "$SKIP_NPM_INSTALL" == false ]; then
-  echo "---> Installing all dependencies"
-  wget http://downloadarchive.documentfoundation.org/libreoffice/old/6.3.3.1/deb/x86_64/LibreOffice_6.3.3.1_Linux_x86-64_deb.tar.gz -O libo.tar.gz
-  apt update \
-  && apt install -y libxinerama1 libfontconfig1 libdbus-glib-1-2 libcairo2 libcups2 libglu1-mesa libsm6 unzip \
-  && tar -zxvf libo.tar.gz
-  dpkg -i LibreOffice_6.3.3.1_Linux_x86-64_deb/DEBS/*.deb
-  mkdir /tmp-reports
-  yarn
-fi
-
-#do not fail when there is no build script
-echo "---> Building in dev mode"
-export BUILD_DIR=$DEV_BUILD_DIR
-npm run build --if-present
-
-echo "---> Building in production mode"
-export BASE_PATH=
-export ASSET_PATH=/
-export BUILD_DIR=$PROD_BUILD_DIR
-npm run build --if-present
-
-# Clear the npm's cache and tmp directories only if they are not a docker volumes
-NPM_CACHE=$(npm config get cache)
-if ! mountpoint $NPM_CACHE; then
-    echo "---> Cleaning the npm cache $NPM_CACHE"
-    #As of npm@5 even the 'npm cache clean --force' does not fully remove the cache directory
-    rm $NPM_CACHE* -rf
-fi
-NPM_TMP=$(npm config get tmp)
-if ! mountpoint $NPM_TMP; then
-    echo "---> Cleaning the $NPM_TMP/npm-*"
-    rm -rf $NPM_TMP/npm-*
-fi
-
-# Remove cache created by package installs
-rm -rf node_modules/.cache/
-
+echo "---> Installing all dependencies"
+wget http://downloadarchive.documentfoundation.org/libreoffice/old/6.3.3.1/deb/x86_64/LibreOffice_6.3.3.1_Linux_x86-64_deb.tar.gz -O libo.tar.gz
+apt update \
+&& apt install -y libxinerama1 libfontconfig1 libdbus-glib-1-2 libcairo2 libcups2 libglu1-mesa libsm6 unzip \
+&& tar -zxvf libo.tar.gz
+dpkg -i LibreOffice_6.3.3.1_Linux_x86-64_deb/DEBS/*.deb
+mkdir /tmp-reports
+yarn
 
 # Fix source directory permissions
 fix-permissions ./
