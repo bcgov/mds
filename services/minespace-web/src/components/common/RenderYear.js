@@ -13,6 +13,7 @@ const propTypes = {
   input: PropTypes.objectOf(PropTypes.any).isRequired,
   label: PropTypes.string.isRequired,
   placeholder: PropTypes.string,
+  required: PropTypes.bool,
   onChange: PropTypes.func,
   disabled: PropTypes.bool,
   meta: PropTypes.objectOf(PropTypes.any).isRequired,
@@ -22,6 +23,7 @@ const defaultProps = {
   placeholder: "yyyy-mm-dd",
   onChange: () => {},
   disabled: false,
+  required: false,
 };
 
 export class RenderDate extends Component {
@@ -65,6 +67,7 @@ export class RenderDate extends Component {
         ((this.props.meta.error && <span>{this.props.meta.error}</span>) ||
           (this.props.meta.warning && <span>{this.props.meta.warning}</span>))
       }
+      required={this.props.required}
     >
       <DatePicker
         id={this.props.id}

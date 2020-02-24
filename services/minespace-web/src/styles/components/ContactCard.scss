@@ -1,0 +1,27 @@
+.contact-card {
+  min-width: max-content;
+
+  &-row {
+    margin-bottom: 1em;
+
+    &:last-child {
+      margin-bottom: 0 !important;
+    }
+
+    &-icon {
+      font-size: 2em;
+    }
+
+    &-field {
+      display: inline-block;
+      vertical-align: top;
+      padding-left: $padding-sm;
+      margin-bottom: 0 !important;
+
+      &-title {
+        display: block;
+        text-transform: uppercase;
+      }
+    }
+  }
+}

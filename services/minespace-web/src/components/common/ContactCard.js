@@ -5,19 +5,18 @@ import { formatDate } from "@common/utils/helpers";
 import CustomPropTypes from "@/customPropTypes";
 import * as Strings from "@/constants/strings";
 
-const { Text } = Typography;
+const { Paragraph, Text } = Typography;
 
 const ContactCardRow = (data) => (
-  <Row gutter={[32, 16]}>
-    <Col span={3}>
-      <Icon type={data.icon} style={{ fontSize: "2em" }} />
-    </Col>
-    <Col span={20} offset={1}>
-      <Text strong style={{ textTransform: "uppercase" }}>
-        {data.label}
-      </Text>
-      <br />
-      <Text>{data.value}</Text>
+  <Row className="contact-card-row">
+    <Col>
+      <Icon type={data.icon} className="contact-card-row-icon" />
+      <Paragraph className="contact-card-row-field">
+        <Text strong className="contact-card-row-field-title">
+          {data.label}
+        </Text>
+        <Text>{data.value}</Text>
+      </Paragraph>
     </Col>
   </Row>
 );
@@ -33,13 +32,12 @@ const defaultProps = {
 };
 
 export const ContactCard = (props) => (
-  <Card title={props.title}>
+  <Card title={props.title} className="contact-card">
     <ContactCardRow
       icon="user"
       label="Name"
       value={props.party ? props.party.name : Strings.UNKNOWN}
     />
-    <br />
     <ContactCardRow
       icon="mail"
       label="Email"
@@ -48,13 +46,11 @@ export const ContactCard = (props) => (
         Strings.UNKNOWN
       }
     />
-    <br />
     <ContactCardRow
       icon="phone"
       label="Phone"
       value={props.party ? props.party.phone_no : Strings.UNKNOWN}
     />
-    <br />
     <ContactCardRow
       icon="calendar"
       label={props.dateLabel}
