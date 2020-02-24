@@ -31,14 +31,14 @@ const REG_NE = new RegionalMineRegionalContacts(
   new Contact(TITLE_SAFETY, "Brian Oke", "(250) 565-4387", "Brian.Oke@gov.bc.ca"),
   new Contact(TITLE_PERMITTING, "Marnie Fraser", "(250) 565-4206", "Marnie.Fraser@gov.bc.ca"),
   new Contact(TITLE_DIRECTOR, "Victor Koyanagi", "(250) 565-4323", "Victor.Koyanagi@gov.bc.ca"),
-  new Contact(TITLE_OFFICE, null, "(250) 847-7383", "MMD-Smithers@gov.bc.ca")
+  new Contact(TITLE_OFFICE, null, "(250) 565-4240", "MMD-PrinceGeorge@gov.bc.ca")
 );
 
 const REG_NW = new RegionalMineRegionalContacts(
   new Contact(TITLE_SAFETY, "Doug Flynn", "(250) 847-7386", "Doug.Flynn@gov.bc.ca"),
   new Contact(TITLE_PERMITTING, "Andrea Ross", "(250) 847-7768", "Andrea.Ross@gov.bc.ca"),
   new Contact(TITLE_DIRECTOR, "Howard Davies", "(250) 847-7653", "Howard.Davies@gov.bc.ca"),
-  new Contact(TITLE_OFFICE, null, "(250) 565-4240", "MMD-PrinceGeorge@gov.bc.ca")
+  new Contact(TITLE_OFFICE, null, "(250) 847-7383", "MMD-Smithers@gov.bc.ca")
 );
 
 const REG_SC = new RegionalMineRegionalContacts(
