@@ -16,12 +16,6 @@
   "[javascript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  "prettier.trailingComma": "es5",
-  "prettier.arrowParens": "always",
-  "prettier.bracketSpacing": true,
-  "prettier.printWidth": 100,
-  "prettier.endOfLine": "lf",
-
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true,
     "eslint.autoFixOnSave": true
