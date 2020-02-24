@@ -210,6 +210,8 @@ services:
       - /var/log
       - ./settings/promtail:/etc/promtail
     command: -config.file=/etc/promtail/promtail-docker-config.yaml
+    expose:
+      - 1514
     networks:
       - mds
 

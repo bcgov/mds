@@ -1,5 +1,6 @@
 import os
 
+from logging.handlers import SysLogHandler
 from dotenv import load_dotenv, find_dotenv
 ENV_FILE = find_dotenv()
 if ENV_FILE:
@@ -30,6 +31,15 @@ class Config(object):
             'handlers': ['wsgi']
         }
     }
+
+    UWSGI_DISABLED = os.environ.get('UWSGI_DISABLED', False)
+    if (UWSGI_DISABLED is not False):
+        LOGGING_DICT_CONFIG['handlers']['customhandler'] = {
+            'class': 'logging.handlers.SysLogHandler',
+            'formatter': 'verbose',
+            'filename': 'flask.log',
+            'address': 'promtail'
+        }
 
     SECRET_KEY = os.environ.get('SECRET_KEY', 'dev')
     BASE_PATH = os.environ.get('BASE_PATH', '')
