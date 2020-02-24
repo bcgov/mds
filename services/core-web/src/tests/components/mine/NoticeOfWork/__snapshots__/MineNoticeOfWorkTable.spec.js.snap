@@ -1,103 +1,92 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`MineNoticeOfWorkTable renders properly 1`] = `
-<TableLoadingWrapper
-  isPaginated={false}
-  tableHeaders={
+<CoreTable
+  columns={
     Array [
-      "Number",
-      "Type",
-      "Status",
-      "Received",
-      "",
+      Object {
+        "dataIndex": "nowNum",
+        "filterDropdown": [Function],
+        "filterIcon": [Function],
+        "render": [Function],
+        "sortField": "now_number",
+        "sortOrder": "ascend",
+        "sorter": true,
+        "title": "Number",
+      },
+      Object {
+        "dataIndex": "nowType",
+        "filterDropdown": [Function],
+        "filterIcon": [Function],
+        "render": [Function],
+        "sortField": "notice_of_work_type_description",
+        "sortOrder": false,
+        "sorter": true,
+        "title": "Type",
+      },
+      Object {
+        "dataIndex": "status",
+        "filterDropdown": [Function],
+        "filterIcon": [Function],
+        "render": [Function],
+        "sortField": "status",
+        "sortOrder": false,
+        "sorter": true,
+        "title": "Status",
+      },
+      Object {
+        "dataIndex": "date",
+        "render": [Function],
+        "sortField": "received_date",
+        "sortOrder": false,
+        "sorter": true,
+        "title": "Received",
+      },
+      Object {
+        "dataIndex": "verify",
+        "render": [Function],
+        "sortOrder": false,
+        "title": "",
+        "width": 150,
+      },
     ]
   }
->
-  <withStore(Table)
-    align="left"
-    columns={
-      Array [
-        Object {
-          "dataIndex": "nowNum",
-          "filterDropdown": [Function],
-          "filterIcon": [Function],
-          "render": [Function],
-          "sortField": "now_number",
-          "sortOrder": "ascend",
-          "sorter": true,
-          "title": "Number",
-        },
-        Object {
-          "dataIndex": "nowType",
-          "filterDropdown": [Function],
-          "filterIcon": [Function],
-          "render": [Function],
-          "sortField": "notice_of_work_type_description",
-          "sortOrder": false,
-          "sorter": true,
-          "title": "Type",
-        },
-        Object {
-          "dataIndex": "status",
-          "filterDropdown": [Function],
-          "filterIcon": [Function],
-          "render": [Function],
-          "sortField": "status",
-          "sortOrder": false,
-          "sorter": true,
-          "title": "Status",
-        },
-        Object {
-          "dataIndex": "date",
-          "render": [Function],
-          "sortField": "received_date",
-          "sortOrder": false,
-          "sorter": true,
-          "title": "Received",
-        },
-        Object {
-          "dataIndex": "verify",
-          "render": [Function],
-          "sortOrder": false,
-          "title": "",
-          "width": 150,
-        },
-      ]
-    }
-    dataSource={
-      Array [
-        Object {
-          "date": "Aug 14 2019",
-          "key": "07e801a0-fa33-4c3b-abcc-ac6df628d483",
-          "location": [Function],
-          "mineGuid": "6e9d3426-ebf1-413f-9e5f-c3a71ab56797",
-          "mineName": "Hamilton, Herrera and Mccormick",
-          "nowNum": 44,
-          "nowType": "choice",
-          "status": "Approved",
-        },
-        Object {
-          "date": "Jul 21 2019",
-          "key": "8e1536da-644c-4961-976b-b1326fa75825",
-          "location": [Function],
-          "mineGuid": "60300a07-376c-46f1-a984-88a813f91438",
-          "mineName": "Thompson-Sullivan",
-          "nowNum": 52,
-          "nowType": "technology",
-          "status": "Approved",
-        },
-      ]
-    }
-    locale={
+  dataSource={
+    Array [
       Object {
+        "date": "Aug 14 2019",
+        "key": "07e801a0-fa33-4c3b-abcc-ac6df628d483",
+        "location": [Function],
+        "mineGuid": "6e9d3426-ebf1-413f-9e5f-c3a71ab56797",
+        "mineName": "Hamilton, Herrera and Mccormick",
+        "nowNum": 44,
+        "nowType": "choice",
+        "status": "Approved",
+      },
+      Object {
+        "date": "Jul 21 2019",
+        "key": "8e1536da-644c-4961-976b-b1326fa75825",
+        "location": [Function],
+        "mineGuid": "60300a07-376c-46f1-a984-88a813f91438",
+        "mineName": "Thompson-Sullivan",
+        "nowNum": 52,
+        "nowType": "technology",
+        "status": "Approved",
+      },
+    ]
+  }
+  tableProps={
+    Object {
+      "align": "left",
+      "locale": Object {
         "emptyText": <NullScreen
           message=""
           type="notice-of-work"
         />,
-      }
+      },
+      "onChange": [Function],
+      "pagination": false,
     }
-    onChange={[Function]}
-    pagination={false}
-  />
-</TableLoadingWrapper>
+  }
+/>
 `;

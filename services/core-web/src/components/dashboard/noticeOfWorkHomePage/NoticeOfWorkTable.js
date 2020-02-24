@@ -1,18 +1,17 @@
 import React, { Component } from "react";
-import { Table, Icon, Input, Button, Badge } from "antd";
+import { Icon, Input, Button, Badge } from "antd";
 import { Link, withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import {
   formatDate,
   optionsFilterLabelAndValue,
   optionsFilterLabelOnly,
-  getTableHeaders,
 } from "@common/utils/helpers";
 import * as Strings from "@common/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
 import * as router from "@/constants/routes";
 import NullScreen from "@/components/common/NullScreen";
-import TableLoadingWrapper from "@/components/common/wrappers/TableLoadingWrapper";
+import CoreTable from "@/components/common/CoreTable";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import { EDIT_OUTLINE_VIOLET } from "@/constants/assets";
 import { getNoticeOfWorkApplicationBadgeStatusType } from "@/constants/theme";
@@ -272,24 +271,21 @@ export class NoticeOfWorkTable extends Component {
 
   render() {
     return (
-      <TableLoadingWrapper
+      <CoreTable
         condition={this.props.isLoaded}
-        tableHeaders={getTableHeaders(this.columns())}
-      >
-        <Table
-          rowClassName="fade-in"
-          align="left"
-          pagination={false}
-          columns={applySortIndicator(
-            this.columns(this.props),
-            this.props.sortField,
-            this.props.sortDir
-          )}
-          dataSource={this.transformRowData(this.props.noticeOfWorkApplications)}
-          locale={{ emptyText: <NullScreen type="no-results" /> }}
-          onChange={handleTableChange(this.props.handleSearch)}
-        />
-      </TableLoadingWrapper>
+        columns={applySortIndicator(
+          this.columns(this.props),
+          this.props.sortField,
+          this.props.sortDir
+        )}
+        dataSource={this.transformRowData(this.props.noticeOfWorkApplications)}
+        tableProps={{
+          align: "left",
+          pagination: false,
+          locale: { emptyText: <NullScreen type="no-results" /> },
+          onChange: handleTableChange(this.props.handleSearch),
+        }}
+      />
     );
   }
 }

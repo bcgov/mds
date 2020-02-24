@@ -1,11 +1,10 @@
 /* eslint-disable */
 import React from "react";
-import { Table } from "antd";
 import moment from "moment";
 import PropTypes from "prop-types";
 import NullScreen from "@/components/common/NullScreen";
 import * as Strings from "@common/constants/strings";
-import { formatDate, getTableHeaders, truncateFilename } from "@common/utils/helpers";
+import { formatDate, truncateFilename } from "@common/utils/helpers";
 import { COLOR } from "@/constants/styles";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
@@ -13,7 +12,7 @@ import CustomPropTypes from "@/customPropTypes";
 import { MineReportActions } from "@/components/mine/Reports/MineReportActions";
 import LinkButton from "@/components/common/LinkButton";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
-import TableLoadingWrapper from "@/components/common/wrappers/TableLoadingWrapper";
+import CoreTable from "@/components/common/CoreTable";
 
 const { errorRed } = COLOR;
 
@@ -146,22 +145,23 @@ const transformRowData = (report, openEditReportModal, handleEditReport, handleR
 });
 
 export const MineReportTable = (props) => (
-  <TableLoadingWrapper condition={props.isLoaded} tableHeaders={getTableHeaders(columns)}>
-    <Table
-      align="left"
-      pagination={false}
-      columns={columns}
-      locale={{ emptyText: <NullScreen type="reports" /> }}
-      dataSource={props.mineReports.map((r) =>
-        transformRowData(
-          r,
-          props.openEditReportModal,
-          props.handleEditReport,
-          props.handleRemoveReport
-        )
-      )}
-    />
-  </TableLoadingWrapper>
+  <CoreTable
+    condition={props.isLoaded}
+    columns={columns}
+    dataSource={props.mineReports.map((r) =>
+      transformRowData(
+        r,
+        props.openEditReportModal,
+        props.handleEditReport,
+        props.handleRemoveReport
+      )
+    )}
+    tableProps={{
+      align: "left",
+      pagination: false,
+      locale: { emptyText: <NullScreen type="reports" /> },
+    }}
+  />
 );
 
 MineReportTable.propTypes = propTypes;

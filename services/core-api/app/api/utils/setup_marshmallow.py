@@ -85,7 +85,7 @@ def setup_schema(Base, session):
                     schema_class = type(schema_class_name, (ModelSchema2, ), {"Meta": Meta})
 
                     setattr(class_, "_schema", schema_class)
-                    print(f'created {class_}')
+                    current_app.logger.debug(f'created {schema_class}')
                 except Exception as e:
                     raise e
 
