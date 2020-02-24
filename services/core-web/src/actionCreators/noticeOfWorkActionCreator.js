@@ -12,7 +12,7 @@ export const generateNoticeOfWorkApplicationDocument = (documentTypeCode, payloa
   dispatch
 ) => {
   dispatch(request(reducerTypes.GENERATE_NOTICE_OF_WORK_APPLICATION_DOCUMENT));
-  dispatch(showLoading());
+  dispatch(showLoading("modal"));
   return CustomAxios()
     .post(
       `${ENVIRONMENT.apiUrl}${COMMON_API.NOW_APPLICATION_DOCUMENT_TYPE_OPTIONS}/${documentTypeCode}/generate`,
@@ -30,7 +30,7 @@ export const generateNoticeOfWorkApplicationDocument = (documentTypeCode, payloa
       return response;
     })
     .catch(() => dispatch(error(reducerTypes.GENERATE_NOTICE_OF_WORK_APPLICATION_DOCUMENT)))
-    .finally(() => dispatch(hideLoading()));
+    .finally(() => dispatch(hideLoading("modal")));
 };
 
 export default generateNoticeOfWorkApplicationDocument;

@@ -389,7 +389,9 @@ export class NoticeOfWorkApplication extends Component {
       now_application_guid: this.props.noticeOfWork.now_application_guid,
       template_data: newValues,
     };
-    this.props.generateNoticeOfWorkApplicationDocument(documentTypeCode, payload);
+    this.props.generateNoticeOfWorkApplicationDocument(documentTypeCode, payload).then(() => {
+      this.props.closeModal();
+    });
   };
 
   renderStepOne = () => {
