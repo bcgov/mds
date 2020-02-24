@@ -29,7 +29,7 @@ beforeEach(() => {
 });
 
 describe("`fetchNoticeOfWorkApplications` action creator", () => {
-  const url = ENVIRONMENT.apiUrl + API.NOTICE_OF_WORK_APPLICATIONS();
+  const url = ENVIRONMENT.apiUrl + API.NOTICE_OF_WORK_APPLICATION_LIST();
   it("Request successful, dispatches `success` with correct response", () => {
     const mockResponse = { data: { success: true } };
     mockAxios.onGet(url).reply(200, mockResponse);

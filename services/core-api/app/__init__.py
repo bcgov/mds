@@ -8,6 +8,7 @@ from flask_compress import Compress
 from sqlalchemy.exc import SQLAlchemyError
 
 from flask_jwt_oidc.exceptions import AuthError
+from werkzeug.exceptions import Forbidden
 
 from app.api.compliance.namespace import api as compliance_api
 from app.api.download_token.namespace import api as download_token_api
@@ -108,6 +109,14 @@ def register_routes(app):
             'status': getattr(error, 'status_code', 401),
             'message': str(error),
         }, getattr(error, 'status_code', 401)
+
+    @api.errorhandler(Forbidden)
+    def forbidden_error_handler(error):
+        app.logger.error(str(error))
+        return {
+            'status': getattr(error, 'status_code', 403),
+            'message': str(error),
+        }, getattr(error, 'status_code', 403)
 
     @api.errorhandler(AssertionError)
     def assertion_error_handler(error):
