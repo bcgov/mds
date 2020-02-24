@@ -19,7 +19,7 @@ class NoticeOfWorkDocumentResource(Resource, UserMixin):
     def get(self):
         token = request.args.get('token', '')
         token_data = cache.get(NOW_DOCUMENT_DOWNLOAD_TOKEN(token))
-        # cache.delete(NOW_DOCUMENT_DOWNLOAD_TOKEN(token))
+        cache.delete(NOW_DOCUMENT_DOWNLOAD_TOKEN(token))
 
         if not token_data:
             raise BadRequest('Valid token required for download')

@@ -15,7 +15,7 @@ COMMENT ON TABLE document_template IS 'Holds template data for documents that CO
 
 
 ALTER TABLE now_application_document_type ADD COLUMN document_template_code varchar; 
-ALTER TABLE now_application_document_type
+ALTER TABLE   
     ADD CONSTRAINT now_application_document_type_template_code
     FOREIGN KEY (document_template_code) REFERENCES document_template(document_template_code) ON UPDATE CASCADE ON DELETE SET NULL;
 
@@ -60,7 +60,7 @@ VALUES
       "required": true
     },
     {
-      "id": "apl_date",
+      "id": "application_dt",
       "label": "Application Date",
       "type": "DATE",
       "placeholder": null,
@@ -83,10 +83,10 @@ VALUES
       "required": true
     },
     {
-      "id": "file_no",
-      "label": "File Number",
+      "id": "mine_no",
+      "label": "Mine Number",
       "type": "FIELD",
-      "placeholder": "Enter the file number",
+      "placeholder": "Enter the mine number",
       "required": true
     },
     {
@@ -124,7 +124,7 @@ VALUES
       "placeholder": "Enter the inspector''s name",
       "required": true
     }
-  ]' , 'templates/now/Withdrawl Letter Template (NoW).docx', true, 'system-mds', 'system-mds'),
+  ]' , 'templates/now/Withdrawal Letter Template (NoW).docx', true, 'system-mds', 'system-mds'),
 	('NOW-CAL', '[
     {
       "id": "letter_dt",
@@ -169,7 +169,7 @@ VALUES
       "required": true
     },
     {
-      "id": "apl_dt",
+      "id": "application_dt",
       "label": "Application Date",
       "type": "DATE",
       "placeholder": null,

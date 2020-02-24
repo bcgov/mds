@@ -51,6 +51,6 @@ class NOWApplicationDocumentGenerateResource(Resource, UserMixin):
                 'document_type_code': document_type_code,
                 'now_application_guid': data['now_application_guid'],
                 'template_data': data['template_data']
-            }, 100000)
+            }, TIMEOUT_5_MINUTES)
 
         return {'token': token}
