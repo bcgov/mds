@@ -1,3 +1,6 @@
+// TODO: Remove this line when file is more properly implemented.
+/* eslint-disable */
+
 import React, { Component } from "react";
 
 import L from "leaflet";
@@ -86,8 +89,8 @@ LeafletWms.Source = LeafletWms.Source.extend({
       request: "GetFeatureInfo",
       info_format: "text/html",
       query_layers: layers.join(","),
-      X: Math.round(point.x),
-      Y: Math.round(point.y),
+      X: Math.round(point.latitude),
+      Y: Math.round(point.longitude),
     };
     return L.extend({}, wmsParams, infoParams);
   },
@@ -108,7 +111,6 @@ LeafletWms.Source = LeafletWms.Source.extend({
     this._map.openPopup(info, latlng, { className: "leaflet-wms-popup" });
   },
 });
-/* eslint-enable */
 
 const getFirstNationLayer = () => {
   const firstNationSource = LeafletWms.source(
@@ -153,12 +155,11 @@ class MineMapLeaflet extends Component {
   };
 
   createPin = (mine) => {
-    const pin = this.props.mineName === mine.mine_name ? SMALL_PIN_SELECTED : SMALL_PIN;
+    const pin = SMALL_PIN; // this.props.mineName === mine.mine_guid ? SMALL_PIN_SELECTED : SMALL_PIN;
     const customIcon = L.icon({ iconUrl: pin, iconSize: [60, 60] });
-
-    const latLong = [mine.mine_location.latitude, mine.mine_location.longitude];
-
-    const marker = L.marker(latLong, { icon: customIcon }).bindPopup(Strings.LOADING);
+    const marker = L.marker([mine.latitude, mine.longitude], { icon: customIcon }).bindPopup(
+      Strings.LOADING
+    );
     this.markerClusterGroup.addLayer(marker);
     marker.on("click", this.handleMinePinClick(mine));
   };
@@ -174,7 +175,7 @@ class MineMapLeaflet extends Component {
   };
 
   addLatLongCircle = () => {
-    if (this.props.lat && this.props.long && !this.props.mineName) {
+    if (!this.props.mineName && this.props.lat && this.props.long) {
       L.circle([this.props.lat, this.props.long], {
         color: "red",
         fillColor: "#f03",
@@ -234,7 +235,6 @@ class MineMapLeaflet extends Component {
       .addTo(this.map);
   };
 
-  /* eslint-disable */
   getLayerGroupFromList = (groupLayerList) => {
     const result = {};
     const layerList = this.webMap.layers;
@@ -260,7 +260,6 @@ class MineMapLeaflet extends Component {
     });
     return result;
   };
-  /* eslint-enable */
 
   initWebMap() {
     // Fetch the WebMap
