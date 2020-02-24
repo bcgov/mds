@@ -34,15 +34,3 @@ if [ ! -z $https_proxy ]; then
     echo "---> Setting npm https proxy to" $(safeLogging $https_proxy)
 	npm config set https-proxy $https_proxy
 fi
-
-echo "---> Installing all dependencies"
-wget https://mirror1.freemirror.org/tdf/libreoffice/stable/6.3.4/rpm/x86_64/LibreOffice_6.3.4_Linux_x86-64_rpm.tar.gz -O libo.tar.gz
-yum update \
-&& yum install -y libxinerama1 libfontconfig1 libdbus-glib-1-2 libcairo2 libcups2 libglu1-mesa libsm6 unzip \
-&& tar -zxvf libo.tar.gz
-rpm -ql LibreOffice_6.3.3.1_Linux_x86-64_rpm/RPMS/*.rpm
-mkdir /tmp-reports
-yarn
-
-# Fix source directory permissions
-fix-permissions ./

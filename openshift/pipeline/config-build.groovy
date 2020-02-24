@@ -122,7 +122,7 @@ app {
                         ]
                 ],
                 [
-                        'file':'openshift/templates/_nodejs.bc.json',
+                        'file':'openshift/templates/docgen/docgen.bc.json',
                         'params':[
                             'NAME':"mds-docgen-api",
                             'SUFFIX': "${app.build.suffix}",
@@ -130,7 +130,7 @@ app {
                             'BASE_PATH': "/${app.git.changeId}",
                             'VERSION':"${app.build.version}",
                             'SOURCE_CONTEXT_DIR': "services/docgen-api",
-                            'DOCKER_IMAGE_DIRECTORY': "openshift/docker-images/nodejs-10",
+                            'DOCKER_IMAGE_DIRECTORY': "openshift/docker-images/docgen",
                             'SOURCE_REPOSITORY_URL': "${app.git.uri}",
                             'NODE_ENV': "production"
                         ]
