@@ -10,17 +10,21 @@
   ],
   "python.linting.enabled": true,
   "eslint.alwaysShowStatus": true,
-  "eslint.autoFixOnSave": true,
   "files.exclude": {
     "**/__pycache__": true
   },
   "[javascript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
+  "prettier.trailingComma": "es5",
+  "prettier.arrowParens": "always",
+  "prettier.bracketSpacing": true,
+  "prettier.printWidth": 100,
+  "prettier.endOfLine": "lf",
+
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": true
+    "source.fixAll.eslint": true,
+    "eslint.autoFixOnSave": true
   },
-  "cSpell.words": [
-    "idir"
-  ]
+  "cSpell.words": ["idir"]
 }
