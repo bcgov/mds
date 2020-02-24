@@ -13,6 +13,8 @@
     "axios-mock-adapter": "^1.17.0",
     "core-js": "^3.6.4",
     "dotenv": "^8.2.0",
+    "enzyme": "^3.11.0",
+    "enzyme-to-json": "^3.4.3",
     "express": "^4.17.1",
     "express-cache-controller": "^1.1.0",
     "filepond": "4.4.9",
@@ -20,7 +22,7 @@
     "filepond-plugin-file-validate-type": "^1.2.4",
     "filepond-polyfill": "^1.0.4",
     "hoist-non-react-statics": "^3.3.1",
-    "keycloak-js": "^6.0.1",
+    "jsonwebtoken": "^8.5.1",
     "leaflet": "^1.5.1",
     "leaflet.markercluster": "^1.4.1",
     "less-loader": "^5.0.0",
@@ -45,9 +47,7 @@
     "redux-thunk": "^2.3.0",
     "regenerator-runtime": "^0.13.3",
     "reselect": "^4.0.0",
-    "tus-js-client": "^1.8.0",
-    "enzyme": "^3.11.0",
-    "enzyme-to-json": "^3.4.3"
+    "tus-js-client": "^1.8.0"
   },
   "devDependencies": {
     "@babel/core": "^7.8.3",

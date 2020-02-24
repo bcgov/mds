@@ -25,6 +25,7 @@ import {
   getNoticeOfWorkApplicationProgressStatusCodeOptions,
   getGeneratableNoticeOfWorkApplicationDocumentTypeOptions,
 } from "@common/selectors/staticContentSelectors";
+import { formatDate } from "@common/utils/helpers";
 import { clearNoticeOfWorkApplication } from "@common/actions/noticeOfWorkActions";
 import { downloadNowDocument } from "@common/utils/actionlessNetworkCalls";
 import { generateNoticeOfWorkApplicationDocument } from "@/actionCreators/noticeOfWorkActionCreator";
@@ -368,7 +369,7 @@ export class NoticeOfWorkApplication extends Component {
     this.props.openModal({
       props: {
         documentType,
-        onSubmit: (values) => this.handleGenerateDocumentFormSubmit(documentTypeCode, values),
+        onSubmit: (values) => this.handleGenerateDocumentFormSubmit(documentType, values),
         title: `Generate ${documentType.description}`,
       },
       width: "75vw",
@@ -376,12 +377,21 @@ export class NoticeOfWorkApplication extends Component {
     });
   };
 
-  handleGenerateDocumentFormSubmit = (documentTypeCode, values) => {
+  handleGenerateDocumentFormSubmit = (documentType, values) => {
+    const documentTypeCode = documentType.now_application_document_type_code;
+    const newValues = values;
+    documentType.document_template.form_spec
+      .filter((field) => field.type === "DATE")
+      .forEach((field) => {
+        newValues[field.id] = formatDate(newValues[field.id]);
+      });
     const payload = {
       now_application_guid: this.props.noticeOfWork.now_application_guid,
-      template_data: values,
+      template_data: newValues,
     };
-    this.props.generateNoticeOfWorkApplicationDocument(documentTypeCode, payload);
+    this.props.generateNoticeOfWorkApplicationDocument(documentTypeCode, payload).then(() => {
+      this.props.closeModal();
+    });
   };
 
   renderStepOne = () => {

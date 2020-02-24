@@ -8,6 +8,7 @@ const dispatchProps = {};
 
 const setupProps = () => {
   props.match = { params: { id: "18133c75-49ad-4101-85f3-a43e35ae989a" } };
+  props.history = { push: jest.fn() };
   props.mine = MOCK.MINES.mines[MOCK.MINES.mineIds[0]];
 };
 
