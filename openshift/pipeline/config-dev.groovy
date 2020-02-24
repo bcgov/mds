@@ -284,7 +284,7 @@ app {
                 [
                     'file':'openshift/templates/_nodejs.dc.json',
                     'params':[
-                            'NAME':"docgen-api",
+                            'NAME':"mds-docgen-api",
                             'SUFFIX': "${vars.deployment.suffix}",
                             'APPLICATION_SUFFIX': "${vars.deployment.application_suffix}",
                             'TAG_NAME':"${app.deployment.version}",
@@ -295,8 +295,8 @@ app {
                             'MEMORY_LIMIT':"${vars.resources.node.memory_limit}",
                             'REPLICA_MIN':"${vars.resources.node.replica_min}",
                             'REPLICA_MAX':"${vars.resources.node.replica_max}",
-                            'APPLICATION_DOMAIN': "${vars.modules.'docgen-api'.HOST}",
-                            'BASE_PATH': "${vars.modules.'docgen-api'.PATH}",
+                            'APPLICATION_DOMAIN': "${vars.modules.'mds-docgen-api'.HOST}",
+                            'BASE_PATH': "${vars.modules.'mds-docgen-api'.PATH}",
                             'NODE_ENV': "${vars.deployment.node_env}"
                     ]
                 ]/*,
@@ -450,8 +450,8 @@ environments {
                 'mds-redis' {
                     HOST = "http://mds-redis${vars.deployment.suffix}"
                 }
-                'docgen-api' {
-                    HOST = "http://docgen-api${vars.deployment.suffix}:3030"
+                'mds-docgen-api' {
+                    HOST = "http://mds-docgen-api${vars.deployment.suffix}:3030"
                     PATH = "/${vars.git.changeId}"
                 }
                 /*'digdag' {
