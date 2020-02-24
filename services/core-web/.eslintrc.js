@@ -6,7 +6,7 @@ module.exports = {
     browser: true,
     node: true,
     "jest/globals": true,
-    es6: true,
+    es6: true
   },
   plugins: ["jest"],
   extends: [
@@ -14,7 +14,7 @@ module.exports = {
     "plugin:react/recommended",
     "airbnb",
     "prettier",
-    "prettier/react",
+    "prettier/react"
   ],
   settings: {
     "import/resolver": {
@@ -22,11 +22,11 @@ module.exports = {
         map: [
           ["@", path.join(__dirname, "src")],
           ["vendor", path.join(__dirname, "vendor")],
-          ["@common", path.join(__dirname, "common")],
+          ["@common", path.join(__dirname, "common")]
         ],
-        extensions: [".js", ".json"],
-      },
-    },
+        extensions: [".js", ".json"]
+      }
+    }
   },
   rules: {
     "react/jsx-filename-extension": "off",
@@ -38,6 +38,6 @@ module.exports = {
     "react/destructuring-assignment": ["error", "never"],
     camelcase: 0,
     "jsx-a11y/label-has-for": 0, // deprecated rule
-    "import/no-cycle": 0,
-  },
+    "import/no-cycle": 0
+  }
 };

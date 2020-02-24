@@ -70,6 +70,7 @@ const createConditionalMineDetails = (key) => (options, tenureTypes) => {
   });
   return newArr;
 };
+
 export const getConditionalDisturbanceOptionsHash = createSelector(
   [getMineDisturbanceOptions, getMineTenureTypeOptions],
   createConditionalMineDetails("mine_disturbance_code")
@@ -376,6 +377,20 @@ export const getDropdownNoticeOfWorkApplicationDocumentTypeOptions = createSelec
 export const getNoticeOfWorkApplicationDocumentTypeOptionsHash = createSelector(
   [getDropdownNoticeOfWorkApplicationDocumentTypeOptions],
   createLabelHash
+);
+
+export const getGeneratableNoticeOfWorkApplicationDocumentTypeOptions = createSelector(
+  [getNoticeOfWorkApplicationDocumentTypeOptions],
+  (options) =>
+    options
+      .filter((option) => option.document_template.document_template_code)
+      .reduce(
+        (map, option) => ({
+          [option.now_application_document_type_code]: option,
+          ...map,
+        }),
+        {}
+      )
 );
 
 export const getDropdownNoticeOfWorkUndergroundExplorationTypeOptions = createSelector(
