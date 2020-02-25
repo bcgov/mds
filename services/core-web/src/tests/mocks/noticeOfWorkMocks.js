@@ -792,7 +792,7 @@ export const GENERATABLE_APPLICATION_DOCUMENTS = {
   },
   WDL: {
     now_application_document_type_code: "WDL",
-    description: "Withdrawl Letter",
+    description: "Withdrawal Letter",
     document_template: {
       document_template_code: "NOW-WDL",
       form_spec: [
