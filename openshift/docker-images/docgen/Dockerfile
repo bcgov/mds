@@ -1,15 +1,24 @@
 FROM "__FROM_IMAGE_STREAM_DEFINED_IN_TEMPLATE__"
 
-RUN wget https://mirror1.freemirror.org/tdf/libreoffice/stable/6.3.4/rpm/x86_64/LibreOffice_6.3.4_Linux_x86-64_rpm.tar.gz -O libo.tar.gz
-RUN yum update \
-    && yum install -y libxinerama1 libfontconfig1 libdbus-glib-1-2 libcairo2 libcups2 libglu1-mesa libsm6 unzip \
-    && tar -zxvf libo.tar.gz
-RUN rpm -ql LibreOffice_6.3.3.1_Linux_x86-64_rpm/RPMS/*.rpm
-RUN mkdir /tmp-reports
+ARG APP_ROOT=/opt/app-root/src
+ENV NO_UPDATE_NOTIFIER=true \
+    PATH="/usr/lib/libreoffice/program:${PATH}" \
+    PYTHONUNBUFFERED=1
+WORKDIR ${APP_ROOT}
 
-COPY package.json ${APP_ROOT}/src
-COPY yarn.lock ${APP_ROOT}/src
+# Install LibreOffice & Common Fonts
+RUN apk --no-cache add bash libreoffice util-linux \
+    ttf-droid-nonlatin ttf-droid ttf-dejavu ttf-freefont ttf-liberation \
+    && rm -rf /var/cache/apk/*
+# Fix Python/LibreOffice Integration
+COPY bindPython.sh ${APP_ROOT}/
+COPY python ${APP_ROOT}/
+RUN chmod a+rx ${APP_ROOT}/bindPython.sh \
+    && ${APP_ROOT}/bindPython.sh
 
-RUN cd ${APP_ROOT}/src && yarn
+# Install dependencies
+COPY package.json yarn.lock ./
+RUN yarn
 
-CMD ['node','index']
+EXPOSE 3030
+CMD ["node", "index"]

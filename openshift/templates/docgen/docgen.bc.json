@@ -79,7 +79,7 @@
             "annotations": null,
             "from": {
               "kind": "DockerImage",
-              "name": "registry.access.redhat.com/ubi8/nodejs-10:latest"
+              "name": "mhart/alpine-node:12"
             },
             "importPolicy": {},
             "referencePolicy": {
