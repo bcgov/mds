@@ -19,7 +19,7 @@ RUN chmod a+rx ${APP_ROOT}/bindPython.sh \
 
 # Install dependencies through yarn
 COPY package.json yarn.lock ${APP_ROOT}/
-RUN cd ${APP_ROOT} && yarn install --frozen-lockfile
+RUN cd ${APP_ROOT} && yarn
 
 RUN chmod -R 777 ${APP_ROOT}
 
