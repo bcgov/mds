@@ -17,6 +17,9 @@ class SettlingPond(ActivitySummaryBase):
         db.Integer, db.ForeignKey('activity_summary.activity_summary_id'), primary_key=True)
 
     proponent_pond_name = db.Column(db.String)
+    wastewater_facility_description = db.Column(db.String)
+    disposal_from_clean_out = db.Column(db.String)
+
     is_ponds_exfiltrated = db.Column(db.Boolean, nullable=False, default=False)
     is_ponds_recycled = db.Column(db.Boolean, nullable=False, default=False)
     is_ponds_discharged = db.Column(db.Boolean, nullable=False, default=False)
