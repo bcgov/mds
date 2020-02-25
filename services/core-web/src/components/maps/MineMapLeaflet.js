@@ -47,6 +47,7 @@ const propTypes = {
   zoom: PropTypes.number,
   minesBasicInfo: PropTypes.arrayOf(CustomPropTypes.mine),
   mineName: PropTypes.string,
+  mineGuid: PropTypes.string,
   transformedMineTypes: CustomPropTypes.transformedMineTypes,
 };
 
@@ -56,6 +57,7 @@ const defaultProps = {
   zoom: Strings.DEFAULT_ZOOM,
   minesBasicInfo: [],
   mineName: "",
+  mineGuid: "",
   transformedMineTypes: {},
 };
 
@@ -65,6 +67,9 @@ const leafletWMSTiledOptions = {
   uppercase: true,
   format: "image/png",
 };
+
+const SELECTED_ICON = L.icon({ iconUrl: SMALL_PIN_SELECTED, iconSize: [60, 60] });
+const UNSELECTED_ICON = L.icon({ iconUrl: SMALL_PIN, iconSize: [60, 60] });
 
 // Override global Leaflet.WMS Layer request to return data
 // into an HTML format so that it renders properly in the iframe
@@ -121,6 +126,10 @@ const getFirstNationLayer = () => {
 };
 
 class MineMapLeaflet extends Component {
+  state = {
+    currentMarker: null,
+  };
+
   componentDidMount() {
     // Create the basic leaflet map
     this.map = L.map("leaflet-map", {
@@ -155,11 +164,15 @@ class MineMapLeaflet extends Component {
   };
 
   createPin = (mine) => {
-    const pin = SMALL_PIN; // this.props.mineName === mine.mine_guid ? SMALL_PIN_SELECTED : SMALL_PIN;
-    const customIcon = L.icon({ iconUrl: pin, iconSize: [60, 60] });
-    const marker = L.marker([mine.latitude, mine.longitude], { icon: customIcon }).bindPopup(
-      Strings.LOADING
-    );
+    const marker = L.marker([mine.latitude, mine.longitude]).bindPopup(Strings.LOADING);
+
+    let icon = UNSELECTED_ICON;
+    if (this.props.mineGuid === mine.mine_guid) {
+      icon = SELECTED_ICON;
+      this.setState({ currentMarker: marker });
+    }
+    marker.setIcon(icon);
+
     this.markerClusterGroup.addLayer(marker);
     marker.on("click", this.handleMinePinClick(mine));
   };
@@ -169,6 +182,11 @@ class MineMapLeaflet extends Component {
       const commodityCodes = this.props.transformedMineTypes.mine_commodity_code.map(
         (code) => this.props.mineCommodityOptionsHash[code]
       );
+
+      this.state.currentMarker && this.state.currentMarker.setIcon(UNSELECTED_ICON);
+      e.target.setIcon(SELECTED_ICON);
+      this.setState({ currentMarker: e.target });
+
       const popup = e.target.getPopup();
       popup.setContent(this.renderPopup(this.props.mines[mine.mine_guid], commodityCodes));
     });
