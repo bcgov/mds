@@ -82,6 +82,8 @@ def _transmogrify_now_details(now_app, now_sub, mms_now_sub):
     now_app.longitude = mms_now_sub.longitude or now_sub.longitude
     now_app.property_name = mms_now_sub.nameofproperty or now_sub.nameofproperty
     now_app.tenure_number = mms_now_sub.tenurenumbers or now_sub.tenurenumbers
+    now_app.crown_grant_or_district_lot_numbers = mms_now_sub.crowngrantlotnumbers or now_sub.crowngrantlotnumbers
+    now_app.type_of_application = mms_now_sub.typeofapplication or now_sub.typeofapplication
     now_app.proposed_start_date = mms_now_sub.proposedstartdate or now_sub.proposedstartdate
     now_app.proposed_end_date = mms_now_sub.proposedenddate or now_sub.proposedenddate
     now_app.directions_to_site = mms_now_sub.sitedirections or now_sub.sitedirections
