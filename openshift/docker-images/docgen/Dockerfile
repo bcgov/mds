@@ -21,5 +21,7 @@ RUN chmod a+rx ${APP_ROOT}/bindPython.sh \
 COPY package.json yarn.lock ./
 RUN yarn
 
+USER 1001
+
 EXPOSE 3030
 CMD ["node", "index"]
