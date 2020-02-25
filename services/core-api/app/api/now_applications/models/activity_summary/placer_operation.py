@@ -24,6 +24,7 @@ class PlacerOperation(ActivitySummaryBase):
     reclamation_area = db.Column((db.Numeric(14, 2)))
     reclamation_unit_type_code = db.Column(
         db.String, db.ForeignKey('unit_type.unit_type_code'), nullable=False)
+    proposed_production = db.Column(db.String)
 
     details = db.relationship(
         'PlacerOperationDetail', secondary='activity_summary_detail_xref', load_on_pending=True)

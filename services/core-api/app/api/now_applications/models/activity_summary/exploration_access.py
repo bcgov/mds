@@ -9,11 +9,16 @@ from app.api.now_applications.models.activity_summary.activity_summary_base impo
 
 
 class ExplorationAccess(ActivitySummaryBase):
+    __tablename__ = "exploration_access"
     __mapper_args__ = {
         'polymorphic_identity': 'exploration_access', ## type code
     }
 
-    ## NO TABLE FOR THIS TYPE
+    activity_summary_id = db.Column(
+        db.Integer, db.ForeignKey('activity_summary.activity_summary_id'), primary_key=True)
+    has_proposed_bridges_or_culverts = db.Column(db.Boolean, nullable=False, default=False)
+    bridge_culvert_crossing_description = db.Column(db.String)
+
     details = db.relationship(
         'ExplorationAccessDetail', secondary='activity_summary_detail_xref', load_on_pending=True)
 

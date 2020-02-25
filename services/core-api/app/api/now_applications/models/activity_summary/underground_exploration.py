@@ -20,6 +20,7 @@ class UndergroundExploration(ActivitySummaryBase):
     total_ore_unit_type_code = db.Column(db.String, db.ForeignKey('unit_type.unit_type_code'))
     total_waste_amount = db.Column(db.Integer)
     total_waste_unit_type_code = db.Column(db.String, db.ForeignKey('unit_type.unit_type_code'))
+    proposed_activity = db.Column(db.String)
 
     details = db.relationship(
         'UndergroundExplorationDetail',
