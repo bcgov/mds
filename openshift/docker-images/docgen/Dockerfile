@@ -16,7 +16,7 @@ COPY python ${APP_ROOT}/
 RUN chmod a+rx ${APP_ROOT}/bindPython.sh \
     && ${APP_ROOT}/bindPython.sh
 
-# Install dependencies
+# Install dependencies through yarn
 COPY package.json yarn.lock ./
 RUN yarn
 
