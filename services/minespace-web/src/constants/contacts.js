@@ -89,7 +89,7 @@ const MAJ_SE = new MajorMineRegionalContacts(
 );
 
 const MAJ_SW = new MajorMineRegionalContacts(
-  new Contact(TITLE_HEALTH, "Blythe Golobic", "250 371-3915", "Blythe.Golobic@gov.bc.ca")
+  new Contact(TITLE_HEALTH, "Blythe Golobic", "(250) 371-3915", "Blythe.Golobic@gov.bc.ca")
 );
 
 export const MAJOR_MINE_REGIONAL_CONTACTS = {
