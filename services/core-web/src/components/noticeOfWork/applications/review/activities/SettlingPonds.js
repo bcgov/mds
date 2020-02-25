@@ -2,9 +2,9 @@ import React from "react";
 import { PropTypes } from "prop-types";
 import { Field, formValueSelector } from "redux-form";
 import { connect } from "react-redux";
-import { Row, Col, Table, Button } from "antd";
+import { Row, Col, Table, Button, Tooltip } from "antd";
 import * as FORM from "@/constants/forms";
-import { TRASHCAN } from "@/constants/assets";
+import { TRASHCAN, INFO_CIRCLE } from "@/constants/assets";
 import RenderField from "@/components/common/RenderField";
 import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
 import RenderRadioButtons from "@/components/common/RenderRadioButtons";
@@ -236,9 +236,21 @@ export const SettlingPonds = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Describe the waste water treatment facility (settling pond design, recycling, distance
-            from creek, etc.)**
+            from creek, etc.)
+            <Tooltip
+              title="This field is not being sent by NROS or vFCBC. Open the original PDF to to see the data."
+              placement="right"
+              mouseEnterDelay={1}
+            >
+              <img src={INFO_CIRCLE} alt="INFO" className="info-tooltip" />
+            </Tooltip>
           </div>
-          <Field id="" name="" component={RenderAutoSizeField} disabled />
+          <Field
+            id="wastewater_facility_description"
+            name="wastewater_facility_description"
+            component={RenderAutoSizeField}
+            disabled={props.isViewMode}
+          />
         </Col>
       </Row>
       <br />
@@ -260,9 +272,21 @@ export const SettlingPonds = (props) => {
       <Row gutter={16}>
         <Col md={12} sm={24}>
           <div className="field-title">
-            Disposal of fines from clean out (i.e. use as a subsoil material)**
+            Disposal of fines from clean out (i.e. use as a subsoil material)
+            <Tooltip
+              title="This field is not being sent by NROS or vFCBC. Open the original PDF to to see the data."
+              placement="right"
+              mouseEnterDelay={1}
+            >
+              <img src={INFO_CIRCLE} alt="INFO" className="info-tooltip" />
+            </Tooltip>
           </div>
-          <Field id="" name="" component={RenderAutoSizeField} disabled />
+          <Field
+            id="disposal_from_clean_out"
+            name="disposal_from_clean_out"
+            component={RenderAutoSizeField}
+            disabled={props.isViewMode}
+          />
         </Col>
       </Row>
       <Row gutter={16}>
