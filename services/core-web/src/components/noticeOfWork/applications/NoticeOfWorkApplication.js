@@ -23,7 +23,9 @@ import { getMines } from "@common/selectors/mineSelectors";
 import {
   getDropdownNoticeOfWorkApplicationStatusOptions,
   getNoticeOfWorkApplicationProgressStatusCodeOptions,
+  getGeneratableNoticeOfWorkApplicationDocumentTypeOptions,
 } from "@common/selectors/staticContentSelectors";
+import { formatDate } from "@common/utils/helpers";
 import { clearNoticeOfWorkApplication } from "@common/actions/noticeOfWorkActions";
 import { downloadNowDocument } from "@common/utils/actionlessNetworkCalls";
 import { generateNoticeOfWorkApplicationDocument } from "@/actionCreators/noticeOfWorkActionCreator";
@@ -77,6 +79,7 @@ const propTypes = {
   inspectorsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   applicationProgressStatusCodes: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string))
     .isRequired,
+  generatableApplicationDocuments: PropTypes.objectOf(PropTypes.objectOf(PropTypes.any)).isRequired,
   reclamationSummary: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.strings)).isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
@@ -124,6 +127,9 @@ export class NoticeOfWorkApplication extends Component {
     if (!this.props.history.location.state && !this.props.match.params.id) {
       this.setState({ showNullScreen: true });
     }
+
+    window.addEventListener("scroll", this.handleScroll);
+    this.handleScroll();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -142,6 +148,7 @@ export class NoticeOfWorkApplication extends Component {
 
   componentWillUnmount() {
     this.props.clearNoticeOfWorkApplication();
+    window.removeEventListener("scroll", this.handleScroll);
   }
 
   loadMineInfo = (mineGuid) => {
@@ -251,9 +258,9 @@ export class NoticeOfWorkApplication extends Component {
   };
 
   handleScroll = () => {
-    if (window.pageYOffset > "100" && !this.state.fixedTop) {
+    if (window.pageYOffset > 100 && !this.state.fixedTop) {
       this.setState({ fixedTop: true });
-    } else if (window.pageYOffset < "100" && this.state.fixedTop) {
+    } else if (window.pageYOffset <= 100 && this.state.fixedTop) {
       this.setState({ fixedTop: false });
     }
   };
@@ -360,13 +367,35 @@ export class NoticeOfWorkApplication extends Component {
     this.setState({ currentStep: statusIndex[status] });
   };
 
-  handleGenerateDocument = (data) => {
-    const documentTypeCode = data.key;
+  handleGenerateDocument = (menuItem) => {
+    const documentTypeCode = menuItem.key;
+    const documentType = this.props.generatableApplicationDocuments[documentTypeCode];
+    this.props.openModal({
+      props: {
+        documentType,
+        onSubmit: (values) => this.handleGenerateDocumentFormSubmit(documentType, values),
+        title: `Generate ${documentType.description}`,
+      },
+      width: "75vw",
+      content: modalConfig.GENERATE_DOCUMENT,
+    });
+  };
+
+  handleGenerateDocumentFormSubmit = (documentType, values) => {
+    const documentTypeCode = documentType.now_application_document_type_code;
+    const newValues = values;
+    documentType.document_template.form_spec
+      .filter((field) => field.type === "DATE")
+      .forEach((field) => {
+        newValues[field.id] = formatDate(newValues[field.id]);
+      });
     const payload = {
       now_application_guid: this.props.noticeOfWork.now_application_guid,
-      template_data: {},
+      template_data: newValues,
     };
-    this.props.generateNoticeOfWorkApplicationDocument(documentTypeCode, payload);
+    this.props.generateNoticeOfWorkApplicationDocument(documentTypeCode, payload).then(() => {
+      this.props.closeModal();
+    });
   };
 
   renderStepOne = () => {
@@ -489,18 +518,16 @@ export class NoticeOfWorkApplication extends Component {
           </Menu.Item>
         )}
         {// TODO: Determine the actual condition that determines whether or not to show this submenu.
-        true && (
-          // TODO: Get document codes in a more correct fashion once document generation is more fully implemented.
-          <Menu.SubMenu key="generate-letters" title="Generate Letters">
-            <Menu.Item key="CAL" onClick={this.handleGenerateDocument}>
-              Client Acknowledgement
-            </Menu.Item>
-            <Menu.Item key="WDL" onClick={this.handleGenerateDocument}>
-              Withdrawl
-            </Menu.Item>
-            <Menu.Item key="RJL" onClick={this.handleGenerateDocument}>
-              Rejection
-            </Menu.Item>
+        true && Object.values(this.props.generatableApplicationDocuments).length > 0 && (
+          <Menu.SubMenu key="generate-documents" title="Generate Documents">
+            {Object.values(this.props.generatableApplicationDocuments).map((document) => (
+              <Menu.Item
+                key={document.now_application_document_type_code}
+                onClick={this.handleGenerateDocument}
+              >
+                {document.description}
+              </Menu.Item>
+            ))}
           </Menu.SubMenu>
         )}
         {!isDecision && this.props.noticeOfWork.lead_inspector_party_guid && (
@@ -546,7 +573,7 @@ export class NoticeOfWorkApplication extends Component {
               : "You have unsaved changes. Are you sure you want to leave without saving?";
           }}
         />
-        <div className="page" onScroll={this.handleScroll()} onLoad={this.handleScroll()}>
+        <div className="page">
           <div className={this.state.fixedTop ? "steps--header fixed-scroll" : "steps--header"}>
             <div className="inline-flex between">
               <NoticeOfWorkPageHeader
@@ -629,6 +656,7 @@ const mapStateToProps = (state) => ({
   reclamationSummary: getNOWReclamationSummary(state),
   applicationStatusOptions: getDropdownNoticeOfWorkApplicationStatusOptions(state),
   applicationProgressStatusCodes: getNoticeOfWorkApplicationProgressStatusCodeOptions(state),
+  generatableApplicationDocuments: getGeneratableNoticeOfWorkApplicationDocumentTypeOptions(state),
 });
 
 const mapDispatchToProps = (dispatch) =>

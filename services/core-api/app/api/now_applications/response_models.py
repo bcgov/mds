@@ -4,6 +4,12 @@ from flask_restplus import fields
 from app.api.parties.response_models import PARTY
 from app.api.mines.response_models import MINE_DOCUMENT_MODEL
 
+DOCUMENT_TEMPLATE_MODEL = api.model('DocumentTemplateModel', {
+    'document_template_code': fields.String,
+    'form_spec': fields.Raw
+})
+
+
 class DateTime(fields.Raw):
     def format(self, value):
         return value.strftime("%Y-%m-%d %H:%M") if value else None
@@ -15,31 +21,29 @@ class Date(fields.Raw):
 
 
 NOW_APPLICATION_EQUIPMENT = api.model(
-    'NOWEquipment',
-    {
-        'equipment_id':fields.Integer,
-        'description':fields.String,
-        'quantity':fields.Integer,
-        'capacity':fields.String,
-    }
-)    
+    'NOWEquipment', {
+        'equipment_id': fields.Integer,
+        'description': fields.String,
+        'quantity': fields.Integer,
+        'capacity': fields.String,
+    })
 
-NOW_APPLICATION_ACTIVITY_DETAIL_BASE = api.model('NOWApplicationActivityDetailBase',
-    {
+NOW_APPLICATION_ACTIVITY_DETAIL_BASE = api.model(
+    'NOWApplicationActivityDetailBase', {
         'activity_detail_id': fields.Integer,
         'activity_type_description': fields.String,
         'disturbed_area': fields.Fixed,
         'timber_volume': fields.Fixed,
         'number_of_sites': fields.Integer,
         'width': fields.Integer,
-        'length'  : fields.Integer,
+        'length': fields.Integer,
         'depth': fields.Integer,
         'height': fields.Integer,
         'quantity': fields.Integer,
         'incline': fields.Fixed,
         'incline_unit_type_code': fields.String,
-        'cut_line_length' : fields.Integer,
-        'water_quantity' : fields.Integer,
+        'cut_line_length': fields.Integer,
+        'water_quantity': fields.Integer,
         'water_quantity_unit_type_code': fields.String,
         'cut_line_length_unit_type_code': fields.String,
         'length_unit_type_code': fields.String,
@@ -48,9 +52,7 @@ NOW_APPLICATION_ACTIVITY_DETAIL_BASE = api.model('NOWApplicationActivityDetailBa
         'depth_unit_type_code': fields.String,
         'timber_volume_unit_type_code': fields.String,
         'disturbed_area_unit_type_code': fields.String,
-    }
-)
-
+    })
 
 NOW_APPLICATION_ACTIVITY_SUMMARY_BASE = api.model(
     'NOWApplicationActivitySummaryBase', {
@@ -58,7 +60,7 @@ NOW_APPLICATION_ACTIVITY_SUMMARY_BASE = api.model(
         'reclamation_cost': fields.Fixed,
         'total_disturbed_area': fields.Fixed,
         'total_disturbed_area_unit_type_code': fields.String,
-        'equipment':fields.List(fields.Nested(NOW_APPLICATION_EQUIPMENT))
+        'equipment': fields.List(fields.Nested(NOW_APPLICATION_EQUIPMENT))
     })
 
 NOW_APPLICATION_CAMP = api.inherit(
@@ -69,12 +71,11 @@ NOW_APPLICATION_CAMP = api.inherit(
         'has_fuel_stored': fields.Boolean,
         'has_fuel_stored_in_bulk': fields.Boolean,
         'has_fuel_stored_in_barrels': fields.Boolean,
-        'details': fields.List(fields.Nested(NOW_APPLICATION_ACTIVITY_DETAIL_BASE,skip_none=True))
-
+        'details': fields.List(fields.Nested(NOW_APPLICATION_ACTIVITY_DETAIL_BASE, skip_none=True))
     })
 
 NOW_APPLICATION_BLASTING_OPERATION = api.inherit(
-    'NOWApplicationBlasting', { 
+    'NOWApplicationBlasting', {
         'has_storage_explosive_on_site': fields.Boolean,
         'explosive_permit_issued': fields.Boolean,
         'explosive_permit_number': fields.String,
@@ -82,11 +83,8 @@ NOW_APPLICATION_BLASTING_OPERATION = api.inherit(
     })
 
 NOW_APPLICATION_CUT_LINES = api.inherit(
-    'NOWApplicationCutLines',
-    NOW_APPLICATION_ACTIVITY_SUMMARY_BASE,
-    {
-       'details': fields.List(fields.Nested(NOW_APPLICATION_ACTIVITY_DETAIL_BASE,skip_none=True))
-    })
+    'NOWApplicationCutLines', NOW_APPLICATION_ACTIVITY_SUMMARY_BASE,
+    {'details': fields.List(fields.Nested(NOW_APPLICATION_ACTIVITY_DETAIL_BASE, skip_none=True))})
 
 NOW_APPLICATION_EXP_ACCESS = api.inherit(
     'NOWApplicationExplorationAccess',
@@ -97,19 +95,9 @@ NOW_APPLICATION_EXP_ACCESS = api.inherit(
         'details': fields.List(fields.Nested(NOW_APPLICATION_ACTIVITY_DETAIL_BASE,skip_none=True))
     })
 
-NOW_APPLICATION_EXP_SURFACE_DRILL = api.inherit('NOWApplicationExpSurfaceDrill',
-                                                NOW_APPLICATION_ACTIVITY_SUMMARY_BASE,
-                                                {'reclamation_core_storage': fields.String,
-                                                'details': fields.List(fields.Nested(NOW_APPLICATION_ACTIVITY_DETAIL_BASE,skip_none=True))
-                                                })
-
-
 NOW_APPLICATION_MECH_TRENCHING = api.inherit(
-    'NOWApplicationMechTrenching',
-    NOW_APPLICATION_ACTIVITY_SUMMARY_BASE,
-    {
-       'details': fields.List(fields.Nested(NOW_APPLICATION_ACTIVITY_DETAIL_BASE,skip_none=True))
-    })
+    'NOWApplicationMechTrenching', NOW_APPLICATION_ACTIVITY_SUMMARY_BASE,
+    {'details': fields.List(fields.Nested(NOW_APPLICATION_ACTIVITY_DETAIL_BASE, skip_none=True))})
 
 NOW_APPLICATION_PLACER_OPS = api.inherit(
     'NOWApplicationPlacerOperations', NOW_APPLICATION_ACTIVITY_SUMMARY_BASE, {
@@ -123,12 +111,10 @@ NOW_APPLICATION_PLACER_OPS = api.inherit(
     })
 
 NOW_APPLICATION_SAND_AND_GRAVEL = api.inherit(
-    'NOWApplicationSandAndGravel',
-    NOW_APPLICATION_ACTIVITY_SUMMARY_BASE,
-    {
+    'NOWApplicationSandAndGravel', NOW_APPLICATION_ACTIVITY_SUMMARY_BASE, {
         'average_overburden_depth': fields.Fixed,
-        'average_overburden_depth_unit_type_code': fields.String, 
-        'average_top_soil_depth_unit_type_code': fields.String, 
+        'average_overburden_depth_unit_type_code': fields.String,
+        'average_top_soil_depth_unit_type_code': fields.String,
         'average_top_soil_depth': fields.Fixed,
         'stability_measures_description': fields.String,
         'is_agricultural_land_reserve': fields.Boolean,
@@ -156,15 +142,13 @@ NOW_APPLICATION_SAND_AND_GRAVEL = api.inherit(
         'dust_impact_plan': fields.String,
         'visual_impact_plan': fields.String,
         'reclamation_backfill_detail': fields.String,
-        'details': fields.List(fields.Nested(NOW_APPLICATION_ACTIVITY_DETAIL_BASE,skip_none=True))
-        
+        'details': fields.List(fields.Nested(NOW_APPLICATION_ACTIVITY_DETAIL_BASE, skip_none=True))
     })
-NOW_APPLICATION_SETTLING_POND_DETAIL = api.inherit(
-    'NOWApplicationCampDetail', NOW_APPLICATION_ACTIVITY_DETAIL_BASE,{
-        'water_source_description': fields.String, 
-        'construction_plan': fields.String
-    }
-)
+NOW_APPLICATION_SETTLING_POND_DETAIL = api.inherit('NOWApplicationCampDetail',
+                                                   NOW_APPLICATION_ACTIVITY_DETAIL_BASE, {
+                                                       'water_source_description': fields.String,
+                                                       'construction_plan': fields.String
+                                                   })
 
 NOW_APPLICATION_SETTLING_POND = api.inherit(
     'NOWApplicationSettlingPond',
@@ -180,9 +164,7 @@ NOW_APPLICATION_SETTLING_POND = api.inherit(
     })
 
 NOW_APPLICATION_SURFACE_BULK = api.inherit(
-    'NOWApplicationSurfaceBulkSample',
-    NOW_APPLICATION_ACTIVITY_SUMMARY_BASE,
-    {
+    'NOWApplicationSurfaceBulkSample', NOW_APPLICATION_ACTIVITY_SUMMARY_BASE, {
         'processing_method_description': fields.String,
         'handling_instructions': fields.String,
         'drainage_mitigation_description': fields.String,
@@ -194,10 +176,9 @@ NOW_APPLICATION_SURFACE_BULK = api.inherit(
     })
 
 NOW_APPLICATION_UNDERGROUND_EXPLORATION_DETAIL = api.inherit(
-    'NOWApplicationCampDetail', NOW_APPLICATION_ACTIVITY_DETAIL_BASE,{
-        'underground_exploration_type_code': fields.String, 
-    }
-)
+    'NOWApplicationCampDetail', NOW_APPLICATION_ACTIVITY_DETAIL_BASE, {
+        'underground_exploration_type_code': fields.String,
+    })
 
 NOW_APPLICATION_UNDERGROUND_EXPLORATION = api.inherit(
     'NOWApplicationUndergroundExploration',
@@ -212,22 +193,18 @@ NOW_APPLICATION_UNDERGROUND_EXPLORATION = api.inherit(
     })
 
 NOW_APPLICATION_WATER_SUPPLY_DETAIL = api.inherit(
-    'NOWApplicationWaterSupplyDetail', NOW_APPLICATION_ACTIVITY_DETAIL_BASE,{
-        'supply_source_description': fields.String, 
-        'supply_source_type': fields.String, 
-        'water_use_description': fields.String, 
+    'NOWApplicationWaterSupplyDetail', NOW_APPLICATION_ACTIVITY_DETAIL_BASE, {
+        'supply_source_description': fields.String,
+        'supply_source_type': fields.String,
+        'water_use_description': fields.String,
         'estimate_rate': fields.Fixed,
         'pump_size': fields.Fixed,
         'intake_location': fields.String
-    }
-)
+    })
 
 NOW_APPLICATION_WATER_SUPPLY = api.inherit(
-    'NOWApplicationWaterSupply',
-    NOW_APPLICATION_ACTIVITY_SUMMARY_BASE,
-    {
-        'details': fields.List(fields.Nested(NOW_APPLICATION_WATER_SUPPLY_DETAIL,skip_none=True))
-    })
+    'NOWApplicationWaterSupply', NOW_APPLICATION_ACTIVITY_SUMMARY_BASE,
+    {'details': fields.List(fields.Nested(NOW_APPLICATION_WATER_SUPPLY_DETAIL, skip_none=True))})
 
 NOW_APPLICATION_STATE_OF_LAND = api.model(
     'NOWStateOfLand',
@@ -258,28 +235,24 @@ NOW_APPLICATION_DOCUMENT = api.model(
         'description': fields.String,
         'is_final_package': fields.Boolean,
         'mine_document': fields.Nested(MINE_DOCUMENT_MODEL),
-    }
-)
+    })
 
 NOW_APPLICATION_PROGRESS = api.model(
-    'NOWApplicationProgress',
-    {
+    'NOWApplicationProgress', {
         'start_date': fields.Date,
         'created_by': fields.String,
         'application_progress_status_code': fields.String
     })
-    
+
 NOW_APPLICATION_REVIEW_MDOEL = api.model(
-    'NOWApplicationReview',
-    {
-        'now_application_review_id':fields.Integer, 
-        'now_application_guid':fields.String(attribute='now_application.now_application_guid'),
-        'now_application_review_type_code':fields.String, 
-        'response_date':fields.Date, 
-        'referee_name':fields.String,
-        'documents':fields.List(fields.Nested(NOW_APPLICATION_DOCUMENT))
-    }
-)
+    'NOWApplicationReview', {
+        'now_application_review_id': fields.Integer,
+        'now_application_guid': fields.String(attribute='now_application.now_application_guid'),
+        'now_application_review_type_code': fields.String,
+        'response_date': fields.Date,
+        'referee_name': fields.String,
+        'documents': fields.List(fields.Nested(NOW_APPLICATION_DOCUMENT))
+    })
 
 NOW_SUBMISSION_DOCUMENT = api.model(
     'SUBMISSION_DOCUMENT', {
@@ -296,8 +269,7 @@ NOW_PARTY_APPOINTMENT = api.model(
         'mine_party_appt_type_code': fields.String,
         'mine_party_appt_type_code_description': fields.String,
         'party': fields.Nested(PARTY),
-    }
-)
+    })
 
 NOW_APPLICATION_MODEL = api.model(
     'NOWApplication',
@@ -360,25 +332,23 @@ NOW_APPLICATION_MODEL = api.model(
     })
 
 NOW_VIEW_MODEL = api.model(
-    'NOWApplication',
-    {
+    'NOWApplication', {
         'now_application_guid': fields.String,
         'mine_guid': fields.String,
         'mine_no': fields.String,
-        'mine_name':fields.String,
-        'mine_region':fields.String,
+        'mine_name': fields.String,
+        'mine_region': fields.String,
         'now_number': fields.String,
         'permit_guid': fields.String(attribute='permit.permit_guid'),
-        'permit_no':fields.String(attribute='permit.permit_no'),
+        'permit_no': fields.String(attribute='permit.permit_no'),
         'lead_inspector_party_guid': fields.String,
         'lead_inspector_name': fields.String,
         'notice_of_work_type_description': fields.String,
         'now_application_status_description': fields.String,
         'received_date': Date,
         'originating_system': fields.String,
-    }
-)
- 
+    })
+
 PAGINATED_LIST = api.model(
     'List', {
         'current_page': fields.Integer,
@@ -389,77 +359,51 @@ PAGINATED_LIST = api.model(
 
 NOW_VIEW_LIST = api.inherit('NOWApplicationList', PAGINATED_LIST, {
     'records': fields.List(fields.Nested(NOW_VIEW_MODEL)),
-    })
+})
 
-NOW_ACTIVITY_TYPES = api.model(
-    'ActivityType', 
-    {
-        'activity_type_code': fields.String,
-        'description': fields.String
-    }
-)
+NOW_ACTIVITY_TYPES = api.model('ActivityType', {
+    'activity_type_code': fields.String,
+    'description': fields.String
+})
 
-NOW_APPLICATION_TYPES = api.model(
-    'ApplicationType', 
-    {
-        'notice_of_work_type_code': fields.String,
-        'description': fields.String
-    }
-)
+NOW_APPLICATION_TYPES = api.model('ApplicationType', {
+    'notice_of_work_type_code': fields.String,
+    'description': fields.String
+})
 
-NOW_APPLICATION_STATUS_CODES = api.model(
-    'ActivityStatusCodes', 
-    {
-        'now_application_status_code': fields.String,
-        'description': fields.String
-    }
-)
+NOW_APPLICATION_STATUS_CODES = api.model('ActivityStatusCodes', {
+    'now_application_status_code': fields.String,
+    'description': fields.String
+})
 
-
-UNIT_TYPES = api.model(
-    'UnitTypeCodes', 
-    {
-        'short_description': fields.String,
-        'unit_type_code': fields.String,
-        'description': fields.String
-    }
-)
+UNIT_TYPES = api.model('UnitTypeCodes', {
+    'short_description': fields.String,
+    'unit_type_code': fields.String,
+    'description': fields.String
+})
 
 NOW_APPLICATION_DOCUMENT_TYPES = api.model(
-    'ApplicationDocumentTypes', 
-    {
+    'ApplicationDocumentTypes', {
         'now_application_document_type_code': fields.String,
-        'description': fields.String
-    }
-)
+        'description': fields.String,
+        'document_template': fields.Nested(DOCUMENT_TEMPLATE_MODEL, skip_none=True),
+    })
 
-UNDERGROUND_EXPLORATION_TYPES = api.model(
-    'UndergroundExplorationTypes', 
-    {
-        'underground_exploration_type_code': fields.String,
-        'description': fields.String
-    }
-)
+UNDERGROUND_EXPLORATION_TYPES = api.model('UndergroundExplorationTypes', {
+    'underground_exploration_type_code': fields.String,
+    'description': fields.String
+})
 
-APPLICATION_PROGRESS_STATUS_CODES = api.model(
-    'ApplicationProgressStatusCodes',
-    {
-        'application_progress_status_code': fields.String,
-        'description': fields.String
-    }
-)
+APPLICATION_PROGRESS_STATUS_CODES = api.model('ApplicationProgressStatusCodes', {
+    'application_progress_status_code': fields.String,
+    'description': fields.String
+})
 
-NOW_APPLICATION_PERMIT_TYPES = api.model(
-    'ApplicationPermitTypes', 
-    {
-        'now_application_permit_type_code': fields.String,
-        'description': fields.String
-    }
-)
-NOW_APPLICATION_REVIEW_TYPES= api.model(
-    'ApplicationReviewTypes', 
-    {
-        'now_application_review_type_code': fields.String,
-        'description': fields.String
-    } 
-)
+NOW_APPLICATION_PERMIT_TYPES = api.model('ApplicationPermitTypes', {
+    'now_application_permit_type_code': fields.String,
+    'description': fields.String
+})
+NOW_APPLICATION_REVIEW_TYPES = api.model('ApplicationReviewTypes', {
+    'now_application_review_type_code': fields.String,
+    'description': fields.String
+})

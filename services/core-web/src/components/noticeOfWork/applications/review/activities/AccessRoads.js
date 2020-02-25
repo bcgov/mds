@@ -4,13 +4,12 @@ import { Field, formValueSelector } from "redux-form";
 import { connect } from "react-redux";
 import { Row, Col, Table, Button, Tooltip } from "antd";
 import * as FORM from "@/constants/forms";
-import { TRASHCAN , INFO_CIRCLE } from "@/constants/assets";
+import { TRASHCAN, INFO_CIRCLE } from "@/constants/assets";
 import Equipment from "@/components/noticeOfWork/applications/review/activities/Equipment";
 import RenderField from "@/components/common/RenderField";
 import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
 import RenderRadioButtons from "@/components/common/RenderRadioButtons";
 import CustomPropTypes from "@/customPropTypes";
-
 
 const propTypes = {
   isViewMode: PropTypes.bool.isRequired,
