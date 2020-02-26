@@ -1,4 +1,5 @@
 import uuid
+from flask import request, current_app
 from flask_restplus import Resource, fields
 from werkzeug.exceptions import NotFound, BadRequest
 
@@ -9,18 +10,25 @@ from app.api.utils.access_decorators import requires_role_view_all, requires_rol
 from app.api.utils.custom_reqparser import CustomReqparser
 
 from app.api.constants import TIMEOUT_5_MINUTES, NOW_DOCUMENT_DOWNLOAD_TOKEN
-from app.api.now_applications.response_models import NOW_APPLICATION_DOCUMENT_TYPES
+from app.api.now_applications.response_models import NOW_APPLICATION_DOCUMENT_TYPE_MODEL
 
 NOW_DOCUMENT_DOWNLOAD_TOKEN_MODEL = api.model('NoticeOfWorkDocumentDownloadToken',
                                               {'token': fields.String})
 
 
-class NOWApplicationDocumentTypeResource(Resource, UserMixin):
+class NOWApplicationDocumentTypeListResource(Resource, UserMixin):
     @api.doc(description='Get a list of all Notice of Work document types', params={})
-    @requires_role_view_all
-    @api.marshal_with(NOW_APPLICATION_DOCUMENT_TYPES, code=200, envelope='records')
+    @api.marshal_with(NOW_APPLICATION_DOCUMENT_TYPE_MODEL, code=200, envelope='records')
     def get(self):
         return NOWApplicationDocumentType.active()
+
+
+class NOWApplicationDocumentTypeResource(Resource, UserMixin):
+    @api.doc(description='Get a list of all Notice of Work document types', params={})
+    @api.marshal_with(NOW_APPLICATION_DOCUMENT_TYPE_MODEL, code=200)
+    def get(self, document_type_code):
+        return NOWApplicationDocumentType.get_with_context(document_type_code,
+                                                           request.args.get('context_guid'))
 
 
 class NOWApplicationDocumentGenerateResource(Resource, UserMixin):
