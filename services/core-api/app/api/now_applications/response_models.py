@@ -87,12 +87,16 @@ NOW_APPLICATION_CUT_LINES = api.inherit(
     {'details': fields.List(fields.Nested(NOW_APPLICATION_ACTIVITY_DETAIL_BASE, skip_none=True))})
 
 NOW_APPLICATION_EXP_ACCESS = api.inherit(
-    'NOWApplicationExplorationAccess',
-    NOW_APPLICATION_ACTIVITY_SUMMARY_BASE,
-    {
+    'NOWApplicationExplorationAccess', NOW_APPLICATION_ACTIVITY_SUMMARY_BASE, {
         'has_proposed_bridges_or_culverts': fields.Boolean,
         'bridge_culvert_crossing_description': fields.String,
-        'details': fields.List(fields.Nested(NOW_APPLICATION_ACTIVITY_DETAIL_BASE,skip_none=True))
+        'details': fields.List(fields.Nested(NOW_APPLICATION_ACTIVITY_DETAIL_BASE, skip_none=True))
+    })
+
+NOW_APPLICATION_EXP_SURFACE_DRILL = api.inherit(
+    'NOWApplicationExpSurfaceDrill', NOW_APPLICATION_ACTIVITY_SUMMARY_BASE, {
+        'reclamation_core_storage': fields.String,
+        'details': fields.List(fields.Nested(NOW_APPLICATION_ACTIVITY_DETAIL_BASE, skip_none=True))
     })
 
 NOW_APPLICATION_MECH_TRENCHING = api.inherit(
@@ -105,9 +109,8 @@ NOW_APPLICATION_PLACER_OPS = api.inherit(
         'is_hand_operation': fields.Boolean,
         'reclamation_area': fields.Fixed,
         'reclamation_unit_type_code': fields.String,
-        'details': fields.List(fields.Nested(NOW_APPLICATION_ACTIVITY_DETAIL_BASE,skip_none=True)),
+        'details': fields.List(fields.Nested(NOW_APPLICATION_ACTIVITY_DETAIL_BASE, skip_none=True)),
         'proposed_production': fields.String,
-
     })
 
 NOW_APPLICATION_SAND_AND_GRAVEL = api.inherit(
@@ -151,16 +154,14 @@ NOW_APPLICATION_SETTLING_POND_DETAIL = api.inherit('NOWApplicationCampDetail',
                                                    })
 
 NOW_APPLICATION_SETTLING_POND = api.inherit(
-    'NOWApplicationSettlingPond',
-    NOW_APPLICATION_ACTIVITY_SUMMARY_BASE,
-    {
-     'proponent_pond_name': fields.String,
-     'is_ponds_exfiltrated': fields.Boolean,
-     'is_ponds_recycled': fields.Boolean,
-     'is_ponds_discharged': fields.Boolean,
-     'details': fields.List(fields.Nested(NOW_APPLICATION_SETTLING_POND_DETAIL,skip_none=True)),
-     'wastewater_facility_description': fields.String,
-     'disposal_from_clean_out': fields.String,
+    'NOWApplicationSettlingPond', NOW_APPLICATION_ACTIVITY_SUMMARY_BASE, {
+        'proponent_pond_name': fields.String,
+        'is_ponds_exfiltrated': fields.Boolean,
+        'is_ponds_recycled': fields.Boolean,
+        'is_ponds_discharged': fields.Boolean,
+        'details': fields.List(fields.Nested(NOW_APPLICATION_SETTLING_POND_DETAIL, skip_none=True)),
+        'wastewater_facility_description': fields.String,
+        'disposal_from_clean_out': fields.String,
     })
 
 NOW_APPLICATION_SURFACE_BULK = api.inherit(
@@ -168,11 +169,10 @@ NOW_APPLICATION_SURFACE_BULK = api.inherit(
         'processing_method_description': fields.String,
         'handling_instructions': fields.String,
         'drainage_mitigation_description': fields.String,
-        'details': fields.List(fields.Nested(NOW_APPLICATION_ACTIVITY_DETAIL_BASE,skip_none=True)),
+        'details': fields.List(fields.Nested(NOW_APPLICATION_ACTIVITY_DETAIL_BASE, skip_none=True)),
         'has_bedrock_expansion': fields.Boolean,
         'surface_water_damage': fields.String,
         'spontaneous_combustion_handling': fields.String,
-
     })
 
 NOW_APPLICATION_UNDERGROUND_EXPLORATION_DETAIL = api.inherit(
@@ -181,15 +181,19 @@ NOW_APPLICATION_UNDERGROUND_EXPLORATION_DETAIL = api.inherit(
     })
 
 NOW_APPLICATION_UNDERGROUND_EXPLORATION = api.inherit(
-    'NOWApplicationUndergroundExploration',
-    NOW_APPLICATION_ACTIVITY_SUMMARY_BASE,
-    {
-        'total_ore_amount': fields.Integer,
-        'total_ore_unit_type_code': fields.String, 
-        'total_waste_amount': fields.Integer,
-        'total_waste_unit_type_code': fields.String, 
-        'details': fields.List(fields.Nested(NOW_APPLICATION_UNDERGROUND_EXPLORATION_DETAIL,skip_none=True)),
-        'proposed_activity': fields.String,
+    'NOWApplicationUndergroundExploration', NOW_APPLICATION_ACTIVITY_SUMMARY_BASE, {
+        'total_ore_amount':
+        fields.Integer,
+        'total_ore_unit_type_code':
+        fields.String,
+        'total_waste_amount':
+        fields.Integer,
+        'total_waste_unit_type_code':
+        fields.String,
+        'details':
+        fields.List(fields.Nested(NOW_APPLICATION_UNDERGROUND_EXPLORATION_DETAIL, skip_none=True)),
+        'proposed_activity':
+        fields.String,
     })
 
 NOW_APPLICATION_WATER_SUPPLY_DETAIL = api.inherit(
@@ -207,26 +211,24 @@ NOW_APPLICATION_WATER_SUPPLY = api.inherit(
     {'details': fields.List(fields.Nested(NOW_APPLICATION_WATER_SUPPLY_DETAIL, skip_none=True))})
 
 NOW_APPLICATION_STATE_OF_LAND = api.model(
-    'NOWStateOfLand',
-    {
+    'NOWStateOfLand', {
         'has_community_water_shed': fields.Boolean,
         'has_archaeology_sites_affected': fields.Boolean,
-        'present_land_condition_description': fields.String, 
-        'means_of_access_description': fields.String, 
-        'physiography_description': fields.String, 
-        'old_equipment_description': fields.String, 
-        'type_of_vegetation_description': fields.String, 
-        'recreational_trail_use_description': fields.String, 
-        'arch_site_protection_plan': fields.String, 
-        'fn_engagement_activities': fields.String, 
-        'cultural_heritage_description': fields.String, 
+        'present_land_condition_description': fields.String,
+        'means_of_access_description': fields.String,
+        'physiography_description': fields.String,
+        'old_equipment_description': fields.String,
+        'type_of_vegetation_description': fields.String,
+        'recreational_trail_use_description': fields.String,
+        'arch_site_protection_plan': fields.String,
+        'fn_engagement_activities': fields.String,
+        'cultural_heritage_description': fields.String,
         'has_shared_info_with_fn': fields.Boolean,
         'has_fn_cultural_heritage_sites_in_area': fields.Boolean,
         'has_activity_in_park': fields.Boolean,
         'is_on_private_land': fields.Boolean,
         'has_auth_lieutenant_gov_council': fields.Boolean,
-    }
-)
+    })
 
 NOW_APPLICATION_DOCUMENT = api.model(
     'NOW_DOCUMENT', {
@@ -274,61 +276,112 @@ NOW_PARTY_APPOINTMENT = api.model(
 NOW_APPLICATION_MODEL = api.model(
     'NOWApplication',
     {
-        'now_application_guid': fields.String,
-        'now_number': fields.String,
-        'mine_guid': fields.String,
-        'mine_name': fields.String,
-        'mine_no': fields.String,
-        'mine_region': fields.String,
-        'lead_inspector_party_guid': fields.String,
-        'lead_inspector': fields.Nested(PARTY),
-        'imported_to_core' : fields.Boolean, #Just-in-time attribute
-        'notice_of_work_type_code': fields.String,                  
-        'now_application_status_code': fields.String,               
-        'submitted_date': Date,
-        'received_date': Date,
-        'latitude': fields.Fixed(description='fixed precision decimal.',
-                                 decimals=7),
-        'longitude': fields.Fixed(description='fixed precision decimal.',
-                                  decimals=7),
-        'property_name': fields.String,
-        'tenure_number': fields.String,
-        'description_of_land': fields.String,
-        'application_permit_type_code': fields.String,
-        'proposed_start_date': Date,
-        'proposed_end_date': Date,
-        'directions_to_site': fields.String,
-        'work_plan': fields.String,
-        'type_of_application': fields.String,
-        'crown_grant_or_district_lot_numbers': fields.String,
-        'req_access_authorization_numbers': fields.String,
-        'has_surface_disturbance_outside_tenure': fields.Boolean,
-        'is_access_gated': fields.Boolean,
-        'has_key_for_inspector': fields.Boolean,
-        'has_req_access_authorizations': fields.Boolean,
-        'application_progress': fields.Nested(NOW_APPLICATION_PROGRESS,skip_none=True),
-        'state_of_land': fields.Nested(NOW_APPLICATION_STATE_OF_LAND,skip_none=True),
-        'first_aid_equipment_on_site': fields.String,
-        'first_aid_cert_level': fields.String, 
-        'blasting_operation': fields.Nested(NOW_APPLICATION_BLASTING_OPERATION, skip_none=True),
-        'camps': fields.Nested(NOW_APPLICATION_CAMP, skip_none=True),
-        'cut_lines_polarization_survey': fields.Nested(NOW_APPLICATION_CUT_LINES, skip_none=True),
-        'exploration_access': fields.Nested(NOW_APPLICATION_EXP_ACCESS, skip_none=True),
-        'exploration_surface_drilling': fields.Nested(NOW_APPLICATION_EXP_SURFACE_DRILL, skip_none=True),
-        'mechanical_trenching': fields.Nested(NOW_APPLICATION_MECH_TRENCHING, skip_none=True),
-        'placer_operation': fields.Nested(NOW_APPLICATION_PLACER_OPS, skip_none=True),
-        'sand_and_gravel': fields.Nested(NOW_APPLICATION_SAND_AND_GRAVEL, skip_none=True),
-        'settling_pond': fields.Nested(NOW_APPLICATION_SETTLING_POND, skip_none=True),
-        'surface_bulk_sample': fields.Nested(NOW_APPLICATION_SURFACE_BULK, skip_none=True),
-        'underground_exploration': fields.Nested(NOW_APPLICATION_UNDERGROUND_EXPLORATION, skip_none=True),
-        'water_supply': fields.Nested(NOW_APPLICATION_WATER_SUPPLY, skip_none=True),
-        'documents': fields.List(fields.Nested(NOW_APPLICATION_DOCUMENT), skip_none=True),
-        'submission_documents': fields.List(fields.Nested(NOW_SUBMISSION_DOCUMENT), skip_none=True),
-        'contacts': fields.List(fields.Nested(NOW_PARTY_APPOINTMENT), skip_none=True),
-        'ready_for_review_date': Date,
-        'referral_closed_on_date': Date,
-        'consultation_closed_on_date': Date,
-        'public_comment_closed_on_date': Date
+        'now_application_guid':
+        fields.String,
+        'now_number':
+        fields.String,
+        'mine_guid':
+        fields.String,
+        'mine_name':
+        fields.String,
+        'mine_no':
+        fields.String,
+        'mine_region':
+        fields.String,
+        'lead_inspector_party_guid':
+        fields.String,
+        'lead_inspector':
+        fields.Nested(PARTY),
+        'imported_to_core':
+        fields.Boolean,                                                         #Just-in-time attribute
+        'notice_of_work_type_code':
+        fields.String,
+        'now_application_status_code':
+        fields.String,
+        'submitted_date':
+        Date,
+        'received_date':
+        Date,
+        'latitude':
+        fields.Fixed(description='fixed precision decimal.', decimals=7),
+        'longitude':
+        fields.Fixed(description='fixed precision decimal.', decimals=7),
+        'property_name':
+        fields.String,
+        'tenure_number':
+        fields.String,
+        'description_of_land':
+        fields.String,
+        'application_permit_type_code':
+        fields.String,
+        'proposed_start_date':
+        Date,
+        'proposed_end_date':
+        Date,
+        'directions_to_site':
+        fields.String,
+        'work_plan':
+        fields.String,
+        'type_of_application':
+        fields.String,
+        'crown_grant_or_district_lot_numbers':
+        fields.String,
+        'req_access_authorization_numbers':
+        fields.String,
+        'has_surface_disturbance_outside_tenure':
+        fields.Boolean,
+        'is_access_gated':
+        fields.Boolean,
+        'has_key_for_inspector':
+        fields.Boolean,
+        'has_req_access_authorizations':
+        fields.Boolean,
+        'application_progress':
+        fields.Nested(NOW_APPLICATION_PROGRESS, skip_none=True),
+        'state_of_land':
+        fields.Nested(NOW_APPLICATION_STATE_OF_LAND, skip_none=True),
+        'first_aid_equipment_on_site':
+        fields.String,
+        'first_aid_cert_level':
+        fields.String,
+        'blasting_operation':
+        fields.Nested(NOW_APPLICATION_BLASTING_OPERATION, skip_none=True),
+        'camps':
+        fields.Nested(NOW_APPLICATION_CAMP, skip_none=True),
+        'cut_lines_polarization_survey':
+        fields.Nested(NOW_APPLICATION_CUT_LINES, skip_none=True),
+        'exploration_access':
+        fields.Nested(NOW_APPLICATION_EXP_ACCESS, skip_none=True),
+        'exploration_surface_drilling':
+        fields.Nested(NOW_APPLICATION_EXP_SURFACE_DRILL, skip_none=True),
+        'mechanical_trenching':
+        fields.Nested(NOW_APPLICATION_MECH_TRENCHING, skip_none=True),
+        'placer_operation':
+        fields.Nested(NOW_APPLICATION_PLACER_OPS, skip_none=True),
+        'sand_and_gravel':
+        fields.Nested(NOW_APPLICATION_SAND_AND_GRAVEL, skip_none=True),
+        'settling_pond':
+        fields.Nested(NOW_APPLICATION_SETTLING_POND, skip_none=True),
+        'surface_bulk_sample':
+        fields.Nested(NOW_APPLICATION_SURFACE_BULK, skip_none=True),
+        'underground_exploration':
+        fields.Nested(NOW_APPLICATION_UNDERGROUND_EXPLORATION, skip_none=True),
+        'water_supply':
+        fields.Nested(NOW_APPLICATION_WATER_SUPPLY, skip_none=True),
+        'documents':
+        fields.List(fields.Nested(NOW_APPLICATION_DOCUMENT), skip_none=True),
+        'submission_documents':
+        fields.List(fields.Nested(NOW_SUBMISSION_DOCUMENT), skip_none=True),
+        'contacts':
+        fields.List(fields.Nested(NOW_PARTY_APPOINTMENT), skip_none=True),
+        'ready_for_review_date':
+        Date,
+        'referral_closed_on_date':
+        Date,
+        'consultation_closed_on_date':
+        Date,
+        'public_comment_closed_on_date':
+        Date
     })
 
 NOW_VIEW_MODEL = api.model(
@@ -382,12 +435,10 @@ UNIT_TYPES = api.model('UnitTypeCodes', {
     'description': fields.String
 })
 
-NOW_APPLICATION_DOCUMENT_TYPES = api.model(
-    'ApplicationDocumentTypes', {
-        'now_application_document_type_code': fields.String,
-        'description': fields.String,
-        'document_template': fields.Nested(DOCUMENT_TEMPLATE_MODEL, skip_none=True),
-    })
+NOW_APPLICATION_DOCUMENT_TYPES = api.model('ApplicationDocumentTypes', {
+    'now_application_document_type_code': fields.String,
+    'description': fields.String
+})
 
 UNDERGROUND_EXPLORATION_TYPES = api.model('UndergroundExplorationTypes', {
     'underground_exploration_type_code': fields.String,
