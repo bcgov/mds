@@ -53,6 +53,19 @@ class NOWApplicationDocumentGenerateResource(Resource, UserMixin):
         # TODO: Generate document using the provided data.
         data = self.parser.parse_args()
 
+        template_data = data['template_data']
+
+        enforced_data = [
+            x for x in document_type.document_template._form_spec_with_context(
+                data['now_application_guid']) if x.get('read-only', False)
+        ]
+        for enforced_item in enforced_data:
+            if template_data[enforced_item['id']] != enforced_item['context-value']:
+                current_app.logger.info(
+                    f'OVERWRITING ENFORCED FIELD {enforced_item["id"]} with {enforced_item["context-value"]}'
+                )
+                template_data[enforced_item['id']] = enforced_item['context-value']
+
         token = uuid.uuid4()
         cache.set(
             NOW_DOCUMENT_DOWNLOAD_TOKEN(token), {
