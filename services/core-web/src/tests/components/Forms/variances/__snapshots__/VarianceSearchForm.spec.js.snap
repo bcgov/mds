@@ -23,6 +23,147 @@ exports[`VarianceSearchForm form renders properly 1`] = `
       />
     </Col>
   </Row>
+  <div>
+    <Row
+      gutter={6}
+    >
+      <Col
+        md={24}
+        xs={24}
+      >
+        <Field
+          component={[Function]}
+          data={
+            Array [
+              Object {
+                "label": "Person must comply",
+                "value": "11",
+              },
+            ]
+          }
+          id="compliance_code"
+          name="compliance_code"
+          placeholder="Select Compliance Code"
+        />
+      </Col>
+    </Row>
+    <Row
+      gutter={6}
+    >
+      <Col
+        md={24}
+        xs={24}
+      >
+        <Field
+          component={[Function]}
+          id="variance_application_status_code"
+          name="variance_application_status_code"
+          placeholder="Select Application Statuses"
+        />
+      </Col>
+    </Row>
+    <Row
+      gutter={6}
+    >
+      <Col
+        md={12}
+        xs={24}
+      >
+        <Field
+          component={[Function]}
+          id="issue_date_after"
+          name="issue_date_after"
+          placeholder="Select Earliest Issue Date"
+        />
+      </Col>
+      <Col
+        md={12}
+        xs={24}
+      >
+        <Field
+          component={[Function]}
+          id="issue_date_before"
+          name="issue_date_before"
+          placeholder="Select Latest Issue Date"
+        />
+      </Col>
+    </Row>
+    <Row
+      gutter={6}
+    >
+      <Col
+        md={12}
+        xs={24}
+      >
+        <Field
+          component={[Function]}
+          id="expiry_date_after"
+          name="expiry_date_after"
+          placeholder="Select Earliest Expiry Date"
+        />
+      </Col>
+      <Col
+        md={12}
+        xs={24}
+      >
+        <Field
+          component={[Function]}
+          id="expiry_date_before"
+          name="expiry_date_before"
+          placeholder="Select Latest Expiry Date"
+        />
+      </Col>
+    </Row>
+    <Row
+      gutter={6}
+    >
+      <Col
+        md={12}
+        xs={24}
+      >
+        <Field
+          component={[Function]}
+          data={
+            Array [
+              Object {
+                "label": "Major and Regional Mines",
+                "value": "",
+              },
+              Object {
+                "label": "Major Mine",
+                "value": "true",
+              },
+              Object {
+                "label": "Regional Mine",
+                "value": "false",
+              },
+            ]
+          }
+          id="major"
+          name="major"
+        />
+      </Col>
+      <Col
+        md={12}
+        xs={24}
+      >
+        <Field
+          component={[Function]}
+          data={
+            Array [
+              Object {
+                "label": "Region must comply",
+                "value": "11",
+              },
+            ]
+          }
+          id="region"
+          name="region"
+          placeholder="Select Mine Region"
+        />
+      </Col>
+    </Row>
+  </div>
   <div
     className="left center-mobile"
   >
@@ -33,9 +174,9 @@ exports[`VarianceSearchForm form renders properly 1`] = `
       htmlType="button"
       loading={false}
     >
-      Expand Filters
+      Collapse Filters
       <Icon
-        type="down"
+        type="up"
       />
     </Button>
   </div>
