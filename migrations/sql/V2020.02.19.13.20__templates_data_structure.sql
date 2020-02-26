@@ -15,7 +15,7 @@ COMMENT ON TABLE document_template IS 'Holds template data for documents that CO
 
 
 ALTER TABLE now_application_document_type ADD COLUMN document_template_code varchar; 
-ALTER TABLE   
+ALTER TABLE now_application_document_type
     ADD CONSTRAINT now_application_document_type_template_code
     FOREIGN KEY (document_template_code) REFERENCES document_template(document_template_code) ON UPDATE CASCADE ON DELETE SET NULL;
 
