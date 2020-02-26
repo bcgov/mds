@@ -290,25 +290,6 @@ export class Dashboard extends Component {
     );
   };
 
-  handleFSearch = (searchParams = {}, clear = false) => {
-    const persistedParams = clear ? {} : this.state.params;
-    const updatedParams = {
-      // Default per_page -- overwrite if provided
-      per_page: Strings.DEFAULT_PER_PAGE,
-      // Start from existing state
-      ...persistedParams,
-      // Overwrite prev params with any newly provided search params
-      ...searchParams,
-      // Reset page number
-      page: Strings.DEFAULT_PAGE,
-      submissions_only: true,
-    };
-
-    this.props.history.push(
-      router.NOTICE_OF_WORK_APPLICATIONS.dynamicRoute(this.joinListParams(updatedParams))
-    );
-  };
-
   handleCreateMineRecordSubmit = (value) => {
     const mineStatus = value.mine_status.join(",");
     this.props.createMineRecord({ ...value, mine_status: mineStatus }).then((response) => {
