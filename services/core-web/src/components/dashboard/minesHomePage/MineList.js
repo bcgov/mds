@@ -68,11 +68,11 @@ const columns = [
     render: (text) => <div title="Operational Status">{text}</div>,
   },
   {
-    title: "Permit No.",
+    title: "Permits",
     dataIndex: "permitNo",
     width: 150,
     render: (text) => (
-      <div title="Permit No.">
+      <div title="Permits">
         {(text && text.length > 0 && (
           <ul className="mine-list__permits">
             {text.map((permitNo) => (

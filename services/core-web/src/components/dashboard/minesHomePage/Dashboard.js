@@ -460,6 +460,8 @@ export class Dashboard extends Component {
                     mines={this.props.mines}
                     fetchMineRecordById={this.props.fetchMineRecordById}
                     transformedMineTypes={this.props.transformedMineTypes}
+                    mineRegionHash={this.props.mineRegionHash}
+                    mineTenureHash={this.props.mineTenureHash}
                     mineCommodityOptionsHash={this.props.mineCommodityOptionsHash}
                     history={this.props.history}
                   />

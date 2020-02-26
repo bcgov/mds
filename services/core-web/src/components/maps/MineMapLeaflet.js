@@ -37,13 +37,16 @@ const propTypes = {
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
   isScriptLoaded: PropTypes.bool.isRequired,
   isScriptLoadSucceed: PropTypes.bool.isRequired,
+  transformedMineTypes: CustomPropTypes.transformedMineTypes.isRequired,
+  mineRegionHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  mineTenureHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  mineCommodityOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   lat: PropTypes.number,
   long: PropTypes.number,
   zoom: PropTypes.number,
   minesBasicInfo: PropTypes.arrayOf(CustomPropTypes.mine),
   mineName: PropTypes.string,
   mineGuid: PropTypes.string,
-  transformedMineTypes: CustomPropTypes.transformedMineTypes,
 };
 
 const defaultProps = {
@@ -174,10 +177,6 @@ class MineMapLeaflet extends Component {
 
   handleMinePinClick = (mine) => (e) => {
     this.props.fetchMineRecordById(mine.mine_guid).then(() => {
-      const commodityCodes = this.props.transformedMineTypes.mine_commodity_code.map(
-        (code) => this.props.mineCommodityOptionsHash[code]
-      );
-
       if (this.state.currentMarker) {
         this.state.currentMarker.setIcon(UNSELECTED_ICON);
       }
@@ -185,7 +184,9 @@ class MineMapLeaflet extends Component {
       this.setState({ currentMarker: e.target });
 
       const popup = e.target.getPopup();
-      popup.setContent(this.renderPopup(this.props.mines[mine.mine_guid], commodityCodes));
+      popup.setContent(
+        this.renderPopup(this.props.mines[mine.mine_guid], this.props.transformedMineTypes)
+      );
     });
   };
 
@@ -297,9 +298,16 @@ class MineMapLeaflet extends Component {
     });
   }
 
-  renderPopup = (mine, commodityCodes = []) => {
+  renderPopup = (mine, transformedMineTypes) => {
     return ReactDOMServer.renderToStaticMarkup(
-      <LeafletPopup mine={mine} commodityCodes={commodityCodes} context={this.context} />
+      <LeafletPopup
+        mine={mine}
+        transformedMineTypes={transformedMineTypes}
+        context={this.context}
+        mineRegionHash={this.props.mineRegionHash}
+        mineTenureHash={this.props.mineTenureHash}
+        mineCommodityOptionsHash={this.props.mineCommodityOptionsHash}
+      />
     );
   };
 
