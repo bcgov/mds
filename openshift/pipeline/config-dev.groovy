@@ -282,7 +282,7 @@ app {
                     ]
                 ],
                 [
-                    'file':'openshift/templates/_nodejs.dc.json',
+                    'file':'openshift/templates/docgen/docgen.dc.json',
                     'params':[
                             'NAME':"mds-docgen-api",
                             'SUFFIX': "${vars.deployment.suffix}",
