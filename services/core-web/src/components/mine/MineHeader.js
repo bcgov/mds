@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+import { uniqBy } from "lodash";
 import PropTypes from "prop-types";
 import { Menu, Divider, Button, Dropdown, Tag, Popover } from "antd";
 import { openModal, closeModal } from "@common/actions/modalActions";
@@ -247,7 +248,7 @@ export class MineHeader extends Component {
           <div className="inline-flex padding-small wrap">
             <p className="field-title">Commodity</p>
             {this.props.transformedMineTypes.mine_commodity_code.length > 0 ? (
-              this.props.transformedMineTypes.mine_commodity_code.map((code) => (
+              uniqBy(this.props.transformedMineTypes.mine_commodity_code).map((code) => (
                 <Tag key={code}>{this.props.mineCommodityOptionsHash[code]}</Tag>
               ))
             ) : (
@@ -257,7 +258,7 @@ export class MineHeader extends Component {
           <div className="inline-flex padding-small wrap">
             <p className="field-title">Disturbance</p>
             {this.props.transformedMineTypes.mine_disturbance_code.length > 0 ? (
-              this.props.transformedMineTypes.mine_disturbance_code.map((code) => (
+              uniqBy(this.props.transformedMineTypes.mine_disturbance_code).map((code) => (
                 <Tag key={code}>{this.props.mineDisturbanceOptionsHash[code]}</Tag>
               ))
             ) : (
@@ -359,7 +360,4 @@ const mapDispatchToProps = (dispatch) =>
 
 MineHeader.propTypes = propTypes;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(MineHeader);
+export default connect(mapStateToProps, mapDispatchToProps)(MineHeader);

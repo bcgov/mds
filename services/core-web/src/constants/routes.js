@@ -36,6 +36,7 @@ export const HOME_PAGE = {
   route: "/home/",
   component: HomePage,
 };
+
 export const CUSTOM_HOME_PAGE = {
   route: "/my-dashboard/",
   component: CustomHomePage,
@@ -50,8 +51,10 @@ export const MINE_HOME_PAGE = {
   route: "/dashboard/mines",
   dynamicRoute: ({ page, per_page, ...params }) =>
     `/dashboard/mines/?${queryString.stringify({ page, per_page, ...params }, { sort: false })}`,
-  mapRoute: (mapParam = null) =>
-    `/dashboard/mines?map=true&${queryString.stringify({ ...mapParam }, { sort: false })}`,
+  mapRoute: (params = null) =>
+    `/dashboard/mines?map=true${
+      params ? `&${queryString.stringify({ ...params }, { sort: false })}` : ""
+    }`,
   component: Dashboard,
 };
 

@@ -1,15 +1,11 @@
-// TODO: Remove this line when file is more properly implemented.
+// TODO: Remove this line when the file is more properly implemented.
 /* eslint-disable */
-
 import React, { Component } from "react";
-
 import L from "leaflet";
 import LeafletWms from "leaflet.wms";
 import scriptLoader from "react-async-script-loader";
-
 import ReactDOMServer from "react-dom/server";
 import PropTypes from "prop-types";
-
 import "leaflet.markercluster";
 import "leaflet/dist/leaflet.css";
 import "leaflet.markercluster/dist/MarkerCluster.css";
@@ -17,7 +13,6 @@ import "leaflet.markercluster/dist/MarkerCluster.Default.css";
 import "vendor/leaflet/leaflet-measure/leaflet-measure.css";
 import "vendor/leaflet/mouse-coordinates/leaflet.mousecoordinate";
 import "vendor/leaflet/grouped-layer-control/leaflet.groupedlayercontrol.min";
-
 import { ENVIRONMENT } from "@common/constants/environment";
 import * as Strings from "@common/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
@@ -183,7 +178,9 @@ class MineMapLeaflet extends Component {
         (code) => this.props.mineCommodityOptionsHash[code]
       );
 
-      this.state.currentMarker && this.state.currentMarker.setIcon(UNSELECTED_ICON);
+      if (this.state.currentMarker) {
+        this.state.currentMarker.setIcon(UNSELECTED_ICON);
+      }
       e.target.setIcon(SELECTED_ICON);
       this.setState({ currentMarker: e.target });
 

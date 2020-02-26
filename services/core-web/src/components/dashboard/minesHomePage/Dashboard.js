@@ -16,7 +16,6 @@ import {
 } from "@common/actionCreators/mineActionCreator";
 import {
   getMines,
-  getMineIds,
   getMinesPageData,
   getTransformedMineTypes,
 } from "@common/selectors/mineSelectors";
@@ -48,6 +47,7 @@ import AddButton from "@/components/common/AddButton";
  * @class Dashboard is the main landing page of the application, currently contains a List and Map View, ability to create a new mine, and search for a mine by name or lat/long.
  *
  */
+
 const { TabPane } = Tabs;
 
 const propTypes = {
@@ -65,11 +65,13 @@ const propTypes = {
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
   mines: PropTypes.objectOf(CustomPropTypes.mine).isRequired,
   transformedMineTypes: CustomPropTypes.transformedMineTypes.isRequired,
-  mineIds: PropTypes.arrayOf(PropTypes.string).isRequired,
   pageData: CustomPropTypes.minePageData.isRequired,
 };
 
 const joinOrRemove = (param, key) => (isEmpty(param) ? {} : { [key]: param.join(",") });
+
+const splitParam = (param) => (param ? param.split(",").filter((x) => x) : []);
+
 const formatParams = ({
   commodity = [],
   region = [],
@@ -110,6 +112,8 @@ export class Dashboard extends Component {
   }
 
   componentDidMount() {
+    console.log("componentDidMount this.props:\n", this.props);
+
     const params = this.props.location.search;
     if (params) {
       this.renderDataFromURL(params);
@@ -124,8 +128,8 @@ export class Dashboard extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const locationChanged = nextProps.location !== this.props.location;
-    if (locationChanged) {
+    console.log("componentWillReceiveProps nextProps:\n", nextProps);
+    if (nextProps.location !== this.props.location) {
       const params = nextProps.location.search;
       this.setState({ isListLoaded: false, isMapLoaded: false });
       this.renderDataFromURL(params);
@@ -134,16 +138,12 @@ export class Dashboard extends Component {
 
   componentWillUnmount() {
     this.handleMineSearchDebounced.cancel();
-    this.setState({
-      params: {},
-      lat: Number(Strings.DEFAULT_LAT),
-      long: Number(Strings.DEFAULT_LONG),
-      zoom: Strings.DEFAULT_ZOOM,
-    });
   }
 
   renderDataFromURL = (params) => {
-    const {
+    console.log("renderDataFromURL params:\n", params);
+
+    let {
       status,
       commodity,
       region,
@@ -157,19 +157,32 @@ export class Dashboard extends Component {
       mineName,
       ...remainingParams
     } = queryString.parse(params);
-    const format = (param) => (param ? param.split(",").filter((x) => x) : []);
+
+    console.log("renderDataFromURL queryString.parse(params):\n", queryString.parse(params));
+
+    // NOTE: Determine if this affects strings with commas in their proper name.
+    status = splitParam(status);
+    commodity = splitParam(commodity);
+    region = splitParam(region);
+    tenure = splitParam(tenure);
+    lat = splitParam(lat)[0];
+    long = splitParam(long)[0];
+    zoom = splitParam(zoom)[0];
+    mineName = splitParam(mineName)[0];
+
     this.setState({
       params: {
-        status: format(status),
-        commodity: format(commodity),
-        region: format(region),
-        tenure: format(tenure),
+        status: status,
+        commodity: commodity,
+        region: region,
+        tenure: tenure,
         major,
         tsf,
         search,
         ...remainingParams,
       },
     });
+
     if (remainingParams.map) {
       this.props.fetchMineRecordsForMap().then(() => {
         this.setState({ isMapLoaded: true });
@@ -180,13 +193,13 @@ export class Dashboard extends Component {
       });
     }
 
-    if (format(lat)[0] && format(long)[0]) {
+    if (lat && long) {
       this.setState({
-        lat: Number(format(lat)[0]),
-        long: Number(format(long)[0]),
-        zoom: format(zoom)[0] ? Number(format(zoom)[0]) : Strings.DEFAULT_ZOOM,
         showCoordinates: true,
-        mineName: format(mineName)[0],
+        lat: Number(lat),
+        long: Number(long),
+        zoom: zoom,
+        mineName: mineName,
       });
       this.handleScroll("landing-page__content", 200);
     }
@@ -196,7 +209,6 @@ export class Dashboard extends Component {
     this.props.history.push(
       router.MINE_HOME_PAGE.dynamicRoute({
         ...formatParams(this.state.params),
-        // Overwrite current page/per_page with values provided
         page,
         per_page,
       })
@@ -207,6 +219,7 @@ export class Dashboard extends Component {
    * @param value = {latitude: '', longitude: ''} || 'longitude, latitude';
    */
   handleCoordinateSearch = (value) => {
+    console.log("handleCoordinateSearch value:\n", value);
     if (typeof value === "string") {
       const newVal = value.split(",");
       if (newVal[0] && newVal[1]) {
@@ -241,7 +254,6 @@ export class Dashboard extends Component {
   };
 
   handleScroll = (element, offset) => {
-    // FIXME: scroll dynamically instead of by a hardcoded value
     scroller.scrollTo(element, {
       duration: 1000,
       smooth: true,
@@ -251,7 +263,10 @@ export class Dashboard extends Component {
   };
 
   handleTabChange = (key) => {
+    console.log("handleTabChange this.state.params:\n", this.state.params);
+
     const { page, per_page, search } = this.state.params;
+
     this.setState({
       isListLoaded: false,
       isMapLoaded: false,
@@ -261,6 +276,7 @@ export class Dashboard extends Component {
       long: Number(Strings.DEFAULT_LONG),
       zoom: Strings.DEFAULT_ZOOM,
     });
+
     if (key === "map") {
       this.props.history.push(router.MINE_HOME_PAGE.mapRoute());
     } else {
@@ -270,17 +286,14 @@ export class Dashboard extends Component {
 
   handleMineSearch = (searchParams, clear = false) => {
     const formattedSearchParams = formatParams(searchParams);
+
     const persistedParams = clear ? {} : formatParams(this.state.params);
 
     this.props.history.push(
       router.MINE_HOME_PAGE.dynamicRoute({
-        // Start from existing state
         ...persistedParams,
-        // Overwrite prev params with any newly provided search params
         ...formattedSearchParams,
-        // Reset page number
         page: Strings.DEFAULT_PAGE,
-        // Retain per_page if present
         per_page: this.state.params.per_page
           ? this.state.params.per_page
           : Strings.DEFAULT_PER_PAGE,
@@ -288,7 +301,7 @@ export class Dashboard extends Component {
     );
   };
 
-  handleSubmit = (value) => {
+  handleCreateMineRecordSubmit = (value) => {
     const mineStatus = value.mine_status.join(",");
     this.props.createMineRecord({ ...value, mine_status: mineStatus }).then((response) => {
       this.props.createMineTypes(response.data.mine_guid, value.mine_types).then(() => {
@@ -299,12 +312,11 @@ export class Dashboard extends Component {
     });
   };
 
-  openModal(event, onSubmit, title) {
-    const handleDelete = () => {};
+  openCreateMineRecordModal(event, onSubmit, title) {
     event.preventDefault();
     this.props.openModal({
       props: {
-        handleDelete,
+        handleDelete: () => {},
         onSubmit,
         title,
         isNewRecord: true,
@@ -315,18 +327,19 @@ export class Dashboard extends Component {
 
   renderCorrectView() {
     const { search, map, page, per_page } = this.state.params;
-    const isMap = map ? "map" : "list";
+
     const mineNameMine =
       this.state.mineName &&
       this.props.mines &&
       this.props.mines.length > 0 &&
       this.props.mines.filter((mine) => mine.mine_name === this.state.mineName)[0];
+
     const mineGuid = mineNameMine ? mineNameMine.mine_guid : null;
 
     return (
       <div>
         <Tabs
-          activeKey={isMap}
+          activeKey={map ? "map" : "list"}
           size="large"
           animated={{ inkBar: true, tabPane: false }}
           onTabClick={this.handleTabChange}
@@ -338,13 +351,11 @@ export class Dashboard extends Component {
               handleMineSearch={this.handleMineSearchDebounced}
               searchValue={search}
             />
-
             <div>
               <div className="tab__content">
                 <MineList
                   isLoaded={this.state.isListLoaded}
                   mines={this.props.mines}
-                  mineIds={this.props.mineIds}
                   mineRegionHash={this.props.mineRegionHash}
                   mineTenureHash={this.props.mineTenureHash}
                   mineCommodityOptionsHash={this.props.mineCommodityOptionsHash}
@@ -439,21 +450,19 @@ export class Dashboard extends Component {
               )}
               <LoadingWrapper condition={this.state.isMapLoaded}>
                 <Element name="mapElement">
-                  <div>
-                    <MineMapLeaflet
-                      lat={this.state.lat}
-                      long={this.state.long}
-                      zoom={this.state.zoom}
-                      minesBasicInfo={this.props.pageData.mines}
-                      mineName={this.state.mineName}
-                      mineGuid={mineGuid}
-                      mines={this.props.mines}
-                      fetchMineRecordById={this.props.fetchMineRecordById}
-                      transformedMineTypes={this.props.transformedMineTypes}
-                      mineCommodityOptionsHash={this.props.mineCommodityOptionsHash}
-                      history={this.props.history}
-                    />
-                  </div>
+                  <MineMapLeaflet
+                    lat={this.state.lat}
+                    long={this.state.long}
+                    zoom={this.state.zoom}
+                    minesBasicInfo={this.props.pageData.mines}
+                    mineName={this.state.mineName}
+                    mineGuid={mineGuid}
+                    mines={this.props.mines}
+                    fetchMineRecordById={this.props.fetchMineRecordById}
+                    transformedMineTypes={this.props.transformedMineTypes}
+                    mineCommodityOptionsHash={this.props.mineCommodityOptionsHash}
+                    history={this.props.history}
+                  />
                 </Element>
               </LoadingWrapper>
             </div>
@@ -476,7 +485,11 @@ export class Dashboard extends Component {
               <AuthorizationWrapper permission={Permission.EDIT_MINES}>
                 <AddButton
                   onClick={(event) =>
-                    this.openModal(event, this.handleSubmit, ModalContent.CREATE_MINE_RECORD)
+                    this.openCreateMineRecordModal(
+                      event,
+                      this.handleCreateMineRecordSubmit,
+                      ModalContent.CREATE_MINE_RECORD
+                    )
                   }
                 >
                   {ModalContent.CREATE_MINE_RECORD}
@@ -493,7 +506,6 @@ export class Dashboard extends Component {
 
 const mapStateToProps = (state) => ({
   mines: getMines(state),
-  mineIds: getMineIds(state),
   pageData: getMinesPageData(state),
   mineRegionHash: getMineRegionHash(state),
   mineTenureHash: getMineTenureTypesHash(state),
@@ -521,7 +533,4 @@ const mapDispatchToProps = (dispatch) =>
 
 Dashboard.propTypes = propTypes;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Dashboard);
+export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
