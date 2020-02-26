@@ -43,12 +43,8 @@ const checkAdvancedSearch = ({ status, region, tenure, commodity, tsf, major }) 
 
 export class MineSearch extends Component {
   state = {
-    isAdvanceSearch: false,
+    isAdvanceSearch: checkAdvancedSearch(this.props.initialValues),
   };
-
-  componentDidMount() {
-    this.setState({ isAdvanceSearch: checkAdvancedSearch(this.props.initialValues) });
-  }
 
   componentWillReceiveProps(nextProps) {
     if (this.props.initialValues !== nextProps.initialValues) {

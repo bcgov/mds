@@ -15,7 +15,6 @@ import { SUCCESS_CHECKMARK } from "@/constants/assets";
 
 const propTypes = {
   mines: objectOf(CustomPropTypes.mine).isRequired,
-  mineIds: arrayOf(string).isRequired,
   mineRegionHash: objectOf(string).isRequired,
   mineTenureHash: objectOf(string).isRequired,
   mineCommodityOptionsHash: objectOf(string).isRequired,

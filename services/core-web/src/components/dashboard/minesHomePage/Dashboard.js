@@ -64,8 +64,12 @@ const propTypes = {
   location: PropTypes.shape({ search: PropTypes.string }).isRequired,
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
   mines: PropTypes.objectOf(CustomPropTypes.mine).isRequired,
-  transformedMineTypes: CustomPropTypes.transformedMineTypes.isRequired,
   pageData: CustomPropTypes.minePageData.isRequired,
+  transformedMineTypes: CustomPropTypes.transformedMineTypes,
+};
+
+const defaultProps = {
+  transformedMineTypes: {},
 };
 
 const joinOrRemove = (param, key) => (isEmpty(param) ? {} : { [key]: param.join(",") });
@@ -98,6 +102,7 @@ export class Dashboard extends Component {
       zoom: Strings.DEFAULT_ZOOM,
       showCoordinates: false,
       mineName: null,
+      mineGuid: null,
       params: {
         page: Strings.DEFAULT_PAGE,
         per_page: Strings.DEFAULT_PER_PAGE,
@@ -185,7 +190,7 @@ export class Dashboard extends Component {
           showCoordinates: true,
           lat: Number(lat),
           long: Number(long),
-          zoom: zoom,
+          zoom: Number(zoom),
           mineName: mineName,
         });
         this.handleScroll("mapElement", -60);
@@ -213,20 +218,29 @@ export class Dashboard extends Component {
   handleCoordinateSearch = (value) => {
     if (typeof value === "string") {
       const newVal = value.split(",");
+      const lat = newVal[0];
+      const long = newVal[1];
+      const mineName = newVal[2];
+      const mineGuid = newVal[3];
       if (newVal[0] && newVal[1]) {
         this.props.history.push(
           router.MINE_HOME_PAGE.mapRoute({
-            mineName: newVal[2],
-            lat: newVal[0],
-            long: newVal[1],
+            mineName: mineName,
+            lat: lat,
+            long: long,
             zoom: Strings.HIGH_ZOOM,
           })
         );
+        this.setState({
+          mineGuid: mineGuid,
+        });
         this.handleScroll("mapElement", -60);
       } else {
         this.setState({
           lat: Number(Strings.DEFAULT_LAT),
           long: Number(Strings.DEFAULT_LONG),
+          mineName: null,
+          mineGuid: null,
           zoom: Strings.DEFAULT_ZOOM,
           showCoordinates: false,
         });
@@ -260,7 +274,8 @@ export class Dashboard extends Component {
       isListLoaded: false,
       isMapLoaded: false,
       showCoordinates: false,
-      mineName: "",
+      mineName: null,
+      mineGuid: null,
       lat: Number(Strings.DEFAULT_LAT),
       long: Number(Strings.DEFAULT_LONG),
       zoom: Strings.DEFAULT_ZOOM,
@@ -316,14 +331,6 @@ export class Dashboard extends Component {
 
   renderCorrectView() {
     const { search, map, page, per_page } = this.state.params;
-
-    const mineNameMine =
-      this.state.mineName &&
-      this.props.mines &&
-      this.props.mines.length > 0 &&
-      this.props.mines.filter((mine) => mine.mine_name === this.state.mineName)[0];
-
-    const mineGuid = mineNameMine ? mineNameMine.mine_guid : null;
 
     return (
       <div>
@@ -445,7 +452,7 @@ export class Dashboard extends Component {
                     zoom={this.state.zoom}
                     minesBasicInfo={this.props.pageData.mines}
                     mineName={this.state.mineName}
-                    mineGuid={mineGuid}
+                    mineGuid={this.state.mineGuid}
                     mines={this.props.mines}
                     fetchMineRecordById={this.props.fetchMineRecordById}
                     transformedMineTypes={this.props.transformedMineTypes}
@@ -523,5 +530,6 @@ const mapDispatchToProps = (dispatch) =>
   );
 
 Dashboard.propTypes = propTypes;
+Dashboard.defaultProps = defaultProps;
 
 export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
