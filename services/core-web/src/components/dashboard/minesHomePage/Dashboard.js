@@ -188,19 +188,19 @@ export class Dashboard extends Component {
         this.setState({ isMapLoaded: true });
         this.handleScroll("mapElement", -60);
       });
+
+      if (lat && long) {
+        this.setState({
+          showCoordinates: true,
+          lat: Number(lat),
+          long: Number(long),
+          zoom: zoom,
+          mineName: mineName,
+        });
+      }
     } else {
       this.props.fetchMineRecords(params).then(() => {
         this.setState({ isListLoaded: true });
-      });
-    }
-
-    if (lat && long) {
-      this.setState({
-        showCoordinates: true,
-        lat: Number(lat),
-        long: Number(long),
-        zoom: zoom,
-        mineName: mineName,
       });
     }
   };
@@ -284,7 +284,7 @@ export class Dashboard extends Component {
     }
   };
 
-  handleMineSearch = (searchParams, clear = false) => {
+  handleMineSearch = (searchParams = {}, clear = false) => {
     const formattedSearchParams = formatParams(searchParams);
 
     const persistedParams = clear ? {} : formatParams(this.state.params);
@@ -298,6 +298,25 @@ export class Dashboard extends Component {
           ? this.state.params.per_page
           : Strings.DEFAULT_PER_PAGE,
       })
+    );
+  };
+
+  handleFSearch = (searchParams = {}, clear = false) => {
+    const persistedParams = clear ? {} : this.state.params;
+    const updatedParams = {
+      // Default per_page -- overwrite if provided
+      per_page: Strings.DEFAULT_PER_PAGE,
+      // Start from existing state
+      ...persistedParams,
+      // Overwrite prev params with any newly provided search params
+      ...searchParams,
+      // Reset page number
+      page: Strings.DEFAULT_PAGE,
+      submissions_only: true,
+    };
+
+    this.props.history.push(
+      router.NOTICE_OF_WORK_APPLICATIONS.dynamicRoute(this.joinListParams(updatedParams))
     );
   };
 

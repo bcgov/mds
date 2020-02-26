@@ -33,7 +33,7 @@ const defaultProps = {
 const columns = [
   {
     title: "Name",
-    dataIndex: "mineName",
+    dataIndex: "mine_name",
     sortField: "mine_name",
     width: 150,
     render: (text, record) => (
@@ -54,7 +54,7 @@ const columns = [
   },
   {
     title: "Number",
-    dataIndex: "mineNo",
+    dataIndex: "mine_no",
     sortField: "mine_no",
     width: 150,
     render: (text) => <div title="Number">{text}</div>,
@@ -86,7 +86,7 @@ const columns = [
   },
   {
     title: "Region",
-    dataIndex: "region",
+    dataIndex: "mine_region",
     sortField: "mine_region",
     width: 150,
     render: (text) => <div title="Region">{text}</div>,
@@ -123,8 +123,8 @@ const columns = [
 const transformRowData = (mines, mineRegionHash, mineTenureHash, mineCommodityHash) =>
   Object.values(mines).map((mine) => ({
     key: mine.mine_guid,
-    mineName: mine.mine_name || Strings.EMPTY_FIELD,
-    mineNo: mine.mine_no || Strings.EMPTY_FIELD,
+    mine_name: mine.mine_name || Strings.EMPTY_FIELD,
+    mine_no: mine.mine_no || Strings.EMPTY_FIELD,
     operationalStatus:
       mine.mine_status &&
       mine.mine_status.length > 0 &&
@@ -136,7 +136,7 @@ const transformRowData = (mines, mineRegionHash, mineTenureHash, mineCommodityHa
       mine.mine_permit_numbers && mine.mine_permit_numbers.length > 0
         ? mine.mine_permit_numbers
         : [],
-    region: mine.mine_region ? mineRegionHash[mine.mine_region] : Strings.EMPTY_FIELD,
+    mine_region: mine.mine_region ? mineRegionHash[mine.mine_region] : Strings.EMPTY_FIELD,
     commodity:
       mine.mine_type && mine.mine_type.length > 0
         ? uniqBy(
@@ -161,22 +161,20 @@ const transformRowData = (mines, mineRegionHash, mineTenureHash, mineCommodityHa
   }));
 
 const handleTableChange = (updateMineList) => (pagination, filters, sorter) => {
-  const params = isEmpty(sorter)
-    ? {
-        sort_field: undefined,
-        sort_dir: undefined,
-      }
-    : {
-        sort_field: sorter.column.sortField,
-        sort_dir: sorter.order.replace("end", ""),
-      };
+  const params = {
+    results: pagination.pageSize,
+    page: pagination.current,
+    sort_field: sorter.field,
+    sort_dir: sorter.order ? sorter.order.replace("end", "") : sorter.order,
+    ...filters,
+  };
   updateMineList(params);
 };
 
 const applySortIndicator = (_columns, field, dir) =>
   _columns.map((column) => ({
     ...column,
-    sortOrder: column.sortField === field ? dir.concat("end") : false,
+    sortOrder: dir && column.sortField === field ? dir.concat("end") : false,
   }));
 
 export const MineList = (props) => (
