@@ -186,6 +186,7 @@ export class Dashboard extends Component {
     if (remainingParams.map) {
       this.props.fetchMineRecordsForMap().then(() => {
         this.setState({ isMapLoaded: true });
+        this.handleScroll("mapElement", -60);
       });
     } else {
       this.props.fetchMineRecords(params).then(() => {
@@ -201,7 +202,6 @@ export class Dashboard extends Component {
         zoom: zoom,
         mineName: mineName,
       });
-      this.handleScroll("landing-page__content", 200);
     }
   };
 
@@ -253,12 +253,12 @@ export class Dashboard extends Component {
     }
   };
 
-  handleScroll = (element, offset) => {
+  handleScroll = (element, offset = 0) => {
     scroller.scrollTo(element, {
       duration: 1000,
       smooth: true,
       isDynamic: true,
-      offset,
+      offset: offset,
     });
   };
 
