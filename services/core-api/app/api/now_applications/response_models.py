@@ -4,10 +4,21 @@ from flask_restplus import fields
 from app.api.parties.response_models import PARTY
 from app.api.mines.response_models import MINE_DOCUMENT_MODEL
 
-DOCUMENT_TEMPLATE_MODEL = api.model('DocumentTemplateModel', {
-    'document_template_code': fields.String,
-    'form_spec': fields.Raw
-})
+DOCUMENT_TEMPLATE_FIELD_MODE = api.model(
+    'DocumentTemplateFieldModel', {
+        "id": fields.String,
+        "label": fields.String,
+        "type": fields.String,
+        "placeholder": fields.String,
+        "required": fields.Boolean(default=False),
+        "read-only": fields.Boolean(default=False),
+    })
+
+DOCUMENT_TEMPLATE_MODEL = api.model(
+    'DocumentTemplateModel', {
+        'document_template_code': fields.String,
+        'form_spec': fields.List(fields.Nested(DOCUMENT_TEMPLATE_FIELD_MODE))
+    })
 
 
 class DateTime(fields.Raw):
