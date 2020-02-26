@@ -60,11 +60,11 @@ class NOWApplicationDocumentGenerateResource(Resource, UserMixin):
                 data['now_application_guid']) if x.get('read-only', False)
         ]
         for enforced_item in enforced_data:
-            if template_data[enforced_item['id']] != enforced_item['context-value']:
+            if template_data.get(enforced_item['id']) != enforced_item['context-value']:
                 current_app.logger.info(
-                    f'OVERWRITING ENFORCED FIELD {enforced_item["id"]} with {enforced_item["context-value"]}'
+                    f'OVERWRITING ENFORCED key={enforced_item["id"]}, value={template_data.get(enforced_item["id"])} -> {enforced_item["context-value"]}'
                 )
-                template_data[enforced_item['id']] = enforced_item['context-value']
+            template_data[enforced_item['id']] = enforced_item['context-value']
 
         token = uuid.uuid4()
         cache.set(
