@@ -112,8 +112,6 @@ export class Dashboard extends Component {
   }
 
   componentDidMount() {
-    console.log("componentDidMount this.props:\n", this.props);
-
     const params = this.props.location.search;
     if (params) {
       this.renderDataFromURL(params);
@@ -128,7 +126,6 @@ export class Dashboard extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log("componentWillReceiveProps nextProps:\n", nextProps);
     if (nextProps.location !== this.props.location) {
       const params = nextProps.location.search;
       this.setState({ isListLoaded: false, isMapLoaded: false });
@@ -141,8 +138,6 @@ export class Dashboard extends Component {
   }
 
   renderDataFromURL = (params) => {
-    console.log("renderDataFromURL params:\n", params);
-
     let {
       status,
       commodity,
@@ -158,9 +153,6 @@ export class Dashboard extends Component {
       ...remainingParams
     } = queryString.parse(params);
 
-    console.log("renderDataFromURL queryString.parse(params):\n", queryString.parse(params));
-
-    // NOTE: Determine if this affects strings with commas in their proper name.
     status = splitParam(status);
     commodity = splitParam(commodity);
     region = splitParam(region);
@@ -186,7 +178,6 @@ export class Dashboard extends Component {
     if (remainingParams.map) {
       this.props.fetchMineRecordsForMap().then(() => {
         this.setState({ isMapLoaded: true });
-        this.handleScroll("mapElement", -60);
       });
 
       if (lat && long) {
@@ -197,6 +188,7 @@ export class Dashboard extends Component {
           zoom: zoom,
           mineName: mineName,
         });
+        this.handleScroll("mapElement", -60);
       }
     } else {
       this.props.fetchMineRecords(params).then(() => {
@@ -219,16 +211,15 @@ export class Dashboard extends Component {
    * @param value = {latitude: '', longitude: ''} || 'longitude, latitude';
    */
   handleCoordinateSearch = (value) => {
-    console.log("handleCoordinateSearch value:\n", value);
     if (typeof value === "string") {
       const newVal = value.split(",");
       if (newVal[0] && newVal[1]) {
         this.props.history.push(
           router.MINE_HOME_PAGE.mapRoute({
-            lat: newVal[1],
-            long: newVal[0],
-            zoom: Strings.HIGH_ZOOM,
             mineName: newVal[2],
+            lat: newVal[0],
+            long: newVal[1],
+            zoom: Strings.HIGH_ZOOM,
           })
         );
         this.handleScroll("mapElement", -60);
@@ -263,8 +254,6 @@ export class Dashboard extends Component {
   };
 
   handleTabChange = (key) => {
-    console.log("handleTabChange this.state.params:\n", this.state.params);
-
     const { page, per_page, search } = this.state.params;
 
     this.setState({
@@ -366,9 +355,9 @@ export class Dashboard extends Component {
           <TabPane tab="List" key="list">
             <MineSearch
               initialValues={this.state.params}
-              {...this.props}
               handleMineSearch={this.handleMineSearchDebounced}
               searchValue={search}
+              {...this.props}
             />
             <div>
               <div className="tab__content">

@@ -61,6 +61,9 @@ export class MineSearch extends Component {
   };
 
   handleSearchByNameChange = (name) => {
+    if (!name) {
+      return;
+    }
     if (name.length > 2) {
       this.props.fetchMineNameList({ name });
     } else if (name.length === 0) {
@@ -73,10 +76,10 @@ export class MineSearch extends Component {
   };
 
   transformData = (data) =>
-    data.map(({ longitude = "", latitude = "", mine_name = "", mine_no = "", mine_guid }) => (
+    data.map(({ latitude = "", longitude = "", mine_name = "", mine_no = "", mine_guid }) => (
       <AutoComplete.Option
         key={mine_guid}
-        value={`${longitude},${latitude},${mine_name},${mine_guid}`}
+        value={`${latitude},${longitude},${mine_name},${mine_guid}`}
       >
         {`${mine_name} - ${mine_no}`}
       </AutoComplete.Option>
@@ -93,6 +96,7 @@ export class MineSearch extends Component {
         />
       );
     }
+
     return (
       <Row>
         <Col md={{ span: 12, offset: 6 }} xs={{ span: 20, offset: 2 }}>

@@ -43,7 +43,7 @@ const propTypes = {
   mineCommodityOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   lat: PropTypes.number,
   long: PropTypes.number,
-  zoom: PropTypes.number,
+  zoom: PropTypes.string,
   minesBasicInfo: PropTypes.arrayOf(CustomPropTypes.mine),
   mineName: PropTypes.string,
   mineGuid: PropTypes.string,
