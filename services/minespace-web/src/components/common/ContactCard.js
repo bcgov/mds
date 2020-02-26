@@ -32,7 +32,7 @@ const defaultProps = {
 };
 
 export const ContactCard = (props) => (
-  <Card title={props.title}>
+  <Card title={props.title} className="contact-card">
     <ContactCardRow
       icon="user"
       label="Name"
