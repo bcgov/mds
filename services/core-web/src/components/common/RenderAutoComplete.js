@@ -30,7 +30,7 @@ const defaultProps = {
   iconColor: Styles.COLOR.violet,
   disabled: false,
   meta: {},
-  input: {},
+  input: null,
 };
 
 const RenderAutoComplete = (props) => {
@@ -64,7 +64,7 @@ const RenderAutoComplete = (props) => {
         onSelect={props.handleSelect}
         onChange={(event) => {
           props.handleChange(event);
-          if (props.input && props.input.onChange) {
+          if (props.input) {
             props.input.onChange(event);
           }
         }}

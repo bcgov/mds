@@ -1,7 +1,7 @@
 import React from "react";
-import { func, objectOf, arrayOf, string, bool } from "prop-types";
+import { func, objectOf, string, bool } from "prop-types";
 import { Link } from "react-router-dom";
-import { isEmpty, uniqBy } from "lodash";
+import { uniqBy, flattenDeep } from "lodash";
 import * as Strings from "@common/constants/strings";
 import * as router from "@/constants/routes";
 import NullScreen from "@/components/common/NullScreen";
@@ -139,20 +139,22 @@ const transformRowData = (mines, mineRegionHash, mineTenureHash, mineCommodityHa
     commodity:
       mine.mine_type && mine.mine_type.length > 0
         ? uniqBy(
-            mine.mine_type.map(
-              (type) =>
-                type.mine_type_detail &&
-                type.mine_type_detail.length > 0 &&
-                type.mine_type_detail
-                  .filter((detail) => detail.mine_commodity_code)
-                  .map((detail) => mineCommodityHash[detail.mine_commodity_code])
+            flattenDeep(
+              mine.mine_type.map(
+                (type) =>
+                  type.mine_type_detail &&
+                  type.mine_type_detail.length > 0 &&
+                  type.mine_type_detail
+                    .filter((detail) => detail.mine_commodity_code)
+                    .map((detail) => mineCommodityHash[detail.mine_commodity_code])
+              )
             )
           )
         : [],
     tenure:
       mine.mine_type && mine.mine_type.length > 0
         ? uniqBy(mine.mine_type.map((type) => mineTenureHash[type.mine_tenure_type_code]))
-        : null,
+        : [],
     tsf: mine.mine_tailings_storage_facilities
       ? mine.mine_tailings_storage_facilities.length
       : Strings.EMPTY_FIELD,

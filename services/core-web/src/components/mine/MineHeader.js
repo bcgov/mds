@@ -360,4 +360,7 @@ const mapDispatchToProps = (dispatch) =>
 
 MineHeader.propTypes = propTypes;
 
-export default connect(mapStateToProps, mapDispatchToProps)(MineHeader);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(MineHeader);
