@@ -1,3 +1,6 @@
+// TODO: Remove this line when file is more properly implemented.
+/* eslint-disable */
+
 import React, { Component } from "react";
 
 import L from "leaflet";
@@ -44,6 +47,7 @@ const propTypes = {
   zoom: PropTypes.number,
   minesBasicInfo: PropTypes.arrayOf(CustomPropTypes.mine),
   mineName: PropTypes.string,
+  mineGuid: PropTypes.string,
   transformedMineTypes: CustomPropTypes.transformedMineTypes,
 };
 
@@ -53,6 +57,7 @@ const defaultProps = {
   zoom: Strings.DEFAULT_ZOOM,
   minesBasicInfo: [],
   mineName: "",
+  mineGuid: "",
   transformedMineTypes: {},
 };
 
@@ -62,6 +67,9 @@ const leafletWMSTiledOptions = {
   uppercase: true,
   format: "image/png",
 };
+
+const SELECTED_ICON = L.icon({ iconUrl: SMALL_PIN_SELECTED, iconSize: [60, 60] });
+const UNSELECTED_ICON = L.icon({ iconUrl: SMALL_PIN, iconSize: [60, 60] });
 
 // Override global Leaflet.WMS Layer request to return data
 // into an HTML format so that it renders properly in the iframe
@@ -86,8 +94,8 @@ LeafletWms.Source = LeafletWms.Source.extend({
       request: "GetFeatureInfo",
       info_format: "text/html",
       query_layers: layers.join(","),
-      X: Math.round(point.x),
-      Y: Math.round(point.y),
+      X: Math.round(point.latitude),
+      Y: Math.round(point.longitude),
     };
     return L.extend({}, wmsParams, infoParams);
   },
@@ -108,7 +116,6 @@ LeafletWms.Source = LeafletWms.Source.extend({
     this._map.openPopup(info, latlng, { className: "leaflet-wms-popup" });
   },
 });
-/* eslint-enable */
 
 const getFirstNationLayer = () => {
   const firstNationSource = LeafletWms.source(
@@ -119,6 +126,10 @@ const getFirstNationLayer = () => {
 };
 
 class MineMapLeaflet extends Component {
+  state = {
+    currentMarker: null,
+  };
+
   componentDidMount() {
     // Create the basic leaflet map
     this.map = L.map("leaflet-map", {
@@ -153,12 +164,15 @@ class MineMapLeaflet extends Component {
   };
 
   createPin = (mine) => {
-    const pin = this.props.mineName === mine.mine_name ? SMALL_PIN_SELECTED : SMALL_PIN;
-    const customIcon = L.icon({ iconUrl: pin, iconSize: [60, 60] });
+    const marker = L.marker([mine.latitude, mine.longitude]).bindPopup(Strings.LOADING);
 
-    const latLong = [mine.mine_location.latitude, mine.mine_location.longitude];
+    let icon = UNSELECTED_ICON;
+    if (this.props.mineGuid === mine.mine_guid) {
+      icon = SELECTED_ICON;
+      this.setState({ currentMarker: marker });
+    }
+    marker.setIcon(icon);
 
-    const marker = L.marker(latLong, { icon: customIcon }).bindPopup(Strings.LOADING);
     this.markerClusterGroup.addLayer(marker);
     marker.on("click", this.handleMinePinClick(mine));
   };
@@ -168,13 +182,18 @@ class MineMapLeaflet extends Component {
       const commodityCodes = this.props.transformedMineTypes.mine_commodity_code.map(
         (code) => this.props.mineCommodityOptionsHash[code]
       );
+
+      this.state.currentMarker && this.state.currentMarker.setIcon(UNSELECTED_ICON);
+      e.target.setIcon(SELECTED_ICON);
+      this.setState({ currentMarker: e.target });
+
       const popup = e.target.getPopup();
       popup.setContent(this.renderPopup(this.props.mines[mine.mine_guid], commodityCodes));
     });
   };
 
   addLatLongCircle = () => {
-    if (this.props.lat && this.props.long && !this.props.mineName) {
+    if (!this.props.mineName && this.props.lat && this.props.long) {
       L.circle([this.props.lat, this.props.long], {
         color: "red",
         fillColor: "#f03",
@@ -234,7 +253,6 @@ class MineMapLeaflet extends Component {
       .addTo(this.map);
   };
 
-  /* eslint-disable */
   getLayerGroupFromList = (groupLayerList) => {
     const result = {};
     const layerList = this.webMap.layers;
@@ -260,7 +278,6 @@ class MineMapLeaflet extends Component {
     });
     return result;
   };
-  /* eslint-enable */
 
   initWebMap() {
     // Fetch the WebMap
