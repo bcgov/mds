@@ -5,6 +5,13 @@ import { compose } from "redux";
 import { connect } from "react-redux";
 import { Field, reduxForm, FormSection, formValueSelector } from "redux-form";
 import { Form, Divider, Row, Col, Tooltip } from "antd";
+import {
+  getNoticeOfWorkApplicationProgressStatusCodeOptions,
+  getMineRegionDropdownOptions,
+  getDropdownNoticeOfWorkApplicationTypeOptions,
+  getDropdownNoticeOfWorkApplicationPermitTypeOptions,
+} from "@common/selectors/staticContentSelectors";
+import { required, lat, lon, maxLength, number } from "@common/utils/Validate";
 import CustomPropTypes from "@/customPropTypes";
 import RenderField from "@/components/common/RenderField";
 import RenderDate from "@/components/common/RenderDate";
@@ -18,14 +25,7 @@ import ReclamationSummary from "./activities/ReclamationSummary";
 import NOWDocuments from "@/components/noticeOfWork/applications//NOWDocuments";
 import NOWSubmissionDocuments from "@/components/noticeOfWork/applications//NOWSubmissionDocuments";
 import ReviewNOWContacts from "./ReviewNOWContacts";
-import {
-  getNoticeOfWorkApplicationProgressStatusCodeOptions,
-  getMineRegionDropdownOptions,
-  getDropdownNoticeOfWorkApplicationTypeOptions,
-  getDropdownNoticeOfWorkApplicationPermitTypeOptions,
-} from "@common/selectors/staticContentSelectors";
 import { INFO_CIRCLE } from "@/constants/assets";
-import { required, lat, lon, maxLength, number } from "@common/utils/Validate";
 
 /**
  * @constant ReviewNOWApplication renders edit/view for the NoW Application review step
@@ -760,13 +760,13 @@ export const ReviewNOWApplication = (props) => {
             noticeOfWorkType={props.noticeOfWorkType}
             noticeOfWork={props.initialValues}
           />
-          <ScrollContentWrapper id="submission_documents" title="Submission Documents (VFCBC/NROS)">
+          <ScrollContentWrapper id="submission-documents" title="Submission Documents (VFCBC/NROS)">
             <NOWSubmissionDocuments
               now_application_guid={props.now_application_guid}
               documents={props.submission_documents}
             />
           </ScrollContentWrapper>
-          <ScrollContentWrapper id="additional_documents" title="Additional Documents">
+          <ScrollContentWrapper id="additional-documents" title="Additional Documents">
             <NOWDocuments
               now_application_guid={props.now_application_guid}
               mine_guid={props.mine_guid}

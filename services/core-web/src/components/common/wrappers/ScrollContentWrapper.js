@@ -1,8 +1,13 @@
-/* eslint-disable */
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import { includes, isEmpty } from "lodash";
+import { bindActionCreators } from "redux";
+import { connect } from "react-redux";
+import { Button, Popconfirm } from "antd";
 import { PropTypes } from "prop-types";
+import { change, getFormValues } from "redux-form";
+import { TRASHCAN } from "@/constants/assets";
+import * as FORM from "@/constants/forms";
 
 import NullScreen from "@/components/common/NullScreen";
 
@@ -19,15 +24,18 @@ const propTypes = {
   }).isRequired,
   showContent: PropTypes.bool,
   data: PropTypes.objectOf(PropTypes.any),
+  isViewMode: PropTypes.bool,
+  change: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
   showContent: true,
   data: undefined,
+  isViewMode: true,
 };
 
 export class ScrollContentWrapper extends Component {
-  state = { isEmpty: false, isVisible: true };
+  state = { isVisible: true };
 
   componentDidMount() {
     if (this.props.data !== undefined && isEmpty(this.props.data)) {
@@ -35,20 +43,36 @@ export class ScrollContentWrapper extends Component {
     }
   }
 
-  toggleContent = () => {
+  enableContent = () => {
     this.setState({ isVisible: true });
   };
 
-  renderCorrectView = () =>
-    this.state.isVisible ? (
-      this.props.showContent ? (
+  clearContent = () => {
+    const formSection = this.props.id.replace(/-/g, "_");
+    this.setState({ isVisible: false });
+    return this.props.change(FORM.EDIT_NOTICE_OF_WORK, formSection, { state_modified: "delete" });
+  };
+
+  renderCorrectView = () => {
+    if (this.props.showContent) {
+      return this.state.isVisible ? (
         <span>{this.props.children}</span>
       ) : (
-        <NullScreen type="now-activity" message={this.props.title} />
-      )
-    ) : (
-      <div>Not Visible</div>
-    );
+        <div>
+          <NullScreen type="add-now-activity" message={this.props.title} />
+          <div className="null-screen">
+            {!this.props.isViewMode && (
+              <Button type="primary" onClick={() => this.enableContent()}>
+                Add Activity
+              </Button>
+            )}
+          </div>
+        </div>
+      );
+    } 
+      return <NullScreen type="now-activity" message={this.props.title} />;
+    
+  };
 
   render() {
     const isActive = () => {
@@ -59,8 +83,6 @@ export class ScrollContentWrapper extends Component {
       const isActiveLink = includes(currentActiveLink, this.props.id);
       return isActiveLink ? "circle purple" : "circle grey";
     };
-    console.log(this.props.data);
-    console.log(isEmpty(this.props.data));
 
     return (
       <div className="scroll-wrapper">
@@ -71,6 +93,22 @@ export class ScrollContentWrapper extends Component {
               <h3>{this.props.title}</h3>
             </div>
           </div>
+          {!this.props.isViewMode && this.props.showContent && this.state.isVisible && (
+            <div name="remove" title="remove">
+              <Popconfirm
+                placement="leftBottom"
+                title={`Are you sure you want to remove the activity ${this.props.title}? You must save the form to commit these changes.`}
+                okText="Yes"
+                cancelText="No"
+                style={{ width: "500px" }}
+                onConfirm={() => this.clearContent()}
+              >
+                <Button type="secondary" size="small" ghost>
+                  <img name="remove" src={TRASHCAN} alt="Remove Activity" />
+                </Button>
+              </Popconfirm>
+            </div>
+          )}
         </div>
         <div className="scroll-wrapper--border">
           <div className="scroll-wrapper--body">{this.renderCorrectView()}</div>
@@ -83,4 +121,21 @@ export class ScrollContentWrapper extends Component {
 ScrollContentWrapper.propTypes = propTypes;
 ScrollContentWrapper.defaultProps = defaultProps;
 
-export default withRouter(ScrollContentWrapper);
+const mapStateToProps = (state) => ({
+  formValues: getFormValues(FORM.EDIT_NOTICE_OF_WORK)(state),
+});
+
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators(
+    {
+      change,
+    },
+    dispatch
+  );
+
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(ScrollContentWrapper)
+);

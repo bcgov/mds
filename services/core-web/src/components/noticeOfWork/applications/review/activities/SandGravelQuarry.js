@@ -3,7 +3,7 @@ import { PropTypes } from "prop-types";
 import { Field, Fields, formValueSelector } from "redux-form";
 import { connect } from "react-redux";
 import { Row, Col, Table, Button } from "antd";
-import { number } from "@common/utils/Validate";
+import { maxLength, number } from "@common/utils/Validate";
 import { getDropdownNoticeOfWorkUnitTypeOptions } from "@common/selectors/staticContentSelectors";
 import * as FORM from "@/constants/forms";
 import { TRASHCAN } from "@/constants/assets";
@@ -139,7 +139,6 @@ export const SandGravelQuarry = (props) => {
 
   return (
     <div>
-      <br />
       <h4>Soil Conservation</h4>
       <Row gutter={16}>
         <Col md={12} sm={24}>
@@ -270,32 +269,6 @@ export const SandGravelQuarry = (props) => {
         </Col>
       </Row>
       <br />
-      <br />
-      <h4>Reclamation Program</h4>
-      <Row gutter={16}>
-        <Col md={12} sm={24}>
-          <div className="field-title">
-            Proposed reclamation and timing for this specific activity
-          </div>
-          <Field
-            id="reclamation_description"
-            name="reclamation_description"
-            component={RenderAutoSizeField}
-            disabled={props.isViewMode}
-          />
-        </Col>
-        <Col md={12} sm={24}>
-          <div className="field-title">
-            Estimated Cost of reclamation activities described above
-          </div>
-          <Field
-            id="reclamation_cost"
-            name="reclamation_cost"
-            component={RenderField}
-            disabled={props.isViewMode}
-          />
-        </Col>
-      </Row>
       <Table
         align="left"
         pagination={false}
@@ -318,6 +291,34 @@ export const SandGravelQuarry = (props) => {
         editRecord={props.editRecord}
         addRecord={props.addRecord}
       />
+      <br />
+      <h4>Reclamation Program</h4>
+      <Row gutter={16}>
+        <Col md={12} sm={24}>
+          <div className="field-title">
+            Proposed reclamation and timing for this specific activity
+          </div>
+          <Field
+            id="reclamation_description"
+            name="reclamation_description"
+            component={RenderAutoSizeField}
+            disabled={props.isViewMode}
+            validate={[maxLength(4000)]}
+          />
+        </Col>
+        <Col md={12} sm={24}>
+          <div className="field-title">
+            Estimated Cost of reclamation activities described above
+          </div>
+          <Field
+            id="reclamation_cost"
+            name="reclamation_cost"
+            component={RenderField}
+            disabled={props.isViewMode}
+            validate={[number]}
+          />
+        </Col>
+      </Row>
     </div>
   );
 };
