@@ -6,6 +6,7 @@ from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.types import TypeEngine
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.ext.declarative import declarative_base
+from marshmallow_sqlalchemy import ModelSchema
 
 from app.extensions import db
 from app.api.constants import STATE_MODIFIED_DELETE_ON_PUT
@@ -61,6 +62,8 @@ class Base(db.Model):
     _edit_key = None
     # Set default query_class on base class.
     query_class = UserBoundQuery
+
+    _ModelSchema = ModelSchema
 
     def save(self, commit=True):
         db.session.add(self)
@@ -199,7 +202,7 @@ class Base(db.Model):
                     if py_type == datetime or py_type == date:
                         #json value is string, if expecting datetime in that column, convert here
                         if v is not None:
-                            setattr(self, k, parser.parse(v) )
+                            setattr(self, k, parser.parse(v))
                         continue
                     if py_type == decimal.Decimal:
                         #if Decimal column, cast whatever you get to Decimal

@@ -1,8 +1,7 @@
 from flask_restplus import Resource
-from flask import request
+from flask import request, current_app
 from sqlalchemy_filters import apply_pagination, apply_sort
 from sqlalchemy import desc, func, or_
-
 
 from app.extensions import api
 from app.api.mines.mine.models.mine import Mine
@@ -10,20 +9,20 @@ from app.api.mines.region.models.region import MineRegionCode
 from app.api.now_submissions.models.application import Application
 from app.api.now_submissions.response_models import PAGINATED_APPLICATION_LIST, APPLICATION
 from app.api.utils.access_decorators import requires_role_view_all
-from app.api.utils.resources_mixins import UserMixin 
-
+from app.api.utils.resources_mixins import UserMixin
 
 PAGE_DEFAULT = 1
 PER_PAGE_DEFAULT = 25
 
 
-class ApplicationListResource(Resource, UserMixin ):
+class ApplicationListResource(Resource, UserMixin):
     @api.doc(
         description='Get a list of applications. Order: receiveddate DESC',
         params={
             'page': f'The page number of paginated records to return. Default: {PAGE_DEFAULT}',
             'per_page': f'The number of records to return per page. Default: {PER_PAGE_DEFAULT}',
-            'status': 'Comma-separated list of statuses to include in results. Default: All statuses.',
+            'status':
+            'Comma-separated list of statuses to include in results. Default: All statuses.',
             'noticeofworktype': 'Substring to match with a NoW\s type',
             'mine_region': 'Mine region code to match with a NoW. Default: All regions.',
             'trackingnumber': 'Number of the NoW',
@@ -35,7 +34,7 @@ class ApplicationListResource(Resource, UserMixin ):
         records, pagination_details = self._apply_filters_and_pagination(
             page_number=request.args.get('page', PAGE_DEFAULT, type=int),
             page_size=request.args.get('per_page', PER_PAGE_DEFAULT, type=int),
-            sort_field = request.args.get('sort_field', 'receiveddate', type=str),
+            sort_field=request.args.get('sort_field', 'receiveddate', type=str),
             sort_dir=request.args.get('sort_dir', 'desc', type=str),
             status=request.args.get('status', type=str),
             noticeofworktype=request.args.get('noticeofworktype', type=str),
@@ -67,7 +66,8 @@ class ApplicationListResource(Resource, UserMixin ):
         base_query = Application.query
 
         if noticeofworktype is not None:
-            filters.append(func.lower(Application.noticeofworktype).contains(func.lower(noticeofworktype)))
+            filters.append(
+                func.lower(Application.noticeofworktype).contains(func.lower(noticeofworktype)))
         if trackingnumber is not None:
             filters.append(Application.trackingnumber == trackingnumber)
 
@@ -79,10 +79,11 @@ class ApplicationListResource(Resource, UserMixin ):
             filters.append(Mine.mine_region.in_(region_filter_values))
 
         if mine_search is not None:
-            filters.append(or_(
-                func.lower(Application.minenumber).contains(func.lower(mine_search)),
-                func.lower(Mine.mine_name).contains(func.lower(mine_search)),
-                func.lower(Mine.mine_no).contains(func.lower(mine_search))))
+            filters.append(
+                or_(
+                    func.lower(Application.minenumber).contains(func.lower(mine_search)),
+                    func.lower(Mine.mine_name).contains(func.lower(mine_search)),
+                    func.lower(Mine.mine_no).contains(func.lower(mine_search))))
 
         status_filter_values = []
         if status is not None:
@@ -107,5 +108,11 @@ class ApplicationListResource(Resource, UserMixin ):
     @api.expect(APPLICATION)
     @api.marshal_with(None, code=201)
     def post(self):
-        raise NotImplemented('Not Implemented')
-        return 
+        data = request.json
+        application = Application._schema().load(data)
+
+        current_app.logger.debug("Test")
+        current_app.logger.debug(application)
+        current_app.logger.debug(application.proposed_settling_pond[0].width)
+        current_app.logger.debug(application.proposed_settling_pond[1].width)
+        return

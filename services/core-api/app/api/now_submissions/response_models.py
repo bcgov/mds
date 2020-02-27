@@ -1,7 +1,6 @@
 from app.extensions import api
 from flask_restplus import fields
 
-
 CLIENT = api.model(
     'Client', {
         'type': fields.String,
@@ -90,19 +89,17 @@ SETTLING_POND = api.model(
         'timbervolume': fields.Arbitrary,
     })
 
-SURFACE_BULK_SAMPLE_ACTIVITY = api.model(
-    'SURFACE_BULK_SAMPLE_ACTIVITY', {
-        'type': fields.String,
-        'disturbedarea': fields.Arbitrary,
-        'timbervolume': fields.Arbitrary,
-    })
+SURFACE_BULK_SAMPLE_ACTIVITY = api.model('SURFACE_BULK_SAMPLE_ACTIVITY', {
+    'type': fields.String,
+    'disturbedarea': fields.Arbitrary,
+    'timbervolume': fields.Arbitrary,
+})
 
-SAND_GRAVEL_QUARRY_ACTIVITY = api.model(
-    'SAND_GRAVEL_QUARRY_ACTIVITY', {
-        'type': fields.String,
-        'disturbedarea': fields.Arbitrary,
-        'timbervolume': fields.Arbitrary,
-    })
+SAND_GRAVEL_QUARRY_ACTIVITY = api.model('SAND_GRAVEL_QUARRY_ACTIVITY', {
+    'type': fields.String,
+    'disturbedarea': fields.Arbitrary,
+    'timbervolume': fields.Arbitrary,
+})
 
 UNDER_EXP_NEW_ACTIVITY = api.model(
     'UNDER_EXP_NEW_ACTIVITY', {
@@ -153,9 +150,9 @@ EXP_SURFACE_DRILL_ACTIVITY = api.model(
     })
 
 MECH_TRENCHING_ACTIVITY = api.model(
-    'EXP_ACCESS_ACTIVITY', {
+    'MECH_TRENCHING_ACTIVITY', {
         'type': fields.String,
-        'numberofsites':  fields.Integer,
+        'numberofsites': fields.Integer,
         'disturbedarea': fields.Arbitrary,
         'timbervolume': fields.Arbitrary,
     })
@@ -357,8 +354,7 @@ PAGINATED_LIST = api.model(
 
 PAGINATED_APPLICATION_LIST = api.inherit('PaginatedApplicationList', PAGINATED_LIST, {
     'records': fields.List(fields.Nested(APPLICATION_LIST)),
-    })
-    
+})
 
 APPLICATIONNDA = api.model(
     'ApplicationNDA', {

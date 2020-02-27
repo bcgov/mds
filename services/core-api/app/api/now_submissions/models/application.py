@@ -2,6 +2,7 @@ import uuid
 from werkzeug.exceptions import NotFound
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.ext.associationproxy import association_proxy
+from marshmallow import fields
 
 from app.extensions import db
 from app.api.utils.models_mixins import Base
@@ -29,6 +30,12 @@ from app.api.now_submissions.models.proposed_settling_pond_xref import ProposedS
 class Application(Base):
     __tablename__ = "application"
     __table_args__ = {"schema": "now_submissions"}
+
+    class _ModelSchema(Base._ModelSchema):
+        application_guid = fields.String(dump_only=True)
+        now_application_guid = fields.String(dump_only=True)
+        mine_guid = fields.String(dump_only=True)
+
     messageid = db.Column(db.Integer, primary_key=True)
     now_application_identity = db.relationship(
         'NOWApplicationIdentity',

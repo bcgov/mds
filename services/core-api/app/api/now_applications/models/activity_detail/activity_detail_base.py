@@ -18,6 +18,10 @@ class ActivityDetailBase(AuditMixin, Base):
     __tablename__ = 'activity_detail'
     _edit_groups = [NOW_APPLICATION_EDIT_GROUP]
 
+    class _ModelSchema(Base._ModelSchema):
+        activity_type_code = fields.String(dump_only=True)
+        activity_detail_id = fields.Integer(dump_only=True)
+
     activity_detail_id = db.Column(db.Integer, primary_key=True, server_default=FetchedValue())
     activity_type_description = db.Column(db.String)
     disturbed_area = db.Column(db.Numeric(14, 2))
