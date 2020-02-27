@@ -17,3 +17,12 @@ export const storeKeycloakData = (data = {}) => ({
     data,
   },
 });
+
+export const storeIsProponent = (isProponent) => {
+  return {
+    type: ActionTypes.STORE_IS_PROPONENT,
+    payload: {
+      data: isProponent,
+    },
+  };
+};

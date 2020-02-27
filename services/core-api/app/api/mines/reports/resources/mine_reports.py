@@ -55,7 +55,7 @@ class MineReportListResource(Resource, UserMixin):
 
     @api.doc(description='creates a new report for the mine')
     @api.marshal_with(MINE_REPORT_MODEL, code=201)
-    @requires_role_edit_report
+    @requires_any_of([EDIT_REPORT, MINESPACE_PROPONENT])
     def post(self, mine_guid):
         mine = Mine.find_by_mine_guid(mine_guid)
         if not mine:
