@@ -44,7 +44,9 @@ import {
 } from "@common/reducers";
 import * as reducerTypes from "@common/constants/reducerTypes";
 import { createReducer } from "@common/utils/helpers";
+import { DOCUMENTS } from "@/constants/reducerTypes";
 import networkReducer from "./networkReducer";
+import documentReducer from "./documentReducer";
 
 export const reducerObject = {
   form: formReducer,
@@ -63,6 +65,7 @@ export const reducerObject = {
   ...reportReducer,
   ...userReducer,
   ...noticeOfWorkReducer,
+  [DOCUMENTS]: documentReducer,
   [reducerTypes.CREATE_PARTY]: createReducer(networkReducer, reducerTypes.CREATE_PARTY),
   [reducerTypes.UPDATE_PARTY]: createReducer(networkReducer, reducerTypes.UPDATE_PARTY),
   [reducerTypes.GET_PARTIES]: createReducer(networkReducer, reducerTypes.GET_PARTIES),

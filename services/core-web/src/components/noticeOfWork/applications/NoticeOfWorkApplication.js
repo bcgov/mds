@@ -28,7 +28,12 @@ import {
 import { formatDate } from "@common/utils/helpers";
 import { clearNoticeOfWorkApplication } from "@common/actions/noticeOfWorkActions";
 import { downloadNowDocument } from "@common/utils/actionlessNetworkCalls";
-import { generateNoticeOfWorkApplicationDocument } from "@/actionCreators/noticeOfWorkActionCreator";
+import {
+  generateNoticeOfWorkApplicationDocument,
+  fetchNoticeOfWorkApplicationContextTemplate,
+} from "@/actionCreators/documentActionCreator";
+import { getDocumentContextTemplate } from "@/reducers/documentReducer";
+
 import * as routes from "@/constants/routes";
 import ApplicationStepOne from "@/components/noticeOfWork/applications/applicationStepOne/ApplicationStepOne";
 import NOWApplicationReviews from "@/components/noticeOfWork/applications/referals/NOWApplicationReviews";
@@ -56,6 +61,8 @@ const propTypes = {
   fetchImportedNoticeOfWorkApplication: PropTypes.func.isRequired,
   fetchOriginalNoticeOfWorkApplication: PropTypes.func.isRequired,
   generateNoticeOfWorkApplicationDocument: PropTypes.func.isRequired,
+  fetchNoticeOfWorkApplicationContextTemplate: PropTypes.func.isRequired,
+  documentContextTemplate: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)),
   reset: PropTypes.func.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func,
@@ -88,6 +95,7 @@ const propTypes = {
 
 const defaultProps = {
   noticeOfWork: { application_progress: [] },
+  documentContextTemplate: {},
 };
 
 export class NoticeOfWorkApplication extends Component {
@@ -370,15 +378,28 @@ export class NoticeOfWorkApplication extends Component {
   handleGenerateDocument = (menuItem) => {
     const documentTypeCode = menuItem.key;
     const documentType = this.props.generatableApplicationDocuments[documentTypeCode];
-    this.props.openModal({
-      props: {
-        documentType,
-        onSubmit: (values) => this.handleGenerateDocumentFormSubmit(documentType, values),
-        title: `Generate ${documentType.description}`,
-      },
-      width: "75vw",
-      content: modalConfig.GENERATE_DOCUMENT,
-    });
+    this.props
+      .fetchNoticeOfWorkApplicationContextTemplate(
+        documentTypeCode,
+        this.props.noticeOfWork.now_application_guid
+      )
+      .then(() => {
+        const initialValues = {};
+        this.props.documentContextTemplate.document_template.form_spec.map((item) => ({
+          [item.id]: item["context-value"],
+          ...initialValues,
+        }));
+        this.props.openModal({
+          props: {
+            initialValues,
+            documentType: this.props.documentContextTemplate,
+            onSubmit: (values) => this.handleGenerateDocumentFormSubmit(documentType, values),
+            title: `Generate ${documentType.description}`,
+          },
+          width: "75vw",
+          content: modalConfig.GENERATE_DOCUMENT,
+        });
+      });
   };
 
   handleGenerateDocumentFormSubmit = (documentType, values) => {
@@ -657,6 +678,7 @@ const mapStateToProps = (state) => ({
   applicationStatusOptions: getDropdownNoticeOfWorkApplicationStatusOptions(state),
   applicationProgressStatusCodes: getNoticeOfWorkApplicationProgressStatusCodeOptions(state),
   generatableApplicationDocuments: getGeneratableNoticeOfWorkApplicationDocumentTypeOptions(state),
+  documentContextTemplate: getDocumentContextTemplate(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
@@ -666,6 +688,7 @@ const mapDispatchToProps = (dispatch) =>
       fetchImportedNoticeOfWorkApplication,
       fetchOriginalNoticeOfWorkApplication,
       generateNoticeOfWorkApplicationDocument,
+      fetchNoticeOfWorkApplicationContextTemplate,
       fetchMineRecordById,
       createNoticeOfWorkApplicationProgress,
       reset,
@@ -679,7 +702,4 @@ const mapDispatchToProps = (dispatch) =>
 NoticeOfWorkApplication.propTypes = propTypes;
 NoticeOfWorkApplication.defaultProps = defaultProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(NoticeOfWorkApplication);
+export default connect(mapStateToProps, mapDispatchToProps)(NoticeOfWorkApplication);

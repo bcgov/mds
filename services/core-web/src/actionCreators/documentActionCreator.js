@@ -7,6 +7,33 @@ import CustomAxios from "@common/customAxios";
 import * as COMMON_API from "@common/constants/API";
 import * as API from "@/constants/API";
 import * as reducerTypes from "@/constants/reducerTypes";
+import * as documentActions from "@/actions/documentActions";
+
+export const fetchNoticeOfWorkApplicationContextTemplate = (
+  documentTypeCode,
+  now_application_guid
+) => (dispatch) => {
+  dispatch(request(reducerTypes.GET_NOTICE_OF_WORK_APPLICATION_DOCUMENT_CONTEXT_TEMPLATE));
+  dispatch(showLoading());
+  return CustomAxios()
+    .get(
+      ENVIRONMENT.apiUrl +
+        API.GET_NOTICE_OF_WORK_APPLICATION_DOCUMENT_CONTEXT_TEMPLATE(
+          documentTypeCode,
+          now_application_guid
+        ),
+      createRequestHeader()
+    )
+    .then((response) => {
+      dispatch(success(reducerTypes.GET_NOTICE_OF_WORK_APPLICATION_DOCUMENT_CONTEXT_TEMPLATE));
+      dispatch(documentActions.storeDocumentContextTemplate(response.data));
+      return response;
+    })
+    .catch(() =>
+      dispatch(error(reducerTypes.GET_NOTICE_OF_WORK_APPLICATION_DOCUMENT_CONTEXT_TEMPLATE))
+    )
+    .finally(() => dispatch(hideLoading()));
+};
 
 export const generateNoticeOfWorkApplicationDocument = (documentTypeCode, payload) => (
   dispatch
