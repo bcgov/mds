@@ -58,6 +58,7 @@ UPDATE document_template SET form_spec_json = '[
       "type": "FIELD",
       "placeholder": "Enter the inspector''s name",
       "required": true,
+      "rel_data_path": "now_application.lead_inspector.name"
     }
   ]' 
 where document_template_code = 'NOW-RJL';
@@ -114,7 +115,8 @@ UPDATE document_template SET form_spec_json = '[
       "label": "Inspector",
       "type": "FIELD",
       "placeholder": "Enter the inspector''s name",
-      "required": true
+      "required": true,
+      "rel_data_path": "now_application.lead_inspector.name"
     }
   ]'
 where document_template_code = 'NOW-WDL';
@@ -193,7 +195,8 @@ UPDATE document_template SET form_spec_json = '[
       "label": "Inspector",
       "type": "FIELD",
       "placeholder": "Enter the inspector''s name",
-      "required": true
+      "required": true,
+      "rel_data_path": "now_application.lead_inspector.name"
     }
   ]'
 where document_template_code = 'NOW-CAL';

@@ -71,7 +71,7 @@ class NOWApplicationDocumentGenerateResource(Resource, UserMixin):
             NOW_DOCUMENT_DOWNLOAD_TOKEN(token), {
                 'document_type_code': document_type_code,
                 'now_application_guid': data['now_application_guid'],
-                'template_data': data['template_data']
+                'template_data': template_data
             }, TIMEOUT_5_MINUTES)
 
         return {'token': token}

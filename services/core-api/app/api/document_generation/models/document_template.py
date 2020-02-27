@@ -36,14 +36,15 @@ class DocumentTemplate(Base, AuditMixin):
     def _form_spec_with_context(self, primary_key):
         spec = json.loads(self.form_spec_json)
 
-        source_model_name = 'NOWApplicationIdentity'
-        current_app.logger.debug(f'getting model for string -> {source_model_name}')
+        current_app.logger.debug(f'getting model for string -> {self.source_model_name}')
 
-        source_model = get_model_by_model_name(source_model_name)
+        source_model = get_model_by_model_name(self.source_model_name)
         current_app.logger.debug(f'source_obj_model -> {source_model}')
 
         source_obj_instance = source_model.query.get(primary_key)
         current_app.logger.debug(f'source_obj_instance -> {source_obj_instance}')
+        if not source_obj_instance:
+            raise Exception("Context Object not found")
 
         for item in spec:
             relative_data_path = item.get('rel_data_path')

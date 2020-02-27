@@ -13,7 +13,7 @@ class TestGetNOWApplicationDocumentTypeResource:
         get_resp = test_client.get(
             f'/now-applications/application-document-types',
             headers=auth_headers['full_auth_header'])
-        assert get_resp.status_code == 200
+        assert get_resp.status_code == 200, get_resp.response
         get_data = json.loads(get_resp.data.decode())
         assert len(get_data['records']) == len(NOWApplicationDocumentType.active())
 
@@ -37,7 +37,7 @@ class TestGetNOWApplicationDocumentTypeResource:
         assert get_resp.status_code == 200, get_resp.response
         get_data = json.loads(get_resp.data.decode())
         assert get_data['document_template']
-        assert get_data['document_template']['form_spec']
+        assert get_data['document_template'].get('form_spec'), get_data
         mine_no_item = [
             x for x in get_data['document_template']['form_spec'] if x['id'] == "mine_no"
         ][0]
@@ -89,16 +89,25 @@ class TestGetNOWApplicationDocumentTypeResource:
 
     def test_generate_document_returns_token(self, test_client, db_session, auth_headers):
         """Should return the a token for successful generation"""
+        now_application = NOWApplicationFactory()
+        now_application_identity = NOWApplicationIdentityFactory(now_application=now_application)
 
-        data = {'now_application_guid': uuid.uuid4(), 'template_data': {'mine_no': '11111'}}
+        changed_mine_no = str(now_application_identity.mine.mine_no + '1')
+        data = {
+            'now_application_guid': now_application_identity.now_application_guid,
+            'template_data': {
+                'mine_no': changed_mine_no
+            }
+        }
 
         post_resp = test_client.post(
-            f'/now-applications/application-document-types/CAL/generate',
+            f'/now-applications/application-document-types/RJL/generate',
             json=data,
             headers=auth_headers['full_auth_header'])
+
         assert post_resp.status_code == 200
         post_data = json.loads(post_resp.data.decode())
         token_data = cache.get(NOW_DOCUMENT_DOWNLOAD_TOKEN(post_data['token']))
         assert token_data is not None
-
+        assert token_data['template_data']['mine_no'] != changed_mine_no
         assert post_data['token']
