@@ -6,6 +6,7 @@ import { connect } from "react-redux";
 import { Button, Popconfirm } from "antd";
 import { PropTypes } from "prop-types";
 import { change, getFormValues } from "redux-form";
+import CustomPropTypes from "@/customPropTypes";
 import { TRASHCAN } from "@/constants/assets";
 import * as FORM from "@/constants/forms";
 
@@ -26,6 +27,7 @@ const propTypes = {
   data: PropTypes.objectOf(PropTypes.any),
   isViewMode: PropTypes.bool,
   change: PropTypes.func.isRequired,
+  formValues: CustomPropTypes.importedNOWApplication.isRequired,
 };
 
 const defaultProps = {
@@ -50,6 +52,26 @@ export class ScrollContentWrapper extends Component {
   clearContent = () => {
     const formSection = this.props.id.replace(/-/g, "_");
     this.setState({ isVisible: false });
+    // delete nested children of activities, if they exist
+    if (
+      this.props.formValues[formSection].details &&
+      this.props.formValues[formSection].details.length > 0
+    ) {
+      this.props.formValues[formSection].details.map(() => {
+        return this.props.change(FORM.EDIT_NOTICE_OF_WORK, `${formSection}.details`, {
+          state_modified: "delete",
+        });
+      });
+    } else if (
+      this.props.formValues[formSection].equipment &&
+      this.props.formValues[formSection].equipment.length > 0
+    ) {
+      this.props.formValues[formSection].details.map(() => {
+        return this.props.change(FORM.EDIT_NOTICE_OF_WORK, `${formSection}.equipment`, {
+          state_modified: "delete",
+        });
+      });
+    }
     return this.props.change(FORM.EDIT_NOTICE_OF_WORK, formSection, { state_modified: "delete" });
   };
 
@@ -69,9 +91,8 @@ export class ScrollContentWrapper extends Component {
           </div>
         </div>
       );
-    } 
-      return <NullScreen type="now-activity" message={this.props.title} />;
-    
+    }
+    return <NullScreen type="now-activity" message={this.props.title} />;
   };
 
   render() {
@@ -96,11 +117,10 @@ export class ScrollContentWrapper extends Component {
           {!this.props.isViewMode && this.props.showContent && this.state.isVisible && (
             <div name="remove" title="remove">
               <Popconfirm
-                placement="leftBottom"
+                placement="left"
                 title={`Are you sure you want to remove the activity ${this.props.title}? You must save the form to commit these changes.`}
                 okText="Yes"
                 cancelText="No"
-                style={{ width: "500px" }}
                 onConfirm={() => this.clearContent()}
               >
                 <Button type="secondary" size="small" ghost>
