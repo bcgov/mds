@@ -316,6 +316,13 @@ export class Dashboard extends Component {
   renderCorrectView() {
     const { search, map, page, per_page } = this.state.params;
     const isMap = map ? "map" : "list";
+    const mineNameMine =
+      this.state.mineName &&
+      this.props.mines &&
+      this.props.mines.length > 0 &&
+      this.props.mines.filter((mine) => mine.mine_name === this.state.mineName)[0];
+    const mineGuid = mineNameMine ? mineNameMine.mine_guid : null;
+
     return (
       <div>
         <Tabs
@@ -439,6 +446,7 @@ export class Dashboard extends Component {
                       zoom={this.state.zoom}
                       minesBasicInfo={this.props.pageData.mines}
                       mineName={this.state.mineName}
+                      mineGuid={mineGuid}
                       mines={this.props.mines}
                       fetchMineRecordById={this.props.fetchMineRecordById}
                       transformedMineTypes={this.props.transformedMineTypes}
@@ -513,7 +521,4 @@ const mapDispatchToProps = (dispatch) =>
 
 Dashboard.propTypes = propTypes;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Dashboard);
+export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);

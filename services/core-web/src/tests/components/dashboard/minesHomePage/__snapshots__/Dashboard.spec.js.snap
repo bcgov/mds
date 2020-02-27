@@ -832,6 +832,7 @@ exports[`Dashboard renders properly 1`] = `
                     }
                     lat={53.7267}
                     long={-127.6476}
+                    mineGuid={null}
                     mineName={null}
                     mines={
                       Object {
