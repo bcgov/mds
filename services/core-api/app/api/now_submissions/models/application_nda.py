@@ -1,6 +1,8 @@
 from app.api.utils.models_mixins import Base
 from app.extensions import db
 
+from app.api.now_submissions.models.client import Client
+from app.api.now_submissions.models.document_nda import DocumentNDA
 
 class ApplicationNDA(Base):
     __tablename__ = "application_nda"
@@ -32,6 +34,13 @@ class ApplicationNDA(Base):
     processeddate = db.Column(db.DateTime)
     nrsosapplicationid = db.Column(db.String)
 
+    applicant = db.relationship('Client', lazy='select', foreign_keys=[applicantclientid])
+    submitter = db.relationship('Client', lazy='select', foreign_keys=[submitterclientid])
+    documents = db.relationship('DocumentNDA', lazy='select')
 
     def __repr__(self):
         return '<ApplicationNDA %r>' % self.messageid
+
+    @classmethod
+    def find_by_messageid(cls, messageid):
+        return cls.query.filter_by(messageid=messageid).first()
