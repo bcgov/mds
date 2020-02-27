@@ -5,7 +5,7 @@ import { FormSection, arrayInsert, arrayRemove, arrayPush } from "redux-form";
 import { connect } from "react-redux";
 import * as FORM from "@/constants/forms";
 import CustomPropTypes from "@/customPropTypes";
-import ScrollContentWrapper from "@/components/common/wrappers/ScrollContentWrapper";
+import ScrollContentWrapper from "@/components/noticeOfWork/applications/ScrollContentWrapper";
 import AccessRoads from "@/components/noticeOfWork/applications/review/activities/AccessRoads";
 import Blasting from "@/components/noticeOfWork/applications/review/activities/Blasting";
 import SurfaceDrilling from "@/components/noticeOfWork/applications/review/activities/SurfaceDrilling";
