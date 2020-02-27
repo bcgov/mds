@@ -385,10 +385,10 @@ export class NoticeOfWorkApplication extends Component {
       )
       .then(() => {
         const initialValues = {};
-        this.props.documentContextTemplate.document_template.form_spec.map((item) => ({
-          [item.id]: item["context-value"],
-          ...initialValues,
-        }));
+        this.props.documentContextTemplate.document_template.form_spec.map(
+          // eslint-disable-next-line
+          (item) => (initialValues[item.id] = item["context-value"])
+        );
         this.props.openModal({
           props: {
             initialValues,
