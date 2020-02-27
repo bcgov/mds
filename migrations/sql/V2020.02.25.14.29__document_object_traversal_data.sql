@@ -171,7 +171,8 @@ UPDATE document_template SET form_spec_json = '[
       "label": "Application Date",
       "type": "DATE",
       "placeholder": null,
-      "required": true
+      "required": true,
+      "rel_data_path": "now_application.submitted_date"
     },
     {
       "id": "exploration_type",
