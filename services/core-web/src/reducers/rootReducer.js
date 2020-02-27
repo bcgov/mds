@@ -1,3 +1,28 @@
+/*
+ 
+                    MMM                                                                                                                                  OMM7                       
+    ~MMN=          7MMMM                                                                                                                                 MMMM           MMMM        
+    MMMMM          IMMMM                                           NMMMM$ ,  ++,   NM  :MMOMN?   DMMMMMMM8    N=    +++++                                MMMM           MMMM:       
+    MMMMM +8$  ?8$ IMMMM                          MMM+  MMM      NMMMMMMM MMMMMM  MMM  MMMMMMMMM MMMMMMMMM  ~MMMM  MMMMMMMMM8 MMe.MM:                    MMMM  8O   8O  MMMM:       
+    MMMMMNMMMM8MMMMIMMMM                         MMMMM MMMMM     MMM7     MMMMMM, MMM  MMM   NMM,MMM        MMMMMM    IMMD    MMM MMMM                   MMMM MMMM MMMM MMMM:       
+    MMMMMNMMMM8MMMMIMMMM                       8MMMMMMMMMMMMM    MMMMMMO  MMM MMM MMM  MMM    MM:MMMZZ,,   8MMMDMMM    MMM    MMM  8DMM                  MMMM MMMM MMMM MMMM:       
+    MMMMMNMMMMOMMMMIMMMM                     MMMMM 7MMMNM MMM    MMMMMMM  MMMMMMM :MMZ MMM    MM:MMMMMM    MMMMMMMM,   MMM    MMMMMMMMMN                 MMMM MMMM MMMM MMMM:       
+    MMMMMNMMM      IMMMM                   8MMMM:    ~MM  ,MMMO  MMM7     MMMhMMM  MMM MMMNMMMMM:MMM       MMMM~~MMM,  MMM    MMMMMMMNMM                 MMMM      DMMM MMMM:       
+    MMMMMNMMN,MMMM, MMMM                 ,MMMMZ            ,MMMN =MMMMMMM MMMhhMM  MMM MMMMMMMM, MMM  e,  MMMI   MMMM  MMM    MMM     MMM                MMMZ NMMMM MMM MMMM:       
+    MMMMM NMM MMMMMM :MM                MMMMN                MMMM MMMMMMM=MMM hhMN MMM NMM,     DMMMMMMMNMMMM     MMM  MMM    MMM     MMM:               MM  MMMMM8 MM?7MMMM:       
+    MMMMMMMMMM ?MMMMMM                MMMMM:                                                     MNMMMM                       ?MM      MMM:                MMMMMM :MMMMMMMMM:       
+    MMMMMMMMMM~  MMMMMM:             8MMM                                                                                               MMM:             NMMMMM,  DMMMMMMMMM:       
+    MMMMMMMMD ~MMMMMMMMM            NMMN                                                                                                 MMMM            MMMMMMMMM  MMMMMMMM:       
+    MMMMMMMZ MMMMMMMMMMM          8MMMM                                                                                                   MMM            MMMMMMMMMM7 MMMMMMM:       
+    MMMMMMM DMMMMMMMMMMM         MMMM,                                                                                                    ,MMM+          MMMMMMMMMMM :MMMMMM:       
+    IMMMMMM MMMMMMMMMMM8       MMMMMMI                                                                                                    ?7MMMM         MMMMMMMMMMMD MMMMMM        
+     NMMMMMMMMMMMMMMMMM       ,MMMMMMMM                                                                                                  MMMMMMMM        ~MMMMMMMMMMMMMMMMM,        
+      MMMMMMMMMMMMMMMM                                                                                                                                    ,MMMMMMMMMMMMMMM?         
+       :MMMMMMMMMMMM:                                                                                                                                       DMMMMMMMMMMMM           
+          IMMMMMMD                                                                                                                                             MMMMMMM              
+                                                                                                                                        
+*/
+
 import { combineReducers } from "redux";
 import { reducer as formReducer } from "redux-form";
 import { loadingBarReducer } from "react-redux-loading-bar";
