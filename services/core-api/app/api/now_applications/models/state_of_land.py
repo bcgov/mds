@@ -29,11 +29,11 @@ class StateOfLand(Base):
     fn_engagement_activities = db.Column(db.String)
     cultural_heritage_description = db.Column(db.String)
 
-    has_shared_info_with_fn = db.Column(db.Boolean, nullable=False, default=False)
-    has_fn_cultural_heritage_sites_in_area = db.Column(db.Boolean, nullable=False, default=False)
-    has_activity_in_park = db.Column(db.Boolean, nullable=False, default=False)
-    is_on_private_land = db.Column(db.Boolean, nullable=False, default=False)
-    has_auth_lieutenant_gov_council = db.Column(db.Boolean, nullable=False, default=False)
+    has_shared_info_with_fn = db.Column(db.Boolean, nullable=True)
+    has_fn_cultural_heritage_sites_in_area = db.Column(db.Boolean, nullable=True)
+    has_activity_in_park = db.Column(db.Boolean, nullable=True)
+    is_on_private_land = db.Column(db.Boolean, nullable=True)
+    has_auth_lieutenant_gov_council = db.Column(db.Boolean, nullable=True)
 
     def __repr__(self):
         return '<StateOfLand %r>' % self.now_application_id
