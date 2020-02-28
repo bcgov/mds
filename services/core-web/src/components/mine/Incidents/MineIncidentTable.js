@@ -9,9 +9,15 @@ import {
   getIncidentStatusCodeHash,
   getIncidentCategoryCodeHash,
   getHSRCMComplianceCodesHash,
+  getDropdownIncidentStatusCodeOptions,
 } from "@common/selectors/staticContentSelectors";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
-import { formatDate } from "@common/utils/helpers";
+import {
+  formatDate,
+  dateSorter,
+  optionsFilterLabelAndValue,
+  truncateFilename,
+} from "@common/utils/helpers";
 import * as Strings from "@common/constants/strings";
 import { EDIT_OUTLINE_VIOLET } from "@/constants/assets";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
@@ -29,6 +35,7 @@ const propTypes = {
   openMineIncidentModal: PropTypes.func.isRequired,
   openViewMineIncidentModal: PropTypes.func.isRequired,
   isLoaded: PropTypes.bool.isRequired,
+  incidentStatusCodeOptions: CustomPropTypes.options.isRequired,
   isDashboardView: PropTypes.bool,
   sortField: PropTypes.string,
   sortDir: PropTypes.string,
@@ -77,10 +84,10 @@ const renderDownloadLinks = (files, mine_incident_document_type_code) => {
     .map((file) => (
       <div key={file.mine_document_guid}>
         <LinkButton
-          key={file.mine_document_guid}
           onClick={() => downloadFileFromDocumentManager(file)}
+          title={file.document_name}
         >
-          {file.document_name}
+          {truncateFilename(file.document_name)}
         </LinkButton>
       </div>
     ));
@@ -99,7 +106,7 @@ export class MineIncidentTable extends Component {
   ) =>
     incidents.map((incident) => {
       return {
-        key: incident.incident_id,
+        key: incident.mine_incident_guid,
         mine_incident_report_no: incident.mine_incident_report_no,
         incident_timestamp: formatDate(incident.incident_timestamp),
         reported_timestamp: formatDate(incident.reported_timestamp),
@@ -121,24 +128,32 @@ export class MineIncidentTable extends Component {
       };
     });
 
+  sortIncidentNumber = (a, b) =>
+    a.incident.mine_incident_id_year - b.incident.mine_incident_id_year ||
+    a.incident.mine_incident_id - b.incident.mine_incident_id;
+
   render() {
     const columns = [
       {
         title: "Number",
+        key: "mine_incident_report_no",
         dataIndex: "mine_incident_report_no",
         sortField: "mine_incident_report_no",
-        sorter: this.props.isDashboardView,
+        sorter: this.props.isDashboardView || this.sortIncidentNumber,
         render: (text) => <div title="Number">{text}</div>,
       },
       {
         title: "Incident Date",
+        key: "incident_timestamp",
         dataIndex: "incident_timestamp",
         sortField: "incident_timestamp",
-        sorter: this.props.isDashboardView,
+        sorter: this.props.isDashboardView || dateSorter("incident_timestamp"),
+        sortOrder: "descend",
         render: (text) => <span title="Incident Date">{text}</span>,
       },
       {
         title: "Mine",
+        key: "mine_name",
         dataIndex: "mine_name",
         sortField: "mine_name",
         sorter: this.props.isDashboardView,
@@ -151,18 +166,24 @@ export class MineIncidentTable extends Component {
       },
       {
         title: "Status",
+        key: "incident_status",
         dataIndex: "incident_status",
         sortField: "incident_status",
-        sorter: this.props.isDashboardView,
-        className: hideColumn(!this.props.isDashboardView),
-        render: (text) => (
-          <span title="Status" className={hideColumn(!this.props.isDashboardView)}>
-            {text}
-          </span>
-        ),
+        sorter:
+          this.props.isDashboardView ||
+          ((a, b) => a.incident_status_code.localeCompare(b.incident_status_code)),
+        filtered: !this.props.isDashboardView,
+        onFilter: (value, record) => record.incident.status_code === value,
+        filters:
+          !this.props.isDashboardView &&
+          (this.props.incidentStatusCodeOptions
+            ? optionsFilterLabelAndValue(this.props.incidentStatusCodeOptions)
+            : []),
+        render: (text) => <span title="Status">{text}</span>,
       },
       {
         title: "Determination",
+        key: "determination",
         dataIndex: "determination",
         sortField: "determination",
         sorter: this.props.isDashboardView,
@@ -175,6 +196,7 @@ export class MineIncidentTable extends Component {
       },
       {
         title: "Code",
+        key: "code",
         dataIndex: "code",
         className: hideColumn(!this.props.isDashboardView),
         render: (text) => (
@@ -193,6 +215,7 @@ export class MineIncidentTable extends Component {
       },
       {
         title: "Reported By",
+        key: "reported_by",
         dataIndex: "reported_by",
         className: hideColumn(this.props.isDashboardView),
         sorter: (a, b) => a.reported_by.localeCompare(b.reported_by),
@@ -218,10 +241,11 @@ export class MineIncidentTable extends Component {
       },
       {
         title: "EMPR Action",
+        key: "followup_action",
         dataIndex: "followup_action",
-        className: hideColumn(this.props.isDashboardView),
+        className: hideColumn(true),
         render: (action, record) => (
-          <div title="EMPR Action" className={hideColumn(this.props.isDashboardView)}>
+          <div title="EMPR Action" className={hideColumn(true)}>
             {action ? action.description : record.incident.followup_type_code}
           </div>
         ),
@@ -233,10 +257,14 @@ export class MineIncidentTable extends Component {
       },
       {
         title: "Initial Report Documents",
+        key: "initialDocuments",
         dataIndex: "initialDocuments",
         className: hideColumn(this.props.isDashboardView),
         render: (text, record) => (
-          <div title="Initial Report Documents" className={hideColumn(this.props.isDashboardView)}>
+          <div
+            title="Initial Report Documents"
+            className={`${hideColumn(this.props.isDashboardView)} cap-col-height`}
+          >
             {(record.docs &&
               record.docs.length > 0 &&
               renderDownloadLinks(record.docs, Strings.INCIDENT_DOCUMENT_TYPES.initial)) ||
@@ -246,10 +274,14 @@ export class MineIncidentTable extends Component {
       },
       {
         title: "Final Report Documents",
+        key: "finalDocuments",
         dataIndex: "finalDocuments",
         className: hideColumn(this.props.isDashboardView),
         render: (text, record) => (
-          <div title="Final Report Documents" className={hideColumn(this.props.isDashboardView)}>
+          <div
+            title="Final Report Documents"
+            className={`${hideColumn(this.props.isDashboardView)} cap-col-height`}
+          >
             {(record.docs &&
               record.docs.length > 0 &&
               renderDownloadLinks(record.docs, Strings.INCIDENT_DOCUMENT_TYPES.final)) ||
@@ -259,6 +291,7 @@ export class MineIncidentTable extends Component {
       },
       {
         title: "",
+        key: "handleEditModal",
         dataIndex: "handleEditModal",
         render: (text, record) => (
           <div title="" align="right" className="btn--middle flex">
@@ -335,6 +368,7 @@ const mapStateToProps = (state) => ({
   incidentStatusCodeHash: getIncidentStatusCodeHash(state),
   incidentCategoryCodeHash: getIncidentCategoryCodeHash(state),
   complianceCodesHash: getHSRCMComplianceCodesHash(state),
+  incidentStatusCodeOptions: getDropdownIncidentStatusCodeOptions(state),
 });
 
 export default connect(mapStateToProps)(MineIncidentTable);
