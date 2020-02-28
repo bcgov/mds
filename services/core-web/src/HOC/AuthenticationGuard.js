@@ -63,21 +63,21 @@ export const AuthenticationGuard = (WrappedComponent) => {
         });
     }
 
+    renderCorrectView = () => {
+      if (
+        !this.props.userAccessData.includes(USER_ROLES.role_view) ||
+        this.props.userAccessData.includes(USER_ROLES.role_minespace_proponent)
+      ) {
+        return <NullScreen type="unauthorized" />;
+      } 
+        return <WrappedComponent {...this.props} />;
+      
+    };
+
     render() {
+      console.log(this.props.userAccessData);
       if (this.props.keycloak) {
-        if (
-          this.props.isAuthenticated &&
-          this.props.userAccessData.includes(USER_ROLES.role_view)
-        ) {
-          return <WrappedComponent {...this.props} />;
-        }
-        if (
-          this.props.isAuthenticated &&
-          !this.props.userAccessData.includes(USER_ROLES.role_view)
-        ) {
-          return <NullScreen type="unauthorized" />;
-        }
-        return <Loading />;
+        return this.props.isAuthenticated ? this.renderCorrectView() : <Loading />;
       }
       return <Loading />;
     }
