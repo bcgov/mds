@@ -58,7 +58,6 @@ export class ScrollContentWrapper extends Component {
       data.details = data.details.map((detail) => ({ ...detail, state_modified: "delete" }));
     }
 
-    // RUN THIS IS EQUIPMENT EXISTS, THEN RUN STEP 3
     if (data.equipment && data.equipment.length > 0) {
       data.equipment = data.equipment.map((equipment) => ({
         ...equipment,
