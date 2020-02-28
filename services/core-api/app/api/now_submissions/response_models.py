@@ -3,6 +3,7 @@ from flask_restplus import fields
 
 CLIENT = api.model(
     'Client', {
+        'clientid': fields.Integer,
         'type': fields.String,
         'org_legalname': fields.String,
         'org_doingbusinessas': fields.String,
@@ -68,6 +69,7 @@ DOCUMENT = api.model(
 
 PLACER_ACTIVITY = api.model(
     'PLACER_ACTIVITY', {
+        'placeractivityid': fields.Integer,
         'type': fields.String,
         'quantity': fields.Integer,
         'depth': fields.Integer,
@@ -79,6 +81,7 @@ PLACER_ACTIVITY = api.model(
 
 SETTLING_POND = api.model(
     'SETTLING_POND', {
+        'settlingpondid': fields.String,
         'pondid': fields.String,
         'watersource': fields.String,
         'width': fields.Integer,
@@ -315,12 +318,12 @@ APPLICATION = api.model(
         'submitter': fields.Nested(CLIENT),
         'documents': fields.List(fields.Nested(DOCUMENT)),
         'contacts': fields.List(fields.Nested(CONTACT)),
-        'existing_placer_activity': fields.List(fields.Nested(PLACER_ACTIVITY)),
-        'existing_settling_pond': fields.List(fields.Nested(SETTLING_POND)),
+        'existing_placer_activity': fields.Nested(PLACER_ACTIVITY),
+        'existing_settling_pond': fields.Nested(SETTLING_POND),
         'exp_access_activity': fields.List(fields.Nested(EXP_ACCESS_ACTIVITY)),
         'exp_surface_drill_activity': fields.List(fields.Nested(EXP_SURFACE_DRILL_ACTIVITY)),
-        'proposed_placer_activity': fields.List(fields.Nested(PLACER_ACTIVITY)),
-        'proposed_settling_pond': fields.List(fields.Nested(SETTLING_POND)),
+        'proposed_placer_activity': fields.Nested(PLACER_ACTIVITY),
+        'proposed_settling_pond': fields.Nested(SETTLING_POND),
         'surface_bulk_sample_activity': fields.List(fields.Nested(SURFACE_BULK_SAMPLE_ACTIVITY)),
         'sand_grv_qry_activity': fields.List(fields.Nested(SAND_GRAVEL_QUARRY_ACTIVITY)),
         'under_exp_new_activity': fields.List(fields.Nested(UNDER_EXP_NEW_ACTIVITY)),
