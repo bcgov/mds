@@ -46,6 +46,7 @@ exports[`Reports renders properly 1`] = `
             style={
               Object {
                 "float": "right",
+                "zIndex": 1,
               }
             }
             type="primary"

@@ -21,6 +21,7 @@ module.exports = {
       alias: {
         map: [
           ["@", path.join(__dirname, "src")],
+          ["vendor", path.join(__dirname, "vendor")],
           ["@common", path.join(__dirname, "common")],
         ],
         extensions: [".js", ".json"],
@@ -36,6 +37,7 @@ module.exports = {
     "jsx-a11y/anchor-is-valid": 0,
     "react/destructuring-assignment": ["error", "never"],
     camelcase: 0,
+    "jsx-a11y/label-has-for": 0, // deprecated rule
     "import/no-cycle": 0,
   },
 };

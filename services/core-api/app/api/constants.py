@@ -67,12 +67,6 @@ MINE_OPERATION_STATUS_SUB_REASON = {
     }
 }
 
-NOW_DOCUMENT_TEMPLATE_TYPES = {
-    'CAL': 'Client Acknowledgment Letter Template (NoW).docx',
-    'RJL': 'Rejection Letter Template (NoW).docx',
-    'WDL': 'Withdrawl Letter Template (NoW).docx'
-}
-
 #Cache prefixes
 NRIS_MAJOR_MINE_LIST = "major_mine_list"
 NRIS_TOKEN = "nris:token"
@@ -87,6 +81,10 @@ def NRIS_COMPLIANCE_DATA(mine_no):
 
 def DOWNLOAD_TOKEN(token_guid):
     return f'document-manager:download-token:{token_guid}'
+
+
+def NOW_DOCUMENT_DOWNLOAD_TOKEN(token_guid):
+    return f'document-generation-now:download-token:{token_guid}'
 
 
 #Deep Update Special Flag
