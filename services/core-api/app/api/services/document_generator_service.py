@@ -12,7 +12,7 @@ def sha256_checksum(filename, block_size=65536):
 
 
 class DocumentGeneratorService():
-    document_generator_url = 'http://docgen-api:3030/template'
+    document_generator_url = f'{Config.DOCUMENT_GENERATOR_URL}/template'
 
     @classmethod
     def generate_document_and_stream_response(cls, template_file_path, data):
