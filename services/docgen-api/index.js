@@ -9,7 +9,7 @@ const bodyParser = require(`body-parser`);
 const crypto = require("crypto");
 
 const app = express();
-const upload = require(`multer`)({ dest: `/tmp-reports/` });
+const upload = require(`multer`)({ dest: `/tmp/tmp-reports/` });
 const port = process.env.CARBONE_PORT || 3030;
 const templatedir = "/app/templates/";
 
@@ -18,7 +18,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 const render = util.promisify(carbone.render);
 
-_.forEach(carbone.formatters, formatter => (formatter.$isDefault = true));
+_.forEach(carbone.formatters, (formatter) => (formatter.$isDefault = true));
 
 app.post("/template/:uid/render", async (req, res) => {
   console.log("TEMPLATE RENDER");
@@ -33,9 +33,7 @@ app.post("/template/:uid/render", async (req, res) => {
   const files = fs.readdirSync(targetPath);
 
   if (!files || files.length !== 1) {
-    return res
-      .status(500)
-      .send("could not read template file from file system");
+    return res.status(500).send("could not read template file from file system");
   }
 
   templateFileName = files[0];
@@ -54,14 +52,11 @@ app.post("/template/:uid/render", async (req, res) => {
   try {
     options = req.body.options;
   } catch (e) {
-    return res
-      .status(500)
-      .send(`options not provided or formatted incorrectly`);
+    return res.status(500).send(`options not provided or formatted incorrectly`);
   }
 
   options.convertTo = options.convertTo || originalFormat;
-  options.outputName =
-    options.outputName || `${originalNameWOExt}.${options.convertTo}`;
+  options.outputName = options.outputName || `${originalNameWOExt}.${options.convertTo}`;
 
   if (typeof data !== `object` || data === null) {
     try {
@@ -75,10 +70,7 @@ app.post("/template/:uid/render", async (req, res) => {
     formatters = telejson.parse(req.body.formatters);
   } catch (e) {}
 
-  carbone.formatters = _.filter(
-    carbone.formatters,
-    formatter => formatter.$isDefault === true
-  );
+  carbone.formatters = _.filter(carbone.formatters, (formatter) => formatter.$isDefault === true);
 
   carbone.addFormatters(formatters);
 
@@ -91,10 +83,7 @@ app.post("/template/:uid/render", async (req, res) => {
     return res.status(500).send(`Internal server error`);
   }
 
-  res.setHeader(
-    `Content-Disposition`,
-    `attachment; filename=${options.outputName}`
-  );
+  res.setHeader(`Content-Disposition`, `attachment; filename=${options.outputName}`);
   res.setHeader(`Content-Transfer-Encoding`, `binary`);
   res.setHeader(`Content-Type`, `application/octet-stream`);
   res.setHeader(`Carbone-Report-Name`, options.outputName);
@@ -138,7 +127,7 @@ app.post("/template", upload.single(`template`), async (req, res) => {
       }
 
       fs.ensureDirSync(targetPath);
-      fs.copy(template.path, targetPath + "/" + template.originalname, err => {
+      fs.copy(template.path, targetPath + "/" + template.originalname, (err) => {
         if (err) return res.send(err);
         fs.remove(template.path);
         return res.send(JSON.stringify({ sha256: hashres }));

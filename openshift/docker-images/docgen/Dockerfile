@@ -17,10 +17,12 @@ COPY python ${APP_ROOT}/
 RUN chmod a+rx ${APP_ROOT}/bindPython.sh \
     && ${APP_ROOT}/bindPython.sh
 
+# Make temporary report directory
+RUN mkdir /tmp/tmp-reports
+
 # Install dependencies through yarn
 COPY package.json yarn.lock ${APP_ROOT}/
 RUN cd ${APP_ROOT} && yarn
-
 RUN chmod -R 777 ${APP_ROOT}
 
 USER 1001
