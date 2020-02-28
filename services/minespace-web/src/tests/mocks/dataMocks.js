@@ -926,7 +926,7 @@ export const COMPLIANCE_CODES = {
   records: [
     {
       article_act_code: "HSRCM",
-      compliance_article_id: 305,
+      compliance_article_id: "305",
       description: "Spills",
       effective_date: "1970-01-01",
       expiry_date: "9999-12-31",
@@ -937,7 +937,7 @@ export const COMPLIANCE_CODES = {
     },
     {
       article_act_code: "HSRCM",
-      compliance_article_id: 306,
+      compliance_article_id: "306",
       description: "Flammable Waste Storage",
       effective_date: "1970-01-01",
       expiry_date: "9999-12-31",
@@ -951,11 +951,11 @@ export const COMPLIANCE_CODES = {
 
 export const DROPDOWN_HSRCM_CODES = [
   {
-    value: 305,
+    value: "305",
     label: "2.3.7 - Spills",
   },
   {
-    value: 306,
+    value: "306",
     label: "2.3.8 - Flammable Waste Storage",
   },
 ];

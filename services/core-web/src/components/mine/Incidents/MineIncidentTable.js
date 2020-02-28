@@ -148,7 +148,7 @@ export class MineIncidentTable extends Component {
         dataIndex: "incident_timestamp",
         sortField: "incident_timestamp",
         sorter: this.props.isDashboardView || dateSorter("incident_timestamp"),
-        sortOrder: "descend",
+        defaultSortOrder: "descend",
         render: (text) => <span title="Incident Date">{text}</span>,
       },
       {
@@ -171,7 +171,7 @@ export class MineIncidentTable extends Component {
         sortField: "incident_status",
         sorter:
           this.props.isDashboardView ||
-          ((a, b) => a.incident_status_code.localeCompare(b.incident_status_code)),
+          ((a, b) => a.incident_status.localeCompare(b.incident_status)),
         filtered: !this.props.isDashboardView,
         onFilter: (value, record) => record.incident.status_code === value,
         filters:

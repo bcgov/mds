@@ -14,10 +14,10 @@ exports[`MineIncidentTable renders properly 1`] = `
       },
       Object {
         "dataIndex": "incident_timestamp",
+        "defaultSortOrder": "descend",
         "key": "incident_timestamp",
         "render": [Function],
         "sortField": "incident_timestamp",
-        "sortOrder": "descend",
         "sorter": [Function],
         "title": "Incident Date",
       },
