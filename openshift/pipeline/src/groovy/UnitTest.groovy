@@ -44,7 +44,7 @@ def dbConfig = "${config.app.name}-postgresql-${config.app.build.env.id}"
 
 def frontendIsName = "mds-frontend-${config.app.build.env.id}"
 def frontendPublicIsName = "mds-frontend-public-${config.app.build.env.id}"
-def documentGeneratorName = "https://mds-docgen-api-${config.app.build.env.id}:3030"
+def documentGeneratorURL = "https://mds-docgen-api-${config.app.build.env.id}:3030"
 
 
 def frontEndDeploymentConfigs = ocGet(['is','-l', "app-name=${config.app.name},image-stream.name=${frontendIsName}", "--namespace=${namespace}"])
@@ -63,7 +63,7 @@ frontEndDeploymentConfigs.items.each {Map object ->
 // Run backend tests
 backEndDeploymentConfigs.items.each {Map object ->
     Map isTag = ocGet(["istag/${object.metadata.name}:${appLabel}", "--namespace=${namespace}"])
-    OpenShiftHelper._exec(["bash", '-c', "oc process -f openshift/templates/sonar.pod.json -l 'app=mds-${appLabel},sonar=${config.app.build.id}-${object.metadata.name}' -p 'NAME=sonar-${config.app.build.id}-${object.metadata.name}' -p 'IMAGE=${isTag.image.dockerImageReference}' -p 'DB_CONFIG_NAME=${dbConfig}' -p 'DOCUMENT_GENERATOR_URL=${documentGeneratorName}' -p 'GIT_BRANCH=${branch}' --namespace=${object.metadata.namespace} |  oc replace -f - --namespace=${object.metadata.namespace} --force=true"], new StringBuffer(), new StringBuffer())
+    OpenShiftHelper._exec(["bash", '-c', "oc process -f openshift/templates/sonar.pod.json -l 'app=mds-${appLabel},sonar=${config.app.build.id}-${object.metadata.name}' -p 'NAME=sonar-${config.app.build.id}-${object.metadata.name}' -p 'IMAGE=${isTag.image.dockerImageReference}' -p 'DB_CONFIG_NAME=${dbConfig}' -p 'DOCUMENT_GENERATOR_URL=${documentGeneratorURL}' -p 'GIT_BRANCH=${branch}' --namespace=${object.metadata.namespace} |  oc replace -f - --namespace=${object.metadata.namespace} --force=true"], new StringBuffer(), new StringBuffer())
 }
 
 // Run public frontend tests
