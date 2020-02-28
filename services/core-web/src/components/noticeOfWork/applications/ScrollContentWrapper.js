@@ -51,28 +51,27 @@ export class ScrollContentWrapper extends Component {
 
   clearContent = () => {
     const formSection = this.props.id.replace(/-/g, "_");
-    this.setState({ isVisible: false });
+    const data = this.props.formValues[formSection];
+
     // delete nested children of activities, if they exist
-    if (
-      this.props.formValues[formSection].details &&
-      this.props.formValues[formSection].details.length > 0
-    ) {
-      this.props.formValues[formSection].details.map(() => {
-        return this.props.change(FORM.EDIT_NOTICE_OF_WORK, `${formSection}.details`, {
-          state_modified: "delete",
-        });
-      });
-    } else if (
-      this.props.formValues[formSection].equipment &&
-      this.props.formValues[formSection].equipment.length > 0
-    ) {
-      this.props.formValues[formSection].details.map(() => {
-        return this.props.change(FORM.EDIT_NOTICE_OF_WORK, `${formSection}.equipment`, {
-          state_modified: "delete",
-        });
-      });
+    if (data.details && data.details.length > 0) {
+      data.details = data.details.map((detail) => ({ ...detail, state_modified: "delete" }));
     }
-    return this.props.change(FORM.EDIT_NOTICE_OF_WORK, formSection, { state_modified: "delete" });
+
+    // RUN THIS IS EQUIPMENT EXISTS, THEN RUN STEP 3
+    if (data.equipment && data.equipment.length > 0) {
+      data.equipment = data.equipment.map((equipment) => ({
+        ...equipment,
+        state_modified: "delete",
+      }));
+    }
+
+    this.props.change(FORM.EDIT_NOTICE_OF_WORK, formSection, {
+      state_modified: "delete",
+      ...data,
+    });
+
+    this.setState({ isVisible: false });
   };
 
   renderCorrectView = () => {
