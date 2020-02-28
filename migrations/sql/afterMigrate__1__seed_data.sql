@@ -706,7 +706,7 @@ UPDATE mine_report_definition SET active_ind='false' where report_name='Appeal t
 INSERT INTO document_template
 (document_template_code,form_spec_json, template_file_path, active_ind, create_user, update_user)
 VALUES
-	('NOW-RJL', '[
+	('NRL', '[
     {
       "id": "letter_dt",
       "label": "Letter Date",
@@ -757,7 +757,7 @@ VALUES
       "required": true
     }
   ]' , 'templates/now/Rejection Letter Template (NoW).docx', true, 'system-mds', 'system-mds'),
-	('NOW-WDL', '[
+	('NWL', '[
     {
       "id": "letter_dt",
       "label": "Letter Date",
@@ -808,7 +808,7 @@ VALUES
       "required": true
     }
   ]' , 'templates/now/Withdrawal Letter Template (NoW).docx', true, 'system-mds', 'system-mds'),
-	('NOW-CAL', '[
+	('NCL', '[
     {
       "id": "letter_dt",
       "label": "Letter Date",
@@ -884,13 +884,13 @@ VALUES
 ON CONFLICT DO NOTHING;
 
 UPDATE now_application_document_type
-SET document_template_code = 'NOW-CAL'
+SET document_template_code = 'NCL'
 where now_application_document_type_code = 'CAL';
 
 UPDATE now_application_document_type
-SET document_template_code = 'NOW-WDL'
+SET document_template_code = 'NWL'
 where now_application_document_type_code = 'WDL';
 
 UPDATE now_application_document_type
-SET document_template_code = 'NOW-RJL'
+SET document_template_code = 'NRL'
 where now_application_document_type_code = 'RJL';
