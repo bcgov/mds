@@ -54,8 +54,8 @@ const defaultProps = {
   long: Strings.DEFAULT_LONG,
   zoom: Strings.DEFAULT_ZOOM,
   minesBasicInfo: [],
-  mineName: "",
-  mineGuid: "",
+  mineName: null,
+  mineGuid: null,
   transformedMineTypes: {},
 };
 

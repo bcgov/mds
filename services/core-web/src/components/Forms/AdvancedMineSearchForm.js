@@ -17,10 +17,12 @@ const propTypes = {
   mineRegionOptions: CustomPropTypes.options.isRequired,
   mineStatusDropDownOptions: CustomPropTypes.options.isRequired,
   isAdvanceSearch: PropTypes.bool.isRequired,
+  initialValues: PropTypes.objectOf(PropTypes.any),
 };
 
 const defaultProps = {
   searchValue: "",
+  initialValues: {},
 };
 
 export class AdvancedMineSearchForm extends Component {

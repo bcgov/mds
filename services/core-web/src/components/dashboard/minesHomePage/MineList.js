@@ -18,7 +18,7 @@ const propTypes = {
   mineRegionHash: objectOf(string).isRequired,
   mineTenureHash: objectOf(string).isRequired,
   mineCommodityOptionsHash: objectOf(string).isRequired,
-  handleMineSearch: func.isRequired,
+  handleSearch: func.isRequired,
   sortField: string,
   sortDir: string,
   isLoaded: bool.isRequired,
@@ -192,7 +192,7 @@ export const MineList = (props) => (
       align: "left",
       pagination: false,
       locale: { emptyText: <NullScreen type="no-results" /> },
-      onChange: handleTableChange(props.handleMineSearch),
+      onChange: handleTableChange(props.handleSearch),
     }}
   />
 );

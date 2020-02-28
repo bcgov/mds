@@ -49,8 +49,8 @@ export const LOGOUT = {
 
 export const MINE_HOME_PAGE = {
   route: "/dashboard/mines",
-  dynamicRoute: ({ page, per_page, ...params }) =>
-    `/dashboard/mines/?${queryString.stringify({ page, per_page, ...params }, { sort: false })}`,
+  dynamicRoute: (params = null) =>
+    `/dashboard/mines/?${queryString.stringify({ ...params }, { sort: false })}`,
   mapRoute: (params = null) =>
     `/dashboard/mines?map=true${
       params ? `&${queryString.stringify({ ...params }, { sort: false })}` : ""

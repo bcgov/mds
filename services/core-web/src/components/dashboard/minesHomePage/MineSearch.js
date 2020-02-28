@@ -16,23 +16,13 @@ import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
   fetchMineNameList: PropTypes.func.isRequired,
-  handleMineSearch: PropTypes.func,
-  handleCoordinateSearch: PropTypes.func,
+  handleSearch: PropTypes.func.isRequired,
   mineNameList: PropTypes.arrayOf(CustomPropTypes.mineName),
   isMapView: PropTypes.bool,
-  initialValues: PropTypes.shape({
-    status: PropTypes.arrayOf(PropTypes.string),
-    region: PropTypes.arrayOf(PropTypes.string),
-    tenure: PropTypes.arrayOf(PropTypes.string),
-    commodity: PropTypes.arrayOf(PropTypes.string),
-    tsf: PropTypes.string,
-    major: PropTypes.bool,
-  }),
+  initialValues: PropTypes.objectOf(PropTypes.any),
 };
 
 const defaultProps = {
-  handleMineSearch: () => {},
-  handleCoordinateSearch: () => {},
   mineNameList: [],
   isMapView: false,
   initialValues: {},
@@ -52,11 +42,7 @@ export class MineSearch extends Component {
     }
   }
 
-  handleCoordinateSearch = (value) => {
-    this.props.handleCoordinateSearch(value);
-  };
-
-  handleSearchByNameChange = (name) => {
+  handleMapViewSearchOnChange = (name) => {
     if (!name) {
       return;
     }
@@ -75,7 +61,7 @@ export class MineSearch extends Component {
     data.map(({ latitude = "", longitude = "", mine_name = "", mine_no = "", mine_guid }) => (
       <AutoComplete.Option
         key={mine_guid}
-        value={`${latitude},${longitude},${mine_name},${mine_guid}`}
+        value={JSON.stringify({ latitude, longitude, mine_name, mine_guid })}
       >
         {`${mine_name} - ${mine_no}`}
       </AutoComplete.Option>
@@ -86,9 +72,9 @@ export class MineSearch extends Component {
       return (
         <RenderAutoComplete
           placeholder="Search for a mine by name"
-          handleSelect={this.handleCoordinateSearch}
+          handleSelect={this.props.handleSearch}
           data={this.transformData(this.props.mineNameList)}
-          handleChange={this.handleSearchByNameChange}
+          handleChange={this.handleMapViewSearchOnChange}
         />
       );
     }
@@ -98,11 +84,12 @@ export class MineSearch extends Component {
         <Col md={{ span: 12, offset: 6 }} xs={{ span: 20, offset: 2 }}>
           <span className="advanced-search__container">
             <AdvancedMineSearchForm
-              {...this.props}
-              onSubmit={this.props.handleMineSearch}
+              initialValues={this.props.initialValues}
+              onSubmit={this.props.handleSearch}
               toggleAdvancedSearch={this.toggleAdvancedSearch}
               isAdvanceSearch={this.state.isAdvanceSearch}
-              handleSearch={this.props.handleMineSearch}
+              handleSearch={this.props.handleSearch}
+              {...this.props}
             />
           </span>
         </Col>
