@@ -44,7 +44,7 @@ def dbConfig = "${config.app.name}-postgresql-${config.app.build.env.id}"
 
 def frontendIsName = "mds-frontend-${config.app.build.env.id}"
 def frontendPublicIsName = "mds-frontend-public-${config.app.build.env.id}"
-def documentGeneratorURL = "https://mds-docgen-api-${config.app.build.env.id}:3030"
+def documentGeneratorURL = "http://mds-docgen-api-${config.app.build.env.id}:3030"
 
 
 def frontEndDeploymentConfigs = ocGet(['is','-l', "app-name=${config.app.name},image-stream.name=${frontendIsName}", "--namespace=${namespace}"])
