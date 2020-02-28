@@ -80,9 +80,7 @@ def setup_schema(Base, session):
                         model_converter = CoreConverter
                         exclude = exclude_columns
 
-                    current_app.logger.debug(f'{class_}: {Meta.exclude}')
                     schema_class_name = "%sSchema" % class_.__name__
-
                     schema_class = type(schema_class_name, (class_._ModelSchema, ), {"Meta": Meta})
 
                     setattr(class_, "_schema", schema_class)

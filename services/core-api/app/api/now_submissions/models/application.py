@@ -2,6 +2,7 @@ import uuid
 from werkzeug.exceptions import NotFound
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.ext.associationproxy import association_proxy
+from sqlalchemy.schema import FetchedValue
 from marshmallow import fields
 
 from app.extensions import db
@@ -43,7 +44,7 @@ class Application(Base):
         uselist=False,
         primaryjoin='Application.messageid==NOWApplicationIdentity.messageid',
         foreign_keys=messageid)
-    application_guid = db.Column(UUID(as_uuid=True), nullable=False)
+    application_guid = db.Column(UUID(as_uuid=True), nullable=False, server_default=FetchedValue())
     now_application_guid = association_proxy('now_application_identity', 'now_application_guid')
     mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine.mine_guid'))
     #mine_guid = association_proxy('now_application_identity', 'mine_guid')

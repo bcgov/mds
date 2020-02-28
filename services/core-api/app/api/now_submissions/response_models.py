@@ -3,6 +3,7 @@ from flask_restplus import fields
 
 CLIENT = api.model(
     'Client', {
+        'clientid': fields.Integer,
         'type': fields.String,
         'org_legalname': fields.String,
         'org_doingbusinessas': fields.String,
@@ -68,6 +69,7 @@ DOCUMENT = api.model(
 
 PLACER_ACTIVITY = api.model(
     'PLACER_ACTIVITY', {
+        'placeractivityid': fields.Integer,
         'type': fields.String,
         'quantity': fields.Integer,
         'depth': fields.Integer,
@@ -79,6 +81,7 @@ PLACER_ACTIVITY = api.model(
 
 SETTLING_POND = api.model(
     'SETTLING_POND', {
+        'settlingpondid': fields.String,
         'pondid': fields.String,
         'watersource': fields.String,
         'width': fields.Integer,

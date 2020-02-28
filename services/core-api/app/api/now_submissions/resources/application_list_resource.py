@@ -106,13 +106,10 @@ class ApplicationListResource(Resource, UserMixin):
     @api.doc(description='Save an application')
     @requires_role_view_all
     @api.expect(APPLICATION)
-    @api.marshal_with(None, code=201)
+    @api.marshal_with(APPLICATION, code=200)
     def post(self):
         data = request.json
         application = Application._schema().load(data)
+        application.save()
 
-        current_app.logger.debug("Test")
-        current_app.logger.debug(application)
-        current_app.logger.debug(application.proposed_settling_pond[0].width)
-        current_app.logger.debug(application.proposed_settling_pond[1].width)
-        return
+        return application
