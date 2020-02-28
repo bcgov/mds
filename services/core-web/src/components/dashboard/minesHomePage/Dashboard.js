@@ -252,13 +252,15 @@ export class Dashboard extends Component {
     }
   };
 
-  handleListViewSearch = (searchParams) => {
+  handleListViewSearch = (searchParams, clear = false) => {
     console.log("IN LIST VIEW SEARCH");
+    const listParams = clear ? {} : this.state.listParams;
     this.setState(
       (prevState) => ({
         listParams: {
           page: prevState.page || Strings.DEFAULT_PAGE,
           per_page: prevState.per_page || Strings.DEFAULT_PER_PAGE,
+          ...listParams,
           ...searchParams,
         },
       }),

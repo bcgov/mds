@@ -17,7 +17,7 @@ const propTypes = {
   mineRegionOptions: CustomPropTypes.options.isRequired,
   mineStatusDropDownOptions: CustomPropTypes.options.isRequired,
   isAdvanceSearch: PropTypes.bool.isRequired,
-  initialValues: PropTypes.objectOf(PropTypes.any),
+  initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 const defaultProps = {
