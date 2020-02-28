@@ -60,7 +60,7 @@
       "kind": "ImageStream",
       "apiVersion": "v1",
       "metadata": {
-        "name": "redhat-ubi-node-10",
+        "name": "alpine-node",
         "creationTimestamp": null,
         "annotations": {
           "description": "Nodejs Base Image"
@@ -156,7 +156,7 @@
           "dockerStrategy": {
             "from": {
               "kind": "ImageStreamTag",
-              "name": "redhat-ubi-node-10:latest"
+              "name": "alpine-node:latest"
             }
           }
         },
