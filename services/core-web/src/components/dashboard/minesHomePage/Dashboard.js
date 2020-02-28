@@ -109,6 +109,7 @@ export class Dashboard extends Component {
             mineName: params.mineName || null,
             zoom: Number(params.zoom) || Strings.DEFAULT_ZOOM,
           },
+          showMapSearchInfo: true,
         },
         () => this.props.history.push(router.MINE_HOME_PAGE.mapRoute(this.state.mapParams))
       );
