@@ -109,7 +109,6 @@ export class Dashboard extends Component {
             mineName: params.mineName || null,
             zoom: Number(params.zoom) || Strings.DEFAULT_ZOOM,
           },
-          showMapSearchInfo: true,
         },
         () => this.props.history.push(router.MINE_HOME_PAGE.mapRoute(this.state.mapParams))
       );
@@ -144,6 +143,7 @@ export class Dashboard extends Component {
         this.setState({ isMapLoaded: true });
         if (lat && long) {
           this.handleScroll("mapElement", -60);
+          this.setState({ showMapSearchInfo: true });
         }
       });
     } else {
@@ -175,21 +175,10 @@ export class Dashboard extends Component {
             zoom: Strings.HIGH_ZOOM,
           },
           mineGuid: mine_guid,
-          showMapSearchInfo: true,
         },
         () => this.props.history.push(router.MINE_HOME_PAGE.mapRoute(this.state.mapParams))
       );
     } else {
-      this.setState({
-        mapParams: {
-          lat: Strings.DEFAULT_LAT,
-          long: Strings.DEFAULT_LONG,
-          mineName: null,
-          zoom: Strings.DEFAULT_ZOOM,
-        },
-        mineGuid: null,
-        showMapSearchInfo: false,
-      });
       notification.error({ message: Strings.NO_COORDINATES, duration: 10 });
     }
   };
@@ -204,7 +193,6 @@ export class Dashboard extends Component {
           zoom: Strings.HIGH_ZOOM,
         },
         mineGuid: null,
-        showMapSearchInfo: true,
       },
       () => this.props.history.push(router.MINE_HOME_PAGE.mapRoute(this.state.mapParams))
     );
