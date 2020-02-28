@@ -1,4 +1,6 @@
 import queryString from "query-string";
+import * as Strings from "@common/constants/strings";
+import { isEmpty } from "lodash";
 import Home from "@/components/Home";
 import Logout from "@/components/common/Logout";
 import Dashboard from "@/components/dashboard/minesHomePage/Dashboard";
@@ -27,6 +29,14 @@ import NoticeOfWorkHomePage from "@/components/dashboard/noticeOfWorkHomePage/No
 import NoticeOfWorkApplication from "@/components/noticeOfWork/applications/NoticeOfWorkApplication";
 import ViewNoticeOfWorkApplication from "@/components/noticeOfWork/applications/ViewNoticeOfWorkApplication";
 
+const withoutDefaultParams = (params, defaults) => {
+  const newParams = JSON.parse(JSON.stringify(params));
+  Object.keys(defaults)
+    .filter((param) => param in newParams && newParams[param] === defaults[param])
+    .map((param) => delete newParams[param]);
+  return newParams;
+};
+
 export const DASHBOARD = {
   route: "/",
   component: Home,
@@ -47,14 +57,26 @@ export const LOGOUT = {
   component: Logout,
 };
 
+const MINE_HOME_PAGE_MAP_DEFAULT_PARAMS = {
+  lat: Strings.DEFAULT_LAT,
+  long: Strings.DEFAULT_LONG,
+  mineName: null,
+  zoom: Strings.DEFAULT_ZOOM,
+};
+
 export const MINE_HOME_PAGE = {
   route: "/dashboard/mines",
   dynamicRoute: (params = null) =>
     `/dashboard/mines/?${queryString.stringify({ ...params }, { sort: false })}`,
-  mapRoute: (params = null) =>
-    `/dashboard/mines?map=true${
-      params ? `&${queryString.stringify({ ...params }, { sort: false })}` : ""
-    }`,
+  mapRoute: (params = null) => {
+    let newParams = params;
+    if (newParams) {
+      newParams = withoutDefaultParams(params, MINE_HOME_PAGE_MAP_DEFAULT_PARAMS);
+    }
+    return `/dashboard/mines?map=true${
+      !isEmpty(newParams) ? `&${queryString.stringify({ ...newParams }, { sort: false })}` : ""
+    }`;
+  },
   component: Dashboard,
 };
 

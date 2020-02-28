@@ -30,7 +30,6 @@ exports[`MineSearch renders properly 1`] = `
         getFormState={[Function]}
         handleCoordinateSearch={[MockFunction]}
         handleMineSearch={[MockFunction]}
-        handleSearch={[MockFunction]}
         initialValues={Object {}}
         isAdvanceSearch={false}
         isMapView={false}
@@ -62,7 +61,6 @@ exports[`MineSearch renders properly 1`] = `
             ],
           }
         }
-        onSubmit={[MockFunction]}
         persistentSubmitErrors={false}
         pure={true}
         shouldAsyncValidate={[Function]}

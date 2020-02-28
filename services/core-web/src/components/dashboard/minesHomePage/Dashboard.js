@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { Element, scroller } from "react-scroll";
-import { debounce, isEmpty } from "lodash";
+import { debounce } from "lodash";
 import PropTypes from "prop-types";
 import { Tabs, Col, Divider, notification, Card } from "antd";
 import queryString from "query-string";
@@ -45,7 +45,6 @@ import AddButton from "@/components/common/AddButton";
 
 /**
  * @class Dashboard is the main landing page of the application, currently contains a List and Map View, ability to create a new mine, and search for a mine by name or lat/long.
- *
  */
 
 const { TabPane } = Tabs;
@@ -71,22 +70,6 @@ const propTypes = {
 const defaultProps = {
   transformedMineTypes: {},
 };
-
-// const joinOrRemove = (param, key) => (isEmpty(param) ? {} : { [key]: param.join(",") });
-
-// const formatParams = ({
-//   status = [],
-//   region = [],
-//   tenure = [],
-//   commodity = [],
-//   ...remainingParams
-// }) => ({
-//   ...joinOrRemove(status, "status"),
-//   ...joinOrRemove(region, "region"),
-//   ...joinOrRemove(tenure, "tenure"),
-//   ...joinOrRemove(commodity, "commodity"),
-//   ...remainingParams,
-// });
 
 export class Dashboard extends Component {
   constructor(props) {
@@ -117,15 +100,14 @@ export class Dashboard extends Component {
 
   componentDidMount() {
     const { map, ...params } = queryString.parse(this.props.location.search);
-    console.log("componentDidMount map, params:\n", map, params);
     if (map) {
       this.setState(
         {
           mapParams: {
-            lat: params.lat || Strings.DEFAULT_LAT,
-            long: params.long || Strings.DEFAULT_LONG,
+            lat: Number(params.lat) || Strings.DEFAULT_LAT,
+            long: Number(params.long) || Strings.DEFAULT_LONG,
             mineName: params.mineName || null,
-            zoom: params.zoom || Strings.DEFAULT_ZOOM,
+            zoom: Number(params.zoom) || Strings.DEFAULT_ZOOM,
           },
         },
         () => this.props.history.push(router.MINE_HOME_PAGE.mapRoute(this.state.mapParams))
@@ -160,7 +142,7 @@ export class Dashboard extends Component {
       this.props.fetchMineRecordsForMap().then(() => {
         this.setState({ isMapLoaded: true });
         if (lat && long) {
-          // this.handleScroll("mapElement", -60);
+          this.handleScroll("mapElement", -60);
         }
       });
     } else {
@@ -171,12 +153,11 @@ export class Dashboard extends Component {
   };
 
   onPageChange = (page, per_page) => {
-    console.log("CALLING PAGE CHANGE");
     this.props.history.push(
       router.MINE_HOME_PAGE.dynamicRoute({
-        ...this.state.listParams,
         page,
         per_page,
+        ...this.state.listParams,
       })
     );
   };
@@ -187,8 +168,8 @@ export class Dashboard extends Component {
       this.setState(
         {
           mapParams: {
-            lat: latitude,
-            long: longitude,
+            lat: Number(latitude),
+            long: Number(longitude),
             mineName: mine_name,
             zoom: Strings.HIGH_ZOOM,
           },
@@ -216,8 +197,8 @@ export class Dashboard extends Component {
     this.setState(
       {
         mapParams: {
-          lat: value.latitude,
-          long: value.longitude,
+          lat: Number(value.latitude),
+          long: Number(value.longitude),
           mineName: null,
           zoom: Strings.HIGH_ZOOM,
         },
@@ -244,16 +225,13 @@ export class Dashboard extends Component {
     });
 
     if (key === "map") {
-      console.log("handleTabChange MAP state:/n", this.state);
       this.props.history.push(router.MINE_HOME_PAGE.mapRoute(this.state.mapParams));
     } else {
-      console.log("handleTabChange LIST state:/n", this.state);
       this.props.history.push(router.MINE_HOME_PAGE.dynamicRoute(this.state.listParams));
     }
   };
 
   handleListViewSearch = (searchParams, clear = false) => {
-    console.log("IN LIST VIEW SEARCH");
     const listParams = clear ? {} : this.state.listParams;
     this.setState(
       (prevState) => ({
@@ -499,4 +477,7 @@ const mapDispatchToProps = (dispatch) =>
 Dashboard.propTypes = propTypes;
 Dashboard.defaultProps = defaultProps;
 
-export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Dashboard);

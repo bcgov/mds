@@ -39,7 +39,7 @@ exports[`Dashboard renders properly 1`] = `
         activeKey="list"
         animated={
           Object {
-            "inkBar": true,
+            "inkBar": false,
             "tabPane": false,
           }
         }
@@ -59,45 +59,33 @@ exports[`Dashboard renders properly 1`] = `
             fetchApplicationStatusOptions={[MockFunction]}
             fetchMineCommodityOptions={[MockFunction]}
             fetchMineDisturbanceOptions={[MockFunction]}
-            fetchMineRecords={
-              [MockFunction] {
-                "calls": Array [
-                  Array [
-                    " ",
-                  ],
-                ],
-                "results": Array [
-                  Object {
-                    "type": "return",
-                    "value": Promise {},
-                  },
-                ],
-              }
-            }
+            fetchMineRecords={[MockFunction]}
             fetchMineReportStatusOptions={[MockFunction]}
             fetchMineTenureTypes={[MockFunction]}
             fetchPartyRelationshipTypes={[MockFunction]}
             fetchPermitStatusOptions={[MockFunction]}
             fetchRegionOptions={[MockFunction]}
             fetchStatusOptions={[MockFunction]}
-            handleMineSearch={[Function]}
+            handleSearch={[Function]}
             history={
               Object {
                 "location": Object {},
-                "push": [MockFunction],
+                "push": [MockFunction] {
+                  "calls": Array [
+                    Array [
+                      "/dashboard/mines/?",
+                    ],
+                  ],
+                  "results": Array [
+                    Object {
+                      "type": "return",
+                      "value": undefined,
+                    },
+                  ],
+                },
               }
             }
-            initialValues={
-              Object {
-                "commodity": Array [],
-                "major": undefined,
-                "region": Array [],
-                "search": undefined,
-                "status": Array [],
-                "tenure": Array [],
-                "tsf": undefined,
-              }
-            }
+            initialValues={Object {}}
             location={
               Object {
                 "search": " ",
@@ -561,7 +549,7 @@ exports[`Dashboard renders properly 1`] = `
               className="tab__content"
             >
               <MineList
-                handleMineSearch={[Function]}
+                handleSearch={[Function]}
                 isLoaded={false}
                 mineRegionHash={
                   Object {
@@ -709,16 +697,13 @@ exports[`Dashboard renders properly 1`] = `
                 xs={24}
               >
                 <Connect(MineSearch)
-                  handleCoordinateSearch={[Function]}
+                  handleSearch={[Function]}
                   initialValues={
                     Object {
-                      "commodity": Array [],
-                      "major": undefined,
-                      "region": Array [],
-                      "search": undefined,
-                      "status": Array [],
-                      "tenure": Array [],
-                      "tsf": undefined,
+                      "lat": 53.7267,
+                      "long": -127.6476,
+                      "mineName": null,
+                      "zoom": 6,
                     }
                   }
                   isMapView={true}
@@ -821,7 +806,19 @@ exports[`Dashboard renders properly 1`] = `
                   history={
                     Object {
                       "location": Object {},
-                      "push": [MockFunction],
+                      "push": [MockFunction] {
+                        "calls": Array [
+                          Array [
+                            "/dashboard/mines/?",
+                          ],
+                        ],
+                        "results": Array [
+                          Object {
+                            "type": "return",
+                            "value": undefined,
+                          },
+                        ],
+                      },
                     }
                   }
                   lat={53.7267}
