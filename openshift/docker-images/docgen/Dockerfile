@@ -24,6 +24,7 @@ RUN mkdir /tmp/tmp-reports
 COPY package.json yarn.lock ${APP_ROOT}/
 RUN cd ${APP_ROOT} && yarn
 RUN chmod -R 777 ${APP_ROOT}
+RUN chmod -R 777 /tmp/tmp-reports
 
 USER 1001
 
