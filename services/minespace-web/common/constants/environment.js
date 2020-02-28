@@ -45,4 +45,5 @@ export const USER_ROLES = {
   role_edit_variances: "core_edit_variances",
   role_close_permits: "core_close_permits",
   role_executive_view: "core_executive_view",
+  role_minespace_proponent: "minespace-proponent",
 };
