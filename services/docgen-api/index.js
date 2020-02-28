@@ -8,10 +8,10 @@ const express = require(`express`);
 const bodyParser = require(`body-parser`);
 const crypto = require("crypto");
 
+const templatedir = "/tmp/tmp-reports/";
 const app = express();
-const upload = require(`multer`)({ dest: `/tmp/tmp-reports/` });
+const upload = require(`multer`)({ dest: templatedir });
 const port = process.env.CARBONE_PORT || 3030;
-const templatedir = "/app/templates/";
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
