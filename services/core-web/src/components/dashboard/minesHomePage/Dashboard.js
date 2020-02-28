@@ -153,12 +153,12 @@ export class Dashboard extends Component {
   };
 
   onPageChange = (page, per_page) => {
-    this.props.history.push(
-      router.MINE_HOME_PAGE.dynamicRoute({
-        page,
-        per_page,
-        ...this.state.listParams,
-      })
+    this.setState({ listParams: { page, per_page } }, () =>
+      this.props.history.push(
+        router.MINE_HOME_PAGE.dynamicRoute({
+          ...this.state.listParams,
+        })
+      )
     );
   };
 
