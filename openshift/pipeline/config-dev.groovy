@@ -345,7 +345,7 @@ environments {
             resources {
                 node {
                     cpu_request = "20m"
-                    cpu_limit = "2000m"
+                    cpu_limit = "100m"
                     memory_request = "128Mi"
                     memory_limit = "256Mi"
                     replica_min = 1
