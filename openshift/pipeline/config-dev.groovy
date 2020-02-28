@@ -221,6 +221,7 @@ app {
                             'API_URL': "https://${vars.modules.'mds-nginx'.HOST_CORE}${vars.modules.'mds-nginx'.PATH}/api",
                             'NRIS_API_URL': "${vars.modules.'mds-nris-backend'.HOST}${vars.modules.'mds-nris-backend'.PATH}",
                             'DOCUMENT_MANAGER_URL': "${vars.modules.'mds-docman-backend'.HOST}${vars.modules.'mds-docman-backend'.PATH}",
+                            'DOCUMENT_GENERATOR_URL': "${vars.modules.'mds-docgen-api'.HOST}${vars.modules.'mds-docgen-api'.PATH}",
                     ]
                 ],
                 [
