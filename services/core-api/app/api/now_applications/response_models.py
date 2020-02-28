@@ -121,8 +121,8 @@ NOW_APPLICATION_PLACER_OPS = api.inherit(
         'is_hand_operation': fields.Boolean,
         'reclamation_area': fields.Fixed,
         'reclamation_unit_type_code': fields.String,
-        'details': fields.List(fields.Nested(NOW_APPLICATION_ACTIVITY_DETAIL_BASE, skip_none=True)),
         'proposed_production': fields.String,
+        'details': fields.List(fields.Nested(NOW_APPLICATION_ACTIVITY_DETAIL_BASE, skip_none=True)),
     })
 
 NOW_APPLICATION_SAND_AND_GRAVEL = api.inherit(
@@ -171,9 +171,9 @@ NOW_APPLICATION_SETTLING_POND = api.inherit(
         'is_ponds_exfiltrated': fields.Boolean,
         'is_ponds_recycled': fields.Boolean,
         'is_ponds_discharged': fields.Boolean,
-        'details': fields.List(fields.Nested(NOW_APPLICATION_SETTLING_POND_DETAIL, skip_none=True)),
         'wastewater_facility_description': fields.String,
         'disposal_from_clean_out': fields.String,
+        'details': fields.List(fields.Nested(NOW_APPLICATION_SETTLING_POND_DETAIL, skip_none=True)),
     })
 
 NOW_APPLICATION_SURFACE_BULK = api.inherit(
@@ -181,10 +181,10 @@ NOW_APPLICATION_SURFACE_BULK = api.inherit(
         'processing_method_description': fields.String,
         'handling_instructions': fields.String,
         'drainage_mitigation_description': fields.String,
-        'details': fields.List(fields.Nested(NOW_APPLICATION_ACTIVITY_DETAIL_BASE, skip_none=True)),
         'has_bedrock_expansion': fields.Boolean,
         'surface_water_damage': fields.String,
         'spontaneous_combustion_handling': fields.String,
+        'details': fields.List(fields.Nested(NOW_APPLICATION_ACTIVITY_DETAIL_BASE, skip_none=True)),
     })
 
 NOW_APPLICATION_UNDERGROUND_EXPLORATION_DETAIL = api.inherit(
@@ -202,10 +202,10 @@ NOW_APPLICATION_UNDERGROUND_EXPLORATION = api.inherit(
         fields.Integer,
         'total_waste_unit_type_code':
         fields.String,
-        'details':
-        fields.List(fields.Nested(NOW_APPLICATION_UNDERGROUND_EXPLORATION_DETAIL, skip_none=True)),
         'proposed_activity':
         fields.String,
+        'details':
+        fields.List(fields.Nested(NOW_APPLICATION_UNDERGROUND_EXPLORATION_DETAIL, skip_none=True)),
     })
 
 NOW_APPLICATION_WATER_SUPPLY_DETAIL = api.inherit(
@@ -447,7 +447,7 @@ UNIT_TYPES = api.model('UnitTypeCodes', {
     'description': fields.String
 })
 
-NOW_APPLICATION_DOCUMENT_TYPE_MODEL = api.model(
+NOW_APPLICATION_DOCUMENT_TYPES = api.model(
     'ApplicationDocumentTypes', {
         'now_application_document_type_code': fields.String,
         'description': fields.String,

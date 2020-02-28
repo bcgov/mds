@@ -8,7 +8,7 @@ from app.api.document_generation.models.document_template import DocumentTemplat
 def test_missing_template_returns_fail(test_client, db_session, auth_headers):
     with current_app.test_request_context():
         template_path = os.path.join(current_app.root_path,
-                                     DocumentTemplate.query.get('NOW-RJL').template_file_path)
+                                     DocumentTemplate.query.get('NRL').template_file_path)
 
         file_download_resp = DocumentGeneratorService.generate_document_and_stream_response(
             template_path, {'mine_no': '1234456'})

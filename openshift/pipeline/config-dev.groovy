@@ -221,6 +221,7 @@ app {
                             'API_URL': "https://${vars.modules.'mds-nginx'.HOST_CORE}${vars.modules.'mds-nginx'.PATH}/api",
                             'NRIS_API_URL': "${vars.modules.'mds-nris-backend'.HOST}${vars.modules.'mds-nris-backend'.PATH}",
                             'DOCUMENT_MANAGER_URL': "${vars.modules.'mds-docman-backend'.HOST}${vars.modules.'mds-docman-backend'.PATH}",
+                            'DOCUMENT_GENERATOR_URL': "${vars.modules.'mds-docgen-api'.HOST}",
                     ]
                 ],
                 [
@@ -282,7 +283,7 @@ app {
                     ]
                 ],
                 [
-                    'file':'openshift/templates/_nodejs.dc.json',
+                    'file':'openshift/templates/docgen/docgen.dc.json',
                     'params':[
                             'NAME':"mds-docgen-api",
                             'SUFFIX': "${vars.deployment.suffix}",
@@ -343,10 +344,10 @@ environments {
             }
             resources {
                 node {
-                    cpu_request = "10m"
-                    cpu_limit = "20m"
-                    memory_request = "64Mi"
-                    memory_limit = "160Mi"
+                    cpu_request = "20m"
+                    cpu_limit = "100m"
+                    memory_request = "128Mi"
+                    memory_limit = "256Mi"
                     replica_min = 1
                     replica_max = 1
                 }
@@ -452,7 +453,6 @@ environments {
                 }
                 'mds-docgen-api' {
                     HOST = "http://mds-docgen-api${vars.deployment.suffix}:3030"
-                    PATH = "/${vars.git.changeId}"
                 }
                 /*'digdag' {
                     HOST = "mds-digdag-${vars.deployment.namespace}.pathfinder.gov.bc.ca"

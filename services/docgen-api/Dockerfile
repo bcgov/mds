@@ -8,7 +8,7 @@ RUN apt update \
 WORKDIR LibreOffice_6.3.3.1_Linux_x86-64_deb/DEBS
 RUN dpkg -i *.deb
 
-RUN mkdir /tmp-reports
+RUN mkdir /tmp/tmp-reports
 COPY . /app
 WORKDIR /app
 RUN yarn
