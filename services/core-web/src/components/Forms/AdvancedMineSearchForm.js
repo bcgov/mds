@@ -18,13 +18,10 @@ const propTypes = {
   reset: PropTypes.func.isRequired,
 };
 
-const haveAdvancedSearchFilters = ({ status, region, tenure, commodity, tsf, major }) =>
-  tsf || major || some([status, region, tenure, commodity], negate(isEmpty));
-
 export class AdvancedMineSearchForm extends Component {
   state = {
-    isAdvancedSearch: haveAdvancedSearchFilters(this.props.initialValues),
-    isAdvancedSearchToggled: haveAdvancedSearchFilters(this.props.initialValues),
+    receivedFirstInitialValues: false,
+    expandAdvancedSearch: false,
   };
 
   handleReset = () => {
@@ -34,21 +31,25 @@ export class AdvancedMineSearchForm extends Component {
 
   toggleIsAdvancedSearch = () =>
     this.setState((prevState) => ({
-      isAdvancedSearchToggled: !prevState.isAdvancedSearchToggled,
-      isAdvancedSearch: false,
+      expandAdvancedSearch: !prevState.expandAdvancedSearch,
     }));
 
+  haveAdvancedSearchFilters = ({ status, region, tenure, commodity, tsf, major }) =>
+    tsf || major || some([status, region, tenure, commodity], negate(isEmpty));
+
   componentWillReceiveProps = (nextProps) => {
-    if (this.props.initialValues !== nextProps.initialValues) {
+    if (
+      !this.state.receivedFirstInitialValues &&
+      this.props.initialValues !== nextProps.initialValues
+    ) {
       this.setState({
-        isAdvancedSearch: haveAdvancedSearchFilters(nextProps.initialValues),
+        receivedFirstInitialValues: true,
+        expandAdvancedSearch: this.haveAdvancedSearchFilters(nextProps.initialValues),
       });
     }
   };
 
   render() {
-    const shouldExpandAdvancedSearch =
-      this.state.isAdvancedSearchToggled || this.state.isAdvancedSearch;
     return (
       <Form layout="vertical" onSubmit={this.props.handleSubmit} onReset={this.handleReset}>
         <Row gutter={6}>
@@ -62,7 +63,7 @@ export class AdvancedMineSearchForm extends Component {
             />
           </Col>
         </Row>
-        {shouldExpandAdvancedSearch && (
+        {this.state.expandAdvancedSearch && (
           <div>
             <Row gutter={6}>
               <Col md={12} xs={24}>
@@ -134,8 +135,8 @@ export class AdvancedMineSearchForm extends Component {
         )}
         <div className="left center-mobile">
           <Button className="btn--dropdown" onClick={this.toggleIsAdvancedSearch}>
-            {shouldExpandAdvancedSearch ? "Collapse Filters" : "Expand Filters"}
-            <Icon type={shouldExpandAdvancedSearch ? "up" : "down"} />
+            {this.state.expandAdvancedSearch ? "Collapse Filters" : "Expand Filters"}
+            <Icon type={this.state.expandAdvancedSearch ? "up" : "down"} />
           </Button>
         </div>
         <div className="right center-mobile">

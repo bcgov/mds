@@ -5,6 +5,7 @@ exports[`AdvancedMineSearchForm renders properly 1`] = `
   colon={true}
   hideRequiredMark={false}
   layout="vertical"
+  onReset={[Function]}
   onSubmit={[MockFunction]}
 >
   <Row
@@ -32,6 +33,7 @@ exports[`AdvancedMineSearchForm renders properly 1`] = `
       ghost={false}
       htmlType="button"
       loading={false}
+      onClick={[Function]}
     >
       Expand Filters
       <Icon
