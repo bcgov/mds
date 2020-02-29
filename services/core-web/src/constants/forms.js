@@ -27,6 +27,7 @@ export const MINE_INCIDENT = "MINE_INCIDENT";
 export const ADD_REPORT = "ADD_REPORT";
 export const EDIT_REPORT = "EDIT_REPORT";
 export const FILTER_REPORTS = "FILTER_REPORTS";
+export const GENERATE_DOCUMENT = "GENERATE_DOCUMENT";
 
 // Notice Of Work
 export const NOTICE_OF_WORK_SEARCH = "NOTICE_OF_WORK_SEARCH";

@@ -466,7 +466,4 @@ const mapDispatchToProps = (dispatch) =>
 Dashboard.propTypes = propTypes;
 Dashboard.defaultProps = defaultProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Dashboard);
+export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
