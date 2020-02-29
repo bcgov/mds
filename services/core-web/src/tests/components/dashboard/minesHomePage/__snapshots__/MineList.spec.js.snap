@@ -6,6 +6,7 @@ exports[`MineList renders properly 1`] = `
     Array [
       Object {
         "dataIndex": "mine_name",
+        "key": "mine_name",
         "render": [Function],
         "sortField": "mine_name",
         "sortOrder": false,
@@ -15,6 +16,7 @@ exports[`MineList renders properly 1`] = `
       },
       Object {
         "dataIndex": "mine_no",
+        "key": "mine_no",
         "render": [Function],
         "sortField": "mine_no",
         "sortOrder": false,
@@ -23,7 +25,8 @@ exports[`MineList renders properly 1`] = `
         "width": 150,
       },
       Object {
-        "dataIndex": "operationalStatus",
+        "dataIndex": "mine_operation_status_code",
+        "key": "mine_operation_status_code",
         "render": [Function],
         "sortField": "mine_operation_status_code",
         "sortOrder": false,
@@ -31,7 +34,8 @@ exports[`MineList renders properly 1`] = `
         "width": 150,
       },
       Object {
-        "dataIndex": "permitNo",
+        "dataIndex": "permit_numbers",
+        "key": "permit_numbers",
         "render": [Function],
         "sortOrder": false,
         "title": "Permits",
@@ -39,6 +43,7 @@ exports[`MineList renders properly 1`] = `
       },
       Object {
         "dataIndex": "mine_region",
+        "key": "mine_region",
         "render": [Function],
         "sortField": "mine_region",
         "sortOrder": false,
@@ -48,6 +53,7 @@ exports[`MineList renders properly 1`] = `
       },
       Object {
         "dataIndex": "tenure",
+        "key": "tenure",
         "render": [Function],
         "sortOrder": false,
         "title": "Tenure",
@@ -55,6 +61,7 @@ exports[`MineList renders properly 1`] = `
       },
       Object {
         "dataIndex": "commodity",
+        "key": "commodity",
         "render": [Function],
         "sortOrder": false,
         "title": "Commodity",
@@ -62,6 +69,7 @@ exports[`MineList renders properly 1`] = `
       },
       Object {
         "dataIndex": "tsf",
+        "key": "tsf",
         "render": [Function],
         "sortOrder": false,
         "title": "TSF",
@@ -78,9 +86,9 @@ exports[`MineList renders properly 1`] = `
         "key": "18133c75-49ad-4101-85f3-a43e35ae989a",
         "mine_name": "mine3",
         "mine_no": "BLAH9091",
+        "mine_operation_status_code": "N/A",
         "mine_region": "North East",
-        "operationalStatus": "N/A",
-        "permitNo": Array [],
+        "permit_numbers": Array [],
         "tenure": Array [
           "Placer",
           "Mineral",
@@ -101,9 +109,9 @@ exports[`MineList renders properly 1`] = `
         "key": "18145c75-49ad-0101-85f3-a43e45ae989a",
         "mine_name": "mine2",
         "mine_no": "BLAH9091",
+        "mine_operation_status_code": "N/A",
         "mine_region": "North East",
-        "operationalStatus": "N/A",
-        "permitNo": Array [
+        "permit_numbers": Array [
           "KNaaWwVdiJ40",
           "xfM0c0ZKEw7B",
         ],

@@ -1,5 +1,5 @@
 import React from "react";
-import { func, objectOf, string, bool } from "prop-types";
+import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { uniqBy, flattenDeep } from "lodash";
 import * as Strings from "@common/constants/strings";
@@ -9,31 +9,31 @@ import CoreTable from "@/components/common/CoreTable";
 import CustomPropTypes from "@/customPropTypes";
 import { SUCCESS_CHECKMARK } from "@/constants/assets";
 
-/**
- * @class MineList - paginated list of mines
- */
-
 const propTypes = {
-  mines: objectOf(CustomPropTypes.mine).isRequired,
-  mineRegionHash: objectOf(string).isRequired,
-  mineTenureHash: objectOf(string).isRequired,
-  mineCommodityOptionsHash: objectOf(string).isRequired,
-  handleSearch: func.isRequired,
-  sortField: string,
-  sortDir: string,
-  isLoaded: bool.isRequired,
+  mines: PropTypes.objectOf(CustomPropTypes.mine).isRequired,
+  mineRegionHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  mineTenureHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  mineCommodityOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  handleSearch: PropTypes.func.isRequired,
+  isLoaded: PropTypes.bool.isRequired,
+  filters: PropTypes.objectOf(PropTypes.any),
+  sortField: PropTypes.string,
+  sortDir: PropTypes.string,
 };
 
 const defaultProps = {
-  sortField: null,
-  sortDir: null,
+  filters: {},
+  sortField: undefined,
+  sortDir: undefined,
 };
 
 const columns = [
   {
     title: "Name",
+    key: "mine_name",
     dataIndex: "mine_name",
     sortField: "mine_name",
+    sorter: true,
     width: 150,
     render: (text, record) => (
       <Link to={router.MINE_SUMMARY.dynamicRoute(record.key)} title="Name">
@@ -49,26 +49,28 @@ const columns = [
         )}
       </Link>
     ),
-    sorter: true,
   },
   {
     title: "Number",
+    key: "mine_no",
     dataIndex: "mine_no",
     sortField: "mine_no",
+    sorter: true,
     width: 150,
     render: (text) => <div title="Number">{text}</div>,
-    sorter: true,
   },
   {
     title: "Operational Status",
-    dataIndex: "operationalStatus",
+    key: "mine_operation_status_code",
+    dataIndex: "mine_operation_status_code",
     sortField: "mine_operation_status_code",
     width: 150,
     render: (text) => <div title="Operational Status">{text}</div>,
   },
   {
     title: "Permits",
-    dataIndex: "permitNo",
+    key: "permit_numbers",
+    dataIndex: "permit_numbers",
     width: 150,
     render: (text) => (
       <div title="Permits">
@@ -85,14 +87,16 @@ const columns = [
   },
   {
     title: "Region",
+    key: "mine_region",
     dataIndex: "mine_region",
     sortField: "mine_region",
+    sorter: true,
     width: 150,
     render: (text) => <div title="Region">{text}</div>,
-    sorter: true,
   },
   {
     title: "Tenure",
+    key: "tenure",
     dataIndex: "tenure",
     width: 150,
     render: (text) => (
@@ -103,6 +107,7 @@ const columns = [
   },
   {
     title: "Commodity",
+    key: "commodity",
     dataIndex: "commodity",
     width: 150,
     render: (text) => (
@@ -113,6 +118,7 @@ const columns = [
   },
   {
     title: "TSF",
+    key: "tsf",
     dataIndex: "tsf",
     width: 150,
     render: (text) => <div title="TSF">{text}</div>,
@@ -124,14 +130,14 @@ const transformRowData = (mines, mineRegionHash, mineTenureHash, mineCommodityHa
     key: mine.mine_guid,
     mine_name: mine.mine_name || Strings.EMPTY_FIELD,
     mine_no: mine.mine_no || Strings.EMPTY_FIELD,
-    operationalStatus:
+    mine_operation_status_code:
       mine.mine_status &&
       mine.mine_status.length > 0 &&
       mine.mine_status[0].status_labels &&
       mine.mine_status[0].status_labels.length > 0
         ? mine.mine_status[0].status_labels[0]
         : Strings.EMPTY_FIELD,
-    permitNo:
+    permit_numbers:
       mine.mine_permit_numbers && mine.mine_permit_numbers.length > 0
         ? mine.mine_permit_numbers
         : [],
@@ -161,15 +167,13 @@ const transformRowData = (mines, mineRegionHash, mineTenureHash, mineCommodityHa
     verified_status: mine.verified_status,
   }));
 
-const handleTableChange = (updateMineList) => (pagination, filters, sorter) => {
+const handleTableChange = (handleSearch, tableFilters) => (pagination, filters, sorter) => {
   const params = {
-    results: pagination.pageSize,
-    page: pagination.current,
-    sort_field: sorter.field,
-    sort_dir: sorter.order ? sorter.order.replace("end", "") : sorter.order,
-    ...filters,
+    ...tableFilters,
+    sort_field: sorter.order ? sorter.field : undefined,
+    sort_dir: sorter.order ? sorter.order.replace("end", "") : undefined,
   };
-  updateMineList(params);
+  handleSearch(params);
 };
 
 const applySortIndicator = (_columns, field, dir) =>
@@ -192,7 +196,7 @@ export const MineList = (props) => (
       align: "left",
       pagination: false,
       locale: { emptyText: <NullScreen type="no-results" /> },
-      onChange: handleTableChange(props.handleSearch),
+      onChange: handleTableChange(props.handleSearch, props.filters),
     }}
   />
 );

@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { Element, scroller } from "react-scroll";
-import { debounce } from "lodash";
 import PropTypes from "prop-types";
 import { Tabs, Col, Divider, notification, Card } from "antd";
 import queryString from "query-string";
@@ -71,25 +70,36 @@ const defaultProps = {
   transformedMineTypes: {},
 };
 
+const defaultListParams = {
+  page: Strings.DEFAULT_PAGE,
+  per_page: Strings.DEFAULT_PER_PAGE,
+  sort_field: undefined,
+  sort_dir: undefined,
+  search: undefined,
+  status: [],
+  region: [],
+  tenure: [],
+  commodity: [],
+  major: undefined,
+  tsf: undefined,
+};
+
 export class Dashboard extends Component {
   constructor(props) {
     super(props);
-    this.handleListViewSearchDebounced = debounce(this.handleListViewSearch, 1000);
     this.state = {
       isListLoaded: false,
       isMapLoaded: false,
       showMapSearchInfo: false,
-      mineGuid: null,
+      listParams: defaultListParams,
       mapParams: {
         lat: Strings.DEFAULT_LAT,
         long: Strings.DEFAULT_LONG,
         mineName: null,
         zoom: Strings.DEFAULT_ZOOM,
       },
-      listParams: {
-        page: Strings.DEFAULT_PAGE,
-        per_page: Strings.DEFAULT_PER_PAGE,
-      },
+      mineGuid: null,
+      allowMapAutoScroll: false,
     };
   }
 
@@ -108,13 +118,13 @@ export class Dashboard extends Component {
         () => this.props.history.push(router.MINE_HOME_PAGE.mapRoute(this.state.mapParams))
       );
     } else {
-      console.log("LIST RELOAD PARAMS", params);
       this.setState(
-        {
+        (prevState) => ({
           listParams: {
+            ...prevState.listParams,
             ...params,
           },
-        },
+        }),
         () => this.props.history.push(router.MINE_HOME_PAGE.dynamicRoute(this.state.listParams))
       );
     }
@@ -128,18 +138,16 @@ export class Dashboard extends Component {
     }
   }
 
-  componentWillUnmount() {
-    this.handleListViewSearchDebounced.cancel();
-  }
-
   renderDataFromURL = (params) => {
     const { map, lat, long } = queryString.parse(params);
     if (map) {
       this.props.fetchMineRecordsForMap().then(() => {
         this.setState({ isMapLoaded: true });
         if (lat && long) {
-          this.handleScroll("mapElement", -60);
           this.setState({ showMapSearchInfo: true });
+          if (this.state.allowMapAutoScroll) {
+            this.handleScroll("mapElement", -60);
+          }
         }
       });
     } else {
@@ -150,12 +158,9 @@ export class Dashboard extends Component {
   };
 
   onPageChange = (page, per_page) => {
-    this.setState({ listParams: { page, per_page } }, () =>
-      this.props.history.push(
-        router.MINE_HOME_PAGE.dynamicRoute({
-          ...this.state.listParams,
-        })
-      )
+    this.setState(
+      (prevState) => ({ listParams: { ...prevState.listParams, page, per_page } }),
+      () => this.props.history.push(router.MINE_HOME_PAGE.dynamicRoute(this.state.listParams))
     );
   };
 
@@ -171,6 +176,7 @@ export class Dashboard extends Component {
             zoom: Strings.HIGH_ZOOM,
           },
           mineGuid: mine_guid,
+          allowMapAutoScroll: true,
         },
         () => this.props.history.push(router.MINE_HOME_PAGE.mapRoute(this.state.mapParams))
       );
@@ -189,6 +195,7 @@ export class Dashboard extends Component {
           zoom: Strings.HIGH_ZOOM,
         },
         mineGuid: null,
+        allowMapAutoScroll: true,
       },
       () => this.props.history.push(router.MINE_HOME_PAGE.mapRoute(this.state.mapParams))
     );
@@ -207,6 +214,7 @@ export class Dashboard extends Component {
     this.setState({
       isListLoaded: false,
       isMapLoaded: false,
+      allowMapAutoScroll: false,
     });
 
     if (key === "map") {
@@ -216,23 +224,27 @@ export class Dashboard extends Component {
     }
   };
 
-  handleListViewSearch = (searchParams, clear = false) => {
-    const listParams = clear ? {} : this.state.listParams;
+  handleListViewSearch = (params) => {
+    this.setState(
+      {
+        listParams: params,
+      },
+      () => this.props.history.push(router.MINE_HOME_PAGE.dynamicRoute(this.state.listParams))
+    );
+  };
+
+  handleListViewReset = () => {
     this.setState(
       (prevState) => ({
         listParams: {
-          page: prevState.page || Strings.DEFAULT_PAGE,
-          per_page: prevState.per_page || Strings.DEFAULT_PER_PAGE,
-          ...listParams,
-          ...searchParams,
+          ...defaultListParams,
+          // page: prevState.listParams.page || defaultListParams.page,
+          per_page: prevState.listParams.per_page || defaultListParams.per_page,
+          sort_field: prevState.listParams.sort_field,
+          sort_dir: prevState.listParams.sort_dir,
         },
       }),
-      () =>
-        this.props.history.push(
-          router.MINE_HOME_PAGE.dynamicRoute({
-            ...this.state.listParams,
-          })
-        )
+      () => this.props.history.push(router.MINE_HOME_PAGE.dynamicRoute(this.state.listParams))
     );
   };
 
@@ -273,7 +285,8 @@ export class Dashboard extends Component {
           <TabPane tab="List" key="list">
             <MineSearch
               initialValues={this.state.listParams}
-              handleSearch={this.handleListViewSearchDebounced}
+              handleSearch={this.handleListViewSearch}
+              handleReset={this.handleListViewReset}
               searchValue={this.state.listParams.search}
               {...this.props}
             />
@@ -286,6 +299,7 @@ export class Dashboard extends Component {
                   mineTenureHash={this.props.mineTenureHash}
                   mineCommodityOptionsHash={this.props.mineCommodityOptionsHash}
                   handleSearch={this.handleListViewSearch}
+                  filters={this.state.listParams}
                   sortField={this.state.listParams.sort_field}
                   sortDir={this.state.listParams.sort_dir}
                 />
@@ -462,4 +476,7 @@ const mapDispatchToProps = (dispatch) =>
 Dashboard.propTypes = propTypes;
 Dashboard.defaultProps = defaultProps;
 
-export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Dashboard);

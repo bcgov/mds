@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { isEmpty, some, negate } from "lodash";
 import { Field, reduxForm } from "redux-form";
 import { Form, Button, Col, Icon, Row } from "antd";
 import * as FORM from "@/constants/forms";
@@ -7,35 +8,47 @@ import { renderConfig } from "@/components/common/config";
 import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
-  searchValue: PropTypes.string,
   handleSubmit: PropTypes.func.isRequired,
-  handleSearch: PropTypes.func.isRequired,
-  toggleAdvancedSearch: PropTypes.func.isRequired,
-  reset: PropTypes.func.isRequired,
+  handleReset: PropTypes.func.isRequired,
   mineTenureTypes: CustomPropTypes.options.isRequired,
   mineCommodityOptions: CustomPropTypes.options.isRequired,
   mineRegionOptions: CustomPropTypes.options.isRequired,
   mineStatusDropDownOptions: CustomPropTypes.options.isRequired,
-  isAdvanceSearch: PropTypes.bool.isRequired,
   initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
+  reset: PropTypes.func.isRequired,
 };
 
-const defaultProps = {
-  searchValue: "",
-};
+const haveAdvancedSearchFilters = ({ status, region, tenure, commodity, tsf, major }) =>
+  tsf || major || some([status, region, tenure, commodity], negate(isEmpty));
 
 export class AdvancedMineSearchForm extends Component {
-  handleReset = () => {
-    this.props.reset();
-    this.props.handleSearch({}, true);
+  state = {
+    isAdvancedSearch: haveAdvancedSearchFilters(this.props.initialValues),
+    isAdvancedSearchToggled: haveAdvancedSearchFilters(this.props.initialValues),
   };
 
-  componentDidMount() {
-    this.props.initialize();
-    console.log("REC NEW PROPS", this.props);
-  }
+  handleReset = () => {
+    this.props.reset();
+    this.props.handleReset();
+  };
+
+  toggleIsAdvancedSearch = () =>
+    this.setState((prevState) => ({
+      isAdvancedSearchToggled: !prevState.isAdvancedSearchToggled,
+      isAdvancedSearch: false,
+    }));
+
+  componentWillReceiveProps = (nextProps) => {
+    if (this.props.initialValues !== nextProps.initialValues) {
+      this.setState({
+        isAdvancedSearch: haveAdvancedSearchFilters(nextProps.initialValues),
+      });
+    }
+  };
 
   render() {
+    const shouldExpandAdvancedSearch =
+      this.state.isAdvancedSearchToggled || this.state.isAdvancedSearch;
     return (
       <Form layout="vertical" onSubmit={this.props.handleSubmit} onReset={this.handleReset}>
         <Row gutter={6}>
@@ -43,13 +56,13 @@ export class AdvancedMineSearchForm extends Component {
             <Field
               id="search"
               name="search"
-              component={renderConfig.FIELD}
-              defaultValue={this.props.searchValue ? this.props.searchValue : undefined}
               placeholder="Search by mine name, ID, or permit number"
+              component={renderConfig.FIELD}
+              allowClear
             />
           </Col>
         </Row>
-        {this.props.isAdvanceSearch && (
+        {shouldExpandAdvancedSearch && (
           <div>
             <Row gutter={6}>
               <Col md={12} xs={24}>
@@ -111,8 +124,8 @@ export class AdvancedMineSearchForm extends Component {
                   component={renderConfig.SELECT}
                   data={[
                     { value: "", label: "Mines With and Without TSFs" },
-                    { value: "false", label: "Mines Without TSFs" },
                     { value: "true", label: "Mines With TSFs" },
+                    { value: "false", label: "Mines Without TSFs" },
                   ]}
                 />
               </Col>
@@ -120,9 +133,9 @@ export class AdvancedMineSearchForm extends Component {
           </div>
         )}
         <div className="left center-mobile">
-          <Button className="btn--dropdown" onClick={this.props.toggleAdvancedSearch}>
-            {this.props.isAdvanceSearch ? "Collapse Filters" : "Expand Filters"}
-            <Icon type={this.props.isAdvanceSearch ? "up" : "down"} />
+          <Button className="btn--dropdown" onClick={this.toggleIsAdvancedSearch}>
+            {shouldExpandAdvancedSearch ? "Collapse Filters" : "Expand Filters"}
+            <Icon type={shouldExpandAdvancedSearch ? "up" : "down"} />
           </Button>
         </div>
         <div className="right center-mobile">
@@ -139,9 +152,9 @@ export class AdvancedMineSearchForm extends Component {
 }
 
 AdvancedMineSearchForm.propTypes = propTypes;
-AdvancedMineSearchForm.defaultProps = defaultProps;
 
 export default reduxForm({
   form: FORM.MINE_ADVANCED_SEARCH,
   touchOnBlur: false,
+  enableReinitialize: true,
 })(AdvancedMineSearchForm);

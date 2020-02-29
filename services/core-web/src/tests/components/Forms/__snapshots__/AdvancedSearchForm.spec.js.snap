@@ -5,7 +5,6 @@ exports[`AdvancedMineSearchForm renders properly 1`] = `
   colon={true}
   hideRequiredMark={false}
   layout="vertical"
-  onReset={[Function]}
   onSubmit={[MockFunction]}
 >
   <Row
@@ -16,6 +15,7 @@ exports[`AdvancedMineSearchForm renders properly 1`] = `
       xs={24}
     >
       <Field
+        allowClear={true}
         component={[Function]}
         id="search"
         name="search"

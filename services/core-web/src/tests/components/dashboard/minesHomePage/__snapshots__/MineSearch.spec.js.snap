@@ -23,13 +23,14 @@ exports[`MineSearch renders properly 1`] = `
     >
       <ReduxForm
         destroyOnUnmount={true}
-        enableReinitialize={false}
+        enableReinitialize={true}
         fetchMineNameList={[MockFunction]}
         forceUnregisterOnUnmount={false}
         form="MINE_ADVANCED_SEARCH"
         getFormState={[Function]}
         handleCoordinateSearch={[MockFunction]}
         handleMineSearch={[MockFunction]}
+        handleReset={[Function]}
         initialValues={Object {}}
         isAdvanceSearch={false}
         isMapView={false}
@@ -61,6 +62,7 @@ exports[`MineSearch renders properly 1`] = `
             ],
           }
         }
+        onReset={[Function]}
         persistentSubmitErrors={false}
         pure={true}
         shouldAsyncValidate={[Function]}

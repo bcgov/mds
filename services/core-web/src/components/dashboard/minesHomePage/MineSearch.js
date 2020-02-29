@@ -3,7 +3,6 @@ import { bindActionCreators } from "redux";
 import { AutoComplete, Row, Col } from "antd";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { isEmpty, some, negate } from "lodash";
 import { fetchMineNameList } from "@common/actionCreators/mineActionCreator";
 import { getMineNames } from "@common/selectors/mineSelectors";
 import RenderAutoComplete from "@/components/common/RenderAutoComplete";
@@ -17,30 +16,19 @@ import CustomPropTypes from "@/customPropTypes";
 const propTypes = {
   fetchMineNameList: PropTypes.func.isRequired,
   handleSearch: PropTypes.func.isRequired,
+  initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
+  handleReset: PropTypes.func,
   mineNameList: PropTypes.arrayOf(CustomPropTypes.mineName),
   isMapView: PropTypes.bool,
-  initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 const defaultProps = {
+  handleReset: () => {},
   mineNameList: [],
   isMapView: false,
 };
 
-const checkAdvancedSearch = ({ status, region, tenure, commodity, tsf, major }) =>
-  tsf || major || some([status, region, tenure, commodity], negate(isEmpty));
-
 export class MineSearch extends Component {
-  state = {
-    isAdvanceSearch: checkAdvancedSearch(this.props.initialValues),
-  };
-
-  componentWillReceiveProps(nextProps) {
-    if (this.props.initialValues !== nextProps.initialValues) {
-      this.setState({ isAdvanceSearch: checkAdvancedSearch(nextProps.initialValues) });
-    }
-  }
-
   handleMapViewSearchOnChange = (name) => {
     if (!name) {
       return;
@@ -50,10 +38,6 @@ export class MineSearch extends Component {
     } else if (name.length === 0) {
       this.props.fetchMineNameList();
     }
-  };
-
-  toggleAdvancedSearch = () => {
-    this.setState((prevState) => ({ isAdvanceSearch: !prevState.isAdvanceSearch }));
   };
 
   transformData = (data) =>
@@ -86,9 +70,7 @@ export class MineSearch extends Component {
             <AdvancedMineSearchForm
               initialValues={this.props.initialValues}
               onSubmit={this.props.handleSearch}
-              toggleAdvancedSearch={this.toggleAdvancedSearch}
-              isAdvanceSearch={this.state.isAdvanceSearch}
-              handleSearch={this.props.handleSearch}
+              onReset={this.props.handleReset}
               {...this.props}
             />
           </span>
@@ -113,4 +95,7 @@ const mapDispatchToProps = (dispatch) =>
 MineSearch.propTypes = propTypes;
 MineSearch.defaultProps = defaultProps;
 
-export default connect(mapStateToProps, mapDispatchToProps)(MineSearch);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(MineSearch);

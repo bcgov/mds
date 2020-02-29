@@ -66,6 +66,7 @@ exports[`Dashboard renders properly 1`] = `
             fetchPermitStatusOptions={[MockFunction]}
             fetchRegionOptions={[MockFunction]}
             fetchStatusOptions={[MockFunction]}
+            handleReset={[Function]}
             handleSearch={[Function]}
             history={
               Object {
@@ -73,7 +74,7 @@ exports[`Dashboard renders properly 1`] = `
                 "push": [MockFunction] {
                   "calls": Array [
                     Array [
-                      "/dashboard/mines/?",
+                      "/dashboard/mines/?page=1&per_page=25",
                     ],
                   ],
                   "results": Array [
@@ -85,7 +86,19 @@ exports[`Dashboard renders properly 1`] = `
                 },
               }
             }
-            initialValues={Object {}}
+            initialValues={
+              Object {
+                "commodity": Array [],
+                "major": undefined,
+                "page": "1",
+                "per_page": "25",
+                "region": Array [],
+                "search": undefined,
+                "status": Array [],
+                "tenure": Array [],
+                "tsf": undefined,
+              }
+            }
             location={
               Object {
                 "search": " ",
@@ -549,6 +562,19 @@ exports[`Dashboard renders properly 1`] = `
               className="tab__content"
             >
               <MineList
+                filters={
+                  Object {
+                    "commodity": Array [],
+                    "major": undefined,
+                    "page": "1",
+                    "per_page": "25",
+                    "region": Array [],
+                    "search": undefined,
+                    "status": Array [],
+                    "tenure": Array [],
+                    "tsf": undefined,
+                  }
+                }
                 handleSearch={[Function]}
                 isLoaded={false}
                 mineRegionHash={
@@ -667,16 +693,14 @@ exports[`Dashboard renders properly 1`] = `
                     },
                   }
                 }
-                sortDir={null}
-                sortField={null}
               />
             </div>
             <div
               className="center"
             >
               <ResponsivePagination
-                currentPage={NaN}
-                itemsPerPage={NaN}
+                currentPage={1}
+                itemsPerPage={25}
                 onPageChange={[Function]}
                 pageTotal={9000}
               />
@@ -809,7 +833,7 @@ exports[`Dashboard renders properly 1`] = `
                       "push": [MockFunction] {
                         "calls": Array [
                           Array [
-                            "/dashboard/mines/?",
+                            "/dashboard/mines/?page=1&per_page=25",
                           ],
                         ],
                         "results": Array [
