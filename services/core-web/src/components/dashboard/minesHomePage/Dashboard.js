@@ -89,11 +89,6 @@ export class Dashboard extends Component {
       listParams: {
         page: Strings.DEFAULT_PAGE,
         per_page: Strings.DEFAULT_PER_PAGE,
-        status: [],
-        region: [],
-        tenure: [],
-        commodity: [],
-        search: null,
       },
     };
   }
@@ -113,6 +108,7 @@ export class Dashboard extends Component {
         () => this.props.history.push(router.MINE_HOME_PAGE.mapRoute(this.state.mapParams))
       );
     } else {
+      console.log("LIST RELOAD PARAMS", params);
       this.setState(
         {
           listParams: {
@@ -466,7 +462,4 @@ const mapDispatchToProps = (dispatch) =>
 Dashboard.propTypes = propTypes;
 Dashboard.defaultProps = defaultProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Dashboard);
+export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);

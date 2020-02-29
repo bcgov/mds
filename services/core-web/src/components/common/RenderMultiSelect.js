@@ -54,6 +54,7 @@ export const RenderMultiSelect = (props) => (
         showArrow
       >
         {props.data &&
+          props.data.length > 0 &&
           props.data.map(({ value, label, tooltip }) => (
             <Select.Option key={value} title={tooltip}>
               {label}

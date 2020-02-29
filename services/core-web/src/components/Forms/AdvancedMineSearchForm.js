@@ -22,7 +22,6 @@ const propTypes = {
 
 const defaultProps = {
   searchValue: "",
-  initialValues: {},
 };
 
 export class AdvancedMineSearchForm extends Component {
@@ -30,6 +29,11 @@ export class AdvancedMineSearchForm extends Component {
     this.props.reset();
     this.props.handleSearch({}, true);
   };
+
+  componentDidMount() {
+    this.props.initialize();
+    console.log("REC NEW PROPS", this.props);
+  }
 
   render() {
     return (

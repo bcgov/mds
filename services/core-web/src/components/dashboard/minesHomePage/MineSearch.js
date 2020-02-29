@@ -19,13 +19,12 @@ const propTypes = {
   handleSearch: PropTypes.func.isRequired,
   mineNameList: PropTypes.arrayOf(CustomPropTypes.mineName),
   isMapView: PropTypes.bool,
-  initialValues: PropTypes.objectOf(PropTypes.any),
+  initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 const defaultProps = {
   mineNameList: [],
   isMapView: false,
-  initialValues: {},
 };
 
 const checkAdvancedSearch = ({ status, region, tenure, commodity, tsf, major }) =>
@@ -75,6 +74,7 @@ export class MineSearch extends Component {
           handleSelect={this.props.handleSearch}
           data={this.transformData(this.props.mineNameList)}
           handleChange={this.handleMapViewSearchOnChange}
+          initialValues={this.props.initialValues}
         />
       );
     }
