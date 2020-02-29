@@ -447,8 +447,8 @@ UNIT_TYPES = api.model('UnitTypeCodes', {
     'description': fields.String
 })
 
-NOW_APPLICATION_DOCUMENT_TYPES = api.model(
-    'ApplicationDocumentTypes', {
+NOW_APPLICATION_DOCUMENT_TYPE_MODEL = api.model(
+    'ApplicationDocumentTypeModel', {
         'now_application_document_type_code': fields.String,
         'description': fields.String,
         'document_template': fields.Nested(DOCUMENT_TEMPLATE_MODEL, skip_none=True),
