@@ -2,7 +2,7 @@
   "kind": "Template",
   "apiVersion": "v1",
   "metadata": {
-    "name": "mds-python-dc",
+    "name": "mds-nodejs-dc",
     "annotations": {
       "template.openshift.io/bindable": "false"
     }

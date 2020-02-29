@@ -9,11 +9,10 @@ import {
 } from "@common/selectors/staticContentSelectors";
 import { number } from "@common/utils/Validate";
 import * as FORM from "@/constants/forms";
-import { TRASHCAN , INFO_CIRCLE } from "@/constants/assets";
+import { TRASHCAN, INFO_CIRCLE } from "@/constants/assets";
 import RenderField from "@/components/common/RenderField";
 import RenderFieldWithDropdown from "@/components/common/RenderFieldWithDropdown";
 import CustomPropTypes from "@/customPropTypes";
-
 
 const propTypes = {
   isViewMode: PropTypes.bool.isRequired,
