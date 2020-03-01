@@ -92,8 +92,8 @@ LeafletWms.Source = LeafletWms.Source.extend({
       request: "GetFeatureInfo",
       info_format: "text/html",
       query_layers: layers.join(","),
-      X: Math.round(point.x),
-      Y: Math.round(point.y),
+      X: point.x,
+      Y: point.y,
     };
     return L.extend({}, wmsParams, infoParams);
   },
