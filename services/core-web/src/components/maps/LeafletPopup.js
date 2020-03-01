@@ -3,21 +3,17 @@ import PropTypes from "prop-types";
 import { Link, StaticRouter } from "react-router-dom";
 import { Button } from "antd";
 import { uniqBy } from "lodash";
-import CustomPropTypes from "@/customPropTypes";
 import * as Strings from "@common/constants/strings";
+import CustomPropTypes from "@/customPropTypes";
 import * as router from "@/constants/routes";
 
 const propTypes = {
-  mine: PropTypes.shape({
-    mine_permit_numbers: PropTypes.arrayOf(PropTypes.string),
-    mine_name: PropTypes.string,
-    mine_no: PropTypes.string,
-    mine_guid: PropTypes.string,
-  }).isRequired,
+  mine: CustomPropTypes.mine.isRequired,
   transformedMineTypes: CustomPropTypes.transformedMineTypes.isRequired,
   mineRegionHash: PropTypes.objectOf(PropTypes.string).isRequired,
   mineTenureHash: PropTypes.objectOf(PropTypes.string).isRequired,
   mineCommodityOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  mineDisturbanceOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   context: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
@@ -50,24 +46,36 @@ export const LeafletPopup = (props) => {
           .join(", ")
       : Strings.EMPTY_FIELD;
 
+  const disturbances =
+    props.transformedMineTypes &&
+    props.transformedMineTypes.mine_disturbance_code &&
+    props.transformedMineTypes.mine_disturbance_code.length > 0
+      ? uniqBy(props.transformedMineTypes.mine_disturbance_code)
+          .map((disturbance) => props.mineDisturbanceOptionsHash[disturbance])
+          .join(", ")
+      : Strings.EMPTY_FIELD;
+
   return (
     <div style={{ width: "220px" }}>
       <h6>{props.mine.mine_name}</h6>
       <br />
       <div>
-        <strong>Region</strong> {region}
+        <strong>Number</strong> {number}
       </div>
       <div>
-        <strong>Number</strong> {number}
+        <strong>Region</strong> {region}
       </div>
       <div>
         <strong>Permits</strong> {permits}
       </div>
       <div>
-        <strong>Tenures</strong> {tenures}
+        <strong>Tenure</strong> {tenures}
       </div>
       <div>
-        <strong>Commodities</strong> {commodities}
+        <strong>Commodity</strong> {commodities}
+      </div>
+      <div>
+        <strong>Disturbance</strong> {disturbances}
       </div>
       <StaticRouter context={props.context} basename={process.env.BASE_PATH}>
         <Link to={router.MINE_SUMMARY.dynamicRoute(props.mine.mine_guid)}>

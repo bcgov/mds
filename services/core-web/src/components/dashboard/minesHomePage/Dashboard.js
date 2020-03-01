@@ -22,6 +22,7 @@ import {
   getMineRegionHash,
   getMineTenureTypesHash,
   getCommodityOptionHash,
+  getDisturbanceOptionHash,
   getMineStatusDropDownOptions,
   getMineRegionDropdownOptions,
   getMineTenureTypeDropdownOptions,
@@ -57,6 +58,7 @@ const propTypes = {
   mineRegionHash: PropTypes.objectOf(PropTypes.string).isRequired,
   mineTenureHash: PropTypes.objectOf(PropTypes.string).isRequired,
   mineCommodityOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  mineDisturbanceOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   location: PropTypes.shape({ search: PropTypes.string }).isRequired,
@@ -403,6 +405,7 @@ export class Dashboard extends Component {
                     mineRegionHash={this.props.mineRegionHash}
                     mineTenureHash={this.props.mineTenureHash}
                     mineCommodityOptionsHash={this.props.mineCommodityOptionsHash}
+                    mineDisturbanceOptionsHash={this.props.mineDisturbanceOptionsHash}
                     history={this.props.history}
                   />
                 </Element>
@@ -452,6 +455,7 @@ const mapStateToProps = (state) => ({
   mineRegionHash: getMineRegionHash(state),
   mineTenureHash: getMineTenureTypesHash(state),
   mineCommodityOptionsHash: getCommodityOptionHash(state),
+  mineDisturbanceOptionsHash: getDisturbanceOptionHash(state),
   mineStatusDropDownOptions: getMineStatusDropDownOptions(state),
   mineRegionOptions: getMineRegionDropdownOptions(state),
   mineTenureTypes: getMineTenureTypeDropdownOptions(state),

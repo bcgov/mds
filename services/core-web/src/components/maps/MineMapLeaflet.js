@@ -32,7 +32,6 @@ import {
 
 const propTypes = {
   mines: PropTypes.objectOf(CustomPropTypes.mine).isRequired,
-  mineCommodityOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
   isScriptLoaded: PropTypes.bool.isRequired,
@@ -41,6 +40,7 @@ const propTypes = {
   mineRegionHash: PropTypes.objectOf(PropTypes.string).isRequired,
   mineTenureHash: PropTypes.objectOf(PropTypes.string).isRequired,
   mineCommodityOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  mineDisturbanceOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   lat: PropTypes.number,
   long: PropTypes.number,
   zoom: PropTypes.number,
@@ -307,6 +307,7 @@ class MineMapLeaflet extends Component {
         mineRegionHash={this.props.mineRegionHash}
         mineTenureHash={this.props.mineTenureHash}
         mineCommodityOptionsHash={this.props.mineCommodityOptionsHash}
+        mineDisturbanceOptionsHash={this.props.mineDisturbanceOptionsHash}
       />
     );
   };
