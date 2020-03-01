@@ -19,11 +19,11 @@ exports[`Home renders properly 1`] = `
       style={
         Object {
           "backgroundColor": "#5e46a1",
-          "height": "8px",
+          "height": 8,
           "position": "fixed",
           "top": 53,
           "width": "100%",
-          "zIndex": 1000,
+          "zIndex": 999,
         }
       }
     />
