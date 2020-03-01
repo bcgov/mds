@@ -102,9 +102,9 @@ export class Home extends Component {
               backgroundColor: Styles.COLOR.violet,
               position: "fixed",
               top: 53,
-              zIndex: 1000,
+              zIndex: 999,
               width: "100%",
-              height: "8px",
+              height: 8,
             }}
           />
         </div>

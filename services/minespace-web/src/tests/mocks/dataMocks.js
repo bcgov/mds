@@ -329,11 +329,11 @@ export const STATUS_OPTIONS = {
           children: [
             {
               value: "LTM",
-              label: "Long Term Maintenance",
+              label: "Long-Term Maintenance",
             },
             {
               value: "LWT",
-              label: "Long Term Maintenance Water Treatment",
+              label: "Long-Term Maintenance Water Treatment",
             },
             {
               value: "PRP",
@@ -347,11 +347,11 @@ export const STATUS_OPTIONS = {
           children: [
             {
               value: "LTM",
-              label: "Long Term Maintenance",
+              label: "Long-Term Maintenance",
             },
             {
               value: "LWT",
-              label: "Long Term Maintenance Water Treatment",
+              label: "Long-Term Maintenance Water Treatment",
             },
             {
               value: "RNS",
@@ -379,7 +379,7 @@ export const STATUS_OPTIONS = {
       children: [
         {
           value: "YR",
-          label: "Year round",
+          label: "Year-Round",
         },
         {
           value: "SEA",

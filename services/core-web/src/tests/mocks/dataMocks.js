@@ -389,7 +389,7 @@ export const STATUS_OPTIONS = {
       },
       mine_operation_status_sub_reason: {
         mine_operation_status_sub_reason_code: "LTM",
-        description: "Long Term Maintenance",
+        description: "Long-Term Maintenance",
       },
       description:
         "The permittee is not able or available to meet permit obligations. The Ministry has taken over responsibility for the mine. Reclamation work is under way. There are long-term care and maintenance activities on site. Contractors are performing the work.",
@@ -406,7 +406,7 @@ export const STATUS_OPTIONS = {
       },
       mine_operation_status_sub_reason: {
         mine_operation_status_sub_reason_code: "LTM",
-        description: "Long Term Maintenance",
+        description: "Long-Term Maintenance",
       },
       description:
         "The mine is closed and not expected to re-open. Reclamation work is under way. There are long-term care and maintenance activities on site. Permit and HSRC obligations are still in place. Site is subject to inspection and still has reporting to file with the Ministry.",
@@ -423,7 +423,7 @@ export const STATUS_OPTIONS = {
       },
       mine_operation_status_sub_reason: {
         mine_operation_status_sub_reason_code: "LWT",
-        description: "Long Term Maintenance & Water Treatment",
+        description: "Long-Term Maintenance & Water Treatment",
       },
       description:
         "The permittee is not able or available to meet permit obligations. The Ministry has taken over responsibility for the mine. Reclamation work is under way. There are long-term care and maintenance activities on site in addition to water treatment. Contractors are performing the work.",
@@ -440,7 +440,7 @@ export const STATUS_OPTIONS = {
       },
       mine_operation_status_sub_reason: {
         mine_operation_status_sub_reason_code: "LWT",
-        description: "Long Term Maintenance & Water Treatment",
+        description: "Long-Term Maintenance & Water Treatment",
       },
       description:
         "The mine is closed and not expected to re-open. Reclamation work is under way. There are long-term care and maintenance activities on site in addition to water treatment. Permit and HSRC obligations are still in place. Site is subject to inspection and still has reporting to file with the Ministry.",
@@ -571,7 +571,7 @@ export const STATUS_OPTIONS = {
       },
       mine_operation_status_reason: {
         mine_operation_status_reason_code: "YR",
-        description: "Year round",
+        description: "Year-Round",
       },
       mine_operation_status_sub_reason: {
         mine_operation_status_sub_reason_code: null,
@@ -638,14 +638,14 @@ export const STATUS_OPTIONS_DROPDOWN = [
         children: [
           {
             children: [],
-            label: "Long Term Maintenance",
+            label: "Long-Term Maintenance",
             title:
               "The permittee is not able or available to meet permit obligations. The Ministry has taken over responsibility for the mine. Reclamation work is under way. There are long-term care and maintenance activities on site. Contractors are performing the work.",
             value: "LTM",
           },
           {
             children: [],
-            label: "Long Term Maintenance & Water Treatment",
+            label: "Long-Term Maintenance & Water Treatment",
             title:
               "The permittee is not able or available to meet permit obligations. The Ministry has taken over responsibility for the mine. Reclamation work is under way. There are long-term care and maintenance activities on site in addition to water treatment. Contractors are performing the work.",
             value: "LWT",
@@ -673,14 +673,14 @@ export const STATUS_OPTIONS_DROPDOWN = [
         children: [
           {
             children: [],
-            label: "Long Term Maintenance",
+            label: "Long-Term Maintenance",
             title:
               "The mine is closed and not expected to re-open. Reclamation work is under way. There are long-term care and maintenance activities on site. Permit and HSRC obligations are still in place. Site is subject to inspection and still has reporting to file with the Ministry.",
             value: "LTM",
           },
           {
             children: [],
-            label: "Long Term Maintenance & Water Treatment",
+            label: "Long-Term Maintenance & Water Treatment",
             title:
               "The mine is closed and not expected to re-open. Reclamation work is under way. There are long-term care and maintenance activities on site in addition to water treatment. Permit and HSRC obligations are still in place. Site is subject to inspection and still has reporting to file with the Ministry.",
             value: "LWT",
@@ -727,7 +727,7 @@ export const STATUS_OPTIONS_DROPDOWN = [
       },
       {
         children: [],
-        label: "Year round",
+        label: "Year-Round",
         title:
           "This mine operates year-round (can be conducting exploration and/or production activities).",
         value: "YR",
@@ -748,8 +748,8 @@ export const a = [
         value: "ORP",
         label: "Orphaned",
         children: [
-          { value: "LTM", label: "Long Term Maintenance" },
-          { value: "LWT", label: "Long Term Maintenance & Water Treatment" },
+          { value: "LTM", label: "Long-Term Maintenance" },
+          { value: "LWT", label: "Long-Term Maintenance & Water Treatment" },
           { value: "RNS", label: "Reclamation Not Started" },
           { value: "SVR", label: "Site Visit Required" },
         ],
@@ -758,8 +758,8 @@ export const a = [
         value: "REC",
         label: "Reclamation",
         children: [
-          { value: "LTM", label: "Long Term Maintenance" },
-          { value: "LWT", label: "Long Term Maintenance & Water Treatment" },
+          { value: "LTM", label: "Long-Term Maintenance" },
+          { value: "LWT", label: "Long-Term Maintenance & Water Treatment" },
           { value: "PRP", label: "Permit Release Pending" },
         ],
       },
@@ -774,7 +774,7 @@ export const a = [
     label: "Operating",
     children: [
       { value: "SEA", label: "Seasonal", children: [] },
-      { value: "YR", label: "Year round", children: [] },
+      { value: "YR", label: "Year-Round", children: [] },
     ],
   },
 ];
@@ -1829,7 +1829,7 @@ export const SEARCH_RESULTS = {
           ],
           mine_status: [
             {
-              status_labels: ["Operating", "Year round"],
+              status_labels: ["Operating", "Year-Round"],
             },
           ],
         },
@@ -1877,7 +1877,7 @@ export const SEARCH_RESULTS = {
           ],
           mine_status: [
             {
-              status_labels: ["Closed", "Reclamation", "Long Term Maintenance"],
+              status_labels: ["Closed", "Reclamation", "Long-Term Maintenance"],
             },
           ],
         },
@@ -2212,7 +2212,7 @@ export const MINE_SEARCH_RESULTS = [
     ],
     mine_status: [
       {
-        status_labels: ["Operating", "Year round"],
+        status_labels: ["Operating", "Year-Round"],
       },
     ],
   },
@@ -2252,7 +2252,7 @@ export const MINE_SEARCH_RESULTS = [
     ],
     mine_status: [
       {
-        status_labels: ["Closed", "Reclamation", "Long Term Maintenance"],
+        status_labels: ["Closed", "Reclamation", "Long-Term Maintenance"],
       },
     ],
   },
