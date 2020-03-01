@@ -96,6 +96,7 @@ export class Home extends Component {
             isMenuOpen={this.state.isMenuOpen}
             toggleHamburgerMenu={this.toggleHamburgerMenu}
           />
+          <div id="menu-loadingbar-background" />
           <LoadingBar
             style={{
               backgroundColor: Styles.COLOR.violet,

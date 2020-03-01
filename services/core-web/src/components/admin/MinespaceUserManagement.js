@@ -59,9 +59,10 @@ export class MinespaceUserManagement extends Component {
   render() {
     return (
       <div>
-        <h2>Minespace User Management</h2>
+        <h2>MineSpace User Management</h2>
+        <br />
         <NewMinespaceUser refreshData={this.refreshUserData} />
-        <h3>Minespace Users</h3>
+        <h3>MineSpace Users</h3>
         <MinespaceUserList
           isLoaded={this.state.isLoaded}
           minespaceUsers={this.props.minespaceUsers}

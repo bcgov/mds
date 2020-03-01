@@ -27,7 +27,7 @@ export class NewMinespaceUser extends Component {
 
   createNewBCEIDUser = (values) => {
     const payload = {
-      mine_guids: values.proponent_mine_access.map((val) => val.split("~")[1]),
+      mine_guids: values.proponent_mine_access,
       email: values.user_bceid_email,
     };
 
@@ -49,12 +49,12 @@ export class NewMinespaceUser extends Component {
   render() {
     return (
       <div>
-        <h3>Add BCeID User</h3>
+        <h3>Create Proponent</h3>
         {this.props.mines && (
           <AddMinespaceUser
             mines={this.props.mines.map((mine) => ({
-              value: `${mine.mine_name}~${mine.mine_guid}`,
-              label: `${mine.mine_name}-${mine.mine_no}`,
+              value: mine.mine_guid,
+              label: `${mine.mine_name} - ${mine.mine_no}`,
             }))}
             onSubmit={this.createNewBCEIDUser}
             handleChange={this.handleChange}

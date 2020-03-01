@@ -3,13 +3,14 @@
 exports[`MinespaceUserManagement renders properly 1`] = `
 <div>
   <h2>
-    Minespace User Management
+    MineSpace User Management
   </h2>
+  <br />
   <Connect(NewMinespaceUser)
     refreshData={[Function]}
   />
   <h3>
-    Minespace Users
+    MineSpace Users
   </h3>
   <MinespaceUserList
     handleDelete={[Function]}

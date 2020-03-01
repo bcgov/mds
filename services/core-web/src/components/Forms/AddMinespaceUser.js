@@ -30,9 +30,11 @@ export const AddMinespaceUser = (props) => (
             <Field
               id="user_bceid_email"
               name="user_bceid_email"
-              label="BCEID Email"
+              label="Email*"
+              placeholder="Enter the user's BCeID email"
               component={RenderField}
               validate={[required, email]}
+              allowClear
             />
           </Form.Item>
         </Col>
@@ -41,8 +43,8 @@ export const AddMinespaceUser = (props) => (
             <Field
               id="proponent_mine_access"
               name="proponent_mine_access"
-              label="Mines"
-              placeholder="Please Select a Mine"
+              label="Mines*"
+              placeholder="Select the mines this user can access"
               component={renderConfig.MULTI_SELECT}
               data={props.mines}
               onChange={props.handleChange}
