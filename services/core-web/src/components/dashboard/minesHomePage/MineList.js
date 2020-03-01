@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { uniqBy, flattenDeep } from "lodash";
+import { formatDate } from "@common/utils/helpers";
 import * as Strings from "@common/constants/strings";
 import * as router from "@/constants/routes";
 import NullScreen from "@/components/common/NullScreen";
@@ -44,7 +45,9 @@ const columns = [
             className="padding-small"
             src={SUCCESS_CHECKMARK}
             width="25"
-            title={`Mine data verified by ${record.verified_status.verifying_user}`}
+            title={`Mine data verified by ${record.verified_status.verifying_user} on ${formatDate(
+              record.verified_status.verifying_timestamp
+            )}`}
           />
         )}
       </Link>

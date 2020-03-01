@@ -1,11 +1,12 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Link, StaticRouter } from "react-router-dom";
-import { Button } from "antd";
+import { formatDate } from "@common/utils/helpers";
 import { uniqBy } from "lodash";
 import * as Strings from "@common/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
 import * as router from "@/constants/routes";
+import { SUCCESS_CHECKMARK } from "@/constants/assets";
 
 const propTypes = {
   mine: CustomPropTypes.mine.isRequired,
@@ -22,6 +23,14 @@ export const LeafletPopup = (props) => {
     (props.mine.mine_region && props.mineRegionHash[props.mine.mine_region]) || Strings.EMPTY_FIELD;
 
   const number = props.mine.mine_no || Strings.EMPTY_FIELD;
+
+  const status =
+    props.mine.mine_status &&
+    props.mine.mine_status.length > 0 &&
+    props.mine.mine_status[0].status_labels &&
+    props.mine.mine_status[0].status_labels.length > 0
+      ? props.mine.mine_status[0].status_labels[0]
+      : Strings.EMPTY_FIELD;
 
   const permits =
     props.mine.mine_permit_numbers && props.mine.mine_permit_numbers.length > 0
@@ -55,15 +64,41 @@ export const LeafletPopup = (props) => {
           .join(", ")
       : Strings.EMPTY_FIELD;
 
+  const tsf = props.mine.mine_tailings_storage_facilities
+    ? props.mine.mine_tailings_storage_facilities.length
+    : Strings.EMPTY_FIELD;
+
+  const verifiedStatus = props.mine.verified_status;
+
   return (
     <div style={{ width: "220px" }}>
-      <h6>{props.mine.mine_name}</h6>
-      <br />
+      <div>
+        <StaticRouter context={props.context} basename={process.env.BASE_PATH}>
+          <Link to={router.MINE_SUMMARY.dynamicRoute(props.mine.mine_guid)} title="Go to mine page">
+            {props.mine.mine_name}
+            {verifiedStatus.healthy_ind && (
+              <img
+                alt="Verified"
+                className="padding-small"
+                src={SUCCESS_CHECKMARK}
+                width="25"
+                title={`Mine data verified by ${verifiedStatus.verifying_user} on ${formatDate(
+                  verifiedStatus.verifying_timestamp
+                )}`}
+              />
+            )}
+          </Link>
+        </StaticRouter>
+      </div>
+      <hr />
       <div>
         <strong>Number</strong> {number}
       </div>
       <div>
         <strong>Region</strong> {region}
+      </div>
+      <div>
+        <strong>Status</strong> {status}
       </div>
       <div>
         <strong>Permits</strong> {permits}
@@ -77,13 +112,16 @@ export const LeafletPopup = (props) => {
       <div>
         <strong>Disturbance</strong> {disturbances}
       </div>
-      <StaticRouter context={props.context} basename={process.env.BASE_PATH}>
+      <div>
+        <strong>TSF</strong> {tsf}
+      </div>
+      {/* <StaticRouter context={props.context} basename={process.env.BASE_PATH}>
         <Link to={router.MINE_SUMMARY.dynamicRoute(props.mine.mine_guid)}>
           <div className="mineMapPopUpButton">
             <Button type="primary">View Mine</Button>
           </div>
         </Link>
-      </StaticRouter>
+      </StaticRouter> */}
     </div>
   );
 };
