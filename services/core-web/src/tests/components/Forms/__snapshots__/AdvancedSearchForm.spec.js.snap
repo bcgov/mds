@@ -16,6 +16,7 @@ exports[`AdvancedMineSearchForm renders properly 1`] = `
       xs={24}
     >
       <Field
+        allowClear={true}
         component={[Function]}
         id="search"
         name="search"
@@ -32,6 +33,7 @@ exports[`AdvancedMineSearchForm renders properly 1`] = `
       ghost={false}
       htmlType="button"
       loading={false}
+      onClick={[Function]}
     >
       Expand Filters
       <Icon

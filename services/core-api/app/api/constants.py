@@ -47,11 +47,11 @@ MINE_OPERATION_STATUS_REASON = {
 MINE_OPERATION_STATUS_SUB_REASON = {
     'long_term_maintenance': {
         'value': 'LTM',
-        'label': 'Long Term Maintenance'
+        'label': 'Long-Term Maintenance'
     },
     'long_term_maintenance_water_treatment': {
         'value': 'LWT',
-        'label': 'Long Term Maintenance with Water Treatment'
+        'label': 'Long-Term Maintenance with Water Treatment'
     },
     'permit_release_pending': {
         'value': 'PRP',

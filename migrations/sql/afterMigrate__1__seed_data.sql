@@ -62,7 +62,7 @@ VALUES
     ('REC', 'Reclamation', 20, 'system-mds', 'system-mds'),
     ('ORP', 'Orphaned', 30, 'system-mds', 'system-mds'),
     ('UN', 'Unknown', 40, 'system-mds', 'system-mds'),
-    ('YR', 'Year round', 50, 'system-mds', 'system-mds'),
+    ('YR', 'Year-Round', 50, 'system-mds', 'system-mds'),
     ('SEA', 'Seasonal', 60, 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
 
