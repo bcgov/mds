@@ -247,6 +247,25 @@ app {
                     ]
                 ],
                 [
+                    'file':'openshift/templates/docgen/docgen.dc.json',
+                    'params':[
+                            'NAME':"mds-docgen-api",
+                            'SUFFIX': "${vars.deployment.suffix}",
+                            'APPLICATION_SUFFIX': "${vars.deployment.application_suffix}",
+                            'TAG_NAME':"${app.deployment.version}",
+                            'PORT':3030,
+                            'CPU_REQUEST':"${vars.resources.node.cpu_request}",
+                            'CPU_LIMIT':"${vars.resources.node.cpu_limit}",
+                            'MEMORY_REQUEST':"${vars.resources.node.memory_request}",
+                            'MEMORY_LIMIT':"${vars.resources.node.memory_limit}",
+                            'REPLICA_MIN':"${vars.resources.node.replica_min}",
+                            'REPLICA_MAX':"${vars.resources.node.replica_max}",
+                            'APPLICATION_DOMAIN': "${vars.modules.'mds-docgen-api'.HOST}",
+                            'BASE_PATH': "${vars.modules.'mds-docgen-api'.PATH}",
+                            'NODE_ENV': "${vars.deployment.node_env}"
+                    ]
+                ],
+                [
                     'file':'openshift/templates/tools/schemaspy.dc.json',
                     'params':[
                             'NAME':"schemaspy",
