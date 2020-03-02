@@ -5,7 +5,7 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { Table, Button } from "antd";
 import PropTypes from "prop-types";
-import { truncateFilename } from "@common/utils/helpers";
+import { truncateFilename, dateSorter } from "@common/utils/helpers";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
 import {
   getIncidentDeterminationHash,
@@ -13,7 +13,7 @@ import {
   getIncidentCategoryCodeHash,
 } from "@common/selectors/staticContentSelectors";
 import { openModal, closeModal } from "@common/actions/modalActions";
-import { formatDate, dateSorter } from "@/utils/helpers";
+import { formatDate } from "@/utils/helpers";
 import LinkButton from "@/components/common/LinkButton";
 import * as Strings from "@/constants/strings";
 import { modalConfig } from "@/components/modalContent/config";

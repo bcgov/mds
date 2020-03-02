@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Table, Button } from "antd";
-import { truncateFilename } from "@common/utils/helpers";
+import { truncateFilename, dateSorter } from "@common/utils/helpers";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
 import CustomPropTypes from "@/customPropTypes";
-import { formatDate, dateSorter } from "@/utils/helpers";
+import { formatDate } from "@/utils/helpers";
 import { RED_CLOCK } from "@/constants/assets";
 import * as Strings from "@/constants/strings";
 import LinkButton from "@/components/common/LinkButton";
