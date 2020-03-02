@@ -231,7 +231,4 @@ const mapDispatchToProps = (dispatch) =>
     dispatch
   );
 
-export default connect(
-  null,
-  mapDispatchToProps
-)(ReviewActivities);
+export default connect(null, mapDispatchToProps)(ReviewActivities);

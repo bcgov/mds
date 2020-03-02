@@ -101,10 +101,7 @@ export const AuthenticationGuard = (WrappedComponent) => {
       dispatch
     );
 
-  return connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(authenticationGuard);
+  return connect(mapStateToProps, mapDispatchToProps)(authenticationGuard);
 };
 
 export default AuthenticationGuard;

@@ -151,9 +151,4 @@ const mapDispatchToProps = (dispatch) =>
     dispatch
   );
 
-export default withRouter(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(ScrollContentWrapper)
-);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ScrollContentWrapper));

@@ -4,10 +4,22 @@ from flask_restplus import fields
 from app.api.parties.response_models import PARTY
 from app.api.mines.response_models import MINE_DOCUMENT_MODEL
 
-DOCUMENT_TEMPLATE_MODEL = api.model('DocumentTemplateModel', {
-    'document_template_code': fields.String,
-    'form_spec': fields.Raw
-})
+DOCUMENT_TEMPLATE_FIELD_MODE = api.model(
+    'DocumentTemplateFieldModel', {
+        "id": fields.String,
+        "label": fields.String,
+        "type": fields.String,
+        "placeholder": fields.String,
+        "required": fields.Boolean(default=False),
+        "context-value": fields.String,
+        "read-only": fields.Boolean(default=False),
+    })
+
+DOCUMENT_TEMPLATE_MODEL = api.model(
+    'DocumentTemplateModel', {
+        'document_template_code': fields.String,
+        'form_spec': fields.List(fields.Nested(DOCUMENT_TEMPLATE_FIELD_MODE, skip_none=True))
+    })
 
 
 class DateTime(fields.Raw):
@@ -435,8 +447,8 @@ UNIT_TYPES = api.model('UnitTypeCodes', {
     'description': fields.String
 })
 
-NOW_APPLICATION_DOCUMENT_TYPES = api.model(
-    'ApplicationDocumentTypes', {
+NOW_APPLICATION_DOCUMENT_TYPE_MODEL = api.model(
+    'ApplicationDocumentTypeModel', {
         'now_application_document_type_code': fields.String,
         'description': fields.String,
         'document_template': fields.Nested(DOCUMENT_TEMPLATE_MODEL, skip_none=True),

@@ -719,7 +719,9 @@ VALUES
       "label": "Mine Number",
       "type": "FIELD",
       "placeholder": "Enter the mine number",
-      "required": true
+      "required": true,
+      "relative-data-path": "mine.mine_no",
+      "read-only": true
     },
     {
       "id": "proponent_address",
@@ -740,23 +742,27 @@ VALUES
       "label": "Property",
       "type": "FIELD",
       "placeholder": "Enter the property",
-      "required": true
+      "required": true,
+      "relative-data-path": "now_application.property_name",
+      "read-only": true
     },
     {
       "id": "application_dt",
       "label": "Application Date",
       "type": "DATE",
       "placeholder": null,
-      "required": true
+      "required": true,
+      "relative-data-path": "now_application.submitted_date"
     },
     {
       "id": "inspector",
       "label": "Inspector",
       "type": "FIELD",
       "placeholder": "Enter the inspector''s name",
-      "required": true
+      "required": true,
+      "relative-data-path": "now_application.lead_inspector.name"
     }
-  ]' , 'templates/now/Rejection Letter Template (NoW).docx', true, 'system-mds', 'system-mds'),
+  ]'  , 'templates/now/Rejection Letter Template (NoW).docx', true, 'system-mds', 'system-mds'),
 	('NWL', '[
     {
       "id": "letter_dt",
@@ -770,7 +776,9 @@ VALUES
       "label": "Mine Number",
       "type": "FIELD",
       "placeholder": "Enter the mine number",
-      "required": true
+      "required": true,
+      "relative-data-path": "mine.mine_no",
+      "read-only": true
     },
     {
       "id": "proponent_address",
@@ -791,7 +799,9 @@ VALUES
       "label": "Property",
       "type": "FIELD",
       "placeholder": "Enter the property",
-      "required": true
+      "required": true,
+      "relative-data-path": "now_application.property_name",
+      "read-only": true
     },
     {
       "id": "withdrawal_dt",
@@ -805,7 +815,8 @@ VALUES
       "label": "Inspector",
       "type": "FIELD",
       "placeholder": "Enter the inspector''s name",
-      "required": true
+      "required": true,
+      "relative-data-path": "now_application.lead_inspector.name"
     }
   ]' , 'templates/now/Withdrawal Letter Template (NoW).docx', true, 'system-mds', 'system-mds'),
 	('NCL', '[
@@ -821,7 +832,9 @@ VALUES
       "label": "Mine Number",
       "type": "FIELD",
       "placeholder": "Enter the mine number",
-      "required": true
+      "required": true,
+      "relative-data-path": "mine.mine_no",
+      "read-only": true
     },
     {
       "id": "proponent_address",
@@ -849,14 +862,17 @@ VALUES
       "label": "Property",
       "type": "FIELD",
       "placeholder": "Enter the property",
-      "required": true
+      "required": true,
+      "relative-data-path": "now_application.property_name",
+      "read-only": true
     },
     {
       "id": "application_dt",
       "label": "Application Date",
       "type": "DATE",
       "placeholder": null,
-      "required": true
+      "required": true,
+      "relative-data-path": "now_application.submitted_date"
     },
     {
       "id": "exploration_type",
@@ -877,7 +893,8 @@ VALUES
       "label": "Inspector",
       "type": "FIELD",
       "placeholder": "Enter the inspector''s name",
-      "required": true
+      "required": true,
+      "relative-data-path": "now_application.lead_inspector.name"
     }
   ]', 'templates/now/Client Acknowledgment Letter Template (NoW).docx', true, 'system-mds', 'system-mds')
   

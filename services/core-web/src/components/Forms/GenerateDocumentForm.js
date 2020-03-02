@@ -18,22 +18,24 @@ const createFields = (fields) => (
   <div>
     {fields &&
       fields.length > 0 &&
-      fields.map((field) => (
-        <Row key={field.id}>
-          <Col>
-            <Form.Item>
-              <Field
-                id={field.id}
-                name={field.id}
-                label={field.label}
-                placeholder={field.placeholder}
-                component={renderConfig[field.type]}
-                validate={field.required ? [required] : null}
-              />
-            </Form.Item>
-          </Col>
-        </Row>
-      ))}
+      fields
+        .filter((f) => !f["read-only"])
+        .map((field) => (
+          <Row key={field.id}>
+            <Col>
+              <Form.Item>
+                <Field
+                  id={field.id}
+                  name={field.id}
+                  label={field.label}
+                  placeholder={field.placeholder}
+                  component={renderConfig[field.type]}
+                  validate={field.required ? [required] : null}
+                />
+              </Form.Item>
+            </Col>
+          </Row>
+        ))}
   </div>
 );
 
