@@ -1,7 +1,7 @@
 from flask_restplus import Resource
 from flask import request
 from sqlalchemy_filters import apply_pagination, apply_sort
-from sqlalchemy import desc, func, or_
+from sqlalchemy import desc, func, or_, and_
 from werkzeug.exceptions import BadRequest, NotFound, InternalServerError
 
 from app.extensions import api
@@ -96,8 +96,9 @@ class NOWApplicationListResource(Resource, UserMixin):
         base_query = NoticeOfWorkView.query
 
         if submissions_only:
-            filters.append(NoticeOfWorkView.originating_system != None
-                           and NoticeOfWorkView.originating_system != 'MMS')
+            filters.append(
+                and_(NoticeOfWorkView.originating_system != None,
+                     NoticeOfWorkView.originating_system != 'MMS'))
 
         if mine_guid:
             filters.append(NoticeOfWorkView.mine_guid == mine_guid)

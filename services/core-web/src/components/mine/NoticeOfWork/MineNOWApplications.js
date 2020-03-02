@@ -69,12 +69,6 @@ export class MineNOWApplications extends Component {
     }
   }
 
-  componentWillUnmount() {
-    this.setState({
-      params: {},
-    });
-  }
-
   renderDataFromURL = (queryParams) => {
     const params = queryParams || this.props.location.search;
     const parsedParams = queryString.parse(params);
