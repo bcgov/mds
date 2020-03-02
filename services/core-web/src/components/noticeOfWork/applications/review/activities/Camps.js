@@ -3,6 +3,7 @@ import { PropTypes } from "prop-types";
 import { Field, formValueSelector } from "redux-form";
 import { connect } from "react-redux";
 import { Row, Col, Table, Button } from "antd";
+import { maxLength, number, required } from "@common/utils/Validate";
 import * as FORM from "@/constants/forms";
 import { TRASHCAN } from "@/constants/assets";
 import RenderField from "@/components/common/RenderField";
@@ -156,30 +157,43 @@ export const Camps = (props) => {
             name="has_fuel_stored"
             component={RenderRadioButtons}
             disabled={props.isViewMode}
+            validate={[required]}
           />
         </Col>
         <Col md={12} sm={24}>
+          <div className="field-title">Volume of fuel stored</div>
+          <Field
+            id="volume_fuel_stored"
+            name="volume_fuel_stored"
+            component={RenderField}
+            disabled={props.isViewMode}
+            validate={[number]}
+          />
+        </Col>
+      </Row>
+      <Row gutter={16}>
+        <Col md={12} sm={24}>
           <div className="field-title">Storage Method</div>
-          <Row gutter={16}>
-            <Col md={12} sm={24}>
-              <Field
-                label="Bulk"
-                id="has_fuel_stored_in_bulk"
-                name="has_fuel_stored_in_bulk"
-                component={RenderRadioButtons}
-                disabled={props.isViewMode}
-              />
-            </Col>
-            <Col md={12} sm={24}>
-              <Field
-                label="Barrell"
-                id="has_fuel_stored_in_barrels"
-                name="has_fuel_stored_in_barrels"
-                component={RenderRadioButtons}
-                disabled={props.isViewMode}
-              />
-            </Col>
-          </Row>
+          <Col md={12} sm={24}>
+            <Field
+              label="Bulk"
+              id="has_fuel_stored_in_bulk"
+              name="has_fuel_stored_in_bulk"
+              component={RenderRadioButtons}
+              disabled={props.isViewMode}
+              validate={[required]}
+            />
+          </Col>
+          <Col md={12} sm={24}>
+            <Field
+              label="Barrell"
+              id="has_fuel_stored_in_barrels"
+              name="has_fuel_stored_in_barrels"
+              component={RenderRadioButtons}
+              disabled={props.isViewMode}
+              validate={[required]}
+            />
+          </Col>
         </Col>
       </Row>
       <br />
@@ -194,6 +208,7 @@ export const Camps = (props) => {
             name="reclamation_description"
             component={RenderAutoSizeField}
             disabled={props.isViewMode}
+            validate={[maxLength(4000)]}
           />
         </Col>
         <Col md={12} sm={24}>
@@ -205,6 +220,7 @@ export const Camps = (props) => {
             name="reclamation_cost"
             component={RenderField}
             disabled={props.isViewMode}
+            validate={[number]}
           />
         </Col>
       </Row>

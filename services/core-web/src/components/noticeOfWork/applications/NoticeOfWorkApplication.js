@@ -251,10 +251,11 @@ export class NoticeOfWorkApplication extends Component {
         this.props.noticeOfWork.now_application_guid
       )
       .then(() => {
-        this.props.fetchImportedNoticeOfWorkApplication(id);
-        this.setState((prevState) => ({
-          isViewMode: !prevState.isViewMode,
-        }));
+        this.props.fetchImportedNoticeOfWorkApplication(id).then(() => {
+          this.setState((prevState) => ({
+            isViewMode: !prevState.isViewMode,
+          }));
+        });
       });
   };
 

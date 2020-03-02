@@ -98,25 +98,25 @@ export class NOWSideMenu extends Component {
           <Link href="#first-aid" title="First Aid" />
           <Link href="#reclamation" title="Summary of Reclamation" />
           <Link
-            href="#access-roads"
+            href="#exploration-access"
             title="Access Roads, Trails, Helipads, Air Strips, Boat Ramps"
           />
-          <Link href="#blasting" title="Blasting" />
+          <Link href="#blasting-operation" title="Blasting" />
           <Link href="#camps" title="Camps, Buildings, Staging Areas, Fuel/Lubricant Storage" />
           <Link
             href="#cut-lines-polarization-survey"
             title="Cut Lines and Induced Polarization Survey"
           />
-          <Link href="#surface-drilling" title="Exploration Surface Drilling" />
+          <Link href="#exploration-surface-drilling" title="Exploration Surface Drilling" />
           <Link href="#mechanical-trenching" title="Mechanical Trenching / Test Pits" />
-          <Link href="#settling-ponds" title="Settling Ponds" />
-          <Link href="#surface-bulk-samples" title="Surface Bulk Sample" />
+          <Link href="#settling-pond" title="Settling Ponds" />
+          <Link href="#surface-bulk-sample" title="Surface Bulk Sample" />
           <Link href="#underground-exploration" title="Underground Exploration" />
-          <Link href="#sand-gravel-quarry-operations" title="Sand and Gravel / Quarry Operations" />
-          <Link href="#placer-operations" title="Placer Operations" />
+          <Link href="#sand-and-gravel" title="Sand and Gravel / Quarry Operations" />
+          <Link href="#placer-operation" title="Placer Operations" />
           <Link href="#water-supply" title="Water Supply" />
-          <Link href="#submission_documents" title="Submission Documents" />
-          <Link href="#additional_documents" title="Additional Documents" />
+          <Link href="#submission-documents" title="Submission Documents" />
+          <Link href="#additional-documents" title="Additional Documents" />
         </Anchor>
       </div>
     );

@@ -5,6 +5,7 @@ import { AutoComplete, Collapse, Button, Icon, Popconfirm, Form, Col, Row } from
 import { required } from "@common/utils/Validate";
 import CustomPropTypes from "@/customPropTypes";
 import * as FORM from "@/constants/forms";
+import { TRASHCAN } from "@/constants/assets";
 import { renderConfig } from "@/components/common/config";
 import { COLOR } from "@/constants/styles";
 
@@ -38,7 +39,7 @@ const panelHeader = (removeField, roleNumber) => (
         cancelText="No"
       >
         <Button ghost>
-          <Icon type="minus-circle" theme="outlined" style={{ color: "#BC2929" }} />
+          <img name="remove" src={TRASHCAN} alt="Remove Activity" />
         </Button>
       </Popconfirm>
     </div>

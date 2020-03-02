@@ -1,15 +1,15 @@
 import React from "react";
 import PropTypes from "prop-types";
-import NullScreen from "@/components/common/NullScreen";
 import * as Strings from "@common/constants/strings";
 import { formatDate, truncateFilename, dateSorter } from "@common/utils/helpers";
+import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
+import NullScreen from "@/components/common/NullScreen";
 import { COLOR } from "@/constants/styles";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
 import CustomPropTypes from "@/customPropTypes";
 import { MineReportActions } from "@/components/mine/Reports/MineReportActions";
 import LinkButton from "@/components/common/LinkButton";
-import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
 import CoreTable from "@/components/common/CoreTable";
 
 const { errorRed } = COLOR;
@@ -64,7 +64,7 @@ const columns = [
     title: "Requested By",
     dataIndex: "created_by_idir",
     key: "created_by_idir",
-    render: (text, record) => <div title="Requested By">{text}</div>,
+    render: (text) => <div title="Requested By">{text}</div>,
   },
   {
     title: "Received",

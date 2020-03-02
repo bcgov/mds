@@ -2,8 +2,14 @@
 
 exports[`ReviewActivities renders properly 1`] = `
 <div>
-  <withRouter(ScrollContentWrapper)
-    id="access-roads"
+  <withRouter(Connect(ScrollContentWrapper))
+    data={
+      Object {
+        "details": Array [],
+      }
+    }
+    id="exploration-access"
+    isViewMode={true}
     title="Access Roads, Trails, Helipads, Air Strips, Boat Ramps"
   >
     <FormSection
@@ -15,9 +21,11 @@ exports[`ReviewActivities renders properly 1`] = `
         isViewMode={true}
       />
     </FormSection>
-  </withRouter(ScrollContentWrapper)>
-  <withRouter(ScrollContentWrapper)
-    id="blasting"
+  </withRouter(Connect(ScrollContentWrapper))>
+  <withRouter(Connect(ScrollContentWrapper))
+    data={Object {}}
+    id="blasting-operation"
+    isViewMode={true}
     title="Blasting"
   >
     <FormSection
@@ -27,9 +35,15 @@ exports[`ReviewActivities renders properly 1`] = `
         isViewMode={true}
       />
     </FormSection>
-  </withRouter(ScrollContentWrapper)>
-  <withRouter(ScrollContentWrapper)
+  </withRouter(Connect(ScrollContentWrapper))>
+  <withRouter(Connect(ScrollContentWrapper))
+    data={
+      Object {
+        "details": Array [],
+      }
+    }
     id="camps"
+    isViewMode={true}
     title="Camps, Buildings, Staging Areas, Fuel/Lubricant Storage"
   >
     <FormSection
@@ -41,9 +55,15 @@ exports[`ReviewActivities renders properly 1`] = `
         isViewMode={true}
       />
     </FormSection>
-  </withRouter(ScrollContentWrapper)>
-  <withRouter(ScrollContentWrapper)
+  </withRouter(Connect(ScrollContentWrapper))>
+  <withRouter(Connect(ScrollContentWrapper))
+    data={
+      Object {
+        "details": Array [],
+      }
+    }
     id="cut-lines-polarization-survey"
+    isViewMode={true}
     showContent={true}
     title="Cut Lines and Induced Polarization Survey"
   >
@@ -56,9 +76,15 @@ exports[`ReviewActivities renders properly 1`] = `
         isViewMode={true}
       />
     </FormSection>
-  </withRouter(ScrollContentWrapper)>
-  <withRouter(ScrollContentWrapper)
-    id="surface-drilling"
+  </withRouter(Connect(ScrollContentWrapper))>
+  <withRouter(Connect(ScrollContentWrapper))
+    data={
+      Object {
+        "details": Array [],
+      }
+    }
+    id="exploration-surface-drilling"
+    isViewMode={true}
     title="Exploration Surface Drilling"
   >
     <FormSection
@@ -70,9 +96,15 @@ exports[`ReviewActivities renders properly 1`] = `
         isViewMode={true}
       />
     </FormSection>
-  </withRouter(ScrollContentWrapper)>
-  <withRouter(ScrollContentWrapper)
+  </withRouter(Connect(ScrollContentWrapper))>
+  <withRouter(Connect(ScrollContentWrapper))
+    data={
+      Object {
+        "details": Array [],
+      }
+    }
     id="mechanical-trenching"
+    isViewMode={true}
     title="Mechanical Trenching / Test Pits"
   >
     <FormSection
@@ -84,9 +116,15 @@ exports[`ReviewActivities renders properly 1`] = `
         isViewMode={true}
       />
     </FormSection>
-  </withRouter(ScrollContentWrapper)>
-  <withRouter(ScrollContentWrapper)
-    id="settling-ponds"
+  </withRouter(Connect(ScrollContentWrapper))>
+  <withRouter(Connect(ScrollContentWrapper))
+    data={
+      Object {
+        "details": Array [],
+      }
+    }
+    id="settling-pond"
+    isViewMode={true}
     title="Settling Ponds"
   >
     <FormSection
@@ -98,9 +136,15 @@ exports[`ReviewActivities renders properly 1`] = `
         isViewMode={true}
       />
     </FormSection>
-  </withRouter(ScrollContentWrapper)>
-  <withRouter(ScrollContentWrapper)
-    id="surface-bulk-samples"
+  </withRouter(Connect(ScrollContentWrapper))>
+  <withRouter(Connect(ScrollContentWrapper))
+    data={
+      Object {
+        "details": Array [],
+      }
+    }
+    id="surface-bulk-sample"
+    isViewMode={true}
     showContent={true}
     title="Surface Bulk Sample"
   >
@@ -113,9 +157,15 @@ exports[`ReviewActivities renders properly 1`] = `
         isViewMode={true}
       />
     </FormSection>
-  </withRouter(ScrollContentWrapper)>
-  <withRouter(ScrollContentWrapper)
+  </withRouter(Connect(ScrollContentWrapper))>
+  <withRouter(Connect(ScrollContentWrapper))
+    data={
+      Object {
+        "details": Array [],
+      }
+    }
     id="underground-exploration"
+    isViewMode={true}
     showContent={true}
     title="Underground Exploration"
   >
@@ -128,9 +178,15 @@ exports[`ReviewActivities renders properly 1`] = `
         isViewMode={true}
       />
     </FormSection>
-  </withRouter(ScrollContentWrapper)>
-  <withRouter(ScrollContentWrapper)
-    id="sand-gravel-quarry-operations"
+  </withRouter(Connect(ScrollContentWrapper))>
+  <withRouter(Connect(ScrollContentWrapper))
+    data={
+      Object {
+        "details": Array [],
+      }
+    }
+    id="sand-and-gravel"
+    isViewMode={true}
     showContent={false}
     title="Sand and Gravel / Quarry Operations"
   >
@@ -143,9 +199,15 @@ exports[`ReviewActivities renders properly 1`] = `
         isViewMode={true}
       />
     </FormSection>
-  </withRouter(ScrollContentWrapper)>
-  <withRouter(ScrollContentWrapper)
-    id="placer-operations"
+  </withRouter(Connect(ScrollContentWrapper))>
+  <withRouter(Connect(ScrollContentWrapper))
+    data={
+      Object {
+        "details": Array [],
+      }
+    }
+    id="placer-operation"
+    isViewMode={true}
     showContent={false}
     title="Placer Operations"
   >
@@ -158,9 +220,15 @@ exports[`ReviewActivities renders properly 1`] = `
         isViewMode={true}
       />
     </FormSection>
-  </withRouter(ScrollContentWrapper)>
-  <withRouter(ScrollContentWrapper)
+  </withRouter(Connect(ScrollContentWrapper))>
+  <withRouter(Connect(ScrollContentWrapper))
+    data={
+      Object {
+        "details": Array [],
+      }
+    }
     id="water-supply"
+    isViewMode={true}
     title="Water Supply"
   >
     <FormSection
@@ -172,6 +240,6 @@ exports[`ReviewActivities renders properly 1`] = `
         isViewMode={true}
       />
     </FormSection>
-  </withRouter(ScrollContentWrapper)>
+  </withRouter(Connect(ScrollContentWrapper))>
 </div>
 `;
