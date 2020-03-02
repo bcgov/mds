@@ -74,7 +74,6 @@ export const AuthenticationGuard = (WrappedComponent) => {
     };
 
     render() {
-      console.log(this.props.userAccessData);
       if (this.props.keycloak) {
         return this.props.isAuthenticated ? this.renderCorrectView() : <Loading />;
       }
@@ -102,7 +101,10 @@ export const AuthenticationGuard = (WrappedComponent) => {
       dispatch
     );
 
-  return connect(mapStateToProps, mapDispatchToProps)(authenticationGuard);
+  return connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(authenticationGuard);
 };
 
 export default AuthenticationGuard;

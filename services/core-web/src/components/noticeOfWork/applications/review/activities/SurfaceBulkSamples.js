@@ -3,6 +3,7 @@ import { PropTypes } from "prop-types";
 import { Field, formValueSelector } from "redux-form";
 import { connect } from "react-redux";
 import { Row, Col, Table, Button, Tooltip } from "antd";
+import { maxLength, number, required } from "@common/utils/Validate";
 import * as FORM from "@/constants/forms";
 import { TRASHCAN, INFO_CIRCLE } from "@/constants/assets";
 import RenderField from "@/components/common/RenderField";
@@ -174,6 +175,7 @@ export const SurfaceBulkSamples = (props) => {
           Add Activity
         </Button>
       )}
+
       <br />
       <Row gutter={16}>
         <Col md={12} sm={24}>
@@ -183,6 +185,7 @@ export const SurfaceBulkSamples = (props) => {
             name="processing_method_description"
             component={RenderField}
             disabled={props.isViewMode}
+            validate={[required]}
           />
         </Col>
         <Col md={12} sm={24}>
@@ -200,39 +203,6 @@ export const SurfaceBulkSamples = (props) => {
             id="has_bedrock_expansion"
             name="has_bedrock_expansion"
             component={RenderRadioButtons}
-            disabled={props.isViewMode}
-          />
-        </Col>
-      </Row>
-      <Equipment
-        equipment={props.equipment}
-        isViewMode={props.isViewMode}
-        activity="surface_bulk_sample"
-        editRecord={props.editRecord}
-        addRecord={props.addRecord}
-      />
-      <br />
-      <h4>Reclamation Program</h4>
-      <Row gutter={16}>
-        <Col md={12} sm={24}>
-          <div className="field-title">
-            Proposed reclamation and timing for this specific activity
-          </div>
-          <Field
-            id="reclamation_description"
-            name="reclamation_description"
-            component={RenderAutoSizeField}
-            disabled={props.isViewMode}
-          />
-        </Col>
-        <Col md={12} sm={24}>
-          <div className="field-title">
-            Estimated Cost of reclamation activities described above
-          </div>
-          <Field
-            id="reclamation_description"
-            name="reclamation_description"
-            component={RenderField}
             disabled={props.isViewMode}
           />
         </Col>
@@ -271,8 +241,44 @@ export const SurfaceBulkSamples = (props) => {
           <Field
             id="spontaneous_combustion_handling"
             name="spontaneous_combustion_handling"
+            component={RenderAutoSizeField}
+            disabled={props.isViewMode}
+          />
+        </Col>
+      </Row>
+      <br />
+      <Equipment
+        equipment={props.equipment}
+        isViewMode={props.isViewMode}
+        activity="surface_bulk_sample"
+        editRecord={props.editRecord}
+        addRecord={props.addRecord}
+      />
+      <br />
+      <h4>Reclamation Program</h4>
+      <Row gutter={16}>
+        <Col md={12} sm={24}>
+          <div className="field-title">
+            Proposed reclamation and timing for this specific activity
+          </div>
+          <Field
+            id="reclamation_description"
+            name="reclamation_description"
+            component={RenderAutoSizeField}
+            disabled={props.isViewMode}
+            validate={[maxLength(4000)]}
+          />
+        </Col>
+        <Col md={12} sm={24}>
+          <div className="field-title">
+            Estimated Cost of reclamation activities described above
+          </div>
+          <Field
+            id="reclamation_cost"
+            name="reclamation_cost"
             component={RenderField}
             disabled={props.isViewMode}
+            validate={[number]}
           />
         </Col>
       </Row>

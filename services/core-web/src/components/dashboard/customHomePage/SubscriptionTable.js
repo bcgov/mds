@@ -112,7 +112,7 @@ export class SubscriptionTable extends Component {
         title: "Tenure",
         key: "tenure",
         dataIndex: "tenure",
-        render: (text, record) => (
+        render: (text) => (
           <div title="Tenure">
             {(text && text.length > 0 && text.join(", ")) || Strings.EMPTY_FIELD}
           </div>
@@ -122,7 +122,7 @@ export class SubscriptionTable extends Component {
         title: "Commodity",
         key: "commodity",
         dataIndex: "commodity",
-        render: (text, record) => (
+        render: (text) => (
           <div title="Commodity">
             {(text && text.length > 0 && text.join(", ")) || Strings.EMPTY_FIELD}
           </div>

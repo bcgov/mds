@@ -251,4 +251,7 @@ const mapDispatchToProps = (dispatch) =>
 
 ContactHomePage.propTypes = propTypes;
 
-export default connect(mapStateToProps, mapDispatchToProps)(ContactHomePage);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ContactHomePage);

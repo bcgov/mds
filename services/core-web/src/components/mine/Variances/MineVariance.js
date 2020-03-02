@@ -249,4 +249,7 @@ const mapDispatchToProps = (dispatch) =>
 
 MineVariance.propTypes = propTypes;
 
-export default connect(mapStateToProps, mapDispatchToProps)(MineVariance);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(MineVariance);
