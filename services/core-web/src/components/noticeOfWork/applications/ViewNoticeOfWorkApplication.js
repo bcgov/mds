@@ -60,7 +60,9 @@ export class ViewNoticeOfWorkApplication extends Component {
     this.props.fetchImportedNoticeOfWorkApplication(id).then(() => {
       this.setState({ isLoaded: true });
     });
+
     this.props.fetchOriginalNoticeOfWorkApplication(id);
+
     this.setState((prevState) => ({
       noticeOfWorkPageFromRoute:
         this.props.location &&
@@ -69,6 +71,13 @@ export class ViewNoticeOfWorkApplication extends Component {
           ? this.props.location.state.noticeOfWorkPageFromRoute
           : prevState.noticeOfWorkPageFromRoute,
     }));
+
+    window.addEventListener("scroll", this.handleScroll);
+    this.handleScroll();
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("scroll", this.handleScroll);
   }
 
   showApplicationForm = () => {
@@ -83,16 +92,16 @@ export class ViewNoticeOfWorkApplication extends Component {
   };
 
   handleScroll = () => {
-    if (window.pageYOffset > "100" && !this.state.fixedTop) {
+    if (window.pageYOffset > 100 && !this.state.fixedTop) {
       this.setState({ fixedTop: true });
-    } else if (window.pageYOffset < "100" && this.state.fixedTop) {
+    } else if (window.pageYOffset <= 100 && this.state.fixedTop) {
       this.setState({ fixedTop: false });
     }
   };
 
   render() {
     return (
-      <div className="page" onScroll={this.handleScroll()} onLoad={this.handleScroll()}>
+      <div className="page">
         <LoadingWrapper condition={this.state.isLoaded}>
           <div
             className={this.state.fixedTop ? "steps--header fixed-scroll-view" : "steps--header"}

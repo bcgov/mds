@@ -521,7 +521,4 @@ const mapDispatchToProps = (dispatch) =>
 
 Dashboard.propTypes = propTypes;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Dashboard);
+export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
