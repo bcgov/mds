@@ -109,7 +109,7 @@ from app.api.now_applications.resources.now_application_resource import NOWAppli
     (NOWApplicationDocumentResource, 'delete', [EDIT_PERMIT]),
     (NOWApplicationDocumentTypeResource, 'get', [VIEW_ALL]),
     (NOWApplicationDocumentTypeListResource, 'get', [VIEW_ALL]),
-    (NOWApplicationDocumentGenerateResource,'get',[EDIT_PERMIT])
+    (NOWApplicationDocumentGenerateResource,'post',[EDIT_PERMIT])
 ])
 def test_endpoint_auth(resource, method, expected_roles):
     endpoint = getattr(resource, method, None)
