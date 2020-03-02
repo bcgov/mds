@@ -47,9 +47,9 @@ class DocumentTemplate(Base, AuditMixin):
             raise Exception("Context Object not found")
 
         for item in spec:
-            relative_data_path = item.get('rel_data_path')
+            relative_data_path = item.get('relative-data-path')
             if not relative_data_path:
-                current_app.logger.debug(f'No rel_data_path for {item["id"]}')
+                current_app.logger.debug(f'No relative-data-path for {item["id"]}')
                 continue
 
             current_object = source_obj_instance
@@ -58,9 +58,9 @@ class DocumentTemplate(Base, AuditMixin):
                 current_object = getattr(current_object, x)
 
             current_app.logger.info(
-                f'Found data for form."{item["id"]}" at "{item["rel_data_path"]}" with -> "{current_object}"'
+                f'Found data for form."{item["id"]}" at "{item["relative-data-path"]}" with -> "{current_object}"'
             )
-            del item['rel_data_path']
+            del item['relative-data-path']
             item["context-value"] = str(current_object)
         return spec
 

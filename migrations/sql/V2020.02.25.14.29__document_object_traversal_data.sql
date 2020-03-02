@@ -18,7 +18,7 @@ UPDATE document_template SET form_spec_json = '[
       "type": "FIELD",
       "placeholder": "Enter the mine number",
       "required": true,
-      "rel_data_path": "mine.mine_no",
+      "relative-data-path": "mine.mine_no",
       "read-only": true
     },
     {
@@ -41,7 +41,7 @@ UPDATE document_template SET form_spec_json = '[
       "type": "FIELD",
       "placeholder": "Enter the property",
       "required": true,
-      "rel_data_path": "now_application.property_name",
+      "relative-data-path": "now_application.property_name",
       "read-only": true
     },
     {
@@ -50,7 +50,7 @@ UPDATE document_template SET form_spec_json = '[
       "type": "DATE",
       "placeholder": null,
       "required": true,
-      "rel_data_path": "now_application.submitted_date"
+      "relative-data-path": "now_application.submitted_date"
     },
     {
       "id": "inspector",
@@ -58,7 +58,7 @@ UPDATE document_template SET form_spec_json = '[
       "type": "FIELD",
       "placeholder": "Enter the inspector''s name",
       "required": true,
-      "rel_data_path": "now_application.lead_inspector.name"
+      "relative-data-path": "now_application.lead_inspector.name"
     }
   ]' 
 where document_template_code = 'NRL';
@@ -77,7 +77,7 @@ UPDATE document_template SET form_spec_json = '[
       "type": "FIELD",
       "placeholder": "Enter the mine number",
       "required": true,
-      "rel_data_path": "mine.mine_no",
+      "relative-data-path": "mine.mine_no",
       "read-only": true
     },
     {
@@ -100,7 +100,7 @@ UPDATE document_template SET form_spec_json = '[
       "type": "FIELD",
       "placeholder": "Enter the property",
       "required": true,
-      "rel_data_path": "now_application.property_name",
+      "relative-data-path": "now_application.property_name",
       "read-only": true
     },
     {
@@ -116,7 +116,7 @@ UPDATE document_template SET form_spec_json = '[
       "type": "FIELD",
       "placeholder": "Enter the inspector''s name",
       "required": true,
-      "rel_data_path": "now_application.lead_inspector.name"
+      "relative-data-path": "now_application.lead_inspector.name"
     }
   ]'
 where document_template_code = 'NWL';
@@ -135,7 +135,7 @@ UPDATE document_template SET form_spec_json = '[
       "type": "FIELD",
       "placeholder": "Enter the mine number",
       "required": true,
-      "rel_data_path": "mine.mine_no",
+      "relative-data-path": "mine.mine_no",
       "read-only": true
     },
     {
@@ -165,7 +165,7 @@ UPDATE document_template SET form_spec_json = '[
       "type": "FIELD",
       "placeholder": "Enter the property",
       "required": true,
-      "rel_data_path": "now_application.property_name",
+      "relative-data-path": "now_application.property_name",
       "read-only": true
     },
     {
@@ -174,7 +174,7 @@ UPDATE document_template SET form_spec_json = '[
       "type": "DATE",
       "placeholder": null,
       "required": true,
-      "rel_data_path": "now_application.submitted_date"
+      "relative-data-path": "now_application.submitted_date"
     },
     {
       "id": "exploration_type",
@@ -196,7 +196,7 @@ UPDATE document_template SET form_spec_json = '[
       "type": "FIELD",
       "placeholder": "Enter the inspector''s name",
       "required": true,
-      "rel_data_path": "now_application.lead_inspector.name"
+      "relative-data-path": "now_application.lead_inspector.name"
     }
   ]'
 where document_template_code = 'NCL';
