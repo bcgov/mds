@@ -107,7 +107,7 @@ exports[`MineResultsTable renders properly 1`] = `
             Object {
               "status_labels": Array [
                 "Operating",
-                "Year round",
+                "Year-Round",
               ],
             },
           ],
@@ -155,7 +155,7 @@ exports[`MineResultsTable renders properly 1`] = `
               "status_labels": Array [
                 "Closed",
                 "Reclamation",
-                "Long Term Maintenance",
+                "Long-Term Maintenance",
               ],
             },
           ],

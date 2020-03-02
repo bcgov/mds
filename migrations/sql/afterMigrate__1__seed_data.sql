@@ -62,7 +62,7 @@ VALUES
     ('REC', 'Reclamation', 20, 'system-mds', 'system-mds'),
     ('ORP', 'Orphaned', 30, 'system-mds', 'system-mds'),
     ('UN', 'Unknown', 40, 'system-mds', 'system-mds'),
-    ('YR', 'Year round', 50, 'system-mds', 'system-mds'),
+    ('YR', 'Year-Round', 50, 'system-mds', 'system-mds'),
     ('SEA', 'Seasonal', 60, 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
 
@@ -601,7 +601,10 @@ VALUES
 	('TMP', 'Tenure Map / Property Map', true, 'system-mds', 'system-mds'),
 	('MPW', 'Map of Proposed Work', true, 'system-mds', 'system-mds'),
     ('REV', 'Review',true,'system-mds','system-mds'),
-    ('PUB', 'Public Comment',true,'system-mds','system-mds')
+    ('PUB', 'Public Comment',true,'system-mds','system-mds'),
+    ('CAL', 'Client Acknowledgement Letter', true, 'system-mds', 'system-mds'),
+	('WDL', 'Withdrawl Letter', true, 'system-mds', 'system-mds'),
+	('RJL', 'Rejection Letter', true, 'system-mds', 'system-mds')
 on conflict do nothing;
 
 INSERT INTO now_application_review_type(
@@ -697,3 +700,214 @@ INSERT INTO public.mine_report_definition
 select report_name, '', due_date_period, due_date_type, 'true', 'system-mds', now(), 'system-mds', now() from tmp_report_definition_compliance;
 -- hide appeal to CIM until notifications are built into CORE/MineSpace
 UPDATE mine_report_definition SET active_ind='false' where report_name='Appeal to CIM Report';
+
+
+
+INSERT INTO document_template
+(document_template_code,form_spec_json, template_file_path, active_ind, create_user, update_user)
+VALUES
+	('NRL', '[
+    {
+      "id": "letter_dt",
+      "label": "Letter Date",
+      "type": "DATE",
+      "placeholder": null,
+      "required": true
+    },
+    {
+      "id": "mine_no",
+      "label": "Mine Number",
+      "type": "FIELD",
+      "placeholder": "Enter the mine number",
+      "required": true,
+      "relative-data-path": "mine.mine_no",
+      "read-only": true
+    },
+    {
+      "id": "proponent_address",
+      "label": "Proponent Address",
+      "type": "FIELD",
+      "placeholder": "Enter the propnent''s address",
+      "required": true
+    },
+    {
+      "id": "proponent_name",
+      "label": "Proponent Name",
+      "type": "FIELD",
+      "placeholder": "Enter the propnent''s name",
+      "required": false
+    },
+    {
+      "id": "property",
+      "label": "Property",
+      "type": "FIELD",
+      "placeholder": "Enter the property",
+      "required": true,
+      "relative-data-path": "now_application.property_name",
+      "read-only": true
+    },
+    {
+      "id": "application_dt",
+      "label": "Application Date",
+      "type": "DATE",
+      "placeholder": null,
+      "required": true,
+      "relative-data-path": "now_application.submitted_date"
+    },
+    {
+      "id": "inspector",
+      "label": "Inspector",
+      "type": "FIELD",
+      "placeholder": "Enter the inspector''s name",
+      "required": true,
+      "relative-data-path": "now_application.lead_inspector.name"
+    }
+  ]'  , 'templates/now/Rejection Letter Template (NoW).docx', true, 'system-mds', 'system-mds'),
+	('NWL', '[
+    {
+      "id": "letter_dt",
+      "label": "Letter Date",
+      "type": "DATE",
+      "placeholder": null,
+      "required": true
+    },
+    {
+      "id": "mine_no",
+      "label": "Mine Number",
+      "type": "FIELD",
+      "placeholder": "Enter the mine number",
+      "required": true,
+      "relative-data-path": "mine.mine_no",
+      "read-only": true
+    },
+    {
+      "id": "proponent_address",
+      "label": "Proponent Address",
+      "type": "FIELD",
+      "placeholder": "Enter the propnent''s address",
+      "required": true
+    },
+    {
+      "id": "proponent_name",
+      "label": "Proponent Name",
+      "type": "FIELD",
+      "placeholder": "Enter the propnent''s name",
+      "required": false
+    },
+    {
+      "id": "property",
+      "label": "Property",
+      "type": "FIELD",
+      "placeholder": "Enter the property",
+      "required": true,
+      "relative-data-path": "now_application.property_name",
+      "read-only": true
+    },
+    {
+      "id": "withdrawal_dt",
+      "label": "Withdrawal Date",
+      "type": "DATE",
+      "placeholder": null,
+      "required": true
+    },
+    {
+      "id": "inspector",
+      "label": "Inspector",
+      "type": "FIELD",
+      "placeholder": "Enter the inspector''s name",
+      "required": true,
+      "relative-data-path": "now_application.lead_inspector.name"
+    }
+  ]' , 'templates/now/Withdrawal Letter Template (NoW).docx', true, 'system-mds', 'system-mds'),
+	('NCL', '[
+    {
+      "id": "letter_dt",
+      "label": "Letter Date",
+      "type": "DATE",
+      "placeholder": null,
+      "required": true
+    },
+    {
+      "id": "mine_no",
+      "label": "Mine Number",
+      "type": "FIELD",
+      "placeholder": "Enter the mine number",
+      "required": true,
+      "relative-data-path": "mine.mine_no",
+      "read-only": true
+    },
+    {
+      "id": "proponent_address",
+      "label": "Proponent Address",
+      "type": "FIELD",
+      "placeholder": "Enter the propnent''s address",
+      "required": true
+    },
+    {
+      "id": "proponent_name",
+      "label": "Proponent Name",
+      "type": "FIELD",
+      "placeholder": "Enter the propnent''s name",
+      "required": false
+    },
+    {
+      "id": "emailed_to",
+      "label": "Emailed to",
+      "type": "FIELD",
+      "placeholder": "Enter the name of the email recipient",
+      "required": false
+    },
+    {
+      "id": "property",
+      "label": "Property",
+      "type": "FIELD",
+      "placeholder": "Enter the property",
+      "required": true,
+      "relative-data-path": "now_application.property_name",
+      "read-only": true
+    },
+    {
+      "id": "application_dt",
+      "label": "Application Date",
+      "type": "DATE",
+      "placeholder": null,
+      "required": true,
+      "relative-data-path": "now_application.submitted_date"
+    },
+    {
+      "id": "exploration_type",
+      "label": "Exploration Type",
+      "type": "FIELD",
+      "placeholder": "Enter the exploration type",
+      "required": true
+    },
+    {
+      "id": "bond_inc_amt",
+      "label": "Bond Amount",
+      "type": "FIELD",
+      "placeholder": "Enter the bond amount",
+      "required": true
+    },
+    {
+      "id": "inspector",
+      "label": "Inspector",
+      "type": "FIELD",
+      "placeholder": "Enter the inspector''s name",
+      "required": true,
+      "relative-data-path": "now_application.lead_inspector.name"
+    }
+  ]', 'templates/now/Client Acknowledgment Letter Template (NoW).docx', true, 'system-mds', 'system-mds')
+  
+ON CONFLICT DO NOTHING;
+
+UPDATE now_application_document_type
+SET document_template_code = 'NCL'
+where now_application_document_type_code = 'CAL';
+
+UPDATE now_application_document_type
+SET document_template_code = 'NWL'
+where now_application_document_type_code = 'WDL';
+
+UPDATE now_application_document_type
+SET document_template_code = 'NRL'
+where now_application_document_type_code = 'RJL';

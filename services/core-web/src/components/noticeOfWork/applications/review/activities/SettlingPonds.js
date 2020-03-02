@@ -3,13 +3,13 @@ import { PropTypes } from "prop-types";
 import { Field, formValueSelector } from "redux-form";
 import { connect } from "react-redux";
 import { Row, Col, Table, Button, Tooltip } from "antd";
+import { required, maxLength, number } from "@common/utils/Validate";
 import * as FORM from "@/constants/forms";
-import { TRASHCAN , INFO_CIRCLE } from "@/constants/assets";
+import { TRASHCAN, INFO_CIRCLE } from "@/constants/assets";
 import RenderField from "@/components/common/RenderField";
 import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
 import RenderRadioButtons from "@/components/common/RenderRadioButtons";
 import CustomPropTypes from "@/customPropTypes";
-
 
 const propTypes = {
   isViewMode: PropTypes.bool.isRequired,
@@ -299,6 +299,7 @@ export const SettlingPonds = (props) => {
             name="is_ponds_recycled"
             component={RenderRadioButtons}
             disabled={props.isViewMode}
+            validate={[required]}
           />
         </Col>
         <Col md={8} sm={24}>
@@ -308,6 +309,7 @@ export const SettlingPonds = (props) => {
             name="is_ponds_exfiltrated"
             component={RenderRadioButtons}
             disabled={props.isViewMode}
+            validate={[required]}
           />
         </Col>
         <Col md={8} sm={24}>
@@ -317,6 +319,7 @@ export const SettlingPonds = (props) => {
             name="is_ponds_discharged"
             component={RenderRadioButtons}
             disabled={props.isViewMode}
+            validate={[required]}
           />
         </Col>
       </Row>
@@ -332,6 +335,7 @@ export const SettlingPonds = (props) => {
             name="reclamation_description"
             component={RenderAutoSizeField}
             disabled={props.isViewMode}
+            validate={[maxLength(4000)]}
           />
         </Col>
         <Col md={12} sm={24}>
@@ -343,6 +347,7 @@ export const SettlingPonds = (props) => {
             name="reclamation_cost"
             component={RenderField}
             disabled={props.isViewMode}
+            validate={[number]}
           />
         </Col>
       </Row>

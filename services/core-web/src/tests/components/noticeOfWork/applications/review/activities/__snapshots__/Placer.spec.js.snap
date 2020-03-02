@@ -155,6 +155,11 @@ exports[`Placer renders properly 1`] = `
         disabled={true}
         id="total_disturbed_area"
         name="total_disturbed_area"
+        validate={
+          Array [
+            [Function],
+          ]
+        }
       />
     </Col>
   </Row>
@@ -175,6 +180,11 @@ exports[`Placer renders properly 1`] = `
         disabled={true}
         id="reclamation_description"
         name="reclamation_description"
+        validate={
+          Array [
+            [Function],
+          ]
+        }
       />
     </Col>
     <Col
@@ -191,6 +201,11 @@ exports[`Placer renders properly 1`] = `
         disabled={true}
         id="reclamation_cost"
         name="reclamation_cost"
+        validate={
+          Array [
+            [Function],
+          ]
+        }
       />
     </Col>
   </Row>

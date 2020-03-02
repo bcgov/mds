@@ -1,15 +1,11 @@
-// TODO: Remove this line when file is more properly implemented.
+// TODO: Remove this line when the file is more properly implemented.
 /* eslint-disable */
-
 import React, { Component } from "react";
-
 import L from "leaflet";
 import LeafletWms from "leaflet.wms";
 import scriptLoader from "react-async-script-loader";
-
 import ReactDOMServer from "react-dom/server";
 import PropTypes from "prop-types";
-
 import "leaflet.markercluster";
 import "leaflet/dist/leaflet.css";
 import "leaflet.markercluster/dist/MarkerCluster.css";
@@ -17,7 +13,6 @@ import "leaflet.markercluster/dist/MarkerCluster.Default.css";
 import "vendor/leaflet/leaflet-measure/leaflet-measure.css";
 import "vendor/leaflet/mouse-coordinates/leaflet.mousecoordinate";
 import "vendor/leaflet/grouped-layer-control/leaflet.groupedlayercontrol.min";
-
 import { ENVIRONMENT } from "@common/constants/environment";
 import * as Strings from "@common/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
@@ -37,18 +32,21 @@ import {
 
 const propTypes = {
   mines: PropTypes.objectOf(CustomPropTypes.mine).isRequired,
-  mineCommodityOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
   isScriptLoaded: PropTypes.bool.isRequired,
   isScriptLoadSucceed: PropTypes.bool.isRequired,
+  transformedMineTypes: CustomPropTypes.transformedMineTypes.isRequired,
+  mineRegionHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  mineTenureHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  mineCommodityOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  mineDisturbanceOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   lat: PropTypes.number,
   long: PropTypes.number,
   zoom: PropTypes.number,
   minesBasicInfo: PropTypes.arrayOf(CustomPropTypes.mine),
   mineName: PropTypes.string,
   mineGuid: PropTypes.string,
-  transformedMineTypes: CustomPropTypes.transformedMineTypes,
 };
 
 const defaultProps = {
@@ -56,8 +54,8 @@ const defaultProps = {
   long: Strings.DEFAULT_LONG,
   zoom: Strings.DEFAULT_ZOOM,
   minesBasicInfo: [],
-  mineName: "",
-  mineGuid: "",
+  mineName: null,
+  mineGuid: null,
   transformedMineTypes: {},
 };
 
@@ -94,8 +92,8 @@ LeafletWms.Source = LeafletWms.Source.extend({
       request: "GetFeatureInfo",
       info_format: "text/html",
       query_layers: layers.join(","),
-      X: Math.round(point.latitude),
-      Y: Math.round(point.longitude),
+      X: point.x,
+      Y: point.y,
     };
     return L.extend({}, wmsParams, infoParams);
   },
@@ -179,16 +177,16 @@ class MineMapLeaflet extends Component {
 
   handleMinePinClick = (mine) => (e) => {
     this.props.fetchMineRecordById(mine.mine_guid).then(() => {
-      const commodityCodes = this.props.transformedMineTypes.mine_commodity_code.map(
-        (code) => this.props.mineCommodityOptionsHash[code]
-      );
-
-      this.state.currentMarker && this.state.currentMarker.setIcon(UNSELECTED_ICON);
+      if (this.state.currentMarker) {
+        this.state.currentMarker.setIcon(UNSELECTED_ICON);
+      }
       e.target.setIcon(SELECTED_ICON);
       this.setState({ currentMarker: e.target });
 
       const popup = e.target.getPopup();
-      popup.setContent(this.renderPopup(this.props.mines[mine.mine_guid], commodityCodes));
+      popup.setContent(
+        this.renderPopup(this.props.mines[mine.mine_guid], this.props.transformedMineTypes)
+      );
     });
   };
 
@@ -300,9 +298,17 @@ class MineMapLeaflet extends Component {
     });
   }
 
-  renderPopup = (mine, commodityCodes = []) => {
+  renderPopup = (mine, transformedMineTypes) => {
     return ReactDOMServer.renderToStaticMarkup(
-      <LeafletPopup mine={mine} commodityCodes={commodityCodes} context={this.context} />
+      <LeafletPopup
+        mine={mine}
+        transformedMineTypes={transformedMineTypes}
+        context={this.context}
+        mineRegionHash={this.props.mineRegionHash}
+        mineTenureHash={this.props.mineTenureHash}
+        mineCommodityOptionsHash={this.props.mineCommodityOptionsHash}
+        mineDisturbanceOptionsHash={this.props.mineDisturbanceOptionsHash}
+      />
     );
   };
 

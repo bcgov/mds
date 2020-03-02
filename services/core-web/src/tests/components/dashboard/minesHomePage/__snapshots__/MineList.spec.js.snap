@@ -5,25 +5,28 @@ exports[`MineList renders properly 1`] = `
   columns={
     Array [
       Object {
-        "dataIndex": "mineName",
+        "dataIndex": "mine_name",
+        "key": "mine_name",
         "render": [Function],
         "sortField": "mine_name",
         "sortOrder": false,
         "sorter": true,
-        "title": "Mine Name",
+        "title": "Name",
         "width": 150,
       },
       Object {
-        "dataIndex": "mineNo",
+        "dataIndex": "mine_no",
+        "key": "mine_no",
         "render": [Function],
         "sortField": "mine_no",
         "sortOrder": false,
         "sorter": true,
-        "title": "Mine No.",
+        "title": "Number",
         "width": 150,
       },
       Object {
-        "dataIndex": "operationalStatus",
+        "dataIndex": "mine_operation_status_code",
+        "key": "mine_operation_status_code",
         "render": [Function],
         "sortField": "mine_operation_status_code",
         "sortOrder": false,
@@ -31,14 +34,16 @@ exports[`MineList renders properly 1`] = `
         "width": 150,
       },
       Object {
-        "dataIndex": "permit",
+        "dataIndex": "permit_numbers",
+        "key": "permit_numbers",
         "render": [Function],
         "sortOrder": false,
-        "title": "Permit No.",
+        "title": "Permits",
         "width": 150,
       },
       Object {
-        "dataIndex": "region",
+        "dataIndex": "mine_region",
+        "key": "mine_region",
         "render": [Function],
         "sortField": "mine_region",
         "sortOrder": false,
@@ -48,6 +53,7 @@ exports[`MineList renders properly 1`] = `
       },
       Object {
         "dataIndex": "tenure",
+        "key": "tenure",
         "render": [Function],
         "sortOrder": false,
         "title": "Tenure",
@@ -55,6 +61,7 @@ exports[`MineList renders properly 1`] = `
       },
       Object {
         "dataIndex": "commodity",
+        "key": "commodity",
         "render": [Function],
         "sortOrder": false,
         "title": "Commodity",
@@ -62,6 +69,7 @@ exports[`MineList renders properly 1`] = `
       },
       Object {
         "dataIndex": "tsf",
+        "key": "tsf",
         "render": [Function],
         "sortOrder": false,
         "title": "TSF",
@@ -73,30 +81,18 @@ exports[`MineList renders properly 1`] = `
     Array [
       Object {
         "commodity": Array [
-          Object {
-            "mine_tenure_type_code": "PLR",
-          },
-          Object {
-            "mine_tenure_type_code": "MIN",
-          },
+          undefined,
         ],
-        "commodityHash": undefined,
-        "emptyField": "N/A",
         "key": "18133c75-49ad-4101-85f3-a43e35ae989a",
-        "mineName": "mine3",
-        "mineNo": "BLAH9091",
-        "operationalStatus": "N/A",
-        "permit": null,
-        "region": "North East",
+        "mine_name": "mine3",
+        "mine_no": "BLAH9091",
+        "mine_operation_status_code": "N/A",
+        "mine_region": "North East",
+        "permit_numbers": Array [],
         "tenure": Array [
-          Object {
-            "mine_tenure_type_code": "PLR",
-          },
-          Object {
-            "mine_tenure_type_code": "MIN",
-          },
+          "Placer",
+          "Mineral",
         ],
-        "tenureHash": undefined,
         "tsf": 1,
         "verified_status": Object {
           "healthy_ind": null,
@@ -108,33 +104,21 @@ exports[`MineList renders properly 1`] = `
       },
       Object {
         "commodity": Array [
-          Object {
-            "mine_tenure_type_code": "PLR",
-          },
-          Object {
-            "mine_tenure_type_code": "MIN",
-          },
+          undefined,
         ],
-        "commodityHash": undefined,
-        "emptyField": "N/A",
         "key": "18145c75-49ad-0101-85f3-a43e45ae989a",
-        "mineName": "mine2",
-        "mineNo": "BLAH9091",
-        "operationalStatus": "N/A",
-        "permit": Array [
+        "mine_name": "mine2",
+        "mine_no": "BLAH9091",
+        "mine_operation_status_code": "N/A",
+        "mine_region": "North East",
+        "permit_numbers": Array [
           "KNaaWwVdiJ40",
           "xfM0c0ZKEw7B",
         ],
-        "region": "North East",
         "tenure": Array [
-          Object {
-            "mine_tenure_type_code": "PLR",
-          },
-          Object {
-            "mine_tenure_type_code": "MIN",
-          },
+          "Placer",
+          "Mineral",
         ],
-        "tenureHash": undefined,
         "tsf": 1,
         "verified_status": Object {
           "healthy_ind": true,

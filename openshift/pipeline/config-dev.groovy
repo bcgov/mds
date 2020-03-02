@@ -221,6 +221,7 @@ app {
                             'API_URL': "https://${vars.modules.'mds-nginx'.HOST_CORE}${vars.modules.'mds-nginx'.PATH}/api",
                             'NRIS_API_URL': "${vars.modules.'mds-nris-backend'.HOST}${vars.modules.'mds-nris-backend'.PATH}",
                             'DOCUMENT_MANAGER_URL': "${vars.modules.'mds-docman-backend'.HOST}${vars.modules.'mds-docman-backend'.PATH}",
+                            'DOCUMENT_GENERATOR_URL': "${vars.modules.'mds-docgen-api'.HOST}",
                     ]
                 ],
                 [
@@ -280,6 +281,25 @@ app {
                             'ENVIRONMENT_NAME':"${app.deployment.env.name}",
                             'API_URL': "https://${vars.modules.'mds-nginx'.HOST_CORE}${vars.modules.'mds-nginx'.PATH}/nris_api",
                     ]
+                ],
+                [
+                    'file':'openshift/templates/docgen/docgen.dc.json',
+                    'params':[
+                            'NAME':"mds-docgen-api",
+                            'SUFFIX': "${vars.deployment.suffix}",
+                            'APPLICATION_SUFFIX': "${vars.deployment.application_suffix}",
+                            'TAG_NAME':"${app.deployment.version}",
+                            'PORT':3030,
+                            'CPU_REQUEST':"${vars.resources.node.cpu_request}",
+                            'CPU_LIMIT':"${vars.resources.node.cpu_limit}",
+                            'MEMORY_REQUEST':"${vars.resources.node.memory_request}",
+                            'MEMORY_LIMIT':"${vars.resources.node.memory_limit}",
+                            'REPLICA_MIN':"${vars.resources.node.replica_min}",
+                            'REPLICA_MAX':"${vars.resources.node.replica_max}",
+                            'APPLICATION_DOMAIN': "${vars.modules.'mds-docgen-api'.HOST}",
+                            'BASE_PATH': "${vars.modules.'mds-docgen-api'.PATH}",
+                            'NODE_ENV': "${vars.deployment.node_env}"
+                    ]
                 ]/*,
                 [
                     'file':'openshift/templates/digdag/digdag.dc.json',
@@ -324,10 +344,10 @@ environments {
             }
             resources {
                 node {
-                    cpu_request = "10m"
-                    cpu_limit = "20m"
-                    memory_request = "64Mi"
-                    memory_limit = "160Mi"
+                    cpu_request = "20m"
+                    cpu_limit = "100m"
+                    memory_request = "128Mi"
+                    memory_limit = "256Mi"
                     replica_min = 1
                     replica_max = 1
                 }
@@ -430,6 +450,9 @@ environments {
                 }
                 'mds-redis' {
                     HOST = "http://mds-redis${vars.deployment.suffix}"
+                }
+                'mds-docgen-api' {
+                    HOST = "http://mds-docgen-api${vars.deployment.suffix}:3030"
                 }
                 /*'digdag' {
                     HOST = "mds-digdag-${vars.deployment.namespace}.pathfinder.gov.bc.ca"

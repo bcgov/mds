@@ -10,16 +10,18 @@ import { renderConfig } from "@/components/common/config";
 import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
-  handleSubmit: PropTypes.func.isRequired,
   mines: CustomPropTypes.options.isRequired,
-  handleChange: PropTypes.func,
-  handleSearch: PropTypes.func,
+  // eslint-disable-next-line react/no-unused-prop-types
+  minespaceUserEmailHash: PropTypes.objectOf(PropTypes.any).isRequired,
+  handleSubmit: PropTypes.func.isRequired,
+  handleChange: PropTypes.func.isRequired,
+  handleSearch: PropTypes.func.isRequired,
 };
 
-const defaultProps = {
-  handleChange: () => {},
-  handleSearch: () => {},
-};
+const minespaceUserNotExists = (value, allValues, props) =>
+  value && !(value in props.minespaceUserEmailHash)
+    ? undefined
+    : "A user with this email already exists";
 
 export const AddMinespaceUser = (props) => (
   <Form layout="vertical" onSubmit={props.handleSubmit}>
@@ -30,9 +32,11 @@ export const AddMinespaceUser = (props) => (
             <Field
               id="user_bceid_email"
               name="user_bceid_email"
-              label="BCEID Email"
+              label="Email*"
+              placeholder="Enter the user's BCeID email"
               component={RenderField}
-              validate={[required, email]}
+              validate={[required, email, minespaceUserNotExists]}
+              allowClear
             />
           </Form.Item>
         </Col>
@@ -41,8 +45,8 @@ export const AddMinespaceUser = (props) => (
             <Field
               id="proponent_mine_access"
               name="proponent_mine_access"
-              label="Mines"
-              placeholder="Please Select a Mine"
+              label="Mines*"
+              placeholder="Select the mines this user can access"
               component={renderConfig.MULTI_SELECT}
               data={props.mines}
               onChange={props.handleChange}
@@ -62,7 +66,6 @@ export const AddMinespaceUser = (props) => (
 );
 
 AddMinespaceUser.propTypes = propTypes;
-AddMinespaceUser.defaultProps = defaultProps;
 
 export default reduxForm({
   form: FORM.ADD_MINESPACE_USER,

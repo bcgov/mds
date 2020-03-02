@@ -28,7 +28,7 @@ exports[`Variance Search Component renders properly 1`] = `
               "records": Array [
                 Object {
                   "article_act_code": "HSRCM",
-                  "compliance_article_id": 305,
+                  "compliance_article_id": "305",
                   "description": "Spills",
                   "effective_date": "1970-01-01",
                   "expiry_date": null,
@@ -39,7 +39,7 @@ exports[`Variance Search Component renders properly 1`] = `
                 },
                 Object {
                   "article_act_code": "HSRCM",
-                  "compliance_article_id": 306,
+                  "compliance_article_id": "306",
                   "description": "Flammable Waste Storage",
                   "effective_date": "1970-01-01",
                   "expiry_date": null,

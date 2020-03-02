@@ -15,6 +15,7 @@ const propTypes = {
   inlineLabel: PropTypes.string,
   disabled: PropTypes.bool,
   defaultValue: PropTypes.string,
+  allowClear: PropTypes.bool,
 };
 
 const defaultProps = {
@@ -23,6 +24,7 @@ const defaultProps = {
   inlineLabel: "",
   disabled: false,
   defaultValue: "",
+  allowClear: false,
 };
 
 const RenderField = (props) => {
@@ -53,6 +55,7 @@ const RenderField = (props) => {
           defaultValue={props.defaultValue}
           id={props.id}
           placeholder={props.placeholder}
+          allowClear={props.allowClear}
           {...props.input}
         />
       </div>
