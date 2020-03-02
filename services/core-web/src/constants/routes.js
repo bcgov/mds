@@ -234,4 +234,4 @@ export const VIEW_NOTICE_OF_WORK_APPLICATION = {
 };
 
 const MINESPACE_URL = "https://minespace.gov.bc.ca/";
-export const VIEW_MINESPACE = (mineGuid) => `${MINESPACE_URL}/mines/${mineGuid}`;
+export const VIEW_MINESPACE = (mineGuid) => `${MINESPACE_URL}/mines/${mineGuid}/overview?core=true`;

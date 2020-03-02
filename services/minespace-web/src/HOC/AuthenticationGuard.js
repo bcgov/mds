@@ -1,6 +1,7 @@
 /* eslint-disable */
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { includes } from "lodash";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import hoistNonReactStatics from "hoist-non-react-statics";
@@ -8,6 +9,9 @@ import { isAuthenticated } from "@/selectors/authenticationSelectors";
 import UnauthenticatedNotice from "@/components/common/UnauthenticatedNotice";
 import { getUserInfoFromToken } from "@/actionCreators/authenticationActionCreator";
 import Loading from "@/components/common/Loading";
+import * as COMMON_ENV from "@common/constants/environment";
+import * as route from "@/constants/routes";
+import * as MINESPACE_ENV from "@/constants/environment";
 
 /**
  * @constant authenticationGuard - a Higher Order Component Thats checks for user authorization and returns the App component if the user is Authenticated.
@@ -25,11 +29,31 @@ export const AuthenticationGuard = (isPublic) => (WrappedComponent) => {
     };
 
     componentDidMount() {
+      console.log(window.location);
+      console.log(window.location.pathname);
+      console.log(window.location.search.includes("?core=true"));
+
+      if (window.location.search.includes("code=")) {
+        console.log("yesssss it does have the code!!");
+        debugger;
+      }
+
       this.authenticate();
     }
 
     async authenticate() {
+      const redirectedFromCore = window.location.search.includes("?core=true");
       const token = localStorage.getItem("jwt");
+      const WINDOW_LOCATION = `${window.location.origin}${process.env.BASE_PATH}`;
+
+      if (!token && !this.props.isAuthenticated && redirectedFromCore) {
+        console.log("COMING FROM CORE AND NOT AUTHENTICATED");
+        debugger;
+        window.location.replace(
+          `${COMMON_ENV.KEYCLOAK.loginURL}${WINDOW_LOCATION}${window.location.pathname}`
+        );
+      }
+
       if (token && !this.props.isAuthenticated) {
         await this.props
           .getUserInfoFromToken(token)
