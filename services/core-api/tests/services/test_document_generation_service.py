@@ -16,7 +16,6 @@ def test_missing_template_returns_fail(test_client, db_session, auth_headers):
         assert file_download_resp.status_code == 200
 
         assert file_download_resp.headers['Content-Transfer-Encoding'] == 'binary'
-        assert file_download_resp.headers[
-            'Content-Disposition'] == 'attachment; filename=Rejection Letter Template (NoW).pdf'
+        assert file_download_resp.headers['Content-Disposition'][-4:] == '.pdf'
         assert file_download_resp.headers['Content-Type'] == 'application/octet-stream'
         assert int(file_download_resp.headers['Content-Length']) > 50000
