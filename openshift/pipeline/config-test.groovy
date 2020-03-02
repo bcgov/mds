@@ -185,6 +185,7 @@ app {
                             'API_URL': "https://${vars.modules.'mds-nginx'.HOST_CORE}${vars.modules.'mds-nginx'.PATH}/api",
                             'NRIS_API_URL': "${vars.modules.'mds-nris-backend'.HOST}${vars.modules.'mds-nris-backend'.PATH}",
                             'DOCUMENT_MANAGER_URL': "${vars.modules.'mds-docman-backend'.HOST}${vars.modules.'mds-docman-backend'.PATH}",
+                            'DOCUMENT_GENERATOR_URL': "${vars.modules.'mds-docgen-api'.HOST}",
                     ]
                 ],
                 [
@@ -449,6 +450,9 @@ environments {
                 }
                 'mds-redis' {
                     HOST = "http://mds-redis${vars.deployment.suffix}"
+                }
+                'mds-docgen-api' {
+                    HOST = "http://mds-docgen-api${vars.deployment.suffix}:3030"
                 }
                 'schemaspy' {
                     HOST = "mds-schemaspy-${vars.deployment.namespace}.pathfinder.gov.bc.ca"

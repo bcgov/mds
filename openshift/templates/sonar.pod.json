@@ -48,6 +48,11 @@
       "value": "https://api.nrs.gov.bc.ca/oauth2/v1/oauth/token"
     },
     {
+      "name": "DOCUMENT_GENERATOR_URL",
+      "required": false,
+      "value": ""
+    },
+    {
       "name": "CPU_LIMIT",
       "value": "500m"
     },
@@ -131,6 +136,10 @@
               {
                 "name": "NRIS_TOKEN_URL",
                 "value": "${NRIS_TOKEN_URL}"
+              },
+              {
+                "name": "DOCUMENT_GENERATOR_URL",
+                "value": "${DOCUMENT_GENERATOR_URL}"
               },
               {
                 "name": "GIT_BRANCH",

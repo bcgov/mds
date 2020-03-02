@@ -143,7 +143,7 @@ export class Reports extends Component {
             <Col>
               <AuthorizationWrapper>
                 <Button
-                  style={{ float: "right" }}
+                  style={{ float: "right", zIndex: 1 }}
                   type="primary"
                   onClick={(event) => this.openAddReportModal(event, this.props.mine.mine_name)}
                 >

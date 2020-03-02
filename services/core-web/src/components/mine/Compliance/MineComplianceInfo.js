@@ -26,7 +26,7 @@ import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
 const propTypes = {
   mines: PropTypes.objectOf(CustomPropTypes.mine).isRequired,
   mineGuid: PropTypes.string.isRequired,
-  mineComplianceInfo: CustomPropTypes.mineComplianceInfo.isRequired,
+  mineComplianceInfo: CustomPropTypes.mineComplianceInfo,
   complianceCodes: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
   fetchMineComplianceInfo: PropTypes.func.isRequired,
   location: PropTypes.shape({ search: PropTypes.string }).isRequired,
@@ -36,6 +36,10 @@ const propTypes = {
       id: PropTypes.string,
     },
   }).isRequired,
+};
+
+const defaultProps = {
+  mineComplianceInfo: {},
 };
 
 const initialSearchValues = {
@@ -217,6 +221,7 @@ export class MineComplianceInfo extends Component {
 }
 
 MineComplianceInfo.propTypes = propTypes;
+MineComplianceInfo.defaultProps = defaultProps;
 
 const mapStateToProps = (state) => ({
   mineComplianceInfo: getMineComplianceInfo(state),

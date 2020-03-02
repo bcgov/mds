@@ -19,7 +19,7 @@ exports[`MineVariance renders properly 1`] = `
       <AddButton
         onClick={[Function]}
       >
-        Add variance
+        Add Variance
       </AddButton>
     </Connect(AuthorizationWrapper)>
   </div>

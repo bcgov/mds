@@ -69,13 +69,11 @@ export const AuthenticationGuard = (WrappedComponent) => {
         this.props.userAccessData.includes(USER_ROLES.role_minespace_proponent)
       ) {
         return <NullScreen type="unauthorized" />;
-      } 
-        return <WrappedComponent {...this.props} />;
-      
+      }
+      return <WrappedComponent {...this.props} />;
     };
 
     render() {
-      console.log(this.props.userAccessData);
       if (this.props.keycloak) {
         return this.props.isAuthenticated ? this.renderCorrectView() : <Loading />;
       }

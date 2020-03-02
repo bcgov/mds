@@ -63,7 +63,7 @@ exports[`AdminDashboard renders properly 1`] = `
       <TabPane
         key="unverifiedMines"
         placeholder={null}
-        tab="Mines to be Checked"
+        tab="Unverified Mines"
       >
         <div
           className="tab__content"
@@ -85,7 +85,7 @@ exports[`AdminDashboard renders properly 1`] = `
       <TabPane
         key="managerMinespaceUsers"
         placeholder={null}
-        tab="Manage Minespace Users"
+        tab="Manage MineSpace Users"
       >
         <div
           className="tab__content"
