@@ -21,10 +21,10 @@ const defaultProps = {
 
 const columns = [
   {
-    title: "User Email",
+    title: "Email",
     width: 150,
     dataIndex: "email",
-    render: (text) => <div title="User Email">{text}</div>,
+    render: (text) => <div title="Email">{text}</div>,
   },
   {
     title: "Mines",

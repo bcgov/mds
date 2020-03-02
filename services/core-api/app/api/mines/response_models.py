@@ -226,9 +226,10 @@ MINE_INCIDENT_CATEGORY_MODEL = api.model(
 
 MINE_INCIDENT_MODEL = api.model(
     'Mine Incident', {
+        'mine_incident_id': fields.Integer,
+        'mine_incident_id_year': fields.Integer,
         'mine_incident_guid': fields.String,
         'mine_incident_report_no': fields.String,
-        'mine_incident_id_year': fields.Integer,
         'mine_guid': fields.String,
         'incident_timestamp': DateTime,
         'incident_description': fields.String,

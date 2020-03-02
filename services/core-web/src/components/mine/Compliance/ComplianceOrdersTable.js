@@ -1,8 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Table } from "antd";
-import moment from "moment";
-import { formatDate, compareCodes, formatDateTime } from "@common/utils/helpers";
+import { formatDate, compareCodes, formatDateTime, dateSorter } from "@common/utils/helpers";
 import { downloadNRISDocument } from "@common/utils/actionlessNetworkCalls";
 import { RED_CLOCK } from "@/constants/assets";
 import CustomPropTypes from "@/customPropTypes";
@@ -35,17 +34,14 @@ const fileColumns = [
     key: "fileName",
     sorter: (a, b) => a.fileName.localeCompare(b.fileName),
     render: (text, record) => (
-      <div title="File Name">
-        <div key={record.externalId}>
-          <LinkButton
-            key={record.externalId}
-            onClick={() =>
-              downloadNRISDocument(record.externalId, record.inspectionId, record.fileName)
-            }
-          >
-            {record.fileName}
-          </LinkButton>
-        </div>
+      <div title="File Name" key={record.externalId}>
+        <LinkButton
+          onClick={() =>
+            downloadNRISDocument(record.externalId, record.inspectionId, record.fileName)
+          }
+        >
+          {record.fileName}
+        </LinkButton>
       </div>
     ),
   },
@@ -53,8 +49,8 @@ const fileColumns = [
     title: "Upload Date/Time",
     dataIndex: "fileDate",
     key: "fileDate",
-    sorter: (a, b) => (moment(a.fileDate) > moment(b.fileDate) ? -1 : 1),
-    render: (text, record) => <div title="Date">{formatDateTime(record.fileDate)}</div>,
+    sorter: dateSorter("fileDate"),
+    render: (text, record) => <div title="Upload Date/Time">{formatDateTime(record.fileDate)}</div>,
   },
   {
     title: "Type",
@@ -68,6 +64,7 @@ const fileColumns = [
 const columns = [
   {
     title: "",
+    key: "overdue",
     dataIndex: "overdue",
     render: (text, record) => (
       <div title="Overdue">
@@ -80,46 +77,52 @@ const columns = [
     ),
   },
   {
-    title: "Order #",
+    title: "Order No.",
+    key: "order_no",
     dataIndex: "order_no",
-    render: (text, record) => <div title="Order #">{record.order_no || "-"}</div>,
+    render: (text, record) => <div title="Order No.">{record.order_no || "-"}</div>,
     sorter: (a, b) => (a.order_no > b.order_no ? -1 : 1),
   },
   {
     title: "Violation",
+    key: "violation",
     dataIndex: "violation",
     render: (text, record) => <div title="Violation">{record.violation || "-"}</div>,
     sorter: (a, b) => compareCodes(a.violation, b.violation),
   },
   {
-    title: "Report #",
+    title: "Report No.",
+    key: "report_no",
     dataIndex: "report_no",
-    render: (text, record) => <div title="Report #">{record.report_no || "-"}</div>,
+    render: (text, record) => <div title="Report No.">{record.report_no || "-"}</div>,
     sorter: (a, b) => (a.report_no > b.report_no ? -1 : 1),
   },
   {
-    title: "Inspector Name",
+    title: "Inspector",
+    key: "inspector",
     dataIndex: "inspector",
-    render: (text, record) => <div title="Inspector Name">{record.inspector || "-"}</div>,
+    render: (text, record) => <div title="Inspector">{record.inspector || "-"}</div>,
     sorter: (a, b) => (a.inspector > b.inspector ? -1 : 1),
   },
   {
     title: "Order Status",
+    key: "status",
     dataIndex: "status",
     render: (text, record) => <div title="Order Status">{record.order_status || "-"}</div>,
     sorter: (a, b) => (a.order_status > b.order_status ? -1 : 1),
   },
   {
     title: "Due Date",
+    key: "due_date",
     dataIndex: "due_date",
     render: (text, record) => <div title="Due Date">{formatDate(record.due_date) || "-"}</div>,
-    sorter: (a, b) => (moment(a.due_date) > moment(b.due_date) ? -1 : 1),
+    sorter: dateSorter("due_date"),
     defaultSortOrder: "descend",
   },
   {
     title: "Documents",
+    key: "documents",
     dataIndex: "documents",
-    key: "documents_key",
     render: (text, record) => (
       <Table
         align="left"

@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { Popconfirm, Tooltip } from "antd";
+import { uniqBy, flattenDeep } from "lodash";
 import * as Strings from "@common/constants/strings";
 import * as router from "@/constants/routes";
 import NullScreen from "@/components/common/NullScreen";
@@ -33,41 +34,67 @@ export class SubscriptionTable extends Component {
       operationalStatus: mine.mine_status.length
         ? mine.mine_status[0].status_labels[0]
         : Strings.EMPTY_FIELD,
-      permit: mine.mine_permit_numbers.length ? mine.mine_permit_numbers : null,
-      region: mine.region_code ? mineRegionHash[mine.region_code] : Strings.EMPTY_FIELD,
-      commodity: mine.mine_type.length ? mine.mine_type : null,
+      permit:
+        mine.mine_permit_numbers && mine.mine_permit_numbers.length > 0
+          ? mine.mine_permit_numbers
+          : [],
+      region: mine.mine_region ? mineRegionHash[mine.mine_region] : Strings.EMPTY_FIELD,
+      commodity:
+        mine.mine_type && mine.mine_type.length > 0
+          ? uniqBy(
+              flattenDeep(
+                mine.mine_type.map(
+                  (type) =>
+                    type.mine_type_detail &&
+                    type.mine_type_detail.length > 0 &&
+                    type.mine_type_detail
+                      .filter((detail) => detail.mine_commodity_code)
+                      .map((detail) => mineCommodityHash[detail.mine_commodity_code])
+                )
+              )
+            )
+          : [],
       commodityHash: mineCommodityHash,
-      tenure: mine.mine_type.length ? mine.mine_type : null,
+      tenure:
+        mine.mine_type && mine.mine_type.length > 0
+          ? uniqBy(mine.mine_type.map((type) => mineTenureHash[type.mine_tenure_type_code]))
+          : [],
       tenureHash: mineTenureHash,
-      tsf: mine.mine_tailings_storage_facility
-        ? mine.mine_tailings_storage_facility.length
+      tsf: mine.mine_tailings_storage_facilities
+        ? mine.mine_tailings_storage_facilities.length
         : Strings.EMPTY_FIELD,
     }));
 
   render() {
     const columns = [
       {
-        title: "Mine Name",
+        title: "Name",
+        key: "mineName",
         dataIndex: "mineName",
         render: (text, record) => (
-          <Link to={router.MINE_SUMMARY.dynamicRoute(record.key)}>{text}</Link>
+          <div title="Name">
+            <Link to={router.MINE_SUMMARY.dynamicRoute(record.key)}>{text}</Link>
+          </div>
         ),
       },
       {
-        title: "Mine No.",
+        title: "Number",
+        key: "mineNo",
         dataIndex: "mineNo",
-        render: (text) => <div title="Mine Number">{text}</div>,
+        render: (text) => <div title="Number">{text}</div>,
       },
       {
         title: "Operational Status",
+        key: "operationalStatus",
         dataIndex: "operationalStatus",
         render: (text) => <div title="Operational Status">{text}</div>,
       },
       {
-        title: "Permit No.",
+        title: "Permits",
+        key: "permit",
         dataIndex: "permit",
         render: (text, record) => (
-          <div title="Permit Number">
+          <div title="Permits">
             <ul className="mine-list__permits">
               {text && text.map((permit_no) => <li key={permit_no}>{permit_no}</li>)}
               {!text && <li>{record.emptyField}</li>}
@@ -77,54 +104,39 @@ export class SubscriptionTable extends Component {
       },
       {
         title: "Region",
+        key: "region",
         dataIndex: "region",
-        render: (text, record) => (
-          <div title="Region">
-            {text}
-            {!text && <div>{record.emptyField}</div>}
-          </div>
-        ),
+        render: (text) => <div title="Region">{text}</div>,
       },
       {
         title: "Tenure",
+        key: "tenure",
         dataIndex: "tenure",
         render: (text, record) => (
           <div title="Tenure">
-            {text &&
-              text.map((tenure) => (
-                <span className="mine_tenure" key={tenure.mine_type_guid}>
-                  {record.tenureHash[tenure.mine_tenure_type_code]}
-                </span>
-              ))}
-            {!text && <div>{record.emptyField}</div>}
+            {(text && text.length > 0 && text.join(", ")) || Strings.EMPTY_FIELD}
           </div>
         ),
       },
       {
         title: "Commodity",
+        key: "commodity",
         dataIndex: "commodity",
         render: (text, record) => (
           <div title="Commodity">
-            {text &&
-              text.map(({ mine_type_detail, mine_type_guid }) => (
-                <div key={mine_type_guid}>
-                  {mine_type_detail.map(({ mine_commodity_code, mine_type_detail_guid }) => (
-                    <span key={mine_type_detail_guid}>
-                      {mine_commodity_code && `${record.commodityHash[mine_commodity_code]},`}
-                    </span>
-                  ))}
-                </div>
-              ))}
+            {(text && text.length > 0 && text.join(", ")) || Strings.EMPTY_FIELD}
           </div>
         ),
       },
       {
         title: "TSF",
+        key: "tsf",
         dataIndex: "tsf",
         render: (text) => <div title="TSF">{text}</div>,
       },
       {
         title: "",
+        key: "unsubscribe",
         dataIndex: "",
         render: (text, record) => (
           <Popconfirm
