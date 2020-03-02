@@ -8,7 +8,7 @@ const express = require(`express`);
 const bodyParser = require(`body-parser`);
 const crypto = require("crypto");
 
-const templatedir = "/app/templates/";
+const templatedir = "/tmp/tmp-reports/";
 const app = express();
 const upload = require(`multer`)({ dest: templatedir });
 const port = process.env.CARBONE_PORT || 3030;
