@@ -1,4 +1,5 @@
-import { STORE_DOCUMENT_CONTEXT_TEMPLATE, DOCUMENTS } from "@/constants/actionTypes";
+import { STORE_DOCUMENT_CONTEXT_TEMPLATE } from "@/constants/actionTypes";
+import { DOCUMENTS } from "@/constants/reducerTypes";
 
 const initialState = {
   contextTemplate: {},
@@ -16,6 +17,10 @@ const documentReducer = (state = initialState, action) => {
   }
 };
 
+const documentReducerObject = {
+  [DOCUMENTS]: documentReducer,
+};
+
 export const getDocumentContextTemplate = (state) => state[DOCUMENTS].contextTemplate;
 
-export default documentReducer;
+export default documentReducerObject;
