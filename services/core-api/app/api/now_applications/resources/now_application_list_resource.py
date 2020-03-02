@@ -96,7 +96,8 @@ class NOWApplicationListResource(Resource, UserMixin):
         base_query = NoticeOfWorkView.query
 
         if submissions_only:
-            filters.append(NoticeOfWorkView.originating_system != None)
+            filters.append(NoticeOfWorkView.originating_system != None
+                           and NoticeOfWorkView.originating_system != 'MMS')
 
         if mine_guid:
             filters.append(NoticeOfWorkView.mine_guid == mine_guid)
