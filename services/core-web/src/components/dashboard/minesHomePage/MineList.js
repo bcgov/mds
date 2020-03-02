@@ -39,7 +39,7 @@ const columns = [
     render: (text, record) => (
       <Link to={router.MINE_SUMMARY.dynamicRoute(record.key)} title="Name">
         {text}
-        {record.verified_status.healthy_ind && (
+        {record.verified_status && record.verified_status.healthy_ind && (
           <img
             alt="Verified"
             className="padding-small"

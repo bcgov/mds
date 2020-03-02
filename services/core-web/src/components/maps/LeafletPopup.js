@@ -76,7 +76,7 @@ export const LeafletPopup = (props) => {
         <StaticRouter context={props.context} basename={process.env.BASE_PATH}>
           <Link to={router.MINE_SUMMARY.dynamicRoute(props.mine.mine_guid)} title="Go to mine page">
             {props.mine.mine_name}
-            {verifiedStatus.healthy_ind && (
+            {verifiedStatus && verifiedStatus.healthy_ind && (
               <img
                 alt="Verified"
                 className="padding-small"
