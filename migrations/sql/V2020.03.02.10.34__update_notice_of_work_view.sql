@@ -15,7 +15,8 @@ COALESCE(msub.receiveddate, sub.receiveddate, app.received_date) as received_dat
 (CASE
     WHEN sub.originating_system IS NOT NULL THEN sub.originating_system
     WHEN msub.mms_cid IS NOT NULL THEN 'MMS'
-    ELSE 'Core'
+    WHEN nid.now_application_id IS NOT NULL THEN 'Core'
+    ELSE NULL
 END) as originating_system
 FROM now_application_identity nid 
 JOIN mine m on nid.mine_guid = m.mine_guid
