@@ -150,10 +150,10 @@ class MineListResource(Resource, UserMixin):
         sort_model = sort_models.get(sort_field)
         search_term = args.get('search', None, type=str)
         # Filters to be applied
-        commodity_filter_terms = args.get('commodity', None, type=str)
-        status_filter_term = args.get('status', None, type=str)
-        tenure_filter_term = args.get('tenure', None, type=str)
-        region_code_filter_term = args.get('region', None, type=str)
+        commodity_filter_terms = args.getlist('commodity', type=str)
+        status_filter_term = args.getlist('status', type=str)
+        tenure_filter_term = args.getlist('tenure', type=str)
+        region_code_filter_term = args.getlist('region', type=str)
         major_mine_filter_term = args.get('major', None, type=str)
         tsf_filter_term = args.get('tsf', None, type=str)
         # Base query:
@@ -180,14 +180,12 @@ class MineListResource(Resource, UserMixin):
             mines_query = mines_query.intersect(tsf_query)
         # Filter by region, if provided
         if region_code_filter_term:
-            region_filter_term_array = region_code_filter_term.split(',')
-            region_filter = Mine.mine_region.in_(region_filter_term_array)
+            region_filter = Mine.mine_region.in_(region_code_filter_term)
             region_query = Mine.query.filter(region_filter)
             mines_query = mines_query.intersect(region_query)
         # Filter by commodity if provided
         if commodity_filter_terms:
-            commodity_filter_term_array = commodity_filter_terms.split(',')
-            commodity_filter = MineTypeDetail.mine_commodity_code.in_(commodity_filter_term_array)
+            commodity_filter = MineTypeDetail.mine_commodity_code.in_(commodity_filter_terms)
             mine_type_active_filter = MineType.active_ind.is_(True)
             commodity_query = Mine.query \
                 .join(MineType) \
@@ -196,8 +194,7 @@ class MineListResource(Resource, UserMixin):
             mines_query = mines_query.intersect(commodity_query)
         # Create a filter on tenure if one is provided
         if tenure_filter_term:
-            tenure_filter_term_array = tenure_filter_term.split(',')
-            tenure_filter = MineType.mine_tenure_type_code.in_(tenure_filter_term_array)
+            tenure_filter = MineType.mine_tenure_type_code.in_(tenure_filter_term)
             mine_type_active_filter = MineType.active_ind.is_(True)
             tenure_query = Mine.query \
                 .join(MineType) \
@@ -205,12 +202,11 @@ class MineListResource(Resource, UserMixin):
             mines_query = mines_query.intersect(tenure_query)
         # Create a filter on mine status if one is provided
         if status_filter_term:
-            status_filter_term_array = status_filter_term.split(',')
-            status_filter = MineStatusXref.mine_operation_status_code.in_(status_filter_term_array)
+            status_filter = MineStatusXref.mine_operation_status_code.in_(status_filter_term)
             status_reason_filter = MineStatusXref.mine_operation_status_reason_code.in_(
-                status_filter_term_array)
+                status_filter_term)
             status_subreason_filter = MineStatusXref.mine_operation_status_sub_reason_code.in_(
-                status_filter_term_array)
+                status_filter_term)
             all_status_filter = status_filter | status_reason_filter | status_subreason_filter
             status_query = Mine.query \
                 .join(MineStatus) \

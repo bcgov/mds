@@ -6,46 +6,55 @@ exports[`SubscriptionTable renders properly 1`] = `
     Array [
       Object {
         "dataIndex": "mineName",
+        "key": "mineName",
         "render": [Function],
-        "title": "Mine Name",
+        "title": "Name",
       },
       Object {
         "dataIndex": "mineNo",
+        "key": "mineNo",
         "render": [Function],
-        "title": "Mine No.",
+        "title": "Number",
       },
       Object {
         "dataIndex": "operationalStatus",
+        "key": "operationalStatus",
         "render": [Function],
         "title": "Operational Status",
       },
       Object {
         "dataIndex": "permit",
+        "key": "permit",
         "render": [Function],
-        "title": "Permit No.",
+        "title": "Permits",
       },
       Object {
         "dataIndex": "region",
+        "key": "region",
         "render": [Function],
         "title": "Region",
       },
       Object {
         "dataIndex": "tenure",
+        "key": "tenure",
         "render": [Function],
         "title": "Tenure",
       },
       Object {
         "dataIndex": "commodity",
+        "key": "commodity",
         "render": [Function],
         "title": "Commodity",
       },
       Object {
         "dataIndex": "tsf",
+        "key": "tsf",
         "render": [Function],
         "title": "TSF",
       },
       Object {
         "dataIndex": "",
+        "key": "unsubscribe",
         "render": [Function],
         "title": "",
       },
@@ -55,12 +64,7 @@ exports[`SubscriptionTable renders properly 1`] = `
     Array [
       Object {
         "commodity": Array [
-          Object {
-            "mine_tenure_type_code": "PLR",
-          },
-          Object {
-            "mine_tenure_type_code": "MIN",
-          },
+          undefined,
         ],
         "commodityHash": Object {
           "CG": "Construction Aggregate",
@@ -72,15 +76,11 @@ exports[`SubscriptionTable renders properly 1`] = `
         "mineName": "mine3",
         "mineNo": "BLAH9091",
         "operationalStatus": "N/A",
-        "permit": null,
-        "region": "North East",
+        "permit": Array [],
+        "region": "N/A",
         "tenure": Array [
-          Object {
-            "mine_tenure_type_code": "PLR",
-          },
-          Object {
-            "mine_tenure_type_code": "MIN",
-          },
+          "Placer",
+          "Mineral",
         ],
         "tenureHash": Object {
           "BCL": "BC Land",
@@ -88,7 +88,7 @@ exports[`SubscriptionTable renders properly 1`] = `
           "MIN": "Mineral",
           "PLR": "Placer",
         },
-        "tsf": 1,
+        "tsf": "N/A",
       },
     ]
   }

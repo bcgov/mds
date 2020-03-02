@@ -13,7 +13,7 @@ const setupDispatchProps = () => {
 };
 
 const setupProps = () => {
-  props.isAdvancedSearch = true;
+  props.isAdvanceSearch = true;
 };
 
 beforeEach(() => {

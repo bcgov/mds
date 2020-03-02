@@ -1,9 +1,9 @@
 import React from "react";
 import { Table, Button } from "antd";
 import PropTypes from "prop-types";
-import { truncateFilename } from "@common/utils/helpers";
+import { truncateFilename, dateSorter } from "@common/utils/helpers";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
-import { formatDate, dateSorter } from "@/utils/helpers";
+import { formatDate } from "@/utils/helpers";
 import * as Strings from "@/constants/strings";
 import { EDIT_PENCIL } from "@/constants/assets";
 import CustomPropTypes from "@/customPropTypes";
