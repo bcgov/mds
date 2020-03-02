@@ -61,7 +61,7 @@ UPDATE document_template SET form_spec_json = '[
       "rel_data_path": "now_application.lead_inspector.name"
     }
   ]' 
-where document_template_code = 'NOW-RJL';
+where document_template_code = 'NRL';
 
 UPDATE document_template SET form_spec_json = '[
     {
@@ -119,7 +119,7 @@ UPDATE document_template SET form_spec_json = '[
       "rel_data_path": "now_application.lead_inspector.name"
     }
   ]'
-where document_template_code = 'NOW-WDL';
+where document_template_code = 'NWL';
 
 UPDATE document_template SET form_spec_json = '[
     {
@@ -199,4 +199,4 @@ UPDATE document_template SET form_spec_json = '[
       "rel_data_path": "now_application.lead_inspector.name"
     }
   ]'
-where document_template_code = 'NOW-CAL';
+where document_template_code = 'NCL';
