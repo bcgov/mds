@@ -2,6 +2,7 @@ from flask_restplus import Resource
 from flask import request, current_app
 from sqlalchemy_filters import apply_pagination, apply_sort
 from sqlalchemy import desc, func, or_
+from marshmallow.exceptions import MarshmallowError
 
 from app.extensions import api
 from app.api.mines.mine.models.mine import Mine
@@ -108,8 +109,12 @@ class ApplicationListResource(Resource, UserMixin):
     @api.expect(APPLICATION)
     @api.marshal_with(APPLICATION, code=200)
     def post(self):
-        data = request.json
-        application = Application._schema().load(data)
-        application.save()
+        try:
+            data = request.json
+            application = Application._schema().load(data)
+        except MarshmallowError as e:
+            current_app.logger.debug(e)
+            raise e
 
+        application.save()
         return application

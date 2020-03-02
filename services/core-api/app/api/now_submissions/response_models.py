@@ -173,6 +173,7 @@ WATER_SOURCE_ACTIVITY = api.model(
 
 APPLICATION = api.model(
     'Application', {
+        "messageid": fields.Integer,
         'application_guid': fields.String,
         'now_application_guid': fields.String,
         'originating_system': fields.String,

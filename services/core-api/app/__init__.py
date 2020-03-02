@@ -6,6 +6,7 @@ from flask_cors import CORS
 from flask_restplus import Resource, apidoc
 from flask_compress import Compress
 from sqlalchemy.exc import SQLAlchemyError
+from marshmallow.exceptions import MarshmallowError
 
 from flask_jwt_oidc.exceptions import AuthError
 from werkzeug.exceptions import Forbidden
@@ -119,6 +120,15 @@ def register_routes(app):
     @api.errorhandler(AssertionError)
     def assertion_error_handler(error):
         app.logger.error(str(error))
+        return {
+            'status': getattr(error, 'code', 400),
+            'message': str(error),
+        }, getattr(error, 'code', 400)
+
+    @api.errorhandler(MarshmallowError)
+    def marshmallow_error_handler(error):
+        app.logger.error(str(error))
+        app.logger.error("TEST                    TEST")
         return {
             'status': getattr(error, 'code', 400),
             'message': str(error),
