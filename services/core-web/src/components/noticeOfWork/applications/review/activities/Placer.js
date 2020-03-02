@@ -3,6 +3,7 @@ import { PropTypes } from "prop-types";
 import { Field, formValueSelector } from "redux-form";
 import { connect } from "react-redux";
 import { Row, Col, Table, Button, Tooltip } from "antd";
+import { maxLength, number } from "@common/utils/Validate";
 import * as FORM from "@/constants/forms";
 import { TRASHCAN, INFO_CIRCLE } from "@/constants/assets";
 import RenderRadioButtons from "@/components/common/RenderRadioButtons";
@@ -268,8 +269,9 @@ export const Placer = (props) => {
           <Field
             id="total_disturbed_area"
             name="total_disturbed_area"
-            component={RenderAutoSizeField}
+            component={RenderField}
             disabled={props.isViewMode}
+            validate={[number]}
           />
         </Col>
       </Row>
@@ -283,6 +285,7 @@ export const Placer = (props) => {
             name="reclamation_description"
             component={RenderAutoSizeField}
             disabled={props.isViewMode}
+            validate={[maxLength(4000)]}
           />
         </Col>
         <Col md={12} sm={24}>
@@ -294,6 +297,7 @@ export const Placer = (props) => {
             name="reclamation_cost"
             component={RenderField}
             disabled={props.isViewMode}
+            validate={[number]}
           />
         </Col>
       </Row>

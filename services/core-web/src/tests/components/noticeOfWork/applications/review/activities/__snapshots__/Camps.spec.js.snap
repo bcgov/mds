@@ -55,6 +55,11 @@ exports[`Camps renders properly 1`] = `
         disabled={true}
         id="has_fuel_stored"
         name="has_fuel_stored"
+        validate={
+          Array [
+            [Function],
+          ]
+        }
       />
     </Col>
     <Col
@@ -64,36 +69,67 @@ exports[`Camps renders properly 1`] = `
       <div
         className="field-title"
       >
+        Volume of fuel stored
+      </div>
+      <Field
+        component={[Function]}
+        disabled={true}
+        id="volume_fuel_stored"
+        name="volume_fuel_stored"
+        validate={
+          Array [
+            [Function],
+          ]
+        }
+      />
+    </Col>
+  </Row>
+  <Row
+    gutter={16}
+  >
+    <Col
+      md={12}
+      sm={24}
+    >
+      <div
+        className="field-title"
+      >
         Storage Method
       </div>
-      <Row
-        gutter={16}
+      <Col
+        md={12}
+        sm={24}
       >
-        <Col
-          md={12}
-          sm={24}
-        >
-          <Field
-            component={[Function]}
-            disabled={true}
-            id="has_fuel_stored_in_bulk"
-            label="Bulk"
-            name="has_fuel_stored_in_bulk"
-          />
-        </Col>
-        <Col
-          md={12}
-          sm={24}
-        >
-          <Field
-            component={[Function]}
-            disabled={true}
-            id="has_fuel_stored_in_barrels"
-            label="Barrell"
-            name="has_fuel_stored_in_barrels"
-          />
-        </Col>
-      </Row>
+        <Field
+          component={[Function]}
+          disabled={true}
+          id="has_fuel_stored_in_bulk"
+          label="Bulk"
+          name="has_fuel_stored_in_bulk"
+          validate={
+            Array [
+              [Function],
+            ]
+          }
+        />
+      </Col>
+      <Col
+        md={12}
+        sm={24}
+      >
+        <Field
+          component={[Function]}
+          disabled={true}
+          id="has_fuel_stored_in_barrels"
+          label="Barrell"
+          name="has_fuel_stored_in_barrels"
+          validate={
+            Array [
+              [Function],
+            ]
+          }
+        />
+      </Col>
     </Col>
   </Row>
   <br />
@@ -117,6 +153,11 @@ exports[`Camps renders properly 1`] = `
         disabled={true}
         id="reclamation_description"
         name="reclamation_description"
+        validate={
+          Array [
+            [Function],
+          ]
+        }
       />
     </Col>
     <Col
@@ -133,6 +174,11 @@ exports[`Camps renders properly 1`] = `
         disabled={true}
         id="reclamation_cost"
         name="reclamation_cost"
+        validate={
+          Array [
+            [Function],
+          ]
+        }
       />
     </Col>
   </Row>

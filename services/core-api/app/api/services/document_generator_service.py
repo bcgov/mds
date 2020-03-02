@@ -1,4 +1,4 @@
-import requests, hashlib, os, mimetypes, json
+import requests, hashlib, os, mimetypes, json, datetime
 from flask import Response, current_app, stream_with_context
 from app.config import Config
 
@@ -24,9 +24,15 @@ class DocumentGeneratorService():
 
         file_sha = sha256_checksum(template_file_path)
         file_name = os.path.basename(template_file_path)
-
+        file_name_no_ext = '.'.join(file_name.split('.')[:-1])
         # https://carbone.io/api-reference.html#native-api
-        body = {'data': data, 'options': {'convertTo': 'pdf'}}
+        body = {
+            'data': data,
+            'options': {
+                'outputName': f'{file_name_no_ext}-{datetime.date.today().strftime("%d%m%Y")}.pdf',
+                'convertTo': 'pdf'
+            }
+        }
 
         resp = requests.post(
             url=f'{cls.document_generator_url}/{file_sha}/render',

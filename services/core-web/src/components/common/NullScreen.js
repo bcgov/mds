@@ -34,6 +34,7 @@ const propTypes = {
     "now-equipment",
     "now-contacts",
     "now-activity",
+    "add-now-activity",
   ]),
   message: PropTypes.string,
 };
@@ -165,10 +166,17 @@ const NullScreen = (props) => (
     )}
     {props.type === "now-activity" && (
       <div>
-        <img alt="mine_img" src={NO_MINE} />
-        <h3>{String.NO_DATA}</h3>
         <p>
           <i>{props.message}</i> does not apply to this type of permit application.
+        </p>
+      </div>
+    )}
+    {props.type === "add-now-activity" && (
+      <div>
+        <p>
+          This application does not contain any information on <i>{props.message}</i>.
+          <br />
+          Enable edit mode to add this Activity.
         </p>
       </div>
     )}

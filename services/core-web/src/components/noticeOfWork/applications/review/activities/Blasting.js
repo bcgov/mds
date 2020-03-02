@@ -2,6 +2,7 @@ import React from "react";
 import { PropTypes } from "prop-types";
 import { Field } from "redux-form";
 import { Row, Col } from "antd";
+import { required } from "@common/utils/Validate";
 import RenderField from "@/components/common/RenderField";
 import RenderDate from "@/components/common/RenderDate";
 import RenderRadioButtons from "@/components/common/RenderRadioButtons";
@@ -21,6 +22,7 @@ export const Blasting = (props) => {
             name="has_storage_explosive_on_site"
             component={RenderRadioButtons}
             disabled={props.isViewMode}
+            validate={[required]}
           />
         </Col>
         <Col md={12} sm={24}>
@@ -30,6 +32,7 @@ export const Blasting = (props) => {
             name="explosive_permit_issued"
             component={RenderRadioButtons}
             disabled={props.isViewMode}
+            validate={[required]}
           />
         </Col>
       </Row>

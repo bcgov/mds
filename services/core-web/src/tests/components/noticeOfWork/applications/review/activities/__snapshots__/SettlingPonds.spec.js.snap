@@ -162,6 +162,11 @@ exports[`SettlingPonds renders properly 1`] = `
         id="is_ponds_recycled"
         label="Recycled"
         name="is_ponds_recycled"
+        validate={
+          Array [
+            [Function],
+          ]
+        }
       />
     </Col>
     <Col
@@ -174,6 +179,11 @@ exports[`SettlingPonds renders properly 1`] = `
         id="is_ponds_exfiltrated"
         label="Exfiltrated to Ground"
         name="is_ponds_exfiltrated"
+        validate={
+          Array [
+            [Function],
+          ]
+        }
       />
     </Col>
     <Col
@@ -186,6 +196,11 @@ exports[`SettlingPonds renders properly 1`] = `
         id="is_ponds_discharged"
         label="Discharged to Environment"
         name="is_ponds_discharged"
+        validate={
+          Array [
+            [Function],
+          ]
+        }
       />
     </Col>
   </Row>
@@ -210,6 +225,11 @@ exports[`SettlingPonds renders properly 1`] = `
         disabled={true}
         id="reclamation_description"
         name="reclamation_description"
+        validate={
+          Array [
+            [Function],
+          ]
+        }
       />
     </Col>
     <Col
@@ -226,6 +246,11 @@ exports[`SettlingPonds renders properly 1`] = `
         disabled={true}
         id="reclamation_cost"
         name="reclamation_cost"
+        validate={
+          Array [
+            [Function],
+          ]
+        }
       />
     </Col>
   </Row>
