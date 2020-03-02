@@ -7,6 +7,7 @@ exports[`MinespaceUserManagement renders properly 1`] = `
   </h2>
   <br />
   <Connect(NewMinespaceUser)
+    minespaceUserEmailHash={Object {}}
     refreshData={[Function]}
   />
   <h3>
