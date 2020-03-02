@@ -35,6 +35,7 @@ exports[`NewMinespaceUser renders properly 1`] = `
         },
       ]
     }
+    minespaceUserEmailHash={Object {}}
     onSubmit={[Function]}
     onSubmitSuccess={[Function]}
     persistentSubmitErrors={false}

@@ -4,7 +4,7 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { getMineNames } from "@common/selectors/mineSelectors";
-import { getMinespaceUsers } from "@common/selectors/minespaceSelector";
+import { getMinespaceUsers, getMinespaceUserEmailHash } from "@common/selectors/minespaceSelector";
 import { fetchMineNameList } from "@common/actionCreators/mineActionCreator";
 import {
   fetchMinespaceUsers,
@@ -22,6 +22,7 @@ import MinespaceUserList from "@/components/admin/MinespaceUserList";
 const propTypes = {
   minespaceUsers: PropTypes.arrayOf(CustomPropTypes.minespaceUser),
   minespaceUserMines: PropTypes.arrayOf(CustomPropTypes.mineName),
+  minespaceUserEmailHash: PropTypes.objectOf(PropTypes.any),
   fetchMineNameList: PropTypes.func.isRequired,
   fetchMinespaceUsers: PropTypes.func.isRequired,
   fetchMinespaceUserMines: PropTypes.func.isRequired,
@@ -31,6 +32,7 @@ const propTypes = {
 const defaultProps = {
   minespaceUsers: [],
   minespaceUserMines: [],
+  minespaceUserEmailHash: {},
 };
 
 export class MinespaceUserManagement extends Component {
@@ -61,7 +63,10 @@ export class MinespaceUserManagement extends Component {
       <div>
         <h2>MineSpace User Management</h2>
         <br />
-        <NewMinespaceUser refreshData={this.refreshUserData} />
+        <NewMinespaceUser
+          refreshData={this.refreshUserData}
+          minespaceUserEmailHash={this.props.minespaceUserEmailHash}
+        />
         <h3>MineSpace Users</h3>
         <MinespaceUserList
           isLoaded={this.state.isLoaded}
@@ -77,6 +82,7 @@ export class MinespaceUserManagement extends Component {
 const mapStateToProps = (state) => ({
   mines: getMineNames(state),
   minespaceUsers: getMinespaceUsers(state),
+  minespaceUserEmailHash: getMinespaceUserEmailHash(state),
   minespaceUserMines: getMinespaceUserMines(state),
 });
 
