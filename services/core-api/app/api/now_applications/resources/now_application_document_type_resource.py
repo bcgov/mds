@@ -61,7 +61,7 @@ class NOWApplicationDocumentGenerateResource(Resource, UserMixin):
         ]
         for enforced_item in enforced_data:
             if template_data.get(enforced_item['id']) != enforced_item['context-value']:
-                current_app.logger.info(
+                current_app.logger.debug(
                     f'OVERWRITING ENFORCED key={enforced_item["id"]}, value={template_data.get(enforced_item["id"])} -> {enforced_item["context-value"]}'
                 )
             template_data[enforced_item['id']] = enforced_item['context-value']
