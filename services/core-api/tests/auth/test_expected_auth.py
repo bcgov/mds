@@ -34,6 +34,8 @@ from app.api.mines.reports.resources.mine_reports import MineReportResource, Min
 
 from app.api.now_applications.resources.now_activity_type_resource import NOWActivityTypeResource
 from app.api.now_applications.resources.now_application_import_resource import NOWApplicationImportResource
+from app.api.now_applications.resources.now_application_document_type_resource import NOWApplicationDocumentTypeListResource, NOWApplicationDocumentTypeResource, NOWApplicationDocumentGenerateResource
+from app.api.now_applications.resources.now_application_document_resource import NOWApplicationDocumentUploadResource, NOWApplicationDocumentResource
 from app.api.now_applications.resources.now_application_list_resource import NOWApplicationListResource
 from app.api.now_applications.resources.now_application_resource import NOWApplicationResource
 
@@ -103,6 +105,11 @@ from app.api.now_applications.resources.now_application_resource import NOWAppli
     (NOWApplicationListResource, 'post', [EDIT_PERMIT]),
     (NOWApplicationResource, 'get', [VIEW_ALL]),
     (NOWApplicationResource, 'put', [EDIT_PERMIT]),
+    (NOWApplicationDocumentUploadResource, 'post', [EDIT_PERMIT]),
+    (NOWApplicationDocumentResource, 'delete', [EDIT_PERMIT]),
+    (NOWApplicationDocumentTypeResource, 'get', [VIEW_ALL]),
+    (NOWApplicationDocumentTypeListResource, 'get', [VIEW_ALL]),
+    (NOWApplicationDocumentGenerateResource,'get',[EDIT_PERMIT])
 ])
 def test_endpoint_auth(resource, method, expected_roles):
     endpoint = getattr(resource, method, None)
