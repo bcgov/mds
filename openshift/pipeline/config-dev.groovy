@@ -290,12 +290,12 @@ app {
                             'APPLICATION_SUFFIX': "${vars.deployment.application_suffix}",
                             'TAG_NAME':"${app.deployment.version}",
                             'PORT':3030,
-                            'CPU_REQUEST':"${vars.resources.node.cpu_request}",
-                            'CPU_LIMIT':"${vars.resources.node.cpu_limit}",
-                            'MEMORY_REQUEST':"${vars.resources.node.memory_request}",
-                            'MEMORY_LIMIT':"${vars.resources.node.memory_limit}",
-                            'REPLICA_MIN':"${vars.resources.node.replica_min}",
-                            'REPLICA_MAX':"${vars.resources.node.replica_max}",
+                            'CPU_REQUEST':"${vars.resources.docgen.cpu_request}",
+                            'CPU_LIMIT':"${vars.resources.docgen.cpu_limit}",
+                            'MEMORY_REQUEST':"${vars.resources.docgen.memory_request}",
+                            'MEMORY_LIMIT':"${vars.resources.docgen.memory_limit}",
+                            'REPLICA_MIN':"${vars.resources.docgen.replica_min}",
+                            'REPLICA_MAX':"${vars.resources.docgen.replica_max}",
                             'APPLICATION_DOMAIN': "${vars.modules.'mds-docgen-api'.HOST}",
                             'BASE_PATH': "${vars.modules.'mds-docgen-api'.PATH}",
                             'NODE_ENV': "${vars.deployment.node_env}"
@@ -344,8 +344,16 @@ environments {
             }
             resources {
                 node {
-                    cpu_request = "20m"
-                    cpu_limit = "100m"
+                    cpu_request = "10m"
+                    cpu_limit = "30m"
+                    memory_request = "64Mi"
+                    memory_limit = "256Mi"
+                    replica_min = 1
+                    replica_max = 1
+                }
+                docgen {
+                    cpu_request = "50m"
+                    cpu_limit = "200m"
                     memory_request = "128Mi"
                     memory_limit = "256Mi"
                     replica_min = 1
