@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { Element, scroller } from "react-scroll";
-import { debounce, isEmpty } from "lodash";
 import PropTypes from "prop-types";
 import { Tabs, Col, Divider, notification, Card } from "antd";
 import queryString from "query-string";
@@ -16,7 +15,6 @@ import {
 } from "@common/actionCreators/mineActionCreator";
 import {
   getMines,
-  getMineIds,
   getMinesPageData,
   getTransformedMineTypes,
 } from "@common/selectors/mineSelectors";
@@ -24,6 +22,7 @@ import {
   getMineRegionHash,
   getMineTenureTypesHash,
   getCommodityOptionHash,
+  getDisturbanceOptionHash,
   getMineStatusDropDownOptions,
   getMineRegionDropdownOptions,
   getMineTenureTypeDropdownOptions,
@@ -46,8 +45,8 @@ import AddButton from "@/components/common/AddButton";
 
 /**
  * @class Dashboard is the main landing page of the application, currently contains a List and Map View, ability to create a new mine, and search for a mine by name or lat/long.
- *
  */
+
 const { TabPane } = Tabs;
 
 const propTypes = {
@@ -59,189 +58,152 @@ const propTypes = {
   mineRegionHash: PropTypes.objectOf(PropTypes.string).isRequired,
   mineTenureHash: PropTypes.objectOf(PropTypes.string).isRequired,
   mineCommodityOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  mineDisturbanceOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   location: PropTypes.shape({ search: PropTypes.string }).isRequired,
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
   mines: PropTypes.objectOf(CustomPropTypes.mine).isRequired,
-  transformedMineTypes: CustomPropTypes.transformedMineTypes.isRequired,
-  mineIds: PropTypes.arrayOf(PropTypes.string).isRequired,
   pageData: CustomPropTypes.minePageData.isRequired,
+  transformedMineTypes: CustomPropTypes.transformedMineTypes,
 };
 
-const joinOrRemove = (param, key) => (isEmpty(param) ? {} : { [key]: param.join(",") });
-const formatParams = ({
-  commodity = [],
-  region = [],
-  status = [],
-  tenure = [],
-  ...remainingParams
-}) => ({
-  ...joinOrRemove(commodity, "commodity"),
-  ...joinOrRemove(region, "region"),
-  ...joinOrRemove(status, "status"),
-  ...joinOrRemove(tenure, "tenure"),
-  ...remainingParams,
-});
+const defaultProps = {
+  transformedMineTypes: {},
+};
+
+const defaultListParams = {
+  page: Strings.DEFAULT_PAGE,
+  per_page: Strings.DEFAULT_PER_PAGE,
+  sort_field: undefined,
+  sort_dir: undefined,
+  search: undefined,
+  status: [],
+  region: [],
+  tenure: [],
+  commodity: [],
+  major: undefined,
+  tsf: undefined,
+};
 
 export class Dashboard extends Component {
   constructor(props) {
     super(props);
-    this.handleMineSearchDebounced = debounce(this.handleMineSearch, 1000);
     this.state = {
       isListLoaded: false,
       isMapLoaded: false,
-      lat: Number(Strings.DEFAULT_LAT),
-      long: Number(Strings.DEFAULT_LONG),
-      zoom: Strings.DEFAULT_ZOOM,
-      showCoordinates: false,
-      mineName: null,
-      params: {
-        page: Strings.DEFAULT_PAGE,
-        per_page: Strings.DEFAULT_PER_PAGE,
-        status: [],
-        region: [],
-        tenure: [],
-        commodity: [],
-        search: [],
-        ...this.params,
+      showMapSearchInfo: false,
+      listParams: defaultListParams,
+      mapParams: {
+        lat: Strings.DEFAULT_LAT,
+        long: Strings.DEFAULT_LONG,
+        mineName: null,
+        zoom: Strings.DEFAULT_ZOOM,
       },
+      mineGuid: null,
+      allowMapAutoScroll: false,
     };
   }
 
   componentDidMount() {
-    const params = this.props.location.search;
-    if (params) {
-      this.renderDataFromURL(params);
+    const { map, ...params } = queryString.parse(this.props.location.search);
+    if (map) {
+      this.setState(
+        {
+          mapParams: {
+            lat: Number(params.lat) || Strings.DEFAULT_LAT,
+            long: Number(params.long) || Strings.DEFAULT_LONG,
+            mineName: params.mineName || null,
+            zoom: Number(params.zoom) || Strings.DEFAULT_ZOOM,
+          },
+        },
+        () => this.props.history.push(router.MINE_HOME_PAGE.mapRoute(this.state.mapParams))
+      );
     } else {
-      this.props.history.push(
-        router.MINE_HOME_PAGE.dynamicRoute({
-          page: Strings.DEFAULT_PAGE,
-          per_page: Strings.DEFAULT_PER_PAGE,
-        })
+      this.setState(
+        (prevState) => ({
+          listParams: {
+            ...prevState.listParams,
+            ...params,
+          },
+        }),
+        () => this.props.history.push(router.MINE_HOME_PAGE.dynamicRoute(this.state.listParams))
       );
     }
   }
 
   componentWillReceiveProps(nextProps) {
-    const locationChanged = nextProps.location !== this.props.location;
-    if (locationChanged) {
-      const params = nextProps.location.search;
-      this.setState({ isListLoaded: false, isMapLoaded: false });
-      this.renderDataFromURL(params);
+    if (nextProps.location !== this.props.location) {
+      this.setState({ isListLoaded: false, isMapLoaded: false }, () =>
+        this.renderDataFromURL(nextProps.location.search)
+      );
     }
   }
 
-  componentWillUnmount() {
-    this.handleMineSearchDebounced.cancel();
-    this.setState({
-      params: {},
-      lat: Number(Strings.DEFAULT_LAT),
-      long: Number(Strings.DEFAULT_LONG),
-      zoom: Strings.DEFAULT_ZOOM,
-    });
-  }
-
   renderDataFromURL = (params) => {
-    const {
-      status,
-      commodity,
-      region,
-      tenure,
-      major,
-      tsf,
-      search,
-      lat,
-      long,
-      zoom,
-      mineName,
-      ...remainingParams
-    } = queryString.parse(params);
-    const format = (param) => (param ? param.split(",").filter((x) => x) : []);
-    this.setState({
-      params: {
-        status: format(status),
-        commodity: format(commodity),
-        region: format(region),
-        tenure: format(tenure),
-        major,
-        tsf,
-        search,
-        ...remainingParams,
-      },
-    });
-    if (remainingParams.map) {
+    const { map, lat, long } = queryString.parse(params);
+    if (map) {
       this.props.fetchMineRecordsForMap().then(() => {
         this.setState({ isMapLoaded: true });
+        if (lat && long) {
+          this.setState({ showMapSearchInfo: true });
+          if (this.state.allowMapAutoScroll) {
+            this.handleScroll("mapElement", -60);
+          }
+        }
       });
     } else {
       this.props.fetchMineRecords(params).then(() => {
         this.setState({ isListLoaded: true });
       });
     }
-
-    if (format(lat)[0] && format(long)[0]) {
-      this.setState({
-        lat: Number(format(lat)[0]),
-        long: Number(format(long)[0]),
-        zoom: format(zoom)[0] ? Number(format(zoom)[0]) : Strings.DEFAULT_ZOOM,
-        showCoordinates: true,
-        mineName: format(mineName)[0],
-      });
-      this.handleScroll("landing-page__content", 200);
-    }
   };
 
   onPageChange = (page, per_page) => {
-    this.props.history.push(
-      router.MINE_HOME_PAGE.dynamicRoute({
-        ...formatParams(this.state.params),
-        // Overwrite current page/per_page with values provided
-        page,
-        per_page,
-      })
+    this.setState(
+      (prevState) => ({ listParams: { ...prevState.listParams, page, per_page } }),
+      () => this.props.history.push(router.MINE_HOME_PAGE.dynamicRoute(this.state.listParams))
     );
   };
 
-  /*
-   * @param value = {latitude: '', longitude: ''} || 'longitude, latitude';
-   */
-  handleCoordinateSearch = (value) => {
-    if (typeof value === "string") {
-      const newVal = value.split(",");
-      if (newVal[0] && newVal[1]) {
-        this.props.history.push(
-          router.MINE_HOME_PAGE.mapRoute({
-            lat: newVal[1],
-            long: newVal[0],
+  handleMapViewSearchByName = (value) => {
+    const { latitude, longitude, mine_name, mine_guid } = JSON.parse(value);
+    if (latitude && longitude) {
+      this.setState(
+        {
+          mapParams: {
+            lat: Number(latitude),
+            long: Number(longitude),
+            mineName: mine_name,
             zoom: Strings.HIGH_ZOOM,
-            mineName: newVal[2],
-          })
-        );
-        this.handleScroll("mapElement", -60);
-      } else {
-        this.setState({
-          lat: Number(Strings.DEFAULT_LAT),
-          long: Number(Strings.DEFAULT_LONG),
-          zoom: Strings.DEFAULT_ZOOM,
-          showCoordinates: false,
-        });
-        notification.error({ message: Strings.NO_COORDINATES, duration: 10 });
-      }
-    } else {
-      this.props.history.push(
-        router.MINE_HOME_PAGE.mapRoute({
-          lat: value.latitude,
-          long: value.longitude,
-          zoom: Strings.HIGH_ZOOM,
-        })
+          },
+          mineGuid: mine_guid,
+          allowMapAutoScroll: true,
+        },
+        () => this.props.history.push(router.MINE_HOME_PAGE.mapRoute(this.state.mapParams))
       );
-      this.handleScroll("mapElement", -60);
+    } else {
+      notification.error({ message: Strings.NO_COORDINATES, duration: 10 });
     }
   };
 
-  handleScroll = (element, offset) => {
-    // FIXME: scroll dynamically instead of by a hardcoded value
+  handleMapViewSearchByCoordinate = (value) => {
+    this.setState(
+      {
+        mapParams: {
+          lat: Number(value.latitude),
+          long: Number(value.longitude),
+          mineName: null,
+          zoom: Strings.HIGH_ZOOM,
+        },
+        mineGuid: null,
+        allowMapAutoScroll: true,
+      },
+      () => this.props.history.push(router.MINE_HOME_PAGE.mapRoute(this.state.mapParams))
+    );
+  };
+
+  handleScroll = (element, offset = 0) => {
     scroller.scrollTo(element, {
       duration: 1000,
       smooth: true,
@@ -251,44 +213,44 @@ export class Dashboard extends Component {
   };
 
   handleTabChange = (key) => {
-    const { page, per_page, search } = this.state.params;
     this.setState({
       isListLoaded: false,
       isMapLoaded: false,
-      showCoordinates: false,
-      mineName: "",
-      lat: Number(Strings.DEFAULT_LAT),
-      long: Number(Strings.DEFAULT_LONG),
-      zoom: Strings.DEFAULT_ZOOM,
+      allowMapAutoScroll: false,
     });
+
     if (key === "map") {
-      this.props.history.push(router.MINE_HOME_PAGE.mapRoute());
+      this.props.history.push(router.MINE_HOME_PAGE.mapRoute(this.state.mapParams));
     } else {
-      this.props.history.push(router.MINE_HOME_PAGE.dynamicRoute({ page, per_page, search }));
+      this.props.history.push(router.MINE_HOME_PAGE.dynamicRoute(this.state.listParams));
     }
   };
 
-  handleMineSearch = (searchParams, clear = false) => {
-    const formattedSearchParams = formatParams(searchParams);
-    const persistedParams = clear ? {} : formatParams(this.state.params);
-
-    this.props.history.push(
-      router.MINE_HOME_PAGE.dynamicRoute({
-        // Start from existing state
-        ...persistedParams,
-        // Overwrite prev params with any newly provided search params
-        ...formattedSearchParams,
-        // Reset page number
-        page: Strings.DEFAULT_PAGE,
-        // Retain per_page if present
-        per_page: this.state.params.per_page
-          ? this.state.params.per_page
-          : Strings.DEFAULT_PER_PAGE,
-      })
+  handleListViewSearch = (params) => {
+    this.setState(
+      {
+        listParams: params,
+      },
+      () => this.props.history.push(router.MINE_HOME_PAGE.dynamicRoute(this.state.listParams))
     );
   };
 
-  handleSubmit = (value) => {
+  handleListViewReset = () => {
+    this.setState(
+      (prevState) => ({
+        listParams: {
+          ...defaultListParams,
+          // page: prevState.listParams.page || defaultListParams.page,
+          per_page: prevState.listParams.per_page || defaultListParams.per_page,
+          sort_field: prevState.listParams.sort_field,
+          sort_dir: prevState.listParams.sort_dir,
+        },
+      }),
+      () => this.props.history.push(router.MINE_HOME_PAGE.dynamicRoute(this.state.listParams))
+    );
+  };
+
+  handleCreateMineRecordSubmit = (value) => {
     const mineStatus = value.mine_status.join(",");
     this.props.createMineRecord({ ...value, mine_status: mineStatus }).then((response) => {
       this.props.createMineTypes(response.data.mine_guid, value.mine_types).then(() => {
@@ -299,12 +261,11 @@ export class Dashboard extends Component {
     });
   };
 
-  openModal(event, onSubmit, title) {
-    const handleDelete = () => {};
+  openCreateMineRecordModal(event, onSubmit, title) {
     event.preventDefault();
     this.props.openModal({
       props: {
-        handleDelete,
+        handleDelete: () => {},
         onSubmit,
         title,
         isNewRecord: true,
@@ -314,51 +275,43 @@ export class Dashboard extends Component {
   }
 
   renderCorrectView() {
-    const { search, map, page, per_page } = this.state.params;
-    const isMap = map ? "map" : "list";
-    const mineNameMine =
-      this.state.mineName &&
-      this.props.mines &&
-      this.props.mines.length > 0 &&
-      this.props.mines.filter((mine) => mine.mine_name === this.state.mineName)[0];
-    const mineGuid = mineNameMine ? mineNameMine.mine_guid : null;
-
+    const { map } = queryString.parse(this.props.location.search);
     return (
       <div>
         <Tabs
-          activeKey={isMap}
+          activeKey={map ? "map" : "list"}
           size="large"
-          animated={{ inkBar: true, tabPane: false }}
+          animated={{ inkBar: false, tabPane: false }}
           onTabClick={this.handleTabChange}
         >
           <TabPane tab="List" key="list">
             <MineSearch
-              initialValues={this.state.params}
+              initialValues={this.state.listParams}
+              handleSearch={this.handleListViewSearch}
+              handleReset={this.handleListViewReset}
+              searchValue={this.state.listParams.search}
               {...this.props}
-              handleMineSearch={this.handleMineSearchDebounced}
-              searchValue={search}
             />
-
             <div>
               <div className="tab__content">
                 <MineList
                   isLoaded={this.state.isListLoaded}
                   mines={this.props.mines}
-                  mineIds={this.props.mineIds}
                   mineRegionHash={this.props.mineRegionHash}
                   mineTenureHash={this.props.mineTenureHash}
                   mineCommodityOptionsHash={this.props.mineCommodityOptionsHash}
-                  handleMineSearch={this.handleMineSearch}
-                  sortField={this.state.params.sort_field}
-                  sortDir={this.state.params.sort_dir}
+                  handleSearch={this.handleListViewSearch}
+                  filters={this.state.listParams}
+                  sortField={this.state.listParams.sort_field}
+                  sortDir={this.state.listParams.sort_dir}
                 />
               </div>
               <div className="center">
                 <ResponsivePagination
                   onPageChange={this.onPageChange}
-                  currentPage={Number(page)}
+                  currentPage={Number(this.state.listParams.page)}
                   pageTotal={Number(this.props.pageData.total)}
-                  itemsPerPage={Number(per_page)}
+                  itemsPerPage={Number(this.state.listParams.per_page)}
                 />
               </div>
             </div>
@@ -368,8 +321,8 @@ export class Dashboard extends Component {
               <div className="landing-page__content--search">
                 <Col md={10} xs={24}>
                   <MineSearch
-                    initialValues={this.state.params}
-                    handleCoordinateSearch={this.handleCoordinateSearch}
+                    initialValues={this.state.mapParams}
+                    handleSearch={this.handleMapViewSearchByName}
                     isMapView
                   />
                   <br />
@@ -411,15 +364,15 @@ export class Dashboard extends Component {
                   </div>
                 </Col>
                 <Col md={10} xs={24}>
-                  <SearchCoordinatesForm onSubmit={this.handleCoordinateSearch} />
+                  <SearchCoordinatesForm onSubmit={this.handleMapViewSearchByCoordinate} />
                 </Col>
               </div>
-              {this.state.showCoordinates && (
+              {this.state.showMapSearchInfo && (
                 <div>
                   <div className="center center-mobile">
-                    {this.state.mineName ? (
+                    {this.state.mapParams.mineName ? (
                       <h2>
-                        Results for: <span className="p">{this.state.mineName}</span>
+                        Results for: <span className="p">{this.state.mapParams.mineName}</span>
                       </h2>
                     ) : (
                       <h2> Result for coordinate search:</h2>
@@ -428,10 +381,10 @@ export class Dashboard extends Component {
                   <div className="center">
                     <div className="inline-flex evenly center-mobile">
                       <h2>
-                        Latitude: <span className="p">{this.state.lat}</span>
+                        Latitude: <span className="p">{this.state.mapParams.lat}</span>
                       </h2>
                       <h2>
-                        Longitude: <span className="p">{this.state.long}</span>
+                        Longitude: <span className="p">{this.state.mapParams.long}</span>
                       </h2>
                     </div>
                   </div>
@@ -439,21 +392,22 @@ export class Dashboard extends Component {
               )}
               <LoadingWrapper condition={this.state.isMapLoaded}>
                 <Element name="mapElement">
-                  <div>
-                    <MineMapLeaflet
-                      lat={this.state.lat}
-                      long={this.state.long}
-                      zoom={this.state.zoom}
-                      minesBasicInfo={this.props.pageData.mines}
-                      mineName={this.state.mineName}
-                      mineGuid={mineGuid}
-                      mines={this.props.mines}
-                      fetchMineRecordById={this.props.fetchMineRecordById}
-                      transformedMineTypes={this.props.transformedMineTypes}
-                      mineCommodityOptionsHash={this.props.mineCommodityOptionsHash}
-                      history={this.props.history}
-                    />
-                  </div>
+                  <MineMapLeaflet
+                    lat={Number(this.state.mapParams.lat)}
+                    long={Number(this.state.mapParams.long)}
+                    zoom={Number(this.state.mapParams.zoom)}
+                    mineName={this.state.mapParams.mineName}
+                    mineGuid={this.state.mineGuid}
+                    mines={this.props.mines}
+                    minesBasicInfo={this.props.pageData.mines}
+                    fetchMineRecordById={this.props.fetchMineRecordById}
+                    transformedMineTypes={this.props.transformedMineTypes}
+                    mineRegionHash={this.props.mineRegionHash}
+                    mineTenureHash={this.props.mineTenureHash}
+                    mineCommodityOptionsHash={this.props.mineCommodityOptionsHash}
+                    mineDisturbanceOptionsHash={this.props.mineDisturbanceOptionsHash}
+                    history={this.props.history}
+                  />
                 </Element>
               </LoadingWrapper>
             </div>
@@ -476,7 +430,11 @@ export class Dashboard extends Component {
               <AuthorizationWrapper permission={Permission.EDIT_MINES}>
                 <AddButton
                   onClick={(event) =>
-                    this.openModal(event, this.handleSubmit, ModalContent.CREATE_MINE_RECORD)
+                    this.openCreateMineRecordModal(
+                      event,
+                      this.handleCreateMineRecordSubmit,
+                      ModalContent.CREATE_MINE_RECORD
+                    )
                   }
                 >
                   {ModalContent.CREATE_MINE_RECORD}
@@ -493,11 +451,11 @@ export class Dashboard extends Component {
 
 const mapStateToProps = (state) => ({
   mines: getMines(state),
-  mineIds: getMineIds(state),
   pageData: getMinesPageData(state),
   mineRegionHash: getMineRegionHash(state),
   mineTenureHash: getMineTenureTypesHash(state),
   mineCommodityOptionsHash: getCommodityOptionHash(state),
+  mineDisturbanceOptionsHash: getDisturbanceOptionHash(state),
   mineStatusDropDownOptions: getMineStatusDropDownOptions(state),
   mineRegionOptions: getMineRegionDropdownOptions(state),
   mineTenureTypes: getMineTenureTypeDropdownOptions(state),
@@ -520,6 +478,7 @@ const mapDispatchToProps = (dispatch) =>
   );
 
 Dashboard.propTypes = propTypes;
+Dashboard.defaultProps = defaultProps;
 
 export default connect(
   mapStateToProps,

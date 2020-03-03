@@ -35,11 +35,11 @@ exports[`NOWSideMenu renders properly 1`] = `
       title="Summary of Reclamation"
     />
     <AnchorLink
-      href="#access-roads"
+      href="#exploration-access"
       title="Access Roads, Trails, Helipads, Air Strips, Boat Ramps"
     />
     <AnchorLink
-      href="#blasting"
+      href="#blasting-operation"
       title="Blasting"
     />
     <AnchorLink
@@ -51,7 +51,7 @@ exports[`NOWSideMenu renders properly 1`] = `
       title="Cut Lines and Induced Polarization Survey"
     />
     <AnchorLink
-      href="#surface-drilling"
+      href="#exploration-surface-drilling"
       title="Exploration Surface Drilling"
     />
     <AnchorLink
@@ -59,11 +59,11 @@ exports[`NOWSideMenu renders properly 1`] = `
       title="Mechanical Trenching / Test Pits"
     />
     <AnchorLink
-      href="#settling-ponds"
+      href="#settling-pond"
       title="Settling Ponds"
     />
     <AnchorLink
-      href="#surface-bulk-samples"
+      href="#surface-bulk-sample"
       title="Surface Bulk Sample"
     />
     <AnchorLink
@@ -71,11 +71,11 @@ exports[`NOWSideMenu renders properly 1`] = `
       title="Underground Exploration"
     />
     <AnchorLink
-      href="#sand-gravel-quarry-operations"
+      href="#sand-and-gravel"
       title="Sand and Gravel / Quarry Operations"
     />
     <AnchorLink
-      href="#placer-operations"
+      href="#placer-operation"
       title="Placer Operations"
     />
     <AnchorLink
@@ -83,11 +83,11 @@ exports[`NOWSideMenu renders properly 1`] = `
       title="Water Supply"
     />
     <AnchorLink
-      href="#submission_documents"
+      href="#submission-documents"
       title="Submission Documents"
     />
     <AnchorLink
-      href="#additional_documents"
+      href="#additional-documents"
       title="Additional Documents"
     />
   </Anchor>

@@ -42,7 +42,7 @@ exports[`MineRecordModal renders properly 1`] = `
             "mine_operation_status_reason_code": "ORP",
           },
           "mine_operation_status_sub_reason": Object {
-            "description": "Long Term Maintenance",
+            "description": "Long-Term Maintenance",
             "mine_operation_status_sub_reason_code": "LTM",
           },
           "mine_status_xref_guid": "0b14738f-7980-49ba-b447-ff5a1859dded",
@@ -58,7 +58,7 @@ exports[`MineRecordModal renders properly 1`] = `
             "mine_operation_status_reason_code": "REC",
           },
           "mine_operation_status_sub_reason": Object {
-            "description": "Long Term Maintenance",
+            "description": "Long-Term Maintenance",
             "mine_operation_status_sub_reason_code": "LTM",
           },
           "mine_status_xref_guid": "b001f941-2421-43a5-aade-f52fe4aecbd1",
@@ -74,7 +74,7 @@ exports[`MineRecordModal renders properly 1`] = `
             "mine_operation_status_reason_code": "ORP",
           },
           "mine_operation_status_sub_reason": Object {
-            "description": "Long Term Maintenance & Water Treatment",
+            "description": "Long-Term Maintenance & Water Treatment",
             "mine_operation_status_sub_reason_code": "LWT",
           },
           "mine_status_xref_guid": "1c04fe6a-ce61-4e0a-be69-2a4130dfaa18",
@@ -90,7 +90,7 @@ exports[`MineRecordModal renders properly 1`] = `
             "mine_operation_status_reason_code": "REC",
           },
           "mine_operation_status_sub_reason": Object {
-            "description": "Long Term Maintenance & Water Treatment",
+            "description": "Long-Term Maintenance & Water Treatment",
             "mine_operation_status_sub_reason_code": "LWT",
           },
           "mine_status_xref_guid": "044f007d-caa6-4139-8891-1a65935ee595",
@@ -214,7 +214,7 @@ exports[`MineRecordModal renders properly 1`] = `
             "mine_operation_status_code": "OP",
           },
           "mine_operation_status_reason": Object {
-            "description": "Year round",
+            "description": "Year-Round",
             "mine_operation_status_reason_code": "YR",
           },
           "mine_operation_status_sub_reason": Object {

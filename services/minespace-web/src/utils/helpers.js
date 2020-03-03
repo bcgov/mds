@@ -11,8 +11,7 @@ import { reset } from "redux-form";
   );
  *
  */
-export const resetForm = (form) => (result, dispatch, props) =>
-  props.clearOnSubmit && dispatch(reset(form));
+export const resetForm = (form) => (result, dispatch) => dispatch(reset(form));
 
 // Function to create a reusable reducer (used in src/reducers/rootReducer)
 export const createReducer = (reducer, name) => (state, action) => {
@@ -48,12 +47,6 @@ export const formatDate = (dateString) =>
   dateString !== "9999-12-31" &&
   dateString !== "None" &&
   moment(dateString, "YYYY-MM-DD").format("MMM DD YYYY");
-
-export const dateSorter = (key) => (a, b) => {
-  const a_date = a[key] == null ? moment().add(200, "y") : moment(a[key]);
-  const b_date = b[key] == null ? moment().add(200, "y") : moment(b[key]);
-  return a_date - b_date;
-};
 
 export const formatComplianceCodeValueOrLabel = (code, showDescription) => {
   const { section, sub_section, paragraph, sub_paragraph, description } = code;

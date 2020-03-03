@@ -114,6 +114,14 @@ exports[`AccessRoads renders properly 1`] = `
     </Col>
   </Row>
   <br />
+  <Equipment
+    activity="exploration_access"
+    addRecord={[MockFunction]}
+    editRecord={[MockFunction]}
+    equipment={Array []}
+    isViewMode={true}
+  />
+  <br />
   <h4>
     Reclamation Program
   </h4>
@@ -134,6 +142,11 @@ exports[`AccessRoads renders properly 1`] = `
         disabled={true}
         id="reclamation_description"
         name="reclamation_description"
+        validate={
+          Array [
+            [Function],
+          ]
+        }
       />
     </Col>
     <Col
@@ -150,16 +163,13 @@ exports[`AccessRoads renders properly 1`] = `
         disabled={true}
         id="reclamation_cost"
         name="reclamation_cost"
+        validate={
+          Array [
+            [Function],
+          ]
+        }
       />
     </Col>
   </Row>
-  <br />
-  <Equipment
-    activity="exploration_access"
-    addRecord={[MockFunction]}
-    editRecord={[MockFunction]}
-    equipment={Array []}
-    isViewMode={true}
-  />
 </div>
 `;

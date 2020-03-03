@@ -7,7 +7,7 @@ from app.api.now_applications.resources.now_activity_type_resource import NOWAct
 from app.api.now_applications.resources.now_application_type_resource import NOWApplicationTypeResource
 from app.api.now_applications.resources.now_application_status_code_resource import NOWApplicationStatusCodeResource
 from app.api.now_applications.resources.unit_type_resource import UnitTypeResource
-from app.api.now_applications.resources.now_application_document_type_resource import NOWApplicationDocumentTypeResource
+from app.api.now_applications.resources.now_application_document_type_resource import NOWApplicationDocumentTypeResource, NOWApplicationDocumentTypeListResource, NOWApplicationDocumentGenerateResource
 from app.api.now_applications.resources.underground_exploration_type_resource import UndergroundExplorationTypeResource
 from app.api.now_applications.resources.now_application_progress_resource import NOWApplicationProgressResource
 from app.api.now_applications.resources.now_application_progress_status_resource import NOWApplicationProgressStatusResource
@@ -28,13 +28,17 @@ api.add_resource(NOWApplicationReviewResource,
 api.add_resource(NOWApplicationDocumentUploadResource, '/<string:application_guid>/document')
 api.add_resource(NOWApplicationDocumentResource,
                  '/<string:application_guid>/document/<string:mine_document_guid>')
+api.add_resource(NOWApplicationDocumentGenerateResource,
+                 '/application-document-types/<string:document_type_code>/generate')
 
 # now static content
 api.add_resource(NOWActivityTypeResource, '/activity-types')
 api.add_resource(NOWApplicationTypeResource, '/application-types')
 api.add_resource(NOWApplicationStatusCodeResource, '/application-status-codes')
 api.add_resource(UnitTypeResource, '/unit-types')
-api.add_resource(NOWApplicationDocumentTypeResource, '/application-document-types')
+api.add_resource(NOWApplicationDocumentTypeListResource, '/application-document-types')
+api.add_resource(NOWApplicationDocumentTypeResource,
+                 '/application-document-types/<string:document_type_code>')
 api.add_resource(UndergroundExplorationTypeResource, '/underground-exploration-types')
 api.add_resource(NOWApplicationProgressStatusResource, '/application-progress-status-codes')
 api.add_resource(NOWApplicationPermitTypeResource, '/application-permit-types')

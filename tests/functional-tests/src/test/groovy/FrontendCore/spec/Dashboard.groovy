@@ -14,7 +14,7 @@ import dataObjects.MineProfileData
 class  DashboardSpec extends GebReportingSpec {
     static NAME_GOOD = "!!!Mine-Test ABC"
     static NAME_GOOD_TWO = "!!!Mine-Test DEF"
-    static STATUS    = "Closed / Orphaned / Long Term Maintenance"
+    static STATUS    = "Closed / Orphaned / Long-Term Maintenance"
     static LAGTITUTE = "52.6565"
     static LONGTITUE = "124.2342"
     static NOTES     = "This is a test mine"
