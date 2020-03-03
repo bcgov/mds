@@ -37,8 +37,10 @@ export const AuthenticationGuard = (isPublic) => (WrappedComponent) => {
       const WINDOW_LOCATION = `${window.location.origin}${process.env.BASE_PATH}`;
 
       const { code } = queryString.parse(window.location.search);
+      const search = queryString.parse(window.location.search);
       if (window.location.search.includes("code=")) {
         console.log(code);
+        console.log(search);
         console.log("yesssss it does have the code!!");
         const redirectUrl = `${WINDOW_LOCATION}${window.location.pathname}`;
         this.props.authenticateUser(code, redirectUrl);
