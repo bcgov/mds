@@ -30,7 +30,10 @@ export const fetchNoticeOfWorkApplications = (params = {}) => (dispatch) => {
   dispatch(request(reducerTypes.GET_NOTICE_OF_WORK_APPLICATIONS));
   dispatch(showLoading());
   return CustomAxios()
-    .get(`${ENVIRONMENT.apiUrl}${API.NOTICE_OF_WORK_APPLICATIONS(params)}`, createRequestHeader())
+    .get(
+      `${ENVIRONMENT.apiUrl}${API.NOTICE_OF_WORK_APPLICATION_LIST(params)}`,
+      createRequestHeader()
+    )
     .then((response) => {
       dispatch(success(reducerTypes.GET_NOTICE_OF_WORK_APPLICATIONS));
       dispatch(noticeOfWorkActions.storeNoticeOfWorkApplications(response.data));
@@ -44,7 +47,10 @@ export const fetchMineNoticeOfWorkApplications = (params = {}) => (dispatch) => 
   dispatch(request(reducerTypes.GET_MINE_NOTICE_OF_WORK_APPLICATIONS));
   dispatch(showLoading());
   return CustomAxios()
-    .get(`${ENVIRONMENT.apiUrl}${API.NOTICE_OF_WORK_APPLICATIONS(params)}`, createRequestHeader())
+    .get(
+      `${ENVIRONMENT.apiUrl}${API.NOTICE_OF_WORK_APPLICATION_LIST(params)}`,
+      createRequestHeader()
+    )
     .then((response) => {
       dispatch(success(reducerTypes.GET_MINE_NOTICE_OF_WORK_APPLICATIONS));
       dispatch(noticeOfWorkActions.storeMineNoticeOfWorkApplications(response.data));
@@ -59,7 +65,7 @@ export const createNoticeOfWorkApplication = (payload) => (dispatch) => {
   dispatch(showLoading());
   return CustomAxios()
     .post(
-      `${ENVIRONMENT.apiUrl}${API.NOTICE_OF_WORK_APPLICATIONS()}`,
+      `${ENVIRONMENT.apiUrl}${API.NOTICE_OF_WORK_APPLICATION_LIST()}`,
       payload,
       createRequestHeader()
     )

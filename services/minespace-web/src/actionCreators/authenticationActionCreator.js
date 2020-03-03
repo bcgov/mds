@@ -34,7 +34,7 @@ export const getUserInfoFromToken = (token, errorMessage) => (dispatch) => {
       },
     })
     .then((response) => {
-      dispatch(getUserRoles(token, response.data.sub));
+      dispatch(getUserRoles(token));
       dispatch(success(reducerTypes.GET_USER_INFO));
       dispatch(authenticationActions.authenticateUser(response.data));
     })

@@ -83,7 +83,7 @@ export class AdminDashboard extends Component {
                 </div>
               </div>
             </TabPane>
-            <TabPane tab="Mines to be Checked" key="unverifiedMines">
+            <TabPane tab="Unverified Mines" key="unverifiedMines">
               <div className="tab__content">
                 <div>
                   <h4>{this.state.unverifiedMines.length}&nbsp;Mines Needing Re-Verification</h4>
@@ -96,7 +96,7 @@ export class AdminDashboard extends Component {
                 </div>
               </div>
             </TabPane>
-            <TabPane tab="Manage Minespace Users" key="managerMinespaceUsers">
+            <TabPane tab="Manage MineSpace Users" key="managerMinespaceUsers">
               <div className="tab__content">
                 <MinespaceUserManagement />
               </div>

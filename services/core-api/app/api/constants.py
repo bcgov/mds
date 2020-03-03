@@ -47,11 +47,11 @@ MINE_OPERATION_STATUS_REASON = {
 MINE_OPERATION_STATUS_SUB_REASON = {
     'long_term_maintenance': {
         'value': 'LTM',
-        'label': 'Long Term Maintenance'
+        'label': 'Long-Term Maintenance'
     },
     'long_term_maintenance_water_treatment': {
         'value': 'LWT',
-        'label': 'Long Term Maintenance with Water Treatment'
+        'label': 'Long-Term Maintenance with Water Treatment'
     },
     'permit_release_pending': {
         'value': 'PRP',
@@ -65,12 +65,6 @@ MINE_OPERATION_STATUS_SUB_REASON = {
         'value': 'SVR',
         'label': 'Site Visit Required'
     }
-}
-
-NOW_DOCUMENT_TEMPLATE_TYPES = {
-    'CAL': 'Client Acknowledgment Letter Template (NoW).docx',
-    'RJL': 'Rejection Letter Template (NoW).docx',
-    'WDL': 'Withdrawl Letter Template (NoW).docx'
 }
 
 #Cache prefixes
@@ -87,6 +81,10 @@ def NRIS_COMPLIANCE_DATA(mine_no):
 
 def DOWNLOAD_TOKEN(token_guid):
     return f'document-manager:download-token:{token_guid}'
+
+
+def NOW_DOCUMENT_DOWNLOAD_TOKEN(token_guid):
+    return f'document-generation-now:download-token:{token_guid}'
 
 
 #Deep Update Special Flag

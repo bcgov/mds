@@ -12,13 +12,32 @@ exports[`SettlingPonds renders properly 1`] = `
       <div
         className="field-title"
       >
-        Describe the waste water treatment facility (settling pond design, recycling, distance from creek, etc.)**
+        Describe the waste water treatment facility (settling pond design, recycling, distance from creek, etc.)
+        <Tooltip
+          arrowPointAtCenter={false}
+          autoAdjustOverflow={true}
+          mouseEnterDelay={1}
+          mouseLeaveDelay={0.1}
+          placement="right"
+          title="This field is not being sent by NROS or vFCBC. Open the original PDF to to see the data."
+          transitionName="zoom-big-fast"
+        >
+          <img
+            alt="INFO"
+            className="info-tooltip"
+            src={
+              Object {
+                "process": [Function],
+              }
+            }
+          />
+        </Tooltip>
       </div>
       <Field
         component={[Function]}
         disabled={true}
-        id=""
-        name=""
+        id="wastewater_facility_description"
+        name="wastewater_facility_description"
       />
     </Col>
   </Row>
@@ -96,13 +115,32 @@ exports[`SettlingPonds renders properly 1`] = `
       <div
         className="field-title"
       >
-        Disposal of fines from clean out (i.e. use as a subsoil material)**
+        Disposal of fines from clean out (i.e. use as a subsoil material)
+        <Tooltip
+          arrowPointAtCenter={false}
+          autoAdjustOverflow={true}
+          mouseEnterDelay={1}
+          mouseLeaveDelay={0.1}
+          placement="right"
+          title="This field is not being sent by NROS or vFCBC. Open the original PDF to to see the data."
+          transitionName="zoom-big-fast"
+        >
+          <img
+            alt="INFO"
+            className="info-tooltip"
+            src={
+              Object {
+                "process": [Function],
+              }
+            }
+          />
+        </Tooltip>
       </div>
       <Field
         component={[Function]}
         disabled={true}
-        id=""
-        name=""
+        id="disposal_from_clean_out"
+        name="disposal_from_clean_out"
       />
     </Col>
   </Row>
@@ -124,6 +162,11 @@ exports[`SettlingPonds renders properly 1`] = `
         id="is_ponds_recycled"
         label="Recycled"
         name="is_ponds_recycled"
+        validate={
+          Array [
+            [Function],
+          ]
+        }
       />
     </Col>
     <Col
@@ -136,6 +179,11 @@ exports[`SettlingPonds renders properly 1`] = `
         id="is_ponds_exfiltrated"
         label="Exfiltrated to Ground"
         name="is_ponds_exfiltrated"
+        validate={
+          Array [
+            [Function],
+          ]
+        }
       />
     </Col>
     <Col
@@ -148,6 +196,11 @@ exports[`SettlingPonds renders properly 1`] = `
         id="is_ponds_discharged"
         label="Discharged to Environment"
         name="is_ponds_discharged"
+        validate={
+          Array [
+            [Function],
+          ]
+        }
       />
     </Col>
   </Row>
@@ -172,6 +225,11 @@ exports[`SettlingPonds renders properly 1`] = `
         disabled={true}
         id="reclamation_description"
         name="reclamation_description"
+        validate={
+          Array [
+            [Function],
+          ]
+        }
       />
     </Col>
     <Col
@@ -188,6 +246,11 @@ exports[`SettlingPonds renders properly 1`] = `
         disabled={true}
         id="reclamation_cost"
         name="reclamation_cost"
+        validate={
+          Array [
+            [Function],
+          ]
+        }
       />
     </Col>
   </Row>

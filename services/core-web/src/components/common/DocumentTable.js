@@ -1,9 +1,10 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Table, Icon, Popconfirm, Button } from "antd";
+import { Table, Popconfirm, Button } from "antd";
 import { formatDate } from "@common/utils/helpers";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
 import * as Strings from "@common/constants/strings";
+import { TRASHCAN } from "@/constants/assets";
 import CustomPropTypes from "@/customPropTypes";
 import LinkButton from "@/components/common/LinkButton";
 
@@ -56,8 +57,7 @@ export class DocumentTable extends Component {
       },
       {
         title: "",
-        dataIndex: "updateEdit",
-        width: 10,
+        dataIndex: "",
         className: this.props.isViewOnly ? "column-hide" : "",
         render: (text, record) => (
           <div title="" align="right" className={this.props.isViewOnly ? "column-hide" : ""}>
@@ -69,7 +69,7 @@ export class DocumentTable extends Component {
               cancelText="Cancel"
             >
               <Button ghost type="primary" size="small">
-                <Icon type="minus-circle" theme="outlined" />
+                <img name="remove" src={TRASHCAN} alt="Remove Activity" />
               </Button>
             </Popconfirm>
           </div>

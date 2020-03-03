@@ -2,9 +2,10 @@ import React from "react";
 import { PropTypes } from "prop-types";
 import { Field, formValueSelector } from "redux-form";
 import { connect } from "react-redux";
-import { Row, Col, Table, Button } from "antd";
+import { Row, Col, Table, Button, Tooltip } from "antd";
+import { maxLength, number, required } from "@common/utils/Validate";
 import * as FORM from "@/constants/forms";
-import { TRASHCAN } from "@/constants/assets";
+import { TRASHCAN, INFO_CIRCLE } from "@/constants/assets";
 import RenderField from "@/components/common/RenderField";
 import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
 import RenderRadioButtons from "@/components/common/RenderRadioButtons";
@@ -174,6 +175,7 @@ export const SurfaceBulkSamples = (props) => {
           Add Activity
         </Button>
       )}
+
       <br />
       <Row gutter={16}>
         <Col md={12} sm={24}>
@@ -183,13 +185,68 @@ export const SurfaceBulkSamples = (props) => {
             name="processing_method_description"
             component={RenderField}
             disabled={props.isViewMode}
+            validate={[required]}
           />
         </Col>
         <Col md={12} sm={24}>
-          <div className="field-title">Bed rock expansion**</div>
-          <Field id="" name="" component={RenderRadioButtons} disabled />
+          <div className="field-title">
+            Bed rock expansion
+            <Tooltip
+              title="This field is not being sent by NROS or vFCBC. Open the original PDF to to see the data."
+              placement="right"
+              mouseEnterDelay={1}
+            >
+              <img src={INFO_CIRCLE} alt="INFO" className="info-tooltip" />
+            </Tooltip>
+          </div>
+          <Field
+            id="has_bedrock_expansion"
+            name="has_bedrock_expansion"
+            component={RenderRadioButtons}
+            disabled={props.isViewMode}
+          />
         </Col>
       </Row>
+      <Row gutter={16}>
+        <Col md={12} sm={24}>
+          <div className="field-title">
+            Surface water damage
+            <Tooltip
+              title="This field is not being sent by NROS or vFCBC. Open the original PDF to to see the data."
+              placement="right"
+              mouseEnterDelay={1}
+            >
+              <img src={INFO_CIRCLE} alt="INFO" className="info-tooltip" />
+            </Tooltip>
+          </div>
+          <Field
+            id="surface_water_damage"
+            name="surface_water_damage"
+            component={RenderAutoSizeField}
+            disabled={props.isViewMode}
+          />
+        </Col>
+        <Col md={12} sm={24}>
+          <div className="field-title">
+            If the material has potential for spontaneous combustion, give details of separate
+            handling.
+            <Tooltip
+              title="This field is not being sent by NROS or vFCBC. Open the original PDF to to see the data."
+              placement="right"
+              mouseEnterDelay={1}
+            >
+              <img src={INFO_CIRCLE} alt="INFO" className="info-tooltip" />
+            </Tooltip>
+          </div>
+          <Field
+            id="spontaneous_combustion_handling"
+            name="spontaneous_combustion_handling"
+            component={RenderAutoSizeField}
+            disabled={props.isViewMode}
+          />
+        </Col>
+      </Row>
+      <br />
       <Equipment
         equipment={props.equipment}
         isViewMode={props.isViewMode}
@@ -209,6 +266,7 @@ export const SurfaceBulkSamples = (props) => {
             name="reclamation_description"
             component={RenderAutoSizeField}
             disabled={props.isViewMode}
+            validate={[maxLength(4000)]}
           />
         </Col>
         <Col md={12} sm={24}>
@@ -216,21 +274,12 @@ export const SurfaceBulkSamples = (props) => {
             Estimated Cost of reclamation activities described above
           </div>
           <Field
-            id="reclamation_description"
-            name="reclamation_description"
+            id="reclamation_cost"
+            name="reclamation_cost"
             component={RenderField}
             disabled={props.isViewMode}
+            validate={[number]}
           />
-        </Col>
-      </Row>
-      <Row gutter={16}>
-        <Col md={12} sm={24}>
-          <div className="field-title">Surface water damage**</div>
-          <Field id="" name="" component={RenderAutoSizeField} disabled />
-        </Col>
-        <Col md={12} sm={24}>
-          <div className="field-title">Spontaneous Combustion**</div>
-          <Field id="" name="" component={RenderField} disabled />
         </Col>
       </Row>
     </div>

@@ -66,7 +66,7 @@ class MineMapResource(Resource, UserMixin):
         last_modified = datetime.utcnow()
 
         # jsonify then store in cache
-        map_result = json.dumps({'mines': list((map(lambda x: x.json_for_map(), records)))},
+        map_result = json.dumps({'mines': list((map(lambda x: x.json(), records)))},
                                 separators=(',', ':'))
 
         cache.set(MINE_MAP_CACHE, map_result, timeout=TIMEOUT_12_HOURS)

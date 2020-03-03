@@ -54,22 +54,73 @@ exports[`AccessRoads renders properly 1`] = `
       <div
         className="field-title"
       >
-        Are you proposing any bridges, culverts, and crossings?**
+        Are you proposing any bridges, culverts, and crossings?
+        <Tooltip
+          arrowPointAtCenter={false}
+          autoAdjustOverflow={true}
+          mouseEnterDelay={1}
+          mouseLeaveDelay={0.1}
+          placement="right"
+          title="This field is not being sent by NROS or vFCBC. Open the original PDF to to see the data."
+          transitionName="zoom-big-fast"
+        >
+          <img
+            alt="INFO"
+            className="info-tooltip"
+            src={
+              Object {
+                "process": [Function],
+              }
+            }
+          />
+        </Tooltip>
       </div>
       <Field
         component={[Function]}
         disabled={true}
-        id=""
-        name=""
+        id="has_proposed_bridges_or_culverts"
+        name="has_proposed_bridges_or_culverts"
       />
+      <div
+        className="field-title"
+      >
+        Describe the changes and reference the locations need on map needed later in the application.
+        <Tooltip
+          arrowPointAtCenter={false}
+          autoAdjustOverflow={true}
+          mouseEnterDelay={1}
+          mouseLeaveDelay={0.1}
+          placement="right"
+          title="This field is not being sent by NROS or vFCBC. Open the original PDF to to see the data."
+          transitionName="zoom-big-fast"
+        >
+          <img
+            alt="INFO"
+            className="info-tooltip"
+            src={
+              Object {
+                "process": [Function],
+              }
+            }
+          />
+        </Tooltip>
+      </div>
       <Field
         component={[Function]}
         disabled={true}
-        id=""
-        name=""
+        id="bridge_culvert_crossing_description"
+        name="bridge_culvert_crossing_description"
       />
     </Col>
   </Row>
+  <br />
+  <Equipment
+    activity="exploration_access"
+    addRecord={[MockFunction]}
+    editRecord={[MockFunction]}
+    equipment={Array []}
+    isViewMode={true}
+  />
   <br />
   <h4>
     Reclamation Program
@@ -91,6 +142,11 @@ exports[`AccessRoads renders properly 1`] = `
         disabled={true}
         id="reclamation_description"
         name="reclamation_description"
+        validate={
+          Array [
+            [Function],
+          ]
+        }
       />
     </Col>
     <Col
@@ -107,16 +163,13 @@ exports[`AccessRoads renders properly 1`] = `
         disabled={true}
         id="reclamation_cost"
         name="reclamation_cost"
+        validate={
+          Array [
+            [Function],
+          ]
+        }
       />
     </Col>
   </Row>
-  <br />
-  <Equipment
-    activity="exploration_access"
-    addRecord={[MockFunction]}
-    editRecord={[MockFunction]}
-    equipment={Array []}
-    isViewMode={true}
-  />
 </div>
 `;

@@ -2,14 +2,14 @@ import React from "react";
 import { PropTypes } from "prop-types";
 import { Field, Fields, formValueSelector } from "redux-form";
 import { connect } from "react-redux";
-import { Row, Col, Table, Button } from "antd";
+import { Row, Col, Table, Button, Tooltip } from "antd";
 import {
   getDropdownNoticeOfWorkUndergroundExplorationTypeOptions,
   getDropdownNoticeOfWorkUnitTypeOptions,
 } from "@common/selectors/staticContentSelectors";
 import { number } from "@common/utils/Validate";
 import * as FORM from "@/constants/forms";
-import { TRASHCAN } from "@/constants/assets";
+import { TRASHCAN, INFO_CIRCLE } from "@/constants/assets";
 import RenderField from "@/components/common/RenderField";
 import RenderFieldWithDropdown from "@/components/common/RenderFieldWithDropdown";
 import CustomPropTypes from "@/customPropTypes";
@@ -269,8 +269,22 @@ export const UndergroundExploration = (props) => {
       <br />
       <Row gutter={16}>
         <Col md={12} sm={24}>
-          <div className="field-title">Proposed Activities**</div>
-          <Field id="" name="" component={RenderField} disabled />
+          <div className="field-title">
+            Proposed Activities
+            <Tooltip
+              title="This field is not being sent by NROS or vFCBC. Open the original PDF to to see the data."
+              placement="right"
+              mouseEnterDelay={1}
+            >
+              <img src={INFO_CIRCLE} alt="INFO" className="info-tooltip" />
+            </Tooltip>
+          </div>
+          <Field
+            id="proposed_activity"
+            name="proposed_activity"
+            component={RenderField}
+            disabled={props.isViewMode}
+          />
         </Col>
       </Row>
       <Row gutter={16}>

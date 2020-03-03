@@ -249,13 +249,13 @@ exports[`MineHeader renders dispatchProperly 1`] = `
         <p
           className="p-white"
         >
-          Lat:
+          Lat: 
           N/A
         </p>
         <p
           className="p-white"
         >
-          Long:
+          Long: 
           N/A
         </p>
       </div>
@@ -265,8 +265,7 @@ exports[`MineHeader renders dispatchProperly 1`] = `
         <p
           className="p-white"
         >
-          Region:
-           
+          Region: 
           North East
         </p>
         <Link

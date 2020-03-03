@@ -127,6 +127,14 @@ class Base(db.Model):
                     setattr(self, k, rel_class())
                 getattr(self, k)._deep_update_from_dict(v, depth=(depth + 1), _edit_key=_edit_key)
 
+                #if DELETE_ITEM_FROM_DICT_JSON_KEY:True in json, delete object
+                if v.get('state_modified', False) == STATE_MODIFIED_DELETE_ON_PUT:
+                    current_app.logger.debug(depth * ' ' + f'deleting {existing_obj}')
+                    #FIXME Caller is responsible for marking all child records.
+                    existing_obj.delete(commit=False)
+                    current_app.logger.debug(
+                        f'session objects marked as deleted: {db.session.deleted}')
+
             if isinstance(v, list):
                 rel = getattr(self.__class__, k) #SA.relationship definition
                 obj_list = getattr(self, k)
@@ -192,14 +200,14 @@ class Base(db.Model):
                     assert isinstance(v, (UUID, str))
                 else:
                     py_type = col.type.python_type
-                    if py_type == bool and not isinstance(v, bool):
+                    if py_type == bool and not isinstance(v, bool) and v is not None:
                         raise DictLoadingError(
                             f"cannot assign '{k}':{v}{type(v)} to column of type {py_type}")
 
                     if py_type == datetime or py_type == date:
                         #json value is string, if expecting datetime in that column, convert here
                         if v is not None:
-                            setattr(self, k, parser.parse(v) )
+                            setattr(self, k, parser.parse(v))
                         continue
                     if py_type == decimal.Decimal:
                         #if Decimal column, cast whatever you get to Decimal
