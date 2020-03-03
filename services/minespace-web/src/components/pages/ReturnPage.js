@@ -25,6 +25,8 @@ export class ReturnPage extends Component {
     // grab the code and redirect type from the redirect url
     const { type, code } = queryString.parse(this.props.location.search);
     if (code) {
+      console.log("GOING THROUGH THE CURRENT LOGIN FLOW");
+      console.log(code);
       // exchange code for token, store user info in redux, redirect to Dashboard
       this.props.authenticateUser(code);
     }

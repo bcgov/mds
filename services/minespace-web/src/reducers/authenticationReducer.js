@@ -19,6 +19,7 @@ const authenticationReducer = (state = initialState, action) => {
         ...state,
         isAuthenticated: true,
         userInfo: action.payload.userInfo,
+        redirect: route.MINES.route,
       };
     case ActionTypes.LOGOUT:
       return {

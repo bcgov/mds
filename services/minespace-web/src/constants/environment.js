@@ -11,6 +11,7 @@ export const DEFAULT_ENVIRONMENT = {
 };
 
 const WINDOW_LOCATION = `${window.location.origin}${process.env.BASE_PATH}`;
+
 export const BCEID_LOGIN_REDIRECT_URI = `${WINDOW_LOCATION}/return-page?type=login`;
 export const REDIRECT_AFTER_LOGIN = `${WINDOW_LOCATION}/mines`;
 // export const REDIRECT_AFTER_LOGIN = `${WINDOW_LOCATION}/return-page?type=login`;
