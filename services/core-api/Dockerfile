@@ -7,6 +7,9 @@ RUN apt-get update
 RUN mkdir /app
 WORKDIR /app
 
+# Monitoring
+
+
 # Install the requirements
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
