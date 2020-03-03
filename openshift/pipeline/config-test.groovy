@@ -247,6 +247,25 @@ app {
                     ]
                 ],
                 [
+                    'file':'openshift/templates/docgen/docgen.dc.json',
+                    'params':[
+                            'NAME':"mds-docgen-api",
+                            'SUFFIX': "${vars.deployment.suffix}",
+                            'APPLICATION_SUFFIX': "${vars.deployment.application_suffix}",
+                            'TAG_NAME':"${app.deployment.version}",
+                            'PORT':3030,
+                            'CPU_REQUEST':"${vars.resources.docgen.cpu_request}",
+                            'CPU_LIMIT':"${vars.resources.docgen.cpu_limit}",
+                            'MEMORY_REQUEST':"${vars.resources.docgen.memory_request}",
+                            'MEMORY_LIMIT':"${vars.resources.docgen.memory_limit}",
+                            'REPLICA_MIN':"${vars.resources.docgen.replica_min}",
+                            'REPLICA_MAX':"${vars.resources.docgen.replica_max}",
+                            'APPLICATION_DOMAIN': "${vars.modules.'mds-docgen-api'.HOST}",
+                            'BASE_PATH': "${vars.modules.'mds-docgen-api'.PATH}",
+                            'NODE_ENV': "${vars.deployment.node_env}"
+                    ]
+                ],
+                [
                     'file':'openshift/templates/tools/schemaspy.dc.json',
                     'params':[
                             'NAME':"schemaspy",
@@ -341,6 +360,14 @@ environments {
                     memory_limit = "256Mi"
                     replica_min = 2
                     replica_max = 4
+                }
+                docgen {
+                    cpu_request = "200m"
+                    cpu_limit = "500m"
+                    memory_request = "256Mi"
+                    memory_limit = "1024Mi"
+                    replica_min = 1
+                    replica_max = 1
                 }
                 nginx {
                     cpu_request = "10m"
