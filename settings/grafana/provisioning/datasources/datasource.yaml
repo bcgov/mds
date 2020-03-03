@@ -9,16 +9,24 @@ datasources:
     access: proxy
     orgId: 1
     url: http://prometheus:9090
-    isDefault: true
-    version: 1
-    editable: true
+    password:
+    user:
+    database:
     basicAuth: true
     basicAuthUser: admin
     basicAuthPassword: foobar
+    withCredentials:
+    isDefault: true
     jsonData:
       graphiteVersion: "1.1"
       tlsAuth: false
       tlsAuthWithCACert: false
+    secureJsonData:
+      tlsCACert: "..."
+      tlsClientCert: "..."
+      tlsClientKey: "..."
+    version: 1
+    editable: true
   - name: Loki
     type: loki
     orgId: 1
