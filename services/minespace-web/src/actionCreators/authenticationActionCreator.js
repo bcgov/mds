@@ -52,11 +52,12 @@ export const getUserInfoFromToken = (token, errorMessage) => (dispatch) => {
     });
 };
 
-export const authenticateUser = (code) => (dispatch) => {
+export const authenticateUser = (code, redirectUrl) => (dispatch) => {
+  const redirect_url = redirectUrl ? redirectUrl : MINESPACE_ENV.REDIRECT_AFTER_LOGIN;
   const data = {
     code,
     grant_type: "authorization_code",
-    redirect_uri: MINESPACE_ENV.BCEID_LOGIN_REDIRECT_URI,
+    redirect_url,
     client_id: COMMON_ENV.KEYCLOAK.clientId,
   };
   dispatch(request(reducerTypes.AUTHENTICATE_USER));

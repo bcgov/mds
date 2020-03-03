@@ -4,8 +4,10 @@ import PropTypes from "prop-types";
 import { includes } from "lodash";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
+import queryString from "query-string";
 import hoistNonReactStatics from "hoist-non-react-statics";
 import { isAuthenticated } from "@/selectors/authenticationSelectors";
+import { authenticateUser } from "@/actionCreators/authenticationActionCreator";
 import UnauthenticatedNotice from "@/components/common/UnauthenticatedNotice";
 import { getUserInfoFromToken } from "@/actionCreators/authenticationActionCreator";
 import Loading from "@/components/common/Loading";
@@ -32,10 +34,14 @@ export const AuthenticationGuard = (isPublic) => (WrappedComponent) => {
       console.log(window.location);
       console.log(window.location.pathname);
       console.log(window.location.search.includes("?core=true"));
+      const WINDOW_LOCATION = `${window.location.origin}${process.env.BASE_PATH}`;
 
+      const { code } = queryString.parse(window.location.search);
       if (window.location.search.includes("code=")) {
+        console.log(code);
         console.log("yesssss it does have the code!!");
-        debugger;
+        const redirectUrl = `${WINDOW_LOCATION}${window.location.pathname}`;
+        this.props.authenticateUser(code, redirectUrl);
       }
 
       this.authenticate();
@@ -48,7 +54,7 @@ export const AuthenticationGuard = (isPublic) => (WrappedComponent) => {
 
       if (!token && !this.props.isAuthenticated && redirectedFromCore) {
         console.log("COMING FROM CORE AND NOT AUTHENTICATED");
-        debugger;
+        // debugger;
         window.location.replace(
           `${COMMON_ENV.KEYCLOAK.loginURL}${WINDOW_LOCATION}${window.location.pathname}`
         );
@@ -84,6 +90,7 @@ export const AuthenticationGuard = (isPublic) => (WrappedComponent) => {
     bindActionCreators(
       {
         getUserInfoFromToken,
+        authenticateUser,
       },
       dispatch
     );
