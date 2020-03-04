@@ -123,7 +123,7 @@ export const Overview = (props) => (
               <MinistryContactItem contact={Contacts.CHIEF_INSPECTOR} />
               <MinistryContactItem contact={Contacts.EXEC_LEAD_AUTH} />
               {getMajorMineRegionalContacts(props.mine.mine_region).map((contact) => (
-                <MinistryContactItem contact={contact} />
+                <MinistryContactItem contact={contact} key={contact.title} />
               ))}
             </Card>
           </Col>
@@ -131,7 +131,7 @@ export const Overview = (props) => (
           <Col>
             <Card title="Regional Ministry Contacts">
               {getRegionalMineRegionalContacts(props.mine.mine_region).map((contact) => (
-                <MinistryContactItem contact={contact} />
+                <MinistryContactItem contact={contact} key={contact.title} />
               ))}
             </Card>
           </Col>,
