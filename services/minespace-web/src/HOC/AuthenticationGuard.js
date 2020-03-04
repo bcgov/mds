@@ -13,6 +13,7 @@ import UnauthenticatedNotice from "@/components/common/UnauthenticatedNotice";
 import Loading from "@/components/common/Loading";
 import * as COMMON_ENV from "@common/constants/environment";
 import * as route from "@/constants/routes";
+import * as ENV from "@/constants/environment";
 
 /**
  * @constant authenticationGuard - a Higher Order Component Thats checks for user authorization and returns the App component if the user is Authenticated.
@@ -40,15 +41,13 @@ export const AuthenticationGuard = (isPublic) => (WrappedComponent) => {
         .split("/mines/")
         .pop()
         .split("/")[0];
-      const redirectedFromCore = window.location.search.includes("?core=true");
-      const fromCore = localStorage.getItem("fromCore");
+      const authenticatingFromCoreFlag = localStorage.getItem("authenticatingFromCoreFlag");
       const token = localStorage.getItem("jwt");
-      const WINDOW_LOCATION = `${window.location.origin}${process.env.BASE_PATH}`;
-      const { code, type } = queryString.parse(window.location.search);
-      const redirectUrl = `${WINDOW_LOCATION}${route.MINE_DASHBOARD.dynamicRoute(guid)}`;
+      const { code, type, redirectingFromCore } = queryString.parse(window.location.search);
+      const redirectUrl = `${ENV.WINDOW_LOCATION}${route.MINE_DASHBOARD.dynamicRoute(guid)}`;
 
-      // all routing from core includes 'core=true', if the user is not authenticated on MineSpace yet, redirect to the Keycloak Login
-      if (redirectedFromCore && !token) {
+      // all routing from core includes 'redirectingFromCore=true', if the user is not authenticated on MineSpace yet, redirect to the Keycloak Login
+      if (redirectingFromCore && !token) {
         window.location.replace(`${COMMON_ENV.KEYCLOAK.loginURL}${redirectUrl}`);
       }
 
@@ -56,8 +55,8 @@ export const AuthenticationGuard = (isPublic) => (WrappedComponent) => {
       // set state in local Storage to persist login flow between redirects
       // value is removed from localStorage after userInfo is obtained
       // if type=true, Login is occurring through standard flow, bypass this block
-      if (code && !token && !fromCore && !type) {
-        localStorage.setItem("fromCore", true);
+      if (code && !token && !authenticatingFromCoreFlag && !type) {
+        localStorage.setItem("authenticatingFromCoreFlag", true);
         await this.props
           .authenticateUser(code, redirectUrl)
           .then(() => {
@@ -66,7 +65,7 @@ export const AuthenticationGuard = (isPublic) => (WrappedComponent) => {
             this.setState({ authComplete: true });
           })
           .catch(() => {
-            localStorage.removeItem("fromCore");
+            localStorage.removeItem("authenticatingFromCoreFlag");
           });
       }
 
@@ -82,11 +81,13 @@ export const AuthenticationGuard = (isPublic) => (WrappedComponent) => {
     }
 
     render() {
-      const fromCore = localStorage.getItem("fromCore");
+      const { redirectingFromCore } = queryString.parse(window.location.search);
+      const authenticatingFromCoreFlag = localStorage.getItem("authenticatingFromCoreFlag");
+      const fromCore = !redirectingFromCore && !authenticatingFromCoreFlag;
       if (this.props.isAuthenticated || isPublic) {
         return <WrappedComponent {...this.props} />;
       }
-      if (!this.props.isAuthenticated && this.state.authComplete && !fromCore) {
+      if (!this.props.isAuthenticated && this.state.authComplete && fromCore) {
         return <UnauthenticatedNotice />;
       }
       return <Loading />;

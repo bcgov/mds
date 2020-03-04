@@ -38,7 +38,7 @@ export const getUserInfoFromToken = (token, errorMessage) => (dispatch) => {
       dispatch(success(reducerTypes.GET_USER_INFO));
       dispatch(authenticationActions.authenticateUser(response.data));
       // core User has successfully logged in, remove flag from localStorage
-      localStorage.removeItem("fromCore");
+      localStorage.removeItem("authenticatingFromCoreFlag");
     })
     .catch((err) => {
       dispatch(error(reducerTypes.GET_USER_INFO));
