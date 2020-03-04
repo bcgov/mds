@@ -28,7 +28,6 @@ export const AuthenticationGuard = (isPublic) => (WrappedComponent) => {
   class authenticationGuard extends Component {
     state = {
       authComplete: false,
-      attemptOne: false,
     };
 
     componentDidMount() {
