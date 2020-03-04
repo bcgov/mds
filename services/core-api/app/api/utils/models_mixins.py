@@ -63,6 +63,8 @@ class Base(db.Model):
     # Set default query_class on base class.
     query_class = UserBoundQuery
 
+    # This allows all models access to the default Marshmallow model Schema
+    # but also allows them to override it if need be.
     _ModelSchema = ModelSchema
 
     def save(self, commit=True):

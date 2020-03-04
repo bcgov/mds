@@ -88,6 +88,8 @@ def setup_schema(Base, session):
                         model_converter = CoreConverter
                         exclude = exclude_columns
 
+                    # After the schema is created on the class this looks for any schemas that have deferred the creation of
+                    # fields and validation. If found they are created and added to the proper schema.
                     for k, v in class_._ModelSchema.__dict__.items():
                         if type(v) == FieldTemplate:
                             current_app.logger.debug(f'creating field for {k} on {class_}')

@@ -125,4 +125,6 @@ type_of_permit_map = {
     None: None
 }
 
+# This constant is defined for use during the app setup and creation.
+# See static_data.py in utils for its use and the values it contains.
 STATIC_DATA = {}
