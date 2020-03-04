@@ -51,7 +51,6 @@ const RenderAutoComplete = (props) => {
         notFoundContent="Not Found"
         allowClear
         dropdownMatchSelectWidth
-        backfill
         defaultValue={props.defaultValue}
         style={{ width: "100%" }}
         dataSource={props.data}
