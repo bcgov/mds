@@ -29,6 +29,7 @@ import * as Strings from "@common/constants/strings";
 import * as FORM from "@/constants/forms";
 import * as Styles from "@/constants/styles";
 import CustomPropTypes from "@/customPropTypes";
+import { TRASHCAN } from "@/constants/assets";
 import { renderConfig } from "@/components/common/config";
 
 const propTypes = {
@@ -166,7 +167,7 @@ export class MineRecordForm extends Component {
           cancelText="No"
         >
           <Button ghost>
-            <Icon type="minus-circle" theme="outlined" style={{ color: "#BC2929" }} />
+            <img name="remove" src={TRASHCAN} alt="Remove MineType" />
           </Button>
         </Popconfirm>
       </div>
@@ -198,7 +199,7 @@ export class MineRecordForm extends Component {
           cancelText="No"
         >
           <Button ghost>
-            <Icon type="minus-circle" theme="outlined" style={{ color: "#BC2929" }} />
+            <img name="remove" src={TRASHCAN} alt="Remove Mine Type" />
           </Button>
         </Popconfirm>
       </div>

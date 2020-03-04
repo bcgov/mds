@@ -116,7 +116,7 @@ class Config(object):
 class TestConfig(Config):
     # The following configs are for testing purposes and all variables and keys are generated using dummy data.
     TESTING = os.environ.get('TESTING', True)
-    CACHE_TYPE = "null"
+    CACHE_TYPE = "simple"
     DB_NAME_TEST = os.environ.get('DB_NAME_TEST', 'db_name_test')
     DB_URL = "postgresql://{0}:{1}@{2}:{3}/{4}".format(Config.DB_USER, Config.DB_PASS,
                                                        Config.DB_HOST, Config.DB_PORT, DB_NAME_TEST)

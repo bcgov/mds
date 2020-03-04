@@ -1,5 +1,5 @@
-import requests
-import json
+import requests, json
+from urllib.parse import quote
 from flask import Response, stream_with_context, request, current_app
 from requests.auth import HTTPBasicAuth
 from app.extensions import cache
@@ -32,5 +32,5 @@ class NROSDownloadService():
 
         file_download_resp.headers['Content-Type'] = file_download_req.headers['Content-Type']
         file_download_resp.headers[
-            'Content-Disposition'] = f'attachment; filename="{file_info_body["filename"]}"'
+            'Content-Disposition'] = f'attachment; filename="{quote(file_info_body["filename"])}"'
         return file_download_resp

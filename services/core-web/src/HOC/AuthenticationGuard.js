@@ -74,7 +74,6 @@ export const AuthenticationGuard = (WrappedComponent) => {
     };
 
     render() {
-      console.log(this.props.userAccessData);
       if (this.props.keycloak) {
         return this.props.isAuthenticated ? this.renderCorrectView() : <Loading />;
       }

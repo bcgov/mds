@@ -1,17 +1,15 @@
-/* eslint-disable */
 import React from "react";
-import moment from "moment";
 import PropTypes from "prop-types";
-import NullScreen from "@/components/common/NullScreen";
 import * as Strings from "@common/constants/strings";
-import { formatDate, truncateFilename } from "@common/utils/helpers";
+import { formatDate, truncateFilename, dateSorter } from "@common/utils/helpers";
+import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
+import NullScreen from "@/components/common/NullScreen";
 import { COLOR } from "@/constants/styles";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
 import CustomPropTypes from "@/customPropTypes";
 import { MineReportActions } from "@/components/mine/Reports/MineReportActions";
 import LinkButton from "@/components/common/LinkButton";
-import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
 import CoreTable from "@/components/common/CoreTable";
 
 const { errorRed } = COLOR;
@@ -27,8 +25,6 @@ const propTypes = {
   handleRemoveReport: PropTypes.func.isRequired,
   isLoaded: PropTypes.bool.isRequired,
 };
-
-const defaultProps = {};
 
 const columns = [
   {
@@ -57,7 +53,7 @@ const columns = [
     title: "Due",
     dataIndex: "due_date",
     key: "due_date",
-    sorter: (a, b) => (moment(a.due_date) > moment(b.due_date) ? -1 : 1),
+    sorter: dateSorter("due_date"),
     render: (text, record) => (
       <div title="Due" style={record.isOverdue ? { color: errorRed } : {}}>
         {formatDate(record.due_date) || Strings.EMPTY_FIELD}
@@ -68,13 +64,13 @@ const columns = [
     title: "Requested By",
     dataIndex: "created_by_idir",
     key: "created_by_idir",
-    render: (text, record) => <div title="requested_by">{text}</div>,
+    render: (text) => <div title="Requested By">{text}</div>,
   },
   {
     title: "Received",
     dataIndex: "received_date",
     key: "received_date",
-    sorter: (a, b) => (moment(a.received_date) > moment(b.received_date) ? -1 : 1),
+    sorter: dateSorter("received_date"),
     render: (text, record) => (
       <div title="Received" style={record.isOverdue ? { color: errorRed } : {}}>
         {formatDate(record.received_date) || Strings.EMPTY_FIELD}
@@ -86,27 +82,20 @@ const columns = [
     dataIndex: "documents",
     key: "documents_key",
     render: (text, record) => (
-      <div title="Documents">
-        <ul>
-          {record.report.mine_report_submissions.length > 0 &&
-          record.report.mine_report_submissions[record.report.mine_report_submissions.length - 1]
-            .documents.length > 0
-            ? record.report.mine_report_submissions[
-                record.report.mine_report_submissions.length - 1
-              ].documents.map((file) => (
-                <li key={file.mine_document_guid}>
-                  <div title={file.document_name}>
-                    <LinkButton
-                      key={file.mine_document_guid}
-                      onClick={() => downloadFileFromDocumentManager(file)}
-                    >
-                      {truncateFilename(file.document_name)}
-                    </LinkButton>
-                  </div>
-                </li>
-              ))
-            : Strings.EMPTY_FIELD}
-        </ul>
+      <div title="Documents" className="cap-col-height">
+        {record.report.mine_report_submissions.length > 0 &&
+        record.report.mine_report_submissions[record.report.mine_report_submissions.length - 1]
+          .documents.length > 0
+          ? record.report.mine_report_submissions[
+              record.report.mine_report_submissions.length - 1
+            ].documents.map((file) => (
+              <div key={file.mine_document_guid} title={file.document_name}>
+                <LinkButton onClick={() => downloadFileFromDocumentManager(file)}>
+                  {truncateFilename(file.document_name)}
+                </LinkButton>
+              </div>
+            ))
+          : Strings.EMPTY_FIELD}
       </div>
     ),
   },
@@ -165,6 +154,5 @@ export const MineReportTable = (props) => (
 );
 
 MineReportTable.propTypes = propTypes;
-MineReportTable.defaultProps = defaultProps;
 
 export default MineReportTable;

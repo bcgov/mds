@@ -60,4 +60,6 @@ class ActivityDetailBase(AuditMixin, Base):
     def delete(self, commit=True):
         for item in self.detail_associations:
             item.delete(commit)
+        for item in self._etl_activity_details:
+            item.delete(commit)
         super(ActivityDetailBase, self).delete(commit)

@@ -15,7 +15,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
         General Information
       </h2>
       <Divider />
-      <withRouter(ScrollContentWrapper)
+      <withRouter(Connect(ScrollContentWrapper))
         id="application-info"
         title="Application Info"
       >
@@ -441,14 +441,14 @@ exports[`ReviewNOWApplication renders properly 1`] = `
             </Col>
           </Row>
         </div>
-      </withRouter(ScrollContentWrapper)>
-      <withRouter(ScrollContentWrapper)
+      </withRouter(Connect(ScrollContentWrapper))>
+      <withRouter(Connect(ScrollContentWrapper))
         id="contacts"
         title="Contacts"
       >
         <ReviewNOWContacts />
-      </withRouter(ScrollContentWrapper)>
-      <withRouter(ScrollContentWrapper)
+      </withRouter(Connect(ScrollContentWrapper))>
+      <withRouter(Connect(ScrollContentWrapper))
         id="access"
         title="Access"
       >
@@ -662,8 +662,8 @@ exports[`ReviewNOWApplication renders properly 1`] = `
             </Col>
           </Row>
         </div>
-      </withRouter(ScrollContentWrapper)>
-      <withRouter(ScrollContentWrapper)
+      </withRouter(Connect(ScrollContentWrapper))>
+      <withRouter(Connect(ScrollContentWrapper))
         id="state-of-land"
         title="State of Land"
       >
@@ -1247,8 +1247,8 @@ exports[`ReviewNOWApplication renders properly 1`] = `
             </Row>
           </FormSection>
         </div>
-      </withRouter(ScrollContentWrapper)>
-      <withRouter(ScrollContentWrapper)
+      </withRouter(Connect(ScrollContentWrapper))>
+      <withRouter(Connect(ScrollContentWrapper))
         id="first-aid"
         title="First Aid"
       >
@@ -1290,7 +1290,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
             </Col>
           </Row>
         </div>
-      </withRouter(ScrollContentWrapper)>
+      </withRouter(Connect(ScrollContentWrapper))>
       <br />
       <h2>
         Work Plan
@@ -1336,7 +1336,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
         </Col>
       </Row>
       <br />
-      <withRouter(ScrollContentWrapper)
+      <withRouter(Connect(ScrollContentWrapper))
         id="reclamation"
         title="Summary of Reclamation"
       >
@@ -1398,26 +1398,26 @@ exports[`ReviewNOWApplication renders properly 1`] = `
             }
           />
         </div>
-      </withRouter(ScrollContentWrapper)>
+      </withRouter(Connect(ScrollContentWrapper))>
       <Connect(ReviewActivities)
         isViewMode={true}
       />
-      <withRouter(ScrollContentWrapper)
-        id="submission_documents"
+      <withRouter(Connect(ScrollContentWrapper))
+        id="submission-documents"
         title="Submission Documents (VFCBC/NROS)"
       >
         <NOWSubmissionDocuments
           selectedRows={null}
         />
-      </withRouter(ScrollContentWrapper)>
-      <withRouter(ScrollContentWrapper)
-        id="additional_documents"
+      </withRouter(Connect(ScrollContentWrapper))>
+      <withRouter(Connect(ScrollContentWrapper))
+        id="additional-documents"
         title="Additional Documents"
       >
         <Connect(NOWDocuments)
           isViewMode={true}
         />
-      </withRouter(ScrollContentWrapper)>
+      </withRouter(Connect(ScrollContentWrapper))>
     </div>
   </Form>
 </div>

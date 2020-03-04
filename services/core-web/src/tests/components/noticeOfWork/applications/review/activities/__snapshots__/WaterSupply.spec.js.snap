@@ -61,6 +61,11 @@ exports[`WaterSupply renders properly 1`] = `
         disabled={true}
         id="reclamation_description"
         name="reclamation_description"
+        validate={
+          Array [
+            [Function],
+          ]
+        }
       />
     </Col>
     <Col
@@ -75,8 +80,13 @@ exports[`WaterSupply renders properly 1`] = `
       <Field
         component={[Function]}
         disabled={true}
-        id="reclamation_description"
-        name="reclamation_description"
+        id="reclamation_cost"
+        name="reclamation_cost"
+        validate={
+          Array [
+            [Function],
+          ]
+        }
       />
     </Col>
   </Row>
