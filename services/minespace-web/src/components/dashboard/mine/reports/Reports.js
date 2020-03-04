@@ -65,8 +65,17 @@ export class Reports extends Component {
   };
 
   handleEditReport = (values) => {
+    const payload = {
+      mine_report_submissions: [
+        ...values.mine_report_submissions,
+        {
+          documents:
+            values.mine_report_submissions[values.mine_report_submissions.length - 1].documents,
+        },
+      ],
+    };
     this.props
-      .updateMineReport(this.props.mine.mine_guid, this.state.selectedMineReportGuid, values)
+      .updateMineReport(this.props.mine.mine_guid, this.state.selectedMineReportGuid, payload)
       .then(() => this.props.closeModal())
       .then(() => this.props.fetchMineReports(this.props.mine.mine_guid));
   };
@@ -85,15 +94,15 @@ export class Reports extends Component {
   };
 
   openEditReportModal = (event, report) => {
-    this.setState({ selectedMineReportGuid: report.mine_report_guid });
     event.preventDefault();
+    this.setState({ selectedMineReportGuid: report.mine_report_guid });
     this.props.openModal({
       props: {
-        initialValues: report,
         onSubmit: this.handleEditReport,
         title: `Add Documents to: ${report.report_name}`,
-        mineGuid: this.props.mine.mine_guid,
         width: "40vw",
+        mineGuid: this.props.mine.mine_guid,
+        mineReport: report,
       },
       content: modalConfig.EDIT_REPORT,
     });
