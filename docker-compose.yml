@@ -69,6 +69,7 @@ services:
       - 5000:5000
     volumes:
       - ./services/core-api/:/app/
+      - core_api_logs:/var/log/core-api/
     depends_on:
       - flyway
       - redis
@@ -85,19 +86,19 @@ services:
       - "6379:6379"
 
   ####################### Frontend Definition #######################
-  # frontend:
-  #   restart: always
-  #   container_name: mds_frontend
-  #   build:
-  #     context: services/core-web
-  #   command: ["npm", "run", "serve"]
-  #   volumes:
-  #     - ./services/core-web/src/:/app/src/
-  #   ports:
-  #     - 3000:3000
-  #   depends_on:
-  #     - backend
-  #   env_file: ./services/core-web/.env
+  frontend:
+    restart: always
+    container_name: mds_frontend
+    build:
+      context: services/core-web
+    command: ["npm", "run", "serve"]
+    volumes:
+      - ./services/core-web/src/:/app/src/
+    ports:
+      - 3000:3000
+    depends_on:
+      - backend
+    env_file: ./services/core-web/.env
 
   # minespace:
   #   restart: always
@@ -185,21 +186,23 @@ services:
 
   ####################### Logging and Monitoring #######################
 
-  # loki:
-  #   image: grafana/loki:latest
-  #   ports:
-  #     - "3100:3100"
-  #   command: -config.file=/etc/loki/loki.local.config.yaml
-  #   volumes:
-  #     - ./settings/loki:/etc/loki/
+  loki:
+    image: grafana/loki:latest
+    ports:
+      - "3100:3100"
+    command: -config.file=/etc/loki/loki.local.yaml
+    volumes:
+      - ./settings/loki/loki.local.yaml:/etc/loki/loki.local.yaml
 
-  # promtail:
-  #   image: grafana/promtail:latest
-  #   volumes:
-  #     - ./settings/promtail:/etc/promtail
-  #   command: -config.file=/etc/promtail/promtail.local.yaml
-  #   expose:
-  #     - 1514
+  promtail:
+    image: grafana/promtail:latest
+    volumes:
+      - ./settings/promtail/promtail.local.yaml:/etc/promtail/promtail.local.yaml
+      - core_api_logs:/mnt/core-api
+      - core_web_logs:/mnt/core-web
+    command: -config.file=/etc/promtail/promtail.local.yaml
+    expose:
+      - 1514
 
   prometheus:
     image: prom/prometheus
@@ -298,3 +301,5 @@ volumes:
   postgres_data: {}
   prometheus_data: {}
   grafana_storage: {}
+  core_api_logs: {}
+  core_web_logs: {}

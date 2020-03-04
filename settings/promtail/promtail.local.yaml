@@ -9,20 +9,23 @@ clients:
   - url: http://loki:3100/loki/api/v1/push
 
 scrape_configs:
-  - job_name: system
+  - job_name: core-api
     static_configs:
       - targets:
           - localhost
         labels:
-          job: varlogs
-          __path__: /var/log/*log
-  - job_name: syslog
-    syslog:
-      listen_address: 0.0.0.0:1514
-      idle_timeout: 60s
-      label_structured_data: yes
-      labels:
-        job: "syslog"
-    relabel_configs:
-      - source_labels: ["__syslog_message_hostname"]
-        target_label: "host"
+          app: core
+          service: core-api
+          __path__: /mnt/core-api/*log
+      - targets:
+          - localhost
+        labels:
+          app: core
+          service: core-web
+          __path__: /mnt/core-web/*log
+      - targets:
+          - localhost
+        labels:
+          app: minespace
+          service: minespace-web
+          __path__: /mnt/minespace-web/*log
