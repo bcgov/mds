@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import { Field } from "redux-form";
-import { Form, Button } from "antd";
 import { concat, reject } from "lodash";
 import FileUpload from "@/components/common/FileUpload";
 import { MINE_REPORT_DOCUMENT } from "@/constants/API";
@@ -9,8 +8,8 @@ import { ReportsUploadedFilesList } from "@/components/Forms/reports/ReportsUplo
 
 const propTypes = {
   mineGuid: PropTypes.string.isRequired,
-  mineReportSubmissions: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)),
   updateMineReportSubmissions: PropTypes.func.isRequired,
+  mineReportSubmissions: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)),
 };
 
 const defaultProps = {
@@ -18,77 +17,65 @@ const defaultProps = {
 };
 
 export const ReportSubmissions = (props) => {
-  const hasSubmissions = props.mineReportSubmissions.length > 0;
-  const [updateFilesClicked, setUpdateFilesClicked] = useState(false);
-  return [
-    props.mineReportSubmissions.length > 0 && (
-      <Form.Item label="Attached Files">
+  const uploadedFiles =
+    props.mineReportSubmissions &&
+    props.mineReportSubmissions.length > 0 &&
+    props.mineReportSubmissions[props.mineReportSubmissions.length - 1].documents &&
+    props.mineReportSubmissions[props.mineReportSubmissions.length - 1].documents.length > 0
+      ? props.mineReportSubmissions[props.mineReportSubmissions.length - 1].documents.filter(
+          (file) => !file.mine_document_guid
+        )
+      : [];
+
+  const handleRemoveFile = (fileToRemove) => {
+    let updatedSubmissions = props.mineReportSubmissions;
+    updatedSubmissions[updatedSubmissions.length - 1].documents = reject(
+      updatedSubmissions[updatedSubmissions.length - 1].documents,
+      (file) => fileToRemove.document_manager_guid === file.document_manager_guid
+    );
+    if (updatedSubmissions.length === 1 && updatedSubmissions[0].documents.length === 0) {
+      updatedSubmissions = [];
+    }
+    props.updateMineReportSubmissions(updatedSubmissions);
+  };
+
+  const handleFileLoad = (documentName, documentManagerGuid) => {
+    const updatedSubmissions =
+      props.mineReportSubmissions && props.mineReportSubmissions.length > 0
+        ? props.mineReportSubmissions
+        : [{ documents: [] }];
+    updatedSubmissions[updatedSubmissions.length - 1].documents = concat(
+      updatedSubmissions[updatedSubmissions.length - 1].documents,
+      {
+        document_name: documentName,
+        document_manager_guid: documentManagerGuid,
+      }
+    );
+    props.updateMineReportSubmissions(updatedSubmissions);
+  };
+
+  return (
+    <div>
+      {uploadedFiles.length > 0 && (
         <Field
           id="ReportAttachedFiles"
           name="ReportAttachedFiles"
-          label="Attached Files"
+          label="Documents"
           component={ReportsUploadedFilesList}
-          files={props.mineReportSubmissions[props.mineReportSubmissions.length - 1].documents}
-          onRemoveFile={(fileToRemove) => {
-            let updatedSubmissions = props.mineReportSubmissions;
-            updatedSubmissions[updatedSubmissions.length - 1].documents = reject(
-              updatedSubmissions[updatedSubmissions.length - 1].documents,
-              (file) => fileToRemove.document_manager_guid === file.document_manager_guid
-            );
-            // If this is the a the first submission, and all files are removed, then remove the empty submission.
-            if (updatedSubmissions.length === 1 && updatedSubmissions[0].documents.length === 0) {
-              updatedSubmissions = [];
-            }
-            props.updateMineReportSubmissions(updatedSubmissions);
-          }}
-          props={{ editing: updateFilesClicked }}
+          files={uploadedFiles}
+          onRemoveFile={handleRemoveFile}
         />
-      </Form.Item>
-    ),
-    (!hasSubmissions || updateFilesClicked) && (
+      )}
       <Field
         id="ReportFileUpload"
         name="ReportFileUpload"
         label="Upload Files"
-        onFileLoad={(document_name, document_manager_guid) => {
-          setUpdateFilesClicked(true);
-          const updatedSubmissions =
-            props.mineReportSubmissions && props.mineReportSubmissions.length > 0
-              ? props.mineReportSubmissions
-              : [{ documents: [] }];
-          updatedSubmissions[updatedSubmissions.length - 1].documents = concat(
-            updatedSubmissions[updatedSubmissions.length - 1].documents,
-            {
-              document_name,
-              document_manager_guid,
-            }
-          );
-          props.updateMineReportSubmissions(updatedSubmissions);
-        }}
-        uploadUrl={MINE_REPORT_DOCUMENT(props.mineGuid)}
         component={FileUpload}
+        uploadUrl={MINE_REPORT_DOCUMENT(props.mineGuid)}
+        onFileLoad={handleFileLoad}
       />
-    ),
-    hasSubmissions && !updateFilesClicked && (
-      <Button
-        type="primary"
-        onClick={() => {
-          setUpdateFilesClicked(!updateFilesClicked);
-          props.updateMineReportSubmissions([
-            ...props.mineReportSubmissions,
-            {
-              documents:
-                props.mineReportSubmissions.length > 0
-                  ? props.mineReportSubmissions[props.mineReportSubmissions.length - 1].documents
-                  : [],
-            },
-          ]);
-        }}
-      >
-        Update Files
-      </Button>
-    ),
-  ];
+    </div>
+  );
 };
 
 ReportSubmissions.propTypes = propTypes;
