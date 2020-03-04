@@ -166,12 +166,10 @@ export class AddReportForm extends Component {
           component={renderConfig.YEAR}
           validate={[required]}
         />
-
         <ReportSubmissions
           mineGuid={this.props.mineGuid}
           mineReportSubmissions={this.state.mineReportSubmissions}
           updateMineReportSubmissions={this.updateMineReportSubmissions}
-          maxFileListHeight={130}
         />
         <div className="ant-modal-footer">
           <Popconfirm

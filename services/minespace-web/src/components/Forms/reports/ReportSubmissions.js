@@ -11,12 +11,10 @@ const propTypes = {
   mineGuid: PropTypes.string.isRequired,
   updateMineReportSubmissions: PropTypes.func.isRequired,
   mineReportSubmissions: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)),
-  maxFileListHeight: PropTypes.number,
 };
 
 const defaultProps = {
   mineReportSubmissions: [],
-  maxFileListHeight: undefined,
 };
 
 export const ReportSubmissions = (props) => {
@@ -59,23 +57,6 @@ export const ReportSubmissions = (props) => {
 
   return (
     <div>
-      {uploadedFiles.length > 0 && (
-        <Form.Item
-          label="Uploaded Documents"
-          style={
-            props.maxFileListHeight ? { maxHeight: props.maxFileListHeight, overflowY: "auto" } : {}
-          }
-        >
-          <Field
-            id="ReportAttachedFiles"
-            name="ReportAttachedFiles"
-            maxHeight={260}
-            component={ReportsUploadedFilesList}
-            files={uploadedFiles}
-            onRemoveFile={handleRemoveFile}
-          />
-        </Form.Item>
-      )}
       <Form.Item label="Upload Documents">
         <Field
           id="ReportFileUpload"
@@ -85,6 +66,17 @@ export const ReportSubmissions = (props) => {
           onFileLoad={handleFileLoad}
         />
       </Form.Item>
+      {uploadedFiles.length > 0 && (
+        <Form.Item label="Uploaded Documents">
+          <Field
+            id="ReportAttachedFiles"
+            name="ReportAttachedFiles"
+            component={ReportsUploadedFilesList}
+            files={uploadedFiles}
+            onRemoveFile={handleRemoveFile}
+          />
+        </Form.Item>
+      )}
     </div>
   );
 };
