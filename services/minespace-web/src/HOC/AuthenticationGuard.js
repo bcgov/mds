@@ -44,22 +44,30 @@ export const AuthenticationGuard = (isPublic) => (WrappedComponent) => {
       const fromCore = localStorage.getItem("fromCore");
       const token = localStorage.getItem("jwt");
       const WINDOW_LOCATION = `${window.location.origin}${process.env.BASE_PATH}`;
-      const { code } = queryString.parse(window.location.search);
+      const { code, type } = queryString.parse(window.location.search);
       const redirectUrl = `${WINDOW_LOCATION}${route.MINE_DASHBOARD.dynamicRoute(guid)}`;
 
       // all routing from core includes 'core=true', if the user is not authenticated on MineSpace yet, redirect to the Keycloak Login
-      if (redirectedFromCore && !code && !token) {
+      if (redirectedFromCore && !token) {
         window.location.replace(`${COMMON_ENV.KEYCLOAK.loginURL}${redirectUrl}`);
       }
 
       // after successful login, re-direct back to MineSpace with a code, swap code for token and authenticate IDIR user
       // set state in local Storage to persist login flow between redirects
       // value is removed from localStorage after userInfo is obtained
-      if (code && !token && !fromCore) {
+      // if type=true, Login is occurring through standard flow, bypass this block
+      if (code && !token && !fromCore && !type) {
         localStorage.setItem("fromCore", true);
-        await this.props.authenticateUser(code, redirectUrl).then(() => {
-          this.setState({ authComplete: true });
-        });
+        await this.props
+          .authenticateUser(code, redirectUrl)
+          .then(() => {
+            // remove session_state/code params from the url after successful authentication
+            window.history.replaceState(null, null, window.location.pathname);
+            this.setState({ authComplete: true });
+          })
+          .catch(() => {
+            localStorage.removeItem("fromCore");
+          });
       }
 
       // standard Authentication flow on initial load,
@@ -68,18 +76,17 @@ export const AuthenticationGuard = (isPublic) => (WrappedComponent) => {
         await this.props
           .getUserInfoFromToken(token)
           .then(() => this.setState({ authComplete: true }));
+      } else {
+        this.setState({ authComplete: true });
       }
     }
 
     render() {
       const fromCore = localStorage.getItem("fromCore");
-      if (fromCore && !this.props.isAuthenticated) {
-        return <Loading />;
-      }
       if (this.props.isAuthenticated || isPublic) {
         return <WrappedComponent {...this.props} />;
       }
-      if (!this.props.isAuthenticated && this.state.authComplete) {
+      if (!this.props.isAuthenticated && this.state.authComplete && !fromCore) {
         return <UnauthenticatedNotice />;
       }
       return <Loading />;

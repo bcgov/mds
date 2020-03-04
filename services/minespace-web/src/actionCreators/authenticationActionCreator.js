@@ -26,6 +26,7 @@ export const getUserRoles = (token) => (dispatch) => {
 };
 
 export const getUserInfoFromToken = (token, errorMessage) => (dispatch) => {
+  console.log("ACTIONCREATOR: getUserInfoFromToken");
   dispatch(request(reducerTypes.GET_USER_INFO));
   return axios
     .get(COMMON_ENV.KEYCLOAK.userInfoURL, {
@@ -55,6 +56,7 @@ export const getUserInfoFromToken = (token, errorMessage) => (dispatch) => {
 };
 
 export const authenticateUser = (code, redirectUrl = "") => (dispatch) => {
+  console.log("ACTIONCREATOR: authenticateUser");
   const redirect_uri = redirectUrl ? redirectUrl : MINESPACE_ENV.BCEID_LOGIN_REDIRECT_URI;
   const data = {
     code,
