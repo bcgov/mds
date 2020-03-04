@@ -72,7 +72,7 @@ describe("`authenticateUser` action creator", () => {
 
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onPost(url, MOCK.createMockHeader()).reply(400, MOCK.ERROR);
-    return authenticateUser()(dispatch).then(() => {
+    return authenticateUser()(dispatch).catch(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(3);

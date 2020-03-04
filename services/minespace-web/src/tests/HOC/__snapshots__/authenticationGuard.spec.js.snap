@@ -2,6 +2,17 @@
 
 exports[`AuthenticationGuard should render the \`WrappedComponent\` if \`isAuthenticated\` 1`] = `
 <Component
+  authenticateUser={[MockFunction]}
+  fromCore={false}
+  getUserInfoFromToken={[MockFunction]}
+  isAuthenticated={true}
+/>
+`;
+
+exports[`AuthenticationGuard should render the \`WrappedComponent\` if \`isPublic\` 1`] = `
+<Component
+  authenticateUser={[MockFunction]}
+  fromCore={false}
   getUserInfoFromToken={[MockFunction]}
   isAuthenticated={true}
 />
