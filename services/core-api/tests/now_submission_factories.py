@@ -305,7 +305,6 @@ class NOWDocumentFactory(BaseFactory):
     class Params:
         application = factory.SubFactory('tests.factories.NOWSubmissionFactory')
 
-    id = factory.Sequence(lambda n: n)
     messageid = factory.SelfAttribute('application.messageid')
     filename = factory.Faker('file_name')
 
@@ -317,7 +316,6 @@ class NOWContactFactory(BaseFactory):
     class Params:
         application = factory.SubFactory('tests.factories.NOWSubmissionFactory')
 
-    id = factory.Sequence(lambda n: n)
     messageid = factory.SelfAttribute('application.messageid')
     type = factory.Faker('sentence', nb_words=1)
 
@@ -329,7 +327,6 @@ class NOWSandGrvQryActivityFactory(BaseFactory):
     class Params:
         application = factory.SubFactory('tests.factories.NOWSubmissionFactory')
 
-    id = factory.Sequence(lambda n: n)
     messageid = factory.SelfAttribute('application.messageid')
     type = factory.Faker('sentence', nb_words=1)
 
@@ -341,7 +338,6 @@ class NOWUnderExpNewActivityFactory(BaseFactory):
     class Params:
         application = factory.SubFactory('tests.factories.NOWSubmissionFactory')
 
-    id = factory.Sequence(lambda n: n)
     messageid = factory.SelfAttribute('application.messageid')
     type = factory.Faker('sentence', nb_words=1)
     incline = factory.fuzzy.FuzzyDecimal(100, precision=1)
@@ -359,7 +355,6 @@ class NOWUnderExpRehabActivityFactory(BaseFactory):
     class Params:
         application = factory.SubFactory('tests.factories.NOWSubmissionFactory')
 
-    id = factory.Sequence(lambda n: n)
     messageid = factory.SelfAttribute('application.messageid')
     type = factory.Faker('sentence', nb_words=1)
     incline = factory.fuzzy.FuzzyDecimal(100, precision=1)
@@ -377,7 +372,6 @@ class NOWUnderExpSurfaceActivityFactory(BaseFactory):
     class Params:
         application = factory.SubFactory('tests.factories.NOWSubmissionFactory')
 
-    id = factory.Sequence(lambda n: n)
     messageid = factory.SelfAttribute('application.messageid')
     type = factory.Faker('sentence', nb_words=1)
     disturbedarea = factory.fuzzy.FuzzyDecimal(100)
@@ -391,7 +385,6 @@ class NOWWaterSourceActivityFactory(BaseFactory):
     class Params:
         application = factory.SubFactory('tests.factories.NOWSubmissionFactory')
 
-    id = factory.Sequence(lambda n: n)
     messageid = factory.SelfAttribute('application.messageid')
     type = factory.Faker('sentence', nb_words=1)
 
@@ -403,7 +396,6 @@ class NOWSurfaceBulkSampleActivityFactory(BaseFactory):
     class Params:
         application = factory.SubFactory('tests.factories.NOWSubmissionFactory')
 
-    id = factory.Sequence(lambda n: n)
     messageid = factory.SelfAttribute('application.messageid')
     type = factory.Faker('sentence', nb_words=1)
     disturbedarea = factory.fuzzy.FuzzyDecimal(100)

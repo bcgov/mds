@@ -3,6 +3,7 @@ from flask import request, current_app
 from sqlalchemy_filters import apply_pagination, apply_sort
 from sqlalchemy import desc, func, or_
 from marshmallow.exceptions import MarshmallowError
+from werkzeug.exceptions import BadRequest
 
 from app.extensions import api
 from app.api.mines.mine.models.mine import Mine
@@ -11,6 +12,8 @@ from app.api.now_submissions.models.application import Application
 from app.api.now_submissions.response_models import PAGINATED_APPLICATION_LIST, APPLICATION
 from app.api.utils.access_decorators import requires_role_view_all
 from app.api.utils.resources_mixins import UserMixin
+from app.api.mines.mine.models.mine import Mine
+from app.api.now_applications.models.now_application_identity import NOWApplicationIdentity
 
 PAGE_DEFAULT = 1
 PER_PAGE_DEFAULT = 25
@@ -107,14 +110,23 @@ class ApplicationListResource(Resource, UserMixin):
     @api.doc(description='Save an application')
     @requires_role_view_all
     @api.expect(APPLICATION)
-    @api.marshal_with(APPLICATION, code=200)
+    @api.marshal_with(APPLICATION, code=201)
     def post(self):
         try:
-            data = request.json
-            application = Application._schema().load(data)
+            application = Application._schema().load(request.json)
         except MarshmallowError as e:
-            current_app.logger.debug(e)
-            raise e
+            raise BadRequest(e)
+
+        mine = Mine.find_by_mine_no(application.minenumber)
+
+        if mine is None:
+            raise BadRequest('Mine not found from the minenumber supplied.')
+
+        application.mine_guid = mine.mine_guid
+
+        application_identity = NOWApplicationIdentity(
+            mine=mine, mine_guid=mine.mine_guid, messageid=application.messageid)
 
         application.save()
+        application_identity.save()
         return application

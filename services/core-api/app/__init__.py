@@ -9,7 +9,7 @@ from sqlalchemy.exc import SQLAlchemyError
 from marshmallow.exceptions import MarshmallowError
 
 from flask_jwt_oidc.exceptions import AuthError
-from werkzeug.exceptions import Forbidden
+from werkzeug.exceptions import Forbidden, BadRequest
 
 from app.api.compliance.namespace import api as compliance_api
 from app.api.download_token.namespace import api as download_token_api
@@ -122,15 +122,6 @@ def register_routes(app):
     @api.errorhandler(AssertionError)
     def assertion_error_handler(error):
         app.logger.error(str(error))
-        return {
-            'status': getattr(error, 'code', 400),
-            'message': str(error),
-        }, getattr(error, 'code', 400)
-
-    @api.errorhandler(MarshmallowError)
-    def marshmallow_error_handler(error):
-        app.logger.error(str(error))
-        app.logger.error("TEST                    TEST")
         return {
             'status': getattr(error, 'code', 400),
             'message': str(error),

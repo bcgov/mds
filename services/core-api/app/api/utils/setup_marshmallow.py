@@ -10,18 +10,21 @@ from sqlalchemy.orm import scoped_session, sessionmaker, mapper
 from sqlalchemy import event
 from sqlalchemy.inspection import inspect
 from sqlalchemy.orm.attributes import InstrumentedAttribute
-from marshmallow import fields, pprint
+from marshmallow import fields, pprint, validate
 from marshmallow_sqlalchemy import ModelConversionError, ModelSchema, ModelConverter
 from app.api.utils.models_mixins import AuditMixin, Base as BaseModel
 from app.extensions import db
 from geoalchemy2 import Geometry
+from sqlalchemy.dialects.postgresql import UUID
 
 from app.api.now_applications.models.activity_detail.activity_detail_base import ActivityDetailBase
 from app.api.now_applications.models.equipment import Equipment
 from app.api.now_applications.models.now_application_document_xref import NOWApplicationDocumentXref
 from app.api.now_submissions import models as sub_models
 from app.api.utils.models_mixins import AuditMixin
-from sqlalchemy.dialects.postgresql import UUID
+from app.api.utils.static_data import setup_static_data
+from app.api.utils.field_template import FieldTemplate
+from app.api.constants import STATIC_DATA
 
 
 class CoreConverter(ModelConverter):
@@ -58,6 +61,11 @@ class CoreConverter(ModelConverter):
 AUDIT_COLUMNS = ('create_user', 'create_timestamp', 'update_user', 'update_timestamp')
 
 
+def run_after_configure():
+    setup_static_data(BaseModel)
+    setup_schema(BaseModel, db.session)()
+
+
 def setup_schema(Base, session):
     """
     inspired by: https://marshmallow-sqlalchemy.readthedocs.io/en/latest/recipes.html#automatically-generating-schemas-for-sqlalchemy-models
@@ -80,6 +88,11 @@ def setup_schema(Base, session):
                         model_converter = CoreConverter
                         exclude = exclude_columns
 
+                    for k, v in class_._ModelSchema.__dict__.items():
+                        if type(v) == FieldTemplate:
+                            current_app.logger.debug(f'creating field for {k} on {class_}')
+                            class_._ModelSchema._declared_fields[k] = v.field(
+                                validate=validate.OneOf(choices=STATIC_DATA[v.one_of]))
                     schema_class_name = "%sSchema" % class_.__name__
                     schema_class = type(schema_class_name, (class_._ModelSchema, ), {"Meta": Meta})
 
@@ -93,10 +106,10 @@ def setup_schema(Base, session):
                 try:
                     mapper = inspect(class_)
                     for rel in mapper.relationships:
-                        if hasattr(rel, "_schema"):
+                        if hasattr(rel.entity.class_, "_schema"):
                             current_app.logger.debug(rel.key)
                             class_._schema._declared_fields[rel.key] = fields.Nested(
-                                rel.entity.class_._schema, many=rel.uselist, dump_only=True)
+                                rel.entity.class_._schema, many=rel.uselist)
                             #exclude=[rel.backref.key] + [pk.name for pk in mapper.primary_keys])
                 except Exception as e:
                     raise e
@@ -107,5 +120,5 @@ def setup_schema(Base, session):
 # TODO: finish this and resolve errors now_application/activity_detail_base.activity_type_code to all for programatic generation of schema
 # TODO: add call to model method to execute post_generation of schema.
 
-event.listen(mapper, "after_configured", setup_schema(BaseModel, db.session))
+event.listen(mapper, "after_configured", run_after_configure)
 # Base.metadata.create_all(db.engine.connect()) # i think this is not used

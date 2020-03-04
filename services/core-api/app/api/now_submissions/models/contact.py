@@ -1,11 +1,12 @@
+from sqlalchemy.schema import FetchedValue
 from app.api.utils.models_mixins import Base
 from app.extensions import db
 
 
 class Contact(Base):
     __tablename__ = "contact"
-    __table_args__ = { "schema": "now_submissions" }
-    id = db.Column(db.Integer, primary_key=True)
+    __table_args__ = {"schema": "now_submissions"}
+    id = db.Column(db.Integer, primary_key=True, server_default=FetchedValue())
     messageid = db.Column(db.Integer, db.ForeignKey('now_submissions.application.messageid'))
     type = db.Column(db.String)
     org_legalname = db.Column(db.String)
@@ -33,7 +34,6 @@ class Contact(Base):
     mailingaddresscountry = db.Column(db.String)
     mailingaddresspostalzip = db.Column(db.String)
     seq_no = db.Column(db.Integer)
-
 
     def __repr__(self):
         return '<Contact %r>' % self.id

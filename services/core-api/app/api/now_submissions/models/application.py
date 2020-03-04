@@ -3,7 +3,7 @@ from werkzeug.exceptions import NotFound
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.schema import FetchedValue
-from marshmallow import fields
+from marshmallow import fields, validate
 
 from app.extensions import db
 from app.api.utils.models_mixins import Base
@@ -27,6 +27,9 @@ from app.api.now_submissions.models.existing_settling_pond_xref import ExistingS
 from app.api.now_submissions.models.proposed_placer_activity_xref import ProposedPlacerActivityXref
 from app.api.now_submissions.models.proposed_settling_pond_xref import ProposedSettlingPondXref
 
+from app.api.constants import unit_type_map, type_of_permit_map
+from app.api.utils.field_template import FieldTemplate
+
 
 class Application(Base):
     __tablename__ = "application"
@@ -36,6 +39,17 @@ class Application(Base):
         application_guid = fields.String(dump_only=True)
         now_application_guid = fields.String(dump_only=True)
         mine_guid = fields.String(dump_only=True)
+        sandgrvqrytotalmineresunits = fields.String(
+            validate=validate.OneOf(choices=unit_type_map.keys()))
+        underexptotaloreunits = fields.String(validate=validate.OneOf(choices=unit_type_map.keys()))
+        underexptotalwasteunits = fields.String(
+            validate=validate.OneOf(choices=unit_type_map.keys()))
+        sandgrvqryannualextrestunits = fields.String(
+            validate=validate.OneOf(choices=unit_type_map.keys()))
+        typeofpermit = fields.String(validate=validate.OneOf(choices=type_of_permit_map.keys()))
+        noticeofworktype = FieldTemplate(
+            field=fields.String, one_of='NOWApplicationType_description')
+        status = FieldTemplate(field=fields.String, one_of='NOWApplicationStatus_description')
 
     messageid = db.Column(db.Integer, primary_key=True)
     now_application_identity = db.relationship(
