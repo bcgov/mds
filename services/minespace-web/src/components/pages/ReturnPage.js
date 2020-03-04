@@ -11,6 +11,11 @@ import { RETURN_PAGE_TYPE } from "@/constants/strings";
 import Loading from "@/components/common/Loading";
 import * as route from "@/constants/routes";
 
+/**
+ * @class ReturnPage - handles all re-routing back and forth from Keycloak/SSO while following the standard login/logout paths by clicking buttons on the UI
+ * CORE/IDIR users bypass this page and authenticate through the AuthenticationGuard.js without any user input
+ */
+
 export class ReturnPage extends Component {
   state = { redirect: null };
 
@@ -22,12 +27,12 @@ export class ReturnPage extends Component {
   };
 
   componentDidMount() {
-    // grab the code and redirect type from the redirect url
     const { type, code } = queryString.parse(this.props.location.search);
     if (code) {
       // exchange code for token, store user info in redux, redirect to Dashboard
       this.props.authenticateUser(code);
     }
+
     if (type === RETURN_PAGE_TYPE.SITEMINDER_LOGOUT) {
       // just returned from SiteMinder, sign out from SSO this time
       signOutFromSSO();
