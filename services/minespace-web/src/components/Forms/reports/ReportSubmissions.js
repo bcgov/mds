@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { Form } from "antd";
 import { Field } from "redux-form";
 import { concat, reject } from "lodash";
 import FileUpload from "@/components/common/FileUpload";
@@ -10,10 +11,12 @@ const propTypes = {
   mineGuid: PropTypes.string.isRequired,
   updateMineReportSubmissions: PropTypes.func.isRequired,
   mineReportSubmissions: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)),
+  maxFileListHeight: PropTypes.number,
 };
 
 const defaultProps = {
   mineReportSubmissions: [],
+  maxFileListHeight: undefined,
 };
 
 export const ReportSubmissions = (props) => {
@@ -57,23 +60,31 @@ export const ReportSubmissions = (props) => {
   return (
     <div>
       {uploadedFiles.length > 0 && (
-        <Field
-          id="ReportAttachedFiles"
-          name="ReportAttachedFiles"
-          label="Documents"
-          component={ReportsUploadedFilesList}
-          files={uploadedFiles}
-          onRemoveFile={handleRemoveFile}
-        />
+        <Form.Item
+          label="Uploaded Documents"
+          style={
+            props.maxFileListHeight ? { maxHeight: props.maxFileListHeight, overflowY: "auto" } : {}
+          }
+        >
+          <Field
+            id="ReportAttachedFiles"
+            name="ReportAttachedFiles"
+            maxHeight={260}
+            component={ReportsUploadedFilesList}
+            files={uploadedFiles}
+            onRemoveFile={handleRemoveFile}
+          />
+        </Form.Item>
       )}
-      <Field
-        id="ReportFileUpload"
-        name="ReportFileUpload"
-        label="Upload Files"
-        component={FileUpload}
-        uploadUrl={MINE_REPORT_DOCUMENT(props.mineGuid)}
-        onFileLoad={handleFileLoad}
-      />
+      <Form.Item label="Upload Documents">
+        <Field
+          id="ReportFileUpload"
+          name="ReportFileUpload"
+          component={FileUpload}
+          uploadUrl={MINE_REPORT_DOCUMENT(props.mineGuid)}
+          onFileLoad={handleFileLoad}
+        />
+      </Form.Item>
     </div>
   );
 };

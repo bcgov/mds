@@ -19,12 +19,12 @@ export const ReportsUploadedFilesList = (props) =>
           <Col span={3} className="right">
             <Popconfirm
               placement="top"
-              title={[<h3>Are you sure you want to remove this file?</h3>]}
+              title={<h3>Are you sure you want to remove this file?</h3>}
               okText="Yes"
               cancelText="No"
               onConfirm={() => props.onRemoveFile(file)}
             >
-              <Button type="button">
+              <Button>
                 <Icon type="close" />
               </Button>
             </Popconfirm>

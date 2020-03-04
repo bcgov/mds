@@ -151,7 +151,7 @@ export class AddReportForm extends Component {
           {this.state.selectedMineReportComplianceArticles.length > 0 ? (
             <List bordered size="small" className="color-primary">
               {this.state.selectedMineReportComplianceArticles.map((opt) => (
-                <List.Item>{formatComplianceCodeValueOrLabel(opt, true)}</List.Item>
+                <List.Item key={opt}>{formatComplianceCodeValueOrLabel(opt, true)}</List.Item>
               ))}
             </List>
           ) : (
@@ -171,6 +171,7 @@ export class AddReportForm extends Component {
           mineGuid={this.props.mineGuid}
           mineReportSubmissions={this.state.mineReportSubmissions}
           updateMineReportSubmissions={this.updateMineReportSubmissions}
+          maxFileListHeight={130}
         />
         <div className="ant-modal-footer">
           <Popconfirm
