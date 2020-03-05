@@ -1,3 +1,5 @@
+import logging
+
 from flask_caching import Cache
 from flask_jwt_oidc import JwtManager
 from flask_sqlalchemy import SQLAlchemy
@@ -6,7 +8,7 @@ from elasticapm.contrib.flask import ElasticAPM
 from .config import Config
 from .helper import Api
 
-apm = ElasticAPM()
+apm = ElasticAPM(logging=logging.WARNING)
 db = SQLAlchemy()
 jwt = JwtManager()
 cache = Cache()
