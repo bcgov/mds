@@ -274,7 +274,7 @@ exports[`DashboardRoutes  renders properly 1`] = `
       }
     }
     exact={true}
-    path="/dashboard/incidents"
+    path="/dashboard/reporting/incidents"
   />
   <Route
     component={

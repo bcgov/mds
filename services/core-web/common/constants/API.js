@@ -133,7 +133,9 @@ export const INCIDENT_STATUS_CODES = `/incidents/status-codes`;
 export const INCIDENT_DOCUMENT_TYPE = `/incidents/document-types`;
 export const INCIDENT_CATEGORY_CODES = `/incidents/category-codes`;
 
-// report
+// Reports
+// Notice Of Work
+export const REPORTS = (params = {}) => `/reports?${queryString.stringify(params)}`;
 export const MINE_REPORT_DEFINITIONS = () => `/mines/reports/definitions`;
 export const MINE_REPORTS = (mineGuid) => `/mines/${mineGuid}/reports`;
 export const MINE_REPORT = (mineGuid, mineReportGuid) =>

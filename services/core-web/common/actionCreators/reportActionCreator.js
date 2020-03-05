@@ -4,6 +4,7 @@ import { request, success, error } from "../actions/genericActions";
 import * as reducerTypes from "../constants/reducerTypes";
 import * as mineReportActions from "../actions/mineReportActions";
 import * as API from "../constants/API";
+import * as Strings from "../constants/strings";
 import { ENVIRONMENT } from "../constants/environment";
 import { createRequestHeader } from "../utils/RequestHeaders";
 import CustomAxios from "../customAxios";
@@ -52,6 +53,20 @@ export const fetchMineReports = (mineGuid) => (dispatch) => {
       return response;
     })
     .catch(() => dispatch(error(reducerTypes.GET_MINE_REPORTS)))
+    .finally(() => dispatch(hideLoading()));
+};
+
+export const fetchReports = (params = {}) => (dispatch) => {
+  dispatch(request(reducerTypes.GET_REPORTS));
+  dispatch(showLoading());
+  return CustomAxios({ errorToastMessage: Strings.ERROR })
+    .get(ENVIRONMENT.apiUrl + API.REPORTS(params), createRequestHeader())
+    .then((response) => {
+      console.log("fetchReports response:\n", response);
+      dispatch(success(reducerTypes.GET_REPORTS));
+      dispatch(reportActions.storeReports(response.data));
+    })
+    .catch(() => dispatch(error(reducerTypes.GET_REPORTS)))
     .finally(() => dispatch(hideLoading()));
 };
 
