@@ -12,8 +12,7 @@ import { reset } from "redux-form";
   );
  *
  */
-export const resetForm = (form) => (result, dispatch, props) =>
-  props.clearOnSubmit && dispatch(reset(form));
+export const resetForm = (form) => (result, dispatch) => dispatch(reset(form));
 
 // Function to create a reusable reducer (used in src/reducers/rootReducer)
 export const createReducer = (reducer, name) => (state, action) => {
@@ -55,6 +54,12 @@ export const formatPostalCode = (code) => code && code.replace(/.{3}$/, " $&");
 
 export const formatTitleString = (input) =>
   input.replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
+
+export const dateSorter = (key) => (a, b) => {
+  const a_date = a[key] == null ? moment().add(200, "y") : moment(a[key]);
+  const b_date = b[key] == null ? moment().add(200, "y") : moment(b[key]);
+  return a_date - b_date;
+};
 
 // Case insensitive filter for a SELECT field by label string
 export const caseInsensitiveLabelFilter = (input, option) =>

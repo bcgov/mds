@@ -29,7 +29,7 @@ beforeEach(() => {
 });
 
 describe("`fetchNoticeOfWorkApplications` action creator", () => {
-  const url = ENVIRONMENT.apiUrl + API.NOTICE_OF_WORK_APPLICATIONS();
+  const url = ENVIRONMENT.apiUrl + API.NOTICE_OF_WORK_APPLICATION_LIST();
   it("Request successful, dispatches `success` with correct response", () => {
     const mockResponse = { data: { success: true } };
     mockAxios.onGet(url).reply(200, mockResponse);
@@ -57,7 +57,10 @@ describe("`importNoticeOfWorkApplication` action creator", () => {
   it("Request successful, dispatches `success` with correct response", () => {
     const mockResponse = { data: { success: true } };
     mockAxios.onPost(url).reply(200, mockResponse);
-    return importNoticeOfWorkApplication(applicationGuid, payload)(dispatch).then(() => {
+    return importNoticeOfWorkApplication(
+      applicationGuid,
+      payload
+    )(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
     });
@@ -65,7 +68,10 @@ describe("`importNoticeOfWorkApplication` action creator", () => {
 
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onPost(url, MOCK.createMockHeader()).reply(418, MOCK.ERROR);
-    return importNoticeOfWorkApplication(applicationGuid, payload)(dispatch).then(() => {
+    return importNoticeOfWorkApplication(
+      applicationGuid,
+      payload
+    )(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
@@ -128,7 +134,10 @@ describe("`updateNoticeOfWorkApplication` action creator", () => {
   it("Request successful, dispatches `success` with correct response", () => {
     const mockResponse = { data: { success: true } };
     mockAxios.onPut(url).reply(200, mockResponse);
-    return updateNoticeOfWorkApplication(payload, applicationGuid)(dispatch).then(() => {
+    return updateNoticeOfWorkApplication(
+      payload,
+      applicationGuid
+    )(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
@@ -137,7 +146,10 @@ describe("`updateNoticeOfWorkApplication` action creator", () => {
 
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onPut(url, MOCK.createMockHeader()).reply(418, MOCK.ERROR);
-    return updateNoticeOfWorkApplication(payload, applicationGuid)(dispatch).then(() => {
+    return updateNoticeOfWorkApplication(
+      payload,
+      applicationGuid
+    )(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
@@ -152,7 +164,10 @@ describe("`createNoticeOfWorkApplicationProgress` action creator", () => {
   it("Request successful, dispatches `success` with correct response", () => {
     const mockResponse = { data: { success: true } };
     mockAxios.onPost(url).reply(200, mockResponse);
-    return createNoticeOfWorkApplicationProgress(applicationGuid, payload)(dispatch).then(() => {
+    return createNoticeOfWorkApplicationProgress(
+      applicationGuid,
+      payload
+    )(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
@@ -161,7 +176,10 @@ describe("`createNoticeOfWorkApplicationProgress` action creator", () => {
 
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onPost(url, MOCK.createMockHeader()).reply(418, MOCK.ERROR);
-    return createNoticeOfWorkApplicationProgress(applicationGuid, payload)(dispatch).then(() => {
+    return createNoticeOfWorkApplicationProgress(
+      applicationGuid,
+      payload
+    )(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);

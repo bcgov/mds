@@ -44,12 +44,10 @@ export class MineNOWApplications extends Component {
   componentDidMount() {
     const params = this.props.location.search;
     const parsedParams = queryString.parse(params);
-    // for the time being, set submissions_only to true if a regional mine, false if a major mine
-    const submissionsOnly = !this.props.mines[this.props.mineGuid].major_mine_ind;
     const {
       page = this.state.params.page,
       per_page = this.state.params.per_page,
-      submissions_only = submissionsOnly,
+      submissions_only = this.state.params.submissions_only,
     } = parsedParams;
     if (params) {
       this.renderDataFromURL();
@@ -69,12 +67,6 @@ export class MineNOWApplications extends Component {
     if (locationChanged) {
       this.renderDataFromURL(nextProps.location.search);
     }
-  }
-
-  componentWillUnmount() {
-    this.setState({
-      params: {},
-    });
   }
 
   renderDataFromURL = (queryParams) => {
@@ -162,7 +154,4 @@ const mapDispatchToProps = (dispatch) =>
 
 MineNOWApplications.propTypes = propTypes;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(MineNOWApplications);
+export default connect(mapStateToProps, mapDispatchToProps)(MineNOWApplications);

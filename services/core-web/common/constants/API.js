@@ -146,14 +146,14 @@ export const MINE_REPORT_COMMENT = (mineGuid, reportGuid, commentGuid) =>
 export const MINE_REPORT_STATUS = "/mines/reports/status-codes";
 
 // Notice Of Work
-export const NOTICE_OF_WORK_APPLICATIONS = (params = {}) =>
+export const NOTICE_OF_WORK_APPLICATION_LIST = (params = {}) =>
   `/now-applications?${queryString.stringify(params)}`;
 export const NOTICE_OF_WORK_APPLICATION = (applicationGuid) =>
   `/now-applications/${applicationGuid}`;
 export const NOTICE_OF_WORK_DOCUMENT_FILE_GET_URL = (id, applicationGuid, token = {}) =>
-  `${NOTICE_OF_WORK_APPLICATION(applicationGuid)}/document/${id}?${queryString.stringify(token)}`;
+  `/now-submissions/applications/${applicationGuid}/document/${id}?${queryString.stringify(token)}`;
 export const NOTICE_OF_WORK_DOCUMENT_TOKEN_GET_URL = (id, applicationGuid) =>
-  `${NOTICE_OF_WORK_APPLICATION(applicationGuid)}/document/${id}/token`;
+  `/now-submissions/applications/${applicationGuid}/document/${id}/token`;
 export const NOTICE_OF_WORK_APPLICATION_IMPORT = (applicationGuid) =>
   `/now-applications/${applicationGuid}/import`;
 export const NOTICE_OF_WORK_ACTIVITY_TYPE_OPTIONS = "/now-applications/activity-types";
@@ -180,6 +180,8 @@ export const MINE_PARTY_APPOINTMENT_DOCUMENTS = (mineGuid, minePartyAppointmentG
   `/mines/${mineGuid}/party-appts/${minePartyAppointmentGuid}/documents`;
 
 export const NRIS_DOCUMENT_TOKEN_GET_URL = (externalId, inspectionId, file_name) =>
-  `/compliance/inspection/${inspectionId}/document/${externalId}/token?file_name=${file_name}`;
+  `/compliance/inspection/${inspectionId}/document/${externalId}/token?${queryString.stringify({
+    file_name,
+  })}`;
 export const NRIS_DOCUMENT_FILE_GET_URL = (externalId, inspectionId, token) =>
   `/compliance/inspection/${inspectionId}/document/${externalId}?${queryString.stringify(token)}`;

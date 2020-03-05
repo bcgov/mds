@@ -10,13 +10,15 @@ import AddMinespaceUser from "@/components/Forms/AddMinespaceUser";
 
 const propTypes = {
   fetchMineNameList: PropTypes.func.isRequired,
-  mines: PropTypes.arrayOf(CustomPropTypes.mineName),
   createMinespaceUser: PropTypes.func.isRequired,
+  mines: PropTypes.arrayOf(CustomPropTypes.mineName),
+  minespaceUserEmailHash: PropTypes.objectOf(PropTypes.any),
   refreshData: PropTypes.func,
 };
 
 const defaultProps = {
   mines: [],
+  minespaceUserEmailHash: {},
   refreshData: () => {},
 };
 
@@ -25,12 +27,11 @@ export class NewMinespaceUser extends Component {
     this.props.fetchMineNameList();
   }
 
-  createNewBCEIDUser = (values) => {
+  handleSubmit = (values) => {
     const payload = {
-      mine_guids: values.proponent_mine_access.map((val) => val.split("~")[1]),
+      mine_guids: values.proponent_mine_access,
       email: values.user_bceid_email,
     };
-
     this.props.createMinespaceUser(payload).then(() => {
       this.props.refreshData();
     });
@@ -49,14 +50,15 @@ export class NewMinespaceUser extends Component {
   render() {
     return (
       <div>
-        <h3>Add BCeID User</h3>
+        <h3>Create Proponent</h3>
         {this.props.mines && (
           <AddMinespaceUser
             mines={this.props.mines.map((mine) => ({
-              value: `${mine.mine_name}~${mine.mine_guid}`,
-              label: `${mine.mine_name}-${mine.mine_no}`,
+              value: mine.mine_guid,
+              label: `${mine.mine_name} - ${mine.mine_no}`,
             }))}
-            onSubmit={this.createNewBCEIDUser}
+            minespaceUserEmailHash={this.props.minespaceUserEmailHash}
+            onSubmit={this.handleSubmit}
             handleChange={this.handleChange}
             handleSearch={this.handleSearch}
           />
@@ -82,7 +84,4 @@ const mapDispatchToProps = (dispatch) =>
 NewMinespaceUser.propTypes = propTypes;
 NewMinespaceUser.defaultProps = defaultProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(NewMinespaceUser);
+export default connect(mapStateToProps, mapDispatchToProps)(NewMinespaceUser);

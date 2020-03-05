@@ -14,7 +14,18 @@ class NOWApplicationDocumentType(AuditMixin, Base):
     now_application_document_type_code = db.Column(db.String, primary_key=True)
     description = db.Column(db.String, nullable=False)
     active_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
+    document_template_code = db.Column(db.String,
+                                       db.ForeignKey('document_template.document_template_code'))
+
+    document_template = db.relationship("DocumentTemplate", backref="now_application_document_type")
 
     @classmethod
     def active(cls):
         return cls.query.filter_by(active_ind=True).all()
+
+    @classmethod
+    def get_with_context(cls, document_type_code, context_guid):
+        document_type = cls.query.get(document_type_code)
+        if context_guid:
+            document_type.document_template.context_primary_key = context_guid
+        return document_type

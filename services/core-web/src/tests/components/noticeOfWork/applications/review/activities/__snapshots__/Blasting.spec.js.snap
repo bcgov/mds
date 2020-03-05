@@ -19,6 +19,11 @@ exports[`Blasting renders properly 1`] = `
         disabled={true}
         id="has_storage_explosive_on_site"
         name="has_storage_explosive_on_site"
+        validate={
+          Array [
+            [Function],
+          ]
+        }
       />
     </Col>
     <Col
@@ -35,6 +40,11 @@ exports[`Blasting renders properly 1`] = `
         disabled={true}
         id="explosive_permit_issued"
         name="explosive_permit_issued"
+        validate={
+          Array [
+            [Function],
+          ]
+        }
       />
     </Col>
   </Row>

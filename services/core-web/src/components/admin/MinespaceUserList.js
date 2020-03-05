@@ -1,7 +1,8 @@
 import React from "react";
-import { Button, Popconfirm, Icon } from "antd";
+import { Button, Popconfirm } from "antd";
 import PropTypes from "prop-types";
 import * as Strings from "@common/constants/strings";
+import { TRASHCAN } from "@/constants/assets";
 import CustomPropTypes from "@/customPropTypes";
 import NullScreen from "@/components/common/NullScreen";
 import CoreTable from "@/components/common/CoreTable";
@@ -21,10 +22,10 @@ const defaultProps = {
 
 const columns = [
   {
-    title: "User Email",
+    title: "Email",
     width: 150,
     dataIndex: "email",
-    render: (text) => <div title="User Email">{text}</div>,
+    render: (text) => <div title="Email">{text}</div>,
   },
   {
     title: "Mines",
@@ -56,7 +57,7 @@ const columns = [
           cancelText="Cancel"
         >
           <Button className="full-mobile" ghost type="primary">
-            <Icon type="minus-circle" theme="outlined" />
+            <img name="remove" src={TRASHCAN} alt="Remove User" />
           </Button>
         </Popconfirm>
       </div>

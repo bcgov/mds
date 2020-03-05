@@ -1,6 +1,6 @@
 from logging.config import dictConfig
 
-from flask import Flask
+from flask import Flask, request
 
 from flask_cors import CORS
 from flask_restplus import Resource, apidoc
@@ -8,6 +8,7 @@ from flask_compress import Compress
 from sqlalchemy.exc import SQLAlchemyError
 
 from flask_jwt_oidc.exceptions import AuthError
+from werkzeug.exceptions import Forbidden
 
 from app.api.compliance.namespace import api as compliance_api
 from app.api.download_token.namespace import api as download_token_api
@@ -32,7 +33,8 @@ import app.api.utils.setup_marshmallow
 
 def create_app(test_config=None):
     """Create and configure an instance of the Flask application."""
-    dictConfig(Config.LOGGING_DICT_CONFIG)
+    if test_config is None:
+        dictConfig(Config.LOGGING_DICT_CONFIG)
     app = Flask(__name__)
 
     if test_config is None:
@@ -102,10 +104,20 @@ def register_routes(app):
     @api.errorhandler(AuthError)
     def jwt_oidc_auth_error_handler(error):
         app.logger.error(str(error))
+        app.logger.error('REQUEST\n' + str(request))
+        app.logger.error('HEADERS\n ' + str(request.headers))
         return {
             'status': getattr(error, 'status_code', 401),
             'message': str(error),
         }, getattr(error, 'status_code', 401)
+
+    @api.errorhandler(Forbidden)
+    def forbidden_error_handler(error):
+        app.logger.error(str(error))
+        return {
+            'status': getattr(error, 'status_code', 403),
+            'message': str(error),
+        }, getattr(error, 'status_code', 403)
 
     @api.errorhandler(AssertionError)
     def assertion_error_handler(error):

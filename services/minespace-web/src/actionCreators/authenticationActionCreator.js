@@ -34,9 +34,11 @@ export const getUserInfoFromToken = (token, errorMessage) => (dispatch) => {
       },
     })
     .then((response) => {
-      dispatch(getUserRoles(token, response.data.sub));
+      dispatch(getUserRoles(token));
       dispatch(success(reducerTypes.GET_USER_INFO));
       dispatch(authenticationActions.authenticateUser(response.data));
+      // core User has successfully logged in, remove flag from localStorage
+      localStorage.removeItem("authenticatingFromCoreFlag");
     })
     .catch((err) => {
       dispatch(error(reducerTypes.GET_USER_INFO));
@@ -47,16 +49,17 @@ export const getUserInfoFromToken = (token, errorMessage) => (dispatch) => {
           duration: 10,
         });
       } else {
-        throw err;
+        throw new Error(err);
       }
     });
 };
 
-export const authenticateUser = (code) => (dispatch) => {
+export const authenticateUser = (code, redirectUrl = "") => (dispatch) => {
+  const redirect_uri = redirectUrl ? redirectUrl : MINESPACE_ENV.BCEID_LOGIN_REDIRECT_URI;
   const data = {
     code,
     grant_type: "authorization_code",
-    redirect_uri: MINESPACE_ENV.BCEID_LOGIN_REDIRECT_URI,
+    redirect_uri,
     client_id: COMMON_ENV.KEYCLOAK.clientId,
   };
   dispatch(request(reducerTypes.AUTHENTICATE_USER));
@@ -65,14 +68,16 @@ export const authenticateUser = (code) => (dispatch) => {
     .then((response) => {
       dispatch(success(reducerTypes.AUTHENTICATE_USER));
       localStorage.setItem("jwt", response.data.access_token);
-      return dispatch(getUserInfoFromToken(response.data.access_token));
+      dispatch(getUserInfoFromToken(response.data.access_token));
+      return response;
     })
-    .catch(() => {
+    .catch((err) => {
       notification.error({
-        message: "Unexpected error occured, please try again",
+        message: "Unexpected error occurred, please try again",
         duration: 10,
       });
       dispatch(error(reducerTypes.AUTHENTICATE_USER));
       dispatch(unAuthenticateUser());
+      throw new Error(err);
     });
 };

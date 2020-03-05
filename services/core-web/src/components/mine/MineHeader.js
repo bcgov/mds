@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+import { uniqBy } from "lodash";
 import PropTypes from "prop-types";
 import { Menu, Divider, Button, Dropdown, Tag, Popover } from "antd";
 import { openModal, closeModal } from "@common/actions/modalActions";
@@ -237,7 +238,7 @@ export class MineHeader extends Component {
             <div>
               <p>
                 {this.props.transformedMineTypes.mine_tenure_type_code.length > 0
-                  ? this.props.transformedMineTypes.mine_tenure_type_code
+                  ? uniqBy(this.props.transformedMineTypes.mine_tenure_type_code)
                       .map((tenure) => this.props.mineTenureHash[tenure])
                       .join(", ")
                   : String.EMPTY_FIELD}
@@ -247,7 +248,7 @@ export class MineHeader extends Component {
           <div className="inline-flex padding-small wrap">
             <p className="field-title">Commodity</p>
             {this.props.transformedMineTypes.mine_commodity_code.length > 0 ? (
-              this.props.transformedMineTypes.mine_commodity_code.map((code) => (
+              uniqBy(this.props.transformedMineTypes.mine_commodity_code).map((code) => (
                 <Tag key={code}>{this.props.mineCommodityOptionsHash[code]}</Tag>
               ))
             ) : (
@@ -257,7 +258,7 @@ export class MineHeader extends Component {
           <div className="inline-flex padding-small wrap">
             <p className="field-title">Disturbance</p>
             {this.props.transformedMineTypes.mine_disturbance_code.length > 0 ? (
-              this.props.transformedMineTypes.mine_disturbance_code.map((code) => (
+              uniqBy(this.props.transformedMineTypes.mine_disturbance_code).map((code) => (
                 <Tag key={code}>{this.props.mineDisturbanceOptionsHash[code]}</Tag>
               ))
             ) : (
@@ -303,13 +304,13 @@ export class MineHeader extends Component {
           <div className="dashboard__header--card__map--footer">
             <div className="inline-flex between">
               <p className="p-white">
-                Lat:
+                Lat:&nbsp;
                 {this.props.mine.mine_location && this.props.mine.mine_location.latitude
                   ? this.props.mine.mine_location.latitude
                   : String.EMPTY_FIELD}
               </p>
               <p className="p-white">
-                Long:
+                Long:&nbsp;
                 {this.props.mine.mine_location && this.props.mine.mine_location.longitude
                   ? this.props.mine.mine_location.longitude
                   : String.EMPTY_FIELD}
@@ -317,7 +318,7 @@ export class MineHeader extends Component {
             </div>
             <div className="inline-flex between">
               <p className="p-white">
-                Region:{" "}
+                Region:&nbsp;
                 {this.props.mine.mine_region
                   ? this.props.mineRegionHash[this.props.mine.mine_region]
                   : String.EMPTY_FIELD}
@@ -359,7 +360,4 @@ const mapDispatchToProps = (dispatch) =>
 
 MineHeader.propTypes = propTypes;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(MineHeader);
+export default connect(mapStateToProps, mapDispatchToProps)(MineHeader);

@@ -23,7 +23,7 @@ const propTypes = {
 };
 
 const defaultProps = {
-  maxFileSize: "100MB",
+  maxFileSize: "400MB",
   acceptedFileTypesMap: {},
   allowRevert: false,
   onFileLoad: () => {},

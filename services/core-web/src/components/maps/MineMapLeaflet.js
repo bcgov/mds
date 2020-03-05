@@ -1,12 +1,11 @@
+// TODO: Remove this line when the file is more properly implemented.
+/* eslint-disable */
 import React, { Component } from "react";
-
 import L from "leaflet";
 import LeafletWms from "leaflet.wms";
 import scriptLoader from "react-async-script-loader";
-
 import ReactDOMServer from "react-dom/server";
 import PropTypes from "prop-types";
-
 import "leaflet.markercluster";
 import "leaflet/dist/leaflet.css";
 import "leaflet.markercluster/dist/MarkerCluster.css";
@@ -14,7 +13,6 @@ import "leaflet.markercluster/dist/MarkerCluster.Default.css";
 import "vendor/leaflet/leaflet-measure/leaflet-measure.css";
 import "vendor/leaflet/mouse-coordinates/leaflet.mousecoordinate";
 import "vendor/leaflet/grouped-layer-control/leaflet.groupedlayercontrol.min";
-
 import { ENVIRONMENT } from "@common/constants/environment";
 import * as Strings from "@common/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
@@ -34,17 +32,21 @@ import {
 
 const propTypes = {
   mines: PropTypes.objectOf(CustomPropTypes.mine).isRequired,
-  mineCommodityOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
   isScriptLoaded: PropTypes.bool.isRequired,
   isScriptLoadSucceed: PropTypes.bool.isRequired,
+  transformedMineTypes: CustomPropTypes.transformedMineTypes.isRequired,
+  mineRegionHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  mineTenureHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  mineCommodityOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  mineDisturbanceOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   lat: PropTypes.number,
   long: PropTypes.number,
   zoom: PropTypes.number,
   minesBasicInfo: PropTypes.arrayOf(CustomPropTypes.mine),
   mineName: PropTypes.string,
-  transformedMineTypes: CustomPropTypes.transformedMineTypes,
+  mineGuid: PropTypes.string,
 };
 
 const defaultProps = {
@@ -52,7 +54,8 @@ const defaultProps = {
   long: Strings.DEFAULT_LONG,
   zoom: Strings.DEFAULT_ZOOM,
   minesBasicInfo: [],
-  mineName: "",
+  mineName: null,
+  mineGuid: null,
   transformedMineTypes: {},
 };
 
@@ -62,6 +65,9 @@ const leafletWMSTiledOptions = {
   uppercase: true,
   format: "image/png",
 };
+
+const SELECTED_ICON = L.icon({ iconUrl: SMALL_PIN_SELECTED, iconSize: [60, 60] });
+const UNSELECTED_ICON = L.icon({ iconUrl: SMALL_PIN, iconSize: [60, 60] });
 
 // Override global Leaflet.WMS Layer request to return data
 // into an HTML format so that it renders properly in the iframe
@@ -86,8 +92,8 @@ LeafletWms.Source = LeafletWms.Source.extend({
       request: "GetFeatureInfo",
       info_format: "text/html",
       query_layers: layers.join(","),
-      X: Math.round(point.x),
-      Y: Math.round(point.y),
+      X: point.x,
+      Y: point.y,
     };
     return L.extend({}, wmsParams, infoParams);
   },
@@ -108,7 +114,6 @@ LeafletWms.Source = LeafletWms.Source.extend({
     this._map.openPopup(info, latlng, { className: "leaflet-wms-popup" });
   },
 });
-/* eslint-enable */
 
 const getFirstNationLayer = () => {
   const firstNationSource = LeafletWms.source(
@@ -119,6 +124,10 @@ const getFirstNationLayer = () => {
 };
 
 class MineMapLeaflet extends Component {
+  state = {
+    currentMarker: null,
+  };
+
   componentDidMount() {
     // Create the basic leaflet map
     this.map = L.map("leaflet-map", {
@@ -153,28 +162,36 @@ class MineMapLeaflet extends Component {
   };
 
   createPin = (mine) => {
-    const pin = this.props.mineName === mine.mine_name ? SMALL_PIN_SELECTED : SMALL_PIN;
-    const customIcon = L.icon({ iconUrl: pin, iconSize: [60, 60] });
+    const marker = L.marker([mine.latitude, mine.longitude]).bindPopup(Strings.LOADING);
 
-    const latLong = [mine.mine_location.latitude, mine.mine_location.longitude];
+    let icon = UNSELECTED_ICON;
+    if (this.props.mineGuid === mine.mine_guid) {
+      icon = SELECTED_ICON;
+      this.setState({ currentMarker: marker });
+    }
+    marker.setIcon(icon);
 
-    const marker = L.marker(latLong, { icon: customIcon }).bindPopup(Strings.LOADING);
     this.markerClusterGroup.addLayer(marker);
     marker.on("click", this.handleMinePinClick(mine));
   };
 
   handleMinePinClick = (mine) => (e) => {
     this.props.fetchMineRecordById(mine.mine_guid).then(() => {
-      const commodityCodes = this.props.transformedMineTypes.mine_commodity_code.map(
-        (code) => this.props.mineCommodityOptionsHash[code]
-      );
+      if (this.state.currentMarker) {
+        this.state.currentMarker.setIcon(UNSELECTED_ICON);
+      }
+      e.target.setIcon(SELECTED_ICON);
+      this.setState({ currentMarker: e.target });
+
       const popup = e.target.getPopup();
-      popup.setContent(this.renderPopup(this.props.mines[mine.mine_guid], commodityCodes));
+      popup.setContent(
+        this.renderPopup(this.props.mines[mine.mine_guid], this.props.transformedMineTypes)
+      );
     });
   };
 
   addLatLongCircle = () => {
-    if (this.props.lat && this.props.long && !this.props.mineName) {
+    if (!this.props.mineName && this.props.lat && this.props.long) {
       L.circle([this.props.lat, this.props.long], {
         color: "red",
         fillColor: "#f03",
@@ -234,7 +251,6 @@ class MineMapLeaflet extends Component {
       .addTo(this.map);
   };
 
-  /* eslint-disable */
   getLayerGroupFromList = (groupLayerList) => {
     const result = {};
     const layerList = this.webMap.layers;
@@ -260,7 +276,6 @@ class MineMapLeaflet extends Component {
     });
     return result;
   };
-  /* eslint-enable */
 
   initWebMap() {
     // Fetch the WebMap
@@ -283,9 +298,17 @@ class MineMapLeaflet extends Component {
     });
   }
 
-  renderPopup = (mine, commodityCodes = []) => {
+  renderPopup = (mine, transformedMineTypes) => {
     return ReactDOMServer.renderToStaticMarkup(
-      <LeafletPopup mine={mine} commodityCodes={commodityCodes} context={this.context} />
+      <LeafletPopup
+        mine={mine}
+        transformedMineTypes={transformedMineTypes}
+        context={this.context}
+        mineRegionHash={this.props.mineRegionHash}
+        mineTenureHash={this.props.mineTenureHash}
+        mineCommodityOptionsHash={this.props.mineCommodityOptionsHash}
+        mineDisturbanceOptionsHash={this.props.mineDisturbanceOptionsHash}
+      />
     );
   };
 

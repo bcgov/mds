@@ -1,8 +1,8 @@
 import React from "react";
-import { Icon, Popconfirm, Button } from "antd";
+import { Popconfirm, Button } from "antd";
 import PropTypes from "prop-types";
+import { TRASHCAN, EDIT_OUTLINE_VIOLET } from "@/constants/assets";
 import CustomPropTypes from "@/customPropTypes";
-import { EDIT_OUTLINE_VIOLET } from "@/constants/assets";
 
 const propTypes = {
   mineReport: CustomPropTypes.mineReport.isRequired,
@@ -25,7 +25,7 @@ const DeleteButton = (state, props) =>
         cancelText="Cancel"
       >
         <Button ghost type="primary" size="small">
-          <Icon type="minus-circle" theme="outlined" />
+          <img name="remove" src={TRASHCAN} alt="Remove Activity" />
         </Button>
       </Popconfirm>
     ),
@@ -38,7 +38,7 @@ const DeleteButton = (state, props) =>
         cancelText="Cancel"
       >
         <Button ghost type="primary" size="small">
-          <Icon type="minus-circle" theme="outlined" />
+          <img name="remove" src={TRASHCAN} alt="Remove Activity" />
         </Button>
       </Popconfirm>
     ),

@@ -2,9 +2,10 @@ import React from "react";
 import { PropTypes } from "prop-types";
 import { Field, formValueSelector } from "redux-form";
 import { connect } from "react-redux";
-import { Row, Col, Table, Button } from "antd";
+import { Row, Col, Table, Button, Tooltip } from "antd";
+import { maxLength, number } from "@common/utils/Validate";
 import * as FORM from "@/constants/forms";
-import { TRASHCAN } from "@/constants/assets";
+import { TRASHCAN, INFO_CIRCLE } from "@/constants/assets";
 import Equipment from "@/components/noticeOfWork/applications/review/activities/Equipment";
 import RenderField from "@/components/common/RenderField";
 import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
@@ -180,33 +181,35 @@ export const AccessRoads = (props) => {
       <Row gutter={16}>
         <Col md={12} sm={24}>
           <div className="field-title">
-            Are you proposing any bridges, culverts, and crossings?**
-          </div>
-          <Field id="" name="" component={RenderRadioButtons} disabled />
-          <Field id="" name="" component={RenderField} disabled />
-        </Col>
-      </Row>
-      <br />
-      <h4>Reclamation Program</h4>
-      <Row gutter={16}>
-        <Col md={12} sm={24}>
-          <div className="field-title">
-            Proposed reclamation and timing for this specific activity
+            Are you proposing any bridges, culverts, and crossings?
+            <Tooltip
+              title="This field is not being sent by NROS or vFCBC. Open the original PDF to to see the data."
+              placement="right"
+              mouseEnterDelay={1}
+            >
+              <img src={INFO_CIRCLE} alt="INFO" className="info-tooltip" />
+            </Tooltip>
           </div>
           <Field
-            id="reclamation_description"
-            name="reclamation_description"
-            component={RenderAutoSizeField}
+            id="has_proposed_bridges_or_culverts"
+            name="has_proposed_bridges_or_culverts"
+            component={RenderRadioButtons}
             disabled={props.isViewMode}
           />
-        </Col>
-        <Col md={12} sm={24}>
           <div className="field-title">
-            Estimated Cost of reclamation activities described above
+            Describe the changes and reference the locations need on map needed later in the
+            application.
+            <Tooltip
+              title="This field is not being sent by NROS or vFCBC. Open the original PDF to to see the data."
+              placement="right"
+              mouseEnterDelay={1}
+            >
+              <img src={INFO_CIRCLE} alt="INFO" className="info-tooltip" />
+            </Tooltip>
           </div>
           <Field
-            id="reclamation_cost"
-            name="reclamation_cost"
+            id="bridge_culvert_crossing_description"
+            name="bridge_culvert_crossing_description"
             component={RenderField}
             disabled={props.isViewMode}
           />
@@ -220,6 +223,34 @@ export const AccessRoads = (props) => {
         editRecord={props.editRecord}
         addRecord={props.addRecord}
       />
+      <br />
+      <h4>Reclamation Program</h4>
+      <Row gutter={16}>
+        <Col md={12} sm={24}>
+          <div className="field-title">
+            Proposed reclamation and timing for this specific activity
+          </div>
+          <Field
+            id="reclamation_description"
+            name="reclamation_description"
+            component={RenderAutoSizeField}
+            disabled={props.isViewMode}
+            validate={[maxLength(4000)]}
+          />
+        </Col>
+        <Col md={12} sm={24}>
+          <div className="field-title">
+            Estimated Cost of reclamation activities described above
+          </div>
+          <Field
+            id="reclamation_cost"
+            name="reclamation_cost"
+            component={RenderField}
+            disabled={props.isViewMode}
+            validate={[number]}
+          />
+        </Col>
+      </Row>
     </div>
   );
 };

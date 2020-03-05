@@ -65,6 +65,11 @@ exports[`SurfaceDrilling renders properly 1`] = `
         disabled={true}
         id="reclamation_core_storage"
         name="reclamation_core_storage"
+        validate={
+          Array [
+            [Function],
+          ]
+        }
       />
     </Col>
   </Row>
@@ -89,6 +94,11 @@ exports[`SurfaceDrilling renders properly 1`] = `
         disabled={true}
         id="reclamation_description"
         name="reclamation_description"
+        validate={
+          Array [
+            [Function],
+          ]
+        }
       />
     </Col>
     <Col
@@ -105,6 +115,11 @@ exports[`SurfaceDrilling renders properly 1`] = `
         disabled={true}
         id="reclamation_cost"
         name="reclamation_cost"
+        validate={
+          Array [
+            [Function],
+          ]
+        }
       />
     </Col>
   </Row>
