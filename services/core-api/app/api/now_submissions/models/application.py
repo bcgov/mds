@@ -199,10 +199,15 @@ class Application(Base):
     istimberselect = db.Column(db.String)
     originating_system = db.Column(db.String)
 
-    mine = db.relationship('Mine', lazy='joined')
+    mine = db.relationship(
+        'Mine',
+        lazy='joined',
+        uselist=False,
+        primaryjoin='Mine.mine_guid==Application.mine_guid',
+        foreign_keys=mine_guid)
 
-    applicant = db.relationship('Client', lazy='select', foreign_keys=[applicantclientid])
-    submitter = db.relationship('Client', lazy='select', foreign_keys=[submitterclientid])
+    applicant = db.relationship('Client', uselist=False, lazy='select', foreign_keys=[applicantclientid])
+    submitter = db.relationship('Client', uselist=False, lazy='select', foreign_keys=[submitterclientid])
     contacts = db.relationship('Contact', lazy='select')
     documents = db.relationship('Document', lazy='select')
 

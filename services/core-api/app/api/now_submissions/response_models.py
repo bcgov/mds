@@ -362,6 +362,7 @@ PAGINATED_APPLICATION_LIST = api.inherit('PaginatedApplicationList', PAGINATED_L
 
 APPLICATIONNDA = api.model(
     'ApplicationNDA', {
+        "messageid": fields.Integer,
         'application_nda_guid': fields.String,
         'originating_system': fields.String,
         'mine_guid': fields.String,
@@ -372,7 +373,6 @@ APPLICATIONNDA = api.model(
         'receiveddate': fields.DateTime,
         'typedeemedauthorization': fields.String,
         'permitnumber': fields.String,
-        'minenumber': fields.String,
         'minenumber': fields.String,
         'nownumber': fields.String,
         'planactivitiesdrillprogram': fields.String,
