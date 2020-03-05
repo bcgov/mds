@@ -180,6 +180,8 @@ export const MINE_PARTY_APPOINTMENT_DOCUMENTS = (mineGuid, minePartyAppointmentG
   `/mines/${mineGuid}/party-appts/${minePartyAppointmentGuid}/documents`;
 
 export const NRIS_DOCUMENT_TOKEN_GET_URL = (externalId, inspectionId, file_name) =>
-  `/compliance/inspection/${inspectionId}/document/${externalId}/token?file_name=${file_name}`;
+  `/compliance/inspection/${inspectionId}/document/${externalId}/token?${queryString.stringify({
+    file_name,
+  })}`;
 export const NRIS_DOCUMENT_FILE_GET_URL = (externalId, inspectionId, token) =>
   `/compliance/inspection/${inspectionId}/document/${externalId}?${queryString.stringify(token)}`;

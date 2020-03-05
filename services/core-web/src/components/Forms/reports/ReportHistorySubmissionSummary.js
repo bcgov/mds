@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Divider } from "antd";
+import { formatDate } from "@common/utils/helpers";
 import FormItemLabel from "@/components/common/FormItemLabel";
 import CommentPanel from "@/components/common/comments/CommentPanel";
 import { UploadedDocumentsTable } from "@/components/common/UploadedDocumentTable";
@@ -16,7 +17,7 @@ const actionBuilder = (visible) => [visible && <span>Comment published to Minesp
 const ReportHistorySubmissionSummary = (props) => (
   <React.Fragment>
     <div className="padding-xxl--bottom">
-      <h4>{props.mineReportSubmission.submission_date}</h4>
+      <h4>{formatDate(props.mineReportSubmission.submission_date)}</h4>
       <Divider style={{ margin: "0" }} />
       <FormItemLabel>Revision Status</FormItemLabel>
       <div>

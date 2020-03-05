@@ -1,28 +1,24 @@
 import React from "react";
 import PropTypes from "prop-types";
+import CustomPropTypes from "@/customPropTypes";
 import EditReportForm from "@/components/Forms/reports/EditReportForm";
 
 const propTypes = {
+  mineGuid: PropTypes.string.isRequired,
+  mineReport: CustomPropTypes.mineReport.isRequired,
   onSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
-  title: PropTypes.string.isRequired,
-  mineGuid: PropTypes.string.isRequired,
-  initialValues: PropTypes.objectOf(PropTypes.any),
 };
-
-const defaultProps = { initialValues: {} };
 
 export const EditReportModal = (props) => (
   <EditReportForm
+    mineGuid={props.mineGuid}
+    mineReport={props.mineReport}
     onSubmit={props.onSubmit}
     closeModal={props.closeModal}
-    title={props.title}
-    mineGuid={props.mineGuid}
-    initialValues={props.initialValues}
   />
 );
 
 EditReportModal.propTypes = propTypes;
-EditReportModal.defaultProps = defaultProps;
 
 export default EditReportModal;
