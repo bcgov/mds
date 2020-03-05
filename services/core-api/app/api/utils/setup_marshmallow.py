@@ -99,7 +99,7 @@ def setup_schema(Base, session):
                     schema_class = type(schema_class_name, (class_._ModelSchema, ), {"Meta": Meta})
 
                     setattr(class_, "_schema", schema_class)
-                    current_app.logger.debug(f'created {class_}')
+                    current_app.logger.debug(f'created schema for {class_}')
                 except Exception as e:
                     raise e
 
@@ -109,7 +109,8 @@ def setup_schema(Base, session):
                     mapper = inspect(class_)
                     for rel in mapper.relationships:
                         if hasattr(rel.entity.class_, "_schema"):
-                            current_app.logger.debug(rel.key)
+                            current_app.logger.debug(
+                                f'creating nested schema on relationship: {rel.key}')
                             class_._schema._declared_fields[rel.key] = fields.Nested(
                                 rel.entity.class_._schema, many=rel.uselist)
                             #exclude=[rel.backref.key] + [pk.name for pk in mapper.primary_keys])
@@ -120,7 +121,6 @@ def setup_schema(Base, session):
 
 
 # TODO: finish this and resolve errors now_application/activity_detail_base.activity_type_code to all for programatic generation of schema
-# TODO: add call to model method to execute post_generation of schema.
 
 event.listen(mapper, "after_configured", run_after_configure)
 # Base.metadata.create_all(db.engine.connect()) # i think this is not used

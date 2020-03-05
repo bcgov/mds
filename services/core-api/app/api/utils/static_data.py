@@ -5,11 +5,15 @@ from sqlalchemy.dialects.postgresql import UUID
 from app.api.now_applications import models as app_models
 
 from app.api.constants import STATIC_DATA
+""" 
+This function is run right before setup_marshmallow and it looks through all of tables in our database.
+It creates a mapping of classes to lists if their PK's, this is only done for code tables. To find the code tables
+the classes are inspected and if they have a column named active_ind, it's type is not a UUID and its type is a string
+the PK's are added to STATIC_DATA under the class name.
 
-# This function is run right before setup_marshmallow and it looks through all of tables in our database.
-# It creates a mapping of classes to lists if their PK's, this is only done for code tables. To find the code tables
-# the classes are inspected and if they have a column named active_ind, it's type is not a UUID and its type is a string
-# the PK's are added to STATIC_DATA under the class name.
+Parameters: Base <SQL Alchemy Model>
+Return: None
+"""
 
 
 def setup_static_data(Base):
@@ -33,18 +37,11 @@ def setup_static_data(Base):
 
                     if class_ in app_models.model_list and col.name == 'description':
                         if type(pk.type) != UUID and pk.type.python_type == str:
-                            current_app.logger.debug(class_)
                             STATIC_DATA[f'{class_.__name__}_description'] = [
                                 a for a, in class_.query.with_entities(
                                     getattr(class_, 'description', None)).filter_by(
                                         active_ind=True).all()
                             ]
 
-                    # if one of the now classes:
-                    #     add descriptions to static data.
-
-                    #exclude=[rel.backref.key] + [pk.name for pk in mapper.primary_keys])
             except Exception as e:
                 raise e
-
-    current_app.logger.debug(STATIC_DATA)
