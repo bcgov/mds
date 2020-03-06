@@ -1,6 +1,6 @@
 import requests
 from flask import Response, stream_with_context, request, current_app
-from urllib.parse import urlparse
+from urllib.parse import urlparse, quote
 from app.extensions import cache
 from app.api.constants import VFCBC_COOKIES, TIMEOUT_60_MINUTES
 
@@ -59,6 +59,7 @@ class VFCBCDownloadService():
             stream_with_context(file_download_req.iter_content(chunk_size=2048)))
 
         file_download_resp.headers['Content-Type'] = file_download_req.headers['Content-Type']
-        file_download_resp.headers['Content-Disposition'] = f'attachment; filename="{file_name}"'
+        file_download_resp.headers[
+            'Content-Disposition'] = f'attachment; filename="{quote(file_name)}"'
 
         return file_download_resp
