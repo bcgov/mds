@@ -150,10 +150,10 @@ export class ReportsHomePage extends Component {
                   .mine_report_submission_status_code
               : "NRQ",
         },
-        onSubmit,
         title: `Edit ${report.submission_year} ${report.report_name}`,
-        mineGuid: this.props.mineGuid,
+        mineGuid: report.mine_guid,
         changeModalTitle: this.props.changeModalTitle,
+        onSubmit,
       },
       content: modalConfig.ADD_REPORT,
     });
@@ -216,7 +216,4 @@ const mapDispatchToProps = (dispatch) =>
 
 ReportsHomePage.propTypes = propTypes;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ReportsHomePage);
+export default connect(mapStateToProps, mapDispatchToProps)(ReportsHomePage);

@@ -185,6 +185,7 @@ export class MineReportInfo extends Component {
         : this.props.mineReportDefinitionOptions.map(
             (definition) => definition.mine_report_definition_guid
           );
+
     const filteredReports = reports.filter((report) =>
       this.handleFiltering(report, formattedParams, filteredReportDefinitionGuids)
     );
@@ -192,10 +193,18 @@ export class MineReportInfo extends Component {
       filteredReports,
       reportFilterParams: formattedParams,
     });
+
+    console.log("renderDataFromURL params:\n", params);
+    console.log("renderDataFromURL reports:\n", reports);
+    console.log(
+      "renderDataFromURL filteredReportDefinitionGuids:\n",
+      filteredReportDefinitionGuids
+    );
+    console.log("renderDataFromURL filteredReports:\n", filteredReports);
   };
 
   handleFiltering = (report, params, reportDefinitionGuids) => {
-    // convert string to boolean before passing it into a filter check
+    console.log("handleFiltering");
     const report_name =
       params.report_name === "" || report.mine_report_definition_guid.includes(params.report_name);
     const report_type =
@@ -286,7 +295,4 @@ const mapDispatchToProps = (dispatch) =>
 
 MineReportInfo.propTypes = propTypes;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(MineReportInfo);
+export default connect(mapStateToProps, mapDispatchToProps)(MineReportInfo);

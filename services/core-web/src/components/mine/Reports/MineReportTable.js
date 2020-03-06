@@ -43,7 +43,7 @@ export const MineReportTable = (props) => {
       key: "mine_report_id",
       dataIndex: "mine_report_id",
       sortField: "mine_report_id",
-      sorter: props.isDashboardView || ((a, b) => (a.mine_report_id > b.mine_report_id ? -1 : 1)),
+      sorter: props.isDashboardView || ((a, b) => (a.mine_report_id < b.mine_report_id ? -1 : 1)),
       render: (text, record) => (
         <div title="Number" style={record.isOverdue ? { color: errorRed } : {}}>
           {text}
@@ -103,7 +103,7 @@ export const MineReportTable = (props) => {
       key: "submission_year",
       dataIndex: "submission_year",
       sortField: "submission_year",
-      sorter: props.isDashboardView || ((a, b) => (a.submission_year > b.submission_year ? -1 : 1)),
+      sorter: props.isDashboardView || ((a, b) => (a.submission_year < b.submission_year ? -1 : 1)),
       render: (text, record) => (
         <div title="Compliance Year" style={record.isOverdue ? { color: errorRed } : {}}>
           {text}
@@ -118,7 +118,7 @@ export const MineReportTable = (props) => {
       sorter: props.isDashboardView || dateSorter("due_date"),
       render: (text, record) => (
         <div title="Due" style={record.isOverdue ? { color: errorRed } : {}}>
-          {text}
+          {text || Strings.EMPTY_FIELD}
         </div>
       ),
     },
@@ -130,7 +130,7 @@ export const MineReportTable = (props) => {
       sorter: props.isDashboardView || dateSorter("received_date"),
       render: (text, record) => (
         <div title="Received" style={record.isOverdue ? { color: errorRed } : {}}>
-          {text}
+          {text || Strings.EMPTY_FIELD}
         </div>
       ),
     },
@@ -139,9 +139,8 @@ export const MineReportTable = (props) => {
       dataIndex: "created_by_idir",
       key: "created_by_idir",
       sortField: "created_by_idir",
-      sorter: props.isDashboardView
-        ? false
-        : (a, b) => a.created_by_idir.localeCompare(b.created_by_idir),
+      sorter:
+        props.isDashboardView || ((a, b) => a.created_by_idir.localeCompare(b.created_by_idir)),
       className: hideColumn(props.isDashboardView),
       render: (text, record) => (
         <div
@@ -198,7 +197,7 @@ export const MineReportTable = (props) => {
   const transformRowData = (reports, openEditReportModal, handleEditReport, handleRemoveReport) =>
     reports.map((report) => ({
       key: report.mine_report_guid,
-      mine_report_id: report.mine_report_id,
+      mine_report_id: Number(report.mine_report_id),
       mine_report_guid: report.mine_report_guid,
       mine_report_definition_guid: report.mine_report_definition_guid,
       mine_report_category:
@@ -206,9 +205,9 @@ export const MineReportTable = (props) => {
           props.mineReportCategoryOptionsHash[report.mine_report_category]) ||
         Strings.EMPTY_FIELD,
       report_name: report.report_name,
-      due_date: formatDate(report.due_date) || Strings.EMPTY_FIELD,
-      received_date: formatDate(report.received_date) || Strings.EMPTY_FIELD,
-      submission_year: report.submission_year,
+      due_date: formatDate(report.due_date),
+      received_date: formatDate(report.received_date),
+      submission_year: Number(report.submission_year),
       created_by_idir: report.created_by_idir,
       permit_guid: report.permit_guid || Strings.EMPTY_FIELD,
       documents:

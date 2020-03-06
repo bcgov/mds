@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-
 import { Icon } from "antd";
 import AddReportForm from "@/components/Forms/reports/AddReportForm";
 import ReportHistory from "@/components/Forms/reports/ReportHistory";
@@ -21,18 +20,25 @@ const defaultProps = { initialValues: {}, disableAddReport: false };
 
 export const AddReportModal = (props) => {
   const [selectedForm, setSelectedForm] = useState(0);
+
+  const resetScrollPosition = () =>
+    document.getElementsByClassName("ant-modal-wrap")[0].scrollTo(0, 0);
+
+  const baseTitle = `${props.initialValues.submission_year} ${props.initialValues.report_name}`;
+
   const hideReportHistory = () => {
-    document.getElementsByClassName("ant-modal-wrap")[0].scrollTo(0, 0);
+    resetScrollPosition();
     setSelectedForm(0);
-    props.changeModalTitle(
-      `Edit ${props.initialValues.submission_year} ${props.initialValues.report_name}`
-    );
+    props.changeModalTitle(`Edit ${baseTitle}`);
   };
+
   const showReportHistory = () => {
-    document.getElementsByClassName("ant-modal-wrap")[0].scrollTo(0, 0);
+    resetScrollPosition();
+    setSelectedForm(1);
     props.changeModalTitle(
       <div className="ant-modal-title">
-        {`File History for ${props.initialValues.submission_year} ${props.initialValues.report_name}`}
+        {`File History for ${baseTitle}`}
+        <br />
         <br />
         <LinkButton onClick={hideReportHistory}>
           <Icon type="arrow-left" style={{ paddingRight: "5px" }} />
@@ -40,8 +46,8 @@ export const AddReportModal = (props) => {
         </LinkButton>
       </div>
     );
-    setSelectedForm(1);
   };
+
   return (
     <div>
       <SlidingForms

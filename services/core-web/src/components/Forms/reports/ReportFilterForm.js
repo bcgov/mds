@@ -24,8 +24,8 @@ const propTypes = {
 };
 
 const defaultProps = {
-  selectedMineReportDefinitionGuid: null,
   selectedMineReportCategory: null,
+  selectedMineReportDefinitionGuid: null,
 };
 
 const selector = formValueSelector(FORM.FILTER_REPORTS);
@@ -41,12 +41,10 @@ export class ReportFilterForm extends Component {
     this.props.onSubmit();
   };
 
-  componentDidMount = () => {
-    this.updateMineReportOptions(this.props.mineReportDefinitionOptions);
-    this.updateMineReportCategoryOptions(this.props.dropdownMineReportCategoryOptions);
-  };
-
-  updateMineReportOptions = (mineReportDefinitionOptions, selectedMineReportCategory) => {
+  updateMineReportDefinitionOptions = (
+    mineReportDefinitionOptions,
+    selectedMineReportCategory = null
+  ) => {
     let mineReportDefinitionOptionsFiltered = mineReportDefinitionOptions;
 
     if (selectedMineReportCategory) {
@@ -70,7 +68,7 @@ export class ReportFilterForm extends Component {
 
   updateMineReportCategoryOptions = (
     dropdownMineReportCategoryOptions,
-    selectedMineReportDefinitionGuid
+    selectedMineReportDefinitionGuid = null
   ) => {
     let dropdownMineReportCategoryOptionsFiltered = dropdownMineReportCategoryOptions;
 
@@ -85,18 +83,30 @@ export class ReportFilterForm extends Component {
           .includes(cat.value)
       );
     }
+
     this.setState({
       dropdownMineReportCategoryOptionsFiltered,
     });
   };
 
   componentWillReceiveProps = (nextProps) => {
+    if (nextProps.mineReportDefinitionOptions !== this.props.mineReportDefinitionOptions) {
+      this.updateMineReportDefinitionOptions(nextProps.mineReportDefinitionOptions);
+    }
+
+    if (
+      nextProps.dropdownMineReportCategoryOptions !== this.props.dropdownMineReportCategoryOptions
+    ) {
+      this.updateMineReportCategoryOptions(nextProps.dropdownMineReportCategoryOptions);
+    }
+
     if (nextProps.selectedMineReportCategory !== this.props.selectedMineReportCategory) {
-      this.updateMineReportOptions(
+      this.updateMineReportDefinitionOptions(
         nextProps.mineReportDefinitionOptions,
         nextProps.selectedMineReportCategory
       );
     }
+
     if (
       nextProps.selectedMineReportDefinitionGuid !== this.props.selectedMineReportDefinitionGuid
     ) {
@@ -114,16 +124,6 @@ export class ReportFilterForm extends Component {
           <Row gutter={16}>
             <Col md={8} sm={24}>
               <Field
-                id="report_name"
-                name="report_name"
-                label="Report Name"
-                placeholder="Start typing a report name"
-                component={renderConfig.SELECT}
-                data={this.state.dropdownMineReportDefinitionOptionsFiltered}
-              />
-            </Col>
-            <Col md={8} sm={24}>
-              <Field
                 id="report_type"
                 name="report_type"
                 label="Report Type"
@@ -134,10 +134,20 @@ export class ReportFilterForm extends Component {
             </Col>
             <Col md={8} sm={24}>
               <Field
+                id="report_name"
+                name="report_name"
+                label="Report Name"
+                placeholder="Select a report name"
+                component={renderConfig.SELECT}
+                data={this.state.dropdownMineReportDefinitionOptionsFiltered}
+              />
+            </Col>
+            <Col md={8} sm={24}>
+              <Field
                 id="compliance_year"
                 name="compliance_year"
                 label="Compliance Year"
-                placeholder="Start date"
+                placeholder="Select compliance year"
                 component={renderConfig.YEAR}
               />
             </Col>
@@ -158,7 +168,7 @@ export class ReportFilterForm extends Component {
                 id="report_due_date_start"
                 name="report_due_date_start"
                 label="Report Due Date"
-                placeholder="Start date"
+                placeholder="Select start date"
                 component={renderConfig.DATE}
               />
             </Col>
@@ -166,7 +176,7 @@ export class ReportFilterForm extends Component {
               <Field
                 id="report_due_date_end"
                 name="report_due_date_end"
-                placeholder="End date"
+                placeholder="Select end date"
                 label="&nbsp;"
                 component={renderConfig.DATE}
               />
@@ -188,7 +198,7 @@ export class ReportFilterForm extends Component {
             Clear Filters
           </Button>
           <Button className="full-mobile" type="primary" htmlType="submit">
-            Filter Reports
+            Apply Filters
           </Button>
         </div>
       </Form>
