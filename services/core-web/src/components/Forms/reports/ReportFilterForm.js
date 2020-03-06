@@ -127,7 +127,7 @@ export class ReportFilterForm extends Component {
                 id="report_type"
                 name="report_type"
                 label="Report Type"
-                placeholder="Select a report type"
+                placeholder="Select the report type"
                 component={renderConfig.SELECT}
                 data={this.state.dropdownMineReportCategoryOptionsFiltered}
               />
@@ -137,7 +137,7 @@ export class ReportFilterForm extends Component {
                 id="report_name"
                 name="report_name"
                 label="Report Name"
-                placeholder="Select a report name"
+                placeholder="Select the report name"
                 component={renderConfig.SELECT}
                 data={this.state.dropdownMineReportDefinitionOptionsFiltered}
               />
@@ -147,7 +147,7 @@ export class ReportFilterForm extends Component {
                 id="compliance_year"
                 name="compliance_year"
                 label="Compliance Year"
-                placeholder="Select compliance year"
+                placeholder="Select the compliance year"
                 component={renderConfig.YEAR}
               />
             </Col>
@@ -156,41 +156,45 @@ export class ReportFilterForm extends Component {
               <Field
                 id="requested_by"
                 name="requested_by"
-                label="Requested by"
-                placeholder="Start typing an inspector name"
+                label="Requested By"
+                placeholder="Select the inspector's name"
                 component={renderConfig.SELECT}
               />
             </Col> */}
           </Row>
-          <Row gutter={6}>
-            <Col md={4} sm={24}>
-              <Field
-                id="report_due_date_start"
-                name="report_due_date_start"
-                label="Report Due Date"
-                placeholder="Select start date"
-                component={renderConfig.DATE}
-              />
-            </Col>
-            <Col md={4} sm={24}>
-              <Field
-                id="report_due_date_end"
-                name="report_due_date_end"
-                placeholder="Select end date"
-                label="&nbsp;"
-                component={renderConfig.DATE}
-              />
-            </Col>
-            {/* This was left in as it is expected to be used with the non MVP version of the code required reports. */}
-            {/* <Col md={6} sm={24}>
+          <Row gutter={16}>
+            <Col>
+              <Form.Item label="Due Date">
+                <Row gutter={16}>
+                  <Col md={4} sm={24}>
+                    <Field
+                      id="report_due_date_start"
+                      name="report_due_date_start"
+                      placeholder="Select the start date"
+                      component={renderConfig.DATE}
+                    />
+                  </Col>
+                  <Col md={4} sm={24}>
+                    <Field
+                      id="report_due_date_end"
+                      name="report_due_date_end"
+                      placeholder="Select the end date"
+                      component={renderConfig.DATE}
+                    />
+                  </Col>
+                </Row>
+              </Form.Item>
+              {/* This was left in as it is expected to be used with the non MVP version of the code required reports. */}
+              {/* <Col md={6} sm={24}>
               <Field
                 id="report_status"
                 name="report_status"
-                label="Review status"
-                placeholder="Select a review status"
+                label="Review Status"
+                placeholder="Select review status"
                 component={renderConfig.SELECT}
               />
             </Col> */}
+            </Col>
           </Row>
         </div>
         <div className="right center-mobile">

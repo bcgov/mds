@@ -51,19 +51,19 @@ const propTypes = {
   }).isRequired,
 };
 
-const initialSearchValues = {
-  report_name: "",
-  report_type: "",
-  compliance_year: "",
-  report_due_date_start: "",
-  report_due_date_end: "",
-  report_status: "",
+const defaultParams = {
+  report_name: undefined,
+  report_type: undefined,
+  compliance_year: undefined,
+  report_due_date_start: undefined,
+  report_due_date_end: undefined,
+  report_status: undefined,
 };
 
 export class MineReportInfo extends Component {
   state = {
     mine: {},
-    reportFilterParams: initialSearchValues,
+    params: defaultParams,
     filteredReports: [],
     isLoaded: false,
     disableAddReport: false,
@@ -72,6 +72,7 @@ export class MineReportInfo extends Component {
   componentWillMount = () => {
     this.props.fetchMineReports(this.props.mineGuid).then(() => {
       this.setState({ isLoaded: true });
+      console.log("componentWillMount: this.props.location.search\n", this.props.location.search);
       if (this.props.location.search) {
         this.renderDataFromURL(this.props.location.search);
       } else {
@@ -80,18 +81,14 @@ export class MineReportInfo extends Component {
     });
   };
 
-  componentDidMount = () => {
-    this.setState({
-      mine: this.props.mines[this.props.mineGuid],
-    });
-  };
-
   componentWillReceiveProps = (nextProps) => {
-    const locationChanged = nextProps.location !== this.props.location;
-    if (locationChanged) {
-      const correctParams = nextProps.location.search
-        ? nextProps.location.search
-        : queryString.stringify(initialSearchValues);
+    if (nextProps.mines !== this.props.mines || nextProps.mineGuid !== this.props.mineGuid) {
+      this.setState({
+        mine: nextProps.mines[nextProps.mineGuid],
+      });
+    }
+    if (nextProps.location !== this.props.location) {
+      const correctParams = nextProps.location.search || queryString.stringify(defaultParams);
       this.renderDataFromURL(correctParams);
     }
   };
@@ -173,25 +170,24 @@ export class MineReportInfo extends Component {
   renderDataFromURL = (params) => {
     const formattedParams = queryString.parse(params);
     const reports = this.props.mineReports || [];
-    const filteredReportDefinitionGuids =
-      formattedParams.report_type !== ""
-        ? this.props.mineReportDefinitionOptions
-            .filter((option) =>
-              option.categories
-                .map((category) => category.mine_report_category)
-                .includes(formattedParams.report_type)
-            )
-            .map((definition) => definition.mine_report_definition_guid)
-        : this.props.mineReportDefinitionOptions.map(
-            (definition) => definition.mine_report_definition_guid
-          );
+    const filteredReportDefinitionGuids = formattedParams.report_type
+      ? this.props.mineReportDefinitionOptions
+          .filter((option) =>
+            option.categories
+              .map((category) => category.mine_report_category)
+              .includes(formattedParams.report_type)
+          )
+          .map((definition) => definition.mine_report_definition_guid)
+      : this.props.mineReportDefinitionOptions.map(
+          (definition) => definition.mine_report_definition_guid
+        );
 
     const filteredReports = reports.filter((report) =>
       this.handleFiltering(report, formattedParams, filteredReportDefinitionGuids)
     );
     this.setState({
       filteredReports,
-      reportFilterParams: formattedParams,
+      params: formattedParams,
     });
 
     console.log("renderDataFromURL params:\n", params);
@@ -206,17 +202,16 @@ export class MineReportInfo extends Component {
   handleFiltering = (report, params, reportDefinitionGuids) => {
     console.log("handleFiltering");
     const report_name =
-      params.report_name === "" || report.mine_report_definition_guid.includes(params.report_name);
-    const report_type =
-      params.report_type === "" ||
-      reportDefinitionGuids.includes(report.mine_report_definition_guid.toLowerCase());
+      !params.report_name || report.mine_report_definition_guid.includes(params.report_name);
+    const report_type = !params.report_type;
+    reportDefinitionGuids.includes(report.mine_report_definition_guid.toLowerCase());
     const compliance_year =
-      params.compliance_year === "" || params.compliance_year.includes(report.submission_year);
+      !params.compliance_year || params.compliance_year.includes(report.submission_year);
     const report_due_date_start =
-      params.report_due_date_start === "" ||
+      !params.report_due_date_start ||
       moment(report.due_date, "YYYY-MM-DD") >= moment(params.report_due_date_start, "YYYY-MM-DD");
     const report_due_date_end =
-      params.report_due_date_end === "" ||
+      !params.report_due_date_end ||
       moment(report.due_date, "YYYY-MM-DD") <= moment(params.report_due_date_end, "YYYY-MM-DD");
     return (
       report_name && report_type && compliance_year && report_due_date_start && report_due_date_end
@@ -254,11 +249,9 @@ export class MineReportInfo extends Component {
         <div className="advanced-search__container">
           <div>
             <h2>Filter By</h2>
+            <br />
           </div>
-          <ReportFilterForm
-            onSubmit={this.handleReportFilter}
-            initialValues={this.state.reportFilterParams}
-          />
+          <ReportFilterForm onSubmit={this.handleReportFilter} initialValues={this.state.params} />
         </div>
         <MineReportTable
           isLoaded={this.state.isLoaded}
