@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import { PropTypes } from "prop-types";
 import { Anchor } from "antd";
+import { activitiesMenu, renderActivities } from "@/constants/NOWConditions";
 
 const { Link } = Anchor;
 
@@ -23,6 +24,7 @@ const propTypes = {
     },
   }).isRequired,
   route: PropTypes.shape({ hashRoute: PropTypes.func }).isRequired,
+  noticeOfWorkType: PropTypes.string.isRequired,
 };
 
 export class NOWSideMenu extends Component {
@@ -91,7 +93,12 @@ export class NOWSideMenu extends Component {
             this.anchor = anchor;
           }}
         >
-          <Link href="#application-info" title="Application Info" />
+          {activitiesMenu
+            .filter(({ href }) => !renderActivities(this.props.noticeOfWorkType, href))
+            .map(({ href, title }) => (
+              <Link href={`#${href}`} title={title} />
+            ))}
+          {/* <Link href="#application-info" title="Application Info" />
           <Link href="#contacts" title="Contacts" />
           <Link href="#access" title="Access" />
           <Link href="#state-of-land" title="State of Land" />
@@ -116,7 +123,7 @@ export class NOWSideMenu extends Component {
           <Link href="#placer-operation" title="Placer Operations" />
           <Link href="#water-supply" title="Water Supply" />
           <Link href="#submission-documents" title="Submission Documents" />
-          <Link href="#additional-documents" title="Additional Documents" />
+          <Link href="#additional-documents" title="Additional Documents" /> */}
         </Anchor>
       </div>
     );

@@ -18,7 +18,7 @@ import SurfaceBulkSamples from "@/components/noticeOfWork/applications/review/ac
 import WaterSupply from "@/components/noticeOfWork/applications/review/activities/WaterSupply";
 import UndergroundExploration from "@/components/noticeOfWork/applications/review/activities/UndergroundExploration";
 import Placer from "@/components/noticeOfWork/applications/review/activities/Placer";
-import { activityConditions } from "@/constants/NOWConditions";
+import { renderActivities } from "@/constants/NOWConditions";
 
 /**
  * @constant ReviewActivities renders edit/view for the NoW Application review step
@@ -50,10 +50,6 @@ export const ReviewActivities = (props) => {
 
   const addRecord = (activity, newActivity) => {
     props.arrayPush(FORM.EDIT_NOTICE_OF_WORK, activity, newActivity);
-  };
-
-  const renderActivities = (type, activity) => {
-    return activityConditions[type].includes(activity);
   };
 
   return (
@@ -96,7 +92,7 @@ export const ReviewActivities = (props) => {
         id="cut-lines-polarization-survey"
         title="Cut Lines and Induced Polarization Survey"
         data={props.noticeOfWork.cut_lines_polarization_survey}
-        showContent={renderActivities(props.noticeOfWorkType, "cut_lines_polarization_survey")}
+        showContent={renderActivities(props.noticeOfWorkType, "cut-lines-polarization-survey")}
         isViewMode={props.isViewMode}
       >
         <FormSection name="cut_lines_polarization_survey">
@@ -179,7 +175,7 @@ export const ReviewActivities = (props) => {
         id="sand-and-gravel"
         title="Sand and Gravel / Quarry Operations"
         data={props.noticeOfWork.sand_and_gravel}
-        showContent={renderActivities(props.noticeOfWorkType, "sand_and_gravel")}
+        showContent={renderActivities(props.noticeOfWorkType, "sand-and-gravel")}
         isViewMode={props.isViewMode}
       >
         <FormSection name="sand_and_gravel">
