@@ -6,9 +6,9 @@ import * as MOCK from "@/tests/mocks/dataMocks";
 const props = {};
 
 const setupProps = () => {
-  props.mineIds = MOCK.MINES.mineIds;
   props.mines = MOCK.MINES.mines;
   props.mineRegionHash = MOCK.REGION_HASH;
+  props.mineTenureHash = MOCK.TENURE_HASH;
 };
 
 beforeEach(() => {

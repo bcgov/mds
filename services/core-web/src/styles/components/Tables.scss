@@ -1,3 +1,8 @@
+.cap-col-height {
+  max-height: 25px * 6;
+  overflow-y: auto;
+}
+
 .ant-table-body {
   overflow-x: auto;
 }

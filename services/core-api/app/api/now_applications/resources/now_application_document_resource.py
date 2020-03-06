@@ -30,6 +30,7 @@ class NOWApplicationDocumentUploadResource(Resource, UserMixin):
 
 class NOWApplicationDocumentResource(Resource, UserMixin):
     @api.response(204, 'Successfully deleted.')
+    @requires_role_edit_permit
     def delete(self, application_guid, mine_document_guid):
         mine_document = MineDocument.find_by_mine_document_guid(mine_document_guid)
         if not mine_document or application_guid != str(

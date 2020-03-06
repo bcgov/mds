@@ -1,9 +1,9 @@
 import React from "react";
 import { Table, Button } from "antd";
 import PropTypes from "prop-types";
-import { truncateFilename } from "@common/utils/helpers";
+import { truncateFilename, dateSorter } from "@common/utils/helpers";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
-import { formatDate, dateSorter } from "@/utils/helpers";
+import { formatDate } from "@/utils/helpers";
 import * as Strings from "@/constants/strings";
 import { EDIT_PENCIL } from "@/constants/assets";
 import CustomPropTypes from "@/customPropTypes";
@@ -12,7 +12,6 @@ import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrap
 
 const propTypes = {
   mineReports: PropTypes.arrayOf(CustomPropTypes.mineReport).isRequired,
-  // Props are used indirectly. Linting is unable to detect it
   // eslint-disable-next-line react/no-unused-prop-types
   openEditReportModal: PropTypes.func.isRequired,
   isLoaded: PropTypes.bool.isRequired,
@@ -60,27 +59,25 @@ export const ReportsTable = (props) => {
         <div title="Documents" className="cap-col-height">
           {(text &&
             text.length > 0 &&
-            text.filter((sub) => sub.documents && sub.documents.length > 0).length > 0 &&
-            text.map((sub) =>
-              sub.documents.map((doc) => (
-                <div key={doc.mine_document_guid}>
-                  <LinkButton
-                    onClick={() => downloadFileFromDocumentManager(doc)}
-                    title={doc.document_name}
-                  >
-                    {truncateFilename(doc.document_name)}
-                    <br />
-                  </LinkButton>
-                </div>
-              ))
-            )) ||
+            text[text.length - 1].documents &&
+            text[text.length - 1].documents.length > 0 &&
+            text[text.length - 1].documents.map((document) => (
+              <LinkButton
+                key={document.mine_document_guid}
+                onClick={() => downloadFileFromDocumentManager(document)}
+                title={document.document_name}
+              >
+                {truncateFilename(document.document_name)}
+                <br />
+              </LinkButton>
+            ))) ||
             Strings.EMPTY_FIELD}
         </div>
       ),
     },
     {
       title: "",
-      dataIndex: "report",
+      dataIndex: "edit",
       render: (text, record) => {
         return (
           <div title="" align="right">

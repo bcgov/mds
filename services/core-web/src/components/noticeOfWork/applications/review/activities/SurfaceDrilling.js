@@ -3,6 +3,7 @@ import { PropTypes } from "prop-types";
 import { Field, formValueSelector } from "redux-form";
 import { connect } from "react-redux";
 import { Row, Col, Table, Button } from "antd";
+import { maxLength, number } from "@common/utils/Validate";
 import * as FORM from "@/constants/forms";
 import { TRASHCAN } from "@/constants/assets";
 import RenderField from "@/components/common/RenderField";
@@ -183,6 +184,7 @@ export const SurfaceDrilling = (props) => {
             name="reclamation_core_storage"
             component={RenderAutoSizeField}
             disabled={props.isViewMode}
+            validate={[maxLength(4000)]}
           />
         </Col>
       </Row>
@@ -198,6 +200,7 @@ export const SurfaceDrilling = (props) => {
             name="reclamation_description"
             component={RenderAutoSizeField}
             disabled={props.isViewMode}
+            validate={[maxLength(4000)]}
           />
         </Col>
         <Col md={12} sm={24}>
@@ -209,6 +212,7 @@ export const SurfaceDrilling = (props) => {
             name="reclamation_cost"
             component={RenderField}
             disabled={props.isViewMode}
+            validate={[number]}
           />
         </Col>
       </Row>

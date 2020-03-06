@@ -1,83 +1,79 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`MineSearch renders properly 1`] = `
-<div>
-  <Row
-    gutter={0}
+<Row
+  gutter={0}
+>
+  <Col
+    md={
+      Object {
+        "offset": 6,
+        "span": 12,
+      }
+    }
+    xs={
+      Object {
+        "offset": 2,
+        "span": 20,
+      }
+    }
   >
-    <Col
-      md={
-        Object {
-          "offset": 6,
-          "span": 12,
-        }
-      }
-      xs={
-        Object {
-          "offset": 2,
-          "span": 20,
-        }
-      }
+    <span
+      className="advanced-search__container"
     >
-      <span
-        className="advanced-search__container"
-      >
-        <ReduxForm
-          destroyOnUnmount={true}
-          enableReinitialize={false}
-          fetchMineNameList={[MockFunction]}
-          forceUnregisterOnUnmount={false}
-          form="MINE_ADVANCED_SEARCH"
-          getFormState={[Function]}
-          handleCoordinateSearch={[MockFunction]}
-          handleMineSearch={[MockFunction]}
-          handleSearch={[MockFunction]}
-          initialValues={Object {}}
-          isAdvanceSearch={false}
-          isMapView={false}
-          keepDirtyOnReinitialize={false}
-          mineNameList={
-            Object {
-              "mines": Array [
-                Object {
-                  "latitude": "51.4961750",
-                  "longitude": "-119.6963833",
-                  "mine_guid": "fc72863d-83e8-46ba-90f9-87b0ed78823f",
-                  "mine_name": "New Mine",
-                  "mine_no": "BLAH6194",
-                },
-                Object {
-                  "latitude": "51.4961750",
-                  "longitude": "-119.6963833",
-                  "mine_guid": "89a65274-581d-4862-8630-99f5f7687089",
-                  "mine_name": "Mine Two",
-                  "mine_no": "BLAH0502",
-                },
-                Object {
-                  "latitude": "51.4961750",
-                  "longitude": "-119.6963833",
-                  "mine_guid": "75692b61-7ab9-406b-b1f5-8c9b857404ac",
-                  "mine_name": "Legit Mine",
-                  "mine_no": "BLAH6734",
-                },
-              ],
-            }
+      <ReduxForm
+        destroyOnUnmount={true}
+        enableReinitialize={true}
+        fetchMineNameList={[MockFunction]}
+        forceUnregisterOnUnmount={false}
+        form="MINE_ADVANCED_SEARCH"
+        getFormState={[Function]}
+        handleCoordinateSearch={[MockFunction]}
+        handleMineSearch={[MockFunction]}
+        handleReset={[Function]}
+        initialValues={Object {}}
+        isMapView={false}
+        keepDirtyOnReinitialize={false}
+        mineNameList={
+          Object {
+            "mines": Array [
+              Object {
+                "latitude": "51.4961750",
+                "longitude": "-119.6963833",
+                "mine_guid": "fc72863d-83e8-46ba-90f9-87b0ed78823f",
+                "mine_name": "New Mine",
+                "mine_no": "BLAH6194",
+              },
+              Object {
+                "latitude": "51.4961750",
+                "longitude": "-119.6963833",
+                "mine_guid": "89a65274-581d-4862-8630-99f5f7687089",
+                "mine_name": "Mine Two",
+                "mine_no": "BLAH0502",
+              },
+              Object {
+                "latitude": "51.4961750",
+                "longitude": "-119.6963833",
+                "mine_guid": "75692b61-7ab9-406b-b1f5-8c9b857404ac",
+                "mine_name": "Legit Mine",
+                "mine_no": "BLAH6734",
+              },
+            ],
           }
-          onSubmit={[MockFunction]}
-          persistentSubmitErrors={false}
-          pure={true}
-          shouldAsyncValidate={[Function]}
-          shouldError={[Function]}
-          shouldValidate={[Function]}
-          shouldWarn={[Function]}
-          submitAsSideEffect={false}
-          toggleAdvancedSearch={[Function]}
-          touchOnBlur={false}
-          touchOnChange={false}
-          updateUnregisteredFields={false}
-        />
-      </span>
-    </Col>
-  </Row>
-</div>
+        }
+        onReset={[Function]}
+        persistentSubmitErrors={false}
+        pure={true}
+        shouldAsyncValidate={[Function]}
+        shouldError={[Function]}
+        shouldValidate={[Function]}
+        shouldWarn={[Function]}
+        submitAsSideEffect={false}
+        touchOnBlur={false}
+        touchOnChange={false}
+        updateUnregisteredFields={false}
+      />
+    </span>
+  </Col>
+</Row>
 `;

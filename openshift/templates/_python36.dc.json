@@ -160,6 +160,10 @@
     {
       "name": "DOCUMENT_MANAGER_URL",
       "required": true
+    },
+    {
+      "name": "DOCUMENT_GENERATOR_URL",
+      "required": true
     }
   ],
   "objects": [
@@ -220,11 +224,7 @@
               "failurePolicy": "Retry",
               "execNewPod": {
                 "containerName": "flyway-migration",
-                "command": [
-                  "bash",
-                  "-c",
-                  "$FLYWAY_HOME/scripts/run_migrations.sh"
-                ]
+                "command": ["bash", "-c", "$FLYWAY_HOME/scripts/run_migrations.sh"]
               }
             },
             "maxSurge": "50%",
@@ -474,6 +474,10 @@
                   {
                     "name": "DOCUMENT_MANAGER_URL",
                     "value": "${DOCUMENT_MANAGER_URL}"
+                  },
+                  {
+                    "name": "DOCUMENT_GENERATOR_URL",
+                    "value": "${DOCUMENT_GENERATOR_URL}"
                   },
                   {
                     "name": "ENVIRONMENT_NAME",

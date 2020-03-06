@@ -9,27 +9,28 @@ import * as Styles from "@/constants/styles";
  */
 
 const propTypes = {
-  id: PropTypes.string,
-  meta: PropTypes.objectOf(PropTypes.any),
-  input: PropTypes.objectOf(PropTypes.any).isRequired,
   handleChange: PropTypes.func.isRequired,
   handleSelect: PropTypes.func.isRequired,
   data: PropTypes.arrayOf(PropTypes.any).isRequired,
+  id: PropTypes.string,
   placeholder: PropTypes.string,
-  iconColor: PropTypes.string,
   defaultValue: PropTypes.string,
-  disabled: PropTypes.bool,
   label: PropTypes.string,
+  iconColor: PropTypes.string,
+  disabled: PropTypes.bool,
+  meta: PropTypes.objectOf(PropTypes.any),
+  input: PropTypes.objectOf(PropTypes.any),
 };
 
 const defaultProps = {
   id: "search",
   placeholder: "",
   defaultValue: "",
+  label: "",
   iconColor: Styles.COLOR.violet,
   disabled: false,
   meta: {},
-  label: "",
+  input: null,
 };
 
 const RenderAutoComplete = (props) => {
@@ -50,7 +51,6 @@ const RenderAutoComplete = (props) => {
         notFoundContent="Not Found"
         allowClear
         dropdownMatchSelectWidth
-        backfill
         defaultValue={props.defaultValue}
         style={{ width: "100%" }}
         dataSource={props.data}
@@ -63,7 +63,9 @@ const RenderAutoComplete = (props) => {
         onSelect={props.handleSelect}
         onChange={(event) => {
           props.handleChange(event);
-          props.input.onChange(event);
+          if (props.input) {
+            props.input.onChange(event);
+          }
         }}
       />
     </Form.Item>

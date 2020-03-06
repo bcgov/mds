@@ -58,6 +58,11 @@ exports[`SurfaceBulkSamples renders properly 1`] = `
         disabled={true}
         id="processing_method_description"
         name="processing_method_description"
+        validate={
+          Array [
+            [Function],
+          ]
+        }
       />
     </Col>
     <Col
@@ -93,53 +98,6 @@ exports[`SurfaceBulkSamples renders properly 1`] = `
         disabled={true}
         id="has_bedrock_expansion"
         name="has_bedrock_expansion"
-      />
-    </Col>
-  </Row>
-  <Equipment
-    activity="surface_bulk_sample"
-    addRecord={[MockFunction]}
-    editRecord={[MockFunction]}
-    equipment={Array []}
-    isViewMode={true}
-  />
-  <br />
-  <h4>
-    Reclamation Program
-  </h4>
-  <Row
-    gutter={16}
-  >
-    <Col
-      md={12}
-      sm={24}
-    >
-      <div
-        className="field-title"
-      >
-        Proposed reclamation and timing for this specific activity
-      </div>
-      <Field
-        component={[Function]}
-        disabled={true}
-        id="reclamation_description"
-        name="reclamation_description"
-      />
-    </Col>
-    <Col
-      md={12}
-      sm={24}
-    >
-      <div
-        className="field-title"
-      >
-        Estimated Cost of reclamation activities described above
-      </div>
-      <Field
-        component={[Function]}
-        disabled={true}
-        id="reclamation_description"
-        name="reclamation_description"
       />
     </Col>
   </Row>
@@ -214,6 +172,64 @@ exports[`SurfaceBulkSamples renders properly 1`] = `
         disabled={true}
         id="spontaneous_combustion_handling"
         name="spontaneous_combustion_handling"
+      />
+    </Col>
+  </Row>
+  <br />
+  <Equipment
+    activity="surface_bulk_sample"
+    addRecord={[MockFunction]}
+    editRecord={[MockFunction]}
+    equipment={Array []}
+    isViewMode={true}
+  />
+  <br />
+  <h4>
+    Reclamation Program
+  </h4>
+  <Row
+    gutter={16}
+  >
+    <Col
+      md={12}
+      sm={24}
+    >
+      <div
+        className="field-title"
+      >
+        Proposed reclamation and timing for this specific activity
+      </div>
+      <Field
+        component={[Function]}
+        disabled={true}
+        id="reclamation_description"
+        name="reclamation_description"
+        validate={
+          Array [
+            [Function],
+          ]
+        }
+      />
+    </Col>
+    <Col
+      md={12}
+      sm={24}
+    >
+      <div
+        className="field-title"
+      >
+        Estimated Cost of reclamation activities described above
+      </div>
+      <Field
+        component={[Function]}
+        disabled={true}
+        id="reclamation_cost"
+        name="reclamation_cost"
+        validate={
+          Array [
+            [Function],
+          ]
+        }
       />
     </Col>
   </Row>

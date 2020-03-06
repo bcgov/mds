@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Table, Button } from "antd";
-import { compareCodes } from "@common/utils/helpers";
+import { compareCodes, dateSorter } from "@common/utils/helpers";
 import PropTypes from "prop-types";
-import { formatDate, dateSorter } from "@/utils/helpers";
+import { formatDate } from "@/utils/helpers";
 import CustomPropTypes from "@/customPropTypes";
 import { RED_CLOCK } from "@/constants/assets";
 import * as STRINGS from "@/constants/strings";

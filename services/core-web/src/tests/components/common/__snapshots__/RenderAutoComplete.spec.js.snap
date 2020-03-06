@@ -8,7 +8,6 @@ exports[`RenderAutoComplete renders properly 1`] = `
 >
   <AutoComplete
     allowClear={true}
-    backfill={true}
     choiceTransitionName="zoom"
     dataSource={
       Object {

@@ -10,7 +10,6 @@
   ],
   "python.linting.enabled": true,
   "eslint.alwaysShowStatus": true,
-  "eslint.autoFixOnSave": true,
   "files.exclude": {
     "**/__pycache__": true
   },
@@ -18,9 +17,8 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": true
+    "source.fixAll.eslint": true,
+    "eslint.autoFixOnSave": true
   },
-  "cSpell.words": [
-    "idir"
-  ]
+  "cSpell.words": ["idir"]
 }
