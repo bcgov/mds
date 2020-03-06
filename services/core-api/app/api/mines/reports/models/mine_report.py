@@ -17,11 +17,19 @@ class MineReport(Base, AuditMixin):
     mine_report_definition_id = db.Column(
         db.Integer, db.ForeignKey('mine_report_definition.mine_report_definition_id'))
     mine_report_definition = db.relationship('MineReportDefinition', lazy='joined')
-    mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine.mine_guid'))
+    mine_report_category_xref = db.relationship(
+        'MineReportCategoryXref',
+        lazy='joined',
+        primaryjoin=
+        'MineReport.mine_report_definition_id==MineReportCategoryXref.mine_report_definition_id',
+        foreign_keys=mine_report_definition_id)
+
+    mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine.mine_guid'), nullable=False)
+
     permit_id = db.Column(db.Integer, db.ForeignKey('permit.permit_id'))
     permit = db.relationship('Permit', lazy='selectin')
     received_date = db.Column(db.DateTime)
-    due_date = db.Column(db.DateTime, nullable=False)
+    due_date = db.Column(db.DateTime)
     submission_year = db.Column(db.Integer)
     deleted_ind = db.Column(db.Boolean, server_default=FetchedValue(), nullable=False)
 
@@ -35,9 +43,14 @@ class MineReport(Base, AuditMixin):
 
     mine_report_definition_guid = association_proxy('mine_report_definition',
                                                     'mine_report_definition_guid')
-    report_name = association_proxy('mine_report_definition', 'report_name')
+    mine_report_category = association_proxy('mine_report_category_xref', 'mine_report_category')
     report_name = association_proxy('mine_report_definition', 'report_name')
     permit_guid = association_proxy('permit', 'permit_guid')
+
+    mine_table = db.relationship('Mine', lazy='joined')
+    mine_name = association_proxy('mine_table', 'mine_name')
+    mine_region = association_proxy('mine_table', 'mine_region')
+    major_mine_ind = association_proxy('mine_table', 'major_mine_ind')
 
     def __repr__(self):
         return '<MineReport %r>' % self.mine_report_guid

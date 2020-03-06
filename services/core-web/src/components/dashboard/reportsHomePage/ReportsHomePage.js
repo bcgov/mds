@@ -7,10 +7,7 @@ import queryString from "query-string";
 import * as Strings from "@common/constants/strings";
 import * as router from "@/constants/routes";
 import CustomPropTypes from "@/customPropTypes";
-import {
-  getMineRegionHash,
-  getMineRegionDropdownOptions,
-} from "@common/selectors/staticContentSelectors";
+import { getMineReportCategoryOptionsHash } from "@common/selectors/staticContentSelectors";
 import ReportsTable from "@/components/dashboard/reportsHomePage/ReportsTable";
 import ReportsSearch from "@/components/dashboard/reportsHomePage/ReportsSearch";
 import ResponsivePagination from "@/components/common/ResponsivePagination";
@@ -22,10 +19,9 @@ const propTypes = {
   fetchReports: PropTypes.func.isRequired,
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
   location: PropTypes.shape({ search: PropTypes.string }).isRequired,
-  pageData: CustomPropTypes.pageData.isRequired,
-  reports: PropTypes.arrayOf(CustomPropTypes.importedNOWApplication).isRequired,
-  mineRegionHash: PropTypes.objectOf(PropTypes.string).isRequired,
-  mineRegionOptions: CustomPropTypes.options.isRequired,
+  pageData: CustomPropTypes.reportPageData,
+  reports: PropTypes.arrayOf(CustomPropTypes.mineReport).isRequired,
+  mineReportCategoryOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
 export class ReportsHomePage extends Component {
@@ -128,7 +124,7 @@ export class ReportsHomePage extends Component {
           </div>
         </div>
         <div className="landing-page__content">
-          {/* <div className="page__content">
+          <div className="page__content">
             <ReportsSearch
               handleSearch={this.handleSearch}
               initialValues={{ mine_search: this.state.params.mine_search }}
@@ -138,11 +134,10 @@ export class ReportsHomePage extends Component {
                 isLoaded={this.state.isLoaded}
                 handleSearch={this.handleSearch}
                 reports={this.props.reports}
+                mineReportCategoryOptionsHash={this.props.mineReportCategoryOptionsHash}
                 sortField={this.state.params.sort_field}
                 sortDir={this.state.params.sort_dir}
                 searchParams={this.state.params}
-                mineRegionHash={this.props.mineRegionHash}
-                mineRegionOptions={this.props.mineRegionOptions}
               />
               <div className="center">
                 <ResponsivePagination
@@ -153,7 +148,7 @@ export class ReportsHomePage extends Component {
                 />
               </div>
             </div>
-          </div> */}
+          </div>
         </div>
       </div>
     );
@@ -163,8 +158,7 @@ export class ReportsHomePage extends Component {
 const mapStateToProps = (state) => ({
   reports: getReports(state),
   pageData: getReportsPageData(state),
-  mineRegionHash: getMineRegionHash(state),
-  mineRegionOptions: getMineRegionDropdownOptions(state),
+  mineReportCategoryOptionsHash: getMineReportCategoryOptionsHash(state),
 });
 
 const mapDispatchToProps = (dispatch) =>

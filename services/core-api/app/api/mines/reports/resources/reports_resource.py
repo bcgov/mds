@@ -1,180 +1,158 @@
 from flask_restplus import Resource
 from flask import request
-from sqlalchemy_filters import apply_pagination, apply_sort
-from sqlalchemy import desc, func, or_, and_
-from werkzeug.exceptions import BadRequest, NotFound, InternalServerError
+from datetime import datetime
+from sqlalchemy import desc, cast, NUMERIC, extract, asc
+from sqlalchemy_filters import apply_sort, apply_pagination, apply_filters
+from werkzeug.exceptions import BadRequest
 
 from app.extensions import api
-from app.api.mines.mine.models.mine import Mine
-from app.api.mines.permits.permit.models.permit import Permit
-from app.api.mines.region.models.region import MineRegionCode
-from app.api.now_applications.models.notice_of_work_view import NoticeOfWorkView
-from app.api.now_applications.models.now_application_status import NOWApplicationStatus
-from app.api.now_applications.models.now_application_identity import NOWApplicationIdentity
-from app.api.now_applications.models.now_application_progress import NOWApplicationProgress
-from app.api.now_applications.models.now_application import NOWApplication
-from app.api.now_applications.response_models import NOW_VIEW_LIST, NOW_APPLICATION_MODEL
-from app.api.utils.access_decorators import requires_role_view_all, requires_role_edit_permit
+from app.api.utils.access_decorators import requires_any_of, VIEW_ALL
 from app.api.utils.resources_mixins import UserMixin
-from app.api.utils.custom_reqparser import CustomReqparser
-from app.api import utils
+
+from app.api.mines.mine.models.mine import Mine
+from app.api.mines.reports.models.mine_report import MineReport
+from app.api.mines.response_models import PAGINATED_REPORT_LIST
 
 PAGE_DEFAULT = 1
 PER_PAGE_DEFAULT = 25
 
 
 class ReportsResource(Resource, UserMixin):
-    parser = utils.custom_reqparser.CustomReqparser()
-    parser.add_argument('permit_guid', type=str, required=True)
-    #required because only allowed on Major Mine Permit Amendment Application
-    parser.add_argument('mine_guid', type=str, required=True)
-    parser.add_argument('notice_of_work_type_code', type=str, required=True)
-    parser.add_argument('submitted_date', type=str, required=True)
-    parser.add_argument('received_date', type=str, required=True)
-
     @api.doc(
         description='Get a list of reports. Order: received_date DESC',
         params={
             'page': f'The page number of paginated records to return. Default: {PAGE_DEFAULT}',
             'per_page': f'The number of records to return per page. Default: {PER_PAGE_DEFAULT}',
-            'now_application_status_description':
-            'Comma-separated list of statuses to include in results. Default: All statuses.',
-            'notice_of_work_type_description': 'Substring to match with a NoW\s type',
-            'mine_region': 'Mine region code to match with a NoW. Default: All regions.',
-            'now_number': 'Number of the NoW',
-            'mine_search': 'Substring to match against a NoW mine number or mine name',
-            'submissions_only': 'Boolean to filter based on NROS/VFCBC/Core submissions only',
-            'mine_guid': 'filter by a given mine guid'
+            'mine_guid': 'The ID of a mine',
+            'search': 'A string to be search in the incident number, mine name, or mine number',
+                                                                                                     # 'incident_status': 'Comma-separated list of the incident status codes',
+                                                                                                     # 'determination':
+                                                                                                     # 'Comma-separated list of the inspectors determination, a three character code',
+                                                                                                     # 'codes':
+                                                                                                     # 'Comma-separated list of code sub_paragraphs to include in results. Default: All status codes.',
+                                                                                                     # 'incident_year': 'Return only incidents for this year',
+            'major': 'boolean indicating if incident is from a major or regional mine',
+            'region':
+            'Comma-separated list of regions the mines associated with the incident are located in',
+            'sort_field': 'The field the returned results will be ordered by',
+            'sort_dir': 'The direction by which the sort field is ordered',
         })
-    @requires_role_view_all
-    @api.marshal_with(NOW_VIEW_LIST, code=200)
+    @requires_any_of([VIEW_ALL])
+    @api.marshal_with(PAGINATED_REPORT_LIST, code=200)
     def get(self):
-        records, pagination_details = self._apply_filters_and_pagination(
-            page_number=request.args.get('page', PAGE_DEFAULT, type=int),
-            page_size=request.args.get('per_page', PER_PAGE_DEFAULT, type=int),
-            sort_field=request.args.get('sort_field', 'received_date', type=str),
-            sort_dir=request.args.get('sort_dir', 'desc', type=str),
-            originating_system=request.args.get('originating_system', 'desc', type=str),
-            mine_guid=request.args.get('mine_guid', type=str),
-            now_application_status_description=request.args.getlist(
-                'now_application_status_description', type=str),
-            notice_of_work_type_description=request.args.getlist(
-                'notice_of_work_type_description', type=str),
-            mine_region=request.args.getlist('mine_region', type=str),
-            mine_name=request.args.get('mine_name', type=str),
-            now_number=request.args.get('now_number', type=str),
-            mine_search=request.args.get('mine_search', type=str),
-            lead_inspector_name=request.args.get('lead_inspector_name', type=str),
-            submissions_only=request.args.get('submissions_only', type=str) in ['true', 'True'])
+        args = {
+            "page_number": request.args.get('page', PAGE_DEFAULT, type=int),
+            "page_size": request.args.get('per_page', PER_PAGE_DEFAULT, type=int),
+                                                                                                     # "status": request.args.get('incident_status', type=str),
+                                                                                                     # "determination": request.args.get('determination', type=str),
+                                                                                                     # "codes": request.args.get('codes', type=str),
+            'major': request.args.get('major', type=str),
+            'region': request.args.get('region', type=str),
+                                                                                                     # 'year': request.args.get('year', type=str),
+            'search_terms': request.args.get('search', type=str),
+            'sort_field': request.args.get('sort_field', type=str),
+            'sort_dir': request.args.get('sort_dir', type=str),
+            'mine_guid': request.args.get('mine_guid', type=str),
+        }
 
-        data = records.all()
-
+        records, pagination_details = self._apply_filters_and_pagination(args)
+        if not records:
+            raise BadRequest('Unable to fetch reports.')
         return {
-            'records': data,
+            'records': records.all(),
             'current_page': pagination_details.page_number,
             'total_pages': pagination_details.num_pages,
             'items_per_page': pagination_details.page_size,
             'total': pagination_details.total_results,
         }
 
-    def _apply_filters_and_pagination(self,
-                                      page_number=PAGE_DEFAULT,
-                                      page_size=PER_PAGE_DEFAULT,
-                                      sort_field=None,
-                                      sort_dir=None,
-                                      mine_guid=None,
-                                      lead_inspector_name=None,
-                                      notice_of_work_type_description=[],
-                                      mine_region=[],
-                                      mine_name=None,
-                                      now_number=None,
-                                      mine_search=None,
-                                      now_application_status_description=[],
-                                      originating_system=None,
-                                      submissions_only=None):
-        filters = []
-        base_query = NoticeOfWorkView.query
+    @classmethod
+    def _build_filter(cls, model, field, op, argfield):
+        return {'model': model, 'field': field, 'op': op, 'value': argfield}
 
-        if submissions_only:
-            filters.append(
-                and_(NoticeOfWorkView.originating_system != None,
-                     NoticeOfWorkView.originating_system != 'MMS'))
+    def _apply_filters_and_pagination(self, args):
+        sort_models = {
+                                                 # "mine_incident_report_no": 'MineReport',
+                                                 # "due_date": 'MineReport',
+                                                 # "determination": 'MineReport',
+                                                 # "incident_status": 'MineReport',
+            "mine_name": 'Mine',
+        }
 
-        if mine_guid:
-            filters.append(NoticeOfWorkView.mine_guid == mine_guid)
+        sort_field = {
+                                                 # "mine_incident_report_no": 'mine_incident_report_no',
+                                                 # "due_date": 'due_date',
+                                                 # "determination": 'determination_type_code',
+                                                 # "incident_status": 'status_code',
+            "mine_name": 'mine_name',
+        }
 
-        if lead_inspector_name:
-            filters.append(
-                func.lower(NoticeOfWorkView.lead_inspector_name).contains(
-                    func.lower(lead_inspector_name)))
+        query = MineReport.query.join(Mine)
+        conditions = []
+        if args["mine_guid"] is not None:
+            conditions.append(
+                self._build_filter('MineReport', 'mine_guid', '==', args["mine_guid"]))
+        # if args["status"] is not None:
+        #     status_values = args["status"].split(',')
+        #     conditions.append(self._build_filter('MineReport', 'status_code', 'in', status_values))
+        # if args["determination"] is not None:
+        #     determination_values = args["determination"].split(',')
+        #     conditions.append(
+        #         self._build_filter('MineReport', 'determination_type_code', 'in',
+        #                            determination_values))
+        # if args["codes"] is not None:
+        #     query = MineReport.query.join(Mine).outerjoin(MineReportDoSubparagraph)
+        #     code_values = args["codes"].split(',')
+        #     conditions.append(
+        #         self._build_filter('MineReportDoSubparagraph', 'compliance_article_id', 'in',
+        #                            code_values))
+        # if args["year"] is not None:
+        #     min_datetime = datetime(int(args["year"]), 1, 1)
+        #     max_datetime = datetime(int(args["year"]) + 1, 1, 1)
+        #     conditions.append(
+        #         self._build_filter('MineReport', 'due_date', '>=', min_datetime))
+        #     conditions.append(
+        #         self._build_filter('MineReport', 'due_date', '<', max_datetime))
 
-        if notice_of_work_type_description:
-            filters.append(
-                NoticeOfWorkView.notice_of_work_type_description.in_(
-                    notice_of_work_type_description))
+        if args["major"] is not None:
+            conditions.append(self._build_filter('Mine', 'major_mine_ind', '==', args["major"]))
 
-        if now_number:
-            filters.append(NoticeOfWorkView.now_number == now_number)
+        if args["search_terms"] is not None:
+            search_conditions = [
+                self._build_filter('Mine', 'mine_name', 'ilike',
+                                   '%{}%'.format(args["search_terms"])),
+                self._build_filter('Mine', 'mine_no', 'ilike', '%{}%'.format(args["search_terms"])),
+            ]
+            conditions.append({'or': search_conditions})
 
-        if mine_region or mine_search or mine_name:
-            base_query = base_query.join(Mine)
+        if args["region"] is not None:
+            region_list = args["region"].split(',')
+            conditions.append(self._build_filter('Mine', 'mine_region', 'in', region_list))
 
-        if mine_region:
-            filters.append(Mine.mine_region.in_(mine_region))
+        filtered_query = apply_filters(query, conditions)
 
-        if mine_name:
-            filters.append(func.lower(Mine.mine_name).contains(func.lower(mine_name)))
-
-        if mine_search:
-            filters.append(
-                or_(
-                    func.lower(NoticeOfWorkView.mine_no).contains(func.lower(mine_search)),
-                    func.lower(Mine.mine_name).contains(func.lower(mine_search)),
-                    func.lower(Mine.mine_no).contains(func.lower(mine_search))))
-
-        if now_application_status_description:
-            filters.append(
-                NoticeOfWorkView.now_application_status_description.in_(
-                    now_application_status_description))
-
-        base_query = base_query.filter(*filters)
-
-        if sort_field and sort_dir:
-            sort_criteria = None
-            if sort_field in ['mine_region', 'mine_name']:
-                sort_criteria = [{'model': 'Mine', 'field': sort_field, 'direction': sort_dir}]
-            else:
+        # Apply sorting
+        if args['sort_field'] and args['sort_dir']:
+            if args['sort_field'] == 'mine_report_no':
                 sort_criteria = [{
-                    'model': 'NoticeOfWorkView',
-                    'field': sort_field,
-                    'direction': sort_dir,
+                    'model': 'MineReport',
+                    'field': 'submission_year',
+                    'direction': args['sort_dir']
+                }, {
+                    'model': 'MineReport',
+                    'field': 'mine_report_id',
+                    'direction': args['sort_dir']
                 }]
-            base_query = apply_sort(base_query, sort_criteria)
+            else:
+                # sorting by code section is not applicable since a single incident may have many sections associated.
+                sort_criteria = [{
+                    'model': sort_models[args['sort_field']],
+                    'field': sort_field[args['sort_field']],
+                    'direction': args['sort_dir']
+                }]
+        else:
+            # default sorting is by descending date.
+            sort_criteria = [{'model': 'MineReport', 'field': 'due_date', 'direction': 'desc'}]
+        filtered_query = apply_sort(filtered_query, sort_criteria)
 
-        return apply_pagination(base_query, page_number, page_size)
-
-    @api.doc(description='Adds a notice of work to a mine/permit.', params={})
-    @requires_role_edit_permit
-    @api.marshal_with(NOW_APPLICATION_MODEL, code=201)
-    def post(self):
-        data = self.parser.parse_args()
-        mine = Mine.find_by_mine_guid(data['mine_guid'])
-        permit = Permit.find_by_permit_guid(data['permit_guid'])
-        err_str = ''
-        if not mine:
-            err_str += 'Mine not Found. '
-        if not permit:
-            err_str += 'Permit not Found. '
-        if mine and not mine.major_mine_ind:
-            err_str += 'Permit Applications can only be created on mines where major_mine_ind=True'
-        if err_str:
-            raise BadRequest(err_str)
-        new_now = NOWApplicationIdentity(mine_guid=data['mine_guid'], permit=permit)
-        new_now.now_application = NOWApplication(
-            notice_of_work_type_code=data['notice_of_work_type_code'],
-            now_application_status_code='UNR',
-            submitted_date=data['submitted_date'],
-            received_date=data['received_date'])
-
-        new_now.save()
-        return new_now, 201
+        return apply_pagination(filtered_query, args["page_number"], args["page_size"])

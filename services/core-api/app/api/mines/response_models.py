@@ -329,15 +329,19 @@ MINE_REPORT_SUBMISSION_MODEL = api.model(
 
 MINE_REPORT_MODEL = api.model(
     'MineReportModel', {
+        'mine_report_id': fields.String,
         'mine_report_guid': fields.String,
         'mine_report_definition_guid': fields.String,
+        'mine_report_category': fields.String,
         'report_name': fields.String,
         'due_date': fields.Date,
         'received_date': fields.Date,
         'submission_year': fields.Integer,
         'created_by_idir': fields.String,
         'permit_guid': fields.String,
-        'mine_report_submissions': fields.List(fields.Nested(MINE_REPORT_SUBMISSION_MODEL))
+        'mine_report_submissions': fields.List(fields.Nested(MINE_REPORT_SUBMISSION_MODEL)),
+        'mine_guid': fields.String,
+        'mine_name': fields.String,
     })
 
 MINE_REPORT_DEFINITION_CATEGORIES = api.model('MineReportDefinitionCategoriesModel', {
@@ -355,6 +359,19 @@ MINE_REPORT_DEFINITION_MODEL = api.model(
         'default_due_date': fields.Date,
         'categories': fields.List(fields.Nested(MINE_REPORT_DEFINITION_CATEGORIES)),
         'compliance_articles': fields.List(fields.Nested(COMPLIANCE_ARTICLE_MODEL)),
+    })
+
+PAGINATED_LIST = api.model(
+    'List', {
+        'current_page': fields.Integer,
+        'total_pages': fields.Integer,
+        'items_per_page': fields.Integer,
+        'total': fields.Integer,
+    })
+
+PAGINATED_REPORT_LIST = api.inherit(
+    'ReportList', PAGINATED_LIST, {
+        'records': fields.List(fields.Nested(MINE_REPORT_MODEL)),
     })
 
 ORDER_DOCUMENT_MODEL = api.model(

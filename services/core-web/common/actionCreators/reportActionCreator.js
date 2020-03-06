@@ -62,9 +62,8 @@ export const fetchReports = (params = {}) => (dispatch) => {
   return CustomAxios({ errorToastMessage: Strings.ERROR })
     .get(ENVIRONMENT.apiUrl + API.REPORTS(params), createRequestHeader())
     .then((response) => {
-      console.log("fetchReports response:\n", response);
       dispatch(success(reducerTypes.GET_REPORTS));
-      dispatch(reportActions.storeReports(response.data));
+      dispatch(mineReportActions.storeReports(response.data));
     })
     .catch(() => dispatch(error(reducerTypes.GET_REPORTS)))
     .finally(() => dispatch(hideLoading()));

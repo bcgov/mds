@@ -12,6 +12,7 @@ export const {
   getMineDisturbanceOptions,
   getMineReportDefinitionOptions,
   getMineReportStatusOptions,
+  getMineReportCategoryOptions,
   getProvinceOptions,
   getPermitStatusOptions,
   getComplianceCodes,
@@ -315,13 +316,13 @@ export const getDropdownMineReportDefinitionOptions = createSelector(
 );
 
 export const getDropdownMineReportCategoryOptions = createSelector(
-  [getMineReportDefinitionOptions],
-  (options) =>
-    createDropDownList(
-      uniqBy(flatMap(options, "categories"), "mine_report_category"),
-      "description",
-      "mine_report_category"
-    )
+  [getMineReportCategoryOptions],
+  (options) => createDropDownList(options, "description", "mine_report_category")
+);
+
+export const getMineReportCategoryOptionsHash = createSelector(
+  [getDropdownMineReportCategoryOptions],
+  createLabelHash
 );
 
 export const getDropdownMineReportStatusOptions = createSelector(

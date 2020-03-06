@@ -7,7 +7,7 @@ import MineIncidentTable from "@/components/mine/Incidents/MineIncidentTable";
 import * as Strings from "@common/constants/strings";
 
 /**
- * @class Incidents Tables
+ * @class Incidents Table
  */
 const propTypes = {
   handleFilterChange: PropTypes.func.isRequired,
@@ -36,6 +36,7 @@ const defaultProps = {
   sortField: null,
   sortDir: null,
 };
+
 export const IncidentsTable = (props) => {
   return (
     <div className="tab__content">
@@ -68,4 +69,5 @@ export const IncidentsTable = (props) => {
 
 IncidentsTable.propTypes = propTypes;
 IncidentsTable.defaultProps = defaultProps;
+
 export default IncidentsTable;

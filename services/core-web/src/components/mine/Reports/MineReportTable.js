@@ -11,148 +11,238 @@ import CustomPropTypes from "@/customPropTypes";
 import { MineReportActions } from "@/components/mine/Reports/MineReportActions";
 import LinkButton from "@/components/common/LinkButton";
 import CoreTable from "@/components/common/CoreTable";
+import * as router from "@/constants/routes";
 
 const { errorRed } = COLOR;
 
-/**
- * @class  MinePermitInfo - contains all permit information
- */
-
 const propTypes = {
   mineReports: PropTypes.arrayOf(CustomPropTypes.mineReport).isRequired,
+  mineReportCategoryOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   openEditReportModal: PropTypes.func.isRequired,
   handleEditReport: PropTypes.func.isRequired,
   handleRemoveReport: PropTypes.func.isRequired,
   isLoaded: PropTypes.bool.isRequired,
+  isDashboardView: PropTypes.bool,
 };
 
-const columns = [
-  {
-    title: "Report Name",
-    dataIndex: "report_name",
-    key: "report_name",
-    sorter: (a, b) => a.report_name.localeCompare(b.report_name),
-    render: (text, record) => (
-      <div title="Report Name" style={record.isOverdue ? { color: errorRed } : {}}>
-        {record.report_name}
-      </div>
-    ),
-  },
-  {
-    title: "Compliance Year/Period",
-    dataIndex: "submission_year",
-    key: "submission_year",
-    sorter: (a, b) => (a.submission_year > b.submission_year ? -1 : 1),
-    render: (text, record) => (
-      <div title="Year" style={record.isOverdue ? { color: errorRed } : {}}>
-        {record.submission_year}
-      </div>
-    ),
-  },
-  {
-    title: "Due",
-    dataIndex: "due_date",
-    key: "due_date",
-    sorter: dateSorter("due_date"),
-    render: (text, record) => (
-      <div title="Due" style={record.isOverdue ? { color: errorRed } : {}}>
-        {formatDate(record.due_date) || Strings.EMPTY_FIELD}
-      </div>
-    ),
-  },
-  {
-    title: "Requested By",
-    dataIndex: "created_by_idir",
-    key: "created_by_idir",
-    render: (text) => <div title="Requested By">{text}</div>,
-  },
-  {
-    title: "Received",
-    dataIndex: "received_date",
-    key: "received_date",
-    sorter: dateSorter("received_date"),
-    render: (text, record) => (
-      <div title="Received" style={record.isOverdue ? { color: errorRed } : {}}>
-        {formatDate(record.received_date) || Strings.EMPTY_FIELD}
-      </div>
-    ),
-  },
-  {
-    title: "Documents",
-    dataIndex: "documents",
-    key: "documents_key",
-    render: (text, record) => (
-      <div title="Documents" className="cap-col-height">
-        {record.report.mine_report_submissions.length > 0 &&
-        record.report.mine_report_submissions[record.report.mine_report_submissions.length - 1]
-          .documents.length > 0
-          ? record.report.mine_report_submissions[
-              record.report.mine_report_submissions.length - 1
-            ].documents.map((file) => (
+const defaultProps = {
+  isDashboardView: false,
+};
+
+export const MineReportTable = (props) => {
+  const hideColumn = (condition) => (condition ? "column-hide" : "");
+
+  const columns = [
+    {
+      title: "Number",
+      key: "mine_report_id",
+      dataIndex: "mine_report_id",
+      sortField: "mine_report_id",
+      sorter: props.isDashboardView || ((a, b) => (a.mine_report_id > b.mine_report_id ? -1 : 1)),
+      render: (text, record) => (
+        <div title="Number" style={record.isOverdue ? { color: errorRed } : {}}>
+          {text}
+        </div>
+      ),
+    },
+    {
+      title: "Mine",
+      key: "mine_name",
+      dataIndex: "mine_name",
+      sortField: "mine_name",
+      sorter: props.isDashboardView,
+      className: hideColumn(!props.isDashboardView),
+      render: (text, record) => (
+        <div
+          title="Mine"
+          className={hideColumn(!props.isDashboardView)}
+          style={record.isOverdue ? { color: errorRed } : {}}
+        >
+          <LinkButton to={router.MINE_SUMMARY.dynamicRoute(record.mine_guid)}>{text}</LinkButton>
+        </div>
+      ),
+    },
+    {
+      title: "Report Type",
+      key: "mine_report_category",
+      dataIndex: "mine_report_category",
+      sortField: "mine_report_category",
+      sorter:
+        props.isDashboardView ||
+        ((a, b) => a.mine_report_category.localeCompare(b.mine_report_category)),
+      className: hideColumn(!props.isDashboardView),
+      render: (text, record) => (
+        <div
+          title="Report Type"
+          className={hideColumn(!props.isDashboardView)}
+          style={record.isOverdue ? { color: errorRed } : {}}
+        >
+          {text}
+        </div>
+      ),
+    },
+    {
+      title: "Report Name",
+      key: "report_name",
+      dataIndex: "report_name",
+      sortField: "report_name",
+      sorter: props.isDashboardView || ((a, b) => a.report_name.localeCompare(b.report_name)),
+      render: (text, record) => (
+        <div title="Report Name" style={record.isOverdue ? { color: errorRed } : {}}>
+          {text}
+        </div>
+      ),
+    },
+    {
+      title: "Compliance Year",
+      key: "submission_year",
+      dataIndex: "submission_year",
+      sortField: "submission_year",
+      sorter: props.isDashboardView || ((a, b) => (a.submission_year > b.submission_year ? -1 : 1)),
+      render: (text, record) => (
+        <div title="Compliance Year" style={record.isOverdue ? { color: errorRed } : {}}>
+          {text}
+        </div>
+      ),
+    },
+    {
+      title: "Due",
+      key: "due_date",
+      dataIndex: "due_date",
+      sortField: "due_date",
+      sorter: props.isDashboardView || dateSorter("due_date"),
+      render: (text, record) => (
+        <div title="Due" style={record.isOverdue ? { color: errorRed } : {}}>
+          {text}
+        </div>
+      ),
+    },
+    {
+      title: "Received",
+      key: "received_date",
+      dataIndex: "received_date",
+      sortField: "received_date",
+      sorter: props.isDashboardView || dateSorter("received_date"),
+      render: (text, record) => (
+        <div title="Received" style={record.isOverdue ? { color: errorRed } : {}}>
+          {text}
+        </div>
+      ),
+    },
+    {
+      title: "Requested By",
+      dataIndex: "created_by_idir",
+      key: "created_by_idir",
+      sortField: "created_by_idir",
+      sorter: props.isDashboardView
+        ? false
+        : (a, b) => a.created_by_idir.localeCompare(b.created_by_idir),
+      className: hideColumn(props.isDashboardView),
+      render: (text, record) => (
+        <div
+          title="Requested By"
+          className={hideColumn(props.isDashboardView)}
+          style={record.isOverdue ? { color: errorRed } : {}}
+        >
+          {text}
+        </div>
+      ),
+    },
+    {
+      title: "Documents",
+      key: "documents",
+      dataIndex: "documents",
+      render: (text, record) => (
+        <div
+          title="Documents"
+          className="cap-col-height"
+          style={record.isOverdue ? { color: errorRed } : {}}
+        >
+          {(text &&
+            text.length > 0 &&
+            text.map((file) => (
               <div key={file.mine_document_guid} title={file.document_name}>
                 <LinkButton onClick={() => downloadFileFromDocumentManager(file)}>
                   {truncateFilename(file.document_name)}
                 </LinkButton>
               </div>
-            ))
-          : Strings.EMPTY_FIELD}
-      </div>
-    ),
-  },
-  {
-    title: "",
-    dataIndex: "record",
-    render: (text, record) => {
-      return (
-        <div title="" align="right">
-          <AuthorizationWrapper permission={Permission.EDIT_REPORTS}>
-            <MineReportActions
-              mineReport={record.report}
-              openEditReportModal={record.openEditReportModal}
-              handleEditReport={record.handleEditReport}
-              handleRemoveReport={record.handleRemoveReport}
-            />
-          </AuthorizationWrapper>
+            ))) ||
+            Strings.EMPTY_FIELD}
         </div>
-      );
+      ),
     },
-  },
-];
+    {
+      key: "operations",
+      render: (text, record) => {
+        return (
+          <div title="" align="right">
+            <AuthorizationWrapper permission={Permission.EDIT_REPORTS}>
+              <MineReportActions
+                mineReport={record.report}
+                openEditReportModal={record.openEditReportModal}
+                handleEditReport={record.handleEditReport}
+                handleRemoveReport={record.handleRemoveReport}
+              />
+            </AuthorizationWrapper>
+          </div>
+        );
+      },
+    },
+  ];
 
-const transformRowData = (report, openEditReportModal, handleEditReport, handleRemoveReport) => ({
-  key: report.report_guid,
-  documents_key: `${report.report_guid}_documents`,
-  report,
-  report_name: report.report_name,
-  due_date: report.due_date,
-  created_by_idir: report.created_by_idir,
-  received_date: report.received_date,
-  submission_year: report.submission_year,
-  openEditReportModal,
-  handleEditReport,
-  handleRemoveReport,
-});
+  const transformRowData = (report, openEditReportModal, handleEditReport, handleRemoveReport) => ({
+    key: report.mine_report_guid,
+    mine_report_id: report.mine_report_id,
+    mine_report_guid: report.mine_report_guid,
+    mine_report_definition_guid: report.mine_report_definition_guid,
+    mine_report_category:
+      (report.mine_report_category &&
+        props.mineReportCategoryOptionsHash[report.mine_report_category]) ||
+      Strings.EMPTY_FIELD,
+    report_name: report.report_name,
+    due_date: formatDate(report.due_date) || Strings.EMPTY_FIELD,
+    received_date: formatDate(report.received_date) || Strings.EMPTY_FIELD,
+    submission_year: report.submission_year,
+    created_by_idir: report.created_by_idir,
+    permit_guid: report.permit_guid || Strings.EMPTY_FIELD,
+    documents:
+      report.mine_report_submissions &&
+      report.mine_report_submissions.length > 0 &&
+      report.mine_report_submissions[report.mine_report_submissions.length - 1].documents &&
+      report.mine_report_submissions[report.mine_report_submissions.length - 1].documents.length > 0
+        ? report.mine_report_submissions[report.mine_report_submissions.length - 1].documents
+        : [],
+    mine_guid: report.mine_guid,
+    mine_name: report.mine_name,
+    isOverdue: report.due_date && Date.parse(report.due_date) < new Date(),
+    report,
+    openEditReportModal,
+    handleEditReport,
+    handleRemoveReport,
+  });
 
-export const MineReportTable = (props) => (
-  <CoreTable
-    condition={props.isLoaded}
-    columns={columns}
-    dataSource={props.mineReports.map((r) =>
-      transformRowData(
-        r,
-        props.openEditReportModal,
-        props.handleEditReport,
-        props.handleRemoveReport
-      )
-    )}
-    tableProps={{
-      align: "left",
-      pagination: false,
-      locale: { emptyText: <NullScreen type="reports" /> },
-    }}
-  />
-);
+  return (
+    <CoreTable
+      condition={props.isLoaded}
+      columns={columns}
+      dataSource={props.mineReports.map((report) =>
+        transformRowData(
+          report,
+          props.openEditReportModal,
+          props.handleEditReport,
+          props.handleRemoveReport
+        )
+      )}
+      tableProps={{
+        align: "left",
+        pagination: false,
+        locale: { emptyText: <NullScreen type="reports" /> },
+      }}
+    />
+  );
+};
 
 MineReportTable.propTypes = propTypes;
+MineReportTable.defaultProps = defaultProps;
 
 export default MineReportTable;
