@@ -160,7 +160,7 @@ export const ReviewActivities = (props) => {
         id="underground-exploration"
         title="Underground Exploration"
         data={props.noticeOfWork.underground_exploration}
-        showContent={renderActivities(props.noticeOfWorkType, "underground_exploration")}
+        showContent={renderActivities(props.noticeOfWorkType, "underground-exploration")}
         isViewMode={props.isViewMode}
       >
         <FormSection name="underground_exploration">
@@ -190,7 +190,7 @@ export const ReviewActivities = (props) => {
         id="placer-operation"
         title="Placer Operations"
         data={props.noticeOfWork.placer_operation}
-        showContent={renderActivities(props.noticeOfWorkType, "placer_operation")}
+        showContent={renderActivities(props.noticeOfWorkType, "placer-operation")}
         isViewMode={props.isViewMode}
       >
         <FormSection name="placer_operation">
