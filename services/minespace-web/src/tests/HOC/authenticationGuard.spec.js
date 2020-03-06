@@ -2,35 +2,55 @@ import React from "react";
 import { shallow } from "enzyme";
 import { AuthenticationGuard } from "@/HOC/AuthenticationGuard";
 import UnauthenticatedNotice from "@/components/common/UnauthenticatedNotice";
+import Loading from "@/components/common/Loading";
 
 const Component = AuthenticationGuard()(() => <div>Test</div>);
 const dispatchProps = {};
-const reducerProps = {};
+const props = {};
 
 const setupDispatchProps = () => {
-  dispatchProps.getUserInfoFromToken = jest.fn();
+  dispatchProps.getUserInfoFromToken = jest.fn(() => Promise.resolve());
+  dispatchProps.authenticateUser = jest.fn(() => Promise.resolve());
 };
 
-const setupReducerProps = () => {
-  reducerProps.isAuthenticated = true;
+const setupprops = () => {
+  props.isAuthenticated = true;
+  props.fromCore = false;
 };
 
 beforeEach(() => {
   setupDispatchProps();
-  setupReducerProps();
+  setupprops();
 });
 
-describe("AuthenticationGuard", () => {
+describe("AuthenticationGuard", (isPublic = false) => {
+  let fromCore;
   it("should render the `WrappedComponent` if `isAuthenticated`", () => {
-    const wrapper = shallow(<Component.WrappedComponent {...dispatchProps} {...reducerProps} />);
+    const wrapper = shallow(<Component.WrappedComponent {...dispatchProps} {...props} />);
+    expect(wrapper).toMatchSnapshot();
+    expect(wrapper.html()).toEqual("<div>Test</div>");
+    expect(wrapper.find(UnauthenticatedNotice).length).toEqual(0);
+  });
+
+  it("should render the `WrappedComponent` if `isPublic`", () => {
+    isPublic = true;
+    const wrapper = shallow(<Component.WrappedComponent {...dispatchProps} {...props} />);
     expect(wrapper).toMatchSnapshot();
     expect(wrapper.html()).toEqual("<div>Test</div>");
     expect(wrapper.find(UnauthenticatedNotice).length).toEqual(0);
   });
 
   it("should render the `NullScreen` if `!isAuthenticated`", () => {
-    reducerProps.isAuthenticated = false;
-    const wrapper = shallow(<Component.WrappedComponent {...dispatchProps} {...reducerProps} />);
+    props.isAuthenticated = false;
+    const wrapper = shallow(<Component.WrappedComponent {...dispatchProps} {...props} />);
     expect(wrapper.find(UnauthenticatedNotice).length).toEqual(1);
+  });
+
+  describe("lifecycle methods", () => {
+    it("componentDidMount", () => {
+      const authenticate = jest.fn();
+      authenticate();
+      expect(authenticate).toHaveBeenCalled();
+    });
   });
 });

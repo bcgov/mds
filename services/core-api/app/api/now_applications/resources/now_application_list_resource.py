@@ -1,7 +1,7 @@
 from flask_restplus import Resource
 from flask import request
 from sqlalchemy_filters import apply_pagination, apply_sort
-from sqlalchemy import desc, func, or_
+from sqlalchemy import desc, func, or_, and_
 from werkzeug.exceptions import BadRequest, NotFound, InternalServerError
 
 from app.extensions import api
@@ -43,7 +43,7 @@ class NOWApplicationListResource(Resource, UserMixin):
             'mine_region': 'Mine region code to match with a NoW. Default: All regions.',
             'now_number': 'Number of the NoW',
             'mine_search': 'Substring to match against a NoW mine number or mine name',
-            'submissions_only': 'Boolean to filter based on NROS/VFCBC submissions only',
+            'submissions_only': 'Boolean to filter based on NROS/VFCBC/Core submissions only',
             'mine_guid': 'filter by a given mine guid'
         })
     @requires_role_view_all
@@ -96,7 +96,9 @@ class NOWApplicationListResource(Resource, UserMixin):
         base_query = NoticeOfWorkView.query
 
         if submissions_only:
-            filters.append(NoticeOfWorkView.originating_system != None)
+            filters.append(
+                and_(NoticeOfWorkView.originating_system != None,
+                     NoticeOfWorkView.originating_system != 'MMS'))
 
         if mine_guid:
             filters.append(NoticeOfWorkView.mine_guid == mine_guid)
