@@ -113,6 +113,7 @@ class ApplicationListResource(Resource, UserMixin):
     @api.expect(APPLICATION)
     @api.marshal_with(APPLICATION, code=201)
     def post(self):
+        current_app.logger.debug('Attempting to load application')
         try:
             application = Application._schema().load(request.json)
         except MarshmallowError as e:
@@ -123,7 +124,7 @@ class ApplicationListResource(Resource, UserMixin):
 
         if application.applicant.clientid == application.submitter.clientid:
             application.submitter = application.applicant
-
+        current_app.logger.debug('Attempting to load the mine')
         mine = Mine.find_by_mine_no(application.minenumber)
 
         if mine is None:
@@ -136,6 +137,6 @@ class ApplicationListResource(Resource, UserMixin):
             mine_guid=mine.mine_guid,
             now_submission=application,
             now_number=NOWApplicationIdentity.create_now_number(mine))
-
+        current_app.logger.debug('Attempting to Save')
         application.save()
-        return application
+        return application, 201

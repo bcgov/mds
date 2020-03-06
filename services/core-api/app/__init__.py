@@ -131,9 +131,10 @@ def register_routes(app):
     # Recursively add handler to every SQLAlchemy Error
     def sqlalchemy_error_handler(error):
         app.logger.error(str(error))
+        app.logger.error(type(error))
         return {
             'status': getattr(error, 'status_code', 400),
-            'message': str('Invalid request.'),
+            'message': str(error),
         }, getattr(error, 'status_code', 400)
 
     def _add_sqlalchemy_error_handlers(classname):

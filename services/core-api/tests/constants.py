@@ -94,3 +94,18 @@ PROPONENT_ONLY_AUTH_CLAIMS = {
         "roles": ["mds_minespace_proponents"]
     }
 }
+
+NROS_VFCBC_AUTH_CLAIMS = {
+    "iss": "test_issuer",
+    "sub": "43e6a245-0bf7-4ccf-9bd0-e7fb85fd18cc",
+    "aud": "test_audience",
+    "exp": 21531718745,
+    "iat": 1531718745,
+    "jti": "flask-jwt-oidc-test-support",
+    "typ": "Bearer",
+    "username": "test-proponent",
+    "email": "test-proponent-email@minespace.ca",
+    "realm_access": {
+        "roles": ["core_edit_submissions"]
+    }
+}
