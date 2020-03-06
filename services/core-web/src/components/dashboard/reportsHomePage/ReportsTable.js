@@ -53,9 +53,9 @@ export const ReportsTable = (props) => {
         params={props.params}
         handleFilterChange={props.handleFilterChange}
         handleReportSearch={props.handleReportSearch}
-        isDashboardView
         sortField={props.sortField}
         sortDir={props.sortDir}
+        isDashboardView
       />
       <div className="center">
         <ResponsivePagination

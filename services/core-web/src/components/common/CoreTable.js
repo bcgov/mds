@@ -39,6 +39,7 @@ export const CoreTable = (props) => {
     width: 150,
     render: () => <div className="skeleton-table__loader" />,
   }));
+
   return (
     <div>
       {props.condition ? (

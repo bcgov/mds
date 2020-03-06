@@ -7,7 +7,6 @@ import queryString from "query-string";
 import * as Strings from "@common/constants/strings";
 import * as router from "@/constants/routes";
 import CustomPropTypes from "@/customPropTypes";
-import { getMineReportCategoryOptionsHash } from "@common/selectors/staticContentSelectors";
 import ReportsTable from "@/components/dashboard/reportsHomePage/ReportsTable";
 import ReportsSearch from "@/components/dashboard/reportsHomePage/ReportsSearch";
 import ResponsivePagination from "@/components/common/ResponsivePagination";

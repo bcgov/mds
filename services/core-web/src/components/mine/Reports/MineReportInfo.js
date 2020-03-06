@@ -286,7 +286,4 @@ const mapDispatchToProps = (dispatch) =>
 
 MineReportInfo.propTypes = propTypes;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(MineReportInfo);
+export default connect(mapStateToProps, mapDispatchToProps)(MineReportInfo);

@@ -23,10 +23,12 @@ const propTypes = {
   handleRemoveReport: PropTypes.func.isRequired,
   isLoaded: PropTypes.bool.isRequired,
   isDashboardView: PropTypes.bool,
+  isPaginated: PropTypes.bool,
 };
 
 const defaultProps = {
   isDashboardView: false,
+  isPaginated: false,
 };
 
 export const MineReportTable = (props) => {
@@ -235,7 +237,7 @@ export const MineReportTable = (props) => {
       )}
       tableProps={{
         align: "left",
-        pagination: false,
+        pagination: props.isPaginated,
         locale: { emptyText: <NullScreen type="reports" /> },
       }}
     />
