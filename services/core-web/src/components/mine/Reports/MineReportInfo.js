@@ -40,9 +40,9 @@ const propTypes = {
   createMineReport: PropTypes.func.isRequired,
   deleteMineReport: PropTypes.func.isRequired,
   changeModalTitle: PropTypes.func.isRequired,
-  history: PropTypes.shape({ push: PropTypes.func }).isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
+  history: PropTypes.shape({ push: PropTypes.func }).isRequired,
   location: PropTypes.shape({ search: PropTypes.string }).isRequired,
   match: PropTypes.shape({
     params: PropTypes.shape({
@@ -102,12 +102,12 @@ export class MineReportInfo extends Component {
     });
   }
 
-  handleEditReport = (values) => {
+  handleEditReport = (report) => {
     this.props
-      .updateMineReport(this.props.mineGuid, values.mine_report_guid, values)
+      .updateMineReport(report.mine_guid, report.mine_report_guid, report)
       .then(() => this.props.closeModal())
       .then(() =>
-        this.props.fetchMineReports(this.props.mineGuid).then(() => {
+        this.props.fetchMineReports(report.mine_guid).then(() => {
           this.setFilteredReports();
         })
       );
@@ -127,9 +127,9 @@ export class MineReportInfo extends Component {
     });
   };
 
-  handleRemoveReport = (reportGuid) => {
-    this.props.deleteMineReport(this.props.mineGuid, reportGuid).then(() =>
-      this.props.fetchMineReports(this.props.mineGuid).then(() => {
+  handleRemoveReport = (report) => {
+    this.props.deleteMineReport(report.mine_guid, report.mine_report_guid).then(() =>
+      this.props.fetchMineReports(report.mine_guid).then(() => {
         this.setFilteredReports();
       })
     );
@@ -286,4 +286,7 @@ const mapDispatchToProps = (dispatch) =>
 
 MineReportInfo.propTypes = propTypes;
 
-export default connect(mapStateToProps, mapDispatchToProps)(MineReportInfo);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(MineReportInfo);

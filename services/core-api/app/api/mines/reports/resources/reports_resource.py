@@ -87,7 +87,7 @@ class ReportsResource(Resource, UserMixin):
             "mine_name": 'mine_name',
         }
 
-        query = MineReport.query.join(Mine)
+        query = MineReport.query.filter_by(deleted_ind=False).join(Mine)
         conditions = []
         if args["mine_guid"] is not None:
             conditions.append(

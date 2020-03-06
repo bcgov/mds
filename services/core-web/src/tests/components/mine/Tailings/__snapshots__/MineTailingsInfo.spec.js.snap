@@ -39,7 +39,7 @@ exports[`MineTailingsInfo renders properly 1`] = `
         </h3>
       </div>
     </div>
-    <MineReportTable
+    <Connect(MineReportTable)
       handleEditReport={[Function]}
       handleRemoveReport={[Function]}
       isLoaded={false}

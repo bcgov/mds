@@ -5,22 +5,31 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import queryString from "query-string";
 import * as Strings from "@common/constants/strings";
-import * as router from "@/constants/routes";
+import * as routes from "@/constants/routes";
 import CustomPropTypes from "@/customPropTypes";
 import ReportsTable from "@/components/dashboard/reportsHomePage/ReportsTable";
 import ReportsSearch from "@/components/dashboard/reportsHomePage/ReportsSearch";
-import ResponsivePagination from "@/components/common/ResponsivePagination";
-import { fetchReports } from "@common/actionCreators/reportActionCreator";
+import {
+  fetchReports,
+  updateMineReport,
+  deleteMineReport,
+} from "@common/actionCreators/reportActionCreator";
+import { changeModalTitle, openModal, closeModal } from "@common/actions/modalActions";
 import { getReports, getReportsPageData } from "@common/selectors/reportSelectors";
 import { formatQueryListParams } from "@common/utils/helpers";
+import { modalConfig } from "@/components/modalContent/config";
 
 const propTypes = {
   fetchReports: PropTypes.func.isRequired,
+  reports: PropTypes.arrayOf(CustomPropTypes.mineReport).isRequired,
+  pageData: CustomPropTypes.reportPageData,
+  updateMineReport: PropTypes.func.isRequired,
+  deleteMineReport: PropTypes.func.isRequired,
+  changeModalTitle: PropTypes.func.isRequired,
+  openModal: PropTypes.func.isRequired,
+  closeModal: PropTypes.func.isRequired,
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
   location: PropTypes.shape({ search: PropTypes.string }).isRequired,
-  pageData: CustomPropTypes.reportPageData,
-  reports: PropTypes.arrayOf(CustomPropTypes.mineReport).isRequired,
-  mineReportCategoryOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
 export class ReportsHomePage extends Component {
@@ -37,7 +46,6 @@ export class ReportsHomePage extends Component {
     params: {
       page: Strings.DEFAULT_PAGE,
       per_page: Strings.DEFAULT_PER_PAGE,
-      submissions_only: true,
       ...this.params,
     },
   };
@@ -45,19 +53,14 @@ export class ReportsHomePage extends Component {
   componentDidMount() {
     const params = this.props.location.search;
     const parsedParams = queryString.parse(params);
-    const {
-      page = this.state.params.page,
-      per_page = this.state.params.per_page,
-      submissions_only = this.state.params.submissions_only,
-    } = parsedParams;
+    const { page = this.state.params.page, per_page = this.state.params.per_page } = parsedParams;
     if (params) {
       this.renderDataFromURL();
     } else {
       this.props.history.push(
-        router.REPORTS_DASHBOARD.dynamicRoute({
+        routes.REPORTS_DASHBOARD.dynamicRoute({
           page,
           per_page,
-          submissions_only,
         })
       );
     }
@@ -96,22 +99,64 @@ export class ReportsHomePage extends Component {
       ...persistedParams,
       ...searchParams,
       page: Strings.DEFAULT_PAGE,
-      submissions_only: true,
     };
 
     this.props.history.push(
-      router.REPORTS_DASHBOARD.dynamicRoute(this.joinListParams(updatedParams))
+      routes.REPORTS_DASHBOARD.dynamicRoute(this.joinListParams(updatedParams))
     );
   };
 
   onPageChange = (page, per_page) => {
     this.props.history.push(
-      router.REPORTS_DASHBOARD.dynamicRoute({
+      routes.REPORTS_DASHBOARD.dynamicRoute({
         ...this.state.params,
         page,
         per_page,
       })
     );
+  };
+
+  // ***
+  handleEditReport = (report) => {
+    this.props
+      .updateMineReport(report.mine_guid, report.mine_report_guid, report)
+      .then(() => this.props.closeModal())
+      .then(() =>
+        this.props.fetchReports().then(() => {
+          // this.setFilteredReports();
+        })
+      );
+  };
+
+  // ***
+  handleRemoveReport = (report) => {
+    this.props.deleteMineReport(report.mine_guid, report.mine_report_guid).then(() =>
+      this.props.fetchReports().then(() => {
+        // this.setFilteredReports();
+      })
+    );
+  };
+
+  // ***
+  openEditReportModal = (event, onSubmit, report) => {
+    event.preventDefault();
+    this.props.openModal({
+      props: {
+        initialValues: {
+          ...report,
+          mine_report_submission_status:
+            report.mine_report_submissions.length > 0
+              ? report.mine_report_submissions[report.mine_report_submissions.length - 1]
+                  .mine_report_submission_status_code
+              : "NRQ",
+        },
+        onSubmit,
+        title: `Edit ${report.submission_year} ${report.report_name}`,
+        mineGuid: this.props.mineGuid,
+        changeModalTitle: this.props.changeModalTitle,
+      },
+      content: modalConfig.ADD_REPORT,
+    });
   };
 
   render() {
@@ -133,19 +178,16 @@ export class ReportsHomePage extends Component {
                 isLoaded={this.state.isLoaded}
                 handleSearch={this.handleSearch}
                 reports={this.props.reports}
-                mineReportCategoryOptionsHash={this.props.mineReportCategoryOptionsHash}
                 sortField={this.state.params.sort_field}
                 sortDir={this.state.params.sort_dir}
                 searchParams={this.state.params}
+                handlePageChange={this.onPageChange}
+                pageData={this.props.pageData}
+                openEditReportModal={this.openEditReportModal}
+                handleEditReport={this.handleEditReport}
+                handleRemoveReport={this.handleRemoveReport}
+                isDashboardView
               />
-              <div className="center">
-                <ResponsivePagination
-                  onPageChange={this.onPageChange}
-                  currentPage={Number(this.state.params.page)}
-                  pageTotal={Number(this.props.pageData.total)}
-                  itemsPerPage={Number(this.state.params.per_page)}
-                />
-              </div>
             </div>
           </div>
         </div>
@@ -157,17 +199,24 @@ export class ReportsHomePage extends Component {
 const mapStateToProps = (state) => ({
   reports: getReports(state),
   pageData: getReportsPageData(state),
-  mineReportCategoryOptionsHash: getMineReportCategoryOptionsHash(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
       fetchReports,
+      updateMineReport,
+      deleteMineReport,
+      openModal,
+      closeModal,
+      changeModalTitle,
     },
     dispatch
   );
 
 ReportsHomePage.propTypes = propTypes;
 
-export default connect(mapStateToProps, mapDispatchToProps)(ReportsHomePage);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ReportsHomePage);

@@ -14,10 +14,7 @@ export const ReportsSearch = (props) => (
     <Row>
       <Col md={{ span: 12, offset: 6 }} xs={{ span: 20, offset: 2 }}>
         <span className="advanced-search__container">
-          {/* <ReportsSearchForm
-            onSubmit={props.handleSearch}
-            initialValues={props.initialValues}
-          /> */}
+          {/* <ReportsSearchForm onSubmit={props.handleSearch} initialValues={props.initialValues} /> */}
         </span>
       </Col>
     </Row>

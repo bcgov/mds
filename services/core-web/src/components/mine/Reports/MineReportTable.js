@@ -1,8 +1,11 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { connect } from "react-redux";
 import * as Strings from "@common/constants/strings";
 import { formatDate, truncateFilename, dateSorter } from "@common/utils/helpers";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
+import { getMineReportCategoryOptionsHash } from "@common/selectors/staticContentSelectors";
+import { Link } from "react-router-dom";
 import NullScreen from "@/components/common/NullScreen";
 import { COLOR } from "@/constants/styles";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
@@ -60,7 +63,7 @@ export const MineReportTable = (props) => {
           className={hideColumn(!props.isDashboardView)}
           style={record.isOverdue ? { color: errorRed } : {}}
         >
-          <LinkButton to={router.MINE_SUMMARY.dynamicRoute(record.mine_guid)}>{text}</LinkButton>
+          <Link to={router.MINE_SUMMARY.dynamicRoute(record.mine_guid)}>{text}</Link>
         </div>
       ),
     },
@@ -192,48 +195,48 @@ export const MineReportTable = (props) => {
     },
   ];
 
-  const transformRowData = (report, openEditReportModal, handleEditReport, handleRemoveReport) => ({
-    key: report.mine_report_guid,
-    mine_report_id: report.mine_report_id,
-    mine_report_guid: report.mine_report_guid,
-    mine_report_definition_guid: report.mine_report_definition_guid,
-    mine_report_category:
-      (report.mine_report_category &&
-        props.mineReportCategoryOptionsHash[report.mine_report_category]) ||
-      Strings.EMPTY_FIELD,
-    report_name: report.report_name,
-    due_date: formatDate(report.due_date) || Strings.EMPTY_FIELD,
-    received_date: formatDate(report.received_date) || Strings.EMPTY_FIELD,
-    submission_year: report.submission_year,
-    created_by_idir: report.created_by_idir,
-    permit_guid: report.permit_guid || Strings.EMPTY_FIELD,
-    documents:
-      report.mine_report_submissions &&
-      report.mine_report_submissions.length > 0 &&
-      report.mine_report_submissions[report.mine_report_submissions.length - 1].documents &&
-      report.mine_report_submissions[report.mine_report_submissions.length - 1].documents.length > 0
-        ? report.mine_report_submissions[report.mine_report_submissions.length - 1].documents
-        : [],
-    mine_guid: report.mine_guid,
-    mine_name: report.mine_name,
-    isOverdue: report.due_date && Date.parse(report.due_date) < new Date(),
-    report,
-    openEditReportModal,
-    handleEditReport,
-    handleRemoveReport,
-  });
+  const transformRowData = (reports, openEditReportModal, handleEditReport, handleRemoveReport) =>
+    reports.map((report) => ({
+      key: report.mine_report_guid,
+      mine_report_id: report.mine_report_id,
+      mine_report_guid: report.mine_report_guid,
+      mine_report_definition_guid: report.mine_report_definition_guid,
+      mine_report_category:
+        (report.mine_report_category &&
+          props.mineReportCategoryOptionsHash[report.mine_report_category]) ||
+        Strings.EMPTY_FIELD,
+      report_name: report.report_name,
+      due_date: formatDate(report.due_date) || Strings.EMPTY_FIELD,
+      received_date: formatDate(report.received_date) || Strings.EMPTY_FIELD,
+      submission_year: report.submission_year,
+      created_by_idir: report.created_by_idir,
+      permit_guid: report.permit_guid || Strings.EMPTY_FIELD,
+      documents:
+        report.mine_report_submissions &&
+        report.mine_report_submissions.length > 0 &&
+        report.mine_report_submissions[report.mine_report_submissions.length - 1].documents &&
+        report.mine_report_submissions[report.mine_report_submissions.length - 1].documents.length >
+          0
+          ? report.mine_report_submissions[report.mine_report_submissions.length - 1].documents
+          : [],
+      mine_guid: report.mine_guid,
+      mine_name: report.mine_name,
+      isOverdue: report.due_date && Date.parse(report.due_date) < new Date(),
+      report,
+      openEditReportModal,
+      handleEditReport,
+      handleRemoveReport,
+    }));
 
   return (
     <CoreTable
       condition={props.isLoaded}
       columns={columns}
-      dataSource={props.mineReports.map((report) =>
-        transformRowData(
-          report,
-          props.openEditReportModal,
-          props.handleEditReport,
-          props.handleRemoveReport
-        )
+      dataSource={transformRowData(
+        props.mineReports,
+        props.openEditReportModal,
+        props.handleEditReport,
+        props.handleRemoveReport
       )}
       tableProps={{
         align: "left",
@@ -247,4 +250,8 @@ export const MineReportTable = (props) => {
 MineReportTable.propTypes = propTypes;
 MineReportTable.defaultProps = defaultProps;
 
-export default MineReportTable;
+const mapStateToProps = (state) => ({
+  mineReportCategoryOptionsHash: getMineReportCategoryOptionsHash(state),
+});
+
+export default connect(mapStateToProps)(MineReportTable);

@@ -43,7 +43,7 @@ exports[`MineReportInfo renders properly 1`] = `
       onSubmit={[Function]}
     />
   </div>
-  <MineReportTable
+  <Connect(MineReportTable)
     handleEditReport={[Function]}
     handleRemoveReport={[Function]}
     isLoaded={false}

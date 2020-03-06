@@ -294,7 +294,7 @@ export class MineIncidentTable extends Component {
         key: "handleEditModal",
         dataIndex: "handleEditModal",
         render: (text, record) => (
-          <div title="" align="right" className="btn--middle flex">
+          <div align="right" className="btn--middle flex">
             <AuthorizationWrapper permission={Permission.EDIT_DO}>
               <Button
                 type="primary"

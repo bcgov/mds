@@ -42,17 +42,17 @@ export class MineTailingsInfo extends Component {
     });
   }
 
-  handleEditReport = (values) => {
+  handleEditReport = (report) => {
     this.props
-      .updateMineReport(this.props.mineGuid, values.mine_report_guid, values)
+      .updateMineReport(report.mine_guid, report.mine_report_guid, report)
       .then(() => this.props.closeModal())
-      .then(() => this.props.fetchMineReports(this.props.mineGuid));
+      .then(() => this.props.fetchMineReports(report.mine_guid));
   };
 
-  handleRemoveReport = (reportGuid) => {
+  handleRemoveReport = (report) => {
     this.props
-      .deleteMineReport(this.props.mineGuid, reportGuid)
-      .then(() => this.props.fetchMineReports(this.props.mineGuid));
+      .deleteMineReport(report.mine_guid, report.mine_report_guid)
+      .then(() => this.props.fetchMineReports(report.mine_guid));
   };
 
   openEditReportModal = (event, onSubmit, report) => {

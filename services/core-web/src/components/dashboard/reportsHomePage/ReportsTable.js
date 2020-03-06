@@ -11,17 +11,16 @@ import * as Strings from "@common/constants/strings";
  */
 
 const propTypes = {
-  handleFilterChange: PropTypes.func.isRequired,
-  openMineReportModal: PropTypes.func.isRequired,
-  handleEditMineReport: PropTypes.func.isRequired,
-  openViewMineReportModal: PropTypes.func.isRequired,
+  openEditReportModal: PropTypes.func.isRequired,
+  handleEditReport: PropTypes.func.isRequired,
+  handleRemoveReport: PropTypes.func.isRequired,
   handlePageChange: PropTypes.func.isRequired,
+  handleFilterChange: PropTypes.func.isRequired,
   handleReportSearch: PropTypes.func.isRequired,
   params: PropTypes.objectOf(
     PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.arrayOf(PropTypes.string)])
   ).isRequired,
   reports: PropTypes.arrayOf(CustomPropTypes.mineReport).isRequired,
-  mineReportCategoryOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   pageData: CustomPropTypes.reportPageData,
   sortField: PropTypes.string,
   sortDir: PropTypes.string,
@@ -46,22 +45,22 @@ export const ReportsTable = (props) => {
       <MineReportTable
         isLoaded={props.isLoaded}
         mineReports={props.reports}
-        mineReportCategoryOptionsHash={props.mineReportCategoryOptionsHash}
-        openMineReportModal={props.openMineReportModal}
-        handleEditMineReport={props.handleEditMineReport}
-        openViewMineReportModal={props.openViewMineReportModal}
         params={props.params}
         handleFilterChange={props.handleFilterChange}
         handleReportSearch={props.handleReportSearch}
+        openMineReportModal={props.openMineReportModal}
+        openEditReportModal={props.openEditReportModal}
+        handleEditReport={props.handleEditReport}
+        handleRemoveReport={props.handleRemoveReport}
         sortField={props.sortField}
         sortDir={props.sortDir}
-        isDashboardView
+        isDashboardView={props.isDashboardView}
       />
       <div className="center">
         <ResponsivePagination
           onPageChange={props.handlePageChange}
           currentPage={Number(props.pageData.current_page)}
-          pageTotal={props.pageData.total}
+          pageTotal={Number(props.pageData.total)}
           itemsPerPage={Number(props.pageData.items_per_page)}
         />
       </div>
