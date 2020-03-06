@@ -154,7 +154,4 @@ const mapDispatchToProps = (dispatch) =>
 
 MineNOWApplications.propTypes = propTypes;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(MineNOWApplications);
+export default connect(mapStateToProps, mapDispatchToProps)(MineNOWApplications);
