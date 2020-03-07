@@ -132,7 +132,7 @@ export class ReportFilterForm extends Component {
                 id="report_type"
                 name="report_type"
                 label="Report Type"
-                placeholder="Select the report type"
+                placeholder="Select report type"
                 component={renderConfig.SELECT}
                 data={this.state.dropdownMineReportCategoryOptionsFiltered}
               />
@@ -142,7 +142,7 @@ export class ReportFilterForm extends Component {
                 id="report_name"
                 name="report_name"
                 label="Report Name"
-                placeholder="Select the report name"
+                placeholder="Select report name"
                 component={renderConfig.SELECT}
                 data={this.state.dropdownMineReportDefinitionOptionsFiltered}
               />
@@ -152,33 +152,65 @@ export class ReportFilterForm extends Component {
                 id="compliance_year"
                 name="compliance_year"
                 label="Compliance Year"
-                placeholder="Select the compliance year"
+                placeholder="Select compliance year"
                 component={renderConfig.YEAR}
               />
             </Col>
           </Row>
           <Row gutter={16}>
-            <Col>
+            <Col md={8} sm={24}>
               <Form.Item label="Due Date">
                 <Row gutter={16}>
-                  <Col md={4} sm={24}>
+                  <Col md={12} sm={24}>
                     <Field
                       id="due_date_start"
                       name="due_date_start"
-                      placeholder="Select the start date"
+                      placeholder="Select start date"
                       component={renderConfig.DATE}
                     />
                   </Col>
-                  <Col md={4} sm={24}>
+                  <Col md={12} sm={24}>
                     <Field
                       id="due_date_end"
                       name="due_date_end"
-                      placeholder="Select the end date"
+                      placeholder="Select end date"
                       component={renderConfig.DATE}
                     />
                   </Col>
                 </Row>
               </Form.Item>
+            </Col>
+            <Col md={8} sm={24}>
+              <Form.Item label="Received Date">
+                <Row gutter={16}>
+                  <Col md={12} sm={24}>
+                    <Field
+                      id="received_date_start"
+                      name="received_date_start"
+                      placeholder="Select start date"
+                      component={renderConfig.DATE}
+                    />
+                  </Col>
+                  <Col md={12} sm={24}>
+                    <Field
+                      id="received_date_end"
+                      name="received_date_end"
+                      placeholder="Select end date"
+                      component={renderConfig.DATE}
+                    />
+                  </Col>
+                </Row>
+              </Form.Item>
+            </Col>
+            <Col md={8} sm={24}>
+              <Field
+                id="requested_by"
+                name="requested_by"
+                label="Requested By"
+                placeholder="Enter keyword"
+                component={renderConfig.FIELD}
+                allowClear
+              />
             </Col>
           </Row>
         </div>

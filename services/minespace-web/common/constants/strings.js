@@ -37,6 +37,7 @@ export const EMPTY_FIELD = "N/A";
 export const EMPTY = "";
 export const ZERO = "0.00";
 export const UNASSIGNED = "Unassigned";
+export const DATE_FORMAT = "YYYY-MM-DD";
 
 // default coordinates for center of BC
 export const DEFAULT_LAT = 53.7267;

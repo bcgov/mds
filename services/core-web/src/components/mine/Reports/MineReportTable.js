@@ -242,10 +242,6 @@ export const MineReportTable = (props) => {
     }));
 
   const handleTableChange = (updateReportList, tableFilters) => (pagination, filters, sorter) => {
-    console.log("handleTableChange pagination:\n", pagination);
-    console.log("handleTableChange filters:\n", filters);
-    console.log("handleTableChange sorter:\n", sorter);
-
     const params = {
       ...tableFilters,
       sort_field: sorter.order ? sorter.field : undefined,

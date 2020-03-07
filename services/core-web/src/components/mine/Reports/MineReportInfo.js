@@ -16,6 +16,7 @@ import { changeModalTitle, openModal, closeModal } from "@common/actions/modalAc
 import { getMineReports } from "@common/selectors/reportSelectors";
 import { getMineReportDefinitionOptions } from "@common/selectors/staticContentSelectors";
 import { getMines, getMineGuid } from "@common/selectors/mineSelectors";
+import * as Strings from "@common/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
 import * as Permission from "@/constants/permissions";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
@@ -57,7 +58,9 @@ const defaultParams = {
   compliance_year: undefined,
   due_date_start: undefined,
   due_date_end: undefined,
-  report_status: undefined,
+  received_date_start: undefined,
+  received_date_end: undefined,
+  requested_by: undefined,
   sort_field: "received_date",
   sort_dir: "desc",
 };
@@ -192,19 +195,41 @@ export class MineReportInfo extends Component {
         );
 
     return reports.filter((report) => {
-      const report_name =
-        !params.report_name || report.mine_report_definition_guid.includes(params.report_name);
       const report_type =
         !params.report_type || reportDefinitionGuids.includes(report.mine_report_definition_guid);
+      const report_name =
+        !params.report_name || report.mine_report_definition_guid === params.report_name;
       const compliance_year =
-        !params.compliance_year || params.compliance_year.includes(report.submission_year);
+        !params.compliance_year || report.submission_year === params.compliance_year;
       const due_date_start =
         !params.due_date_start ||
-        moment(report.due_date, "YYYY-MM-DD") >= moment(params.due_date_start, "YYYY-MM-DD");
+        moment(report.due_date, Strings.DATE_FORMAT) >=
+          moment(params.due_date_start, Strings.DATE_FORMAT);
       const due_date_end =
         !params.due_date_end ||
-        moment(report.due_date, "YYYY-MM-DD") <= moment(params.due_date_end, "YYYY-MM-DD");
-      return report_name && report_type && compliance_year && due_date_start && due_date_end;
+        moment(report.due_date, Strings.DATE_FORMAT) <=
+          moment(params.due_date_end, Strings.DATE_FORMAT);
+      const received_date_start =
+        !params.received_date_start ||
+        moment(report.received_date, Strings.DATE_FORMAT) >=
+          moment(params.received_date_start, Strings.DATE_FORMAT);
+      const received_date_end =
+        !params.receiveddate_end ||
+        moment(report.received_date, Strings.DATE_FORMAT) <=
+          moment(params.received_date_end, Strings.DATE_FORMAT);
+      const requested_by =
+        !params.requested_by ||
+        report.created_by_idir.toLowerCase().includes(params.requested_by.toLowerCase());
+      return (
+        report_name &&
+        report_type &&
+        compliance_year &&
+        due_date_start &&
+        due_date_end &&
+        received_date_start &&
+        received_date_end &&
+        requested_by
+      );
     });
   };
 
