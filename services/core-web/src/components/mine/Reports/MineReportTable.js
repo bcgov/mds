@@ -27,7 +27,7 @@ const propTypes = {
   isLoaded: PropTypes.bool.isRequired,
   handleTableChange: PropTypes.func,
   isDashboardView: PropTypes.bool,
-  params: PropTypes.objectOf(PropTypes.any),
+  filters: PropTypes.objectOf(PropTypes.any),
   sortField: PropTypes.string,
   sortDir: PropTypes.string,
   isPaginated: PropTypes.bool,
@@ -36,7 +36,7 @@ const propTypes = {
 const defaultProps = {
   handleTableChange: () => {},
   isDashboardView: false,
-  params: {},
+  filters: {},
   sortField: undefined,
   sortDir: undefined,
   isPaginated: false,
@@ -83,11 +83,11 @@ export const MineReportTable = (props) => {
       sorter:
         props.isDashboardView ||
         ((a, b) => a.mine_report_category.localeCompare(b.mine_report_category)),
-      className: hideColumn(!props.isDashboardView),
+      // className: hideColumn(!props.isDashboardView),
       render: (text, record) => (
         <div
           title="Report Type"
-          className={hideColumn(!props.isDashboardView)}
+          // className={hideColumn(!props.isDashboardView)}
           style={record.isOverdue ? { color: errorRed } : {}}
         >
           {text}
@@ -202,25 +202,6 @@ export const MineReportTable = (props) => {
     },
   ];
 
-  const applySortIndicator = (_columns, field, dir) =>
-    _columns.map((column) => ({
-      ...column,
-      sortOrder: dir && column.sortField === field ? dir.concat("end") : false,
-    }));
-
-  const handleTableChange = (updateReportList) => (pagination, filters, sorter) => {
-    console.log("handleTableChange pagination:\n", pagination);
-    console.log("handleTableChange filters:\n", filters);
-    console.log("handleTableChange sorter:\n", sorter);
-
-    const params = {
-      ...props.params,
-      sort_field: sorter.order ? sorter.field : undefined,
-      sort_dir: sorter.order ? sorter.order.replace("end", "") : undefined,
-    };
-    updateReportList(params);
-  };
-
   const transformRowData = (reports, openEditReportModal, handleEditReport, handleRemoveReport) =>
     reports.map((report) => ({
       key: report.mine_report_guid,
@@ -254,6 +235,25 @@ export const MineReportTable = (props) => {
       handleRemoveReport,
     }));
 
+  const applySortIndicator = (_columns, field, dir) =>
+    _columns.map((column) => ({
+      ...column,
+      sortOrder: dir && column.sortField === field ? dir.concat("end") : false,
+    }));
+
+  const handleTableChange = (updateReportList, tableFilters) => (pagination, filters, sorter) => {
+    console.log("handleTableChange pagination:\n", pagination);
+    console.log("handleTableChange filters:\n", filters);
+    console.log("handleTableChange sorter:\n", sorter);
+
+    const params = {
+      ...tableFilters,
+      sort_field: sorter.order ? sorter.field : undefined,
+      sort_dir: sorter.order ? sorter.order.replace("end", "") : undefined,
+    };
+    updateReportList(params);
+  };
+
   return (
     <CoreTable
       condition={props.isLoaded}
@@ -268,7 +268,7 @@ export const MineReportTable = (props) => {
         align: "left",
         pagination: props.isPaginated,
         locale: { emptyText: <NullScreen type="reports" /> },
-        onChange: handleTableChange(props.handleTableChange),
+        onChange: handleTableChange(props.handleTableChange, props.filters),
       }}
     />
   );

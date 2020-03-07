@@ -15,7 +15,7 @@ import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
-  onSubmit: PropTypes.func.isRequired,
+  handleReset: PropTypes.func.isRequired,
   reset: PropTypes.func.isRequired,
   mineReportDefinitionOptions: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
   dropdownMineReportCategoryOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
@@ -38,7 +38,7 @@ export class ReportFilterForm extends Component {
 
   handleReset = () => {
     this.props.reset();
-    this.props.onSubmit();
+    this.props.handleReset();
   };
 
   updateMineReportDefinitionOptions = (
@@ -156,16 +156,6 @@ export class ReportFilterForm extends Component {
                 component={renderConfig.YEAR}
               />
             </Col>
-            {/* This was left in as it is expected to be used with the non MVP version of the code required reports. */}
-            {/* <Col md={6} sm={24}>
-              <Field
-                id="requested_by"
-                name="requested_by"
-                label="Requested By"
-                placeholder="Select the inspector's name"
-                component={renderConfig.SELECT}
-              />
-            </Col> */}
           </Row>
           <Row gutter={16}>
             <Col>
@@ -173,32 +163,22 @@ export class ReportFilterForm extends Component {
                 <Row gutter={16}>
                   <Col md={4} sm={24}>
                     <Field
-                      id="report_due_date_start"
-                      name="report_due_date_start"
+                      id="due_date_start"
+                      name="due_date_start"
                       placeholder="Select the start date"
                       component={renderConfig.DATE}
                     />
                   </Col>
                   <Col md={4} sm={24}>
                     <Field
-                      id="report_due_date_end"
-                      name="report_due_date_end"
+                      id="due_date_end"
+                      name="due_date_end"
                       placeholder="Select the end date"
                       component={renderConfig.DATE}
                     />
                   </Col>
                 </Row>
               </Form.Item>
-              {/* This was left in as it is expected to be used with the non MVP version of the code required reports. */}
-              {/* <Col md={6} sm={24}>
-              <Field
-                id="report_status"
-                name="report_status"
-                label="Review Status"
-                placeholder="Select review status"
-                component={renderConfig.SELECT}
-              />
-            </Col> */}
             </Col>
           </Row>
         </div>
@@ -227,7 +207,7 @@ export default compose(
   })),
   reduxForm({
     form: FORM.FILTER_REPORTS,
-    touchOnBlur: true,
+    touchOnBlur: false,
     enableReinitialize: true,
   })
 )(ReportFilterForm);

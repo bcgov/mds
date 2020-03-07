@@ -33,7 +33,7 @@ const propTypes = {
 };
 
 export class MineTailingsInfo extends Component {
-  state = { mine: {}, isLoaded: false };
+  state = { mine: {}, isLoaded: false, params: { sort_field: "received_date", sort_dir: "desc" } };
 
   componentDidMount() {
     this.setState({ mine: this.props.mines[this.props.mineGuid] });
@@ -66,6 +66,10 @@ export class MineTailingsInfo extends Component {
       },
       content: modalConfig.ADD_REPORT,
     });
+  };
+
+  handleReportFilterSubmit = (params) => {
+    this.setState({ params: { sort_field: params.sort_field, sort_dir: params.sort_dir } });
   };
 
   render() {
@@ -116,6 +120,9 @@ export class MineTailingsInfo extends Component {
             openEditReportModal={this.openEditReportModal}
             handleEditReport={this.handleEditReport}
             handleRemoveReport={this.handleRemoveReport}
+            handleTableChange={this.handleReportFilterSubmit}
+            sortField={this.state.params.sort_field}
+            sortDir={this.state.params.sort_dir}
           />
         </div>
       </div>
@@ -144,7 +151,4 @@ const mapDispatchToProps = (dispatch) =>
 
 MineTailingsInfo.propTypes = propTypes;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(MineTailingsInfo);
+export default connect(mapStateToProps, mapDispatchToProps)(MineTailingsInfo);

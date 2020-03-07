@@ -55,11 +55,11 @@ const defaultParams = {
   report_name: undefined,
   report_type: undefined,
   compliance_year: undefined,
-  report_due_date_start: undefined,
-  report_due_date_end: undefined,
+  due_date_start: undefined,
+  due_date_end: undefined,
   report_status: undefined,
-  sort_dir: undefined,
-  sort_field: undefined,
+  sort_field: "received_date",
+  sort_dir: "desc",
 };
 
 export class MineReportInfo extends Component {
@@ -71,44 +71,29 @@ export class MineReportInfo extends Component {
     disableAddReport: false,
   };
 
-  componentWillMount = () => {
+  componentDidMount = () => {
+    this.setState({ mine: this.props.mines[this.props.mineGuid] });
+    const params = queryString.parse(this.props.location.search);
     this.props.fetchMineReports(this.props.mineGuid).then(() => {
-      this.setState({ isLoaded: true });
-      if (this.props.location.search) {
-        this.renderDataFromURL(this.props.location.search);
-      } else {
-        this.setFilteredReports();
-        this.props.history.replace(
-          routes.MINE_REPORTS.dynamicRoute(this.props.match.params.id, defaultParams)
-        );
-      }
+      this.setState(
+        (prevState) => ({
+          isLoaded: true,
+          params: { ...prevState.params, ...params },
+          filteredReports: this.props.mineReports,
+        }),
+        () =>
+          this.props.history.replace(
+            routes.MINE_REPORTS.dynamicRoute(this.props.match.params.id, this.state.params)
+          )
+      );
     });
   };
 
   componentWillReceiveProps = (nextProps) => {
-    if (nextProps.mines !== this.props.mines || nextProps.mineGuid !== this.props.mineGuid) {
-      this.setState({
-        mine: nextProps.mines[nextProps.mineGuid],
-      });
-    }
-
     if (nextProps.location !== this.props.location) {
-      if (nextProps.location.search) {
-        this.renderDataFromURL(nextProps.location.search);
-      } else {
-        // this.renderDataFromURL(queryString.stringify(defaultParams));
-        this.props.history.replace(
-          routes.MINE_REPORTS.dynamicRoute(this.props.match.params.id, defaultParams)
-        );
-      }
+      this.renderDataFromURL(nextProps.location.search);
     }
   };
-
-  setFilteredReports(reports = null) {
-    this.setState({
-      filteredReports: reports || this.props.mineReports,
-    });
-  }
 
   handleEditReport = (report) => {
     this.props
@@ -116,7 +101,9 @@ export class MineReportInfo extends Component {
       .then(() => this.props.closeModal())
       .then(() =>
         this.props.fetchMineReports(report.mine_guid).then(() => {
-          this.setFilteredReports();
+          this.setState({
+            filteredReports: this.props.mineReports,
+          });
         })
       );
   };
@@ -128,7 +115,9 @@ export class MineReportInfo extends Component {
         .then(() => this.props.closeModal())
         .then(() =>
           this.props.fetchMineReports(this.props.mineGuid).then(() => {
-            this.setFilteredReports();
+            this.setState({
+              filteredReports: this.props.mineReports,
+            });
           })
         )
         .finally(this.setState({ disableAddReport: false }));
@@ -138,7 +127,9 @@ export class MineReportInfo extends Component {
   handleRemoveReport = (report) => {
     this.props.deleteMineReport(report.mine_guid, report.mine_report_guid).then(() =>
       this.props.fetchMineReports(report.mine_guid).then(() => {
-        this.setFilteredReports();
+        this.setState({
+          filteredReports: this.props.mineReports,
+        });
       })
     );
   };
@@ -207,23 +198,17 @@ export class MineReportInfo extends Component {
         !params.report_type || reportDefinitionGuids.includes(report.mine_report_definition_guid);
       const compliance_year =
         !params.compliance_year || params.compliance_year.includes(report.submission_year);
-      const report_due_date_start =
-        !params.report_due_date_start ||
-        moment(report.due_date, "YYYY-MM-DD") >= moment(params.report_due_date_start, "YYYY-MM-DD");
-      const report_due_date_end =
-        !params.report_due_date_end ||
-        moment(report.due_date, "YYYY-MM-DD") <= moment(params.report_due_date_end, "YYYY-MM-DD");
-      return (
-        report_name &&
-        report_type &&
-        compliance_year &&
-        report_due_date_start &&
-        report_due_date_end
-      );
+      const due_date_start =
+        !params.due_date_start ||
+        moment(report.due_date, "YYYY-MM-DD") >= moment(params.due_date_start, "YYYY-MM-DD");
+      const due_date_end =
+        !params.due_date_end ||
+        moment(report.due_date, "YYYY-MM-DD") <= moment(params.due_date_end, "YYYY-MM-DD");
+      return report_name && report_type && compliance_year && due_date_start && due_date_end;
     });
   };
 
-  handleReportFilter = (params) => {
+  handleReportFilterSubmit = (params) => {
     if (isEmpty(params)) {
       this.props.history.replace(
         routes.MINE_REPORTS.dynamicRoute(this.props.match.params.id, defaultParams)
@@ -233,6 +218,22 @@ export class MineReportInfo extends Component {
         routes.MINE_REPORTS.dynamicRoute(this.props.match.params.id, params)
       );
     }
+  };
+
+  handleReportFilterReset = () => {
+    this.setState(
+      (prevState) => ({
+        params: {
+          ...defaultParams,
+          sort_field: prevState.params.sort_field,
+          sort_dir: prevState.params.sort_dir,
+        },
+      }),
+      () =>
+        this.props.history.replace(
+          routes.MINE_REPORTS.dynamicRoute(this.props.match.params.id, this.state.params)
+        )
+    );
   };
 
   render() {
@@ -260,16 +261,20 @@ export class MineReportInfo extends Component {
             <h2>Filter By</h2>
             <br />
           </div>
-          <ReportFilterForm onSubmit={this.handleReportFilter} initialValues={this.state.params} />
+          <ReportFilterForm
+            onSubmit={this.handleReportFilterSubmit}
+            handleReset={this.handleReportFilterReset}
+            initialValues={this.state.params}
+          />
         </div>
         <MineReportTable
           isLoaded={this.state.isLoaded}
           openEditReportModal={this.openEditReportModal}
           handleEditReport={this.handleEditReport}
           handleRemoveReport={this.handleRemoveReport}
-          handleTableChange={this.handleReportFilter}
+          handleTableChange={this.handleReportFilterSubmit}
           mineReports={this.state.filteredReports}
-          params={this.state.params}
+          filters={this.state.params}
           sortField={this.state.params.sort_field}
           sortDir={this.state.params.sort_dir}
         />

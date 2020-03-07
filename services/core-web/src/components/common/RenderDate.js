@@ -10,19 +10,20 @@ import { Form, DatePicker } from "antd";
 const propTypes = {
   id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   input: PropTypes.objectOf(PropTypes.any).isRequired,
-  label: PropTypes.string.isRequired,
-  placeholder: PropTypes.string,
-  onChange: PropTypes.func,
   meta: PropTypes.objectOf(PropTypes.any).isRequired,
   showTime: PropTypes.bool,
+  label: PropTypes.string,
+  placeholder: PropTypes.string,
   disabled: PropTypes.bool,
+  onChange: PropTypes.func,
 };
 
 const defaultProps = {
   showTime: false,
-  placeholder: "yyyy-mm-dd",
-  onChange: () => {},
+  label: "",
+  placeholder: "",
   disabled: false,
+  onChange: () => {},
 };
 
 const RenderDate = (props) => (
