@@ -9,6 +9,7 @@ import * as Strings from "@common/constants/strings";
 /**
  * @class Incidents Table
  */
+
 const propTypes = {
   handleFilterChange: PropTypes.func.isRequired,
   openMineIncidentModal: PropTypes.func.isRequired,

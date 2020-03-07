@@ -36,14 +36,14 @@ const propTypes = {
   openViewMineIncidentModal: PropTypes.func.isRequired,
   isLoaded: PropTypes.bool.isRequired,
   incidentStatusCodeOptions: CustomPropTypes.options.isRequired,
-  isDashboardView: PropTypes.bool,
-  sortField: PropTypes.string,
-  sortDir: PropTypes.string,
   handleIncidentSearch: PropTypes.func,
   incidentDeterminationHash: PropTypes.objectOf(PropTypes.string),
   complianceCodesHash: PropTypes.objectOf(PropTypes.string),
   incidentStatusCodeHash: PropTypes.objectOf(PropTypes.string),
   incidentCategoryCodeHash: PropTypes.objectOf(PropTypes.string),
+  isDashboardView: PropTypes.bool,
+  sortField: PropTypes.string,
+  sortDir: PropTypes.string,
   isPaginated: PropTypes.bool,
 };
 
@@ -71,7 +71,7 @@ const handleTableChange = (updateIncidentList) => (pagination, filters, sorter) 
   const params = {
     results: pagination.pageSize,
     page: pagination.current,
-    sort_field: sorter.field,
+    sort_field: sorter.order ? sorter.field : undefined,
     sort_dir: sorter.order ? sorter.order.replace("end", "") : sorter.order,
     ...filters,
   };

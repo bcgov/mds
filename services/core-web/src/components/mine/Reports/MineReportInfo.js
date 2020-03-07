@@ -42,7 +42,7 @@ const propTypes = {
   changeModalTitle: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
-  history: PropTypes.shape({ push: PropTypes.func }).isRequired,
+  history: PropTypes.shape({ replace: PropTypes.func }).isRequired,
   location: PropTypes.shape({ search: PropTypes.string }).isRequired,
   match: PropTypes.shape({
     params: PropTypes.shape({
@@ -58,6 +58,8 @@ const defaultParams = {
   report_due_date_start: undefined,
   report_due_date_end: undefined,
   report_status: undefined,
+  sort_dir: undefined,
+  sort_field: undefined,
 };
 
 export class MineReportInfo extends Component {
@@ -72,11 +74,13 @@ export class MineReportInfo extends Component {
   componentWillMount = () => {
     this.props.fetchMineReports(this.props.mineGuid).then(() => {
       this.setState({ isLoaded: true });
-      console.log("componentWillMount: this.props.location.search\n", this.props.location.search);
       if (this.props.location.search) {
         this.renderDataFromURL(this.props.location.search);
       } else {
         this.setFilteredReports();
+        this.props.history.replace(
+          routes.MINE_REPORTS.dynamicRoute(this.props.match.params.id, defaultParams)
+        );
       }
     });
   };
@@ -87,9 +91,16 @@ export class MineReportInfo extends Component {
         mine: nextProps.mines[nextProps.mineGuid],
       });
     }
+
     if (nextProps.location !== this.props.location) {
-      const correctParams = nextProps.location.search || queryString.stringify(defaultParams);
-      this.renderDataFromURL(correctParams);
+      if (nextProps.location.search) {
+        this.renderDataFromURL(nextProps.location.search);
+      } else {
+        // this.renderDataFromURL(queryString.stringify(defaultParams));
+        this.props.history.replace(
+          routes.MINE_REPORTS.dynamicRoute(this.props.match.params.id, defaultParams)
+        );
+      }
     }
   };
 
@@ -168,61 +179,59 @@ export class MineReportInfo extends Component {
   };
 
   renderDataFromURL = (params) => {
-    const formattedParams = queryString.parse(params);
-    const reports = this.props.mineReports || [];
-    const filteredReportDefinitionGuids = formattedParams.report_type
+    const parsedParams = queryString.parse(params);
+    const filteredReports = this.handleFiltering(this.props.mineReports, parsedParams);
+    this.setState({
+      filteredReports,
+      params: parsedParams,
+    });
+  };
+
+  handleFiltering = (reports, params) => {
+    const reportDefinitionGuids = params.report_type
       ? this.props.mineReportDefinitionOptions
           .filter((option) =>
             option.categories
               .map((category) => category.mine_report_category)
-              .includes(formattedParams.report_type)
+              .includes(params.report_type)
           )
           .map((definition) => definition.mine_report_definition_guid)
       : this.props.mineReportDefinitionOptions.map(
           (definition) => definition.mine_report_definition_guid
         );
 
-    const filteredReports = reports.filter((report) =>
-      this.handleFiltering(report, formattedParams, filteredReportDefinitionGuids)
-    );
-    this.setState({
-      filteredReports,
-      params: formattedParams,
+    return reports.filter((report) => {
+      const report_name =
+        !params.report_name || report.mine_report_definition_guid.includes(params.report_name);
+      const report_type =
+        !params.report_type || reportDefinitionGuids.includes(report.mine_report_definition_guid);
+      const compliance_year =
+        !params.compliance_year || params.compliance_year.includes(report.submission_year);
+      const report_due_date_start =
+        !params.report_due_date_start ||
+        moment(report.due_date, "YYYY-MM-DD") >= moment(params.report_due_date_start, "YYYY-MM-DD");
+      const report_due_date_end =
+        !params.report_due_date_end ||
+        moment(report.due_date, "YYYY-MM-DD") <= moment(params.report_due_date_end, "YYYY-MM-DD");
+      return (
+        report_name &&
+        report_type &&
+        compliance_year &&
+        report_due_date_start &&
+        report_due_date_end
+      );
     });
-
-    console.log("renderDataFromURL params:\n", params);
-    console.log("renderDataFromURL reports:\n", reports);
-    console.log(
-      "renderDataFromURL filteredReportDefinitionGuids:\n",
-      filteredReportDefinitionGuids
-    );
-    console.log("renderDataFromURL filteredReports:\n", filteredReports);
   };
 
-  handleFiltering = (report, params, reportDefinitionGuids) => {
-    console.log("handleFiltering");
-    const report_name =
-      !params.report_name || report.mine_report_definition_guid.includes(params.report_name);
-    const report_type = !params.report_type;
-    reportDefinitionGuids.includes(report.mine_report_definition_guid.toLowerCase());
-    const compliance_year =
-      !params.compliance_year || params.compliance_year.includes(report.submission_year);
-    const report_due_date_start =
-      !params.report_due_date_start ||
-      moment(report.due_date, "YYYY-MM-DD") >= moment(params.report_due_date_start, "YYYY-MM-DD");
-    const report_due_date_end =
-      !params.report_due_date_end ||
-      moment(report.due_date, "YYYY-MM-DD") <= moment(params.report_due_date_end, "YYYY-MM-DD");
-    return (
-      report_name && report_type && compliance_year && report_due_date_start && report_due_date_end
-    );
-  };
-
-  handleReportFilter = (values) => {
-    if (isEmpty(values)) {
-      this.props.history.push(routes.MINE_REPORTS.dynamicRoute(this.props.match.params.id));
+  handleReportFilter = (params) => {
+    if (isEmpty(params)) {
+      this.props.history.replace(
+        routes.MINE_REPORTS.dynamicRoute(this.props.match.params.id, defaultParams)
+      );
     } else {
-      this.props.history.push(routes.MINE_REPORTS.dynamicRoute(this.props.match.params.id, values));
+      this.props.history.replace(
+        routes.MINE_REPORTS.dynamicRoute(this.props.match.params.id, params)
+      );
     }
   };
 
@@ -258,7 +267,11 @@ export class MineReportInfo extends Component {
           openEditReportModal={this.openEditReportModal}
           handleEditReport={this.handleEditReport}
           handleRemoveReport={this.handleRemoveReport}
+          handleTableChange={this.handleReportFilter}
           mineReports={this.state.filteredReports}
+          params={this.state.params}
+          sortField={this.state.params.sort_field}
+          sortDir={this.state.params.sort_dir}
         />
       </div>
     );

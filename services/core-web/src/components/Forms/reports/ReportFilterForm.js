@@ -24,8 +24,8 @@ const propTypes = {
 };
 
 const defaultProps = {
-  selectedMineReportCategory: null,
-  selectedMineReportDefinitionGuid: null,
+  selectedMineReportCategory: undefined,
+  selectedMineReportDefinitionGuid: undefined,
 };
 
 const selector = formValueSelector(FORM.FILTER_REPORTS);
@@ -43,7 +43,7 @@ export class ReportFilterForm extends Component {
 
   updateMineReportDefinitionOptions = (
     mineReportDefinitionOptions,
-    selectedMineReportCategory = null
+    selectedMineReportCategory = undefined
   ) => {
     let mineReportDefinitionOptionsFiltered = mineReportDefinitionOptions;
 
@@ -68,7 +68,7 @@ export class ReportFilterForm extends Component {
 
   updateMineReportCategoryOptions = (
     dropdownMineReportCategoryOptions,
-    selectedMineReportDefinitionGuid = null
+    selectedMineReportDefinitionGuid = undefined
   ) => {
     let dropdownMineReportCategoryOptionsFiltered = dropdownMineReportCategoryOptions;
 
@@ -87,6 +87,11 @@ export class ReportFilterForm extends Component {
     this.setState({
       dropdownMineReportCategoryOptionsFiltered,
     });
+  };
+
+  componentWillMount = () => {
+    this.updateMineReportDefinitionOptions(this.props.mineReportDefinitionOptions);
+    this.updateMineReportCategoryOptions(this.props.dropdownMineReportCategoryOptions);
   };
 
   componentWillReceiveProps = (nextProps) => {
