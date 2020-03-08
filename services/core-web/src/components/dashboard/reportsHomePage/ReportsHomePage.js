@@ -16,7 +16,6 @@ import {
 } from "@common/actionCreators/reportActionCreator";
 import { changeModalTitle, openModal, closeModal } from "@common/actions/modalActions";
 import { getReports, getReportsPageData } from "@common/selectors/reportSelectors";
-import { formatQueryListParams } from "@common/utils/helpers";
 import { modalConfig } from "@/components/modalContent/config";
 
 const propTypes = {
@@ -28,116 +27,110 @@ const propTypes = {
   changeModalTitle: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
-  history: PropTypes.shape({ push: PropTypes.func }).isRequired,
+  history: PropTypes.shape({ replace: PropTypes.func }).isRequired,
   location: PropTypes.shape({ search: PropTypes.string }).isRequired,
 };
 
+const defaultParams = {
+  page: Strings.DEFAULT_PAGE,
+  per_page: Strings.DEFAULT_PER_PAGE,
+  sort_field: undefined,
+  sort_dir: undefined,
+  search: undefined,
+  report_type: [],
+  report_name: [],
+  due_date_after: undefined,
+  due_date_before: undefined,
+  received_date_after: undefined,
+  received_date_before: undefined,
+  requested_by: undefined,
+  // TODO: Implement status.
+  status: undefined,
+  compliance_year: undefined,
+  major: undefined,
+  region: [],
+};
+
 export class ReportsHomePage extends Component {
-  params = queryString.parse(this.props.location.search);
-
-  listQueryParams = [];
-
-  splitListParams = formatQueryListParams("split", this.listQueryParams);
-
-  joinListParams = formatQueryListParams("join", this.listQueryParams);
-
   state = {
     isLoaded: false,
-    params: {
-      page: Strings.DEFAULT_PAGE,
-      per_page: Strings.DEFAULT_PER_PAGE,
-      ...this.params,
-    },
+    params: defaultParams,
   };
 
   componentDidMount() {
-    const params = this.props.location.search;
-    const parsedParams = queryString.parse(params);
-    const { page = this.state.params.page, per_page = this.state.params.per_page } = parsedParams;
-    if (params) {
-      this.renderDataFromURL();
-    } else {
-      this.props.history.push(
-        routes.REPORTS_DASHBOARD.dynamicRoute({
-          page,
-          per_page,
-        })
-      );
-    }
+    const params = queryString.parse(this.props.location.search);
+    this.setState(
+      (prevState) => ({
+        params: {
+          ...prevState.params,
+          ...params,
+        },
+      }),
+      () => this.props.history.replace(routes.REPORTS_DASHBOARD.dynamicRoute(this.state.params))
+    );
   }
 
   componentWillReceiveProps(nextProps) {
-    const locationChanged = nextProps.location !== this.props.location;
-    if (locationChanged) {
-      this.renderDataFromURL(nextProps.location.search);
+    if (nextProps.location !== this.props.location) {
+      this.setState({ isLoaded: false }, () => this.renderDataFromURL(nextProps.location.search));
     }
   }
 
-  componentWillUnmount() {
-    this.setState({ params: {} });
-  }
-
-  renderDataFromURL = (queryParams) => {
-    const params = queryParams || this.props.location.search;
+  renderDataFromURL = (params) => {
     const parsedParams = queryString.parse(params);
-    this.setState(
-      {
-        params: this.splitListParams(parsedParams),
-        isLoaded: false,
-      },
-      () =>
-        this.props.fetchReports(parsedParams).then(() => {
-          this.setState({ isLoaded: true });
-        })
-    );
-  };
-
-  handleSearch = (searchParams = {}, clear = false) => {
-    const persistedParams = clear ? {} : this.state.params;
-    const updatedParams = {
-      per_page: Strings.DEFAULT_PER_PAGE,
-      ...persistedParams,
-      ...searchParams,
-      page: Strings.DEFAULT_PAGE,
-    };
-
-    this.props.history.push(
-      routes.REPORTS_DASHBOARD.dynamicRoute(this.joinListParams(updatedParams))
-    );
+    this.props.fetchReports(parsedParams).then(() => {
+      this.setState({ isLoaded: true });
+    });
   };
 
   onPageChange = (page, per_page) => {
-    this.props.history.push(
-      routes.REPORTS_DASHBOARD.dynamicRoute({
-        ...this.state.params,
-        page,
-        per_page,
-      })
+    this.setState(
+      (prevState) => ({ params: { ...prevState.params, page, per_page } }),
+      () => this.props.history.replace(routes.REPORTS_DASHBOARD.dynamicRoute(this.state.params))
     );
   };
 
-  // ***
+  handleSearch = (params) => {
+    this.setState(
+      {
+        params,
+      },
+      () => this.props.history.replace(routes.REPORTS_DASHBOARD.dynamicRoute(this.state.params))
+    );
+  };
+
+  handleReset = () => {
+    this.setState(
+      (prevState) => ({
+        params: {
+          ...defaultParams,
+          // page: prevState.params.page || params.page,
+          per_page: prevState.params.per_page || defaultParams.per_page,
+          sort_field: prevState.params.sort_field,
+          sort_dir: prevState.params.sort_dir,
+        },
+      }),
+      () => this.props.history.replace(routes.REPORTS_DASHBOARD.dynamicRoute(this.state.params))
+    );
+  };
+
   handleEditReport = (report) => {
     this.props
       .updateMineReport(report.mine_guid, report.mine_report_guid, report)
       .then(() => this.props.closeModal())
       .then(() =>
-        this.props.fetchReports().then(() => {
-          // this.setFilteredReports();
-        })
+        this.props.history.replace(routes.REPORTS_DASHBOARD.dynamicRoute(this.state.params))
       );
   };
 
-  // ***
   handleRemoveReport = (report) => {
-    this.props.deleteMineReport(report.mine_guid, report.mine_report_guid).then(() =>
-      this.props.fetchReports().then(() => {
-        // this.setFilteredReports();
-      })
-    );
+    this.props
+      .deleteMineReport(report.mine_guid, report.mine_report_guid)
+      .then(() =>
+        this.props.history.replace(routes.REPORTS_DASHBOARD.dynamicRoute(this.state.params))
+      );
   };
 
-  // ***
   openEditReportModal = (event, onSubmit, report) => {
     event.preventDefault();
     this.props.openModal({
@@ -171,16 +164,17 @@ export class ReportsHomePage extends Component {
           <div className="page__content">
             <ReportsSearch
               handleSearch={this.handleSearch}
-              initialValues={{ mine_search: this.state.params.mine_search }}
+              handleReset={this.handleReset}
+              initialValues={this.state.params}
             />
             <div>
               <ReportsTable
                 isLoaded={this.state.isLoaded}
                 handleSearch={this.handleSearch}
                 reports={this.props.reports}
+                params={this.state.params}
                 sortField={this.state.params.sort_field}
                 sortDir={this.state.params.sort_dir}
-                searchParams={this.state.params}
                 handlePageChange={this.onPageChange}
                 pageData={this.props.pageData}
                 openEditReportModal={this.openEditReportModal}

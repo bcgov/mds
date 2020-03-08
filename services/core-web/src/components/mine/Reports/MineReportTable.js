@@ -2,12 +2,20 @@ import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import * as Strings from "@common/constants/strings";
-import { formatDate, truncateFilename, dateSorter } from "@common/utils/helpers";
+import {
+  formatDate,
+  truncateFilename,
+  dateSorter,
+  nullableStringSorter,
+} from "@common/utils/helpers";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
-import { getMineReportCategoryOptionsHash } from "@common/selectors/staticContentSelectors";
+import {
+  getMineReportCategoryOptionsHash,
+  getMineReportStatusOptionsHash,
+} from "@common/selectors/staticContentSelectors";
 import { Link } from "react-router-dom";
+import { Badge } from "antd";
 import NullScreen from "@/components/common/NullScreen";
-import { COLOR } from "@/constants/styles";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
 import CustomPropTypes from "@/customPropTypes";
@@ -15,12 +23,12 @@ import { MineReportActions } from "@/components/mine/Reports/MineReportActions";
 import LinkButton from "@/components/common/LinkButton";
 import CoreTable from "@/components/common/CoreTable";
 import * as router from "@/constants/routes";
-
-const { errorRed } = COLOR;
+import { getReportSubmissionBadgeStatusType } from "@/constants/theme";
 
 const propTypes = {
   mineReports: PropTypes.arrayOf(CustomPropTypes.mineReport).isRequired,
   mineReportCategoryOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  mineReportStatusOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   openEditReportModal: PropTypes.func.isRequired,
   handleEditReport: PropTypes.func.isRequired,
   handleRemoveReport: PropTypes.func.isRequired,
@@ -52,11 +60,7 @@ export const MineReportTable = (props) => {
       dataIndex: "mine_report_id",
       sortField: "mine_report_id",
       sorter: props.isDashboardView || ((a, b) => (a.mine_report_id < b.mine_report_id ? -1 : 1)),
-      render: (text, record) => (
-        <div title="Number" style={record.isOverdue ? { color: errorRed } : {}}>
-          {text}
-        </div>
-      ),
+      render: (text) => <div title="Number">{text}</div>,
     },
     {
       title: "Mine",
@@ -66,11 +70,7 @@ export const MineReportTable = (props) => {
       sorter: props.isDashboardView,
       className: hideColumn(!props.isDashboardView),
       render: (text, record) => (
-        <div
-          title="Mine"
-          className={hideColumn(!props.isDashboardView)}
-          style={record.isOverdue ? { color: errorRed } : {}}
-        >
+        <div title="Mine" className={hideColumn(!props.isDashboardView)}>
           <Link to={router.MINE_SUMMARY.dynamicRoute(record.mine_guid)}>{text}</Link>
         </div>
       ),
@@ -84,11 +84,10 @@ export const MineReportTable = (props) => {
         props.isDashboardView ||
         ((a, b) => a.mine_report_category.localeCompare(b.mine_report_category)),
       // className: hideColumn(!props.isDashboardView),
-      render: (text, record) => (
+      render: (text) => (
         <div
           title="Report Type"
           // className={hideColumn(!props.isDashboardView)}
-          style={record.isOverdue ? { color: errorRed } : {}}
         >
           {text}
         </div>
@@ -100,21 +99,32 @@ export const MineReportTable = (props) => {
       dataIndex: "report_name",
       sortField: "report_name",
       sorter: props.isDashboardView || ((a, b) => a.report_name.localeCompare(b.report_name)),
-      render: (text, record) => (
-        <div title="Report Name" style={record.isOverdue ? { color: errorRed } : {}}>
-          {text}
-        </div>
-      ),
+      render: (text) => <div title="Report Name">{text}</div>,
     },
+    // {
+    //   title: "Compliance Year",
+    //   key: "submission_year",
+    //   dataIndex: "submission_year",
+    //   sortField: "submission_year",
+    //   sorter: props.isDashboardView || ((a, b) => (a.submission_year < b.submission_year ? -1 : 1)),
+    //   render: (text) => (
+    //     <div title="Compliance Year" >
+    //       {text}
+    //     </div>
+    //   ),
+    // },
     {
-      title: "Compliance Year",
-      key: "submission_year",
-      dataIndex: "submission_year",
-      sortField: "submission_year",
-      sorter: props.isDashboardView || ((a, b) => (a.submission_year < b.submission_year ? -1 : 1)),
-      render: (text, record) => (
-        <div title="Compliance Year" style={record.isOverdue ? { color: errorRed } : {}}>
-          {text}
+      title: "Status",
+      key: "mine_report_submission_status_code",
+      dataIndex: "mine_report_submission_status_code",
+      sortField: "mine_report_submission_status_code",
+      sorter: props.isDashboardView || nullableStringSorter("mine_report_submission_status_code"),
+      render: (text) => (
+        <div title="Status">
+          <Badge
+            status={getReportSubmissionBadgeStatusType(text)}
+            text={text || Strings.EMPTY_FIELD}
+          />
         </div>
       ),
     },
@@ -124,11 +134,7 @@ export const MineReportTable = (props) => {
       dataIndex: "due_date",
       sortField: "due_date",
       sorter: props.isDashboardView || dateSorter("due_date"),
-      render: (text, record) => (
-        <div title="Due" style={record.isOverdue ? { color: errorRed } : {}}>
-          {text || Strings.EMPTY_FIELD}
-        </div>
-      ),
+      render: (text) => <div title="Due">{text || Strings.EMPTY_FIELD}</div>,
     },
     {
       title: "Received",
@@ -136,11 +142,7 @@ export const MineReportTable = (props) => {
       dataIndex: "received_date",
       sortField: "received_date",
       sorter: props.isDashboardView || dateSorter("received_date"),
-      render: (text, record) => (
-        <div title="Received" style={record.isOverdue ? { color: errorRed } : {}}>
-          {text || Strings.EMPTY_FIELD}
-        </div>
-      ),
+      render: (text) => <div title="Received">{text || Strings.EMPTY_FIELD}</div>,
     },
     {
       title: "Requested By",
@@ -150,12 +152,8 @@ export const MineReportTable = (props) => {
       sorter:
         props.isDashboardView || ((a, b) => a.created_by_idir.localeCompare(b.created_by_idir)),
       className: hideColumn(props.isDashboardView),
-      render: (text, record) => (
-        <div
-          title="Requested By"
-          className={hideColumn(props.isDashboardView)}
-          style={record.isOverdue ? { color: errorRed } : {}}
-        >
+      render: (text) => (
+        <div title="Requested By" className={hideColumn(props.isDashboardView)}>
           {text}
         </div>
       ),
@@ -164,12 +162,8 @@ export const MineReportTable = (props) => {
       title: "Documents",
       key: "documents",
       dataIndex: "documents",
-      render: (text, record) => (
-        <div
-          title="Documents"
-          className="cap-col-height"
-          style={record.isOverdue ? { color: errorRed } : {}}
-        >
+      render: (text) => (
+        <div title="Documents" className="cap-col-height">
           {(text &&
             text.length > 0 &&
             text.map((file) => (
@@ -210,7 +204,11 @@ export const MineReportTable = (props) => {
       mine_report_definition_guid: report.mine_report_definition_guid,
       mine_report_category:
         (report.mine_report_category &&
-          props.mineReportCategoryOptionsHash[report.mine_report_category]) ||
+          report.mine_report_category.length > 0 &&
+          report.mine_report_category
+            .map((category) => props.mineReportCategoryOptionsHash[category])
+            // .sort()
+            .join(", ")) ||
         Strings.EMPTY_FIELD,
       report_name: report.report_name,
       due_date: formatDate(report.due_date),
@@ -218,6 +216,14 @@ export const MineReportTable = (props) => {
       submission_year: Number(report.submission_year),
       created_by_idir: report.created_by_idir,
       permit_guid: report.permit_guid || Strings.EMPTY_FIELD,
+      mine_report_submission_status_code:
+        (report.mine_report_submissions &&
+          report.mine_report_submissions.length > 0 &&
+          props.mineReportStatusOptionsHash[
+            report.mine_report_submissions[report.mine_report_submissions.length - 1]
+              .mine_report_submission_status_code
+          ]) ||
+        null,
       documents:
         report.mine_report_submissions &&
         report.mine_report_submissions.length > 0 &&
@@ -228,7 +234,7 @@ export const MineReportTable = (props) => {
           : [],
       mine_guid: report.mine_guid,
       mine_name: report.mine_name,
-      isOverdue: report.due_date && Date.parse(report.due_date) < new Date(),
+      // isOverdue: report.due_date && Date.parse(report.due_date) < new Date(),
       report,
       openEditReportModal,
       handleEditReport,
@@ -275,6 +281,7 @@ MineReportTable.defaultProps = defaultProps;
 
 const mapStateToProps = (state) => ({
   mineReportCategoryOptionsHash: getMineReportCategoryOptionsHash(state),
+  mineReportStatusOptionsHash: getMineReportStatusOptionsHash(state),
 });
 
 export default connect(mapStateToProps)(MineReportTable);

@@ -14,7 +14,7 @@ export const mineReport = PropTypes.shape({
   mine_report_id: PropTypes.string,
   mine_report_guid: PropTypes.string,
   mine_report_definition_guid: PropTypes.string,
-  mine_report_category: PropTypes.string,
+  mine_report_category: PropTypes.arrayOf(PropTypes.string),
   report_name: PropTypes.string,
   due_date: PropTypes.string,
   received_date: PropTypes.string,

@@ -15,8 +15,7 @@ const propTypes = {
   handleEditReport: PropTypes.func.isRequired,
   handleRemoveReport: PropTypes.func.isRequired,
   handlePageChange: PropTypes.func.isRequired,
-  handleFilterChange: PropTypes.func.isRequired,
-  handleReportSearch: PropTypes.func.isRequired,
+  handleSearch: PropTypes.func.isRequired,
   params: PropTypes.objectOf(
     PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.arrayOf(PropTypes.string)])
   ).isRequired,
@@ -45,13 +44,12 @@ export const ReportsTable = (props) => {
       <MineReportTable
         isLoaded={props.isLoaded}
         mineReports={props.reports}
-        params={props.params}
-        handleFilterChange={props.handleFilterChange}
-        handleReportSearch={props.handleReportSearch}
+        handleTableChange={props.handleSearch}
         openMineReportModal={props.openMineReportModal}
         openEditReportModal={props.openEditReportModal}
         handleEditReport={props.handleEditReport}
         handleRemoveReport={props.handleRemoveReport}
+        filters={props.params}
         sortField={props.sortField}
         sortDir={props.sortDir}
         isDashboardView={props.isDashboardView}

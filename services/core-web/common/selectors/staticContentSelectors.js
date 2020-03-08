@@ -1,4 +1,4 @@
-import { chain, flatMap, uniqBy } from "lodash";
+import { chain } from "lodash";
 import { createSelector } from "reselect";
 import * as staticContentReducer from "../reducers/staticContentReducer";
 import { createLabelHash, createDropDownList, compareCodes } from "../utils/helpers";
@@ -328,6 +328,11 @@ export const getMineReportCategoryOptionsHash = createSelector(
 export const getDropdownMineReportStatusOptions = createSelector(
   [getMineReportStatusOptions],
   (options) => createDropDownList(options, "description", "mine_report_submission_status_code")
+);
+
+export const getMineReportStatusOptionsHash = createSelector(
+  [getDropdownMineReportStatusOptions],
+  createLabelHash
 );
 
 export const getDropdownNoticeOfWorkActivityTypeOptions = createSelector(

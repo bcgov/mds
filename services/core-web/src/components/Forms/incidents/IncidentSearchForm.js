@@ -23,21 +23,6 @@ const defaultProps = {
   isAdvanceSearch: false,
 };
 
-export const validate = (values) => {
-  const errors = {};
-  if (values.issue_date_after && values.issue_date_before) {
-    if (Date.parse(values.issue_date_after) > Date.parse(values.issue_date_before)) {
-      errors.issue_date_before = "Must be after issue date.";
-    }
-  }
-  if (values.expiry_date_after && values.expiry_date_before) {
-    if (Date.parse(values.expiry_date_after) > Date.parse(values.expiry_date_before)) {
-      errors.expiry_date_before = "Must be after expiry date.";
-    }
-  }
-  return errors;
-};
-
 export class IncidentSearchForm extends Component {
   handleReset = () => {
     this.props.reset();
@@ -64,7 +49,7 @@ export class IncidentSearchForm extends Component {
                 <Field
                   id="incident_status"
                   name="incident_status"
-                  placeholder="Select incident Status"
+                  placeholder="Select Incident Status"
                   component={renderConfig.MULTI_SELECT}
                   data={this.props.incidentStatusCodeOptions}
                 />
@@ -73,7 +58,7 @@ export class IncidentSearchForm extends Component {
                 <Field
                   id="year"
                   name="year"
-                  placeholder="Select year of incident"
+                  placeholder="Select Incident Year"
                   component={renderConfig.YEAR}
                   validate={[yearNotInFuture]}
                 />
@@ -85,7 +70,7 @@ export class IncidentSearchForm extends Component {
                 <Field
                   id="determination"
                   name="determination"
-                  placeholder="Select inspector's Determination"
+                  placeholder="Select Inspector's Determination"
                   component={renderConfig.MULTI_SELECT}
                   data={this.props.incidentDeterminationOptions}
                 />
@@ -151,7 +136,6 @@ IncidentSearchForm.defaultProps = defaultProps;
 
 export default reduxForm({
   form: FORM.INCIDENT_ADVANCED_SEARCH,
-  validate,
   touchOnBlur: false,
   enableReinitialize: true,
 })(IncidentSearchForm);
