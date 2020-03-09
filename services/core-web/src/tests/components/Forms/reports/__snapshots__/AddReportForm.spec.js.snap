@@ -17,10 +17,11 @@ exports[`AddReportForm renders properly 1`] = `
         <Field
           component={[Function]}
           doNotPinDropdown={true}
+          format={null}
           id="mine_report_category"
           label="Report Type*"
           name="mine_report_category"
-          placeholder="Select report category"
+          placeholder="Select report type"
           validate={
             Array [
               [Function],
@@ -35,14 +36,15 @@ exports[`AddReportForm renders properly 1`] = `
           component={[Function]}
           data={Array []}
           doNotPinDropdown={true}
+          format={null}
           id="mine_report_definition_guid"
           label="Report Name*"
           name="mine_report_definition_guid"
           onChange={[Function]}
-          placeholder="Select report category above"
+          placeholder="Select report type above"
           props={
             Object {
-              "disabled": false,
+              "disabled": true,
             }
           }
           validate={
@@ -51,23 +53,6 @@ exports[`AddReportForm renders properly 1`] = `
             ]
           }
         />
-      </FormItem>
-      <FormItem
-        hasFeedback={false}
-        label="Report Code Requirements"
-      >
-        <List
-          bordered={true}
-          dataSource={Array []}
-          loading={false}
-          pagination={false}
-          size="large"
-          split={true}
-        >
-          <Item
-            key="1"
-          />
-        </List>
       </FormItem>
       <FormItem
         hasFeedback={false}

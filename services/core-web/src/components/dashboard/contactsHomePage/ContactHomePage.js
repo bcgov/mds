@@ -128,7 +128,7 @@ export class ContactHomePage extends Component {
       // Reset page number
       page: Strings.DEFAULT_PAGE,
     };
-    console.log("UPDATED PARAMS", updatedParams);
+
     this.props.history.push(router.CONTACT_HOME_PAGE.dynamicRoute(updatedParams));
     this.setState(
       {
