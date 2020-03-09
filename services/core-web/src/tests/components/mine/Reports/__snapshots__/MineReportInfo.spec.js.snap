@@ -31,40 +31,49 @@ exports[`MineReportInfo renders properly 1`] = `
       <br />
     </div>
     <Connect(ReduxForm)
+      handleReset={[Function]}
       initialValues={
         Object {
           "compliance_year": undefined,
-          "report_due_date_end": undefined,
-          "report_due_date_start": undefined,
+          "due_date_end": undefined,
+          "due_date_start": undefined,
+          "received_date_end": undefined,
+          "received_date_start": undefined,
           "report_name": undefined,
-          "report_status": undefined,
           "report_type": undefined,
-          "sort_dir": undefined,
-          "sort_field": undefined,
+          "requested_by": undefined,
+          "sort_dir": "desc",
+          "sort_field": "received_date",
+          "status": Array [],
         }
       }
       onSubmit={[Function]}
     />
   </div>
   <Connect(MineReportTable)
+    filters={
+      Object {
+        "compliance_year": undefined,
+        "due_date_end": undefined,
+        "due_date_start": undefined,
+        "received_date_end": undefined,
+        "received_date_start": undefined,
+        "report_name": undefined,
+        "report_type": undefined,
+        "requested_by": undefined,
+        "sort_dir": "desc",
+        "sort_field": "received_date",
+        "status": Array [],
+      }
+    }
     handleEditReport={[Function]}
     handleRemoveReport={[Function]}
     handleTableChange={[Function]}
     isLoaded={false}
     mineReports={Array []}
     openEditReportModal={[Function]}
-    params={
-      Object {
-        "compliance_year": undefined,
-        "report_due_date_end": undefined,
-        "report_due_date_start": undefined,
-        "report_name": undefined,
-        "report_status": undefined,
-        "report_type": undefined,
-        "sort_dir": undefined,
-        "sort_field": undefined,
-      }
-    }
+    sortDir="desc"
+    sortField="received_date"
   />
 </div>
 `;

@@ -329,7 +329,7 @@ MINE_REPORT_SUBMISSION_MODEL = api.model(
 
 MINE_REPORT_MODEL = api.model(
     'MineReportModel', {
-        'mine_report_id': fields.String,
+        'mine_report_id': fields.Integer,
         'mine_report_guid': fields.String,
         'mine_report_definition_guid': fields.String,
         'mine_report_category': fields.List(fields.String),

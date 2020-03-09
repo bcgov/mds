@@ -207,7 +207,6 @@ export const MineReportTable = (props) => {
           report.mine_report_category.length > 0 &&
           report.mine_report_category
             .map((category) => props.mineReportCategoryOptionsHash[category])
-            // .sort()
             .join(", ")) ||
         Strings.EMPTY_FIELD,
       report_name: report.report_name,

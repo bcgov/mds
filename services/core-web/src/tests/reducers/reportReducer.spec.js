@@ -3,6 +3,8 @@ import { storeMineReports } from "@common/actions/mineReportActions";
 import * as Mocks from "@/tests/mocks/dataMocks";
 
 const baseExpectedValue = {
+  reports: [],
+  reportsPageData: {},
   mineReports: [],
   reportComments: [],
   commentsLoading: true,

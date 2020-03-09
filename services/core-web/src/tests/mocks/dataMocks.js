@@ -1528,8 +1528,10 @@ export const INCIDENTS = {
 export const MINE_REPORT_RESPONSE = {
   records: [
     {
+      mine_report_id: 123,
       mine_report_guid: "9f98a719-720a-40a5-ac5b-e91e8a526fad",
       mine_report_definition_guid: "baa01f9f-c9b2-485d-96f3-12a9c8fe637b",
+      mine_report_category: ["GSC", "GTC"],
       report_name: "Underground Oil and Grease Storage Area Report",
       due_date: "2020-01-02",
       received_date: "2020-01-10",
@@ -1553,10 +1555,14 @@ export const MINE_REPORT_RESPONSE = {
           comments: [],
         },
       ],
+      mine_guid: "aa3cb08a-ee1b-4dc9-8bf6-f54eb7484d4d",
+      mine_name: "Abbott Inc",
     },
     {
+      mine_report_id: 124,
       mine_report_guid: "b59a166e-749e-4e6c-a232-d4c55f1f227c",
       mine_report_definition_guid: "5f4f4727-4ecd-4a04-8929-2e8a5e03996d",
+      mine_report_category: ["GTC", "TSF"],
       report_name: "TSF, WSF or Dam As-built Report",
       due_date: "2020-03-31",
       received_date: "2020-01-02",
@@ -1580,10 +1586,14 @@ export const MINE_REPORT_RESPONSE = {
           comments: [],
         },
       ],
+      mine_guid: "aa3cb08a-ee1b-4dc9-8bf6-f54eb7484d4d",
+      mine_name: "Abbott Inc",
     },
     {
+      mine_report_id: 125,
       mine_report_guid: "92327cd3-eec0-4e18-b898-25539ac408e9",
       mine_report_definition_guid: "6eda0c36-8748-4072-83c9-0fcdf270d36f",
+      mine_report_category: ["GTC", "TSF"],
       report_name: "Annual DSI",
       due_date: "2020-03-31",
       received_date: null,
@@ -1591,14 +1601,18 @@ export const MINE_REPORT_RESPONSE = {
       created_by_idir: "idir\\TEST",
       permit_guid: null,
       mine_report_submissions: [],
+      mine_guid: "aa3cb08a-ee1b-4dc9-8bf6-f54eb7484d4d",
+      mine_name: "Abbott Inc",
     },
   ],
 };
 
 export const MINE_REPORTS = [
   {
+    mine_report_id: 123,
     mine_report_guid: "9f98a719-720a-40a5-ac5b-e91e8a526fad",
     mine_report_definition_guid: "baa01f9f-c9b2-485d-96f3-12a9c8fe637b",
+    mine_report_category: ["GSC", "GTC"],
     report_name: "Underground Oil and Grease Storage Area Report",
     due_date: "2020-01-02",
     received_date: "2020-01-10",
@@ -1622,10 +1636,14 @@ export const MINE_REPORTS = [
         comments: [],
       },
     ],
+    mine_guid: "aa3cb08a-ee1b-4dc9-8bf6-f54eb7484d4d",
+    mine_name: "Abbott Inc",
   },
   {
+    mine_report_id: 124,
     mine_report_guid: "b59a166e-749e-4e6c-a232-d4c55f1f227c",
     mine_report_definition_guid: "5f4f4727-4ecd-4a04-8929-2e8a5e03996d",
+    mine_report_category: ["GTC", "TSF"],
     report_name: "TSF, WSF or Dam As-built Report",
     due_date: "2020-03-31",
     received_date: "2020-01-02",
@@ -1649,10 +1667,14 @@ export const MINE_REPORTS = [
         comments: [],
       },
     ],
+    mine_guid: "aa3cb08a-ee1b-4dc9-8bf6-f54eb7484d4d",
+    mine_name: "Abbott Inc",
   },
   {
+    mine_report_id: 125,
     mine_report_guid: "92327cd3-eec0-4e18-b898-25539ac408e9",
     mine_report_definition_guid: "6eda0c36-8748-4072-83c9-0fcdf270d36f",
+    mine_report_category: ["GTC", "TSF"],
     report_name: "Annual DSI",
     due_date: "2020-03-31",
     received_date: null,
@@ -1660,6 +1682,8 @@ export const MINE_REPORTS = [
     created_by_idir: "idir\\TEST",
     permit_guid: null,
     mine_report_submissions: [],
+    mine_guid: "aa3cb08a-ee1b-4dc9-8bf6-f54eb7484d4d",
+    mine_name: "Abbott Inc",
   },
 ];
 
@@ -2599,4 +2623,19 @@ export const NOW = {
       received_date: "2019-07-21",
     },
   ],
+};
+
+export const MINE_REPORT_CATEGORY_OPTIONS_HASH = {
+  "H&S": "Health and Safety",
+  GTC: "Geotechnical",
+  OTH: "Other",
+  GSE: "Geoscience and Environmental",
+  TSF: "Tailings Storage Facility",
+};
+
+export const MINE_REPORT_STATUS_OPTIONS_HASH = {
+  NRQ: "Not Requested",
+  REQ: "Changes Requested",
+  REC: "Changes Received",
+  ACC: "Accepted",
 };

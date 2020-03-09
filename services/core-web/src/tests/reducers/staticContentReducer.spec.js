@@ -36,6 +36,7 @@ const baseExpectedValue = {
   incidentCategoryCodeOptions: [],
   varianceStatusOptions: [],
   varianceDocumentCategoryOptions: [],
+  mineReportCategoryOptions: [],
   mineReportDefinitionOptions: [],
   mineReportStatusOptions: [],
   noticeOfWorkActivityTypeOptions: [],
