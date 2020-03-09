@@ -103,7 +103,6 @@ export class ReportsHomePage extends Component {
       (prevState) => ({
         params: {
           ...defaultParams,
-          // page: prevState.params.page || params.page,
           per_page: prevState.params.per_page || defaultParams.per_page,
           sort_field: prevState.params.sort_field,
           sort_dir: prevState.params.sort_dir,

@@ -117,7 +117,7 @@ export class ContactHomePage extends Component {
   };
 
   handleSearch = (searchParams = {}, clear = false) => {
-    const persistedParams = clear ? {} : this.state.params;
+    const persistedParams = clear ? { type: "PER" } : this.state.params;
     const updatedParams = {
       // Default per_page -- overwrite if provided
       per_page: Strings.DEFAULT_PER_PAGE,
@@ -128,7 +128,7 @@ export class ContactHomePage extends Component {
       // Reset page number
       page: Strings.DEFAULT_PAGE,
     };
-
+    console.log("UPDATED PARAMS", updatedParams);
     this.props.history.push(router.CONTACT_HOME_PAGE.dynamicRoute(updatedParams));
     this.setState(
       {
@@ -150,9 +150,9 @@ export class ContactHomePage extends Component {
   };
 
   handleNameFieldReset = () => {
-    this.props.change(FORM.CONTACT_ADVANCED_SEARCH, "party_name", null);
-    this.props.change(FORM.CONTACT_ADVANCED_SEARCH, "first_name", null);
-    this.props.change(FORM.CONTACT_ADVANCED_SEARCH, "last_name", null);
+    this.props.change(FORM.CONTACT_ADVANCED_SEARCH, "party_name", undefined);
+    this.props.change(FORM.CONTACT_ADVANCED_SEARCH, "first_name", undefined);
+    this.props.change(FORM.CONTACT_ADVANCED_SEARCH, "last_name", undefined);
   };
 
   openAddContactModal(event, fetchData, title, provinceOptions) {

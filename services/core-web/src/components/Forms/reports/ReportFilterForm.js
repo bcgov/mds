@@ -21,6 +21,7 @@ const propTypes = {
   dropdownMineReportStatusOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
   mineReportDefinitionOptions: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
   dropdownMineReportCategoryOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
+  initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
   selectedMineReportCategory: PropTypes.string,
   selectedMineReportDefinitionGuid: PropTypes.string,
 };
@@ -137,6 +138,7 @@ export class ReportFilterForm extends Component {
                 placeholder="Select report type"
                 component={renderConfig.SELECT}
                 data={this.state.dropdownMineReportCategoryOptionsFiltered}
+                format={null}
               />
             </Col>
             <Col md={8} sm={24}>
@@ -147,6 +149,7 @@ export class ReportFilterForm extends Component {
                 placeholder="Select report name"
                 component={renderConfig.SELECT}
                 data={this.state.dropdownMineReportDefinitionOptionsFiltered}
+                format={null}
               />
             </Col>
             <Col md={8} sm={24}>
@@ -224,6 +227,7 @@ export class ReportFilterForm extends Component {
                 placeholder="Select status"
                 component={renderConfig.MULTI_SELECT}
                 data={this.props.dropdownMineReportStatusOptions}
+                format={null}
               />
             </Col>
           </Row>

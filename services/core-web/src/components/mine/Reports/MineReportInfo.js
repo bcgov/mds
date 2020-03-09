@@ -215,7 +215,7 @@ export class MineReportInfo extends Component {
         moment(report.received_date, Strings.DATE_FORMAT) >=
           moment(params.received_date_start, Strings.DATE_FORMAT);
       const received_date_end =
-        !params.receiveddate_end ||
+        !params.received_date_end ||
         moment(report.received_date, Strings.DATE_FORMAT) <=
           moment(params.received_date_end, Strings.DATE_FORMAT);
       const requested_by =
@@ -244,15 +244,11 @@ export class MineReportInfo extends Component {
   };
 
   handleReportFilterSubmit = (params) => {
-    if (isEmpty(params)) {
+    this.setState({ params }, () =>
       this.props.history.replace(
-        routes.MINE_REPORTS.dynamicRoute(this.props.match.params.id, defaultParams)
-      );
-    } else {
-      this.props.history.replace(
-        routes.MINE_REPORTS.dynamicRoute(this.props.match.params.id, params)
-      );
-    }
+        routes.MINE_REPORTS.dynamicRoute(this.props.match.params.id, this.state.params)
+      )
+    );
   };
 
   handleReportFilterReset = () => {

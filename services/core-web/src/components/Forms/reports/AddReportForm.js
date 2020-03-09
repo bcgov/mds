@@ -152,11 +152,12 @@ export class AddReportForm extends Component {
                   id="mine_report_category"
                   name="mine_report_category"
                   label="Report Type*"
-                  placeholder="Select report category"
+                  placeholder="Select report type"
                   data={this.props.dropdownMineReportCategoryOptions}
                   doNotPinDropdown
                   component={renderConfig.SELECT}
                   validate={[required]}
+                  format={null}
                 />
               </Form.Item>
             )}
@@ -168,32 +169,37 @@ export class AddReportForm extends Component {
                 placeholder={
                   this.props.selectedMineReportCategory
                     ? "Select report name"
-                    : "Select report category above"
+                    : "Select report type above"
                 }
                 data={this.state.dropdownMineReportDefinitionOptionsFiltered}
                 doNotPinDropdown
                 component={renderConfig.SELECT}
                 validate={[required]}
+                format={null}
                 onChange={this.updateDueDateWithDefaultDueDate}
-                props={{ disabled: this.state.existingReport }}
+                props={{
+                  disabled: this.state.existingReport || !this.props.selectedMineReportCategory,
+                }}
               />
             </Form.Item>
-            <Form.Item label="Report Code Requirements">
-              <List
-                bordered
-                size={
-                  this.state.selectedMineReportComplianceArticles.length > 0 ? "small" : "large"
-                }
-              >
-                {this.state.selectedMineReportComplianceArticles.length
-                  ? this.state.selectedMineReportComplianceArticles.map((opt, index) => (
-                      <List.Item key={index}>
-                        {formatComplianceCodeValueOrLabel(opt, true)}
-                      </List.Item>
-                    ))
-                  : [<List.Item key={1} />]}
-              </List>
-            </Form.Item>
+            {this.props.selectedMineReportCategory && this.props.selectedMineReportDefinition && (
+              <Form.Item label="Report Code Requirements">
+                <List
+                  bordered
+                  size={
+                    this.state.selectedMineReportComplianceArticles.length > 0 ? "small" : "large"
+                  }
+                >
+                  {this.state.selectedMineReportComplianceArticles.length
+                    ? this.state.selectedMineReportComplianceArticles.map((opt, index) => (
+                        <List.Item key={index}>
+                          {formatComplianceCodeValueOrLabel(opt, true)}
+                        </List.Item>
+                      ))
+                    : [<List.Item key={1} />]}
+                </List>
+              </Form.Item>
+            )}
             <Form.Item>
               <Field
                 id="submission_year"

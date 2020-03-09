@@ -42,7 +42,7 @@ export const AddIncidentReportingForm = (props) => (
               id="categories"
               name="categories"
               label="Incident type(s)*"
-              placeholder="Select the incident type(s)"
+              placeholder="Select incident type(s)"
               component={renderConfig.MULTI_SELECT}
               validate={[requiredList]}
               data={props.incidentCategoryCodeOptions}
@@ -53,8 +53,9 @@ export const AddIncidentReportingForm = (props) => (
               id="reported_to_inspector_party_guid"
               name="reported_to_inspector_party_guid"
               label="Incident reported to*"
-              placeholder="Start typing inspector name"
+              placeholder="Select inspector"
               component={renderConfig.GROUPED_SELECT}
+              format={null}
               validate={[required]}
               data={props.inspectors}
             />
@@ -65,7 +66,8 @@ export const AddIncidentReportingForm = (props) => (
               name="responsible_inspector_party_guid"
               label="Inspector responsible*"
               component={renderConfig.GROUPED_SELECT}
-              placeholder="Start typing inspector name"
+              format={null}
+              placeholder="Select responsible inspector"
               validate={[required]}
               data={props.inspectors}
             />
@@ -76,7 +78,7 @@ export const AddIncidentReportingForm = (props) => (
               id="reported_by_name"
               name="reported_by_name"
               label="Reported by*"
-              placeholder="Provide name of reporter"
+              placeholder="Enter name of reporter"
               component={renderConfig.FIELD}
               validate={[required]}
             />
@@ -101,7 +103,7 @@ export const AddIncidentReportingForm = (props) => (
                   id="reported_by_phone_ext"
                   name="reported_by_phone_ext"
                   label="Phone extension"
-                  placeholder=""
+                  placeholder="x"
                   component={renderConfig.FIELD}
                   validate={[number, maxLength(4)]}
                 />
