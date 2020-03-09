@@ -64,10 +64,25 @@ class MineReport(Base, AuditMixin):
     created_by_idir = db.Column(db.String, nullable=False, default=User().get_user_username)
 
     @hybrid_property
-    def mine_report_submission_status_code_description(self):
+    def mine_report_submission_status_code(self):
         if self.mine_report_submissions and len(self.mine_report_submissions) > 0:
             return self.mine_report_submissions[len(self.mine_report_submissions) -
                                                 1].mine_report_submission_status_code
+        else:
+            return None
+
+    @mine_report_submission_status_code.expression
+    def mine_report_submission_status_code(cls):
+        return select([
+            MineReportSubmission.mine_report_submission_status_code
+        ]).where(MineReportSubmission.mine_report_id == cls.mine_report_id).order_by(
+            desc(MineReportSubmission.mine_report_submission_id)).limit(1).as_scalar()
+
+    @hybrid_property
+    def mine_report_submission_status_code_description(self):
+        if self.mine_report_submissions and len(self.mine_report_submissions) > 0:
+            return MineReportSubmissionStatusCode.find_by_mine_report_submission_status_code(
+                self.mine_report_submission_status_code).description
         else:
             return None
 

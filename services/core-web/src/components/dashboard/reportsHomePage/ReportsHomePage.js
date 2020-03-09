@@ -44,8 +44,7 @@ const defaultParams = {
   received_date_after: undefined,
   received_date_before: undefined,
   requested_by: undefined,
-  // TODO: Implement status.
-  status: undefined,
+  status: [],
   compliance_year: undefined,
   major: undefined,
   region: [],

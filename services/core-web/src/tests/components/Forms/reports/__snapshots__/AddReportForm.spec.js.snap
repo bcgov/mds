@@ -20,7 +20,7 @@ exports[`AddReportForm renders properly 1`] = `
           id="mine_report_category"
           label="Report Type*"
           name="mine_report_category"
-          placeholder="Select"
+          placeholder="Select report category"
           validate={
             Array [
               [Function],
@@ -39,10 +39,10 @@ exports[`AddReportForm renders properly 1`] = `
           label="Report Name*"
           name="mine_report_definition_guid"
           onChange={[Function]}
-          placeholder="Select a category above"
+          placeholder="Select report category above"
           props={
             Object {
-              "disabled": true,
+              "disabled": false,
             }
           }
           validate={
@@ -75,9 +75,9 @@ exports[`AddReportForm renders properly 1`] = `
         <Field
           component={[Function]}
           id="submission_year"
-          label="Report Compliance Year/Period*"
+          label="Compliance Year*"
           name="submission_year"
-          placeholder=""
+          placeholder="Select compliance year"
           props={
             Object {
               "disabled": false,
@@ -98,7 +98,7 @@ exports[`AddReportForm renders properly 1`] = `
           id="due_date"
           label="Due Date*"
           name="due_date"
-          placeholder=""
+          placeholder="Select due date"
           validate={
             Array [
               [Function],
@@ -114,7 +114,7 @@ exports[`AddReportForm renders properly 1`] = `
           id="received_date"
           label="Received Date"
           name="received_date"
-          placeholder=""
+          placeholder="Select received date"
         />
       </FormItem>
       <ReportSubmissions

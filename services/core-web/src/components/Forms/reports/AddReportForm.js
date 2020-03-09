@@ -43,8 +43,8 @@ const selector = formValueSelector(FORM.ADD_REPORT);
 
 const defaultProps = {
   initialValues: {},
-  selectedMineReportDefinition: null,
-  selectedMineReportCategory: null,
+  selectedMineReportDefinition: undefined,
+  selectedMineReportCategory: undefined,
   disableAddReport: false,
 };
 
@@ -57,10 +57,9 @@ export class AddReportForm extends Component {
     mineReportSubmissions: this.props.initialValues.mine_report_submissions,
   };
 
-  componentDidMount = () => {
+  componentWillMount = () => {
     if (this.props.initialValues.mine_report_definition_guid) {
       this.updateMineReportDefinitionOptions(this.props.mineReportDefinitionOptions);
-
       this.updateSelectedMineReportComplianceArticles(
         this.props.initialValues.mine_report_definition_guid
       );
@@ -107,12 +106,7 @@ export class AddReportForm extends Component {
   updateDueDateWithDefaultDueDate = (mineReportDefinitionGuid) => {
     let formMeta = this.props.formMeta;
     if (
-      !(
-        formMeta &&
-        formMeta.fields &&
-        formMeta.fields.due_date &&
-        formMeta.fields.due_date.touched == true
-      )
+      !(formMeta && formMeta.fields && formMeta.fields.due_date && formMeta.fields.due_date.touched)
     ) {
       this.props.change(
         "due_date",
@@ -124,21 +118,27 @@ export class AddReportForm extends Component {
   };
 
   componentWillReceiveProps = (nextProps) => {
+    if (nextProps.selectedMineReportDefinition !== this.props.selectedMineReportDefinition) {
+      this.updateSelectedMineReportComplianceArticles(nextProps.selectedMineReportDefinition);
+    }
+    if (nextProps.initialValues !== this.props.initialValues) {
+      this.updateMineReportDefinitionOptions(nextProps.mineReportDefinitionOptions);
+      this.updateSelectedMineReportComplianceArticles(
+        nextProps.initialValues.mine_report_definition_guid
+      );
+    }
     if (nextProps.selectedMineReportCategory !== this.props.selectedMineReportCategory) {
       this.updateMineReportDefinitionOptions(
         nextProps.mineReportDefinitionOptions,
         nextProps.selectedMineReportCategory
       );
     }
-
-    if (nextProps.selectedMineReportDefinition !== this.props.selectedMineReportDefinition) {
-      this.updateSelectedMineReportComplianceArticles(nextProps.selectedMineReportDefinition);
-    }
   };
 
   updateMineReportSubmissions = (updatedSubmissions) => {
-    this.setState({ mineReportSubmissions: updatedSubmissions });
-    this.props.change("mine_report_submissions", this.state.mineReportSubmissions);
+    this.setState({ mineReportSubmissions: updatedSubmissions }, () =>
+      this.props.change("mine_report_submissions", this.state.mineReportSubmissions)
+    );
   };
 
   render() {
@@ -152,7 +152,7 @@ export class AddReportForm extends Component {
                   id="mine_report_category"
                   name="mine_report_category"
                   label="Report Type*"
-                  placeholder="Select"
+                  placeholder="Select report category"
                   data={this.props.dropdownMineReportCategoryOptions}
                   doNotPinDropdown
                   component={renderConfig.SELECT}
@@ -166,14 +166,16 @@ export class AddReportForm extends Component {
                 name="mine_report_definition_guid"
                 label="Report Name*"
                 placeholder={
-                  this.props.selectedMineReportCategory ? "Select" : "Select a category above"
+                  this.props.selectedMineReportCategory
+                    ? "Select report name"
+                    : "Select report category above"
                 }
                 data={this.state.dropdownMineReportDefinitionOptionsFiltered}
                 doNotPinDropdown
                 component={renderConfig.SELECT}
                 validate={[required]}
                 onChange={this.updateDueDateWithDefaultDueDate}
-                props={{ disabled: !this.props.selectedMineReportCategory }}
+                props={{ disabled: this.state.existingReport }}
               />
             </Form.Item>
             <Form.Item label="Report Code Requirements">
@@ -196,8 +198,8 @@ export class AddReportForm extends Component {
               <Field
                 id="submission_year"
                 name="submission_year"
-                label="Report Compliance Year/Period*"
-                placeholder=""
+                label="Compliance Year*"
+                placeholder="Select compliance year"
                 component={renderConfig.YEAR}
                 validate={[required]}
                 props={{ disabled: this.state.existingReport }}
@@ -208,7 +210,7 @@ export class AddReportForm extends Component {
                 id="due_date"
                 name="due_date"
                 label="Due Date*"
-                placeholder=""
+                placeholder="Select due date"
                 component={renderConfig.DATE}
                 validate={[required]}
               />
@@ -218,7 +220,7 @@ export class AddReportForm extends Component {
                 id="received_date"
                 name="received_date"
                 label="Received Date"
-                placeholder=""
+                placeholder="Select received date"
                 component={renderConfig.DATE}
               />
             </Form.Item>
@@ -281,6 +283,7 @@ export default compose(
   reduxForm({
     form: FORM.ADD_REPORT,
     touchOnBlur: false,
+    enableReinitialize: true,
     onSubmitSuccess: resetForm(FORM.ADD_REPORT),
   })
 )(AddReportForm);

@@ -61,6 +61,7 @@ const defaultParams = {
   received_date_start: undefined,
   received_date_end: undefined,
   requested_by: undefined,
+  status: [],
   sort_field: "received_date",
   sort_dir: "desc",
 };
@@ -220,6 +221,14 @@ export class MineReportInfo extends Component {
       const requested_by =
         !params.requested_by ||
         report.created_by_idir.toLowerCase().includes(params.requested_by.toLowerCase());
+      const status =
+        isEmpty(params.status) ||
+        (report.mine_report_submissions &&
+          report.mine_report_submissions.length > 0 &&
+          params.status.includes(
+            report.mine_report_submissions[report.mine_report_submissions.length - 1]
+              .mine_report_submission_status_code
+          ));
       return (
         report_name &&
         report_type &&
@@ -228,7 +237,8 @@ export class MineReportInfo extends Component {
         due_date_end &&
         received_date_start &&
         received_date_end &&
-        requested_by
+        requested_by &&
+        status
       );
     });
   };

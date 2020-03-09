@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 import { Field, reduxForm, formValueSelector } from "redux-form";
 import { Form, Button, Col, Row } from "antd";
 import {
+  getDropdownMineReportStatusOptions,
   getDropdownMineReportCategoryOptions,
   getMineReportDefinitionOptions,
 } from "@common/selectors/staticContentSelectors";
@@ -17,6 +18,7 @@ const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   handleReset: PropTypes.func.isRequired,
   reset: PropTypes.func.isRequired,
+  dropdownMineReportStatusOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
   mineReportDefinitionOptions: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
   dropdownMineReportCategoryOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
   selectedMineReportCategory: PropTypes.string,
@@ -213,6 +215,18 @@ export class ReportFilterForm extends Component {
               />
             </Col>
           </Row>
+          <Row gutter={16}>
+            <Col md={8} sm={24}>
+              <Field
+                id="status"
+                name="status"
+                label="Status"
+                placeholder="Select status"
+                component={renderConfig.MULTI_SELECT}
+                data={this.props.dropdownMineReportStatusOptions}
+              />
+            </Col>
+          </Row>
         </div>
         <div className="right center-mobile">
           <Button className="full-mobile" type="secondary" htmlType="reset">
@@ -232,6 +246,7 @@ ReportFilterForm.defaultProps = defaultProps;
 
 export default compose(
   connect((state) => ({
+    dropdownMineReportStatusOptions: getDropdownMineReportStatusOptions(state),
     dropdownMineReportCategoryOptions: getDropdownMineReportCategoryOptions(state),
     mineReportDefinitionOptions: getMineReportDefinitionOptions(state),
     selectedMineReportCategory: selector(state, "report_type"),

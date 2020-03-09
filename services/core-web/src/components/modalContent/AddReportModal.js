@@ -7,16 +7,19 @@ import { SlidingForms } from "@/components/common/SlidingForms";
 import LinkButton from "@/components/common/LinkButton";
 
 const propTypes = {
-  disableAddReport: PropTypes.bool,
-  onSubmit: PropTypes.func.isRequired,
-  closeModal: PropTypes.func.isRequired,
   title: PropTypes.oneOfType([PropTypes.string, PropTypes.objectOf(PropTypes.any)]).isRequired,
   mineGuid: PropTypes.string.isRequired,
-  initialValues: PropTypes.objectOf(PropTypes.any),
+  onSubmit: PropTypes.func.isRequired,
+  closeModal: PropTypes.func.isRequired,
   changeModalTitle: PropTypes.func.isRequired,
+  disableAddReport: PropTypes.bool,
+  initialValues: PropTypes.objectOf(PropTypes.any),
 };
 
-const defaultProps = { initialValues: {}, disableAddReport: false };
+const defaultProps = {
+  initialValues: {},
+  disableAddReport: false,
+};
 
 export const AddReportModal = (props) => {
   const [selectedForm, setSelectedForm] = useState(0);

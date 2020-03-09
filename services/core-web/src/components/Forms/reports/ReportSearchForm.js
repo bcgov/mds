@@ -6,6 +6,7 @@ import { isEmpty, some, negate } from "lodash";
 import { Field, reduxForm } from "redux-form";
 import { Form, Button, Col, Icon, Row } from "antd";
 import {
+  getDropdownMineReportStatusOptions,
   getDropdownMineReportCategoryOptions,
   getDropdownMineReportDefinitionOptions,
   getMineRegionDropdownOptions,
@@ -20,6 +21,7 @@ const propTypes = {
   reset: PropTypes.func.isRequired,
   initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
   mineRegionOptions: CustomPropTypes.options.isRequired,
+  dropdownMineReportStatusOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
   dropdownMineReportDefinitionOptions: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any))
     .isRequired,
   dropdownMineReportCategoryOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
@@ -41,8 +43,27 @@ export class ReportSearchForm extends Component {
       expandAdvancedSearch: !prevState.expandAdvancedSearch,
     }));
 
-  haveAdvancedSearchFilters = ({ status, region, tenure, commodity, tsf, major }) =>
-    tsf || major || some([status, region, tenure, commodity], negate(isEmpty));
+  haveAdvancedSearchFilters = ({
+    report_type,
+    report_name,
+    due_date_after,
+    due_date_before,
+    received_date_after,
+    received_date_before,
+    compliance_year,
+    status,
+    requested_by,
+    major,
+    region,
+  }) =>
+    due_date_after ||
+    due_date_before ||
+    received_date_after ||
+    received_date_before ||
+    compliance_year ||
+    requested_by ||
+    major ||
+    some([report_type, report_name, status, region], negate(isEmpty));
 
   componentWillReceiveProps = (nextProps) => {
     if (
@@ -139,6 +160,17 @@ export class ReportSearchForm extends Component {
               </Col>
               <Col md={12} xs={24}>
                 <Field
+                  id="status"
+                  name="status"
+                  placeholder="Select Report Status"
+                  component={renderConfig.MULTI_SELECT}
+                  data={this.props.dropdownMineReportStatusOptions}
+                />
+              </Col>
+            </Row>
+            <Row gutter={6}>
+              <Col xs={24}>
+                <Field
                   id="requested_by"
                   name="requested_by"
                   placeholder="Search Requested By"
@@ -195,6 +227,7 @@ ReportSearchForm.propTypes = propTypes;
 export default compose(
   connect((state) => ({
     mineRegionOptions: getMineRegionDropdownOptions(state),
+    dropdownMineReportStatusOptions: getDropdownMineReportStatusOptions(state),
     dropdownMineReportCategoryOptions: getDropdownMineReportCategoryOptions(state),
     dropdownMineReportDefinitionOptions: getDropdownMineReportDefinitionOptions(state),
   })),

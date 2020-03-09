@@ -56,6 +56,7 @@ class ReportsResource(Resource, UserMixin):
             'received_date_before': request.args.get('received_date_before', type=str),
             'compliance_year': request.args.get('compliance_year', type=str),
             'requested_by': request.args.get('requested_by', type=str),
+            'status': request.args.getlist('status', type=str),
             'major': request.args.get('major', type=str),
             'region': request.args.getlist('region', type=str),
         }
@@ -134,6 +135,9 @@ class ReportsResource(Resource, UserMixin):
             conditions.append(
                 self._build_filter('MineReportDefinition', 'mine_report_definition_guid', 'in',
                                    args["report_name"]))
+
+        if args["status"]:
+            query = query.filter(MineReport.mine_report_submission_status_code.in_(args["status"]))
 
         if args["compliance_year"]:
             conditions.append(
