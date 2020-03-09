@@ -39,4 +39,4 @@ class ApplicationNDAListResource(Resource, UserMixin):
         application_nda.nownumber = NOWApplicationIdentity.create_now_number(mine)
 
         application_nda.save()
-        return application_nda
+        return application_nda, 201
