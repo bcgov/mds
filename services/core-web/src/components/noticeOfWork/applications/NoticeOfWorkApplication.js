@@ -1,8 +1,9 @@
+/* eslint-disable */
 import React, { Component } from "react";
 import { Prompt } from "react-router-dom";
 import { Steps, Button, Dropdown, Menu, Icon, Popconfirm } from "antd";
 import PropTypes from "prop-types";
-import { getFormValues, reset } from "redux-form";
+import { getFormValues, reset, getFormSyncErrors, focus } from "redux-form";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import {
@@ -244,19 +245,24 @@ export class NoticeOfWorkApplication extends Component {
   };
 
   handleSaveNOWEdit = () => {
-    const { id } = this.props.match.params;
-    this.props
-      .updateNoticeOfWorkApplication(
-        this.props.formValues,
-        this.props.noticeOfWork.now_application_guid
-      )
-      .then(() => {
-        this.props.fetchImportedNoticeOfWorkApplication(id).then(() => {
-          this.setState((prevState) => ({
-            isViewMode: !prevState.isViewMode,
-          }));
+    console.log(this.props.formErrors);
+    if (this.props.formErrors) {
+      console.log("going to jump around to the errors");
+    } else {
+      const { id } = this.props.match.params;
+      this.props
+        .updateNoticeOfWorkApplication(
+          this.props.formValues,
+          this.props.noticeOfWork.now_application_guid
+        )
+        .then(() => {
+          this.props.fetchImportedNoticeOfWorkApplication(id).then(() => {
+            this.setState((prevState) => ({
+              isViewMode: !prevState.isViewMode,
+            }));
+          });
         });
-      });
+    }
   };
 
   handleCancelNOWEdit = () => {
@@ -672,6 +678,7 @@ const mapStateToProps = (state) => ({
   noticeOfWork: getNoticeOfWork(state),
   originalNoticeOfWork: getOriginalNoticeOfWork(state),
   formValues: getFormValues(FORM.EDIT_NOTICE_OF_WORK)(state),
+  formErrors: getFormSyncErrors(FORM.EDIT_NOTICE_OF_WORK)(state),
   mines: getMines(state),
   inspectors: getDropdownInspectors(state),
   inspectorsHash: getInspectorsHash(state),
@@ -696,6 +703,7 @@ const mapDispatchToProps = (dispatch) =>
       openModal,
       closeModal,
       clearNoticeOfWorkApplication,
+      focus,
     },
     dispatch
   );
