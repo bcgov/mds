@@ -27,7 +27,7 @@ from app.api.now_submissions.models.existing_settling_pond_xref import ExistingS
 from app.api.now_submissions.models.proposed_placer_activity_xref import ProposedPlacerActivityXref
 from app.api.now_submissions.models.proposed_settling_pond_xref import ProposedSettlingPondXref
 
-from app.api.constants import unit_type_map, type_of_permit_map
+from app.api.constants import unit_type_map, type_of_permit_map, NOW_SUBMISSIONS_YES_NO
 from app.api.utils.field_template import FieldTemplate
 
 
@@ -47,6 +47,34 @@ class Application(Base):
         sandgrvqryannualextrestunits = fields.String(
             validate=validate.OneOf(choices=unit_type_map.keys()))
         typeofpermit = fields.String(validate=validate.OneOf(choices=type_of_permit_map.keys()))
+        landcommunitywatershed = fields.String(
+            validate=validate.OneOf(choices=NOW_SUBMISSIONS_YES_NO))
+        archsitesaffected = fields.String(validate=validate.OneOf(choices=NOW_SUBMISSIONS_YES_NO))
+        fuellubstoreonsite = fields.String(validate=validate.OneOf(choices=NOW_SUBMISSIONS_YES_NO))
+        placerundergroundoperations = fields.String(
+            validate=validate.OneOf(choices=NOW_SUBMISSIONS_YES_NO))
+        placerhandoperations = fields.String(
+            validate=validate.OneOf(choices=NOW_SUBMISSIONS_YES_NO))
+        pondsexfiltratedtoground = fields.String(
+            validate=validate.OneOf(choices=NOW_SUBMISSIONS_YES_NO))
+        pondsrecycled = fields.String(validate=validate.OneOf(choices=NOW_SUBMISSIONS_YES_NO))
+        pondsdischargedtoenv = fields.String(
+            validate=validate.OneOf(choices=NOW_SUBMISSIONS_YES_NO))
+        bcexplosivespermitissued = fields.String(
+            validate=validate.OneOf(choices=NOW_SUBMISSIONS_YES_NO))
+        storeexplosivesonsite = fields.String(
+            validate=validate.OneOf(choices=NOW_SUBMISSIONS_YES_NO))
+        sandgrvqrywithinaglandres = fields.String(
+            validate=validate.OneOf(choices=NOW_SUBMISSIONS_YES_NO))
+        sandgrvqrylocalgovsoilrembylaw = fields.String(
+            validate=validate.OneOf(choices=NOW_SUBMISSIONS_YES_NO))
+        sandgrvqrygrdwtrexistingareas = fields.String(
+            validate=validate.OneOf(choices=NOW_SUBMISSIONS_YES_NO))
+        sandgrvqrygrdwtrtestpits = fields.String(
+            validate=validate.OneOf(choices=NOW_SUBMISSIONS_YES_NO))
+        sandgrvqrygrdwtrtestwells = fields.String(
+            validate=validate.OneOf(choices=NOW_SUBMISSIONS_YES_NO))
+
         noticeofworktype = FieldTemplate(
             field=fields.String, one_of='NOWApplicationType_description')
         status = FieldTemplate(field=fields.String, one_of='NOWApplicationStatus_description')
@@ -206,8 +234,10 @@ class Application(Base):
         primaryjoin='Mine.mine_guid==Application.mine_guid',
         foreign_keys=mine_guid)
 
-    applicant = db.relationship('Client', uselist=False, lazy='select', foreign_keys=[applicantclientid])
-    submitter = db.relationship('Client', uselist=False, lazy='select', foreign_keys=[submitterclientid])
+    applicant = db.relationship(
+        'Client', uselist=False, lazy='select', foreign_keys=[applicantclientid])
+    submitter = db.relationship(
+        'Client', uselist=False, lazy='select', foreign_keys=[submitterclientid])
     contacts = db.relationship('Contact', lazy='select')
     documents = db.relationship('Document', lazy='select')
 

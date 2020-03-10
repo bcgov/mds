@@ -125,6 +125,15 @@ type_of_permit_map = {
     None: None
 }
 
+type_of_contact_map = {
+    'Mine manager': 'MMG',
+    'Permittee': 'PMT',
+    'Site operator': 'MOR',
+    'Tenure Holder': 'THD',
+    None: None
+}
+
+NOW_SUBMISSIONS_YES_NO = ['Yes', 'No']
 # This constant is defined for use during the app setup and creation.
 # See static_data.py in utils for its use and the values it contains.
 STATIC_DATA = {}
