@@ -53,19 +53,19 @@ NOW_APPLICATION_DATA = {
     "yearroundseasonal":
     "str",
     "landcommunitywatershed":
-    "str",
+    "Yes",
     "landprivate":
     "str",
     "landlegaldesc":
     "str",
     "archsitesaffected":
-    "str",
+    "Yes",
     "sandgravelquarryoperations":
     "str",
     "storeexplosivesonsite":
-    "str",
+    "Yes",
     "bcexplosivespermitissued":
-    "str",
+    "Yes",
     "bcexplosivespermitnumber":
     "str",
     "bcexplosivespermitexpiry":
@@ -83,7 +83,7 @@ NOW_APPLICATION_DATA = {
     "stgetimbervolume":
     0,
     "fuellubstoreonsite":
-    "str",
+    "Yes",
     "fuellubstored":
     0,
     "fuellubstoremethodbulk":
@@ -131,9 +131,9 @@ NOW_APPLICATION_DATA = {
     "underexpreclamationcost":
     0,
     "placerundergroundoperations":
-    "str",
+    "Yes",
     "placerhandoperations":
-    "str",
+    "Yes",
     "placerreclamationarea":
     0,
     "placerreclamation":
@@ -147,11 +147,11 @@ NOW_APPLICATION_DATA = {
     "sandgrvqrystabilizemeasures":
     "str",
     "sandgrvqrywithinaglandres":
-    "str",
+    "No",
     "sandgrvqryalrpermitnumber":
     "str",
     "sandgrvqrylocalgovsoilrembylaw":
-    "str",
+    "Yes",
     "sandgrvqryofficialcommplan":
     "str",
     "sandgrvqrylandusezoning":
@@ -175,11 +175,11 @@ NOW_APPLICATION_DATA = {
     "sandgrvqrygrdwtravgdepth":
     0,
     "sandgrvqrygrdwtrexistingareas":
-    "str",
+    "Yes",
     "sandgrvqrygrdwtrtestpits":
-    "str",
+    "Yes",
     "sandgrvqrygrdwtrtestwells":
-    "str",
+    "Yes",
     "sandgrvqrygrdwtrother":
     "str",
     "sandgrvqrygrdwtrmeasprotect":
@@ -259,11 +259,11 @@ NOW_APPLICATION_DATA = {
     "cutlinesexplgriddisturbedarea":
     0,
     "pondsrecycled":
-    "str",
+    "No",
     "pondsexfiltratedtoground":
-    "str",
+    "Yes",
     "pondsdischargedtoenv":
-    "str",
+    "Yes",
     "pondsreclamation":
     "str",
     "pondsreclamationcost":
@@ -350,7 +350,7 @@ NOW_APPLICATION_DATA = {
         "org_hstregnumber": "str",
         "org_contactname": "str",
         "mailingaddressline1": "str",
-        "contacttype": "str",
+        "contacttype": "Mine manager",
         "contactcertificationtype": "str",
         "contactcertificationid": "str",
         "mailingaddressline2": "str",
