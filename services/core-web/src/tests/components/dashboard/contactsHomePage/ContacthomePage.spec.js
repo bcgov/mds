@@ -53,13 +53,13 @@ describe("ContactHomePage", () => {
     it("componentDidMount without `params` from the URL", () => {
       const component = shallow(<ContactHomePage {...dispatchProps} {...reducerProps} />);
       component.update();
-      reducerProps.history.push(
+      reducerProps.history.replace(
         router.CONTACT_HOME_PAGE.dynamicRoute({
           page: String.DEFAULT_PAGE,
           per_page: String.DEFAULT_PER_PAGE,
         })
       );
-      expect(reducerProps.history.push).toHaveBeenCalledWith(
+      expect(reducerProps.history.replace).toHaveBeenCalledWith(
         router.CONTACT_HOME_PAGE.dynamicRoute({
           page: String.DEFAULT_PAGE,
           per_page: String.DEFAULT_PER_PAGE,
