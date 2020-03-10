@@ -33,11 +33,9 @@ export const CoreTable = (props) => {
     rowClassName: "fade-in",
   };
   const combinedProps = { ...baseProps, ...props.tableProps };
-  const renderColumns = getTableHeaders(props.columns).map((title) => ({
-    title,
-    dataIndex: title,
-    width: 150,
-    render: () => <div className="skeleton-table__loader" />,
+  const skeletonColumns = props.columns.map((column) => ({
+    ...column,
+    render: () => <div className={`skeleton-table__loader ${column.className}`} />,
   }));
 
   return (
@@ -51,7 +49,7 @@ export const CoreTable = (props) => {
           <Table
             align="left"
             pagination={false}
-            columns={renderColumns}
+            columns={skeletonColumns}
             dataSource={new Array(props.tableProps.pagination ? 25 : 9).fill({})}
             rowClassName="skeleton-table__row"
           />
