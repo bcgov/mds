@@ -13,8 +13,6 @@ from app.extensions import db
 from app.api.utils.models_mixins import Base, AuditMixin
 from app.api.utils.include.user_info import User
 
-import sys
-
 
 class MineReport(Base, AuditMixin):
     __tablename__ = "mine_report"
