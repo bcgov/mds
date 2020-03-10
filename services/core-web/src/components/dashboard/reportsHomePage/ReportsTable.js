@@ -1,10 +1,8 @@
-/* eslint-disable */
 import React from "react";
 import PropTypes from "prop-types";
 import CustomPropTypes from "@/customPropTypes";
 import ResponsivePagination from "@/components/common/ResponsivePagination";
 import MineReportTable from "@/components/mine/Reports/MineReportTable";
-import * as Strings from "@common/constants/strings";
 
 /**
  * @class Reports Table
@@ -16,24 +14,17 @@ const propTypes = {
   handleRemoveReport: PropTypes.func.isRequired,
   handlePageChange: PropTypes.func.isRequired,
   handleSearch: PropTypes.func.isRequired,
-  params: PropTypes.objectOf(
-    PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.arrayOf(PropTypes.string)])
-  ).isRequired,
   reports: PropTypes.arrayOf(CustomPropTypes.mineReport).isRequired,
-  pageData: CustomPropTypes.reportPageData,
+  pageData: CustomPropTypes.reportPageData.isRequired,
+  params: PropTypes.objectOf(PropTypes.any).isRequired,
+  isLoaded: PropTypes.bool.isRequired,
+  isDashboardView: PropTypes.bool,
   sortField: PropTypes.string,
   sortDir: PropTypes.string,
-  isLoaded: PropTypes.bool.isRequired,
 };
 
 const defaultProps = {
-  pageData: {
-    records: {},
-    current_page: 1,
-    items_per_page: Strings.DEFAULT_PER_PAGE,
-    total: 0,
-    total_pages: 1,
-  },
+  isDashboardView: false,
   sortField: undefined,
   sortDir: undefined,
 };
@@ -45,7 +36,6 @@ export const ReportsTable = (props) => {
         isLoaded={props.isLoaded}
         mineReports={props.reports}
         handleTableChange={props.handleSearch}
-        openMineReportModal={props.openMineReportModal}
         openEditReportModal={props.openEditReportModal}
         handleEditReport={props.handleEditReport}
         handleRemoveReport={props.handleRemoveReport}

@@ -34,20 +34,20 @@ const propTypes = {
   handleRemoveReport: PropTypes.func.isRequired,
   isLoaded: PropTypes.bool.isRequired,
   handleTableChange: PropTypes.func,
-  isDashboardView: PropTypes.bool,
   filters: PropTypes.objectOf(PropTypes.any),
   sortField: PropTypes.string,
   sortDir: PropTypes.string,
   isPaginated: PropTypes.bool,
+  isDashboardView: PropTypes.bool,
 };
 
 const defaultProps = {
   handleTableChange: () => {},
-  isDashboardView: false,
   filters: {},
   sortField: undefined,
   sortDir: undefined,
   isPaginated: false,
+  isDashboardView: false,
 };
 
 export const MineReportTable = (props) => {
