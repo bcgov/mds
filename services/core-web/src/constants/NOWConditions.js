@@ -6,8 +6,8 @@ export const activityConditions = {
   QCA: ["sand-and-gravel"],
   SAG: ["sand-and-gravel"],
   QIM: ["sand-and-gravel"],
-  COL: ["surface_bulk_sample", "cut-lines-polarization-survey", "underground-exploration"],
-  MIN: ["surface_bulk_sample", "cut-lines-polarization-survey", "underground-exploration"],
+  COL: ["surface-bulk-sample", "cut-lines-polarization-survey", "underground-exploration"],
+  MIN: ["surface-bulk-sample", "cut-lines-polarization-survey", "underground-exploration"],
   PLA: ["placer-operation", "cut-lines-polarization-survey", "underground-exploration"],
 };
 

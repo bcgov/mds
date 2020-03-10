@@ -145,7 +145,7 @@ export const ReviewActivities = (props) => {
         id="surface-bulk-sample"
         title="Surface Bulk Sample"
         data={props.noticeOfWork.surface_bulk_sample}
-        showContent={renderActivities(props.noticeOfWorkType, "surface_bulk_sample")}
+        showContent={renderActivities(props.noticeOfWorkType, "surface-bulk-sample")}
         isViewMode={props.isViewMode}
       >
         <FormSection name="surface_bulk_sample">
