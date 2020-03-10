@@ -19,7 +19,7 @@ const setupDispatchProps = () => {
 const setupReducerProps = () => {
   reducerProps.location = { search: " " };
   reducerProps.history = {
-    push: jest.fn(),
+    replace: jest.fn(),
     location: {},
   };
   reducerProps.parties = MOCK.PARTY.parties;
