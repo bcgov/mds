@@ -1,14 +1,9 @@
-/* eslint-disable */
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import queryString from "query-string";
 import * as Strings from "@common/constants/strings";
-import * as routes from "@/constants/routes";
-import CustomPropTypes from "@/customPropTypes";
-import ReportsTable from "@/components/dashboard/reportsHomePage/ReportsTable";
-import ReportsSearch from "@/components/dashboard/reportsHomePage/ReportsSearch";
 import {
   fetchReports,
   updateMineReport,
@@ -16,12 +11,16 @@ import {
 } from "@common/actionCreators/reportActionCreator";
 import { changeModalTitle, openModal, closeModal } from "@common/actions/modalActions";
 import { getReports, getReportsPageData } from "@common/selectors/reportSelectors";
+import * as routes from "@/constants/routes";
+import CustomPropTypes from "@/customPropTypes";
+import ReportsTable from "@/components/dashboard/reportsHomePage/ReportsTable";
+import ReportsSearch from "@/components/dashboard/reportsHomePage/ReportsSearch";
 import { modalConfig } from "@/components/modalContent/config";
 
 const propTypes = {
   fetchReports: PropTypes.func.isRequired,
   reports: PropTypes.arrayOf(CustomPropTypes.mineReport).isRequired,
-  pageData: CustomPropTypes.reportPageData,
+  pageData: CustomPropTypes.reportPageData.isRequired,
   updateMineReport: PropTypes.func.isRequired,
   deleteMineReport: PropTypes.func.isRequired,
   changeModalTitle: PropTypes.func.isRequired,
