@@ -122,6 +122,8 @@ export class NoticeOfWorkApplication extends Component {
     submitting: false,
   };
 
+  count = 0;
+
   componentDidMount() {
     if (this.props.location.state && this.props.location.state.noticeOfWorkPageFromRoute) {
       this.setState({
@@ -271,14 +273,15 @@ export class NoticeOfWorkApplication extends Component {
     }
   };
 
-  focusErrorInput = () => {
+  focusErrorInput = (skip = false) => {
     const errors = Object.keys(flattenObject(this.props.formErrors));
-    const errorElement = document.querySelector(
-      errors.map((fieldName) => `[name="${fieldName}"]`).join(",")
-    );
+    const index = skip && this.count !== errors.length ? this.count + 1 : 0;
+    console.log(errors);
+    const errorElement = document.querySelector(`[name="${errors[index]}"]`);
     if (errorElement && errorElement.focus) {
-      errorElement.focus(); // this scrolls without visible scroll
+      errorElement.focus();
     }
+    console.log(errorElement);
   };
 
   handleCancelNOWEdit = () => {
@@ -668,7 +671,11 @@ export class NoticeOfWorkApplication extends Component {
                     </Button>
                   </Popconfirm>
                   {showErrors && (
-                    <Button type="danger" className="full-mobile" onClick={this.focusErrorInput}>
+                    <Button
+                      type="danger"
+                      className="full-mobile"
+                      onClick={() => this.focusErrorInput(true)}
+                    >
                       Skip through
                     </Button>
                   )}
