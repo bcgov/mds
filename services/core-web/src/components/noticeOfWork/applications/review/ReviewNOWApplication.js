@@ -11,7 +11,7 @@ import {
   getDropdownNoticeOfWorkApplicationTypeOptions,
   getDropdownNoticeOfWorkApplicationPermitTypeOptions,
 } from "@common/selectors/staticContentSelectors";
-import { required, lat, lon, maxLength, number } from "@common/utils/Validate";
+import { required, lat, lon, maxLength, number, requiredRadioButton } from "@common/utils/Validate";
 import CustomPropTypes from "@/customPropTypes";
 import RenderField from "@/components/common/RenderField";
 import RenderDate from "@/components/common/RenderDate";
@@ -26,6 +26,7 @@ import NOWDocuments from "@/components/noticeOfWork/applications//NOWDocuments";
 import NOWSubmissionDocuments from "@/components/noticeOfWork/applications//NOWSubmissionDocuments";
 import ReviewNOWContacts from "./ReviewNOWContacts";
 import { INFO_CIRCLE } from "@/constants/assets";
+import { flattenObject } from "@common/utils/helpers";
 
 /**
  * @constant ReviewNOWApplication renders edit/view for the NoW Application review step
@@ -477,7 +478,7 @@ export const ReviewNOWApplication = (props) => {
               name="has_community_water_shed"
               component={RenderRadioButtons}
               disabled={props.isViewMode}
-              validate={[required]}
+              validate={[requiredRadioButton]}
             />
           </Col>
           <Col md={12} sm={24}>
@@ -797,7 +798,35 @@ export default compose(
   })),
   reduxForm({
     form: FORM.EDIT_NOTICE_OF_WORK,
+    touchOnChange: true,
     touchOnBlur: true,
     enableReinitialize: true,
+    // onSubmitFail: (errors) => {
+    //   // # Focus on first error
+
+    //   // When Immutable:
+    //   // The errors are _not_ in `REGISTER_FIELD` order so we cant just "use" the first one..
+    //   // (possibly requires an ordered list reviver when getting errors?)
+
+    //   // so we try to get the first error element in another way, using a DOM query:
+
+    //   // Note: You can't query a possible error class in `onSubmitFail` as the `render` may not have yet happened.
+
+    //   // We do this using a DOM selector of all the fields that have error'ed and use [`querySelector`](https://developer.mozilla.org/en-US/docs/Web/API/Document/querySelector) which
+    //   // Returns the first Element within the document that matches the specified selector, or group of selectors.
+    //   const errorEl = document.querySelector(
+    //     // flattenObject: https://github.com/hughsk/flat/issues/52
+    //     Object.keys(flattenObject(errors))
+    //       .map((fieldName) => `[name="${fieldName}"]`)
+    //       .join(",")
+    //   );
+    //   if (errorEl && errorEl.focus) {
+    //     // npe
+    //     // if (errorEl.scrollIntoView) {
+    //     //   errorEl.scrollIntoView(); // fails as the site has a fixed/floating header
+    //     // }
+    //     errorEl.focus(); // this scrolls without visible scroll
+    //   }
+    // },
   })
 )(ReviewNOWApplication);

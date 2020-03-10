@@ -50,6 +50,9 @@ export const Validate = new Validator();
 
 export const required = (value) => (value ? undefined : "This is a required field");
 
+export const requiredRadioButton = (value) =>
+  value !== null ? undefined : "This is a required field";
+
 export const requiredList = (value) =>
   value && value.length > 0 ? undefined : "This is a required field";
 

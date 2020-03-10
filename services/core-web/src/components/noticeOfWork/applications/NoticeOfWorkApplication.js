@@ -1,9 +1,8 @@
-/* eslint-disable */
 import React, { Component } from "react";
 import { Prompt } from "react-router-dom";
-import { Steps, Button, Dropdown, Menu, Icon, Popconfirm } from "antd";
+import { Steps, Button, Dropdown, Menu, Icon, Popconfirm, Alert } from "antd";
 import PropTypes from "prop-types";
-import { getFormValues, reset, getFormSyncErrors, focus } from "redux-form";
+import { getFormValues, reset, getFormSyncErrors, focus, touch } from "redux-form";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import {
@@ -26,7 +25,7 @@ import {
   getNoticeOfWorkApplicationProgressStatusCodeOptions,
   getGeneratableNoticeOfWorkApplicationDocumentTypeOptions,
 } from "@common/selectors/staticContentSelectors";
-import { formatDate } from "@common/utils/helpers";
+import { formatDate, flattenObject } from "@common/utils/helpers";
 import { clearNoticeOfWorkApplication } from "@common/actions/noticeOfWorkActions";
 import { downloadNowDocument } from "@common/utils/actionlessNetworkCalls";
 import {
@@ -92,11 +91,15 @@ const propTypes = {
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   clearNoticeOfWorkApplication: PropTypes.func.isRequired,
+  formErrors: PropTypes.objectOf(
+    PropTypes.oneOfType([PropTypes.objectOf(PropTypes.string), PropTypes.string])
+  ),
 };
 
 const defaultProps = {
   noticeOfWork: { application_progress: [] },
   documentContextTemplate: {},
+  formErrors: undefined,
 };
 
 export class NoticeOfWorkApplication extends Component {
@@ -116,6 +119,7 @@ export class NoticeOfWorkApplication extends Component {
     initialPermitGuid: "",
     isNewApplication: false,
     mineGuid: "",
+    submitting: false,
   };
 
   componentDidMount() {
@@ -245,9 +249,10 @@ export class NoticeOfWorkApplication extends Component {
   };
 
   handleSaveNOWEdit = () => {
-    console.log(this.props.formErrors);
-    if (this.props.formErrors) {
-      console.log("going to jump around to the errors");
+    this.setState({ submitting: true });
+    const errors = Object.keys(flattenObject(this.props.formErrors));
+    if (errors.length > 0) {
+      this.focusErrorInput();
     } else {
       const { id } = this.props.match.params;
       this.props
@@ -259,9 +264,20 @@ export class NoticeOfWorkApplication extends Component {
           this.props.fetchImportedNoticeOfWorkApplication(id).then(() => {
             this.setState((prevState) => ({
               isViewMode: !prevState.isViewMode,
+              submitting: false,
             }));
           });
         });
+    }
+  };
+
+  focusErrorInput = () => {
+    const errors = Object.keys(flattenObject(this.props.formErrors));
+    const errorElement = document.querySelector(
+      errors.map((fieldName) => `[name="${fieldName}"]`).join(",")
+    );
+    if (errorElement && errorElement.focus) {
+      errorElement.focus(); // this scrolls without visible scroll
     }
   };
 
@@ -591,6 +607,8 @@ export class NoticeOfWorkApplication extends Component {
       />,
     ];
 
+    const errorsLength = Object.keys(flattenObject(this.props.formErrors)).length;
+    const showErrors = errorsLength > 0 && this.state.submitting;
     return (
       <React.Fragment>
         <Prompt
@@ -636,28 +654,50 @@ export class NoticeOfWorkApplication extends Component {
                 )}
               </div>
             ) : (
-              <div className="inline-flex flex-center block-mobile">
-                <Popconfirm
-                  placement="bottomRight"
-                  title="You have unsaved changes, Are you sure you want to cancel?"
-                  onConfirm={this.handleCancelNOWEdit}
-                  okText="Yes"
-                  cancelText="No"
-                >
-                  <Button type="secondary" className="full-mobile">
-                    Cancel
+              <div className="center">
+                <div className="inline-flex flex-center block-mobile">
+                  <Popconfirm
+                    placement="bottomRight"
+                    title="You have unsaved changes, Are you sure you want to cancel?"
+                    onConfirm={this.handleCancelNOWEdit}
+                    okText="Yes"
+                    cancelText="No"
+                  >
+                    <Button type="secondary" className="full-mobile">
+                      Cancel
+                    </Button>
+                  </Popconfirm>
+                  {showErrors && (
+                    <Button type="danger" className="full-mobile" onClick={this.focusErrorInput}>
+                      Skip through
+                    </Button>
+                  )}
+                  <Button type="primary" className="full-mobile" onClick={this.handleSaveNOWEdit}>
+                    Save
                   </Button>
-                </Popconfirm>
-                <Button type="primary" className="full-mobile" onClick={this.handleSaveNOWEdit}>
-                  Save
-                </Button>
+                </div>
+                {showErrors && (
+                  <div className="error">
+                    <Alert
+                      message={`You have ${errorsLength} ${
+                        errorsLength === 1 ? "Error" : "Errors"
+                      } that must be fixed before proceeding`}
+                      type="error"
+                      showIcon
+                    />
+                  </div>
+                )}
               </div>
             )}
           </div>
           <LoadingWrapper condition={this.state.isLoaded}>
             <div>
-              <div className={this.state.fixedTop ? "side-menu--fixed" : "side-menu"}>
-                {this.state.currentStep === 1 && (
+              <div
+                className={this.state.fixedTop ? "side-menu--fixed" : "side-menu"}
+                //  lower fixNav to account for error message
+                style={showErrors && this.state.fixedTop ? { top: "170px" } : {}}
+              >
+                {this.state.currentStep !== 0 && (
                   <NOWSideMenu route={routes.NOTICE_OF_WORK_APPLICATION} />
                 )}
               </div>
@@ -704,6 +744,7 @@ const mapDispatchToProps = (dispatch) =>
       closeModal,
       clearNoticeOfWorkApplication,
       focus,
+      touch,
     },
     dispatch
   );
