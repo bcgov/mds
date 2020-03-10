@@ -1,3 +1,4 @@
+import logging
 from logging.config import dictConfig
 
 from flask import Flask, request
@@ -57,9 +58,10 @@ def register_extensions(app):
     # Overriding swaggerUI base path to serve content under a prefix
     apidoc.apidoc.static_url_path = '{}/swaggerui'.format(Config.BASE_PATH)
     api.init_app(app)
-
     if app.config['ELASTIC_ENABLED'] == '1':
         apm.init_app(app)
+        logging.getLogger('elasticapm').setLevel(30)
+
     else:
         app.logger.info('ELASTIC_ENABLED: FALSE, set ELASTIC_ENABLED=1 to enable')
 
