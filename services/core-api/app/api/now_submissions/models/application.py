@@ -2,6 +2,8 @@ import uuid
 from werkzeug.exceptions import NotFound
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.ext.associationproxy import association_proxy
+from sqlalchemy.schema import FetchedValue
+from marshmallow import fields, validate
 
 from app.extensions import db
 from app.api.utils.models_mixins import Base
@@ -25,10 +27,58 @@ from app.api.now_submissions.models.existing_settling_pond_xref import ExistingS
 from app.api.now_submissions.models.proposed_placer_activity_xref import ProposedPlacerActivityXref
 from app.api.now_submissions.models.proposed_settling_pond_xref import ProposedSettlingPondXref
 
+from app.api.constants import unit_type_map, type_of_permit_map, NOW_SUBMISSIONS_YES_NO
+from app.api.utils.field_template import FieldTemplate
+
 
 class Application(Base):
     __tablename__ = "application"
     __table_args__ = {"schema": "now_submissions"}
+
+    class _ModelSchema(Base._ModelSchema):
+        application_guid = fields.String(dump_only=True)
+        now_application_guid = fields.String(dump_only=True)
+        mine_guid = fields.String(dump_only=True)
+        sandgrvqrytotalmineresunits = fields.String(
+            validate=validate.OneOf(choices=unit_type_map.keys()))
+        underexptotaloreunits = fields.String(validate=validate.OneOf(choices=unit_type_map.keys()))
+        underexptotalwasteunits = fields.String(
+            validate=validate.OneOf(choices=unit_type_map.keys()))
+        sandgrvqryannualextrestunits = fields.String(
+            validate=validate.OneOf(choices=unit_type_map.keys()))
+        typeofpermit = fields.String(validate=validate.OneOf(choices=type_of_permit_map.keys()))
+        landcommunitywatershed = fields.String(
+            validate=validate.OneOf(choices=NOW_SUBMISSIONS_YES_NO))
+        archsitesaffected = fields.String(validate=validate.OneOf(choices=NOW_SUBMISSIONS_YES_NO))
+        fuellubstoreonsite = fields.String(validate=validate.OneOf(choices=NOW_SUBMISSIONS_YES_NO))
+        placerundergroundoperations = fields.String(
+            validate=validate.OneOf(choices=NOW_SUBMISSIONS_YES_NO))
+        placerhandoperations = fields.String(
+            validate=validate.OneOf(choices=NOW_SUBMISSIONS_YES_NO))
+        pondsexfiltratedtoground = fields.String(
+            validate=validate.OneOf(choices=NOW_SUBMISSIONS_YES_NO))
+        pondsrecycled = fields.String(validate=validate.OneOf(choices=NOW_SUBMISSIONS_YES_NO))
+        pondsdischargedtoenv = fields.String(
+            validate=validate.OneOf(choices=NOW_SUBMISSIONS_YES_NO))
+        bcexplosivespermitissued = fields.String(
+            validate=validate.OneOf(choices=NOW_SUBMISSIONS_YES_NO))
+        storeexplosivesonsite = fields.String(
+            validate=validate.OneOf(choices=NOW_SUBMISSIONS_YES_NO))
+        sandgrvqrywithinaglandres = fields.String(
+            validate=validate.OneOf(choices=NOW_SUBMISSIONS_YES_NO))
+        sandgrvqrylocalgovsoilrembylaw = fields.String(
+            validate=validate.OneOf(choices=NOW_SUBMISSIONS_YES_NO))
+        sandgrvqrygrdwtrexistingareas = fields.String(
+            validate=validate.OneOf(choices=NOW_SUBMISSIONS_YES_NO))
+        sandgrvqrygrdwtrtestpits = fields.String(
+            validate=validate.OneOf(choices=NOW_SUBMISSIONS_YES_NO))
+        sandgrvqrygrdwtrtestwells = fields.String(
+            validate=validate.OneOf(choices=NOW_SUBMISSIONS_YES_NO))
+
+        noticeofworktype = FieldTemplate(
+            field=fields.String, one_of='NOWApplicationType_description')
+        status = FieldTemplate(field=fields.String, one_of='NOWApplicationStatus_description')
+
     messageid = db.Column(db.Integer, primary_key=True)
     now_application_identity = db.relationship(
         'NOWApplicationIdentity',
@@ -36,7 +86,7 @@ class Application(Base):
         uselist=False,
         primaryjoin='Application.messageid==NOWApplicationIdentity.messageid',
         foreign_keys=messageid)
-    application_guid = db.Column(UUID(as_uuid=True), nullable=False)
+    application_guid = db.Column(UUID(as_uuid=True), nullable=False, server_default=FetchedValue())
     now_application_guid = association_proxy('now_application_identity', 'now_application_guid')
     mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine.mine_guid'))
     #mine_guid = association_proxy('now_application_identity', 'mine_guid')
@@ -177,10 +227,17 @@ class Application(Base):
     istimberselect = db.Column(db.String)
     originating_system = db.Column(db.String)
 
-    mine = db.relationship('Mine', lazy='joined')
+    mine = db.relationship(
+        'Mine',
+        lazy='joined',
+        uselist=False,
+        primaryjoin='Mine.mine_guid==Application.mine_guid',
+        foreign_keys=mine_guid)
 
-    applicant = db.relationship('Client', lazy='select', foreign_keys=[applicantclientid])
-    submitter = db.relationship('Client', lazy='select', foreign_keys=[submitterclientid])
+    applicant = db.relationship(
+        'Client', uselist=False, lazy='select', foreign_keys=[applicantclientid])
+    submitter = db.relationship(
+        'Client', uselist=False, lazy='select', foreign_keys=[submitterclientid])
     contacts = db.relationship('Contact', lazy='select')
     documents = db.relationship('Document', lazy='select')
 

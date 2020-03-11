@@ -1,9 +1,9 @@
 from app.extensions import api
 from flask_restplus import fields
 
-
 CLIENT = api.model(
     'Client', {
+        'clientid': fields.Integer,
         'type': fields.String,
         'org_legalname': fields.String,
         'org_doingbusinessas': fields.String,
@@ -69,6 +69,7 @@ DOCUMENT = api.model(
 
 PLACER_ACTIVITY = api.model(
     'PLACER_ACTIVITY', {
+        'placeractivityid': fields.Integer,
         'type': fields.String,
         'quantity': fields.Integer,
         'depth': fields.Integer,
@@ -80,6 +81,7 @@ PLACER_ACTIVITY = api.model(
 
 SETTLING_POND = api.model(
     'SETTLING_POND', {
+        'settlingpondid': fields.String,
         'pondid': fields.String,
         'watersource': fields.String,
         'width': fields.Integer,
@@ -90,19 +92,17 @@ SETTLING_POND = api.model(
         'timbervolume': fields.Arbitrary,
     })
 
-SURFACE_BULK_SAMPLE_ACTIVITY = api.model(
-    'SURFACE_BULK_SAMPLE_ACTIVITY', {
-        'type': fields.String,
-        'disturbedarea': fields.Arbitrary,
-        'timbervolume': fields.Arbitrary,
-    })
+SURFACE_BULK_SAMPLE_ACTIVITY = api.model('SURFACE_BULK_SAMPLE_ACTIVITY', {
+    'type': fields.String,
+    'disturbedarea': fields.Arbitrary,
+    'timbervolume': fields.Arbitrary,
+})
 
-SAND_GRAVEL_QUARRY_ACTIVITY = api.model(
-    'SAND_GRAVEL_QUARRY_ACTIVITY', {
-        'type': fields.String,
-        'disturbedarea': fields.Arbitrary,
-        'timbervolume': fields.Arbitrary,
-    })
+SAND_GRAVEL_QUARRY_ACTIVITY = api.model('SAND_GRAVEL_QUARRY_ACTIVITY', {
+    'type': fields.String,
+    'disturbedarea': fields.Arbitrary,
+    'timbervolume': fields.Arbitrary,
+})
 
 UNDER_EXP_NEW_ACTIVITY = api.model(
     'UNDER_EXP_NEW_ACTIVITY', {
@@ -153,9 +153,9 @@ EXP_SURFACE_DRILL_ACTIVITY = api.model(
     })
 
 MECH_TRENCHING_ACTIVITY = api.model(
-    'EXP_ACCESS_ACTIVITY', {
+    'MECH_TRENCHING_ACTIVITY', {
         'type': fields.String,
-        'numberofsites':  fields.Integer,
+        'numberofsites': fields.Integer,
         'disturbedarea': fields.Arbitrary,
         'timbervolume': fields.Arbitrary,
     })
@@ -173,6 +173,7 @@ WATER_SOURCE_ACTIVITY = api.model(
 
 APPLICATION = api.model(
     'Application', {
+        "messageid": fields.Integer,
         'application_guid': fields.String,
         'now_application_guid': fields.String,
         'originating_system': fields.String,
@@ -190,8 +191,8 @@ APPLICATION = api.model(
         'typeofpermit': fields.String,
         'typeofapplication': fields.String,
         'minenumber': fields.String,
-        'latitude': fields.Arbitrary,
-        'longitude': fields.Arbitrary,
+        'latitude': fields.Fixed(decimals=7),
+        'longitude': fields.Fixed(decimals=7),
         'nameofproperty': fields.String,
         'tenurenumbers': fields.String,
         'crowngrantlotnumbers': fields.String,
@@ -334,7 +335,7 @@ APPLICATION = api.model(
     })
 
 APPLICATION_LIST = api.model(
-    'Application', {
+    'ApplicationList', {
         'application_guid': fields.String,
         'now_application_guid': fields.String,
         'mine_guid': fields.String,
@@ -355,6 +356,40 @@ PAGINATED_LIST = api.model(
         'total': fields.Integer,
     })
 
-PAGINATED_APPLICATION_LIST = api.inherit('ApplicationList', PAGINATED_LIST, {
+PAGINATED_APPLICATION_LIST = api.inherit('PaginatedApplicationList', PAGINATED_LIST, {
     'records': fields.List(fields.Nested(APPLICATION_LIST)),
+})
+
+APPLICATIONNDA = api.model(
+    'ApplicationNDA', {
+        "messageid": fields.Integer,
+        'application_nda_guid': fields.String,
+        'originating_system': fields.String,
+        'mine_guid': fields.String,
+        'trackingnumber': fields.Integer,
+        'applicationtype': fields.String,
+        'status': fields.String,
+        'submitteddate': fields.DateTime,
+        'receiveddate': fields.DateTime,
+        'typedeemedauthorization': fields.String,
+        'permitnumber': fields.String,
+        'minenumber': fields.String,
+        'nownumber': fields.String,
+        'planactivitiesdrillprogram': fields.String,
+        'planactivitiesipsurvey': fields.String,
+        'proposedstartdate': fields.DateTime,
+        'proposedenddate': fields.DateTime,
+        'totallinekilometers': fields.Integer,
+        'descplannedactivities': fields.String,
+        'proposednewenddate': fields.DateTime,
+        'reasonforextension': fields.String,
+        'anyotherinformation': fields.String,
+        'vfcbcapplicationurl': fields.String,
+        'messagecreateddate': fields.DateTime,
+        'processed': fields.String,
+        'processeddate': fields.DateTime,
+        'nrsosapplicationid': fields.String,
+        'applicant': fields.Nested(CLIENT),
+        'submitter': fields.Nested(CLIENT),
+        'documents': fields.List(fields.Nested(DOCUMENT))
     })

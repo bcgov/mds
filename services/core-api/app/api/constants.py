@@ -106,3 +106,34 @@ NOW_APPLICATION_EDIT_GROUP = 'NOW_APPLICATION_EDIT_GROUP'
 PERMIT_EDIT_GROUP = 'PERMIT_EDIT_GROUP'
 PERMIT_AMENDMENT_EDIT_GROUP = 'PERMIT_AMENDMENT_EDIT_GROUP'
 MINE_EDIT_GROUP = 'MINE_EDIT_GROUP'
+
+#Transmogrify NoW
+unit_type_map = {
+    'm3': 'Meters cubed',
+    'tonnes': 'Tonne (Metric Ton 1,000 kg)',
+    'm3/year': 'Meters cubed',
+    'tonnes/year': 'Tonne (Metric Ton 1,000 kg)',
+    'Degrees': 'Degrees',
+    'Percent': 'Grade (Percent)',
+    None: None
+}
+
+type_of_permit_map = {
+    'I would like to apply for a Multi-Year permit': 'MYP',
+    'I would like to apply for a one year permit': 'OYP',
+    'I would like to apply for a Multi-Year, Area Based permit': 'MY-ABP',
+    None: None
+}
+
+type_of_contact_map = {
+    'Mine manager': 'MMG',
+    'Permittee': 'PMT',
+    'Site operator': 'MOR',
+    'Tenure Holder': 'THD',
+    None: None
+}
+
+NOW_SUBMISSIONS_YES_NO = ['Yes', 'No']
+# This constant is defined for use during the app setup and creation.
+# See static_data.py in utils for its use and the values it contains.
+STATIC_DATA = {}
