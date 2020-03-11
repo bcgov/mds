@@ -27,21 +27,12 @@ class MineReport(Base, AuditMixin):
     mine_report_definition_guid = association_proxy('mine_report_definition',
                                                     'mine_report_definition_guid')
     report_name = association_proxy('mine_report_definition', 'report_name')
-    mine_report_category_xref = db.relationship(
-        'MineReportCategoryXref',
-        lazy='joined',
-        primaryjoin=
-        'MineReport.mine_report_definition_id==MineReportCategoryXref.mine_report_definition_id',
-        foreign_keys=mine_report_definition_id,
-        uselist=True,
-        order_by='MineReportCategoryXref.mine_report_category')
-    mine_report_category = association_proxy('mine_report_category_xref', 'mine_report_category')
 
     mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine.mine_guid'), nullable=False)
-    mine_table = db.relationship('Mine', lazy='joined')
-    mine_name = association_proxy('mine_table', 'mine_name')
-    mine_region = association_proxy('mine_table', 'mine_region')
-    major_mine_ind = association_proxy('mine_table', 'major_mine_ind')
+    mine = db.relationship('Mine', lazy='joined')
+    mine_name = association_proxy('mine', 'mine_name')
+    mine_region = association_proxy('mine', 'mine_region')
+    major_mine_ind = association_proxy('mine', 'major_mine_ind')
 
     permit_id = db.Column(db.Integer, db.ForeignKey('permit.permit_id'))
     permit = db.relationship('Permit', lazy='selectin')
@@ -62,30 +53,29 @@ class MineReport(Base, AuditMixin):
     created_by_idir = db.Column(db.String, nullable=False, default=User().get_user_username)
 
     @hybrid_property
-    def mine_report_submission_status_code(self):
-        if self.mine_report_submissions and len(self.mine_report_submissions) > 0:
-            return self.mine_report_submissions[len(self.mine_report_submissions) -
-                                                1].mine_report_submission_status_code
+    def mine_report_status_code(self):
+        if self.mine_report_submissions:
+            return self.mine_report_submissions[-1].mine_report_submission_status_code
         else:
             return None
 
-    @mine_report_submission_status_code.expression
-    def mine_report_submission_status_code(cls):
+    @mine_report_status_code.expression
+    def mine_report_status_code(cls):
         return select([
             MineReportSubmission.mine_report_submission_status_code
         ]).where(MineReportSubmission.mine_report_id == cls.mine_report_id).order_by(
             desc(MineReportSubmission.mine_report_submission_id)).limit(1).as_scalar()
 
     @hybrid_property
-    def mine_report_submission_status_code_description(self):
-        if self.mine_report_submissions and len(self.mine_report_submissions) > 0:
+    def mine_report_status_description(self):
+        if self.mine_report_submissions:
             return MineReportSubmissionStatusCode.find_by_mine_report_submission_status_code(
-                self.mine_report_submission_status_code).description
+                self.mine_report_status_code).description
         else:
             return None
 
-    @mine_report_submission_status_code_description.expression
-    def mine_report_submission_status_code_description(cls):
+    @mine_report_status_description.expression
+    def mine_report_status_description(cls):
         return select([MineReportSubmissionStatusCode.description]).where(
             and_(
                 MineReportSubmission.mine_report_id == cls.mine_report_id,

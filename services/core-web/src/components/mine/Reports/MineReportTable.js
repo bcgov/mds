@@ -109,10 +109,10 @@ export const MineReportTable = (props) => {
     },
     {
       title: "Status",
-      key: "mine_report_submission_status_code",
-      dataIndex: "mine_report_submission_status_code",
-      sortField: "mine_report_submission_status_code",
-      sorter: props.isDashboardView || nullableStringSorter("mine_report_submission_status_code"),
+      key: "mine_report_status_code",
+      dataIndex: "mine_report_status_code",
+      sortField: "mine_report_status_code",
+      sorter: props.isDashboardView || nullableStringSorter("mine_report_status_code"),
       render: (text) => (
         <div title="Status">
           <Badge
@@ -209,7 +209,7 @@ export const MineReportTable = (props) => {
       submission_year: Number(report.submission_year),
       created_by_idir: report.created_by_idir,
       permit_guid: report.permit_guid || Strings.EMPTY_FIELD,
-      mine_report_submission_status_code:
+      mine_report_status_code:
         (report.mine_report_submissions &&
           report.mine_report_submissions.length > 0 &&
           props.mineReportStatusOptionsHash[

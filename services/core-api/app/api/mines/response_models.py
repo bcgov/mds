@@ -133,6 +133,7 @@ STATUS_MODEL = api.model(
         'status_date': fields.DateTime,
         'status_description': fields.String,
     })
+
 MINE_REPORT_SUBMISSION_STATUS = api.model('MineReportSubmissionStatus', {
     'mine_report_submission_status_code': fields.String,
     'description': fields.String,
@@ -329,19 +330,34 @@ MINE_REPORT_SUBMISSION_MODEL = api.model(
 
 MINE_REPORT_MODEL = api.model(
     'MineReportModel', {
-        'mine_report_id': fields.Integer,
-        'mine_report_guid': fields.String,
-        'mine_report_definition_guid': fields.String,
-        'mine_report_category': fields.List(fields.String),
-        'report_name': fields.String,
-        'due_date': fields.Date,
-        'received_date': fields.Date,
-        'submission_year': fields.Integer,
-        'created_by_idir': fields.String,
-        'permit_guid': fields.String,
-        'mine_report_submissions': fields.List(fields.Nested(MINE_REPORT_SUBMISSION_MODEL)),
-        'mine_guid': fields.String,
-        'mine_name': fields.String,
+        'mine_report_id':
+        fields.Integer,
+        'mine_report_guid':
+        fields.String,
+        'mine_report_definition_guid':
+        fields.String,
+        'mine_report_category':
+        fields.List(
+            fields.String(attribute='mine_report_category'),
+            attribute='mine_report_definition.categories'),
+        'report_name':
+        fields.String,
+        'due_date':
+        fields.Date,
+        'received_date':
+        fields.Date,
+        'submission_year':
+        fields.Integer,
+        'created_by_idir':
+        fields.String,
+        'permit_guid':
+        fields.String,
+        'mine_report_submissions':
+        fields.List(fields.Nested(MINE_REPORT_SUBMISSION_MODEL)),
+        'mine_guid':
+        fields.String,
+        'mine_name':
+        fields.String,
     })
 
 MINE_REPORT_DEFINITION_CATEGORIES = api.model('MineReportDefinitionCategoriesModel', {

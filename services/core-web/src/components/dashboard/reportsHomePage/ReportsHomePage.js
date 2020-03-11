@@ -33,8 +33,8 @@ const propTypes = {
 const defaultParams = {
   page: Strings.DEFAULT_PAGE,
   per_page: Strings.DEFAULT_PER_PAGE,
-  sort_field: undefined,
-  sort_dir: undefined,
+  sort_field: "received_date",
+  sort_dir: "asc",
   search: undefined,
   report_type: [],
   report_name: [],

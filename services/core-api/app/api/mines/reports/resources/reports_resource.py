@@ -84,7 +84,7 @@ class ReportsResource(Resource, UserMixin):
             "due_date": 'MineReport',
             "received_date": 'MineReport',
             "submission_year": 'MineReport',
-            "mine_report_submission_status_code": 'MineReportSubmissionStatusCode',
+            "mine_report_status_code": 'MineReportSubmissionStatusCode',
             "created_by_idir": 'MineReport',
             "mine_name": 'Mine',
         }
@@ -96,7 +96,7 @@ class ReportsResource(Resource, UserMixin):
             "due_date": 'due_date',
             "received_date": 'received_date',
             "submission_year": 'submission_year',
-            "mine_report_submission_status_code": 'mine_report_submission_status_code_description',
+            "mine_report_status_code": 'mine_report_status_description',
             "created_by_idir": 'created_by_idir',
             "mine_name": 'mine_name',
         }
@@ -137,7 +137,7 @@ class ReportsResource(Resource, UserMixin):
                                    args["report_name"]))
 
         if args["status"]:
-            query = query.filter(MineReport.mine_report_submission_status_code.in_(args["status"]))
+            query = query.filter(MineReport.mine_report_status_code.in_(args["status"]))
 
         if args["compliance_year"]:
             conditions.append(
@@ -176,13 +176,13 @@ class ReportsResource(Resource, UserMixin):
 
         filtered_query = apply_filters(query, conditions)
 
-        if args['sort_field'] == 'mine_report_submission_status_code':
+        if args['sort_field'] == 'mine_report_status_code':
             if args['sort_dir'] == 'asc':
                 filtered_query = filtered_query.order_by(
-                    asc(MineReport.mine_report_submission_status_code_description))
+                    asc(MineReport.mine_report_status_description))
             else:
                 filtered_query = filtered_query.order_by(
-                    desc(MineReport.mine_report_submission_status_code_description))
+                    desc(MineReport.mine_report_status_description))
 
         else:
             if args['sort_field'] and args['sort_dir']:
