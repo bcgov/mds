@@ -75,24 +75,22 @@ export const MineReportTable = (props) => {
         </div>
       ),
     },
-    {
-      title: "Report Type",
-      key: "mine_report_category",
-      dataIndex: "mine_report_category",
-      sortField: "mine_report_category",
-      sorter:
-        props.isDashboardView ||
-        ((a, b) => a.mine_report_category.localeCompare(b.mine_report_category)),
-      // className: hideColumn(!props.isDashboardView),
-      render: (text) => (
-        <div
-          title="Report Type"
-          // className={hideColumn(!props.isDashboardView)}
-        >
-          {text}
-        </div>
-      ),
-    },
+    // NOTE: This column is commented-out and retained intentionally in case we want to use it later.
+    // {
+    //   title: "Report Type",
+    //   key: "mine_report_category",
+    //   dataIndex: "mine_report_category",
+    //   sortField: "mine_report_category",
+    //   sorter:
+    //     props.isDashboardView ||
+    //     ((a, b) => a.mine_report_category.localeCompare(b.mine_report_category)),
+    //   className: hideColumn(!props.isDashboardView),
+    //   render: (text) => (
+    //     <div title="Report Type" className={hideColumn(!props.isDashboardView)}>
+    //       {text}
+    //     </div>
+    //   ),
+    // },
     {
       title: "Report Name",
       key: "report_name",
@@ -101,18 +99,14 @@ export const MineReportTable = (props) => {
       sorter: props.isDashboardView || ((a, b) => a.report_name.localeCompare(b.report_name)),
       render: (text) => <div title="Report Name">{text}</div>,
     },
-    // {
-    //   title: "Compliance Year",
-    //   key: "submission_year",
-    //   dataIndex: "submission_year",
-    //   sortField: "submission_year",
-    //   sorter: props.isDashboardView || ((a, b) => (a.submission_year < b.submission_year ? -1 : 1)),
-    //   render: (text) => (
-    //     <div title="Compliance Year" >
-    //       {text}
-    //     </div>
-    //   ),
-    // },
+    {
+      title: "Compliance Year",
+      key: "submission_year",
+      dataIndex: "submission_year",
+      sortField: "submission_year",
+      sorter: props.isDashboardView || ((a, b) => (a.submission_year < b.submission_year ? -1 : 1)),
+      render: (text) => <div title="Compliance Year">{text}</div>,
+    },
     {
       title: "Status",
       key: "mine_report_submission_status_code",
@@ -233,6 +227,7 @@ export const MineReportTable = (props) => {
           : [],
       mine_guid: report.mine_guid,
       mine_name: report.mine_name,
+      // NOTE: This is commented-out intentionally until we decide on a use for it.
       // isOverdue: report.due_date && Date.parse(report.due_date) < new Date(),
       report,
       openEditReportModal,

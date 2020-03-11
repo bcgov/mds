@@ -31,10 +31,14 @@ export const CoreTable = (props) => {
     locale: { emptyText: <NullScreen type="no-results" /> },
     pagination: false,
     rowClassName: "fade-in",
+    tableLayout: "auto",
   };
   const combinedProps = { ...baseProps, ...props.tableProps };
   const skeletonColumns = props.columns.map((column) => ({
-    ...column,
+    title: column.title,
+    dataIndex: column.title,
+    className: column.className,
+    width: column.width,
     render: () => <div className={`skeleton-table__loader ${column.className}`} />,
   }));
 
