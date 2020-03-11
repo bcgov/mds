@@ -11,19 +11,17 @@ const propTypes = {
   id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   input: PropTypes.objectOf(PropTypes.any).isRequired,
   meta: PropTypes.objectOf(PropTypes.any).isRequired,
-  showTime: PropTypes.bool,
   label: PropTypes.string,
   placeholder: PropTypes.string,
   disabled: PropTypes.bool,
-  onChange: PropTypes.func,
+  showTime: PropTypes.bool,
 };
 
 const defaultProps = {
-  showTime: false,
   label: "",
   placeholder: "",
   disabled: false,
-  onChange: () => {},
+  showTime: false,
 };
 
 const RenderDate = (props) => (
@@ -43,7 +41,7 @@ const RenderDate = (props) => (
       id={props.id}
       {...props.input}
       placeholder={props.placeholder}
-      onChange={(date, dateString) => props.input.onChange(dateString)}
+      onChange={(date, dateString) => props.input.onChange(dateString ? dateString : null)}
       value={props.input.value ? moment(props.input.value) : null}
       showTime={props.showTime && { format: "HH:mm" }}
       format={props.showTime && "YYYY-MM-DD HH:mm"}

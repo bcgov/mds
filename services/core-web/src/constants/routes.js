@@ -38,6 +38,14 @@ const withoutDefaultParams = (params, defaults) => {
   return newParams;
 };
 
+const withoutNullParams = (params) => {
+  const newParams = JSON.parse(JSON.stringify(params));
+  Object.keys(params)
+    .filter((param) => params[param] === null)
+    .map((param) => delete newParams[param]);
+  return newParams;
+};
+
 export const DASHBOARD = {
   route: "/",
   component: Home,
@@ -193,7 +201,7 @@ export const REPORTS_DASHBOARD = {
   route: "/dashboard/reporting/reports",
   dynamicRoute: ({ page, per_page, ...params }) =>
     `/dashboard/reporting/reports?${queryString.stringify(
-      { page, per_page, ...params },
+      { page, per_page, ...withoutNullParams(params) },
       { sort: false }
     )}`,
   component: ReportsHomePage,

@@ -120,6 +120,7 @@ export class ReportSearchForm extends Component {
                   name="due_date_after"
                   placeholder="Select Earliest Due Date"
                   component={renderConfig.DATE}
+                  format={null}
                 />
               </Col>
               <Col md={12} xs={24}>
@@ -128,6 +129,7 @@ export class ReportSearchForm extends Component {
                   name="due_date_before"
                   placeholder="Select Latest Due Date"
                   component={renderConfig.DATE}
+                  format={null}
                 />
               </Col>
             </Row>
@@ -138,6 +140,7 @@ export class ReportSearchForm extends Component {
                   name="received_date_after"
                   placeholder="Select Earliest Received Date"
                   component={renderConfig.DATE}
+                  format={null}
                 />
               </Col>
               <Col md={12} xs={24}>
@@ -146,6 +149,7 @@ export class ReportSearchForm extends Component {
                   name="received_date_before"
                   placeholder="Select Latest Received Date"
                   component={renderConfig.DATE}
+                  format={null}
                 />
               </Col>
             </Row>
@@ -156,6 +160,7 @@ export class ReportSearchForm extends Component {
                   name="compliance_year"
                   placeholder="Select Compliance Year"
                   component={renderConfig.YEAR}
+                  format={null}
                 />
               </Col>
               <Col md={12} xs={24}>
