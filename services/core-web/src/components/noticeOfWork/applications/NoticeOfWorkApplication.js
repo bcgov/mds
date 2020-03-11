@@ -275,7 +275,7 @@ export class NoticeOfWorkApplication extends Component {
 
   focusErrorInput = (skip = false) => {
     const errors = Object.keys(flattenObject(this.props.formErrors));
-    const index = skip && this.count !== errors.length ? this.count + 1 : 0;
+    const index = skip && this.count <= errors.length ? this.count + 1 : 0;
     console.log(errors);
     const errorElement = document.querySelector(`[name="${errors[index]}"]`);
     if (errorElement && errorElement.focus) {
