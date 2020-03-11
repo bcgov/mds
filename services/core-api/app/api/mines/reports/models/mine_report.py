@@ -52,6 +52,8 @@ class MineReport(Base, AuditMixin):
 
     created_by_idir = db.Column(db.String, nullable=False, default=User().get_user_username)
 
+    # The below hybrid properties/expressions exist solely for filtering and sorting purposes.
+
     @hybrid_property
     def mine_report_status_code(self):
         if self.mine_report_submissions:
