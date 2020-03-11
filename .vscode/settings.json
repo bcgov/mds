@@ -8,7 +8,6 @@
   "python.formatting.yapfArgs": [
     "--style={column_limit:100, spaces_before_comment:'15,30,50', SPLIT_BEFORE_EXPRESSION_AFTER_OPENING_PAREN:TRUE}"
   ],
-  "python.linting.enabled": true,
   "eslint.alwaysShowStatus": true,
   "files.exclude": {
     "**/__pycache__": true
@@ -20,9 +19,5 @@
     "source.fixAll.eslint": true,
     "eslint.autoFixOnSave": true
   },
-  "cSpell.words": ["idir"],
-  "python.linting.flake8Enabled": true,
-  "python.linting.flake8Args": [
-    "--max-line-length=100"
-  ]
+  "cSpell.words": ["idir"]
 }
