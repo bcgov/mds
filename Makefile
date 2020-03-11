@@ -20,6 +20,13 @@ reset:  stop | clean
 database-seed: database-dump | database-dump-seed
 database-seed-local: database-dump | database-dump-seed-local
 
+reset-local-env-files: 
+	@cp ./services/core-web/.env-example ./services/core-web/.env
+	@cp ./services/core-api/.env-example ./services/core-api/.env
+	@cp ./services/nris-api/backend/.env-example ./services/nris-api/backend/.env
+	@cp ./services/document-manager/backend/.env-example ./services/document-manager/backend/.env
+	@cp ./services/minespace-web/.env-example  ./services/minespace-web/.env
+
 one-time-local-dev-env-setup:
 	@echo "+\n++ Setting up your local development environment"
 	@echo "++ with local authentication and db.  Run this once only."
