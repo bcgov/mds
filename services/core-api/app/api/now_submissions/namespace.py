@@ -6,7 +6,6 @@ from app.api.now_submissions.resources.application_nda_resource import Applicati
 from app.api.now_submissions.resources.application_nda_list_resource import ApplicationNDAListResource
 from app.api.now_submissions.resources.application_document_resource import ApplicationDocumentResource, ApplicationDocumentTokenResource
 
-
 api = Namespace('now-submissions', description='NROS/VFCBC Notice of Work submission operations')
 
 api.add_resource(ApplicationListResource, '/applications')

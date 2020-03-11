@@ -173,6 +173,7 @@ WATER_SOURCE_ACTIVITY = api.model(
 
 APPLICATION = api.model(
     'Application', {
+        "messageid": fields.Integer,
         'application_guid': fields.String,
         'now_application_guid': fields.String,
         'originating_system': fields.String,
@@ -190,8 +191,8 @@ APPLICATION = api.model(
         'typeofpermit': fields.String,
         'typeofapplication': fields.String,
         'minenumber': fields.String,
-        'latitude': fields.Arbitrary,
-        'longitude': fields.Arbitrary,
+        'latitude': fields.Fixed(decimals=7),
+        'longitude': fields.Fixed(decimals=7),
         'nameofproperty': fields.String,
         'tenurenumbers': fields.String,
         'crowngrantlotnumbers': fields.String,
@@ -361,6 +362,7 @@ PAGINATED_APPLICATION_LIST = api.inherit('PaginatedApplicationList', PAGINATED_L
 
 APPLICATIONNDA = api.model(
     'ApplicationNDA', {
+        "messageid": fields.Integer,
         'application_nda_guid': fields.String,
         'originating_system': fields.String,
         'mine_guid': fields.String,
@@ -371,7 +373,6 @@ APPLICATIONNDA = api.model(
         'receiveddate': fields.DateTime,
         'typedeemedauthorization': fields.String,
         'permitnumber': fields.String,
-        'minenumber': fields.String,
         'minenumber': fields.String,
         'nownumber': fields.String,
         'planactivitiesdrillprogram': fields.String,

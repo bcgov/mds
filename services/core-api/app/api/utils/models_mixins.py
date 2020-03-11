@@ -6,6 +6,7 @@ from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.types import TypeEngine
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.ext.declarative import declarative_base
+from marshmallow_sqlalchemy import ModelSchema
 
 from app.extensions import db
 from app.api.constants import STATE_MODIFIED_DELETE_ON_PUT
@@ -61,6 +62,10 @@ class Base(db.Model):
     _edit_key = None
     # Set default query_class on base class.
     query_class = UserBoundQuery
+
+    # This allows all models access to the default Marshmallow model Schema
+    # but also allows them to override it if need be.
+    _ModelSchema = ModelSchema
 
     def save(self, commit=True):
         db.session.add(self)
