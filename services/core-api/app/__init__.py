@@ -7,9 +7,10 @@ from flask_cors import CORS
 from flask_restplus import Resource, apidoc
 from flask_compress import Compress
 from sqlalchemy.exc import SQLAlchemyError
+from marshmallow.exceptions import MarshmallowError
 
 from flask_jwt_oidc.exceptions import AuthError
-from werkzeug.exceptions import Forbidden
+from werkzeug.exceptions import Forbidden, BadRequest
 
 from app.api.compliance.namespace import api as compliance_api
 from app.api.download_token.namespace import api as download_token_api
@@ -132,9 +133,10 @@ def register_routes(app):
     # Recursively add handler to every SQLAlchemy Error
     def sqlalchemy_error_handler(error):
         app.logger.error(str(error))
+        app.logger.error(type(error))
         return {
             'status': getattr(error, 'status_code', 400),
-            'message': str('Invalid request.'),
+            'message': str(error),
         }, getattr(error, 'status_code', 400)
 
     def _add_sqlalchemy_error_handlers(classname):
