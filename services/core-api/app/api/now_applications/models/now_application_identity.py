@@ -1,4 +1,5 @@
 import uuid
+from datetime import datetime
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
 from sqlalchemy.ext.associationproxy import association_proxy
@@ -54,3 +55,17 @@ class NOWApplicationIdentity(Base, AuditMixin):
             return cls.query.filter_by(now_application_guid=_id).first()
         except ValueError:
             return None
+
+    @classmethod
+    def submission_count_ytd(cls, _mine_guid, _sub_year):
+        try:
+            return cls.query.filter_by(mine_guid=_mine_guid).filter(
+                cls.now_number.ilike(f'{_sub_year}%')).count()
+        except ValueError:
+            return None
+
+    @classmethod
+    def create_now_number(cls, mine):
+        current_year = datetime.now().strftime("%Y")
+        number_of_now = cls.submission_count_ytd(mine.mine_guid, current_year)
+        return f'{current_year}-{mine.mine_no}-{str(number_of_now + 1).zfill(2)}'
