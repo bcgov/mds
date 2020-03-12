@@ -134,46 +134,27 @@ const transformRowData = (mines, mineRegionHash, mineTenureHash, mineCommodityHa
     mine_name: mine.mine_name || Strings.EMPTY_FIELD,
     mine_no: mine.mine_no || Strings.EMPTY_FIELD,
     mine_operation_status_code:
-      mine.mine_status &&
-      mine.mine_status.length > 0 &&
-      mine.mine_status[0].status_labels &&
-      mine.mine_status[0].status_labels.length > 0
+      mine.mine_status.length > 0 && mine.mine_status[0].status_labels.length > 0
         ? mine.mine_status[0].status_labels[0]
         : Strings.EMPTY_FIELD,
-    permit_numbers:
-      mine.mine_permit_numbers && mine.mine_permit_numbers.length > 0
-        ? mine.mine_permit_numbers
-        : [],
+    permit_numbers: mine.mine_permit_numbers.length > 0 ? mine.mine_permit_numbers : [],
     mine_region: mine.mine_region ? mineRegionHash[mine.mine_region] : Strings.EMPTY_FIELD,
-    commodity:
-      mine.mine_type &&
-      mine.mine_type.length > 0 &&
-      mine.mine_type.filter(
-        (type) =>
-          type.mine_type_detail &&
-          type.mine_type_detail.length > 0 &&
-          type.mine_type_detail.filter((detail) => detail.mine_commodity_code).length > 0
-      ).length > 0
-        ? uniqBy(
-            flattenDeep(
-              mine.mine_type.map(
-                (type) =>
-                  type.mine_type_detail &&
-                  type.mine_type_detail.length > 0 &&
-                  type.mine_type_detail
-                    .filter((detail) => detail.mine_commodity_code)
-                    .map((detail) => mineCommodityHash[detail.mine_commodity_code])
-              )
-            )
-          )
-        : [],
-    tenure:
-      mine.mine_type && mine.mine_type.length > 0
-        ? uniqBy(mine.mine_type.map((type) => mineTenureHash[type.mine_tenure_type_code]))
-        : [],
-    tsf: mine.mine_tailings_storage_facilities
-      ? mine.mine_tailings_storage_facilities.length
-      : Strings.EMPTY_FIELD,
+    commodity: uniqBy(
+      flattenDeep(
+        mine.mine_type.reduce((result, type) => {
+          if (type.mine_type_detail.length > 0) {
+            result.push(
+              type.mine_type_detail
+                .filter((detail) => detail.mine_commodity_code)
+                .map((detail) => mineCommodityHash[detail.mine_commodity_code])
+            );
+          }
+          return result;
+        }, [])
+      )
+    ),
+    tenure: uniqBy(mine.mine_type.map((type) => mineTenureHash[type.mine_tenure_type_code])),
+    tsf: mine.mine_tailings_storage_facilities.length,
     verified_status: mine.verified_status,
   }));
 
