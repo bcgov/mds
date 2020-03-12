@@ -92,6 +92,7 @@ export class NOWSideMenu extends Component {
           }}
         >
           <Link href="#application-info" title="Application Info" />
+          <Link href="#securities" title="Securities" />
           <Link href="#contacts" title="Contacts" />
           <Link href="#access" title="Access" />
           <Link href="#state-of-land" title="State of Land" />
