@@ -53,7 +53,7 @@ export const AddIncidentReportingForm = (props) => (
               id="reported_to_inspector_party_guid"
               name="reported_to_inspector_party_guid"
               label="Incident reported to*"
-              placeholder="Select inspector"
+              placeholder="Search for inspector"
               component={renderConfig.GROUPED_SELECT}
               format={null}
               validate={[required]}
@@ -67,7 +67,7 @@ export const AddIncidentReportingForm = (props) => (
               label="Inspector responsible*"
               component={renderConfig.GROUPED_SELECT}
               format={null}
-              placeholder="Select responsible inspector"
+              placeholder="Search for responsible inspector"
               validate={[required]}
               data={props.inspectors}
             />
