@@ -76,6 +76,10 @@ class NOWApplication(Base, AuditMixin):
     blasting_operation = db.relationship('BlastingOperation', lazy='joined', uselist=False)
     state_of_land = db.relationship('StateOfLand', lazy='joined', uselist=False)
 
+    # Securities
+    security_total = db.Column(db.Numeric(10, 2))
+    security_received_date = db.Column(db.Date)
+
     # Activities
     camps = db.relationship('Camp', lazy='selectin', uselist=False)
     cut_lines_polarization_survey = db.relationship(

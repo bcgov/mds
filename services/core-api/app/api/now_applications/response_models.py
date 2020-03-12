@@ -393,6 +393,10 @@ NOW_APPLICATION_MODEL = api.model(
         'consultation_closed_on_date':
         Date,
         'public_comment_closed_on_date':
+        Date,
+        'security_total':
+        fields.Fixed,
+        'security_received_date':
         Date
     })
 
