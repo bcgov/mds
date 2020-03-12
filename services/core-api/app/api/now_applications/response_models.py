@@ -395,7 +395,7 @@ NOW_APPLICATION_MODEL = api.model(
         'public_comment_closed_on_date':
         Date,
         'security_total':
-        fields.Fixed,
+        fields.Fixed(description='Currency', decimals=2),
         'security_received_date':
         Date
     })
