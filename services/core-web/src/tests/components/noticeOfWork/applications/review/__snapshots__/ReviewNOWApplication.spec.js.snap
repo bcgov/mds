@@ -443,6 +443,57 @@ exports[`ReviewNOWApplication renders properly 1`] = `
         </div>
       </withRouter(Connect(ScrollContentWrapper))>
       <withRouter(Connect(ScrollContentWrapper))
+        id="securities"
+        title="Securities"
+      >
+        <div>
+          <Row
+            gutter={16}
+          >
+            <Col
+              md={12}
+              sm={24}
+            >
+              <div
+                className="field-title"
+              >
+                Security Total
+              </div>
+              <Field
+                allowClear={true}
+                component={[Function]}
+                disabled={true}
+                format={[Function]}
+                id="security_total"
+                name="security_total"
+                placeholder="$12345.67"
+                validate={
+                  Array [
+                    [Function],
+                  ]
+                }
+              />
+            </Col>
+            <Col
+              md={12}
+              sm={24}
+            >
+              <div
+                className="field-title"
+              >
+                Security Received
+              </div>
+              <Field
+                component={[Function]}
+                disabled={true}
+                id="security_received_date"
+                name="security_received_date"
+              />
+            </Col>
+          </Row>
+        </div>
+      </withRouter(Connect(ScrollContentWrapper))>
+      <withRouter(Connect(ScrollContentWrapper))
         id="contacts"
         title="Contacts"
       >

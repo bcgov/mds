@@ -15,6 +15,10 @@ exports[`NOWSideMenu renders properly 1`] = `
       title="Application Info"
     />
     <AnchorLink
+      href="#securities"
+      title="Securities"
+    />
+    <AnchorLink
       href="#contacts"
       title="Contacts"
     />
