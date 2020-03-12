@@ -164,13 +164,13 @@ export class ReportFilterForm extends Component {
           </Row>
           <Row gutter={16}>
             <Col md={8} sm={24}>
-              <Form.Item label="Due Date">
+              <Form.Item label="Due Date Range">
                 <Row gutter={16}>
                   <Col md={12} sm={24}>
                     <Field
                       id="due_date_start"
                       name="due_date_start"
-                      placeholder="Select start date"
+                      placeholder="Select earliest date"
                       component={renderConfig.DATE}
                     />
                   </Col>
@@ -178,7 +178,7 @@ export class ReportFilterForm extends Component {
                     <Field
                       id="due_date_end"
                       name="due_date_end"
-                      placeholder="Select end date"
+                      placeholder="Select latest date"
                       component={renderConfig.DATE}
                     />
                   </Col>
@@ -186,13 +186,13 @@ export class ReportFilterForm extends Component {
               </Form.Item>
             </Col>
             <Col md={8} sm={24}>
-              <Form.Item label="Received Date">
+              <Form.Item label="Received Date Range">
                 <Row gutter={16}>
                   <Col md={12} sm={24}>
                     <Field
                       id="received_date_start"
                       name="received_date_start"
-                      placeholder="Select start date"
+                      placeholder="Select earliest date"
                       component={renderConfig.DATE}
                     />
                   </Col>
@@ -200,7 +200,7 @@ export class ReportFilterForm extends Component {
                     <Field
                       id="received_date_end"
                       name="received_date_end"
-                      placeholder="Select end date"
+                      placeholder="Select latest date"
                       component={renderConfig.DATE}
                     />
                   </Col>
