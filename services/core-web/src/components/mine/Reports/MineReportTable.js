@@ -54,14 +54,15 @@ export const MineReportTable = (props) => {
   const hideColumn = (condition) => (condition ? "column-hide" : "");
 
   const columns = [
-    {
-      title: "Number",
-      key: "mine_report_id",
-      dataIndex: "mine_report_id",
-      sortField: "mine_report_id",
-      sorter: props.isDashboardView || ((a, b) => (a.mine_report_id < b.mine_report_id ? -1 : 1)),
-      render: (text) => <div title="Number">{text}</div>,
-    },
+    // NOTE: This column is commented-out and retained intentionally in case we want to use it later.
+    // {
+    //   title: "Number",
+    //   key: "mine_report_id",
+    //   dataIndex: "mine_report_id",
+    //   sortField: "mine_report_id",
+    //   sorter: props.isDashboardView || ((a, b) => (a.mine_report_id < b.mine_report_id ? -1 : 1)),
+    //   render: (text) => <div title="Number">{text}</div>,
+    // },
     {
       title: "Mine",
       key: "mine_name",

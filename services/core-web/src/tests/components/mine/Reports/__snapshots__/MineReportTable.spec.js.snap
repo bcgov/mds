@@ -5,15 +5,6 @@ exports[`MineReportTable renders properly 1`] = `
   columns={
     Array [
       Object {
-        "dataIndex": "mine_report_id",
-        "key": "mine_report_id",
-        "render": [Function],
-        "sortField": "mine_report_id",
-        "sortOrder": false,
-        "sorter": [Function],
-        "title": "Number",
-      },
-      Object {
         "className": "column-hide",
         "dataIndex": "mine_name",
         "key": "mine_name",
