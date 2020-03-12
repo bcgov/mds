@@ -47,7 +47,7 @@ const handleTableChange = (updateApplicationList) => (pagination, filters, sorte
   const params = {
     results: pagination.pageSize,
     page: pagination.current,
-    sort_field: sorter.field,
+    sort_field: sorter.order ? sorter.field : undefined,
     sort_dir: sorter.order ? sorter.order.replace("end", "") : sorter.order,
     ...filters,
   };

@@ -41,7 +41,6 @@ export const VarianceTable = (props) => (
   <React.Fragment>
     <MineVarianceTable
       isLoaded={props.isLoaded}
-      isPaginated
       params={props.params}
       filterVarianceStatusOptions={props.filterVarianceStatusOptions}
       handleFilterChange={props.handleFilterChange}

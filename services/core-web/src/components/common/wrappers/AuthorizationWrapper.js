@@ -45,7 +45,10 @@ const propTypes = {
   isMajorMine: PropTypes.bool,
   inDevelopment: PropTypes.bool,
   inTesting: PropTypes.bool,
-  children: PropTypes.element.isRequired,
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.element.isRequired),
+    PropTypes.element.isRequired,
+  ]),
   userRoles: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
