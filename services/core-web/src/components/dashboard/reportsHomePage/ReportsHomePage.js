@@ -34,7 +34,7 @@ const defaultParams = {
   page: Strings.DEFAULT_PAGE,
   per_page: Strings.DEFAULT_PER_PAGE,
   sort_field: "received_date",
-  sort_dir: "asc",
+  sort_dir: "desc",
   search: undefined,
   report_type: [],
   report_name: [],
