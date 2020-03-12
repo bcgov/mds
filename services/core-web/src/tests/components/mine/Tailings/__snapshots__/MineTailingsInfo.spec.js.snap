@@ -39,11 +39,14 @@ exports[`MineTailingsInfo renders properly 1`] = `
         </h3>
       </div>
     </div>
-    <MineReportTable
+    <Connect(MineReportTable)
       handleEditReport={[Function]}
       handleRemoveReport={[Function]}
+      handleTableChange={[Function]}
       isLoaded={false}
       openEditReportModal={[Function]}
+      sortDir="desc"
+      sortField="received_date"
     />
   </div>
 </div>

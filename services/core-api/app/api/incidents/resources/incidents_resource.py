@@ -3,6 +3,7 @@ from flask import request
 from datetime import datetime
 from sqlalchemy import desc, cast, NUMERIC, extract, asc
 from sqlalchemy_filters import apply_sort, apply_pagination, apply_filters
+from werkzeug.exceptions import BadRequest
 
 from app.extensions import api
 from app.api.utils.access_decorators import requires_any_of, VIEW_ALL
@@ -90,7 +91,8 @@ class IncidentsResource(Resource, UserMixin):
         query = MineIncident.query.join(Mine)
         conditions = []
         if args["mine_guid"] is not None:
-            conditions.append(self._build_filter('MineIncident', 'mine_guid', '==', args["mine_guid"]))
+            conditions.append(
+                self._build_filter('MineIncident', 'mine_guid', '==', args["mine_guid"]))
         if args["status"] is not None:
             status_values = args["status"].split(',')
             conditions.append(
