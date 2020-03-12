@@ -32,15 +32,13 @@ export class AdvancedContactSearchForm extends Component {
   };
 
   handleReset = () => {
-    this.setState({ contactType: "PER" });
     this.props.reset();
     this.props.handleSearch({}, true);
+    this.handleContactTypeChange(null, "PER");
   };
 
   handleContactTypeChange = (chars, value) => {
-    this.setState({ contactType: value });
-    // Set the first,last, and party names to null
-    this.props.handleNameFieldReset();
+    this.setState({ contactType: value }, () => this.props.handleNameFieldReset());
   };
 
   render() {
@@ -51,6 +49,7 @@ export class AdvancedContactSearchForm extends Component {
             <Field
               id="type"
               name="type"
+              placeholder="Party Type"
               component={renderConfig.SELECT}
               data={this.props.partyTypeOptions}
               onChange={this.handleContactTypeChange}
@@ -61,8 +60,8 @@ export class AdvancedContactSearchForm extends Component {
               <Field
                 id="party_name"
                 name="party_name"
-                component={renderConfig.FIELD}
                 placeholder="Organization Name"
+                component={renderConfig.FIELD}
               />
             </Col>
           )}
@@ -71,8 +70,8 @@ export class AdvancedContactSearchForm extends Component {
               <Field
                 id="first_name"
                 name="first_name"
-                component={renderConfig.FIELD}
                 placeholder="First Name"
+                component={renderConfig.FIELD}
               />
             </Col>
           )}
@@ -81,8 +80,8 @@ export class AdvancedContactSearchForm extends Component {
               <Field
                 id="last_name"
                 name="last_name"
+                placeholder="Last Name"
                 component={renderConfig.FIELD}
-                placeholder="Surname"
               />
             </Col>
           )}
@@ -91,12 +90,7 @@ export class AdvancedContactSearchForm extends Component {
           <div>
             <Row gutter={6}>
               <Col md={8} xs={24}>
-                <Field
-                  id="email"
-                  name="email"
-                  placeholder="Contact Email"
-                  component={renderConfig.FIELD}
-                />
+                <Field id="email" name="email" placeholder="Email" component={renderConfig.FIELD} />
               </Col>
               <Col md={8} xs={24}>
                 <Field
@@ -111,6 +105,7 @@ export class AdvancedContactSearchForm extends Component {
                 <Field
                   id="role"
                   name="role"
+                  placeholder="Role"
                   component={renderConfig.SELECT}
                   data={this.props.relationshipTypes}
                 />

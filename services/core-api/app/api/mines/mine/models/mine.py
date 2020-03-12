@@ -70,7 +70,7 @@ class Mine(AuditMixin, Base):
 
     mine_party_appt = db.relationship('MinePartyAppointment', backref="mine", lazy='select')
     mine_incidents = db.relationship('MineIncident', backref="mine", lazy='select')
-    mine_reports = db.relationship('MineReport', backref="mine", lazy='select')
+    mine_reports = db.relationship('MineReport', lazy='select')
 
     def __repr__(self):
         return '<Mine %r>' % self.mine_guid

@@ -274,7 +274,20 @@ exports[`DashboardRoutes  renders properly 1`] = `
       }
     }
     exact={true}
-    path="/dashboard/incidents"
+    path="/dashboard/reporting/incidents"
+  />
+  <Route
+    component={
+      Object {
+        "$$typeof": Symbol(react.memo),
+        "WrappedComponent": [Function],
+        "compare": null,
+        "displayName": "Connect(ReportsHomePage)",
+        "type": [Function],
+      }
+    }
+    exact={true}
+    path="/dashboard/reporting/reports"
   />
   <Route
     component={
