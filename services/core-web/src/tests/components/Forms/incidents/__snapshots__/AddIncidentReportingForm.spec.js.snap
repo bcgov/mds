@@ -37,7 +37,7 @@ exports[`AddIncidentReportingForm renders properly 1`] = `
             id="reported_to_inspector_party_guid"
             label="Incident reported to*"
             name="reported_to_inspector_party_guid"
-            placeholder="Select inspector"
+            placeholder="Search for inspector"
             validate={
               Array [
                 [Function],
@@ -54,7 +54,7 @@ exports[`AddIncidentReportingForm renders properly 1`] = `
             id="responsible_inspector_party_guid"
             label="Inspector responsible*"
             name="responsible_inspector_party_guid"
-            placeholder="Select responsible inspector"
+            placeholder="Search for responsible inspector"
             validate={
               Array [
                 [Function],
