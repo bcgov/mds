@@ -16,6 +16,12 @@ const badgeStatusTypes = {
     "Ready for Decision": "processing",
     Withdrawn: "warning",
   },
+  report: {
+    Accepted: "success",
+    "Changes Received": "warning",
+    "Changes Requested": "processing",
+    "Not Requested": "default",
+  },
 };
 
 export const getNoticeOfWorkApplicationBadgeStatusType = (status) =>
@@ -23,3 +29,6 @@ export const getNoticeOfWorkApplicationBadgeStatusType = (status) =>
 
 export const getVarianceApplicationBadgeStatusType = (status) =>
   badgeStatusTypes.variance[status] || undefinedStatusStyleType;
+
+export const getReportSubmissionBadgeStatusType = (status) =>
+  badgeStatusTypes.report[status] || undefinedStatusStyleType;

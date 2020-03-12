@@ -9,6 +9,7 @@ const props = {};
 const setupProps = () => {
   props.mines = MOCK.MINES.mines;
   [props.mineGuid] = MOCK.MINES.mineIds;
+  props.location = { search: "" };
 };
 
 const setupDispatchProps = () => {

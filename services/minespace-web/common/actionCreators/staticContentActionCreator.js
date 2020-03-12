@@ -217,6 +217,18 @@ export const fetchMineReportStatusOptions = () => (dispatch) => {
     .catch(() => dispatch(error(reducerTypes.GET_MINE_REPORT_STATUS_OPTIONS)));
 };
 
+export const fetchMineReportCategoryOptions = () => (dispatch) => {
+  dispatch(request(reducerTypes.GET_MINE_REPORT_CATEGORY_OPTIONS));
+  return CustomAxios()
+    .get(`${ENVIRONMENT.apiUrl + API.MINE_REPORT_CATEGORY}`, createRequestHeader())
+    .then((response) => {
+      dispatch(success(reducerTypes.GET_MINE_REPORT_CATEGORY_OPTIONS));
+      dispatch(staticContentActions.storeMineReportCategoryOptions(response.data));
+      return response;
+    })
+    .catch(() => dispatch(error(reducerTypes.GET_MINE_REPORT_CATEGORY_OPTIONS)));
+};
+
 // notice of work staticContent
 export const fetchNoticeOfWorkActivityTypeOptions = () => (dispatch) => {
   dispatch(request(reducerTypes.GET_NOTICE_OF_WORK_ACTIVITY_TYPE_OPTIONS));
