@@ -6,6 +6,7 @@ exports[`ContactList renders properly 1`] = `
     Array [
       Object {
         "dataIndex": "name",
+        "key": "name",
         "render": [Function],
         "sortField": "party_name",
         "sortOrder": false,
@@ -15,6 +16,7 @@ exports[`ContactList renders properly 1`] = `
       },
       Object {
         "dataIndex": "role",
+        "key": "role",
         "render": [Function],
         "sortOrder": false,
         "title": "Role",
@@ -22,6 +24,7 @@ exports[`ContactList renders properly 1`] = `
       },
       Object {
         "dataIndex": "email",
+        "key": "email",
         "render": [Function],
         "sortOrder": false,
         "title": "Email",
@@ -29,6 +32,7 @@ exports[`ContactList renders properly 1`] = `
       },
       Object {
         "dataIndex": "phone",
+        "key": "phone",
         "render": [Function],
         "sortOrder": false,
         "title": "Phone",

@@ -16,7 +16,7 @@ from app.api.now_applications.resources.now_application_permit_type_resource imp
 from app.api.now_applications.resources.now_application_review_resource import NOWApplicationReviewListResource, NOWApplicationReviewResource
 from app.api.now_applications.resources.now_application_review_type_resource import NOWApplicationReviewTypeResource
 
-api = Namespace('now-applications', description='Party related operations')
+api = Namespace('now-applications', description='Core Notice of Work operations')
 
 api.add_resource(NOWApplicationListResource, '')
 api.add_resource(NOWApplicationImportResource, '/<string:application_guid>/import')
