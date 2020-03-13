@@ -15,11 +15,11 @@ class TestGetNOWApplicationDocumentTypeResource:
             headers=auth_headers['full_auth_header'])
         assert get_resp.status_code == 200, get_resp.response
         get_data = json.loads(get_resp.data.decode())
-        assert len(get_data['records']) == len(NOWApplicationDocumentType.active())
+        assert len(get_data['records']) == len(NOWApplicationDocumentType.get_active())
 
     def test_get_application_document_type(self, test_client, db_session, auth_headers):
         """Should return the a single document_type"""
-        code = NOWApplicationDocumentType.active()[0].now_application_document_type_code
+        code = NOWApplicationDocumentType.get_active()[0].now_application_document_type_code
         get_resp = test_client.get(
             f'/now-applications/application-document-types/{code}',
             headers=auth_headers['full_auth_header'])
@@ -56,7 +56,7 @@ class TestGetNOWApplicationDocumentTypeResource:
         get_data = json.loads(get_resp.data.decode())
         assert len([x for x in get_data['records'] if x['document_template']]) > 0
         assert len([x for x in get_data['records'] if x['document_template']]) == len(
-            [x for x in NOWApplicationDocumentType.active() if x.document_template_code])
+            [x for x in NOWApplicationDocumentType.get_active() if x.document_template_code])
 
     def test_generate_document_not_found(self, test_client, db_session, auth_headers):
         """Should error is document type doesn't exist"""
