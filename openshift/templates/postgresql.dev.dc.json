@@ -298,7 +298,7 @@
                 "image": " ",
                 "imagePullPolicy": "IfNotPresent",
                 "livenessProbe": {
-                  "initialDelaySeconds": 30,
+                  "initialDelaySeconds": 60,
                   "tcpSocket": {
                     "port": 5432
                   },
