@@ -11,7 +11,7 @@ class BondTypeCode(Base, AuditMixin):
 
     bond_type_code = db.Column(db.String, nullable=False, primary_key=True)
     description = db.Column(db.String, nullable=False)
-    active_ind = db.Column(db.Bool, nullable=False, server_default=FetchedValue())
+    active_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
 
     def __repr__(self):
         return '<BondTypeCode %r>' % self.bond_type_code

@@ -45,3 +45,5 @@ def setup_static_data(Base):
 
             except Exception as e:
                 raise e
+
+    current_app.logger.debug(STATIC_DATA)
