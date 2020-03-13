@@ -215,10 +215,11 @@ class Base(db.Model):
                             setattr(self, k, parser.parse(v))
                         continue
                     if py_type == decimal.Decimal:
-                        #if Decimal column, cast whatever you get to Decimal
-                        dec = decimal.Decimal(v)
-                        #don't care about anything more precise, procection if incoming data is float
-                        setattr(self, k, dec.quantize(decimal.Decimal('.0000001')))
+                        if v is not None:
+                            #if Decimal column, cast whatever you get to Decimal
+                            dec = decimal.Decimal(v)
+                            #don't care about anything more precise, procection if incoming data is float
+                            setattr(self, k, dec.quantize(decimal.Decimal('.0000001')))
                         continue
                     # elif (v is not None) and not isinstance(v, py_type):
                     #     #type safety (don't coalese empty string to false if it's targetting a boolean column)
