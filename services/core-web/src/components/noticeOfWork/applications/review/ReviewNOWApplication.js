@@ -236,36 +236,33 @@ export const ReviewNOWApplication = (props) => {
     </div>
   );
 
-  const renderSecurities = () => {
-    console.log(props);
-    return (
-      <div>
-        <Row gutter={16}>
-          <Col md={12} sm={24}>
-            <div className="field-title">Security Total</div>
-            <Field
-              id="security_total"
-              name="security_total"
-              component={RenderField}
-              disabled={props.isViewMode}
-              allowClear
-              {...currencyMask}
-              validate={[currency]}
-            />
-          </Col>
-          <Col md={12} sm={24}>
-            <div className="field-title">Security Received</div>
-            <Field
-              id="security_received_date"
-              name="security_received_date"
-              component={RenderDate}
-              disabled={props.isViewMode}
-            />
-          </Col>
-        </Row>
-      </div>
-    );
-  };
+  const renderSecurities = () => (
+    <div>
+      <Row gutter={16}>
+        <Col md={12} sm={24}>
+          <div className="field-title">Security Total</div>
+          <Field
+            id="security_total"
+            name="security_total"
+            component={RenderField}
+            disabled={props.isViewMode}
+            allowClear
+            {...currencyMask}
+            validate={[currency]}
+          />
+        </Col>
+        <Col md={12} sm={24}>
+          <div className="field-title">Security Received</div>
+          <Field
+            id="security_received_date"
+            name="security_received_date"
+            component={RenderDate}
+            disabled={props.isViewMode}
+          />
+        </Col>
+      </Row>
+    </div>
+  );
 
   const renderAccess = () => (
     <div>
