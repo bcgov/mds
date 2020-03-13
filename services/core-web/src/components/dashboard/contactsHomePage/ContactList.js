@@ -16,9 +16,9 @@ const propTypes = {
   parties: PropTypes.objectOf(CustomPropTypes.party).isRequired,
   relationshipTypeHash: PropTypes.objectOf(PropTypes.string).isRequired,
   handleSearch: PropTypes.func.isRequired,
+  isLoaded: PropTypes.bool.isRequired,
   sortField: PropTypes.string,
   sortDir: PropTypes.string,
-  isLoaded: PropTypes.bool.isRequired,
 };
 
 const defaultProps = {
@@ -29,36 +29,41 @@ const defaultProps = {
 const columns = [
   {
     title: "Name",
+    key: "name",
     dataIndex: "name",
     sortField: "party_name",
     width: 150,
+    sorter: true,
     render: ([firstName = "", lastName = ""], record) => {
       const comma = firstName ? ", " : "";
       return (
         <Link
+          title="Name"
           to={router.PARTY_PROFILE.dynamicRoute(record.key)}
         >{` ${lastName}${comma}${firstName}`}</Link>
       );
     },
-    sorter: true,
   },
   {
     title: "Role",
+    key: "role",
     dataIndex: "role",
     width: 150,
-    render: (text) => <div title="role">{text}</div>,
+    render: (text) => <div title="Role">{text}</div>,
   },
   {
     title: "Email",
+    key: "email",
     dataIndex: "email",
     width: 150,
-    render: (text) => <div title="email">{text}</div>,
+    render: (text) => <div title="Email">{text}</div>,
   },
   {
     title: "Phone",
+    key: "phone",
     dataIndex: "phone",
     width: 150,
-    render: (text) => <div title="phone">{text}</div>,
+    render: (text) => <div title="Phone">{text}</div>,
   },
 ];
 

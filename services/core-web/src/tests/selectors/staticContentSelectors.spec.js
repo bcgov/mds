@@ -8,6 +8,7 @@ import {
   getMineCommodityOptions,
   getDropdownCommodityOptions,
   getProvinceOptions,
+  getMineReportCategoryOptions,
   getDropdownProvinceOptions,
   getComplianceCodes,
   getDropdownHSRCMComplianceCodes,
@@ -46,6 +47,7 @@ import {
   storeCommodityOptions,
   storeProvinceCodes,
   storeComplianceCodes,
+  storeMineReportCategoryOptions,
   storeVarianceStatusOptions,
   storeVarianceDocumentCategoryOptions,
   storeNoticeOfWorkActivityTypeOptions,
@@ -66,6 +68,7 @@ const mockState = {
   mineTenureTypes: Mock.TENURE_TYPES_RESPONSE.records,
   mineDisturbanceOptions: Mock.DISTURBANCE_OPTIONS.records,
   mineCommodityOptions: Mock.COMMODITY_OPTIONS.records,
+  mineReportCategoryOptions: Mock.MINE_REPORT_CATEGORY_OPTIONS.records,
   provinceOptions: Mock.PROVINCE_OPTIONS.records,
   complianceCodes: Mock.COMPLIANCE_CODES.records,
   varianceStatusOptions: Mock.VARIANCE_STATUS_OPTIONS.records,
@@ -84,6 +87,7 @@ describe("staticContentSelectors", () => {
     mineDisturbanceOptions,
     mineCommodityOptions,
     noticeOfWorkActivityTypeOptions,
+    mineReportCategoryOptions,
   } = mockState;
   const {
     provinceOptions,
@@ -180,14 +184,13 @@ describe("staticContentSelectors", () => {
     expect(getDropdownProvinceOptions(localMockState)).toEqual(mockProvinceCodes);
   });
 
-  it("`getComplianceCodes` calls `staticContentReducer.getComplianceCodes`", () => {
-    const storeAction = storeComplianceCodes(Mock.COMPLIANCE_CODES);
+  it("`getMineReportCategoryOptions` calls `staticContentReducer.getMineReportCategoryOptions`", () => {
+    const storeAction = storeMineReportCategoryOptions(Mock.MINE_REPORT_CATEGORY_OPTIONS);
     const storeState = staticContentReducer({}, storeAction);
     const localMockState = {
       [STATIC_CONTENT]: storeState,
     };
-    const mockComplianceCodes = Mock.COMPLIANCE_CODES.records;
-    expect(getComplianceCodes(localMockState)).toEqual(mockComplianceCodes);
+    expect(getMineReportCategoryOptions(localMockState)).toEqual(mineReportCategoryOptions);
   });
 
   it("`getComplianceCodes` calls `staticContentReducer.getComplianceCodes`", () => {

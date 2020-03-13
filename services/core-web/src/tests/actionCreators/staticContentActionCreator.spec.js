@@ -8,6 +8,7 @@ import {
   fetchMineCommodityOptions,
   fetchProvinceCodes,
   fetchMineComplianceCodes,
+  fetchMineReportCategoryOptions,
   fetchVarianceStatusOptions,
   fetchVarianceDocumentCategoryOptions,
   fetchNoticeOfWorkActivityTypeOptions,
@@ -163,6 +164,27 @@ describe("`fetchProvinceCodes` action creator", () => {
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onGet(url, MOCK.createMockHeader()).reply(418, MOCK.ERROR);
     return fetchProvinceCodes()(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(errorSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(2);
+    });
+  });
+});
+
+describe("`fetchMineReportCategoryOptions` action creator", () => {
+  const url = ENVIRONMENT.apiUrl + API.MINE_REPORT_CATEGORY;
+  it("Request successful, dispatches `success` with correct response", () => {
+    const mockResponse = { data: { success: true } };
+    mockAxios.onGet(url).reply(200, mockResponse);
+    return fetchMineReportCategoryOptions()(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(successSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(3);
+    });
+  });
+  it("Request failure, dispatches `error` with correct response", () => {
+    mockAxios.onGet(url, MOCK.createMockHeader()).reply(418, MOCK.ERROR);
+    return fetchMineReportCategoryOptions()(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(2);

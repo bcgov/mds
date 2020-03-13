@@ -7,6 +7,7 @@ import Dashboard from "@/components/dashboard/minesHomePage/Dashboard";
 import ContactHomePage from "@/components/dashboard/contactsHomePage/ContactHomePage";
 import VarianceHomePage from "@/components/dashboard/varianceHomePage/VarianceHomePage";
 import IncidentsHomePage from "@/components/dashboard/incidentsHomePage/IncidentsHomePage";
+import ReportsHomePage from "@/components/dashboard/reportsHomePage/ReportsHomePage";
 import MineDashboard from "@/components/mine/MineDashboard";
 import PartyProfile from "@/components/parties/PartyProfile";
 import RelationshipProfile from "@/components/parties/RelationshipProfile";
@@ -33,6 +34,14 @@ const withoutDefaultParams = (params, defaults) => {
   const newParams = JSON.parse(JSON.stringify(params));
   Object.keys(defaults)
     .filter((param) => param in newParams && newParams[param] === defaults[param])
+    .map((param) => delete newParams[param]);
+  return newParams;
+};
+
+const withoutNullParams = (params) => {
+  const newParams = JSON.parse(JSON.stringify(params));
+  Object.keys(params)
+    .filter((param) => params[param] === null)
     .map((param) => delete newParams[param]);
   return newParams;
 };
@@ -179,13 +188,23 @@ export const VARIANCE_DASHBOARD = {
 };
 
 export const INCIDENTS_DASHBOARD = {
-  route: "/dashboard/incidents",
+  route: "/dashboard/reporting/incidents",
   dynamicRoute: ({ page, per_page, ...params }) =>
-    `/dashboard/incidents/?${queryString.stringify(
+    `/dashboard/reporting/incidents/?${queryString.stringify(
       { page, per_page, ...params },
       { sort: false }
     )}`,
   component: IncidentsHomePage,
+};
+
+export const REPORTS_DASHBOARD = {
+  route: "/dashboard/reporting/reports",
+  dynamicRoute: ({ page, per_page, ...params }) =>
+    `/dashboard/reporting/reports?${queryString.stringify(
+      { page, per_page, ...withoutNullParams(params) },
+      { sort: false }
+    )}`,
+  component: ReportsHomePage,
 };
 
 export const EXECUTIVE_REPORTING_DASHBOARD = {

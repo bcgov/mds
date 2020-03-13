@@ -1,12 +1,17 @@
 from flask_restplus import Namespace
 
 from app.api.now_submissions.resources.application_resource import ApplicationResource
+from app.api.now_submissions.resources.application_list_resource import ApplicationListResource
+from app.api.now_submissions.resources.application_nda_resource import ApplicationNDAResource
+from app.api.now_submissions.resources.application_nda_list_resource import ApplicationNDAListResource
 from app.api.now_submissions.resources.application_document_resource import ApplicationDocumentResource, ApplicationDocumentTokenResource
 
+api = Namespace('now-submissions', description='NROS/VFCBC Notice of Work submission operations')
 
-api = Namespace('now-submissions', description='Notice of Work operations')
-
+api.add_resource(ApplicationListResource, '/applications')
 api.add_resource(ApplicationResource, '/applications/<string:application_guid>')
+api.add_resource(ApplicationNDAListResource, '/applications-nda')
+api.add_resource(ApplicationNDAResource, '/applications-nda/<int:application_nda_guid>')
 api.add_resource(ApplicationDocumentResource,
                  '/applications/<string:application_guid>/document/<int:id>')
 api.add_resource(ApplicationDocumentTokenResource,
