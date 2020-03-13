@@ -461,12 +461,15 @@ exports[`ReviewNOWApplication renders properly 1`] = `
               </div>
               <Field
                 allowClear={true}
+                autoComplete="off"
                 component={[Function]}
                 disabled={true}
                 format={[Function]}
                 id="security_total"
                 name="security_total"
-                placeholder="$12345.67"
+                normalize={[Function]}
+                onChange={[Function]}
+                onFocus={[Function]}
                 validate={
                   Array [
                     [Function],
