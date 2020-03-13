@@ -25,7 +25,7 @@ class Validator {
 
   LON_REGEX = /^(\+|-)?(?:180(?:(?:\.0{1,7})?)|(?:[0-9]|[1-9][0-9]|1[0-7][0-9])(?:(?:\.[0-9]{1,7})?))$/;
 
-  CURRENCY_REGEX = /^\d+(?:\.\d{0,20})?$/;
+  CURRENCY_REGEX = /^\d{1,8}(?:\.\d{0,2})?$/;
 
   checkLat(lat) {
     return this.LAT_REGEX.test(lat);
@@ -92,7 +92,7 @@ export const email = (value) =>
   value && !Validate.checkEmail(value) ? "Invalid email address" : undefined;
 
 export const currency = (value) =>
-  value && !Validate.checkCurrency(value) ? "Invalid dollar amount e.g. 12345.67" : undefined;
+  value && !Validate.checkCurrency(value) ? "Invalid dollar amount" : undefined;
 
 export const validSearchSelection = ({ key, err }) => (value, allValues, formProps) =>
   !Object.keys(formProps[key]).includes(value) ? err || "Invalid Selection" : undefined;
