@@ -31,14 +31,17 @@ export const CoreTable = (props) => {
     locale: { emptyText: <NullScreen type="no-results" /> },
     pagination: false,
     rowClassName: "fade-in",
+    tableLayout: "auto",
   };
   const combinedProps = { ...baseProps, ...props.tableProps };
-  const renderColumns = getTableHeaders(props.columns).map((title) => ({
-    title,
-    dataIndex: title,
-    width: 150,
-    render: () => <div className="skeleton-table__loader" />,
+  const skeletonColumns = props.columns.map((column) => ({
+    title: column.title,
+    dataIndex: column.title,
+    className: column.className,
+    width: column.width,
+    render: () => <div className={`skeleton-table__loader ${column.className}`} />,
   }));
+
   return (
     <div>
       {props.condition ? (
@@ -50,7 +53,7 @@ export const CoreTable = (props) => {
           <Table
             align="left"
             pagination={false}
-            columns={renderColumns}
+            columns={skeletonColumns}
             dataSource={new Array(props.tableProps.pagination ? 25 : 9).fill({})}
             rowClassName="skeleton-table__row"
           />
