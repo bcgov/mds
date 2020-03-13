@@ -26,7 +26,7 @@ import NOWDocuments from "@/components/noticeOfWork/applications//NOWDocuments";
 import NOWSubmissionDocuments from "@/components/noticeOfWork/applications//NOWSubmissionDocuments";
 import ReviewNOWContacts from "./ReviewNOWContacts";
 import { INFO_CIRCLE } from "@/constants/assets";
-import { formatCurrency } from "@common/utils/helpers";
+import { currencyMask } from "@common/utils/helpers";
 
 /**
  * @constant ReviewNOWApplication renders edit/view for the NoW Application review step
@@ -246,13 +246,11 @@ export const ReviewNOWApplication = (props) => {
             <Field
               id="security_total"
               name="security_total"
-              placeholder="$12345.67"
               component={RenderField}
               disabled={props.isViewMode}
-              format={props.isViewMode ? formatCurrency : null}
-              validate={[currency]}
-              // normalize={(value) => formatCurrency(value)}
               allowClear
+              {...currencyMask}
+              validate={[currency]}
             />
           </Col>
           <Col md={12} sm={24}>
