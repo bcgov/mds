@@ -1,5 +1,10 @@
 import * as ActionTypes from "../constants/actionTypes";
 
+export const storeBulkStaticContent = (payload) => ({
+  type: ActionTypes.STORE_BULK_STATIC_CONTENT,
+  payload,
+});
+
 export const storeTenureTypes = (payload) => ({
   type: ActionTypes.STORE_TENURE_TYPES,
   payload,

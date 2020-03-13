@@ -67,12 +67,11 @@ class StaticContentResource(Resource):
     )
     @requires_role_view_all
     def get(self):
-        # content_dict = cache.get(STATIC_CONTENT_KEY)
-        # if not content_dict:
-        current_app.logger.debug('CACHE MISS - core-static-content')
-        content = generate_static_content_dict()
-        assert content
-        content_dict = marshal(content, STATIC_CONTENT_MODEL)
-        current_app.logger.debug(content_dict)
-        cache.set(STATIC_CONTENT_KEY, content_dict, TIMEOUT_60_MINUTES)
+        content_dict = cache.get(STATIC_CONTENT_KEY)
+        if not content_dict:
+            current_app.logger.debug('CACHE MISS - core-static-content')
+            content = generate_static_content_dict()
+            assert content
+            content_dict = marshal(content, STATIC_CONTENT_MODEL)
+            cache.set(STATIC_CONTENT_KEY, content_dict, TIMEOUT_60_MINUTES)
         return content_dict

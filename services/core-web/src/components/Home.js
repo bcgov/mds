@@ -10,7 +10,10 @@ import {
   detectDevelopmentEnvironment,
 } from "@common/utils/environmentUtils";
 import { getStaticContentLoadingIsComplete } from "@common/selectors/staticContentSelectors";
-import * as staticContent from "@common/actionCreators/staticContentActionCreator";
+import {
+  loadBulkStaticContent,
+  fetchInspectors,
+} from "@common/actionCreators/staticContentActionCreator";
 import DashboardRoutes from "@/routes/DashboardRoutes";
 import { AuthenticationGuard } from "@/HOC/AuthenticationGuard";
 import NavBar from "./navigation/NavBar";
@@ -80,10 +83,15 @@ export class Home extends Component {
 
   loadStaticContent = () => {
     this.props.dispatch(showLoading());
-    const staticContentActionCreators = Object.getOwnPropertyNames(staticContent).filter(
-      (property) => typeof staticContent[property] === "function"
-    );
-    staticContentActionCreators.forEach((action) => this.props.dispatch(staticContent[action]()));
+    console.log("HELPS");
+    this.props.dispatch(loadBulkStaticContent());
+    this.props.dispatch(fetchInspectors());
+    //  this.props.dispatch(fetchMineDisturbanceOptions());
+
+    // const staticContentActionCreators = Object.getOwnPropertyNames(staticContent).filter(
+    //   (property) => typeof staticContent[property] === "function"
+    // );
+    // staticContentActionCreators.forEach((action) => this.props.dispatch(staticContent[action]()));
   };
 
   render() {

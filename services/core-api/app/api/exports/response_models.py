@@ -57,7 +57,7 @@ STATIC_CONTENT_MODEL = api.model(
         'mineReportStatusOptions':
         fields.List(
             fields.Nested(MINE_REPORT_SUBMISSION_STATUS),
-            attribute='MINE_REPORT_SUBMISSION_STATUS'),
+            attribute='MineReportSubmissionStatusCode'),
         'mineReportCategoryOptions':
         fields.List(
             fields.Nested(MINE_REPORT_DEFINITION_CATEGORIES), attribute='MineReportCategory'),
