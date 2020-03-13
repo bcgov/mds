@@ -428,7 +428,7 @@ environments {
                     cpu_request = "200m"
                     cpu_limit = "1"
                     memory_request = "4Gi"
-                    memory_limit = "16Gi"
+                    memory_limit = "12Gi"
                 }
                 redis {
                     cpu_request = "10m"
