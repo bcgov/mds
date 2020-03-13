@@ -1,32 +1,53 @@
-from flask import Response, current_app
-from flask_restplus import Resource
-from sqlalchemy.inspection import inspect
+from datetime import datetime
 
-from ..models.mine_summary_csv_view import MineSummaryCSVView
+from flask_restplus import Resource
+from app.api.utils.custom_reqparser import CustomReqparser
+
+from app.api.mines.mine.models.mine import Mine
+from app.api.mines.permits.permit.models.permit import Permit
 
 from app.extensions import api, cache
 from app.api.utils.access_decorators import requires_role_view_all
 from app.api.constants import MINE_DETAILS_CSV, TIMEOUT_60_MINUTES
 
 
-class MineSummaryCSVResource(Resource):
+class VerifyPermitResource(Resource):
     @api.doc(
         description=
-        'Returns a subset of mine data in a CSV. Column headers: mine_guid, mine_name, mine_no, mine_region, major_mine_ind, operating_status, operating_status_code, effective_date, tenure, tenure_code, commodity, commodity_code, disturbance, disturbance_code, permit_no, permittee_party_name'
+        'Verifies that a permit is valid for a mine based on the type of deemed authorization.'
     )
-    @requires_role_view_all
+    #@requires_role_view_all
     def get(self):
+        parser = CustomReqparser()
+        parser.add_argument('a_PermitNumber', type=str, required=True)
+        parser.add_argument('a_TypeofDeemedAuth', type=str, required=True)
+        data = parser.parse_args()
 
-        csv_string = cache.get(MINE_DETAILS_CSV)
-        if not csv_string:
+        result = ""
+        mine_info = ""
+        response_message = ""
 
-            model = inspect(MineSummaryCSVView)
+        try:
+            permit_no = data.get('permit_no')
+            type_of_deemed_auth = data.get('type_of_deemed_auth')
 
-            csv_string = "\"" + '","'.join([c.name or "" for c in model.columns]) + "\"\n"
+            permit = Permit.find_by_permit_no(permit_no)
 
-            rows = MineSummaryCSVView.query.all()
+            if not permit:
+                result = "Failure"
+                response_message = "NoValidMinesForPermit"
+            else:
+                mine = Mine.find_by_mine_guid(permit.mine_guid)
 
-            csv_string += '\n'.join([r.csv_row() for r in rows])
-            cache.set(MINE_DETAILS_CSV, csv_string, timeout=TIMEOUT_60_MINUTES)
+                if type_of_deemed_auth == "INDUCED":
+                    
+                else:
+                
+                result = "Success"
+ 
+        except:
+            result = "Failure"
+            mine_info = ""
+            response_message = "Unhandled Exception"
 
-        return Response(csv_string, mimetype='text/csv')
+        return { "a_Result": result, "a_MineInfo": mine_info, "a_ResponseMessage": response_message, "a_Timestamp": datetime.utcnow}
