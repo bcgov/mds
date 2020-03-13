@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Prompt } from "react-router-dom";
 import { Steps, Button, Dropdown, Menu, Icon, Popconfirm, Alert } from "antd";
 import PropTypes from "prop-types";
-import { getFormValues, reset, getFormSyncErrors, focus, touch } from "redux-form";
+import { getFormValues, reset, getFormSyncErrors, focus } from "redux-form";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import {
@@ -122,7 +122,7 @@ export class NoticeOfWorkApplication extends Component {
     submitting: false,
   };
 
-  count = 0;
+  count = 1;
 
   componentDidMount() {
     if (this.props.location.state && this.props.location.state.noticeOfWorkPageFromRoute) {
@@ -275,13 +275,17 @@ export class NoticeOfWorkApplication extends Component {
 
   focusErrorInput = (skip = false) => {
     const errors = Object.keys(flattenObject(this.props.formErrors));
-    const index = skip && this.count <= errors.length ? this.count + 1 : 0;
-    console.log(errors);
-    const errorElement = document.querySelector(`[name="${errors[index]}"]`);
+    if (skip) {
+      if (this.count < errors.length) {
+        this.count += 1;
+      } else if (this.count === errors.length) {
+        this.count = 1;
+      }
+    }
+    const errorElement = document.querySelector(`[name="${errors[this.count - 1]}"]`);
     if (errorElement && errorElement.focus) {
       errorElement.focus();
     }
-    console.log(errorElement);
   };
 
   handleCancelNOWEdit = () => {
@@ -676,7 +680,7 @@ export class NoticeOfWorkApplication extends Component {
                       className="full-mobile"
                       onClick={() => this.focusErrorInput(true)}
                     >
-                      Skip through
+                      Next Issue
                     </Button>
                   )}
                   <Button type="primary" className="full-mobile" onClick={this.handleSaveNOWEdit}>
@@ -687,7 +691,7 @@ export class NoticeOfWorkApplication extends Component {
                   <div className="error">
                     <Alert
                       message={`You have ${errorsLength} ${
-                        errorsLength === 1 ? "Error" : "Errors"
+                        errorsLength === 1 ? "issue" : "issues"
                       } that must be fixed before proceeding`}
                       type="error"
                       showIcon
@@ -751,7 +755,6 @@ const mapDispatchToProps = (dispatch) =>
       closeModal,
       clearNoticeOfWorkApplication,
       focus,
-      touch,
     },
     dispatch
   );

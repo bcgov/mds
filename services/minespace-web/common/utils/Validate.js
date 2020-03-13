@@ -73,6 +73,13 @@ export const exactLength = memoize((min) => (value) =>
 export const number = (value) =>
   value && Number.isNaN(Number(value)) ? "Input must be a number" : undefined;
 
+// Redux Forms 'Fields' component accepts an array of Field names, and applies the validation to both field inputs,
+// The raw input should be a number, the unit code comes from a dropdown and should be ignored
+export const numberWithUnitCode = (value) => {
+  const isUnitCode = value && value.length <= 3 && value === value.toUpperCase();
+  return value && !isUnitCode && Number.isNaN(Number(value)) ? "Input must be a number" : undefined;
+};
+
 export const lat = (value) =>
   value && !Validate.checkLat(value) ? "Invalid latitude coordinate e.g. 53.7267" : undefined;
 

@@ -552,7 +552,7 @@ export const ReviewNOWApplication = (props) => {
               name="has_archaeology_sites_affected"
               component={RenderRadioButtons}
               disabled={props.isViewMode}
-              validate={[required]}
+              validate={[requiredRadioButton]}
             />
             <div className="field-title--light">
               Plan to protect the archaeological site
@@ -801,32 +801,5 @@ export default compose(
     touchOnChange: true,
     touchOnBlur: true,
     enableReinitialize: true,
-    // onSubmitFail: (errors) => {
-    //   // # Focus on first error
-
-    //   // When Immutable:
-    //   // The errors are _not_ in `REGISTER_FIELD` order so we cant just "use" the first one..
-    //   // (possibly requires an ordered list reviver when getting errors?)
-
-    //   // so we try to get the first error element in another way, using a DOM query:
-
-    //   // Note: You can't query a possible error class in `onSubmitFail` as the `render` may not have yet happened.
-
-    //   // We do this using a DOM selector of all the fields that have error'ed and use [`querySelector`](https://developer.mozilla.org/en-US/docs/Web/API/Document/querySelector) which
-    //   // Returns the first Element within the document that matches the specified selector, or group of selectors.
-    //   const errorEl = document.querySelector(
-    //     // flattenObject: https://github.com/hughsk/flat/issues/52
-    //     Object.keys(flattenObject(errors))
-    //       .map((fieldName) => `[name="${fieldName}"]`)
-    //       .join(",")
-    //   );
-    //   if (errorEl && errorEl.focus) {
-    //     // npe
-    //     // if (errorEl.scrollIntoView) {
-    //     //   errorEl.scrollIntoView(); // fails as the site has a fixed/floating header
-    //     // }
-    //     errorEl.focus(); // this scrolls without visible scroll
-    //   }
-    // },
   })
 )(ReviewNOWApplication);

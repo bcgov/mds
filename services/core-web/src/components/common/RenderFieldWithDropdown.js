@@ -48,7 +48,7 @@ const RenderFieldWithDropdown = (props) => {
     <Form.Item
       label={props.label}
       validateStatus={
-        !props[props.dropdownID].meta.error && props[props.id].meta.touched
+        props[props.id].meta.touched
           ? (props[props.id].meta.error && "error") || (props[props.id].meta.warning && "warning")
           : ""
       }
