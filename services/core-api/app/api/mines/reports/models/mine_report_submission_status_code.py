@@ -18,5 +18,9 @@ class MineReportSubmissionStatusCode(Base, AuditMixin):
         return '<MineReportSubmissionStatusCode %r>' % self.mine_report_submission_status_code
 
     @classmethod
+    def find_by_mine_report_submission_status_code(cls, _code):
+        return cls.query.filter_by(mine_report_submission_status_code=_code).first()
+
+    @classmethod
     def active(cls):
         return cls.query.filter_by(active_ind=True).all()

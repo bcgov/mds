@@ -18,3 +18,24 @@ from .etl_equipment import ETLEquipment
 from .activity_equipment_xref import ActivityEquipmentXref
 from .now_party_appointment import NOWPartyAppointment
 from .now_application_progress import NOWApplicationProgress
+
+model_list = [
+    NoticeOfWorkView,
+    NOWApplication,
+    NOWApplicationIdentity,
+    NOWApplicationType,
+    NOWApplicationStatus,
+    NOWApplicationPermitType,
+    NOWApplicationDocumentType,
+    NOWApplicationReview,
+    NOWApplicationReviewDocumentXref,
+    NOWApplicationReviewType,
+    BlastingOperation,
+    UnitType,
+    StateOfLand,
+    Equipment,
+    ETLEquipment,
+    ActivityEquipmentXref,
+    NOWPartyAppointment,
+    NOWApplicationProgress,
+]

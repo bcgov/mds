@@ -6,6 +6,7 @@ from app import create_app
 from app.config import TestConfig
 from app.extensions import db, jwt as _jwt
 from app.api.utils.include.user_info import User
+from app.api.utils.setup_marshmallow import run_after_configure
 
 from .constants import *
 from tests.factories import FACTORY_LIST
@@ -37,6 +38,7 @@ def auth_headers(app):
     create_only_auth_token = _jwt.create_jwt(CREATE_ONLY_AUTH_CLAIMS, TOKEN_HEADER)
     admin_only_auth_token = _jwt.create_jwt(ADMIN_ONLY_AUTH_CLAIMS, TOKEN_HEADER)
     proponent_only_auth_token = _jwt.create_jwt(PROPONENT_ONLY_AUTH_CLAIMS, TOKEN_HEADER)
+    nros_vfcbc_only_auth_token = _jwt.create_jwt(NROS_VFCBC_AUTH_CLAIMS, TOKEN_HEADER)
     return {
         'base_auth_header': {
             'Authorization': 'Bearer ' + base_auth_token
@@ -56,6 +58,9 @@ def auth_headers(app):
         'proponent_only_auth_header': {
             'Authorization': 'Bearer ' + proponent_only_auth_token
         },
+        'nros_vfcbc_auth_header': {
+            'Authorization': 'Bearer ' + nros_vfcbc_only_auth_token
+        }
     }
 
 
@@ -73,6 +78,10 @@ def test_client():
     ctx.push()
 
     User._test_mode = True
+
+    # The event that this function runs off of is never fired
+    # when the tests are run so it has to be called manually.
+    run_after_configure()
 
     yield client
 
