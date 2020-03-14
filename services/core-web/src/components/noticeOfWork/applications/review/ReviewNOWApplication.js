@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import { compose } from "redux";
 import { connect } from "react-redux";
 import { Field, reduxForm, FormSection, formValueSelector } from "redux-form";
-import { Form, Divider, Row, Col, Tooltip } from "antd";
+import { Form, Divider, Row, Col } from "antd";
 import {
   getNoticeOfWorkApplicationProgressStatusCodeOptions,
   getMineRegionDropdownOptions,
@@ -25,7 +25,7 @@ import ReclamationSummary from "./activities/ReclamationSummary";
 import NOWDocuments from "@/components/noticeOfWork/applications//NOWDocuments";
 import NOWSubmissionDocuments from "@/components/noticeOfWork/applications//NOWSubmissionDocuments";
 import ReviewNOWContacts from "./ReviewNOWContacts";
-import { INFO_CIRCLE } from "@/constants/assets";
+import NOWFieldOriginTooltip from "./NOWFieldOriginTooltip";
 
 /**
  * @constant ReviewNOWApplication renders edit/view for the NoW Application review step
@@ -61,13 +61,7 @@ export const ReviewNOWApplication = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Permit Status
-            <Tooltip
-              title="This field is not being sent by NROS or vFCBC. Open the original PDF to to see the data."
-              placement="right"
-              mouseEnterDelay={1}
-            >
-              <img src={INFO_CIRCLE} alt="INFO" className="info-tooltip" />
-            </Tooltip>
+            <NOWFieldOriginTooltip />
           </div>
           <Field id="" name="" component={RenderField} disabled />
         </Col>
@@ -80,13 +74,7 @@ export const ReviewNOWApplication = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Individual or Company/Organization?
-            <Tooltip
-              title="This field is not being sent by NROS or vFCBC. Open the original PDF to to see the data."
-              placement="right"
-              mouseEnterDelay={1}
-            >
-              <img src={INFO_CIRCLE} alt="INFO" className="info-tooltip" />
-            </Tooltip>
+            <NOWFieldOriginTooltip />
           </div>
           <Field id="" name="" component={RenderField} disabled />
         </Col>
@@ -105,13 +93,7 @@ export const ReviewNOWApplication = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Relationship to Individual or Company/Organization?
-            <Tooltip
-              title="This field is not being sent by NROS or vFCBC. Open the original PDF to to see the data."
-              placement="right"
-              mouseEnterDelay={1}
-            >
-              <img src={INFO_CIRCLE} alt="INFO" className="info-tooltip" />
-            </Tooltip>
+            <NOWFieldOriginTooltip />
           </div>
           <Field id="" name="" component={RenderField} disabled />
         </Col>
@@ -168,13 +150,7 @@ export const ReviewNOWApplication = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Term of Application
-            <Tooltip
-              title="This field is not being sent by NROS or vFCBC. Open the original PDF to to see the data."
-              placement="right"
-              mouseEnterDelay={1}
-            >
-              <img src={INFO_CIRCLE} alt="INFO" className="info-tooltip" />
-            </Tooltip>
+            <NOWFieldOriginTooltip />
           </div>
           <Field id="" name="" component={RenderField} disabled validate={[number]} />
         </Col>
@@ -251,13 +227,7 @@ export const ReviewNOWApplication = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Do you have the required access authorizations in place?
-            <Tooltip
-              title="This field is not being sent by NROS or vFCBC. Open the original PDF to to see the data."
-              placement="right"
-              mouseEnterDelay={1}
-            >
-              <img src={INFO_CIRCLE} alt="INFO" className="info-tooltip" />
-            </Tooltip>
+            <NOWFieldOriginTooltip />
           </div>
           <Field
             id="has_req_access_authorizations"
@@ -272,13 +242,7 @@ export const ReviewNOWApplication = (props) => {
           <div className="field-title">
             Do you need to build a road, create stream crossings or other surface disturbance that
             will not be on your tenure?
-            <Tooltip
-              title="This field is not being sent by NROS or vFCBC. Open the original PDF to to see the data."
-              placement="right"
-              mouseEnterDelay={1}
-            >
-              <img src={INFO_CIRCLE} alt="INFO" className="info-tooltip" />
-            </Tooltip>
+            <NOWFieldOriginTooltip />
           </div>
           <Field
             id="has_surface_disturbance_outside_tenure"
@@ -291,13 +255,7 @@ export const ReviewNOWApplication = (props) => {
           <div className="field-title--light">
             Please provide the type and authorization numbers for each access authorization
             application or exemption to use the road(s).
-            <Tooltip
-              title="This field is not being sent by NROS or vFCBC. Open the original PDF to to see the data."
-              placement="right"
-              mouseEnterDelay={1}
-            >
-              <img src={INFO_CIRCLE} alt="INFO" className="info-tooltip" />
-            </Tooltip>
+            <NOWFieldOriginTooltip />
           </div>
           <Field
             id="req_access_authorization_numbers"
@@ -311,13 +269,7 @@ export const ReviewNOWApplication = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Access presently gated
-            <Tooltip
-              title="This field is not being sent by NROS or vFCBC. Open the original PDF to to see the data."
-              placement="right"
-              mouseEnterDelay={1}
-            >
-              <img src={INFO_CIRCLE} alt="INFO" className="info-tooltip" />
-            </Tooltip>
+            <NOWFieldOriginTooltip />
           </div>
           <Field
             id="is_access_gated"
@@ -329,13 +281,7 @@ export const ReviewNOWApplication = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Key provided to the inspector
-            <Tooltip
-              title="This field is not being sent by NROS or vFCBC. Open the original PDF to to see the data."
-              placement="right"
-              mouseEnterDelay={1}
-            >
-              <img src={INFO_CIRCLE} alt="INFO" className="info-tooltip" />
-            </Tooltip>
+            <NOWFieldOriginTooltip />
           </div>
           <Field
             id="has_key_for_inspector"
@@ -356,13 +302,7 @@ export const ReviewNOWApplication = (props) => {
           <Col md={12} sm={24}>
             <div className="field-title">
               Present condition of the land
-              <Tooltip
-                title="This field is not being sent by NROS or vFCBC. Open the original PDF to to see the data."
-                placement="right"
-                mouseEnterDelay={1}
-              >
-                <img src={INFO_CIRCLE} alt="INFO" className="info-tooltip" />
-              </Tooltip>
+              <NOWFieldOriginTooltip />
             </div>
             <Field
               id="present_land_condition_description"
@@ -374,13 +314,7 @@ export const ReviewNOWApplication = (props) => {
           <Col md={12} sm={24}>
             <div className="field-title">
               Current means of access
-              <Tooltip
-                title="This field is not being sent by NROS or vFCBC. Open the original PDF to to see the data."
-                placement="right"
-                mouseEnterDelay={1}
-              >
-                <img src={INFO_CIRCLE} alt="INFO" className="info-tooltip" />
-              </Tooltip>
+              <NOWFieldOriginTooltip />
             </div>
             <Field
               id="means_of_access_description"
@@ -394,13 +328,7 @@ export const ReviewNOWApplication = (props) => {
           <Col md={12} sm={24}>
             <div className="field-title">
               Physiography
-              <Tooltip
-                title="This field is not being sent by NROS or vFCBC. Open the original PDF to to see the data."
-                placement="right"
-                mouseEnterDelay={1}
-              >
-                <img src={INFO_CIRCLE} alt="INFO" className="info-tooltip" />
-              </Tooltip>
+              <NOWFieldOriginTooltip />
             </div>
             <Field
               id="physiography_description"
@@ -412,13 +340,7 @@ export const ReviewNOWApplication = (props) => {
           <Col md={12} sm={24}>
             <div className="field-title">
               Old Equipment
-              <Tooltip
-                title="This field is not being sent by NROS or vFCBC. Open the original PDF to to see the data."
-                placement="right"
-                mouseEnterDelay={1}
-              >
-                <img src={INFO_CIRCLE} alt="INFO" className="info-tooltip" />
-              </Tooltip>
+              <NOWFieldOriginTooltip />
             </div>
             <Field
               id="old_equipment_description"
@@ -432,13 +354,7 @@ export const ReviewNOWApplication = (props) => {
           <Col md={12} sm={24}>
             <div className="field-title">
               Type of vegetation
-              <Tooltip
-                title="This field is not being sent by NROS or vFCBC. Open the original PDF to to see the data."
-                placement="right"
-                mouseEnterDelay={1}
-              >
-                <img src={INFO_CIRCLE} alt="INFO" className="info-tooltip" />
-              </Tooltip>
+              <NOWFieldOriginTooltip />
             </div>
             <Field
               id="type_of_vegetation_description"
@@ -450,13 +366,7 @@ export const ReviewNOWApplication = (props) => {
           <Col md={12} sm={24}>
             <div className="field-title">
               Recreational trail/use
-              <Tooltip
-                title="This field is not being sent by NROS or vFCBC. Open the original PDF to to see the data."
-                placement="right"
-                mouseEnterDelay={1}
-              >
-                <img src={INFO_CIRCLE} alt="INFO" className="info-tooltip" />
-              </Tooltip>
+              <NOWFieldOriginTooltip />
             </div>
             <Field
               id="recreational_trail_use_description"
@@ -483,13 +393,7 @@ export const ReviewNOWApplication = (props) => {
           <Col md={12} sm={24}>
             <div className="field-title">
               Activities in park
-              <Tooltip
-                title="This field is not being sent by NROS or vFCBC. Open the original PDF to to see the data."
-                placement="right"
-                mouseEnterDelay={1}
-              >
-                <img src={INFO_CIRCLE} alt="INFO" className="info-tooltip" />
-              </Tooltip>
+              <NOWFieldOriginTooltip />
             </div>
             <Field
               id="has_activity_in_park"
@@ -503,13 +407,7 @@ export const ReviewNOWApplication = (props) => {
           <Col md={12} sm={24}>
             <div className="field-title">
               Proposed activities on private land
-              <Tooltip
-                title="This field is not being sent by NROS or vFCBC. Open the original PDF to to see the data."
-                placement="right"
-                mouseEnterDelay={1}
-              >
-                <img src={INFO_CIRCLE} alt="INFO" className="info-tooltip" />
-              </Tooltip>
+              <NOWFieldOriginTooltip />
             </div>
             <Field
               id="is_on_private_land"
@@ -521,13 +419,7 @@ export const ReviewNOWApplication = (props) => {
           <Col md={12} sm={24}>
             <div className="field-title--light">
               Do you have authorization by the Lieutenant Governor in Council?
-              <Tooltip
-                title="This field is not being sent by NROS or vFCBC. Open the original PDF to to see the data."
-                placement="right"
-                mouseEnterDelay={1}
-              >
-                <img src={INFO_CIRCLE} alt="INFO" className="info-tooltip" />
-              </Tooltip>
+              <NOWFieldOriginTooltip />
             </div>
             <Field
               id="has_auth_lieutenant_gov_council"
@@ -555,13 +447,7 @@ export const ReviewNOWApplication = (props) => {
             />
             <div className="field-title--light">
               Plan to protect the archaeological site
-              <Tooltip
-                title="This field is not being sent by NROS or vFCBC. Open the original PDF to to see the data."
-                placement="right"
-                mouseEnterDelay={1}
-              >
-                <img src={INFO_CIRCLE} alt="INFO" className="info-tooltip" />
-              </Tooltip>
+              <NOWFieldOriginTooltip />
             </div>
             <Field
               id="arch_site_protection_plan"
@@ -579,13 +465,7 @@ export const ReviewNOWApplication = (props) => {
             <div className="field-title">
               Have you shared information and engaged with First Nations in the area of the proposed
               activity?
-              <Tooltip
-                title="This field is not being sent by NROS or vFCBC. Open the original PDF to to see the data."
-                placement="right"
-                mouseEnterDelay={1}
-              >
-                <img src={INFO_CIRCLE} alt="INFO" className="info-tooltip" />
-              </Tooltip>
+              <NOWFieldOriginTooltip />
             </div>
             <Field
               id="has_shared_info_with_fn"
@@ -598,13 +478,7 @@ export const ReviewNOWApplication = (props) => {
             <div className="field-title">
               As a result of the engagement, are you aware of any cultural heritage resources in the
               area where the work is proposed?
-              <Tooltip
-                title="This field is not being sent by NROS or vFCBC. Open the original PDF to to see the data."
-                placement="right"
-                mouseEnterDelay={1}
-              >
-                <img src={INFO_CIRCLE} alt="INFO" className="info-tooltip" />
-              </Tooltip>
+              <NOWFieldOriginTooltip />
             </div>
             <Field
               id="has_fn_cultural_heritage_sites_in_area"
@@ -618,13 +492,7 @@ export const ReviewNOWApplication = (props) => {
           <Col md={12} sm={24}>
             <div className="field-title">
               Describe your First Nations engagement activities
-              <Tooltip
-                title="This field is not being sent by NROS or vFCBC. Open the original PDF to to see the data."
-                placement="right"
-                mouseEnterDelay={1}
-              >
-                <img src={INFO_CIRCLE} alt="INFO" className="info-tooltip" />
-              </Tooltip>
+              <NOWFieldOriginTooltip />
             </div>
             <Field
               id="fn_engagement_activities"
@@ -636,13 +504,7 @@ export const ReviewNOWApplication = (props) => {
           <Col md={12} sm={24}>
             <div className="field-title">
               Describe any cultural heritage resources in the area
-              <Tooltip
-                title="This field is not being sent by NROS or vFCBC. Open the original PDF to to see the data."
-                placement="right"
-                mouseEnterDelay={1}
-              >
-                <img src={INFO_CIRCLE} alt="INFO" className="info-tooltip" />
-              </Tooltip>
+              <NOWFieldOriginTooltip />
             </div>
             <Field
               id="cultural_heritage_description"
@@ -686,13 +548,7 @@ export const ReviewNOWApplication = (props) => {
       <Col md={12} sm={24}>
         <div className="field-title">
           Description of Work
-          <Tooltip
-            title="This field is not being sent by NROS or vFCBC. Open the original PDF to to see the data."
-            placement="right"
-            mouseEnterDelay={1}
-          >
-            <img src={INFO_CIRCLE} alt="INFO" className="info-tooltip" />
-          </Tooltip>
+          <NOWFieldOriginTooltip />
         </div>
         <Field
           id="work_plan"
@@ -710,13 +566,7 @@ export const ReviewNOWApplication = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Total merchantable timber volume
-            <Tooltip
-              title="This field is not being sent by NROS or vFCBC. Open the original PDF to to see the data."
-              placement="right"
-              mouseEnterDelay={1}
-            >
-              <img src={INFO_CIRCLE} alt="INFO" className="info-tooltip" />
-            </Tooltip>
+            <NOWFieldOriginTooltip />
           </div>
           <Field id="" name="" component={RenderField} disabled />
         </Col>
@@ -725,6 +575,8 @@ export const ReviewNOWApplication = (props) => {
       <ReclamationSummary summary={props.reclamationSummary} />
     </div>
   );
+
+  console.log(props);
 
   return (
     <div>
@@ -760,7 +612,7 @@ export const ReviewNOWApplication = (props) => {
             noticeOfWorkType={props.noticeOfWorkType}
             noticeOfWork={props.initialValues}
           />
-          <ScrollContentWrapper id="submission-documents" title="Submission Documents (VFCBC/NROS)">
+          <ScrollContentWrapper id="submission-documents" title="Submission Documents (vFCBC/NROS)">
             <NOWSubmissionDocuments
               now_application_guid={props.now_application_guid}
               documents={props.submission_documents}

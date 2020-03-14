@@ -2,15 +2,16 @@ import React from "react";
 import { PropTypes } from "prop-types";
 import { Field, formValueSelector } from "redux-form";
 import { connect } from "react-redux";
-import { Row, Col, Table, Button, Tooltip } from "antd";
+import { Row, Col, Table, Button } from "antd";
 import { maxLength, number, required } from "@common/utils/Validate";
 import * as FORM from "@/constants/forms";
-import { TRASHCAN, INFO_CIRCLE } from "@/constants/assets";
+import { TRASHCAN } from "@/constants/assets";
 import RenderField from "@/components/common/RenderField";
 import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
 import RenderRadioButtons from "@/components/common/RenderRadioButtons";
 import Equipment from "@/components/noticeOfWork/applications/review/activities/Equipment";
 import CustomPropTypes from "@/customPropTypes";
+import NOWFieldOriginTooltip from "../NOWFieldOriginTooltip";
 
 const propTypes = {
   isViewMode: PropTypes.bool.isRequired,
@@ -191,13 +192,7 @@ export const SurfaceBulkSamples = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Bed rock expansion
-            <Tooltip
-              title="This field is not being sent by NROS or vFCBC. Open the original PDF to to see the data."
-              placement="right"
-              mouseEnterDelay={1}
-            >
-              <img src={INFO_CIRCLE} alt="INFO" className="info-tooltip" />
-            </Tooltip>
+            <NOWFieldOriginTooltip />
           </div>
           <Field
             id="has_bedrock_expansion"
@@ -211,13 +206,7 @@ export const SurfaceBulkSamples = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Surface water damage
-            <Tooltip
-              title="This field is not being sent by NROS or vFCBC. Open the original PDF to to see the data."
-              placement="right"
-              mouseEnterDelay={1}
-            >
-              <img src={INFO_CIRCLE} alt="INFO" className="info-tooltip" />
-            </Tooltip>
+            <NOWFieldOriginTooltip />
           </div>
           <Field
             id="surface_water_damage"
@@ -230,13 +219,7 @@ export const SurfaceBulkSamples = (props) => {
           <div className="field-title">
             If the material has potential for spontaneous combustion, give details of separate
             handling.
-            <Tooltip
-              title="This field is not being sent by NROS or vFCBC. Open the original PDF to to see the data."
-              placement="right"
-              mouseEnterDelay={1}
-            >
-              <img src={INFO_CIRCLE} alt="INFO" className="info-tooltip" />
-            </Tooltip>
+            <NOWFieldOriginTooltip />
           </div>
           <Field
             id="spontaneous_combustion_handling"

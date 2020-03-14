@@ -53,25 +53,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 className="field-title"
               >
                 Permit Status
-                <Tooltip
-                  arrowPointAtCenter={false}
-                  autoAdjustOverflow={true}
-                  mouseEnterDelay={1}
-                  mouseLeaveDelay={0.1}
-                  placement="right"
-                  title="This field is not being sent by NROS or vFCBC. Open the original PDF to to see the data."
-                  transitionName="zoom-big-fast"
-                >
-                  <img
-                    alt="INFO"
-                    className="info-tooltip"
-                    src={
-                      Object {
-                        "process": [Function],
-                      }
-                    }
-                  />
-                </Tooltip>
+                <NOWFieldOriginTooltip />
               </div>
               <Field
                 component={[Function]}
@@ -108,25 +90,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 className="field-title"
               >
                 Individual or Company/Organization?
-                <Tooltip
-                  arrowPointAtCenter={false}
-                  autoAdjustOverflow={true}
-                  mouseEnterDelay={1}
-                  mouseLeaveDelay={0.1}
-                  placement="right"
-                  title="This field is not being sent by NROS or vFCBC. Open the original PDF to to see the data."
-                  transitionName="zoom-big-fast"
-                >
-                  <img
-                    alt="INFO"
-                    className="info-tooltip"
-                    src={
-                      Object {
-                        "process": [Function],
-                      }
-                    }
-                  />
-                </Tooltip>
+                <NOWFieldOriginTooltip />
               </div>
               <Field
                 component={[Function]}
@@ -163,25 +127,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 className="field-title"
               >
                 Relationship to Individual or Company/Organization?
-                <Tooltip
-                  arrowPointAtCenter={false}
-                  autoAdjustOverflow={true}
-                  mouseEnterDelay={1}
-                  mouseLeaveDelay={0.1}
-                  placement="right"
-                  title="This field is not being sent by NROS or vFCBC. Open the original PDF to to see the data."
-                  transitionName="zoom-big-fast"
-                >
-                  <img
-                    alt="INFO"
-                    className="info-tooltip"
-                    src={
-                      Object {
-                        "process": [Function],
-                      }
-                    }
-                  />
-                </Tooltip>
+                <NOWFieldOriginTooltip />
               </div>
               <Field
                 component={[Function]}
@@ -310,25 +256,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 className="field-title"
               >
                 Term of Application
-                <Tooltip
-                  arrowPointAtCenter={false}
-                  autoAdjustOverflow={true}
-                  mouseEnterDelay={1}
-                  mouseLeaveDelay={0.1}
-                  placement="right"
-                  title="This field is not being sent by NROS or vFCBC. Open the original PDF to to see the data."
-                  transitionName="zoom-big-fast"
-                >
-                  <img
-                    alt="INFO"
-                    className="info-tooltip"
-                    src={
-                      Object {
-                        "process": [Function],
-                      }
-                    }
-                  />
-                </Tooltip>
+                <NOWFieldOriginTooltip />
               </div>
               <Field
                 component={[Function]}
@@ -485,25 +413,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 className="field-title"
               >
                 Do you have the required access authorizations in place?
-                <Tooltip
-                  arrowPointAtCenter={false}
-                  autoAdjustOverflow={true}
-                  mouseEnterDelay={1}
-                  mouseLeaveDelay={0.1}
-                  placement="right"
-                  title="This field is not being sent by NROS or vFCBC. Open the original PDF to to see the data."
-                  transitionName="zoom-big-fast"
-                >
-                  <img
-                    alt="INFO"
-                    className="info-tooltip"
-                    src={
-                      Object {
-                        "process": [Function],
-                      }
-                    }
-                  />
-                </Tooltip>
+                <NOWFieldOriginTooltip />
               </div>
               <Field
                 component={[Function]}
@@ -524,25 +434,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 className="field-title"
               >
                 Do you need to build a road, create stream crossings or other surface disturbance that will not be on your tenure?
-                <Tooltip
-                  arrowPointAtCenter={false}
-                  autoAdjustOverflow={true}
-                  mouseEnterDelay={1}
-                  mouseLeaveDelay={0.1}
-                  placement="right"
-                  title="This field is not being sent by NROS or vFCBC. Open the original PDF to to see the data."
-                  transitionName="zoom-big-fast"
-                >
-                  <img
-                    alt="INFO"
-                    className="info-tooltip"
-                    src={
-                      Object {
-                        "process": [Function],
-                      }
-                    }
-                  />
-                </Tooltip>
+                <NOWFieldOriginTooltip />
               </div>
               <Field
                 component={[Function]}
@@ -559,25 +451,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 className="field-title--light"
               >
                 Please provide the type and authorization numbers for each access authorization application or exemption to use the road(s).
-                <Tooltip
-                  arrowPointAtCenter={false}
-                  autoAdjustOverflow={true}
-                  mouseEnterDelay={1}
-                  mouseLeaveDelay={0.1}
-                  placement="right"
-                  title="This field is not being sent by NROS or vFCBC. Open the original PDF to to see the data."
-                  transitionName="zoom-big-fast"
-                >
-                  <img
-                    alt="INFO"
-                    className="info-tooltip"
-                    src={
-                      Object {
-                        "process": [Function],
-                      }
-                    }
-                  />
-                </Tooltip>
+                <NOWFieldOriginTooltip />
               </div>
               <Field
                 component={[Function]}
@@ -598,25 +472,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 className="field-title"
               >
                 Access presently gated
-                <Tooltip
-                  arrowPointAtCenter={false}
-                  autoAdjustOverflow={true}
-                  mouseEnterDelay={1}
-                  mouseLeaveDelay={0.1}
-                  placement="right"
-                  title="This field is not being sent by NROS or vFCBC. Open the original PDF to to see the data."
-                  transitionName="zoom-big-fast"
-                >
-                  <img
-                    alt="INFO"
-                    className="info-tooltip"
-                    src={
-                      Object {
-                        "process": [Function],
-                      }
-                    }
-                  />
-                </Tooltip>
+                <NOWFieldOriginTooltip />
               </div>
               <Field
                 component={[Function]}
@@ -633,25 +489,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 className="field-title"
               >
                 Key provided to the inspector
-                <Tooltip
-                  arrowPointAtCenter={false}
-                  autoAdjustOverflow={true}
-                  mouseEnterDelay={1}
-                  mouseLeaveDelay={0.1}
-                  placement="right"
-                  title="This field is not being sent by NROS or vFCBC. Open the original PDF to to see the data."
-                  transitionName="zoom-big-fast"
-                >
-                  <img
-                    alt="INFO"
-                    className="info-tooltip"
-                    src={
-                      Object {
-                        "process": [Function],
-                      }
-                    }
-                  />
-                </Tooltip>
+                <NOWFieldOriginTooltip />
               </div>
               <Field
                 component={[Function]}
@@ -685,25 +523,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                   className="field-title"
                 >
                   Present condition of the land
-                  <Tooltip
-                    arrowPointAtCenter={false}
-                    autoAdjustOverflow={true}
-                    mouseEnterDelay={1}
-                    mouseLeaveDelay={0.1}
-                    placement="right"
-                    title="This field is not being sent by NROS or vFCBC. Open the original PDF to to see the data."
-                    transitionName="zoom-big-fast"
-                  >
-                    <img
-                      alt="INFO"
-                      className="info-tooltip"
-                      src={
-                        Object {
-                          "process": [Function],
-                        }
-                      }
-                    />
-                  </Tooltip>
+                  <NOWFieldOriginTooltip />
                 </div>
                 <Field
                   component={[Function]}
@@ -720,25 +540,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                   className="field-title"
                 >
                   Current means of access
-                  <Tooltip
-                    arrowPointAtCenter={false}
-                    autoAdjustOverflow={true}
-                    mouseEnterDelay={1}
-                    mouseLeaveDelay={0.1}
-                    placement="right"
-                    title="This field is not being sent by NROS or vFCBC. Open the original PDF to to see the data."
-                    transitionName="zoom-big-fast"
-                  >
-                    <img
-                      alt="INFO"
-                      className="info-tooltip"
-                      src={
-                        Object {
-                          "process": [Function],
-                        }
-                      }
-                    />
-                  </Tooltip>
+                  <NOWFieldOriginTooltip />
                 </div>
                 <Field
                   component={[Function]}
@@ -759,25 +561,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                   className="field-title"
                 >
                   Physiography
-                  <Tooltip
-                    arrowPointAtCenter={false}
-                    autoAdjustOverflow={true}
-                    mouseEnterDelay={1}
-                    mouseLeaveDelay={0.1}
-                    placement="right"
-                    title="This field is not being sent by NROS or vFCBC. Open the original PDF to to see the data."
-                    transitionName="zoom-big-fast"
-                  >
-                    <img
-                      alt="INFO"
-                      className="info-tooltip"
-                      src={
-                        Object {
-                          "process": [Function],
-                        }
-                      }
-                    />
-                  </Tooltip>
+                  <NOWFieldOriginTooltip />
                 </div>
                 <Field
                   component={[Function]}
@@ -794,25 +578,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                   className="field-title"
                 >
                   Old Equipment
-                  <Tooltip
-                    arrowPointAtCenter={false}
-                    autoAdjustOverflow={true}
-                    mouseEnterDelay={1}
-                    mouseLeaveDelay={0.1}
-                    placement="right"
-                    title="This field is not being sent by NROS or vFCBC. Open the original PDF to to see the data."
-                    transitionName="zoom-big-fast"
-                  >
-                    <img
-                      alt="INFO"
-                      className="info-tooltip"
-                      src={
-                        Object {
-                          "process": [Function],
-                        }
-                      }
-                    />
-                  </Tooltip>
+                  <NOWFieldOriginTooltip />
                 </div>
                 <Field
                   component={[Function]}
@@ -833,25 +599,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                   className="field-title"
                 >
                   Type of vegetation
-                  <Tooltip
-                    arrowPointAtCenter={false}
-                    autoAdjustOverflow={true}
-                    mouseEnterDelay={1}
-                    mouseLeaveDelay={0.1}
-                    placement="right"
-                    title="This field is not being sent by NROS or vFCBC. Open the original PDF to to see the data."
-                    transitionName="zoom-big-fast"
-                  >
-                    <img
-                      alt="INFO"
-                      className="info-tooltip"
-                      src={
-                        Object {
-                          "process": [Function],
-                        }
-                      }
-                    />
-                  </Tooltip>
+                  <NOWFieldOriginTooltip />
                 </div>
                 <Field
                   component={[Function]}
@@ -868,25 +616,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                   className="field-title"
                 >
                   Recreational trail/use
-                  <Tooltip
-                    arrowPointAtCenter={false}
-                    autoAdjustOverflow={true}
-                    mouseEnterDelay={1}
-                    mouseLeaveDelay={0.1}
-                    placement="right"
-                    title="This field is not being sent by NROS or vFCBC. Open the original PDF to to see the data."
-                    transitionName="zoom-big-fast"
-                  >
-                    <img
-                      alt="INFO"
-                      className="info-tooltip"
-                      src={
-                        Object {
-                          "process": [Function],
-                        }
-                      }
-                    />
-                  </Tooltip>
+                  <NOWFieldOriginTooltip />
                 </div>
                 <Field
                   component={[Function]}
@@ -932,25 +662,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                   className="field-title"
                 >
                   Activities in park
-                  <Tooltip
-                    arrowPointAtCenter={false}
-                    autoAdjustOverflow={true}
-                    mouseEnterDelay={1}
-                    mouseLeaveDelay={0.1}
-                    placement="right"
-                    title="This field is not being sent by NROS or vFCBC. Open the original PDF to to see the data."
-                    transitionName="zoom-big-fast"
-                  >
-                    <img
-                      alt="INFO"
-                      className="info-tooltip"
-                      src={
-                        Object {
-                          "process": [Function],
-                        }
-                      }
-                    />
-                  </Tooltip>
+                  <NOWFieldOriginTooltip />
                 </div>
                 <Field
                   component={[Function]}
@@ -971,25 +683,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                   className="field-title"
                 >
                   Proposed activities on private land
-                  <Tooltip
-                    arrowPointAtCenter={false}
-                    autoAdjustOverflow={true}
-                    mouseEnterDelay={1}
-                    mouseLeaveDelay={0.1}
-                    placement="right"
-                    title="This field is not being sent by NROS or vFCBC. Open the original PDF to to see the data."
-                    transitionName="zoom-big-fast"
-                  >
-                    <img
-                      alt="INFO"
-                      className="info-tooltip"
-                      src={
-                        Object {
-                          "process": [Function],
-                        }
-                      }
-                    />
-                  </Tooltip>
+                  <NOWFieldOriginTooltip />
                 </div>
                 <Field
                   component={[Function]}
@@ -1006,25 +700,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                   className="field-title--light"
                 >
                   Do you have authorization by the Lieutenant Governor in Council?
-                  <Tooltip
-                    arrowPointAtCenter={false}
-                    autoAdjustOverflow={true}
-                    mouseEnterDelay={1}
-                    mouseLeaveDelay={0.1}
-                    placement="right"
-                    title="This field is not being sent by NROS or vFCBC. Open the original PDF to to see the data."
-                    transitionName="zoom-big-fast"
-                  >
-                    <img
-                      alt="INFO"
-                      className="info-tooltip"
-                      src={
-                        Object {
-                          "process": [Function],
-                        }
-                      }
-                    />
-                  </Tooltip>
+                  <NOWFieldOriginTooltip />
                 </div>
                 <Field
                   component={[Function]}
@@ -1065,25 +741,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                   className="field-title--light"
                 >
                   Plan to protect the archaeological site
-                  <Tooltip
-                    arrowPointAtCenter={false}
-                    autoAdjustOverflow={true}
-                    mouseEnterDelay={1}
-                    mouseLeaveDelay={0.1}
-                    placement="right"
-                    title="This field is not being sent by NROS or vFCBC. Open the original PDF to to see the data."
-                    transitionName="zoom-big-fast"
-                  >
-                    <img
-                      alt="INFO"
-                      className="info-tooltip"
-                      src={
-                        Object {
-                          "process": [Function],
-                        }
-                      }
-                    />
-                  </Tooltip>
+                  <NOWFieldOriginTooltip />
                 </div>
                 <Field
                   component={[Function]}
@@ -1108,25 +766,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                   className="field-title"
                 >
                   Have you shared information and engaged with First Nations in the area of the proposed activity?
-                  <Tooltip
-                    arrowPointAtCenter={false}
-                    autoAdjustOverflow={true}
-                    mouseEnterDelay={1}
-                    mouseLeaveDelay={0.1}
-                    placement="right"
-                    title="This field is not being sent by NROS or vFCBC. Open the original PDF to to see the data."
-                    transitionName="zoom-big-fast"
-                  >
-                    <img
-                      alt="INFO"
-                      className="info-tooltip"
-                      src={
-                        Object {
-                          "process": [Function],
-                        }
-                      }
-                    />
-                  </Tooltip>
+                  <NOWFieldOriginTooltip />
                 </div>
                 <Field
                   component={[Function]}
@@ -1143,25 +783,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                   className="field-title"
                 >
                   As a result of the engagement, are you aware of any cultural heritage resources in the area where the work is proposed?
-                  <Tooltip
-                    arrowPointAtCenter={false}
-                    autoAdjustOverflow={true}
-                    mouseEnterDelay={1}
-                    mouseLeaveDelay={0.1}
-                    placement="right"
-                    title="This field is not being sent by NROS or vFCBC. Open the original PDF to to see the data."
-                    transitionName="zoom-big-fast"
-                  >
-                    <img
-                      alt="INFO"
-                      className="info-tooltip"
-                      src={
-                        Object {
-                          "process": [Function],
-                        }
-                      }
-                    />
-                  </Tooltip>
+                  <NOWFieldOriginTooltip />
                 </div>
                 <Field
                   component={[Function]}
@@ -1182,25 +804,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                   className="field-title"
                 >
                   Describe your First Nations engagement activities
-                  <Tooltip
-                    arrowPointAtCenter={false}
-                    autoAdjustOverflow={true}
-                    mouseEnterDelay={1}
-                    mouseLeaveDelay={0.1}
-                    placement="right"
-                    title="This field is not being sent by NROS or vFCBC. Open the original PDF to to see the data."
-                    transitionName="zoom-big-fast"
-                  >
-                    <img
-                      alt="INFO"
-                      className="info-tooltip"
-                      src={
-                        Object {
-                          "process": [Function],
-                        }
-                      }
-                    />
-                  </Tooltip>
+                  <NOWFieldOriginTooltip />
                 </div>
                 <Field
                   component={[Function]}
@@ -1217,25 +821,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                   className="field-title"
                 >
                   Describe any cultural heritage resources in the area
-                  <Tooltip
-                    arrowPointAtCenter={false}
-                    autoAdjustOverflow={true}
-                    mouseEnterDelay={1}
-                    mouseLeaveDelay={0.1}
-                    placement="right"
-                    title="This field is not being sent by NROS or vFCBC. Open the original PDF to to see the data."
-                    transitionName="zoom-big-fast"
-                  >
-                    <img
-                      alt="INFO"
-                      className="info-tooltip"
-                      src={
-                        Object {
-                          "process": [Function],
-                        }
-                      }
-                    />
-                  </Tooltip>
+                  <NOWFieldOriginTooltip />
                 </div>
                 <Field
                   component={[Function]}
@@ -1307,25 +893,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
             className="field-title"
           >
             Description of Work
-            <Tooltip
-              arrowPointAtCenter={false}
-              autoAdjustOverflow={true}
-              mouseEnterDelay={1}
-              mouseLeaveDelay={0.1}
-              placement="right"
-              title="This field is not being sent by NROS or vFCBC. Open the original PDF to to see the data."
-              transitionName="zoom-big-fast"
-            >
-              <img
-                alt="INFO"
-                className="info-tooltip"
-                src={
-                  Object {
-                    "process": [Function],
-                  }
-                }
-              />
-            </Tooltip>
+            <NOWFieldOriginTooltip />
           </div>
           <Field
             component={[Function]}
@@ -1352,25 +920,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 className="field-title"
               >
                 Total merchantable timber volume
-                <Tooltip
-                  arrowPointAtCenter={false}
-                  autoAdjustOverflow={true}
-                  mouseEnterDelay={1}
-                  mouseLeaveDelay={0.1}
-                  placement="right"
-                  title="This field is not being sent by NROS or vFCBC. Open the original PDF to to see the data."
-                  transitionName="zoom-big-fast"
-                >
-                  <img
-                    alt="INFO"
-                    className="info-tooltip"
-                    src={
-                      Object {
-                        "process": [Function],
-                      }
-                    }
-                  />
-                </Tooltip>
+                <NOWFieldOriginTooltip />
               </div>
               <Field
                 component={[Function]}
@@ -1404,7 +954,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
       />
       <withRouter(Connect(ScrollContentWrapper))
         id="submission-documents"
-        title="Submission Documents (VFCBC/NROS)"
+        title="Submission Documents (vFCBC/NROS)"
       >
         <NOWSubmissionDocuments
           selectedRows={null}
