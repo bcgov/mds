@@ -622,7 +622,6 @@ class BondFactory(BaseFactory):
         model = Bond
 
     class Params:
-        # permit = factory.SubFactory(PermitFactory, permit_amendments=0)
         payer = factory.SubFactory(PartyFactory, company=True)
         institution = factory.SubFactory(PartyFactory, company=True)
 
@@ -634,5 +633,3 @@ class BondFactory(BaseFactory):
     payer_party_guid = factory.SelfAttribute('payer.party_guid')
     institution_party_guid = factory.SelfAttribute('institution.party_guid')
     reference_number = str(random.randint(1, 9999999))
-    # Note: This is a property in the model... But it's not required here, as the PermitFactory creates BondPermitXrefs
-    #permits = []
