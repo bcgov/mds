@@ -559,7 +559,6 @@ class PermitFactory(BaseFactory):
     permit_status_code = factory.LazyFunction(RandomPermitStatusCode)
     permit_amendments = []
     mine = factory.SubFactory('tests.factories.MineFactory', minimal=True)
-    bonds = []
 
     @factory.post_generation
     def permit_amendments(obj, create, extracted, **kwargs):
@@ -581,7 +580,7 @@ class PermitFactory(BaseFactory):
             extracted = 1
 
         for n in range(extracted):
-            BondPermitXrefFactory(permit=obj, **kwargs)
+            BondFactory(permits=obj, **kwargs)
 
 
 class PermitAmendmentFactory(BaseFactory):
@@ -637,15 +636,3 @@ class BondFactory(BaseFactory):
     reference_number = str(random.randint(1, 9999999))
     # Note: This is a property in the model... But it's not required here, as the PermitFactory creates BondPermitXrefs
     #permits = []
-
-
-class BondPermitXrefFactory(BaseFactory):
-    class Meta:
-        model = BondPermitXref
-
-    class Params:
-        bond = factory.SubFactory(BondFactory)
-        permit = factory.SubFactory(PermitFactory)
-
-    bond_id = factory.SelfAttribute('bond.bond_id')
-    permit_id = factory.SelfAttribute('permit.permit_id')
