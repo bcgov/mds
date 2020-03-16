@@ -4,6 +4,7 @@ from sqlalchemy.schema import FetchedValue
 from marshmallow import fields, validate
 
 from app.extensions import db
+from app.api.mines.permits.permit.models.permit import Permit
 from app.api.utils.models_mixins import Base, AuditMixin
 from app.api.utils.field_template import FieldTemplate
 
