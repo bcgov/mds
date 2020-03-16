@@ -27,7 +27,7 @@ import MineHeader from "@/components/mine/MineHeader";
 
 const propTypes = {
   match: CustomPropTypes.match.isRequired,
-  mines: PropTypes.arrayOf(CustomPropTypes.mine).isRequired,
+  mines: PropTypes.objectOf(CustomPropTypes.mine).isRequired,
   partyRelationshipTypes: PropTypes.arrayOf(CustomPropTypes.partyRelationshipType),
   partyRelationships: PropTypes.arrayOf(CustomPropTypes.partyRelationship),
   mineComplianceInfo: CustomPropTypes.mineComplianceInfo,

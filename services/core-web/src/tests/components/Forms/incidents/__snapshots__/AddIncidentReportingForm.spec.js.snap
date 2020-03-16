@@ -20,7 +20,7 @@ exports[`AddIncidentReportingForm renders properly 1`] = `
             id="categories"
             label="Incident type(s)*"
             name="categories"
-            placeholder="Select the incident type(s)"
+            placeholder="Select incident type(s)"
             validate={
               Array [
                 [Function],
@@ -33,10 +33,11 @@ exports[`AddIncidentReportingForm renders properly 1`] = `
         >
           <Field
             component={[Function]}
+            format={null}
             id="reported_to_inspector_party_guid"
             label="Incident reported to*"
             name="reported_to_inspector_party_guid"
-            placeholder="Start typing inspector name"
+            placeholder="Search for inspector"
             validate={
               Array [
                 [Function],
@@ -49,10 +50,11 @@ exports[`AddIncidentReportingForm renders properly 1`] = `
         >
           <Field
             component={[Function]}
+            format={null}
             id="responsible_inspector_party_guid"
             label="Inspector responsible*"
             name="responsible_inspector_party_guid"
-            placeholder="Start typing inspector name"
+            placeholder="Search for responsible inspector"
             validate={
               Array [
                 [Function],
@@ -71,7 +73,7 @@ exports[`AddIncidentReportingForm renders properly 1`] = `
             id="reported_by_name"
             label="Reported by*"
             name="reported_by_name"
-            placeholder="Provide name of reporter"
+            placeholder="Enter name of reporter"
             validate={
               Array [
                 [Function],
@@ -117,7 +119,7 @@ exports[`AddIncidentReportingForm renders properly 1`] = `
                 id="reported_by_phone_ext"
                 label="Phone extension"
                 name="reported_by_phone_ext"
-                placeholder=""
+                placeholder="x"
                 validate={
                   Array [
                     [Function],

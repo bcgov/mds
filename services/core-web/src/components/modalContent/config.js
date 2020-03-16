@@ -21,8 +21,6 @@ import NOWReviewModal from "./NOWReviewModal";
 import ChangeNOWLocationModal from "./ChangeNOWLocationModal";
 import GenerateDocumentModal from "./GenerateDocumentModal";
 
-// This file is anticipated to have multiple exports
-// eslint-disable-next-line import/prefer-default-export
 export const modalConfig = {
   MINE_RECORD: MineRecordModal,
   ADD_TAILINGS: AddTailingsModal,
@@ -39,13 +37,13 @@ export const modalConfig = {
   MINE_INCIDENT: AddIncidentModal,
   ADD_REPORT: AddReportModal,
   GENERATE_DOCUMENT: GenerateDocumentModal,
-  //  EDIT_REPORT:
   VIEW_MINE_INCIDENT: ViewIncidentModal,
   EDIT_NOTICE_OF_WORK_DOCUMENT: EditNoticeOfWorkDocumentModal,
   CHANGE_NOW_MINE: ChangeNOWMineModal,
-  // NoW REVIEW
   DOWNLOAD_DOC_PACKAGE: DownloadDocumentPackageModal,
   NOW_REVIEW: NOWReviewModal,
   UPDATE_NOW_LEAD_INSPECTOR: UpdateNOWLeadInspectorModal,
   CHANGE_NOW_LOCATION: ChangeNOWLocationModal,
 };
+
+export default modalConfig;
