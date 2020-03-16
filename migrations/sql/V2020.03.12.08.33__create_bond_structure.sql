@@ -47,12 +47,12 @@ ALTER TABLE bond OWNER TO mds;
 
 CREATE TABLE IF NOT EXISTS bond_permit_xref
 (
-    bond_permit_xref_guid uuid    DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
-    bond_id               integer                           NOT NULL            ,
-    permit_id             integer                           NOT NULL            ,
+    bond_id               integer                           NOT NULL,
+    permit_id             integer                           NOT NULL,
 
     FOREIGN KEY (bond_id) REFERENCES bond(bond_id) DEFERRABLE INITIALLY DEFERRED,
     FOREIGN KEY (permit_id) REFERENCES permit(permit_id) DEFERRABLE INITIALLY DEFERRED
+    PRIMARY KEY(bond_id, permit_id)
 );
 
 ALTER TABLE bond_permit_xref OWNER TO mds;

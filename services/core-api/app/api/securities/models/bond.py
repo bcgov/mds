@@ -28,7 +28,7 @@ class Bond(Base, AuditMixin):
     bond_status_code = db.Column(db.String, db.ForeignKey('bond_status.bond_status_code'))
     reference_number = db.Column(db.String)
 
-    permits = db.relationship('Permit', lazy='select', secondary='bond_permit_xref')
+    permits = db.relationship('Permit', uselist=False, lazy='select', secondary='bond_permit_xref')
 
     def __repr__(self):
         return '<Bond %r>' % self.bond_guid
