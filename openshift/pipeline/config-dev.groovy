@@ -52,7 +52,7 @@ app {
         timeoutInSeconds = 60*20 // 20 minutes
         templates = [
                 [
-                    'file':'openshift/templates/postgresql.dev.dc.json',
+                    'file':'openshift/templates/postgresql.dc.json',
                     'params':[
                             'NAME':"mds-postgresql",
                             'SUFFIX':"${vars.deployment.suffix}",
