@@ -8,6 +8,8 @@ CREATE TABLE bond_status (
     update_timestamp                 timestamp with time zone DEFAULT now() NOT NULL
 );
 
+ALTER TABLE bond_status OWNER TO mds;
+
 CREATE TABLE bond_type(
     bond_type_code                   varchar                                NOT NULL PRIMARY KEY,
     description                      varchar                                NOT NULL            ,
@@ -18,7 +20,7 @@ CREATE TABLE bond_type(
     update_timestamp                 timestamp with time zone DEFAULT now() NOT NULL
 );
 
-ALTER TABLE bond_status_code OWNER TO mds;
+ALTER TABLE bond_type OWNER TO mds;
 
 CREATE TABLE IF NOT EXISTS bond (
     bond_id                                                          SERIAL PRIMARY KEY,
@@ -36,8 +38,8 @@ CREATE TABLE IF NOT EXISTS bond (
 
     FOREIGN KEY (payer_party_guid) REFERENCES party(party_guid) DEFERRABLE INITIALLY DEFERRED,
     FOREIGN KEY (institution_party_guid) REFERENCES party(party_guid) DEFERRABLE INITIALLY DEFERRED,
-    FOREIGN KEY (bond_status_code) REFERENCES bond_status_code(bond_status_code) DEFERRABLE INITIALLY DEFERRED,
-    FOREIGN KEY (bond_type_code) REFERENCES bond_type_code(bond_type_code) DEFERRABLE INITIALLY DEFERRED
+    FOREIGN KEY (bond_status_code) REFERENCES bond_status(bond_status_code) DEFERRABLE INITIALLY DEFERRED,
+    FOREIGN KEY (bond_type_code) REFERENCES bond_type(bond_type_code) DEFERRABLE INITIALLY DEFERRED
 
 );
 
