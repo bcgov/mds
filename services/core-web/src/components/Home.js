@@ -83,7 +83,6 @@ export class Home extends Component {
 
   loadStaticContent = () => {
     this.props.dispatch(showLoading());
-    console.log("HELPS");
     this.props.dispatch(loadBulkStaticContent());
     this.props.dispatch(fetchInspectors());
     //  this.props.dispatch(fetchMineDisturbanceOptions());

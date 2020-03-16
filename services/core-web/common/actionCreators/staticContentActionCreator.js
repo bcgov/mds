@@ -26,7 +26,6 @@ import {
 } from "../selectors/staticContentSelectors";
 
 export const loadBulkStaticContent = () => (dispatch) => {
-  console.log("LOAD BULK STATIC CONTENT");
   dispatch(request(reducerTypes.LOAD_ALL_STATIC_CONTENT));
   return CustomAxios()
     .get(ENVIRONMENT.apiUrl + API.CORE_STATIC_CONTENT, createRequestHeader())

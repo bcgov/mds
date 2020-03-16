@@ -63,7 +63,7 @@ def generate_static_content_dict():
 class StaticContentResource(Resource):
     @api.doc(
         description=
-        'Returns a subset of mine data in a CSV. Column headers: mine_guid, mine_name, mine_no, mine_region, major_mine_ind, operating_status, operating_status_code, effective_date, tenure, tenure_code, commodity, commodity_code, disturbance, disturbance_code, permit_no, permittee_party_name'
+        'Returns static content in bulk instead of calling endpoints individually, keys are custom for current store in CORE/Minespace'
     )
     @requires_role_view_all
     def get(self):
