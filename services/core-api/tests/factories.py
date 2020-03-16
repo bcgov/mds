@@ -24,6 +24,8 @@ from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointme
 from app.api.mines.permits.permit.models.permit import Permit
 from app.api.mines.permits.permit_amendment.models.permit_amendment import PermitAmendment
 from app.api.mines.permits.permit_amendment.models.permit_amendment_document import PermitAmendmentDocument
+from app.api.securities.models.bond import Bond
+from app.api.securities.models.bond_permit_xref import BondPermitXref
 from app.api.users.core.models.core_user import CoreUser, IdirUserDetail
 from app.api.users.minespace.models.minespace_user import MinespaceUser
 from app.api.variances.models.variance import Variance
@@ -569,6 +571,17 @@ class PermitFactory(BaseFactory):
         for n in range(extracted):
             PermitAmendmentFactory(permit=obj, initial_permit=(n == 0), **kwargs)
 
+    @factory.post_generation
+    def bonds(obj, create, extracted, **kwargs):
+        if not create:
+            return
+
+        if not isinstance(extracted, int):
+            extracted = random.randint(0, 3)
+
+        for n in range(extracted):
+            BondFactory(permits=obj, **kwargs)
+
 
 class PermitAmendmentFactory(BaseFactory):
     class Meta:
@@ -602,3 +615,21 @@ class PermitAmendmentDocumentFactory(BaseFactory):
     mine_guid = factory.SelfAttribute('permit_amendment.permit.mine.mine_guid')
     document_manager_guid = GUID
     permit_amendment = factory.SubFactory(PermitAmendmentFactory)
+
+
+class BondFactory(BaseFactory):
+    class Meta:
+        model = Bond
+
+    class Params:
+        payer = factory.SubFactory(PartyFactory, company=True)
+        institution = factory.SubFactory(PartyFactory, company=True)
+
+    bond_guid = GUID
+    amount = factory.Faker(
+        'pydecimal', right_digits=2, positive=True, min_value=50, max_value=500000)
+    bond_type_code = factory.LazyFunction(RandomBondTypeCode)
+    bond_status_code = factory.LazyFunction(RandomBondStatusCode)
+    payer_party_guid = factory.SelfAttribute('payer.party_guid')
+    institution_party_guid = factory.SelfAttribute('institution.party_guid')
+    reference_number = str(random.randint(1, 9999999))

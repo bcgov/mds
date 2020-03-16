@@ -51,7 +51,7 @@ CREATE TABLE IF NOT EXISTS bond_permit_xref
     permit_id             integer                           NOT NULL,
 
     FOREIGN KEY (bond_id) REFERENCES bond(bond_id) DEFERRABLE INITIALLY DEFERRED,
-    FOREIGN KEY (permit_id) REFERENCES permit(permit_id) DEFERRABLE INITIALLY DEFERRED
+    FOREIGN KEY (permit_id) REFERENCES permit(permit_id) DEFERRABLE INITIALLY DEFERRED,
     PRIMARY KEY(bond_id, permit_id)
 );
 
