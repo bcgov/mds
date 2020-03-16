@@ -15,3 +15,7 @@ class BondStatusCode(Base, AuditMixin):
 
     def __repr__(self):
         return '<BondStatusCode %r>' % self.bond_status_code
+
+    @classmethod
+    def get_active(cls):
+        return cls.query.filter_by(active_ind=True).all()
