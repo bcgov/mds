@@ -578,7 +578,7 @@ class PermitFactory(BaseFactory):
             return
 
         if not isinstance(extracted, int):
-            extracted = 1
+            extracted = random.randint(0, 3)
 
         for n in range(extracted):
             BondPermitXrefFactory(permit=obj, **kwargs)
