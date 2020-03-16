@@ -7,7 +7,7 @@ from app.api.utils.models_mixins import Base, AuditMixin
 
 
 class BondTypeCode(Base, AuditMixin):
-    __tablename__ = "bond_type"
+    __tablename__ = "bond_type_code"
 
     bond_type_code = db.Column(db.String, nullable=False, primary_key=True)
     description = db.Column(db.String, nullable=False)
