@@ -835,7 +835,7 @@ SET document_template_code = 'NRL'
 where now_application_document_type_code = 'RJL';
 
 
-INSERT INTO bond_status_code(
+INSERT INTO bond_status(
     bond_status_code,
     description,
     create_user,
@@ -847,7 +847,7 @@ VALUES
     ('ACT', 'Active', 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
 
-INSERT INTO bond_type_code(
+INSERT INTO bond_type(
     bond_type_code,
     description,
     create_user,
