@@ -1,4 +1,4 @@
-CREATE TABLE bond_status_code (
+CREATE TABLE bond_status (
     bond_status_code                 varchar                                NOT NULL PRIMARY KEY,
     description                      varchar                                NOT NULL            ,
     active_ind                       boolean                  DEFAULT true  NOT NULL            ,
@@ -8,7 +8,7 @@ CREATE TABLE bond_status_code (
     update_timestamp                 timestamp with time zone DEFAULT now() NOT NULL
 );
 
-CREATE TABLE bond_type_code (
+CREATE TABLE bond_type(
     bond_type_code                   varchar                                NOT NULL PRIMARY KEY,
     description                      varchar                                NOT NULL            ,
     active_ind                       boolean                  DEFAULT true  NOT NULL            ,
@@ -22,7 +22,7 @@ ALTER TABLE bond_status_code OWNER TO mds;
 
 CREATE TABLE IF NOT EXISTS bond (
     bond_id                                                          SERIAL PRIMARY KEY,
-    bond_guid                        uuid DEFAULT gen_random_uuid()            NOT NULL,
+    bond_guid                        uuid DEFAULT gen_random_uuid()     UNIQUE NOT NULL,
     amount                           numeric(14,2)                             NOT NULL,
     bond_type_code                   varchar                                   NOT NULL,
     payer_party_guid                 uuid                                      NOT NULL,
