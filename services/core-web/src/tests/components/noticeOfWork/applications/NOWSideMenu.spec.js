@@ -8,6 +8,7 @@ const setupReducerProps = () => {
   reducerProps.match = {};
   reducerProps.history = { push: jest.fn() };
   reducerProps.location = {};
+  reducerProps.noticeOfWorkType = "PLA";
 };
 
 beforeEach(() => {
