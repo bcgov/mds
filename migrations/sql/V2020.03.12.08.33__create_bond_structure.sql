@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS bond (
     amount                           numeric(14,2)                             NOT NULL,
     bond_type_code                   varchar                                   NOT NULL,
     payer_party_guid                 uuid                                      NOT NULL,
-    institution_party_guid           uuid                                              ,
+    institution_party_guid           uuid                                      NOT NULL,
     bond_status_code                 varchar                                   NOT NULL,
     reference_number                 varchar                                           ,
     create_user                      varchar                                   NOT NULL,
