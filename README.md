@@ -9,7 +9,7 @@ The Mines Digital Services (MDS) will have a number of interconnections and rela
 The product is anticipated to include:
 
 1.	Support for integrated analysis and decision making across the process of mine oversight
-2.	Support for the creation of a complex data model that can connect various components of mines. Some examples include consultation information, risk management modeling, spatial data, financial tracking and collecting and physical attributes
+2.	Support for the creation of a complex data model that can connect various components of mines. Some examples include consultation information, risk management modeling, spatial data, financial tracking, and collecting and physical attributes
 3.	Enhancements to the public-facing [BC Mine Information website](http://mines.nrs.gov.bc.ca/) ([github repository](https://github.com/bcgov/mem-mmti-public)) to broaden the available data and create new or improved functionality to increase usability
 4.	Enhancements to the [BC Mine Information website's administrative console](https://mines.empr.gov.bc.ca/) ([github repository](https://github.com/bcgov/mem-admin)) , including work required to connect with other systems (e.g., the Natural Resource Inspection System, aka NRIS)
 
