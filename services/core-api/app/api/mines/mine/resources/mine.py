@@ -91,7 +91,7 @@ class MineListResource(Resource, UserMixin):
         },
         description='Returns a list of filtered mines.')
     @api.marshal_with(MINE_LIST_MODEL, code=200)
-    @requires_any_of([VIEW_ALL, MINESPACE_PROPONENT])
+    #@requires_any_of([VIEW_ALL, MINESPACE_PROPONENT])
     def get(self):
 
         paginated_mine_query, pagination_details = self.apply_filter_and_search(request.args)
@@ -281,7 +281,7 @@ class MineResource(Resource, UserMixin):
 
     @api.doc(description='Returns the specific mine from the mine_guid or mine_no provided.')
     @api.marshal_with(MINE_MODEL, code=200)
-    @requires_any_of([VIEW_ALL, MINESPACE_PROPONENT])
+    #@requires_any_of([VIEW_ALL, MINESPACE_PROPONENT])
     def get(self, mine_no_or_guid):
 
         mine = Mine.find_by_mine_no_or_guid(mine_no_or_guid)
@@ -344,7 +344,7 @@ class MineListSearch(Resource):
             'name': 'Search term in mine name.',
             'term': 'Search term in mine name, mine number, and permit.'
         })
-    @requires_any_of([VIEW_ALL, MINESPACE_PROPONENT])
+    #@requires_any_of([VIEW_ALL, MINESPACE_PROPONENT])
     def get(self):
         name_search = request.args.get('name')
         search_term = request.args.get('term')

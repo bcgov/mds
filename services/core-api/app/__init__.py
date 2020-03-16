@@ -4,7 +4,6 @@ from flask import Flask, request
 
 from flask_cors import CORS
 from flask_restplus import Resource, apidoc
-from flask_compress import Compress
 from sqlalchemy.exc import SQLAlchemyError
 
 from flask_jwt_oidc.exceptions import AuthError
@@ -73,7 +72,6 @@ def register_extensions(app):
     db.init_app(app)
 
     CORS(app)
-    Compress(app)
 
     return None
 

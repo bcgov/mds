@@ -36,14 +36,6 @@ class VerifyPermitResource(Resource):
             if not permit:
                 result = "Failure"
                 response_message = "NoValidMinesForPermit"
-            else:
-                mine = Mine.find_by_mine_guid(permit.mine_guid)
-
-                if type_of_deemed_auth == "INDUCED":
-                    
-                else:
-                
-                result = "Success"
  
         except:
             result = "Failure"
