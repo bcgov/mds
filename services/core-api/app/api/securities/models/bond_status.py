@@ -14,7 +14,7 @@ class BondStatus(Base, AuditMixin):
     active_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
 
     def __repr__(self):
-        return '<BondStatusCode %r>' % self.bond_status_code
+        return '<BondStatus %r>' % self.bond_status_code
 
     @classmethod
     def get_active(cls):
