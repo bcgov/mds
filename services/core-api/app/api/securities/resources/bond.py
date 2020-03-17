@@ -76,7 +76,7 @@ class BondResource(Resource, UserMixin):
     def put(self, bond_guid):
 
         try:
-            bond = Bond._schema().load(request.json)
+            bond = Bond._schema().load(request.json, instance=Bond.find_by_bond_guid(bond_guid))
         except MarshmallowError as e:
             raise BadRequest(e)
 
