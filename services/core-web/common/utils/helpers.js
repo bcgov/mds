@@ -235,10 +235,6 @@ export const flattenObject = (ob) => {
   const toReturn = {};
   let flatObject;
   for (const i in ob) {
-    if (!ob.hasOwnProperty(i)) {
-      continue;
-    }
-
     if (typeof ob[i] === "object") {
       flatObject = flattenObject(ob[i]);
       for (const x in flatObject) {
