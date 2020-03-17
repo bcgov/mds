@@ -240,6 +240,10 @@ class Base(db.Model):
                             setattr(self, k, dec.quantize(decimal.Decimal('.0000001')))
                         continue
 
+                    #for string columns, consider empty strings as null
+                    if py_type == str and v is '':
+                        setattr(self, k, None)
+
                     # elif (v is not None) and not isinstance(v, py_type):
                     #     #type safety (don't coalese empty string to false if it's targetting a boolean column)
                     #     raise DictLoadingError(
