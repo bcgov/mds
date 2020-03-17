@@ -16,7 +16,7 @@ class VerifyPermitResource(Resource):
         description=
         'Verifies that a permit is valid for a mine based on the type of deemed authorization.'
     )
-    #@requires_role_view_all
+    @requires_role_view_all
     def get(self):
         parser = CustomReqparser()
         parser.add_argument('a_PermitNumber', type=str, required=True)
@@ -29,13 +29,36 @@ class VerifyPermitResource(Resource):
 
         try:
             permit_no = data.get('permit_no')
+            permit_prefix = permit_no.split("-")[0]
             type_of_deemed_auth = data.get('type_of_deemed_auth')
 
-            permit = Permit.find_by_permit_no(permit_no)
+            permits = Permit.find_by_permit_no_all(permit_no)
 
-            if not permit:
+            if not permits:
                 result = "Failure"
                 response_message = "NoValidMinesForPermit"
+            else:
+                for permit in permits:
+                    mine = Mine.find_by_mine_guid(permit.mine_guid)
+
+                    # Mine must be operating.
+                    if mine.mine_status.mine_status_xref.mine_operation_status_code != "OP":
+                        break;
+
+                    # IP SURVEYS (Induced): Valid MMS mine types: 'CX','ES','EU'
+                    # There may be need of a check against mine_tenure_type_code IN ["MIN", "COL"] and mine_disturbance_code IN ["SUR", "UND"]
+                    # but this data is inconsistant for now. 
+                    if type_of_deemed_auth == "INDUCED" and permit_prefix not in ["CX", "M"]:
+                        break;
+                    
+                    # DRILL PROGRAM (Drill): Valid MMS mine types: 'CS','CU','MS','MU','IS','IU'
+                    if type_of_deemed_auth != "INDUCED" and permit_prefix not in ["C", "M"]:
+                        break;
+                
+                    mine_info = mine_info + mine.mine_no + ' - ' + mine.mine_name + "\r\c"
+
+                if mine_info != "":
+                    result = "Success"
  
         except:
             result = "Failure"
