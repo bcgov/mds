@@ -13,3 +13,10 @@ BOND = api.model(
         'reference_number': fields.String,
         'permit_guid': fields.String(attribute='permits.permit_guid')
     })
+
+BOND_STATUS = api.model('BondStatus', {
+    'bond_status_code': fields.String,
+    'description': fields.String
+})
+
+BOND_TYPE = api.model('BondType', {'bond_type_code': fields.String, 'description': fields.String})
