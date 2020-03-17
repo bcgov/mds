@@ -709,7 +709,10 @@ export class NoticeOfWorkApplication extends Component {
                 style={showErrors && this.state.fixedTop ? { top: "170px" } : {}}
               >
                 {this.state.currentStep !== 0 && (
-                  <NOWSideMenu route={routes.NOTICE_OF_WORK_APPLICATION} />
+                  <NOWSideMenu
+                    route={routes.NOTICE_OF_WORK_APPLICATION}
+                    noticeOfWorkType={this.props.noticeOfWork.notice_of_work_type_code}
+                  />
                 )}
               </div>
               <div
