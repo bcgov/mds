@@ -31,7 +31,10 @@ export const MINE_RESPONSE = {
           mine_tailings_storage_facility_name: "MockTSF",
         },
       ],
-      mine_type: [{ mine_tenure_type_code: "PLR" }, { mine_tenure_type_code: "MIN" }],
+      mine_type: [
+        { mine_tenure_type_code: "PLR", mine_type_detail: [] },
+        { mine_tenure_type_code: "MIN", mine_type_detail: [] },
+      ],
       verified_status: {
         mine_guid: null,
         mine_name: null,
@@ -64,7 +67,10 @@ export const MINE_RESPONSE = {
           mine_tailings_storage_facility_name: "MockTSF1",
         },
       ],
-      mine_type: [{ mine_tenure_type_code: "PLR" }, { mine_tenure_type_code: "MIN" }],
+      mine_type: [
+        { mine_tenure_type_code: "PLR", mine_type_detail: [] },
+        { mine_tenure_type_code: "MIN", mine_type_detail: [] },
+      ],
       verified_status: {
         mine_guid: "18145c75-49ad-0101-85f3-a43e45ae989a",
         mine_name: "mine2",
@@ -120,7 +126,10 @@ export const MINES = {
           mine_tailings_storage_facility_name: "MockTSF",
         },
       ],
-      mine_type: [{ mine_tenure_type_code: "PLR" }, { mine_tenure_type_code: "MIN" }],
+      mine_type: [
+        { mine_tenure_type_code: "PLR", mine_type_detail: [] },
+        { mine_tenure_type_code: "MIN", mine_type_detail: [] },
+      ],
       mine_status: {
         statusvalue: ["CLD", "CM"],
         status_labels: ["Closed", "Care & Maintenance"],
@@ -159,7 +168,10 @@ export const MINES = {
           mine_tailings_storage_facility_name: "MockTSF1",
         },
       ],
-      mine_type: [{ mine_tenure_type_code: "PLR" }, { mine_tenure_type_code: "MIN" }],
+      mine_type: [
+        { mine_tenure_type_code: "PLR", mine_type_detail: [] },
+        { mine_tenure_type_code: "MIN", mine_type_detail: [] },
+      ],
       verified_status: {
         mine_guid: "18145c75-49ad-0101-85f3-a43e45ae989a",
         mine_name: "mine2",
