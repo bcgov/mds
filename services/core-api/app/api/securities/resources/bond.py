@@ -27,11 +27,11 @@ class BondListResource(Resource, UserMixin):
         if permits is None:
             return
 
-        bonds = [bond for bond in permit.bonds for permit in permits]
+        bonds = [bond for permit in permits for bond in permit.bonds]
 
         return bonds
 
-    @api.doc(description='create an bond')
+    @api.doc(description='create a bond')
     @requires_role_edit_permit
     @api.expect(BOND)
     @api.marshal_with(BOND, code=201)
@@ -39,9 +39,20 @@ class BondListResource(Resource, UserMixin):
 
         current_app.logger.debug('Attempting to load bond')
         try:
-            bond = Bond._schema().load(request.json)
+            bond = Bond._schema().load(request.json['bond'])
         except MarshmallowError as e:
             raise BadRequest(e)
+
+        permit = Permit.find_by_permit_guid(request.json['permit_guid'])
+
+        if permit is None:
+            raise BadRequest('No Permit found with the guid provided.')
+
+        bond.permits = permit
+
+        bond.save()
+
+        current_app.logger.debug(bond)
 
         return bond, 201
 
@@ -55,5 +66,20 @@ class BondResource(Resource, UserMixin):
 
         if bond is None:
             raise BadRequest('No bond was found with the guid provided.')
+
+        return bond
+
+    @api.doc(description='Update a bond')
+    @requires_role_edit_permit
+    @api.expect(BOND)
+    @api.marshal_with(BOND, code=200)
+    def put(self, bond_guid):
+
+        try:
+            bond = Bond._schema().load(request.json)
+        except MarshmallowError as e:
+            raise BadRequest(e)
+
+        bond.save()
 
         return bond
