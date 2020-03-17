@@ -292,6 +292,9 @@ def test_update_date_with_date_string_passes(db_session):
     assert mine.mine_permit[0].permit_amendments[0].received_date == date_expect
 
 
+"""String parsing tests"""
+
+
 def test_update_string_with_empty_string_sets_null(db_session):
     mine = MineFactory(mine_permit=1)
     mine_dict = {'mine_location_description': ''}
