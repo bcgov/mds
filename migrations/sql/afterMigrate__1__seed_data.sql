@@ -833,3 +833,32 @@ where now_application_document_type_code = 'WDL';
 UPDATE now_application_document_type
 SET document_template_code = 'NRL'
 where now_application_document_type_code = 'RJL';
+
+
+INSERT INTO bond_status(
+    bond_status_code,
+    description,
+    create_user,
+    update_user
+    )
+VALUES
+    ('REL', 'Released', 'system-mds', 'system-mds'),
+    ('CON', 'Confiscated', 'system-mds', 'system-mds'),
+    ('ACT', 'Active', 'system-mds', 'system-mds')
+ON CONFLICT DO NOTHING;
+
+INSERT INTO bond_type(
+    bond_type_code,
+    description,
+    create_user,
+    update_user
+    )
+VALUES
+    ('CEC', 'Certified Cheque', 'system-mds', 'system-mds'),
+    ('CAS', 'Cash', 'system-mds', 'system-mds'),
+    ('ILC', 'Irrevocable Line of Credit', 'system-mds', 'system-mds'),
+    ('MOR', 'Money Order', 'system-mds', 'system-mds'),
+    ('BDA', 'Bank Draft', 'system-mds', 'system-mds'),
+    ('SBO', 'Surety Bond', 'system-mds', 'system-mds'),
+    ('SAG', 'Safekeeping Agreement', 'system-mds', 'system-mds')
+ON CONFLICT DO NOTHING;
