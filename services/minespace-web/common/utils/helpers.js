@@ -188,8 +188,8 @@ export const compareCodes = (a, b) => {
     input.match(/([0-9]+)\.([0-9]+)\.([0-9]+)/) ||
     input.match(/([0-9]+)\.([0-9]+)/) ||
     input.match(/([0-9]+)/);
-  const aCodes = regexParse(a);
-  const bCodes = regexParse(b);
+  const aCodes = regexParse(a.toString());
+  const bCodes = regexParse(b.toString());
   if (!aCodes) {
     return -1;
   }
