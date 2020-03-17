@@ -80,9 +80,7 @@ exports[`MineList renders properly 1`] = `
   dataSource={
     Array [
       Object {
-        "commodity": Array [
-          undefined,
-        ],
+        "commodity": Array [],
         "key": "18133c75-49ad-4101-85f3-a43e35ae989a",
         "mine_name": "mine3",
         "mine_no": "BLAH9091",
@@ -103,9 +101,7 @@ exports[`MineList renders properly 1`] = `
         },
       },
       Object {
-        "commodity": Array [
-          undefined,
-        ],
+        "commodity": Array [],
         "key": "18145c75-49ad-0101-85f3-a43e45ae989a",
         "mine_name": "mine2",
         "mine_no": "BLAH9091",
