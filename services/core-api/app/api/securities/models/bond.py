@@ -18,7 +18,8 @@ class Bond(Base, AuditMixin):
         bond_status_code = FieldTemplate(field=fields.String, one_of='BondStatus')
 
     bond_id = db.Column(db.Integer, primary_key=True, server_default=FetchedValue())
-    bond_guid = db.Column(UUID(as_uuid=True), nullable=False, server_default=FetchedValue())
+    bond_guid = db.Column(
+        UUID(as_uuid=True), nullable=False, unique=True, server_default=FetchedValue())
     amount = db.Column(db.Numeric(14, 2), nullable=False)
     bond_type_code = db.Column(db.String, db.ForeignKey('bond_type.bond_type_code'))
     payer_party_guid = db.Column(
