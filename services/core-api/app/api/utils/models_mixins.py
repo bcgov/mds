@@ -221,23 +221,23 @@ class Base(db.Model):
                             f"cannot assign '{k}':{v}{type(v)} to column of type {py_type}")
 
                     if py_type == datetime or py_type == date:
-                        #json value is string, if expecting datetime in that column, convert here
-                        if v:
-                            setattr(self, k, parser.parse(v))
                         #values that are considered null
-                        elif v in [None, '']:
+                        if v in [None, '']:
                             setattr(self, k, None)
+                        #json value is string, if expecting datetime in that column, convert here
+                        else:
+                            setattr(self, k, parser.parse(v))
                         continue
 
                     if py_type == decimal.Decimal:
-                        if v or isinstance(v, Number):
+                        #values that are considered null
+                        if v in [None, '']:
+                            setattr(self, k, None)
+                        else:
                             #if Decimal column, cast whatever you get to Decimal
                             dec = decimal.Decimal(v)
                             #don't care about anything more precise, protection if incoming data is float
                             setattr(self, k, dec.quantize(decimal.Decimal('.0000001')))
-                        #values that are considered null
-                        elif v in [None, '']:
-                            setattr(self, k, None)
                         continue
 
                     # elif (v is not None) and not isinstance(v, py_type):
