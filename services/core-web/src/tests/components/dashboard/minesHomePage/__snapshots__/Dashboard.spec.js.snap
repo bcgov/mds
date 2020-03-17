@@ -479,9 +479,11 @@ exports[`Dashboard renders properly 1`] = `
                   "mine_type": Array [
                     Object {
                       "mine_tenure_type_code": "PLR",
+                      "mine_type_detail": Array [],
                     },
                     Object {
                       "mine_tenure_type_code": "MIN",
+                      "mine_type_detail": Array [],
                     },
                   ],
                   "verified_status": Object {
@@ -528,9 +530,11 @@ exports[`Dashboard renders properly 1`] = `
                   "mine_type": Array [
                     Object {
                       "mine_tenure_type_code": "PLR",
+                      "mine_type_detail": Array [],
                     },
                     Object {
                       "mine_tenure_type_code": "MIN",
+                      "mine_type_detail": Array [],
                     },
                   ],
                   "verified_status": Object {
@@ -633,9 +637,11 @@ exports[`Dashboard renders properly 1`] = `
                       "mine_type": Array [
                         Object {
                           "mine_tenure_type_code": "PLR",
+                          "mine_type_detail": Array [],
                         },
                         Object {
                           "mine_tenure_type_code": "MIN",
+                          "mine_type_detail": Array [],
                         },
                       ],
                       "verified_status": Object {
@@ -682,9 +688,11 @@ exports[`Dashboard renders properly 1`] = `
                       "mine_type": Array [
                         Object {
                           "mine_tenure_type_code": "PLR",
+                          "mine_type_detail": Array [],
                         },
                         Object {
                           "mine_tenure_type_code": "MIN",
+                          "mine_type_detail": Array [],
                         },
                       ],
                       "verified_status": Object {
@@ -905,9 +913,11 @@ exports[`Dashboard renders properly 1`] = `
                         "mine_type": Array [
                           Object {
                             "mine_tenure_type_code": "PLR",
+                            "mine_type_detail": Array [],
                           },
                           Object {
                             "mine_tenure_type_code": "MIN",
+                            "mine_type_detail": Array [],
                           },
                         ],
                         "verified_status": Object {
@@ -954,9 +964,11 @@ exports[`Dashboard renders properly 1`] = `
                         "mine_type": Array [
                           Object {
                             "mine_tenure_type_code": "PLR",
+                            "mine_type_detail": Array [],
                           },
                           Object {
                             "mine_tenure_type_code": "MIN",
+                            "mine_type_detail": Array [],
                           },
                         ],
                         "verified_status": Object {
