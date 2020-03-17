@@ -11,7 +11,7 @@ from app.api.utils.access_decorators import requires_role_view_all
 from app.api.constants import MINE_DETAILS_CSV, TIMEOUT_60_MINUTES
 
 
-class VerifyPermitResource(Resource):
+class VerifyPermitMineResource(Resource):
     @api.doc(
         description=
         'Verifies that a permit is valid for a mine based on the type of deemed authorization.'
@@ -34,31 +34,30 @@ class VerifyPermitResource(Resource):
 
             permits = Permit.find_by_permit_no_all(permit_no)
 
-            if not permits:
-                result = "Failure"
-                response_message = "NoValidMinesForPermit"
-            else:
-                for permit in permits:
-                    mine = Mine.find_by_mine_guid(permit.mine_guid)
+            for permit in permits:
+                mine = Mine.find_by_mine_guid(permit.mine_guid)
 
-                    # Mine must be operating.
-                    if mine.mine_status.mine_status_xref.mine_operation_status_code != "OP":
-                        break;
+                # Mine must be operating.
+                if mine.mine_status.mine_status_xref.mine_operation_status_code != "OP":
+                    break;
 
-                    # IP SURVEYS (Induced): Valid MMS mine types: 'CX','ES','EU'
-                    # There may be need of a check against mine_tenure_type_code IN ["MIN", "COL"] and mine_disturbance_code IN ["SUR", "UND"]
-                    # but this data is inconsistant for now. 
-                    if type_of_deemed_auth == "INDUCED" and permit_prefix not in ["CX", "M"]:
-                        break;
-                    
-                    # DRILL PROGRAM (Drill): Valid MMS mine types: 'CS','CU','MS','MU','IS','IU'
-                    if type_of_deemed_auth != "INDUCED" and permit_prefix not in ["C", "M"]:
-                        break;
+                # IP SURVEYS (Induced): Valid MMS mine types: 'CX','ES','EU'
+                # There may be need of a check against mine_tenure_type_code IN ["MIN", "COL"] and mine_disturbance_code IN ["SUR", "UND"]
+                # but this data is inconsistant for now. 
+                if type_of_deemed_auth == "INDUCED" and permit_prefix not in ["CX", "M"]:
+                    break;
                 
-                    mine_info = mine_info + mine.mine_no + ' - ' + mine.mine_name + "\r\c"
+                # DRILL PROGRAM (Drill): Valid MMS mine types: 'CS','CU','MS','MU','IS','IU'
+                if type_of_deemed_auth != "INDUCED" and permit_prefix not in ["C", "M"]:
+                    break;
+            
+                mine_info = mine_info + mine.mine_no + ' - ' + mine.mine_name + "\r\c"
 
                 if mine_info != "":
                     result = "Success"
+                else:
+                    result = "Failure"
+                    response_message = "NoValidMinesForPermit"
  
         except:
             result = "Failure"
