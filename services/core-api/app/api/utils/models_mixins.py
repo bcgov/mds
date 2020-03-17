@@ -1,4 +1,5 @@
 import decimal
+from numbers import Number
 from datetime import datetime, date
 from dateutil import parser
 from flask import current_app
@@ -108,14 +109,18 @@ class Base(db.Model):
         editable_columns = [
             c for c in model.columns if c.name not in [pk.name for pk in model.primary_key]
         ]
+
         if not _edit_key:
             if not self._edit_key:
                 current_app.logger.warn(
                     'Model._edit_key not set, no related models will be updated')
             _edit_key = self._edit_key
+
         assert isinstance(data_dict, dict)
+
         for k, v in data_dict.items():
             current_app.logger.debug(depth * '>' + f'{type(v)}-{k}')
+
             if isinstance(v, dict):
                 if len(v.keys()) < 1:
                     continue
@@ -163,6 +168,7 @@ class Base(db.Model):
                     existing_obj = next((x for x in obj_list if all(
                         i.get(pk_name, None) == getattr(x, pk_name)
                         and getattr(x, pk_name) is not None for pk_name in pk_names)), None)
+
                     #ALWAYS NONE for new obj, except tests
                     if existing_obj:
                         current_app.logger.debug(
@@ -179,10 +185,12 @@ class Base(db.Model):
 
                         existing_obj._deep_update_from_dict(
                             i, depth=(depth + 1), _edit_key=_edit_key)
+
                     elif False:
                         #TODO check if this item is in the db, but not in json set should be removed
                         #unsure if we want this behaviour, could be done in second pass as well
                         pass
+
                     else:
                         if not hasattr(obj_list_class, '_schema'):
                             raise Exception(
@@ -198,8 +206,10 @@ class Base(db.Model):
 
             if k in [c.name for c in editable_columns]:
                 col = next(col for col in editable_columns if col.name == k)
+
                 #get column definition for
                 current_app.logger.debug(depth * ' ' + f'updating {self}.{k}={v}')
+
                 if (type(col.type) == UUID):
                     #UUID does not implement python_type, manual check
                     assert isinstance(v, (UUID, str))
@@ -214,17 +224,19 @@ class Base(db.Model):
                         #json value is string, if expecting datetime in that column, convert here
                         if v:
                             setattr(self, k, parser.parse(v))
-                        else:
+                        #values that are considered null
+                        elif v in [None, '']:
                             setattr(self, k, None)
                         continue
 
                     if py_type == decimal.Decimal:
-                        if v:
+                        if v or isinstance(v, Number):
                             #if Decimal column, cast whatever you get to Decimal
                             dec = decimal.Decimal(v)
                             #don't care about anything more precise, protection if incoming data is float
                             setattr(self, k, dec.quantize(decimal.Decimal('.0000001')))
-                        else:
+                        #values that are considered null
+                        elif v in [None, '']:
                             setattr(self, k, None)
                         continue
 
