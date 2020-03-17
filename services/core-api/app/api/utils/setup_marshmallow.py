@@ -24,6 +24,7 @@ from app.api.now_submissions import models as sub_models
 from app.api.utils.models_mixins import AuditMixin
 from app.api.utils.static_data import setup_static_data
 from app.api.utils.field_template import FieldTemplate
+from app.api.securities.models.bond import Bond
 from app.api.constants import STATIC_DATA
 
 
@@ -71,8 +72,9 @@ def setup_schema(Base, session):
     inspired by: https://marshmallow-sqlalchemy.readthedocs.io/en/latest/recipes.html#automatically-generating-schemas-for-sqlalchemy-models
     """
     def setup_schema_fn():
-        for class_ in ActivityDetailBase.__subclasses__() + [Equipment, NOWApplicationDocumentXref
-                                                             ] + sub_models.model_list:
+        for class_ in ActivityDetailBase.__subclasses__() + [
+                Equipment, NOWApplicationDocumentXref, Bond
+        ] + sub_models.model_list:
             if hasattr(class_, "__tablename__"):
                 try:
                     if class_.__name__.endswith("Schema"):
