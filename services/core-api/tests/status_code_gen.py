@@ -6,6 +6,8 @@ from app.api.incidents.models.mine_incident_status_code import MineIncidentStatu
 from app.api.incidents.models.mine_incident_document_type_code import MineIncidentDocumentTypeCode
 from app.api.mines.region.models.region import MineRegionCode
 from app.api.mines.permits.permit.models.permit_status_code import PermitStatusCode
+from app.api.securities.models.bond_status import BondStatus
+from app.api.securities.models.bond_type import BondType
 from app.api.mines.mine.models.mine_tenure_type_code import MineTenureTypeCode
 from app.api.mines.mine.models.mine_commodity_code import MineCommodityCode
 from app.api.mines.mine.models.mine_disturbance_code import MineDisturbanceCode
@@ -32,6 +34,14 @@ def RandomMineRegionCode():
 
 def RandomPermitStatusCode():
     return random.choice([x.permit_status_code for x in db.session.query(PermitStatusCode).all()])
+
+
+def RandomBondStatusCode():
+    return random.choice([x.bond_status_code for x in BondStatus.get_active()])
+
+
+def RandomBondTypeCode():
+    return random.choice([x.bond_type_code for x in BondType.get_active()])
 
 
 def RandomTenureTypeCode():
