@@ -44,15 +44,15 @@ NOW_APPLICATION_ACTIVITY_DETAIL_BASE = api.model(
     'NOWApplicationActivityDetailBase', {
         'activity_detail_id': fields.Integer,
         'activity_type_description': fields.String,
-        'disturbed_area': fields.Fixed,
-        'timber_volume': fields.Fixed,
+        'disturbed_area': fields.Fixed(decimals=2),
+        'timber_volume': fields.Fixed(decimals=2),
         'number_of_sites': fields.Integer,
         'width': fields.Integer,
         'length': fields.Integer,
         'depth': fields.Integer,
         'height': fields.Integer,
         'quantity': fields.Integer,
-        'incline': fields.Fixed,
+        'incline': fields.Fixed(decimals=2),
         'incline_unit_type_code': fields.String,
         'cut_line_length': fields.Integer,
         'water_quantity': fields.Integer,
@@ -69,8 +69,8 @@ NOW_APPLICATION_ACTIVITY_DETAIL_BASE = api.model(
 NOW_APPLICATION_ACTIVITY_SUMMARY_BASE = api.model(
     'NOWApplicationActivitySummaryBase', {
         'reclamation_description': fields.String,
-        'reclamation_cost': fields.Fixed,
-        'total_disturbed_area': fields.Fixed,
+        'reclamation_cost': fields.Fixed(decimals=2),
+        'total_disturbed_area': fields.Fixed(decimals=2),
         'total_disturbed_area_unit_type_code': fields.String,
         'equipment': fields.List(fields.Nested(NOW_APPLICATION_EQUIPMENT))
     })
@@ -119,7 +119,7 @@ NOW_APPLICATION_PLACER_OPS = api.inherit(
     'NOWApplicationPlacerOperations', NOW_APPLICATION_ACTIVITY_SUMMARY_BASE, {
         'is_underground': fields.Boolean,
         'is_hand_operation': fields.Boolean,
-        'reclamation_area': fields.Fixed,
+        'reclamation_area':fields.Fixed(decimals=2),
         'reclamation_unit_type_code': fields.String,
         'proposed_production': fields.String,
         'details': fields.List(fields.Nested(NOW_APPLICATION_ACTIVITY_DETAIL_BASE, skip_none=True)),
@@ -127,10 +127,10 @@ NOW_APPLICATION_PLACER_OPS = api.inherit(
 
 NOW_APPLICATION_SAND_AND_GRAVEL = api.inherit(
     'NOWApplicationSandAndGravel', NOW_APPLICATION_ACTIVITY_SUMMARY_BASE, {
-        'average_overburden_depth': fields.Fixed,
+        'average_overburden_depth': fields.Fixed(decimals=2),
         'average_overburden_depth_unit_type_code': fields.String,
         'average_top_soil_depth_unit_type_code': fields.String,
-        'average_top_soil_depth': fields.Fixed,
+        'average_top_soil_depth': fields.Fixed(decimals=2),
         'stability_measures_description': fields.String,
         'is_agricultural_land_reserve': fields.Boolean,
         'agri_lnd_rsrv_permit_application_number': fields.String,
@@ -142,7 +142,7 @@ NOW_APPLICATION_SAND_AND_GRAVEL = api.inherit(
         'total_mineable_reserves_unit_type_code': fields.String,
         'total_annual_extraction': fields.Integer,
         'total_annual_extraction_unit_type_code': fields.String,
-        'average_groundwater_depth': fields.Fixed,
+        'average_groundwater_depth': fields.Fixed(decimals=2),
         'has_groundwater_from_existing_area': fields.Boolean,
         'has_groundwater_from_test_pits': fields.Boolean,
         'has_groundwater_from_test_wells': fields.Boolean,
@@ -213,8 +213,8 @@ NOW_APPLICATION_WATER_SUPPLY_DETAIL = api.inherit(
         'supply_source_description': fields.String,
         'supply_source_type': fields.String,
         'water_use_description': fields.String,
-        'estimate_rate': fields.Fixed,
-        'pump_size': fields.Fixed,
+        'estimate_rate': fields.Fixed(decimals=2),
+        'pump_size': fields.Fixed(decimals=2),
         'intake_location': fields.String
     })
 

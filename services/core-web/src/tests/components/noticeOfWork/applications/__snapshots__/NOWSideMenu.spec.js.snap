@@ -11,86 +11,92 @@ exports[`NOWSideMenu renders properly 1`] = `
     showInkInFixed={false}
   >
     <AnchorLink
+      className="now-menu-link"
       href="#application-info"
       title="Application Info"
     />
     <AnchorLink
-      href="#securities"
-      title="Securities"
-    />
-    <AnchorLink
+      className="now-menu-link"
       href="#contacts"
       title="Contacts"
     />
     <AnchorLink
+      className="now-menu-link"
       href="#access"
       title="Access"
     />
     <AnchorLink
+      className="now-menu-link"
       href="#state-of-land"
       title="State of Land"
     />
     <AnchorLink
+      className="now-menu-link"
       href="#first-aid"
       title="First Aid"
     />
     <AnchorLink
+      className="now-menu-link"
       href="#reclamation"
       title="Summary of Reclamation"
     />
     <AnchorLink
+      className="now-menu-link"
       href="#exploration-access"
       title="Access Roads, Trails, Helipads, Air Strips, Boat Ramps"
     />
     <AnchorLink
+      className="now-menu-link"
       href="#blasting-operation"
       title="Blasting"
     />
     <AnchorLink
+      className="now-menu-link"
       href="#camps"
       title="Camps, Buildings, Staging Areas, Fuel/Lubricant Storage"
     />
     <AnchorLink
+      className="now-menu-link"
       href="#cut-lines-polarization-survey"
       title="Cut Lines and Induced Polarization Survey"
     />
     <AnchorLink
+      className="now-menu-link"
       href="#exploration-surface-drilling"
       title="Exploration Surface Drilling"
     />
     <AnchorLink
+      className="now-menu-link"
       href="#mechanical-trenching"
       title="Mechanical Trenching / Test Pits"
     />
     <AnchorLink
+      className="now-menu-link"
       href="#settling-pond"
       title="Settling Ponds"
     />
     <AnchorLink
-      href="#surface-bulk-sample"
-      title="Surface Bulk Sample"
-    />
-    <AnchorLink
+      className="now-menu-link"
       href="#underground-exploration"
       title="Underground Exploration"
     />
     <AnchorLink
-      href="#sand-and-gravel"
-      title="Sand and Gravel / Quarry Operations"
-    />
-    <AnchorLink
+      className="now-menu-link"
       href="#placer-operation"
       title="Placer Operations"
     />
     <AnchorLink
+      className="now-menu-link"
       href="#water-supply"
       title="Water Supply"
     />
     <AnchorLink
+      className="now-menu-link"
       href="#submission-documents"
       title="Submission Documents"
     />
     <AnchorLink
+      className="now-menu-link"
       href="#additional-documents"
       title="Additional Documents"
     />
