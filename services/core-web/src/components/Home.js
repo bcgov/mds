@@ -85,12 +85,6 @@ export class Home extends Component {
     this.props.dispatch(showLoading());
     this.props.dispatch(loadBulkStaticContent());
     this.props.dispatch(fetchInspectors());
-    //  this.props.dispatch(fetchMineDisturbanceOptions());
-
-    // const staticContentActionCreators = Object.getOwnPropertyNames(staticContent).filter(
-    //   (property) => typeof staticContent[property] === "function"
-    // );
-    // staticContentActionCreators.forEach((action) => this.props.dispatch(staticContent[action]()));
   };
 
   render() {
