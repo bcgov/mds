@@ -82,7 +82,10 @@ exports[`UndergroundExploration renders properly 1`] = `
         className="field-title"
       >
         Proposed Activities
-        <NOWFieldOriginTooltip />
+        <CoreTooltip
+          title={null}
+          type="now_field_origin"
+        />
       </div>
       <Field
         component={[Function]}

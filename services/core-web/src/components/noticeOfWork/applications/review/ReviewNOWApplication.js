@@ -25,7 +25,7 @@ import ReclamationSummary from "./activities/ReclamationSummary";
 import NOWDocuments from "@/components/noticeOfWork/applications//NOWDocuments";
 import NOWSubmissionDocuments from "@/components/noticeOfWork/applications//NOWSubmissionDocuments";
 import ReviewNOWContacts from "./ReviewNOWContacts";
-import NOWFieldOriginTooltip from "./NOWFieldOriginTooltip";
+import CoreTooltip from "@/components/common/CoreTooltip";
 
 /**
  * @constant ReviewNOWApplication renders edit/view for the NoW Application review step
@@ -61,7 +61,7 @@ export const ReviewNOWApplication = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Permit Status
-            <NOWFieldOriginTooltip />
+            <CoreTooltip type="now_field_origin" />
           </div>
           <Field id="" name="" component={RenderField} disabled />
         </Col>
@@ -74,7 +74,7 @@ export const ReviewNOWApplication = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Individual or Company/Organization?
-            <NOWFieldOriginTooltip />
+            <CoreTooltip type="now_field_origin" />
           </div>
           <Field id="" name="" component={RenderField} disabled />
         </Col>
@@ -93,7 +93,7 @@ export const ReviewNOWApplication = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Relationship to Individual or Company/Organization?
-            <NOWFieldOriginTooltip />
+            <CoreTooltip title="now_field_origin" />
           </div>
           <Field id="" name="" component={RenderField} disabled />
         </Col>
@@ -150,7 +150,7 @@ export const ReviewNOWApplication = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Term of Application
-            <NOWFieldOriginTooltip />
+            <CoreTooltip type="now_field_origin" />
           </div>
           <Field id="" name="" component={RenderField} disabled validate={[number]} />
         </Col>
@@ -227,7 +227,7 @@ export const ReviewNOWApplication = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Do you have the required access authorizations in place?
-            <NOWFieldOriginTooltip />
+            <CoreTooltip type="now_field_origin" />
           </div>
           <Field
             id="has_req_access_authorizations"
@@ -242,7 +242,7 @@ export const ReviewNOWApplication = (props) => {
           <div className="field-title">
             Do you need to build a road, create stream crossings or other surface disturbance that
             will not be on your tenure?
-            <NOWFieldOriginTooltip />
+            <CoreTooltip type="now_field_origin" />
           </div>
           <Field
             id="has_surface_disturbance_outside_tenure"
@@ -255,7 +255,7 @@ export const ReviewNOWApplication = (props) => {
           <div className="field-title--light">
             Please provide the type and authorization numbers for each access authorization
             application or exemption to use the road(s).
-            <NOWFieldOriginTooltip />
+            <CoreTooltip type="now_field_origin" />
           </div>
           <Field
             id="req_access_authorization_numbers"
@@ -269,7 +269,7 @@ export const ReviewNOWApplication = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Access presently gated
-            <NOWFieldOriginTooltip />
+            <CoreTooltip type="now_field_origin" />
           </div>
           <Field
             id="is_access_gated"
@@ -281,7 +281,7 @@ export const ReviewNOWApplication = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Key provided to the inspector
-            <NOWFieldOriginTooltip />
+            <CoreTooltip type="now_field_origin" />
           </div>
           <Field
             id="has_key_for_inspector"
@@ -302,7 +302,7 @@ export const ReviewNOWApplication = (props) => {
           <Col md={12} sm={24}>
             <div className="field-title">
               Present condition of the land
-              <NOWFieldOriginTooltip />
+              <CoreTooltip type="now_field_origin" />
             </div>
             <Field
               id="present_land_condition_description"
@@ -314,7 +314,7 @@ export const ReviewNOWApplication = (props) => {
           <Col md={12} sm={24}>
             <div className="field-title">
               Current means of access
-              <NOWFieldOriginTooltip />
+              <CoreTooltip type="now_field_origin" />
             </div>
             <Field
               id="means_of_access_description"
@@ -328,7 +328,7 @@ export const ReviewNOWApplication = (props) => {
           <Col md={12} sm={24}>
             <div className="field-title">
               Physiography
-              <NOWFieldOriginTooltip />
+              <CoreTooltip type="now_field_origin" />
             </div>
             <Field
               id="physiography_description"
@@ -340,7 +340,7 @@ export const ReviewNOWApplication = (props) => {
           <Col md={12} sm={24}>
             <div className="field-title">
               Old Equipment
-              <NOWFieldOriginTooltip />
+              <CoreTooltip type="now_field_origin" />
             </div>
             <Field
               id="old_equipment_description"
@@ -354,7 +354,7 @@ export const ReviewNOWApplication = (props) => {
           <Col md={12} sm={24}>
             <div className="field-title">
               Type of vegetation
-              <NOWFieldOriginTooltip />
+              <CoreTooltip type="now_field_origin" />
             </div>
             <Field
               id="type_of_vegetation_description"
@@ -366,7 +366,7 @@ export const ReviewNOWApplication = (props) => {
           <Col md={12} sm={24}>
             <div className="field-title">
               Recreational trail/use
-              <NOWFieldOriginTooltip />
+              <CoreTooltip type="now_field_origin" />
             </div>
             <Field
               id="recreational_trail_use_description"
@@ -393,7 +393,7 @@ export const ReviewNOWApplication = (props) => {
           <Col md={12} sm={24}>
             <div className="field-title">
               Activities in park
-              <NOWFieldOriginTooltip />
+              <CoreTooltip type="now_field_origin" />
             </div>
             <Field
               id="has_activity_in_park"
@@ -407,7 +407,7 @@ export const ReviewNOWApplication = (props) => {
           <Col md={12} sm={24}>
             <div className="field-title">
               Proposed activities on private land
-              <NOWFieldOriginTooltip />
+              <CoreTooltip type="now_field_origin" />
             </div>
             <Field
               id="is_on_private_land"
@@ -419,7 +419,7 @@ export const ReviewNOWApplication = (props) => {
           <Col md={12} sm={24}>
             <div className="field-title--light">
               Do you have authorization by the Lieutenant Governor in Council?
-              <NOWFieldOriginTooltip />
+              <CoreTooltip type="now_field_origin" />
             </div>
             <Field
               id="has_auth_lieutenant_gov_council"
@@ -447,7 +447,7 @@ export const ReviewNOWApplication = (props) => {
             />
             <div className="field-title--light">
               Plan to protect the archaeological site
-              <NOWFieldOriginTooltip />
+              <CoreTooltip type="now_field_origin" />
             </div>
             <Field
               id="arch_site_protection_plan"
@@ -465,7 +465,7 @@ export const ReviewNOWApplication = (props) => {
             <div className="field-title">
               Have you shared information and engaged with First Nations in the area of the proposed
               activity?
-              <NOWFieldOriginTooltip />
+              <CoreTooltip type="now_field_origin" />
             </div>
             <Field
               id="has_shared_info_with_fn"
@@ -478,7 +478,7 @@ export const ReviewNOWApplication = (props) => {
             <div className="field-title">
               As a result of the engagement, are you aware of any cultural heritage resources in the
               area where the work is proposed?
-              <NOWFieldOriginTooltip />
+              <CoreTooltip type="now_field_origin" />
             </div>
             <Field
               id="has_fn_cultural_heritage_sites_in_area"
@@ -492,7 +492,7 @@ export const ReviewNOWApplication = (props) => {
           <Col md={12} sm={24}>
             <div className="field-title">
               Describe your First Nations engagement activities
-              <NOWFieldOriginTooltip />
+              <CoreTooltip type="now_field_origin" />
             </div>
             <Field
               id="fn_engagement_activities"
@@ -504,7 +504,7 @@ export const ReviewNOWApplication = (props) => {
           <Col md={12} sm={24}>
             <div className="field-title">
               Describe any cultural heritage resources in the area
-              <NOWFieldOriginTooltip />
+              <CoreTooltip type="now_field_origin" />
             </div>
             <Field
               id="cultural_heritage_description"
@@ -548,7 +548,7 @@ export const ReviewNOWApplication = (props) => {
       <Col md={12} sm={24}>
         <div className="field-title">
           Description of Work
-          <NOWFieldOriginTooltip />
+          <CoreTooltip type="now_field_origin" />
         </div>
         <Field
           id="work_plan"
@@ -566,7 +566,7 @@ export const ReviewNOWApplication = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Total merchantable timber volume
-            <NOWFieldOriginTooltip />
+            <CoreTooltip type="now_field_origin" />
           </div>
           <Field id="" name="" component={RenderField} disabled />
         </Col>

@@ -10,7 +10,7 @@ import RenderField from "@/components/common/RenderField";
 import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
 import RenderRadioButtons from "@/components/common/RenderRadioButtons";
 import CustomPropTypes from "@/customPropTypes";
-import NOWFieldOriginTooltip from "../NOWFieldOriginTooltip";
+import CoreTooltip from "@/components/common/CoreTooltip";
 
 const propTypes = {
   isViewMode: PropTypes.bool.isRequired,
@@ -239,7 +239,7 @@ export const SettlingPonds = (props) => {
           <div className="field-title">
             Describe the waste water treatment facility (settling pond design, recycling, distance
             from creek, etc.)
-            <NOWFieldOriginTooltip />
+            <CoreTooltip type="now_field_origin" />
           </div>
           <Field
             id="wastewater_facility_description"
@@ -269,7 +269,7 @@ export const SettlingPonds = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Disposal of fines from clean out (i.e. use as a subsoil material)
-            <NOWFieldOriginTooltip />
+            <CoreTooltip type="now_field_origin" />
           </div>
           <Field
             id="disposal_from_clean_out"
