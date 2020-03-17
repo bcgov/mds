@@ -1,4 +1,4 @@
-import uuid, pytest, decimal
+import uuid, pytest, decimal, math
 
 from app.extensions import jwt, api
 from app.api.utils.models_mixins import DictLoadingError
@@ -187,3 +187,36 @@ def test_update_new_item_in_list(db_session):
     mine = Mine.query.filter_by(mine_guid=mine.mine_guid).first()
     assert len(mine.mine_permit) == 6
     assert all(len(p.permit_amendments) > 0 for p in mine.mine_permit)
+
+
+def test_update_decimal_with_various_types(db_session):
+    mine = MineFactory()
+
+    #test updating decimal value with string fails
+    mine_dict = {'latitude': "foo"}
+    assert pytest.raises(
+        decimal.InvalidOperation,
+        mine.deep_update_from_dict,
+        mine_dict,
+        _edit_key=PERMIT_EDIT_GROUP)
+
+    #test updating decimal value with empty list fails
+    mine_dict = {'latitude': []}
+    assert pytest.raises(
+        AttributeError, mine.deep_update_from_dict, mine_dict, _edit_key=PERMIT_EDIT_GROUP)
+
+    #test updating decimal with empty string passes (considered null)
+    mine_dict = {'latitude': ''}
+    mine.deep_update_from_dict(mine_dict, _edit_key=PERMIT_EDIT_GROUP)
+    assert mine.latitude is None
+
+    #test updating decimal with null passes
+    mine_dict = {'latitude': None}
+    mine.deep_update_from_dict(mine_dict, _edit_key=PERMIT_EDIT_GROUP)
+    assert mine.latitude is None
+
+    #test updating decimal with decimal passes
+    latitude = decimal.Decimal(12.3456)
+    mine_dict = {'latitude': latitude}
+    mine.deep_update_from_dict(mine_dict, _edit_key=PERMIT_EDIT_GROUP)
+    assert math.isclose(mine.latitude, latitude, rel_tol=1e-5)
