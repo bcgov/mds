@@ -189,4 +189,5 @@ export const NRIS_DOCUMENT_FILE_GET_URL = (externalId, inspectionId, token) =>
   `/compliance/inspection/${inspectionId}/document/${externalId}?${queryString.stringify(token)}`;
 
 export const MINE_BONDS = (mineGuid) => `/bonds?mine_guid=${mineGuid}/`;
-export const MINE_BOND = (mineGuid, bondGuid) => `/bonds?mine_guid=${mineGuid}/${bondGuid}`;
+export const PERMIT_BOND = () => `/bonds`;
+export const BOND = (bondGuid) => `/bond/${bondGuid}`;

@@ -8,10 +8,10 @@ import { ENVIRONMENT } from "../constants/environment";
 import { createRequestHeader } from "../utils/RequestHeaders";
 import CustomAxios from "../customAxios";
 
-export const fetchMineBonds = (permitGuid) => (dispatch) => {
+export const fetchMineBonds = (mineGuid) => (dispatch) => {
   dispatch(request(reducerTypes.GET_MINE_BONDS));
   return CustomAxios()
-    .get(`${ENVIRONMENT.apiUrl}${API.MINE_BONDS(permitGuid)}`, createRequestHeader())
+    .get(`${ENVIRONMENT.apiUrl}${API.MINE_BONDS(mineGuid)}`, createRequestHeader())
     .then((response) => {
       dispatch(success(reducerTypes.GET_MINE_BONDS));
       dispatch(securitiesActions.storeMineBonds(response.data));
@@ -20,17 +20,17 @@ export const fetchMineBonds = (permitGuid) => (dispatch) => {
     .catch(() => dispatch(error(reducerTypes.GET_MINE_BONDS)));
 };
 
-export const fetchMineBondsById = (permitGuid, bondGuid) => (dispatch) => {
-  dispatch(request(reducerTypes.GET_MINE_BOND));
+export const fetchMineBondsById = (bondGuid) => (dispatch) => {
+  dispatch(request(reducerTypes.GET_BOND));
   dispatch(showLoading("modal"));
   return CustomAxios()
-    .get(`${ENVIRONMENT.apiUrl}${API.MINE_BOND(permitGuid, bondGuid)}`, createRequestHeader())
+    .get(`${ENVIRONMENT.apiUrl}${API.BOND(bondGuid)}`, createRequestHeader())
     .then((response) => {
-      dispatch(success(reducerTypes.GET_MINE_BOND));
+      dispatch(success(reducerTypes.GET_BOND));
       dispatch(securitiesActions.storeBond(response.data));
       return response;
     })
-    .catch(() => dispatch(error(reducerTypes.GET_MINE_BOND)))
+    .catch(() => dispatch(error(reducerTypes.GET_BOND)))
     .finally(() => dispatch(hideLoading("modal")));
 };
 
@@ -38,7 +38,7 @@ export const createBond = (permitGuid, payload) => (dispatch) => {
   dispatch(request(reducerTypes.CREATE_BOND));
   dispatch(showLoading("modal"));
   return CustomAxios()
-    .post(ENVIRONMENT.apiUrl + API.MINE_BONDS(permitGuid), payload, createRequestHeader())
+    .post(ENVIRONMENT.apiUrl + API.PERMIT_BOND(permitGuid), payload, createRequestHeader())
     .then((response) => {
       notification.success({
         message: "Successfully added a new bond.",
@@ -51,11 +51,11 @@ export const createBond = (permitGuid, payload) => (dispatch) => {
     .finally(() => dispatch(hideLoading("modal")));
 };
 
-export const updateBond = (permitGuid, bondGuid, payload) => (dispatch) => {
+export const updateBond = (bondGuid, payload) => (dispatch) => {
   dispatch(request(reducerTypes.CREATE_BOND));
   dispatch(showLoading("modal"));
   return CustomAxios()
-    .post(ENVIRONMENT.apiUrl + API.MINE_BOND(permitGuid, bondGuid), payload, createRequestHeader())
+    .post(ENVIRONMENT.apiUrl + API.BOND(bondGuid), payload, createRequestHeader())
     .then((response) => {
       notification.success({
         message: "Successfully updated the bond record.",
