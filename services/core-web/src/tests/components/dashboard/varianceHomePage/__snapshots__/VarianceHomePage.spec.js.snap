@@ -69,6 +69,34 @@ exports[`VarianceHomePage renders properly 1`] = `
               ],
             }
           }
+          filterVarianceStatusOptions={
+            Array [
+              Object {
+                "description": "Ready for Decision",
+                "variance_application_status_code": "RFD",
+              },
+              Object {
+                "description": "Withdrawn",
+                "variance_application_status_code": "WIT",
+              },
+              Object {
+                "description": "In Review",
+                "variance_application_status_code": "REV",
+              },
+              Object {
+                "description": "Not Applicable",
+                "variance_application_status_code": "NAP",
+              },
+              Object {
+                "description": "Approved",
+                "variance_application_status_code": "APP",
+              },
+              Object {
+                "description": "Denied",
+                "variance_application_status_code": "DEN",
+              },
+            ]
+          }
           handleVarianceSearch={[Function]}
           initialValues={
             Object {
