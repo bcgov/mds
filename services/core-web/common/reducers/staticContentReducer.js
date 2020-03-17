@@ -227,11 +227,11 @@ export const getNoticeOfWorkApplicationPermitTypeOptions = (state) =>
 export const getNoticeOfWorkApplicationReviewOptions = (state) =>
   state[STATIC_CONTENT].noticeOfWorkApplicationReviewOptions;
 
-const isStaticContentLoaded = (state) => true;
-// Object.keys(state)
-//   // eslint-disable-next-line no-prototype-builtins
-//   .filter((p) => state.hasOwnProperty(p) && Array.isArray(state[p]))
-//   .every((p) => state[p].length > 0);
+const isStaticContentLoaded = (state) =>
+  Object.keys(state)
+    // eslint-disable-next-line no-prototype-builtins
+    .filter((p) => state.hasOwnProperty(p) && Array.isArray(state[p]))
+    .every((p) => state[p].length > 0);
 
 export const getStaticContentLoadingIsComplete = (state) =>
   isStaticContentLoaded(state[STATIC_CONTENT]);
