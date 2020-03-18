@@ -604,7 +604,8 @@ VALUES
     ('PUB', 'Public Comment',true,'system-mds','system-mds'),
     ('CAL', 'Client Acknowledgement Letter', true, 'system-mds', 'system-mds'),
 	('WDL', 'Withdrawl Letter', true, 'system-mds', 'system-mds'),
-	('RJL', 'Rejection Letter', true, 'system-mds', 'system-mds')
+	('RJL', 'Rejection Letter', true, 'system-mds', 'system-mds'),
+    ('SCD', 'Security Calculation Document', true, 'system-mds', 'system-mds')
 on conflict do nothing;
 
 INSERT INTO now_application_review_type(
