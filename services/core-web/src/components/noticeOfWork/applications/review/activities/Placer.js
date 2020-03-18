@@ -238,7 +238,7 @@ export const Placer = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Proposed Production
-            <CoreTooltip type="now_field_origin" />
+            <CoreTooltip type="now-field-origin" />
           </div>
           <Field
             id="proposed_production"

@@ -272,7 +272,7 @@ export const UndergroundExploration = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Proposed Activities
-            <CoreTooltip type="now_field_origin" />
+            <CoreTooltip type="now-field-origin" />
           </div>
           <Field
             id="proposed_activity"

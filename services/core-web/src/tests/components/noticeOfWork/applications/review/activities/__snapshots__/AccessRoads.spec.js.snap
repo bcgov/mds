@@ -57,7 +57,7 @@ exports[`AccessRoads renders properly 1`] = `
         Are you proposing any bridges, culverts, and crossings?
         <CoreTooltip
           title={null}
-          type="now_field_origin"
+          type="now-field-origin"
         />
       </div>
       <Field
@@ -72,7 +72,7 @@ exports[`AccessRoads renders properly 1`] = `
         Describe the changes and reference the locations need on map needed later in the application.
         <CoreTooltip
           title={null}
-          type="now_field_origin"
+          type="now-field-origin"
         />
       </div>
       <Field

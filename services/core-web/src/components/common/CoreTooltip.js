@@ -4,7 +4,7 @@ import { Tooltip } from "antd";
 import { INFO_CIRCLE } from "@/constants/assets";
 
 const types = {
-  now_field_origin:
+  "now-field-origin":
     "This field is not being sent by NROS or vFCBC. Open the original PDF to see the data.",
 };
 

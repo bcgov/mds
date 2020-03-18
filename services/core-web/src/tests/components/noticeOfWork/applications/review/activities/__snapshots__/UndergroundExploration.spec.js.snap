@@ -84,7 +84,7 @@ exports[`UndergroundExploration renders properly 1`] = `
         Proposed Activities
         <CoreTooltip
           title={null}
-          type="now_field_origin"
+          type="now-field-origin"
         />
       </div>
       <Field

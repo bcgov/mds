@@ -183,7 +183,7 @@ export const AccessRoads = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Are you proposing any bridges, culverts, and crossings?
-            <CoreTooltip type="now_field_origin" />
+            <CoreTooltip type="now-field-origin" />
           </div>
           <Field
             id="has_proposed_bridges_or_culverts"
@@ -194,7 +194,7 @@ export const AccessRoads = (props) => {
           <div className="field-title">
             Describe the changes and reference the locations need on map needed later in the
             application.
-            <CoreTooltip type="now_field_origin" />
+            <CoreTooltip type="now-field-origin" />
           </div>
           <Field
             id="bridge_culvert_crossing_description"

@@ -103,7 +103,7 @@ exports[`Placer renders properly 1`] = `
         Proposed Production
         <CoreTooltip
           title={null}
-          type="now_field_origin"
+          type="now-field-origin"
         />
       </div>
       <Field

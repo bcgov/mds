@@ -55,7 +55,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 Permit Status
                 <CoreTooltip
                   title={null}
-                  type="now_field_origin"
+                  type="now-field-origin"
                 />
               </div>
               <Field
@@ -95,7 +95,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 Individual or Company/Organization?
                 <CoreTooltip
                   title={null}
-                  type="now_field_origin"
+                  type="now-field-origin"
                 />
               </div>
               <Field
@@ -134,7 +134,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
               >
                 Relationship to Individual or Company/Organization?
                 <CoreTooltip
-                  title="now_field_origin"
+                  title="now-field-origin"
                   type={null}
                 />
               </div>
@@ -267,7 +267,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 Term of Application
                 <CoreTooltip
                   title={null}
-                  type="now_field_origin"
+                  type="now-field-origin"
                 />
               </div>
               <Field
@@ -481,7 +481,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 Do you have the required access authorizations in place?
                 <CoreTooltip
                   title={null}
-                  type="now_field_origin"
+                  type="now-field-origin"
                 />
               </div>
               <Field
@@ -505,7 +505,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 Do you need to build a road, create stream crossings or other surface disturbance that will not be on your tenure?
                 <CoreTooltip
                   title={null}
-                  type="now_field_origin"
+                  type="now-field-origin"
                 />
               </div>
               <Field
@@ -525,7 +525,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 Please provide the type and authorization numbers for each access authorization application or exemption to use the road(s).
                 <CoreTooltip
                   title={null}
-                  type="now_field_origin"
+                  type="now-field-origin"
                 />
               </div>
               <Field
@@ -549,7 +549,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 Access presently gated
                 <CoreTooltip
                   title={null}
-                  type="now_field_origin"
+                  type="now-field-origin"
                 />
               </div>
               <Field
@@ -569,7 +569,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 Key provided to the inspector
                 <CoreTooltip
                   title={null}
-                  type="now_field_origin"
+                  type="now-field-origin"
                 />
               </div>
               <Field
@@ -606,7 +606,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                   Present condition of the land
                   <CoreTooltip
                     title={null}
-                    type="now_field_origin"
+                    type="now-field-origin"
                   />
                 </div>
                 <Field
@@ -626,7 +626,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                   Current means of access
                   <CoreTooltip
                     title={null}
-                    type="now_field_origin"
+                    type="now-field-origin"
                   />
                 </div>
                 <Field
@@ -650,7 +650,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                   Physiography
                   <CoreTooltip
                     title={null}
-                    type="now_field_origin"
+                    type="now-field-origin"
                   />
                 </div>
                 <Field
@@ -670,7 +670,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                   Old Equipment
                   <CoreTooltip
                     title={null}
-                    type="now_field_origin"
+                    type="now-field-origin"
                   />
                 </div>
                 <Field
@@ -694,7 +694,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                   Type of vegetation
                   <CoreTooltip
                     title={null}
-                    type="now_field_origin"
+                    type="now-field-origin"
                   />
                 </div>
                 <Field
@@ -714,7 +714,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                   Recreational trail/use
                   <CoreTooltip
                     title={null}
-                    type="now_field_origin"
+                    type="now-field-origin"
                   />
                 </div>
                 <Field
@@ -763,7 +763,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                   Activities in park
                   <CoreTooltip
                     title={null}
-                    type="now_field_origin"
+                    type="now-field-origin"
                   />
                 </div>
                 <Field
@@ -787,7 +787,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                   Proposed activities on private land
                   <CoreTooltip
                     title={null}
-                    type="now_field_origin"
+                    type="now-field-origin"
                   />
                 </div>
                 <Field
@@ -807,7 +807,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                   Do you have authorization by the Lieutenant Governor in Council?
                   <CoreTooltip
                     title={null}
-                    type="now_field_origin"
+                    type="now-field-origin"
                   />
                 </div>
                 <Field
@@ -851,7 +851,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                   Plan to protect the archaeological site
                   <CoreTooltip
                     title={null}
-                    type="now_field_origin"
+                    type="now-field-origin"
                   />
                 </div>
                 <Field
@@ -879,7 +879,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                   Have you shared information and engaged with First Nations in the area of the proposed activity?
                   <CoreTooltip
                     title={null}
-                    type="now_field_origin"
+                    type="now-field-origin"
                   />
                 </div>
                 <Field
@@ -899,7 +899,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                   As a result of the engagement, are you aware of any cultural heritage resources in the area where the work is proposed?
                   <CoreTooltip
                     title={null}
-                    type="now_field_origin"
+                    type="now-field-origin"
                   />
                 </div>
                 <Field
@@ -923,7 +923,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                   Describe your First Nations engagement activities
                   <CoreTooltip
                     title={null}
-                    type="now_field_origin"
+                    type="now-field-origin"
                   />
                 </div>
                 <Field
@@ -943,7 +943,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                   Describe any cultural heritage resources in the area
                   <CoreTooltip
                     title={null}
-                    type="now_field_origin"
+                    type="now-field-origin"
                   />
                 </div>
                 <Field
@@ -1018,7 +1018,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
             Description of Work
             <CoreTooltip
               title={null}
-              type="now_field_origin"
+              type="now-field-origin"
             />
           </div>
           <Field
@@ -1048,7 +1048,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 Total merchantable timber volume
                 <CoreTooltip
                   title={null}
-                  type="now_field_origin"
+                  type="now-field-origin"
                 />
               </div>
               <Field

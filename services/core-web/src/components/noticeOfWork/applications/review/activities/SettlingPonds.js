@@ -239,7 +239,7 @@ export const SettlingPonds = (props) => {
           <div className="field-title">
             Describe the waste water treatment facility (settling pond design, recycling, distance
             from creek, etc.)
-            <CoreTooltip type="now_field_origin" />
+            <CoreTooltip type="now-field-origin" />
           </div>
           <Field
             id="wastewater_facility_description"
@@ -269,7 +269,7 @@ export const SettlingPonds = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Disposal of fines from clean out (i.e. use as a subsoil material)
-            <CoreTooltip type="now_field_origin" />
+            <CoreTooltip type="now-field-origin" />
           </div>
           <Field
             id="disposal_from_clean_out"

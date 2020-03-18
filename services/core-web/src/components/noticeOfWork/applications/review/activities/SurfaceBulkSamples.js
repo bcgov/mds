@@ -192,7 +192,7 @@ export const SurfaceBulkSamples = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Bed rock expansion
-            <CoreTooltip type="now_field_origin" />
+            <CoreTooltip type="now-field-origin" />
           </div>
           <Field
             id="has_bedrock_expansion"
@@ -206,7 +206,7 @@ export const SurfaceBulkSamples = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Surface water damage
-            <CoreTooltip type="now_field_origin" />
+            <CoreTooltip type="now-field-origin" />
           </div>
           <Field
             id="surface_water_damage"
@@ -219,7 +219,7 @@ export const SurfaceBulkSamples = (props) => {
           <div className="field-title">
             If the material has potential for spontaneous combustion, give details of separate
             handling.
-            <CoreTooltip type="now_field_origin" />
+            <CoreTooltip type="now-field-origin" />
           </div>
           <Field
             id="spontaneous_combustion_handling"
