@@ -1,6 +1,13 @@
 import requests, hashlib, os, mimetypes, json, datetime
 from flask import Response, current_app, stream_with_context
 from app.config import Config
+from werkzeug.exceptions import NotFound, BadRequest
+from flask import current_app, send_file, request
+
+import json
+import sys
+from app.api.now_applications.models.now_application_identity import NOWApplicationIdentity
+from app.api.services.document_manager_service import DocumentManagerService
 
 
 def sha256_checksum(filename, block_size=65536):
@@ -43,6 +50,17 @@ class DocumentGeneratorService():
 
         file_download_resp = Response(
             stream_with_context(resp.iter_content(chunk_size=2048)), headers=dict(resp.headers))
+
+        print("******************", file=sys.stderr)
+        print(data, file=sys.stderr)
+        application_guid = 'c97cf974-1336-46c3-98e1-fea28a450db3'
+        now_application_identity = NOWApplicationIdentity.find_by_guid(application_guid)
+        if not now_application_identity:
+            print("if not now_application_identity", file=sys.stderr)
+            raise NotFound('No identity record for this application guid.')
+
+        # DocumentManagerService.initializeFileUploadWithDocumentManager(
+        #     request, now_application_identity.mine, 'noticeofwork')
 
         return file_download_resp
 
