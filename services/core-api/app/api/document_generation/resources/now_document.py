@@ -1,6 +1,7 @@
 import os
 import uuid
-from flask import current_app, send_file, request
+from flask import current_app, send_file, request, Response, stream_with_context
+
 from flask_restplus import Resource, fields
 from werkzeug.exceptions import NotFound, BadRequest
 from app.extensions import api, cache
@@ -10,6 +11,7 @@ from app.api.utils.custom_reqparser import CustomReqparser
 from app.api.constants import NOW_DOCUMENT_DOWNLOAD_TOKEN
 from app.api.now_applications.models.now_application_document_type import NOWApplicationDocumentType
 from app.api.services.document_generator_service import DocumentGeneratorService
+from app.api.services.document_manager_service import DocumentManagerService
 
 
 class NoticeOfWorkDocumentResource(Resource, UserMixin):
@@ -29,7 +31,15 @@ class NoticeOfWorkDocumentResource(Resource, UserMixin):
         template_path = os.path.join(current_app.root_path,
                                      doc_type.document_template.template_file_path)
 
-        file_gen_resp = DocumentGeneratorService.generate_document_and_stream_response(
+        docgen_resp = DocumentGeneratorService.generate_document_and_stream_response(
             template_path, data=token_data['template_data'])
+
+        #duplicate and push docman
+        DocumentManagerService.pushFileToDocumentManager(
+            docgen_resp=docgen_resp, headers=request.headers)
+
+        file_gen_resp = Response(
+            stream_with_context(docgen_resp.iter_content(chunk_size=2048)),
+            headers=dict(docgen_resp.headers))
 
         return file_gen_resp

@@ -16,20 +16,22 @@ from app.constants import FILE_UPLOAD_SIZE, FILE_UPLOAD_OFFSET, FILE_UPLOAD_PATH
 class DocumentListResource(Resource):
     parser = reqparse.RequestParser(trim=True)
     parser.add_argument(
-        'folder', type=str, required=True, help='The sub folder path to store the document in.')
+        'folder', type=str, required=False, help='The sub folder path to store the document in.')
     parser.add_argument(
         'pretty_folder',
         type=str,
-        required=True,
+        required=False,
         help=
         'The sub folder path to store the document in with the guids replaced for more readable names.'
     )
     parser.add_argument(
-        'filename', type=str, required=True, help='File name + extension of the document.')
+        'filename', type=str, required=False, help='File name + extension of the document.')
 
-    @requires_any_of(
-        [MINE_EDIT, EDIT_PARTY, EDIT_PERMIT, EDIT_DO, EDIT_VARIANCE, MINESPACE_PROPONENT])
+    # TODO: Create new role
+    # @requires_any_of(
+    #     [MINE_EDIT, EDIT_PARTY, EDIT_PERMIT, EDIT_DO, EDIT_VARIANCE, MINESPACE_PROPONENT])
     def post(self):
+        current_app.logger.debug(request.headers)
         if request.headers.get('Tus-Resumable') is None:
             raise BadRequest('Received file upload for unsupported file transfer protocol')
 
@@ -42,8 +44,8 @@ class DocumentListResource(Resource):
             raise RequestEntityTooLarge(
                 f'The maximum file upload size is {max_file_size/1024/1024}MB.')
 
-        data = self.parser.parse_args()
-        filename = data.get('filename')
+        data = self.parser.parse_args()          ###
+        filename = data.get('filename') or request.headers.get('Filename')
         if not filename:
             raise BadRequest('File name cannot be empty')
         if filename.endswith(FORBIDDEN_FILETYPES):
@@ -51,10 +53,10 @@ class DocumentListResource(Resource):
 
         document_guid = str(uuid.uuid4())
         base_folder = current_app.config['UPLOADED_DOCUMENT_DEST']
-        folder = data.get('folder')
+        folder = data.get('folder') or request.headers.get('Folder')
         folder = os.path.join(base_folder, folder)
         file_path = os.path.join(folder, document_guid)
-        pretty_folder = data.get('pretty_folder')
+        pretty_folder = data.get('pretty_folder') or request.headers.get('Pretty-Folder')
         pretty_path = os.path.join(base_folder, pretty_folder, filename)
 
         try:
@@ -116,22 +118,10 @@ class DocumentListResource(Resource):
 
 @api.route(f'/documents/<string:document_guid>')
 class DocumentResource(Resource):
-    parser = reqparse.RequestParser(trim=True)
-    parser.add_argument(
-        'folder', type=str, required=True, help='The sub folder path to store the document in.')
-    parser.add_argument(
-        'pretty_folder',
-        type=str,
-        required=True,
-        help=
-        'The sub folder path to store the document in with the guids replaced for more readable names.'
-    )
-    parser.add_argument(
-        'filename', type=str, required=True, help='File name + extension of the document.')
-
-    @requires_any_of(
-        [MINE_EDIT, EDIT_PARTY, EDIT_PERMIT, EDIT_DO, EDIT_VARIANCE, MINESPACE_PROPONENT])
+    # @requires_any_of(
+    #     [MINE_EDIT, EDIT_PARTY, EDIT_PERMIT, EDIT_DO, EDIT_VARIANCE, MINESPACE_PROPONENT])
     def patch(self, document_guid):
+        current_app.logger.debug(request.headers)
         file_path = cache.get(FILE_UPLOAD_PATH(document_guid))
         if file_path is None or not os.path.lexists(file_path):
             raise NotFound('PATCH sent for a upload that does not exist')
@@ -180,9 +170,10 @@ class DocumentResource(Resource):
             'Access-Control-Expose-Headers'] = "Tus-Resumable,Tus-Version,Upload-Offset"
         return response
 
-    @requires_any_of(
-        [MINE_EDIT, EDIT_PARTY, EDIT_PERMIT, EDIT_DO, EDIT_VARIANCE, MINESPACE_PROPONENT])
+    # @requires_any_of(
+    #     [MINE_EDIT, EDIT_PARTY, EDIT_PERMIT, EDIT_DO, EDIT_VARIANCE, MINESPACE_PROPONENT])
     def head(self, document_guid):
+        current_app.logger.debug(request.headers)
         if document_guid is None:
             raise BadRequest('Must specify document GUID in HEAD')
 
@@ -201,6 +192,7 @@ class DocumentResource(Resource):
         return response
 
     def options(self, document_guid):
+        current_app.logger.debug(request.headers)
         response = make_response('', 200)
 
         if request.headers.get('Access-Control-Request-Method', None) is not None:
