@@ -623,7 +623,6 @@ class BondFactory(BaseFactory):
 
     class Params:
         payer = factory.SubFactory(PartyFactory, company=True)
-        institution = factory.SubFactory(PartyFactory, company=True)
 
     bond_guid = GUID
     amount = factory.Faker(
@@ -631,5 +630,13 @@ class BondFactory(BaseFactory):
     bond_type_code = factory.LazyFunction(RandomBondTypeCode)
     bond_status_code = factory.LazyFunction(RandomBondStatusCode)
     payer_party_guid = factory.SelfAttribute('payer.party_guid')
-    institution_party_guid = factory.SelfAttribute('institution.party_guid')
+    institution_name = factory.Faker('company')
+    institution_street = factory.Faker('street_address')
+    institution_city = factory.Faker('city')
+    institution_province = factory.Faker('state')
+    institution_postal_code = factory.Faker(
+        'bothify', text='?#?#?#', letters='ABCDEFGHIJKLMNOPQRSTUVWXYZ')
+    note = factory.Faker(
+        'paragraph', nb_sentences=3, variable_nb_sentences=True, ext_word_list=None)
+    issue_date = TODAY
     reference_number = str(random.randint(1, 9999999))
