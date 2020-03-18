@@ -23,12 +23,15 @@ class DocumentGeneratorService():
 
     @classmethod
     def generate_document_and_stream_response(cls, template_file_path, data):
+
+        # Ensure that the desired template exists
         current_app.logger.debug(f'CHECKING TEMPLATE at {template_file_path}')
         template_exists = cls._check_remote_template(template_file_path)
         if not template_exists:
             current_app.logger.debug(f'PUSHING TEMPLATE at {template_file_path}')
             cls._push_template(template_file_path)
 
+        # Create the document generation request
         file_sha = sha256_checksum(template_file_path)
         file_name = os.path.basename(template_file_path)
         file_name_no_ext = '.'.join(file_name.split('.')[:-1])
@@ -41,6 +44,7 @@ class DocumentGeneratorService():
             }
         }
 
+        # Send the document generation request
         resp = requests.post(
             url=f'{cls.document_generator_url}/{file_sha}/render',
             data=json.dumps(body),
@@ -48,20 +52,21 @@ class DocumentGeneratorService():
         if resp.status_code != 200:
             current_app.logger.warn(f'Docgen-api/generate replied with {str(resp.content)}')
 
-        file_download_resp = Response(
-            stream_with_context(resp.iter_content(chunk_size=2048)), headers=dict(resp.headers))
-
-        print("******************", file=sys.stderr)
-        print(data, file=sys.stderr)
+        # TODO: Attach this generated document to the associated NoW before sending the response
+        # First, get the NoW application identity associated with this document
         application_guid = 'c97cf974-1336-46c3-98e1-fea28a450db3'
-        now_application_identity = NOWApplicationIdentity.find_by_guid(application_guid)
+        now_application_identity = NOWApplicationIdentity.query.unbound_unsafe().get(
+            application_guid)
         if not now_application_identity:
-            print("if not now_application_identity", file=sys.stderr)
             raise NotFound('No identity record for this application guid.')
 
-        # DocumentManagerService.initializeFileUploadWithDocumentManager(
-        #     request, now_application_identity.mine, 'noticeofwork')
+        # Then, create a request to the document manager service to associate this document with the NoW
+        DocumentManagerService.initializeFileUploadWithDocumentManager(
+            request, now_application_identity.mine, 'noticeofwork')
 
+        # Create and return the file download response
+        file_download_resp = Response(
+            stream_with_context(resp.iter_content(chunk_size=2048)), headers=dict(resp.headers))
         return file_download_resp
 
     @classmethod
