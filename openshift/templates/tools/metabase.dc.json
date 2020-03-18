@@ -91,7 +91,9 @@
         }
       },
       "spec": {
-        "accessModes": ["ReadWriteOnce"],
+        "accessModes": [
+          "ReadWriteOnce"
+        ],
         "resources": {
           "requests": {
             "storage": "${METABASE_PVC_SIZE}"
@@ -156,7 +158,9 @@
             "type": "ImageChange",
             "imageChangeParams": {
               "automatic": true,
-              "containerNames": ["${NAME}"],
+              "containerNames": [
+                "${NAME}"
+              ],
               "from": {
                 "kind": "ImageStreamTag",
                 "name": "${NAME}:${VERSION}"
@@ -167,7 +171,9 @@
             "type": "ImageChange",
             "imageChangeParams": {
               "automatic": true,
-              "containerNames": ["${NAME_DATABASE}"],
+              "containerNames": [
+                "${NAME_DATABASE}"
+              ],
               "from": {
                 "kind": "ImageStreamTag",
                 "name": "${NAME_DATABASE}:${VERSION}"
@@ -303,10 +309,9 @@
                 "readinessProbe": {
                   "exec": {
                     "command": [
-                      "/bin/sh",
-                      "-i",
+                      "/bin/bash",
                       "-c",
-                      "psql -h 127.0.0.1 -U $POSTGRESQL_USER -q -d $POSTGRESQL_DATABASE -c 'SELECT 1'"
+                      "pg_isready -h localhost -p 5432"
                     ]
                   },
                   "initialDelaySeconds": 20,
