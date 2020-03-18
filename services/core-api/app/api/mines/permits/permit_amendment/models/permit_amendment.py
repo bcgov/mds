@@ -42,6 +42,8 @@ class PermitAmendment(AuditMixin, Base):
     permit_amendment_type = db.relationship('PermitAmendmentTypeCode')
     permit_amendment_type_description = association_proxy('permit_amendment_type', 'description')
 
+    security_total = db.Column(db.Numeric(16, 2))
+
     @classmethod
     def create(cls,
                permit,

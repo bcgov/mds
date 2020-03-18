@@ -1,5 +1,6 @@
 import moment from "moment";
 import { reset } from "redux-form";
+import { createNumberMask } from "redux-form-input-masks";
 
 /**
  * Helper function to clear redux form after submission
@@ -55,10 +56,39 @@ export const formatPostalCode = (code) => code && code.replace(/.{3}$/, " $&");
 export const formatTitleString = (input) =>
   input.replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
 
+export const currencyMask = createNumberMask({
+  prefix: "$",
+  suffix: "",
+  decimalPlaces: 2,
+  locale: "en-CA",
+  allowEmpty: true,
+  stringValue: false,
+});
+
 export const dateSorter = (key) => (a, b) => {
-  const a_date = a[key] == null ? moment().add(200, "y") : moment(a[key]);
-  const b_date = b[key] == null ? moment().add(200, "y") : moment(b[key]);
-  return a_date - b_date;
+  if (a[key] === b[key]) {
+    return 0;
+  }
+  if (!a[key]) {
+    return 1;
+  }
+  if (!b[key]) {
+    return -1;
+  }
+  return moment(a[key]) - moment(b[key]);
+};
+
+export const nullableStringSorter = (key) => (a, b) => {
+  if (a[key] === b[key]) {
+    return 0;
+  }
+  if (!a[key]) {
+    return 1;
+  }
+  if (!b[key]) {
+    return -1;
+  }
+  return a[key].localeCompare(b[key]);
 };
 
 // Case insensitive filter for a SELECT field by label string
@@ -206,8 +236,4 @@ export const formatComplianceCodeValueOrLabel = (code, showDescription) => {
   const formattedDescription = showDescription ? ` - ${description}` : "";
 
   return `${section}${formattedSubSection}${formattedParagraph}${formattedSubParagraph}${formattedDescription}`;
-};
-
-export const getTableHeaders = (tableColumns) => {
-  return tableColumns.map((column) => column.title);
 };

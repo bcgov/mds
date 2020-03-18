@@ -5,25 +5,9 @@ from app.api.mms_now_submissions import models as mms_sub_models
 from app.api.parties.party.models.party import Party
 from app.api.parties.party.models.address import Address
 from app.api.parties.party_appt.models.mine_party_appt_type import MinePartyAppointmentType
+from app.api.constants import type_of_permit_map, unit_type_map
 
 from flask import current_app
-
-unit_type_map = {
-    'm3': 'Meters cubed',
-    'tonnes': 'Tonne (Metric Ton 1,000 kg)',
-    'm3/year': 'Meters cubed',
-    'tonnes/year': 'Tonne (Metric Ton 1,000 kg)',
-    'Degrees': 'Degrees',
-    'Percent': 'Grade (Percent)',
-    None: None
-}
-
-type_of_permit_map = {
-    'I would like to apply for a Multi-Year permit': 'MYP',
-    'I would like to apply for a one year permit': 'OYP',
-    'I would like to apply for a Multi-Year, Area Based permit': 'MY-ABP',
-    None: None
-}
 
 
 def code_lookup(model, description, code_column_name):

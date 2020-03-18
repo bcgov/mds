@@ -93,7 +93,7 @@
       position: fixed;
       width: 100vw;
       top: -20px;
-      background-color: white;
+      background-color: $pure-white;
       z-index: 50;
     }
     &.fixed-scroll-view {
@@ -102,7 +102,7 @@
       position: fixed;
       width: 100vw;
       top: 50px;
-      background-color: white;
+      background-color: $pure-white;
       z-index: 50;
     }
   }
@@ -154,6 +154,13 @@
 
   @include tablet {
     display: none;
+  }
+}
+
+.now-menu-link {
+  a:hover {
+    text-decoration: none;
+    color: $light-violet;
   }
 }
 

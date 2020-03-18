@@ -1,8 +1,10 @@
 import { reportReducer } from "@common/reducers/reportReducer";
-import { storeMineReports } from "@common/actions/mineReportActions";
+import { storeMineReports, storeReports } from "@common/actions/mineReportActions";
 import * as Mocks from "@/tests/mocks/dataMocks";
 
 const baseExpectedValue = {
+  reports: [],
+  reportsPageData: {},
   mineReports: [],
   reportComments: [],
   commentsLoading: true,
@@ -23,6 +25,14 @@ describe("reportReducer", () => {
     const expectedValue = getBaseExpectedValue();
     expectedValue.mineReports = Mocks.MINE_REPORTS;
     const result = reportReducer(undefined, storeMineReports(Mocks.MINE_REPORT_RESPONSE));
+    expect(result).toEqual(expectedValue);
+  });
+
+  it("receives STORE_REPORTS", () => {
+    const expectedValue = getBaseExpectedValue();
+    expectedValue.reports = Mocks.REPORTS_PAGE_DATA.records;
+    expectedValue.reportsPageData = Mocks.REPORTS_PAGE_DATA;
+    const result = reportReducer(undefined, storeReports(Mocks.REPORTS_PAGE_DATA));
     expect(result).toEqual(expectedValue);
   });
 });
