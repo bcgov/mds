@@ -11,15 +11,22 @@ from app.api.utils.models_mixins import AuditMixin, Base
 
 class MineDocument(AuditMixin, Base):
     __tablename__ = 'mine_document'
+
+    mine_document_id = db.Column(
+        db.Integer, nullable=False, unique=True, server_default=FetchedValue())
     mine_document_guid = db.Column(
         UUID(as_uuid=True), primary_key=True, server_default=FetchedValue())
     mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine.mine_guid'))
     document_manager_guid = db.Column(UUID(as_uuid=True))
     document_name = db.Column(db.String(40), nullable=False)
+    document_class = db.Column(db.String, nullable=False)
+
     active_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
     upload_date = db.Column(db.Date, nullable=False, default=datetime.utcnow)
 
     mine_name = association_proxy('mine', 'mine_name')
+
+    __mapper_args__ = {'polymorphic_on': document_class}
 
     @classmethod
     def find_by_mine_guid(cls, mine_guid):
