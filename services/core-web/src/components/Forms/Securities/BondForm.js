@@ -2,14 +2,22 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Field, reduxForm } from "redux-form";
 import { Form, Button, Col, Row, Popconfirm } from "antd";
-import { required, number, postalCode, maxLength } from "@common/utils/Validate";
-import { resetForm, upperCase } from "@common/utils/helpers";
+import {
+  required,
+  number,
+  postalCode,
+  maxLength,
+  dateNotInFuture,
+  currency,
+} from "@common/utils/Validate";
+import { resetForm, upperCase , currencyMask } from "@common/utils/helpers";
 import RenderField from "@/components/common/RenderField";
 import RenderDate from "@/components/common/RenderDate";
 import PartySelectField from "@/components/common/PartySelectField";
 import * as FORM from "@/constants/forms";
 import RenderSelect from "@/components/common/RenderSelect";
 import CustomPropTypes from "@/customPropTypes";
+
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
@@ -29,7 +37,8 @@ export const BondFrom = (props) => (
             name="amount"
             label="Bond Amount*"
             component={RenderField}
-            validate={[required, number]}
+            {...currencyMask}
+            validate={[required, number, currency]}
           />
         </Form.Item>
       </Col>
@@ -64,8 +73,9 @@ export const BondFrom = (props) => (
             id="issue_date"
             name="issue_date"
             label="Issue Date"
+            showTime
             component={RenderDate}
-            validate={[required]}
+            validate={[required, dateNotInFuture]}
           />
         </Form.Item>
       </Col>
@@ -91,7 +101,12 @@ export const BondFrom = (props) => (
     <Row gutter={16}>
       <Col lg={12} md={24}>
         <Form.Item>
-          <Field id="institution" name="institution" label="Institution" component={RenderField} />
+          <Field
+            id="institution_name"
+            name="institution_name"
+            label="Institution Name"
+            component={RenderField}
+          />
         </Form.Item>
       </Col>
     </Row>
@@ -99,9 +114,9 @@ export const BondFrom = (props) => (
       <Col md={12} xs={24}>
         <Form.Item>
           <Field
-            id="address_line_1"
-            name="address_line_1"
-            label="Street Address 1"
+            id="institution_street"
+            name="institution_street"
+            label="Street Address"
             component={RenderField}
           />
         </Form.Item>
@@ -109,8 +124,8 @@ export const BondFrom = (props) => (
       <Col md={12} xs={24}>
         <Form.Item>
           <Field
-            id="city"
-            name="city"
+            id="institution_city"
+            name="institution_city"
             label="City"
             component={RenderField}
             validate={[maxLength(30)]}
@@ -122,8 +137,8 @@ export const BondFrom = (props) => (
       <Col md={12} xs={24}>
         <Form.Item>
           <Field
-            id="sub_division_code"
-            name="sub_division_code"
+            id="institution_province"
+            name="institution_province"
             label="Province"
             component={RenderSelect}
             data={props.provinceOptions}
@@ -133,8 +148,8 @@ export const BondFrom = (props) => (
       <Col md={12} xs={24}>
         <Form.Item>
           <Field
-            id="post_code"
-            name="post_code"
+            id="institution_postal_code"
+            name="institution_postal_code"
             label="Postal Code"
             placeholder="e.g xxxxxx"
             component={RenderField}
@@ -147,7 +162,7 @@ export const BondFrom = (props) => (
     <Row>
       <Col md={24}>
         <Form.Item>
-          <Field id="notes" name="notes" label="Notes" component={RenderField} />
+          <Field id="note" name="note" label="Notes" component={RenderField} />
         </Form.Item>
       </Col>
     </Row>

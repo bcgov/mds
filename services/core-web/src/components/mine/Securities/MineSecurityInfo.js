@@ -8,6 +8,7 @@ import { fetchPermits } from "@common/actionCreators/permitActionCreator";
 import { fetchMineRecordById } from "@common/actionCreators/mineActionCreator";
 import { openModal, closeModal } from "@common/actions/modalActions";
 import { getPermits } from "@common/reducers/permitReducer";
+import { getBonds } from "@common/selectors/securitiesSelectors";
 import {
   fetchMineBonds,
   fetchMineBondsById,
@@ -52,8 +53,6 @@ const defaultProps = {
 export class MineSecurityInfo extends Component {
   state = {
     expandedRowKeys: [],
-    modifiedPermits: false,
-    modifiedPermitGuid: null,
     isLoaded: false,
   };
 
@@ -80,7 +79,6 @@ export class MineSecurityInfo extends Component {
   };
 
   addBondToPermit = (values, permitGuid) => {
-    console.log(permitGuid);
     const payload = {
       bond: {
         bond_status_code: "ACT",
@@ -90,17 +88,28 @@ export class MineSecurityInfo extends Component {
     };
 
     this.props.createBond(payload).then(() => {
-      this.props.closeModal();
+      this.props.fetchMineBonds(this.props.mineGuid).then(() => {
+        this.props.closeModal();
+        this.setState({ isLoaded: true });
+      });
     });
   };
 
-  onExpand = (expanded, record) =>
+  onExpand = (expanded, record) => {
+    console.log(expanded);
+    console.log(record);
+    console.log("IM GETTING CALLED");
     this.setState((prevState) => {
       const expandedRowKeys = expanded
-        ? prevState.expandedRowKeys.concat(record.key)
-        : prevState.expandedRowKeys.filter((key) => key !== record.key);
+        ? prevState.expandedRowKeys.concat(record.permit_id)
+        : prevState.expandedRowKeys.filter((key) => {
+            console.log(key);
+            console.log(record.permit_id);
+            key !== record.permit_id;
+          });
       return { expandedRowKeys };
     });
+  };
 
   render() {
     return (
@@ -121,6 +130,7 @@ export class MineSecurityInfo extends Component {
             expandedRowKeys={this.state.expandedRowKeys}
             onExpand={this.onExpand}
             openAddBondModal={this.openAddBondModal}
+            bonds={this.props.bonds}
           />
         </div>
       </div>
@@ -131,6 +141,7 @@ export class MineSecurityInfo extends Component {
 const mapStateToProps = (state) => ({
   permits: getPermits(state),
   mineGuid: getMineGuid(state),
+  bonds: getBonds(state),
 });
 
 const mapDispatchToProps = (dispatch) =>

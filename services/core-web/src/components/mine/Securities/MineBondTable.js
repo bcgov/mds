@@ -71,22 +71,40 @@ export const MineBondTable = (props) => {
 
   const bondColumns = [
     {
-      title: "Permit No.",
-      dataIndex: "permit_no",
-      key: "permit_no",
-      render: (text) => <div title="Permit No.">{text}</div>,
+      title: "Issue Date",
+      dataIndex: "issue_date",
+      key: "issue_date",
+      render: (text) => <div title="Issue Date">{text}</div>,
     },
     {
-      title: "Security Total",
-      dataIndex: "security_total",
-      key: "security_total",
-      render: (text) => <div title="Permit No.">{text}</div>,
+      title: "Payer",
+      dataIndex: "payer_party_guid",
+      key: "payer_party_guid",
+      render: (text) => <div title="Payer">{text}</div>,
     },
     {
-      title: "Total Bonds",
-      dataIndex: "total_bonds",
-      key: "total_bonds",
-      render: (text) => <div title="Permit No.">{text}</div>,
+      title: "Institution",
+      dataIndex: "institution_name",
+      key: "institution_name",
+      render: (text) => <div title="Institution">{text}</div>,
+    },
+    {
+      title: "Type",
+      dataIndex: "bond_type_code",
+      key: "bond_type_code",
+      render: (text) => <div title="Type">{text}</div>,
+    },
+    {
+      title: "Amount",
+      dataIndex: "amount",
+      key: "amount",
+      render: (text) => <div title="Amount">{text}</div>,
+    },
+    {
+      title: "Status",
+      dataIndex: "bond_status_code",
+      key: "bond_status_code",
+      render: (text) => <div title="Status">{text}</div>,
     },
     {
       title: "",
@@ -95,7 +113,19 @@ export const MineBondTable = (props) => {
       align: "right",
       render: (text, record) => {
         return (
-          <AuthorizationWrapper permission={Permission.EDIT_SECURITIES}>
+          <div>
+            <AuthorizationWrapper permission={Permission.EDIT_SECURITIES}>
+              <Button
+                type="secondary"
+                className="permit-table-button"
+                onClick={(event) => props.openAddBondModal(event, record.permit_guid)}
+              >
+                <div className="padding-small">
+                  <img className="padding-small--right icon-svg-filter" src={EDIT} alt="Add/Edit" />
+                  Edit
+                </div>
+              </Button>
+            </AuthorizationWrapper>
             <Button
               type="secondary"
               className="permit-table-button"
@@ -103,17 +133,22 @@ export const MineBondTable = (props) => {
             >
               <div className="padding-small">
                 <img className="padding-small--right icon-svg-filter" src={EDIT} alt="Add/Edit" />
-                Edit
+                View
               </div>
             </Button>
-          </AuthorizationWrapper>
+          </div>
         );
       },
     },
   ];
 
-  const bonds = () => {
-    return <Table align="left" pagination={false} columns={bondColumns} dataSource={[]} />;
+  const bonds = (permit) => {
+    const bondsByPermit = props.bonds.filter(({ permit_guid }) => {
+      permit_guid === permit.permit_guid;
+    });
+    return (
+      <Table align="left" pagination={false} columns={bondColumns} dataSource={bondsByPermit} />
+    );
   };
 
   const RenderTableExpandIcon = (rowProps) => (
@@ -148,6 +183,7 @@ export const MineBondTable = (props) => {
         align: "left",
         pagination: false,
         locale: { emptyText: <NullScreen type="securities" /> },
+        defaultExpandAllRows: true,
         expandIcon: RenderTableExpandIcon,
         expandRowByClick: true,
         expandedRowRender: bonds,
