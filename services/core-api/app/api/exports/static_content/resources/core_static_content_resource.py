@@ -1,3 +1,5 @@
+import json
+
 from flask import Response, current_app
 from flask_restplus import Resource, marshal
 from sqlalchemy.inspection import inspect
@@ -73,5 +75,6 @@ class StaticContentResource(Resource):
             content = generate_static_content_dict()
             assert content
             content_dict = marshal(content, STATIC_CONTENT_MODEL)
-            cache.set(STATIC_CONTENT_KEY, content_dict, TIMEOUT_60_MINUTES)
+            cache.set(STATIC_CONTENT_KEY, json.dumps(content_dict, separators=(',', ':')),
+                      TIMEOUT_60_MINUTES)
         return content_dict
