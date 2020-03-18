@@ -1,4 +1,4 @@
-import requests, base64
+import requests, base64, io
 from tusclient import client
 
 from flask import Response, current_app
@@ -36,22 +36,16 @@ class DocumentManagerService():
         return Response(str(resp.content), resp.status_code, resp.raw.headers.items())
 
     @classmethod
-    def pushFileToDocumentManager(cls, docgen_resp, headers):      #, mine, document_category):
+    def pushFileToDocumentManager(cls, docgen_resp, headers):
         current_app.logger.debug(docgen_resp.headers)
-                                                                   #       folder, pretty_folder = cls._parse_upload_folders(mine, document_category)
         data = {
             'folder': 'test',
             'pretty_folder': 'test',
             'filename': docgen_resp.headers['Carbone-Report-Name']
         }
-                                                                   # headers = docgen_resp.headers
-                                                                   # headers['Upload-Length'] = headers['Content-Length']
 
-        my_client = client.TusClient(cls.document_manager_url, headers=data) #, headers=headers)
-
-        filestream = open('/app/README.md')
-
-        uploader = my_client.uploader(file_stream=filestream, chunk_size=2048)
+        my_client = client.TusClient(cls.document_manager_url, headers=data)
+        uploader = my_client.uploader(file_stream=io.BytesIO(docgen_resp.content), chunk_size=2048)
         uploader.upload()
 
     @classmethod

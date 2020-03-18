@@ -44,7 +44,7 @@ class DocumentListResource(Resource):
             raise RequestEntityTooLarge(
                 f'The maximum file upload size is {max_file_size/1024/1024}MB.')
 
-        data = self.parser.parse_args()          ###
+        data = self.parser.parse_args()
         filename = data.get('filename') or request.headers.get('Filename')
         if not filename:
             raise BadRequest('File name cannot be empty')

@@ -52,20 +52,6 @@ class DocumentGeneratorService():
         if resp.status_code != 200:
             current_app.logger.warn(f'Docgen-api/generate replied with {str(resp.content)}')
 
-        # # TODO: Attach this generated document to the associated NoW before sending the response
-        # # First, get the NoW application identity associated with this document
-        # application_guid = 'c97cf974-1336-46c3-98e1-fea28a450db3'
-        # now_application_identity = NOWApplicationIdentity.query.unbound_unsafe().get(
-        #     application_guid)
-        # if not now_application_identity:
-        #     raise NotFound('No identity record for this application guid.')
-
-        # # Then, create a request to the document manager service to associate this document with the NoW
-        # DocumentManagerService.initializeFileUploadWithDocumentManager(
-        #     request, now_application_identity.mine, 'noticeofwork')
-
-        # Create and return the file download response
-
         return resp
 
     @classmethod
