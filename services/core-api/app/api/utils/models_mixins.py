@@ -1,4 +1,5 @@
 import decimal
+from numbers import Number
 from datetime import datetime, date
 from dateutil import parser
 from flask import current_app
@@ -108,14 +109,18 @@ class Base(db.Model):
         editable_columns = [
             c for c in model.columns if c.name not in [pk.name for pk in model.primary_key]
         ]
+
         if not _edit_key:
             if not self._edit_key:
                 current_app.logger.warn(
                     'Model._edit_key not set, no related models will be updated')
             _edit_key = self._edit_key
+
         assert isinstance(data_dict, dict)
+
         for k, v in data_dict.items():
             current_app.logger.debug(depth * '>' + f'{type(v)}-{k}')
+
             if isinstance(v, dict):
                 if len(v.keys()) < 1:
                     continue
@@ -163,6 +168,7 @@ class Base(db.Model):
                     existing_obj = next((x for x in obj_list if all(
                         i.get(pk_name, None) == getattr(x, pk_name)
                         and getattr(x, pk_name) is not None for pk_name in pk_names)), None)
+
                     #ALWAYS NONE for new obj, except tests
                     if existing_obj:
                         current_app.logger.debug(
@@ -179,10 +185,12 @@ class Base(db.Model):
 
                         existing_obj._deep_update_from_dict(
                             i, depth=(depth + 1), _edit_key=_edit_key)
+
                     elif False:
                         #TODO check if this item is in the db, but not in json set should be removed
                         #unsure if we want this behaviour, could be done in second pass as well
                         pass
+
                     else:
                         if not hasattr(obj_list_class, '_schema'):
                             raise Exception(
@@ -198,32 +206,49 @@ class Base(db.Model):
 
             if k in [c.name for c in editable_columns]:
                 col = next(col for col in editable_columns if col.name == k)
+
                 #get column definition for
                 current_app.logger.debug(depth * ' ' + f'updating {self}.{k}={v}')
+
                 if (type(col.type) == UUID):
                     #UUID does not implement python_type, manual check
                     assert isinstance(v, (UUID, str))
                 else:
                     py_type = col.type.python_type
+
                     if py_type == bool and not isinstance(v, bool) and v is not None:
                         raise DictLoadingError(
                             f"cannot assign '{k}':{v}{type(v)} to column of type {py_type}")
 
                     if py_type == datetime or py_type == date:
+                        #values that are considered null
+                        if v in [None, '']:
+                            setattr(self, k, None)
                         #json value is string, if expecting datetime in that column, convert here
-                        if v is not None:
+                        else:
                             setattr(self, k, parser.parse(v))
                         continue
+
                     if py_type == decimal.Decimal:
-                        #if Decimal column, cast whatever you get to Decimal
-                        dec = decimal.Decimal(v)
-                        #don't care about anything more precise, procection if incoming data is float
-                        setattr(self, k, dec.quantize(decimal.Decimal('.0000001')))
+                        #values that are considered null
+                        if v in [None, '']:
+                            setattr(self, k, None)
+                        else:
+                            #if Decimal column, cast whatever you get to Decimal
+                            dec = decimal.Decimal(v)
+                            #don't care about anything more precise, protection if incoming data is float
+                            setattr(self, k, dec.quantize(decimal.Decimal('.0000001')))
                         continue
+
+                    #for string columns, consider empty strings as null
+                    if py_type == str and v is '':
+                        setattr(self, k, None)
+
                     # elif (v is not None) and not isinstance(v, py_type):
                     #     #type safety (don't coalese empty string to false if it's targetting a boolean column)
                     #     raise DictLoadingError(
                     #         f"cannot assign '{k}':{v}{type(v)} to column of type {py_type}")
+
                     else:
                         setattr(self, k, v)
 
