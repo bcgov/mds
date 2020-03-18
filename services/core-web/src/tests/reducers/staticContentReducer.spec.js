@@ -1,5 +1,9 @@
-import { staticContentReducer } from "@common/reducers/staticContentReducer";
+import {
+  staticContentReducer,
+  getStaticContentLoadingIsComplete,
+} from "@common/reducers/staticContentReducer";
 import { storeBulkStaticContent } from "@common/actions/staticContentActions";
+import { STATIC_CONTENT } from "@common/constants/reducerTypes";
 import * as MOCK from "@/tests/mocks/dataMocks";
 
 const baseExpectedValue = {
@@ -49,5 +53,14 @@ describe("staticContentReducer", () => {
       storeBulkStaticContent(MOCK.BULK_STATIC_CONTENT_RESPONSE)
     );
     expect(result).toEqual(expectedValue);
+  });
+
+  it("`STORE_BULK_STATIC_CONTENT marks static content as loaded", () => {
+    const storeAction = storeBulkStaticContent({}, MOCK.BULK_STATIC_CONTENT_RESPONSE);
+    const storeState = staticContentReducer({}, storeAction);
+    const localMockState = {
+      [STATIC_CONTENT]: storeState,
+    };
+    expect(getStaticContentLoadingIsComplete(localMockState)).toEqual(true);
   });
 });
