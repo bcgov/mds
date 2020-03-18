@@ -11,6 +11,13 @@ BOND = api.model(
         'institution_party_guid': fields.String,
         'bond_status_code': fields.String,
         'reference_number': fields.String,
+        'issue_date': fields.DateTime,
+        'institution_name': fields.String,
+        'institution_street': fields.String,
+        'institution_city': fields.String,
+        'institution_province': fields.String,
+        'institution_postal_code': fields.String,
+        'note': fields.String,
         'permit_guid': fields.String(attribute='permits.permit_guid')
     })
 

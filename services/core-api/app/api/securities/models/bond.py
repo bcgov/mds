@@ -22,12 +22,17 @@ class Bond(Base, AuditMixin):
         UUID(as_uuid=True), nullable=False, unique=True, server_default=FetchedValue())
     amount = db.Column(db.Numeric(14, 2), nullable=False)
     bond_type_code = db.Column(db.String, db.ForeignKey('bond_type.bond_type_code'))
+    issue_date = db.Column(db.DateTime)
     payer_party_guid = db.Column(
-        UUID(as_uuid=True), db.ForeignKey('party.party_guid'), nullable=False)
-    institution_party_guid = db.Column(
         UUID(as_uuid=True), db.ForeignKey('party.party_guid'), nullable=False)
     bond_status_code = db.Column(db.String, db.ForeignKey('bond_status.bond_status_code'))
     reference_number = db.Column(db.String)
+    institution_name = db.Column(db.String)
+    institution_street = db.Column(db.String)
+    institution_city = db.Column(db.String)
+    institution_province = db.Column(db.String)
+    institution_postal_code = db.Column(db.String)
+    note = db.Column(db.String)
 
     permits = db.relationship('Permit', uselist=False, lazy='select', secondary='bond_permit_xref')
 
