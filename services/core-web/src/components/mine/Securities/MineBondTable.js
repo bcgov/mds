@@ -29,21 +29,21 @@ export const MineBondTable = (props) => {
   const columns = [
     {
       title: "Permit No.",
-      dataIndex: "permitNo",
-      key: "permitNo",
-      render: (text, record) => <div title="Permit No.">{text}</div>,
+      dataIndex: "permit_no",
+      key: "permit_no",
+      render: (text) => <div title="Permit No.">{text}</div>,
     },
     {
       title: "Security Total",
-      dataIndex: "permitNo",
-      key: "permitNo",
-      render: (text, record) => <div title="Permit No.">{text}</div>,
+      dataIndex: "security_total",
+      key: "security_total",
+      render: (text) => <div title="Permit No.">{text}</div>,
     },
     {
       title: "Total Bonds",
-      dataIndex: "permitNo",
-      key: "permitNo",
-      render: (text, record) => <div title="Permit No.">{text}</div>,
+      dataIndex: "total_bonds",
+      key: "total_bonds",
+      render: (text) => <div title="Permit No.">{text}</div>,
     },
     {
       title: "",
@@ -56,7 +56,7 @@ export const MineBondTable = (props) => {
             <Button
               type="secondary"
               className="permit-table-button"
-              onClick={props.openAddBondModal}
+              onClick={(event) => props.openAddBondModal(event, record.permit_guid)}
             >
               <div className="padding-small">
                 <img className="padding-small--right icon-svg-filter" src={EDIT} alt="Add/Edit" />
@@ -69,6 +69,53 @@ export const MineBondTable = (props) => {
     },
   ];
 
+  const bondColumns = [
+    {
+      title: "Permit No.",
+      dataIndex: "permit_no",
+      key: "permit_no",
+      render: (text) => <div title="Permit No.">{text}</div>,
+    },
+    {
+      title: "Security Total",
+      dataIndex: "security_total",
+      key: "security_total",
+      render: (text) => <div title="Permit No.">{text}</div>,
+    },
+    {
+      title: "Total Bonds",
+      dataIndex: "total_bonds",
+      key: "total_bonds",
+      render: (text) => <div title="Permit No.">{text}</div>,
+    },
+    {
+      title: "",
+      dataIndex: "addEditButton",
+      key: "addEditButton",
+      align: "right",
+      render: (text, record) => {
+        return (
+          <AuthorizationWrapper permission={Permission.EDIT_SECURITIES}>
+            <Button
+              type="secondary"
+              className="permit-table-button"
+              onClick={(event) => props.openAddBondModal(event, record.permit_guid)}
+            >
+              <div className="padding-small">
+                <img className="padding-small--right icon-svg-filter" src={EDIT} alt="Add/Edit" />
+                Edit
+              </div>
+            </Button>
+          </AuthorizationWrapper>
+        );
+      },
+    },
+  ];
+
+  const bonds = () => {
+    return <Table align="left" pagination={false} columns={bondColumns} dataSource={[]} />;
+  };
+
   const RenderTableExpandIcon = (rowProps) => (
     <a
       role="link"
@@ -79,11 +126,11 @@ export const MineBondTable = (props) => {
       tabIndex="0"
     >
       {rowProps.expanded ? (
-        <Tooltip title="Click to hide amendment history." placement="right" mouseEnterDelay={1}>
+        <Tooltip title="Click to hide associated bonds." placement="right" mouseEnterDelay={1}>
           <Icon type="minus-square" theme="filled" className="icon-lg--grey" />
         </Tooltip>
       ) : (
-        <Tooltip title="Click to view amendment history." placement="right" mouseEnterDelay={1}>
+        <Tooltip title="Click to view associated bonds." placement="right" mouseEnterDelay={1}>
           <Icon type="plus-square" theme="filled" className="icon-lg--grey" />
         </Tooltip>
       )}
@@ -100,12 +147,12 @@ export const MineBondTable = (props) => {
         rowClassName: "table-row-align-middle pointer fade-in",
         align: "left",
         pagination: false,
-        locale: { emptyText: <NullScreen type="generic" /> },
-        // expandIcon: RenderTableExpandIcon,
-        // expandRowByClick: true,
-        // expandedRowRender: bonds,
-        // expandedRowKeys: props.expandedRowKeys,
-        // onExpand: props.onExpand,
+        locale: { emptyText: <NullScreen type="securities" /> },
+        expandIcon: RenderTableExpandIcon,
+        expandRowByClick: true,
+        expandedRowRender: bonds,
+        expandedRowKeys: props.expandedRowKeys,
+        onExpand: props.onExpand,
       }}
     />
   );

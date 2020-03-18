@@ -18,6 +18,7 @@ import { getMineGuid } from "@common/selectors/mineSelectors";
 import CustomPropTypes from "@/customPropTypes";
 import MineBondTable from "@/components/mine/Securities/MineBondTable";
 import * as ModalContent from "@/constants/modalContent";
+import MineDashboardContentCard from "@/components/mine/MineDashboardContentCard";
 import { modalConfig } from "@/components/modalContent/config";
 /**
  * @class  MineSecurityInfo - contains all information relating to bonds and securities
@@ -59,15 +60,37 @@ export class MineSecurityInfo extends Component {
   componentWillMount = () => {
     const { id } = this.props.match.params;
     this.props.fetchPermits(id).then(() => {
-      this.setState({ isLoaded: true });
+      this.props.fetchMineBonds(id).then(() => {
+        this.setState({ isLoaded: true });
+      });
     });
   };
 
-  openAddBondModal = (event, onSubmit, title) => {
+  openAddBondModal = (event, permitGuid) => {
     event.preventDefault();
     this.props.openModal({
+      props: {
+        title: "Add Bond",
+        onSubmit: this.addBondToPermit,
+        permitGuid,
+      },
       width: "50vw",
-      content: modalConfig.ADD_PERMIT,
+      content: modalConfig.ADD_BOND_MODAL,
+    });
+  };
+
+  addBondToPermit = (values, permitGuid) => {
+    console.log(permitGuid);
+    const payload = {
+      bond: {
+        bond_status_code: "ACT",
+        ...values,
+      },
+      permit_guid: permitGuid,
+    };
+
+    this.props.createBond(payload).then(() => {
+      this.props.closeModal();
     });
   };
 
@@ -85,15 +108,21 @@ export class MineSecurityInfo extends Component {
         <div>
           <h2>Securities</h2>
           <Divider />
+          <div className="dashboard--cards">
+            <MineDashboardContentCard title="Total Amount Assessed" content="$1,000,000" />
+            <MineDashboardContentCard title="Total Amount Held" content="1" />
+            <MineDashboardContentCard title="Total Bonds" content="1" />
+            <MineDashboardContentCard title="Total Amount Confiscated" content="$3" />
+          </div>
+          <br />
+          <MineBondTable
+            isLoaded={this.state.isLoaded}
+            permits={this.props.permits}
+            expandedRowKeys={this.state.expandedRowKeys}
+            onExpand={this.onExpand}
+            openAddBondModal={this.openAddBondModal}
+          />
         </div>
-        <br />
-        <MineBondTable
-          isLoaded={this.state.isLoaded}
-          permits={this.props.permits}
-          expandedRowKeys={this.state.expandedRowKeys}
-          onExpand={this.onExpand}
-          openAddBondModal={this.openAddBondModal}
-        />
       </div>
     );
   }

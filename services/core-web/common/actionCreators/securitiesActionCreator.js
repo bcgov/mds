@@ -34,11 +34,11 @@ export const fetchMineBondsById = (bondGuid) => (dispatch) => {
     .finally(() => dispatch(hideLoading("modal")));
 };
 
-export const createBond = (permitGuid, payload) => (dispatch) => {
+export const createBond = (payload) => (dispatch) => {
   dispatch(request(reducerTypes.CREATE_BOND));
   dispatch(showLoading("modal"));
   return CustomAxios()
-    .post(ENVIRONMENT.apiUrl + API.PERMIT_BOND(permitGuid), payload, createRequestHeader())
+    .post(ENVIRONMENT.apiUrl + API.BOND(), payload, createRequestHeader())
     .then((response) => {
       notification.success({
         message: "Successfully added a new bond.",
