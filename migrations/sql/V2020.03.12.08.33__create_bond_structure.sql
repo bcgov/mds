@@ -28,13 +28,7 @@ CREATE TABLE IF NOT EXISTS bond (
     amount                           numeric(14,2)                             NOT NULL,
     bond_type_code                   varchar                                   NOT NULL,
     payer_party_guid                 uuid                                      NOT NULL,
-    institution_name                 varchar                                           ,
-    institution_street               varchar                                           ,
-    institution_city                 varchar                                           ,
-    institution_province             varchar                                           ,
-    institution_postal_code          varchar                                           ,
-    note                             varchar                                           ,
-    issue_date                       timestamp                                 NOT NULL,
+    institution_party_guid           uuid                                      NOT NULL,
     bond_status_code                 varchar                                   NOT NULL,
     reference_number                 varchar                                           ,
     create_user                      varchar                                   NOT NULL,
@@ -43,6 +37,7 @@ CREATE TABLE IF NOT EXISTS bond (
     update_timestamp                 timestamp with time zone DEFAULT now()    NOT NULL,
 
     FOREIGN KEY (payer_party_guid) REFERENCES party(party_guid) DEFERRABLE INITIALLY DEFERRED,
+    FOREIGN KEY (institution_party_guid) REFERENCES party(party_guid) DEFERRABLE INITIALLY DEFERRED,
     FOREIGN KEY (bond_status_code) REFERENCES bond_status(bond_status_code) DEFERRABLE INITIALLY DEFERRED,
     FOREIGN KEY (bond_type_code) REFERENCES bond_type(bond_type_code) DEFERRABLE INITIALLY DEFERRED
 
