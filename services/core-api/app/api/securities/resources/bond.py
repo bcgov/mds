@@ -10,6 +10,7 @@ from app.api.securities.models.bond import Bond
 from app.api.utils.access_decorators import requires_role_view_all, requires_role_edit_bonds
 from app.api.utils.resources_mixins import UserMixin
 from app.api.mines.permits.permit.models.permit import Permit
+from app.api.mines.mine.models.mine import Mine
 
 
 class BondListResource(Resource, UserMixin):
@@ -22,7 +23,12 @@ class BondListResource(Resource, UserMixin):
         if mine_guid is None:
             raise BadRequest('Please provide a mine_guid.')
 
-        permits = Permit.find_by_mine_guid(mine_guid)
+        mine = Mine.find_by_mine_guid(mine_guid)
+
+        if mine is None:
+            raise BadRequest('No mine found with the provided mine_guid.')
+
+        permits = Permit.find_by_mine_guid(mine.mine_guid)
 
         if not permits:
             return []
@@ -51,8 +57,6 @@ class BondListResource(Resource, UserMixin):
         bond.permits = permit
 
         bond.save()
-
-        current_app.logger.debug(bond)
 
         return bond, 201
 
