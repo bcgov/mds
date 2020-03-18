@@ -65,8 +65,11 @@ class  PermitSpec extends GebReportingSpec {
         to MineProfilePermitPage
         when: "I open the edit initial permit modal."
         permitTab.permitRow.children().has(text:"Add/Edit").click()
-        moveToElement(footer)   // Hide Add/Edit popup
-        footer.click()
+        interact {  // Hide Add/Edit popup
+            moveToElement(footer)
+            footer.click()
+        }
+
         permitTab.openFileModalButton.click()
 
         and: "Upload a test file to the permit."
