@@ -25,6 +25,8 @@ class Validator {
 
   LON_REGEX = /^(\+|-)?(?:180(?:(?:\.0{1,7})?)|(?:[0-9]|[1-9][0-9]|1[0-7][0-9])(?:(?:\.[0-9]{1,7})?))$/;
 
+  CURRENCY_REGEX = /^\d{1,8}(?:\.\d{0,2})?$/;
+
   checkLat(lat) {
     return this.LAT_REGEX.test(lat);
   }
@@ -44,11 +46,18 @@ class Validator {
   checkPostalCode(code) {
     return this.CAN_POSTAL_CODE_REGEX.test(code);
   }
+
+  checkCurrency(number) {
+    return this.CURRENCY_REGEX.test(number);
+  }
 }
 
 export const Validate = new Validator();
 
 export const required = (value) => (value ? undefined : "This is a required field");
+
+export const requiredRadioButton = (value) =>
+  value !== null ? undefined : "This is a required field";
 
 export const requiredList = (value) =>
   value && value.length > 0 ? undefined : "This is a required field";
@@ -70,6 +79,13 @@ export const exactLength = memoize((min) => (value) =>
 export const number = (value) =>
   value && Number.isNaN(Number(value)) ? "Input must be a number" : undefined;
 
+// Redux Forms 'Fields' component accepts an array of Field names, and applies the validation to both field inputs,
+// The raw input should be a number, the unit code comes from a dropdown and should be ignored
+export const numberWithUnitCode = (value) => {
+  const isUnitCode = value && value.length <= 3 && value === value.toUpperCase();
+  return value && !isUnitCode && Number.isNaN(Number(value)) ? "Input must be a number" : undefined;
+};
+
 export const lat = (value) =>
   value && !Validate.checkLat(value) ? "Invalid latitude coordinate e.g. 53.7267" : undefined;
 
@@ -84,6 +100,9 @@ export const postalCode = (value) =>
 
 export const email = (value) =>
   value && !Validate.checkEmail(value) ? "Invalid email address" : undefined;
+
+export const currency = (value) =>
+  value && !Validate.checkCurrency(value) ? "Invalid dollar amount" : undefined;
 
 export const validSearchSelection = ({ key, err }) => (value, allValues, formProps) =>
   !Object.keys(formProps[key]).includes(value) ? err || "Invalid Selection" : undefined;

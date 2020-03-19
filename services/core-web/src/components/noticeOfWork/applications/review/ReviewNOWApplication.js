@@ -11,7 +11,15 @@ import {
   getDropdownNoticeOfWorkApplicationTypeOptions,
   getDropdownNoticeOfWorkApplicationPermitTypeOptions,
 } from "@common/selectors/staticContentSelectors";
-import { required, lat, lon, maxLength, number } from "@common/utils/Validate";
+import {
+  required,
+  lat,
+  lon,
+  maxLength,
+  number,
+  requiredRadioButton,
+  currency,
+} from "@common/utils/Validate";
 import CustomPropTypes from "@/customPropTypes";
 import RenderField from "@/components/common/RenderField";
 import RenderDate from "@/components/common/RenderDate";
@@ -26,6 +34,7 @@ import NOWDocuments from "@/components/noticeOfWork/applications//NOWDocuments";
 import NOWSubmissionDocuments from "@/components/noticeOfWork/applications//NOWSubmissionDocuments";
 import ReviewNOWContacts from "./ReviewNOWContacts";
 import { INFO_CIRCLE } from "@/constants/assets";
+import { flattenObject, currencyMask } from "@common/utils/helpers";
 
 /**
  * @constant ReviewNOWApplication renders edit/view for the NoW Application review step
@@ -229,6 +238,34 @@ export const ReviewNOWApplication = (props) => {
             component={RenderAutoSizeField}
             disabled={props.isViewMode}
             validate={[maxLength(4000)]}
+          />
+        </Col>
+      </Row>
+    </div>
+  );
+
+  const renderSecurities = () => (
+    <div>
+      <Row gutter={16}>
+        <Col md={12} sm={24}>
+          <div className="field-title">Security Total</div>
+          <Field
+            id="security_total"
+            name="security_total"
+            component={RenderField}
+            disabled={props.isViewMode}
+            allowClear
+            {...currencyMask}
+            validate={[currency]}
+          />
+        </Col>
+        <Col md={12} sm={24}>
+          <div className="field-title">Security Received</div>
+          <Field
+            id="security_received_date"
+            name="security_received_date"
+            component={RenderDate}
+            disabled={props.isViewMode}
           />
         </Col>
       </Row>
@@ -477,7 +514,7 @@ export const ReviewNOWApplication = (props) => {
               name="has_community_water_shed"
               component={RenderRadioButtons}
               disabled={props.isViewMode}
-              validate={[required]}
+              validate={[requiredRadioButton]}
             />
           </Col>
           <Col md={12} sm={24}>
@@ -551,7 +588,7 @@ export const ReviewNOWApplication = (props) => {
               name="has_archaeology_sites_affected"
               component={RenderRadioButtons}
               disabled={props.isViewMode}
-              validate={[required]}
+              validate={[requiredRadioButton]}
             />
             <div className="field-title--light">
               Plan to protect the archaeological site
@@ -735,6 +772,9 @@ export const ReviewNOWApplication = (props) => {
           <ScrollContentWrapper id="application-info" title="Application Info">
             {renderApplicationInfo()}
           </ScrollContentWrapper>
+          <ScrollContentWrapper id="securities" title="Securities">
+            {renderSecurities()}
+          </ScrollContentWrapper>
           <ScrollContentWrapper id="contacts" title="Contacts">
             <ReviewNOWContacts contacts={props.contacts} />
           </ScrollContentWrapper>
@@ -797,6 +837,7 @@ export default compose(
   })),
   reduxForm({
     form: FORM.EDIT_NOTICE_OF_WORK,
+    touchOnChange: true,
     touchOnBlur: true,
     enableReinitialize: true,
   })

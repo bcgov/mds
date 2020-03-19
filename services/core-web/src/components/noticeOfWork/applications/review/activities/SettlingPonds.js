@@ -3,7 +3,7 @@ import { PropTypes } from "prop-types";
 import { Field, formValueSelector } from "redux-form";
 import { connect } from "react-redux";
 import { Row, Col, Table, Button, Tooltip } from "antd";
-import { required, maxLength, number } from "@common/utils/Validate";
+import { requiredRadioButton, maxLength, number } from "@common/utils/Validate";
 import * as FORM from "@/constants/forms";
 import { TRASHCAN, INFO_CIRCLE } from "@/constants/assets";
 import RenderField from "@/components/common/RenderField";
@@ -299,7 +299,7 @@ export const SettlingPonds = (props) => {
             name="is_ponds_recycled"
             component={RenderRadioButtons}
             disabled={props.isViewMode}
-            validate={[required]}
+            validate={[requiredRadioButton]}
           />
         </Col>
         <Col md={8} sm={24}>
@@ -309,7 +309,7 @@ export const SettlingPonds = (props) => {
             name="is_ponds_exfiltrated"
             component={RenderRadioButtons}
             disabled={props.isViewMode}
-            validate={[required]}
+            validate={[requiredRadioButton]}
           />
         </Col>
         <Col md={8} sm={24}>
@@ -319,7 +319,7 @@ export const SettlingPonds = (props) => {
             name="is_ponds_discharged"
             component={RenderRadioButtons}
             disabled={props.isViewMode}
-            validate={[required]}
+            validate={[requiredRadioButton]}
           />
         </Col>
       </Row>
