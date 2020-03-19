@@ -6,6 +6,7 @@ from werkzeug.exceptions import NotFound, BadRequest
 from app.extensions import api, cache
 from app.api.now_applications.models.now_application_document_type import NOWApplicationDocumentType
 from app.api.utils.resources_mixins import UserMixin
+from app.api.utils.include.user_info import User
 from app.api.utils.access_decorators import requires_role_view_all, requires_role_edit_permit
 from app.api.utils.custom_reqparser import CustomReqparser
 
@@ -52,7 +53,6 @@ class NOWApplicationDocumentGenerateResource(Resource, UserMixin):
         if not document_type.document_template:
             raise BadRequest(f'Cannot generate a {document_type.description}')
 
-        # TODO: Generate document using the provided data.
         data = self.parser.parse_args()
         template_data = data['template_data']
 
@@ -73,7 +73,8 @@ class NOWApplicationDocumentGenerateResource(Resource, UserMixin):
             NOW_DOCUMENT_DOWNLOAD_TOKEN(token), {
                 'document_type_code': document_type_code,
                 'now_application_guid': data['now_application_guid'],
-                'template_data': template_data
+                'template_data': template_data,
+                'username': User().get_user_username()
             }, TIMEOUT_5_MINUTES)
 
         return {'token': token}

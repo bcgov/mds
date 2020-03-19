@@ -36,12 +36,14 @@ class DocumentManagerService():
         return Response(str(resp.content), resp.status_code, resp.raw.headers.items())
 
     @classmethod
-    def pushFileToDocumentManager(cls, file_content, filename):
-        # TODO: Assign folder and pretty_folder correctly.
-        data = {'folder': 'test', 'pretty_folder': 'test', 'filename': filename}
+    def pushFileToDocumentManager(cls, file_content, filename, mine, document_category):
+        folder, pretty_folder = cls._parse_upload_folders(mine, document_category)
+        data = {'folder': folder, 'pretty_folder': pretty_folder, 'filename': filename}
         my_client = client.TusClient(cls.document_manager_url, headers=data)
         uploader = my_client.uploader(file_stream=io.BytesIO(file_content), chunk_size=2048)
         uploader.upload()
+        document_manager_guid = uploader.url.rsplit('/', 1)[-1]
+        return document_manager_guid
 
     @classmethod
     def _parse_upload_folders(cls, mine, document_category):

@@ -3,12 +3,15 @@ from flask import current_app, request, Response, stream_with_context
 from flask_restplus import Resource
 from werkzeug.exceptions import BadRequest, NotFound
 from app.extensions import api, cache
+from datetime import datetime
 
 from app.api.utils.resources_mixins import UserMixin
 from app.api.utils.access_decorators import requires_role_view_all, requires_role_edit_permit
 from app.api.utils.custom_reqparser import CustomReqparser
 from app.api.constants import NOW_DOCUMENT_DOWNLOAD_TOKEN
-from app.api.now_applications.models.now_application import NOWApplication
+
+from app.api.mines.documents.models.mine_document import MineDocument
+from app.api.now_applications.models.now_application_identity import NOWApplicationIdentity
 from app.api.now_applications.models.now_application_document_type import NOWApplicationDocumentType
 from app.api.now_applications.models.now_application_document_xref import NOWApplicationDocumentXref
 from app.api.services.document_generator_service import DocumentGeneratorService
@@ -40,21 +43,36 @@ class NoticeOfWorkDocumentResource(Resource, UserMixin):
         # Generate the document using the template and template data
         docgen_resp = DocumentGeneratorService.generate_document_and_stream_response(
             template_path, data=token_data['template_data'])
-        current_app.logger.warn(f'*** docgen_resp.headers: {docgen_resp.headers}')
+        current_app.logger.warn(f'*** docgen_resp: {docgen_resp}')
 
         # Push the document to the Document Manager
-        docman_resp = DocumentManagerService.pushFileToDocumentManager(
-            file_content=docgen_resp.content, filename=docgen_resp.headers['Carbone-Report-Name'])
-        current_app.logger.warn(f'*** docman_resp.headers: {docman_resp.headers}')
-
-        # Associate the document with the Notice of Work
+        filename = docgen_resp.headers['Carbone-Report-Name']
         now_application_guid = token_data['now_application_guid']
-        # now_application = NOWApplication.query.unbound_unsafe().get(now_application_guid)
-        # now_doc = NOWApplicationDocumentXref(
-        #         mine_document=new_mine_doc,
-        #         now_application_document_type_code='PUB' if new_review.now_application_review_type_code == 'PUB' else 'REV',
-        #         now_application_id=now_application.now_application.now_application_id,
-        #     )
+        now_application_identity = NOWApplicationIdentity.query.unbound_unsafe().get(
+            now_application_guid)
+        document_manager_guid = DocumentManagerService.pushFileToDocumentManager(
+            file_content=docgen_resp.content,
+            filename=filename,
+            mine=now_application_identity.mine,
+            document_category='noticeofwork')
+        current_app.logger.warn(f'*** document_manager_guid: {document_manager_guid}')
+
+        # Add the document to the Notice of Work's documents
+        username = token_data['username']
+        new_mine_doc = MineDocument(
+            mine_guid=now_application_identity.now_application.mine_guid,
+            document_manager_guid=document_manager_guid,
+            document_name=filename,
+            create_user=username,
+            update_user=username)
+        now_doc = NOWApplicationDocumentXref(
+            mine_document=new_mine_doc,
+            now_application_document_type=doc_type,
+            now_application_id=now_application_identity.now_application_id,
+            create_user=username,
+            update_user=username)
+        now_application_identity.now_application.documents.append(now_doc)
+        now_application_identity.save()
 
         # Return the generated document
         file_gen_resp = Response(
