@@ -183,10 +183,11 @@ export class NoticeOfWorkApplication extends Component {
 
   loadNoticeOfWork = (id) => {
     this.props.fetchImportedNoticeOfWorkApplication(id).then(({ data }) => {
-      this.setState({ isLoaded: true });
       this.loadMineInfo(data.mine_guid);
       this.handleProgressButtonLabels(data.application_progress);
-      this.props.fetchOriginalNoticeOfWorkApplication(id);
+      this.props
+        .fetchOriginalNoticeOfWorkApplication(id)
+        .then(() => this.setState({ isLoaded: true }));
     });
   };
 
@@ -328,10 +329,9 @@ export class NoticeOfWorkApplication extends Component {
         } as the Lead Inspector`
       )
       .then(() => {
-        this.props.fetchImportedNoticeOfWorkApplication(
-          this.props.noticeOfWork.now_application_guid
-        );
-        this.setState({ isLoaded: true });
+        this.props
+          .fetchImportedNoticeOfWorkApplication(this.props.noticeOfWork.now_application_guid)
+          .then(() => this.setState({ isLoaded: true }));
       })
       .then(() => finalAction());
   };
@@ -444,9 +444,17 @@ export class NoticeOfWorkApplication extends Component {
       now_application_guid: this.props.noticeOfWork.now_application_guid,
       template_data: newValues,
     };
-    this.props.generateNoticeOfWorkApplicationDocument(documentTypeCode, payload).then(() => {
-      this.props.closeModal();
-    });
+    this.props
+      .generateNoticeOfWorkApplicationDocument(documentTypeCode, payload)
+      .then(() => {
+        this.props.closeModal();
+      })
+      .then(() => {
+        this.setState({ isLoaded: false });
+        this.props
+          .fetchImportedNoticeOfWorkApplication(this.props.noticeOfWork.now_application_guid)
+          .then(() => this.setState({ isLoaded: true }));
+      });
   };
 
   renderStepOne = () => {
