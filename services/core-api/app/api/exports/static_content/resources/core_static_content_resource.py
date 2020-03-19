@@ -1,6 +1,6 @@
 import json
 
-from flask import Response, current_app
+from flask import Response, current_app, make_response
 from flask_restplus import Resource, marshal
 from sqlalchemy.inspection import inspect
 
@@ -77,4 +77,8 @@ class StaticContentResource(Resource):
             content_dict = marshal(content, STATIC_CONTENT_MODEL)
             content_json = json.dumps(content_dict, separators=(',', ':'))
             cache.set(STATIC_CONTENT_KEY, content_json, TIMEOUT_60_MINUTES)
-        return content_json
+
+        response = make_response(content_json)
+        response.headers['content-type'] = 'application/json'
+
+        return response
