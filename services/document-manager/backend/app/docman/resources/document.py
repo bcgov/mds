@@ -30,7 +30,6 @@ class DocumentListResource(Resource):
     @requires_any_of(
         [MINE_EDIT, EDIT_PARTY, EDIT_PERMIT, EDIT_DO, EDIT_VARIANCE, MINESPACE_PROPONENT])
     def post(self):
-        current_app.logger.debug(request.headers)
         if request.headers.get('Tus-Resumable') is None:
             raise BadRequest('Received file upload for unsupported file transfer protocol')
 
@@ -103,7 +102,6 @@ class DocumentListResource(Resource):
         doc = Document.query.filter_by(document_guid=doc_guid).first()
         if not doc:
             raise NotFound('Could not find the document corresponding to the token')
-        current_app.logger.debug(attachment)
         if attachment is not None:
             attach_style = True if attachment == 'true' else False
         else:
@@ -120,7 +118,6 @@ class DocumentResource(Resource):
     @requires_any_of(
         [MINE_EDIT, EDIT_PARTY, EDIT_PERMIT, EDIT_DO, EDIT_VARIANCE, MINESPACE_PROPONENT])
     def patch(self, document_guid):
-        current_app.logger.debug(request.headers)
         file_path = cache.get(FILE_UPLOAD_PATH(document_guid))
         if file_path is None or not os.path.lexists(file_path):
             raise NotFound('PATCH sent for a upload that does not exist')
@@ -172,7 +169,6 @@ class DocumentResource(Resource):
     @requires_any_of(
         [MINE_EDIT, EDIT_PARTY, EDIT_PERMIT, EDIT_DO, EDIT_VARIANCE, MINESPACE_PROPONENT])
     def head(self, document_guid):
-        current_app.logger.debug(request.headers)
         if document_guid is None:
             raise BadRequest('Must specify document GUID in HEAD')
 
@@ -191,7 +187,6 @@ class DocumentResource(Resource):
         return response
 
     def options(self, document_guid):
-        current_app.logger.debug(request.headers)
         response = make_response('', 200)
 
         if request.headers.get('Access-Control-Request-Method', None) is not None:

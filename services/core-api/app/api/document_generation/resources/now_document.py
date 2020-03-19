@@ -32,7 +32,6 @@ class NoticeOfWorkDocumentResource(Resource, UserMixin):
         cache.delete(NOW_DOCUMENT_DOWNLOAD_TOKEN(token))
         if not token_data:
             raise BadRequest('Valid token required for download')
-        current_app.logger.warn(f'*** token_data: {token_data}')
 
         # Get the template associated with the token
         doc_type = NOWApplicationDocumentType.query.unbound_unsafe().get(
@@ -43,7 +42,6 @@ class NoticeOfWorkDocumentResource(Resource, UserMixin):
         # Generate the document using the template and template data
         docgen_resp = DocumentGeneratorService.generate_document_and_stream_response(
             template_path, data=token_data['template_data'])
-        current_app.logger.warn(f'*** docgen_resp: {docgen_resp}')
 
         # Push the document to the Document Manager
         filename = docgen_resp.headers['Carbone-Report-Name']
@@ -56,7 +54,6 @@ class NoticeOfWorkDocumentResource(Resource, UserMixin):
             mine=now_application_identity.mine,
             document_category='noticeofwork',
             authorization_header=token_data['authorization_header'])
-        current_app.logger.warn(f'*** document_manager_guid: {document_manager_guid}')
 
         # Add the document to the Notice of Work's documents
         username = token_data['username']
