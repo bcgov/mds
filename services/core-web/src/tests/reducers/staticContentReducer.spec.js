@@ -7,6 +7,7 @@ import {
   storeCommodityOptions,
   storeProvinceCodes,
   storeComplianceCodes,
+  storeMineReportCategoryOptions,
   storeVarianceStatusOptions,
   storeVarianceDocumentCategoryOptions,
   storeNoticeOfWorkActivityTypeOptions,
@@ -36,6 +37,7 @@ const baseExpectedValue = {
   incidentCategoryCodeOptions: [],
   varianceStatusOptions: [],
   varianceDocumentCategoryOptions: [],
+  mineReportCategoryOptions: [],
   mineReportDefinitionOptions: [],
   mineReportStatusOptions: [],
   noticeOfWorkActivityTypeOptions: [],
@@ -108,6 +110,16 @@ describe("staticContentReducer", () => {
     const expectedValue = getBaseExpectedValue();
     expectedValue.complianceCodes = MOCK.COMPLIANCE_CODES.records;
     const result = staticContentReducer(undefined, storeComplianceCodes(MOCK.COMPLIANCE_CODES));
+    expect(result).toEqual(expectedValue);
+  });
+
+  it("receives STORE_MINE_REPORT_CATEGORY_OPTIONS", () => {
+    const expectedValue = getBaseExpectedValue();
+    expectedValue.mineReportCategoryOptions = MOCK.MINE_REPORT_CATEGORY_OPTIONS.records;
+    const result = staticContentReducer(
+      undefined,
+      storeMineReportCategoryOptions(MOCK.MINE_REPORT_CATEGORY_OPTIONS)
+    );
     expect(result).toEqual(expectedValue);
   });
 

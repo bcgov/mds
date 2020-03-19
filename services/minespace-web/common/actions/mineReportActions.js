@@ -1,5 +1,10 @@
 import * as ActionTypes from "../constants/actionTypes";
 
+export const storeReports = (payload) => ({
+  type: ActionTypes.STORE_REPORTS,
+  payload,
+});
+
 export const storeMineReports = (payload) => ({
   type: ActionTypes.STORE_MINE_REPORTS,
   payload,

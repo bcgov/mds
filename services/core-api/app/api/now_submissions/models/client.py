@@ -4,7 +4,7 @@ from app.extensions import db
 
 class Client(Base):
     __tablename__ = "client"
-    __table_args__ = { "schema": "now_submissions" }
+    __table_args__ = {"schema": "now_submissions"}
     clientid = db.Column(db.Integer, primary_key=True)
     type = db.Column(db.String)
     org_legalname = db.Column(db.String)

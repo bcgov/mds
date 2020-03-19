@@ -38,7 +38,7 @@ describe("`createMineRecord` action creator", () => {
   const mineTenureTypeCode = "MIN";
   const url = ENVIRONMENT.apiUrl + API.MINE;
   const mineTypeUrl = ENVIRONMENT.apiUrl + API.MINE_TYPES(mineGuid);
-  const mockMineTypePayLoad = [{ mine_tenure_type_code: mineTenureTypeCode }];
+  const mockMineTypePayLoad = [{ mine_tenure_type_code: mineTenureTypeCode, mine_type_detail: [] }];
   const mockPayLoad = {
     name: mineName,
     mine_tenure_type_code: mineTenureTypeCode,
@@ -75,7 +75,11 @@ describe("`removeMineType` action creator", () => {
   it("Request successful, dispatches `success` with correct response", () => {
     const mockResponse = { data: { success: true } };
     mockAxios.onDelete(url).reply(200, mockResponse);
-    return removeMineType(mineGuid, mineTypeGuid, tenure)(dispatch).then(() => {
+    return removeMineType(
+      mineGuid,
+      mineTypeGuid,
+      tenure
+    )(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
@@ -100,7 +104,10 @@ describe("`createTailingsStorageFacility` action creator", () => {
   it("Request successful, dispatches `success` with correct response", () => {
     const mockResponse = { data: { success: true } };
     mockAxios.onPost(url, mockPayload).reply(200, mockResponse);
-    return createTailingsStorageFacility(mine_guid, mockPayload)(dispatch).then(() => {
+    return createTailingsStorageFacility(
+      mine_guid,
+      mockPayload
+    )(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
@@ -109,7 +116,10 @@ describe("`createTailingsStorageFacility` action creator", () => {
 
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onPost(url, mockPayload).reply(418, MOCK.ERROR);
-    return createTailingsStorageFacility(mine_guid, mockPayload)(dispatch).then(() => {
+    return createTailingsStorageFacility(
+      mine_guid,
+      mockPayload
+    )(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
@@ -122,7 +132,10 @@ describe("`fetchMineRecords` action creator", () => {
   it("Request successful, dispatches `success` with correct response", () => {
     const mockResponse = { data: { success: true } };
     mockAxios.onGet(url).reply(200, mockResponse);
-    return fetchMineRecords("1", "5")(dispatch).then(() => {
+    return fetchMineRecords(
+      "1",
+      "5"
+    )(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(5);
@@ -131,7 +144,10 @@ describe("`fetchMineRecords` action creator", () => {
 
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onGet(url, MOCK.createMockHeader()).reply(418, MOCK.ERROR);
-    return fetchMineRecords("1", "5")(dispatch).then(() => {
+    return fetchMineRecords(
+      "1",
+      "5"
+    )(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
@@ -238,7 +254,10 @@ describe("`unSubscribe` action creator", () => {
   it("Request successful, dispatches `success` with correct response", () => {
     const mockResponse = { data: { success: true } };
     mockAxios.onDelete(url).reply(200, mockResponse);
-    return unSubscribe(mineGuid, mineName)(dispatch).then(() => {
+    return unSubscribe(
+      mineGuid,
+      mineName
+    )(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
@@ -247,7 +266,10 @@ describe("`unSubscribe` action creator", () => {
 
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onDelete(url, MOCK.createMockHeader()).reply(418, MOCK.ERROR);
-    return unSubscribe(mineGuid, mineName)(dispatch).then(() => {
+    return unSubscribe(
+      mineGuid,
+      mineName
+    )(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
@@ -262,7 +284,10 @@ describe("`subscribe` action creator", () => {
   it("Request successful, dispatches `success` with correct response", () => {
     const mockResponse = { data: { success: true } };
     mockAxios.onPost(url).reply(200, mockResponse);
-    return subscribe(mineGuid, mineName)(dispatch).then(() => {
+    return subscribe(
+      mineGuid,
+      mineName
+    )(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
@@ -271,7 +296,10 @@ describe("`subscribe` action creator", () => {
 
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onPost(url).reply(418, MOCK.ERROR);
-    return subscribe(mineGuid, mineName)(dispatch).then(() => {
+    return subscribe(
+      mineGuid,
+      mineName
+    )(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);

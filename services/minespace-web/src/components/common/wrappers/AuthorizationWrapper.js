@@ -36,7 +36,10 @@ import { isProponent } from "@/selectors/authenticationSelectors";
 const propTypes = {
   inDevelopment: PropTypes.bool,
   inTesting: PropTypes.bool,
-  children: PropTypes.element.isRequired,
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.element.isRequired),
+    PropTypes.element.isRequired,
+  ]),
 };
 
 const defaultProps = {
