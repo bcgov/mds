@@ -445,15 +445,14 @@ export class NoticeOfWorkApplication extends Component {
       template_data: newValues,
     };
     this.props
-      .generateNoticeOfWorkApplicationDocument(documentTypeCode, payload)
-      .then(() => {
-        this.props.closeModal();
-      })
-      .then(() => {
+      .generateNoticeOfWorkApplicationDocument(documentTypeCode, payload, () => {
         this.setState({ isLoaded: false });
         this.props
           .fetchImportedNoticeOfWorkApplication(this.props.noticeOfWork.now_application_guid)
           .then(() => this.setState({ isLoaded: true }));
+      })
+      .then(() => {
+        this.props.closeModal();
       });
   };
 
