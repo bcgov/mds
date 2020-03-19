@@ -54,7 +54,8 @@ class NoticeOfWorkDocumentResource(Resource, UserMixin):
             file_content=docgen_resp.content,
             filename=filename,
             mine=now_application_identity.mine,
-            document_category='noticeofwork')
+            document_category='noticeofwork',
+            authorization_header=token_data['authorization_header'])
         current_app.logger.warn(f'*** document_manager_guid: {document_manager_guid}')
 
         # Add the document to the Notice of Work's documents

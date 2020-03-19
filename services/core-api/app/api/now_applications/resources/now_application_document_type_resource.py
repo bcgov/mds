@@ -74,7 +74,8 @@ class NOWApplicationDocumentGenerateResource(Resource, UserMixin):
                 'document_type_code': document_type_code,
                 'now_application_guid': data['now_application_guid'],
                 'template_data': template_data,
-                'username': User().get_user_username()
+                'username': User().get_user_username(),
+                'authorization_header': request.headers['Authorization']
             }, TIMEOUT_5_MINUTES)
 
         return {'token': token}

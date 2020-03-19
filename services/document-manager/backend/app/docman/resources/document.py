@@ -27,9 +27,8 @@ class DocumentListResource(Resource):
     parser.add_argument(
         'filename', type=str, required=False, help='File name + extension of the document.')
 
-    # TODO: Create new role
-    # @requires_any_of(
-    #     [MINE_EDIT, EDIT_PARTY, EDIT_PERMIT, EDIT_DO, EDIT_VARIANCE, MINESPACE_PROPONENT])
+    @requires_any_of(
+        [MINE_EDIT, EDIT_PARTY, EDIT_PERMIT, EDIT_DO, EDIT_VARIANCE, MINESPACE_PROPONENT])
     def post(self):
         current_app.logger.debug(request.headers)
         if request.headers.get('Tus-Resumable') is None:
@@ -118,8 +117,8 @@ class DocumentListResource(Resource):
 
 @api.route(f'/documents/<string:document_guid>')
 class DocumentResource(Resource):
-    # @requires_any_of(
-    #     [MINE_EDIT, EDIT_PARTY, EDIT_PERMIT, EDIT_DO, EDIT_VARIANCE, MINESPACE_PROPONENT])
+    @requires_any_of(
+        [MINE_EDIT, EDIT_PARTY, EDIT_PERMIT, EDIT_DO, EDIT_VARIANCE, MINESPACE_PROPONENT])
     def patch(self, document_guid):
         current_app.logger.debug(request.headers)
         file_path = cache.get(FILE_UPLOAD_PATH(document_guid))
@@ -170,8 +169,8 @@ class DocumentResource(Resource):
             'Access-Control-Expose-Headers'] = "Tus-Resumable,Tus-Version,Upload-Offset"
         return response
 
-    # @requires_any_of(
-    #     [MINE_EDIT, EDIT_PARTY, EDIT_PERMIT, EDIT_DO, EDIT_VARIANCE, MINESPACE_PROPONENT])
+    @requires_any_of(
+        [MINE_EDIT, EDIT_PARTY, EDIT_PERMIT, EDIT_DO, EDIT_VARIANCE, MINESPACE_PROPONENT])
     def head(self, document_guid):
         current_app.logger.debug(request.headers)
         if document_guid is None:

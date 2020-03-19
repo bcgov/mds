@@ -36,9 +36,15 @@ class DocumentManagerService():
         return Response(str(resp.content), resp.status_code, resp.raw.headers.items())
 
     @classmethod
-    def pushFileToDocumentManager(cls, file_content, filename, mine, document_category):
+    def pushFileToDocumentManager(cls, file_content, filename, mine, document_category,
+                                  authorization_header):
         folder, pretty_folder = cls._parse_upload_folders(mine, document_category)
-        data = {'folder': folder, 'pretty_folder': pretty_folder, 'filename': filename}
+        data = {
+            'folder': folder,
+            'pretty_folder': pretty_folder,
+            'filename': filename,
+            'authorization': authorization_header
+        }
         my_client = client.TusClient(cls.document_manager_url, headers=data)
         uploader = my_client.uploader(file_stream=io.BytesIO(file_content), chunk_size=2048)
         uploader.upload()
