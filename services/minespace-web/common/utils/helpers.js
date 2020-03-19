@@ -1,3 +1,4 @@
+/* eslint-disable */
 import moment from "moment";
 import { reset } from "redux-form";
 import { createNumberMask } from "redux-form-input-masks";
@@ -236,4 +237,25 @@ export const formatComplianceCodeValueOrLabel = (code, showDescription) => {
   const formattedDescription = showDescription ? ` - ${description}` : "";
 
   return `${section}${formattedSubSection}${formattedParagraph}${formattedSubParagraph}${formattedDescription}`;
+};
+
+// function to flatten an object for nested items in redux form
+// eslint-disable-snippets
+export const flattenObject = (ob) => {
+  const toReturn = {};
+  let flatObject;
+  for (const i in ob) {
+    if (typeof ob[i] === "object") {
+      flatObject = flattenObject(ob[i]);
+      for (const x in flatObject) {
+        if (!flatObject.hasOwnProperty(x)) {
+          continue;
+        }
+        toReturn[i + (isNaN(x) ? `.${x}` : "")] = flatObject[x];
+      }
+    } else {
+      toReturn[i] = ob[i];
+    }
+  }
+  return toReturn;
 };
