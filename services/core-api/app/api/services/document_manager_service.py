@@ -24,7 +24,7 @@ class DocumentManagerService():
             'pretty_folder': pretty_folder,
             'filename': metadata.get('filename')
         }
-        current_app.logger.error(cls.document_manager_url)
+
         resp = requests.post(
             url=cls.document_manager_url,
             headers={key: value
@@ -36,16 +36,11 @@ class DocumentManagerService():
         return Response(str(resp.content), resp.status_code, resp.raw.headers.items())
 
     @classmethod
-    def pushFileToDocumentManager(cls, docgen_resp, headers):
-        current_app.logger.debug(docgen_resp.headers)
-        data = {
-            'folder': 'test',
-            'pretty_folder': 'test',
-            'filename': docgen_resp.headers['Carbone-Report-Name']
-        }
-
+    def pushFileToDocumentManager(cls, file_content, filename):
+        # TODO: Assign folder and pretty_folder correctly.
+        data = {'folder': 'test', 'pretty_folder': 'test', 'filename': filename}
         my_client = client.TusClient(cls.document_manager_url, headers=data)
-        uploader = my_client.uploader(file_stream=io.BytesIO(docgen_resp.content), chunk_size=2048)
+        uploader = my_client.uploader(file_stream=io.BytesIO(file_content), chunk_size=2048)
         uploader.upload()
 
     @classmethod

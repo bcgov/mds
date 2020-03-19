@@ -1,13 +1,6 @@
 import requests, hashlib, os, mimetypes, json, datetime
 from flask import Response, current_app, stream_with_context
 from app.config import Config
-from werkzeug.exceptions import NotFound, BadRequest
-from flask import current_app, send_file, request
-
-import json
-import sys
-from app.api.now_applications.models.now_application_identity import NOWApplicationIdentity
-from app.api.services.document_manager_service import DocumentManagerService
 
 
 def sha256_checksum(filename, block_size=65536):
@@ -44,7 +37,7 @@ class DocumentGeneratorService():
             }
         }
 
-        # Send the document generation request
+        # Send the document generation request and return the response
         resp = requests.post(
             url=f'{cls.document_generator_url}/{file_sha}/render',
             data=json.dumps(body),
