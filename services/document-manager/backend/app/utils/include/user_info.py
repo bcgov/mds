@@ -17,7 +17,7 @@ DUMMY_AUTH_CLAIMS = {
 
 
 class User:
-    _test_mode = True
+    _test_mode = False
 
     def get_user_raw_info(self):
         if self._test_mode:
