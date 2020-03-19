@@ -7,9 +7,10 @@ from marshmallow.exceptions import MarshmallowError
 from app.extensions import api, db
 from app.api.securities.response_models import BOND
 from app.api.securities.models.bond import Bond
-from app.api.utils.access_decorators import requires_role_view_all, requires_role_edit_permit
+from app.api.utils.access_decorators import requires_role_view_all, requires_role_edit_bonds
 from app.api.utils.resources_mixins import UserMixin
 from app.api.mines.permits.permit.models.permit import Permit
+from app.api.mines.mine.models.mine import Mine
 
 
 class BondListResource(Resource, UserMixin):
@@ -22,17 +23,22 @@ class BondListResource(Resource, UserMixin):
         if mine_guid is None:
             raise BadRequest('Please provide a mine_guid.')
 
-        permits = Permit.find_by_mine_guid(mine_guid)
+        mine = Mine.find_by_mine_guid(mine_guid)
 
-        if permits is None:
-            return
+        if mine is None:
+            raise BadRequest('No mine found with the provided mine_guid.')
+
+        permits = Permit.find_by_mine_guid(mine.mine_guid)
+
+        if not permits:
+            return []
 
         bonds = [bond for permit in permits for bond in permit.bonds]
 
         return bonds
 
     @api.doc(description='create a bond')
-    @requires_role_edit_permit
+    @requires_role_edit_bonds
     @api.expect(BOND)
     @api.marshal_with(BOND, code=201)
     def post(self):
@@ -52,8 +58,6 @@ class BondListResource(Resource, UserMixin):
 
         bond.save()
 
-        current_app.logger.debug(bond)
-
         return bond, 201
 
 
@@ -70,7 +74,7 @@ class BondResource(Resource, UserMixin):
         return bond
 
     @api.doc(description='Update a bond')
-    @requires_role_edit_permit
+    @requires_role_edit_bonds
     @api.expect(BOND)
     @api.marshal_with(BOND, code=200)
     def put(self, bond_guid):
