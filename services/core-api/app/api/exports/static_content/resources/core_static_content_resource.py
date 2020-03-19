@@ -70,7 +70,7 @@ class StaticContentResource(Resource):
     @requires_role_view_all
     def get(self):
         content_json = cache.get(STATIC_CONTENT_KEY)
-        if not content_dict:
+        if not content_json:
             current_app.logger.debug('CACHE MISS - core-static-content')
             content = generate_static_content_dict()
             assert content
