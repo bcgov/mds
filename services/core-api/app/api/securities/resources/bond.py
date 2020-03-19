@@ -43,7 +43,6 @@ class BondListResource(Resource, UserMixin):
     @api.marshal_with(BOND, code=201)
     def post(self):
 
-        current_app.logger.debug('Attempting to load bond')
         try:
             bond = Bond._schema().load(request.json['bond'])
         except MarshmallowError as e:
