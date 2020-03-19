@@ -1,7 +1,7 @@
 timezone: America/Vancouver
 
 schedule:
-  daily>: 23:59:99   # daily at 11:59 PM PDT/PST
+  daily>: 4:00:00   # daily at 4:00 AM PT
 
 _export:
   job_name: RESTORE REPORTING DATABASE 

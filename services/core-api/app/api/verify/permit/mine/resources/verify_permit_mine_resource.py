@@ -14,7 +14,7 @@ from app.api.constants import MINE_DETAILS_CSV, TIMEOUT_60_MINUTES
 class VerifyPermitMineResource(Resource):
     @api.doc(
         description=
-        'Verifies that a permit is valid for a mine based on the type of deemed authorization.'
+        'Verifies that a permit is valid for a mine based on the type of deemed authorization. NOTE: This exists for integration purposes and does not follow the typical patterns of this API.'
     )
     @requires_role_view_all
     def get(self):
@@ -51,7 +51,7 @@ class VerifyPermitMineResource(Resource):
                 if type_of_deemed_auth != "INDUCED" and permit_prefix not in ["C", "M"]:
                     break;
             
-                mine_info = mine_info + mine.mine_no + ' - ' + mine.mine_name + "\r\c"
+                mine_info = mine_info + mine.mine_no + ' - ' + mine.mine_name + '\r\c'
 
                 if mine_info != "":
                     result = "Success"

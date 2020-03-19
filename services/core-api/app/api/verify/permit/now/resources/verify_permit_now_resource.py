@@ -14,7 +14,7 @@ from app.api.constants import MINE_DETAILS_CSV, TIMEOUT_60_MINUTES
 class VerifyPermitNOWResource(Resource):
     @api.doc(
         description=
-        'Verifies by permit number that a permit amendment is within 30 days of authorization ending.'
+        'Verifies by permit number that a permit amendment is within 30 days of authorization ending. NOTE: This exists for integration purposes and does not follow the typical patterns of this API.'
     )
     @requires_role_view_all
     def get(self):
@@ -40,16 +40,16 @@ class VerifyPermitNOWResource(Resource):
                 if mine.mine_status.mine_status_xref.mine_operation_status_code != "OP":
                     break;
 
-                if permit_prefix not in ["CX", "M"]:
+                if permit_prefix not in ["CX", "MX"]:
                     break;
             
                 for permit_amendment in permit.permit_amendments:
                     if datetime.now() - permit_amendment.authorization_end_date < 30:
-                        now_info = now_info + permit.permit_guid + " - " + permit_amendment.authorization_end_date "\r\c"
+                        now_info = now_info + permit.permit_guid + " - " + permit_amendment.authorization_end_date + '\r\c'
 
                 if now_info != "":
                     result = "Success"
-                else
+                else:
                     result = "Failure"
                     response_message = "NoValidNowsForPermit"
  
