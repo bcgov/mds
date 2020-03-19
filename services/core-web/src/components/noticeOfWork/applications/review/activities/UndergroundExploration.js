@@ -7,7 +7,7 @@ import {
   getDropdownNoticeOfWorkUndergroundExplorationTypeOptions,
   getDropdownNoticeOfWorkUnitTypeOptions,
 } from "@common/selectors/staticContentSelectors";
-import { number } from "@common/utils/Validate";
+import { numberWithUnitCode } from "@common/utils/Validate";
 import * as FORM from "@/constants/forms";
 import { TRASHCAN, INFO_CIRCLE } from "@/constants/assets";
 import RenderField from "@/components/common/RenderField";
@@ -296,7 +296,7 @@ export const UndergroundExploration = (props) => {
             dropdownID="total_ore_unit_type_code"
             component={RenderFieldWithDropdown}
             disabled={props.isViewMode}
-            validate={[number]}
+            validate={[numberWithUnitCode]}
             data={props.unitTypeOptions}
           />
         </Col>
@@ -308,7 +308,7 @@ export const UndergroundExploration = (props) => {
             dropdownID="total_waste_unit_type_code"
             component={RenderFieldWithDropdown}
             disabled={props.isViewMode}
-            validate={[number]}
+            validate={[numberWithUnitCode]}
             data={props.unitTypeOptions}
           />
         </Col>
