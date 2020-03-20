@@ -73,10 +73,7 @@ exports[`SurfaceBulkSamples renders properly 1`] = `
         className="field-title"
       >
         Bed rock expansion
-        <CoreTooltip
-          title={null}
-          type="now-field-origin"
-        />
+        <NOWFieldOriginTooltip />
       </div>
       <Field
         component={[Function]}
@@ -97,10 +94,7 @@ exports[`SurfaceBulkSamples renders properly 1`] = `
         className="field-title"
       >
         Surface water damage
-        <CoreTooltip
-          title={null}
-          type="now-field-origin"
-        />
+        <NOWFieldOriginTooltip />
       </div>
       <Field
         component={[Function]}
@@ -117,10 +111,7 @@ exports[`SurfaceBulkSamples renders properly 1`] = `
         className="field-title"
       >
         If the material has potential for spontaneous combustion, give details of separate handling.
-        <CoreTooltip
-          title={null}
-          type="now-field-origin"
-        />
+        <NOWFieldOriginTooltip />
       </div>
       <Field
         component={[Function]}

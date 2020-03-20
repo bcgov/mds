@@ -11,7 +11,7 @@ import RenderField from "@/components/common/RenderField";
 import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
 import RenderRadioButtons from "@/components/common/RenderRadioButtons";
 import CustomPropTypes from "@/customPropTypes";
-import CoreTooltip from "@/components/common/CoreTooltip";
+import { NOWFieldOriginTooltip } from "@/components/common/CoreTooltip";
 
 const propTypes = {
   isViewMode: PropTypes.bool.isRequired,
@@ -183,7 +183,7 @@ export const AccessRoads = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Are you proposing any bridges, culverts, and crossings?
-            <CoreTooltip type="now-field-origin" />
+            <NOWFieldOriginTooltip />
           </div>
           <Field
             id="has_proposed_bridges_or_culverts"
@@ -194,7 +194,7 @@ export const AccessRoads = (props) => {
           <div className="field-title">
             Describe the changes and reference the locations need on map needed later in the
             application.
-            <CoreTooltip type="now-field-origin" />
+            <NOWFieldOriginTooltip />
           </div>
           <Field
             id="bridge_culvert_crossing_description"

@@ -55,10 +55,7 @@ exports[`AccessRoads renders properly 1`] = `
         className="field-title"
       >
         Are you proposing any bridges, culverts, and crossings?
-        <CoreTooltip
-          title={null}
-          type="now-field-origin"
-        />
+        <NOWFieldOriginTooltip />
       </div>
       <Field
         component={[Function]}
@@ -70,10 +67,7 @@ exports[`AccessRoads renders properly 1`] = `
         className="field-title"
       >
         Describe the changes and reference the locations need on map needed later in the application.
-        <CoreTooltip
-          title={null}
-          type="now-field-origin"
-        />
+        <NOWFieldOriginTooltip />
       </div>
       <Field
         component={[Function]}

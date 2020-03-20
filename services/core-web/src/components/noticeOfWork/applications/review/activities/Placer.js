@@ -11,7 +11,7 @@ import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
 import RenderField from "@/components/common/RenderField";
 import Equipment from "@/components/noticeOfWork/applications/review/activities/Equipment";
 import CustomPropTypes from "@/customPropTypes";
-import CoreTooltip from "@/components/common/CoreTooltip";
+import { NOWFieldOriginTooltip } from "@/components/common/CoreTooltip";
 
 const propTypes = {
   isViewMode: PropTypes.bool.isRequired,
@@ -238,7 +238,7 @@ export const Placer = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Proposed Production
-            <CoreTooltip type="now-field-origin" />
+            <NOWFieldOriginTooltip />
           </div>
           <Field
             id="proposed_production"

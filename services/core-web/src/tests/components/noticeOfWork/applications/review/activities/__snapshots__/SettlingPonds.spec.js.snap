@@ -13,10 +13,7 @@ exports[`SettlingPonds renders properly 1`] = `
         className="field-title"
       >
         Describe the waste water treatment facility (settling pond design, recycling, distance from creek, etc.)
-        <CoreTooltip
-          title={null}
-          type="now-field-origin"
-        />
+        <NOWFieldOriginTooltip />
       </div>
       <Field
         component={[Function]}
@@ -101,10 +98,7 @@ exports[`SettlingPonds renders properly 1`] = `
         className="field-title"
       >
         Disposal of fines from clean out (i.e. use as a subsoil material)
-        <CoreTooltip
-          title={null}
-          type="now-field-origin"
-        />
+        <NOWFieldOriginTooltip />
       </div>
       <Field
         component={[Function]}

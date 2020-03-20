@@ -53,10 +53,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 className="field-title"
               >
                 Permit Status
-                <CoreTooltip
-                  title={null}
-                  type="now-field-origin"
-                />
+                <NOWFieldOriginTooltip />
               </div>
               <Field
                 component={[Function]}
@@ -93,10 +90,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 className="field-title"
               >
                 Individual or Company/Organization?
-                <CoreTooltip
-                  title={null}
-                  type="now-field-origin"
-                />
+                <NOWFieldOriginTooltip />
               </div>
               <Field
                 component={[Function]}
@@ -133,10 +127,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 className="field-title"
               >
                 Relationship to Individual or Company/Organization?
-                <CoreTooltip
-                  title="now-field-origin"
-                  type={null}
-                />
+                <NOWFieldOriginTooltip />
               </div>
               <Field
                 component={[Function]}
@@ -265,10 +256,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 className="field-title"
               >
                 Term of Application
-                <CoreTooltip
-                  title={null}
-                  type="now-field-origin"
-                />
+                <NOWFieldOriginTooltip />
               </div>
               <Field
                 component={[Function]}
@@ -479,10 +467,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 className="field-title"
               >
                 Do you have the required access authorizations in place?
-                <CoreTooltip
-                  title={null}
-                  type="now-field-origin"
-                />
+                <NOWFieldOriginTooltip />
               </div>
               <Field
                 component={[Function]}
@@ -503,10 +488,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 className="field-title"
               >
                 Do you need to build a road, create stream crossings or other surface disturbance that will not be on your tenure?
-                <CoreTooltip
-                  title={null}
-                  type="now-field-origin"
-                />
+                <NOWFieldOriginTooltip />
               </div>
               <Field
                 component={[Function]}
@@ -523,10 +505,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 className="field-title--light"
               >
                 Please provide the type and authorization numbers for each access authorization application or exemption to use the road(s).
-                <CoreTooltip
-                  title={null}
-                  type="now-field-origin"
-                />
+                <NOWFieldOriginTooltip />
               </div>
               <Field
                 component={[Function]}
@@ -547,10 +526,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 className="field-title"
               >
                 Access presently gated
-                <CoreTooltip
-                  title={null}
-                  type="now-field-origin"
-                />
+                <NOWFieldOriginTooltip />
               </div>
               <Field
                 component={[Function]}
@@ -567,10 +543,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 className="field-title"
               >
                 Key provided to the inspector
-                <CoreTooltip
-                  title={null}
-                  type="now-field-origin"
-                />
+                <NOWFieldOriginTooltip />
               </div>
               <Field
                 component={[Function]}
@@ -604,10 +577,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                   className="field-title"
                 >
                   Present condition of the land
-                  <CoreTooltip
-                    title={null}
-                    type="now-field-origin"
-                  />
+                  <NOWFieldOriginTooltip />
                 </div>
                 <Field
                   component={[Function]}
@@ -624,10 +594,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                   className="field-title"
                 >
                   Current means of access
-                  <CoreTooltip
-                    title={null}
-                    type="now-field-origin"
-                  />
+                  <NOWFieldOriginTooltip />
                 </div>
                 <Field
                   component={[Function]}
@@ -648,10 +615,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                   className="field-title"
                 >
                   Physiography
-                  <CoreTooltip
-                    title={null}
-                    type="now-field-origin"
-                  />
+                  <NOWFieldOriginTooltip />
                 </div>
                 <Field
                   component={[Function]}
@@ -668,10 +632,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                   className="field-title"
                 >
                   Old Equipment
-                  <CoreTooltip
-                    title={null}
-                    type="now-field-origin"
-                  />
+                  <NOWFieldOriginTooltip />
                 </div>
                 <Field
                   component={[Function]}
@@ -692,10 +653,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                   className="field-title"
                 >
                   Type of vegetation
-                  <CoreTooltip
-                    title={null}
-                    type="now-field-origin"
-                  />
+                  <NOWFieldOriginTooltip />
                 </div>
                 <Field
                   component={[Function]}
@@ -712,10 +670,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                   className="field-title"
                 >
                   Recreational trail/use
-                  <CoreTooltip
-                    title={null}
-                    type="now-field-origin"
-                  />
+                  <NOWFieldOriginTooltip />
                 </div>
                 <Field
                   component={[Function]}
@@ -761,10 +716,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                   className="field-title"
                 >
                   Activities in park
-                  <CoreTooltip
-                    title={null}
-                    type="now-field-origin"
-                  />
+                  <NOWFieldOriginTooltip />
                 </div>
                 <Field
                   component={[Function]}
@@ -785,10 +737,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                   className="field-title"
                 >
                   Proposed activities on private land
-                  <CoreTooltip
-                    title={null}
-                    type="now-field-origin"
-                  />
+                  <NOWFieldOriginTooltip />
                 </div>
                 <Field
                   component={[Function]}
@@ -805,10 +754,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                   className="field-title--light"
                 >
                   Do you have authorization by the Lieutenant Governor in Council?
-                  <CoreTooltip
-                    title={null}
-                    type="now-field-origin"
-                  />
+                  <NOWFieldOriginTooltip />
                 </div>
                 <Field
                   component={[Function]}
@@ -849,10 +795,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                   className="field-title--light"
                 >
                   Plan to protect the archaeological site
-                  <CoreTooltip
-                    title={null}
-                    type="now-field-origin"
-                  />
+                  <NOWFieldOriginTooltip />
                 </div>
                 <Field
                   component={[Function]}
@@ -877,10 +820,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                   className="field-title"
                 >
                   Have you shared information and engaged with First Nations in the area of the proposed activity?
-                  <CoreTooltip
-                    title={null}
-                    type="now-field-origin"
-                  />
+                  <NOWFieldOriginTooltip />
                 </div>
                 <Field
                   component={[Function]}
@@ -897,10 +837,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                   className="field-title"
                 >
                   As a result of the engagement, are you aware of any cultural heritage resources in the area where the work is proposed?
-                  <CoreTooltip
-                    title={null}
-                    type="now-field-origin"
-                  />
+                  <NOWFieldOriginTooltip />
                 </div>
                 <Field
                   component={[Function]}
@@ -921,10 +858,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                   className="field-title"
                 >
                   Describe your First Nations engagement activities
-                  <CoreTooltip
-                    title={null}
-                    type="now-field-origin"
-                  />
+                  <NOWFieldOriginTooltip />
                 </div>
                 <Field
                   component={[Function]}
@@ -941,10 +875,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                   className="field-title"
                 >
                   Describe any cultural heritage resources in the area
-                  <CoreTooltip
-                    title={null}
-                    type="now-field-origin"
-                  />
+                  <NOWFieldOriginTooltip />
                 </div>
                 <Field
                   component={[Function]}
@@ -1016,10 +947,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
             className="field-title"
           >
             Description of Work
-            <CoreTooltip
-              title={null}
-              type="now-field-origin"
-            />
+            <NOWFieldOriginTooltip />
           </div>
           <Field
             component={[Function]}
@@ -1046,10 +974,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 className="field-title"
               >
                 Total merchantable timber volume
-                <CoreTooltip
-                  title={null}
-                  type="now-field-origin"
-                />
+                <NOWFieldOriginTooltip />
               </div>
               <Field
                 component={[Function]}

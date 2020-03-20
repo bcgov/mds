@@ -13,7 +13,7 @@ import { TRASHCAN } from "@/constants/assets";
 import RenderField from "@/components/common/RenderField";
 import RenderFieldWithDropdown from "@/components/common/RenderFieldWithDropdown";
 import CustomPropTypes from "@/customPropTypes";
-import CoreTooltip from "@/components/common/CoreTooltip";
+import { NOWFieldOriginTooltip } from "@/components/common/CoreTooltip";
 
 const propTypes = {
   isViewMode: PropTypes.bool.isRequired,
@@ -272,7 +272,7 @@ export const UndergroundExploration = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Proposed Activities
-            <CoreTooltip type="now-field-origin" />
+            <NOWFieldOriginTooltip />
           </div>
           <Field
             id="proposed_activity"

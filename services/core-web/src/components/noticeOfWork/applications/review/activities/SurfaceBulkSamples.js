@@ -11,7 +11,7 @@ import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
 import RenderRadioButtons from "@/components/common/RenderRadioButtons";
 import Equipment from "@/components/noticeOfWork/applications/review/activities/Equipment";
 import CustomPropTypes from "@/customPropTypes";
-import CoreTooltip from "@/components/common/CoreTooltip";
+import { NOWFieldOriginTooltip } from "@/components/common/CoreTooltip";
 
 const propTypes = {
   isViewMode: PropTypes.bool.isRequired,
@@ -192,7 +192,7 @@ export const SurfaceBulkSamples = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Bed rock expansion
-            <CoreTooltip type="now-field-origin" />
+            <NOWFieldOriginTooltip />
           </div>
           <Field
             id="has_bedrock_expansion"
@@ -206,7 +206,7 @@ export const SurfaceBulkSamples = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Surface water damage
-            <CoreTooltip type="now-field-origin" />
+            <NOWFieldOriginTooltip />
           </div>
           <Field
             id="surface_water_damage"
@@ -219,7 +219,7 @@ export const SurfaceBulkSamples = (props) => {
           <div className="field-title">
             If the material has potential for spontaneous combustion, give details of separate
             handling.
-            <CoreTooltip type="now-field-origin" />
+            <NOWFieldOriginTooltip />
           </div>
           <Field
             id="spontaneous_combustion_handling"
