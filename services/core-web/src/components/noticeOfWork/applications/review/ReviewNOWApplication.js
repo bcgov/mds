@@ -613,8 +613,6 @@ export const ReviewNOWApplication = (props) => {
     </div>
   );
 
-  console.log(props);
-
   return (
     <div>
       <Form layout="vertical">
