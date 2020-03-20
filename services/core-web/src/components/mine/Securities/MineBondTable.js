@@ -129,18 +129,9 @@ export const MineBondTable = (props) => {
               <button
                 type="button"
                 className="full"
-                onClick={(event) => props.releaseOrConfiscateBond("CON", record.bond_guid, record)}
+                onClick={() => props.releaseOrConfiscateBond("CON", record.bond_guid, record)}
               >
                 Confiscate Bond
-              </button>
-            </Menu.Item>
-            <Menu.Item key="0">
-              <button
-                type="button"
-                className="full"
-                onClick={(event) => props.editBond(event, record.bond_guid)}
-              >
-                <div className="padding-small">Edit Bond</div>
               </button>
             </Menu.Item>
           </Menu>
