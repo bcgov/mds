@@ -12,4 +12,4 @@ class TestGetNOWApplicationPermitType:
             f'/now-applications/application-permit-types', headers=auth_headers['full_auth_header'])
         get_data = json.loads(get_resp.data.decode())
         assert get_resp.status_code == 200
-        assert len(get_data['records']) == len(NOWApplicationPermitType.active())
+        assert len(get_data['records']) == len(NOWApplicationPermitType.get_active())

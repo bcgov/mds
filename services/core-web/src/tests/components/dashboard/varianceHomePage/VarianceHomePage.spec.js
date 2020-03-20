@@ -37,7 +37,8 @@ const setupReducerProps = () => {
   reducerProps.variancePageData = MOCK.VARIANCE_PAGE_DATA;
   reducerProps.complianceCodesHash = MOCK.COMPLIANCE_CODES;
   reducerProps.getDropdownHSRCMComplianceCodes = MOCK.DROPDOWN_HSRCM_CODES;
-  reducerProps.filterVarianceStatusOptions = MOCK.VARIANCE_STATUS_OPTIONS;
+  reducerProps.filterVarianceStatusOptions =
+    MOCK.BULK_STATIC_CONTENT_RESPONSE.varianceStatusOptions;
 };
 
 beforeEach(() => {

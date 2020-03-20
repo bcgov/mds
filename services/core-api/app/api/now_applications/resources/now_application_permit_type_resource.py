@@ -13,4 +13,4 @@ class NOWApplicationPermitTypeResource(Resource, UserMixin):
     @requires_role_view_all
     @api.marshal_with(NOW_APPLICATION_PERMIT_TYPES, code=200, envelope='records')
     def get(self):
-        return NOWApplicationPermitType.active()
+        return NOWApplicationPermitType.get_active()

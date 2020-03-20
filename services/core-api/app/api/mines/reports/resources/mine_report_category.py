@@ -15,4 +15,4 @@ class MineReportCategoryListResource(Resource, UserMixin):
     @api.doc(description='returns the report categories for possible reports.')
     @requires_any_of([VIEW_ALL, MINESPACE_PROPONENT])
     def get(self):
-        return MineReportCategory.active()
+        return MineReportCategory.get_active()

@@ -1,3 +1,5 @@
+export const LOAD_ALL_STATIC_CONTENT = "LOAD_ALL_STATIC_CONTENT";
+
 // Redux reducers
 export const CREATE_MINE_RECORD = "CREATE_MINE_RECORD";
 export const CREATE_MINE_TYPE = "CREATE_MINE_TYPE";
