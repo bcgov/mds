@@ -1,5 +1,6 @@
 import * as actionTypes from "../constants/actionTypes";
 import { STATIC_CONTENT } from "../constants/reducerTypes";
+import { createDropDownList } from "../utils/helpers";
 
 /**
  * @file staticContentReducer.js
@@ -101,5 +102,13 @@ const isStaticContentLoaded = (state) =>
 
 export const getStaticContentLoadingIsComplete = (state) =>
   isStaticContentLoaded(state[STATIC_CONTENT]);
+
+export const getPartyRelationshipTypes = (state) => state[STATIC_CONTENT].partyRelationshipTypes;
+export const getPartyRelationshipTypesList = (state) =>
+  createDropDownList(
+    state[STATIC_CONTENT].partyRelationshipTypes,
+    "description",
+    "mine_party_appt_type_code"
+  );
 
 export default staticContentReducerObject;
