@@ -14,11 +14,12 @@ import {
   addDocumentToRelationship,
 } from "@common/actionCreators/partiesActionCreator";
 import { createTailingsStorageFacility } from "@common/actionCreators/mineActionCreator";
+import { getPartyRelationships } from "@common/selectors/partiesSelectors";
 import {
   getPartyRelationshipTypes,
   getPartyRelationshipTypesList,
-  getPartyRelationships,
-} from "@common/selectors/partiesSelectors";
+} from "@common/selectors/staticContentSelectors";
+
 import { getUserAccessData } from "@common/selectors/authenticationSelectors";
 import { USER_ROLES } from "@common/constants/environment";
 import { getPermits } from "@common/reducers/permitReducer";
@@ -510,9 +511,4 @@ const mapDispatchToProps = (dispatch) =>
 ViewPartyRelationships.propTypes = propTypes;
 ViewPartyRelationships.defaultProps = defaultProps;
 
-export default withRouter(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(ViewPartyRelationships)
-);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ViewPartyRelationships));
