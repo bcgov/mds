@@ -1,6 +1,6 @@
 /* eslint-disable */
 import React from "react";
-import { Menu, Dropdown, Button, Icon, Tooltip } from "antd";
+import { Menu, Dropdown, Button, Icon, Tooltip, Table } from "antd";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
@@ -12,6 +12,7 @@ import CustomPropTypes from "@/customPropTypes";
 import { EDIT_OUTLINE, EDIT_OUTLINE_VIOLET, EDIT, CARAT } from "@/constants/assets";
 import LinkButton from "@/components/common/LinkButton";
 import CoreTable from "@/components/common/CoreTable";
+import { formatDate } from "@common/utils/helpers";
 
 /**
  * @class  MineBondTable - displays a table of permits with their related bonds
@@ -19,10 +20,7 @@ import CoreTable from "@/components/common/CoreTable";
 
 const propTypes = {
   permits: PropTypes.arrayOf(CustomPropTypes.permit).isRequired,
-};
-
-const defaultProps = {
-  partyRelationships: [],
+  partyRelationshipsHash: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
 export const MineBondTable = (props) => {
@@ -37,7 +35,11 @@ export const MineBondTable = (props) => {
       title: "Security Total",
       dataIndex: "security_total",
       key: "security_total",
-      render: (text) => <div title="Permit No.">{text}</div>,
+      render: (text, record) => (
+        <div title="Permit No.">
+          {record.permit_amendments[0].security_total || Strings.EMPTY_FIELD}
+        </div>
+      ),
     },
     {
       title: "Total Bonds",
@@ -74,19 +76,19 @@ export const MineBondTable = (props) => {
       title: "Issue Date",
       dataIndex: "issue_date",
       key: "issue_date",
-      render: (text) => <div title="Issue Date">{text}</div>,
+      render: (text) => <div title="Issue Date">{formatDate(text)}</div>,
     },
     {
       title: "Payer",
       dataIndex: "payer_party_guid",
       key: "payer_party_guid",
-      render: (text) => <div title="Payer">{text}</div>,
+      render: (text) => <div title="Payer">{props.partyRelationshipsHash[text]}</div>,
     },
     {
       title: "Institution",
       dataIndex: "institution_name",
       key: "institution_name",
-      render: (text) => <div title="Institution">{text}</div>,
+      render: (text) => <div title="Institution">{text || Strings.EMPTY_FIELD}</div>,
     },
     {
       title: "Type",
@@ -112,6 +114,37 @@ export const MineBondTable = (props) => {
       key: "addEditButton",
       align: "right",
       render: (text, record) => {
+        const menu = (
+          <Menu>
+            <Menu.Item key="0">
+              <button
+                type="button"
+                className="full"
+                onClick={() => props.releaseOrConfiscateBond("REL", record.bond_guid, record)}
+              >
+                Release Bond
+              </button>
+            </Menu.Item>
+            <Menu.Item key="0">
+              <button
+                type="button"
+                className="full"
+                onClick={(event) => props.releaseOrConfiscateBond("CON", record.bond_guid, record)}
+              >
+                Confiscate Bond
+              </button>
+            </Menu.Item>
+            <Menu.Item key="0">
+              <button
+                type="button"
+                className="full"
+                onClick={(event) => props.editBond(event, record.bond_guid)}
+              >
+                <div className="padding-small">Edit Bond</div>
+              </button>
+            </Menu.Item>
+          </Menu>
+        );
         return (
           <div>
             <AuthorizationWrapper permission={Permission.EDIT_SECURITIES}>
@@ -121,30 +154,31 @@ export const MineBondTable = (props) => {
                 onClick={(event) => props.openAddBondModal(event, record.permit_guid)}
               >
                 <div className="padding-small">
-                  <img className="padding-small--right icon-svg-filter" src={EDIT} alt="Add/Edit" />
-                  Edit
+                  <Icon type="eye" alt="View" className="icon-lg icon-svg-filter" />
                 </div>
               </Button>
+              <Dropdown className="full-height full-mobile" overlay={menu} placement="bottomLeft">
+                <Button type="secondary" className="permit-table-button">
+                  <div className="padding-small">
+                    <img
+                      className="padding-small--right icon-svg-filter"
+                      src={CARAT}
+                      alt="Menu"
+                      style={{ paddingLeft: "5px" }}
+                    />
+                  </div>
+                </Button>
+              </Dropdown>
             </AuthorizationWrapper>
-            <Button
-              type="secondary"
-              className="permit-table-button"
-              onClick={(event) => props.openAddBondModal(event, record.permit_guid)}
-            >
-              <div className="padding-small">
-                <img className="padding-small--right icon-svg-filter" src={EDIT} alt="Add/Edit" />
-                View
-              </div>
-            </Button>
           </div>
         );
       },
     },
   ];
 
-  const bonds = (permit) => {
+  const bonds = (record) => {
     const bondsByPermit = props.bonds.filter(({ permit_guid }) => {
-      permit_guid === permit.permit_guid;
+      return permit_guid === record.permit_guid;
     });
     return (
       <Table align="left" pagination={false} columns={bondColumns} dataSource={bondsByPermit} />
@@ -172,10 +206,18 @@ export const MineBondTable = (props) => {
     </a>
   );
 
+  const transformRowData = (permits) =>
+    permits.map((permit) => {
+      return {
+        key: permit.permit_guid,
+        ...permit,
+      };
+    });
+
   return (
     <CoreTable
       condition={props.isLoaded}
-      dataSource={props.permits}
+      dataSource={transformRowData(props.permits)}
       columns={columns}
       tableProps={{
         className: "nested-table",
@@ -183,7 +225,6 @@ export const MineBondTable = (props) => {
         align: "left",
         pagination: false,
         locale: { emptyText: <NullScreen type="securities" /> },
-        defaultExpandAllRows: true,
         expandIcon: RenderTableExpandIcon,
         expandRowByClick: true,
         expandedRowRender: bonds,
@@ -195,6 +236,5 @@ export const MineBondTable = (props) => {
 };
 
 MineBondTable.propTypes = propTypes;
-MineBondTable.defaultProps = defaultProps;
 
 export default MineBondTable;

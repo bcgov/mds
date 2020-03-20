@@ -51,19 +51,19 @@ export const createBond = (payload) => (dispatch) => {
     .finally(() => dispatch(hideLoading("modal")));
 };
 
-export const updateBond = (bondGuid, payload) => (dispatch) => {
-  dispatch(request(reducerTypes.CREATE_BOND));
+export const updateBond = (payload, bondGuid) => (dispatch) => {
+  dispatch(request(reducerTypes.UPDATE_BOND));
   dispatch(showLoading("modal"));
   return CustomAxios()
-    .post(ENVIRONMENT.apiUrl + API.BOND(bondGuid), payload, createRequestHeader())
+    .put(ENVIRONMENT.apiUrl + API.BOND(bondGuid), payload, createRequestHeader())
     .then((response) => {
       notification.success({
         message: "Successfully updated the bond record.",
         duration: 10,
       });
-      dispatch(success(reducerTypes.CREATE_BOND));
+      dispatch(success(reducerTypes.UPDATE_BOND));
       return response;
     })
-    .catch(() => dispatch(error(reducerTypes.CREATE_BOND)))
+    .catch(() => dispatch(error(reducerTypes.UPDATE_BOND)))
     .finally(() => dispatch(hideLoading("modal")));
 };

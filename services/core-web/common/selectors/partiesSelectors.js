@@ -28,31 +28,29 @@ export const getPartyRelationshipTypeHash = createSelector(
   createLabelHash
 );
 
-export const getDropdownInspectors = createSelector(
-  [getInspectors],
-  (parties) => {
-    const activeInspectors = parties
-      .filter(
-        (inspector) => moment(inspector.expiry_date) >= moment() || inspector.expiry_date === null
-      )
-      .map((inspector) => ({
-        value: inspector.party_guid,
-        label: inspector.name,
-      }));
-    const inactiveInspectors = parties
-      .filter((inspector) => moment(inspector.expiry_date) < moment())
-      .map((inspector) => ({
-        value: inspector.party_guid,
-        label: inspector.name,
-      }));
-    return [
-      { groupName: "Active", opt: activeInspectors },
-      { groupName: "Inactive", opt: inactiveInspectors },
-    ];
-  }
+export const getPartyRelationshipsHash = createSelector([getPartyRelationships], (parties) =>
+  parties.reduce((map, { party }) => ({ [party.party_guid]: party.name, ...map }), {})
 );
 
-export const getInspectorsHash = createSelector(
-  [getInspectorsList],
-  createLabelHash
-);
+export const getDropdownInspectors = createSelector([getInspectors], (parties) => {
+  const activeInspectors = parties
+    .filter(
+      (inspector) => moment(inspector.expiry_date) >= moment() || inspector.expiry_date === null
+    )
+    .map((inspector) => ({
+      value: inspector.party_guid,
+      label: inspector.name,
+    }));
+  const inactiveInspectors = parties
+    .filter((inspector) => moment(inspector.expiry_date) < moment())
+    .map((inspector) => ({
+      value: inspector.party_guid,
+      label: inspector.name,
+    }));
+  return [
+    { groupName: "Active", opt: activeInspectors },
+    { groupName: "Inactive", opt: inactiveInspectors },
+  ];
+});
+
+export const getInspectorsHash = createSelector([getInspectorsList], createLabelHash);

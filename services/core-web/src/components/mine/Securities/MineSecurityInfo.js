@@ -4,11 +4,12 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { Divider } from "antd";
 import PropTypes from "prop-types";
+import { getPartyRelationshipsHash } from "@common/selectors/partiesSelectors";
 import { fetchPermits } from "@common/actionCreators/permitActionCreator";
 import { fetchMineRecordById } from "@common/actionCreators/mineActionCreator";
 import { openModal, closeModal } from "@common/actions/modalActions";
 import { getPermits } from "@common/reducers/permitReducer";
-import { getBonds } from "@common/selectors/securitiesSelectors";
+import { getBonds, getBondTotals } from "@common/selectors/securitiesSelectors";
 import {
   fetchMineBonds,
   fetchMineBondsById,
@@ -16,9 +17,9 @@ import {
   updateBond,
 } from "@common/actionCreators/securitiesActionCreator";
 import { getMineGuid } from "@common/selectors/mineSelectors";
+import { currencyMask } from "@common/utils/helpers";
 import CustomPropTypes from "@/customPropTypes";
 import MineBondTable from "@/components/mine/Securities/MineBondTable";
-import * as ModalContent from "@/constants/modalContent";
 import MineDashboardContentCard from "@/components/mine/MineDashboardContentCard";
 import { modalConfig } from "@/components/modalContent/config";
 /**
@@ -43,6 +44,8 @@ const propTypes = {
   createBond: PropTypes.func.isRequired,
   updateBond: PropTypes.func.isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
+  bondTotals: PropTypes.objectOf(PropTypes.number),
+  partyRelationshipsHash: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
 const defaultProps = {
@@ -78,6 +81,47 @@ export class MineSecurityInfo extends Component {
     });
   };
 
+  openEditBondModal = (event, permitGuid) => {
+    event.preventDefault();
+    this.props.openModal({
+      props: {
+        title: "Add Bond",
+        onSubmit: this.editBond,
+        permitGuid,
+        editBond: true,
+      },
+      width: "50vw",
+      content: modalConfig.ADD_BOND_MODAL,
+    });
+  };
+
+  editBond = (values, bondGuid) => {
+    this.props.updateBond(values, bondGuid).then(() => {
+      this.props.fetchMineBonds(this.props.mineGuid).then(() => {
+        this.props.closeModal();
+        this.setState({ isLoaded: true });
+      });
+    });
+  };
+
+  releaseOrConfiscateBond = (code, bondGuid, bond) => {
+    const newBond = bond;
+    delete newBond.permit_guid;
+    delete newBond.bond_id;
+    delete newBond.bond_guid;
+    delete newBond.institution_party_guid;
+    const payload = {
+      ...newBond,
+      bond_status_code: code,
+    };
+    this.props.updateBond(payload, bondGuid).then(() => {
+      this.props.fetchMineBonds(this.props.mineGuid).then(() => {
+        this.props.closeModal();
+        this.setState({ isLoaded: true });
+      });
+    });
+  };
+
   addBondToPermit = (values, permitGuid) => {
     const payload = {
       bond: {
@@ -95,21 +139,15 @@ export class MineSecurityInfo extends Component {
     });
   };
 
-  onExpand = (expanded, record) => {
-    console.log(expanded);
-    console.log(record);
-    console.log("IM GETTING CALLED");
+  onExpand = (expanded, record) =>
     this.setState((prevState) => {
       const expandedRowKeys = expanded
-        ? prevState.expandedRowKeys.concat(record.permit_id)
+        ? prevState.expandedRowKeys.concat(record.key)
         : prevState.expandedRowKeys.filter((key) => {
-            console.log(key);
-            console.log(record.permit_id);
-            key !== record.permit_id;
+            key !== record.key;
           });
       return { expandedRowKeys };
     });
-  };
 
   render() {
     return (
@@ -119,9 +157,15 @@ export class MineSecurityInfo extends Component {
           <Divider />
           <div className="dashboard--cards">
             <MineDashboardContentCard title="Total Amount Assessed" content="$1,000,000" />
-            <MineDashboardContentCard title="Total Amount Held" content="1" />
-            <MineDashboardContentCard title="Total Bonds" content="1" />
-            <MineDashboardContentCard title="Total Amount Confiscated" content="$3" />
+            <MineDashboardContentCard
+              title="Total Amount Held"
+              content={this.props.bondTotals.amountHeld}
+            />
+            <MineDashboardContentCard title="Total Bonds" content={this.props.bondTotals.count} />
+            <MineDashboardContentCard
+              title="Total Amount Confiscated"
+              content={this.props.bondTotals.amountConfiscated}
+            />
           </div>
           <br />
           <MineBondTable
@@ -131,6 +175,8 @@ export class MineSecurityInfo extends Component {
             onExpand={this.onExpand}
             openAddBondModal={this.openAddBondModal}
             bonds={this.props.bonds}
+            releaseOrConfiscateBond={this.releaseOrConfiscateBond}
+            partyRelationshipsHash={this.props.partyRelationshipsHash}
           />
         </div>
       </div>
@@ -142,6 +188,8 @@ const mapStateToProps = (state) => ({
   permits: getPermits(state),
   mineGuid: getMineGuid(state),
   bonds: getBonds(state),
+  bondTotals: getBondTotals(state),
+  partyRelationshipsHash: getPartyRelationshipsHash(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
