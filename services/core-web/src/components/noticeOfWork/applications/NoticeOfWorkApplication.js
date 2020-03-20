@@ -717,7 +717,7 @@ export class NoticeOfWorkApplication extends Component {
                 //  lower fixNav to account for error message
                 style={showErrors && this.state.fixedTop ? { top: "170px" } : {}}
               >
-                {this.state.currentStep !== 0 && (
+                {this.state.currentStep === 1 && (
                   <NOWSideMenu
                     route={routes.NOTICE_OF_WORK_APPLICATION}
                     noticeOfWorkType={this.props.noticeOfWork.notice_of_work_type_code}
