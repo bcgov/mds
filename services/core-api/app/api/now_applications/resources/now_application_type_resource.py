@@ -13,4 +13,4 @@ class NOWApplicationTypeResource(Resource, UserMixin):
     @requires_role_view_all
     @api.marshal_with(NOW_APPLICATION_TYPES, code=200, envelope='records')
     def get(self):
-        return NOWApplicationType.active()
+        return NOWApplicationType.get_active()

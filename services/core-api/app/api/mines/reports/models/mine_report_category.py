@@ -15,7 +15,7 @@ class MineReportCategory(Base, AuditMixin):
         return '<MineReportCategory %r>' % self.mine_report_category
 
     @classmethod
-    def active(cls):
+    def get_active(cls):
         try:
             return cls.query.filter_by(active_ind=True).order_by(asc(cls.display_order)).all()
         except ValueError:

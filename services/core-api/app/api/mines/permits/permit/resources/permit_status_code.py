@@ -13,4 +13,4 @@ class PermitStatusCodeResource(Resource, UserMixin):
     @requires_role_view_all
     @api.marshal_with(PERMIT_STATUS_CODE_MODEL, envelope='records', code=200)
     def get(self):
-        return PermitStatusCode.active_options()
+        return PermitStatusCode.get_active()

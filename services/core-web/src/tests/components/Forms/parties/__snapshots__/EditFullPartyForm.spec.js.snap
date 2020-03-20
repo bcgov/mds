@@ -207,12 +207,12 @@ exports[`EditFullPartyForm renders properly 1`] = `
                       "value": null,
                     },
                     Object {
-                      "label": "BC",
-                      "value": "BC",
-                    },
-                    Object {
                       "label": "AB",
                       "value": "AB",
+                    },
+                    Object {
+                      "label": "BC",
+                      "value": "BC",
                     },
                   ]
                 }

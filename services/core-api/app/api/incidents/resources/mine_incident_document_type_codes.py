@@ -8,8 +8,9 @@ from app.api.incidents.models.mine_incident_document_type_code import MineIncide
 
 
 class MineIncidentDocumentTypeCodeResource(Resource):
-    @api.marshal_with(MINE_INCIDENT_DOCUMENT_TYPE_CODE_MODEL, envelope='records', code=200, as_list=True)
+    @api.marshal_with(
+        MINE_INCIDENT_DOCUMENT_TYPE_CODE_MODEL, envelope='records', code=200, as_list=True)
     @api.doc(description='Returns the possible incident document types')
     @requires_role_view_all
     def get(self):
-        return MineIncidentDocumentTypeCode.active()
+        return MineIncidentDocumentTypeCode.get_active()

@@ -98,6 +98,8 @@ exports[`MineVariance renders properly 1`] = `
           "DEN": "Denied",
           "NAP": "Not Applicable",
           "REV": "In Review",
+          "RFD": "Ready for Decision",
+          "WIT": "Withdrawn",
         }
       }
       variances={
@@ -196,6 +198,8 @@ exports[`MineVariance renders properly 1`] = `
           "DEN": "Denied",
           "NAP": "Not Applicable",
           "REV": "In Review",
+          "RFD": "Ready for Decision",
+          "WIT": "Withdrawn",
         }
       }
       variances={
