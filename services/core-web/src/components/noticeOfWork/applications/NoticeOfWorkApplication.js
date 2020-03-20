@@ -166,9 +166,10 @@ export class NoticeOfWorkApplication extends Component {
     window.removeEventListener("scroll", this.handleScroll);
   }
 
-  loadMineInfo = (mineGuid) => {
+  loadMineInfo = (mineGuid, onMineInfoLoaded = () => {}) => {
     this.props.fetchMineRecordById(mineGuid).then(({ data }) => {
       this.setState({ isMajorMine: data.major_mine_ind, mineGuid: data.mine_guid });
+      onMineInfoLoaded();
     });
   };
 
@@ -181,14 +182,15 @@ export class NoticeOfWorkApplication extends Component {
     });
   };
 
-  loadNoticeOfWork = (id) => {
-    this.props.fetchImportedNoticeOfWorkApplication(id).then(({ data }) => {
-      this.loadMineInfo(data.mine_guid);
-      this.handleProgressButtonLabels(data.application_progress);
-      this.props
-        .fetchOriginalNoticeOfWorkApplication(id)
-        .then(() => this.setState({ isLoaded: true }));
-    });
+  loadNoticeOfWork = async (id) => {
+    this.setState({ isLoaded: false });
+    await Promise.all([
+      this.props.fetchOriginalNoticeOfWorkApplication(id),
+      this.props.fetchImportedNoticeOfWorkApplication(id).then(({ data }) => {
+        this.handleProgressButtonLabels(data.application_progress);
+        this.loadMineInfo(data.mine_guid, this.setState({ isLoaded: true }));
+      }),
+    ]);
   };
 
   handleProgressButtonLabels = (applicationProgress) => {
