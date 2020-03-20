@@ -11,7 +11,15 @@ import {
   getDropdownNoticeOfWorkApplicationTypeOptions,
   getDropdownNoticeOfWorkApplicationPermitTypeOptions,
 } from "@common/selectors/staticContentSelectors";
-import { required, lat, lon, maxLength, number, currency } from "@common/utils/Validate";
+import {
+  required,
+  lat,
+  lon,
+  maxLength,
+  number,
+  requiredRadioButton,
+  currency,
+} from "@common/utils/Validate";
 import CustomPropTypes from "@/customPropTypes";
 import RenderField from "@/components/common/RenderField";
 import RenderDate from "@/components/common/RenderDate";
@@ -416,7 +424,7 @@ export const ReviewNOWApplication = (props) => {
               name="has_community_water_shed"
               component={RenderRadioButtons}
               disabled={props.isViewMode}
-              validate={[required]}
+              validate={[requiredRadioButton]}
             />
           </Col>
           <Col md={12} sm={24}>
@@ -472,7 +480,7 @@ export const ReviewNOWApplication = (props) => {
               name="has_archaeology_sites_affected"
               component={RenderRadioButtons}
               disabled={props.isViewMode}
-              validate={[required]}
+              validate={[requiredRadioButton]}
             />
             <div className="field-title--light">
               Plan to protect the archaeological site
@@ -681,6 +689,7 @@ export default compose(
   })),
   reduxForm({
     form: FORM.EDIT_NOTICE_OF_WORK,
+    touchOnChange: true,
     touchOnBlur: true,
     enableReinitialize: true,
   })
