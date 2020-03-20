@@ -13,7 +13,6 @@ class VarianceDocumentCategoryCode(AuditMixin, Base):
     def __repr__(self):
         return '<VarianceDocumentCategoryCode %r>' % self.variance_document_category_code
 
-
     @classmethod
-    def active(cls):
+    def get_active(cls):
         return cls.query.filter_by(active_ind=True).all()

@@ -12,4 +12,4 @@ class MineIncidentCategoryResource(Resource):
     @api.doc(description='Returns the possible categories for dangerous occurrences')
     @requires_role_view_all
     def get(self):
-        return MineIncidentCategory.active()
+        return MineIncidentCategory.get_active()

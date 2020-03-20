@@ -13,4 +13,4 @@ class NOWApplicationStatusCodeResource(Resource, UserMixin):
     @requires_role_view_all
     @api.marshal_with(NOW_APPLICATION_STATUS_CODES, code=200, envelope='records')
     def get(self):
-        return NOWApplicationStatus.active()
+        return NOWApplicationStatus.get_active()

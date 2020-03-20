@@ -44,5 +44,5 @@ class NOWApplicationProgress(Base, AuditMixin):
         return progress
 
     @classmethod
-    def active(cls):
+    def get_active(cls):
         return cls.query.filter_by(active_ind=True).all()

@@ -12,4 +12,4 @@ class TestGetNOWApplicationStatus:
             f'/now-applications/application-status-codes', headers=auth_headers['full_auth_header'])
         get_data = json.loads(get_resp.data.decode())
         assert get_resp.status_code == 200
-        assert len(get_data['records']) == len(NOWApplicationStatus.active())
+        assert len(get_data['records']) == len(NOWApplicationStatus.get_active())
