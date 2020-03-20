@@ -13,4 +13,4 @@ class UnitTypeResource(Resource, UserMixin):
     @requires_role_view_all
     @api.marshal_with(UNIT_TYPES, code=200, envelope='records')
     def get(self):
-        return UnitType.active()
+        return UnitType.get_active()

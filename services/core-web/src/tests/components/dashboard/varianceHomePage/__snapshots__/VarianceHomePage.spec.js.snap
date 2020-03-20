@@ -27,11 +27,11 @@ exports[`VarianceHomePage renders properly 1`] = `
             Array [
               Object {
                 "label": "2.3.7 - Spills",
-                "value": "305",
+                "value": 305,
               },
               Object {
                 "label": "2.3.8 - Flammable Waste Storage",
-                "value": "306",
+                "value": 306,
               },
             ]
           }
@@ -70,26 +70,32 @@ exports[`VarianceHomePage renders properly 1`] = `
             }
           }
           filterVarianceStatusOptions={
-            Object {
-              "records": Array [
-                Object {
-                  "description": "In Review",
-                  "variance_application_status_code": "REV",
-                },
-                Object {
-                  "description": "Not Applicable",
-                  "variance_application_status_code": "NAP",
-                },
-                Object {
-                  "description": "Approved",
-                  "variance_application_status_code": "APP",
-                },
-                Object {
-                  "description": "Denied",
-                  "variance_application_status_code": "DEN",
-                },
-              ],
-            }
+            Array [
+              Object {
+                "description": "Ready for Decision",
+                "variance_application_status_code": "RFD",
+              },
+              Object {
+                "description": "Withdrawn",
+                "variance_application_status_code": "WIT",
+              },
+              Object {
+                "description": "In Review",
+                "variance_application_status_code": "REV",
+              },
+              Object {
+                "description": "Not Applicable",
+                "variance_application_status_code": "NAP",
+              },
+              Object {
+                "description": "Approved",
+                "variance_application_status_code": "APP",
+              },
+              Object {
+                "description": "Denied",
+                "variance_application_status_code": "DEN",
+              },
+            ]
           }
           handleVarianceSearch={[Function]}
           initialValues={
