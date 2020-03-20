@@ -2,17 +2,18 @@ import React from "react";
 import { PropTypes } from "prop-types";
 import { Field, Fields, formValueSelector } from "redux-form";
 import { connect } from "react-redux";
-import { Row, Col, Table, Button, Tooltip } from "antd";
+import { Row, Col, Table, Button } from "antd";
 import {
   getDropdownNoticeOfWorkUndergroundExplorationTypeOptions,
   getDropdownNoticeOfWorkUnitTypeOptions,
 } from "@common/selectors/staticContentSelectors";
 import { numberWithUnitCode } from "@common/utils/Validate";
 import * as FORM from "@/constants/forms";
-import { TRASHCAN, INFO_CIRCLE } from "@/constants/assets";
+import { TRASHCAN } from "@/constants/assets";
 import RenderField from "@/components/common/RenderField";
 import RenderFieldWithDropdown from "@/components/common/RenderFieldWithDropdown";
 import CustomPropTypes from "@/customPropTypes";
+import { NOWFieldOriginTooltip } from "@/components/common/CoreTooltip";
 
 const propTypes = {
   isViewMode: PropTypes.bool.isRequired,
@@ -20,7 +21,7 @@ const propTypes = {
   editRecord: PropTypes.func.isRequired,
   addRecord: PropTypes.func.isRequired,
   unitTypeOptions: CustomPropTypes.options.isRequired,
-  // eslint-disable-next-line
+  // eslint-disable-next-line react/no-unused-prop-types
   undergroundExplorationTypeOptions: CustomPropTypes.options.isRequired,
 };
 
@@ -271,13 +272,7 @@ export const UndergroundExploration = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Proposed Activities
-            <Tooltip
-              title="This field is not being sent by NROS or vFCBC. Open the original PDF to to see the data."
-              placement="right"
-              mouseEnterDelay={1}
-            >
-              <img src={INFO_CIRCLE} alt="INFO" className="info-tooltip" />
-            </Tooltip>
+            <NOWFieldOriginTooltip />
           </div>
           <Field
             id="proposed_activity"

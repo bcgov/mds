@@ -73,25 +73,7 @@ exports[`SurfaceBulkSamples renders properly 1`] = `
         className="field-title"
       >
         Bed rock expansion
-        <Tooltip
-          arrowPointAtCenter={false}
-          autoAdjustOverflow={true}
-          mouseEnterDelay={1}
-          mouseLeaveDelay={0.1}
-          placement="right"
-          title="This field is not being sent by NROS or vFCBC. Open the original PDF to to see the data."
-          transitionName="zoom-big-fast"
-        >
-          <img
-            alt="INFO"
-            className="info-tooltip"
-            src={
-              Object {
-                "process": [Function],
-              }
-            }
-          />
-        </Tooltip>
+        <NOWFieldOriginTooltip />
       </div>
       <Field
         component={[Function]}
@@ -112,25 +94,7 @@ exports[`SurfaceBulkSamples renders properly 1`] = `
         className="field-title"
       >
         Surface water damage
-        <Tooltip
-          arrowPointAtCenter={false}
-          autoAdjustOverflow={true}
-          mouseEnterDelay={1}
-          mouseLeaveDelay={0.1}
-          placement="right"
-          title="This field is not being sent by NROS or vFCBC. Open the original PDF to to see the data."
-          transitionName="zoom-big-fast"
-        >
-          <img
-            alt="INFO"
-            className="info-tooltip"
-            src={
-              Object {
-                "process": [Function],
-              }
-            }
-          />
-        </Tooltip>
+        <NOWFieldOriginTooltip />
       </div>
       <Field
         component={[Function]}
@@ -147,25 +111,7 @@ exports[`SurfaceBulkSamples renders properly 1`] = `
         className="field-title"
       >
         If the material has potential for spontaneous combustion, give details of separate handling.
-        <Tooltip
-          arrowPointAtCenter={false}
-          autoAdjustOverflow={true}
-          mouseEnterDelay={1}
-          mouseLeaveDelay={0.1}
-          placement="right"
-          title="This field is not being sent by NROS or vFCBC. Open the original PDF to to see the data."
-          transitionName="zoom-big-fast"
-        >
-          <img
-            alt="INFO"
-            className="info-tooltip"
-            src={
-              Object {
-                "process": [Function],
-              }
-            }
-          />
-        </Tooltip>
+        <NOWFieldOriginTooltip />
       </div>
       <Field
         component={[Function]}

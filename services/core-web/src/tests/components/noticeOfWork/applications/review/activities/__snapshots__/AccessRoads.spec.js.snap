@@ -55,25 +55,7 @@ exports[`AccessRoads renders properly 1`] = `
         className="field-title"
       >
         Are you proposing any bridges, culverts, and crossings?
-        <Tooltip
-          arrowPointAtCenter={false}
-          autoAdjustOverflow={true}
-          mouseEnterDelay={1}
-          mouseLeaveDelay={0.1}
-          placement="right"
-          title="This field is not being sent by NROS or vFCBC. Open the original PDF to to see the data."
-          transitionName="zoom-big-fast"
-        >
-          <img
-            alt="INFO"
-            className="info-tooltip"
-            src={
-              Object {
-                "process": [Function],
-              }
-            }
-          />
-        </Tooltip>
+        <NOWFieldOriginTooltip />
       </div>
       <Field
         component={[Function]}
@@ -85,25 +67,7 @@ exports[`AccessRoads renders properly 1`] = `
         className="field-title"
       >
         Describe the changes and reference the locations need on map needed later in the application.
-        <Tooltip
-          arrowPointAtCenter={false}
-          autoAdjustOverflow={true}
-          mouseEnterDelay={1}
-          mouseLeaveDelay={0.1}
-          placement="right"
-          title="This field is not being sent by NROS or vFCBC. Open the original PDF to to see the data."
-          transitionName="zoom-big-fast"
-        >
-          <img
-            alt="INFO"
-            className="info-tooltip"
-            src={
-              Object {
-                "process": [Function],
-              }
-            }
-          />
-        </Tooltip>
+        <NOWFieldOriginTooltip />
       </div>
       <Field
         component={[Function]}
