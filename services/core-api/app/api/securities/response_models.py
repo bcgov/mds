@@ -8,7 +8,6 @@ BOND = api.model(
         'amount': fields.Fixed(decimals=2),
         'bond_type_code': fields.String,
         'payer_party_guid': fields.String,
-        'institution_party_guid': fields.String,
         'bond_status_code': fields.String,
         'reference_number': fields.String,
         'issue_date': fields.DateTime,
