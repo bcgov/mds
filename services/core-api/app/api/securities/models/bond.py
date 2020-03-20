@@ -34,7 +34,7 @@ class Bond(Base, AuditMixin):
     institution_postal_code = db.Column(db.String)
     note = db.Column(db.String)
 
-    # payer = db.relationship('Party', lazy='joined')
+    payer = db.relationship('Party', lazy='joined')
     permits = db.relationship('Permit', uselist=False, lazy='select', secondary='bond_permit_xref')
 
     def __repr__(self):
