@@ -85,5 +85,8 @@ STATIC_CONTENT_MODEL = api.model(
             fields.Nested(NOW_APPLICATION_PERMIT_TYPES), attribute='NOWApplicationPermitType'),
         'noticeOfWorkApplicationReviewOptions':
         fields.List(
-            fields.Nested(NOW_APPLICATION_REVIEW_TYPES), attribute='NOWApplicationReviewType')
+            fields.Nested(NOW_APPLICATION_REVIEW_TYPES), attribute='NOWApplicationReviewType'),
+        'partyRelationshipTypes':
+        fields.List(
+            fields.Nested(MINE_PARTY_APPT_TYPE_MODEL), attribute='MinePartyAppointmentType')
     })

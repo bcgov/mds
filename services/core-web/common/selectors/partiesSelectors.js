@@ -7,8 +7,6 @@ export const {
   getParties,
   getRawParties,
   getPartyIds,
-  getPartyRelationshipTypes,
-  getPartyRelationshipTypesList,
   getPartyRelationships,
   getPartyPageData,
   getAddPartyFormState,
@@ -21,15 +19,6 @@ export const getSummaryPartyRelationships = createSelector(
   [getPartyRelationships],
   (partyRelationships) =>
     partyRelationships.filter((pr) => ["MMG", "PMT"].includes(pr.mine_party_appt_type_code))
-);
-
-export const getPartyRelationshipTypeHash = createSelector(
-  [getPartyRelationshipTypesList],
-  createLabelHash
-);
-
-export const getPartyRelationshipsHash = createSelector([getPartyRelationships], (parties) =>
-  parties.reduce((map, { party }) => ({ [party.party_guid]: party.name, ...map }), {})
 );
 
 export const getDropdownInspectors = createSelector([getInspectors], (parties) => {

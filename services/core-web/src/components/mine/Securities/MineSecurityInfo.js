@@ -4,7 +4,6 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { Divider } from "antd";
 import PropTypes from "prop-types";
-import { getPartyRelationshipsHash } from "@common/selectors/partiesSelectors";
 import { fetchPermits } from "@common/actionCreators/permitActionCreator";
 import { fetchMineRecordById } from "@common/actionCreators/mineActionCreator";
 import { openModal, closeModal } from "@common/actions/modalActions";
@@ -45,7 +44,6 @@ const propTypes = {
   updateBond: PropTypes.func.isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
   bondTotals: PropTypes.objectOf(PropTypes.number),
-  partyRelationshipsHash: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
 const defaultProps = {
@@ -176,7 +174,6 @@ export class MineSecurityInfo extends Component {
             openAddBondModal={this.openAddBondModal}
             bonds={this.props.bonds}
             releaseOrConfiscateBond={this.releaseOrConfiscateBond}
-            partyRelationshipsHash={this.props.partyRelationshipsHash}
           />
         </div>
       </div>
@@ -189,7 +186,6 @@ const mapStateToProps = (state) => ({
   mineGuid: getMineGuid(state),
   bonds: getBonds(state),
   bondTotals: getBondTotals(state),
-  partyRelationshipsHash: getPartyRelationshipsHash(state),
 });
 
 const mapDispatchToProps = (dispatch) =>

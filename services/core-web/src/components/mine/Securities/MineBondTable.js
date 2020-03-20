@@ -20,7 +20,6 @@ import { formatDate } from "@common/utils/helpers";
 
 const propTypes = {
   permits: PropTypes.arrayOf(CustomPropTypes.permit).isRequired,
-  partyRelationshipsHash: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
 export const MineBondTable = (props) => {
@@ -82,7 +81,7 @@ export const MineBondTable = (props) => {
       title: "Payer",
       dataIndex: "payer_party_guid",
       key: "payer_party_guid",
-      render: (text) => <div title="Payer">{props.partyRelationshipsHash[text]}</div>,
+      render: (text) => <div title="Payer">{text}</div>,
     },
     {
       title: "Institution",

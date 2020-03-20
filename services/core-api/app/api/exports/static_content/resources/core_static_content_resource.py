@@ -38,7 +38,7 @@ from app.api.now_applications.models.activity_detail.underground_exploration_typ
 from app.api.now_applications.models.now_application_progress_status import NOWApplicationProgressStatus
 from app.api.now_applications.models.now_application_permit_type import NOWApplicationPermitType
 from app.api.now_applications.models.now_application_review_type import NOWApplicationReviewType
-from app.api.parties.party_appt.models.mine_party_appt_type import Party
+from app.api.parties.party_appt.models.mine_party_appt_type import MinePartyAppointmentType
 
 from app.api.parties.party.models.party import Party
 
@@ -50,7 +50,7 @@ MODELS_GET_ACTIVE = [
     MineReportDefinition, MineReportCategory, MineReportSubmissionStatusCode, ActivityType,
     UnitType, NOWApplicationType, NOWApplicationStatus, NOWApplicationDocumentType,
     UndergroundExplorationType, NOWApplicationProgressStatus, NOWApplicationPermitType,
-    NOWApplicationReviewType
+    MinePartyAppointmentType, NOWApplicationReviewType
 ]
 
 
