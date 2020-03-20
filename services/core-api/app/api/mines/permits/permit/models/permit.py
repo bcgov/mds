@@ -45,6 +45,8 @@ class Permit(AuditMixin, Base):
                                                        'description')
     mine_name = association_proxy('mine', 'mine_name')
 
+    bonds = db.relationship('Bond', lazy='select', secondary='bond_permit_xref')
+
     @hybrid_property
     def current_permittee(self):
         if len(self.permittee_appointments) > 0:

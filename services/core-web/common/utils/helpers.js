@@ -1,5 +1,7 @@
+/* eslint-disable */
 import moment from "moment";
 import { reset } from "redux-form";
+import { createNumberMask } from "redux-form-input-masks";
 
 /**
  * Helper function to clear redux form after submission
@@ -54,6 +56,15 @@ export const formatPostalCode = (code) => code && code.replace(/.{3}$/, " $&");
 
 export const formatTitleString = (input) =>
   input.replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
+
+export const currencyMask = createNumberMask({
+  prefix: "$",
+  suffix: "",
+  decimalPlaces: 2,
+  locale: "en-CA",
+  allowEmpty: true,
+  stringValue: false,
+});
 
 export const dateSorter = (key) => (a, b) => {
   if (a[key] === b[key]) {
@@ -188,8 +199,8 @@ export const compareCodes = (a, b) => {
     input.match(/([0-9]+)\.([0-9]+)\.([0-9]+)/) ||
     input.match(/([0-9]+)\.([0-9]+)/) ||
     input.match(/([0-9]+)/);
-  const aCodes = regexParse(a);
-  const bCodes = regexParse(b);
+  const aCodes = regexParse(a.toString());
+  const bCodes = regexParse(b.toString());
   if (!aCodes) {
     return -1;
   }
@@ -226,4 +237,25 @@ export const formatComplianceCodeValueOrLabel = (code, showDescription) => {
   const formattedDescription = showDescription ? ` - ${description}` : "";
 
   return `${section}${formattedSubSection}${formattedParagraph}${formattedSubParagraph}${formattedDescription}`;
+};
+
+// function to flatten an object for nested items in redux form
+// eslint-disable-snippets
+export const flattenObject = (ob) => {
+  const toReturn = {};
+  let flatObject;
+  for (const i in ob) {
+    if (typeof ob[i] === "object") {
+      flatObject = flattenObject(ob[i]);
+      for (const x in flatObject) {
+        if (!flatObject.hasOwnProperty(x)) {
+          continue;
+        }
+        toReturn[i + (isNaN(x) ? `.${x}` : "")] = flatObject[x];
+      }
+    } else {
+      toReturn[i] = ob[i];
+    }
+  }
+  return toReturn;
 };

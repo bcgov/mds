@@ -9,4 +9,4 @@ def test_get_mine_party_appt_type(test_client, db_session, auth_headers):
         '/parties/mines/relationship-types', headers=auth_headers['full_auth_header'])
     get_data = json.loads(get_resp.data.decode())
     assert get_resp.status_code == 200
-    assert len(get_data) == len(MinePartyAppointmentType.find_all_active())
+    assert len(get_data) == len(MinePartyAppointmentType.get_active())

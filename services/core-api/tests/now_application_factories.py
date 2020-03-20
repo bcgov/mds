@@ -398,7 +398,7 @@ class NOWApplicationFactory(BaseFactory):
     # or factory.fuzzy.FuzzyFloat(-132, -114.7) for ~ BC
     longitude = factory.Faker('longitude')
     property_name = factory.Faker('company')
-    tenure_number = str(factory.Sequence(lambda n: n))
+    tenure_number = factory.Sequence(lambda n: str(n))
     description_of_land = factory.Faker('sentence', nb_words=6, variable_nb_words=True)
     proposed_start_date = factory.Faker('past_datetime')
     proposed_end_date = factory.Faker('past_datetime')

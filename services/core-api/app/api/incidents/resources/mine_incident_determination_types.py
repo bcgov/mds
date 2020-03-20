@@ -8,8 +8,10 @@ from app.api.incidents.models.mine_incident_determination_type import MineIncide
 
 
 class MineIncidentDeterminationTypeResource(Resource):
-    @api.marshal_with(MINE_INCIDENT_DETERMINATION_TYPE_MODEL, envelope='records', code=200, as_list=True)
-    @api.doc(description='Returns the possible EMPR inspector determination types for dangerous occurrences')
+    @api.marshal_with(
+        MINE_INCIDENT_DETERMINATION_TYPE_MODEL, envelope='records', code=200, as_list=True)
+    @api.doc(description=
+             'Returns the possible EMPR inspector determination types for dangerous occurrences')
     @requires_role_view_all
     def get(self):
-        return MineIncidentDeterminationType.active()
+        return MineIncidentDeterminationType.get_active()

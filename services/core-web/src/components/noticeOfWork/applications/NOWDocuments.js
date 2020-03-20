@@ -131,7 +131,7 @@ export const NOWDocuments = (props) => {
     ];
   };
 
-  const transfromDocuments = (
+  const transformDocuments = (
     documents,
     now_application_guid,
     noticeOfWorkApplicationDocumentTypeOptionsHash
@@ -158,7 +158,7 @@ export const NOWDocuments = (props) => {
           align="left"
           pagination={false}
           columns={columns(props.noticeOfWorkApplicationDocumentTypeOptionsHash)}
-          dataSource={transfromDocuments(
+          dataSource={transformDocuments(
             props.documents,
             props.now_application_guid,
             props.noticeOfWorkApplicationDocumentTypeOptionsHash
@@ -220,7 +220,4 @@ const mapDispatchToProps = (dispatch) =>
     dispatch
   );
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(NOWDocuments);
+export default connect(mapStateToProps, mapDispatchToProps)(NOWDocuments);

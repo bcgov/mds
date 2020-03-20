@@ -149,14 +149,16 @@ const transformRowData = (mines, mineRegionHash, mineTenureHash, mineCommodityHa
       mine.mine_type && mine.mine_type.length > 0
         ? uniqBy(
             flattenDeep(
-              mine.mine_type.map(
-                (type) =>
-                  type.mine_type_detail &&
-                  type.mine_type_detail.length > 0 &&
-                  type.mine_type_detail
-                    .filter((detail) => detail.mine_commodity_code)
-                    .map((detail) => mineCommodityHash[detail.mine_commodity_code])
-              )
+              mine.mine_type.reduce((result, type) => {
+                if (type.mine_type_detail.length > 0) {
+                  result.push(
+                    type.mine_type_detail
+                      .filter((detail) => detail.mine_commodity_code)
+                      .map((detail) => mineCommodityHash[detail.mine_commodity_code])
+                  );
+                }
+                return result;
+              }, [])
             )
           )
         : [],
@@ -164,9 +166,7 @@ const transformRowData = (mines, mineRegionHash, mineTenureHash, mineCommodityHa
       mine.mine_type && mine.mine_type.length > 0
         ? uniqBy(mine.mine_type.map((type) => mineTenureHash[type.mine_tenure_type_code]))
         : [],
-    tsf: mine.mine_tailings_storage_facilities
-      ? mine.mine_tailings_storage_facilities.length
-      : Strings.EMPTY_FIELD,
+    tsf: mine.mine_tailings_storage_facilities ? mine.mine_tailings_storage_facilities.length : 0,
     verified_status: mine.verified_status,
   }));
 

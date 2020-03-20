@@ -13,6 +13,6 @@ class MineTenureTypeCodeResource(Resource, UserMixin):
     @requires_role_view_all
     @api.marshal_with(MINE_TENURE_TYPE_CODE_MODEL, code=200, envelope='records')
     def get(self):
-        mineral_tenure_type_codes = MineTenureTypeCode.find_all_active()
+        mineral_tenure_type_codes = MineTenureTypeCode.get_active()
 
         return mineral_tenure_type_codes
