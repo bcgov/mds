@@ -129,7 +129,10 @@ export class ViewNoticeOfWorkApplication extends Component {
                   : {}
               }
             >
-              <NOWSideMenu route={routes.VIEW_NOTICE_OF_WORK_APPLICATION} />
+              <NOWSideMenu
+                route={routes.VIEW_NOTICE_OF_WORK_APPLICATION}
+                noticeOfWorkType={this.props.noticeOfWork.notice_of_work_type_code}
+              />
             </div>
             <div
               className={this.state.fixedTop ? "steps--content with-fixed-top" : "steps--content"}
@@ -182,7 +185,4 @@ const mapDispatchToProps = (dispatch) =>
 
 ViewNoticeOfWorkApplication.propTypes = propTypes;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ViewNoticeOfWorkApplication);
+export default connect(mapStateToProps, mapDispatchToProps)(ViewNoticeOfWorkApplication);
