@@ -5,10 +5,8 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { formatDate } from "@common/utils/helpers";
-import {
-  getPartyRelationshipTypes,
-  getPartyRelationships,
-} from "@common/selectors/partiesSelectors";
+import { getPartyRelationships } from "@common/selectors/partiesSelectors";
+import { getPartyRelationshipTypes } from "@common/selectors/staticContentSelectors";
 import { getMineComplianceInfo } from "@common/selectors/complianceSelectors";
 import { getMines } from "@common/selectors/mineSelectors";
 import { getPermits } from "@common/reducers/permitReducer";

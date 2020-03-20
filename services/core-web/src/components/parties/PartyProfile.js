@@ -13,13 +13,12 @@ import {
 } from "@common/actionCreators/partiesActionCreator";
 import { fetchMineBasicInfoList } from "@common/actionCreators/mineActionCreator";
 import { openModal, closeModal } from "@common/actions/modalActions";
-import {
-  getParties,
-  getPartyRelationships,
-  getPartyRelationshipTypeHash,
-} from "@common/selectors/partiesSelectors";
+import { getParties, getPartyRelationships } from "@common/selectors/partiesSelectors";
 import { getMineBasicInfoListHash } from "@common/selectors/mineSelectors";
-import { getDropdownProvinceOptions } from "@common/selectors/staticContentSelectors";
+import {
+  getDropdownProvinceOptions,
+  getPartyRelationshipTypeHash,
+} from "@common/selectors/staticContentSelectors";
 import { formatTitleString, formatDate } from "@common/utils/helpers";
 import * as Strings from "@common/constants/strings";
 import { EDIT } from "@/constants/assets";
@@ -280,7 +279,4 @@ const mapDispatchToProps = (dispatch) =>
 PartyProfile.propTypes = propTypes;
 PartyProfile.defaultProps = defaultProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(PartyProfile);
+export default connect(mapStateToProps, mapDispatchToProps)(PartyProfile);
