@@ -16,12 +16,12 @@ exports[`EditPartyModal renders properly 1`] = `
     provinceOptions={
       Array [
         Object {
-          "label": "BC",
-          "value": "BC",
-        },
-        Object {
           "label": "AB",
           "value": "AB",
+        },
+        Object {
+          "label": "BC",
+          "value": "BC",
         },
       ]
     }

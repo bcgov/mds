@@ -14,19 +14,6 @@ class SubDivisionCode(AuditMixin, Base):
     def __repr__(self):
         return '<SubDivisionCode %r>' % self.sub_division_code
 
-
     @classmethod
-    def all_options(cls):
-        return list(map(
-            lambda x: {
-                'sub_division_code': x[0],
-                'description': x[1],
-                'display_order': x[2],
-            },
-            cls.query
-               .with_entities(cls.sub_division_code,
-                              cls.description,
-                              cls.display_order)
-               .filter_by(active_ind=True)
-               .all()
-        ))
+    def get_active(cls):
+        return cls.query.filter_by(active_ind=True).all()

@@ -8,9 +8,8 @@ from app.api.utils.models_mixins import AuditMixin, Base
 class ComplianceArticle(AuditMixin, Base):
     __tablename__ = 'compliance_article'
     compliance_article_id = db.Column(db.Integer, nullable=False, primary_key=True)
-    article_act_code = db.Column(db.String,
-                                 db.ForeignKey('article_act_code.article_act_code'),
-                                 nullable=False)
+    article_act_code = db.Column(
+        db.String, db.ForeignKey('article_act_code.article_act_code'), nullable=False)
     section = db.Column(db.String, nullable=True)
     sub_section = db.Column(db.String, nullable=True)
     paragraph = db.Column(db.String, nullable=True)
@@ -28,3 +27,7 @@ class ComplianceArticle(AuditMixin, Base):
     @classmethod
     def find_by_compliance_article_id(cls, id):
         return cls.query.filter_by(compliance_article_id=id).first()
+
+    @classmethod
+    def get_active(cls):
+        return cls.query.all()

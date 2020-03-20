@@ -11,14 +11,14 @@ class PermitStatusCode(AuditMixin, Base):
     display_order = db.Column(db.Integer, nullable=False)
 
     def __repr__(self):
-        return '<Permit %r>' % self.permit_guid
+        return '<Permit %r>' % self.permit_status_code
 
     @classmethod
     def find_by_permit_status_code(cls, _id):
         return cls.query.filter_by(permit_status_code=_id).first()
 
     @classmethod
-    def active_options(cls):
+    def get_active(cls):
         return cls.query.all()
         #TODO put active ind on this table
 

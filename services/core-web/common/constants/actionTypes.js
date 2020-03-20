@@ -1,4 +1,5 @@
 export const STORE_TEST_INFO = "STORE_TEST_INFO";
+export const STORE_BULK_STATIC_CONTENT = "STORE_BULK_STATIC_CONTENT";
 
 // Redux Actions
 export const REQUEST = "REQUEST";

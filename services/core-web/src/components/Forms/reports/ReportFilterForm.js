@@ -21,7 +21,6 @@ const propTypes = {
   dropdownMineReportStatusOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
   mineReportDefinitionOptions: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
   dropdownMineReportCategoryOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
-  initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
   selectedMineReportCategory: PropTypes.string,
   selectedMineReportDefinitionGuid: PropTypes.string,
 };

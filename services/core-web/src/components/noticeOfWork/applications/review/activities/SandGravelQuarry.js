@@ -3,7 +3,7 @@ import { PropTypes } from "prop-types";
 import { Field, Fields, formValueSelector } from "redux-form";
 import { connect } from "react-redux";
 import { Row, Col, Table, Button } from "antd";
-import { maxLength, number } from "@common/utils/Validate";
+import { maxLength, number, numberWithUnitCode } from "@common/utils/Validate";
 import { getDropdownNoticeOfWorkUnitTypeOptions } from "@common/selectors/staticContentSelectors";
 import * as FORM from "@/constants/forms";
 import { TRASHCAN } from "@/constants/assets";
@@ -149,7 +149,7 @@ export const SandGravelQuarry = (props) => {
             dropdownID="average_overburden_depth_unit_type_code"
             component={RenderFieldWithDropdown}
             disabled={props.isViewMode}
-            validate={[number]}
+            validate={[numberWithUnitCode]}
             data={props.unitTypeOptions}
           />
         </Col>
@@ -161,7 +161,7 @@ export const SandGravelQuarry = (props) => {
             dropdownID="average_top_soil_depth_unit_type_code"
             component={RenderFieldWithDropdown}
             disabled={props.isViewMode}
-            validate={[number]}
+            validate={[numberWithUnitCode]}
             data={props.unitTypeOptions}
           />
         </Col>
@@ -251,7 +251,7 @@ export const SandGravelQuarry = (props) => {
             dropdownID="total_mineable_reserves_unit_type_code"
             component={RenderFieldWithDropdown}
             disabled={props.isViewMode}
-            validate={[number]}
+            validate={[numberWithUnitCode]}
             data={props.unitTypeOptions}
           />
         </Col>
@@ -263,7 +263,7 @@ export const SandGravelQuarry = (props) => {
             dropdownID="total_annual_extraction_unit_type_code"
             component={RenderFieldWithDropdown}
             disabled={props.isViewMode}
-            validate={[number]}
+            validate={[numberWithUnitCode]}
             data={props.unitTypeOptions}
           />
         </Col>
