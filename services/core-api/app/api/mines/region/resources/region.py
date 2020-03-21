@@ -4,10 +4,7 @@ from app.api.utils.access_decorators import requires_role_view_all
 from app.api.utils.resources_mixins import UserMixin
 from app.api.mines.region.models.region import MineRegionCode
 
-MINE_REGION_OPTION = api.model('MineRegion', {
-    'mine_region_code': fields.String,
-    'description': fields.String
-})
+from app.api.mines.response_models import MINE_REGION_OPTION
 
 
 class MineRegionResource(Resource, UserMixin):
@@ -15,4 +12,4 @@ class MineRegionResource(Resource, UserMixin):
     @api.marshal_with(MINE_REGION_OPTION, code=201, envelope='records')
     @requires_role_view_all
     def get(self):
-        return MineRegionCode.active()
+        return MineRegionCode.get_active()

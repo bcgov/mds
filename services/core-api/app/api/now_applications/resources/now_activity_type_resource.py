@@ -13,4 +13,4 @@ class NOWActivityTypeResource(Resource, UserMixin):
     @requires_role_view_all
     @api.marshal_with(NOW_ACTIVITY_TYPES, code=200, envelope='records')
     def get(self):
-        return ActivityType.active()
+        return ActivityType.get_active()

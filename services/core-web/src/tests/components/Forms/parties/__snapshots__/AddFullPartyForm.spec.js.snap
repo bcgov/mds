@@ -229,12 +229,12 @@ exports[`AddFullPartyForm renders properly 1`] = `
                 data={
                   Array [
                     Object {
-                      "label": "BC",
-                      "value": "BC",
-                    },
-                    Object {
                       "label": "AB",
                       "value": "AB",
+                    },
+                    Object {
+                      "label": "BC",
+                      "value": "BC",
                     },
                   ]
                 }

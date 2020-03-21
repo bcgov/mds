@@ -86,38 +86,39 @@ def RandomComplianceArticleId():
 
 
 def RandomIncidentDeterminationTypeCode():
-    return random.choice(
-        [x.mine_incident_determination_type_code for x in MineIncidentDeterminationType.active()])
+    return random.choice([
+        x.mine_incident_determination_type_code for x in MineIncidentDeterminationType.get_active()
+    ])
 
 
 def RandomIncidentStatusCode():
-    return random.choice([x.mine_incident_status_code for x in MineIncidentStatusCode.active()])
+    return random.choice([x.mine_incident_status_code for x in MineIncidentStatusCode.get_active()])
 
 
 def RandomIncidentDocumentType():
     return random.choice(
-        [x.mine_incident_document_type_code for x in MineIncidentDocumentTypeCode.active()])
+        [x.mine_incident_document_type_code for x in MineIncidentDocumentTypeCode.get_active()])
 
 
 def RandomMineReportDefinition():
-    return random.choice([x.mine_report_definition_id for x in MineReportDefinition.active()])
+    return random.choice([x.mine_report_definition_id for x in MineReportDefinition.get_active()])
 
 
 def RandomMineReportDefinitionWithDueDate():
     return random.choice([
-        x.mine_report_definition_id for x in MineReportDefinition.active()
+        x.mine_report_definition_id for x in MineReportDefinition.get_active()
         if x.due_date_period_months and x.due_date_period_months > 0
     ])
 
 
 def RandomMineReportSubmissionStatusCode():
     return random.choice(
-        [x.mine_report_submission_status_code for x in MineReportSubmissionStatusCode.active()])
+        [x.mine_report_submission_status_code for x in MineReportSubmissionStatusCode.get_active()])
 
 
 def RandomVarianceDocumentCategoryCode():
     return random.choice(
-        [x.variance_document_category_code for x in VarianceDocumentCategoryCode.active()])
+        [x.variance_document_category_code for x in VarianceDocumentCategoryCode.get_active()])
 
 
 def SampleDangerousOccurrenceSubparagraphs(num):
@@ -134,7 +135,7 @@ def RandomVarianceApplicationStatusCode():
     return random.choice([
         x.variance_application_status_code
         for x in filter(lambda x: x.variance_application_status_code not in ['APP', 'DEN'],
-                        VarianceApplicationStatusCode.active())
+                        VarianceApplicationStatusCode.get_active())
     ])
 
 

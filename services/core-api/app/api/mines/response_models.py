@@ -171,6 +171,12 @@ MINE_VERIFIED_MODEL = api.model(
         'verifying_timestamp': fields.DateTime,
     })
 
+MINE_REGION_OPTION = api.model('MineRegion', {
+    'mine_region_code': fields.String,
+    'description': fields.String
+})
+
+
 MINES_MODEL = api.model(
     'Mines', {
         'mine_guid': fields.String,

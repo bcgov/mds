@@ -13,4 +13,4 @@ class NOWApplicationProgressStatusResource(Resource, UserMixin):
     @requires_role_view_all
     @api.marshal_with(APPLICATION_PROGRESS_STATUS_CODES, code=200, envelope='records')
     def get(self):
-        return NOWApplicationProgressStatus.active()
+        return NOWApplicationProgressStatus.get_active()
