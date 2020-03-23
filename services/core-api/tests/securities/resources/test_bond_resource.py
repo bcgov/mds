@@ -15,7 +15,8 @@ BOND_POST_DATA = {
         "institution_city": "Test City",
         "institution_province": "BC",
         "institution_postal_code": "T3S 0T0",
-        "note": "Testing 123"
+        "note": "Testing 123",
+        "project_id": "#123 Testing"
     }
 }
 
@@ -29,7 +30,8 @@ BOND_POST_BAD_DATA = {
         "institution_city": "Test City",
         "institution_province": "BC",
         "institution_postal_code": "T3S 0T0",
-        "note": "Testing 123"
+        "note": "Testing 123",
+        "project_id": "#123 Testing"
     }
 }
 
