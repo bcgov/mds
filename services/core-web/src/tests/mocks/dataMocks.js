@@ -3699,4 +3699,18 @@ export const BULK_STATIC_CONTENT_RESPONSE = {
     { now_application_review_type_code: "FNC", description: "First Nations Consultation" },
     { now_application_review_type_code: "PUB", description: "Public Comment" },
   ],
+  bondStatusOptions: [
+    { bond_status_code: "REL", description: "Released" },
+    { bond_status_code: "CON", description: "Confiscated" },
+    { bond_status_code: "ACT", description: "Active" },
+  ],
+  bondTypeOptions: [
+    { bond_type_code: "CEC", description: "Certified Cheque" },
+    { bond_type_code: "CAS", description: "Cash" },
+    { bond_type_code: "ILC", description: "Irrevocable Line of Credit" },
+    { bond_type_code: "MOR", description: "Money Order" },
+    { bond_type_code: "BDA", description: "Bank Draft" },
+    { bond_type_code: "SBO", description: "Surety Bond" },
+    { bond_type_code: "SAG", description: "Safekeeping Agreement" },
+  ],
 };

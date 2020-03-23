@@ -24,6 +24,7 @@ from app.api.variances.namespace import api as variances_api
 from app.api.users.namespace import api as users_api
 from app.api.exports.namespace import api as exports_api
 from app.api.document_generation.namespace import api as doc_gen_api
+from app.api.securities.namespace import api as securities_api
 from app.api.verify.namespace import api as verify_api
 
 from app.commands import register_commands
@@ -96,6 +97,7 @@ def register_routes(app):
     api.add_namespace(now_app_api)
     api.add_namespace(exports_api)
     api.add_namespace(doc_gen_api)
+    api.add_namespace(securities_api)
     api.add_namespace(verify_api)
 
     # Healthcheck endpoint
