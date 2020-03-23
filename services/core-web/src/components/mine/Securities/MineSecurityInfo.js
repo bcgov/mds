@@ -15,7 +15,6 @@ import {
 } from "@common/selectors/staticContentSelectors";
 import {
   fetchMineBonds,
-  fetchMineBondsById,
   createBond,
   updateBond,
 } from "@common/actionCreators/securitiesActionCreator";
@@ -42,7 +41,6 @@ const propTypes = {
   closeModal: PropTypes.func.isRequired,
   fetchPermits: PropTypes.func.isRequired,
   fetchMineBonds: PropTypes.func.isRequired,
-  fetchMineBondsById: PropTypes.func.isRequired,
   createBond: PropTypes.func.isRequired,
   updateBond: PropTypes.func.isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
@@ -217,7 +215,6 @@ const mapDispatchToProps = (dispatch) =>
       openModal,
       closeModal,
       fetchMineBonds,
-      fetchMineBondsById,
       createBond,
       updateBond,
     },

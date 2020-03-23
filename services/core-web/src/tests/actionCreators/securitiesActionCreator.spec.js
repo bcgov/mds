@@ -3,7 +3,6 @@ import MockAdapter from "axios-mock-adapter";
 import axios from "axios";
 import {
   fetchMineBonds,
-  fetchMineBondsById,
   updateBond,
   createBond,
 } from "@common/actionCreators/securitiesActionCreator";

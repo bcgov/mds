@@ -20,20 +20,6 @@ export const fetchMineBonds = (mineGuid) => (dispatch) => {
     .catch(() => dispatch(error(reducerTypes.GET_MINE_BONDS)));
 };
 
-export const fetchMineBondsById = (bondGuid) => (dispatch) => {
-  dispatch(request(reducerTypes.GET_BOND));
-  dispatch(showLoading("modal"));
-  return CustomAxios()
-    .get(`${ENVIRONMENT.apiUrl}${API.BOND(bondGuid)}`, createRequestHeader())
-    .then((response) => {
-      dispatch(success(reducerTypes.GET_BOND));
-      dispatch(securitiesActions.storeBond(response.data));
-      return response;
-    })
-    .catch(() => dispatch(error(reducerTypes.GET_BOND)))
-    .finally(() => dispatch(hideLoading("modal")));
-};
-
 export const createBond = (payload) => (dispatch) => {
   dispatch(request(reducerTypes.CREATE_BOND));
   dispatch(showLoading("modal"));

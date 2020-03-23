@@ -117,24 +117,28 @@ export const MineBondTable = (props) => {
       render: (text, record) => {
         const menu = (
           <Menu>
-            <Menu.Item key="0">
-              <button
-                type="button"
-                className="full"
-                onClick={() => props.releaseOrConfiscateBond("REL", record.bond_guid, record)}
-              >
-                Release Bond
-              </button>
-            </Menu.Item>
-            <Menu.Item key="1">
-              <button
-                type="button"
-                className="full"
-                onClick={() => props.releaseOrConfiscateBond("CON", record.bond_guid, record)}
-              >
-                Confiscate Bond
-              </button>
-            </Menu.Item>
+            {record.bond_status_code === "ACT" && (
+              <span>
+                <Menu.Item key="0">
+                  <button
+                    type="button"
+                    className="full"
+                    onClick={() => props.releaseOrConfiscateBond("REL", record.bond_guid, record)}
+                  >
+                    Release Bond
+                  </button>
+                </Menu.Item>
+                <Menu.Item key="1">
+                  <button
+                    type="button"
+                    className="full"
+                    onClick={() => props.releaseOrConfiscateBond("CON", record.bond_guid, record)}
+                  >
+                    Confiscate Bond
+                  </button>
+                </Menu.Item>
+              </span>
+            )}
             <Menu.Item key="2">
               <button
                 type="button"
@@ -157,22 +161,20 @@ export const MineBondTable = (props) => {
                 <Icon type="eye" alt="View" className="icon-lg icon-svg-filter" />
               </div>
             </Button>
-            {record.bond_status_code === "ACT" && (
-              <AuthorizationWrapper permission={Permission.EDIT_SECURITIES}>
-                <Dropdown className="full-height full-mobile" overlay={menu} placement="bottomLeft">
-                  <Button type="secondary" className="permit-table-button">
-                    <div className="padding-small">
-                      <img
-                        className="padding-small--right icon-svg-filter"
-                        src={CARAT}
-                        alt="Menu"
-                        style={{ paddingLeft: "5px" }}
-                      />
-                    </div>
-                  </Button>
-                </Dropdown>
-              </AuthorizationWrapper>
-            )}
+            <AuthorizationWrapper permission={Permission.EDIT_SECURITIES}>
+              <Dropdown className="full-height full-mobile" overlay={menu} placement="bottomLeft">
+                <Button type="secondary" className="permit-table-button">
+                  <div className="padding-small">
+                    <img
+                      className="padding-small--right icon-svg-filter"
+                      src={CARAT}
+                      alt="Menu"
+                      style={{ paddingLeft: "5px" }}
+                    />
+                  </div>
+                </Button>
+              </Dropdown>
+            </AuthorizationWrapper>
           </div>
         );
       },
