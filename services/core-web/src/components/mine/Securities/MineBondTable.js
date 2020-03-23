@@ -179,12 +179,17 @@ export const MineBondTable = (props) => {
     },
   ];
 
+  const bondsByPermit = (permit) =>
+    props.bonds.filter(({ permit_guid }) => permit_guid === permit.permit_guid);
+
   const bonds = (record) => {
-    const bondsByPermit = props.bonds.filter(({ permit_guid }) => {
-      return permit_guid === record.permit_guid;
-    });
     return (
-      <Table align="left" pagination={false} columns={bondColumns} dataSource={bondsByPermit} />
+      <Table
+        align="left"
+        pagination={false}
+        columns={bondColumns}
+        dataSource={bondsByPermit(record)}
+      />
     );
   };
 
@@ -213,6 +218,7 @@ export const MineBondTable = (props) => {
     permits.map((permit) => {
       return {
         key: permit.permit_guid,
+        total_bonds: bondsByPermit(permit).length,
         ...permit,
       };
     });
