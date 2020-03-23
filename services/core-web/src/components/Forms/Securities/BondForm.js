@@ -12,6 +12,7 @@ import {
 } from "@common/utils/Validate";
 import { resetForm, upperCase, currencyMask } from "@common/utils/helpers";
 import RenderField from "@/components/common/RenderField";
+import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
 import RenderDate from "@/components/common/RenderDate";
 import PartySelectField from "@/components/common/PartySelectField";
 import * as FORM from "@/constants/forms";
@@ -73,7 +74,7 @@ export const BondFrom = (props) => (
           <Field
             id="issue_date"
             name="issue_date"
-            label="Issue Date"
+            label="Issue Date*"
             showTime
             component={RenderDate}
             validate={[required, dateNotInFuture]}
@@ -90,6 +91,11 @@ export const BondFrom = (props) => (
             label="Reference Number"
             component={RenderField}
           />
+        </Form.Item>
+      </Col>
+      <Col md={12} sm={24}>
+        <Form.Item>
+          <Field id="project_id" name="project_id" label="Project Id" component={RenderField} />
         </Form.Item>
       </Col>
     </Row>
@@ -162,7 +168,7 @@ export const BondFrom = (props) => (
     <Row>
       <Col md={24}>
         <Form.Item>
-          <Field id="note" name="note" label="Notes" component={RenderField} />
+          <Field id="note" name="note" label="Notes" component={RenderAutoSizeField} />
         </Form.Item>
       </Col>
     </Row>

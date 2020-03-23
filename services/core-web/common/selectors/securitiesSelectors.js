@@ -13,12 +13,8 @@ export const getBondTotals = createSelector([getBonds, getPermits], (bonds, perm
         bond_status_code === status;
       })
       .reduce((a, b) => a + (b.amount || 0), 0);
-
-  const getSecurityTotal = () => permits.reduce((a, b) => a + (b.security_totals || 0), 0);
   return {
-    securityTotal: getSecurityTotal(),
     amountHeld: getSum("ACT"),
-    amountConfiscated: getSum("CON"),
     count: bonds.length,
   };
 });

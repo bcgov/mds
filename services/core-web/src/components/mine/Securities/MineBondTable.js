@@ -119,7 +119,7 @@ export const MineBondTable = (props) => {
           <Menu>
             {record.bond_status_code === "ACT" && (
               <span>
-                <Menu.Item key="0">
+                <div className="custom-menu-item">
                   <button
                     type="button"
                     className="full"
@@ -127,8 +127,8 @@ export const MineBondTable = (props) => {
                   >
                     Release Bond
                   </button>
-                </Menu.Item>
-                <Menu.Item key="1">
+                </div>
+                <div className="custom-menu-item">
                   <button
                     type="button"
                     className="full"
@@ -136,7 +136,7 @@ export const MineBondTable = (props) => {
                   >
                     Confiscate Bond
                   </button>
-                </Menu.Item>
+                </div>
               </span>
             )}
             <Menu.Item key="2">

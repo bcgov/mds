@@ -167,16 +167,11 @@ export class MineSecurityInfo extends Component {
           <h2>Securities</h2>
           <Divider />
           <div className="dashboard--cards">
-            <MineDashboardContentCard title="Total Amount Assessed" content="$1,000,000" />
             <MineDashboardContentCard
               title="Total Amount Held"
               content={this.props.bondTotals.amountHeld}
             />
             <MineDashboardContentCard title="Total Bonds" content={this.props.bondTotals.count} />
-            <MineDashboardContentCard
-              title="Total Amount Confiscated"
-              content={this.props.bondTotals.amountConfiscated}
-            />
           </div>
           <br />
           <MineBondTable
