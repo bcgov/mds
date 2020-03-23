@@ -75,6 +75,9 @@ class MineStatusFactory(BaseFactory):
     class Meta:
         model = MineStatus
 
+    class Params:
+        operating = factory.Trait(mine_status_xref = factory.LazyFunction(RandomOperatingMineStatusXref))
+
     mine_status_guid = GUID
     effective_date = TODAY
     mine_status_xref = factory.LazyFunction(RandomMineStatusXref)
@@ -477,6 +480,9 @@ class MineFactory(BaseFactory):
             mine_incidents=0,
             mine_variance=0,
             mine_reports=0)
+        operating = factory.Trait(
+            mine_status = factory.RelatedFactory(MineStatusFactory, 'mine', operating=True)
+        )
 
     mine_guid = GUID
     mine_no = factory.Faker('ean', length=8)
@@ -598,7 +604,7 @@ class PermitAmendmentFactory(BaseFactory):
     permit_id = factory.SelfAttribute('permit.permit_id')
     received_date = TODAY
     issue_date = TODAY
-    authorization_end_date = factory.Faker('future_datetime', end_date='+30d')
+    authorization_end_date = factory.Faker('date_between', start_date='+31d', end_date='+90d')
     permit_amendment_status_code = 'ACT'
     permit_amendment_type_code = 'AMD'
     description = factory.Faker('sentence', nb_words=6, variable_nb_words=True)
