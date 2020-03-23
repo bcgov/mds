@@ -37,7 +37,7 @@ export const MineBondTable = (props) => {
       dataIndex: "security_total",
       key: "security_total",
       render: (text, record) => (
-        <div title="Permit No.">
+        <div title="Security Total">
           {record.permit_amendments[0].security_total || Strings.EMPTY_FIELD}
         </div>
       ),
@@ -46,7 +46,7 @@ export const MineBondTable = (props) => {
       title: "Total Bonds",
       dataIndex: "total_bonds",
       key: "total_bonds",
-      render: (text) => <div title="Permit No.">{text}</div>,
+      render: (text) => <div title="Total Bonds">{text}</div>,
     },
     {
       title: "",
