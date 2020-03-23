@@ -1,7 +1,7 @@
 from flask_restplus import Resource, reqparse
 from datetime import datetime
 from flask import current_app, request
-from werkzeug.exceptions import BadRequest, NotFound, InternalServerError
+from werkzeug.exceptions import BadRequest, NotFound
 from marshmallow.exceptions import MarshmallowError
 
 from app.extensions import api, db
@@ -26,7 +26,7 @@ class BondListResource(Resource, UserMixin):
         mine = Mine.find_by_mine_guid(mine_guid)
 
         if mine is None:
-            raise BadRequest('No mine found with the provided mine_guid.')
+            raise NotFound('No mine found with the provided mine_guid.')
 
         permits = Permit.find_by_mine_guid(mine.mine_guid)
 
@@ -43,7 +43,6 @@ class BondListResource(Resource, UserMixin):
     @api.marshal_with(BOND, code=201)
     def post(self):
 
-        current_app.logger.debug('Attempting to load bond')
         try:
             bond = Bond._schema().load(request.json['bond'])
         except MarshmallowError as e:
@@ -52,7 +51,7 @@ class BondListResource(Resource, UserMixin):
         permit = Permit.find_by_permit_guid(request.json['permit_guid'])
 
         if permit is None:
-            raise BadRequest('No Permit found with the guid provided.')
+            raise NotFound('No Permit found with the guid provided.')
 
         bond.permits = permit
 
@@ -69,7 +68,7 @@ class BondResource(Resource, UserMixin):
         bond = Bond.find_by_bond_guid(bond_guid)
 
         if bond is None:
-            raise BadRequest('No bond was found with the guid provided.')
+            raise NotFound('No bond was found with the guid provided.')
 
         return bond
 

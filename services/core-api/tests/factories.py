@@ -633,7 +633,7 @@ class BondFactory(BaseFactory):
     institution_name = factory.Faker('company')
     institution_street = factory.Faker('street_address')
     institution_city = factory.Faker('city')
-    institution_province = factory.Faker('state')
+    institution_province = factory.LazyFunction(RandomSubDivisionCode)
     institution_postal_code = factory.Faker(
         'bothify', text='?#?#?#', letters='ABCDEFGHIJKLMNOPQRSTUVWXYZ')
     note = factory.Faker(

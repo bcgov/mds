@@ -33,6 +33,8 @@ const baseExpectedValue = {
   noticeOfWorkApplicationProgressStatusCodeOptions: [],
   noticeOfWorkApplicationReviewOptions: [],
   noticeOfWorkApplicationPermitTypeOptions: [],
+  bondStatusOptions: [],
+  bondTypeOptions: [],
 };
 
 // Creates deep copy of javascript object instead of setting a reference

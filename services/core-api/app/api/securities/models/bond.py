@@ -30,10 +30,12 @@ class Bond(Base, AuditMixin):
     institution_name = db.Column(db.String)
     institution_street = db.Column(db.String)
     institution_city = db.Column(db.String)
-    institution_province = db.Column(db.String)
+    institution_province = db.Column(db.String,
+                                     db.ForeignKey('sub_division_code.sub_division_code'))
     institution_postal_code = db.Column(db.String)
     note = db.Column(db.String)
 
+    payer = db.relationship('Party', lazy='joined')
     permits = db.relationship('Permit', uselist=False, lazy='select', secondary='bond_permit_xref')
     documents = db.relationship('BondDocument', lazy='select')
 
