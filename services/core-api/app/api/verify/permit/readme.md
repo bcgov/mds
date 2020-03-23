@@ -4,11 +4,11 @@ The verify permit endpoints exist for integration purposes and do not follow the
 
 ###Business Rules
 
-This notification allows you to submit a notice for one of the following three options:
+This notification allows you to submit a notice of deemed authorization for one of the following three options:
 
 1. Induced Polarization Surveys Using Exposed Electrodes, if you hold a valid mineral or coal exploration permit.
-2. Exploration Drill Programs and Induced Polarization Surveys in the Permitted Area of Disturbance of an Operating, Producing Mineral or Coal Mine
-3. Extending the Term of Mineral or Coal Exploration Activities by up to Two Years if you hold a mineral or coal Notice of Work which is at least 30 days before its expiration date. The term can only be extended once.
+2. Exploration Drill Programs and Induced Polarization Surveys in the Permitted Area of Disturbance of an Operating, Producing Mineral or Coal Mine (M or C permit – not MX or CX)
+3. Extending the Term of Mineral or Coal Exploration Activities by up to Two Years if you hold a mineral or coal permit which is at least 30 days before its its authorization end date. The term can only be extended once.
 
 If there are no concerns raised by a Mines Inspector within the 30 day notification period, you may begin the activity on or after the start date indicated in your notification.
 
@@ -22,7 +22,7 @@ Order in Council No. 134, the Mines Act Permit Regulation, establishes that cert
 
 - For every permit with a given permit number:
   - If the associated mine is of status Operating:
-    - If the type of deemed authorization is INDUCED, is it a CX or M permit?
+    - If the type of deemed authorization is INDUCED, is it a CX or MX permit?
       - If true, then add the mine and mine details to the allowable list of results.
     - If it is NOT INDUCED, is it a C or M permit?
       - If true, then add the mine and mine details to the allowable list of results.
@@ -31,7 +31,7 @@ Order in Council No. 134, the Mines Act Permit Regulation, establishes that cert
 
 - For every permit with a given permit number:
   - If the associated mine is of status Operating and it is a CX or MX permit:
-    - Does it have an assocated permit amendment that is within 30 days of its authorization end date?
+    - Does it have an assocated permit or permit amendment that is within 30 days of its authorization end date?
       - If false, then add the permit and permit details to the allowable list of results.
 
 ###original logic
