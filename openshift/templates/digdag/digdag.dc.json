@@ -235,7 +235,7 @@
                 "capabilities": {},
                 "livenessProbe": {
                   "failureThreshold": 3,
-                  "initialDelaySeconds": 20,
+                  "initialDelaySeconds": 60,
                   "periodSeconds": 10,
                   "successThreshold": 1,
                   "tcpSocket": {
@@ -244,18 +244,13 @@
                   "timeoutSeconds": 1
                 },
                 "readinessProbe": {
-                  "exec": {
-                    "command": [
-                      "digdag",
-                      "version",
-                      "--endpoint",
-                      "0.0.0.0:808"
-                    ]
-                  },
                   "failureThreshold": 3,
-                  "initialDelaySeconds": 25,
+                  "initialDelaySeconds": 60,
                   "periodSeconds": 10,
                   "successThreshold": 1,
+                  "tcpSocket": {
+                    "port": 8081
+                  },
                   "timeoutSeconds": 1
                 }
               }
