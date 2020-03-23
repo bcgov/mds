@@ -16,16 +16,16 @@ from app.constants import FILE_UPLOAD_SIZE, FILE_UPLOAD_OFFSET, FILE_UPLOAD_PATH
 class DocumentListResource(Resource):
     parser = reqparse.RequestParser(trim=True)
     parser.add_argument(
-        'folder', type=str, required=True, help='The sub folder path to store the document in.')
+        'folder', type=str, required=False, help='The sub folder path to store the document in.')
     parser.add_argument(
         'pretty_folder',
         type=str,
-        required=True,
+        required=False,
         help=
         'The sub folder path to store the document in with the guids replaced for more readable names.'
     )
     parser.add_argument(
-        'filename', type=str, required=True, help='File name + extension of the document.')
+        'filename', type=str, required=False, help='File name + extension of the document.')
 
     @requires_any_of(
         [MINE_EDIT, EDIT_PARTY, EDIT_PERMIT, EDIT_DO, EDIT_VARIANCE, MINESPACE_PROPONENT])
@@ -43,7 +43,7 @@ class DocumentListResource(Resource):
                 f'The maximum file upload size is {max_file_size/1024/1024}MB.')
 
         data = self.parser.parse_args()
-        filename = data.get('filename')
+        filename = data.get('filename') or request.headers.get('Filename')
         if not filename:
             raise BadRequest('File name cannot be empty')
         if filename.endswith(FORBIDDEN_FILETYPES):
@@ -51,10 +51,10 @@ class DocumentListResource(Resource):
 
         document_guid = str(uuid.uuid4())
         base_folder = current_app.config['UPLOADED_DOCUMENT_DEST']
-        folder = data.get('folder')
+        folder = data.get('folder') or request.headers.get('Folder')
         folder = os.path.join(base_folder, folder)
         file_path = os.path.join(folder, document_guid)
-        pretty_folder = data.get('pretty_folder')
+        pretty_folder = data.get('pretty_folder') or request.headers.get('Pretty-Folder')
         pretty_path = os.path.join(base_folder, pretty_folder, filename)
 
         try:
@@ -102,7 +102,6 @@ class DocumentListResource(Resource):
         doc = Document.query.filter_by(document_guid=doc_guid).first()
         if not doc:
             raise NotFound('Could not find the document corresponding to the token')
-        current_app.logger.debug(attachment)
         if attachment is not None:
             attach_style = True if attachment == 'true' else False
         else:
@@ -116,19 +115,6 @@ class DocumentListResource(Resource):
 
 @api.route(f'/documents/<string:document_guid>')
 class DocumentResource(Resource):
-    parser = reqparse.RequestParser(trim=True)
-    parser.add_argument(
-        'folder', type=str, required=True, help='The sub folder path to store the document in.')
-    parser.add_argument(
-        'pretty_folder',
-        type=str,
-        required=True,
-        help=
-        'The sub folder path to store the document in with the guids replaced for more readable names.'
-    )
-    parser.add_argument(
-        'filename', type=str, required=True, help='File name + extension of the document.')
-
     @requires_any_of(
         [MINE_EDIT, EDIT_PARTY, EDIT_PERMIT, EDIT_DO, EDIT_VARIANCE, MINESPACE_PROPONENT])
     def patch(self, document_guid):
