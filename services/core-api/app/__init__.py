@@ -102,7 +102,7 @@ def register_routes(app):
     @api.route('/health')
     class Healthcheck(Resource):
         def get(self):
-            return {'success': 'true'}
+            return {'status': 'pass'}
 
     @api.errorhandler(AuthError)
     def jwt_oidc_auth_error_handler(error):
