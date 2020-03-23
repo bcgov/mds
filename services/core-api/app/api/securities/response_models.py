@@ -24,6 +24,7 @@ BOND = api.model(
         'institution_postal_code': fields.String,
         'note': fields.String,
         'payer': fields.Nested(BOND_PARTY),
+        'project_id': fields.String,
         'permit_guid': fields.String(attribute='permits.permit_guid')
     })
 
