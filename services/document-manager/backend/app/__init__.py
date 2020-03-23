@@ -6,7 +6,6 @@ from flask import Flask, current_app
 from flask_cors import CORS
 from flask_restplus import Resource
 from flask_restplus.apidoc import apidoc
-from flask_compress import Compress
 from flask_migrate import MigrateCommand
 
 from flask_jwt_oidc.exceptions import AuthError
@@ -52,6 +51,5 @@ def register_extensions(app):
     migrate.init_app(app, db)
 
     CORS(app)
-    Compress(app)
 
     return None
