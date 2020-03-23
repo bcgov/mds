@@ -34,7 +34,10 @@ const initialState = {
   noticeOfWorkApplicationProgressStatusCodeOptions: [],
   noticeOfWorkApplicationPermitTypeOptions: [],
   noticeOfWorkApplicationReviewOptions: [],
+  bondStatusOptions: [],
+  bondTypeOptions: [],
 };
+
 export const staticContentReducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.STORE_BULK_STATIC_CONTENT:
