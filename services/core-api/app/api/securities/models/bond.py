@@ -34,6 +34,7 @@ class Bond(Base, AuditMixin):
                                      db.ForeignKey('sub_division_code.sub_division_code'))
     institution_postal_code = db.Column(db.String)
     note = db.Column(db.String)
+    project_id = db.Column(db.String)
 
     payer = db.relationship('Party', lazy='joined')
     permits = db.relationship('Permit', uselist=False, lazy='select', secondary='bond_permit_xref')

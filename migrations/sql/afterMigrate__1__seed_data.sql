@@ -855,11 +855,11 @@ INSERT INTO bond_type(
     update_user
     )
 VALUES
-    ('CEC', 'Certified Cheque', 'system-mds', 'system-mds'),
     ('CAS', 'Cash', 'system-mds', 'system-mds'),
     ('ILC', 'Irrevocable Line of Credit', 'system-mds', 'system-mds'),
-    ('MOR', 'Money Order', 'system-mds', 'system-mds'),
-    ('BDA', 'Bank Draft', 'system-mds', 'system-mds'),
     ('SBO', 'Surety Bond', 'system-mds', 'system-mds'),
-    ('SAG', 'Safekeeping Agreement', 'system-mds', 'system-mds')
+    ('SAG', 'Safekeeping Agreement', 'system-mds', 'system-mds'),
+    ('QET', 'Qualified Environmental Trust', 'system-mds', 'system-mds'),
+    ('STR', 'Section 12 Reclamation', 'system-mds', 'system-mds'),
+    ('ASA', 'Asset Security Agreement', 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
