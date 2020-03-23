@@ -1,7 +1,6 @@
 import React from "react";
 import { PropTypes } from "prop-types";
 import { Table } from "antd";
-import { getTableHeaders } from "@common/utils/helpers";
 import NullScreen from "@/components/common/NullScreen";
 
 /**

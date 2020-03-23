@@ -101,6 +101,7 @@ MINE_MAP_CACHE = "mds:mines:map-json"
 MINE_DETAILS_CSV = "mds:mines:summary-csv"
 #Redis Cache Keys
 GET_ALL_INSPECTORS_KEY = "mds:parties:all_inspectors"
+STATIC_CONTENT_KEY = "mds:core:all_static_content"
 
 NOW_APPLICATION_EDIT_GROUP = 'NOW_APPLICATION_EDIT_GROUP'
 PERMIT_EDIT_GROUP = 'PERMIT_EDIT_GROUP'

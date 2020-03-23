@@ -26,7 +26,7 @@ class MineRegionCode(AuditMixin, Base):
 
     @classmethod
     #add active_ind here when added to db
-    def active(cls):
+    def get_active(cls):
         return cls.query.all()
 
     @classmethod

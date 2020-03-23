@@ -7,8 +7,6 @@ export const {
   getParties,
   getRawParties,
   getPartyIds,
-  getPartyRelationshipTypes,
-  getPartyRelationshipTypesList,
   getPartyRelationships,
   getPartyPageData,
   getAddPartyFormState,
@@ -23,36 +21,25 @@ export const getSummaryPartyRelationships = createSelector(
     partyRelationships.filter((pr) => ["MMG", "PMT"].includes(pr.mine_party_appt_type_code))
 );
 
-export const getPartyRelationshipTypeHash = createSelector(
-  [getPartyRelationshipTypesList],
-  createLabelHash
-);
+export const getDropdownInspectors = createSelector([getInspectors], (parties) => {
+  const activeInspectors = parties
+    .filter(
+      (inspector) => moment(inspector.expiry_date) >= moment() || inspector.expiry_date === null
+    )
+    .map((inspector) => ({
+      value: inspector.party_guid,
+      label: inspector.name,
+    }));
+  const inactiveInspectors = parties
+    .filter((inspector) => moment(inspector.expiry_date) < moment())
+    .map((inspector) => ({
+      value: inspector.party_guid,
+      label: inspector.name,
+    }));
+  return [
+    { groupName: "Active", opt: activeInspectors },
+    { groupName: "Inactive", opt: inactiveInspectors },
+  ];
+});
 
-export const getDropdownInspectors = createSelector(
-  [getInspectors],
-  (parties) => {
-    const activeInspectors = parties
-      .filter(
-        (inspector) => moment(inspector.expiry_date) >= moment() || inspector.expiry_date === null
-      )
-      .map((inspector) => ({
-        value: inspector.party_guid,
-        label: inspector.name,
-      }));
-    const inactiveInspectors = parties
-      .filter((inspector) => moment(inspector.expiry_date) < moment())
-      .map((inspector) => ({
-        value: inspector.party_guid,
-        label: inspector.name,
-      }));
-    return [
-      { groupName: "Active", opt: activeInspectors },
-      { groupName: "Inactive", opt: inactiveInspectors },
-    ];
-  }
-);
-
-export const getInspectorsHash = createSelector(
-  [getInspectorsList],
-  createLabelHash
-);
+export const getInspectorsHash = createSelector([getInspectorsList], createLabelHash);

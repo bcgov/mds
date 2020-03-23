@@ -21,7 +21,7 @@ class NOWApplicationDocumentTypeListResource(Resource, UserMixin):
     @requires_role_view_all
     @api.marshal_with(NOW_APPLICATION_DOCUMENT_TYPE_MODEL, code=200, envelope='records')
     def get(self):
-        return NOWApplicationDocumentType.active()
+        return NOWApplicationDocumentType.get_active()
 
 
 class NOWApplicationDocumentTypeResource(Resource, UserMixin):

@@ -23,4 +23,4 @@ class MineReportDefinitionListResource(Resource, UserMixin):
     @api.doc(description='returns the report definitions for possible reports.')
     @requires_any_of([VIEW_ALL, MINESPACE_PROPONENT])
     def get(self):
-        return MineReportDefinition.active()
+        return MineReportDefinition.get_active()
