@@ -70,6 +70,10 @@ class Permit(AuditMixin, Base):
         return cls.query.filter_by(permit_no=_permit_no).first()
 
     @classmethod
+    def find_by_permit_no_all(cls, _permit_no):
+        return cls.query.filter_by(permit_no=_permit_no).all()
+
+    @classmethod
     def find_by_permit_guid_or_no(cls, _permit_guid_or_no):
         result = cls.find_by_permit_guid(_permit_guid_or_no)
         if not result:
