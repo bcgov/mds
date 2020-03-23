@@ -199,7 +199,7 @@
                 "livenessProbe": {
                   "failureThreshold": 3,
                   "httpGet": {
-                    "path": "/",
+                    "path": "/health",
                     "port": "${{PORT}}",
                     "scheme": "HTTP"
                   },
@@ -211,7 +211,7 @@
                 "readinessProbe": {
                   "failureThreshold": 3,
                   "httpGet": {
-                    "path": "/",
+                    "path": "/health",
                     "port": "${{PORT}}",
                     "scheme": "HTTP"
                   },
