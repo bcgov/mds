@@ -10,7 +10,7 @@ import {
   dateNotInFuture,
   currency,
 } from "@common/utils/Validate";
-import { resetForm, upperCase , currencyMask } from "@common/utils/helpers";
+import { resetForm, upperCase, currencyMask } from "@common/utils/helpers";
 import RenderField from "@/components/common/RenderField";
 import RenderDate from "@/components/common/RenderDate";
 import PartySelectField from "@/components/common/PartySelectField";
@@ -18,13 +18,13 @@ import * as FORM from "@/constants/forms";
 import RenderSelect from "@/components/common/RenderSelect";
 import CustomPropTypes from "@/customPropTypes";
 
-
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
   submitting: PropTypes.bool.isRequired,
   provinceOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
+  bondTypeOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
 };
 
 export const BondFrom = (props) => (
@@ -48,7 +48,8 @@ export const BondFrom = (props) => (
             id="bond_type_code"
             name="bond_type_code"
             label="Bond Type*"
-            component={RenderField}
+            component={RenderSelect}
+            data={props.bondTypeOptions}
             validate={[required]}
           />
         </Form.Item>
@@ -88,7 +89,6 @@ export const BondFrom = (props) => (
             name="reference_number"
             label="Reference Number"
             component={RenderField}
-            validate={[required]}
           />
         </Form.Item>
       </Col>

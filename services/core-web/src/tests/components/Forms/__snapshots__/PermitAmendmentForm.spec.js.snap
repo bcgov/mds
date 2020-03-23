@@ -50,6 +50,26 @@ exports[`PermitAmendmentForm renders properly 1`] = `
         hasFeedback={false}
       >
         <Field
+          autoComplete="off"
+          component={[Function]}
+          format={[Function]}
+          id="security_total"
+          label="Security Assessment"
+          name="security_total"
+          normalize={[Function]}
+          onChange={[Function]}
+          onFocus={[Function]}
+          validate={
+            Array [
+              [Function],
+            ]
+          }
+        />
+      </FormItem>
+      <FormItem
+        hasFeedback={false}
+      >
+        <Field
           component={[Function]}
           id="description"
           label="Description"

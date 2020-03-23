@@ -21,6 +21,7 @@ import NOWReviewModal from "./NOWReviewModal";
 import ChangeNOWLocationModal from "./ChangeNOWLocationModal";
 import GenerateDocumentModal from "./GenerateDocumentModal";
 import AddBondModal from "./AddBondModal";
+import ViewBondModal from "./ViewBondModal";
 
 export const modalConfig = {
   MINE_RECORD: MineRecordModal,
@@ -46,6 +47,7 @@ export const modalConfig = {
   UPDATE_NOW_LEAD_INSPECTOR: UpdateNOWLeadInspectorModal,
   CHANGE_NOW_LOCATION: ChangeNOWLocationModal,
   ADD_BOND_MODAL: AddBondModal,
+  VIEW_BOND_MODAL: ViewBondModal,
 };
 
 export default modalConfig;

@@ -1,7 +1,11 @@
+/* eslint-disable */
 import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { getDropdownProvinceOptions } from "@common/selectors/staticContentSelectors";
+import {
+  getDropdownProvinceOptions,
+  getBondTypeOptionsDropDownOptions,
+} from "@common/selectors/staticContentSelectors";
 import BondForm from "@/components/Forms/Securities/BondForm";
 import CustomPropTypes from "@/customPropTypes";
 
@@ -15,7 +19,9 @@ const propTypes = {
 
 export const AddBondModal = (props) => {
   const handleAddBond = (values) => {
-    props.onSubmit(values, props.permitGuid);
+    props.editBond
+      ? props.onSubmit(values, props.bond.bond_guid)
+      : props.onSubmit(values, props.permitGuid);
   };
 
   return (
@@ -25,6 +31,9 @@ export const AddBondModal = (props) => {
         closeModal={props.closeModal}
         title={props.title}
         provinceOptions={props.provinceOptions}
+        bondTypeOptions={props.bondTypeOptions}
+        bondStatusOptions={props.bondStatusOptions}
+        initialValues={props.bond}
       />
     </div>
   );
@@ -34,6 +43,7 @@ AddBondModal.propTypes = propTypes;
 
 const mapStateToProps = (state) => ({
   provinceOptions: getDropdownProvinceOptions(state),
+  bondTypeOptions: getBondTypeOptionsDropDownOptions(state),
 });
 
 export default connect(mapStateToProps)(AddBondModal);

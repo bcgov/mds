@@ -10,13 +10,16 @@ import { openModal, closeModal } from "@common/actions/modalActions";
 import { getPermits } from "@common/reducers/permitReducer";
 import { getBonds, getBondTotals } from "@common/selectors/securitiesSelectors";
 import {
+  getBondTypeOptionsHash,
+  getBondStatusOptionsHash,
+} from "@common/selectors/staticContentSelectors";
+import {
   fetchMineBonds,
   fetchMineBondsById,
   createBond,
   updateBond,
 } from "@common/actionCreators/securitiesActionCreator";
 import { getMineGuid } from "@common/selectors/mineSelectors";
-import { currencyMask } from "@common/utils/helpers";
 import CustomPropTypes from "@/customPropTypes";
 import MineBondTable from "@/components/mine/Securities/MineBondTable";
 import MineDashboardContentCard from "@/components/mine/MineDashboardContentCard";
@@ -43,7 +46,9 @@ const propTypes = {
   createBond: PropTypes.func.isRequired,
   updateBond: PropTypes.func.isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
-  bondTotals: PropTypes.objectOf(PropTypes.number),
+  bondTotals: PropTypes.objectOf(PropTypes.number).isRequired,
+  bondStatusOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  bondTypeOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
 const defaultProps = {
@@ -79,22 +84,40 @@ export class MineSecurityInfo extends Component {
     });
   };
 
-  openEditBondModal = (event, permitGuid) => {
+  openEditBondModal = (event, bond) => {
     event.preventDefault();
     this.props.openModal({
       props: {
-        title: "Add Bond",
+        title: `Edit Bond ${bond.bond_id}`,
         onSubmit: this.editBond,
-        permitGuid,
         editBond: true,
+        bond: bond,
       },
       width: "50vw",
       content: modalConfig.ADD_BOND_MODAL,
     });
   };
 
+  openViewBondModal = (event, bond) => {
+    event.preventDefault();
+    this.props.openModal({
+      props: {
+        title: `View Bond ${bond.bond_id}`,
+        bond: bond,
+      },
+      width: "50vw",
+      content: modalConfig.VIEW_BOND_MODAL,
+    });
+  };
+
   editBond = (values, bondGuid) => {
-    this.props.updateBond(values, bondGuid).then(() => {
+    const payload = values;
+    // payload expects the basic bond object without the following:
+    delete payload.permit_guid;
+    delete payload.bond_id;
+    delete payload.bond_guid;
+    delete payload.payer;
+    this.props.updateBond(payload, bondGuid).then(() => {
       this.props.fetchMineBonds(this.props.mineGuid).then(() => {
         this.props.closeModal();
         this.setState({ isLoaded: true });
@@ -103,21 +126,13 @@ export class MineSecurityInfo extends Component {
   };
 
   releaseOrConfiscateBond = (code, bondGuid, bond) => {
-    const newBond = bond;
-    delete newBond.permit_guid;
-    delete newBond.bond_id;
-    delete newBond.bond_guid;
-    delete newBond.institution_party_guid;
+    // if bond is confiscated, convert to bond type to Cash
     const payload = {
-      ...newBond,
+      ...bond,
       bond_status_code: code,
+      bond_type_code: code === "CON" ? "CAS" : bond.bond_type_code,
     };
-    this.props.updateBond(payload, bondGuid).then(() => {
-      this.props.fetchMineBonds(this.props.mineGuid).then(() => {
-        this.props.closeModal();
-        this.setState({ isLoaded: true });
-      });
-    });
+    this.editBond(payload, bond.bond_guid);
   };
 
   addBondToPermit = (values, permitGuid) => {
@@ -174,6 +189,10 @@ export class MineSecurityInfo extends Component {
             openAddBondModal={this.openAddBondModal}
             bonds={this.props.bonds}
             releaseOrConfiscateBond={this.releaseOrConfiscateBond}
+            bondStatusOptionsHash={this.props.bondStatusOptionsHash}
+            bondTypeOptionsHash={this.props.bondTypeOptionsHash}
+            openViewBondModal={this.openViewBondModal}
+            openEditBondModal={this.openEditBondModal}
           />
         </div>
       </div>
@@ -186,6 +205,8 @@ const mapStateToProps = (state) => ({
   mineGuid: getMineGuid(state),
   bonds: getBonds(state),
   bondTotals: getBondTotals(state),
+  bondStatusOptionsHash: getBondStatusOptionsHash(state),
+  bondTypeOptionsHash: getBondTypeOptionsHash(state),
 });
 
 const mapDispatchToProps = (dispatch) =>

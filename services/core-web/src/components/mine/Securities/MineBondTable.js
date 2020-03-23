@@ -20,6 +20,8 @@ import { formatDate } from "@common/utils/helpers";
 
 const propTypes = {
   permits: PropTypes.arrayOf(CustomPropTypes.permit).isRequired,
+  bondStatusOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  bondTypeOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
 export const MineBondTable = (props) => {
@@ -81,7 +83,7 @@ export const MineBondTable = (props) => {
       title: "Payer",
       dataIndex: "payer_party_guid",
       key: "payer_party_guid",
-      render: (text) => <div title="Payer">{text}</div>,
+      render: (text, record) => <div title="Payer">{record.payer.name || Strings.EMPTY_FIELD}</div>,
     },
     {
       title: "Institution",
@@ -93,7 +95,7 @@ export const MineBondTable = (props) => {
       title: "Type",
       dataIndex: "bond_type_code",
       key: "bond_type_code",
-      render: (text) => <div title="Type">{text}</div>,
+      render: (text) => <div title="Type">{props.bondTypeOptionsHash[text]}</div>,
     },
     {
       title: "Amount",
@@ -105,7 +107,7 @@ export const MineBondTable = (props) => {
       title: "Status",
       dataIndex: "bond_status_code",
       key: "bond_status_code",
-      render: (text) => <div title="Status">{text}</div>,
+      render: (text) => <div title="Status">{props.bondStatusOptionsHash[text]}</div>,
     },
     {
       title: "",
@@ -124,7 +126,7 @@ export const MineBondTable = (props) => {
                 Release Bond
               </button>
             </Menu.Item>
-            <Menu.Item key="0">
+            <Menu.Item key="1">
               <button
                 type="button"
                 className="full"
@@ -133,33 +135,44 @@ export const MineBondTable = (props) => {
                 Confiscate Bond
               </button>
             </Menu.Item>
+            <Menu.Item key="2">
+              <button
+                type="button"
+                className="full"
+                onClick={(event) => props.openEditBondModal(event, record)}
+              >
+                Edit Bond
+              </button>
+            </Menu.Item>
           </Menu>
         );
         return (
           <div>
-            <AuthorizationWrapper permission={Permission.EDIT_SECURITIES}>
-              <Button
-                type="secondary"
-                className="permit-table-button"
-                onClick={(event) => props.openAddBondModal(event, record.permit_guid)}
-              >
-                <div className="padding-small">
-                  <Icon type="eye" alt="View" className="icon-lg icon-svg-filter" />
-                </div>
-              </Button>
-              <Dropdown className="full-height full-mobile" overlay={menu} placement="bottomLeft">
-                <Button type="secondary" className="permit-table-button">
-                  <div className="padding-small">
-                    <img
-                      className="padding-small--right icon-svg-filter"
-                      src={CARAT}
-                      alt="Menu"
-                      style={{ paddingLeft: "5px" }}
-                    />
-                  </div>
-                </Button>
-              </Dropdown>
-            </AuthorizationWrapper>
+            <Button
+              type="secondary"
+              className="permit-table-button"
+              onClick={(event) => props.openViewBondModal(event, record)}
+            >
+              <div className="padding-small">
+                <Icon type="eye" alt="View" className="icon-lg icon-svg-filter" />
+              </div>
+            </Button>
+            {record.bond_status_code === "ACT" && (
+              <AuthorizationWrapper permission={Permission.EDIT_SECURITIES}>
+                <Dropdown className="full-height full-mobile" overlay={menu} placement="bottomLeft">
+                  <Button type="secondary" className="permit-table-button">
+                    <div className="padding-small">
+                      <img
+                        className="padding-small--right icon-svg-filter"
+                        src={CARAT}
+                        alt="Menu"
+                        style={{ paddingLeft: "5px" }}
+                      />
+                    </div>
+                  </Button>
+                </Dropdown>
+              </AuthorizationWrapper>
+            )}
           </div>
         );
       },
