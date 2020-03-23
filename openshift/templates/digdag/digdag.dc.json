@@ -60,7 +60,9 @@
         "name": "${NAME}${SUFFIX}"
       },
       "spec": {
-        "accessModes": ["ReadWriteOnce"],
+        "accessModes": [
+          "ReadWriteOnce"
+        ],
         "resources": {
           "requests": {
             "storage": "${SCHEDULER_PVC_SIZE}"
@@ -108,7 +110,9 @@
             "type": "ImageChange",
             "imageChangeParams": {
               "automatic": true,
-              "containerNames": ["${NAME}"],
+              "containerNames": [
+                "${NAME}"
+              ],
               "from": {
                 "kind": "ImageStreamTag",
                 "name": "${NAME}:${VERSION}"
@@ -228,7 +232,32 @@
                 },
                 "terminationMessagePath": "/dev/termination-log",
                 "imagePullPolicy": "IfNotPresent",
-                "capabilities": {}
+                "capabilities": {},
+                "livenessProbe": {
+                  "failureThreshold": 3,
+                  "initialDelaySeconds": 20,
+                  "periodSeconds": 10,
+                  "successThreshold": 1,
+                  "tcpSocket": {
+                    "port": 8081
+                  },
+                  "timeoutSeconds": 1
+                },
+                "readinessProbe": {
+                  "exec": {
+                    "command": [
+                      "digdag",
+                      "version",
+                      "--endpoint",
+                      "0.0.0.0:808"
+                    ]
+                  },
+                  "failureThreshold": 3,
+                  "initialDelaySeconds": 25,
+                  "periodSeconds": 10,
+                  "successThreshold": 1,
+                  "timeoutSeconds": 1
+                }
               }
             ],
             "volumes": [
