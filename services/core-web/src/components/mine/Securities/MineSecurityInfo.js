@@ -23,6 +23,7 @@ import CustomPropTypes from "@/customPropTypes";
 import MineBondTable from "@/components/mine/Securities/MineBondTable";
 import MineDashboardContentCard from "@/components/mine/MineDashboardContentCard";
 import { modalConfig } from "@/components/modalContent/config";
+import { formatMoney } from "@common/utils/helpers";
 /**
  * @class  MineSecurityInfo - contains all information relating to bonds and securities
  */
@@ -161,7 +162,6 @@ export class MineSecurityInfo extends Component {
     });
 
   render() {
-    console.log(this.props.bondTotals.amountHeld);
     return (
       <div className="tab__content">
         <div>
@@ -170,7 +170,7 @@ export class MineSecurityInfo extends Component {
           <div className="dashboard--cards">
             <MineDashboardContentCard
               title="Total Amount Held"
-              content={this.props.bondTotals.amountHeld}
+              content={formatMoney(this.props.bondTotals.amountHeld)}
             />
             <MineDashboardContentCard title="Total Bonds" content={this.props.bondTotals.count} />
           </div>

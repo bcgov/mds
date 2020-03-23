@@ -3,7 +3,7 @@ import React from "react";
 import { Menu, Dropdown, Button, Icon, Tooltip, Table } from "antd";
 import PropTypes from "prop-types";
 import * as Strings from "@common/constants/strings";
-import { formatDate, dateSorter } from "@common/utils/helpers";
+import { formatDate, dateSorter, formatMoney } from "@common/utils/helpers";
 import NullScreen from "@/components/common/NullScreen";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
@@ -43,7 +43,7 @@ export const MineBondTable = (props) => {
       key: "security_total",
       render: (text, record) => (
         <div title="Security Total">
-          {record.permit_amendments[0].security_total || Strings.EMPTY_FIELD}
+          {formatMoney(record.permit_amendments[0].security_total) || Strings.EMPTY_FIELD}
         </div>
       ),
     },
@@ -63,7 +63,7 @@ export const MineBondTable = (props) => {
       title: "Amount Confiscated",
       dataIndex: "amount_confiscated",
       key: "amount_confiscated",
-      render: (text) => <div title="Amount Confiscated">{text}</div>,
+      render: (text) => <div title="Amount Confiscated">{text || Strings.EMPTY_FIELD}</div>,
     },
     {
       title: "",
@@ -121,20 +121,24 @@ export const MineBondTable = (props) => {
       dataIndex: "bond_type_code",
       key: "bond_type_code",
       sorter: (a, b) => (a.bond_type_code > b.bond_type_code ? -1 : 1),
-      render: (text) => <div title="Type">{props.bondTypeOptionsHash[text]}</div>,
+      render: (text) => (
+        <div title="Type">{props.bondTypeOptionsHash[text] || Strings.EMPTY_FIELD}</div>
+      ),
     },
     {
       title: "Amount",
       dataIndex: "amount",
       key: "amount",
-      render: (text) => <div title="Amount">{text}</div>,
+      render: (text) => <div title="Amount">{formatMoney(text) || Strings.EMPTY_FIELD}</div>,
     },
     {
       title: "Status",
       dataIndex: "bond_status_code",
       key: "bond_status_code",
       sorter: (a, b) => (a.bond_status_code > b.bond_status_code ? -1 : 1),
-      render: (text) => <div title="Status">{props.bondStatusOptionsHash[text]}</div>,
+      render: (text) => (
+        <div title="Status">{props.bondStatusOptionsHash[text] || Strings.EMPTY_FIELD}</div>
+      ),
       defaultSortOrder: "descend",
     },
     {
@@ -212,13 +216,15 @@ export const MineBondTable = (props) => {
   const bondsByPermit = (permit) =>
     props.bonds.filter(({ permit_guid }) => permit_guid === permit.permit_guid);
 
-  const getSum = (status, permit) =>
-    props.bonds
+  const getSum = (status, permit) => {
+    const sum = props.bonds
       .filter(
         ({ bond_status_code, permit_guid }) =>
           bond_status_code === status && permit_guid === permit.permit_guid
       )
       .reduce((a, b) => +a + +b.amount, 0);
+    return formatMoney(sum);
+  };
 
   const bonds = (record) => {
     return (

@@ -259,3 +259,12 @@ export const flattenObject = (ob) => {
   }
   return toReturn;
 };
+
+export const formatMoney = (value) => {
+  console.log(value);
+  console.log(typeof value);
+  console.log(typeof value === "number" || typeof value === "string");
+  return value && (typeof value === "number" || typeof value === "string")
+    ? "$" + value.toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")
+    : "0";
+};
