@@ -58,11 +58,11 @@ class VerifyPermitNOWResource(Resource):
                 result = "Success"
             else:
                 result = "Failure"
-                #response_message = "NoValidNowsForPermit"
+                response_message = "NoValidNowsForPermit"
  
         except:
             result = "Failure"
             now_info = ""
-            #response_message = "Unhandled Exception"
+            response_message = "Unhandled Exception"
 
         return  {"a_Result": result, "a_NoWInfo": now_info, "a_ResponseMessage": response_message, "a_Timestamp": datetime.utcnow()}
