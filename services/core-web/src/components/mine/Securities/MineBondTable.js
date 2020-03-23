@@ -2,17 +2,14 @@
 import React from "react";
 import { Menu, Dropdown, Button, Icon, Tooltip, Table } from "antd";
 import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
 import * as Strings from "@common/constants/strings";
+import { formatDate, dateSorter } from "@common/utils/helpers";
 import NullScreen from "@/components/common/NullScreen";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
 import CustomPropTypes from "@/customPropTypes";
-import { EDIT_OUTLINE, EDIT_OUTLINE_VIOLET, EDIT, CARAT } from "@/constants/assets";
-import LinkButton from "@/components/common/LinkButton";
+import { EDIT, CARAT } from "@/constants/assets";
 import CoreTable from "@/components/common/CoreTable";
-import { formatDate } from "@common/utils/helpers";
 
 /**
  * @class  MineBondTable - displays a table of permits with their related bonds
@@ -22,6 +19,14 @@ const propTypes = {
   permits: PropTypes.arrayOf(CustomPropTypes.permit).isRequired,
   bondStatusOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   bondTypeOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  isLoaded: PropTypes.bool.isRequired,
+  openEditBondModal: PropTypes.func.isRequired,
+  openViewBondModal: PropTypes.func.isRequired,
+  openAddBondModal: PropTypes.func.isRequired,
+  releaseOrConfiscateBond: PropTypes.func.isRequired,
+  expandedRowKeys: PropTypes.arrayOf(PropTypes.string).isRequired,
+  onExpand: PropTypes.func.isRequired,
+  bonds: PropTypes.arrayOf(CustomPropTypes.bond).isRequired,
 };
 
 export const MineBondTable = (props) => {
@@ -33,7 +38,7 @@ export const MineBondTable = (props) => {
       render: (text) => <div title="Permit No.">{text}</div>,
     },
     {
-      title: "Security Total",
+      title: "Amount Assessed",
       dataIndex: "security_total",
       key: "security_total",
       render: (text, record) => (
@@ -43,10 +48,22 @@ export const MineBondTable = (props) => {
       ),
     },
     {
+      title: "Amount Held",
+      dataIndex: "amount_held",
+      key: "amount_held",
+      render: (text) => <div title="Total Bonds">{text || Strings.EMPTY_FIELD}</div>,
+    },
+    {
       title: "Total Bonds",
       dataIndex: "total_bonds",
       key: "total_bonds",
-      render: (text) => <div title="Total Bonds">{text}</div>,
+      render: (text) => <div title="Total Bonds">{text || Strings.EMPTY_FIELD}</div>,
+    },
+    {
+      title: "Amount Confiscated",
+      dataIndex: "amount_confiscated",
+      key: "amount_confiscated",
+      render: (text) => <div title="Amount Confiscated">{text}</div>,
     },
     {
       title: "",
@@ -74,10 +91,18 @@ export const MineBondTable = (props) => {
 
   const bondColumns = [
     {
+      title: "Bond No.",
+      dataIndex: "bond_id",
+      key: "bond_id",
+      sorter: (a, b) => (a.bond_id > b.bond_id ? -1 : 1),
+      render: (text) => <div title="Bond No.">{text}</div>,
+    },
+    {
       title: "Issue Date",
       dataIndex: "issue_date",
       key: "issue_date",
-      render: (text) => <div title="Issue Date">{formatDate(text)}</div>,
+      sorter: dateSorter("due_date"),
+      render: (text) => <div title="Issue Date">{formatDate(text) || Strings.EMPTY_FIELD}</div>,
     },
     {
       title: "Payer",
@@ -95,6 +120,7 @@ export const MineBondTable = (props) => {
       title: "Type",
       dataIndex: "bond_type_code",
       key: "bond_type_code",
+      sorter: (a, b) => (a.bond_type_code > b.bond_type_code ? -1 : 1),
       render: (text) => <div title="Type">{props.bondTypeOptionsHash[text]}</div>,
     },
     {
@@ -107,7 +133,9 @@ export const MineBondTable = (props) => {
       title: "Status",
       dataIndex: "bond_status_code",
       key: "bond_status_code",
+      sorter: (a, b) => (a.bond_status_code > b.bond_status_code ? -1 : 1),
       render: (text) => <div title="Status">{props.bondStatusOptionsHash[text]}</div>,
+      defaultSortOrder: "descend",
     },
     {
       title: "",
@@ -221,6 +249,8 @@ export const MineBondTable = (props) => {
       return {
         key: permit.permit_guid,
         total_bonds: bondsByPermit(permit).length,
+        amount_confiscated: "",
+        amount_held: "",
         ...permit,
       };
     });
