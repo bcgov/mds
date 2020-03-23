@@ -41,7 +41,7 @@ export const DownloadDocumentPackageModal = (props) => {
     </div>
   ) : (
     <div>
-      <h4>Submission Documents (VFCBC/NROS)</h4>
+      <h4>Submission Documents (vFCBC/NROS)</h4>
       <NOWSubmissionDocuments
         now_application_guid={props.noticeOfWorkGuid}
         documents={props.submissionDocuments}

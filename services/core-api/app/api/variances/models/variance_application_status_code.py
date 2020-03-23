@@ -13,7 +13,6 @@ class VarianceApplicationStatusCode(AuditMixin, Base):
     def __repr__(self):
         return '<VarianceApplicationStatusCode %r>' % self.variance_application_status_code
 
-
     @classmethod
-    def active(cls):
+    def get_active(cls):
         return cls.query.filter_by(active_ind=True).all()

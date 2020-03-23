@@ -1,5 +1,6 @@
 import * as actionTypes from "../constants/actionTypes";
 import { STATIC_CONTENT } from "../constants/reducerTypes";
+import { createDropDownList } from "../utils/helpers";
 
 /**
  * @file staticContentReducer.js
@@ -36,141 +37,9 @@ const initialState = {
 };
 export const staticContentReducer = (state = initialState, action) => {
   switch (action.type) {
-    case actionTypes.STORE_STATUS_OPTIONS:
-      return {
-        ...state,
-        mineStatusOptions: action.payload.records,
-      };
-    case actionTypes.STORE_REGION_OPTIONS:
-      return {
-        ...state,
-        mineRegionOptions: action.payload.records,
-      };
-    case actionTypes.STORE_TENURE_TYPES:
-      return {
-        ...state,
-        mineTenureTypes: action.payload.records,
-      };
-    case actionTypes.STORE_DISTURBANCE_OPTIONS:
-      return {
-        ...state,
-        mineDisturbanceOptions: action.payload.records,
-      };
-    case actionTypes.STORE_COMMODITY_OPTIONS:
-      return {
-        ...state,
-        mineCommodityOptions: action.payload.records,
-      };
-    case actionTypes.STORE_PROVINCE_OPTIONS:
-      return {
-        ...state,
-        provinceOptions: action.payload.records,
-      };
-    case actionTypes.STORE_PERMIT_STATUS_OPTIONS:
-      return {
-        ...state,
-        permitStatusCodes: action.payload.records,
-      };
-    case actionTypes.STORE_COMPLIANCE_CODES:
-      return {
-        ...state,
-        complianceCodes: action.payload.records,
-      };
-    case actionTypes.STORE_INCIDENT_DOCUMENT_TYPE_OPTIONS:
-      return {
-        ...state,
-        incidentDocumentTypeOptions: action.payload.records,
-      };
-    case actionTypes.STORE_MINE_INCIDENT_FOLLOWUP_ACTION_OPTIONS:
-      return {
-        ...state,
-        incidentFollowupActionOptions: action.payload.records,
-      };
-    case actionTypes.STORE_MINE_INCIDENT_DETERMINATION_OPTIONS:
-      return {
-        ...state,
-        incidentDeterminationOptions: action.payload.records,
-      };
-    case actionTypes.STORE_MINE_INCIDENT_STATUS_CODE_OPTIONS:
-      return {
-        ...state,
-        incidentStatusCodeOptions: action.payload.records,
-      };
-    case actionTypes.STORE_MINE_INCIDENT_CATEGORY_CODE_OPTIONS:
-      return {
-        ...state,
-        incidentCategoryCodeOptions: action.payload.records,
-      };
-    case actionTypes.STORE_VARIANCE_STATUS_OPTIONS:
-      return {
-        ...state,
-        varianceStatusOptions: action.payload.records,
-      };
-    case actionTypes.STORE_VARIANCE_DOCUMENT_CATEGORY_OPTIONS:
-      return {
-        ...state,
-        varianceDocumentCategoryOptions: action.payload.records,
-      };
-    case actionTypes.STORE_MINE_REPORT_DEFINITION_OPTIONS:
-      return {
-        ...state,
-        mineReportDefinitionOptions: action.payload.records,
-      };
-    case actionTypes.STORE_MINE_REPORT_STATUS_OPTIONS:
-      return {
-        ...state,
-        mineReportStatusOptions: action.payload.records,
-      };
-    case actionTypes.STORE_MINE_REPORT_CATEGORY_OPTIONS:
-      return {
-        ...state,
-        mineReportCategoryOptions: action.payload.records,
-      };
-    case actionTypes.STORE_NOTICE_OF_WORK_ACTIVITY_TYPE_OPTIONS:
-      return {
-        ...state,
-        noticeOfWorkActivityTypeOptions: action.payload.records,
-      };
-    case actionTypes.STORE_NOTICE_OF_WORK_UNIT_TYPE_OPTIONS:
-      return {
-        ...state,
-        noticeOfWorkUnitTypeOptions: action.payload.records,
-      };
-    case actionTypes.STORE_NOTICE_OF_WORK_APPLICATION_TYPE_OPTIONS:
-      return {
-        ...state,
-        noticeOfWorkApplicationTypeOptions: action.payload.records,
-      };
-    case actionTypes.STORE_NOTICE_OF_WORK_APPLICATION_STATUS_OPTIONS:
-      return {
-        ...state,
-        noticeOfWorkApplicationStatusOptions: action.payload.records,
-      };
-    case actionTypes.STORE_NOTICE_OF_WORK_APPLICATION_DOCUMENT_TYPE_OPTIONS:
-      return {
-        ...state,
-        noticeOfWorkApplicationDocumentTypeOptions: action.payload.records,
-      };
-    case actionTypes.STORE_NOW_UNDERGROUND_EXPLORATION_TYPE_OPTIONS:
-      return {
-        ...state,
-        noticeOfWorkUndergroundExplorationTypeOptions: action.payload.records,
-      };
-    case actionTypes.STORE_NOW_APPLICATION_PROGRESS_STATUS_CODES:
-      return {
-        ...state,
-        noticeOfWorkApplicationProgressStatusCodeOptions: action.payload.records,
-      };
-    case actionTypes.STORE_NOW_APPLICATION_PERMIT_TYPES:
-      return {
-        ...state,
-        noticeOfWorkApplicationPermitTypeOptions: action.payload.records,
-      };
-    case actionTypes.STORE_NOTICE_OF_WORK_APPLICATION_REVIEW_TYPES:
-      return {
-        ...state,
-        noticeOfWorkApplicationReviewOptions: action.payload.records,
-      };
+    case actionTypes.STORE_BULK_STATIC_CONTENT:
+      return { ...state, ...action.payload };
+
     default:
       return state;
   }
@@ -233,5 +102,13 @@ const isStaticContentLoaded = (state) =>
 
 export const getStaticContentLoadingIsComplete = (state) =>
   isStaticContentLoaded(state[STATIC_CONTENT]);
+
+export const getPartyRelationshipTypes = (state) => state[STATIC_CONTENT].partyRelationshipTypes;
+export const getPartyRelationshipTypesList = (state) =>
+  createDropDownList(
+    state[STATIC_CONTENT].partyRelationshipTypes,
+    "description",
+    "mine_party_appt_type_code"
+  );
 
 export default staticContentReducerObject;

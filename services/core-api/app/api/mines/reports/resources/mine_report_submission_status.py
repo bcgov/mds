@@ -13,4 +13,4 @@ class MineReportSubmissionStatusResource(Resource, UserMixin):
     @api.marshal_with(MINE_REPORT_SUBMISSION_STATUS, code=201, envelope='records')
     @requires_role_view_all
     def get(self):
-        return MineReportSubmissionStatusCode.active()
+        return MineReportSubmissionStatusCode.get_active()

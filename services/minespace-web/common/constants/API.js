@@ -1,5 +1,6 @@
 import queryString from "query-string";
 
+export const CORE_STATIC_CONTENT = "/exports/core-static-content";
 // Network URL's
 export const MINE = "/mines";
 export const MINE_LIST = "/mines";

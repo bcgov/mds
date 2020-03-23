@@ -13,4 +13,4 @@ class NOWApplicationReviewTypeResource(Resource, UserMixin):
     @requires_role_view_all
     @api.marshal_with(NOW_APPLICATION_REVIEW_TYPES, code=200, envelope='records')
     def get(self):
-        return NOWApplicationReviewType.active()
+        return NOWApplicationReviewType.get_active()
