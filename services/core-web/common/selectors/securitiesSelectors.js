@@ -7,14 +7,13 @@ export const { getBonds, getBond } = securitiesReducer;
 const { getPermits } = permitReducer;
 
 export const getBondTotals = createSelector([getBonds, getPermits], (bonds, permits) => {
-  const getSum = (status) =>
+  const getSum = () =>
     bonds
-      .filter(({ bond_status_code }) => {
-        bond_status_code === status;
-      })
-      .reduce((a, b) => a + (b.amount || 0), 0);
+      .filter(({ bond_status_code }) => bond_status_code === "ACT")
+      .reduce((a, b) => +a + +b.amount, 0);
+
   return {
-    amountHeld: getSum("ACT"),
+    amountHeld: getSum(),
     count: bonds.length,
   };
 });

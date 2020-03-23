@@ -212,6 +212,14 @@ export const MineBondTable = (props) => {
   const bondsByPermit = (permit) =>
     props.bonds.filter(({ permit_guid }) => permit_guid === permit.permit_guid);
 
+  const getSum = (status, permit) =>
+    props.bonds
+      .filter(
+        ({ bond_status_code, permit_guid }) =>
+          bond_status_code === status && permit_guid === permit.permit_guid
+      )
+      .reduce((a, b) => +a + +b.amount, 0);
+
   const bonds = (record) => {
     return (
       <Table
@@ -249,8 +257,8 @@ export const MineBondTable = (props) => {
       return {
         key: permit.permit_guid,
         total_bonds: bondsByPermit(permit).length,
-        amount_confiscated: "",
-        amount_held: "",
+        amount_confiscated: getSum("CON", permit),
+        amount_held: getSum("ACT", permit),
         ...permit,
       };
     });

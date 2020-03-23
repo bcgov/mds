@@ -161,6 +161,7 @@ export class MineSecurityInfo extends Component {
     });
 
   render() {
+    console.log(this.props.bondTotals.amountHeld);
     return (
       <div className="tab__content">
         <div>
