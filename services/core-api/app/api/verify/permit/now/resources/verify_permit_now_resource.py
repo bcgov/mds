@@ -26,7 +26,7 @@ class VerifyPermitNOWResource(Resource):
         }
     )
     @api.marshal_with(VERIFY_PERMIT_NOW_MODEL, code=200)
-    #@requires_role_view_all
+    @requires_role_view_all
     def get(self):
         result = ""
         now_info = ""
