@@ -49,13 +49,10 @@ class VerifyPermitNOWResource(Resource):
                     break;
             
                 for permit_amendment in permit.permit_amendments:
-                    response_message = response_message + str((datetime.utcnow() - permit_amendment.authorization_end_date).days)
-                    if datetime.utcnow() - permit_amendment.authorization_end_date < 30:
+                    if (permit_amendment.authorization_end_date - datetime.utcnow().date()).days > 30:
                         #instead of permit.permit_guid, we really want the now_number but there is currently no relationship from 
                         #permit to NOW
-                        response_message = response_message + '2'
-                        now_info = now_info + permit.permit_guid + " - " + permit_amendment.authorization_end_date + '\r\c'
-                        response_message = response_message + '3'
+                        now_info = now_info + str(permit.permit_guid) + " - " + str(permit_amendment.authorization_end_date) + '\r\c'
 
             if now_info != "":
                 result = "Success"
@@ -66,6 +63,6 @@ class VerifyPermitNOWResource(Resource):
         except:
             result = "Failure"
             now_info = ""
-            response_message = "Unhandled Exception"
+            #response_message = "Unhandled Exception"
 
         return  {"a_Result": result, "a_NoWInfo": now_info, "a_ResponseMessage": response_message, "a_Timestamp": datetime.utcnow()}
