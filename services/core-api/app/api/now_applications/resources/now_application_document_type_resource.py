@@ -69,6 +69,9 @@ class NOWApplicationDocumentGenerateResource(Resource, UserMixin):
             template_data[enforced_item['id']] = enforced_item['context-value']
 
         token = uuid.uuid4()
+        # For now, we don't have a "proper" means of authorizing communication between our microservices, so this temporary solution
+        # has been put in place to authorize with the document manager (pass the authorization headers into the token and re-use them
+        # later). A ticket (MDS-2744) to set something else up as been created.
         cache.set(
             NOW_DOCUMENT_DOWNLOAD_TOKEN(token), {
                 'document_type_code': document_type_code,

@@ -1,13 +1,10 @@
 import os
 from flask import current_app, request, Response, stream_with_context
 from flask_restplus import Resource
-from werkzeug.exceptions import BadRequest, NotFound
+from werkzeug.exceptions import BadRequest
 from app.extensions import api, cache
-from datetime import datetime
 
 from app.api.utils.resources_mixins import UserMixin
-from app.api.utils.access_decorators import requires_role_view_all, requires_role_edit_permit
-from app.api.utils.custom_reqparser import CustomReqparser
 from app.api.constants import NOW_DOCUMENT_DOWNLOAD_TOKEN
 
 from app.api.mines.documents.models.mine_document import MineDocument
@@ -23,7 +20,10 @@ class NoticeOfWorkDocumentResource(Resource, UserMixin):
         description=
         'Returns the generated document associated with the received token and pushes it to the \
         Document Manager and associates it with the Notice of Work.',
-        params={'token': 'uuid4 token to execute the planned file generation for that token'})
+        params={
+            'token':
+            'The UUID4 token used to generate the document. Must be retrieved from the Notice of Work Document Type POST endpoint.'
+        })
     def get(self):
 
         # Ensure that the token is valid
