@@ -269,28 +269,28 @@
                 "imagePullPolicy": "IfNotPresent",
                 "capabilities": {},
                 "livenessProbe": {
-                  "failureThreshold": 3,
+                  "failureThreshold": 6,
                   "httpGet": {
-                    "path": "/api/health",
+                    "path": "/",
                     "port": 3000,
                     "scheme": "HTTP"
                   },
-                  "initialDelaySeconds": 300,
-                  "periodSeconds": 10,
+                  "initialDelaySeconds": 120,
+                  "periodSeconds": 5,
                   "successThreshold": 1,
-                  "timeoutSeconds": 1
+                  "timeoutSeconds": 3
                 },
                 "readinessProbe": {
                   "failureThreshold": 3,
                   "httpGet": {
-                    "path": "/api/health",
+                    "path": "/",
                     "port": 3000,
                     "scheme": "HTTP"
                   },
-                  "initialDelaySeconds": 300,
-                  "periodSeconds": 10,
+                  "initialDelaySeconds": 30,
+                  "periodSeconds": 5,
                   "successThreshold": 1,
-                  "timeoutSeconds": 1
+                  "timeoutSeconds": 3
                 }
               },
               {
