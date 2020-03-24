@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React from "react";
 import { Menu, Dropdown, Button, Icon, Tooltip, Table } from "antd";
 import PropTypes from "prop-types";
@@ -17,16 +16,23 @@ import CoreTable from "@/components/common/CoreTable";
 
 const propTypes = {
   permits: PropTypes.arrayOf(CustomPropTypes.permit).isRequired,
+  // eslint-disable-next-line react/no-unused-prop-types
   bondStatusOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  // eslint-disable-next-line react/no-unused-prop-types
   bondTypeOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
-  isLoaded: PropTypes.bool.isRequired,
-  openEditBondModal: PropTypes.func.isRequired,
-  openViewBondModal: PropTypes.func.isRequired,
-  openAddBondModal: PropTypes.func.isRequired,
-  releaseOrConfiscateBond: PropTypes.func.isRequired,
-  expandedRowKeys: PropTypes.arrayOf(PropTypes.string).isRequired,
-  onExpand: PropTypes.func.isRequired,
   bonds: PropTypes.arrayOf(CustomPropTypes.bond).isRequired,
+  isLoaded: PropTypes.bool.isRequired,
+  expandedRowKeys: PropTypes.arrayOf(PropTypes.string).isRequired,
+  // eslint-disable-next-line react/no-unused-prop-types
+  openEditBondModal: PropTypes.func.isRequired,
+  // eslint-disable-next-line react/no-unused-prop-types
+  openViewBondModal: PropTypes.func.isRequired,
+  // eslint-disable-next-line react/no-unused-prop-types
+  openAddBondModal: PropTypes.func.isRequired,
+  // eslint-disable-next-line react/no-unused-prop-types
+  releaseOrConfiscateBond: PropTypes.func.isRequired,
+  // eslint-disable-next-line react/no-unused-prop-types
+  onExpand: PropTypes.func.isRequired,
 };
 
 export const MineBondTable = (props) => {
@@ -131,9 +137,7 @@ export const MineBondTable = (props) => {
       title: "Amount",
       dataIndex: "amount",
       key: "amount",
-      render: (text, record) => (
-        <div title="Amount">{formatMoney(text) || Strings.EMPTY_FIELD}</div>
-      ),
+      render: (text) => <div title="Amount">{formatMoney(text) || Strings.EMPTY_FIELD}</div>,
     },
     {
       title: "Status",

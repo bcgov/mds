@@ -3715,21 +3715,23 @@ export const BULK_STATIC_CONTENT_RESPONSE = {
   ],
 };
 
-export const BONDS = {
-  bond_id: 1,
-  bond_guid: "erjvnaqekrj",
-  amount: 300,
-  bond_type_code: "CAS",
-  payer_party_guid: "sethwrt",
-  bond_status_code: "ACT",
-  reference_number: "",
-  issue_date: "2018-10-16",
-  institution_name: null,
-  institution_street: null,
-  institution_city: null,
-  institution_province: null,
-  institution_postal_code: null,
-  note: null,
-  payer: {},
-  permit_guid: "463236",
-};
+export const BONDS = [
+  {
+    bond_id: 1,
+    bond_guid: "erjvnaqekrj",
+    amount: 300,
+    bond_type_code: "CAS",
+    payer_party_guid: "sethwrt",
+    bond_status_code: "ACT",
+    reference_number: "",
+    issue_date: "2018-10-16",
+    institution_name: null,
+    institution_street: null,
+    institution_city: null,
+    institution_province: null,
+    institution_postal_code: null,
+    note: null,
+    payer: {},
+    permit_guid: "463236",
+  },
+];

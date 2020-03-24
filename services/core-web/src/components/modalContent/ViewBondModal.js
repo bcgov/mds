@@ -1,9 +1,8 @@
-/* eslint-disable */
 import React from "react";
 import PropTypes from "prop-types";
 import { Button } from "antd";
 import { connect } from "react-redux";
-import { formatDate } from "@common/utils/helpers";
+import { formatDate, formatMoney } from "@common/utils/helpers";
 import {
   getBondTypeOptionsHash,
   getBondStatusOptionsHash,
@@ -11,14 +10,12 @@ import {
 import * as Strings from "@common/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
 import Address from "@/components/common/Address";
-import { formatMoney } from "@common/utils/helpers";
 
 const propTypes = {
-  onSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
-  title: PropTypes.string.isRequired,
-  provinceOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
-  permitGuid: PropTypes.string.isRequired,
+  bondTypeOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  statusTypeOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  bond: CustomPropTypes.bond.isRequired,
 };
 
 export const ViewBondModal = (props) => {

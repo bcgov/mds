@@ -1,11 +1,9 @@
-/* eslint-disable */
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { Divider } from "antd";
 import PropTypes from "prop-types";
 import { fetchPermits } from "@common/actionCreators/permitActionCreator";
-import { fetchMineRecordById } from "@common/actionCreators/mineActionCreator";
 import { openModal, closeModal } from "@common/actions/modalActions";
 import { getPermits } from "@common/reducers/permitReducer";
 import { getBonds, getBondTotals } from "@common/selectors/securitiesSelectors";
@@ -19,11 +17,11 @@ import {
   updateBond,
 } from "@common/actionCreators/securitiesActionCreator";
 import { getMineGuid } from "@common/selectors/mineSelectors";
+import { formatMoney } from "@common/utils/helpers";
 import CustomPropTypes from "@/customPropTypes";
 import MineBondTable from "@/components/mine/Securities/MineBondTable";
 import MineDashboardContentCard from "@/components/mine/MineDashboardContentCard";
 import { modalConfig } from "@/components/modalContent/config";
-import { formatMoney } from "@common/utils/helpers";
 /**
  * @class  MineSecurityInfo - contains all information relating to bonds and securities
  */
@@ -34,24 +32,21 @@ const propTypes = {
       id: PropTypes.string,
     },
   }).isRequired,
-  mines: PropTypes.arrayOf(CustomPropTypes.mine).isRequired,
   mineGuid: PropTypes.string.isRequired,
   permits: PropTypes.arrayOf(CustomPropTypes.permit),
   openModal: PropTypes.func.isRequired,
-  history: PropTypes.shape({ push: PropTypes.func }).isRequired,
   closeModal: PropTypes.func.isRequired,
   fetchPermits: PropTypes.func.isRequired,
   fetchMineBonds: PropTypes.func.isRequired,
   createBond: PropTypes.func.isRequired,
   updateBond: PropTypes.func.isRequired,
-  fetchMineRecordById: PropTypes.func.isRequired,
   bondTotals: PropTypes.objectOf(PropTypes.number).isRequired,
   bondStatusOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   bondTypeOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  bonds: PropTypes.arrayOf(CustomPropTypes.bond).isRequired,
 };
 
 const defaultProps = {
-  partyRelationships: [],
   permits: [],
 };
 
@@ -90,7 +85,7 @@ export class MineSecurityInfo extends Component {
         title: `Edit Bond ${bond.bond_id}`,
         onSubmit: this.editBond,
         editBond: true,
-        bond: bond,
+        bond,
       },
       width: "50vw",
       content: modalConfig.ADD_BOND_MODAL,
@@ -102,7 +97,7 @@ export class MineSecurityInfo extends Component {
     this.props.openModal({
       props: {
         title: `View Bond ${bond.bond_id}`,
-        bond: bond,
+        bond,
       },
       width: "50vw",
       content: modalConfig.VIEW_BOND_MODAL,
@@ -155,9 +150,7 @@ export class MineSecurityInfo extends Component {
     this.setState((prevState) => {
       const expandedRowKeys = expanded
         ? prevState.expandedRowKeys.concat(record.key)
-        : prevState.expandedRowKeys.filter((key) => {
-            key !== record.key;
-          });
+        : prevState.expandedRowKeys.filter((key) => key !== record.key);
       return { expandedRowKeys };
     });
 
@@ -207,7 +200,6 @@ const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
       fetchPermits,
-      fetchMineRecordById,
       openModal,
       closeModal,
       fetchMineBonds,
