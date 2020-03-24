@@ -1,5 +1,5 @@
 import React from "react";
-import { Menu, Dropdown, Button, Icon, Tooltip, Table } from "antd";
+import { Menu, Dropdown, Button, Icon, Tooltip, Table, Popconfirm } from "antd";
 import PropTypes from "prop-types";
 import * as Strings from "@common/constants/strings";
 import { formatDate, dateSorter, formatMoney } from "@common/utils/helpers";
@@ -160,22 +160,30 @@ export const MineBondTable = (props) => {
             {record.bond_status_code === "ACT" && (
               <span>
                 <div className="custom-menu-item">
-                  <button
-                    type="button"
-                    className="full"
-                    onClick={() => props.releaseOrConfiscateBond("REL", record.bond_guid, record)}
+                  <Popconfirm
+                    placement="leftTop"
+                    title={`Are you sure you want to release Bond ${record.bond_id}?`}
+                    onConfirm={() => props.releaseOrConfiscateBond("REL", record.bond_guid, record)}
+                    okText="Release"
+                    cancelText="Cancel"
                   >
-                    Release Bond
-                  </button>
+                    <button type="button" className="full">
+                      Release Bond
+                    </button>
+                  </Popconfirm>
                 </div>
                 <div className="custom-menu-item">
-                  <button
-                    type="button"
-                    className="full"
-                    onClick={() => props.releaseOrConfiscateBond("CON", record.bond_guid, record)}
+                  <Popconfirm
+                    placement="leftTop"
+                    title={`Are you sure you want to confiscate Bond ${record.bond_id}? Doing so will convert the bond type to cash.`}
+                    onConfirm={() => props.releaseOrConfiscateBond("CON", record.bond_guid, record)}
+                    okText="Confiscate"
+                    cancelText="Cancel"
                   >
-                    Confiscate Bond
-                  </button>
+                    <button type="button" className="full">
+                      Confiscate Bond
+                    </button>
+                  </Popconfirm>
                 </div>
               </span>
             )}
