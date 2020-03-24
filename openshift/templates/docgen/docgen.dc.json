@@ -13,7 +13,7 @@
       "displayName": "Name",
       "description": "The name assigned to all of the frontend objects defined in this template.",
       "required": true,
-      "value": "web-api"
+      "value": "doc-gen-api"
     },
     {
       "name": "SUFFIX",
@@ -24,13 +24,6 @@
     {
       "name": "APPLICATION_SUFFIX",
       "required": true
-    },
-    {
-      "name": "TAG_NAME",
-      "displayName": "Name",
-      "description": "The name assigned to all of the frontend objects defined in this template.",
-      "required": true,
-      "value": "latest"
     },
     {
       "name": "APPLICATION_DOMAIN",
@@ -87,7 +80,7 @@
       "kind": "ImageStream",
       "apiVersion": "v1",
       "metadata": {
-        "name": "${NAME}",
+        "name": "doc-gen-api",
         "creationTimestamp": null,
         "annotations": {
           "description": "Doc Gen API"
@@ -102,7 +95,6 @@
         },
         "tags": [
           {
-            "name": "${TAG_NAME}",
             "annotations": null,
             "from": {
               "kind": "DockerImage",
@@ -112,7 +104,7 @@
             "referencePolicy": {
               "type": "Local"
             },
-            "tag": "${TAG_NAME}"
+            "tag": "latest"
           }
         ]
       }
@@ -168,7 +160,7 @@
               ],
               "from": {
                 "kind": "ImageStreamTag",
-                "name": "${NAME}:${TAG_NAME}"
+                "name": "${NAME}:latest"
               }
             }
           },

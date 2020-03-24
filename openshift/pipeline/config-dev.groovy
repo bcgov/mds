@@ -288,7 +288,6 @@ app {
                             'NAME':"mds-docgen-api",
                             'SUFFIX': "${vars.deployment.suffix}",
                             'APPLICATION_SUFFIX': "${vars.deployment.application_suffix}",
-                            'TAG_NAME':"${app.deployment.version}",
                             'PORT':3030,
                             'CPU_REQUEST':"${vars.resources.docgen.cpu_request}",
                             'CPU_LIMIT':"${vars.resources.docgen.cpu_limit}",
