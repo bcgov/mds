@@ -4,6 +4,7 @@ from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
 from datetime import datetime
+from marshmallow import fields
 
 from app.extensions import db
 from app.api.utils.models_mixins import AuditMixin, Base
@@ -11,6 +12,10 @@ from app.api.utils.models_mixins import AuditMixin, Base
 
 class MineDocument(AuditMixin, Base):
     __tablename__ = 'mine_document'
+
+    class _ModelSchema(Base._ModelSchema):
+        document_class = fields.String(dump_only=True)
+        upload_date = fields.Date(dump_only=True)
 
     mine_document_id = db.Column(
         db.Integer, nullable=False, unique=True, server_default=FetchedValue())

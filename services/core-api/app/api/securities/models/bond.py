@@ -6,6 +6,7 @@ from marshmallow import fields, validate
 from app.extensions import db
 from app.api.utils.models_mixins import Base, AuditMixin
 from app.api.utils.field_template import FieldTemplate
+from app.api.securities.models.bond_document import BondDocument
 
 
 class Bond(Base, AuditMixin):
@@ -37,7 +38,7 @@ class Bond(Base, AuditMixin):
     project_id = db.Column(db.String)
 
     payer = db.relationship('Party', lazy='joined')
-    permits = db.relationship('Permit', uselist=False, lazy='select', secondary='bond_permit_xref')
+    permits = db.relationship('Permit', uselist=False, lazy='joined', secondary='bond_permit_xref')
     documents = db.relationship('BondDocument', lazy='select')
 
     def __repr__(self):

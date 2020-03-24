@@ -10,6 +10,7 @@ from app.api.mines.documents.models.mine_document import MineDocument
 
 
 class BondDocument(MineDocument):
+    __create_schema__ = True
     __mapper_args__ = {
         'polymorphic_identity': 'bond',          ## type code
     }
