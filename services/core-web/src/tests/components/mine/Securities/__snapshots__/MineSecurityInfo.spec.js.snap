@@ -1,0 +1,62 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MineSecurityInfo renders properly 1`] = `
+<div
+  className="tab__content"
+>
+  <div>
+    <h2>
+      Securities
+    </h2>
+    <Divider />
+    <div
+      className="dashboard--cards"
+    >
+      <MineDashboardContentCard
+        content="$NaN"
+        icon={null}
+        title="Total Amount Held"
+      />
+      <MineDashboardContentCard
+        icon={null}
+        title="Total Bonds"
+      />
+    </div>
+    <br />
+    <MineBondTable
+      bondStatusOptionsHash={Object {}}
+      bondTypeOptionsHash={Object {}}
+      bonds={
+        Array [
+          Object {
+            "amount": 300,
+            "bond_guid": "erjvnaqekrj",
+            "bond_id": 1,
+            "bond_status_code": "ACT",
+            "bond_type_code": "CAS",
+            "institution_city": null,
+            "institution_name": null,
+            "institution_postal_code": null,
+            "institution_province": null,
+            "institution_street": null,
+            "issue_date": "2018-10-16",
+            "note": null,
+            "payer": Object {},
+            "payer_party_guid": "sethwrt",
+            "permit_guid": "463236",
+            "reference_number": "",
+          },
+        ]
+      }
+      expandedRowKeys={Array []}
+      isLoaded={false}
+      onExpand={[Function]}
+      openAddBondModal={[Function]}
+      openEditBondModal={[Function]}
+      openViewBondModal={[Function]}
+      permits={Array []}
+      releaseOrConfiscateBond={[Function]}
+    />
+  </div>
+</div>
+`;

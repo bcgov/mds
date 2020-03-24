@@ -12,8 +12,11 @@ const setupDispatchProps = () => {
 };
 
 const setupProps = () => {
-  props.isPerson = true;
+  props.title = "Add Bond";
+  props.permitGuid = "462562457";
   props.provinceOptions = MOCK.DROPDOWN_PROVINCE_OPTIONS;
+  props.bondTypeOptions = [];
+  [props.bond] = MOCK.BONDS;
 };
 
 beforeEach(() => {

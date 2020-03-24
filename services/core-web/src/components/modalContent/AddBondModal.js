@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
@@ -13,16 +12,22 @@ const propTypes = {
   onSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
+  bondTypeOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
   provinceOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
   permitGuid: PropTypes.string.isRequired,
+  bond: CustomPropTypes.bond.isRequired,
+  editBond: PropTypes.bool,
+};
+
+const defaultProps = {
+  editBond: false,
 };
 
 export const AddBondModal = (props) => {
-  const handleAddBond = (values) => {
+  const handleAddBond = (values) =>
     props.editBond
       ? props.onSubmit(values, props.bond.bond_guid)
       : props.onSubmit(values, props.permitGuid);
-  };
 
   return (
     <div>
@@ -32,7 +37,6 @@ export const AddBondModal = (props) => {
         title={props.title}
         provinceOptions={props.provinceOptions}
         bondTypeOptions={props.bondTypeOptions}
-        bondStatusOptions={props.bondStatusOptions}
         initialValues={props.bond}
       />
     </div>
@@ -40,6 +44,7 @@ export const AddBondModal = (props) => {
 };
 
 AddBondModal.propTypes = propTypes;
+AddBondModal.defaultProps = defaultProps;
 
 const mapStateToProps = (state) => ({
   provinceOptions: getDropdownProvinceOptions(state),
