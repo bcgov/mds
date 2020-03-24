@@ -11,25 +11,19 @@
     {
       "name": "NAME",
       "displayName": "Name",
-      "description": "The name assigned to all of the frontend objects defined in this template.",
+      "description": "The name assigned to all of the docgen objects defined in this template.",
       "required": true,
       "value": "doc-gen-api"
     },
     {
       "name": "SUFFIX",
       "displayName": "Name",
-      "description": "The name assigned to all of the frontend objects defined in this template.",
+      "description": "The name assigned to all of the docgen objects defined in this template.",
       "required": true
     },
     {
       "name": "APPLICATION_SUFFIX",
       "required": true
-    },
-    {
-      "name": "APPLICATION_DOMAIN",
-      "displayName": "Application Hostname",
-      "description": "The exposed hostname that will route to the Node.js service, if left blank a value will be defaulted.",
-      "value": ""
     },
     {
       "name": "BASE_PATH",
@@ -104,7 +98,7 @@
             "referencePolicy": {
               "type": "Local"
             },
-            "tag": "latest"
+            "tag": "v1.0.0"
           }
         ]
       }
@@ -160,7 +154,7 @@
               ],
               "from": {
                 "kind": "ImageStreamTag",
-                "name": "${NAME}:latest"
+                "name": "doc-gen-api:v1.0.0"
               }
             }
           },

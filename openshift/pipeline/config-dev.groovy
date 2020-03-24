@@ -295,7 +295,6 @@ app {
                             'MEMORY_LIMIT':"${vars.resources.docgen.memory_limit}",
                             'REPLICA_MIN':"${vars.resources.docgen.replica_min}",
                             'REPLICA_MAX':"${vars.resources.docgen.replica_max}",
-                            'APPLICATION_DOMAIN': "${vars.modules.'mds-docgen-api'.HOST}",
                             'BASE_PATH': "${vars.modules.'mds-docgen-api'.PATH}",
                             'NODE_ENV': "${vars.deployment.node_env}"
                     ]
