@@ -24,6 +24,8 @@ from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointme
 from app.api.mines.permits.permit.models.permit import Permit
 from app.api.mines.permits.permit_amendment.models.permit_amendment import PermitAmendment
 from app.api.mines.permits.permit_amendment.models.permit_amendment_document import PermitAmendmentDocument
+from app.api.securities.models.bond import Bond
+from app.api.securities.models.bond_permit_xref import BondPermitXref
 from app.api.users.core.models.core_user import CoreUser, IdirUserDetail
 from app.api.users.minespace.models.minespace_user import MinespaceUser
 from app.api.variances.models.variance import Variance
@@ -72,6 +74,9 @@ class MineDocumentFactory(BaseFactory):
 class MineStatusFactory(BaseFactory):
     class Meta:
         model = MineStatus
+
+    class Params:
+        operating = factory.Trait(mine_status_xref = factory.LazyFunction(RandomOperatingMineStatusXref))
 
     mine_status_guid = GUID
     effective_date = TODAY
@@ -475,6 +480,9 @@ class MineFactory(BaseFactory):
             mine_incidents=0,
             mine_variance=0,
             mine_reports=0)
+        operating = factory.Trait(
+            mine_status = factory.RelatedFactory(MineStatusFactory, 'mine', operating=True)
+        )
 
     mine_guid = GUID
     mine_no = factory.Faker('ean', length=8)
@@ -569,6 +577,17 @@ class PermitFactory(BaseFactory):
         for n in range(extracted):
             PermitAmendmentFactory(permit=obj, initial_permit=(n == 0), **kwargs)
 
+    @factory.post_generation
+    def bonds(obj, create, extracted, **kwargs):
+        if not create:
+            return
+
+        if not isinstance(extracted, int):
+            extracted = random.randint(1, 3)
+
+        for n in range(extracted):
+            BondFactory(permits=obj, **kwargs)
+
 
 class PermitAmendmentFactory(BaseFactory):
     class Meta:
@@ -585,7 +604,7 @@ class PermitAmendmentFactory(BaseFactory):
     permit_id = factory.SelfAttribute('permit.permit_id')
     received_date = TODAY
     issue_date = TODAY
-    authorization_end_date = factory.Faker('future_datetime', end_date='+30d')
+    authorization_end_date = factory.Faker('date_between', start_date='+31d', end_date='+90d')
     permit_amendment_status_code = 'ACT'
     permit_amendment_type_code = 'AMD'
     description = factory.Faker('sentence', nb_words=6, variable_nb_words=True)
@@ -602,3 +621,28 @@ class PermitAmendmentDocumentFactory(BaseFactory):
     mine_guid = factory.SelfAttribute('permit_amendment.permit.mine.mine_guid')
     document_manager_guid = GUID
     permit_amendment = factory.SubFactory(PermitAmendmentFactory)
+
+
+class BondFactory(BaseFactory):
+    class Meta:
+        model = Bond
+
+    class Params:
+        payer = factory.SubFactory(PartyFactory, company=True)
+
+    bond_guid = GUID
+    amount = factory.Faker(
+        'pydecimal', right_digits=2, positive=True, min_value=50, max_value=500000)
+    bond_type_code = factory.LazyFunction(RandomBondTypeCode)
+    bond_status_code = factory.LazyFunction(RandomBondStatusCode)
+    payer_party_guid = factory.SelfAttribute('payer.party_guid')
+    institution_name = factory.Faker('company')
+    institution_street = factory.Faker('street_address')
+    institution_city = factory.Faker('city')
+    institution_province = factory.LazyFunction(RandomSubDivisionCode)
+    institution_postal_code = factory.Faker(
+        'bothify', text='?#?#?#', letters='ABCDEFGHIJKLMNOPQRSTUVWXYZ')
+    note = factory.Faker(
+        'paragraph', nb_sentences=3, variable_nb_sentences=True, ext_word_list=None)
+    issue_date = TODAY
+    reference_number = str(random.randint(1, 9999999))

@@ -3,7 +3,7 @@ import { PropTypes } from "prop-types";
 import { Field, formValueSelector } from "redux-form";
 import { connect } from "react-redux";
 import { Row, Col, Table, Button } from "antd";
-import { maxLength, number, required } from "@common/utils/Validate";
+import { maxLength, number, requiredRadioButton } from "@common/utils/Validate";
 import * as FORM from "@/constants/forms";
 import { TRASHCAN } from "@/constants/assets";
 import RenderField from "@/components/common/RenderField";
@@ -157,7 +157,7 @@ export const Camps = (props) => {
             name="has_fuel_stored"
             component={RenderRadioButtons}
             disabled={props.isViewMode}
-            validate={[required]}
+            validate={[requiredRadioButton]}
           />
         </Col>
         <Col md={12} sm={24}>
@@ -181,7 +181,7 @@ export const Camps = (props) => {
               name="has_fuel_stored_in_bulk"
               component={RenderRadioButtons}
               disabled={props.isViewMode}
-              validate={[required]}
+              validate={[requiredRadioButton]}
             />
           </Col>
           <Col md={12} sm={24}>
@@ -191,7 +191,7 @@ export const Camps = (props) => {
               name="has_fuel_stored_in_barrels"
               component={RenderRadioButtons}
               disabled={props.isViewMode}
-              validate={[required]}
+              validate={[requiredRadioButton]}
             />
           </Col>
         </Col>

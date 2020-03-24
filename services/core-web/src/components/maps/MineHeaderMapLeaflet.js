@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import L from "leaflet";
+import LeafletWms from "leaflet.wms";
 import PropTypes from "prop-types";
 
 import "leaflet.markercluster";
@@ -23,6 +24,22 @@ const propTypes = {
 
 const defaultProps = {
   additionalPin: [],
+};
+
+const leafletWMSTiledOptions = {
+  transparent: true,
+  tiled: true,
+  uppercase: true,
+  format: "image/png",
+  identify: false,
+};
+
+const getMajorMinePermittedAreas = () => {
+  const majorMinesSource = LeafletWms.source(
+    "https://openmaps.gov.bc.ca/geo/pub/WHSE_MINERAL_TENURE.HSP_MJR_MINES_PERMTTD_AREAS_SP/ows",
+    { ...leafletWMSTiledOptions, identify: false }
+  );
+  return majorMinesSource.getLayer("pub:WHSE_MINERAL_TENURE.HSP_MJR_MINES_PERMTTD_AREAS_SP");
 };
 
 class MineHeaderMapLeaflet extends Component {
@@ -107,8 +124,10 @@ class MineHeaderMapLeaflet extends Component {
   createMap() {
     this.map = L.map("leaflet-map", { attributionControl: false })
       .setView(this.latLong, Strings.DEFAULT_ZOOM)
-      .setMaxZoom(10);
+      .setMaxZoom(12);
     this.layerGroup = new L.FeatureGroup().addTo(this.map);
+    const majorMinePermittedAreas = getMajorMinePermittedAreas();
+    this.map.addLayer(majorMinePermittedAreas);
   }
 
   render() {

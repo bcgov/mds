@@ -32,6 +32,8 @@ export const {
   getNoticeOfWorkApplicationProgressStatusCodeOptions,
   getNoticeOfWorkApplicationPermitTypeOptions,
   getNoticeOfWorkApplicationReviewOptions,
+  getPartyRelationshipTypes,
+  getPartyRelationshipTypesList,
 } = staticContentReducer;
 
 // removes all expired compliance codes from the array
@@ -431,5 +433,10 @@ export const getDropdownNoticeOfWorkApplicationReviewTypeOptions = createSelecto
 
 export const getNoticeOfWorkApplicationApplicationReviewTypeHash = createSelector(
   [getDropdownNoticeOfWorkApplicationReviewTypeOptions],
+  createLabelHash
+);
+
+export const getPartyRelationshipTypeHash = createSelector(
+  [getPartyRelationshipTypesList],
   createLabelHash
 );

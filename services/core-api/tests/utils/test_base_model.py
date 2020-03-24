@@ -1,4 +1,4 @@
-import uuid, pytest, decimal
+import uuid, pytest, decimal, math, datetime
 
 from app.extensions import jwt, api
 from app.api.utils.models_mixins import DictLoadingError
@@ -107,7 +107,6 @@ def test_delete_flag_in_nested_item_fail_orphan(db_session):
         {'mine_permit': mine.mine_permit},
         api.model('test_list', {'mine_permit': fields.List(fields.Nested(PERMIT_MODEL))}))
     partial_mine_permit_dict['mine_permit'][1]['state_modified'] = STATE_MODIFIED_DELETE_ON_PUT
-    print(partial_mine_permit_dict)
     mine.deep_update_from_dict(partial_mine_permit_dict, _edit_key=PERMIT_EDIT_GROUP)
 
     mine = Mine.query.filter_by(mine_guid=mine.mine_guid).first()
@@ -187,3 +186,117 @@ def test_update_new_item_in_list(db_session):
     mine = Mine.query.filter_by(mine_guid=mine.mine_guid).first()
     assert len(mine.mine_permit) == 6
     assert all(len(p.permit_amendments) > 0 for p in mine.mine_permit)
+
+
+"""Decimal parsing tests"""
+
+
+def test_update_decimal_with_string_fails(db_session):
+    mine = MineFactory()
+    mine_dict = {'latitude': "foo"}
+    assert pytest.raises(
+        decimal.InvalidOperation,
+        mine.deep_update_from_dict,
+        mine_dict,
+        _edit_key=PERMIT_EDIT_GROUP)
+
+
+def test_update_decimal_with_empty_list_fails(db_session):
+    mine = MineFactory()
+    mine_dict = {'latitude': []}
+    assert pytest.raises(
+        AttributeError, mine.deep_update_from_dict, mine_dict, _edit_key=PERMIT_EDIT_GROUP)
+
+
+def test_update_decimal_with_empty_string_sets_null(db_session):
+    mine = MineFactory()
+    mine_dict = {'latitude': ''}
+    mine.deep_update_from_dict(mine_dict, _edit_key=PERMIT_EDIT_GROUP)
+    assert mine.latitude is None
+
+
+def test_update_decimal_with_null_sets_null(db_session):
+    mine = MineFactory()
+    mine_dict = {'latitude': None}
+    mine.deep_update_from_dict(mine_dict, _edit_key=PERMIT_EDIT_GROUP)
+    assert mine.latitude is None
+
+
+def test_update_decimal_with_decimal_passes(db_session):
+    mine = MineFactory()
+    latitude = decimal.Decimal(12.3456)
+    mine_dict = {'latitude': latitude}
+    mine.deep_update_from_dict(mine_dict, _edit_key=PERMIT_EDIT_GROUP)
+    assert math.isclose(mine.latitude, latitude, rel_tol=1e-5)
+
+
+"""Date parsing tests"""
+
+
+def test_update_date_with_string_fails(db_session):
+    mine = MineFactory(mine_permit=1)
+    partial_mine_permit_dict = marshal(
+        {'mine_permit': mine.mine_permit},
+        api.model('test_list', {'mine_permit': fields.List(fields.Nested(PERMIT_MODEL))}))
+    partial_mine_permit_dict['mine_permit'][0]['permit_amendments'][0]['received_date'] = "foo"
+    assert pytest.raises(
+        ValueError,
+        mine.deep_update_from_dict,
+        partial_mine_permit_dict,
+        _edit_key=PERMIT_EDIT_GROUP)
+
+
+def test_update_date_with_empty_list_fails(db_session):
+    mine = MineFactory(mine_permit=1)
+    partial_mine_permit_dict = marshal(
+        {'mine_permit': mine.mine_permit},
+        api.model('test_list', {'mine_permit': fields.List(fields.Nested(PERMIT_MODEL))}))
+    partial_mine_permit_dict['mine_permit'][0]['permit_amendments'][0]['received_date'] = []
+    assert pytest.raises(
+        AttributeError,
+        mine.deep_update_from_dict,
+        partial_mine_permit_dict,
+        _edit_key=PERMIT_EDIT_GROUP)
+
+
+def test_update_date_with_empty_string_sets_null(db_session):
+    mine = MineFactory(mine_permit=1)
+    partial_mine_permit_dict = marshal(
+        {'mine_permit': mine.mine_permit},
+        api.model('test_list', {'mine_permit': fields.List(fields.Nested(PERMIT_MODEL))}))
+    partial_mine_permit_dict['mine_permit'][0]['permit_amendments'][0]['received_date'] = ''
+    mine.deep_update_from_dict(partial_mine_permit_dict, _edit_key=PERMIT_EDIT_GROUP)
+    assert mine.mine_permit[0].permit_amendments[0].received_date is None
+
+
+def test_update_date_with_null_sets_null(db_session):
+    mine = MineFactory(mine_permit=1)
+    partial_mine_permit_dict = marshal(
+        {'mine_permit': mine.mine_permit},
+        api.model('test_list', {'mine_permit': fields.List(fields.Nested(PERMIT_MODEL))}))
+    partial_mine_permit_dict['mine_permit'][0]['permit_amendments'][0]['received_date'] = None
+    mine.deep_update_from_dict(partial_mine_permit_dict, _edit_key=PERMIT_EDIT_GROUP)
+    assert mine.mine_permit[0].permit_amendments[0].received_date is None
+
+
+def test_update_date_with_date_string_passes(db_session):
+    mine = MineFactory(mine_permit=1)
+    partial_mine_permit_dict = marshal(
+        {'mine_permit': mine.mine_permit},
+        api.model('test_list', {'mine_permit': fields.List(fields.Nested(PERMIT_MODEL))}))
+    date_receive = "2020-03-17"
+    date_expect = datetime.date(2020, 3, 17)
+    partial_mine_permit_dict['mine_permit'][0]['permit_amendments'][0][
+        'received_date'] = date_receive
+    mine.deep_update_from_dict(partial_mine_permit_dict, _edit_key=PERMIT_EDIT_GROUP)
+    assert mine.mine_permit[0].permit_amendments[0].received_date == date_expect
+
+
+"""String parsing tests"""
+
+
+def test_update_string_with_empty_string_sets_null(db_session):
+    mine = MineFactory(mine_permit=1)
+    mine_dict = {'mine_location_description': ''}
+    mine.deep_update_from_dict(mine_dict, _edit_key=PERMIT_EDIT_GROUP)
+    assert mine.mine_location_description is None

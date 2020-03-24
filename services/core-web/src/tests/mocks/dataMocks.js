@@ -31,7 +31,10 @@ export const MINE_RESPONSE = {
           mine_tailings_storage_facility_name: "MockTSF",
         },
       ],
-      mine_type: [{ mine_tenure_type_code: "PLR" }, { mine_tenure_type_code: "MIN" }],
+      mine_type: [
+        { mine_tenure_type_code: "PLR", mine_type_detail: [] },
+        { mine_tenure_type_code: "MIN", mine_type_detail: [] },
+      ],
       verified_status: {
         mine_guid: null,
         mine_name: null,
@@ -64,7 +67,10 @@ export const MINE_RESPONSE = {
           mine_tailings_storage_facility_name: "MockTSF1",
         },
       ],
-      mine_type: [{ mine_tenure_type_code: "PLR" }, { mine_tenure_type_code: "MIN" }],
+      mine_type: [
+        { mine_tenure_type_code: "PLR", mine_type_detail: [] },
+        { mine_tenure_type_code: "MIN", mine_type_detail: [] },
+      ],
       verified_status: {
         mine_guid: "18145c75-49ad-0101-85f3-a43e45ae989a",
         mine_name: "mine2",
@@ -120,7 +126,10 @@ export const MINES = {
           mine_tailings_storage_facility_name: "MockTSF",
         },
       ],
-      mine_type: [{ mine_tenure_type_code: "PLR" }, { mine_tenure_type_code: "MIN" }],
+      mine_type: [
+        { mine_tenure_type_code: "PLR", mine_type_detail: [] },
+        { mine_tenure_type_code: "MIN", mine_type_detail: [] },
+      ],
       mine_status: {
         statusvalue: ["CLD", "CM"],
         status_labels: ["Closed", "Care & Maintenance"],
@@ -159,7 +168,10 @@ export const MINES = {
           mine_tailings_storage_facility_name: "MockTSF1",
         },
       ],
-      mine_type: [{ mine_tenure_type_code: "PLR" }, { mine_tenure_type_code: "MIN" }],
+      mine_type: [
+        { mine_tenure_type_code: "PLR", mine_type_detail: [] },
+        { mine_tenure_type_code: "MIN", mine_type_detail: [] },
+      ],
       verified_status: {
         mine_guid: "18145c75-49ad-0101-85f3-a43e45ae989a",
         mine_name: "mine2",
@@ -734,7 +746,8 @@ export const STATUS_OPTIONS_DROPDOWN = [
       },
     ],
     label: "Operating",
-    title: null,
+    title:
+      "This mine operates year-round (can be conducting exploration and/or production activities).",
     value: "OP",
   },
 ];
@@ -1032,16 +1045,57 @@ export const DROPDOWN_COMMODITY_OPTIONS = [
     value: "CG",
     label: "Construction Aggregate",
   },
+
+  {
+    value: "SA",
+    label: "Sand and Gravel",
+  },
+  {
+    value: "AE",
+    label: "Agate",
+  },
+  {
+    value: "AL",
+    label: "Aluminum",
+  },
+  {
+    value: "AI",
+    label: "Alunite",
+  },
+  {
+    value: "AM",
+    label: "Amber",
+  },
+  {
+    value: "AY",
+    label: "Amethyst",
+  },
+  {
+    value: "AD",
+    label: "Andalusite",
+  },
+  {
+    value: "AA",
+    label: "Andesite",
+  },
+  {
+    value: "AN",
+    label: "Anhydrite",
+  },
+  {
+    value: "SB",
+    label: "Antimony",
+  },
 ];
 
 export const DROPDOWN_PROVINCE_OPTIONS = [
   {
-    value: "BC",
-    label: "BC",
-  },
-  {
     value: "AB",
     label: "AB",
+  },
+  {
+    value: "BC",
+    label: "BC",
   },
 ];
 
@@ -1422,11 +1476,11 @@ export const COMPLIANCE_CODES = {
 
 export const DROPDOWN_HSRCM_CODES = [
   {
-    value: "305",
+    value: 305,
     label: "2.3.7 - Spills",
   },
   {
-    value: "306",
+    value: 306,
     label: "2.3.8 - Flammable Waste Storage",
   },
 ];
@@ -1642,27 +1696,6 @@ export const SIMPLE_SEARCH_RESULTS = {
       },
       score: 375,
       type: "mine",
-    },
-  ],
-};
-
-export const VARIANCE_STATUS_OPTIONS = {
-  records: [
-    {
-      variance_application_status_code: "REV",
-      description: "In Review",
-    },
-    {
-      variance_application_status_code: "NAP",
-      description: "Not Applicable",
-    },
-    {
-      variance_application_status_code: "APP",
-      description: "Approved",
-    },
-    {
-      variance_application_status_code: "DEN",
-      description: "Denied",
     },
   ],
 };
@@ -2397,22 +2430,12 @@ export const MINE_DOCUMENT_SEARCH_RESULTS = [
 ];
 
 export const VARIANCE_DROPDOWN_STATUS_OPTIONS = [
-  {
-    label: "In Review",
-    value: "REV",
-  },
-  {
-    label: "Not Applicable",
-    value: "NAP",
-  },
-  {
-    label: "Approved",
-    value: "APP",
-  },
-  {
-    label: "Denied",
-    value: "DEN",
-  },
+  { value: "RFD", label: "Ready for Decision" },
+  { value: "WIT", label: "Withdrawn" },
+  { value: "REV", label: "In Review" },
+  { value: "NAP", label: "Not Applicable" },
+  { value: "APP", label: "Approved" },
+  { value: "DEN", label: "Denied" },
 ];
 
 export const VARIANCE_STATUS_OPTIONS_HASH = {
@@ -2420,6 +2443,8 @@ export const VARIANCE_STATUS_OPTIONS_HASH = {
   NAP: "Not Applicable",
   APP: "Approved",
   DEN: "Denied",
+  WIT: "Withdrawn",
+  RFD: "Ready for Decision",
 };
 
 export const VARIANCE_DOCUMENT_CATEGORY_OPTIONS = {
@@ -2578,4 +2603,1114 @@ export const MINE_REPORT_STATUS_OPTIONS_HASH = {
   REQ: "Changes Requested",
   REC: "Changes Received",
   ACC: "Accepted",
+};
+
+export const BULK_STATIC_CONTENT_RESPONSE = {
+  mineDisturbanceOptions: [
+    {
+      mine_disturbance_code: "SUR",
+      description: "Surface",
+      active_ind: true,
+      mine_tenure_type_codes: ["COL", "MIN", "PLR", "BCL"],
+    },
+    {
+      mine_disturbance_code: "UND",
+      description: "Underground",
+      active_ind: true,
+      mine_tenure_type_codes: ["COL", "MIN", "PLR"],
+    },
+    {
+      mine_disturbance_code: "CWA",
+      description: "Coal Wash",
+      active_ind: true,
+      mine_tenure_type_codes: ["COL"],
+    },
+    {
+      mine_disturbance_code: "MIL",
+      description: "Mill",
+      active_ind: true,
+      mine_tenure_type_codes: ["PLR"],
+    },
+  ],
+  mineCommodityOptions: [
+    {
+      mine_commodity_code: "TO",
+      description: "Thermal Coal",
+      active_ind: true,
+      mine_tenure_type_codes: ["COL"],
+    },
+    {
+      mine_commodity_code: "MC",
+      description: "Metallurgic",
+      active_ind: true,
+      mine_tenure_type_codes: ["COL"],
+    },
+    {
+      mine_commodity_code: "CG",
+      description: "Construction Aggregate",
+      active_ind: true,
+      mine_tenure_type_codes: ["BCL"],
+    },
+    {
+      mine_commodity_code: "SA",
+      description: "Sand and Gravel",
+      active_ind: true,
+      mine_tenure_type_codes: ["BCL"],
+    },
+    {
+      mine_commodity_code: "AE",
+      description: "Agate",
+      active_ind: true,
+      mine_tenure_type_codes: ["MIN", "PLR"],
+    },
+    {
+      mine_commodity_code: "AL",
+      description: "Aluminum",
+      active_ind: true,
+      mine_tenure_type_codes: ["MIN", "PLR"],
+    },
+    {
+      mine_commodity_code: "AI",
+      description: "Alunite",
+      active_ind: true,
+      mine_tenure_type_codes: ["MIN", "PLR"],
+    },
+    {
+      mine_commodity_code: "AM",
+      description: "Amber",
+      active_ind: true,
+      mine_tenure_type_codes: ["MIN", "PLR"],
+    },
+    {
+      mine_commodity_code: "AY",
+      description: "Amethyst",
+      active_ind: true,
+      mine_tenure_type_codes: ["MIN", "PLR"],
+    },
+    {
+      mine_commodity_code: "AD",
+      description: "Andalusite",
+      active_ind: true,
+      mine_tenure_type_codes: ["MIN", "PLR"],
+    },
+    {
+      mine_commodity_code: "AA",
+      description: "Andesite",
+      active_ind: true,
+      mine_tenure_type_codes: ["MIN", "PLR"],
+    },
+    {
+      mine_commodity_code: "AN",
+      description: "Anhydrite",
+      active_ind: true,
+      mine_tenure_type_codes: ["MIN", "PLR"],
+    },
+    {
+      mine_commodity_code: "SB",
+      description: "Antimony",
+      active_ind: true,
+      mine_tenure_type_codes: ["MIN", "PLR"],
+    },
+  ],
+  mineStatusOptions: [
+    {
+      mine_status_xref_guid: "94ac7344-ea11-4010-a8a2-826d9eefb1d3",
+      mine_operation_status: { mine_operation_status_code: "CLD", description: "Closed" },
+      mine_operation_status_reason: {
+        mine_operation_status_reason_code: "ORP",
+        description: "Orphaned",
+      },
+      mine_operation_status_sub_reason: {
+        mine_operation_status_sub_reason_code: "LTM",
+        description: "Long-Term Maintenance",
+      },
+      description:
+        "The permittee is not able or available to meet permit obligations. The Ministry has taken over responsibility for the mine. Reclamation work is under way. There are long-term care and maintenance activities on site. Contractors are performing the work.",
+    },
+    {
+      mine_status_xref_guid: "43c1b20a-7719-4a9e-926a-6cafe25ca18c",
+      mine_operation_status: { mine_operation_status_code: "CLD", description: "Closed" },
+      mine_operation_status_reason: {
+        mine_operation_status_reason_code: "REC",
+        description: "Reclamation",
+      },
+      mine_operation_status_sub_reason: {
+        mine_operation_status_sub_reason_code: "LTM",
+        description: "Long-Term Maintenance",
+      },
+      description:
+        "The mine is closed and not expected to re-open. Reclamation work is under way. There are long-term care and maintenance activities on site. Permit and HSRC obligations are still in place. Site is subject to inspection and still has reporting to file with the Ministry.",
+    },
+    {
+      mine_status_xref_guid: "ef9e2d1d-b635-46a2-8f67-1a3fb736186c",
+      mine_operation_status: { mine_operation_status_code: "CLD", description: "Closed" },
+      mine_operation_status_reason: {
+        mine_operation_status_reason_code: "ORP",
+        description: "Orphaned",
+      },
+      mine_operation_status_sub_reason: {
+        mine_operation_status_sub_reason_code: "LWT",
+        description: "Long-Term Maintenance & Water Treatment",
+      },
+      description:
+        "The permittee is not able or available to meet permit obligations. The Ministry has taken over responsibility for the mine. Reclamation work is under way. There are long-term care and maintenance activities on site in addition to water treatment. Contractors are performing the work.",
+    },
+    {
+      mine_status_xref_guid: "bbcb118f-9a16-4f77-8f2f-46f7c2b4e667",
+      mine_operation_status: { mine_operation_status_code: "CLD", description: "Closed" },
+      mine_operation_status_reason: {
+        mine_operation_status_reason_code: "REC",
+        description: "Reclamation",
+      },
+      mine_operation_status_sub_reason: {
+        mine_operation_status_sub_reason_code: "LWT",
+        description: "Long-Term Maintenance & Water Treatment",
+      },
+      description:
+        "The mine is closed and not expected to re-open. Reclamation work is under way. There are long-term care and maintenance activities on site in addition to water treatment. Permit and HSRC obligations are still in place. Site is subject to inspection and still has reporting to file with the Ministry.",
+    },
+    {
+      mine_status_xref_guid: "35e67918-643b-4698-9464-e5d6b62afad7",
+      mine_operation_status: { mine_operation_status_code: "CLD", description: "Closed" },
+      mine_operation_status_reason: {
+        mine_operation_status_reason_code: "REC",
+        description: "Reclamation",
+      },
+      mine_operation_status_sub_reason: {
+        mine_operation_status_sub_reason_code: "PRP",
+        description: "Permit Release Pending",
+      },
+      description:
+        "Reclamation work is complete, no additional care required. Ministry needs to return bond and close permit for mine to be Abandoned.",
+    },
+    {
+      mine_status_xref_guid: "855abb0d-b104-45b5-8893-baafa52d974e",
+      mine_operation_status: { mine_operation_status_code: "CLD", description: "Closed" },
+      mine_operation_status_reason: {
+        mine_operation_status_reason_code: "ORP",
+        description: "Orphaned",
+      },
+      mine_operation_status_sub_reason: {
+        mine_operation_status_sub_reason_code: "RNS",
+        description: "Reclamation Not Started",
+      },
+      description:
+        "The permittee is not able or available to meet permit obligations. The Ministry has taken over responsibility for the mine. Reclamation work has not started. A contractor has not been retained to perform the work.",
+    },
+    {
+      mine_status_xref_guid: "49264af9-a9c6-4971-b837-c243d71a4811",
+      mine_operation_status: { mine_operation_status_code: "CLD", description: "Closed" },
+      mine_operation_status_reason: {
+        mine_operation_status_reason_code: "ORP",
+        description: "Orphaned",
+      },
+      mine_operation_status_sub_reason: {
+        mine_operation_status_sub_reason_code: "SVR",
+        description: "Site Visit Required",
+      },
+      description:
+        "The permittee is not able or available to meet permit obligations. The Ministry will take over responsibility for the mine. The site needs to be visited and assessed to determine status and work required.",
+    },
+    {
+      mine_status_xref_guid: "619b6b37-9e34-4413-8c8d-f906cda98ae0",
+      mine_operation_status: { mine_operation_status_code: "ABN", description: "Abandoned" },
+      mine_operation_status_reason: { mine_operation_status_reason_code: null, description: null },
+      mine_operation_status_sub_reason: {
+        mine_operation_status_sub_reason_code: null,
+        description: null,
+      },
+      description:
+        "The mine site is shut down, the permit obligations have been fulfilled. Bond has been returned if permittee completed reclamation work.",
+    },
+    {
+      mine_status_xref_guid: "f6eba8e4-255f-4380-a518-27299cfc8f35",
+      mine_operation_status: { mine_operation_status_code: "CLD", description: "Closed" },
+      mine_operation_status_reason: { mine_operation_status_reason_code: null, description: null },
+      mine_operation_status_sub_reason: {
+        mine_operation_status_sub_reason_code: null,
+        description: null,
+      },
+      description: null,
+    },
+    {
+      mine_status_xref_guid: "3630d968-59e0-4437-8a31-d793d0c583b4",
+      mine_operation_status: { mine_operation_status_code: "NS", description: "Not Started" },
+      mine_operation_status_reason: { mine_operation_status_reason_code: null, description: null },
+      mine_operation_status_sub_reason: {
+        mine_operation_status_sub_reason_code: null,
+        description: null,
+      },
+      description:
+        "No mine related work has started at this site (including exploration). The mine record may have been created as placeholder for an exploration permit. Sites with closed exploration permits that are constructing production facilities also fit into this category.",
+    },
+    {
+      mine_status_xref_guid: "d1d74d8f-0699-41f8-b0e2-c97955b6be7e",
+      mine_operation_status: { mine_operation_status_code: "OP", description: "Operating" },
+      mine_operation_status_reason: { mine_operation_status_reason_code: null, description: null },
+      mine_operation_status_sub_reason: {
+        mine_operation_status_sub_reason_code: null,
+        description: null,
+      },
+      description:
+        "This mine operates year-round (can be conducting exploration and/or production activities).",
+    },
+    {
+      mine_status_xref_guid: "08c6b6da-0d0d-45ae-8cc1-81bb6b521928",
+      mine_operation_status: { mine_operation_status_code: "OP", description: "Operating" },
+      mine_operation_status_reason: {
+        mine_operation_status_reason_code: "SEA",
+        description: "Seasonal",
+      },
+      mine_operation_status_sub_reason: {
+        mine_operation_status_sub_reason_code: null,
+        description: null,
+      },
+      description:
+        "This mine operates seasonally. Dates shown are from the most recently approved NoW application. Confirm operating dates with operator or permittee before visiting.",
+    },
+    {
+      mine_status_xref_guid: "6f6fe51f-5878-49d5-a49c-26544e5ae0af",
+      mine_operation_status: { mine_operation_status_code: "OP", description: "Operating" },
+      mine_operation_status_reason: {
+        mine_operation_status_reason_code: "YR",
+        description: "Year-Round",
+      },
+      mine_operation_status_sub_reason: {
+        mine_operation_status_sub_reason_code: null,
+        description: null,
+      },
+      description:
+        "This mine operates year-round (can be conducting exploration and/or production activities).",
+    },
+    {
+      mine_status_xref_guid: "7a5cc32a-fa3c-451e-977d-51feeeae0838",
+      mine_operation_status: { mine_operation_status_code: "CLD", description: "Closed" },
+      mine_operation_status_reason: {
+        mine_operation_status_reason_code: "UN",
+        description: "Unknown",
+      },
+      mine_operation_status_sub_reason: {
+        mine_operation_status_sub_reason_code: null,
+        description: null,
+      },
+      description:
+        "Ministry has not determined if the permittee is able or available to meet permit obligations. A visit to the site is required.",
+    },
+    {
+      mine_status_xref_guid: "85a2593b-56f6-4f51-b19a-b65b50575df3",
+      mine_operation_status: { mine_operation_status_code: "CLD", description: "Closed" },
+      mine_operation_status_reason: {
+        mine_operation_status_reason_code: "ORP",
+        description: "Orphaned",
+      },
+      mine_operation_status_sub_reason: {
+        mine_operation_status_sub_reason_code: null,
+        description: null,
+      },
+      description: "The permittee is not able or available to meet permit obligations.",
+    },
+    {
+      mine_status_xref_guid: "7cf2894b-02fe-4cf5-bc62-cadfee5c46c2",
+      mine_operation_status: { mine_operation_status_code: "CLD", description: "Closed" },
+      mine_operation_status_reason: {
+        mine_operation_status_reason_code: "REC",
+        description: "Reclamation",
+      },
+      mine_operation_status_sub_reason: {
+        mine_operation_status_sub_reason_code: null,
+        description: null,
+      },
+      description: "The mine is closed and not expected to re-open.",
+    },
+    {
+      mine_status_xref_guid: "4b956d18-39df-4917-a628-ea66534d602e",
+      mine_operation_status: { mine_operation_status_code: "CLD", description: "Closed" },
+      mine_operation_status_reason: {
+        mine_operation_status_reason_code: "CM",
+        description: "Care & Maintenance",
+      },
+      mine_operation_status_sub_reason: {
+        mine_operation_status_sub_reason_code: null,
+        description: null,
+      },
+      description:
+        "The mine is temporarily closed. It is expected that it will eventually re-open. Permit and HSRC obligations are still in place. Site is subject to inspection and still has reporting to file with the Ministry.",
+    },
+  ],
+  mineRegionOptions: [
+    { mine_region_code: "SW", description: "South West" },
+    { mine_region_code: "SC", description: "South Central" },
+    { mine_region_code: "NW", description: "North West" },
+    { mine_region_code: "NE", description: "North East" },
+    { mine_region_code: "SE", description: "South East" },
+  ],
+  mineTenureTypes: [
+    { mine_tenure_type_code: "COL", description: "Coal" },
+    { mine_tenure_type_code: "MIN", description: "Mineral" },
+    { mine_tenure_type_code: "PLR", description: "Placer" },
+    { mine_tenure_type_code: "BCL", description: "BC Land" },
+  ],
+  permitStatusCodes: [
+    { permit_status_code: "O", description: "Open", display_order: 10 },
+    { permit_status_code: "C", description: "Closed", display_order: 20 },
+  ],
+  incidentDocumentTypeOptions: [
+    { mine_incident_document_type_code: "FIN", description: "Final Document" },
+    { mine_incident_document_type_code: "INI", description: "Initial Document" },
+  ],
+  incidentFollowupActionOptions: [
+    {
+      mine_incident_followup_investigation_type_code: "MIU",
+      description: "Yes - MIU Investigation",
+    },
+    {
+      mine_incident_followup_investigation_type_code: "INS",
+      description: "Yes - Inspector Investigation",
+    },
+    { mine_incident_followup_investigation_type_code: "NO", description: "No" },
+  ],
+  incidentDeterminationOptions: [
+    { mine_incident_determination_type_code: "PEN", description: "Pending determination" },
+    { mine_incident_determination_type_code: "DO", description: "This was a dangerous occurrence" },
+    {
+      mine_incident_determination_type_code: "NDO",
+      description: "This was not a dangerous occurrence",
+    },
+  ],
+  incidentStatusCodeOptions: [
+    { mine_incident_status_code: "PRE", description: "Preliminary" },
+    { mine_incident_status_code: "FIN", description: "Final" },
+  ],
+  incidentCategoryCodeOptions: [
+    {
+      mine_incident_category_code: "ENV",
+      description: "Environmental",
+      display_order: 10,
+      active_ind: true,
+    },
+    {
+      mine_incident_category_code: "GTC",
+      description: "Geotechnical",
+      display_order: 20,
+      active_ind: true,
+    },
+    {
+      mine_incident_category_code: "H&S",
+      description: "Health and Safety",
+      display_order: 30,
+      active_ind: true,
+    },
+    {
+      mine_incident_category_code: "SPI",
+      description: "Spill",
+      display_order: 40,
+      active_ind: true,
+    },
+  ],
+  provinceOptions: [
+    { sub_division_code: "AB", description: "Alberta", display_order: 10 },
+    { sub_division_code: "BC", description: "British Columbia", display_order: 20 },
+  ],
+  complianceCodes: [
+    {
+      compliance_article_id: 305,
+      article_act_code: "HSRCM",
+      section: "2",
+      sub_section: "3",
+      paragraph: "7",
+      sub_paragraph: null,
+      description: "Spills",
+      long_description: "Spills",
+      effective_date: "1970-01-01",
+      expiry_date: "9999-12-31",
+    },
+    {
+      compliance_article_id: 306,
+      article_act_code: "HSRCM",
+      section: "2",
+      sub_section: "3",
+      paragraph: "8",
+      sub_paragraph: null,
+      description: "Flammable Waste Storage",
+      long_description: "Flammable Waste Storage",
+      effective_date: "1970-01-01",
+      expiry_date: "9999-12-31",
+    },
+  ],
+  varianceStatusOptions: [
+    { variance_application_status_code: "RFD", description: "Ready for Decision" },
+    { variance_application_status_code: "WIT", description: "Withdrawn" },
+    { variance_application_status_code: "REV", description: "In Review" },
+    { variance_application_status_code: "NAP", description: "Not Applicable" },
+    { variance_application_status_code: "APP", description: "Approved" },
+    { variance_application_status_code: "DEN", description: "Denied" },
+  ],
+  varianceDocumentCategoryOptions: [
+    { variance_document_category_code: "REQ", description: "Request" },
+    { variance_document_category_code: "REC", description: "Recommendation" },
+    { variance_document_category_code: "DEC", description: "Decision" },
+  ],
+  mineReportDefinitionOptions: [
+    {
+      mine_report_definition_guid: "a1f02190-908b-4459-9dfe-6382282dfd30",
+      report_name: "OHSC Annual Report",
+      description: "",
+      due_date_period_months: 12,
+      mine_report_due_date_type: "FIS",
+      default_due_date: "2020-03-31",
+      categories: [{ mine_report_category: "H&S", description: "Health and Safety" }],
+      compliance_articles: [
+        {
+          compliance_article_id: 114,
+          article_act_code: "HSRCM",
+          section: "1",
+          sub_section: "9",
+          paragraph: "3",
+          sub_paragraph: null,
+          description: "General",
+          long_description: "General",
+          effective_date: "1970-01-01",
+          expiry_date: "9999-12-31",
+        },
+      ],
+    },
+    {
+      mine_report_definition_guid: "1f4dac68-2131-4b12-9cdd-9e2bb86e50a2",
+      report_name: "Right to Refuse Report",
+      description: "",
+      due_date_period_months: null,
+      mine_report_due_date_type: "EVT",
+      default_due_date: null,
+      categories: [{ mine_report_category: "H&S", description: "Health and Safety" }],
+      compliance_articles: [
+        {
+          compliance_article_id: 59,
+          article_act_code: "HSRCM",
+          section: "1",
+          sub_section: "10",
+          paragraph: "7",
+          sub_paragraph: null,
+          description: "Manager Investigates",
+          long_description: "Manager Investigates",
+          effective_date: "1970-01-01",
+          expiry_date: "9999-12-31",
+        },
+      ],
+    },
+    {
+      mine_report_definition_guid: "f650d2b6-96e4-43f0-9d15-6fbead2d5978",
+      report_name: "Report of MERP Test",
+      description: "",
+      due_date_period_months: 12,
+      mine_report_due_date_type: "FIS",
+      default_due_date: "2020-03-31",
+      categories: [{ mine_report_category: "H&S", description: "Health and Safety" }],
+      compliance_articles: [
+        {
+          compliance_article_id: 370,
+          article_act_code: "HSRCM",
+          section: "3",
+          sub_section: "7",
+          paragraph: "1",
+          sub_paragraph: null,
+          description: "Mine Emergency Response Plan",
+          long_description: "Mine Emergency Response Plan",
+          effective_date: "1970-01-01",
+          expiry_date: "9999-12-31",
+        },
+      ],
+    },
+    {
+      mine_report_definition_guid: "c9baac63-1578-47eb-847d-a992e0aeba67",
+      report_name: "Underground Fueling Station Report",
+      description: "",
+      due_date_period_months: null,
+      mine_report_due_date_type: "PMT",
+      default_due_date: null,
+      categories: [
+        { mine_report_category: "GSE", description: "Geoscience and Environmental" },
+        { mine_report_category: "GTC", description: "Geotechnical" },
+      ],
+      compliance_articles: [
+        {
+          compliance_article_id: 510,
+          article_act_code: "HSRCM",
+          section: "4",
+          sub_section: "3",
+          paragraph: "3",
+          sub_paragraph: null,
+          description: "Underground Fuelling Stations",
+          long_description: "Underground Fuelling Stations",
+          effective_date: "1970-01-01",
+          expiry_date: "9999-12-31",
+        },
+      ],
+    },
+    {
+      mine_report_definition_guid: "f5dec476-cb13-430a-a85e-81e5bbe666e4",
+      report_name: "Underground Oil and Grease Storage Area Report",
+      description: "",
+      due_date_period_months: null,
+      mine_report_due_date_type: "PMT",
+      default_due_date: null,
+      categories: [
+        { mine_report_category: "GSE", description: "Geoscience and Environmental" },
+        { mine_report_category: "GTC", description: "Geotechnical" },
+      ],
+      compliance_articles: [
+        {
+          compliance_article_id: 511,
+          article_act_code: "HSRCM",
+          section: "4",
+          sub_section: "3",
+          paragraph: "4",
+          sub_paragraph: null,
+          description: "Underground Oil and Grease Storage Areas",
+          long_description: "Underground Oil and Grease Storage Areas",
+          effective_date: "1970-01-01",
+          expiry_date: "9999-12-31",
+        },
+      ],
+    },
+    {
+      mine_report_definition_guid: "ec11deae-1187-42e7-a13c-17a25743448f",
+      report_name: "Flammable Gas Report",
+      description: "",
+      due_date_period_months: null,
+      mine_report_due_date_type: "EVT",
+      default_due_date: null,
+      categories: [{ mine_report_category: "H&S", description: "Health and Safety" }],
+      compliance_articles: [
+        {
+          compliance_article_id: 702,
+          article_act_code: "HSRCM",
+          section: "6",
+          sub_section: "42",
+          paragraph: "3",
+          sub_paragraph: null,
+          description: "Reporting",
+          long_description: "Reporting",
+          effective_date: "1970-01-01",
+          expiry_date: "9999-12-31",
+        },
+      ],
+    },
+    {
+      mine_report_definition_guid: "e2f72b23-d7d9-4a11-9139-e86b3c6f4bc4",
+      report_name: "Free Fall Tests Report",
+      description: "",
+      due_date_period_months: null,
+      mine_report_due_date_type: "EVT",
+      default_due_date: null,
+      categories: [{ mine_report_category: "H&S", description: "Health and Safety" }],
+      compliance_articles: [
+        {
+          compliance_article_id: 793,
+          article_act_code: "HSRCM",
+          section: "7",
+          sub_section: "5",
+          paragraph: "13",
+          sub_paragraph: null,
+          description: "Free Fall Tests - Report",
+          long_description: "Free Fall Tests - Report",
+          effective_date: "1970-01-01",
+          expiry_date: "9999-12-31",
+        },
+      ],
+    },
+    {
+      mine_report_definition_guid: "b820a0e0-1d0c-4460-8787-c813484742c6",
+      report_name: "Defective Explosives Report",
+      description: "",
+      due_date_period_months: null,
+      mine_report_due_date_type: "EVT",
+      default_due_date: null,
+      categories: [{ mine_report_category: "H&S", description: "Health and Safety" }],
+      compliance_articles: [
+        {
+          compliance_article_id: 909,
+          article_act_code: "HSRCM",
+          section: "8",
+          sub_section: "3",
+          paragraph: "4",
+          sub_paragraph: null,
+          description: "Defective Explosives",
+          long_description: "Defective Explosives",
+          effective_date: "1970-01-01",
+          expiry_date: "9999-12-31",
+        },
+      ],
+    },
+    {
+      mine_report_definition_guid: "82abcaf9-e432-423d-b110-73acbfa9c94f",
+      report_name: "Careless Acts Report",
+      description: "",
+      due_date_period_months: null,
+      mine_report_due_date_type: "EVT",
+      default_due_date: null,
+      categories: [{ mine_report_category: "H&S", description: "Health and Safety" }],
+      compliance_articles: [
+        {
+          compliance_article_id: 914,
+          article_act_code: "HSRCM",
+          section: "8",
+          sub_section: "3",
+          paragraph: "9",
+          sub_paragraph: null,
+          description: "Careless Acts",
+          long_description: "Careless Acts",
+          effective_date: "1970-01-01",
+          expiry_date: "9999-12-31",
+        },
+      ],
+    },
+    {
+      mine_report_definition_guid: "d7f7b95c-4f60-4125-8f8c-f843d1be462e",
+      report_name: "Drilling Precaution Procedures Report",
+      description: "",
+      due_date_period_months: null,
+      mine_report_due_date_type: "PMT",
+      default_due_date: null,
+      categories: [{ mine_report_category: "H&S", description: "Health and Safety" }],
+      compliance_articles: [
+        {
+          compliance_article_id: 955,
+          article_act_code: "HSRCM",
+          section: "8",
+          sub_section: "7",
+          paragraph: "2",
+          sub_paragraph: null,
+          description: "Misfired Holes and Bootlegs - Drilling Precautions",
+          long_description: "Misfired Holes and Bootlegs - Drilling Precautions",
+          effective_date: "1970-01-01",
+          expiry_date: "9999-12-31",
+        },
+      ],
+    },
+    {
+      mine_report_definition_guid: "61b87acf-8604-4975-8172-282bbf2b59fc",
+      report_name: "Annual Summary of Exploration Activities",
+      description: "",
+      due_date_period_months: 12,
+      mine_report_due_date_type: "FIS",
+      default_due_date: "2020-03-31",
+      categories: [
+        { mine_report_category: "H&S", description: "Health and Safety" },
+        { mine_report_category: "GSE", description: "Geoscience and Environmental" },
+        { mine_report_category: "GTC", description: "Geotechnical" },
+      ],
+      compliance_articles: [
+        {
+          compliance_article_id: 969,
+          article_act_code: "HSRCM",
+          section: "9",
+          sub_section: "2",
+          paragraph: "1",
+          sub_paragraph: null,
+          description: "Notice Requirements",
+          long_description: "Notice Requirements",
+          effective_date: "1970-01-01",
+          expiry_date: "9999-12-31",
+        },
+      ],
+    },
+    {
+      mine_report_definition_guid: "ba6f37df-5ced-4664-9a5e-5a5e93a09748",
+      report_name: "Management Plan for Riparian Area",
+      description: "",
+      due_date_period_months: null,
+      mine_report_due_date_type: "PMT",
+      default_due_date: null,
+      categories: [{ mine_report_category: "GSE", description: "Geoscience and Environmental" }],
+      compliance_articles: [
+        {
+          compliance_article_id: 978,
+          article_act_code: "HSRCM",
+          section: "9",
+          sub_section: "5",
+          paragraph: "1",
+          sub_paragraph: null,
+          description: "Riparian Setback Distances",
+          long_description: "Riparian Setback Distances",
+          effective_date: "1970-01-01",
+          expiry_date: "9999-12-31",
+        },
+      ],
+    },
+    {
+      mine_report_definition_guid: "c387b2a2-7bf4-4a29-9e9a-faa38a838b2d",
+      report_name: "Terrain Stability Remediation Plan",
+      description: "",
+      due_date_period_months: null,
+      mine_report_due_date_type: "EVT",
+      default_due_date: null,
+      categories: [
+        { mine_report_category: "GSE", description: "Geoscience and Environmental" },
+        { mine_report_category: "H&S", description: "Health and Safety" },
+      ],
+      compliance_articles: [
+        {
+          compliance_article_id: 980,
+          article_act_code: "HSRCM",
+          section: "9",
+          sub_section: "7",
+          paragraph: "1",
+          sub_paragraph: null,
+          description: "Terrain",
+          long_description: "Terrain",
+          effective_date: "1970-01-01",
+          expiry_date: "9999-12-31",
+        },
+      ],
+    },
+  ],
+  mineReportStatusOptions: [
+    { mine_report_submission_status_code: "NRQ", description: "Not Requested" },
+    { mine_report_submission_status_code: "REQ", description: "Changes Requested" },
+    { mine_report_submission_status_code: "REC", description: "Changes Received" },
+    { mine_report_submission_status_code: "ACC", description: "Accepted" },
+  ],
+  mineReportCategoryOptions: [
+    { mine_report_category: "H&S", description: "Health and Safety" },
+    { mine_report_category: "GSE", description: "Geoscience and Environmental" },
+    { mine_report_category: "GTC", description: "Geotechnical" },
+    { mine_report_category: "TSF", description: "Tailings Storage Facility" },
+    { mine_report_category: "OTH", description: "Other" },
+  ],
+  noticeOfWorkActivityTypeOptions: [
+    {
+      activity_type_code: "cut_lines_polarization_survey",
+      description: "Cut Lines and Induced Polarization Survey",
+    },
+    { activity_type_code: "water_supply", description: "Water Supply" },
+  ],
+  noticeOfWorkUnitTypeOptions: [
+    { short_description: "km", unit_type_code: "KMT", description: "Kilometer " },
+    { short_description: "t", unit_type_code: "MTN", description: "Tonne (Metric Ton 1,000 kg)" },
+    { short_description: "m3", unit_type_code: "MEC", description: "Meters cubed" },
+    { short_description: "ha", unit_type_code: "HA", description: "Hectares" },
+    { short_description: "deg", unit_type_code: "DEG", description: "Degrees" },
+    { short_description: "%", unit_type_code: "PER", description: "Grade (Percent)" },
+    { short_description: "m", unit_type_code: "MTR", description: "Meters" },
+  ],
+  noticeOfWorkApplicationTypeOptions: [
+    { notice_of_work_type_code: "QCA", description: "Quarry - Construction Aggregate" },
+    { notice_of_work_type_code: "COL", description: "Coal" },
+    { notice_of_work_type_code: "PLA", description: "Placer Operations" },
+    { notice_of_work_type_code: "MIN", description: "Mineral" },
+    { notice_of_work_type_code: "SAG", description: "Sand & Gravel" },
+    { notice_of_work_type_code: "QIM", description: "Quarry - Industrial Mineral" },
+  ],
+  noticeOfWorkApplicationStatusOptions: [
+    { now_application_status_code: "ACC", description: "Accepted" },
+    { now_application_status_code: "WDN", description: "Withdrawn" },
+    { now_application_status_code: "UNR", description: "Under Review" },
+  ],
+  noticeOfWorkApplicationDocumentTypeOptions: [
+    {
+      now_application_document_type_code: "ANS",
+      description: "Annual Summary",
+      document_template: {},
+    },
+    {
+      now_application_document_type_code: "ACP",
+      description: "Archaeological Chance Find Procedure",
+      document_template: {},
+    },
+    {
+      now_application_document_type_code: "BLP",
+      description: "Blasting Procedure",
+      document_template: {},
+    },
+    {
+      now_application_document_type_code: "EMS",
+      description: "Explosives Magazine Storage and Use Permit Application",
+      document_template: {},
+    },
+    {
+      now_application_document_type_code: "LAL",
+      description: "Landowner Authorization Letter",
+      document_template: {},
+    },
+    {
+      now_application_document_type_code: "MRP",
+      description: "Mine Emergency Response Plan",
+      document_template: {},
+    },
+    { now_application_document_type_code: "OTH", description: "Other", document_template: {} },
+    {
+      now_application_document_type_code: "RFE",
+      description: "Record of First Nations Engagement",
+      document_template: {},
+    },
+    {
+      now_application_document_type_code: "TAL",
+      description: "Tenure Authorization Letter",
+      document_template: {},
+    },
+    {
+      now_application_document_type_code: "TMP",
+      description: "Tenure Map / Property Map",
+      document_template: {},
+    },
+    {
+      now_application_document_type_code: "MPW",
+      description: "Map of Proposed Work",
+      document_template: {},
+    },
+    {
+      now_application_document_type_code: "PUB",
+      description: "Public Comment",
+      document_template: {},
+    },
+    { now_application_document_type_code: "REV", description: "Review", document_template: {} },
+    {
+      now_application_document_type_code: "CAL",
+      description: "Client Acknowledgement Letter",
+      document_template: {
+        document_template_code: "NCL",
+        form_spec: [
+          {
+            id: "letter_dt",
+            label: "Letter Date",
+            type: "DATE",
+            required: true,
+            "read-only": false,
+          },
+          {
+            id: "mine_no",
+            label: "Mine Number",
+            type: "FIELD",
+            placeholder: "Enter the mine number",
+            required: true,
+            "read-only": true,
+          },
+          {
+            id: "proponent_address",
+            label: "Proponent Address",
+            type: "FIELD",
+            placeholder: "Enter the propnent's address",
+            required: true,
+            "read-only": false,
+          },
+          {
+            id: "proponent_name",
+            label: "Proponent Name",
+            type: "FIELD",
+            placeholder: "Enter the propnent's name",
+            required: false,
+            "read-only": false,
+          },
+          {
+            id: "emailed_to",
+            label: "Emailed to",
+            type: "FIELD",
+            placeholder: "Enter the name of the email recipient",
+            required: false,
+            "read-only": false,
+          },
+          {
+            id: "property",
+            label: "Property",
+            type: "FIELD",
+            placeholder: "Enter the property",
+            required: true,
+            "read-only": true,
+          },
+          {
+            id: "application_dt",
+            label: "Application Date",
+            type: "DATE",
+            required: true,
+            "read-only": false,
+          },
+          {
+            id: "exploration_type",
+            label: "Exploration Type",
+            type: "FIELD",
+            placeholder: "Enter the exploration type",
+            required: true,
+            "read-only": false,
+          },
+          {
+            id: "bond_inc_amt",
+            label: "Bond Amount",
+            type: "FIELD",
+            placeholder: "Enter the bond amount",
+            required: true,
+            "read-only": false,
+          },
+          {
+            id: "inspector",
+            label: "Inspector",
+            type: "FIELD",
+            placeholder: "Enter the inspector's name",
+            required: true,
+            "read-only": false,
+          },
+        ],
+      },
+    },
+    {
+      now_application_document_type_code: "WDL",
+      description: "Withdrawal Letter",
+      document_template: {
+        document_template_code: "NWL",
+        form_spec: [
+          {
+            id: "letter_dt",
+            label: "Letter Date",
+            type: "DATE",
+            required: true,
+            "read-only": false,
+          },
+          {
+            id: "mine_no",
+            label: "Mine Number",
+            type: "FIELD",
+            placeholder: "Enter the mine number",
+            required: true,
+            "read-only": true,
+          },
+          {
+            id: "proponent_address",
+            label: "Proponent Address",
+            type: "FIELD",
+            placeholder: "Enter the propnent's address",
+            required: true,
+            "read-only": false,
+          },
+          {
+            id: "proponent_name",
+            label: "Proponent Name",
+            type: "FIELD",
+            placeholder: "Enter the propnent's name",
+            required: false,
+            "read-only": false,
+          },
+          {
+            id: "property",
+            label: "Property",
+            type: "FIELD",
+            placeholder: "Enter the property",
+            required: true,
+            "read-only": true,
+          },
+          {
+            id: "withdrawal_dt",
+            label: "Withdrawal Date",
+            type: "DATE",
+            required: true,
+            "read-only": false,
+          },
+          {
+            id: "inspector",
+            label: "Inspector",
+            type: "FIELD",
+            placeholder: "Enter the inspector's name",
+            required: true,
+            "read-only": false,
+          },
+        ],
+      },
+    },
+    {
+      now_application_document_type_code: "RJL",
+      description: "Rejection Letter",
+      document_template: {
+        document_template_code: "NRL",
+        form_spec: [
+          {
+            id: "letter_dt",
+            label: "Letter Date",
+            type: "DATE",
+            required: true,
+            "read-only": false,
+          },
+          {
+            id: "mine_no",
+            label: "Mine Number",
+            type: "FIELD",
+            placeholder: "Enter the mine number",
+            required: true,
+            "read-only": true,
+          },
+          {
+            id: "proponent_address",
+            label: "Proponent Address",
+            type: "FIELD",
+            placeholder: "Enter the propnent's address",
+            required: true,
+            "read-only": false,
+          },
+          {
+            id: "proponent_name",
+            label: "Proponent Name",
+            type: "FIELD",
+            placeholder: "Enter the propnent's name",
+            required: false,
+            "read-only": false,
+          },
+          {
+            id: "property",
+            label: "Property",
+            type: "FIELD",
+            placeholder: "Enter the property",
+            required: true,
+            "read-only": true,
+          },
+          {
+            id: "application_dt",
+            label: "Application Date",
+            type: "DATE",
+            required: true,
+            "read-only": false,
+          },
+          {
+            id: "inspector",
+            label: "Inspector",
+            type: "FIELD",
+            placeholder: "Enter the inspector's name",
+            required: true,
+            "read-only": false,
+          },
+        ],
+      },
+    },
+  ],
+  noticeOfWorkUndergroundExplorationTypeOptions: [
+    { underground_exploration_type_code: "NEW", description: "New" },
+    { underground_exploration_type_code: "RHB", description: "Rehabilitation" },
+    { underground_exploration_type_code: "SUR", description: "Surface" },
+  ],
+  noticeOfWorkApplicationProgressStatusCodeOptions: [
+    { application_progress_status_code: "VER", description: "Verification" },
+    { application_progress_status_code: "REV", description: "Technical Review" },
+    { application_progress_status_code: "REF", description: "Referral / Consultation" },
+    { application_progress_status_code: "DEC", description: "Decision" },
+  ],
+  noticeOfWorkApplicationPermitTypeOptions: [
+    { now_application_permit_type_code: "MY-ABP", description: "Multi-Year, Area-Based Permit" },
+    { now_application_permit_type_code: "OYP", description: "One-Year Permit" },
+    { now_application_permit_type_code: "MYP", description: "Multi-Year Permit" },
+  ],
+  noticeOfWorkApplicationReviewOptions: [
+    { now_application_review_type_code: "REF", description: "Referral" },
+    { now_application_review_type_code: "FNC", description: "First Nations Consultation" },
+    { now_application_review_type_code: "PUB", description: "Public Comment" },
+  ],
+  bondStatusOptions: [
+    { bond_status_code: "REL", description: "Released" },
+    { bond_status_code: "CON", description: "Confiscated" },
+    { bond_status_code: "ACT", description: "Active" },
+  ],
+  bondTypeOptions: [
+    { bond_type_code: "CEC", description: "Certified Cheque" },
+    { bond_type_code: "CAS", description: "Cash" },
+    { bond_type_code: "ILC", description: "Irrevocable Line of Credit" },
+    { bond_type_code: "MOR", description: "Money Order" },
+    { bond_type_code: "BDA", description: "Bank Draft" },
+    { bond_type_code: "SBO", description: "Surety Bond" },
+    { bond_type_code: "SAG", description: "Safekeeping Agreement" },
+  ],
 };

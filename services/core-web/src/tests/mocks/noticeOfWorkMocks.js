@@ -599,26 +599,43 @@ export const UNIT_TYPES = {
 
 export const DROPDOWN_UNIT_TYPES = [
   {
-    value: "MTN",
-    label: "Tonne (Metric Ton 1,000 kg)",
+    label: "km",
+    value: "KMT",
   },
-  { value: "MEC", label: "Meters cubed" },
-  { value: "HA", label: "Hectares" },
   {
-    value: "DEG",
-    label: "Degrees",
+    label: "t",
+    value: "MTN",
   },
-  { value: "PER", label: "Grade (Percent)" },
-  { value: "MTR", label: "Meters" },
+  {
+    label: "m3",
+    value: "MEC",
+  },
+  {
+    label: "ha",
+    value: "HA",
+  },
+  {
+    label: "deg",
+    value: "DEG",
+  },
+  {
+    label: "%",
+    value: "PER",
+  },
+  {
+    label: "m",
+    value: "MTR",
+  },
 ];
 
 export const UNIT_TYPES_HASH = {
-  MTN: "Tonne (Metric Ton 1,000 kg)",
-  MEC: "Meters cubed",
-  HA: "Hectares",
-  DEG: "Degrees",
-  PER: "Grade (Percent)",
-  MTR: "Meters",
+  KMT: "km",
+  MTN: "t",
+  MEC: "m3",
+  HA: "ha",
+  DEG: "deg",
+  PER: "%",
+  MTR: "m",
 };
 
 export const APPLICATION_DOCUMENT_TYPES = {

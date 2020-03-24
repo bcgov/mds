@@ -74,9 +74,11 @@ exports[`MineVariance renders properly 1`] = `
           "mine_type": Array [
             Object {
               "mine_tenure_type_code": "PLR",
+              "mine_type_detail": Array [],
             },
             Object {
               "mine_tenure_type_code": "MIN",
+              "mine_type_detail": Array [],
             },
           ],
           "verified_status": Object {
@@ -96,6 +98,8 @@ exports[`MineVariance renders properly 1`] = `
           "DEN": "Denied",
           "NAP": "Not Applicable",
           "REV": "In Review",
+          "RFD": "Ready for Decision",
+          "WIT": "Withdrawn",
         }
       }
       variances={
@@ -170,9 +174,11 @@ exports[`MineVariance renders properly 1`] = `
           "mine_type": Array [
             Object {
               "mine_tenure_type_code": "PLR",
+              "mine_type_detail": Array [],
             },
             Object {
               "mine_tenure_type_code": "MIN",
+              "mine_type_detail": Array [],
             },
           ],
           "verified_status": Object {
@@ -192,6 +198,8 @@ exports[`MineVariance renders properly 1`] = `
           "DEN": "Denied",
           "NAP": "Not Applicable",
           "REV": "In Review",
+          "RFD": "Ready for Decision",
+          "WIT": "Withdrawn",
         }
       }
       variances={

@@ -6,13 +6,13 @@ import PropTypes from "prop-types";
 import queryString from "query-string";
 import { openModal, closeModal } from "@common/actions/modalActions";
 import { fetchParties, createParty } from "@common/actionCreators/partiesActionCreator";
-import { getDropdownProvinceOptions } from "@common/selectors/staticContentSelectors";
 import {
-  getParties,
-  getPartyPageData,
+  getDropdownProvinceOptions,
   getPartyRelationshipTypeHash,
   getPartyRelationshipTypesList,
-} from "@common/selectors/partiesSelectors";
+} from "@common/selectors/staticContentSelectors";
+import { getParties, getPartyPageData } from "@common/selectors/partiesSelectors";
+
 import * as Strings from "@common/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
 import * as FORM from "@/constants/forms";

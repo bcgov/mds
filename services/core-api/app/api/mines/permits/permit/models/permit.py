@@ -45,6 +45,8 @@ class Permit(AuditMixin, Base):
                                                        'description')
     mine_name = association_proxy('mine', 'mine_name')
 
+    bonds = db.relationship('Bond', lazy='select', secondary='bond_permit_xref')
+
     @hybrid_property
     def current_permittee(self):
         if len(self.permittee_appointments) > 0:
@@ -66,6 +68,10 @@ class Permit(AuditMixin, Base):
     @classmethod
     def find_by_permit_no(cls, _permit_no):
         return cls.query.filter_by(permit_no=_permit_no).first()
+
+    @classmethod
+    def find_by_permit_no_all(cls, _permit_no):
+        return cls.query.filter_by(permit_no=_permit_no).all()
 
     @classmethod
     def find_by_permit_guid_or_no(cls, _permit_guid_or_no):

@@ -12,6 +12,7 @@ EDIT_REPORT = "core_edit_reports"
 CLOSE_PERMIT = "core_close_permits"
 EDIT_DO = "core_edit_do"
 EDIT_VARIANCE = "core_edit_variances"
+EDIT_BONDS = "core_edit_bonds"
 MINESPACE_PROPONENT = "mds_minespace_proponents"
 EDIT_SUBMISSIONS = "core_edit_submissions"
 
@@ -50,6 +51,10 @@ def requires_role_close_permit(func):
 
 def requires_role_edit_submissions(func):
     return _inner_wrapper(func, EDIT_SUBMISSIONS)
+
+
+def requires_role_edit_bonds(func):
+    return _inner_wrapper(func, EDIT_BONDS)
 
 
 def requires_any_of(roles):
