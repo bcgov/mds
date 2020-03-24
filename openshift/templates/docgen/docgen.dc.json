@@ -48,6 +48,10 @@
       "value": "3000"
     },
     {
+      "name": "FILE_DIR",
+      "value": "/tmp/tmp-reports"
+    },
+    {
       "name": "NODE_ENV",
       "displayName": "Node Environment",
       "description": "Environment for running node",
@@ -84,12 +88,33 @@
       "apiVersion": "v1",
       "metadata": {
         "name": "${NAME}${APPLICATION_SUFFIX}",
+        "creationTimestamp": null,
+        "annotations": {
+          "description": "Doc Gen API"
+        },
         "labels": {
           "shared": "true"
-        },
-        "annotations": {
-          "description": "Keeps track of changes in the application image"
         }
+      },
+      "spec": {
+        "lookupPolicy": {
+          "local": false
+        },
+        "tags": [
+          {
+            "name": "${TAG_NAME}",
+            "annotations": null,
+            "from": {
+              "kind": "DockerImage",
+              "name": "bcgovimages/doc-gen-api:v1.0.0"
+            },
+            "importPolicy": {},
+            "referencePolicy": {
+              "type": "Local"
+            },
+            "tag": "${TAG_NAME}"
+          }
+        ]
       }
     },
     {
@@ -138,7 +163,9 @@
             "type": "ImageChange",
             "imageChangeParams": {
               "automatic": true,
-              "containerNames": ["app"],
+              "containerNames": [
+                "app"
+              ],
               "from": {
                 "kind": "ImageStreamTag",
                 "name": "${NAME}${APPLICATION_SUFFIX}:${TAG_NAME}"
@@ -166,6 +193,14 @@
                 "name": "app",
                 "image": " ",
                 "env": [
+                  {
+                    "name": "APP_PORT",
+                    "value": "${PORT}"
+                  },
+                  {
+                    "name": "CACHE_DIR",
+                    "value": "${FILE_DIR}"
+                  },
                   {
                     "name": "NODE_ENV",
                     "value": "${NODE_ENV}"

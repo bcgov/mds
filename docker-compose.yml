@@ -198,7 +198,7 @@ services:
     container_name: docgen_api
     build:
       context: services/docgen-api
-    command: ["node", "index"]
+    command: ["npm", "run", "start"]
     #volumes:
     #  - ./services/docgen-api/:/carbone-api/
     ports:
