@@ -3735,3 +3735,4 @@ export const BONDS = [
     permit_guid: "463236",
   },
 ];
+export const BOND_RESPONSE = { records: BONDS };
