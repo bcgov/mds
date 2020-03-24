@@ -100,6 +100,7 @@ export class MineSecurityInfo extends Component {
         bond,
       },
       width: "50vw",
+      isViewOnly: true,
       content: modalConfig.VIEW_BOND_MODAL,
     });
   };
