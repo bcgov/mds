@@ -18,8 +18,8 @@ describe("securitiesReducer", () => {
 
   it("receives STORE_MINE_BONDS", () => {
     const expectedValue = getBaseExpectedValue();
-    expectedValue.bonds = MOCK.BONDS;
-    const result = securitiesReducer(undefined, storeMineBonds(MOCK.BOND_RESPONSE));
+    expectedValue.bonds = MOCK.BONDS.records;
+    const result = securitiesReducer(undefined, storeMineBonds(MOCK.BONDS));
     expect(result).toEqual(expectedValue);
   });
 });

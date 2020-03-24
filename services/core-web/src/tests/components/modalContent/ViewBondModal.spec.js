@@ -13,7 +13,7 @@ const setupDispatchProps = () => {
 const setupProps = () => {
   props.bondTypeOptionsHash = {};
   props.statusTypeOptionsHash = {};
-  [props.bond] = MOCK.BONDS;
+  [props.bond] = MOCK.BONDS.records;
 };
 
 beforeEach(() => {

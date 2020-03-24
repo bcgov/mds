@@ -22,7 +22,7 @@ const setupProps = () => {
   props.bondTotals = {};
   props.bondStatusOptionsHash = {};
   props.bondTypeOptionsHash = {};
-  props.bonds = MOCK.BONDS;
+  props.bonds = MOCK.BONDS.records;
 };
 
 beforeEach(() => {

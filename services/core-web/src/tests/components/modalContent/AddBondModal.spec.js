@@ -16,7 +16,7 @@ const setupProps = () => {
   props.permitGuid = "462562457";
   props.provinceOptions = MOCK.DROPDOWN_PROVINCE_OPTIONS;
   props.bondTypeOptions = [];
-  [props.bond] = MOCK.BONDS;
+  [props.bond] = MOCK.BONDS.records;
 };
 
 beforeEach(() => {

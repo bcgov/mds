@@ -20,7 +20,7 @@ const setupProps = () => {
   props.bondTypeOptionsHash = {};
   props.isLoaded = true;
   props.expandedRowKeys = [];
-  props.bonds = MOCK.BONDS;
+  props.bonds = MOCK.BONDS.records;
 };
 
 beforeEach(() => {
