@@ -82,7 +82,7 @@ export class MineSecurityInfo extends Component {
     event.preventDefault();
     this.props.openModal({
       props: {
-        title: `Edit Bond ${bond.bond_id}`,
+        title: `Edit Bond`,
         onSubmit: this.editBond,
         editBond: true,
         bond,
@@ -96,7 +96,7 @@ export class MineSecurityInfo extends Component {
     event.preventDefault();
     this.props.openModal({
       props: {
-        title: `View Bond ${bond.bond_id}`,
+        title: `View Bond`,
         bond,
       },
       width: "50vw",

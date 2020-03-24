@@ -99,13 +99,6 @@ export const MineBondTable = (props) => {
 
   const bondColumns = [
     {
-      title: "Bond No.",
-      dataIndex: "bond_id",
-      key: "bond_id",
-      sorter: (a, b) => (a.bond_id > b.bond_id ? -1 : 1),
-      render: (text) => <div title="Bond No.">{text}</div>,
-    },
-    {
       title: "Issue Date",
       dataIndex: "issue_date",
       key: "issue_date",
