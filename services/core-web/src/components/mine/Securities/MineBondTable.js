@@ -44,33 +44,33 @@ export const MineBondTable = (props) => {
       render: (text) => <div title="Permit No.">{text}</div>,
     },
     {
-      title: "Amount Assessed",
+      title: "Total Assessed",
       dataIndex: "security_total",
       key: "security_total",
       render: (text, record) => (
-        <div title="Security Total">
+        <div title="Total Assessed">
           {formatMoney(record.permit_amendments[0].security_total) || Strings.EMPTY_FIELD}
         </div>
       ),
     },
     {
-      title: "Amount Held",
+      title: "Total Held",
       dataIndex: "amount_held",
       key: "amount_held",
-      render: (text) => <div title="Total Bonds">{text || Strings.EMPTY_FIELD}</div>,
+      render: (text) => <div title="Total Held">{formatMoney(text) || Strings.EMPTY_FIELD}</div>,
     },
     {
-      title: "Total Bonds",
+      title: "No. of Bonds",
       dataIndex: "total_bonds",
       key: "total_bonds",
-      render: (text) => <div title="Total Bonds">{text || Strings.EMPTY_FIELD}</div>,
+      render: (text) => <div title="No. of Bonds">{text || Strings.EMPTY_FIELD}</div>,
     },
     {
-      title: "Amount Confiscated",
+      title: "Total Confiscated",
       dataIndex: "amount_confiscated",
       key: "amount_confiscated",
       render: (text) => (
-        <div title="Amount Confiscated">{formatMoney(text) || Strings.EMPTY_FIELD}</div>
+        <div title="Total Confiscated">{formatMoney(text) || Strings.EMPTY_FIELD}</div>
       ),
     },
     {

@@ -15,11 +15,11 @@ exports[`MineSecurityInfo renders properly 1`] = `
       <MineDashboardContentCard
         content="$NaN"
         icon={null}
-        title="Total Amount Held"
+        title="Total Security Held"
       />
       <MineDashboardContentCard
         icon={null}
-        title="Total Bonds"
+        title="Total No. of Bonds"
       />
     </div>
     <br />

@@ -162,10 +162,13 @@ export class MineSecurityInfo extends Component {
           <Divider />
           <div className="dashboard--cards">
             <MineDashboardContentCard
-              title="Total Amount Held"
+              title="Total Security Held"
               content={formatMoney(this.props.bondTotals.amountHeld)}
             />
-            <MineDashboardContentCard title="Total Bonds" content={this.props.bondTotals.count} />
+            <MineDashboardContentCard
+              title="Total No. of Bonds"
+              content={this.props.bondTotals.count}
+            />
           </div>
           <br />
           <MineBondTable
