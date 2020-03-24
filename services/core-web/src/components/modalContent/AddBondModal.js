@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import {
   getDropdownProvinceOptions,
-  getBondTypeOptionsDropDownOptions,
+  getBondTypeDropDownOptions,
 } from "@common/selectors/staticContentSelectors";
 import BondForm from "@/components/Forms/Securities/BondForm";
 import CustomPropTypes from "@/customPropTypes";
@@ -48,7 +48,7 @@ AddBondModal.defaultProps = defaultProps;
 
 const mapStateToProps = (state) => ({
   provinceOptions: getDropdownProvinceOptions(state),
-  bondTypeOptions: getBondTypeOptionsDropDownOptions(state),
+  bondTypeOptions: getBondTypeDropDownOptions(state),
 });
 
 export default connect(mapStateToProps)(AddBondModal);

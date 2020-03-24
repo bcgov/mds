@@ -443,21 +443,17 @@ export const getPartyRelationshipTypeHash = createSelector(
   createLabelHash
 );
 
-export const getBondTypeOptionsDropDownOptions = createSelector([getBondTypeOptions], (options) =>
+export const getBondTypeDropDownOptions = createSelector([getBondTypeOptions], (options) =>
   createDropDownList(options, "description", "bond_type_code")
 );
 
-export const getBondStatusOptionsDropDownOptions = createSelector(
-  [getBondStatusOptions],
-  (options) => createDropDownList(options, "description", "bond_status_code")
+export const getBondStatusDropDownOptions = createSelector([getBondStatusOptions], (options) =>
+  createDropDownList(options, "description", "bond_status_code")
 );
 
-export const getBondTypeOptionsHash = createSelector(
-  [getBondTypeOptionsDropDownOptions],
-  createLabelHash
-);
+export const getBondTypeOptionsHash = createSelector([getBondTypeDropDownOptions], createLabelHash);
 
 export const getBondStatusOptionsHash = createSelector(
-  [getBondStatusOptionsDropDownOptions],
+  [getBondStatusDropDownOptions],
   createLabelHash
 );

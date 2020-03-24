@@ -3715,6 +3715,38 @@ export const BULK_STATIC_CONTENT_RESPONSE = {
   ],
 };
 
+export const DROPDOWN_BOND_TYPE_OPTIONS = [
+  { value: "CEC", label: "Certified Cheque" },
+  { value: "CAS", label: "Cash" },
+  { value: "ILC", label: "Irrevocable Line of Credit" },
+  { value: "MOR", label: "Money Order" },
+  { value: "BDA", label: "Bank Draft" },
+  { value: "SBO", label: "Surety Bond" },
+  { value: "SAG", label: "Safekeeping Agreement" },
+];
+
+export const BOND_TYPE_OPTIONS_HASH = {
+  CEC: "Certified Cheque",
+  CAS: "Cash",
+  ILC: "Irrevocable Line of Credit",
+  MOR: "Money Order",
+  BDA: "Bank Draft",
+  SBO: "Surety Bond",
+  SAG: "Safekeeping Agreement",
+};
+
+export const DROPDOWN_BOND_STATUS_OPTIONS = [
+  { value: "REL", label: "Released" },
+  { value: "CON", label: "Confiscated" },
+  { value: "ACT", label: "Active" },
+];
+
+export const BOND_STATUS_OPTIONS_HASH = {
+  REL: "Released",
+  CON: "Confiscated",
+  ACT: "Active",
+};
+
 export const BONDS = [
   {
     bond_id: 1,
