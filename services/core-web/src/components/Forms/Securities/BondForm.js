@@ -28,7 +28,7 @@ const propTypes = {
   bondTypeOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
 };
 
-export const BondFrom = (props) => (
+export const BondForm = (props) => (
   <Form layout="vertical" onSubmit={props.handleSubmit}>
     <Row gutter={16}>
       <Col md={12} sm={24}>
@@ -191,10 +191,10 @@ export const BondFrom = (props) => (
   </Form>
 );
 
-BondFrom.propTypes = propTypes;
+BondForm.propTypes = propTypes;
 
 export default reduxForm({
   form: FORM.ADD_BOND,
   touchOnBlur: false,
   onSubmitSuccess: resetForm(FORM.ADD_BOND),
-})(BondFrom);
+})(BondForm);
