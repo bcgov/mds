@@ -8,9 +8,10 @@ export const getBondTotals = createSelector([getBonds], (bonds) => {
     bonds
       .filter(({ bond_status_code }) => bond_status_code === "ACT")
       .reduce((a, b) => +a + +b.amount, 0);
-
+  const getActiveCount = () =>
+    bonds.filter(({ bond_status_code }) => bond_status_code === "ACT").length;
   return {
     amountHeld: getSum(),
-    count: bonds.length,
+    count: getActiveCount(),
   };
 });

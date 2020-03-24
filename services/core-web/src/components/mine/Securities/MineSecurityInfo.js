@@ -167,7 +167,7 @@ export class MineSecurityInfo extends Component {
               content={formatMoney(this.props.bondTotals.amountHeld)}
             />
             <MineDashboardContentCard
-              title="Total No. of Bonds"
+              title="Total No. of Active Bonds"
               content={this.props.bondTotals.count}
             />
           </div>

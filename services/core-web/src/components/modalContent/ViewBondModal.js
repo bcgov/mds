@@ -56,6 +56,10 @@ export const ViewBondModal = (props) => {
           <p>{props.bond.reference_number || Strings.EMPTY_FIELD}</p>
         </div>
         <div className="inline-flex padding-small">
+          <p className="field-title">Project ID</p>
+          <p>{props.bond.project_id || Strings.EMPTY_FIELD}</p>
+        </div>
+        <div className="inline-flex padding-small">
           <p className="field-title">Institution Name</p>
           <p>{props.bond.institution_name || Strings.EMPTY_FIELD}</p>
         </div>
