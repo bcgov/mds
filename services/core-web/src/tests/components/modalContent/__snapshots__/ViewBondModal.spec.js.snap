@@ -88,6 +88,18 @@ exports[`ViewBondModal renders properly 1`] = `
       <p
         className="field-title"
       >
+        Project ID
+      </p>
+      <p>
+        N/A
+      </p>
+    </div>
+    <div
+      className="inline-flex padding-small"
+    >
+      <p
+        className="field-title"
+      >
         Institution Name
       </p>
       <p>

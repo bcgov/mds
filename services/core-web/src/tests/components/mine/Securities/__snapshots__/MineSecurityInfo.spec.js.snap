@@ -19,7 +19,7 @@ exports[`MineSecurityInfo renders properly 1`] = `
       />
       <MineDashboardContentCard
         icon={null}
-        title="Total No. of Bonds"
+        title="Total No. of Active Bonds"
       />
     </div>
     <br />

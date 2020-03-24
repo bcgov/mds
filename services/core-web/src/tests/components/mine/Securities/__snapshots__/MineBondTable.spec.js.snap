@@ -26,7 +26,7 @@ exports[`MineBondTable renders properly 1`] = `
         "dataIndex": "total_bonds",
         "key": "total_bonds",
         "render": [Function],
-        "title": "No. of Bonds",
+        "title": "No. of Active Bonds",
       },
       Object {
         "dataIndex": "amount_confiscated",
