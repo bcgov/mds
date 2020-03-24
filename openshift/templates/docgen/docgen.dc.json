@@ -87,7 +87,7 @@
       "kind": "ImageStream",
       "apiVersion": "v1",
       "metadata": {
-        "name": "${NAME}${APPLICATION_SUFFIX}",
+        "name": "${NAME}",
         "creationTimestamp": null,
         "annotations": {
           "description": "Doc Gen API"
@@ -168,7 +168,7 @@
               ],
               "from": {
                 "kind": "ImageStreamTag",
-                "name": "${NAME}${APPLICATION_SUFFIX}:${TAG_NAME}"
+                "name": "${NAME}:${TAG_NAME}"
               }
             }
           },
