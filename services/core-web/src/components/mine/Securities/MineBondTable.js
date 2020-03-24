@@ -235,7 +235,7 @@ export const MineBondTable = (props) => {
         ({ bond_status_code, permit_guid }) =>
           bond_status_code === status && permit_guid === permit.permit_guid
       )
-      .reduce((a, b) => +a + +b.amount, 0);
+      .reduce((sum, bond) => +sum + +bond.amount, 0);
 
   const bonds = (record) => {
     return (
