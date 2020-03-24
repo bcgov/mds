@@ -261,10 +261,6 @@ export const flattenObject = (ob) => {
 };
 
 export const formatMoney = (value) => {
-  console.log(value);
-  console.log(typeof value);
-  console.log(typeof value === "number" || typeof value === "string");
-  return value && (typeof value === "number" || typeof value === "string")
-    ? "$" + value.toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")
-    : "0";
+  const number = Number(value);
+  return number.toLocaleString("en-US", { style: "currency", currency: "USD" });
 };

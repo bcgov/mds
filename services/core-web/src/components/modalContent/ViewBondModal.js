@@ -11,6 +11,7 @@ import {
 import * as Strings from "@common/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
 import Address from "@/components/common/Address";
+import { formatMoney } from "@common/utils/helpers";
 
 const propTypes = {
   onSubmit: PropTypes.func.isRequired,
@@ -32,7 +33,7 @@ export const ViewBondModal = (props) => {
       <div className="inline-flex between block-tablet">
         <div className="flex-tablet">
           <p className="field-title">Amount</p>
-          <p>{props.bond.amount || Strings.EMPTY_FIELD}</p>
+          <p>{formatMoney(props.bond.amount) || Strings.EMPTY_FIELD}</p>
         </div>
         <div className="flex-tablet">
           <p className="field-title">Status</p>

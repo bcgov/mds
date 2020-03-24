@@ -63,7 +63,9 @@ export const MineBondTable = (props) => {
       title: "Amount Confiscated",
       dataIndex: "amount_confiscated",
       key: "amount_confiscated",
-      render: (text) => <div title="Amount Confiscated">{text || Strings.EMPTY_FIELD}</div>,
+      render: (text) => (
+        <div title="Amount Confiscated">{formatMoney(text) || Strings.EMPTY_FIELD}</div>
+      ),
     },
     {
       title: "",
@@ -129,7 +131,9 @@ export const MineBondTable = (props) => {
       title: "Amount",
       dataIndex: "amount",
       key: "amount",
-      render: (text) => <div title="Amount">{formatMoney(text) || Strings.EMPTY_FIELD}</div>,
+      render: (text, record) => (
+        <div title="Amount">{formatMoney(text) || Strings.EMPTY_FIELD}</div>
+      ),
     },
     {
       title: "Status",
@@ -216,15 +220,13 @@ export const MineBondTable = (props) => {
   const bondsByPermit = (permit) =>
     props.bonds.filter(({ permit_guid }) => permit_guid === permit.permit_guid);
 
-  const getSum = (status, permit) => {
-    const sum = props.bonds
+  const getSum = (status, permit) =>
+    props.bonds
       .filter(
         ({ bond_status_code, permit_guid }) =>
           bond_status_code === status && permit_guid === permit.permit_guid
       )
       .reduce((a, b) => +a + +b.amount, 0);
-    return formatMoney(sum);
-  };
 
   const bonds = (record) => {
     return (
