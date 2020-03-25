@@ -9,11 +9,12 @@ BOND_PARTY = api.model('Party', {
 })
 
 BOND_DOCUMENT_MODEL = api.model(
-    'MineDocument', {
+    'BondDocument', {
         'mine_document_guid': fields.String,
         'mine_guid': fields.String,
         'document_manager_guid': fields.String,
-        'document_name': fields.String
+        'document_name': fields.String,
+        'bond_document_type_code': fields.String
     })
 
 BOND = api.model(

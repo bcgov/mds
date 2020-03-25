@@ -863,3 +863,19 @@ VALUES
     ('STR', 'Section 12 Reclamation', 'system-mds', 'system-mds'),
     ('ASA', 'Asset Security Agreement', 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
+
+INSERT INTO bond_document_type(
+    bond_document_type_code,
+    description,
+    create_user,
+    update_user
+    )
+VALUES
+    ('SRB', 'Scan of Reclamation Security Bond', 'system-mds', 'system-mds'),
+    ('RSF', 'Release of Security Form (signed by inspector)', 'system-mds', 'system-mds'),
+    ('RSL', 'Release of Security Letter (my letter to the bank or proponent)', 'system-mds', 'system-mds'),
+    ('CSF', 'Confiscation of Security Form (signed by inspector)', 'system-mds', 'system-mds'),
+    ('CSL', 'Confiscation of Security Letter (my letter to bank or proponent)', 'system-mds', 'system-mds'),
+    ('REL', 'Reminder Letter', 'system-mds', 'system-mds'),
+    ('AKL', 'Acknowledgement Letter', 'system-mds', 'system-mds')
+ON CONFLICT DO NOTHING;
