@@ -13,7 +13,7 @@ exports[`MineSecurityInfo renders properly 1`] = `
       className="dashboard--cards"
     >
       <MineDashboardContentCard
-        content="$NaN"
+        content="NaN"
         icon={null}
         title="Total Security Held"
       />
