@@ -12,3 +12,4 @@ export const DEVELOPER = "role_developer";
 export const IN_DEVELOPMENT = "inDevelopment";
 export const IN_TESTING = "inTesting";
 export const EXECUTIVE = "role_executive_view";
+export const EDIT_SECURITIES = "role_edit_securities";

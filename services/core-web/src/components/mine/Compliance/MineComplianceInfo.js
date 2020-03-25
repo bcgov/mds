@@ -15,7 +15,7 @@ import NullScreen from "@/components/common/NullScreen";
 import CustomPropTypes from "@/customPropTypes";
 import * as routes from "@/constants/routes";
 import ComplianceOrdersTable from "@/components/mine/Compliance/ComplianceOrdersTable";
-import MineComplianceCard from "@/components/mine/Compliance/MineComplianceCard";
+import MineDashboardContentCard from "@/components/mine/MineDashboardContentCard";
 import MineComplianceFilterForm from "@/components/mine/Compliance/MineComplianceFilterForm";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
 
@@ -143,38 +143,38 @@ export class MineComplianceInfo extends Component {
             <LoadingWrapper condition={this.state.isLoaded}>
               <div>
                 {this.props.mineComplianceInfo && this.props.mineComplianceInfo.last_inspection ? (
-                  <div className="compliance--content">
-                    <MineComplianceCard
+                  <div className="dashboard--cards">
+                    <MineDashboardContentCard
                       title="Inspections - Past 12 months"
                       content={this.props.mineComplianceInfo.last_12_months.num_inspections}
                     />
-                    <MineComplianceCard
+                    <MineDashboardContentCard
                       title={`Inspections - Since April 1, ${fiscalYear}`}
                       content={this.props.mineComplianceInfo.current_fiscal.num_inspections}
                     />
-                    <MineComplianceCard
+                    <MineDashboardContentCard
                       title="Last inspected"
                       content={formatDate(this.props.mineComplianceInfo.last_inspection)}
                     />
-                    <MineComplianceCard
+                    <MineDashboardContentCard
                       title="Last inspector (IDIR)"
                       content={this.props.mineComplianceInfo.last_inspector}
                     />
-                    <MineComplianceCard
+                    <MineDashboardContentCard
                       title="Open orders"
                       icon={DOC}
                       content={this.props.mineComplianceInfo.num_open_orders}
                     />
-                    <MineComplianceCard
+                    <MineDashboardContentCard
                       title="Overdue orders"
                       icon={OVERDUEDOC}
                       content={this.props.mineComplianceInfo.num_overdue_orders}
                     />
-                    <MineComplianceCard
+                    <MineDashboardContentCard
                       title="Warnings  - Past 12 months"
                       content={this.props.mineComplianceInfo.last_12_months.num_warnings}
                     />
-                    <MineComplianceCard
+                    <MineDashboardContentCard
                       title="Advisories - Past 12 months"
                       content={this.props.mineComplianceInfo.last_12_months.num_advisories}
                     />

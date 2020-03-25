@@ -154,7 +154,4 @@ const mapDispatchToProps = (dispatch) =>
 ApplicationStepOne.propTypes = propTypes;
 ApplicationStepOne.defaultProps = defaultProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ApplicationStepOne);
+export default connect(mapStateToProps, mapDispatchToProps)(ApplicationStepOne);

@@ -180,6 +180,7 @@ exports[`ViewIncidentModal renders properly 1`] = `
         </p>
       </div>
     </div>
+    <br />
     <h5>
       Dangerous Occurance Determination
     </h5>
