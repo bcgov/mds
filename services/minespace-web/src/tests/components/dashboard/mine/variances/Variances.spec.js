@@ -19,9 +19,6 @@ const setupProps = () => {
 const setupDispatchProps = () => {
   dispatchProps.fetchMineRecordById = jest.fn(() => Promise.resolve());
   dispatchProps.fetchVariancesByMine = jest.fn();
-  dispatchProps.fetchMineComplianceCodes = jest.fn();
-  dispatchProps.fetchVarianceStatusOptions = jest.fn();
-  dispatchProps.fetchVarianceDocumentCategoryOptions = jest.fn();
 };
 
 beforeEach(() => {
