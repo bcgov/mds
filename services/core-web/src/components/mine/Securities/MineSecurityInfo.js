@@ -21,6 +21,7 @@ import { formatMoney } from "@common/utils/helpers";
 import CustomPropTypes from "@/customPropTypes";
 import MineBondTable from "@/components/mine/Securities/MineBondTable";
 import MineDashboardContentCard from "@/components/mine/MineDashboardContentCard";
+import { CoreTooltip } from "@/components/common/CoreTooltip";
 import { modalConfig } from "@/components/modalContent/config";
 /**
  * @class  MineSecurityInfo - contains all information relating to bonds and securities
@@ -163,11 +164,21 @@ export class MineSecurityInfo extends Component {
           <Divider />
           <div className="dashboard--cards">
             <MineDashboardContentCard
-              title="Total Security Held"
+              title={
+                <span>
+                  Total Security Held
+                  <CoreTooltip title="Total amount of money held through active bonds across all permits." />
+                </span>
+              }
               content={formatMoney(this.props.bondTotals.amountHeld)}
             />
             <MineDashboardContentCard
-              title="Total No. of Active Bonds"
+              title={
+                <span>
+                  Total Active Bonds
+                  <CoreTooltip title="Total number of bonds that are currently active across all permits. Released and confiscated bonds are not included in this total." />
+                </span>
+              }
               content={this.props.bondTotals.count}
             />
           </div>
