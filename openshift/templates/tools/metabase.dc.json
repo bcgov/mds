@@ -267,29 +267,7 @@
                 },
                 "terminationMessagePath": "/dev/termination-log",
                 "imagePullPolicy": "IfNotPresent",
-                "capabilities": {},
-                "livenessProbe": {
-                  "failureThreshold": 10,
-                  "initialDelaySeconds": 420,
-                  "periodSeconds": 10,
-                  "successThreshold": 1,
-                  "tcpSocket": {
-                    "port": 3000
-                  },
-                  "timeoutSeconds": 10
-                },
-                "readinessProbe": {
-                  "failureThreshold": 10,
-                  "httpGet": {
-                    "path": "/",
-                    "port": 3000,
-                    "scheme": "HTTP"
-                  },
-                  "initialDelaySeconds": 420,
-                  "periodSeconds": 10,
-                  "successThreshold": 1,
-                  "timeoutSeconds": 10
-                }
+                "capabilities": {}
               },
               {
                 "name": "${NAME_DATABASE}",
