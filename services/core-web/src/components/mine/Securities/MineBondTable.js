@@ -9,6 +9,7 @@ import * as Permission from "@/constants/permissions";
 import CustomPropTypes from "@/customPropTypes";
 import { EDIT, CARAT } from "@/constants/assets";
 import CoreTable from "@/components/common/CoreTable";
+import { CoreTooltip } from "@/components/common/CoreTooltip";
 
 /**
  * @class  MineBondTable - displays a table of permits with their related bonds
@@ -34,6 +35,19 @@ const propTypes = {
   // eslint-disable-next-line react/no-unused-prop-types
   onExpand: PropTypes.func.isRequired,
 };
+const totalAssessedTitle = (
+  <span>
+    Total Assessed
+    <CoreTooltip title="Total Assessed is derived from the most recent permit amendment. This total can be added on the Permit tab while updating an amendment." />
+  </span>
+);
+
+const totalConfiscatedTitle = (
+  <span>
+    Total Confiscated
+    <CoreTooltip title="Total Confiscated is the sum of all confiscated bonds. This amount is `cash on hand` and can be used for reclamation." />
+  </span>
+);
 
 export const MineBondTable = (props) => {
   const columns = [
@@ -44,7 +58,7 @@ export const MineBondTable = (props) => {
       render: (text) => <div title="Permit No.">{text}</div>,
     },
     {
-      title: "Total Assessed",
+      title: totalAssessedTitle,
       dataIndex: "security_total",
       key: "security_total",
       render: (text, record) => (
@@ -60,13 +74,13 @@ export const MineBondTable = (props) => {
       render: (text) => <div title="Total Held">{formatMoney(text) || Strings.EMPTY_FIELD}</div>,
     },
     {
-      title: "No. of Active Bonds",
+      title: "Active Bonds",
       dataIndex: "total_bonds",
       key: "total_bonds",
       render: (text) => <div title="No. of Active Bonds">{text || Strings.EMPTY_FIELD}</div>,
     },
     {
-      title: "Total Confiscated",
+      title: totalConfiscatedTitle,
       dataIndex: "amount_confiscated",
       key: "amount_confiscated",
       render: (text) => (
