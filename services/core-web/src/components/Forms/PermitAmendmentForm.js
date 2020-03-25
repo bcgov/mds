@@ -3,8 +3,8 @@ import PropTypes from "prop-types";
 import { remove } from "lodash";
 import { Field, reduxForm, change } from "redux-form";
 import { Form, Button, Col, Row, Popconfirm } from "antd";
-import { required, maxLength, dateNotInFuture } from "@common/utils/Validate";
-import { resetForm } from "@common/utils/helpers";
+import { required, maxLength, dateNotInFuture, number } from "@common/utils/Validate";
+import { resetForm, currencyMask } from "@common/utils/helpers";
 import { renderConfig } from "@/components/common/config";
 import PartySelectField from "@/components/common/PartySelectField";
 import * as FORM from "@/constants/forms";
@@ -113,6 +113,16 @@ export class PermitAmendmentForm extends Component {
                 label="Issue date*"
                 component={renderConfig.DATE}
                 validate={[required, dateNotInFuture]}
+              />
+            </Form.Item>
+            <Form.Item>
+              <Field
+                id="security_total"
+                name="security_total"
+                label="Security Assessment"
+                component={renderConfig.FIELD}
+                {...currencyMask}
+                validate={[number]}
               />
             </Form.Item>
             {this.props.initialValues.permit_amendment_type_code !== originalPermit && (

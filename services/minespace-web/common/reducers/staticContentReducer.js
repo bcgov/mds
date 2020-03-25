@@ -96,6 +96,8 @@ export const getNoticeOfWorkApplicationPermitTypeOptions = (state) =>
   state[STATIC_CONTENT].noticeOfWorkApplicationPermitTypeOptions;
 export const getNoticeOfWorkApplicationReviewOptions = (state) =>
   state[STATIC_CONTENT].noticeOfWorkApplicationReviewOptions;
+export const getBondTypeOptions = (state) => state[STATIC_CONTENT].bondTypeOptions;
+export const getBondStatusOptions = (state) => state[STATIC_CONTENT].bondStatusOptions;
 
 const isStaticContentLoaded = (state) =>
   Object.keys(state)

@@ -1,14 +1,14 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`MineComplianceCard renders properly 1`] = `
+exports[`MineDashboardContentCard renders properly 1`] = `
 <div
-  className="compliance--card"
+  className="content--card"
 >
   <div
-    className="compliance--card--head"
+    className="content--card--head"
   >
     <div
-      className="compliance--card--head--content"
+      className="content--card--head--content"
     >
       <span
         className="info-display"
@@ -18,7 +18,7 @@ exports[`MineComplianceCard renders properly 1`] = `
     </div>
   </div>
   <div
-    className="compliance--card--body"
+    className="content--card--body"
   >
     <h4>
       mock title
