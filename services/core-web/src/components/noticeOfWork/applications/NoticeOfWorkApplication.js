@@ -166,9 +166,10 @@ export class NoticeOfWorkApplication extends Component {
     window.removeEventListener("scroll", this.handleScroll);
   }
 
-  loadMineInfo = (mineGuid) => {
+  loadMineInfo = (mineGuid, onMineInfoLoaded = () => {}) => {
     this.props.fetchMineRecordById(mineGuid).then(({ data }) => {
       this.setState({ isMajorMine: data.major_mine_ind, mineGuid: data.mine_guid });
+      onMineInfoLoaded();
     });
   };
 
@@ -181,13 +182,15 @@ export class NoticeOfWorkApplication extends Component {
     });
   };
 
-  loadNoticeOfWork = (id) => {
-    this.props.fetchImportedNoticeOfWorkApplication(id).then(({ data }) => {
-      this.setState({ isLoaded: true });
-      this.loadMineInfo(data.mine_guid);
-      this.handleProgressButtonLabels(data.application_progress);
-      this.props.fetchOriginalNoticeOfWorkApplication(id);
-    });
+  loadNoticeOfWork = async (id) => {
+    this.setState({ isLoaded: false });
+    await Promise.all([
+      this.props.fetchOriginalNoticeOfWorkApplication(id),
+      this.props.fetchImportedNoticeOfWorkApplication(id).then(({ data }) => {
+        this.handleProgressButtonLabels(data.application_progress);
+        this.loadMineInfo(data.mine_guid, this.setState({ isLoaded: true }));
+      }),
+    ]);
   };
 
   handleProgressButtonLabels = (applicationProgress) => {
@@ -328,10 +331,9 @@ export class NoticeOfWorkApplication extends Component {
         } as the Lead Inspector`
       )
       .then(() => {
-        this.props.fetchImportedNoticeOfWorkApplication(
-          this.props.noticeOfWork.now_application_guid
-        );
-        this.setState({ isLoaded: true });
+        this.props
+          .fetchImportedNoticeOfWorkApplication(this.props.noticeOfWork.now_application_guid)
+          .then(() => this.setState({ isLoaded: true }));
       })
       .then(() => finalAction());
   };
@@ -444,9 +446,16 @@ export class NoticeOfWorkApplication extends Component {
       now_application_guid: this.props.noticeOfWork.now_application_guid,
       template_data: newValues,
     };
-    this.props.generateNoticeOfWorkApplicationDocument(documentTypeCode, payload).then(() => {
-      this.props.closeModal();
-    });
+    this.props
+      .generateNoticeOfWorkApplicationDocument(documentTypeCode, payload, () => {
+        this.setState({ isLoaded: false });
+        this.props
+          .fetchImportedNoticeOfWorkApplication(this.props.noticeOfWork.now_application_guid)
+          .then(() => this.setState({ isLoaded: true }));
+      })
+      .then(() => {
+        this.props.closeModal();
+      });
   };
 
   renderStepOne = () => {
@@ -708,7 +717,7 @@ export class NoticeOfWorkApplication extends Component {
                 //  lower fixNav to account for error message
                 style={showErrors && this.state.fixedTop ? { top: "170px" } : {}}
               >
-                {this.state.currentStep !== 0 && (
+                {this.state.currentStep === 1 && (
                   <NOWSideMenu
                     route={routes.NOTICE_OF_WORK_APPLICATION}
                     noticeOfWorkType={this.props.noticeOfWork.notice_of_work_type_code}

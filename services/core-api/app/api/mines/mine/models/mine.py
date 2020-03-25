@@ -9,9 +9,6 @@ from sqlalchemy.ext.hybrid import hybrid_property
 from geoalchemy2 import Geometry
 from app.extensions import db
 from app.api.utils.models_mixins import AuditMixin, Base
-# FIXME: Model import from outside of its namespace
-# This breaks micro-service architecture and is done
-# for search performance until search can be refactored
 from app.api.mines.permits.permit.models.permit import Permit
 from app.api.users.minespace.models.minespace_user_mine import MinespaceUserMine
 from app.api.constants import *

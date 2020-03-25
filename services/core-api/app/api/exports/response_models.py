@@ -8,6 +8,7 @@ from app.api.incidents.response_models import MINE_INCIDENT_CATEGORY_MODEL, MINE
 from app.api.parties.response_models import MINE_PARTY_APPT_TYPE_MODEL, SUB_DIVISION_CODE_MODEL
 from app.api.variances.response_models import VARIANCE_APPLICATION_STATUS_CODE, VARIANCE_DOCUMENT_CATEGORY_CODE
 from app.api.now_applications.response_models import NOW_APPLICATION_DOCUMENT_TYPE_MODEL, NOW_APPLICATION_REVIEW_TYPES, NOW_APPLICATION_TYPES, UNIT_TYPES, NOW_ACTIVITY_TYPES, NOW_APPLICATION_STATUS_CODES, UNDERGROUND_EXPLORATION_TYPES, NOW_APPLICATION_PERMIT_TYPES, NOW_APPLICATION_REVIEW_TYPES, APPLICATION_PROGRESS_STATUS_CODES
+from app.api.securities.response_models import BOND_STATUS, BOND_TYPE
 
 STATIC_CONTENT_MODEL = api.model(
     'StaticContentModel', {
@@ -85,5 +86,12 @@ STATIC_CONTENT_MODEL = api.model(
             fields.Nested(NOW_APPLICATION_PERMIT_TYPES), attribute='NOWApplicationPermitType'),
         'noticeOfWorkApplicationReviewOptions':
         fields.List(
-            fields.Nested(NOW_APPLICATION_REVIEW_TYPES), attribute='NOWApplicationReviewType')
+            fields.Nested(NOW_APPLICATION_REVIEW_TYPES), attribute='NOWApplicationReviewType'),
+        'partyRelationshipTypes':
+        fields.List(
+            fields.Nested(MINE_PARTY_APPT_TYPE_MODEL), attribute='MinePartyAppointmentType'),
+        'bondStatusOptions':
+        fields.List(fields.Nested(BOND_STATUS), attribute='BondStatus'),
+        'bondTypeOptions':
+        fields.List(fields.Nested(BOND_TYPE), attribute='BondType')
     })

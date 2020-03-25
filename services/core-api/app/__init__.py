@@ -5,7 +5,6 @@ from flask import Flask, request
 
 from flask_cors import CORS
 from flask_restplus import Resource, apidoc
-from flask_compress import Compress
 from sqlalchemy.exc import SQLAlchemyError
 from marshmallow.exceptions import MarshmallowError
 
@@ -25,6 +24,8 @@ from app.api.variances.namespace import api as variances_api
 from app.api.users.namespace import api as users_api
 from app.api.exports.namespace import api as exports_api
 from app.api.document_generation.namespace import api as doc_gen_api
+from app.api.securities.namespace import api as securities_api
+from app.api.verify.namespace import api as verify_api
 
 from app.commands import register_commands
 from app.config import Config
@@ -75,7 +76,6 @@ def register_extensions(app):
     db.init_app(app)
 
     CORS(app)
-    Compress(app)
 
     return None
 
@@ -97,6 +97,8 @@ def register_routes(app):
     api.add_namespace(now_app_api)
     api.add_namespace(exports_api)
     api.add_namespace(doc_gen_api)
+    api.add_namespace(securities_api)
+    api.add_namespace(verify_api)
 
     # Healthcheck endpoint
     @api.route('/health')

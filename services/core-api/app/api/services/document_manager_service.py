@@ -1,10 +1,12 @@
-import requests
-import base64
+import requests, base64, io
+from tusclient import client
 
-from flask import Response
+from flask import Response, current_app
 from app.config import Config
 
-ALLOWED_DOCUMENT_CATEGORIES = ['tailings', 'permits', 'variances', 'incidents', 'reports', 'mine_party_appts','noticeofwork']
+ALLOWED_DOCUMENT_CATEGORIES = [
+    'tailings', 'permits', 'variances', 'incidents', 'reports', 'mine_party_appts', 'noticeofwork'
+]
 
 
 class DocumentManagerService():
@@ -32,6 +34,22 @@ class DocumentManagerService():
         )
 
         return Response(str(resp.content), resp.status_code, resp.raw.headers.items())
+
+    @classmethod
+    def pushFileToDocumentManager(cls, file_content, filename, mine, document_category,
+                                  authorization_header):
+        folder, pretty_folder = cls._parse_upload_folders(mine, document_category)
+        data = {
+            'folder': folder,
+            'pretty_folder': pretty_folder,
+            'filename': filename,
+            'authorization': authorization_header
+        }
+        my_client = client.TusClient(cls.document_manager_url, headers=data)
+        uploader = my_client.uploader(file_stream=io.BytesIO(file_content), chunk_size=2048)
+        uploader.upload()
+        document_manager_guid = uploader.url.rsplit('/', 1)[-1]
+        return document_manager_guid
 
     @classmethod
     def _parse_upload_folders(cls, mine, document_category):

@@ -123,6 +123,14 @@ const getFirstNationLayer = () => {
   return firstNationSource.getLayer("WHSE_ADMIN_BOUNDARIES.PIP_CONSULTATION_AREAS_SP");
 };
 
+const getMajorMinePermittedAreas = () => {
+  const majorMinesSource = LeafletWms.source(
+    "https://openmaps.gov.bc.ca/geo/pub/WHSE_MINERAL_TENURE.HSP_MJR_MINES_PERMTTD_AREAS_SP/ows",
+    { ...leafletWMSTiledOptions, identify: false }
+  );
+  return majorMinesSource.getLayer("pub:WHSE_MINERAL_TENURE.HSP_MJR_MINES_PERMTTD_AREAS_SP");
+};
+
 class MineMapLeaflet extends Component {
   state = {
     currentMarker: null,
@@ -228,9 +236,12 @@ class MineMapLeaflet extends Component {
   };
 
   addWebMapLayers = () => {
+    const majorMinePermittedAreas = getMajorMinePermittedAreas();
+    this.map.addLayer(majorMinePermittedAreas);
     const groupedOverlays = {
-      "Mine Pins": {
+      Mines: {
         "Mine Pins": this.markerClusterGroup,
+        "Major Mine Permitted Areas": majorMinePermittedAreas,
       },
       Roads: this.getLayerGroupFromList(roadLayerArray),
       "Natural Features": {

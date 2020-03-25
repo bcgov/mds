@@ -3,7 +3,7 @@
 exports[`DownloadDocumentPackageModal renders properly 1`] = `
 <div>
   <h4>
-    Submission Documents (VFCBC/NROS)
+    Submission Documents (vFCBC/NROS)
   </h4>
   <NOWSubmissionDocuments
     documents={Array []}
