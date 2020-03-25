@@ -15,11 +15,25 @@ exports[`MineSecurityInfo renders properly 1`] = `
       <MineDashboardContentCard
         content="$NaN"
         icon={null}
-        title="Total Security Held"
+        title={
+          <span>
+            Total Security Held
+            <CoreTooltip
+              title="Total amount of money held through active bonds across all permits."
+            />
+          </span>
+        }
       />
       <MineDashboardContentCard
         icon={null}
-        title="Total No. of Active Bonds"
+        title={
+          <span>
+            Total Active Bonds
+            <CoreTooltip
+              title="Total number of bonds that are currently active across all permits. Released and confiscated bonds are not included in this total."
+            />
+          </span>
+        }
       />
     </div>
     <br />
