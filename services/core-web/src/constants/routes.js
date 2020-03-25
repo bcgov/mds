@@ -19,6 +19,7 @@ import CustomHomePage from "@/components/dashboard/customHomePage/CustomHomePage
 import MineSummary from "@/components/mine/Summary/MineSummary";
 import MineContactInfo from "@/components/mine/ContactInfo/MineContactInfo";
 import MinePermitInfo from "@/components/mine/Permit/MinePermitInfo";
+import MineSecurityInfo from "@/components/mine/Securities/MineSecurityInfo";
 import MineVariance from "@/components/mine/Variances/MineVariance";
 import MineComplianceInfo from "@/components/mine/Compliance/MineComplianceInfo";
 import MineIncidents from "@/components/mine/Incidents/MineIncidents";
@@ -119,6 +120,12 @@ export const MINE_PERMITS = {
   route: "/mine-dashboard/:id/permits-and-approvals/permits",
   dynamicRoute: (id) => `/mine-dashboard/${id}/permits-and-approvals/permits`,
   component: MinePermitInfo,
+};
+
+export const MINE_SECURITIES = {
+  route: "/mine-dashboard/:id/permits-and-approvals/securities",
+  dynamicRoute: (id) => `/mine-dashboard/${id}/permits-and-approvals/securities`,
+  component: MineSecurityInfo,
 };
 
 export const MINE_VARIANCES = {
