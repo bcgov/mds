@@ -42,7 +42,7 @@ VALUES
 	('Safety Fuse Procedure','AVA',null, 'HSRCM','8','3','5'), -- H&S
 	('Drilling in Stream/Lake/Wetland Management Plan','AVA',null, 'HSRCM','9','11','1'), -- H&S
 	('Factor of Safety Justification','EVT',null, 'HSRCM','10','1','10'), -- GTC/TSF --PRIVATE, NOT MINESPACE --CIM   
-	('Design Slopes Justification','EVT',null, 'HSRCM','7','9','4'), -- GTC/TSF --PRIVATE, NOT MINESPACE --CIM
+	('Design Slopes Justification','EVT',null, 'HSRCM','10','1','9'), -- GTC/TSF --PRIVATE, NOT MINESPACE --CIM
 	('Issued for Construction Drawings and Quality Assurance/Quality Control Plans','EVT',null, 'HSRCM','10','5','1'), -- GTC/TSF  CIM?
 	('Site Monitoring and Maintenance Program','AVA',null, 'HSRCM','10','6','2'), -- H&S 
 	('Reclamation and Environmental Protection Program','AVA',null, 'HSRCM','10','7','21') -- H&S, GSC, GTC
@@ -87,8 +87,8 @@ INSERT INTO mine_report_category_xref (mine_report_definition_id, mine_report_ca
 INSERT INTO mine_report_category_xref (mine_report_definition_id, mine_report_category) values ((SELECT x.mine_report_definition_id from mine_report_definition x where report_name = 'Site Monitoring and Maintenance Program' LIMIT 1), 'H&S') ON CONFLICT DO NOTHING; 
 INSERT INTO mine_report_category_xref (mine_report_definition_id, mine_report_category) values ((SELECT x.mine_report_definition_id from mine_report_definition x where report_name = 'Site Monitoring and Maintenance Program' LIMIT 1), 'GTC') ON CONFLICT DO NOTHING; 
 INSERT INTO mine_report_category_xref (mine_report_definition_id, mine_report_category) values ((SELECT x.mine_report_definition_id from mine_report_definition x where report_name = 'Site Monitoring and Maintenance Program' LIMIT 1), 'GSE') ON CONFLICT DO NOTHING; 
-INSERT INTO mine_report_category_xref (mine_report_definition_id, mine_report_category) values ((SELECT x.mine_report_definition_id from mine_report_definition x where report_name = 'Reclamation and Environmental Protection Program' LIMIT 1), 'GSE') ON CONFLICT DO NOTHING; 
-INSERT INTO mine_report_category_xref (mine_report_definition_id, mine_report_category) values ((SELECT x.mine_report_definition_id from mine_report_definition x where report_name = 'Reclamation and Environmental Protection Program' LIMIT 1), 'GSE') ON CONFLICT DO NOTHING; 
+INSERT INTO mine_report_category_xref (mine_report_definition_id, mine_report_category) values ((SELECT x.mine_report_definition_id from mine_report_definition x where report_name = 'Reclamation and Environmental Protection Program' LIMIT 1), 'H&S') ON CONFLICT DO NOTHING; 
+INSERT INTO mine_report_category_xref (mine_report_definition_id, mine_report_category) values ((SELECT x.mine_report_definition_id from mine_report_definition x where report_name = 'Reclamation and Environmental Protection Program' LIMIT 1), 'GTC') ON CONFLICT DO NOTHING; 
 INSERT INTO mine_report_category_xref (mine_report_definition_id, mine_report_category) values ((SELECT x.mine_report_definition_id from mine_report_definition x where report_name = 'Reclamation and Environmental Protection Program' LIMIT 1), 'GSE') ON CONFLICT DO NOTHING; 
 
 

@@ -12,7 +12,6 @@ CREATE TEMPORARY TABLE tmp_report_definition_compliance(
 	compliance_paragraph character varying(2),
 	compliance_article_id integer
 );
-
 --see jira mds-2661 for original requirements document
 INSERT INTO tmp_report_definition_compliance
 (report_name, due_date_type, due_date_period, compliance_act, compliance_section, compliance_sub_section, compliance_paragraph)
@@ -42,12 +41,11 @@ VALUES
 	('Safety Fuse Procedure','AVA',null, 'HSRCM','8','3','5'), -- H&S
 	('Drilling in Stream/Lake/Wetland Management Plan','AVA',null, 'HSRCM','9','11','1'), -- H&S
 	('Factor of Safety Justification','EVT',null, 'HSRCM','10','1','10'), -- GTC/TSF --PRIVATE, NOT MINESPACE --CIM   
-	('Design Slopes Justification','EVT',null, 'HSRCM','7','9','4'), -- GTC/TSF --PRIVATE, NOT MINESPACE --CIM
+	('Design Slopes Justification','EVT',null, 'HSRCM','10','1','9'), -- GTC/TSF --PRIVATE, NOT MINESPACE --CIM
 	('Issued for Construction Drawings and Quality Assurance/Quality Control Plans','EVT',null, 'HSRCM','10','5','1'), -- GTC/TSF  CIM?
 	('Site Monitoring and Maintenance Program','AVA',null, 'HSRCM','10','6','2'), -- H&S 
 	('Reclamation and Environmental Protection Program','AVA',null, 'HSRCM','10','7','21') -- H&S, GSC, GTC
 ON CONFLICT DO NOTHING;
-
 INSERT INTO public.mine_report_definition
 (report_name, description, due_date_period_months, mine_report_due_date_type, active_ind, create_user, create_timestamp, update_user, update_timestamp)
 select report_name, '', due_date_period, due_date_type, 'true', 'system-mds', now(), 'system-mds', now() from tmp_report_definition_compliance;
