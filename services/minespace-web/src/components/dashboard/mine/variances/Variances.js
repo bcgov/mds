@@ -13,11 +13,6 @@ import {
   addDocumentToVariance,
   updateVariance,
 } from "@common/actionCreators/varianceActionCreator";
-import {
-  fetchMineComplianceCodes,
-  fetchVarianceStatusOptions,
-  fetchVarianceDocumentCategoryOptions,
-} from "@common/actionCreators/staticContentActionCreator";
 import { getVariances } from "@common/selectors/varianceSelectors";
 import {
   getVarianceStatusOptionsHash,
@@ -42,9 +37,6 @@ const propTypes = {
   fetchMineRecordById: PropTypes.func.isRequired,
   updateVariance: PropTypes.func.isRequired,
   fetchVariancesByMine: PropTypes.func.isRequired,
-  fetchMineComplianceCodes: PropTypes.func.isRequired,
-  fetchVarianceStatusOptions: PropTypes.func.isRequired,
-  fetchVarianceDocumentCategoryOptions: PropTypes.func.isRequired,
   complianceCodesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   complianceCodes: CustomPropTypes.options.isRequired,
   varianceStatusOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
@@ -71,9 +63,6 @@ export class Variances extends Component {
         this.setState({ isLoaded: true, mine: this.props.mines[id] });
       });
     });
-    this.props.fetchMineComplianceCodes();
-    this.props.fetchVarianceStatusOptions();
-    this.props.fetchVarianceDocumentCategoryOptions();
   }
 
   handleAddDocuments = (files, varianceGuid) =>
@@ -215,9 +204,6 @@ const mapDispatchToProps = (dispatch) =>
       openModal,
       closeModal,
       fetchVariancesByMine,
-      fetchMineComplianceCodes,
-      fetchVarianceStatusOptions,
-      fetchVarianceDocumentCategoryOptions,
       createVariance,
       updateVariance,
       addDocumentToVariance,
