@@ -21,7 +21,7 @@ class BondDocument(MineDocument):
         bond_document_type_code = FieldTemplate(field=fields.String, one_of='BondDocumentType')
 
     bond_id = db.Column(db.Integer, db.ForeignKey('bond.bond_id'))
-    bond_document_type_code = db.Column(db.String,
-                                        db.ForeignKey('bond_document_type.bond_document_type_code'))
+    bond_document_type_code = db.Column(
+        db.String, db.ForeignKey('bond_document_type.bond_document_type_code'), nullable=False)
 
     bond = db.relationship('Bond', lazy='joined')
