@@ -872,10 +872,10 @@ INSERT INTO bond_document_type(
     )
 VALUES
     ('SRB', 'Scan of Reclamation Security Bond', 'system-mds', 'system-mds'),
-    ('RSF', 'Release of Security Form (signed by inspector)', 'system-mds', 'system-mds'),
-    ('RSL', 'Release of Security Letter (my letter to the bank or proponent)', 'system-mds', 'system-mds'),
-    ('CSF', 'Confiscation of Security Form (signed by inspector)', 'system-mds', 'system-mds'),
-    ('CSL', 'Confiscation of Security Letter (my letter to bank or proponent)', 'system-mds', 'system-mds'),
+    ('RSF', 'Release of Security Form', 'system-mds', 'system-mds'),
+    ('RSL', 'Release of Security Letter', 'system-mds', 'system-mds'),
+    ('CSF', 'Confiscation of Security Form', 'system-mds', 'system-mds'),
+    ('CSL', 'Confiscation of Security Letter', 'system-mds', 'system-mds'),
     ('REL', 'Reminder Letter', 'system-mds', 'system-mds'),
     ('AKL', 'Acknowledgement Letter', 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;

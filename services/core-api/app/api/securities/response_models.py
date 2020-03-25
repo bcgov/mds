@@ -45,3 +45,8 @@ BOND_STATUS = api.model('BondStatus', {
 })
 
 BOND_TYPE = api.model('BondType', {'bond_type_code': fields.String, 'description': fields.String})
+
+BOND_DOCUMENT_TYPE = api.model('BondDocumentType', {
+    'bond_document_type_code': fields.String,
+    'description': fields.String
+})
