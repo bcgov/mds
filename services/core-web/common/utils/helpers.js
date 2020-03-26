@@ -262,8 +262,7 @@ export const flattenObject = (ob) => {
 
 export const formatMoney = (value) => {
   const number = Number(value);
-  // force view to show 'N/A' for null values instead of $0.00
-  return value === null
+  return number === NaN
     ? null
     : number.toLocaleString("en-US", { style: "currency", currency: "USD" });
 };

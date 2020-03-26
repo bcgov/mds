@@ -3799,4 +3799,10 @@ export const BONDS = {
     },
   ],
 };
+
+export const BOND_TOTALS = {
+  amountHeld: 300,
+  count: 1,
+};
+
 export const BOND_RESPONSE = { records: BONDS };
