@@ -191,3 +191,4 @@ export const NRIS_DOCUMENT_FILE_GET_URL = (externalId, inspectionId, token) =>
 
 export const MINE_BONDS = (mineGuid) => `/bonds?mine_guid=${mineGuid}`;
 export const BOND = (bondGuid) => (bondGuid ? `/bonds/${bondGuid}` : "/bonds");
+export const BOND_DOCUMENTS = (mineGuid) => `/bonds/${mineGuid}/bonds/documents`;

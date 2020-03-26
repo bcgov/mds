@@ -5,7 +5,8 @@ from flask import Response, current_app
 from app.config import Config
 
 ALLOWED_DOCUMENT_CATEGORIES = [
-    'tailings', 'permits', 'variances', 'incidents', 'reports', 'mine_party_appts', 'noticeofwork'
+    'tailings', 'permits', 'variances', 'incidents', 'reports', 'mine_party_appts', 'noticeofwork',
+    'bonds'
 ]
 
 
