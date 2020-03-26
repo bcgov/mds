@@ -76,3 +76,53 @@
     background-color: $violet;
   }
 }
+
+// needed to set a fixed width to the cards on the compliance and securities Tab,
+// opted to create a custom class vs interfering with the default style of cards that do not need a set width
+// cards are full responsive, regardless of the amount on view.
+.content--card {
+  width: 310px;
+  height: 100%;
+  text-align: center;
+  width: 310px;
+  margin: 20px 10px;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+
+  @include tablet {
+    width: 100% !important;
+  }
+
+  &--head {
+    background-color: white;
+    line-height: 85px;
+    height: 85px;
+
+    &--content {
+      vertical-align: middle;
+    }
+  }
+  &--body {
+    height: 60px;
+    background-color: $card-body-background-color;
+    width: inherit;
+    display: table;
+
+    h4 {
+      display: table-cell;
+      vertical-align: middle;
+      padding: 0 10px;
+    }
+  }
+}
+
+.dashboard--cards {
+  @include flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  margin: 0 auto;
+  max-width: 1450px;
+
+  &::after {
+    justify-content: start;
+  }
+}

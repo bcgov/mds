@@ -2,11 +2,10 @@ import sys
 import json
 import os
 
-from flask import Flask, current_app
+from flask import Flask, current_app, request
 from flask_cors import CORS
 from flask_restplus import Resource
 from flask_restplus.apidoc import apidoc
-from flask_compress import Compress
 from flask_migrate import MigrateCommand
 
 from flask_jwt_oidc.exceptions import AuthError
@@ -33,6 +32,16 @@ def create_app(config_object=None):
     register_routes(app)
     register_commands(app)
 
+    @api.errorhandler(Exception)
+    def default_error_handler(error):
+        app.logger.error(str(error))
+        app.logger.error('REQUEST\n' + str(request))
+        app.logger.error('HEADERS\n ' + str(request.headers))
+        return {
+            'status': getattr(error, 'code', 500),
+            'message': str(error),
+        }, getattr(error, 'code', 500)
+
     return app
 
 
@@ -52,6 +61,5 @@ def register_extensions(app):
     migrate.init_app(app, db)
 
     CORS(app)
-    Compress(app)
 
     return None

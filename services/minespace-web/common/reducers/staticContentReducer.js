@@ -34,7 +34,10 @@ const initialState = {
   noticeOfWorkApplicationProgressStatusCodeOptions: [],
   noticeOfWorkApplicationPermitTypeOptions: [],
   noticeOfWorkApplicationReviewOptions: [],
+  bondStatusOptions: [],
+  bondTypeOptions: [],
 };
+
 export const staticContentReducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.STORE_BULK_STATIC_CONTENT:
@@ -93,6 +96,8 @@ export const getNoticeOfWorkApplicationPermitTypeOptions = (state) =>
   state[STATIC_CONTENT].noticeOfWorkApplicationPermitTypeOptions;
 export const getNoticeOfWorkApplicationReviewOptions = (state) =>
   state[STATIC_CONTENT].noticeOfWorkApplicationReviewOptions;
+export const getBondTypeOptions = (state) => state[STATIC_CONTENT].bondTypeOptions;
+export const getBondStatusOptions = (state) => state[STATIC_CONTENT].bondStatusOptions;
 
 const isStaticContentLoaded = (state) =>
   Object.keys(state)

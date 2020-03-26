@@ -75,6 +75,9 @@ class MineStatusFactory(BaseFactory):
     class Meta:
         model = MineStatus
 
+    class Params:
+        operating = factory.Trait(mine_status_xref = factory.LazyFunction(RandomOperatingMineStatusXref))
+
     mine_status_guid = GUID
     effective_date = TODAY
     mine_status_xref = factory.LazyFunction(RandomMineStatusXref)
@@ -477,6 +480,9 @@ class MineFactory(BaseFactory):
             mine_incidents=0,
             mine_variance=0,
             mine_reports=0)
+        operating = factory.Trait(
+            mine_status = factory.RelatedFactory(MineStatusFactory, 'mine', operating=True)
+        )
 
     mine_guid = GUID
     mine_no = factory.Faker('ean', length=8)
@@ -577,7 +583,7 @@ class PermitFactory(BaseFactory):
             return
 
         if not isinstance(extracted, int):
-            extracted = random.randint(0, 3)
+            extracted = random.randint(1, 3)
 
         for n in range(extracted):
             BondFactory(permits=obj, **kwargs)
@@ -598,7 +604,7 @@ class PermitAmendmentFactory(BaseFactory):
     permit_id = factory.SelfAttribute('permit.permit_id')
     received_date = TODAY
     issue_date = TODAY
-    authorization_end_date = factory.Faker('future_datetime', end_date='+30d')
+    authorization_end_date = factory.Faker('date_between', start_date='+31d', end_date='+90d')
     permit_amendment_status_code = 'ACT'
     permit_amendment_type_code = 'AMD'
     description = factory.Faker('sentence', nb_words=6, variable_nb_words=True)
@@ -623,7 +629,6 @@ class BondFactory(BaseFactory):
 
     class Params:
         payer = factory.SubFactory(PartyFactory, company=True)
-        institution = factory.SubFactory(PartyFactory, company=True)
 
     bond_guid = GUID
     amount = factory.Faker(
@@ -631,5 +636,13 @@ class BondFactory(BaseFactory):
     bond_type_code = factory.LazyFunction(RandomBondTypeCode)
     bond_status_code = factory.LazyFunction(RandomBondStatusCode)
     payer_party_guid = factory.SelfAttribute('payer.party_guid')
-    institution_party_guid = factory.SelfAttribute('institution.party_guid')
+    institution_name = factory.Faker('company')
+    institution_street = factory.Faker('street_address')
+    institution_city = factory.Faker('city')
+    institution_province = factory.LazyFunction(RandomSubDivisionCode)
+    institution_postal_code = factory.Faker(
+        'bothify', text='?#?#?#', letters='ABCDEFGHIJKLMNOPQRSTUVWXYZ')
+    note = factory.Faker(
+        'paragraph', nb_sentences=3, variable_nb_sentences=True, ext_word_list=None)
+    issue_date = TODAY
     reference_number = str(random.randint(1, 9999999))
