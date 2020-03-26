@@ -53,7 +53,7 @@ class BondListResource(Resource, UserMixin):
         if permit is None:
             raise NotFound('No Permit found with the guid provided.')
 
-        bond.permits = permit
+        bond.permit = permit
 
         for doc in bond.documents:
             doc.mine_guid = permit.mine_guid
@@ -86,7 +86,7 @@ class BondResource(Resource, UserMixin):
             raise BadRequest(e)
 
         for doc in bond.documents:
-            doc.mine_guid = bond.permits.mine_guid
+            doc.mine_guid = bond.permit.mine_guid
 
         bond.save()
 
