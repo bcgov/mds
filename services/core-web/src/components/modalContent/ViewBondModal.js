@@ -7,8 +7,8 @@ import {
   getBondTypeOptionsHash,
   getBondStatusOptionsHash,
 } from "@common/selectors/staticContentSelectors";
-import BondDocumentsTable from "@/components/mine/Securities/BondDocumentsTable";
 import * as Strings from "@common/constants/strings";
+import BondDocumentsTable from "@/components/mine/Securities/BondDocumentsTable";
 import CustomPropTypes from "@/customPropTypes";
 import Address from "@/components/common/Address";
 
@@ -26,6 +26,7 @@ export const ViewBondModal = (props) => {
     sub_division_code: props.bond.institution_province,
     post_code: props.bond.institution_postal_code,
   };
+
   return (
     <div>
       <div className="inline-flex between block-tablet">
