@@ -9,4 +9,4 @@ CREATE TABLE bond_document_type(
 );
 
 ALTER TABLE bond_document_type OWNER TO mds;
-COMMENT ON TABLE bond_document_type IS 'Contains a list of documents related to bonds used by the Ministry. Bond document types include; Scan of Reclamation Security Bond, Release of Security Form, Release of Security Letter, Confiscation of Security Form, Confiscation of Security Letter, Reminder Letter, Acknowledgement Letter.';
+COMMENT ON TABLE bond_document_type IS 'Contains a list of documents related to bonds used by the Ministry. Examples of Bond document types may include; Scan of Reclamation Security Bond, Release of Security Form, Confiscation of Security Form.';

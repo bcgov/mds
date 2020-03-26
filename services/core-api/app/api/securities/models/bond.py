@@ -38,7 +38,7 @@ class Bond(Base, AuditMixin):
     project_id = db.Column(db.String)
 
     payer = db.relationship('Party', lazy='joined')
-    permits = db.relationship('Permit', uselist=False, lazy='joined', secondary='bond_permit_xref')
+    permit = db.relationship('Permit', uselist=False, lazy='joined', secondary='bond_permit_xref')
     documents = db.relationship('BondDocument', lazy='select')
 
     def __repr__(self):
