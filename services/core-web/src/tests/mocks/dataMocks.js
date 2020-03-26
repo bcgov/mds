@@ -3756,6 +3756,26 @@ export const BOND_STATUS_OPTIONS_HASH = {
   ACT: "Active",
 };
 
+export const DROPDOWN_BOND_DOCUMENT_TYPE_OPTIONS = [
+  { value: "SRB", label: "Scan of Reclamation Security Bond" },
+  { value: "RSF", label: "Release of Security Form" },
+  { value: "RSL", label: "Release of Security Letter" },
+  { value: "CSF", label: "Confiscation of Security Form" },
+  { value: "CSL", label: "Confiscation of Security Letter" },
+  { value: "REL", label: "Reminder Letter" },
+  { value: "AKL", label: "Acknowledgement Letter" },
+];
+
+export const BOND_DOCUMENT_TYPE_OPTIONS_HASH = {
+  AKL: "Acknowledgement Letter",
+  REL: "Reminder Letter",
+  CSL: "Confiscation of Security Letter",
+  CSF: "Confiscation of Security Form",
+  RSL: "Release of Security Letter",
+  RSF: "Release of Security Form",
+  SRB: "Scan of Reclamation Security Bond",
+};
+
 export const BONDS = {
   records: [
     {

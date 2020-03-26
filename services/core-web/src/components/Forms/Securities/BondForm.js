@@ -284,7 +284,6 @@ export class BondForm extends Component {
             onRemoveFile={this.onRemoveFile}
             allowRevert
             allowMultiple
-            onChange={(v) => console.log("V:\n", v)}
           />
         </Form.Item>
         <div className="right center-mobile">
