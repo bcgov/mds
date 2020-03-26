@@ -12,11 +12,12 @@ CREATE TEMPORARY TABLE tmp_report_definition_compliance(
 	compliance_paragraph character varying(2),
 	compliance_article_id integer
 );
+
 --see jira mds-2661 for original requirements document
 INSERT INTO tmp_report_definition_compliance
 (report_name, due_date_type, due_date_period, compliance_act, compliance_section, compliance_sub_section, compliance_paragraph)
 VALUES 
-	('Monthly Medical Aid Report','AVA',1, 'HSRCM','1','97','1'), -- H&S
+	('Monthly Medical Aid Report','AVA',1, 'HSRCM','1','7','1'), -- H&S
 	('Monthly First Aid Report','AVA',1, 'HSRCM','1','9','3'),-- H&S
 	('Procedures for the Use, Handling and Disposal of Asbestos or Materials Containing Asbestos','AVA',null, 'HSRCM','2','3','1'),-- H&S CIM?
 	('Industrial Hygiene Standards for Uranium Drill Sites','AVA',null, 'HSRCM','2','3','11'), --H&S CIM?
@@ -46,6 +47,7 @@ VALUES
 	('Site Monitoring and Maintenance Program','AVA',null, 'HSRCM','10','6','2'), -- H&S 
 	('Reclamation and Environmental Protection Program','AVA',null, 'HSRCM','10','7','21') -- H&S, GSC, GTC
 ON CONFLICT DO NOTHING;
+
 INSERT INTO public.mine_report_definition
 (report_name, description, due_date_period_months, mine_report_due_date_type, active_ind, create_user, create_timestamp, update_user, update_timestamp)
 select report_name, '', due_date_period, due_date_type, 'true', 'system-mds', now(), 'system-mds', now() from tmp_report_definition_compliance;
