@@ -9,15 +9,15 @@ import DocumentTable from "@/components/common/DocumentTable";
 const propTypes = {
   variance: CustomPropTypes.variance.isRequired,
   mineName: PropTypes.string.isRequired,
-  removeDocument: PropTypes.func,
   complianceCodesHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  varianceDocumentCategoryOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   isViewOnly: PropTypes.bool,
-  documentCategoryOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  removeDocument: PropTypes.func,
 };
 
 const defaultProps = {
-  removeDocument: () => {},
   isViewOnly: false,
+  removeDocument: () => {},
 };
 
 export const VarianceDetails = (props) => (
@@ -40,17 +40,17 @@ export const VarianceDetails = (props) => (
         </p>
       </div>
       <div className="inline-flex padding-small">
-        <p className="field-title">Submission date</p>
+        <p className="field-title">Submission Date</p>
         <p>{formatDate(props.variance.received_date) || Strings.EMPTY_FIELD}</p>
       </div>
       {props.isViewOnly && (
         <div>
           <div className="inline-flex padding-small">
-            <p className="field-title">Issue date</p>
+            <p className="field-title">Issue Date</p>
             <p>{formatDate(props.variance.issue_date) || Strings.EMPTY_FIELD}</p>
           </div>
           <div className="inline-flex padding-small">
-            <p className="field-title">Expiry date</p>
+            <p className="field-title">Expiry Date</p>
             <p>{formatDate(props.variance.expiry_date) || Strings.EMPTY_FIELD}</p>
           </div>
         </div>
@@ -61,18 +61,31 @@ export const VarianceDetails = (props) => (
       </div>
       {props.isViewOnly && (
         <div className="inline-flex padding-small">
-          <p className="field-title">Affected parties have been notified</p>
+          <p className="field-title">Affected Parties Have Been Notified</p>
           <p>{props.variance.parties_notified_ind ? "Yes" : "No"}</p>
         </div>
       )}
     </div>
     <br />
-    <h5>documents</h5>
+    <h5>Documents</h5>
     <DocumentTable
-      documents={props.variance.documents}
+      documents={(props.variance.documents || []).reduce(
+        (docs, doc) => [
+          {
+            key: doc.mine_document_guid,
+            mine_document_guid: doc.mine_document_guid,
+            document_manager_guid: doc.document_manager_guid,
+            name: doc.document_name,
+            category:
+              props.varianceDocumentCategoryOptionsHash[doc.variance_document_category_code],
+            uploaded: doc.created_at,
+          },
+          ...docs,
+        ],
+        []
+      )}
       removeDocument={props.removeDocument}
       isViewOnly={props.isViewOnly}
-      documentCategoryOptionsHash={props.documentCategoryOptionsHash}
     />
   </div>
 );

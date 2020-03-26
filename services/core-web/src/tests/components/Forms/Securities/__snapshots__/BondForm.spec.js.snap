@@ -46,7 +46,6 @@ exports[`BondForm renders properly 1`] = `
       >
         <Field
           component={[Function]}
-          data={Array []}
           id="bond_type_code"
           label="Bond Type*"
           name="bond_type_code"
@@ -300,9 +299,11 @@ exports[`BondForm renders properly 1`] = `
     <Col
       xs={24}
     >
-      <Connect(BondDocumentsTable)
+      <DocumentTable
         documents={Array []}
+        isViewOnly={false}
         removeDocument={[Function]}
+        tableEmptyMessage="There are no attached documents."
       />
     </Col>
   </Row>

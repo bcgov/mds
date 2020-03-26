@@ -24,7 +24,6 @@ exports[`AddBondModal renders properly 1`] = `
         "reference_number": "",
       }
     }
-    bondTypeOptions={Array []}
     closeModal={[MockFunction]}
     destroyOnUnmount={true}
     enableReinitialize={false}
