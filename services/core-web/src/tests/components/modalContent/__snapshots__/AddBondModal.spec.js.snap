@@ -3,6 +3,27 @@
 exports[`AddBondModal renders properly 1`] = `
 <div>
   <ReduxForm
+    bond={
+      Object {
+        "amount": 300,
+        "bond_guid": "erjvnaqekrj",
+        "bond_id": 1,
+        "bond_status_code": "ACT",
+        "bond_type_code": "CAS",
+        "documents": Array [],
+        "institution_city": null,
+        "institution_name": null,
+        "institution_postal_code": null,
+        "institution_province": null,
+        "institution_street": null,
+        "issue_date": "2018-10-16",
+        "note": null,
+        "payer": Object {},
+        "payer_party_guid": "sethwrt",
+        "permit_guid": "463236",
+        "reference_number": "",
+      }
+    }
     bondTypeOptions={Array []}
     closeModal={[MockFunction]}
     destroyOnUnmount={true}
@@ -17,6 +38,7 @@ exports[`AddBondModal renders properly 1`] = `
         "bond_id": 1,
         "bond_status_code": "ACT",
         "bond_type_code": "CAS",
+        "documents": Array [],
         "institution_city": null,
         "institution_name": null,
         "institution_postal_code": null,

@@ -29,7 +29,6 @@ const defaultProps = {
 
 export const AddBondModal = (props) => {
   const handleAddBond = (values) => {
-    console.log("AddBondModal handleAddBond values:\n", values);
     return props.editBond
       ? props.onSubmit(values, props.bond.bond_guid)
       : props.onSubmit(values, props.permitGuid);

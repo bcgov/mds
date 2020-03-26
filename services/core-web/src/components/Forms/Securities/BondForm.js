@@ -17,7 +17,7 @@ import RenderDate from "@/components/common/RenderDate";
 import PartySelectField from "@/components/common/PartySelectField";
 import * as FORM from "@/constants/forms";
 import RenderSelect from "@/components/common/RenderSelect";
-import DocumentTable from "@/components/common/DocumentTable";
+import BondDocumentsTable from "@/components/mine/Securities/BondDocumentsTable";
 import CustomPropTypes from "@/customPropTypes";
 import FileUpload from "@/components/common/FileUpload";
 import { BOND_DOCUMENTS } from "@common/constants/API";
@@ -42,14 +42,12 @@ export class BondForm extends Component {
   };
 
   onFileLoad = (document_name, document_manager_guid) => {
-    console.log("onFileLoad:\n", document_name, document_manager_guid);
     this.setState((prevState) => ({
       uploadedFiles: [{ document_manager_guid, document_name }, ...prevState.uploadedFiles],
     }));
   };
 
   onRemoveFile = (error, file) => {
-    console.log("onRemoveFile:\n", error, file);
     this.setState((prevState) => ({
       uploadedFiles: prevState.uploadedFiles.filter(
         (doc) => doc.document_manager_guid !== file.serverId
@@ -59,8 +57,6 @@ export class BondForm extends Component {
 
   onRemoveExistingFile = (event, mineDocumentGuid) => {
     event.preventDefault();
-    console.log("event", event);
-    console.log("mineDocumentGuid:", mineDocumentGuid);
     this.setState((prevState) => ({
       filesToDelete: [mineDocumentGuid, ...prevState.filesToDelete],
     }));
@@ -72,20 +68,26 @@ export class BondForm extends Component {
       <Form
         layout="vertical"
         onSubmit={this.props.handleSubmit((values) => {
-          console.log("VALUES", values);
-
-          const bond_document_type_code = values.bond_document_type_code;
-          console.log("bondDocumentType", bond_document_type_code);
-          delete values.bond_document_type_code;
+          // Set the bond document type code for each uploaded document to the selected value.
           this.state.uploadedFiles.map(
-            (doc) => (doc.bond_document_type_code = bond_document_type_code)
+            (doc) => (doc.bond_document_type_code = values.bond_document_type_code)
           );
-          return this.props.onSubmit({
+
+          // Delete this value from the bond, as it's not a valid property.
+          delete values.bond_document_type_code;
+
+          // Create the bond's new document list by removing deleted documents and adding uploaded documents.
+          const currentDocuments = this.props.bond.documents || [];
+          const newDocuments = currentDocuments
+            .filter((doc) => !this.state.filesToDelete.includes(doc.mine_document_guid))
+            .concat(this.state.uploadedFiles);
+
+          // Create the new bond and pass it to the form's submit method.
+          const bond = {
             ...values,
-            documents: this.props.bond.documents
-              .filter((doc) => !this.state.filesToDelete.includes(doc.mine_document_guid))
-              .concat(this.state.uploadedFiles),
-          });
+            documents: newDocuments,
+          };
+          return this.props.onSubmit(bond);
         })}
       >
         <Row gutter={16}>
@@ -237,13 +239,15 @@ export class BondForm extends Component {
         </Row>
         <Row gutter={16}>
           <Col xs={24}>
-            <DocumentTable
-              documents={this.props.bond.documents.filter(
-                (doc) => !this.state.filesToDelete.includes(doc.mine_document_guid)
-              )}
+            <BondDocumentsTable
+              documents={
+                this.props.bond.documents
+                  ? this.props.bond.documents.filter(
+                      (doc) => !this.state.filesToDelete.includes(doc.mine_document_guid)
+                    )
+                  : []
+              }
               removeDocument={this.onRemoveExistingFile}
-              isViewOnly={this.props.isViewOnly}
-              documentCategoryOptionsHash={this.props.documentCategoryOptionsHash}
             />
           </Col>
         </Row>

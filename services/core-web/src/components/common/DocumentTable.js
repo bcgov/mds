@@ -9,7 +9,7 @@ import CustomPropTypes from "@/customPropTypes";
 import LinkButton from "@/components/common/LinkButton";
 
 const propTypes = {
-  documents: PropTypes.arrayOf(CustomPropTypes.genericMineDocumentData),
+  documents: PropTypes.arrayOf(CustomPropTypes.mineDocument),
   removeDocument: PropTypes.func,
   isViewOnly: PropTypes.bool.isRequired,
   documentCategoryOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
@@ -83,7 +83,7 @@ export class DocumentTable extends Component {
           align="left"
           pagination={false}
           columns={columns}
-          locale={{ emptyText: "No documents have been uploaded." }}
+          locale={{ emptyText: "This variance does not contain any documents." }}
           dataSource={this.transformRowData(this.props.documents)}
         />
       </div>

@@ -7,11 +7,3 @@ export const mineDocument = shape({
   document_name: PropTypes.string,
   active_ind: PropTypes.string,
 });
-
-export const genericMineDocumentData = shape({
-  mine_document_guid: PropTypes.string.isRequired,
-  document_manager_guid: PropTypes.string,
-  name: PropTypes.string,
-  category: PropTypes.string,
-  upload_date: PropTypes.string,
-});

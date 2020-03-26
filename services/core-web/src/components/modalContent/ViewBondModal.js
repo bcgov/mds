@@ -7,6 +7,7 @@ import {
   getBondTypeOptionsHash,
   getBondStatusOptionsHash,
 } from "@common/selectors/staticContentSelectors";
+import BondDocumentsTable from "@/components/mine/Securities/BondDocumentsTable";
 import * as Strings from "@common/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
 import Address from "@/components/common/Address";
@@ -70,6 +71,13 @@ export const ViewBondModal = (props) => {
         <div className="inline-flex padding-small">
           <p className="field-title">Notes</p>
           <p>{props.bond.note || Strings.EMPTY_FIELD}</p>
+        </div>
+      </div>
+      <br />
+      <div className="between block-tablet">
+        <div className="flex-tablet">
+          <p className="field-title">Documents</p>
+          <BondDocumentsTable documents={props.bond.documents} isViewOnly />
         </div>
       </div>
       <br />

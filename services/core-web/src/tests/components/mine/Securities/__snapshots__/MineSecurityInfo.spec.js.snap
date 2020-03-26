@@ -13,7 +13,7 @@ exports[`MineSecurityInfo renders properly 1`] = `
       className="dashboard--cards"
     >
       <MineDashboardContentCard
-        content="NaN"
+        content="$NaN"
         icon={null}
         title="Total Security Held"
       />
@@ -34,6 +34,7 @@ exports[`MineSecurityInfo renders properly 1`] = `
             "bond_id": 1,
             "bond_status_code": "ACT",
             "bond_type_code": "CAS",
+            "documents": Array [],
             "institution_city": null,
             "institution_name": null,
             "institution_postal_code": null,

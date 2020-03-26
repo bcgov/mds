@@ -140,6 +140,24 @@ exports[`ViewBondModal renders properly 1`] = `
   </div>
   <br />
   <div
+    className="between block-tablet"
+  >
+    <div
+      className="flex-tablet"
+    >
+      <p
+        className="field-title"
+      >
+        Documents
+      </p>
+      <Connect(BondDocumentsTable)
+        documents={Array []}
+        isViewOnly={true}
+      />
+    </div>
+  </div>
+  <br />
+  <div
     className="right center-mobile"
   >
     <Button

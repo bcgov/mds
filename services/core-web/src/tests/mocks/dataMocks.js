@@ -3713,6 +3713,15 @@ export const BULK_STATIC_CONTENT_RESPONSE = {
     { bond_type_code: "SBO", description: "Surety Bond" },
     { bond_type_code: "SAG", description: "Safekeeping Agreement" },
   ],
+  bondDocumentTypeOptions: [
+    { bond_document_type_code: "SRB", description: "Scan of Reclamation Security Bond" },
+    { bond_document_type_code: "RSF", description: "Release of Security Form" },
+    { bond_document_type_code: "RSL", description: "Release of Security Letter" },
+    { bond_document_type_code: "CSF", description: "Confiscation of Security Form" },
+    { bond_document_type_code: "CSL", description: "Confiscation of Security Letter" },
+    { bond_document_type_code: "REL", description: "Reminder Letter" },
+    { bond_document_type_code: "AKL", description: "Acknowledgement Letter" },
+  ],
 };
 
 export const DROPDOWN_BOND_TYPE_OPTIONS = [
@@ -3766,6 +3775,7 @@ export const BONDS = {
       note: null,
       payer: {},
       permit_guid: "463236",
+      documents: [],
     },
   ],
 };

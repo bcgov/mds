@@ -88,6 +88,7 @@ export class MineSecurityInfo extends Component {
         onSubmit: this.editBond,
         editBond: true,
         bond,
+        permitGuid: bond.permit_guid,
         mineGuid: this.props.mineGuid,
       },
       width: "50vw",
