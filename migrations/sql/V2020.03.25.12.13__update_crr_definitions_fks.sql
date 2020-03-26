@@ -17,7 +17,7 @@ CREATE TEMPORARY TABLE tmp_report_definition_compliance(
 INSERT INTO tmp_report_definition_compliance
 (report_name, due_date_type, due_date_period, compliance_act, compliance_section, compliance_sub_section, compliance_paragraph)
 VALUES 
-	('Monthly Medical Aid Report','AVA',1, 'HSRCM','1','97','1'), -- H&S
+	('Monthly Medical Aid Report','AVA',1, 'HSRCM','1','7','1'), -- H&S
 	('Monthly First Aid Report','AVA',1, 'HSRCM','1','9','3'),-- H&S
 	('Procedures for the Use, Handling and Disposal of Asbestos or Materials Containing Asbestos','AVA',null, 'HSRCM','2','3','1'),-- H&S CIM?
 	('Industrial Hygiene Standards for Uranium Drill Sites','AVA',null, 'HSRCM','2','3','11'), --H&S CIM?
