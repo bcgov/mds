@@ -28,11 +28,10 @@ const defaultProps = {
 };
 
 export const AddBondModal = (props) => {
-  const handleAddBond = (values) => {
-    return props.editBond
+  const handleAddBond = (values) =>
+    props.editBond
       ? props.onSubmit(values, props.bond.bond_guid)
       : props.onSubmit(values, props.permitGuid);
-  };
 
   return (
     <div>

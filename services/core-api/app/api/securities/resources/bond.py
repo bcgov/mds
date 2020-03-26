@@ -80,7 +80,6 @@ class BondResource(Resource, UserMixin):
     @api.expect(BOND)
     @api.marshal_with(BOND, code=200)
     def put(self, bond_guid):
-        current_app.logger.debug("loading bond")
         try:
             bond = Bond._schema().load(request.json, instance=Bond.find_by_bond_guid(bond_guid))
         except MarshmallowError as e:
