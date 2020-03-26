@@ -36,7 +36,7 @@ BOND = api.model(
         'note': fields.String,
         'payer': fields.Nested(BOND_PARTY),
         'project_id': fields.String,
-        'permit_guid': fields.String(attribute='permits.permit_guid'),
+        'permit_guid': fields.String(attribute='permit.permit_guid'),
         'documents': fields.List(fields.Nested(BOND_DOCUMENT_MODEL))
     })
 
