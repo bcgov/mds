@@ -360,7 +360,6 @@ exports[`BondForm renders properly 1`] = `
       component={[Function]}
       id="documents"
       name="documents"
-      onChange={[Function]}
       onFileLoad={[Function]}
       onRemoveFile={[Function]}
       uploadUrl="/bonds/undefined/bonds/documents"
