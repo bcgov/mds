@@ -7,3 +7,12 @@ export const mineDocument = shape({
   document_name: PropTypes.string,
   active_ind: PropTypes.string,
 });
+
+export const documentRecord = shape({
+  key: PropTypes.string.isRequired,
+  mine_document_guid: PropTypes.string.isRequired,
+  document_manager_guid: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  category: PropTypes.string.isRequired,
+  uploaded: PropTypes.string.isRequired,
+});

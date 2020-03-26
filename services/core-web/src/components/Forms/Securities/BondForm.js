@@ -18,7 +18,7 @@ import RenderDate from "@/components/common/RenderDate";
 import PartySelectField from "@/components/common/PartySelectField";
 import * as FORM from "@/constants/forms";
 import RenderSelect from "@/components/common/RenderSelect";
-import BondDocumentsTable from "@/components/mine/Securities/BondDocumentsTable";
+import DocumentTable from "@/components/common/DocumentTable";
 import CustomPropTypes from "@/customPropTypes";
 import FileUpload from "@/components/common/FileUpload";
 import { DOCUMENT, EXCEL } from "@/constants/fileTypes";
@@ -32,8 +32,9 @@ const propTypes = {
   bond: CustomPropTypes.bond.isRequired,
   mineGuid: PropTypes.string.isRequired,
   provinceOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
-  bondTypeOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
+  bondTypeDropDownOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
   bondDocumentTypeDropDownOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
+  bondDocumentTypeOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
 export class BondForm extends Component {
@@ -65,6 +66,27 @@ export class BondForm extends Component {
 
   render() {
     const filesUploaded = this.state.uploadedFiles.length >= 1;
+
+    const documentTableRecords = (this.props.bond.documents
+      ? this.props.bond.documents.filter(
+          (doc) => !this.state.filesToDelete.includes(doc.mine_document_guid)
+        )
+      : []
+    ).reduce(
+      (docs, doc) => [
+        {
+          key: doc.mine_document_guid,
+          mine_document_guid: doc.mine_document_guid,
+          document_manager_guid: doc.document_manager_guid,
+          name: doc.document_name,
+          category: this.props.bondDocumentTypeOptionsHash[doc.bond_document_type_code],
+          uploaded: doc.upload_date,
+        },
+        ...docs,
+      ],
+      []
+    );
+
     return (
       <Form
         layout="vertical"
@@ -113,7 +135,7 @@ export class BondForm extends Component {
                 name="bond_type_code"
                 label="Bond Type*"
                 component={RenderSelect}
-                data={this.props.bondTypeOptions}
+                data={this.props.bondTypeDropDownOptions}
                 validate={[required]}
               />
             </Form.Item>
@@ -242,14 +264,8 @@ export class BondForm extends Component {
         </Row>
         <Row gutter={16}>
           <Col xs={24}>
-            <BondDocumentsTable
-              documents={
-                this.props.bond.documents
-                  ? this.props.bond.documents.filter(
-                      (doc) => !this.state.filesToDelete.includes(doc.mine_document_guid)
-                    )
-                  : []
-              }
+            <DocumentTable
+              documents={documentTableRecords}
               removeDocument={this.onRemoveExistingFile}
             />
           </Col>

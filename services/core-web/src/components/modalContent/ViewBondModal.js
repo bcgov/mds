@@ -6,16 +6,18 @@ import { formatDate, formatMoney } from "@common/utils/helpers";
 import {
   getBondTypeOptionsHash,
   getBondStatusOptionsHash,
+  getBondDocumentTypeOptionsHash,
 } from "@common/selectors/staticContentSelectors";
 import * as Strings from "@common/constants/strings";
-import BondDocumentsTable from "@/components/mine/Securities/BondDocumentsTable";
+import DocumentTable from "@/components/common/DocumentTable";
 import CustomPropTypes from "@/customPropTypes";
 import Address from "@/components/common/Address";
 
 const propTypes = {
   closeModal: PropTypes.func.isRequired,
   bondTypeOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
-  statusTypeOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  bondStatusOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  bondDocumentTypeOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   bond: CustomPropTypes.bond.isRequired,
 };
 
@@ -27,6 +29,21 @@ export const ViewBondModal = (props) => {
     post_code: props.bond.institution_postal_code,
   };
 
+  const documentTableRecords = (props.bond.documents || []).reduce(
+    (docs, doc) => [
+      {
+        key: doc.mine_document_guid,
+        mine_document_guid: doc.mine_document_guid,
+        document_manager_guid: doc.document_manager_guid,
+        name: doc.document_name,
+        category: props.bondDocumentTypeOptionsHash[doc.bond_document_type_code],
+        uploaded: doc.upload_date,
+      },
+      ...docs,
+    ],
+    []
+  );
+
   return (
     <div>
       <div className="inline-flex between block-tablet">
@@ -36,7 +53,7 @@ export const ViewBondModal = (props) => {
         </div>
         <div className="flex-tablet">
           <p className="field-title">Status</p>
-          <p>{props.statusTypeOptionsHash[props.bond.bond_status_code] || Strings.EMPTY_FIELD}</p>
+          <p>{props.bondStatusOptionsHash[props.bond.bond_status_code] || Strings.EMPTY_FIELD}</p>
         </div>
       </div>
       <br />
@@ -78,7 +95,7 @@ export const ViewBondModal = (props) => {
       <div className="between block-tablet">
         <div className="flex-tablet">
           <p className="field-title">Documents</p>
-          <BondDocumentsTable documents={props.bond.documents} isViewOnly />
+          <DocumentTable documents={documentTableRecords} isViewOnly />
         </div>
       </div>
       <br />
@@ -95,7 +112,8 @@ ViewBondModal.propTypes = propTypes;
 
 const mapStateToProps = (state) => ({
   bondTypeOptionsHash: getBondTypeOptionsHash(state),
-  statusTypeOptionsHash: getBondStatusOptionsHash(state),
+  bondStatusOptionsHash: getBondStatusOptionsHash(state),
+  bondDocumentTypeOptionsHash: getBondDocumentTypeOptionsHash(state),
 });
 
 export default connect(mapStateToProps)(ViewBondModal);
