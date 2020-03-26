@@ -30,6 +30,7 @@ const defaultProps = {
   props: {
     title: "",
     onSubmit: () => {},
+    afterClose: () => {},
   },
   content: () => {},
 };
@@ -122,7 +123,4 @@ const mapDispatchToProps = (dispatch) =>
 ModalWrapper.propTypes = propTypes;
 ModalWrapper.defaultProps = defaultProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ModalWrapper);
+export default connect(mapStateToProps, mapDispatchToProps)(ModalWrapper);

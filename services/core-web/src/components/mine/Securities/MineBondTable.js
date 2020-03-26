@@ -35,19 +35,6 @@ const propTypes = {
   // eslint-disable-next-line react/no-unused-prop-types
   onExpand: PropTypes.func.isRequired,
 };
-const totalAssessedTitle = (
-  <span>
-    Total Assessed
-    <CoreTooltip title="Total Assessed is derived from the most recent permit amendment. This total can be added on the Permit tab while updating an amendment." />
-  </span>
-);
-
-const totalConfiscatedTitle = (
-  <span>
-    Total Confiscated
-    <CoreTooltip title="Total Confiscated is the sum of all confiscated bonds. This amount is `cash on hand` and can be used for reclamation." />
-  </span>
-);
 
 export const MineBondTable = (props) => {
   const columns = [
@@ -58,7 +45,13 @@ export const MineBondTable = (props) => {
       render: (text) => <div title="Permit No.">{text}</div>,
     },
     {
-      title: totalAssessedTitle,
+      title: (
+        <span>
+          Total Assessed
+          <CoreTooltip title="Total Assessed is derived from the most recent permit amendment. This total can be added on the Permit tab while updating an amendment." />
+        </span>
+      ),
+      // title: "Total Assessed",
       dataIndex: "security_total",
       key: "security_total",
       render: (text, record) => (
@@ -80,7 +73,12 @@ export const MineBondTable = (props) => {
       render: (text) => <div title="No. of Active Bonds">{text || Strings.EMPTY_FIELD}</div>,
     },
     {
-      title: totalConfiscatedTitle,
+      title: (
+        <span>
+          Total Confiscated
+          <CoreTooltip title="Total Confiscated is the sum of all confiscated bonds. This amount is `cash on hand` and can be used for reclamation." />
+        </span>
+      ),
       dataIndex: "amount_confiscated",
       key: "amount_confiscated",
       render: (text) => (
