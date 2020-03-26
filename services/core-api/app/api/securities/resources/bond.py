@@ -1,6 +1,6 @@
 from flask_restplus import Resource, reqparse
 from datetime import datetime
-from flask import current_app, request
+from flask import request
 from werkzeug.exceptions import BadRequest, NotFound
 from marshmallow.exceptions import MarshmallowError
 
