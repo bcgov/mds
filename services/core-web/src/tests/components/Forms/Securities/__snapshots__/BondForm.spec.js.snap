@@ -134,7 +134,7 @@ exports[`BondForm renders properly 1`] = `
         <Field
           component={[Function]}
           id="project_id"
-          label="Project Id"
+          label="Project ID"
           name="project_id"
         />
       </FormItem>

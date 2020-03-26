@@ -11,6 +11,7 @@ import {
   currency,
 } from "@common/utils/Validate";
 import { resetForm, upperCase, currencyMask } from "@common/utils/helpers";
+import { BOND_DOCUMENTS } from "@common/constants/API";
 import RenderField from "@/components/common/RenderField";
 import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
 import RenderDate from "@/components/common/RenderDate";
@@ -20,10 +21,10 @@ import RenderSelect from "@/components/common/RenderSelect";
 import BondDocumentsTable from "@/components/mine/Securities/BondDocumentsTable";
 import CustomPropTypes from "@/customPropTypes";
 import FileUpload from "@/components/common/FileUpload";
-import { BOND_DOCUMENTS } from "@common/constants/API";
 import { DOCUMENT, EXCEL } from "@/constants/fileTypes";
 
 const propTypes = {
+  onSubmit: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
@@ -70,10 +71,12 @@ export class BondForm extends Component {
         onSubmit={this.props.handleSubmit((values) => {
           // Set the bond document type code for each uploaded document to the selected value.
           this.state.uploadedFiles.map(
+            // eslint-disable-next-line no-return-assign, no-param-reassign
             (doc) => (doc.bond_document_type_code = values.bond_document_type_code)
           );
 
           // Delete this value from the bond, as it's not a valid property.
+          // eslint-disable-next-line no-param-reassign
           delete values.bond_document_type_code;
 
           // Create the bond's new document list by removing deleted documents and adding uploaded documents.
@@ -155,7 +158,7 @@ export class BondForm extends Component {
           </Col>
           <Col md={12} sm={24}>
             <Form.Item>
-              <Field id="project_id" name="project_id" label="Project Id" component={RenderField} />
+              <Field id="project_id" name="project_id" label="Project ID" component={RenderField} />
             </Form.Item>
           </Col>
         </Row>
