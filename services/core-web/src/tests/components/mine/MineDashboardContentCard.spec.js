@@ -1,6 +1,6 @@
 import React from "react";
 import { shallow } from "enzyme";
-import { MineComplianceCard } from "@/components/mine/Compliance/MineComplianceCard";
+import { MineDashboardContentCard } from "@/components/mine/MineDashboardContentCard";
 
 const props = {};
 
@@ -14,9 +14,9 @@ beforeEach(() => {
   setupProps();
 });
 
-describe("MineComplianceCard", () => {
+describe("MineDashboardContentCard", () => {
   it("renders properly", () => {
-    const component = shallow(<MineComplianceCard {...props} />);
+    const component = shallow(<MineDashboardContentCard {...props} />);
     expect(component).toMatchSnapshot();
   });
 });

@@ -30,7 +30,10 @@ describe("`fetchSearchResults` action creator", () => {
   it("Request successful, dispatches `success` with correct response", () => {
     const mockResponse = { data: { success: true } };
     mockAxios.onGet(url).reply(200, mockResponse);
-    return fetchSearchResults(searchTerm, null)(dispatch).then(() => {
+    return fetchSearchResults(
+      searchTerm,
+      null
+    )(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(6);
@@ -39,7 +42,10 @@ describe("`fetchSearchResults` action creator", () => {
 
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onGet(url).reply(418, MOCK.ERROR);
-    return fetchSearchResults(searchTerm, null)(dispatch).then(() => {
+    return fetchSearchResults(
+      searchTerm,
+      null
+    )(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
