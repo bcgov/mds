@@ -13,19 +13,36 @@ exports[`MineSecurityInfo renders properly 1`] = `
       className="dashboard--cards"
     >
       <MineDashboardContentCard
-        content="$NaN"
+        content="$300.00"
         icon={null}
         title="Total Security Held"
       />
       <MineDashboardContentCard
+        content={1}
         icon={null}
         title="Total No. of Active Bonds"
       />
     </div>
     <br />
     <MineBondTable
-      bondStatusOptionsHash={Object {}}
-      bondTypeOptionsHash={Object {}}
+      bondStatusOptionsHash={
+        Object {
+          "ACT": "Active",
+          "CON": "Confiscated",
+          "REL": "Released",
+        }
+      }
+      bondTypeOptionsHash={
+        Object {
+          "BDA": "Bank Draft",
+          "CAS": "Cash",
+          "CEC": "Certified Cheque",
+          "ILC": "Irrevocable Line of Credit",
+          "MOR": "Money Order",
+          "SAG": "Safekeeping Agreement",
+          "SBO": "Surety Bond",
+        }
+      }
       bonds={
         Array [
           Object {
@@ -34,6 +51,7 @@ exports[`MineSecurityInfo renders properly 1`] = `
             "bond_id": 1,
             "bond_status_code": "ACT",
             "bond_type_code": "CAS",
+            "documents": Array [],
             "institution_city": null,
             "institution_name": null,
             "institution_postal_code": null,

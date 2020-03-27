@@ -36,6 +36,7 @@ export const {
   getPartyRelationshipTypesList,
   getBondStatusOptions,
   getBondTypeOptions,
+  getBondDocumentTypeOptions,
 } = staticContentReducer;
 
 // removes all expired compliance codes from the array
@@ -451,9 +452,19 @@ export const getBondStatusDropDownOptions = createSelector([getBondStatusOptions
   createDropDownList(options, "description", "bond_status_code")
 );
 
+export const getBondDocumentTypeDropDownOptions = createSelector(
+  [getBondDocumentTypeOptions],
+  (options) => createDropDownList(options, "description", "bond_document_type_code")
+);
+
 export const getBondTypeOptionsHash = createSelector([getBondTypeDropDownOptions], createLabelHash);
 
 export const getBondStatusOptionsHash = createSelector(
   [getBondStatusDropDownOptions],
+  createLabelHash
+);
+
+export const getBondDocumentTypeOptionsHash = createSelector(
+  [getBondDocumentTypeDropDownOptions],
   createLabelHash
 );

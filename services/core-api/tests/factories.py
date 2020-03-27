@@ -76,7 +76,8 @@ class MineStatusFactory(BaseFactory):
         model = MineStatus
 
     class Params:
-        operating = factory.Trait(mine_status_xref = factory.LazyFunction(RandomOperatingMineStatusXref))
+        operating = factory.Trait(
+            mine_status_xref=factory.LazyFunction(RandomOperatingMineStatusXref))
 
     mine_status_guid = GUID
     effective_date = TODAY
@@ -481,8 +482,7 @@ class MineFactory(BaseFactory):
             mine_variance=0,
             mine_reports=0)
         operating = factory.Trait(
-            mine_status = factory.RelatedFactory(MineStatusFactory, 'mine', operating=True)
-        )
+            mine_status=factory.RelatedFactory(MineStatusFactory, 'mine', operating=True))
 
     mine_guid = GUID
     mine_no = factory.Faker('ean', length=8)
@@ -586,7 +586,7 @@ class PermitFactory(BaseFactory):
             extracted = random.randint(1, 3)
 
         for n in range(extracted):
-            BondFactory(permits=obj, **kwargs)
+            BondFactory(permit=obj, **kwargs)
 
 
 class PermitAmendmentFactory(BaseFactory):
