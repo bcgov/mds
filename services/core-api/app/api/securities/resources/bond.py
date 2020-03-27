@@ -1,13 +1,13 @@
 from flask_restplus import Resource, reqparse
 from datetime import datetime
-from flask import current_app, request
+from flask import request
 from werkzeug.exceptions import BadRequest, NotFound
 from marshmallow.exceptions import MarshmallowError
 
 from app.extensions import api, db
 from app.api.securities.response_models import BOND
 from app.api.securities.models.bond import Bond
-from app.api.utils.access_decorators import requires_role_view_all, requires_role_edit_bonds
+from app.api.utils.access_decorators import requires_role_view_all, requires_role_edit_securities
 from app.api.utils.resources_mixins import UserMixin
 from app.api.mines.permits.permit.models.permit import Permit
 from app.api.mines.mine.models.mine import Mine
@@ -38,7 +38,7 @@ class BondListResource(Resource, UserMixin):
         return bonds
 
     @api.doc(description='create a bond')
-    @requires_role_edit_bonds
+    @requires_role_edit_securities
     @api.expect(BOND)
     @api.marshal_with(BOND, code=201)
     def post(self):
@@ -53,7 +53,10 @@ class BondListResource(Resource, UserMixin):
         if permit is None:
             raise NotFound('No Permit found with the guid provided.')
 
-        bond.permits = permit
+        bond.permit = permit
+
+        for doc in bond.documents:
+            doc.mine_guid = permit.mine_guid
 
         bond.save()
 
@@ -73,15 +76,17 @@ class BondResource(Resource, UserMixin):
         return bond
 
     @api.doc(description='Update a bond')
-    @requires_role_edit_bonds
+    @requires_role_edit_securities
     @api.expect(BOND)
     @api.marshal_with(BOND, code=200)
     def put(self, bond_guid):
-
         try:
             bond = Bond._schema().load(request.json, instance=Bond.find_by_bond_guid(bond_guid))
         except MarshmallowError as e:
             raise BadRequest(e)
+
+        for doc in bond.documents:
+            doc.mine_guid = bond.permit.mine_guid
 
         bond.save()
 

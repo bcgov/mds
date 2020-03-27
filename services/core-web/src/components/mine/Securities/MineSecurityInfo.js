@@ -23,6 +23,7 @@ import MineBondTable from "@/components/mine/Securities/MineBondTable";
 import MineDashboardContentCard from "@/components/mine/MineDashboardContentCard";
 import { CoreTooltip } from "@/components/common/CoreTooltip";
 import { modalConfig } from "@/components/modalContent/config";
+
 /**
  * @class  MineSecurityInfo - contains all information relating to bonds and securities
  */
@@ -73,6 +74,7 @@ export class MineSecurityInfo extends Component {
         title: "Add Bond",
         onSubmit: this.addBondToPermit,
         permitGuid,
+        mineGuid: this.props.mineGuid,
       },
       width: "50vw",
       content: modalConfig.ADD_BOND_MODAL,
@@ -87,6 +89,8 @@ export class MineSecurityInfo extends Component {
         onSubmit: this.editBond,
         editBond: true,
         bond,
+        permitGuid: bond.permit_guid,
+        mineGuid: this.props.mineGuid,
       },
       width: "50vw",
       content: modalConfig.ADD_BOND_MODAL,

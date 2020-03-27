@@ -3713,6 +3713,15 @@ export const BULK_STATIC_CONTENT_RESPONSE = {
     { bond_type_code: "SBO", description: "Surety Bond" },
     { bond_type_code: "SAG", description: "Safekeeping Agreement" },
   ],
+  bondDocumentTypeOptions: [
+    { bond_document_type_code: "SRB", description: "Scan of Reclamation Security Bond" },
+    { bond_document_type_code: "RSF", description: "Release of Security Form" },
+    { bond_document_type_code: "RSL", description: "Release of Security Letter" },
+    { bond_document_type_code: "CSF", description: "Confiscation of Security Form" },
+    { bond_document_type_code: "CSL", description: "Confiscation of Security Letter" },
+    { bond_document_type_code: "REL", description: "Reminder Letter" },
+    { bond_document_type_code: "AKL", description: "Acknowledgement Letter" },
+  ],
 };
 
 export const DROPDOWN_BOND_TYPE_OPTIONS = [
@@ -3747,6 +3756,26 @@ export const BOND_STATUS_OPTIONS_HASH = {
   ACT: "Active",
 };
 
+export const DROPDOWN_BOND_DOCUMENT_TYPE_OPTIONS = [
+  { value: "SRB", label: "Scan of Reclamation Security Bond" },
+  { value: "RSF", label: "Release of Security Form" },
+  { value: "RSL", label: "Release of Security Letter" },
+  { value: "CSF", label: "Confiscation of Security Form" },
+  { value: "CSL", label: "Confiscation of Security Letter" },
+  { value: "REL", label: "Reminder Letter" },
+  { value: "AKL", label: "Acknowledgement Letter" },
+];
+
+export const BOND_DOCUMENT_TYPE_OPTIONS_HASH = {
+  AKL: "Acknowledgement Letter",
+  REL: "Reminder Letter",
+  CSL: "Confiscation of Security Letter",
+  CSF: "Confiscation of Security Form",
+  RSL: "Release of Security Letter",
+  RSF: "Release of Security Form",
+  SRB: "Scan of Reclamation Security Bond",
+};
+
 export const BONDS = {
   records: [
     {
@@ -3766,7 +3795,14 @@ export const BONDS = {
       note: null,
       payer: {},
       permit_guid: "463236",
+      documents: [],
     },
   ],
 };
+
+export const BOND_TOTALS = {
+  amountHeld: 300,
+  count: 1,
+};
+
 export const BOND_RESPONSE = { records: BONDS };
