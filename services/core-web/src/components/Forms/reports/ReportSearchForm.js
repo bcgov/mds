@@ -50,6 +50,7 @@ export class ReportSearchForm extends Component {
     due_date_before,
     received_date_after,
     received_date_before,
+    received_only,
     compliance_year,
     status,
     requested_by,
@@ -60,6 +61,7 @@ export class ReportSearchForm extends Component {
     due_date_before ||
     received_date_after ||
     received_date_before ||
+    received_only ||
     compliance_year ||
     requested_by ||
     major ||
@@ -134,7 +136,7 @@ export class ReportSearchForm extends Component {
               </Col>
             </Row>
             <Row gutter={6}>
-              <Col md={12} xs={24}>
+              <Col md={8} xs={24}>
                 <Field
                   id="received_date_after"
                   name="received_date_after"
@@ -143,13 +145,24 @@ export class ReportSearchForm extends Component {
                   format={null}
                 />
               </Col>
-              <Col md={12} xs={24}>
+              <Col md={8} xs={24}>
                 <Field
                   id="received_date_before"
                   name="received_date_before"
                   placeholder="Select Latest Received Date"
                   component={renderConfig.DATE}
                   format={null}
+                />
+              </Col>
+              <Col md={8} xs={24}>
+                <Field
+                  id="received_only"
+                  name="received_only"
+                  component={renderConfig.SELECT}
+                  data={[
+                    { value: "", label: "Received Only" },
+                    { value: "false", label: "Received and Unreceived" },
+                  ]}
                 />
               </Col>
             </Row>
