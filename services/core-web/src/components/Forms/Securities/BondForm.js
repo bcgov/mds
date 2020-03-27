@@ -26,6 +26,7 @@ const propTypes = {
   submitting: PropTypes.bool.isRequired,
   provinceOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
   bondTypeOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
+  initialPartyValue: PropTypes.oneOfType([PropTypes.string, PropTypes.objectOf(PropTypes.string)]),
 };
 
 export const BondForm = (props) => (
@@ -63,6 +64,7 @@ export const BondForm = (props) => (
             id="payer_party_guid"
             name="payer_party_guid"
             label="Payer*"
+            initialValue={props.initialPartyValue}
             partyLabel="payee"
             validate={[required]}
             allowAddingParties

@@ -167,7 +167,7 @@ export class MineSecurityInfo extends Component {
               title={
                 <span>
                   Total Security Held
-                  <CoreTooltip title="Total amount of money held through active bonds across all permits." />
+                  <CoreTooltip title="Total Security Held: This is the total amount of all active bonds held on this mine record. If the mine is on a payment schedule, it shows only what has been paid to date. It includes any interest earned." />
                 </span>
               }
               content={formatMoney(this.props.bondTotals.amountHeld)}
@@ -176,7 +176,7 @@ export class MineSecurityInfo extends Component {
               title={
                 <span>
                   Total Active Bonds
-                  <CoreTooltip title="Total number of bonds that are currently active across all permits. Released and confiscated bonds are not included in this total." />
+                  <CoreTooltip title="Total Active Bonds: This is the number of active bonds held by EMPR for all the permits on this mine record. It does not include bonds that have been released or confiscated." />
                 </span>
               }
               content={this.props.bondTotals.count}

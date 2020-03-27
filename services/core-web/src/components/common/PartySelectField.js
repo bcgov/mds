@@ -42,6 +42,7 @@ const defaultProps = {
   allowAddingParties: false,
   validate: [],
   searchResults: [],
+  initialValue: "",
 };
 
 const renderAddPartyFooter = (showAddParty, partyLabel) => (
@@ -83,6 +84,14 @@ export class PartySelectField extends Component {
       leading: true,
       trailing: true,
     });
+  }
+
+  componentDidMount() {
+    if (this.props.initialValue) {
+      this.setState({
+        selectedOption: this.props.initialValue,
+      });
+    }
   }
 
   showAddPartyForm = () => {
@@ -152,22 +161,30 @@ export class PartySelectField extends Component {
 
   // Validator to ensure the selected option is in the collection of available options.
   // This validator is appened to any validators passed in from the form in the render function below.
-  validOption = (value) =>
-    this.state.partyDataSource.find((opt) => opt.key === value)
-      ? undefined
-      : `Invalid ${this.props.partyLabel}`;
+  validOption = (value) => {
+    // ignore this validation if an initialValue is passed in
+    if (this.props.initialValue && this.props.initialValue !== this.state.selectedOption) {
+      return this.state.partyDataSource.find((opt) => opt.key === value)
+        ? undefined
+        : `Invalid ${this.props.partyLabel}`;
+    }
+  };
 
-  render = () => (
-    <Field
-      {...this.props}
-      component={RenderLargeSelect}
-      handleSearch={this.handleSearch}
-      handleSelect={this.handleSelect}
-      validate={this.props.validate.concat(this.validOption)}
-      dataSource={this.state.partyDataSource}
-      selectedOption={this.state.selectedOption}
-    />
-  );
+  render = () => {
+    console.log(this.state.selectedOption);
+
+    return (
+      <Field
+        {...this.props}
+        component={RenderLargeSelect}
+        handleSearch={this.handleSearch}
+        handleSelect={this.handleSelect}
+        validate={this.props.validate.concat(this.validOption)}
+        dataSource={this.state.partyDataSource}
+        selectedOption={this.state.selectedOption}
+      />
+    );
+  };
 }
 
 const mapStateToProps = (state) => ({
@@ -187,7 +204,4 @@ const mapDispatchToProps = (dispatch) =>
 PartySelectField.propTypes = propTypes;
 PartySelectField.defaultProps = defaultProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(PartySelectField);
+export default connect(mapStateToProps, mapDispatchToProps)(PartySelectField);

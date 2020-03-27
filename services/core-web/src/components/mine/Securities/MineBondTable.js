@@ -46,10 +46,10 @@ export const MineBondTable = (props) => {
     },
     {
       title: (
-        <span>
+        <div>
           Total Assessed
-          <CoreTooltip title="Total Assessed is derived from the most recent permit amendment. This total can be added on the Permit tab while updating an amendment." />
-        </span>
+          <CoreTooltip title="Total Assessed: This is the total value of all bond assessments for the permit, including amendments. Assessed values are determined by permitting inspectors and come from the permits." />
+        </div>
       ),
       // title: "Total Assessed",
       dataIndex: "security_total",
@@ -74,10 +74,10 @@ export const MineBondTable = (props) => {
     },
     {
       title: (
-        <span>
+        <div>
           Total Confiscated
-          <CoreTooltip title="Total Confiscated is the sum of all confiscated bonds. This amount is `cash on hand` and can be used for reclamation." />
-        </span>
+          <CoreTooltip title="Total Confiscated: This is the total value of bonds that have been confiscated for the permit. This amount is also shown below as Cash On Hand for the permit" />
+        </div>
       ),
       dataIndex: "amount_confiscated",
       key: "amount_confiscated",
