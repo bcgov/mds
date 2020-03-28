@@ -158,6 +158,11 @@ class ReportsResource(Resource, UserMixin):
                 self._build_filter('MineReport', 'received_date', '<=',
                                    args["received_date_before"]))
 
+        if args["received_date_after"]:
+            conditions.append(
+                self._build_filter('MineReport', 'received_date', '>=',
+                                   args["received_date_after"]))
+
         if not args["received_only"]:
             query = query.filter(MineReport.received_date.isnot(None))
 
