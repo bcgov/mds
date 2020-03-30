@@ -15,7 +15,7 @@ def register_routes(app):
     @api.route('/health')
     class Healthcheck(Resource):
         def get(self):
-            return {'success': 'true'}
+            return {'status': 'pass'}
 
     # Global Handlers
     @api.errorhandler(AuthError)
