@@ -138,7 +138,9 @@
             "type": "ImageChange",
             "imageChangeParams": {
               "automatic": true,
-              "containerNames": ["app"],
+              "containerNames": [
+                "app"
+              ],
               "from": {
                 "kind": "ImageStreamTag",
                 "name": "${NAME}${APPLICATION_SUFFIX}:${TAG_NAME}"
@@ -193,7 +195,31 @@
                   {
                     "containerPort": "${{PORT}}"
                   }
-                ]
+                ],
+                "livenessProbe": {
+                  "failureThreshold": 3,
+                  "httpGet": {
+                    "path": "/health",
+                    "port": "${{PORT}}",
+                    "scheme": "HTTP"
+                  },
+                  "initialDelaySeconds": 25,
+                  "periodSeconds": 10,
+                  "successThreshold": 1,
+                  "timeoutSeconds": 1
+                },
+                "readinessProbe": {
+                  "failureThreshold": 3,
+                  "httpGet": {
+                    "path": "/health",
+                    "port": "${{PORT}}",
+                    "scheme": "HTTP"
+                  },
+                  "initialDelaySeconds": 25,
+                  "periodSeconds": 10,
+                  "successThreshold": 1,
+                  "timeoutSeconds": 1
+                }
               }
             ]
           }
