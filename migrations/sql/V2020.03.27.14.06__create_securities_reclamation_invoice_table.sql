@@ -15,14 +15,17 @@ CREATE TABLE IF NOT EXISTS reclamation_invoice (
 
 ALTER TABLE reclamation_invoice OWNER TO mds;
 
-CREATE TABLE IF NOT EXISTS reclamation_invoice_document_xref
-(
-    reclamation_invoice_id           integer                                   NOT NULL,
-    mine_document_guid               uuid                                      NOT NULL,
+-- CREATE TABLE IF NOT EXISTS reclamation_invoice_document_xref
+-- (
+--     reclamation_invoice_id           integer                                   NOT NULL,
+--     mine_document_guid               uuid                                      NOT NULL,
 
-    FOREIGN KEY (reclamation_invoice_id) REFERENCES reclamation_invoice(reclamation_invoice_id) DEFERRABLE INITIALLY DEFERRED,
-    FOREIGN KEY (mine_document_guid)     REFERENCES mine_document(mine_document_guid) DEFERRABLE INITIALLY DEFERRED,
-    PRIMARY KEY(reclamation_invoice_id, mine_document_guid)
-);
+--     FOREIGN KEY (reclamation_invoice_id) REFERENCES reclamation_invoice(reclamation_invoice_id) DEFERRABLE INITIALLY DEFERRED,
+--     FOREIGN KEY (mine_document_guid)     REFERENCES mine_document(mine_document_guid) DEFERRABLE INITIALLY DEFERRED,
+--     PRIMARY KEY(reclamation_invoice_id, mine_document_guid)
+-- );
 
-ALTER TABLE reclamation_invoice_document_xref OWNER TO mds;
+-- ALTER TABLE reclamation_invoice_document_xref OWNER TO mds;
+
+ALTER TABLE mine_document ADD COLUMN reclamation_invoice_id integer;
+ALTER TABLE mine_document ADD CONSTRAINT reclamation_invoice_id_fk FOREIGN KEY (reclamation_invoice_id) REFERENCES reclamation_invoice(reclamation_invoice_id);
