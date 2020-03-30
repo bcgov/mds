@@ -41,6 +41,7 @@ from app.api.now_applications.models.now_application_review_type import NOWAppli
 from app.api.parties.party_appt.models.mine_party_appt_type import MinePartyAppointmentType
 from app.api.securities.models.bond_status import BondStatus
 from app.api.securities.models.bond_type import BondType
+from app.api.securities.models.bond_document_type import BondDocumentType
 
 from app.api.parties.party.models.party import Party
 
@@ -52,7 +53,7 @@ MODELS_GET_ACTIVE = [
     MineReportDefinition, MineReportCategory, MineReportSubmissionStatusCode, ActivityType,
     UnitType, NOWApplicationType, NOWApplicationStatus, NOWApplicationDocumentType,
     UndergroundExplorationType, NOWApplicationProgressStatus, NOWApplicationPermitType,
-    MinePartyAppointmentType, NOWApplicationReviewType, BondType, BondStatus
+    MinePartyAppointmentType, NOWApplicationReviewType, BondType, BondStatus, BondDocumentType
 ]
 
 

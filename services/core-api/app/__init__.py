@@ -104,7 +104,7 @@ def register_routes(app):
     @api.route('/health')
     class Healthcheck(Resource):
         def get(self):
-            return {'success': 'true'}
+            return {'status': 'pass'}
 
     @api.errorhandler(AuthError)
     def jwt_oidc_auth_error_handler(error):
@@ -119,6 +119,8 @@ def register_routes(app):
     @api.errorhandler(Forbidden)
     def forbidden_error_handler(error):
         app.logger.error(str(error))
+        app.logger.error('REQUEST\n' + str(request))
+        app.logger.error('HEADERS\n ' + str(request.headers))
         return {
             'status': getattr(error, 'status_code', 403),
             'message': str(error),

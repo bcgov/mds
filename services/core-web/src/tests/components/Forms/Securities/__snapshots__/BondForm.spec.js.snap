@@ -5,7 +5,7 @@ exports[`BondForm renders properly 1`] = `
   colon={true}
   hideRequiredMark={false}
   layout="vertical"
-  onSubmit={[MockFunction]}
+  onSubmit={[Function]}
 >
   <Row
     gutter={16}
@@ -46,7 +46,6 @@ exports[`BondForm renders properly 1`] = `
       >
         <Field
           component={[Function]}
-          data={Array []}
           id="bond_type_code"
           label="Bond Type*"
           name="bond_type_code"
@@ -134,7 +133,7 @@ exports[`BondForm renders properly 1`] = `
         <Field
           component={[Function]}
           id="project_id"
-          label="Project Id"
+          label="Project ID"
           name="project_id"
         />
       </FormItem>
@@ -282,6 +281,91 @@ exports[`BondForm renders properly 1`] = `
       </FormItem>
     </Col>
   </Row>
+  <Row
+    gutter={16}
+  >
+    <Col
+      md={12}
+      xs={24}
+    >
+      <h5>
+        Documents
+      </h5>
+    </Col>
+  </Row>
+  <Row
+    gutter={16}
+  >
+    <Col
+      xs={24}
+    >
+      <DocumentTable
+        documents={Array []}
+        isViewOnly={false}
+        removeDocument={[Function]}
+        tableEmptyMessage="There are no attached documents."
+      />
+    </Col>
+  </Row>
+  <br />
+  <Row
+    gutter={16}
+  >
+    <Col
+      md={12}
+      xs={24}
+    >
+      <h5>
+        Document Upload
+      </h5>
+    </Col>
+  </Row>
+  <p
+    className="p-light"
+  >
+    All documents uploaded will be associated with the category selected. If you would like to add a different category of document, please submit and re-open the form.
+  </p>
+  <br />
+  <FormItem
+    hasFeedback={false}
+  >
+    <Field
+      component={[Function]}
+      id="bond_document_type_code"
+      label="Document Category"
+      name="bond_document_type_code"
+      placeholder="Please select category"
+      validate={Array []}
+    />
+  </FormItem>
+  <FormItem
+    hasFeedback={false}
+  >
+    <Field
+      acceptedFileTypesMap={
+        Object {
+          ".doc": "application/msword",
+          ".docx": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+          ".odm": "application/vnd.oasis.opendocument.text-master",
+          ".odt": "application/vnd.oasis.opendocument.text",
+          ".oth": "application/vnd.oasis.opendocument.text-web",
+          ".ott": "application/vnd.oasis.opendocument.text-template",
+          ".pdf": "application/pdf",
+          ".rtf": "application/rtf",
+          ".xls": "application/vnd.ms-excel",
+          ".xlsx": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        }
+      }
+      allowMultiple={true}
+      allowRevert={true}
+      component={[Function]}
+      id="documents"
+      name="documents"
+      onFileLoad={[Function]}
+      onRemoveFile={[Function]}
+      uploadUrl="/bonds/undefined/bonds/documents"
+    />
+  </FormItem>
   <div
     className="right center-mobile"
   >
