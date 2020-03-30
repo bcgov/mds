@@ -499,6 +499,8 @@ class MineFactory(BaseFactory):
     geom = factory.LazyAttribute(lambda o: 'SRID=3005;POINT(%f %f)' % (o.longitude, o.latitude))
     mine_location_description = factory.Faker('sentence', nb_words=8, variable_nb_words=True)
     mine_status = factory.RelatedFactory(MineStatusFactory, 'mine')
+    exemption_fee_status_code = factory.LazyFunction(RandomExemptionFeeStatusCode)
+    exemption_fee_status_note = factory.Faker('sentence', nb_words=6, variable_nb_words=True)
     mine_tailings_storage_facilities = []
     mine_permit = []
     mine_incidents = []

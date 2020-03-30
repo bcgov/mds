@@ -863,3 +863,26 @@ VALUES
     ('STR', 'Section 12 Reclamation', 'system-mds', 'system-mds'),
     ('ASA', 'Asset Security Agreement', 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
+
+INSERT INTO exemption_fee_status
+    (
+    exemption_fee_status_code,
+    description,
+    display_order,
+    create_user,
+    update_user
+    )
+VALUES
+    ('Y', 'Yes', 10, 'system-mds', 'system-mds'),
+    ('F', 'Ministry of Forests', 20, 'system-mds', 'system-mds'),
+    ('H', 'Ministry of Highways', 30, 'system-mds', 'system-mds'),
+    ('M', 'Municipality', 40, 'system-mds', 'system-mds'),
+    ('O', 'OGC', 50, 'system-mds', 'system-mds'),
+    ('P', 'Placer Surface', 60, 'system-mds', 'system-mds'),
+    ('R', 'Reclaimed', 70, 'system-mds', 'system-mds'),
+    ('X', 'Mineral Exploration Surface', 80, 'system-mds', 'system-mds'),
+    ('A', 'Aboriginal', 90, 'system-mds', 'system-mds'),
+    ('B', 'Abandoned', 100, 'system-mds', 'system-mds'),
+    ('N', 'Not Permitted', 110, 'system-mds', 'system-mds'),
+    ('I', 'Investigative Use S&G', 120, 'system-mds', 'system-mds')
+ON CONFLICT DO NOTHING;
