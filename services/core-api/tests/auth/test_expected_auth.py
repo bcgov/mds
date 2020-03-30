@@ -1,5 +1,5 @@
 import pytest
-from app.api.utils.access_decorators import VIEW_ALL, MINE_EDIT, MINE_ADMIN, MINESPACE_PROPONENT, EDIT_PARTY, EDIT_PERMIT, EDIT_DO, EDIT_VARIANCE, EDIT_REPORT, EDIT_SUBMISSIONS, EDIT_BONDS
+from app.api.utils.access_decorators import VIEW_ALL, MINE_EDIT, MINE_ADMIN, MINESPACE_PROPONENT, EDIT_PARTY, EDIT_PERMIT, EDIT_DO, EDIT_VARIANCE, EDIT_REPORT, EDIT_SUBMISSIONS, EDIT_SECURITIES
 
 from app.api.download_token.resources.download_token import DownloadTokenResource
 from app.api.mines.documents.resources.mine_document_resource import MineDocumentListResource
@@ -115,10 +115,10 @@ from app.api.now_applications.resources.now_application_resource import NOWAppli
     (NOWApplicationDocumentGenerateResource,'post',[EDIT_PERMIT]),
     (ApplicationListResource,'post',[EDIT_SUBMISSIONS]),
     (ApplicationNDAListResource,'post',[EDIT_SUBMISSIONS]),
-    (BondListResource,'post',[EDIT_BONDS]),
+    (BondListResource,'post',[EDIT_SECURITIES]),
     (BondListResource,'get',[VIEW_ALL]),
     (BondResource,'get',[VIEW_ALL]),
-    (BondResource,'put',[EDIT_BONDS]),
+    (BondResource,'put',[EDIT_SECURITIES]),
 ])
 def test_endpoint_auth(resource, method, expected_roles):
     endpoint = getattr(resource, method, None)

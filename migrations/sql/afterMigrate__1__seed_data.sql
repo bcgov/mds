@@ -886,3 +886,19 @@ VALUES
     ('N', 'Not Permitted', 110, 'system-mds', 'system-mds'),
     ('I', 'Investigative Use S&G', 120, 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
+
+INSERT INTO bond_document_type(
+    bond_document_type_code,
+    description,
+    create_user,
+    update_user
+    )
+VALUES
+    ('SRB', 'Scan of Reclamation Security Bond', 'system-mds', 'system-mds'),
+    ('RSF', 'Release of Security Form', 'system-mds', 'system-mds'),
+    ('RSL', 'Release of Security Letter', 'system-mds', 'system-mds'),
+    ('CSF', 'Confiscation of Security Form', 'system-mds', 'system-mds'),
+    ('CSL', 'Confiscation of Security Letter', 'system-mds', 'system-mds'),
+    ('REL', 'Reminder Letter', 'system-mds', 'system-mds'),
+    ('AKL', 'Acknowledgement Letter', 'system-mds', 'system-mds')
+ON CONFLICT DO NOTHING;
