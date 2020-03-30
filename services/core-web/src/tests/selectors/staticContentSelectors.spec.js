@@ -39,10 +39,13 @@ import {
   getDropdownNoticeOfWorkApplicationPermitTypeOptions,
   getBondTypeDropDownOptions,
   getBondStatusDropDownOptions,
+  getBondDocumentTypeDropDownOptions,
   getBondTypeOptions,
   getBondStatusOptions,
+  getBondDocumentTypeOptions,
   getBondStatusOptionsHash,
   getBondTypeOptionsHash,
+  getBondDocumentTypeOptionsHash,
 } from "@common/selectors/staticContentSelectors";
 import { STATIC_CONTENT } from "@common/constants/reducerTypes";
 import * as Mock from "@/tests/mocks/dataMocks";
@@ -275,5 +278,21 @@ describe("staticContentSelectors", () => {
 
   it("`getBondStatusOptionsHash` calls `staticContentReducer.getBondStatusDropDownOptions`", () => {
     expect(getBondStatusOptionsHash(mockState)).toEqual(Mock.BOND_STATUS_OPTIONS_HASH);
+  });
+
+  it("`getBondDocumentTypeOptions` calls `staticContentReducer.getBondDocumentTypeOptions`", () => {
+    expect(getBondDocumentTypeOptions(mockState)).toEqual(
+      mockState[STATIC_CONTENT].bondDocumentTypeOptions
+    );
+  });
+
+  it("`getBondDocumentTypeDropDownOptions` calls `staticContentReducer.getBondDocumentTypeOptions`", () => {
+    expect(getBondDocumentTypeDropDownOptions(mockState)).toEqual(
+      Mock.DROPDOWN_BOND_DOCUMENT_TYPE_OPTIONS
+    );
+  });
+
+  it("`getBondDocumentTypeOptionsHash` calls `staticContentReducer.getBondDocumentTypeDropDownOptions`", () => {
+    expect(getBondDocumentTypeOptionsHash(mockState)).toEqual(Mock.BOND_DOCUMENT_TYPE_OPTIONS_HASH);
   });
 });

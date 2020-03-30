@@ -140,8 +140,8 @@ export class EditVarianceForm extends Component {
         <br />
         <h5>upload files</h5>
         <p className="p-light">
-          All documents uploaded will be associated with the category selected, if you would like to
-          add a different category of documents please submit and edit the variance.
+          All documents uploaded will be associated with the category selected. If you would like to
+          add a different category of document, please submit and re-open the form.
         </p>
         <br />
         <Form.Item>
