@@ -4,7 +4,7 @@ from marshmallow import fields
 
 from app.extensions import db
 from app.api.utils.models_mixins import Base, AuditMixin
-# from app.api.securities.models.reclamation_invoice_document import ReclamationInvoiceDocument
+from app.api.securities.models.reclamation_invoice_document import ReclamationInvoiceDocument
 
 
 class ReclamationInvoice(Base, AuditMixin):
@@ -22,7 +22,7 @@ class ReclamationInvoice(Base, AuditMixin):
     vendor = db.Column(db.String, nullable=False)
 
     permit = db.relationship('Permit', lazy='select')
-    # documents = db.relationship('ReclamationInvoiceDocument', lazy='select')
+    documents = db.relationship('ReclamationInvoiceDocument', lazy='select')
 
     def __repr__(self):
         return '<ReclamationInvoice %r>' % self.reclamation_invoice_guid
