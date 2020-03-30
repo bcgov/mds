@@ -15,8 +15,7 @@ CREATE TABLE IF NOT EXISTS reclamation_invoice (
 
 ALTER TABLE reclamation_invoice OWNER TO mds;
 
--- TODO: Write a comment for this table.
-COMMENT ON TABLE reclamation_invoice IS '';
+COMMENT ON TABLE reclamation_invoice IS 'Contains reclamation invoices for permits.';
 
 ALTER TABLE mine_document ADD COLUMN reclamation_invoice_id integer;
 ALTER TABLE mine_document ADD CONSTRAINT reclamation_invoice_id_fk FOREIGN KEY (reclamation_invoice_id) REFERENCES reclamation_invoice(reclamation_invoice_id);
