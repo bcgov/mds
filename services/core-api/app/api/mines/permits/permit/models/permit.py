@@ -31,7 +31,7 @@ class Permit(AuditMixin, Base):
         'PermitAmendment',
         backref='permit',
         primaryjoin=
-        "and_(PermitAmendment.permit_id == Permit.permit_id, PermitAmendment.deleted_ind==False)",
+        'and_(PermitAmendment.permit_id == Permit.permit_id, PermitAmendment.deleted_ind==False)',
         order_by='desc(PermitAmendment.issue_date), desc(PermitAmendment.permit_amendment_id)',
         lazy='select')
 
