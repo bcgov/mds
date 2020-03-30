@@ -145,23 +145,25 @@
                   }
                 ],
                 "livenessProbe": {
-                  "failureThreshold": 3,
-                  "initialDelaySeconds": 25,
+                  "failureThreshold": 60,
+                  "initialDelaySeconds": 180,
                   "periodSeconds": 10,
                   "successThreshold": 1,
-                  "tcpSocket": {
-                    "port": 8080
-                  },
-                  "timeoutSeconds": 1
-                },
-                "readinessProbe": {
-                  "failureThreshold": 3,
                   "httpGet": {
                     "path": "/",
                     "port": 8080,
                     "scheme": "HTTP"
                   },
-                  "initialDelaySeconds": 25,
+                  "timeoutSeconds": 1
+                },
+                "readinessProbe": {
+                  "failureThreshold": 60,
+                  "httpGet": {
+                    "path": "/",
+                    "port": 8080,
+                    "scheme": "HTTP"
+                  },
+                  "initialDelaySeconds": 180,
                   "periodSeconds": 10,
                   "successThreshold": 1,
                   "timeoutSeconds": 1
