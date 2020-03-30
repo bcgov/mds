@@ -633,7 +633,7 @@ VALUES
 	('NWL', '' , 'templates/now/Withdrawal Letter Template (NoW).docx', true, 'system-mds', 'system-mds'),
 	('NCL', '', 'templates/now/Client Acknowledgment Letter Template (NoW).docx', true, 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
---use update statement so it can be easily copied from new fixed  migrations.
+--use update statement so it can be easily copied from new fixed  migrations and just be changed in the future.
 UPDATE document_template SET form_spec_json = '[
     {
       "id": "letter_dt",
@@ -829,6 +829,7 @@ UPDATE document_template SET form_spec_json = '[
       "type": "FIELD",
       "placeholder": "Enter the exploration type",
       "required": true
+      "relative-data-path": "now_application.notice_of_work_type.description"
     },
     {
       "id": "bond_inc_amt",
