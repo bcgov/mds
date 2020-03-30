@@ -68,7 +68,7 @@ app.post("/template/:uid/render", async (req, res) => {
 
   try {
     formatters = telejson.parse(req.body.formatters);
-  } catch (e) {}
+  } catch (e) { }
 
   carbone.formatters = _.filter(carbone.formatters, (formatter) => formatter.$isDefault === true);
 
@@ -110,13 +110,13 @@ app.post("/template", upload.single(`template`), async (req, res) => {
   const hash = crypto.createHash("sha256");
   const readStream = fs.createReadStream(template.path);
   readStream
-    .on("readable", function() {
+    .on("readable", function () {
       var chunk;
       while (null !== (chunk = readStream.read())) {
         hash.update(chunk);
       }
     })
-    .on("end", function() {
+    .on("end", function () {
       const hashres = hash.digest("hex");
       const targetPath = templatedir + hashres;
       if (!hashres) {
@@ -133,6 +133,10 @@ app.post("/template", upload.single(`template`), async (req, res) => {
         return res.send(JSON.stringify({ sha256: hashres }));
       });
     });
+});
+
+app.get("/health", async (req, res) => {
+  return res.status(200).send('{"status":"pass"}');
 });
 
 app.listen(port, () => console.log(`DocGen listening on port ${port}!`));
