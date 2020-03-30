@@ -828,7 +828,7 @@ UPDATE document_template SET form_spec_json = '[
       "label": "Exploration Type",
       "type": "FIELD",
       "placeholder": "Enter the exploration type",
-      "required": true
+      "required": true,
       "relative-data-path": "now_application.notice_of_work_type.description"
     },
     {
