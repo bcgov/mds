@@ -1,10 +1,9 @@
-from flask_restplus import Resource, reqparse
-from datetime import datetime
+from flask_restplus import Resource
 from flask import request
 from werkzeug.exceptions import BadRequest, NotFound
 from marshmallow.exceptions import MarshmallowError
 
-from app.extensions import api, db
+from app.extensions import api
 from app.api.securities.response_models import BOND
 from app.api.securities.models.bond import Bond
 from app.api.utils.access_decorators import requires_role_view_all, requires_role_edit_securities
@@ -14,6 +13,7 @@ from app.api.mines.mine.models.mine import Mine
 
 
 class BondListResource(Resource, UserMixin):
+    @api.doc(description='Get all bonds on a mine')
     @requires_role_view_all
     @api.marshal_with(BOND, envelope='records', code=200)
     def get(self):
@@ -26,7 +26,7 @@ class BondListResource(Resource, UserMixin):
         mine = Mine.find_by_mine_guid(mine_guid)
 
         if mine is None:
-            raise NotFound('No mine found with the provided mine_guid.')
+            raise NotFound('No mine was found with the guid provided.')
 
         permits = Permit.find_by_mine_guid(mine.mine_guid)
 
@@ -37,7 +37,7 @@ class BondListResource(Resource, UserMixin):
 
         return bonds
 
-    @api.doc(description='create a bond')
+    @api.doc(description='Create a bond')
     @requires_role_edit_securities
     @api.expect(BOND)
     @api.marshal_with(BOND, code=201)
@@ -51,7 +51,7 @@ class BondListResource(Resource, UserMixin):
         permit = Permit.find_by_permit_guid(request.json['permit_guid'])
 
         if permit is None:
-            raise NotFound('No Permit found with the guid provided.')
+            raise NotFound('No permit was found with the guid provided.')
 
         bond.permit = permit
 
@@ -64,6 +64,7 @@ class BondListResource(Resource, UserMixin):
 
 
 class BondResource(Resource, UserMixin):
+    @api.doc(description='Get a bond')
     @requires_role_view_all
     @api.marshal_with(BOND, code=200)
     def get(self, bond_guid):
