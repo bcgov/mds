@@ -165,6 +165,11 @@ export class MineSecurityInfo extends Component {
       <div className="tab__content">
         <div>
           <h2>Securities</h2>
+          <p>
+            This page shows all of the bonds that have been received for each permit held on this
+            mine record. It also shows information about cash-on-hand from confiscated bonds,
+            including invoices from reclamation contractors billed against cash-on-hand.
+          </p>
           <Divider />
           <div className="dashboard--cards">
             <MineDashboardContentCard

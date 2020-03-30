@@ -45,13 +45,14 @@ export const MineBondTable = (props) => {
       render: (text) => <div title="Permit No.">{text}</div>,
     },
     {
-      title: (
-        <div>
-          Total Assessed
-          <CoreTooltip title="Total Assessed: This is the total value of all bond assessments for the permit, including amendments. Assessed values are determined by permitting inspectors and come from the permits." />
-        </div>
-      ),
-      // title: "Total Assessed",
+      // commenting out code for now as it introduces a new bug (adds an additional )
+      // title: (
+      //   <div>
+      //     Total Assessed
+      //     <CoreTooltip title="Total Assessed: This is the total value of all bond assessments for the permit, including amendments. Assessed values are determined by permitting inspectors and come from the permits." />
+      //   </div>
+      // ),
+      title: "Total Assessed",
       dataIndex: "security_total",
       key: "security_total",
       render: (text, record) => (
