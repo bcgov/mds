@@ -17,14 +17,14 @@ VERIFY_PERMIT_NOW_MODEL = api.model(
         'a_Timestamp': fields.DateTime
     })
 
+
 class VerifyPermitNOWResource(Resource):
     @api.doc(
         description=
         'Verifies by permit number that a permit amendment is within 30 days of authorization ending. NOTE: This exists for integration purposes and does not follow the typical patterns of this API.',
         params={
             'a_PermitNumber': f'The permit number.',
-        }
-    )
+        })
     @api.marshal_with(VERIFY_PERMIT_NOW_MODEL, code=200)
     @requires_role_view_all
     def get(self):
@@ -43,26 +43,33 @@ class VerifyPermitNOWResource(Resource):
 
                 # Mine must be operating.
                 if mine.mine_status[0].mine_status_xref.mine_operation_status_code != "OP":
-                    break;
+                    break
 
                 if permit_prefix not in ["CX", "MX"]:
-                    break;
-            
+                    break
+
                 for permit_amendment in permit.permit_amendments:
-                    if (permit_amendment.authorization_end_date - datetime.utcnow().date()).days > 30:
-                        #instead of permit.permit_guid, we really want the now_number but there is currently no relationship from 
+                    if (permit_amendment.authorization_end_date -
+                            datetime.utcnow().date()).days > 30:
+                        #instead of permit.permit_guid, we really want the now_number but there is currently no relationship from
                         #permit to NOW
-                        now_info = now_info + str(permit.permit_guid) + " - " + str(permit_amendment.authorization_end_date) + '\r\c'
+                        now_info = now_info + str(permit.permit_guid) + " - " + str(
+                            permit_amendment.authorization_end_date) + '\r\c'
 
             if now_info != "":
                 result = "Success"
             else:
                 result = "Failure"
                 response_message = "NoValidNowsForPermit"
- 
+
         except:
             result = "Failure"
             now_info = ""
             response_message = "Unhandled Exception"
 
-        return  {"a_Result": result, "a_NoWInfo": now_info, "a_ResponseMessage": response_message, "a_Timestamp": datetime.utcnow()}
+        return {
+            "a_Result": result,
+            "a_NoWInfo": now_info,
+            "a_ResponseMessage": response_message,
+            "a_Timestamp": datetime.utcnow()
+        }
