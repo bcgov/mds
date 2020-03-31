@@ -31,6 +31,7 @@ import { modalConfig } from "@/components/modalContent/config";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import CustomPropTypes from "@/customPropTypes";
 import * as Permission from "@/constants/permissions";
+import { CoreTooltip } from "@/components/common/CoreTooltip";
 
 /**
  * @class MineHeader.js contains header section of MineDashboard before the tabs. Including map, mineName, mineNumber.
@@ -298,6 +299,17 @@ export class MineHeader extends Component {
               )}
             </div>
           </div>
+          <div className="inline-flex padding-small wrap">
+            <p className="field-title">Exemption Status</p>
+            <div>
+              {(this.props.mine.exemption_fee_status &&
+                this.props.mine.exemption_fee_status.description) ||
+                Strings.EMPTY_FIELD}
+              {this.props.mine.exemption_fee_status_note && (
+                <CoreTooltip title={this.props.mine.exemption_fee_status_note} />
+              )}
+            </div>
+          </div>
         </div>
         <div className="dashboard__header--card__map">
           <MineHeaderMapLeaflet mine={this.props.mine} />
@@ -360,7 +372,4 @@ const mapDispatchToProps = (dispatch) =>
 
 MineHeader.propTypes = propTypes;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(MineHeader);
+export default connect(mapStateToProps, mapDispatchToProps)(MineHeader);
