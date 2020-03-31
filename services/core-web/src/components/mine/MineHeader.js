@@ -203,13 +203,7 @@ export class MineHeader extends Component {
                   <p>{String.EMPTY_FIELD}</p>
                 )}
                 {this.props.mine.mine_status[0] && (
-                  <img
-                    alt="info"
-                    className="dashboard__header--card__content--status__img"
-                    src={INFO_CIRCLE}
-                    style={{ marginLeft: 5 }}
-                    title={this.props.mine.mine_status[0].status_description}
-                  />
+                  <CoreTooltip title={this.props.mine.mine_status[0].status_description} />
                 )}
               </div>
 
@@ -285,13 +279,7 @@ export class MineHeader extends Component {
                   trigger="click"
                 >
                   <Button ghost style={{ padding: 0, margin: 0, height: 0 }}>
-                    View Notes{" "}
-                    <img
-                      alt="info"
-                      className="padding-small"
-                      src={INFO_CIRCLE}
-                      style={{ padding: 0, margin: 0 }}
-                    />
+                    View Notes <CoreTooltip />
                   </Button>
                 </Popover>
               ) : (
