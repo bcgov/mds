@@ -37,6 +37,7 @@ export const {
   getBondStatusOptions,
   getBondTypeOptions,
   getBondDocumentTypeOptions,
+  getExemptionFeeSatusOptions,
 } = staticContentReducer;
 
 // removes all expired compliance codes from the array
@@ -466,5 +467,15 @@ export const getBondStatusOptionsHash = createSelector(
 
 export const getBondDocumentTypeOptionsHash = createSelector(
   [getBondDocumentTypeDropDownOptions],
+  createLabelHash
+);
+
+export const getExemptionFeeSatusDropDownOptions = createSelector(
+  [getExemptionFeeSatusOptions],
+  (options) => createDropDownList(options, "description", "exemption_fee_status_code")
+);
+
+export const getExemptionFeeSatusOptionsHash = createSelector(
+  [getExemptionFeeSatusDropDownOptions],
   createLabelHash
 );

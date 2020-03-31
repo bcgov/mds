@@ -28,6 +28,12 @@ BASIC_MINE_LIST = api.model(
         'mine_location': fields.Nested(BASIC_MINE_LOCATION_MODEL),
     })
 
+EXEMPTION_FEE_STATUS_CODE_MODEL = api.model('ExemptionFeeStatusCode', {
+    'exemption_fee_status_code': fields.String,
+    'description': fields.String,
+    'display_order': fields.Integer
+})
+
 MINE_TENURE_TYPE_CODE_MODEL = api.model('MineTenureTypeCode', {
     'mine_tenure_type_code': fields.String,
     'description': fields.String,
@@ -198,6 +204,8 @@ MINES_MODEL = api.model(
 
 MINE_MODEL = api.inherit('Mine', MINES_MODEL, {
     'mine_location': fields.Nested(MINE_LOCATION_MODEL),
+    'exemption_fee_status': fields.Nested(EXEMPTION_FEE_STATUS_CODE_MODEL),
+    'exemption_fee_status_note': fields.String,
 })
 
 MINE_LIST_MODEL = api.model(

@@ -37,6 +37,7 @@ const initialState = {
   bondStatusOptions: [],
   bondTypeOptions: [],
   bondDocumentTypeOptions: [],
+  exemptionFeeSatusOptions: [],
 };
 
 export const staticContentReducer = (state = initialState, action) => {
@@ -100,6 +101,8 @@ export const getNoticeOfWorkApplicationReviewOptions = (state) =>
 export const getBondTypeOptions = (state) => state[STATIC_CONTENT].bondTypeOptions;
 export const getBondStatusOptions = (state) => state[STATIC_CONTENT].bondStatusOptions;
 export const getBondDocumentTypeOptions = (state) => state[STATIC_CONTENT].bondDocumentTypeOptions;
+export const getExemptionFeeSatusOptions = (state) =>
+  state[STATIC_CONTENT].exemptionFeeSatusOptions;
 
 const isStaticContentLoaded = (state) =>
   Object.keys(state)
