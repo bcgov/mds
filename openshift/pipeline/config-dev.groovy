@@ -300,7 +300,7 @@ app {
                             'BASE_PATH': "${vars.modules.'mds-docgen-api'.PATH}",
                             'NODE_ENV': "${vars.deployment.node_env}"
                     ]
-                ]/*,
+                ],
                 [
                     'file':'openshift/templates/digdag/digdag.dc.json',
                     'params':[
@@ -317,7 +317,7 @@ app {
                             'MEMORY_REQUEST':"${vars.resources.digdag.memory_request}",
                             'MEMORY_LIMIT':"${vars.resources.digdag.memory_limit}"
                     ]
-                ]*/
+                ]
         ]
     }
 }

@@ -1,0 +1,2 @@
+ALTER TABLE permit_amendment ADD COLUMN now_application_guid integer;
+ALTER TABLE permit_amendment ADD CONSTRAINT permit_amendment_now_application_guid_fk FOREIGN KEY (now_application_guid) REFERENCES now_application_identity(now_application_guid);

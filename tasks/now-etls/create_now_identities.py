@@ -36,3 +36,14 @@ def create_and_update_now_identities(connection):
         AND NOT EXISTS (SELECT nai.mms_cid from public.now_application_identity nai inner join mms_now_submissions.application mms_nsa on nai.mms_cid=mms_nsa.mms_cid);
         """
         cursor.execute(INSERT_NOW_IDENTITIES_FOR_MMS_ONLY_APPLICATIONS)
+
+        print('LINK PERMIT AMENDMENTS TO NOW APPLICATIONS FROM MMS')
+        INSERT_NOW_IDENTITIES_FOR_MMS_ONLY_APPLICATIONS = """
+        UPDATE public.permit_amendment pa
+        SET now_application_guid = (
+            SELECT nai.now_application_guid from public.etl_permit ep 
+                inner join public.now_application_identity nai on permit_cid = nai.mms_cid::varchar 
+            WHERE ep.permit_application_guid = pa.permit_application_guid
+        )
+        """
+        cursor.execute(INSERT_NOW_IDENTITIES_FOR_MMS_ONLY_APPLICATIONS)
