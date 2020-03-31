@@ -26,6 +26,8 @@ from app.api.utils.static_data import setup_static_data
 from app.api.utils.field_template import FieldTemplate
 from app.api.securities.models.bond import Bond
 from app.api.securities.models.bond_document import BondDocument
+from app.api.securities.models.reclamation_invoice import ReclamationInvoice
+from app.api.securities.models.reclamation_invoice_document import ReclamationInvoiceDocument
 from app.api.constants import STATIC_DATA
 
 
@@ -74,7 +76,8 @@ def setup_schema(Base, session):
     """
     def setup_schema_fn():
         for class_ in ActivityDetailBase.__subclasses__() + [
-                Equipment, NOWApplicationDocumentXref, Bond, BondDocument
+                Equipment, NOWApplicationDocumentXref, Bond, BondDocument, ReclamationInvoice,
+                ReclamationInvoiceDocument
         ] + sub_models.model_list:
             if hasattr(class_, "__tablename__") or getattr(class_, "__create_schema__", False):
                 try:

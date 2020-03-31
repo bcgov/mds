@@ -18,7 +18,7 @@ class ReclamationInvoice(Base, AuditMixin):
     reclamation_invoice_guid = db.Column(
         UUID(as_uuid=True), nullable=False, unique=True, server_default=FetchedValue())
     permit_id = db.Column(db.Integer, db.ForeignKey('permit.permit_id'))
-    invoice_number = db.Column(db.String, nullable=False)
+    project_id = db.Column(db.String, nullable=False)
     amount = db.Column(db.Numeric(14, 2), nullable=False)
     vendor = db.Column(db.String, nullable=False)
 

@@ -45,7 +45,6 @@ class ReclamationInvoiceListResource(Resource, UserMixin):
     @api.expect(RECLAMATION_INVOICE)
     @api.marshal_with(RECLAMATION_INVOICE, code=201)
     def post(self):
-
         try:
             reclamation_invoice = ReclamationInvoice._schema().load(
                 request.json['reclamation_invoice'])

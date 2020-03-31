@@ -665,7 +665,7 @@ class ReclamationInvoiceFactory(BaseFactory):
         model = ReclamationInvoice
 
     reclamation_invoice_guid = GUID
-    invoice_number = factory.Faker('numerify', text='#######')
+    project_id = factory.Faker('numerify', text='#######')
     amount = factory.Faker(
         'pydecimal', right_digits=2, positive=True, min_value=50, max_value=500000)
     vendor = factory.Faker('company')
