@@ -405,13 +405,13 @@ environments {
                     cpu_limit = "0"
                     memory_request = "0"
                     memory_limit = "0"
-                }
+                }*/
                 digdag {
                     cpu_request = "100m"
                     cpu_limit = "200m"
                     memory_request = "512Mi"
                     memory_limit = "1Gi"
-                }*/
+                }
             }
             deployment {
                 env {
@@ -462,9 +462,9 @@ environments {
                 'mds-docgen-api' {
                     HOST = "http://mds-docgen-api${vars.deployment.suffix}:3030"
                 }
-                /*'digdag' {
+                'digdag' {
                     HOST = "mds-digdag-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
-                }*/
+                }
             }
         }
     }
