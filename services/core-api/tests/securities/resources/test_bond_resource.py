@@ -132,7 +132,7 @@ class TestBondsResource:
         assert post_data['message'] is not None
 
     def test_post_a_bond_bad_data(self, test_client, db_session, auth_headers):
-        """Should return an error and a 404 response code"""
+        """Should return an error and a 400 response code"""
 
         mine = MineFactory(minimal=True)
         party1 = PartyFactory(person=True)
@@ -141,11 +141,8 @@ class TestBondsResource:
         BOND_POST_BAD_DATA['permit_guid'] = permit.permit_guid
 
         post_resp = test_client.post(
-                                                 # this should be bad post data?
-            '/securities/bonds',
-            json=BOND_POST_DATA,
-            headers=auth_headers['full_auth_header'])
-        assert post_resp.status_code == 404, post_resp.response
+            '/securities/bonds', json=BOND_POST_BAD_DATA, headers=auth_headers['full_auth_header'])
+        assert post_resp.status_code == 400, post_resp.response
         post_data = json.loads(post_resp.data.decode())
         assert post_data['message'] is not None
 
