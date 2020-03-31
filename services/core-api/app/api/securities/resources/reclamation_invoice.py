@@ -26,7 +26,7 @@ class ReclamationInvoiceListResource(Resource, UserMixin):
         mine = Mine.find_by_mine_guid(mine_guid)
 
         if mine is None:
-            raise NotFound('No mine was found with the guid provided.')
+            return []
 
         permits = Permit.find_by_mine_guid(mine.mine_guid)
 
@@ -54,7 +54,7 @@ class ReclamationInvoiceListResource(Resource, UserMixin):
         permit = Permit.find_by_permit_guid(request.json['permit_guid'])
 
         if permit is None:
-            raise NotFound('No permit was found with the guid provided.')
+            raise BadRequest('No permit was found with the guid provided.')
 
         reclamation_invoice.permit = permit
 

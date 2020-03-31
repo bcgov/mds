@@ -51,14 +51,14 @@ class TestReclamationInvoiceResource:
 
     def test_get_all_reclamation_invoices_on_mine_no_mine_guid(self, test_client, db_session,
                                                                auth_headers):
-        """Should return the error with a 404 response code"""
+        """Should return empty list"""
 
         get_resp = test_client.get(
             f'/securities/reclamation-invoices?mine_guid={BAD_GUID}',
             headers=auth_headers['full_auth_header'])
-        assert get_resp.status_code == 404, get_resp.response
+        assert get_resp.status_code == 200, get_resp.response
         get_data = json.loads(get_resp.data.decode())
-        assert get_data['message'] is not None
+        assert len(get_data['records']) == 0
 
     def test_get_all_reclamation_invoices_on_mine_no_permits(self, test_client, db_session,
                                                              auth_headers):
@@ -115,7 +115,7 @@ class TestReclamationInvoiceResource:
 
     def test_post_a_reclamation_invoice_bad_permit_guid(self, test_client, db_session,
                                                         auth_headers):
-        """Should return an error and a 404 response code"""
+        """Should return an error and a 400 response code"""
 
         GOOD_RECLAMATION_INVOICE_POST_DATA['permit_guid'] = BAD_GUID
 
@@ -123,7 +123,7 @@ class TestReclamationInvoiceResource:
             '/securities/reclamation-invoices',
             json=GOOD_RECLAMATION_INVOICE_POST_DATA,
             headers=auth_headers['full_auth_header'])
-        assert post_resp.status_code == 404, post_resp.response
+        assert post_resp.status_code == 400, post_resp.response
         post_data = json.loads(post_resp.data.decode())
         assert post_data['message'] is not None
 
