@@ -1,12 +1,16 @@
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { Divider } from "antd";
+import { Divider, Tabs } from "antd";
 import PropTypes from "prop-types";
 import { fetchPermits } from "@common/actionCreators/permitActionCreator";
 import { openModal, closeModal } from "@common/actions/modalActions";
 import { getPermits } from "@common/reducers/permitReducer";
-import { getBonds, getBondTotals } from "@common/selectors/securitiesSelectors";
+import {
+  getBonds,
+  getBondTotals,
+  getReclamationInvoices,
+} from "@common/selectors/securitiesSelectors";
 import {
   getBondTypeOptionsHash,
   getBondStatusOptionsHash,
@@ -15,6 +19,8 @@ import {
   fetchMineBonds,
   createBond,
   updateBond,
+  fetchMineReclamationInvoices,
+  createReclamationInvoice,
 } from "@common/actionCreators/securitiesActionCreator";
 import { getMineGuid } from "@common/selectors/mineSelectors";
 import { formatMoney } from "@common/utils/helpers";
@@ -22,6 +28,8 @@ import CustomPropTypes from "@/customPropTypes";
 import MineBondTable from "@/components/mine/Securities/MineBondTable";
 import MineDashboardContentCard from "@/components/mine/MineDashboardContentCard";
 import { modalConfig } from "@/components/modalContent/config";
+
+const { TabPane } = Tabs;
 
 /**
  * @class  MineSecurityInfo - contains all information relating to bonds and securities
@@ -60,6 +68,7 @@ export class MineSecurityInfo extends Component {
   componentWillMount = () => {
     const { id } = this.props.match.params;
     this.props.fetchPermits(id).then(() => {
+      this.props.fetchMineReclamationInvoices(id);
       this.props.fetchMineBonds(id).then(() => {
         this.setState({ isLoaded: true });
       });
@@ -159,37 +168,69 @@ export class MineSecurityInfo extends Component {
       return { expandedRowKeys };
     });
 
+  handleAddReclamationInvoice = (values, permitGuid) => {
+    console.log(values);
+    const payload = {
+      reclamation_invoice: {
+        ...values,
+      },
+      permit_guid: permitGuid,
+    };
+    this.props.createReclamationInvoice(payload);
+  };
+
+  openAddReclamationInvoiceModal = (event, permitGuid) => {
+    event.preventDefault();
+    this.props.openModal({
+      props: {
+        title: "Add Reclamation Invoice",
+        onSubmit: this.handleAddReclamationInvoice,
+        permitGuid,
+        mineGuid: this.props.mineGuid,
+      },
+      width: "50vw",
+      content: modalConfig.ADD_RECLAMATION_INVOICE_MODAL,
+    });
+  };
+
   render() {
     return (
       <div className="tab__content">
-        <div>
-          <h2>Securities</h2>
-          <Divider />
-          <div className="dashboard--cards">
-            <MineDashboardContentCard
-              title="Total Security Held"
-              content={formatMoney(this.props.bondTotals.amountHeld)}
-            />
-            <MineDashboardContentCard
-              title="Total No. of Active Bonds"
-              content={this.props.bondTotals.count}
-            />
-          </div>
-          <br />
-          <MineBondTable
-            isLoaded={this.state.isLoaded}
-            permits={this.props.permits}
-            expandedRowKeys={this.state.expandedRowKeys}
-            onExpand={this.onExpand}
-            openAddBondModal={this.openAddBondModal}
-            bonds={this.props.bonds}
-            releaseOrConfiscateBond={this.releaseOrConfiscateBond}
-            bondStatusOptionsHash={this.props.bondStatusOptionsHash}
-            bondTypeOptionsHash={this.props.bondTypeOptionsHash}
-            openViewBondModal={this.openViewBondModal}
-            openEditBondModal={this.openEditBondModal}
-          />
-        </div>
+        <h2>Securities</h2>
+        <Tabs type="card">
+          <TabPane tab="Bonds" key="1">
+            <div>
+              <div className="dashboard--cards">
+                <MineDashboardContentCard
+                  title="Total Security Held"
+                  content={formatMoney(this.props.bondTotals.amountHeld)}
+                />
+                <MineDashboardContentCard
+                  title="Total No. of Active Bonds"
+                  content={this.props.bondTotals.count}
+                />
+              </div>
+              <br />
+              <MineBondTable
+                isLoaded={this.state.isLoaded}
+                permits={this.props.permits}
+                expandedRowKeys={this.state.expandedRowKeys}
+                onExpand={this.onExpand}
+                openAddBondModal={this.openAddBondModal}
+                openAddReclamationInvoiceModal={this.openAddReclamationInvoiceModal}
+                bonds={this.props.bonds}
+                releaseOrConfiscateBond={this.releaseOrConfiscateBond}
+                bondStatusOptionsHash={this.props.bondStatusOptionsHash}
+                bondTypeOptionsHash={this.props.bondTypeOptionsHash}
+                openViewBondModal={this.openViewBondModal}
+                openEditBondModal={this.openEditBondModal}
+              />
+            </div>
+          </TabPane>
+          <TabPane tab="Reclamation Invoices" key="2">
+            Content of Tab Pane 2
+          </TabPane>
+        </Tabs>
       </div>
     );
   }
@@ -200,6 +241,7 @@ const mapStateToProps = (state) => ({
   mineGuid: getMineGuid(state),
   bonds: getBonds(state),
   bondTotals: getBondTotals(state),
+  reclamationInvoices: getReclamationInvoices(state),
   bondStatusOptionsHash: getBondStatusOptionsHash(state),
   bondTypeOptionsHash: getBondTypeOptionsHash(state),
 });
@@ -213,6 +255,8 @@ const mapDispatchToProps = (dispatch) =>
       fetchMineBonds,
       createBond,
       updateBond,
+      fetchMineReclamationInvoices,
+      createReclamationInvoice,
     },
     dispatch
   );
