@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Field, reduxForm } from "redux-form";
+import { Field, reduxForm, focus } from "redux-form";
 import { Form, Button, Col, Row, Popconfirm } from "antd";
 import { required } from "@common/utils/Validate";
 import { resetForm } from "@common/utils/helpers";
@@ -69,4 +69,6 @@ export default reduxForm({
   form: FORM.GENERATE_DOCUMENT,
   touchOnBlur: false,
   onSubmitSuccess: resetForm(FORM.GENERATE_DOCUMENT),
+  onSubmitFail: (errors, dispatch) =>
+    dispatch(focus(FORM.GENERATE_DOCUMENT, Object.keys(errors)[0])),
 })(GenerateDocumentForm);
