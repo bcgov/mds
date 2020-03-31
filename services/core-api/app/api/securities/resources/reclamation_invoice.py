@@ -1,5 +1,5 @@
 from flask_restplus import Resource
-from flask import request, current_app
+from flask import request
 from werkzeug.exceptions import BadRequest, NotFound
 from marshmallow.exceptions import MarshmallowError
 
@@ -41,13 +41,10 @@ class ReclamationInvoiceListResource(Resource, UserMixin):
         return reclamation_invoices
 
     @api.doc(description='Create a reclamation invoice')
-    # @requires_role_edit_securities
+    @requires_role_edit_securities
     @api.expect(RECLAMATION_INVOICE)
     @api.marshal_with(RECLAMATION_INVOICE, code=201)
     def post(self):
-        current_app.logger.debug('****************************')
-        current_app.logger.debug(str(request.json))
-
         try:
             reclamation_invoice = ReclamationInvoice._schema().load(
                 request.json['reclamation_invoice'])

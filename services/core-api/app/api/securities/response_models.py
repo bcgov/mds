@@ -56,7 +56,7 @@ RECLAMATION_INVOICE = api.model(
     'ReclamationInvoice', {
         'reclamation_invoice_id': fields.Integer,
         'reclamation_invoice_guid': fields.String,
-        'invoice_number': fields.String,
+        'project_id': fields.String,
         'amount': fields.Fixed(decimals=2),
         'vendor': fields.String,
         'permit_guid': fields.String(attribute='permit.permit_guid'),

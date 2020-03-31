@@ -2,7 +2,7 @@ CREATE TABLE IF NOT EXISTS reclamation_invoice (
     reclamation_invoice_id                                           SERIAL PRIMARY KEY,
     reclamation_invoice_guid         uuid DEFAULT gen_random_uuid()     UNIQUE NOT NULL,
     permit_id                        integer                                   NOT NULL,
-    invoice_number                   varchar                                   NOT NULL,
+    project_id                       varchar                                   NOT NULL,
     amount                           numeric(14,2)                             NOT NULL,
     vendor                           varchar                                   NOT NULL,
     create_user                      varchar                                   NOT NULL,
