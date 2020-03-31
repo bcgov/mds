@@ -38,6 +38,7 @@ export const fetchNoticeOfWorkApplicationContextTemplate = (
 export const generateNoticeOfWorkApplicationDocument = (
   documentTypeCode,
   payload,
+  message = "Successfully generated Notice of Work document",
   onDocumentRetrieved = () => {}
 ) => (dispatch) => {
   dispatch(request(reducerTypes.GENERATE_NOTICE_OF_WORK_APPLICATION_DOCUMENT));
@@ -56,7 +57,7 @@ export const generateNoticeOfWorkApplicationDocument = (
       );
       docWindow.onbeforeunload = () => {
         notification.success({
-          message: "Successfully generated Notice of Work document",
+          message,
           duration: 10,
         });
         dispatch(success(reducerTypes.GENERATE_NOTICE_OF_WORK_APPLICATION_DOCUMENT));
