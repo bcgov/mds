@@ -14,9 +14,9 @@ VALUES
 	('REF', 'Referred', 70, true, 'system-mds', 'system-mds'),
 	('CDI', 'Client Delay Info', 30, true, 'system-mds', 'system-mds'),
 	('CDB', 'Client Delay Bond', 20, true, 'system-mds', 'system-mds'),
-	('GVD', 'Govt Delay', 60, true, 'system-mds', 'system-mds'),
+    ('GVD', 'Govt Delay', 60, true, 'system-mds', 'system-mds'),
     ('CON', 'Consultation', 50, true, 'system-mds', 'system-mds'),
-	('AIA', 'Active/Issued/Approved', 10, true, 'system-mds', 'system-mds'),
+    ('AIA', 'Active/Issued/Approved', 10, true, 'system-mds', 'system-mds'),
 	('WTN', 'Withdrawn', 100, true, 'system-mds', 'system-mds'),
 	('REJ', 'Rejected', 80, true, 'system-mds', 'system-mds'),
 	('CLO', 'Closed', 40, true, 'system-mds', 'system-mds')
