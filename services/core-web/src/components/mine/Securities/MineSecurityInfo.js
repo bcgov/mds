@@ -26,6 +26,7 @@ import { getMineGuid } from "@common/selectors/mineSelectors";
 import { formatMoney } from "@common/utils/helpers";
 import CustomPropTypes from "@/customPropTypes";
 import MineBondTable from "@/components/mine/Securities/MineBondTable";
+import MineReclamationInvoiceTable from "@/components/mine/Securities/MineReclamationInvoiceTable";
 import MineDashboardContentCard from "@/components/mine/MineDashboardContentCard";
 import { modalConfig } from "@/components/modalContent/config";
 
@@ -193,11 +194,28 @@ export class MineSecurityInfo extends Component {
     });
   };
 
+  openEditReclamationInvoiceModal = (event, permitGuid, invoice) => {
+    event.preventDefault();
+    this.props.openModal({
+      props: {
+        title: "Add Reclamation Invoice",
+        onSubmit: this.handleAddReclamationInvoice,
+        permitGuid,
+        mineGuid: this.props.mineGuid,
+        invoice,
+        edit: true,
+      },
+      width: "50vw",
+      content: modalConfig.ADD_RECLAMATION_INVOICE_MODAL,
+    });
+  };
+
   render() {
     return (
       <div className="tab__content">
         <h2>Securities</h2>
-        <Tabs type="card">
+        <br />
+        <Tabs type="card" style={{ textAlign: "left !important" }}>
           <TabPane tab="Bonds" key="1">
             <div>
               <div className="dashboard--cards">
@@ -217,7 +235,6 @@ export class MineSecurityInfo extends Component {
                 expandedRowKeys={this.state.expandedRowKeys}
                 onExpand={this.onExpand}
                 openAddBondModal={this.openAddBondModal}
-                openAddReclamationInvoiceModal={this.openAddReclamationInvoiceModal}
                 bonds={this.props.bonds}
                 releaseOrConfiscateBond={this.releaseOrConfiscateBond}
                 bondStatusOptionsHash={this.props.bondStatusOptionsHash}
@@ -228,7 +245,17 @@ export class MineSecurityInfo extends Component {
             </div>
           </TabPane>
           <TabPane tab="Reclamation Invoices" key="2">
-            Content of Tab Pane 2
+            <MineReclamationInvoiceTable
+              isLoaded={this.state.isLoaded}
+              permits={this.props.permits}
+              expandedRowKeys={this.state.expandedRowKeys}
+              onExpand={this.onExpand}
+              openAddBondModal={this.openAddBondModal}
+              openAddReclamationInvoiceModal={this.openAddReclamationInvoiceModal}
+              invoices={this.props.invoices}
+              bonds={this.props.bonds}
+              openEditReclamationInvoiceModal={this.openEditReclamationInvoiceModal}
+            />
           </TabPane>
         </Tabs>
       </div>
@@ -241,7 +268,7 @@ const mapStateToProps = (state) => ({
   mineGuid: getMineGuid(state),
   bonds: getBonds(state),
   bondTotals: getBondTotals(state),
-  reclamationInvoices: getReclamationInvoices(state),
+  invoices: getReclamationInvoices(state),
   bondStatusOptionsHash: getBondStatusOptionsHash(state),
   bondTypeOptionsHash: getBondTypeOptionsHash(state),
 });

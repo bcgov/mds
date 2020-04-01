@@ -81,28 +81,16 @@ export const MineBondTable = (props) => {
       render: (text, record) => {
         return (
           <AuthorizationWrapper permission={Permission.EDIT_SECURITIES}>
-            <div>
-              <Button
-                type="secondary"
-                className="permit-table-button"
-                onClick={(event) => props.openAddBondModal(event, record.permit_guid)}
-              >
-                <div className="padding-small">
-                  <img className="padding-small--right icon-svg-filter" src={EDIT} alt="Add/Edit" />
-                  Add Bond
-                </div>
-              </Button>
-              <Button
-                type="secondary"
-                className="permit-table-button"
-                onClick={(event) => props.openAddReclamationInvoiceModal(event, record.permit_guid)}
-              >
-                <div className="padding-small">
-                  <img className="padding-small--right icon-svg-filter" src={EDIT} alt="Add/Edit" />
-                  Add Reclamation Invoice
-                </div>
-              </Button>
-            </div>
+            <Button
+              type="secondary"
+              className="permit-table-button"
+              onClick={(event) => props.openAddBondModal(event, record.permit_guid)}
+            >
+              <div className="padding-small">
+                <img className="padding-small--right icon-svg-filter" src={EDIT} alt="Add/Edit" />
+                Add Bond
+              </div>
+            </Button>
           </AuthorizationWrapper>
         );
       },

@@ -119,9 +119,6 @@ const mapDispatchToProps = (dispatch) =>
 AdminDashboard.propTypes = propTypes;
 
 export default compose(
-  connect(
-    null,
-    mapDispatchToProps
-  ),
+  connect(null, mapDispatchToProps),
   AuthorizationGuard(Permission.ADMIN)
 )(AdminDashboard);

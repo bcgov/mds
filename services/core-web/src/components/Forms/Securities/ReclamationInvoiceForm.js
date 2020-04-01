@@ -115,12 +115,7 @@ export class ReclamationInvoiceForm extends Component {
         <Row gutter={16}>
           <Col md={12} sm={24}>
             <Form.Item>
-              <Field
-                id="invoice_number"
-                name="invoice_number"
-                label="Invoice Number"
-                component={RenderField}
-              />
+              <Field id="project_id" name="project_id" label="Project ID" component={RenderField} />
             </Form.Item>
           </Col>
           <Col md={12} sm={24}>
