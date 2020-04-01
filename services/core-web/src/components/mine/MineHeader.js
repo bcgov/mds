@@ -213,7 +213,7 @@ export class MineHeader extends Component {
                 {this.props.mine.mine_status[0].status_date ? (
                   formatDate(this.props.mine.mine_status[0].status_date)
                 ) : (
-                  <p>Not Entered</p>
+                  <p>{String.EMPTY_FIELD}</p>
                 )}
               </div>
             </div>
@@ -290,9 +290,7 @@ export class MineHeader extends Component {
           <div className="inline-flex padding-small wrap">
             <p className="field-title">Exemption Status</p>
             <div>
-              {(this.props.mine.exemption_fee_status &&
-                this.props.mine.exemption_fee_status.description) ||
-                Strings.EMPTY_FIELD}
+              {(null && this.props.mine.exemption_fee_status.description) || String.EMPTY_FIELD}
               {this.props.mine.exemption_fee_status_note && (
                 <CoreTooltip title={this.props.mine.exemption_fee_status_note} />
               )}
