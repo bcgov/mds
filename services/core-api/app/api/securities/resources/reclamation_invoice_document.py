@@ -9,7 +9,7 @@ from app.api.utils.resources_mixins import UserMixin
 from app.api.services.document_manager_service import DocumentManagerService
 
 
-class BondDocumentListResource(Resource, UserMixin):
+class ReclamationInvoiceDocumentListResource(Resource, UserMixin):
     @api.doc(description='Request a document_manager_guid for uploading a document')
     @requires_role_edit_securities
     def post(self, mine_guid):
@@ -19,4 +19,4 @@ class BondDocumentListResource(Resource, UserMixin):
             raise NotFound('Mine not found.')
 
         return DocumentManagerService.initializeFileUploadWithDocumentManager(
-            request, mine, 'bonds')
+            request, mine, 'reclamation_invoices')
