@@ -1,5 +1,6 @@
 import queryString from "query-string";
 
+export const CORE_STATIC_CONTENT = "/exports/core-static-content";
 // Network URL's
 export const MINE = "/mines";
 export const MINE_LIST = "/mines";
@@ -133,7 +134,8 @@ export const INCIDENT_STATUS_CODES = `/incidents/status-codes`;
 export const INCIDENT_DOCUMENT_TYPE = `/incidents/document-types`;
 export const INCIDENT_CATEGORY_CODES = `/incidents/category-codes`;
 
-// report
+// Reports
+export const REPORTS = (params = {}) => `/mines/reports?${queryString.stringify(params)}`;
 export const MINE_REPORT_DEFINITIONS = () => `/mines/reports/definitions`;
 export const MINE_REPORTS = (mineGuid) => `/mines/${mineGuid}/reports`;
 export const MINE_REPORT = (mineGuid, mineReportGuid) =>
@@ -144,6 +146,7 @@ export const MINE_REPORT_COMMENTS = (mineGuid, reportGuid) =>
 export const MINE_REPORT_COMMENT = (mineGuid, reportGuid, commentGuid) =>
   `/mines/${mineGuid}/reports/${reportGuid}/comments/${commentGuid}`;
 export const MINE_REPORT_STATUS = "/mines/reports/status-codes";
+export const MINE_REPORT_CATEGORY = "/mines/reports/category-codes";
 
 // Notice Of Work
 export const NOTICE_OF_WORK_APPLICATION_LIST = (params = {}) =>
@@ -185,3 +188,8 @@ export const NRIS_DOCUMENT_TOKEN_GET_URL = (externalId, inspectionId, file_name)
   })}`;
 export const NRIS_DOCUMENT_FILE_GET_URL = (externalId, inspectionId, token) =>
   `/compliance/inspection/${inspectionId}/document/${externalId}?${queryString.stringify(token)}`;
+
+export const MINE_BONDS = (mineGuid) => `/securities/bonds?mine_guid=${mineGuid}`;
+export const BOND = (bondGuid) =>
+  bondGuid ? `/securities/bonds/${bondGuid}` : "/securities/bonds";
+export const BOND_DOCUMENTS = (mineGuid) => `/securities/${mineGuid}/bonds/documents`;

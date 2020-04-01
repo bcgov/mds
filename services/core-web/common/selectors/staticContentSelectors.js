@@ -1,4 +1,4 @@
-import { chain, flatMap, uniqBy } from "lodash";
+import { chain } from "lodash";
 import { createSelector } from "reselect";
 import * as staticContentReducer from "../reducers/staticContentReducer";
 import { createLabelHash, createDropDownList, compareCodes } from "../utils/helpers";
@@ -12,6 +12,7 @@ export const {
   getMineDisturbanceOptions,
   getMineReportDefinitionOptions,
   getMineReportStatusOptions,
+  getMineReportCategoryOptions,
   getProvinceOptions,
   getPermitStatusOptions,
   getComplianceCodes,
@@ -31,6 +32,11 @@ export const {
   getNoticeOfWorkApplicationProgressStatusCodeOptions,
   getNoticeOfWorkApplicationPermitTypeOptions,
   getNoticeOfWorkApplicationReviewOptions,
+  getPartyRelationshipTypes,
+  getPartyRelationshipTypesList,
+  getBondStatusOptions,
+  getBondTypeOptions,
+  getBondDocumentTypeOptions,
 } = staticContentReducer;
 
 // removes all expired compliance codes from the array
@@ -315,18 +321,23 @@ export const getDropdownMineReportDefinitionOptions = createSelector(
 );
 
 export const getDropdownMineReportCategoryOptions = createSelector(
-  [getMineReportDefinitionOptions],
-  (options) =>
-    createDropDownList(
-      uniqBy(flatMap(options, "categories"), "mine_report_category"),
-      "description",
-      "mine_report_category"
-    )
+  [getMineReportCategoryOptions],
+  (options) => createDropDownList(options, "description", "mine_report_category")
+);
+
+export const getMineReportCategoryOptionsHash = createSelector(
+  [getDropdownMineReportCategoryOptions],
+  createLabelHash
 );
 
 export const getDropdownMineReportStatusOptions = createSelector(
   [getMineReportStatusOptions],
   (options) => createDropDownList(options, "description", "mine_report_submission_status_code")
+);
+
+export const getMineReportStatusOptionsHash = createSelector(
+  [getDropdownMineReportStatusOptions],
+  createLabelHash
 );
 
 export const getDropdownNoticeOfWorkActivityTypeOptions = createSelector(
@@ -425,5 +436,35 @@ export const getDropdownNoticeOfWorkApplicationReviewTypeOptions = createSelecto
 
 export const getNoticeOfWorkApplicationApplicationReviewTypeHash = createSelector(
   [getDropdownNoticeOfWorkApplicationReviewTypeOptions],
+  createLabelHash
+);
+
+export const getPartyRelationshipTypeHash = createSelector(
+  [getPartyRelationshipTypesList],
+  createLabelHash
+);
+
+export const getBondTypeDropDownOptions = createSelector([getBondTypeOptions], (options) =>
+  createDropDownList(options, "description", "bond_type_code")
+);
+
+export const getBondStatusDropDownOptions = createSelector([getBondStatusOptions], (options) =>
+  createDropDownList(options, "description", "bond_status_code")
+);
+
+export const getBondDocumentTypeDropDownOptions = createSelector(
+  [getBondDocumentTypeOptions],
+  (options) => createDropDownList(options, "description", "bond_document_type_code")
+);
+
+export const getBondTypeOptionsHash = createSelector([getBondTypeDropDownOptions], createLabelHash);
+
+export const getBondStatusOptionsHash = createSelector(
+  [getBondStatusDropDownOptions],
+  createLabelHash
+);
+
+export const getBondDocumentTypeOptionsHash = createSelector(
+  [getBondDocumentTypeDropDownOptions],
   createLabelHash
 );

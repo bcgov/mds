@@ -6,13 +6,13 @@ import PropTypes from "prop-types";
 import queryString from "query-string";
 import { openModal, closeModal } from "@common/actions/modalActions";
 import { fetchParties, createParty } from "@common/actionCreators/partiesActionCreator";
-import { getDropdownProvinceOptions } from "@common/selectors/staticContentSelectors";
 import {
-  getParties,
-  getPartyPageData,
+  getDropdownProvinceOptions,
   getPartyRelationshipTypeHash,
   getPartyRelationshipTypesList,
-} from "@common/selectors/partiesSelectors";
+} from "@common/selectors/staticContentSelectors";
+import { getParties, getPartyPageData } from "@common/selectors/partiesSelectors";
+
 import * as Strings from "@common/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
 import * as FORM from "@/constants/forms";
@@ -21,7 +21,7 @@ import ContactSearch from "@/components/dashboard/contactsHomePage/ContactSearch
 import ContactList from "@/components/dashboard/contactsHomePage/ContactList";
 import ResponsivePagination from "@/components/common/ResponsivePagination";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
-import * as router from "@/constants/routes";
+import * as routes from "@/constants/routes";
 import { modalConfig } from "@/components/modalContent/config";
 import * as ModalContent from "@/constants/modalContent";
 import AddButton from "@/components/common/AddButton";
@@ -35,7 +35,7 @@ const propTypes = {
   fetchParties: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
   change: PropTypes.func.isRequired,
-  history: PropTypes.shape({ push: PropTypes.func }).isRequired,
+  history: PropTypes.shape({ replace: PropTypes.func }).isRequired,
   location: PropTypes.shape({ search: PropTypes.string }).isRequired,
   pageData: PropTypes.objectOf(CustomPropTypes.partyPageData).isRequired,
   provinceOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
@@ -44,104 +44,64 @@ const propTypes = {
   relationshipTypeHash: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
-export class ContactHomePage extends Component {
-  params = queryString.parse(this.props.location.search);
+const defaultParams = {
+  page: Strings.DEFAULT_PAGE,
+  per_page: Strings.DEFAULT_PER_PAGE,
+  type: "PER",
+  relationships: "mine_party_appt",
+};
 
+export class ContactHomePage extends Component {
   state = {
+    params: defaultParams,
     isLoaded: false,
-    params: {
-      page: Strings.DEFAULT_PAGE,
-      per_page: Strings.DEFAULT_PER_PAGE,
-      type: "PER",
-      ...this.params,
-    },
   };
 
   componentDidMount() {
-    const params = this.props.location.search;
-    const parsedParams = queryString.parse(params);
-    const {
-      page = this.state.params.page,
-      per_page = this.state.params.per_page,
-      type = this.state.params.type,
-    } = parsedParams;
-    if (params) {
-      this.renderDataFromURL();
-    } else {
-      this.props.history.push(
-        router.CONTACT_HOME_PAGE.dynamicRoute({
-          page,
-          per_page,
-          type,
-        })
-      );
-    }
-    this.props
-      .fetchParties({
-        ...parsedParams,
-        page,
-        per_page,
-        relationships: "mine_party_appt",
-      })
-      .then(() => {
-        this.setState({ isLoaded: true });
-      });
+    const params = queryString.parse(this.props.location.search);
+    this.setState(
+      (prevState) => ({
+        params: {
+          ...prevState.params,
+          ...params,
+        },
+      }),
+      () => this.props.history.replace(routes.CONTACT_HOME_PAGE.dynamicRoute(this.state.params))
+    );
   }
 
   componentWillReceiveProps(nextProps) {
-    const locationChanged = nextProps.location !== this.props.location;
-    if (locationChanged) {
-      this.renderDataFromURL(nextProps);
+    if (nextProps.location !== this.props.location) {
+      this.renderDataFromURL(nextProps.location.search);
     }
   }
 
-  componentWillUnmount() {
-    this.setState({ params: {} });
-  }
-
-  renderDataFromURL = (nextProps) => {
-    const params = nextProps ? nextProps.location.search : this.props.location.search;
+  renderDataFromURL = (params) => {
     const parsedParams = queryString.parse(params);
-    this.setState({
-      params: parsedParams,
-      isLoaded: false,
-    });
-    this.props
-      .fetchParties({
-        ...parsedParams,
-        relationships: "mine_party_appt",
-      })
-      .then(() => {
-        this.setState({ isLoaded: true });
-      });
-  };
-
-  handleSearch = (searchParams = {}, clear = false) => {
-    const persistedParams = clear ? {} : this.state.params;
-    const updatedParams = {
-      // Default per_page -- overwrite if provided
-      per_page: Strings.DEFAULT_PER_PAGE,
-      // Start from existing state
-      ...persistedParams,
-      // Overwrite prev params with any newly provided search params
-      ...searchParams,
-      // Reset page number
-      page: Strings.DEFAULT_PAGE,
-    };
-
-    this.props.history.push(router.CONTACT_HOME_PAGE.dynamicRoute(updatedParams));
     this.setState(
       {
-        params: updatedParams,
+        params: { ...defaultParams, ...parsedParams },
+        isLoaded: false,
       },
-      // Fetch parties once state has been updated
-      () => this.renderDataFromURL()
+      () =>
+        this.props.fetchParties(this.state.params).then(() => {
+          this.setState({ isLoaded: true });
+        })
     );
   };
 
+  handleSearch = (searchParams = {}, clear = false) => {
+    const persistedParams = clear ? defaultParams : this.state.params;
+    const params = {
+      ...persistedParams,
+      ...searchParams,
+    };
+    this.props.history.replace(routes.CONTACT_HOME_PAGE.dynamicRoute(params));
+  };
+
   onPageChange = (page, per_page) => {
-    this.props.history.push(
-      router.CONTACT_HOME_PAGE.dynamicRoute({
+    this.props.history.replace(
+      routes.CONTACT_HOME_PAGE.dynamicRoute({
         ...this.state.params,
         page,
         per_page,
@@ -150,9 +110,9 @@ export class ContactHomePage extends Component {
   };
 
   handleNameFieldReset = () => {
-    this.props.change(FORM.CONTACT_ADVANCED_SEARCH, "party_name", null);
-    this.props.change(FORM.CONTACT_ADVANCED_SEARCH, "first_name", null);
-    this.props.change(FORM.CONTACT_ADVANCED_SEARCH, "last_name", null);
+    this.props.change(FORM.CONTACT_ADVANCED_SEARCH, "party_name", undefined);
+    this.props.change(FORM.CONTACT_ADVANCED_SEARCH, "first_name", undefined);
+    this.props.change(FORM.CONTACT_ADVANCED_SEARCH, "last_name", undefined);
   };
 
   openAddContactModal(event, fetchData, title, provinceOptions) {

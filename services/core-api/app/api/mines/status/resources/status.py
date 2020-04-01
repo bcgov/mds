@@ -12,4 +12,4 @@ class MineStatusXrefListResource(Resource, UserMixin):
     @api.marshal_with(MINE_STATUS_CODE_MODEL, envelope='records')
     @requires_role_view_all
     def get(self):
-        return MineStatusXref.active()
+        return MineStatusXref.get_active()

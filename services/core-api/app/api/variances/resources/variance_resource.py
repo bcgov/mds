@@ -2,6 +2,7 @@ from flask import request
 from flask_restplus import Resource
 from sqlalchemy_filters import apply_sort, apply_pagination, apply_filters
 from sqlalchemy import desc, cast, NUMERIC, func, or_
+from werkzeug.exceptions import BadRequest
 
 from app.extensions import api
 from app.api.utils.access_decorators import requires_any_of, VIEW_ALL
@@ -85,7 +86,7 @@ class VarianceResource(Resource, UserMixin):
 
         status_filter_values = list(
             map(lambda x: x.variance_application_status_code,
-                VarianceApplicationStatusCode.active()))
+                VarianceApplicationStatusCode.get_active()))
 
         conditions = []
         if args["application_status"] is not None:

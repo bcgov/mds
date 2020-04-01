@@ -21,7 +21,6 @@ import { fetchMineComplianceInfo } from "@common/actionCreators/complianceAction
 import { getUserInfo } from "@common/selectors/authenticationSelectors";
 import { getMines, getIsUserSubscribed } from "@common/selectors/mineSelectors";
 import { formatDate } from "@common/utils/helpers";
-import { storeRegionOptions, storeTenureTypes } from "@common/actions/staticContentActions";
 import { storeVariances } from "@common/actions/varianceActions";
 import { storePermits } from "@common/actions/permitActions";
 import { storeMine } from "@common/actions/mineActions";
@@ -191,7 +190,7 @@ export class MineDashboard extends Component {
           <RefreshButton
             isNestedButton
             actions={[storeMine]}
-            listActions={[storeRegionOptions, storeTenureTypes, storeVariances, storePermits]}
+            listActions={[storeVariances, storePermits]}
             requests={[
               () => this.props.fetchVariancesByMine({ mineGuid: id }),
               () => this.props.fetchPermits(mine.mine_guid),

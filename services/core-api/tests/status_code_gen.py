@@ -6,6 +6,8 @@ from app.api.incidents.models.mine_incident_status_code import MineIncidentStatu
 from app.api.incidents.models.mine_incident_document_type_code import MineIncidentDocumentTypeCode
 from app.api.mines.region.models.region import MineRegionCode
 from app.api.mines.permits.permit.models.permit_status_code import PermitStatusCode
+from app.api.securities.models.bond_status import BondStatus
+from app.api.securities.models.bond_type import BondType
 from app.api.mines.mine.models.mine_tenure_type_code import MineTenureTypeCode
 from app.api.mines.mine.models.mine_commodity_code import MineCommodityCode
 from app.api.mines.mine.models.mine_disturbance_code import MineDisturbanceCode
@@ -34,6 +36,14 @@ def RandomPermitStatusCode():
     return random.choice([x.permit_status_code for x in db.session.query(PermitStatusCode).all()])
 
 
+def RandomBondStatusCode():
+    return random.choice([x.bond_status_code for x in BondStatus.get_active()])
+
+
+def RandomBondTypeCode():
+    return random.choice([x.bond_type_code for x in BondType.get_active()])
+
+
 def RandomTenureTypeCode():
     return random.choice(
         [x.mine_tenure_type_code for x in db.session.query(MineTenureTypeCode).all()])
@@ -49,6 +59,12 @@ def SampleMineDisturbanceCodes(mine_tenure_type, num):
     return [
         x.mine_disturbance_code for x in random.sample(mine_tenure_type.mine_disturbance_codes, num)
     ]
+
+def RandomOperatingMineStatusXref():
+    return random.choice(
+        db.session.query(MineStatusXref).filter(
+            MineStatusXref.mine_operation_status_code == 'OP').all()
+    )
 
 
 def RandomMineStatusXref():
@@ -76,38 +92,39 @@ def RandomComplianceArticleId():
 
 
 def RandomIncidentDeterminationTypeCode():
-    return random.choice(
-        [x.mine_incident_determination_type_code for x in MineIncidentDeterminationType.active()])
+    return random.choice([
+        x.mine_incident_determination_type_code for x in MineIncidentDeterminationType.get_active()
+    ])
 
 
 def RandomIncidentStatusCode():
-    return random.choice([x.mine_incident_status_code for x in MineIncidentStatusCode.active()])
+    return random.choice([x.mine_incident_status_code for x in MineIncidentStatusCode.get_active()])
 
 
 def RandomIncidentDocumentType():
     return random.choice(
-        [x.mine_incident_document_type_code for x in MineIncidentDocumentTypeCode.active()])
+        [x.mine_incident_document_type_code for x in MineIncidentDocumentTypeCode.get_active()])
 
 
 def RandomMineReportDefinition():
-    return random.choice([x.mine_report_definition_id for x in MineReportDefinition.active()])
+    return random.choice([x.mine_report_definition_id for x in MineReportDefinition.get_active()])
 
 
 def RandomMineReportDefinitionWithDueDate():
     return random.choice([
-        x.mine_report_definition_id for x in MineReportDefinition.active()
+        x.mine_report_definition_id for x in MineReportDefinition.get_active()
         if x.due_date_period_months and x.due_date_period_months > 0
     ])
 
 
 def RandomMineReportSubmissionStatusCode():
     return random.choice(
-        [x.mine_report_submission_status_code for x in MineReportSubmissionStatusCode.active()])
+        [x.mine_report_submission_status_code for x in MineReportSubmissionStatusCode.get_active()])
 
 
 def RandomVarianceDocumentCategoryCode():
     return random.choice(
-        [x.variance_document_category_code for x in VarianceDocumentCategoryCode.active()])
+        [x.variance_document_category_code for x in VarianceDocumentCategoryCode.get_active()])
 
 
 def SampleDangerousOccurrenceSubparagraphs(num):
@@ -124,7 +141,7 @@ def RandomVarianceApplicationStatusCode():
     return random.choice([
         x.variance_application_status_code
         for x in filter(lambda x: x.variance_application_status_code not in ['APP', 'DEN'],
-                        VarianceApplicationStatusCode.active())
+                        VarianceApplicationStatusCode.get_active())
     ])
 
 
@@ -154,6 +171,7 @@ def RandomUndergroundExplorationTypeCode():
         x.underground_exploration_type_code
         for x in db.session.query(UndergroundExplorationType).all()
     ])
+
 
 def RandomNOWProgressStatusCode():
     return random.choice([

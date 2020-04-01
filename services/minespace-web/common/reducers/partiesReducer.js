@@ -36,11 +36,6 @@ export const partiesReducer = (state = initialState, action) => {
         parties: createItemMap([action.payload], "party_guid"),
         partyIds: createItemIdsArray([action.payload], "party_guid"),
       };
-    case actionTypes.STORE_PARTY_RELATIONSHIP_TYPES:
-      return {
-        ...state,
-        partyRelationshipTypes: action.payload,
-      };
     case actionTypes.STORE_PARTY_RELATIONSHIPS:
       return {
         ...state,
@@ -74,13 +69,7 @@ const partiesReducerObject = {
 export const getParties = (state) => state[PARTIES].parties;
 export const getRawParties = (state) => state[PARTIES].rawParties;
 export const getPartyIds = (state) => state[PARTIES].partyIds;
-export const getPartyRelationshipTypes = (state) => state[PARTIES].partyRelationshipTypes;
-export const getPartyRelationshipTypesList = (state) =>
-  createDropDownList(
-    state[PARTIES].partyRelationshipTypes,
-    "description",
-    "mine_party_appt_type_code"
-  );
+
 export const getPartyRelationships = (state) => state[PARTIES].partyRelationships;
 export const getPartyPageData = (state) => state[PARTIES].partyPageData;
 export const getAddPartyFormState = (state) => state[PARTIES].addPartyFormState;

@@ -1,5 +1,5 @@
 import pytest
-from app.api.utils.access_decorators import VIEW_ALL, MINE_EDIT, MINE_ADMIN, MINESPACE_PROPONENT, EDIT_PARTY, EDIT_PERMIT, EDIT_DO, EDIT_VARIANCE, EDIT_REPORT
+from app.api.utils.access_decorators import VIEW_ALL, MINE_EDIT, MINE_ADMIN, MINESPACE_PROPONENT, EDIT_PARTY, EDIT_PERMIT, EDIT_DO, EDIT_VARIANCE, EDIT_REPORT, EDIT_SUBMISSIONS, EDIT_SECURITIES
 
 from app.api.download_token.resources.download_token import DownloadTokenResource
 from app.api.mines.documents.resources.mine_document_resource import MineDocumentListResource
@@ -31,6 +31,9 @@ from app.api.users.minespace.resources.minespace_user_mine import MinespaceUserM
 from app.api.search.search.resources.search import SearchResource, SearchOptionsResource
 from app.api.search.search.resources.simple_search import SimpleSearchResource
 from app.api.mines.reports.resources.mine_reports import MineReportResource, MineReportListResource
+from app.api.now_submissions.resources.application_list_resource import ApplicationListResource
+from app.api.now_submissions.resources.application_nda_list_resource import ApplicationNDAListResource
+from app.api.securities.resources.bond import BondResource, BondListResource
 
 from app.api.now_applications.resources.now_activity_type_resource import NOWActivityTypeResource
 from app.api.now_applications.resources.now_application_import_resource import NOWApplicationImportResource
@@ -109,7 +112,13 @@ from app.api.now_applications.resources.now_application_resource import NOWAppli
     (NOWApplicationDocumentResource, 'delete', [EDIT_PERMIT]),
     (NOWApplicationDocumentTypeResource, 'get', [VIEW_ALL]),
     (NOWApplicationDocumentTypeListResource, 'get', [VIEW_ALL]),
-    (NOWApplicationDocumentGenerateResource,'post',[EDIT_PERMIT])
+    (NOWApplicationDocumentGenerateResource,'post',[EDIT_PERMIT]),
+    (ApplicationListResource,'post',[EDIT_SUBMISSIONS]),
+    (ApplicationNDAListResource,'post',[EDIT_SUBMISSIONS]),
+    (BondListResource,'post',[EDIT_SECURITIES]),
+    (BondListResource,'get',[VIEW_ALL]),
+    (BondResource,'get',[VIEW_ALL]),
+    (BondResource,'put',[EDIT_SECURITIES]),
 ])
 def test_endpoint_auth(resource, method, expected_roles):
     endpoint = getattr(resource, method, None)

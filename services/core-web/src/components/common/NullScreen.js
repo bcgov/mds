@@ -33,8 +33,8 @@ const propTypes = {
     "documents",
     "now-equipment",
     "now-contacts",
-    "now-activity",
     "add-now-activity",
+    "securities",
   ]),
   message: PropTypes.string,
 };
@@ -164,13 +164,6 @@ const NullScreen = (props) => (
         <h3>No contacts associated with this Notice of Work</h3>
       </div>
     )}
-    {props.type === "now-activity" && (
-      <div>
-        <p>
-          <i>{props.message}</i> does not apply to this type of permit application.
-        </p>
-      </div>
-    )}
     {props.type === "add-now-activity" && (
       <div>
         <p>
@@ -196,6 +189,12 @@ const NullScreen = (props) => (
       <div>
         <img alt="mine_img" src={PERMIT} />
         <h3>No documents found</h3>
+      </div>
+    )}
+    {props.type === "securities" && (
+      <div>
+        <img alt="mine_img" src={PERMIT} />
+        <h3>{String.NO_SECURITIES}</h3>
       </div>
     )}
   </div>

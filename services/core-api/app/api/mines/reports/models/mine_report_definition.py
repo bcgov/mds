@@ -58,7 +58,7 @@ class MineReportDefinition(Base, AuditMixin):
             return None
 
     @classmethod
-    def active(cls):
+    def get_active(cls):
         try:
             return cls.query.filter_by(active_ind=True).all()
         except ValueError:
@@ -85,7 +85,7 @@ def _calculate_due_date(current_date, due_date_type, period_in_months):
     if due_date_type == 'FIS':
 
         fiscal_year_end = datetime(current_year, march, day, hour, minute, second)
-        if current_date < fiscal_year_end:  #Jan - Mar
+        if current_date < fiscal_year_end:       #Jan - Mar
             tmp_date = fiscal_year_end - relativedelta(years=1)
         else:
             tmp_date = fiscal_year_end

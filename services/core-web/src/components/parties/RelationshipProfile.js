@@ -10,10 +10,9 @@ import { fetchPartyRelationships } from "@common/actionCreators/partiesActionCre
 import { fetchPermits } from "@common/actionCreators/permitActionCreator";
 import { fetchMineRecordById } from "@common/actionCreators/mineActionCreator";
 import { getPermits } from "@common/reducers/permitReducer";
-import {
-  getPartyRelationshipTypesList,
-  getPartyRelationships,
-} from "@common/selectors/partiesSelectors";
+import { getPartyRelationships } from "@common/selectors/partiesSelectors";
+import { getPartyRelationshipTypesList } from "@common/selectors/staticContentSelectors";
+
 import { getMines } from "@common/selectors/mineSelectors";
 import { formatDate } from "@common/utils/helpers";
 import * as String from "@common/constants/strings";
@@ -257,7 +256,4 @@ const mapDispatchToProps = (dispatch) =>
 RelationshipProfile.propTypes = propTypes;
 RelationshipProfile.defaultProps = defaultProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(RelationshipProfile);
+export default connect(mapStateToProps, mapDispatchToProps)(RelationshipProfile);

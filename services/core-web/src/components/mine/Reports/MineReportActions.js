@@ -20,7 +20,7 @@ const DeleteButton = (state, props) =>
       <Popconfirm
         placement="topLeft"
         title={`Are you sure you want to delete the ${props.mineReport.submission_year} ${props.mineReport.report_name}?`}
-        onConfirm={() => props.handleRemoveReport(props.mineReport.mine_report_guid)}
+        onConfirm={() => props.handleRemoveReport(props.mineReport)}
         okText="Delete"
         cancelText="Cancel"
       >
@@ -33,7 +33,7 @@ const DeleteButton = (state, props) =>
       <Popconfirm
         placement="topLeft"
         title={`Are you sure you want to delete the ${props.mineReport.submission_year} ${props.mineReport.report_name}?`}
-        onConfirm={() => props.handleRemoveReport(props.mineReport.mine_report_guid)}
+        onConfirm={() => props.handleRemoveReport(props.mineReport)}
         okText="Delete"
         cancelText="Cancel"
       >
@@ -55,7 +55,7 @@ const renderDeleteButton = (props) => {
 };
 
 export const MineReportActions = (props) => (
-  <div>
+  <div style={{ width: "max-content" }}>
     <Button
       type="primary"
       size="small"

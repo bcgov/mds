@@ -604,7 +604,8 @@ VALUES
     ('PUB', 'Public Comment',true,'system-mds','system-mds'),
     ('CAL', 'Client Acknowledgement Letter', true, 'system-mds', 'system-mds'),
 	('WDL', 'Withdrawl Letter', true, 'system-mds', 'system-mds'),
-	('RJL', 'Rejection Letter', true, 'system-mds', 'system-mds')
+	('RJL', 'Rejection Letter', true, 'system-mds', 'system-mds'),
+    ('SCD', 'Security Calculation Document', true, 'system-mds', 'system-mds')
 on conflict do nothing;
 
 INSERT INTO now_application_review_type(
@@ -620,93 +621,20 @@ VALUES
 ON CONFLICT DO NOTHING;
 
 
-
-DROP TABLE IF EXISTS tmp_report_definition_compliance;
-CREATE TEMPORARY TABLE tmp_report_definition_compliance(
-	tmp_id serial primary key, 
-	mrd_id integer, 
-	report_name character varying(100),
-	due_date_type character varying(3),
-	due_date_period integer,
-	compliance_act character varying(5), 
-	compliance_section character varying(2),
-	compliance_sub_section character varying(2),
-	compliance_paragraph character varying(2),
-	compliance_article_id integer
-);INSERT INTO tmp_report_definition_compliance
-(report_name, due_date_type, due_date_period, compliance_act, compliance_section, compliance_sub_section, compliance_paragraph)
-VALUES 
-	('OHSC Annual Report','FIS',12, 'HSRCM','1','9','3'),
-	('Right to Refuse Report','EVT',null, 'HSRCM','1','10','7'),
-	('Report of MERP Test','FIS',12, 'HSRCM','3','7','1'),
-	('Underground Fueling Station Report','PMT',null, 'HSRCM','4','3','3'),
-	('Underground Oil and Grease Storage Area Report','PMT',null, 'HSRCM','4','3','4'),
-	('Flammable Gas Report','EVT',null, 'HSRCM','6','42','3'),
-	('Free Fall Tests Report','EVT',null, 'HSRCM','7','5','13'),
-	('Defective Explosives Report','EVT',null, 'HSRCM','8','3','4'),
-	('Careless Acts Report','EVT',null, 'HSRCM','8','3','9'),
-	('Drilling Precaution Procedures Report','PMT',null, 'HSRCM','8','7','2'),
-	('Annual Summary of Exploration Activities','FIS',12, 'HSRCM','9','2','1'),
-	('Management Plan for Riparian Area','PMT',null,'HSRCM','9','5','1'),
-	('Terrain Stability Remediation Plan','EVT',null,'HSRCM','9','7','1'),
-	('Terrain Incident Report','EVT',null, 'HSRCM','9','7','1'),
-	('ARD Surface Material Request','PMT',null, 'HSRCM','9','10','1'),
-	('Cessation of Exploration Reclamation Report','EVT',null, 'HSRCM','9','13','1'),
-	('Permit Application: ML/ARD Management Plan','ANV',60, 'HSRCM','10','1','3'),
-	('Duty to Report Safety Issue at TSF','EVT',null, 'HSRCM','10','1','6'),
-	('Breach and Inundation Study/Failure Runout Assessment','AVA',null, 'HSRCM','10','1','11'),
-	('ML/ARD Management Plan','ANV',60, 'HSRCM','10','1','16'),
-	('Departure from Approval for Reclamation Program or Mine Plan','PMT',null, 'HSRCM','10','1','18'),
-	('5-year Mine Plan','FIS',60, 'HSRCM','10','4','1'),
-	('ITRB Terms of Reference','PMT',null, 'HSRCM','10','4','2'),
-	('TSF Emergency Preparedness and Response Plan','PMT',null, 'HSRCM','10','4','2'),
-	('Annual Reclamation Report','FIS',12, 'HSRCM','10','4','4'),
-	('Annual DSI','FIS',12, 'HSRCM','10','4','4'),
-	('ITRB Activities Report','FIS',12, 'HSRCM','10','4','4'),
-	('Summary of TSF or Dam Safety Recommendations','FIS',12, 'HSRCM','10','4','4'),
-	('Performance of High Risk Dumps','FIS',12, 'HSRCM','10','4','4'),
-	('Mine Plan Update','FIS',60, 'HSRCM','10','4','5'),
-	('Dam Safety Review','FIS',60, 'HSRCM','10','4','5'),
-	('TSF, WSF or Dam As-built Report','FIS',12, 'HSRCM','10','5','1'),
-	('OMS Manual','PMT',null, 'HSRCM','10','5','2'),
-	('Materials Inventory Report','EVT',null, 'HSRCM','10','5','7'),
-	('Closure Drawings and Plans','EVT',null, 'HSRCM','10','6','3'),
-	('Closure of TSF or Dam Report','PMT',null, 'HSRCM','10','6','7'),
-	('TSF Closure OMS','PMT',null, 'HSRCM','10','6','8'),
-	('Closure Management Manual','EVT',null, 'HSRCM','10','6','9'),
-	('Appeal to CIM Report','EVT',null, 'MA','33','1',''),
-	('Workplace Monitoring Program','AVA',null, 'HSRCM','2','1','3'),
-	('Report of Emergency Warning System Test','AVA',null, 'HSRCM','3','13','4'),
-	('Maintenance Record','AVA',null, 'HSRCM','4','4','15'),
-	('Water Management Plan','PMT',null, 'HSRCM','10','1','3'),
-	('Annual Reconciliation of Water Balance and Water Management Plans','AVA',null, 'HSRCM','10','4','1'),
-	('Tailings Management System','AVA',null, 'HSRCM','10','4','2'),
-	('TSF Risk Assessment','AVA',null, 'HSRCM','10','4','2'),
-	('TSF and Dam Registry','AVA',null, 'HSRCM','10','4','3'),
-	('TSF and Dam Registry Updates','AVA',null, 'HSRCM','10','4','4'),
-	('Term Extension','EVT',null, 'MA','10','6',''),
-	('Acquisition of a Mine','EVT',null, 'MA','11','1',''),
-	('Engineering Report','EVT',null, 'MA','18','',''),
-	('ITRB Qualifications','PMT',null, 'HSRCM','10','4','2'),
-	('Health and Safety Program','AVA',null, 'HSRCM','1','6','9'),
-	('Dump OMS Manual','AVA',null, 'HSRCM','10','5','2'),
-	('Standard Operating Procedures or Safe Work Procedures','AVA',null, 'HSRCM','3','4','2'),
-	('Mine Emergency Response Plan','FIS',null, 'HSRCM','3','7','1'),
-	('Musculoskeletal Disorder Prevention Program', 'AVA', null, 'HSRCM', '1','6','9')
-ON CONFLICT DO NOTHING;
-
-INSERT INTO public.mine_report_definition
-(report_name, description, due_date_period_months, mine_report_due_date_type, active_ind, create_user, create_timestamp, update_user, update_timestamp)
-select report_name, '', due_date_period, due_date_type, 'true', 'system-mds', now(), 'system-mds', now() from tmp_report_definition_compliance;
--- hide appeal to CIM until notifications are built into CORE/MineSpace
-UPDATE mine_report_definition SET active_ind='false' where report_name='Appeal to CIM Report';
-
-
+-- Mine Report Definitions have been managed by sequential migrations. 
+-- V2019.07.05.15.01
+-- V2019.07.09.16.01
+-- V2019.09.28.14.16
 
 INSERT INTO document_template
 (document_template_code,form_spec_json, template_file_path, active_ind, create_user, update_user)
 VALUES
-	('NRL', '[
+	('NRL', '' , 'templates/now/Rejection Letter Template (NoW).docx', true, 'system-mds', 'system-mds'),
+	('NWL', '' , 'templates/now/Withdrawal Letter Template (NoW).docx', true, 'system-mds', 'system-mds'),
+	('NCL', '', 'templates/now/Client Acknowledgment Letter Template (NoW).docx', true, 'system-mds', 'system-mds')
+ON CONFLICT DO NOTHING;
+--use update statement so it can be easily copied from new fixed  migrations and just be changed in the future.
+UPDATE document_template SET form_spec_json = '[
     {
       "id": "letter_dt",
       "label": "Letter Date",
@@ -761,9 +689,19 @@ VALUES
       "placeholder": "Enter the inspector''s name",
       "required": true,
       "relative-data-path": "now_application.lead_inspector.name"
+    },
+    { 
+      "id": "letter_body",
+      "label": "Letter Body",
+      "type": "AUTO_SIZE_FIELD",
+      "context-value": "Future proposals for mining activities on the above noted property will require the submission of a new Notice of Work application. Should you require further information or have questions please do not hesitate to contact me.",
+      "required":true
     }
-  ]'  , 'templates/now/Rejection Letter Template (NoW).docx', true, 'system-mds', 'system-mds'),
-	('NWL', '[
+  ]' 
+where document_template_code = 'NRL';
+
+
+UPDATE document_template SET form_spec_json = '[
     {
       "id": "letter_dt",
       "label": "Letter Date",
@@ -817,9 +755,20 @@ VALUES
       "placeholder": "Enter the inspector''s name",
       "required": true,
       "relative-data-path": "now_application.lead_inspector.name"
+    },
+    { 
+      "id": "letter_body",
+      "label": "Letter Body",
+      "type": "AUTO_SIZE_FIELD",
+      "context-value": "You will have to reapply should you wish to carry out your intended work program. You are reminded that pursuant to Section 10 of the Mines Act no exploration activities can be carried out unless you have received the required permit.",
+      "required":true
     }
-  ]' , 'templates/now/Withdrawal Letter Template (NoW).docx', true, 'system-mds', 'system-mds'),
-	('NCL', '[
+  ]'
+where document_template_code = 'NWL';
+
+
+
+UPDATE document_template SET form_spec_json = '[
     {
       "id": "letter_dt",
       "label": "Letter Date",
@@ -879,7 +828,8 @@ VALUES
       "label": "Exploration Type",
       "type": "FIELD",
       "placeholder": "Enter the exploration type",
-      "required": true
+      "required": true,
+      "relative-data-path": "now_application.notice_of_work_type.description"
     },
     {
       "id": "bond_inc_amt",
@@ -895,10 +845,44 @@ VALUES
       "placeholder": "Enter the inspector''s name",
       "required": true,
       "relative-data-path": "now_application.lead_inspector.name"
+    },
+    { 
+      "id": "bond_information_para",
+      "label": "Bond Information",
+      "type": "AUTO_SIZE_FIELD",
+      "context-value": "You may wish to take the opportunity to post your security at this time to avoid delays in the permitting process.  The security deposit amount has been calculated based on the information provided in your application.  Details for the security deposit calculation are outlined in the attached spreadsheet.  Preferred forms of security are certified cheques, money orders or bank drafts made payable to the Minister of Finance.  Surety Bonds and Irrevocable Standby Letters of Credit (‘ILOC’) are also acceptable.  Please do not send cash.  Ensure you also include a completed and signed `No Interest Payable Form`, which is attached.  ILOCs will only be accepted from the following financial institutions: Bank of Montreal, Bank of Nova Scotia, Canadian Imperial Bank of Commerce, Royal Bank of Canada, Toronto-Dominion Bank",
+      "required":true
+    },
+    { 
+      "id": "other_documents_para",
+      "label": "Other Required Documents",
+      "type": "AUTO_SIZE_FIELD",
+      "context-value": "In addition, within 30 calendar days of receipt of this letter and prior to issuance of a permit, you must provide to this office:  A Chance Find Procedure (‘CFP’) for archaeological sites, an invasive plant species management plan and an updated Mine Emergency Response Plan (‘MERP’).  Guidelines and best management practices have been attached to this letter to assist with the preparation of the aforementioned items.",
+      "required":true
+    },
+    { 
+      "id": "plant_program_para",
+      "label": "Alien Plant Program Information",
+      "type": "AUTO_SIZE_FIELD",
+      "context-value": "The introduction and spread of invasive plants is a concern throughout the area.  The provincial Invasive Alien Plant Program (https://www2.gov.bc.ca/gov/content/environment/plants-animals-ecosystems/invasive-species/iapp) should be reviewed to determine what invasive species have been documented in and around the proposed work site(s).  Best management practices should be applied during operations and an invasive plant management strategy developed.  The attached best practices document has been developed by the Invasive Species Council of British Columbia for forestry operations, but the operational guidelines describe in it can be extended to mineral exploration operations.  For example, ensure incoming and outgoing vehicles are free of weed seeds and plant parts, report observations of infestation and re-vegetate disturbed areas as soon after disturbance.  For more information on individual species visit the Ministry of Agriculture site www.weedsbc.ca or the Invasive Species Council of BC website at www.bcinvasives.ca and go to `resources`.",
+      "required":true
+    },
+    { 
+      "id": "merp_para",
+      "label": "MERP Information",
+      "type": "AUTO_SIZE_FIELD",
+      "context-value": "The MERP shall include a section which outlines how engagement with affected communities and First Nations will occur in case of an emergency at your mine site.  The MERP is required to be posted at the work site at all times, which must include the name of the designated Mine Manager.  All employees must be advised and trained in the use of this plan.",
+      "required":true
+    },
+    { 
+      "id": "letter_body",
+      "label": "Letter Body",
+      "type": "AUTO_SIZE_FIELD",
+      "context-value": "Other legislation may be applicable to the operation and you (the Permittee) may be required to obtain approvals or permits under that legislation.  It is your responsibility to comply with the terms and conditions of all other permits and authorizations which you may have been issued and other applicable legislation including, but not limited to the: Wildlife Act, Wildfire Act, Wildfire Regulation and the Water Sustainability Act.",
+      "required":true
     }
-  ]', 'templates/now/Client Acknowledgment Letter Template (NoW).docx', true, 'system-mds', 'system-mds')
-  
-ON CONFLICT DO NOTHING;
+  ]'
+where document_template_code = 'NCL';
 
 UPDATE now_application_document_type
 SET document_template_code = 'NCL'
@@ -911,3 +895,48 @@ where now_application_document_type_code = 'WDL';
 UPDATE now_application_document_type
 SET document_template_code = 'NRL'
 where now_application_document_type_code = 'RJL';
+
+
+INSERT INTO bond_status(
+    bond_status_code,
+    description,
+    create_user,
+    update_user
+    )
+VALUES
+    ('REL', 'Released', 'system-mds', 'system-mds'),
+    ('CON', 'Confiscated', 'system-mds', 'system-mds'),
+    ('ACT', 'Active', 'system-mds', 'system-mds')
+ON CONFLICT DO NOTHING;
+
+INSERT INTO bond_type(
+    bond_type_code,
+    description,
+    create_user,
+    update_user
+    )
+VALUES
+    ('CAS', 'Cash', 'system-mds', 'system-mds'),
+    ('ILC', 'Irrevocable Line of Credit', 'system-mds', 'system-mds'),
+    ('SBO', 'Surety Bond', 'system-mds', 'system-mds'),
+    ('SAG', 'Safekeeping Agreement', 'system-mds', 'system-mds'),
+    ('QET', 'Qualified Environmental Trust', 'system-mds', 'system-mds'),
+    ('STR', 'Section 12 Reclamation', 'system-mds', 'system-mds'),
+    ('ASA', 'Asset Security Agreement', 'system-mds', 'system-mds')
+ON CONFLICT DO NOTHING;
+
+INSERT INTO bond_document_type(
+    bond_document_type_code,
+    description,
+    create_user,
+    update_user
+    )
+VALUES
+    ('SRB', 'Scan of Reclamation Security Bond', 'system-mds', 'system-mds'),
+    ('RSF', 'Release of Security Form', 'system-mds', 'system-mds'),
+    ('RSL', 'Release of Security Letter', 'system-mds', 'system-mds'),
+    ('CSF', 'Confiscation of Security Form', 'system-mds', 'system-mds'),
+    ('CSL', 'Confiscation of Security Letter', 'system-mds', 'system-mds'),
+    ('REL', 'Reminder Letter', 'system-mds', 'system-mds'),
+    ('AKL', 'Acknowledgement Letter', 'system-mds', 'system-mds')
+ON CONFLICT DO NOTHING;

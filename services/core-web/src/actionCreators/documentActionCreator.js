@@ -35,9 +35,12 @@ export const fetchNoticeOfWorkApplicationContextTemplate = (
     .finally(() => dispatch(hideLoading()));
 };
 
-export const generateNoticeOfWorkApplicationDocument = (documentTypeCode, payload) => (
-  dispatch
-) => {
+export const generateNoticeOfWorkApplicationDocument = (
+  documentTypeCode,
+  payload,
+  message = "Successfully generated Notice of Work document",
+  onDocumentRetrieved = () => {}
+) => (dispatch) => {
   dispatch(request(reducerTypes.GENERATE_NOTICE_OF_WORK_APPLICATION_DOCUMENT));
   dispatch(showLoading("modal"));
   return CustomAxios()
@@ -48,12 +51,18 @@ export const generateNoticeOfWorkApplicationDocument = (documentTypeCode, payloa
     )
     .then((response) => {
       const token = { token: response.data.token };
-      window.open(`${ENVIRONMENT.apiUrl + API.RETRIEVE_CORE_DOCUMENT(token)}`, "_blank");
-      notification.success({
-        message: "Successfully generated Notice of Work document",
-        duration: 10,
-      });
-      dispatch(success(reducerTypes.GENERATE_NOTICE_OF_WORK_APPLICATION_DOCUMENT));
+      const docWindow = window.open(
+        `${ENVIRONMENT.apiUrl + API.RETRIEVE_CORE_DOCUMENT(token)}`,
+        "_blank"
+      );
+      docWindow.onbeforeunload = () => {
+        notification.success({
+          message,
+          duration: 10,
+        });
+        dispatch(success(reducerTypes.GENERATE_NOTICE_OF_WORK_APPLICATION_DOCUMENT));
+        onDocumentRetrieved();
+      };
       return response;
     })
     .catch(() => dispatch(error(reducerTypes.GENERATE_NOTICE_OF_WORK_APPLICATION_DOCUMENT)))

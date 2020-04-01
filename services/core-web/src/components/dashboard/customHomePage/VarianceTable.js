@@ -38,10 +38,9 @@ const defaultProps = {
 };
 
 export const VarianceTable = (props) => (
-  <React.Fragment>
+  <div className="tab__content">
     <MineVarianceTable
       isLoaded={props.isLoaded}
-      isPaginated
       params={props.params}
       filterVarianceStatusOptions={props.filterVarianceStatusOptions}
       handleFilterChange={props.handleFilterChange}
@@ -62,7 +61,7 @@ export const VarianceTable = (props) => (
         itemsPerPage={Number(props.pageData.items_per_page)}
       />
     </div>
-  </React.Fragment>
+  </div>
 );
 
 VarianceTable.propTypes = propTypes;

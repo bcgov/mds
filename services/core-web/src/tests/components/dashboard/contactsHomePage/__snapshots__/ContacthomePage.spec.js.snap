@@ -33,37 +33,17 @@ exports[`ContactHomePage renders properly 1`] = `
     className="landing-page__content"
   >
     <ContactSearch
-      fetchParties={
-        [MockFunction] {
-          "calls": Array [
-            Array [
-              Object {
-                "relationships": "mine_party_appt",
-              },
-            ],
-            Array [
-              Object {
-                "page": "1",
-                "per_page": "25",
-                "relationships": "mine_party_appt",
-              },
-            ],
-          ],
-          "results": Array [
-            Object {
-              "type": "return",
-              "value": Promise {},
-            },
-            Object {
-              "type": "return",
-              "value": Promise {},
-            },
-          ],
-        }
-      }
+      fetchParties={[MockFunction]}
       handleNameFieldReset={[Function]}
       handleSearch={[Function]}
-      initialValues={Object {}}
+      initialValues={
+        Object {
+          "page": "1",
+          "per_page": "25",
+          "relationships": "mine_party_appt",
+          "type": "PER",
+        }
+      }
       partyRelationshipTypesList={
         Array [
           Object {
@@ -221,8 +201,8 @@ exports[`ContactHomePage renders properly 1`] = `
         className="center"
       >
         <ResponsivePagination
-          currentPage={NaN}
-          itemsPerPage={NaN}
+          currentPage={1}
+          itemsPerPage={25}
           onPageChange={[Function]}
           pageTotal={9000}
         />

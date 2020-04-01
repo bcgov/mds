@@ -90,8 +90,8 @@ PERMIT_AMENDMENT_MODEL = api.model(
         'received_date': fields.DateTime(dt_format='iso8601'),
         'issue_date': fields.DateTime(dt_format='iso8601'),
         'authorization_end_date': fields.DateTime(dt_format='iso8601'),
-                                                                                         #'permit_amendment_status_description': fields.String,
-                                                                                         #'permit_amendment_type_description': fields.String,
+        'security_total': fields.Fixed(description='Currency', decimals=2),
+                                                                                         #'permit_amendment_status_description': fields.String,                                                                            #'permit_amendment_type_description': fields.String,
         'description': fields.String,
         'related_documents': fields.List(fields.Nested(PERMIT_AMENDMENT_DOCUMENT_MODEL))
     })
@@ -133,6 +133,7 @@ STATUS_MODEL = api.model(
         'status_date': fields.DateTime,
         'status_description': fields.String,
     })
+
 MINE_REPORT_SUBMISSION_STATUS = api.model('MineReportSubmissionStatus', {
     'mine_report_submission_status_code': fields.String,
     'description': fields.String,
@@ -169,6 +170,12 @@ MINE_VERIFIED_MODEL = api.model(
         'verifying_user': fields.String,
         'verifying_timestamp': fields.DateTime,
     })
+
+MINE_REGION_OPTION = api.model('MineRegion', {
+    'mine_region_code': fields.String,
+    'description': fields.String
+})
+
 
 MINES_MODEL = api.model(
     'Mines', {
@@ -329,15 +336,34 @@ MINE_REPORT_SUBMISSION_MODEL = api.model(
 
 MINE_REPORT_MODEL = api.model(
     'MineReportModel', {
-        'mine_report_guid': fields.String,
-        'mine_report_definition_guid': fields.String,
-        'report_name': fields.String,
-        'due_date': fields.Date,
-        'received_date': fields.Date,
-        'submission_year': fields.Integer,
-        'created_by_idir': fields.String,
-        'permit_guid': fields.String,
-        'mine_report_submissions': fields.List(fields.Nested(MINE_REPORT_SUBMISSION_MODEL))
+        'mine_report_id':
+        fields.Integer,
+        'mine_report_guid':
+        fields.String,
+        'mine_report_definition_guid':
+        fields.String,
+        'mine_report_category':
+        fields.List(
+            fields.String(attribute='mine_report_category'),
+            attribute='mine_report_definition.categories'),
+        'report_name':
+        fields.String,
+        'due_date':
+        fields.Date,
+        'received_date':
+        fields.Date,
+        'submission_year':
+        fields.Integer,
+        'created_by_idir':
+        fields.String,
+        'permit_guid':
+        fields.String,
+        'mine_report_submissions':
+        fields.List(fields.Nested(MINE_REPORT_SUBMISSION_MODEL)),
+        'mine_guid':
+        fields.String,
+        'mine_name':
+        fields.String,
     })
 
 MINE_REPORT_DEFINITION_CATEGORIES = api.model('MineReportDefinitionCategoriesModel', {
@@ -356,6 +382,18 @@ MINE_REPORT_DEFINITION_MODEL = api.model(
         'categories': fields.List(fields.Nested(MINE_REPORT_DEFINITION_CATEGORIES)),
         'compliance_articles': fields.List(fields.Nested(COMPLIANCE_ARTICLE_MODEL)),
     })
+
+PAGINATED_LIST = api.model(
+    'List', {
+        'current_page': fields.Integer,
+        'total_pages': fields.Integer,
+        'items_per_page': fields.Integer,
+        'total': fields.Integer,
+    })
+
+PAGINATED_REPORT_LIST = api.inherit('ReportList', PAGINATED_LIST, {
+    'records': fields.List(fields.Nested(MINE_REPORT_MODEL)),
+})
 
 ORDER_DOCUMENT_MODEL = api.model(
     'MineComplianceOrderDocument', {

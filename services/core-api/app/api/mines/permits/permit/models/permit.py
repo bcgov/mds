@@ -31,7 +31,7 @@ class Permit(AuditMixin, Base):
         'PermitAmendment',
         backref='permit',
         primaryjoin=
-        "and_(PermitAmendment.permit_id == Permit.permit_id, PermitAmendment.deleted_ind==False)",
+        'and_(PermitAmendment.permit_id == Permit.permit_id, PermitAmendment.deleted_ind==False)',
         order_by='desc(PermitAmendment.issue_date), desc(PermitAmendment.permit_amendment_id)',
         lazy='select')
 
@@ -44,6 +44,9 @@ class Permit(AuditMixin, Base):
     permit_status_code_description = association_proxy('permit_status_code_relationship',
                                                        'description')
     mine_name = association_proxy('mine', 'mine_name')
+
+    bonds = db.relationship('Bond', lazy='select', secondary='bond_permit_xref')
+    reclamation_invoices = db.relationship('ReclamationInvoice', lazy='select')
 
     @hybrid_property
     def current_permittee(self):
@@ -66,6 +69,10 @@ class Permit(AuditMixin, Base):
     @classmethod
     def find_by_permit_no(cls, _permit_no):
         return cls.query.filter_by(permit_no=_permit_no).first()
+
+    @classmethod
+    def find_by_permit_no_all(cls, _permit_no):
+        return cls.query.filter_by(permit_no=_permit_no).all()
 
     @classmethod
     def find_by_permit_guid_or_no(cls, _permit_guid_or_no):

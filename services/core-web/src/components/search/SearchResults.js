@@ -7,7 +7,7 @@ import { Row, Col, Icon } from "antd";
 import { Link } from "react-router-dom";
 import { sumBy, map, mapValues, keyBy } from "lodash";
 import { getSearchResults, getSearchTerms } from "@common/selectors/searchSelectors";
-import { getPartyRelationshipTypeHash } from "@common/selectors/partiesSelectors";
+import { getPartyRelationshipTypeHash } from "@common/selectors/staticContentSelectors";
 import { fetchSearchOptions, fetchSearchResults } from "@common/actionCreators/searchActionCreator";
 import { getSearchOptions } from "@common/reducers/searchReducer";
 import { MineResultsTable } from "@/components/search/MineResultsTable";
@@ -267,7 +267,4 @@ const mapDispatchToProps = (dispatch) =>
 SearchResults.propTypes = propTypes;
 SearchResults.defaultProps = defaultProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(SearchResults);
+export default connect(mapStateToProps, mapDispatchToProps)(SearchResults);

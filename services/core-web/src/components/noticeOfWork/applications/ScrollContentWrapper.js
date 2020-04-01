@@ -74,23 +74,20 @@ export class ScrollContentWrapper extends Component {
   };
 
   renderCorrectView = () => {
-    if (this.props.showContent) {
-      return this.state.isVisible ? (
-        <span>{this.props.children}</span>
-      ) : (
-        <div>
-          <NullScreen type="add-now-activity" message={this.props.title} />
-          <div className="null-screen">
-            {!this.props.isViewMode && (
-              <Button type="primary" onClick={() => this.enableContent()}>
-                Add Activity
-              </Button>
-            )}
-          </div>
+    return this.state.isVisible ? (
+      <span>{this.props.children}</span>
+    ) : (
+      <div>
+        <NullScreen type="add-now-activity" message={this.props.title} />
+        <div className="null-screen">
+          {!this.props.isViewMode && (
+            <Button type="primary" onClick={() => this.enableContent()}>
+              Add Activity
+            </Button>
+          )}
         </div>
-      );
-    }
-    return <NullScreen type="now-activity" message={this.props.title} />;
+      </div>
+    );
   };
 
   render() {
@@ -102,6 +99,10 @@ export class ScrollContentWrapper extends Component {
       const isActiveLink = includes(currentActiveLink, this.props.id);
       return isActiveLink ? "circle purple" : "circle grey";
     };
+
+    if (!this.props.showContent) {
+      return <div />;
+    }
 
     return (
       <div className="scroll-wrapper">

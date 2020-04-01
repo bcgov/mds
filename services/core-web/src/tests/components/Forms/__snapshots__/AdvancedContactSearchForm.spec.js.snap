@@ -26,6 +26,7 @@ exports[`AdvancedContactSearch form renders properly 1`] = `
         id="type"
         name="type"
         onChange={[Function]}
+        placeholder="Party Type"
       />
     </Col>
     <Col
@@ -47,7 +48,7 @@ exports[`AdvancedContactSearch form renders properly 1`] = `
         component={[Function]}
         id="last_name"
         name="last_name"
-        placeholder="Surname"
+        placeholder="Last Name"
       />
     </Col>
   </Row>

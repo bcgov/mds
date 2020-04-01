@@ -2,7 +2,6 @@ from flask import Flask
 from flask_cors import CORS
 
 from flask_restplus.apidoc import apidoc
-from flask_compress import Compress
 
 from app.commands import register_commands
 from app.routes import register_routes
@@ -48,6 +47,5 @@ def register_extensions(app):
     migrate.init_app(app, db)
 
     CORS(app)
-    Compress(app)
 
     return None

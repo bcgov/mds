@@ -15,7 +15,7 @@ class Config(object):
     ENVIRONMENT_NAME = os.environ.get('ENVIRONMENT_NAME', 'dev')
 
     SQLALCHEMY_DATABASE_URI = DB_URL
-    SQLALCHEMY_TRACK_MODIFICATIONS = True
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
 
     JWT_OIDC_WELL_KNOWN_CONFIG = os.environ.get(
         'JWT_OIDC_WELL_KNOWN_CONFIG',
@@ -43,9 +43,11 @@ class Config(object):
     CACHE_REDIS_PASS = os.environ.get('CACHE_REDIS_PASS', 'redis-password')
     CACHE_REDIS_URL = 'redis://:{0}@{1}:{2}'.format(CACHE_REDIS_PASS, CACHE_REDIS_HOST,
                                                     CACHE_REDIS_PORT)
-    DOCUMENT_MANAGER_URL = os.environ.get('DOCUMENT_MANAGER_URL', 'http://localhost:5001')
+    DOCUMENT_MANAGER_URL = os.environ.get('DOCUMENT_MANAGER_URL',
+                                          'http://document_manager_backend:5001')
     UPLOADED_DOCUMENT_DEST = os.environ.get('UPLOADED_DOCUMENT_DEST', '/app/document_uploads')
     MAX_CONTENT_LENGTH = 400 * 1024 * 1024
+    JSONIFY_PRETTYPRINT_REGULAR = False
 
     def JWT_ROLE_CALLBACK(jwt_dict):
         return (jwt_dict['realm_access']['roles'])

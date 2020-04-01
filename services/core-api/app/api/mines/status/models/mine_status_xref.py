@@ -28,8 +28,8 @@ class MineStatusXref(AuditMixin, Base):
         db.String(3),
         db.ForeignKey(
             'mine_operation_status_sub_reason_code.mine_operation_status_sub_reason_code'))
-    mine_operation_status_sub_reason = db.relationship('MineOperationStatusSubReasonCode',
-                                                       lazy='joined')
+    mine_operation_status_sub_reason = db.relationship(
+        'MineOperationStatusSubReasonCode', lazy='joined')
     description = db.Column(db.String(1024))
 
     active_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
@@ -38,7 +38,7 @@ class MineStatusXref(AuditMixin, Base):
         return '<MineStatusXref %r>' % self.mine_status_xref_guid
 
     @classmethod
-    def active(cls):
+    def get_active(cls):
         return cls.query.filter_by(active_ind=True).all()
 
     @classmethod

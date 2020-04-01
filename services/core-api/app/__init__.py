@@ -1,14 +1,15 @@
+import logging
 from logging.config import dictConfig
 
 from flask import Flask, request
 
 from flask_cors import CORS
 from flask_restplus import Resource, apidoc
-from flask_compress import Compress
 from sqlalchemy.exc import SQLAlchemyError
+from marshmallow.exceptions import MarshmallowError
 
 from flask_jwt_oidc.exceptions import AuthError
-from werkzeug.exceptions import Forbidden
+from werkzeug.exceptions import Forbidden, BadRequest
 
 from app.api.compliance.namespace import api as compliance_api
 from app.api.download_token.namespace import api as download_token_api
@@ -23,6 +24,8 @@ from app.api.variances.namespace import api as variances_api
 from app.api.users.namespace import api as users_api
 from app.api.exports.namespace import api as exports_api
 from app.api.document_generation.namespace import api as doc_gen_api
+from app.api.securities.namespace import api as securities_api
+from app.api.verify.namespace import api as verify_api
 
 from app.commands import register_commands
 from app.config import Config
@@ -57,9 +60,10 @@ def register_extensions(app):
     # Overriding swaggerUI base path to serve content under a prefix
     apidoc.apidoc.static_url_path = '{}/swaggerui'.format(Config.BASE_PATH)
     api.init_app(app)
-
     if app.config['ELASTIC_ENABLED'] == '1':
         apm.init_app(app)
+        logging.getLogger('elasticapm').setLevel(30)
+
     else:
         app.logger.info('ELASTIC_ENABLED: FALSE, set ELASTIC_ENABLED=1 to enable')
 
@@ -72,7 +76,6 @@ def register_extensions(app):
     db.init_app(app)
 
     CORS(app)
-    Compress(app)
 
     return None
 
@@ -94,12 +97,14 @@ def register_routes(app):
     api.add_namespace(now_app_api)
     api.add_namespace(exports_api)
     api.add_namespace(doc_gen_api)
+    api.add_namespace(securities_api)
+    api.add_namespace(verify_api)
 
     # Healthcheck endpoint
     @api.route('/health')
     class Healthcheck(Resource):
         def get(self):
-            return {'success': 'true'}
+            return {'status': 'pass'}
 
     @api.errorhandler(AuthError)
     def jwt_oidc_auth_error_handler(error):
@@ -114,6 +119,8 @@ def register_routes(app):
     @api.errorhandler(Forbidden)
     def forbidden_error_handler(error):
         app.logger.error(str(error))
+        app.logger.error('REQUEST\n' + str(request))
+        app.logger.error('HEADERS\n ' + str(request.headers))
         return {
             'status': getattr(error, 'status_code', 403),
             'message': str(error),
@@ -130,9 +137,10 @@ def register_routes(app):
     # Recursively add handler to every SQLAlchemy Error
     def sqlalchemy_error_handler(error):
         app.logger.error(str(error))
+        app.logger.error(type(error))
         return {
             'status': getattr(error, 'status_code', 400),
-            'message': str('Invalid request.'),
+            'message': str(error),
         }, getattr(error, 'status_code', 400)
 
     def _add_sqlalchemy_error_handlers(classname):

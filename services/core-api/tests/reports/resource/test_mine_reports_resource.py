@@ -39,7 +39,7 @@ def test_post_mine_report(test_client, db_session, auth_headers):
     mine = MineFactory(mine_reports=ONE_REPORT)
     mine_report = mine.mine_reports[0]
 
-    mine_report_definition = MineReportDefinition.active()
+    mine_report_definition = MineReportDefinition.get_active()
 
     num_reports = len(mine.mine_reports)
     new_report_definition = [
@@ -92,7 +92,7 @@ def test_post_mine_report_with_permit(test_client, db_session, auth_headers):
     mine = MineFactory(mine_reports=ONE_REPORT)
     mine_report = mine.mine_reports[0]
 
-    mine_report_definition = MineReportDefinition.active()
+    mine_report_definition = MineReportDefinition.get_active()
     new_report_definition = [
         x for x in mine_report_definition
         if x.mine_report_definition_guid != mine_report.mine_report_definition_guid

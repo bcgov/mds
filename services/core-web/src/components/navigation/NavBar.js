@@ -248,6 +248,18 @@ export class NavBar extends Component {
           </Row>
           <Row>
             <Col span={24}>
+              <Link to={router.REPORTS_DASHBOARD.route}>
+                <Button
+                  id={this.ifActiveButton(router.REPORTS_DASHBOARD.route)}
+                  className="menu--hamburger__btn--link"
+                >
+                  Browse Reports
+                </Button>
+              </Link>
+            </Col>
+          </Row>
+          <Row>
+            <Col span={24}>
               <Link to={router.NOTICE_OF_WORK_APPLICATIONS.route}>
                 <Button
                   id={this.ifActiveButton(router.NOTICE_OF_WORK_APPLICATIONS.route)}
@@ -347,6 +359,11 @@ export class NavBar extends Component {
           <button type="button">Browse Incidents</button>
         </Link>
       </Menu.Item>
+      <Menu.Item key="browse-reports" className="navbar-dropdown-menu-item">
+        <Link to={router.REPORTS_DASHBOARD.route}>
+          <button type="button">Browse Reports</button>
+        </Link>
+      </Menu.Item>
       <Menu.Item key="browse-notices-of-work" className="navbar-dropdown-menu-item">
         <Link to={router.NOTICE_OF_WORK_APPLICATIONS.route}>
           <button type="button">Browse Notices of Work</button>
@@ -408,7 +425,4 @@ const mapDispatchToProps = (dispatch) =>
 NavBar.propTypes = propTypes;
 NavBar.defaultProps = defaultProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(NavBar);
+export default connect(mapStateToProps, mapDispatchToProps)(NavBar);

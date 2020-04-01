@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 import { Field, reduxForm, formValueSelector } from "redux-form";
 import { Form, Button, Col, Row } from "antd";
 import {
+  getDropdownMineReportStatusOptions,
   getDropdownMineReportCategoryOptions,
   getMineReportDefinitionOptions,
 } from "@common/selectors/staticContentSelectors";
@@ -15,8 +16,9 @@ import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
-  onSubmit: PropTypes.func.isRequired,
+  handleReset: PropTypes.func.isRequired,
   reset: PropTypes.func.isRequired,
+  dropdownMineReportStatusOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
   mineReportDefinitionOptions: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
   dropdownMineReportCategoryOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
   selectedMineReportCategory: PropTypes.string,
@@ -24,8 +26,8 @@ const propTypes = {
 };
 
 const defaultProps = {
-  selectedMineReportDefinitionGuid: null,
-  selectedMineReportCategory: null,
+  selectedMineReportCategory: undefined,
+  selectedMineReportDefinitionGuid: undefined,
 };
 
 const selector = formValueSelector(FORM.FILTER_REPORTS);
@@ -38,15 +40,13 @@ export class ReportFilterForm extends Component {
 
   handleReset = () => {
     this.props.reset();
-    this.props.onSubmit();
+    this.props.handleReset();
   };
 
-  componentDidMount = () => {
-    this.updateMineReportOptions(this.props.mineReportDefinitionOptions);
-    this.updateMineReportCategoryOptions(this.props.dropdownMineReportCategoryOptions);
-  };
-
-  updateMineReportOptions = (mineReportDefinitionOptions, selectedMineReportCategory) => {
+  updateMineReportDefinitionOptions = (
+    mineReportDefinitionOptions,
+    selectedMineReportCategory = undefined
+  ) => {
     let mineReportDefinitionOptionsFiltered = mineReportDefinitionOptions;
 
     if (selectedMineReportCategory) {
@@ -70,7 +70,7 @@ export class ReportFilterForm extends Component {
 
   updateMineReportCategoryOptions = (
     dropdownMineReportCategoryOptions,
-    selectedMineReportDefinitionGuid
+    selectedMineReportDefinitionGuid = undefined
   ) => {
     let dropdownMineReportCategoryOptionsFiltered = dropdownMineReportCategoryOptions;
 
@@ -85,18 +85,35 @@ export class ReportFilterForm extends Component {
           .includes(cat.value)
       );
     }
+
     this.setState({
       dropdownMineReportCategoryOptionsFiltered,
     });
   };
 
+  componentWillMount = () => {
+    this.updateMineReportDefinitionOptions(this.props.mineReportDefinitionOptions);
+    this.updateMineReportCategoryOptions(this.props.dropdownMineReportCategoryOptions);
+  };
+
   componentWillReceiveProps = (nextProps) => {
+    if (nextProps.mineReportDefinitionOptions !== this.props.mineReportDefinitionOptions) {
+      this.updateMineReportDefinitionOptions(nextProps.mineReportDefinitionOptions);
+    }
+
+    if (
+      nextProps.dropdownMineReportCategoryOptions !== this.props.dropdownMineReportCategoryOptions
+    ) {
+      this.updateMineReportCategoryOptions(nextProps.dropdownMineReportCategoryOptions);
+    }
+
     if (nextProps.selectedMineReportCategory !== this.props.selectedMineReportCategory) {
-      this.updateMineReportOptions(
+      this.updateMineReportDefinitionOptions(
         nextProps.mineReportDefinitionOptions,
         nextProps.selectedMineReportCategory
       );
     }
+
     if (
       nextProps.selectedMineReportDefinitionGuid !== this.props.selectedMineReportDefinitionGuid
     ) {
@@ -114,22 +131,24 @@ export class ReportFilterForm extends Component {
           <Row gutter={16}>
             <Col md={8} sm={24}>
               <Field
-                id="report_name"
-                name="report_name"
-                label="Report Name"
-                placeholder="Start typing a report name"
+                id="report_type"
+                name="report_type"
+                label="Report Type"
+                placeholder="Select report type"
                 component={renderConfig.SELECT}
-                data={this.state.dropdownMineReportDefinitionOptionsFiltered}
+                data={this.state.dropdownMineReportCategoryOptionsFiltered}
+                format={null}
               />
             </Col>
             <Col md={8} sm={24}>
               <Field
-                id="report_type"
-                name="report_type"
-                label="Report Type"
-                placeholder="Select a report type"
+                id="report_name"
+                name="report_name"
+                label="Report Name"
+                placeholder="Select report name"
                 component={renderConfig.SELECT}
-                data={this.state.dropdownMineReportCategoryOptionsFiltered}
+                data={this.state.dropdownMineReportDefinitionOptionsFiltered}
+                format={null}
               />
             </Col>
             <Col md={8} sm={24}>
@@ -137,50 +156,91 @@ export class ReportFilterForm extends Component {
                 id="compliance_year"
                 name="compliance_year"
                 label="Compliance Year"
-                placeholder="Start date"
+                placeholder="Select compliance year"
                 component={renderConfig.YEAR}
               />
             </Col>
-            {/* This was left in as it is expected to be used with the non MVP version of the code required reports. */}
-            {/* <Col md={6} sm={24}>
+          </Row>
+          <Row gutter={16}>
+            <Col md={8} sm={24}>
+              <Form.Item label="Due Date Range">
+                <Row gutter={16}>
+                  <Col md={12} sm={24}>
+                    <Field
+                      id="due_date_start"
+                      name="due_date_start"
+                      placeholder="Select earliest date"
+                      component={renderConfig.DATE}
+                    />
+                  </Col>
+                  <Col md={12} sm={24}>
+                    <Field
+                      id="due_date_end"
+                      name="due_date_end"
+                      placeholder="Select latest date"
+                      component={renderConfig.DATE}
+                    />
+                  </Col>
+                </Row>
+              </Form.Item>
+            </Col>
+            <Col md={8} sm={24}>
+              <Form.Item label="Received Date Range">
+                <Row gutter={16}>
+                  <Col md={12} sm={24}>
+                    <Field
+                      id="received_date_start"
+                      name="received_date_start"
+                      placeholder="Select earliest date"
+                      component={renderConfig.DATE}
+                    />
+                  </Col>
+                  <Col md={12} sm={24}>
+                    <Field
+                      id="received_date_end"
+                      name="received_date_end"
+                      placeholder="Select latest date"
+                      component={renderConfig.DATE}
+                    />
+                  </Col>
+                </Row>
+              </Form.Item>
+            </Col>
+            <Col md={8} sm={24}>
               <Field
                 id="requested_by"
                 name="requested_by"
-                label="Requested by"
-                placeholder="Start typing an inspector name"
-                component={renderConfig.SELECT}
+                label="Requested By"
+                placeholder="Enter keyword"
+                component={renderConfig.FIELD}
+                allowClear
               />
-            </Col> */}
+            </Col>
           </Row>
-          <Row gutter={6}>
-            <Col md={4} sm={24}>
+          <Row gutter={16}>
+            <Col md={8} sm={24}>
               <Field
-                id="report_due_date_start"
-                name="report_due_date_start"
-                label="Report Due Date"
-                placeholder="Start date"
-                component={renderConfig.DATE}
+                id="status"
+                name="status"
+                label="Status"
+                placeholder="Select status"
+                component={renderConfig.MULTI_SELECT}
+                data={this.props.dropdownMineReportStatusOptions}
+                format={null}
               />
             </Col>
-            <Col md={4} sm={24}>
+            <Col md={8} sm={24}>
               <Field
-                id="report_due_date_end"
-                name="report_due_date_end"
-                placeholder="End date"
-                label="&nbsp;"
-                component={renderConfig.DATE}
-              />
-            </Col>
-            {/* This was left in as it is expected to be used with the non MVP version of the code required reports. */}
-            {/* <Col md={6} sm={24}>
-              <Field
-                id="report_status"
-                name="report_status"
-                label="Review status"
-                placeholder="Select a review status"
+                id="received_only"
+                name="received_only"
+                label="Received Status"
                 component={renderConfig.SELECT}
+                data={[
+                  { value: "", label: "Received Only" },
+                  { value: "false", label: "Received and Unreceived" },
+                ]}
               />
-            </Col> */}
+            </Col>
           </Row>
         </div>
         <div className="right center-mobile">
@@ -188,7 +248,7 @@ export class ReportFilterForm extends Component {
             Clear Filters
           </Button>
           <Button className="full-mobile" type="primary" htmlType="submit">
-            Filter Reports
+            Apply Filters
           </Button>
         </div>
       </Form>
@@ -201,6 +261,7 @@ ReportFilterForm.defaultProps = defaultProps;
 
 export default compose(
   connect((state) => ({
+    dropdownMineReportStatusOptions: getDropdownMineReportStatusOptions(state),
     dropdownMineReportCategoryOptions: getDropdownMineReportCategoryOptions(state),
     mineReportDefinitionOptions: getMineReportDefinitionOptions(state),
     selectedMineReportCategory: selector(state, "report_type"),
@@ -208,7 +269,7 @@ export default compose(
   })),
   reduxForm({
     form: FORM.FILTER_REPORTS,
-    touchOnBlur: true,
+    touchOnBlur: false,
     enableReinitialize: true,
   })
 )(ReportFilterForm);
