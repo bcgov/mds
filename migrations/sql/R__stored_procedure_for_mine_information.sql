@@ -23,6 +23,7 @@ CREATE OR REPLACE FUNCTION transfer_mine_information() RETURNS void AS $$
                 latitude          numeric(11,7)  ,
                 longitude         numeric(11,7) ,
                 major_mine_ind    boolean,
+				exemption_fee_status_code	varchar(3),
             deleted_ind       boolean
             );
             CREATE INDEX IF NOT EXISTS etl_mine_mine_no_idx ON ETL_MINE (mine_no);
@@ -37,6 +38,7 @@ CREATE OR REPLACE FUNCTION transfer_mine_information() RETURNS void AS $$
             RAISE NOTICE '.. Update existing records with latest MMS data';
             UPDATE ETL_MINE
             SET mine_name      = mms.mmsmin.mine_nm,
+				exemption_fee_status_code = mms.mmsmin.fee_sta,
                 latitude       = CASE
                                    WHEN mms.mmsmin.lat_dec <> 0 AND mms.mmsmin.lon_dec <> 0 THEN mms.mmsmin.lat_dec
                                    ELSE NULL
@@ -90,7 +92,8 @@ CREATE OR REPLACE FUNCTION transfer_mine_information() RETURNS void AS $$
                 latitude        ,
                 longitude       ,
                 major_mine_ind  ,
-                deleted_ind     )
+                deleted_ind     ,
+                exemption_fee_status_code)
             SELECT
                 gen_random_uuid()  ,
                 mms_new.mine_no    ,
@@ -119,7 +122,8 @@ CREATE OR REPLACE FUNCTION transfer_mine_information() RETURNS void AS $$
                     ELSE NULL
                 END,
                 (mms_new.min_lnk = 'Y' AND mms_new.min_lnk IS NOT NULL),
-            CASE WHEN lower(mms_new.mine_nm) LIKE '%delete%' OR lower(mms_new.mine_nm) LIKE '%deleted%' OR lower(mms_new.mine_nm) LIKE '%reuse%' THEN TRUE ELSE FALSE END
+            CASE WHEN lower(mms_new.mine_nm) LIKE '%delete%' OR lower(mms_new.mine_nm) LIKE '%deleted%' OR lower(mms_new.mine_nm) LIKE '%reuse%' THEN TRUE ELSE FALSE END,
+			mms_new.fee_sta,
             FROM mms_new
             WHERE (mms_new.min_lnk = 'Y' AND mms_new.min_lnk IS NOT NULL) = FALSE;
             SELECT count(*) FROM ETL_MINE INTO new_row;
@@ -142,6 +146,7 @@ CREATE OR REPLACE FUNCTION transfer_mine_information() RETURNS void AS $$
                 mine_region      = ETL_MINE.mine_region   ,
                 major_mine_ind   = ETL_MINE.major_mine_ind,
                 deleted_ind      = ETL_MINE.deleted_ind   ,
+				exemption_fee_status_code = ETL_MINE.exemption_fee_status_code,
                 update_user      = 'mms_migration'        ,
                 update_timestamp = now()
             FROM ETL_MINE
@@ -152,6 +157,14 @@ CREATE OR REPLACE FUNCTION transfer_mine_information() RETURNS void AS $$
             SELECT count(*) FROM mine, ETL_MINE WHERE ETL_MINE.mine_guid = mine.mine_guid INTO update_row;
             RAISE NOTICE '....# of mine records in MDS: %', old_row;
             RAISE NOTICE '....# of mine records updated in MDS: %', update_row;
+			
+			-- Update fee status for major mines
+            RAISE NOTICE '.. Update fee status for major mines with latest MMS data';
+            UPDATE mine
+			SET exemption_fee_status_code = mms.mmsmin.fee_sta
+			FROM mms.mmsmin
+            WHERE mms.mmsmin.mine_no = mine.mine_no
+			AND (mms.mmsmin.min_lnk = 'Y' AND mms.mmsmin.min_lnk IS NOT NULL);
 
             WITH new_record AS (
                 SELECT *
@@ -172,7 +185,8 @@ CREATE OR REPLACE FUNCTION transfer_mine_information() RETURNS void AS $$
                 create_user         ,
                 create_timestamp    ,
                 update_user         ,
-                update_timestamp    )
+                update_timestamp    ,
+				exemption_fee_status_code)
             SELECT
                 new.mine_guid       ,
                 new.mine_no         ,
@@ -183,7 +197,8 @@ CREATE OR REPLACE FUNCTION transfer_mine_information() RETURNS void AS $$
                 'mms_migration'     ,
                 now()               ,
                 'mms_migration'     ,
-                now()
+                now(),
+				new.exemption_fee_status_code
             FROM new_record new;
             SELECT count(*) FROM mine into new_row;
             RAISE NOTICE '....# of new mine records loaded into MDS: %.', (new_row-old_row);
