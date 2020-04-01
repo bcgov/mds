@@ -16,6 +16,7 @@ import ViewIncidentModal from "./ViewIncidentModal";
 import EditNoticeOfWorkDocumentModal from "./EditNoticeOfWorkDocumentModal";
 import ChangeNOWMineModal from "./ChangeNOWMineModal";
 import UpdateNOWLeadInspectorModal from "./UpdateNOWLeadInspectorModal";
+import UpdateNOWStatusModal from "./UpdateNOWStatusModal";
 import DownloadDocumentPackageModal from "./DownloadDocumentPackageModal";
 import NOWReviewModal from "./NOWReviewModal";
 import ChangeNOWLocationModal from "./ChangeNOWLocationModal";
@@ -45,6 +46,7 @@ export const modalConfig = {
   DOWNLOAD_DOC_PACKAGE: DownloadDocumentPackageModal,
   NOW_REVIEW: NOWReviewModal,
   UPDATE_NOW_LEAD_INSPECTOR: UpdateNOWLeadInspectorModal,
+  UPDATE_NOW_STATUS: UpdateNOWStatusModal,
   CHANGE_NOW_LOCATION: ChangeNOWLocationModal,
   ADD_BOND_MODAL: AddBondModal,
   VIEW_BOND_MODAL: ViewBondModal,
