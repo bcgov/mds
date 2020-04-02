@@ -22,6 +22,7 @@ import ChangeNOWLocationModal from "./ChangeNOWLocationModal";
 import GenerateDocumentModal from "./GenerateDocumentModal";
 import AddBondModal from "./AddBondModal";
 import ViewBondModal from "./ViewBondModal";
+import AddReclamationInvoiceModal from "./AddReclamationInvoiceModal";
 
 export const modalConfig = {
   MINE_RECORD: MineRecordModal,
@@ -48,6 +49,7 @@ export const modalConfig = {
   CHANGE_NOW_LOCATION: ChangeNOWLocationModal,
   ADD_BOND_MODAL: AddBondModal,
   VIEW_BOND_MODAL: ViewBondModal,
+  ADD_RECLAMATION_INVOICE_MODAL: AddReclamationInvoiceModal,
 };
 
 export default modalConfig;

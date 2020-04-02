@@ -24,11 +24,11 @@ const propTypes = {
   inspectors: CustomPropTypes.groupOptions.isRequired,
   variance: CustomPropTypes.variance.isRequired,
   varianceStatusOptions: CustomPropTypes.options.isRequired,
-  documentCategoryOptions: CustomPropTypes.options.isRequired,
+  varianceDocumentCategoryOptions: CustomPropTypes.options.isRequired,
   statusCode: PropTypes.string.isRequired,
   removeDocument: PropTypes.func.isRequired,
   complianceCodesHash: PropTypes.objectOf(PropTypes.string).isRequired,
-  documentCategoryOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  varianceDocumentCategoryOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
 const inspectorRequired = (value) =>
@@ -135,7 +135,7 @@ export class EditVarianceForm extends Component {
           variance={this.props.variance}
           removeDocument={this.props.removeDocument}
           complianceCodesHash={this.props.complianceCodesHash}
-          documentCategoryOptionsHash={this.props.documentCategoryOptionsHash}
+          varianceDocumentCategoryOptionsHash={this.props.varianceDocumentCategoryOptionsHash}
         />
         <br />
         <h5>upload files</h5>
@@ -152,7 +152,7 @@ export class EditVarianceForm extends Component {
             placeholder="Please select category"
             component={renderConfig.SELECT}
             validate={filesUploaded ? [required] : []}
-            data={this.props.documentCategoryOptions}
+            data={this.props.varianceDocumentCategoryOptions}
           />
         </Form.Item>
         <Form.Item>

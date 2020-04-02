@@ -83,7 +83,7 @@ app.post("/template/:uid/render", async (req, res) => {
     return res.status(500).send(`Internal server error`);
   }
 
-  res.setHeader(`Content-Disposition`, `attachment; filename=${options.outputName}`);
+  res.setHeader(`Content-Disposition`, `attachment; filename="${options.outputName}"`);
   res.setHeader(`Content-Transfer-Encoding`, `binary`);
   res.setHeader(`Content-Type`, `application/octet-stream`);
   res.setHeader(`Carbone-Report-Name`, options.outputName);
