@@ -39,6 +39,15 @@ exports[`MineSecurityInfo renders properly 1`] = `
           />
         </div>
         <br />
+        <h4
+          className="uppercase"
+        >
+          Bonds
+        </h4>
+        <p>
+          Record all bonds received for each permit this mine holds.
+        </p>
+        <br />
         <MineBondTable
           bondStatusOptionsHash={
             Object {

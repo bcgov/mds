@@ -23,6 +23,12 @@ exports[`MineReclamationInvoiceTable renders properly 1`] = `
         "title": "Total Spent",
       },
       Object {
+        "dataIndex": "balance",
+        "key": "balance",
+        "render": [Function],
+        "title": "Balance",
+      },
+      Object {
         "align": "right",
         "dataIndex": "addEditButton",
         "key": "addEditButton",

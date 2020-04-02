@@ -51,8 +51,13 @@ exports[`ReclamationInvoiceForm renders properly 1`] = `
         <Field
           component={[Function]}
           id="project_id"
-          label="Project ID"
+          label="Project ID*"
           name="project_id"
+          validate={
+            Array [
+              [Function],
+            ]
+          }
         />
       </FormItem>
     </Col>
@@ -66,8 +71,13 @@ exports[`ReclamationInvoiceForm renders properly 1`] = `
         <Field
           component={[Function]}
           id="vendor"
-          label="Vendor"
+          label="Vendor*"
           name="vendor"
+          validate={
+            Array [
+              [Function],
+            ]
+          }
         />
       </FormItem>
     </Col>
