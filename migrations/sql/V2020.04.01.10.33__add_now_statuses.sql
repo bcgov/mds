@@ -23,4 +23,3 @@ UPDATE now_application SET now_application_status_code = 'SUB';
 -- Delete all of the old Core statuses (Accepted, Under Review, and Withdrawn)
 DELETE FROM now_application_status WHERE now_application_status_code = 'ACC';
 DELETE FROM now_application_status WHERE now_application_status_code = 'UNR';
-DELETE FROM now_application_status WHERE now_application_status_code = 'WDN';
