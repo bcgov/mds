@@ -393,3 +393,5 @@ APPLICATIONNDA = api.model(
         'submitter': fields.Nested(CLIENT),
         'documents': fields.List(fields.Nested(DOCUMENT))
     })
+
+APPLICATION_STATUS = {'status': fields.String}
