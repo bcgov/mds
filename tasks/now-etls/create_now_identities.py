@@ -29,21 +29,19 @@ def create_and_update_now_identities(connection):
 
         print('INSERT_NOW_IDENTITIES_FOR_MMS_ONLY_APPLICATIONS')
         INSERT_NOW_IDENTITIES_FOR_MMS_ONLY_APPLICATIONS = """
-        INSERT INTO public.now_application_identity
+     	INSERT INTO public.now_application_identity
         SELECT gen_random_uuid(), null, null, mms_cid, 'now-etl-mds', now(), 'now-etl-mds', now(), (SELECT mine_guid FROM public.mine WHERE public.mine.mine_no=mms_now_submissions.application.minenumber limit 1) as mine_guid
         FROM mms_now_submissions.application
         WHERE EXISTS (SELECT mine_guid FROM public.mine WHERE public.mine.mine_no=mms_now_submissions.application.minenumber)
-        AND NOT EXISTS (SELECT nai.mms_cid from public.now_application_identity nai inner join mms_now_submissions.application mms_nsa on nai.mms_cid=mms_nsa.mms_cid);
+        AND mms_cid NOT IN (SELECT nai.mms_cid from public.now_application_identity nai inner join mms_now_submissions.application mms_nsa on nai.mms_cid=mms_nsa.mms_cid);
         """
         cursor.execute(INSERT_NOW_IDENTITIES_FOR_MMS_ONLY_APPLICATIONS)
 
         print('LINK PERMIT AMENDMENTS TO NOW APPLICATIONS FROM MMS')
         INSERT_NOW_IDENTITIES_FOR_MMS_ONLY_APPLICATIONS = """
-        UPDATE public.permit_amendment pa
-        SET now_application_guid = (
-            SELECT nai.now_application_guid from public.etl_permit ep 
-                inner join public.now_application_identity nai on permit_cid = nai.mms_cid::varchar 
-            WHERE ep.permit_application_guid = pa.permit_application_guid
-        )
+        UPDATE public.permit_amendment as pa
+        set now_application_guid = nai.now_application_guid 
+        from public.etl_permit ep inner join public.now_application_identity nai on permit_cid = nai.mms_cid::varchar
+        where pa.permit_amendment_guid = ep.permit_amendment_guid ;  	
         """
         cursor.execute(INSERT_NOW_IDENTITIES_FOR_MMS_ONLY_APPLICATIONS)
