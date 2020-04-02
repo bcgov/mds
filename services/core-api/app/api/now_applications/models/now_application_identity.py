@@ -57,6 +57,10 @@ class NOWApplicationIdentity(Base, AuditMixin):
             return None
 
     @classmethod
+    def find_by_messageid(cls, _messageid):
+        return cls.query.filter_by(messageid=_messageid).first()
+
+    @classmethod
     def submission_count_ytd(cls, _mine_guid, _sub_year):
         try:
             return cls.query.filter_by(mine_guid=_mine_guid).filter(

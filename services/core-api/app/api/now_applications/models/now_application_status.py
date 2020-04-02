@@ -17,5 +17,9 @@ class NOWApplicationStatus(Base, AuditMixin):
         return '<NOWApplicationStatus %r>' % self.now_application_status_code
 
     @classmethod
+    def find_by_now_application_status_code(cls, _code):
+        return cls.query.filter_by(now_application_status_code=_code).first()
+
+    @classmethod
     def get_active(cls):
         return cls.query.filter_by(active_ind=True).all()
