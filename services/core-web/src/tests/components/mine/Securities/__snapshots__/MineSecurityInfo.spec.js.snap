@@ -102,6 +102,9 @@ exports[`MineSecurityInfo renders properly 1`] = `
       >
         Reclamation Invoices
       </h4>
+      <p>
+        Record invoices for reclamation activities paid for with funds from confiscated bonds.
+      </p>
       <br />
       <MineReclamationInvoiceTable
         bonds={
@@ -128,6 +131,15 @@ exports[`MineSecurityInfo renders properly 1`] = `
           ]
         }
         expandedRowKeys={Array []}
+        invoices={
+          Array [
+            Object {
+              "amount": "1251.46",
+              "project_id": "3523461",
+              "vendor": "John Doe",
+            },
+          ]
+        }
         isLoaded={false}
         onExpand={[Function]}
         openAddBondModal={[Function]}

@@ -10,6 +10,7 @@ from app.api.utils.access_decorators import requires_role_view_all, requires_rol
 from app.api.utils.resources_mixins import UserMixin
 from app.api.mines.permits.permit.models.permit import Permit
 from app.api.mines.mine.models.mine import Mine
+from marshmallow import pprint
 
 
 class ReclamationInvoiceListResource(Resource, UserMixin):
@@ -17,7 +18,6 @@ class ReclamationInvoiceListResource(Resource, UserMixin):
     @requires_role_view_all
     @api.marshal_with(RECLAMATION_INVOICE, envelope='records', code=200)
     def get(self):
-
         mine_guid = request.args.get('mine_guid', None)
 
         if mine_guid is None:

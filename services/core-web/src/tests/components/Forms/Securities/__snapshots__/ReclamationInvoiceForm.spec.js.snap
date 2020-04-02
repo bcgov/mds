@@ -1,0 +1,186 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ReclamationInvoiceForm renders properly 1`] = `
+<Form
+  colon={true}
+  hideRequiredMark={false}
+  layout="vertical"
+  onSubmit={[Function]}
+>
+  <Row
+    gutter={16}
+  >
+    <Col
+      md={12}
+      sm={24}
+    >
+      <FormItem
+        hasFeedback={false}
+      >
+        <Field
+          autoComplete="off"
+          component={[Function]}
+          format={[Function]}
+          id="amount"
+          label="invoice Amount*"
+          name="amount"
+          normalize={[Function]}
+          onChange={[Function]}
+          onFocus={[Function]}
+          validate={
+            Array [
+              [Function],
+              [Function],
+              [Function],
+            ]
+          }
+        />
+      </FormItem>
+    </Col>
+  </Row>
+  <Row
+    gutter={16}
+  >
+    <Col
+      md={12}
+      sm={24}
+    >
+      <FormItem
+        hasFeedback={false}
+      >
+        <Field
+          component={[Function]}
+          id="project_id"
+          label="Project ID"
+          name="project_id"
+        />
+      </FormItem>
+    </Col>
+    <Col
+      md={12}
+      sm={24}
+    >
+      <FormItem
+        hasFeedback={false}
+      >
+        <Field
+          component={[Function]}
+          id="vendor"
+          label="Vendor"
+          name="vendor"
+        />
+      </FormItem>
+    </Col>
+  </Row>
+  <Row
+    gutter={16}
+  >
+    <Col
+      md={12}
+      xs={24}
+    >
+      <h5>
+        Documents
+      </h5>
+    </Col>
+  </Row>
+  <Row
+    gutter={16}
+  >
+    <Col
+      xs={24}
+    >
+      <DocumentTable
+        documents={Array []}
+        isViewOnly={false}
+        removeDocument={[Function]}
+        tableEmptyMessage="There are no attached documents."
+      />
+    </Col>
+  </Row>
+  <br />
+  <Row
+    gutter={16}
+  >
+    <Col
+      md={12}
+      xs={24}
+    >
+      <h5>
+        Document Upload
+      </h5>
+    </Col>
+  </Row>
+  <FormItem
+    hasFeedback={false}
+  >
+    <Field
+      acceptedFileTypesMap={
+        Object {
+          ".doc": "application/msword",
+          ".docx": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+          ".odm": "application/vnd.oasis.opendocument.text-master",
+          ".odt": "application/vnd.oasis.opendocument.text",
+          ".oth": "application/vnd.oasis.opendocument.text-web",
+          ".ott": "application/vnd.oasis.opendocument.text-template",
+          ".pdf": "application/pdf",
+          ".rtf": "application/rtf",
+          ".xls": "application/vnd.ms-excel",
+          ".xlsx": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        }
+      }
+      allowMultiple={true}
+      allowRevert={true}
+      component={[Function]}
+      id="documents"
+      name="documents"
+      onFileLoad={[Function]}
+      onRemoveFile={[Function]}
+      uploadUrl="/securities/462562457/reclamation-invoices/documents"
+    />
+  </FormItem>
+  <div
+    className="right center-mobile"
+  >
+    <Popconfirm
+      cancelText="No"
+      disabled={false}
+      icon={
+        <Icon
+          theme="filled"
+          type="exclamation-circle"
+        />
+      }
+      okText="Yes"
+      okType="primary"
+      onConfirm={[MockFunction]}
+      placement="topRight"
+      title="Are you sure you want to cancel?"
+      transitionName="zoom-big"
+      trigger="click"
+    >
+      <Button
+        block={false}
+        className="full-mobile"
+        ghost={false}
+        htmlType="button"
+        loading={false}
+        type="secondary"
+      >
+        Cancel
+      </Button>
+    </Popconfirm>
+    <Button
+      block={false}
+      className="full-mobile"
+      disabled={false}
+      ghost={false}
+      htmlType="submit"
+      loading={false}
+      type="primary"
+    >
+      Add Reclamation Invoice
+    </Button>
+  </div>
+</Form>
+`;

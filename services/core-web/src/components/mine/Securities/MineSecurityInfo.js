@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { Divider, Tabs } from "antd";
 import PropTypes from "prop-types";
+import { Tabs } from "antd";
 import { fetchPermits } from "@common/actionCreators/permitActionCreator";
 import { openModal, closeModal } from "@common/actions/modalActions";
 import { getPermits } from "@common/reducers/permitReducer";
@@ -51,10 +51,14 @@ const propTypes = {
   fetchMineBonds: PropTypes.func.isRequired,
   createBond: PropTypes.func.isRequired,
   updateBond: PropTypes.func.isRequired,
+  fetchMineReclamationInvoices: PropTypes.func.isRequired,
+  createReclamationInvoice: PropTypes.func.isRequired,
+  updateReclamationInvoice: PropTypes.func.isRequired,
   bondTotals: PropTypes.objectOf(PropTypes.number).isRequired,
   bondStatusOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   bondTypeOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   bonds: PropTypes.arrayOf(CustomPropTypes.bond).isRequired,
+  invoices: PropTypes.arrayOf(CustomPropTypes.invoices).isRequired,
 };
 
 const defaultProps = {
@@ -220,7 +224,7 @@ export class MineSecurityInfo extends Component {
     event.preventDefault();
     this.props.openModal({
       props: {
-        title: "Add Reclamation Invoice",
+        title: "Edit Reclamation Invoice",
         onSubmit: this.handleUpdateReclamationInvoice,
         mineGuid: this.props.mineGuid,
         invoice,
@@ -267,6 +271,9 @@ export class MineSecurityInfo extends Component {
           </TabPane>
           <TabPane tab="Reclamation Invoices" key="2">
             <h4 className="uppercase">Reclamation Invoices</h4>
+            <p>
+              Record invoices for reclamation activities paid for with funds from confiscated bonds.
+            </p>
             <br />
             <MineReclamationInvoiceTable
               isLoaded={this.state.isInvoicesLoaded}
