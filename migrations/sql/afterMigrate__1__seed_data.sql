@@ -513,9 +513,6 @@ on conflict do nothing;
 INSERT INTO now_application_status
 (now_application_status_code, description, display_order, active_ind, create_user, update_user)
 VALUES
-	('ACC', 'Accepted', 5, false, 'system-mds', 'system-mds'),
-	('WDN', 'Withdrawn', 100, false, 'system-mds', 'system-mds'),
-	('UNR', 'Under Review', 95, false, 'system-mds', 'system-mds'),
   ('SUB', 'Submitted', 90, true, 'system-mds', 'system-mds'),
 	('REF', 'Referred', 70, true, 'system-mds', 'system-mds'),
 	('CDI', 'Client Delay Info', 30, true, 'system-mds', 'system-mds'),
@@ -523,7 +520,7 @@ VALUES
   ('GVD', 'Govt Delay', 60, true, 'system-mds', 'system-mds'),
   ('CON', 'Consultation', 50, true, 'system-mds', 'system-mds'),
   ('AIA', 'Active/Issued/Approved', 10, true, 'system-mds', 'system-mds'),
-	('WTN', 'Withdrawn', 100, true, 'system-mds', 'system-mds'),
+	('WDN', 'Withdrawn', 100, true, 'system-mds', 'system-mds'),
 	('REJ', 'Rejected', 80, true, 'system-mds', 'system-mds'),
 	('CLO', 'Closed', 40, true, 'system-mds', 'system-mds')
 on conflict do nothing;

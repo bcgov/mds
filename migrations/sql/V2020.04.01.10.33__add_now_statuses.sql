@@ -1,10 +1,8 @@
 -- Create a new column for defining the desired display order of the statuses
 ALTER TABLE now_application_status ADD COLUMN display_order integer;
 
--- Inactivate all of the existing Core statuses and set their display order
-UPDATE now_application_status SET active_ind = false, display_order = 5 WHERE now_application_status_code = 'ACC';
-UPDATE now_application_status SET active_ind = false, display_order = 95 WHERE now_application_status_code = 'UNR';
-UPDATE now_application_status SET active_ind = false, display_order = 100 WHERE now_application_status_code = 'WDN';
+-- Delete all of the current statuses
+DELETE FROM TABLE now_application_status WHERE now_application_status_code in ('ACC', 'UNR', 'WDN');
 
 -- Create new statuses (from MMS)
 INSERT INTO now_application_status
@@ -17,7 +15,7 @@ VALUES
     ('GVD', 'Govt Delay', 60, true, 'system-mds', 'system-mds'),
     ('CON', 'Consultation', 50, true, 'system-mds', 'system-mds'),
     ('AIA', 'Active/Issued/Approved', 10, true, 'system-mds', 'system-mds'),
-	('WTN', 'Withdrawn', 100, true, 'system-mds', 'system-mds'),
+	('WDN', 'Withdrawn', 100, true, 'system-mds', 'system-mds'),
 	('REJ', 'Rejected', 80, true, 'system-mds', 'system-mds'),
 	('CLO', 'Closed', 40, true, 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
