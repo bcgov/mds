@@ -13,7 +13,7 @@ import CoreTable from "@/components/common/CoreTable";
 import LinkButton from "@/components/common/LinkButton";
 
 /**
- * @class  MineReclamationInvoiceTable - displays a table of permits with their related bonds
+ * @class  MineReclamationInvoiceTable - displays a table of permits with their related invoices
  */
 
 const propTypes = {
@@ -23,7 +23,10 @@ const propTypes = {
   isLoaded: PropTypes.bool.isRequired,
   expandedRowKeys: PropTypes.arrayOf(PropTypes.string).isRequired,
   // eslint-disable-next-line react/no-unused-prop-types
-  openEditBondModal: PropTypes.func.isRequired,
+  openEditReclamationInvoiceModal: PropTypes.func.isRequired,
+  // eslint-disable-next-line react/no-unused-prop-types
+  openAddReclamationInvoiceModal: PropTypes.func.isRequired,
+  bonds: PropTypes.arrayOf(CustomPropTypes.bond).isRequired,
   // eslint-disable-next-line react/no-unused-prop-types
   onExpand: PropTypes.func.isRequired,
 };
@@ -85,7 +88,7 @@ export const MineReclamationInvoiceTable = (props) => {
       title: "Vendor",
       dataIndex: "vendor",
       key: "vendor",
-      render: (text, record) => <div title="Vendor">{text || Strings.EMPTY_FIELD}</div>,
+      render: (text) => <div title="Vendor">{text || Strings.EMPTY_FIELD}</div>,
     },
     {
       title: "Project ID",

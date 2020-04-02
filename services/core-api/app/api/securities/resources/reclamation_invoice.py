@@ -10,7 +10,6 @@ from app.api.utils.access_decorators import requires_role_view_all, requires_rol
 from app.api.utils.resources_mixins import UserMixin
 from app.api.mines.permits.permit.models.permit import Permit
 from app.api.mines.mine.models.mine import Mine
-from marshmallow import pprint
 
 
 class ReclamationInvoiceListResource(Resource, UserMixin):

@@ -1,11 +1,6 @@
 // stylying overrides for Ant components
 
 // TABS
-// .center-tabs {
-//   &.ant-tabs-nav-scroll {
-//     text-align: center;
-//   }
-// }
 .center-tabs {
   & .ant-tabs-bar {
     text-align: center;

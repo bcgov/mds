@@ -17,7 +17,7 @@ BOND_DOCUMENT_MODEL = api.model(
         'bond_document_type_code': fields.String
     })
 
-INVOICE_DOCUMENT_MODEL = api.model(
+RECLAMATION_INVOICE_DOCUMENT_MODEL = api.model(
     'MineDocument', {
         'mine_document_guid': fields.String,
         'mine_guid': fields.String,
@@ -68,5 +68,5 @@ RECLAMATION_INVOICE = api.model(
         'amount': fields.Fixed(decimals=2),
         'vendor': fields.String,
         'permit_guid': fields.String(attribute='permit.permit_guid'),
-        'documents': fields.List(fields.Nested(INVOICE_DOCUMENT_MODEL))
+        'documents': fields.List(fields.Nested(RECLAMATION_INVOICE_DOCUMENT_MODEL))
     })

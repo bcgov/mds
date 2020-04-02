@@ -22,6 +22,10 @@ const propTypes = {
   mineGuid: PropTypes.string.isRequired,
 };
 
+const defaultProps = {
+  invoice: {},
+};
+
 export class ReclamationInvoiceForm extends Component {
   state = {
     uploadedFiles: [],
@@ -50,7 +54,6 @@ export class ReclamationInvoiceForm extends Component {
   };
 
   render() {
-    const filesUploaded = this.state.uploadedFiles.length >= 1;
     const documentTableRecords = (this.props.invoice.documents
       ? this.props.invoice.documents.filter(
           (doc) => !this.state.filesToDelete.includes(doc.mine_document_guid)
@@ -94,7 +97,7 @@ export class ReclamationInvoiceForm extends Component {
               <Field
                 id="amount"
                 name="amount"
-                label="invoice Amount*"
+                label="Invoice Amount*"
                 component={RenderField}
                 {...currencyMask}
                 validate={[required, number, currency]}
@@ -173,6 +176,7 @@ export class ReclamationInvoiceForm extends Component {
 }
 
 ReclamationInvoiceForm.propTypes = propTypes;
+ReclamationInvoiceForm.defaultProps = defaultProps;
 
 export default reduxForm({
   form: FORM.ADD_RECLAMATION_INVOICE,

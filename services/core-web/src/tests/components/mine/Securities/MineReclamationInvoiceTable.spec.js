@@ -7,10 +7,7 @@ const dispatchProps = {};
 const props = {};
 
 const setupDispatchProps = () => {
-  dispatchProps.openEditBondModal = jest.fn();
-  dispatchProps.openViewBondModal = jest.fn();
-  dispatchProps.openAddBondModal = jest.fn();
-  dispatchProps.releaseOrConfiscateBond = jest.fn();
+  dispatchProps.openEditReclamationInvoiceModal = jest.fn();
   dispatchProps.onExpand = jest.fn();
 };
 
