@@ -17,7 +17,6 @@ const defaultProps = {
 };
 
 export const GenerateDocumentModal = (props) => {
-  console.log(props.documentFormErrors);
   const errorsLength = Object.keys(props.documentFormErrors).length;
   const showErrors = errorsLength > 0;
   return (
