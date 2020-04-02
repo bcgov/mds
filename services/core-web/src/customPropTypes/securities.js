@@ -23,4 +23,27 @@ export const bond = PropTypes.shape({
   note: PropTypes.string,
   payer,
   permit_guid: PropTypes.string,
+  documents: PropTypes.shape({
+    mine_document_guid: PropTypes.string,
+    mine_guid: PropTypes.string,
+    document_manager_guid: PropTypes.string,
+    document_name: PropTypes.string,
+    upload_date: PropTypes.string,
+  }),
+});
+
+export const invoice = PropTypes.shape({
+  reclamation_invoice_id: PropTypes.number,
+  reclamation_invoice_guid: PropTypes.string,
+  project_id: PropTypes.string,
+  amount: PropTypes.string,
+  vendor: PropTypes.string,
+  permit_guid: PropTypes.string,
+  documents: PropTypes.shape({
+    mine_document_guid: PropTypes.string,
+    mine_guid: PropTypes.string,
+    document_manager_guid: PropTypes.string,
+    document_name: PropTypes.string,
+    upload_date: PropTypes.string,
+  }),
 });

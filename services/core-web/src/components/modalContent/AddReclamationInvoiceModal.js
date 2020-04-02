@@ -19,10 +19,12 @@ const defaultProps = {
 };
 
 export const AddReclamationInvoiceModal = (props) => {
-  const handleAddReclamationInvoice = (values) =>
+  const handleAddReclamationInvoice = (values) => {
+    const newValues = props.edit ? { values, ...props.invoice } : values;
     props.edit
-      ? props.onSubmit(values, props.bond.bond_guid)
+      ? props.onSubmit(values, props.invoice.reclamation_invoice_guid)
       : props.onSubmit(values, props.permitGuid);
+  };
 
   return (
     <div>

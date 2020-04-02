@@ -74,16 +74,6 @@ export class ReclamationInvoiceForm extends Component {
       <Form
         layout="vertical"
         onSubmit={this.props.handleSubmit((values) => {
-          // Set the invoice document type code for each uploaded document to the selected value.
-          this.state.uploadedFiles.map(
-            // eslint-disable-next-line no-return-assign, no-param-reassign
-            (doc) => (doc.invoice_document_type_code = values.invoice_document_type_code)
-          );
-
-          // Delete this value from the invoice, as it's not a valid property.
-          // eslint-disable-next-line no-param-reassign
-          delete values.invoice_document_type_code;
-
           // Create the invoice's new document list by removing deleted documents and adding uploaded documents.
           const currentDocuments = this.props.invoice.documents || [];
           const newDocuments = currentDocuments

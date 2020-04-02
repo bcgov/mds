@@ -21,6 +21,7 @@ import {
   updateBond,
   fetchMineReclamationInvoices,
   createReclamationInvoice,
+  updateReclamationInvoice,
 } from "@common/actionCreators/securitiesActionCreator";
 import { getMineGuid } from "@common/selectors/mineSelectors";
 import { formatMoney } from "@common/utils/helpers";
@@ -63,15 +64,18 @@ const defaultProps = {
 export class MineSecurityInfo extends Component {
   state = {
     expandedRowKeys: [],
-    isLoaded: false,
+    isBondLoaded: false,
+    isInvoicesLoaded: false,
   };
 
   componentWillMount = () => {
     const { id } = this.props.match.params;
     this.props.fetchPermits(id).then(() => {
-      this.props.fetchMineReclamationInvoices(id);
+      this.props
+        .fetchMineReclamationInvoices(id)
+        .then(() => this.setState({ isInvoicesLoaded: true }));
       this.props.fetchMineBonds(id).then(() => {
-        this.setState({ isLoaded: true });
+        this.setState({ isBondLoaded: true });
       });
     });
   };
@@ -129,7 +133,7 @@ export class MineSecurityInfo extends Component {
     this.props.updateBond(payload, bondGuid).then(() => {
       this.props.fetchMineBonds(this.props.mineGuid).then(() => {
         this.props.closeModal();
-        this.setState({ isLoaded: true });
+        this.setState({ isBondLoaded: true });
       });
     });
   };
@@ -156,7 +160,7 @@ export class MineSecurityInfo extends Component {
     this.props.createBond(payload).then(() => {
       this.props.fetchMineBonds(this.props.mineGuid).then(() => {
         this.props.closeModal();
-        this.setState({ isLoaded: true });
+        this.setState({ isBondLoaded: true });
       });
     });
   };
@@ -170,14 +174,32 @@ export class MineSecurityInfo extends Component {
     });
 
   handleAddReclamationInvoice = (values, permitGuid) => {
-    console.log(values);
     const payload = {
       reclamation_invoice: {
         ...values,
       },
       permit_guid: permitGuid,
     };
-    this.props.createReclamationInvoice(payload);
+    this.props.createReclamationInvoice(payload).then(() => {
+      this.props.fetchMineReclamationInvoices(this.props.mineGuid).then(() => {
+        this.props.closeModal();
+        this.setState({ isInvoicesLoaded: true });
+      });
+    });
+  };
+
+  handleUpdateReclamationInvoice = (values, invoiceGuid) => {
+    const payload = values;
+    // payload expects the basic invoice object without the following:
+    delete payload.permit_guid;
+    delete payload.reclamation_invoice_id;
+    delete payload.reclamation_invoice_guid;
+    this.props.updateReclamationInvoice(payload, invoiceGuid).then(() => {
+      this.props.fetchMineReclamationInvoices(this.props.mineGuid).then(() => {
+        this.props.closeModal();
+        this.setState({ isInvoicesLoaded: true });
+      });
+    });
   };
 
   openAddReclamationInvoiceModal = (event, permitGuid) => {
@@ -194,13 +216,12 @@ export class MineSecurityInfo extends Component {
     });
   };
 
-  openEditReclamationInvoiceModal = (event, permitGuid, invoice) => {
+  openEditReclamationInvoiceModal = (event, invoice) => {
     event.preventDefault();
     this.props.openModal({
       props: {
         title: "Add Reclamation Invoice",
-        onSubmit: this.handleAddReclamationInvoice,
-        permitGuid,
+        onSubmit: this.handleUpdateReclamationInvoice,
         mineGuid: this.props.mineGuid,
         invoice,
         edit: true,
@@ -230,7 +251,7 @@ export class MineSecurityInfo extends Component {
               </div>
               <br />
               <MineBondTable
-                isLoaded={this.state.isLoaded}
+                isLoaded={this.state.isBondLoaded}
                 permits={this.props.permits}
                 expandedRowKeys={this.state.expandedRowKeys}
                 onExpand={this.onExpand}
@@ -245,8 +266,10 @@ export class MineSecurityInfo extends Component {
             </div>
           </TabPane>
           <TabPane tab="Reclamation Invoices" key="2">
+            <h4 className="uppercase">Reclamation Invoices</h4>
+            <br />
             <MineReclamationInvoiceTable
-              isLoaded={this.state.isLoaded}
+              isLoaded={this.state.isInvoicesLoaded}
               permits={this.props.permits}
               expandedRowKeys={this.state.expandedRowKeys}
               onExpand={this.onExpand}
@@ -284,6 +307,7 @@ const mapDispatchToProps = (dispatch) =>
       updateBond,
       fetchMineReclamationInvoices,
       createReclamationInvoice,
+      updateReclamationInvoice,
     },
     dispatch
   );

@@ -1,14 +1,16 @@
 import React from "react";
-import { Menu, Dropdown, Button, Icon, Tooltip, Table, Popconfirm } from "antd";
+import { Button, Icon, Tooltip, Table } from "antd";
 import PropTypes from "prop-types";
 import * as Strings from "@common/constants/strings";
-import { formatMoney } from "@common/utils/helpers";
+import { formatMoney, truncateFilename } from "@common/utils/helpers";
+import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
 import NullScreen from "@/components/common/NullScreen";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
 import CustomPropTypes from "@/customPropTypes";
 import { EDIT, EDIT_OUTLINE_VIOLET } from "@/constants/assets";
 import CoreTable from "@/components/common/CoreTable";
+import LinkButton from "@/components/common/LinkButton";
 
 /**
  * @class  MineReclamationInvoiceTable - displays a table of permits with their related bonds
@@ -92,12 +94,23 @@ export const MineReclamationInvoiceTable = (props) => {
       render: (text) => <div title="Project ID">{text || Strings.EMPTY_FIELD}</div>,
     },
     {
-      title: "Type",
-      dataIndex: "bond_type_code",
-      key: "bond_type_code",
-      sorter: (a, b) => (a.bond_type_code > b.bond_type_code ? -1 : 1),
-      render: (text) => (
-        <div title="Type">{props.bondTypeOptionsHash[text] || Strings.EMPTY_FIELD}</div>
+      title: "Documents",
+      dataIndex: "documents",
+      render: (text, record) => (
+        <div title="Documents">
+          {record.documents.length > 0
+            ? record.documents.map((file) => (
+                <div key={file.mine_document_guid} title={file.document_name}>
+                  <LinkButton
+                    key={file.mine_document_guid}
+                    onClick={() => downloadFileFromDocumentManager(file)}
+                  >
+                    {truncateFilename(file.document_name)}
+                  </LinkButton>
+                </div>
+              ))
+            : Strings.EMPTY_FIELD}
+        </div>
       ),
     },
     {
@@ -112,7 +125,7 @@ export const MineReclamationInvoiceTable = (props) => {
               <Button
                 type="secondary"
                 className="permit-table-button"
-                onClick={(event) => props.openViewBondModal(event, record)}
+                onClick={(event) => props.openEditReclamationInvoiceModal(event, record)}
               >
                 <img
                   src={EDIT_OUTLINE_VIOLET}
@@ -137,6 +150,10 @@ export const MineReclamationInvoiceTable = (props) => {
           bond_status_code === status && permit_guid === permit.permit_guid
       )
       .reduce((sum, bond) => +sum + +bond.amount, 0);
+  const getAmountSum = (permit) =>
+    props.invoices
+      .filter(({ permit_guid }) => permit_guid === permit.permit_guid)
+      .reduce((sum, invoice) => +sum + +invoice.amount, 0);
 
   const invoices = (record) => {
     return (
@@ -175,6 +192,7 @@ export const MineReclamationInvoiceTable = (props) => {
       return {
         key: permit.permit_guid,
         amount_confiscated: getSum("CON", permit),
+        amount_spent: getAmountSum(permit),
         ...permit,
       };
     });
