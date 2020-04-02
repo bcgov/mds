@@ -54,6 +54,12 @@ export const MineReclamationInvoiceTable = (props) => {
       render: (text) => <div title="Total Spent">{formatMoney(text) || Strings.EMPTY_FIELD}</div>,
     },
     {
+      title: "Balance",
+      dataIndex: "balance",
+      key: "balance",
+      render: (text) => <div title="Balance">{formatMoney(text) || Strings.EMPTY_FIELD}</div>,
+    },
+    {
       title: "",
       dataIndex: "addEditButton",
       key: "addEditButton",
@@ -157,7 +163,6 @@ export const MineReclamationInvoiceTable = (props) => {
     props.invoices
       .filter(({ permit_guid }) => permit_guid === permit.permit_guid)
       .reduce((sum, invoice) => +sum + +invoice.amount, 0);
-
   const invoices = (record) => {
     return (
       <Table
@@ -196,6 +201,7 @@ export const MineReclamationInvoiceTable = (props) => {
         key: permit.permit_guid,
         amount_confiscated: getSum("CON", permit),
         amount_spent: getAmountSum(permit),
+        balance: getSum("CON", permit) - getAmountSum(permit),
         ...permit,
       };
     });

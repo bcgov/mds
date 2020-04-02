@@ -254,6 +254,9 @@ export class MineSecurityInfo extends Component {
                 />
               </div>
               <br />
+              <h4 className="uppercase">Bonds</h4>
+              <p>Record all bonds received for each permit this mine holds.</p>
+              <br />
               <MineBondTable
                 isLoaded={this.state.isBondLoaded}
                 permits={this.props.permits}
