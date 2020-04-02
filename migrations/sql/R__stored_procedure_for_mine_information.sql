@@ -123,7 +123,7 @@ CREATE OR REPLACE FUNCTION transfer_mine_information() RETURNS void AS $$
                 END,
                 (mms_new.min_lnk = 'Y' AND mms_new.min_lnk IS NOT NULL),
             CASE WHEN lower(mms_new.mine_nm) LIKE '%delete%' OR lower(mms_new.mine_nm) LIKE '%deleted%' OR lower(mms_new.mine_nm) LIKE '%reuse%' THEN TRUE ELSE FALSE END,
-			mms_new.fee_sta,
+			mms_new.fee_sta
             FROM mms_new
             WHERE (mms_new.min_lnk = 'Y' AND mms_new.min_lnk IS NOT NULL) = FALSE;
             SELECT count(*) FROM ETL_MINE INTO new_row;
