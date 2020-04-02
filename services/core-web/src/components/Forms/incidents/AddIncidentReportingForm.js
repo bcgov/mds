@@ -103,9 +103,9 @@ export const AddIncidentReportingForm = (props) => (
                   id="reported_by_phone_ext"
                   name="reported_by_phone_ext"
                   label="Phone extension"
-                  placeholder="x"
+                  placeholder="xxxxxx"
                   component={renderConfig.FIELD}
-                  validate={[number, maxLength(4)]}
+                  validate={[number, maxLength(6)]}
                 />
               </Form.Item>
             </Col>
