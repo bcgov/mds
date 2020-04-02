@@ -17,7 +17,6 @@ class ReclamationInvoiceListResource(Resource, UserMixin):
     @requires_role_view_all
     @api.marshal_with(RECLAMATION_INVOICE, envelope='records', code=200)
     def get(self):
-
         mine_guid = request.args.get('mine_guid', None)
 
         if mine_guid is None:

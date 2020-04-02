@@ -3806,3 +3806,11 @@ export const BOND_TOTALS = {
 };
 
 export const BOND_RESPONSE = { records: BONDS };
+
+export const RECLAMATION_INVOICE = {
+  project_id: "3523461",
+  amount: "1251.46",
+  vendor: "John Doe",
+};
+
+export const RECLAMATION_INVOICES = { records: [RECLAMATION_INVOICE] };

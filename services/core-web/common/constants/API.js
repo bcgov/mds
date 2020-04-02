@@ -193,3 +193,11 @@ export const MINE_BONDS = (mineGuid) => `/securities/bonds?mine_guid=${mineGuid}
 export const BOND = (bondGuid) =>
   bondGuid ? `/securities/bonds/${bondGuid}` : "/securities/bonds";
 export const BOND_DOCUMENTS = (mineGuid) => `/securities/${mineGuid}/bonds/documents`;
+export const MINE_RECLAMATION_INVOICES = (mineGuid) =>
+  `/securities/reclamation-invoices?mine_guid=${mineGuid}`;
+export const RECLAMATION_INVOICE = (invoiceGuid) =>
+  invoiceGuid
+    ? `/securities/reclamation-invoices/${invoiceGuid}`
+    : "/securities/reclamation-invoices";
+export const RECLAMATION_INVOICE_DOCUMENTS = (mineGuid) =>
+  `/securities/${mineGuid}/reclamation-invoices/documents`;

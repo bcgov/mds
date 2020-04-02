@@ -10,7 +10,7 @@ from sqlalchemy.orm import scoped_session, sessionmaker, mapper
 from sqlalchemy import event
 from sqlalchemy.inspection import inspect
 from sqlalchemy.orm.attributes import InstrumentedAttribute
-from marshmallow import fields, pprint, validate
+from marshmallow import fields, pprint, validate, EXCLUDE
 from marshmallow_sqlalchemy import ModelConversionError, ModelSchema, ModelConverter
 from app.api.utils.models_mixins import AuditMixin, Base as BaseModel
 from app.extensions import db
@@ -89,6 +89,7 @@ def setup_schema(Base, session):
                     class Meta(object):
                         model = class_
                         ordered = True
+                        unknown = EXCLUDE
                         include_fk = True
                         sqla_session = db.session
                         model_converter = CoreConverter
