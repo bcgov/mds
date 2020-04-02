@@ -119,7 +119,7 @@ NOW_APPLICATION_PLACER_OPS = api.inherit(
     'NOWApplicationPlacerOperations', NOW_APPLICATION_ACTIVITY_SUMMARY_BASE, {
         'is_underground': fields.Boolean,
         'is_hand_operation': fields.Boolean,
-        'reclamation_area':fields.Fixed(decimals=2),
+        'reclamation_area': fields.Fixed(decimals=2),
         'reclamation_unit_type_code': fields.String,
         'proposed_production': fields.String,
         'details': fields.List(fields.Nested(NOW_APPLICATION_ACTIVITY_DETAIL_BASE, skip_none=True)),
@@ -472,6 +472,7 @@ NOW_APPLICATION_PERMIT_TYPES = api.model('ApplicationPermitTypes', {
     'now_application_permit_type_code': fields.String,
     'description': fields.String
 })
+
 NOW_APPLICATION_REVIEW_TYPES = api.model('ApplicationReviewTypes', {
     'now_application_review_type_code': fields.String,
     'description': fields.String
