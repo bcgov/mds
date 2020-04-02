@@ -1,8 +1,10 @@
 -- Create a new column for defining the desired display order of the statuses
 ALTER TABLE now_application_status ADD COLUMN display_order integer;
 
--- Delete all of the current statuses
-DELETE FROM TABLE now_application_status WHERE now_application_status_code in ('ACC', 'UNR', 'WDN');
+-- Delete all of the old Core statuses (Accepted, Under Review, and Withdrawn)
+DELETE FROM now_application_status WHERE now_application_status_code = 'ACC';
+DELETE FROM now_application_status WHERE now_application_status_code = 'UNR';
+DELETE FROM now_application_status WHERE now_application_status_code = 'WDN';
 
 -- Create new statuses (from MMS)
 INSERT INTO now_application_status
