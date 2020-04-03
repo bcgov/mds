@@ -929,7 +929,7 @@ UPDATE document_template SET form_spec_json = '[
     {
       "id": "application_date",
       "label": "Application Date",
-      "type": "FIELD",
+      "type": "DATE",
       "placeholder": "Enter the inspector''s name",
       "required": true,
       "relative-data-path": "now_application.submitted_date",
