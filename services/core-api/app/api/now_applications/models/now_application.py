@@ -42,6 +42,7 @@ class NOWApplication(Base, AuditMixin):
         db.String,
         db.ForeignKey('now_application_status.now_application_status_code'),
         nullable=False)
+    status_updated_date = db.Column(db.Date, nullable=False)
     submitted_date = db.Column(db.Date, nullable=False)
     received_date = db.Column(db.Date, nullable=False)
     latitude = db.Column(db.Numeric(9, 7))
@@ -55,6 +56,8 @@ class NOWApplication(Base, AuditMixin):
     proposed_end_date = db.Column(db.Date)
     directions_to_site = db.Column(db.String)
     type_of_application = db.Column(db.String)
+
+    now_application_identity = db.relationship('NOWApplicationIdentity', uselist=False)
 
     first_aid_equipment_on_site = db.Column(db.String)
     first_aid_cert_level = db.Column(db.String)

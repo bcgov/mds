@@ -64,6 +64,10 @@ class NOWApplicationResource(Resource, UserMixin):
         if lead_inspector_party_guid is not None:
             now_application_identity.now_application.lead_inspector_party_guid = lead_inspector_party_guid
 
+        now_application_status_code = data.get('now_application_status_code', None)
+        if now_application_status_code is not None and now_application_identity.now_application.now_application_status_code != now_application_status_code:
+            now_application_identity.now_application.status_updated_date = datetime.today()
+
         if data.get('mine_guid', None):
             mine = Mine.find_by_mine_guid(data['mine_guid'])
             if not mine:

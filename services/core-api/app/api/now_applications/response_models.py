@@ -286,8 +286,7 @@ NOW_PARTY_APPOINTMENT = api.model(
     })
 
 NOW_APPLICATION_MODEL = api.model(
-    'NOWApplication',
-    {
+    'NOWApplication', {
         'now_application_guid':
         fields.String,
         'now_number':
@@ -305,19 +304,21 @@ NOW_APPLICATION_MODEL = api.model(
         'lead_inspector':
         fields.Nested(PARTY),
         'imported_to_core':
-        fields.Boolean,                                                         #Just-in-time attribute
+        fields.Boolean,
         'notice_of_work_type_code':
         fields.String,
         'now_application_status_code':
         fields.String,
+        'status_updated_date':
+        Date,
         'submitted_date':
         Date,
         'received_date':
         Date,
         'latitude':
-        fields.Fixed(description='fixed precision decimal.', decimals=7),
+        fields.Fixed(decimals=7),
         'longitude':
-        fields.Fixed(description='fixed precision decimal.', decimals=7),
+        fields.Fixed(decimals=7),
         'property_name':
         fields.String,
         'tenure_number':
@@ -395,7 +396,7 @@ NOW_APPLICATION_MODEL = api.model(
         'public_comment_closed_on_date':
         Date,
         'security_total':
-        fields.Fixed(description='Currency', decimals=2),
+        fields.Fixed(decimals=2),
         'security_received_date':
         Date
     })
@@ -444,6 +445,12 @@ NOW_APPLICATION_STATUS_CODES = api.model('ActivityStatusCodes', {
     'now_application_status_code': fields.String,
     'description': fields.String
 })
+
+NOW_APPLICATION_STATUS_UPDATED_RECORD = {
+    'messageid': fields.Integer,
+    'status_updated_date': Date,
+    'status': fields.Nested(NOW_APPLICATION_STATUS_CODES)
+}
 
 UNIT_TYPES = api.model('UnitTypeCodes', {
     'short_description': fields.String,
