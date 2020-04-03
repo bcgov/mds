@@ -13,6 +13,7 @@ import {
   getOriginalNoticeOfWork,
   getNOWReclamationSummary,
 } from "@common/selectors/noticeOfWorkSelectors";
+import { getNoticeOfWorkApplicationStatusOptionsHash } from "@common/selectors/staticContentSelectors";
 import { getMines } from "@common/selectors/mineSelectors";
 import { getInspectorsHash } from "@common/selectors/partiesSelectors";
 import { downloadNowDocument } from "@common/utils/actionlessNetworkCalls";
@@ -33,6 +34,7 @@ const propTypes = {
   fetchImportedNoticeOfWorkApplication: PropTypes.func.isRequired,
   fetchOriginalNoticeOfWorkApplication: PropTypes.func.isRequired,
   inspectorsHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  noticeOfWorkApplicationStatusOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   reclamationSummary: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.strings)).isRequired,
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
   location: PropTypes.shape({
@@ -110,6 +112,9 @@ export class ViewNoticeOfWorkApplication extends Component {
               <NoticeOfWorkPageHeader
                 noticeOfWork={this.props.noticeOfWork}
                 inspectorsHash={this.props.inspectorsHash}
+                noticeOfWorkApplicationStatusOptionsHash={
+                  this.props.noticeOfWorkApplicationStatusOptionsHash
+                }
                 noticeOfWorkPageFromRoute={this.state.noticeOfWorkPageFromRoute}
               />
               {this.state.isLoaded &&
@@ -170,6 +175,7 @@ const mapStateToProps = (state) => ({
   originalNoticeOfWork: getOriginalNoticeOfWork(state),
   mines: getMines(state),
   inspectorsHash: getInspectorsHash(state),
+  noticeOfWorkApplicationStatusOptionsHash: getNoticeOfWorkApplicationStatusOptionsHash(state),
   reclamationSummary: getNOWReclamationSummary(state),
 });
 
