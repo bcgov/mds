@@ -538,34 +538,46 @@ export const APPLICATION_TYPES_HASH = {
 
 export const APPLICATION_STATUS_CODES = {
   records: [
-    {
-      now_application_status_code: "ACC",
-      description: "Accepted",
-    },
-    {
-      now_application_status_code: "WDN",
-      description: "Withdrawn",
-    },
-    {
-      now_application_status_code: "UNR",
-      description: "Under Review",
-    },
+    { now_application_status_code: "SUB", description: "Submitted" },
+    { now_application_status_code: "REF", description: "Referred" },
+    { now_application_status_code: "CDI", description: "Client Delay Info" },
+    { now_application_status_code: "CDB", description: "Client Delay Bond" },
+    { now_application_status_code: "GVD", description: "Govt Delay" },
+    { now_application_status_code: "CON", description: "Consultation" },
+    { now_application_status_code: "AIA", description: "Active/Issued/Approved" },
+    { now_application_status_code: "WDN", description: "Withdrawn" },
+    { now_application_status_code: "REJ", description: "Rejected" },
+    { now_application_status_code: "CLO", description: "Closed" },
   ],
 };
 
 export const DROPDOWN_APPLICATION_STATUS_CODES = [
   {
-    value: "ACC",
-    label: "Accepted",
+    value: "SUB",
+    label: "Submitted",
   },
+  { value: "REF", label: "Referred" },
+  { value: "CDI", label: "Client Delay Info" },
+  { value: "CDB", label: "Client Delay Bond" },
+  { value: "GVD", label: "Govt Delay" },
+  { value: "CON", label: "Consultation" },
+  { value: "AIA", label: "Active/Issued/Approved" },
   { value: "WDN", label: "Withdrawn" },
-  { value: "UNR", label: "Under Review" },
+  { value: "REJ", label: "Rejected" },
+  { value: "CLO", label: "Closed" },
 ];
 
 export const APPLICATION_STATUS_CODES_HASH = {
-  ACC: "Accepted",
+  SUB: "Submitted",
+  REF: "Referred",
+  CDI: "Client Delay Info",
+  CDB: "Client Delay Bond",
+  GVD: "Govt Delay",
+  CON: "Consultation",
+  AIA: "Active/Issued/Approved",
   WDN: "Withdrawn",
-  UNR: "Under Review",
+  REJ: "Rejected",
+  CLO: "Closed",
 };
 
 export const UNIT_TYPES = {

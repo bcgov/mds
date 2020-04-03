@@ -1,0 +1,178 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ViewBondModal renders properly 1`] = `
+<div>
+  <div
+    className="inline-flex between block-tablet"
+  >
+    <div
+      className="flex-tablet"
+    >
+      <p
+        className="field-title"
+      >
+        Amount
+      </p>
+      <p>
+        $300.00
+      </p>
+    </div>
+    <div
+      className="flex-tablet"
+    >
+      <p
+        className="field-title"
+      >
+        Status
+      </p>
+      <p>
+        Active
+      </p>
+    </div>
+  </div>
+  <br />
+  <div
+    className="content--light-grey padding-small"
+  >
+    <div
+      className="inline-flex padding-small"
+    >
+      <p
+        className="field-title"
+      >
+        Payment Type
+      </p>
+      <p>
+        Cash
+      </p>
+    </div>
+    <div
+      className="inline-flex padding-small"
+    >
+      <p
+        className="field-title"
+      >
+        Issue Date
+      </p>
+      <p>
+        Oct 16 2018
+      </p>
+    </div>
+    <div
+      className="inline-flex padding-small"
+    >
+      <p
+        className="field-title"
+      >
+        Payer
+      </p>
+      <p>
+        N/A
+      </p>
+    </div>
+    <div
+      className="inline-flex padding-small"
+    >
+      <p
+        className="field-title"
+      >
+        Reference Number
+      </p>
+      <p>
+        N/A
+      </p>
+    </div>
+    <div
+      className="inline-flex padding-small"
+    >
+      <p
+        className="field-title"
+      >
+        Project ID
+      </p>
+      <p>
+        N/A
+      </p>
+    </div>
+    <div
+      className="inline-flex padding-small"
+    >
+      <p
+        className="field-title"
+      >
+        Institution Name
+      </p>
+      <p>
+        N/A
+      </p>
+    </div>
+    <div
+      className="inline-flex padding-small"
+    >
+      <p
+        className="field-title"
+      >
+        Institution Location
+      </p>
+      <Address
+        address={
+          Object {
+            "address_line_1": null,
+            "city": null,
+            "post_code": null,
+            "sub_division_code": null,
+          }
+        }
+      />
+    </div>
+    <div
+      className="inline-flex padding-small"
+    >
+      <p
+        className="field-title"
+      >
+        Notes
+      </p>
+      <p>
+        N/A
+      </p>
+    </div>
+  </div>
+  <br />
+  <div
+    className="between block-tablet"
+  >
+    <div
+      className="flex-tablet"
+    >
+      <p
+        className="field-title"
+      >
+        Documents
+      </p>
+      <DocumentTable
+        documents={Array []}
+        isViewOnly={true}
+        removeDocument={[Function]}
+        tableEmptyMessage="There are no attached documents."
+      />
+    </div>
+  </div>
+  <br />
+  <div
+    className="right center-mobile"
+  >
+    <Button
+      block={false}
+      className="full-mobile"
+      ghost={false}
+      htmlType="button"
+      loading={false}
+      onClick={[MockFunction]}
+      type="secondary"
+    >
+      Close
+    </Button>
+  </div>
+</div>
+`;

@@ -34,6 +34,7 @@ const propTypes = {
     "now-equipment",
     "now-contacts",
     "add-now-activity",
+    "securities",
   ]),
   message: PropTypes.string,
 };
@@ -188,6 +189,12 @@ const NullScreen = (props) => (
       <div>
         <img alt="mine_img" src={PERMIT} />
         <h3>No documents found</h3>
+      </div>
+    )}
+    {props.type === "securities" && (
+      <div>
+        <img alt="mine_img" src={PERMIT} />
+        <h3>{String.NO_SECURITIES}</h3>
       </div>
     )}
   </div>

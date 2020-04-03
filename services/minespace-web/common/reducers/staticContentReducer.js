@@ -36,6 +36,7 @@ const initialState = {
   noticeOfWorkApplicationReviewOptions: [],
   bondStatusOptions: [],
   bondTypeOptions: [],
+  bondDocumentTypeOptions: [],
 };
 
 export const staticContentReducer = (state = initialState, action) => {
@@ -96,6 +97,9 @@ export const getNoticeOfWorkApplicationPermitTypeOptions = (state) =>
   state[STATIC_CONTENT].noticeOfWorkApplicationPermitTypeOptions;
 export const getNoticeOfWorkApplicationReviewOptions = (state) =>
   state[STATIC_CONTENT].noticeOfWorkApplicationReviewOptions;
+export const getBondTypeOptions = (state) => state[STATIC_CONTENT].bondTypeOptions;
+export const getBondStatusOptions = (state) => state[STATIC_CONTENT].bondStatusOptions;
+export const getBondDocumentTypeOptions = (state) => state[STATIC_CONTENT].bondDocumentTypeOptions;
 
 const isStaticContentLoaded = (state) =>
   Object.keys(state)

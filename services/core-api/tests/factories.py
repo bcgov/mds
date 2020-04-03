@@ -26,6 +26,7 @@ from app.api.mines.permits.permit_amendment.models.permit_amendment import Permi
 from app.api.mines.permits.permit_amendment.models.permit_amendment_document import PermitAmendmentDocument
 from app.api.securities.models.bond import Bond
 from app.api.securities.models.bond_permit_xref import BondPermitXref
+from app.api.securities.models.reclamation_invoice import ReclamationInvoice
 from app.api.users.core.models.core_user import CoreUser, IdirUserDetail
 from app.api.users.minespace.models.minespace_user import MinespaceUser
 from app.api.variances.models.variance import Variance
@@ -76,7 +77,8 @@ class MineStatusFactory(BaseFactory):
         model = MineStatus
 
     class Params:
-        operating = factory.Trait(mine_status_xref = factory.LazyFunction(RandomOperatingMineStatusXref))
+        operating = factory.Trait(
+            mine_status_xref=factory.LazyFunction(RandomOperatingMineStatusXref))
 
     mine_status_guid = GUID
     effective_date = TODAY
@@ -276,8 +278,10 @@ class MineReportFactory(BaseFactory):
     mine_report_guid = GUID
     mine_guid = factory.SelfAttribute('mine.mine_guid')
     mine_report_definition_id = factory.LazyFunction(RandomMineReportDefinition)
+    received_date = factory.Faker('date_between', start_date='-15d', end_date='+15d')
     due_date = factory.Faker('future_datetime', end_date='+30d')
-    submission_year = factory.fuzzy.FuzzyInteger(2020, 3000)
+    submission_year = factory.fuzzy.FuzzyInteger(datetime.utcnow().year - 2,
+                                                 datetime.utcnow().year + 11)
     mine_report_submissions = []
 
     @factory.post_generation
@@ -481,8 +485,7 @@ class MineFactory(BaseFactory):
             mine_variance=0,
             mine_reports=0)
         operating = factory.Trait(
-            mine_status = factory.RelatedFactory(MineStatusFactory, 'mine', operating=True)
-        )
+            mine_status=factory.RelatedFactory(MineStatusFactory, 'mine', operating=True))
 
     mine_guid = GUID
     mine_no = factory.Faker('ean', length=8)
@@ -586,7 +589,18 @@ class PermitFactory(BaseFactory):
             extracted = random.randint(1, 3)
 
         for n in range(extracted):
-            BondFactory(permits=obj, **kwargs)
+            BondFactory(permit=obj, **kwargs)
+
+    @factory.post_generation
+    def reclamation_invoices(obj, create, extracted, **kwargs):
+        if not create:
+            return
+
+        if not isinstance(extracted, int):
+            extracted = random.randint(1, 3)
+
+        for n in range(extracted):
+            ReclamationInvoiceFactory(permit=obj, **kwargs)
 
 
 class PermitAmendmentFactory(BaseFactory):
@@ -645,4 +659,15 @@ class BondFactory(BaseFactory):
     note = factory.Faker(
         'paragraph', nb_sentences=3, variable_nb_sentences=True, ext_word_list=None)
     issue_date = TODAY
-    reference_number = str(random.randint(1, 9999999))
+    reference_number = factory.Faker('numerify', text='#######')
+
+
+class ReclamationInvoiceFactory(BaseFactory):
+    class Meta:
+        model = ReclamationInvoice
+
+    reclamation_invoice_guid = GUID
+    project_id = factory.Faker('numerify', text='#######')
+    amount = factory.Faker(
+        'pydecimal', right_digits=2, positive=True, min_value=50, max_value=500000)
+    vendor = factory.Faker('company')

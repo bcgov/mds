@@ -3402,9 +3402,16 @@ export const BULK_STATIC_CONTENT_RESPONSE = {
     { notice_of_work_type_code: "QIM", description: "Quarry - Industrial Mineral" },
   ],
   noticeOfWorkApplicationStatusOptions: [
-    { now_application_status_code: "ACC", description: "Accepted" },
+    { now_application_status_code: "SUB", description: "Submitted" },
+    { now_application_status_code: "REF", description: "Referred" },
+    { now_application_status_code: "CDI", description: "Client Delay Info" },
+    { now_application_status_code: "CDB", description: "Client Delay Bond" },
+    { now_application_status_code: "GVD", description: "Govt Delay" },
+    { now_application_status_code: "CON", description: "Consultation" },
+    { now_application_status_code: "AIA", description: "Active/Issued/Approved" },
     { now_application_status_code: "WDN", description: "Withdrawn" },
-    { now_application_status_code: "UNR", description: "Under Review" },
+    { now_application_status_code: "REJ", description: "Rejected" },
+    { now_application_status_code: "CLO", description: "Closed" },
   ],
   noticeOfWorkApplicationDocumentTypeOptions: [
     {
@@ -3713,4 +3720,104 @@ export const BULK_STATIC_CONTENT_RESPONSE = {
     { bond_type_code: "SBO", description: "Surety Bond" },
     { bond_type_code: "SAG", description: "Safekeeping Agreement" },
   ],
+  bondDocumentTypeOptions: [
+    { bond_document_type_code: "SRB", description: "Scan of Reclamation Security Bond" },
+    { bond_document_type_code: "RSF", description: "Release of Security Form" },
+    { bond_document_type_code: "RSL", description: "Release of Security Letter" },
+    { bond_document_type_code: "CSF", description: "Confiscation of Security Form" },
+    { bond_document_type_code: "CSL", description: "Confiscation of Security Letter" },
+    { bond_document_type_code: "REL", description: "Reminder Letter" },
+    { bond_document_type_code: "AKL", description: "Acknowledgement Letter" },
+  ],
 };
+
+export const DROPDOWN_BOND_TYPE_OPTIONS = [
+  { value: "CEC", label: "Certified Cheque" },
+  { value: "CAS", label: "Cash" },
+  { value: "ILC", label: "Irrevocable Line of Credit" },
+  { value: "MOR", label: "Money Order" },
+  { value: "BDA", label: "Bank Draft" },
+  { value: "SBO", label: "Surety Bond" },
+  { value: "SAG", label: "Safekeeping Agreement" },
+];
+
+export const BOND_TYPE_OPTIONS_HASH = {
+  CEC: "Certified Cheque",
+  CAS: "Cash",
+  ILC: "Irrevocable Line of Credit",
+  MOR: "Money Order",
+  BDA: "Bank Draft",
+  SBO: "Surety Bond",
+  SAG: "Safekeeping Agreement",
+};
+
+export const DROPDOWN_BOND_STATUS_OPTIONS = [
+  { value: "REL", label: "Released" },
+  { value: "CON", label: "Confiscated" },
+  { value: "ACT", label: "Active" },
+];
+
+export const BOND_STATUS_OPTIONS_HASH = {
+  REL: "Released",
+  CON: "Confiscated",
+  ACT: "Active",
+};
+
+export const DROPDOWN_BOND_DOCUMENT_TYPE_OPTIONS = [
+  { value: "SRB", label: "Scan of Reclamation Security Bond" },
+  { value: "RSF", label: "Release of Security Form" },
+  { value: "RSL", label: "Release of Security Letter" },
+  { value: "CSF", label: "Confiscation of Security Form" },
+  { value: "CSL", label: "Confiscation of Security Letter" },
+  { value: "REL", label: "Reminder Letter" },
+  { value: "AKL", label: "Acknowledgement Letter" },
+];
+
+export const BOND_DOCUMENT_TYPE_OPTIONS_HASH = {
+  AKL: "Acknowledgement Letter",
+  REL: "Reminder Letter",
+  CSL: "Confiscation of Security Letter",
+  CSF: "Confiscation of Security Form",
+  RSL: "Release of Security Letter",
+  RSF: "Release of Security Form",
+  SRB: "Scan of Reclamation Security Bond",
+};
+
+export const BONDS = {
+  records: [
+    {
+      bond_id: 1,
+      bond_guid: "erjvnaqekrj",
+      amount: 300,
+      bond_type_code: "CAS",
+      payer_party_guid: "sethwrt",
+      bond_status_code: "ACT",
+      reference_number: "",
+      issue_date: "2018-10-16",
+      institution_name: null,
+      institution_street: null,
+      institution_city: null,
+      institution_province: null,
+      institution_postal_code: null,
+      note: null,
+      payer: {},
+      permit_guid: "463236",
+      documents: [],
+    },
+  ],
+};
+
+export const BOND_TOTALS = {
+  amountHeld: 300,
+  count: 1,
+};
+
+export const BOND_RESPONSE = { records: BONDS };
+
+export const RECLAMATION_INVOICE = {
+  project_id: "3523461",
+  amount: "1251.46",
+  vendor: "John Doe",
+};
+
+export const RECLAMATION_INVOICES = { records: [RECLAMATION_INVOICE] };

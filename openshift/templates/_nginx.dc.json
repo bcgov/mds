@@ -95,7 +95,9 @@
         "name": "mds-access-logs${SUFFIX}"
       },
       "spec": {
-        "accessModes": ["ReadWriteMany"],
+        "accessModes": [
+          "ReadWriteMany"
+        ],
         "resources": {
           "requests": {
             "storage": "${LOG_PVC_SIZE}"
@@ -145,7 +147,9 @@
             "type": "ImageChange",
             "imageChangeParams": {
               "automatic": true,
-              "containerNames": ["nginx"],
+              "containerNames": [
+                "nginx"
+              ],
               "from": {
                 "kind": "ImageStreamTag",
                 "name": "${NAME}:${VERSION}"
@@ -226,7 +230,31 @@
                   {
                     "containerPort": 8080
                   }
-                ]
+                ],
+                "livenessProbe": {
+                  "failureThreshold": 3,
+                  "httpGet": {
+                    "path": "/health",
+                    "port": 8081,
+                    "scheme": "HTTP"
+                  },
+                  "initialDelaySeconds": 25,
+                  "periodSeconds": 10,
+                  "successThreshold": 1,
+                  "timeoutSeconds": 1
+                },
+                "readinessProbe": {
+                  "failureThreshold": 3,
+                  "httpGet": {
+                    "path": "/health",
+                    "port": 8081,
+                    "scheme": "HTTP"
+                  },
+                  "initialDelaySeconds": 25,
+                  "periodSeconds": 10,
+                  "successThreshold": 1,
+                  "timeoutSeconds": 1
+                }
               }
             ],
             "volumes": [
