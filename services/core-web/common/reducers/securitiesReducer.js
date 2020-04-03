@@ -3,6 +3,7 @@ import { SECURITIES } from "../constants/reducerTypes";
 
 const initialState = {
   bonds: [],
+  reclamationInvoices: [],
 };
 
 export const securitiesReducer = (state = initialState, action) => {
@@ -11,6 +12,11 @@ export const securitiesReducer = (state = initialState, action) => {
       return {
         ...state,
         bonds: action.payload.records,
+      };
+    case actionTypes.STORE_MINE_RECLAMATION_INVOICES:
+      return {
+        ...state,
+        reclamationInvoices: action.payload.records,
       };
     default:
       return state;
@@ -22,5 +28,6 @@ const securitiesReducerObject = {
 };
 
 export const getBonds = (state) => state[SECURITIES].bonds;
+export const getReclamationInvoices = (state) => state[SECURITIES].reclamationInvoices;
 
 export default securitiesReducerObject;

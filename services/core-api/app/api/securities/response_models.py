@@ -1,6 +1,5 @@
 from app.extensions import api
 from flask_restplus import fields
-from app.api.mines.response_models import MINE_DOCUMENT_MODEL
 
 BOND_PARTY = api.model('Party', {
     'party_name': fields.String,
@@ -16,6 +15,15 @@ BOND_DOCUMENT_MODEL = api.model(
         'document_name': fields.String,
         'upload_date': fields.Date,
         'bond_document_type_code': fields.String
+    })
+
+RECLAMATION_INVOICE_DOCUMENT_MODEL = api.model(
+    'MineDocument', {
+        'mine_document_guid': fields.String,
+        'mine_guid': fields.String,
+        'document_manager_guid': fields.String,
+        'document_name': fields.String,
+        'upload_date': fields.Date,
     })
 
 BOND = api.model(
@@ -51,3 +59,14 @@ BOND_DOCUMENT_TYPE = api.model('BondDocumentType', {
     'bond_document_type_code': fields.String,
     'description': fields.String
 })
+
+RECLAMATION_INVOICE = api.model(
+    'ReclamationInvoice', {
+        'reclamation_invoice_id': fields.Integer,
+        'reclamation_invoice_guid': fields.String,
+        'project_id': fields.String,
+        'amount': fields.Fixed(decimals=2),
+        'vendor': fields.String,
+        'permit_guid': fields.String(attribute='permit.permit_guid'),
+        'documents': fields.List(fields.Nested(RECLAMATION_INVOICE_DOCUMENT_MODEL))
+    })
