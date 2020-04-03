@@ -51,10 +51,9 @@ class VerifyPermitNOWResource(Resource):
                 for permit_amendment in permit.permit_amendments:
                     if (permit_amendment.authorization_end_date -
                             datetime.utcnow().date()).days > 30:
-                        #instead of permit.permit_guid, we really want the now_number but there is currently no relationship from
-                        #permit to NOW
-                        now_info = now_info + str(permit.permit_guid) + " - " + str(
-                            permit_amendment.authorization_end_date) + '\r\c'
+                        now_info = now_info + str(
+                            permit.now_identity.now_application.now_tracking_number) + " - " + str(
+                                permit_amendment.authorization_end_date) + '\r\c'
 
             if now_info != "":
                 result = "Success"

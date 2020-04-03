@@ -42,6 +42,7 @@ def create_and_update_now_identities(connection):
         UPDATE public.permit_amendment as pa
         set now_application_guid = nai.now_application_guid 
         from public.etl_permit ep inner join public.now_application_identity nai on permit_cid = nai.mms_cid::varchar
-        where pa.permit_amendment_guid = ep.permit_amendment_guid ;  	
+        where pa.permit_amendment_guid = ep.permit_amendment_guid
+        and pa.now_application_guid is null;
         """
         cursor.execute(INSERT_NOW_IDENTITIES_FOR_MMS_ONLY_APPLICATIONS)

@@ -43,6 +43,9 @@ class PermitAmendment(AuditMixin, Base):
     permit_amendment_type_description = association_proxy('permit_amendment_type', 'description')
 
     security_total = db.Column(db.Numeric(16, 2))
+    now_application_guid = db.Column(
+        UUID(as_uuid=True), db.ForeignKey('now_application_identity.now_application_guid'))
+    now_identity = db.relationship('NOWApplicationIdentity', lazy='select')
 
     @classmethod
     def create(cls,
