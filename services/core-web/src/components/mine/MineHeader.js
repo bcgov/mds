@@ -290,7 +290,9 @@ export class MineHeader extends Component {
           <div className="inline-flex padding-small wrap">
             <p className="field-title">Exemption Status</p>
             <div>
-              {(null && this.props.mine.exemption_fee_status.description) || String.EMPTY_FIELD}
+              {(this.props.mine.exemption_fee_status &&
+                this.props.mine.exemption_fee_status.description) ||
+                String.EMPTY_FIELD}
               {this.props.mine.exemption_fee_status_note && (
                 <CoreTooltip title={this.props.mine.exemption_fee_status_note} />
               )}

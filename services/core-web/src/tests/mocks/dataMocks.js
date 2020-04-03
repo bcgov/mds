@@ -3007,7 +3007,7 @@ export const BULK_STATIC_CONTENT_RESPONSE = {
       active_ind: true,
     },
   ],
-  exemptionFeeSatusOptions: [],
+  exemptionFeeStatusOptions: [],
   provinceOptions: [
     { sub_division_code: "AB", description: "Alberta", display_order: 10 },
     { sub_division_code: "BC", description: "British Columbia", display_order: 20 },

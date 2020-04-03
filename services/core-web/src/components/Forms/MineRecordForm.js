@@ -24,6 +24,8 @@ import {
   getMineRegionDropdownOptions,
   getMineTenureTypeDropdownOptions,
   getMineTenureTypesHash,
+  getExemptionFeeSatusDropDownOptions,
+  getExemptionFeeStatusOptionsHash,
 } from "@common/selectors/staticContentSelectors";
 import * as Strings from "@common/constants/strings";
 import * as FORM from "@/constants/forms";
@@ -50,6 +52,8 @@ const propTypes = {
   currentMineTypes: PropTypes.arrayOf(CustomPropTypes.mineTypes),
   submitting: PropTypes.bool.isRequired,
   isNewRecord: PropTypes.bool,
+  exemptionFeeSatusDropDownOptions: PropTypes.objectOf(CustomPropTypes.options).isRequired,
+  exemptionFeeStatusOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
 const defaultProps = {
@@ -442,6 +446,21 @@ export class MineRecordForm extends Component {
             </Form.Item>
           </Col>
         </Row>
+        <Row gutter={16}>
+          <Col>
+            <Form.Item>
+              <Field
+                id="exception_status_code"
+                name="exception_status_code"
+                label="Fee Exemption"
+                placeholder="Select a fee exemption status"
+                component={renderConfig.SELECT}
+                data={this.props.exemptionFeeSatusDropDownOptions}
+                validate={[required]}
+              />
+            </Form.Item>
+          </Col>
+        </Row>
         <div className="right center-mobile">
           <Popconfirm
             placement="topRight"
@@ -484,6 +503,8 @@ export default compose(
     mineStatus: selector(state, "mine_status"),
     mine_types: selector(state, "mine_types"),
     status_date: selector(state, "status_date"),
+    exemptionFeeSatusDropDownOptions: getExemptionFeeSatusDropDownOptions(state),
+    exemptionFeeStatusOptionsHash: getExemptionFeeStatusOptionsHash(state),
   })),
   reduxForm({
     form: FORM.MINE_RECORD,
