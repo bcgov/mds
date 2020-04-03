@@ -43,3 +43,6 @@ export const MAJOR_MINE_PERMIT_APPLICATION_CREATE = "MAJOR_MINE_PERMIT_APPLICATI
 
 // Securities
 export const ADD_BOND = "ADD_BOND";
+
+//Permit Generation
+export const GENERATE_PERMIT = "GENERATE_PERMIT";
