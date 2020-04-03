@@ -506,6 +506,8 @@ export class NoticeOfWorkApplication extends Component {
       <NOWPermitGeneration
         returnToPrevStep={this.returnToPrevStep}
         noticeOfWork={this.props.noticeOfWork}
+        documentType={this.props.generatableApplicationDocuments["PMT"]}
+        handleGenerateDocumentFormSubmit={this.handleGenerateDocumentFormSubmit}
       />
     );
   };

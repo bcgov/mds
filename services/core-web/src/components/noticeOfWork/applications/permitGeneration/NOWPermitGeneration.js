@@ -19,6 +19,8 @@ const propTypes = {
   returnToPrevStep: PropTypes.func.isRequired,
   noticeOfWork: CustomPropTypes.importedNOWApplication,
   appOptions: PropTypes.arrayOf(CustomPropTypes.options).isRequired,
+  handleGenerateDocumentFormSubmit: PropTypes.func.isRequired,
+  documentType: PropTypes.any,
 };
 
 const defaultProps = {};
@@ -70,6 +72,13 @@ export class NOWPermitGeneration extends Component {
       }));
   };
 
+  handleSubmit = (values) => {
+    handleGenerateDocumentFormSubmit(this.props.documentType, {
+      ...values,
+      document_list: this.createDocList(this.props.noticeOfWork),
+    });
+  };
+
   render() {
     return (
       <div>
@@ -85,6 +94,7 @@ export class NOWPermitGeneration extends Component {
             initialValues={this.createPermitGenObject(this.props.noticeOfWork)}
             cancelGeneration={this.props.returnToPrevStep}
             documentList={this.createDocList(this.props.noticeOfWork)}
+            handleSubmit={this.handleSubmit}
           />
         </div>
       </div>

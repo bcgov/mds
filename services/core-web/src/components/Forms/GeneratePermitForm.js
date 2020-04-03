@@ -12,10 +12,11 @@ const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   returnToPrevStep: PropTypes.func.isRequired,
   documentList: PropTypes.arrayOf(PropTypes.any),
+  submitting: PropTypes.bool.isRequired,
 };
 
 export const GeneratePermitForm = (props) => (
-  <Form layout="vertical">
+  <Form layout="vertical" onSubmit={props.handleSubmit}>
     <h2 className="padding-large--top">Part One: General Information</h2>
     <Row gutter={32}>
       <Col xs={24} md={12}>
@@ -198,7 +199,7 @@ export const GeneratePermitForm = (props) => (
           Cancel
         </Button>
       </Popconfirm>
-      <Button className="full-mobile" type="primary" htmlType="submit">
+      <Button className="full-mobile" type="primary" htmlType="submit" disabled={props.submitting}>
         Generate
       </Button>
     </div>
