@@ -888,6 +888,8 @@ UPDATE document_template SET form_spec_json = '[
   ]'
 where document_template_code = 'NCL';
 
+--THE FRONTEND DOESN"T ACTUALLY USE THE SPEC TO MAKE THE FORM,
+--but we need data enforcement still. 
 UPDATE document_template SET form_spec_json = '[
     {
       "id": "mine_no",
