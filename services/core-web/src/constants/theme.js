@@ -4,12 +4,6 @@ const undefinedStatusStyleType = "default";
 
 const badgeStatusTypes = {
   noticeOfWork: {
-    // Core Status Code Descriptions
-    Accepted: "success",
-    "Under Review": "processing",
-    Withdrawn: "warning",
-
-    // NROS/vFCBC Status Code Descriptions
     Submitted: "warning",
     Referred: "processing",
     "Client Delay Info": "processing",
@@ -17,7 +11,7 @@ const badgeStatusTypes = {
     "Govt Delay": "processing",
     Consultation: "processing",
     "Active/Issued/Approved": "success",
-    // Withdrawn: "error",
+    Withdrawn: "warning",
     Rejected: "error",
     Closed: "error",
   },
