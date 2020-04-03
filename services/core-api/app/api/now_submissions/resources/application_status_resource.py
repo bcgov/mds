@@ -23,7 +23,8 @@ class ApplicationStatusResource(Resource, UserMixin):
 
 
 class ApplicationStatusUpdatesSinceResource(Resource, UserMixin):
-    @api.doc(description='Get the statuses of applications ')
+    @api.doc(description=
+             'Get the statuses of applications whose statuses have changed since the provided date')
     @requires_role_view_all
     @api.marshal_with(NOW_APPLICATION_STATUS_UPDATED_RECORD, code=200)
     def get(self, status_updated_date):
