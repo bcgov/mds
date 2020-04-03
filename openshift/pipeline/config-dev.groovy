@@ -325,7 +325,7 @@ app {
 environments {
     'dev' {
         vars {
-            DB_PVC_SIZE = '1Gi'
+            DB_PVC_SIZE = '5Gi'
             DOCUMENT_PVC_SIZE = '1Gi'
             BACKUP_VERIFICATION_PVC_SIZE = '200Mi'
             LOG_PVC_SIZE = '1Gi'
