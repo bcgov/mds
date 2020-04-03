@@ -96,6 +96,6 @@ STATIC_CONTENT_MODEL = api.model(
         fields.List(fields.Nested(BOND_TYPE), attribute='BondType'),
         'bondDocumentTypeOptions':
         fields.List(fields.Nested(BOND_DOCUMENT_TYPE), attribute='BondDocumentType'),
-        'exemptionFeeSatusOptions':
+        'exemptionFeeStatusOptions':
         fields.List(fields.Nested(EXEMPTION_FEE_STATUS_CODE_MODEL), attribute='ExemptionFeeStatus'),
     })

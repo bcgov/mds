@@ -19,6 +19,7 @@ import {
   getMineTenureTypesHash,
   getDisturbanceOptionHash,
   getCommodityOptionHash,
+  getExemptionFeeStatusOptionsHash,
 } from "@common/selectors/staticContentSelectors";
 import { getCurrentMineTypes, getTransformedMineTypes } from "@common/selectors/mineSelectors";
 import { getUserInfo } from "@common/selectors/authenticationSelectors";
@@ -51,6 +52,7 @@ const propTypes = {
   mineCommodityOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   transformedMineTypes: CustomPropTypes.transformedMineTypes.isRequired,
   userInfo: PropTypes.shape({ preferred_username: PropTypes.string.isRequired }).isRequired,
+  exemptionFeeStatusOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
 export class MineHeader extends Component {
@@ -112,6 +114,8 @@ export class MineHeader extends Component {
       major_mine_ind: mine.major_mine_ind ? mine.major_mine_ind : false,
       mine_region: mine.mine_region,
       mine_note: mine.mine_note,
+      exemption_fee_status_code: mine.exemption_fee_status_code,
+      exemption_fee_status_note: mine.exemption_fee_status_note,
     };
     this.props.openModal({
       props: {
@@ -290,9 +294,11 @@ export class MineHeader extends Component {
           <div className="inline-flex padding-small wrap">
             <p className="field-title">Exemption Status</p>
             <div>
-              {(this.props.mine.exemption_fee_status &&
-                this.props.mine.exemption_fee_status.description) ||
-                String.EMPTY_FIELD}
+              {this.props.mine.exemption_fee_status_code
+                ? this.props.exemptionFeeStatusOptionsHash[
+                    this.props.mine.exemption_fee_status_code
+                  ]
+                : String.EMPTY_FIELD}
               {this.props.mine.exemption_fee_status_note && (
                 <CoreTooltip title={this.props.mine.exemption_fee_status_note} />
               )}
@@ -342,6 +348,7 @@ const mapStateToProps = (state) => ({
   mineDisturbanceOptionsHash: getDisturbanceOptionHash(state),
   currentMineTypes: getCurrentMineTypes(state),
   transformedMineTypes: getTransformedMineTypes(state),
+  exemptionFeeStatusOptionsHash: getExemptionFeeStatusOptionsHash(state),
 });
 
 const mapDispatchToProps = (dispatch) =>

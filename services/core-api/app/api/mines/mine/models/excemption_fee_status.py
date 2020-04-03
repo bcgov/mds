@@ -3,7 +3,7 @@ from app.extensions import db
 
 from app.api.utils.models_mixins import AuditMixin, Base
 
-class ExemptionFeeStatus(AuditMixin, Base):
+class ExemptionFeeStatus(Base, AuditMixin):
     __tablename__ = 'exemption_fee_status'
     exemption_fee_status_code = db.Column(db.String, nullable=False, primary_key=True)
     description = db.Column(db.String, nullable=False)

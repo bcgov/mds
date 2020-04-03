@@ -101,7 +101,7 @@ export const getNoticeOfWorkApplicationReviewOptions = (state) =>
 export const getBondTypeOptions = (state) => state[STATIC_CONTENT].bondTypeOptions;
 export const getBondStatusOptions = (state) => state[STATIC_CONTENT].bondStatusOptions;
 export const getBondDocumentTypeOptions = (state) => state[STATIC_CONTENT].bondDocumentTypeOptions;
-export const getexemptionFeeStatusOptions = (state) =>
+export const getExemptionFeeStatusOptions = (state) =>
   state[STATIC_CONTENT].exemptionFeeStatusOptions;
 
 const isStaticContentLoaded = (state) =>

@@ -49,7 +49,6 @@ class Mine(AuditMixin, Base):
         backref='mine',
         order_by='desc(MineTailingsStorageFacility.mine_tailings_storage_facility_name)',
         lazy='joined')
-    exemption_fee_status = db.relationship('ExemptionFeeStatus', lazy='joined')
 
     #Almost always used, but faster to use selectin to load related data
     mine_permit = db.relationship(

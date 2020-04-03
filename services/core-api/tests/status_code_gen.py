@@ -37,7 +37,7 @@ def RandomPermitStatusCode():
     return random.choice([x.permit_status_code for x in db.session.query(PermitStatusCode).all()])
 
 def RandomExemptionFeeStatusCode():
-    return random.choice([x.exemption_fee_status_code for x in db.session.query(ExemptionFeeStatus).get_active()])
+    return random.choice([x.exemption_fee_status_code for x in ExemptionFeeStatus.get_active()])
 
 def RandomBondStatusCode():
     return random.choice([x.bond_status_code for x in BondStatus.get_active()])

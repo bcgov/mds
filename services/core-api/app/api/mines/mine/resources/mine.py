@@ -278,6 +278,20 @@ class MineResource(Resource, UserMixin):
         'ohsc_ind', type=bool, store_missing=False, help='Indicates if the mine has an OHSC.')
     parser.add_argument(
         'union_ind', type=bool, store_missing=False, help='Indicates if the mine has a union.')
+    parser.add_argument(
+        'exemption_fee_status_code',
+        type=str,
+        help='Fee exemption status for the mine.',
+        trim=True,
+        store_missing=False,
+        location='json')
+    parser.add_argument(
+        'exemption_fee_status_note',
+        type=str,
+        help='Fee exemption status note for the mine.',
+        trim=True,
+        store_missing=False,
+        location='json')
 
     @api.doc(description='Returns the specific mine from the mine_guid or mine_no provided.')
     @api.marshal_with(MINE_MODEL, code=200)
@@ -326,6 +340,10 @@ class MineResource(Resource, UserMixin):
             mine.latitude = data['latitude']
             mine.longitude = data['longitude']
             refresh_cache = True
+        if 'exemption_fee_status_code' in data:
+            mine.exemption_fee_status_code = data['exemption_fee_status_code']
+        if 'exemption_fee_status_code' in data:
+            mine.exemption_fee_status_note = data['exemption_fee_status_note']
         mine.save()
 
         _mine_status_processor(data.get('mine_status'), data.get('status_date'), mine)
