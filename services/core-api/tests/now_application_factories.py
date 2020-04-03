@@ -391,6 +391,7 @@ class NOWApplicationFactory(BaseFactory):
     now_tracking_number = factory.fuzzy.FuzzyInteger(1, 100)
     notice_of_work_type_code = factory.LazyFunction(RandomNOWTypeCode)
     now_application_status_code = factory.LazyFunction(RandomNOWStatusCode)
+    status_updated_date = TODAY
     submitted_date = factory.Faker('past_datetime')
     received_date = factory.Faker('past_datetime')
     # or factory.fuzzy.FuzzyFloat(49, 60) for ~ inside BC

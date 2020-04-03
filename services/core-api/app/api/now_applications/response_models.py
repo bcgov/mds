@@ -446,11 +446,12 @@ NOW_APPLICATION_STATUS_CODES = api.model('ActivityStatusCodes', {
     'description': fields.String
 })
 
-NOW_APPLICATION_STATUS_UPDATED_RECORD = {
-    'messageid': fields.Integer,
-    'status_updated_date': Date,
-    'status': fields.Nested(NOW_APPLICATION_STATUS_CODES)
-}
+NOW_APPLICATION_STATUS_UPDATED_RECORD = api.model(
+    'NOWApplicationStatusUpdatedRecord', {
+        'messageid': fields.Integer,
+        'status_updated_date': Date,
+        'status': fields.Nested(NOW_APPLICATION_STATUS_CODES)
+    })
 
 UNIT_TYPES = api.model('UnitTypeCodes', {
     'short_description': fields.String,

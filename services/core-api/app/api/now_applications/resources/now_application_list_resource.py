@@ -1,5 +1,6 @@
 from flask_restplus import Resource
 from flask import request
+from datetime import datetime
 from sqlalchemy_filters import apply_pagination, apply_sort
 from sqlalchemy import desc, func, or_, and_
 from werkzeug.exceptions import BadRequest, NotFound, InternalServerError
@@ -173,6 +174,7 @@ class NOWApplicationListResource(Resource, UserMixin):
         new_now.now_application = NOWApplication(
             notice_of_work_type_code=data['notice_of_work_type_code'],
             now_application_status_code='SUB',
+            status_updated_date=datetime.today(),
             submitted_date=data['submitted_date'],
             received_date=data['received_date'])
 
