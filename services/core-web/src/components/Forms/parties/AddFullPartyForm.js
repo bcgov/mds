@@ -112,7 +112,7 @@ export const AddFullPartyForm = (props) => (
                   name="phone_ext"
                   label="Ext"
                   component={renderConfig.FIELD}
-                  validate={[number, maxLength(4)]}
+                  validate={[number, maxLength(6)]}
                 />
               </Form.Item>
             </Col>

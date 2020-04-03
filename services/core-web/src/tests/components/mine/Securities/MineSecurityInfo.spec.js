@@ -13,6 +13,9 @@ const setupDispatchProps = () => {
   dispatchProps.fetchMineBonds = jest.fn();
   dispatchProps.createBond = jest.fn();
   dispatchProps.updateBond = jest.fn();
+  dispatchProps.fetchMineReclamationInvoices = jest.fn();
+  dispatchProps.createReclamationInvoice = jest.fn();
+  dispatchProps.updateReclamationInvoice = jest.fn();
 };
 
 const setupProps = () => {
@@ -23,6 +26,7 @@ const setupProps = () => {
   props.bondStatusOptionsHash = MOCK.BOND_STATUS_OPTIONS_HASH;
   props.bondTypeOptionsHash = MOCK.BOND_TYPE_OPTIONS_HASH;
   props.bonds = MOCK.BONDS.records;
+  props.invoices = MOCK.RECLAMATION_INVOICES.records;
 };
 
 beforeEach(() => {

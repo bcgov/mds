@@ -3403,9 +3403,16 @@ export const BULK_STATIC_CONTENT_RESPONSE = {
     { notice_of_work_type_code: "QIM", description: "Quarry - Industrial Mineral" },
   ],
   noticeOfWorkApplicationStatusOptions: [
-    { now_application_status_code: "ACC", description: "Accepted" },
+    { now_application_status_code: "SUB", description: "Submitted" },
+    { now_application_status_code: "REF", description: "Referred" },
+    { now_application_status_code: "CDI", description: "Client Delay Info" },
+    { now_application_status_code: "CDB", description: "Client Delay Bond" },
+    { now_application_status_code: "GVD", description: "Govt Delay" },
+    { now_application_status_code: "CON", description: "Consultation" },
+    { now_application_status_code: "AIA", description: "Active/Issued/Approved" },
     { now_application_status_code: "WDN", description: "Withdrawn" },
-    { now_application_status_code: "UNR", description: "Under Review" },
+    { now_application_status_code: "REJ", description: "Rejected" },
+    { now_application_status_code: "CLO", description: "Closed" },
   ],
   noticeOfWorkApplicationDocumentTypeOptions: [
     {
@@ -3807,3 +3814,11 @@ export const BOND_TOTALS = {
 };
 
 export const BOND_RESPONSE = { records: BONDS };
+
+export const RECLAMATION_INVOICE = {
+  project_id: "3523461",
+  amount: "1251.46",
+  vendor: "John Doe",
+};
+
+export const RECLAMATION_INVOICES = { records: [RECLAMATION_INVOICE] };
