@@ -29,7 +29,6 @@ class TestApplicationResource:
 
     """POST /now-applications/"""
     def test_post_major_mine_now_application_success(self, test_client, db_session, auth_headers):
-        num_created = 3
         mine = MineFactory(major_mine_ind=True)
         payload = {
             'mine_guid': mine.mine_guid,
