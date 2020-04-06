@@ -50,37 +50,37 @@ exports[`ReclamationInvoiceForm renders properly 1`] = `
         />
       </FormItem>
     </Col>
-  </Row>
-  <Row
-    gutter={16}
-  >
-    <Col
-      md={12}
-      sm={24}
+    <Row
+      gutter={16}
     >
-      <FormItem
-        hasFeedback={false}
+      <Col
+        md={12}
+        sm={24}
       >
-        <Field
-          autoComplete="off"
-          component={[Function]}
-          format={[Function]}
-          id="amount"
-          label="Invoice Amount*"
-          name="amount"
-          normalize={[Function]}
-          onChange={[Function]}
-          onFocus={[Function]}
-          validate={
-            Array [
-              [Function],
-              [Function],
-              [Function],
-            ]
-          }
-        />
-      </FormItem>
-    </Col>
+        <FormItem
+          hasFeedback={false}
+        >
+          <Field
+            autoComplete="off"
+            component={[Function]}
+            format={[Function]}
+            id="amount"
+            label="Invoice Amount*"
+            name="amount"
+            normalize={[Function]}
+            onChange={[Function]}
+            onFocus={[Function]}
+            validate={
+              Array [
+                [Function],
+                [Function],
+                [Function],
+              ]
+            }
+          />
+        </FormItem>
+      </Col>
+    </Row>
   </Row>
   <Row
     gutter={16}
@@ -189,7 +189,7 @@ exports[`ReclamationInvoiceForm renders properly 1`] = `
       loading={false}
       type="primary"
     >
-      Add Reclamation Invoice
+      Save Reclamation Invoice
     </Button>
   </div>
 </Form>
