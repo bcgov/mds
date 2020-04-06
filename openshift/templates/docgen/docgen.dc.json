@@ -75,6 +75,26 @@
   ],
   "objects": [
     {
+      "kind": "ImageStream",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "${NAME}",
+        "creationTimestamp": null,
+        "labels": {
+          "shared": "true"
+        },
+        "annotations": {
+          "description": "Keeps track of changes in the application image"
+        }
+      },
+      "spec": {
+        "lookupPolicy": {
+          "local": false
+        },
+        "tags": []
+      }
+    },
+    {
       "kind": "Service",
       "apiVersion": "v1",
       "metadata": {
@@ -124,12 +144,11 @@
             "imageChangeParams": {
               "automatic": true,
               "containerNames": [
-                "app"
+                "${NAME}"
               ],
               "from": {
                 "kind": "ImageStreamTag",
-                "name": "docgen:${TAG_NAME}",
-                "namespace": "empr-mds-tools"
+                "name": "${NAME}:${VERSION}"
               }
             }
           }
