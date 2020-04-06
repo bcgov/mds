@@ -12,10 +12,11 @@ class NOWApplicationStatus(Base, AuditMixin):
     now_application_status_code = db.Column(db.String, primary_key=True)
     description = db.Column(db.String, nullable=False)
     active_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
+    display_order = db.Column(db.Integer, nullable=False)
 
     def __repr__(self):
         return '<NOWApplicationStatus %r>' % self.now_application_status_code
 
     @classmethod
     def get_active(cls):
-        return cls.query.filter_by(active_ind=True).all()
+        return cls.query.filter_by(active_ind=True).order_by(cls.display_order).all()

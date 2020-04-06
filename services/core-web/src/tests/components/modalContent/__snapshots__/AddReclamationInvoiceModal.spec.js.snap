@@ -1,0 +1,43 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AddReclamationInvoiceModal renders properly 1`] = `
+<div>
+  <ReduxForm
+    closeModal={[MockFunction]}
+    destroyOnUnmount={true}
+    enableReinitialize={false}
+    forceUnregisterOnUnmount={false}
+    form="ADD_RECLAMATION_INVOICE"
+    getFormState={[Function]}
+    initialValues={
+      Object {
+        "amount": "1251.46",
+        "project_id": "3523461",
+        "vendor": "John Doe",
+      }
+    }
+    invoice={
+      Object {
+        "amount": "1251.46",
+        "project_id": "3523461",
+        "vendor": "John Doe",
+      }
+    }
+    keepDirtyOnReinitialize={false}
+    mineGuid="1436613"
+    onSubmit={[Function]}
+    onSubmitSuccess={[Function]}
+    persistentSubmitErrors={false}
+    pure={true}
+    shouldAsyncValidate={[Function]}
+    shouldError={[Function]}
+    shouldValidate={[Function]}
+    shouldWarn={[Function]}
+    submitAsSideEffect={false}
+    title="Add Bond"
+    touchOnBlur={false}
+    touchOnChange={false}
+    updateUnregisteredFields={false}
+  />
+</div>
+`;

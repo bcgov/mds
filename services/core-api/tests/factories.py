@@ -278,8 +278,10 @@ class MineReportFactory(BaseFactory):
     mine_report_guid = GUID
     mine_guid = factory.SelfAttribute('mine.mine_guid')
     mine_report_definition_id = factory.LazyFunction(RandomMineReportDefinition)
+    received_date = factory.Faker('date_between', start_date='-15d', end_date='+15d')
     due_date = factory.Faker('future_datetime', end_date='+30d')
-    submission_year = factory.fuzzy.FuzzyInteger(2020, 3000)
+    submission_year = factory.fuzzy.FuzzyInteger(datetime.utcnow().year - 2,
+                                                 datetime.utcnow().year + 11)
     mine_report_submissions = []
 
     @factory.post_generation

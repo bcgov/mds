@@ -22,7 +22,7 @@ class ReclamationInvoice(Base, AuditMixin):
     amount = db.Column(db.Numeric(14, 2), nullable=False)
     vendor = db.Column(db.String, nullable=False)
 
-    permit = db.relationship('Permit', lazy='select')
+    permit = db.relationship('Permit', lazy='joined')
     documents = db.relationship('ReclamationInvoiceDocument', lazy='select')
 
     def __repr__(self):
