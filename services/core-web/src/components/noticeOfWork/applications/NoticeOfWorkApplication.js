@@ -546,11 +546,17 @@ export class NoticeOfWorkApplication extends Component {
   };
 
   renderPermitGeneration = () => {
+    const isAmendment = this.props.noticeOfWork.type_of_application === "New Permit";
     return (
       <NOWPermitGeneration
         returnToPrevStep={this.returnToPrevStep}
         noticeOfWork={this.props.noticeOfWork}
-        documentType={this.props.generatableApplicationDocuments["PMT"]}
+        documentType={
+          isAmendment
+            ? this.props.generatableApplicationDocuments["PMT"]
+            : this.props.generatableApplicationDocuments["PMA"]
+        }
+        isAmendment={isAmendment}
         handleGenerateDocumentFormSubmit={this.handleGenerateDocumentFormSubmit}
       />
     );

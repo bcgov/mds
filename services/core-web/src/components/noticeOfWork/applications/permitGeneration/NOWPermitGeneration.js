@@ -21,6 +21,7 @@ const propTypes = {
   appOptions: PropTypes.arrayOf(CustomPropTypes.options).isRequired,
   handleGenerateDocumentFormSubmit: PropTypes.func.isRequired,
   documentType: PropTypes.any,
+  isAmendment: PropTypes.bool.isRequired,
 };
 
 const defaultProps = {};
@@ -32,7 +33,7 @@ export class NOWPermitGeneration extends Component {
       issue_date: moment().format("MMM DD YYYY"),
       auth_end_date: "",
       regional_office: "",
-      current_date: moment().format("DD"),
+      current_date: moment().format("Do"),
       current_month: moment().format("MMMM"),
       current_year: moment().format("YYYY"),
       conditions: "",
@@ -73,6 +74,7 @@ export class NOWPermitGeneration extends Component {
   };
 
   handlePremitGenSubmit = (values) => {
+    values.auth_end_date = formatDate(values.auth_end_date);
     this.props.handleGenerateDocumentFormSubmit(this.props.documentType, {
       ...values,
       document_list: this.createDocList(this.props.noticeOfWork),
@@ -96,6 +98,7 @@ export class NOWPermitGeneration extends Component {
             cancelGeneration={this.props.returnToPrevStep}
             documentList={this.createDocList(this.props.noticeOfWork)}
             onSubmit={this.handlePremitGenSubmit}
+            isAmendment={this.props.isAmendment}
           />
         </div>
       </div>

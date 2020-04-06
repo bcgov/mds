@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Field, reduxForm } from "redux-form";
 import { Form, Button, Col, Row, Popconfirm } from "antd";
-import { required, maxLength } from "@common/utils/Validate";
+import { required } from "@common/utils/Validate";
 import { resetForm } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
@@ -14,6 +14,7 @@ const propTypes = {
   returnToPrevStep: PropTypes.func.isRequired,
   documentList: PropTypes.arrayOf(PropTypes.any),
   submitting: PropTypes.bool.isRequired,
+  isAmendment: PropTypes.bool.isRequired,
 };
 
 export const GeneratePermitForm = (props) => (

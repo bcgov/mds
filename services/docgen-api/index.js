@@ -66,13 +66,13 @@ app.post("/template/:uid/render", async (req, res) => {
     }
   }
 
-  // try {
-  //   formatters = telejson.parse(req.body.formatters);
-  // } catch (e) {}
+  try {
+    formatters = telejson.parse(req.body.formatters);
+  } catch (e) {}
 
   // carbone.formatters = _.filter(carbone.formatters, (formatter) => formatter.$isDefault === true);
 
-  // carbone.addFormatters(formatters);
+  carbone.addFormatters(formatters);
 
   let report = null;
 
