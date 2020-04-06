@@ -334,6 +334,14 @@ export class NoticeOfWorkApplication extends Component {
   };
 
   handleUpdateLeadInspector = (finalAction) => {
+    if (
+      !this.state.associatedLeadInspectorPartyGuid ||
+      this.state.associatedLeadInspectorPartyGuid ===
+        this.props.noticeOfWork.lead_inspector_party_guid
+    ) {
+      finalAction();
+      return;
+    }
     this.setState({ isLoaded: false });
     this.props
       .updateNoticeOfWorkApplication(
@@ -365,6 +373,14 @@ export class NoticeOfWorkApplication extends Component {
   };
 
   handleUpdateStatus = (finalAction) => {
+    if (
+      !this.state.associatedStatus ||
+      this.state.associatedStatus === this.props.noticeOfWork.now_application_status_code
+    ) {
+      finalAction();
+      return;
+    }
+
     this.setState({ isLoaded: false });
     this.props
       .updateNoticeOfWorkApplication(
