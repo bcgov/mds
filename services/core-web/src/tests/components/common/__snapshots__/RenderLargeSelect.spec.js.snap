@@ -42,7 +42,7 @@ exports[`RenderLargeSelect renders properly 1`] = `
       }
     }
     transitionName="slide-up"
-    value="1"
+    value=""
   >
     <Input
       suffix={
