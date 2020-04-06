@@ -2,7 +2,6 @@ import requests, hashlib, os, mimetypes, json, datetime
 from flask import Response, current_app, stream_with_context
 from app.config import Config
 
-import pprint
 
 def sha256_checksum(filename, block_size=65536):
     sha256 = hashlib.sha256()
@@ -37,9 +36,6 @@ class DocumentGeneratorService():
                 'convertTo': 'pdf'
             }
         }
-
-        print('Document data')
-        pprint.pprint(body)
 
         # Send the document generation request and return the response
         resp = requests.post(
