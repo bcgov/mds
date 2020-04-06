@@ -22,6 +22,10 @@
       "required": true
     },
     {
+      "name": "VERSION",
+      "required": true
+    },
+    {
       "name": "APPLICATION_SUFFIX",
       "required": true
     },
