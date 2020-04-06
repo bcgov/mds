@@ -43,7 +43,7 @@
             "name": "${TAG_NAME}",
             "annotations": null,
             "from": {
-              "kind": "ImageStreamTag",
+              "kind": "DockerImage",
               "name": "bcgovimages/doc-gen-api:v1.0.0"
             },
             "generation": 1,
