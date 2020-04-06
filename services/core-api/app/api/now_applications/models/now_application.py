@@ -3,6 +3,7 @@ from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
 from sqlalchemy.ext.associationproxy import association_proxy
 from werkzeug.exceptions import NotFound
+from sqlalchemy.ext.hybrid import hybrid_property
 
 from app.api.utils.models_mixins import Base, AuditMixin
 from app.extensions import db
@@ -118,6 +119,13 @@ class NOWApplication(Base, AuditMixin):
 
     # Contacts
     contacts = db.relationship('NOWPartyAppointment', lazy='selectin')
+
+    @hybrid_property
+    def permittee_name(self):
+        return [
+            contact.party.name for contact in self.contacts
+            if contact.mine_party_appt_type_code == 'PMT'
+        ][0]
 
     def __repr__(self):
         return '<NOWApplication %r>' % self.now_application_guid

@@ -72,11 +72,12 @@ export class NOWPermitGeneration extends Component {
       }));
   };
 
-  handleSubmit = (values) => {
-    handleGenerateDocumentFormSubmit(this.props.documentType, {
+  handlePremitGenSubmit = (values) => {
+    this.props.handleGenerateDocumentFormSubmit(this.props.documentType, {
       ...values,
       document_list: this.createDocList(this.props.noticeOfWork),
     });
+    this.props.returnToPrevStep();
   };
 
   render() {
@@ -94,7 +95,7 @@ export class NOWPermitGeneration extends Component {
             initialValues={this.createPermitGenObject(this.props.noticeOfWork)}
             cancelGeneration={this.props.returnToPrevStep}
             documentList={this.createDocList(this.props.noticeOfWork)}
-            handleSubmit={this.handleSubmit}
+            onSubmit={this.handlePremitGenSubmit}
           />
         </div>
       </div>
