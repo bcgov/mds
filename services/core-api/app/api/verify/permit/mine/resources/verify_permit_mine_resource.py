@@ -44,6 +44,7 @@ class VerifyPermitMineResource(Resource):
                 mine = Mine.find_by_mine_guid(str(permit.mine_guid))
 
                 # Mine must be operating.
+                #TODO What do if mine has no status, throws exception
                 if mine.mine_status[0].mine_status_xref.mine_operation_status_code != "OP":
                     break
 
