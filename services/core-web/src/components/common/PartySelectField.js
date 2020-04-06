@@ -30,6 +30,7 @@ const propTypes = {
   fetchSearchResults: PropTypes.func.isRequired,
   setAddPartyFormState: PropTypes.func.isRequired,
   lastCreatedParty: CustomPropTypes.party.isRequired,
+  initialValue: PropTypes.objectOf(PropTypes.string),
 };
 
 const defaultProps = {
@@ -161,6 +162,7 @@ export class PartySelectField extends Component {
 
   // Validator to ensure the selected option is in the collection of available options.
   // This validator is appened to any validators passed in from the form in the render function below.
+  // eslint-disable-next-line consistent-return
   validOption = (value) => {
     // ignore this validation if an initialValue is passed in
     if (this.props.initialValue && this.props.initialValue !== this.state.selectedOption) {
@@ -171,8 +173,6 @@ export class PartySelectField extends Component {
   };
 
   render = () => {
-    console.log(this.state.selectedOption);
-
     return (
       <Field
         {...this.props}

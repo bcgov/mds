@@ -124,7 +124,4 @@ const mapDispatchToProps = (dispatch) =>
 RenderMineSelect.propTypes = propTypes;
 RenderMineSelect.defaultProps = defaultProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(RenderMineSelect);
+export default connect(mapStateToProps, mapDispatchToProps)(RenderMineSelect);

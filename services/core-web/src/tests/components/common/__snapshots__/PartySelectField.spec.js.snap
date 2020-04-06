@@ -9,6 +9,7 @@ exports[`PartySelectField renders properly 1`] = `
   handleSearch={[Function]}
   handleSelect={[Function]}
   id="party_guid"
+  initialValue=""
   label="Name*"
   name="party_guid"
   organization={false}

@@ -38,7 +38,7 @@ export const AddBondModal = (props) => {
   const initialPartyValue = props.editBond
     ? {
         key: props.bond.payer_party_guid,
-        // props: { value: props.bond.payer.name, children: props.bond.payer.name },
+        value: props.bond.payer.name,
       }
     : "";
   return (

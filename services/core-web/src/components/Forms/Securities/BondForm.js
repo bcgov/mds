@@ -35,7 +35,11 @@ const propTypes = {
   bondTypeDropDownOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
   bondDocumentTypeDropDownOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
   bondDocumentTypeOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
-  initialPartyValue: PropTypes.oneOfType([PropTypes.string, PropTypes.objectOf(PropTypes.string)]),
+  initialPartyValue: PropTypes.objectOf(PropTypes.string),
+};
+
+const defaultProps = {
+  initialPartyValue: {},
 };
 
 export class BondForm extends Component {
@@ -334,6 +338,7 @@ export class BondForm extends Component {
 }
 
 BondForm.propTypes = propTypes;
+BondForm.defaultProps = defaultProps;
 
 export default reduxForm({
   form: FORM.ADD_BOND,

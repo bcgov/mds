@@ -447,12 +447,17 @@ export class NoticeOfWorkApplication extends Component {
       template_data: newValues,
     };
     this.props
-      .generateNoticeOfWorkApplicationDocument(documentTypeCode, payload, () => {
-        this.setState({ isLoaded: false });
-        this.props
-          .fetchImportedNoticeOfWorkApplication(this.props.noticeOfWork.now_application_guid)
-          .then(() => this.setState({ isLoaded: true }));
-      })
+      .generateNoticeOfWorkApplicationDocument(
+        documentTypeCode,
+        payload,
+        "Successfully Created Document and Attached it to this Notice of Work",
+        () => {
+          this.setState({ isLoaded: false });
+          this.props
+            .fetchImportedNoticeOfWorkApplication(this.props.noticeOfWork.now_application_guid)
+            .then(() => this.setState({ isLoaded: true }));
+        }
+      )
       .then(() => {
         this.props.closeModal();
       });

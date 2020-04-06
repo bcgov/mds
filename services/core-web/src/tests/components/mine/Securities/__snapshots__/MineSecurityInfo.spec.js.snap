@@ -4,91 +4,173 @@ exports[`MineSecurityInfo renders properly 1`] = `
 <div
   className="tab__content"
 >
-  <div>
-    <h2>
-      Securities
-    </h2>
-    <Divider />
-    <div
-      className="dashboard--cards"
+  <h2>
+    Securities
+  </h2>
+  <br />
+  <Tabs
+    hideAdd={false}
+    style={
+      Object {
+        "textAlign": "left !important",
+      }
+    }
+    tabPosition="top"
+    type="card"
+  >
+    <TabPane
+      key="1"
+      placeholder={null}
+      tab="Bonds"
     >
-      <MineDashboardContentCard
-        content="$300.00"
-        icon={null}
-        title={
-          <span>
-            Total Security Held
-            <CoreTooltip
-              title="Total amount of money held through active bonds across all permits."
-            />
-          </span>
+      <div>
+        <div
+          className="dashboard--cards"
+        >
+          <MineDashboardContentCard
+            content="$300.00"
+            icon={null}
+            title={
+              <span>
+                Total Security Held
+                <CoreTooltip
+                  title="Total Security Held: This is the total amount of all active bonds held on this mine record. If the mine is on a payment schedule, it shows only what has been paid to date. It includes any interest earned."
+                />
+              </span>
+            }
+          />
+          <MineDashboardContentCard
+            content={1}
+            icon={null}
+            title={
+              <span>
+                Total Active Bonds
+                <CoreTooltip
+                  title="Total Active Bonds: This is the number of active bonds held by EMPR for all the permits on this mine record. It does not include bonds that have been released or confiscated."
+                />
+              </span>
+            }
+          />
+        </div>
+        <br />
+        <h4
+          className="uppercase"
+        >
+          Bonds
+        </h4>
+        <p>
+          Record all bonds received for each permit this mine holds.
+        </p>
+        <br />
+        <MineBondTable
+          bondStatusOptionsHash={
+            Object {
+              "ACT": "Active",
+              "CON": "Confiscated",
+              "REL": "Released",
+            }
+          }
+          bondTypeOptionsHash={
+            Object {
+              "BDA": "Bank Draft",
+              "CAS": "Cash",
+              "CEC": "Certified Cheque",
+              "ILC": "Irrevocable Line of Credit",
+              "MOR": "Money Order",
+              "SAG": "Safekeeping Agreement",
+              "SBO": "Surety Bond",
+            }
+          }
+          bonds={
+            Array [
+              Object {
+                "amount": 300,
+                "bond_guid": "erjvnaqekrj",
+                "bond_id": 1,
+                "bond_status_code": "ACT",
+                "bond_type_code": "CAS",
+                "documents": Array [],
+                "institution_city": null,
+                "institution_name": null,
+                "institution_postal_code": null,
+                "institution_province": null,
+                "institution_street": null,
+                "issue_date": "2018-10-16",
+                "note": null,
+                "payer": Object {},
+                "payer_party_guid": "sethwrt",
+                "permit_guid": "463236",
+                "reference_number": "",
+              },
+            ]
+          }
+          expandedRowKeys={Array []}
+          isLoaded={false}
+          onExpand={[Function]}
+          openAddBondModal={[Function]}
+          openEditBondModal={[Function]}
+          openViewBondModal={[Function]}
+          permits={Array []}
+          releaseOrConfiscateBond={[Function]}
+        />
+      </div>
+    </TabPane>
+    <TabPane
+      key="2"
+      placeholder={null}
+      tab="Reclamation Invoices"
+    >
+      <h4
+        className="uppercase"
+      >
+        Reclamation Invoices
+      </h4>
+      <p>
+        Record invoices for reclamation activities paid for with funds from confiscated bonds.
+      </p>
+      <br />
+      <MineReclamationInvoiceTable
+        bonds={
+          Array [
+            Object {
+              "amount": 300,
+              "bond_guid": "erjvnaqekrj",
+              "bond_id": 1,
+              "bond_status_code": "ACT",
+              "bond_type_code": "CAS",
+              "documents": Array [],
+              "institution_city": null,
+              "institution_name": null,
+              "institution_postal_code": null,
+              "institution_province": null,
+              "institution_street": null,
+              "issue_date": "2018-10-16",
+              "note": null,
+              "payer": Object {},
+              "payer_party_guid": "sethwrt",
+              "permit_guid": "463236",
+              "reference_number": "",
+            },
+          ]
         }
+        expandedRowKeys={Array []}
+        invoices={
+          Array [
+            Object {
+              "amount": "1251.46",
+              "project_id": "3523461",
+              "vendor": "John Doe",
+            },
+          ]
+        }
+        isLoaded={false}
+        onExpand={[Function]}
+        openAddBondModal={[Function]}
+        openAddReclamationInvoiceModal={[Function]}
+        openEditReclamationInvoiceModal={[Function]}
+        permits={Array []}
       />
-      <MineDashboardContentCard
-        content={1}
-        icon={null}
-        title={
-          <span>
-            Total Active Bonds
-            <CoreTooltip
-              title="Total number of bonds that are currently active across all permits. Released and confiscated bonds are not included in this total."
-            />
-          </span>
-        }
-      />
-    </div>
-    <br />
-    <MineBondTable
-      bondStatusOptionsHash={
-        Object {
-          "ACT": "Active",
-          "CON": "Confiscated",
-          "REL": "Released",
-        }
-      }
-      bondTypeOptionsHash={
-        Object {
-          "BDA": "Bank Draft",
-          "CAS": "Cash",
-          "CEC": "Certified Cheque",
-          "ILC": "Irrevocable Line of Credit",
-          "MOR": "Money Order",
-          "SAG": "Safekeeping Agreement",
-          "SBO": "Surety Bond",
-        }
-      }
-      bonds={
-        Array [
-          Object {
-            "amount": 300,
-            "bond_guid": "erjvnaqekrj",
-            "bond_id": 1,
-            "bond_status_code": "ACT",
-            "bond_type_code": "CAS",
-            "documents": Array [],
-            "institution_city": null,
-            "institution_name": null,
-            "institution_postal_code": null,
-            "institution_province": null,
-            "institution_street": null,
-            "issue_date": "2018-10-16",
-            "note": null,
-            "payer": Object {},
-            "payer_party_guid": "sethwrt",
-            "permit_guid": "463236",
-            "reference_number": "",
-          },
-        ]
-      }
-      expandedRowKeys={Array []}
-      isLoaded={false}
-      onExpand={[Function]}
-      openAddBondModal={[Function]}
-      openEditBondModal={[Function]}
-      openViewBondModal={[Function]}
-      permits={Array []}
-      releaseOrConfiscateBond={[Function]}
-    />
-  </div>
+    </TabPane>
+  </Tabs>
 </div>
 `;

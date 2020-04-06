@@ -363,7 +363,7 @@ exports[`BondForm renders properly 1`] = `
       name="documents"
       onFileLoad={[Function]}
       onRemoveFile={[Function]}
-      uploadUrl="/bonds/undefined/bonds/documents"
+      uploadUrl="/securities/undefined/bonds/documents"
     />
   </FormItem>
   <div

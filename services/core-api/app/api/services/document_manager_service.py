@@ -6,7 +6,7 @@ from app.config import Config
 
 ALLOWED_DOCUMENT_CATEGORIES = [
     'tailings', 'permits', 'variances', 'incidents', 'reports', 'mine_party_appts', 'noticeofwork',
-    'bonds'
+    'bonds', 'reclamation_invoices'
 ]
 
 

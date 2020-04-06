@@ -1,24 +1,11 @@
-import decimal
-import uuid
-import base64
-import requests
-import json
+from flask import request
+from flask_restplus import Resource
+from werkzeug.exceptions import NotFound
 
-from datetime import datetime
-from flask import request, current_app, Response
-from flask_restplus import Resource, reqparse
-from werkzeug.datastructures import FileStorage
-from werkzeug.exceptions import BadRequest, NotFound
-from sqlalchemy.exc import DBAPIError
-
+from app.extensions import api
 from app.api.mines.mine.models.mine import Mine
-from app.api.mines.reports.models.mine_report import MineReport
-
-from app.extensions import api, db
-from app.api.utils.custom_reqparser import CustomReqparser
 from app.api.utils.access_decorators import requires_role_edit_securities
 from app.api.utils.resources_mixins import UserMixin
-
 from app.api.services.document_manager_service import DocumentManagerService
 
 
