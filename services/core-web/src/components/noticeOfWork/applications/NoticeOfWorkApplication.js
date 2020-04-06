@@ -24,6 +24,7 @@ import {
   getDropdownNoticeOfWorkApplicationStatusOptions,
   getNoticeOfWorkApplicationProgressStatusCodeOptions,
   getGeneratableNoticeOfWorkApplicationDocumentTypeOptions,
+  getNoticeOfWorkApplicationStatusOptionsHash,
 } from "@common/selectors/staticContentSelectors";
 import { formatDate, flattenObject } from "@common/utils/helpers";
 import { clearNoticeOfWorkApplication } from "@common/actions/noticeOfWorkActions";
@@ -86,6 +87,7 @@ const propTypes = {
   formValues: CustomPropTypes.importedNOWApplication.isRequired,
   inspectors: CustomPropTypes.groupOptions.isRequired,
   inspectorsHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  noticeOfWorkApplicationStatusOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   applicationProgressStatusCodes: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string))
     .isRequired,
   generatableApplicationDocuments: PropTypes.objectOf(PropTypes.objectOf(PropTypes.any)).isRequired,
@@ -111,6 +113,7 @@ export class NoticeOfWorkApplication extends Component {
     isLoaded: false,
     isMajorMine: null,
     associatedLeadInspectorPartyGuid: "",
+    associatedStatus: "",
     isViewMode: true,
     showOriginalValues: false,
     fixedTop: false,
@@ -257,6 +260,12 @@ export class NoticeOfWorkApplication extends Component {
     });
   };
 
+  setStatus = (status) => {
+    this.setState({
+      associatedStatus: status,
+    });
+  };
+
   handleSaveNOWEdit = () => {
     this.setState({ submitting: true });
     const errors = Object.keys(flattenObject(this.props.formErrors));
@@ -352,6 +361,36 @@ export class NoticeOfWorkApplication extends Component {
         handleUpdateLeadInspector: (e) => this.handleUpdateLeadInspector(this.props.closeModal, e),
       },
       content: modalConfig.UPDATE_NOW_LEAD_INSPECTOR,
+    });
+  };
+
+  handleUpdateStatus = (finalAction) => {
+    this.setState({ isLoaded: false });
+    this.props
+      .updateNoticeOfWorkApplication(
+        { now_application_status_code: this.state.associatedStatus },
+        this.props.noticeOfWork.now_application_guid,
+        `Successfully changed status to ${
+          this.props.noticeOfWorkApplicationStatusOptionsHash[this.state.associatedStatus]
+        }`
+      )
+      .then(() => {
+        this.props
+          .fetchImportedNoticeOfWorkApplication(this.props.noticeOfWork.now_application_guid)
+          .then(() => this.setState({ isLoaded: true }));
+      })
+      .then(() => finalAction());
+  };
+
+  openUpdateStatusModal = () => {
+    this.props.openModal({
+      props: {
+        title: "Change Application Status",
+        now_application_status_code: this.props.noticeOfWork.now_application_status_code,
+        setStatus: this.setStatus,
+        handleUpdateStatus: (e) => this.handleUpdateStatus(this.props.closeModal, e),
+      },
+      content: modalConfig.UPDATE_NOW_STATUS,
     });
   };
 
@@ -451,12 +490,17 @@ export class NoticeOfWorkApplication extends Component {
       template_data: newValues,
     };
     this.props
-      .generateNoticeOfWorkApplicationDocument(documentTypeCode, payload, () => {
-        this.setState({ isLoaded: false });
-        this.props
-          .fetchImportedNoticeOfWorkApplication(this.props.noticeOfWork.now_application_guid)
-          .then(() => this.setState({ isLoaded: true }));
-      })
+      .generateNoticeOfWorkApplicationDocument(
+        documentTypeCode,
+        payload,
+        "Successfully Created Document and Attached it to this Notice of Work",
+        () => {
+          this.setState({ isLoaded: false });
+          this.props
+            .fetchImportedNoticeOfWorkApplication(this.props.noticeOfWork.now_application_guid)
+            .then(() => this.setState({ isLoaded: true }));
+        }
+      )
       .then(() => {
         this.props.closeModal();
       });
@@ -594,6 +638,11 @@ export class NoticeOfWorkApplication extends Component {
             Edit Application Lat/Long
           </Menu.Item>
         )}
+        {!isDecision && (
+          <Menu.Item key="edit-application-status" onClick={() => this.openUpdateStatusModal()}>
+            Edit Application Status
+          </Menu.Item>
+        )}
         {!isDecision && this.props.noticeOfWork.lead_inspector_party_guid && (
           <Menu.Item
             key="change-the-lead-inspector"
@@ -667,6 +716,9 @@ export class NoticeOfWorkApplication extends Component {
                 noticeOfWork={this.props.noticeOfWork}
                 inspectorsHash={this.props.inspectorsHash}
                 noticeOfWorkPageFromRoute={this.state.noticeOfWorkPageFromRoute}
+                noticeOfWorkApplicationStatusOptionsHash={
+                  this.props.noticeOfWorkApplicationStatusOptionsHash
+                }
                 fixedTop={this.state.fixedTop}
               />
               {!this.state.isPermitGeneration && (
@@ -786,6 +838,7 @@ const mapStateToProps = (state) => ({
   applicationStatusOptions: getDropdownNoticeOfWorkApplicationStatusOptions(state),
   applicationProgressStatusCodes: getNoticeOfWorkApplicationProgressStatusCodeOptions(state),
   generatableApplicationDocuments: getGeneratableNoticeOfWorkApplicationDocumentTypeOptions(state),
+  noticeOfWorkApplicationStatusOptionsHash: getNoticeOfWorkApplicationStatusOptionsHash(state),
   documentContextTemplate: getDocumentContextTemplate(state),
 });
 

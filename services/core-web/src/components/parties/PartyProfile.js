@@ -233,7 +233,12 @@ export class PartyProfile extends Component {
             <Address address={parties.address[0] || {}} />
           </div>
           <div className="profile__content">
-            <Tabs activeKey="history" size="large" animated={{ inkBar: true, tabPane: false }}>
+            <Tabs
+              className="center-tabs"
+              activeKey="history"
+              size="large"
+              animated={{ inkBar: true, tabPane: false }}
+            >
               <TabPane tab="History" key="history">
                 <div className="tab__content ">
                   <Table

@@ -511,11 +511,18 @@ VALUES
 on conflict do nothing;
 
 INSERT INTO now_application_status
-(now_application_status_code, description, active_ind, create_user, update_user)
+(now_application_status_code, description, display_order, active_ind, create_user, update_user)
 VALUES
-	('ACC', 'Accepted', true, 'system-mds', 'system-mds'),
-	('WDN', 'Withdrawn', true, 'system-mds', 'system-mds'),
-	('UNR', 'Under Review', true, 'system-mds', 'system-mds')
+  ('SUB', 'Submitted', 90, true, 'system-mds', 'system-mds'),
+	('REF', 'Referred', 70, true, 'system-mds', 'system-mds'),
+	('CDI', 'Client Delay Info', 30, true, 'system-mds', 'system-mds'),
+	('CDB', 'Client Delay Bond', 20, true, 'system-mds', 'system-mds'),
+  ('GVD', 'Govt Delay', 60, true, 'system-mds', 'system-mds'),
+  ('CON', 'Consultation', 50, true, 'system-mds', 'system-mds'),
+  ('AIA', 'Active/Issued/Approved', 10, true, 'system-mds', 'system-mds'),
+	('WDN', 'Withdrawn', 100, true, 'system-mds', 'system-mds'),
+	('REJ', 'Rejected', 80, true, 'system-mds', 'system-mds'),
+	('CLO', 'Closed', 40, true, 'system-mds', 'system-mds')
 on conflict do nothing;
 
 INSERT INTO mine_incident_category
@@ -634,7 +641,6 @@ VALUES
 	('NRL', '' , 'templates/now/Rejection Letter Template (NoW).docx', true, 'system-mds', 'system-mds'),
 	('NWL', '' , 'templates/now/Withdrawal Letter Template (NoW).docx', true, 'system-mds', 'system-mds'),
 	('NCL', '', 'templates/now/Client Acknowledgment Letter Template (NoW).docx', true, 'system-mds', 'system-mds')
- -- ('PMT', '', 'templates/permit/New_Permit_Template.docx', true, 'system-mds','system-mds')
   -- ('PMA', '', 'templates/permit/Permit_Amendment_template.docx',true,'system-mds','system-mds')
 ON CONFLICT DO NOTHING;
 
@@ -643,6 +649,7 @@ INSERT INTO document_template
 VALUES
 ('PMT', '', 'templates/permit/New_Permit_Template.docx', true, 'system-mds','system-mds')
 ON CONFLICT DO NOTHING;
+
 --use update statement so it can be easily copied from new fixed  migrations and just be changed in the future.
 UPDATE document_template SET form_spec_json = '[
     {
@@ -952,64 +959,6 @@ UPDATE document_template SET form_spec_json = '[
     }
   ]'
 where document_template_code = 'PMT';
-
--- UPDATE document_template SET form_spec_json = '[
---     {
---       "id": "letter_dt",
---       "label": "Letter Date",
---       "type": "DATE",
---       "placeholder": null,
---       "required": true
---     },
---     {
---       "id": "mine_no",
---       "label": "Mine Number",
---       "type": "FIELD",
---       "placeholder": "Enter the mine number",
---       "required": true,
---       "relative-data-path": "mine.mine_no",
---       "read-only": true
---     },
---     {
---       "id": "proponent_address",
---       "label": "Proponent Address",
---       "type": "FIELD",
---       "placeholder": "Enter the propnent''s address",
---       "required": true
---     },
---     {
---       "id": "proponent_name",
---       "label": "Proponent Name",
---       "type": "FIELD",
---       "placeholder": "Enter the propnent''s name",
---       "required": false
---     },
---     {
---       "id": "emailed_to",
---       "label": "Emailed to",
---       "type": "FIELD",
---       "placeholder": "Enter the name of the email recipient",
---       "required": false
---     },
---     {
---       "id": "property",
---       "label": "Property",
---       "type": "FIELD",
---       "placeholder": "Enter the property",
---       "required": true,
---       "relative-data-path": "now_application.property_name",
---       "read-only": true
---     },
---     {
---       "id": "application_dt",
---       "label": "Application Date",
---       "type": "DATE",
---       "placeholder": null,
---       "required": true,
---       "relative-data-path": "now_application.submitted_date"
---     },
---   ]'
--- where document_template_code = 'PMT';
 
 UPDATE now_application_document_type
 SET document_template_code = 'NCL'

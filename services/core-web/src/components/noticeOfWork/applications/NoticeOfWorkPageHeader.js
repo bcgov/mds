@@ -9,6 +9,7 @@ import CustomPropTypes from "@/customPropTypes";
 const propTypes = {
   noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
   inspectorsHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  noticeOfWorkApplicationStatusOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   noticeOfWorkPageFromRoute: CustomPropTypes.noticeOfWorkPageFromRoute.isRequired,
   fixedTop: PropTypes.bool.isRequired,
 };
@@ -18,6 +19,10 @@ const NoticeOfWorkPageHeader = (props) => {
   const nowLeadInspectorName =
     props.inspectorsHash[props.noticeOfWork.lead_inspector_party_guid] || Strings.UNASSIGNED;
   const nowMineName = props.noticeOfWork.mine_name || Strings.UNASSIGNED;
+  const nowStatus =
+    props.noticeOfWorkApplicationStatusOptionsHash[
+      props.noticeOfWork.now_application_status_code
+    ] || Strings.UNASSIGNED;
 
   return (
     <div>
@@ -43,6 +48,10 @@ const NoticeOfWorkPageHeader = (props) => {
               <Icon type="user" className="padding-small--right" />
               {nowLeadInspectorName}
             </Link>
+          </Tag>
+          <Tag title={`Status: ${nowStatus}`}>
+            <Icon type="tag" className="padding-small--right" />
+            {nowStatus}
           </Tag>
         </span>
       </h1>

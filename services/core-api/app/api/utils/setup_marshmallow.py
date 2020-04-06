@@ -10,7 +10,7 @@ from sqlalchemy.orm import scoped_session, sessionmaker, mapper
 from sqlalchemy import event
 from sqlalchemy.inspection import inspect
 from sqlalchemy.orm.attributes import InstrumentedAttribute
-from marshmallow import fields, pprint, validate
+from marshmallow import fields, pprint, validate, EXCLUDE
 from marshmallow_sqlalchemy import ModelConversionError, ModelSchema, ModelConverter
 from app.api.utils.models_mixins import AuditMixin, Base as BaseModel
 from app.extensions import db
@@ -26,6 +26,8 @@ from app.api.utils.static_data import setup_static_data
 from app.api.utils.field_template import FieldTemplate
 from app.api.securities.models.bond import Bond
 from app.api.securities.models.bond_document import BondDocument
+from app.api.securities.models.reclamation_invoice import ReclamationInvoice
+from app.api.securities.models.reclamation_invoice_document import ReclamationInvoiceDocument
 from app.api.constants import STATIC_DATA
 
 
@@ -74,7 +76,8 @@ def setup_schema(Base, session):
     """
     def setup_schema_fn():
         for class_ in ActivityDetailBase.__subclasses__() + [
-                Equipment, NOWApplicationDocumentXref, Bond, BondDocument
+                Equipment, NOWApplicationDocumentXref, Bond, BondDocument, ReclamationInvoice,
+                ReclamationInvoiceDocument
         ] + sub_models.model_list:
             if hasattr(class_, "__tablename__") or getattr(class_, "__create_schema__", False):
                 try:
@@ -86,6 +89,7 @@ def setup_schema(Base, session):
                     class Meta(object):
                         model = class_
                         ordered = True
+                        unknown = EXCLUDE
                         include_fk = True
                         sqla_session = db.session
                         model_converter = CoreConverter
@@ -93,11 +97,16 @@ def setup_schema(Base, session):
 
                     # After the schema is created on the class this looks for any schemas that have deferred the creation of
                     # fields and validation. If found they are created and added to the proper schema.
+                    mapper = inspect(class_)
                     for k, v in class_._ModelSchema.__dict__.items():
                         if type(v) == FieldTemplate:
                             current_app.logger.debug(f'creating field for {k} on {class_}')
+                            col = [x for x in mapper.columns if x.name == k][0]
+                            kwargs = {}
+                            if col.nullable:
+                                kwargs['allow_none'] = True
                             class_._ModelSchema._declared_fields[k] = v.field(
-                                validate=validate.OneOf(choices=STATIC_DATA[v.one_of]))
+                                validate=validate.OneOf(choices=STATIC_DATA[v.one_of]), **kwargs)
                     schema_class_name = "%sSchema" % class_.__name__
                     schema_class = type(schema_class_name, (class_._ModelSchema, ), {"Meta": Meta})
 

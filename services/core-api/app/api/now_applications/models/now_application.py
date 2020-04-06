@@ -38,7 +38,8 @@ class NOWApplication(Base, AuditMixin):
     now_tracking_number = db.Column(db.Integer)
     notice_of_work_type_code = db.Column(
         db.String, db.ForeignKey('notice_of_work_type.notice_of_work_type_code'), nullable=False)
-    notice_of_work_type = db.relationship('NOWApplicationType', lazy='select')
+    notice_of_work_type = db.relationship('NOWApplicationType', lazy='joined')
+
     now_application_status_code = db.Column(
         db.String,
         db.ForeignKey('now_application_status.now_application_status_code'),
