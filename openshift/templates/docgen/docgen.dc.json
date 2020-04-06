@@ -167,7 +167,7 @@
           "spec": {
             "containers": [
               {
-                "name": "app",
+                "name": "${NAME}",
                 "image": " ",
                 "env": [
                   {
