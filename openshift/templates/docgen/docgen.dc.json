@@ -26,10 +26,6 @@
       "required": true
     },
     {
-      "name": "TAG_NAME",
-      "required": true
-    },
-    {
       "name": "BASE_PATH",
       "required": false,
       "value": "/"

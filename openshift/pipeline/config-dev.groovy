@@ -287,7 +287,7 @@ app {
                     'params':[
                             'NAME':"docgen",
                             'SUFFIX': "${vars.deployment.suffix}",
-                            'TAG_NAME': "${app.build.version}",
+                            'VERSION':"${app.deployment.version}",
                             'APPLICATION_SUFFIX': "${vars.deployment.application_suffix}",
                             'PORT':3030,
                             'CPU_REQUEST':"${vars.resources.docgen.cpu_request}",
