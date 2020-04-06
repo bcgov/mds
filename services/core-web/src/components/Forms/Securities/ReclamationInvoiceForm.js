@@ -95,20 +95,6 @@ export class ReclamationInvoiceForm extends Component {
           <Col md={12} sm={24}>
             <Form.Item>
               <Field
-                id="amount"
-                name="amount"
-                label="Invoice Amount*"
-                component={RenderField}
-                {...currencyMask}
-                validate={[required, number, currency]}
-              />
-            </Form.Item>
-          </Col>
-        </Row>
-        <Row gutter={16}>
-          <Col md={12} sm={24}>
-            <Form.Item>
-              <Field
                 id="project_id"
                 name="project_id"
                 label="Project ID*"
@@ -125,6 +111,20 @@ export class ReclamationInvoiceForm extends Component {
                 label="Vendor*"
                 component={RenderField}
                 validate={[required]}
+              />
+            </Form.Item>
+          </Col>
+        </Row>
+        <Row gutter={16}>
+          <Col md={12} sm={24}>
+            <Form.Item>
+              <Field
+                id="amount"
+                name="amount"
+                label="Invoice Amount*"
+                component={RenderField}
+                {...currencyMask}
+                validate={[required, number, currency]}
               />
             </Form.Item>
           </Col>

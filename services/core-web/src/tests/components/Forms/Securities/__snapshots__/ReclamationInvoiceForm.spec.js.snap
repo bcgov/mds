@@ -18,37 +18,6 @@ exports[`ReclamationInvoiceForm renders properly 1`] = `
         hasFeedback={false}
       >
         <Field
-          autoComplete="off"
-          component={[Function]}
-          format={[Function]}
-          id="amount"
-          label="Invoice Amount*"
-          name="amount"
-          normalize={[Function]}
-          onChange={[Function]}
-          onFocus={[Function]}
-          validate={
-            Array [
-              [Function],
-              [Function],
-              [Function],
-            ]
-          }
-        />
-      </FormItem>
-    </Col>
-  </Row>
-  <Row
-    gutter={16}
-  >
-    <Col
-      md={12}
-      sm={24}
-    >
-      <FormItem
-        hasFeedback={false}
-      >
-        <Field
           component={[Function]}
           id="project_id"
           label="Project ID*"
@@ -75,6 +44,37 @@ exports[`ReclamationInvoiceForm renders properly 1`] = `
           name="vendor"
           validate={
             Array [
+              [Function],
+            ]
+          }
+        />
+      </FormItem>
+    </Col>
+  </Row>
+  <Row
+    gutter={16}
+  >
+    <Col
+      md={12}
+      sm={24}
+    >
+      <FormItem
+        hasFeedback={false}
+      >
+        <Field
+          autoComplete="off"
+          component={[Function]}
+          format={[Function]}
+          id="amount"
+          label="Invoice Amount*"
+          name="amount"
+          normalize={[Function]}
+          onChange={[Function]}
+          onFocus={[Function]}
+          validate={
+            Array [
+              [Function],
+              [Function],
               [Function],
             ]
           }
