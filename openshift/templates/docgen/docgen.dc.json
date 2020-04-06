@@ -13,7 +13,7 @@
       "displayName": "Name",
       "description": "The name assigned to all of the docgen objects defined in this template.",
       "required": true,
-      "value": "doc-gen-api"
+      "value": "docgen"
     },
     {
       "name": "SUFFIX",
