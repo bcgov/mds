@@ -146,19 +146,6 @@
         },
         "triggers": [
           {
-            "type": "ImageChange",
-            "imageChangeParams": {
-              "automatic": true,
-              "containerNames": [
-                "app"
-              ],
-              "from": {
-                "kind": "ImageStreamTag",
-                "name": "doc-gen-api:v1.0.0"
-              }
-            }
-          },
-          {
             "type": "ConfigChange"
           }
         ],
@@ -177,7 +164,7 @@
             "containers": [
               {
                 "name": "app",
-                "image": " ",
+                "image": "bcgovimages/doc-gen-api",
                 "env": [
                   {
                     "name": "APP_PORT",
