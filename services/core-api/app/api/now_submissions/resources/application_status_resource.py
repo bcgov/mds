@@ -1,5 +1,6 @@
+from flask import request
 from flask_restplus import Resource
-from werkzeug.exceptions import NotFound
+from werkzeug.exceptions import BadRequest, NotFound
 
 from app.extensions import api
 from app.api.now_applications.models.now_application import NOWApplication, NOWApplicationIdentity
@@ -22,14 +23,20 @@ class ApplicationStatusResource(Resource, UserMixin):
         return NOWApplicationStatus.find_by_now_application_status_code(code)
 
 
-class ApplicationStatusUpdatesSinceResource(Resource, UserMixin):
-    @api.doc(description=
-             'Get the statuses of applications whose statuses have changed since the provided date')
+class ApplicationStatusListResource(Resource, UserMixin):
+    @api.doc(
+        description=
+        'Get the status of all applications whose statuses have been updated since the provided date',
+        params={'status_updated_date_since': 'Status must have been updated since this date'})
     @requires_role_view_all
     @api.marshal_with(NOW_APPLICATION_STATUS_UPDATED_RECORD, code=200)
-    def get(self, status_updated_date):
+    def get(self):
+        status_updated_date_since = request.args.get('status_updated_date_since')
+        if not status_updated_date_since:
+            raise BadRequest('status_updated_date_since is a required query parameter')
+
         now_applications = NOWApplication.query.filter(
-            NOWApplication.status_updated_date >= status_updated_date).order_by(
+            NOWApplication.status_updated_date >= status_updated_date_since).order_by(
                 NOWApplication.status_updated_date.desc()).all()
 
         updated_status_records = []

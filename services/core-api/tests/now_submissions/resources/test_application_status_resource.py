@@ -21,6 +21,7 @@ class TestGetApplicationResource:
         assert get_data[
             'now_application_status_code'] == identity.now_application.now_application_status_code
 
+    """GET /now-submissions/applications/status?status_updated_date_since={date}"""
     def test_get_now_application_status_updates_since_success(self, test_client, db_session,
                                                               auth_headers):
         """Should return the correct records with a 200 response code"""
@@ -36,7 +37,7 @@ class TestGetApplicationResource:
             identities.append(identity)
 
         get_resp = test_client.get(
-            f'/now-submissions/applications/status/{today}',
+            f'/now-submissions/applications/status?status_updated_date_since={today}',
             headers=auth_headers['full_auth_header'])
         assert get_resp.status_code == 200, get_resp.response
         get_data = json.loads(get_resp.data.decode())
@@ -49,14 +50,14 @@ class TestGetApplicationResource:
             identity.save()
 
         get_resp = test_client.get(
-            f'/now-submissions/applications/status/{today}',
+            f'/now-submissions/applications/status?status_updated_date_since={today}',
             headers=auth_headers['full_auth_header'])
         assert get_resp.status_code == 200, get_resp.response
         get_data = json.loads(get_resp.data.decode())
         assert len(get_data) == 1
 
         get_resp = test_client.get(
-            f'/now-submissions/applications/status/{today + datetime.timedelta(days=+42)}',
+            f'/now-submissions/applications/status?status_updated_date_since={today + datetime.timedelta(days=+42)}',
             headers=auth_headers['full_auth_header'])
         assert get_resp.status_code == 200, get_resp.response
         get_data = json.loads(get_resp.data.decode())
