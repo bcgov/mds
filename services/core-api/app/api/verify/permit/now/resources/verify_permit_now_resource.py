@@ -42,8 +42,8 @@ class VerifyPermitNOWResource(Resource):
                 mine = Mine.find_by_mine_guid(str(permit.mine_guid))
 
                 # Mine must be operating.
-                #TODO What do if mine has no status, throws exception
-                if mine.mine_status[0].mine_status_xref.mine_operation_status_code != "OP":
+                if not mine.mine_status or mine.mine_status[
+                        0].mine_status_xref.mine_operation_status_code != "OP":
                     break
 
                 if permit_prefix not in ["CX", "MX"]:
@@ -52,6 +52,7 @@ class VerifyPermitNOWResource(Resource):
                 for permit_amendment in permit.permit_amendments:
                     if (permit_amendment.authorization_end_date -
                             datetime.utcnow().date()).days > 30:
+                        #only want permits that expire 30 days or further in the future
                         now_info = now_info + str(
                             permit_amendment.now_identity.now_submission.trackingnumber
                         ) + " - " + str(permit_amendment.authorization_end_date) + '\r\c'

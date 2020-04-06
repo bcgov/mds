@@ -1,4 +1,5 @@
-DROP VIEW notice_of_work_view;
+-- Updates the "Notice of Work View" view to fix an issue where the order of NoW coalesce params was incorrect.
+DROP VIEW IF EXISTS notice_of_work_view;
 CREATE OR REPLACE VIEW notice_of_work_view
 	AS
 SELECT nid.now_application_guid,
@@ -7,10 +8,15 @@ m.mine_no,
 nid.now_number,
 app.lead_inspector_party_guid,
 concat_ws (' ', p.first_name, p.party_name) AS lead_inspector_name,
-COALESCE(nowt.description,  sub.noticeofworktype, msub.noticeofworktype) as notice_of_work_type_description,
-COALESCE(sub.status, nows.description) as now_application_status_description,
+COALESCE(nowt.description, sub.noticeofworktype, msub.noticeofworktype) as notice_of_work_type_description,
+COALESCE(nows.description, sub.status) as now_application_status_description,
 COALESCE(app.received_date, sub.receiveddate, msub.receiveddate) as received_date,
-sub.originating_system
+(CASE
+    WHEN sub.originating_system IS NOT NULL THEN sub.originating_system
+    WHEN msub.mms_cid IS NOT NULL THEN 'MMS'
+    WHEN nid.now_application_id IS NOT NULL THEN 'Core'
+    ELSE NULL
+END) as originating_system
 FROM now_application_identity nid 
 JOIN mine m on nid.mine_guid = m.mine_guid
 LEFT JOIN now_submissions.application sub on nid.messageid = sub.messageid
