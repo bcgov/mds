@@ -114,20 +114,20 @@ export class ReclamationInvoiceForm extends Component {
               />
             </Form.Item>
           </Col>
-          <Row gutter={16}>
-            <Col md={12} sm={24}>
-              <Form.Item>
-                <Field
-                  id="amount"
-                  name="amount"
-                  label="Invoice Amount*"
-                  component={RenderField}
-                  {...currencyMask}
-                  validate={[required, number, currency]}
-                />
-              </Form.Item>
-            </Col>
-          </Row>
+        </Row>
+        <Row gutter={16}>
+          <Col md={12} sm={24}>
+            <Form.Item>
+              <Field
+                id="amount"
+                name="amount"
+                label="Invoice Amount*"
+                component={RenderField}
+                {...currencyMask}
+                validate={[required, number, currency]}
+              />
+            </Form.Item>
+          </Col>
         </Row>
         <Row gutter={16}>
           <Col md={12} xs={24}>

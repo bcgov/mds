@@ -31,10 +31,9 @@ export const AddReclamationInvoiceModal = (props) => {
     props.edit
       ? props.onSubmit(values, props.invoice.reclamation_invoice_guid)
       : props.onSubmit(values, props.permitGuid);
-  const isNegative = (value) => Math.sign(value) === -1;
   const newBalance = props.formValues.amount ? props.balance - props.formValues.amount : 0;
-  const isNewBalanceNegative = isNegative(newBalance);
-  const showErrors = isNegative(props.balance) || isNewBalanceNegative;
+  const isNewBalanceNegative = newBalance < 0;
+  const showErrors = props.balance < 0 || newBalance < 0;
   return (
     <div>
       {showErrors && (
