@@ -130,6 +130,13 @@ app {
                     ]
                 ],
                 [
+                    'file':'openshift/templates/docgen/docgen.bc.json',
+                    'params':[
+                        'NAME':"docgen",
+                        'TAG_NAME':"${app.build.version}"
+                    ]
+                ],                
+                [
                     'file':'openshift/templates/dbbackup.bc.json',
                     'params':[
                         'NAME':"mds-database-backup",
