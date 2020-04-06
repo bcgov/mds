@@ -459,7 +459,7 @@ environments {
                     HOST = "http://mds-redis${vars.deployment.suffix}"
                 }
                 'mds-docgen-api' {
-                    HOST = "http://mds-docgen-api${vars.deployment.suffix}:3030"
+                    HOST = "http://docgen${vars.deployment.suffix}:3030"
                 }
                 /*'digdag' {
                     HOST = "mds-digdag-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
