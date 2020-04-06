@@ -174,7 +174,7 @@ class NOWSubmissionFactory(BaseFactory):
         lambda: random.choice([x.description for x in NOWApplicationType.query.all()]))
     trackingnumber = factory.fuzzy.FuzzyInteger(1, 100)
     status = factory.LazyFunction(
-        lambda: random.choice([x.description for x in NOWApplicationStatus.get_active()]))
+        lambda: random.choice(['Accepted', 'Withdrawn', 'Under Review']))
     submitteddate = factory.Faker('past_datetime')
     receiveddate = factory.Faker('past_datetime')
     minenumber = factory.Faker('word')
