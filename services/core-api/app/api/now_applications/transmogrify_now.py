@@ -9,6 +9,8 @@ from app.api.constants import type_of_permit_map, unit_type_map
 
 from flask import current_app
 
+status_code_mapping = { "Accepted": "AIA", "Withdrawn": "WDN", "Under Review": "SUB" }
+
 
 def code_lookup(model, description, code_column_name):
     if description:
@@ -20,7 +22,6 @@ def code_lookup(model, description, code_column_name):
     else:
         result = None
     return result
-
 
 def transmogrify_now(now_application_identity):
     now_sub = sub_models.Application.find_by_messageid(
@@ -56,8 +57,7 @@ def _transmogrify_now_details(now_app, now_sub, mms_now_sub):
     now_app.notice_of_work_type_code = code_lookup(
         app_models.NOWApplicationType, mms_now_sub.noticeofworktype or now_sub.noticeofworktype,
         'notice_of_work_type_code')
-    now_app.now_application_status_code = code_lookup(app_models.NOWApplicationStatus,
-                                                      now_sub.status, 'now_application_status_code')
+    now_app.now_application_status_code = status_code_mapping[now_sub.status]
     now_app.application_permit_type_code = type_of_permit_map[now_sub.typeofpermit]
 
     now_app.submitted_date = mms_now_sub.submitteddate or now_sub.submitteddate
