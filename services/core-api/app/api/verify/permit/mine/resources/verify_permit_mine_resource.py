@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from flask_restplus import Resource, fields
-from flask import request
+from flask import request, current_app
 from app.extensions import api
 
 from app.api.mines.mine.models.mine import Mine
@@ -65,7 +65,8 @@ class VerifyPermitMineResource(Resource):
                 result = "Failure"
                 response_message = "NoValidMinesForPermit"
 
-        except:
+        except Exception as e:
+            current_app.logger.error(str(e))
             result = "Failure"
             mine_info = ""
             response_message = "Unhandled Exception"

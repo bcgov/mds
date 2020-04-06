@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from flask_restplus import Resource, fields
-from flask import request
+from flask import request, current_app
 from app.extensions import api
 
 from app.api.mines.mine.models.mine import Mine
@@ -61,7 +61,8 @@ class VerifyPermitNOWResource(Resource):
                 result = "Failure"
                 response_message = "NoValidNowsForPermit"
 
-        except:
+        except Exception as e:
+            current_app.logger.error(str(e))
             result = "Failure"
             now_info = ""
             response_message = "Unhandled Exception"
