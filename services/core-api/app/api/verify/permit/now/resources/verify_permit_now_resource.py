@@ -52,7 +52,7 @@ class VerifyPermitNOWResource(Resource):
                     if (permit_amendment.authorization_end_date -
                             datetime.utcnow().date()).days > 30:
                         now_info = now_info + str(
-                            permit_amendment.now_identity.now_application.now_tracking_number
+                            permit_amendment.now_identity.now_submission.trackingnumber
                         ) + " - " + str(permit_amendment.authorization_end_date) + '\r\c'
 
             if now_info != "":
