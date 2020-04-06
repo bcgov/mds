@@ -157,7 +157,6 @@ export class PartySelectField extends Component {
   };
 
   handleSelect = (value, option) => {
-    console.log(option);
     this.setState({ selectedOption: option });
   };
 
