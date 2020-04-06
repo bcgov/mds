@@ -60,11 +60,11 @@ def SampleMineDisturbanceCodes(mine_tenure_type, num):
         x.mine_disturbance_code for x in random.sample(mine_tenure_type.mine_disturbance_codes, num)
     ]
 
+
 def RandomOperatingMineStatusXref():
     return random.choice(
         db.session.query(MineStatusXref).filter(
-            MineStatusXref.mine_operation_status_code == 'OP').all()
-    )
+            MineStatusXref.mine_operation_status_code == 'OP').all())
 
 
 def RandomMineStatusXref():
@@ -151,8 +151,7 @@ def RandomNOWTypeCode():
 
 
 def RandomNOWStatusCode():
-    return random.choice(
-        [x.now_application_status_code for x in db.session.query(NOWApplicationStatus).all()])
+    return random.choice([x.now_application_status_code for x in NOWApplicationStatus.get_active()])
 
 
 def RandomNOWReviewCode():

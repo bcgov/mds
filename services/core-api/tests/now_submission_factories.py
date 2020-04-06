@@ -174,7 +174,7 @@ class NOWSubmissionFactory(BaseFactory):
         lambda: random.choice([x.description for x in NOWApplicationType.query.all()]))
     trackingnumber = factory.fuzzy.FuzzyInteger(1, 100)
     status = factory.LazyFunction(
-        lambda: random.choice([x.description for x in NOWApplicationStatus.query.all()]))
+        lambda: random.choice([x.description for x in NOWApplicationStatus.get_active()]))
     submitteddate = factory.Faker('past_datetime')
     receiveddate = factory.Faker('past_datetime')
     minenumber = factory.Faker('word')
@@ -307,7 +307,7 @@ class NOWApplicationNDAFactory(BaseFactory):
     applicantclientid = factory.SelfAttribute('applicant.clientid')
     submitterclientid = factory.SelfAttribute('submitter.clientid')
     status = factory.LazyFunction(
-        lambda: random.choice([x.description for x in NOWApplicationStatus.query.all()]))
+        lambda: random.choice([x.description for x in NOWApplicationStatus.get_active()]))
     submitteddate = factory.Faker('past_datetime')
     receiveddate = factory.Faker('past_datetime')
     minenumber = factory.SelfAttribute('mine.mine_no')
