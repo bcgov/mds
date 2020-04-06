@@ -50,37 +50,37 @@ exports[`ReclamationInvoiceForm renders properly 1`] = `
         />
       </FormItem>
     </Col>
-    <Row
-      gutter={16}
+  </Row>
+  <Row
+    gutter={16}
+  >
+    <Col
+      md={12}
+      sm={24}
     >
-      <Col
-        md={12}
-        sm={24}
+      <FormItem
+        hasFeedback={false}
       >
-        <FormItem
-          hasFeedback={false}
-        >
-          <Field
-            autoComplete="off"
-            component={[Function]}
-            format={[Function]}
-            id="amount"
-            label="Invoice Amount*"
-            name="amount"
-            normalize={[Function]}
-            onChange={[Function]}
-            onFocus={[Function]}
-            validate={
-              Array [
-                [Function],
-                [Function],
-                [Function],
-              ]
-            }
-          />
-        </FormItem>
-      </Col>
-    </Row>
+        <Field
+          autoComplete="off"
+          component={[Function]}
+          format={[Function]}
+          id="amount"
+          label="Invoice Amount*"
+          name="amount"
+          normalize={[Function]}
+          onChange={[Function]}
+          onFocus={[Function]}
+          validate={
+            Array [
+              [Function],
+              [Function],
+              [Function],
+            ]
+          }
+        />
+      </FormItem>
+    </Col>
   </Row>
   <Row
     gutter={16}
