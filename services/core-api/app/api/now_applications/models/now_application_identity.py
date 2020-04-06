@@ -38,7 +38,7 @@ class NOWApplicationIdentity(Base, AuditMixin):
 
     @property
     def now_submission(self):
-        return Application.query.get(self.messageid).first()
+        return Application.query.get(self.messageid)
 
     @now_submission.setter
     def now_submission(self, now_submission):
