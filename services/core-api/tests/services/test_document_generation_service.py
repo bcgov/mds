@@ -17,5 +17,5 @@ def test_missing_template_returns_fail(test_client, db_session, auth_headers):
 
         assert file_download_resp.headers['Content-Transfer-Encoding'] == 'binary'
         assert file_download_resp.headers['Content-Disposition'].find('.pdf') != -1
-        assert file_download_resp.headers['Content-Type'] == 'application/octet-stream'
+        assert file_download_resp.headers['Content-Type'] == 'application/pdf'
         assert int(file_download_resp.headers['Content-Length']) > 50000
