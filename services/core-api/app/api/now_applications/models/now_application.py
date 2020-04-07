@@ -42,7 +42,7 @@ class NOWApplication(Base, AuditMixin):
         db.String,
         db.ForeignKey('now_application_status.now_application_status_code'),
         nullable=False)
-    status_updated_date = db.Column(db.Date, nullable=False)
+    status_updated_date = db.Column(db.Date, nullable=False, server_default=FetchedValue())
     submitted_date = db.Column(db.Date, nullable=False)
     received_date = db.Column(db.Date, nullable=False)
     latitude = db.Column(db.Numeric(9, 7))
