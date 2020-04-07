@@ -454,7 +454,6 @@ export class MineRecordForm extends Component {
                 placeholder="Select a fee exemption status"
                 component={renderConfig.SELECT}
                 data={this.props.exemptionFeeSatusDropDownOptions}
-                validate={[required]}
               />
             </Form.Item>
           </Col>

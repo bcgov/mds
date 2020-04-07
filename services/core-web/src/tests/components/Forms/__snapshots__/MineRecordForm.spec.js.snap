@@ -244,11 +244,6 @@ exports[`MineRecordForm renders properly 1`] = `
           label="Fee Exemption"
           name="exemption_fee_status_code"
           placeholder="Select a fee exemption status"
-          validate={
-            Array [
-              [Function],
-            ]
-          }
         />
       </FormItem>
     </Col>
