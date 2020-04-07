@@ -174,7 +174,6 @@ class NOWApplicationListResource(Resource, UserMixin):
         new_now.now_application = NOWApplication(
             notice_of_work_type_code=data['notice_of_work_type_code'],
             now_application_status_code='SUB',
-            status_updated_date=datetime.today(),
             submitted_date=data['submitted_date'],
             received_date=data['received_date'])
 
