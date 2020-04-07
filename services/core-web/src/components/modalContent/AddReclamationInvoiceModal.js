@@ -46,7 +46,7 @@ export const AddReclamationInvoiceModal = (props) => {
                   )}`
                 : `Total Spent exceeds Total Confiscated. Balance: ${formatMoney(props.balance)}`
             }
-            type="error"
+            type="warning"
             showIcon
           />
           <br />
