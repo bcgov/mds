@@ -9,6 +9,7 @@ import * as Permission from "@/constants/permissions";
 import CustomPropTypes from "@/customPropTypes";
 import { EDIT, CARAT } from "@/constants/assets";
 import CoreTable from "@/components/common/CoreTable";
+import { CoreTooltip } from "@/components/common/CoreTooltip";
 
 /**
  * @class  MineBondTable - displays a table of permits with their related bonds
@@ -44,6 +45,13 @@ export const MineBondTable = (props) => {
       render: (text) => <div title="Permit No.">{text}</div>,
     },
     {
+      // commenting out code for now as it introduces a new bug (adds an additional )
+      // title: (
+      //   <div>
+      //     Total Assessed
+      //     <CoreTooltip title="Total Assessed: This is the total value of all bond assessments for the permit, including amendments. Assessed values are determined by permitting inspectors and come from the permits." />
+      //   </div>
+      // ),
       title: "Total Assessed",
       dataIndex: "security_total",
       key: "security_total",
@@ -60,13 +68,18 @@ export const MineBondTable = (props) => {
       render: (text) => <div title="Total Held">{formatMoney(text) || Strings.EMPTY_FIELD}</div>,
     },
     {
-      title: "No. of Active Bonds",
+      title: "Active Bonds",
       dataIndex: "total_bonds",
       key: "total_bonds",
       render: (text) => <div title="No. of Active Bonds">{text || Strings.EMPTY_FIELD}</div>,
     },
     {
-      title: "Total Confiscated",
+      title: (
+        <div>
+          Total Confiscated
+          <CoreTooltip title="Total Confiscated: This is the total value of bonds that have been confiscated for the permit. This amount is also shown below as Cash On Hand for the permit" />
+        </div>
+      ),
       dataIndex: "amount_confiscated",
       key: "amount_confiscated",
       render: (text) => (
