@@ -29,6 +29,7 @@ import CustomPropTypes from "@/customPropTypes";
 import MineBondTable from "@/components/mine/Securities/MineBondTable";
 import MineReclamationInvoiceTable from "@/components/mine/Securities/MineReclamationInvoiceTable";
 import MineDashboardContentCard from "@/components/mine/MineDashboardContentCard";
+import { CoreTooltip } from "@/components/common/CoreTooltip";
 import { modalConfig } from "@/components/modalContent/config";
 
 const { TabPane } = Tabs;
@@ -206,7 +207,7 @@ export class MineSecurityInfo extends Component {
     });
   };
 
-  openAddReclamationInvoiceModal = (event, permitGuid) => {
+  openAddReclamationInvoiceModal = (event, permitGuid, balance) => {
     event.preventDefault();
     this.props.openModal({
       props: {
@@ -214,13 +215,14 @@ export class MineSecurityInfo extends Component {
         onSubmit: this.handleAddReclamationInvoice,
         permitGuid,
         mineGuid: this.props.mineGuid,
+        balance,
       },
       width: "50vw",
       content: modalConfig.ADD_RECLAMATION_INVOICE_MODAL,
     });
   };
 
-  openEditReclamationInvoiceModal = (event, invoice) => {
+  openEditReclamationInvoiceModal = (event, invoice, balance) => {
     event.preventDefault();
     this.props.openModal({
       props: {
@@ -229,6 +231,7 @@ export class MineSecurityInfo extends Component {
         mineGuid: this.props.mineGuid,
         invoice,
         edit: true,
+        balance,
       },
       width: "50vw",
       content: modalConfig.ADD_RECLAMATION_INVOICE_MODAL,
@@ -245,11 +248,21 @@ export class MineSecurityInfo extends Component {
             <div>
               <div className="dashboard--cards">
                 <MineDashboardContentCard
-                  title="Total Security Held"
+                  title={
+                    <span>
+                      Total Security Held
+                      <CoreTooltip title="Total Security Held: This is the total amount of all active bonds held on this mine record. If the mine is on a payment schedule, it shows only what has been paid to date. It includes any interest earned." />
+                    </span>
+                  }
                   content={formatMoney(this.props.bondTotals.amountHeld)}
                 />
                 <MineDashboardContentCard
-                  title="Total No. of Active Bonds"
+                  title={
+                    <span>
+                      Total Active Bonds
+                      <CoreTooltip title="Total Active Bonds: This is the number of active bonds held by EMPR for all the permits on this mine record. It does not include bonds that have been released or confiscated." />
+                    </span>
+                  }
                   content={this.props.bondTotals.count}
                 />
               </div>

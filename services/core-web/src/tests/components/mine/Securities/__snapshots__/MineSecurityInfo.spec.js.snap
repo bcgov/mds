@@ -30,12 +30,26 @@ exports[`MineSecurityInfo renders properly 1`] = `
           <MineDashboardContentCard
             content="$300.00"
             icon={null}
-            title="Total Security Held"
+            title={
+              <span>
+                Total Security Held
+                <CoreTooltip
+                  title="Total Security Held: This is the total amount of all active bonds held on this mine record. If the mine is on a payment schedule, it shows only what has been paid to date. It includes any interest earned."
+                />
+              </span>
+            }
           />
           <MineDashboardContentCard
             content={1}
             icon={null}
-            title="Total No. of Active Bonds"
+            title={
+              <span>
+                Total Active Bonds
+                <CoreTooltip
+                  title="Total Active Bonds: This is the number of active bonds held by EMPR for all the permits on this mine record. It does not include bonds that have been released or confiscated."
+                />
+              </span>
+            }
           />
         </div>
         <br />
