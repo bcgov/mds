@@ -29,7 +29,7 @@ export const GeneratePermitForm = (props) => (
           required
           component={renderConfig.FIELD}
           validate={[required]}
-          disabled={true}
+          disabled
         />
       </Col>
       <Col xs={24} md={12}>
@@ -52,7 +52,7 @@ export const GeneratePermitForm = (props) => (
           required
           component={renderConfig.FIELD}
           validate={[required]}
-          disabled={true}
+          disabled
         />
       </Col>
       <Col xs={24} md={12}>
@@ -63,7 +63,7 @@ export const GeneratePermitForm = (props) => (
           required
           component={renderConfig.AUTO_SIZE_FIELD}
           validate={[required]}
-          disabled={true}
+          disabled
         />
       </Col>
     </Row>
@@ -76,7 +76,7 @@ export const GeneratePermitForm = (props) => (
           required
           component={renderConfig.FIELD}
           validate={[required]}
-          disabled={true}
+          disabled
         />
       </Col>
       <Col xs={24} md={12}>
@@ -87,7 +87,7 @@ export const GeneratePermitForm = (props) => (
           required
           component={renderConfig.FIELD}
           validate={[required]}
-          disabled={true}
+          disabled
         />
       </Col>
     </Row>
@@ -100,7 +100,7 @@ export const GeneratePermitForm = (props) => (
           required
           component={renderConfig.DATE}
           validate={[required]}
-          disabled={true}
+          disabled
         />
       </Col>
       <Col xs={24} md={12}>
@@ -123,7 +123,7 @@ export const GeneratePermitForm = (props) => (
           required
           component={renderConfig.FIELD}
           validate={[required]}
-          disabled={true}
+          disabled
         />
       </Col>
       <Col xs={24} md={12}>
@@ -172,7 +172,7 @@ export const GeneratePermitForm = (props) => (
           required
           component={renderConfig.FIELD}
           validate={[required]}
-          disabled={true}
+          disabled
         />
       </Col>
       <Col xs={24} md={12}>
@@ -183,7 +183,7 @@ export const GeneratePermitForm = (props) => (
           required
           component={renderConfig.FIELD}
           validate={[required]}
-          disabled={true}
+          disabled
         />
       </Col>
     </Row>
@@ -205,11 +205,12 @@ export const GeneratePermitForm = (props) => (
     <div className="right center-mobile">
       <Popconfirm
         placement="topRight"
+        onConfirm={() => props.cancelGeneration()}
         title="Are you sure you want to cancel?"
         okText="Yes"
         cancelText="No"
       >
-        <Button className="full-mobile" type="secondary" onClick={() => props.cancelGeneration()}>
+        <Button className="full-mobile" type="secondary">
           Cancel
         </Button>
       </Popconfirm>
