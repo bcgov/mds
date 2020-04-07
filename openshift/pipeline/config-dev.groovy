@@ -318,6 +318,37 @@ app {
                             'MEMORY_LIMIT':"${vars.resources.digdag.memory_limit}"
                     ]
                 ]*/
+                /*,
+                [
+                    'file':'openshift/templates/monitoring/loki.dc.json',
+                    'params':[
+                            'NAME':"loki",
+                            'VERSION':"${app.deployment.version}",
+                            'NAMESPACE':"${vars.deployment.namespace}",
+                            'SUFFIX': "${vars.deployment.suffix}",
+                            'ENVIRONMENT_NAME':"${app.deployment.env.name}",
+                            'KEYCLOAK_DISCOVERY_URL':"${vars.keycloak.known_config_url}",
+                            'APPLICATION_DOMAIN': "${vars.modules.'digdag'.HOST}",
+                            'CPU_REQUEST':"${vars.resources.digdag.cpu_request}",
+                            'CPU_LIMIT':"${vars.resources.digdag.cpu_limit}",
+                            'MEMORY_REQUEST':"${vars.resources.digdag.memory_request}",
+                            'MEMORY_LIMIT':"${vars.resources.digdag.memory_limit}"
+                    ]
+                ],
+                'file':'openshift/templates/digdag/grafana.dc.json',
+                    'params':[
+                            'NAME':"grafana",
+                            'VERSION':"${app.deployment.version}",
+                            'NAMESPACE':"${vars.deployment.namespace}",
+                            'SUFFIX': "${vars.deployment.suffix}",
+                            'ENVIRONMENT_NAME':"${app.deployment.env.name}",
+                            'KEYCLOAK_DISCOVERY_URL':"${vars.keycloak.known_config_url}",
+                            'APPLICATION_DOMAIN': "${vars.modules.'digdag'.HOST}",
+                            'CPU_REQUEST':"${vars.resources.digdag.cpu_request}",
+                            'CPU_LIMIT':"${vars.resources.digdag.cpu_limit}",
+                            'MEMORY_REQUEST':"${vars.resources.digdag.memory_request}",
+                            'MEMORY_LIMIT':"${vars.resources.digdag.memory_limit}"
+                ]*/
         ]
     }
 }
@@ -412,6 +443,19 @@ environments {
                     memory_request = "512Mi"
                     memory_limit = "1Gi"
                 }*/
+                /*loki {
+                    cpu_request = "100m"
+                    cpu_limit = "200m"
+                    memory_request = "512Mi"
+                    memory_limit = "1Gi"
+
+                }
+                grafana {
+                    cpu_request = "100m"
+                    cpu_limit = "200m"
+                    memory_request = "512Mi"
+                    memory_limit = "1Gi"
+                }*/
             }
             deployment {
                 env {
@@ -465,6 +509,9 @@ environments {
                 /*'digdag' {
                     HOST = "mds-digdag-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
                 }*/
+                'grafana' {
+                    HOST = "http://mds-grafana${vars.deployment.suffix}:3030"
+                }
             }
         }
     }

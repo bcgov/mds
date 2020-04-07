@@ -1,0 +1,17 @@
+{
+    "kind": "Template",
+    "apiVersion": "v1",
+    "metadata": {
+        "name": "loki-bc",
+        "creationTimestamp": null
+    },
+    "parameters": [
+        {
+            "name": "NAME",
+            "displayName": "Name",
+            "description": "A suffix appended to all objects",
+            "required": true
+        }
+    ],
+    "objects": []
+}
