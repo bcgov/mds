@@ -205,7 +205,7 @@ services:
     #volumes:
     #  - ./services/docgen-api/:/carbone-api/
     ports:
-      - 3030:8000
+      - 3030:3030
     networks:
       - mds
 
