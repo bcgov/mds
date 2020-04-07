@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from flask_restplus import Resource, fields
-from flask import request
+from flask import request, current_app
 from app.extensions import api
 
 from app.api.mines.mine.models.mine import Mine
@@ -17,6 +17,7 @@ VERIFY_PERMIT_MINE_MODEL = api.model(
         'a_Timestamp': fields.DateTime
     })
 
+
 class VerifyPermitMineResource(Resource):
     @api.doc(
         description=
@@ -24,8 +25,7 @@ class VerifyPermitMineResource(Resource):
         params={
             'a_PermitNumber': f'The permit number.',
             'a_TypeofDeemedAuth': f'The type of deemed authorization, eg INDUCED.'
-        }
-    )
+        })
     @api.marshal_with(VERIFY_PERMIT_MINE_MODEL, code=200)
     @requires_role_view_all
     def get(self):
@@ -44,19 +44,20 @@ class VerifyPermitMineResource(Resource):
                 mine = Mine.find_by_mine_guid(str(permit.mine_guid))
 
                 # Mine must be operating.
-                if mine.mine_status[0].mine_status_xref.mine_operation_status_code != "OP":
-                    break;
-    
+                if not mine.mine_status or mine.mine_status[
+                        0].mine_status_xref.mine_operation_status_code != "OP":
+                    break
+
                 # IP SURVEYS (Induced): Valid MMS mine types: 'CX','ES','EU'
                 # There may be need of a check against mine_tenure_type_code IN ["MIN", "COL"] and mine_disturbance_code IN ["SUR", "UND"]
-                # but this data is inconsistant for now. 
+                # but this data is inconsistant for now.
                 if type_of_deemed_auth == "INDUCED" and permit_prefix not in ["CX", "MX"]:
-                    break;
-                
+                    break
+
                 # DRILL PROGRAM (Drill): Valid MMS mine types: 'CS','CU','MS','MU','IS','IU'
                 if type_of_deemed_auth != "INDUCED" and permit_prefix not in ["C", "M"]:
-                    break;
-            
+                    break
+
                 mine_info = mine_info + mine.mine_no + ' - ' + mine.mine_name + '\r\c'
 
             if mine_info != "":
@@ -65,9 +66,15 @@ class VerifyPermitMineResource(Resource):
                 result = "Failure"
                 response_message = "NoValidMinesForPermit"
 
-        except:
+        except Exception as e:
+            current_app.logger.error(str(e))
             result = "Failure"
             mine_info = ""
             response_message = "Unhandled Exception"
 
-        return { "a_Result": result, "a_MineInfo": mine_info, "a_ResponseMessage": response_message, "a_Timestamp": datetime.utcnow()}
+        return {
+            "a_Result": result,
+            "a_MineInfo": mine_info,
+            "a_ResponseMessage": response_message,
+            "a_Timestamp": datetime.utcnow()
+        }
