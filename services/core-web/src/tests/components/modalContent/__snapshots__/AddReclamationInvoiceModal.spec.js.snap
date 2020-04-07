@@ -8,7 +8,7 @@ exports[`AddReclamationInvoiceModal renders properly 1`] = `
     <Alert
       message="Total Spent exceeds Total Confiscated. Balance including the current invoice amount: -$1,251.46"
       showIcon={true}
-      type="error"
+      type="warning"
     />
     <br />
   </div>
