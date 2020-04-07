@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+import { Alert } from "antd";
 import {
   getDropdownProvinceOptions,
   getBondTypeDropDownOptions,
@@ -34,13 +35,32 @@ export const AddBondModal = (props) => {
     props.editBond
       ? props.onSubmit(values, props.bond.bond_guid)
       : props.onSubmit(values, props.permitGuid);
-
+  const initialPartyValue = props.editBond
+    ? {
+        key: props.bond.payer_party_guid,
+        label: props.bond.payer.name,
+      }
+    : "";
   return (
     <div>
+      {props.editBond && (
+        <div>
+          <Alert
+            message="Making a correction?"
+            description="Use this window to make corrections to bonds you have recorded.
+            If you want to record a change and keep the history of the bond, release this bond and record a new one instead."
+            type="info"
+            showIcon
+            style={{ textAlign: "left" }}
+          />
+          <br />
+        </div>
+      )}
       <BondForm
         onSubmit={handleAddBond}
         closeModal={props.closeModal}
         title={props.title}
+        initialPartyValue={initialPartyValue}
         provinceOptions={props.provinceOptions}
         bondTypeDropDownOptions={props.bondTypeDropDownOptions}
         bondDocumentTypeDropDownOptions={props.bondDocumentTypeDropDownOptions}

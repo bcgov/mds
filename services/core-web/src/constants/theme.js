@@ -4,9 +4,18 @@ const undefinedStatusStyleType = "default";
 
 const badgeStatusTypes = {
   noticeOfWork: {
-    Accepted: "success",
+    Submitted: "warning",
     "Under Review": "processing",
+    Referred: "processing",
+    "Client Delay Info": "processing",
+    "Client Delay Bond": "processing",
+    "Govt Delay": "processing",
+    Consultation: "processing",
+    "Active/Issued/Approved": "success",
+    Accepted: "success",
     Withdrawn: "warning",
+    Rejected: "error",
+    Closed: "error",
   },
   variance: {
     Approved: "success",

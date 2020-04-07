@@ -32,6 +32,20 @@ const propTypes = {
 };
 
 export const MineReclamationInvoiceTable = (props) => {
+  const invoicesByPermit = (permit) =>
+    props.invoices.filter(({ permit_guid }) => permit_guid === permit.permit_guid);
+  const getSum = (status, permitGuid) =>
+    props.bonds
+      .filter(
+        ({ bond_status_code, permit_guid }) =>
+          bond_status_code === status && permit_guid === permitGuid
+      )
+      .reduce((sum, bond) => +sum + +bond.amount, 0);
+  const getAmountSum = (permitGuid) =>
+    props.invoices
+      .filter(({ permit_guid }) => permit_guid === permitGuid)
+      .reduce((sum, invoice) => +sum + +invoice.amount, 0);
+  const getBalance = (permitGuid) => getSum("CON", permitGuid) - getAmountSum(permitGuid);
   const columns = [
     {
       title: "Permit No.",
@@ -70,7 +84,13 @@ export const MineReclamationInvoiceTable = (props) => {
             <Button
               type="secondary"
               className="permit-table-button"
-              onClick={(event) => props.openAddReclamationInvoiceModal(event, record.permit_guid)}
+              onClick={(event) =>
+                props.openAddReclamationInvoiceModal(
+                  event,
+                  record.permit_guid,
+                  getBalance(record.permit_guid)
+                )
+              }
             >
               <div className="padding-small">
                 <img className="padding-small--right icon-svg-filter" src={EDIT} alt="Add/Edit" />
@@ -134,7 +154,13 @@ export const MineReclamationInvoiceTable = (props) => {
               <Button
                 type="secondary"
                 className="permit-table-button"
-                onClick={(event) => props.openEditReclamationInvoiceModal(event, record)}
+                onClick={(event) =>
+                  props.openEditReclamationInvoiceModal(
+                    event,
+                    record,
+                    getBalance(record.permit_guid)
+                  )
+                }
               >
                 <img
                   src={EDIT_OUTLINE_VIOLET}
@@ -150,19 +176,6 @@ export const MineReclamationInvoiceTable = (props) => {
     },
   ];
 
-  const invoicesByPermit = (permit) =>
-    props.invoices.filter(({ permit_guid }) => permit_guid === permit.permit_guid);
-  const getSum = (status, permit) =>
-    props.bonds
-      .filter(
-        ({ bond_status_code, permit_guid }) =>
-          bond_status_code === status && permit_guid === permit.permit_guid
-      )
-      .reduce((sum, bond) => +sum + +bond.amount, 0);
-  const getAmountSum = (permit) =>
-    props.invoices
-      .filter(({ permit_guid }) => permit_guid === permit.permit_guid)
-      .reduce((sum, invoice) => +sum + +invoice.amount, 0);
   const invoices = (record) => {
     return (
       <Table
@@ -199,9 +212,9 @@ export const MineReclamationInvoiceTable = (props) => {
     permits.map((permit) => {
       return {
         key: permit.permit_guid,
-        amount_confiscated: getSum("CON", permit),
-        amount_spent: getAmountSum(permit),
-        balance: getSum("CON", permit) - getAmountSum(permit),
+        amount_confiscated: getSum("CON", permit.permit_guid),
+        amount_spent: getAmountSum(permit.permit_guid),
+        balance: getBalance(permit.permit_guid),
         ...permit,
       };
     });

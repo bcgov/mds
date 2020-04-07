@@ -1,3 +1,5 @@
+-- Updates the "Notice of Work View" view to fix an issue where the order of NoW coalesce params was incorrect.
+
 DROP VIEW IF EXISTS notice_of_work_view;
 CREATE OR REPLACE VIEW notice_of_work_view
 	AS

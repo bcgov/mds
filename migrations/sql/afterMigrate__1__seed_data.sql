@@ -511,11 +511,18 @@ VALUES
 on conflict do nothing;
 
 INSERT INTO now_application_status
-(now_application_status_code, description, active_ind, create_user, update_user)
+(now_application_status_code, description, display_order, active_ind, create_user, update_user)
 VALUES
-	('ACC', 'Accepted', true, 'system-mds', 'system-mds'),
-	('WDN', 'Withdrawn', true, 'system-mds', 'system-mds'),
-	('UNR', 'Under Review', true, 'system-mds', 'system-mds')
+  ('SUB', 'Submitted', 90, true, 'system-mds', 'system-mds'),
+	('REF', 'Referred', 70, true, 'system-mds', 'system-mds'),
+	('CDI', 'Client Delay Info', 30, true, 'system-mds', 'system-mds'),
+	('CDB', 'Client Delay Bond', 20, true, 'system-mds', 'system-mds'),
+  ('GVD', 'Govt Delay', 60, true, 'system-mds', 'system-mds'),
+  ('CON', 'Consultation', 50, true, 'system-mds', 'system-mds'),
+  ('AIA', 'Active/Issued/Approved', 10, true, 'system-mds', 'system-mds'),
+	('WDN', 'Withdrawn', 100, true, 'system-mds', 'system-mds'),
+	('REJ', 'Rejected', 80, true, 'system-mds', 'system-mds'),
+	('CLO', 'Closed', 40, true, 'system-mds', 'system-mds')
 on conflict do nothing;
 
 INSERT INTO mine_incident_category
@@ -923,6 +930,29 @@ VALUES
     ('QET', 'Qualified Environmental Trust', 'system-mds', 'system-mds'),
     ('STR', 'Section 12 Reclamation', 'system-mds', 'system-mds'),
     ('ASA', 'Asset Security Agreement', 'system-mds', 'system-mds')
+ON CONFLICT DO NOTHING;
+
+INSERT INTO exemption_fee_status
+    (
+    exemption_fee_status_code,
+    description,
+    display_order,
+    create_user,
+    update_user
+    )
+VALUES
+    ('Y', 'Yes', 10, 'system-mds', 'system-mds'),
+    ('F', 'Ministry of Forests', 20, 'system-mds', 'system-mds'),
+    ('H', 'Ministry of Highways', 30, 'system-mds', 'system-mds'),
+    ('M', 'Municipality', 40, 'system-mds', 'system-mds'),
+    ('O', 'OGC', 50, 'system-mds', 'system-mds'),
+    ('P', 'Placer Surface', 60, 'system-mds', 'system-mds'),
+    ('R', 'Reclaimed', 70, 'system-mds', 'system-mds'),
+    ('X', 'Mineral Exploration Surface', 80, 'system-mds', 'system-mds'),
+    ('A', 'Aboriginal', 90, 'system-mds', 'system-mds'),
+    ('B', 'Abandoned', 100, 'system-mds', 'system-mds'),
+    ('N', 'Not Permitted', 110, 'system-mds', 'system-mds'),
+    ('I', 'Investigative Use S&G', 120, 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
 
 INSERT INTO bond_document_type(

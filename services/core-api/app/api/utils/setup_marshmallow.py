@@ -97,11 +97,16 @@ def setup_schema(Base, session):
 
                     # After the schema is created on the class this looks for any schemas that have deferred the creation of
                     # fields and validation. If found they are created and added to the proper schema.
+                    mapper = inspect(class_)
                     for k, v in class_._ModelSchema.__dict__.items():
                         if type(v) == FieldTemplate:
                             current_app.logger.debug(f'creating field for {k} on {class_}')
+                            col = [x for x in mapper.columns if x.name == k][0]
+                            kwargs = {}
+                            if col.nullable:
+                                kwargs['allow_none'] = True
                             class_._ModelSchema._declared_fields[k] = v.field(
-                                validate=validate.OneOf(choices=STATIC_DATA[v.one_of]))
+                                validate=validate.OneOf(choices=STATIC_DATA[v.one_of]), **kwargs)
                     schema_class_name = "%sSchema" % class_.__name__
                     schema_class = type(schema_class_name, (class_._ModelSchema, ), {"Meta": Meta})
 

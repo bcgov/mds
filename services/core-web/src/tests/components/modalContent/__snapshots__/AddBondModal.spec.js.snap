@@ -30,6 +30,7 @@ exports[`AddBondModal renders properly 1`] = `
     forceUnregisterOnUnmount={false}
     form="ADD_BOND"
     getFormState={[Function]}
+    initialPartyValue=""
     initialValues={
       Object {
         "amount": 300,
