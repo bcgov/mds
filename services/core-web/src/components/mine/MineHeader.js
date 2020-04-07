@@ -25,7 +25,7 @@ import { getCurrentMineTypes, getTransformedMineTypes } from "@common/selectors/
 import { getUserInfo } from "@common/selectors/authenticationSelectors";
 import * as String from "@common/constants/strings";
 import MineHeaderMapLeaflet from "@/components/maps/MineHeaderMapLeaflet";
-import { EDIT_OUTLINE_VIOLET, BRAND_DOCUMENT, EDIT, INFO_CIRCLE } from "@/constants/assets";
+import { EDIT_OUTLINE_VIOLET, BRAND_DOCUMENT, EDIT } from "@/constants/assets";
 import * as route from "@/constants/routes";
 import * as ModalContent from "@/constants/modalContent";
 import { modalConfig } from "@/components/modalContent/config";
