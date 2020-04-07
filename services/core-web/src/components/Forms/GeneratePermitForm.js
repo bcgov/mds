@@ -148,6 +148,18 @@ export const GeneratePermitForm = (props) => (
           validate={[required]}
         />
       </Col>
+      {props.isAmendment && (
+        <Col xs={24} md={12}>
+          <Field
+            id="original_permit_issue_date"
+            name="original_permit_issue_date"
+            label="Original Permit Issue Date"
+            required
+            component={renderConfig.DATE}
+            validate={[required]}
+          />
+        </Col>
+      )}
     </Row>
 
     <h2 className="padding-large--top">Part Two: Preamble</h2>

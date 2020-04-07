@@ -74,6 +74,9 @@ export class NOWPermitGeneration extends Component {
   };
 
   handlePremitGenSubmit = (values) => {
+    if (this.props.isAmendment) {
+      values.original_permit_issue_date = formatDate(values.original_permit_issue_date);
+    }
     values.auth_end_date = formatDate(values.auth_end_date);
     this.props.handleGenerateDocumentFormSubmit(this.props.documentType, {
       ...values,
@@ -83,6 +86,7 @@ export class NOWPermitGeneration extends Component {
   };
 
   render() {
+    console.log(this.props.isAmendment);
     return (
       <div>
         <LinkButton className="padding-large" onClick={this.props.returnToPrevStep}>
