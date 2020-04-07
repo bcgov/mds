@@ -35,6 +35,11 @@ const propTypes = {
   bondTypeDropDownOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
   bondDocumentTypeDropDownOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
   bondDocumentTypeOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  initialPartyValue: PropTypes.objectOf(PropTypes.string),
+};
+
+const defaultProps = {
+  initialPartyValue: {},
 };
 
 export class BondForm extends Component {
@@ -149,6 +154,7 @@ export class BondForm extends Component {
                 name="payer_party_guid"
                 label="Payer*"
                 partyLabel="payee"
+                initialValue={this.props.initialPartyValue}
                 validate={[required]}
                 allowAddingParties
               />
@@ -332,6 +338,7 @@ export class BondForm extends Component {
 }
 
 BondForm.propTypes = propTypes;
+BondForm.defaultProps = defaultProps;
 
 export default reduxForm({
   form: FORM.ADD_BOND,
