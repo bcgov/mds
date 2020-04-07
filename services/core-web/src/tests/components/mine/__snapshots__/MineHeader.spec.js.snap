@@ -185,6 +185,18 @@ exports[`MineHeader renders dispatchProperly 1`] = `
         </p>
       </div>
     </div>
+    <div
+      className="inline-flex padding-small wrap"
+    >
+      <p
+        className="field-title"
+      >
+        Exemption Status
+      </p>
+      <div>
+        N/A
+      </div>
+    </div>
   </div>
   <div
     className="dashboard__header--card__map"

@@ -16,6 +16,7 @@ from app.api.mines.mine.models.mine_commodity_code import MineCommodityCode
 from app.api.mines.status.models.mine_status_xref import MineStatusXref
 from app.api.mines.region.models.region import MineRegionCode
 from app.api.mines.mine.models.mine_tenure_type_code import MineTenureTypeCode
+from app.api.mines.mine.models.excemption_fee_status import ExemptionFeeStatus
 from app.api.mines.permits.permit.models.permit_status_code import PermitStatusCode
 from app.api.incidents.models.mine_incident_document_type_code import MineIncidentDocumentTypeCode
 from app.api.incidents.models.mine_incident_followup_investigation_type import MineIncidentFollowupInvestigationType
@@ -53,7 +54,7 @@ MODELS_GET_ACTIVE = [
     MineReportDefinition, MineReportCategory, MineReportSubmissionStatusCode, ActivityType,
     UnitType, NOWApplicationType, NOWApplicationStatus, NOWApplicationDocumentType,
     UndergroundExplorationType, NOWApplicationProgressStatus, NOWApplicationPermitType,
-    MinePartyAppointmentType, NOWApplicationReviewType, BondType, BondStatus, BondDocumentType
+    MinePartyAppointmentType, NOWApplicationReviewType, BondType, BondStatus, BondDocumentType, ExemptionFeeStatus
 ]
 
 
