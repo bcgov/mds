@@ -231,6 +231,49 @@ exports[`MineRecordForm renders properly 1`] = `
       </FormItem>
     </Col>
   </Row>
+  <Row
+    gutter={16}
+  >
+    <Col>
+      <FormItem
+        hasFeedback={false}
+      >
+        <Field
+          component={[Function]}
+          id="exemption_fee_status_code"
+          label="Fee Exemption"
+          name="exemption_fee_status_code"
+          placeholder="Select a fee exemption status"
+          validate={
+            Array [
+              [Function],
+            ]
+          }
+        />
+      </FormItem>
+    </Col>
+  </Row>
+  <Row
+    gutter={16}
+  >
+    <Col>
+      <FormItem
+        hasFeedback={false}
+      >
+        <Field
+          component={[Function]}
+          id="exemption_fee_status_note"
+          label="Fee Exemption Note"
+          name="exemption_fee_status_note"
+          validate={
+            Array [
+              [Function],
+            ]
+          }
+        />
+      </FormItem>
+    </Col>
+  </Row>
   <div
     className="right center-mobile"
   >

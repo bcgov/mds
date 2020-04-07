@@ -37,6 +37,8 @@ class Mine(AuditMixin, Base):
     longitude = db.Column(db.Numeric(11, 7))
     geom = db.Column(Geometry('POINT', 3005))
     mine_location_description = db.Column(db.String)
+    exemption_fee_status_code = db.Column(db.String, db.ForeignKey('exemption_fee_status.exemption_fee_status_code'))
+    exemption_fee_status_note = db.Column(db.String)
     # Relationships
 
     #Almost always used and 1:1, so these are joined
