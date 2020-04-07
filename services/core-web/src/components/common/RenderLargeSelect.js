@@ -57,6 +57,7 @@ const RenderLargeSelect = (props) => (
       onChange={props.input.onChange}
       onBlur={props.input.onChange(props.selectedOption.key)}
       value={props.selectedOption.key}
+      {...props.input}
     >
       <Input
         suffix={<Icon type="search" className="certain-category-icon" />}

@@ -16,6 +16,7 @@ const setupProps = () => {
   props.permitGuid = "462562457";
   props.mineGuid = "1436613";
   props.invoice = MOCK.RECLAMATION_INVOICE;
+  props.formValues = MOCK.RECLAMATION_INVOICE;
   props.edit = false;
 };
 

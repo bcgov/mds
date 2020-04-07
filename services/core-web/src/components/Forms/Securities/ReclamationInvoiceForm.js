@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { Field, reduxForm } from "redux-form";
 import { Form, Button, Col, Row, Popconfirm } from "antd";
 import { required, number, currency } from "@common/utils/Validate";
-import { resetForm, currencyMask } from "@common/utils/helpers";
+import { currencyMask } from "@common/utils/helpers";
 import { RECLAMATION_INVOICE_DOCUMENTS } from "@common/constants/API";
 import RenderField from "@/components/common/RenderField";
 import * as FORM from "@/constants/forms";
@@ -95,20 +95,6 @@ export class ReclamationInvoiceForm extends Component {
           <Col md={12} sm={24}>
             <Form.Item>
               <Field
-                id="amount"
-                name="amount"
-                label="Invoice Amount*"
-                component={RenderField}
-                {...currencyMask}
-                validate={[required, number, currency]}
-              />
-            </Form.Item>
-          </Col>
-        </Row>
-        <Row gutter={16}>
-          <Col md={12} sm={24}>
-            <Form.Item>
-              <Field
                 id="project_id"
                 name="project_id"
                 label="Project ID*"
@@ -125,6 +111,20 @@ export class ReclamationInvoiceForm extends Component {
                 label="Vendor*"
                 component={RenderField}
                 validate={[required]}
+              />
+            </Form.Item>
+          </Col>
+        </Row>
+        <Row gutter={16}>
+          <Col md={12} sm={24}>
+            <Form.Item>
+              <Field
+                id="amount"
+                name="amount"
+                label="Invoice Amount*"
+                component={RenderField}
+                {...currencyMask}
+                validate={[required, number, currency]}
               />
             </Form.Item>
           </Col>
@@ -179,7 +179,7 @@ export class ReclamationInvoiceForm extends Component {
             htmlType="submit"
             disabled={this.props.submitting}
           >
-            {this.props.title}
+            Save Reclamation Invoice
           </Button>
         </div>
       </Form>
@@ -193,5 +193,4 @@ ReclamationInvoiceForm.defaultProps = defaultProps;
 export default reduxForm({
   form: FORM.ADD_RECLAMATION_INVOICE,
   touchOnBlur: false,
-  onSubmitSuccess: resetForm(FORM.ADD_RECLAMATION_INVOICE),
 })(ReclamationInvoiceForm);
