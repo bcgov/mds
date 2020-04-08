@@ -1,11 +1,5 @@
-from datetime import datetime
-
-from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
-from sqlalchemy.orm import validates
-
 from app.extensions import db
-
 from app.api.utils.models_mixins import AuditMixin, Base
 
 

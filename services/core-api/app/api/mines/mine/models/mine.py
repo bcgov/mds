@@ -11,6 +11,7 @@ from app.extensions import db
 from app.api.utils.models_mixins import AuditMixin, Base
 from app.api.mines.permits.permit.models.permit import Permit
 from app.api.users.minespace.models.minespace_user_mine import MinespaceUserMine
+from app.api.mines.region.models.regional_contact import RegionalContact
 from app.api.constants import *
 
 # NOTE: Be careful about relationships defined in the mine model. lazy='joined' will cause the relationship
@@ -122,6 +123,10 @@ class Mine(AuditMixin, Base):
         count = db.session.query(MinespaceUserMine).filter(
             MinespaceUserMine.mine_guid == self.mine_guid).count()
         return count > 0
+
+    @hybrid_property
+    def regional_office_contact(self):
+        return RegionalContact.find_regional_contact('ROE', self.mine_region)
 
     @classmethod
     def find_by_mine_guid(cls, _id):

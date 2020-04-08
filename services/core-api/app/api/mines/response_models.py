@@ -28,11 +28,12 @@ BASIC_MINE_LIST = api.model(
         'mine_location': fields.Nested(BASIC_MINE_LOCATION_MODEL),
     })
 
-EXEMPTION_FEE_STATUS_CODE_MODEL = api.model('ExemptionFeeStatusCode', {
-    'exemption_fee_status_code': fields.String,
-    'description': fields.String,
-    'display_order': fields.Integer
-})
+EXEMPTION_FEE_STATUS_CODE_MODEL = api.model(
+    'ExemptionFeeStatusCode', {
+        'exemption_fee_status_code': fields.String,
+        'description': fields.String,
+        'display_order': fields.Integer
+    })
 
 MINE_TENURE_TYPE_CODE_MODEL = api.model('MineTenureTypeCode', {
     'mine_tenure_type_code': fields.String,
@@ -182,6 +183,16 @@ MINE_REGION_OPTION = api.model('MineRegion', {
     'description': fields.String
 })
 
+REGIONAL_CONTACT = api.model(
+    'RegionalContact', {
+        'regional_contact_type_code': fields.String,
+        'mine_region_code': fields.String,
+        'email': fields.String,
+        'phone_number': fields.String,
+        'fax_number': fields.String,
+        'mailing_address_line_1': fields.String,
+        'mailing_address_line_2': fields.String
+    })
 
 MINES_MODEL = api.model(
     'Mines', {
@@ -200,13 +211,15 @@ MINES_MODEL = api.model(
         'mine_type': fields.List(fields.Nested(MINE_TYPE_MODEL)),
         'verified_status': fields.Nested(MINE_VERIFIED_MODEL),
         'has_minespace_users': fields.Boolean,
+        'regional_office_contact': fields.Nested(REGIONAL_CONTACT)
     })
 
-MINE_MODEL = api.inherit('Mine', MINES_MODEL, {
-    'mine_location': fields.Nested(MINE_LOCATION_MODEL),
-    'exemption_fee_status_code': fields.String,
-    'exemption_fee_status_note': fields.String,
-})
+MINE_MODEL = api.inherit(
+    'Mine', MINES_MODEL, {
+        'mine_location': fields.Nested(MINE_LOCATION_MODEL),
+        'exemption_fee_status_code': fields.String,
+        'exemption_fee_status_note': fields.String,
+    })
 
 MINE_LIST_MODEL = api.model(
     'MineList', {
