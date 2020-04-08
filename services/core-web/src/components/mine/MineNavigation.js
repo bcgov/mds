@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { Menu, Icon } from "antd";
 import { includes } from "lodash";
-import { detectDevelopmentEnvironment } from "@common/utils/environmentUtils";
+import { detectProdEnvironment } from "@common/utils/environmentUtils";
 import * as routes from "@/constants/routes";
 import CustomPropTypes from "@/customPropTypes";
 
@@ -19,7 +19,7 @@ export class MineNavigation extends Component {
   ifActiveButton = (route) => (includes(this.props.activeButton, route) ? "active-menu-btn" : "");
 
   render() {
-    const isDev = detectDevelopmentEnvironment();
+    const isProd = detectProdEnvironment();
     const isMajorMine = this.props.mine.major_mine_ind;
     const isTailingsVisible = this.props.mine.mine_tailings_storage_facilities.length >= 1;
     return (
@@ -57,7 +57,7 @@ export class MineNavigation extends Component {
             <Menu.Item key="permits">
               <Link to={routes.MINE_PERMITS.dynamicRoute(this.props.mine.mine_guid)}>Permits</Link>
             </Menu.Item>
-            {isDev && (
+            {!isProd && (
               <Menu.Item key="securities">
                 <Link to={routes.MINE_SECURITIES.dynamicRoute(this.props.mine.mine_guid)}>
                   Securities
