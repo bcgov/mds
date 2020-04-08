@@ -86,7 +86,6 @@ export class NOWPermitGeneration extends Component {
   };
 
   render() {
-    console.log(this.props.isAmendment);
     return (
       <div>
         <LinkButton className="padding-large" onClick={this.props.returnToPrevStep}>
