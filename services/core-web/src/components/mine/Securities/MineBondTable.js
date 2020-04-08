@@ -71,7 +71,7 @@ export const MineBondTable = (props) => {
       title: "Active Bonds",
       dataIndex: "total_bonds",
       key: "total_bonds",
-      render: (text) => <div title="No. of Active Bonds">{text || Strings.EMPTY_FIELD}</div>,
+      render: (text) => <div title="No. of Active Bonds">{text || 0}</div>,
     },
     {
       title: (
