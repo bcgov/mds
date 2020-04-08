@@ -873,7 +873,7 @@ export const GENERATABLE_APPLICATION_DOCUMENTS = {
   },
   CAL: {
     now_application_document_type_code: "CAL",
-    description: "Client Acknowledgement Letter",
+    description: "Acknowledgement Letter",
     document_template: {
       document_template_code: "NOW-CAL",
       form_spec: [

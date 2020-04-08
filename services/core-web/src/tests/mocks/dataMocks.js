@@ -3474,7 +3474,7 @@ export const BULK_STATIC_CONTENT_RESPONSE = {
     { now_application_document_type_code: "REV", description: "Review", document_template: {} },
     {
       now_application_document_type_code: "CAL",
-      description: "Client Acknowledgement Letter",
+      description: "Acknowledgement Letter",
       document_template: {
         document_template_code: "NCL",
         form_spec: [

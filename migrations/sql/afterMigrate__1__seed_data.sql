@@ -609,7 +609,7 @@ VALUES
 	('MPW', 'Map of Proposed Work', true, 'system-mds', 'system-mds'),
     ('REV', 'Review',true,'system-mds','system-mds'),
     ('PUB', 'Public Comment',true,'system-mds','system-mds'),
-    ('CAL', 'Client Acknowledgement Letter', true, 'system-mds', 'system-mds'),
+    ('CAL', 'Acknowledgement Letter', true, 'system-mds', 'system-mds'),
 	('WDL', 'Withdrawl Letter', true, 'system-mds', 'system-mds'),
 	('RJL', 'Rejection Letter', true, 'system-mds', 'system-mds'),
     ('SCD', 'Security Calculation Document', true, 'system-mds', 'system-mds')
@@ -638,7 +638,7 @@ INSERT INTO document_template
 VALUES
 	('NRL', '' , 'templates/now/Rejection Letter Template (NoW).docx', true, 'system-mds', 'system-mds'),
 	('NWL', '' , 'templates/now/Withdrawal Letter Template (NoW).docx', true, 'system-mds', 'system-mds'),
-	('NCL', '', 'templates/now/Client Acknowledgment Letter Template (NoW).docx', true, 'system-mds', 'system-mds')
+	('NCL', '', 'templates/now/Acknowledgment Letter Template (NoW).docx', true, 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
 --use update statement so it can be easily copied from new fixed  migrations and just be changed in the future.
 UPDATE document_template SET form_spec_json = '[
