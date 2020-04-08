@@ -612,7 +612,9 @@ VALUES
     ('CAL', 'Client Acknowledgement Letter', true, 'system-mds', 'system-mds'),
 	('WDL', 'Withdrawl Letter', true, 'system-mds', 'system-mds'),
 	('RJL', 'Rejection Letter', true, 'system-mds', 'system-mds'),
-    ('SCD', 'Security Calculation Document', true, 'system-mds', 'system-mds')
+    ('SCD', 'Security Calculation Document', true, 'system-mds', 'system-mds'),
+    ('PMT','Working Permit', true, 'system-mds','system-mds'),
+    ('PMA','Working Permit for Amendment', true, 'system-mds','system-mds')
 on conflict do nothing;
 
 INSERT INTO now_application_review_type(
@@ -639,7 +641,21 @@ VALUES
 	('NRL', '' , 'templates/now/Rejection Letter Template (NoW).docx', true, 'system-mds', 'system-mds'),
 	('NWL', '' , 'templates/now/Withdrawal Letter Template (NoW).docx', true, 'system-mds', 'system-mds'),
 	('NCL', '', 'templates/now/Client Acknowledgment Letter Template (NoW).docx', true, 'system-mds', 'system-mds')
+  -- ('PMA', '', 'templates/permit/Permit_Amendment_template.docx',true,'system-mds','system-mds')
 ON CONFLICT DO NOTHING;
+
+INSERT INTO document_template
+(document_template_code,form_spec_json, template_file_path, active_ind, create_user, update_user)
+VALUES
+('PMT', '', 'templates/permit/New_Permit_Template.docx', true, 'system-mds','system-mds')
+ON CONFLICT DO NOTHING;
+
+INSERT INTO document_template
+(document_template_code,form_spec_json, template_file_path, active_ind, create_user, update_user)
+VALUES
+('PMA', '', 'templates/permit/Permit_Amendment_Template.docx', true, 'system-mds','system-mds')
+ON CONFLICT DO NOTHING;
+
 --use update statement so it can be easily copied from new fixed  migrations and just be changed in the future.
 UPDATE document_template SET form_spec_json = '[
     {
@@ -891,6 +907,122 @@ UPDATE document_template SET form_spec_json = '[
   ]'
 where document_template_code = 'NCL';
 
+--THE FRONTEND DOESN"T ACTUALLY USE THE SPEC TO MAKE THE FORM,
+--but we need data enforcement still. 
+UPDATE document_template SET form_spec_json = '[
+    {
+      "id": "mine_no",
+      "label": "Mine Number",
+      "type": "FIELD",
+      "placeholder": "Enter the mine number",
+      "required": true,
+      "relative-data-path": "mine.mine_no",
+      "read-only": true
+    },
+    {
+      "id": "permittee",
+      "label": "Permittee Name",
+      "type": "FIELD",
+      "placeholder": "Enter the permittee''s name",
+      "relative-data-path": "now_application.permittee_name",
+      "read-only": true
+    },
+    {
+      "id": "property",
+      "label": "Property",
+      "type": "FIELD",
+      "placeholder": "Enter the property",
+      "required": true,
+      "relative-data-path": "now_application.property_name",
+      "read-only": true
+    },
+    {
+      "id": "lead_inspector",
+      "label": "Lead Inspector",
+      "type": "FIELD",
+      "placeholder": "Enter the inspector''s name",
+      "required": true,
+      "relative-data-path": "now_application.lead_inspector.name",
+      "read-only": true
+    },
+    {
+      "id": "application_date",
+      "label": "Application Date",
+      "type": "DATE",
+      "placeholder": "Enter the inspector''s name",
+      "required": true,
+      "relative-data-path": "now_application.submitted_date",
+      "read-only": true
+    },
+    {
+      "id": "application_type",
+      "label": "Application Type",
+      "type": "FIELD",
+      "placeholder": "Enter the inspector''s name",
+      "required": true,
+      "relative-data-path": "now_application.notice_of_work_type.description",
+      "read-only": true
+    }
+  ]'
+where document_template_code = 'PMT';
+
+UPDATE document_template SET form_spec_json = '[
+    {
+      "id": "mine_no",
+      "label": "Mine Number",
+      "type": "FIELD",
+      "placeholder": "Enter the mine number",
+      "required": true,
+      "relative-data-path": "mine.mine_no",
+      "read-only": true
+    },
+    {
+      "id": "permittee",
+      "label": "Permittee Name",
+      "type": "FIELD",
+      "placeholder": "Enter the permittee''s name",
+      "relative-data-path": "now_application.permittee_name",
+      "read-only": true
+    },
+    {
+      "id": "property",
+      "label": "Property",
+      "type": "FIELD",
+      "placeholder": "Enter the property",
+      "required": true,
+      "relative-data-path": "now_application.property_name",
+      "read-only": true
+    },
+    {
+      "id": "lead_inspector",
+      "label": "Lead Inspector",
+      "type": "FIELD",
+      "placeholder": "Enter the inspector''s name",
+      "required": true,
+      "relative-data-path": "now_application.lead_inspector.name",
+      "read-only": true
+    },
+    {
+      "id": "application_date",
+      "label": "Application Date",
+      "type": "DATE",
+      "placeholder": "Enter the inspector''s name",
+      "required": true,
+      "relative-data-path": "now_application.submitted_date",
+      "read-only": true
+    },
+    {
+      "id": "application_type",
+      "label": "Application Type",
+      "type": "FIELD",
+      "placeholder": "Enter the inspector''s name",
+      "required": true,
+      "relative-data-path": "now_application.notice_of_work_type.description",
+      "read-only": true
+    }
+  ]'
+where document_template_code = 'PMA';
+
 UPDATE now_application_document_type
 SET document_template_code = 'NCL'
 where now_application_document_type_code = 'CAL';
@@ -902,6 +1034,18 @@ where now_application_document_type_code = 'WDL';
 UPDATE now_application_document_type
 SET document_template_code = 'NRL'
 where now_application_document_type_code = 'RJL';
+
+UPDATE now_application_document_type
+SET document_template_code = 'PMT'
+where now_application_document_type_code = 'PMT';
+
+UPDATE now_application_document_type
+SET document_template_code = 'PMA'
+where now_application_document_type_code = 'PMA';
+
+-- UPDATE now_application_document_type
+-- SET document_template_code = 'PMA'
+-- where now_application_document_type_code = 'PMA';
 
 
 INSERT INTO bond_status(
