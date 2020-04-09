@@ -10,9 +10,6 @@ import { renderConfig } from "@/components/common/config";
 const propTypes = {
   cancelGeneration: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
-  onSubmit: PropTypes.func.isRequired,
-  returnToPrevStep: PropTypes.func.isRequired,
-  documentList: PropTypes.arrayOf(PropTypes.any),
   submitting: PropTypes.bool.isRequired,
   isAmendment: PropTypes.bool.isRequired,
 };
