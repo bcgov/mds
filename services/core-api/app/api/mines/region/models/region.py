@@ -2,6 +2,7 @@ from sqlalchemy.schema import FetchedValue
 from sqlalchemy.ext.hybrid import hybrid_property
 from app.extensions import db
 from app.api.utils.models_mixins import AuditMixin, Base
+from app.api.mines.region.models.regional_contact import RegionalContact
 
 
 class MineRegionCode(AuditMixin, Base):
