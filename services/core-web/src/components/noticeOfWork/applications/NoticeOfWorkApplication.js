@@ -47,7 +47,6 @@ import NoticeOfWorkPageHeader from "@/components/noticeOfWork/applications/Notic
 import * as FORM from "@/constants/forms";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
 import { modalConfig } from "@/components/modalContent/config";
-import * as Strings from "@common/constants/strings";
 
 const { Step } = Steps;
 
@@ -569,8 +568,8 @@ export class NoticeOfWorkApplication extends Component {
         noticeOfWork={this.props.noticeOfWork}
         documentType={
           isAmendment
-            ? this.props.generatableApplicationDocuments["PMA"]
-            : this.props.generatableApplicationDocuments["PMT"]
+            ? this.props.generatableApplicationDocuments.PMA
+            : this.props.generatableApplicationDocuments.PMT
         }
         isAmendment={isAmendment}
         handleGenerateDocumentFormSubmit={this.handleGenerateDocumentFormSubmit}
@@ -607,7 +606,7 @@ export class NoticeOfWorkApplication extends Component {
   };
 
   returnToPrevStep = () => {
-    this.setState({ currentStep: this.state.prevStep, isPermitGeneration: false });
+    this.setState((prevState) => ({ currentStep: prevState.prevStep, isPermitGeneration: false }));
   };
 
   render() {
