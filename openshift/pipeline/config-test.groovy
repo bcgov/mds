@@ -251,6 +251,7 @@ app {
                     'params':[
                             'NAME':"mds-docgen-api",
                             'SUFFIX': "${vars.deployment.suffix}",
+                            'VERSION':"${app.deployment.version}",
                             'APPLICATION_SUFFIX': "${vars.deployment.application_suffix}",
                             'TAG_NAME':"${app.deployment.version}",
                             'PORT':3030,
