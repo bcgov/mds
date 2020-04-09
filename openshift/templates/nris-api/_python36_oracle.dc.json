@@ -173,7 +173,9 @@
             "type": "ImageChange",
             "imageChangeParams": {
               "automatic": true,
-              "containerNames": ["app"],
+              "containerNames": [
+                "app"
+              ],
               "from": {
                 "kind": "ImageStreamTag",
                 "name": "${NAME}:${VERSION}"
@@ -282,7 +284,7 @@
                   },
                   {
                     "name": "NRIS_DB_PORT",
-                    "value": "1521"
+                    "value": "1543"
                   },
                   {
                     "name": "UWSGI_PROCESSES",
