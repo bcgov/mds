@@ -19,7 +19,7 @@ class MineRegionCode(AuditMixin, Base):
     # Specific regional contacts
     @hybrid_property
     def regional_contact_office(self):
-        return RegionalContact.find_by_region_code('ROE', self.mine_region_code)
+        return RegionalContact.find_regional_contact('ROE', self.mine_region_code)
 
     def __repr__(self):
         return '<MineRegionCode %r>' % self.mine_region_code

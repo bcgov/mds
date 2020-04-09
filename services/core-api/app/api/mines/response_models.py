@@ -178,11 +178,6 @@ MINE_VERIFIED_MODEL = api.model(
         'verifying_timestamp': fields.DateTime,
     })
 
-MINE_REGION_OPTION = api.model('MineRegion', {
-    'mine_region_code': fields.String,
-    'description': fields.String
-})
-
 REGIONAL_CONTACT = api.model(
     'RegionalContact', {
         'regional_contact_type_code': fields.String,
@@ -192,6 +187,14 @@ REGIONAL_CONTACT = api.model(
         'fax_number': fields.String,
         'mailing_address_line_1': fields.String,
         'mailing_address_line_2': fields.String
+    })
+
+MINE_REGION_OPTION = api.model(
+    'MineRegion', {
+        'mine_region_code': fields.String,
+        'description': fields.String#,
+        # 'regional_contacts': fields.List(fields.Nested(REGIONAL_CONTACT)),
+        # 'regional_contact_office': fields.Nested(REGIONAL_CONTACT)
     })
 
 MINES_MODEL = api.model(
@@ -210,8 +213,8 @@ MINES_MODEL = api.model(
         'mine_tailings_storage_facilities': fields.List(fields.Nested(MINE_TSF_MODEL)),
         'mine_type': fields.List(fields.Nested(MINE_TYPE_MODEL)),
         'verified_status': fields.Nested(MINE_VERIFIED_MODEL),
-        'has_minespace_users': fields.Boolean,
-        'regional_office_contact': fields.Nested(REGIONAL_CONTACT)
+        'has_minespace_users': fields.Boolean#,
+        # 'region': fields.Nested(MINE_REGION_OPTION)
     })
 
 MINE_MODEL = api.inherit(
