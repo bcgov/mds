@@ -119,7 +119,7 @@ exports[`AddIncidentReportingForm renders properly 1`] = `
                 id="reported_by_phone_ext"
                 label="Phone extension"
                 name="reported_by_phone_ext"
-                placeholder="x"
+                placeholder="xxxxxx"
                 validate={
                   Array [
                     [Function],

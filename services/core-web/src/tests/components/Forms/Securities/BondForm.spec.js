@@ -17,6 +17,7 @@ const setupProps = () => {
   props.submitting = false;
   props.provinceOptions = MOCK.DROPDOWN_PROVINCE_OPTIONS;
   props.bondTypeOptions = [];
+  props.bond = MOCK.BONDS.records[0];
 };
 
 beforeEach(() => {

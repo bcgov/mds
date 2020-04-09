@@ -27,7 +27,7 @@ from app.api.now_submissions.models.existing_settling_pond_xref import ExistingS
 from app.api.now_submissions.models.proposed_placer_activity_xref import ProposedPlacerActivityXref
 from app.api.now_submissions.models.proposed_settling_pond_xref import ProposedSettlingPondXref
 
-from app.api.constants import unit_type_map, type_of_permit_map, NOW_SUBMISSIONS_YES_NO
+from app.api.constants import unit_type_map, type_of_permit_map, NOW_SUBMISSIONS_YES_NO, NOW_SUBMISSION_STATUS
 from app.api.utils.field_template import FieldTemplate
 
 
@@ -40,44 +40,50 @@ class Application(Base):
         now_application_guid = fields.String(dump_only=True)
         mine_guid = fields.String(dump_only=True)
         sandgrvqrytotalmineresunits = fields.String(
-            validate=validate.OneOf(choices=unit_type_map.keys()))
-        underexptotaloreunits = fields.String(validate=validate.OneOf(choices=unit_type_map.keys()))
+            validate=validate.OneOf(choices=unit_type_map.keys()), allow_none=True)
+        underexptotaloreunits = fields.String(
+            validate=validate.OneOf(choices=unit_type_map.keys()), allow_none=True)
         underexptotalwasteunits = fields.String(
-            validate=validate.OneOf(choices=unit_type_map.keys()))
+            validate=validate.OneOf(choices=unit_type_map.keys()), allow_none=True)
         sandgrvqryannualextrestunits = fields.String(
-            validate=validate.OneOf(choices=unit_type_map.keys()))
-        typeofpermit = fields.String(validate=validate.OneOf(choices=type_of_permit_map.keys()))
+            validate=validate.OneOf(choices=unit_type_map.keys()), allow_none=True)
+        typeofpermit = fields.String(
+            validate=validate.OneOf(choices=type_of_permit_map.keys()), allow_none=True)
         landcommunitywatershed = fields.String(
-            validate=validate.OneOf(choices=NOW_SUBMISSIONS_YES_NO))
-        archsitesaffected = fields.String(validate=validate.OneOf(choices=NOW_SUBMISSIONS_YES_NO))
-        fuellubstoreonsite = fields.String(validate=validate.OneOf(choices=NOW_SUBMISSIONS_YES_NO))
+            validate=validate.OneOf(choices=NOW_SUBMISSIONS_YES_NO), allow_none=True)
+        archsitesaffected = fields.String(
+            validate=validate.OneOf(choices=NOW_SUBMISSIONS_YES_NO), allow_none=True)
+        fuellubstoreonsite = fields.String(
+            validate=validate.OneOf(choices=NOW_SUBMISSIONS_YES_NO), allow_none=True)
         placerundergroundoperations = fields.String(
-            validate=validate.OneOf(choices=NOW_SUBMISSIONS_YES_NO))
+            validate=validate.OneOf(choices=NOW_SUBMISSIONS_YES_NO), allow_none=True)
         placerhandoperations = fields.String(
-            validate=validate.OneOf(choices=NOW_SUBMISSIONS_YES_NO))
+            validate=validate.OneOf(choices=NOW_SUBMISSIONS_YES_NO), allow_none=True)
         pondsexfiltratedtoground = fields.String(
-            validate=validate.OneOf(choices=NOW_SUBMISSIONS_YES_NO))
-        pondsrecycled = fields.String(validate=validate.OneOf(choices=NOW_SUBMISSIONS_YES_NO))
+            validate=validate.OneOf(choices=NOW_SUBMISSIONS_YES_NO), allow_none=True)
+        pondsrecycled = fields.String(
+            validate=validate.OneOf(choices=NOW_SUBMISSIONS_YES_NO), allow_none=True)
         pondsdischargedtoenv = fields.String(
-            validate=validate.OneOf(choices=NOW_SUBMISSIONS_YES_NO))
+            validate=validate.OneOf(choices=NOW_SUBMISSIONS_YES_NO), allow_none=True)
         bcexplosivespermitissued = fields.String(
-            validate=validate.OneOf(choices=NOW_SUBMISSIONS_YES_NO))
+            validate=validate.OneOf(choices=NOW_SUBMISSIONS_YES_NO), allow_none=True)
         storeexplosivesonsite = fields.String(
-            validate=validate.OneOf(choices=NOW_SUBMISSIONS_YES_NO))
+            validate=validate.OneOf(choices=NOW_SUBMISSIONS_YES_NO), allow_none=True)
         sandgrvqrywithinaglandres = fields.String(
-            validate=validate.OneOf(choices=NOW_SUBMISSIONS_YES_NO))
+            validate=validate.OneOf(choices=NOW_SUBMISSIONS_YES_NO), allow_none=True)
         sandgrvqrylocalgovsoilrembylaw = fields.String(
-            validate=validate.OneOf(choices=NOW_SUBMISSIONS_YES_NO))
+            validate=validate.OneOf(choices=NOW_SUBMISSIONS_YES_NO), allow_none=True)
         sandgrvqrygrdwtrexistingareas = fields.String(
-            validate=validate.OneOf(choices=NOW_SUBMISSIONS_YES_NO))
+            validate=validate.OneOf(choices=NOW_SUBMISSIONS_YES_NO), allow_none=True)
         sandgrvqrygrdwtrtestpits = fields.String(
-            validate=validate.OneOf(choices=NOW_SUBMISSIONS_YES_NO))
+            validate=validate.OneOf(choices=NOW_SUBMISSIONS_YES_NO), allow_none=True)
         sandgrvqrygrdwtrtestwells = fields.String(
-            validate=validate.OneOf(choices=NOW_SUBMISSIONS_YES_NO))
+            validate=validate.OneOf(choices=NOW_SUBMISSIONS_YES_NO), allow_none=True)
+        status = fields.String(
+            validate=validate.OneOf(choices=NOW_SUBMISSION_STATUS), allow_none=True)
 
         noticeofworktype = FieldTemplate(
             field=fields.String, one_of='NOWApplicationType_description')
-        status = FieldTemplate(field=fields.String, one_of='NOWApplicationStatus_description')
 
     messageid = db.Column(db.Integer, primary_key=True)
     now_application_identity = db.relationship(

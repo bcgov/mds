@@ -112,14 +112,13 @@ class MineReportListResource(Resource, UserMixin):
 
 class MineReportResource(Resource, UserMixin):
     parser = CustomReqparser()
-    # required
-
     parser.add_argument('due_date', type=str, location='json', store_missing=False)
     parser.add_argument(
         'received_date',
         location='json',
         store_missing=False,
         type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None)
+    parser.add_argument('submission_year', type=str, location='json', store_missing=False)
     parser.add_argument('mine_report_submission_status', type=str, location='json')
     parser.add_argument('mine_report_submissions', type=list, location='json', store_missing=False)
 
@@ -147,6 +146,9 @@ class MineReportResource(Resource, UserMixin):
 
         if 'received_date' in data:
             mine_report.received_date = data['received_date']
+
+        if 'submission_year' in data:
+            mine_report.submission_year = data['submission_year']
 
         if data.get('mine_report_submission_status') is not None:
             mine_report_submission_status = data.get('mine_report_submission_status')

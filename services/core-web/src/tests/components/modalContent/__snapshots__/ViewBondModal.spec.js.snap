@@ -26,7 +26,7 @@ exports[`ViewBondModal renders properly 1`] = `
         Status
       </p>
       <p>
-        N/A
+        Active
       </p>
     </div>
   </div>
@@ -43,7 +43,7 @@ exports[`ViewBondModal renders properly 1`] = `
         Payment Type
       </p>
       <p>
-        N/A
+        Cash
       </p>
     </div>
     <div
@@ -136,6 +136,26 @@ exports[`ViewBondModal renders properly 1`] = `
       <p>
         N/A
       </p>
+    </div>
+  </div>
+  <br />
+  <div
+    className="between block-tablet"
+  >
+    <div
+      className="flex-tablet"
+    >
+      <p
+        className="field-title"
+      >
+        Documents
+      </p>
+      <DocumentTable
+        documents={Array []}
+        isViewOnly={true}
+        removeDocument={[Function]}
+        tableEmptyMessage="There are no attached documents."
+      />
     </div>
   </div>
   <br />

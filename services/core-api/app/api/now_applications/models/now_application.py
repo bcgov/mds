@@ -3,6 +3,7 @@ from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
 from sqlalchemy.ext.associationproxy import association_proxy
 from werkzeug.exceptions import NotFound
+from sqlalchemy.ext.hybrid import hybrid_property
 
 from app.api.utils.models_mixins import Base, AuditMixin
 from app.extensions import db
@@ -37,10 +38,13 @@ class NOWApplication(Base, AuditMixin):
     now_tracking_number = db.Column(db.Integer)
     notice_of_work_type_code = db.Column(
         db.String, db.ForeignKey('notice_of_work_type.notice_of_work_type_code'), nullable=False)
+    notice_of_work_type = db.relationship('NOWApplicationType', lazy='joined')
+
     now_application_status_code = db.Column(
         db.String,
         db.ForeignKey('now_application_status.now_application_status_code'),
         nullable=False)
+    status_updated_date = db.Column(db.Date, nullable=False, server_default=FetchedValue())
     submitted_date = db.Column(db.Date, nullable=False)
     received_date = db.Column(db.Date, nullable=False)
     latitude = db.Column(db.Numeric(9, 7))
@@ -54,6 +58,8 @@ class NOWApplication(Base, AuditMixin):
     proposed_end_date = db.Column(db.Date)
     directions_to_site = db.Column(db.String)
     type_of_application = db.Column(db.String)
+
+    now_application_identity = db.relationship('NOWApplicationIdentity', uselist=False)
 
     first_aid_equipment_on_site = db.Column(db.String)
     first_aid_cert_level = db.Column(db.String)
@@ -117,6 +123,13 @@ class NOWApplication(Base, AuditMixin):
 
     # Contacts
     contacts = db.relationship('NOWPartyAppointment', lazy='selectin')
+
+    @hybrid_property
+    def permittee_name(self):
+        return [
+            contact.party.name for contact in self.contacts
+            if contact.mine_party_appt_type_code == 'PMT'
+        ][0]
 
     def __repr__(self):
         return '<NOWApplication %r>' % self.now_application_guid

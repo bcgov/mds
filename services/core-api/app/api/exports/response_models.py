@@ -1,14 +1,14 @@
 from app.extensions import api
 from flask_restplus import fields
 
-from app.api.mines.response_models import MINE_TENURE_TYPE_CODE_MODEL, MINE_COMMODITY_CODE_MODEL, MINE_DISTURBANCE_CODE_MODEL, MINE_STATUS_CODE_MODEL, MINE_REGION_OPTION, MINE_REPORT_DEFINITION_CATEGORIES, MINE_REPORT_DEFINITION_MODEL, MINE_REPORT_SUBMISSION_STATUS
-from app.api.mines.permits.response_models import PERMIT_STATUS_CODE_MODEL
+from app.api.mines.response_models import MINE_TENURE_TYPE_CODE_MODEL, MINE_COMMODITY_CODE_MODEL, MINE_DISTURBANCE_CODE_MODEL, MINE_STATUS_CODE_MODEL, MINE_REGION_OPTION, MINE_REPORT_DEFINITION_CATEGORIES, MINE_REPORT_DEFINITION_MODEL, MINE_REPORT_SUBMISSION_STATUS, EXEMPTION_FEE_STATUS_CODE_MODEL
+from app.api.mines.response_models import PERMIT_STATUS_CODE_MODEL
 from app.api.compliance.response_models import COMPLIANCE_ARTICLE_MODEL
 from app.api.incidents.response_models import MINE_INCIDENT_CATEGORY_MODEL, MINE_INCIDENT_DETERMINATION_TYPE_MODEL, MINE_INCIDENT_STATUS_CODE_MODEL, MINE_INCIDENT_DOCUMENT_TYPE_CODE_MODEL, MINE_INCIDENT_FOLLOWUP_INVESTIGATION_TYPE_MODEL
 from app.api.parties.response_models import MINE_PARTY_APPT_TYPE_MODEL, SUB_DIVISION_CODE_MODEL
 from app.api.variances.response_models import VARIANCE_APPLICATION_STATUS_CODE, VARIANCE_DOCUMENT_CATEGORY_CODE
 from app.api.now_applications.response_models import NOW_APPLICATION_DOCUMENT_TYPE_MODEL, NOW_APPLICATION_REVIEW_TYPES, NOW_APPLICATION_TYPES, UNIT_TYPES, NOW_ACTIVITY_TYPES, NOW_APPLICATION_STATUS_CODES, UNDERGROUND_EXPLORATION_TYPES, NOW_APPLICATION_PERMIT_TYPES, NOW_APPLICATION_REVIEW_TYPES, APPLICATION_PROGRESS_STATUS_CODES
-from app.api.securities.response_models import BOND_STATUS, BOND_TYPE
+from app.api.securities.response_models import BOND_STATUS, BOND_TYPE, BOND_DOCUMENT_TYPE
 
 STATIC_CONTENT_MODEL = api.model(
     'StaticContentModel', {
@@ -93,5 +93,9 @@ STATIC_CONTENT_MODEL = api.model(
         'bondStatusOptions':
         fields.List(fields.Nested(BOND_STATUS), attribute='BondStatus'),
         'bondTypeOptions':
-        fields.List(fields.Nested(BOND_TYPE), attribute='BondType')
+        fields.List(fields.Nested(BOND_TYPE), attribute='BondType'),
+        'bondDocumentTypeOptions':
+        fields.List(fields.Nested(BOND_DOCUMENT_TYPE), attribute='BondDocumentType'),
+        'exemptionFeeStatusOptions':
+        fields.List(fields.Nested(EXEMPTION_FEE_STATUS_CODE_MODEL), attribute='ExemptionFeeStatus'),
     })

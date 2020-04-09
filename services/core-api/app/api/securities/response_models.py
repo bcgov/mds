@@ -7,6 +7,25 @@ BOND_PARTY = api.model('Party', {
     'first_name': fields.String,
 })
 
+BOND_DOCUMENT_MODEL = api.model(
+    'BondDocument', {
+        'mine_document_guid': fields.String,
+        'mine_guid': fields.String,
+        'document_manager_guid': fields.String,
+        'document_name': fields.String,
+        'upload_date': fields.Date,
+        'bond_document_type_code': fields.String
+    })
+
+RECLAMATION_INVOICE_DOCUMENT_MODEL = api.model(
+    'MineDocument', {
+        'mine_document_guid': fields.String,
+        'mine_guid': fields.String,
+        'document_manager_guid': fields.String,
+        'document_name': fields.String,
+        'upload_date': fields.Date,
+    })
+
 BOND = api.model(
     'Bond', {
         'bond_id': fields.Integer,
@@ -25,7 +44,8 @@ BOND = api.model(
         'note': fields.String,
         'payer': fields.Nested(BOND_PARTY),
         'project_id': fields.String,
-        'permit_guid': fields.String(attribute='permits.permit_guid')
+        'permit_guid': fields.String(attribute='permit.permit_guid'),
+        'documents': fields.List(fields.Nested(BOND_DOCUMENT_MODEL))
     })
 
 BOND_STATUS = api.model('BondStatus', {
@@ -34,3 +54,19 @@ BOND_STATUS = api.model('BondStatus', {
 })
 
 BOND_TYPE = api.model('BondType', {'bond_type_code': fields.String, 'description': fields.String})
+
+BOND_DOCUMENT_TYPE = api.model('BondDocumentType', {
+    'bond_document_type_code': fields.String,
+    'description': fields.String
+})
+
+RECLAMATION_INVOICE = api.model(
+    'ReclamationInvoice', {
+        'reclamation_invoice_id': fields.Integer,
+        'reclamation_invoice_guid': fields.String,
+        'project_id': fields.String,
+        'amount': fields.Fixed(decimals=2),
+        'vendor': fields.String,
+        'permit_guid': fields.String(attribute='permit.permit_guid'),
+        'documents': fields.List(fields.Nested(RECLAMATION_INVOICE_DOCUMENT_MODEL))
+    })

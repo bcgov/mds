@@ -24,6 +24,7 @@ import {
   getMineRegionDropdownOptions,
   getMineTenureTypeDropdownOptions,
   getMineTenureTypesHash,
+  getExemptionFeeSatusDropDownOptions,
 } from "@common/selectors/staticContentSelectors";
 import * as Strings from "@common/constants/strings";
 import * as FORM from "@/constants/forms";
@@ -50,6 +51,7 @@ const propTypes = {
   currentMineTypes: PropTypes.arrayOf(CustomPropTypes.mineTypes),
   submitting: PropTypes.bool.isRequired,
   isNewRecord: PropTypes.bool,
+  exemptionFeeSatusDropDownOptions: PropTypes.objectOf(CustomPropTypes.options).isRequired,
 };
 
 const defaultProps = {
@@ -442,6 +444,33 @@ export class MineRecordForm extends Component {
             </Form.Item>
           </Col>
         </Row>
+        <Row gutter={16}>
+          <Col>
+            <Form.Item>
+              <Field
+                id="exemption_fee_status_code"
+                name="exemption_fee_status_code"
+                label="Fee Exemption"
+                placeholder="Select a fee exemption status"
+                component={renderConfig.SELECT}
+                data={this.props.exemptionFeeSatusDropDownOptions}
+              />
+            </Form.Item>
+          </Col>
+        </Row>
+        <Row gutter={16}>
+          <Col>
+            <Form.Item>
+              <Field
+                id="exemption_fee_status_note"
+                name="exemption_fee_status_note"
+                label="Fee Exemption Note"
+                component={renderConfig.AUTO_SIZE_FIELD}
+                validate={[maxLength(300)]}
+              />
+            </Form.Item>
+          </Col>
+        </Row>
         <div className="right center-mobile">
           <Popconfirm
             placement="topRight"
@@ -484,6 +513,7 @@ export default compose(
     mineStatus: selector(state, "mine_status"),
     mine_types: selector(state, "mine_types"),
     status_date: selector(state, "status_date"),
+    exemptionFeeSatusDropDownOptions: getExemptionFeeSatusDropDownOptions(state),
   })),
   reduxForm({
     form: FORM.MINE_RECORD,

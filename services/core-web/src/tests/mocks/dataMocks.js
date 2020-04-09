@@ -3007,6 +3007,7 @@ export const BULK_STATIC_CONTENT_RESPONSE = {
       active_ind: true,
     },
   ],
+  exemptionFeeStatusOptions: [],
   provinceOptions: [
     { sub_division_code: "AB", description: "Alberta", display_order: 10 },
     { sub_division_code: "BC", description: "British Columbia", display_order: 20 },
@@ -3402,9 +3403,16 @@ export const BULK_STATIC_CONTENT_RESPONSE = {
     { notice_of_work_type_code: "QIM", description: "Quarry - Industrial Mineral" },
   ],
   noticeOfWorkApplicationStatusOptions: [
-    { now_application_status_code: "ACC", description: "Accepted" },
+    { now_application_status_code: "SUB", description: "Submitted" },
+    { now_application_status_code: "REF", description: "Referred" },
+    { now_application_status_code: "CDI", description: "Client Delay Info" },
+    { now_application_status_code: "CDB", description: "Client Delay Bond" },
+    { now_application_status_code: "GVD", description: "Govt Delay" },
+    { now_application_status_code: "CON", description: "Consultation" },
+    { now_application_status_code: "AIA", description: "Active/Issued/Approved" },
     { now_application_status_code: "WDN", description: "Withdrawn" },
-    { now_application_status_code: "UNR", description: "Under Review" },
+    { now_application_status_code: "REJ", description: "Rejected" },
+    { now_application_status_code: "CLO", description: "Closed" },
   ],
   noticeOfWorkApplicationDocumentTypeOptions: [
     {
@@ -3466,7 +3474,7 @@ export const BULK_STATIC_CONTENT_RESPONSE = {
     { now_application_document_type_code: "REV", description: "Review", document_template: {} },
     {
       now_application_document_type_code: "CAL",
-      description: "Client Acknowledgement Letter",
+      description: "Acknowledgement Letter",
       document_template: {
         document_template_code: "NCL",
         form_spec: [
@@ -3489,7 +3497,7 @@ export const BULK_STATIC_CONTENT_RESPONSE = {
             id: "proponent_address",
             label: "Proponent Address",
             type: "FIELD",
-            placeholder: "Enter the propnent's address",
+            placeholder: "Enter the proponent's address",
             required: true,
             "read-only": false,
           },
@@ -3497,7 +3505,7 @@ export const BULK_STATIC_CONTENT_RESPONSE = {
             id: "proponent_name",
             label: "Proponent Name",
             type: "FIELD",
-            placeholder: "Enter the propnent's name",
+            placeholder: "Enter the proponent's name",
             required: false,
             "read-only": false,
           },
@@ -3576,7 +3584,7 @@ export const BULK_STATIC_CONTENT_RESPONSE = {
             id: "proponent_address",
             label: "Proponent Address",
             type: "FIELD",
-            placeholder: "Enter the propnent's address",
+            placeholder: "Enter the proponent's address",
             required: true,
             "read-only": false,
           },
@@ -3584,7 +3592,7 @@ export const BULK_STATIC_CONTENT_RESPONSE = {
             id: "proponent_name",
             label: "Proponent Name",
             type: "FIELD",
-            placeholder: "Enter the propnent's name",
+            placeholder: "Enter the proponent's name",
             required: false,
             "read-only": false,
           },
@@ -3639,7 +3647,7 @@ export const BULK_STATIC_CONTENT_RESPONSE = {
             id: "proponent_address",
             label: "Proponent Address",
             type: "FIELD",
-            placeholder: "Enter the propnent's address",
+            placeholder: "Enter the proponent's address",
             required: true,
             "read-only": false,
           },
@@ -3647,7 +3655,7 @@ export const BULK_STATIC_CONTENT_RESPONSE = {
             id: "proponent_name",
             label: "Proponent Name",
             type: "FIELD",
-            placeholder: "Enter the propnent's name",
+            placeholder: "Enter the proponent's name",
             required: false,
             "read-only": false,
           },
@@ -3713,6 +3721,15 @@ export const BULK_STATIC_CONTENT_RESPONSE = {
     { bond_type_code: "SBO", description: "Surety Bond" },
     { bond_type_code: "SAG", description: "Safekeeping Agreement" },
   ],
+  bondDocumentTypeOptions: [
+    { bond_document_type_code: "SRB", description: "Scan of Reclamation Security Bond" },
+    { bond_document_type_code: "RSF", description: "Release of Security Form" },
+    { bond_document_type_code: "RSL", description: "Release of Security Letter" },
+    { bond_document_type_code: "CSF", description: "Confiscation of Security Form" },
+    { bond_document_type_code: "CSL", description: "Confiscation of Security Letter" },
+    { bond_document_type_code: "REL", description: "Reminder Letter" },
+    { bond_document_type_code: "AKL", description: "Acknowledgement Letter" },
+  ],
 };
 
 export const DROPDOWN_BOND_TYPE_OPTIONS = [
@@ -3747,6 +3764,26 @@ export const BOND_STATUS_OPTIONS_HASH = {
   ACT: "Active",
 };
 
+export const DROPDOWN_BOND_DOCUMENT_TYPE_OPTIONS = [
+  { value: "SRB", label: "Scan of Reclamation Security Bond" },
+  { value: "RSF", label: "Release of Security Form" },
+  { value: "RSL", label: "Release of Security Letter" },
+  { value: "CSF", label: "Confiscation of Security Form" },
+  { value: "CSL", label: "Confiscation of Security Letter" },
+  { value: "REL", label: "Reminder Letter" },
+  { value: "AKL", label: "Acknowledgement Letter" },
+];
+
+export const BOND_DOCUMENT_TYPE_OPTIONS_HASH = {
+  AKL: "Acknowledgement Letter",
+  REL: "Reminder Letter",
+  CSL: "Confiscation of Security Letter",
+  CSF: "Confiscation of Security Form",
+  RSL: "Release of Security Letter",
+  RSF: "Release of Security Form",
+  SRB: "Scan of Reclamation Security Bond",
+};
+
 export const BONDS = {
   records: [
     {
@@ -3766,7 +3803,22 @@ export const BONDS = {
       note: null,
       payer: {},
       permit_guid: "463236",
+      documents: [],
     },
   ],
 };
+
+export const BOND_TOTALS = {
+  amountHeld: 300,
+  count: 1,
+};
+
 export const BOND_RESPONSE = { records: BONDS };
+
+export const RECLAMATION_INVOICE = {
+  project_id: "3523461",
+  amount: "1251.46",
+  vendor: "John Doe",
+};
+
+export const RECLAMATION_INVOICES = { records: [RECLAMATION_INVOICE] };

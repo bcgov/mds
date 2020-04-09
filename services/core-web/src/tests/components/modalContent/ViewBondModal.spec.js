@@ -11,8 +11,9 @@ const setupDispatchProps = () => {
 };
 
 const setupProps = () => {
-  props.bondTypeOptionsHash = {};
-  props.statusTypeOptionsHash = {};
+  props.bondTypeOptionsHash = MOCK.BOND_TYPE_OPTIONS_HASH;
+  props.bondStatusOptionsHash = MOCK.BOND_STATUS_OPTIONS_HASH;
+  props.bondDocumentTypeOptionsHash = MOCK.BOND_DOCUMENT_TYPE_OPTIONS_HASH;
   [props.bond] = MOCK.BONDS.records;
 };
 

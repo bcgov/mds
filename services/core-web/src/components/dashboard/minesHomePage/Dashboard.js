@@ -279,6 +279,7 @@ export class Dashboard extends Component {
     return (
       <div>
         <Tabs
+          className="center-tabs"
           activeKey={map ? "map" : "list"}
           size="large"
           animated={{ inkBar: false, tabPane: false }}

@@ -24,6 +24,7 @@ import {
   getDropdownNoticeOfWorkApplicationStatusOptions,
   getNoticeOfWorkApplicationProgressStatusCodeOptions,
   getGeneratableNoticeOfWorkApplicationDocumentTypeOptions,
+  getNoticeOfWorkApplicationStatusOptionsHash,
 } from "@common/selectors/staticContentSelectors";
 import { formatDate, flattenObject } from "@common/utils/helpers";
 import { clearNoticeOfWorkApplication } from "@common/actions/noticeOfWorkActions";
@@ -33,8 +34,9 @@ import {
   fetchNoticeOfWorkApplicationContextTemplate,
 } from "@/actionCreators/documentActionCreator";
 import { getDocumentContextTemplate } from "@/reducers/documentReducer";
-
+import { EDIT_OUTLINE_VIOLET } from "@/constants/assets";
 import * as routes from "@/constants/routes";
+import NOWPermitGeneration from "@/components/noticeOfWork/applications/permitGeneration/NOWPermitGeneration";
 import ApplicationStepOne from "@/components/noticeOfWork/applications/applicationStepOne/ApplicationStepOne";
 import NOWApplicationReviews from "@/components/noticeOfWork/applications/referals/NOWApplicationReviews";
 import CustomPropTypes from "@/customPropTypes";
@@ -84,6 +86,7 @@ const propTypes = {
   formValues: CustomPropTypes.importedNOWApplication.isRequired,
   inspectors: CustomPropTypes.groupOptions.isRequired,
   inspectorsHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  noticeOfWorkApplicationStatusOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   applicationProgressStatusCodes: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string))
     .isRequired,
   generatableApplicationDocuments: PropTypes.objectOf(PropTypes.objectOf(PropTypes.any)).isRequired,
@@ -105,9 +108,11 @@ const defaultProps = {
 export class NoticeOfWorkApplication extends Component {
   state = {
     currentStep: 0,
+    prevStep: 0,
     isLoaded: false,
     isMajorMine: null,
     associatedLeadInspectorPartyGuid: "",
+    associatedStatus: "",
     isViewMode: true,
     showOriginalValues: false,
     fixedTop: false,
@@ -120,6 +125,7 @@ export class NoticeOfWorkApplication extends Component {
     isNewApplication: false,
     mineGuid: "",
     submitting: false,
+    isPermitGeneration: false,
   };
 
   count = 1;
@@ -253,6 +259,12 @@ export class NoticeOfWorkApplication extends Component {
     });
   };
 
+  setStatus = (status) => {
+    this.setState({
+      associatedStatus: status,
+    });
+  };
+
   handleSaveNOWEdit = () => {
     this.setState({ submitting: true });
     const errors = Object.keys(flattenObject(this.props.formErrors));
@@ -321,6 +333,14 @@ export class NoticeOfWorkApplication extends Component {
   };
 
   handleUpdateLeadInspector = (finalAction) => {
+    if (
+      !this.state.associatedLeadInspectorPartyGuid ||
+      this.state.associatedLeadInspectorPartyGuid ===
+        this.props.noticeOfWork.lead_inspector_party_guid
+    ) {
+      finalAction();
+      return;
+    }
     this.setState({ isLoaded: false });
     this.props
       .updateNoticeOfWorkApplication(
@@ -348,6 +368,44 @@ export class NoticeOfWorkApplication extends Component {
         handleUpdateLeadInspector: (e) => this.handleUpdateLeadInspector(this.props.closeModal, e),
       },
       content: modalConfig.UPDATE_NOW_LEAD_INSPECTOR,
+    });
+  };
+
+  handleUpdateStatus = (finalAction) => {
+    if (
+      !this.state.associatedStatus ||
+      this.state.associatedStatus === this.props.noticeOfWork.now_application_status_code
+    ) {
+      finalAction();
+      return;
+    }
+
+    this.setState({ isLoaded: false });
+    this.props
+      .updateNoticeOfWorkApplication(
+        { now_application_status_code: this.state.associatedStatus },
+        this.props.noticeOfWork.now_application_guid,
+        `Successfully changed status to ${
+          this.props.noticeOfWorkApplicationStatusOptionsHash[this.state.associatedStatus]
+        }`
+      )
+      .then(() => {
+        this.props
+          .fetchImportedNoticeOfWorkApplication(this.props.noticeOfWork.now_application_guid)
+          .then(() => this.setState({ isLoaded: true }));
+      })
+      .then(() => finalAction());
+  };
+
+  openUpdateStatusModal = () => {
+    this.props.openModal({
+      props: {
+        title: "Change Application Status",
+        now_application_status_code: this.props.noticeOfWork.now_application_status_code,
+        setStatus: this.setStatus,
+        handleUpdateStatus: (e) => this.handleUpdateStatus(this.props.closeModal, e),
+      },
+      content: modalConfig.UPDATE_NOW_STATUS,
     });
   };
 
@@ -447,12 +505,17 @@ export class NoticeOfWorkApplication extends Component {
       template_data: newValues,
     };
     this.props
-      .generateNoticeOfWorkApplicationDocument(documentTypeCode, payload, () => {
-        this.setState({ isLoaded: false });
-        this.props
-          .fetchImportedNoticeOfWorkApplication(this.props.noticeOfWork.now_application_guid)
-          .then(() => this.setState({ isLoaded: true }));
-      })
+      .generateNoticeOfWorkApplicationDocument(
+        documentTypeCode,
+        payload,
+        "Successfully Created Document and Attached it to this Notice of Work",
+        () => {
+          this.setState({ isLoaded: false });
+          this.props
+            .fetchImportedNoticeOfWorkApplication(this.props.noticeOfWork.now_application_guid)
+            .then(() => this.setState({ isLoaded: true }));
+        }
+      )
       .then(() => {
         this.props.closeModal();
       });
@@ -497,6 +560,23 @@ export class NoticeOfWorkApplication extends Component {
     );
   };
 
+  renderPermitGeneration = () => {
+    const isAmendment = this.props.noticeOfWork.type_of_application !== "New Permit";
+    return (
+      <NOWPermitGeneration
+        returnToPrevStep={this.returnToPrevStep}
+        noticeOfWork={this.props.noticeOfWork}
+        documentType={
+          isAmendment
+            ? this.props.generatableApplicationDocuments.PMA
+            : this.props.generatableApplicationDocuments.PMT
+        }
+        isAmendment={isAmendment}
+        handleGenerateDocumentFormSubmit={this.handleGenerateDocumentFormSubmit}
+      />
+    );
+  };
+
   renderProgressStatus = (stepIndex) => {
     if (this.props.noticeOfWork.application_progress) {
       const progressLength = this.props.noticeOfWork.application_progress.length;
@@ -520,6 +600,15 @@ export class NoticeOfWorkApplication extends Component {
     return isDisabled;
   };
 
+  setPermitGenerationStep = (step) => {
+    this.setState({ prevStep: step });
+    this.setState({ currentStep: 100, isPermitGeneration: true });
+  };
+
+  returnToPrevStep = () => {
+    this.setState((prevState) => ({ currentStep: prevState.prevStep, isPermitGeneration: false }));
+  };
+
   render() {
     if (this.state.showNullScreen) {
       return <NullScreen type="unauthorized-page" />;
@@ -536,6 +625,7 @@ export class NoticeOfWorkApplication extends Component {
       1: this.renderStepTwo(),
       2: this.renderStepThree(),
       3: <NullScreen type="next-stage" />,
+      100: this.renderPermitGeneration(),
     };
 
     const menu = (
@@ -567,6 +657,11 @@ export class NoticeOfWorkApplication extends Component {
             onClick={() => this.openChangeNOWLocationModal(this.props.noticeOfWork)}
           >
             Edit Application Lat/Long
+          </Menu.Item>
+        )}
+        {!isDecision && (
+          <Menu.Item key="edit-application-status" onClick={() => this.openUpdateStatusModal()}>
+            Edit Application Status
           </Menu.Item>
         )}
         {!isDecision && this.props.noticeOfWork.lead_inspector_party_guid && (
@@ -642,8 +737,23 @@ export class NoticeOfWorkApplication extends Component {
                 noticeOfWork={this.props.noticeOfWork}
                 inspectorsHash={this.props.inspectorsHash}
                 noticeOfWorkPageFromRoute={this.state.noticeOfWorkPageFromRoute}
+                noticeOfWorkApplicationStatusOptionsHash={
+                  this.props.noticeOfWorkApplicationStatusOptionsHash
+                }
                 fixedTop={this.state.fixedTop}
               />
+              {!this.state.isPermitGeneration && (
+                <Button
+                  type="secondary"
+                  className="full-mobile"
+                  onClick={() => {
+                    this.setPermitGenerationStep(this.state.currentStep);
+                  }}
+                >
+                  <img alt="pencil" className="padding-small--right" src={EDIT_OUTLINE_VIOLET} />
+                  Draft Permit
+                </Button>
+              )}
             </div>
             <br />
             {this.state.isViewMode ? (
@@ -749,6 +859,7 @@ const mapStateToProps = (state) => ({
   applicationStatusOptions: getDropdownNoticeOfWorkApplicationStatusOptions(state),
   applicationProgressStatusCodes: getNoticeOfWorkApplicationProgressStatusCodeOptions(state),
   generatableApplicationDocuments: getGeneratableNoticeOfWorkApplicationDocumentTypeOptions(state),
+  noticeOfWorkApplicationStatusOptionsHash: getNoticeOfWorkApplicationStatusOptionsHash(state),
   documentContextTemplate: getDocumentContextTemplate(state),
 });
 

@@ -32,10 +32,10 @@ const propTypes = {
   fetchVarianceById: PropTypes.func.isRequired,
   varianceGuid: PropTypes.string.isRequired,
   removeDocumentFromVariance: PropTypes.func.isRequired,
-  documentCategoryOptions: CustomPropTypes.options.isRequired,
+  varianceDocumentCategoryOptions: CustomPropTypes.options.isRequired,
   complianceCodesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   fetchVariancesByMine: PropTypes.func.isRequired,
-  documentCategoryOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  varianceDocumentCategoryOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
 const defaultProps = {
@@ -72,13 +72,13 @@ export class EditVarianceModal extends Component {
             mineGuid={this.props.mineGuid}
             mineName={this.props.mineName}
             inspectors={this.props.inspectors}
-            documentCategoryOptions={this.props.documentCategoryOptions}
+            varianceDocumentCategoryOptions={this.props.varianceDocumentCategoryOptions}
             variance={this.props.variance}
             varianceStatusOptions={this.props.varianceStatusOptions}
             initialValues={this.props.variance}
             removeDocument={this.handleRemoveDocument}
             complianceCodesHash={this.props.complianceCodesHash}
-            documentCategoryOptionsHash={this.props.documentCategoryOptionsHash}
+            varianceDocumentCategoryOptionsHash={this.props.varianceDocumentCategoryOptionsHash}
           />
         </LoadingWrapper>
       </div>
@@ -91,8 +91,8 @@ const mapStateToProps = (state) => ({
   varianceStatusOptions: getDropdownVarianceStatusOptions(state),
   inspectors: getDropdownInspectors(state),
   complianceCodesHash: getHSRCMComplianceCodesHash(state),
-  documentCategoryOptions: getDropdownVarianceDocumentCategoryOptions(state),
-  documentCategoryOptionsHash: getVarianceDocumentCategoryOptionsHash(state),
+  varianceDocumentCategoryOptions: getDropdownVarianceDocumentCategoryOptions(state),
+  varianceDocumentCategoryOptionsHash: getVarianceDocumentCategoryOptionsHash(state),
   varianceStatusOptionsHash: getVarianceStatusOptionsHash(state),
   complianceCodes: getDropdownHSRCMComplianceCodes(state),
 });
@@ -110,7 +110,4 @@ const mapDispatchToProps = (dispatch) =>
 EditVarianceModal.propTypes = propTypes;
 EditVarianceModal.defaultProps = defaultProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(EditVarianceModal);
+export default connect(mapStateToProps, mapDispatchToProps)(EditVarianceModal);

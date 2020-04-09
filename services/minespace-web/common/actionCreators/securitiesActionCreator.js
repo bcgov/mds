@@ -53,3 +53,49 @@ export const updateBond = (payload, bondGuid) => (dispatch) => {
     .catch(() => dispatch(error(reducerTypes.UPDATE_BOND)))
     .finally(() => dispatch(hideLoading("modal")));
 };
+
+export const fetchMineReclamationInvoices = (mineGuid) => (dispatch) => {
+  dispatch(request(reducerTypes.GET_MINE_RECLAMATION_INVOICES));
+  return CustomAxios()
+    .get(`${ENVIRONMENT.apiUrl}${API.MINE_RECLAMATION_INVOICES(mineGuid)}`, createRequestHeader())
+    .then((response) => {
+      dispatch(success(reducerTypes.GET_MINE_RECLAMATION_INVOICES));
+      dispatch(securitiesActions.storeMineReclamationInvoices(response.data));
+      return response;
+    })
+    .catch(() => dispatch(error(reducerTypes.GET_MINE_RECLAMATION_INVOICES)));
+};
+
+export const createReclamationInvoice = (payload) => (dispatch) => {
+  dispatch(request(reducerTypes.CREATE_RECLAMATION_INVOICE));
+  dispatch(showLoading("modal"));
+  return CustomAxios()
+    .post(ENVIRONMENT.apiUrl + API.RECLAMATION_INVOICE(), payload, createRequestHeader())
+    .then((response) => {
+      notification.success({
+        message: "Successfully added a new reclamation invoice.",
+        duration: 10,
+      });
+      dispatch(success(reducerTypes.CREATE_RECLAMATION_INVOICE));
+      return response;
+    })
+    .catch(() => dispatch(error(reducerTypes.CREATE_RECLAMATION_INVOICE)))
+    .finally(() => dispatch(hideLoading("modal")));
+};
+
+export const updateReclamationInvoice = (payload, invoiceGuid) => (dispatch) => {
+  dispatch(request(reducerTypes.UPDATE_RECLAMATION_INVOICE));
+  dispatch(showLoading("modal"));
+  return CustomAxios()
+    .put(ENVIRONMENT.apiUrl + API.RECLAMATION_INVOICE(invoiceGuid), payload, createRequestHeader())
+    .then((response) => {
+      notification.success({
+        message: "Successfully updated the invoice record.",
+        duration: 10,
+      });
+      dispatch(success(reducerTypes.UPDATE_RECLAMATION_INVOICE));
+      return response;
+    })
+    .catch(() => dispatch(error(reducerTypes.UPDATE_RECLAMATION_INVOICE)))
+    .finally(() => dispatch(hideLoading("modal")));
+};

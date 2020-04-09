@@ -229,6 +229,18 @@ export class ReportFilterForm extends Component {
                 format={null}
               />
             </Col>
+            <Col md={8} sm={24}>
+              <Field
+                id="received_only"
+                name="received_only"
+                label="Received Status"
+                component={renderConfig.SELECT}
+                data={[
+                  { value: "", label: "Received Only" },
+                  { value: "false", label: "Received and Unreceived" },
+                ]}
+              />
+            </Col>
           </Row>
         </div>
         <div className="right center-mobile">

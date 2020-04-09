@@ -38,7 +38,7 @@ class NOWApplicationIdentity(Base, AuditMixin):
 
     @property
     def now_submission(self):
-        return Application.query.find(self.messageid).first()
+        return Application.query.get(self.messageid)
 
     @now_submission.setter
     def now_submission(self, now_submission):
@@ -55,6 +55,10 @@ class NOWApplicationIdentity(Base, AuditMixin):
             return cls.query.filter_by(now_application_guid=_id).first()
         except ValueError:
             return None
+
+    @classmethod
+    def find_by_messageid(cls, messageid):
+        return cls.query.filter_by(messageid=messageid).first()
 
     @classmethod
     def submission_count_ytd(cls, _mine_guid, _sub_year):

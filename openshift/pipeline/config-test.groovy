@@ -251,6 +251,7 @@ app {
                     'params':[
                             'NAME':"mds-docgen-api",
                             'SUFFIX': "${vars.deployment.suffix}",
+                            'VERSION':"${app.deployment.version}",
                             'APPLICATION_SUFFIX': "${vars.deployment.application_suffix}",
                             'TAG_NAME':"${app.deployment.version}",
                             'PORT':3030,
@@ -479,7 +480,7 @@ environments {
                     HOST = "http://mds-redis${vars.deployment.suffix}"
                 }
                 'mds-docgen-api' {
-                    HOST = "http://mds-docgen-api${vars.deployment.suffix}:3030"
+                    HOST = "http://docgen${vars.deployment.suffix}:3030"
                 }
                 'schemaspy' {
                     HOST = "mds-schemaspy-${vars.deployment.namespace}.pathfinder.gov.bc.ca"

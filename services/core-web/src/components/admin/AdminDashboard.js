@@ -64,6 +64,7 @@ export class AdminDashboard extends Component {
         </div>
         <div className="landing-page__content">
           <Tabs
+            className="center-tabs"
             activeKey={this.state.activeTab}
             defaultActiveKey="summary"
             onChange={this.handleTabChange}
@@ -119,9 +120,6 @@ const mapDispatchToProps = (dispatch) =>
 AdminDashboard.propTypes = propTypes;
 
 export default compose(
-  connect(
-    null,
-    mapDispatchToProps
-  ),
+  connect(null, mapDispatchToProps),
   AuthorizationGuard(Permission.ADMIN)
 )(AdminDashboard);
