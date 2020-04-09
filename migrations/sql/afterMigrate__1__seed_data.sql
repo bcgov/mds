@@ -641,19 +641,8 @@ VALUES
 	('NRL', '' , 'templates/now/Rejection Letter Template (NoW).docx', true, 'system-mds', 'system-mds'),
 	('NWL', '' , 'templates/now/Withdrawal Letter Template (NoW).docx', true, 'system-mds', 'system-mds'),
 	('NCL', '', 'templates/now/Client Acknowledgment Letter Template (NoW).docx', true, 'system-mds', 'system-mds')
-  -- ('PMA', '', 'templates/permit/Permit_Amendment_template.docx',true,'system-mds','system-mds')
-ON CONFLICT DO NOTHING;
-
-INSERT INTO document_template
-(document_template_code,form_spec_json, template_file_path, active_ind, create_user, update_user)
-VALUES
-('PMT', '', 'templates/permit/New_Permit_Template.docx', true, 'system-mds','system-mds')
-ON CONFLICT DO NOTHING;
-
-INSERT INTO document_template
-(document_template_code,form_spec_json, template_file_path, active_ind, create_user, update_user)
-VALUES
-('PMA', '', 'templates/permit/Permit_Amendment_Template.docx', true, 'system-mds','system-mds')
+  ('PMT', '', 'templates/permit/New_Permit_Template.docx', true, 'system-mds','system-mds'),
+  ('PMA', '', 'templates/permit/Permit_Amendment_Template.docx', true, 'system-mds','system-mds')
 ON CONFLICT DO NOTHING;
 
 --use update statement so it can be easily copied from new fixed  migrations and just be changed in the future.
