@@ -63,7 +63,7 @@ class NOWApplicationImportResource(Resource, UserMixin):
         # In the event of multiple requests being fired simultaneously this can still sometimes fail.
         db.session.refresh(now_application_identity)
         if now_application_identity.now_application_id is not None:
-            raise BadRequest('This redcord has already been imported.')
+            raise BadRequest('This record has already been imported.')
         application.save()
 
         return {'now_application_guid': str(application.now_application_guid)}
