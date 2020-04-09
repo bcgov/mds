@@ -196,9 +196,12 @@ services:
   docgen-api:
     restart: always
     container_name: docgen_api
-    build:
-      context: services/docgen-api
-    command: ["node", "index"]
+    image: bcgovimages/doc-gen-api:v1.0.0
+    command: ["npm", "run", "start"]
+    environment:
+      - APP_PORT=3030
+      - CACHE_DIR=/tmp/tmp-reports
+      - NODE_ENV=development
     #volumes:
     #  - ./services/docgen-api/:/carbone-api/
     ports:
