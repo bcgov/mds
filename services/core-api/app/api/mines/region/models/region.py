@@ -1,15 +1,24 @@
 from sqlalchemy.schema import FetchedValue
+from sqlalchemy.ext.hybrid import hybrid_property
 from app.extensions import db
 from app.api.utils.models_mixins import AuditMixin, Base
 
 
 class MineRegionCode(AuditMixin, Base):
     __tablename__ = 'mine_region_code'
+
     mine_region_code = db.Column(db.String(2), nullable=False, primary_key=True)
     description = db.Column(db.String(100), nullable=False)
     display_order = db.Column(db.Integer, nullable=False)
     effective_date = db.Column(db.DateTime, nullable=False, server_default=FetchedValue())
     expiry_date = db.Column(db.DateTime)
+
+    regional_contacts = db.relationship('RegionalContact', lazy='select')
+
+    # Specific regional contacts
+    @hybrid_property
+    def regional_contact_office(self):
+        return RegionalContact.find_by_region_code('ROE', self.mine_region_code)
 
     def __repr__(self):
         return '<MineRegionCode %r>' % self.mine_region_code
@@ -19,7 +28,6 @@ class MineRegionCode(AuditMixin, Base):
         return cls.query.filter_by(mine_region_code=_code).first()
 
     @classmethod
-    #add active_ind here when added to db
     def get_active(cls):
         return cls.query.all()
 

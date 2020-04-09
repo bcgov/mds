@@ -193,48 +193,48 @@ UPDATE document_template SET form_spec_json = '[
       "relative-data-path": "now_application.lead_inspector.name"
     },
     {
-      "id": "regional_office_contact_email",
+      "id": "rc_office_email",
       "label": "Regional Office Contact''s Email",
       "type": "FIELD",
       "placeholder": "Enter the regional office contact''s email",
       "required": true,
-      "relative-data-path": "mine.regional_office_contact.email",
+      "relative-data-path": "mine.region.regional_contact_office.email",
       "read-only": true
     },
     {
-      "id": "regional_office_contact_phone_number",
+      "id": "rc_office_phone_number",
       "label": "Regional Office Contact''s Phone Number",
       "type": "FIELD",
       "placeholder": "Enter the regional office contact''s phone number",
       "required": true,
-      "relative-data-path": "mine.regional_office_contact.phone_number",
+      "relative-data-path": "mine.region.regional_contact_office.phone_number",
       "read-only": true
     },
     {
-      "id": "regional_office_contact_fax_number",
+      "id": "rc_office_fax_number",
       "label": "Regional Office Contact''s Fax Number",
       "type": "FIELD",
       "placeholder": "Enter the regional office contact''s fax number",
       "required": true,
-      "relative-data-path": "mine.regional_office_contact.fax_number",
+      "relative-data-path": "mine.region.regional_contact_office.fax_number",
       "read-only": true
     },
     {
-      "id": "regional_office_contact_mailing_address_line_1",
+      "id": "rc_office_mailing_address_line_1",
       "label": "Regional Office Contact''s Mailing Address Line 1",
       "type": "FIELD",
       "placeholder": "Enter the regional office contact''s mailing address line 1",
       "required": true,
-      "relative-data-path": "mine.regional_office_contact.mailing_address_line_1",
+      "relative-data-path": "mine.region.regional_contact_office.mailing_address_line_1",
       "read-only": true
     },
     {
-      "id": "regional_office_contact_mailing_address_line_2",
+      "id": "rc_office_mailing_address_line_2",
       "label": "Regional Office Contact''s Mailing Address Line 2",
       "type": "FIELD",
       "placeholder": "Enter the regional office contact''s mailing address line 2",
       "required": true,
-      "relative-data-path": "mine.regional_office_contact.mailing_address_line_2",
+      "relative-data-path": "mine.region.regional_contact_office.mailing_address_line_2",
       "read-only": true
     }
   ]'
