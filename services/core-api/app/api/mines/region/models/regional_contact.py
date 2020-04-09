@@ -4,6 +4,7 @@ from app.api.utils.models_mixins import Base
 
 class RegionalContact(Base):
     __tablename__ = 'regional_contact'
+
     regional_contact_type_code = db.Column(
         db.String(3),
         db.ForeignKey('regional_contact_type.regional_contact_type_code'),
