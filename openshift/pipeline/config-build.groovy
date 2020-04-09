@@ -122,20 +122,6 @@ app {
                         ]
                 ],
                 [
-                        'file':'openshift/templates/docgen/docgen.bc.json',
-                        'params':[
-                            'NAME':"mds-docgen-api",
-                            'SUFFIX': "${app.build.suffix}",
-                            'APPLICATION_SUFFIX': "-${app.build.env.id}",
-                            'BASE_PATH': "/${app.git.changeId}",
-                            'VERSION':"${app.build.version}",
-                            'SOURCE_CONTEXT_DIR': "services/docgen-api",
-                            'DOCKER_IMAGE_DIRECTORY': "openshift/docker-images/docgen",
-                            'SOURCE_REPOSITORY_URL': "${app.git.uri}",
-                            'NODE_ENV': "production"
-                        ]
-                ],
-                [
                     'file':'openshift/templates/postgresql.bc.json',
                     'params':[
                         'NAME':"mds-postgresql",
@@ -143,6 +129,14 @@ app {
                         'TAG_NAME':"${app.build.version}"
                     ]
                 ],
+                [
+                    'file':'openshift/templates/docgen/docgen.bc.json',
+                    'params':[
+                        'NAME':"docgen",
+                        'SUFFIX': "${app.build.suffix}",
+                        'TAG_NAME':"${app.build.version}"
+                    ]
+                ],                
                 [
                     'file':'openshift/templates/dbbackup.bc.json',
                     'params':[
