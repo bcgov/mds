@@ -44,7 +44,7 @@ class NoticeOfWorkDocumentResource(Resource, UserMixin):
             template_path, data=token_data['template_data'])
 
         # Push the document to the Document Manager
-        filename = docgen_resp.headers['Carbone-Report-Name']
+        filename = docgen_resp.headers['X-Report-Name']
         now_application_guid = token_data['now_application_guid']
         now_application_identity = NOWApplicationIdentity.query.unbound_unsafe().get(
             now_application_guid)

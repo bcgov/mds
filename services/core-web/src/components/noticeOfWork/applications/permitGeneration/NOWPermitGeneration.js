@@ -4,12 +4,12 @@ import PropTypes from "prop-types";
 import moment from "moment";
 import { connect } from "react-redux";
 
-import CustomPropTypes from "@/customPropTypes";
-import LinkButton from "@/components/common/LinkButton";
-import GeneratePermitForm from "@/components/Forms/GeneratePermitForm";
 import * as Strings from "@common/constants/strings";
 import { formatDate } from "@common/utils/helpers";
 import { getNoticeOfWorkApplicationTypeOptions } from "@common/selectors/staticContentSelectors";
+import CustomPropTypes from "@/customPropTypes";
+import LinkButton from "@/components/common/LinkButton";
+import GeneratePermitForm from "@/components/Forms/GeneratePermitForm";
 
 /**
  * @class NOWPermitGeneration - contains the form and information to generate a permit document form a Notice of Work
@@ -17,10 +17,10 @@ import { getNoticeOfWorkApplicationTypeOptions } from "@common/selectors/staticC
 
 const propTypes = {
   returnToPrevStep: PropTypes.func.isRequired,
-  noticeOfWork: CustomPropTypes.importedNOWApplication,
+  noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
   appOptions: PropTypes.arrayOf(CustomPropTypes.options).isRequired,
   handleGenerateDocumentFormSubmit: PropTypes.func.isRequired,
-  documentType: PropTypes.any,
+  documentType: PropTypes.objectOf(PropTypes.any).isRequired,
   isAmendment: PropTypes.bool.isRequired,
 };
 
@@ -28,7 +28,7 @@ const defaultProps = {};
 
 export class NOWPermitGeneration extends Component {
   createPermitGenObject = (noticeOfWork) => {
-    let permitGenObject = {
+    const permitGenObject = {
       permit_number: "",
       issue_date: moment().format("MMM DD YYYY"),
       auth_end_date: "",
@@ -45,17 +45,9 @@ export class NOWPermitGeneration extends Component {
     )[0];
 
     permitGenObject.permittee = permittee.party.name;
-    permitGenObject.permittee_mailing_address =
-      permittee.party.address[0].address_line_1 +
-      "\n" +
-      permittee.party.address[0].city +
-      " " +
-      permittee.party.address[0].sub_division_code +
-      " " +
-      permittee.party.address[0].post_code;
+    permitGenObject.permittee_mailing_address = `${permittee.party.address[0].address_line_1}\n${permittee.party.address[0].city} ${permittee.party.address[0].sub_division_code} ${permittee.party.address[0].post_code}`;
     permitGenObject.property = noticeOfWork.property_name;
-    permitGenObject.mine_location =
-      "Latitude: " + noticeOfWork.latitude + ", Longitude: " + noticeOfWork.longitude;
+    permitGenObject.mine_location = `Latitude: ${noticeOfWork.latitude}, Longitude: ${noticeOfWork.longitude}`;
     permitGenObject.application_date = noticeOfWork.submitted_date;
     permitGenObject.application_type = this.props.appOptions.filter(
       (option) => option.notice_of_work_type_code === noticeOfWork.notice_of_work_type_code
@@ -74,12 +66,13 @@ export class NOWPermitGeneration extends Component {
   };
 
   handlePremitGenSubmit = (values) => {
+    const newValues = values;
     if (this.props.isAmendment) {
-      values.original_permit_issue_date = formatDate(values.original_permit_issue_date);
+      newValues.original_permit_issue_date = formatDate(values.original_permit_issue_date);
     }
-    values.auth_end_date = formatDate(values.auth_end_date);
+    newValues.auth_end_date = formatDate(values.auth_end_date);
     this.props.handleGenerateDocumentFormSubmit(this.props.documentType, {
-      ...values,
+      ...newValues,
       document_list: this.createDocList(this.props.noticeOfWork),
     });
     this.props.returnToPrevStep();
