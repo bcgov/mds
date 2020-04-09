@@ -66,14 +66,13 @@ export class NOWPermitGeneration extends Component {
   };
 
   handlePremitGenSubmit = (values) => {
+    const newValues = values;
     if (this.props.isAmendment) {
-      // eslint-disable-next-line no-param-reassign
-      values.original_permit_issue_date = formatDate(values.original_permit_issue_date);
+      newValues.original_permit_issue_date = formatDate(values.original_permit_issue_date);
     }
-    // eslint-disable-next-line no-param-reassign
-    values.auth_end_date = formatDate(values.auth_end_date);
+    newValues.auth_end_date = formatDate(values.auth_end_date);
     this.props.handleGenerateDocumentFormSubmit(this.props.documentType, {
-      ...values,
+      ...newValues,
       document_list: this.createDocList(this.props.noticeOfWork),
     });
     this.props.returnToPrevStep();
