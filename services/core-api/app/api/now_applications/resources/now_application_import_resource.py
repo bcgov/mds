@@ -58,6 +58,9 @@ class NOWApplicationImportResource(Resource, UserMixin):
         application.latitude = latitude
         application.longitude = longitude
         application.now_application_guid = application_guid
+
+        # This is a first pass but by no means exhaustive solution to preventing the now application from being saved more than once.
+        # In the event of multiple requests being fired simultaneously this can still sometimes fail.
         db.session.refresh(now_application_identity)
         if now_application_identity.now_application_id is not None:
             raise BadRequest('This redcord has already been imported.')
