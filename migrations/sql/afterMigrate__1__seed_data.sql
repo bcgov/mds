@@ -609,10 +609,12 @@ VALUES
 	('MPW', 'Map of Proposed Work', true, 'system-mds', 'system-mds'),
     ('REV', 'Review',true,'system-mds','system-mds'),
     ('PUB', 'Public Comment',true,'system-mds','system-mds'),
-    ('CAL', 'Client Acknowledgement Letter', true, 'system-mds', 'system-mds'),
+    ('CAL', 'Acknowledgement Letter', true, 'system-mds', 'system-mds'),
 	('WDL', 'Withdrawl Letter', true, 'system-mds', 'system-mds'),
 	('RJL', 'Rejection Letter', true, 'system-mds', 'system-mds'),
-    ('SCD', 'Security Calculation Document', true, 'system-mds', 'system-mds')
+    ('SCD', 'Security Calculation Document', true, 'system-mds', 'system-mds'),
+    ('PMT','Working Permit', true, 'system-mds','system-mds'),
+    ('PMA','Working Permit for Amendment', true, 'system-mds','system-mds')
 on conflict do nothing;
 
 INSERT INTO now_application_review_type(
@@ -638,9 +640,11 @@ INSERT INTO document_template
 VALUES
 	('NRL', '' , 'templates/now/Rejection Letter Template (NoW).docx', true, 'system-mds', 'system-mds'),
 	('NWL', '' , 'templates/now/Withdrawal Letter Template (NoW).docx', true, 'system-mds', 'system-mds'),
-	('NCL', '', 'templates/now/Client Acknowledgment Letter Template (NoW).docx', true, 'system-mds', 'system-mds')
+	('NCL', '', 'templates/now/Acknowledgment Letter Template (NoW).docx', true, 'system-mds', 'system-mds'),
+  ('PMT', '', 'templates/permit/New_Permit_Template.docx', true, 'system-mds','system-mds'),
+  ('PMA', '', 'templates/permit/Permit_Amendment_Template.docx', true, 'system-mds','system-mds')
 ON CONFLICT DO NOTHING;
---use update statement so it can be easily copied from new fixed  migrations and just be changed in the future.
+
 UPDATE document_template SET form_spec_json = '[
     {
       "id": "letter_dt",
@@ -662,14 +666,14 @@ UPDATE document_template SET form_spec_json = '[
       "id": "proponent_address",
       "label": "Proponent Address",
       "type": "FIELD",
-      "placeholder": "Enter the propnent''s address",
+      "placeholder": "Enter the proponent''s address",
       "required": true
     },
     {
       "id": "proponent_name",
       "label": "Proponent Name",
       "type": "FIELD",
-      "placeholder": "Enter the propnent''s name",
+      "placeholder": "Enter the proponent''s name",
       "required": false
     },
     {
@@ -702,11 +706,55 @@ UPDATE document_template SET form_spec_json = '[
       "label": "Letter Body",
       "type": "AUTO_SIZE_FIELD",
       "context-value": "Future proposals for mining activities on the above noted property will require the submission of a new Notice of Work application. Should you require further information or have questions please do not hesitate to contact me.",
-      "required":true
+      "required": true
+    },
+    {
+      "id": "rc_office_email",
+      "label": "Regional Office Contact''s Email",
+      "type": "FIELD",
+      "placeholder": "Enter the regional office contact''s email",
+      "required": true,
+      "relative-data-path": "mine.region.regional_contact_office.email",
+      "read-only": true
+    },
+    {
+      "id": "rc_office_phone_number",
+      "label": "Regional Office Contact''s Phone Number",
+      "type": "FIELD",
+      "placeholder": "Enter the regional office contact''s phone number",
+      "required": true,
+      "relative-data-path": "mine.region.regional_contact_office.phone_number",
+      "read-only": true
+    },
+    {
+      "id": "rc_office_fax_number",
+      "label": "Regional Office Contact''s Fax Number",
+      "type": "FIELD",
+      "placeholder": "Enter the regional office contact''s fax number",
+      "required": true,
+      "relative-data-path": "mine.region.regional_contact_office.fax_number",
+      "read-only": true
+    },
+    {
+      "id": "rc_office_mailing_address_line_1",
+      "label": "Regional Office Contact''s Mailing Address Line 1",
+      "type": "FIELD",
+      "placeholder": "Enter the regional office contact''s mailing address line 1",
+      "required": true,
+      "relative-data-path": "mine.region.regional_contact_office.mailing_address_line_1",
+      "read-only": true
+    },
+    {
+      "id": "rc_office_mailing_address_line_2",
+      "label": "Regional Office Contact''s Mailing Address Line 2",
+      "type": "FIELD",
+      "placeholder": "Enter the regional office contact''s mailing address line 2",
+      "required": true,
+      "relative-data-path": "mine.region.regional_contact_office.mailing_address_line_2",
+      "read-only": true
     }
   ]' 
 where document_template_code = 'NRL';
-
 
 UPDATE document_template SET form_spec_json = '[
     {
@@ -729,14 +777,14 @@ UPDATE document_template SET form_spec_json = '[
       "id": "proponent_address",
       "label": "Proponent Address",
       "type": "FIELD",
-      "placeholder": "Enter the propnent''s address",
+      "placeholder": "Enter the proponent''s address",
       "required": true
     },
     {
       "id": "proponent_name",
       "label": "Proponent Name",
       "type": "FIELD",
-      "placeholder": "Enter the propnent''s name",
+      "placeholder": "Enter the proponent''s name",
       "required": false
     },
     {
@@ -768,12 +816,55 @@ UPDATE document_template SET form_spec_json = '[
       "label": "Letter Body",
       "type": "AUTO_SIZE_FIELD",
       "context-value": "You will have to reapply should you wish to carry out your intended work program. You are reminded that pursuant to Section 10 of the Mines Act no exploration activities can be carried out unless you have received the required permit.",
-      "required":true
+      "required": true
+    },
+    {
+      "id": "rc_office_email",
+      "label": "Regional Office Contact''s Email",
+      "type": "FIELD",
+      "placeholder": "Enter the regional office contact''s email",
+      "required": true,
+      "relative-data-path": "mine.region.regional_contact_office.email",
+      "read-only": true
+    },
+    {
+      "id": "rc_office_phone_number",
+      "label": "Regional Office Contact''s Phone Number",
+      "type": "FIELD",
+      "placeholder": "Enter the regional office contact''s phone number",
+      "required": true,
+      "relative-data-path": "mine.region.regional_contact_office.phone_number",
+      "read-only": true
+    },
+    {
+      "id": "rc_office_fax_number",
+      "label": "Regional Office Contact''s Fax Number",
+      "type": "FIELD",
+      "placeholder": "Enter the regional office contact''s fax number",
+      "required": true,
+      "relative-data-path": "mine.region.regional_contact_office.fax_number",
+      "read-only": true
+    },
+    {
+      "id": "rc_office_mailing_address_line_1",
+      "label": "Regional Office Contact''s Mailing Address Line 1",
+      "type": "FIELD",
+      "placeholder": "Enter the regional office contact''s mailing address line 1",
+      "required": true,
+      "relative-data-path": "mine.region.regional_contact_office.mailing_address_line_1",
+      "read-only": true
+    },
+    {
+      "id": "rc_office_mailing_address_line_2",
+      "label": "Regional Office Contact''s Mailing Address Line 2",
+      "type": "FIELD",
+      "placeholder": "Enter the regional office contact''s mailing address line 2",
+      "required": true,
+      "relative-data-path": "mine.region.regional_contact_office.mailing_address_line_2",
+      "read-only": true
     }
   ]'
 where document_template_code = 'NWL';
-
-
 
 UPDATE document_template SET form_spec_json = '[
     {
@@ -796,14 +887,14 @@ UPDATE document_template SET form_spec_json = '[
       "id": "proponent_address",
       "label": "Proponent Address",
       "type": "FIELD",
-      "placeholder": "Enter the propnent''s address",
+      "placeholder": "Enter the proponent''s address",
       "required": true
     },
     {
       "id": "proponent_name",
       "label": "Proponent Name",
       "type": "FIELD",
-      "placeholder": "Enter the propnent''s name",
+      "placeholder": "Enter the proponent''s name",
       "required": false
     },
     {
@@ -835,8 +926,7 @@ UPDATE document_template SET form_spec_json = '[
       "label": "Exploration Type",
       "type": "FIELD",
       "placeholder": "Enter the exploration type",
-      "required": true,
-      "relative-data-path": "now_application.notice_of_work_type.description"
+      "required": true
     },
     {
       "id": "bond_inc_amt",
@@ -854,42 +944,175 @@ UPDATE document_template SET form_spec_json = '[
       "relative-data-path": "now_application.lead_inspector.name"
     },
     { 
-      "id": "bond_information_para",
-      "label": "Bond Information",
-      "type": "AUTO_SIZE_FIELD",
-      "context-value": "You may wish to take the opportunity to post your security at this time to avoid delays in the permitting process.  The security deposit amount has been calculated based on the information provided in your application.  Details for the security deposit calculation are outlined in the attached spreadsheet.  Preferred forms of security are certified cheques, money orders or bank drafts made payable to the Minister of Finance.  Surety Bonds and Irrevocable Standby Letters of Credit (‘ILOC’) are also acceptable.  Please do not send cash.  Ensure you also include a completed and signed `No Interest Payable Form`, which is attached.  ILOCs will only be accepted from the following financial institutions: Bank of Montreal, Bank of Nova Scotia, Canadian Imperial Bank of Commerce, Royal Bank of Canada, Toronto-Dominion Bank",
-      "required":true
-    },
-    { 
-      "id": "other_documents_para",
-      "label": "Other Required Documents",
-      "type": "AUTO_SIZE_FIELD",
-      "context-value": "In addition, within 30 calendar days of receipt of this letter and prior to issuance of a permit, you must provide to this office:  A Chance Find Procedure (‘CFP’) for archaeological sites, an invasive plant species management plan and an updated Mine Emergency Response Plan (‘MERP’).  Guidelines and best management practices have been attached to this letter to assist with the preparation of the aforementioned items.",
-      "required":true
-    },
-    { 
-      "id": "plant_program_para",
-      "label": "Alien Plant Program Information",
-      "type": "AUTO_SIZE_FIELD",
-      "context-value": "The introduction and spread of invasive plants is a concern throughout the area.  The provincial Invasive Alien Plant Program (https://www2.gov.bc.ca/gov/content/environment/plants-animals-ecosystems/invasive-species/iapp) should be reviewed to determine what invasive species have been documented in and around the proposed work site(s).  Best management practices should be applied during operations and an invasive plant management strategy developed.  The attached best practices document has been developed by the Invasive Species Council of British Columbia for forestry operations, but the operational guidelines describe in it can be extended to mineral exploration operations.  For example, ensure incoming and outgoing vehicles are free of weed seeds and plant parts, report observations of infestation and re-vegetate disturbed areas as soon after disturbance.  For more information on individual species visit the Ministry of Agriculture site www.weedsbc.ca or the Invasive Species Council of BC website at www.bcinvasives.ca and go to `resources`.",
-      "required":true
-    },
-    { 
-      "id": "merp_para",
-      "label": "MERP Information",
-      "type": "AUTO_SIZE_FIELD",
-      "context-value": "The MERP shall include a section which outlines how engagement with affected communities and First Nations will occur in case of an emergency at your mine site.  The MERP is required to be posted at the work site at all times, which must include the name of the designated Mine Manager.  All employees must be advised and trained in the use of this plan.",
-      "required":true
-    },
-    { 
       "id": "letter_body",
       "label": "Letter Body",
       "type": "AUTO_SIZE_FIELD",
-      "context-value": "Other legislation may be applicable to the operation and you (the Permittee) may be required to obtain approvals or permits under that legislation.  It is your responsibility to comply with the terms and conditions of all other permits and authorizations which you may have been issued and other applicable legislation including, but not limited to the: Wildlife Act, Wildfire Act, Wildfire Regulation and the Water Sustainability Act.",
-      "required":true
+      "context-value": "You may wish to take the opportunity to post your security at this time to avoid delays in the permitting process.  The security deposit amount has been calculated based on the information provided in your application.  Details for the security deposit calculation are outlined in the attached spreadsheet.  Preferred forms of security are certified cheques, money orders or bank drafts made payable to the Minister of Finance.  Surety Bonds and Irrevocable Standby Letters of Credit (‘ILOC’) are also acceptable.  Please do not send cash.  Ensure you also include a completed and signed `No Interest Payable Form`, which is attached.  ILOCs will only be accepted from the following financial institutions: Bank of Montreal, Bank of Nova Scotia, Canadian Imperial Bank of Commerce, Royal Bank of Canada, Toronto-Dominion Bank.\n\nIn addition, within 30 calendar days of receipt of this letter and prior to issuance of a permit, you must provide to this office:  A Chance Find Procedure (‘CFP’) for archaeological sites, an invasive plant species management plan and an updated Mine Emergency Response Plan (‘MERP’).  Guidelines and best management practices have been attached to this letter to assist with the preparation of the aforementioned items.\n\nThe introduction and spread of invasive plants is a concern throughout the area.  The provincial Invasive Alien Plant Program (https://www2.gov.bc.ca/gov/content/environment/plants-animals-ecosystems/invasive-species/iapp) should be reviewed to determine what invasive species have been documented in and around the proposed work site(s).  Best management practices should be applied during operations and an invasive plant management strategy developed.  The attached best practices document has been developed by the Invasive Species Council of British Columbia for forestry operations, but the operational guidelines describe in it can be extended to mineral exploration operations.  For example, ensure incoming and outgoing vehicles are free of weed seeds and plant parts, report observations of infestation and re-vegetate disturbed areas as soon after disturbance.  For more information on individual species visit the Ministry of Agriculture site www.weedsbc.ca or the Invasive Species Council of BC website at www.bcinvasives.ca and go to `resources`.\n\nThe MERP shall include a section which outlines how engagement with affected communities and First Nations will occur in case of an emergency at your mine site.  The MERP is required to be posted at the work site at all times, which must include the name of the designated Mine Manager.  All employees must be advised and trained in the use of this plan.\n\nOther legislation may be applicable to the operation and you (the Permittee) may be required to obtain approvals or permits under that legislation.  It is your responsibility to comply with the terms and conditions of all other permits and authorizations which you may have been issued and other applicable legislation including, but not limited to the: Wildlife Act, Wildfire Act, Wildfire Regulation and the Water Sustainability Act.",
+      "required": true
+    },
+    {
+      "id": "rc_office_email",
+      "label": "Regional Office Contact''s Email",
+      "type": "FIELD",
+      "placeholder": "Enter the regional office contact''s email",
+      "required": true,
+      "relative-data-path": "mine.region.regional_contact_office.email",
+      "read-only": true
+    },
+    {
+      "id": "rc_office_phone_number",
+      "label": "Regional Office Contact''s Phone Number",
+      "type": "FIELD",
+      "placeholder": "Enter the regional office contact''s phone number",
+      "required": true,
+      "relative-data-path": "mine.region.regional_contact_office.phone_number",
+      "read-only": true
+    },
+    {
+      "id": "rc_office_fax_number",
+      "label": "Regional Office Contact''s Fax Number",
+      "type": "FIELD",
+      "placeholder": "Enter the regional office contact''s fax number",
+      "required": true,
+      "relative-data-path": "mine.region.regional_contact_office.fax_number",
+      "read-only": true
+    },
+    {
+      "id": "rc_office_mailing_address_line_1",
+      "label": "Regional Office Contact''s Mailing Address Line 1",
+      "type": "FIELD",
+      "placeholder": "Enter the regional office contact''s mailing address line 1",
+      "required": true,
+      "relative-data-path": "mine.region.regional_contact_office.mailing_address_line_1",
+      "read-only": true
+    },
+    {
+      "id": "rc_office_mailing_address_line_2",
+      "label": "Regional Office Contact''s Mailing Address Line 2",
+      "type": "FIELD",
+      "placeholder": "Enter the regional office contact''s mailing address line 2",
+      "required": true,
+      "relative-data-path": "mine.region.regional_contact_office.mailing_address_line_2",
+      "read-only": true
     }
   ]'
 where document_template_code = 'NCL';
+
+--THE FRONTEND DOESN"T ACTUALLY USE THE SPEC TO MAKE THE FORM,
+--but we need data enforcement still. 
+UPDATE document_template SET form_spec_json = '[
+    {
+      "id": "mine_no",
+      "label": "Mine Number",
+      "type": "FIELD",
+      "placeholder": "Enter the mine number",
+      "required": true,
+      "relative-data-path": "mine.mine_no",
+      "read-only": true
+    },
+    {
+      "id": "permittee",
+      "label": "Permittee Name",
+      "type": "FIELD",
+      "placeholder": "Enter the permittee''s name",
+      "relative-data-path": "now_application.permittee_name",
+      "read-only": true
+    },
+    {
+      "id": "property",
+      "label": "Property",
+      "type": "FIELD",
+      "placeholder": "Enter the property",
+      "required": true,
+      "relative-data-path": "now_application.property_name",
+      "read-only": true
+    },
+    {
+      "id": "lead_inspector",
+      "label": "Lead Inspector",
+      "type": "FIELD",
+      "placeholder": "Enter the inspector''s name",
+      "required": true,
+      "relative-data-path": "now_application.lead_inspector.name",
+      "read-only": true
+    },
+    {
+      "id": "application_date",
+      "label": "Application Date",
+      "type": "DATE",
+      "placeholder": "Enter the inspector''s name",
+      "required": true,
+      "relative-data-path": "now_application.submitted_date",
+      "read-only": true
+    },
+    {
+      "id": "application_type",
+      "label": "Application Type",
+      "type": "FIELD",
+      "placeholder": "Enter the inspector''s name",
+      "required": true,
+      "relative-data-path": "now_application.notice_of_work_type.description",
+      "read-only": true
+    }
+  ]'
+where document_template_code = 'PMT';
+
+UPDATE document_template SET form_spec_json = '[
+    {
+      "id": "mine_no",
+      "label": "Mine Number",
+      "type": "FIELD",
+      "placeholder": "Enter the mine number",
+      "required": true,
+      "relative-data-path": "mine.mine_no",
+      "read-only": true
+    },
+    {
+      "id": "permittee",
+      "label": "Permittee Name",
+      "type": "FIELD",
+      "placeholder": "Enter the permittee''s name",
+      "relative-data-path": "now_application.permittee_name",
+      "read-only": true
+    },
+    {
+      "id": "property",
+      "label": "Property",
+      "type": "FIELD",
+      "placeholder": "Enter the property",
+      "required": true,
+      "relative-data-path": "now_application.property_name",
+      "read-only": true
+    },
+    {
+      "id": "lead_inspector",
+      "label": "Lead Inspector",
+      "type": "FIELD",
+      "placeholder": "Enter the inspector''s name",
+      "required": true,
+      "relative-data-path": "now_application.lead_inspector.name",
+      "read-only": true
+    },
+    {
+      "id": "application_date",
+      "label": "Application Date",
+      "type": "DATE",
+      "placeholder": "Enter the inspector''s name",
+      "required": true,
+      "relative-data-path": "now_application.submitted_date",
+      "read-only": true
+    },
+    {
+      "id": "application_type",
+      "label": "Application Type",
+      "type": "FIELD",
+      "placeholder": "Enter the inspector''s name",
+      "required": true,
+      "relative-data-path": "now_application.notice_of_work_type.description",
+      "read-only": true
+    }
+  ]'
+where document_template_code = 'PMA';
 
 UPDATE now_application_document_type
 SET document_template_code = 'NCL'
@@ -902,6 +1125,18 @@ where now_application_document_type_code = 'WDL';
 UPDATE now_application_document_type
 SET document_template_code = 'NRL'
 where now_application_document_type_code = 'RJL';
+
+UPDATE now_application_document_type
+SET document_template_code = 'PMT'
+where now_application_document_type_code = 'PMT';
+
+UPDATE now_application_document_type
+SET document_template_code = 'PMA'
+where now_application_document_type_code = 'PMA';
+
+-- UPDATE now_application_document_type
+-- SET document_template_code = 'PMA'
+-- where now_application_document_type_code = 'PMA';
 
 
 INSERT INTO bond_status(
@@ -969,4 +1204,37 @@ VALUES
     ('CSL', 'Confiscation of Security Letter', 'system-mds', 'system-mds'),
     ('REL', 'Reminder Letter', 'system-mds', 'system-mds'),
     ('AKL', 'Acknowledgement Letter', 'system-mds', 'system-mds')
+ON CONFLICT DO NOTHING;
+
+INSERT INTO regional_contact_type
+    (
+    regional_contact_type_code,
+    description,
+    display_order,
+    create_user,
+    update_user
+    )
+VALUES
+    ('SHI', 'Senior Health, Safety and Environment Inspector', 30, 'system-mds', 'system-mds'),
+    ('SPI', 'Senior Permitting Inspector', 40, 'system-mds', 'system-mds'),
+    ('ROE', 'Regional Office', 20, 'system-mds', 'system-mds'),
+    ('RDR', 'Regional Director', 10, 'system-mds', 'system-mds')
+ON CONFLICT DO NOTHING;
+
+INSERT INTO regional_contact
+    (
+    regional_contact_type_code,
+    mine_region_code,
+    email,
+    phone_number,
+    fax_number,
+    mailing_address_line_1,
+    mailing_address_line_2
+    )
+VALUES
+    ('ROE', 'NE', 'MMD-PrinceGeorge@gov.bc.ca', '250 565-4240', '250 565-4328', '350-1011 4th Avenue', 'Prince George, B.C. V2L 3H9'),
+    ('ROE', 'NW', 'MMD-Smithers@gov.bc.ca', '250 847-7383', '250 847-7603', '2nd Floor, 3726 Alfred Avenue', 'Smithers, B.C. V0J 2N0'),
+    ('ROE', 'SC', 'MMD-Kamloops@gov.bc.ca', '250 371-3912', NULL, '2nd Floor, 441 Columbia Street', 'Kamloops, B.C. V2C 2T3'),
+    ('ROE', 'SE', 'MMD-Cranbrook@gov.bc.ca', '250 417-6134', NULL, '202-100 Cranbrook Street North', 'Cranbrook, B.C. V1C 3P9'),
+    ('ROE', 'SW', 'SouthwestMinesDivision@gov.bc.ca', '778 698-3645', '250 953-3878', 'PO Box 9395, Stn Prov Govt', 'Victoria, B.C. V8W 9M9')
 ON CONFLICT DO NOTHING;

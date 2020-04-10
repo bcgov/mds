@@ -34,8 +34,9 @@ import {
   fetchNoticeOfWorkApplicationContextTemplate,
 } from "@/actionCreators/documentActionCreator";
 import { getDocumentContextTemplate } from "@/reducers/documentReducer";
-
+import { EDIT_OUTLINE_VIOLET } from "@/constants/assets";
 import * as routes from "@/constants/routes";
+import NOWPermitGeneration from "@/components/noticeOfWork/applications/permitGeneration/NOWPermitGeneration";
 import ApplicationStepOne from "@/components/noticeOfWork/applications/applicationStepOne/ApplicationStepOne";
 import NOWApplicationReviews from "@/components/noticeOfWork/applications/referals/NOWApplicationReviews";
 import CustomPropTypes from "@/customPropTypes";
@@ -108,6 +109,7 @@ const defaultProps = {
 export class NoticeOfWorkApplication extends Component {
   state = {
     currentStep: 0,
+    prevStep: 0,
     isLoaded: false,
     isMajorMine: null,
     associatedLeadInspectorPartyGuid: "",
@@ -124,6 +126,7 @@ export class NoticeOfWorkApplication extends Component {
     isNewApplication: false,
     mineGuid: "",
     submitting: false,
+    isPermitGeneration: false,
   };
 
   count = 1;
@@ -567,6 +570,23 @@ export class NoticeOfWorkApplication extends Component {
     );
   };
 
+  renderPermitGeneration = () => {
+    const isAmendment = this.props.noticeOfWork.type_of_application !== "New Permit";
+    return (
+      <NOWPermitGeneration
+        returnToPrevStep={this.returnToPrevStep}
+        noticeOfWork={this.props.noticeOfWork}
+        documentType={
+          isAmendment
+            ? this.props.generatableApplicationDocuments.PMA
+            : this.props.generatableApplicationDocuments.PMT
+        }
+        isAmendment={isAmendment}
+        handleGenerateDocumentFormSubmit={this.handleGenerateDocumentFormSubmit}
+      />
+    );
+  };
+
   renderProgressStatus = (stepIndex) => {
     if (this.props.noticeOfWork.application_progress) {
       const progressLength = this.props.noticeOfWork.application_progress.length;
@@ -590,6 +610,15 @@ export class NoticeOfWorkApplication extends Component {
     return isDisabled;
   };
 
+  setPermitGenerationStep = (step) => {
+    this.setState({ prevStep: step });
+    this.setState({ currentStep: 100, isPermitGeneration: true });
+  };
+
+  returnToPrevStep = () => {
+    this.setState((prevState) => ({ currentStep: prevState.prevStep, isPermitGeneration: false }));
+  };
+
   render() {
     if (this.state.showNullScreen) {
       return <NullScreen type="unauthorized-page" />;
@@ -606,6 +635,7 @@ export class NoticeOfWorkApplication extends Component {
       1: this.renderStepTwo(),
       2: this.renderStepThree(),
       3: this.renderStepFour(),
+      100: this.renderPermitGeneration(),
     };
 
     const menu = (
@@ -722,6 +752,18 @@ export class NoticeOfWorkApplication extends Component {
                 }
                 fixedTop={this.state.fixedTop}
               />
+              {!this.state.isPermitGeneration && (
+                <Button
+                  type="secondary"
+                  className="full-mobile"
+                  onClick={() => {
+                    this.setPermitGenerationStep(this.state.currentStep);
+                  }}
+                >
+                  <img alt="pencil" className="padding-small--right" src={EDIT_OUTLINE_VIOLET} />
+                  Draft Permit
+                </Button>
+              )}
             </div>
             <br />
             {this.state.isViewMode ? (

@@ -5,8 +5,8 @@ import { remove } from "lodash";
 import { Form, Button, Popconfirm, Typography } from "antd";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
-import { required, maxLength } from "@/utils/Validate";
-import { resetForm } from "@/utils/helpers";
+import { required, maxLength } from "@common/utils/Validate";
+import { resetForm } from "@common/utils/helpers";
 import CustomPropTypes from "@/customPropTypes";
 import VarianceFileUpload from "@/components/Forms/variances/VarianceFileUpload";
 
