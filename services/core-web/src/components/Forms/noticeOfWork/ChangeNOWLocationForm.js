@@ -17,7 +17,6 @@ const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
-  submitting: PropTypes.bool.isRequired,
   locationOnly: PropTypes.bool,
   mine: CustomPropTypes.mine,
   latitude: PropTypes.string,
@@ -34,6 +33,11 @@ const defaultProps = {
 const selector = formValueSelector(FORM.CHANGE_NOW_LOCATION);
 // eslint-disable-next-line react/prefer-stateless-function
 export class ChangeNOWLocationForm extends Component {
+  state = { submitting: false };
+  handleFormSubmit = (values) => {
+    this.setState({ submitting: true });
+    this.props.handleSubmit(values);
+  };
   render() {
     const additionalPin =
       this.props.latitude && this.props.longitude
@@ -41,7 +45,7 @@ export class ChangeNOWLocationForm extends Component {
         : [];
     const span = this.props.locationOnly ? 12 : 6;
     return (
-      <Form layout="vertical" onSubmit={this.props.handleSubmit}>
+      <Form layout="vertical" onSubmit={this.handleFormSubmit}>
         <Row gutter={16}>
           {!this.props.locationOnly && (
             <Col md={12} s={24}>
@@ -90,7 +94,7 @@ export class ChangeNOWLocationForm extends Component {
             className="full-mobile"
             type="primary"
             htmlType="submit"
-            disabled={this.props.submitting}
+            disabled={this.state.submitting}
           >
             {this.props.title}
           </Button>
