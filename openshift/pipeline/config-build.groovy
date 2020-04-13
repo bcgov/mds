@@ -132,8 +132,7 @@ app {
                 [
                     'file':'openshift/templates/docgen/docgen.bc.json',
                     'params':[
-                        'NAME':"docgen",
-                        'SUFFIX': "${app.build.suffix}",
+                        'NAME':"mds-docgen-api",
                         'TAG_NAME':"${app.build.version}"
                     ]
                 ],                
