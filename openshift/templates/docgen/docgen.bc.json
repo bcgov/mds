@@ -13,6 +13,12 @@
       "required": true
     },
     {
+      "name": "NAME_SUFFIX",
+      "displayName": "Name Suffix",
+      "description": "A suffix appended to all objects",
+      "required": true
+    },
+    {
       "name": "TAG_NAME",
       "required": true
     }
