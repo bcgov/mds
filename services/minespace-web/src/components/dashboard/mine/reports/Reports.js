@@ -120,15 +120,23 @@ export class Reports extends Component {
                 <Text className="color-primary" strong>
                   reports
                 </Text>
-                &nbsp;that have been submitted to the Ministry. If a report is listed but there are
-                no files attached, it means the report has not been submitted. This table may not
-                show all reports that your mine is required to submit to the Ministry. If you have
-                any questions, please check with an EMPR representative.
+                &nbsp;from the Health, Safety and Reclamation code that your mine has submitted to
+                the Ministry. It also shows reports the Ministry has requested from your mine.
+                <br />
+                If you do not see an HSRC report that your mine must submit, click Submit Report,
+                choose the report you need to send and then attach the file or files.
+                <br />
+                <Text className="color-primary" strong>
+                  Note
+                </Text>
+                : Do not use this page to submit reports specified in your permit. Continue to email
+                these reports to the Ministry.
               </Paragraph>
               <br />
             </Col>
           </Row>
-          {this.props.mineReports && this.props.mineReports.length > 0 && (
+          {/* The summary cards are intentionally hidden for now. */}
+          {false && this.props.mineReports && this.props.mineReports.length > 0 && (
             <Row type="flex" justify="space-around" gutter={[16, 32]}>
               <Col md={24} lg={8}>
                 <TableSummaryCard

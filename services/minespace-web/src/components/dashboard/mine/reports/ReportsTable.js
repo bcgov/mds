@@ -26,6 +26,14 @@ export const ReportsTable = (props) => {
       render: (text) => <div title="Report Name">{text}</div>,
     },
     {
+      title: "Report Type",
+      key: "mine_report_category",
+      dataIndex: "mine_report_category",
+      sortField: "mine_report_category",
+      sorter: (a, b) => a.mine_report_category.localeCompare(b.mine_report_category),
+      render: (text) => <div title="Report Type">{text}</div>,
+    },
+    {
       title: "Compliance Period",
       dataIndex: "submission_year",
       sorter: (a, b) => (a.submission_year > b.submission_year ? -1 : 1),
