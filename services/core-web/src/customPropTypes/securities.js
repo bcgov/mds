@@ -1,4 +1,5 @@
 import { PropTypes } from "prop-types";
+import { mineDocument } from "./documents";
 
 export const payer = PropTypes.shape({
   party_name: PropTypes.string,
@@ -23,4 +24,15 @@ export const bond = PropTypes.shape({
   note: PropTypes.string,
   payer,
   permit_guid: PropTypes.string,
+  documents: PropTypes.arrayOf(mineDocument),
+});
+
+export const invoice = PropTypes.shape({
+  reclamation_invoice_id: PropTypes.number,
+  reclamation_invoice_guid: PropTypes.string,
+  project_id: PropTypes.string,
+  amount: PropTypes.string,
+  vendor: PropTypes.string,
+  permit_guid: PropTypes.string,
+  documents: PropTypes.arrayOf(mineDocument),
 });

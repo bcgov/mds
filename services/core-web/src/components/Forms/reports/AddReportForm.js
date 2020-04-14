@@ -208,7 +208,6 @@ export class AddReportForm extends Component {
                 placeholder="Select compliance year"
                 component={renderConfig.YEAR}
                 validate={[required]}
-                props={{ disabled: this.state.existingReport }}
               />
             </Form.Item>
             <Form.Item>

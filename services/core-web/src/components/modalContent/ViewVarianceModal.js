@@ -19,7 +19,7 @@ const propTypes = {
   varianceStatusOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   complianceCodesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   inspectorsHash: PropTypes.objectOf(PropTypes.string).isRequired,
-  documentCategoryOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  varianceDocumentCategoryOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
 export const ViewVarianceModal = (props) => {
@@ -52,7 +52,7 @@ export const ViewVarianceModal = (props) => {
         mineName={props.mineName}
         isViewOnly
         complianceCodesHash={props.complianceCodesHash}
-        documentCategoryOptionsHash={props.documentCategoryOptionsHash}
+        varianceDocumentCategoryOptionsHash={props.varianceDocumentCategoryOptionsHash}
       />
       <div className="right center-mobile">
         <Button className="full-mobile" type="secondary" onClick={props.closeModal}>
@@ -69,7 +69,7 @@ const mapStateToProps = (state) => ({
   varianceStatusOptionsHash: getVarianceStatusOptionsHash(state),
   complianceCodesHash: getHSRCMComplianceCodesHash(state),
   inspectorsHash: getInspectorsHash(state),
-  documentCategoryOptionsHash: getVarianceDocumentCategoryOptionsHash(state),
+  varianceDocumentCategoryOptionsHash: getVarianceDocumentCategoryOptionsHash(state),
 });
 
 export default connect(mapStateToProps)(ViewVarianceModal);

@@ -11,32 +11,23 @@
     {
       "name": "NAME",
       "displayName": "Name",
-      "description": "The name assigned to all of the frontend objects defined in this template.",
+      "description": "The name assigned to all of the docgen objects defined in this template.",
       "required": true,
-      "value": "web-api"
+      "value": "docgen"
     },
     {
       "name": "SUFFIX",
       "displayName": "Name",
-      "description": "The name assigned to all of the frontend objects defined in this template.",
+      "description": "The name assigned to all of the docgen objects defined in this template.",
+      "required": true
+    },
+    {
+      "name": "VERSION",
       "required": true
     },
     {
       "name": "APPLICATION_SUFFIX",
       "required": true
-    },
-    {
-      "name": "TAG_NAME",
-      "displayName": "Name",
-      "description": "The name assigned to all of the frontend objects defined in this template.",
-      "required": true,
-      "value": "latest"
-    },
-    {
-      "name": "APPLICATION_DOMAIN",
-      "displayName": "Application Hostname",
-      "description": "The exposed hostname that will route to the Node.js service, if left blank a value will be defaulted.",
-      "value": ""
     },
     {
       "name": "BASE_PATH",
@@ -46,6 +37,10 @@
     {
       "name": "PORT",
       "value": "3000"
+    },
+    {
+      "name": "FILE_DIR",
+      "value": "/tmp/tmp-reports"
     },
     {
       "name": "NODE_ENV",
@@ -83,13 +78,20 @@
       "kind": "ImageStream",
       "apiVersion": "v1",
       "metadata": {
-        "name": "${NAME}${APPLICATION_SUFFIX}",
+        "name": "${NAME}",
+        "creationTimestamp": null,
         "labels": {
           "shared": "true"
         },
         "annotations": {
           "description": "Keeps track of changes in the application image"
         }
+      },
+      "spec": {
+        "lookupPolicy": {
+          "local": false
+        },
+        "tags": []
       }
     },
     {
@@ -135,18 +137,20 @@
         },
         "triggers": [
           {
+            "type": "ConfigChange"
+          },
+          {
             "type": "ImageChange",
             "imageChangeParams": {
               "automatic": true,
-              "containerNames": ["app"],
+              "containerNames": [
+                "${NAME}"
+              ],
               "from": {
                 "kind": "ImageStreamTag",
-                "name": "${NAME}${APPLICATION_SUFFIX}:${TAG_NAME}"
+                "name": "${NAME}:${VERSION}"
               }
             }
-          },
-          {
-            "type": "ConfigChange"
           }
         ],
         "replicas": "${{REPLICA_MIN}}",
@@ -163,9 +167,17 @@
           "spec": {
             "containers": [
               {
-                "name": "app",
+                "name": "${NAME}",
                 "image": " ",
                 "env": [
+                  {
+                    "name": "APP_PORT",
+                    "value": "${PORT}"
+                  },
+                  {
+                    "name": "CACHE_DIR",
+                    "value": "${FILE_DIR}"
+                  },
                   {
                     "name": "NODE_ENV",
                     "value": "${NODE_ENV}"
@@ -193,7 +205,31 @@
                   {
                     "containerPort": "${{PORT}}"
                   }
-                ]
+                ],
+                "livenessProbe": {
+                  "failureThreshold": 3,
+                  "httpGet": {
+                    "path": "/health",
+                    "port": "${{PORT}}",
+                    "scheme": "HTTP"
+                  },
+                  "initialDelaySeconds": 25,
+                  "periodSeconds": 10,
+                  "successThreshold": 1,
+                  "timeoutSeconds": 1
+                },
+                "readinessProbe": {
+                  "failureThreshold": 3,
+                  "httpGet": {
+                    "path": "/health",
+                    "port": "${{PORT}}",
+                    "scheme": "HTTP"
+                  },
+                  "initialDelaySeconds": 25,
+                  "periodSeconds": 10,
+                  "successThreshold": 1,
+                  "timeoutSeconds": 1
+                }
               }
             ]
           }

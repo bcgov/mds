@@ -1,95 +1,86 @@
-import React, { Component } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import { Table, Popconfirm, Button } from "antd";
-import { formatDate } from "@common/utils/helpers";
+import { formatDate, dateSorter, nullableStringSorter } from "@common/utils/helpers";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
-import * as Strings from "@common/constants/strings";
 import { TRASHCAN } from "@/constants/assets";
 import CustomPropTypes from "@/customPropTypes";
 import LinkButton from "@/components/common/LinkButton";
 
 const propTypes = {
-  documents: PropTypes.arrayOf(CustomPropTypes.mineDocument),
+  documents: PropTypes.arrayOf(CustomPropTypes.documentRecord),
+  isViewOnly: PropTypes.bool,
+  // eslint-disable-next-line react/no-unused-prop-types
   removeDocument: PropTypes.func,
-  isViewOnly: PropTypes.bool.isRequired,
-  documentCategoryOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  tableEmptyMessage: PropTypes.string,
 };
 
 const defaultProps = {
   documents: [],
+  isViewOnly: false,
   removeDocument: () => {},
+  tableEmptyMessage: "There are no attached documents.",
 };
 
-export class DocumentTable extends Component {
-  transformRowData = (documents) =>
-    documents.map((document) => ({
-      key: document.mine_document_guid,
-      document_manager_guid: document.document_manager_guid,
-      name: document.document_name,
-      category: document.variance_document_category_code
-        ? this.props.documentCategoryOptionsHash[document.variance_document_category_code]
-        : Strings.EMPTY_FIELD,
-      created_at: formatDate(document.created_at) || Strings.EMPTY_FIELD,
-    }));
+export const DocumentTable = (props) => {
+  const columns = [
+    {
+      title: "Name",
+      key: "name",
+      dataIndex: "name",
+      sorter: nullableStringSorter("name"),
+      render: (text, record) => (
+        <div key={record.key} title="Name">
+          <LinkButton onClick={() => downloadFileFromDocumentManager(record)}>{text}</LinkButton>
+        </div>
+      ),
+    },
+    {
+      title: "Category",
+      key: "category",
+      dataIndex: "category",
+      sorter: nullableStringSorter("category"),
+      render: (text) => <div title="Category">{text}</div>,
+    },
+    {
+      title: "Uploaded",
+      key: "uploaded",
+      dataIndex: "uploaded",
+      sorter: dateSorter("uploaded"),
+      defaultSortOrder: "descend",
+      render: (text) => <div title="Uploaded">{formatDate(text)}</div>,
+    },
+    {
+      key: "remove",
+      className: props.isViewOnly ? "column-hide" : "",
+      render: (text, record) => (
+        <div align="right" className={props.isViewOnly ? "column-hide" : ""}>
+          <Popconfirm
+            placement="topLeft"
+            title={`Are you sure you want to delete ${record.name}?`}
+            onConfirm={(event) => props.removeDocument(event, record.key)}
+            okText="Delete"
+            cancelText="Cancel"
+          >
+            <Button ghost type="primary" size="small">
+              <img src={TRASHCAN} alt="Remove" />
+            </Button>
+          </Popconfirm>
+        </div>
+      ),
+    },
+  ];
 
-  render() {
-    const columns = [
-      {
-        title: "File name",
-        dataIndex: "name",
-        render: (text, record) => (
-          <div title="File name">
-            <LinkButton key={record.key} onClick={() => downloadFileFromDocumentManager(record)}>
-              {text}
-            </LinkButton>
-          </div>
-        ),
-      },
-      {
-        title: "Category",
-        dataIndex: "category",
-        render: (text) => <div title="Upload date">{text}</div>,
-      },
-      {
-        title: "Upload date",
-        dataIndex: "created_at",
-        render: (text) => <div title="Upload date">{text}</div>,
-      },
-      {
-        title: "",
-        dataIndex: "",
-        className: this.props.isViewOnly ? "column-hide" : "",
-        render: (text, record) => (
-          <div title="" align="right" className={this.props.isViewOnly ? "column-hide" : ""}>
-            <Popconfirm
-              placement="topLeft"
-              title={`Are you sure you want to delete ${record.name}?`}
-              onConfirm={(event) => this.props.removeDocument(event, record.key)}
-              okText="Delete"
-              cancelText="Cancel"
-            >
-              <Button ghost type="primary" size="small">
-                <img name="remove" src={TRASHCAN} alt="Remove Activity" />
-              </Button>
-            </Popconfirm>
-          </div>
-        ),
-      },
-    ];
-
-    return (
-      <div>
-        <Table
-          align="left"
-          pagination={false}
-          columns={columns}
-          locale={{ emptyText: "This variance does not contain any documents." }}
-          dataSource={this.transformRowData(this.props.documents)}
-        />
-      </div>
-    );
-  }
-}
+  return (
+    <Table
+      align="left"
+      pagination={false}
+      columns={columns}
+      locale={{ emptyText: props.tableEmptyMessage }}
+      dataSource={props.documents}
+    />
+  );
+};
 
 DocumentTable.propTypes = propTypes;
 DocumentTable.defaultProps = defaultProps;

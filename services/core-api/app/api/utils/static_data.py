@@ -18,7 +18,7 @@ Return: None
 
 def setup_static_data(Base):
     for class_ in Base._decl_class_registry.values():
-        if hasattr(class_, "__tablename__"):
+        if hasattr(class_, "__tablename__") or getattr(class_, "__create_schema__", False):
             try:
                 mapper = inspect(class_)
                 pk = mapper.primary_key[0]
@@ -45,3 +45,4 @@ def setup_static_data(Base):
 
             except Exception as e:
                 raise e
+    current_app.logger.debug(STATIC_DATA)

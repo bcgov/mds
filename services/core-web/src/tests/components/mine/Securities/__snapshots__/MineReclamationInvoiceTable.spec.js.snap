@@ -1,0 +1,62 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MineReclamationInvoiceTable renders properly 1`] = `
+<CoreTable
+  columns={
+    Array [
+      Object {
+        "dataIndex": "permit_no",
+        "key": "permit_no",
+        "render": [Function],
+        "title": "Permit No.",
+      },
+      Object {
+        "dataIndex": "amount_confiscated",
+        "key": "amount_confiscated",
+        "render": [Function],
+        "title": "Total Confiscated",
+      },
+      Object {
+        "dataIndex": "amount_spent",
+        "key": "amount_spent",
+        "render": [Function],
+        "title": "Total Spent",
+      },
+      Object {
+        "dataIndex": "balance",
+        "key": "balance",
+        "render": [Function],
+        "title": "Balance",
+      },
+      Object {
+        "align": "right",
+        "dataIndex": "addEditButton",
+        "key": "addEditButton",
+        "render": [Function],
+        "title": "",
+      },
+    ]
+  }
+  condition={true}
+  dataSource={Array []}
+  tableProps={
+    Object {
+      "align": "left",
+      "className": "nested-table",
+      "expandIcon": [Function],
+      "expandRowByClick": true,
+      "expandedRowKeys": Array [],
+      "expandedRowRender": [Function],
+      "locale": Object {
+        "emptyText": <NullScreen
+          message=""
+          type="securities"
+        />,
+      },
+      "onExpand": [MockFunction],
+      "pagination": false,
+      "rowClassName": "table-row-align-middle pointer fade-in",
+    }
+  }
+/>
+`;

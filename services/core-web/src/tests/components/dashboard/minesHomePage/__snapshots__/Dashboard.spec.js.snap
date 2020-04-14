@@ -43,6 +43,7 @@ exports[`Dashboard renders properly 1`] = `
             "tabPane": false,
           }
         }
+        className="center-tabs"
         hideAdd={false}
         onTabClick={[Function]}
         size="large"

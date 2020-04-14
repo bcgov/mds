@@ -4,6 +4,9 @@ import {
   fetchMineBonds,
   updateBond,
   createBond,
+  createReclamationInvoice,
+  updateReclamationInvoice,
+  fetchMineReclamationInvoices,
 } from "@common/actionCreators/securitiesActionCreator";
 import * as genericActions from "@common/actions/genericActions";
 import { ENVIRONMENT } from "@common/constants/environment";
@@ -90,6 +93,79 @@ describe("`updateBond` action creator", () => {
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onPut(url).reply(418, MOCK.ERROR);
     return updateBond(bondGuid)(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(errorSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+});
+
+describe("`fetchMineReclamationInvoices` action creator", () => {
+  const mineGuid = "12345-6789";
+  const url = ENVIRONMENT.apiUrl + API.MINE_RECLAMATION_INVOICES(mineGuid);
+  it("Request successful, dispatches `success` with correct response", () => {
+    const mockResponse = { data: { success: true } };
+    mockAxios.onGet(url).reply(200, mockResponse);
+    return fetchMineReclamationInvoices(mineGuid)(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(successSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(3);
+    });
+  });
+
+  it("Request failure, dispatches `error` with correct response", () => {
+    mockAxios.onGet(url).reply(418, MOCK.ERROR);
+    return fetchMineReclamationInvoices(mineGuid)(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(errorSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(2);
+    });
+  });
+});
+
+describe("`createReclamationInvoice` action creator", () => {
+  const payload = {};
+  const url = ENVIRONMENT.apiUrl + API.RECLAMATION_INVOICE();
+  it("Request successful, dispatches `success` with correct response", () => {
+    const mockResponse = { data: { success: true } };
+    mockAxios.onPost(url, payload).reply(200, mockResponse);
+    return createReclamationInvoice(payload)(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(successSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+
+  it("Request failure, dispatches `error` with correct response", () => {
+    mockAxios.onPost(url).reply(418, MOCK.ERROR);
+    return createReclamationInvoice()(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(errorSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+});
+
+describe("`updateReclamationInvoice` action creator", () => {
+  const invoiceGuid = "53463";
+  const payload = {};
+  const url = ENVIRONMENT.apiUrl + API.RECLAMATION_INVOICE(invoiceGuid);
+  it("Request successful, dispatches `success` with correct response", () => {
+    const mockResponse = { data: { success: true } };
+    mockAxios.onPut(url, payload).reply(200, mockResponse);
+    return updateReclamationInvoice(
+      payload,
+      invoiceGuid
+    )(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(successSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+
+  it("Request failure, dispatches `error` with correct response", () => {
+    mockAxios.onPut(url).reply(418, MOCK.ERROR);
+    return updateReclamationInvoice(invoiceGuid)(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);

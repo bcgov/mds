@@ -173,8 +173,7 @@ class NOWSubmissionFactory(BaseFactory):
     noticeofworktype = factory.LazyFunction(
         lambda: random.choice([x.description for x in NOWApplicationType.query.all()]))
     trackingnumber = factory.fuzzy.FuzzyInteger(1, 100)
-    status = factory.LazyFunction(
-        lambda: random.choice([x.description for x in NOWApplicationStatus.query.all()]))
+    status = factory.LazyFunction(lambda: random.choice(['Accepted', 'Withdrawn', 'Under Review']))
     submitteddate = factory.Faker('past_datetime')
     receiveddate = factory.Faker('past_datetime')
     minenumber = factory.Faker('word')
@@ -307,7 +306,7 @@ class NOWApplicationNDAFactory(BaseFactory):
     applicantclientid = factory.SelfAttribute('applicant.clientid')
     submitterclientid = factory.SelfAttribute('submitter.clientid')
     status = factory.LazyFunction(
-        lambda: random.choice([x.description for x in NOWApplicationStatus.query.all()]))
+        lambda: random.choice([x.description for x in NOWApplicationStatus.get_active()]))
     submitteddate = factory.Faker('past_datetime')
     receiveddate = factory.Faker('past_datetime')
     minenumber = factory.SelfAttribute('mine.mine_no')
@@ -352,6 +351,21 @@ class NOWContactFactory(BaseFactory):
 
     messageid = factory.SelfAttribute('application.messageid')
     type = factory.Faker('sentence', nb_words=1)
+    org_legalname = factory.Faker('name')
+    org_doingbusinessas = factory.Faker('company')
+    ind_firstname = factory.Faker('first_name')
+    ind_lastname = factory.Faker('first_name')
+    ind_phonenumber = factory.Faker('numerify', text='##########')
+    dayphonenumber = factory.Faker('numerify', text='##########')
+    dayphonenumberext = factory.Faker('numerify', text='###')
+    faxnumber = factory.Faker('numerify', text='##########')
+    email = factory.Faker('company_email')
+    contacttype = "Permitee"
+    mailingaddressline2 = factory.Faker('street_address')
+    mailingaddresscity = factory.Faker('city')
+    mailingaddressprovstate = factory.LazyFunction(RandomSubDivisionCode)
+    mailingaddresspostalzip = factory.Faker(
+        'bothify', text='?#?#?#', letters='ABCDEFGHIJKLMNOPQRSTUVWXYZ')
 
 
 class NOWSandGrvQryActivityFactory(BaseFactory):

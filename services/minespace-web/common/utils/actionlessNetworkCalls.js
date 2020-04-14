@@ -82,7 +82,7 @@ export const downloadNowDocument = (id, applicationGuid, fileName) => {
 
 export const downloadFileFromDocumentManager = ({ document_manager_guid, document_name = "" }) => {
   if (!document_manager_guid) {
-    throw new Error("Must provide docManagerGuid");
+    throw new Error("Must provide document_manager_guid");
   }
 
   CustomAxios()
@@ -102,7 +102,7 @@ export const downloadFileFromDocumentManager = ({ document_manager_guid, documen
 
 export const getDocumentDownloadToken = (document_manager_guid, filename, URLArray) => {
   if (!document_manager_guid) {
-    throw new Error("Must provide docManagerGuid");
+    throw new Error("Must provide document_manager_guid");
   }
 
   CustomAxios()

@@ -49,7 +49,7 @@ exports[`VarianceDetails renders properly 1`] = `
       <p
         className="field-title"
       >
-        Submission date
+        Submission Date
       </p>
       <p>
         N/A
@@ -70,19 +70,13 @@ exports[`VarianceDetails renders properly 1`] = `
   </div>
   <br />
   <h5>
-    documents
+    Documents
   </h5>
   <DocumentTable
-    documentCategoryOptionsHash={
-      Object {
-        "DEC": "Decision Document",
-        "REC": "Recommendation Document",
-        "REQ": "Request Document",
-      }
-    }
     documents={Array []}
     isViewOnly={false}
     removeDocument={[MockFunction]}
+    tableEmptyMessage="There are no attached documents."
   />
 </div>
 `;

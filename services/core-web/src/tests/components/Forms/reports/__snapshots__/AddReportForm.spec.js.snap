@@ -63,11 +63,6 @@ exports[`AddReportForm renders properly 1`] = `
           label="Compliance Year*"
           name="submission_year"
           placeholder="Select compliance year"
-          props={
-            Object {
-              "disabled": false,
-            }
-          }
           validate={
             Array [
               [Function],

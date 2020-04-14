@@ -34,6 +34,7 @@ class ReportsResource(Resource, UserMixin):
             'due_date_before': 'Reports with a due date only before this date',
             'received_date_after': 'Reports with a received date only after this date',
             'received_date_before': 'Reports with a received date only before this date',
+            'received_only': 'Whether or not to only show reports that have a set received date',
             'compliance_year': 'The compliance year/period of the report',
             'requested_by': 'A substring to match in the name of the user who requested the report',
             'major': 'Whether or not the report is for a major or regional mine',
@@ -54,6 +55,7 @@ class ReportsResource(Resource, UserMixin):
             'due_date_before': request.args.get('due_date_before', type=str),
             'received_date_after': request.args.get('received_date_after', type=str),
             'received_date_before': request.args.get('received_date_before', type=str),
+            'received_only': request.args.get('received_only', type=str),
             'compliance_year': request.args.get('compliance_year', type=str),
             'requested_by': request.args.get('requested_by', type=str),
             'status': request.args.getlist('status', type=str),
@@ -160,6 +162,9 @@ class ReportsResource(Resource, UserMixin):
             conditions.append(
                 self._build_filter('MineReport', 'received_date', '>=',
                                    args["received_date_after"]))
+
+        if not args["received_only"]:
+            query = query.filter(MineReport.received_date.isnot(None))
 
         if args["requested_by"]:
             conditions.append(
