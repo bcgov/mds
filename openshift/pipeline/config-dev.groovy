@@ -285,10 +285,10 @@ app {
                 [
                     'file':'openshift/templates/docgen/docgen.dc.json',
                     'params':[
-                            'NAME':"mds-docgen-api",
+                            'NAME':"docgen",
                             'SUFFIX': "${vars.deployment.suffix}",
+                            'VERSION':"${app.deployment.version}",
                             'APPLICATION_SUFFIX': "${vars.deployment.application_suffix}",
-                            'TAG_NAME':"${app.deployment.version}",
                             'PORT':3030,
                             'CPU_REQUEST':"${vars.resources.docgen.cpu_request}",
                             'CPU_LIMIT':"${vars.resources.docgen.cpu_limit}",
@@ -296,59 +296,27 @@ app {
                             'MEMORY_LIMIT':"${vars.resources.docgen.memory_limit}",
                             'REPLICA_MIN':"${vars.resources.docgen.replica_min}",
                             'REPLICA_MAX':"${vars.resources.docgen.replica_max}",
-                            'APPLICATION_DOMAIN': "${vars.modules.'mds-docgen-api'.HOST}",
                             'BASE_PATH': "${vars.modules.'mds-docgen-api'.PATH}",
                             'NODE_ENV': "${vars.deployment.node_env}"
                     ]
-                ]/*,
-                [
-                    'file':'openshift/templates/digdag/digdag.dc.json',
-                    'params':[
-                            'NAME':"digdag",
-                            'VERSION':"${app.deployment.version}",
-                            'NAMESPACE':"${vars.deployment.namespace}",
-                            'SUFFIX': "${vars.deployment.suffix}",
-                            'SCHEDULER_PVC_SIZE':"200Mi",
-                            'ENVIRONMENT_NAME':"${app.deployment.env.name}",
-                            'KEYCLOAK_DISCOVERY_URL':"${vars.keycloak.known_config_url}",
-                            'APPLICATION_DOMAIN': "${vars.modules.'digdag'.HOST}",
-                            'CPU_REQUEST':"${vars.resources.digdag.cpu_request}",
-                            'CPU_LIMIT':"${vars.resources.digdag.cpu_limit}",
-                            'MEMORY_REQUEST':"${vars.resources.digdag.memory_request}",
-                            'MEMORY_LIMIT':"${vars.resources.digdag.memory_limit}"
-                    ]
-                ]*/
-                /*,
-                [
-                    'file':'openshift/templates/monitoring/loki.dc.json',
-                    'params':[
-                            'NAME':"loki",
-                            'VERSION':"${app.deployment.version}",
-                            'NAMESPACE':"${vars.deployment.namespace}",
-                            'SUFFIX': "${vars.deployment.suffix}",
-                            'ENVIRONMENT_NAME':"${app.deployment.env.name}",
-                            'KEYCLOAK_DISCOVERY_URL':"${vars.keycloak.known_config_url}",
-                            'APPLICATION_DOMAIN': "${vars.modules.'digdag'.HOST}",
-                            'CPU_REQUEST':"${vars.resources.digdag.cpu_request}",
-                            'CPU_LIMIT':"${vars.resources.digdag.cpu_limit}",
-                            'MEMORY_REQUEST':"${vars.resources.digdag.memory_request}",
-                            'MEMORY_LIMIT':"${vars.resources.digdag.memory_limit}"
-                    ]
                 ],
-                'file':'openshift/templates/digdag/grafana.dc.json',
-                    'params':[
-                            'NAME':"grafana",
-                            'VERSION':"${app.deployment.version}",
-                            'NAMESPACE':"${vars.deployment.namespace}",
-                            'SUFFIX': "${vars.deployment.suffix}",
-                            'ENVIRONMENT_NAME':"${app.deployment.env.name}",
-                            'KEYCLOAK_DISCOVERY_URL':"${vars.keycloak.known_config_url}",
-                            'APPLICATION_DOMAIN': "${vars.modules.'digdag'.HOST}",
-                            'CPU_REQUEST':"${vars.resources.digdag.cpu_request}",
-                            'CPU_LIMIT':"${vars.resources.digdag.cpu_limit}",
-                            'MEMORY_REQUEST':"${vars.resources.digdag.memory_request}",
-                            'MEMORY_LIMIT':"${vars.resources.digdag.memory_limit}"
-                ]*/
+                // [
+                //     'file':'openshift/templates/digdag/digdag.dc.json',
+                //     'params':[
+                //             'NAME':"digdag",
+                //             'VERSION':"${app.deployment.version}",
+                //             'NAMESPACE':"${vars.deployment.namespace}",
+                //             'SUFFIX': "${vars.deployment.suffix}",
+                //             'SCHEDULER_PVC_SIZE':"200Mi",
+                //             'ENVIRONMENT_NAME':"${app.deployment.env.name}",
+                //             'KEYCLOAK_DISCOVERY_URL':"${vars.keycloak.known_config_url}",
+                //             'APPLICATION_DOMAIN': "${vars.modules.'digdag'.HOST}",
+                //             'CPU_REQUEST':"${vars.resources.digdag.cpu_request}",
+                //             'CPU_LIMIT':"${vars.resources.digdag.cpu_limit}",
+                //             'MEMORY_REQUEST':"${vars.resources.digdag.memory_request}",
+                //             'MEMORY_LIMIT':"${vars.resources.digdag.memory_limit}"
+                //     ]
+                // ]
         ]
     }
 }
@@ -356,7 +324,7 @@ app {
 environments {
     'dev' {
         vars {
-            DB_PVC_SIZE = '1Gi'
+            DB_PVC_SIZE = '5Gi'
             DOCUMENT_PVC_SIZE = '1Gi'
             BACKUP_VERIFICATION_PVC_SIZE = '200Mi'
             LOG_PVC_SIZE = '1Gi'
@@ -436,26 +404,13 @@ environments {
                     cpu_limit = "0"
                     memory_request = "0"
                     memory_limit = "0"
-                }
-                digdag {
-                    cpu_request = "100m"
-                    cpu_limit = "200m"
-                    memory_request = "512Mi"
-                    memory_limit = "1Gi"
                 }*/
-                /*loki {
-                    cpu_request = "100m"
-                    cpu_limit = "200m"
-                    memory_request = "512Mi"
-                    memory_limit = "1Gi"
-
-                }
-                grafana {
-                    cpu_request = "100m"
-                    cpu_limit = "200m"
-                    memory_request = "512Mi"
-                    memory_limit = "1Gi"
-                }*/
+                // digdag {
+                //     cpu_request = "100m"
+                //     cpu_limit = "200m"
+                //     memory_request = "512Mi"
+                //     memory_limit = "1Gi"
+                // }
             }
             deployment {
                 env {
@@ -504,14 +459,11 @@ environments {
                     HOST = "http://mds-redis${vars.deployment.suffix}"
                 }
                 'mds-docgen-api' {
-                    HOST = "http://mds-docgen-api${vars.deployment.suffix}:3030"
+                    HOST = "http://docgen${vars.deployment.suffix}:3030"
                 }
-                /*'digdag' {
-                    HOST = "mds-digdag-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
-                }*/
-                'grafana' {
-                    HOST = "http://mds-grafana${vars.deployment.suffix}:3030"
-                }
+                // 'digdag' {
+                //     HOST = "mds-digdag-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
+                // }
             }
         }
     }

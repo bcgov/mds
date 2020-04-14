@@ -6,7 +6,7 @@ from flask import request, current_app
 from flask_restplus import Resource
 from werkzeug.exceptions import BadRequest, InternalServerError, NotFound
 
-from app.extensions import api
+from app.extensions import api, db
 from app.api.utils.access_decorators import requires_role_view_all, requires_role_edit_permit, requires_any_of, VIEW_ALL
 from app.api.utils.resources_mixins import UserMixin
 from app.api.utils.custom_reqparser import CustomReqparser
@@ -58,6 +58,12 @@ class NOWApplicationImportResource(Resource, UserMixin):
         application.latitude = latitude
         application.longitude = longitude
         application.now_application_guid = application_guid
+
+        # This is a first pass but by no means exhaustive solution to preventing the now application from being saved more than once.
+        # In the event of multiple requests being fired simultaneously this can still sometimes fail.
+        db.session.refresh(now_application_identity)
+        if now_application_identity.now_application_id is not None:
+            raise BadRequest('This record has already been imported.')
         application.save()
 
         return {'now_application_guid': str(application.now_application_guid)}

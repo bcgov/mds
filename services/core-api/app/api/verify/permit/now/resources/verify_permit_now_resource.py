@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from flask_restplus import Resource, fields
-from flask import request
+from flask import request, current_app
 from app.extensions import api
 
 from app.api.mines.mine.models.mine import Mine
@@ -17,14 +17,14 @@ VERIFY_PERMIT_NOW_MODEL = api.model(
         'a_Timestamp': fields.DateTime
     })
 
+
 class VerifyPermitNOWResource(Resource):
     @api.doc(
         description=
         'Verifies by permit number that a permit amendment is within 30 days of authorization ending. NOTE: This exists for integration purposes and does not follow the typical patterns of this API.',
         params={
             'a_PermitNumber': f'The permit number.',
-        }
-    )
+        })
     @api.marshal_with(VERIFY_PERMIT_NOW_MODEL, code=200)
     @requires_role_view_all
     def get(self):
@@ -42,27 +42,36 @@ class VerifyPermitNOWResource(Resource):
                 mine = Mine.find_by_mine_guid(str(permit.mine_guid))
 
                 # Mine must be operating.
-                if mine.mine_status[0].mine_status_xref.mine_operation_status_code != "OP":
-                    break;
+                if not mine.mine_status or mine.mine_status[
+                        0].mine_status_xref.mine_operation_status_code != "OP":
+                    break
 
                 if permit_prefix not in ["CX", "MX"]:
-                    break;
-            
+                    break
+
                 for permit_amendment in permit.permit_amendments:
-                    if (permit_amendment.authorization_end_date - datetime.utcnow().date()).days > 30:
-                        #instead of permit.permit_guid, we really want the now_number but there is currently no relationship from 
-                        #permit to NOW
-                        now_info = now_info + str(permit.permit_guid) + " - " + str(permit_amendment.authorization_end_date) + '\r\c'
+                    if (permit_amendment.authorization_end_date -
+                            datetime.utcnow().date()).days > 30:
+                        #only want permits that expire 30 days or further in the future
+                        now_info = now_info + str(
+                            permit_amendment.now_identity.now_submission.trackingnumber
+                        ) + " - " + str(permit_amendment.authorization_end_date) + '\r\c'
 
             if now_info != "":
                 result = "Success"
             else:
                 result = "Failure"
                 response_message = "NoValidNowsForPermit"
- 
-        except:
+
+        except Exception as e:
+            current_app.logger.error(str(e))
             result = "Failure"
             now_info = ""
             response_message = "Unhandled Exception"
 
-        return  {"a_Result": result, "a_NoWInfo": now_info, "a_ResponseMessage": response_message, "a_Timestamp": datetime.utcnow()}
+        return {
+            "a_Result": result,
+            "a_NoWInfo": now_info,
+            "a_ResponseMessage": response_message,
+            "a_Timestamp": datetime.utcnow()
+        }

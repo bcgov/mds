@@ -26,13 +26,18 @@ exports[`MineBondTable renders properly 1`] = `
         "dataIndex": "total_bonds",
         "key": "total_bonds",
         "render": [Function],
-        "title": "No. of Active Bonds",
+        "title": "Active Bonds",
       },
       Object {
         "dataIndex": "amount_confiscated",
         "key": "amount_confiscated",
         "render": [Function],
-        "title": "Total Confiscated",
+        "title": <div>
+          Total Confiscated
+          <CoreTooltip
+            title="Total Confiscated: This is the total value of bonds that have been confiscated for the permit. This amount is also shown below as Cash On Hand for the permit"
+          />
+        </div>,
       },
       Object {
         "align": "right",

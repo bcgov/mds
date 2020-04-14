@@ -2,6 +2,16 @@
 
 exports[`AddReclamationInvoiceModal renders properly 1`] = `
 <div>
+  <div
+    className="error center"
+  >
+    <Alert
+      message="Total Spent exceeds Total Confiscated. Balance including the current invoice amount: -$1,251.46"
+      showIcon={true}
+      type="warning"
+    />
+    <br />
+  </div>
   <ReduxForm
     closeModal={[MockFunction]}
     destroyOnUnmount={true}
@@ -26,7 +36,6 @@ exports[`AddReclamationInvoiceModal renders properly 1`] = `
     keepDirtyOnReinitialize={false}
     mineGuid="1436613"
     onSubmit={[Function]}
-    onSubmitSuccess={[Function]}
     persistentSubmitErrors={false}
     pure={true}
     shouldAsyncValidate={[Function]}

@@ -10,6 +10,7 @@ const propTypes = {
   documentType: PropTypes.objectOf(PropTypes.any).isRequired,
   onSubmit: PropTypes.func.isRequired,
   title: PropTypes.string,
+  documentFormErrors: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)).isRequired,
 };
 
 const defaultProps = {

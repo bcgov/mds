@@ -27,7 +27,7 @@ from app.api.now_submissions.models.existing_settling_pond_xref import ExistingS
 from app.api.now_submissions.models.proposed_placer_activity_xref import ProposedPlacerActivityXref
 from app.api.now_submissions.models.proposed_settling_pond_xref import ProposedSettlingPondXref
 
-from app.api.constants import unit_type_map, type_of_permit_map, NOW_SUBMISSIONS_YES_NO
+from app.api.constants import unit_type_map, type_of_permit_map, NOW_SUBMISSIONS_YES_NO, NOW_SUBMISSION_STATUS
 from app.api.utils.field_template import FieldTemplate
 
 
@@ -79,10 +79,11 @@ class Application(Base):
             validate=validate.OneOf(choices=NOW_SUBMISSIONS_YES_NO), allow_none=True)
         sandgrvqrygrdwtrtestwells = fields.String(
             validate=validate.OneOf(choices=NOW_SUBMISSIONS_YES_NO), allow_none=True)
+        status = fields.String(
+            validate=validate.OneOf(choices=NOW_SUBMISSION_STATUS), allow_none=True)
 
         noticeofworktype = FieldTemplate(
             field=fields.String, one_of='NOWApplicationType_description')
-        status = FieldTemplate(field=fields.String, one_of='NOWApplicationStatus_description')
 
     messageid = db.Column(db.Integer, primary_key=True)
     now_application_identity = db.relationship(
