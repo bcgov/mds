@@ -1,5 +1,4 @@
 import { memoize } from "lodash";
-import moment from "moment";
 
 /**
  * Utility class for validating inputs using redux forms
@@ -85,6 +84,3 @@ export const validateStartDate = memoize((previousStartDate) => (value) =>
     ? "New manager's start date cannot be on or before the previous manager's start date."
     : undefined
 );
-
-export const yearNotInFuture = (value) =>
-  value && value > moment().year() ? "Year cannot be in future" : undefined;

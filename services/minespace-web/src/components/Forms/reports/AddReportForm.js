@@ -9,7 +9,7 @@ import { Field, reduxForm, formValueSelector } from "redux-form";
 import { Form, Button, Popconfirm, List, Typography } from "antd";
 import { renderConfig } from "@/components/common/config";
 import * as FORM from "@/constants/forms";
-import { required, yearNotInFuture } from "@/utils/Validate";
+import { required, yearNotInFuture } from "@common/utils/Validate";
 import { resetForm, createDropDownList, formatComplianceCodeValueOrLabel } from "@/utils/helpers";
 import {
   getDropdownMineReportCategoryOptions,
