@@ -24,6 +24,12 @@ exports[`MineReportTable renders properly 1`] = `
         "title": "Report Name",
       },
       Object {
+        "key": "code_section",
+        "render": [Function],
+        "sortOrder": false,
+        "title": "Code Section",
+      },
+      Object {
         "dataIndex": "submission_year",
         "key": "submission_year",
         "render": [Function],

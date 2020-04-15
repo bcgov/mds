@@ -114,10 +114,10 @@ export const validateStartDate = memoize((previousStartDate) => (value) =>
 );
 
 export const dateNotInFuture = (value) =>
-  value && new Date(value) >= new Date() ? "Date can not be in the future" : undefined;
+  value && new Date(value) >= new Date() ? "Date cannot be in the future" : undefined;
 
 export const yearNotInFuture = (value) =>
-  value && value > new Date().getFullYear() ? "Year can not be in the future" : undefined;
+  value && value > new Date().getFullYear() ? "Year cannot be in the future" : undefined;
 
 export const validateIncidentDate = memoize((reportedDate) => (value) =>
   value <= reportedDate

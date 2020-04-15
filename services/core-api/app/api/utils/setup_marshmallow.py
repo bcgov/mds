@@ -82,7 +82,7 @@ def setup_schema(Base, session):
             if hasattr(class_, "__tablename__") or getattr(class_, "__create_schema__", False):
                 try:
                     if class_.__name__.endswith("Schema"):
-                        raise ModelConversionError("For safety, setup_schema can not be used when a"
+                        raise ModelConversionError("For safety, setup_schema cannot be used when a"
                                                    "Model class ends with 'Schema'")
                     exclude_columns = AUDIT_COLUMNS if AuditMixin in class_.__bases__ else ()
 

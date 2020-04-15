@@ -7,11 +7,13 @@ import {
   truncateFilename,
   dateSorter,
   nullableStringSorter,
+  formatComplianceCodeValueOrLabel,
 } from "@common/utils/helpers";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
 import {
   getMineReportCategoryOptionsHash,
   getMineReportStatusOptionsHash,
+  getMineReportDefinitionHash,
 } from "@common/selectors/staticContentSelectors";
 import { Link } from "react-router-dom";
 import { Badge } from "antd";
@@ -29,6 +31,8 @@ const propTypes = {
   mineReports: PropTypes.arrayOf(CustomPropTypes.mineReport).isRequired,
   mineReportCategoryOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   mineReportStatusOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  // eslint-disable-next-line react/no-unused-prop-types
+  mineReportDefinitionHash: PropTypes.objectOf(PropTypes.any).isRequired,
   openEditReportModal: PropTypes.func.isRequired,
   handleEditReport: PropTypes.func.isRequired,
   handleRemoveReport: PropTypes.func.isRequired,
@@ -99,6 +103,19 @@ export const MineReportTable = (props) => {
       sortField: "report_name",
       sorter: props.isDashboardView || ((a, b) => a.report_name.localeCompare(b.report_name)),
       render: (text) => <div title="Report Name">{text}</div>,
+    },
+    {
+      title: "Code Section",
+      key: "code_section",
+      render: (record) => (
+        <div title="Code Section">
+          {formatComplianceCodeValueOrLabel(
+            props.mineReportDefinitionHash[record.mine_report_definition_guid]
+              .compliance_articles[0],
+            false
+          )}
+        </div>
+      ),
     },
     {
       title: "Compliance Year",
@@ -277,6 +294,7 @@ MineReportTable.defaultProps = defaultProps;
 const mapStateToProps = (state) => ({
   mineReportCategoryOptionsHash: getMineReportCategoryOptionsHash(state),
   mineReportStatusOptionsHash: getMineReportStatusOptionsHash(state),
+  mineReportDefinitionHash: getMineReportDefinitionHash(state),
 });
 
 export default connect(mapStateToProps)(MineReportTable);

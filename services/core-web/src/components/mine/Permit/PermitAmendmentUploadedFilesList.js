@@ -25,7 +25,7 @@ export const PermitAmendmentUploadedFilesList = (props) => (
               placement="top"
               title={[
                 <h3>Are you sure you want to remove this file?</h3>,
-                <p>This can not be undone.</p>,
+                <p>This cannot be undone.</p>,
               ]}
               okText="Yes"
               cancelText="No"
