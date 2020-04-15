@@ -1,4 +1,5 @@
 import { memoize } from "lodash";
+
 /**
  * Utility class for validating inputs using redux forms
  */
