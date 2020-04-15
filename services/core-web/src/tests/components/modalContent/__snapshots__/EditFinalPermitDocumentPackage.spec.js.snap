@@ -59,7 +59,7 @@ exports[`EditFinalPermitDocumentPackage renders properly 1`] = `
         theme="outlined"
         type="download"
       />
-      save Application Package
+      Save Application Package
     </Button>
   </div>
 </div>
