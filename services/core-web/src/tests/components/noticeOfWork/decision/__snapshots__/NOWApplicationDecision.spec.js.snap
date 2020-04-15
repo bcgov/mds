@@ -5,7 +5,7 @@ exports[`NOWApplicationDecision renders properly 1`] = `
   className="page__content"
 >
   <Connect(FinalPermitDocuments)
-    mineGuid="1"
+    mineGuid="18133c75-49ad-4101-85f3-a43e35ae989a"
     noticeOfWork={
       Object {
         "blasting_operation": Object {},

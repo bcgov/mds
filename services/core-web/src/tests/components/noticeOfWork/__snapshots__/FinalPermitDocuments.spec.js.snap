@@ -52,7 +52,7 @@ exports[`FinalPermitDocuments renders properly 1`] = `
   <Connect(NOWDocuments)
     documents={Array []}
     isViewMode={true}
-    mine_guid="1"
+    mine_guid="18133c75-49ad-4101-85f3-a43e35ae989a"
     now_application_guid=""
   />
 </div>
