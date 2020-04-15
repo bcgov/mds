@@ -23,8 +23,7 @@ const { Paragraph, Title, Text } = Typography;
 const propTypes = {
   mine: CustomPropTypes.mine.isRequired,
   mineReports: PropTypes.arrayOf(CustomPropTypes.mineReport).isRequired,
-  // This IS being used.
-  // eslint-disable-next-line
+  // eslint-disable-next-line react/no-unused-prop-types
   mineReportDefinitionOptions: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
   updateMineReport: PropTypes.func.isRequired,
   createMineReport: PropTypes.func.isRequired,
@@ -65,6 +64,11 @@ export class Reports extends Component {
   };
 
   handleEditReport = (values) => {
+    if (!values.mine_report_submissions || values.mine_report_submissions.length === 0) {
+      this.props.closeModal();
+      return;
+    }
+
     const payload = {
       mine_report_submissions: [
         ...values.mine_report_submissions,
@@ -74,6 +78,7 @@ export class Reports extends Component {
         },
       ],
     };
+
     this.props
       .updateMineReport(this.props.mine.mine_guid, this.state.selectedMineReportGuid, payload)
       .then(() => this.props.closeModal())
