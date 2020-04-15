@@ -1,286 +1,225 @@
 {
-    "kind": "Template",
     "apiVersion": "v1",
+    "kind": "Template",
+    "labels": {
+        "template": "loki-template"
+    },
+    "message": "The following service(s) have been created in your project: ${LOKI_SERVICE_NAME}.\nFor more information about using this template, including OpenShift considerations, contact the rocketchat community.",
     "metadata": {
-        "name": "loki",
-        "creationTimestamp": null
+        "annotations": {
+            "description": "MDS Loki Template. ",
+            "tags": "monitoring,loki"
+        },
+        "name": "loki-template"
     },
     "parameters": [
         {
-            "name": "NAME",
-            "displayName": "Name",
-            "description": "A suffix appended to all objects",
-            "required": true
+            "name": "LOKI_SERVICE_NAME",
+            "value": "loki"
         }
     ],
     "objects": [
         {
-            "apiVersion": "policy/v1beta1",
-            "kind": "PodSecurityPolicy",
-            "metadata": null,
-            "name": "loki",
-            "labels": {
-                "app": "loki"
-            },
-            "spec": null,
-            "privileged": false,
-            "allowPrivilegeEscalation": false,
-            "volumes": [
-                "configMap",
-                "emptyDir",
-                "persistentVolumeClaim",
-                "secret"
-            ],
-            "hostNetwork": false,
-            "hostIPC": false,
-            "hostPID": false,
-            "runAsUser": {
-                "rule": "MustRunAsNonRoot"
-            },
-            "seLinux": {
-                "rule": "RunAsAny"
-            },
-            "supplementalGroups": {
-                "rule": "MustRunAs",
-                "ranges": [
-                    {
-                        "min": 1
-                    }
-                ],
-                "max": 65535
-            },
-            "fsGroup": {
-                "rule": "MustRunAs",
-                "ranges": [
-                    {
-                        "min": 1
-                    }
-                ],
-                "max": 65535
-            },
-            "readOnlyRootFilesystem": true,
-            "requiredDropCapabilities": [
-                "ALL"
-            ]
-        },
-        {
             "apiVersion": "v1",
-            "kind": "ServiceAccount",
-            "metadata": null,
-            "labels": {
-                "app": "loki"
+            "stringData": {
+                "loki.yaml": "auth_enabled: false\nchunk_store_config:\n  max_look_back_period: 0\ningester:\n  chunk_block_size: 262144\n  chunk_idle_period: 3m\n  chunk_retain_period: 1m\n  lifecycler:\n    ring:\n      kvstore:\n        store: inmemory\n      replication_factor: 1\nlimits_config:\n  enforce_metric_name: false\n  reject_old_samples: true\n  reject_old_samples_max_age: 168h\nschema_config:\n  configs:\n  - from: 2018-04-15\n    index:\n      period: 168h\n      prefix: index_\n    object_store: filesystem\n    schema: v9\n    store: boltdb\nserver:\n  http_listen_port: 3100\nstorage_config:\n  boltdb:\n    directory: /data/loki/index\n  filesystem:\n    directory: /data/loki/chunks\ntable_manager:\n  retention_deletes_enabled: false\n  retention_period: 0"
             },
-            "annotations": {},
-            "name": "loki"
-        },
-        {
-            "apiVersion": "v1",
             "kind": "Secret",
-            "metadata": null,
-            "name": "loki",
-            "namespace": "default",
-            "labels": {
-                "app": "loki"
-            },
-            "data": null,
-            "loki.yaml": "${SECRET}"
-        },
-        {
-            "apiVersion": "rbac.authorization.k8s.io/v1",
-            "kind": "Role",
-            "metadata": null,
-            "name": "loki",
-            "namespace": "default",
-            "labels": {
-                "app": "loki"
-            },
-            "rules": [
-                {
-                    "apiGroups": [
-                        "extensions"
-                    ]
-                }
-            ],
-            "resources": [
-                "podsecuritypolicies"
-            ],
-            "verbs": [
-                "use"
-            ]
-        },
-        {
-            "apiVersion": "rbac.authorization.k8s.io/v1",
-            "kind": "Role",
-            "metadata": null,
-            "name": "RELEASE-NAME-loki",
-            "namespace": "default",
-            "labels": {
-                "app": "loki"
-            },
-            "roleRef": null,
-            "apiGroup": "rbac.authorization.k8s.io",
-            "subjects": [
-                {
-                    "kind": "ServiceAccount"
-                }
-            ]
-        },
-        {
-            "apiVersion": "v1",
-            "kind": "Service",
-            "metadata": null,
-            "name": "loki-headless-${NAME}",
-            "namespace": "default",
-            "labels": {
-                "app": "loki"
-            },
-            "spec": null,
-            "clusterIP": "None",
-            "ports": [
-                {
-                    "port": 3100,
-                    "protocol": "TCP",
-                    "name": "http-metrics",
-                    "targetPort": "http-metrics"
-                }
-            ],
-            "selector": {
-                "app": "loki",
-                "release": "RELEASE-NAME"
+            "type": "Opaque",
+            "metadata": {
+                "annotations": {},
+                "labels": {
+                    "app": "${LOKI_SERVICE_NAME}",
+                    "chart": "loki-0.16.0",
+                    "heritage": "Tiller",
+                    "release": "${LOKI_SERVICE_NAME}"
+                },
+                "name": "${LOKI_SERVICE_NAME}"
             }
         },
         {
             "apiVersion": "v1",
             "kind": "Service",
-            "metadata": null,
-            "name": "RELEASE-NAME-loki",
-            "namespace": "default",
-            "labels": {
-                "app": "loki"
+            "spec": {
+                "ports": [
+                    {
+                        "name": "http-metrics",
+                        "port": 3100,
+                        "protocol": "TCP",
+                        "targetPort": "http-metrics"
+                    }
+                ],
+                "selector": {
+                    "app": "${LOKI_SERVICE_NAME}",
+                    "release": "${LOKI_SERVICE_NAME}"
+                },
+                "sessionAffinity": "None",
+                "type": "ClusterIP"
             },
-            "annotations": {},
-            "spec": null,
-            "type": "ClusterIP",
-            "ports": [
-                {
-                    "port": 3100,
-                    "protocol": "TCP",
-                    "name": "http-metrics",
-                    "targetPort": "http-metrics"
-                }
-            ],
-            "selector": {
-                "app": "loki",
-                "version": "RELEASE-NAME"
+            "metadata": {
+                "annotations": {},
+                "labels": {
+                    "app": "${LOKI_SERVICE_NAME}",
+                    "chart": "loki-0.16.0",
+                    "heritage": "Tiller",
+                    "release": "${LOKI_SERVICE_NAME}"
+                },
+                "name": "${LOKI_SERVICE_NAME}-headless"
+            }
+        },
+        {
+            "apiVersion": "v1",
+            "kind": "Service",
+            "spec": {
+                "ports": [
+                    {
+                        "name": "http-metrics",
+                        "port": 3100,
+                        "protocol": "TCP",
+                        "targetPort": "http-metrics"
+                    }
+                ],
+                "selector": {
+                    "app": "${LOKI_SERVICE_NAME}",
+                    "release": "${LOKI_SERVICE_NAME}"
+                },
+                "sessionAffinity": "None",
+                "type": "ClusterIP"
+            },
+            "metadata": {
+                "annotations": {},
+                "labels": {
+                    "app": "${LOKI_SERVICE_NAME}",
+                    "chart": "loki-0.16.0",
+                    "heritage": "Tiller",
+                    "release": "${LOKI_SERVICE_NAME}"
+                },
+                "name": "${LOKI_SERVICE_NAME}"
             }
         },
         {
             "apiVersion": "apps/v1",
             "kind": "StatefulSet",
-            "metadata": null,
-            "name": "RELEASE-NAME-loki",
-            "namespace": "default",
-            "labels": {
-                "app": "loki",
-                "chart": "loki-0.26.1",
-                "release": "RELEASE-NAME",
-                "heritage": "Helm"
-            },
-            "annotations": {},
-            "spec": null,
-            "podManagementPolicy": "OrderedReady",
-            "replicas": 1,
-            "selector": {
-                "matchLabels": null,
-                "app": "loki",
-                "release": "RELEASE-NAME"
-            },
-            "serviceName": "RELEASE-NAME-loki-headless",
-            "updateStrategy": {
-                "type": "RollingUpdate"
-            },
-            "template": {
-                "metadata": null,
-                "labels": {
-                    "app": "loki",
-                    "name": "loki",
-                    "release": "RELEASE-NAME"
-                },
-                "annotations": {
-                    "checksum/config": "70594ec7d6556d7405076c96130b9ff7789694169cb862563694f9b87c949fcf",
-                    "prometheus.io/port": "http-metrics",
-                    "prometheus.io/scrape": "true"
-                },
-                "spec": null,
-                "serviceAccountName": "RELEASE-NAME-loki",
-                "securityContext": {
-                    "fsGroup": 10001,
-                    "runAsGroup": 10001,
-                    "runAsNonRoot": true,
-                    "runAsUser": 10001
-                },
-                "initContainers": [],
-                "containers": [
-                    {
-                        "name": "loki",
-                        "image": "grafana/loki:1.4.1",
-                        "imagePullPolicy": "IfNotPresent",
-                        "args": [
-                            "-config.file=/etc/loki/loki.yaml"
-                        ],
-                        "volumeMounts": [
-                            {
-                                "name": "config",
-                                "mountPath": "/etc/loki"
-                            },
-                            {
-                                "name": "storage",
-                                "mountPath": "/data",
-                                "subPath": null
-                            }
-                        ],
-                        "ports": [
-                            {
-                                "name": "http-metrics",
-                                "containerPort": 3100,
-                                "protocol": "TCP"
-                            }
-                        ],
-                        "livenessProbe": {
-                            "httpGet": null,
-                            "path": "/ready",
-                            "port": "http-metrics",
-                            "initialDelaySeconds": 45
-                        },
-                        "readinessProbe": {
-                            "httpGet": null,
-                            "path": "/ready",
-                            "port": "http-metrics",
-                            "initialDelaySeconds": 45
-                        },
-                        "resources": {},
-                        "securityContext": {
-                            "readOnlyRootFilesystem": true
-                        },
-                        "env": null
+            "spec": {
+                "podManagementPolicy": "OrderedReady",
+                "replicas": 1,
+                "revisionHistoryLimit": 10,
+                "selector": {
+                    "matchLabels": {
+                        "app": "${LOKI_SERVICE_NAME}",
+                        "release": "${LOKI_SERVICE_NAME}"
                     }
-                ],
-                "nodeSelector": {},
-                "affinity": {},
-                "tolerations": [],
-                "terminationGracePeriodSeconds": 4800,
-                "volumes": [
-                    {
-                        "name": "config",
-                        "secret": {
-                            "secretName": "RELEASE-NAME-loki"
+                },
+                "serviceName": "${LOKI_SERVICE_NAME}-headless",
+                "template": {
+                    "metadata": {
+                        "annotations": {
+                            "checksum/config": "1a1db42c74b23fa57b31058016b0d6d279b0bd0dc39493d37569d18455c4e60d",
+                            "prometheus.io/port": "http-metrics",
+                            "prometheus.io/scrape": "true"
+                        },
+                        "creationTimestamp": null,
+                        "labels": {
+                            "app": "${LOKI_SERVICE_NAME}",
+                            "name": "loki",
+                            "release": "${LOKI_SERVICE_NAME}"
                         }
                     },
-                    {
-                        "name": "storage",
-                        "emptyDir": {}
+                    "spec": {
+                        "affinity": {},
+                        "containers": [
+                            {
+                                "args": [
+                                    "-config.file=/etc/loki/loki.yaml"
+                                ],
+                                "image": "grafana/loki:v0.3.0",
+                                "imagePullPolicy": "IfNotPresent",
+                                "livenessProbe": {
+                                    "failureThreshold": 3,
+                                    "httpGet": {
+                                        "path": "/ready",
+                                        "port": "http-metrics",
+                                        "scheme": "HTTP"
+                                    },
+                                    "initialDelaySeconds": 45,
+                                    "periodSeconds": 10,
+                                    "successThreshold": 1,
+                                    "timeoutSeconds": 1
+                                },
+                                "name": "loki",
+                                "ports": [
+                                    {
+                                        "containerPort": 3100,
+                                        "name": "http-metrics",
+                                        "protocol": "TCP"
+                                    }
+                                ],
+                                "readinessProbe": {
+                                    "failureThreshold": 3,
+                                    "httpGet": {
+                                        "path": "/ready",
+                                        "port": "http-metrics",
+                                        "scheme": "HTTP"
+                                    },
+                                    "initialDelaySeconds": 45,
+                                    "periodSeconds": 10,
+                                    "successThreshold": 1,
+                                    "timeoutSeconds": 1
+                                },
+                                "resources": {},
+                                "securityContext": {
+                                    "readOnlyRootFilesystem": true
+                                },
+                                "terminationMessagePath": "/dev/termination-log",
+                                "terminationMessagePolicy": "File",
+                                "volumeMounts": [
+                                    {
+                                        "mountPath": "/etc/loki",
+                                        "name": "config"
+                                    },
+                                    {
+                                        "mountPath": "/data",
+                                        "name": "storage"
+                                    }
+                                ]
+                            }
+                        ],
+                        "dnsPolicy": "ClusterFirst",
+                        "restartPolicy": "Always",
+                        "schedulerName": "default-scheduler",
+                        "securityContext": {},
+                        "serviceAccount": "default",
+                        "serviceAccountName": "default",
+                        "terminationGracePeriodSeconds": 30,
+                        "volumes": [
+                            {
+                                "name": "config",
+                                "secret": {
+                                    "defaultMode": 420,
+                                    "secretName": "${LOKI_SERVICE_NAME}"
+                                }
+                            },
+                            {
+                                "emptyDir": {},
+                                "name": "storage"
+                            }
+                        ]
                     }
-                ]
+                },
+                "updateStrategy": {
+                    "type": "RollingUpdate"
+                }
+            },
+            "metadata": {
+                "annotations": {},
+                "generation": 2,
+                "labels": {
+                    "app": "${LOKI_SERVICE_NAME}",
+                    "chart": "loki-0.16.0",
+                    "heritage": "Tiller",
+                    "release": "${LOKI_SERVICE_NAME}"
+                },
+                "name": "${LOKI_SERVICE_NAME}"
             }
         }
     ]
