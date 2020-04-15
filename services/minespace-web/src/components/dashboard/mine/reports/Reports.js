@@ -33,7 +33,7 @@ const propTypes = {
 };
 
 export class Reports extends Component {
-  state = { isLoaded: false, selectedMineReportGuid: null, reportsDue: 0, reportsSubmitted: 0 };
+  state = { isLoaded: false, report: null, reportsDue: 0, reportsSubmitted: 0 };
 
   componentDidMount() {
     this.props.fetchMineReports(this.props.mine.mine_guid).then(() => {
@@ -54,7 +54,7 @@ export class Reports extends Component {
 
   handleAddReport = (values) => {
     const formValues = values;
-    if (values.mine_report_submissions !== undefined) {
+    if (values.mine_report_submissions && values.mine_report_submissions.length > 0) {
       formValues.received_date = moment().format("YYYY-MM-DD");
     }
     this.props
@@ -69,7 +69,7 @@ export class Reports extends Component {
       return;
     }
 
-    const payload = {
+    let payload = {
       mine_report_submissions: [
         ...values.mine_report_submissions,
         {
@@ -79,8 +79,16 @@ export class Reports extends Component {
       ],
     };
 
+    if (
+      !values.received_date &&
+      values.mine_report_submissions &&
+      values.mine_report_submissions.length > 0
+    ) {
+      payload = { ...payload, received_date: moment().format("YYYY-MM-DD") };
+    }
+
     this.props
-      .updateMineReport(this.props.mine.mine_guid, this.state.selectedMineReportGuid, payload)
+      .updateMineReport(this.props.mine.mine_guid, this.state.report.mine_report_guid, payload)
       .then(() => this.props.closeModal())
       .then(() => this.props.fetchMineReports(this.props.mine.mine_guid));
   };
@@ -100,7 +108,7 @@ export class Reports extends Component {
 
   openEditReportModal = (event, report) => {
     event.preventDefault();
-    this.setState({ selectedMineReportGuid: report.mine_report_guid });
+    this.setState({ report });
     this.props.openModal({
       props: {
         onSubmit: this.handleEditReport,
