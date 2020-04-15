@@ -14,7 +14,7 @@ import { resetForm, createDropDownList, formatComplianceCodeValueOrLabel } from 
 import {
   getDropdownMineReportCategoryOptions,
   getMineReportDefinitionOptions,
-} from "@/selectors/staticContentSelectors";
+} from "@common/selectors/staticContentSelectors";
 import CustomPropTypes from "@/customPropTypes";
 import { ReportSubmissions } from "@/components/Forms/reports/ReportSubmissions";
 
