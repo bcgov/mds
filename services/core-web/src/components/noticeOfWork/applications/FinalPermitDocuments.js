@@ -1,32 +1,19 @@
-/* eslint-disable */
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { Button, Icon, Progress, notification } from "antd";
-import {
-  downloadNowDocument,
-  getNowDocumentDownloadToken,
-  getDocumentDownloadToken,
-} from "@common/utils/actionlessNetworkCalls";
+import { getDocumentDownloadToken } from "@common/utils/actionlessNetworkCalls";
 import { getDocumentDownloadState } from "@common/selectors/noticeOfWorkSelectors";
 import {
-  createNoticeOfWorkApplicationReview,
-  fetchNoticeOfWorkApplicationReviews,
-  deleteNoticeOfWorkApplicationReview,
-  updateNoticeOfWorkApplicationReview,
-  deleteNoticeOfWorkApplicationReviewDocument,
   setNoticeOfWorkApplicationDocumentDownloadState,
-  updateNoticeOfWorkApplication,
   fetchImportedNoticeOfWorkApplication,
+  updateNoticeOfWorkApplication,
 } from "@common/actionCreators/noticeOfWorkActionCreator";
 import { openModal, closeModal } from "@common/actions/modalActions";
 import { EDIT_OUTLINE } from "@/constants/assets";
 import { modalConfig } from "@/components/modalContent/config";
-
-import * as routes from "@/constants/routes";
 import { COLOR } from "@/constants/styles";
-
 import CustomPropTypes from "@/customPropTypes";
 import NOWDocuments from "@/components/noticeOfWork/applications//NOWDocuments";
 
@@ -37,17 +24,39 @@ import NOWDocuments from "@/components/noticeOfWork/applications//NOWDocuments";
 const propTypes = {
   mineGuid: PropTypes.string.isRequired,
   noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
+  updateNoticeOfWorkApplication: PropTypes.func.isRequired,
+  fetchImportedNoticeOfWorkApplication: PropTypes.func.isRequired,
+  closeModal: PropTypes.func.isRequired,
+  openModal: PropTypes.func.isRequired,
+  setNoticeOfWorkApplicationDocumentDownloadState: PropTypes.func.isRequired,
+  documentDownloadState: CustomPropTypes.documentDownloadState.isRequired,
 };
 
 export class FinalPermitDocuments extends Component {
   state = {
-    isLoaded: false,
     cancelDownload: false,
   };
 
   createFinalDocumentPackage = (selectedCoreRows) => {
-    console.log(selectedCoreRows);
-    console.log("creating the final application package");
+    const documentPayload = this.props.noticeOfWork.documents.map((document) => {
+      // eslint-disable-next-line no-unused-expressions
+      selectedCoreRows.includes(document.now_application_document_xref_guid)
+        ? (document.is_final_package = true)
+        : (document.is_final_package = false);
+      return document;
+    });
+    const payload = { ...this.props.noticeOfWork, documents: documentPayload };
+    const message = "Successfully updated the final application package.";
+
+    this.props
+      .updateNoticeOfWorkApplication(payload, this.props.noticeOfWork.now_application_guid, message)
+      .then(() => {
+        this.props
+          .fetchImportedNoticeOfWorkApplication(this.props.noticeOfWork.now_application_guid)
+          .then(() => {
+            this.props.closeModal();
+          });
+      });
   };
 
   cancelDownload = () => {
@@ -95,7 +104,6 @@ export class FinalPermitDocuments extends Component {
       for (const url of docURLS) {
         if (this.state.cancelDownload) {
           this.setState({ cancelDownload: false });
-          this.props.closeModal();
           this.props.setNoticeOfWorkApplicationDocumentDownloadState({
             downloading: false,
             currentFile: 0,
@@ -132,13 +140,9 @@ export class FinalPermitDocuments extends Component {
   };
 
   openFinalDocumentPackageModal = (event) => {
-    const finalDocuments = this.props.noticeOfWork.documents.filter(
-      ({ is_final_package, now_application_document_xref_guid }) => {
-        if (is_final_package) {
-          return now_application_document_xref_guid;
-        }
-      }
-    );
+    const finalDocuments = this.props.noticeOfWork.documents
+      .filter(({ is_final_package }) => is_final_package)
+      .map(({ now_application_document_xref_guid }) => now_application_document_xref_guid);
     event.preventDefault();
     this.props.openModal({
       props: {
@@ -188,16 +192,14 @@ export class FinalPermitDocuments extends Component {
               <Icon type="download" theme="outlined" className="padding-small--right icon-sm" />
               Download All
             </Button>
-            {false && (
-              <Button
-                type="secondary"
-                className="full-mobile"
-                onClick={this.openFinalDocumentPackageModal}
-              >
-                <img src={EDIT_OUTLINE} title="Edit" alt="Edit" className="padding-md--right" />
-                Edit
-              </Button>
-            )}
+            <Button
+              type="secondary"
+              className="full-mobile"
+              onClick={this.openFinalDocumentPackageModal}
+            >
+              <img src={EDIT_OUTLINE} title="Edit" alt="Edit" className="padding-md--right" />
+              Edit
+            </Button>
           </div>
         </div>
         <br />
@@ -218,7 +220,13 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
-    { openModal, closeModal, setNoticeOfWorkApplicationDocumentDownloadState },
+    {
+      openModal,
+      closeModal,
+      setNoticeOfWorkApplicationDocumentDownloadState,
+      updateNoticeOfWorkApplication,
+      fetchImportedNoticeOfWorkApplication,
+    },
     dispatch
   );
 

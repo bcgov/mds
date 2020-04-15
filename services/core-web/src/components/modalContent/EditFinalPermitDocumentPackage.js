@@ -1,28 +1,19 @@
-/* eslint-disable */
-import React, { useState, Component } from "react";
-import { connect } from "react-redux";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
-import { Button, Progress, Icon, Popconfirm } from "antd";
-import { getDocumentDownloadState } from "@common/selectors/noticeOfWorkSelectors";
+import { Button, Icon, Popconfirm } from "antd";
 import NOWDocuments from "../noticeOfWork/applications/NOWDocuments";
-import { COLOR } from "@/constants/styles";
 
 const propTypes = {
-  submissionDocuments: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
-  coreDocuments: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
+  documents: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
+  finalDocuments: PropTypes.arrayOf(PropTypes.strings).isRequired,
   mineGuid: PropTypes.string.isRequired,
   noticeOfWorkGuid: PropTypes.string.isRequired,
   onSubmit: PropTypes.func.isRequired,
-  cancelDownload: PropTypes.func.isRequired,
-  documentDownloadState: PropTypes.shape({
-    downloading: PropTypes.bool.isRequired,
-    currentFile: PropTypes.number.isRequired,
-    totalFiles: PropTypes.number.isRequired,
-  }).isRequired,
   closeModal: PropTypes.func.isRequired,
 };
+
 export const EditFinalPermitDocumentPackage = (props) => {
-  const [selectedCoreRows, setSelectedCoreRows] = useState([]);
+  const [selectedCoreRows, setSelectedCoreRows] = useState(props.finalDocuments);
   return (
     <div>
       <NOWDocuments
@@ -56,9 +47,5 @@ export const EditFinalPermitDocumentPackage = (props) => {
   );
 };
 
-const mapStateToProps = (state) => ({
-  documentDownloadState: getDocumentDownloadState(state),
-});
-
 EditFinalPermitDocumentPackage.propTypes = propTypes;
-export default connect(mapStateToProps)(EditFinalPermitDocumentPackage);
+export default EditFinalPermitDocumentPackage;

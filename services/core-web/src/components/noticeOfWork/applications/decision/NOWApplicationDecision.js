@@ -1,5 +1,4 @@
-/* eslint-disable */
-import React, { Component } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import CustomPropTypes from "@/customPropTypes";
 import FinalPermitDocuments from "@/components/noticeOfWork/applications/FinalPermitDocuments";
@@ -13,18 +12,13 @@ const propTypes = {
   noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
 };
 
-export class NOWApplicationDecision extends Component {
-  render() {
-    return (
-      <div className="page__content">
-        <FinalPermitDocuments
-          mineGuid={this.props.mineGuid}
-          noticeOfWork={this.props.noticeOfWork}
-        />
-      </div>
-    );
-  }
-}
+export const NOWApplicationDecision = (props) => {
+  return (
+    <div className="page__content">
+      <FinalPermitDocuments mineGuid={props.mineGuid} noticeOfWork={props.noticeOfWork} />
+    </div>
+  );
+};
 
 NOWApplicationDecision.propTypes = propTypes;
 
