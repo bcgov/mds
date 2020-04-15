@@ -66,6 +66,7 @@ export const VARIANCES = (params) => {
     region = [],
     ...otherParams
   } = params;
+  console.log(compliance_code);
   const formattedCodes = {};
   Object.assign(
     formattedCodes,

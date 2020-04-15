@@ -39,10 +39,9 @@ export class FinalPermitDocuments extends Component {
 
   createFinalDocumentPackage = (selectedCoreRows) => {
     const documentPayload = this.props.noticeOfWork.documents.map((document) => {
-      // eslint-disable-next-line no-unused-expressions
-      selectedCoreRows.includes(document.now_application_document_xref_guid)
-        ? (document.is_final_package = true)
-        : (document.is_final_package = false);
+      document.is_final_package = selectedCoreRows.includes(
+        document.now_application_document_xref_guid
+      );
       return document;
     });
     const payload = { ...this.props.noticeOfWork, documents: documentPayload };
