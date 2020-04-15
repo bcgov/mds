@@ -255,10 +255,10 @@ app {
                               [
                     'file':'openshift/templates/docgen/docgen.dc.json',
                     'params':[
-                            'NAME':"mds-docgen-api",
+                            'NAME':"docgen",
                             'SUFFIX': "${vars.deployment.suffix}",
+                            'VERSION':"${app.deployment.version}",
                             'APPLICATION_SUFFIX': "${vars.deployment.application_suffix}",
-                            'TAG_NAME':"${app.deployment.version}",
                             'PORT':3030,
                             'CPU_REQUEST':"${vars.resources.docgen.cpu_request}",
                             'CPU_LIMIT':"${vars.resources.docgen.cpu_limit}",
@@ -522,7 +522,7 @@ environments {
                     HOST = "http://mds-redis${vars.deployment.suffix}"
                 }
                 'mds-docgen-api' {
-                    HOST = "http://mds-docgen-api${vars.deployment.suffix}:3030"
+                    HOST = "http://docgen${vars.deployment.suffix}:3030"
                 }
                 'schemaspy' {
                     HOST = "mds-schemaspy-${vars.deployment.namespace}.pathfinder.gov.bc.ca"

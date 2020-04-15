@@ -785,14 +785,14 @@ export const GENERATABLE_APPLICATION_DOCUMENTS = {
           id: "proponent_address",
           label: "Proponent Address",
           type: "FIELD",
-          placeholder: "Enter the propnent's address",
+          placeholder: "Enter the proponent's address",
           required: true,
         },
         {
           id: "proponent_name",
           label: "Proponent Name",
           type: "FIELD",
-          placeholder: "Enter the propnent's name",
+          placeholder: "Enter the proponent's name",
           required: false,
         },
         {
@@ -837,14 +837,14 @@ export const GENERATABLE_APPLICATION_DOCUMENTS = {
           id: "proponent_address",
           label: "Proponent Address",
           type: "FIELD",
-          placeholder: "Enter the propnent's address",
+          placeholder: "Enter the proponent's address",
           required: true,
         },
         {
           id: "proponent_name",
           label: "Proponent Name",
           type: "FIELD",
-          placeholder: "Enter the propnent's name",
+          placeholder: "Enter the proponent's name",
           required: false,
         },
         {
@@ -873,7 +873,7 @@ export const GENERATABLE_APPLICATION_DOCUMENTS = {
   },
   CAL: {
     now_application_document_type_code: "CAL",
-    description: "Client Acknowledgement Letter",
+    description: "Acknowledgement Letter",
     document_template: {
       document_template_code: "NOW-CAL",
       form_spec: [
@@ -889,14 +889,14 @@ export const GENERATABLE_APPLICATION_DOCUMENTS = {
           id: "proponent_address",
           label: "Proponent Address",
           type: "FIELD",
-          placeholder: "Enter the propnent's address",
+          placeholder: "Enter the proponent's address",
           required: true,
         },
         {
           id: "proponent_name",
           label: "Proponent Name",
           type: "FIELD",
-          placeholder: "Enter the propnent's name",
+          placeholder: "Enter the proponent's name",
           required: false,
         },
         {
