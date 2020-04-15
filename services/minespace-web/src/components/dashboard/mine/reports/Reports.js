@@ -80,7 +80,7 @@ export class Reports extends Component {
     };
 
     if (
-      !values.received_date &&
+      !this.state.report.received_date &&
       values.mine_report_submissions &&
       values.mine_report_submissions.length > 0
     ) {
