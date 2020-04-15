@@ -53,7 +53,10 @@ class Mine(AuditMixin, Base):
 
     #Almost always used, but faster to use selectin to load related data
     mine_permit = db.relationship(
-        'Permit', backref='mine', order_by='desc(Permit.create_timestamp)', lazy='selectin')
+        'Permit',
+        order_by='desc(Permit.create_timestamp)',
+        lazy='selectin',
+        secondary='mine_permit_xref')
 
     mine_type = db.relationship(
         'MineType',
