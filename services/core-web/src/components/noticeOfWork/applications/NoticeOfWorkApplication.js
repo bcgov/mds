@@ -47,6 +47,7 @@ import NoticeOfWorkPageHeader from "@/components/noticeOfWork/applications/Notic
 import * as FORM from "@/constants/forms";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
 import { modalConfig } from "@/components/modalContent/config";
+import { NOWApplicationDecision } from "@/components/noticeOfWork/applications/decision/NOWApplicationDecision";
 
 const { Step } = Steps;
 
@@ -560,6 +561,15 @@ export class NoticeOfWorkApplication extends Component {
     );
   };
 
+  renderStepFour = () => {
+    return (
+      <NOWApplicationDecision
+        mineGuid={this.props.noticeOfWork.mine_guid}
+        noticeOfWork={this.props.noticeOfWork}
+      />
+    );
+  };
+
   renderPermitGeneration = () => {
     const isAmendment = this.props.noticeOfWork.type_of_application !== "New Permit";
     return (
@@ -624,7 +634,7 @@ export class NoticeOfWorkApplication extends Component {
       0: this.renderStepOne(),
       1: this.renderStepTwo(),
       2: this.renderStepThree(),
-      3: <NullScreen type="next-stage" />,
+      3: this.renderStepFour(),
       100: this.renderPermitGeneration(),
     };
 

@@ -1,0 +1,67 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NOWApplicationDecision renders properly 1`] = `
+<div
+  className="page__content"
+>
+  <Connect(FinalPermitDocuments)
+    mineGuid="18133c75-49ad-4101-85f3-a43e35ae989a"
+    noticeOfWork={
+      Object {
+        "blasting_operation": Object {},
+        "camps": Object {
+          "details": Array [],
+        },
+        "contacts": Array [],
+        "cut_lines_polarization_survey": Object {
+          "details": Array [],
+        },
+        "description_of_land": "",
+        "documents": Array [],
+        "exploration_access": Object {
+          "details": Array [],
+        },
+        "exploration_surface_drilling": Object {
+          "details": Array [],
+        },
+        "latitude": "",
+        "longitude": "",
+        "mechanical_trenching": Object {
+          "details": Array [],
+        },
+        "mine_guid": "",
+        "notice_of_work_type_code": "",
+        "now_application_guid": "",
+        "now_application_id": "",
+        "now_message_id": 47284,
+        "now_tracking_number": 47284,
+        "placer_operation": Object {
+          "details": Array [],
+        },
+        "property_name": "",
+        "proposed_end_date": "",
+        "proposed_start_date": "",
+        "received_date": "",
+        "sand_and_gravel": Object {
+          "details": Array [],
+        },
+        "settling_pond": Object {
+          "details": Array [],
+        },
+        "state_of_land": Object {},
+        "submitted_date": "",
+        "surface_bulk_sample": Object {
+          "details": Array [],
+        },
+        "tenure_number": "",
+        "underground_exploration": Object {
+          "details": Array [],
+        },
+        "water_supply": Object {
+          "details": Array [],
+        },
+      }
+    }
+  />
+</div>
+`;

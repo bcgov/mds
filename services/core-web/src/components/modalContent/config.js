@@ -18,6 +18,7 @@ import ChangeNOWMineModal from "./ChangeNOWMineModal";
 import UpdateNOWLeadInspectorModal from "./UpdateNOWLeadInspectorModal";
 import UpdateNOWStatusModal from "./UpdateNOWStatusModal";
 import DownloadDocumentPackageModal from "./DownloadDocumentPackageModal";
+import EditFinalPermitDocumentPackage from "./EditFinalPermitDocumentPackage";
 import NOWReviewModal from "./NOWReviewModal";
 import ChangeNOWLocationModal from "./ChangeNOWLocationModal";
 import GenerateDocumentModal from "./GenerateDocumentModal";
@@ -45,6 +46,7 @@ export const modalConfig = {
   EDIT_NOTICE_OF_WORK_DOCUMENT: EditNoticeOfWorkDocumentModal,
   CHANGE_NOW_MINE: ChangeNOWMineModal,
   DOWNLOAD_DOC_PACKAGE: DownloadDocumentPackageModal,
+  EDIT_FINAL_PERMIT_DOC_PACKAGE: EditFinalPermitDocumentPackage,
   NOW_REVIEW: NOWReviewModal,
   UPDATE_NOW_LEAD_INSPECTOR: UpdateNOWLeadInspectorModal,
   UPDATE_NOW_STATUS: UpdateNOWStatusModal,
