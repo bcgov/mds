@@ -62,7 +62,7 @@ where p.permit_id = mpx.permit_id
 and p.permit_no = 'M-162'
 and m.mine_name = 'FOUR-J MINE'; -- or 'Lussier River'
 
-ALTER TABLE mine_expected_document DROP CONSTRAINT if exists permit_mine_guid_fkey;
+ALTER TABLE permit DROP CONSTRAINT if exists permit_mine_guid_fkey;
 
 --delete newly orphaned records
 --none of these duplicate records have had their permittee's changed
@@ -70,4 +70,4 @@ delete from mine_party_appt where permit_guid in (select permit_guid from permit
 delete from permit_amendment where permit_id not in (select permit_id from mine_permit_xref);
 DELETE FROM permit where permit_id not in (select permit_id from mine_permit_xref);
 
-ALTER TABLE mine_expected_document DROP COLUMN mine_guid
+ALTER TABLE permit DROP COLUMN mine_guid
