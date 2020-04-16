@@ -405,6 +405,7 @@ export const IMPORTED_NOTICE_OF_WORK = {
   underground_exploration: { details: [] },
   water_supply: { details: [] },
   placer_operation: { details: [] },
+  documents: [],
 };
 
 export const NOTICE_OF_WORK_ACTIVITY_TYPES = {

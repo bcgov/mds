@@ -1,0 +1,59 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`FinalPermitDocuments renders properly 1`] = `
+<div>
+  <div
+    className="inline-flex between"
+  >
+    <h3>
+      Final Permit Documents
+    </h3>
+    <div>
+      <Button
+        block={false}
+        className="full-mobile"
+        ghost={false}
+        htmlType="button"
+        loading={false}
+        onClick={[Function]}
+        type="secondary"
+      >
+        <Icon
+          className="padding-small--right icon-sm"
+          theme="outlined"
+          type="download"
+        />
+        Download All
+      </Button>
+      <Button
+        block={false}
+        className="full-mobile"
+        ghost={false}
+        htmlType="button"
+        loading={false}
+        onClick={[Function]}
+        type="secondary"
+      >
+        <img
+          alt="Edit"
+          className="padding-md--right"
+          src={
+            Object {
+              "process": [Function],
+            }
+          }
+          title="Edit"
+        />
+        Edit
+      </Button>
+    </div>
+  </div>
+  <br />
+  <Connect(NOWDocuments)
+    documents={Array []}
+    isViewMode={true}
+    mine_guid="18133c75-49ad-4101-85f3-a43e35ae989a"
+    now_application_guid=""
+  />
+</div>
+`;

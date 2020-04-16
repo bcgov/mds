@@ -35,10 +35,6 @@ class FileUpload extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      files: [],
-    };
-
     this.server = {
       process: (fieldName, file, metadata, load, error, progress, abort) => {
         const upload = new tus.Upload(file, {
@@ -82,22 +78,13 @@ class FileUpload extends React.Component {
         server={this.server}
         name="file"
         allowRevert={this.props.allowRevert}
+        onremovefile={this.props.onRemoveFile}
         allowMultiple
         maxFileSize={this.props.maxFileSize}
         allowFileTypeValidation={acceptedFileTypes.length > 0}
         acceptedFileTypes={acceptedFileTypes}
         fileValidateTypeLabelExpectedTypesMap={this.props.acceptedFileTypesMap}
-        onupdatefiles={(fileItems) => {
-          this.setState({
-            files: map(fileItems, "file"),
-          });
-        }}
-        onRemoveFiles={this.props.onRemoveFile}
-      >
-        {this.state.files.map((file) => (
-          <File key={file} src={file} origin="local" />
-        ))}
-      </FilePond>
+      />
     );
   }
 }
