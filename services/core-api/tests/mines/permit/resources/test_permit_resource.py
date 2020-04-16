@@ -14,7 +14,7 @@ from tests.factories import MineFactory, PermitFactory, PermitAmendmentFactory, 
 def test_get_permit_not_found(test_client, db_session, auth_headers):
     permit = PermitFactory()
     get_resp = test_client.get(
-        f'/mines/{permit.mine_guid}/permits/{uuid.uuid4()}',
+        f'/mines/{permit.mine.mine_guid}/permits/{uuid.uuid4()}',
         headers=auth_headers['full_auth_header'])
     get_data = json.loads(get_resp.data.decode())
     assert 'not found' in get_data['message']
@@ -24,7 +24,7 @@ def test_get_permit_not_found(test_client, db_session, auth_headers):
 def test_get_permit(test_client, db_session, auth_headers):
     permit = PermitFactory()
     permit_guid = permit.permit_guid
-    mine_guid = permit.mine_guid
+    mine_guid = permit.mine.mine_guid
 
     get_resp = test_client.get(
         f'/mines/{mine_guid}/permits/{permit_guid}', headers=auth_headers['full_auth_header'])
@@ -54,7 +54,7 @@ def test_post_permit(test_client, db_session, auth_headers):
     post_data = json.loads(post_resp.data.decode())
 
     updated_mine = Mine.find_by_mine_guid(str(mine.mine_guid))
-    permittees = MinePartyAppointment.find_by_permit_guid(updated_mine.mine_permit[0].permit_guid)
+    permittees = MinePartyAppointment.find_by_permit_id(updated_mine.mine_permit[0].permit_id)
 
     assert post_resp.status_code == 200
     assert updated_mine.mine_permit[0].permit_no == PERMIT_NO
@@ -104,7 +104,7 @@ def test_put_permit(test_client, db_session, auth_headers):
 
     data = {'permit_status_code': 'C'}
     put_resp = test_client.put(
-        f'/mines/{permit.mine_guid}/permits/{permit_guid}',
+        f'/mines/{permit.mine.mine_guid}/permits/{permit_guid}',
         headers=auth_headers['full_auth_header'],
         json=data)
     put_data = json.loads(put_resp.data.decode())
@@ -117,7 +117,7 @@ def test_put_permit_bad_permit_guid(test_client, db_session, auth_headers):
 
     data = {'permit_status_code': 'C'}
     put_resp = test_client.put(
-        f'/mines/{permit.mine_guid}/permits/{uuid.uuid4()}',
+        f'/mines/{permit.mine.mine_guid}/permits/{uuid.uuid4()}',
         headers=auth_headers['full_auth_header'],
         json=data)
     assert put_resp.status_code == 404

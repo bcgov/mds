@@ -50,7 +50,7 @@ class PermitListResource(Resource, UserMixin):
     @requires_role_view_all
     @api.marshal_with(PERMIT_MODEL, envelope='records', code=200)
     def get(self, mine_guid):
-        results = Permit.find_by_mine_guid(mine_guid)
+        results = Mine.find_by_mine_guid(mine_guid).mine_permit
         return results
 
     @api.doc(params={'permit_guid': 'Permit guid.'})
@@ -73,8 +73,7 @@ class PermitListResource(Resource, UserMixin):
 
         uploadedFiles = data.get('uploadedFiles', [])
 
-        permit = Permit.create(mine.mine_guid, data.get('permit_no'),
-                               data.get('permit_status_code'))
+        permit = Permit.create(mine, data.get('permit_no'), data.get('permit_status_code'))
 
         amendment = PermitAmendment.create(
             permit,
@@ -91,19 +90,19 @@ class PermitListResource(Resource, UserMixin):
             new_pa_doc = PermitAmendmentDocument(
                 document_name=newFile['fileName'],
                 document_manager_guid=newFile['document_manager_guid'],
-                mine_guid=permit.mine_guid,
+                mine_guid=permit.mine.mine_guid,
             )
             amendment.related_documents.append(new_pa_doc)
         db.session.commit()
 
         permittee_start_date = data.get('issue_date'),
         permittee = MinePartyAppointment.create(
-            mine.mine_guid,
+            mine,
             data.get('permittee_party_guid'),
-            'PMT',
+            mine_party_appt_type_code='PMT',
             start_date=permittee_start_date,
             processed_by=self.get_user_info(),
-            permit_guid=permit.permit_guid)
+            permit=permit)
         db.session.add(permittee)
         db.session.commit()
 
@@ -158,7 +157,7 @@ class PermitResource(Resource, UserMixin):
         permit = Permit.find_by_permit_guid_or_no(permit_guid)
         if not permit:
             raise NotFound('Permit not found.')
-        if not str(permit.mine_guid) == mine_guid:
+        if not str(permit.mine.mine_guid) == mine_guid:
             raise BadRequest('Permit and mine_guid mismatch.')
         return permit
 
@@ -170,7 +169,7 @@ class PermitResource(Resource, UserMixin):
         if not permit:
             raise NotFound('Permit not found.')
 
-        if not str(permit.mine_guid) == mine_guid:
+        if not str(permit.mine.mine_guid) == mine_guid:
             raise BadRequest('Permit and mine_guid mismatch.')
 
         data = self.parser.parse_args()

@@ -39,7 +39,7 @@ def test_post_permit_amendment_no_params(test_client, db_session, auth_headers):
     permit_guid = permit.permit_guid
 
     post_resp = test_client.post(
-        f'/mines/{permit.mine_guid}/permits/{permit_guid}/amendments',
+        f'/mines/{permit.mine.mine_guid}/permits/{permit_guid}/amendments',
         headers=auth_headers['full_auth_header'])
     post_data = json.loads(post_resp.data.decode())
     assert post_resp.status_code == 200, post_resp.response
@@ -54,10 +54,9 @@ def test_post_permit_amendment_no_params(test_client, db_session, auth_headers):
 
 def test_post_permit_amendment_with_date_params(test_client, db_session, auth_headers):
     permit = PermitFactory()
-    permit_guid = permit.permit_guid
     #TODO Figure out how to make permit factory make it's own initial permittee
     permittee = MinePartyAppointmentFactory(
-        permit_guid=permit_guid, mine_party_appt_type_code='PMT', mine=permit.mine)
+        permit_id=permit.permit_id, mine_party_appt_type_code='PMT', mine=permit.mine)
     party_guid = PartyFactory(company=True).party_guid
     data = {
         'permittee_party_guid': party_guid,
@@ -67,7 +66,7 @@ def test_post_permit_amendment_with_date_params(test_client, db_session, auth_he
     }
 
     post_resp = test_client.post(
-        f'/mines/{permit.mine_guid}/permits/{permit_guid}/amendments',
+        f'/mines/{permit.mine.mine_guid}/permits/{permit.permit_guid}/amendments',
         json=data,
         headers=auth_headers['full_auth_header'])
     post_data = json.loads(post_resp.data.decode())
@@ -110,7 +109,7 @@ def test_put_permit_amendment(test_client, db_session, auth_headers):
 
     data = {'permit_amendment_type_code': 'AMD', 'permit_amendment_status_code': 'RMT'}
     put_resp = test_client.put(
-        f'/mines/{permit.mine_guid}/permits/{permit.permit_guid}/amendments/{amendment.permit_amendment_guid}',
+        f'/mines/{permit.mine.mine_guid}/permits/{permit.permit_guid}/amendments/{amendment.permit_amendment_guid}',
         json=data,
         headers=auth_headers['full_auth_header'])
     put_data = json.loads(put_resp.data.decode())

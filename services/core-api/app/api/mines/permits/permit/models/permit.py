@@ -23,7 +23,6 @@ class Permit(AuditMixin, Base):
 
     permit_id = db.Column(db.Integer, primary_key=True)
     permit_guid = db.Column(UUID(as_uuid=True), server_default=FetchedValue())
-    mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine.mine_guid'))
     permit_no = db.Column(db.String(16), nullable=False)
     permit_status_code = db.Column(
         db.String(2), db.ForeignKey('permit_status_code.permit_status_code'))
@@ -63,10 +62,6 @@ class Permit(AuditMixin, Base):
         return cls.query.filter_by(permit_guid=_id).first()
 
     @classmethod
-    def find_by_mine_guid(cls, _id):
-        return cls.query.filter_by(mine_guid=_id).all()
-
-    @classmethod
     def find_by_permit_no(cls, _permit_no):
         return cls.query.filter_by(permit_no=_permit_no).first()
 
@@ -82,9 +77,9 @@ class Permit(AuditMixin, Base):
         return result
 
     @classmethod
-    def create(cls, mine_guid, permit_no, permit_status_code, add_to_session=True):
-        mine_permit = cls(
-            mine_guid=mine_guid, permit_no=permit_no, permit_status_code=permit_status_code)
+    def create(cls, mine, permit_no, permit_status_code, add_to_session=True):
+        mine_permit = cls(permit_no=permit_no, permit_status_code=permit_status_code)
+        mine.mine_permit.append(mine_permit)
         if add_to_session:
             mine_permit.save(commit=False)
         return mine_permit

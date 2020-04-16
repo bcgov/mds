@@ -52,7 +52,7 @@ class PermitAmendmentListResource(Resource, UserMixin):
         if not permit:
             raise NotFound('Permit does not exist.')
 
-        if not str(permit.mine_guid) == mine_guid:
+        if not str(permit.mine.mine_guid) == mine_guid:
             raise BadRequest('Permits mine_guid and provided mine_guid mismatch.')
 
         data = self.parser.parse_args()
@@ -62,7 +62,7 @@ class PermitAmendmentListResource(Resource, UserMixin):
         if not party:
             raise NotFound('Party not found')
 
-        permittees = MinePartyAppointment.find_by_permit_guid(permit_guid)
+        permittees = permit.permittee_appointments
         if not permittees:
             raise NotFound('Party appointments not found')
 
@@ -73,7 +73,7 @@ class PermitAmendmentListResource(Resource, UserMixin):
         is_historical_permit = False
 
         new_end_dates = MinePartyAppointment.find_appointment_end_dates(
-            permit_guid, permit_issue_date)
+            permit.permit_id, permit_issue_date)
 
         for permittee in permittees:
             # check if the new appointment is older than the current appointment, if so create a new permittee appointment
@@ -94,13 +94,13 @@ class PermitAmendmentListResource(Resource, UserMixin):
 
         # create a new appointment, so every amendment is associated with a permittee
         new_permittee = MinePartyAppointment.create(
-            permit.mine_guid,
+            permit.mine,
             data.get('permittee_party_guid'),
-            'PMT',
-            self.get_user_info(),
+            mine_party_appt_type_code='PMT',
+            processed_by=self.get_user_info(),
             start_date=permittee_start_date,
             end_date=permittee_end_date,
-            permit_guid=permit_guid)
+            permit=permit)
 
         new_permittee.save()
         new_pa = PermitAmendment.create(
@@ -116,7 +116,7 @@ class PermitAmendmentListResource(Resource, UserMixin):
             new_pa_doc = PermitAmendmentDocument(
                 document_name=newFile['fileName'],
                 document_manager_guid=newFile['document_manager_guid'],
-                mine_guid=permit.mine_guid,
+                mine_guid=permit.mine.mine_guid,
             )
             new_pa.related_documents.append(new_pa_doc)
 

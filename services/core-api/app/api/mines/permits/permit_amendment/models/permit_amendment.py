@@ -38,7 +38,7 @@ class PermitAmendment(AuditMixin, Base):
     permit_amendment_status_description = association_proxy('permit_amendment_status',
                                                             'description')
     permit_guid = association_proxy('permit', 'permit_guid')
-    mine_guid = association_proxy('permit', 'mine_guid')
+    mine_guid = association_proxy('permit', 'mine.mine_guid')
     permit_amendment_type = db.relationship('PermitAmendmentTypeCode')
     permit_amendment_type_description = association_proxy('permit_amendment_type', 'description')
 

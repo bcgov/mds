@@ -28,7 +28,7 @@ class BondListResource(Resource, UserMixin):
         if mine is None:
             return []
 
-        permits = Permit.find_by_mine_guid(mine.mine_guid)
+        permits = mine.mine_permit
 
         if not permits:
             return []
@@ -56,7 +56,7 @@ class BondListResource(Resource, UserMixin):
         bond.permit = permit
 
         for doc in bond.documents:
-            doc.mine_guid = permit.mine_guid
+            doc.mine_guid = permit.mine.mine_guid
 
         bond.save()
 
@@ -87,7 +87,7 @@ class BondResource(Resource, UserMixin):
             raise BadRequest(e)
 
         for doc in bond.documents:
-            doc.mine_guid = bond.permit.mine_guid
+            doc.mine_guid = bond.permit.mine.mine_guid
 
         bond.save()
 

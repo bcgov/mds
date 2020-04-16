@@ -10,6 +10,7 @@ from geoalchemy2 import Geometry
 from app.extensions import db
 from app.api.utils.models_mixins import AuditMixin, Base
 from app.api.mines.permits.permit.models.permit import Permit
+from app.api.mines.permits.permit.models.mine_permit_xref import MinePermitXref
 from app.api.users.minespace.models.minespace_user_mine import MinespaceUserMine
 from app.api.constants import *
 
@@ -119,7 +120,7 @@ class Mine(AuditMixin, Base):
     @hybrid_property
     def mine_permit_numbers(self):
         rows = db.session.query(
-            Permit.permit_no).filter(Permit.mine_guid == self.mine_guid).distinct().all()
+            Permit.permit_no).filter(Permit.mine.mine_guid == self.mine_guid).distinct().all()
         p_numbers = [permit_no for permit_no, in rows]
         return p_numbers
 
@@ -162,7 +163,7 @@ class Mine(AuditMixin, Base):
             number_filter = Mine.mine_no.ilike('%{}%'.format(term))
             permit_filter = Permit.permit_no.ilike('%{}%'.format(term))
             mines_q = Mine.query.filter(name_filter | number_filter).filter_by(deleted_ind=False)
-            permit_q = Mine.query.join(Permit).filter(permit_filter)
+            permit_q = Mine.query.join(MinePermitXref).join(Permit).filter(permit_filter)
             mines_q = mines_q.union(permit_q)
         else:
             mines_q = Mine.query

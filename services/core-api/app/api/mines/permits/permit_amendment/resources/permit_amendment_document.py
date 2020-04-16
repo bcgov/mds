@@ -49,7 +49,7 @@ class PermitAmendmentDocumentListResource(Resource, UserMixin):
                 raise BadRequest('Must supply filename for new file upload.')
 
             new_pa_doc = PermitAmendmentDocument(
-                mine_guid=permit_amendment.permit.mine_guid,
+                mine_guid=permit_amendment.permit.mine.mine_guid,
                 document_manager_guid=data.get('document_manager_guid'),
                 document_name=filename)
 
