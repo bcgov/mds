@@ -72,4 +72,4 @@ class NOWApplicationIdentity(Base, AuditMixin):
     def create_now_number(cls, mine):
         current_year = datetime.now().strftime("%Y")
         number_of_now = cls.submission_count_ytd(mine.mine_guid, current_year)
-        return f'{current_year}-{mine.mine_no}-{str(number_of_now + 1).zfill(2)}'
+        return f'{mine.mine_no}-{current_year}-{str(number_of_now + 1).zfill(2)}'
