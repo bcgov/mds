@@ -1,5 +1,6 @@
 /* eslint-disable */
 import React, { Component } from "react";
+import moment from "moment";
 import { connect } from "react-redux";
 import { compose } from "redux";
 import PropTypes from "prop-types";
@@ -8,16 +9,16 @@ import { Field, reduxForm, formValueSelector } from "redux-form";
 import { Form, Button, Popconfirm, List, Typography } from "antd";
 import { renderConfig } from "@/components/common/config";
 import * as FORM from "@/constants/forms";
-import { required } from "@/utils/Validate";
+import { required, yearNotInFuture } from "@common/utils/Validate";
 import { resetForm, createDropDownList, formatComplianceCodeValueOrLabel } from "@/utils/helpers";
 import {
   getDropdownMineReportCategoryOptions,
   getMineReportDefinitionOptions,
-} from "@/selectors/staticContentSelectors";
+} from "@common/selectors/staticContentSelectors";
 import CustomPropTypes from "@/customPropTypes";
 import { ReportSubmissions } from "@/components/Forms/reports/ReportSubmissions";
 
-const { Paragraph } = Typography;
+const { Paragraph, Text } = Typography;
 
 const propTypes = {
   mineGuid: PropTypes.string.isRequired,
@@ -123,8 +124,7 @@ export class AddReportForm extends Component {
           <Field
             id="mine_report_category"
             name="mine_report_category"
-            label="Report Type"
-            required
+            label="Report Type*"
             placeholder="Select"
             data={this.props.dropdownMineReportCategoryOptions}
             doNotPinDropdown
@@ -136,8 +136,7 @@ export class AddReportForm extends Component {
         <Field
           id="mine_report_definition_guid"
           name="mine_report_definition_guid"
-          label="Report Name"
-          required
+          label="Report Name*"
           placeholder={this.props.selectedMineReportCategory ? "Select" : "Select a category above"}
           data={this.state.dropdownMineReportDefinitionOptionsFiltered}
           doNotPinDropdown
@@ -161,10 +160,18 @@ export class AddReportForm extends Component {
         <Field
           id="submission_year"
           name="submission_year"
-          label="Report Compliance Year/Period"
-          required
+          label={
+            <span>
+              <div style={{ paddingBottom: 8 }}>Report Compliance Year/Period*</div>
+              <Text>
+                Select the year for which the report is being submitted. Depending on the report,
+                this may not be the current calendar year.
+              </Text>
+            </span>
+          }
           component={renderConfig.YEAR}
-          validate={[required]}
+          validate={[required, yearNotInFuture]}
+          disabledDate={(currentDate) => currentDate.year() > moment().year}
         />
         <ReportSubmissions
           mineGuid={this.props.mineGuid}

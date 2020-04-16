@@ -15,13 +15,15 @@ const propTypes = {
   placeholder: PropTypes.string,
   required: PropTypes.bool,
   onChange: PropTypes.func,
+  disabledDate: PropTypes.func,
   disabled: PropTypes.bool,
   meta: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 const defaultProps = {
-  placeholder: "yyyy-mm-dd",
+  placeholder: "",
   onChange: () => {},
+  disabledDate: () => {},
   disabled: false,
   required: false,
 };
@@ -79,6 +81,7 @@ export class RenderDate extends Component {
         onOpenChange={this.handleOpenChange}
         onPanelChange={this.handlePanelChange}
         onChange={this.clearValue}
+        disabledDate={this.props.disabledDate}
         disabled={this.props.disabled}
       />
     </Form.Item>

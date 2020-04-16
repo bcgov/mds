@@ -16,3 +16,9 @@ export const documentRecord = shape({
   category: PropTypes.string.isRequired,
   uploaded: PropTypes.string.isRequired,
 });
+
+export const documentDownloadState = PropTypes.shape({
+  downloading: PropTypes.bool.isRequired,
+  currentFile: PropTypes.number.isRequired,
+  totalFiles: PropTypes.number.isRequired,
+}).isRequired;

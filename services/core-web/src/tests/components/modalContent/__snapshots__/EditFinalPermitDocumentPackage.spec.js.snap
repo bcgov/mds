@@ -1,0 +1,66 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`EditFinalPermitDocumentPackage renders properly 1`] = `
+<div>
+  <Connect(NOWDocuments)
+    documents={Array []}
+    isViewMode={true}
+    mine_guid=""
+    now_application_guid=""
+    selectedRows={
+      Object {
+        "selectedCoreRows": Array [],
+        "setSelectedCoreRows": [Function],
+      }
+    }
+  />
+  <br />
+  <div
+    className="right center-mobile padding-md--top"
+  >
+    <Popconfirm
+      cancelText="No"
+      disabled={false}
+      icon={
+        <Icon
+          theme="filled"
+          type="exclamation-circle"
+        />
+      }
+      okText="Yes"
+      okType="primary"
+      onConfirm={[MockFunction]}
+      placement="topRight"
+      title="Are you sure you want to cancel?"
+      transitionName="zoom-big"
+      trigger="click"
+    >
+      <Button
+        block={false}
+        className="full-mobile"
+        ghost={false}
+        htmlType="button"
+        loading={false}
+      >
+        Cancel
+      </Button>
+    </Popconfirm>
+    <Button
+      block={false}
+      className="full-mobile"
+      ghost={false}
+      htmlType="button"
+      loading={false}
+      onClick={[Function]}
+      type="primary"
+    >
+      <Icon
+        className="padding-small--right icon-sm"
+        theme="outlined"
+        type="download"
+      />
+      Save Application Package
+    </Button>
+  </div>
+</div>
+`;
