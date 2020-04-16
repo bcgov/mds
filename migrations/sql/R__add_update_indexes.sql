@@ -22,7 +22,7 @@ DROP INDEX IF EXISTS mine_party_appt_guid_idx;
 CREATE INDEX IF NOT EXISTS mine_party_appt_mine_guid_fkey_idx ON mine_party_appt(mine_guid);
 CREATE INDEX IF NOT EXISTS mine_party_appt_party_guid_fkey_idx ON mine_party_appt(party_guid);
 CREATE INDEX IF NOT EXISTS mine_party_appt_mine_party_appt_type_code_fkey_idx ON mine_party_appt(mine_party_appt_type_code);
-CREATE INDEX IF NOT EXISTS mine_party_appt_mine_guid_permit_guid_fkey_idx ON mine_party_appt(mine_guid, permit_id);
+CREATE INDEX IF NOT EXISTS mine_party_appt_mine_guid_permit_id_fkey_idx ON mine_party_appt(mine_guid, permit_id);
 CREATE INDEX IF NOT EXISTS mine_party_appt_mine_tsf_guid_mine_guid_fkey_idx ON mine_party_appt(mine_tailings_storage_facility_guid,mine_guid);
 
 /* Mine Type */

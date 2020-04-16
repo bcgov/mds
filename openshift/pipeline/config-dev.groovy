@@ -300,23 +300,23 @@ app {
                             'NODE_ENV': "${vars.deployment.node_env}"
                     ]
                 ],
-                [
-                    'file':'openshift/templates/digdag/digdag.dc.json',
-                    'params':[
-                            'NAME':"digdag",
-                            'VERSION':"${app.deployment.version}",
-                            'NAMESPACE':"${vars.deployment.namespace}",
-                            'SUFFIX': "${vars.deployment.suffix}",
-                            'SCHEDULER_PVC_SIZE':"200Mi",
-                            'ENVIRONMENT_NAME':"${app.deployment.env.name}",
-                            'KEYCLOAK_DISCOVERY_URL':"${vars.keycloak.known_config_url}",
-                            'APPLICATION_DOMAIN': "${vars.modules.'digdag'.HOST}",
-                            'CPU_REQUEST':"${vars.resources.digdag.cpu_request}",
-                            'CPU_LIMIT':"${vars.resources.digdag.cpu_limit}",
-                            'MEMORY_REQUEST':"${vars.resources.digdag.memory_request}",
-                            'MEMORY_LIMIT':"${vars.resources.digdag.memory_limit}"
-                    ]
-                ]
+                // [
+                //     'file':'openshift/templates/digdag/digdag.dc.json',
+                //     'params':[
+                //             'NAME':"digdag",
+                //             'VERSION':"${app.deployment.version}",
+                //             'NAMESPACE':"${vars.deployment.namespace}",
+                //             'SUFFIX': "${vars.deployment.suffix}",
+                //             'SCHEDULER_PVC_SIZE':"200Mi",
+                //             'ENVIRONMENT_NAME':"${app.deployment.env.name}",
+                //             'KEYCLOAK_DISCOVERY_URL':"${vars.keycloak.known_config_url}",
+                //             'APPLICATION_DOMAIN': "${vars.modules.'digdag'.HOST}",
+                //             'CPU_REQUEST':"${vars.resources.digdag.cpu_request}",
+                //             'CPU_LIMIT':"${vars.resources.digdag.cpu_limit}",
+                //             'MEMORY_REQUEST':"${vars.resources.digdag.memory_request}",
+                //             'MEMORY_LIMIT':"${vars.resources.digdag.memory_limit}"
+                //     ]
+                // ]
         ]
     }
 }
@@ -324,7 +324,7 @@ app {
 environments {
     'dev' {
         vars {
-            DB_PVC_SIZE = '5Gi'
+            DB_PVC_SIZE = '1Gi'
             DOCUMENT_PVC_SIZE = '1Gi'
             BACKUP_VERIFICATION_PVC_SIZE = '200Mi'
             LOG_PVC_SIZE = '1Gi'
@@ -405,12 +405,12 @@ environments {
                     memory_request = "0"
                     memory_limit = "0"
                 }*/
-                digdag {
-                    cpu_request = "100m"
-                    cpu_limit = "200m"
-                    memory_request = "512Mi"
-                    memory_limit = "1Gi"
-                }
+                // digdag {
+                //     cpu_request = "100m"
+                //     cpu_limit = "200m"
+                //     memory_request = "512Mi"
+                //     memory_limit = "1Gi"
+                // }
             }
             deployment {
                 env {
@@ -461,9 +461,9 @@ environments {
                 'mds-docgen-api' {
                     HOST = "http://docgen${vars.deployment.suffix}:3030"
                 }
-                'digdag' {
-                    HOST = "mds-digdag-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
-                }
+                // 'digdag' {
+                //     HOST = "mds-digdag-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
+                // }
             }
         }
     }
