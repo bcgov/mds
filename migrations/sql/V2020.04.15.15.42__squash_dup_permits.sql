@@ -1,19 +1,17 @@
- 
-drop table if exists duplicate_permits;
+  
 --PERMIT_NUMBERS That exist on multiple mines, the duplicates that need to squashed
-select permit_no, count(distinct mine_guid) mine_cnt
+drop table if exists duplicate_permits;
+select permit_no, count(distinct p.mine_guid) mine_cnt
 INTO duplicate_permits
 from permit p 
     inner join permit_amendment pa on p.permit_id = pa.permit_id
     left join permit_amendment_document pad on pad.permit_amendment_id = pa.permit_amendment_id
 group by permit_no
-having count(distinct p.mine_guid) > 1;
-order by mine_cnt desc   
+having count(distinct p.mine_guid) > 1
+order by mine_cnt desc;
 
-
-
+--PERMITS THAT HAVE MULTIPLE COPIES EXCLUDING numbers that have been changed by users
 drop table if exists simple_duplicates_mine_permit;
---PERMITS THAT HAVE MULTIPLE COPIES EXLCUING numbers that have been changed by users
 SELECT p.mine_guid, p.permit_id, p.permit_no
 INTO simple_duplicates_mine_permit
     from permit p
@@ -65,7 +63,6 @@ and p.permit_no = 'M-162'
 and m.mine_name = 'FOUR-J MINE'; -- or 'Lussier River'
 
 --delete newly orphaned records
-
 --none of these duplicate records have had their permittee's changed
 delete from mine_party_appt where permit_guid in (select permit_guid from permit where permit_id not in (select permit_id from public.mine_permit_xref));
 delete from permit_amendment where permit_id not in (select permit_id from mine_permit_xref);
