@@ -40,5 +40,6 @@ module.exports = {
     "jsx-a11y/label-has-for": 0, // deprecated rule
     "import/no-cycle": 0,
     "no-param-reassign": 0,
+    "no-return-assign": 0,
   },
 };
