@@ -48,6 +48,11 @@ const defaultProps = {
   disableAddReport: false,
 };
 
+const requiredReceivedDateIfUploadedFiles = (value, formValues) =>
+  formValues.mine_report_submissions && formValues.mine_report_submissions.length > 0 && !value
+    ? "Received date must be set if files are attached"
+    : undefined;
+
 export class AddReportForm extends Component {
   state = {
     existingReport: Boolean(this.props.initialValues.mine_report_definition_guid),
@@ -227,6 +232,7 @@ export class AddReportForm extends Component {
                 label="Received Date"
                 placeholder="Select received date"
                 component={renderConfig.DATE}
+                validate={[requiredReceivedDateIfUploadedFiles]}
               />
             </Form.Item>
             <ReportSubmissions

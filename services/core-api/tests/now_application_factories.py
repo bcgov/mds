@@ -444,6 +444,7 @@ class NOWApplicationIdentityFactory(BaseFactory):
     messageid = factory.SelfAttribute('now_submission.messageid')
     mms_cid = factory.Sequence(lambda n: n)
     mine_guid = factory.SelfAttribute('mine.mine_guid')
+    # TODO: Create a value that adheres to the actual structure of a NoW number
     now_number = factory.Sequence(lambda n: n)
 
     now_application = factory.SubFactory('tests.now_application_factories.NOWApplicationFactory')

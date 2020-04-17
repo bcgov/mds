@@ -9,6 +9,7 @@ import {
   getDropdownCommodityOptions,
   getProvinceOptions,
   getMineReportCategoryOptions,
+  getMineReportDefinitionHash,
   getDropdownProvinceOptions,
   getComplianceCodes,
   getDropdownHSRCMComplianceCodes,
@@ -106,6 +107,10 @@ describe("staticContentSelectors", () => {
     expect(getMineReportCategoryOptions(mockState)).toEqual(
       mockState[STATIC_CONTENT].mineReportCategoryOptions
     );
+  });
+
+  it("`getMineReportDefinitionHash` calls `staticContentReducer.getMineReportDefinitionHash`", () => {
+    expect(getMineReportDefinitionHash(mockState)).toEqual(Mock.MINE_REPORT_DEFINITION_HASH);
   });
 
   it("`getComplianceCodes` calls `staticContentReducer.getComplianceCodes`", () => {
