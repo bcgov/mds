@@ -3547,6 +3547,7 @@ export const BULK_STATIC_CONTENT_RESPONSE = {
             placeholder: "Enter the bond amount",
             required: true,
             "read-only": false,
+            "context-props": ["currency"],
           },
           {
             id: "inspector",

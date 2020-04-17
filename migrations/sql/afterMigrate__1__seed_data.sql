@@ -933,7 +933,8 @@ UPDATE document_template SET form_spec_json = '[
       "label": "Bond Amount",
       "type": "FIELD",
       "placeholder": "Enter the bond amount",
-      "required": true
+      "required": true,
+      "context-props": ["currency"]
     },
     {
       "id": "inspector",

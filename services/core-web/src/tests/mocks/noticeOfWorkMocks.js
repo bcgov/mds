@@ -934,6 +934,7 @@ export const GENERATABLE_APPLICATION_DOCUMENTS = {
           type: "FIELD",
           placeholder: "Enter the bond amount",
           required: true,
+          "context-props": ["currency"],
         },
         {
           id: "inspector",
