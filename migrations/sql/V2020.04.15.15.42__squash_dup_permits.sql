@@ -60,7 +60,7 @@ from permit p
 inner join mine m on p.mine_guid = m.mine_guid
 where p.permit_id = mpx.permit_id
 and p.permit_no = 'M-162'
-and m.mine_name = 'Lussier River' -- instead of 'FOUR-J MINE'
+and m.mine_name = 'Lussier River'; -- instead of 'FOUR-J MINE'
 
 
 
