@@ -70,11 +70,11 @@ export const VARIANCES = (params) => {
   Object.assign(
     formattedCodes,
     compliance_code.length >= 1 && {
-      compliance_code: compliance_code.join(","),
+      compliance_code: compliance_code,
     },
-    region.length >= 1 && { region: region.join(",") },
+    region.length >= 1 && { region: region },
     variance_application_status_code.length >= 1 && {
-      variance_application_status_code: variance_application_status_code.join(","),
+      variance_application_status_code: variance_application_status_code,
     }
   );
   return params

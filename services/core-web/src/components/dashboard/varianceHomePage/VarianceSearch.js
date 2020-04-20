@@ -10,6 +10,7 @@ import CustomPropTypes from "@/customPropTypes";
  */
 const propTypes = {
   handleVarianceSearch: PropTypes.func.isRequired,
+  handleReset: PropTypes.func.isRequired,
   initialValues: CustomPropTypes.varianceSearchInitialValues,
   mineRegionOptions: CustomPropTypes.options.isRequired,
   complianceCodes: CustomPropTypes.options.isRequired,
@@ -23,6 +24,7 @@ const defaultProps = {
 const checkAdvancedSearch = ({
   region,
   compliance_code,
+  variance_application_status_code,
   major,
   issue_date_after,
   issue_date_before,
@@ -34,6 +36,7 @@ const checkAdvancedSearch = ({
     [
       region,
       compliance_code,
+      variance_application_status_code,
       issue_date_after,
       issue_date_before,
       expiry_date_before,
@@ -58,8 +61,8 @@ export class VarianceSearch extends Component {
           <Col md={{ span: 12, offset: 6 }} xs={{ span: 20, offset: 2 }}>
             <span className="advanced-search__container">
               <VarianceSearchForm
+                handleReset={this.props.handleReset}
                 onSubmit={this.props.handleVarianceSearch}
-                handleVarianceSearch={this.props.handleVarianceSearch}
                 toggleAdvancedSearch={this.toggleAdvancedSearch}
                 isAdvanceSearch={this.state.isAdvanceSearch}
                 initialValues={this.props.initialValues}

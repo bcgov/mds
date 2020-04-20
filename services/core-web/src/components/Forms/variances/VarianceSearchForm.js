@@ -8,10 +8,10 @@ import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
-  handleVarianceSearch: PropTypes.func.isRequired,
   toggleAdvancedSearch: PropTypes.func.isRequired,
   reset: PropTypes.func.isRequired,
   isAdvanceSearch: PropTypes.bool,
+  handleReset: PropTypes.func.isRequired,
   complianceCodes: CustomPropTypes.options.isRequired,
   mineRegionOptions: CustomPropTypes.options.isRequired,
   filterVarianceStatusOptions: CustomPropTypes.filterOptions.isRequired,
@@ -39,7 +39,7 @@ export const validate = (values) => {
 export class VarianceSearchForm extends Component {
   handleReset = () => {
     this.props.reset();
-    this.props.handleVarianceSearch({}, true);
+    this.props.handleReset();
   };
 
   render() {
