@@ -109,7 +109,7 @@ class ApplicationListResource(Resource, UserMixin):
         return apply_pagination(base_query, page_number, page_size)
 
     @api.doc(description='Save an application')
-    # @requires_role_edit_submissions
+    @requires_role_edit_submissions
     @api.expect(APPLICATION)
     @api.marshal_with(APPLICATION, code=201)
     def post(self):
