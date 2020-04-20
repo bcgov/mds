@@ -44,11 +44,11 @@ class IncidentsResource(Resource, UserMixin):
         args = {
             "page_number": request.args.get('page', PAGE_DEFAULT, type=int),
             "page_size": request.args.get('per_page', PER_PAGE_DEFAULT, type=int),
-            "status": request.args.get('incident_status', type=str),
-            "determination": request.args.get('determination', type=str),
-            "codes": request.args.get('codes', type=str),
+            "status": request.args.getlist('incident_status', type=str),
+            "determination": request.args.getlist('determination', type=str),
+            "codes": request.args.getlist('codes', type=str),
             'major': request.args.get('major', type=str),
-            'region': request.args.get('region', type=str),
+            'region': request.args.getlist('region', type=str),
             'year': request.args.get('year', type=str),
             'search_terms': request.args.get('search', type=str),
             'sort_field': request.args.get('sort_field', type=str),
@@ -93,21 +93,21 @@ class IncidentsResource(Resource, UserMixin):
         if args["mine_guid"] is not None:
             conditions.append(
                 self._build_filter('MineIncident', 'mine_guid', '==', args["mine_guid"]))
-        if args["status"] is not None:
-            status_values = args["status"].split(',')
+        if args["status"]:
+            # status_values = args["status"].split(',')
             conditions.append(
-                self._build_filter('MineIncident', 'status_code', 'in', status_values))
-        if args["determination"] is not None:
-            determination_values = args["determination"].split(',')
+                self._build_filter('MineIncident', 'status_code', 'in', args["status"]))
+        if args["determination"]:
+            # determination_values = args["determination"].split(',')
             conditions.append(
                 self._build_filter('MineIncident', 'determination_type_code', 'in',
-                                   determination_values))
-        if args["codes"] is not None:
+                                   args["determination"]))
+        if args["codes"]:
             query = MineIncident.query.join(Mine).outerjoin(MineIncidentDoSubparagraph)
-            code_values = args["codes"].split(',')
+            # code_values = args["codes"].split(',')
             conditions.append(
                 self._build_filter('MineIncidentDoSubparagraph', 'compliance_article_id', 'in',
-                                   code_values))
+                                   args["codes"]))
         if args["year"] is not None:
             min_datetime = datetime(int(args["year"]), 1, 1)
             max_datetime = datetime(int(args["year"]) + 1, 1, 1)
@@ -115,8 +115,10 @@ class IncidentsResource(Resource, UserMixin):
                 self._build_filter('MineIncident', 'incident_timestamp', '>=', min_datetime))
             conditions.append(
                 self._build_filter('MineIncident', 'incident_timestamp', '<', max_datetime))
-        if args["major"] is not None:
+        if args["major"]:
             conditions.append(self._build_filter('Mine', 'major_mine_ind', '==', args["major"]))
+        # if args["major"] is not None:
+        #     conditions.append(self._build_filter('Mine', 'major_mine_ind', '==', args["major"]))
         if args["search_terms"] is not None:
             search_conditions = [
                 self._build_filter('Mine', 'mine_name', 'ilike',
@@ -124,9 +126,12 @@ class IncidentsResource(Resource, UserMixin):
                 self._build_filter('Mine', 'mine_no', 'ilike', '%{}%'.format(args["search_terms"])),
             ]
             conditions.append({'or': search_conditions})
-        if args["region"] is not None:
-            region_list = args["region"].split(',')
-            conditions.append(self._build_filter('Mine', 'mine_region', 'in', region_list))
+
+        if args["region"]:
+            conditions.append(self._build_filter('Mine', 'mine_region', 'in', args["region"]))   
+        # if args["region"] is not None:
+        #     region_list = args["region"].split(',')
+        #     conditions.append(self._build_filter('Mine', 'mine_region', 'in', region_list))
 
         filtered_query = apply_filters(query, conditions)
 
