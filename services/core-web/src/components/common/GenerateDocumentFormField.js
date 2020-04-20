@@ -40,15 +40,13 @@ const GenerateDocumentFormField = (props) => (
   />
 );
 
-const GenerateDocumentFormFieldCurrency = (props) => {
-  return (
-    <GenerateDocumentFormField
-      {...props}
-      {...currencyMask}
-      validate={props.field.required ? [required, number, currency] : [number, currency]}
-    />
-  );
-};
+const GenerateDocumentFormFieldCurrency = (props) => (
+  <GenerateDocumentFormField
+    {...props}
+    {...currencyMask}
+    validate={props.field.required ? [required, number, currency] : [number, currency]}
+  />
+);
 
 const FIELDS = {
   CHECKBOX: GenerateDocumentFormField,
