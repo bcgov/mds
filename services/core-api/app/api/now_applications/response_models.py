@@ -12,8 +12,7 @@ DOCUMENT_TEMPLATE_FIELD_MODE = api.model(
         "placeholder": fields.String,
         "required": fields.Boolean(default=False),
         "context-value": fields.String,
-        "read-only": fields.Boolean(default=False),
-        "context-props": fields.List(fields.String),
+        "read-only": fields.Boolean(default=False)
     })
 
 DOCUMENT_TEMPLATE_MODEL = api.model(

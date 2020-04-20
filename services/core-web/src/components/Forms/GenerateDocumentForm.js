@@ -1,12 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Field, reduxForm, focus } from "redux-form";
+import { reduxForm, focus } from "redux-form";
 import { Form, Button, Col, Row, Popconfirm } from "antd";
-import { required } from "@common/utils/Validate";
 import { resetForm } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
-import { getContextProps } from "@/constants/documentGeneration";
-import { renderConfig } from "@/components/common/config";
+import { getGenerateDocumentFormField } from "@/components/common/GenerateDocumentFormField";
 
 const propTypes = {
   documentType: PropTypes.objectOf(PropTypes.any).isRequired,
@@ -24,17 +22,7 @@ const createFields = (fields) => (
         .map((field) => (
           <Row key={field.id}>
             <Col>
-              <Form.Item>
-                <Field
-                  id={field.id}
-                  name={field.id}
-                  label={field.label}
-                  placeholder={field.placeholder}
-                  component={renderConfig[field.type]}
-                  validate={field.required ? [required] : null}
-                  {...getContextProps(field["context-props"])}
-                />
-              </Form.Item>
+              <Form.Item>{getGenerateDocumentFormField(field)}</Form.Item>
             </Col>
           </Row>
         ))}
