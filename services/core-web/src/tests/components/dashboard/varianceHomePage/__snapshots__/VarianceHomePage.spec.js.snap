@@ -32,40 +32,7 @@ exports[`VarianceHomePage renders properly 1`] = `
             },
           ]
         }
-        fetchVariances={
-          [MockFunction] {
-            "calls": Array [
-              Array [
-                Object {
-                  "compliance_code": Array [],
-                  "major": undefined,
-                  "region": Array [],
-                  "search": undefined,
-                  "variance_application_status_code": Array [],
-                },
-              ],
-              Array [
-                Object {
-                  "compliance_code": Array [],
-                  "major": undefined,
-                  "region": Array [],
-                  "search": undefined,
-                  "variance_application_status_code": Array [],
-                },
-              ],
-            ],
-            "results": Array [
-              Object {
-                "type": "return",
-                "value": Promise {},
-              },
-              Object {
-                "type": "return",
-                "value": Promise {},
-              },
-            ],
-          }
-        }
+        fetchVariances={[MockFunction]}
         filterVarianceStatusOptions={
           Array [
             Object {
@@ -94,20 +61,28 @@ exports[`VarianceHomePage renders properly 1`] = `
             },
           ]
         }
+        handleReset={[Function]}
         handleVarianceSearch={[Function]}
         initialValues={
           Object {
             "compliance_code": Array [],
+            "expiry_date_after": undefined,
+            "expiry_date_before": undefined,
+            "issue_date_after": undefined,
+            "issue_date_before": undefined,
             "major": undefined,
+            "page": "1",
+            "per_page": "25",
             "region": Array [],
             "search": undefined,
+            "sort_dir": "desc",
+            "sort_field": "variance_application_status_code",
             "variance_application_status_code": Array [],
           }
         }
       />
       <div>
         <VarianceTable
-          handleFilterChange={[Function]}
           handlePageChange={[Function]}
           handleVarianceSearch={[Function]}
           isLoaded={false}
@@ -144,14 +119,22 @@ exports[`VarianceHomePage renders properly 1`] = `
           params={
             Object {
               "compliance_code": Array [],
+              "expiry_date_after": undefined,
+              "expiry_date_before": undefined,
+              "issue_date_after": undefined,
+              "issue_date_before": undefined,
               "major": undefined,
+              "page": "1",
+              "per_page": "25",
               "region": Array [],
               "search": undefined,
+              "sort_dir": "desc",
+              "sort_field": "variance_application_status_code",
               "variance_application_status_code": Array [],
             }
           }
-          sortDir={null}
-          sortField={null}
+          sortDir="desc"
+          sortField="variance_application_status_code"
           variances={
             Object {
               "current_page": 1,
