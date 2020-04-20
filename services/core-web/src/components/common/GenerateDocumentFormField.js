@@ -1,12 +1,12 @@
 import React from "react";
-import PropTypes from "prop-types";
 import { Field } from "redux-form";
 import { currencyMask } from "@common/utils/helpers";
 import { required, number, currency } from "@common/utils/Validate";
 import { renderConfig } from "@/components/common/config";
+import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
-  field: PropTypes.objectOf(PropTypes.any).isRequired,
+  field: CustomPropTypes.documentFormSpecField.isRequired,
 };
 
 const FIELDS_COMPONENT = {
@@ -40,9 +40,15 @@ const GenerateDocumentFormField = (props) => (
   />
 );
 
-const GenerateDocumentFormFieldCurrency = (props) => (
-  <GenerateDocumentFormField {...props} {...currencyMask} validate={[required, number, currency]} />
-);
+const GenerateDocumentFormFieldCurrency = (props) => {
+  return (
+    <GenerateDocumentFormField
+      {...props}
+      {...currencyMask}
+      validate={props.field.required ? [required, number, currency] : [number, currency]}
+    />
+  );
+};
 
 const FIELDS = {
   CHECKBOX: GenerateDocumentFormField,
@@ -64,6 +70,7 @@ const FIELDS = {
 };
 
 GenerateDocumentFormField.propTypes = propTypes;
+GenerateDocumentFormFieldCurrency.propTypes = propTypes;
 
 export const getGenerateDocumentFormField = (field) => {
   const FormField = FIELDS[field.type];
