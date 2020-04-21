@@ -43,12 +43,14 @@ class MineTailingsStorageFacilityListResource(Resource, UserMixin):
             raise NotFound('Mine not found.')
 
         data = self.parser.parse_args()
+
+        mine_tsf_list = mine.mine_tailings_storage_facilities
+        is_mine_first_tsf = len(mine_tsf_list) == 0
+
         mine_tsf = MineTailingsStorageFacility.create(
             mine, mine_tailings_storage_facility_name=data['mine_tailings_storage_facility_name'])
         mine.mine_tailings_storage_facilities.append(mine_tsf)
 
-        mine_tsf_list = mine.mine_tailings_storage_facilities
-        is_mine_first_tsf = len(mine_tsf_list) == 0
         if is_mine_first_tsf:
             try:
                 tsf_required_reports = MineReportDefinition.find_required_reports_by_category('TSF')
@@ -68,4 +70,4 @@ class MineTailingsStorageFacilityListResource(Resource, UserMixin):
                 raise InternalServerError(str(e) + ", tsf not created")
 
         mine.save()
-        return mine_tsf
+        return mine_tsf, 201
