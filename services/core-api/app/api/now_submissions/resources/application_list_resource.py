@@ -111,6 +111,7 @@ class ApplicationListResource(Resource, UserMixin):
     @api.doc(description='Save an application')
     @requires_role_edit_submissions
     @api.expect(APPLICATION)
+    @api.marshal_with(APPLICATION, code=201)
     def post(self):
         current_app.logger.debug('Attempting to load application')
         try:
@@ -138,4 +139,4 @@ class ApplicationListResource(Resource, UserMixin):
             now_number=NOWApplicationIdentity.create_now_number(mine))
         current_app.logger.debug('Attempting to Save')
         application.save()
-        return application.now_application_identity.now_number, 201
+        return application, 201
