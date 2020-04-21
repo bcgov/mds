@@ -44,7 +44,7 @@
                         "annotations": null,
                         "from": {
                             "kind": "DockerImage",
-                            "name": "grafana/loki:k14-60b97e3"
+                            "name": "grafana/promtail:k14-60b97e3"
                         },
                         "generation": 1,
                         "importPolicy": {},
