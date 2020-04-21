@@ -237,7 +237,7 @@ services:
       - grafana_storage:/var/lib/grafana
       - ./settings/grafana/provisioning/:/etc/grafana/provisioning/
     env_file:
-      - ./settings/grafana/config.monitoring
+      - ./settings/grafana/env
     restart: always
 
   # jaeger:
