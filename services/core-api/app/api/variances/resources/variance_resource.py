@@ -1,4 +1,4 @@
-from flask import request
+from flask import request, current_app
 from flask_restplus import Resource
 from sqlalchemy_filters import apply_sort, apply_pagination, apply_filters
 from sqlalchemy import desc, cast, NUMERIC, func, or_
@@ -26,12 +26,12 @@ class VarianceResource(Resource, UserMixin):
             'page': f'The page number of paginated records to return. Default: {PAGE_DEFAULT}',
             'per_page': f'The number of records to return per page. Default: {PER_PAGE_DEFAULT}',
             'variance_application_status_code':
-            'Comma-separated list of code statuses to include in results. Default: All status codes.',
+            'Status Codes. Default: All status codes.',
             'compliance_codes':
-            'Comma-separated list of compliance codes to be filtered. Default: All compliance codes',
+            'List of compliance codes to be filtered. Default: All compliance codes',
             'major': 'boolean indicating if variance is from a major or regional mine',
             'region':
-            'Comma-separated list of regions the mines associated with the variances are located in',
+            'Regions the mines associated with the variances are located in',
             'sort_field': 'The field the returned results will be ordered by',
             'sort_dir': 'The direction by which the sort field is ordered',
             'issue_date_before': 'Latest possible issue date returned (inclusive)',
@@ -45,10 +45,10 @@ class VarianceResource(Resource, UserMixin):
         args = {
             "page_number": request.args.get('page', PAGE_DEFAULT, type=int),
             "page_size": request.args.get('per_page', PER_PAGE_DEFAULT, type=int),
-            "application_status": request.args.get('variance_application_status_code', type=str),
-            "compliance_codes": request.args.get('compliance_code', type=str),
+            "application_status": request.args.getlist('variance_application_status_code', type=str),
+            "compliance_codes": request.args.getlist('compliance_code', type=str),
             'major': request.args.get('major', type=str),
-            'region': request.args.get('region', type=str),
+            'region': request.args.getlist('region', type=str),
             'issue_date_before': request.args.get('issue_date_before', type=str),
             'issue_date_after': request.args.get('issue_date_after', type=str),
             'expiry_date_before': request.args.get('expiry_date_before', type=str),
@@ -89,17 +89,15 @@ class VarianceResource(Resource, UserMixin):
                 VarianceApplicationStatusCode.get_active()))
 
         conditions = []
-        if args["application_status"] is not None:
-            status_filter_values = args["application_status"].split(',')
+        if args["application_status"]:
             conditions.append(
                 self._build_filter('Variance', 'variance_application_status_code', 'in',
-                                   status_filter_values))
+                                   args["application_status"]))
 
-        if args["compliance_codes"] is not None:
-            compliance_codes_values = args["compliance_codes"].split(',')
+        if args["compliance_codes"]:
             conditions.append(
                 self._build_filter('Variance', 'compliance_article_id', 'in',
-                                   compliance_codes_values))
+                                   args["compliance_codes"]))
 
         if args["expiry_date_before"] is not None:
             conditions.append(
@@ -117,7 +115,7 @@ class VarianceResource(Resource, UserMixin):
             conditions.append(
                 self._build_filter('Variance', 'issue_date', '>=', args["issue_date_after"]))
 
-        if args["major"] is not None:
+        if args["major"]:
             conditions.append(self._build_filter('Mine', 'major_mine_ind', '==', args["major"]))
 
         if args["search_terms"] is not None:
@@ -128,9 +126,9 @@ class VarianceResource(Resource, UserMixin):
             ]
             conditions.append({'or': search_conditions})
 
-        if args["region"] is not None:
-            region_list = args["region"].split(',')
-            conditions.append(self._build_filter('Mine', 'mine_region', 'in', region_list))
+        if args["region"]:
+            conditions.append(self._build_filter('Mine', 'mine_region', 'in', args["region"]))
+
 
         query = Variance.query.join(Mine).join(ComplianceArticle)
 

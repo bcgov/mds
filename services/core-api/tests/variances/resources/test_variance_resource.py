@@ -111,7 +111,7 @@ class TestGetVariances:
         VarianceFactory(compliance_article_id=compliance_codes[1])
 
         get_resp = test_client.get(
-            f'/variances?compliance_code={compliance_codes[0]},{compliance_codes[1]}',
+            f'/variances?compliance_code={compliance_codes[0]}&compliance_code={compliance_codes[1]}',
             headers=auth_headers['full_auth_header'])
         get_data = json.loads(get_resp.data.decode())
         assert get_resp.status_code == 200

@@ -181,7 +181,7 @@ export const MineBondTable = (props) => {
                 <div className="custom-menu-item">
                   <Popconfirm
                     placement="leftTop"
-                    title={`Are you sure you want to confiscate Bond ${record.bond_id}? Doing so will convert the bond type to cash.`}
+                    title="Are you sure you want to confiscate this bond? Doing so will convert the bond type to cash."
                     onConfirm={() => props.releaseOrConfiscateBond("CON", record.bond_guid, record)}
                     okText="Confiscate"
                     cancelText="Cancel"
