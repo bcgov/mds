@@ -1,10 +1,8 @@
-/* eslint-disable */
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { destroy } from "redux-form";
 import moment from "moment";
-import { debounce, isEmpty } from "lodash";
 import queryString from "query-string";
 import PropTypes from "prop-types";
 import { openModal, closeModal } from "@common/actions/modalActions";
@@ -25,7 +23,6 @@ import {
 import { getDropdownInspectors } from "@common/selectors/partiesSelectors";
 import { getIncidents, getIncidentPageData } from "@common/selectors/incidentSelectors";
 import { fetchIncidents, updateMineIncident } from "@common/actionCreators/incidentActionCreator";
-import { formatParamStringToArray } from "@common/utils/helpers";
 import * as Strings from "@common/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
 import { IncidentsTable } from "./IncidentsTable";
@@ -51,7 +48,7 @@ const propTypes = {
   updateMineIncident: PropTypes.func.isRequired,
   location: PropTypes.shape({ search: PropTypes.string }).isRequired,
   mineRegionOptions: CustomPropTypes.options.isRequired,
-  history: PropTypes.shape({ push: PropTypes.func }).isRequired,
+  history: PropTypes.shape({ replace: PropTypes.func }).isRequired,
   followupActions: PropTypes.arrayOf(CustomPropTypes.incidentFollowupType),
   followupActionsOptions: CustomPropTypes.options.isRequired,
   incidentDeterminationOptions: CustomPropTypes.options.isRequired,
@@ -64,41 +61,10 @@ const defaultProps = {
   followupActions: [],
 };
 
-// export const joinOrRemove = (param, key) => {
-//   if (isEmpty(param)) {
-//     return {};
-//   }
-//   return typeof param === "string" ? { [key]: param } : { [key]: param.join(",") };
-// };
-// export const removeEmptyStings = (param, key) => (isEmpty(param) ? {} : { [key]: param });
-
-// // TODO: Implement the NoW dashboard pattern for cleaning props
-// export const formatParams = ({
-//   region = [],
-//   year,
-//   incident_status = [],
-//   codes = [],
-//   determination = [],
-//   search,
-//   major,
-//   ...remainingParams
-// }) => {
-//   return {
-//     ...joinOrRemove(region, "region"),
-//     ...removeEmptyStings(year, "year"),
-//     ...joinOrRemove(incident_status, "incident_status"),
-//     ...joinOrRemove(codes, "codes"),
-//     ...joinOrRemove(determination, "determination"),
-//     ...removeEmptyStings(search, "search"),
-//     ...removeEmptyStings(major, "major"),
-//     ...remainingParams,
-//   };
-// };
-
 const defaultParams = {
   page: Strings.DEFAULT_PAGE,
   per_page: Strings.DEFAULT_PER_PAGE,
-  sort_field: "received_date",
+  sort_field: "incident_timestamp",
   sort_dir: "desc",
   search: undefined,
   major: undefined,
@@ -110,16 +76,10 @@ const defaultParams = {
 };
 
 export class IncidentsHomePage extends Component {
-  // params = queryString.parse(this.props.location.search);
-
-  constructor(props) {
-    super(props);
-    // this.handleIncidentSearchDebounced = debounce(this.handleIncidentSearch, 1000);
-    this.state = {
-      incidentsLoaded: false,
-      params: defaultParams,
-    };
-  }
+  state = {
+    incidentsLoaded: false,
+    params: defaultParams,
+  };
 
   componentDidMount() {
     const params = queryString.parse(this.props.location.search);
@@ -135,13 +95,6 @@ export class IncidentsHomePage extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const locationChanged = nextProps.location !== this.props.location;
-    if (locationChanged) {
-      this.renderDataFromURL(nextProps.location.search);
-    }
-  }
-
-  componentWillReceiveProps(nextProps) {
     if (nextProps.location !== this.props.location) {
       this.setState({ incidentsLoaded: false }, () =>
         this.renderDataFromURL(nextProps.location.search)
@@ -150,51 +103,11 @@ export class IncidentsHomePage extends Component {
   }
 
   renderDataFromURL = (params) => {
-    // const {
-    //   region,
-    //   major,
-    //   incident_status,
-    //   codes,
-    //   determination,
-    //   search,
-    //   ...remainingParams
-    // } = queryString.parse(params);
-    // this.setState(
-    //   {
-    //     params: {
-    //       region: formatParamStringToArray(region),
-    //       incident_status: formatParamStringToArray(incident_status),
-    //       codes: formatParamStringToArray(codes),
-    //       determination: formatParamStringToArray(determination),
-    //       major,
-    //       search,
-    //       ...remainingParams,
-    //     },
-    //   },
-    //   () => {
-    //     this.props.fetchIncidents(this.state.params);
-    //   }
-    // );
-
     const parsedParams = queryString.parse(params);
     this.props.fetchIncidents(parsedParams).then(() => {
       this.setState({ incidentsLoaded: true });
     });
   };
-
-  // clearParams = () => {
-  //   this.setState({
-  //     params: {
-  //       region: [],
-  //       major: null,
-  //       search: null,
-  //       year: null,
-  //       incident_status: [],
-  //       codes: [],
-  //       determination: [],
-  //     },
-  //   });
-  // };
 
   clearParams = () => {
     this.setState(
@@ -207,47 +120,19 @@ export class IncidentsHomePage extends Component {
         },
       }),
       () => {
-        this.props.fetchIncidents(this.state.params);
+        this.props.history.replace(router.INCIDENTS_DASHBOARD.dynamicRoute(this.state.params));
       }
     );
   };
 
-  handleIncidentSearch = (params, clear = false) => {
+  handleIncidentSearch = (params) => {
     this.setState(
       {
         params,
       },
       () => this.props.history.replace(router.INCIDENTS_DASHBOARD.dynamicRoute(this.state.params))
     );
-    // const formattedSearchParams = formatParams(searchParams);
-    // const persistedParams = clear ? {} : formatParams(this.state.params);
-    // this.setState((prevState) => {
-    //   const updatedParams = {
-    //     // Start from existing state
-    //     ...persistedParams,
-    //     // Overwrite prev params with any newly provided search params
-    //     ...formattedSearchParams,
-    //     // Reset page number
-    //     page: prevState.params.page ? prevState.params.page : Strings.DEFAULT_PAGE,
-    //     // Retain per_page if present
-    //     per_page: prevState.params.per_page ? prevState.params.per_page : Strings.DEFAULT_PER_PAGE,
-    //   };
-    //   this.props.history.push(router.INCIDENTS_DASHBOARD.dynamicRoute(updatedParams));
-    //   return { params: updatedParams };
-    // });
   };
-
-  // handleIncidentPageChange = (page, per_page) => {
-  //   this.setState({ incidentsLoaded: false });
-  //   return this.setState((prevState) => {
-  //     const params = { ...prevState.params, page, per_page };
-  //     this.props.history.push(router.INCIDENTS_DASHBOARD.dynamicRoute(formatParams(params)));
-  //     return {
-  //       incidentsLoaded: true,
-  //       params,
-  //     };
-  //   });
-  // };
 
   onPageChange = (page, per_page) => {
     this.setState(
@@ -355,6 +240,7 @@ export class IncidentsHomePage extends Component {
         <div className="landing-page__content">
           <div className="page__content">
             <IncidentsSearch
+              handleReset={this.clearParams}
               handleNameFieldReset={this.handleNameFieldReset}
               initialValues={this.state.params}
               handleIncidentSearch={this.handleIncidentSearch}

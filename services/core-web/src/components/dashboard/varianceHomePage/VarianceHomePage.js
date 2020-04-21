@@ -60,7 +60,7 @@ const defaultParams = {
   expiry_date_before: undefined,
   expiry_date_after: undefined,
   major: undefined,
-  sort_field: "variance_application_status_code",
+  sort_field: "received_date",
   sort_dir: "desc",
 };
 
@@ -115,7 +115,7 @@ export class VarianceHomePage extends Component {
         },
       }),
       () => {
-        this.props.fetchVariances(this.state.params);
+        this.props.history.replace(router.VARIANCE_DASHBOARD.dynamicRoute(this.state.params));
       }
     );
   };

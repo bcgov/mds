@@ -26,15 +26,15 @@ class IncidentsResource(Resource, UserMixin):
             'per_page': f'The number of records to return per page. Default: {PER_PAGE_DEFAULT}',
             'mine_guid': 'The ID of a mine',
             'search': 'A string to be search in the incident number, mine name, or mine number',
-            'incident_status': 'Comma-separated list of the incident status codes',
+            'incident_status': 'List of the incident status codes',
             'determination':
-            'Comma-separated list of the inspectors determination, a three character code',
+            'List of the inspectors determination, a three character code',
             'codes':
-            'Comma-separated list of code sub_paragraphs to include in results. Default: All status codes.',
+            'List of code sub_paragraphs to include in results. Default: All status codes.',
             'incident_year': 'Return only incidents for this year',
             'major': 'boolean indicating if incident is from a major or regional mine',
             'region':
-            'Comma-separated list of regions the mines associated with the incident are located in',
+            'List of regions the mines associated with the incident are located in',
             'sort_field': 'The field the returned results will be ordered by',
             'sort_dir': 'The direction by which the sort field is ordered',
         })
@@ -94,17 +94,14 @@ class IncidentsResource(Resource, UserMixin):
             conditions.append(
                 self._build_filter('MineIncident', 'mine_guid', '==', args["mine_guid"]))
         if args["status"]:
-            # status_values = args["status"].split(',')
             conditions.append(
                 self._build_filter('MineIncident', 'status_code', 'in', args["status"]))
         if args["determination"]:
-            # determination_values = args["determination"].split(',')
             conditions.append(
                 self._build_filter('MineIncident', 'determination_type_code', 'in',
                                    args["determination"]))
         if args["codes"]:
             query = MineIncident.query.join(Mine).outerjoin(MineIncidentDoSubparagraph)
-            # code_values = args["codes"].split(',')
             conditions.append(
                 self._build_filter('MineIncidentDoSubparagraph', 'compliance_article_id', 'in',
                                    args["codes"]))
@@ -117,8 +114,7 @@ class IncidentsResource(Resource, UserMixin):
                 self._build_filter('MineIncident', 'incident_timestamp', '<', max_datetime))
         if args["major"]:
             conditions.append(self._build_filter('Mine', 'major_mine_ind', '==', args["major"]))
-        # if args["major"] is not None:
-        #     conditions.append(self._build_filter('Mine', 'major_mine_ind', '==', args["major"]))
+
         if args["search_terms"] is not None:
             search_conditions = [
                 self._build_filter('Mine', 'mine_name', 'ilike',
@@ -129,9 +125,6 @@ class IncidentsResource(Resource, UserMixin):
 
         if args["region"]:
             conditions.append(self._build_filter('Mine', 'mine_region', 'in', args["region"]))   
-        # if args["region"] is not None:
-        #     region_list = args["region"].split(',')
-        #     conditions.append(self._build_filter('Mine', 'mine_region', 'in', region_list))
 
         filtered_query = apply_filters(query, conditions)
 

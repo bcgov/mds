@@ -37,7 +37,7 @@ class TestGetIncidents:
         MineIncidentFactory.create_batch(size=batch_size, determination_type_code="PEN")
         MineIncidentFactory.create_batch(size=batch_size, determination_type_code="DO")
         MineIncidentFactory.create_batch(size=batch_size, determination_type_code="NDO")
-        get_resp = test_client.get(f"/incidents?determination=DO%2CNDO", headers=auth_headers['full_auth_header'])
+        get_resp = test_client.get(f"/incidents?determination=DO&determination=NDO", headers=auth_headers['full_auth_header'])
         get_data = json.loads(get_resp.data.decode())
         assert get_resp.status_code == 200
         assert len(get_data['records']) == 2*batch_size
@@ -53,7 +53,7 @@ class TestGetIncidents:
         MineIncidentFactory.create_batch(size=batch_size, determination_type_code= 'DO', dangerous_occurrence_subparagraphs=code2)
         MineIncidentFactory.create_batch(size=batch_size, determination_type_code= 'DO', dangerous_occurrence_subparagraphs=code3)
 
-        get_resp = test_client.get(f"/incidents?codes={code2[0].compliance_article_id}%2C{code2[1].compliance_article_id}",
+        get_resp = test_client.get(f"/incidents?codes={code2[0].compliance_article_id}&codes={code2[1].compliance_article_id}",
                                    headers=auth_headers['full_auth_header'])
         get_data = json.loads(get_resp.data.decode())
         assert get_resp.status_code == 200

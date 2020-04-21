@@ -76,7 +76,7 @@ exports[`VarianceHomePage renders properly 1`] = `
             "region": Array [],
             "search": undefined,
             "sort_dir": "desc",
-            "sort_field": "variance_application_status_code",
+            "sort_field": "received_date",
             "variance_application_status_code": Array [],
           }
         }
@@ -129,12 +129,12 @@ exports[`VarianceHomePage renders properly 1`] = `
               "region": Array [],
               "search": undefined,
               "sort_dir": "desc",
-              "sort_field": "variance_application_status_code",
+              "sort_field": "received_date",
               "variance_application_status_code": Array [],
             }
           }
           sortDir="desc"
-          sortField="variance_application_status_code"
+          sortField="received_date"
           variances={
             Object {
               "current_page": 1,

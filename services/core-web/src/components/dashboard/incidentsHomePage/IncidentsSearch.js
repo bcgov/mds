@@ -10,6 +10,7 @@ import CustomPropTypes from "@/customPropTypes";
  */
 const propTypes = {
   handleIncidentSearch: PropTypes.func.isRequired,
+  handleReset: PropTypes.func.isRequired,
   initialValues: CustomPropTypes.incidentSearchInitialValues,
   mineRegionOptions: CustomPropTypes.options.isRequired,
   incidentStatusCodeOptions: CustomPropTypes.options.isRequired,
@@ -40,8 +41,8 @@ export class IncidentsSearch extends Component {
           <Col md={{ span: 12, offset: 6 }} xs={{ span: 20, offset: 2 }}>
             <span className="advanced-search__container">
               <IncidentSearchForm
+                handleReset={this.props.handleReset}
                 onSubmit={this.props.handleIncidentSearch}
-                handleIncidentSearch={this.props.handleIncidentSearch}
                 toggleAdvancedSearch={this.toggleAdvancedSearch}
                 isAdvanceSearch={this.state.isAdvanceSearch}
                 initialValues={this.props.initialValues}
