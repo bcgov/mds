@@ -63,7 +63,7 @@ class MineTailingsStorageFacilityListResource(Resource, UserMixin):
                         mine_guid=mine.mine_guid,
                         due_date=calculated_due_date,
                         received_date=None,
-                        submission_year=calculated_due_date.year,
+                        submission_year=calculated_due_date.year - 1,
                         permit_id=None)
 
             except Exception as e:
