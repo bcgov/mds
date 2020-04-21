@@ -448,7 +448,7 @@ NOW_APPLICATION_STATUS_CODES = api.model('ActivityStatusCodes', {
 
 NOW_APPLICATION_STATUS_UPDATED_RECORD = api.model(
     'NOWApplicationStatusUpdatedRecord', {
-        'messageid': fields.Integer,
+        'now_number': fields.String,
         'status_updated_date': Date,
         'status': fields.Nested(NOW_APPLICATION_STATUS_CODES)
     })
