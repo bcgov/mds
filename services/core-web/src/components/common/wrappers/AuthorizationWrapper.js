@@ -1,3 +1,5 @@
+/* eslint-disable */
+import React, { useState } from "react";
 import { PropTypes } from "prop-types";
 import { connect } from "react-redux";
 import { getUserAccessData } from "@common/selectors/authenticationSelectors";
@@ -6,6 +8,7 @@ import {
   detectDevelopmentEnvironment,
   detectProdEnvironment,
 } from "@common/utils/environmentUtils";
+import { CoreTooltip } from "@/components/common/CoreTooltip";
 import * as Permission from "@/constants/permissions";
 
 /**
@@ -60,6 +63,8 @@ const defaultProps = {
 };
 
 export const AuthorizationWrapper = (props) => {
+  const [updateFilesClicked, setUpdateFilesClicked] = useState(false);
+  const handleAdminMode = true;
   const inDevCheck =
     props.inDevelopment === undefined || (props.inDevelopment && detectDevelopmentEnvironment());
   const inTestCheck =
@@ -70,7 +75,12 @@ export const AuthorizationWrapper = (props) => {
   const isAdmin = props.userRoles.includes(USER_ROLES[Permission.ADMIN]);
 
   return (
-    (isAdmin || (inDevCheck && inTestCheck && permissionCheck && isMajorMine)) && props.children
+    (isAdmin || (inDevCheck && inTestCheck && permissionCheck && isMajorMine)) && (
+      <span style={{ backgroundColor: "yellow" }}>
+        {props.children}
+        <CoreTooltip title={USER_ROLES[props.permission]} />
+      </span>
+    )
   );
 };
 AuthorizationWrapper.propTypes = propTypes;
