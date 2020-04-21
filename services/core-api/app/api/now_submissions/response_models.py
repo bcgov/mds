@@ -176,6 +176,7 @@ APPLICATION = api.model(
         "messageid": fields.Integer,
         'application_guid': fields.String,
         'now_application_guid': fields.String,
+        'now_number': fields.String,
         'originating_system': fields.String,
         'mine_guid': fields.String,
         'mine_name': fields.String,

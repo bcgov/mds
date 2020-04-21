@@ -22,3 +22,13 @@ export const documentDownloadState = PropTypes.shape({
   currentFile: PropTypes.number.isRequired,
   totalFiles: PropTypes.number.isRequired,
 }).isRequired;
+
+export const documentFormSpecField = PropTypes.shape({
+  id: PropTypes.string.isRequired,
+  type: PropTypes.string.isRequired,
+  label: PropTypes.string,
+  placeholder: PropTypes.string,
+  required: PropTypes.bool,
+  "context-value": PropTypes.string,
+  "read-only": PropTypes.string,
+}).isRequired;
