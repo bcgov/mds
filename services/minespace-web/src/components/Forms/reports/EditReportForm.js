@@ -32,6 +32,7 @@ export class EditReportForm extends Component {
           mineGuid={this.props.mineGuid}
           mineReportSubmissions={this.state.mineReportSubmissions}
           updateMineReportSubmissions={this.updateMineReportSubmissions}
+          showUploadedFiles
         />
         <div className="ant-modal-footer">
           <Popconfirm

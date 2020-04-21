@@ -1,9 +1,11 @@
 import React from "react";
+import { connect } from "react-redux";
 import { Table, Button } from "antd";
 import PropTypes from "prop-types";
 import { truncateFilename, dateSorter } from "@common/utils/helpers";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
-import { formatDate } from "@/utils/helpers";
+import { getMineReportDefinitionHash } from "@common/selectors/staticContentSelectors";
+import { formatDate, formatComplianceCodeValueOrLabel } from "@/utils/helpers";
 import * as Strings from "@/constants/strings";
 import { EDIT_PENCIL } from "@/constants/assets";
 import CustomPropTypes from "@/customPropTypes";
@@ -12,6 +14,7 @@ import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrap
 
 const propTypes = {
   mineReports: PropTypes.arrayOf(CustomPropTypes.mineReport).isRequired,
+  mineReportDefinitionHash: PropTypes.objectOf(PropTypes.any).isRequired,
   // eslint-disable-next-line react/no-unused-prop-types
   openEditReportModal: PropTypes.func.isRequired,
   isLoaded: PropTypes.bool.isRequired,
@@ -26,10 +29,23 @@ export const ReportsTable = (props) => {
       render: (text) => <div title="Report Name">{text}</div>,
     },
     {
-      title: "Compliance Period",
+      title: "Code Section",
+      key: "code_section",
+      render: (record) => (
+        <div title="Code Section">
+          {formatComplianceCodeValueOrLabel(
+            props.mineReportDefinitionHash[record.mine_report_definition_guid]
+              .compliance_articles[0],
+            false
+          )}
+        </div>
+      ),
+    },
+    {
+      title: "Compliance Year",
       dataIndex: "submission_year",
       sorter: (a, b) => (a.submission_year > b.submission_year ? -1 : 1),
-      render: (text) => <div title="Compliance Period">{text}</div>,
+      render: (text) => <div title="Compliance Year">{text}</div>,
     },
     {
       title: "Due",
@@ -105,6 +121,10 @@ export const ReportsTable = (props) => {
   );
 };
 
+const mapStateToProps = (state) => ({
+  mineReportDefinitionHash: getMineReportDefinitionHash(state),
+});
+
 ReportsTable.propTypes = propTypes;
 
-export default ReportsTable;
+export default connect(mapStateToProps, null)(ReportsTable);

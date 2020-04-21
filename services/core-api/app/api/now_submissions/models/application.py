@@ -94,6 +94,7 @@ class Application(Base):
         foreign_keys=messageid)
     application_guid = db.Column(UUID(as_uuid=True), nullable=False, server_default=FetchedValue())
     now_application_guid = association_proxy('now_application_identity', 'now_application_guid')
+    now_number = association_proxy('now_application_identity', 'now_number')
     mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine.mine_guid'))
     #mine_guid = association_proxy('now_application_identity', 'mine_guid')
     trackingnumber = db.Column(db.Integer)
