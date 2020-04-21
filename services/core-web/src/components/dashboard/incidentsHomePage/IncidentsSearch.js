@@ -22,16 +22,36 @@ const defaultProps = {
   initialValues: {},
 };
 
-const checkAdvancedSearch = ({ region, major, year, incident_status, codes, determination }) =>
-  major || some([region, year, incident_status, codes, determination], negate(isEmpty));
+const haveAdvancedSearchFilters = ({
+  region,
+  major,
+  year,
+  incident_status,
+  codes,
+  determination,
+}) => major || some([region, year, incident_status, codes, determination], negate(isEmpty));
 
 export class IncidentsSearch extends Component {
   state = {
-    isAdvanceSearch: checkAdvancedSearch(this.props.initialValues),
+    receivedFirstInitialValues: false,
+    expandAdvancedSearch: false,
   };
 
-  toggleAdvancedSearch = () => {
-    this.setState((prevState) => ({ isAdvanceSearch: !prevState.isAdvanceSearch }));
+  toggleIsAdvancedSearch = () =>
+    this.setState((prevState) => ({
+      expandAdvancedSearch: !prevState.expandAdvancedSearch,
+    }));
+
+  componentWillReceiveProps = (nextProps) => {
+    if (
+      !this.state.receivedFirstInitialValues &&
+      this.props.initialValues !== nextProps.initialValues
+    ) {
+      this.setState({
+        receivedFirstInitialValues: true,
+        expandAdvancedSearch: haveAdvancedSearchFilters(nextProps.initialValues),
+      });
+    }
   };
 
   render() {
@@ -43,8 +63,8 @@ export class IncidentsSearch extends Component {
               <IncidentSearchForm
                 handleReset={this.props.handleReset}
                 onSubmit={this.props.handleIncidentSearch}
-                toggleAdvancedSearch={this.toggleAdvancedSearch}
-                isAdvanceSearch={this.state.isAdvanceSearch}
+                toggleAdvancedSearch={this.toggleIsAdvancedSearch}
+                isAdvanceSearch={this.state.expandAdvancedSearch}
                 initialValues={this.props.initialValues}
                 mineRegionOptions={this.props.mineRegionOptions}
                 incidentStatusCodeOptions={this.props.incidentStatusCodeOptions}
