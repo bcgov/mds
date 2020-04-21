@@ -8,6 +8,7 @@ import CustomPropTypes from "@/customPropTypes";
 /**
  * @class IncidentsSearch supports searching for a filtered list of incidents.
  */
+
 const propTypes = {
   handleIncidentSearch: PropTypes.func.isRequired,
   handleReset: PropTypes.func.isRequired,
