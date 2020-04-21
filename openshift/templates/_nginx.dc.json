@@ -255,6 +255,23 @@
                   "successThreshold": 1,
                   "timeoutSeconds": 1
                 }
+              },
+              {
+                "name": "promtail-config",
+                "image": "grafana/promtail",
+                "args": [
+                  "-config.file=/etc/promtail/promtail.yaml"
+                ],
+                "volumeMounts": [
+                  {
+                    "mountPath": "/var/log/nginx",
+                    "name": "${NAME}${SUFFIX}-log"
+                  },
+                  {
+                    "mountPath": "/etc/promtail",
+                    "name": "promtail-config"
+                  }
+                ]
               }
             ],
             "volumes": [
@@ -262,6 +279,12 @@
                 "name": "${NAME}${SUFFIX}-log",
                 "persistentVolumeClaim": {
                   "claimName": "mds-access-logs${SUFFIX}"
+                }
+              },
+              {
+                "name": "promtail-config",
+                "configMap": {
+                  "name": "promtail-config"
                 }
               }
             ]

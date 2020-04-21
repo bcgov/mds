@@ -1,0 +1,10 @@
+{
+    "apiVersion": "v1",
+    "data": {
+        "promtail.yaml": "server:\r\n  http_listen_port: 9080\r\n  grpc_listen_port: 0\r\n\r\npositions:\r\n  filename: /tmp/positions.yaml\r\n\r\nclients:\r\n  - url: http://loki:3100/loki/api/v1/push\r\n\r\nscrape_configs:\r\n  - job_name: core-api\r\n    static_configs:\r\n      - targets:\r\n          - localhost\r\n        labels:\r\n          app: core\r\n          service: core-api\r\n          __path__: /mnt/core-api/*log\r\n      - targets:\r\n          - localhost\r\n        labels:\r\n          app: core\r\n          service: core-web\r\n          __path__: /mnt/core-web/*log\r\n      - targets:\r\n          - localhost\r\n        labels:\r\n          app: minespace\r\n          service: minespace-web\r\n          __path__: /mnt/minespace-web/*log\r\n"
+    },
+    "kind": "ConfigMap",
+    "metadata": {
+        "name": "promtail-config"
+    }
+}
