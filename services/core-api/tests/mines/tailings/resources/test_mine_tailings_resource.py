@@ -22,7 +22,7 @@ def test_post_mine_tailings_storage_facility_by_mine_guid(test_client, db_sessio
         f'/mines/{mine.mine_guid}/tailings',
         data={'mine_tailings_storage_facility_name': 'a name'},
         headers=auth_headers['full_auth_header'])
-    assert post_resp.status_code == 201
+    assert post_resp.status_code == 200
     assert len(mine.mine_tailings_storage_facilities) == org_mine_tsf_list_len + 1
 
 
@@ -35,7 +35,7 @@ def test_post_first_mine_tailings_storage_facility_by_mine_guid(test_client, db_
         f'/mines/{mine.mine_guid}/tailings',
         data={'mine_tailings_storage_facility_name': 'a name'},
         headers=auth_headers['full_auth_header'])
-    assert post_resp.status_code == 201
+    assert post_resp.status_code == 200
     assert len(mine.mine_tailings_storage_facilities) == 1
 
 
@@ -48,6 +48,6 @@ def test_post_first_mine_tailings_storage_facility_by_mine_guid_creates_tsf_requ
         f'/mines/{mine.mine_guid}/tailings',
         data={'mine_tailings_storage_facility_name': 'a name'},
         headers=auth_headers['full_auth_header'])
-    assert post_resp.status_code == 201
+    assert post_resp.status_code == 200
     tsf_required_reports = MineReportDefinition.find_required_reports_by_category('TSF')
     assert len(mine.mine_reports) == len(tsf_required_reports)
