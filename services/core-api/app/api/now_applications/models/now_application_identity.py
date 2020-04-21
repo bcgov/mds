@@ -64,7 +64,7 @@ class NOWApplicationIdentity(Base, AuditMixin):
     def submission_count_ytd(cls, _mine_guid, _sub_year):
         try:
             return cls.query.filter_by(mine_guid=_mine_guid).filter(
-                cls.now_number.ilike(f'{_sub_year}%')).count()
+                cls.now_number.ilike(f'%-{_sub_year}-%')).count()
         except ValueError:
             return None
 
@@ -72,4 +72,4 @@ class NOWApplicationIdentity(Base, AuditMixin):
     def create_now_number(cls, mine):
         current_year = datetime.now().strftime("%Y")
         number_of_now = cls.submission_count_ytd(mine.mine_guid, current_year)
-        return f'{current_year}-{mine.mine_no}-{str(number_of_now + 1).zfill(2)}'
+        return f'{mine.mine_no}-{current_year}-{str(number_of_now + 1).zfill(2)}'

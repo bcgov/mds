@@ -16,3 +16,19 @@ export const documentRecord = shape({
   category: PropTypes.string.isRequired,
   uploaded: PropTypes.string.isRequired,
 });
+
+export const documentDownloadState = PropTypes.shape({
+  downloading: PropTypes.bool.isRequired,
+  currentFile: PropTypes.number.isRequired,
+  totalFiles: PropTypes.number.isRequired,
+}).isRequired;
+
+export const documentFormSpecField = PropTypes.shape({
+  id: PropTypes.string.isRequired,
+  type: PropTypes.string.isRequired,
+  label: PropTypes.string,
+  placeholder: PropTypes.string,
+  required: PropTypes.bool,
+  "context-value": PropTypes.string,
+  "read-only": PropTypes.string,
+}).isRequired;

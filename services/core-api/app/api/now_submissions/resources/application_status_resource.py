@@ -43,6 +43,7 @@ class ApplicationStatusListResource(Resource, UserMixin):
         for now_application in now_applications:
             updated_status_record = {
                 "messageid":
+                None if not now_application.now_application_identity else
                 now_application.now_application_identity.messageid,
                 "status_updated_date":
                 now_application.status_updated_date,
