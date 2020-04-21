@@ -32,8 +32,8 @@ const defaultProps = {
     total: 0,
     total_pages: 1,
   },
-  sortField: null,
-  sortDir: null,
+  sortField: undefined,
+  sortDir: undefined,
 };
 
 export const VarianceTable = (props) => (

@@ -21,7 +21,7 @@ const defaultProps = {
   initialValues: {},
 };
 
-const checkAdvancedSearch = ({
+const haveAdvancedSearchFilters = ({
   region,
   compliance_code,
   variance_application_status_code,
@@ -47,11 +47,25 @@ const checkAdvancedSearch = ({
 
 export class VarianceSearch extends Component {
   state = {
-    isAdvanceSearch: checkAdvancedSearch(this.props.initialValues),
+    receivedFirstInitialValues: false,
+    expandAdvancedSearch: false,
   };
 
-  toggleAdvancedSearch = () => {
-    this.setState((prevState) => ({ isAdvanceSearch: !prevState.isAdvanceSearch }));
+  toggleIsAdvancedSearch = () =>
+    this.setState((prevState) => ({
+      expandAdvancedSearch: !prevState.expandAdvancedSearch,
+    }));
+
+  componentWillReceiveProps = (nextProps) => {
+    if (
+      !this.state.receivedFirstInitialValues &&
+      this.props.initialValues !== nextProps.initialValues
+    ) {
+      this.setState({
+        receivedFirstInitialValues: true,
+        expandAdvancedSearch: haveAdvancedSearchFilters(nextProps.initialValues),
+      });
+    }
   };
 
   render() {
@@ -63,8 +77,8 @@ export class VarianceSearch extends Component {
               <VarianceSearchForm
                 handleReset={this.props.handleReset}
                 onSubmit={this.props.handleVarianceSearch}
-                toggleAdvancedSearch={this.toggleAdvancedSearch}
-                isAdvanceSearch={this.state.isAdvanceSearch}
+                toggleAdvancedSearch={this.toggleIsAdvancedSearch}
+                isAdvanceSearch={this.state.expandAdvancedSearch}
                 initialValues={this.props.initialValues}
                 complianceCodes={this.props.complianceCodes}
                 mineRegionOptions={this.props.mineRegionOptions}
