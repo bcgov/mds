@@ -47,8 +47,8 @@ const defaultProps = {
   isApplication: false,
   isDashboardView: false,
   params: {},
-  sortField: null,
-  sortDir: null,
+  sortField: undefined,
+  sortDir: undefined,
   isPaginated: false,
 };
 
@@ -60,13 +60,11 @@ const applySortIndicator = (_columns, field, dir) =>
     sortOrder: dir && column.sortField === field ? dir.concat("end") : false,
   }));
 
-const handleTableChange = (updateVarianceList) => (pagination, filters, sorter) => {
+const handleTableChange = (updateVarianceList, tableFilters) => (pagination, filters, sorter) => {
   const params = {
-    results: pagination.pageSize,
-    page: pagination.current,
+    ...tableFilters,
     sort_field: sorter.order ? sorter.field : undefined,
     sort_dir: sorter.order ? sorter.order.replace("end", "") : sorter.order,
-    ...filters,
   };
   updateVarianceList(params);
 };
@@ -268,7 +266,7 @@ export class MineVarianceTable extends Component {
         }
         dataSource={this.transformRowData(this.props.variances)}
         tableProps={{
-          onChange: handleTableChange(this.props.handleVarianceSearch),
+          onChange: handleTableChange(this.props.handleVarianceSearch, this.props.params),
           align: "left",
           pagination: this.props.isPaginated,
           locale: {

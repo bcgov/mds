@@ -4,15 +4,15 @@ from tests.factories import (NOWSubmissionFactory, NOWApplicationIdentityFactory
 
 
 class TestGetApplicationResource:
-    """GET /now-submissions/applications/{messageid}/status"""
-    def test_get_now_application_status_by_messageid_success(self, test_client, db_session,
-                                                             auth_headers):
+    """GET /now-submissions/applications/{now_number}/status"""
+    def test_get_now_application_status_by_now_number_success(self, test_client, db_session,
+                                                              auth_headers):
         """Should return the correct record with a 200 response code"""
 
         now_submission = NOWSubmissionFactory()
         identity = NOWApplicationIdentityFactory(now_submission=now_submission)
         get_resp = test_client.get(
-            f'/now-submissions/applications/{identity.messageid}/status',
+            f'/now-submissions/applications/{identity.now_number}/status',
             headers=auth_headers['full_auth_header'])
         assert get_resp.status_code == 200, get_resp.response
 

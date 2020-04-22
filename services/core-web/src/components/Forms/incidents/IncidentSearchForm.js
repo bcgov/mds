@@ -9,8 +9,8 @@ import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
-  handleIncidentSearch: PropTypes.func.isRequired,
   toggleAdvancedSearch: PropTypes.func.isRequired,
+  handleReset: PropTypes.func.isRequired,
   reset: PropTypes.func.isRequired,
   isAdvanceSearch: PropTypes.bool,
   mineRegionOptions: CustomPropTypes.options.isRequired,
@@ -26,7 +26,7 @@ const defaultProps = {
 export class IncidentSearchForm extends Component {
   handleReset = () => {
     this.props.reset();
-    this.props.handleIncidentSearch({}, true);
+    this.props.handleReset();
   };
 
   render() {
