@@ -62,16 +62,12 @@ where p.permit_id = mpx.permit_id
 and p.permit_no = 'M-162'
 and m.mine_name = 'Lussier River'; -- instead of 'FOUR-J MINE'
 
-
-
 --TRANSFER Permit GUID FK
 ALTER TABLE public.mine_party_appt ADD COLUMN permit_id integer;
 UPDATE public.mine_party_appt mpa
 set permit_id = p.permit_id
 from permit p 
 where mpa.permit_guid = p.permit_guid;
-
-
 
 --update this view to use the new join
 CREATE OR REPLACE VIEW public.mine_summary_view
@@ -130,16 +126,3 @@ AS SELECT m.mine_guid::character varying AS mine_guid,
 
 -- Permissions
 ALTER TABLE public.mine_summary_view OWNER TO mds;
-
-
---clean up 
-ALTER TABLE public.mine_party_appt DROP CONSTRAINT mine_party_appt_permit_party_fk; 
-ALTER TABLE public.mine_party_appt DROP COLUMN permit_guid;
---delete newly orphaned records
---none of these duplicate records have had their permittee's changed
-ALTER TABLE permit DROP CONSTRAINT if exists permit_mine_guid_fkey;
-delete from mine_party_appt where permit_id not in (select permit_id from public.mine_permit_xref);
-delete from permit_amendment where permit_id not in (select permit_id from mine_permit_xref);
-DELETE FROM permit where permit_id not in (select permit_id from mine_permit_xref);
-
-ALTER TABLE permit DROP COLUMN mine_guid
