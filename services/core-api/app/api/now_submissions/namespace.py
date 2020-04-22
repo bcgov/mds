@@ -17,5 +17,5 @@ api.add_resource(ApplicationDocumentResource,
                  '/applications/<string:application_guid>/document/<int:id>')
 api.add_resource(ApplicationDocumentTokenResource,
                  '/applications/<string:application_guid>/document/<int:id>/token')
-api.add_resource(ApplicationStatusResource, '/applications/<string:messageid>/status')
+api.add_resource(ApplicationStatusResource, '/applications/<string:now_number>/status')
 api.add_resource(ApplicationStatusListResource, '/applications/status')
