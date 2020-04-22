@@ -28,39 +28,37 @@ and p.permit_id in (select permit_id from simple_duplicates_mine_permit where pe
 
 
 --documents have been uplodaded to these ones
-update mine_permit_xref mpx 
-set permit_id = p.permit_id
-from permit p 
-inner join mine m on p.mine_guid = m.mine_guid
-where p.permit_id = mpx.permit_id
-and p.permit_no = 'M-183'
-and m.mine_name = 'CANDORADO';
+update mine_permit_xref mpx
+set permit_id = (select permit_id from permit p2
+	inner join mine m on p2.mine_guid= m.mine_guid
+	where p2.permit_no= 'M-183' and m.mine_name ='CANDORADO')
+from permit p where p.permit_id = mpx.permit_id and 
+p.permit_no  = 'M-183';
 
-update mine_permit_xref mpx 
-set permit_id = p.permit_id
-from permit p 
-inner join mine m on p.mine_guid = m.mine_guid
-where p.permit_id = mpx.permit_id
-and p.permit_no = 'Q-20'
-and m.mine_name = 'Windermere Mining Operation';
+
+update mine_permit_xref mpx
+set permit_id = (select permit_id from permit p2
+	inner join mine m on p2.mine_guid= m.mine_guid
+	where p2.permit_no= 'Q-20' and m.mine_name ='Windermere Mining Operation')
+from permit p where p.permit_id = mpx.permit_id and 
+p.permit_no  = 'Q-20';
 
 -- documents have been uploaded to multiple, but are identical
-update mine_permit_xref mpx 
-set permit_id = p.permit_id
-from permit p 
-inner join mine m on p.mine_guid = m.mine_guid
-where p.permit_id = mpx.permit_id
-and p.permit_no = 'Q-36'
-and m.mine_name = 'Sidar/Crawford Bay';
+update mine_permit_xref mpx
+set permit_id = (select permit_id from permit p2
+	inner join mine m on p2.mine_guid= m.mine_guid
+	where p2.permit_no= 'Q-36' and m.mine_name ='Sidar/Crawford Bay')
+from permit p where p.permit_id = mpx.permit_id and 
+p.permit_no  = 'Q-36';
 
 -- documents have been uploaded to multipl, this is was curated
-update mine_permit_xref mpx 
-set permit_id = p.permit_id
-from permit p 
-inner join mine m on p.mine_guid = m.mine_guid
-where p.permit_id = mpx.permit_id
-and p.permit_no = 'M-162'
-and m.mine_name = 'Lussier River'; -- instead of 'FOUR-J MINE'
+update mine_permit_xref mpx
+set permit_id = (select permit_id from permit p2
+	inner join mine m on p2.mine_guid= m.mine_guid
+	where p2.permit_no= 'M-162' and m.mine_name ='Lussier River')
+from permit p where p.permit_id = mpx.permit_id and 
+p.permit_no  = 'M-162';
+
 
 --TRANSFER Permit GUID FK
 ALTER TABLE public.mine_party_appt ADD COLUMN permit_id integer;
