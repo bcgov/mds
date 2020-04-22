@@ -23,8 +23,8 @@ INTO simple_duplicates_mine_permit
 update mine_permit_xref mpx
 set permit_id = (select permit_id from simple_duplicates_mine_permit sdmp where p.permit_no = sdmp.permit_no order by permit_id LIMIT 1)
 from permit p
-inner join simple_duplicates_mine_permit sdmp on p.permit_id = sdmp.permit_id
-where p.permit_id = mpx.permit_id; 
+where p.permit_id = mpx.permit_id
+and p.permit_id in (select permit_id in simple_duplicates_mine_permit where permit_id is not null); 
 
 
 --documents have been uplodaded to these ones
