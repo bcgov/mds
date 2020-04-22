@@ -70,7 +70,6 @@ UPDATE public.mine_party_appt mpa
 set permit_id = p.permit_id
 from permit p 
 where mpa.permit_guid = p.permit_guid;
-ALTER TABLE public.mine_party_appt ADD CONSTRAINT mine_party_appt_permit_party_xref_fk FOREIGN KEY (permit_id, mine_guid) REFERENCES mine_permit_xref(permit_id, mine_guid);
 
 
 
