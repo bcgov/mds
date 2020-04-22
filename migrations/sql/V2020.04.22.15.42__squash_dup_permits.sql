@@ -65,9 +65,15 @@ and m.mine_name = 'Lussier River'; -- instead of 'FOUR-J MINE'
 --TRANSFER Permit GUID FK
 ALTER TABLE public.mine_party_appt ADD COLUMN permit_id integer;
 UPDATE public.mine_party_appt mpa
-set permit_id = p.permit_id
-from permit p 
-where mpa.permit_guid = p.permit_guid;
+set permit_id = mpx.permit_id
+from permit p
+ 	inner join mine_party_appt mpa2 on mpa2.permit_guid = p.permit_guid
+ 	inner join permit p2 on p.permit_no  = p2.permit_no
+ 	inner join mine_permit_xref mpx on mpx.permit_id = p2.permit_id
+where mpa.mine_party_appt_guid = mpa2.mine_party_appt_guid
+and mpa.permit_guid = p.permit_guid
+and mpx.permit_id is not null;
+
 
 --update this view to use the new join
 CREATE OR REPLACE VIEW public.mine_summary_view
@@ -123,6 +129,3 @@ AS SELECT m.mine_guid::character varying AS mine_guid,
      LEFT JOIN mine_commodity_code mcc ON mtdx.mine_commodity_code::text = mcc.mine_commodity_code::text
   WHERE m.deleted_ind = false
   GROUP BY p.permit_no, p.permit_guid, m.mine_guid, m.mine_name, m.mine_no, m.deleted_ind, mos.description, mosr.description, mossr.description, mos.mine_operation_status_code, mosr.mine_operation_status_reason_code, mossr.mine_operation_status_sub_reason_code, ms.effective_date, pt.first_name, pt.party_name;
-
--- Permissions
-ALTER TABLE public.mine_summary_view OWNER TO mds;
