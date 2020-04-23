@@ -6,7 +6,8 @@ exports[`MineNOWApplications renders properly 1`] = `
 >
   <div>
     <h2>
-      Permit Applications
+      Permit Application
+      s
     </h2>
     <Connect(AuthorizationWrapper)
       isMajorMine={true}
@@ -15,7 +16,8 @@ exports[`MineNOWApplications renders properly 1`] = `
       <AddButton
         onClick={[Function]}
       >
-        Add a Permit Application
+        Add a 
+        Permit Application
       </AddButton>
     </Connect(AuthorizationWrapper)>
   </div>
@@ -57,11 +59,7 @@ exports[`MineNOWApplications renders properly 1`] = `
         },
       ]
     }
-    searchParams={
-      Object {
-        "submissions_only": true,
-      }
-    }
+    searchParams={Object {}}
   />
 </div>
 `;
