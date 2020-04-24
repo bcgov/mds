@@ -25,7 +25,7 @@ import { formatQueryListParams } from "@common/utils/helpers";
 
 const propTypes = {
   fetchNoticeOfWorkApplications: PropTypes.func.isRequired,
-  history: PropTypes.shape({ push: PropTypes.func }).isRequired,
+  history: PropTypes.shape({ replace: PropTypes.func }).isRequired,
   location: PropTypes.shape({ search: PropTypes.string }).isRequired,
   pageData: CustomPropTypes.pageData.isRequired,
   noticeOfWorkApplications: PropTypes.arrayOf(CustomPropTypes.importedNOWApplication).isRequired,
@@ -50,7 +50,6 @@ export class NoticeOfWorkHomePage extends Component {
     params: {
       page: Strings.DEFAULT_PAGE,
       per_page: Strings.DEFAULT_PER_PAGE,
-      submissions_only: true,
       ...this.params,
     },
   };
@@ -58,19 +57,14 @@ export class NoticeOfWorkHomePage extends Component {
   componentDidMount() {
     const params = this.props.location.search;
     const parsedParams = queryString.parse(params);
-    const {
-      page = this.state.params.page,
-      per_page = this.state.params.per_page,
-      submissions_only = this.state.params.submissions_only,
-    } = parsedParams;
+    const { page = this.state.params.page, per_page = this.state.params.per_page } = parsedParams;
     if (params) {
       this.renderDataFromURL();
     } else {
-      this.props.history.push(
+      this.props.history.replace(
         router.NOTICE_OF_WORK_APPLICATIONS.dynamicRoute({
           page,
           per_page,
-          submissions_only,
         })
       );
     }
@@ -114,16 +108,15 @@ export class NoticeOfWorkHomePage extends Component {
       ...searchParams,
       // Reset page number
       page: Strings.DEFAULT_PAGE,
-      submissions_only: true,
     };
 
-    this.props.history.push(
+    this.props.history.replace(
       router.NOTICE_OF_WORK_APPLICATIONS.dynamicRoute(this.joinListParams(updatedParams))
     );
   };
 
   onPageChange = (page, per_page) => {
-    this.props.history.push(
+    this.props.history.replace(
       router.NOTICE_OF_WORK_APPLICATIONS.dynamicRoute({
         ...this.state.params,
         page,
