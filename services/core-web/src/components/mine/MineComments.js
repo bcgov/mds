@@ -41,7 +41,7 @@ export class MineComments extends Component {
 
   handleAddComment = async (values) => {
     const formValues = {
-      report_comment: values.comment,
+      mine_comment: values.comment,
     };
     return this.props.createMineComment(this.props.mineGuid, formValues).then(() => {
       this.fetchComments();
@@ -67,7 +67,7 @@ export class MineComments extends Component {
             key: comment.mine_comment_guid,
             author: comment.comment_user,
             content: comment.mine_comment,
-            // actions: actionBuilder(comment.comment_visibility_ind, comment.from_latest_submission),
+            actions: null,
             datetime: comment.comment_datetime,
           }))}
         />

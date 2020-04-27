@@ -268,13 +268,13 @@ export class MineDashboard extends Component {
     return (
       <div>
         <Drawer
-          title="Mine Comments"
+          title={`Comments for ${mine.mine_name}`}
           placement="right"
           closable={false}
           onClose={this.toggleDrawer}
           visible={this.state.isDrawerVisible}
         >
-          <MineComments />
+          <MineComments mineGuid={mine.mine_guid} />
         </Drawer>
         {this.state.isLoaded && (
           <div>
@@ -332,7 +332,8 @@ export class MineDashboard extends Component {
                     </Button>
                   </Dropdown>
                   <Button onClick={this.toggleDrawer}>
-                    <Icon type="comment-outline" />
+                    Comments
+                    {/* <Icon type="comments" /> */}
                   </Button>
                 </div>
               </div>
