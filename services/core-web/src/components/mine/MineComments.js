@@ -23,11 +23,6 @@ const defaultProps = {
   comments: [],
 };
 
-// const actionBuilder = (visible, latest) => [
-//   !latest && <span>Comment refers to a previous submission</span>,
-//   visible && <span>Comment published to Minespace</span>,
-// ];
-
 export class MineComments extends Component {
   state = { loading: true };
 
