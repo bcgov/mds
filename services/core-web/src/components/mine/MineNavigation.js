@@ -70,11 +70,7 @@ export class MineNavigation extends Component {
               </Link>
             </Menu.Item>
             <Menu.Item key="notices-of-work">
-              <Link
-                to={routes.MINE_NOW_APPLICATIONS.dynamicRoute(this.props.mine.mine_guid, {
-                  submissions_only: true,
-                })}
-              >
+              <Link to={routes.MINE_NOW_APPLICATIONS.dynamicRoute(this.props.mine.mine_guid)}>
                 {isMajorMine ? "Permit Applications" : "Notice of Work Applications"}
               </Link>
             </Menu.Item>
