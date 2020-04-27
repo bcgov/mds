@@ -63,6 +63,13 @@ const defaultProps = {
 };
 
 export const AuthorizationWrapper = (props) => {
+  const style = {
+    width: "fit-content !important",
+    height: "fit-content !important",
+    // padding: "10px",
+    // borderRadius: "10px",
+    borderBottom: "5px solid #e5ee39",
+  };
   const [updateFilesClicked, setUpdateFilesClicked] = useState(false);
   const handleAdminMode = true;
   const inDevCheck =
@@ -76,9 +83,9 @@ export const AuthorizationWrapper = (props) => {
 
   return (
     (isAdmin || (inDevCheck && inTestCheck && permissionCheck && isMajorMine)) && (
-      <span>
+      <span style={style}>
         {props.children}
-        <CoreTooltip title={USER_ROLES[props.permission]} />
+        {/* <CoreTooltip title={USER_ROLES[props.permission]} /> */}
       </span>
     )
   );
