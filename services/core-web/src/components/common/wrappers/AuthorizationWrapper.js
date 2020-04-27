@@ -76,7 +76,7 @@ export const AuthorizationWrapper = (props) => {
 
   return (
     (isAdmin || (inDevCheck && inTestCheck && permissionCheck && isMajorMine)) && (
-      <span style={{ backgroundColor: "yellow" }}>
+      <span>
         {props.children}
         <CoreTooltip title={USER_ROLES[props.permission]} />
       </span>
