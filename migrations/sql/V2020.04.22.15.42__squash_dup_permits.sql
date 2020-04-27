@@ -21,7 +21,8 @@ INTO simple_duplicates_mine_permit
        
 --MOVE PERMIT RELATIONSHIP to first permit 
 update mine_permit_xref mpx
-set permit_id = (select permit_id from simple_duplicates_mine_permit sdmp where p.permit_no = sdmp.permit_no order by permit_id LIMIT 1)
+set permit_id = (
+    select permit_id from simple_duplicates_mine_permit sdmp inner join permit_amendment pa on pa.permit_id = sdmp.permit_id where p.permit_no = sdmp.permit_no order by permit_id LIMIT 1)--make sure you pick a permit with amendments 
 from permit p
 where p.permit_id = mpx.permit_id
 and p.permit_id in (select permit_id from simple_duplicates_mine_permit where permit_id is not null); 
