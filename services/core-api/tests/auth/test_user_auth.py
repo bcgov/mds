@@ -14,22 +14,22 @@ from tests.factories import MinespaceUserFactory
 class DummyAuthResource(Resource):
     @requires_any_of([VIEW_ALL, MINESPACE_PROPONENT])
     def get(self):
-        user_security = auth.get_current_user_security()
+        user_security = auth.get_current_minespace_user_security()
         return user_security.is_restricted()
 
     @requires_any_of([VIEW_ALL, MINESPACE_PROPONENT])
     def post(self):
-        user_security = auth.get_current_user_security()
+        user_security = auth.get_current_minespace_user_security()
         return user_security.is_restricted()
 
     @requires_any_of([VIEW_ALL, MINESPACE_PROPONENT])
     def delete(self):
-        user_security = auth.get_current_user_security()
+        user_security = auth.get_current_minespace_user_security()
         return user_security.is_restricted()
 
     @requires_any_of([VIEW_ALL, MINESPACE_PROPONENT])
     def put(self):
-        user_security = auth.get_current_user_security()
+        user_security = auth.get_current_minespace_user_security()
         return user_security.is_restricted()
 
 

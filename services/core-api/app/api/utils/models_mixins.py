@@ -38,7 +38,7 @@ def ensure_constrained(query):
 
     mzero = query._mapper_zero()
     if mzero is not None:
-        user_security = auth.get_current_user_security()
+        user_security = auth.get_current_minespace_user_security()
 
         if user_security.is_restricted():
             # use reflection to get current model
