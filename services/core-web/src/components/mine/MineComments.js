@@ -61,7 +61,6 @@ export class MineComments extends Component {
           renderAdd
           onSubmit={this.handleAddComment}
           loading={this.state.loading}
-          s
           onRemove={this.handleRemoveComment}
           comments={this.props.comments.map((comment) => ({
             key: comment.mine_comment_guid,

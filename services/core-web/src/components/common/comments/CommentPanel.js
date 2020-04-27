@@ -31,7 +31,7 @@ const CommentPanel = (props) => (
         className="comment-list"
         itemLayout="horizontal"
         dataSource={props.comments}
-        locale={{ emptyText: <Icon /> }}
+        locale={{ emptyText: "No comments" }}
         renderItem={(item) => (
           <li key={item.key}>
             <Comment author={item.author} datetime={item.datetime} actions={item.actions}>
