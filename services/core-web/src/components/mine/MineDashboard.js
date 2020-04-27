@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
-import { Menu, Icon, Button, Dropdown, Popconfirm, Tooltip } from "antd";
+import { Menu, Icon, Button, Dropdown, Popconfirm, Tooltip, Drawer } from "antd";
 import { fetchPermits } from "@common/actionCreators/permitActionCreator";
 import {
   fetchMineRecordById,
@@ -69,6 +69,7 @@ export class MineDashboard extends Component {
     isLoaded: false,
     activeNavButton: "mine-information",
     openSubMenuKey: ["general"],
+    isDrawerVisible: false,
   };
 
   componentWillMount() {
@@ -88,6 +89,10 @@ export class MineDashboard extends Component {
       this.handleActiveButton(nextProps.location.pathname);
     }
   }
+
+  toggleDrawer = () => {
+    this.setState((prevState) => ({ isDrawerVisible: !prevState.isDrawerVisible }));
+  };
 
   handleActiveButton = (path) => {
     const lastPath = path.split("/").pop();
@@ -261,6 +266,18 @@ export class MineDashboard extends Component {
 
     return (
       <div>
+        <Button onClick={this.toggleDrawer}>Add Comments</Button>
+        <Drawer
+          title="Basic Drawer"
+          placement="right"
+          closable={false}
+          onClose={this.toggleDrawer}
+          visible={this.state.isDrawerVisible}
+        >
+          <p>Some contents...</p>
+          <p>Some contents...</p>
+          <p>Some contents...</p>
+        </Drawer>
         {this.state.isLoaded && (
           <div>
             <div className="tab__content">
