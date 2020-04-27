@@ -5,6 +5,7 @@ import { Spin, List, Icon } from "antd";
 
 import CommentEditor from "@/components/common/comments/CommentEditor";
 import Comment from "@/components/common/comments/Comment";
+import * as Style from "@/constants/styles";
 
 const propTypes = {
   loading: PropTypes.bool,
@@ -20,7 +21,9 @@ const defaultProps = {
   onChange: () => {},
   onSubmit: () => {},
 };
-
+const antIcon = (
+  <Icon type="loading" style={{ fontSize: 30, color: Style.COLOR.mediumGrey }} spin />
+);
 const CommentPanel = (props) => (
   <React.Fragment>
     {!props.loading ? (
@@ -38,7 +41,9 @@ const CommentPanel = (props) => (
         )}
       />
     ) : (
-      <Spin />
+      <div className="center margin-xlarge">
+        <Spin id="spinner" indicator={antIcon} />
+      </div>
     )}
     {props.renderAdd && <CommentEditor onChange={props.onChange} onSubmit={props.onSubmit} />}
   </React.Fragment>

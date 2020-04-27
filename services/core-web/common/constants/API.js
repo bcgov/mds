@@ -152,3 +152,7 @@ export const RECLAMATION_INVOICE = (invoiceGuid) =>
     : "/securities/reclamation-invoices";
 export const RECLAMATION_INVOICE_DOCUMENTS = (mineGuid) =>
   `/securities/${mineGuid}/reclamation-invoices/documents`;
+
+export const MINE_COMMENTS = (mineGuid) => `/mine/${mineGuid}/comments`;
+
+export const MINE_COMMENT = (mineGuid, commentGuid) => `/mine/${mineGuid}/comments/${commentGuid}`;

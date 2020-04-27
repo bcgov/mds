@@ -428,3 +428,8 @@ select {
     color: white;
   }
 }
+
+// Drawer
+.ant-drawer-content-wrapper {
+  width: 500px !important; // 250px by default
+}

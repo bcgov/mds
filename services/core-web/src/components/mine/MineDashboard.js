@@ -41,6 +41,7 @@ import {
 } from "@/constants/assets";
 import RefreshButton from "@/components/common/RefreshButton";
 import * as router from "@/constants/routes";
+import MineComments from "@/components/mine/MineComments";
 /**
  * @class MineDashboard.js is an individual mines dashboard, gets Mine data from redux and passes into children.
  */
@@ -266,17 +267,14 @@ export class MineDashboard extends Component {
 
     return (
       <div>
-        <Button onClick={this.toggleDrawer}>Add Comments</Button>
         <Drawer
-          title="Basic Drawer"
+          title="Mine Comments"
           placement="right"
           closable={false}
           onClose={this.toggleDrawer}
           visible={this.state.isDrawerVisible}
         >
-          <p>Some contents...</p>
-          <p>Some contents...</p>
-          <p>Some contents...</p>
+          <MineComments />
         </Drawer>
         {this.state.isLoaded && (
           <div>
@@ -321,17 +319,22 @@ export class MineDashboard extends Component {
                     </Tooltip>
                   )}
                 </div>
-                <Dropdown
-                  overlay={menu}
-                  placement="bottomLeft"
-                  onVisibleChange={this.handleVisibleChange}
-                  visible={this.state.menuVisible}
-                >
-                  <Button type="secondary">
-                    Options
-                    <Icon type="down" />
+                <div>
+                  <Dropdown
+                    overlay={menu}
+                    placement="bottomLeft"
+                    onVisibleChange={this.handleVisibleChange}
+                    visible={this.state.menuVisible}
+                  >
+                    <Button type="secondary">
+                      Options
+                      <Icon type="down" />
+                    </Button>
+                  </Dropdown>
+                  <Button onClick={this.toggleDrawer}>
+                    <Icon type="comment-outline" />
                   </Button>
-                </Dropdown>
+                </div>
               </div>
             </div>
             <MineNavigation
