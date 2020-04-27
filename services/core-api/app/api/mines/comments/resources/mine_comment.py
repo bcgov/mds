@@ -65,41 +65,18 @@ class MineCommentListResource(Resource, UserMixin):
 
 
 class MineCommentResource(Resource, UserMixin):
-    parser = CustomReqparser()
-    parser.add_argument('report_comment', type=str, location='json')
-    parser.add_argument('comment_visibility_ind', type=inputs.boolean, location='json')
+    @api.doc(
+        description='Delete a mine comment by guid',
+        params={'mine_comment_guid': 'guid of the comment to delete.'})
+    @requires_role_mine_admin
+    def delete(self, mine_guid, mine_comment_guid):
+        comment = MineComment.find_by_guid(mine_comment_guid)
+        if not comment:
+            raise NotFound('Mine comment with guid "{mine_comment_guid}" not found.')
 
-    # @api.expect(MINE_REPORT_COMMENT_MODEL)
-    # @api.doc(description='update a comment')
-    # @api.marshal_with(MINE_REPORT_COMMENT_MODEL, code=201)
-    # @requires_role_mine_edit
-    # def put(self, mine_guid, mine_report_guid, mine_report_comment_guid=None):
+        comment.deleted_ind = True
+        current_app.logger.info(f'Deleting {comment}')
 
-    #     data = self.parser.parse_args()
-    #     comment = MineReportComment.find_by_guid(mine_report_comment_guid)
-    #     if not comment:
-    #         raise NotFound('Mine report comment with guid "{mine_report_comment_guid}" not found.')
+        comment.save()
 
-    #     current_app.logger.info(f'Updating {comment} with {data}')
-    #     for key, value in data.items():
-    #         setattr(comment, key, value)
-
-    #     comment.save()
-
-    #     return comment, 201
-
-    # @api.doc(
-    #     description='Delete a mine report comment by guid',
-    #     params={'mine_report_comment_guid': 'guid of the comment to delete.'})
-    # @requires_role_mine_admin
-    # def delete(self, mine_guid, mine_report_guid, mine_report_comment_guid):
-    #     comment = MineReportComment.find_by_guid(mine_report_comment_guid)
-    #     if not comment:
-    #         raise NotFound('Mine report comment with guid "{mine_report_comment_guid}" not found.')
-
-    #     comment.deleted_ind = True
-    #     current_app.logger.info(f'Deleting {comment}')
-
-    #     comment.save()
-
-    #     return ('', 204)
+        return ('', 204)
