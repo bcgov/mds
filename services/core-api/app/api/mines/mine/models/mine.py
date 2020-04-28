@@ -23,7 +23,6 @@ class Mine(AuditMixin, Base):
     __tablename__ = 'mine'
     _edit_key = MINE_EDIT_GROUP
 
-    mine_id = db.Column(db.Integer, server_default=FetchedValue())
     mine_guid = db.Column(UUID(as_uuid=True), primary_key=True, server_default=FetchedValue())
     mine_no = db.Column(db.String(10))
     mine_name = db.Column(db.String(60), nullable=False)
@@ -132,13 +131,6 @@ class Mine(AuditMixin, Base):
         try:
             uuid.UUID(_id, version=4)
             return cls.query.filter_by(mine_guid=_id).filter_by(deleted_ind=False).first()
-        except ValueError:
-            return None
-
-    @classmethod
-    def find_by_mine_id(cls, _id):
-        try:
-            return cls.query.filter_by(mine_id=_id).filter_by(deleted_ind=False).first()
         except ValueError:
             return None
 
