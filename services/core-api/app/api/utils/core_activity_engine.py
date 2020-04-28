@@ -27,24 +27,44 @@ class CoreActivityEngine(object):
     def process(
         verb, 
         title, 
-        object_id, 
+        object_guid, 
         object_type, 
-        target_id, 
+        target_guid, 
         target_type):
 
         from app import auth
         core_user = auth.get_core_user()
-        user_id = core_user.core_user_id
+        user_guid = core_user.core_user_guid
 
         new_activity = CoreActivity(
             core_activity_verb_code=verb.value,
             title=title,
-            actor_id=user_id,
+            actor_guid=user_guid,
             actor_object_type_code=Objects.user.value,
-            object_id=object_id,
+            object_guid=object_guid,
             object_object_type_code=object_type.value,
-            target_id=target_id,
+            target_guid=target_guid,
             target_object_type_code=target_type.value,
             )
         new_activity.save()
         return new_activity
+
+    def get(published_since, published_before):
+            
+        def generate_link(core_activity):
+            if core_activity.target_object_type_code == "MIN":
+                return f"/mine-dashboard/{core_activity.object_guid}"
+            if core_activity.target_object_type_code == "CRR":
+                return f"/mine-dashboard/{core_activity.target_guid}/reports"
+                
+        core_activities_query = CoreActivity.query.filter(CoreActivity.published_date >= published_since)
+
+        if published_before:
+            core_activities_query = core_activities_query.filter(CoreActivity.published_date < published_since)
+            
+        core_activities = core_activities_query.order_by(CoreActivity.published_date.desc()).all()
+
+        for core_activity in core_activities:
+            core_activity.link = generate_link(core_activity)
+        
+        return core_activities

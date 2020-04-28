@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import { fetchMetabaseDashboard } from "@common/actionCreators/reportingActionCreator";
 import ReactIframeResizer from "react-iframe-resizer-super";
 import SearchBar from "@/components/search/SearchBar";
+import CoreActivities from "@components/activities/CoreActivities";
 import { BACKGROUND, HSRC_PDF } from "@/constants/assets";
 
 const iframeResizerOptions = { checkOrigin: false };
@@ -46,6 +47,14 @@ export class HomePage extends Component {
               <SearchBar />
               <br />
               <a href="mailto: mds@gov.bc.ca">Have questions?</a>
+            </div>
+          </Col>
+        </Row>
+        <Row type="flex" justify="center" gutter={[hGutter, vGutter]}>
+          <Col xs={xs} sm={sm} md={md * 2} lg={lg * 2} xl={xl * 2}>
+            <div className="search-container">
+              <h1>Recent Activities</h1>
+              <CoreActivities />
             </div>
           </Col>
         </Row>

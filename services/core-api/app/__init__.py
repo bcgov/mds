@@ -26,6 +26,7 @@ from app.api.exports.namespace import api as exports_api
 from app.api.document_generation.namespace import api as doc_gen_api
 from app.api.securities.namespace import api as securities_api
 from app.api.verify.namespace import api as verify_api
+from app.api.core_activity.namespace import api as core_activity_api
 
 from app.commands import register_commands
 from app.config import Config
@@ -105,6 +106,7 @@ def register_routes(app):
     api.add_namespace(doc_gen_api)
     api.add_namespace(securities_api)
     api.add_namespace(verify_api)
+    api.add_namespace(core_activity_api)
 
     # Healthcheck endpoint
     @api.route('/health')
