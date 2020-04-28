@@ -8,6 +8,7 @@ CREATE TABLE mine_permit_xref (
     FOREIGN KEY (permit_id) REFERENCES permit(permit_id) DEFERRABLE INITIALLY DEFERRED
 );
 
+ALTER TABLE mine_permit_xref OWNER TO mds;
 
 INSERT INTO mine_permit_xref
 SELECT m.mine_guid, p.permit_id from mine m

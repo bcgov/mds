@@ -28,6 +28,16 @@ where p.permit_id = mpx.permit_id
 and p.permit_id in (select permit_id from simple_duplicates_mine_permit where permit_id is not null); 
 
 
+--merge all permit_amendments to the used ones
+update permit_amendment pa 
+set permit_id = (select distinct mpx.permit_id from permit p2 inner join mine_permit_xref mpx on p2.permit_id = mpx.permit_id where p2.permit_no = p.permit_no)
+from permit p
+where pa.permit_id = p.permit_id
+
+--orphan leftover permits that have no amendments
+delete from mine_permit_xref mpx where mpx.permit_id not in (select permit_id from permit_amendment);
+
+
 --documents have been uplodaded to these ones
 update mine_permit_xref mpx
 set permit_id = (select permit_id from permit p2
@@ -69,6 +79,7 @@ from permit p
  	inner join mine_party_appt mpa2 on mpa2.permit_guid = p.permit_guid
  	inner join permit p2 on p.permit_no  = p2.permit_no
  	inner join mine_permit_xref mpx on mpx.permit_id = p2.permit_id
+    inner join permit_amendment pa on pa.permit_id = p2.permit_id
 where mpa.mine_party_appt_guid = mpa2.mine_party_appt_guid
 and mpa.permit_guid = p.permit_guid
 and mpx.permit_id is not null;
