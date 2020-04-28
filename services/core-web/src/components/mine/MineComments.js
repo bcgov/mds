@@ -52,7 +52,6 @@ export class MineComments extends Component {
     return (
       <div>
         <CommentPanel
-          hideTitle
           renderAdd
           onSubmit={this.handleAddComment}
           loading={this.state.loading}

@@ -268,7 +268,7 @@ export class MineDashboard extends Component {
     return (
       <div>
         <Drawer
-          title={`Comments for ${mine.mine_name}`}
+          title={`Internal Communication for ${mine.mine_name}`}
           placement="right"
           closable={false}
           onClose={this.toggleDrawer}
@@ -332,8 +332,8 @@ export class MineDashboard extends Component {
                     </Button>
                   </Dropdown>
                   <Button onClick={this.toggleDrawer}>
-                    Comments
-                    {/* <Icon type="comments" /> */}
+                    Internal Communication
+                    <Icon type="message" />
                   </Button>
                 </div>
               </div>
