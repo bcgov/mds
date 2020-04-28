@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
-import { Tooltip, Icon, Dropdown, Menu, Button, Row, Col } from "antd";
+import { Tooltip, Icon, Badge, Dropdown, Menu, Button, Row, Col } from "antd";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
@@ -32,11 +32,13 @@ const propTypes = {
   fetchMineVerifiedStatuses: PropTypes.func.isRequired,
   currentUserVerifiedMines: PropTypes.arrayOf(CustomPropTypes.mineVerificationStatus),
   currentUserUnverifiedMines: PropTypes.arrayOf(CustomPropTypes.mineVerificationStatus),
+  currentUserNotifications: PropTypes.arrayOf(PropTypes.string)
 };
 
 const defaultProps = {
   currentUserVerifiedMines: [],
   currentUserUnverifiedMines: [],
+  currentUserNotifications: ['Test', 'Notifications']
 };
 
 export class NavBar extends Component {
@@ -107,6 +109,13 @@ export class NavBar extends Component {
           <Icon type="down" />
         </button>
       </Dropdown>
+      <Link to={router.ADMIN_DASHBOARD.route}>
+        <Button className="menu__btn--link">
+          <Badge count={this.props.currentUserNotifications.length}>
+            <Icon type="bell" className="icon-sm" />
+          </Badge>
+        </Button>
+      </Link>
       <a href="https://mdsfider.pathfinder.gov.bc.ca/" target="_blank" rel="noopener noreferrer">
         <Tooltip title="Feedback" placement="bottom">
           <Button type="link" className="menu__btn--link">

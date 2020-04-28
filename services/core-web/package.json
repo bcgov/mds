@@ -96,7 +96,7 @@
     "lint-prepush": "^0.4.1",
     "lint-staged": "^8.2.1",
     "mini-css-extract-plugin": "^0.7.0",
-    "node-sass": "^4.12.0",
+    "node-sass": "^4.14.0",
     "optimize-css-assets-webpack-plugin": "^5.0.3",
     "postcss-loader": "^3.0.0",
     "prettier": "^1.19.1",

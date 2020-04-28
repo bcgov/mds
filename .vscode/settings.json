@@ -20,5 +20,8 @@
     "source.fixAll.eslint": true,
     "eslint.autoFixOnSave": true
   },
-  "cSpell.words": ["idir"]
+  "cSpell.words": [
+    "idir"
+  ],
+  "python.pythonPath": "c:\\Users\\Paul\\Documents\\Projects\\mds\\venv\\Scripts\\python.exe"
 }
