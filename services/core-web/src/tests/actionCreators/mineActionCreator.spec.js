@@ -14,7 +14,6 @@ import {
   fetchMineVerifiedStatuses,
   fetchMineComments,
   createMineComment,
-  updateMineComment,
   deleteMineComment,
 } from "@common/actionCreators/mineActionCreator";
 import * as genericActions from "@common/actions/genericActions";
@@ -382,41 +381,6 @@ describe("`createMineComment` action creator", () => {
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onPost(url, MOCK.createMockHeader()).reply(418, MOCK.ERROR);
     return createMineComment(mineGuid)(dispatch).then(() => {
-      expect(requestSpy).toHaveBeenCalledTimes(1);
-      expect(errorSpy).toHaveBeenCalledTimes(1);
-      expect(dispatch).toHaveBeenCalledTimes(2);
-    });
-  });
-});
-
-describe("`updateMineComment` action creator", () => {
-  const mineGuid = "346346";
-  const commentGuid = "1451345";
-  const payload = {
-    report_comment: "updating my comment",
-  };
-  const url = `${ENVIRONMENT.apiUrl}${API.MINE_COMMENT(mineGuid, commentGuid)}`;
-
-  it("Request successful, dispatches `success` with correct response", () => {
-    const mockResponse = { data: { success: true } };
-    mockAxios.onPut(url, payload).reply(200, mockResponse);
-    return updateMineComment(
-      mineGuid,
-      commentGuid,
-      payload
-    )(dispatch).then(() => {
-      expect(requestSpy).toHaveBeenCalledTimes(1);
-      expect(successSpy).toHaveBeenCalledTimes(1);
-      expect(dispatch).toHaveBeenCalledTimes(2);
-    });
-  });
-
-  it("Request failure, dispatches `error` with correct response", () => {
-    mockAxios.onPut(url, MOCK.createMockHeader()).reply(418, MOCK.ERROR);
-    return updateMineComment(
-      mineGuid,
-      commentGuid
-    )(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(2);

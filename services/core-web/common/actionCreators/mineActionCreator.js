@@ -294,25 +294,6 @@ export const createMineComment = (mineGuid, payload) => (dispatch) => {
     .catch(() => dispatch(error(reducerTypes.CREATE_MINE_COMMENTS)));
 };
 
-export const updateMineComment = (mineGuid, commentGuid, payload) => (dispatch) => {
-  dispatch(request(reducerTypes.UPDATE_MINE_COMMENT));
-  return CustomAxios()
-    .put(
-      `${ENVIRONMENT.apiUrl}${API.MINE_COMMENT(mineGuid, commentGuid)}`,
-      payload,
-      createRequestHeader()
-    )
-    .then((response) => {
-      notification.success({
-        message: "Successfully updated comment.",
-        duration: 10,
-      });
-      dispatch(success(reducerTypes.UPDATE_MINE_COMMENT));
-      return response;
-    })
-    .catch(() => dispatch(error(reducerTypes.UPDATE_MINE_COMMENT)));
-};
-
 export const deleteMineComment = (mineGuid, commentGuid) => (dispatch) => {
   dispatch(request(reducerTypes.DELETE_MINE_COMMENT));
   return CustomAxios()
