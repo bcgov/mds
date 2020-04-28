@@ -23,6 +23,8 @@ from app.api.mines.reports.models.mine_report_definition_compliance_article_xref
 from app.api.utils.custom_reqparser import CustomReqparser
 from app.api.mines.response_models import MINE_REPORT_MODEL
 
+from app.api.utils.core_activity_engine import CoreActivityEngine, Verbs, Objects
+
 
 class MineReportListResource(Resource, UserMixin):
     parser = CustomReqparser()
@@ -106,6 +108,11 @@ class MineReportListResource(Resource, UserMixin):
             mine_report.save()
         except Exception as e:
             raise InternalServerError(f'Error when saving: {e}')
+
+        CoreActivityEngine.process(Verbs.added, 
+        f'{CoreActivityEngine.get_username()} added a {mine_report.submission_year} {mine_report_definition.report_name} report to {mine.mine_name}', 
+        mine_report.mine_report_id, Objects.report,
+        mine.mine_id, Objects.mine)
 
         return mine_report, 201
 
@@ -212,6 +219,12 @@ class MineReportResource(Resource, UserMixin):
             mine_report.save()
         except Exception as e:
             raise InternalServerError(f'Error when saving: {e}')
+
+        CoreActivityEngine.process(Verbs.modified, 
+        f'{CoreActivityEngine.get_username()} updated a {mine_report.submission_year} {mine_report.mine_report_definition.report_name} report to {mine.mine_name}', 
+        mine_report.mine_report_id, Objects.report,
+        mine.mine_id, Objects.mine)
+
         return mine_report
 
     @requires_role_edit_report

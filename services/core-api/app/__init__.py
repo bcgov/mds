@@ -79,9 +79,10 @@ def register_extensions(app):
 
     @app.before_request
     def user_auth():
-        from app import auth
-        core_user = auth.get_core_user()
-        raise Exception(core_user)
+        if request.method != 'OPTIONS': 
+            from app import auth
+            core_user = auth.get_core_user()
+        
     return None
 
 

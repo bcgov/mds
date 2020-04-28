@@ -41,7 +41,7 @@ def get_mine_access():
     return list(x.mine_guid for x in user.minespace_user_mines)
 
 def get_core_user():
-    rv = getattr(g, 'current_user', None)
+    rv = getattr(g, 'current_core_user', None)
     if rv == None:
         email = get_user_email()
         rv = CoreUser.query.unbound_unsafe().filter_by(email=email).filter_by(
@@ -60,7 +60,7 @@ def get_core_user():
                                                 add_to_session=False)
                 new_cu.save()
                 rv = new_cu
-        g.current_user = rv
+        g.current_core_user = rv
     return rv
 
 def get_current_minespace_user():
