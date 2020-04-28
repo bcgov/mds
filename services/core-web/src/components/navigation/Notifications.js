@@ -18,6 +18,8 @@ import SearchBar from "@/components/search/SearchBar";
 import { LOGO, HAMBURGER, CLOSE, SUCCESS_CHECKMARK, YELLOW_HAZARD } from "@/constants/assets";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 
+import NoticeBox from "@/components/navigation/NoticeBox"
+
 /**
  * @class NavBar - fixed and responsive navigation
  */
@@ -26,46 +28,48 @@ const propTypes = {
   userInfo: PropTypes.shape({ preferred_username: PropTypes.string.isRequired }).isRequired,
   activeButton: PropTypes.string.isRequired,
   fetchNotifications: PropTypes.func.isRequired,
-  currentNotifications: PropTypes.arrayOf(PropTypes.string),
+  currentNotifications: PropTypes.arrayOf(PropTypes.any),
 };
 
 const defaultProps = {
-  currentUserNotifications: ["Test", "Notifications"],
+  activeButton: 'yes',
+  fetchNotifications: () => { },
+  currentNotifications: [
+    {
+      read: false,
+      avatar: "https://gw.alipayobjects.com/zos/rmsportal/ThXAXghbEsBCCSDihZxY.png",
+      key: 1,
+      title: "CRR Submitted by 'Dummy Mine'",
+      description: "Notification",
+      datetime: "May 25 2020 8:30pm"
+    },
+    {
+      read: false,
+      avatar: "https://gw.alipayobjects.com/zos/rmsportal/ThXAXghbEsBCCSDihZxY.png",
+      key: 2,
+      title: "CRR Submitted by 'Dummy Mine'",
+      description: "Notification",
+      datetime: "May 22 2020 7:50am"
+    },
+  ]
 };
 
 export class Notifications extends Component {
   componentDidMount() {
-    this.props.fetchNotifications(userInfo);
+    this.props.fetchNotifications();
   }
 
   ifActiveButton = (route) => (includes(this.props.activeButton, route) ? "active-menu-btn" : "");
 
   render() {
-    const { userInfo, fetchingNotices, onNoticeVisibleChange } = this.props;
-    const noticeData = this.getNoticeData();
-    const unreadMsg = this.getUnreadData(noticeData);
+    const currentNotifications = this.props.currentNotifications;
+    console.log(currentNotifications)
+
     return (
       <NoticeBox
-        className={styles.action}
-        count={userInfo && userInfo.unreadCount}
-        loading={fetchingNotices}
-        clearText="Clear Notifications"
-        viewMoreText="View More"
-        onClear={this.handleNoticeClear}
-        onPopupVisibleChange={onNoticeVisibleChange}
-        onViewMore={() => {
-          /* Toastr */
-        }}
-        clearClose
+        count={4}
+        list={currentNotifications}
       >
-        <NoticeBox.Tab
-          tabKey="notification"
-          count={unreadMsg.notification}
-          list={noticeData.notification}
-          title="Notifications"
-          emptyText="You have 0 unread notifications"
-          showViewMore
-        />
       </NoticeBox>
     );
   }
@@ -73,14 +77,14 @@ export class Notifications extends Component {
 
 const mapStateToProps = (state) => ({
   userInfo: getUserInfo(state),
-  currentNotifications: getCurrentUserNotifications(state),
+  //currentNotifications: getCurrentUserNotifications(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
       // TODO: implement action creator
-      fetchNotifications,
+      //fetchNotifications,
     },
     dispatch
   );
@@ -88,4 +92,4 @@ const mapDispatchToProps = (dispatch) =>
 Notifications.propTypes = propTypes;
 Notifications.defaultProps = defaultProps;
 
-export default connect(mapStateToProps, mapDispatchToProps)(NavBar);
+export default Notifications;

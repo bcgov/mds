@@ -1,0 +1,134 @@
+
+
+
+.notification-popover {
+    position: relative;
+    width: 336px;
+    background-color: white;
+  }
+  
+  .notification-noticeButton {
+    display: inline-block;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  .notification-icon {
+    padding: 4px;
+    vertical-align: middle;
+  }
+  
+.notification-badge {
+    font-size: 16px;
+  }
+  
+.notification-tabs {
+
+    text-align: center;
+      
+    .ant-tabs-bar {
+        margin-bottom: 0;
+      }
+}
+
+
+// 
+
+.notification-list {
+    max-height: 400px;
+    overflow: auto;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+    .item {
+      padding-right: 24px;
+      padding-left: 24px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: all 0.3s;
+  
+      .meta {
+        width: 100%;
+      }
+  
+      .avatar {
+        margin-top: 4px;
+        background: white;
+      }
+      .iconElement {
+        font-size: 32px;
+      }
+  
+      &.read {
+        opacity: 0.4;
+      }
+      &:last-child {
+        border-bottom: 0;
+      }
+      &:hover {
+        background: lightgrey;
+      }
+      .title {
+        margin-bottom: 8px;
+        font-weight: normal;
+      }
+      .description {
+        font-size: 12px;
+      }
+      .datetime {
+        margin-top: 4px;
+        font-size: 12px;
+      }
+      .extra {
+        float: right;
+        margin-top: -1.5px;
+        margin-right: 0;
+        color: darkslateblue;
+        font-weight: normal;
+      }
+    }
+    .loadMore {
+      padding: 8px 0;
+      color: blue;
+      text-align: center;
+      cursor: pointer;
+      &.loadedAll {
+        color: rgba(0, 0, 0, 0.25);
+        cursor: unset;
+      }
+    }
+  }
+  
+.notification-notFound {
+padding: 73px 0 88px;
+color: blue;
+text-align: center;
+img {
+    display: inline-block;
+    height: 76px;
+    margin-bottom: 16px;
+}
+}
+  
+.notification-bottomBar {
+height: 46px;
+color: lightgrey;
+line-height: 46px;
+text-align: center;
+border-top: 1px solid;
+border-radius: 0 0;
+transition: all 0.3s;
+div {
+    display: inline-block;
+    width: 50%;
+    cursor: pointer;
+    transition: all 0.3s;
+    user-select: none;
+
+    &:only-child {
+    width: 100%;
+    }
+    &:not(:only-child):last-child {
+    border-left: 1px solid;
+    }
+}
+}

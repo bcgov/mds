@@ -19,7 +19,7 @@ import * as Permission from "@/constants/permissions";
 import SearchBar from "@/components/search/SearchBar";
 import { LOGO, HAMBURGER, CLOSE, SUCCESS_CHECKMARK, YELLOW_HAZARD } from "@/constants/assets";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
-import NoticeBox from "@/components/navigation/NoticeBox"
+import Notifications from "@/components/navigation/Notifications"
 
 /**
  * @class NavBar - fixed and responsive navigation
@@ -39,7 +39,7 @@ const propTypes = {
 const defaultProps = {
   currentUserVerifiedMines: [],
   currentUserUnverifiedMines: [],
-  currentUserNotifications: ["Test", "Notifications"],
+  currentUserNotifications: [],
 };
 
 export class NavBar extends Component {
@@ -110,17 +110,10 @@ export class NavBar extends Component {
           <Icon type="down" />
         </button>
       </Dropdown>
-      <Dropdown overlay={this.userMenu} placement="bottomLeft">
-        <button type="button" className="menu__btn" id={this.ifActiveButton("my-dashboard")}>
-          <Icon className="padding-small--right icon-sm" type="user" />
-          <span className="padding-small--right">{this.props.userInfo.preferred_username}</span>
-          <Icon type="down" />
-        </button>
-      </Dropdown>
-      <Dropdown overlay={this.navigationBox} placement="bottomRight" >
+      <Dropdown overlay={this.notificationBox} placement="bottomRight" overlayClassName="notification-popover">
         <Button className="menu__btn--link">
-          <Badge count={this.props.currentUserNotifications.length} >
-            <BellOutlined className="icon-sm" />
+          <Badge count={4} className="notification-badge">
+            <Icon type="bell" className="icon-sm" />
           </Badge>
         </Button>
       </Dropdown>
@@ -337,8 +330,8 @@ export class NavBar extends Component {
     </div>
   );
 
-  navigationBox = () => (
-    <NoticeBox></NoticeBox>
+  notificationBox = () => (
+    <Notifications></Notifications>
   );
 
   userMenu = () => (
