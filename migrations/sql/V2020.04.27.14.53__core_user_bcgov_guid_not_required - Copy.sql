@@ -1,0 +1,1 @@
+ALTER TABLE idir_user_detail ALTER COLUMN bcgov_guid DROP NOT NULL;

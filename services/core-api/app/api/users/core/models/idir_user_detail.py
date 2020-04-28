@@ -14,7 +14,7 @@ class IdirUserDetail(AuditMixin, Base):
     __tablename__ = 'idir_user_detail'
     idir_user_detail_id = db.Column(db.Integer, primary_key=True, server_default=FetchedValue())
     core_user_id = db.Column(db.Integer, db.ForeignKey('core_user.core_user_id'), nullable=False)
-    bcgov_guid = db.Column(UUID(as_uuid=True), nullable=False)
+    bcgov_guid = db.Column(UUID(as_uuid=True))
     username = db.Column(db.String)
     title = db.Column(db.String)
     city = db.Column(db.String)
@@ -47,32 +47,26 @@ class IdirUserDetail(AuditMixin, Base):
         except ValueError:
             return None
 
-    @validates('bcgov_guid')
-    def validate_bcgov_guid(self, key, bcgov_guid):
-        if not bcgov_guid:
-            raise AssertionError('BCGOV guid is not provided.')
-        return bcgov_guid
-
     @validates('username')
     def validate_username(self, key, username):
-        if len(username) > 128:
+        if username and len(username) > 128:
             raise AssertionError('Username must not exceed 128 characters.')
         return username
 
     @validates('title')
     def validate_title(self, key, title):
-        if len(title) > 254:
+        if title and len(title) > 254:
             raise AssertionError('Title must not exceed 254 characters.')
         return title
 
     @validates('city')
     def validate_city(self, key, city):
-        if len(city) > 128:
+        if city and len(city) > 128:
             raise AssertionError('City must not exceed 128 characters.')
         return city
 
     @validates('department')
     def validate_department(self, key, department):
-        if len(department) > 254:
+        if department and len(department) > 254:
             raise AssertionError('Department must not exceed 254 characters.')
         return department
