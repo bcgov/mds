@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React, { useState } from "react";
+import React from "react";
 import { PropTypes } from "prop-types";
 import { connect } from "react-redux";
 import { getUserAccessData } from "@common/selectors/authenticationSelectors";
@@ -8,7 +8,7 @@ import {
   detectDevelopmentEnvironment,
   detectProdEnvironment,
 } from "@common/utils/environmentUtils";
-import { CoreTooltip } from "@/components/common/CoreTooltip";
+import { Tooltip } from "antd";
 import * as Permission from "@/constants/permissions";
 
 /**
@@ -63,15 +63,6 @@ const defaultProps = {
 };
 
 export const AuthorizationWrapper = (props) => {
-  const style = {
-    width: "fit-content !important",
-    height: "fit-content !important",
-    // padding: "10px",
-    // borderRadius: "10px",
-    borderBottom: "5px solid #e5ee39",
-  };
-  const [updateFilesClicked, setUpdateFilesClicked] = useState(false);
-  const handleAdminMode = true;
   const inDevCheck =
     props.inDevelopment === undefined || (props.inDevelopment && detectDevelopmentEnvironment());
   const inTestCheck =
@@ -80,13 +71,23 @@ export const AuthorizationWrapper = (props) => {
     props.permission === undefined || props.userRoles.includes(USER_ROLES[props.permission]);
   const isMajorMine = props.isMajorMine === undefined || props.isMajorMine;
   const isAdmin = props.userRoles.includes(USER_ROLES[Permission.ADMIN]);
+  const title = () => {
+    const permission = props.permission ? `${USER_ROLES[props.permission]}` : "";
+    const inTest = props.inTesting ? ` \nNot Visible in Production` : "";
+    const majorMine = props.isMajorMine !== undefined ? ` \nOnly Visible to Major Mines` : "";
+    return `${permission}${inTest}${majorMine}`;
+  };
 
   return (
     (isAdmin || (inDevCheck && inTestCheck && permissionCheck && isMajorMine)) && (
-      <span style={style}>
+      <Tooltip
+        title={isAdmin ? title() : ""}
+        placement="bottom"
+        mouseEnterDelay={1}
+        style={{ zIndex: 100000 }}
+      >
         {props.children}
-        {/* <CoreTooltip title={USER_ROLES[props.permission]} /> */}
-      </span>
+      </Tooltip>
     )
   );
 };

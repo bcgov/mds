@@ -166,31 +166,27 @@ export class PartyProfile extends Component {
             <div className="inline-flex between">
               <h1>{formattedName}</h1>
               <div>
-                <AuthorizationWrapper inTesting>
-                  <AuthorizationWrapper permission={Permission.ADMIN}>
-                    <Popconfirm
-                      className="delete_contact_warning"
-                      placement="bottom"
-                      title={
-                        <div>
-                          <p>
-                            Are you sure you want to delete the party &apos;{formattedName}&apos;?
-                          </p>
-                          <p>
-                            Doing so will permanently remove the party and all associated roles.
-                          </p>
-                        </div>
-                      }
-                      onConfirm={this.deleteParty}
-                      okText="Yes"
-                      cancelText="No"
-                    >
-                      <Button type="danger">
-                        <Icon className="btn-danger--icon" type="minus-circle" theme="outlined" />
-                        Delete Party
-                      </Button>
-                    </Popconfirm>
-                  </AuthorizationWrapper>
+                <AuthorizationWrapper permission={Permission.ADMIN} inTesting>
+                  <Popconfirm
+                    className="delete_contact_warning"
+                    placement="bottom"
+                    title={
+                      <div>
+                        <p>
+                          Are you sure you want to delete the party &apos;{formattedName}&apos;?
+                        </p>
+                        <p>Doing so will permanently remove the party and all associated roles.</p>
+                      </div>
+                    }
+                    onConfirm={this.deleteParty}
+                    okText="Yes"
+                    cancelText="No"
+                  >
+                    <Button type="danger">
+                      <Icon className="btn-danger--icon" type="minus-circle" theme="outlined" />
+                      Delete Party
+                    </Button>
+                  </Popconfirm>
                 </AuthorizationWrapper>
                 <AuthorizationWrapper permission={Permission.EDIT_PARTIES}>
                   <Button

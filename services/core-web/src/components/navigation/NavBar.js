@@ -40,9 +40,15 @@ const defaultProps = {
 };
 
 export class NavBar extends Component {
+  state = { adminMode: false };
+
   componentDidMount() {
     this.props.fetchMineVerifiedStatuses(`idir\\${this.props.userInfo.preferred_username}`);
   }
+
+  toggleAdminMode = () => {
+    this.setState((prevState) => ({ adminMode: !prevState.adminMode }));
+  };
 
   ifActiveButton = (route) => (includes(this.props.activeButton, route) ? "active-menu-btn" : "");
 
@@ -332,6 +338,13 @@ export class NavBar extends Component {
           <button type="button">Log Out</button>
         </Link>
       </Menu.Item>
+      {/* <AuthorizationWrapper permission={Permission.ADMIN} enableAdminMode={this.state.adminMode}>
+        <Menu.Item key="log-out" className="navbar-dropdown-menu-item">
+          <button onClick={this.toggleAdminMode} type="button">
+            {this.state.adminMode ? `Disable Admin Mode` : `Enable Admin Mode`}
+          </button>
+        </Menu.Item>
+      </AuthorizationWrapper> */}
     </Menu>
   );
 
