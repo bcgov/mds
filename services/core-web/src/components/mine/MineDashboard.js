@@ -93,6 +93,7 @@ export class MineDashboard extends Component {
 
   toggleDrawer = () => {
     this.setState((prevState) => ({ isDrawerVisible: !prevState.isDrawerVisible }));
+    this.handleMenuClick();
   };
 
   handleActiveButton = (path) => {
@@ -169,6 +170,12 @@ export class MineDashboard extends Component {
 
     const menu = (
       <Menu>
+        <div className="custom-menu-item">
+          <button type="button" className="full" onClick={this.toggleDrawer}>
+            <Icon type="message" className="padding-small icon-sm" />
+            Communication
+          </button>
+        </div>
         {this.props.subscribed ? (
           <div className="custom-menu-item">
             <Popconfirm
@@ -274,6 +281,9 @@ export class MineDashboard extends Component {
           onClose={this.toggleDrawer}
           visible={this.state.isDrawerVisible}
         >
+          <Button ghost className="modal__close" onClick={this.toggleDrawer}>
+            <Icon type="close" />
+          </Button>
           <MineComments mineGuid={mine.mine_guid} />
         </Drawer>
         {this.state.isLoaded && (
@@ -319,23 +329,17 @@ export class MineDashboard extends Component {
                     </Tooltip>
                   )}
                 </div>
-                <div>
-                  <Dropdown
-                    overlay={menu}
-                    placement="bottomLeft"
-                    onVisibleChange={this.handleVisibleChange}
-                    visible={this.state.menuVisible}
-                  >
-                    <Button type="secondary">
-                      Options
-                      <Icon type="down" />
-                    </Button>
-                  </Dropdown>
-                  <Button onClick={this.toggleDrawer}>
-                    Internal Communication
-                    <Icon type="message" />
+                <Dropdown
+                  overlay={menu}
+                  placement="bottomLeft"
+                  onVisibleChange={this.handleVisibleChange}
+                  visible={this.state.menuVisible}
+                >
+                  <Button type="secondary">
+                    Options
+                    <Icon type="down" />
                   </Button>
-                </div>
+                </Dropdown>
               </div>
             </div>
             <MineNavigation

@@ -432,4 +432,5 @@ select {
 // Drawer
 .ant-drawer-content-wrapper {
   width: 520px !important; // 250px by default
+  z-index: 1000000 !important;
 }
