@@ -11,6 +11,7 @@ from app.api.utils.access_decorators import requires_role_view_all, requires_rol
 from app.api.utils.resources_mixins import UserMixin
 from app.api.utils.custom_reqparser import CustomReqparser
 
+from app.api.parties.party.models.party import Party
 from app.api.mines.mine.models.mine import Mine
 from app.api.now_applications.models.now_application import NOWApplication
 from app.api.now_applications.models.now_application_identity import NOWApplicationIdentity
@@ -18,6 +19,7 @@ from app.api.now_applications.transmogrify_now import transmogrify_now
 
 from app.api.now_applications.response_models import NOW_APPLICATION_MODEL
 
+from app.api.utils.core_activity_engine import CoreActivityEngine, Verbs, Objects
 
 class NOWApplicationResource(Resource, UserMixin):
     @api.doc(
@@ -63,6 +65,13 @@ class NOWApplicationResource(Resource, UserMixin):
         lead_inspector_party_guid = data.get('lead_inspector_party_guid', None)
         if lead_inspector_party_guid is not None:
             now_application_identity.now_application.lead_inspector_party_guid = lead_inspector_party_guid
+            
+            party = Party.find_by_party_guid(lead_inspector_party_guid)
+
+            CoreActivityEngine.process(Verbs.assigned, 
+            f'{CoreActivityEngine.get_username()} assigned {party.name} to notice of work {now_application_identity.now_number}', 
+            party.party_guid, Objects.party,
+            now_application_identity.now_application_guid, Objects.now)
 
         now_application_status_code = data.get('now_application_status_code', None)
         if now_application_status_code is not None and now_application_identity.now_application.now_application_status_code != now_application_status_code:

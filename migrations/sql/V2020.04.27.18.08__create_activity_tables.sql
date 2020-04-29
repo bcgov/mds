@@ -54,9 +54,9 @@ INSERT INTO core_activity_verb
 VALUES
     ('ADD', 'added', 'system-mds', 'system-mds'),
     ('MOD', 'modified', 'system-mds', 'system-mds'),
-    ('DEL', 'deleted', 'system-mds', 'system-mds')
+    ('DEL', 'deleted', 'system-mds', 'system-mds'),
+	('ASN', 'assigned', 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
-
 
 INSERT INTO core_activity_object_type
     (
@@ -68,6 +68,6 @@ INSERT INTO core_activity_object_type
 VALUES
     ('USR', 'user', 'system-mds', 'system-mds'),
     ('CRR', 'code-required report', 'system-mds', 'system-mds'),
-    ('MIN', 'mine', 'system-mds', 'system-mds')
+    ('MIN', 'mine', 'system-mds', 'system-mds'),
+    ('NOW', 'notice of work', 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
-

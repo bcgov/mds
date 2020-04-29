@@ -11,11 +11,14 @@ class Verbs(enum.Enum):
    added = "ADD"
    modified = "MOD"
    deleted = "DEL"
+   assigned = "ASN"
 
 class Objects(enum.Enum):
    user = "USR"
    report = "CRR"
    mine = "MIN"
+   now = "NOW"
+   party = "PTY"
 
 class CoreActivityEngine(object):
 
@@ -53,9 +56,13 @@ class CoreActivityEngine(object):
             
         def generate_link(core_activity):
             if core_activity.target_object_type_code == "MIN":
-                return f"/mine-dashboard/{core_activity.object_guid}"
+                return f"/mine-dashboard/{core_activity.target_guid}"
             if core_activity.target_object_type_code == "CRR":
-                return f"/mine-dashboard/{core_activity.target_guid}/reports"
+                return f"/mine-dashboard/{core_activity.object_guid}/reports"
+            if core_activity.target_object_type_code == "NOW":
+                return f"/dashboard/notice-of-work/application/{core_activity.target_guid}"
+            else:
+                return f"/"                
                 
         core_activities_query = CoreActivity.query.filter(CoreActivity.published_date >= published_since)
 

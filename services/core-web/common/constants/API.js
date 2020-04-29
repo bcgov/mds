@@ -152,3 +152,7 @@ export const RECLAMATION_INVOICE = (invoiceGuid) =>
     : "/securities/reclamation-invoices";
 export const RECLAMATION_INVOICE_DOCUMENTS = (mineGuid) =>
   `/securities/${mineGuid}/reclamation-invoices/documents`;
+
+// Core Activities
+export const CORE_ACTIVITIES = (publishedSince) =>
+  `/core_activity?published_since=${publishedSince}`;

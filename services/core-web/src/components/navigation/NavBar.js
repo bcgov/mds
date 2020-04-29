@@ -19,7 +19,6 @@ import * as Permission from "@/constants/permissions";
 import SearchBar from "@/components/search/SearchBar";
 import { LOGO, HAMBURGER, CLOSE, SUCCESS_CHECKMARK, YELLOW_HAZARD } from "@/constants/assets";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
-import NoticeBox from "@/components/navigation/NoticeBox"
 
 /**
  * @class NavBar - fixed and responsive navigation
@@ -116,13 +115,6 @@ export class NavBar extends Component {
           <span className="padding-small--right">{this.props.userInfo.preferred_username}</span>
           <Icon type="down" />
         </button>
-      </Dropdown>
-      <Dropdown overlay={this.navigationBox} placement="bottomRight" >
-        <Button className="menu__btn--link">
-          <Badge count={this.props.currentUserNotifications.length} >
-            <BellOutlined className="icon-sm" />
-          </Badge>
-        </Button>
       </Dropdown>
       <a href="https://mdsfider.pathfinder.gov.bc.ca/" target="_blank" rel="noopener noreferrer">
         <Tooltip title="Feedback" placement="bottom">
@@ -337,10 +329,6 @@ export class NavBar extends Component {
     </div>
   );
 
-  navigationBox = () => (
-    <NoticeBox></NoticeBox>
-  );
-
   userMenu = () => (
     <Menu id="menu__dropdown" className="navbar-dropdown-menu">
       <Menu.Item key="my-dashboard" className="navbar-dropdown-menu-item">
@@ -392,7 +380,6 @@ export class NavBar extends Component {
       </Menu.Item>
     </Menu>
   );
-
 
   render() {
     const fullNavMinWidth = 1080;

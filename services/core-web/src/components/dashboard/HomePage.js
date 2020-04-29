@@ -51,9 +51,11 @@ export class HomePage extends Component {
           </Col>
         </Row>
         <Row type="flex" justify="center" gutter={[hGutter, vGutter]}>
-          <Col xs={xs} sm={sm} md={md * 2} lg={lg * 2} xl={xl * 2}>
-            <div className="search-container">
-              <h1>Recent Activities</h1>
+          <Col xs={xs * 2} sm={sm * 2} md={md * 3} lg={lg * 3} xl={xl * 3}>
+            <div className="center">
+              <h1 style={{ color: "white" }}>Recent Activities</h1>
+            </div>
+            <div className="activities-card">
               <CoreActivities />
             </div>
           </Col>

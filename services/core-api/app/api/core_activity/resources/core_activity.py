@@ -23,6 +23,4 @@ class CoreActivityListResource(Resource, UserMixin):
         if not published_since:
             raise BadRequest('published_since is a required query parameter')
 
-        # validate < 30 days?
-
         return CoreActivityEngine.get(published_since, published_before)

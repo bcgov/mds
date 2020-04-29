@@ -7,9 +7,7 @@ import PropTypes from "prop-types";
 import MediaQuery from "react-responsive";
 import { includes } from "lodash";
 import { getUserInfo } from "@common/selectors/authenticationSelectors";
-import {
-  getCurrentUserNotifications,
-} from "@common/reducers/mineReducer";
+import { getCurrentUserNotifications } from "@common/reducers/mineReducer";
 import * as Strings from "@common/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
 import * as router from "@/constants/routes";
@@ -57,16 +55,7 @@ export class Notifications extends Component {
           /* Toastr */
         }}
         clearClose
-      >
-        <NoticeBox.Tab
-          tabKey="notification"
-          count={unreadMsg.notification}
-          list={noticeData.notification}
-          title="Notifications"
-          emptyText="You have 0 unread notifications"
-          showViewMore
-        />
-      </NoticeBox>
+      ></NoticeBox>
     );
   }
 }
