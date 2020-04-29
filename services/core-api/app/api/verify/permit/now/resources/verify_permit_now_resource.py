@@ -53,9 +53,13 @@ class VerifyPermitNOWResource(Resource):
                     if (permit_amendment.authorization_end_date -
                             datetime.utcnow().date()).days > 30:
                         #only want permits that expire 30 days or further in the future
-                        now_info = now_info + str(
-                            permit_amendment.now_identity.now_submission.trackingnumber
-                        ) + " - " + str(permit_amendment.authorization_end_date) + '\r\c'
+                        if permit_amendment.now_identity:
+                            now_info = now_info + str(
+                                permit_amendment.now_identity.now_number
+                            ) + " - " + str(permit_amendment.authorization_end_date) + '\r\c'
+                        else:
+                            now_info = now_info + " - " + str(permit_amendment.authorization_end_date) + '\r\c'
+                        break
 
             if now_info != "":
                 result = "Success"
