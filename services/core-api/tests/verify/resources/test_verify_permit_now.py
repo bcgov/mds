@@ -24,4 +24,4 @@ class TestVerifyPermitMine:
         get_data = json.loads(get_resp.data.decode())
         assert get_resp.status_code == 200
         assert get_data['a_Result'] == "Success"
-        assert str(now_sub.trackingnumber) in get_data['a_NoWInfo']
+        assert str(now_app.now_number) in get_data['a_NoWInfo']
