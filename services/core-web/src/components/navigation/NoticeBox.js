@@ -1,57 +1,41 @@
 import React, { Component } from "react";
-import { bindActionCreators } from "redux";
-import { Tooltip, Icon, Badge, Dropdown, Menu, Button, Row, Col } from "antd";
-import { connect } from "react-redux";
-import { Link } from "react-router-dom";
+
+import { Tabs } from "antd";
+
 import PropTypes from "prop-types";
-import MediaQuery from "react-responsive";
-import { includes } from "lodash";
-import { getUserInfo } from "@common/selectors/authenticationSelectors";
-import { fetchMineVerifiedStatuses } from "@common/actionCreators/mineActionCreator";
-import {
-  getCurrentUserVerifiedMines,
-  getCurrentUserUnverifiedMines,
-} from "@common/reducers/mineReducer";
-import * as Strings from "@common/constants/strings";
-import CustomPropTypes from "@/customPropTypes";
-import * as router from "@/constants/routes";
-import * as Permission from "@/constants/permissions";
-import SearchBar from "@/components/search/SearchBar";
-import { LOGO, HAMBURGER, CLOSE, SUCCESS_CHECKMARK, YELLOW_HAZARD } from "@/constants/assets";
-import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
+
 import NoticeList from "@/components/navigation/NoticeList";
+const { TabPane } = Tabs;
 
 const propTypes = {
   count: PropTypes.number,
-  // bell?: React.ReactNode;
-  // className?: string,
-  loading: PropTypes.boolean,
-  // onClear?: PropTypes.func,
-  // onItemClick?: (item: NoticeIconData, tabProps: NoticeIconTabProps) => void;
-  // onViewMore?: (tabProps: NoticeIconTabProps, e: MouseEvent) => void;
-  // onTabChange?: (tabTile: string) => void;
-  // style?: React.CSSProperties;
-  // onPopupVisibleChange?: (visible: boolean) => void;
-  popupVisible: PropTypes.boolean,
-  clearText: PropTypes.string,
-  viewMoreText: PropTypes.string,
-  clearClose: PropTypes.boolean,
-  emptyImage: PropTypes.string,
-  children: PropTypes.Array,
-
-  userInfo: PropTypes.shape({ preferred_username: PropTypes.string.isRequired }).isRequired,
-  activeButton: PropTypes.string.isRequired,
-  fetchNotifications: PropTypes.func.isRequired,
-  currentNotifications: PropTypes.arrayOf(PropTypes.string),
+  list: PropTypes.arrayOf(PropTypes.any),
 };
 
 const defaultProps = {
-  currentNotifications: ["Test", "Notifications"],
-  emptyImage: "https://gw.alipayobjects.com/zos/rmsportal/wAhyIChODzsoKIOBHcBk.svg",
+  list: [],
+  count: 0,
 };
 
 export class NoticeBox extends Component {
-  render() {}
+  render() {
+    const list = this.props.list;
+    const { loading, title } = this.props;
+    console.log(list);
+
+    if (loading) return this.notificationsBox;
+
+    return (
+      <Tabs className="notification-tabs">
+        <TabPane tab="Notifications" key="1">
+          <NoticeList data={list} />
+        </TabPane>
+      </Tabs>
+    );
+  }
 }
+
+NoticeBox.propTypes = propTypes;
+NoticeBox.defaultProps = defaultProps;
 
 export default NoticeBox;

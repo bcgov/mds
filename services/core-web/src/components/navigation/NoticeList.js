@@ -1,60 +1,84 @@
 import React, { Component } from "react";
-import { bindActionCreators } from "redux";
 import { Tooltip, Icon, Badge, Dropdown, Menu, Button, Row, Col, Avatar, List } from "antd";
-import { connect } from "react-redux";
-import { Link } from "react-router-dom";
+
 import PropTypes from "prop-types";
-import MediaQuery from "react-responsive";
-import { includes } from "lodash";
-import { getUserInfo } from "@common/selectors/authenticationSelectors";
-import { fetchMineVerifiedStatuses } from "@common/actionCreators/mineActionCreator";
-import {
-  getCurrentUserVerifiedMines,
-  getCurrentUserUnverifiedMines,
-} from "@common/reducers/mineReducer";
-import * as Strings from "@common/constants/strings";
-import CustomPropTypes from "@/customPropTypes";
-import * as router from "@/constants/routes";
-import * as Permission from "@/constants/permissions";
-import SearchBar from "@/components/search/SearchBar";
-import { LOGO, HAMBURGER, CLOSE, SUCCESS_CHECKMARK, YELLOW_HAZARD } from "@/constants/assets";
-import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 
 const propTypes = {
   count: PropTypes.number,
-  name: PropTypes.string,
-  showClear: PropTypes.boolean,
-  //showViewMore?: PropTypes.boolean,
-  //  style?: React.CSSProperties,
-  title: PropTypes.string,
-  tabKey: PropTypes.string,
-  data: PropTypes.Array,
-  onClick: PropTypes.func,
-  onClear: PropTypes.func,
-  emptyText: PropTypes.string,
-  clearText: PropTypes.string,
-  viewMoreText: PropTypes.string,
-  list: PropTypes.Array,
-  onViewMore: PropTypes.func,
+  data: PropTypes.arrayOf(PropTypes.any),
+  // viewMoreText: PropTypes.string,
 };
 
-const defaultProps = {};
+const defaultProps = {
+  showClear: true,
+  showViewMore: true,
+};
 
 export class NoticeList extends Component {
   render() {
+    const data = this.props.data;
+
+    console.log(data);
+
     if (!data || data.length === 0) {
       return (
-        <div className={styles.notFound}>
+        <div className=".notification-notFound">
           <img
             src="https://gw.alipayobjects.com/zos/rmsportal/sAuJeJzSKbUmHfBQRzmZ.svg"
             alt="not found"
           />
-          <div>{emptyText}</div>
+          <div>You have 0 unread notifications.</div>
         </div>
       );
     }
-    return <div></div>;
+
+    return (
+      <div>
+        <List
+          className=".notification-list"
+          dataSource={data}
+          renderItem={(item, i) => {
+            const itemCls = item.read ? "item read" : "item";
+
+            const leftIcon = item.avatar ? (
+              typeof item.avatar === "string" ? (
+                <Avatar className="avatar" src={item.avatar} />
+              ) : (
+                <span className="iconElement">{item.avatar}</span>
+              )
+            ) : null;
+
+            return (
+              <List.Item className={itemCls} key={item.key || i} onClick={() => {}}>
+                <List.Item.Meta
+                  avatar={leftIcon}
+                  title={
+                    <div className="title">
+                      {item.title}
+                      <div className="extra">{item.extra}</div>
+                    </div>
+                  }
+                  description={
+                    <div>
+                      <div>{item.description}</div>
+                      <div>{item.datetime}</div>
+                    </div>
+                  }
+                />
+              </List.Item>
+            );
+          }}
+        />
+        <div className=".notification-bottomBar">
+          <div onClick={(e) => {}}>Clear Notifications</div>
+          <div onClick={(e) => {}}>View More</div>
+        </div>
+      </div>
+    );
   }
 }
+
+NoticeList.propTypes = propTypes;
+NoticeList.defaultProps = defaultProps;
 
 export default NoticeList;
