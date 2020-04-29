@@ -170,12 +170,14 @@ export class MineDashboard extends Component {
 
     const menu = (
       <Menu>
-        <div className="custom-menu-item">
-          <button type="button" className="full" onClick={this.toggleDrawer}>
-            <Icon type="message" className="padding-small icon-sm" />
-            Communication
-          </button>
-        </div>
+        <AuthorizationWrapper inTesting>
+          <div className="custom-menu-item">
+            <button type="button" className="full" onClick={this.toggleDrawer}>
+              <Icon type="message" className="padding-small icon-sm" />
+              Communication
+            </button>
+          </div>
+        </AuthorizationWrapper>
         {this.props.subscribed ? (
           <div className="custom-menu-item">
             <Popconfirm
