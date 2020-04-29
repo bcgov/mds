@@ -12,11 +12,11 @@ class MineComment(Base, AuditMixin):
     __tablename__ = "mine_comment"
     mine_comment_id = db.Column(db.Integer, primary_key=True, server_default=FetchedValue())
     mine_comment_guid = db.Column(UUID(as_uuid=True), nullable=False, server_default=FetchedValue())
-    mine_guid = db.Column(db.Integer, db.ForeignKey('mine.mine_guid'))
+    mine_guid = db.Column(db.Integer, db.ForeignKey('mine.mine_guid'), nullable=False)
     mine_comment = db.Column(db.String, nullable=False)
     deleted_ind = db.Column(db.Boolean, nullable=False, default=False)
 
-    comment_user = db.Column(db.String(60), nullable=False, default=User().get_user_username)
+    comment_user = db.Column(nullable=False, default=User().get_user_username)
     comment_datetime = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 
     def __repr__(self):

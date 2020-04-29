@@ -20,7 +20,7 @@ class MineCommentListResource(Resource, UserMixin):
     parser = CustomReqparser()
     parser.add_argument('mine_comment', type=str, location='json')
 
-    @api.doc(description='retrive a list of comments for amine')
+    @api.doc(description='Retrive a list of comments for a mine')
     @api.marshal_with(MINE_COMMENT_MODEL, envelope='records', code=200)
     @requires_role_view_all
     def get(self, mine_guid):
