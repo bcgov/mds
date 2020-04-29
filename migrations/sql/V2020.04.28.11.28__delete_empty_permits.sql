@@ -8,6 +8,6 @@ UPDATE ETL_PERMIT etl2 SET permit_guid = p.permit_guid
 from permit p
 inner join etl_permit etl on p.permit_guid = etl.permit_guid
 where etl2.mine_guid = etl.mine_guid
-and etl.permit_no = etl.permit_no
+and etl.permit_no = etl.permit_no;
 
 ALTER TABLE public.permit ADD CONSTRAINT permit_mine_guid_permit_no_unique UNIQUE (mine_guid, permit_no);
