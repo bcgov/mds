@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { formatDate } from "@common/utils/helpers";
+import { formatDateTime } from "@common/utils/helpers";
 
 const propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
@@ -33,7 +33,7 @@ const Comment = (props) => (
       <div className="ant-comment-content-author">
         <span className="ant-comment-content-author-name">{props.author}</span>
         {props.datetime && (
-          <span className="ant-comment-content-author-time">{formatDate(props.datetime)}</span>
+          <span className="ant-comment-content-author-time">{formatDateTime(props.datetime)}</span>
         )}
       </div>
     </div>
