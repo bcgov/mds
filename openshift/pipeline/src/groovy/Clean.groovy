@@ -46,9 +46,13 @@ config.app.namespaces.each {String key, Map env->
         oc(['delete', 'all', '-l', "app=${config.app.name}-${key}-pr-${config.app.git.changeId}", '-n', "${env.namespace}"])
         oc(['delete', 'secret,configmap,pvc', '-l', "app=${config.app.name}-${key}-pr-${config.app.git.changeId}", '-n', "${env.namespace}"])
 
-        Map ret = ocGet(['is', '-l', "app-name=${config.app.name}", '-n', "${env.namespace}"])
-        for(Map imageStream:ret.items){
-                oc(['delete', 'istag', "${imageStream.metadata.name}:${key}-pr-${config.app.git.changeId}", '--ignore-not-found=true', '-n', "${env.namespace}"])
+        // Delete ImageStreams associated to a single PR (e.g. Frontend)
+        oc(['delete', 'is', '-l', "change-id=${config.app.git.changeId}"], '-n', "${env.namespace}"])
+
+        // Delete ImageStreamTags associated to a single PR (most others)
+        Map tags = ocGet(['istag', '-l', """-o=jsonpath='{.items[?(@.tag.name=="build-pr-${config.app.git.changeId}")].metadata.name}""", '-n', "${env.namespace}"])
+        tags.each { tag ->
+            oc(['delete', 'istag', "${tag}", '--ignore-not-found=true', '-n', "${env.namespace}"])
         }
     }
 }
