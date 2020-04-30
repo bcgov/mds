@@ -242,14 +242,13 @@ export const MineBondTable = (props) => {
       ({ permit_guid, bond_status_code }) =>
         permit_guid === permit.permit_guid && bond_status_code === "ACT"
     ).length;
-  const getSum = (status, permit) => {
+  const getSum = (status, permit) =>
     props.bonds
       .filter(
         ({ bond_status_code, permit_guid }) =>
           bond_status_code === status && permit_guid === permit.permit_guid
       )
       .reduce((sum, bond) => +sum + +bond.amount, 0);
-  };
 
   const bonds = (record) => {
     return (
