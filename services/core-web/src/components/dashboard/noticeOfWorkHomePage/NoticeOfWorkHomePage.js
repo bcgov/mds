@@ -96,7 +96,7 @@ export class NoticeOfWorkHomePage extends Component {
   handleSearch = (params) => {
     this.setState(
       {
-        params,
+        params: { ...params, page: defaultParams.page },
       },
       () =>
         this.props.history.replace(
