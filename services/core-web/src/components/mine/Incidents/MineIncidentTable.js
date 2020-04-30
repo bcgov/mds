@@ -37,6 +37,9 @@ const propTypes = {
   isLoaded: PropTypes.bool.isRequired,
   incidentStatusCodeOptions: CustomPropTypes.options.isRequired,
   handleIncidentSearch: PropTypes.func,
+  params: PropTypes.objectOf(
+    PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.arrayOf(PropTypes.string)])
+  ).isRequired,
   incidentDeterminationHash: PropTypes.objectOf(PropTypes.string),
   complianceCodesHash: PropTypes.objectOf(PropTypes.string),
   incidentStatusCodeHash: PropTypes.objectOf(PropTypes.string),
@@ -54,8 +57,8 @@ const defaultProps = {
   incidentStatusCodeHash: {},
   incidentCategoryCodeHash: {},
   isDashboardView: false,
-  sortField: null,
-  sortDir: null,
+  sortField: undefined,
+  sortDir: undefined,
   isPaginated: false,
 };
 
@@ -67,10 +70,11 @@ const applySortIndicator = (_columns, field, dir) =>
     sortOrder: dir && column.sortField === field ? dir.concat("end") : false,
   }));
 
-const handleTableChange = (updateIncidentList) => (pagination, filters, sorter) => {
+const handleTableChange = (updateIncidentList, tableFilters) => (pagination, filters, sorter) => {
   const params = {
     results: pagination.pageSize,
     page: pagination.current,
+    ...tableFilters,
     sort_field: sorter.order ? sorter.field : undefined,
     sort_dir: sorter.order ? sorter.order.replace("end", "") : sorter.order,
     ...filters,
@@ -345,7 +349,7 @@ export class MineIncidentTable extends Component {
         )}
         tableProps={{
           onChange: this.props.isDashboardView
-            ? handleTableChange(this.props.handleIncidentSearch)
+            ? handleTableChange(this.props.handleIncidentSearch, this.props.params)
             : null,
           align: "left",
           pagination: this.props.isPaginated,

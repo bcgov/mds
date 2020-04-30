@@ -321,6 +321,18 @@ export const getDropdownMineReportDefinitionOptions = createSelector(
   (options) => createDropDownList(options, "report_name", "mine_report_definition_guid")
 );
 
+export const getMineReportDefinitionHash = createSelector(
+  [getMineReportDefinitionOptions],
+  (options) =>
+    options.reduce(
+      (map, mine_report_definition) => ({
+        [mine_report_definition.mine_report_definition_guid]: mine_report_definition,
+        ...map,
+      }),
+      {}
+    )
+);
+
 export const getDropdownMineReportCategoryOptions = createSelector(
   [getMineReportCategoryOptions],
   (options) => createDropDownList(options, "description", "mine_report_category")

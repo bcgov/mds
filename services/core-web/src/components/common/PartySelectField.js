@@ -89,6 +89,7 @@ export class PartySelectField extends Component {
 
   componentDidMount() {
     if (this.props.initialValue) {
+      this.handleSearch(this.props.initialValue.label);
       this.setState({
         selectedOption: this.props.initialValue,
       });

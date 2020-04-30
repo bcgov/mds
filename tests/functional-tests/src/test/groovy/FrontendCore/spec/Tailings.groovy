@@ -52,10 +52,12 @@ class Tailings extends GebReportingSpec {
         when: "User navigates to the TSF tab and clicks the upload icon"
         to MineProfileTailingsPage
 
-        and: "User opens modal and uploads a valid file type"
+        and: "User opens modal and uploads a valid file type and selects received date"
         def uploadedFile = dir.newFile(Const.TEST_FILE_NAME) << Const.TEST_FILE_CONTENT
         tailingsTab.addTailingsDocButtons[0].click()
         tailingsTab.uploadField = uploadedFile.absolutePath
+        tailingsTab.receivedDate.click()
+        tailingsTab.calendarInput = "2020-04-02"
 
         then: "The doc upload complete message is shown"
         assert tailingsTab.uploadCompleteMessage != null

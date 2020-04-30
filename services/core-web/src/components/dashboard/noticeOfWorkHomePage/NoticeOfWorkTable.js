@@ -92,6 +92,7 @@ export class NoticeOfWorkTable extends Component {
       now_application_status_description:
         application.now_application_status_description || Strings.EMPTY_FIELD,
       received_date: formatDate(application.received_date) || Strings.EMPTY_FIELD,
+      originating_system: application.originating_system || Strings.EMPTY_FIELD,
     }));
 
   filterProperties = (name, field) => ({
@@ -241,12 +242,28 @@ export class NoticeOfWorkTable extends Component {
       render: (text) => <div title="Received">{text}</div>,
     },
     {
-      title: "",
+      title: "Source",
+      key: "originating_system",
+      dataIndex: "originating_system",
+      sortField: "originating_system",
+      sorter: true,
+      filtered: true,
+      filteredValue: this.props.searchParams.originating_system
+        ? [this.props.searchParams.originating_system]
+        : [],
+      filters: [
+        { text: "Core", value: "Core" },
+        { text: "NROS", value: "NROS" },
+        { text: "VFCBC", value: "VFCBC" },
+        { text: "MMS", value: "MMS" },
+      ],
+      render: (text) => <div title="Source">{text}</div>,
+    },
+    {
       key: "operations",
-      dataIndex: "operations",
       render: (text, record) =>
         record.key && (
-          <div title="" className="btn--middle flex">
+          <div className="btn--middle flex">
             <AuthorizationWrapper inTesting>
               <Link to={this.createLinkTo(router.NOTICE_OF_WORK_APPLICATION, record)}>
                 <img
