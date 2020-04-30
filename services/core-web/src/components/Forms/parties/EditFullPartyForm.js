@@ -14,10 +14,13 @@ import { normalizePhone, upperCase, resetForm } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
 import CustomPropTypes from "@/customPropTypes";
 import { renderConfig } from "@/components/common/config";
+import PartyOrgBookForm from "@/components/Forms/parties/PartyOrgBookForm";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
+  handleSearchOrgBookEntitiesSubmit: PropTypes.func.handleSearchOrgBookEntitiesSubmit,
   isPerson: PropTypes.bool.isRequired,
+  isSearchingOrgBook: PropTypes.bool.isRequired,
   closeModal: PropTypes.func.isRequired,
   provinceOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
 };
@@ -194,6 +197,10 @@ export const EditFullPartyForm = (props) => (
           </Row>
         </Col>
       </Row>
+      <PartyOrgBookForm
+        handleSubmit={props.handleSearchOrgBookEntitiesSubmit}
+        isSearchingOrgBook={props.isSearchingOrgBook}
+      />
       <div className="right center-mobile">
         <Popconfirm
           placement="topRight"

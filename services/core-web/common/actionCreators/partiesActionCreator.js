@@ -120,12 +120,12 @@ export const updatePartyRelationship = (payload) => (dispatch) => {
     .finally(() => dispatch(hideLoading()));
 };
 
-export const fetchPartyRelationships = (parms) => (dispatch) => {
+export const fetchPartyRelationships = (params) => (dispatch) => {
   dispatch(request(reducerTypes.FETCH_PARTY_RELATIONSHIPS));
   dispatch(showLoading());
   return CustomAxios()
     .get(
-      `${ENVIRONMENT.apiUrl + API.PARTY_RELATIONSHIP}?${queryString.stringify(parms)}`,
+      `${ENVIRONMENT.apiUrl + API.PARTY_RELATIONSHIP}?${queryString.stringify(params)}`,
       createRequestHeader()
     )
     .then((response) => {
@@ -195,4 +195,21 @@ export const addDocumentToRelationship = ({ mineGuid, minePartyApptGuid }, paylo
     })
     .catch(() => dispatch(error(reducerTypes.ADD_DOCUMENT_TO_RELATIONSHIP)))
     .finally(() => dispatch(hideLoading("modal")));
+};
+
+export const searchOrgBookEntities = (params) => (dispatch) => {
+  dispatch(request(reducerTypes.SEARCH_ORGBOOK_ENTITIES));
+  dispatch(showLoading());
+  return CustomAxios()
+    .get(
+      `${ENVIRONMENT.apiUrl + API.SEARCH_ORGBOOK_ENTITIES}?${queryString.stringify(params)}`,
+      createRequestHeader()
+    )
+    .then((response) => {
+      console.log("searchOrgBookEntities response", response);
+      dispatch(success(reducerTypes.SEARCH_ORGBOOK_ENTITIES));
+      dispatch(partyActions.storeSearchOrgBookEntities(response.data));
+    })
+    .catch(() => dispatch(error(reducerTypes.SEARCH_ORGBOOK_ENTITIES)))
+    .finally(() => dispatch(hideLoading()));
 };

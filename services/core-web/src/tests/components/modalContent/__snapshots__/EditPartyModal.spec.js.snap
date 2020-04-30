@@ -1,39 +1,39 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`EditPartyModal renders properly 1`] = `
-<div>
-  <ReduxForm
-    closeModal={[MockFunction]}
-    destroyOnUnmount={true}
-    enableReinitialize={true}
-    forceUnregisterOnUnmount={false}
-    form="EDIT_FULL_PARTY"
-    getFormState={[Function]}
-    isPerson={true}
-    keepDirtyOnReinitialize={true}
-    onSubmitSuccess={[Function]}
-    persistentSubmitErrors={false}
-    provinceOptions={
-      Array [
-        Object {
-          "label": "AB",
-          "value": "AB",
-        },
-        Object {
-          "label": "BC",
-          "value": "BC",
-        },
-      ]
-    }
-    pure={true}
-    shouldAsyncValidate={[Function]}
-    shouldError={[Function]}
-    shouldValidate={[Function]}
-    shouldWarn={[Function]}
-    submitAsSideEffect={false}
-    touchOnBlur={true}
-    touchOnChange={false}
-    updateUnregisteredFields={false}
-  />
-</div>
+<ReduxForm
+  closeModal={[MockFunction]}
+  destroyOnUnmount={true}
+  enableReinitialize={true}
+  forceUnregisterOnUnmount={false}
+  form="EDIT_FULL_PARTY"
+  getFormState={[Function]}
+  handleSearchOrgBookEntitiesSubmit={[Function]}
+  isPerson={true}
+  isSearchingOrgBook={false}
+  keepDirtyOnReinitialize={true}
+  onSubmitSuccess={[Function]}
+  persistentSubmitErrors={false}
+  provinceOptions={
+    Array [
+      Object {
+        "label": "AB",
+        "value": "AB",
+      },
+      Object {
+        "label": "BC",
+        "value": "BC",
+      },
+    ]
+  }
+  pure={true}
+  shouldAsyncValidate={[Function]}
+  shouldError={[Function]}
+  shouldValidate={[Function]}
+  shouldWarn={[Function]}
+  submitAsSideEffect={false}
+  touchOnBlur={true}
+  touchOnChange={false}
+  updateUnregisteredFields={false}
+/>
 `;

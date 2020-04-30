@@ -11,6 +11,7 @@ export const PARTIES_LIST_QUERY = (params = {}) => `/parties?${queryString.strin
 export const MINE_MAP_LIST = "/mines/map-list";
 export const MINE_BASIC_INFO_LIST = `/mines/basicinfo`;
 export const PARTY = "/parties";
+export const SEARCH_ORGBOOK_ENTITIES = "/parties/search-orgbook-entities";
 export const MANAGER = "/parties/managers";
 export const PARTY_RELATIONSHIP = "/parties/mines";
 export const PERMITTEE = "/permits/permittees";

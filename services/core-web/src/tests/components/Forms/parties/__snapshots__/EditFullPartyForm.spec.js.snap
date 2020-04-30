@@ -273,6 +273,7 @@ exports[`EditFullPartyForm renders properly 1`] = `
         </Row>
       </Col>
     </Row>
+    <PartyOrgBookForm />
     <div
       className="right center-mobile"
     >

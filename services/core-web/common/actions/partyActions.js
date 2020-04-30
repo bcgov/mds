@@ -30,3 +30,8 @@ export const storeInspectors = (payload) => ({
   type: ActionTypes.STORE_INSPECTORS,
   payload,
 });
+
+export const storeSearchOrgBookEntities = (payload) => ({
+  type: ActionTypes.STORE_SEARCH_ORGBOOK_ENTITIES,
+  payload,
+});

@@ -103,7 +103,7 @@ class Config(object):
     NROS_CLIENT_ID = os.environ.get('NROS_CLIENT_ID', None)
     NROS_TOKEN_URL = os.environ.get('NROS_TOKEN_URL', None)
 
-    # VFCBC
+    # vFCBC
     VFCBC_CLIENT_SECRET = os.environ.get('VFCBC_CLIENT_SECRET', None)
     VFCBC_CLIENT_ID = os.environ.get('VFCBC_CLIENT_ID', None)
 
@@ -111,6 +111,9 @@ class Config(object):
     NRIS_REMOTE_CLIENT_SECRET = os.environ.get('NRIS_REMOTE_CLIENT_SECRET', None)
     NRIS_REMOTE_CLIENT_ID = os.environ.get('NRIS_REMOTE_CLIENT_ID', None)
     NRIS_REMOTE_TOKEN_URL = os.environ.get('NRIS_REMOTE_TOKEN_URL', None)
+
+    # OrgBook
+    ORGBOOK_API_URL = 'https://theorgbook.pathfinder.gov.bc.ca/api/v2/'
 
 
 class TestConfig(Config):
