@@ -13,7 +13,7 @@ import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
   loading: PropTypes.bool,
-  isEditable: PropTypes.bool,
+  renderEditor: PropTypes.bool,
   comments: PropTypes.arrayOf(CustomPropTypes.mineComment).isRequired,
   onSubmit: PropTypes.func,
   onChange: PropTypes.func,
@@ -21,7 +21,7 @@ const propTypes = {
 };
 
 const defaultProps = {
-  isEditable: false,
+  renderEditor: false,
   loading: false,
   onChange: () => {},
   onSubmit: () => {},
@@ -68,7 +68,7 @@ const CommentPanel = (props) => (
         <Spin id="spinner" indicator={antIcon} />
       </div>
     )}
-    {props.isEditable && <CommentEditor onChange={props.onChange} onSubmit={props.onSubmit} />}
+    {props.renderEditor && <CommentEditor onChange={props.onChange} onSubmit={props.onSubmit} />}
   </React.Fragment>
 );
 
