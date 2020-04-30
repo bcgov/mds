@@ -83,21 +83,6 @@ export class NoticeOfWorkHomePage extends Component {
     });
   };
 
-  renderDataFromURL = (queryParams) => {
-    const params = queryParams || this.props.location.search;
-    const parsedParams = queryString.parse(params);
-    this.setState(
-      {
-        params: parsedParams,
-        isLoaded: false,
-      },
-      () =>
-        this.props.fetchNoticeOfWorkApplications(parsedParams).then(() => {
-          this.setState({ isLoaded: true });
-        })
-    );
-  };
-
   onPageChange = (page, per_page) => {
     this.setState(
       (prevState) => ({ params: { ...prevState.params, page, per_page } }),
