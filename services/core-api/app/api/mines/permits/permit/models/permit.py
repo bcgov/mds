@@ -22,6 +22,7 @@ class Permit(AuditMixin, Base):
     _edit_key = PERMIT_EDIT_GROUP
 
     permit_id = db.Column(db.Integer, primary_key=True)
+    mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine.mine_guid'))
     permit_guid = db.Column(UUID(as_uuid=True), server_default=FetchedValue())
     permit_no = db.Column(db.String(16), nullable=False)
     permit_status_code = db.Column(
@@ -43,7 +44,7 @@ class Permit(AuditMixin, Base):
     permit_status_code_description = association_proxy('permit_status', 'description')
     mine_name = association_proxy('mine', 'mine_name')
 
-    mine = db.relationship('Mine', uselist=False)
+    mine = db.relationship('Mine')
     bonds = db.relationship('Bond', lazy='select', secondary='bond_permit_xref')
     reclamation_invoices = db.relationship('ReclamationInvoice', lazy='select')
 
