@@ -23,8 +23,7 @@ const { Paragraph, Title, Text } = Typography;
 const propTypes = {
   mine: CustomPropTypes.mine.isRequired,
   mineReports: PropTypes.arrayOf(CustomPropTypes.mineReport).isRequired,
-  // This IS being used.
-  // eslint-disable-next-line
+  // eslint-disable-next-line react/no-unused-prop-types
   mineReportDefinitionOptions: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
   updateMineReport: PropTypes.func.isRequired,
   createMineReport: PropTypes.func.isRequired,
@@ -34,7 +33,7 @@ const propTypes = {
 };
 
 export class Reports extends Component {
-  state = { isLoaded: false, selectedMineReportGuid: null, reportsDue: 0, reportsSubmitted: 0 };
+  state = { isLoaded: false, report: null, reportsDue: 0, reportsSubmitted: 0 };
 
   componentDidMount() {
     this.props.fetchMineReports(this.props.mine.mine_guid).then(() => {
@@ -55,7 +54,7 @@ export class Reports extends Component {
 
   handleAddReport = (values) => {
     const formValues = values;
-    if (values.mine_report_submissions !== undefined) {
+    if (values.mine_report_submissions && values.mine_report_submissions.length > 0) {
       formValues.received_date = moment().format("YYYY-MM-DD");
     }
     this.props
@@ -65,7 +64,12 @@ export class Reports extends Component {
   };
 
   handleEditReport = (values) => {
-    const payload = {
+    if (!values.mine_report_submissions || values.mine_report_submissions.length === 0) {
+      this.props.closeModal();
+      return;
+    }
+
+    let payload = {
       mine_report_submissions: [
         ...values.mine_report_submissions,
         {
@@ -74,8 +78,17 @@ export class Reports extends Component {
         },
       ],
     };
+
+    if (
+      !this.state.report.received_date &&
+      values.mine_report_submissions &&
+      values.mine_report_submissions.length > 0
+    ) {
+      payload = { ...payload, received_date: moment().format("YYYY-MM-DD") };
+    }
+
     this.props
-      .updateMineReport(this.props.mine.mine_guid, this.state.selectedMineReportGuid, payload)
+      .updateMineReport(this.props.mine.mine_guid, this.state.report.mine_report_guid, payload)
       .then(() => this.props.closeModal())
       .then(() => this.props.fetchMineReports(this.props.mine.mine_guid));
   };
@@ -95,7 +108,7 @@ export class Reports extends Component {
 
   openEditReportModal = (event, report) => {
     event.preventDefault();
-    this.setState({ selectedMineReportGuid: report.mine_report_guid });
+    this.setState({ report });
     this.props.openModal({
       props: {
         onSubmit: this.handleEditReport,
@@ -120,15 +133,23 @@ export class Reports extends Component {
                 <Text className="color-primary" strong>
                   reports
                 </Text>
-                &nbsp;that have been submitted to the Ministry. If a report is listed but there are
-                no files attached, it means the report has not been submitted. This table may not
-                show all reports that your mine is required to submit to the Ministry. If you have
-                any questions, please check with an EMPR representative.
+                &nbsp;from the Health, Safety and Reclamation code that your mine has submitted to
+                the Ministry. It also shows reports the Ministry has requested from your mine.
+                <br />
+                If you do not see an HSRC report that your mine must submit, click Submit Report,
+                choose the report you need to send and then attach the file or files.
+                <br />
+                <Text className="color-primary" strong>
+                  Note
+                </Text>
+                : Do not use this page to submit reports specified in your permit. Continue to email
+                these reports to the Ministry.
               </Paragraph>
               <br />
             </Col>
           </Row>
-          {this.props.mineReports && this.props.mineReports.length > 0 && (
+          {/* The summary cards are intentionally hidden for now. */}
+          {false && this.props.mineReports && this.props.mineReports.length > 0 && (
             <Row type="flex" justify="space-around" gutter={[16, 32]}>
               <Col md={24} lg={8}>
                 <TableSummaryCard

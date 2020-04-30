@@ -6,6 +6,7 @@ import { getDocumentDownloadState } from "@common/selectors/noticeOfWorkSelector
 import NOWSubmissionDocuments from "@/components/noticeOfWork/applications/NOWSubmissionDocuments";
 import NOWDocuments from "../noticeOfWork/applications/NOWDocuments";
 import { COLOR } from "@/constants/styles";
+import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
   submissionDocuments: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
@@ -14,11 +15,7 @@ const propTypes = {
   noticeOfWorkGuid: PropTypes.string.isRequired,
   onSubmit: PropTypes.func.isRequired,
   cancelDownload: PropTypes.func.isRequired,
-  documentDownloadState: PropTypes.shape({
-    downloading: PropTypes.bool.isRequired,
-    currentFile: PropTypes.number.isRequired,
-    totalFiles: PropTypes.number.isRequired,
-  }).isRequired,
+  documentDownloadState: CustomPropTypes.documentDownloadState.isRequired,
   closeModal: PropTypes.func.isRequired,
 };
 export const DownloadDocumentPackageModal = (props) => {

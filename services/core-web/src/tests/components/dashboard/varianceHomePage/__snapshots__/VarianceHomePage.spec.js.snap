@@ -19,99 +19,70 @@ exports[`VarianceHomePage renders properly 1`] = `
     <div
       className="page__content"
     >
-      <Connect(AuthorizationWrapper)
-        inTesting={true}
-      >
-        <VarianceSearch
-          complianceCodes={
-            Array [
-              Object {
-                "label": "2.3.7 - Spills",
-                "value": 305,
-              },
-              Object {
-                "label": "2.3.8 - Flammable Waste Storage",
-                "value": 306,
-              },
-            ]
-          }
-          fetchVariances={
-            [MockFunction] {
-              "calls": Array [
-                Array [
-                  Object {
-                    "compliance_code": Array [],
-                    "major": undefined,
-                    "region": Array [],
-                    "search": undefined,
-                    "variance_application_status_code": Array [],
-                  },
-                ],
-                Array [
-                  Object {
-                    "compliance_code": Array [],
-                    "major": undefined,
-                    "region": Array [],
-                    "search": undefined,
-                    "variance_application_status_code": Array [],
-                  },
-                ],
-              ],
-              "results": Array [
-                Object {
-                  "type": "return",
-                  "value": Promise {},
-                },
-                Object {
-                  "type": "return",
-                  "value": Promise {},
-                },
-              ],
-            }
-          }
-          filterVarianceStatusOptions={
-            Array [
-              Object {
-                "description": "Ready for Decision",
-                "variance_application_status_code": "RFD",
-              },
-              Object {
-                "description": "Withdrawn",
-                "variance_application_status_code": "WIT",
-              },
-              Object {
-                "description": "In Review",
-                "variance_application_status_code": "REV",
-              },
-              Object {
-                "description": "Not Applicable",
-                "variance_application_status_code": "NAP",
-              },
-              Object {
-                "description": "Approved",
-                "variance_application_status_code": "APP",
-              },
-              Object {
-                "description": "Denied",
-                "variance_application_status_code": "DEN",
-              },
-            ]
-          }
-          handleVarianceSearch={[Function]}
-          initialValues={
+      <VarianceSearch
+        complianceCodes={
+          Array [
             Object {
-              "compliance_code": Array [],
-              "major": undefined,
-              "region": Array [],
-              "search": undefined,
-              "variance_application_status_code": Array [],
-            }
+              "label": "2.3.7 - Spills",
+              "value": 305,
+            },
+            Object {
+              "label": "2.3.8 - Flammable Waste Storage",
+              "value": 306,
+            },
+          ]
+        }
+        fetchVariances={[MockFunction]}
+        filterVarianceStatusOptions={
+          Array [
+            Object {
+              "description": "Ready for Decision",
+              "variance_application_status_code": "RFD",
+            },
+            Object {
+              "description": "Withdrawn",
+              "variance_application_status_code": "WIT",
+            },
+            Object {
+              "description": "In Review",
+              "variance_application_status_code": "REV",
+            },
+            Object {
+              "description": "Not Applicable",
+              "variance_application_status_code": "NAP",
+            },
+            Object {
+              "description": "Approved",
+              "variance_application_status_code": "APP",
+            },
+            Object {
+              "description": "Denied",
+              "variance_application_status_code": "DEN",
+            },
+          ]
+        }
+        handleReset={[Function]}
+        handleVarianceSearch={[Function]}
+        initialValues={
+          Object {
+            "compliance_code": Array [],
+            "expiry_date_after": undefined,
+            "expiry_date_before": undefined,
+            "issue_date_after": undefined,
+            "issue_date_before": undefined,
+            "major": undefined,
+            "page": "1",
+            "per_page": "25",
+            "region": Array [],
+            "search": undefined,
+            "sort_dir": "desc",
+            "sort_field": "received_date",
+            "variance_application_status_code": Array [],
           }
-        />
-      </Connect(AuthorizationWrapper)>
+        }
+      />
       <div>
         <VarianceTable
-          handleFilterChange={[Function]}
           handlePageChange={[Function]}
           handleVarianceSearch={[Function]}
           isLoaded={false}
@@ -148,14 +119,22 @@ exports[`VarianceHomePage renders properly 1`] = `
           params={
             Object {
               "compliance_code": Array [],
+              "expiry_date_after": undefined,
+              "expiry_date_before": undefined,
+              "issue_date_after": undefined,
+              "issue_date_before": undefined,
               "major": undefined,
+              "page": "1",
+              "per_page": "25",
               "region": Array [],
               "search": undefined,
+              "sort_dir": "desc",
+              "sort_field": "received_date",
               "variance_application_status_code": Array [],
             }
           }
-          sortDir={null}
-          sortField={null}
+          sortDir="desc"
+          sortField="received_date"
           variances={
             Object {
               "current_page": 1,

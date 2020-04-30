@@ -8,6 +8,7 @@ import {
   getIsUserSubscribed,
   getMineBasicInfoList,
   getMineDocuments,
+  getMineComments,
 } from "@common/selectors/mineSelectors";
 import { mineReducer } from "@common/reducers/mineReducer";
 import {
@@ -17,6 +18,7 @@ import {
   storeSubscribedMines,
   storeMineBasicInfoList,
   storeMineDocuments,
+  storeMineComments,
 } from "@common/actions/mineActions";
 import { MINES } from "@common/constants/reducerTypes";
 import * as Mock from "@/tests/mocks/dataMocks";
@@ -32,6 +34,7 @@ const mockState = {
   subscribedMines: Mock.SUBSCRIBED_MINES.mines,
   mineBasicInfoList: Mock.MINE_BASIC_INFO,
   mineDocuments: Mock.MINEDOCUMENTS.records,
+  mineComments: Mock.MINE_COMMENTS.records,
 };
 
 describe("mineSelectors", () => {
@@ -42,6 +45,7 @@ describe("mineSelectors", () => {
     mineBasicInfoList,
     mineDocuments,
     subscribedMines,
+    mineComments,
   } = mockState;
   const { mines, mineGuid } = mockState;
 
@@ -133,5 +137,14 @@ describe("mineSelectors", () => {
       [MINES]: storeState,
     };
     expect(getMineDocuments(localMockState)).toEqual(mineDocuments);
+  });
+
+  it("`getMineComments` calls `mineReducer.getMineDocuments`", () => {
+    const storeAction = storeMineComments(Mock.MINE_COMMENTS);
+    const storeState = mineReducer({}, storeAction);
+    const localMockState = {
+      [MINES]: storeState,
+    };
+    expect(getMineComments(localMockState)).toEqual(mineComments);
   });
 });
