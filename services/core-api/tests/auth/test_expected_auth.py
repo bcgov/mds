@@ -122,7 +122,7 @@ from app.api.now_applications.resources.now_application_resource import NOWAppli
     (BondResource,'put',[EDIT_SECURITIES]),
     (MineCommentListResource,'get',[VIEW_ALL]),
     (MineCommentListResource,'post',[MINE_EDIT]),
-    (MineComment,'put',[MINE_ADMIN]),
+    (MineComment,'delete',[MINE_ADMIN]),
 ])
 def test_endpoint_auth(resource, method, expected_roles):
     endpoint = getattr(resource, method, None)
