@@ -10,17 +10,14 @@ import {
   fetchMineComments,
 } from "@common/actionCreators/mineActionCreator";
 import CommentPanel from "@/components/common/comments/CommentPanel";
+import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
   mineGuid: PropTypes.string.isRequired,
-  comments: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)),
+  comments: PropTypes.arrayOf(CustomPropTypes.mineComment).isRequired,
   deleteMineComment: PropTypes.func.isRequired,
   createMineComment: PropTypes.func.isRequired,
   fetchMineComments: PropTypes.func.isRequired,
-};
-
-const defaultProps = {
-  comments: [],
 };
 
 export class MineComments extends Component {
@@ -52,7 +49,7 @@ export class MineComments extends Component {
     return (
       <div>
         <CommentPanel
-          renderAdd
+          renderEditor
           onSubmit={this.handleAddComment}
           loading={this.state.loading}
           onRemove={this.handleRemoveComment}
@@ -70,7 +67,6 @@ export class MineComments extends Component {
 }
 
 MineComments.propTypes = propTypes;
-MineComments.defaultProps = defaultProps;
 
 const mapStateToProps = (state) => ({
   comments: getMineComments(state),

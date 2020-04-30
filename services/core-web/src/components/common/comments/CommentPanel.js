@@ -9,18 +9,19 @@ import * as Style from "@/constants/styles";
 import { TRASHCAN } from "@/constants/assets";
 import * as Permission from "@/constants/permissions";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
+import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
   loading: PropTypes.bool,
-  renderAdd: PropTypes.bool,
-  comments: PropTypes.arrayOf(PropTypes.any).isRequired,
+  isEditable: PropTypes.bool,
+  comments: PropTypes.arrayOf(CustomPropTypes.mineComment).isRequired,
   onSubmit: PropTypes.func,
   onChange: PropTypes.func,
   onRemove: PropTypes.func,
 };
 
 const defaultProps = {
-  renderAdd: true,
+  isEditable: false,
   loading: false,
   onChange: () => {},
   onSubmit: () => {},
@@ -67,7 +68,7 @@ const CommentPanel = (props) => (
         <Spin id="spinner" indicator={antIcon} />
       </div>
     )}
-    {props.renderAdd && <CommentEditor onChange={props.onChange} onSubmit={props.onSubmit} />}
+    {props.isEditable && <CommentEditor onChange={props.onChange} onSubmit={props.onSubmit} />}
   </React.Fragment>
 );
 

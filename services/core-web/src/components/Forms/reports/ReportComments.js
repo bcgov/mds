@@ -67,7 +67,7 @@ export class ReportComments extends Component {
       <React.Fragment>
         <FormItemLabel underline>Comments</FormItemLabel>
         <CommentPanel
-          renderAdd
+          renderEditor
           onSubmit={this.handleAddComment}
           loading={this.state.loading}
           onRemove={this.handleRemoveComment}
@@ -101,7 +101,4 @@ const mapDispatchToProps = (dispatch) =>
     dispatch
   );
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ReportComments);
+export default connect(mapStateToProps, mapDispatchToProps)(ReportComments);
