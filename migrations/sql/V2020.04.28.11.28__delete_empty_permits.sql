@@ -17,7 +17,7 @@ DO $$
             from permit p
             inner join etl_permit etl on p.permit_guid = etl.permit_guid
             where etl2.mine_guid = etl.mine_guid
-            and etl.permit_no = etl.permit_no;
+            and etl2.permit_no = etl.permit_no;
         END IF ;
     END
    $$ ;
