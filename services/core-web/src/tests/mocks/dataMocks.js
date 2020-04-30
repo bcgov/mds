@@ -4137,3 +4137,20 @@ export const RECLAMATION_INVOICE = {
 };
 
 export const RECLAMATION_INVOICES = { records: [RECLAMATION_INVOICE] };
+
+export const MINE_COMMENTS = {
+  records: [
+    {
+      mine_comment_guid: "245234634153",
+      comment_user: "mockUser",
+      mine_comment: "new comment",
+      comment_datetime: "2018-10-16",
+    },
+    {
+      mine_comment_guid: "356135",
+      comment_user: "mockUser",
+      mine_comment: "new comment again",
+      comment_datetime: "2018-10-16",
+    },
+  ],
+};
