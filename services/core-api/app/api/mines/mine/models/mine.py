@@ -10,7 +10,6 @@ from geoalchemy2 import Geometry
 from app.extensions import db
 from app.api.utils.models_mixins import AuditMixin, Base
 from app.api.mines.permits.permit.models.permit import Permit
-from app.api.mines.permits.permit.models.mine_permit_xref import MinePermitXref
 from app.api.users.minespace.models.minespace_user_mine import MinespaceUserMine
 from app.api.constants import *
 
@@ -54,10 +53,7 @@ class Mine(AuditMixin, Base):
 
     #Almost always used, but faster to use selectin to load related data
     mine_permit = db.relationship(
-        'Permit',
-        order_by='desc(Permit.create_timestamp)',
-        lazy='selectin',
-        secondary='mine_permit_xref')
+        'Permit', order_by='desc(Permit.create_timestamp)', lazy='selectin')
 
     mine_type = db.relationship(
         'MineType',
