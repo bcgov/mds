@@ -33,6 +33,7 @@ from app.api.mines.variances.resources.variance_list import MineVarianceListReso
 from app.api.mines.variances.resources.variance_document_upload import MineVarianceDocumentUploadResource
 from app.api.mines.variances.resources.variance_uploaded_documents import MineVarianceUploadedDocumentsResource
 from app.api.parties.party_appt.resources.mine_party_appt_document_upload_resource import MinePartyApptDocumentUploadResource
+from app.api.mines.comments.resources.mine_comment import MineCommentListResource, MineCommentResource
 
 api = Namespace('mines', description='Mine related operations')
 
@@ -121,3 +122,6 @@ api.add_resource(
 
 api.add_resource(MinePartyApptDocumentUploadResource,
                  '/<string:mine_guid>/party-appts/<string:mine_party_appt_guid>/documents')
+
+api.add_resource(MineCommentListResource, '/<string:mine_guid>/comments')
+api.add_resource(MineCommentResource, '/<string:mine_guid>/comments/<string:mine_comment_guid>')
