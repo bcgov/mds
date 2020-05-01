@@ -232,11 +232,7 @@ export const SEARCH_RESULTS = {
 
 export const NOTICE_OF_WORK_APPLICATIONS = {
   route: "/dashboard/reporting/notice-of-work",
-  dynamicRoute: ({ page, per_page, ...params }) =>
-    `/dashboard/reporting/notice-of-work?${queryString.stringify(
-      { page, per_page, ...params },
-      { sort: false }
-    )}`,
+  dynamicRoute: (params) => `/dashboard/reporting/notice-of-work?${queryString.stringify(params)}`,
   component: NoticeOfWorkHomePage,
 };
 
