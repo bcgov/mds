@@ -54,7 +54,7 @@ def test_post_permit(test_client, db_session, auth_headers):
     post_data = json.loads(post_resp.data.decode())
 
     updated_mine = Mine.find_by_mine_guid(str(mine.mine_guid))
-    permittees = MinePartyAppointment.find_by_permit_id(updated_mine.mine_permit[0].permit_id)
+    permittees = MinePartyAppointment.find_by_permit_guid(updated_mine.mine_permit[0].permit_guid)
 
     assert post_resp.status_code == 200
     assert updated_mine.mine_permit[0].permit_no == PERMIT_NO

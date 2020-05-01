@@ -423,8 +423,8 @@ class MinePartyAppointmentFactory(BaseFactory):
     end_date = None
     processed_by = factory.Faker('first_name')
     processed_on = TODAY
-    permit_id = factory.LazyAttribute(lambda o: o.mine.mine_permit[
-        0].permit_id if o.mine.mine_permit and o.mine_party_appt_type_code == 'PMT' else None)
+    permit_guid = factory.LazyAttribute(lambda o: o.mine.mine_permit[
+        0].permit_guid if o.mine.mine_permit and o.mine_party_appt_type_code == 'PMT' else None)
     mine_tailings_storage_facility_guid = factory.LazyAttribute(
         lambda o: o.mine.mine_tailings_storage_facilities[0].mine_tailings_storage_facility_guid
         if o.mine_party_appt_type_code == 'EOR' else None)

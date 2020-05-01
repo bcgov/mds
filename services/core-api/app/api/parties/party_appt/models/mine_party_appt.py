@@ -61,7 +61,7 @@ class MinePartyAppointment(AuditMixin, Base):
             permit = Permit.find_by_permit_guid(related_guid)
             if not permit:
                 raise AssertionError(f'Permit with guid {related_guid} not found')
-            self.permit_id = permit.permit_id
+            self.permit_guid = permit.permit_guid
         return
 
     def json(self, relationships=[]):
@@ -108,17 +108,16 @@ class MinePartyAppointment(AuditMixin, Base):
             return None
 
     @classmethod
-    def find_by_permit_id(cls, _id):
-        return cls.find_by(permit_id=_id)
+    def find_by_permit_guid(cls, _id):
+        return cls.find_by(permit_guid=_id)
 
-
-# given a permmit, and an issue date of a new amendment, order appointment start_dates
-# return the all appointment start_dates in order
+    # given a permmit, and an issue date of a new amendment, order appointment start_dates
+    # return the all appointment start_dates in order
 
     @classmethod
-    def find_appointment_end_dates(cls, _id, issue_datetime):
+    def find_appointment_end_dates(cls, permit, issue_datetime):
         start_dates = [issue_datetime]
-        appointments = cls.find_by(permit_id=_id)
+        appointments = permit.permittee_appointments
         for appointment in appointments:
             start_dates.append(appointment.start_date)
         ordered_dates = sorted(start_dates, reverse=True)
@@ -152,14 +151,14 @@ class MinePartyAppointment(AuditMixin, Base):
                 mine_guid=None,
                 party_guid=None,
                 mine_party_appt_type_codes=None,
-                permit_id=None):
+                permit_guid=None):
         built_query = cls.query.filter_by(deleted_ind=False)
         if mine_guid:
             built_query = built_query.filter_by(mine_guid=mine_guid)
         if party_guid:
             built_query = built_query.filter_by(party_guid=party_guid)
-        if permit_id:
-            built_query = built_query.filter_by(permit_id=permit_id)
+        if permit_guid:
+            built_query = built_query.filter_by(permit_guid=permit_guid)
         if mine_party_appt_type_codes:
             built_query = built_query.filter(
                 cls.mine_party_appt_type_code.in_(mine_party_appt_type_codes))
