@@ -43,6 +43,17 @@ ADDRESS = api.model(
         'address_type_code': fields.String,
     })
 
+PARTY_ORGBOOK_ENTITY = api.model(
+    'PartyOrgBookEntity', {
+        'registration_id': fields.Integer,
+        'registration_inactive': fields.Boolean,
+        'name_id': fields.Integer,
+        'name_text': fields.String,
+        'name_credential_id': fields.Integer,
+        'party_guid': fields.String,
+        'association_timestamp': fields.Date
+    })
+
 PARTY = api.model(
     'Party', {
         'party_guid': fields.String,
@@ -60,6 +71,7 @@ PARTY = api.model(
         'job_title': fields.String,
         'postnominal_letters': fields.String,
         'idir_username': fields.String,
+        'party_orgbook_entity': fields.Nested(PARTY_ORGBOOK_ENTITY)
     })
 
 PAGINATED_LIST = api.model(

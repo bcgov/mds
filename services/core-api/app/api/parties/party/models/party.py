@@ -35,6 +35,7 @@ class Party(AuditMixin, Base):
     idir_username = db.Column(db.String, nullable=True)
 
     business_role_appts = db.relationship('PartyBusinessRoleAppointment', lazy='joined')
+    party_orgbook_entity = db.relationship('PartyOrgBookEntity', lazy='joined')
 
     @hybrid_property
     def name(self):
@@ -115,24 +116,24 @@ class Party(AuditMixin, Base):
 
     @classmethod
     def create(
-            cls,
+        cls,
                                                  # Required fields
-            party_name,
-            phone_no,
-            party_type_code,
+        party_name,
+        phone_no,
+        party_type_code,
                                                  # Optional fields
-            address_type_code=None,
+        address_type_code=None,
                                                  # Nullable fields
-            email=None,
-            first_name=None,
-            phone_ext=None,
-            suite_no=None,
-            address_line_1=None,
-            address_line_2=None,
-            city=None,
-            sub_division_code=None,
-            post_code=None,
-            add_to_session=True):
+        email=None,
+        first_name=None,
+        phone_ext=None,
+        suite_no=None,
+        address_line_1=None,
+        address_line_2=None,
+        city=None,
+        sub_division_code=None,
+        post_code=None,
+        add_to_session=True):
         party = cls(
                                                  # Required fields
             party_name=party_name,
