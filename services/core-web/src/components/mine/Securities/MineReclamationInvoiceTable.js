@@ -123,6 +123,12 @@ export const MineReclamationInvoiceTable = (props) => {
       render: (text) => <div title="Project ID">{text || Strings.EMPTY_FIELD}</div>,
     },
     {
+      title: "Notes",
+      dataIndex: "note",
+      key: "note",
+      render: (text) => <div title="Notes">{text || Strings.EMPTY_FIELD}</div>,
+    },
+    {
       title: "Documents",
       dataIndex: "documents",
       render: (text, record) => (
