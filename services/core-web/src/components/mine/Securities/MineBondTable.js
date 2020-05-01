@@ -57,7 +57,9 @@ export const MineBondTable = (props) => {
       key: "security_total",
       render: (text, record) => (
         <div title="Total Assessed">
-          {formatMoney(record.permit_amendments[0].security_total) || Strings.EMPTY_FIELD}
+          {record.permit_amendments && record.permit_amendments.length > 0
+            ? formatMoney(record.permit_amendments[0].security_total)
+            : Strings.EMPTY_FIELD}
         </div>
       ),
     },
