@@ -16,7 +16,7 @@ const setupDispatchProps = () => {
 const setupReducerProps = () => {
   reducerProps.location = { search: "mine_region=SW,NE" };
   reducerProps.history = {
-    push: jest.fn(),
+    replace: jest.fn(),
     location: {},
   };
   reducerProps.noticeOfWorkApplications = MOCK.NOW.applications;

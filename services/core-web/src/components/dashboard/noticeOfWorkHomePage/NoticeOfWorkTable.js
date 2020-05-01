@@ -25,7 +25,8 @@ const propTypes = {
   noticeOfWorkApplications: PropTypes.arrayOf(CustomPropTypes.importedNOWApplication),
   sortField: PropTypes.string,
   sortDir: PropTypes.string,
-  searchParams: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
+  searchParams: PropTypes.objectOf(PropTypes.any).isRequired,
+  defaultParams: PropTypes.objectOf(PropTypes.any).isRequired,
   mineRegionHash: PropTypes.objectOf(PropTypes.string).isRequired,
   mineRegionOptions: CustomPropTypes.options.isRequired,
   applicationStatusOptions: CustomPropTypes.options.isRequired,
@@ -38,20 +39,19 @@ const propTypes = {
 };
 
 const defaultProps = {
-  sortField: null,
-  sortDir: null,
+  sortField: undefined,
+  sortDir: undefined,
   noticeOfWorkApplications: [],
 };
 
-const handleTableChange = (updateApplicationList) => (pagination, filters, sorter) => {
+const handleTableChange = (updateNOWList, tableFilters) => (pagination, filters, sorter) => {
   const params = {
-    results: pagination.pageSize,
-    page: pagination.current,
-    sort_field: sorter.order ? sorter.field : undefined,
-    sort_dir: sorter.order ? sorter.order.replace("end", "") : sorter.order,
+    ...tableFilters,
     ...filters,
+    sort_field: sorter.order ? sorter.field : undefined,
+    sort_dir: sorter.order ? sorter.order.replace("end", "") : undefined,
   };
-  updateApplicationList(params);
+  updateNOWList(params);
 };
 
 const applySortIndicator = (_columns, field, dir) =>
@@ -63,6 +63,16 @@ const applySortIndicator = (_columns, field, dir) =>
 const pageTitle = "Browse Notices of Work";
 
 export class NoticeOfWorkTable extends Component {
+  ensureListValue = (value) => {
+    if (Array.isArray(value)) {
+      return value;
+    }
+    if (value) {
+      return [value];
+    }
+    return [];
+  };
+
   createLinkTo = (route, record) => {
     return {
       pathname: route.dynamicRoute(record.key),
@@ -108,7 +118,7 @@ export class NoticeOfWorkTable extends Component {
             value={selectedKeys[0] || this.props.searchParams[field]}
             onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
             onPressEnter={() => {
-              this.props.handleSearch({ [field]: this.searchInput });
+              this.props.handleSearch({ ...this.props.searchParams, [field]: this.searchInput });
             }}
             style={{ width: 188, marginBottom: 8, display: "block" }}
             allowClear
@@ -116,7 +126,7 @@ export class NoticeOfWorkTable extends Component {
           <Button
             type="primary"
             onClick={() => {
-              this.props.handleSearch({ [field]: this.searchInput });
+              this.props.handleSearch({ ...this.props.searchParams, [field]: this.searchInput });
             }}
             icon="search"
             size="small"
@@ -126,7 +136,10 @@ export class NoticeOfWorkTable extends Component {
           </Button>
           <Button
             onClick={() => {
-              this.props.handleSearch({ [field]: null });
+              this.props.handleSearch({
+                ...this.props.searchParams,
+                [field]: this.props.defaultParams[field],
+              });
             }}
             size="small"
             style={{ width: 90 }}
@@ -172,14 +185,10 @@ export class NoticeOfWorkTable extends Component {
       sortField: "mine_region",
       sorter: true,
       filtered: true,
-      filteredValue: this.props.searchParams.mine_region
-        ? [this.props.searchParams.mine_region]
-        : [],
-      filters: this.props.mineRegionOptions
-        ? optionsFilterLabelAndValue(this.props.mineRegionOptions).sort((a, b) =>
-            a.value > b.value ? 1 : -1
-          )
-        : [],
+      filteredValue: this.ensureListValue(this.props.searchParams.mine_region),
+      filters: optionsFilterLabelAndValue(this.props.mineRegionOptions).sort((a, b) =>
+        a.value > b.value ? 1 : -1
+      ),
       render: (text) => <div title="Region">{text}</div>,
     },
     {
@@ -189,9 +198,7 @@ export class NoticeOfWorkTable extends Component {
       sortField: "notice_of_work_type_description",
       sorter: true,
       filtered: true,
-      filteredValue: this.props.searchParams.notice_of_work_type_description
-        ? [this.props.searchParams.notice_of_work_type_description]
-        : [],
+      filteredValue: this.ensureListValue(this.props.searchParams.notice_of_work_type_description),
       filters: optionsFilterLabelOnly(this.props.applicationTypeOptions).sort((a, b) =>
         a.value > b.value ? 1 : -1
       ),
@@ -221,9 +228,9 @@ export class NoticeOfWorkTable extends Component {
       sortField: "now_application_status_description",
       sorter: true,
       filtered: true,
-      filteredValue: this.props.searchParams.now_application_status_description
-        ? [this.props.searchParams.now_application_status_description]
-        : [],
+      filteredValue: this.ensureListValue(
+        this.props.searchParams.now_application_status_description
+      ),
       filters: optionsFilterLabelOnly(this.props.applicationStatusOptions).sort((a, b) =>
         a.value > b.value ? 1 : -1
       ),
@@ -248,9 +255,7 @@ export class NoticeOfWorkTable extends Component {
       sortField: "originating_system",
       sorter: true,
       filtered: true,
-      filteredValue: this.props.searchParams.originating_system
-        ? [this.props.searchParams.originating_system]
-        : [],
+      filteredValue: this.ensureListValue(this.props.searchParams.originating_system),
       filters: [
         { text: "Core", value: "Core" },
         { text: "NROS", value: "NROS" },
@@ -300,7 +305,7 @@ export class NoticeOfWorkTable extends Component {
           align: "left",
           pagination: false,
           locale: { emptyText: <NullScreen type="no-results" /> },
-          onChange: handleTableChange(this.props.handleSearch),
+          onChange: handleTableChange(this.props.handleSearch, this.props.searchParams),
         }}
       />
     );

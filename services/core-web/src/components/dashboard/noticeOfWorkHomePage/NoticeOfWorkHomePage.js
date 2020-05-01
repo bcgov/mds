@@ -1,27 +1,25 @@
-/* eslint-disable */
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import queryString from "query-string";
 import * as Strings from "@common/constants/strings";
-import * as router from "@/constants/routes";
-import CustomPropTypes from "@/customPropTypes";
 import {
   getMineRegionHash,
   getMineRegionDropdownOptions,
   getDropdownNoticeOfWorkApplicationStatusOptions,
   getDropdownNoticeOfWorkApplicationTypeOptions,
 } from "@common/selectors/staticContentSelectors";
-import NoticeOfWorkTable from "@/components/dashboard/noticeOfWorkHomePage/NoticeOfWorkTable";
-import NoticeOfWorkSearch from "@/components/dashboard/noticeOfWorkHomePage/NoticeOfWorkSearch";
-import ResponsivePagination from "@/components/common/ResponsivePagination";
 import { fetchNoticeOfWorkApplications } from "@common/actionCreators/noticeOfWorkActionCreator";
 import {
   getNoticeOfWorkList,
   getNoticeOfWorkPageData,
 } from "@common/selectors/noticeOfWorkSelectors";
-import { formatQueryListParams } from "@common/utils/helpers";
+import * as routes from "@/constants/routes";
+import CustomPropTypes from "@/customPropTypes";
+import NoticeOfWorkTable from "@/components/dashboard/noticeOfWorkHomePage/NoticeOfWorkTable";
+import NoticeOfWorkSearch from "@/components/dashboard/noticeOfWorkHomePage/NoticeOfWorkSearch";
+import ResponsivePagination from "@/components/common/ResponsivePagination";
 
 const propTypes = {
   fetchNoticeOfWorkApplications: PropTypes.func.isRequired,
@@ -35,93 +33,75 @@ const propTypes = {
   applicationTypeOptions: CustomPropTypes.options.isRequired,
 };
 
+const defaultParams = {
+  page: Strings.DEFAULT_PAGE,
+  per_page: Strings.DEFAULT_PER_PAGE,
+  sort_field: "received_date",
+  sort_dir: "desc",
+  mine_search: undefined,
+  now_number: undefined,
+  mine_name: undefined,
+  originating_system: [],
+  lead_inspector_name: undefined,
+  now_application_status_description: [],
+  notice_of_work_type_description: [],
+  mine_region: [],
+};
+
 export class NoticeOfWorkHomePage extends Component {
-  params = queryString.parse(this.props.location.search);
-
-  listQueryParams = [];
-
-  splitListParams = formatQueryListParams("split", this.listQueryParams);
-
-  joinListParams = formatQueryListParams("join", this.listQueryParams);
-
-  // Holds list params as array
   state = {
     isLoaded: false,
-    params: {
-      page: Strings.DEFAULT_PAGE,
-      per_page: Strings.DEFAULT_PER_PAGE,
-      ...this.params,
-    },
+    params: defaultParams,
   };
 
   componentDidMount() {
-    const params = this.props.location.search;
-    const parsedParams = queryString.parse(params);
-    const { page = this.state.params.page, per_page = this.state.params.per_page } = parsedParams;
-    if (params) {
-      this.renderDataFromURL();
-    } else {
-      this.props.history.replace(
-        router.NOTICE_OF_WORK_APPLICATIONS.dynamicRoute({
-          page,
-          per_page,
-        })
-      );
-    }
+    const params = queryString.parse(this.props.location.search);
+    this.setState(
+      (prevState) => ({
+        params: {
+          ...prevState.params,
+          ...params,
+        },
+      }),
+      () =>
+        this.props.history.replace(
+          routes.NOTICE_OF_WORK_APPLICATIONS.dynamicRoute(this.state.params)
+        )
+    );
   }
 
   componentWillReceiveProps(nextProps) {
-    const locationChanged = nextProps.location !== this.props.location;
-    if (locationChanged) {
-      this.renderDataFromURL(nextProps.location.search);
+    if (nextProps.location !== this.props.location) {
+      this.setState({ isLoaded: false }, () => this.renderDataFromURL(nextProps.location.search));
     }
   }
 
-  componentWillUnmount() {
-    this.setState({ params: {} });
-  }
-
-  renderDataFromURL = (queryParams) => {
-    const params = queryParams || this.props.location.search;
+  renderDataFromURL = (params) => {
     const parsedParams = queryString.parse(params);
-    this.setState(
-      {
-        params: this.splitListParams(parsedParams),
-        isLoaded: false,
-      },
-      () =>
-        this.props.fetchNoticeOfWorkApplications(parsedParams).then(() => {
-          this.setState({ isLoaded: true });
-        })
-    );
-  };
-
-  // Expects list params as arrays
-  handleSearch = (searchParams = {}, clear = false) => {
-    const persistedParams = clear ? {} : this.state.params;
-    const updatedParams = {
-      // Default per_page -- overwrite if provided
-      per_page: Strings.DEFAULT_PER_PAGE,
-      // Start from existing state
-      ...persistedParams,
-      // Overwrite prev params with any newly provided search params
-      ...searchParams,
-      // Reset page number
-      page: Strings.DEFAULT_PAGE,
-    };
-
-    this.props.history.replace(
-      router.NOTICE_OF_WORK_APPLICATIONS.dynamicRoute(this.joinListParams(updatedParams))
-    );
+    this.props.fetchNoticeOfWorkApplications(parsedParams).then(() => {
+      this.setState({ isLoaded: true });
+    });
   };
 
   onPageChange = (page, per_page) => {
-    this.props.history.replace(
-      router.NOTICE_OF_WORK_APPLICATIONS.dynamicRoute({
-        ...this.state.params,
-        page,
-        per_page,
-      })
+    this.setState(
+      (prevState) => ({ params: { ...prevState.params, page, per_page } }),
+      () =>
+        this.props.history.replace(
+          routes.NOTICE_OF_WORK_APPLICATIONS.dynamicRoute(this.state.params)
+        )
+    );
+  };
+
+  handleSearch = (params) => {
+    this.setState(
+      {
+        params: { ...params, page: defaultParams.page },
+      },
+      () =>
+        this.props.history.replace(
+          routes.NOTICE_OF_WORK_APPLICATIONS.dynamicRoute(this.state.params)
+        )
     );
   };
 
@@ -131,13 +111,13 @@ export class NoticeOfWorkHomePage extends Component {
         <div className="landing-page__header">
           <div>
             <h1>Browse Notices of Work</h1>
-            <p>Applications shown are from Core, NROS, and vFCBC only.</p>
           </div>
         </div>
         <div className="landing-page__content">
           <div className="page__content">
             <NoticeOfWorkSearch
               handleSearch={this.handleSearch}
+              searchParams={this.state.params}
               initialValues={{ mine_search: this.state.params.mine_search }}
             />
             <div>
@@ -149,6 +129,7 @@ export class NoticeOfWorkHomePage extends Component {
                   sortField={this.state.params.sort_field}
                   sortDir={this.state.params.sort_dir}
                   searchParams={this.state.params}
+                  defaultParams={defaultParams}
                   mineRegionHash={this.props.mineRegionHash}
                   mineRegionOptions={this.props.mineRegionOptions}
                   applicationStatusOptions={this.props.applicationStatusOptions}
