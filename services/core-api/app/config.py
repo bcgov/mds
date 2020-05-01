@@ -113,7 +113,7 @@ class Config(object):
     NRIS_REMOTE_TOKEN_URL = os.environ.get('NRIS_REMOTE_TOKEN_URL', None)
 
     # OrgBook
-    ORGBOOK_API_URL = 'https://theorgbook.pathfinder.gov.bc.ca/api/v2/'
+    ORGBOOK_API_URL = 'https://orgbook.gov.bc.ca/api/v2/'
 
 
 class TestConfig(Config):
