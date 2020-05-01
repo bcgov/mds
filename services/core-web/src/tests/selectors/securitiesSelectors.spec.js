@@ -33,8 +33,8 @@ describe("userSelectors", () => {
     };
 
     expect(getBondTotals(localMockState)).toEqual({
-      amountHeld: 300,
-      count: 1,
+      amountHeld: 1200,
+      count: 2,
     });
   });
 

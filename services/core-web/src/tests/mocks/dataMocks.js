@@ -948,6 +948,7 @@ export const PERMITS = [
         received_date: null,
         issue_date: "2019-04-01",
         authorization_end_date: null,
+        security_total: "1000000",
         description: "Initial permit issued.",
         related_documents: [
           {
@@ -4117,26 +4118,80 @@ export const BONDS = {
       institution_postal_code: null,
       note: null,
       payer: {},
-      permit_guid: "463236",
+      permit_guid: "1628847c-060b-45f2-990f-815877174801",
+      documents: [],
+    },
+    {
+      bond_id: 1,
+      bond_guid: "erjvnaqekrj",
+      amount: 900,
+      bond_type_code: "CAS",
+      payer_party_guid: "sethwrt",
+      bond_status_code: "ACT",
+      reference_number: "",
+      issue_date: "2018-10-16",
+      institution_name: null,
+      institution_street: null,
+      institution_city: null,
+      institution_province: null,
+      institution_postal_code: null,
+      note: null,
+      payer: {},
+      permit_guid: "1628847c-060b-45f2-990f-815877174801",
+      documents: [],
+    },
+    {
+      bond_id: 1,
+      bond_guid: "erjvnaqekrj",
+      amount: 1000,
+      bond_type_code: "CAS",
+      payer_party_guid: "sethwrt",
+      bond_status_code: "CON",
+      reference_number: "",
+      issue_date: "2018-10-16",
+      institution_name: null,
+      institution_street: null,
+      institution_city: null,
+      institution_province: null,
+      institution_postal_code: null,
+      note: null,
+      payer: {},
+      permit_guid: "1628847c-060b-45f2-990f-815877174801",
       documents: [],
     },
   ],
 };
 
 export const BOND_TOTALS = {
-  amountHeld: 300,
-  count: 1,
+  amountHeld: 1200,
+  count: 2,
 };
 
 export const BOND_RESPONSE = { records: BONDS };
 
-export const RECLAMATION_INVOICE = {
-  project_id: "3523461",
-  amount: "1251.46",
-  vendor: "John Doe",
-};
+// export const RECLAMATION_INVOICE = {
+//   project_id: "3523461",
+//   permit_guid: "1628847c-060b-45f2-990f-815877174801",
+//   amount: 1251.46,
+//   vendor: "John Doe",
+// };
 
-export const RECLAMATION_INVOICES = { records: [RECLAMATION_INVOICE] };
+export const RECLAMATION_INVOICES = {
+  records: [
+    {
+      project_id: "3523461",
+      permit_guid: "1628847c-060b-45f2-990f-815877174801",
+      amount: 1251,
+      vendor: "John Doe",
+    },
+    {
+      project_id: "35434461",
+      permit_guid: "1628847c-060b-45f2-990f-815877174801",
+      amount: 200,
+      vendor: "John Peterson",
+    },
+  ],
+};
 
 export const MINE_COMMENTS = {
   records: [
