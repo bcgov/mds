@@ -25,6 +25,7 @@ const initialState = {
   mineReportDefinitionOptions: [],
   mineReportStatusOptions: [],
   mineReportCategoryOptions: [],
+  partyRelationshipTypes: [],
   noticeOfWorkActivityTypeOptions: [],
   noticeOfWorkUnitTypeOptions: [],
   noticeOfWorkApplicationTypeOptions: [],
@@ -44,7 +45,6 @@ export const staticContentReducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.STORE_BULK_STATIC_CONTENT:
       return { ...state, ...action.payload };
-
     default:
       return state;
   }
@@ -103,6 +103,7 @@ export const getBondStatusOptions = (state) => state[STATIC_CONTENT].bondStatusO
 export const getBondDocumentTypeOptions = (state) => state[STATIC_CONTENT].bondDocumentTypeOptions;
 export const getExemptionFeeStatusOptions = (state) =>
   state[STATIC_CONTENT].exemptionFeeStatusOptions;
+export const getPartyRelationshipTypes = (state) => state[STATIC_CONTENT].partyRelationshipTypes;
 
 const isStaticContentLoaded = (state) =>
   Object.keys(state)
@@ -112,13 +113,5 @@ const isStaticContentLoaded = (state) =>
 
 export const getStaticContentLoadingIsComplete = (state) =>
   isStaticContentLoaded(state[STATIC_CONTENT]);
-
-export const getPartyRelationshipTypes = (state) => state[STATIC_CONTENT].partyRelationshipTypes;
-export const getPartyRelationshipTypesList = (state) =>
-  createDropDownList(
-    state[STATIC_CONTENT].partyRelationshipTypes,
-    "description",
-    "mine_party_appt_type_code"
-  );
 
 export default staticContentReducerObject;

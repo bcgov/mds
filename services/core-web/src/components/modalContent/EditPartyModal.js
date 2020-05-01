@@ -2,18 +2,23 @@ import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import CustomPropTypes from "@/customPropTypes";
-import EditFullPartyForm from "@/components/Forms/parties/EditFullPartyForm";
 import { searchOrgBookEntities } from "@common/actionCreators/partiesActionCreator";
 import { getSearchOrgBookEntities } from "@common/selectors/partiesSelectors";
+import CustomPropTypes from "@/customPropTypes";
+import EditFullPartyForm from "@/components/Forms/parties/EditFullPartyForm";
 
 const propTypes = {
   onSubmit: PropTypes.func.isRequired,
+  searchOrgBookEntities: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   isPerson: PropTypes.bool.isRequired,
   provinceOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
   initialValues: PropTypes.objectOf(PropTypes.string).isRequired,
   orgBookEntities: PropTypes.objectOf(PropTypes.any),
+};
+
+const defaultProps = {
+  orgBookEntities: [],
 };
 
 export class EditPartyModal extends Component {
@@ -22,10 +27,10 @@ export class EditPartyModal extends Component {
   };
 
   handleSearchOrgBookEntitiesSubmit = (search) => {
-    console.log("handleSearchOrgBookEntitiesSubmit search:\n", search);
+    // console.log("handleSearchOrgBookEntitiesSubmit search:\n", search);
     this.setState({ isSearchingOrgBook: true });
     this.props.searchOrgBookEntities({ search }).then(() => {
-      console.log("this.props.orgBookEntities.results:\n", this.props.orgBookEntities.results);
+      // console.log("this.props.orgBookEntities.results:\n", this.props.orgBookEntities.results);
       this.setState({ isSearchingOrgBook: false });
     });
   };
@@ -58,5 +63,6 @@ const mapDispatchToProps = (dispatch) =>
   );
 
 EditPartyModal.propTypes = propTypes;
+EditPartyModal.defaultProps = defaultProps;
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditPartyModal);
