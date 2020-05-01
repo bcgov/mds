@@ -34,6 +34,7 @@ from app.api.mines.reports.resources.mine_reports import MineReportResource, Min
 from app.api.now_submissions.resources.application_list_resource import ApplicationListResource
 from app.api.now_submissions.resources.application_nda_list_resource import ApplicationNDAListResource
 from app.api.securities.resources.bond import BondResource, BondListResource
+from app.api.mines.comments.resources.mine_comment import MineCommentResource, MineCommentListResource
 
 from app.api.now_applications.resources.now_activity_type_resource import NOWActivityTypeResource
 from app.api.now_applications.resources.now_application_import_resource import NOWApplicationImportResource
@@ -119,6 +120,9 @@ from app.api.now_applications.resources.now_application_resource import NOWAppli
     (BondListResource,'get',[VIEW_ALL]),
     (BondResource,'get',[VIEW_ALL]),
     (BondResource,'put',[EDIT_SECURITIES]),
+    (MineCommentListResource,'get',[VIEW_ALL]),
+    (MineCommentListResource,'post',[MINE_EDIT]),
+    (MineCommentResource,'delete',[MINE_ADMIN]),
 ])
 def test_endpoint_auth(resource, method, expected_roles):
     endpoint = getattr(resource, method, None)
