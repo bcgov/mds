@@ -165,7 +165,7 @@ class Mine(AuditMixin, Base):
             number_filter = Mine.mine_no.ilike('%{}%'.format(term))
             permit_filter = Permit.permit_no.ilike('%{}%'.format(term))
             mines_q = Mine.query.filter(name_filter | number_filter).filter_by(deleted_ind=False)
-            permit_q = Mine.query.join(MinePermitXref).join(Permit).filter(permit_filter)
+            permit_q = Mine.query.join(Permit).filter(permit_filter)
             mines_q = mines_q.union(permit_q)
         else:
             mines_q = Mine.query
