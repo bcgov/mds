@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
-import { Menu, Icon, Button, Dropdown, Popconfirm, Tooltip } from "antd";
+import { Menu, Icon, Button, Dropdown, Popconfirm, Tooltip, Drawer } from "antd";
 import { fetchPermits } from "@common/actionCreators/permitActionCreator";
 import {
   fetchMineRecordById,
@@ -41,6 +41,7 @@ import {
 } from "@/constants/assets";
 import RefreshButton from "@/components/common/RefreshButton";
 import * as router from "@/constants/routes";
+import MineComments from "@/components/mine/MineComments";
 /**
  * @class MineDashboard.js is an individual mines dashboard, gets Mine data from redux and passes into children.
  */
@@ -69,6 +70,7 @@ export class MineDashboard extends Component {
     isLoaded: false,
     activeNavButton: "mine-information",
     openSubMenuKey: ["general"],
+    isDrawerVisible: false,
   };
 
   componentWillMount() {
@@ -88,6 +90,11 @@ export class MineDashboard extends Component {
       this.handleActiveButton(nextProps.location.pathname);
     }
   }
+
+  toggleDrawer = () => {
+    this.setState((prevState) => ({ isDrawerVisible: !prevState.isDrawerVisible }));
+    this.handleMenuClick();
+  };
 
   handleActiveButton = (path) => {
     const lastPath = path.split("/").pop();
@@ -163,6 +170,14 @@ export class MineDashboard extends Component {
 
     const menu = (
       <Menu>
+        <AuthorizationWrapper inTesting>
+          <div className="custom-menu-item">
+            <button type="button" className="full" onClick={this.toggleDrawer}>
+              <Icon type="message" className="padding-small icon-sm" />
+              Communication
+            </button>
+          </div>
+        </AuthorizationWrapper>
         {this.props.subscribed ? (
           <div className="custom-menu-item">
             <Popconfirm
@@ -261,6 +276,18 @@ export class MineDashboard extends Component {
 
     return (
       <div>
+        <Drawer
+          title={`Internal Communication for ${mine.mine_name}`}
+          placement="right"
+          closable={false}
+          onClose={this.toggleDrawer}
+          visible={this.state.isDrawerVisible}
+        >
+          <Button ghost className="modal__close" onClick={this.toggleDrawer}>
+            <Icon type="close" />
+          </Button>
+          <MineComments mineGuid={mine.mine_guid} />
+        </Drawer>
         {this.state.isLoaded && (
           <div>
             <div className="tab__content">

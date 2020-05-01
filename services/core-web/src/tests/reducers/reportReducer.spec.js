@@ -7,8 +7,6 @@ const baseExpectedValue = {
   reportsPageData: {},
   mineReports: [],
   reportComments: [],
-  commentsLoading: true,
-  commentSubmitting: false,
 };
 
 // Creates deep copy of javascript object instead of setting a reference

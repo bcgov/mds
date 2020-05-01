@@ -129,6 +129,10 @@ body {
   }
 }
 
+.flex-4 {
+  flex: 4;
+}
+
 .wrap {
   flex-wrap: wrap;
 }
@@ -317,6 +321,10 @@ body {
 
 .margin-large {
   margin: $default-margin-lg;
+}
+
+.margin-xlarge {
+  margin: 50px;
 }
 
 .lightest-grey-bg {
