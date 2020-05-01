@@ -35,7 +35,7 @@ class MinePartyAppointment(AuditMixin, Base):
     mine_tailings_storage_facility_guid = db.Column(
         UUID(as_uuid=True),
         db.ForeignKey('mine_tailings_storage_facility.mine_tailings_storage_facility_guid'))
-    permit_id = db.Column(db.Integer, db.ForeignKey('permit.permit_id'))
+    permit_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('permit.permit_guid'))
     permit = db.relationship('Permit', lazy='select')
     deleted_ind = db.Column(db.Boolean, server_default=FetchedValue())
 
