@@ -4169,13 +4169,6 @@ export const BOND_TOTALS = {
 
 export const BOND_RESPONSE = { records: BONDS };
 
-// export const RECLAMATION_INVOICE = {
-//   project_id: "3523461",
-//   permit_guid: "1628847c-060b-45f2-990f-815877174801",
-//   amount: 1251.46,
-//   vendor: "John Doe",
-// };
-
 export const RECLAMATION_INVOICES = {
   records: [
     {
