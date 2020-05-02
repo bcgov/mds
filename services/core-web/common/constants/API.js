@@ -153,6 +153,9 @@ export const RECLAMATION_INVOICE = (invoiceGuid) =>
 export const RECLAMATION_INVOICE_DOCUMENTS = (mineGuid) =>
   `/securities/${mineGuid}/reclamation-invoices/documents`;
 
+export const MINE_COMMENTS = (mineGuid) => `/mines/${mineGuid}/comments`;
+export const MINE_COMMENT = (mineGuid, commentGuid) => `/mines/${mineGuid}/comments/${commentGuid}`;
+
 // OrgBook
 export const ORGBOOK_SEARCH = "/parties/orgbook/search";
 export const ORGBOOK_CREDENTIAL = (credentialId) => `/parties/orgbook/credential/${credentialId}`;
