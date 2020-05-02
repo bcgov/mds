@@ -273,7 +273,43 @@ exports[`EditFullPartyForm renders properly 1`] = `
         </Row>
       </Col>
     </Row>
-    <PartyOrgBookForm />
+    <Row
+      gutter={48}
+    >
+      <Col
+        md={12}
+        sm={24}
+      >
+        <Row
+          gutter={16}
+        >
+          <Col
+            md={24}
+            xs={24}
+          >
+            <h5>
+              Associated OrgBook Entity
+            </h5>
+          </Col>
+        </Row>
+        <Row
+          gutter={16}
+        >
+          <Col>
+            <FormItem
+              hasFeedback={false}
+              label="OrgBook Search"
+            >
+              <Connect(OrgBookSearchField) />
+            </FormItem>
+          </Col>
+        </Row>
+      </Col>
+      <Col
+        md={12}
+        sm={24}
+      />
+    </Row>
     <div
       className="right center-mobile"
     >

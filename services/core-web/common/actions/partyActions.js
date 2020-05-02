@@ -31,7 +31,7 @@ export const storeInspectors = (payload) => ({
   payload,
 });
 
-export const storeSearchOrgBookEntities = (payload) => ({
-  type: ActionTypes.STORE_SEARCH_ORGBOOK_ENTITIES,
+export const storeSearchOrgBookResponse = (payload) => ({
+  type: ActionTypes.STORE_ORGBOOK_SEARCH,
   payload,
 });

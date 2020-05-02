@@ -14,13 +14,11 @@ import { normalizePhone, upperCase, resetForm } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
 import CustomPropTypes from "@/customPropTypes";
 import { renderConfig } from "@/components/common/config";
-import PartyOrgBookForm from "@/components/Forms/parties/PartyOrgBookForm";
+import OrgBookSearchField from "@/components/Forms/parties/OrgBookSearchField";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
-  handleSearchOrgBookEntitiesSubmit: PropTypes.func.handleSearchOrgBookEntitiesSubmit,
   isPerson: PropTypes.bool.isRequired,
-  isSearchingOrgBook: PropTypes.bool.isRequired,
   closeModal: PropTypes.func.isRequired,
   provinceOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
 };
@@ -197,10 +195,23 @@ export const EditFullPartyForm = (props) => (
           </Row>
         </Col>
       </Row>
-      <PartyOrgBookForm
-        handleSubmit={props.handleSearchOrgBookEntitiesSubmit}
-        isSearchingOrgBook={props.isSearchingOrgBook}
-      />
+      <Row gutter={48}>
+        <Col md={12} sm={24}>
+          <Row gutter={16}>
+            <Col md={24} xs={24}>
+              <h5>Associated OrgBook Entity</h5>
+            </Col>
+          </Row>
+          <Row gutter={16}>
+            <Col>
+              <Form.Item label="OrgBook Search">
+                <OrgBookSearchField />
+              </Form.Item>
+            </Col>
+          </Row>
+        </Col>
+        <Col md={12} sm={24} />
+      </Row>
       <div className="right center-mobile">
         <Popconfirm
           placement="topRight"

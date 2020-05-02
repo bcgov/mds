@@ -17,7 +17,7 @@ const initialState = {
   addPartyFormState: {},
   lastCreatedParty: {},
   inspectors: [],
-  searchOrgBookEntities: [],
+  searchOrgBookResponse: {},
 };
 
 export const partiesReducer = (state = initialState, action) => {
@@ -58,10 +58,10 @@ export const partiesReducer = (state = initialState, action) => {
         ...state,
         inspectors: action.payload.records,
       };
-    case actionTypes.STORE_SEARCH_ORGBOOK_ENTITIES:
+    case actionTypes.STORE_ORGBOOK_SEARCH:
       return {
         ...state,
-        searchOrgBookEntities: action.payload,
+        searchOrgBookResponse: action.payload,
       };
     default:
       return state;
@@ -83,6 +83,6 @@ export const getLastCreatedParty = (state) => state[PARTIES].lastCreatedParty;
 export const getInspectors = (state) => state[PARTIES].inspectors;
 export const getInspectorsList = (state) =>
   createDropDownList(state[PARTIES].inspectors, "name", "party_guid");
-export const getSearchOrgBookEntities = (state) => state[PARTIES].searchOrgBookEntities;
+export const getSearchOrgBookResponse = (state) => state[PARTIES].searchOrgBookResponse;
 
 export default partiesReducerObject;

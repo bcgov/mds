@@ -3378,6 +3378,7 @@ export const BULK_STATIC_CONTENT_RESPONSE = {
     { mine_report_category: "TSF", description: "Tailings Storage Facility" },
     { mine_report_category: "OTH", description: "Other" },
   ],
+  partyRelationshipTypes: [],
   noticeOfWorkActivityTypeOptions: [
     {
       activity_type_code: "cut_lines_polarization_survey",
