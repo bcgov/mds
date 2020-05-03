@@ -12,6 +12,7 @@ const baseExpectedValue = {
   lastCreatedParty: {},
   inspectors: [],
   searchOrgBookResponse: {},
+  orgBookCredential: {},
 };
 
 // Creates deep copy of javascript object instead of setting a reference
