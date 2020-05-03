@@ -1,4 +1,5 @@
 from flask_restplus import Resource
+from werkzeug.exceptions import InternalServerError
 
 from app.extensions import api
 from app.api.utils.access_decorators import requires_role_edit_party
@@ -18,7 +19,7 @@ class PartyOrgBookEntityListResource(Resource, UserMixin):
     parser.add_argument('credential_id', type=int, help='', required=True)
 
     @api.expect(parser)
-    @api.doc(description='Create a party OrgBook entity.')
+    @api.doc(description='Create a Party OrgBook Entity.')
     @requires_role_edit_party
     @api.marshal_with(PARTY_ORGBOOK_ENTITY, code=201)
     def post(self, party_guid):
@@ -28,6 +29,9 @@ class PartyOrgBookEntityListResource(Resource, UserMixin):
             data.get('registration_id'), data.get('registration_status'),
             data.get('registration_date'), data.get('name_id'), data.get('name_text'),
             data.get('credential_id'), party_guid)
+
+        if not party_orgbook_entity:
+            raise InternalServerError('Error: Failed to create party OrgBook entity')
 
         party_orgbook_entity.save()
 
