@@ -5,16 +5,18 @@ import debounce from "lodash";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { searchOrgBook, fetchOrgBookCredential } from "@common/actionCreators/partiesActionCreator";
-import { getSearchOrgBookResponse } from "@common/selectors/partiesSelectors";
+import { getSearchOrgBookResponse, getOrgBookCredential } from "@common/selectors/partiesSelectors";
 
 const propTypes = {
   searchOrgBook: PropTypes.func.isRequired,
   fetchOrgBookCredential: PropTypes.func.isRequired,
   searchOrgBookResponse: PropTypes.objectOf(PropTypes.any),
+  orgBookCredential: PropTypes.objectOf(PropTypes.any),
 };
 
 const defaultProps = {
   searchOrgBookResponse: {},
+  orgBookCredential: {},
 };
 
 export class OrgBookSearchField extends Component {
@@ -25,9 +27,9 @@ export class OrgBookSearchField extends Component {
   }
 
   state = {
-    data: [],
+    options: [],
     isSearching: false,
-    details: {},
+    credential: {},
   };
 
   handleChange = () => {
@@ -37,10 +39,10 @@ export class OrgBookSearchField extends Component {
   };
 
   handleSelect = (value) => {
-    this.setState({ details: null });
+    this.setState({ credential: null });
     const credentialId = value.key;
-    this.props.fetchOrgBookCredential(credentialId).then((data) => {
-      this.setState({ details: data });
+    this.props.fetchOrgBookCredential(credentialId).then(() => {
+      this.setState({ credential: this.props.orgBookCredential });
     });
   };
 
@@ -51,28 +53,28 @@ export class OrgBookSearchField extends Component {
 
     this.lastFetchId += 1;
     const fetchId = this.lastFetchId;
-    this.setState({ data: [], isSearching: true, details: null });
+    this.setState({ options: [], isSearching: true, credential: null });
 
-    this.props.searchOrgBook({ search }).then(() => {
+    this.props.searchOrgBook(search).then(() => {
       if (fetchId !== this.lastFetchId) {
         return;
       }
 
       const results = this.props.searchOrgBookResponse.results || [];
-      const data = results
+      const selectOptions = results
         .filter((result) => result.names && result.names.length > 0)
         .map((result) => ({
           text: result.names[0].text,
           value: result.names[0].credential_id,
         }));
-      this.setState({ data, isSearching: false });
+      this.setState({ options: selectOptions, isSearching: false });
     });
   }
 
   render() {
     const linkClick = () =>
       window.open(
-        `https://orgbook.gov.bc.ca/en/organization/${this.state.details.topic.source_id}`,
+        `https://orgbook.gov.bc.ca/en/organization/${this.state.credential.topic.source_id}`,
         "_blank",
         "noreferrer"
       );
@@ -91,16 +93,16 @@ export class OrgBookSearchField extends Component {
         onSelect={this.handleSelect}
         style={{ width: "100%" }}
         suffixIcon={
-          this.state.details &&
-          this.state.details.topic && (
+          this.state.credential &&
+          this.state.credential.topic && (
             <a role="link" tabIndex={0} onClick={linkClick} onKeyDown={linkClick}>
               View on OrgBook
             </a>
           )
         }
       >
-        {this.state.data.map((d) => (
-          <Select.Option key={d.value}>{d.text}</Select.Option>
+        {this.state.options.map((option) => (
+          <Select.Option key={option.value}>{option.text}</Select.Option>
         ))}
       </Select>
     );
@@ -109,6 +111,7 @@ export class OrgBookSearchField extends Component {
 
 const mapStateToProps = (state) => ({
   searchOrgBookResponse: getSearchOrgBookResponse(state),
+  orgBookCredential: getOrgBookCredential(state),
 });
 
 const mapDispatchToProps = (dispatch) =>

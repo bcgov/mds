@@ -18,6 +18,7 @@ const initialState = {
   lastCreatedParty: {},
   inspectors: [],
   searchOrgBookResponse: {},
+  orgBookCredential: {},
 };
 
 export const partiesReducer = (state = initialState, action) => {
@@ -63,6 +64,11 @@ export const partiesReducer = (state = initialState, action) => {
         ...state,
         searchOrgBookResponse: action.payload,
       };
+    case actionTypes.STORE_ORGBOOK_CREDENTIAL:
+      return {
+        ...state,
+        orgBookCredential: action.payload,
+      };
     default:
       return state;
   }
@@ -84,5 +90,6 @@ export const getInspectors = (state) => state[PARTIES].inspectors;
 export const getInspectorsList = (state) =>
   createDropDownList(state[PARTIES].inspectors, "name", "party_guid");
 export const getSearchOrgBookResponse = (state) => state[PARTIES].searchOrgBookResponse;
+export const getOrgBookCredential = (state) => state[PARTIES].orgBookCredential;
 
 export default partiesReducerObject;

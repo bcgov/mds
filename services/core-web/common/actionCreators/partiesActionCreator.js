@@ -197,12 +197,12 @@ export const addDocumentToRelationship = ({ mineGuid, minePartyApptGuid }, paylo
     .finally(() => dispatch(hideLoading("modal")));
 };
 
-export const searchOrgBook = (params) => (dispatch) => {
+export const searchOrgBook = (search) => (dispatch) => {
   dispatch(request(reducerTypes.ORGBOOK_SEARCH));
   dispatch(showLoading());
   return CustomAxios()
     .get(
-      `${ENVIRONMENT.apiUrl + API.ORGBOOK_SEARCH}?${queryString.stringify(params)}`,
+      `${ENVIRONMENT.apiUrl + API.ORGBOOK_SEARCH}?${queryString.stringify({ search })}`,
       createRequestHeader()
     )
     .then((response) => {
@@ -220,7 +220,7 @@ export const fetchOrgBookCredential = (credentialId) => (dispatch) => {
     .get(`${ENVIRONMENT.apiUrl + API.ORGBOOK_CREDENTIAL(credentialId)}`, createRequestHeader())
     .then((response) => {
       dispatch(success(reducerTypes.ORGBOOK_CREDENTIAL));
-      return response.data;
+      dispatch(partyActions.storeOrgBookCredential(response.data));
     })
     .catch(() => dispatch(error(reducerTypes.ORGBOOK_CREDENTIAL)))
     .finally(() => dispatch(hideLoading()));
