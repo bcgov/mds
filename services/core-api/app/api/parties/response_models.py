@@ -45,12 +45,15 @@ ADDRESS = api.model(
 
 PARTY_ORGBOOK_ENTITY = api.model(
     'PartyOrgBookEntity', {
-        'registration_id': fields.Integer,
-        'registration_inactive': fields.Boolean,
+        'party_orgbook_entity_id': fields.Integer,
+        'registration_id': fields.String,
+        'registration_status': fields.Boolean,
+        'registration_date': fields.Date,
         'name_id': fields.Integer,
         'name_text': fields.String,
-        'name_credential_id': fields.Integer,
+        'credential_id': fields.Integer,
         'party_guid': fields.String,
+        'association_user': fields.String,
         'association_timestamp': fields.Date
     })
 

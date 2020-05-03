@@ -1,13 +1,16 @@
 -- NOTE: Column names are based off of OrgBook's column names for entities.
 CREATE TABLE IF NOT EXISTS party_orgbook_entity
 (
-    registration_id                     integer                               PRIMARY KEY,
-    registration_inactive               boolean                                  NOT NULL,
+    party_orgbook_entity_id                                            SERIAL PRIMARY KEY,
+    registration_id                     varchar                           UNIQUE NOT NULL,
+    registration_status                 boolean                                  NOT NULL,
+    registration_date                   timestamp                                NOT NULL,
     name_id                             integer                           UNIQUE NOT NULL,
     name_text                           varchar                           UNIQUE NOT NULL,
-    name_credential_id                  integer                           UNIQUE NOT NULL,
+    credential_id                       integer                           UNIQUE NOT NULL,
     
     party_guid                          uuid                              UNIQUE NOT NULL,
+    association_user                    character varying(60)                    NOT NULL,
     association_timestamp               timestamp with time zone DEFAULT now()   NOT NULL,
 
     create_user                         character varying(60)                    NOT NULL,
