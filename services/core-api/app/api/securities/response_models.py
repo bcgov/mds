@@ -67,6 +67,7 @@ RECLAMATION_INVOICE = api.model(
         'project_id': fields.String,
         'amount': fields.Fixed(decimals=2),
         'vendor': fields.String,
+        'note': fields.String,
         'permit_guid': fields.String(attribute='permit.permit_guid'),
         'documents': fields.List(fields.Nested(RECLAMATION_INVOICE_DOCUMENT_MODEL))
     })
