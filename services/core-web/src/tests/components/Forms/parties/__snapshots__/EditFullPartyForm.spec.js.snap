@@ -39,6 +39,7 @@ exports[`EditFullPartyForm renders properly 1`] = `
             >
               <Field
                 component={[Function]}
+                disabled={false}
                 id="party_name"
                 label="Company Name *"
                 name="party_name"
@@ -274,41 +275,42 @@ exports[`EditFullPartyForm renders properly 1`] = `
       </Col>
     </Row>
     <Row
-      gutter={48}
+      gutter={0}
     >
-      <Col
-        md={12}
-        sm={24}
-      >
-        <Row
-          gutter={16}
-        >
-          <Col
-            md={24}
-            xs={24}
-          >
-            <h5>
-              Associated OrgBook Entity
-            </h5>
-          </Col>
-        </Row>
-        <Row
-          gutter={16}
-        >
-          <Col>
-            <FormItem
-              hasFeedback={false}
-              label="OrgBook Search"
-            >
-              <Connect(OrgBookSearchField) />
-            </FormItem>
-          </Col>
-        </Row>
+      <Col>
+        <Connect(PartyOrgBookForm)
+          party={
+            Object {
+              "parties": Object {
+                "18133c75-49ad-4101-85f3-a43e35ae989a": Object {
+                  "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                  "name": "mock name",
+                },
+                "18145c75-49ad-0101-85f3-a43e45ae989a": Object {
+                  "guid": "18145c75-49ad-0101-85f3-a43e45ae989a",
+                  "name": "mock Two",
+                },
+              },
+              "partiesWithAppointments": Object {
+                "18133c75-49ad-4101-85f3-a43e35ae989a": Object {
+                  "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                  "mine_party_appt": Array [],
+                  "name": "mock name",
+                },
+                "18145c75-49ad-0101-85f3-a43e45ae989a": Object {
+                  "guid": "18145c75-49ad-0101-85f3-a43e45ae989a",
+                  "mine_party_appt": Array [],
+                  "name": "mock Two",
+                },
+              },
+              "partyIds": Array [
+                "18133c75-49ad-4101-85f3-a43e35ae989a",
+                "18145c75-49ad-0101-85f3-a43e45ae989a",
+              ],
+            }
+          }
+        />
       </Col>
-      <Col
-        md={12}
-        sm={24}
-      />
     </Row>
     <div
       className="right center-mobile"

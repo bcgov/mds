@@ -3,7 +3,7 @@ CREATE TABLE IF NOT EXISTS party_orgbook_entity
     party_orgbook_entity_id                                            SERIAL PRIMARY KEY,
     registration_id                     varchar                           UNIQUE NOT NULL,
     registration_status                 boolean                                  NOT NULL,
-    registration_date                   timestamp                                NOT NULL,
+    registration_date                   timestamp with time zone                 NOT NULL,
     name_id                             integer                           UNIQUE NOT NULL,
     name_text                           varchar                           UNIQUE NOT NULL,
     credential_id                       integer                           UNIQUE NOT NULL,

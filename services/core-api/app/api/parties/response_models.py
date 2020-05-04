@@ -48,13 +48,13 @@ PARTY_ORGBOOK_ENTITY = api.model(
         'party_orgbook_entity_id': fields.Integer,
         'registration_id': fields.String,
         'registration_status': fields.Boolean,
-        'registration_date': fields.Date,
+        'registration_date': fields.DateTime,
         'name_id': fields.Integer,
         'name_text': fields.String,
         'credential_id': fields.Integer,
         'party_guid': fields.String,
         'association_user': fields.String,
-        'association_timestamp': fields.Date
+        'association_timestamp': fields.DateTime
     })
 
 PARTY = api.model(
@@ -74,8 +74,7 @@ PARTY = api.model(
         'job_title': fields.String,
         'postnominal_letters': fields.String,
         'idir_username': fields.String,
-        'has_orgbook_entity': fields.Boolean,
-        'party_orgbook_entity': fields.Nested(PARTY_ORGBOOK_ENTITY)
+        'party_orgbook_entity': fields.Nested(PARTY_ORGBOOK_ENTITY, skip_none=True)
     })
 
 PAGINATED_LIST = api.model(

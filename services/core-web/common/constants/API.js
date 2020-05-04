@@ -13,6 +13,7 @@ export const MINE_BASIC_INFO_LIST = `/mines/basicinfo`;
 export const PARTY = "/parties";
 export const MANAGER = "/parties/managers";
 export const PARTY_RELATIONSHIP = "/parties/mines";
+export const CREATE_PARTY_ORGBOOK_ENTITY = (partyGuid) => `/parties/${partyGuid}/orgbook-entity`;
 export const PERMITTEE = "/permits/permittees";
 export const MINE_NAME_LIST = (params = {}) => `/mines/search?${queryString.stringify(params)}`;
 export const MINE_STATUS = "/mines/status";

@@ -53,10 +53,6 @@ class Party(AuditMixin, Base):
     def name(cls):
         return func.concat(cls.first_name, ' ', cls.party_name)
 
-    @hybrid_property
-    def has_orgbook_entity(self):
-        return self.party_orgbook_entity is not None
-
     def __repr__(self):
         return '<Party %r>' % self.party_guid
 
