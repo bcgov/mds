@@ -21,6 +21,7 @@ const propTypes = {
   bondStatusOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   // eslint-disable-next-line react/no-unused-prop-types
   bondTypeOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  // eslint-disable-next-line react/no-unused-prop-types
   bonds: PropTypes.arrayOf(CustomPropTypes.bond).isRequired,
   isLoaded: PropTypes.bool.isRequired,
   expandedRowKeys: PropTypes.arrayOf(PropTypes.string).isRequired,
@@ -34,6 +35,10 @@ const propTypes = {
   releaseOrConfiscateBond: PropTypes.func.isRequired,
   // eslint-disable-next-line react/no-unused-prop-types
   onExpand: PropTypes.func.isRequired,
+  // eslint-disable-next-line react/no-unused-prop-types
+  recordsByPermit: PropTypes.func.isRequired,
+  activeBondCount: PropTypes.func.isRequired,
+  getSum: PropTypes.func.isRequired,
 };
 
 export const MineBondTable = (props) => {
@@ -237,28 +242,13 @@ export const MineBondTable = (props) => {
     },
   ];
 
-  const bondsByPermit = (permit) =>
-    props.bonds.filter(({ permit_guid }) => permit_guid === permit.permit_guid);
-  const activeBondCount = (permit) =>
-    props.bonds.filter(
-      ({ permit_guid, bond_status_code }) =>
-        permit_guid === permit.permit_guid && bond_status_code === "ACT"
-    ).length;
-  const getSum = (status, permit) =>
-    props.bonds
-      .filter(
-        ({ bond_status_code, permit_guid }) =>
-          bond_status_code === status && permit_guid === permit.permit_guid
-      )
-      .reduce((sum, bond) => +sum + +bond.amount, 0);
-
   const bonds = (record) => {
     return (
       <Table
         align="left"
         pagination={false}
         columns={bondColumns}
-        dataSource={bondsByPermit(record)}
+        dataSource={props.recordsByPermit(record, props.bonds)}
       />
     );
   };
@@ -288,9 +278,9 @@ export const MineBondTable = (props) => {
     permits.map((permit) => {
       return {
         key: permit.permit_guid,
-        total_bonds: activeBondCount(permit),
-        amount_confiscated: getSum("CON", permit),
-        amount_held: getSum("ACT", permit),
+        total_bonds: props.activeBondCount(permit),
+        amount_confiscated: props.getSum("CON", permit),
+        amount_held: props.getSum("ACT", permit),
         ...permit,
       };
     });
