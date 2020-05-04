@@ -3,7 +3,7 @@ from sqlalchemy.dialects.postgresql import UUID
 
 from app.extensions import db
 from app.api.utils.models_mixins import AuditMixin, Base
-from app.utils.include.user_info import User
+from app.api.utils.include.user_info import User
 
 
 class PartyOrgBookEntity(AuditMixin, Base):
@@ -19,8 +19,7 @@ class PartyOrgBookEntity(AuditMixin, Base):
 
     party_guid = db.Column(
         UUID(as_uuid=True), db.ForeignKey('party.party_guid'), nullable=False, unique=True)
-    association_user = db.Column(
-        db.DateTime, nullable=False, server_default=User().get_user_username)
+    association_user = db.Column(db.DateTime, nullable=False, default=User().get_user_username)
     association_timestamp = db.Column(db.DateTime, nullable=False, server_default=FetchedValue())
 
     def __repr__(self):

@@ -1,4 +1,3 @@
--- NOTE: Column names are based off of OrgBook's column names for entities.
 CREATE TABLE IF NOT EXISTS party_orgbook_entity
 (
     party_orgbook_entity_id                                            SERIAL PRIMARY KEY,
@@ -23,4 +22,4 @@ CREATE TABLE IF NOT EXISTS party_orgbook_entity
 
 ALTER TABLE party_orgbook_entity OWNER TO mds;
 
-COMMENT ON TABLE party_orgbook_entity IS 'Contains information on parties and their associated OrgBook BC entity.';
+COMMENT ON TABLE party_orgbook_entity IS 'Contains information on parties that have an associated OrgBook entity.';

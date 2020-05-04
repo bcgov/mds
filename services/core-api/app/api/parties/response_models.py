@@ -74,6 +74,7 @@ PARTY = api.model(
         'job_title': fields.String,
         'postnominal_letters': fields.String,
         'idir_username': fields.String,
+        'has_orgbook_entity': fields.Boolean,
         'party_orgbook_entity': fields.Nested(PARTY_ORGBOOK_ENTITY)
     })
 

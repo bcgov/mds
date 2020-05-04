@@ -11,7 +11,7 @@ class SearchAutocompleteList(Resource):
     @requires_role_view_all
     def get(self):
         search = request.args.get('search')
-        resp = OrgBookService.search_autocomplete_list(search)
+        resp = OrgBookService.search_autocomplete_list(search)['results']
         return resp
 
 

@@ -60,7 +60,7 @@ export class OrgBookSearchField extends Component {
         return;
       }
 
-      const results = this.props.searchOrgBookResponse.results || [];
+      const results = this.props.searchOrgBookResponse || [];
       const selectOptions = results
         .filter((result) => result.names && result.names.length > 0)
         .map((result) => ({

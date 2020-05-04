@@ -35,7 +35,8 @@ class Party(AuditMixin, Base):
     idir_username = db.Column(db.String, nullable=True)
 
     business_role_appts = db.relationship('PartyBusinessRoleAppointment', lazy='joined')
-    party_orgbook_entity = db.relationship('PartyOrgBookEntity', lazy='joined')
+    party_orgbook_entity = db.relationship(
+        'PartyOrgBookEntity', backref='party_orgbook_entity', uselist=False, lazy='select')
 
     @hybrid_property
     def name(self):
@@ -51,6 +52,10 @@ class Party(AuditMixin, Base):
     @name.expression
     def name(cls):
         return func.concat(cls.first_name, ' ', cls.party_name)
+
+    @hybrid_property
+    def has_orgbook_entity(self):
+        return self.party_orgbook_entity is not None
 
     def __repr__(self):
         return '<Party %r>' % self.party_guid
