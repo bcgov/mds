@@ -400,6 +400,9 @@ exports[`DashboardRoutes  renders properly 1`] = `
     exact={true}
   />
   <Route
+    exact={true}
+  />
+  <Route
     component={[Function]}
   />
 </Switch>

@@ -8,11 +8,24 @@ exports[`EditPartyModal renders properly 1`] = `
   forceUnregisterOnUnmount={false}
   form="EDIT_FULL_PARTY"
   getFormState={[Function]}
+  initialValues={
+    Object {
+      "address": Array [
+        Object {},
+      ],
+      "email": null,
+      "party_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+      "party_name": "mock name",
+    }
+  }
   isPerson={true}
   keepDirtyOnReinitialize={true}
   onSubmitSuccess={[Function]}
   party={
     Object {
+      "address": Array [
+        Object {},
+      ],
       "party_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
       "party_name": "mock name",
     }

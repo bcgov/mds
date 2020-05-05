@@ -303,21 +303,25 @@ export const PARTY = {
     "18133c75-49ad-4101-85f3-a43e35ae989a": {
       party_guid: "18133c75-49ad-4101-85f3-a43e35ae989a",
       party_name: "mock name",
+      address: [{}],
     },
     "18145c75-49ad-0101-85f3-a43e45ae989a": {
       party_guid: "18145c75-49ad-0101-85f3-a43e45ae989a",
       party_name: "mock Two",
+      address: [{}],
     },
   },
   partiesWithAppointments: {
     "18133c75-49ad-4101-85f3-a43e35ae989a": {
       party_guid: "18133c75-49ad-4101-85f3-a43e35ae989a",
       party_name: "mock name",
+      address: [{}],
       mine_party_appt: [],
     },
     "18145c75-49ad-0101-85f3-a43e45ae989a": {
       party_guid: "18145c75-49ad-0101-85f3-a43e45ae989a",
       party_name: "mock Two",
+      address: [{}],
       mine_party_appt: [],
     },
   },
