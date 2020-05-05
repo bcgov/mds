@@ -29,8 +29,7 @@ class PartyOrgBookEntityListResource(Resource, UserMixin):
     @requires_role_edit_party
     @api.marshal_with(PARTY_ORGBOOK_ENTITY, code=201)
     def post(self, party_guid):
-        party = Party.find_by_party_guid(party_guid)
-        if party is None:
+        if Party.find_by_party_guid(party_guid) is None:
             raise NotFound('Party not found.')
 
         if PartyOrgBookEntity.find_by_party_guid(party_guid) is not None:
@@ -63,8 +62,5 @@ class PartyOrgBookEntityListResource(Resource, UserMixin):
             raise InternalServerError('Failed to create the Party OrgBook Entity')
 
         party_orgbook_entity.save()
-
-        party.party_name = name_text
-        party.save()
 
         return party_orgbook_entity, 201
