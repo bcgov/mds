@@ -12,6 +12,9 @@ const setupDispatchProps = () => {
   dispatchProps.openAddBondModal = jest.fn();
   dispatchProps.releaseOrConfiscateBond = jest.fn();
   dispatchProps.onExpand = jest.fn();
+  dispatchProps.recordsByPermit = jest.fn();
+  dispatchProps.activeBondCount = jest.fn();
+  dispatchProps.getSum = jest.fn();
 };
 
 const setupProps = () => {
@@ -20,7 +23,6 @@ const setupProps = () => {
   props.bondTypeOptionsHash = {};
   props.isLoaded = true;
   props.expandedRowKeys = [];
-  props.bonds = MOCK.BONDS.records;
 };
 
 beforeEach(() => {

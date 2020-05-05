@@ -6,8 +6,6 @@ const initialState = {
   reportsPageData: {},
   mineReports: [],
   reportComments: [],
-  commentsLoading: true,
-  commentSubmitting: false,
 };
 
 export const reportReducer = (state = initialState, action) => {

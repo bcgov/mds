@@ -9,7 +9,7 @@ from app.api.constants import type_of_permit_map, unit_type_map
 
 from flask import current_app
 
-status_code_mapping = { "Accepted": "AIA", "Withdrawn": "WDN", "Under Review": "SUB" }
+status_code_mapping = {"Accepted": "AIA", "Withdrawn": "WDN", "Under Review": "SUB", None: "SUB"}
 
 
 def code_lookup(model, description, code_column_name):

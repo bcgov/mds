@@ -26,26 +26,16 @@ const propTypes = {
   openEditReclamationInvoiceModal: PropTypes.func.isRequired,
   // eslint-disable-next-line react/no-unused-prop-types
   openAddReclamationInvoiceModal: PropTypes.func.isRequired,
-  bonds: PropTypes.arrayOf(CustomPropTypes.bond).isRequired,
   // eslint-disable-next-line react/no-unused-prop-types
   onExpand: PropTypes.func.isRequired,
+  // eslint-disable-next-line react/no-unused-prop-types
+  recordsByPermit: PropTypes.func.isRequired,
+  getBalance: PropTypes.func.isRequired,
+  getSum: PropTypes.func.isRequired,
+  getAmountSum: PropTypes.func.isRequired,
 };
 
 export const MineReclamationInvoiceTable = (props) => {
-  const invoicesByPermit = (permit) =>
-    props.invoices.filter(({ permit_guid }) => permit_guid === permit.permit_guid);
-  const getSum = (status, permitGuid) =>
-    props.bonds
-      .filter(
-        ({ bond_status_code, permit_guid }) =>
-          bond_status_code === status && permit_guid === permitGuid
-      )
-      .reduce((sum, bond) => +sum + +bond.amount, 0);
-  const getAmountSum = (permitGuid) =>
-    props.invoices
-      .filter(({ permit_guid }) => permit_guid === permitGuid)
-      .reduce((sum, invoice) => +sum + +invoice.amount, 0);
-  const getBalance = (permitGuid) => getSum("CON", permitGuid) - getAmountSum(permitGuid);
   const columns = [
     {
       title: "Permit No.",
@@ -88,7 +78,7 @@ export const MineReclamationInvoiceTable = (props) => {
                 props.openAddReclamationInvoiceModal(
                   event,
                   record.permit_guid,
-                  getBalance(record.permit_guid)
+                  props.getBalance(record.permit_guid)
                 )
               }
             >
@@ -121,6 +111,12 @@ export const MineReclamationInvoiceTable = (props) => {
       dataIndex: "project_id",
       key: "project_id",
       render: (text) => <div title="Project ID">{text || Strings.EMPTY_FIELD}</div>,
+    },
+    {
+      title: "Notes",
+      dataIndex: "note",
+      key: "note",
+      render: (text) => <div title="Notes">{text || Strings.EMPTY_FIELD}</div>,
     },
     {
       title: "Documents",
@@ -158,7 +154,7 @@ export const MineReclamationInvoiceTable = (props) => {
                   props.openEditReclamationInvoiceModal(
                     event,
                     record,
-                    getBalance(record.permit_guid)
+                    props.getBalance(record.permit_guid)
                   )
                 }
               >
@@ -182,7 +178,7 @@ export const MineReclamationInvoiceTable = (props) => {
         align="left"
         pagination={false}
         columns={invoiceColumns}
-        dataSource={invoicesByPermit(record)}
+        dataSource={props.recordsByPermit(record, props.invoices)}
       />
     );
   };
@@ -212,9 +208,9 @@ export const MineReclamationInvoiceTable = (props) => {
     permits.map((permit) => {
       return {
         key: permit.permit_guid,
-        amount_confiscated: getSum("CON", permit.permit_guid),
-        amount_spent: getAmountSum(permit.permit_guid),
-        balance: getBalance(permit.permit_guid),
+        amount_confiscated: props.getSum("CON", permit),
+        amount_spent: props.getAmountSum(permit),
+        balance: props.getBalance(permit),
         ...permit,
       };
     });

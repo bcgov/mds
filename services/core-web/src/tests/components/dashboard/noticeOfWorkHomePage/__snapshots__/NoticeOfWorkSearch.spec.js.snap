@@ -24,13 +24,13 @@ exports[`NoticeOfWorkSearch renders properly 1`] = `
       >
         <ReduxForm
           destroyOnUnmount={true}
-          enableReinitialize={false}
+          enableReinitialize={true}
           forceUnregisterOnUnmount={false}
           form="NOTICE_OF_WORK_SEARCH"
           getFormState={[Function]}
           initialValues={Object {}}
           keepDirtyOnReinitialize={false}
-          onSubmit={[MockFunction]}
+          onSubmit={[Function]}
           persistentSubmitErrors={false}
           pure={true}
           shouldAsyncValidate={[Function]}

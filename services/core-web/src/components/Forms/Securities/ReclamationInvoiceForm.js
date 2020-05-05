@@ -10,6 +10,7 @@ import * as FORM from "@/constants/forms";
 import DocumentTable from "@/components/common/DocumentTable";
 import CustomPropTypes from "@/customPropTypes";
 import FileUpload from "@/components/common/FileUpload";
+import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
 import { DOCUMENT, EXCEL } from "@/constants/fileTypes";
 
 const propTypes = {
@@ -140,6 +141,13 @@ export class ReclamationInvoiceForm extends Component {
               documents={documentTableRecords}
               removeDocument={this.onRemoveExistingFile}
             />
+          </Col>
+        </Row>
+        <Row>
+          <Col md={24}>
+            <Form.Item>
+              <Field id="note" name="note" label="Notes" component={RenderAutoSizeField} />
+            </Form.Item>
           </Col>
         </Row>
         <br />

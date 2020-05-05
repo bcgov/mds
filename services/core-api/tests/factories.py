@@ -35,6 +35,7 @@ from app.api.parties.party_appt.models.party_business_role_appt import PartyBusi
 from app.api.mines.reports.models.mine_report import MineReport
 from app.api.mines.reports.models.mine_report_submission import MineReportSubmission
 from app.api.mines.reports.models.mine_report_comment import MineReportComment
+from app.api.mines.comments.models.mine_comment import MineComment
 
 GUID = factory.LazyFunction(uuid.uuid4)
 TODAY = factory.LazyFunction(datetime.utcnow)
@@ -146,6 +147,17 @@ class MineTailingsStorageFacilityFactory(BaseFactory):
     mine_tailings_storage_facility_guid = GUID
     mine_tailings_storage_facility_name = factory.Faker('last_name')
     mine = factory.SubFactory('tests.factories.MineFactory', minimal=True)
+
+
+class MineCommentFactory(BaseFactory):
+    class Meta:
+        model = MineComment
+
+    class Params:
+        mine = factory.SubFactory('tests.factories.MineFactory')
+
+    mine_guid = factory.SelfAttribute('mine.mine_guid')
+    mine_comment = factory.Faker('paragraph')
 
 
 class VarianceFactory(BaseFactory):
@@ -556,6 +568,16 @@ class MineFactory(BaseFactory):
             extracted = 1
 
         MineReportFactory.create_batch(size=extracted, mine=obj, **kwargs)
+
+    @factory.post_generation
+    def comments(obj, create, extracted, **kwargs):
+        if not create:
+            return
+
+        if not isinstance(extracted, int):
+            extracted = 1
+
+        MineCommentFactory.create_batch(size=extracted, mine=obj, **kwargs)
 
 
 class PermitFactory(BaseFactory):

@@ -76,6 +76,12 @@ class Mine(AuditMixin, Base):
     mine_incidents = db.relationship('MineIncident', backref="mine", lazy='select')
     mine_reports = db.relationship('MineReport', lazy='select')
 
+    comments = db.relationship(
+        'MineComment',
+        order_by='MineComment.comment_datetime',
+        primaryjoin="and_(MineComment.mine_guid == Mine.mine_guid, MineComment.deleted_ind==False)",
+        lazy='joined')
+
     region = db.relationship('MineRegionCode', lazy='select')
 
     def __repr__(self):
