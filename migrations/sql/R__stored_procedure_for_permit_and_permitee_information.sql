@@ -644,9 +644,9 @@ CREATE OR REPLACE FUNCTION transfer_permit_permitee_information() RETURNS void A
             --Select only new entry in ETL_PERMIT table
             new_permit AS (
                 SELECT DISTINCT mine_guid, permit_no, permit_status_code
-                FROM ETL_PERMIT etl
-                WHERE permit_guid NOT IN (
-                    SELECT permit_guid
+                FROM ETL_PERMIT etl 
+                WHERE (mine_guid,permit_no) NOT IN (
+                    SELECT mine_guid, permit_no
                     FROM permit
                 )
 				AND issue_date = (select max(issue_date) from ETL_PERMIT where etl.permit_no = ETL_PERMIT.permit_no and etl.mine_guid = ETL_PERMIT.mine_guid)
