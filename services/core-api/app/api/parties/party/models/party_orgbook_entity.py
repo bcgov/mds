@@ -26,6 +26,14 @@ class PartyOrgBookEntity(AuditMixin, Base):
         return '<PartyOrgBookEntity %r>' % self.party_orgbook_entity_id
 
     @classmethod
+    def find_by_party_guid(cls, party_guid):
+        return cls.query.filter_by(party_guid=party_guid).first()
+
+    @classmethod
+    def find_by_credential_id(cls, credential_id):
+        return cls.query.filter_by(credential_id=credential_id).first()
+
+    @classmethod
     def create(cls,
                registration_id,
                registration_status,

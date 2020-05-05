@@ -100,15 +100,15 @@ export class PartyOrgBookForm extends Component {
               <h5>OrgBook Entity</h5>
               <p>
                 This party has not been associated with an entity on OrgBook. To associate this
-                party with an entity on OrgBook, search for the entity using the search below and
-                select the&nbsp;
+                party with an entity on OrgBook, search for the correct entity using the search
+                below and then select the&nbsp;
                 <strong>Associate</strong> button.
               </p>
             </Col>
           </Row>
           <Row gutter={16}>
             <Col span={24}>
-              <Form.Item label="Search OrgBook">
+              <Form.Item>
                 <Select
                   showSearch
                   showArrow
@@ -134,7 +134,6 @@ export class PartyOrgBookForm extends Component {
             </Col>
             <Col span={24}>
               <Button
-                type="secondary"
                 className="full-mobile"
                 href={
                   hasOrgBookCredential
@@ -144,8 +143,10 @@ export class PartyOrgBookForm extends Component {
                 target="_blank"
                 disabled={!hasOrgBookCredential}
               >
-                <Icon type="book" />
-                View on OrgBook
+                <span>
+                  <Icon type="book" className="padding-small--right" />
+                  View on OrgBook
+                </span>
               </Button>
               <Button
                 type="primary"

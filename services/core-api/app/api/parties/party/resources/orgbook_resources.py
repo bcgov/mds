@@ -1,3 +1,4 @@
+import json
 from flask import request
 from flask_restplus import Resource
 
@@ -11,8 +12,9 @@ class SearchAutocompleteList(Resource):
     @requires_role_view_all
     def get(self):
         search = request.args.get('search')
-        resp = OrgBookService.search_autocomplete_list(search)['results']
-        return resp
+        resp = OrgBookService.search_autocomplete_list(search)
+        results = json.loads(resp.text)['results']
+        return results
 
 
 class CredentialRetrieveFormatted(Resource):
@@ -20,4 +22,5 @@ class CredentialRetrieveFormatted(Resource):
     @requires_role_view_all
     def get(self, credential_id):
         resp = OrgBookService.credential_retrieve_formatted(credential_id)
-        return resp
+        credential = json.loads(resp.text)
+        return credential
