@@ -167,12 +167,12 @@ exports[`ContactHomePage renders properly 1`] = `
           parties={
             Object {
               "18133c75-49ad-4101-85f3-a43e35ae989a": Object {
-                "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-                "name": "mock name",
+                "party_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                "party_name": "mock name",
               },
               "18145c75-49ad-0101-85f3-a43e45ae989a": Object {
-                "guid": "18145c75-49ad-0101-85f3-a43e45ae989a",
-                "name": "mock Two",
+                "party_guid": "18145c75-49ad-0101-85f3-a43e45ae989a",
+                "party_name": "mock Two",
               },
             }
           }

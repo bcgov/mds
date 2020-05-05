@@ -301,23 +301,23 @@ export const PARTY = {
   partyIds: ["18133c75-49ad-4101-85f3-a43e35ae989a", "18145c75-49ad-0101-85f3-a43e45ae989a"],
   parties: {
     "18133c75-49ad-4101-85f3-a43e35ae989a": {
-      guid: "18133c75-49ad-4101-85f3-a43e35ae989a",
-      name: "mock name",
+      party_guid: "18133c75-49ad-4101-85f3-a43e35ae989a",
+      party_name: "mock name",
     },
     "18145c75-49ad-0101-85f3-a43e45ae989a": {
-      guid: "18145c75-49ad-0101-85f3-a43e45ae989a",
-      name: "mock Two",
+      party_guid: "18145c75-49ad-0101-85f3-a43e45ae989a",
+      party_name: "mock Two",
     },
   },
   partiesWithAppointments: {
     "18133c75-49ad-4101-85f3-a43e35ae989a": {
-      guid: "18133c75-49ad-4101-85f3-a43e35ae989a",
-      name: "mock name",
+      party_guid: "18133c75-49ad-4101-85f3-a43e35ae989a",
+      party_name: "mock name",
       mine_party_appt: [],
     },
     "18145c75-49ad-0101-85f3-a43e45ae989a": {
-      guid: "18145c75-49ad-0101-85f3-a43e45ae989a",
-      name: "mock Two",
+      party_guid: "18145c75-49ad-0101-85f3-a43e45ae989a",
+      party_name: "mock Two",
       mine_party_appt: [],
     },
   },
