@@ -12,20 +12,27 @@ const propTypes = {
   party: CustomPropTypes.party.isRequired,
   isPerson: PropTypes.bool.isRequired,
   provinceOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
-  initialValues: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
-export const EditPartyModal = (props) => (
-  <EditFullPartyForm
-    onSubmit={props.onSubmit}
-    closeModal={props.closeModal}
-    party={props.parties[props.party.party_guid]}
-    isPerson={props.isPerson}
-    provinceOptions={props.provinceOptions}
-    initialValues={props.initialValues}
-  />
-);
+export const EditPartyModal = (props) => {
+  const party = props.parties[props.party.party_guid];
+  const initialValues = {
+    ...party,
+    ...(party.address[0] ? party.address[0] : {}),
+    email: party.email && party.email !== "Unknown" ? party.email : null,
+  };
 
+  return (
+    <EditFullPartyForm
+      onSubmit={props.onSubmit}
+      closeModal={props.closeModal}
+      party={party}
+      isPerson={props.isPerson}
+      provinceOptions={props.provinceOptions}
+      initialValues={initialValues}
+    />
+  );
+};
 const mapStateToProps = (state) => ({
   parties: getParties(state),
 });

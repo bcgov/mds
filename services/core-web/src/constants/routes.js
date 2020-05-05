@@ -261,3 +261,5 @@ export const VIEW_MINESPACE = (mineGuid) =>
 
 const ORGBOOK_URL = "https://orgbook.gov.bc.ca";
 export const ORGBOOK_ENTITY_URL = (sourceId) => `${ORGBOOK_URL}/en/organization/${sourceId}`;
+export const ORGBOOK_CREDENTIAL_URL = (sourceId, credentialId) =>
+  `${ORGBOOK_URL}/en/organization/${sourceId}/cred/${credentialId}`;
