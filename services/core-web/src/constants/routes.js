@@ -258,3 +258,6 @@ export const VIEW_NOTICE_OF_WORK_APPLICATION = {
 const MINESPACE_URL = "https://minespace.gov.bc.ca/";
 export const VIEW_MINESPACE = (mineGuid) =>
   `${MINESPACE_URL}/mines/${mineGuid}/overview?redirectingFromCore=true`;
+
+const ORGBOOK_URL = "https://orgbook.gov.bc.ca";
+export const ORGBOOK_ENTITY_URL = (sourceId) => `${ORGBOOK_URL}/en/organization/${sourceId}`;

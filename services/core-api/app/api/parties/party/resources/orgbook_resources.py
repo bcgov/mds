@@ -8,7 +8,9 @@ from app.api.services.orgbook_service import OrgBookService
 
 
 class SearchAutocompleteList(Resource):
-    @api.doc(description='', params={})
+    @api.doc(
+        description='Search OrgBook.',
+        params={'search': 'The search term to use when searching OrgBook.'})
     @requires_role_view_all
     def get(self):
         search = request.args.get('search')
@@ -18,7 +20,7 @@ class SearchAutocompleteList(Resource):
 
 
 class CredentialRetrieveFormatted(Resource):
-    @api.doc(description='', params={})
+    @api.doc(description='Get information on an OrgBook credential.')
     @requires_role_view_all
     def get(self, credential_id):
         resp = OrgBookService.credential_retrieve_formatted(credential_id)

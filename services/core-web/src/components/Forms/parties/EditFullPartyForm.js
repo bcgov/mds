@@ -11,11 +11,12 @@ import {
   maxLength,
   number,
 } from "@common/utils/Validate";
-import { normalizePhone, upperCase, resetForm } from "@common/utils/helpers";
+import { normalizePhone, upperCase, resetForm, formatDate } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
 import CustomPropTypes from "@/customPropTypes";
 import { renderConfig } from "@/components/common/config";
 import PartyOrgBookForm from "@/components/Forms/parties/PartyOrgBookForm";
+import { ORGBOOK_ENTITY_URL } from "@/constants/routes";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
@@ -202,9 +203,36 @@ export const EditFullPartyForm = (props) => {
             </Row>
           </Col>
         </Row>
-        <Row>
-          <Col>
-            <PartyOrgBookForm party={props.party} />
+        <Row gutter={48}>
+          <Col span={24}>
+            <h5>OrgBook Entity</h5>
+            {(hasOrgBookEntity && (
+              <p>
+                This party was associated with the following entity on OrgBook by&nbsp;
+                <strong>{props.party.party_orgbook_entity.association_user}</strong> on&nbsp;
+                <strong>
+                  {formatDate(props.party.party_orgbook_entity.association_timestamp)}
+                </strong>
+                :&nbsp;
+                <a
+                  href={ORGBOOK_ENTITY_URL(props.party.party_orgbook_entity.registration_id)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {props.party.party_orgbook_entity.name_text}
+                </a>
+              </p>
+            )) || (
+              <>
+                <p>
+                  This party has not been associated with an entity on OrgBook. To associate this
+                  party with an entity on OrgBook, search for the correct entity using the search
+                  below and then select the&nbsp;
+                  <strong>Associate</strong> button.
+                </p>
+                <PartyOrgBookForm party={props.party} />
+              </>
+            )}
           </Col>
         </Row>
         <div className="right center-mobile">

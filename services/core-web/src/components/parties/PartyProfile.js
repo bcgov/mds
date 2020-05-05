@@ -120,7 +120,7 @@ export class PartyProfile extends Component {
 
   render() {
     const { id } = this.props.match.params;
-    const parties = this.props.parties[id];
+    const party = this.props.parties[id];
     const columns = [
       {
         title: "Mine Name",
@@ -157,9 +157,9 @@ export class PartyProfile extends Component {
         startDate: formatDate(relationship.start_date) || "Unknown",
       }));
 
-    if (this.state.isLoaded && parties) {
-      const formattedName = formatTitleString(parties.name);
-      const isPerson = parties.party_type_code === ModalContent.PERSON;
+    if (this.state.isLoaded && party) {
+      const formattedName = formatTitleString(party.name);
+      const isPerson = party.party_type_code === ModalContent.PERSON;
       return (
         <div className="profile">
           <div className="profile__header">
@@ -198,7 +198,7 @@ export class PartyProfile extends Component {
                     onClick={(event) =>
                       this.openEditPartyModal(
                         event,
-                        parties,
+                        party,
                         this.editParty,
                         ModalContent.EDIT_PARTY(formattedName),
                         isPerson,
@@ -216,8 +216,8 @@ export class PartyProfile extends Component {
               <div className="padding-right">
                 <Icon type="mail" className="icon-sm" />
               </div>
-              {parties.email && parties.email !== "Unknown" ? (
-                <a href={`mailto:${parties.email}`}>{parties.email}</a>
+              {party.email && party.email !== "Unknown" ? (
+                <a href={`mailto:${party.email}`}>{party.email}</a>
               ) : (
                 <p>{Strings.EMPTY_FIELD}</p>
               )}
@@ -227,10 +227,10 @@ export class PartyProfile extends Component {
                 <Icon type="phone" className="icon-sm" />
               </div>
               <p>
-                {parties.phone_no} {parties.phone_ext ? `x${parties.phone_ext}` : ""}
+                {party.phone_no} {party.phone_ext ? `x${party.phone_ext}` : ""}
               </p>
             </div>
-            <Address address={parties.address[0] || {}} />
+            <Address address={party.address[0] || {}} />
           </div>
           <div className="profile__content">
             <Tabs

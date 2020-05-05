@@ -5,18 +5,21 @@ import debounce, { isEmpty } from "lodash";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import {
+  fetchPartyById,
   searchOrgBook,
   fetchOrgBookCredential,
   createPartyOrgBookEntity,
 } from "@common/actionCreators/partiesActionCreator";
 import { getSearchOrgBookResponse, getOrgBookCredential } from "@common/selectors/partiesSelectors";
 import CustomPropTypes from "@/customPropTypes";
+import { ORGBOOK_ENTITY_URL } from "@/constants/routes";
 
 const propTypes = {
+  fetchPartyById: PropTypes.func.isRequired,
   searchOrgBook: PropTypes.func.isRequired,
   fetchOrgBookCredential: PropTypes.func.isRequired,
   createPartyOrgBookEntity: PropTypes.func.isRequired,
-  searchOrgBookResponse: PropTypes.objectOf(PropTypes.any),
+  searchOrgBookResponse: PropTypes.arrayOf(PropTypes.any),
   orgBookCredential: PropTypes.objectOf(PropTypes.any),
   party: CustomPropTypes.party.isRequired,
 };
@@ -47,7 +50,9 @@ export class PartyOrgBookForm extends Component {
         credential_id: this.state.credential.id,
       })
       .finally(() => {
-        this.setState({ isAssociating: false });
+        this.props.fetchPartyById(this.props.party.party_guid).finally(() => {
+          this.setState({ isAssociating: false });
+        });
       });
   };
 
@@ -93,75 +98,60 @@ export class PartyOrgBookForm extends Component {
     const hasOrgBookCredential = !isEmpty(this.state.credential);
 
     return (
-      <Row gutter={48}>
-        <Col span={24}>
-          <Row gutter={16}>
-            <Col md={24} xs={24}>
-              <h5>OrgBook Entity</h5>
-              <p>
-                This party has not been associated with an entity on OrgBook. To associate this
-                party with an entity on OrgBook, search for the correct entity using the search
-                below and then select the&nbsp;
-                <strong>Associate</strong> button.
-              </p>
-            </Col>
-          </Row>
-          <Row gutter={16}>
-            <Col span={24}>
-              <Form.Item>
-                <Select
-                  showSearch
-                  showArrow
-                  labelInValue
-                  placeholder="Start typing to search OrgBook..."
-                  notFoundContent={
-                    this.state.isSearching ? (
-                      <Spin size="small" indicator={<Icon type="loading" />} />
-                    ) : null
-                  }
-                  filterOption={false}
-                  onSearch={this.handleSearchDebounced}
-                  onChange={this.handleChange}
-                  onSelect={this.handleSelect}
-                  style={{ width: "100%" }}
-                  disabled={this.state.isAssociating}
-                >
-                  {this.state.options.map((option) => (
-                    <Select.Option key={option.value}>{option.text}</Select.Option>
-                  ))}
-                </Select>
-              </Form.Item>
-            </Col>
-            <Col span={24}>
-              <Button
-                className="full-mobile"
-                href={
-                  hasOrgBookCredential
-                    ? `https://orgbook.gov.bc.ca/en/organization/${this.state.credential.topic.source_id}`
-                    : null
-                }
-                target="_blank"
-                disabled={!hasOrgBookCredential}
-              >
-                <span>
-                  <Icon type="book" className="padding-small--right" />
-                  View on OrgBook
-                </span>
-              </Button>
-              <Button
-                type="primary"
-                className="full-mobile"
-                disabled={!hasOrgBookCredential}
-                onClick={this.handleAssociateButtonClick}
-                loading={this.state.isAssociating}
-              >
-                <span>
-                  <Icon type="check-circle" className="padding-small--right" />
-                  Associate
-                </span>
-              </Button>
-            </Col>
-          </Row>
+      <Row>
+        <Col>
+          <Form.Item>
+            <Select
+              showSearch
+              showArrow
+              labelInValue
+              placeholder="Start typing to search OrgBook..."
+              notFoundContent={
+                this.state.isSearching ? (
+                  <Spin size="small" indicator={<Icon type="loading" />} />
+                ) : null
+              }
+              filterOption={false}
+              onSearch={this.handleSearchDebounced}
+              onChange={this.handleChange}
+              onSelect={this.handleSelect}
+              style={{ width: "100%" }}
+              disabled={this.state.isAssociating}
+            >
+              {this.state.options.map((option) => (
+                <Select.Option key={option.value}>{option.text}</Select.Option>
+              ))}
+            </Select>
+          </Form.Item>
+        </Col>
+        <Col>
+          <Button
+            className="full-mobile"
+            href={
+              hasOrgBookCredential
+                ? ORGBOOK_ENTITY_URL(this.state.credential.topic.source_id)
+                : null
+            }
+            target="_blank"
+            disabled={!hasOrgBookCredential}
+          >
+            <span>
+              <Icon type="book" className="padding-small--right" />
+              View on OrgBook
+            </span>
+          </Button>
+          <Button
+            type="primary"
+            className="full-mobile"
+            disabled={!hasOrgBookCredential}
+            onClick={this.handleAssociateButtonClick}
+            loading={this.state.isAssociating}
+          >
+            <span>
+              <Icon type="check-circle" className="padding-small--right" />
+              Associate
+            </span>
+          </Button>
         </Col>
       </Row>
     );
@@ -176,6 +166,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
+      fetchPartyById,
       searchOrgBook,
       fetchOrgBookCredential,
       createPartyOrgBookEntity,
