@@ -288,7 +288,7 @@ export const EditFullPartyForm = (props) => {
             <Button className="full-mobile">Cancel</Button>
           </Popconfirm>
           <Button className="full-mobile" type="primary" htmlType="submit">
-            {isPerson ? "Update Personnel" : "Update Company"}
+            {isPerson ? "Update Person" : "Update Company"}
           </Button>
         </div>
       </Form>
