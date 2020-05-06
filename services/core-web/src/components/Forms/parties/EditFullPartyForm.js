@@ -12,6 +12,7 @@ import {
   number,
 } from "@common/utils/Validate";
 import { normalizePhone, upperCase, resetForm, formatDateTime } from "@common/utils/helpers";
+import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as FORM from "@/constants/forms";
 import CustomPropTypes from "@/customPropTypes";
 import { renderConfig } from "@/components/common/config";
@@ -262,18 +263,21 @@ export const EditFullPartyForm = (props) => {
               </Row>
             )) ||
               (!isPerson && (
-                <Row>
-                  <Col>
-                    <h5>OrgBook Entity</h5>
-                    <Paragraph>
-                      This party has not been associated with an entity on OrgBook. To associate
-                      this party with an entity on OrgBook, search for the correct entity using the
-                      search below and then select the&nbsp;
-                      <Text strong>Associate</Text> button.
-                    </Paragraph>
-                    <PartyOrgBookForm party={props.party} />
-                  </Col>
-                </Row>
+                <AuthorizationWrapper inTesting>
+                  <Row>
+                    <Col>
+                      <h5>OrgBook Entity</h5>
+                      <Paragraph>
+                        This party has not been associated with an entity on OrgBook. To associate
+                        this party with an entity on OrgBook, search for the correct entity using
+                        the search below and then select the&nbsp;
+                        <Text strong>Associate</Text>
+                        &nbsp;button.
+                      </Paragraph>
+                      <PartyOrgBookForm party={props.party} />
+                    </Col>
+                  </Row>
+                </AuthorizationWrapper>
               ))}
           </Col>
         </Row>
