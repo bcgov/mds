@@ -13,7 +13,7 @@ from app.api.utils.resources_mixins import UserMixin
 
 class ApplicationStartStopListResource(Resource, UserMixin):
     @api.doc(description='Save an application start stop')
-    #@requires_role_edit_submissions
+    @requires_role_edit_submissions
     @api.expect(APPLICATIONSTARTSTOP)
     def post(self):
         
