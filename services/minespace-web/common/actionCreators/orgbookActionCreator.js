@@ -1,5 +1,4 @@
 import { showLoading, hideLoading } from "react-redux-loading-bar";
-import queryString from "query-string";
 import { request, success, error } from "../actions/genericActions";
 import * as reducerTypes from "../constants/reducerTypes";
 import * as orgbookActions from "../actions/orgbookActions";
@@ -12,10 +11,7 @@ export const searchOrgBook = (search) => (dispatch) => {
   dispatch(request(reducerTypes.ORGBOOK_SEARCH));
   dispatch(showLoading());
   return CustomAxios()
-    .get(
-      `${ENVIRONMENT.apiUrl + API.ORGBOOK_SEARCH}?${queryString.stringify({ search })}`,
-      createRequestHeader()
-    )
+    .get(ENVIRONMENT.apiUrl + API.ORGBOOK_SEARCH(search), createRequestHeader())
     .then((response) => {
       dispatch(success(reducerTypes.ORGBOOK_SEARCH));
       dispatch(orgbookActions.storeSearchOrgBookResults(response.data));
@@ -28,7 +24,7 @@ export const fetchOrgBookCredential = (credentialId) => (dispatch) => {
   dispatch(request(reducerTypes.ORGBOOK_CREDENTIAL));
   dispatch(showLoading());
   return CustomAxios()
-    .get(`${ENVIRONMENT.apiUrl + API.ORGBOOK_CREDENTIAL(credentialId)}`, createRequestHeader())
+    .get(ENVIRONMENT.apiUrl + API.ORGBOOK_CREDENTIAL(credentialId), createRequestHeader())
     .then((response) => {
       dispatch(success(reducerTypes.ORGBOOK_CREDENTIAL));
       dispatch(orgbookActions.storeOrgBookCredential(response.data));

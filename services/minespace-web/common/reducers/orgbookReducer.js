@@ -8,7 +8,7 @@ const initialState = {
 
 export const orgbookReducer = (state = initialState, action) => {
   switch (action.type) {
-    case actionTypes.STORE_ORGBOOK_SEARCH:
+    case actionTypes.STORE_ORGBOOK_SEARCH_RESULTS:
       return {
         ...state,
         searchOrgBookResults: action.payload,

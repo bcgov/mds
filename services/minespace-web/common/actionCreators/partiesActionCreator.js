@@ -198,25 +198,21 @@ export const addDocumentToRelationship = ({ mineGuid, minePartyApptGuid }, paylo
 };
 
 export const createPartyOrgBookEntity = (partyGuid, payload) => (dispatch) => {
-  dispatch(request(reducerTypes.CREATE_PARTY_ORGBOOK_ENTITY));
+  dispatch(request(reducerTypes.PARTY_ORGBOOK_ENTITY));
   dispatch(showLoading("modal"));
   return CustomAxios()
-    .post(
-      ENVIRONMENT.apiUrl + API.CREATE_PARTY_ORGBOOK_ENTITY(partyGuid),
-      payload,
-      createRequestHeader()
-    )
+    .post(ENVIRONMENT.apiUrl + API.PARTY_ORGBOOK_ENTITY(partyGuid), payload, createRequestHeader())
     .then((response) => {
       dispatch(hideLoading("modal"));
       notification.success({
         message: "Successfully associated party with OrgBook entity",
         duration: 10,
       });
-      dispatch(success(reducerTypes.CREATE_PARTY_ORGBOOK_ENTITY));
+      dispatch(success(reducerTypes.PARTY_ORGBOOK_ENTITY));
       return response;
     })
     .catch((err) => {
-      dispatch(error(reducerTypes.CREATE_PARTY_ORGBOOK_ENTITY));
+      dispatch(error(reducerTypes.PARTY_ORGBOOK_ENTITY));
       dispatch(hideLoading("modal"));
       throw new Error(err);
     });
