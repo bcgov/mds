@@ -120,12 +120,12 @@ export const updatePartyRelationship = (payload) => (dispatch) => {
     .finally(() => dispatch(hideLoading()));
 };
 
-export const fetchPartyRelationships = (parms) => (dispatch) => {
+export const fetchPartyRelationships = (params) => (dispatch) => {
   dispatch(request(reducerTypes.FETCH_PARTY_RELATIONSHIPS));
   dispatch(showLoading());
   return CustomAxios()
     .get(
-      `${ENVIRONMENT.apiUrl + API.PARTY_RELATIONSHIP}?${queryString.stringify(parms)}`,
+      `${ENVIRONMENT.apiUrl + API.PARTY_RELATIONSHIP}?${queryString.stringify(params)}`,
       createRequestHeader()
     )
     .then((response) => {
@@ -195,4 +195,60 @@ export const addDocumentToRelationship = ({ mineGuid, minePartyApptGuid }, paylo
     })
     .catch(() => dispatch(error(reducerTypes.ADD_DOCUMENT_TO_RELATIONSHIP)))
     .finally(() => dispatch(hideLoading("modal")));
+};
+
+export const searchOrgBook = (search) => (dispatch) => {
+  dispatch(request(reducerTypes.ORGBOOK_SEARCH));
+  dispatch(showLoading());
+  partyActions.storeSearchOrgBookResponse(null);
+  return CustomAxios()
+    .get(
+      `${ENVIRONMENT.apiUrl + API.ORGBOOK_SEARCH}?${queryString.stringify({ search })}`,
+      createRequestHeader()
+    )
+    .then((response) => {
+      dispatch(success(reducerTypes.ORGBOOK_SEARCH));
+      dispatch(partyActions.storeSearchOrgBookResponse(response.data));
+    })
+    .catch(() => dispatch(error(reducerTypes.ORGBOOK_SEARCH)))
+    .finally(() => dispatch(hideLoading()));
+};
+
+export const fetchOrgBookCredential = (credentialId) => (dispatch) => {
+  dispatch(request(reducerTypes.ORGBOOK_CREDENTIAL));
+  dispatch(showLoading());
+  partyActions.storeOrgBookCredential(null);
+  return CustomAxios()
+    .get(`${ENVIRONMENT.apiUrl + API.ORGBOOK_CREDENTIAL(credentialId)}`, createRequestHeader())
+    .then((response) => {
+      dispatch(success(reducerTypes.ORGBOOK_CREDENTIAL));
+      dispatch(partyActions.storeOrgBookCredential(response.data));
+    })
+    .catch(() => dispatch(error(reducerTypes.ORGBOOK_CREDENTIAL)))
+    .finally(() => dispatch(hideLoading()));
+};
+
+export const createPartyOrgBookEntity = (partyGuid, payload) => (dispatch) => {
+  dispatch(request(reducerTypes.CREATE_PARTY_ORGBOOK_ENTITY));
+  dispatch(showLoading("modal"));
+  return CustomAxios()
+    .post(
+      ENVIRONMENT.apiUrl + API.CREATE_PARTY_ORGBOOK_ENTITY(partyGuid),
+      payload,
+      createRequestHeader()
+    )
+    .then((response) => {
+      dispatch(hideLoading("modal"));
+      notification.success({
+        message: "Successfully associated party with OrgBook entity",
+        duration: 10,
+      });
+      dispatch(success(reducerTypes.CREATE_PARTY_ORGBOOK_ENTITY));
+      return response;
+    })
+    .catch((err) => {
+      dispatch(error(reducerTypes.CREATE_PARTY_ORGBOOK_ENTITY));
+      dispatch(hideLoading("modal"));
+      throw new Error(err);
+    });
 };

@@ -33,6 +33,7 @@ export const EditPartyModal = (props) => {
     />
   );
 };
+
 const mapStateToProps = (state) => ({
   parties: getParties(state),
 });

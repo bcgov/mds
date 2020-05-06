@@ -264,6 +264,7 @@ export const EditFullPartyForm = (props) => {
               (!props.isPerson && (
                 <Row>
                   <Col>
+                    <h5>OrgBook Entity</h5>
                     <Paragraph>
                       This party has not been associated with an entity on OrgBook. To associate
                       this party with an entity on OrgBook, search for the correct entity using the
