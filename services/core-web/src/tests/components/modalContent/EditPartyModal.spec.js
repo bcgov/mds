@@ -15,7 +15,7 @@ const setupProps = () => {
   props.isPerson = true;
   props.provinceOptions = MOCK.DROPDOWN_PROVINCE_OPTIONS;
   props.parties = MOCK.PARTY.parties;
-  props.party = MOCK.PARTY.parties[MOCK.PARTY.partyIds[0]];
+  props.partyGuid = MOCK.PARTY.parties[MOCK.PARTY.partyIds[0]].party_guid;
 };
 
 beforeEach(() => {

@@ -21,7 +21,6 @@ import { ORGBOOK_ENTITY_URL, ORGBOOK_CREDENTIAL_URL } from "@/constants/routes";
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   party: CustomPropTypes.party.isRequired,
-  isPerson: PropTypes.bool.isRequired,
   closeModal: PropTypes.func.isRequired,
   provinceOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
 };
@@ -29,6 +28,7 @@ const propTypes = {
 const { Paragraph, Text } = Typography;
 
 export const EditFullPartyForm = (props) => {
+  const isPerson = props.party.party_type_code === "PER";
   const orgBookEntity = props.party.party_orgbook_entity;
   const hasOrgBookEntity = !isEmpty(orgBookEntity);
   return (
@@ -41,7 +41,7 @@ export const EditFullPartyForm = (props) => {
                 <h5>Basic Details</h5>
               </Col>
             </Row>
-            {props.isPerson && (
+            {isPerson && (
               <Row gutter={16}>
                 <Col md={12} xs={24}>
                   <Form.Item>
@@ -67,7 +67,7 @@ export const EditFullPartyForm = (props) => {
                 </Col>
               </Row>
             )}
-            {!props.isPerson && (
+            {!isPerson && (
               <Row gutter={16}>
                 <Col span={24}>
                   <Form.Item>
@@ -261,7 +261,7 @@ export const EditFullPartyForm = (props) => {
                 </Col>
               </Row>
             )) ||
-              (!props.isPerson && (
+              (!isPerson && (
                 <Row>
                   <Col>
                     <h5>OrgBook Entity</h5>
@@ -288,7 +288,7 @@ export const EditFullPartyForm = (props) => {
             <Button className="full-mobile">Cancel</Button>
           </Popconfirm>
           <Button className="full-mobile" type="primary" htmlType="submit">
-            {props.isPerson ? "Update Personnel" : "Update Company"}
+            {isPerson ? "Update Personnel" : "Update Company"}
           </Button>
         </div>
       </Form>

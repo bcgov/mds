@@ -9,13 +9,12 @@ const propTypes = {
   onSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   parties: PropTypes.arrayOf(CustomPropTypes.party).isRequired,
-  party: CustomPropTypes.party.isRequired,
-  isPerson: PropTypes.bool.isRequired,
+  partyGuid: PropTypes.string.isRequired,
   provinceOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
 };
 
 export const EditPartyModal = (props) => {
-  const party = props.parties[props.party.party_guid];
+  const party = props.parties[props.partyGuid];
   const initialValues = {
     ...party,
     ...(party.address[0] ? party.address[0] : {}),
@@ -27,7 +26,6 @@ export const EditPartyModal = (props) => {
       onSubmit={props.onSubmit}
       closeModal={props.closeModal}
       party={party}
-      isPerson={props.isPerson}
       provinceOptions={props.provinceOptions}
       initialValues={initialValues}
     />

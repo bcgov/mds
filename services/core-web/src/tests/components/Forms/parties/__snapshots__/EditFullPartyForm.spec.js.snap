@@ -282,6 +282,9 @@ exports[`EditFullPartyForm renders properly 1`] = `
           gutter={0}
         >
           <Col>
+            <h5>
+              OrgBook Entity
+            </h5>
             <Paragraph>
               This party has not been associated with an entity on OrgBook. To associate this party with an entity on OrgBook, search for the correct entity using the search below and then select the 
               <Text

@@ -13,8 +13,6 @@ export const {
   getLastCreatedParty,
   getInspectors,
   getInspectorsList,
-  getSearchOrgBookResponse,
-  getOrgBookCredential,
 } = partiesReducer;
 
 export const getSummaryPartyRelationships = createSelector(

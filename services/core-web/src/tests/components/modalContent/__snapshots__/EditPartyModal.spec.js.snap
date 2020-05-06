@@ -18,7 +18,6 @@ exports[`EditPartyModal renders properly 1`] = `
       "party_name": "mock name",
     }
   }
-  isPerson={true}
   keepDirtyOnReinitialize={true}
   onSubmitSuccess={[Function]}
   party={

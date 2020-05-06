@@ -6,11 +6,10 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import {
   fetchPartyById,
-  searchOrgBook,
-  fetchOrgBookCredential,
   createPartyOrgBookEntity,
 } from "@common/actionCreators/partiesActionCreator";
-import { getSearchOrgBookResponse, getOrgBookCredential } from "@common/selectors/partiesSelectors";
+import { searchOrgBook, fetchOrgBookCredential } from "@common/actionCreators/orgbookActionCreator";
+import { getSearchOrgBookResults, getOrgBookCredential } from "@common/selectors/orgbookSelectors";
 import CustomPropTypes from "@/customPropTypes";
 import { ORGBOOK_ENTITY_URL } from "@/constants/routes";
 
@@ -19,13 +18,13 @@ const propTypes = {
   searchOrgBook: PropTypes.func.isRequired,
   fetchOrgBookCredential: PropTypes.func.isRequired,
   createPartyOrgBookEntity: PropTypes.func.isRequired,
-  searchOrgBookResponse: PropTypes.arrayOf(PropTypes.any),
+  searchOrgBookResults: PropTypes.arrayOf(PropTypes.any),
   orgBookCredential: PropTypes.objectOf(PropTypes.any),
   party: CustomPropTypes.party.isRequired,
 };
 
 const defaultProps = {
-  searchOrgBookResponse: null,
+  searchOrgBookResults: null,
   orgBookCredential: null,
 };
 
@@ -83,7 +82,7 @@ export class PartyOrgBookForm extends Component {
         return;
       }
 
-      const results = this.props.searchOrgBookResponse || [];
+      const results = this.props.searchOrgBookResults || [];
       const selectOptions = results
         .filter((result) => result.names && result.names.length > 0)
         .map((result) => ({
@@ -159,7 +158,7 @@ export class PartyOrgBookForm extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  searchOrgBookResponse: getSearchOrgBookResponse(state),
+  searchOrgBookResults: getSearchOrgBookResults(state),
   orgBookCredential: getOrgBookCredential(state),
 });
 

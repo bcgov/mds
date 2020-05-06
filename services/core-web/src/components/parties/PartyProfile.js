@@ -82,10 +82,10 @@ export class PartyProfile extends Component {
     }
   };
 
-  openEditPartyModal = (event, party, onSubmit, title, isPerson, provinceOptions) => {
+  openEditPartyModal = (event, partyGuid, onSubmit, title, provinceOptions) => {
     event.preventDefault();
     this.props.openModal({
-      props: { onSubmit, title, party, isPerson, provinceOptions },
+      props: { partyGuid, onSubmit, title, provinceOptions },
       content: modalConfig.EDIT_PARTY,
       width: "75vw",
       clearOnSubmit: false,
@@ -153,7 +153,6 @@ export class PartyProfile extends Component {
 
     if (this.state.isLoaded && party) {
       const formattedName = formatTitleString(party.name);
-      const isPerson = party.party_type_code === ModalContent.PERSON;
       return (
         <div className="profile">
           <div className="profile__header">
@@ -192,10 +191,9 @@ export class PartyProfile extends Component {
                     onClick={(event) =>
                       this.openEditPartyModal(
                         event,
-                        party,
+                        party.party_guid,
                         this.editParty,
                         ModalContent.EDIT_PARTY(formattedName),
-                        isPerson,
                         this.props.provinceOptions
                       )
                     }
