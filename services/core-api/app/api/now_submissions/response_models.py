@@ -413,7 +413,7 @@ APPLICATIONSTARTSTOP = api.model(
         'attachments': fields.List(fields.Nested(DOCUMENT)),
         'status': fields.String,
         'approvalNumber': fields.String,
-        'links': fields.List(fields.Nested(fields.String)),
+        'links': fields.List(fields.String),
         'stopWorkDate': fields.String,
         'startWorkDate': fields.String,
         'receivedDate': fields.String,
