@@ -1,8 +1,8 @@
 from flask_restplus import Namespace
 
-from app.api.orgbook.resources.orgbook_resources import SearchAutocompleteList, CredentialRetrieveFormatted
+from app.api.orgbook.resources.orgbook_resources import SearchResource, CredentialResource
 
 api = Namespace('orgbook', description='OrgBook API Gateway')
 
-api.add_resource(SearchAutocompleteList, '/search')
-api.add_resource(CredentialRetrieveFormatted, '/credential/<int:credential_id>')
+api.add_resource(SearchResource, '/search')
+api.add_resource(CredentialResource, '/credential/<int:credential_id>')

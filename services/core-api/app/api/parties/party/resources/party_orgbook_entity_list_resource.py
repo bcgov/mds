@@ -2,7 +2,6 @@ import json
 import requests
 from flask_restplus import Resource
 from werkzeug.exceptions import BadRequest, InternalServerError, NotFound, BadGateway
-from flask import current_app
 
 from app.extensions import api
 from app.api.utils.access_decorators import requires_role_edit_party
@@ -59,7 +58,7 @@ class PartyOrgBookEntityListResource(Resource, UserMixin):
                                                          registration_date, name_id, name_text,
                                                          credential_id, party_guid)
         if not party_orgbook_entity:
-            raise InternalServerError('Failed to create the Party OrgBook Entity')
+            raise InternalServerError('Failed to create the Party OrgBook Entity.')
 
         party_orgbook_entity.save()
 

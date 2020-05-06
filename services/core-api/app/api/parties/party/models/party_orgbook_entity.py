@@ -34,15 +34,8 @@ class PartyOrgBookEntity(AuditMixin, Base):
         return cls.query.filter_by(credential_id=credential_id).first()
 
     @classmethod
-    def create(cls,
-               registration_id,
-               registration_status,
-               registration_date,
-               name_id,
-               name_text,
-               credential_id,
-               party_guid,
-               add_to_session=True):
+    def create(cls, registration_id, registration_status, registration_date, name_id, name_text,
+               credential_id, party_guid):
         party_orgbook_entity = cls(
             registration_id=registration_id,
             registration_status=registration_status,
@@ -51,6 +44,5 @@ class PartyOrgBookEntity(AuditMixin, Base):
             name_text=name_text,
             credential_id=credential_id,
             party_guid=party_guid)
-        if add_to_session:
-            party_orgbook_entity.save(commit=False)
+        party_orgbook_entity.save()
         return party_orgbook_entity

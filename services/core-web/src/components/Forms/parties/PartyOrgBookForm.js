@@ -32,7 +32,7 @@ export class PartyOrgBookForm extends Component {
   constructor(props) {
     super(props);
     this.lastFetchId = 0;
-    this.handleSearchDebounced = (value) => debounce(this.handleSearch(value), 800);
+    this.handleSearchDebounced = (value) => debounce(this.handleSearch(value), 1000);
   }
 
   state = {
