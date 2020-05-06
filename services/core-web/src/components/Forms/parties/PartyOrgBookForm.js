@@ -24,8 +24,8 @@ const propTypes = {
 };
 
 const defaultProps = {
-  searchOrgBookResults: null,
-  orgBookCredential: null,
+  searchOrgBookResults: [],
+  orgBookCredential: {},
 };
 
 export class PartyOrgBookForm extends Component {
@@ -82,8 +82,7 @@ export class PartyOrgBookForm extends Component {
         return;
       }
 
-      const results = this.props.searchOrgBookResults || [];
-      const selectOptions = results
+      const selectOptions = this.props.searchOrgBookResults
         .filter((result) => result.names && result.names.length > 0)
         .map((result) => ({
           text: result.names[0].text,

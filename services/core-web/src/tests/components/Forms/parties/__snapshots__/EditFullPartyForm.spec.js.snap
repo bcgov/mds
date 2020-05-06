@@ -32,16 +32,36 @@ exports[`EditFullPartyForm renders properly 1`] = `
           gutter={16}
         >
           <Col
-            span={24}
+            md={12}
+            xs={24}
           >
             <FormItem
               hasFeedback={false}
             >
               <Field
                 component={[Function]}
-                disabled={false}
+                id="first_name"
+                label="First Name *"
+                name="first_name"
+                validate={
+                  Array [
+                    [Function],
+                  ]
+                }
+              />
+            </FormItem>
+          </Col>
+          <Col
+            md={12}
+            xs={24}
+          >
+            <FormItem
+              hasFeedback={false}
+            >
+              <Field
+                component={[Function]}
                 id="party_name"
-                label="Company Name *"
+                label="Surname *"
                 name="party_name"
                 validate={
                   Array [
@@ -277,70 +297,7 @@ exports[`EditFullPartyForm renders properly 1`] = `
     <Row
       gutter={48}
     >
-      <Col>
-        <Row
-          gutter={0}
-        >
-          <Col>
-            <h5>
-              OrgBook Entity
-            </h5>
-            <Paragraph>
-              This party has not been associated with an entity on OrgBook. To associate this party with an entity on OrgBook, search for the correct entity using the search below and then select the 
-              <Text
-                strong={true}
-              >
-                Associate
-              </Text>
-               button.
-            </Paragraph>
-            <Connect(PartyOrgBookForm)
-              party={
-                Object {
-                  "parties": Object {
-                    "18133c75-49ad-4101-85f3-a43e35ae989a": Object {
-                      "address": Array [
-                        Object {},
-                      ],
-                      "party_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-                      "party_name": "mock name",
-                    },
-                    "18145c75-49ad-0101-85f3-a43e45ae989a": Object {
-                      "address": Array [
-                        Object {},
-                      ],
-                      "party_guid": "18145c75-49ad-0101-85f3-a43e45ae989a",
-                      "party_name": "mock Two",
-                    },
-                  },
-                  "partiesWithAppointments": Object {
-                    "18133c75-49ad-4101-85f3-a43e35ae989a": Object {
-                      "address": Array [
-                        Object {},
-                      ],
-                      "mine_party_appt": Array [],
-                      "party_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-                      "party_name": "mock name",
-                    },
-                    "18145c75-49ad-0101-85f3-a43e45ae989a": Object {
-                      "address": Array [
-                        Object {},
-                      ],
-                      "mine_party_appt": Array [],
-                      "party_guid": "18145c75-49ad-0101-85f3-a43e45ae989a",
-                      "party_name": "mock Two",
-                    },
-                  },
-                  "partyIds": Array [
-                    "18133c75-49ad-4101-85f3-a43e35ae989a",
-                    "18145c75-49ad-0101-85f3-a43e45ae989a",
-                  ],
-                }
-              }
-            />
-          </Col>
-        </Row>
-      </Col>
+      <Col />
     </Row>
     <div
       className="right center-mobile"
@@ -380,7 +337,7 @@ exports[`EditFullPartyForm renders properly 1`] = `
         loading={false}
         type="primary"
       >
-        Update Company
+        Update Person
       </Button>
     </div>
   </Form>

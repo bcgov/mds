@@ -14,7 +14,7 @@ class SearchAutocompleteList(Resource):
     @requires_role_view_all
     def get(self):
         search = request.args.get('search')
-        resp = OrgBookService.search_autocomplete_list(search)
+        resp = OrgBookService.search(search)
         results = json.loads(resp.text)['results']
         return results
 
@@ -23,6 +23,6 @@ class CredentialRetrieveFormatted(Resource):
     @api.doc(description='Get information on an OrgBook credential.')
     @requires_role_view_all
     def get(self, credential_id):
-        resp = OrgBookService.credential_retrieve_formatted(credential_id)
+        resp = OrgBookService.get_credential(credential_id)
         credential = json.loads(resp.text)
         return credential

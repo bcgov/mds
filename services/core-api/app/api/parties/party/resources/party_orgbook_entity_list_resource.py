@@ -1,12 +1,11 @@
 import json
 import requests
 from flask_restplus import Resource
-from werkzeug.exceptions import InternalServerError
+from werkzeug.exceptions import BadRequest, InternalServerError, NotFound, BadGateway
 from flask import current_app
 
 from app.extensions import api
 from app.api.utils.access_decorators import requires_role_edit_party
-from werkzeug.exceptions import BadRequest, InternalServerError, NotFound, BadGateway
 from app.api.utils.resources_mixins import UserMixin
 from app.api.utils.custom_reqparser import CustomReqparser
 from app.api.parties.party.models.party_orgbook_entity import PartyOrgBookEntity
@@ -42,7 +41,7 @@ class PartyOrgBookEntityListResource(Resource, UserMixin):
         if PartyOrgBookEntity.find_by_credential_id(credential_id) is not None:
             raise BadRequest('An OrgBook entity with the provided credential ID already exists.')
 
-        resp = OrgBookService.credential_retrieve_formatted(credential_id)
+        resp = OrgBookService.get_credential(credential_id)
         if resp.status_code != requests.codes.ok:
             raise BadGateway(f'OrgBook API responded with {resp.status_code}: {resp.reason}')
 

@@ -107,13 +107,12 @@ class Config(object):
     VFCBC_CLIENT_SECRET = os.environ.get('VFCBC_CLIENT_SECRET', None)
     VFCBC_CLIENT_ID = os.environ.get('VFCBC_CLIENT_ID', None)
 
-    # NRIS Remote API
+    # NRIS
     NRIS_REMOTE_CLIENT_SECRET = os.environ.get('NRIS_REMOTE_CLIENT_SECRET', None)
     NRIS_REMOTE_CLIENT_ID = os.environ.get('NRIS_REMOTE_CLIENT_ID', None)
     NRIS_REMOTE_TOKEN_URL = os.environ.get('NRIS_REMOTE_TOKEN_URL', None)
 
     # OrgBook
-    # NOTE: A version 3 of the API is currently in the works and it's suggested we move to it when it's made public.
     ORGBOOK_API_URL = 'https://orgbook.gov.bc.ca/api/v2/'
 
 

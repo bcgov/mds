@@ -11,7 +11,6 @@ import CustomAxios from "../customAxios";
 export const searchOrgBook = (search) => (dispatch) => {
   dispatch(request(reducerTypes.ORGBOOK_SEARCH));
   dispatch(showLoading());
-  orgbookActions.storeSearchOrgBookResults(null);
   return CustomAxios()
     .get(
       `${ENVIRONMENT.apiUrl + API.ORGBOOK_SEARCH}?${queryString.stringify({ search })}`,
@@ -28,7 +27,6 @@ export const searchOrgBook = (search) => (dispatch) => {
 export const fetchOrgBookCredential = (credentialId) => (dispatch) => {
   dispatch(request(reducerTypes.ORGBOOK_CREDENTIAL));
   dispatch(showLoading());
-  orgbookActions.storeOrgBookCredential(null);
   return CustomAxios()
     .get(`${ENVIRONMENT.apiUrl + API.ORGBOOK_CREDENTIAL(credentialId)}`, createRequestHeader())
     .then((response) => {
