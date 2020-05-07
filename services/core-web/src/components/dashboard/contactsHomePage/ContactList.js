@@ -2,11 +2,13 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { uniqBy, map, toArray, isEmpty } from "lodash";
+import { formatDate } from "@common/utils/helpers";
 import * as Strings from "@common/constants/strings";
 import * as router from "@/constants/routes";
 import NullScreen from "@/components/common/NullScreen";
 import CustomPropTypes from "@/customPropTypes";
 import CoreTable from "@/components/common/CoreTable";
+import { SUCCESS_CHECKMARK } from "@/constants/assets";
 
 /**
  * @class ContactList - paginated list of contacts
@@ -37,10 +39,20 @@ const columns = [
     render: ([firstName = "", lastName = ""], record) => {
       const comma = firstName ? ", " : "";
       return (
-        <Link
-          title="Name"
-          to={router.PARTY_PROFILE.dynamicRoute(record.key)}
-        >{` ${lastName}${comma}${firstName}`}</Link>
+        <Link title="Name" to={router.PARTY_PROFILE.dynamicRoute(record.key)}>
+          {`${lastName}${comma}${firstName}`}
+          {!isEmpty(record.party_orgbook_entity) && (
+            <img
+              alt="Verified"
+              className="padding-small"
+              src={SUCCESS_CHECKMARK}
+              width="25"
+              title={`Party verified by ${
+                record.party_orgbook_entity.association_user
+              } on ${formatDate(record.party_orgbook_entity.association_timestamp)}`}
+            />
+          )}
+        </Link>
       );
     },
   },
@@ -88,6 +100,7 @@ const transformRowData = (parties, relationshipTypeHash) =>
       party.mine_party_appt.length > 0
         ? uniqueRolesString(party.mine_party_appt, relationshipTypeHash)
         : Strings.EMPTY_FIELD,
+    party_orgbook_entity: party.party_orgbook_entity,
   }));
 
 const handleTableChange = (updateContactList) => (pagination, filters, sorter) => {
