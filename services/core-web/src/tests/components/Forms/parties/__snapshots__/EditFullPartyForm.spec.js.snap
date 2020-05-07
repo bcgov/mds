@@ -32,7 +32,28 @@ exports[`EditFullPartyForm renders properly 1`] = `
           gutter={16}
         >
           <Col
-            span={24}
+            md={12}
+            xs={24}
+          >
+            <FormItem
+              hasFeedback={false}
+            >
+              <Field
+                component={[Function]}
+                id="first_name"
+                label="First Name *"
+                name="first_name"
+                validate={
+                  Array [
+                    [Function],
+                  ]
+                }
+              />
+            </FormItem>
+          </Col>
+          <Col
+            md={12}
+            xs={24}
           >
             <FormItem
               hasFeedback={false}
@@ -40,7 +61,7 @@ exports[`EditFullPartyForm renders properly 1`] = `
               <Field
                 component={[Function]}
                 id="party_name"
-                label="Company Name *"
+                label="Surname *"
                 name="party_name"
                 validate={
                   Array [
@@ -273,6 +294,11 @@ exports[`EditFullPartyForm renders properly 1`] = `
         </Row>
       </Col>
     </Row>
+    <Row
+      gutter={48}
+    >
+      <Col />
+    </Row>
     <div
       className="right center-mobile"
     >
@@ -311,7 +337,7 @@ exports[`EditFullPartyForm renders properly 1`] = `
         loading={false}
         type="primary"
       >
-        Update Company
+        Update Person
       </Button>
     </div>
   </Form>
