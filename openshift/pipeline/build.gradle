@@ -34,20 +34,6 @@ ext.getScriptArgs = {->
     return args
 }
 
-task('cd-cleanup', type: JavaExec) {
-    description 'Run cleanup Groovy script'
-
-    // Set main property to name of Groovy script class.
-    main = 'Clean'
-
-    // Set classpath for running the Groovy script.
-    classpath = sourceSets.main.runtimeClasspath
-
-    args project.getScriptArgs()
-
-    workingDir file(['git', 'rev-parse', '--show-toplevel'].execute().text.trim())
-}
-
 task('cd-build', type: JavaExec) {
     description 'Run Build Groovy script'
 
