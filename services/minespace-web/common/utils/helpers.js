@@ -262,7 +262,7 @@ export const flattenObject = (ob) => {
 
 export const formatMoney = (value) => {
   const number = Number(value);
-  return number === NaN
+  return isNaN(number)
     ? null
     : number.toLocaleString("en-US", { style: "currency", currency: "USD" });
 };

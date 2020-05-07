@@ -108,6 +108,24 @@ exports[`ReclamationInvoiceForm renders properly 1`] = `
       />
     </Col>
   </Row>
+  <Row
+    gutter={0}
+  >
+    <Col
+      md={24}
+    >
+      <FormItem
+        hasFeedback={false}
+      >
+        <Field
+          component={[Function]}
+          id="note"
+          label="Notes"
+          name="note"
+        />
+      </FormItem>
+    </Col>
+  </Row>
   <br />
   <Row
     gutter={16}

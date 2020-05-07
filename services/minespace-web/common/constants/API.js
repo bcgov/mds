@@ -13,6 +13,7 @@ export const MINE_BASIC_INFO_LIST = `/mines/basicinfo`;
 export const PARTY = "/parties";
 export const MANAGER = "/parties/managers";
 export const PARTY_RELATIONSHIP = "/parties/mines";
+export const PARTY_ORGBOOK_ENTITY = (partyGuid) => `/parties/${partyGuid}/orgbook-entity`;
 export const PERMITTEE = "/permits/permittees";
 export const MINE_NAME_LIST = (params = {}) => `/mines/search?${queryString.stringify(params)}`;
 export const MINE_STATUS = "/mines/status";
@@ -152,3 +153,10 @@ export const RECLAMATION_INVOICE = (invoiceGuid) =>
     : "/securities/reclamation-invoices";
 export const RECLAMATION_INVOICE_DOCUMENTS = (mineGuid) =>
   `/securities/${mineGuid}/reclamation-invoices/documents`;
+
+export const MINE_COMMENTS = (mineGuid) => `/mines/${mineGuid}/comments`;
+export const MINE_COMMENT = (mineGuid, commentGuid) => `/mines/${mineGuid}/comments/${commentGuid}`;
+
+// OrgBook
+export const ORGBOOK_SEARCH = (search) => `/orgbook/search?${queryString.stringify({ search })}`;
+export const ORGBOOK_CREDENTIAL = (credentialId) => `/orgbook/credential/${credentialId}`;

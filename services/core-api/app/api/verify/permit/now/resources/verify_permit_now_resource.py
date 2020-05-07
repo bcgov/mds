@@ -56,9 +56,9 @@ class VerifyPermitNOWResource(Resource):
                         if permit_amendment.now_identity:
                             now_info = now_info + str(
                                 permit_amendment.now_identity.now_number
-                            ) + " - " + str(permit_amendment.authorization_end_date) + '\r\c'
+                            ) + " - " + str(permit_amendment.authorization_end_date) + '\r'
                         else:
-                            now_info = now_info + " - " + str(permit_amendment.authorization_end_date) + '\r\c'
+                            now_info = now_info + " - " + str(permit_amendment.authorization_end_date) + '\r'
                         break
 
             if now_info != "":

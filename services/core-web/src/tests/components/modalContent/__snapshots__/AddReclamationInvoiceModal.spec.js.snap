@@ -6,7 +6,7 @@ exports[`AddReclamationInvoiceModal renders properly 1`] = `
     className="error center"
   >
     <Alert
-      message="Total Spent exceeds Total Confiscated. Balance including the current invoice amount: -$1,251.46"
+      message="Total Spent exceeds Total Confiscated. Balance including the current invoice amount: -$1,251.00"
       showIcon={true}
       type="warning"
     />
@@ -21,14 +21,16 @@ exports[`AddReclamationInvoiceModal renders properly 1`] = `
     getFormState={[Function]}
     initialValues={
       Object {
-        "amount": "1251.46",
+        "amount": 1251,
+        "permit_guid": "1628847c-060b-45f2-990f-815877174801",
         "project_id": "3523461",
         "vendor": "John Doe",
       }
     }
     invoice={
       Object {
-        "amount": "1251.46",
+        "amount": 1251,
+        "permit_guid": "1628847c-060b-45f2-990f-815877174801",
         "project_id": "3523461",
         "vendor": "John Doe",
       }

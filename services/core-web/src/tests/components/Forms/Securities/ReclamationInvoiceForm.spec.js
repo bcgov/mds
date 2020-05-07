@@ -16,7 +16,7 @@ const setupProps = () => {
   props.title = "Add Reclamation Invoice";
   props.mineGuid = "462562457";
   props.submitting = false;
-  props.invoice = MOCK.RECLAMATION_INVOICE;
+  [props.invoice] = MOCK.RECLAMATION_INVOICES.records;
 };
 
 beforeEach(() => {
