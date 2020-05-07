@@ -46,7 +46,7 @@ class Config(object):
     DOCUMENT_MANAGER_URL = os.environ.get('DOCUMENT_MANAGER_URL',
                                           'http://document_manager_backend:5001')
     UPLOADED_DOCUMENT_DEST = os.environ.get('UPLOADED_DOCUMENT_DEST', '/app/document_uploads')
-    MAX_CONTENT_LENGTH = 400 * 1024 * 1024
+    MAX_CONTENT_LENGTH = 750 * 1024 * 1024
     JSONIFY_PRETTYPRINT_REGULAR = False
 
     def JWT_ROLE_CALLBACK(jwt_dict):
