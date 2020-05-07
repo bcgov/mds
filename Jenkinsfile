@@ -21,6 +21,13 @@ pipeline {
                 }
             }
         }
+        stage('Preclean') {
+            agent { label 'master' }
+            steps {
+                echo "Cleaning ..."
+                sh 'unset JAVA_OPTS; openshift/pipeline/gradlew --no-build-cache --console=plain --no-daemon -b openshift/pipeline/build.gradle cd-clean -Pargs.--config=openshift/pipeline/config-dev.groovy -Pargs.--pr=${CHANGE_ID}'
+            }
+        }
         stage('Build') {
             agent { label 'master' }
             steps {

@@ -50,9 +50,10 @@ config.app.namespaces.each {String key, Map env->
         oc(['delete', 'is', '-l', "change-id=${config.app.git.changeId}", '-n', "${env.namespace}"])
 
         // Delete ImageStreamTags associated to a single PR (most others)
-        Map ret = oc(['oc','get',' istag', """-o=jsonpath='{.items[?(@.tag.name=="build-pr-${config.app.git.changeId}")].metadata.name}'""", '--ignore-not-found=true', '-n', "${env.namespace}"])
-        println "Return: ${tags.toMapString()}"
-        tags = tags.out.split()
+        Map ret = oc(['get',' istag', """-o=jsonpath='{.items[?(@.tag.name=="build-pr-${config.app.git.changeId}")].metadata.name}'""", '--ignore-not-found=true', '-n', "${env.namespace}"])
+
+        println "Return: ${ret.toMapString()}"
+        tags = ret.out.split()
         println "Tags: ${tags}"
         tags.out.items.each { tag ->
             oc(['delete', 'istag', "${tag}", '--ignore-not-found=true', '-n', "${env.namespace}"])
