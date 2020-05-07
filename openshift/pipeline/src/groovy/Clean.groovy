@@ -51,7 +51,7 @@ config.app.namespaces.each {String key, Map env->
 
         // Delete ImageStreamTags associated to a single PR (most others)
         Map ret = oc(['get','istag', """-o=jsonpath='{.items[?(@.tag.name=="build-pr-${config.app.git.changeId}")].metadata.name}'""", '--ignore-not-found=true', '-n', "${env.namespace}"])
-        out = ret['out'].replaceAll("^'|'$", "")
+        out = ret['out'].replaceAll("^'|'\$", "")
         println "out: ${out}"
         if (out && !out.allWhitespace){
             tags = out.split()
