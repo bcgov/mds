@@ -14,7 +14,7 @@ import { FLUSH_SOUND, WATER_SOUND } from "@/constants/assets";
 
 registerPlugin(FilePondPluginFileValidateSize, FilePondPluginFileValidateType);
 
-const doNothing = () => {};
+const doNothing = () => { };
 
 const propTypes = {
   uploadUrl: PropTypes.string.isRequired,
@@ -28,7 +28,7 @@ const propTypes = {
 };
 
 const defaultProps = {
-  maxFileSize: "400MB",
+  maxFileSize: "750MB",
   acceptedFileTypesMap: {},
   onFileLoad: doNothing,
   onRemoveFile: doNothing,

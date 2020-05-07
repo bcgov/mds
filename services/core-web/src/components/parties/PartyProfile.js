@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { Tabs, Icon, Table, Button, Popconfirm } from "antd";
-import { uniq } from "lodash";
+import { uniq, isEmpty } from "lodash";
 import {
   fetchPartyById,
   fetchPartyRelationships,
@@ -24,7 +24,7 @@ import * as Strings from "@common/constants/strings";
 import { EDIT } from "@/constants/assets";
 import { modalConfig } from "@/components/modalContent/config";
 import Loading from "@/components/common/Loading";
-import * as router from "@/constants/routes";
+import * as routes from "@/constants/routes";
 import * as ModalContent from "@/constants/modalContent";
 import * as Permission from "@/constants/permissions";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
@@ -82,16 +82,10 @@ export class PartyProfile extends Component {
     }
   };
 
-  openEditPartyModal = (event, party, onSubmit, title, isPerson, provinceOptions) => {
-    const initialValues = {
-      ...party,
-      ...(party.address[0] ? party.address[0] : {}),
-      email: party.email && party.email !== "Unknown" ? party.email : null,
-    };
-
+  openEditPartyModal = (event, partyGuid, onSubmit, title, provinceOptions) => {
     event.preventDefault();
     this.props.openModal({
-      props: { onSubmit, title, isPerson, initialValues, provinceOptions },
+      props: { partyGuid, onSubmit, title, provinceOptions },
       content: modalConfig.EDIT_PARTY,
       width: "75vw",
       clearOnSubmit: false,
@@ -110,7 +104,7 @@ export class PartyProfile extends Component {
     const { id } = this.props.match.params;
     this.props.deleteParty(id).then(() => {
       this.props.history.push(
-        router.CONTACT_HOME_PAGE.dynamicRoute({
+        routes.CONTACT_HOME_PAGE.dynamicRoute({
           page: String.DEFAULT_PAGE,
           per_page: String.DEFAULT_PER_PAGE,
         })
@@ -120,14 +114,14 @@ export class PartyProfile extends Component {
 
   render() {
     const { id } = this.props.match.params;
-    const parties = this.props.parties[id];
+    const party = this.props.parties[id];
     const columns = [
       {
         title: "Mine Name",
         dataIndex: "mineName",
         render: (text, record) => (
           <div title="Mine Name">
-            <Link to={router.MINE_CONTACTS.dynamicRoute(record.mineGuid)}>{text}</Link>
+            <Link to={routes.MINE_CONTACTS.dynamicRoute(record.mineGuid)}>{text}</Link>
           </div>
         ),
       },
@@ -157,9 +151,8 @@ export class PartyProfile extends Component {
         startDate: formatDate(relationship.start_date) || "Unknown",
       }));
 
-    if (this.state.isLoaded && parties) {
-      const formattedName = formatTitleString(parties.name);
-      const isPerson = parties.party_type_code === ModalContent.PERSON;
+    if (this.state.isLoaded && party) {
+      const formattedName = formatTitleString(party.name);
       return (
         <div className="profile">
           <div className="profile__header">
@@ -198,10 +191,9 @@ export class PartyProfile extends Component {
                     onClick={(event) =>
                       this.openEditPartyModal(
                         event,
-                        parties,
+                        party.party_guid,
                         this.editParty,
                         ModalContent.EDIT_PARTY(formattedName),
-                        isPerson,
                         this.props.provinceOptions
                       )
                     }
@@ -212,12 +204,28 @@ export class PartyProfile extends Component {
                 </AuthorizationWrapper>
               </div>
             </div>
+            {!isEmpty(party.party_orgbook_entity) && (
+              <div className="inline-flex">
+                <div className="padding-right">
+                  <Icon type="check-circle" className="icon-sm" />
+                </div>
+                <p>
+                  <a
+                    href={routes.ORGBOOK_ENTITY_URL(party.party_orgbook_entity.registration_id)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Verified OrgBook Entity
+                  </a>
+                </p>
+              </div>
+            )}
             <div className="inline-flex">
               <div className="padding-right">
                 <Icon type="mail" className="icon-sm" />
               </div>
-              {parties.email && parties.email !== "Unknown" ? (
-                <a href={`mailto:${parties.email}`}>{parties.email}</a>
+              {party.email && party.email !== "Unknown" ? (
+                <a href={`mailto:${party.email}`}>{party.email}</a>
               ) : (
                 <p>{Strings.EMPTY_FIELD}</p>
               )}
@@ -227,10 +235,10 @@ export class PartyProfile extends Component {
                 <Icon type="phone" className="icon-sm" />
               </div>
               <p>
-                {parties.phone_no} {parties.phone_ext ? `x${parties.phone_ext}` : ""}
+                {party.phone_no} {party.phone_ext ? `x${party.phone_ext}` : ""}
               </p>
             </div>
-            <Address address={parties.address[0] || {}} />
+            <Address address={party.address[0] || {}} />
           </div>
           <div className="profile__content">
             <Tabs
