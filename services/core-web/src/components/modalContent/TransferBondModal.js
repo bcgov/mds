@@ -23,38 +23,57 @@ const propTypes = {
   permitGuid: PropTypes.string.isRequired,
   mineGuid: PropTypes.string.isRequired,
   bond: CustomPropTypes.bond,
-  editBond: PropTypes.bool,
+  permits: PropTypes.arrayOf(CustomPropTypes.permit).isRequired,
 };
 
 const defaultProps = {
   bond: {},
-  editBond: false,
 };
 
 export const TransferBondModal = (props) => {
-  // const handleAddBond = (values) => props.onSubmit(values, props.permitGuid);
-  // const handleAddBond = (values) =>
-  //   props.editBond
-  //     ? props.onSubmit(values, props.bond.bond_guid)
-  //     : props.onSubmit(values, props.permitGuid);
-  // const initialPartyValue = props.editBond
-  //   ? {
-  //       key: props.bond.payer_party_guid,
-  //       label: props.bond.payer.name,
-  //     }
-  //   : "";
+  const handleAddBond = (values) => {
+    console.log("transferring..");
+    const newPermitGuid = values.permit_guid;
+    delete values.permit_guid;
+    const releasedBond = { ...props.bond, bond_status_code: "REL" };
+
+    const bondGuid = releasedBond.bond_guid;
+    // payload expects the basic bond object without the following:
+    delete releasedBond.permit_guid;
+    delete releasedBond.bond_id;
+    delete releasedBond.bond_guid;
+    delete releasedBond.payer;
+    // Since the form is populated with the bond initialValues, remove all nullValues from object when creating newBond
+    Object.keys(values).forEach((key) => values[key] == null && delete values[key]);
+    delete values.payer;
+    delete values.bond_guid;
+    // new payload object in the format that the API is expecting
+    const payload = {
+      bond: {
+        bond_status_code: "ACT",
+        ...values,
+      },
+      permit_guid: newPermitGuid,
+    };
+
+    props.onSubmit(releasedBond, bondGuid, payload);
+  };
+
   const initialPartyValue = props.editBond
     ? {
         key: props.bond.payer_party_guid,
         label: props.bond.payer.name,
       }
     : "";
+  const initialValues = () => {
+    delete props.bond.permit_guid;
+    return props.bond;
+  };
   return (
     <div>
       <Alert
-        message="Making a correction?"
-        description="Use this window to to transfer the bond do a different permit on this mine.
-            This action will release the current bond and record a new one under a different permit."
+        message="Transfer to a different Permit"
+        description="This action will release the current bond and record a new bond using the same information under the selected permit."
         type="info"
         showIcon
         style={{ textAlign: "left" }}
@@ -69,9 +88,10 @@ export const TransferBondModal = (props) => {
         bondTypeDropDownOptions={props.bondTypeDropDownOptions}
         bondDocumentTypeDropDownOptions={props.bondDocumentTypeDropDownOptions}
         bondDocumentTypeOptionsHash={props.bondDocumentTypeOptionsHash}
-        initialValues={props.bond}
+        initialValues={initialValues()}
         bond={props.bond}
         mineGuid={props.mineGuid}
+        permits={props.permits.filter(({ permit_guid }) => permit_guid !== props.permitGuid)}
       />
     </div>
   );

@@ -129,13 +129,16 @@ export class TransferBondForm extends Component {
                 id="permit_guid"
                 name="permit_guid"
                 label="Select a Permit *"
-                component={renderConfig.SELECT}
-                data={props.permits}
+                component={RenderSelect}
+                data={this.props.permits.map((p) => {
+                  return { value: p.permit_guid, label: p.permit_no };
+                })}
                 validate={[required]}
               />
             </Form.Item>
           </Col>
         </Row>
+        <br />
         <Row gutter={16}>
           <Col md={12} sm={24}>
             <Form.Item>
@@ -357,7 +360,7 @@ TransferBondForm.propTypes = propTypes;
 TransferBondForm.defaultProps = defaultProps;
 
 export default reduxForm({
-  form: FORM.ADD_BOND,
+  form: FORM.TRANSFER_BOND,
   touchOnBlur: false,
-  onSubmitSuccess: resetForm(FORM.ADD_BOND),
+  onSubmitSuccess: resetForm(FORM.TRANSFER_BOND),
 })(TransferBondForm);

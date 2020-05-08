@@ -139,6 +139,34 @@ export class MineSecurityInfo extends Component {
     });
   };
 
+  openTransferBondModal = (event, bond) => {
+    event.preventDefault();
+    this.props.openModal({
+      props: {
+        title: `Transfer Bond`,
+        onSubmit: this.transferBond,
+        editBond: true,
+        bond,
+        permitGuid: bond.permit_guid,
+        mineGuid: this.props.mineGuid,
+        permits: this.props.permits,
+      },
+      width: "50vw",
+      content: modalConfig.TRANSFER_BOND_MODAL,
+    });
+  };
+
+  transferBond = (previousBondPayload, previousBondGuid, newBondPayload) => {
+    this.props.updateBond(previousBondPayload, previousBondGuid).then(() => {
+      this.props.createBond(newBondPayload).then(() => {
+        this.props.fetchMineBonds(this.props.mineGuid).then(() => {
+          this.props.closeModal();
+          this.setState({ isBondLoaded: true });
+        });
+      });
+    });
+  };
+
   openViewBondModal = (event, bond) => {
     event.preventDefault();
     this.props.openModal({
@@ -306,6 +334,7 @@ export class MineSecurityInfo extends Component {
                 bondTypeOptionsHash={this.props.bondTypeOptionsHash}
                 openViewBondModal={this.openViewBondModal}
                 openEditBondModal={this.openEditBondModal}
+                openTransferBondModal={this.openTransferBondModal}
                 recordsByPermit={this.recordsByPermit}
                 activeBondCount={this.activeBondCount}
                 getSum={this.getSum}
