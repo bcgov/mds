@@ -323,6 +323,14 @@ MINE_STATUS_CODE_MODEL = api.model(
         'description': fields.String,
     })
 
+MINE_COMMENT_MODEL = api.model(
+    'MineCommentModel', {
+        'mine_comment_guid': fields.String,
+        'mine_comment': fields.String,
+        'comment_user': fields.String,
+        'comment_datetime': fields.DateTime,
+    })
+
 MINE_REPORT_COMMENT_MODEL = api.model(
     'MineReportCommentModel', {
         'mine_report_comment_guid': fields.String,

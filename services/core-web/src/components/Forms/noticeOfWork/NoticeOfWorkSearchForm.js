@@ -43,4 +43,5 @@ NoticeOfWorkSearchForm.propTypes = propTypes;
 export default reduxForm({
   form: FORM.NOTICE_OF_WORK_SEARCH,
   touchOnBlur: false,
+  enableReinitialize: true,
 })(NoticeOfWorkSearchForm);

@@ -13,6 +13,7 @@ export const MINE_BASIC_INFO_LIST = `/mines/basicinfo`;
 export const PARTY = "/parties";
 export const MANAGER = "/parties/managers";
 export const PARTY_RELATIONSHIP = "/parties/mines";
+export const PARTY_ORGBOOK_ENTITY = (partyGuid) => `/parties/${partyGuid}/orgbook-entity`;
 export const PERMITTEE = "/permits/permittees";
 export const MINE_NAME_LIST = (params = {}) => `/mines/search?${queryString.stringify(params)}`;
 export const MINE_STATUS = "/mines/status";
@@ -59,31 +60,7 @@ export const DASHBOARD = (dashboardId) => `/reporting/dashboard/${dashboardId}`;
 // Variances
 export const COMPLIANCE_CODES = "/compliance/codes";
 export const MINE_VARIANCES = (mineGuid) => `/mines/${mineGuid}/variances`;
-export const VARIANCES = (params) => {
-  const {
-    variance_application_status_code = [],
-    compliance_code = [],
-    region = [],
-    ...otherParams
-  } = params;
-  const formattedCodes = {};
-  Object.assign(
-    formattedCodes,
-    compliance_code.length >= 1 && {
-      compliance_code: compliance_code.join(","),
-    },
-    region.length >= 1 && { region: region.join(",") },
-    variance_application_status_code.length >= 1 && {
-      variance_application_status_code: variance_application_status_code.join(","),
-    }
-  );
-  return params
-    ? `/variances?${queryString.stringify({
-        ...formattedCodes,
-        ...otherParams,
-      })}`
-    : "/variances";
-};
+export const VARIANCES = (params = {}) => `/variances?${queryString.stringify(params)}`;
 export const VARIANCE = (mineGuid, varianceGuid) => `/mines/${mineGuid}/variances/${varianceGuid}`;
 export const VARIANCE_DOCUMENTS = (mineGuid, varianceGuid) =>
   `/mines/${mineGuid}/variances/${varianceGuid}/documents`;
@@ -101,33 +78,8 @@ export const MINE_INCIDENT = (mineGuid, mine_incident_guid) =>
   `/mines/${mineGuid}/incidents/${mine_incident_guid}`;
 export const MINE_INCIDENT_DOCUMENT = (mineGuid) => `/mines/${mineGuid}/incidents/documents`;
 
-export const INCIDENTS = (params) => {
-  const {
-    codes = [],
-    region = [],
-    determination = [],
-    incident_status = [],
-    ...otherParams
-  } = params;
-  const formattedCodes = {};
-  Object.assign(
-    formattedCodes,
-    codes.length >= 1 && { codes: codes.join(",") },
-    region.length >= 1 && { region: region.join(",") },
-    incident_status.length >= 1 && {
-      incident_status: incident_status.join(","),
-    },
-    determination.length >= 1 && {
-      determination: determination.join(","),
-    }
-  );
-  return params
-    ? `/incidents?${queryString.stringify({
-        ...formattedCodes,
-        ...otherParams,
-      })}`
-    : "/incidents";
-};
+export const INCIDENTS = (params = {}) => `/incidents?${queryString.stringify(params)}`;
+
 export const INCIDENT_FOLLOWUP_ACTIONS = `/incidents/followup-types`;
 export const INCIDENT_DETERMINATION_TYPES = `/incidents/determination-types`;
 export const INCIDENT_STATUS_CODES = `/incidents/status-codes`;
@@ -201,3 +153,10 @@ export const RECLAMATION_INVOICE = (invoiceGuid) =>
     : "/securities/reclamation-invoices";
 export const RECLAMATION_INVOICE_DOCUMENTS = (mineGuid) =>
   `/securities/${mineGuid}/reclamation-invoices/documents`;
+
+export const MINE_COMMENTS = (mineGuid) => `/mines/${mineGuid}/comments`;
+export const MINE_COMMENT = (mineGuid, commentGuid) => `/mines/${mineGuid}/comments/${commentGuid}`;
+
+// OrgBook
+export const ORGBOOK_SEARCH = (search) => `/orgbook/search?${queryString.stringify({ search })}`;
+export const ORGBOOK_CREDENTIAL = (credentialId) => `/orgbook/credential/${credentialId}`;

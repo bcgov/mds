@@ -20,7 +20,7 @@ exports[`AddBondModal renders properly 1`] = `
         "note": null,
         "payer": Object {},
         "payer_party_guid": "sethwrt",
-        "permit_guid": "463236",
+        "permit_guid": "1628847c-060b-45f2-990f-815877174801",
         "reference_number": "",
       }
     }
@@ -48,7 +48,7 @@ exports[`AddBondModal renders properly 1`] = `
         "note": null,
         "payer": Object {},
         "payer_party_guid": "sethwrt",
-        "permit_guid": "463236",
+        "permit_guid": "1628847c-060b-45f2-990f-815877174801",
         "reference_number": "",
       }
     }

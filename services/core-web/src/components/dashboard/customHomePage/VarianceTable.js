@@ -9,7 +9,6 @@ import MineVarianceTable from "@/components/mine/Variances/MineVarianceTable";
  * @class VarianceTables
  */
 const propTypes = {
-  handleFilterChange: PropTypes.func.isRequired,
   variances: PropTypes.arrayOf(CustomPropTypes.variance).isRequired,
   openEditVarianceModal: PropTypes.func.isRequired,
   openViewVarianceModal: PropTypes.func.isRequired,
@@ -33,8 +32,8 @@ const defaultProps = {
     total: 0,
     total_pages: 1,
   },
-  sortField: null,
-  sortDir: null,
+  sortField: undefined,
+  sortDir: undefined,
 };
 
 export const VarianceTable = (props) => (
@@ -43,7 +42,6 @@ export const VarianceTable = (props) => (
       isLoaded={props.isLoaded}
       params={props.params}
       filterVarianceStatusOptions={props.filterVarianceStatusOptions}
-      handleFilterChange={props.handleFilterChange}
       handleVarianceSearch={props.handleVarianceSearch}
       variances={props.variances}
       isApplication

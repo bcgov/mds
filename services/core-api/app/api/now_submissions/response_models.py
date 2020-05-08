@@ -173,9 +173,10 @@ WATER_SOURCE_ACTIVITY = api.model(
 
 APPLICATION = api.model(
     'Application', {
-        "messageid": fields.Integer,
+        'messageid': fields.Integer,
         'application_guid': fields.String,
         'now_application_guid': fields.String,
+        'now_number': fields.String,
         'originating_system': fields.String,
         'mine_guid': fields.String,
         'mine_name': fields.String,
@@ -362,7 +363,7 @@ PAGINATED_APPLICATION_LIST = api.inherit('PaginatedApplicationList', PAGINATED_L
 
 APPLICATIONNDA = api.model(
     'ApplicationNDA', {
-        "messageid": fields.Integer,
+        'messageid': fields.Integer,
         'application_nda_guid': fields.String,
         'originating_system': fields.String,
         'mine_guid': fields.String,
@@ -392,4 +393,36 @@ APPLICATIONNDA = api.model(
         'applicant': fields.Nested(CLIENT),
         'submitter': fields.Nested(CLIENT),
         'documents': fields.List(fields.Nested(DOCUMENT))
+    })
+
+APPLICATIONSTARTSTOP = api.model(
+    'ApplicationStartStop', {
+        'termOfPermit': fields.String,
+        'permitIssuedDate': fields.String,
+        'portalApplicationPackageId': fields.String,
+        'nowNumber': fields.String,
+        'applicationId': fields.String,
+        'permitExpiryDate': fields.String,
+        'noticeOfWorkType': fields.String,
+        'applicationType': fields.String,
+        'processedDate': fields.String,
+        'contacts': fields.List(fields.Nested(CLIENT)),
+        'mineNumber': fields.String,
+        'typeOfApplication': fields.String,
+        'applicationDescription': fields.String,
+        'attachments': fields.List(fields.Nested(DOCUMENT)),
+        'status': fields.String,
+        'approvalNumber': fields.String,
+        'links': fields.List(fields.String),
+        'stopWorkDate': fields.String,
+        'startWorkDate': fields.String,
+        'receivedDate': fields.String,
+        'portalApplicationPackageNumber': fields.String,
+        'typeOfPermit': fields.String,
+        'proposedStartDate': fields.String,
+        'otherInformation': fields.String,
+        'permitStartDate': fields.String,
+        'submittedDate': fields.String,
+        'portalApplicationId': fields.String,
+        'proposedEndDate': fields.String
     })
