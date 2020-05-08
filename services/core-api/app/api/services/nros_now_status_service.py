@@ -38,7 +38,8 @@ class NROSNOWStatusService():
             url=cls.nros_now_url,
             headers={
                 'Authorization': f'Bearer {token}',
-                'Content-type': 'application/json'
+                'Content-type': 'application/json',
+                'lobName': 'MMS'
             },
             data=json.dumps(data))
         current_app.logger.info(resp.__dict__)
