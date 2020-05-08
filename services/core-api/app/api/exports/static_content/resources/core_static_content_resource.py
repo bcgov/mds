@@ -24,6 +24,7 @@ from app.api.incidents.models.mine_incident_determination_type import MineIncide
 from app.api.incidents.models.mine_incident_status_code import MineIncidentStatusCode
 from app.api.incidents.models.mine_incident_category import MineIncidentCategory
 from app.api.parties.party.models.sub_division_code import SubDivisionCode
+from app.api.parties.party_appt.models.mine_party_appt_type import MinePartyAppointmentType
 from app.api.compliance.models.compliance_article import ComplianceArticle
 from app.api.variances.models.variance_application_status_code import VarianceApplicationStatusCode
 from app.api.variances.models.variance_document_category_code import VarianceDocumentCategoryCode
@@ -39,7 +40,6 @@ from app.api.now_applications.models.activity_detail.underground_exploration_typ
 from app.api.now_applications.models.now_application_progress_status import NOWApplicationProgressStatus
 from app.api.now_applications.models.now_application_permit_type import NOWApplicationPermitType
 from app.api.now_applications.models.now_application_review_type import NOWApplicationReviewType
-from app.api.parties.party_appt.models.mine_party_appt_type import MinePartyAppointmentType
 from app.api.securities.models.bond_status import BondStatus
 from app.api.securities.models.bond_type import BondType
 from app.api.securities.models.bond_document_type import BondDocumentType
@@ -54,7 +54,8 @@ MODELS_GET_ACTIVE = [
     MineReportDefinition, MineReportCategory, MineReportSubmissionStatusCode, ActivityType,
     UnitType, NOWApplicationType, NOWApplicationStatus, NOWApplicationDocumentType,
     UndergroundExplorationType, NOWApplicationProgressStatus, NOWApplicationPermitType,
-    MinePartyAppointmentType, NOWApplicationReviewType, BondType, BondStatus, BondDocumentType, ExemptionFeeStatus
+    MinePartyAppointmentType, NOWApplicationReviewType, BondType, BondStatus, BondDocumentType,
+    ExemptionFeeStatus
 ]
 
 
