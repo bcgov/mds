@@ -20,7 +20,6 @@ class NROSNOWStatusService():
         token = cache.get(NROS_NOW_TOKEN)
         if not token:
             token = cls.get_nros_now_token()
-            # token = '6c4877f5-562c-4578-8c69-215a7de03290'
             cache.set(NROS_NOW_TOKEN, token, TIMEOUT_24_HOURS)
 
         data = {
@@ -42,7 +41,7 @@ class NROSNOWStatusService():
                 'lobName': 'MMS'
             },
             data=json.dumps(data))
-        current_app.logger.info(resp.__dict__)
+        current_app.logger.info(f'Status for NoW Number{now_number} pushed to NROS')
         return
 
     @classmethod
@@ -51,7 +50,7 @@ class NROSNOWStatusService():
         resp = requests.get(cls.nros_now_token_url, auth=auth)
 
         resp_body = json.loads(resp.text)
-        current_app.logger.debug(resp_body)
+
         token = resp_body["access_token"]
 
         return token
