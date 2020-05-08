@@ -200,15 +200,17 @@ export const MineBondTable = (props) => {
                     </button>
                   </Popconfirm>
                 </div>
-                <div className="custom-menu-item">
-                  <button
-                    type="button"
-                    className="full"
-                    onClick={(event) => props.openTransferBondModal(event, record)}
-                  >
-                    Transfer Bond
-                  </button>
-                </div>
+                {props.permits.length > 1 && (
+                  <div className="custom-menu-item">
+                    <button
+                      type="button"
+                      className="full"
+                      onClick={(event) => props.openTransferBondModal(event, record)}
+                    >
+                      Transfer Bond
+                    </button>
+                  </div>
+                )}
               </span>
             )}
             <Menu.Item key="2">
