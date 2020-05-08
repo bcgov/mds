@@ -138,7 +138,7 @@ export class TransferBondForm extends Component {
             </Form.Item>
           </Col>
         </Row>
-        <br />
+        {/* <br />
         <Row gutter={16}>
           <Col md={12} sm={24}>
             <Form.Item>
@@ -329,7 +329,7 @@ export class TransferBondForm extends Component {
             allowRevert
             allowMultiple
           />
-        </Form.Item>
+        </Form.Item> */}
         <div className="right center-mobile">
           <Popconfirm
             placement="topRight"
