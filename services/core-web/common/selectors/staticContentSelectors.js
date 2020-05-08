@@ -33,7 +33,6 @@ export const {
   getNoticeOfWorkApplicationPermitTypeOptions,
   getNoticeOfWorkApplicationReviewOptions,
   getPartyRelationshipTypes,
-  getPartyRelationshipTypesList,
   getBondStatusOptions,
   getBondTypeOptions,
   getBondDocumentTypeOptions,
@@ -450,6 +449,11 @@ export const getDropdownNoticeOfWorkApplicationReviewTypeOptions = createSelecto
 export const getNoticeOfWorkApplicationApplicationReviewTypeHash = createSelector(
   [getDropdownNoticeOfWorkApplicationReviewTypeOptions],
   createLabelHash
+);
+
+export const getPartyRelationshipTypesList = createSelector(
+  [getPartyRelationshipTypes],
+  (options) => createDropDownList(options, "description", "mine_party_appt_type_code")
 );
 
 export const getPartyRelationshipTypeHash = createSelector(
