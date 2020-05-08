@@ -47,7 +47,6 @@ class MinespaceUser(Base):
             minespace_user.save(commit=False)
         return minespace_user
 
-    @validates('email')
     def validate_email(self, key, email):
         if not email:
             raise AssertionError('email is not provided.')

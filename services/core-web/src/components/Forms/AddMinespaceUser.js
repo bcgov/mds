@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Field, reduxForm } from "redux-form";
 import { Form, Button, Col, Row } from "antd";
-import { required, email, requiredList } from "@common/utils/Validate";
+import { required, requiredList } from "@common/utils/Validate";
 import { resetForm } from "@common/utils/helpers";
 import RenderField from "@/components/common/RenderField";
 import * as FORM from "@/constants/forms";
@@ -30,12 +30,12 @@ export const AddMinespaceUser = (props) => (
         <Col>
           <Form.Item>
             <Field
-              id="user_bceid_email"
-              name="user_bceid_email"
-              label="Email*"
+              id="email"
+              name="email"
+              label="Email or BCeID username*"
               placeholder="Enter the user's BCeID email"
               component={RenderField}
-              validate={[required, email, minespaceUserNotExists]}
+              validate={[required, minespaceUserNotExists]}
               allowClear
             />
           </Form.Item>
@@ -43,8 +43,8 @@ export const AddMinespaceUser = (props) => (
         <Col>
           <Form.Item>
             <Field
-              id="proponent_mine_access"
-              name="proponent_mine_access"
+              id="mine_guids"
+              name="mine_guids"
               label="Mines*"
               placeholder="Select the mines this user can access"
               component={renderConfig.MULTI_SELECT}

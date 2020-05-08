@@ -51,7 +51,7 @@ export class Inspections extends Component {
             </Text>
             &nbsp;since March 2018. Each row represents an individual order.
           </Paragraph>
-          {this.state.isLoaded && (
+          {this.state.isLoaded && this.props.mineComplianceInfo && (
             <Row type="flex" justify="space-around" gutter={[16, 16]}>
               <Col sm={24} md={10} lg={6}>
                 <TableSummaryCard
@@ -102,7 +102,7 @@ export class Inspections extends Component {
           <InspectionsTable
             isLoaded={this.state.isLoaded}
             orders={
-              this.props.mineComplianceInfo.orders
+              this.props.mineComplianceInfo && this.props.mineComplianceInfo.orders
                 ? sortedOrders(this.props.mineComplianceInfo.orders)
                 : []
             }
