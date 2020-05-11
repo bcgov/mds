@@ -199,12 +199,6 @@ class MinePartyAppointment(AuditMixin, Base):
         return mpa
 
     # validators
-    @validates('mine_guid')
-    def validate_mine_guid(self, key, val):
-        if not val:
-            raise AssertionError('No mine guid provided.')
-        return val
-
     @validates('party_guid')
     def validate_party_guid(self, key, val):
         if not val:

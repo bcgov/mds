@@ -7,6 +7,7 @@ from sqlalchemy.schema import FetchedValue
 from app.extensions import db
 
 from app.api.mines.permits.permit_amendment.models.permit_amendment import PermitAmendment
+from app.api.mines.permits.permit.models.mine_permit_xref import MinePermitXref
 #for schema creation
 from app.api.mines.permits.permit.models.permit_status_code import PermitStatusCode
 from app.api.mines.documents.models.mine_document import MineDocument
@@ -47,6 +48,8 @@ class Permit(AuditMixin, Base):
     bonds = db.relationship('Bond', lazy='select', secondary='bond_permit_xref')
     reclamation_invoices = db.relationship('ReclamationInvoice', lazy='select')
 
+    _mine_associations = db.relationship('MinePermitXref')
+
     @hybrid_property
     def current_permittee(self):
         if len(self.permittee_appointments) > 0:
@@ -84,11 +87,14 @@ class Permit(AuditMixin, Base):
 
     @classmethod
     def create(cls, mine, permit_no, permit_status_code, add_to_session=True):
-        mine_permit = cls(permit_no=permit_no, permit_status_code=permit_status_code)
-        mine.mine_permit.append(mine_permit)
+        permit = cls.find_by_permit_no(permit_no)
+        if not permit:
+            permit = cls(permit_no=permit_no, permit_status_code=permit_status_code)
+
+        permit._mine_associations.append(MinePermitXref(mine_guid=mine.mine_guid))
         if add_to_session:
-            mine_permit.save(commit=False)
-        return mine_permit
+            permit.save(commit=False)
+        return permit
 
     @validates('permit_status_code')
     def validate_status_code(self, key, permit_status_code):

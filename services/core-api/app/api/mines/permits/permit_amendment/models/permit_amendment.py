@@ -67,7 +67,7 @@ class PermitAmendment(AuditMixin, Base):
             permit_amendment_type_code=permit_amendment_type_code,
             permit_amendment_status_code=permit_amendment_status_code,
             description=description)
-        permit.all_permit_amendments.append(new_pa)
+        permit._all_permit_amendments.append(new_pa)
         if add_to_session:
             new_pa.save(commit=False)
         return new_pa

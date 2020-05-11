@@ -91,12 +91,12 @@ class PermitListResource(Resource, UserMixin):
             new_pa_doc = PermitAmendmentDocument(
                 document_name=newFile['fileName'],
                 document_manager_guid=newFile['document_manager_guid'],
-                mine_guid=permit.mine.mine_guid,
+                mine_guid=mine.mine_guid,
             )
             amendment.related_documents.append(new_pa_doc)
         db.session.commit()
 
-        permittee_start_date = data.get('issue_date'),
+        permittee_start_date = data.get('issue_date')
         permittee = MinePartyAppointment.create(
             None,
             data.get('permittee_party_guid'),
