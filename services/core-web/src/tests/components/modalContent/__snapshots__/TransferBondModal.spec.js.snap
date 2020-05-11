@@ -3,7 +3,7 @@
 exports[`TransferBondModal renders properly 1`] = `
 <div>
   <Alert
-    description="This action will release the current bond and record a new bond using the same information under the selected permit."
+    description="This action will release the current bond and record a new bond using the same information under the selected permit. Any note created will be carried forward on the new bond record"
     message="Transfer to a different Permit"
     showIcon={true}
     style={

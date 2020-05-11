@@ -1,14 +1,7 @@
 /* eslint-disable */
 import React from "react";
 import PropTypes from "prop-types";
-import { connect } from "react-redux";
 import { Alert } from "antd";
-import {
-  getDropdownProvinceOptions,
-  getBondTypeDropDownOptions,
-  getBondDocumentTypeDropDownOptions,
-  getBondDocumentTypeOptionsHash,
-} from "@common/selectors/staticContentSelectors";
 import TransferBondForm from "@/components/Forms/Securities/TransferBondForm";
 import CustomPropTypes from "@/customPropTypes";
 
@@ -16,12 +9,7 @@ const propTypes = {
   onSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
-  bondTypeDropDownOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
-  provinceOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
-  bondDocumentTypeDropDownOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
-  bondDocumentTypeOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   permitGuid: PropTypes.string.isRequired,
-  mineGuid: PropTypes.string.isRequired,
   bond: CustomPropTypes.bond,
   permits: PropTypes.arrayOf(CustomPropTypes.permit).isRequired,
 };
@@ -32,7 +20,6 @@ const defaultProps = {
 
 export const TransferBondModal = (props) => {
   const handleAddBond = (values) => {
-    console.log("transferring..");
     const newPermitGuid = values.permit_guid;
     delete values.permit_guid;
     const releasedBond = { ...props.bond, bond_status_code: "REL" };
@@ -73,7 +60,7 @@ export const TransferBondModal = (props) => {
     <div>
       <Alert
         message="Transfer to a different Permit"
-        description="This action will release the current bond and record a new bond using the same information under the selected permit."
+        description="This action will release the current bond and record a new bond using the same information under the selected permit. Any note created will be carried forward on the new bond record"
         type="info"
         showIcon
         style={{ textAlign: "left" }}
@@ -100,11 +87,4 @@ export const TransferBondModal = (props) => {
 TransferBondModal.propTypes = propTypes;
 TransferBondModal.defaultProps = defaultProps;
 
-const mapStateToProps = (state) => ({
-  provinceOptions: getDropdownProvinceOptions(state),
-  bondTypeDropDownOptions: getBondTypeDropDownOptions(state),
-  bondDocumentTypeDropDownOptions: getBondDocumentTypeDropDownOptions(state),
-  bondDocumentTypeOptionsHash: getBondDocumentTypeOptionsHash(state),
-});
-
-export default connect(mapStateToProps)(TransferBondModal);
+export default TransferBondModal;
