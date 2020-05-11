@@ -26,7 +26,7 @@ class Permit(AuditMixin, Base):
     permit_no = db.Column(db.String(16), nullable=False)
     permit_status_code = db.Column(
         db.String(2), db.ForeignKey('permit_status_code.permit_status_code'))
-    permit_amendments = db.relationship(
+    all_permit_amendments = db.relationship(
         'PermitAmendment',
         backref='permit',
         primaryjoin=
@@ -53,6 +53,9 @@ class Permit(AuditMixin, Base):
             return self.permittee_appointments[0].party.name
         else:
             return ""
+
+    def get_amendments_by_mine_guid(self, mine_guid):
+        return [x for x in self.all_permit_amendments if x.mine_guid == mine_guid]
 
     def __repr__(self):
         return '<Permit %r>' % self.permit_guid

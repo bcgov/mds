@@ -53,7 +53,7 @@ class Mine(AuditMixin, Base):
         lazy='joined')
 
     #Almost always used, but faster to use selectin to load related data
-    mine_permit = db.relationship(
+    mine_permit_identities = db.relationship(
         'Permit',
         order_by='desc(Permit.create_timestamp)',
         lazy='selectin',
@@ -122,6 +122,14 @@ class Mine(AuditMixin, Base):
             'utm_zone_letter': self.utm_zone_letter,
             'mine_location_description': self.mine_location_description
         }
+
+    @hybrid_property
+    def mine_permit(self):
+        permits_w_amendments = []
+        for p in self.mine_permit_identities:
+            p.permit_amendments = p.get_amendments_by_mine_guid(self.mine_guid)
+            permits_w_amendments.append(p)
+        return permits_w_amendments
 
     @hybrid_property
     def mine_permit_numbers(self):
