@@ -52,8 +52,8 @@ class PermitAmendmentListResource(Resource, UserMixin):
         if not permit:
             raise NotFound('Permit does not exist.')
 
-        if not str(permit.mine.mine_guid) == mine_guid:
-            raise BadRequest('Permits mine_guid and provided mine_guid mismatch.')
+        # if str(pid) not in [m.mine_guid for m in permit.all_mines]:
+        #     raise BadRequest('Permits mine_guid and provided mine_guid mismatch.')
 
         data = self.parser.parse_args()
         current_app.logger.info(f'creating permit_amendment with >> {data}')
@@ -94,7 +94,7 @@ class PermitAmendmentListResource(Resource, UserMixin):
 
         # create a new appointment, so every amendment is associated with a permittee
         new_permittee = MinePartyAppointment.create(
-            permit.mine,
+            None,
             data.get('permittee_party_guid'),
             mine_party_appt_type_code='PMT',
             processed_by=self.get_user_info(),
@@ -105,6 +105,7 @@ class PermitAmendmentListResource(Resource, UserMixin):
         new_permittee.save()
         new_pa = PermitAmendment.create(
             permit,
+            mine,
             data.get('received_date'),
             data.get('issue_date'),
             data.get('authorization_end_date'),

@@ -26,13 +26,15 @@ class Permit(AuditMixin, Base):
     permit_no = db.Column(db.String(16), nullable=False)
     permit_status_code = db.Column(
         db.String(2), db.ForeignKey('permit_status_code.permit_status_code'))
-    all_permit_amendments = db.relationship(
+    _all_permit_amendments = db.relationship(
         'PermitAmendment',
         backref='permit',
         primaryjoin=
         'and_(PermitAmendment.permit_id == Permit.permit_id, PermitAmendment.deleted_ind==False)',
         order_by='desc(PermitAmendment.issue_date), desc(PermitAmendment.permit_amendment_id)',
         lazy='select')
+
+    _all_mines = db.relationship('Mine', lazy='selectin', secondary='mine_permit_xref')
 
     permittee_appointments = db.relationship(
         'MinePartyAppointment',
@@ -41,9 +43,7 @@ class Permit(AuditMixin, Base):
         'desc(MinePartyAppointment.start_date), desc(MinePartyAppointment.mine_party_appt_id)')
     permit_status = db.relationship('PermitStatusCode', lazy='select')
     permit_status_code_description = association_proxy('permit_status', 'description')
-    mine_name = association_proxy('mine', 'mine_name')
 
-    mine = db.relationship('Mine', secondary='mine_permit_xref', uselist=False)
     bonds = db.relationship('Bond', lazy='select', secondary='bond_permit_xref')
     reclamation_invoices = db.relationship('ReclamationInvoice', lazy='select')
 
@@ -55,7 +55,10 @@ class Permit(AuditMixin, Base):
             return ""
 
     def get_amendments_by_mine_guid(self, mine_guid):
-        return [x for x in self.all_permit_amendments if x.mine_guid == mine_guid]
+        return [pa for pa in self._all_permit_amendments if pa.mine_guid == mine_guid]
+
+    def mine(self, mine_guid):
+        return next([m for m in self.all_mines if m.mine_guid == mine_guid], None)
 
     def __repr__(self):
         return '<Permit %r>' % self.permit_guid

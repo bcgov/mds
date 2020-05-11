@@ -77,6 +77,7 @@ class PermitListResource(Resource, UserMixin):
 
         amendment = PermitAmendment.create(
             permit,
+            mine,
             data.get('received_date'),
             data.get('issue_date'),
             data.get('authorization_end_date'),
@@ -97,7 +98,7 @@ class PermitListResource(Resource, UserMixin):
 
         permittee_start_date = data.get('issue_date'),
         permittee = MinePartyAppointment.create(
-            mine,
+            None,
             data.get('permittee_party_guid'),
             mine_party_appt_type_code='PMT',
             start_date=permittee_start_date,
