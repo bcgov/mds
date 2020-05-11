@@ -24,7 +24,7 @@ const columns = [
   {
     title: "Email",
     width: 150,
-    dataIndex: "email",
+    dataIndex: "user_identifier",
     render: (text) => <div title="Email">{text}</div>,
   },
   {
@@ -78,7 +78,7 @@ const transformRowData = (minespaceUsers, mines, deleteFunc) =>
   minespaceUsers.map((user) => ({
     key: user.user_id,
     emptyField: Strings.EMPTY_FIELD,
-    email: user.email,
+    user_identifier: user.user_identifier,
     mineNames: lookupMineName(user.mines, mines),
     user_id: user.user_id,
     delete: deleteFunc,

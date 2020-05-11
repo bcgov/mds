@@ -30,10 +30,10 @@ export const AddMinespaceUser = (props) => (
         <Col>
           <Form.Item>
             <Field
-              id="email"
-              name="email"
-              label="Email or BCeID username*"
-              placeholder="Enter the user's BCeID email"
+              id="user_identifier"
+              name="user_identifier"
+              label="Email/BCeID username"
+              placeholder="Enter the users Email (BCeID username if email is not available)"
               component={RenderField}
               validate={[required, minespaceUserNotExists]}
               allowClear

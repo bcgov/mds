@@ -42,7 +42,7 @@ app_api.add_namespace(api)
 def setup_info(db_session):
     User._test_mode = False
     auth.clear_cache()
-    MinespaceUserFactory(email='test-proponent-email@minespace.ca')
+    MinespaceUserFactory(user_identifier='test-proponent-email@minespace.ca')
 
     yield
 

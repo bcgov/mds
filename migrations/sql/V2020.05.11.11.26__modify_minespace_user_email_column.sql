@@ -1,0 +1,1 @@
+alter table minespace_user rename column email to user_identifier;

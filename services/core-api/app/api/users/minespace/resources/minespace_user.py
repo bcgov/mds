@@ -15,15 +15,17 @@ from app.api.users.response_models import MINESPACE_USER_MODEL
 
 class MinespaceUserListResource(Resource, UserMixin):
     parser = reqparse.RequestParser(trim=True)
-    parser.add_argument('email', type=str, location='json', required=True)
+    parser.add_argument('user_identifier', type=str, location='json', required=True)
     parser.add_argument('mine_guids', type=list, location='json', required=True)
 
-    @api.doc(params={'email': 'find by email, this will return a list with at most one element'})
+    @api.doc(params={
+        'user_identifier': 'find by email, this will return a list with at most one element'
+    })
     @api.marshal_with(MINESPACE_USER_MODEL, envelope='records')
     @requires_role_mine_admin
     def get(self):
-        if request.args.get('email'):
-            ms_users = [MinespaceUser.find_by_email(request.args.get('email'))]
+        if request.args.get('user_identifier'):
+            ms_users = [MinespaceUser.find_by_email(request.args.get('user_identifier'))]
         else:
             ms_users = MinespaceUser.get_all()
         return ms_users
@@ -32,7 +34,7 @@ class MinespaceUserListResource(Resource, UserMixin):
     @requires_role_mine_admin
     def post(self):
         data = self.parser.parse_args()
-        new_user = MinespaceUser.create_minespace_user(data.get('email'))
+        new_user = MinespaceUser.create_minespace_user(data.get('user_identifier'))
         new_user.save()
         for guid in data.get('mine_guids'):
             guid = uuid.UUID(guid)               #ensure good formatting

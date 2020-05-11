@@ -45,7 +45,8 @@ def get_current_user():
         email = get_user_email()
         username = get_user_username()
         rv = MinespaceUser.query.unbound_unsafe().filter(
-            MinespaceUser.email.in_([email, username])).filter_by(deleted_ind=False).first()
+            MinespaceUser.user_identifier.in_([email,
+                                               username])).filter_by(deleted_ind=False).first()
         g.current_user = rv
     return rv
 

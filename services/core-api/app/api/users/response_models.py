@@ -5,6 +5,6 @@ MINESPACE_USER_MODEL = api.model(
     'MineDocument', {
         'user_id': fields.String,
         'keycloak_guid': fields.String,
-        'email': fields.String,
+        'user_identifier': fields.String,
         'mines': fields.List(fields.String),
     })
