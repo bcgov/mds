@@ -15,7 +15,7 @@ class MinespaceUser(Base):
 
     user_id = db.Column(db.Integer, primary_key=True, server_default=FetchedValue())
     keycloak_guid = db.Column(UUID(as_uuid=True))
-    user_identifier = db.Column(db.String(100), nullable=False)
+    email_or_username = db.Column(db.String(100), nullable=False)
     deleted_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
 
     minespace_user_mines = db.relationship('MinespaceUserMine', backref='user', lazy='joined')
@@ -37,19 +37,19 @@ class MinespaceUser(Base):
         return cls.query.filter_by(keycloak_guid=user_guid).filter_by(deleted_ind=False).first()
 
     @classmethod
-    def find_by_email(cls, user_identifier):
-        return cls.query.filter_by(user_identifier=user_identifier).filter_by(
+    def find_by_email(cls, email_or_username):
+        return cls.query.filter_by(email_or_username=email_or_username).filter_by(
             deleted_ind=False).first()
 
     @classmethod
-    def create_minespace_user(cls, user_identifier, add_to_session=True):
-        minespace_user = cls(user_identifier=user_identifier)
+    def create_minespace_user(cls, email_or_username, add_to_session=True):
+        minespace_user = cls(email_or_username=email_or_username)
         if add_to_session:
             minespace_user.save(commit=False)
         return minespace_user
 
-    @validates('user_identifier')
-    def validate_email(self, key, user_identifier):
-        if not user_identifier:
+    @validates('email_or_username')
+    def validate_email(self, key, email_or_username):
+        if not email_or_username:
             raise AssertionError('Identifier is not provided.')
-        return user_identifier
+        return email_or_username

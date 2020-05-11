@@ -461,7 +461,7 @@ class MinespaceUserFactory(BaseFactory):
         model = MinespaceUser
 
     keycloak_guid = GUID
-    user_identifier = factory.Faker('email')
+    email_or_username = factory.Faker('email')
 
 
 class SubscriptionFactory(BaseFactory):

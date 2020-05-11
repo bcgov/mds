@@ -22,10 +22,10 @@ const defaultProps = {
 
 const columns = [
   {
-    title: "Email",
+    title: "Email/BCeID",
     width: 150,
-    dataIndex: "user_identifier",
-    render: (text) => <div title="Email">{text}</div>,
+    dataIndex: "email_or_username",
+    render: (text) => <div title="Email/BCeID">{text}</div>,
   },
   {
     title: "Mines",
@@ -78,7 +78,7 @@ const transformRowData = (minespaceUsers, mines, deleteFunc) =>
   minespaceUsers.map((user) => ({
     key: user.user_id,
     emptyField: Strings.EMPTY_FIELD,
-    user_identifier: user.user_identifier,
+    email_or_username: user.email_or_username,
     mineNames: lookupMineName(user.mines, mines),
     user_id: user.user_id,
     delete: deleteFunc,
