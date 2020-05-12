@@ -58,7 +58,7 @@ class VerifyPermitMineResource(Resource):
                 if type_of_deemed_auth != "INDUCED" and permit_prefix not in ["C", "M"]:
                     break
 
-                mine_info = mine_info + mine.mine_no + ' - ' + mine.mine_name + '\r\c'
+                mine_info = mine_info + mine.mine_no + ' - ' + mine.mine_name + '\r'
 
             if mine_info != "":
                 result = "Success"
