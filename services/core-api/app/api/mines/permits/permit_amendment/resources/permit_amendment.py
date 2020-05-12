@@ -3,6 +3,7 @@ from flask_restplus import Resource, reqparse, inputs
 from flask import current_app
 from werkzeug.exceptions import BadRequest, InternalServerError, NotFound
 
+from app.api.mines.mine.models.mine import Mine
 from app.api.mines.permits.permit.models.permit import Permit
 from app.api.mines.permits.permit_amendment.models.permit_amendment import PermitAmendment
 from app.api.mines.permits.permit_amendment.models.permit_amendment_document import PermitAmendmentDocument
@@ -52,6 +53,9 @@ class PermitAmendmentListResource(Resource, UserMixin):
         if not permit:
             raise NotFound('Permit does not exist.')
 
+        mine = Mine.find_by_mine_guid(mine_guid)
+        if not mine:
+            raise NotFound("Mine does not exist")
         # if str(pid) not in [m.mine_guid for m in permit.all_mines]:
         #     raise BadRequest('Permits mine_guid and provided mine_guid mismatch.')
 
@@ -117,7 +121,7 @@ class PermitAmendmentListResource(Resource, UserMixin):
             new_pa_doc = PermitAmendmentDocument(
                 document_name=newFile['fileName'],
                 document_manager_guid=newFile['document_manager_guid'],
-                mine_guid=permit.mine.mine_guid,
+                mine_guid=mine.mine_guid,
             )
             new_pa.related_documents.append(new_pa_doc)
 

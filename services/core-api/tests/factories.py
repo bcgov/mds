@@ -514,7 +514,7 @@ class MineFactory(BaseFactory):
     exemption_fee_status_code = factory.LazyFunction(RandomExemptionFeeStatusCode)
     exemption_fee_status_note = factory.Faker('sentence', nb_words=6, variable_nb_words=True)
     mine_tailings_storage_facilities = []
-    mine_permit = []
+    mine_permit_identities = []
     mine_incidents = []
     mine_variance = []
     mine_reports = []
@@ -530,7 +530,7 @@ class MineFactory(BaseFactory):
         MineTailingsStorageFacilityFactory.create_batch(size=extracted, mine=obj, **kwargs)
 
     @factory.post_generation
-    def mine_permit(obj, create, extracted, **kwargs):
+    def mine_permit_identities(obj, create, extracted, **kwargs):
         if not create:
             return
 
@@ -584,6 +584,9 @@ class PermitFactory(BaseFactory):
     class Meta:
         model = Permit
 
+    class Params:
+        mine = factory.SubFactory('tests.factories.MineFactory', minimal=True)
+
     permit_guid = GUID
     permit_no = factory.LazyFunction(RandomPermitNumber)
     permit_status_code = factory.LazyFunction(RandomPermitStatusCode)
@@ -599,7 +602,7 @@ class PermitFactory(BaseFactory):
             extracted = 1
 
         for n in range(extracted):
-            PermitAmendmentFactory(permit=obj, initial_permit=(n == 0), **kwargs)
+            PermitAmendmentFactory(permit=obj, initial_permit=(n == 0), mine=obj.mine, **kwargs)
 
     @factory.post_generation
     def bonds(obj, create, extracted, **kwargs):
@@ -634,9 +637,11 @@ class PermitAmendmentFactory(BaseFactory):
             permit_amendment_type_code='OGP',
         )
         permit = factory.SubFactory(PermitFactory, permit_amendments=0)
+        mine = factory.SubFactory('tests.factories.MineFactory', minimal=True)
 
     permit_amendment_guid = GUID
     permit_id = factory.SelfAttribute('permit.permit_id')
+    mine_guid = factory.SelfAttribute('mine.mine_guid')
     received_date = TODAY
     issue_date = TODAY
     authorization_end_date = factory.Faker('date_between', start_date='+31d', end_date='+90d')
@@ -653,7 +658,7 @@ class PermitAmendmentDocumentFactory(BaseFactory):
     permit_amendment_document_guid = GUID
     permit_amendment_id = factory.SelfAttribute('permit_amendment.permit_amendment_id')
     document_name = factory.Faker('file_name')
-    mine_guid = factory.SelfAttribute('permit_amendment.permit.mine.mine_guid')
+    mine_guid = factory.SelfAttribute('permit_amendment.mine_guid')
     document_manager_guid = GUID
     permit_amendment = factory.SubFactory(PermitAmendmentFactory)
 

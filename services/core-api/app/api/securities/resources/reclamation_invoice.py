@@ -57,7 +57,7 @@ class ReclamationInvoiceListResource(Resource, UserMixin):
         reclamation_invoice.permit = permit
 
         for doc in reclamation_invoice.documents:
-            doc.mine_guid = permit.mine.mine_guid
+            doc.mine_guid = permit.get_mine(mine_guid).mine_guid
 
         reclamation_invoice.save()
 

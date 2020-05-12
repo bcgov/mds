@@ -1,5 +1,6 @@
-from sqlalchemy.dialects.postgresql import UUID
+from flask import current_app
 
+from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.orm import validates
@@ -57,11 +58,29 @@ class Permit(AuditMixin, Base):
         else:
             return ""
 
+    @hybrid_property
+    def mine(self):
+        mine = next(self._all_mines, None)
+        if len(self._all_mines) > 1:
+            current_app.logger.WARN(
+                f'{self.permit_no}.mine returned {mine.mine_no},{mine.mine_name} out of {len(self._all_mines)}'
+            )
+        return mine
+
+    @mine.setter
+    def mine(self, value):
+        #factories use this setter. should not be used without
+        if len(self._all_mines < 2):
+            self._all_mines = [value]
+        else:
+            raise Exception(
+                "Permit is used by multiple mines, cannot override. try mine._all_mines.append()")
+
+    def get_mine(self, mine_guid):
+        return next([m for m in self.all_mines if m.mine_guid == mine_guid], None)
+
     def get_amendments_by_mine_guid(self, mine_guid):
         return [pa for pa in self._all_permit_amendments if pa.mine_guid == mine_guid]
-
-    def mine(self, mine_guid):
-        return next([m for m in self.all_mines if m.mine_guid == mine_guid], None)
 
     def __repr__(self):
         return '<Permit %r>' % self.permit_guid

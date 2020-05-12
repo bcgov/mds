@@ -22,7 +22,7 @@ class PermitAmendment(AuditMixin, Base):
     _edit_key = PERMIT_AMENDMENT_EDIT_GROUP
 
     permit_amendment_id = db.Column(db.Integer, primary_key=True)
-    mine_guid = db.Column(UUID(as_uuid=True), nullable=False)
+    mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine.mine_guid'), nullable=False)
     permit_amendment_guid = db.Column(UUID(as_uuid=True), server_default=FetchedValue())
     permit_id = db.Column(db.Integer, db.ForeignKey('permit.permit_id'), nullable=False)
     received_date = db.Column(db.DateTime, nullable=False)
@@ -46,6 +46,7 @@ class PermitAmendment(AuditMixin, Base):
     now_application_guid = db.Column(
         UUID(as_uuid=True), db.ForeignKey('now_application_identity.now_application_guid'))
     now_identity = db.relationship('NOWApplicationIdentity', lazy='select')
+    mine = db.relationship('Mine', lazy='selectin')
 
     @classmethod
     def create(cls,

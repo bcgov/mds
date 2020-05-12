@@ -158,7 +158,7 @@ class PermitResource(Resource, UserMixin):
         permit = Permit.find_by_permit_guid_or_no(permit_guid)
         if not permit:
             raise NotFound('Permit not found.')
-        if not str(permit.mine.mine_guid) == mine_guid:
+        if permit.get_mine(mine_guid):
             raise BadRequest('Permit and mine_guid mismatch.')
         return permit
 
@@ -169,9 +169,6 @@ class PermitResource(Resource, UserMixin):
         permit = Permit.find_by_permit_guid(permit_guid)
         if not permit:
             raise NotFound('Permit not found.')
-
-        if not str(permit.mine.mine_guid) == mine_guid:
-            raise BadRequest('Permit and mine_guid mismatch.')
 
         data = self.parser.parse_args()
         for key, value in data.items():
