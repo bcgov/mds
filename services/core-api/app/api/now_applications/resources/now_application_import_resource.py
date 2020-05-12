@@ -68,10 +68,9 @@ class NOWApplicationImportResource(Resource, UserMixin):
             raise BadRequest('This record has already been imported.')
         application.save()
         db.session.refresh(now_application_identity)
-        status = NOWApplicationStatus.find_by_now_application_status_code(
-            now_application_identity.now_application.now_application_status_code)
         NROSNOWStatusService.nros_now_status_update(
-            now_application_identity.now_number, status.description,
+            now_application_identity.now_number,
+            now_application_identity.now_application.status.description,
             now_application_identity.now_application.status_updated_date.strftime(
                 "%Y-%m-%dT%H:%M:%S"))
 

@@ -41,7 +41,8 @@ class NROSNOWStatusService():
                 'lobName': 'MMS'
             },
             data=json.dumps(data))
-        current_app.logger.info(f'Status for NoW Number{now_number} pushed to NROS')
+        current_app.logger.info(
+            f'Status for NoW Number{now_number} pushed to NROS with response: {resp.__dict__}')
         return
 
     @classmethod

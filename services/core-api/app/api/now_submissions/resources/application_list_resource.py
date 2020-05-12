@@ -139,4 +139,5 @@ class ApplicationListResource(Resource, UserMixin):
             now_number=NOWApplicationIdentity.create_now_number(mine))
         current_app.logger.debug('Attempting to Save')
         application.save()
+
         return application, 201

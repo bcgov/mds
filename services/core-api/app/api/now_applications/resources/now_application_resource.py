@@ -80,10 +80,9 @@ class NOWApplicationResource(Resource, UserMixin):
         now_application_identity.save()
 
         now_application_identity.now_application.deep_update_from_dict(data)
-        status = NOWApplicationStatus.find_by_now_application_status_code(
-            now_application_identity.now_application.now_application_status_code)
         NROSNOWStatusService.nros_now_status_update(
-            now_application_identity.now_number, status.description,
+            now_application_identity.now_number,
+            now_application_identity.now_application.status.description,
             now_application_identity.now_application.status_updated_date.strftime(
                 "%Y-%m-%dT%H:%M:%S"))
 
