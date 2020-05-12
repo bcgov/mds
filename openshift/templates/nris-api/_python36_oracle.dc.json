@@ -227,7 +227,7 @@
                 "volumeMounts": [
                   {
                     "name": "nris-database-tns",
-                    "mountPath": "/opt/app-root/src/tnsnames.ora",
+                    "mountPath": "/etc/ora/tnsnames.ora",
                     "subPath": "tnsnames.ora"
                   }
                 ],
@@ -385,6 +385,14 @@
                   {
                     "name": "ENVIRONMENT_NAME",
                     "value": "${ENVIRONMENT_NAME}"
+                  },
+                  {
+                    "name": "TNS_ADMIN",
+                    "value": "/etc/ora"
+                  },
+                  {
+                    "name": "ORACLE_HOME",
+                    "value": "/etc/ora"
                   }
                 ],
                 "resources": {
