@@ -56,9 +56,9 @@ def clean_nris_xml_import():
 def import_nris_xml():
 
     oracle_db = cx_Oracle.connect(
-        "ENFPROD1.NRS.BCGOV",
         current_app.config['NRIS_DB_USER'],
         current_app.config['NRIS_DB_PASSWORD'],
+        "ENFPROD1.NRS.BCGOV",
         encoding="UTF-8")
 
     cursor = oracle_db.cursor()
