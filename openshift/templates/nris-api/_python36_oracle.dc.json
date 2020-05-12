@@ -200,6 +200,20 @@
             }
           },
           "spec": {
+            "volumes": [
+              {
+                "name": "nris-database-tns",
+                "configMap": {
+                  "name": "nris-database-tns",
+                  "items": [
+                    {
+                      "key": "tnsnames.ora",
+                      "path": "tnsnames.ora"
+                    }
+                  ]
+                }
+              }
+            ],
             "containers": [
               {
                 "name": "app",
@@ -208,6 +222,13 @@
                   {
                     "containerPort": 5500,
                     "protocol": "TCP"
+                  }
+                ],
+                "volumeMounts": [
+                  {
+                    "name": "nris-database-tns",
+                    "mountPath": "/opt/app-root/src/tnsnames.ora",
+                    "subPath": "tnsnames.ora"
                   }
                 ],
                 "env": [
