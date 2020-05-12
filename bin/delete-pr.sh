@@ -19,16 +19,6 @@ exit 1
 # ===================================================================================================
 # Setup
 # ---------------------------------------------------------------------------------------------------
-while getopts c:h FLAG; do
-  case $FLAG in
-    c ) CHANGE_ID=$OPTARG ;;
-    h ) usage ;;
-    \?) #unrecognized option - show help
-      echo -e \\n"Invalid script option"\\n
-      usage
-      ;;
-  esac
-done
 
 if ! oc whoami
 then
@@ -42,12 +32,15 @@ fi
 template='{.items[?(@.tag.name=="build-pr-%s")].metadata.name}'
 
 # ===================================================================================================
-oc project empr-mds-dev
+for pr in "$@"
+do
+    oc project empr-mds-dev
 
-oc delete secret,pvc,all -l change-id=$CHANGE_ID
+    oc delete secret,pvc,all -l change-id=$pr
 
-oc project empr-mds-tools
+    oc project empr-mds-tools
 
-oc delete is -l change-id=$CHANGE_ID
-tags=`oc get istag -o=jsonpath=$(printf "${template}" "${CHANGE_ID}")`
-oc delete istag ${tags}
+    oc delete is -l change-id=$pr
+    tags=`oc get istag -o=jsonpath=$(printf "${template}" "${pr}")`
+    oc delete istag ${tags}
+done
