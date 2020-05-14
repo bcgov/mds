@@ -13,7 +13,7 @@ APPLICATION_NDA_DATA = {
     "applicationtype":
     "str",
     "status":
-    "Withdrawn",
+    "Received",
     "submitteddate":
     "2020-03-05T23:15:39.361Z",
     "receiveddate":
