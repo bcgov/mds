@@ -8,6 +8,7 @@ import { fetchPartyRelationships } from "@common/actionCreators/partiesActionCre
 import { getStaticContentLoadingIsComplete } from "@common/selectors/staticContentSelectors";
 import * as staticContent from "@common/actionCreators/staticContentActionCreator";
 import { getMines } from "@common/selectors/mineSelectors";
+import { isProponent } from "@/selectors/authenticationSelectors";
 import CustomPropTypes from "@/customPropTypes";
 import Loading from "@/components/common/Loading";
 import Overview from "@/components/dashboard/mine/overview/Overview";
@@ -20,7 +21,6 @@ import Bonds from "@/components/dashboard/mine/bonds/Bonds";
 import * as router from "@/constants/routes";
 import * as Strings from "@/constants/strings";
 import NotFoundNotice from "@/components/common/NotFoundNotice";
-import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 
 const { Title } = Typography;
 const { TabPane } = Tabs;
@@ -36,6 +36,7 @@ const propTypes = {
   }).isRequired,
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
   staticContentLoadingIsComplete: PropTypes.bool.isRequired,
+  isProponent: PropTypes.bool.isRequired,
   dispatch: PropTypes.func.isRequired,
 };
 
@@ -136,11 +137,12 @@ export class MineDashboard extends Component {
                   <TabPane tab="Reports" key="reports">
                     <Reports mine={mine} match={this.props.match} />
                   </TabPane>
-                  <AuthorizationWrapper>
+                  {/* Hide bonds from proponents for the time being */}
+                  {this.props.isProponent === false && (
                     <TabPane tab="Bonds" key="bonds">
                       <Bonds mine={mine} match={this.props.match} />
                     </TabPane>
-                  </AuthorizationWrapper>
+                  )}
                 </Tabs>
               </Col>
             </Row>
@@ -152,6 +154,7 @@ export class MineDashboard extends Component {
 }
 
 const mapStateToProps = (state) => ({
+  isProponent: isProponent(state),
   mines: getMines(state),
   staticContentLoadingIsComplete: getStaticContentLoadingIsComplete(state),
 });
