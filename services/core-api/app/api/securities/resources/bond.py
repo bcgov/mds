@@ -6,7 +6,7 @@ from marshmallow.exceptions import MarshmallowError
 from app.extensions import api, jwt
 from app.api.securities.response_models import BOND, BOND_MINESPACE
 from app.api.securities.models.bond import Bond
-from app.api.utils.access_decorators import MINESPACE_PROPONENT, VIEW_ALL, requires_any_of, requires_role_edit_securities
+from app.api.utils.access_decorators import MINESPACE_PROPONENT, VIEW_ALL, requires_any_of, requires_role_view_all, requires_role_edit_securities
 from app.api.utils.resources_mixins import UserMixin
 from app.api.mines.permits.permit.models.permit import Permit
 from app.api.mines.mine.models.mine import Mine
