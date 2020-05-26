@@ -32,7 +32,7 @@ export class Bonds extends Component {
         <Col>
           <Row>
             <Col>
-              <Title level={4}>Reports</Title>
+              <Title level={4}>Bonds</Title>
               <Paragraph>
                 This table shows&nbsp;
                 <Text className="color-primary" strong>
