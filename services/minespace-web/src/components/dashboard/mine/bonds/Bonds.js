@@ -20,7 +20,6 @@ export class Bonds extends Component {
   state = { isLoaded: false };
 
   componentDidMount() {
-    console.log(this.props.mine.mine_guid);
     this.props.fetchMineBonds(this.props.mine.mine_guid).then(() => {
       this.setState({ isLoaded: true });
     });
