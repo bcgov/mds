@@ -31,7 +31,7 @@ export const invoice = PropTypes.shape({
   reclamation_invoice_id: PropTypes.number,
   reclamation_invoice_guid: PropTypes.string,
   project_id: PropTypes.string,
-  amount: PropTypes.string,
+  amount: PropTypes.number,
   vendor: PropTypes.string,
   permit_guid: PropTypes.string,
   documents: PropTypes.arrayOf(mineDocument),
