@@ -58,10 +58,10 @@ BOND_MINESPACE = api.model(
         'bond_status_code': fields.String,
         'reference_number': fields.String,
         'issue_date': fields.DateTime,
-        'note': fields.String,
         'payer': fields.Nested(BOND_PARTY),
         'project_id': fields.String,
         'permit_guid': fields.String(attribute='permit.permit_guid'),
+        'permit_no': fields.String(attribute='permit.permit_no'),
     })
 
 BOND_STATUS = api.model('BondStatus', {
