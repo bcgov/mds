@@ -68,7 +68,7 @@ class BondListResource(Resource, UserMixin):
 
 class BondResource(Resource, UserMixin):
     @api.doc(description='Get a bond')
-    @requires_role_view_all
+    @requires_any_of([VIEW_ALL, MINESPACE_PROPONENT])
     @api.marshal_with(BOND, code=200)
     def get(self, bond_guid):
 
@@ -76,6 +76,9 @@ class BondResource(Resource, UserMixin):
 
         if bond is None:
             raise NotFound('No bond was found with the guid provided.')
+
+        if jwt.validate_roles([MINESPACE_PROPONENT]):
+            bond = marshal(bond, BOND_MINESPACE)
 
         return bond
 
