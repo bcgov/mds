@@ -20,6 +20,7 @@ import Bonds from "@/components/dashboard/mine/bonds/Bonds";
 import * as router from "@/constants/routes";
 import * as Strings from "@/constants/strings";
 import NotFoundNotice from "@/components/common/NotFoundNotice";
+import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 
 const { Title } = Typography;
 const { TabPane } = Tabs;
@@ -59,7 +60,7 @@ export class MineDashboard extends Component {
       .then(() => {
         this.setState({ isLoaded: true });
       })
-      .catch((err) => {
+      .catch(() => {
         this.setState({ mineNotFound: true });
       });
   }
@@ -135,9 +136,11 @@ export class MineDashboard extends Component {
                   <TabPane tab="Reports" key="reports">
                     <Reports mine={mine} match={this.props.match} />
                   </TabPane>
-                  <TabPane tab="Bonds" key="bonds">
-                    <Bonds mine={mine} match={this.props.match} />
-                  </TabPane>
+                  <AuthorizationWrapper>
+                    <TabPane tab="Bonds" key="bonds">
+                      <Bonds mine={mine} match={this.props.match} />
+                    </TabPane>
+                  </AuthorizationWrapper>
                 </Tabs>
               </Col>
             </Row>
