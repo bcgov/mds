@@ -54,16 +54,6 @@ def get_current_user():
     return rv
 
 
-# def get_current_user():
-#     rv = getattr(g, 'current_user', None)
-#     if rv == None:
-#         email = get_user_email()
-#         rv = MinespaceUser.query.unbound_unsafe().filter_by(
-#             email_or_username=email).filter_by(deleted_ind=False).first()
-#         g.current_user = rv
-#     return rv
-
-
 def get_user_is_proponent():
     # The flask-jwt-oidc library throws an exception if a token does not exist.
     token_data = User().get_user_raw_info()
