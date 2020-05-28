@@ -112,7 +112,7 @@ class BondTransferResource(Resource, UserMixin):
         if bond.bond_status_code != "ACT":
             raise BadRequest('Only active bonds can be transferred.')
 
-        # Get and validate the permit to transfer the bond to
+        # Get the permit to transfer the bond to and validate it
         permit_guid = request.json.get('permit_guid', None)
         if not permit_guid:
             raise BadRequest('permit_guid is required.')
@@ -122,10 +122,10 @@ class BondTransferResource(Resource, UserMixin):
         if permit.permit_guid == bond.permit.permit_guid:
             raise BadRequest('This bond is already associated with this permit.')
 
-        # Release the current bond
+        # Release the bond
         bond.bond_status_code = "REL"
 
-        # Create the new "transferred bond" record
+        # Create the new "transferred bond"
         new_bond_json = marshal(bond, BOND)
         del new_bond_json['bond_id']
         del new_bond_json['bond_guid']
