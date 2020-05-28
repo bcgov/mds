@@ -122,6 +122,11 @@ class BondTransferResource(Resource, UserMixin):
         if permit.permit_guid == bond.permit.permit_guid:
             raise BadRequest('This bond is already associated with this permit.')
 
+        # Get the note to apply to the bond and the transferred bond
+        note = request.json.get('note', None)
+        if note:
+            bond.note = note
+
         # Release the bond
         bond.bond_status_code = "REL"
 
@@ -133,7 +138,7 @@ class BondTransferResource(Resource, UserMixin):
         del new_bond_json['permit_no']
         del new_bond_json['payer']
         new_bond_json['bond_status_code'] = 'ACT'
-        new_bond_json['note'] = request.json.get('note', None)
+        new_bond_json['note'] = note
         try:
             new_bond = Bond._schema().load(new_bond_json)
         except MarshmallowError as e:
