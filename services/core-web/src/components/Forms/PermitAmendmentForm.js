@@ -32,13 +32,19 @@ const defaultProps = {
 };
 
 const validateBusinessRules = (values) => {
+  console.log(values);
   const errors = {};
   if (values.amendments && values.permit_amendment_type_code !== originalPermit) {
     const originalPermitAmendment = values.amendments.filter(
       (x) => x.permit_amendment_type_code === originalPermit
     )[0];
-    if (originalPermitAmendment && values.issue_date < originalPermitAmendment.issue_date)
+    const mostRecentAmendment = values.amendments[0];
+    if (originalPermitAmendment && values.issue_date < originalPermitAmendment.issue_date) {
       errors.issue_date = "Issue Date cannot be before the permits First Issued date.";
+    }
+    if (mostRecentAmendment && values.issue_date < mostRecentAmendment.issue_date) {
+      errors.issue_date = "Issue Date cannot be before the last amendments issued date";
+    }
   }
 
   return errors;
