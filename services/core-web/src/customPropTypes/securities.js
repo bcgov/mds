@@ -10,7 +10,7 @@ export const payer = PropTypes.shape({
 export const bond = PropTypes.shape({
   bond_id: PropTypes.number,
   bond_guid: PropTypes.string,
-  amount: PropTypes.string,
+  amount: PropTypes.number,
   bond_type_code: PropTypes.string,
   payer_party_guid: PropTypes.string,
   bond_status_code: PropTypes.string,
@@ -31,7 +31,7 @@ export const invoice = PropTypes.shape({
   reclamation_invoice_id: PropTypes.number,
   reclamation_invoice_guid: PropTypes.string,
   project_id: PropTypes.string,
-  amount: PropTypes.string,
+  amount: PropTypes.number,
   vendor: PropTypes.string,
   permit_guid: PropTypes.string,
   documents: PropTypes.arrayOf(mineDocument),
