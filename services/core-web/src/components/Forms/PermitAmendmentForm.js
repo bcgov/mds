@@ -32,7 +32,6 @@ const defaultProps = {
 };
 
 const validateBusinessRules = (values) => {
-  console.log(values);
   const errors = {};
   if (values.amendments && values.permit_amendment_type_code !== originalPermit) {
     const originalPermitAmendment = values.amendments.filter(
