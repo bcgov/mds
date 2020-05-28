@@ -3,8 +3,8 @@
 exports[`TransferBondModal renders properly 1`] = `
 <div>
   <Alert
-    description="This action will release the current bond and record a new bond using the same information under the selected permit. Any note created will be carried forward on the new bond record"
-    message="Transfer to a different Permit"
+    description="This action will release the current bond and create a new bond using the same information under the selected permit. Any note created will be added to the new bond and the transferred bond."
+    message="Transfer this bond to a different permit"
     showIcon={true}
     style={
       Object {
@@ -15,55 +15,18 @@ exports[`TransferBondModal renders properly 1`] = `
   />
   <br />
   <ReduxForm
-    bond={
-      Object {
-        "amount": 300,
-        "bond_guid": "erjvnaqekrj",
-        "bond_id": 1,
-        "bond_status_code": "ACT",
-        "bond_type_code": "CAS",
-        "documents": Array [],
-        "institution_city": null,
-        "institution_name": null,
-        "institution_postal_code": null,
-        "institution_province": null,
-        "institution_street": null,
-        "issue_date": "2018-10-16",
-        "note": null,
-        "payer": Object {},
-        "payer_party_guid": "sethwrt",
-        "reference_number": "",
-      }
-    }
     closeModal={[MockFunction]}
     destroyOnUnmount={true}
-    enableReinitialize={false}
+    enableReinitialize={true}
     forceUnregisterOnUnmount={false}
     form="TRANSFER_BOND"
     getFormState={[Function]}
-    initialPartyValue=""
     initialValues={
       Object {
-        "amount": 300,
-        "bond_guid": "erjvnaqekrj",
-        "bond_id": 1,
-        "bond_status_code": "ACT",
-        "bond_type_code": "CAS",
-        "documents": Array [],
-        "institution_city": null,
-        "institution_name": null,
-        "institution_postal_code": null,
-        "institution_province": null,
-        "institution_street": null,
-        "issue_date": "2018-10-16",
         "note": null,
-        "payer": Object {},
-        "payer_party_guid": "sethwrt",
-        "reference_number": "",
       }
     }
     keepDirtyOnReinitialize={false}
-    mineGuid="3512521"
     onSubmit={[Function]}
     onSubmitSuccess={[Function]}
     permits={Array []}
