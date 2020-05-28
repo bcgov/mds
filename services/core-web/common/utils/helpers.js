@@ -2,6 +2,7 @@
 import moment from "moment";
 import { reset } from "redux-form";
 import { createNumberMask } from "redux-form-input-masks";
+import { get } from "lodash";
 
 /**
  * Helper function to clear redux form after submission
@@ -79,17 +80,19 @@ export const dateSorter = (key) => (a, b) => {
   return moment(a[key]) - moment(b[key]);
 };
 
-export const nullableStringSorter = (key) => (a, b) => {
-  if (a[key] === b[key]) {
+export const nullableStringSorter = (path) => (a, b) => {
+  const aObj = get(a, path, null);
+  const bObj = get(b, path, null);
+  if (aObj === bObj) {
     return 0;
   }
-  if (!a[key]) {
+  if (!aObj) {
     return 1;
   }
-  if (!b[key]) {
+  if (!bObj) {
     return -1;
   }
-  return a[key].localeCompare(b[key]);
+  return aObj.localeCompare(bObj);
 };
 
 // Case insensitive filter for a SELECT field by label string
