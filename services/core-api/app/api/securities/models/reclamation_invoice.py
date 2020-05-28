@@ -21,6 +21,7 @@ class ReclamationInvoice(Base, AuditMixin):
     project_id = db.Column(db.String, nullable=False)
     amount = db.Column(db.Numeric(14, 2), nullable=False)
     vendor = db.Column(db.String, nullable=False)
+    note = db.Column(db.String)
 
     permit = db.relationship('Permit', lazy='joined')
     documents = db.relationship('ReclamationInvoiceDocument', lazy='select')

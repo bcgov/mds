@@ -232,11 +232,7 @@ export const SEARCH_RESULTS = {
 
 export const NOTICE_OF_WORK_APPLICATIONS = {
   route: "/dashboard/reporting/notice-of-work",
-  dynamicRoute: ({ page, per_page, ...params }) =>
-    `/dashboard/reporting/notice-of-work?${queryString.stringify(
-      { page, per_page, ...params },
-      { sort: false }
-    )}`,
+  dynamicRoute: (params) => `/dashboard/reporting/notice-of-work?${queryString.stringify(params)}`,
   component: NoticeOfWorkHomePage,
 };
 
@@ -262,3 +258,8 @@ export const VIEW_NOTICE_OF_WORK_APPLICATION = {
 const MINESPACE_URL = "https://minespace.gov.bc.ca/";
 export const VIEW_MINESPACE = (mineGuid) =>
   `${MINESPACE_URL}/mines/${mineGuid}/overview?redirectingFromCore=true`;
+
+const ORGBOOK_URL = "https://orgbook.gov.bc.ca";
+export const ORGBOOK_ENTITY_URL = (sourceId) => `${ORGBOOK_URL}/en/organization/${sourceId}`;
+export const ORGBOOK_CREDENTIAL_URL = (sourceId, credentialId) =>
+  `${ORGBOOK_URL}/en/organization/${sourceId}/cred/${credentialId}`;

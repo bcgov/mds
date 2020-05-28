@@ -16,7 +16,6 @@ class TestVerifyPermitMine:
         permit.permit_amendments[0].now_identity = now_app
 
         now_sub = NOWSubmissionFactory()
-        now_app.messageid = now_sub.messageid
 
         get_resp = test_client.get(
             f'/verify/permit/now?a_PermitNumber={permit.permit_no}',
@@ -24,4 +23,4 @@ class TestVerifyPermitMine:
         get_data = json.loads(get_resp.data.decode())
         assert get_resp.status_code == 200
         assert get_data['a_Result'] == "Success"
-        assert str(now_sub.trackingnumber) in get_data['a_NoWInfo']
+        assert str(now_app.now_number) in get_data['a_NoWInfo']

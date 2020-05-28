@@ -120,12 +120,12 @@ export const updatePartyRelationship = (payload) => (dispatch) => {
     .finally(() => dispatch(hideLoading()));
 };
 
-export const fetchPartyRelationships = (parms) => (dispatch) => {
+export const fetchPartyRelationships = (params) => (dispatch) => {
   dispatch(request(reducerTypes.FETCH_PARTY_RELATIONSHIPS));
   dispatch(showLoading());
   return CustomAxios()
     .get(
-      `${ENVIRONMENT.apiUrl + API.PARTY_RELATIONSHIP}?${queryString.stringify(parms)}`,
+      `${ENVIRONMENT.apiUrl + API.PARTY_RELATIONSHIP}?${queryString.stringify(params)}`,
       createRequestHeader()
     )
     .then((response) => {
@@ -195,4 +195,25 @@ export const addDocumentToRelationship = ({ mineGuid, minePartyApptGuid }, paylo
     })
     .catch(() => dispatch(error(reducerTypes.ADD_DOCUMENT_TO_RELATIONSHIP)))
     .finally(() => dispatch(hideLoading("modal")));
+};
+
+export const createPartyOrgBookEntity = (partyGuid, payload) => (dispatch) => {
+  dispatch(request(reducerTypes.PARTY_ORGBOOK_ENTITY));
+  dispatch(showLoading("modal"));
+  return CustomAxios()
+    .post(ENVIRONMENT.apiUrl + API.PARTY_ORGBOOK_ENTITY(partyGuid), payload, createRequestHeader())
+    .then((response) => {
+      dispatch(hideLoading("modal"));
+      notification.success({
+        message: "Successfully associated party with OrgBook entity",
+        duration: 10,
+      });
+      dispatch(success(reducerTypes.PARTY_ORGBOOK_ENTITY));
+      return response;
+    })
+    .catch((err) => {
+      dispatch(error(reducerTypes.PARTY_ORGBOOK_ENTITY));
+      dispatch(hideLoading("modal"));
+      throw new Error(err);
+    });
 };

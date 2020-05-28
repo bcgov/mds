@@ -23,11 +23,11 @@ const propTypes = {
 };
 
 const defaultProps = {
-  maxFileSize: "400MB",
+  maxFileSize: "750MB",
   acceptedFileTypesMap: {},
   allowRevert: false,
-  onFileLoad: () => {},
-  onRemoveFile: () => {},
+  onFileLoad: () => { },
+  onRemoveFile: () => { },
   chunkSize: 1048576, // 1MB
 };
 
