@@ -71,10 +71,11 @@ export const AuthorizationWrapper = (props) => {
     props.permission === undefined || props.userRoles.includes(USER_ROLES[props.permission]);
   const isMajorMine = props.isMajorMine === undefined || props.isMajorMine;
   const isAdmin = props.userRoles.includes(USER_ROLES[Permission.ADMIN]);
+
   const title = () => {
     const permission = props.permission ? `${USER_ROLES[props.permission]}` : "";
-    const inTest = props.inTesting ? ` \nNot Visible in Production` : "";
-    const majorMine = props.isMajorMine !== undefined ? ` \nOnly Visible to Major Mines` : "";
+    const inTest = props.inTesting ? "\nNot Visible in Production" : "";
+    const majorMine = props.isMajorMine !== undefined ? "\nOnly Visible to Major Mines" : "";
     return `${permission}${inTest}${majorMine}`;
   };
 
