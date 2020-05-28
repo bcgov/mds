@@ -121,6 +121,8 @@ class BondTransferResource(Resource, UserMixin):
             raise BadRequest('No permit was found with the permit_guid provided.')
         if permit.permit_guid == bond.permit.permit_guid:
             raise BadRequest('This bond is already associated with this permit.')
+        if bond.permit.mine_guid != permit.mine_guid:
+            raise BadRequest('You can only transfer to a permit on the same mine.')
 
         # Get the note to apply to the bond and the transferred bond
         note = request.json.get('note', None)
