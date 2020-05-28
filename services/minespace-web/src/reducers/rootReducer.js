@@ -11,6 +11,7 @@ import {
   reportReducer,
   modalReducer,
   varianceReducer,
+  securitiesReducer,
   orgbookReducer,
 } from "@common/reducers";
 import networkReducer from "./networkReducer";
@@ -38,6 +39,7 @@ export const reducerObject = {
   ...partiesReducer,
   ...incidentReducer,
   ...varianceReducer,
+  ...securitiesReducer,
   ...orgbookReducer,
   [reducerTypes.AUTHENTICATION]: authenticationReducer,
   [reducerTypes.USER_MINE_INFO]: userMineReducer,
