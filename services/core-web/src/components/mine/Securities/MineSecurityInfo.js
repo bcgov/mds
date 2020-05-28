@@ -158,8 +158,6 @@ export class MineSecurityInfo extends Component {
   };
 
   transferBond = (values, bond) => {
-    console.log(values);
-    console.log(bond);
     this.props.transferBond(values, bond.bond_guid).then(() => {
       this.setState({ isBondLoaded: false });
       this.props
