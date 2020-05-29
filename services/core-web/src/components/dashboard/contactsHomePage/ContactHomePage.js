@@ -12,7 +12,6 @@ import {
   getPartyRelationshipTypesList,
 } from "@common/selectors/staticContentSelectors";
 import { getParties, getPartyPageData } from "@common/selectors/partiesSelectors";
-
 import * as Strings from "@common/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
 import * as FORM from "@/constants/forms";

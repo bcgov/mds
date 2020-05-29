@@ -16,7 +16,6 @@ class TestVerifyPermitMine:
         permit.permit_amendments[0].now_identity = now_app
 
         now_sub = NOWSubmissionFactory()
-        now_app.messageid = now_sub.messageid
 
         get_resp = test_client.get(
             f'/verify/permit/now?a_PermitNumber={permit.permit_no}',

@@ -35,6 +35,7 @@ class User:
 
     def get_user_username(self):
         raw_info = self.get_user_raw_info()
-        realms = list(set(VALID_REALM) & set(raw_info['realm_access']['roles']))
-        return realms[0] + '\\' + raw_info['preferred_username'] if realms else raw_info[
-            'preferred_username']
+        realms = list(
+            set(VALID_REALM) & set(raw_info['realm_access']['roles']))
+        return realms[0] + '\\' + raw_info[
+            'preferred_username'] if realms else raw_info['preferred_username']
