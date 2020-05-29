@@ -433,3 +433,10 @@ select {
 .ant-drawer-content-wrapper {
   width: 520px !important; // 250px by default
 }
+
+// tooltip - specific to the admin tooltip
+.tooltip__admin {
+  .ant-tooltip-inner {
+    background-color: #402f7a;
+  }
+}

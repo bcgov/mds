@@ -2,6 +2,7 @@
 import React from "react";
 import { PropTypes } from "prop-types";
 import { connect } from "react-redux";
+import { startCase, camelCase } from "lodash";
 import { getUserAccessData } from "@common/selectors/authenticationSelectors";
 import { USER_ROLES } from "@common/constants/environment";
 import {
@@ -74,20 +75,32 @@ export const AuthorizationWrapper = (props) => {
 
   const title = () => {
     const permission = props.permission ? `${USER_ROLES[props.permission]}` : "";
-    const inTest = props.inTesting ? "\nNot Visible in Production" : "";
-    const majorMine = props.isMajorMine !== undefined ? "\nOnly Visible to Major Mines" : "";
-    return `${permission}${inTest}${majorMine}`;
+    const inTest = props.inTesting ? "Not Visible in Production" : "";
+    const majorMine = props.isMajorMine !== undefined ? "Only Visible to Major Mines" : "";
+    return (
+      <ul style={{ listStyle: "none" }}>
+        {permission && <li>{startCase(camelCase(permission))}</li>}
+        {inTest && <li>{inTest}</li>}
+        {majorMine && <li>{majorMine}</li>}
+      </ul>
+    );
   };
-
+  console.log(props);
   return (
     (isAdmin || (inDevCheck && inTestCheck && permissionCheck && isMajorMine)) && (
       <Tooltip
         title={isAdmin ? title() : ""}
-        placement="bottom"
+        placement="left"
         mouseEnterDelay={1}
+        arrowPointAtCenter
+        overlayClassName="tooltip__admin"
         style={{ zIndex: 100000 }}
       >
-        {props.children}
+        {React.Children.map(props.children, (child) => {
+          return React.cloneElement(child, { ...props });
+        })}
+        {/* {React.cloneElement(props.children, { children: props.children, ...props })} */}
+        {/* {props.children} */}
       </Tooltip>
     )
   );
