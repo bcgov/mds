@@ -30,24 +30,25 @@ from .mine_map import MineMapResource
 
 class MineListResource(Resource, UserMixin):
     parser = reqparse.RequestParser()
-    parser.add_argument(
-        'mine_name', type=str, help='Name of the mine.', trim=True, required=True, location='json')
-    parser.add_argument(
-        'mine_note',
-        type=str,
-        help='Any additional notes to be added to the mine.',
-        trim=True,
-        location='json')
-    parser.add_argument(
-        'longitude',
-        type=lambda x: Decimal(x) if x else None,
-        help='Longitude point for the mine.',
-        location='json')
-    parser.add_argument(
-        'latitude',
-        type=lambda x: Decimal(x) if x else None,
-        help='Latitude point for the mine.',
-        location='json')
+    parser.add_argument('mine_name',
+                        type=str,
+                        help='Name of the mine.',
+                        trim=True,
+                        required=True,
+                        location='json')
+    parser.add_argument('mine_note',
+                        type=str,
+                        help='Any additional notes to be added to the mine.',
+                        trim=True,
+                        location='json')
+    parser.add_argument('longitude',
+                        type=lambda x: Decimal(x) if x else None,
+                        help='Longitude point for the mine.',
+                        location='json')
+    parser.add_argument('latitude',
+                        type=lambda x: Decimal(x) if x else None,
+                        help='Latitude point for the mine.',
+                        location='json')
     parser.add_argument(
         'mine_status',
         action='split',
@@ -55,46 +56,51 @@ class MineListResource(Resource, UserMixin):
         'Status of the mine, to be given as a comma separated string value. Ex: status_code, status_reason_code, status_sub_reason_code ',
         required=True,
         location='json')
-    parser.add_argument(
-        'status_date', help='The date when the current status took effect', location='json')
+    parser.add_argument('status_date',
+                        help='The date when the current status took effect',
+                        location='json')
     parser.add_argument(
         'major_mine_ind',
         type=inputs.boolean,
-        help='Indication if mine is major_mine_ind or regional. Accepts "true", "false", "1", "0".',
+        help=
+        'Indication if mine is major_mine_ind or regional. Accepts "true", "false", "1", "0".',
         location='json')
-    parser.add_argument(
-        'mine_region',
-        type=str,
-        help='Region for the mine.',
-        trim=True,
-        required=True,
-        location='json')
-    parser.add_argument(
-        'ohsc_ind', type=bool, store_missing=False, help='Indicates if the mine has an OHSC.')
-    parser.add_argument(
-        'union_ind', type=bool, store_missing=False, help='Indicates if the mine has a union.')
+    parser.add_argument('mine_region',
+                        type=str,
+                        help='Region for the mine.',
+                        trim=True,
+                        required=True,
+                        location='json')
+    parser.add_argument('ohsc_ind',
+                        type=bool,
+                        store_missing=False,
+                        help='Indicates if the mine has an OHSC.')
+    parser.add_argument('union_ind',
+                        type=bool,
+                        store_missing=False,
+                        help='Indicates if the mine has a union.')
 
-    @api.doc(
-        params={
-            'per_page': 'The number of results to be returned per page.',
-            'page': 'The current page number to be displayed.',
-            'search': 'The search term.',
-            'commodity': 'A specific commodity to filter the mine list on.',
-            'status': 'A specific mine status to filter the mine list on.',
-            'tenure': 'A specific mine tenure type to filter the mine list on.',
-            'region': 'A specific mine region to filter the mine list on.',
-            'major': 'Filters the mine list by major mines or regional mines.',
-            'tsf': 'Filters the mine list by mines with or without a TSF.',
-            'sort_field':
-            'enum[mine_name, mine_no, mine_operation_status_code, mine_region] Default: mine_name',
-            'sort_dir': 'enum[asc, desc] Default: asc'
-        },
-        description='Returns a list of filtered mines.')
+    @api.doc(params={
+        'per_page': 'The number of results to be returned per page.',
+        'page': 'The current page number to be displayed.',
+        'search': 'The search term.',
+        'commodity': 'A specific commodity to filter the mine list on.',
+        'status': 'A specific mine status to filter the mine list on.',
+        'tenure': 'A specific mine tenure type to filter the mine list on.',
+        'region': 'A specific mine region to filter the mine list on.',
+        'major': 'Filters the mine list by major mines or regional mines.',
+        'tsf': 'Filters the mine list by mines with or without a TSF.',
+        'sort_field':
+        'enum[mine_name, mine_no, mine_operation_status_code, mine_region] Default: mine_name',
+        'sort_dir': 'enum[asc, desc] Default: asc'
+    },
+             description='Returns a list of filtered mines.')
     @api.marshal_with(MINE_LIST_MODEL, code=200)
     @requires_any_of([VIEW_ALL, MINESPACE_PROPONENT])
     def get(self):
 
-        paginated_mine_query, pagination_details = self.apply_filter_and_search(request.args)
+        paginated_mine_query, pagination_details = self.apply_filter_and_search(
+            request.args)
         mines = paginated_mine_query.all()
         return {
             'mines': mines,
@@ -113,22 +119,23 @@ class MineListResource(Resource, UserMixin):
         lat = data.get('latitude')
         lon = data.get('longitude')
         if (lat and not lon) or (not lat and lon):
-            raise BadRequest('latitude and longitude must both be empty, or both provided')
+            raise BadRequest(
+                'latitude and longitude must both be empty, or both provided')
 
         # query the mine tables and check if that mine name exists
         _throw_error_if_mine_exists(data.get('mine_name'))
-        mine = Mine(
-            mine_no=generate_mine_no(),
-            mine_name=data.get('mine_name'),
-            mine_note=data.get('mine_note'),
-            major_mine_ind=data.get('major_mine_ind'),
-            mine_region=data.get('mine_region'),
-            ohsc_ind=data.get('ohsc_ind'),
-            union_ind=data.get('union_ind'),
-            latitude=lat,
-            longitude=lon)
+        mine = Mine(mine_no=generate_mine_no(),
+                    mine_name=data.get('mine_name'),
+                    mine_note=data.get('mine_note'),
+                    major_mine_ind=data.get('major_mine_ind'),
+                    mine_region=data.get('mine_region'),
+                    ohsc_ind=data.get('ohsc_ind'),
+                    union_ind=data.get('union_ind'),
+                    latitude=lat,
+                    longitude=lon)
 
-        mine_status = _mine_status_processor(data.get('mine_status'), data.get('status_date'), mine)
+        mine_status = _mine_status_processor(data.get('mine_status'),
+                                             data.get('status_date'), mine)
         mine.save()
 
         # Clear and rebuild the cache after committing changes to db
@@ -141,7 +148,11 @@ class MineListResource(Resource, UserMixin):
         return mine
 
     def apply_filter_and_search(self, args):
-        sort_models = {'mine_name': 'Mine', 'mine_no': 'Mine', 'mine_region': 'Mine'}
+        sort_models = {
+            'mine_name': 'Mine',
+            'mine_no': 'Mine',
+            'mine_region': 'Mine'
+        }
         # Handle ListView request
         items_per_page = args.get('per_page', 25, type=int)
         page = args.get('page', 1, type=int)
@@ -169,7 +180,8 @@ class MineListResource(Resource, UserMixin):
             mines_query = mines_name_query.union(permit_query)
         # Filter by Major Mine, if provided
         if major_mine_filter_term == "true" or major_mine_filter_term == "false":
-            major_mine_filter = Mine.major_mine_ind.is_(major_mine_filter_term == "true")
+            major_mine_filter = Mine.major_mine_ind.is_(
+                major_mine_filter_term == "true")
             major_mine_query = Mine.query.filter(major_mine_filter)
             mines_query = mines_query.intersect(major_mine_query)
         # Filter by TSF, if provided
@@ -185,7 +197,8 @@ class MineListResource(Resource, UserMixin):
             mines_query = mines_query.intersect(region_query)
         # Filter by commodity if provided
         if commodity_filter_terms:
-            commodity_filter = MineTypeDetail.mine_commodity_code.in_(commodity_filter_terms)
+            commodity_filter = MineTypeDetail.mine_commodity_code.in_(
+                commodity_filter_terms)
             mine_type_active_filter = MineType.active_ind.is_(True)
             commodity_query = Mine.query \
                 .join(MineType) \
@@ -194,7 +207,8 @@ class MineListResource(Resource, UserMixin):
             mines_query = mines_query.intersect(commodity_query)
         # Create a filter on tenure if one is provided
         if tenure_filter_term:
-            tenure_filter = MineType.mine_tenure_type_code.in_(tenure_filter_term)
+            tenure_filter = MineType.mine_tenure_type_code.in_(
+                tenure_filter_term)
             mine_type_active_filter = MineType.active_ind.is_(True)
             tenure_query = Mine.query \
                 .join(MineType) \
@@ -202,7 +216,8 @@ class MineListResource(Resource, UserMixin):
             mines_query = mines_query.intersect(tenure_query)
         # Create a filter on mine status if one is provided
         if status_filter_term:
-            status_filter = MineStatusXref.mine_operation_status_code.in_(status_filter_term)
+            status_filter = MineStatusXref.mine_operation_status_code.in_(
+                status_filter_term)
             status_reason_filter = MineStatusXref.mine_operation_status_reason_code.in_(
                 status_filter_term)
             status_subreason_filter = MineStatusXref.mine_operation_status_sub_reason_code.in_(
@@ -213,12 +228,20 @@ class MineListResource(Resource, UserMixin):
                 .join(MineStatusXref) \
                 .filter(all_status_filter, MineStatus.active_ind == True)
             mines_query = mines_query.intersect(status_query)
-        deleted_filter = [{'field': 'deleted_ind', 'op': '==', 'value': 'False'}]
+        deleted_filter = [{
+            'field': 'deleted_ind',
+            'op': '==',
+            'value': 'False'
+        }]
         mines_query = apply_filters(mines_query, deleted_filter)
 
         # Apply sorting
         if sort_model and sort_field and sort_dir:
-            sort_criteria = [{'model': sort_model, 'field': sort_field, 'direction': sort_dir}]
+            sort_criteria = [{
+                'model': sort_model,
+                'field': sort_field,
+                'direction': sort_dir
+            }]
             mines_query = apply_sort(mines_query, sort_criteria)
 
         return apply_pagination(mines_query, page, items_per_page)
@@ -226,32 +249,28 @@ class MineListResource(Resource, UserMixin):
 
 class MineResource(Resource, UserMixin):
     parser = reqparse.RequestParser()
-    parser.add_argument(
-        'mine_name',
-        type=str,
-        help='Name of the mine.',
-        trim=True,
-        store_missing=False,
-        location='json')
-    parser.add_argument(
-        'mine_note',
-        type=str,
-        help='Any additional notes to be added to the mine.',
-        trim=True,
-        store_missing=False,
-        location='json')
-    parser.add_argument(
-        'longitude',
-        type=lambda x: Decimal(x) if x else None,
-        help='Longitude point for the mine.',
-        store_missing=False,
-        location='json')
-    parser.add_argument(
-        'latitude',
-        type=lambda x: Decimal(x) if x else None,
-        help='Latitude point for the mine.',
-        store_missing=False,
-        location='json')
+    parser.add_argument('mine_name',
+                        type=str,
+                        help='Name of the mine.',
+                        trim=True,
+                        store_missing=False,
+                        location='json')
+    parser.add_argument('mine_note',
+                        type=str,
+                        help='Any additional notes to be added to the mine.',
+                        trim=True,
+                        store_missing=False,
+                        location='json')
+    parser.add_argument('longitude',
+                        type=lambda x: Decimal(x) if x else None,
+                        help='Longitude point for the mine.',
+                        store_missing=False,
+                        location='json')
+    parser.add_argument('latitude',
+                        type=lambda x: Decimal(x) if x else None,
+                        help='Latitude point for the mine.',
+                        store_missing=False,
+                        location='json')
     parser.add_argument(
         'mine_status',
         action='split',
@@ -259,41 +278,46 @@ class MineResource(Resource, UserMixin):
         'Status of the mine, to be given as a comma separated string value. Ex: status_code, status_reason_code, status_sub_reason_code ',
         store_missing=False,
         location='json')
-    parser.add_argument(
-        'status_date', help='The date when the current status took effect', location='json')
+    parser.add_argument('status_date',
+                        help='The date when the current status took effect',
+                        location='json')
     parser.add_argument(
         'major_mine_ind',
         type=inputs.boolean,
-        help='Indication if mine is major_mine_ind or regional. Accepts "true", "false", "1", "0".',
+        help=
+        'Indication if mine is major_mine_ind or regional. Accepts "true", "false", "1", "0".',
         store_missing=False,
         location='json')
-    parser.add_argument(
-        'mine_region',
-        type=str,
-        help='Region for the mine.',
-        trim=True,
-        store_missing=False,
-        location='json')
-    parser.add_argument(
-        'ohsc_ind', type=bool, store_missing=False, help='Indicates if the mine has an OHSC.')
-    parser.add_argument(
-        'union_ind', type=bool, store_missing=False, help='Indicates if the mine has a union.')
-    parser.add_argument(
-        'exemption_fee_status_code',
-        type=str,
-        help='Fee exemption status for the mine.',
-        trim=True,
-        store_missing=False,
-        location='json')
-    parser.add_argument(
-        'exemption_fee_status_note',
-        type=str,
-        help='Fee exemption status note for the mine.',
-        trim=True,
-        store_missing=False,
-        location='json')
+    parser.add_argument('mine_region',
+                        type=str,
+                        help='Region for the mine.',
+                        trim=True,
+                        store_missing=False,
+                        location='json')
+    parser.add_argument('ohsc_ind',
+                        type=bool,
+                        store_missing=False,
+                        help='Indicates if the mine has an OHSC.')
+    parser.add_argument('union_ind',
+                        type=bool,
+                        store_missing=False,
+                        help='Indicates if the mine has a union.')
+    parser.add_argument('exemption_fee_status_code',
+                        type=str,
+                        help='Fee exemption status for the mine.',
+                        trim=True,
+                        store_missing=False,
+                        location='json')
+    parser.add_argument('exemption_fee_status_note',
+                        type=str,
+                        help='Fee exemption status note for the mine.',
+                        trim=True,
+                        store_missing=False,
+                        location='json')
 
-    @api.doc(description='Returns the specific mine from the mine_guid or mine_no provided.')
+    @api.doc(
+        description=
+        'Returns the specific mine from the mine_guid or mine_no provided.')
     @api.marshal_with(MINE_MODEL, code=200)
     @requires_any_of([VIEW_ALL, MINESPACE_PROPONENT])
     def get(self, mine_no_or_guid):
@@ -319,7 +343,8 @@ class MineResource(Resource, UserMixin):
         lat = data.get('latitude')
         lon = data.get('longitude')
         if (lat and not lon) or (not lat and lon):
-            raise BadRequest('latitude and longitude must both be empty, or both provided')
+            raise BadRequest(
+                'latitude and longitude must both be empty, or both provided')
 
         # Mine Detail
         if 'mine_name' in data and mine.mine_name != data['mine_name']:
@@ -346,7 +371,8 @@ class MineResource(Resource, UserMixin):
             mine.exemption_fee_status_note = data['exemption_fee_status_note']
         mine.save()
 
-        _mine_status_processor(data.get('mine_status'), data.get('status_date'), mine)
+        _mine_status_processor(data.get('mine_status'),
+                               data.get('status_date'), mine)
 
         # refresh cache will need to be called for all supported fields, should more be added in the future
         if refresh_cache:
@@ -389,7 +415,8 @@ class MineListSearch(Resource):
                     'longitude':
                     str(x.longitude) if x.longitude else '',
                     'mine_location_description':
-                    x.mine_location_description if x.mine_location_description else '',
+                    x.mine_location_description
+                    if x.mine_location_description else '',
                 }, mines))
         return {'mines': result}
 
@@ -404,7 +431,8 @@ def _mine_operation_code_processor(mine_status, index):
 
 def _mine_status_processor(mine_status, status_date, mine):
     if not mine_status:
-        existing_status_date = mine.mine_status[0].status_date if mine.mine_status else None
+        existing_status_date = mine.mine_status[
+            0].status_date if mine.mine_status else None
         if status_date == existing_status_date:
             return mine.mine_status
 
@@ -419,7 +447,9 @@ def _mine_status_processor(mine_status, status_date, mine):
         _mine_operation_code_processor(mine_status, 1),
         _mine_operation_code_processor(mine_status, 2))
     if not mine_status_xref:
-        raise BadRequest('Invalid status_code, reason_code, and sub_reason_code combination.')
+        raise BadRequest(
+            'Invalid status_code, reason_code, and sub_reason_code combination.'
+        )
     existing_status = mine.mine_status[0] if mine.mine_status else None
     if existing_status:
         if existing_status.mine_status_xref_guid == mine_status_xref.mine_status_xref_guid \
@@ -430,10 +460,12 @@ def _mine_status_processor(mine_status, status_date, mine):
         existing_status.active_ind = False
         existing_status.save()
     if status_date == '':
-        new_status = MineStatus(mine_status_xref_guid=mine_status_xref.mine_status_xref_guid)
+        new_status = MineStatus(
+            mine_status_xref_guid=mine_status_xref.mine_status_xref_guid)
     else:
         new_status = MineStatus(
-            mine_status_xref_guid=mine_status_xref.mine_status_xref_guid, status_date=status_date)
+            mine_status_xref_guid=mine_status_xref.mine_status_xref_guid,
+            status_date=status_date)
     mine.mine_status.append(new_status)
     new_status.save()
     mine.save(commit=False)
@@ -447,4 +479,6 @@ def _throw_error_if_mine_exists(mine_name):
         mines_name_query = Mine.query.filter(name_filter)
         mines_with_name = mines_name_query.all()
         if len(mines_with_name) > 0:
-            raise BadRequest(f'Mine No: {mines_with_name[0].mine_no} already has that name.')
+            raise BadRequest(
+                f'Mine No: {mines_with_name[0].mine_no} already has that name.'
+            )
