@@ -1,7 +1,9 @@
 from cached_property import cached_property
 from flask import g
 from uuid import UUID
+from sqlalchemy import or_
 from typing import Optional, Set
+from app.extensions import db
 from .api.utils.include.user_info import User
 from .api.users.minespace.models.minespace_user import MinespaceUser
 from app.api.utils.access_decorators import MINESPACE_PROPONENT
@@ -13,7 +15,9 @@ apply_security = True
 
 
 class UserSecurity(object):
-    def __init__(self, user_id: Optional[int] = None, access: Optional[Set[UUID]] = None):
+    def __init__(self,
+                 user_id: Optional[int] = None,
+                 access: Optional[Set[UUID]] = None):
         self.access = access or {}
         self.user_id = user_id
 
@@ -42,8 +46,10 @@ def get_current_user():
     rv = getattr(g, 'current_user', None)
     if rv == None:
         email = get_user_email()
-        rv = MinespaceUser.query.unbound_unsafe().filter_by(email=email).filter_by(
-            deleted_ind=False).first()
+        username = get_user_username()
+        rv = MinespaceUser.query.unbound_unsafe().filter(
+            MinespaceUser.email_or_username.in_(
+                [email, username])).filter_by(deleted_ind=False).first()
         g.current_user = rv
     return rv
 
@@ -52,7 +58,8 @@ def get_user_is_proponent():
     # The flask-jwt-oidc library throws an exception if a token does not exist.
     token_data = User().get_user_raw_info()
     try:
-        is_proponent = MINESPACE_PROPONENT in token_data["realm_access"]["roles"]
+        is_proponent = MINESPACE_PROPONENT in token_data["realm_access"][
+            "roles"]
     except:
         raise Exception("A JWT token exists, but no roles are defined.")
     return is_proponent
@@ -60,6 +67,10 @@ def get_user_is_proponent():
 
 def get_user_email():
     return User().get_user_email()
+
+
+def get_user_username():
+    return User().get_user_username()
 
 
 def get_current_user_security():

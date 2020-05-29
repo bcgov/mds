@@ -1,12 +1,12 @@
-from flask_restplus import Resource
+from flask_restplus import Resource, marshal
 from flask import request
 from werkzeug.exceptions import BadRequest, NotFound
 from marshmallow.exceptions import MarshmallowError
 
-from app.extensions import api
-from app.api.securities.response_models import BOND
+from app.extensions import api, jwt
+from app.api.securities.response_models import BOND, BOND_MINESPACE
 from app.api.securities.models.bond import Bond
-from app.api.utils.access_decorators import requires_role_view_all, requires_role_edit_securities
+from app.api.utils.access_decorators import MINESPACE_PROPONENT, VIEW_ALL, requires_any_of, requires_role_view_all, requires_role_edit_securities
 from app.api.utils.resources_mixins import UserMixin
 from app.api.mines.permits.permit.models.permit import Permit
 from app.api.mines.mine.models.mine import Mine
@@ -14,7 +14,7 @@ from app.api.mines.mine.models.mine import Mine
 
 class BondListResource(Resource, UserMixin):
     @api.doc(description='Get all bonds on a mine')
-    @requires_role_view_all
+    @requires_any_of([VIEW_ALL, MINESPACE_PROPONENT])
     @api.marshal_with(BOND, envelope='records', code=200)
     def get(self):
 
@@ -34,6 +34,9 @@ class BondListResource(Resource, UserMixin):
             return []
 
         bonds = [bond for permit in permits for bond in permit.bonds]
+
+        if jwt.validate_roles([MINESPACE_PROPONENT]):
+            bonds = marshal(bonds, BOND_MINESPACE)
 
         return bonds
 
@@ -65,7 +68,7 @@ class BondListResource(Resource, UserMixin):
 
 class BondResource(Resource, UserMixin):
     @api.doc(description='Get a bond')
-    @requires_role_view_all
+    @requires_any_of([VIEW_ALL, MINESPACE_PROPONENT])
     @api.marshal_with(BOND, code=200)
     def get(self, bond_guid):
 
@@ -73,6 +76,9 @@ class BondResource(Resource, UserMixin):
 
         if bond is None:
             raise NotFound('No bond was found with the guid provided.')
+
+        if jwt.validate_roles([MINESPACE_PROPONENT]):
+            bond = marshal(bond, BOND_MINESPACE)
 
         return bond
 
