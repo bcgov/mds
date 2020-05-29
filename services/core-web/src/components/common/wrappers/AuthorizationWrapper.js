@@ -78,14 +78,13 @@ export const AuthorizationWrapper = (props) => {
     const inTest = props.inTesting ? "Not Visible in Production" : "";
     const majorMine = props.isMajorMine !== undefined ? "Only Visible to Major Mines" : "";
     return (
-      <ul style={{ listStyle: "none" }}>
+      <ul style={{ listStyle: "none", marginBottom: "0" }}>
         {permission && <li>{startCase(camelCase(permission))}</li>}
         {inTest && <li>{inTest}</li>}
         {majorMine && <li>{majorMine}</li>}
       </ul>
     );
   };
-  console.log(props);
   return (
     (isAdmin || (inDevCheck && inTestCheck && permissionCheck && isMajorMine)) && (
       <Tooltip
@@ -96,11 +95,7 @@ export const AuthorizationWrapper = (props) => {
         overlayClassName="tooltip__admin"
         style={{ zIndex: 100000 }}
       >
-        {React.Children.map(props.children, (child) => {
-          return React.cloneElement(child, { ...props });
-        })}
-        {/* {React.cloneElement(props.children, { children: props.children, ...props })} */}
-        {/* {props.children} */}
+        {React.createElement("span", { ...props }, props.children)}
       </Tooltip>
     )
   );

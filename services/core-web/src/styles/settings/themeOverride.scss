@@ -437,6 +437,10 @@ select {
 // tooltip - specific to the admin tooltip
 .tooltip__admin {
   .ant-tooltip-inner {
-    background-color: #402f7a;
+    background-color: $violet;
+  }
+  .ant-tooltip-arrow::before,
+  .ant-tooltip-arrow::after {
+    background-color: $violet !important;
   }
 }
