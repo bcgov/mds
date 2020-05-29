@@ -186,6 +186,7 @@ export class MineIncidents extends Component {
           openMineIncidentModal={this.openMineIncidentModal}
           handleEditMineIncident={this.handleEditMineIncident}
           openViewMineIncidentModal={this.openViewMineIncidentModal}
+          incidentCategoryCodeOptions={this.props.incidentCategoryCodeOptions}
         />
       </div>
     );
@@ -221,7 +222,4 @@ const mapDispatchToProps = (dispatch) =>
 MineIncidents.propTypes = propTypes;
 MineIncidents.defaultProps = defaultProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(MineIncidents);
+export default connect(mapStateToProps, mapDispatchToProps)(MineIncidents);
