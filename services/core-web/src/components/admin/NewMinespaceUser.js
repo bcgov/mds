@@ -28,11 +28,7 @@ export class NewMinespaceUser extends Component {
   }
 
   handleSubmit = (values) => {
-    const payload = {
-      mine_guids: values.proponent_mine_access,
-      email: values.user_bceid_email,
-    };
-    this.props.createMinespaceUser(payload).then(() => {
+    this.props.createMinespaceUser(values).then(() => {
       this.props.refreshData();
     });
   };
@@ -84,7 +80,4 @@ const mapDispatchToProps = (dispatch) =>
 NewMinespaceUser.propTypes = propTypes;
 NewMinespaceUser.defaultProps = defaultProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(NewMinespaceUser);
+export default connect(mapStateToProps, mapDispatchToProps)(NewMinespaceUser);
