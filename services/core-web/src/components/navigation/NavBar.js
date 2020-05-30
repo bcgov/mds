@@ -40,15 +40,9 @@ const defaultProps = {
 };
 
 export class NavBar extends Component {
-  state = { adminMode: false };
-
   componentDidMount() {
     this.props.fetchMineVerifiedStatuses(`idir\\${this.props.userInfo.preferred_username}`);
   }
-
-  toggleAdminMode = () => {
-    this.setState((prevState) => ({ adminMode: !prevState.adminMode }));
-  };
 
   ifActiveButton = (route) => (includes(this.props.activeButton, route) ? "active-menu-btn" : "");
 
