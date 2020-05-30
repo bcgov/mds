@@ -1,5 +1,6 @@
 /* eslint-disable */
 import React from "react";
+import ReactDOMServer from "react-dom/server";
 import { PropTypes } from "prop-types";
 import { connect } from "react-redux";
 import { startCase, camelCase } from "lodash";
@@ -85,6 +86,7 @@ export const AuthorizationWrapper = (props) => {
       </ul>
     );
   };
+
   return (
     (isAdmin || (inDevCheck && inTestCheck && permissionCheck && isMajorMine)) && (
       <Tooltip
@@ -95,7 +97,7 @@ export const AuthorizationWrapper = (props) => {
         overlayClassName="tooltip__admin"
         style={{ zIndex: 100000 }}
       >
-        {React.createElement("span", { ...props }, props.children)}
+        {React.createElement("span", null, props.children)}
       </Tooltip>
     )
   );
