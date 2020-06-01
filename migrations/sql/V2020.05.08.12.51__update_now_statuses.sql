@@ -1,4 +1,3 @@
--- Create new statuses (from MMS)
 INSERT INTO now_application_status
 (now_application_status_code, description, display_order, active_ind, create_user, update_user)
 VALUES
@@ -10,7 +9,6 @@ VALUES
 	('RCO', 'Referral Complete', 120, true, 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
 
--- Set all of the current NoW statuses to the new default status (Submitted)
 UPDATE now_application_status SET description = 'Client delayed' where now_application_status_code = 'CDI';
 UPDATE now_application_status SET description = 'Govt. Action Required' where now_application_status_code = 'GVD';
 UPDATE now_application_status SET description = 'Approved' where now_application_status_code = 'AIA';
@@ -21,7 +19,6 @@ update now_application set now_application_status_code = 'PAP' where now_applica
 update now_application set now_application_status_code = 'REI' where now_application_status_code = 'WDN';
 update now_application set now_application_status_code = 'PCO' where now_application_status_code = 'CLO';
 
--- Delete all of the old Core statuses (Accepted, Under Review, and Withdrawn)
 DELETE FROM now_application_status WHERE now_application_status_code = 'SUB';
 DELETE FROM now_application_status WHERE now_application_status_code = 'CDB';
 DELETE FROM now_application_status WHERE now_application_status_code = 'CON';
