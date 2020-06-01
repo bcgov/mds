@@ -30,6 +30,8 @@ const propTypes = {
   // eslint-disable-next-line react/no-unused-prop-types
   openViewBondModal: PropTypes.func.isRequired,
   // eslint-disable-next-line react/no-unused-prop-types
+  openTransferBondModal: PropTypes.func.isRequired,
+  // eslint-disable-next-line react/no-unused-prop-types
   openAddBondModal: PropTypes.func.isRequired,
   // eslint-disable-next-line react/no-unused-prop-types
   releaseOrConfiscateBond: PropTypes.func.isRequired,
@@ -198,6 +200,17 @@ export const MineBondTable = (props) => {
                     </button>
                   </Popconfirm>
                 </div>
+                {props.permits.length > 1 && (
+                  <div className="custom-menu-item">
+                    <button
+                      type="button"
+                      className="full"
+                      onClick={(event) => props.openTransferBondModal(event, record)}
+                    >
+                      Transfer Bond
+                    </button>
+                  </div>
+                )}
               </span>
             )}
             <Menu.Item key="2">
