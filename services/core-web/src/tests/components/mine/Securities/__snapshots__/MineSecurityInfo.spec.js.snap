@@ -149,6 +149,7 @@ exports[`MineSecurityInfo renders properly 1`] = `
           onExpand={[Function]}
           openAddBondModal={[Function]}
           openEditBondModal={[Function]}
+          openTransferBondModal={[Function]}
           openViewBondModal={[Function]}
           permits={
             Array [

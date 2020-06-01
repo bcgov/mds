@@ -19,6 +19,7 @@ import {
   fetchMineBonds,
   createBond,
   updateBond,
+  transferBond,
   fetchMineReclamationInvoices,
   createReclamationInvoice,
   updateReclamationInvoice,
@@ -52,6 +53,7 @@ const propTypes = {
   fetchMineBonds: PropTypes.func.isRequired,
   createBond: PropTypes.func.isRequired,
   updateBond: PropTypes.func.isRequired,
+  transferBond: PropTypes.func.isRequired,
   fetchMineReclamationInvoices: PropTypes.func.isRequired,
   createReclamationInvoice: PropTypes.func.isRequired,
   updateReclamationInvoice: PropTypes.func.isRequired,
@@ -139,6 +141,32 @@ export class MineSecurityInfo extends Component {
     });
   };
 
+  openTransferBondModal = (event, bond) => {
+    event.preventDefault();
+    this.props.openModal({
+      props: {
+        title: `Transfer Bond`,
+        onSubmit: this.transferBond,
+        editBond: true,
+        bond,
+        permitGuid: bond.permit_guid,
+        permits: this.props.permits,
+      },
+      width: "50vw",
+      content: modalConfig.TRANSFER_BOND_MODAL,
+    });
+  };
+
+  transferBond = (values, bond) => {
+    this.props.transferBond(values, bond.bond_guid).then(() => {
+      this.setState({ isBondLoaded: false });
+      this.props
+        .fetchMineBonds(this.props.mineGuid)
+        .then(() => this.props.closeModal())
+        .finally(() => this.setState({ isBondLoaded: true }));
+    });
+  };
+
   openViewBondModal = (event, bond) => {
     event.preventDefault();
     this.props.openModal({
@@ -160,10 +188,11 @@ export class MineSecurityInfo extends Component {
     delete payload.bond_guid;
     delete payload.payer;
     this.props.updateBond(payload, bondGuid).then(() => {
-      this.props.fetchMineBonds(this.props.mineGuid).then(() => {
-        this.props.closeModal();
-        this.setState({ isBondLoaded: true });
-      });
+      this.setState({ isBondLoaded: false });
+      this.props
+        .fetchMineBonds(this.props.mineGuid)
+        .then(() => this.props.closeModal())
+        .finally(() => this.setState({ isBondLoaded: true }));
     });
   };
 
@@ -187,10 +216,11 @@ export class MineSecurityInfo extends Component {
     };
 
     this.props.createBond(payload).then(() => {
-      this.props.fetchMineBonds(this.props.mineGuid).then(() => {
-        this.props.closeModal();
-        this.setState({ isBondLoaded: true });
-      });
+      this.setState({ isBondLoaded: false });
+      this.props
+        .fetchMineBonds(this.props.mineGuid)
+        .then(() => this.props.closeModal())
+        .finally(() => this.setState({ isBondLoaded: true }));
     });
   };
 
@@ -306,6 +336,7 @@ export class MineSecurityInfo extends Component {
                 bondTypeOptionsHash={this.props.bondTypeOptionsHash}
                 openViewBondModal={this.openViewBondModal}
                 openEditBondModal={this.openEditBondModal}
+                openTransferBondModal={this.openTransferBondModal}
                 recordsByPermit={this.recordsByPermit}
                 activeBondCount={this.activeBondCount}
                 getSum={this.getSum}
@@ -359,6 +390,7 @@ const mapDispatchToProps = (dispatch) =>
       fetchMineBonds,
       createBond,
       updateBond,
+      transferBond,
       fetchMineReclamationInvoices,
       createReclamationInvoice,
       updateReclamationInvoice,
