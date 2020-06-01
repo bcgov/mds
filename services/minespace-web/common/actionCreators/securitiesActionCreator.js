@@ -54,6 +54,23 @@ export const updateBond = (payload, bondGuid) => (dispatch) => {
     .finally(() => dispatch(hideLoading("modal")));
 };
 
+export const transferBond = (payload, bondGuid) => (dispatch) => {
+  dispatch(request(reducerTypes.TRANSFER_BOND));
+  dispatch(showLoading("modal"));
+  return CustomAxios()
+    .put(ENVIRONMENT.apiUrl + API.BOND_TRANSFER(bondGuid), payload, createRequestHeader())
+    .then((response) => {
+      notification.success({
+        message: "Successfully transferred the bond.",
+        duration: 10,
+      });
+      dispatch(success(reducerTypes.TRANSFER_BOND));
+      return response;
+    })
+    .catch(() => dispatch(error(reducerTypes.TRANSFER_BOND)))
+    .finally(() => dispatch(hideLoading("modal")));
+};
+
 export const fetchMineReclamationInvoices = (mineGuid) => (dispatch) => {
   dispatch(request(reducerTypes.GET_MINE_RECLAMATION_INVOICES));
   return CustomAxios()

@@ -44,6 +44,7 @@ export const MAJOR_MINE_PERMIT_APPLICATION_CREATE = "MAJOR_MINE_PERMIT_APPLICATI
 
 // Securities
 export const ADD_BOND = "ADD_BOND";
+export const TRANSFER_BOND = "TRANSFER_BOND";
 export const ADD_RECLAMATION_INVOICE = "ADD_RECLAMATION_INVOICE";
 
 // Permit Generation
