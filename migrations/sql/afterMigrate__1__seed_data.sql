@@ -1203,7 +1203,8 @@ VALUES
     ('CSF', 'Confiscation of Security Form', 'system-mds', 'system-mds'),
     ('CSL', 'Confiscation of Security Letter', 'system-mds', 'system-mds'),
     ('REL', 'Reminder Letter', 'system-mds', 'system-mds'),
-    ('AKL', 'Acknowledgement Letter', 'system-mds', 'system-mds')
+    ('AKL', 'Acknowledgement Letter', 'system-mds', 'system-mds'),
+    ('CON', 'Change of Name Certificate', 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
 
 INSERT INTO regional_contact_type
