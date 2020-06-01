@@ -144,6 +144,7 @@ export const NRIS_DOCUMENT_FILE_GET_URL = (externalId, inspectionId, token) =>
 export const MINE_BONDS = (mineGuid) => `/securities/bonds?mine_guid=${mineGuid}`;
 export const BOND = (bondGuid) =>
   bondGuid ? `/securities/bonds/${bondGuid}` : "/securities/bonds";
+export const BOND_TRANSFER = (bondGuid) => `/securities/bonds/${bondGuid}/transfer`;
 export const BOND_DOCUMENTS = (mineGuid) => `/securities/${mineGuid}/bonds/documents`;
 export const MINE_RECLAMATION_INVOICES = (mineGuid) =>
   `/securities/reclamation-invoices?mine_guid=${mineGuid}`;
