@@ -124,6 +124,9 @@ class NOWApplication(Base, AuditMixin):
     # Contacts
     contacts = db.relationship('NOWPartyAppointment', lazy='selectin')
 
+    #status
+    status = db.relationship('NOWApplicationStatus', lazy='selectin')
+
     @hybrid_property
     def permittee_name(self):
         return [
