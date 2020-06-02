@@ -109,7 +109,7 @@ export class MineIncidentTable extends Component {
     statusHash
   ) =>
     incidents.map((incident) => {
-      return {
+      const values = {
         key: incident.mine_incident_guid,
         mine_incident_report_no: incident.mine_incident_report_no,
         incident_timestamp: formatDate(incident.incident_timestamp),
@@ -125,11 +125,19 @@ export class MineIncidentTable extends Component {
             x.mine_incident_followup_investigation_type_code ===
             incident.followup_investigation_type_code
         ),
+        incident_types:
+          incident.categories && incident.categories.length > 0
+            ? incident.categories.map(
+                (type) => this.props.incidentCategoryCodeHash[type.mine_incident_category_code]
+              )
+            : [],
         handleEditMineIncident,
         openMineIncidentModal,
         openViewMineIncidentModal,
         incident,
       };
+
+      return values;
     });
 
   sortIncidentNumber = (a, b) =>
@@ -165,6 +173,16 @@ export class MineIncidentTable extends Component {
         render: (text, record) => (
           <div title="Mine" className={hideColumn(!this.props.isDashboardView)}>
             <Link to={router.MINE_SUMMARY.dynamicRoute(record.incident.mine_guid)}>{text}</Link>
+          </div>
+        ),
+      },
+      {
+        title: "Incident Type(s)",
+        key: "incident_types",
+        dataIndex: "incident_types",
+        render: (text) => (
+          <div title="Incident Type(s)">
+            {(text && text.length > 0 && text.join(", ")) || Strings.EMPTY_FIELD}
           </div>
         ),
       },
