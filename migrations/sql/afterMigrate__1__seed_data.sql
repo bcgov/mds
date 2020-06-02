@@ -1196,20 +1196,21 @@ INSERT INTO bond_document_type(
     description,
     active_ind,
     create_user,
-    update_user
+    update_user,
+    display_order
     )
 VALUES
-    ('SRB', 'Scan of Reclamation Security Document', true, 'system-mds', 'system-mds'),
-    ('RSF', 'Release of Security Form', true, 'system-mds', 'system-mds'),
-    ('RSL', 'Release of Security Letter', true, 'system-mds', 'system-mds'),
-    ('CSF', 'Confiscation of Security Form', true, 'system-mds', 'system-mds'),
-    ('CSL', 'Confiscation of Security Letter', true, 'system-mds', 'system-mds'),
-    ('REL', 'Reminder Letter', false, 'system-mds', 'system-mds'),
-    ('AKL', 'Acknowledgement of Security Letter', true, 'system-mds', 'system-mds'),
-    ('CNC', 'Change of Name Certificate', true, 'system-mds', 'system-mds'),
-    ('BSR', 'Bond Status Request Letter', true, 'system-mds', 'system-mds'),
-    ('NIA', 'No Interest Acknowledgement Form', true, 'system-mds', 'system-mds'),
-    ('SIB', 'Security Instructions for Bank', true, 'system-mds', 'system-mds')
+    ('AKL', 'Acknowledgement of Security Letter', true, 'system-mds', 'system-mds', 10),
+    ('BSR', 'Bond Status Request Letter', true, 'system-mds', 'system-mds', 20),
+    ('CNC', 'Change of Name Certificate', true, 'system-mds', 'system-mds', 30),
+    ('CSF', 'Confiscation of Security Form', true, 'system-mds', 'system-mds', 40),
+    ('CSL', 'Confiscation of Security Letter', true, 'system-mds', 'system-mds', 50),   
+    ('NIA', 'No Interest Acknowledgement Form', true, 'system-mds', 'system-mds', 60),
+    ('RSF', 'Release of Security Form', true, 'system-mds', 'system-mds', 70),
+    ('RSL', 'Release of Security Letter', true, 'system-mds', 'system-mds', 80),
+    ('REL', 'Reminder Letter', false, 'system-mds', 'system-mds', 90),
+    ('SRB', 'Scan of Reclamation Security Document', true, 'system-mds', 'system-mds', 100),
+    ('SIB', 'Security Instructions for Bank', true, 'system-mds', 'system-mds', 110)
 ON CONFLICT DO NOTHING;
 
 INSERT INTO regional_contact_type
