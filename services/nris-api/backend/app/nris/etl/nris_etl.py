@@ -93,10 +93,14 @@ def _parse_nris_element(input):
     assessment_id = data.find('assessment_id')
     assessment_status = data.find('assessment_status')
 
-    if assessment_status is not None:
+    # Tracer
+    if assessment_status is None:
+        print(f"No assessment status \n Data: {data}")
+
+
+    if assessment_status is not None and assessment_status.text != 'Deleted':
         assessment_status_code = assessment_status.text
 
-    if assessment_status_code != 'Deleted':
         assessment_date = data.find('assessment_date')
         business_area = data.find('businessArea').find('business_area_name')
 
