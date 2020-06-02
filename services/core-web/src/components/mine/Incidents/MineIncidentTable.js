@@ -181,7 +181,7 @@ export class MineIncidentTable extends Component {
         key: "incident_types",
         dataIndex: "incident_types",
         render: (text) => (
-          <div title="Commodity">
+          <div title="Incident Type(s)">
             {(text && text.length > 0 && text.join(", ")) || Strings.EMPTY_FIELD}
           </div>
         ),
