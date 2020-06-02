@@ -21,6 +21,8 @@ from app.api.now_applications.models.unit_type import UnitType
 from app.api.now_applications.models.activity_detail.exploration_surface_drilling_detail import ExplorationSurfaceDrillingDetail
 
 from app.api.now_applications.transmogrify_now import transmogrify_now
+from app.api.services.nros_now_status_service import NROSNOWStatusService
+from app.api.now_applications.models.now_application_status import NOWApplicationStatus
 
 
 class NOWApplicationImportResource(Resource, UserMixin):
@@ -65,5 +67,11 @@ class NOWApplicationImportResource(Resource, UserMixin):
         if now_application_identity.now_application_id is not None:
             raise BadRequest('This record has already been imported.')
         application.save()
+        db.session.refresh(now_application_identity)
+        NROSNOWStatusService.nros_now_status_update(
+            now_application_identity.now_number,
+            now_application_identity.now_application.status.description,
+            now_application_identity.now_application.status_updated_date.strftime(
+                "%Y-%m-%dT%H:%M:%S"))
 
         return {'now_application_guid': str(application.now_application_guid)}

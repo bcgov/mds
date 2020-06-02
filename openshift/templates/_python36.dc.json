@@ -135,6 +135,11 @@
       "value": "template.mds-elastic-secret"
     },
     {
+      "name": "MDS_NROS_NOW_SECRET",
+      "required": false,
+      "value": "template.mds-nros-now-secret"
+    },
+    {
       "name": "ELASTIC_ENABLED",
       "value": "0"
     },
@@ -415,6 +420,42 @@
                       "secretKeyRef": {
                         "name": "${MDS_ELASTIC_SECRET}",
                         "key": "server-url"
+                      }
+                    }
+                  },
+                  {
+                    "name": "NROS_NOW_CLIENT_SECRET",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${MDS_NROS_NOW_SECRET}",
+                        "key": "secret"
+                      }
+                    }
+                  },
+                  {
+                    "name": "NROS_NOW_CLIENT_ID",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${MDS_NROS_NOW_SECRET}",
+                        "key": "client-id"
+                      }
+                    }
+                  },
+                  {
+                    "name": "NROS_NOW_URL",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${MDS_NROS_NOW_SECRET}",
+                        "key": "url"
+                      }
+                    }
+                  },
+                  {
+                    "name": "NROS_NOW_TOKEN_URL",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${MDS_NROS_NOW_SECRET}",
+                        "key": "token-url"
                       }
                     }
                   },
