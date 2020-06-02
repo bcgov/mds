@@ -198,12 +198,12 @@ MINES_MODEL = api.model(
         'mine_permit_numbers': fields.List(fields.String),
         'mine_tailings_storage_facilities': fields.List(fields.Nested(MINE_TSF_MODEL)),
         'mine_type': fields.List(fields.Nested(MINE_TYPE_MODEL)),
-        'verified_status': fields.Nested(MINE_VERIFIED_MODEL),
+        'verified_status': fields.Nested(MINE_VERIFIED_MODEL, skip_none=True),
         'has_minespace_users': fields.Boolean,
     })
 
 MINE_MODEL = api.inherit('Mine', MINES_MODEL, {
-    'mine_location': fields.Nested(MINE_LOCATION_MODEL),
+    'mine_location': fields.Nested(MINE_LOCATION_MODEL, skip_none=True),
     'exemption_fee_status_code': fields.String,
     'exemption_fee_status_note': fields.String,
 })
