@@ -101,7 +101,6 @@ class TestBondsResource:
         assert get_data['message'] is not None
 
     """POST BONDS"""
-
     def test_post_a_bond(self, test_client, db_session, auth_headers):
         """Should return the created bond with a 201 response code"""
 
@@ -147,7 +146,6 @@ class TestBondsResource:
         assert post_data['message'] is not None
 
     """PUT BONDS"""
-
     def test_put_a_bond(self, test_client, db_session, auth_headers):
         """Should return the edited bond with a 200 response code"""
 
@@ -158,7 +156,6 @@ class TestBondsResource:
         old_status = bond.bond_status_code
 
         data = {
-            "amount": 5000010.00,
             "bond_type_code": "CAS",
             "payer_party_guid": str(bond.payer_party_guid),
             "bond_status_code": "ACT" if "ACT" != old_status else "REL",
@@ -171,7 +168,7 @@ class TestBondsResource:
             headers=auth_headers['full_auth_header'])
         assert post_resp.status_code == 200, post_resp.response
         post_data = json.loads(post_resp.data.decode())
-        assert post_data['amount'] != str(old_amount)
+        assert post_data['amount'] == str(old_amount)
         assert post_data['bond_status_code'] != old_status
 
     def test_put_a_bond_missing_data(self, test_client, db_session, auth_headers):
