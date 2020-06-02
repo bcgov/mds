@@ -26,6 +26,7 @@ exports[`AddBondModal renders properly 1`] = `
     }
     closeModal={[MockFunction]}
     destroyOnUnmount={true}
+    editBond={false}
     enableReinitialize={false}
     forceUnregisterOnUnmount={false}
     form="ADD_BOND"
