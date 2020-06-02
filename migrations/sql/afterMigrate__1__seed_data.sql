@@ -1194,18 +1194,22 @@ ON CONFLICT DO NOTHING;
 INSERT INTO bond_document_type(
     bond_document_type_code,
     description,
+    active_ind,
     create_user,
     update_user
     )
 VALUES
-    ('SRB', 'Scan of Reclamation Security Bond', 'system-mds', 'system-mds'),
-    ('RSF', 'Release of Security Form', 'system-mds', 'system-mds'),
-    ('RSL', 'Release of Security Letter', 'system-mds', 'system-mds'),
-    ('CSF', 'Confiscation of Security Form', 'system-mds', 'system-mds'),
-    ('CSL', 'Confiscation of Security Letter', 'system-mds', 'system-mds'),
-    ('REL', 'Reminder Letter', 'system-mds', 'system-mds'),
-    ('AKL', 'Acknowledgement Letter', 'system-mds', 'system-mds'),
-    ('CON', 'Change of Name Certificate', 'system-mds', 'system-mds')
+    ('SRB', 'Scan of Reclamation Security Document', true, 'system-mds', 'system-mds'),
+    ('RSF', 'Release of Security Form', true, 'system-mds', 'system-mds'),
+    ('RSL', 'Release of Security Letter', true, 'system-mds', 'system-mds'),
+    ('CSF', 'Confiscation of Security Form', true, 'system-mds', 'system-mds'),
+    ('CSL', 'Confiscation of Security Letter', true, 'system-mds', 'system-mds'),
+    ('REL', 'Reminder Letter', false, 'system-mds', 'system-mds'),
+    ('AKL', 'Acknowledgement of Security Letter', true, 'system-mds', 'system-mds'),
+    ('CNC', 'Change of Name Certificate', true, 'system-mds', 'system-mds'),
+    ('BSR', 'Bond Status Request Letter', true, 'system-mds', 'system-mds'),
+    ('NIA', 'No Interest Acknowledgement Form', true, 'system-mds', 'system-mds'),
+    ('SIB', 'Security Instructions for Bank', true, 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
 
 INSERT INTO regional_contact_type
