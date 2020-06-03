@@ -32,7 +32,7 @@ from app.commands import register_commands
 from app.config import Config
 from app.extensions import db, jwt, api, cache, apm
 
-import app.api.utils.setup_marshmallow
+from app.api.utils.setup_marshmallow import setup_marshmallow
 
 
 def create_app(test_config=None):
@@ -78,7 +78,9 @@ def register_extensions(app):
 
     CORS(app)
 
-    return None
+    # Set up Marshmallow
+    with app.app_context():
+        setup_marshmallow(db.session)
 
 
 def register_routes(app):
