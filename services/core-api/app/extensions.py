@@ -12,6 +12,7 @@ apm = ElasticAPM(logging=logging.WARNING)
 db = SQLAlchemy()
 jwt = JwtManager()
 cache = Cache()
+
 api = Api(
     prefix='{}'.format(Config.BASE_PATH),
     doc='{}/'.format(Config.BASE_PATH),

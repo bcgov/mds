@@ -1,5 +1,5 @@
 import uuid, datetime
-from marshmallow import Schema, fields, pprint
+from marshmallow import fields
 from sqlalchemy import and_, select
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import validates
