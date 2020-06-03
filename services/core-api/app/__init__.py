@@ -6,6 +6,8 @@ from flask import Flask, request
 from flask_cors import CORS
 from flask_restplus import Resource, apidoc
 from sqlalchemy.exc import SQLAlchemyError
+from sqlalchemy.orm import scoped_session, sessionmaker, mapper
+
 from marshmallow.exceptions import MarshmallowError
 
 from flask_jwt_oidc.exceptions import AuthError
@@ -58,8 +60,10 @@ def create_app(test_config=None):
 def register_extensions(app):
 
     api.app = app
+
     # Overriding swaggerUI base path to serve content under a prefix
     apidoc.apidoc.static_url_path = '{}/swaggerui'.format(Config.BASE_PATH)
+
     api.init_app(app)
     if app.config['ELASTIC_ENABLED'] == '1':
         apm.init_app(app)
@@ -80,7 +84,8 @@ def register_extensions(app):
 
     # Set up Marshmallow
     with app.app_context():
-        setup_marshmallow(db.session)
+        session = scoped_session(sessionmaker(bind=db.engine))
+        setup_marshmallow(app, session)
 
 
 def register_routes(app):

@@ -16,31 +16,32 @@ Return: None
 """
 
 
-def setup_static_data(Base):
-    for class_ in Base._decl_class_registry.values():
-        if hasattr(class_, "__tablename__") or getattr(class_, "__create_schema__", False):
-            try:
-                mapper = inspect(class_)
-                pk = mapper.primary_key[0]
-                for col in mapper.columns:
-                    if col.name == 'active_ind':
-                        if type(pk.type) != UUID and pk.type.python_type == str:
-                            STATIC_DATA[class_.__name__] = [
-                                a for a, in class_.query.unbound_unsafe().with_entities(
-                                    getattr(class_, pk.name, None)).all()
-                            ]
+def setup_static_data(app, Base):
+    with app.app_context():
+        for class_ in Base._decl_class_registry.values():
+            if hasattr(class_, "__tablename__") or getattr(class_, "__create_schema__", False):
+                try:
+                    mapper = inspect(class_)
+                    pk = mapper.primary_key[0]
+                    for col in mapper.columns:
+                        if col.name == 'active_ind':
+                            if type(pk.type) != UUID and pk.type.python_type == str:
+                                STATIC_DATA[class_.__name__] = [
+                                    a for a, in class_.query.unbound_unsafe().with_entities(
+                                        getattr(class_, pk.name, None)).all()
+                                ]
 
-                    # This section is specific to NoW_submissions. Some of the code values that NROS and vFCBC send are
-                    # in long form so they are stored in the descriptions of the code tables so the descriptions of those
-                    # tables are also added under a (class name)_description in STATIC_DATA.
+                        # This section is specific to NoW_submissions. Some of the code values that NROS and vFCBC send are
+                        # in long form so they are stored in the descriptions of the code tables so the descriptions of those
+                        # tables are also added under a (class name)_description in STATIC_DATA.
 
-                    if class_ in app_models.model_list and col.name == 'description':
-                        if type(pk.type) != UUID and pk.type.python_type == str:
-                            STATIC_DATA[f'{class_.__name__}_description'] = [
-                                a for a, in class_.query.unbound_unsafe().with_entities(
-                                    getattr(class_, 'description', None)).all()
-                            ]
+                        if class_ in app_models.model_list and col.name == 'description':
+                            if type(pk.type) != UUID and pk.type.python_type == str:
+                                STATIC_DATA[f'{class_.__name__}_description'] = [
+                                    a for a, in class_.query.unbound_unsafe().with_entities(
+                                        getattr(class_, 'description', None)).all()
+                                ]
 
-            except Exception as e:
-                raise e
-    current_app.logger.debug(STATIC_DATA)
+                except Exception as e:
+                    raise e
+        current_app.logger.debug(STATIC_DATA)

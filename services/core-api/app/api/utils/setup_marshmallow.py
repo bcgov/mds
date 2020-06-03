@@ -62,13 +62,12 @@ class CoreConverter(ModelConverter):
 # @event.listens_for(mapper, "after_configured")
 # def run_after_configure():
 #     current_app.logger.debug('run_after_configure called')
-#     setup_static_data(BaseModel)
-#     setup_schema(BaseModel, db.session)()
+#     setup_marshmallow(db.session)
 
 
-def setup_marshmallow(session):
+def setup_marshmallow(app, session):
     current_app.logger.debug('setup_marshmallow called')
-    setup_static_data(BaseModel)
+    setup_static_data(app, BaseModel)
     setup_schema(BaseModel, session)()
 
 
