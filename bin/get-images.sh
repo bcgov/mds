@@ -1,0 +1,1 @@
+oc get istag -o go-template='{{range .items}}{{.metadata.name}}{{" "}}{{.image.metadata.name}}{{"\n"}}{{end}}'
