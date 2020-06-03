@@ -198,12 +198,12 @@ MINES_MODEL = api.model(
         'mine_permit_numbers': fields.List(fields.String),
         'mine_tailings_storage_facilities': fields.List(fields.Nested(MINE_TSF_MODEL)),
         'mine_type': fields.List(fields.Nested(MINE_TYPE_MODEL)),
-        'verified_status': fields.Nested(MINE_VERIFIED_MODEL),
+        'verified_status': fields.Nested(MINE_VERIFIED_MODEL, skip_none=True),
         'has_minespace_users': fields.Boolean,
     })
 
 MINE_MODEL = api.inherit('Mine', MINES_MODEL, {
-    'mine_location': fields.Nested(MINE_LOCATION_MODEL),
+    'mine_location': fields.Nested(MINE_LOCATION_MODEL, skip_none=True),
     'exemption_fee_status_code': fields.String,
     'exemption_fee_status_note': fields.String,
 })
@@ -395,6 +395,7 @@ MINE_REPORT_DEFINITION_MODEL = api.model(
         'due_date_period_months': fields.Integer,
         'mine_report_due_date_type': fields.String,
         'default_due_date': fields.Date,
+        'active_ind': fields.Boolean,
         'categories': fields.List(fields.Nested(MINE_REPORT_DEFINITION_CATEGORIES)),
         'compliance_articles': fields.List(fields.Nested(COMPLIANCE_ARTICLE_MODEL)),
     })
