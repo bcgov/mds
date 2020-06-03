@@ -10,6 +10,7 @@ BASE_AUTH_CLAIMS = {
     "jti": "flask-jwt-oidc-test-support",
     "typ": "Bearer",
     "username": "test-user",
+    "preferred_username": "test-user",
     "realm_access": {
         "roles": ["idir"]
     }
@@ -47,6 +48,7 @@ VIEW_ONLY_AUTH_CLAIMS = {
     "jti": "flask-jwt-oidc-test-support",
     "typ": "Bearer",
     "username": "test-user",
+    "preferred_username": "test-user",
     "email": "test-email",
     "realm_access": {
         "roles": ["core_view_all", "idir"]
@@ -62,6 +64,7 @@ CREATE_ONLY_AUTH_CLAIMS = {
     "jti": "flask-jwt-oidc-test-support",
     "typ": "Bearer",
     "username": "test-user",
+    "preferred_username": "test-user",
     "realm_access": {
         "roles": ["core_edit_mines", "idir"]
     }
@@ -75,6 +78,7 @@ ADMIN_ONLY_AUTH_CLAIMS = {
     "iat": 1531718745,
     "jti": "flask-jwt-oidc-test-support",
     "typ": "Bearer",
+    "preferred_username": "test-user",
     "username": "test-user",
     "realm_access": {
         "roles": ["core_admin", "idir"]
@@ -89,6 +93,7 @@ PROPONENT_ONLY_AUTH_CLAIMS = {
     "iat": 1531718745,
     "jti": "flask-jwt-oidc-test-support",
     "typ": "Bearer",
+    "preferred_username": "test-proponent",
     "username": "test-proponent",
     "email": "test-proponent-email@minespace.ca",
     "realm_access": {
@@ -104,6 +109,7 @@ NROS_VFCBC_AUTH_CLAIMS = {
     "iat": 1531718745,
     "jti": "flask-jwt-oidc-test-support",
     "typ": "Bearer",
+    "preferred_username": "test-user",
     "username": "test-proponent",
     "email": "test-proponent-email@minespace.ca",
     "realm_access": {

@@ -235,11 +235,20 @@ const childColumns = [
     title: "Files",
     dataIndex: "documents",
     key: "documents",
-    render: (text) => (
+    render: (text, record) => (
       <div title="Files">
         <ul>
           {text.map((file) => (
-            <li className="wrapped-text">{renderDocumentLink(file, file.document_name)}</li>
+            <li className="wrapped-text">
+              {record.isAmalgamated ? (
+                <>
+                  {renderDocumentLink(file, file.document_name)}
+                  <span> (amalgamated)</span>
+                </>
+              ) : (
+                renderDocumentLink(file, file.document_name)
+              )}
+            </li>
           ))}
         </ul>
       </div>
@@ -336,6 +345,7 @@ const transformChildRowData = (
 ) => ({
   amendmentNumber,
   amendmentType: amendment.permit_amendment_type_code,
+  isAmalgamated: amendment.permit_amendment_type_code === amalgamatedPermit,
   receivedDate: formatDate(amendment.received_date) || Strings.EMPTY_FIELD,
   issueDate: formatDate(amendment.issue_date) || Strings.EMPTY_FIELD,
   authorizationEndDate: formatDate(amendment.authorization_end_date) || Strings.EMPTY_FIELD,

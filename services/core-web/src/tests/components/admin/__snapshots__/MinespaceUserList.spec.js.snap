@@ -5,9 +5,9 @@ exports[`MinespaceUserList renders properly 1`] = `
   columns={
     Array [
       Object {
-        "dataIndex": "email",
+        "dataIndex": "email_or_username",
         "render": [Function],
-        "title": "Email",
+        "title": "Email/BCeID",
         "width": 150,
       },
       Object {

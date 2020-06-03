@@ -68,6 +68,7 @@ export const AddBondModal = (props) => {
         initialValues={props.bond}
         bond={props.bond}
         mineGuid={props.mineGuid}
+        editBond={props.editBond}
       />
     </div>
   );
