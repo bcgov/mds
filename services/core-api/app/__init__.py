@@ -6,7 +6,6 @@ from flask import Flask, request
 from flask_cors import CORS
 from flask_restplus import Resource, apidoc
 from sqlalchemy.exc import SQLAlchemyError
-from sqlalchemy.orm import scoped_session, sessionmaker, mapper
 
 from marshmallow.exceptions import MarshmallowError
 
@@ -84,8 +83,7 @@ def register_extensions(app):
 
     # Set up Marshmallow
     with app.app_context():
-        session = scoped_session(sessionmaker(bind=db.engine))
-        setup_marshmallow(app, session)
+        setup_marshmallow()
 
 
 def register_routes(app):

@@ -65,10 +65,10 @@ class CoreConverter(ModelConverter):
 #     setup_marshmallow(db.session)
 
 
-def setup_marshmallow(app, session):
+def setup_marshmallow():
     current_app.logger.debug('setup_marshmallow called')
-    setup_static_data(app, BaseModel)
-    setup_schema(BaseModel, session)()
+    setup_static_data(BaseModel)
+    setup_schema(BaseModel, db.session)()
 
 
 def setup_schema(Base, session):
