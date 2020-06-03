@@ -1,6 +1,6 @@
 from flask_restplus import Resource, marshal
 from flask import request
-from werkzeug.exceptions import BadRequest, NotFound
+from werkzeug.exceptions import BadRequest, NotFound, InternalServerError
 from marshmallow.exceptions import MarshmallowError
 
 from app.extensions import api, jwt
@@ -87,6 +87,10 @@ class BondResource(Resource, UserMixin):
     @api.expect(BOND)
     @api.marshal_with(BOND, code=200)
     def put(self, bond_guid):
+        #remove the amount from the request if it exists as it should not be editable.
+        temp_bond = Bond.find_by_bond_guid(bond_guid)
+        request.json['amount'] = temp_bond.amount
+
         try:
             bond = Bond._schema().load(request.json, instance=Bond.find_by_bond_guid(bond_guid))
         except MarshmallowError as e:
@@ -98,3 +102,56 @@ class BondResource(Resource, UserMixin):
         bond.save()
 
         return bond
+
+
+class BondTransferResource(Resource, UserMixin):
+    @api.doc(description='Transfer a bond to a different permit')
+    @requires_role_edit_securities
+    @api.marshal_with(BOND, code=200)
+    def put(self, bond_guid):
+        # Get the bond and validate that it can be transferred
+        bond = Bond.find_by_bond_guid(bond_guid)
+        if bond is None:
+            raise NotFound('No bond was found with the guid provided.')
+        if bond.bond_status_code != "ACT":
+            raise BadRequest('Only active bonds can be transferred.')
+
+        # Get the permit to transfer the bond to and validate it
+        permit_guid = request.json.get('permit_guid', None)
+        if not permit_guid:
+            raise BadRequest('permit_guid is required.')
+        permit = Permit.find_by_permit_guid(permit_guid)
+        if not permit:
+            raise BadRequest('No permit was found with the permit_guid provided.')
+        if permit.permit_guid == bond.permit.permit_guid:
+            raise BadRequest('This bond is already associated with this permit.')
+        if bond.permit.mine_guid != permit.mine_guid:
+            raise BadRequest('You can only transfer to a permit on the same mine.')
+
+        # Get the note to apply to the bond and the transferred bond
+        note = request.json.get('note', None)
+        if note:
+            bond.note = note
+
+        # Release the bond
+        bond.bond_status_code = "REL"
+
+        # Create the new "transferred bond"
+        new_bond_json = marshal(bond, BOND)
+        del new_bond_json['bond_id']
+        del new_bond_json['bond_guid']
+        del new_bond_json['permit_guid']
+        del new_bond_json['permit_no']
+        del new_bond_json['payer']
+        new_bond_json['bond_status_code'] = 'ACT'
+        new_bond_json['note'] = note
+        try:
+            new_bond = Bond._schema().load(new_bond_json)
+        except MarshmallowError as e:
+            raise InternalServerError(e)
+
+        permit.bonds.append(new_bond)
+        bond.save()
+        new_bond.save()
+
+        return new_bond
