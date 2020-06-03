@@ -27,8 +27,7 @@ def setup_static_data(Base):
                         if type(pk.type) != UUID and pk.type.python_type == str:
                             STATIC_DATA[class_.__name__] = [
                                 a for a, in class_.query.unbound_unsafe().with_entities(
-                                    getattr(class_, pk.name, None)).filter_by(
-                                        active_ind=True).all()
+                                    getattr(class_, pk.name, None)).all()
                             ]
 
                     # This section is specific to NoW_submissions. Some of the code values that NROS and vFCBC send are
@@ -39,8 +38,7 @@ def setup_static_data(Base):
                         if type(pk.type) != UUID and pk.type.python_type == str:
                             STATIC_DATA[f'{class_.__name__}_description'] = [
                                 a for a, in class_.query.unbound_unsafe().with_entities(
-                                    getattr(class_, 'description', None)).filter_by(
-                                        active_ind=True).all()
+                                    getattr(class_, 'description', None)).all()
                             ]
 
             except Exception as e:
