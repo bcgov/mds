@@ -60,7 +60,7 @@ class Permit(AuditMixin, Base):
 
     @hybrid_property
     def mine(self):
-        mine = next(self._all_mines, None)
+        mine = next(iter(self._all_mines), None)
         if len(self._all_mines) > 1:
             current_app.logger.WARN(
                 f'{self.permit_no}.mine returned {mine.mine_no},{mine.mine_name} out of {len(self._all_mines)}'

@@ -234,6 +234,7 @@ class MineIncidentFactory(BaseFactory):
         model = MineIncident
 
     class Params:
+
         mine = factory.SubFactory('tests.factories.MineFactory', minimal=True)
         do_subparagraph_count = 2
 
@@ -489,10 +490,11 @@ class MineFactory(BaseFactory):
             verified_status=None,
             mine_status=None,
             mine_tailings_storage_facilities=0,
-            mine_permit=0,
+                                                 # mine_permit=0,
             mine_incidents=0,
             mine_variance=0,
-            mine_reports=0)
+            mine_reports=0,
+            comments=0)
         operating = factory.Trait(
             mine_status=factory.RelatedFactory(MineStatusFactory, 'mine', operating=True))
 
@@ -514,10 +516,11 @@ class MineFactory(BaseFactory):
     exemption_fee_status_code = factory.LazyFunction(RandomExemptionFeeStatusCode)
     exemption_fee_status_note = factory.Faker('sentence', nb_words=6, variable_nb_words=True)
     mine_tailings_storage_facilities = []
-    mine_permit_identities = []
+                                                 #mine_permit_identities = []
     mine_incidents = []
     mine_variance = []
     mine_reports = []
+    comments = []
 
     @factory.post_generation
     def mine_tailings_storage_facilities(obj, create, extracted, **kwargs):
@@ -529,15 +532,15 @@ class MineFactory(BaseFactory):
 
         MineTailingsStorageFacilityFactory.create_batch(size=extracted, mine=obj, **kwargs)
 
-    @factory.post_generation
-    def mine_permit_identities(obj, create, extracted, **kwargs):
-        if not create:
-            return
+    # @factory.post_generation
+    # def mine_permit_identities(obj, create, extracted, **kwargs):
+    #     if not create:
+    #         return
 
-        if not isinstance(extracted, int):
-            extracted = 1
+    #     if not isinstance(extracted, int):
+    #         extracted = 1
 
-        PermitFactory.create_batch(size=extracted, mine=obj, **kwargs)
+    #     PermitFactory.create_batch(size=extracted, mine=obj, **kwargs)
 
     @factory.post_generation
     def mine_incidents(obj, create, extracted, **kwargs):
