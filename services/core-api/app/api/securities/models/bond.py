@@ -49,13 +49,16 @@ class Bond(Base, AuditMixin):
         return '<Bond %r>' % self.bond_guid
 
     def save_bond_history(self):
-        new_bond_json = marshal(self, BOND)
-        del new_bond_json['bond_guid']
-        del new_bond_json['permit_guid']
-        del new_bond_json['permit_no']
-        del new_bond_json['payer']
-        new_bond_json['bond_status_code'] = 'ACT'
-        current_app.logger.info(new_bond_json)
+        bond_json = marshal(self, BOND)
+        del bond_json['bond_guid']
+        del bond_json['permit_guid']
+        del bond_json['documents']
+        del bond_json['payer_party_guid']
+
+        bond_json['payer'] = bond_json['payer']['party_name']
+        current_app.logger.info(bond_json)
+        bond_hist = BondHistory._schema().load(bond_json)
+        bond_hist.save()
 
     @classmethod
     def find_by_bond_guid(cls, bond_guid):
