@@ -89,6 +89,7 @@ class BondResource(Resource, UserMixin):
     def put(self, bond_guid):
         #remove the amount from the request if it exists as it should not be editable.
         temp_bond = Bond.find_by_bond_guid(bond_guid)
+        temp_bond.save_bond_history()
         request.json['amount'] = temp_bond.amount
 
         try:

@@ -2,11 +2,15 @@ import uuid
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
 from marshmallow import fields, validate
+from flask_restplus import marshal
+from flask import current_app
 
 from app.extensions import db
 from app.api.utils.models_mixins import Base, AuditMixin
 from app.api.utils.field_template import FieldTemplate
 from app.api.securities.models.bond_document import BondDocument
+from app.api.securities.models.bond_history import BondHistory
+from app.api.securities.response_models import BOND
 
 
 class Bond(Base, AuditMixin):
@@ -43,6 +47,15 @@ class Bond(Base, AuditMixin):
 
     def __repr__(self):
         return '<Bond %r>' % self.bond_guid
+
+    def save_bond_history(self):
+        new_bond_json = marshal(self, BOND)
+        del new_bond_json['bond_guid']
+        del new_bond_json['permit_guid']
+        del new_bond_json['permit_no']
+        del new_bond_json['payer']
+        new_bond_json['bond_status_code'] = 'ACT'
+        current_app.logger.info(new_bond_json)
 
     @classmethod
     def find_by_bond_guid(cls, bond_guid):
