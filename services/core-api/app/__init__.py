@@ -1,15 +1,11 @@
 import logging
 from logging.config import dictConfig
-
 from flask import Flask, request
-
 from flask_cors import CORS
 from flask_restplus import Resource, apidoc
 from sqlalchemy.exc import SQLAlchemyError
-from marshmallow.exceptions import MarshmallowError
-
 from flask_jwt_oidc.exceptions import AuthError
-from werkzeug.exceptions import Forbidden, BadRequest
+from werkzeug.exceptions import Forbidden
 
 from app.api.compliance.namespace import api as compliance_api
 from app.api.download_token.namespace import api as download_token_api
@@ -31,8 +27,7 @@ from app.api.orgbook.namespace import api as orgbook_api
 from app.commands import register_commands
 from app.config import Config
 from app.extensions import db, jwt, api, cache, apm
-
-import app.api.utils.setup_marshmallow
+from app.api.utils.setup_marshmallow import setup_marshmallow
 
 
 def create_app(test_config=None):
@@ -58,13 +53,14 @@ def create_app(test_config=None):
 def register_extensions(app):
 
     api.app = app
+
     # Overriding swaggerUI base path to serve content under a prefix
     apidoc.apidoc.static_url_path = '{}/swaggerui'.format(Config.BASE_PATH)
+
     api.init_app(app)
     if app.config['ELASTIC_ENABLED'] == '1':
         apm.init_app(app)
         logging.getLogger('elasticapm').setLevel(30)
-
     else:
         app.logger.info('ELASTIC_ENABLED: FALSE, set ELASTIC_ENABLED=1 to enable')
 
@@ -75,10 +71,11 @@ def register_extensions(app):
 
     cache.init_app(app)
     db.init_app(app)
-
     CORS(app)
 
-    return None
+    # Set up Marshmallow
+    with app.app_context():
+        setup_marshmallow()
 
 
 def register_routes(app):
