@@ -6,7 +6,7 @@ from app import create_app
 from app.config import TestConfig
 from app.extensions import db, jwt as _jwt
 from app.api.utils.include.user_info import User
-from app.api.utils.setup_marshmallow import run_after_configure
+from app.api.utils.setup_marshmallow import setup_marshmallow
 
 from .constants import *
 from tests.factories import FACTORY_LIST
@@ -85,7 +85,7 @@ def test_client():
 
     # The event that this function runs off of is never fired
     # when the tests are run so it has to be called manually.
-    run_after_configure()
+    setup_marshmallow()
 
     yield client
 
