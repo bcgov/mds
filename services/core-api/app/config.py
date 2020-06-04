@@ -121,6 +121,13 @@ class Config(object):
     # OrgBook
     ORGBOOK_API_URL = os.environ.get('ORGBOOK_API_URL', 'https://orgbook.gov.bc.ca/api/v2/')
 
+    # Document Hosting Settings
+    OBJECT_STORE_ENABLED = os.environ.get('OBJECT_STORE_ENABLED', False)
+    OBJECT_STORE_HOST = os.environ.get('OBJECT_STORE_HOST', '')
+    OBJECT_STORE_ACCESS_KEY_ID = os.environ.get('OBJECT_STORE_ACCESS_KEY_ID', '')
+    OBJECT_STORE_ACCESS_KEY = os.environ.get('OBJECT_STORE_ACCESS_KEY', '')
+    OBJECT_STORE_BUCKET = os.environ.get('OBJECT_STORE_BUCKET', '')
+
 
 class TestConfig(Config):
     # The following configs are for testing purposes and all variables and keys are generated using dummy data.
