@@ -26,19 +26,15 @@ class DocumentManagerService():
             'filename': metadata.get('filename')
         }
 
-        # TODO: Implement when S3 is the desired document hosting option
-        if Config.OBJECT_STORE_ENABLED:
-            pass
-        else:
-            resp = requests.post(
-                url=cls.document_manager_url,
-                headers={key: value
-                         for (key, value) in request.headers if key != 'Host'},
-                data=data,
-                cookies=request.cookies,
-            )
+        resp = requests.post(
+            url=cls.document_manager_url,
+            headers={key: value
+                     for (key, value) in request.headers if key != 'Host'},
+            data=data,
+            cookies=request.cookies,
+        )
 
-            return Response(str(resp.content), resp.status_code, resp.raw.headers.items())
+        return Response(str(resp.content), resp.status_code, resp.raw.headers.items())
 
     @classmethod
     def pushFileToDocumentManager(cls, file_content, filename, mine, document_category,
@@ -51,15 +47,11 @@ class DocumentManagerService():
             'authorization': authorization_header
         }
 
-        # TODO: Implement when S3 is the desired document hosting option
-        if Config.OBJECT_STORE_ENABLED:
-            pass
-        else:
-            my_client = client.TusClient(cls.document_manager_url, headers=data)
-            uploader = my_client.uploader(file_stream=io.BytesIO(file_content), chunk_size=2048)
-            uploader.upload()
-            document_manager_guid = uploader.url.rsplit('/', 1)[-1]
-            return document_manager_guid
+        my_client = client.TusClient(cls.document_manager_url, headers=data)
+        uploader = my_client.uploader(file_stream=io.BytesIO(file_content), chunk_size=2048)
+        uploader.upload()
+        document_manager_guid = uploader.url.rsplit('/', 1)[-1]
+        return document_manager_guid
 
     @classmethod
     def _parse_upload_folders(cls, mine, document_category):
