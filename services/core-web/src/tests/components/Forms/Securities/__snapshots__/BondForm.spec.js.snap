@@ -20,6 +20,7 @@ exports[`BondForm renders properly 1`] = `
         <Field
           autoComplete="off"
           component={[Function]}
+          disabled={false}
           format={[Function]}
           id="amount"
           label="Bond Amount*"

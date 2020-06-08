@@ -72,10 +72,12 @@ export class AddReportForm extends Component {
   };
 
   updateMineReportDefinitionOptions = (mineReportDefinitionOptions, selectedMineReportCategory) => {
-    let mineReportDefinitionOptionsFiltered = mineReportDefinitionOptions;
+    let mineReportDefinitionOptionsFiltered = mineReportDefinitionOptions.filter(
+      (option) => option.active_ind
+    );
 
     if (selectedMineReportCategory) {
-      mineReportDefinitionOptionsFiltered = mineReportDefinitionOptions.filter(
+      mineReportDefinitionOptionsFiltered = mineReportDefinitionOptionsFiltered.filter(
         (rd) =>
           rd.categories.filter((c) => c.mine_report_category === selectedMineReportCategory)
             .length > 0
