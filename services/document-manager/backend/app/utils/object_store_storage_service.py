@@ -35,6 +35,8 @@ class ObjectStoreStorageService():
         Function to upload a file to an S3 bucket
         """
         object_name = file_name
+        current_app.logger.info('****************************************')
+        current_app.logger.info(file_name)
         response = self._client.upload_file(file_name, Config.OBJECT_STORE_BUCKET, object_name)
 
         return response
