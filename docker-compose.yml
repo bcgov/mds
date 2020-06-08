@@ -159,6 +159,16 @@ services:
     env_file: ./services/nris-api/backend/.env
     networks:
       - mds
+
+  ####################### TUSD Definition #######################
+  tusd:
+    container_name: tusd
+    build:
+      context: services/tusd
+    ports:
+      - 1080:1080
+    env_file: ./services/tusd/.env
+
   ####################### DOCUMENT_MANAGER_BACKEND Definition #######################
   document_manager_backend:
     restart: always
