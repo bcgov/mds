@@ -490,7 +490,7 @@ class MineFactory(BaseFactory):
             verified_status=None,
             mine_status=None,
             mine_tailings_storage_facilities=0,
-                                                 # mine_permit=0,
+            mine_permit_amendments=0,
             mine_incidents=0,
             mine_variance=0,
             mine_reports=0,
@@ -516,7 +516,7 @@ class MineFactory(BaseFactory):
     exemption_fee_status_code = factory.LazyFunction(RandomExemptionFeeStatusCode)
     exemption_fee_status_note = factory.Faker('sentence', nb_words=6, variable_nb_words=True)
     mine_tailings_storage_facilities = []
-                                                 #mine_permit_identities = []
+    mine_permit_amendments = []
     mine_incidents = []
     mine_variance = []
     mine_reports = []
@@ -532,15 +532,17 @@ class MineFactory(BaseFactory):
 
         MineTailingsStorageFacilityFactory.create_batch(size=extracted, mine=obj, **kwargs)
 
-    # @factory.post_generation
-    # def mine_permit_identities(obj, create, extracted, **kwargs):
-    #     if not create:
-    #         return
+    @factory.post_generation
+    def mine_permit_amendments(obj, create, extracted, **kwargs):
+        if not create:
+            return
 
-    #     if not isinstance(extracted, int):
-    #         extracted = 1
+        if not isinstance(extracted, int):
+            extracted = 1
 
-    #     PermitFactory.create_batch(size=extracted, mine=obj, **kwargs)
+        permit = PermitFactory()
+        permit._all_mines.append(obj)
+        PermitAmendmentFactory.create_batch(size=extracted, mine=obj, permit=permit, **kwargs)
 
     @factory.post_generation
     def mine_incidents(obj, create, extracted, **kwargs):
@@ -587,25 +589,9 @@ class PermitFactory(BaseFactory):
     class Meta:
         model = Permit
 
-    class Params:
-        mine = factory.SubFactory('tests.factories.MineFactory', minimal=True)
-
     permit_guid = GUID
     permit_no = factory.LazyFunction(RandomPermitNumber)
     permit_status_code = factory.LazyFunction(RandomPermitStatusCode)
-    permit_amendments = []
-    mine = factory.SubFactory('tests.factories.MineFactory', minimal=True)
-
-    @factory.post_generation
-    def permit_amendments(obj, create, extracted, **kwargs):
-        if not create:
-            return
-
-        if not isinstance(extracted, int):
-            extracted = 1
-
-        for n in range(extracted):
-            PermitAmendmentFactory(permit=obj, initial_permit=(n == 0), mine=obj.mine, **kwargs)
 
     @factory.post_generation
     def bonds(obj, create, extracted, **kwargs):
@@ -652,6 +638,7 @@ class PermitAmendmentFactory(BaseFactory):
     permit_amendment_type_code = 'AMD'
     description = factory.Faker('sentence', nb_words=6, variable_nb_words=True)
     related_documents = []
+    mine = factory.SubFactory('tests.factories.MineFactory', minimal=True)
 
 
 class PermitAmendmentDocumentFactory(BaseFactory):

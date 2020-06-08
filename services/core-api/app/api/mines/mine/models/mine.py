@@ -59,6 +59,9 @@ class Mine(AuditMixin, Base):
         lazy='selectin',
         secondary='mine_permit_xref')
 
+    #across all permit_identities
+    mine_permit_amendments = db.relationship('PermitAmendment', lazy='selectin')
+
     mine_type = db.relationship(
         'MineType',
         backref='mine',
@@ -133,9 +136,7 @@ class Mine(AuditMixin, Base):
 
     @hybrid_property
     def mine_permit_numbers(self):
-        rows = db.session.query(
-            Permit.permit_no).filter(Permit.mine.mine_guid == self.mine_guid).distinct().all()
-        p_numbers = [permit_no for permit_no, in rows]
+        p_numbers = [mpi.permit_no for mpi in self.mine_permit_identities]
         return p_numbers
 
     @hybrid_property
