@@ -34,7 +34,7 @@ import NOWDocuments from "@/components/noticeOfWork/applications//NOWDocuments";
 import NOWSubmissionDocuments from "@/components/noticeOfWork/applications//NOWSubmissionDocuments";
 import ReviewNOWContacts from "./ReviewNOWContacts";
 import { NOWFieldOriginTooltip } from "@/components/common/CoreTooltip";
-import { currencyMask } from "@common/utils/helpers";
+import { currencyMask, formatDate } from "@common/utils/helpers";
 
 /**
  * @constant ReviewNOWApplication renders edit/view for the NoW Application review step
@@ -618,6 +618,7 @@ export const ReviewNOWApplication = (props) => {
       <Form layout="vertical">
         <div className="side-menu--content">
           <h2>General Information</h2>
+          <p className="violet">Last Updated: {formatDate(props.noticeOfWork.last_updated_date)}</p>
           <Divider />
           <ScrollContentWrapper id="application-info" title="Application Info">
             {renderApplicationInfo()}
