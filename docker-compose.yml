@@ -80,6 +80,7 @@ services:
       - redis
       - nris_backend
       - document_manager_backend
+      - tusd
     networks:
       - mds
 
@@ -167,6 +168,8 @@ services:
       context: services/tusd
     ports:
       - 1080:1080
+    depends_on:
+      - document_manager_backend
     env_file: ./services/tusd/.env
 
   ####################### DOCUMENT_MANAGER_BACKEND Definition #######################
