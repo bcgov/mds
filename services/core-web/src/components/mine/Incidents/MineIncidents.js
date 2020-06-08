@@ -221,7 +221,4 @@ const mapDispatchToProps = (dispatch) =>
 MineIncidents.propTypes = propTypes;
 MineIncidents.defaultProps = defaultProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(MineIncidents);
+export default connect(mapStateToProps, mapDispatchToProps)(MineIncidents);

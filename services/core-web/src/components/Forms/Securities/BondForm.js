@@ -36,9 +36,11 @@ const propTypes = {
   bondDocumentTypeDropDownOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
   bondDocumentTypeOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   initialPartyValue: PropTypes.objectOf(PropTypes.string),
+  editBond: PropTypes.bool,
 };
 
 const defaultProps = {
+  editBond: false,
   initialPartyValue: {},
 };
 
@@ -130,6 +132,7 @@ export class BondForm extends Component {
                 component={RenderField}
                 {...currencyMask}
                 validate={[required, number, currency]}
+                disabled={this.props.editBond}
               />
             </Form.Item>
           </Col>
