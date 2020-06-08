@@ -64,6 +64,7 @@ class DocumentListResource(Resource):
                 f.seek(file_size - 1)
                 f.write(b"\0")
         except IOError as e:
+            current_app.logger.error(e)
             raise InternalServerError('Unable to create file')
 
         cache.set(FILE_UPLOAD_SIZE(document_guid), file_size, TIMEOUT_24_HOURS)
@@ -143,6 +144,7 @@ class DocumentResource(Resource):
                 f.seek(file_offset)
                 f.write(request.data)
         except IOError as e:
+            current_app.logger.error(e)
             raise InternalServerError('Unable to write to file')
 
         if new_offset == file_size:
