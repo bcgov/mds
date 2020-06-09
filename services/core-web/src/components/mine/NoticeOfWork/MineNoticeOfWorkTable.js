@@ -10,7 +10,6 @@ import NullScreen from "@/components/common/NullScreen";
 import CoreTable from "@/components/common/CoreTable";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import { EDIT_OUTLINE_VIOLET } from "@/constants/assets";
-import * as Permission from "@/constants/permissions";
 import { getNoticeOfWorkApplicationBadgeStatusType } from "@/constants/theme";
 
 /**
@@ -129,11 +128,14 @@ export class MineNoticeOfWorkTable extends Component {
         record.key && (
           <div className="btn--middle flex">
             <AuthorizationWrapper inTesting>
-              <AuthorizationWrapper permission={Permission.ADMIN}>
-                <Link to={this.createLinkTo(router.NOTICE_OF_WORK_APPLICATION, record)}>
-                  <img src={EDIT_OUTLINE_VIOLET} alt="Edit NoW" className="padding-large--right" />
-                </Link>
-              </AuthorizationWrapper>
+              <Link to={this.createLinkTo(router.NOTICE_OF_WORK_APPLICATION, record)}>
+                <img
+                  src={EDIT_OUTLINE_VIOLET}
+                  alt="Edit NoW"
+                  title="Edit"
+                  className="padding-large--right"
+                />
+              </Link>
             </AuthorizationWrapper>
             <Link to={this.createLinkTo(router.VIEW_NOTICE_OF_WORK_APPLICATION, record)}>
               <Icon type="eye" className="icon-lg icon-svg-filter padding-large--left" />
