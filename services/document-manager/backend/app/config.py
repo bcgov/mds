@@ -51,6 +51,8 @@ class Config(object):
     MAX_CONTENT_LENGTH = 750 * 1024 * 1024
     JSONIFY_PRETTYPRINT_REGULAR = False
 
+    TUSD_URL = os.environ.get('TUSD_URL', 'http://tusd:1080/files')
+
     # Document hosting settings
     OBJECT_STORE_ENABLED = os.environ.get('OBJECT_STORE_ENABLED', False)
     OBJECT_STORE_HOST = os.environ.get('OBJECT_STORE_HOST', '')

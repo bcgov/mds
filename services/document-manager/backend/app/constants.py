@@ -5,6 +5,7 @@ TIMEOUT_24_HOURS = 86340
 TIMEOUT_12_HOURS = 43140
 
 # Cache keys
+def OBJECT_STORE_PATH(document_guid): return f'document-manager:{document_guid}:object-store-path'
 def FILE_UPLOAD_SIZE(document_guid): return f'document-manager:{document_guid}:file-size'
 def FILE_UPLOAD_OFFSET(document_guid): return f'document-manager:{document_guid}:offset'
 def FILE_UPLOAD_PATH(document_guid): return f'document-manager:{document_guid}:file-path'

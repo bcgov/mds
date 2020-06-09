@@ -26,9 +26,9 @@ const defaultProps = {
   maxFileSize: "750MB",
   acceptedFileTypesMap: {},
   allowRevert: false,
-  onFileLoad: () => { },
-  onRemoveFile: () => { },
-  chunkSize: 1048576, // 1MB
+  onFileLoad: () => {},
+  onRemoveFile: () => {},
+  chunkSize: 5242880, // 5MB
 };
 
 class FileUpload extends React.Component {
@@ -44,6 +44,7 @@ class FileUpload extends React.Component {
           chunkSize: this.props.chunkSize,
           metadata: {
             filename: file.name,
+            filetype: file.type,
           },
           headers: createRequestHeader().headers,
           onError: (err) => {

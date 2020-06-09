@@ -14,7 +14,7 @@ import { FLUSH_SOUND, WATER_SOUND } from "@/constants/assets";
 
 registerPlugin(FilePondPluginFileValidateSize, FilePondPluginFileValidateType);
 
-const doNothing = () => { };
+const doNothing = () => {};
 
 const propTypes = {
   uploadUrl: PropTypes.string.isRequired,
@@ -32,7 +32,7 @@ const defaultProps = {
   acceptedFileTypesMap: {},
   onFileLoad: doNothing,
   onRemoveFile: doNothing,
-  chunkSize: 1048576, // 1MB
+  chunkSize: 5242880, // 5MB
   allowRevert: false,
   allowMultiple: true,
 };
@@ -52,6 +52,7 @@ class FileUpload extends React.Component {
           chunkSize: this.props.chunkSize,
           metadata: {
             filename: file.name,
+            filetype: file.type,
           },
           headers: createRequestHeader().headers,
           onError: (err) => {

@@ -171,6 +171,8 @@ services:
     depends_on:
       - document_manager_backend
     env_file: ./services/tusd/.env
+    networks:
+      - mds
 
   ####################### DOCUMENT_MANAGER_BACKEND Definition #######################
   document_manager_backend:

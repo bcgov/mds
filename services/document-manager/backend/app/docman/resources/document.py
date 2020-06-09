@@ -1,6 +1,9 @@
 import uuid
 import os
+import requests
 from datetime import datetime
+from urllib.parse import urlparse
+from app.utils.object_store_storage_service import ObjectStoreStorageService
 
 from werkzeug.exceptions import BadRequest, NotFound, Conflict, RequestEntityTooLarge, InternalServerError
 from flask import request, current_app, send_file, make_response, jsonify
@@ -9,7 +12,7 @@ from flask_restplus import Resource, reqparse
 from app.docman.models.document import Document
 from app.extensions import api, cache
 from app.utils.access_decorators import requires_any_of, MINE_EDIT, VIEW_ALL, MINESPACE_PROPONENT, EDIT_PARTY, EDIT_PERMIT, EDIT_DO, EDIT_VARIANCE
-from app.constants import FILE_UPLOAD_SIZE, FILE_UPLOAD_OFFSET, FILE_UPLOAD_PATH, DOWNLOAD_TOKEN, TIMEOUT_24_HOURS, TUS_API_VERSION, TUS_API_SUPPORTED_VERSIONS, FORBIDDEN_FILETYPES
+from app.constants import OBJECT_STORE_PATH, FILE_UPLOAD_SIZE, FILE_UPLOAD_OFFSET, FILE_UPLOAD_PATH, DOWNLOAD_TOKEN, TIMEOUT_24_HOURS, TUS_API_VERSION, TUS_API_SUPPORTED_VERSIONS, FORBIDDEN_FILETYPES
 from app.config import Config
 
 DOCUMENT_UPLOAD_ROLES = [
@@ -63,20 +66,43 @@ class DocumentListResource(Resource):
         file_path = os.path.join(folder, document_guid)
         pretty_folder = data.get('pretty_folder') or request.headers.get('Pretty-Folder')
         pretty_path = os.path.join(base_folder, pretty_folder, filename)
-        current_app.logger.info(f'folder: {folder}')
-        current_app.logger.info(f'file_path: {file_path}')
-        current_app.logger.info(f'pretty_path: {pretty_path}')
+        # current_app.logger.info(f'folder: {folder}')
+        # current_app.logger.info(f'file_path: {file_path}')
+        # current_app.logger.info(f'pretty_path: {pretty_path}')
 
-        # Create an empty file at this path
-        try:
-            if not os.path.exists(folder):
-                os.makedirs(folder)
-            with open(file_path, 'wb') as f:
-                f.seek(file_size - 1)
-                f.write(b'\0')
-        except IOError as e:
-            current_app.logger.error(e)
-            raise InternalServerError('Unable to create file')
+        # If the object store is enabled, send the post request through to TUSD
+        object_store_path = None
+        if Config.OBJECT_STORE_ENABLED:
+            current_app.logger.info('Object store is enabled, posting file to object store')
+            resp = requests.post(
+                url=Config.TUSD_URL,
+                headers={key: value
+                         for (key, value) in request.headers if key != 'Host'},
+                data=request.data,
+                cookies=request.cookies,
+            )
+            current_app.logger.info(f'resp:\n{resp.__dict__}')
+
+            # TODO: Handle errors.
+            if resp.status_code != 201:
+                pass
+
+            object_store_path = urlparse(resp.headers['Location']).path.split('/')[-1]
+            cache.set(OBJECT_STORE_PATH(document_guid), object_store_path, TIMEOUT_24_HOURS)
+            current_app.logger.info(f'object_store_path:\n{object_store_path}')
+
+        # Else, create an empty file at this path
+        else:
+            current_app.logger.info('Object store is not enabled, posting file to file system')
+            try:
+                if not os.path.exists(folder):
+                    os.makedirs(folder)
+                with open(file_path, 'wb') as f:
+                    f.seek(file_size - 1)
+                    f.write(b'\0')
+            except IOError as e:
+                current_app.logger.error(e)
+                raise InternalServerError('Unable to create file')
 
         # Cache this file POST data to be used in future PATCH requests
         cache.set(FILE_UPLOAD_SIZE(document_guid), file_size, TIMEOUT_24_HOURS)
@@ -90,7 +116,7 @@ class DocumentListResource(Resource):
             upload_started_date=datetime.utcnow(),
             file_display_name=filename,
             path_display_name=pretty_path,
-        )
+            object_store_path=object_store_path)
         document_info.save()
 
         # Create and send response
@@ -102,7 +128,6 @@ class DocumentListResource(Resource):
         response.headers[
             'Access-Control-Expose-Headers'] = 'Tus-Resumable,Tus-Version,Location,Upload-Offset'
         response.autocorrect_location_header = False
-        current_app.logger.info(f'response:\n{response.__dict__}')
         return response
 
     def get(self):
@@ -122,10 +147,16 @@ class DocumentListResource(Resource):
         else:
             attach_style = '.pdf' not in doc.file_display_name.lower()
 
-        return send_file(
-            filename_or_fp=doc.full_storage_path,
-            attachment_filename=doc.file_display_name,
-            as_attachment=attach_style)
+        if doc.object_store_path:
+            return ObjectStoreStorageService().download_file(
+                path=doc.object_store_path,
+                display_name=doc.file_display_name,
+                as_attachment=attach_style)
+        else:
+            return send_file(
+                filename_or_fp=doc.full_storage_path,
+                attachment_filename=doc.file_display_name,
+                as_attachment=attach_style)
 
 
 @api.route(f'/documents/<string:document_guid>')
@@ -134,7 +165,8 @@ class DocumentResource(Resource):
     def patch(self, document_guid):
         # Get and validate the file path
         file_path = cache.get(FILE_UPLOAD_PATH(document_guid))
-        if file_path is None or not os.path.lexists(file_path):
+        if file_path is None or (not Config.OBJECT_STORE_ENABLED
+                                 and not os.path.lexists(file_path)):
             raise NotFound('File does not exist')
 
         # Get and validate the upload offset
@@ -154,14 +186,33 @@ class DocumentResource(Resource):
             raise RequestEntityTooLarge(
                 'The uploaded chunk would put the file above its declared file size')
 
-        # Write the content to the file
-        try:
-            with open(file_path, 'r+b') as f:
-                f.seek(file_offset)
-                f.write(request.data)
-        except IOError as e:
-            current_app.logger.error(e)
-            raise InternalServerError('Unable to write to file')
+        # If the object store is enabled, send the patch request through to TUSD
+        if Config.OBJECT_STORE_ENABLED:
+            current_app.logger.info('Object store is enabled, patching file to object store')
+            object_store_path = cache.get(OBJECT_STORE_PATH(document_guid))
+            resp = requests.patch(
+                url=f'{Config.TUSD_URL}/{object_store_path}',
+                headers={key: value
+                         for (key, value) in request.headers if key != 'Host'},
+                data=request.data,
+                cookies=request.cookies,
+            )
+            current_app.logger.info(f'resp:\n{resp.__dict__}')
+
+            # TODO: Handle errors.
+            if resp.status_code != 204:
+                pass
+
+        # Else, write the content to the file
+        else:
+            current_app.logger.info('Object store is not enabled, patching file to file system')
+            try:
+                with open(file_path, 'r+b') as f:
+                    f.seek(file_offset)
+                    f.write(request.data)
+            except IOError as e:
+                current_app.logger.error(e)
+                raise InternalServerError('Unable to write to file')
 
         # If the file upload is complete, create meta data and remove data from cache
         if new_offset == file_size:
@@ -182,7 +233,6 @@ class DocumentResource(Resource):
         response.headers['Upload-Offset'] = new_offset
         response.headers[
             'Access-Control-Expose-Headers'] = 'Tus-Resumable,Tus-Version,Upload-Offset'
-        current_app.logger.info(f'response:\n{response.__dict__}')
         return response
 
     @requires_any_of(DOCUMENT_UPLOAD_ROLES)
