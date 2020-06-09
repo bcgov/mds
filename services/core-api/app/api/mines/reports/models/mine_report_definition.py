@@ -62,7 +62,8 @@ class MineReportDefinition(Base, AuditMixin):
     # that some content in the UI that depends on now "inactive" content will fail to render and can cause crashes.
     def get_active(cls):
         try:
-            return cls.query.all()        except ValueError:
+            return cls.query.all()
+        except ValueError:
             return None
 
     @classmethod
