@@ -34,7 +34,7 @@ class DocumentListResource(Resource):
             raise BadRequest('Received file upload for unsupported file transfer protocol')
 
         file_size = request.headers.get('Upload-Length')
-        max_file_size = current_app.config["MAX_CONTENT_LENGTH"]
+        max_file_size = current_app.config['MAX_CONTENT_LENGTH']
         if not file_size:
             raise BadRequest('Received file upload of unspecified size')
         file_size = int(file_size)

@@ -213,7 +213,7 @@
                   },
                   {
                     "name": "S3_PREFIX",
-                    "value": "core-files/"
+                    "value": "mds-files-${VERSION}/"
                   }
                 ],
                 "resources": {
