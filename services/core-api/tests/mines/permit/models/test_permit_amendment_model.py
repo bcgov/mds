@@ -9,7 +9,7 @@ from tests.factories import PermitFactory, MineFactory
 
 def test_permit_amendment_model_find_by_permit_amendment_id(db_session):
     mine = MineFactory(mine_permit_amendments=1)
-    test_pa = mine.mine_permit_amendments[0]
+    test_pa = mine.mine_permit[0].permit_amendments[0]
 
     permit_amendment = PermitAmendment.find_by_permit_amendment_id(test_pa.permit_amendment_id)
     assert permit_amendment.permit_amendment_id == test_pa.permit_amendment_id
@@ -18,7 +18,7 @@ def test_permit_amendment_model_find_by_permit_amendment_id(db_session):
 def test_permit_amendment_model_find_by_permit_id(db_session):
     batch_size = 3
     mine = MineFactory(mine_permit_amendments=batch_size)
-    permit_id = mine.mine_permit_identities[0].permit_id
+    permit_id = mine.mine_permit[0].permit_id
 
     permit_amendments = PermitAmendment.find_by_permit_id(permit_id)
     assert len(permit_amendments) == batch_size

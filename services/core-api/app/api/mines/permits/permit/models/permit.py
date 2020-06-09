@@ -51,6 +51,12 @@ class Permit(AuditMixin, Base):
 
     _mine_associations = db.relationship('MinePermitXref')
 
+    # _context_mine allows a Permit() to be used thouugh it only belongs to that mine.
+    # legacy data has permits used by multiple mines, but at access time, our application
+    # should behave like permits only belong to one mine. If this is not set, many helper methods
+    # will fail. Any implicit instantiation of Permit() should set this where possible.
+    _context_mine = None
+
     @hybrid_property
     def current_permittee(self):
         if len(self.permittee_appointments) > 0:
@@ -59,25 +65,44 @@ class Permit(AuditMixin, Base):
             return ""
 
     @hybrid_property
+    def permit_amendments(self):
+        if not self._context_mine:
+            raise Exception('this getter is only available if _context_mine has been set')
+
+        return self._all_permit_amendments
+
+    @permit_amendments.setter
+    def permit_amendments(self, value):
+        if not self._context_mine:
+            raise Exception('this getter is only available if _context_mine has been set')
+        raise NotImplementedError('TODO')
+
+    @hybrid_property
     def mine(self):
-        mine = next(iter(self._all_mines), None)
-        if len(self._all_mines) > 1:
-            current_app.logger.WARN(
-                f'{self.permit_no}.mine returned {mine.mine_no},{mine.mine_name} out of {len(self._all_mines)}'
-            )
-        return mine
+        if not self._context_mine:
+            raise Exception('this getter is only available if _context_mine has been set')
+        return self._context_mine
 
-    @mine.setter
-    def mine(self, value):
-        #factories use this setter. should not be used without
-        if len(self._all_mines < 2):
-            self._all_mines = [value]
-        else:
-            raise Exception(
-                "Permit is used by multiple mines, cannot override. try mine._all_mines.append()")
+    # @hybrid_property
+    # def mine(self):
+    #     mine = next(iter(self._all_mines), None)
+    #     if len(self._all_mines) > 1:
+    #         current_app.logger.WARN(
+    #             f'{self.permit_no}.mine returned {mine.mine_no},{mine.mine_name} out of {len(self._all_mines)}'
+    #         )
+    #     return mine
 
-    def get_mine(self, mine_guid):
-        return next([m for m in self.all_mines if m.mine_guid == mine_guid], None)
+    # @mine.setter
+    # def mine(self, value):
+    #     #factories use this setter. should not be used without
+    #     if len(self._all_mines < 2):
+    #         self._all_mines = [value]
+    #     else:
+    #         raise Exception(
+    #             "Permit is used by multiple mines, cannot override. try mine._all_mines.append()")
+
+    # def get_mine(self, mine_guid):
+    #     return next([m for m in self.all_mines if m.mine_guid == mine_guid], None)
 
     def get_amendments_by_mine_guid(self, mine_guid):
         return [pa for pa in self._all_permit_amendments if pa.mine_guid == mine_guid]
