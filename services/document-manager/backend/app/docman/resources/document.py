@@ -132,26 +132,29 @@ class DocumentListResource(Resource):
 class DocumentResource(Resource):
     @requires_any_of(DOCUMENT_UPLOAD_ROLES)
     def patch(self, document_guid):
+        # Get and validate the file path
         file_path = cache.get(FILE_UPLOAD_PATH(document_guid))
         if file_path is None or not os.path.lexists(file_path):
-            raise NotFound('PATCH sent for a file that does not exist')
+            raise NotFound('File does not exist')
 
+        # Get and validate the upload offset
         request_offset = int(request.headers.get('Upload-Offset', 0))
         file_offset = cache.get(FILE_UPLOAD_OFFSET(document_guid))
         if request_offset != file_offset:
-            raise Conflict('Offset in request does not match uploaded file\'s offset')
+            raise Conflict('Upload offset in request does not match the file\'s upload offset')
 
+        # Get and validate the content length and new upload offset after write
         chunk_size = request.headers.get('Content-Length')
         if chunk_size is None:
             raise BadRequest('No Content-Length header in request')
         chunk_size = int(chunk_size)
-
         new_offset = file_offset + chunk_size
         file_size = cache.get(FILE_UPLOAD_SIZE(document_guid))
         if new_offset > file_size:
             raise RequestEntityTooLarge(
                 'The uploaded chunk would put the file above its declared file size')
 
+        # Write the content to the file
         try:
             with open(file_path, 'r+b') as f:
                 f.seek(file_offset)
@@ -160,17 +163,17 @@ class DocumentResource(Resource):
             current_app.logger.error(e)
             raise InternalServerError('Unable to write to file')
 
+        # If the file upload is complete, create meta data and remove data from cache
         if new_offset == file_size:
-            # File transfer complete.
             doc = Document.find_by_document_guid(document_guid)
             doc.upload_completed_date = datetime.utcnow()
             doc.save()
-
             cache.delete(FILE_UPLOAD_SIZE(document_guid))
             cache.delete(FILE_UPLOAD_OFFSET(document_guid))
             cache.delete(FILE_UPLOAD_PATH(document_guid))
+
+        # Else, the file upload is still in progress, update its upload offset in cache
         else:
-            # File upload still in progress
             cache.set(FILE_UPLOAD_OFFSET(document_guid), new_offset, TIMEOUT_24_HOURS)
 
         response = make_response('', 204)
@@ -179,13 +182,11 @@ class DocumentResource(Resource):
         response.headers['Upload-Offset'] = new_offset
         response.headers[
             'Access-Control-Expose-Headers'] = 'Tus-Resumable,Tus-Version,Upload-Offset'
+        current_app.logger.info(f'response:\n{response.__dict__}')
         return response
 
     @requires_any_of(DOCUMENT_UPLOAD_ROLES)
     def head(self, document_guid):
-        if document_guid is None:
-            raise BadRequest('Must specify document GUID in HEAD')
-
         file_path = cache.get(FILE_UPLOAD_PATH(document_guid))
         if file_path is None or not os.path.lexists(file_path):
             raise NotFound('File does not exist')
@@ -203,8 +204,8 @@ class DocumentResource(Resource):
     def options(self, document_guid):
         response = make_response('', 200)
 
+        # If CORS request, return 200
         if request.headers.get('Access-Control-Request-Method') is not None:
-            # CORS request, return 200
             return response
 
         response.headers['Tus-Resumable'] = self.tus_api_version
