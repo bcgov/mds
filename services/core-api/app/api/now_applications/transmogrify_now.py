@@ -9,7 +9,7 @@ from app.api.constants import type_of_permit_map, unit_type_map
 
 from flask import current_app
 
-status_code_mapping = {"Accepted": "AIA", "Withdrawn": "WDN", "Under Review": "SUB", None: "SUB"}
+status_code_mapping = {"Accepted": "AIA", "Withdrawn": "REI", "Under Review": "REC", None: "REC"}
 
 
 def code_lookup(model, description, code_column_name):
@@ -22,6 +22,7 @@ def code_lookup(model, description, code_column_name):
     else:
         result = None
     return result
+
 
 def transmogrify_now(now_application_identity):
     now_sub = sub_models.Application.find_by_messageid(

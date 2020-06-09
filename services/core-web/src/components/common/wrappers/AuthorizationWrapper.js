@@ -1,11 +1,16 @@
+/* eslint-disable */
+import React from "react";
+import ReactDOMServer from "react-dom/server";
 import { PropTypes } from "prop-types";
 import { connect } from "react-redux";
+import { startCase, camelCase } from "lodash";
 import { getUserAccessData } from "@common/selectors/authenticationSelectors";
 import { USER_ROLES } from "@common/constants/environment";
 import {
   detectDevelopmentEnvironment,
   detectProdEnvironment,
 } from "@common/utils/environmentUtils";
+import { Tooltip } from "antd";
 import * as Permission from "@/constants/permissions";
 
 /**
@@ -69,8 +74,32 @@ export const AuthorizationWrapper = (props) => {
   const isMajorMine = props.isMajorMine === undefined || props.isMajorMine;
   const isAdmin = props.userRoles.includes(USER_ROLES[Permission.ADMIN]);
 
+  const title = () => {
+    const permission = props.permission ? `${USER_ROLES[props.permission]}` : "";
+    const inTest = props.inTesting ? "Not Visible in Production" : "";
+    const majorMine = props.isMajorMine !== undefined ? "Only Visible to Major Mines" : "";
+    return (
+      <ul style={{ listStyle: "none", marginBottom: "0" }}>
+        {permission && <li>{startCase(camelCase(permission))}</li>}
+        {inTest && <li>{inTest}</li>}
+        {majorMine && <li>{majorMine}</li>}
+      </ul>
+    );
+  };
+
   return (
-    (isAdmin || (inDevCheck && inTestCheck && permissionCheck && isMajorMine)) && props.children
+    (isAdmin || (inDevCheck && inTestCheck && permissionCheck && isMajorMine)) && (
+      <Tooltip
+        title={isAdmin ? title() : ""}
+        placement="left"
+        mouseEnterDelay={1}
+        arrowPointAtCenter
+        overlayClassName="tooltip__admin"
+        style={{ zIndex: 100000 }}
+      >
+        {React.createElement("span", null, props.children)}
+      </Tooltip>
+    )
   );
 };
 AuthorizationWrapper.propTypes = propTypes;

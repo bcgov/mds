@@ -513,16 +513,17 @@ on conflict do nothing;
 INSERT INTO now_application_status
 (now_application_status_code, description, display_order, active_ind, create_user, update_user)
 VALUES
-  ('SUB', 'Submitted', 90, true, 'system-mds', 'system-mds'),
 	('REF', 'Referred', 70, true, 'system-mds', 'system-mds'),
-	('CDI', 'Client Delay Info', 30, true, 'system-mds', 'system-mds'),
-	('CDB', 'Client Delay Bond', 20, true, 'system-mds', 'system-mds'),
-  ('GVD', 'Govt Delay', 60, true, 'system-mds', 'system-mds'),
-  ('CON', 'Consultation', 50, true, 'system-mds', 'system-mds'),
-  ('AIA', 'Active/Issued/Approved', 10, true, 'system-mds', 'system-mds'),
-	('WDN', 'Withdrawn', 100, true, 'system-mds', 'system-mds'),
+	('CDI', 'Client Delay', 30, true, 'system-mds', 'system-mds'),
+  ('GVD', 'Govt. Action Required', 60, true, 'system-mds', 'system-mds'),
+  ('AIA', 'Approved', 10, true, 'system-mds', 'system-mds'),
 	('REJ', 'Rejected', 80, true, 'system-mds', 'system-mds'),
-	('CLO', 'Closed', 40, true, 'system-mds', 'system-mds')
+  ('REC', 'Received', 90, true, 'system-mds', 'system-mds'),
+  ('PAP', 'Pending Approval', 50, true, 'system-mds', 'system-mds'),
+	('REI', 'Rejected-Initial', 100, true, 'system-mds', 'system-mds'),
+	('PCO', 'Permit Closed', 40, true, 'system-mds', 'system-mds'),
+	('NPR', 'No Permit Required', 110, true, 'system-mds', 'system-mds'),
+	('RCO', 'Referral Complete', 120, true, 'system-mds', 'system-mds')
 on conflict do nothing;
 
 INSERT INTO mine_incident_category
@@ -1193,17 +1194,23 @@ ON CONFLICT DO NOTHING;
 INSERT INTO bond_document_type(
     bond_document_type_code,
     description,
+    active_ind,
     create_user,
-    update_user
+    update_user,
+    display_order
     )
 VALUES
-    ('SRB', 'Scan of Reclamation Security Bond', 'system-mds', 'system-mds'),
-    ('RSF', 'Release of Security Form', 'system-mds', 'system-mds'),
-    ('RSL', 'Release of Security Letter', 'system-mds', 'system-mds'),
-    ('CSF', 'Confiscation of Security Form', 'system-mds', 'system-mds'),
-    ('CSL', 'Confiscation of Security Letter', 'system-mds', 'system-mds'),
-    ('REL', 'Reminder Letter', 'system-mds', 'system-mds'),
-    ('AKL', 'Acknowledgement Letter', 'system-mds', 'system-mds')
+    ('AKL', 'Acknowledgement of Security Letter', true, 'system-mds', 'system-mds', 10),
+    ('BSR', 'Bond Status Request Letter', true, 'system-mds', 'system-mds', 20),
+    ('CNC', 'Change of Name Certificate', true, 'system-mds', 'system-mds', 30),
+    ('CSF', 'Confiscation of Security Form', true, 'system-mds', 'system-mds', 40),
+    ('CSL', 'Confiscation of Security Letter', true, 'system-mds', 'system-mds', 50),   
+    ('NIA', 'No Interest Acknowledgement Form', true, 'system-mds', 'system-mds', 60),
+    ('RSF', 'Release of Security Form', true, 'system-mds', 'system-mds', 70),
+    ('RSL', 'Release of Security Letter', true, 'system-mds', 'system-mds', 80),
+    ('REL', 'Reminder Letter', false, 'system-mds', 'system-mds', 90),
+    ('SRB', 'Scan of Reclamation Security Document', true, 'system-mds', 'system-mds', 100),
+    ('SIB', 'Security Instructions for Bank', true, 'system-mds', 'system-mds', 110)
 ON CONFLICT DO NOTHING;
 
 INSERT INTO regional_contact_type

@@ -196,7 +196,7 @@ export const MineReportTable = (props) => {
       key: "operations",
       render: (text, record) => {
         return (
-          <div title="" align="right">
+          <div align="right">
             <AuthorizationWrapper permission={Permission.EDIT_REPORTS}>
               <MineReportActions
                 mineReport={record.report}
