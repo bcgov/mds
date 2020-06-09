@@ -75,11 +75,13 @@ export class AddReportForm extends Component {
     let mineReportDefinitionOptionsFiltered = mineReportDefinitionOptions;
 
     if (selectedMineReportCategory) {
-      mineReportDefinitionOptionsFiltered = mineReportDefinitionOptions.filter(
-        (rd) =>
-          rd.categories.filter((c) => c.mine_report_category === selectedMineReportCategory)
-            .length > 0
-      );
+      mineReportDefinitionOptionsFiltered = mineReportDefinitionOptions
+        .filter((o) => o.active_ind)
+        .filter(
+          (rd) =>
+            rd.categories.filter((c) => c.mine_report_category === selectedMineReportCategory)
+              .length > 0
+        );
     }
 
     const dropdownMineReportDefinitionOptionsFiltered = createDropDownList(

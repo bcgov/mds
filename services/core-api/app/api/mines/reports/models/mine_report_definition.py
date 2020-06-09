@@ -60,7 +60,7 @@ class MineReportDefinition(Base, AuditMixin):
     @classmethod
     def get_active(cls):
         try:
-            return cls.query.filter_by(active_ind=True).all()
+            return cls.query.all()
         except ValueError:
             return None
 

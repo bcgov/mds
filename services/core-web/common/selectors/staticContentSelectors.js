@@ -39,14 +39,41 @@ export const {
   getExemptionFeeStatusOptions,
 } = staticContentReducer;
 
+// TODO may be it is better to set option to false by default
+const getVisibilityFilterOption = (_state, showActiveOnly = true) => showActiveOnly;
+
+const getOptions = (transformOptionsFunc, showActiveOnly) => {
+  const options = transformOptionsFunc();
+  return showActiveOnly && options && options.length > 0
+    ? options.filter((o) => o.isActive)
+    : options;
+};
+
+const createSelectorWrapper = (
+  getOptionsMethods,
+  transformOptionsMethod,
+  transformOptionsFuncArgs = []
+) => {
+  return createSelector(
+    [getVisibilityFilterOption, ...getOptionsMethods],
+    (showActiveOnly, options) => {
+      return getOptions(
+        () => transformOptionsMethod(options, ...transformOptionsFuncArgs),
+        showActiveOnly
+      );
+    }
+  );
+};
+
 // removes all expired compliance codes from the array
 export const getCurrentComplianceCodes = createSelector([getComplianceCodes], (codes) =>
   codes.filter((code) => code.expiry_date === null || new Date(code.expiry_date) > new Date())
 );
 
-export const getMineTenureTypeDropdownOptions = createSelector(
+export const getMineTenureTypeDropdownOptions = createSelectorWrapper(
   [getMineTenureTypeOptions],
-  (options) => createDropDownList(options, "description", "mine_tenure_type_code")
+  createDropDownList,
+  ["description", "mine_tenure_type_code", "active_ind"]
 );
 
 export const getMineTenureTypesHash = createSelector(
@@ -60,31 +87,57 @@ export const getMineRegionDropdownOptions = createSelector([getMineRegionOptions
 
 export const getMineRegionHash = createSelector([getMineRegionDropdownOptions], createLabelHash);
 
-const createConditionalMineDetails = (key) => (options, tenureTypes) => {
+const createConditionalMineDetails = (optionsObject, key, isShowActiveOnly) => {
   const newArr = {};
-  tenureTypes.forEach((type) => {
-    const valueArr = [];
-    options.forEach((option) => {
-      if (option.mine_tenure_type_codes.includes(type.mine_tenure_type_code)) {
-        valueArr.push({
-          label: option.description,
-          value: option[key],
-        });
-        newArr[type.mine_tenure_type_code] = valueArr;
-      }
+  const {tenureTypes} = optionsObject;
+  const {options} = optionsObject;
+
+  if (tenureTypes && tenureTypes.length > 0)
+    tenureTypes.forEach((type) => {
+      const valueArr = [];
+      options.forEach((option) => {
+        if (
+          option.mine_tenure_type_codes.includes(type.mine_tenure_type_code) &&
+          option.active_ind === isShowActiveOnly
+        ) {
+          valueArr.push({
+            label: option.description,
+            value: option[key],
+            isActive: option.active_ind,
+          });
+          newArr[type.mine_tenure_type_code] = valueArr;
+        }
+      });
     });
-  });
   return newArr;
 };
 
 export const getConditionalDisturbanceOptionsHash = createSelector(
-  [getMineDisturbanceOptions, getMineTenureTypeOptions],
-  createConditionalMineDetails("mine_disturbance_code")
+  [
+    getVisibilityFilterOption,
+    (state) => {
+      return {
+        options: getMineDisturbanceOptions(state),
+        tenureTypes: getMineTenureTypeOptions(state),
+      };
+    },
+  ],
+  (isShowActiveOnly, options) =>
+    createConditionalMineDetails(options, ["mine_disturbance_code"], isShowActiveOnly)
 );
 
 export const getConditionalCommodityOptions = createSelector(
-  [getMineCommodityOptions, getMineTenureTypeOptions],
-  createConditionalMineDetails("mine_commodity_code")
+  [
+    getVisibilityFilterOption,
+    (state) => {
+      return {
+        options: getMineCommodityOptions(state),
+        tenureTypes: getMineTenureTypeOptions(state),
+      };
+    },
+  ],
+  (isShowActiveOnly, options) =>
+    createConditionalMineDetails(options, ["mine_commodity_code"], isShowActiveOnly)
 );
 
 export const getDisturbanceOptionHash = createSelector([getMineDisturbanceOptions], (options) =>
@@ -107,8 +160,10 @@ export const getCommodityOptionHash = createSelector([getMineCommodityOptions], 
   )
 );
 
-export const getDropdownCommodityOptions = createSelector([getMineCommodityOptions], (options) =>
-  createDropDownList(options, "description", "mine_commodity_code")
+export const getDropdownCommodityOptions = createSelectorWrapper(
+  [getMineCommodityOptions],
+  createDropDownList,
+  ["description", "mine_commodity_code", "active_ind"]
 );
 
 export const getDropdownProvinceOptions = createSelector([getProvinceOptions], (options) =>
@@ -289,12 +344,13 @@ const transformMineStatus = (data) =>
         ? null
         : codes[0].description,
       children: transformMineStatusReason(codes),
+      isActive: codes[0].mine_operation_status.active_ind,
     }))
     .value()
     .sort((a, b) => (a.label < b.label ? -1 : 1));
 
-export const getMineStatusDropDownOptions = createSelector(
-  getMineStatusOptions,
+export const getMineStatusDropDownOptions = createSelectorWrapper(
+  [getMineStatusOptions],
   transformMineStatus
 );
 
@@ -315,13 +371,14 @@ export const getVarianceDocumentCategoryOptionsHash = createSelector(
   createLabelHash
 );
 
-export const getDropdownMineReportDefinitionOptions = createSelector(
+export const getDropdownMineReportDefinitionOptions = createSelectorWrapper(
   [getMineReportDefinitionOptions],
-  (options) => createDropDownList(options, "report_name", "mine_report_definition_guid")
+  createDropDownList,
+  ["report_name", "mine_report_definition_guid", "active_ind"]
 );
 
 export const getMineReportDefinitionHash = createSelector(
-  [getMineReportDefinitionOptions],
+  getMineReportDefinitionOptions,
   (options) =>
     options.reduce(
       (map, mine_report_definition) => ({
@@ -332,9 +389,10 @@ export const getMineReportDefinitionHash = createSelector(
     )
 );
 
-export const getDropdownMineReportCategoryOptions = createSelector(
+export const getDropdownMineReportCategoryOptions = createSelectorWrapper(
   [getMineReportCategoryOptions],
-  (options) => createDropDownList(options, "description", "mine_report_category")
+  createDropDownList,
+  ["description", "mine_report_category", "active_ind"]
 );
 
 export const getMineReportCategoryOptionsHash = createSelector(
@@ -342,9 +400,10 @@ export const getMineReportCategoryOptionsHash = createSelector(
   createLabelHash
 );
 
-export const getDropdownMineReportStatusOptions = createSelector(
+export const getDropdownMineReportStatusOptions = createSelectorWrapper(
   [getMineReportStatusOptions],
-  (options) => createDropDownList(options, "description", "mine_report_submission_status_code")
+  createDropDownList,
+  ["description", "mine_report_submission_status_code", "active_ind"]
 );
 
 export const getMineReportStatusOptionsHash = createSelector(
@@ -486,9 +545,10 @@ export const getBondDocumentTypeOptionsHash = createSelector(
   createLabelHash
 );
 
-export const getExemptionFeeSatusDropDownOptions = createSelector(
+export const getExemptionFeeSatusDropDownOptions = createSelectorWrapper(
   [getExemptionFeeStatusOptions],
-  (options) => createDropDownList(options, "description", "exemption_fee_status_code")
+  createDropDownList,
+  ["description", "exemption_fee_status_code", "active_ind"]
 );
 
 export const getExemptionFeeStatusOptionsHash = createSelector(

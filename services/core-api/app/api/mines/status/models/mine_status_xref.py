@@ -39,7 +39,8 @@ class MineStatusXref(AuditMixin, Base):
 
     @classmethod
     def get_active(cls):
-        return cls.query.filter_by(active_ind=True).all()
+        return cls.query.all()
+        # return cls.query.filter_by(active_ind=True).all()
 
     @classmethod
     def find_by_mine_status_xref_guid(cls, _id):

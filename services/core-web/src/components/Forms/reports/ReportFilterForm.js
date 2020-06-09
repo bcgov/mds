@@ -261,8 +261,8 @@ ReportFilterForm.defaultProps = defaultProps;
 
 export default compose(
   connect((state) => ({
-    dropdownMineReportStatusOptions: getDropdownMineReportStatusOptions(state),
-    dropdownMineReportCategoryOptions: getDropdownMineReportCategoryOptions(state),
+    dropdownMineReportStatusOptions: getDropdownMineReportStatusOptions(state, false),
+    dropdownMineReportCategoryOptions: getDropdownMineReportCategoryOptions(state, false),
     mineReportDefinitionOptions: getMineReportDefinitionOptions(state),
     selectedMineReportCategory: selector(state, "report_type"),
     selectedMineReportDefinitionGuid: selector(state, "report_name"),
