@@ -66,7 +66,7 @@ class CoreConverter(ModelConverter):
 
 
 def setup_marshmallow():
-    current_app.logger.debug('setup_marshmallow called')
+    #current_app.logger.debug('setup_marshmallow called')
     setup_static_data(BaseModel)
     setup_schema(BaseModel, db.session)()
 
@@ -89,6 +89,8 @@ def setup_schema(Base, session):
 
                     class Meta(object):
                         model = class_
+                        load_instance = True
+                        include_relationships = True
                         ordered = True
                         unknown = EXCLUDE
                         include_fk = True
@@ -101,7 +103,7 @@ def setup_schema(Base, session):
                     mapper = inspect(class_)
                     for k, v in class_._ModelSchema.__dict__.items():
                         if type(v) == FieldTemplate:
-                            current_app.logger.debug(f'creating field for {k} on {class_}')
+                            #current_app.logger.debug(f'creating field for {k} on {class_}')
                             col = [x for x in mapper.columns if x.name == k][0]
                             kwargs = {}
                             if col.nullable:
@@ -112,7 +114,7 @@ def setup_schema(Base, session):
                     schema_class = type(schema_class_name, (class_._ModelSchema, ), {"Meta": Meta})
 
                     setattr(class_, "_schema", schema_class)
-                    current_app.logger.debug(f'created schema for {class_}')
+                    #current_app.logger.debug(f'created schema for {class_}')
                 except Exception as e:
                     raise e
 
@@ -122,8 +124,8 @@ def setup_schema(Base, session):
                     mapper = inspect(class_)
                     for rel in mapper.relationships:
                         if hasattr(rel.entity.class_, "_schema"):
-                            current_app.logger.debug(
-                                f'creating nested schema on relationship: {rel.key}')
+                            # current_app.logger.debug(
+                            #     f'creating nested schema on relationship: {rel.key}')
                             class_._schema._declared_fields[rel.key] = fields.Nested(
                                 rel.entity.class_._schema, many=rel.uselist)
                             #exclude=[rel.backref.key] + [pk.name for pk in mapper.primary_keys])
