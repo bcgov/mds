@@ -161,11 +161,11 @@ keycloak-user:
 
 test:
 	@echo "+\n++ Running functional test...\n+"
-	@cd functional-tests && ./gradlew chromeTest -DchromeTest.single=CustomJUnitSpecRunner
+	@cd tests/functional-tests && ./gradlew chromeTest -DchromeTest.single=CustomJUnitSpecRunner
 
 test-headless:
 	@echo "+\n++ Running functional test...\n+"
-	@cd functional-tests && ./gradlew chromeHeadlessTest -DchromeHeadlessTest.single=CustomJUnitSpecRunner
+	@cd tests/functional-tests && ./gradlew chromeHeadlessTest -DchromeHeadlessTest.single=CustomJUnitSpecRunner
 
 stop:
 	@echo "+\n++ Stopping backend and postgres...\n+"
