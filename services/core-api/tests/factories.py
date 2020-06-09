@@ -43,11 +43,11 @@ TODAY = factory.LazyFunction(datetime.utcnow)
 FACTORY_LIST = []
 
 
-def create_mine_and_permit(mine_kwargs, permit_kwargs):
+def create_mine_and_permit(mine_kwargs={}, permit_kwargs={}, num_permit_amendments=1):
     mine = MineFactory(mine_permit_amendments=0, **mine_kwargs)
     permit = PermitFactory(_context_mine=mine, **permit_kwargs)
     permit._all_mines.append(mine)
-    PermitAmendmentFactory(mine=mine, permit=permit)
+    PermitAmendmentFactory.create_batch(size=num_permit_amendments, mine=mine, permit=permit)
     permit._context_mine = mine
     return mine, permit
 

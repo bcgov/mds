@@ -4,20 +4,20 @@ import uuid
 import pytest
 
 from app.api.mines.permits.permit_amendment.models.permit_amendment import PermitAmendment
-from tests.factories import PermitFactory, MineFactory
+from tests.factories import create_mine_and_permit
 
 
 def test_permit_amendment_model_find_by_permit_amendment_id(db_session):
-    mine = MineFactory(mine_permit_amendments=1)
-    test_pa = mine.mine_permit[0].permit_amendments[0]
+    mine, permit = create_mine_and_permit()
 
-    permit_amendment = PermitAmendment.find_by_permit_amendment_id(test_pa.permit_amendment_id)
-    assert permit_amendment.permit_amendment_id == test_pa.permit_amendment_id
+    permit_amendment = PermitAmendment.find_by_permit_amendment_id(
+        permit.permit_amendments[0].permit_amendment_id)
+    assert permit_amendment.permit_amendment_id == permit.permit_amendments[0].permit_amendment_id
 
 
 def test_permit_amendment_model_find_by_permit_id(db_session):
     batch_size = 3
-    mine = MineFactory(mine_permit_amendments=batch_size)
+    mine, permit = create_mine_and_permit(num_permit_amendments=batch_size)
     permit_id = mine.mine_permit[0].permit_id
 
     permit_amendments = PermitAmendment.find_by_permit_id(permit_id)

@@ -57,6 +57,9 @@ class Permit(AuditMixin, Base):
     # will fail. Any implicit instantiation of Permit() should set this where possible.
     _context_mine = None
 
+    def __repr__(self):
+        return '<Permit %r, %r>' % (self.permit_id, self.permit_guid)
+
     @hybrid_property
     def current_permittee(self):
         if len(self.permittee_appointments) > 0:
@@ -92,23 +95,20 @@ class Permit(AuditMixin, Base):
     #         )
     #     return mine
 
-    # @mine.setter
-    # def mine(self, value):
-    #     #factories use this setter. should not be used without
-    #     if len(self._all_mines < 2):
-    #         self._all_mines = [value]
-    #     else:
-    #         raise Exception(
-    #             "Permit is used by multiple mines, cannot override. try mine._all_mines.append()")
+    @mine.setter
+    def mine(self, value):
+        #factories use this setter. should not be used without
+        if len(self._all_mines < 2):
+            self._all_mines = [value]
+        else:
+            raise Exception(
+                "Permit is used by multiple mines, cannot override. try mine._all_mines.append()")
 
     # def get_mine(self, mine_guid):
     #     return next([m for m in self.all_mines if m.mine_guid == mine_guid], None)
 
     def get_amendments_by_mine_guid(self, mine_guid):
         return [pa for pa in self._all_permit_amendments if pa.mine_guid == mine_guid]
-
-    def __repr__(self):
-        return '<Permit %r>' % self.permit_guid
 
     @classmethod
     def find_by_permit_guid(cls, _id):
