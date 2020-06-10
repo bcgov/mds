@@ -59,7 +59,6 @@ class FileUpload extends React.Component {
             this.props.onFileLoad(file.name, documentGuid);
           },
         });
-        // Start the upload
         upload.start();
         return {
           abort: () => {

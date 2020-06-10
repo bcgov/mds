@@ -5,7 +5,7 @@ from datetime import datetime
 from urllib.parse import urlparse
 from app.utils.object_store_storage_service import ObjectStoreStorageService
 
-from werkzeug.exceptions import BadRequest, NotFound, Conflict, RequestEntityTooLarge, InternalServerError
+from werkzeug.exceptions import BadRequest, NotFound, Conflict, RequestEntityTooLarge, InternalServerError, BadGateway
 from flask import request, current_app, send_file, make_response, jsonify
 from flask_restplus import Resource, reqparse
 
@@ -42,15 +42,15 @@ class DocumentListResource(Resource):
 
         # Validate the file size
         file_size = request.headers.get('Upload-Length')
-        max_file_size = Config.MAX_CONTENT_LENGTH
         if not file_size:
             raise BadRequest('Received file upload of unspecified size')
         file_size = int(file_size)
+        max_file_size = Config.MAX_CONTENT_LENGTH
         if file_size > max_file_size:
             raise RequestEntityTooLarge(
                 f'The maximum file upload size is {max_file_size/1024/1024}MB.')
 
-        # Validate the file name and file extension
+        # Validate the file name and file type
         data = self.parser.parse_args()
         filename = data.get('filename') or request.headers.get('Filename')
         if not filename:
@@ -70,10 +70,10 @@ class DocumentListResource(Resource):
         # current_app.logger.info(f'file_path: {file_path}')
         # current_app.logger.info(f'pretty_path: {pretty_path}')
 
-        # If the object store is enabled, send the post request through to TUSD
+        # If the object store is enabled, send the post request through to TUSD to the object store
+        # TODO: Use file_path as part of key in object store (if possible) to improve organization
         object_store_path = None
         if Config.OBJECT_STORE_ENABLED:
-            current_app.logger.info('Object store is enabled, posting file to object store')
             resp = requests.post(
                 url=Config.TUSD_URL,
                 headers={key: value
@@ -81,17 +81,18 @@ class DocumentListResource(Resource):
                 data=request.data,
                 cookies=request.cookies,
             )
-            current_app.logger.info(f'resp:\n{resp.__dict__}')
 
-            # TODO: Handle errors.
-            if resp.status_code != 201:
-                pass
+            if resp.status_code != requests.codes.created:
+                message = f'Cannot upload file. Object store responded with {resp.status_code}: {resp.reason}'
+                current_app.logger.error(message)
+                current_app.logger.info(f'resp:\n{resp.__dict__}')
+                raise BadGateway(message)
 
             object_store_path = urlparse(resp.headers['Location']).path.split('/')[-1]
             cache.set(OBJECT_STORE_PATH(document_guid), object_store_path, TIMEOUT_24_HOURS)
             current_app.logger.info(f'object_store_path:\n{object_store_path}')
 
-        # Else, create an empty file at this path
+        # Else, create an empty file at this path in the file system
         else:
             current_app.logger.info('Object store is not enabled, posting file to file system')
             try:
@@ -110,14 +111,14 @@ class DocumentListResource(Resource):
         cache.set(FILE_UPLOAD_PATH(document_guid), file_path, TIMEOUT_24_HOURS)
 
         # Create document record
-        document_info = Document(
+        document = Document(
             document_guid=document_guid,
             full_storage_path=file_path,
             upload_started_date=datetime.utcnow(),
             file_display_name=filename,
             path_display_name=pretty_path,
             object_store_path=object_store_path)
-        document_info.save()
+        document.save()
 
         # Create and send response
         response = make_response(jsonify(document_manager_guid=document_guid), 201)
@@ -132,41 +133,41 @@ class DocumentListResource(Resource):
 
     def get(self):
         token_guid = request.args.get('token', '')
-        attachment = request.args.get('as_attachment', None)
-        doc_guid = cache.get(DOWNLOAD_TOKEN(token_guid))
+        as_attachment = request.args.get('as_attachment', None)
+        document_guid = cache.get(DOWNLOAD_TOKEN(token_guid))
         cache.delete(DOWNLOAD_TOKEN(token_guid))
 
-        if not doc_guid:
+        if not document_guid:
             raise BadRequest('Valid token required for download')
 
-        doc = Document.query.filter_by(document_guid=doc_guid).first()
-        if not doc:
+        document = Document.query.filter_by(document_guid=document_guid).first()
+        if not document:
             raise NotFound('Could not find the document corresponding to the token')
-        if attachment is not None:
-            attach_style = True if attachment == 'true' else False
+        if as_attachment is not None:
+            as_attachment = True if as_attachment == 'true' else False
         else:
-            attach_style = '.pdf' not in doc.file_display_name.lower()
+            as_attachment = '.pdf' not in document.file_display_name.lower()
 
-        if doc.object_store_path:
+        if document.object_store_path:
             return ObjectStoreStorageService().download_file(
-                path=doc.object_store_path,
-                display_name=doc.file_display_name,
-                as_attachment=attach_style)
+                path=document.object_store_path,
+                display_name=document.file_display_name,
+                as_attachment=as_attachment)
         else:
             return send_file(
-                filename_or_fp=doc.full_storage_path,
-                attachment_filename=doc.file_display_name,
-                as_attachment=attach_style)
+                filename_or_fp=document.full_storage_path,
+                attachment_filename=document.file_display_name,
+                as_attachment=as_attachment)
 
 
 @api.route(f'/documents/<string:document_guid>')
 class DocumentResource(Resource):
     @requires_any_of(DOCUMENT_UPLOAD_ROLES)
     def patch(self, document_guid):
-        # Get and validate the file path
+        # Get and validate the file path (not required if object store is enabled)
         file_path = cache.get(FILE_UPLOAD_PATH(document_guid))
-        if file_path is None or (not Config.OBJECT_STORE_ENABLED
-                                 and not os.path.lexists(file_path)):
+        if not Config.OBJECT_STORE_ENABLED and (file_path is None
+                                                or not os.path.lexists(file_path)):
             raise NotFound('File does not exist')
 
         # Get and validate the upload offset
@@ -175,7 +176,7 @@ class DocumentResource(Resource):
         if request_offset != file_offset:
             raise Conflict('Upload offset in request does not match the file\'s upload offset')
 
-        # Get and validate the content length and new upload offset after write
+        # Get and validate the content length and the expected new upload offset
         chunk_size = request.headers.get('Content-Length')
         if chunk_size is None:
             raise BadRequest('No Content-Length header in request')
@@ -186,9 +187,8 @@ class DocumentResource(Resource):
             raise RequestEntityTooLarge(
                 'The uploaded chunk would put the file above its declared file size')
 
-        # If the object store is enabled, send the patch request through to TUSD
+        # If the object store is enabled, send the patch request through to TUSD to the object store
         if Config.OBJECT_STORE_ENABLED:
-            current_app.logger.info('Object store is enabled, patching file to object store')
             object_store_path = cache.get(OBJECT_STORE_PATH(document_guid))
             resp = requests.patch(
                 url=f'{Config.TUSD_URL}/{object_store_path}',
@@ -197,15 +197,15 @@ class DocumentResource(Resource):
                 data=request.data,
                 cookies=request.cookies,
             )
-            current_app.logger.info(f'resp:\n{resp.__dict__}')
 
-            # TODO: Handle errors.
-            if resp.status_code != 204:
-                pass
+            if resp.status_code not in [requests.codes.ok, requests.codes.no_content]:
+                message = f'Cannot upload file. Object store responded with {resp.status_code}: {resp.reason}'
+                current_app.logger.error(message)
+                current_app.logger.info(f'resp:\n{resp.__dict__}')
+                raise BadGateway(message)
 
-        # Else, write the content to the file
+        # Else, write the content to the file in the file system
         else:
-            current_app.logger.info('Object store is not enabled, patching file to file system')
             try:
                 with open(file_path, 'r+b') as f:
                     f.seek(file_offset)
@@ -214,16 +214,17 @@ class DocumentResource(Resource):
                 current_app.logger.error(e)
                 raise InternalServerError('Unable to write to file')
 
-        # If the file upload is complete, create meta data and remove data from cache
+        # If the file upload is complete, set the upload completion date and delete cached data
         if new_offset == file_size:
-            doc = Document.find_by_document_guid(document_guid)
-            doc.upload_completed_date = datetime.utcnow()
-            doc.save()
+            document = Document.find_by_document_guid(document_guid)
+            document.upload_completed_date = datetime.utcnow()
+            document.save()
             cache.delete(FILE_UPLOAD_SIZE(document_guid))
             cache.delete(FILE_UPLOAD_OFFSET(document_guid))
             cache.delete(FILE_UPLOAD_PATH(document_guid))
+            cache.delete(OBJECT_STORE_PATH(document_guid))
 
-        # Else, the file upload is still in progress, update its upload offset in cache
+        # Else, the file upload is still in progress, update its upload offset in the cache
         else:
             cache.set(FILE_UPLOAD_OFFSET(document_guid), new_offset, TIMEOUT_24_HOURS)
 
@@ -254,7 +255,7 @@ class DocumentResource(Resource):
     def options(self, document_guid):
         response = make_response('', 200)
 
-        # If CORS request, return 200
+        # If CORS request, return an empty 200 response
         if request.headers.get('Access-Control-Request-Method') is not None:
             return response
 
