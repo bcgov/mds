@@ -5,13 +5,13 @@ from app.api.mines.permits.permit_amendment.models.permit_amendment import Permi
 from app.api.mines.permits.permit.models.permit import Permit
 from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
 
-from tests.factories import PermitFactory, PermitAmendmentFactory, PartyFactory, MinePartyAppointmentFactory
+from tests.factories import PermitFactory, PermitAmendmentFactory, PartyFactory, MinePartyAppointmentFactory, create_mine_and_permit
 
 
 # GET
 def test_get_permit_amendment_by_guid(test_client, db_session, auth_headers):
-    permit_amendment = PermitAmendmentFactory()
-
+    mine, permit = create_mine_and_permit()
+    permit_amendment = permit.permit_amendments[0]
     get_resp = test_client.get(
         f'/mines/{permit_amendment.mine_guid}/permits/{permit_amendment.permit_guid}/amendments/{permit_amendment.permit_amendment_guid}',
         headers=auth_headers['full_auth_header'])
@@ -21,7 +21,8 @@ def test_get_permit_amendment_by_guid(test_client, db_session, auth_headers):
 
 
 def test_get_permit_amendment_not_found(test_client, db_session, auth_headers):
-    permit_amendment = PermitAmendmentFactory()
+    mine, permit = create_mine_and_permit()
+    permit_amendment = permit.permit_amendments[0]
     get_resp = test_client.get(
         f'/mines/{permit_amendment.mine_guid}/permits/{permit_amendment.permit_guid}/amendments/' +
         str(uuid.uuid4()),
@@ -35,7 +36,7 @@ def test_get_permit_amendment_not_found(test_client, db_session, auth_headers):
 @pytest.mark.xfail(
     reason='Failing due to null derefrence, line 133 in permit_amendment => "issue_date.date()"')
 def test_post_permit_amendment_no_params(test_client, db_session, auth_headers):
-    permit = PermitFactory()
+    mine, permit = create_mine_and_permit()
     permit_guid = permit.permit_guid
 
     post_resp = test_client.post(
@@ -53,7 +54,7 @@ def test_post_permit_amendment_no_params(test_client, db_session, auth_headers):
 
 
 def test_post_permit_amendment_with_date_params(test_client, db_session, auth_headers):
-    permit = PermitFactory()
+    mine, permit = create_mine_and_permit()
     #TODO Figure out how to make permit factory make it's own initial permittee
     permittee = MinePartyAppointmentFactory(
         permit_id=permit.permit_id, mine_party_appt_type_code='PMT', mine=permit.mine)
@@ -86,7 +87,8 @@ def test_post_permit_amendment_with_date_params(test_client, db_session, auth_he
 @pytest.mark.xfail(
     reason='Failing due to null derefrence, line 133 in permit_amendment => "issue_date.date()"')
 def test_post_permit_amendment_with_type_params(test_client, db_session, auth_headers):
-    permit_guid = PermitFactory().permit_guid
+    mine, permit = create_mine_and_permit()
+    permit_guid = permit.permit_guid
 
     data = {'permit_amendment_type_code': 'OGP'}
 
@@ -104,7 +106,7 @@ def test_post_permit_amendment_with_type_params(test_client, db_session, auth_he
 
 # #PUT
 def test_put_permit_amendment(test_client, db_session, auth_headers):
-    permit = PermitFactory(permit_amendments=1)
+    mine, permit = create_mine_and_permit()
     amendment = permit.permit_amendments[0]
 
     data = {'permit_amendment_type_code': 'AMD', 'permit_amendment_status_code': 'RMT'}
@@ -125,8 +127,8 @@ def test_put_permit_amendment(test_client, db_session, auth_headers):
 
 #DELETE
 def test_delete_permit_amendment(test_client, db_session, auth_headers):
-    permit_amendment = PermitAmendmentFactory()
-
+    mine, permit = create_mine_and_permit()
+    permit_amendment = permit.permit_amendments[0]
     del_resp = test_client.delete(
         f'/mines/{permit_amendment.mine_guid}/permits/{permit_amendment.permit_guid}/amendments/{permit_amendment.permit_amendment_guid}',
         headers=auth_headers['full_auth_header'])
@@ -136,8 +138,8 @@ def test_delete_permit_amendment(test_client, db_session, auth_headers):
 
 
 def test_delete_twice_permit_amendment(test_client, db_session, auth_headers):
-    permit_amendment = PermitAmendmentFactory()
-
+    mine, permit = create_mine_and_permit()
+    permit_amendment = permit.permit_amendments[0]
     del_resp = test_client.delete(
         f'/mines/{permit_amendment.mine_guid}/permits/{permit_amendment.permit_guid}/amendments/{permit_amendment.permit_amendment_guid}',
         headers=auth_headers['full_auth_header'])
