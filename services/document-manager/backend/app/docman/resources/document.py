@@ -66,9 +66,6 @@ class DocumentListResource(Resource):
         file_path = os.path.join(folder, document_guid)
         pretty_folder = data.get('pretty_folder') or request.headers.get('Pretty-Folder')
         pretty_path = os.path.join(base_folder, pretty_folder, filename)
-        # current_app.logger.info(f'folder: {folder}')
-        # current_app.logger.info(f'file_path: {file_path}')
-        # current_app.logger.info(f'pretty_path: {pretty_path}')
 
         # If the object store is enabled, send the post request through to TUSD to the object store
         object_store_path = None
@@ -96,7 +93,6 @@ class DocumentListResource(Resource):
 
         # Else, create an empty file at this path in the file system
         else:
-            current_app.logger.info('Object store is not enabled, posting file to file system')
             try:
                 if not os.path.exists(folder):
                     os.makedirs(folder)
