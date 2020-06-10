@@ -227,3 +227,9 @@ class MinePartyAppointment(AuditMixin, Base):
             if not val:
                 raise AssertionError('No permit_id, but mine_party_appt_type_code is PMT.')
         return val
+
+    @validates('mine_guid')
+    def validate_mine_guid(self, key, val):
+        if not self.mine_guid and not self.permit_id:
+            raise AssertionError('If not related to permit, must be related to mine')
+        return val

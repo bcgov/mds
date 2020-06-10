@@ -15,8 +15,7 @@ def setup_info(db_session):
         mine_guid=str(mine.mine_guid),
         eor_party_guid=str(eor.party.party_guid),
         mine_manager_appt_guid=str(mine_manager.mine_party_appt_guid),
-        tsf_guid=str(
-            mine.mine_tailings_storage_facilities[0].mine_tailings_storage_facility_guid))
+        tsf_guid=str(mine.mine_tailings_storage_facilities[0].mine_tailings_storage_facility_guid))
 
 
 # GET
@@ -102,7 +101,8 @@ def test_post_mine_party_appt_success(test_client, db_session, auth_headers, set
     assert post_resp.status_code == 200
 
 
-def test_post_mine_party_appt_missing_mine_guid(test_client, db_session, auth_headers, setup_info):
+def test_post_mine_party_appt_missing_mine_guid_and_permit_guid(test_client, db_session,
+                                                                auth_headers, setup_info):
     party_guid = PartyFactory(person=True).party_guid
 
     test_data = {'party_guid': str(party_guid), 'mine_party_appt_type_code': 'BLA'}
