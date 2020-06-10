@@ -360,6 +360,46 @@
                     "value": "${ENVIRONMENT_NAME}"
                   },
                   {
+                    "name": "OBJECT_STORE_ENABLED",
+                    "value": "1"
+                  },
+                  {
+                    "name": "OBJECT_STORE_ACCESS_KEY_ID",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${OBJECT_STORE_SECRET_NAME}",
+                        "key": "key-id"
+                      }
+                    }
+                  },
+                  {
+                    "name": "OBJECT_STORE_ACCESS_KEY",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${OBJECT_STORE_SECRET_NAME}",
+                        "key": "secret-access-key"
+                      }
+                    }
+                  },
+                  {
+                    "name": "OBJECT_STORE_BUCKET",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${OBJECT_STORE_SECRET_NAME}",
+                        "key": "bucket-id"
+                      }
+                    }
+                  },
+                  {
+                    "name": "OBJECT_STORE_HOST",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${OBJECT_STORE_SECRET_NAME}",
+                        "key": "endpoint"
+                      }
+                    }
+                  },
+                  {
                     "name": "S3_PREFIX",
                     "value": "mds-files-${VERSION}/"
                   }
