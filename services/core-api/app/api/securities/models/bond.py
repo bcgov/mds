@@ -57,6 +57,7 @@ class Bond(Base, AuditMixin):
         current_app.logger.info(bond_json)
         bond_hist = BondHistory._schema().load(bond_json)
         bond_hist.save()
+        return bond_hist
 
     @classmethod
     def find_by_bond_guid(cls, bond_guid):
