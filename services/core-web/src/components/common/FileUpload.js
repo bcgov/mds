@@ -30,7 +30,7 @@ const defaultProps = {
   acceptedFileTypesMap: {},
   onFileLoad: () => {},
   onRemoveFile: () => {},
-  chunkSize: 5242880, // 5MB
+  chunkSize: 1048576, // 1MB
   allowRevert: false,
   allowMultiple: true,
 };

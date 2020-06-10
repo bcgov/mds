@@ -33,7 +33,6 @@ class DocumentManagerService():
             data=data,
             cookies=request.cookies,
         )
-        current_app.logger.info(f'resp:\n{resp.__dict__}')
 
         return Response(str(resp.content), resp.status_code, resp.raw.headers.items())
 

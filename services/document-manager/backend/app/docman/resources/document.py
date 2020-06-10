@@ -3,7 +3,7 @@ import os
 import requests
 from datetime import datetime
 from urllib.parse import urlparse
-from app.utils.object_store_storage_service import ObjectStoreStorageService
+from app.services.object_store_storage_service import ObjectStoreStorageService
 
 from werkzeug.exceptions import BadRequest, NotFound, Conflict, RequestEntityTooLarge, InternalServerError, BadGateway
 from flask import request, current_app, send_file, make_response, jsonify
