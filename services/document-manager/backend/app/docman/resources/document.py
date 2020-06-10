@@ -12,7 +12,7 @@ from flask_restplus import Resource, reqparse
 from app.docman.models.document import Document
 from app.extensions import api, cache
 from app.utils.access_decorators import requires_any_of, MINE_EDIT, VIEW_ALL, MINESPACE_PROPONENT, EDIT_PARTY, EDIT_PERMIT, EDIT_DO, EDIT_VARIANCE
-from app.constants import OBJECT_STORE_PATH, FILE_UPLOAD_SIZE, FILE_UPLOAD_OFFSET, FILE_UPLOAD_PATH, DOWNLOAD_TOKEN, TIMEOUT_24_HOURS, TUS_API_VERSION, TUS_API_SUPPORTED_VERSIONS, FORBIDDEN_FILETYPES
+from app.constants import OBJECT_STORE_PATH, OBJECT_STORE_UPLOAD_RESOURCE, FILE_UPLOAD_SIZE, FILE_UPLOAD_OFFSET, FILE_UPLOAD_PATH, DOWNLOAD_TOKEN, TIMEOUT_24_HOURS, TUS_API_VERSION, TUS_API_SUPPORTED_VERSIONS, FORBIDDEN_FILETYPES
 from app.config import Config
 
 DOCUMENT_UPLOAD_ROLES = [
@@ -71,7 +71,6 @@ class DocumentListResource(Resource):
         # current_app.logger.info(f'pretty_path: {pretty_path}')
 
         # If the object store is enabled, send the post request through to TUSD to the object store
-        # TODO: Use file_path as part of key in object store (if possible) to improve organization
         object_store_path = None
         if Config.OBJECT_STORE_ENABLED:
             resp = requests.post(
@@ -88,9 +87,12 @@ class DocumentListResource(Resource):
                 current_app.logger.info(f'resp:\n{resp.__dict__}')
                 raise BadGateway(message)
 
-            object_store_path = urlparse(resp.headers['Location']).path.split('/')[-1]
+            object_store_upload_resource = urlparse(resp.headers['Location']).path.split('/')[-1]
+            object_store_path = Config.S3_PREFIX + object_store_upload_resource.split('+')[0]
+            cache.set(
+                OBJECT_STORE_UPLOAD_RESOURCE(document_guid), object_store_upload_resource,
+                TIMEOUT_24_HOURS)
             cache.set(OBJECT_STORE_PATH(document_guid), object_store_path, TIMEOUT_24_HOURS)
-            current_app.logger.info(f'object_store_path:\n{object_store_path}')
 
         # Else, create an empty file at this path in the file system
         else:
@@ -105,7 +107,7 @@ class DocumentListResource(Resource):
                 current_app.logger.error(e)
                 raise InternalServerError('Unable to create file')
 
-        # Cache this file POST data to be used in future PATCH requests
+        # Cache data to be used in future PATCH requests
         cache.set(FILE_UPLOAD_SIZE(document_guid), file_size, TIMEOUT_24_HOURS)
         cache.set(FILE_UPLOAD_OFFSET(document_guid), 0, TIMEOUT_24_HOURS)
         cache.set(FILE_UPLOAD_PATH(document_guid), file_path, TIMEOUT_24_HOURS)
@@ -189,9 +191,9 @@ class DocumentResource(Resource):
 
         # If the object store is enabled, send the patch request through to TUSD to the object store
         if Config.OBJECT_STORE_ENABLED:
-            object_store_path = cache.get(OBJECT_STORE_PATH(document_guid))
+            object_store_upload_resource = cache.get(OBJECT_STORE_UPLOAD_RESOURCE(document_guid))
             resp = requests.patch(
-                url=f'{Config.TUSD_URL}/{object_store_path}',
+                url=f'{Config.TUSD_URL}/{object_store_upload_resource}',
                 headers={key: value
                          for (key, value) in request.headers if key != 'Host'},
                 data=request.data,
@@ -223,6 +225,7 @@ class DocumentResource(Resource):
             cache.delete(FILE_UPLOAD_OFFSET(document_guid))
             cache.delete(FILE_UPLOAD_PATH(document_guid))
             cache.delete(OBJECT_STORE_PATH(document_guid))
+            cache.delete(OBJECT_STORE_UPLOAD_RESOURCE(document_guid))
 
         # Else, the file upload is still in progress, update its upload offset in the cache
         else:
