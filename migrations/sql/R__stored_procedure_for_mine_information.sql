@@ -63,7 +63,7 @@ CREATE OR REPLACE FUNCTION transfer_mine_information() RETURNS void AS $$
                                     WHEN mms.mmsmin.mine_typ = ANY('{Q,CM,SG}'::text[]) THEN 'BCL'
                                     ELSE NULL
                                 END,
-                deleted_ind    = LOWER(mms.mmsmin.mine_nm) LIKE '%delete%' OR LOWER(mms.mmsmin.mine_nm) LIKE '%deleted%' OR LOWER(mms.mmsmin.mine_nm) LIKE '%reuse%'
+                deleted_ind    = LOWER(mms.mmsmin.reg_cd) = 'x' OR LOWER(mms.mmsmin.mine_nm) LIKE '%delete%' OR LOWER(mms.mmsmin.mine_nm) LIKE '%deleted%' OR LOWER(mms.mmsmin.mine_nm) LIKE '%reuse%'
             FROM mms.mmsmin
             WHERE mms.mmsmin.mine_no = ETL_MINE.mine_no;
             SELECT count(*) FROM ETL_MINE, mms.mmsmin WHERE ETL_MINE.mine_no = mms.mmsmin.mine_no INTO update_row;
