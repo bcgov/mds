@@ -358,6 +358,10 @@
                   {
                     "name": "ENVIRONMENT_NAME",
                     "value": "${ENVIRONMENT_NAME}"
+                  },
+                  {
+                    "name": "S3_PREFIX",
+                    "value": "mds-files-${VERSION}/"
                   }
                 ],
                 "resources": {
