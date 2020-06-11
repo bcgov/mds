@@ -58,6 +58,10 @@
       "required": true
     },
     {
+      "name": "OBJECT_STORE_SECRET_NAME",
+      "value": "object-store-credentials"
+    },
+    {
       "name": "CPU_LIMIT",
       "value": "200m"
     },
