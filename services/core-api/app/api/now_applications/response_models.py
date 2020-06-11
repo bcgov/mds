@@ -438,7 +438,8 @@ NOW_ACTIVITY_TYPES = api.model('ActivityType', {
 
 NOW_APPLICATION_TYPES = api.model('ApplicationType', {
     'notice_of_work_type_code': fields.String,
-    'description': fields.String
+    'description': fields.String,
+    'active_ind': fields.Boolean
 })
 
 NOW_APPLICATION_STATUS_CODES = api.model('ActivityStatusCodes', {

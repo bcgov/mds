@@ -13,4 +13,4 @@ class MineIncidentDeterminationType(AuditMixin, Base):
 
     @classmethod
     def get_active(cls):
-        return cls.query.filter_by(active_ind=True).order_by(cls.display_order).all()
+        return cls.query.order_by(cls.display_order).all()

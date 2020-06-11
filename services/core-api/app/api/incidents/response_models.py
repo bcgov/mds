@@ -11,18 +11,21 @@ MINE_INCIDENT_CATEGORY_MODEL = api.model(
 
 MINE_INCIDENT_DETERMINATION_TYPE_MODEL = api.model('Mine Incident Determination Type', {
     'mine_incident_determination_type_code': fields.String,
-    'description': fields.String
+    'description': fields.String,
+    'active_ind': fields.Boolean
 })
 
 MINE_INCIDENT_FOLLOWUP_INVESTIGATION_TYPE_MODEL = api.model(
     'Mine Incident Followup Investigation Type', {
         'mine_incident_followup_investigation_type_code': fields.String,
-        'description': fields.String
+        'description': fields.String,
+        'active_ind': fields.Boolean
     })
 
 MINE_INCIDENT_STATUS_CODE_MODEL = api.model('Mine Incident Status Codes', {
     'mine_incident_status_code': fields.String,
-    'description': fields.String
+    'description': fields.String,
+    'active_ind' : fields.Boolean
 })
 
 MINE_INCIDENT_DOCUMENT_TYPE_CODE_MODEL = api.model('Mine Incident Document Type Codes', {

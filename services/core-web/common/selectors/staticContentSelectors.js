@@ -17,7 +17,6 @@ export const {
   getPermitStatusOptions,
   getComplianceCodes,
   getIncidentDocumentTypeOptions,
-  getIncidentFollowupActionOptions,
   getIncidentDeterminationOptions,
   getIncidentStatusCodeOptions,
   getIncidentCategoryCodeOptions,
@@ -39,7 +38,7 @@ export const {
   getExemptionFeeStatusOptions,
 } = staticContentReducer;
 
-// TODO may be it is better to set option to false by default
+// TODO namings
 const getVisibilityFilterOption = (_state, showActiveOnly = true) => showActiveOnly;
 
 const getOptions = (transformOptionsFunc, showActiveOnly) => {
@@ -65,6 +64,26 @@ const createSelectorWrapper = (
   );
 };
 
+const getOptionsWrapper = (getOptionsMethod, isShowActiveOnly = true) => {
+  // TODO clean up
+  console.log("reducer");
+  console.log(`isShowActiveOnly = ${isShowActiveOnly}`);
+
+  const arr = isShowActiveOnly
+    ? getOptionsMethod().filter((o) => o.active_ind)
+    : getOptionsMethod();
+
+  console.log(arr);
+
+  return arr;
+};
+
+export const getIncidentFollowupActionOptions = (state, isShowActiveOnly) =>
+  getOptionsWrapper(
+    () => staticContentReducer.getIncidentFollowupActionOptions(state),
+    isShowActiveOnly
+  );
+
 // removes all expired compliance codes from the array
 export const getCurrentComplianceCodes = createSelector([getComplianceCodes], (codes) =>
   codes.filter((code) => code.expiry_date === null || new Date(code.expiry_date) > new Date())
@@ -76,7 +95,7 @@ export const getMineTenureTypeDropdownOptions = createSelectorWrapper(
   ["description", "mine_tenure_type_code", "active_ind"]
 );
 
-export const getMineTenureTypesHash = createSelector(
+export const getMineTenureTypesHash = createSelectorWrapper(
   [getMineTenureTypeDropdownOptions],
   createLabelHash
 );
@@ -89,8 +108,8 @@ export const getMineRegionHash = createSelector([getMineRegionDropdownOptions], 
 
 const createConditionalMineDetails = (optionsObject, key, isShowActiveOnly) => {
   const newArr = {};
-  const {tenureTypes} = optionsObject;
-  const {options} = optionsObject;
+  const { tenureTypes } = optionsObject;
+  const { options } = optionsObject;
 
   if (tenureTypes && tenureTypes.length > 0)
     tenureTypes.forEach((type) => {
@@ -179,35 +198,48 @@ export const getDropdownIncidentDocumentTypeOptions = createSelector(
   (options) => createDropDownList(options, "description", "mine_incident_document_type_code")
 );
 
-export const getDropdownIncidentFollowupActionOptions = createSelector(
-  [getIncidentFollowupActionOptions],
+export const getDropdownIncidentFollowupActionOptions = createSelectorWrapper(
+  [staticContentReducer.getIncidentFollowupActionOptions],
   (options) =>
-    createDropDownList(options, "description", "mine_incident_followup_investigation_type_code")
+    createDropDownList(
+      options,
+      "description",
+      "mine_incident_followup_investigation_type_code",
+      "active_ind"
+    )
 );
 
-export const getIncidentFollowupActionHash = createSelector(
+export const getIncidentFollowupActionHash = createSelectorWrapper(
   [getDropdownIncidentFollowupActionOptions],
   createLabelHash
 );
 
-export const getDropdownIncidentDeterminationOptions = createSelector(
+export const getDropdownIncidentDeterminationOptions = createSelectorWrapper(
   [getIncidentDeterminationOptions],
-  (options) => createDropDownList(options, "description", "mine_incident_determination_type_code")
+  (options) =>
+    createDropDownList(
+      options,
+      "description",
+      "mine_incident_determination_type_code",
+      "active_ind"
+    )
 );
 
-export const getIncidentDeterminationHash = createSelector(
+export const getIncidentDeterminationHash = createSelectorWrapper(
   [getDropdownIncidentDeterminationOptions],
   createLabelHash
 );
 
-export const getDropdownIncidentStatusCodeOptions = createSelector(
+export const getDropdownIncidentStatusCodeOptions = createSelectorWrapper(
   [getIncidentStatusCodeOptions],
-  (options) => createDropDownList(options, "description", "mine_incident_status_code")
+  createDropDownList,
+  ["description", "mine_incident_status_code", "active_ind"]
 );
 
-export const getDropdownIncidentCategoryCodeOptions = createSelector(
+export const getDropdownIncidentCategoryCodeOptions = createSelectorWrapper(
   [getIncidentCategoryCodeOptions],
-  (options) => createDropDownList(options, "description", "mine_incident_category_code")
+  createDropDownList,
+  ["description", "mine_incident_category_code", "active_ind"]
 );
 
 export const getIncidentStatusCodeHash = createSelector(
@@ -286,18 +318,20 @@ export const getMultiSelectComplianceCodes = createSelector([getCurrentComplianc
   })
 );
 
-export const getDropdownVarianceStatusOptions = createSelector(
+export const getDropdownVarianceStatusOptions = createSelectorWrapper(
   [getVarianceStatusOptions],
-  (options) => createDropDownList(options, "description", "variance_application_status_code")
+  (options) =>
+    createDropDownList(options, "description", "variance_application_status_code", "active_ind")
 );
 
 // Ant design filter options expects the keys to be value/text vs the dropdown which expects value/label
-export const getFilterVarianceStatusOptions = createSelector(
+export const getFilterVarianceStatusOptions = createSelectorWrapper(
   [getVarianceStatusOptions],
   (options) =>
-    options.map(({ description, variance_application_status_code }) => ({
+    options.map(({ description, variance_application_status_code, active_ind }) => ({
       value: variance_application_status_code,
       label: description,
+      isActive: active_ind,
     }))
 );
 
@@ -354,7 +388,7 @@ export const getMineStatusDropDownOptions = createSelectorWrapper(
   transformMineStatus
 );
 
-export const getDropdownVarianceDocumentCategoryOptions = createSelector(
+export const getDropdownVarianceDocumentCategoryOptions = createSelectorWrapper(
   [getVarianceDocumentCategoryOptions],
   (options) =>
     options.map((option) => {
@@ -362,6 +396,7 @@ export const getDropdownVarianceDocumentCategoryOptions = createSelector(
       return {
         value: option.variance_document_category_code,
         label: composedLabel,
+        isActive: option.active_ind,
       };
     })
 );
@@ -406,7 +441,7 @@ export const getDropdownMineReportStatusOptions = createSelectorWrapper(
   ["description", "mine_report_submission_status_code", "active_ind"]
 );
 
-export const getMineReportStatusOptionsHash = createSelector(
+export const getMineReportStatusOptionsHash = createSelectorWrapper(
   [getDropdownMineReportStatusOptions],
   createLabelHash
 );
@@ -431,9 +466,10 @@ export const getNoticeOfWorkUnitTypeOptionsHash = createSelector(
   createLabelHash
 );
 
-export const getDropdownNoticeOfWorkApplicationTypeOptions = createSelector(
+export const getDropdownNoticeOfWorkApplicationTypeOptions = createSelectorWrapper(
   [getNoticeOfWorkApplicationTypeOptions],
-  (options) => createDropDownList(options, "description", "notice_of_work_type_code")
+  createDropDownList,
+  ["description", "notice_of_work_type_code", "active_ind"]
 );
 
 export const getNoticeOfWorkApplicationTypeOptionsHash = createSelector(

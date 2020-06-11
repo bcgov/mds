@@ -245,9 +245,9 @@ ReportSearchForm.propTypes = propTypes;
 export default compose(
   connect((state) => ({
     mineRegionOptions: getMineRegionDropdownOptions(state),
-    dropdownMineReportStatusOptions: getDropdownMineReportStatusOptions(state),
-    dropdownMineReportCategoryOptions: getDropdownMineReportCategoryOptions(state),
-    dropdownMineReportDefinitionOptions: getDropdownMineReportDefinitionOptions(state),
+    dropdownMineReportStatusOptions: getDropdownMineReportStatusOptions(state, false),
+    dropdownMineReportCategoryOptions: getDropdownMineReportCategoryOptions(state, false),
+    dropdownMineReportDefinitionOptions: getDropdownMineReportDefinitionOptions(state, false),
   })),
   reduxForm({
     form: FORM.REPORT_ADVANCED_SEARCH,
