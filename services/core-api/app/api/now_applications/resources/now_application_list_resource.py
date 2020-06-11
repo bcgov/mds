@@ -176,7 +176,7 @@ class NOWApplicationListResource(Resource, UserMixin):
         new_now = NOWApplicationIdentity(mine_guid=data['mine_guid'], permit=permit)
         new_now.now_application = NOWApplication(
             notice_of_work_type_code=data['notice_of_work_type_code'],
-            now_application_status_code='SUB',
+            now_application_status_code='REC',
             submitted_date=data['submitted_date'],
             received_date=data['received_date'])
 
