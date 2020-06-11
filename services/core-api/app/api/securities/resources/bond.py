@@ -95,6 +95,7 @@ class BondResource(Resource, UserMixin):
         try:
             bond = Bond._schema().load(request.json, instance=Bond.find_by_bond_guid(bond_guid))
         except MarshmallowError as e:
+            history.delete()
             raise BadRequest(e)
 
         for doc in bond.documents:

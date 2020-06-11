@@ -33,7 +33,11 @@ AUDIT_COLUMNS = ('create_user', 'create_timestamp', 'update_user', 'update_times
 
 class CoreConverter(ModelConverter):
     SQLA_TYPE_MAPPING = ModelConverter.SQLA_TYPE_MAPPING.copy()
-    SQLA_TYPE_MAPPING.update({Geometry: fields.String, sa.Numeric: fields.Number})
+    SQLA_TYPE_MAPPING.update({
+        Geometry: fields.String,
+        sa.Numeric: fields.Number,
+        UUID: fields.UUID
+    })
 
 
 # class UUIDEncoder(json.JSONEncoder):

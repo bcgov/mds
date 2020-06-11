@@ -18,7 +18,7 @@ class Bond(Base, AuditMixin):
 
     class _ModelSchema(Base._ModelSchema):
         bond_id = fields.Integer(dump_only=True)
-        bond_guid = fields.String(dump_only=True)
+        bond_guid = fields.UUID(dump_only=True)
         bond_type_code = FieldTemplate(field=fields.String, one_of='BondType')
         bond_status_code = FieldTemplate(field=fields.String, one_of='BondStatus')
 
