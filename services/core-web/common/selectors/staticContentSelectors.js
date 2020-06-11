@@ -95,7 +95,8 @@ export const getMineTenureTypeDropdownOptions = createSelectorWrapper(
   ["description", "mine_tenure_type_code", "active_ind"]
 );
 
-export const getMineTenureTypesHash = createSelectorWrapper(
+// TODO check if needed createSelectorWrapper
+export const getMineTenureTypesHash = createSelector(
   [getMineTenureTypeDropdownOptions],
   createLabelHash
 );
@@ -349,6 +350,7 @@ const transformMineStatusSubReason = (reasons) =>
       label: subReasons[0].mine_operation_status_sub_reason.description,
       title: subReasons[0].description,
       children: [],
+      isActive: subReasons[0].mine_operation_status_sub_reason.active_ind,
     }))
     .value()
     .sort((a, b) => (a.label < b.label ? -1 : 1));
@@ -364,6 +366,7 @@ const transformMineStatusReason = (codes) =>
         ? null
         : reasons[0].description,
       children: transformMineStatusSubReason(reasons),
+      isActive: reasons[0].mine_operation_status_reason.active_ind,
     }))
     .value()
     .sort((a, b) => (a.label < b.label ? -1 : 1));
