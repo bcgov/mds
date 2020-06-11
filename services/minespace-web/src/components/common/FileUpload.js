@@ -28,7 +28,7 @@ const defaultProps = {
   allowRevert: false,
   onFileLoad: () => {},
   onRemoveFile: () => {},
-  chunkSize: 1048576, // 1MB
+  chunkSize: 5242880, // 5MB
 };
 
 class FileUpload extends React.Component {

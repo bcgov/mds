@@ -17,7 +17,7 @@ class ObjectStoreStorageService():
 
     def download_file(self, path, display_name, as_attachment):
         def generate(result):
-            for chunk in iter(lambda: result['Body'].read(2048), b''):
+            for chunk in iter(lambda: result['Body'].read(5120), b''):
                 yield chunk
 
         s3_response = self._client.get_object(Bucket=Config.OBJECT_STORE_BUCKET, Key=path)
