@@ -38,7 +38,6 @@ export const {
   getExemptionFeeStatusOptions,
 } = staticContentReducer;
 
-// TODO namings
 const getVisibilityFilterOption = (_state, showActiveOnly = true) => showActiveOnly;
 
 const getOptions = (transformOptionsFunc, showActiveOnly) => {
@@ -49,12 +48,12 @@ const getOptions = (transformOptionsFunc, showActiveOnly) => {
 };
 
 const createSelectorWrapper = (
-  getOptionsMethods,
+  getOptionsMethod,
   transformOptionsMethod,
   transformOptionsFuncArgs = []
 ) => {
   return createSelector(
-    [getVisibilityFilterOption, ...getOptionsMethods],
+    [getVisibilityFilterOption, getOptionsMethod],
     (showActiveOnly, options) => {
       return getOptions(
         () => transformOptionsMethod(options, ...transformOptionsFuncArgs),
@@ -64,19 +63,8 @@ const createSelectorWrapper = (
   );
 };
 
-const getOptionsWrapper = (getOptionsMethod, isShowActiveOnly = true) => {
-  // TODO clean up
-  console.log("reducer");
-  console.log(`isShowActiveOnly = ${isShowActiveOnly}`);
-
-  const arr = isShowActiveOnly
-    ? getOptionsMethod().filter((o) => o.active_ind)
-    : getOptionsMethod();
-
-  console.log(arr);
-
-  return arr;
-};
+const getOptionsWrapper = (getOptionsMethod, isShowActiveOnly = true) =>
+  isShowActiveOnly ? getOptionsMethod().filter((o) => o.active_ind) : getOptionsMethod();
 
 export const getIncidentFollowupActionOptions = (state, isShowActiveOnly) =>
   getOptionsWrapper(
@@ -90,14 +78,14 @@ export const getCurrentComplianceCodes = createSelector([getComplianceCodes], (c
 );
 
 export const getMineTenureTypeDropdownOptions = createSelectorWrapper(
-  [getMineTenureTypeOptions],
+  getMineTenureTypeOptions,
   createDropDownList,
   ["description", "mine_tenure_type_code", "active_ind"]
 );
 
 // TODO check if needed createSelectorWrapper
 export const getMineTenureTypesHash = createSelector(
-  [getMineTenureTypeDropdownOptions],
+  getMineTenureTypeDropdownOptions,
   createLabelHash
 );
 
@@ -181,13 +169,13 @@ export const getCommodityOptionHash = createSelector([getMineCommodityOptions], 
 );
 
 export const getDropdownCommodityOptions = createSelectorWrapper(
-  [getMineCommodityOptions],
+  getMineCommodityOptions,
   createDropDownList,
   ["description", "mine_commodity_code", "active_ind"]
 );
 
 export const getDropdownProvinceOptions = createSelectorWrapper(
-  [getProvinceOptions],
+  getProvinceOptions,
   createDropDownList,
   ["sub_division_code", "sub_division_code", "active_ind"]
 );
@@ -198,13 +186,13 @@ export const getDropdownPermitStatusOptions = createSelector([getPermitStatusOpt
 );
 
 export const getDropdownIncidentDocumentTypeOptions = createSelectorWrapper(
-  [getIncidentDocumentTypeOptions],
+  getIncidentDocumentTypeOptions,
   createDropDownList,
   ["description", "mine_incident_document_type_code", "active_ind"]
 );
 
 export const getDropdownIncidentFollowupActionOptions = createSelectorWrapper(
-  [staticContentReducer.getIncidentFollowupActionOptions],
+  staticContentReducer.getIncidentFollowupActionOptions,
   (options) =>
     createDropDownList(
       options,
@@ -215,12 +203,12 @@ export const getDropdownIncidentFollowupActionOptions = createSelectorWrapper(
 );
 // TODO check this, not sure if hash needs it
 export const getIncidentFollowupActionHash = createSelectorWrapper(
-  [getDropdownIncidentFollowupActionOptions],
+  getDropdownIncidentFollowupActionOptions,
   createLabelHash
 );
 
 export const getDropdownIncidentDeterminationOptions = createSelectorWrapper(
-  [getIncidentDeterminationOptions],
+  getIncidentDeterminationOptions,
   (options) =>
     createDropDownList(
       options,
@@ -231,18 +219,18 @@ export const getDropdownIncidentDeterminationOptions = createSelectorWrapper(
 );
 // TODO check this, not sure if hash needs it
 export const getIncidentDeterminationHash = createSelectorWrapper(
-  [getDropdownIncidentDeterminationOptions],
+  getDropdownIncidentDeterminationOptions,
   createLabelHash
 );
 
 export const getDropdownIncidentStatusCodeOptions = createSelectorWrapper(
-  [getIncidentStatusCodeOptions],
+  getIncidentStatusCodeOptions,
   createDropDownList,
   ["description", "mine_incident_status_code", "active_ind"]
 );
 
 export const getDropdownIncidentCategoryCodeOptions = createSelectorWrapper(
-  [getIncidentCategoryCodeOptions],
+  getIncidentCategoryCodeOptions,
   createDropDownList,
   ["description", "mine_incident_category_code", "active_ind"]
 );
@@ -324,14 +312,14 @@ export const getMultiSelectComplianceCodes = createSelector([getCurrentComplianc
 );
 
 export const getDropdownVarianceStatusOptions = createSelectorWrapper(
-  [getVarianceStatusOptions],
+  getVarianceStatusOptions,
   createDropDownList,
   ["description", "variance_application_status_code", "active_ind"]
 );
 
 // Ant design filter options expects the keys to be value/text vs the dropdown which expects value/label
 export const getFilterVarianceStatusOptions = createSelectorWrapper(
-  [getVarianceStatusOptions],
+  getVarianceStatusOptions,
   (options) =>
     options.map(({ description, variance_application_status_code, active_ind }) => ({
       value: variance_application_status_code,
@@ -391,12 +379,12 @@ const transformMineStatus = (data) =>
     .sort((a, b) => (a.label < b.label ? -1 : 1));
 
 export const getMineStatusDropDownOptions = createSelectorWrapper(
-  [getMineStatusOptions],
+  getMineStatusOptions,
   transformMineStatus
 );
 
 export const getDropdownVarianceDocumentCategoryOptions = createSelectorWrapper(
-  [getVarianceDocumentCategoryOptions],
+  getVarianceDocumentCategoryOptions,
   (options) =>
     options.map((option) => {
       const composedLabel = `${option.description} Document`;
@@ -414,7 +402,7 @@ export const getVarianceDocumentCategoryOptionsHash = createSelector(
 );
 
 export const getDropdownMineReportDefinitionOptions = createSelectorWrapper(
-  [getMineReportDefinitionOptions],
+  getMineReportDefinitionOptions,
   createDropDownList,
   ["report_name", "mine_report_definition_guid", "active_ind"]
 );
@@ -432,7 +420,7 @@ export const getMineReportDefinitionHash = createSelector(
 );
 
 export const getDropdownMineReportCategoryOptions = createSelectorWrapper(
-  [getMineReportCategoryOptions],
+  getMineReportCategoryOptions,
   createDropDownList,
   ["description", "mine_report_category", "active_ind"]
 );
@@ -443,18 +431,18 @@ export const getMineReportCategoryOptionsHash = createSelector(
 );
 
 export const getDropdownMineReportStatusOptions = createSelectorWrapper(
-  [getMineReportStatusOptions],
+  getMineReportStatusOptions,
   createDropDownList,
   ["description", "mine_report_submission_status_code", "active_ind"]
 );
 
 export const getMineReportStatusOptionsHash = createSelectorWrapper(
-  [getDropdownMineReportStatusOptions],
+  getDropdownMineReportStatusOptions,
   createLabelHash
 );
 
 export const getDropdownNoticeOfWorkActivityTypeOptions = createSelectorWrapper(
-  [getNoticeOfWorkActivityTypeOptions],
+  getNoticeOfWorkActivityTypeOptions,
   createDropDownList,
   ["description", "activity_type_code", "active_ind"]
 );
@@ -465,7 +453,7 @@ export const getNoticeOfWorkActivityTypeOptionsHash = createSelector(
 );
 
 export const getDropdownNoticeOfWorkUnitTypeOptions = createSelectorWrapper(
-  [getNoticeOfWorkUnitTypeOptions],
+  getNoticeOfWorkUnitTypeOptions,
   createDropDownList,
   ["short_description", "unit_type_code", "active_ind"]
 );
@@ -476,7 +464,7 @@ export const getNoticeOfWorkUnitTypeOptionsHash = createSelector(
 );
 
 export const getDropdownNoticeOfWorkApplicationTypeOptions = createSelectorWrapper(
-  [getNoticeOfWorkApplicationTypeOptions],
+  getNoticeOfWorkApplicationTypeOptions,
   createDropDownList,
   ["description", "notice_of_work_type_code", "active_ind"]
 );
@@ -487,7 +475,7 @@ export const getNoticeOfWorkApplicationTypeOptionsHash = createSelector(
 );
 
 export const getDropdownNoticeOfWorkApplicationStatusOptions = createSelectorWrapper(
-  [getNoticeOfWorkApplicationStatusOptions],
+  getNoticeOfWorkApplicationStatusOptions,
   createDropDownList,
   ["description", "now_application_status_code", "active_ind"]
 );
@@ -498,7 +486,7 @@ export const getNoticeOfWorkApplicationStatusOptionsHash = createSelector(
 );
 
 export const getDropdownNoticeOfWorkApplicationDocumentTypeOptions = createSelectorWrapper(
-  [getNoticeOfWorkApplicationDocumentTypeOptions],
+  getNoticeOfWorkApplicationDocumentTypeOptions,
   createDropDownList,
   ["description", "now_application_document_type_code", "active_ind"]
 );
@@ -524,7 +512,7 @@ export const getGeneratableNoticeOfWorkApplicationDocumentTypeOptions = createSe
 );
 
 export const getDropdownNoticeOfWorkUndergroundExplorationTypeOptions = createSelectorWrapper(
-  [getNoticeOfWorkUndergroundExplorationTypeOptions],
+  getNoticeOfWorkUndergroundExplorationTypeOptions,
   createDropDownList,
   ["description", "underground_exploration_type_code", "active_ind"]
 );
@@ -535,7 +523,7 @@ export const getNoticeOfWorkUndergroundExplorationTypeOptionsHash = createSelect
 );
 
 export const getDropdownNticeOfWorkApplicationStatusCodeOptions = createSelectorWrapper(
-  [getNoticeOfWorkApplicationProgressStatusCodeOptions],
+  getNoticeOfWorkApplicationProgressStatusCodeOptions,
   createDropDownList,
   ["description", "application_progress_status_code", "active_ind"]
 );
@@ -546,13 +534,13 @@ export const getNoticeOfWorkApplicationProgressStatusCodeOptionsHash = createSel
 );
 
 export const getDropdownNoticeOfWorkApplicationPermitTypeOptions = createSelectorWrapper(
-  [getNoticeOfWorkApplicationPermitTypeOptions],
+  getNoticeOfWorkApplicationPermitTypeOptions,
   createDropDownList,
   ["description", "now_application_permit_type_code", "active_ind"]
 );
 
 export const getDropdownNoticeOfWorkApplicationReviewTypeOptions = createSelectorWrapper(
-  [getNoticeOfWorkApplicationReviewOptions],
+  getNoticeOfWorkApplicationReviewOptions,
   createDropDownList,
   ["description", "now_application_review_type_code", "active_ind"]
 );
@@ -563,7 +551,7 @@ export const getNoticeOfWorkApplicationApplicationReviewTypeHash = createSelecto
 );
 
 export const getPartyRelationshipTypesList = createSelectorWrapper(
-  [getPartyRelationshipTypes],
+  getPartyRelationshipTypes,
   createDropDownList,
   ["description", "mine_party_appt_type_code", "active_ind"]
 );
@@ -574,19 +562,19 @@ export const getPartyRelationshipTypeHash = createSelector(
 );
 
 export const getBondTypeDropDownOptions = createSelectorWrapper(
-  [getBondTypeOptions],
+  getBondTypeOptions,
   createDropDownList,
   ["description", "bond_type_code", "active_ind"]
 );
 
 export const getBondStatusDropDownOptions = createSelectorWrapper(
-  [getBondStatusOptions],
+  getBondStatusOptions,
   createDropDownList,
   ["description", "bond_status_code", "active_ind"]
 );
 
 export const getBondDocumentTypeDropDownOptions = createSelectorWrapper(
-  [getBondDocumentTypeOptions],
+  getBondDocumentTypeOptions,
   createDropDownList,
   ["description", "bond_document_type_code", "active_ind"]
 );
@@ -604,7 +592,7 @@ export const getBondDocumentTypeOptionsHash = createSelector(
 );
 
 export const getExemptionFeeSatusDropDownOptions = createSelectorWrapper(
-  [getExemptionFeeStatusOptions],
+  getExemptionFeeStatusOptions,
   createDropDownList,
   ["description", "exemption_fee_status_code", "active_ind"]
 );

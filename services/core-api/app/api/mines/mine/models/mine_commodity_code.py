@@ -38,5 +38,5 @@ class MineCommodityCode(AuditMixin, Base):
         return cls.query.get(code)
 
     @classmethod
-    def get_active(cls):
+    def get_all(cls):
         return cls.query.all()

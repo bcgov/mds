@@ -11,5 +11,5 @@ class NOWApplicationProgressStatus(AuditMixin, Base):
     active_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
 
     @classmethod
-    def get_active(cls):
+    def get_all(cls):
         return cls.query.all()

@@ -17,5 +17,5 @@ class NOWApplicationType(Base, AuditMixin):
         return '<NOWType %r>' % self.notice_of_work_type_code
 
     @classmethod
-    def get_active(cls):
+    def get_all(cls):
         return cls.query.all()

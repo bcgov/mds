@@ -15,5 +15,5 @@ class BondType(Base, AuditMixin):
         return '<BondType %r>' % self.bond_type_code
 
     @classmethod
-    def get_active(cls):
+    def get_all(cls):
         return cls.query.all()

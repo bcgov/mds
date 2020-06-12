@@ -12,4 +12,4 @@ class VarianceDocumentCategoryCodeResource(Resource, UserMixin):
     @requires_any_of([VIEW_ALL])
     @api.marshal_with(VARIANCE_DOCUMENT_CATEGORY_CODE, code=200, envelope='records')
     def get(self):
-        return VarianceDocumentCategoryCode.get_active()
+        return VarianceDocumentCategoryCode.get_all()

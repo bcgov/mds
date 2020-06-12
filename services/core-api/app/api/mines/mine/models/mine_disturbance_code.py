@@ -34,5 +34,5 @@ class MineDisturbanceCode(AuditMixin, Base):
         return '<MineDisturbanceCode %r>' % self.mine_disturbance_code
 
     @classmethod
-    def get_active(cls):
+    def get_all(cls):
         return cls.query.all()

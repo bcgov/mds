@@ -15,5 +15,5 @@ class BondStatus(Base, AuditMixin):
         return '<BondStatus %r>' % self.bond_status_code
 
     @classmethod
-    def get_active(cls):
+    def get_all(cls):
         return cls.query.all()

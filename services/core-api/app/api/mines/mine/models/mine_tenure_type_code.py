@@ -15,7 +15,7 @@ class MineTenureTypeCode(AuditMixin, Base):
         return '<MineTenureTypeCode %r>' % self.mine_tenure_type_code
     
     @classmethod
-    def get_active(cls):
+    def get_all(cls):
         return cls.query.all()
 
     @classmethod

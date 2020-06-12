@@ -22,5 +22,5 @@ class NOWApplicationStatus(Base, AuditMixin):
         return cls.query.filter_by(now_application_status_code=code).first()
 
     @classmethod
-    def get_active(cls):
+    def get_all(cls):
         return cls.query.order_by(cls.display_order).all()

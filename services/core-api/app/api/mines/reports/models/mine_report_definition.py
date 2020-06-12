@@ -60,7 +60,8 @@ class MineReportDefinition(Base, AuditMixin):
     @classmethod
     # TODO: We need to revisit how we return "static content" items via a "get active only" function. This means
     # that some content in the UI that depends on now "inactive" content will fail to render and can cause crashes.
-    def get_active(cls):
+    # the above comment may be not relevant anymore :)
+    def get_all(cls):
         try:
             return cls.query.all()
         except ValueError:

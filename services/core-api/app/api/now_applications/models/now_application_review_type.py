@@ -17,5 +17,5 @@ class NOWApplicationReviewType(Base, AuditMixin):
         return '<NOWApplicationPermitType %r>' % self.now_application_review_type_code
 
     @classmethod
-    def get_active(cls):
+    def get_all(cls):
         return cls.query.all()

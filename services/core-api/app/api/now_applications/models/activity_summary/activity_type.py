@@ -15,5 +15,5 @@ class ActivityType(Base, AuditMixin):
         return '<ActivityType %r>' % self.activity_type_code
 
     @classmethod
-    def get_active(cls):
+    def get_all(cls):
         return cls.query.all()
