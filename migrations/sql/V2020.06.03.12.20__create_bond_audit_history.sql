@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS bond_history (
     permit_guid                      uuid                                      NOT NULL,
     permit_no                        varchar                                   NOT NULL,
     payer_party_guid                 uuid                                      NOT NULL,
-    payer                            varchar                                   NOT NULL,
+    payer_name                       varchar                                   NOT NULL,
     bond_status_code                 varchar                                   NOT NULL,
     reference_number                 varchar                                           ,
     update_user                      varchar                                   NOT NULL,

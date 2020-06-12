@@ -20,7 +20,7 @@ class BondHistory(Base):
     issue_date = db.Column(db.DateTime)
     permit_no = db.Column(db.String)
     permit_guid = db.Column(UUID(as_uuid=True))
-    payer = db.Column(db.String)
+    payer_name = db.Column(db.String)
     payer_party_guid = db.Column(UUID(as_uuid=True))
     bond_status_code = db.Column(db.String)
     reference_number = db.Column(db.String)
