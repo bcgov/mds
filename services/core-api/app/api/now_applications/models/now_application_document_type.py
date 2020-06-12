@@ -21,7 +21,7 @@ class NOWApplicationDocumentType(AuditMixin, Base):
 
     @classmethod
     def get_active(cls):
-        return cls.query.filter_by(active_ind=True).all()
+        return cls.query.all()
 
     @classmethod
     def get_with_context(cls, document_type_code, context_guid):

@@ -30,7 +30,8 @@ MINE_INCIDENT_STATUS_CODE_MODEL = api.model('Mine Incident Status Codes', {
 
 MINE_INCIDENT_DOCUMENT_TYPE_CODE_MODEL = api.model('Mine Incident Document Type Codes', {
     'mine_incident_document_type_code': fields.String,
-    'description': fields.String
+    'description': fields.String,
+    'active_ind': fields.Boolean
 })
 
 MINE_INCIDENT_DOCUMENT_MODEL = api.model(

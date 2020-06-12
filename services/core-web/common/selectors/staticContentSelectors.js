@@ -186,17 +186,21 @@ export const getDropdownCommodityOptions = createSelectorWrapper(
   ["description", "mine_commodity_code", "active_ind"]
 );
 
-export const getDropdownProvinceOptions = createSelector([getProvinceOptions], (options) =>
-  createDropDownList(options, "sub_division_code", "sub_division_code")
+export const getDropdownProvinceOptions = createSelectorWrapper(
+  [getProvinceOptions],
+  createDropDownList,
+  ["sub_division_code", "sub_division_code", "active_ind"]
 );
 
+// no need for wrapper, does not have a 'active_ind'
 export const getDropdownPermitStatusOptions = createSelector([getPermitStatusOptions], (options) =>
   createDropDownList(options, "description", "permit_status_code")
 );
 
-export const getDropdownIncidentDocumentTypeOptions = createSelector(
+export const getDropdownIncidentDocumentTypeOptions = createSelectorWrapper(
   [getIncidentDocumentTypeOptions],
-  (options) => createDropDownList(options, "description", "mine_incident_document_type_code")
+  createDropDownList,
+  ["description", "mine_incident_document_type_code", "active_ind"]
 );
 
 export const getDropdownIncidentFollowupActionOptions = createSelectorWrapper(
@@ -209,7 +213,7 @@ export const getDropdownIncidentFollowupActionOptions = createSelectorWrapper(
       "active_ind"
     )
 );
-
+// TODO check this, not sure if hash needs it
 export const getIncidentFollowupActionHash = createSelectorWrapper(
   [getDropdownIncidentFollowupActionOptions],
   createLabelHash
@@ -225,7 +229,7 @@ export const getDropdownIncidentDeterminationOptions = createSelectorWrapper(
       "active_ind"
     )
 );
-
+// TODO check this, not sure if hash needs it
 export const getIncidentDeterminationHash = createSelectorWrapper(
   [getDropdownIncidentDeterminationOptions],
   createLabelHash
@@ -321,8 +325,8 @@ export const getMultiSelectComplianceCodes = createSelector([getCurrentComplianc
 
 export const getDropdownVarianceStatusOptions = createSelectorWrapper(
   [getVarianceStatusOptions],
-  (options) =>
-    createDropDownList(options, "description", "variance_application_status_code", "active_ind")
+  createDropDownList,
+  ["description", "variance_application_status_code", "active_ind"]
 );
 
 // Ant design filter options expects the keys to be value/text vs the dropdown which expects value/label
@@ -449,9 +453,10 @@ export const getMineReportStatusOptionsHash = createSelectorWrapper(
   createLabelHash
 );
 
-export const getDropdownNoticeOfWorkActivityTypeOptions = createSelector(
+export const getDropdownNoticeOfWorkActivityTypeOptions = createSelectorWrapper(
   [getNoticeOfWorkActivityTypeOptions],
-  (options) => createDropDownList(options, "description", "activity_type_code")
+  createDropDownList,
+  ["description", "activity_type_code", "active_ind"]
 );
 
 export const getNoticeOfWorkActivityTypeOptionsHash = createSelector(
@@ -459,9 +464,10 @@ export const getNoticeOfWorkActivityTypeOptionsHash = createSelector(
   createLabelHash
 );
 
-export const getDropdownNoticeOfWorkUnitTypeOptions = createSelector(
+export const getDropdownNoticeOfWorkUnitTypeOptions = createSelectorWrapper(
   [getNoticeOfWorkUnitTypeOptions],
-  (options) => createDropDownList(options, "short_description", "unit_type_code")
+  createDropDownList,
+  ["short_description", "unit_type_code", "active_ind"]
 );
 
 export const getNoticeOfWorkUnitTypeOptionsHash = createSelector(
@@ -480,9 +486,10 @@ export const getNoticeOfWorkApplicationTypeOptionsHash = createSelector(
   createLabelHash
 );
 
-export const getDropdownNoticeOfWorkApplicationStatusOptions = createSelector(
+export const getDropdownNoticeOfWorkApplicationStatusOptions = createSelectorWrapper(
   [getNoticeOfWorkApplicationStatusOptions],
-  (options) => createDropDownList(options, "description", "now_application_status_code")
+  createDropDownList,
+  ["description", "now_application_status_code", "active_ind"]
 );
 
 export const getNoticeOfWorkApplicationStatusOptionsHash = createSelector(
@@ -490,9 +497,10 @@ export const getNoticeOfWorkApplicationStatusOptionsHash = createSelector(
   createLabelHash
 );
 
-export const getDropdownNoticeOfWorkApplicationDocumentTypeOptions = createSelector(
+export const getDropdownNoticeOfWorkApplicationDocumentTypeOptions = createSelectorWrapper(
   [getNoticeOfWorkApplicationDocumentTypeOptions],
-  (options) => createDropDownList(options, "description", "now_application_document_type_code")
+  createDropDownList,
+  ["description", "now_application_document_type_code", "active_ind"]
 );
 
 export const getNoticeOfWorkApplicationDocumentTypeOptionsHash = createSelector(
@@ -500,6 +508,7 @@ export const getNoticeOfWorkApplicationDocumentTypeOptionsHash = createSelector(
   createLabelHash
 );
 
+// TODO check this separately
 export const getGeneratableNoticeOfWorkApplicationDocumentTypeOptions = createSelector(
   [getNoticeOfWorkApplicationDocumentTypeOptions],
   (options) =>
@@ -514,9 +523,10 @@ export const getGeneratableNoticeOfWorkApplicationDocumentTypeOptions = createSe
       )
 );
 
-export const getDropdownNoticeOfWorkUndergroundExplorationTypeOptions = createSelector(
+export const getDropdownNoticeOfWorkUndergroundExplorationTypeOptions = createSelectorWrapper(
   [getNoticeOfWorkUndergroundExplorationTypeOptions],
-  (options) => createDropDownList(options, "description", "underground_exploration_type_code")
+  createDropDownList,
+  ["description", "underground_exploration_type_code", "active_ind"]
 );
 
 export const getNoticeOfWorkUndergroundExplorationTypeOptionsHash = createSelector(
@@ -524,9 +534,10 @@ export const getNoticeOfWorkUndergroundExplorationTypeOptionsHash = createSelect
   createLabelHash
 );
 
-export const getDropdownNticeOfWorkApplicationStatusCodeOptions = createSelector(
+export const getDropdownNticeOfWorkApplicationStatusCodeOptions = createSelectorWrapper(
   [getNoticeOfWorkApplicationProgressStatusCodeOptions],
-  (options) => createDropDownList(options, "description", "application_progress_status_code")
+  createDropDownList,
+  ["description", "application_progress_status_code", "active_ind"]
 );
 
 export const getNoticeOfWorkApplicationProgressStatusCodeOptionsHash = createSelector(
@@ -534,14 +545,16 @@ export const getNoticeOfWorkApplicationProgressStatusCodeOptionsHash = createSel
   createLabelHash
 );
 
-export const getDropdownNoticeOfWorkApplicationPermitTypeOptions = createSelector(
+export const getDropdownNoticeOfWorkApplicationPermitTypeOptions = createSelectorWrapper(
   [getNoticeOfWorkApplicationPermitTypeOptions],
-  (options) => createDropDownList(options, "description", "now_application_permit_type_code")
+  createDropDownList,
+  ["description", "now_application_permit_type_code", "active_ind"]
 );
 
-export const getDropdownNoticeOfWorkApplicationReviewTypeOptions = createSelector(
+export const getDropdownNoticeOfWorkApplicationReviewTypeOptions = createSelectorWrapper(
   [getNoticeOfWorkApplicationReviewOptions],
-  (options) => createDropDownList(options, "description", "now_application_review_type_code")
+  createDropDownList,
+  ["description", "now_application_review_type_code", "active_ind"]
 );
 
 export const getNoticeOfWorkApplicationApplicationReviewTypeHash = createSelector(
@@ -549,9 +562,10 @@ export const getNoticeOfWorkApplicationApplicationReviewTypeHash = createSelecto
   createLabelHash
 );
 
-export const getPartyRelationshipTypesList = createSelector(
+export const getPartyRelationshipTypesList = createSelectorWrapper(
   [getPartyRelationshipTypes],
-  (options) => createDropDownList(options, "description", "mine_party_appt_type_code")
+  createDropDownList,
+  ["description", "mine_party_appt_type_code", "active_ind"]
 );
 
 export const getPartyRelationshipTypeHash = createSelector(
@@ -559,17 +573,22 @@ export const getPartyRelationshipTypeHash = createSelector(
   createLabelHash
 );
 
-export const getBondTypeDropDownOptions = createSelector([getBondTypeOptions], (options) =>
-  createDropDownList(options, "description", "bond_type_code")
+export const getBondTypeDropDownOptions = createSelectorWrapper(
+  [getBondTypeOptions],
+  createDropDownList,
+  ["description", "bond_type_code", "active_ind"]
 );
 
-export const getBondStatusDropDownOptions = createSelector([getBondStatusOptions], (options) =>
-  createDropDownList(options, "description", "bond_status_code")
+export const getBondStatusDropDownOptions = createSelectorWrapper(
+  [getBondStatusOptions],
+  createDropDownList,
+  ["description", "bond_status_code", "active_ind"]
 );
 
-export const getBondDocumentTypeDropDownOptions = createSelector(
+export const getBondDocumentTypeDropDownOptions = createSelectorWrapper(
   [getBondDocumentTypeOptions],
-  (options) => createDropDownList(options, "description", "bond_document_type_code")
+  createDropDownList,
+  ["description", "bond_document_type_code", "active_ind"]
 );
 
 export const getBondTypeOptionsHash = createSelector([getBondTypeDropDownOptions], createLabelHash);
