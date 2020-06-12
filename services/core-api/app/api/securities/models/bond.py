@@ -53,7 +53,7 @@ class Bond(Base, AuditMixin):
         del bond_json['bond_guid']
         del bond_json['documents']
 
-        bond_json['payer'] = bond_json['payer']['party_name']
+        bond_json['payer_name'] = bond_json['payer']['party_name']
         current_app.logger.info(bond_json)
         bond_hist = BondHistory._schema().load(bond_json)
         bond_hist.save()
