@@ -39,10 +39,6 @@
     {
       "name": "VERSION",
       "required": true
-    },
-    {
-      "name": "TUSD_URL",
-      "required": true
     }
   ],
   "objects": [
@@ -218,10 +214,6 @@
                   {
                     "name": "S3_PREFIX",
                     "value": "mds-files-${VERSION}/"
-                  },
-                  {
-                    "name": "TUSD_URL",
-                    "value": "${TUSD_URL}"
                   }
                 ],
                 "resources": {

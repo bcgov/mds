@@ -130,6 +130,10 @@
       "description": "The name or Id of the environment.  This variable is used by the webhook integration to identify the environment in which the backup notifications originate.",
       "required": false,
       "value": "dev"
+    },
+    {
+      "name": "TUSD_URL",
+      "required": true
     }
   ],
   "objects": [
@@ -405,7 +409,7 @@
                   },
                   {
                     "name": "TUSD_URL",
-                    "value": "tusd-${VERSION}:1080/"
+                    "value": "${TUSD_URL}"
                   }
                 ],
                 "resources": {
