@@ -29,13 +29,3 @@ class ObjectStoreStorageService():
                 ('attachment; ' if as_attachment else '') + ('filename=' + display_name)
             })
         return resp
-
-    # NOTE: Leaving this old method in here for reference and in case we want to use it in the future.
-    # def download_file(self, path, display_name, as_attachment):
-    #     buffer = io.BytesIO()
-    #     self._client.download_fileobj(
-    #         Config.OBJECT_STORE_BUCKET, path, buffer, Config=TransferConfig())
-    #     buffer.seek(0)
-    #     resp = send_file(buffer, attachment_filename=display_name, as_attachment=as_attachment)
-    #     current_app.logger.info(f'resp:\n{resp.__dict__}')
-    #     return resp
