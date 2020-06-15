@@ -89,17 +89,22 @@ class BondResource(Resource, UserMixin):
     def put(self, bond_guid):
         #remove the amount from the request if it exists as it should not be editable.
         temp_bond = Bond.find_by_bond_guid(bond_guid)
+        history = temp_bond.save_bond_history()
         request.json['amount'] = temp_bond.amount
 
         try:
             bond = Bond._schema().load(request.json, instance=Bond.find_by_bond_guid(bond_guid))
         except MarshmallowError as e:
+            history.delete()
             raise BadRequest(e)
 
         for doc in bond.documents:
             doc.mine_guid = bond.permit.mine_guid
-
-        bond.save()
+        try:
+            bond.save()
+        except:
+            history.delete()
+            raise
 
         return bond
 

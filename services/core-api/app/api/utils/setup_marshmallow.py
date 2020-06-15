@@ -22,6 +22,7 @@ from app.api.now_submissions import models as sub_models
 from app.api.utils.static_data import setup_static_data
 from app.api.utils.field_template import FieldTemplate
 from app.api.securities.models.bond import Bond
+from app.api.securities.models.bond_history import BondHistory
 from app.api.securities.models.bond_document import BondDocument
 from app.api.securities.models.reclamation_invoice import ReclamationInvoice
 from app.api.securities.models.reclamation_invoice_document import ReclamationInvoiceDocument
@@ -32,7 +33,11 @@ AUDIT_COLUMNS = ('create_user', 'create_timestamp', 'update_user', 'update_times
 
 class CoreConverter(ModelConverter):
     SQLA_TYPE_MAPPING = ModelConverter.SQLA_TYPE_MAPPING.copy()
-    SQLA_TYPE_MAPPING.update({Geometry: fields.String, sa.Numeric: fields.Number})
+    SQLA_TYPE_MAPPING.update({
+        Geometry: fields.String,
+        sa.Numeric: fields.Number,
+        UUID: fields.UUID
+    })
 
 
 # class UUIDEncoder(json.JSONEncoder):
@@ -78,7 +83,7 @@ def setup_schema(Base, session):
     def setup_schema_fn():
         for class_ in ActivityDetailBase.__subclasses__() + [
                 Equipment, NOWApplicationDocumentXref, Bond, BondDocument, ReclamationInvoice,
-                ReclamationInvoiceDocument
+                ReclamationInvoiceDocument, BondHistory
         ] + sub_models.model_list:
             if hasattr(class_, "__tablename__") or getattr(class_, "__create_schema__", False):
                 try:
