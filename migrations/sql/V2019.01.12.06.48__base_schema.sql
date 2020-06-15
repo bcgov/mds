@@ -27,7 +27,6 @@ CREATE TABLE document_manager (
     upload_date timestamp with time zone NOT NULL,
     file_display_name character varying(40) NOT NULL,
     path_display_name character varying(150) NOT NULL,
-    object_store_path character varying,
     create_user character varying(60) NOT NULL,
     create_timestamp timestamp with time zone DEFAULT now() NOT NULL,
     update_user character varying(60) NOT NULL,
