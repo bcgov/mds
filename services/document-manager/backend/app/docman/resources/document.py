@@ -81,7 +81,7 @@ class DocumentListResource(Resource):
             if resp.status_code != requests.codes.created:
                 message = f'Cannot upload file. Object store responded with {resp.status_code}: {resp.reason}'
                 current_app.logger.error(message)
-                current_app.logger.info(f'resp:\n{resp.__dict__}')
+                current_app.logger.error(f'resp:\n{resp.__dict__}')
                 raise BadGateway(message)
 
             object_store_upload_resource = urlparse(resp.headers['Location']).path.split('/')[-1]
@@ -199,7 +199,7 @@ class DocumentResource(Resource):
             if resp.status_code not in [requests.codes.ok, requests.codes.no_content]:
                 message = f'Cannot upload file. Object store responded with {resp.status_code}: {resp.reason}'
                 current_app.logger.error(message)
-                current_app.logger.info(f'resp:\n{resp.__dict__}')
+                current_app.logger.error(f'resp:\n{resp.__dict__}')
                 raise BadGateway(message)
 
         # Else, write the content to the file in the file system
