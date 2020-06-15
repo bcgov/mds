@@ -83,7 +83,6 @@ export const getMineTenureTypeDropdownOptions = createSelectorWrapper(
   ["description", "mine_tenure_type_code", "active_ind"]
 );
 
-// TODO check if needed createSelectorWrapper
 export const getMineTenureTypesHash = createSelector(
   getMineTenureTypeDropdownOptions,
   createLabelHash
@@ -201,8 +200,8 @@ export const getDropdownIncidentFollowupActionOptions = createSelectorWrapper(
       "active_ind"
     )
 );
-// TODO check this, not sure if hash needs it
-export const getIncidentFollowupActionHash = createSelectorWrapper(
+
+export const getIncidentFollowupActionHash = createSelector(
   getDropdownIncidentFollowupActionOptions,
   createLabelHash
 );
@@ -217,8 +216,8 @@ export const getDropdownIncidentDeterminationOptions = createSelectorWrapper(
       "active_ind"
     )
 );
-// TODO check this, not sure if hash needs it
-export const getIncidentDeterminationHash = createSelectorWrapper(
+
+export const getIncidentDeterminationHash = createSelector(
   getDropdownIncidentDeterminationOptions,
   createLabelHash
 );
@@ -496,7 +495,6 @@ export const getNoticeOfWorkApplicationDocumentTypeOptionsHash = createSelector(
   createLabelHash
 );
 
-// TODO check this separately
 export const getGeneratableNoticeOfWorkApplicationDocumentTypeOptions = createSelector(
   [getNoticeOfWorkApplicationDocumentTypeOptions],
   (options) =>
