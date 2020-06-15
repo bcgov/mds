@@ -187,11 +187,7 @@
               "failurePolicy": "Retry",
               "execNewPod": {
                 "containerName": "app",
-                "command": [
-                  "bash",
-                  "-c",
-                  "cd /opt/app-root/src && flask db upgrade"
-                ]
+                "command": ["bash", "-c", "cd /opt/app-root/src && flask db upgrade"]
               }
             },
             "maxSurge": "50%",
@@ -406,6 +402,10 @@
                   {
                     "name": "S3_PREFIX",
                     "value": "mds-files-${VERSION}/"
+                  },
+                  {
+                    "name": "TUSD_URL",
+                    "value": "tusd-${VERSION}:1080/"
                   }
                 ],
                 "resources": {
