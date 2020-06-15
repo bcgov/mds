@@ -13,6 +13,7 @@ import {
   resetForm,
   createDropDownList,
   formatComplianceCodeValueOrLabel,
+  sortListObjectsByPropertyLocaleCompare,
 } from "@common/utils/helpers";
 import {
   getDropdownMineReportCategoryOptions,
@@ -84,10 +85,14 @@ export class AddReportForm extends Component {
       );
     }
 
-    const dropdownMineReportDefinitionOptionsFiltered = createDropDownList(
+    let dropdownMineReportDefinitionOptionsFiltered = createDropDownList(
       mineReportDefinitionOptionsFiltered,
       "report_name",
       "mine_report_definition_guid"
+    );
+    dropdownMineReportDefinitionOptionsFiltered = sortListObjectsByPropertyLocaleCompare(
+      dropdownMineReportDefinitionOptionsFiltered,
+      "label"
     );
 
     this.setState({
