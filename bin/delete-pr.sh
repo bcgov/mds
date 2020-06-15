@@ -42,5 +42,7 @@ do
     oc delete all -l change-id=$pr
     tags=`oc get istag -o=jsonpath=$(printf "${template}" "${pr}")`
     oc delete istag ${tags}
+    
 
 done
+
