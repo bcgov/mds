@@ -9,7 +9,7 @@ import {
   getDropdownMineReportCategoryOptions,
   getMineReportDefinitionOptions,
 } from "@common/selectors/staticContentSelectors";
-import { createDropDownList } from "@common/utils/helpers";
+import { createDropDownList, sortListObjectsByPropertyLocaleCompare } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
 import CustomPropTypes from "@/customPropTypes";
@@ -57,10 +57,14 @@ export class ReportFilterForm extends Component {
       );
     }
 
-    const dropdownMineReportDefinitionOptionsFiltered = createDropDownList(
+    let dropdownMineReportDefinitionOptionsFiltered = createDropDownList(
       mineReportDefinitionOptionsFiltered,
       "report_name",
       "mine_report_definition_guid"
+    );
+    dropdownMineReportDefinitionOptionsFiltered = sortListObjectsByPropertyLocaleCompare(
+      dropdownMineReportDefinitionOptionsFiltered,
+      "label"
     );
 
     this.setState({
