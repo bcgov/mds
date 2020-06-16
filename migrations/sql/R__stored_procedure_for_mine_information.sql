@@ -160,7 +160,7 @@ CREATE OR REPLACE FUNCTION transfer_mine_information() RETURNS void AS $$
                 OR ETL_MINE.mine_region != mine.mine_region
                 OR ETL_MINE.major_mine_ind != mine.major_mine_ind
                 OR ETL_MINE.exemption_fee_status_code != mine.exemption_fee_status_code
-                OR ETL_MINE.mms_alias != mine.mms_alias)
+                OR ETL_MINE.mms_alias != mine.mms_alias
 				OR ETL_MINE.deleted_ind != mine.deleted_ind);
             SELECT count(*) FROM mine, ETL_MINE WHERE ETL_MINE.mine_guid = mine.mine_guid INTO update_row;
             RAISE NOTICE '....# of mine records in MDS: %', old_row;
