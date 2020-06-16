@@ -95,6 +95,11 @@ export const nullableStringSorter = (path) => (a, b) => {
   return aObj.localeCompare(bObj);
 };
 
+export const sortListObjectsByPropertyLocaleCompare = (list, property) =>
+  list.sort(nullableStringSorter(property));
+
+export const sortListObjectsByPropertyDate = (list, property) => list.sort(dateSorter(property));
+
 // Case insensitive filter for a SELECT field by label string
 export const caseInsensitiveLabelFilter = (input, option) =>
   option.props.children.toLowerCase().includes(input.toLowerCase());
