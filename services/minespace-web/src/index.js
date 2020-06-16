@@ -11,6 +11,9 @@ import "./styles/index.scss";
 import fetchEnv from "./fetchEnv";
 import configureStore from "./store/configureStore";
 
+import { MatomoProvider, createInstance } from "@datapunt/matomo-tracker-react";
+import ENVIRONMENT from "./constants/environment";
+
 export const store = configureStore();
 
 export class Index extends Component {
@@ -18,6 +21,10 @@ export class Index extends Component {
     super();
     this.state = { environment: false };
     fetchEnv().then(() => {
+      instance = createInstance({
+        urlBase: ENVIRONMENT.matomoUrl,
+        enableLinkTracking: false,
+      });
       this.setState({ environment: true });
     });
   }
@@ -26,7 +33,9 @@ export class Index extends Component {
     if (this.state.environment) {
       return (
         <Provider store={store}>
-          <App />
+          <MatomoProvider value={instance}>
+            <App />
+          </MatomoProvider>
         </Provider>
       );
     }

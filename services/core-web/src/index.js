@@ -10,11 +10,18 @@ import "antd/dist/antd.less";
 import "./styles/index.scss";
 import fetchEnv from "./fetchEnv";
 
+import { MatomoProvider, createInstance } from "@datapunt/matomo-tracker-react";
+import ENVIRONMENT from "./constants/environment";
+
 class Index extends Component {
   constructor() {
     super();
     this.state = { environment: false };
     fetchEnv().then(() => {
+      instance = createInstance({
+        urlBase: ENVIRONMENT.matomoUrl,
+        enableLinkTracking: false,
+      });
       this.setState({ environment: true });
     });
   }
