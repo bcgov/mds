@@ -7,6 +7,7 @@
   "dependencies": {
     "@babel/runtime": "^7.8.3",
     "@babel/runtime-corejs3": "^7.8.3",
+    "@datapunt/matomo-tracker-react": "^0.1.5",
     "@hot-loader/react-dom": "^16.11.0",
     "antd": "^3.26.8",
     "axios": "^0.19.1",
