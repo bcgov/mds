@@ -9,13 +9,16 @@ from app.api.constants import NROS_NOW_TOKEN, TIMEOUT_24_HOURS
 
 class NROSNOWStatusService():
 
-    nros_now_url = f'{Config.NROS_NOW_URL}/status'
+    nros_now_url = f'{Config.NROS_NOW_URL}/status' if Config.NROS_NOW_URL is not None else None
     nros_now_token_pass = Config.NROS_NOW_CLIENT_SECRET
     nros_now_token_user = Config.NROS_NOW_CLIENT_ID
     nros_now_token_url = Config.NROS_NOW_TOKEN_URL
 
     @classmethod
     def nros_now_status_update(cls, now_number, status, status_updated_date):
+        if cls.nros_now_url is None or cls.nros_now_token_url is None:
+            current_app.logger.info('Could not get the NROS NoW URL or the NROS NoW token URL.')
+            return
 
         token = cache.get(NROS_NOW_TOKEN)
         if not token:

@@ -250,7 +250,7 @@ const mapStateToProps = (state) => ({
   complianceCodesHash: getHSRCMComplianceCodesHash(state),
   getDropdownHSRCMComplianceCodes: getDropdownHSRCMComplianceCodes(state),
   mineRegionOptions: getMineRegionDropdownOptions(state),
-  filterVarianceStatusOptions: getFilterVarianceStatusOptions(state),
+  filterVarianceStatusOptions: getFilterVarianceStatusOptions(state, false),
 });
 
 const mapDispatchToProps = (dispatch) =>

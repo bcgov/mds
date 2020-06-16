@@ -57,6 +57,15 @@ const defaultProps = {
 export const MineReportTable = (props) => {
   const hideColumn = (condition) => (condition ? "column-hide" : "");
 
+  const getComplianceCodeValue = (guid) => {
+    return props.mineReportDefinitionHash && props.mineReportDefinitionHash[guid]
+      ? formatComplianceCodeValueOrLabel(
+          props.mineReportDefinitionHash[guid].compliance_articles[0],
+          false
+        )
+      : null;
+  };
+
   const columns = [
     // NOTE: This column is commented-out and retained intentionally in case we want to use it later.
     // {
@@ -108,13 +117,7 @@ export const MineReportTable = (props) => {
       title: "Code Section",
       key: "code_section",
       render: (record) => (
-        <div title="Code Section">
-          {formatComplianceCodeValueOrLabel(
-            props.mineReportDefinitionHash[record.mine_report_definition_guid]
-              .compliance_articles[0],
-            false
-          )}
-        </div>
+        <div title="Code Section">{getComplianceCodeValue(record.mine_report_definition_guid)}</div>
       ),
     },
     {
@@ -193,7 +196,7 @@ export const MineReportTable = (props) => {
       key: "operations",
       render: (text, record) => {
         return (
-          <div title="" align="right">
+          <div align="right">
             <AuthorizationWrapper permission={Permission.EDIT_REPORTS}>
               <MineReportActions
                 mineReport={record.report}

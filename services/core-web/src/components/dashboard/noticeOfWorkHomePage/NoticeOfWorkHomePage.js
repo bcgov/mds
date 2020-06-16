@@ -158,7 +158,7 @@ const mapStateToProps = (state) => ({
   mineRegionHash: getMineRegionHash(state),
   mineRegionOptions: getMineRegionDropdownOptions(state),
   applicationStatusOptions: getDropdownNoticeOfWorkApplicationStatusOptions(state),
-  applicationTypeOptions: getDropdownNoticeOfWorkApplicationTypeOptions(state),
+  applicationTypeOptions: getDropdownNoticeOfWorkApplicationTypeOptions(state, false),
 });
 
 const mapDispatchToProps = (dispatch) =>

@@ -31,9 +31,9 @@ class MinePartyAppointmentType(AuditMixin, Base):
             return None
 
     @classmethod
-    def get_active(cls):
+    def get_all(cls):
         try:
-            return cls.query.filter_by(active_ind=True).order_by(
+            return cls.query.order_by(
                 desc(cls.grouping_level), cls.display_order).all()
         except ValueError:
             return None

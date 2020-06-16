@@ -1,5 +1,3 @@
-# import json
-
 import sqlalchemy as sa
 import itertools
 
@@ -11,7 +9,7 @@ from sqlalchemy import event
 from sqlalchemy.inspection import inspect
 from sqlalchemy.orm.attributes import InstrumentedAttribute
 from marshmallow import fields, pprint, validate, EXCLUDE
-from marshmallow_sqlalchemy import ModelConversionError, ModelSchema, ModelConverter
+from marshmallow_sqlalchemy import ModelConversionError, ModelConverter
 from app.api.utils.models_mixins import AuditMixin, Base as BaseModel
 from app.extensions import db
 from geoalchemy2 import Geometry
@@ -21,14 +19,16 @@ from app.api.now_applications.models.activity_detail.activity_detail_base import
 from app.api.now_applications.models.equipment import Equipment
 from app.api.now_applications.models.now_application_document_xref import NOWApplicationDocumentXref
 from app.api.now_submissions import models as sub_models
-from app.api.utils.models_mixins import AuditMixin
 from app.api.utils.static_data import setup_static_data
 from app.api.utils.field_template import FieldTemplate
 from app.api.securities.models.bond import Bond
+from app.api.securities.models.bond_history import BondHistory
 from app.api.securities.models.bond_document import BondDocument
 from app.api.securities.models.reclamation_invoice import ReclamationInvoice
 from app.api.securities.models.reclamation_invoice_document import ReclamationInvoiceDocument
 from app.api.constants import STATIC_DATA
+
+AUDIT_COLUMNS = ('create_user', 'create_timestamp', 'update_user', 'update_timestamp')
 
 
 class CoreConverter(ModelConverter):
@@ -36,7 +36,7 @@ class CoreConverter(ModelConverter):
     SQLA_TYPE_MAPPING.update({
         Geometry: fields.String,
         sa.Numeric: fields.Number,
-                                                 # py_uuid: fields.UUID
+        UUID: fields.UUID
     })
 
 
@@ -62,10 +62,16 @@ class CoreConverter(ModelConverter):
 #         else:
 #             pprint(f'{attr} already loaded -> ' + str(obj.__class__))
 #         return super(SmartNested, self).serialize(attr, obj, accessor)
-AUDIT_COLUMNS = ('create_user', 'create_timestamp', 'update_user', 'update_timestamp')
+
+# NOTE: This may not be needed, but is left in for potential future use.
+# @event.listens_for(mapper, "after_configured")
+# def run_after_configure():
+#     current_app.logger.debug('run_after_configure called')
+#     setup_marshmallow(db.session)
 
 
-def run_after_configure():
+def setup_marshmallow():
+    current_app.logger.debug('setup_marshmallow called')
     setup_static_data(BaseModel)
     setup_schema(BaseModel, db.session)()
 
@@ -77,7 +83,7 @@ def setup_schema(Base, session):
     def setup_schema_fn():
         for class_ in ActivityDetailBase.__subclasses__() + [
                 Equipment, NOWApplicationDocumentXref, Bond, BondDocument, ReclamationInvoice,
-                ReclamationInvoiceDocument
+                ReclamationInvoiceDocument, BondHistory
         ] + sub_models.model_list:
             if hasattr(class_, "__tablename__") or getattr(class_, "__create_schema__", False):
                 try:
@@ -91,7 +97,7 @@ def setup_schema(Base, session):
                         ordered = True
                         unknown = EXCLUDE
                         include_fk = True
-                        sqla_session = db.session
+                        sqla_session = session
                         model_converter = CoreConverter
                         exclude = exclude_columns
 
@@ -130,9 +136,3 @@ def setup_schema(Base, session):
                     raise e
 
     return setup_schema_fn
-
-
-# TODO: finish this and resolve errors now_application/activity_detail_base.activity_type_code to all for programatic generation of schema
-
-event.listen(mapper, "after_configured", run_after_configure)
-# Base.metadata.create_all(db.engine.connect()) # i think this is not used
