@@ -13,7 +13,6 @@ location ${PATH_PREFIX}/document-manager/ {
         include /opt/app-root/etc/nginx.conf.d/proxy.params;
         proxy_request_buffering  off;
         proxy_buffering          off;
-        proxy_http_version       1.1;
 
         # Add X-Forwarded-* headers
         proxy_set_header X-Forwarded-Host $server_name;
@@ -35,7 +34,6 @@ location ${PATH_PREFIX}/document-manager/v1/ {
         include /opt/app-root/etc/nginx.conf.d/proxy.params;
         proxy_request_buffering  off;
         proxy_buffering          off;
-        proxy_http_version       1.1;
 
         # Add X-Forwarded-* headers
         proxy_set_header X-Forwarded-Host $server_name;
