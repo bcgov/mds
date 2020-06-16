@@ -457,10 +457,10 @@ const mapStateToProps = (state) => ({
   mineTenureHash: getMineTenureTypesHash(state),
   mineCommodityOptionsHash: getCommodityOptionHash(state),
   mineDisturbanceOptionsHash: getDisturbanceOptionHash(state),
-  mineStatusDropDownOptions: getMineStatusDropDownOptions(state),
+  mineStatusDropDownOptions: getMineStatusDropDownOptions(state, false),
   mineRegionOptions: getMineRegionDropdownOptions(state),
-  mineTenureTypes: getMineTenureTypeDropdownOptions(state),
-  mineCommodityOptions: getDropdownCommodityOptions(state),
+  mineTenureTypes: getMineTenureTypeDropdownOptions(state, false),
+  mineCommodityOptions: getDropdownCommodityOptions(state, false),
   transformedMineTypes: getTransformedMineTypes(state),
 });
 

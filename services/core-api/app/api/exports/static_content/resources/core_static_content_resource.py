@@ -62,7 +62,7 @@ MODELS_GET_ACTIVE = [
 def generate_static_content_dict():
     static_content = {}
     for model in MODELS_GET_ACTIVE:
-        static_content[model.__name__] = model.get_active()
+        static_content[model.__name__] = model.get_all()
 
     return static_content
 

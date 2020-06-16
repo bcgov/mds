@@ -18,7 +18,7 @@ class PermitStatusCode(AuditMixin, Base):
         return cls.query.filter_by(permit_status_code=_id).first()
 
     @classmethod
-    def get_active(cls):
+    def get_all(cls):
         return cls.query.all()
         #TODO put active ind on this table
 

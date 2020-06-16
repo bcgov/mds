@@ -194,14 +194,17 @@ exports[`Dashboard renders properly 1`] = `
                 Object {
                   "description": "The permittee is not able or available to meet permit obligations. The Ministry has taken over responsibility for the mine. Reclamation work is under way. There are long-term care and maintenance activities on site. Contractors are performing the work.",
                   "mine_operation_status": Object {
+                    "active_ind": true,
                     "description": "Closed",
                     "mine_operation_status_code": "CLD",
                   },
                   "mine_operation_status_reason": Object {
+                    "active_ind": true,
                     "description": "Orphaned",
                     "mine_operation_status_reason_code": "ORP",
                   },
                   "mine_operation_status_sub_reason": Object {
+                    "active_ind": true,
                     "description": "Long-Term Maintenance",
                     "mine_operation_status_sub_reason_code": "LTM",
                   },
@@ -210,14 +213,17 @@ exports[`Dashboard renders properly 1`] = `
                 Object {
                   "description": "The mine is closed and not expected to re-open. Reclamation work is under way. There are long-term care and maintenance activities on site. Permit and HSRC obligations are still in place. Site is subject to inspection and still has reporting to file with the Ministry.",
                   "mine_operation_status": Object {
+                    "active_ind": true,
                     "description": "Closed",
                     "mine_operation_status_code": "CLD",
                   },
                   "mine_operation_status_reason": Object {
+                    "active_ind": true,
                     "description": "Reclamation",
                     "mine_operation_status_reason_code": "REC",
                   },
                   "mine_operation_status_sub_reason": Object {
+                    "active_ind": true,
                     "description": "Long-Term Maintenance",
                     "mine_operation_status_sub_reason_code": "LTM",
                   },
@@ -226,14 +232,17 @@ exports[`Dashboard renders properly 1`] = `
                 Object {
                   "description": "The permittee is not able or available to meet permit obligations. The Ministry has taken over responsibility for the mine. Reclamation work is under way. There are long-term care and maintenance activities on site in addition to water treatment. Contractors are performing the work.",
                   "mine_operation_status": Object {
+                    "active_ind": true,
                     "description": "Closed",
                     "mine_operation_status_code": "CLD",
                   },
                   "mine_operation_status_reason": Object {
+                    "active_ind": true,
                     "description": "Orphaned",
                     "mine_operation_status_reason_code": "ORP",
                   },
                   "mine_operation_status_sub_reason": Object {
+                    "active_ind": true,
                     "description": "Long-Term Maintenance & Water Treatment",
                     "mine_operation_status_sub_reason_code": "LWT",
                   },
@@ -242,14 +251,17 @@ exports[`Dashboard renders properly 1`] = `
                 Object {
                   "description": "The mine is closed and not expected to re-open. Reclamation work is under way. There are long-term care and maintenance activities on site in addition to water treatment. Permit and HSRC obligations are still in place. Site is subject to inspection and still has reporting to file with the Ministry.",
                   "mine_operation_status": Object {
+                    "active_ind": true,
                     "description": "Closed",
                     "mine_operation_status_code": "CLD",
                   },
                   "mine_operation_status_reason": Object {
+                    "active_ind": true,
                     "description": "Reclamation",
                     "mine_operation_status_reason_code": "REC",
                   },
                   "mine_operation_status_sub_reason": Object {
+                    "active_ind": true,
                     "description": "Long-Term Maintenance & Water Treatment",
                     "mine_operation_status_sub_reason_code": "LWT",
                   },
@@ -258,14 +270,17 @@ exports[`Dashboard renders properly 1`] = `
                 Object {
                   "description": "Reclamation work is complete, no additional care required. Ministry needs to return bond and close permit for mine to be Abandoned.",
                   "mine_operation_status": Object {
+                    "active_ind": true,
                     "description": "Closed",
                     "mine_operation_status_code": "CLD",
                   },
                   "mine_operation_status_reason": Object {
+                    "active_ind": true,
                     "description": "Reclamation",
                     "mine_operation_status_reason_code": "REC",
                   },
                   "mine_operation_status_sub_reason": Object {
+                    "active_ind": true,
                     "description": "Permit Release Pending",
                     "mine_operation_status_sub_reason_code": "PRP",
                   },
@@ -274,14 +289,17 @@ exports[`Dashboard renders properly 1`] = `
                 Object {
                   "description": "The permittee is not able or available to meet permit obligations. The Ministry has taken over responsibility for the mine. Reclamation work has not started. A contractor has not been retained to perform the work.",
                   "mine_operation_status": Object {
+                    "active_ind": true,
                     "description": "Closed",
                     "mine_operation_status_code": "CLD",
                   },
                   "mine_operation_status_reason": Object {
+                    "active_ind": true,
                     "description": "Orphaned",
                     "mine_operation_status_reason_code": "ORP",
                   },
                   "mine_operation_status_sub_reason": Object {
+                    "active_ind": true,
                     "description": "Reclamation Not Started",
                     "mine_operation_status_sub_reason_code": "RNS",
                   },
@@ -290,14 +308,17 @@ exports[`Dashboard renders properly 1`] = `
                 Object {
                   "description": "The permittee is not able or available to meet permit obligations. The Ministry will take over responsibility for the mine. The site needs to be visited and assessed to determine status and work required.",
                   "mine_operation_status": Object {
+                    "active_ind": true,
                     "description": "Closed",
                     "mine_operation_status_code": "CLD",
                   },
                   "mine_operation_status_reason": Object {
+                    "active_ind": true,
                     "description": "Orphaned",
                     "mine_operation_status_reason_code": "ORP",
                   },
                   "mine_operation_status_sub_reason": Object {
+                    "active_ind": true,
                     "description": "Site Visit Required",
                     "mine_operation_status_sub_reason_code": "SVR",
                   },
@@ -306,14 +327,17 @@ exports[`Dashboard renders properly 1`] = `
                 Object {
                   "description": "The mine site is shut down, the permit obligations have been fulfilled. Bond has been returned if permittee completed reclamation work.",
                   "mine_operation_status": Object {
+                    "active_ind": true,
                     "description": "Abandoned",
                     "mine_operation_status_code": "ABN",
                   },
                   "mine_operation_status_reason": Object {
+                    "active_ind": null,
                     "description": null,
                     "mine_operation_status_reason_code": null,
                   },
                   "mine_operation_status_sub_reason": Object {
+                    "active_ind": null,
                     "description": null,
                     "mine_operation_status_sub_reason_code": null,
                   },
@@ -322,14 +346,17 @@ exports[`Dashboard renders properly 1`] = `
                 Object {
                   "description": null,
                   "mine_operation_status": Object {
+                    "active_ind": true,
                     "description": "Closed",
                     "mine_operation_status_code": "CLD",
                   },
                   "mine_operation_status_reason": Object {
+                    "active_ind": null,
                     "description": null,
                     "mine_operation_status_reason_code": null,
                   },
                   "mine_operation_status_sub_reason": Object {
+                    "active_ind": null,
                     "description": null,
                     "mine_operation_status_sub_reason_code": null,
                   },
@@ -338,14 +365,17 @@ exports[`Dashboard renders properly 1`] = `
                 Object {
                   "description": "No mine related work has started at this site (including exploration). The mine record may have been created as placeholder for an exploration permit. Sites with closed exploration permits that are constructing production facilities also fit into this category.",
                   "mine_operation_status": Object {
+                    "active_ind": true,
                     "description": "Not Started",
                     "mine_operation_status_code": "NS",
                   },
                   "mine_operation_status_reason": Object {
+                    "active_ind": null,
                     "description": null,
                     "mine_operation_status_reason_code": null,
                   },
                   "mine_operation_status_sub_reason": Object {
+                    "active_ind": null,
                     "description": null,
                     "mine_operation_status_sub_reason_code": null,
                   },
@@ -354,14 +384,17 @@ exports[`Dashboard renders properly 1`] = `
                 Object {
                   "description": "This mine operates seasonally. Dates shown are from the most recently approved NoW application. Confirm operating dates with operator or permittee before visiting.",
                   "mine_operation_status": Object {
+                    "active_ind": true,
                     "description": "Operating",
                     "mine_operation_status_code": "OP",
                   },
                   "mine_operation_status_reason": Object {
+                    "active_ind": true,
                     "description": "Seasonal",
                     "mine_operation_status_reason_code": "SEA",
                   },
                   "mine_operation_status_sub_reason": Object {
+                    "active_ind": null,
                     "description": null,
                     "mine_operation_status_sub_reason_code": null,
                   },
@@ -370,14 +403,17 @@ exports[`Dashboard renders properly 1`] = `
                 Object {
                   "description": "This mine operates year-round (can be conducting exploration and/or production activities).",
                   "mine_operation_status": Object {
+                    "active_ind": true,
                     "description": "Operating",
                     "mine_operation_status_code": "OP",
                   },
                   "mine_operation_status_reason": Object {
+                    "active_ind": true,
                     "description": "Year-Round",
                     "mine_operation_status_reason_code": "YR",
                   },
                   "mine_operation_status_sub_reason": Object {
+                    "active_ind": null,
                     "description": null,
                     "mine_operation_status_sub_reason_code": null,
                   },
@@ -386,14 +422,17 @@ exports[`Dashboard renders properly 1`] = `
                 Object {
                   "description": "Ministry has not determined if the permittee is able or available to meet permit obligations. A visit to the site is required.",
                   "mine_operation_status": Object {
+                    "active_ind": true,
                     "description": "Closed",
                     "mine_operation_status_code": "CLD",
                   },
                   "mine_operation_status_reason": Object {
+                    "active_ind": true,
                     "description": "Unknown",
                     "mine_operation_status_reason_code": "UN",
                   },
                   "mine_operation_status_sub_reason": Object {
+                    "active_ind": null,
                     "description": null,
                     "mine_operation_status_sub_reason_code": null,
                   },
@@ -402,14 +441,17 @@ exports[`Dashboard renders properly 1`] = `
                 Object {
                   "description": "The mine is temporarily closed. It is expected that it will eventually re-open. Permit and HSRC obligations are still in place. Site is subject to inspection and still has reporting to file with the Ministry.",
                   "mine_operation_status": Object {
+                    "active_ind": true,
                     "description": "Closed",
                     "mine_operation_status_code": "CLD",
                   },
                   "mine_operation_status_reason": Object {
+                    "active_ind": true,
                     "description": "Care & Maintenance",
                     "mine_operation_status_reason_code": "CM",
                   },
                   "mine_operation_status_sub_reason": Object {
+                    "active_ind": null,
                     "description": null,
                     "mine_operation_status_sub_reason_code": null,
                   },
@@ -428,18 +470,22 @@ exports[`Dashboard renders properly 1`] = `
             mineTenureTypes={
               Array [
                 Object {
+                  "isActive": true,
                   "label": "Coal",
                   "value": "COL",
                 },
                 Object {
+                  "isActive": true,
                   "label": "Mineral",
                   "value": "MIN",
                 },
                 Object {
+                  "isActive": true,
                   "label": "Placer",
                   "value": "PLR",
                 },
                 Object {
+                  "isActive": true,
                   "label": "BC Land",
                   "value": "BCL",
                 },

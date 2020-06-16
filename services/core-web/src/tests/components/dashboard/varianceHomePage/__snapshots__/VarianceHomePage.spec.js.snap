@@ -36,26 +36,32 @@ exports[`VarianceHomePage renders properly 1`] = `
         filterVarianceStatusOptions={
           Array [
             Object {
+              "active_ind": true,
               "description": "Ready for Decision",
               "variance_application_status_code": "RFD",
             },
             Object {
+              "active_ind": true,
               "description": "Withdrawn",
               "variance_application_status_code": "WIT",
             },
             Object {
+              "active_ind": true,
               "description": "In Review",
               "variance_application_status_code": "REV",
             },
             Object {
+              "active_ind": true,
               "description": "Not Applicable",
               "variance_application_status_code": "NAP",
             },
             Object {
+              "active_ind": true,
               "description": "Approved",
               "variance_application_status_code": "APP",
             },
             Object {
+              "active_ind": true,
               "description": "Denied",
               "variance_application_status_code": "DEN",
             },

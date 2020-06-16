@@ -23,4 +23,4 @@ class MinePartyApptTypeResource(Resource, UserMixin):
     @api.marshal_with(MINE_PARTY_APPT_TYPE_MODEL, code=201)
     @requires_role_view_all
     def get(self):
-        return MinePartyAppointmentType.get_active()
+        return MinePartyAppointmentType.get_all()

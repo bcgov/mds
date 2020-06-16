@@ -13,4 +13,4 @@ class MineDisturbanceCodeResource(Resource, UserMixin):
     @api.marshal_with(MINE_DISTURBANCE_CODE_MODEL, code=200, envelope='records')
     @requires_role_view_all
     def get(self):
-        return MineDisturbanceCode.get_active()
+        return MineDisturbanceCode.get_all()

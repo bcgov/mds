@@ -38,8 +38,13 @@ export const createItemMap = (array, idField) => {
 // Function create id array for redux state. (used in src/reducers/<customReducer>)
 export const createItemIdsArray = (array, idField) => array.map((item) => item[idField]);
 
-export const createDropDownList = (array, labelField, valueField) =>
-  array.map((item) => ({ value: item[valueField], label: item[labelField] }));
+export const createDropDownList = (array, labelField, valueField, isActiveField = false) => {
+  return array.map((item) => ({
+    value: item[valueField],
+    label: item[labelField],
+    isActive: isActiveField ? item[isActiveField] : true,
+  }));
+};
 
 // Function to create a hash given an array of values and labels
 export const createLabelHash = (arr) =>
