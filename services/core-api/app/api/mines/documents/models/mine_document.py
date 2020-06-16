@@ -26,7 +26,7 @@ class MineDocument(AuditMixin, Base):
     document_name = db.Column(db.String(255), nullable=False)
     document_class = db.Column(db.String)
 
-    active_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
+    deleted_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
     upload_date = db.Column(db.Date, nullable=False, default=datetime.utcnow)
 
     mine_name = association_proxy('mine', 'mine_name')
@@ -35,12 +35,12 @@ class MineDocument(AuditMixin, Base):
 
     @classmethod
     def find_by_mine_guid(cls, mine_guid):
-        return cls.query.filter_by(mine_guid=mine_guid).filter_by(active_ind=True).all()
+        return cls.query.filter_by(mine_guid=mine_guid).filter_by(deleted_ind=False).all()
 
     @classmethod
     def find_by_mine_document_guid(cls, mine_document_guid):
         return cls.query.filter_by(mine_document_guid=mine_document_guid).filter_by(
-            active_ind=True).first()
+            deleted_ind=False).first()
 
     # TODO: Remove when mine_party_appt is refactored
     def json(self):

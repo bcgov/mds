@@ -37,14 +37,14 @@ def RandomPermitStatusCode():
     return random.choice([x.permit_status_code for x in db.session.query(PermitStatusCode).all()])
 
 def RandomExemptionFeeStatusCode():
-    return random.choice([x.exemption_fee_status_code for x in ExemptionFeeStatus.get_active()])
+    return random.choice([x.exemption_fee_status_code for x in ExemptionFeeStatus.get_all()])
 
 def RandomBondStatusCode():
-    return random.choice([x.bond_status_code for x in BondStatus.get_active()])
+    return random.choice([x.bond_status_code for x in BondStatus.get_all()])
 
 
 def RandomBondTypeCode():
-    return random.choice([x.bond_type_code for x in BondType.get_active()])
+    return random.choice([x.bond_type_code for x in BondType.get_all()])
 
 
 def RandomTenureTypeCode():
@@ -96,38 +96,38 @@ def RandomComplianceArticleId():
 
 def RandomIncidentDeterminationTypeCode():
     return random.choice([
-        x.mine_incident_determination_type_code for x in MineIncidentDeterminationType.get_active()
+        x.mine_incident_determination_type_code for x in MineIncidentDeterminationType.get_all()
     ])
 
 
 def RandomIncidentStatusCode():
-    return random.choice([x.mine_incident_status_code for x in MineIncidentStatusCode.get_active()])
+    return random.choice([x.mine_incident_status_code for x in MineIncidentStatusCode.get_all()])
 
 
 def RandomIncidentDocumentType():
     return random.choice(
-        [x.mine_incident_document_type_code for x in MineIncidentDocumentTypeCode.get_active()])
+        [x.mine_incident_document_type_code for x in MineIncidentDocumentTypeCode.get_all()])
 
 
 def RandomMineReportDefinition():
-    return random.choice([x.mine_report_definition_id for x in MineReportDefinition.get_active()])
+    return random.choice([x.mine_report_definition_id for x in MineReportDefinition.get_all()])
 
 
 def RandomMineReportDefinitionWithDueDate():
     return random.choice([
-        x.mine_report_definition_id for x in MineReportDefinition.get_active()
+        x.mine_report_definition_id for x in MineReportDefinition.get_all()
         if x.due_date_period_months and x.due_date_period_months > 0
     ])
 
 
 def RandomMineReportSubmissionStatusCode():
     return random.choice(
-        [x.mine_report_submission_status_code for x in MineReportSubmissionStatusCode.get_active()])
+        [x.mine_report_submission_status_code for x in MineReportSubmissionStatusCode.get_all()])
 
 
 def RandomVarianceDocumentCategoryCode():
     return random.choice(
-        [x.variance_document_category_code for x in VarianceDocumentCategoryCode.get_active()])
+        [x.variance_document_category_code for x in VarianceDocumentCategoryCode.get_all()])
 
 
 def SampleDangerousOccurrenceSubparagraphs(num):
@@ -144,7 +144,7 @@ def RandomVarianceApplicationStatusCode():
     return random.choice([
         x.variance_application_status_code
         for x in filter(lambda x: x.variance_application_status_code not in ['APP', 'DEN'],
-                        VarianceApplicationStatusCode.get_active())
+                        VarianceApplicationStatusCode.get_all())
     ])
 
 
@@ -154,7 +154,7 @@ def RandomNOWTypeCode():
 
 
 def RandomNOWStatusCode():
-    return random.choice([x.now_application_status_code for x in NOWApplicationStatus.get_active()])
+    return random.choice([x.now_application_status_code for x in NOWApplicationStatus.get_all()])
 
 
 def RandomNOWReviewCode():

@@ -422,8 +422,9 @@ export const DROPDOWN_NOTICE_OF_WORK_ACTIVITY_TYPES = [
   {
     value: "cut_lines_polarization_survey",
     label: "Cut Lines and Induced Polarization Survey",
+    isActive: true,
   },
-  { value: "water_supply", label: "Water Supply" },
+  { value: "water_supply", label: "Water Supply", isActive: true },
 ];
 
 export const ACTIVITY_TYPE_HASH = {
@@ -473,9 +474,10 @@ export const DROPDOWN_UNDERGROUND_EXPLORATION_TYPES = [
   {
     value: "NEW",
     label: "New",
+    isActive: true,
   },
-  { value: "RHB", label: "Rehabilitation" },
-  { value: "SUR", label: "Surface" },
+  { value: "RHB", label: "Rehabilitation", isActive: true },
+  { value: "SUR", label: "Surface", isActive: true },
 ];
 
 export const UNDERGROUND_EXPLORATION_TYPES_HASH = {
@@ -517,15 +519,17 @@ export const DROPDOWN_APPLICATION_TYPES = [
   {
     value: "QCA",
     label: "Quarry - Construction Aggregate",
+    isActive: true,
   },
-  { value: "COL", label: "Coal" },
-  { value: "PLA", label: "Placer Operations" },
+  { value: "COL", label: "Coal", isActive: true },
+  { value: "PLA", label: "Placer Operations", isActive: true },
   {
     value: "MIN",
     label: "Mineral",
+    isActive: true,
   },
-  { value: "SAG", label: "Sand & Gravel" },
-  { value: "QIM", label: "Quarry - Industrial Mineral" },
+  { value: "SAG", label: "Sand & Gravel", isActive: true },
+  { value: "QIM", label: "Quarry - Industrial Mineral", isActive: true },
 ];
 
 export const APPLICATION_TYPES_HASH = {
@@ -539,16 +543,16 @@ export const APPLICATION_TYPES_HASH = {
 
 export const APPLICATION_STATUS_CODES = {
   records: [
-    { now_application_status_code: "SUB", description: "Submitted" },
-    { now_application_status_code: "REF", description: "Referred" },
-    { now_application_status_code: "CDI", description: "Client Delay Info" },
-    { now_application_status_code: "CDB", description: "Client Delay Bond" },
-    { now_application_status_code: "GVD", description: "Govt Delay" },
-    { now_application_status_code: "CON", description: "Consultation" },
-    { now_application_status_code: "AIA", description: "Active/Issued/Approved" },
-    { now_application_status_code: "WDN", description: "Withdrawn" },
-    { now_application_status_code: "REJ", description: "Rejected" },
-    { now_application_status_code: "CLO", description: "Closed" },
+    { now_application_status_code: "SUB", description: "Submitted", active_ind: true },
+    { now_application_status_code: "REF", description: "Referred", active_ind: true },
+    { now_application_status_code: "CDI", description: "Client Delay Info", active_ind: true },
+    { now_application_status_code: "CDB", description: "Client Delay Bond", active_ind: true },
+    { now_application_status_code: "GVD", description: "Govt Delay", active_ind: true },
+    { now_application_status_code: "CON", description: "Consultation", active_ind: true },
+    { now_application_status_code: "AIA", description: "Active/Issued/Approved", active_ind: true },
+    { now_application_status_code: "WDN", description: "Withdrawn", active_ind: true },
+    { now_application_status_code: "REJ", description: "Rejected", active_ind: true },
+    { now_application_status_code: "CLO", description: "Closed", active_ind: true },
   ],
 };
 
@@ -556,16 +560,17 @@ export const DROPDOWN_APPLICATION_STATUS_CODES = [
   {
     value: "SUB",
     label: "Submitted",
+    isActive: true,
   },
-  { value: "REF", label: "Referred" },
-  { value: "CDI", label: "Client Delay Info" },
-  { value: "CDB", label: "Client Delay Bond" },
-  { value: "GVD", label: "Govt Delay" },
-  { value: "CON", label: "Consultation" },
-  { value: "AIA", label: "Active/Issued/Approved" },
-  { value: "WDN", label: "Withdrawn" },
-  { value: "REJ", label: "Rejected" },
-  { value: "CLO", label: "Closed" },
+  { value: "REF", label: "Referred", isActive: true },
+  { value: "CDI", label: "Client Delay Info", isActive: true },
+  { value: "CDB", label: "Client Delay Bond", isActive: true },
+  { value: "GVD", label: "Govt Delay", isActive: true },
+  { value: "CON", label: "Consultation", isActive: true },
+  { value: "AIA", label: "Active/Issued/Approved", isActive: true },
+  { value: "WDN", label: "Withdrawn", isActive: true },
+  { value: "REJ", label: "Rejected", isActive: true },
+  { value: "CLO", label: "Closed", isActive: true },
 ];
 
 export const APPLICATION_STATUS_CODES_HASH = {
@@ -586,26 +591,32 @@ export const UNIT_TYPES = {
     {
       unit_type_code: "MTN",
       short_description: "Tonne (Metric Ton 1,000 kg)",
+      active_ind: true,
     },
     {
       unit_type_code: "MEC",
       short_description: "Meters cubed",
+      active_ind: true,
     },
     {
       unit_type_code: "HA",
       short_description: "Hectares",
+      active_ind: true,
     },
     {
       unit_type_code: "DEG",
       short_description: "Degrees",
+      active_ind: true,
     },
     {
       unit_type_code: "PER",
       short_description: "Grade (Percent)",
+      active_ind: true,
     },
     {
       unit_type_code: "MTR",
       short_description: "Meters",
+      active_ind: true,
     },
   ],
 };
@@ -614,30 +625,37 @@ export const DROPDOWN_UNIT_TYPES = [
   {
     label: "km",
     value: "KMT",
+    isActive: true,
   },
   {
     label: "t",
     value: "MTN",
+    isActive: true,
   },
   {
     label: "m3",
     value: "MEC",
+    isActive: true,
   },
   {
     label: "ha",
     value: "HA",
+    isActive: true,
   },
   {
     label: "deg",
     value: "DEG",
+    isActive: true,
   },
   {
     label: "%",
     value: "PER",
+    isActive: true,
   },
   {
     label: "m",
     value: "MTR",
+    isActive: true,
   },
 ];
 
@@ -697,9 +715,10 @@ export const DROPDOWN_APPLICATION_PERMIT_TYPES = [
   {
     value: "MY-ABP",
     label: "Multi-Year, Area-Based Permit",
+    isActive: true,
   },
-  { value: "OYP", label: "One-Year Permit" },
-  { value: "MYP", label: "Multi-Year Permit" },
+  { value: "OYP", label: "One-Year Permit", isActive: true },
+  { value: "MYP", label: "Multi-Year Permit", isActive: true },
 ];
 
 export const NOTICE_OF_WORK_REVIEW_RESPONSE = {

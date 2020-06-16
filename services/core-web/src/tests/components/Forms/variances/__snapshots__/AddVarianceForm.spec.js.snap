@@ -111,14 +111,17 @@ exports[`AddVarianceForm renders properly 1`] = `
       data={
         Array [
           Object {
+            "isActive": true,
             "label": "Request Document",
             "value": "REQ",
           },
           Object {
+            "isActive": true,
             "label": "Recommendation Document",
             "value": "REC",
           },
           Object {
+            "isActive": true,
             "label": "Decision Document",
             "value": "DEC",
           },

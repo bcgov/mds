@@ -15,5 +15,5 @@ class SubDivisionCode(AuditMixin, Base):
         return '<SubDivisionCode %r>' % self.sub_division_code
 
     @classmethod
-    def get_active(cls):
-        return cls.query.filter_by(active_ind=True).all()
+    def get_all(cls):
+        return cls.query.all()
