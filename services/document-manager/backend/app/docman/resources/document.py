@@ -77,12 +77,13 @@ class DocumentListResource(Resource):
                 data=request.data,
                 cookies=request.cookies,
             )
-
+            current_app.logger.error(f'POST resp:\n{resp.__dict__}')
+            current_app.logger.error(f'POST resp.request:\n{resp.request.__dict__}')
             if resp.status_code != requests.codes.created:
                 message = f'Cannot upload file. Object store responded with {resp.status_code}: {resp.reason}'
                 current_app.logger.error(message)
-                current_app.logger.error(f'resp:\n{resp.__dict__}')
-                current_app.logger.error(f'resp.request:\n{resp.request.__dict__}')
+                # current_app.logger.error(f'POST resp:\n{resp.__dict__}')
+                # current_app.logger.error(f'POST resp.request:\n{resp.request.__dict__}')
                 raise BadGateway(message)
 
             object_store_upload_resource = urlparse(resp.headers['Location']).path.split('/')[-1]
@@ -196,12 +197,13 @@ class DocumentResource(Resource):
                 data=request.data,
                 cookies=request.cookies,
             )
-
+            current_app.logger.error(f'PATCH resp:\n{resp.__dict__}')
+            current_app.logger.error(f'PATCH resp.request:\n{resp.request.__dict__}')
             if resp.status_code not in [requests.codes.ok, requests.codes.no_content]:
                 message = f'Cannot upload file. Object store responded with {resp.status_code}: {resp.reason}'
                 current_app.logger.error(message)
-                current_app.logger.error(f'resp:\n{resp.__dict__}')
-                current_app.logger.error(f'resp.request:\n{resp.request.__dict__}')
+                # current_app.logger.error(f'PATCH resp:\n{resp.__dict__}')
+                # current_app.logger.error(f'PATCH resp.request:\n{resp.request.__dict__}')
                 raise BadGateway(message)
 
         # Else, write the content to the file in the file system
