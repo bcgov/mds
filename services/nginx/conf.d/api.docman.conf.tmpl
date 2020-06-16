@@ -11,6 +11,7 @@ location ${PATH_PREFIX}/document-manager/ {
 
         proxy_pass ${DOCUMENT_MANAGER_SERVICE_URL}${PATH_PREFIX}/document-manager/;
         include /opt/app-root/etc/nginx.conf.d/proxy.params;
+        include /opt/app-root/etc/nginx.conf.d/tusd.params;
 }
 
 location ${PATH_PREFIX}/document-manager/v1/ {
@@ -20,4 +21,5 @@ location ${PATH_PREFIX}/document-manager/v1/ {
 
         proxy_pass ${DOCUMENT_MANAGER_SERVICE_URL}${PATH_PREFIX}/document-manager/;
         include /opt/app-root/etc/nginx.conf.d/proxy.params;
+        include /opt/app-root/etc/nginx.conf.d/tusd.params;
 }

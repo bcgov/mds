@@ -1,0 +1,18 @@
+# ----------------------------------------------------------------------
+# | TUSD parameters                                             |
+# ----------------------------------------------------------------------
+
+# Disable request and response buffering
+proxy_request_buffering  off;
+proxy_buffering          off;
+proxy_http_version       1.1;
+
+# Add X-Forwarded-* headers
+proxy_set_header X-Forwarded-Host $server_name;
+proxy_set_header X-Forwarded-Proto https;
+proxy_set_header X-Forwarded-For "";
+proxy_set_header Forwarded "";
+
+proxy_set_header         Upgrade $http_upgrade;
+proxy_set_header         Connection "upgrade";
+client_max_body_size     0;
