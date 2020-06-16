@@ -17,6 +17,7 @@ location ${PATH_PREFIX}/document-manager/ {
         proxy_set_header         Upgrade $http_upgrade;
         proxy_set_header         Connection "upgrade";
         client_max_body_size     0;
+        underscores_in_headers on;
 }
 
 location ${PATH_PREFIX}/document-manager/v1/ {
@@ -32,5 +33,5 @@ location ${PATH_PREFIX}/document-manager/v1/ {
         proxy_set_header         Upgrade $http_upgrade;
         proxy_set_header         Connection "upgrade";
         client_max_body_size     0;
-
+        underscores_in_headers on;
 }

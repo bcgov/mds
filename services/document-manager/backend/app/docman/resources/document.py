@@ -188,6 +188,7 @@ class DocumentResource(Resource):
                 'The uploaded chunk would put the file above its declared file size')
 
         # If the object store is enabled, send the patch request through to TUSD to the object store
+        current_app.logger.error(f'PATCH request.headers:\n{request.headers.__dict__}')
         if Config.OBJECT_STORE_ENABLED:
             object_store_upload_resource = cache.get(OBJECT_STORE_UPLOAD_RESOURCE(document_guid))
             resp = requests.patch(
