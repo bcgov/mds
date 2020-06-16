@@ -12,5 +12,5 @@ class TestGetIncidentDeterminationTypeResource:
             f'/incidents/determination-types', headers=auth_headers['full_auth_header'])
         get_data = json.loads(get_resp.data.decode())
         assert get_resp.status_code == 200
-        assert len(MineIncidentDeterminationType.get_active()) > 0
-        assert len(get_data['records']) == len(MineIncidentDeterminationType.get_active())
+        assert len(MineIncidentDeterminationType.get_all()) > 0
+        assert len(get_data['records']) == len(MineIncidentDeterminationType.get_all())

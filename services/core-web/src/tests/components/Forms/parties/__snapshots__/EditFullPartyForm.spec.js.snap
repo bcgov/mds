@@ -228,10 +228,12 @@ exports[`EditFullPartyForm renders properly 1`] = `
                       "value": null,
                     },
                     Object {
+                      "isActive": true,
                       "label": "AB",
                       "value": "AB",
                     },
                     Object {
+                      "isActive": true,
                       "label": "BC",
                       "value": "BC",
                     },

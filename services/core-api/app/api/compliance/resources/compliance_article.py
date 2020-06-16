@@ -13,5 +13,5 @@ class ComplianceArticleResource(Resource, UserMixin):
     @requires_any_of([VIEW_ALL, MINESPACE_PROPONENT])
     @api.marshal_with(COMPLIANCE_ARTICLE_MODEL, code=200, envelope='records')
     def get(self):
-        records = ComplianceArticle.get_active()
+        records = ComplianceArticle.get_all()
         return records
