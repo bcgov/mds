@@ -5,7 +5,7 @@ import { remove } from "lodash";
 import { Form, Button, Popconfirm, Typography } from "antd";
 import * as FORM from "@/constants/forms";
 import CustomPropTypes from "@/customPropTypes";
-import { resetForm } from "@/utils/helpers";
+import { resetForm } from "@common/utils/helpers";
 import { VarianceDetails } from "@/components/dashboard/mine/variances/VarianceDetails";
 import VarianceFileUpload from "@/components/Forms/variances/VarianceFileUpload";
 

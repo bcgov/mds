@@ -4,7 +4,7 @@ from app.api.mines.mine.models.mine_commodity_code import MineCommodityCode
 
 
 def test_get_all_mine_commodity_types(test_client, db_session, auth_headers):
-    commodities = MineCommodityCode.query.filter_by(active_ind=True).all()
+    commodities = MineCommodityCode.query.all()
     commodity_codes = map(lambda c: c.mine_commodity_code, commodities)
     discriptions = map(lambda c: c.description, commodities)
 
@@ -15,4 +15,3 @@ def test_get_all_mine_commodity_types(test_client, db_session, auth_headers):
     assert len(records) == len(commodities)
     assert all(record['mine_commodity_code'] in commodity_codes for record in records)
     assert all(record['description'] in discriptions for record in records)
-
