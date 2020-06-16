@@ -3,6 +3,7 @@ import { PropTypes } from "prop-types";
 import { Field, Fields, formValueSelector } from "redux-form";
 import { connect } from "react-redux";
 import { Row, Col, Table, Button } from "antd";
+import { isNull } from "lodash";
 import {
   getDropdownNoticeOfWorkUndergroundExplorationTypeOptions,
   getDropdownNoticeOfWorkUnitTypeOptions,
@@ -13,7 +14,7 @@ import { TRASHCAN } from "@/constants/assets";
 import RenderField from "@/components/common/RenderField";
 import RenderFieldWithDropdown from "@/components/common/RenderFieldWithDropdown";
 import CustomPropTypes from "@/customPropTypes";
-import { NOWFieldOriginTooltip } from "@/components/common/CoreTooltip";
+import { NOWFieldOriginTooltip, NOWOrigionalValueTooltip } from "@/components/common/CoreTooltip";
 
 const propTypes = {
   isViewMode: PropTypes.bool.isRequired,
@@ -23,6 +24,7 @@ const propTypes = {
   unitTypeOptions: CustomPropTypes.options.isRequired,
   // eslint-disable-next-line react/no-unused-prop-types
   undergroundExplorationTypeOptions: CustomPropTypes.options.isRequired,
+  originalValuesIfEdited: PropTypes.objectOf(PropTypes.strings).isRequired,
 };
 
 const defaultProps = {};
@@ -36,7 +38,7 @@ export const UndergroundExploration = (props) => {
         removeOnly = true;
       }
     } else {
-      activityToChange[event.target.name] = event.target.value;
+      activityToChange[event.target.name] = event.target;
     }
     props.editRecord(
       activityToChange,
@@ -77,7 +79,7 @@ export const UndergroundExploration = (props) => {
             onChange={(e) => editActivity(e, record.index, false)}
           >
             {props.undergroundExplorationTypeOptions.map((type) => (
-              <option value={type.value}>{type.label}</option>
+              <option value={type}>{type.label}</option>
             ))}
           </select>
         </div>
@@ -284,7 +286,17 @@ export const UndergroundExploration = (props) => {
       </Row>
       <Row gutter={16}>
         <Col md={12} sm={24}>
-          <div className="field-title">Total Ore</div>
+          <div className="field-title">
+            Total Ore
+            <NOWOrigionalValueTooltip
+              origionalValue={
+                props.originalValuesIfEdited["underground_exploration.total_ore_amount"]
+              }
+              isVisible={
+                !isNull(props.originalValuesIfEdited["underground_exploration.total_ore_amount"])
+              }
+            />
+          </div>
           <Fields
             names={["total_ore_amount", "total_ore_unit_type_code"]}
             id="total_ore_amount"
@@ -296,7 +308,17 @@ export const UndergroundExploration = (props) => {
           />
         </Col>
         <Col md={12} sm={24}>
-          <div className="field-title">Total Waste</div>
+          <div className="field-title">
+            Total Waste
+            <NOWOrigionalValueTooltip
+              origionalValue={
+                props.originalValuesIfEdited["underground_exploration.total_waste_amount"]
+              }
+              isVisible={
+                !isNull(props.originalValuesIfEdited["underground_exploration.total_waste_amount"])
+              }
+            />
+          </div>
           <Fields
             names={["total_waste_amount", "total_waste_unit_type_code"]}
             id="total_waste_amount"

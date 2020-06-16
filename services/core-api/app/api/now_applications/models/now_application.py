@@ -4,6 +4,7 @@ from sqlalchemy.schema import FetchedValue
 from sqlalchemy.ext.associationproxy import association_proxy
 from werkzeug.exceptions import NotFound
 from sqlalchemy.ext.hybrid import hybrid_property
+from datetime import datetime
 
 from app.api.utils.models_mixins import Base, AuditMixin
 from app.extensions import db
@@ -12,6 +13,7 @@ from .now_application_type import NOWApplicationType
 from .now_application_status import NOWApplicationStatus
 from .now_application_identity import NOWApplicationIdentity
 from app.api.constants import *
+from app.api.utils.include.user_info import User
 
 from app.api.now_submissions.models.document import Document
 
@@ -55,6 +57,12 @@ class NOWApplication(Base, AuditMixin):
     status_updated_date = db.Column(db.Date,
                                     nullable=False,
                                     server_default=FetchedValue())
+    last_updated_date = db.Column(db.Date,
+                                  default=datetime.utcnow,
+                                  onupdate=datetime.utcnow)
+    last_updated_by = db.Column(db.String,
+                                default=User().get_user_username,
+                                onupdate=User().get_user_username)
     submitted_date = db.Column(db.Date, nullable=False)
     received_date = db.Column(db.Date, nullable=False)
     latitude = db.Column(db.Numeric(9, 7))
@@ -188,3 +196,8 @@ class NOWApplication(Base, AuditMixin):
             uuid.UUID(str(guid), version=4)
         except ValueError:
             raise AssertionError(msg)
+
+    def save(self, commit=True):
+        self.last_updated_by = User().get_user_username()
+        self.last_updated_date = datetime.utcnow()
+        super(NOWApplication, self).save(commit)

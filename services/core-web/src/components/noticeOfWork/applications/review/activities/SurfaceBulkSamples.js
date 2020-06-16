@@ -3,6 +3,7 @@ import { PropTypes } from "prop-types";
 import { Field, formValueSelector } from "redux-form";
 import { connect } from "react-redux";
 import { Row, Col, Table, Button } from "antd";
+import { isNull } from "lodash";
 import { maxLength, number, required } from "@common/utils/Validate";
 import * as FORM from "@/constants/forms";
 import { TRASHCAN } from "@/constants/assets";
@@ -11,7 +12,7 @@ import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
 import RenderRadioButtons from "@/components/common/RenderRadioButtons";
 import Equipment from "@/components/noticeOfWork/applications/review/activities/Equipment";
 import CustomPropTypes from "@/customPropTypes";
-import { NOWFieldOriginTooltip } from "@/components/common/CoreTooltip";
+import { NOWFieldOriginTooltip, NOWOrigionalValueTooltip } from "@/components/common/CoreTooltip";
 
 const propTypes = {
   isViewMode: PropTypes.bool.isRequired,
@@ -19,6 +20,7 @@ const propTypes = {
   equipment: CustomPropTypes.activityEquipment.isRequired,
   editRecord: PropTypes.func.isRequired,
   addRecord: PropTypes.func.isRequired,
+  originalValuesIfEdited: PropTypes.objectOf(PropTypes.strings).isRequired,
 };
 
 const defaultProps = {};
@@ -32,7 +34,7 @@ export const SurfaceBulkSamples = (props) => {
         removeOnly = true;
       }
     } else {
-      activityToChange[event.target.name] = event.target.value;
+      activityToChange[event.target.name] = event.target;
     }
     props.editRecord(
       activityToChange,
@@ -180,7 +182,19 @@ export const SurfaceBulkSamples = (props) => {
       <br />
       <Row gutter={16}>
         <Col md={12} sm={24}>
-          <div className="field-title">Processing Methods</div>
+          <div className="field-title">
+            Processing Methods
+            <NOWOrigionalValueTooltip
+              origionalValue={
+                props.originalValuesIfEdited["surface_bulk_sample.processing_method_description"]
+              }
+              isVisible={
+                !isNull(
+                  props.originalValuesIfEdited["surface_bulk_sample.processing_method_description"]
+                )
+              }
+            />
+          </div>
           <Field
             id="processing_method_description"
             name="processing_method_description"
@@ -243,6 +257,14 @@ export const SurfaceBulkSamples = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Proposed reclamation and timing for this specific activity
+            <NOWOrigionalValueTooltip
+              origionalValue={
+                props.originalValuesIfEdited["surface_bulk_sample.reclamation_description"]
+              }
+              isVisible={
+                !isNull(props.originalValuesIfEdited["surface_bulk_sample.reclamation_description"])
+              }
+            />
           </div>
           <Field
             id="reclamation_description"
@@ -255,6 +277,12 @@ export const SurfaceBulkSamples = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Estimated Cost of reclamation activities described above
+            <NOWOrigionalValueTooltip
+              origionalValue={props.originalValuesIfEdited["surface_bulk_sample.reclamation_cost"]}
+              isVisible={
+                !isNull(props.originalValuesIfEdited["surface_bulk_sample.reclamation_cost"])
+              }
+            />
           </div>
           <Field
             id="reclamation_cost"

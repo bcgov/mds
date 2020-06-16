@@ -11,6 +11,11 @@ const defaultProps = {
   title: null,
 };
 
+const OrigionalValuePropTypes = {
+  origionalValue: PropTypes.string.isRequired,
+  isVisible: PropTypes.bool.isRequired,
+};
+
 export const CoreTooltip = (props) => (
   <Tooltip title={props.title} placement="right" mouseEnterDelay={0.3}>
     <img src={INFO_CIRCLE} alt="Info" className="info-tooltip" />
@@ -21,5 +26,17 @@ export const NOWFieldOriginTooltip = () => (
   <CoreTooltip title="This field is not being sent by NROS or vFCBC. Open the original PDF to see the data." />
 );
 
+export const NOWOrigionalValueTooltip = (props) => (
+  <Tooltip
+    title={props.origionalValue}
+    placement="right"
+    mouseEnterDelay={0.3}
+    className="position-right"
+  >
+    {props.isVisible && <span className="violet">Edited</span>}
+  </Tooltip>
+);
+
 CoreTooltip.propTypes = propTypes;
 CoreTooltip.defaultProps = defaultProps;
+NOWOrigionalValueTooltip.propTypes = OrigionalValuePropTypes;

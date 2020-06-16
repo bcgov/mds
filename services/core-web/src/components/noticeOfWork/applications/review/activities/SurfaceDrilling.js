@@ -3,18 +3,21 @@ import { PropTypes } from "prop-types";
 import { Field, formValueSelector } from "redux-form";
 import { connect } from "react-redux";
 import { Row, Col, Table, Button } from "antd";
+import { isNull } from "lodash";
 import { maxLength, number } from "@common/utils/Validate";
 import * as FORM from "@/constants/forms";
 import { TRASHCAN } from "@/constants/assets";
 import RenderField from "@/components/common/RenderField";
 import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
 import CustomPropTypes from "@/customPropTypes";
+import { NOWOrigionalValueTooltip } from "@/components/common/CoreTooltip";
 
 const propTypes = {
   isViewMode: PropTypes.bool.isRequired,
   details: CustomPropTypes.activityDetails.isRequired,
   editRecord: PropTypes.func.isRequired,
   addRecord: PropTypes.func.isRequired,
+  originalValuesIfEdited: PropTypes.objectOf(PropTypes.strings).isRequired,
 };
 
 const defaultProps = {};
@@ -28,7 +31,7 @@ export const SurfaceDrilling = (props) => {
         removeOnly = true;
       }
     } else {
-      activityToChange[event.target.name] = event.target.value;
+      activityToChange[event.target.name] = event.target;
     }
     props.editRecord(
       activityToChange,
@@ -178,7 +181,23 @@ export const SurfaceDrilling = (props) => {
       <h4>Support of the Drilling Program</h4>
       <Row gutter={16}>
         <Col md={12} sm={24}>
-          <div className="field-title">The Drilling program will be</div>
+          <div className="field-title">
+            The Drilling program will be
+            <NOWOrigionalValueTooltip
+              origionalValue={
+                props.originalValuesIfEdited[
+                  "exploration_surface_drilling.reclamation_core_storage"
+                ]
+              }
+              isVisible={
+                !isNull(
+                  props.originalValuesIfEdited[
+                    "exploration_surface_drilling.reclamation_core_storage"
+                  ]
+                )
+              }
+            />
+          </div>
           <Field
             id="reclamation_core_storage"
             name="reclamation_core_storage"
@@ -194,6 +213,18 @@ export const SurfaceDrilling = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Proposed reclamation and timing for this specific activity
+            <NOWOrigionalValueTooltip
+              origionalValue={
+                props.originalValuesIfEdited["exploration_surface_drilling.reclamation_description"]
+              }
+              isVisible={
+                !isNull(
+                  props.originalValuesIfEdited[
+                    "exploration_surface_drilling.reclamation_description"
+                  ]
+                )
+              }
+            />
           </div>
           <Field
             id="reclamation_description"
@@ -206,6 +237,16 @@ export const SurfaceDrilling = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Estimated Cost of reclamation activities described above
+            <NOWOrigionalValueTooltip
+              origionalValue={
+                props.originalValuesIfEdited["exploration_surface_drilling.reclamation_cost"]
+              }
+              isVisible={
+                !isNull(
+                  props.originalValuesIfEdited["exploration_surface_drilling.reclamation_cost"]
+                )
+              }
+            />
           </div>
           <Field
             id="reclamation_cost"

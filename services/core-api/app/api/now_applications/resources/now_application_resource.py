@@ -8,6 +8,7 @@ from werkzeug.exceptions import BadRequest, InternalServerError, NotFound, NotIm
 from app.extensions import api, db
 from app.api.utils.access_decorators import requires_role_view_all, requires_role_edit_permit
 
+from app.api.utils.include.user_info import User
 from app.api.utils.resources_mixins import UserMixin
 from app.api.utils.custom_reqparser import CustomReqparser
 
@@ -65,7 +66,6 @@ class NOWApplicationResource(Resource, UserMixin):
                 'This application has not been imported. Please import an application before making changes.'
             )
         data = request.json
-
         lead_inspector_party_guid = data.get('lead_inspector_party_guid', None)
         if lead_inspector_party_guid is not None:
             now_application_identity.now_application.lead_inspector_party_guid = lead_inspector_party_guid

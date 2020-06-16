@@ -441,6 +441,11 @@ export const getDropdownNoticeOfWorkApplicationPermitTypeOptions = createSelecto
   (options) => createDropDownList(options, "description", "now_application_permit_type_code")
 );
 
+export const getNoticeOfWorkApplicationPermitTypeOptionsHash = createSelector(
+  [getDropdownNoticeOfWorkApplicationPermitTypeOptions],
+  createLabelHash
+);
+
 export const getDropdownNoticeOfWorkApplicationReviewTypeOptions = createSelector(
   [getNoticeOfWorkApplicationReviewOptions],
   (options) => createDropDownList(options, "description", "now_application_review_type_code")

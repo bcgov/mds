@@ -2,6 +2,7 @@ import React from "react";
 import { PropTypes } from "prop-types";
 import { Field, formValueSelector } from "redux-form";
 import { connect } from "react-redux";
+import { isNull } from "lodash";
 import { Row, Col, Table, Button } from "antd";
 import { maxLength, number } from "@common/utils/Validate";
 import * as FORM from "@/constants/forms";
@@ -9,12 +10,14 @@ import { TRASHCAN } from "@/constants/assets";
 import RenderField from "@/components/common/RenderField";
 import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
 import CustomPropTypes from "@/customPropTypes";
+import { NOWOrigionalValueTooltip } from "@/components/common/CoreTooltip";
 
 const propTypes = {
   isViewMode: PropTypes.bool.isRequired,
   details: CustomPropTypes.activityDetails.isRequired,
   editRecord: PropTypes.func.isRequired,
   addRecord: PropTypes.func.isRequired,
+  originalValuesIfEdited: PropTypes.objectOf(PropTypes.strings).isRequired,
 };
 
 const defaultProps = {};
@@ -28,7 +31,7 @@ export const CutLines = (props) => {
         removeOnly = true;
       }
     } else {
-      activityToChange[event.target.name] = event.target.value;
+      activityToChange[event.target.name] = event.target;
     }
     props.editRecord(
       activityToChange,
@@ -160,6 +163,20 @@ export const CutLines = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Proposed reclamation and timing for this specific activity
+            <NOWOrigionalValueTooltip
+              origionalValue={
+                props.originalValuesIfEdited[
+                  "cut_lines_polarization_survey.reclamation_description"
+                ]
+              }
+              isVisible={
+                !isNull(
+                  props.originalValuesIfEdited[
+                    "cut_lines_polarization_survey.reclamation_description"
+                  ]
+                )
+              }
+            />
           </div>
           <Field
             id="reclamation_description"
@@ -172,6 +189,16 @@ export const CutLines = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Estimated Cost of reclamation activities described above
+            <NOWOrigionalValueTooltip
+              origionalValue={
+                props.originalValuesIfEdited["cut_lines_polarization_survey.reclamation_cost"]
+              }
+              isVisible={
+                !isNull(
+                  props.originalValuesIfEdited["cut_lines_polarization_survey.reclamation_cost"]
+                )
+              }
+            />
           </div>
           <Field
             id="reclamation_cost"

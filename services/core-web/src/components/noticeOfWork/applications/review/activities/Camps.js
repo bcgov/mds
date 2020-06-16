@@ -2,6 +2,7 @@ import React from "react";
 import { PropTypes } from "prop-types";
 import { Field, formValueSelector } from "redux-form";
 import { connect } from "react-redux";
+import { isNull } from "lodash";
 import { Row, Col, Table, Button } from "antd";
 import { maxLength, number, requiredRadioButton } from "@common/utils/Validate";
 import * as FORM from "@/constants/forms";
@@ -10,12 +11,14 @@ import RenderField from "@/components/common/RenderField";
 import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
 import RenderRadioButtons from "@/components/common/RenderRadioButtons";
 import CustomPropTypes from "@/customPropTypes";
+import { NOWOrigionalValueTooltip } from "@/components/common/CoreTooltip";
 
 const propTypes = {
   isViewMode: PropTypes.bool.isRequired,
   details: CustomPropTypes.activityDetails.isRequired,
   editRecord: PropTypes.func.isRequired,
   addRecord: PropTypes.func.isRequired,
+  originalValuesIfEdited: PropTypes.objectOf(PropTypes.strings).isRequired,
 };
 
 const defaultProps = {};
@@ -29,7 +32,7 @@ export const Camps = (props) => {
         removeOnly = true;
       }
     } else {
-      activityToChange[event.target.name] = event.target.value;
+      activityToChange[event.target.name] = event.target;
     }
     props.editRecord(activityToChange, "camps.details", rowIndex, isDelete, removeOnly);
   };
@@ -151,7 +154,13 @@ export const Camps = (props) => {
       <h4>Fuel</h4>
       <Row gutter={16}>
         <Col md={12} sm={24}>
-          <div className="field-title">Do you propose to store fuel?</div>
+          <div className="field-title">
+            Do you propose to store fuel?
+            <NOWOrigionalValueTooltip
+              origionalValue={props.originalValuesIfEdited["camps.has_fuel_stored"]}
+              isVisible={!isNull(props.originalValuesIfEdited["camps.has_fuel_stored"])}
+            />
+          </div>
           <Field
             id="has_fuel_stored"
             name="has_fuel_stored"
@@ -161,7 +170,13 @@ export const Camps = (props) => {
           />
         </Col>
         <Col md={12} sm={24}>
-          <div className="field-title">Volume of fuel stored</div>
+          <div className="field-title">
+            Volume of fuel stored
+            <NOWOrigionalValueTooltip
+              origionalValue={props.originalValuesIfEdited["camps.volume_fuel_stored"]}
+              isVisible={!isNull(props.originalValuesIfEdited["camps.volume_fuel_stored"])}
+            />
+          </div>
           <Field
             id="volume_fuel_stored"
             name="volume_fuel_stored"
@@ -175,6 +190,10 @@ export const Camps = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">Storage Method</div>
           <Col md={12} sm={24}>
+            <NOWOrigionalValueTooltip
+              origionalValue={props.originalValuesIfEdited["camps.has_fuel_stored_in_bulk"]}
+              isVisible={!isNull(props.originalValuesIfEdited["camps.has_fuel_stored_in_bulk"])}
+            />
             <Field
               label="Bulk"
               id="has_fuel_stored_in_bulk"
@@ -185,6 +204,10 @@ export const Camps = (props) => {
             />
           </Col>
           <Col md={12} sm={24}>
+            <NOWOrigionalValueTooltip
+              origionalValue={props.originalValuesIfEdited["camps.has_fuel_stored_in_barrels"]}
+              isVisible={!isNull(props.originalValuesIfEdited["camps.has_fuel_stored_in_barrels"])}
+            />
             <Field
               label="Barrell"
               id="has_fuel_stored_in_barrels"
@@ -202,6 +225,10 @@ export const Camps = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Proposed reclamation and timing for this specific activity
+            <NOWOrigionalValueTooltip
+              origionalValue={props.originalValuesIfEdited["camps.reclamation_description"]}
+              isVisible={!isNull(props.originalValuesIfEdited["camps.reclamation_description"])}
+            />
           </div>
           <Field
             id="reclamation_description"
@@ -214,6 +241,10 @@ export const Camps = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Estimated Cost of reclamation activities described above
+            <NOWOrigionalValueTooltip
+              origionalValue={props.originalValuesIfEdited["camps.reclamation_cost"]}
+              isVisible={!isNull(props.originalValuesIfEdited["camps.reclamation_cost"])}
+            />
           </div>
           <Field
             id="reclamation_cost"

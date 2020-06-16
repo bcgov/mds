@@ -2,6 +2,7 @@ import React from "react";
 import { PropTypes } from "prop-types";
 import { Field, formValueSelector } from "redux-form";
 import { connect } from "react-redux";
+import { isNull } from "lodash";
 import { Row, Col, Table, Button } from "antd";
 import { maxLength, number } from "@common/utils/Validate";
 import * as FORM from "@/constants/forms";
@@ -11,7 +12,7 @@ import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
 import RenderField from "@/components/common/RenderField";
 import Equipment from "@/components/noticeOfWork/applications/review/activities/Equipment";
 import CustomPropTypes from "@/customPropTypes";
-import { NOWFieldOriginTooltip } from "@/components/common/CoreTooltip";
+import { NOWFieldOriginTooltip, NOWOrigionalValueTooltip } from "@/components/common/CoreTooltip";
 
 const propTypes = {
   isViewMode: PropTypes.bool.isRequired,
@@ -19,6 +20,7 @@ const propTypes = {
   equipment: CustomPropTypes.activityEquipment.isRequired,
   editRecord: PropTypes.func.isRequired,
   addRecord: PropTypes.func.isRequired,
+  originalValuesIfEdited: PropTypes.objectOf(PropTypes.strings).isRequired,
 };
 
 const defaultProps = {};
@@ -32,7 +34,7 @@ export const Placer = (props) => {
         removeOnly = true;
       }
     } else {
-      activityToChange[event.target.name] = event.target.value;
+      activityToChange[event.target.name] = event.target;
     }
     props.editRecord(activityToChange, "placer_operation.details", rowIndex, isDelete, removeOnly);
   };
@@ -200,6 +202,10 @@ export const Placer = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Is this an application for Underground Placer Operations?
+            <NOWOrigionalValueTooltip
+              origionalValue={props.originalValuesIfEdited["placer_operation.is_underground"]}
+              isVisible={!isNull(props.originalValuesIfEdited["placer_operation.is_underground"])}
+            />
           </div>
           <Field
             id="is_underground"
@@ -209,7 +215,15 @@ export const Placer = (props) => {
           />
         </Col>
         <Col md={12} sm={24}>
-          <div className="field-title">Is this an application for Hand Operations?</div>
+          <div className="field-title">
+            Is this an application for Hand Operations?
+            <NOWOrigionalValueTooltip
+              origionalValue={props.originalValuesIfEdited["placer_operation.is_hand_operation"]}
+              isVisible={
+                !isNull(props.originalValuesIfEdited["placer_operation.is_hand_operation"])
+              }
+            />
+          </div>
           <Field
             id="is_hand_operation"
             name="is_hand_operation"
@@ -260,7 +274,15 @@ export const Placer = (props) => {
       <h4>Reclamation Program</h4>
       <Row gutter={16}>
         <Col md={12} sm={24}>
-          <div className="field-title">Total area of planned reclamation this year</div>
+          <div className="field-title">
+            Total area of planned reclamation this year
+            <NOWOrigionalValueTooltip
+              origionalValue={props.originalValuesIfEdited["placer_operation.total_disturbed_area"]}
+              isVisible={
+                !isNull(props.originalValuesIfEdited["placer_operation.total_disturbed_area"])
+              }
+            />
+          </div>
           <Field
             id="total_disturbed_area"
             name="total_disturbed_area"
@@ -274,6 +296,14 @@ export const Placer = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Proposed reclamation and timing for this specific activity
+            <NOWOrigionalValueTooltip
+              origionalValue={
+                props.originalValuesIfEdited["placer_operation.reclamation_description"]
+              }
+              isVisible={
+                !isNull(props.originalValuesIfEdited["placer_operation.reclamation_description"])
+              }
+            />
           </div>
           <Field
             id="reclamation_description"
@@ -286,6 +316,10 @@ export const Placer = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Estimated Cost of reclamation activities described above
+            <NOWOrigionalValueTooltip
+              origionalValue={props.originalValuesIfEdited["placer_operation.reclamation_cost"]}
+              isVisible={!isNull(props.originalValuesIfEdited["placer_operation.reclamation_cost"])}
+            />
           </div>
           <Field
             id="reclamation_cost"

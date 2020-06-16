@@ -3,6 +3,7 @@ import { PropTypes } from "prop-types";
 import { Field, formValueSelector } from "redux-form";
 import { connect } from "react-redux";
 import { Row, Col, Table, Button } from "antd";
+import { isNull } from "lodash";
 import { maxLength, number } from "@common/utils/Validate";
 import * as FORM from "@/constants/forms";
 import { TRASHCAN } from "@/constants/assets";
@@ -11,9 +12,10 @@ import RenderField from "@/components/common/RenderField";
 import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
 import RenderRadioButtons from "@/components/common/RenderRadioButtons";
 import CustomPropTypes from "@/customPropTypes";
-import { NOWFieldOriginTooltip } from "@/components/common/CoreTooltip";
+import { NOWFieldOriginTooltip, NOWOrigionalValueTooltip } from "@/components/common/CoreTooltip";
 
 const propTypes = {
+  originalValuesIfEdited: PropTypes.objectOf(PropTypes.strings).isRequired,
   isViewMode: PropTypes.bool.isRequired,
   details: CustomPropTypes.activityDetails.isRequired,
   equipment: CustomPropTypes.activityEquipment.isRequired,
@@ -32,7 +34,7 @@ export const AccessRoads = (props) => {
         removeOnly = true;
       }
     } else {
-      activityToChange[event.target.name] = event.target.value;
+      activityToChange[event.target.name] = event.target;
     }
     props.editRecord(
       activityToChange,
@@ -218,6 +220,14 @@ export const AccessRoads = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Proposed reclamation and timing for this specific activity
+            <NOWOrigionalValueTooltip
+              origionalValue={
+                props.originalValuesIfEdited["exploration_access.reclamation_description"]
+              }
+              isVisible={
+                !isNull(props.originalValuesIfEdited["exploration_access.reclamation_description"])
+              }
+            />
           </div>
           <Field
             id="reclamation_description"
@@ -230,6 +240,12 @@ export const AccessRoads = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Estimated Cost of reclamation activities described above
+            <NOWOrigionalValueTooltip
+              origionalValue={props.originalValuesIfEdited["exploration_access.reclamation_cost"]}
+              isVisible={
+                !isNull(props.originalValuesIfEdited["exploration_access.reclamation_cost"])
+              }
+            />
           </div>
           <Field
             id="reclamation_cost"

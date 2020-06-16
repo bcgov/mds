@@ -1,6 +1,6 @@
-/* eslint-disable */
-import { isEmpty, transform, isEqual, isObject, differenceWith } from "lodash";
+import { isEmpty, get } from "lodash";
 import { createSelector } from "reselect";
+import { flattenObject } from "@common/utils/helpers";
 import * as noticeOfWorkReducer from "../reducers/noticeOfWorkReducer";
 import { getDropdownNoticeOfWorkActivityTypeOptions } from "./staticContentSelectors";
 
@@ -42,20 +42,24 @@ export const getNOWReclamationSummary = createSelector(
   }
 );
 
-const difference = (object, base) => {
-  function changes(object, base) {
-    return transform(object, function(result, value, key) {
-      if (!isEqual(value, base[key])) {
-        result[key] = isObject(value) && isObject(base[key]) ? changes(value, base[key]) : value;
-      }
-    });
-  }
-  return changes(object, base);
-};
-
-export const getEditedNOWDiff = createSelector(
+export const getOriginalValuesIfEdited = createSelector(
   [getNoticeOfWork, getOriginalNoticeOfWork],
   (noticeOfWork, originalNoticeOfWork) => {
-    return difference(noticeOfWork, originalNoticeOfWork);
+    const current = flattenObject(noticeOfWork);
+    const keys = Object.keys(current);
+    keys.map((path) => {
+      const prevValue = get(originalNoticeOfWork, path);
+      const currentValue = get(noticeOfWork, path);
+      const prevValueExisted = prevValue !== null || prevValue !== undefined;
+      if (prevValue !== currentValue && prevValueExisted) {
+        // check if the value has changed, if so, set it to be the previous value
+        current[path] = prevValue;
+        return current;
+      }
+      // otherwise return null, the FE checks if null and doesn't show 'Edited'
+      current[path] = null;
+      return current;
+    });
+    return current;
   }
 );
