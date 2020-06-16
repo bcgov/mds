@@ -191,6 +191,18 @@ exports[`MineHeader renders dispatchProperly 1`] = `
       <p
         className="field-title"
       >
+        Mine Alias in MMS
+      </p>
+      <p>
+        N/A
+      </p>
+    </div>
+    <div
+      className="inline-flex padding-small wrap"
+    >
+      <p
+        className="field-title"
+      >
         Exemption Status
       </p>
       <div>
