@@ -24,6 +24,7 @@ export class Index extends Component {
       instance = createInstance({
         urlBase: ENVIRONMENT.matomoUrl,
         enableLinkTracking: false,
+        siteId: 2,
       });
       this.setState({ environment: true });
     });
