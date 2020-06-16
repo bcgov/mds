@@ -10,7 +10,7 @@ from app.api.mines.mine.models.mine import Mine
 from app.api.parties.party.models.party import Party
 from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
 from app.extensions import api, db
-from app.api.utils.access_decorators import requires_role_view_all, requires_role_edit_permit
+from app.api.utils.access_decorators import requires_role_view_all, requires_role_edit_permit, requires_role_mine_admin
 from app.api.utils.resources_mixins import UserMixin
 from app.api.mines.response_models import PERMIT_MODEL
 
@@ -181,3 +181,14 @@ class PermitResource(Resource, UserMixin):
 
         permit.save()
         return permit
+
+    @api.doc(params={'permit_guid': 'Permit guid.'})
+    @requires_role_mine_admin
+    @api.response(204, 'Successfully deleted.')
+    def delete(self, permit_guid, mine_guid):
+        permit = Permit.find_by_permit_guid(permit_guid)
+        if not permit:
+            raise NotFound('Permit not found.')
+
+        permit.soft_delete()
+        return None, 204
