@@ -29,5 +29,5 @@ class ComplianceArticle(AuditMixin, Base):
         return cls.query.filter_by(compliance_article_id=id).first()
 
     @classmethod
-    def get_active(cls):
+    def get_all(cls):
         return cls.query.all()

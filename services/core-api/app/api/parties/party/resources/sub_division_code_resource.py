@@ -13,4 +13,4 @@ class SubDivisionCodeResource(Resource, UserMixin):
     @requires_role_view_all
     @api.marshal_with(SUB_DIVISION_CODE_MODEL, envelope='records', code=200)
     def get(self):
-        return SubDivisionCode.get_active()
+        return SubDivisionCode.get_all()
