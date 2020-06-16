@@ -12,6 +12,7 @@ ignore_invalid_headers off;
 add_header X-UA-Compatible "IE=Edge";
 add_header Pragma "no-cache";
 add_header X-XSS-Protection 1;
+underscores_in_headers on;
 
 # Import additional configuration files
 include       /opt/app-root/etc/nginx.conf.d/*.common.conf;
