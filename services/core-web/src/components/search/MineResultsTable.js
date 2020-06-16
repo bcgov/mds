@@ -36,7 +36,7 @@ export const MineResultsTable = (props) => {
         </Row>,
         <Row className="padding-small--top">
           <Col xs={24} md={4}>
-            <p>Alias</p>
+            <p>Legacy Alias</p>
           </Col>
           <Col xs={24} md={4}>
             <p>
