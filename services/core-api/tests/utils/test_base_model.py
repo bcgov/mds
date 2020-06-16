@@ -67,17 +67,17 @@ def test_update_unexpected_type(db_session):
 
 
 def test_update_field_in_nested_item(db_session):
-    mine, permit = create_mine_and_permit(num_permit_amendments=5)
-    new_permit_no = 'XXX-9999'
-    partial_mine_permit_dict = marshal(
-        {'mine_permit': mine.mine_permit},
-        api.model('test_list', {'mine_permit': fields.List(fields.Nested(PERMIT_MODEL))}))
-    partial_mine_permit_dict['mine_permit'][1]['permit_no'] = new_permit_no
-    #mine_permit isn't a sqlAlchemy relationship.... what do....
-    mine.deep_update_from_dict(partial_mine_permit_dict, _edit_key=PERMIT_EDIT_GROUP)
+    now_app = NOWApplicationIdentityFactory().now_application
 
-    mine = Mine.query.filter_by(mine_guid=mine.mine_guid).first()
-    assert mine.mine_permit[1].permit_no == new_permit_no
+    new_reclam_desc = "TEST DESCRIPTIONzzzz"
+
+    now_app_dict = marshal(now_app, NOW_APPLICATION_MODEL)
+    now_app_dict['camps']['reclamation_description'] = new_reclam_desc
+
+    now_app.deep_update_from_dict(now_app_dict)
+
+    db_session.refresh(now_app)
+    assert now_app.camps.reclamation_description == new_reclam_desc
 
 
 #schema implemented for now_application_activity_details only
@@ -235,7 +235,7 @@ def test_update_decimal_with_decimal_passes(db_session):
 
 
 def test_update_date_with_string_fails(db_session):
-    mine = MineFactory(mine_permit_amendments=1)
+    mine, permit = create_mine_and_permit()
     partial_mine_permit_dict = marshal(
         {'mine_permit': mine.mine_permit},
         api.model('test_list', {'mine_permit': fields.List(fields.Nested(PERMIT_MODEL))}))
@@ -248,7 +248,7 @@ def test_update_date_with_string_fails(db_session):
 
 
 def test_update_date_with_empty_list_fails(db_session):
-    mine = MineFactory(mine_permit_amendments=1)
+    mine, permit = create_mine_and_permit()
     partial_mine_permit_dict = marshal(
         {'mine_permit': mine.mine_permit},
         api.model('test_list', {'mine_permit': fields.List(fields.Nested(PERMIT_MODEL))}))
@@ -261,7 +261,7 @@ def test_update_date_with_empty_list_fails(db_session):
 
 
 def test_update_date_with_empty_string_sets_null(db_session):
-    mine = MineFactory(mine_permit_amendments=1)
+    mine, permit = create_mine_and_permit()
     partial_mine_permit_dict = marshal(
         {'mine_permit': mine.mine_permit},
         api.model('test_list', {'mine_permit': fields.List(fields.Nested(PERMIT_MODEL))}))
@@ -271,7 +271,7 @@ def test_update_date_with_empty_string_sets_null(db_session):
 
 
 def test_update_date_with_null_sets_null(db_session):
-    mine = MineFactory(mine_permit_amendments=1)
+    mine, permit = create_mine_and_permit()
     partial_mine_permit_dict = marshal(
         {'mine_permit': mine.mine_permit},
         api.model('test_list', {'mine_permit': fields.List(fields.Nested(PERMIT_MODEL))}))
@@ -281,7 +281,7 @@ def test_update_date_with_null_sets_null(db_session):
 
 
 def test_update_date_with_date_string_passes(db_session):
-    mine = MineFactory(mine_permit_amendments=1)
+    mine, permit = create_mine_and_permit()
     partial_mine_permit_dict = marshal(
         {'mine_permit': mine.mine_permit},
         api.model('test_list', {'mine_permit': fields.List(fields.Nested(PERMIT_MODEL))}))
