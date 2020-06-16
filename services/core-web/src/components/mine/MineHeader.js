@@ -292,7 +292,7 @@ export class MineHeader extends Component {
             </div>
           </div>
           <div className="inline-flex padding-small wrap">
-            <p className="field-title">Mine Alias in MMS</p>
+            <p className="field-title">Legacy Alias</p>
             <p>{this.props.mine.mms_alias ? this.props.mine.mms_alias : String.EMPTY_FIELD}</p>
           </div>
           <div className="inline-flex padding-small wrap">
