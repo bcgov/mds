@@ -105,10 +105,11 @@ class Base(db.Model):
         Side-Effect: Self attributes have been overwritten by values in data_dict, matched on key, recursivly.
         """
         current_app.logger.debug(depth * '-' + f'updating{self}')
-        model = inspect(self.__class__)
+        mapper = inspect(self.__class__)
         editable_columns = [
-            c for c in model.columns if c.name not in [pk.name for pk in model.primary_key]
+            c for c in mapper.columns if c.name not in [pk.name for pk in mapper.primary_key]
         ]
+        class_relationships = mapper.relationships
 
         if not _edit_key:
             if not self._edit_key:
@@ -120,8 +121,10 @@ class Base(db.Model):
 
         for k, v in data_dict.items():
             current_app.logger.debug(depth * '>' + f'{type(v)}-{k}')
-
             if isinstance(v, dict):
+                if k not in [r for r, x in class_relationships.items()]:
+                    current_app.logger.debug(f'key <{k}> is not a relationship, skipping')
+                    continue
                 if len(v.keys()) < 1:
                     continue
                 rel = getattr(self.__class__, k)
@@ -131,7 +134,7 @@ class Base(db.Model):
                         f'COMBOBREAKER!!! {_edit_key} not in {rel_class} edit groups {rel_class._edit_groups}'
                     )
                     continue
-                current_app.logger.debug(depth * ' ' + f'recursivly updating {k}')
+                current_app.logger.debug(depth * ' ' + f'recursively updating {k}')
                 existing_obj = getattr(self, k)
                 if existing_obj is None:
                     setattr(self, k, rel_class())

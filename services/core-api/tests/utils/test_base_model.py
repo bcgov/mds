@@ -4,7 +4,7 @@ from app.extensions import jwt, api
 from app.api.utils.models_mixins import DictLoadingError
 from app.api.now_applications.models.activity_detail.camp_detail import CampDetail
 from tests.constants import VIEW_ONLY_AUTH_CLAIMS, TOKEN_HEADER
-from tests.factories import MineFactory, PermitFactory
+from tests.factories import MineFactory, PermitFactory, create_mine_and_permit
 from tests.now_application_factories import NOWApplicationIdentityFactory
 
 from flask_restplus import marshal, fields
@@ -47,14 +47,14 @@ def test_update_ignores_pk_change(db_session):
 
 
 def test_update_ignores_related_object_not_in_edit_group(db_session):
-    mine = MineFactory()
+    mine, permit = create_mine_and_permit()
     mine_dict = {
         'mine': {
             'mine_name': "NEW_MINE_NAME"
         },
     }
-
-    mine.mine_permit[0].deep_update_from_dict(mine_dict)
+    print(permit.mine)
+    permit.deep_update_from_dict(mine_dict)
     assert mine.mine_name != 'NEW_MINE_NAME'
 
 
@@ -67,12 +67,13 @@ def test_update_unexpected_type(db_session):
 
 
 def test_update_field_in_nested_item(db_session):
-    mine = MineFactory(mine_permit_amendments=5)
+    mine, permit = create_mine_and_permit(num_permit_amendments=5)
     new_permit_no = 'XXX-9999'
     partial_mine_permit_dict = marshal(
         {'mine_permit': mine.mine_permit},
         api.model('test_list', {'mine_permit': fields.List(fields.Nested(PERMIT_MODEL))}))
     partial_mine_permit_dict['mine_permit'][1]['permit_no'] = new_permit_no
+    #mine_permit isn't a sqlAlchemy relationship.... what do....
     mine.deep_update_from_dict(partial_mine_permit_dict, _edit_key=PERMIT_EDIT_GROUP)
 
     mine = Mine.query.filter_by(mine_guid=mine.mine_guid).first()

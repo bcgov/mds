@@ -1,6 +1,6 @@
 import json
 
-from tests.factories import ReclamationInvoiceFactory, MineFactory, PermitFactory
+from tests.factories import ReclamationInvoiceFactory, MineFactory, PermitFactory, create_mine_and_permit
 from app.api.now_applications.resources.now_application_list_resource import PAGE_DEFAULT, PER_PAGE_DEFAULT
 
 GOOD_RECLAMATION_INVOICE_POST_DATA = {
@@ -32,6 +32,7 @@ class TestReclamationInvoiceResource:
         batch_size = 5
         mine = MineFactory(minimal=True)
         permits = PermitFactory.create_batch(size=batch_size, mine=mine)
+
         reclamation_invoices = [
             reclamation_invoice for permit in permits
             for reclamation_invoice in permit.reclamation_invoices
@@ -74,9 +75,7 @@ class TestReclamationInvoiceResource:
 
     def test_get_reclamation_invoice_by_id(self, test_client, db_session, auth_headers):
         """Should return a specific reclamation invoice"""
-
-        mine = MineFactory(minimal=True)
-        permit = PermitFactory(mine=mine)
+        mine, permit = create_mine_and_permit()
         reclamation_invoice = permit.reclamation_invoices[0]
         get_resp = test_client.get(
             f'/securities/reclamation-invoices/{reclamation_invoice.reclamation_invoice_guid}',
@@ -100,9 +99,8 @@ class TestReclamationInvoiceResource:
 
     def test_post_a_reclamation_invoice(self, test_client, db_session, auth_headers):
         """Should return the created reclamation invoice with a 201 response code"""
+        mine, permit = create_mine_and_permit()
 
-        mine = MineFactory(minimal=True)
-        permit = PermitFactory(mine=mine)
         GOOD_RECLAMATION_INVOICE_POST_DATA['permit_guid'] = permit.permit_guid
 
         post_resp = test_client.post(
@@ -129,9 +127,8 @@ class TestReclamationInvoiceResource:
 
     def test_post_a_reclamation_invoice_bad_data(self, test_client, db_session, auth_headers):
         """Should return an error and a 400 response code"""
+        mine, permit = create_mine_and_permit()
 
-        mine = MineFactory(minimal=True)
-        permit = PermitFactory(mine=mine)
         BAD_RECLAMATION_INVOICE_POST_DATA['permit_guid'] = permit.permit_guid
 
         post_resp = test_client.post(
@@ -146,9 +143,8 @@ class TestReclamationInvoiceResource:
 
     def test_put_a_reclamation_invoice(self, test_client, db_session, auth_headers):
         """Should return the edited reclamation invoice with a 200 response code"""
+        mine, permit = create_mine_and_permit()
 
-        mine = MineFactory(minimal=True)
-        permit = PermitFactory(mine=mine)
         reclamation_invoice = permit.reclamation_invoices[0]
         old_amount = reclamation_invoice.amount
         old_vendor = reclamation_invoice.vendor
@@ -171,9 +167,8 @@ class TestReclamationInvoiceResource:
 
     def test_put_a_reclamation_invoice_missing_data(self, test_client, db_session, auth_headers):
         """Should return 400 response code with an error"""
+        mine, permit = create_mine_and_permit()
 
-        mine = MineFactory(minimal=True)
-        permit = PermitFactory(mine=mine)
         reclamation_invoice = permit.reclamation_invoices[0]
 
         data = {

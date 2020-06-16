@@ -43,12 +43,15 @@ TODAY = factory.LazyFunction(datetime.utcnow)
 FACTORY_LIST = []
 
 
-def create_mine_and_permit(mine_kwargs={}, permit_kwargs={}, num_permit_amendments=1):
+def create_mine_and_permit(mine_kwargs={},
+                           permit_kwargs={},
+                           num_permits=1,
+                           num_permit_amendments=1):
     mine = MineFactory(mine_permit_amendments=0, **mine_kwargs)
     permit = PermitFactory(_context_mine=mine, **permit_kwargs)
-    permit._all_mines.append(mine)
+    permit._all_mines.append(mine)               ##create mine_permit_xref
     PermitAmendmentFactory.create_batch(size=num_permit_amendments, mine=mine, permit=permit)
-    permit._context_mine = mine
+    permit._context_mine = mine                  # possibly redundant
     return mine, permit
 
 
@@ -427,6 +430,7 @@ class MinePartyAppointmentFactory(BaseFactory):
 
     mine_party_appt_guid = GUID
     mine = factory.SubFactory('tests.factories.MineFactory')
+    mine_guid = factory.SelfAttribute('mine.mine_guid')
     party = factory.SubFactory(PartyFactory, person=True)
     mine_party_appt_type_code = factory.LazyFunction(RandomMinePartyAppointmentTypeCode)
     start_date = factory.LazyFunction(datetime.utcnow().date)

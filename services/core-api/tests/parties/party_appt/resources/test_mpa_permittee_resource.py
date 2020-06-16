@@ -3,7 +3,7 @@ import json
 import uuid
 from datetime import datetime
 
-from tests.factories import PermitFactory, PartyFactory, MinePartyAppointmentFactory
+from tests.factories import PermitFactory, PartyFactory, MinePartyAppointmentFactory, create_mine_and_permit
 
 
 # GET
@@ -59,11 +59,11 @@ def test_post_permittee_no_permit(test_client, db_session, auth_headers):
 
 
 def test_post_permittee(test_client, db_session, auth_headers):
-    permit = PermitFactory()
+    mine, permit = create_mine_and_permit()
     party_guid = PartyFactory(person=True).party_guid
 
     data = {
-        'mine_guid': str(permit.mine.mine_guid),
+        'mine_guid': str(mine.mine_guid),
         'party_guid': str(party_guid),
         'mine_party_appt_type_code': 'PMT',
         'related_guid': str(permit.permit_guid),
