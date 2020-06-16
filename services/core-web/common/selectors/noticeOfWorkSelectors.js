@@ -50,7 +50,7 @@ export const getOriginalValuesIfEdited = createSelector(
     keys.map((path) => {
       const prevValue = get(originalNoticeOfWork, path);
       const currentValue = get(noticeOfWork, path);
-      const prevValueExisted = prevValue !== null || prevValue !== undefined;
+      const prevValueExisted = prevValue !== null && prevValue !== undefined;
       if (prevValue !== currentValue && prevValueExisted) {
         // check if the value has changed, if so, set it to be the previous value
         current[path] = prevValue;
