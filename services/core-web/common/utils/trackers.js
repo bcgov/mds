@@ -12,7 +12,6 @@ const trackPageView = (title) => {
 
   React.useEffect(() => {
     trackPageView({
-      href: ENVIRONMENT.apiUrl,
       documentTitle: title,
     });
   }, []);
