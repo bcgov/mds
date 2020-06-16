@@ -12,7 +12,7 @@ import fetchEnv from "./fetchEnv";
 import configureStore from "./store/configureStore";
 
 import { MatomoProvider, createInstance } from "@datapunt/matomo-tracker-react";
-import ENVIRONMENT from "./constants/environment";
+import ENVIRONMENT from "@common/constants/environment";
 
 export const store = configureStore();
 
