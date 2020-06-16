@@ -20,9 +20,10 @@ CREATE OR REPLACE FUNCTION transfer_mine_information() RETURNS void AS $$
                 mine_name         varchar(60)   ,
                 mine_region       varchar(2)    ,
                 mine_type         varchar(3)    ,
-                latitude          numeric(11,7)  ,
+                latitude          numeric(11,7) ,
                 longitude         numeric(11,7) ,
                 major_mine_ind    boolean,
+                mms_alias         varchar       ,
 				exemption_fee_status_code	varchar(3),
             deleted_ind       boolean
             );
@@ -63,7 +64,8 @@ CREATE OR REPLACE FUNCTION transfer_mine_information() RETURNS void AS $$
                                     WHEN mms.mmsmin.mine_typ = ANY('{Q,CM,SG}'::text[]) THEN 'BCL'
                                     ELSE NULL
                                 END,
-                deleted_ind    = LOWER(mms.mmsmin.mine_nm) LIKE '%delete%' OR LOWER(mms.mmsmin.mine_nm) LIKE '%deleted%' OR LOWER(mms.mmsmin.mine_nm) LIKE '%reuse%'
+                deleted_ind    = LOWER(mms.mmsmin.mine_nm) LIKE '%delete%' OR LOWER(mms.mmsmin.mine_nm) LIKE '%deleted%' OR LOWER(mms.mmsmin.mine_nm) LIKE '%reuse%',
+                mms_alias      = mms.mmsmin.alias 
             FROM mms.mmsmin
             WHERE mms.mmsmin.mine_no = ETL_MINE.mine_no;
             SELECT count(*) FROM ETL_MINE, mms.mmsmin WHERE ETL_MINE.mine_no = mms.mmsmin.mine_no INTO update_row;
@@ -93,7 +95,8 @@ CREATE OR REPLACE FUNCTION transfer_mine_information() RETURNS void AS $$
                 longitude       ,
                 major_mine_ind  ,
                 deleted_ind     ,
-                exemption_fee_status_code)
+                exemption_fee_status_code,
+                mms_alias)
             SELECT
                 gen_random_uuid()  ,
                 mms_new.mine_no    ,
@@ -123,7 +126,8 @@ CREATE OR REPLACE FUNCTION transfer_mine_information() RETURNS void AS $$
                 END,
                 (mms_new.min_lnk = 'Y' AND mms_new.min_lnk IS NOT NULL),
             CASE WHEN lower(mms_new.mine_nm) LIKE '%delete%' OR lower(mms_new.mine_nm) LIKE '%deleted%' OR lower(mms_new.mine_nm) LIKE '%reuse%' THEN TRUE ELSE FALSE END,
-			mms_new.fee_sta
+			mms_new.fee_sta,
+            mms_new.alias
             FROM mms_new
             WHERE (mms_new.min_lnk = 'Y' AND mms_new.min_lnk IS NOT NULL) = FALSE;
             SELECT count(*) FROM ETL_MINE INTO new_row;
@@ -147,6 +151,7 @@ CREATE OR REPLACE FUNCTION transfer_mine_information() RETURNS void AS $$
                 major_mine_ind   = ETL_MINE.major_mine_ind,
                 deleted_ind      = ETL_MINE.deleted_ind   ,
 				exemption_fee_status_code = ETL_MINE.exemption_fee_status_code,
+                mms_alias        = ETL_MINE.mms_alias     ,
                 update_user      = 'mms_migration'        ,
                 update_timestamp = now()
             FROM ETL_MINE
@@ -154,7 +159,8 @@ CREATE OR REPLACE FUNCTION transfer_mine_information() RETURNS void AS $$
             AND (ETL_MINE.mine_name != mine.mine_name
                 OR ETL_MINE.mine_region != mine.mine_region
                 OR ETL_MINE.major_mine_ind != mine.major_mine_ind
-                OR ETL_MINE.exemption_fee_status_code != mine.exemption_fee_status_code);
+                OR ETL_MINE.exemption_fee_status_code != mine.exemption_fee_status_code
+                OR ETL_MINE.mms_alias != mine.mms_alias);
             SELECT count(*) FROM mine, ETL_MINE WHERE ETL_MINE.mine_guid = mine.mine_guid INTO update_row;
             RAISE NOTICE '....# of mine records in MDS: %', old_row;
             RAISE NOTICE '....# of mine records updated in MDS: %', update_row;
