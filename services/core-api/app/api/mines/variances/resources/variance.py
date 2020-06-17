@@ -121,6 +121,6 @@ class MineVarianceResource(Resource, UserMixin):
     def delete(self, mine_guid, variance_guid):
         variance = Variance.find_by_mine_guid_and_variance_guid(mine_guid, variance_guid)
         if variance is None:
-            raise NotFound('Unable to fetch variance')
+            raise NotFound('Mine variance not found')
         variance.soft_delete()
         return None, 204

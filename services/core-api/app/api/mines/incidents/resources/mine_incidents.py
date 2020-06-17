@@ -251,7 +251,7 @@ class MineIncidentResource(Resource, UserMixin):
     def delete(self, mine_guid, mine_incident_guid):
         incident = MineIncident.find_by_mine_incident_guid(mine_incident_guid)
         if not incident:
-            raise NotFound('Unable to fetch incident')
+            raise NotFound('Mine incident not found')
 
         incident.soft_delete()
         return None, 204
