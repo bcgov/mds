@@ -77,10 +77,10 @@ class DocumentListResource(Resource):
                 data=request.data,
                 cookies=request.cookies,
             )
-            current_app.logger.error(f'POST resp:\n{resp.__dict__}')
             current_app.logger.error(f'POST resp.request:\n{resp.request.__dict__}')
+            current_app.logger.error(f'POST resp:\n{resp.__dict__}')
             if resp.status_code != requests.codes.created:
-                message = f'Cannot upload file. Object store responded with {resp.status_code}: {resp.reason}'
+                message = f'Cannot upload file. Object store responded with {resp.status_code} ({resp.reason}): {resp._content}'
                 current_app.logger.error(message)
                 # current_app.logger.error(f'POST resp:\n{resp.__dict__}')
                 # current_app.logger.error(f'POST resp.request:\n{resp.request.__dict__}')
@@ -191,17 +191,18 @@ class DocumentResource(Resource):
         current_app.logger.error(f'PATCH request.headers:\n{request.headers.__dict__}')
         if Config.OBJECT_STORE_ENABLED:
             object_store_upload_resource = cache.get(OBJECT_STORE_UPLOAD_RESOURCE(document_guid))
+            headers = {key: value for (key, value) in request.headers if key != 'Host'}
+            current_app.logger.error(f'PATCH headers:\n{headers}')
             resp = requests.patch(
                 url=f'{Config.TUSD_URL}/{object_store_upload_resource}',
-                headers={key: value
-                         for (key, value) in request.headers if key != 'Host'},
+                headers=headers,
                 data=request.data,
                 cookies=request.cookies,
             )
-            current_app.logger.error(f'PATCH resp:\n{resp.__dict__}')
             current_app.logger.error(f'PATCH resp.request:\n{resp.request.__dict__}')
+            current_app.logger.error(f'PATCH resp:\n{resp.__dict__}')
             if resp.status_code not in [requests.codes.ok, requests.codes.no_content]:
-                message = f'Cannot upload file. Object store responded with {resp.status_code}: {resp.reason}'
+                message = f'Cannot upload file. Object store responded with {resp.status_code} ({resp.reason}): {resp._content}'
                 current_app.logger.error(message)
                 # current_app.logger.error(f'PATCH resp:\n{resp.__dict__}')
                 # current_app.logger.error(f'PATCH resp.request:\n{resp.request.__dict__}')
