@@ -11,12 +11,6 @@ location ${PATH_PREFIX}/api/ {
 
         proxy_pass ${API_SERVICE_URL}${PATH_PREFIX}/api/;
         include /opt/app-root/etc/nginx.conf.d/proxy.params;
-
-        proxy_request_buffering  off;
-        proxy_buffering          off;
-        proxy_set_header         Upgrade $http_upgrade;
-        proxy_set_header         Connection "upgrade";
-        client_max_body_size     0;        
 }
 
 location ${PATH_PREFIX}/api/v1/ {
@@ -26,10 +20,4 @@ location ${PATH_PREFIX}/api/v1/ {
 
         proxy_pass ${API_SERVICE_URL}${PATH_PREFIX}/api/;
         include /opt/app-root/etc/nginx.conf.d/proxy.params;
-
-        proxy_request_buffering  off;
-        proxy_buffering          off;
-        proxy_set_header         Upgrade $http_upgrade;
-        proxy_set_header         Connection "upgrade";
-        client_max_body_size     0;        
 }
