@@ -38,7 +38,8 @@ MINE_SEARCH_MODEL = api.model(
         'mine_no': fields.String,
         'mine_region': fields.String,
         'mine_permit': fields.List(fields.Nested(PERMIT_SEARCH_MODEL)),
-        'mine_status': fields.Nested(MINE_STATUS_MODEL)
+        'mine_status': fields.Nested(MINE_STATUS_MODEL),
+        'mms_alias': fields.String,
     })
 
 PARTY_SEARCH_MODEL = api.model(
