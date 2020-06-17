@@ -15,4 +15,4 @@ class TestGetVarianceDocumentCategoryCode:
             f'/variances/document-categories', headers=auth_headers['full_auth_header'])
         get_data = json.loads(get_resp.data.decode())
         assert get_resp.status_code == 200
-        assert len(get_data['records']) == len(VarianceDocumentCategoryCode.get_active())
+        assert len(get_data['records']) == len(VarianceDocumentCategoryCode.get_all())

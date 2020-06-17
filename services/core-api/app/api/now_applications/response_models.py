@@ -433,17 +433,20 @@ NOW_VIEW_LIST = api.inherit('NOWApplicationList', PAGINATED_LIST, {
 
 NOW_ACTIVITY_TYPES = api.model('ActivityType', {
     'activity_type_code': fields.String,
-    'description': fields.String
+    'description': fields.String,
+    'active_ind': fields.Boolean
 })
 
 NOW_APPLICATION_TYPES = api.model('ApplicationType', {
     'notice_of_work_type_code': fields.String,
-    'description': fields.String
+    'description': fields.String,
+    'active_ind': fields.Boolean
 })
 
 NOW_APPLICATION_STATUS_CODES = api.model('ActivityStatusCodes', {
     'now_application_status_code': fields.String,
-    'description': fields.String
+    'description': fields.String,
+    'active_ind': fields.Boolean
 })
 
 NOW_APPLICATION_STATUS_UPDATED_RECORD = api.model(
@@ -456,7 +459,8 @@ NOW_APPLICATION_STATUS_UPDATED_RECORD = api.model(
 UNIT_TYPES = api.model('UnitTypeCodes', {
     'short_description': fields.String,
     'unit_type_code': fields.String,
-    'description': fields.String
+    'description': fields.String,
+    'active_ind': fields.Boolean
 })
 
 NOW_APPLICATION_DOCUMENT_TYPE_MODEL = api.model(
@@ -464,24 +468,29 @@ NOW_APPLICATION_DOCUMENT_TYPE_MODEL = api.model(
         'now_application_document_type_code': fields.String,
         'description': fields.String,
         'document_template': fields.Nested(DOCUMENT_TEMPLATE_MODEL, skip_none=True),
+        'active_ind': fields.Boolean
     })
 
 UNDERGROUND_EXPLORATION_TYPES = api.model('UndergroundExplorationTypes', {
     'underground_exploration_type_code': fields.String,
-    'description': fields.String
+    'description': fields.String,
+    'active_ind': fields.Boolean
 })
 
 APPLICATION_PROGRESS_STATUS_CODES = api.model('ApplicationProgressStatusCodes', {
     'application_progress_status_code': fields.String,
-    'description': fields.String
+    'description': fields.String,
+    'active_ind': fields.Boolean
 })
 
 NOW_APPLICATION_PERMIT_TYPES = api.model('ApplicationPermitTypes', {
     'now_application_permit_type_code': fields.String,
-    'description': fields.String
+    'description': fields.String,
+    'active_ind': fields.Boolean
 })
 
 NOW_APPLICATION_REVIEW_TYPES = api.model('ApplicationReviewTypes', {
     'now_application_review_type_code': fields.String,
-    'description': fields.String
+    'description': fields.String,
+    'active_ind': fields.Boolean
 })

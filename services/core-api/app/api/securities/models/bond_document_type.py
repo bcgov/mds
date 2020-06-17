@@ -16,5 +16,5 @@ class BondDocumentType(Base, AuditMixin):
         return '<BondDocumentType %r>' % self.bond_document_type_code
 
     @classmethod
-    def get_active(cls):
-        return cls.query.filter_by(active_ind=True).order_by(cls.display_order).all()
+    def get_all(cls):
+        return cls.query.order_by(cls.display_order).all()

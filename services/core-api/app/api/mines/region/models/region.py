@@ -29,7 +29,7 @@ class MineRegionCode(AuditMixin, Base):
         return cls.query.filter_by(mine_region_code=_code).first()
 
     @classmethod
-    def get_active(cls):
+    def get_all(cls):
         return cls.query.all()
 
     @classmethod
