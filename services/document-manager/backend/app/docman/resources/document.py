@@ -74,9 +74,7 @@ class DocumentListResource(Resource):
                 url=Config.TUSD_URL,
                 headers={key: value
                          for (key, value) in request.headers if key != 'Host'},
-                data=request.data,
-                cookies=request.cookies,
-            )
+                data=request.data)
             current_app.logger.error(f'POST resp.request:\n{resp.request.__dict__}')
             current_app.logger.error(f'POST resp:\n{resp.__dict__}')
             if resp.status_code != requests.codes.created:
@@ -196,9 +194,7 @@ class DocumentResource(Resource):
             resp = requests.patch(
                 url=f'{Config.TUSD_URL}/{object_store_upload_resource}',
                 headers=headers,
-                data=request.data,
-                cookies=request.cookies,
-            )
+                data=request.data)
             current_app.logger.error(f'PATCH resp.request:\n{resp.request.__dict__}')
             current_app.logger.error(f'PATCH resp:\n{resp.__dict__}')
             if resp.status_code not in [requests.codes.ok, requests.codes.no_content]:
