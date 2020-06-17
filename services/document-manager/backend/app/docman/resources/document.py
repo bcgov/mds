@@ -189,7 +189,9 @@ class DocumentResource(Resource):
         current_app.logger.error(f'PATCH request.headers:\n{request.headers.__dict__}')
         if Config.OBJECT_STORE_ENABLED:
             object_store_upload_resource = cache.get(OBJECT_STORE_UPLOAD_RESOURCE(document_guid))
-            headers = {key: value for (key, value) in request.headers if key != 'Host'}
+
+            excluded_headers = ['content-encoding', 'content-length', 'transfer-encoding', 'connection', 'Host']
+            headers = {key: value for (key, value) in request.headers if key not in excluded_headers}
             headers['Content-Type'] = "application/offset+octet-stream"
 
             current_app.logger.error(f'PATCH headers:\n{headers}')
