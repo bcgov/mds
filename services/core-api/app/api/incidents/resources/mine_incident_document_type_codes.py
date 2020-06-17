@@ -13,4 +13,4 @@ class MineIncidentDocumentTypeCodeResource(Resource):
     @api.doc(description='Returns the possible incident document types')
     @requires_role_view_all
     def get(self):
-        return MineIncidentDocumentTypeCode.get_active()
+        return MineIncidentDocumentTypeCode.get_all()

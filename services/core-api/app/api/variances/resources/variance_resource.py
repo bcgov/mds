@@ -86,7 +86,7 @@ class VarianceResource(Resource, UserMixin):
 
         status_filter_values = list(
             map(lambda x: x.variance_application_status_code,
-                VarianceApplicationStatusCode.get_active()))
+                VarianceApplicationStatusCode.get_all()))
 
         conditions = []
         if args["application_status"]:

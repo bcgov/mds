@@ -67,14 +67,20 @@ BOND_MINESPACE = api.model(
 
 BOND_STATUS = api.model('BondStatus', {
     'bond_status_code': fields.String,
-    'description': fields.String
+    'description': fields.String,
+    'active_ind': fields.Boolean
 })
 
-BOND_TYPE = api.model('BondType', {'bond_type_code': fields.String, 'description': fields.String})
+BOND_TYPE = api.model('BondType', {
+    'bond_type_code': fields.String,
+    'description': fields.String,
+    'active_ind': fields.Boolean
+})
 
 BOND_DOCUMENT_TYPE = api.model('BondDocumentType', {
     'bond_document_type_code': fields.String,
-    'description': fields.String
+    'description': fields.String,
+    'active_ind': fields.Boolean
 })
 
 RECLAMATION_INVOICE = api.model(
