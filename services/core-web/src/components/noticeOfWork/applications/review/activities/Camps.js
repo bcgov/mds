@@ -189,12 +189,19 @@ export const Camps = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">Storage Method</div>
           <Col md={12} sm={24}>
-            <NOWOriginalValueTooltip
-              originalValue={props.renderOriginalValues("camps.has_fuel_stored_in_bulk").value}
-              isVisible={props.renderOriginalValues("camps.has_fuel_stored_in_bulk").edited}
-            />
             <Field
-              label="Bulk"
+              label={
+                <span>
+                  Bulk
+                  <NOWOriginalValueTooltip
+                    style={{ marginLeft: "20%" }}
+                    originalValue={
+                      props.renderOriginalValues("camps.has_fuel_stored_in_bulk").value
+                    }
+                    isVisible={props.renderOriginalValues("camps.has_fuel_stored_in_bulk").edited}
+                  />
+                </span>
+              }
               id="has_fuel_stored_in_bulk"
               name="has_fuel_stored_in_bulk"
               component={RenderRadioButtons}
@@ -203,12 +210,21 @@ export const Camps = (props) => {
             />
           </Col>
           <Col md={12} sm={24}>
-            <NOWOriginalValueTooltip
-              originalValue={props.renderOriginalValues("camps.has_fuel_stored_in_barrels").value}
-              isVisible={props.renderOriginalValues("camps.has_fuel_stored_in_barrels").edited}
-            />
             <Field
-              label="Barrell"
+              label={
+                <span>
+                  Barrell
+                  <NOWOriginalValueTooltip
+                    style={{ marginLeft: "20%" }}
+                    originalValue={
+                      props.renderOriginalValues("camps.has_fuel_stored_in_barrels").value
+                    }
+                    isVisible={
+                      props.renderOriginalValues("camps.has_fuel_stored_in_barrels").edited
+                    }
+                  />
+                </span>
+              }
               id="has_fuel_stored_in_barrels"
               name="has_fuel_stored_in_barrels"
               component={RenderRadioButtons}

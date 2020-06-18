@@ -14,7 +14,10 @@ const defaultProps = {
 const OriginalValuePropTypes = {
   originalValue: PropTypes.string.isRequired,
   isVisible: PropTypes.bool.isRequired,
+  style: PropTypes.objectOf(PropTypes.string),
 };
+
+const OriginalValueDefaultProps = { style: {} };
 
 export const CoreTooltip = (props) => (
   <Tooltip title={props.title} placement="right" mouseEnterDelay={0.3}>
@@ -31,12 +34,17 @@ export const NOWOriginalValueTooltip = (props) => (
     title={`Original Value: ${props.originalValue}`}
     placement="right"
     mouseEnterDelay={0.3}
-    className="position-right"
+    className={!props.style.marginLeft && "position-right"}
   >
-    {props.isVisible && <span className="violet">Edited</span>}
+    {props.isVisible && (
+      <span style={props.style} className="violet">
+        Edited
+      </span>
+    )}
   </Tooltip>
 );
 
 CoreTooltip.propTypes = propTypes;
 CoreTooltip.defaultProps = defaultProps;
+NOWOriginalValueTooltip.defaultProps = OriginalValueDefaultProps;
 NOWOriginalValueTooltip.propTypes = OriginalValuePropTypes;

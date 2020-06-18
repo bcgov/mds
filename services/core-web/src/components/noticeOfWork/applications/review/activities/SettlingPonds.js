@@ -281,12 +281,19 @@ export const SettlingPonds = (props) => {
       <Row gutter={16}>
         <div className="field-title">Water from Ponds will be</div>
         <Col md={8} sm={24}>
-          <NOWOriginalValueTooltip
-            originalValue={props.renderOriginalValues("settling_pond.is_ponds_recycled").value}
-            isVisible={props.renderOriginalValues("settling_pond.is_ponds_recycled").edited}
-          />
           <Field
-            label="Recycled"
+            label={
+              <span>
+                Recycled
+                <NOWOriginalValueTooltip
+                  style={{ marginLeft: "20%" }}
+                  originalValue={
+                    props.renderOriginalValues("settling_pond.is_ponds_recycled").value
+                  }
+                  isVisible={props.renderOriginalValues("settling_pond.is_ponds_recycled").edited}
+                />
+              </span>
+            }
             id="is_ponds_recycled"
             name="is_ponds_recycled"
             component={RenderRadioButtons}
@@ -295,12 +302,21 @@ export const SettlingPonds = (props) => {
           />
         </Col>
         <Col md={8} sm={24}>
-          <NOWOriginalValueTooltip
-            originalValue={props.renderOriginalValues("settling_pond.is_ponds_exfiltrated").value}
-            isVisible={props.renderOriginalValues("settling_pond.is_ponds_exfiltrated").edited}
-          />
           <Field
-            label="Exfiltrated to Ground"
+            label={
+              <span>
+                Exfiltrated to Ground
+                <NOWOriginalValueTooltip
+                  style={{ marginLeft: "20%" }}
+                  originalValue={
+                    props.renderOriginalValues("settling_pond.is_ponds_exfiltrated").value
+                  }
+                  isVisible={
+                    props.renderOriginalValues("settling_pond.is_ponds_exfiltrated").edited
+                  }
+                />
+              </span>
+            }
             id="is_ponds_exfiltrated"
             name="is_ponds_exfiltrated"
             component={RenderRadioButtons}
@@ -309,12 +325,19 @@ export const SettlingPonds = (props) => {
           />
         </Col>
         <Col md={8} sm={24}>
-          <NOWOriginalValueTooltip
-            originalValue={props.renderOriginalValues("settling_pond.is_ponds_discharged").value}
-            isVisible={props.renderOriginalValues("settling_pond.is_ponds_discharged").edited}
-          />
           <Field
-            label="Discharged to Environment"
+            label={
+              <span>
+                Discharged to Environment
+                <NOWOriginalValueTooltip
+                  style={{ marginLeft: "20%" }}
+                  originalValue={
+                    props.renderOriginalValues("settling_pond.is_ponds_discharged").value
+                  }
+                  isVisible={props.renderOriginalValues("settling_pond.is_ponds_discharged").edited}
+                />
+              </span>
+            }
             id="is_ponds_discharged"
             name="is_ponds_discharged"
             component={RenderRadioButtons}
