@@ -26,21 +26,16 @@ export const NOWFieldOriginTooltip = () => (
   <CoreTooltip title="This field is not being sent by NROS or vFCBC. Open the original PDF to see the data." />
 );
 
-export const NOWOriginalValueTooltip = (props) => {
-  // const isBool =
-  //   typeof props.originalValue === Boolean ? props.originalValue.toString() : props.originalValue;
-
-  return (
-    <Tooltip
-      title={`Original Value: ${props.originalValue}`}
-      placement="right"
-      mouseEnterDelay={0.3}
-      className="position-right"
-    >
-      {props.isVisible && <span className="violet">Edited</span>}
-    </Tooltip>
-  );
-};
+export const NOWOriginalValueTooltip = (props) => (
+  <Tooltip
+    title={`Original Value: ${props.originalValue}`}
+    placement="right"
+    mouseEnterDelay={0.3}
+    className="position-right"
+  >
+    {props.isVisible && <span className="violet">Edited</span>}
+  </Tooltip>
+);
 
 CoreTooltip.propTypes = propTypes;
 CoreTooltip.defaultProps = defaultProps;
