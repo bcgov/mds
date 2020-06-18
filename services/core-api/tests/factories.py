@@ -48,10 +48,11 @@ def create_mine_and_permit(mine_kwargs={},
                            num_permits=1,
                            num_permit_amendments=1):
     mine = MineFactory(mine_permit_amendments=0, **mine_kwargs)
-    permit = PermitFactory(_context_mine=mine, **permit_kwargs)
-    permit._all_mines.append(mine)               ##create mine_permit_xref
-    PermitAmendmentFactory.create_batch(size=num_permit_amendments, mine=mine, permit=permit)
-    permit._context_mine = mine                  # possibly redundant
+    for x in range(num_permits):
+        permit = PermitFactory(_context_mine=mine, **permit_kwargs)
+        permit._all_mines.append(mine)           ##create mine_permit_xref
+        PermitAmendmentFactory.create_batch(size=num_permit_amendments, mine=mine, permit=permit)
+        permit._context_mine = mine              # possibly redundant
     return mine, permit
 
 

@@ -30,8 +30,8 @@ class TestReclamationInvoiceResource:
         """Should return the correct records with a 200 response code"""
 
         batch_size = 5
-        mine = MineFactory(minimal=True)
-        permits = PermitFactory.create_batch(size=batch_size, mine=mine)
+        mine, permit = create_mine_and_permit(num_permits=batch_size)
+        permits = mine.mine_permit
 
         reclamation_invoices = [
             reclamation_invoice for permit in permits
