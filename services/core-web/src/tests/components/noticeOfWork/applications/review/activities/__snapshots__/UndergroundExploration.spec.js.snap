@@ -103,6 +103,11 @@ exports[`UndergroundExploration renders properly 1`] = `
         className="field-title"
       >
         Total Ore
+        <NOWOriginalValueTooltip
+          isVisible={true}
+          originalValue="N/A"
+          style={Object {}}
+        />
       </div>
       <Fields
         component={[Function]}
@@ -130,6 +135,11 @@ exports[`UndergroundExploration renders properly 1`] = `
         className="field-title"
       >
         Total Waste
+        <NOWOriginalValueTooltip
+          isVisible={true}
+          originalValue="N/A"
+          style={Object {}}
+        />
       </div>
       <Fields
         component={[Function]}

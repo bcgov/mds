@@ -11,7 +11,7 @@ import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
 import RenderRadioButtons from "@/components/common/RenderRadioButtons";
 import Equipment from "@/components/noticeOfWork/applications/review/activities/Equipment";
 import CustomPropTypes from "@/customPropTypes";
-import { NOWFieldOriginTooltip } from "@/components/common/CoreTooltip";
+import { NOWFieldOriginTooltip, NOWOriginalValueTooltip } from "@/components/common/CoreTooltip";
 
 const propTypes = {
   isViewMode: PropTypes.bool.isRequired,
@@ -19,6 +19,7 @@ const propTypes = {
   equipment: CustomPropTypes.activityEquipment.isRequired,
   editRecord: PropTypes.func.isRequired,
   addRecord: PropTypes.func.isRequired,
+  renderOriginalValues: PropTypes.func.isRequired,
 };
 
 const defaultProps = {};
@@ -180,7 +181,19 @@ export const SurfaceBulkSamples = (props) => {
       <br />
       <Row gutter={16}>
         <Col md={12} sm={24}>
-          <div className="field-title">Processing Methods</div>
+          <div className="field-title">
+            Processing Methods
+            <NOWOriginalValueTooltip
+              originalValue={
+                props.renderOriginalValues("surface_bulk_sample.processing_method_description")
+                  .value
+              }
+              isVisible={
+                props.renderOriginalValues("surface_bulk_sample.processing_method_description")
+                  .edited
+              }
+            />
+          </div>
           <Field
             id="processing_method_description"
             name="processing_method_description"
@@ -243,6 +256,14 @@ export const SurfaceBulkSamples = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Proposed reclamation and timing for this specific activity
+            <NOWOriginalValueTooltip
+              originalValue={
+                props.renderOriginalValues("surface_bulk_sample.reclamation_description").value
+              }
+              isVisible={
+                props.renderOriginalValues("surface_bulk_sample.reclamation_description").edited
+              }
+            />
           </div>
           <Field
             id="reclamation_description"
@@ -255,6 +276,12 @@ export const SurfaceBulkSamples = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Estimated Cost of reclamation activities described above
+            <NOWOriginalValueTooltip
+              originalValue={
+                props.renderOriginalValues("surface_bulk_sample.reclamation_cost").value
+              }
+              isVisible={props.renderOriginalValues("surface_bulk_sample.reclamation_cost").edited}
+            />
           </div>
           <Field
             id="reclamation_cost"

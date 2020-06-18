@@ -124,7 +124,20 @@ exports[`SettlingPonds renders properly 1`] = `
         component={[Function]}
         disabled={true}
         id="is_ponds_recycled"
-        label="Recycled"
+        label={
+          <span>
+            Recycled
+            <NOWOriginalValueTooltip
+              isVisible={true}
+              originalValue="N/A"
+              style={
+                Object {
+                  "marginLeft": "20%",
+                }
+              }
+            />
+          </span>
+        }
         name="is_ponds_recycled"
         validate={
           Array [
@@ -141,7 +154,20 @@ exports[`SettlingPonds renders properly 1`] = `
         component={[Function]}
         disabled={true}
         id="is_ponds_exfiltrated"
-        label="Exfiltrated to Ground"
+        label={
+          <span>
+            Exfiltrated to Ground
+            <NOWOriginalValueTooltip
+              isVisible={true}
+              originalValue="N/A"
+              style={
+                Object {
+                  "marginLeft": "20%",
+                }
+              }
+            />
+          </span>
+        }
         name="is_ponds_exfiltrated"
         validate={
           Array [
@@ -158,7 +184,20 @@ exports[`SettlingPonds renders properly 1`] = `
         component={[Function]}
         disabled={true}
         id="is_ponds_discharged"
-        label="Discharged to Environment"
+        label={
+          <span>
+            Discharged to Environment
+            <NOWOriginalValueTooltip
+              isVisible={true}
+              originalValue="N/A"
+              style={
+                Object {
+                  "marginLeft": "20%",
+                }
+              }
+            />
+          </span>
+        }
         name="is_ponds_discharged"
         validate={
           Array [
@@ -183,6 +222,11 @@ exports[`SettlingPonds renders properly 1`] = `
         className="field-title"
       >
         Proposed reclamation and timing for this specific activity
+        <NOWOriginalValueTooltip
+          isVisible={true}
+          originalValue="N/A"
+          style={Object {}}
+        />
       </div>
       <Field
         component={[Function]}
@@ -204,6 +248,11 @@ exports[`SettlingPonds renders properly 1`] = `
         className="field-title"
       >
         Estimated Cost of reclamation activities described above
+        <NOWOriginalValueTooltip
+          isVisible={true}
+          originalValue="N/A"
+          style={Object {}}
+        />
       </div>
       <Field
         component={[Function]}
