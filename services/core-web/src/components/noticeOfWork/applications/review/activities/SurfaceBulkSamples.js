@@ -33,7 +33,7 @@ export const SurfaceBulkSamples = (props) => {
         removeOnly = true;
       }
     } else {
-      activityToChange[event.target.name] = event.target;
+      activityToChange[event.target.name] = event.target.value;
     }
     props.editRecord(
       activityToChange,

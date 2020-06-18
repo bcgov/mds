@@ -60,8 +60,6 @@ const { Step } = Steps;
 const propTypes = {
   noticeOfWork: CustomPropTypes.importedNOWApplication,
   originalNoticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
-  // eslint-disable-next-line react/no-unused-prop-types
-  originalValuesIfEdited: PropTypes.objectOf(PropTypes.strings).isRequired,
   createNoticeOfWorkApplicationProgress: PropTypes.func.isRequired,
   updateNoticeOfWorkApplication: PropTypes.func.isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,

@@ -36,7 +36,7 @@ export const SandGravelQuarry = (props) => {
         removeOnly = true;
       }
     } else {
-      activityToChange[event.target.name] = event.target;
+      activityToChange[event.target.name] = event.target.value;
     }
     props.editRecord(activityToChange, "sand_and_gravel.details", rowIndex, isDelete, removeOnly);
   };

@@ -30,7 +30,7 @@ export const WaterSupply = (props) => {
         removeOnly = true;
       }
     } else {
-      activityToChange[event.target.name] = event.target;
+      activityToChange[event.target.name] = event.target.value;
     }
     props.editRecord(activityToChange, "water_supply.details", rowIndex, isDelete, removeOnly);
   };

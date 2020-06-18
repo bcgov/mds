@@ -31,7 +31,7 @@ export const Camps = (props) => {
         removeOnly = true;
       }
     } else {
-      activityToChange[event.target.name] = event.target;
+      activityToChange[event.target.name] = event.target.value;
     }
     props.editRecord(activityToChange, "camps.details", rowIndex, isDelete, removeOnly);
   };

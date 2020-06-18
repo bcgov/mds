@@ -29,7 +29,7 @@ export const SettlingPonds = (props) => {
         removeOnly = true;
       }
     } else {
-      activityToChange[event.target.name] = event.target;
+      activityToChange[event.target.name] = event.target.value;
     }
     props.editRecord(activityToChange, "settling_pond.details", rowIndex, isDelete, removeOnly);
   };
