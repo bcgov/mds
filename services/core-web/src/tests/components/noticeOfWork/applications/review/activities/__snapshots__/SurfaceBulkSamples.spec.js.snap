@@ -52,6 +52,11 @@ exports[`SurfaceBulkSamples renders properly 1`] = `
         className="field-title"
       >
         Processing Methods
+        <NOWOriginalValueTooltip
+          isVisible={true}
+          originalValue="N/A"
+          style={Object {}}
+        />
       </div>
       <Field
         component={[Function]}
@@ -144,6 +149,11 @@ exports[`SurfaceBulkSamples renders properly 1`] = `
         className="field-title"
       >
         Proposed reclamation and timing for this specific activity
+        <NOWOriginalValueTooltip
+          isVisible={true}
+          originalValue="N/A"
+          style={Object {}}
+        />
       </div>
       <Field
         component={[Function]}
@@ -165,6 +175,11 @@ exports[`SurfaceBulkSamples renders properly 1`] = `
         className="field-title"
       >
         Estimated Cost of reclamation activities described above
+        <NOWOriginalValueTooltip
+          isVisible={true}
+          originalValue="N/A"
+          style={Object {}}
+        />
       </div>
       <Field
         component={[Function]}
