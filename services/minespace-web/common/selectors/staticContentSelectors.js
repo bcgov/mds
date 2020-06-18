@@ -536,6 +536,10 @@ export const getDropdownNoticeOfWorkApplicationPermitTypeOptions = createSelecto
   createDropDownList,
   ["description", "now_application_permit_type_code", "active_ind"]
 );
+export const getNoticeOfWorkApplicationPermitTypeOptionsHash = createSelector(
+  [getDropdownNoticeOfWorkApplicationPermitTypeOptions],
+  createLabelHash
+);
 
 export const getDropdownNoticeOfWorkApplicationReviewTypeOptions = createSelectorWrapper(
   getNoticeOfWorkApplicationReviewOptions,
