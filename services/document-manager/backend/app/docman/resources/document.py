@@ -1,6 +1,7 @@
 import uuid
 import os
 import requests
+from collections import OrderedDict
 from datetime import datetime
 from urllib.parse import urlparse
 from app.services.object_store_storage_service import ObjectStoreStorageService
@@ -191,12 +192,12 @@ class DocumentResource(Resource):
             object_store_upload_resource = cache.get(OBJECT_STORE_UPLOAD_RESOURCE(document_guid))
 
             excluded_headers = ['content-encoding', 'content-length', 'transfer-encoding', 'connection', 'Host']
-            headers = {key: value for (key, value) in request.headers if key not in excluded_headers}
-            headers['Content-Type'] = "application/offset+octet-stream"
+            headers = OrderedDict({key: value for (key, value) in request.headers if key not in excluded_headers})
+            #headers['Content-Type'] = "application/offset+octet-stream"
 
             current_app.logger.error(f'PATCH headers:\n{headers}')
             resp = requests.request(
-                method='PATCH'
+                method='PATCH',
                 url=f'{Config.TUSD_URL}/{object_store_upload_resource}',
                 headers=headers,
                 data=request.data)
