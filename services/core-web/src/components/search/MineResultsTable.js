@@ -36,6 +36,14 @@ export const MineResultsTable = (props) => {
         </Row>,
         <Row className="padding-small--top">
           <Col xs={24} md={4}>
+            <p>Legacy Alias</p>
+          </Col>
+          <Col xs={24} md={4}>
+            <p>
+              <Highlight search={props.highlightRegex}>{record.mms_alias}</Highlight>
+            </p>
+          </Col>
+          <Col xs={24} md={4}>
             <p>Mine No.</p>
           </Col>
           <Col xs={24} md={4}>

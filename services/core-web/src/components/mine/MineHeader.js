@@ -292,6 +292,10 @@ export class MineHeader extends Component {
             </div>
           </div>
           <div className="inline-flex padding-small wrap">
+            <p className="field-title">Legacy Alias</p>
+            <p>{this.props.mine.mms_alias ? this.props.mine.mms_alias : String.EMPTY_FIELD}</p>
+          </div>
+          <div className="inline-flex padding-small wrap">
             <p className="field-title">Exemption Status</p>
             <div>
               {this.props.mine.exemption_fee_status_code

@@ -10,6 +10,7 @@ import RenderField from "@/components/common/RenderField";
 import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
 import Equipment from "@/components/noticeOfWork/applications/review/activities/Equipment";
 import CustomPropTypes from "@/customPropTypes";
+import { NOWOriginalValueTooltip } from "@/components/common/CoreTooltip";
 
 const propTypes = {
   isViewMode: PropTypes.bool.isRequired,
@@ -17,6 +18,7 @@ const propTypes = {
   equipment: CustomPropTypes.activityEquipment.isRequired,
   editRecord: PropTypes.func.isRequired,
   addRecord: PropTypes.func.isRequired,
+  renderOriginalValues: PropTypes.func.isRequired,
 };
 const defaultProps = {};
 
@@ -186,6 +188,14 @@ export const MechanicalTrenching = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Proposed reclamation and timing for this specific activity
+            <NOWOriginalValueTooltip
+              originalValue={
+                props.renderOriginalValues("mechanical_trenching.reclamation_description").value
+              }
+              isVisible={
+                props.renderOriginalValues("mechanical_trenching.reclamation_description").edited
+              }
+            />
           </div>
           <Field
             id="reclamation_description"
@@ -198,6 +208,12 @@ export const MechanicalTrenching = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Estimated Cost of reclamation activities described above
+            <NOWOriginalValueTooltip
+              originalValue={
+                props.renderOriginalValues("mechanical_trenching.reclamation_cost").value
+              }
+              isVisible={props.renderOriginalValues("mechanical_trenching.reclamation_cost").edited}
+            />
           </div>
           <Field
             id="reclamation_cost"

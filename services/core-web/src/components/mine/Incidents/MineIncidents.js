@@ -197,7 +197,7 @@ const mapStateToProps = (state) => ({
   mines: getMines(state),
   mineGuid: getMineGuid(state),
   inspectors: getDropdownInspectors(state),
-  followupActions: getIncidentFollowupActionOptions(state),
+  followupActions: getIncidentFollowupActionOptions(state, true),
   followupActionsOptions: getDropdownIncidentFollowupActionOptions(state),
   incidentDeterminationOptions: getDropdownIncidentDeterminationOptions(state),
   incidentStatusCodeOptions: getDropdownIncidentStatusCodeOptions(state),

@@ -13,4 +13,4 @@ class BondTypeResource(Resource, UserMixin):
     @requires_any_of([VIEW_ALL, MINESPACE_PROPONENT])
     @api.marshal_with(BOND_TYPE, code=200, envelope='records')
     def get(self):
-        return BondType.get_active()
+        return BondType.get_all()

@@ -121,3 +121,14 @@ def test_put_permit_bad_permit_guid(test_client, db_session, auth_headers):
         headers=auth_headers['full_auth_header'],
         json=data)
     assert put_resp.status_code == 404
+
+
+# DELETE
+def test_delete_permit(test_client, db_session, auth_headers):
+    permit = PermitFactory(permit_status_code='O')
+    permit_guid = permit.permit_guid
+
+    delete_resp = test_client.delete(
+        f'/mines/{permit.mine_guid}/permits/{permit_guid}',
+        headers=auth_headers['full_auth_header'])
+    assert delete_resp.status_code == 204
