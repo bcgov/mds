@@ -30,6 +30,7 @@ class MineIncident(AuditMixin, Base):
 
     incident_timestamp = db.Column(db.DateTime, nullable=False)
     incident_description = db.Column(db.String, nullable=False)
+    deleted_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
 
     reported_timestamp = db.Column(db.DateTime)
     reported_by_name = db.Column(db.String)
@@ -119,7 +120,7 @@ class MineIncident(AuditMixin, Base):
     def find_by_mine_incident_guid(cls, _id):
         try:
             uuid.UUID(_id, version=4)
-            return cls.query.filter_by(mine_incident_guid=_id).first()
+            return cls.query.filter_by(mine_incident_guid=_id, deleted_ind=False).first()
         except ValueError:
             return None
 

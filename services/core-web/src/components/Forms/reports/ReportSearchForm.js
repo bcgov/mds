@@ -11,6 +11,7 @@ import {
   getDropdownMineReportDefinitionOptions,
   getMineRegionDropdownOptions,
 } from "@common/selectors/staticContentSelectors";
+import { sortListObjectsByPropertyLocaleCompare } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
 import CustomPropTypes from "@/customPropTypes";
@@ -111,7 +112,10 @@ export class ReportSearchForm extends Component {
                   name="report_name"
                   placeholder="Select Report Name"
                   component={renderConfig.MULTI_SELECT}
-                  data={this.props.dropdownMineReportDefinitionOptions}
+                  data={sortListObjectsByPropertyLocaleCompare(
+                    this.props.dropdownMineReportDefinitionOptions,
+                    "label"
+                  )}
                 />
               </Col>
             </Row>
@@ -245,9 +249,9 @@ ReportSearchForm.propTypes = propTypes;
 export default compose(
   connect((state) => ({
     mineRegionOptions: getMineRegionDropdownOptions(state),
-    dropdownMineReportStatusOptions: getDropdownMineReportStatusOptions(state),
-    dropdownMineReportCategoryOptions: getDropdownMineReportCategoryOptions(state),
-    dropdownMineReportDefinitionOptions: getDropdownMineReportDefinitionOptions(state),
+    dropdownMineReportStatusOptions: getDropdownMineReportStatusOptions(state, false),
+    dropdownMineReportCategoryOptions: getDropdownMineReportCategoryOptions(state, false),
+    dropdownMineReportDefinitionOptions: getDropdownMineReportDefinitionOptions(state, false),
   })),
   reduxForm({
     form: FORM.REPORT_ADVANCED_SEARCH,
