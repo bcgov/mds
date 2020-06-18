@@ -3,7 +3,6 @@ import { PropTypes } from "prop-types";
 import { Field, Fields, formValueSelector } from "redux-form";
 import { connect } from "react-redux";
 import { Row, Col, Table, Button } from "antd";
-import { isNull } from "lodash";
 import { maxLength, number, numberWithUnitCode } from "@common/utils/Validate";
 import { getDropdownNoticeOfWorkUnitTypeOptions } from "@common/selectors/staticContentSelectors";
 import * as FORM from "@/constants/forms";
@@ -14,7 +13,7 @@ import RenderRadioButtons from "@/components/common/RenderRadioButtons";
 import RenderFieldWithDropdown from "@/components/common/RenderFieldWithDropdown";
 import Equipment from "@/components/noticeOfWork/applications/review/activities/Equipment";
 import CustomPropTypes from "@/customPropTypes";
-import { NOWOrigionalValueTooltip } from "@/components/common/CoreTooltip";
+import { NOWOriginalValueTooltip } from "@/components/common/CoreTooltip";
 
 const propTypes = {
   isViewMode: PropTypes.bool.isRequired,
@@ -23,7 +22,7 @@ const propTypes = {
   editRecord: PropTypes.func.isRequired,
   addRecord: PropTypes.func.isRequired,
   unitTypeOptions: CustomPropTypes.options.isRequired,
-  originalValuesIfEdited: PropTypes.objectOf(PropTypes.strings).isRequired,
+  renderOriginalValues: PropTypes.func.isRequired,
 };
 
 const defaultProps = {};
@@ -146,12 +145,12 @@ export const SandGravelQuarry = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Average Depth Overburden
-            <NOWOrigionalValueTooltip
-              origionalValue={
-                props.originalValuesIfEdited["sand_and_gravel.average_overburden_depth"]
+            <NOWOriginalValueTooltip
+              originalValue={
+                props.renderOriginalValues("sand_and_gravel.average_overburden_depth").value
               }
               isVisible={
-                !isNull(props.originalValuesIfEdited["sand_and_gravel.average_overburden_depth"])
+                props.renderOriginalValues("sand_and_gravel.average_overburden_depth").edited
               }
             />
           </div>
@@ -168,12 +167,12 @@ export const SandGravelQuarry = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Average Depth of top soil
-            <NOWOrigionalValueTooltip
-              origionalValue={
-                props.originalValuesIfEdited["sand_and_gravel.average_top_soil_depth"]
+            <NOWOriginalValueTooltip
+              originalValue={
+                props.renderOriginalValues("sand_and_gravel.average_top_soil_depth").value
               }
               isVisible={
-                !isNull(props.originalValuesIfEdited["sand_and_gravel.average_top_soil_depth"])
+                props.renderOriginalValues("sand_and_gravel.average_top_soil_depth").edited
               }
             />
           </div>
@@ -192,14 +191,12 @@ export const SandGravelQuarry = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Measures to stabilize soil overburden stockpiles and control noxious weeds
-            <NOWOrigionalValueTooltip
-              origionalValue={
-                props.originalValuesIfEdited["sand_and_gravel.stability_measures_description"]
+            <NOWOriginalValueTooltip
+              originalValue={
+                props.renderOriginalValues("sand_and_gravel.stability_measures_description").value
               }
               isVisible={
-                !isNull(
-                  props.originalValuesIfEdited["sand_and_gravel.stability_measures_description"]
-                )
+                props.renderOriginalValues("sand_and_gravel.stability_measures_description").edited
               }
             />
           </div>
@@ -218,14 +215,12 @@ export const SandGravelQuarry = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Is this site within the Agricultural Land Reserve?
-            <NOWOrigionalValueTooltip
-              origionalValue={
-                props.originalValuesIfEdited["sand_and_gravel.is_agricultural_land_reserve"]
+            <NOWOriginalValueTooltip
+              originalValue={
+                props.renderOriginalValues("sand_and_gravel.is_agricultural_land_reserve").value
               }
               isVisible={
-                !isNull(
-                  props.originalValuesIfEdited["sand_and_gravel.is_agricultural_land_reserve"]
-                )
+                props.renderOriginalValues("sand_and_gravel.is_agricultural_land_reserve").edited
               }
             />
           </div>
@@ -239,9 +234,9 @@ export const SandGravelQuarry = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Current land use zoning for the site
-            <NOWOrigionalValueTooltip
-              origionalValue={props.originalValuesIfEdited["sand_and_gravel.land_use_zoning"]}
-              isVisible={!isNull(props.originalValuesIfEdited["sand_and_gravel.land_use_zoning"])}
+            <NOWOriginalValueTooltip
+              originalValue={props.renderOriginalValues("sand_and_gravel.land_use_zoning").value}
+              isVisible={props.renderOriginalValues("sand_and_gravel.land_use_zoning").edited}
             />
           </div>
           <Field
@@ -256,18 +251,16 @@ export const SandGravelQuarry = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title--light">
             Permit Application Number
-            <NOWOrigionalValueTooltip
-              origionalValue={
-                props.originalValuesIfEdited[
+            <NOWOriginalValueTooltip
+              originalValue={
+                props.renderOriginalValues(
                   "sand_and_gravel.agri_lnd_rsrv_permit_application_number"
-                ]
+                ).value
               }
               isVisible={
-                !isNull(
-                  props.originalValuesIfEdited[
-                    "sand_and_gravel.agri_lnd_rsrv_permit_application_number"
-                  ]
-                )
+                props.renderOriginalValues(
+                  "sand_and_gravel.agri_lnd_rsrv_permit_application_number"
+                ).edited
               }
             />
           </div>
@@ -281,9 +274,9 @@ export const SandGravelQuarry = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Proposed land use
-            <NOWOrigionalValueTooltip
-              origionalValue={props.originalValuesIfEdited["sand_and_gravel.proposed_land_use"]}
-              isVisible={!isNull(props.originalValuesIfEdited["sand_and_gravel.proposed_land_use"])}
+            <NOWOriginalValueTooltip
+              originalValue={props.renderOriginalValues("sand_and_gravel.proposed_land_use").value}
+              isVisible={props.renderOriginalValues("sand_and_gravel.proposed_land_use").edited}
             />
           </div>
           <Field
@@ -298,9 +291,9 @@ export const SandGravelQuarry = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Official community plan for the site
-            <NOWOrigionalValueTooltip
-              origionalValue={props.originalValuesIfEdited["sand_and_gravel.community_plan"]}
-              isVisible={!isNull(props.originalValuesIfEdited["sand_and_gravel.community_plan"])}
+            <NOWOriginalValueTooltip
+              originalValue={props.renderOriginalValues("sand_and_gravel.community_plan").value}
+              isVisible={props.renderOriginalValues("sand_and_gravel.community_plan").edited}
             />
           </div>
           <Field
@@ -313,14 +306,12 @@ export const SandGravelQuarry = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Does the local government have a soil removal bylaw?
-            <NOWOrigionalValueTooltip
-              origionalValue={
-                props.originalValuesIfEdited["sand_and_gravel.has_local_soil_removal_bylaw"]
+            <NOWOriginalValueTooltip
+              originalValue={
+                props.renderOriginalValues("sand_and_gravel.has_local_soil_removal_bylaw").value
               }
               isVisible={
-                !isNull(
-                  props.originalValuesIfEdited["sand_and_gravel.has_local_soil_removal_bylaw"]
-                )
+                props.renderOriginalValues("sand_and_gravel.has_local_soil_removal_bylaw").edited
               }
             />
           </div>
@@ -336,12 +327,12 @@ export const SandGravelQuarry = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Total mineable reserves over the life of the mine
-            <NOWOrigionalValueTooltip
-              origionalValue={
-                props.originalValuesIfEdited["sand_and_gravel.total_mineable_reserves"]
+            <NOWOriginalValueTooltip
+              originalValue={
+                props.renderOriginalValues("sand_and_gravel.total_mineable_reserves").value
               }
               isVisible={
-                !isNull(props.originalValuesIfEdited["sand_and_gravel.total_mineable_reserves"])
+                props.renderOriginalValues("sand_and_gravel.total_mineable_reserves").edited
               }
             />
           </div>
@@ -358,12 +349,12 @@ export const SandGravelQuarry = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Annual extraction from site
-            <NOWOrigionalValueTooltip
-              origionalValue={
-                props.originalValuesIfEdited["sand_and_gravel.total_annual_extraction"]
+            <NOWOriginalValueTooltip
+              originalValue={
+                props.renderOriginalValues("sand_and_gravel.total_annual_extraction").value
               }
               isVisible={
-                !isNull(props.originalValuesIfEdited["sand_and_gravel.total_annual_extraction"])
+                props.renderOriginalValues("sand_and_gravel.total_annual_extraction").edited
               }
             />
           </div>
@@ -407,12 +398,12 @@ export const SandGravelQuarry = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Proposed reclamation and timing for this specific activity
-            <NOWOrigionalValueTooltip
-              origionalValue={
-                props.originalValuesIfEdited["sand_and_gravel.reclamation_description"]
+            <NOWOriginalValueTooltip
+              originalValue={
+                props.renderOriginalValues("sand_and_gravel.reclamation_description").value
               }
               isVisible={
-                !isNull(props.originalValuesIfEdited["sand_and_gravel.reclamation_description"])
+                props.renderOriginalValues("sand_and_gravel.reclamation_description").edited
               }
             />
           </div>
@@ -427,9 +418,9 @@ export const SandGravelQuarry = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Estimated Cost of reclamation activities described above
-            <NOWOrigionalValueTooltip
-              origionalValue={props.originalValuesIfEdited["sand_and_gravel.reclamation_cost"]}
-              isVisible={!isNull(props.originalValuesIfEdited["sand_and_gravel.reclamation_cost"])}
+            <NOWOriginalValueTooltip
+              originalValue={props.renderOriginalValues("sand_and_gravel.reclamation_cost").value}
+              isVisible={props.renderOriginalValues("sand_and_gravel.reclamation_cost").edited}
             />
           </div>
           <Field

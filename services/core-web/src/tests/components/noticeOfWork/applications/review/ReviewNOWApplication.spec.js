@@ -9,6 +9,7 @@ const setupReducerProps = () => {
   reducerProps.isViewMode = true;
   reducerProps.noticeOfWork = NOW_MOCK.IMPORTED_NOTICE_OF_WORK;
   reducerProps.reclamationSummary = NOW_MOCK.RECLAMATION_SUMMARY;
+  reducerProps.renderOriginalValues = jest.fn();
 };
 
 beforeEach(() => {

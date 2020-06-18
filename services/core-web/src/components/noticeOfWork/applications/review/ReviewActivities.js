@@ -3,7 +3,6 @@ import { PropTypes } from "prop-types";
 import { bindActionCreators } from "redux";
 import { FormSection, arrayInsert, arrayRemove, arrayPush } from "redux-form";
 import { connect } from "react-redux";
-import { getOriginalValuesIfEdited } from "@common/selectors/noticeOfWorkSelectors";
 import * as FORM from "@/constants/forms";
 import CustomPropTypes from "@/customPropTypes";
 import ScrollContentWrapper from "@/components/noticeOfWork/applications/ScrollContentWrapper";
@@ -32,7 +31,7 @@ const propTypes = {
   arrayRemove: PropTypes.func.isRequired,
   arrayPush: PropTypes.func.isRequired,
   noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
-  originalValuesIfEdited: PropTypes.objectOf(PropTypes.strings).isRequired,
+  renderOriginalValues: PropTypes.objectOf(PropTypes.strings).isRequired,
 };
 
 export const ReviewActivities = (props) => {
@@ -67,7 +66,7 @@ export const ReviewActivities = (props) => {
             isViewMode={props.isViewMode}
             editRecord={editRecord}
             addRecord={addRecord}
-            originalValuesIfEdited={props.originalValuesIfEdited}
+            renderOriginalValues={props.renderOriginalValues}
           />
         </FormSection>
       </ScrollContentWrapper>
@@ -80,7 +79,7 @@ export const ReviewActivities = (props) => {
         <FormSection name="blasting_operation">
           <Blasting
             isViewMode={props.isViewMode}
-            originalValuesIfEdited={props.originalValuesIfEdited}
+            renderOriginalValues={props.renderOriginalValues}
           />
         </FormSection>
       </ScrollContentWrapper>
@@ -95,7 +94,7 @@ export const ReviewActivities = (props) => {
             isViewMode={props.isViewMode}
             editRecord={editRecord}
             addRecord={addRecord}
-            originalValuesIfEdited={props.originalValuesIfEdited}
+            renderOriginalValues={props.renderOriginalValues}
           />
         </FormSection>
       </ScrollContentWrapper>
@@ -111,7 +110,7 @@ export const ReviewActivities = (props) => {
             isViewMode={props.isViewMode}
             editRecord={editRecord}
             addRecord={addRecord}
-            originalValuesIfEdited={props.originalValuesIfEdited}
+            renderOriginalValues={props.renderOriginalValues}
           />
         </FormSection>
       </ScrollContentWrapper>
@@ -126,7 +125,7 @@ export const ReviewActivities = (props) => {
             isViewMode={props.isViewMode}
             editRecord={editRecord}
             addRecord={addRecord}
-            originalValuesIfEdited={props.originalValuesIfEdited}
+            renderOriginalValues={props.renderOriginalValues}
           />
         </FormSection>
       </ScrollContentWrapper>
@@ -141,7 +140,7 @@ export const ReviewActivities = (props) => {
             isViewMode={props.isViewMode}
             editRecord={editRecord}
             addRecord={addRecord}
-            originalValuesIfEdited={props.originalValuesIfEdited}
+            renderOriginalValues={props.renderOriginalValues}
           />
         </FormSection>
       </ScrollContentWrapper>
@@ -156,7 +155,7 @@ export const ReviewActivities = (props) => {
             isViewMode={props.isViewMode}
             editRecord={editRecord}
             addRecord={addRecord}
-            originalValuesIfEdited={props.originalValuesIfEdited}
+            renderOriginalValues={props.renderOriginalValues}
           />
         </FormSection>
       </ScrollContentWrapper>
@@ -172,7 +171,7 @@ export const ReviewActivities = (props) => {
             isViewMode={props.isViewMode}
             editRecord={editRecord}
             addRecord={addRecord}
-            originalValuesIfEdited={props.originalValuesIfEdited}
+            renderOriginalValues={props.renderOriginalValues}
           />
         </FormSection>
       </ScrollContentWrapper>
@@ -188,7 +187,7 @@ export const ReviewActivities = (props) => {
             isViewMode={props.isViewMode}
             editRecord={editRecord}
             addRecord={addRecord}
-            originalValuesIfEdited={props.originalValuesIfEdited}
+            renderOriginalValues={props.renderOriginalValues}
           />
         </FormSection>
       </ScrollContentWrapper>
@@ -204,7 +203,7 @@ export const ReviewActivities = (props) => {
             isViewMode={props.isViewMode}
             editRecord={editRecord}
             addRecord={addRecord}
-            originalValuesIfEdited={props.originalValuesIfEdited}
+            renderOriginalValues={props.renderOriginalValues}
           />
         </FormSection>
       </ScrollContentWrapper>
@@ -220,7 +219,7 @@ export const ReviewActivities = (props) => {
             isViewMode={props.isViewMode}
             editRecord={editRecord}
             addRecord={addRecord}
-            originalValuesIfEdited={props.originalValuesIfEdited}
+            renderOriginalValues={props.renderOriginalValues}
           />
         </FormSection>
       </ScrollContentWrapper>
@@ -235,7 +234,7 @@ export const ReviewActivities = (props) => {
             isViewMode={props.isViewMode}
             editRecord={editRecord}
             addRecord={addRecord}
-            originalValuesIfEdited={props.originalValuesIfEdited}
+            renderOriginalValues={props.renderOriginalValues}
           />
         </FormSection>
       </ScrollContentWrapper>
@@ -244,10 +243,6 @@ export const ReviewActivities = (props) => {
 };
 
 ReviewActivities.propTypes = propTypes;
-
-const mapStateToProps = (state) => ({
-  originalValuesIfEdited: getOriginalValuesIfEdited(state),
-});
 
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
@@ -259,4 +254,4 @@ const mapDispatchToProps = (dispatch) =>
     dispatch
   );
 
-export default connect(mapStateToProps, mapDispatchToProps)(ReviewActivities);
+export default connect(null, mapDispatchToProps)(ReviewActivities);

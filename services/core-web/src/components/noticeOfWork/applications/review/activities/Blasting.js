@@ -1,17 +1,16 @@
 import React from "react";
 import { PropTypes } from "prop-types";
 import { Field } from "redux-form";
-import { isNull } from "lodash";
 import { Row, Col } from "antd";
 import { requiredRadioButton } from "@common/utils/Validate";
 import RenderField from "@/components/common/RenderField";
 import RenderDate from "@/components/common/RenderDate";
 import RenderRadioButtons from "@/components/common/RenderRadioButtons";
-import { NOWOrigionalValueTooltip } from "@/components/common/CoreTooltip";
+import { NOWOriginalValueTooltip } from "@/components/common/CoreTooltip";
 
 const propTypes = {
   isViewMode: PropTypes.bool.isRequired,
-  originalValuesIfEdited: PropTypes.objectOf(PropTypes.strings).isRequired,
+  renderOriginalValues: PropTypes.func.isRequired,
 };
 
 export const Blasting = (props) => {
@@ -21,14 +20,13 @@ export const Blasting = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             On site storage explosives
-            <NOWOrigionalValueTooltip
-              origionalValue={
-                props.originalValuesIfEdited["blasting_operation.has_storage_explosive_on_site"]
+            <NOWOriginalValueTooltip
+              originalValue={
+                props.renderOriginalValues("blasting_operation.has_storage_explosive_on_site").value
               }
               isVisible={
-                !isNull(
-                  props.originalValuesIfEdited["blasting_operation.has_storage_explosive_on_site"]
-                )
+                props.renderOriginalValues("blasting_operation.has_storage_explosive_on_site")
+                  .edited
               }
             />
           </div>
@@ -43,12 +41,12 @@ export const Blasting = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Explosive Magazine Storage and Use Permit
-            <NOWOrigionalValueTooltip
-              origionalValue={
-                props.originalValuesIfEdited["blasting_operation.explosive_permit_issued"]
+            <NOWOriginalValueTooltip
+              originalValue={
+                props.renderOriginalValues("blasting_operation.explosive_permit_issued").value
               }
               isVisible={
-                !isNull(props.originalValuesIfEdited["blasting_operation.explosive_permit_issued"])
+                props.renderOriginalValues("blasting_operation.explosive_permit_issued").edited
               }
             />
           </div>
@@ -65,14 +63,12 @@ export const Blasting = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Expiry Date
-            <NOWOrigionalValueTooltip
-              origionalValue={
-                props.originalValuesIfEdited["blasting_operation.explosive_permit_expiry_date"]
+            <NOWOriginalValueTooltip
+              originalValue={
+                props.renderOriginalValues("blasting_operation.explosive_permit_expiry_date").value
               }
               isVisible={
-                !isNull(
-                  props.originalValuesIfEdited["blasting_operation.explosive_permit_expiry_date"]
-                )
+                props.renderOriginalValues("blasting_operation.explosive_permit_expiry_date").edited
               }
             />
           </div>
@@ -86,12 +82,12 @@ export const Blasting = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Permit Number
-            <NOWOrigionalValueTooltip
-              origionalValue={
-                props.originalValuesIfEdited["blasting_operation.explosive_permit_number"]
+            <NOWOriginalValueTooltip
+              originalValue={
+                props.renderOriginalValues("blasting_operation.explosive_permit_number").value
               }
               isVisible={
-                !isNull(props.originalValuesIfEdited["blasting_operation.explosive_permit_number"])
+                props.renderOriginalValues("blasting_operation.explosive_permit_number").edited
               }
             />
           </div>

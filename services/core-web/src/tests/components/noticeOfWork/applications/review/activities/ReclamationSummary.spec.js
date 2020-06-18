@@ -7,6 +7,7 @@ const reducerProps = {};
 
 const setupReducerProps = () => {
   reducerProps.reclamationSummary = NOW_MOCK.RECLAMATION_SUMMARY;
+  reducerProps.renderOriginalValues = jest.fn();
 };
 
 beforeEach(() => {

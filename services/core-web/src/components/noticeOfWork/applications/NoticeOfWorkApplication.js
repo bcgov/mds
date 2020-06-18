@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 import { getFormValues, reset, getFormSyncErrors, focus } from "redux-form";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
+import { get, isNull, isUndefined } from "lodash";
 import {
   fetchImportedNoticeOfWorkApplication,
   fetchOriginalNoticeOfWorkApplication,
@@ -18,7 +19,6 @@ import {
   getNoticeOfWork,
   getOriginalNoticeOfWork,
   getNOWReclamationSummary,
-  getOriginalValuesIfEdited,
 } from "@common/selectors/noticeOfWorkSelectors";
 import { getMines } from "@common/selectors/mineSelectors";
 import {
@@ -30,6 +30,7 @@ import {
 import { formatDate, flattenObject } from "@common/utils/helpers";
 import { clearNoticeOfWorkApplication } from "@common/actions/noticeOfWorkActions";
 import { downloadNowDocument } from "@common/utils/actionlessNetworkCalls";
+import * as Strings from "@common/constants/strings";
 import {
   generateNoticeOfWorkApplicationDocument,
   fetchNoticeOfWorkApplicationContextTemplate,
@@ -181,6 +182,30 @@ export class NoticeOfWorkApplication extends Component {
       this.setState({ isMajorMine: data.major_mine_ind, mineGuid: data.mine_guid });
       onMineInfoLoaded();
     });
+  };
+
+  renderOriginalValues = (path) => {
+    const prevValue = get(this.props.originalNoticeOfWork, path);
+    const currentValue = get(this.props.noticeOfWork, path);
+    // only show edited if user has updated the field
+    const isNewValue = isUndefined(prevValue) && !isNull(currentValue);
+    const edited = isNewValue && prevValue !== currentValue;
+
+    const getValue = () => {
+      if (prevValue === true) {
+        return "Yes";
+      }
+      if (prevValue === false) {
+        return "No";
+      }
+      if (isUndefined(prevValue) || isNull(prevValue)) {
+        return Strings.EMPTY_FIELD;
+      }
+      return prevValue;
+    };
+
+    const toolTipValue = { value: getValue(), edited };
+    return toolTipValue;
   };
 
   loadCreatePermitApplication = () => {
@@ -552,6 +577,7 @@ export class NoticeOfWorkApplication extends Component {
           this.state.showOriginalValues ? this.props.originalNoticeOfWork : this.props.noticeOfWork
         }
         noticeOfWork={this.props.noticeOfWork}
+        renderOriginalValues={this.renderOriginalValues}
       />
     );
   };
@@ -864,7 +890,6 @@ export class NoticeOfWorkApplication extends Component {
 const mapStateToProps = (state) => ({
   noticeOfWork: getNoticeOfWork(state),
   originalNoticeOfWork: getOriginalNoticeOfWork(state),
-  originalValuesIfEdited: getOriginalValuesIfEdited(state),
   formValues: getFormValues(FORM.EDIT_NOTICE_OF_WORK)(state),
   formErrors: getFormSyncErrors(FORM.EDIT_NOTICE_OF_WORK)(state),
   mines: getMines(state),

@@ -1,6 +1,5 @@
-import { isEmpty, get } from "lodash";
+import { isEmpty } from "lodash";
 import { createSelector } from "reselect";
-import { flattenObject } from "@common/utils/helpers";
 import * as noticeOfWorkReducer from "../reducers/noticeOfWorkReducer";
 import { getDropdownNoticeOfWorkActivityTypeOptions } from "./staticContentSelectors";
 
@@ -39,27 +38,5 @@ export const getNOWReclamationSummary = createSelector(
       });
     }
     return reclamationList;
-  }
-);
-
-export const getOriginalValuesIfEdited = createSelector(
-  [getNoticeOfWork, getOriginalNoticeOfWork],
-  (noticeOfWork, originalNoticeOfWork) => {
-    const current = flattenObject(noticeOfWork);
-    const keys = Object.keys(current);
-    keys.map((path) => {
-      const prevValue = get(originalNoticeOfWork, path);
-      const currentValue = get(noticeOfWork, path);
-      const prevValueExisted = prevValue !== null && prevValue !== undefined;
-      if (prevValue !== currentValue && prevValueExisted) {
-        // check if the value has changed, if so, set it to be the previous value
-        current[path] = prevValue;
-        return current;
-      }
-      // otherwise return null, the FE checks if null and doesn't show 'Edited'
-      current[path] = null;
-      return current;
-    });
-    return current;
   }
 );

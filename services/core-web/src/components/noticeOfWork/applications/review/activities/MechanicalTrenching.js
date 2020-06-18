@@ -3,7 +3,6 @@ import { PropTypes } from "prop-types";
 import { Field, formValueSelector } from "redux-form";
 import { connect } from "react-redux";
 import { Row, Col, Table, Button } from "antd";
-import { isNull } from "lodash";
 import { maxLength, number } from "@common/utils/Validate";
 import * as FORM from "@/constants/forms";
 import { TRASHCAN } from "@/constants/assets";
@@ -11,7 +10,7 @@ import RenderField from "@/components/common/RenderField";
 import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
 import Equipment from "@/components/noticeOfWork/applications/review/activities/Equipment";
 import CustomPropTypes from "@/customPropTypes";
-import { NOWOrigionalValueTooltip } from "@/components/common/CoreTooltip";
+import { NOWOriginalValueTooltip } from "@/components/common/CoreTooltip";
 
 const propTypes = {
   isViewMode: PropTypes.bool.isRequired,
@@ -19,7 +18,7 @@ const propTypes = {
   equipment: CustomPropTypes.activityEquipment.isRequired,
   editRecord: PropTypes.func.isRequired,
   addRecord: PropTypes.func.isRequired,
-  originalValuesIfEdited: PropTypes.objectOf(PropTypes.strings).isRequired,
+  renderOriginalValues: PropTypes.func.isRequired,
 };
 const defaultProps = {};
 
@@ -189,14 +188,12 @@ export const MechanicalTrenching = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Proposed reclamation and timing for this specific activity
-            <NOWOrigionalValueTooltip
-              origionalValue={
-                props.originalValuesIfEdited["mechanical_trenching.reclamation_description"]
+            <NOWOriginalValueTooltip
+              originalValue={
+                props.renderOriginalValues("mechanical_trenching.reclamation_description").value
               }
               isVisible={
-                !isNull(
-                  props.originalValuesIfEdited["mechanical_trenching.reclamation_description"]
-                )
+                props.renderOriginalValues("mechanical_trenching.reclamation_description").edited
               }
             />
           </div>
@@ -211,11 +208,11 @@ export const MechanicalTrenching = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Estimated Cost of reclamation activities described above
-            <NOWOrigionalValueTooltip
-              origionalValue={props.originalValuesIfEdited["mechanical_trenching.reclamation_cost"]}
-              isVisible={
-                !isNull(props.originalValuesIfEdited["mechanical_trenching.reclamation_cost"])
+            <NOWOriginalValueTooltip
+              originalValue={
+                props.renderOriginalValues("mechanical_trenching.reclamation_cost").value
               }
+              isVisible={props.renderOriginalValues("mechanical_trenching.reclamation_cost").edited}
             />
           </div>
           <Field

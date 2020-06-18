@@ -3,7 +3,6 @@ import { PropTypes } from "prop-types";
 import { Field, Fields, formValueSelector } from "redux-form";
 import { connect } from "react-redux";
 import { Row, Col, Table, Button } from "antd";
-import { isNull } from "lodash";
 import {
   getDropdownNoticeOfWorkUndergroundExplorationTypeOptions,
   getDropdownNoticeOfWorkUnitTypeOptions,
@@ -14,7 +13,7 @@ import { TRASHCAN } from "@/constants/assets";
 import RenderField from "@/components/common/RenderField";
 import RenderFieldWithDropdown from "@/components/common/RenderFieldWithDropdown";
 import CustomPropTypes from "@/customPropTypes";
-import { NOWFieldOriginTooltip, NOWOrigionalValueTooltip } from "@/components/common/CoreTooltip";
+import { NOWFieldOriginTooltip, NOWOriginalValueTooltip } from "@/components/common/CoreTooltip";
 
 const propTypes = {
   isViewMode: PropTypes.bool.isRequired,
@@ -24,7 +23,7 @@ const propTypes = {
   unitTypeOptions: CustomPropTypes.options.isRequired,
   // eslint-disable-next-line react/no-unused-prop-types
   undergroundExplorationTypeOptions: CustomPropTypes.options.isRequired,
-  originalValuesIfEdited: PropTypes.objectOf(PropTypes.strings).isRequired,
+  renderOriginalValues: PropTypes.func.isRequired,
 };
 
 const defaultProps = {};
@@ -288,12 +287,12 @@ export const UndergroundExploration = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Total Ore
-            <NOWOrigionalValueTooltip
-              origionalValue={
-                props.originalValuesIfEdited["underground_exploration.total_ore_amount"]
+            <NOWOriginalValueTooltip
+              originalValue={
+                props.renderOriginalValues("underground_exploration.total_ore_amount").value
               }
               isVisible={
-                !isNull(props.originalValuesIfEdited["underground_exploration.total_ore_amount"])
+                props.renderOriginalValues("underground_exploration.total_ore_amount").edited
               }
             />
           </div>
@@ -310,12 +309,12 @@ export const UndergroundExploration = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Total Waste
-            <NOWOrigionalValueTooltip
-              origionalValue={
-                props.originalValuesIfEdited["underground_exploration.total_waste_amount"]
+            <NOWOriginalValueTooltip
+              originalValue={
+                props.renderOriginalValues("underground_exploration.total_waste_amount").value
               }
               isVisible={
-                !isNull(props.originalValuesIfEdited["underground_exploration.total_waste_amount"])
+                props.renderOriginalValues("underground_exploration.total_waste_amount").edited
               }
             />
           </div>

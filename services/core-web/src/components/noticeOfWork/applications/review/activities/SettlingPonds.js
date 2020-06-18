@@ -2,7 +2,6 @@ import React from "react";
 import { PropTypes } from "prop-types";
 import { Field, formValueSelector } from "redux-form";
 import { connect } from "react-redux";
-import { isNull } from "lodash";
 import { Row, Col, Table, Button } from "antd";
 import { requiredRadioButton, maxLength, number } from "@common/utils/Validate";
 import * as FORM from "@/constants/forms";
@@ -11,14 +10,14 @@ import RenderField from "@/components/common/RenderField";
 import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
 import RenderRadioButtons from "@/components/common/RenderRadioButtons";
 import CustomPropTypes from "@/customPropTypes";
-import { NOWFieldOriginTooltip, NOWOrigionalValueTooltip } from "@/components/common/CoreTooltip";
+import { NOWFieldOriginTooltip, NOWOriginalValueTooltip } from "@/components/common/CoreTooltip";
 
 const propTypes = {
   isViewMode: PropTypes.bool.isRequired,
   details: CustomPropTypes.activityDetails.isRequired,
   editRecord: PropTypes.func.isRequired,
   addRecord: PropTypes.func.isRequired,
-  originalValuesIfEdited: PropTypes.objectOf(PropTypes.strings).isRequired,
+  renderOriginalValues: PropTypes.func.isRequired,
 };
 
 export const SettlingPonds = (props) => {
@@ -282,9 +281,9 @@ export const SettlingPonds = (props) => {
       <Row gutter={16}>
         <div className="field-title">Water from Ponds will be</div>
         <Col md={8} sm={24}>
-          <NOWOrigionalValueTooltip
-            origionalValue={props.originalValuesIfEdited["settling_pond.is_ponds_recycled"]}
-            isVisible={!isNull(props.originalValuesIfEdited["settling_pond.is_ponds_recycled"])}
+          <NOWOriginalValueTooltip
+            originalValue={props.renderOriginalValues("settling_pond.is_ponds_recycled").value}
+            isVisible={props.renderOriginalValues("settling_pond.is_ponds_recycled").edited}
           />
           <Field
             label="Recycled"
@@ -296,9 +295,9 @@ export const SettlingPonds = (props) => {
           />
         </Col>
         <Col md={8} sm={24}>
-          <NOWOrigionalValueTooltip
-            origionalValue={props.originalValuesIfEdited["settling_pond.is_ponds_exfiltrated"]}
-            isVisible={!isNull(props.originalValuesIfEdited["settling_pond.is_ponds_exfiltrated"])}
+          <NOWOriginalValueTooltip
+            originalValue={props.renderOriginalValues("settling_pond.is_ponds_exfiltrated").value}
+            isVisible={props.renderOriginalValues("settling_pond.is_ponds_exfiltrated").edited}
           />
           <Field
             label="Exfiltrated to Ground"
@@ -310,9 +309,9 @@ export const SettlingPonds = (props) => {
           />
         </Col>
         <Col md={8} sm={24}>
-          <NOWOrigionalValueTooltip
-            origionalValue={props.originalValuesIfEdited["settling_pond.is_ponds_discharged"]}
-            isVisible={!isNull(props.originalValuesIfEdited["settling_pond.is_ponds_discharged"])}
+          <NOWOriginalValueTooltip
+            originalValue={props.renderOriginalValues("settling_pond.is_ponds_discharged").value}
+            isVisible={props.renderOriginalValues("settling_pond.is_ponds_discharged").edited}
           />
           <Field
             label="Discharged to Environment"
@@ -330,11 +329,11 @@ export const SettlingPonds = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Proposed reclamation and timing for this specific activity
-            <NOWOrigionalValueTooltip
-              origionalValue={props.originalValuesIfEdited["settling_pond.reclamation_description"]}
-              isVisible={
-                !isNull(props.originalValuesIfEdited["settling_pond.reclamation_description"])
+            <NOWOriginalValueTooltip
+              originalValue={
+                props.renderOriginalValues("settling_pond.reclamation_description").value
               }
+              isVisible={props.renderOriginalValues("settling_pond.reclamation_description").edited}
             />
           </div>
           <Field
@@ -348,9 +347,9 @@ export const SettlingPonds = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Estimated Cost of reclamation activities described above
-            <NOWOrigionalValueTooltip
-              origionalValue={props.originalValuesIfEdited["settling_pond.reclamation_cost"]}
-              isVisible={!isNull(props.originalValuesIfEdited["settling_pond.reclamation_cost"])}
+            <NOWOriginalValueTooltip
+              originalValue={props.renderOriginalValues("settling_pond.reclamation_cost").value}
+              isVisible={props.renderOriginalValues("settling_pond.reclamation_cost").edited}
             />
           </div>
           <Field
