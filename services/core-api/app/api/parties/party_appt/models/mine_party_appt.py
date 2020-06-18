@@ -1,7 +1,5 @@
 from datetime import datetime
-import re
-import uuid
-import requests
+import re, sys, uuid, requests
 
 from flask import request, current_app
 from sqlalchemy import func
@@ -63,6 +61,11 @@ class MinePartyAppointment(AuditMixin, Base):
                 raise AssertionError(f'Permit with guid {related_guid} not found')
             self.permit_id = permit.permit_id
         return
+
+    def save(self):
+        if not (self.permit or self.permit_id or self.mine_guid or self.mine):
+            raise AssertionError("Must have a related permit or mine")
+        super(MinePartyAppointment, self).save()
 
     def json(self, relationships=[]):
         result = {
@@ -227,10 +230,3 @@ class MinePartyAppointment(AuditMixin, Base):
             if not val:
                 raise AssertionError('No permit_id, but mine_party_appt_type_code is PMT.')
         return val
-
-    # @validates('mine_guid')
-    # def validate_mine_guid(self, key, val):
-    #     if self.mine_guid or self.permit_id:
-    #         return val
-    #     else:
-    #         raise AssertionError('If not related to permit, must be related to mine')
