@@ -56,6 +56,7 @@ exports[`CutLines renders properly 1`] = `
         <NOWOriginalValueTooltip
           isVisible={true}
           originalValue="N/A"
+          style={Object {}}
         />
       </div>
       <Field
@@ -81,6 +82,7 @@ exports[`CutLines renders properly 1`] = `
         <NOWOriginalValueTooltip
           isVisible={true}
           originalValue="N/A"
+          style={Object {}}
         />
       </div>
       <Field

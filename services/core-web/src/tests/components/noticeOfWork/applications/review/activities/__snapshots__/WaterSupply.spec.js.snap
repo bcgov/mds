@@ -58,6 +58,7 @@ exports[`WaterSupply renders properly 1`] = `
         <NOWOriginalValueTooltip
           isVisible={true}
           originalValue="N/A"
+          style={Object {}}
         />
       </div>
       <Field
@@ -83,6 +84,7 @@ exports[`WaterSupply renders properly 1`] = `
         <NOWOriginalValueTooltip
           isVisible={true}
           originalValue="N/A"
+          style={Object {}}
         />
       </div>
       <Field

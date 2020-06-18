@@ -52,6 +52,7 @@ exports[`Camps renders properly 1`] = `
         <NOWOriginalValueTooltip
           isVisible={true}
           originalValue="N/A"
+          style={Object {}}
         />
       </div>
       <Field
@@ -77,6 +78,7 @@ exports[`Camps renders properly 1`] = `
         <NOWOriginalValueTooltip
           isVisible={true}
           originalValue="N/A"
+          style={Object {}}
         />
       </div>
       <Field
@@ -108,15 +110,24 @@ exports[`Camps renders properly 1`] = `
         md={12}
         sm={24}
       >
-        <NOWOriginalValueTooltip
-          isVisible={true}
-          originalValue="N/A"
-        />
         <Field
           component={[Function]}
           disabled={true}
           id="has_fuel_stored_in_bulk"
-          label="Bulk"
+          label={
+            <span>
+              Bulk
+              <NOWOriginalValueTooltip
+                isVisible={true}
+                originalValue="N/A"
+                style={
+                  Object {
+                    "marginLeft": "20%",
+                  }
+                }
+              />
+            </span>
+          }
           name="has_fuel_stored_in_bulk"
           validate={
             Array [
@@ -129,15 +140,24 @@ exports[`Camps renders properly 1`] = `
         md={12}
         sm={24}
       >
-        <NOWOriginalValueTooltip
-          isVisible={true}
-          originalValue="N/A"
-        />
         <Field
           component={[Function]}
           disabled={true}
           id="has_fuel_stored_in_barrels"
-          label="Barrell"
+          label={
+            <span>
+              Barrell
+              <NOWOriginalValueTooltip
+                isVisible={true}
+                originalValue="N/A"
+                style={
+                  Object {
+                    "marginLeft": "20%",
+                  }
+                }
+              />
+            </span>
+          }
           name="has_fuel_stored_in_barrels"
           validate={
             Array [
@@ -166,6 +186,7 @@ exports[`Camps renders properly 1`] = `
         <NOWOriginalValueTooltip
           isVisible={true}
           originalValue="N/A"
+          style={Object {}}
         />
       </div>
       <Field
@@ -191,6 +212,7 @@ exports[`Camps renders properly 1`] = `
         <NOWOriginalValueTooltip
           isVisible={true}
           originalValue="N/A"
+          style={Object {}}
         />
       </div>
       <Field
