@@ -69,3 +69,22 @@ export const fetchIncidents = (payload) => (dispatch) => {
     .catch(() => dispatch(error(reducerTypes.GET_INCIDENTS)))
     .finally(() => dispatch(hideLoading()));
 };
+
+export const deleteMineIncident = (mineGuid, incidentGuid) => (dispatch) => {
+  dispatch(request(reducerTypes.DELETE_INCIDENT));
+  return CustomAxios()
+    .delete(
+      `${ENVIRONMENT.apiUrl}${API.INCIDENT_DELETE(mineGuid, incidentGuid)}`,
+      createRequestHeader()
+    )
+    .then((response) => {
+      notification.success({
+        message: "Successfully deleted incident.",
+        duration: 10,
+      });
+      dispatch(success(reducerTypes.DELETE_INCIDENT));
+      return response;
+    })
+    .catch(() => dispatch(error(reducerTypes.DELETE_INCIDENT)))
+    .finally(() => dispatch(hideLoading()));
+};

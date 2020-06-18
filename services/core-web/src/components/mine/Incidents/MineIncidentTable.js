@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
-import { Button, Icon } from "antd";
+import { Button, Icon, Popconfirm } from "antd";
 import _ from "lodash";
 import {
   getIncidentDeterminationHash,
@@ -19,7 +19,7 @@ import {
   truncateFilename,
 } from "@common/utils/helpers";
 import * as Strings from "@common/constants/strings";
-import { EDIT_OUTLINE_VIOLET } from "@/constants/assets";
+import { EDIT_OUTLINE_VIOLET, TRASHCAN } from "@/constants/assets";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
 import CustomPropTypes from "@/customPropTypes";
@@ -32,6 +32,7 @@ const propTypes = {
   incidents: PropTypes.arrayOf(CustomPropTypes.incident).isRequired,
   followupActions: PropTypes.arrayOf(CustomPropTypes.incidentFollowupType).isRequired,
   handleEditMineIncident: PropTypes.func.isRequired,
+  handleDeleteMineIncident: PropTypes.func.isRequired,
   openMineIncidentModal: PropTypes.func.isRequired,
   openViewMineIncidentModal: PropTypes.func.isRequired,
   isLoaded: PropTypes.bool.isRequired,
@@ -103,6 +104,7 @@ export class MineIncidentTable extends Component {
     incidents,
     actions,
     handleEditMineIncident,
+    handleDeleteMineIncident,
     openMineIncidentModal,
     openViewMineIncidentModal,
     determinationHash,
@@ -132,6 +134,7 @@ export class MineIncidentTable extends Component {
               )
             : [],
         handleEditMineIncident,
+        handleDeleteMineIncident,
         openMineIncidentModal,
         openViewMineIncidentModal,
         incident,
@@ -342,6 +345,19 @@ export class MineIncidentTable extends Component {
             >
               <Icon type="eye" className="icon-lg icon-svg-filter" />
             </Button>
+            <AuthorizationWrapper permission={Permission.ADMIN}>
+              <Popconfirm
+                placement="topLeft"
+                title="Are you sure you want to delete this incident?"
+                onConfirm={() => record.handleDeleteMineIncident(record.incident)}
+                okText="Delete"
+                cancelText="Cancel"
+              >
+                <Button ghost type="primary">
+                  <img name="remove" src={TRASHCAN} alt="Remove Incident" />
+                </Button>
+              </Popconfirm>
+            </AuthorizationWrapper>
           </div>
         ),
       },
@@ -359,6 +375,7 @@ export class MineIncidentTable extends Component {
           this.props.incidents,
           this.props.followupActions,
           this.props.handleEditMineIncident,
+          this.props.handleDeleteMineIncident,
           this.props.openMineIncidentModal,
           this.props.openViewMineIncidentModal,
           this.props.incidentDeterminationHash,

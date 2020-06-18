@@ -18,6 +18,7 @@ import { getVariances, getVariancePageData } from "@common/selectors/varianceSel
 import {
   fetchVariances,
   updateVariance,
+  deleteVariance,
   addDocumentToVariance,
 } from "@common/actionCreators/varianceActionCreator";
 import * as Strings from "@common/constants/strings";
@@ -35,6 +36,7 @@ import VarianceSearch from "./VarianceSearch";
 const propTypes = {
   addDocumentToVariance: PropTypes.func.isRequired,
   updateVariance: PropTypes.func.isRequired,
+  deleteVariance: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   fetchVariances: PropTypes.func.isRequired,
@@ -197,6 +199,14 @@ export class VarianceHomePage extends Component {
     });
   };
 
+  handleDeleteVariance = (variance) => {
+    this.props.deleteVariance(variance.mine_guid, variance.variance_guid).then(() => {
+      this.props.fetchVariances(this.state.params).then(() => {
+        this.setState({ variancesLoaded: true });
+      });
+    });
+  };
+
   render() {
     return (
       <div className="landing-page">
@@ -228,6 +238,7 @@ export class VarianceHomePage extends Component {
                 params={this.state.params}
                 openEditVarianceModal={this.openEditVarianceModal}
                 openViewVarianceModal={this.openViewVarianceModal}
+                handleDeleteVariance={this.handleDeleteVariance}
                 sortField={this.state.params.sort_field}
                 sortDir={this.state.params.sort_dir}
               />
@@ -258,6 +269,7 @@ const mapDispatchToProps = (dispatch) =>
     {
       fetchVariances,
       updateVariance,
+      deleteVariance,
       openModal,
       closeModal,
       addDocumentToVariance,

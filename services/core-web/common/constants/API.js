@@ -48,6 +48,7 @@ export const PERMITAMENDMENT = (mineGuid, permitGuid, permitAmendmentGuid) =>
   `/mines/${mineGuid}/permits/${permitGuid}/amendments/${permitAmendmentGuid}`;
 export const PERMITAMENDMENTDOCUMENT = (mineGuid, permitGuid, permitAmendmentGuid, documentGuid) =>
   `/mines/${mineGuid}/permits/${permitGuid}/amendments/${permitAmendmentGuid}/documents/${documentGuid}`;
+export const PERMITDELETE = (mineGuid, permitGuid) => `/mines/${mineGuid}/permits/${permitGuid}`;
 
 // Search
 export const SEARCH = (params) => (params ? `/search?${queryString.stringify(params)}` : "/search");
@@ -68,6 +69,8 @@ export const VARIANCE_DOCUMENT = (mineGuid, varianceGuid, documentManagerGuid) =
   `/mines/${mineGuid}/variances/${varianceGuid}/documents/${documentManagerGuid}`;
 export const VARIANCE_STATUS_CODES = "/variances/status-codes";
 export const VARIANCE_DOCUMENT_CATEGORY_OPTIONS = "/variances/document-categories";
+export const VARIANCE_DELETE = (mineGuid, varianceGuid) =>
+  `/mines/${mineGuid}/variances/${varianceGuid}`;
 
 // Users
 export const CORE_USER = "/users/core";
@@ -85,6 +88,8 @@ export const INCIDENT_DETERMINATION_TYPES = `/incidents/determination-types`;
 export const INCIDENT_STATUS_CODES = `/incidents/status-codes`;
 export const INCIDENT_DOCUMENT_TYPE = `/incidents/document-types`;
 export const INCIDENT_CATEGORY_CODES = `/incidents/category-codes`;
+export const INCIDENT_DELETE = (mineGuid, incidentGuid) =>
+  `/mines/${mineGuid}/incidents/${incidentGuid}`;
 
 // Reports
 export const REPORTS = (params = {}) => `/mines/reports?${queryString.stringify(params)}`;

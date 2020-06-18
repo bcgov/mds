@@ -1,10 +1,10 @@
 import React from "react";
-import { Table, Menu, Dropdown, Button, Icon, Tooltip } from "antd";
+import { Table, Menu, Dropdown, Button, Icon, Tooltip, Popconfirm } from "antd";
 import moment from "moment";
 import { orderBy } from "lodash";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { formatDate } from "@common/utils/helpers";
+import { formatDate, renderLabel } from "@common/utils/helpers";
 import { getPartyRelationships } from "@common/selectors/partiesSelectors";
 import { getDropdownPermitStatusOptions } from "@common/selectors/staticContentSelectors";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
@@ -13,7 +13,7 @@ import NullScreen from "@/components/common/NullScreen";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
 import CustomPropTypes from "@/customPropTypes";
-import { EDIT_OUTLINE, EDIT_OUTLINE_VIOLET, EDIT, CARAT } from "@/constants/assets";
+import { EDIT_OUTLINE, EDIT_OUTLINE_VIOLET, EDIT, CARAT, TRASHCAN } from "@/constants/assets";
 import LinkButton from "@/components/common/LinkButton";
 import CoreTable from "@/components/common/CoreTable";
 
@@ -37,6 +37,7 @@ const propTypes = {
   onExpand: PropTypes.func.isRequired,
   isLoaded: PropTypes.bool.isRequired,
   handleAddPermitAmendmentApplication: PropTypes.func.isRequired,
+  handleDeletePermit: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
@@ -71,9 +72,7 @@ const columns = [
     dataIndex: "status",
     key: "status",
     render: (text, record) => (
-      <div title="Status">
-        {record.permitStatusOptions.find((item) => item.value === text).label}
-      </div>
+      <div title="Status">{renderLabel(record.permitStatusOptions, text)}</div>
     ),
   },
   {
@@ -180,25 +179,40 @@ const columns = [
         </Menu>
       );
       return (
-        <AuthorizationWrapper
-          permission={Permission.EDIT_PERMITS}
-          isMajorMine={text.major_mine_ind}
-        >
-          <Dropdown className="full-height full-mobile" overlay={menu} placement="bottomLeft">
-            <Button type="secondary" className="permit-table-button">
-              <div className="padding-small">
-                <img className="padding-small--right icon-svg-filter" src={EDIT} alt="Add/Edit" />
-                Add/Edit
-                <img
-                  className="padding-small--right icon-svg-filter"
-                  src={CARAT}
-                  alt="Menu"
-                  style={{ paddingLeft: "5px" }}
-                />
-              </div>
-            </Button>
-          </Dropdown>
-        </AuthorizationWrapper>
+        <div className="btn--middle flex">
+          <AuthorizationWrapper
+            permission={Permission.EDIT_PERMITS}
+            isMajorMine={text.major_mine_ind}
+          >
+            <Dropdown className="full-height full-mobile" overlay={menu} placement="bottomLeft">
+              <Button type="secondary" className="permit-table-button">
+                <div className="padding-small">
+                  <img className="padding-small--right icon-svg-filter" src={EDIT} alt="Add/Edit" />
+                  Add/Edit
+                  <img
+                    className="padding-small--right icon-svg-filter"
+                    src={CARAT}
+                    alt="Menu"
+                    style={{ paddingLeft: "5px" }}
+                  />
+                </div>
+              </Button>
+            </Dropdown>
+          </AuthorizationWrapper>
+          <AuthorizationWrapper permission={Permission.ADMIN}>
+            <Popconfirm
+              placement="topLeft"
+              title="Are you sure you want to delete this permit?"
+              onConfirm={() => record.handleDeletePermit(record.permit.permit_guid)}
+              okText="Delete"
+              cancelText="Cancel"
+            >
+              <Button ghost type="primary">
+                <img name="remove" src={TRASHCAN} alt="Remove Permit" />
+              </Button>
+            </Popconfirm>
+          </AuthorizationWrapper>
+        </div>
       );
     },
   },
@@ -301,7 +315,8 @@ const transformRowData = (
   openAddPermitAmendmentModal,
   openAddAmalgamatedPermitModal,
   handleAddPermitAmendmentApplication,
-  permitStatusOptions
+  permitStatusOptions,
+  handleDeletePermit
 ) => {
   const latestAmendment = permit.permit_amendments[0];
   const firstAmendment = permit.permit_amendments[permit.permit_amendments.length - 1];
@@ -333,6 +348,7 @@ const transformRowData = (
     handleAddPermitAmendmentApplication,
     permitStatusOptions,
     permit,
+    handleDeletePermit,
   };
 };
 
@@ -405,7 +421,8 @@ export const MinePermitTable = (props) => {
       props.openAddPermitAmendmentModal,
       props.openAddAmalgamatedPermitModal,
       props.handleAddPermitAmendmentApplication,
-      props.permitStatusOptions
+      props.permitStatusOptions,
+      props.handleDeletePermit
     )
   );
 

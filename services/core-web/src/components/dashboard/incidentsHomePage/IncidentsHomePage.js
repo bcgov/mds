@@ -21,7 +21,11 @@ import {
 } from "@common/selectors/staticContentSelectors";
 import { getDropdownInspectors } from "@common/selectors/partiesSelectors";
 import { getIncidents, getIncidentPageData } from "@common/selectors/incidentSelectors";
-import { fetchIncidents, updateMineIncident } from "@common/actionCreators/incidentActionCreator";
+import {
+  fetchIncidents,
+  updateMineIncident,
+  deleteMineIncident,
+} from "@common/actionCreators/incidentActionCreator";
 import * as Strings from "@common/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
 import { IncidentsTable } from "./IncidentsTable";
@@ -56,6 +60,7 @@ const propTypes = {
   incidentStatusCodeOptionsActiveOnly: CustomPropTypes.options.isRequired,
   incidentCategoryCodeOptions: CustomPropTypes.options.isRequired,
   doSubparagraphOptions: CustomPropTypes.options.isRequired,
+  deleteMineIncident: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
@@ -159,6 +164,14 @@ export class IncidentsHomePage extends Component {
   handleEditMineIncident = (values) => {
     this.props.updateMineIncident(values.mine_guid, values.mine_incident_guid, values).then(() => {
       this.props.closeModal();
+    });
+  };
+
+  handleDeleteMineIncident = (values) => {
+    this.props.deleteMineIncident(values.mine_guid, values.mine_incident_guid).then(() => {
+      this.props.fetchIncidents(this.state.params).then(() => {
+        this.setState({ incidentsLoaded: true });
+      });
     });
   };
 
@@ -266,6 +279,7 @@ export class IncidentsHomePage extends Component {
                 openMineIncidentModal={this.openMineIncidentModal}
                 handleEditMineIncident={this.handleEditMineIncident}
                 openViewMineIncidentModal={this.openViewMineIncidentModal}
+                handleDeleteMineIncident={this.handleDeleteMineIncident}
               />
             </div>
           </div>
@@ -305,6 +319,7 @@ const mapDispatchToProps = (dispatch) =>
       destroy,
       openModal,
       closeModal,
+      deleteMineIncident,
     },
     dispatch
   );
