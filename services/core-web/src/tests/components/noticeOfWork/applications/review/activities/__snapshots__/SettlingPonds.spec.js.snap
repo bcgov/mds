@@ -120,6 +120,10 @@ exports[`SettlingPonds renders properly 1`] = `
       md={8}
       sm={24}
     >
+      <NOWOriginalValueTooltip
+        isVisible={true}
+        originalValue="N/A"
+      />
       <Field
         component={[Function]}
         disabled={true}
@@ -137,6 +141,10 @@ exports[`SettlingPonds renders properly 1`] = `
       md={8}
       sm={24}
     >
+      <NOWOriginalValueTooltip
+        isVisible={true}
+        originalValue="N/A"
+      />
       <Field
         component={[Function]}
         disabled={true}
@@ -154,6 +162,10 @@ exports[`SettlingPonds renders properly 1`] = `
       md={8}
       sm={24}
     >
+      <NOWOriginalValueTooltip
+        isVisible={true}
+        originalValue="N/A"
+      />
       <Field
         component={[Function]}
         disabled={true}
@@ -183,6 +195,10 @@ exports[`SettlingPonds renders properly 1`] = `
         className="field-title"
       >
         Proposed reclamation and timing for this specific activity
+        <NOWOriginalValueTooltip
+          isVisible={true}
+          originalValue="N/A"
+        />
       </div>
       <Field
         component={[Function]}
@@ -204,6 +220,10 @@ exports[`SettlingPonds renders properly 1`] = `
         className="field-title"
       >
         Estimated Cost of reclamation activities described above
+        <NOWOriginalValueTooltip
+          isVisible={true}
+          originalValue="N/A"
+        />
       </div>
       <Field
         component={[Function]}

@@ -55,6 +55,10 @@ exports[`WaterSupply renders properly 1`] = `
         className="field-title"
       >
         Proposed reclamation and timing for this specific activity
+        <NOWOriginalValueTooltip
+          isVisible={true}
+          originalValue="N/A"
+        />
       </div>
       <Field
         component={[Function]}
@@ -76,6 +80,10 @@ exports[`WaterSupply renders properly 1`] = `
         className="field-title"
       >
         Estimated Cost of reclamation activities described above
+        <NOWOriginalValueTooltip
+          isVisible={true}
+          originalValue="N/A"
+        />
       </div>
       <Field
         component={[Function]}
