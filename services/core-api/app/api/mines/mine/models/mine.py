@@ -23,44 +23,60 @@ class Mine(AuditMixin, Base):
     __tablename__ = 'mine'
     _edit_key = MINE_EDIT_GROUP
 
-    mine_guid = db.Column(UUID(as_uuid=True), primary_key=True, server_default=FetchedValue())
+    mine_guid = db.Column(UUID(as_uuid=True),
+                          primary_key=True,
+                          server_default=FetchedValue())
     mine_no = db.Column(db.String(10))
     mine_name = db.Column(db.String(60), nullable=False)
     mine_note = db.Column(db.String(300), default='')
     legacy_mms_mine_status = db.Column(db.String(50))
     major_mine_ind = db.Column(db.Boolean, nullable=False, default=False)
-    deleted_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
-    mine_region = db.Column(db.String(2), db.ForeignKey('mine_region_code.mine_region_code'))
-    ohsc_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
-    union_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
+    deleted_ind = db.Column(db.Boolean,
+                            nullable=False,
+                            server_default=FetchedValue())
+    mine_region = db.Column(db.String(2),
+                            db.ForeignKey('mine_region_code.mine_region_code'))
+    ohsc_ind = db.Column(db.Boolean,
+                         nullable=False,
+                         server_default=FetchedValue())
+    union_ind = db.Column(db.Boolean,
+                          nullable=False,
+                          server_default=FetchedValue())
     latitude = db.Column(db.Numeric(9, 7))
     longitude = db.Column(db.Numeric(11, 7))
     geom = db.Column(Geometry('POINT', 3005))
     mine_location_description = db.Column(db.String)
     exemption_fee_status_code = db.Column(
-        db.String, db.ForeignKey('exemption_fee_status.exemption_fee_status_code'))
+        db.String,
+        db.ForeignKey('exemption_fee_status.exemption_fee_status_code'))
     exemption_fee_status_note = db.Column(db.String)
     mms_alias = db.Column(db.String)
 
     # Relationships
     #Almost always used and 1:1, so these are joined
-    mine_status = db.relationship(
-        'MineStatus', backref='mine', order_by='desc(MineStatus.update_timestamp)', lazy='joined')
+    mine_status = db.relationship('MineStatus',
+                                  backref='mine',
+                                  order_by='desc(MineStatus.update_timestamp)',
+                                  lazy='joined')
     mine_tailings_storage_facilities = db.relationship(
         'MineTailingsStorageFacility',
         backref='mine',
-        order_by='desc(MineTailingsStorageFacility.mine_tailings_storage_facility_name)',
+        order_by=
+        'desc(MineTailingsStorageFacility.mine_tailings_storage_facility_name)',
         lazy='joined')
 
     #Almost always used, but faster to use selectin to load related data
-    mine_permit = db.relationship(
-        'Permit', backref='mine', order_by='desc(Permit.create_timestamp)', lazy='selectin')
+    mine_permit = db.relationship('Permit',
+                                  backref='mine',
+                                  order_by='desc(Permit.create_timestamp)',
+                                  lazy='selectin')
 
     mine_type = db.relationship(
         'MineType',
         backref='mine',
         order_by='desc(MineType.update_timestamp)',
-        primaryjoin="and_(MineType.mine_guid == Mine.mine_guid, MineType.active_ind==True)",
+        primaryjoin=
+        "and_(MineType.mine_guid == Mine.mine_guid, MineType.active_ind==True)",
         lazy='selectin')
 
     mine_documents = db.relationship(
@@ -70,14 +86,19 @@ class Mine(AuditMixin, Base):
         "and_(MineDocument.mine_guid == Mine.mine_guid, MineDocument.deleted_ind==False)",
         lazy='select')
 
-    mine_party_appt = db.relationship('MinePartyAppointment', backref="mine", lazy='select')
-    mine_incidents = db.relationship('MineIncident', backref="mine", lazy='select')
+    mine_party_appt = db.relationship('MinePartyAppointment',
+                                      backref="mine",
+                                      lazy='select')
+    mine_incidents = db.relationship('MineIncident',
+                                     backref="mine",
+                                     lazy='select')
     mine_reports = db.relationship('MineReport', lazy='select')
 
     comments = db.relationship(
         'MineComment',
         order_by='MineComment.comment_datetime',
-        primaryjoin="and_(MineComment.mine_guid == Mine.mine_guid, MineComment.deleted_ind==False)",
+        primaryjoin=
+        "and_(MineComment.mine_guid == Mine.mine_guid, MineComment.deleted_ind==False)",
         lazy='joined')
 
     region = db.relationship('MineRegionCode', lazy='select')
@@ -89,7 +110,8 @@ class Mine(AuditMixin, Base):
     def init_on_load(self):
         if self.latitude and self.longitude:
             try:
-                self.utm_values = utm.from_latlon(self.latitude, self.longitude)
+                self.utm_values = utm.from_latlon(self.latitude,
+                                                  self.longitude)
             except utm.error.OutOfRangeError:
                 self.utm_values = ()
 
@@ -123,8 +145,8 @@ class Mine(AuditMixin, Base):
 
     @hybrid_property
     def mine_permit_numbers(self):
-        rows = db.session.query(
-            Permit.permit_no).filter(Permit.mine_guid == self.mine_guid).distinct().all()
+        rows = db.session.query(Permit.permit_no).filter(
+            Permit.mine_guid == self.mine_guid).distinct().all()
         p_numbers = [permit_no for permit_no, in rows]
         return p_numbers
 
@@ -138,20 +160,23 @@ class Mine(AuditMixin, Base):
     def find_by_mine_guid(cls, _id):
         try:
             uuid.UUID(_id, version=4)
-            return cls.query.filter_by(mine_guid=_id).filter_by(deleted_ind=False).first()
+            return cls.query.filter_by(mine_guid=_id).filter_by(
+                deleted_ind=False).first()
         except ValueError:
             return None
 
     @classmethod
     def find_by_mine_no(cls, _id):
-        return cls.query.filter_by(mine_no=_id).filter_by(deleted_ind=False).first()
+        return cls.query.filter_by(mine_no=_id).filter_by(
+            deleted_ind=False).first()
 
     @classmethod
     def find_by_mine_name(cls, term=None, major=None):
         MINE_LIST_RESULT_LIMIT = 50
         if term:
             name_filter = Mine.mine_name.ilike('%{}%'.format(term))
-            mines_q = Mine.query.filter(name_filter).filter_by(deleted_ind=False)
+            mines_q = Mine.query.filter(name_filter).filter_by(
+                deleted_ind=False)
         else:
             mines_q = Mine.query
 
@@ -166,7 +191,8 @@ class Mine(AuditMixin, Base):
             name_filter = Mine.mine_name.ilike('%{}%'.format(term))
             number_filter = Mine.mine_no.ilike('%{}%'.format(term))
             permit_filter = Permit.permit_no.ilike('%{}%'.format(term))
-            mines_q = Mine.query.filter(name_filter | number_filter).filter_by(deleted_ind=False)
+            mines_q = Mine.query.filter(name_filter | number_filter).filter_by(
+                deleted_ind=False)
             permit_q = Mine.query.join(Permit).filter(permit_filter)
             mines_q = mines_q.union(permit_q)
         else:
@@ -179,7 +205,8 @@ class Mine(AuditMixin, Base):
 
     @classmethod
     def find_all_major_mines(cls):
-        return cls.query.filter_by(major_mine_ind=True).filter_by(deleted_ind=False).all()
+        return cls.query.filter_by(major_mine_ind=True).filter_by(
+            deleted_ind=False).all()
 
     @classmethod
     def find_by_mine_no_or_guid(cls, _id):

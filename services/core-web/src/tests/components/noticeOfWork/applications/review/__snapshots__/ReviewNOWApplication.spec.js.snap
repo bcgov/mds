@@ -31,6 +31,11 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 className="field-title"
               >
                 Name of Property
+                <NOWOriginalValueTooltip
+                  isVisible={true}
+                  originalValue="N/A"
+                  style={Object {}}
+                />
               </div>
               <Field
                 component={[Function]}
@@ -74,6 +79,11 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 className="field-title"
               >
                 Mine Number
+                <NOWOriginalValueTooltip
+                  isVisible={true}
+                  originalValue="N/A"
+                  style={Object {}}
+                />
               </div>
               <Field
                 component={[Function]}
@@ -111,6 +121,11 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 className="field-title"
               >
                 Region
+                <NOWOriginalValueTooltip
+                  isVisible={true}
+                  originalValue="N/A"
+                  style={Object {}}
+                />
               </div>
               <Field
                 component={[Function]}
@@ -148,6 +163,12 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 className="field-title"
               >
                 Lat
+                 
+                <NOWOriginalValueTooltip
+                  isVisible={true}
+                  originalValue="N/A"
+                  style={Object {}}
+                />
               </div>
               <Field
                 component={[Function]}
@@ -169,6 +190,11 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 className="field-title"
               >
                 Description of Land
+                <NOWOriginalValueTooltip
+                  isVisible={true}
+                  originalValue="N/A"
+                  style={Object {}}
+                />
               </div>
               <Field
                 component={[Function]}
@@ -194,6 +220,11 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 className="field-title"
               >
                 Long
+                <NOWOriginalValueTooltip
+                  isVisible={true}
+                  originalValue="N/A"
+                  style={Object {}}
+                />
               </div>
               <Field
                 component={[Function]}
@@ -215,6 +246,11 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 className="field-title"
               >
                 Type of Application
+                <NOWOriginalValueTooltip
+                  isVisible={true}
+                  originalValue="N/A"
+                  style={Object {}}
+                />
               </div>
               <Field
                 component={[Function]}
@@ -235,6 +271,11 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 className="field-title"
               >
                 Type of Notice of Work
+                <NOWOriginalValueTooltip
+                  isVisible={true}
+                  originalValue="N/A"
+                  style={Object {}}
+                />
               </div>
               <Field
                 component={[Function]}
@@ -282,6 +323,11 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 className="field-title"
               >
                 Permit Type
+                <NOWOriginalValueTooltip
+                  isVisible={true}
+                  originalValue="N/A"
+                  style={Object {}}
+                />
               </div>
               <Field
                 component={[Function]}
@@ -298,6 +344,11 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 className="field-title"
               >
                 Proposed Start Date
+                <NOWOriginalValueTooltip
+                  isVisible={true}
+                  originalValue="N/A"
+                  style={Object {}}
+                />
               </div>
               <Field
                 component={[Function]}
@@ -318,6 +369,11 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 className="field-title"
               >
                 Crown Grant / District Lot Number
+                <NOWOriginalValueTooltip
+                  isVisible={true}
+                  originalValue="N/A"
+                  style={Object {}}
+                />
               </div>
               <Field
                 component={[Function]}
@@ -334,6 +390,11 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 className="field-title"
               >
                 Proposed End Date
+                <NOWOriginalValueTooltip
+                  isVisible={true}
+                  originalValue="N/A"
+                  style={Object {}}
+                />
               </div>
               <Field
                 component={[Function]}
@@ -354,6 +415,11 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 className="field-title"
               >
                 Tenure Number(s)
+                <NOWOriginalValueTooltip
+                  isVisible={true}
+                  originalValue="N/A"
+                  style={Object {}}
+                />
               </div>
               <Field
                 component={[Function]}
@@ -446,6 +512,11 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 className="field-title"
               >
                 Directions to Site
+                <NOWOriginalValueTooltip
+                  isVisible={true}
+                  originalValue="N/A"
+                  style={Object {}}
+                />
               </div>
               <Field
                 component={[Function]}
@@ -695,6 +766,11 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                   className="field-title"
                 >
                   Application in a community watershed
+                  <NOWOriginalValueTooltip
+                    isVisible={true}
+                    originalValue="N/A"
+                    style={Object {}}
+                  />
                 </div>
                 <Field
                   component={[Function]}
@@ -779,6 +855,11 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                   className="field-title"
                 >
                   Are you aware of any protected archaeological sites that may be affected by the proposed project?
+                  <NOWOriginalValueTooltip
+                    isVisible={true}
+                    originalValue="N/A"
+                    style={Object {}}
+                  />
                 </div>
                 <Field
                   component={[Function]}
@@ -904,6 +985,11 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 className="field-title"
               >
                 Proposed First Aid equipment on site
+                <NOWOriginalValueTooltip
+                  isVisible={true}
+                  originalValue="N/A"
+                  style={Object {}}
+                />
               </div>
               <Field
                 component={[Function]}
@@ -920,6 +1006,11 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 className="field-title"
               >
                 Level of First Aid Certificate held by attendant
+                <NOWOriginalValueTooltip
+                  isVisible={true}
+                  originalValue="N/A"
+                  style={Object {}}
+                />
               </div>
               <Field
                 component={[Function]}
@@ -1005,6 +1096,374 @@ exports[`ReviewNOWApplication renders properly 1`] = `
       </withRouter(Connect(ScrollContentWrapper))>
       <Connect(ReviewActivities)
         isViewMode={true}
+        renderOriginalValues={
+          [MockFunction] {
+            "calls": Array [
+              Array [
+                "property_name",
+              ],
+              Array [
+                "property_name",
+              ],
+              Array [
+                "mine_no",
+              ],
+              Array [
+                "mine_no",
+              ],
+              Array [
+                "mine_region",
+              ],
+              Array [
+                "mine_region",
+              ],
+              Array [
+                "latitude",
+              ],
+              Array [
+                "latitude",
+              ],
+              Array [
+                "description_of_land",
+              ],
+              Array [
+                "description_of_land",
+              ],
+              Array [
+                "longitude",
+              ],
+              Array [
+                "longitude",
+              ],
+              Array [
+                "type_of_application",
+              ],
+              Array [
+                "type_of_application",
+              ],
+              Array [
+                "notice_of_work_type_code",
+              ],
+              Array [
+                "notice_of_work_type_code",
+              ],
+              Array [
+                "application_permit_type_code",
+              ],
+              Array [
+                "application_permit_type_code",
+              ],
+              Array [
+                "proposed_start_date",
+              ],
+              Array [
+                "proposed_start_date",
+              ],
+              Array [
+                "crown_grant_or_district_lot_numbers",
+              ],
+              Array [
+                "crown_grant_or_district_lot_numbers",
+              ],
+              Array [
+                "proposed_end_date",
+              ],
+              Array [
+                "proposed_end_date",
+              ],
+              Array [
+                "tenure_number",
+              ],
+              Array [
+                "tenure_number",
+              ],
+              Array [
+                "directions_to_site",
+              ],
+              Array [
+                "directions_to_site",
+              ],
+              Array [
+                "has_community_water_shed",
+              ],
+              Array [
+                "has_community_water_shed",
+              ],
+              Array [
+                "has_archaeology_sites_affected",
+              ],
+              Array [
+                "has_archaeology_sites_affected",
+              ],
+              Array [
+                "first_aid_equipment_on_site",
+              ],
+              Array [
+                "first_aid_equipment_on_site",
+              ],
+              Array [
+                "first_aid_cert_level",
+              ],
+              Array [
+                "first_aid_cert_level",
+              ],
+            ],
+            "results": Array [
+              Object {
+                "type": "return",
+                "value": Object {
+                  "edited": true,
+                  "value": "N/A",
+                },
+              },
+              Object {
+                "type": "return",
+                "value": Object {
+                  "edited": true,
+                  "value": "N/A",
+                },
+              },
+              Object {
+                "type": "return",
+                "value": Object {
+                  "edited": true,
+                  "value": "N/A",
+                },
+              },
+              Object {
+                "type": "return",
+                "value": Object {
+                  "edited": true,
+                  "value": "N/A",
+                },
+              },
+              Object {
+                "type": "return",
+                "value": Object {
+                  "edited": true,
+                  "value": "N/A",
+                },
+              },
+              Object {
+                "type": "return",
+                "value": Object {
+                  "edited": true,
+                  "value": "N/A",
+                },
+              },
+              Object {
+                "type": "return",
+                "value": Object {
+                  "edited": true,
+                  "value": "N/A",
+                },
+              },
+              Object {
+                "type": "return",
+                "value": Object {
+                  "edited": true,
+                  "value": "N/A",
+                },
+              },
+              Object {
+                "type": "return",
+                "value": Object {
+                  "edited": true,
+                  "value": "N/A",
+                },
+              },
+              Object {
+                "type": "return",
+                "value": Object {
+                  "edited": true,
+                  "value": "N/A",
+                },
+              },
+              Object {
+                "type": "return",
+                "value": Object {
+                  "edited": true,
+                  "value": "N/A",
+                },
+              },
+              Object {
+                "type": "return",
+                "value": Object {
+                  "edited": true,
+                  "value": "N/A",
+                },
+              },
+              Object {
+                "type": "return",
+                "value": Object {
+                  "edited": true,
+                  "value": "N/A",
+                },
+              },
+              Object {
+                "type": "return",
+                "value": Object {
+                  "edited": true,
+                  "value": "N/A",
+                },
+              },
+              Object {
+                "type": "return",
+                "value": Object {
+                  "edited": true,
+                  "value": "N/A",
+                },
+              },
+              Object {
+                "type": "return",
+                "value": Object {
+                  "edited": true,
+                  "value": "N/A",
+                },
+              },
+              Object {
+                "type": "return",
+                "value": Object {
+                  "edited": true,
+                  "value": "N/A",
+                },
+              },
+              Object {
+                "type": "return",
+                "value": Object {
+                  "edited": true,
+                  "value": "N/A",
+                },
+              },
+              Object {
+                "type": "return",
+                "value": Object {
+                  "edited": true,
+                  "value": "N/A",
+                },
+              },
+              Object {
+                "type": "return",
+                "value": Object {
+                  "edited": true,
+                  "value": "N/A",
+                },
+              },
+              Object {
+                "type": "return",
+                "value": Object {
+                  "edited": true,
+                  "value": "N/A",
+                },
+              },
+              Object {
+                "type": "return",
+                "value": Object {
+                  "edited": true,
+                  "value": "N/A",
+                },
+              },
+              Object {
+                "type": "return",
+                "value": Object {
+                  "edited": true,
+                  "value": "N/A",
+                },
+              },
+              Object {
+                "type": "return",
+                "value": Object {
+                  "edited": true,
+                  "value": "N/A",
+                },
+              },
+              Object {
+                "type": "return",
+                "value": Object {
+                  "edited": true,
+                  "value": "N/A",
+                },
+              },
+              Object {
+                "type": "return",
+                "value": Object {
+                  "edited": true,
+                  "value": "N/A",
+                },
+              },
+              Object {
+                "type": "return",
+                "value": Object {
+                  "edited": true,
+                  "value": "N/A",
+                },
+              },
+              Object {
+                "type": "return",
+                "value": Object {
+                  "edited": true,
+                  "value": "N/A",
+                },
+              },
+              Object {
+                "type": "return",
+                "value": Object {
+                  "edited": true,
+                  "value": "N/A",
+                },
+              },
+              Object {
+                "type": "return",
+                "value": Object {
+                  "edited": true,
+                  "value": "N/A",
+                },
+              },
+              Object {
+                "type": "return",
+                "value": Object {
+                  "edited": true,
+                  "value": "N/A",
+                },
+              },
+              Object {
+                "type": "return",
+                "value": Object {
+                  "edited": true,
+                  "value": "N/A",
+                },
+              },
+              Object {
+                "type": "return",
+                "value": Object {
+                  "edited": true,
+                  "value": "N/A",
+                },
+              },
+              Object {
+                "type": "return",
+                "value": Object {
+                  "edited": true,
+                  "value": "N/A",
+                },
+              },
+              Object {
+                "type": "return",
+                "value": Object {
+                  "edited": true,
+                  "value": "N/A",
+                },
+              },
+              Object {
+                "type": "return",
+                "value": Object {
+                  "edited": true,
+                  "value": "N/A",
+                },
+              },
+            ],
+          }
+        }
       />
       <withRouter(Connect(ScrollContentWrapper))
         id="submission-documents"
