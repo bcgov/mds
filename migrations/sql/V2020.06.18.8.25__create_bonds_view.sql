@@ -11,7 +11,7 @@ FROM
         issue_date,
         note,
         payer_party_guid,
-        party_name as "payer_name",
+        party_name AS "payer_name",
         institution_city,
         institution_name,
         institution_postal_code,
@@ -54,7 +54,7 @@ FROM
         reference_number,
         bond_history.update_timestamp,
         bond_history.update_user,
-        'No' "is_current_record"
+        'No' AS "is_current_record"
     FROM
         bond_history
     ) AS bond_data
