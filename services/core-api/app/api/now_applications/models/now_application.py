@@ -57,12 +57,8 @@ class NOWApplication(Base, AuditMixin):
     status_updated_date = db.Column(db.Date,
                                     nullable=False,
                                     server_default=FetchedValue())
-    last_updated_date = db.Column(db.Date,
-                                  default=datetime.utcnow,
-                                  onupdate=datetime.utcnow)
-    last_updated_by = db.Column(db.String,
-                                default=User().get_user_username,
-                                onupdate=User().get_user_username)
+    last_updated_date = db.Column(db.Date)
+    last_updated_by = db.Column(db.String)
     submitted_date = db.Column(db.Date, nullable=False)
     received_date = db.Column(db.Date, nullable=False)
     latitude = db.Column(db.Numeric(9, 7))
