@@ -25,24 +25,24 @@ class MinePartyApptResource(Resource, UserMixin):
                         store_missing=False)
     parser.add_argument('related_guid', type=str, store_missing=False)
     parser.add_argument('end_current', type=bool)
-    parser.add_argument(
-        'start_date',
-        type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None,
-        store_missing=False)
-    parser.add_argument(
-        'end_date',
-        type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None,
-        store_missing=False)
+    parser.add_argument('start_date',
+                        type=lambda x: datetime.strptime(x, '%Y-%m-%d')
+                        if x else None,
+                        store_missing=False)
+    parser.add_argument('end_date',
+                        type=lambda x: datetime.strptime(x, '%Y-%m-%d')
+                        if x else None,
+                        store_missing=False)
 
-      @api.doc(params={
-        'mine_party_appt_guid': 'Mine party appointment serial id',
-        'mine_guid': 'Mine serial id',
-        'party_guid': 'Party serial id',
-        'start_date': 'Date the mine appointment started',
-        'end_date': "Date the mine appointment ended",
-        'relationships': 'Relationship type - `party`'
-    },
-        description='Returns a list of party appointments')
+    @api.doc(description='Returns a list of party appointments',
+             params={
+                 'mine_party_appt_guid': 'Mine party appointment serial id',
+                 'mine_guid': 'Mine serial id',
+                 'party_guid': 'Party serial id',
+                 'start_date': 'Date the mine appointment started',
+                 'end_date': "Date the mine appointment ended",
+                 'relationships': 'Relationship type - `party`'
+             })
     @requires_role_view_all
     def get(self, mine_party_appt_guid=None):
         relationships = request.args.get('relationships')
