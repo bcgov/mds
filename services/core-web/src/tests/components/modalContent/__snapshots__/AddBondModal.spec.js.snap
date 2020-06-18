@@ -60,10 +60,12 @@ exports[`AddBondModal renders properly 1`] = `
     provinceOptions={
       Array [
         Object {
+          "isActive": true,
           "label": "AB",
           "value": "AB",
         },
         Object {
+          "isActive": true,
           "label": "BC",
           "value": "BC",
         },

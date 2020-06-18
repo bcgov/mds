@@ -20,8 +20,8 @@ class NOWApplicationDocumentType(AuditMixin, Base):
     document_template = db.relationship("DocumentTemplate", backref="now_application_document_type")
 
     @classmethod
-    def get_active(cls):
-        return cls.query.filter_by(active_ind=True).all()
+    def get_all(cls):
+        return cls.query.all()
 
     @classmethod
     def get_with_context(cls, document_type_code, context_guid):

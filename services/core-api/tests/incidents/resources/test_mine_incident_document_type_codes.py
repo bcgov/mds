@@ -12,5 +12,5 @@ class TestGetIncidentDocumentTypeCodeResource:
             f'/incidents/document-types', headers=auth_headers['full_auth_header'])
         get_data = json.loads(get_resp.data.decode())
         assert get_resp.status_code == 200
-        assert len(MineIncidentDocumentTypeCode.get_active()) > 0
-        assert len(get_data['records']) == len(MineIncidentDocumentTypeCode.get_active())
+        assert len(MineIncidentDocumentTypeCode.get_all()) > 0
+        assert len(get_data['records']) == len(MineIncidentDocumentTypeCode.get_all())
