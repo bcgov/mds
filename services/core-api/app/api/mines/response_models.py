@@ -203,6 +203,7 @@ MINES_MODEL = api.model(
         'mine_type': fields.List(fields.Nested(MINE_TYPE_MODEL)),
         'verified_status': fields.Nested(MINE_VERIFIED_MODEL, skip_none=True),
         'has_minespace_users': fields.Boolean,
+        'mms_alias': fields.String,
     })
 
 MINE_MODEL = api.inherit(

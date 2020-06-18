@@ -89,6 +89,13 @@ class Base(db.Model):
                 db.session.rollback()
                 raise e
 
+    def soft_delete(self):
+        if not (hasattr(self, 'deleted_ind')):
+            raise Exception("Provided entity does not have deleted_ind field.")
+
+        self.deleted_ind = True
+        self.save()
+
     def _deep_update_from_dict(self, data_dict, depth=0, _edit_key=None):
         """
         This function takes a python dictionary and assigns all present key value pairs to 

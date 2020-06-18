@@ -50,6 +50,7 @@ class Mine(AuditMixin, Base):
         db.String,
         db.ForeignKey('exemption_fee_status.exemption_fee_status_code'))
     exemption_fee_status_note = db.Column(db.String)
+    mms_alias = db.Column(db.String)
 
     # Relationships
     #Almost always used and 1:1, so these are joined
