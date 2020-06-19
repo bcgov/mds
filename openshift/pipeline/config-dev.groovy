@@ -353,8 +353,8 @@ environments {
                 docgen {
                     cpu_request = "50m"
                     cpu_limit = "200m"
-                    memory_request = "512Mi"
-                    memory_limit = "512Mi"
+                    memory_request = "128Mi"
+                    memory_limit = "256Mi"
                     replica_min = 1
                     replica_max = 1
                 }
@@ -379,8 +379,8 @@ environments {
                 python_lite {
                     cpu_request = "10m"
                     cpu_limit = "100m"
-                    memory_request = "128Mi"
-                    memory_limit = "256Mi"
+                    memory_request = "256Mi"
+                    memory_limit = "512Mi"
                     uwsgi_threads = 2
                     uwsgi_processes = 1
                     replica_min = 1
