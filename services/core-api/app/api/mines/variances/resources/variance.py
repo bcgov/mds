@@ -16,6 +16,7 @@ from app.api.variances.models.variance import Variance
 from app.api.parties.party.models.party import Party
 from app.api.parties.party_appt.models.party_business_role_appt import PartyBusinessRoleAppointment
 from app.api.mines.response_models import VARIANCE_MODEL
+from app.api.utils.access_decorators import requires_role_mine_admin
 
 
 class MineVarianceResource(Resource, UserMixin):
@@ -108,3 +109,18 @@ class MineVarianceResource(Resource, UserMixin):
 
         variance.save()
         return variance
+
+    @api.doc(
+        description='Delete a variance.',
+        params={
+            'mine_guid': 'GUID of the mine to which the variance is associated',
+            'variance_guid': 'GUID of the variance to delete'
+        })
+    @requires_role_mine_admin
+    @api.response(204, 'Successfully deleted.')
+    def delete(self, mine_guid, variance_guid):
+        variance = Variance.find_by_mine_guid_and_variance_guid(mine_guid, variance_guid)
+        if variance is None:
+            raise NotFound('Mine variance not found')
+        variance.soft_delete()
+        return None, 204
