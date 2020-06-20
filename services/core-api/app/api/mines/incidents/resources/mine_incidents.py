@@ -5,7 +5,7 @@ from werkzeug.exceptions import BadRequest, NotFound, InternalServerError
 
 from app.extensions import api, db
 from app.api.utils.resources_mixins import UserMixin
-from app.api.utils.access_decorators import requires_role_view_all, requires_role_edit_do, requires_role_mine_admin
+from app.api.utils.access_decorators import requires_role_view_all, requires_role_edit_do
 
 from app.api.mines.mine.models.mine import Mine
 from app.api.mines.incidents.models.mine_incident_document_xref import MineIncidentDocumentXref
@@ -75,7 +75,7 @@ class MineIncidentListResource(Resource, UserMixin):
         mine = Mine.find_by_mine_guid(mine_guid)
         if not mine:
             raise NotFound("Mine not found")
-        return [i for i in mine.mine_incidents if i.deleted_ind == False]
+        return mine.mine_incidents
 
     @api.expect(MINE_INCIDENT_MODEL)
     @api.doc(description='creates a new incident for the mine')
@@ -245,16 +245,6 @@ class MineIncidentResource(Resource, UserMixin):
         if not incident:
             raise NotFound("Mine Incident not found")
         return incident
-
-    @requires_role_mine_admin
-    @api.response(204, 'Successfully deleted.')
-    def delete(self, mine_guid, mine_incident_guid):
-        incident = MineIncident.find_by_mine_incident_guid(mine_incident_guid)
-        if not incident:
-            raise NotFound('Mine incident not found')
-
-        incident.soft_delete()
-        return None, 204
 
     @api.expect(parser)
     @api.marshal_with(MINE_INCIDENT_MODEL, code=200)

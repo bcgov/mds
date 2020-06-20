@@ -15,7 +15,8 @@ def test_get_mine_incidents_by_mine_guid(test_client, db_session, auth_headers):
     get_data = json.loads(get_resp.data.decode())
     assert get_resp.status_code == 200
     assert len(get_data['records']) > 0
-    assert all(i['mine_guid'] == str(test_mine_guid) for i in get_data['records'])
+    assert all(i['mine_guid'] == str(test_mine_guid)
+               for i in get_data['records'])
 
 
 def test_get_mine_incidents_by_guid(test_client, db_session, auth_headers):
@@ -23,8 +24,7 @@ def test_get_mine_incidents_by_guid(test_client, db_session, auth_headers):
     test_guid = test_mine.mine_incidents[0].mine_incident_guid
 
     get_resp = test_client.get(
-        f'/mines/{test_mine.mine_guid}/incidents/{test_guid}',
-        headers=auth_headers['full_auth_header'])
+        f'/mines/{test_mine.mine_guid}/incidents/{test_guid}', headers=auth_headers['full_auth_header'])
     assert get_resp.status_code == 200
     get_data = json.loads(get_resp.data.decode())
     assert get_data['mine_incident_guid'] == str(test_guid)
@@ -80,8 +80,7 @@ def test_post_mine_incidents_including_optional_fields(test_client, db_session, 
     assert post_data['incident_timestamp'] == now_time_string
     assert post_data['incident_description'] == data['incident_description']
     assert post_data['mine_determination_type_code'] == data['mine_determination_type_code']
-    assert post_data['mine_determination_representative'] == data[
-        'mine_determination_representative']
+    assert post_data['mine_determination_representative'] == data['mine_determination_representative']
 
 
 def test_post_mine_incidents_dangerous_occurrence_happy(test_client, db_session, auth_headers):
@@ -136,7 +135,8 @@ def test_put_mine_incidents_happy(test_client, db_session, auth_headers):
     test_mine = MineFactory()
     test_guid = test_mine.mine_incidents[0].mine_incident_guid
 
-    new_time_string = (datetime.now() - timedelta(days=1)).strftime("%Y-%m-%d %H:%M")
+    new_time_string = (datetime.now() - timedelta(days=1)
+                       ).strftime("%Y-%m-%d %H:%M")
     data = {
         'determination_type_code': 'NDO',
         'incident_timestamp': new_time_string,
@@ -144,9 +144,7 @@ def test_put_mine_incidents_happy(test_client, db_session, auth_headers):
     }
 
     put_resp = test_client.put(
-        f'/mines/{test_mine.mine_guid}/incidents/{test_guid}',
-        json=data,
-        headers=auth_headers['full_auth_header'])
+        f'/mines/{test_mine.mine_guid}/incidents/{test_guid}', json=data, headers=auth_headers['full_auth_header'])
     assert put_resp.status_code == 200, put_resp.response
 
     put_data = json.loads(put_resp.data.decode())
@@ -159,7 +157,8 @@ def test_put_mine_incidents_including_optional_fields(test_client, db_session, a
     test_mine = MineFactory()
     test_guid = test_mine.mine_incidents[0].mine_incident_guid
 
-    new_time_string = (datetime.now() - timedelta(days=1)).strftime("%Y-%m-%d %H:%M")
+    new_time_string = (datetime.now() - timedelta(days=1)
+                       ).strftime("%Y-%m-%d %H:%M")
     data = {
         'determination_type_code': 'NDO',
         'incident_timestamp': new_time_string,
@@ -170,9 +169,7 @@ def test_put_mine_incidents_including_optional_fields(test_client, db_session, a
     }
 
     put_resp = test_client.put(
-        f'/mines/{test_mine.mine_guid}/incidents/{test_guid}',
-        json=data,
-        headers=auth_headers['full_auth_header'])
+        f'/mines/{test_mine.mine_guid}/incidents/{test_guid}', json=data, headers=auth_headers['full_auth_header'])
     assert put_resp.status_code == 200, put_resp.response
 
     put_data = json.loads(put_resp.data.decode())
@@ -180,8 +177,7 @@ def test_put_mine_incidents_including_optional_fields(test_client, db_session, a
     assert put_data['incident_timestamp'] == new_time_string
     assert put_data['incident_description'] == data['incident_description']
     assert put_data['mine_determination_type_code'] == data['mine_determination_type_code']
-    assert put_data['mine_determination_representative'] == data[
-        'mine_determination_representative']
+    assert put_data['mine_determination_representative'] == data['mine_determination_representative']
 
 
 def test_put_mine_incidents_dangerous_occurrence_happy(test_client, db_session, auth_headers):
@@ -194,7 +190,8 @@ def test_put_mine_incidents_dangerous_occurrence_happy(test_client, db_session, 
         for sub in SampleDangerousOccurrenceSubparagraphs(do_subparagraph_count)
     ]
 
-    new_time_string = (datetime.now() - timedelta(days=1)).strftime("%Y-%m-%d %H:%M")
+    new_time_string = (datetime.now() - timedelta(days=1)
+                       ).strftime("%Y-%m-%d %H:%M")
     data = {
         'determination_type_code': 'DO',
         'incident_timestamp': new_time_string,
@@ -220,7 +217,8 @@ def test_put_mine_incidents_dangerous_occurrence_no_subs(test_client, db_session
     test_mine = MineFactory()
     existing_incident_guid = test_mine.mine_incidents[0].mine_incident_guid
 
-    new_time_string = (datetime.now() - timedelta(days=1)).strftime("%Y-%m-%d %H:%M")
+    new_time_string = (datetime.now() - timedelta(days=1)
+                       ).strftime("%Y-%m-%d %H:%M")
     data = {
         'determination_type_code': 'DO',
         'incident_timestamp': new_time_string,
@@ -233,15 +231,3 @@ def test_put_mine_incidents_dangerous_occurrence_no_subs(test_client, db_session
         json=data,
         headers=auth_headers['full_auth_header'])
     assert put_resp.status_code == 400, put_resp.response
-
-
-    # DELETE
-def test_delete_mine_incident(test_client, db_session, auth_headers):
-    test_mine = MineFactory()
-    test_mine_incident = test_mine.mine_incidents[0]
-    test_mine_incident_guid = test_mine_incident.mine_incident_guid
-
-    delete_resp = test_client.delete(
-        f'/mines/{test_mine.mine_guid}/incidents/{test_mine_incident_guid}',
-        headers=auth_headers['full_auth_header'])
-    assert delete_resp.status_code == 204

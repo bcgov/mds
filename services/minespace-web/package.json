@@ -84,7 +84,7 @@
     "lint-prepush": "^0.4.2",
     "lint-staged": "^8.2.1",
     "mini-css-extract-plugin": "^0.7.0",
-    "node-sass": "^4.14.1",
+    "node-sass": "^4.13.1",
     "optimize-css-assets-webpack-plugin": "^5.0.3",
     "postcss-loader": "^3.0.0",
     "prettier": "^1.19.1",
@@ -96,7 +96,7 @@
     "url-loader": "^2.3.0",
     "webpack": "^4.41.5",
     "webpack-cli": "^3.3.10",
-    "webpack-dev-server": "^3.11.0",
+    "webpack-dev-server": "^3.10.1",
     "webpack-manifest-plugin": "^2.2.0",
     "webpack-merge": "^4.2.2"
   },

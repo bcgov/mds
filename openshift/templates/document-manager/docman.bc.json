@@ -56,11 +56,11 @@
         },
         "tags": [
           {
-            "name": "3.6.1-73",
+            "name": "3.6.1-36",
             "annotations": null,
             "from": {
               "kind": "DockerImage",
-              "name": "registry.access.redhat.com/rhscl/python-36-rhel7:1-73"
+              "name": "registry.access.redhat.com/rhscl/python-36-rhel7:1-36"
             },
             "importPolicy": {},
             "referencePolicy": {
@@ -139,7 +139,7 @@
           "dockerStrategy": {
             "from": {
               "kind": "ImageStreamTag",
-              "name": "rhscl-python-36-rhel7:3.6.1-73"
+              "name": "rhscl-python-36-rhel7:3.6.1-36"
             },
             "env": []
           }

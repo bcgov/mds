@@ -41,7 +41,6 @@ class Variance(AuditMixin, Base):
     issue_date = db.Column(db.DateTime)
     received_date = db.Column(db.DateTime, nullable=False)
     expiry_date = db.Column(db.DateTime)
-    deleted_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
 
     documents = db.relationship('VarianceDocumentXref', lazy='joined')
     mine_documents = db.relationship('MineDocument',
@@ -87,23 +86,22 @@ class Variance(AuditMixin, Base):
     @classmethod
     def find_by_mine_guid(cls, mine_guid):
         cls.validate_guid(mine_guid, INVALID_MINE_GUID)
-        return cls.query.filter_by(mine_guid=mine_guid, deleted_ind=False).all()
+        return cls.query.filter_by(mine_guid=mine_guid).all()
 
     @classmethod
     def find_by_variance_id(cls, variance_id):
-        return cls.query.filter_by(variance_id=variance_id, deleted_ind=False).first()
+        return cls.query.filter_by(variance_id=variance_id).first()
 
     @classmethod
     def find_by_variance_guid(cls, variance_guid):
         cls.validate_guid(variance_guid, INVALID_VARIANCE_GUID)
-        return cls.query.filter_by(variance_guid=variance_guid, deleted_ind=False).first()
+        return cls.query.filter_by(variance_guid=variance_guid).first()
 
     @classmethod
     def find_by_mine_guid_and_variance_guid(cls, mine_guid, variance_guid):
         cls.validate_guid(mine_guid, INVALID_MINE_GUID)
         cls.validate_guid(variance_guid, INVALID_VARIANCE_GUID)
-        return cls.query.filter_by(
-            mine_guid=mine_guid, variance_guid=variance_guid, deleted_ind=False).first()
+        return cls.query.filter_by(mine_guid=mine_guid, variance_guid=variance_guid).first()
 
     @classmethod
     def validate_guid(cls, guid, msg=INVALID_GUID):
