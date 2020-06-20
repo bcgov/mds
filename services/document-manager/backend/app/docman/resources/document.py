@@ -198,6 +198,8 @@ class DocumentResource(Resource):
                 for (key, value) in request.headers if key not in excluded_headers
             }
             headers['Content-Type'] = "application/offset+octet-stream"
+            headers['content-type'] = "application/offset+octet-stream"
+            headers['CONTENT_TYPE'] = "application/offset+octet-stream"
 
             current_app.logger.error(f'PATCH headers:\n{headers}')
 
