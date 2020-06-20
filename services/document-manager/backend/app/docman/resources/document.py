@@ -189,8 +189,6 @@ class DocumentResource(Resource):
             object_store_upload_resource = cache.get(OBJECT_STORE_UPLOAD_RESOURCE(document_guid))
             headers = {key: value for (key, value) in request.headers if key != 'Host'}
             headers['content-type'] = 'application/offset+octet-stream'
-            headers['Content-Type'] = 'application/offset+octet-stream'
-            headers['CONTENT_TYPE'] = 'application/offset+octet-stream'
             resp = requests.patch(
                 url=f'{Config.TUSD_URL}/{object_store_upload_resource}',
                 headers=headers,
