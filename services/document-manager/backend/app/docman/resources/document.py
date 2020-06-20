@@ -195,7 +195,8 @@ class DocumentResource(Resource):
             headers['Content-Type'] = "application/offset+octet-stream"
 
             current_app.logger.error(f'PATCH headers:\n{headers}')
-            resp = requests.patch(
+            s = requests.Session()
+            resp = s.patch(
                 url=f'{Config.TUSD_URL}/{object_store_upload_resource}',
                 headers=headers,
                 data=request.data)
