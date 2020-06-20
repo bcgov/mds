@@ -191,11 +191,11 @@ class DocumentResource(Resource):
             object_store_upload_resource = cache.get(OBJECT_STORE_UPLOAD_RESOURCE(document_guid))
 
             excluded_headers = [
-                'content-encoding', 'content-length', 'transfer-encoding', 'connection', 'host'
+                'content-encoding', 'content-length', 'transfer-encoding', 'connection', 'Host'
             ]
             headers = {
                 key: value
-                for (key, value) in request.headers if str(key).lower() not in excluded_headers
+                for (key, value) in request.headers if key not in excluded_headers
             }
             headers['Content-Type'] = "application/offset+octet-stream"
 
