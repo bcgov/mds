@@ -185,7 +185,7 @@ services:
     volumes:
       - ./services/document-manager/backend/:/app/
     depends_on:
-      - postgres
+      - flyway
       - redis
       - document_manager_migrate
     env_file: ./services/document-manager/backend/.env
@@ -200,7 +200,7 @@ services:
     volumes:
       - ./services/document-manager/backend/:/app/
     depends_on:
-      - postgres
+      - flyway
       - redis
     command: flask db upgrade
     env_file: ./services/document-manager/backend/.env

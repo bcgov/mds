@@ -15,4 +15,4 @@ COPY . .
 
 # Run the server
 EXPOSE 5001
-CMD ["./app.sh"]
+CMD ["flask","run"]
