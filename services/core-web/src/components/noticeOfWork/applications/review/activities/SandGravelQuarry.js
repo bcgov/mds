@@ -13,7 +13,6 @@ import RenderRadioButtons from "@/components/common/RenderRadioButtons";
 import RenderFieldWithDropdown from "@/components/common/RenderFieldWithDropdown";
 import Equipment from "@/components/noticeOfWork/applications/review/activities/Equipment";
 import CustomPropTypes from "@/customPropTypes";
-import { NOWOriginalValueTooltip } from "@/components/common/CoreTooltip";
 
 const propTypes = {
   isViewMode: PropTypes.bool.isRequired,
@@ -22,7 +21,6 @@ const propTypes = {
   editRecord: PropTypes.func.isRequired,
   addRecord: PropTypes.func.isRequired,
   unitTypeOptions: CustomPropTypes.options.isRequired,
-  renderOriginalValues: PropTypes.func.isRequired,
 };
 
 const defaultProps = {};
@@ -138,22 +136,13 @@ export const SandGravelQuarry = (props) => {
       }))
       .filter((activity) => !activity.state_modified);
   };
+
   return (
     <div>
       <h4>Soil Conservation</h4>
       <Row gutter={16}>
         <Col md={12} sm={24}>
-          <div className="field-title">
-            Average Depth Overburden
-            <NOWOriginalValueTooltip
-              originalValue={
-                props.renderOriginalValues("sand_and_gravel.average_overburden_depth").value
-              }
-              isVisible={
-                props.renderOriginalValues("sand_and_gravel.average_overburden_depth").edited
-              }
-            />
-          </div>
+          <div className="field-title">Average Depth Overburden</div>
           <Fields
             names={["average_overburden_depth", "average_overburden_depth_unit_type_code"]}
             id="average_overburden_depth"
@@ -165,17 +154,7 @@ export const SandGravelQuarry = (props) => {
           />
         </Col>
         <Col md={12} sm={24}>
-          <div className="field-title">
-            Average Depth of top soil
-            <NOWOriginalValueTooltip
-              originalValue={
-                props.renderOriginalValues("sand_and_gravel.average_top_soil_depth").value
-              }
-              isVisible={
-                props.renderOriginalValues("sand_and_gravel.average_top_soil_depth").edited
-              }
-            />
-          </div>
+          <div className="field-title">Average Depth of top soil</div>
           <Fields
             names={["average_top_soil_depth", "average_top_soil_depth_unit_type_code"]}
             id="average_top_soil_depth"
@@ -191,14 +170,6 @@ export const SandGravelQuarry = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Measures to stabilize soil overburden stockpiles and control noxious weeds
-            <NOWOriginalValueTooltip
-              originalValue={
-                props.renderOriginalValues("sand_and_gravel.stability_measures_description").value
-              }
-              isVisible={
-                props.renderOriginalValues("sand_and_gravel.stability_measures_description").edited
-              }
-            />
           </div>
           <Field
             id="stability_measures_description"
@@ -213,17 +184,7 @@ export const SandGravelQuarry = (props) => {
       <h4>Land Use</h4>
       <Row gutter={16}>
         <Col md={12} sm={24}>
-          <div className="field-title">
-            Is this site within the Agricultural Land Reserve?
-            <NOWOriginalValueTooltip
-              originalValue={
-                props.renderOriginalValues("sand_and_gravel.is_agricultural_land_reserve").value
-              }
-              isVisible={
-                props.renderOriginalValues("sand_and_gravel.is_agricultural_land_reserve").edited
-              }
-            />
-          </div>
+          <div className="field-title">Is this site within the Agricultural Land Reserve?</div>
           <Field
             id="is_agricultural_land_reserve"
             name="is_agricultural_land_reserve"
@@ -232,13 +193,7 @@ export const SandGravelQuarry = (props) => {
           />
         </Col>
         <Col md={12} sm={24}>
-          <div className="field-title">
-            Current land use zoning for the site
-            <NOWOriginalValueTooltip
-              originalValue={props.renderOriginalValues("sand_and_gravel.land_use_zoning").value}
-              isVisible={props.renderOriginalValues("sand_and_gravel.land_use_zoning").edited}
-            />
-          </div>
+          <div className="field-title">Current land use zoning for the site </div>
           <Field
             id="land_use_zoning"
             name="land_use_zoning"
@@ -249,21 +204,7 @@ export const SandGravelQuarry = (props) => {
       </Row>
       <Row gutter={16}>
         <Col md={12} sm={24}>
-          <div className="field-title--light">
-            Permit Application Number
-            <NOWOriginalValueTooltip
-              originalValue={
-                props.renderOriginalValues(
-                  "sand_and_gravel.agri_lnd_rsrv_permit_application_number"
-                ).value
-              }
-              isVisible={
-                props.renderOriginalValues(
-                  "sand_and_gravel.agri_lnd_rsrv_permit_application_number"
-                ).edited
-              }
-            />
-          </div>
+          <div className="field-title--light">Permit Application Number</div>
           <Field
             id="agri_lnd_rsrv_permit_application_number"
             name="agri_lnd_rsrv_permit_application_number"
@@ -272,13 +213,7 @@ export const SandGravelQuarry = (props) => {
           />
         </Col>
         <Col md={12} sm={24}>
-          <div className="field-title">
-            Proposed land use
-            <NOWOriginalValueTooltip
-              originalValue={props.renderOriginalValues("sand_and_gravel.proposed_land_use").value}
-              isVisible={props.renderOriginalValues("sand_and_gravel.proposed_land_use").edited}
-            />
-          </div>
+          <div className="field-title">Proposed land use</div>
           <Field
             id="proposed_land_use"
             name="proposed_land_use"
@@ -289,13 +224,7 @@ export const SandGravelQuarry = (props) => {
       </Row>
       <Row gutter={16}>
         <Col md={12} sm={24}>
-          <div className="field-title">
-            Official community plan for the site
-            <NOWOriginalValueTooltip
-              originalValue={props.renderOriginalValues("sand_and_gravel.community_plan").value}
-              isVisible={props.renderOriginalValues("sand_and_gravel.community_plan").edited}
-            />
-          </div>
+          <div className="field-title">Official community plan for the site</div>
           <Field
             id="community_plan"
             name="community_plan"
@@ -304,17 +233,7 @@ export const SandGravelQuarry = (props) => {
           />
         </Col>
         <Col md={12} sm={24}>
-          <div className="field-title">
-            Does the local government have a soil removal bylaw?
-            <NOWOriginalValueTooltip
-              originalValue={
-                props.renderOriginalValues("sand_and_gravel.has_local_soil_removal_bylaw").value
-              }
-              isVisible={
-                props.renderOriginalValues("sand_and_gravel.has_local_soil_removal_bylaw").edited
-              }
-            />
-          </div>
+          <div className="field-title">Does the local government have a soil removal bylaw?</div>
           <Field
             id="has_local_soil_removal_bylaw"
             name="has_local_soil_removal_bylaw"
@@ -325,17 +244,7 @@ export const SandGravelQuarry = (props) => {
       </Row>
       <Row gutter={16}>
         <Col md={12} sm={24}>
-          <div className="field-title">
-            Total mineable reserves over the life of the mine
-            <NOWOriginalValueTooltip
-              originalValue={
-                props.renderOriginalValues("sand_and_gravel.total_mineable_reserves").value
-              }
-              isVisible={
-                props.renderOriginalValues("sand_and_gravel.total_mineable_reserves").edited
-              }
-            />
-          </div>
+          <div className="field-title">Total mineable reserves over the life of the mine</div>
           <Fields
             names={["total_mineable_reserves", "total_mineable_reserves_unit_type_code"]}
             id="total_mineable_reserves"
@@ -347,17 +256,7 @@ export const SandGravelQuarry = (props) => {
           />
         </Col>
         <Col md={12} sm={24}>
-          <div className="field-title">
-            Annual extraction from site
-            <NOWOriginalValueTooltip
-              originalValue={
-                props.renderOriginalValues("sand_and_gravel.total_annual_extraction").value
-              }
-              isVisible={
-                props.renderOriginalValues("sand_and_gravel.total_annual_extraction").edited
-              }
-            />
-          </div>
+          <div className="field-title">Annual extraction from site</div>
           <Fields
             names={["total_annual_extraction", "total_annual_extraction_unit_type_code"]}
             id="total_annual_extraction"
@@ -398,14 +297,6 @@ export const SandGravelQuarry = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Proposed reclamation and timing for this specific activity
-            <NOWOriginalValueTooltip
-              originalValue={
-                props.renderOriginalValues("sand_and_gravel.reclamation_description").value
-              }
-              isVisible={
-                props.renderOriginalValues("sand_and_gravel.reclamation_description").edited
-              }
-            />
           </div>
           <Field
             id="reclamation_description"
@@ -418,10 +309,6 @@ export const SandGravelQuarry = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Estimated Cost of reclamation activities described above
-            <NOWOriginalValueTooltip
-              originalValue={props.renderOriginalValues("sand_and_gravel.reclamation_cost").value}
-              isVisible={props.renderOriginalValues("sand_and_gravel.reclamation_cost").edited}
-            />
           </div>
           <Field
             id="reclamation_cost"

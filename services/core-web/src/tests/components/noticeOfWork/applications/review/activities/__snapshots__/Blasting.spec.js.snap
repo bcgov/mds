@@ -13,11 +13,6 @@ exports[`Blasting renders properly 1`] = `
         className="field-title"
       >
         On site storage explosives
-        <NOWOriginalValueTooltip
-          isVisible={true}
-          originalValue="N/A"
-          style={Object {}}
-        />
       </div>
       <Field
         component={[Function]}
@@ -39,11 +34,6 @@ exports[`Blasting renders properly 1`] = `
         className="field-title"
       >
         Explosive Magazine Storage and Use Permit
-        <NOWOriginalValueTooltip
-          isVisible={true}
-          originalValue="N/A"
-          style={Object {}}
-        />
       </div>
       <Field
         component={[Function]}
@@ -69,11 +59,6 @@ exports[`Blasting renders properly 1`] = `
         className="field-title"
       >
         Expiry Date
-        <NOWOriginalValueTooltip
-          isVisible={true}
-          originalValue="N/A"
-          style={Object {}}
-        />
       </div>
       <Field
         component={[Function]}
@@ -90,11 +75,6 @@ exports[`Blasting renders properly 1`] = `
         className="field-title"
       >
         Permit Number
-        <NOWOriginalValueTooltip
-          isVisible={true}
-          originalValue="N/A"
-          style={Object {}}
-        />
       </div>
       <Field
         component={[Function]}

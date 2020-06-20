@@ -10,14 +10,13 @@ import RenderField from "@/components/common/RenderField";
 import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
 import RenderRadioButtons from "@/components/common/RenderRadioButtons";
 import CustomPropTypes from "@/customPropTypes";
-import { NOWFieldOriginTooltip, NOWOriginalValueTooltip } from "@/components/common/CoreTooltip";
+import { NOWFieldOriginTooltip } from "@/components/common/CoreTooltip";
 
 const propTypes = {
   isViewMode: PropTypes.bool.isRequired,
   details: CustomPropTypes.activityDetails.isRequired,
   editRecord: PropTypes.func.isRequired,
   addRecord: PropTypes.func.isRequired,
-  renderOriginalValues: PropTypes.func.isRequired,
 };
 
 export const SettlingPonds = (props) => {
@@ -282,18 +281,7 @@ export const SettlingPonds = (props) => {
         <div className="field-title">Water from Ponds will be</div>
         <Col md={8} sm={24}>
           <Field
-            label={
-              <span>
-                Recycled
-                <NOWOriginalValueTooltip
-                  style={{ marginLeft: "20%" }}
-                  originalValue={
-                    props.renderOriginalValues("settling_pond.is_ponds_recycled").value
-                  }
-                  isVisible={props.renderOriginalValues("settling_pond.is_ponds_recycled").edited}
-                />
-              </span>
-            }
+            label="Recycled"
             id="is_ponds_recycled"
             name="is_ponds_recycled"
             component={RenderRadioButtons}
@@ -303,20 +291,7 @@ export const SettlingPonds = (props) => {
         </Col>
         <Col md={8} sm={24}>
           <Field
-            label={
-              <span>
-                Exfiltrated to Ground
-                <NOWOriginalValueTooltip
-                  style={{ marginLeft: "20%" }}
-                  originalValue={
-                    props.renderOriginalValues("settling_pond.is_ponds_exfiltrated").value
-                  }
-                  isVisible={
-                    props.renderOriginalValues("settling_pond.is_ponds_exfiltrated").edited
-                  }
-                />
-              </span>
-            }
+            label="Exfiltrated to Ground"
             id="is_ponds_exfiltrated"
             name="is_ponds_exfiltrated"
             component={RenderRadioButtons}
@@ -326,18 +301,7 @@ export const SettlingPonds = (props) => {
         </Col>
         <Col md={8} sm={24}>
           <Field
-            label={
-              <span>
-                Discharged to Environment
-                <NOWOriginalValueTooltip
-                  style={{ marginLeft: "20%" }}
-                  originalValue={
-                    props.renderOriginalValues("settling_pond.is_ponds_discharged").value
-                  }
-                  isVisible={props.renderOriginalValues("settling_pond.is_ponds_discharged").edited}
-                />
-              </span>
-            }
+            label="Discharged to Environment"
             id="is_ponds_discharged"
             name="is_ponds_discharged"
             component={RenderRadioButtons}
@@ -352,12 +316,6 @@ export const SettlingPonds = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Proposed reclamation and timing for this specific activity
-            <NOWOriginalValueTooltip
-              originalValue={
-                props.renderOriginalValues("settling_pond.reclamation_description").value
-              }
-              isVisible={props.renderOriginalValues("settling_pond.reclamation_description").edited}
-            />
           </div>
           <Field
             id="reclamation_description"
@@ -370,10 +328,6 @@ export const SettlingPonds = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Estimated Cost of reclamation activities described above
-            <NOWOriginalValueTooltip
-              originalValue={props.renderOriginalValues("settling_pond.reclamation_cost").value}
-              isVisible={props.renderOriginalValues("settling_pond.reclamation_cost").edited}
-            />
           </div>
           <Field
             id="reclamation_cost"

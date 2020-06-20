@@ -8,7 +8,6 @@ const reducerProps = {};
 const setupReducerProps = () => {
   reducerProps.isViewMode = true;
   reducerProps.initialValues = NOW_MOCK.IMPORTED_NOTICE_OF_WORK.water_supply;
-  reducerProps.renderOriginalValues = jest.fn().mockReturnValue({ value: "N/A", edited: true });
 };
 
 beforeEach(() => {

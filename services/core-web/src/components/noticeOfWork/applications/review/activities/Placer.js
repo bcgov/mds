@@ -11,7 +11,7 @@ import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
 import RenderField from "@/components/common/RenderField";
 import Equipment from "@/components/noticeOfWork/applications/review/activities/Equipment";
 import CustomPropTypes from "@/customPropTypes";
-import { NOWFieldOriginTooltip, NOWOriginalValueTooltip } from "@/components/common/CoreTooltip";
+import { NOWFieldOriginTooltip } from "@/components/common/CoreTooltip";
 
 const propTypes = {
   isViewMode: PropTypes.bool.isRequired,
@@ -19,7 +19,6 @@ const propTypes = {
   equipment: CustomPropTypes.activityEquipment.isRequired,
   editRecord: PropTypes.func.isRequired,
   addRecord: PropTypes.func.isRequired,
-  renderOriginalValues: PropTypes.func.isRequired,
 };
 
 const defaultProps = {};
@@ -201,10 +200,6 @@ export const Placer = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Is this an application for Underground Placer Operations?
-            <NOWOriginalValueTooltip
-              originalValue={props.renderOriginalValues("placer_operation.is_underground").value}
-              isVisible={props.renderOriginalValues("placer_operation.is_underground").edited}
-            />
           </div>
           <Field
             id="is_underground"
@@ -214,13 +209,7 @@ export const Placer = (props) => {
           />
         </Col>
         <Col md={12} sm={24}>
-          <div className="field-title">
-            Is this an application for Hand Operations?
-            <NOWOriginalValueTooltip
-              originalValue={props.renderOriginalValues("placer_operation.is_hand_operation").value}
-              isVisible={props.renderOriginalValues("placer_operation.is_hand_operation").edited}
-            />
-          </div>
+          <div className="field-title">Is this an application for Hand Operations?</div>
           <Field
             id="is_hand_operation"
             name="is_hand_operation"
@@ -271,15 +260,7 @@ export const Placer = (props) => {
       <h4>Reclamation Program</h4>
       <Row gutter={16}>
         <Col md={12} sm={24}>
-          <div className="field-title">
-            Total area of planned reclamation this year
-            <NOWOriginalValueTooltip
-              originalValue={
-                props.renderOriginalValues("placer_operation.total_disturbed_area").value
-              }
-              isVisible={props.renderOriginalValues("placer_operation.total_disturbed_area").edited}
-            />
-          </div>
+          <div className="field-title">Total area of planned reclamation this year</div>
           <Field
             id="total_disturbed_area"
             name="total_disturbed_area"
@@ -293,14 +274,6 @@ export const Placer = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Proposed reclamation and timing for this specific activity
-            <NOWOriginalValueTooltip
-              originalValue={
-                props.renderOriginalValues("placer_operation.reclamation_description").value
-              }
-              isVisible={
-                props.renderOriginalValues("placer_operation.reclamation_description").edited
-              }
-            />
           </div>
           <Field
             id="reclamation_description"
@@ -313,10 +286,6 @@ export const Placer = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Estimated Cost of reclamation activities described above
-            <NOWOriginalValueTooltip
-              originalValue={props.renderOriginalValues("placer_operation.reclamation_cost").value}
-              isVisible={props.renderOriginalValues("placer_operation.reclamation_cost").edited}
-            />
           </div>
           <Field
             id="reclamation_cost"

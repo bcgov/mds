@@ -22,50 +22,38 @@ class ActivityDetailBase(AuditMixin, Base):
         activity_type_code = fields.String(dump_only=True)
         activity_detail_id = fields.Integer(dump_only=True)
 
-    activity_detail_id = db.Column(db.Integer,
-                                   primary_key=True,
-                                   server_default=FetchedValue())
+    activity_detail_id = db.Column(db.Integer, primary_key=True, server_default=FetchedValue())
     activity_type_description = db.Column(db.String)
     disturbed_area = db.Column(db.Numeric(14, 2))
-    disturbed_area_unit_type_code = db.Column(
-        db.String, db.ForeignKey('unit_type.unit_type_code'))
+    disturbed_area_unit_type_code = db.Column(db.String, db.ForeignKey('unit_type.unit_type_code'))
     timber_volume = db.Column(db.Numeric(14, 2))
-    timber_volume_unit_type_code = db.Column(
-        db.String, db.ForeignKey('unit_type.unit_type_code'))
+    timber_volume_unit_type_code = db.Column(db.String, db.ForeignKey('unit_type.unit_type_code'))
     number_of_sites = db.Column(db.Integer)
     width = db.Column(db.Integer)
-    width_unit_type_code = db.Column(db.String,
-                                     db.ForeignKey('unit_type.unit_type_code'))
+    width_unit_type_code = db.Column(db.String, db.ForeignKey('unit_type.unit_type_code'))
     length = db.Column(db.Integer)
-    length_unit_type_code = db.Column(
-        db.String, db.ForeignKey('unit_type.unit_type_code'))
+    length_unit_type_code = db.Column(db.String, db.ForeignKey('unit_type.unit_type_code'))
     depth = db.Column(db.Integer)
-    depth_unit_type_code = db.Column(db.String,
-                                     db.ForeignKey('unit_type.unit_type_code'))
+    depth_unit_type_code = db.Column(db.String, db.ForeignKey('unit_type.unit_type_code'))
     height = db.Column(db.Integer)
-    height_unit_type_code = db.Column(
-        db.String, db.ForeignKey('unit_type.unit_type_code'))
+    height_unit_type_code = db.Column(db.String, db.ForeignKey('unit_type.unit_type_code'))
     quantity = db.Column(db.Integer)
     incline = db.Column(db.Numeric(14, 2))
-    incline_unit_type_code = db.Column(
-        db.String, db.ForeignKey('unit_type.unit_type_code'))
+    incline_unit_type_code = db.Column(db.String, db.ForeignKey('unit_type.unit_type_code'))
     cut_line_length = db.Column(db.Integer)
-    cut_line_length_unit_type_code = db.Column(
-        db.String, db.ForeignKey('unit_type.unit_type_code'))
+    cut_line_length_unit_type_code = db.Column(db.String, db.ForeignKey('unit_type.unit_type_code'))
     water_quantity = db.Column(db.Integer)
-    water_quantity_unit_type_code = db.Column(
-        db.String, db.ForeignKey('unit_type.unit_type_code'))
+    water_quantity_unit_type_code = db.Column(db.String, db.ForeignKey('unit_type.unit_type_code'))
 
-    _etl_activity_details = db.relationship('ETLActivityDetail',
-                                            load_on_pending=True)
+    _etl_activity_details = db.relationship('ETLActivityDetail', load_on_pending=True)
 
     activity_type_code = db.column_property(
         db.select([ActivitySummaryBase.activity_type_code],
                   and_(
                       ActivitySummaryDetailXref.activity_summary_id ==
                       ActivitySummaryBase.activity_summary_id,
-                      ActivitySummaryDetailXref.activity_detail_id ==
-                      activity_detail_id)).limit(1).as_scalar())
+                      ActivitySummaryDetailXref.activity_detail_id == activity_detail_id)).limit(
+                          1).as_scalar())
 
     __mapper_args__ = {'polymorphic_on': activity_type_code}
 

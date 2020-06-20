@@ -9,7 +9,6 @@ const setupReducerProps = () => {
   reducerProps.isViewMode = true;
   reducerProps.noticeOfWork = NOW_MOCK.IMPORTED_NOTICE_OF_WORK;
   reducerProps.noticeOfWorkType = "COL";
-  reducerProps.renderOriginalValues = jest.fn().mockReturnValue({ value: "N/A", edited: true });
 };
 
 beforeEach(() => {

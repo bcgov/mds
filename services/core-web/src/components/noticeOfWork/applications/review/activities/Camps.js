@@ -10,14 +10,12 @@ import RenderField from "@/components/common/RenderField";
 import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
 import RenderRadioButtons from "@/components/common/RenderRadioButtons";
 import CustomPropTypes from "@/customPropTypes";
-import { NOWOriginalValueTooltip } from "@/components/common/CoreTooltip";
 
 const propTypes = {
   isViewMode: PropTypes.bool.isRequired,
   details: CustomPropTypes.activityDetails.isRequired,
   editRecord: PropTypes.func.isRequired,
   addRecord: PropTypes.func.isRequired,
-  renderOriginalValues: PropTypes.func.isRequired,
 };
 
 const defaultProps = {};
@@ -153,13 +151,7 @@ export const Camps = (props) => {
       <h4>Fuel</h4>
       <Row gutter={16}>
         <Col md={12} sm={24}>
-          <div className="field-title">
-            Do you propose to store fuel?
-            <NOWOriginalValueTooltip
-              originalValue={props.renderOriginalValues("camps.has_fuel_stored").value}
-              isVisible={props.renderOriginalValues("camps.has_fuel_stored").edited}
-            />
-          </div>
+          <div className="field-title">Do you propose to store fuel?</div>
           <Field
             id="has_fuel_stored"
             name="has_fuel_stored"
@@ -169,13 +161,7 @@ export const Camps = (props) => {
           />
         </Col>
         <Col md={12} sm={24}>
-          <div className="field-title">
-            Volume of fuel stored
-            <NOWOriginalValueTooltip
-              originalValue={props.renderOriginalValues("camps.volume_fuel_stored").value}
-              isVisible={props.renderOriginalValues("camps.volume_fuel_stored").edited}
-            />
-          </div>
+          <div className="field-title">Volume of fuel stored</div>
           <Field
             id="volume_fuel_stored"
             name="volume_fuel_stored"
@@ -190,18 +176,7 @@ export const Camps = (props) => {
           <div className="field-title">Storage Method</div>
           <Col md={12} sm={24}>
             <Field
-              label={
-                <span>
-                  Bulk
-                  <NOWOriginalValueTooltip
-                    style={{ marginLeft: "20%" }}
-                    originalValue={
-                      props.renderOriginalValues("camps.has_fuel_stored_in_bulk").value
-                    }
-                    isVisible={props.renderOriginalValues("camps.has_fuel_stored_in_bulk").edited}
-                  />
-                </span>
-              }
+              label="Bulk"
               id="has_fuel_stored_in_bulk"
               name="has_fuel_stored_in_bulk"
               component={RenderRadioButtons}
@@ -211,20 +186,7 @@ export const Camps = (props) => {
           </Col>
           <Col md={12} sm={24}>
             <Field
-              label={
-                <span>
-                  Barrell
-                  <NOWOriginalValueTooltip
-                    style={{ marginLeft: "20%" }}
-                    originalValue={
-                      props.renderOriginalValues("camps.has_fuel_stored_in_barrels").value
-                    }
-                    isVisible={
-                      props.renderOriginalValues("camps.has_fuel_stored_in_barrels").edited
-                    }
-                  />
-                </span>
-              }
+              label="Barrell"
               id="has_fuel_stored_in_barrels"
               name="has_fuel_stored_in_barrels"
               component={RenderRadioButtons}
@@ -240,10 +202,6 @@ export const Camps = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Proposed reclamation and timing for this specific activity
-            <NOWOriginalValueTooltip
-              originalValue={props.renderOriginalValues("camps.reclamation_description").value}
-              isVisible={props.renderOriginalValues("camps.reclamation_description").edited}
-            />
           </div>
           <Field
             id="reclamation_description"
@@ -256,10 +214,6 @@ export const Camps = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Estimated Cost of reclamation activities described above
-            <NOWOriginalValueTooltip
-              originalValue={props.renderOriginalValues("camps.reclamation_cost").value}
-              isVisible={props.renderOriginalValues("camps.reclamation_cost").edited}
-            />
           </div>
           <Field
             id="reclamation_cost"

@@ -10,9 +10,6 @@ import {
   getMineRegionDropdownOptions,
   getDropdownNoticeOfWorkApplicationTypeOptions,
   getDropdownNoticeOfWorkApplicationPermitTypeOptions,
-  getMineRegionHash,
-  getNoticeOfWorkApplicationPermitTypeOptionsHash,
-  getNoticeOfWorkApplicationTypeOptionsHash,
 } from "@common/selectors/staticContentSelectors";
 import {
   required,
@@ -36,9 +33,8 @@ import ReclamationSummary from "./activities/ReclamationSummary";
 import NOWDocuments from "@/components/noticeOfWork/applications//NOWDocuments";
 import NOWSubmissionDocuments from "@/components/noticeOfWork/applications//NOWSubmissionDocuments";
 import ReviewNOWContacts from "./ReviewNOWContacts";
-import { NOWFieldOriginTooltip, NOWOriginalValueTooltip } from "@/components/common/CoreTooltip";
-import { currencyMask, formatDate } from "@common/utils/helpers";
-import * as Strings from "@common/constants/strings";
+import { NOWFieldOriginTooltip } from "@/components/common/CoreTooltip";
+import { currencyMask } from "@common/utils/helpers";
 
 /**
  * @constant ReviewNOWApplication renders edit/view for the NoW Application review step
@@ -58,23 +54,11 @@ const propTypes = {
 };
 
 export const ReviewNOWApplication = (props) => {
-  const renderCodeValues = (codeHash, value) => {
-    if (value === Strings.EMPTY_FIELD) {
-      return value;
-    }
-    return codeHash[value];
-  };
   const renderApplicationInfo = () => (
     <div>
       <Row gutter={16}>
         <Col md={12} sm={24}>
-          <div className="field-title">
-            Name of Property
-            <NOWOriginalValueTooltip
-              originalValue={props.renderOriginalValues("property_name").value}
-              isVisible={props.renderOriginalValues("property_name").edited}
-            />
-          </div>
+          <div className="field-title">Name of Property</div>
           <Field
             id="property_name"
             name="property_name"
@@ -93,13 +77,7 @@ export const ReviewNOWApplication = (props) => {
       </Row>
       <Row gutter={16}>
         <Col md={12} sm={24}>
-          <div className="field-title">
-            Mine Number
-            <NOWOriginalValueTooltip
-              originalValue={props.renderOriginalValues("mine_no").value}
-              isVisible={props.renderOriginalValues("mine_no").edited}
-            />
-          </div>
+          <div className="field-title">Mine Number</div>
           <Field id="mine_no" name="mine_no" component={RenderField} disabled />
         </Col>
         <Col md={12} sm={24}>
@@ -112,16 +90,7 @@ export const ReviewNOWApplication = (props) => {
       </Row>
       <Row gutter={16}>
         <Col md={12} sm={24}>
-          <div className="field-title">
-            Region
-            <NOWOriginalValueTooltip
-              originalValue={renderCodeValues(
-                props.regionHash,
-                props.renderOriginalValues("mine_region").value
-              )}
-              isVisible={props.renderOriginalValues("mine_region").edited}
-            />
-          </div>
+          <div className="field-title">Region</div>
           <Field
             id="mine_region"
             name="mine_region"
@@ -140,23 +109,11 @@ export const ReviewNOWApplication = (props) => {
       </Row>
       <Row gutter={16}>
         <Col md={12} sm={24}>
-          <div className="field-title">
-            Lat{" "}
-            <NOWOriginalValueTooltip
-              originalValue={props.renderOriginalValues("latitude").value}
-              isVisible={props.renderOriginalValues("latitude").edited}
-            />
-          </div>
+          <div className="field-title">Lat</div>
           <Field id="latitude" name="latitude" component={RenderField} disabled validate={[lat]} />
         </Col>
         <Col md={12} sm={24}>
-          <div className="field-title">
-            Description of Land
-            <NOWOriginalValueTooltip
-              originalValue={props.renderOriginalValues("description_of_land").value}
-              isVisible={props.renderOriginalValues("description_of_land").edited}
-            />
-          </div>
+          <div className="field-title">Description of Land</div>
           <Field
             id="description_of_land"
             name="description_of_land"
@@ -168,13 +125,7 @@ export const ReviewNOWApplication = (props) => {
       </Row>
       <Row gutter={16}>
         <Col md={12} sm={24}>
-          <div className="field-title">
-            Long
-            <NOWOriginalValueTooltip
-              originalValue={props.renderOriginalValues("longitude").value}
-              isVisible={props.renderOriginalValues("longitude").edited}
-            />
-          </div>
+          <div className="field-title">Long</div>
           <Field
             id="longitude"
             name="longitude"
@@ -184,13 +135,7 @@ export const ReviewNOWApplication = (props) => {
           />
         </Col>
         <Col md={12} sm={24}>
-          <div className="field-title">
-            Type of Application
-            <NOWOriginalValueTooltip
-              originalValue={props.renderOriginalValues("type_of_application").value}
-              isVisible={props.renderOriginalValues("type_of_application").edited}
-            />
-          </div>
+          <div className="field-title">Type of Application</div>
           <Field
             id="type_of_application"
             name="type_of_application"
@@ -201,16 +146,7 @@ export const ReviewNOWApplication = (props) => {
       </Row>
       <Row gutter={16}>
         <Col md={12} sm={24}>
-          <div className="field-title">
-            Type of Notice of Work
-            <NOWOriginalValueTooltip
-              originalValue={renderCodeValues(
-                props.applicationTypeOptionsHash,
-                props.renderOriginalValues("notice_of_work_type_code").value
-              )}
-              isVisible={props.renderOriginalValues("notice_of_work_type_code").edited}
-            />
-          </div>
+          <div className="field-title">Type of Notice of Work</div>
           <Field
             id="notice_of_work_type_code"
             name="notice_of_work_type_code"
@@ -230,16 +166,7 @@ export const ReviewNOWApplication = (props) => {
       </Row>
       <Row gutter={16}>
         <Col md={12} sm={24}>
-          <div className="field-title">
-            Permit Type
-            <NOWOriginalValueTooltip
-              originalValue={renderCodeValues(
-                props.permitTypeHash,
-                props.renderOriginalValues("application_permit_type_code").value
-              )}
-              isVisible={props.renderOriginalValues("application_permit_type_code").edited}
-            />
-          </div>
+          <div className="field-title">Permit Type</div>
           <Field
             id="application_permit_type_code"
             name="application_permit_type_code"
@@ -249,13 +176,7 @@ export const ReviewNOWApplication = (props) => {
           />
         </Col>
         <Col md={12} sm={24}>
-          <div className="field-title">
-            Proposed Start Date
-            <NOWOriginalValueTooltip
-              originalValue={props.renderOriginalValues("proposed_start_date").value}
-              isVisible={props.renderOriginalValues("proposed_start_date").edited}
-            />
-          </div>
+          <div className="field-title">Proposed Start Date</div>
           <Field
             id="proposed_start_date"
             name="proposed_start_date"
@@ -266,15 +187,7 @@ export const ReviewNOWApplication = (props) => {
       </Row>
       <Row gutter={16}>
         <Col md={12} sm={24}>
-          <div className="field-title">
-            Crown Grant / District Lot Number
-            <NOWOriginalValueTooltip
-              originalValue={
-                props.renderOriginalValues("crown_grant_or_district_lot_numbers").value
-              }
-              isVisible={props.renderOriginalValues("crown_grant_or_district_lot_numbers").edited}
-            />
-          </div>
+          <div className="field-title">Crown Grant / District Lot Number</div>
           <Field
             id="crown_grant_or_district_lot_numbers"
             name="crown_grant_or_district_lot_numbers"
@@ -283,13 +196,7 @@ export const ReviewNOWApplication = (props) => {
           />
         </Col>
         <Col md={12} sm={24}>
-          <div className="field-title">
-            Proposed End Date
-            <NOWOriginalValueTooltip
-              originalValue={props.renderOriginalValues("proposed_end_date").value}
-              isVisible={props.renderOriginalValues("proposed_end_date").edited}
-            />
-          </div>
+          <div className="field-title">Proposed End Date</div>
           <Field
             id="proposed_end_date"
             name="proposed_end_date"
@@ -300,13 +207,7 @@ export const ReviewNOWApplication = (props) => {
       </Row>
       <Row gutter={16}>
         <Col md={12} sm={24}>
-          <div className="field-title">
-            Tenure Number(s)
-            <NOWOriginalValueTooltip
-              originalValue={props.renderOriginalValues("tenure_number").value}
-              isVisible={props.renderOriginalValues("tenure_number").edited}
-            />
-          </div>
+          <div className="field-title">Tenure Number(s)</div>
           <Field
             id="tenure_number"
             name="tenure_number"
@@ -351,13 +252,7 @@ export const ReviewNOWApplication = (props) => {
     <div>
       <Row gutter={16}>
         <Col md={12} sm={24}>
-          <div className="field-title">
-            Directions to Site
-            <NOWOriginalValueTooltip
-              originalValue={props.renderOriginalValues("directions_to_site").value}
-              isVisible={props.renderOriginalValues("directions_to_site").edited}
-            />
-          </div>
+          <div className="field-title">Directions to Site</div>
           <Field
             id="directions_to_site"
             name="directions_to_site"
@@ -523,13 +418,7 @@ export const ReviewNOWApplication = (props) => {
         <h4>Land Ownership</h4>
         <Row gutter={16}>
           <Col md={12} sm={24}>
-            <div className="field-title">
-              Application in a community watershed
-              <NOWOriginalValueTooltip
-                originalValue={props.renderOriginalValues("has_community_water_shed").value}
-                isVisible={props.renderOriginalValues("has_community_water_shed").edited}
-              />
-            </div>
+            <div className="field-title">Application in a community watershed</div>
             <Field
               id="has_community_water_shed"
               name="has_community_water_shed"
@@ -585,10 +474,6 @@ export const ReviewNOWApplication = (props) => {
             <div className="field-title">
               Are you aware of any protected archaeological sites that may be affected by the
               proposed project?
-              <NOWOriginalValueTooltip
-                originalValue={props.renderOriginalValues("has_archaeology_sites_affected").value}
-                isVisible={props.renderOriginalValues("has_archaeology_sites_affected").edited}
-              />
             </div>
             <Field
               id="has_archaeology_sites_affected"
@@ -674,13 +559,7 @@ export const ReviewNOWApplication = (props) => {
     <div>
       <Row gutter={16}>
         <Col md={12} sm={24}>
-          <div className="field-title">
-            Proposed First Aid equipment on site
-            <NOWOriginalValueTooltip
-              originalValue={props.renderOriginalValues("first_aid_equipment_on_site").value}
-              isVisible={props.renderOriginalValues("first_aid_equipment_on_site").edited}
-            />
-          </div>
+          <div className="field-title">Proposed First Aid equipment on site</div>
           <Field
             id="first_aid_equipment_on_site"
             name="first_aid_equipment_on_site"
@@ -689,13 +568,7 @@ export const ReviewNOWApplication = (props) => {
           />
         </Col>
         <Col md={12} sm={24}>
-          <div className="field-title">
-            Level of First Aid Certificate held by attendant
-            <NOWOriginalValueTooltip
-              originalValue={props.renderOriginalValues("first_aid_cert_level").value}
-              isVisible={props.renderOriginalValues("first_aid_cert_level").edited}
-            />
-          </div>
+          <div className="field-title">Level of First Aid Certificate held by attendant</div>
           <Field
             id="first_aid_cert_level"
             name="first_aid_cert_level"
@@ -745,14 +618,6 @@ export const ReviewNOWApplication = (props) => {
       <Form layout="vertical">
         <div className="side-menu--content">
           <h2>General Information</h2>
-          {props.noticeOfWork.last_updated_date && (
-            <p className="violet">
-              Last Updated: {formatDate(props.noticeOfWork.last_updated_date)}
-            </p>
-          )}
-          {props.noticeOfWork.last_updated_by && (
-            <p className="violet">Updated By: {props.noticeOfWork.last_updated_by}</p>
-          )}
           <Divider />
           <ScrollContentWrapper id="application-info" title="Application Info">
             {renderApplicationInfo()}
@@ -784,7 +649,6 @@ export const ReviewNOWApplication = (props) => {
             isViewMode={props.isViewMode}
             noticeOfWorkType={props.noticeOfWorkType}
             noticeOfWork={props.initialValues}
-            renderOriginalValues={props.renderOriginalValues}
           />
           <ScrollContentWrapper id="submission-documents" title="Submission Documents (vFCBC/NROS)">
             <NOWSubmissionDocuments
@@ -820,9 +684,6 @@ export default compose(
     applicationTypeOptions: getDropdownNoticeOfWorkApplicationTypeOptions(state),
     applicationProgressStatusCodes: getNoticeOfWorkApplicationProgressStatusCodeOptions(state),
     permitTypeOptions: getDropdownNoticeOfWorkApplicationPermitTypeOptions(state),
-    regionHash: getMineRegionHash(state),
-    permitTypeHash: getNoticeOfWorkApplicationPermitTypeOptionsHash(state),
-    applicationTypeOptionsHash: getNoticeOfWorkApplicationTypeOptionsHash(state),
   })),
   reduxForm({
     form: FORM.EDIT_NOTICE_OF_WORK,

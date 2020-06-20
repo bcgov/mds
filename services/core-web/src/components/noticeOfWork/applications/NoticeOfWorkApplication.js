@@ -5,7 +5,6 @@ import PropTypes from "prop-types";
 import { getFormValues, reset, getFormSyncErrors, focus } from "redux-form";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { get, isNull, isUndefined } from "lodash";
 import {
   fetchImportedNoticeOfWorkApplication,
   fetchOriginalNoticeOfWorkApplication,
@@ -30,7 +29,6 @@ import {
 import { formatDate, flattenObject } from "@common/utils/helpers";
 import { clearNoticeOfWorkApplication } from "@common/actions/noticeOfWorkActions";
 import { downloadNowDocument } from "@common/utils/actionlessNetworkCalls";
-import * as Strings from "@common/constants/strings";
 import {
   generateNoticeOfWorkApplicationDocument,
   fetchNoticeOfWorkApplicationContextTemplate,
@@ -180,37 +178,6 @@ export class NoticeOfWorkApplication extends Component {
       this.setState({ isMajorMine: data.major_mine_ind, mineGuid: data.mine_guid });
       onMineInfoLoaded();
     });
-  };
-
-  renderOriginalValues = (path) => {
-    const prevValue = get(this.props.originalNoticeOfWork, path);
-    const currentValue = get(this.props.noticeOfWork, path);
-    // cases for isEdited:
-    // activities can be added, prevValue === undefined, currentValue === null, thus prevValue !== currentValue - but field has not been edited.
-    // prevValue !== undefined || prevValue !==  null, but currentValue has been changed to null, thus is has been edited
-    // prevValue !== currentValue, due to other value changes that are not null or undefined
-    const isNewValue = isUndefined(prevValue) && !isNull(currentValue);
-    const isPrevValue =
-      !isUndefined(prevValue) &&
-      !isNull(prevValue) &&
-      (isNull(currentValue) || isUndefined(currentValue));
-    const hasBeenEdited = isNewValue || isPrevValue;
-    const edited = hasBeenEdited && prevValue !== currentValue;
-    const getValue = () => {
-      if (prevValue === true) {
-        return "Yes";
-      }
-      if (prevValue === false) {
-        return "No";
-      }
-      if (isUndefined(prevValue) || isNull(prevValue)) {
-        return Strings.EMPTY_FIELD;
-      }
-      return prevValue;
-    };
-
-    const toolTipValue = { value: getValue(), edited };
-    return toolTipValue;
   };
 
   loadCreatePermitApplication = () => {
@@ -581,8 +548,6 @@ export class NoticeOfWorkApplication extends Component {
         initialValues={
           this.state.showOriginalValues ? this.props.originalNoticeOfWork : this.props.noticeOfWork
         }
-        noticeOfWork={this.props.noticeOfWork}
-        renderOriginalValues={this.renderOriginalValues}
       />
     );
   };

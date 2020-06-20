@@ -13,11 +13,6 @@ exports[`Placer renders properly 1`] = `
         className="field-title"
       >
         Is this an application for Underground Placer Operations?
-        <NOWOriginalValueTooltip
-          isVisible={true}
-          originalValue="N/A"
-          style={Object {}}
-        />
       </div>
       <Field
         component={[Function]}
@@ -34,11 +29,6 @@ exports[`Placer renders properly 1`] = `
         className="field-title"
       >
         Is this an application for Hand Operations?
-        <NOWOriginalValueTooltip
-          isVisible={true}
-          originalValue="N/A"
-          style={Object {}}
-        />
       </div>
       <Field
         component={[Function]}
@@ -141,11 +131,6 @@ exports[`Placer renders properly 1`] = `
         className="field-title"
       >
         Total area of planned reclamation this year
-        <NOWOriginalValueTooltip
-          isVisible={true}
-          originalValue="N/A"
-          style={Object {}}
-        />
       </div>
       <Field
         component={[Function]}
@@ -171,11 +156,6 @@ exports[`Placer renders properly 1`] = `
         className="field-title"
       >
         Proposed reclamation and timing for this specific activity
-        <NOWOriginalValueTooltip
-          isVisible={true}
-          originalValue="N/A"
-          style={Object {}}
-        />
       </div>
       <Field
         component={[Function]}
@@ -197,11 +177,6 @@ exports[`Placer renders properly 1`] = `
         className="field-title"
       >
         Estimated Cost of reclamation activities described above
-        <NOWOriginalValueTooltip
-          isVisible={true}
-          originalValue="N/A"
-          style={Object {}}
-        />
       </div>
       <Field
         component={[Function]}

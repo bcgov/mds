@@ -13,7 +13,7 @@ import { TRASHCAN } from "@/constants/assets";
 import RenderField from "@/components/common/RenderField";
 import RenderFieldWithDropdown from "@/components/common/RenderFieldWithDropdown";
 import CustomPropTypes from "@/customPropTypes";
-import { NOWFieldOriginTooltip, NOWOriginalValueTooltip } from "@/components/common/CoreTooltip";
+import { NOWFieldOriginTooltip } from "@/components/common/CoreTooltip";
 
 const propTypes = {
   isViewMode: PropTypes.bool.isRequired,
@@ -23,7 +23,6 @@ const propTypes = {
   unitTypeOptions: CustomPropTypes.options.isRequired,
   // eslint-disable-next-line react/no-unused-prop-types
   undergroundExplorationTypeOptions: CustomPropTypes.options.isRequired,
-  renderOriginalValues: PropTypes.func.isRequired,
 };
 
 const defaultProps = {};
@@ -78,7 +77,7 @@ export const UndergroundExploration = (props) => {
             onChange={(e) => editActivity(e, record.index, false)}
           >
             {props.undergroundExplorationTypeOptions.map((type) => (
-              <option value={type}>{type.label}</option>
+              <option value={type.value}>{type.label}</option>
             ))}
           </select>
         </div>
@@ -285,17 +284,7 @@ export const UndergroundExploration = (props) => {
       </Row>
       <Row gutter={16}>
         <Col md={12} sm={24}>
-          <div className="field-title">
-            Total Ore
-            <NOWOriginalValueTooltip
-              originalValue={
-                props.renderOriginalValues("underground_exploration.total_ore_amount").value
-              }
-              isVisible={
-                props.renderOriginalValues("underground_exploration.total_ore_amount").edited
-              }
-            />
-          </div>
+          <div className="field-title">Total Ore</div>
           <Fields
             names={["total_ore_amount", "total_ore_unit_type_code"]}
             id="total_ore_amount"
@@ -307,17 +296,7 @@ export const UndergroundExploration = (props) => {
           />
         </Col>
         <Col md={12} sm={24}>
-          <div className="field-title">
-            Total Waste
-            <NOWOriginalValueTooltip
-              originalValue={
-                props.renderOriginalValues("underground_exploration.total_waste_amount").value
-              }
-              isVisible={
-                props.renderOriginalValues("underground_exploration.total_waste_amount").edited
-              }
-            />
-          </div>
+          <div className="field-title">Total Waste</div>
           <Fields
             names={["total_waste_amount", "total_waste_unit_type_code"]}
             id="total_waste_amount"

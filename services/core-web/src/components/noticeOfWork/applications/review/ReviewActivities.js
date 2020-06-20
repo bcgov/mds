@@ -31,7 +31,6 @@ const propTypes = {
   arrayRemove: PropTypes.func.isRequired,
   arrayPush: PropTypes.func.isRequired,
   noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
-  renderOriginalValues: PropTypes.objectOf(PropTypes.strings).isRequired,
 };
 
 export const ReviewActivities = (props) => {
@@ -66,7 +65,6 @@ export const ReviewActivities = (props) => {
             isViewMode={props.isViewMode}
             editRecord={editRecord}
             addRecord={addRecord}
-            renderOriginalValues={props.renderOriginalValues}
           />
         </FormSection>
       </ScrollContentWrapper>
@@ -77,10 +75,7 @@ export const ReviewActivities = (props) => {
         isViewMode={props.isViewMode}
       >
         <FormSection name="blasting_operation">
-          <Blasting
-            isViewMode={props.isViewMode}
-            renderOriginalValues={props.renderOriginalValues}
-          />
+          <Blasting isViewMode={props.isViewMode} />
         </FormSection>
       </ScrollContentWrapper>
       <ScrollContentWrapper
@@ -90,12 +85,7 @@ export const ReviewActivities = (props) => {
         isViewMode={props.isViewMode}
       >
         <FormSection name="camps">
-          <Camps
-            isViewMode={props.isViewMode}
-            editRecord={editRecord}
-            addRecord={addRecord}
-            renderOriginalValues={props.renderOriginalValues}
-          />
+          <Camps isViewMode={props.isViewMode} editRecord={editRecord} addRecord={addRecord} />
         </FormSection>
       </ScrollContentWrapper>
       <ScrollContentWrapper
@@ -106,12 +96,7 @@ export const ReviewActivities = (props) => {
         isViewMode={props.isViewMode}
       >
         <FormSection name="cut_lines_polarization_survey">
-          <CutLines
-            isViewMode={props.isViewMode}
-            editRecord={editRecord}
-            addRecord={addRecord}
-            renderOriginalValues={props.renderOriginalValues}
-          />
+          <CutLines isViewMode={props.isViewMode} editRecord={editRecord} addRecord={addRecord} />
         </FormSection>
       </ScrollContentWrapper>
       <ScrollContentWrapper
@@ -125,7 +110,6 @@ export const ReviewActivities = (props) => {
             isViewMode={props.isViewMode}
             editRecord={editRecord}
             addRecord={addRecord}
-            renderOriginalValues={props.renderOriginalValues}
           />
         </FormSection>
       </ScrollContentWrapper>
@@ -140,7 +124,6 @@ export const ReviewActivities = (props) => {
             isViewMode={props.isViewMode}
             editRecord={editRecord}
             addRecord={addRecord}
-            renderOriginalValues={props.renderOriginalValues}
           />
         </FormSection>
       </ScrollContentWrapper>
@@ -155,7 +138,6 @@ export const ReviewActivities = (props) => {
             isViewMode={props.isViewMode}
             editRecord={editRecord}
             addRecord={addRecord}
-            renderOriginalValues={props.renderOriginalValues}
           />
         </FormSection>
       </ScrollContentWrapper>
@@ -171,7 +153,6 @@ export const ReviewActivities = (props) => {
             isViewMode={props.isViewMode}
             editRecord={editRecord}
             addRecord={addRecord}
-            renderOriginalValues={props.renderOriginalValues}
           />
         </FormSection>
       </ScrollContentWrapper>
@@ -187,7 +168,6 @@ export const ReviewActivities = (props) => {
             isViewMode={props.isViewMode}
             editRecord={editRecord}
             addRecord={addRecord}
-            renderOriginalValues={props.renderOriginalValues}
           />
         </FormSection>
       </ScrollContentWrapper>
@@ -203,7 +183,6 @@ export const ReviewActivities = (props) => {
             isViewMode={props.isViewMode}
             editRecord={editRecord}
             addRecord={addRecord}
-            renderOriginalValues={props.renderOriginalValues}
           />
         </FormSection>
       </ScrollContentWrapper>
@@ -215,12 +194,7 @@ export const ReviewActivities = (props) => {
         isViewMode={props.isViewMode}
       >
         <FormSection name="placer_operation">
-          <Placer
-            isViewMode={props.isViewMode}
-            editRecord={editRecord}
-            addRecord={addRecord}
-            renderOriginalValues={props.renderOriginalValues}
-          />
+          <Placer isViewMode={props.isViewMode} editRecord={editRecord} addRecord={addRecord} />
         </FormSection>
       </ScrollContentWrapper>
       <ScrollContentWrapper
@@ -234,7 +208,6 @@ export const ReviewActivities = (props) => {
             isViewMode={props.isViewMode}
             editRecord={editRecord}
             addRecord={addRecord}
-            renderOriginalValues={props.renderOriginalValues}
           />
         </FormSection>
       </ScrollContentWrapper>
