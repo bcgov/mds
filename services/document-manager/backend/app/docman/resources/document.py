@@ -125,7 +125,7 @@ class DocumentListResource(Resource):
         response.headers['Location'] = f'{Config.DOCUMENT_MANAGER_URL}/documents/{document_guid}'
         response.headers['Upload-Offset'] = 0
         response.headers[
-            'Access-Control-Expose-Headers'] = 'Tus-Resumable,Tus-Version,Location,Upload-Offset'
+            'Access-Control-Expose-Headers'] = 'Tus-Resumable,Tus-Version,Location,Upload-Offset,Content-Type'
         response.autocorrect_location_header = False
         return response
 
@@ -190,14 +190,20 @@ class DocumentResource(Resource):
         if Config.OBJECT_STORE_ENABLED:
             object_store_upload_resource = cache.get(OBJECT_STORE_UPLOAD_RESOURCE(document_guid))
 
-            excluded_headers = ['content-encoding', 'content-length', 'transfer-encoding', 'connection', 'Host']
-            headers = {key: value for (key, value) in request.headers if key not in excluded_headers}
+            excluded_headers = [
+                'content-encoding', 'content-length', 'transfer-encoding', 'connection', 'host'
+            ]
+            headers = {
+                key: value
+                for (key, value) in request.headers if lower(key) not in excluded_headers
+            }
             headers['Content-Type'] = "application/offset+octet-stream"
 
             current_app.logger.error(f'PATCH headers:\n{headers}')
 
             s = requests.Session()
-            req = requests.Request('PATCH', url=f'{Config.TUSD_URL}/{object_store_upload_resource}', data=request.data)
+            req = requests.Request(
+                'PATCH', url=f'{Config.TUSD_URL}/{object_store_upload_resource}', data=request.data)
             prepped = s.prepare_request(req)
 
             current_app.logger.error(f'PATCH prepped headers before:\n{prepped.headers}')
