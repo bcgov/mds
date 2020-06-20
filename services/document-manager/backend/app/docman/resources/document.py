@@ -75,12 +75,13 @@ class DocumentListResource(Resource):
                 headers={key: value
                          for (key, value) in request.headers if key != 'Host'},
                 data=request.data)
-
+            current_app.logger.error(f'POST resp.request:\n{resp.request.__dict__}')
+            current_app.logger.error(f'POST resp:\n{resp.__dict__}')
             if resp.status_code != requests.codes.created:
                 message = f'Cannot upload file. Object store responded with {resp.status_code} ({resp.reason}): {resp._content}'
                 current_app.logger.error(message)
-                current_app.logger.error(f'POST resp:\n{resp.__dict__}')
-                current_app.logger.error(f'POST resp.request:\n{resp.request.__dict__}')
+                # current_app.logger.error(f'POST resp:\n{resp.__dict__}')
+                # current_app.logger.error(f'POST resp.request:\n{resp.request.__dict__}')
                 raise BadGateway(message)
 
             object_store_upload_resource = urlparse(resp.headers['Location']).path.split('/')[-1]
@@ -124,7 +125,7 @@ class DocumentListResource(Resource):
         response.headers['Location'] = f'{Config.DOCUMENT_MANAGER_URL}/documents/{document_guid}'
         response.headers['Upload-Offset'] = 0
         response.headers[
-            'Access-Control-Expose-Headers'] = 'Tus-Resumable,Tus-Version,Location,Upload-Offset'
+            'Access-Control-Expose-Headers'] = 'Tus-Resumable,Tus-Version,Location,Upload-Offset,Content-Type'
         response.autocorrect_location_header = False
         return response
 
@@ -188,18 +189,44 @@ class DocumentResource(Resource):
         current_app.logger.error(f'PATCH request.headers:\n{request.headers.__dict__}')
         if Config.OBJECT_STORE_ENABLED:
             object_store_upload_resource = cache.get(OBJECT_STORE_UPLOAD_RESOURCE(document_guid))
-            headers = {key: value for (key, value) in request.headers if key != 'Host'}
-            headers['content-type'] = headers['Content-Type']
-            resp = requests.patch(
-                url=f'{Config.TUSD_URL}/{object_store_upload_resource}',
-                headers=headers,
-                data=request.data)
 
+            excluded_headers = [
+                'content-encoding', 'content-length', 'transfer-encoding', 'connection', 'Host'
+            ]
+            headers = {
+                key: value
+                for (key, value) in request.headers if key not in excluded_headers
+            }
+            # headers['Content-Type'] = "application/offset+octet-stream"
+            headers['content-type'] = "application/offset+octet-stream"
+            # headers['CONTENT_TYPE'] = "application/offset+octet-stream"
+
+            current_app.logger.error(f'PATCH headers:\n{headers}')
+
+            s = requests.Session()
+            req = requests.Request(
+                'PATCH', url=f'{Config.TUSD_URL}/{object_store_upload_resource}', data=request.data)
+            prepped = s.prepare_request(req)
+
+            current_app.logger.error(f'PATCH prepped headers before:\n{prepped.headers}')
+            prepped.headers = headers
+            current_app.logger.error(f'PATCH prepped headers after:\n{prepped.headers}')
+
+            # Merge environment settings into session
+            settings = s.merge_environment_settings(prepped.url, {}, None, None, None)
+            resp = s.send(prepped, **settings)
+
+            # resp = s.patch(
+            #     url=,
+            #     headers=headers,
+            #     data=request.data)
+            current_app.logger.error(f'PATCH resp.request:\n{resp.request.__dict__}')
+            current_app.logger.error(f'PATCH resp:\n{resp.__dict__}')
             if resp.status_code not in [requests.codes.ok, requests.codes.no_content]:
                 message = f'Cannot upload file. Object store responded with {resp.status_code} ({resp.reason}): {resp._content}'
                 current_app.logger.error(message)
-                current_app.logger.error(f'PATCH resp:\n{resp.__dict__}')
-                current_app.logger.error(f'PATCH resp.request:\n{resp.request.__dict__}')
+                # current_app.logger.error(f'PATCH resp:\n{resp.__dict__}')
+                # current_app.logger.error(f'PATCH resp.request:\n{resp.request.__dict__}')
                 raise BadGateway(message)
 
         # Else, write the content to the file in the file system
