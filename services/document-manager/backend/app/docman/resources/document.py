@@ -215,7 +215,7 @@ class DocumentResource(Resource):
             # settings = s.merge_environment_settings(prepped.url, {}, None, None, None)
             # resp = s.send(prepped, **settings)
 
-            resp = s.patch(
+            resp = requests.patch(
                 url=f'{Config.TUSD_URL}/{object_store_upload_resource}',
                 headers=headers,
                 data=request.data)
