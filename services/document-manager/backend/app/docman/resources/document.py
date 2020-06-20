@@ -195,7 +195,7 @@ class DocumentResource(Resource):
             ]
             headers = {
                 key: value
-                for (key, value) in request.headers if key.lower() not in excluded_headers
+                for (key, value) in request.headers if str(key).lower() not in excluded_headers
             }
             headers['Content-Type'] = "application/offset+octet-stream"
 
