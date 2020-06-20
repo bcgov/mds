@@ -185,21 +185,25 @@ class DocumentResource(Resource):
                 'The uploaded chunk would put the file above its declared file size')
 
         # If the object store is enabled, send the patch request through to TUSD to the object store
-        current_app.logger.error(f'PATCH request.headers:\n{request.headers.__dict__}')
         if Config.OBJECT_STORE_ENABLED:
             object_store_upload_resource = cache.get(OBJECT_STORE_UPLOAD_RESOURCE(document_guid))
             headers = {key: value for (key, value) in request.headers if key != 'Host'}
-            headers['content-type'] = headers['Content-Type']
+            headers['content-type'] = 'application/offset+octet-stream'
             resp = requests.patch(
                 url=f'{Config.TUSD_URL}/{object_store_upload_resource}',
                 headers=headers,
                 data=request.data)
 
+            current_app.logger.error(f'PATCH request.headers:\n{request.headers.__dict__}')
+            current_app.logger.error(f'PATCH headers:\n{headers}')
+            current_app.logger.error(f'PATCH resp:\n{resp.__dict__}')
+            current_app.logger.error(f'PATCH resp.request:\n{resp.request.__dict__}')
+
             if resp.status_code not in [requests.codes.ok, requests.codes.no_content]:
                 message = f'Cannot upload file. Object store responded with {resp.status_code} ({resp.reason}): {resp._content}'
                 current_app.logger.error(message)
-                current_app.logger.error(f'PATCH resp:\n{resp.__dict__}')
-                current_app.logger.error(f'PATCH resp.request:\n{resp.request.__dict__}')
+                # current_app.logger.error(f'PATCH resp:\n{resp.__dict__}')
+                # current_app.logger.error(f'PATCH resp.request:\n{resp.request.__dict__}')
                 raise BadGateway(message)
 
         # Else, write the content to the file in the file system
