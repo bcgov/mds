@@ -211,10 +211,10 @@ class DocumentResource(Resource):
 
             prepped = s.prepare_request(req)
             current_app.logger.error(f'PATCH prepped headers before:\n{prepped.headers}')
-            headers['Content-Type'] = 'application/offset+octet-stream'
-            headers['content-type'] = 'application/offset+octet-stream'
-            headers['CONTENT_TYPE'] = 'application/offset+octet-stream'
-            headers['X-HTTP-Method-Override'] = 'PATCH'
+            prepped.headers['Content-Type'] = 'application/offset+octet-stream'
+            prepped.headers['content-type'] = 'application/offset+octet-stream'
+            prepped.headers['CONTENT_TYPE'] = 'application/offset+octet-stream'
+            prepped.headers['X-HTTP-Method-Override'] = 'PATCH'
             current_app.logger.error(f'PATCH prepped headers after:\n{prepped.headers}')
 
             # Merge environment settings into session
