@@ -204,7 +204,12 @@ class DocumentResource(Resource):
 
             s = requests.Session()
             req = requests.Request(
-                'PATCH', url=f'{Config.TUSD_URL}/{object_store_upload_resource}', data=request.data)
+                'PATCH',
+                url=f'{Config.TUSD_URL}/{object_store_upload_resource}',
+                data=request.data,
+                                                                         # headers=headers,
+                                                                         # cookies=request.cookies)
+            )
             prepped = s.prepare_request(req)
 
             current_app.logger.error(f'PATCH prepped headers before:\n{prepped.headers}')
@@ -212,13 +217,15 @@ class DocumentResource(Resource):
             current_app.logger.error(f'PATCH prepped headers after:\n{prepped.headers}')
 
             # Merge environment settings into session
-            settings = s.merge_environment_settings(prepped.url, {}, None, None, None)
-            resp = s.send(prepped, **settings)
+            # settings = s.merge_environment_settings(prepped.url, {}, None, None, None)
+            # resp = s.send(prepped, **settings)
+            resp = s.send(prepped)
 
             # resp = s.patch(
-            #     url=,
+            #     url=f'',
             #     headers=headers,
-            #     data=request.data)
+            #     data=request.data,
+            #     )
             current_app.logger.error(f'PATCH resp.request:\n{resp.request.__dict__}')
             current_app.logger.error(f'PATCH resp:\n{resp.__dict__}')
             if resp.status_code not in [requests.codes.ok, requests.codes.no_content]:
