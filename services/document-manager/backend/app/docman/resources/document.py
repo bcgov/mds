@@ -211,6 +211,8 @@ class DocumentResource(Resource):
 
             prepped = s.prepare_request(req)
             current_app.logger.error(f'PATCH prepped headers before:\n{prepped.headers}')
+            headers['content-type'] = request.headers['Content-Type']
+            headers['X-HTTP-Method-Override'] = 'PATCH'
             current_app.logger.error(f'PATCH prepped headers after:\n{prepped.headers}')
 
             # Merge environment settings into session
