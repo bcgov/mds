@@ -353,7 +353,7 @@ export class MineIncidentTable extends Component {
                 okText="Delete"
                 cancelText="Cancel"
               >
-                <Button ghost type="primary">
+                <Button ghost size="small" type="primary">
                   <img name="remove" src={TRASHCAN} alt="Remove Incident" />
                 </Button>
               </Popconfirm>

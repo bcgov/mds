@@ -261,7 +261,7 @@ export class MineVarianceTable extends Component {
                 okText="Delete"
                 cancelText="Cancel"
               >
-                <Button ghost type="primary">
+                <Button ghost size="small" type="primary">
                   <img name="remove" src={TRASHCAN} alt="Remove variance" />
                 </Button>
               </Popconfirm>

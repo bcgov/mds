@@ -23,6 +23,7 @@ class PermitAmendmentDocument(AuditMixin, Base):
     mine_guid = db.Column(UUID(as_uuid=True), nullable=False)
     document_manager_guid = db.Column(UUID(as_uuid=True))
     active_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
+    deleted_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
 
     permit_amendment = db.relationship(
         'PermitAmendment', backref='related_documents', lazy='joined')
@@ -31,4 +32,4 @@ class PermitAmendmentDocument(AuditMixin, Base):
 
     @classmethod
     def find_by_permit_amendment_document_guid(cls, _guid):
-        return cls.query.filter_by(permit_amendment_document_guid=_guid).first()
+        return cls.query.filter_by(permit_amendment_document_guid=_guid, deleted_ind=False).first()

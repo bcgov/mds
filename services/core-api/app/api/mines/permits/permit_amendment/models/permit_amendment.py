@@ -47,6 +47,17 @@ class PermitAmendment(AuditMixin, Base):
         UUID(as_uuid=True), db.ForeignKey('now_application_identity.now_application_guid'))
     now_identity = db.relationship('NOWApplicationIdentity', lazy='select')
 
+    def soft_delete(self):
+        permit_amendment_documents = PermitAmendmentDocument.query.filter_by(
+            permit_amendment_id=self.permit_amendment_id, deleted_ind=False).all()
+        # TODO test document deletion
+        if permit_amendment_documents:
+            for document in permit_amendment_documents:
+                document.soft_delete()
+
+        self.deleted_ind = True
+        self.save()
+
     @classmethod
     def create(cls,
                permit,

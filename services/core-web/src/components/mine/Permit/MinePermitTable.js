@@ -38,6 +38,7 @@ const propTypes = {
   isLoaded: PropTypes.bool.isRequired,
   handleAddPermitAmendmentApplication: PropTypes.func.isRequired,
   handleDeletePermit: PropTypes.func.isRequired,
+  handleDeletePermitAmendment: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
@@ -178,6 +179,30 @@ const columns = [
           </div>
         </Menu>
       );
+
+      const deletePermitPopUp = (
+        <Popconfirm
+          placement="topLeft"
+          {...(() => {
+            return record.permit.bonds && record.permit.bonds.length > 0
+              ? {
+                  title: "You can not delete permit with bonds",
+                  okText: "Ok",
+                }
+              : {
+                  title:
+                    "Are you sure you want to delete this permit and all related permit amendments and permit documents?",
+                  onConfirm: () => record.handleDeletePermit(record.permit.permit_guid),
+                  okText: "Delete",
+                  cancelText: "Cancel",
+                };
+          })()}
+        >
+          <Button ghost type="primary" size="small">
+            <img name="remove" src={TRASHCAN} alt="Remove Permit" />
+          </Button>
+        </Popconfirm>
+      );
       return (
         <div className="btn--middle flex">
           <AuthorizationWrapper
@@ -200,17 +225,7 @@ const columns = [
             </Dropdown>
           </AuthorizationWrapper>
           <AuthorizationWrapper permission={Permission.ADMIN}>
-            <Popconfirm
-              placement="topLeft"
-              title="Are you sure you want to delete this permit?"
-              onConfirm={() => record.handleDeletePermit(record.permit.permit_guid)}
-              okText="Delete"
-              cancelText="Cancel"
-            >
-              <Button ghost type="primary">
-                <img name="remove" src={TRASHCAN} alt="Remove Permit" />
-              </Button>
-            </Popconfirm>
+            {deletePermitPopUp}
           </AuthorizationWrapper>
         </div>
       );
@@ -274,17 +289,38 @@ const childColumns = [
     key: "amendmentEdit",
     align: "right",
     render: (text, record) => (
-      <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
-        <Button
-          className="permit-table-button"
-          type="ghost"
-          onClick={(event) => record.openEditAmendmentModal(event, text.amendment, record.permit)}
-        >
-          <div>
-            <img className="padding-small--right icon-svg-filter" src={EDIT_OUTLINE} alt="Edit" />
-          </div>
-        </Button>
-      </AuthorizationWrapper>
+      <div>
+        <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
+          <Button
+            className="permit-table-button"
+            type="ghost"
+            onClick={(event) => record.openEditAmendmentModal(event, text.amendment, record.permit)}
+          >
+            <div>
+              <img className="padding-small--right icon-svg-filter" src={EDIT_OUTLINE} alt="Edit" />
+            </div>
+          </Button>
+        </AuthorizationWrapper>
+        <AuthorizationWrapper permission={Permission.ADMIN}>
+          <Popconfirm
+            placement="topLeft"
+            title="Are you sure you want to delete this amendment and all related documents?"
+            onConfirm={() => record.handleDeletePermitAmendment(record)}
+            okText="Delete"
+            cancelText="Cancel"
+          >
+            <Button className="permit-table-button" type="ghost">
+              <div>
+                <img
+                  className="padding-small--right icon-svg-filter"
+                  src={TRASHCAN}
+                  alt="Remove Permit Amendment"
+                />
+              </div>
+            </Button>
+          </Popconfirm>
+        </AuthorizationWrapper>
+      </div>
     ),
   },
 ];
@@ -316,7 +352,8 @@ const transformRowData = (
   openAddAmalgamatedPermitModal,
   handleAddPermitAmendmentApplication,
   permitStatusOptions,
-  handleDeletePermit
+  handleDeletePermit,
+  handleDeletePermitAmendment
 ) => {
   const latestAmendment = permit.permit_amendments[0];
   const firstAmendment = permit.permit_amendments[permit.permit_amendments.length - 1];
@@ -349,6 +386,7 @@ const transformRowData = (
     permitStatusOptions,
     permit,
     handleDeletePermit,
+    handleDeletePermitAmendment,
   };
 };
 
@@ -357,7 +395,8 @@ const transformChildRowData = (
   record,
   amendmentNumber,
   major_mine_ind,
-  openEditAmendmentModal
+  openEditAmendmentModal,
+  handleDeletePermitAmendment
 ) => ({
   amendmentNumber,
   amendmentType: amendment.permit_amendment_type_code,
@@ -373,6 +412,7 @@ const transformChildRowData = (
   openEditAmendmentModal,
   permit: record.permit,
   documents: amendment.related_documents,
+  handleDeletePermitAmendment,
 });
 
 export const RenderPermitTableExpandIcon = (rowProps) => (
@@ -404,7 +444,8 @@ export const MinePermitTable = (props) => {
         permit,
         permit.permit_amendments.length - index,
         props.major_mine_ind,
-        props.openEditAmendmentModal
+        props.openEditAmendmentModal,
+        props.handleDeletePermitAmendment
       )
     );
     return (
@@ -422,7 +463,8 @@ export const MinePermitTable = (props) => {
       props.openAddAmalgamatedPermitModal,
       props.handleAddPermitAmendmentApplication,
       props.permitStatusOptions,
-      props.handleDeletePermit
+      props.handleDeletePermit,
+      props.handleDeletePermitAmendment,
     )
   );
 

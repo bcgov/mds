@@ -211,7 +211,5 @@ class PermitAmendmentResource(Resource, UserMixin):
         if not str(permit_amendment.mine_guid) == mine_guid:
             raise BadRequest('Permits mine_guid and supplied mine_guid mismatch.')
 
-        permit_amendment.deleted_ind = True
-
-        permit_amendment.save()
+        permit_amendment.soft_delete()
         return

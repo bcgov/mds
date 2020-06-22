@@ -11,6 +11,7 @@ import {
   createPermitAmendment,
   removePermitAmendmentDocument,
   deletePermit,
+  deletePermitAmendment,
 } from "@common/actionCreators/permitActionCreator";
 import { fetchPartyRelationships } from "@common/actionCreators/partiesActionCreator";
 import { fetchMineRecordById } from "@common/actionCreators/mineActionCreator";
@@ -54,6 +55,7 @@ const propTypes = {
   removePermitAmendmentDocument: PropTypes.func.isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
   deletePermit: PropTypes.func.isRequired,
+  deletePermitAmendment: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
@@ -266,6 +268,17 @@ export class MinePermitInfo extends Component {
       permitGuid,
     });
 
+  handleDeletePermitAmendment = (record) => {
+    console.log(record);
+    return this.props
+      .deletePermitAmendment(
+        this.props.mineGuid,
+        record.permit.permit_guid,
+        record.amendmentEdit.amendment.permit_amendment_guid
+      )
+      .then(() => this.closePermitModal());
+  };
+
   onExpand = (expanded, record) =>
     this.setState((prevState) => {
       const expandedRowKeys = expanded
@@ -319,6 +332,7 @@ export class MinePermitInfo extends Component {
           expandedRowKeys={this.state.expandedRowKeys}
           onExpand={this.onExpand}
           handleDeletePermit={this.handleDeletePermit}
+          handleDeletePermitAmendment={this.handleDeletePermitAmendment}
         />
       </div>
     );
@@ -345,6 +359,7 @@ const mapDispatchToProps = (dispatch) =>
       openModal,
       closeModal,
       deletePermit,
+      deletePermitAmendment,
     },
     dispatch
   );

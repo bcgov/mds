@@ -149,3 +149,22 @@ export const deletePermit = (mineGuid, permitGuid) => (dispatch) => {
     .catch(() => dispatch(error(reducerTypes.DELETE_PERMIT)))
     .finally(() => dispatch(hideLoading()));
 };
+
+export const deletePermitAmendment = (mineGuid, permitGuid, permitAmdendmentGuid) => (dispatch) => {
+  dispatch(request(reducerTypes.DELETE_PERMIT_AMENDMENT));
+  return CustomAxios()
+    .delete(
+      `${ENVIRONMENT.apiUrl}${API.PERMITAMENDMENT(mineGuid, permitGuid, permitAmdendmentGuid)}`,
+      createRequestHeader()
+    )
+    .then((response) => {
+      notification.success({
+        message: "Successfully deleted permit amendment and all related documents.",
+        duration: 10,
+      });
+      dispatch(success(reducerTypes.DELETE_PERMIT_AMENDMENT));
+      return response;
+    })
+    .catch(() => dispatch(error(reducerTypes.DELETE_PERMIT_AMENDMENT)))
+    .finally(() => dispatch(hideLoading()));
+};
