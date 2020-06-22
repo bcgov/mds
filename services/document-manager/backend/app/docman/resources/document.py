@@ -214,6 +214,7 @@ class DocumentResource(Resource):
 
             current_app.logger.error(f'PATCH prepped headers before:\n{prepped.headers}')
             prepped.headers = headers
+            del prepped.headers['X-Forwarded-Port']
             current_app.logger.error(f'PATCH prepped headers after:\n{prepped.headers}')
 
             # Merge environment settings into session
