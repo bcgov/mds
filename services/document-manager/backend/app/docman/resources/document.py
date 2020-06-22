@@ -207,9 +207,9 @@ class DocumentResource(Resource):
                 'PATCH',
                 url=f'{Config.TUSD_URL}/{object_store_upload_resource}',
                 data=request.data,
-                                                                         # headers=headers,
-                                                                         # cookies=request.cookies)
-            )
+                headers=headers,
+                cookies=request.cookies)
+
             prepped = s.prepare_request(req)
 
             current_app.logger.error(f'PATCH prepped headers before:\n{prepped.headers}')
