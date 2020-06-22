@@ -211,7 +211,9 @@ class DocumentResource(Resource):
 
             prepped = s.prepare_request(req)
             current_app.logger.error(f'PATCH prepped headers before:\n{prepped.headers}')
-            headers['content-type'] = request.headers['Content-Type']
+            headers['Content-Type'] = 'application/offset+octet-stream'
+            headers['content-type'] = 'application/offset+octet-stream'
+            headers['CONTENT_TYPE'] = 'application/offset+octet-stream'
             headers['X-HTTP-Method-Override'] = 'PATCH'
             current_app.logger.error(f'PATCH prepped headers after:\n{prepped.headers}')
 
