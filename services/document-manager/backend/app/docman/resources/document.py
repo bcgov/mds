@@ -196,6 +196,7 @@ class DocumentResource(Resource):
                              # key: value
                              # for (key, value) in request.headers if key not in excluded_headers
             }
+            headers['Connection'] = 'keep-alive'
             headers['Tus-Resumable'] = request.headers['Tus-Resumable']
             headers['Content-Type'] = request.headers['Content-Type']
             headers['Content-Length'] = request.headers['Content-Length']
@@ -218,7 +219,14 @@ class DocumentResource(Resource):
 
             current_app.logger.error(f'PATCH prepped headers before:\n{prepped.headers}')
             prepped.headers = headers
-            # del prepped.headers['X-Forwarded-Port']
+            prepped.headers['Connection'] = 'keep-alive'
+            prepped.headers['Tus-Resumable'] = request.headers['Tus-Resumable']
+            prepped.headers['Content-Type'] = request.headers['Content-Type']
+            prepped.headers['Content-Length'] = request.headers['Content-Length']
+            prepped.headers['Upload-Offset'] = request.headers['Upload-Offset']
+
+            prepped.headers['content-type'] = request.headers['Content-Type']
+
             current_app.logger.error(f'PATCH prepped headers after:\n{prepped.headers}')
 
             # Merge environment settings into session
