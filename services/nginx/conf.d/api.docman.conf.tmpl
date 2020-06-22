@@ -17,7 +17,7 @@ location ${PATH_PREFIX}/document-manager/ {
 
         # Add X-Forwarded-* headers
         proxy_set_header X-Forwarded-Host $server_name;
-        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Forwarded-Proto https;
 
         proxy_set_header         Upgrade $http_upgrade;
         proxy_set_header         Connection "upgrade";
