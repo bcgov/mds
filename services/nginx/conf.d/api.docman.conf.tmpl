@@ -25,7 +25,7 @@ location ${PATH_PREFIX}/document-manager/ {
         proxy_set_header   Host $host;
 
         # proxy_set_header         Upgrade $http_upgrade;
-        # proxy_set_header         Connection "upgrade";
+        proxy_set_header         Connection "keep-alive";
         client_max_body_size     0;
 
         proxy_pass_request_headers on;
@@ -52,7 +52,7 @@ location ${PATH_PREFIX}/document-manager/v1/ {
         proxy_set_header   Host $host;
 
         # proxy_set_header         Upgrade $http_upgrade;
-        # proxy_set_header         Connection "upgrade";
+        proxy_set_header         Connection "keep-alive";
         client_max_body_size     0;
 
         proxy_pass_request_headers on;
