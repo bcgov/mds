@@ -191,23 +191,37 @@ class DocumentResource(Resource):
         if Config.OBJECT_STORE_ENABLED:
             object_store_upload_resource = cache.get(OBJECT_STORE_UPLOAD_RESOURCE(document_guid))
 
-            headers = {
-                key: value
-                for (key, value) in request.headers if key.lower() != 'host'
-            }
+            headers = {key: value for (key, value) in request.headers if key.lower() != 'host'}
 
             headers['Content-Type'] = "application/offset+octet-stream"
-            headers['CONTENT-TYPE'] = "application/offset+octet-stream"
+            headers['CONTENT_TYPE'] = "application/offset+octet-stream"
             headers['content-type'] = "application/offset+octet-stream"
-
             current_app.logger.error(f'PATCH headers:\n{headers}')
-            resp = requests.request(
-                method='PATCH',
-                url=f'{Config.TUSD_URL}/{object_store_upload_resource}',
-                headers=headers,
-                data=request.data)
 
-                
+            s = requests.Session()
+            req = requests.Request(
+                'PATCH',
+                url=f'{Config.TUSD_URL}/{object_store_upload_resource}',
+                data=request.data,
+                headers=headers,
+                cookies=request.cookies)
+
+            prepped = s.prepare_request(req)
+            current_app.logger.error(f'PATCH prepped headers before:\n{prepped.headers}')
+            prepped.headers = headers
+            current_app.logger.error(f'PATCH prepped headers after:\n{prepped.headers}')
+
+            # Merge environment settings into session
+            # settings = s.merge_environment_settings(prepped.url, {}, None, None, None)
+            # resp = s.send(prepped, **settings)
+            resp = s.send(prepped)
+
+            # resp = requests.request(
+            #     method='PATCH',
+            #     url=f'{Config.TUSD_URL}/{object_store_upload_resource}',
+            #     headers=headers,
+            #     data=request.data)
+
             current_app.logger.error(f'PATCH resp.request:\n{resp.request.__dict__}')
             current_app.logger.error(f'PATCH resp:\n{resp.__dict__}')
 
@@ -217,7 +231,6 @@ class DocumentResource(Resource):
                 # current_app.logger.error(f'PATCH resp:\n{resp.__dict__}')
                 # current_app.logger.error(f'PATCH resp.request:\n{resp.request.__dict__}')
                 raise BadGateway(message)
-
 
         # Else, write the content to the file in the file system
         else:
