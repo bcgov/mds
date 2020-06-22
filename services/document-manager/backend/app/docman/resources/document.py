@@ -191,7 +191,13 @@ class DocumentResource(Resource):
         if Config.OBJECT_STORE_ENABLED:
             object_store_upload_resource = cache.get(OBJECT_STORE_UPLOAD_RESOURCE(document_guid))
 
-            headers = {key: value for (key, value) in request.headers if key.lower() != 'host'}
+            # headers = {key: value for (key, value) in request.headers if key.lower() != 'host'}
+
+            headers = {}
+            headers['Tus-Resumable'] = request.headers['Tus-Resumable']
+            headers['Content-Type'] = request.headers['Content-Type']
+            headers['Content-Length'] = request.headers['Content-Length']
+            headers['Upload-Offset'] = request.headers['Upload-Offset']
 
             current_app.logger.error(f'PATCH headers:\n{headers}')
 
@@ -205,10 +211,6 @@ class DocumentResource(Resource):
 
             prepped = s.prepare_request(req)
             current_app.logger.error(f'PATCH prepped headers before:\n{prepped.headers}')
-            prepped.headers['Content-Type'] = "application/offset+octet-stream"
-            prepped.headers['CONTENT_TYPE'] = "application/offset+octet-stream"
-            prepped.headers['content-type'] = "application/offset+octet-stream"
-
             current_app.logger.error(f'PATCH prepped headers after:\n{prepped.headers}')
 
             # Merge environment settings into session
