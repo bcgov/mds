@@ -18,9 +18,9 @@ location ${PATH_PREFIX}/document-manager/ {
         port_in_redirect   off;
 
         # Add X-Forwarded-* headers
-        # proxy_set_header X-Forwarded-Host $server_name;
-        # proxy_set_header X-Forwarded-Proto https;
-        # proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-Host $server_name;
+        proxy_set_header X-Forwarded-Proto https;
+        proxy_set_header X-Real-IP $remote_addr;
 
         proxy_set_header   Host $host;
 
@@ -45,9 +45,9 @@ location ${PATH_PREFIX}/document-manager/v1/ {
         port_in_redirect   off;
 
         # Add X-Forwarded-* headers
-        # proxy_set_header X-Forwarded-Host $server_name;
-        # proxy_set_header X-Forwarded-Proto https;
-        # proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-Host $server_name;
+        proxy_set_header X-Forwarded-Proto https;
+        proxy_set_header X-Real-IP $remote_addr;
 
         proxy_set_header   Host $host;
 
