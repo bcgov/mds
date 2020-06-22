@@ -191,14 +191,18 @@ class DocumentResource(Resource):
             object_store_upload_resource = cache.get(OBJECT_STORE_UPLOAD_RESOURCE(document_guid))
 
             # 'content-encoding', 'content-length', 'transfer-encoding', 'connection',
-            excluded_headers = ['Host']
+            # excluded_headers = ['Host']
             headers = {
-                key: value
-                for (key, value) in request.headers if key not in excluded_headers
+                             # key: value
+                             # for (key, value) in request.headers if key not in excluded_headers
             }
-            headers['Content-Type'] = "application/offset+octet-stream"
-            headers['content-type'] = "application/offset+octet-stream"
-            headers['CONTENT_TYPE'] = "application/offset+octet-stream"
+            headers['Tus-Resumable'] = request.headers['Tus-Resumable']
+            headers['Content-Type'] = request.headers['Content-Type']
+            headers['Content-Length'] = request.headers['Content-Length']
+            headers['Upload-Offset'] = request.headers['Upload-Offset']
+                             # headers['X-Forwarded-Port'] = request.headers['X-Forwarded-Port']
+                             # headers['Content-Type'] = "application/offset+octet-stream"
+                             # headers['Content-Type'] = "application/offset+octet-stream"
 
             current_app.logger.error(f'PATCH headers:\n{headers}')
 
@@ -214,7 +218,7 @@ class DocumentResource(Resource):
 
             current_app.logger.error(f'PATCH prepped headers before:\n{prepped.headers}')
             prepped.headers = headers
-            del prepped.headers['X-Forwarded-Port']
+            # del prepped.headers['X-Forwarded-Port']
             current_app.logger.error(f'PATCH prepped headers after:\n{prepped.headers}')
 
             # Merge environment settings into session
