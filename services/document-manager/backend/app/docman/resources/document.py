@@ -126,7 +126,7 @@ class DocumentListResource(Resource):
         response.headers['Location'] = f'{Config.DOCUMENT_MANAGER_URL}/documents/{document_guid}'
         response.headers['Upload-Offset'] = 0
         response.headers[
-            'Access-Control-Expose-Headers'] = 'Tus-Resumable,Tus-Version,Location,Upload-Offset'
+            'Access-Control-Expose-Headers'] = 'Tus-Resumable,Tus-Version,Location,Upload-Offset,Content-Type'
         response.autocorrect_location_header = False
         return response
 
@@ -191,9 +191,10 @@ class DocumentResource(Resource):
         if Config.OBJECT_STORE_ENABLED:
             object_store_upload_resource = cache.get(OBJECT_STORE_UPLOAD_RESOURCE(document_guid))
 
-            excluded_headers = ['content-encoding', 'content-length', 'transfer-encoding', 'connection', 'Host']
-            headers = OrderedDict({key: value for (key, value) in request.headers if key not in excluded_headers})
-            #headers['Content-Type'] = "application/offset+octet-stream"
+            headers = {
+                key: value
+                for (key, value) in request.headers if key.lower() != 'host'
+            }
 
             current_app.logger.error(f'PATCH headers:\n{headers}')
             resp = requests.request(
@@ -201,14 +202,17 @@ class DocumentResource(Resource):
                 url=f'{Config.TUSD_URL}/{object_store_upload_resource}',
                 headers=headers,
                 data=request.data)
+
             current_app.logger.error(f'PATCH resp.request:\n{resp.request.__dict__}')
             current_app.logger.error(f'PATCH resp:\n{resp.__dict__}')
+
             if resp.status_code not in [requests.codes.ok, requests.codes.no_content]:
                 message = f'Cannot upload file. Object store responded with {resp.status_code} ({resp.reason}): {resp._content}'
                 current_app.logger.error(message)
                 # current_app.logger.error(f'PATCH resp:\n{resp.__dict__}')
                 # current_app.logger.error(f'PATCH resp.request:\n{resp.request.__dict__}')
                 raise BadGateway(message)
+
 
         # Else, write the content to the file in the file system
         else:
