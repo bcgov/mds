@@ -190,9 +190,8 @@ class DocumentResource(Resource):
         if Config.OBJECT_STORE_ENABLED:
             object_store_upload_resource = cache.get(OBJECT_STORE_UPLOAD_RESOURCE(document_guid))
 
-            excluded_headers = [
-                'content-encoding', 'content-length', 'transfer-encoding', 'connection', 'Host'
-            ]
+            # 'content-encoding', 'content-length', 'transfer-encoding', 'connection',
+            excluded_headers = ['Host']
             headers = {
                 key: value
                 for (key, value) in request.headers if key not in excluded_headers
