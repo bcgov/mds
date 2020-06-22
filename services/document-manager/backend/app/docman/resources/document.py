@@ -195,6 +195,10 @@ class DocumentResource(Resource):
                 key: value
                 for (key, value) in request.headers if key.lower() != 'host'
             }
+            
+            headers['Content-Type'] = "application/offset+octet-stream"
+            headers['CONTENT-TYPE'] = "application/offset+octet-stream"
+            headers['content-type'] = "application/offset+octet-stream"
 
             current_app.logger.error(f'PATCH headers:\n{headers}')
             resp = requests.request(
@@ -203,8 +207,11 @@ class DocumentResource(Resource):
                 headers=headers,
                 data=request.data)
 
+                
             current_app.logger.error(f'PATCH resp.request:\n{resp.request.__dict__}')
             current_app.logger.error(f'PATCH resp:\n{resp.__dict__}')
+
+            headers = [(key, value) for (key, value) in resp.raw.headers.items() if key.lower() not in excluded_headers]
 
             if resp.status_code not in [requests.codes.ok, requests.codes.no_content]:
                 message = f'Cannot upload file. Object store responded with {resp.status_code} ({resp.reason}): {resp._content}'
