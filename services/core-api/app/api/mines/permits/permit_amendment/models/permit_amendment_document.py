@@ -26,7 +26,12 @@ class PermitAmendmentDocument(AuditMixin, Base):
     deleted_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
 
     permit_amendment = db.relationship(
-        'PermitAmendment', backref='related_documents', lazy='joined')
+        'PermitAmendment',
+        backref='related_documents',
+        lazy='joined',
+        primaryjoin=
+        'and_(PermitAmendment.permit_amendment_id == PermitAmendmentDocument.permit_amendment_id, PermitAmendmentDocument.deleted_ind==False)',
+    )
 
     mine_name = association_proxy('permit_amendment', 'permit.mine.mine_name')
 
