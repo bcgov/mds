@@ -18,8 +18,6 @@ from app.commands import register_commands
 from app.routes import register_routes
 from app.extensions import api, cache, db, jwt, apm, migrate
 
-from werkzeug.middleware.proxy_fix import ProxyFix
-
 from .config import Config
 
 
@@ -29,8 +27,6 @@ def create_app(config_object=None):
 
     config = config_object if config_object else Config
     app.config.from_object(config)
-
-    app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_host=1)
 
     register_extensions(app)
     register_routes(app)
