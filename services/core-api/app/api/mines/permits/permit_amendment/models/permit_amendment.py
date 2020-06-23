@@ -50,7 +50,6 @@ class PermitAmendment(AuditMixin, Base):
     def soft_delete(self):
         permit_amendment_documents = PermitAmendmentDocument.query.filter_by(
             permit_amendment_id=self.permit_amendment_id, deleted_ind=False).all()
-        # TODO test document deletion
         if permit_amendment_documents:
             for document in permit_amendment_documents:
                 document.soft_delete()
