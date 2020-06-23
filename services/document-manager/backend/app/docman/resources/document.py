@@ -190,18 +190,18 @@ class DocumentResource(Resource):
         if Config.OBJECT_STORE_ENABLED:
             object_store_upload_resource = cache.get(OBJECT_STORE_UPLOAD_RESOURCE(document_guid))
 
-            # excluded_headers = ['Host']
-            # headers = {
-            #     key: value
-            #     for (key, value) in request.headers if key not in excluded_headers
-            # }
-            headers = {}
-            headers['Connection'] = 'keep-alive'
-            headers['Connection'] = request.headers['Connection']
-            headers['Tus-Resumable'] = request.headers['Tus-Resumable']
-            headers['Content-Type'] = request.headers['Content-Type']
-            headers['Content-Length'] = request.headers['Content-Length']
-            headers['Upload-Offset'] = request.headers['Upload-Offset']
+            excluded_headers = ['Host']
+            headers = {
+                key: value
+                for (key, value) in request.headers if key not in excluded_headers
+            }
+            # headers = {}
+            # headers['Connection'] = 'keep-alive'
+            # headers['Connection'] = request.headers['Connection']
+            # headers['Tus-Resumable'] = request.headers['Tus-Resumable']
+            # headers['Content-Type'] = request.headers['Content-Type']
+            # headers['Content-Length'] = request.headers['Content-Length']
+            # headers['Upload-Offset'] = request.headers['Upload-Offset']
             # headers['X-Forwarded-Port'] = request.headers['X-Forwarded-Port']
             # headers['Content-Type'] = "application/offset+octet-stream"
             # headers['Content-Type'] = "application/offset+octet-stream"
