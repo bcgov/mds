@@ -13,6 +13,5 @@ location ${PATH_PREFIX}/ {
         }
 
         proxy_pass ${CORE_SERVICE_URL}${PATH_PREFIX}/;
-        proxy_buffering    off;
         include /opt/app-root/etc/nginx.conf.d/proxy.params;
 }
