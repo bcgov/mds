@@ -140,7 +140,7 @@ export const deletePermit = (mineGuid, permitGuid) => (dispatch) => {
     .delete(`${ENVIRONMENT.apiUrl}${API.PERMITDELETE(mineGuid, permitGuid)}`, createRequestHeader())
     .then((response) => {
       notification.success({
-        message: "Successfully deleted permit.",
+        message: "Successfully deleted permit and all related permit amendments and documents",
         duration: 10,
       });
       dispatch(success(reducerTypes.DELETE_PERMIT));
