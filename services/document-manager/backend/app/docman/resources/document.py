@@ -77,6 +77,8 @@ class DocumentListResource(Resource):
                 data=request.data)
             if resp.status_code != requests.codes.created:
                 message = f'Cannot upload file. Object store responded with {resp.status_code} ({resp.reason}): {resp._content}'
+                current_app.logger.error(f'POST resp.request:\n{resp.request.__dict__}')
+                current_app.logger.error(f'POST resp:\n{resp.__dict__}')
                 current_app.logger.error(message)
                 raise BadGateway(message)
 
@@ -185,21 +187,14 @@ class DocumentResource(Resource):
         if Config.OBJECT_STORE_ENABLED:
             object_store_upload_resource = cache.get(OBJECT_STORE_UPLOAD_RESOURCE(document_guid))
 
-            excluded_headers = ['Host']
-            headers = {
-                key: value
-                for (key, value) in request.headers if key not in excluded_headers
-            }
-
             url = f'{Config.TUSD_URL}{object_store_upload_resource}'
-            resp = requests.patch(
-                url=url,
-                headers=headers,
-                data=request.data,
-            )
+            headers = {key: value for (key, value) in request.headers if key != 'Host'}
+            resp = requests.patch(url=url, headers=headers, data=request.data)
 
             if resp.status_code not in [requests.codes.ok, requests.codes.no_content]:
                 message = f'Cannot upload file. Object store responded with {resp.status_code} ({resp.reason}): {resp._content}'
+                current_app.logger.error(f'PATCH resp.request:\n{resp.request.__dict__}')
+                current_app.logger.error(f'PATCH resp:\n{resp.__dict__}')
                 current_app.logger.error(message)
                 raise BadGateway(message)
 
