@@ -15,5 +15,5 @@ proxy_set_header   X-Forwarded-Host $server_name;
 proxy_pass_request_headers on;
 
 # Disable request and response buffering
-proxy_request_buffering  off;
-proxy_buffering          off;
+# proxy_request_buffering  off;
+# proxy_buffering          off;
