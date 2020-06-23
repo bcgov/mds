@@ -190,57 +190,56 @@ class DocumentResource(Resource):
         if Config.OBJECT_STORE_ENABLED:
             object_store_upload_resource = cache.get(OBJECT_STORE_UPLOAD_RESOURCE(document_guid))
 
-            # 'content-encoding', 'content-length', 'transfer-encoding', 'connection',
             # excluded_headers = ['Host']
-            headers = {
-                             # key: value
-                             # for (key, value) in request.headers if key not in excluded_headers
-            }
+            # headers = {
+            #     key: value
+            #     for (key, value) in request.headers if key not in excluded_headers
+            # }
+            headers = {}
             headers['Connection'] = 'keep-alive'
+            headers['Connection'] = request.headers['Connection']
             headers['Tus-Resumable'] = request.headers['Tus-Resumable']
             headers['Content-Type'] = request.headers['Content-Type']
             headers['Content-Length'] = request.headers['Content-Length']
             headers['Upload-Offset'] = request.headers['Upload-Offset']
-                             # headers['X-Forwarded-Port'] = request.headers['X-Forwarded-Port']
-                             # headers['Content-Type'] = "application/offset+octet-stream"
-                             # headers['Content-Type'] = "application/offset+octet-stream"
+            # headers['X-Forwarded-Port'] = request.headers['X-Forwarded-Port']
+            # headers['Content-Type'] = "application/offset+octet-stream"
+            # headers['Content-Type'] = "application/offset+octet-stream"
 
             current_app.logger.error(f'PATCH headers:\n{headers}')
 
-            s = requests.Session()
-            req = requests.Request(
-                'PATCH',
-                url=f'{Config.TUSD_URL}/{object_store_upload_resource}',
-                data=request.data,
-                headers=headers,
-                cookies=request.cookies)
-
-            prepped = s.prepare_request(req)
-
-            current_app.logger.error(f'PATCH prepped headers before:\n{prepped.headers}')
-            prepped.headers = headers
-            prepped.headers['Connection'] = 'keep-alive'
-            prepped.headers['Tus-Resumable'] = request.headers['Tus-Resumable']
-            prepped.headers['Content-Type'] = request.headers['Content-Type']
-            prepped.headers['Content-Length'] = request.headers['Content-Length']
-            prepped.headers['Upload-Offset'] = request.headers['Upload-Offset']
-
-            prepped.headers['content-type'] = request.headers['Content-Type']
-
-            current_app.logger.error(f'PATCH prepped headers after:\n{prepped.headers}')
-
-            # Merge environment settings into session
+            # s = requests.Session()
+            # req = requests.Request(
+            #     'PATCH',
+            #     url=f'{Config.TUSD_URL}/{object_store_upload_resource}',
+            #     data=request.data,
+            #     headers=headers,
+            #     cookies=request.cookies)
+            # prepped = s.prepare_request(req)
+            # current_app.logger.error(f'PATCH prepped headers before:\n{prepped.headers}')
+            # prepped.headers = headers
+            # prepped.headers['Connection'] = 'keep-alive'
+            # prepped.headers['Tus-Resumable'] = request.headers['Tus-Resumable']
+            # prepped.headers['Content-Type'] = request.headers['Content-Type']
+            # prepped.headers['Content-Length'] = request.headers['Content-Length']
+            # prepped.headers['Upload-Offset'] = request.headers['Upload-Offset']
+            # prepped.headers['content-type'] = request.headers['Content-Type']
+            # current_app.logger.error(f'PATCH prepped headers after:\n{prepped.headers}')
             # settings = s.merge_environment_settings(prepped.url, {}, None, None, None)
             # resp = s.send(prepped, **settings)
-            resp = s.send(prepped)
+            # resp = s.send(prepped)
 
-            # resp = s.patch(
-            #     url=f'',
-            #     headers=headers,
-            #     data=request.data,
-            #     )
+            url = f'{Config.TUSD_URL}/{object_store_upload_resource}/'
+            current_app.logger.error(f'PATCH URL:\n{url}')
+            resp = requests.patch(
+                url=url,
+                headers=headers,
+                data=request.data,
+            )
+
             current_app.logger.error(f'PATCH resp.request:\n{resp.request.__dict__}')
             current_app.logger.error(f'PATCH resp:\n{resp.__dict__}')
+
             if resp.status_code not in [requests.codes.ok, requests.codes.no_content]:
                 message = f'Cannot upload file. Object store responded with {resp.status_code} ({resp.reason}): {resp._content}'
                 current_app.logger.error(message)
