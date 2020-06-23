@@ -299,6 +299,7 @@ app {
                             'DOCUMENT_CAPACITY_LOWER':"${vars.DOCUMENT_PVC_SIZE.toString().toLowerCase()}",
                             'ENVIRONMENT_NAME':"${app.deployment.env.name}",
                             'API_URL': "https://${vars.modules.'mds-nginx'.HOST_CORE}${vars.modules.'mds-nginx'.PATH}/document-manager",
+                            'OBJECT_STORE_ENABLED': '1',
                             'TUSD_URL': "http://tusd${vars.deployment.suffix}:1080/files/"
                     ]
                 ],

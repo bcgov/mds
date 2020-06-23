@@ -57,6 +57,7 @@
       "name": "API_URL",
       "required": true
     },
+    { "name": "OBJECT_STORE_ENABLED", "required": false, "value": "0" },
     {
       "name": "OBJECT_STORE_SECRET_NAME",
       "value": "object-store-credentials"
@@ -365,7 +366,7 @@
                   },
                   {
                     "name": "OBJECT_STORE_ENABLED",
-                    "value": "1"
+                    "value": "${OBJECT_STORE_ENABLED}"
                   },
                   {
                     "name": "OBJECT_STORE_ACCESS_KEY_ID",
