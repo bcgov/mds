@@ -229,7 +229,7 @@ class DocumentResource(Resource):
             # resp = s.send(prepped, **settings)
             # resp = s.send(prepped)
 
-            url = f'{Config.TUSD_URL}/{object_store_upload_resource}/'
+            url = f'{Config.TUSD_URL}{object_store_upload_resource}'
             current_app.logger.error(f'PATCH URL:\n{url}')
             resp = requests.patch(
                 url=url,
