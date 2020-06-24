@@ -47,7 +47,12 @@ class PermitAmendment(AuditMixin, Base):
         UUID(as_uuid=True), db.ForeignKey('now_application_identity.now_application_guid'))
     now_identity = db.relationship('NOWApplicationIdentity', lazy='select')
 
-    def soft_delete(self):
+    def soft_delete(self, is_force_delete=False):
+        if not is_force_delete and self.permit_amendment_type_code == 'OGP':
+            raise Exception(
+                "Deletion of permit amendment of type 'Original Permit' is not allowed, please, consider deleting the permit itself."
+            )
+
         permit_amendment_documents = PermitAmendmentDocument.query.filter_by(
             permit_amendment_id=self.permit_amendment_id, deleted_ind=False).all()
         if permit_amendment_documents:

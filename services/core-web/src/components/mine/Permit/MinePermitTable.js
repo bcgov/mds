@@ -22,6 +22,7 @@ import CoreTable from "@/components/common/CoreTable";
  */
 
 const amalgamatedPermit = "ALG";
+const originalPermit = "OGP";
 
 const propTypes = {
   permits: PropTypes.arrayOf(CustomPropTypes.permit).isRequired,
@@ -186,7 +187,7 @@ const columns = [
           {...(() => {
             return record.permit.bonds && record.permit.bonds.length > 0
               ? {
-                  title: "You can not delete permit with bonds",
+                  title: "You cannot delete a permit that has associated bond records",
                   okText: "Ok",
                 }
               : {
@@ -304,10 +305,22 @@ const childColumns = [
         <AuthorizationWrapper permission={Permission.ADMIN}>
           <Popconfirm
             placement="topLeft"
-            title="Are you sure you want to delete this amendment and all related documents?"
-            onConfirm={() => record.handleDeletePermitAmendment(record)}
-            okText="Delete"
-            cancelText="Cancel"
+            {...(() => {
+              console.log(record);
+              return record.amendmentType === originalPermit
+                ? {
+                    title:
+                      "Deletion of permit amendment of type 'Original Permit' is not allowed, please, consider deleting the permit itself.",
+                    okText: "Ok",
+                  }
+                : {
+                    title:
+                      "Are you sure you want to delete this amendment and all related documents?",
+                    onConfirm: () => record.handleDeletePermitAmendment(record),
+                    okText: "Delete",
+                    cancelText: "Cancel",
+                  };
+            })()}
           >
             <Button className="permit-table-button" type="ghost">
               <div>
@@ -464,7 +477,7 @@ export const MinePermitTable = (props) => {
       props.handleAddPermitAmendmentApplication,
       props.permitStatusOptions,
       props.handleDeletePermit,
-      props.handleDeletePermitAmendment,
+      props.handleDeletePermitAmendment
     )
   );
 

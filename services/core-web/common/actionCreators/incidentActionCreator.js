@@ -72,6 +72,7 @@ export const fetchIncidents = (payload) => (dispatch) => {
 
 export const deleteMineIncident = (mineGuid, incidentGuid) => (dispatch) => {
   dispatch(request(reducerTypes.DELETE_INCIDENT));
+  dispatch(showLoading());
   return CustomAxios()
     .delete(
       `${ENVIRONMENT.apiUrl}${API.INCIDENT_DELETE(mineGuid, incidentGuid)}`,

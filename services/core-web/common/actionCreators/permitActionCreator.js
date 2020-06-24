@@ -136,6 +136,7 @@ export const removePermitAmendmentDocument = (
 
 export const deletePermit = (mineGuid, permitGuid) => (dispatch) => {
   dispatch(request(reducerTypes.DELETE_PERMIT));
+  dispatch(showLoading());
   return CustomAxios()
     .delete(`${ENVIRONMENT.apiUrl}${API.PERMITDELETE(mineGuid, permitGuid)}`, createRequestHeader())
     .then((response) => {
@@ -152,6 +153,7 @@ export const deletePermit = (mineGuid, permitGuid) => (dispatch) => {
 
 export const deletePermitAmendment = (mineGuid, permitGuid, permitAmdendmentGuid) => (dispatch) => {
   dispatch(request(reducerTypes.DELETE_PERMIT_AMENDMENT));
+  dispatch(showLoading());
   return CustomAxios()
     .delete(
       `${ENVIRONMENT.apiUrl}${API.PERMITAMENDMENT(mineGuid, permitGuid, permitAmdendmentGuid)}`,
