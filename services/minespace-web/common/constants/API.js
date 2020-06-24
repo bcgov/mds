@@ -40,15 +40,20 @@ export const MINE_VERIFIED_STATUSES = (params = {}) =>
 export const MINE_VERIFIED_STATUS = (mine_guid) => `/mines/${mine_guid}/verified-status`;
 
 // Permits
-export const PERMITSTATUSCODES = () => `/mines/permits/status-codes`;
+export const PERMIT_STATUS_CODES = () => `/mines/permits/status-codes`;
 export const PERMITS = (mineGuid) => `/mines/${mineGuid}/permits`;
-export const PERMITAMENDMENTS = (mineGuid, permitGuid) =>
+export const PERMIT_AMENDMENTS = (mineGuid, permitGuid) =>
   `/mines/${mineGuid}/permits/${permitGuid}/amendments`;
-export const PERMITAMENDMENT = (mineGuid, permitGuid, permitAmendmentGuid) =>
+export const PERMIT_AMENDMENT = (mineGuid, permitGuid, permitAmendmentGuid) =>
   `/mines/${mineGuid}/permits/${permitGuid}/amendments/${permitAmendmentGuid}`;
-export const PERMITAMENDMENTDOCUMENT = (mineGuid, permitGuid, permitAmendmentGuid, documentGuid) =>
+export const PERMIT_AMENDMENT_DOCUMENT = (
+  mineGuid,
+  permitGuid,
+  permitAmendmentGuid,
+  documentGuid
+) =>
   `/mines/${mineGuid}/permits/${permitGuid}/amendments/${permitAmendmentGuid}/documents/${documentGuid}`;
-export const PERMITDELETE = (mineGuid, permitGuid) => `/mines/${mineGuid}/permits/${permitGuid}`;
+export const PERMIT_DELETE = (mineGuid, permitGuid) => `/mines/${mineGuid}/permits/${permitGuid}`;
 
 // Search
 export const SEARCH = (params) => (params ? `/search?${queryString.stringify(params)}` : "/search");
