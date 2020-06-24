@@ -52,6 +52,32 @@ const renderDocumentLink = (file, text) => (
   </LinkButton>
 );
 
+const renderDeleteButtonForPermitAmendments = (record) => {
+  if (record.amendmentType === originalPermit) return;
+
+  return (
+    <AuthorizationWrapper permission={Permission.ADMIN}>
+      <Popconfirm
+        placement="topLeft"
+        title="Are you sure you want to delete this amendment and all related documents?"
+        okText="Delete"
+        cancelText="Cancel"
+        onConfirm={() => record.handleDeletePermitAmendment(record)}
+      >
+        <Button className="permit-table-button" type="ghost">
+          <div>
+            <img
+              className="padding-small--right icon-svg-filter"
+              src={TRASHCAN}
+              alt="Remove Permit Amendment"
+            />
+          </div>
+        </Button>
+      </Popconfirm>
+    </AuthorizationWrapper>
+  );
+};
+
 const renderPermitNo = (permit) => {
   const permitNoShouldLinkToDocument =
     permit.permit_amendments[0] &&
@@ -302,37 +328,7 @@ const childColumns = [
             </div>
           </Button>
         </AuthorizationWrapper>
-        <AuthorizationWrapper permission={Permission.ADMIN}>
-          <Popconfirm
-            placement="topLeft"
-            {...(() => {
-              console.log(record);
-              return record.amendmentType === originalPermit
-                ? {
-                    title:
-                      "Deletion of permit amendment of type 'Original Permit' is not allowed, please, consider deleting the permit itself.",
-                    okText: "Ok",
-                  }
-                : {
-                    title:
-                      "Are you sure you want to delete this amendment and all related documents?",
-                    onConfirm: () => record.handleDeletePermitAmendment(record),
-                    okText: "Delete",
-                    cancelText: "Cancel",
-                  };
-            })()}
-          >
-            <Button className="permit-table-button" type="ghost">
-              <div>
-                <img
-                  className="padding-small--right icon-svg-filter"
-                  src={TRASHCAN}
-                  alt="Remove Permit Amendment"
-                />
-              </div>
-            </Button>
-          </Popconfirm>
-        </AuthorizationWrapper>
+        {renderDeleteButtonForPermitAmendments(record)}
       </div>
     ),
   },
