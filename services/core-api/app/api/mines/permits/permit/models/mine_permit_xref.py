@@ -11,3 +11,7 @@ class MinePermitXref(Base, AuditMixin):
 
     mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine.mine_guid'), primary_key=True)
     permit_id = db.Column(db.Integer, db.ForeignKey('permit.permit_id'), primary_key=True)
+
+    start_date = db.Column()
+    end_date = db.Column()
+    active_ind = db.Column()

@@ -4,6 +4,7 @@ CREATE TABLE mine_permit_xref (
     permit_id integer NOT NULL,
     start_date date,
     end_date date,
+    deleted_ind boolean DEFAULT false NOT NULL,
     create_user               varchar                                 NOT null,  
     create_timestamp          timestamp with time zone DEFAULT now()  NOT NULL,  
     update_user               varchar                                 NOT null,
