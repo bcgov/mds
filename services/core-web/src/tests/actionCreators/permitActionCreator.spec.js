@@ -7,6 +7,8 @@ import {
   createPermitAmendment,
   updatePermitAmendment,
   removePermitAmendmentDocument,
+  deletePermitAmendment,
+  deletePermit,
 } from "@common/actionCreators/permitActionCreator";
 import * as genericActions from "@common/actions/genericActions";
 import { ENVIRONMENT } from "@common/constants/environment";
@@ -228,6 +230,75 @@ describe("`removePermitAmendmentDocument` action creator", () => {
       permitGuid,
       permitAmdendmentGuid,
       documentGuid
+    )(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(errorSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+});
+
+describe("`deletePermit` action creator", () => {
+  const mineGuid = "12345-6789";
+  const permitGuid = "123432";
+
+  const url = `${ENVIRONMENT.apiUrl}${API.PERMIT_DELETE(mineGuid, permitGuid)}`;
+  it("Request successful, dispatches `success` with correct response", () => {
+    const mockResponse = { data: { success: true } };
+    mockAxios.onDelete(url).reply(204, mockResponse);
+    return deletePermit(
+      mineGuid,
+      permitGuid
+    )(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(successSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+
+  it("Request failure, dispatches `error` with correct response", () => {
+    mockAxios.onPut(url).reply(418, MOCK.ERROR);
+    return deletePermit(
+      mineGuid,
+      permitGuid
+    )(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(errorSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+});
+
+describe("`deletePermitAmendment` action creator", () => {
+  const mineGuid = "12345-6789";
+  const permitGuid = "123432";
+  const permitAmdendmentGuid = "54321";
+
+  const url = `${ENVIRONMENT.apiUrl}${API.PERMIT_AMENDMENT(
+    mineGuid,
+    permitGuid,
+    permitAmdendmentGuid
+  )}`;
+  it("Request successful, dispatches `success` with correct response", () => {
+    const mockResponse = { data: { success: true } };
+    mockAxios.onDelete(url).reply(204, mockResponse);
+    return deletePermitAmendment(
+      mineGuid,
+      permitGuid,
+      permitAmdendmentGuid
+    )(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(successSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+
+  it("Request failure, dispatches `error` with correct response", () => {
+    mockAxios.onPut(url).reply(500, MOCK.ERROR);
+    return deletePermitAmendment(
+      mineGuid,
+      permitGuid,
+      permitAmdendmentGuid
     )(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);

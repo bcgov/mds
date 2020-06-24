@@ -120,11 +120,9 @@ export const fetchVariances = (payload) => (dispatch) => {
 
 export const deleteVariance = (mineGuid, varianceGuid) => (dispatch) => {
   dispatch(request(reducerTypes.DELETE_VARIANCE));
+  dispatch(showLoading());
   return CustomAxios()
-    .delete(
-      `${ENVIRONMENT.apiUrl}${API.VARIANCE_DELETE(mineGuid, varianceGuid)}`,
-      createRequestHeader()
-    )
+    .delete(`${ENVIRONMENT.apiUrl}${API.VARIANCE(mineGuid, varianceGuid)}`, createRequestHeader())
     .then((response) => {
       notification.success({
         message: "Successfully deleted variance.",

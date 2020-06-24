@@ -74,8 +74,6 @@ export const VARIANCE_DOCUMENT = (mineGuid, varianceGuid, documentManagerGuid) =
   `/mines/${mineGuid}/variances/${varianceGuid}/documents/${documentManagerGuid}`;
 export const VARIANCE_STATUS_CODES = "/variances/status-codes";
 export const VARIANCE_DOCUMENT_CATEGORY_OPTIONS = "/variances/document-categories";
-export const VARIANCE_DELETE = (mineGuid, varianceGuid) =>
-  `/mines/${mineGuid}/variances/${varianceGuid}`;
 
 // Users
 export const CORE_USER = "/users/core";
