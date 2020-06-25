@@ -6,7 +6,7 @@ from datetime import datetime
 
 
 def permit_etl(connection):
-    db.session.execute(r"""
+    connection.cursor().execute(r"""
         CREATE TABLE IF NOT EXISTS ETL_PERMIT(
             mine_party_appt_guid   uuid                  ,
             --permit info
@@ -32,6 +32,7 @@ def permit_etl(connection):
             effective_date         date
         );
         """)
+    connection.commit()
 
     valid_permits = etl.fromdb(
         connection, r"""
@@ -82,7 +83,7 @@ def permit_etl(connection):
         SET
             update_user            = 'mms_migration'       ,
             update_timestamp       = now()                 ,
-            permit_status_code     = etl.permit_status_code,
+            permit_status_code     = etl.permit_status_code
         FROM ETL_PERMIT etl
         INNER JOIN mine_permit_xref mpx on etl.mine_guid=mpx.mine_guid
         WHERE
@@ -106,62 +107,63 @@ def permit_etl(connection):
         WHERE
             permit_amendment.permit_amendment_guid = etl.permit_amendment_guid
     """)
+    #TODO POPULATE ETL PERMIT BEFORE THIS CAN HAPPEND
+    # ################################################################
+    # # Insert new permits from MMS into MDS
+    # ################################################################
+    # new_permits = etl.fromdb(
+    #     connection, r"""
+    #     SELECT DISTINCT mine_guid, permit_no, permit_status_code
+    #     FROM ETL_PERMIT etl
+    #     WHERE (mine_guid, permit_no) NOT IN (
+    #         SELECT mpx.mine_guid, p.permit_no
+    #         FROM permit p
+    #         INNER JOIN mine_permit_xref mpx on p.permit_id=mpx.permit_id
+    #     )
+    #     -- Newest notice of work for each mine/permit:
+    #     AND issue_date = (select max(issue_date) from ETL_PERMIT where etl.permit_no = ETL_PERMIT.permit_no and etl.mine_guid = ETL_PERMIT.mine_guid)
+    #     """)
+    # ##TODO SHOWING 0 ETL_PERMIT IS EMPTY AT THIS POINT
+    # current_app.logger.info(f'# new_permits {etl.nrows(new_permits)}')
 
-    ################################################################
-    # Insert new permits from MMS into MDS
-    ################################################################
-    new_permits = etl.fromdb(
-        connection, r"""
-        SELECT DISTINCT mine_guid, permit_no, permit_status_code
-        FROM ETL_PERMIT etl
-        WHERE (mine_guid, permit_no) NOT IN (
-            SELECT mpx.mine_guid, p.permit_no
-            FROM permit p
-            INNER JOIN mine_permit_xref mpx on p.permit_id=mpx.permit_id
-        )
-        -- Newest notice of work for each mine/permit:
-        AND issue_date = (select max(issue_date) from ETL_PERMIT where etl.permit_no = ETL_PERMIT.permit_no and etl.mine_guid = ETL_PERMIT.mine_guid)
-        """)
-    current_app.logger.info(f'# new_permits {etl.nrows(new_permits)}')
+    # new_permits = etl.addfields(new_permits, [('permit_guid', uuid.uuid4()),
+    #                                           ('create_user', 'mms_migration'),
+    #                                           ('create_timestamp', datetime.utcnow()),
+    #                                           ('update_user', 'mms_migration'),
+    #                                           ('update_timestamp', datetime.utcnow())])
 
-    new_permits = etl.addfields(new_permits, [('permit_guid', uuid.uuid4()),
-                                              ('create_user', 'mms_migration'),
-                                              ('create_timestamp', datetime.utcnow()),
-                                              ('update_user', 'mms_migration'),
-                                              ('update_timestamp', datetime.utcnow())])
+    # etl.appenddb(etl.cutout(new_permits, 'mine_guid'), connection, 'permit', commit=False)
 
-    etl.appenddb(etl.cutout(new_permits, 'mine_guid'), connection, 'permit', commit=False)
+    # ################################################################
+    # # Insert new permits into the mine permit xref
+    # ################################################################
+    # db.session.execute(f"""
+    #     INSERT INTO mine_permit_xref (
+    #         mine_guid,
+    #         permit_id
+    #     )
+    #     SELECT etl_p.mine_guid, p.permit_id
+    #     from permit p
+    #     INNER JOIN ETL_PERMIT etl on p.permit_guid = etl_p.permit_guid
+    #     WHERE p.permit_guid in ("test"
+    #         {','.join([p for p in list(etl.values(new_permits,'permit_guid'))])}
+    #     )
+    # """)
 
-    ################################################################
-    # Insert new permits into the mine permit xref
-    ################################################################
-    db.session.execute(f"""
-        INSERT INTO mine_permit_xref (
-            mine_guid,
-            permit_id
-        )
-        SELECT etl_p.mine_guid, p.permit_id 
-        from permit p 
-        INNER JOIN ETL_PERMIT etl on p.permit_guid = etl_p.permit_guid
-        WHERE p.permit_guid in 
-            {','.join([p for p in list(etl.values(new_permits,'permit_guid'))])}
-        {','.join([x['permit_guid'] for x in new_permits])}
-    """)
-
-    ################################################################
-    # update ETL_Permit permit_guids from the newly entered permits.
-    ################################################################
-    for permit in new_permits:
-        db.session.execute(f"""
-            UPDATE ETL_PERMIT SET permit_guid = {permit['permit_guid']}
-            WHERE ETL_PERMIT.permit_no =  {permit['permit_no']}
-            AND ETL_PERMIT.mine_guid = {permit['mine_guid']}
-            -- Truly new permits do not have any amendments yet:
-            AND permit_amendment_guid NOT IN (
-                SELECT permit_amendment_guid
-                FROM permit_amendment
-                )
-            """)
+    # ################################################################
+    # # update ETL_Permit permit_guids from the newly entered permits.
+    # ################################################################
+    # for permit in new_permits:
+    #     db.session.execute(f"""
+    #         UPDATE ETL_PERMIT SET permit_guid = {permit['permit_guid']}
+    #         WHERE ETL_PERMIT.permit_no =  {permit['permit_no']}
+    #         AND ETL_PERMIT.mine_guid = {permit['mine_guid']}
+    #         -- Truly new permits do not have any amendments yet:
+    #         AND permit_amendment_guid NOT IN (
+    #             SELECT permit_amendment_guid
+    #             FROM permit_amendment
+    #             )
+    #         """)
 
     ################################################################
     # Insert new permit amendment records
