@@ -279,3 +279,8 @@ export const formatMoney = (value) => {
     ? null
     : number.toLocaleString("en-US", { style: "currency", currency: "USD" });
 };
+
+export const renderLabel = (options, keyStr) =>
+  options && options.length > 0 && keyStr && keyStr.trim().length > 0
+    ? options.find((item) => item.value === keyStr).label
+    : "";

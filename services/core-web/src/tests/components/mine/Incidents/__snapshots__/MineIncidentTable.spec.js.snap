@@ -124,6 +124,7 @@ exports[`MineIncidentTable renders properly 1`] = `
           "description": "No Action",
           "mine_incident_followup_type_code": "NOA",
         },
+        "handleDeleteMineIncident": [MockFunction],
         "handleEditMineIncident": [MockFunction],
         "incident": Object {
           "closing_report_summary": "Parent south person form evidence receive tree wide memory but medical car himself benefit key really series sea enter money prove if lawyer seven ready religious shake.",
