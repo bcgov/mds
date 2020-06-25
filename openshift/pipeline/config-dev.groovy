@@ -368,9 +368,9 @@ environments {
                 }
                 python {
                     cpu_request = "50m"
-                    cpu_limit = "200m"
-                    memory_request = "256Mi"
-                    memory_limit = "512Mi"
+                    cpu_limit = "1"
+                    memory_request = "512Mi"
+                    memory_limit = "1Gi"
                     uwsgi_threads = 4
                     uwsgi_processes = 2
                     replica_min = 1
@@ -388,7 +388,7 @@ environments {
                 }
                 postgres {
                     cpu_request = "20m"
-                    cpu_limit = "200m"
+                    cpu_limit = "300m"
                     memory_request = "1Gi"
                     memory_limit = "2Gi"
                 }
