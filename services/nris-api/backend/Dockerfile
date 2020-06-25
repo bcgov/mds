@@ -3,7 +3,8 @@ FROM python:3.6
 ENV LD_LIBRARY_PATH="/opt/oracle/instantclient" \
     OCI_HOME="/opt/oracle/instantclient" \
     OCI_LIB_DIR="/opt/oracle/instantclient" \
-    OCI_INCLUDE_DIR="/opt/oracle/instantclient/sdk/include"
+    OCI_INCLUDE_DIR="/opt/oracle/instantclient/sdk/include"\
+    TNS_ADMIN="/opt/oracle/"
 
 RUN curl -o instantclient-basic-linux.x64-19.3.0.0.0.zip http://mds-local-http-empr-mds-tools.pathfinder.gov.bc.ca/data/instantclient-basic-linux.x64-19.3.0.0.0.zip
 RUN curl -o instantclient-sdk-linux.x64-19.3.0.0.0.zip http://mds-local-http-empr-mds-tools.pathfinder.gov.bc.ca/data/instantclient-sdk-linux.x64-19.3.0.0.0.zip
@@ -21,6 +22,9 @@ RUN mkdir -p opt/oracle && \
     rm -rf instantclient-basic-linux.x64-19.3.0.0.0.zip instantclient-sdk-linux.x64-19.3.0.0.0.zip && \
     rm -rf /var/lib/apt/lists/*
 
+#TODO create and set up sqlnet.ora
+RUN mkdir /opt/oracle/wallet
+COPY wallet /opt/oracle/wallet
 # Create working directory
 RUN mkdir /app
 WORKDIR /app

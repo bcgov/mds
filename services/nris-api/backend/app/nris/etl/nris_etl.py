@@ -58,14 +58,18 @@ def import_nris_xml():
     dsn_tns = cx_Oracle.makedsn(current_app.config['NRIS_DB_HOSTNAME'],
                                 current_app.config['NRIS_DB_PORT'],
                                 service_name=current_app.config['NRIS_DB_SERVICENAME'])
+    # oracle_db = cx_Oracle.connect(user=current_app.config['NRIS_DB_USER'],
+    #                               password=current_app.config['NRIS_DB_PASSWORD'],
+    #                               dsn=dsn_tns)
     oracle_db = cx_Oracle.connect(user=current_app.config['NRIS_DB_USER'],
                                   password=current_app.config['NRIS_DB_PASSWORD'],
-                                  dsn=dsn_tns)
+                                  dsn=dsn_tns, encoding="UTF-8")
 
     cursor = oracle_db.cursor()
 
+# TODO this is for test purpose only
     cursor.execute(
-        "select xml_document from CORS.CORS_CV_ASSESSMENTS_XVW where business_area = 'EMPR'")
+        "select xml_document from CORS.CORS_CV_ASSESSMENTS_XVW where business_area = 'EMPR' WHERE ROWNUM <= 10")
 
     results = cursor.fetchall()
     for result in results:
