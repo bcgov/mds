@@ -17,7 +17,7 @@ CREATE TABLE mine_permit_xref (
 ALTER TABLE mine_permit_xref OWNER TO mds;
 
 INSERT INTO mine_permit_xref
-SELECT p.mine_guid, p.permit_id, null, null, p.create_user, p.create_timestamp, p.create_user, p.create_timestamp 
+SELECT p.mine_guid, p.permit_id, null, null, null,null,false, p.create_user, p.create_timestamp, p.create_user, p.create_timestamp 
 from permit p; 
 
 
