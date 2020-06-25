@@ -53,7 +53,9 @@ const renderDocumentLink = (file, text) => (
 );
 
 const renderDeleteButtonForPermitAmendments = (record) => {
-  if (record.amendmentType === originalPermit) return;
+  if (record.amendmentType === originalPermit) {
+    return;
+  }
 
   return (
     <AuthorizationWrapper permission={Permission.ADMIN}>
@@ -213,7 +215,7 @@ const columns = [
           {...(() => {
             return record.permit.bonds && record.permit.bonds.length > 0
               ? {
-                  title: "You cannot delete a permit that has associated bond records",
+                  title: "You cannot delete a permit that has associated bond records.",
                   okText: "Ok",
                 }
               : {

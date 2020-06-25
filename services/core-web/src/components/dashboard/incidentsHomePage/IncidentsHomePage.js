@@ -169,6 +169,7 @@ export class IncidentsHomePage extends Component {
 
   handleDeleteMineIncident = (values) => {
     this.props.deleteMineIncident(values.mine_guid, values.mine_incident_guid).then(() => {
+      this.setState({ incidentsLoaded: false });
       this.props.fetchIncidents(this.state.params).then(() => {
         this.setState({ incidentsLoaded: true });
       });

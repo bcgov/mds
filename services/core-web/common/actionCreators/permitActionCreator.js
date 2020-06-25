@@ -144,7 +144,7 @@ export const deletePermit = (mineGuid, permitGuid) => (dispatch) => {
     )
     .then((response) => {
       notification.success({
-        message: "Successfully deleted permit and all related permit amendments and documents",
+        message: "Successfully deleted permit and all related permit amendments and documents.",
         duration: 10,
       });
       dispatch(success(reducerTypes.DELETE_PERMIT));

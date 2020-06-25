@@ -75,7 +75,12 @@ class Mine(AuditMixin, Base):
         lazy='select')
 
     mine_party_appt = db.relationship('MinePartyAppointment', backref="mine", lazy='select')
-    mine_incidents = db.relationship('MineIncident', backref="mine", lazy='select')
+    mine_incidents = db.relationship(
+        'MineIncident',
+        backref="mine",
+        lazy='select',
+        primaryjoin="and_(MineIncident.mine_guid == Mine.mine_guid, MineIncident.deleted_ind==False)"
+    )
     mine_reports = db.relationship('MineReport', lazy='select')
 
     comments = db.relationship(

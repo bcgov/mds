@@ -60,7 +60,7 @@ class Permit(AuditMixin, Base):
 
     def soft_delete(self):
         if self.bonds:
-            raise Exception('Unable to delete permit with attached bonds')
+            raise Exception('Unable to delete permit with attached bonds.')
         if self.permit_amendments:
             for amendment in self.permit_amendments:
                 amendment.soft_delete(True)

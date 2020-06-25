@@ -101,6 +101,7 @@ export class VarianceHomePage extends Component {
 
   renderDataFromURL = (params) => {
     const parsedParams = queryString.parse(params);
+    this.setState({ variancesLoaded: false });
     this.props.fetchVariances(parsedParams).then(() => {
       this.setState({ variancesLoaded: true });
     });

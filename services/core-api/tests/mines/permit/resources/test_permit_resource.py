@@ -141,4 +141,4 @@ def test_delete_permit_fail(test_client, db_session, auth_headers):
     delete_resp = test_client.delete(
         f'/mines/{permit.mine_guid}/permits/{permit_guid}',
         headers=auth_headers['full_auth_header'])
-    assert delete_resp.status_code == 500
+    assert delete_resp.status_code == 400
