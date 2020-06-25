@@ -68,11 +68,11 @@ def permit_etl(connection):
         FROM mms.mmspmt permit_info
         INNER JOIN ETL_MINE ON ETL_MINE.mine_no = permit_info.mine_no
         WHERE permit_info.cid IN (
-            {','.join([x.permit_cid for x in valid_permits])}
+            {','.join([p for p in list(etl.values(valid_permits,'permit_cid'))])}
         )
         """)
     current_app.logger.info(f'# valid_permit_details {etl.nrows(valid_permits)}')
-    return
+
     #STEP 2 of old permit ETL
     ################################################################
     # Update permit records with the newest version in the MMS data
@@ -122,6 +122,7 @@ def permit_etl(connection):
         -- Newest notice of work for each mine/permit:
         AND issue_date = (select max(issue_date) from ETL_PERMIT where etl.permit_no = ETL_PERMIT.permit_no and etl.mine_guid = ETL_PERMIT.mine_guid)
         """)
+    current_app.logger.info(f'# new_permits {etl.nrows(new_permits)}')
 
     new_permits = etl.addfields(new_permits, [('permit_guid', uuid.uuid4()),
                                               ('create_user', 'mms_migration'),
@@ -142,7 +143,9 @@ def permit_etl(connection):
         SELECT etl_p.mine_guid, p.permit_id 
         from permit p 
         INNER JOIN ETL_PERMIT etl on p.permit_guid = etl_p.permit_guid
-        WHERE p.permit_guid in {','.join([x.permit_guid for x in new_permits])}
+        WHERE p.permit_guid in 
+            {','.join([p for p in list(etl.values(new_permits,'permit_guid'))])}
+        {','.join([x['permit_guid'] for x in new_permits])}
     """)
 
     ################################################################
@@ -150,9 +153,9 @@ def permit_etl(connection):
     ################################################################
     for permit in new_permits:
         db.session.execute(f"""
-            UPDATE ETL_PERMIT SET permit_guid = {permit.permit_guid}
-            WHERE ETL_PERMIT.permit_no =  {permit.permit_no}
-            AND ETL_PERMIT.mine_guid = {permit.mine_guid}
+            UPDATE ETL_PERMIT SET permit_guid = {permit['permit_guid']}
+            WHERE ETL_PERMIT.permit_no =  {permit['permit_no']}
+            AND ETL_PERMIT.mine_guid = {permit['mine_guid']}
             -- Truly new permits do not have any amendments yet:
             AND permit_amendment_guid NOT IN (
                 SELECT permit_amendment_guid
@@ -188,6 +191,10 @@ def permit_etl(connection):
             FROM permit_amendment
         )
             """)
+
+    current_app.logger.info(f'# new_permit_amendments {etl.nrows(new_permit_amendments)}')
+    current_app.logger.info(etl.headers(new_permit_amendments))
+
     etl.appenddb(new_permit_amendments, connection, 'permit_amendment', commit=False)
 
     ################################################################
@@ -227,6 +234,9 @@ def permit_etl(connection):
             )
         """)
 
+    current_app.logger.info(
+        f'# mine_update_screen_permittees {etl.nrows(mine_update_screen_permittees)}')
+
     now_company_info_permittees = etl.fromdb(
         connection, r"""
             WITH 
@@ -254,6 +264,51 @@ def permit_etl(connection):
             INNER JOIN mms.mmscmp company ON
                 company.cmp_cd = now.cmp_cd
             """)
+
+    current_app.logger.info(
+        f'# now_company_info_permittees {etl.nrows(now_company_info_permittees)}')
+
+    permit_contacts = etl.fromdb(
+        connection, r"""
+        WITH 
+        permit_list AS (
+            SELECT
+                mine_no||permit_no||recv_dt||iss_dt AS combo_id,
+                max(cid) permit_cid
+            FROM mms.mmspmt 
+            WHERE
+                (sta_cd ~* 'z'  OR sta_cd ~* 'a')
+                AND
+                ((permit_no !~ '^ *$' AND  permit_no IS NOT NULL))
+            GROUP BY combo_id
+        ),
+        most_recent_permittee AS (
+            SELECT
+                cid  AS permit_cid  ,
+                max(cid_ccn) AS contact_cid
+            FROM mms.mmsccc
+            WHERE
+                SUBSTRING(type_ind, 4, 1)='Y'
+            GROUP BY cid
+        )
+        SELECT
+            most_recent_permittee.permit_cid                ,
+            contact_info.add_dt ::date AS effective_date    ,
+            company_info.cmp_nm  AS permittee_nm            ,
+            company_info.tel_no                             ,
+            company_info.email                              ,
+            '1'::numeric AS source
+        FROM most_recent_permittee
+        INNER JOIN mms.mmsccn contact_info ON
+            most_recent_permittee.contact_cid=contact_info.cid
+        INNER JOIN mms.mmscmp company_info ON
+            contact_info.cmp_cd=company_info.cmp_cd
+    """)
+    current_app.logger.info(f'# permit_contacts {etl.nrows(permit_contacts)}')
+
+    ################################################################
+    # Determine which source is best and update permittee
+    ################################################################
 
     #STEP 3 of old permit ETL
     ################################################################
