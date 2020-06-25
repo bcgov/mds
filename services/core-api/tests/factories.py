@@ -593,6 +593,7 @@ class PermitFactory(BaseFactory):
     permit_no = factory.LazyFunction(RandomPermitNumber)
     permit_status_code = factory.LazyFunction(RandomPermitStatusCode)
     permit_amendments = []
+    deleted_ind = False
     mine = factory.SubFactory('tests.factories.MineFactory', minimal=True)
 
     @factory.post_generation

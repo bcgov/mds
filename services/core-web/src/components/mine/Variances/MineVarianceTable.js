@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Button, Icon, Badge } from "antd";
+import { Button, Icon, Badge, Popconfirm } from "antd";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import {
@@ -14,7 +14,7 @@ import * as Strings from "@common/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
-import { RED_CLOCK, EDIT_OUTLINE_VIOLET } from "@/constants/assets";
+import { RED_CLOCK, EDIT_OUTLINE_VIOLET, TRASHCAN } from "@/constants/assets";
 import NullScreen from "@/components/common/NullScreen";
 import LinkButton from "@/components/common/LinkButton";
 import * as router from "@/constants/routes";
@@ -31,6 +31,7 @@ const propTypes = {
   isApplication: PropTypes.bool,
   isDashboardView: PropTypes.bool,
   openEditVarianceModal: PropTypes.func,
+  handleDeleteVariance: PropTypes.func,
   params: PropTypes.shape({
     variance_application_status_code: PropTypes.arrayOf(PropTypes.string),
   }),
@@ -44,6 +45,7 @@ const defaultProps = {
   openEditVarianceModal: () => {},
   openViewVarianceModal: () => {},
   handleVarianceSearch: () => {},
+  handleDeleteVariance: () => {},
   isApplication: false,
   isDashboardView: false,
   params: {},
@@ -251,6 +253,19 @@ export class MineVarianceTable extends Component {
             >
               <Icon type="eye" alt="View" className="icon-lg icon-svg-filter" />
             </Button>
+            <AuthorizationWrapper permission={Permission.ADMIN}>
+              <Popconfirm
+                placement="topLeft"
+                title="Are you sure you want to delete this variance?"
+                onConfirm={() => this.props.handleDeleteVariance(record.variance)}
+                okText="Delete"
+                cancelText="Cancel"
+              >
+                <Button ghost size="small" type="primary">
+                  <img name="remove" src={TRASHCAN} alt="Remove variance" />
+                </Button>
+              </Popconfirm>
+            </AuthorizationWrapper>
           </div>
         ),
       },
