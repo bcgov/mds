@@ -172,11 +172,11 @@ def permit_etl(connection):
         connection, r"""
         SELECT
             permit.permit_id				         	,
-            ETL_PERMIT.permit_amendment_guid  ,
-            ETL_PERMIT.received_date       	,
-            ETL_PERMIT.issue_date          	,
-            ETL_PERMIT.authorization_end_date	,
-            CASE WHEN original_permits.permit_amendment_guid IS NOT NULL THEN 'OGP' ELSE 'AMD' END,
+            ETL_PERMIT.permit_amendment_guid            ,
+            ETL_PERMIT.received_date       	            ,
+            ETL_PERMIT.issue_date          	            ,
+            ETL_PERMIT.authorization_end_date	        ,
+            CASE WHEN first_amendment.permit_no IS NOT NULL THEN 'OGP' ELSE 'AMD' END,
             'ACT'										,
             'mms_migration'                				,
             now()                          				,
@@ -185,9 +185,16 @@ def permit_etl(connection):
         FROM ETL_PERMIT
         INNER JOIN permit ON
             ETL_PERMIT.permit_guid = permit.permit_guid
-        LEFT JOIN (SELECT permit_no, mine_guid, MIN(issue_date) AS min_issue_date
-            FROM ETL_PERMIT GROUP BY permit_no, mine_guid) AS original_permits 
-            ON ETL_PERMIT.permit_amendment_guid = original_permits.permit_amendment_guid
+        -- NOTE: join to first amendment issued to use above to determine if this is the first amendment / original permit
+        LEFT JOIN (SELECT
+                permit_no, mine_guid, MIN(issue_date) AS min_issue_date
+            FROM
+                ETL_PERMIT
+            GROUP BY
+                permit_no, mine_guid) AS first_amendment ON 
+            ETL_PERMIT.permit_no = first_amendment.permit_no AND
+            ETL_PERMIT.mine_guid = first_amendment.mine_guid AND
+            ETL_PERMIT.issue_date = first_amendment.min_issue_date
         WHERE permit_amendment_guid NOT IN (
             SELECT permit_amendment_guid
             FROM permit_amendment
@@ -316,3 +323,49 @@ def permit_etl(connection):
     ################################################################
     # Update existing Parties
     ################################################################
+
+
+"""
+all permit info
+
+Columns:
+    #PERMIT#
+        mine_party_appt_guid - gen_random_guid()
+        permit_guid - gen_random_guid()
+        permit_amendment_guid - gen_random_guid()
+        Source - Set when the permitee info is collected and is a 1, 2, or 3
+        mine_guid - ETL_MINE.mine_guid find by matching ETL_MINE.mine_no = mms.mmspmt.mine_no
+        mine_no - mms.mmspmt.mine_no
+        permit_no - mms.mmspmt.permit_no
+        permit_cid - mms.mmspmt.cid
+        received_date - mms.mmspmt.recv_dt
+        issue_date - mms.mmspmt.iss_dt
+        authorization_end_date - mms.mmsnow.end_dt where mms.mmsnow.cid = mms.mmspmt.cid
+        permit_status_code - mms.mmspmt.sta_cd ("Z" THEN "C" ELSE "O")
+    #PERMITEE#
+        party_guid - gen_random_uuid()
+        party_combo_id - 
+        first_name
+        party_name
+        party_type
+        phone_no
+        email
+        effective_date
+
+    CASE
+        WHEN permit_info.permit_cid NOT IN (
+            SELECT ETL_PERMIT.permit_cid
+            FROM ETL_PERMIT
+        )
+        THEN TRUE
+        ELSE FALSE
+    END AS new_permit           ,
+    CASE
+        WHEN permittee_wContact.party_combo_id NOT IN (
+            SELECT ETL_PERMIT.party_combo_id
+            FROM ETL_PERMIT
+        )
+        THEN TRUE
+        ELSE FALSE
+    END AS new_permittee
+"""
