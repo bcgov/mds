@@ -31,6 +31,7 @@ RUN echo '${APP_ROOT}/oracle_bin/instantclient/' | tee -a /etc/ld.so.conf.d/orac
 RUN mkdir -p $APP_ROOT/oracle_bin/instantclient/wallet
 COPY wallet $APP_ROOT/oracle_bin/instantclient/wallet
 COPY sqlnet.ora $APP_ROOT/oracle_bin/instantclient
+COPY tnsnames.ora $APP_ROOT/oracle_bin/instantclient
 # RUN chmod 777 -R $APP_ROOT/oracle_bin/instantclient/wallet
 # RUN chmod 777 $APP_ROOT/oracle_bin/instantclient/sqlnet.ora
 

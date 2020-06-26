@@ -1,0 +1,17 @@
+mds_nris =
+    (DESCRIPTION =
+        (ADDRESS = (PROTOCOL = TCP)(HOST = nrkdb03.bcgov)(PORT = 1521))
+        (CONNECT_DATA =
+            (SERVER = DEDICATED)
+            (SERVICE_NAME = enfprod1.nrs.bcgov)
+        )
+    )
+
+mds_nris_2 =
+    (DESCRIPTION =
+        (ADDRESS = (PROTOCOL = TCPS)(HOST = nrkdb03.bcgov)(PORT = 1521))
+        (CONNECT_DATA =
+            (SERVER = DEDICATED)
+            (SERVICE_NAME = enfprod1.nrs.bcgov)
+        )
+    )
