@@ -14,4 +14,14 @@ mds_nris_2 =
             (SERVER = DEDICATED)
             (SERVICE_NAME = enfprod1.nrs.bcgov)
         )
+        (SECURITY=(ssl_server_cert_dn="CN=nrkdb03.bcgov"))
+    )
+
+mds_nris_3 =
+    (DESCRIPTION =
+        (ADDRESS = (PROTOCOL = TCPS)(HOST = nrkdb03.bcgov)(PORT = 1543))
+        (CONNECT_DATA =
+            (SERVICE_NAME = enfprod1.nrs.bcgov)
+        )
+        (SECURITY=(ssl_server_cert_dn="CN=nrkdb03.bcgov"))
     )
