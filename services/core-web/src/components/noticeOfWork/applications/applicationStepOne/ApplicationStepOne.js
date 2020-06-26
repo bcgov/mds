@@ -20,7 +20,6 @@ const propTypes = {
   noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
   fetchImportedNoticeOfWorkApplication: PropTypes.func.isRequired,
   handleUpdateLeadInspector: PropTypes.func.isRequired,
-  handleProgressChange: PropTypes.func.isRequired,
   inspectors: CustomPropTypes.groupOptions.isRequired,
   setLeadInspectorPartyGuid: PropTypes.func.isRequired,
   loadNoticeOfWork: PropTypes.func.isRequired,
@@ -67,9 +66,7 @@ export class ApplicationStepOne extends Component {
         inspectors={this.props.inspectors}
         noticeOfWork={this.props.noticeOfWork}
         setLeadInspectorPartyGuid={this.props.setLeadInspectorPartyGuid}
-        handleUpdateLeadInspector={(e) =>
-          this.props.handleUpdateLeadInspector(() => this.props.handleProgressChange("REV"), e)
-        }
+        handleUpdateLeadInspector={this.props.handleUpdateLeadInspector}
       />
     );
   };
@@ -90,7 +87,7 @@ export class ApplicationStepOne extends Component {
             >
               <Alert
                 message="Need to change something?"
-                description="You can transfer the Notice of Work to a different mine or change its Lead Inspector by using the Actions dropdown menu above."
+                description="You can transfer the Notice of Work to a different mine or change its Lead Inspector on the Administrative tab"
                 type="info"
                 showIcon
                 style={{ textAlign: "left" }}
@@ -113,7 +110,6 @@ export class ApplicationStepOne extends Component {
         <MajorMinePermitApplicationCreate
           initialPermitGuid={this.props.initialPermitGuid}
           mineGuid={this.props.mineGuid}
-          handleProgressChange={this.props.handleProgressChange}
           loadNoticeOfWork={this.props.loadNoticeOfWork}
         />
       );
@@ -129,7 +125,7 @@ export class ApplicationStepOne extends Component {
         {this.state.isImported && !this.props.noticeOfWork.lead_inspector_party_guid && (
           <div>{this.renderInspectorAssignment()}</div>
         )}
-        {this.state.isImported && this.props.noticeOfWork.application_progress[0] && (
+        {this.state.isImported && this.props.noticeOfWork.lead_inspector_party_guid && (
           <div>{this.renderResult()}</div>
         )}
       </div>

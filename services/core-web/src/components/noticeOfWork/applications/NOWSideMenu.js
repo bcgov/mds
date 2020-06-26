@@ -72,7 +72,7 @@ export class NOWSideMenu extends Component {
 
   updateUrlRoute = (route) => {
     const nowGuid = this.props.match.params.id;
-    this.urlRoute = this.props.route.hashRoute(nowGuid, route);
+    this.urlRoute = this.props.route.hashRoute(nowGuid, "technical-review", route);
 
     if (route === this.props.history.location.hash) {
       return;
