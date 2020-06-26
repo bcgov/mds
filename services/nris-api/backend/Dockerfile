@@ -26,6 +26,9 @@ RUN mkdir -p opt/oracle && \
 # Copy NRIS DB wallet
 RUN mkdir /opt/oracle/wallet
 COPY wallet /opt/oracle/wallet
+COPY sqlnet.ora /opt/oracle
+RUN chmod 777 -R /opt/oracle/wallet
+RUN chmod 777 /opt/oracle/sqlnet.ora
 
 # Create working directory
 RUN mkdir /app
