@@ -27,12 +27,12 @@ RUN echo '${APP_ROOT}/oracle_bin/instantclient/' | tee -a /etc/ld.so.conf.d/orac
     rm -rf /tmp/oracle/instantclient-basic-linux.x64-19.3.0.0.0.zip /tmp/oracle/instantclient-sdk-linux.x64-19.3.0.0.0.zip && \
     rm -rf /var/lib/apt/lists/*
 
+USER 1001
+
 #TODO create and set up sqlnet.ora
 RUN mkdir /opt/oracle/wallet
 COPY wallet /opt/oracle/wallet
-
-USER 1001
-
+COPY sqlnet.ora /opt/oracle
 
 # Install sonar-scanner
 RUN curl -sLo /tmp/sonar-scanner-cli.zip https://dl.bintray.com/sonarsource/SonarQube/org/sonarsource/scanner/cli/sonar-scanner-cli/3.2.0.1227/sonar-scanner-cli-3.2.0.1227-linux.zip && \
