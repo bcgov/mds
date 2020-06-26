@@ -16,8 +16,10 @@ class Config(object):
 
     ENVIRONMENT_NAME = os.environ.get('ENVIRONMENT_NAME', 'dev')
 
+    # SqlAlchemy config
     SQLALCHEMY_DATABASE_URI = DB_URL
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    SQLALCHEMY_ENGINE_OPTIONS = {"pool_pre_ping": True}
 
     JWT_OIDC_WELL_KNOWN_CONFIG = os.environ.get(
     'JWT_OIDC_WELL_KNOWN_CONFIG',

@@ -14,6 +14,7 @@ const propTypes = {
   openViewVarianceModal: PropTypes.func.isRequired,
   handlePageChange: PropTypes.func.isRequired,
   handleVarianceSearch: PropTypes.func.isRequired,
+  handleDeleteVariance: PropTypes.func.isRequired,
   params: PropTypes.objectOf(
     PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.arrayOf(PropTypes.string)])
   ).isRequired,
@@ -48,6 +49,7 @@ export const VarianceTable = (props) => (
       isDashboardView
       openEditVarianceModal={props.openEditVarianceModal}
       openViewVarianceModal={props.openViewVarianceModal}
+      handleDeleteVariance={props.handleDeleteVariance}
       sortField={props.sortField}
       sortDir={props.sortDir}
     />

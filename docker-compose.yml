@@ -80,6 +80,7 @@ services:
       - redis
       - nris_backend
       - document_manager_backend
+      - tusd
     networks:
       - mds
 
@@ -159,6 +160,20 @@ services:
     env_file: ./services/nris-api/backend/.env
     networks:
       - mds
+
+  ####################### TUSD Definition #######################
+  tusd:
+    container_name: tusd
+    build:
+      context: services/tusd
+    ports:
+      - 1080:1080
+    depends_on:
+      - document_manager_backend
+    env_file: ./services/tusd/.env
+    networks:
+      - mds
+
   ####################### DOCUMENT_MANAGER_BACKEND Definition #######################
   document_manager_backend:
     restart: always
@@ -170,7 +185,7 @@ services:
     volumes:
       - ./services/document-manager/backend/:/app/
     depends_on:
-      - flyway
+      - postgres
       - redis
       - document_manager_migrate
     env_file: ./services/document-manager/backend/.env
@@ -185,7 +200,7 @@ services:
     volumes:
       - ./services/document-manager/backend/:/app/
     depends_on:
-      - flyway
+      - postgres
       - redis
     command: flask db upgrade
     env_file: ./services/document-manager/backend/.env
