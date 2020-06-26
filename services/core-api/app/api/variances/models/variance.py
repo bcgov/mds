@@ -41,11 +41,17 @@ class Variance(AuditMixin, Base):
     issue_date = db.Column(db.DateTime)
     received_date = db.Column(db.DateTime, nullable=False)
     expiry_date = db.Column(db.DateTime)
+    deleted_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
 
+    # please note there is a dependency on deleted_ind in mine_documents
     documents = db.relationship('VarianceDocumentXref', lazy='joined')
-    mine_documents = db.relationship('MineDocument',
-                                     lazy='joined',
-                                     secondary='variance_document_xref')
+    mine_documents = db.relationship(
+        'MineDocument',
+        lazy='joined',
+        secondary='variance_document_xref',
+        secondaryjoin=
+        'and_(foreign(VarianceDocumentXref.mine_document_guid) == remote(MineDocument.mine_document_guid),MineDocument.deleted_ind == False)'
+    )
     inspector = db.relationship('Party', lazy='joined', foreign_keys=[inspector_party_guid])
     mine = db.relationship('Mine', lazy='joined')
 
@@ -54,13 +60,21 @@ class Variance(AuditMixin, Base):
     def __repr__(self):
         return '<Variance %r>' % self.variance_id
 
+    def soft_delete(self):
+        if self.mine_documents:
+            for document in self.mine_documents:
+                document.deleted_ind = True
+
+        self.deleted_ind = True
+        self.save()
+
     @classmethod
     def create(
             cls,
             compliance_article_id,
             mine_guid,
             received_date,
-            # Optional Params
+                                                                               # Optional Params
             applicant_guid=None,
             variance_application_status_code=None,
             inspector_party_guid=None,
@@ -69,16 +83,17 @@ class Variance(AuditMixin, Base):
             issue_date=None,
             expiry_date=None,
             add_to_session=True):
-        new_variance = cls(compliance_article_id=compliance_article_id,
-                           mine_guid=mine_guid,
-                           variance_application_status_code=variance_application_status_code,
-                           applicant_guid=applicant_guid,
-                           inspector_party_guid=inspector_party_guid,
-                           note=note,
-                           parties_notified_ind=parties_notified_ind,
-                           issue_date=issue_date,
-                           received_date=received_date,
-                           expiry_date=expiry_date)
+        new_variance = cls(
+            compliance_article_id=compliance_article_id,
+            mine_guid=mine_guid,
+            variance_application_status_code=variance_application_status_code,
+            applicant_guid=applicant_guid,
+            inspector_party_guid=inspector_party_guid,
+            note=note,
+            parties_notified_ind=parties_notified_ind,
+            issue_date=issue_date,
+            received_date=received_date,
+            expiry_date=expiry_date)
         if add_to_session:
             new_variance.save(commit=False)
         return new_variance
@@ -86,22 +101,23 @@ class Variance(AuditMixin, Base):
     @classmethod
     def find_by_mine_guid(cls, mine_guid):
         cls.validate_guid(mine_guid, INVALID_MINE_GUID)
-        return cls.query.filter_by(mine_guid=mine_guid).all()
+        return cls.query.filter_by(mine_guid=mine_guid, deleted_ind=False).all()
 
     @classmethod
     def find_by_variance_id(cls, variance_id):
-        return cls.query.filter_by(variance_id=variance_id).first()
+        return cls.query.filter_by(variance_id=variance_id, deleted_ind=False).first()
 
     @classmethod
     def find_by_variance_guid(cls, variance_guid):
         cls.validate_guid(variance_guid, INVALID_VARIANCE_GUID)
-        return cls.query.filter_by(variance_guid=variance_guid).first()
+        return cls.query.filter_by(variance_guid=variance_guid, deleted_ind=False).first()
 
     @classmethod
     def find_by_mine_guid_and_variance_guid(cls, mine_guid, variance_guid):
         cls.validate_guid(mine_guid, INVALID_MINE_GUID)
         cls.validate_guid(variance_guid, INVALID_VARIANCE_GUID)
-        return cls.query.filter_by(mine_guid=mine_guid, variance_guid=variance_guid).first()
+        return cls.query.filter_by(
+            mine_guid=mine_guid, variance_guid=variance_guid, deleted_ind=False).first()
 
     @classmethod
     def validate_guid(cls, guid, msg=INVALID_GUID):

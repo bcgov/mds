@@ -89,6 +89,7 @@ exports[`VarianceHomePage renders properly 1`] = `
       />
       <div>
         <VarianceTable
+          handleDeleteVariance={[Function]}
           handlePageChange={[Function]}
           handleVarianceSearch={[Function]}
           isLoaded={false}

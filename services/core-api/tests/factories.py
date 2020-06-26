@@ -184,6 +184,7 @@ class VarianceFactory(BaseFactory):
     parties_notified_ind = factory.Faker('boolean', chance_of_getting_true=50)
     received_date = TODAY
     documents = []
+    deleted_ind = False
 
     @factory.post_generation
     def documents(obj, create, extracted, **kwargs):
@@ -251,6 +252,7 @@ class MineIncidentFactory(BaseFactory):
         lambda o: SampleDangerousOccurrenceSubparagraphs(o.do_subparagraph_count)
         if o.determination_type_code == 'DO' else [])
     documents = []
+    deleted_ind = False
 
     @factory.post_generation
     def documents(obj, create, extracted, **kwargs):
@@ -591,6 +593,7 @@ class PermitFactory(BaseFactory):
     permit_no = factory.LazyFunction(RandomPermitNumber)
     permit_status_code = factory.LazyFunction(RandomPermitStatusCode)
     permit_amendments = []
+    deleted_ind = False
     mine = factory.SubFactory('tests.factories.MineFactory', minimal=True)
 
     @factory.post_generation
@@ -647,6 +650,7 @@ class PermitAmendmentFactory(BaseFactory):
     permit_amendment_type_code = 'AMD'
     description = factory.Faker('sentence', nb_words=6, variable_nb_words=True)
     related_documents = []
+    deleted_ind = False
 
 
 class PermitAmendmentDocumentFactory(BaseFactory):
