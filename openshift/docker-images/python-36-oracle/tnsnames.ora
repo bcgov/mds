@@ -35,3 +35,20 @@ mds_nris_4 =
         )
         (SECURITY=(ssl_server_cert_dn="CN=NRKDB03.bcgov"))
     )
+
+mds_nris_5 =
+    (DESCRIPTION =
+        (ADDRESS = (PROTOCOL = TCPS)(HOST = NRKDB03.bcgov)(PORT = 1543))
+        (CONNECT_DATA =
+            (SERVER = DEDICATED)
+            (SERVICE_NAME = enfprod1.nrs.bcgov)
+        )
+    )
+
+mds_nris_6 =
+    (DESCRIPTION =
+        (ADDRESS = (PROTOCOL = TCPS)(HOST = NRKDB03.bcgov)(PORT = 1543))
+        (CONNECT_DATA =
+            (SERVICE_NAME = enfprod1.nrs.bcgov)
+        )
+    )
