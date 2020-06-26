@@ -4,7 +4,7 @@ ENV LD_LIBRARY_PATH="${APP_ROOT}/oracle_bin/instantclient" \
     OCI_HOME="$APP_ROOT/oracle_bin/instantclient" \
     OCI_LIB_DIR="$APP_ROOT/oracle_bin/instantclient" \
     OCI_INCLUDE_DIR="$APP_ROOT/oracle_bin/instantclient/sdk/include" \
-    TNS_ADMIN="/opt/oracle/"
+    TNS_ADMIN="$APP_ROOT/oracle_bin/instantclient"
 
 RUN mkdir -p /tmp/oracle
 
@@ -27,14 +27,14 @@ RUN echo '${APP_ROOT}/oracle_bin/instantclient/' | tee -a /etc/ld.so.conf.d/orac
     rm -rf /tmp/oracle/instantclient-basic-linux.x64-19.3.0.0.0.zip /tmp/oracle/instantclient-sdk-linux.x64-19.3.0.0.0.zip && \
     rm -rf /var/lib/apt/lists/*
 
-USER 1001
-
 # Copy NRIS DB wallet
-RUN mkdir /opt/oracle/wallet
-COPY wallet /opt/oracle/wallet
-COPY sqlnet.ora /opt/oracle
-RUN chmod 777 -R /opt/oracle/wallet
-RUN chmod 777 /opt/oracle/sqlnet.ora
+RUN mkdir -p $APP_ROOT/oracle_bin/instantclient/wallet
+COPY wallet $APP_ROOT/oracle_bin/instantclient/wallet
+COPY sqlnet.ora $APP_ROOT/oracle_bin/instantclient
+# RUN chmod 777 -R $APP_ROOT/oracle_bin/instantclient/wallet
+# RUN chmod 777 $APP_ROOT/oracle_bin/instantclient/sqlnet.ora
+
+USER 1001
 
 # Install sonar-scanner
 RUN curl -sLo /tmp/sonar-scanner-cli.zip https://dl.bintray.com/sonarsource/SonarQube/org/sonarsource/scanner/cli/sonar-scanner-cli/3.2.0.1227/sonar-scanner-cli-3.2.0.1227-linux.zip && \
