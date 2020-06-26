@@ -1,6 +1,6 @@
 {
   "extensions.ignoreRecommendations": true,
-  "files.eol": "\n",
+  "files.eol": "/n",
   "files.trimFinalNewlines": true,
   "editor.renderWhitespace": "none",
   "editor.formatOnSave": true,
@@ -20,5 +20,8 @@
     "source.fixAll.eslint": true,
     "eslint.autoFixOnSave": true
   },
-  "cSpell.words": ["idir"]
+  "cSpell.words": ["idir"],
+  "python.linting.pylintEnabled": true,
+  "python.pythonPath": "./venv/Scripts/python.exe",
+  "python.linting.pylintPath": "./venv/Lib/site-packages/pylint"
 }
