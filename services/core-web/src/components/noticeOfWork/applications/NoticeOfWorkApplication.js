@@ -47,6 +47,7 @@ import * as FORM from "@/constants/forms";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
 import { modalConfig } from "@/components/modalContent/config";
 import { NOWApplicationAdministrative } from "@/components/noticeOfWork/applications/administrative/NOWApplicationAdministrative";
+import Loading from "@/components/common/Loading";
 
 const { TabPane } = Tabs;
 
@@ -106,6 +107,7 @@ const defaultProps = {
 export class NoticeOfWorkApplication extends Component {
   state = {
     isLoaded: false,
+    isTabLoaded: false,
     isMajorMine: null,
     associatedLeadInspectorPartyGuid: "",
     associatedStatus: "",
@@ -158,6 +160,7 @@ export class NoticeOfWorkApplication extends Component {
     }
 
     if (nextProps.match.params.tab !== this.props.match.params.tab) {
+      this.setState({ isTabLoaded: false });
       this.setActiveTab(nextProps.match.params.tab);
     }
   }
@@ -175,7 +178,7 @@ export class NoticeOfWorkApplication extends Component {
   };
 
   setActiveTab = (tab) => {
-    this.setState({ activeTab: tab });
+    this.setState({ activeTab: tab, isTabLoaded: true });
   };
 
   renderOriginalValues = (path) => {
@@ -531,7 +534,6 @@ export class NoticeOfWorkApplication extends Component {
   };
 
   handleTabChange = (key) => {
-    console.log(key);
     this.props.history.replace(
       routes.NOTICE_OF_WORK_APPLICATION.dynamicRoute(
         this.props.noticeOfWork.now_application_guid,
@@ -664,6 +666,9 @@ export class NoticeOfWorkApplication extends Component {
     if (this.state.showNullScreen) {
       return <NullScreen type="unauthorized-page" />;
     }
+    if (!this.state.isLoaded) {
+      return <Loading />;
+    }
     const errorsLength = Object.keys(flattenObject(this.props.formErrors)).length;
     const showErrors = errorsLength > 0 && this.state.submitting;
     const isImported = this.props.noticeOfWork.imported_to_core;
@@ -722,7 +727,7 @@ export class NoticeOfWorkApplication extends Component {
             </TabPane>
 
             <TabPane tab="Technical Review" key="technical-review" disabled={!isImported}>
-              <LoadingWrapper condition={this.state.isLoaded}>
+              <LoadingWrapper condition={this.state.isTabLoaded}>
                 <div>
                   <div className={renderFixedClass()}>{this.renderEditModeNav()}</div>
                   <div
@@ -760,7 +765,7 @@ export class NoticeOfWorkApplication extends Component {
             </TabPane>
 
             <TabPane tab="Draft Permit" key="draft-permit" disabled={!isImported}>
-              <LoadingWrapper condition={this.state.isLoaded}>
+              <LoadingWrapper condition={this.state.isTabLoaded}>
                 <div className="page__content">
                   <h2> Draft Permit</h2>
                   <Divider style={{ margin: 0 }} />
@@ -770,7 +775,7 @@ export class NoticeOfWorkApplication extends Component {
             </TabPane>
 
             <TabPane tab="Referral/Consultation" key="referral-consultation" disabled={!isImported}>
-              <LoadingWrapper condition={this.state.isLoaded}>
+              <LoadingWrapper condition={this.state.isTabLoaded}>
                 <div className="page__content">
                   <h2>Referral/Consultation</h2>
                   <Divider style={{ margin: 0 }} />
@@ -783,7 +788,7 @@ export class NoticeOfWorkApplication extends Component {
             </TabPane>
 
             <TabPane tab="Administrative" key="administrative" disabled={!isImported}>
-              <LoadingWrapper condition={this.state.isLoaded}>
+              <LoadingWrapper condition={this.state.isTabLoaded}>
                 <div className="page__content">
                   <div className="inline-flex block-mobile padding-md between">
                     <h2>Administrative</h2>
