@@ -350,7 +350,7 @@ app {
 environments {
     'test' {
         vars {
-            DB_PVC_SIZE = '10Gi'
+            DB_PVC_SIZE = '30Gi'
             DOCUMENT_PVC_SIZE = '5Gi'
             LOG_PVC_SIZE = '1Gi'
             METABASE_PVC_SIZE = '10Gi'
