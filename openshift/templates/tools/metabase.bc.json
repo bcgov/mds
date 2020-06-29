@@ -59,7 +59,7 @@
             "annotations": null,
             "from": {
               "kind": "DockerImage",
-              "name": "registry.access.redhat.com/rhscl/postgresql-96-rhel7:latest"
+              "name": "registry.access.redhat.com/rhscl/postgresql-96-rhel7:1-58"
             },
             "generation": 1,
             "importPolicy": {},
