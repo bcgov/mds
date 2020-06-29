@@ -11,7 +11,7 @@ import "./styles/index.scss";
 import fetchEnv from "./fetchEnv";
 
 import { MatomoProvider, createInstance } from "@datapunt/matomo-tracker-react";
-import ENVIRONMENT from "@common/constants/environment";
+import { ENVIRONMENT } from "@common/constants/environment";
 
 class Index extends Component {
   constructor() {
