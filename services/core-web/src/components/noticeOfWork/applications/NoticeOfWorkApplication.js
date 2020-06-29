@@ -113,6 +113,7 @@ export class NoticeOfWorkApplication extends Component {
     showOriginalValues: false,
     fixedTop: false,
     menuVisible: false,
+    adminMenuVisible: false,
     noticeOfWorkPageFromRoute: undefined,
     showNullScreen: false,
     initialPermitGuid: "",
@@ -174,7 +175,7 @@ export class NoticeOfWorkApplication extends Component {
   };
 
   setActiveTab = (tab) => {
-    this.setState({ activeTab: tab, isLoaded: true });
+    this.setState({ activeTab: tab });
   };
 
   renderOriginalValues = (path) => {
@@ -228,11 +229,11 @@ export class NoticeOfWorkApplication extends Component {
   };
 
   handleVisibleChange = (flag) => {
-    this.setState({ menuVisible: flag });
+    this.setState({ menuVisible: flag, adminMenuVisible: flag });
   };
 
   handleMenuClick = () => {
-    this.setState({ menuVisible: false });
+    this.setState({ menuVisible: false, adminMenuVisible: false });
   };
 
   showApplicationForm = () => {
@@ -530,7 +531,7 @@ export class NoticeOfWorkApplication extends Component {
   };
 
   handleTabChange = (key) => {
-    this.setState({ isLoaded: false });
+    console.log(key);
     this.props.history.replace(
       routes.NOTICE_OF_WORK_APPLICATION.dynamicRoute(
         this.props.noticeOfWork.now_application_guid,
@@ -544,7 +545,7 @@ export class NoticeOfWorkApplication extends Component {
     const showErrors = errorsLength > 0 && this.state.submitting;
     return this.state.isViewMode ? (
       <div className="inline-flex block-mobile padding-md between">
-        <h1>Technical Review</h1>
+        <h2>Technical Review</h2>
         <Dropdown
           overlay={this.menu(true)}
           placement="bottomLeft"
@@ -761,7 +762,7 @@ export class NoticeOfWorkApplication extends Component {
             <TabPane tab="Draft Permit" key="draft-permit" disabled={!isImported}>
               <LoadingWrapper condition={this.state.isLoaded}>
                 <div className="page__content">
-                  <h1> Draft Permit</h1>
+                  <h2> Draft Permit</h2>
                   <Divider style={{ margin: 0 }} />
                   {this.renderPermitGeneration()}
                 </div>
@@ -771,7 +772,7 @@ export class NoticeOfWorkApplication extends Component {
             <TabPane tab="Referral/Consultation" key="referral-consultation" disabled={!isImported}>
               <LoadingWrapper condition={this.state.isLoaded}>
                 <div className="page__content">
-                  <h1>Referral/Consultation</h1>
+                  <h2>Referral/Consultation</h2>
                   <Divider style={{ margin: 0 }} />
                   <NOWApplicationReviews
                     mineGuid={this.props.noticeOfWork.mine_guid}
@@ -785,12 +786,12 @@ export class NoticeOfWorkApplication extends Component {
               <LoadingWrapper condition={this.state.isLoaded}>
                 <div className="page__content">
                   <div className="inline-flex block-mobile padding-md between">
-                    <h1>Administrative</h1>
+                    <h2>Administrative</h2>
                     <Dropdown
-                      overlay={this.menu()}
+                      overlay={this.menu(false)}
                       placement="bottomLeft"
                       onVisibleChange={this.handleVisibleChange}
-                      visible={this.state.menuVisible}
+                      visible={this.state.adminMenuVisible}
                     >
                       <Button type="secondary" className="full-mobile">
                         Actions

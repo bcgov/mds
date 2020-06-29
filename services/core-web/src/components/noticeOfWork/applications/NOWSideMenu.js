@@ -49,7 +49,6 @@ export class NOWSideMenu extends Component {
 
     // Extracts "#blasting" from "#blasting&state=bd74ea1c-09e5-4d7e-810f-d...", for example.
     link = link.substr(0, link.indexOf("&"));
-
     this.updateUrlRoute(link);
     this.anchor.handleScrollTo(link);
   }
@@ -61,8 +60,9 @@ export class NOWSideMenu extends Component {
 
   handleAnchorOnChange = (currentActiveLink) => {
     if (
-      this.props.history.action === "POP" &&
-      currentActiveLink === this.props.history.location.hash
+      (this.props.history.action === "POP" &&
+        currentActiveLink === this.props.history.location.hash) ||
+      this.props.match.params.tab !== "technical-review"
     ) {
       return;
     }
