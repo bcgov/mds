@@ -13,6 +13,8 @@ import fetchEnv from "./fetchEnv";
 import { MatomoProvider, createInstance } from "@datapunt/matomo-tracker-react";
 import { ENVIRONMENT } from "@common/constants/environment";
 
+let instance = {};
+
 class Index extends Component {
   constructor() {
     super();

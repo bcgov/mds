@@ -15,6 +15,8 @@ import configureStore from "./store/configureStore";
 
 export const store = configureStore();
 
+let instance = {};
+
 export class Index extends Component {
   constructor() {
     super();
