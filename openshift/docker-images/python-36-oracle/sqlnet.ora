@@ -1,8 +1,8 @@
-ENCRYPTION_WALLET_LOCATION =
+WALLET_LOCATION =
    (SOURCE =
      (METHOD = FILE)
      (METHOD_DATA =
-       (DIRECTORY = /opt/app-root/oracle_bin/instantclient/wallet)
+       (DIRECTORY = /opt/app-root/oracle_bin/instantclient/client_wallet)
      )
    )
 
