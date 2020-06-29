@@ -37,8 +37,8 @@ RUN chmod 777 $APP_ROOT/oracle_bin/instantclient/sqlnet.ora
 RUN chmod 777 $APP_ROOT/oracle_bin/instantclient/tnsnames.ora
 
 # Copy "test connection" script
-COPY test_connection.py $APP_ROOT/src/app/nris/utils
-RUN chmod 777 $APP_ROOT/src/app/nris/utils/test_connection.py
+COPY test_connection.py $APP_ROOT/oracle_bin/instantclient/
+RUN chmod 777 $APP_ROOT/oracle_bin/instantclient/test_connection.py
 
 
 USER 1001
