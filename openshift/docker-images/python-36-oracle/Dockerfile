@@ -4,7 +4,6 @@ ENV LD_LIBRARY_PATH="$APP_ROOT/oracle_bin/instantclient" \
     OCI_HOME="$APP_ROOT/oracle_bin/instantclient" \
     OCI_LIB_DIR="$APP_ROOT/oracle_bin/instantclient" \
     OCI_INCLUDE_DIR="$APP_ROOT/oracle_bin/instantclient/sdk/include" \
-    TNS_ADMIN="$APP_ROOT/oracle_bin/instantclient" \
     ORACLE_HOME="$APP_ROOT/oracle_bin/instantclient"
 
 RUN mkdir -p /tmp/oracle
@@ -29,13 +28,13 @@ RUN echo '${APP_ROOT}/oracle_bin/instantclient/' | tee -a /etc/ld.so.conf.d/orac
     rm -rf /var/lib/apt/lists/*
 
 # Copy NRIS DB wallet
-RUN mkdir -p $APP_ROOT/oracle_bin/instantclient/client_wallet
-COPY client_wallet $APP_ROOT/oracle_bin/instantclient/client_wallet
-COPY sqlnet.ora $APP_ROOT/oracle_bin/instantclient
-COPY tnsnames.ora $APP_ROOT/oracle_bin/instantclient
-RUN chmod 777 -R $APP_ROOT/oracle_bin/instantclient/client_wallet
-RUN chmod 777 $APP_ROOT/oracle_bin/instantclient/sqlnet.ora
-RUN chmod 777 $APP_ROOT/oracle_bin/instantclient/tnsnames.ora
+#RUN mkdir -p $APP_ROOT/oracle_bin/instantclient/network/admin/client_wallet
+COPY client_wallet $APP_ROOT/oracle_bin/instantclient/network/admin
+COPY sqlnet.ora $APP_ROOT/oracle_bin/instantclient/network/admin
+COPY tnsnames.ora $APP_ROOT/oracle_bin/instantclient/network/admin
+RUN chmod 777 -R $APP_ROOT/oracle_bin/instantclient/network/admin/client_wallet
+RUN chmod 777 $APP_ROOT/oracle_bin/instantclient/network/admin/sqlnet.ora
+RUN chmod 777 $APP_ROOT/oracle_bin/instantclient/network/admin/tnsnames.ora
 
 # Copy "test connection" script
 COPY test_connection.py $APP_ROOT/oracle_bin/instantclient
