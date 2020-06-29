@@ -189,5 +189,9 @@ class PermitResource(Resource, UserMixin):
         if not permit:
             raise NotFound('Permit not found.')
 
-        permit.soft_delete()
+        try:
+            permit.soft_delete()
+        except Exception as e:
+            raise BadRequest(e)
+
         return None, 204

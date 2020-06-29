@@ -49,7 +49,7 @@ simple_additional_search_targets = {
         'description': 'Permits',
         'entities_to_return': [Permit.permit_guid, Permit.permit_no],
         'columns_to_search': [Permit.permit_no],
-        'has_deleted_ind': False,
+        'has_deleted_ind': True,
         'id_field': 'mine_guid',
         'value_field': 'permit_no',
         'score_multiplier': 1000
@@ -63,7 +63,7 @@ full_additional_search_targets = {
         'description': 'Permits',
         'entities_to_return': [Permit.permit_guid, Permit.permit_no],
         'columns_to_search': [Permit.permit_no],
-        'has_deleted_ind': False,
+        'has_deleted_ind': True,
         'id_field': 'permit_guid',
         'value_field': 'permit_no',
         'score_multiplier': 1000
@@ -92,7 +92,7 @@ full_additional_search_targets = {
         ],
         'columns_to_search': [PermitAmendmentDocument.document_name],
         'has_deleted_ind':
-        False,
+        True,
         'id_field':
         'permit_amendment_document_guid',
         'value_field':

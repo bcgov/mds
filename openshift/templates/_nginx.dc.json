@@ -55,6 +55,10 @@
       "value": "/"
     },
     {
+      "name": "TUSD_SERVICE_URL",
+      "value": "tusd"
+    },    
+    {
       "name": "CORE_DOMAIN",
       "required": true
     },

@@ -17,6 +17,7 @@ class Document(AuditMixin, Base):
     upload_completed_date = db.Column(db.DateTime, nullable=True)
     file_display_name = db.Column(db.String(255), nullable=False)
     path_display_name = db.Column(db.String(4096), nullable=False)
+    object_store_path = db.Column(db.String)
 
     def __repr__(self):
         return '<Document %r>' % self.document_id
@@ -29,7 +30,8 @@ class Document(AuditMixin, Base):
             'upload_completed_date':
             str(self.upload_completed_date) if self.upload_completed_date else None,
             'file_display_name': self.file_display_name,
-            'path_display_name': self.path_display_name
+            'path_display_name': self.path_display_name,
+            'object_store_path': self.object_store_path
         }
 
     @classmethod
