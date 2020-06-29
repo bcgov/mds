@@ -28,11 +28,11 @@ RUN echo '${APP_ROOT}/oracle_bin/instantclient/' | tee -a /etc/ld.so.conf.d/orac
     rm -rf /var/lib/apt/lists/*
 
 # Copy NRIS DB wallet
-RUN mkdir -p $APP_ROOT/oracle_bin/instantclient/wallet
-COPY wallet $APP_ROOT/oracle_bin/instantclient/wallet
+RUN mkdir -p $APP_ROOT/oracle_bin/instantclient/client_wallet
+COPY client_wallet $APP_ROOT/oracle_bin/instantclient/client_wallet
 COPY sqlnet.ora $APP_ROOT/oracle_bin/instantclient
 COPY tnsnames.ora $APP_ROOT/oracle_bin/instantclient
-RUN chmod 777 -R $APP_ROOT/oracle_bin/instantclient/wallet
+RUN chmod 777 -R $APP_ROOT/oracle_bin/instantclient/client_wallet
 RUN chmod 777 $APP_ROOT/oracle_bin/instantclient/sqlnet.ora
 RUN chmod 777 $APP_ROOT/oracle_bin/instantclient/tnsnames.ora
 
