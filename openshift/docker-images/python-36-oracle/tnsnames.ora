@@ -52,3 +52,13 @@ mds_nris_6 =
             (SERVICE_NAME = enfprod1.nrs.bcgov)
         )
     )
+
+mds_nris_dlvr1 =
+(DESCRIPTION =
+(ADDRESS = (PROTOCOL = TCPS)(HOST = nrcdb01.bcgov)(PORT = 1543))
+(CONNECT_DATA =
+(SERVER = DEDICATED)
+(SERVICE_NAME = enfdlvr1.nrs.bcgov)
+)
+(SECURITY=(ssl_server_cert_dn="CN=NRCDB01.bcgov"))
+)
