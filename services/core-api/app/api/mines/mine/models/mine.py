@@ -144,13 +144,7 @@ class Mine(AuditMixin, Base):
 
     @hybrid_property
     def mine_permit_numbers(self):
-<<<<<<< HEAD
         p_numbers = [mpi.permit_no for mpi in self._permit_identities]
-=======
-        rows = db.session.query(Permit.permit_no).filter(
-            Permit.mine_guid == self.mine_guid, Permit.deleted_ind == False).distinct().all()
-        p_numbers = [permit_no for permit_no, in rows]
->>>>>>> develop
         return p_numbers
 
     @hybrid_property
