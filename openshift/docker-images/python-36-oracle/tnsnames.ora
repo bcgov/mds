@@ -7,16 +7,6 @@ mds_nris =
         )
     )
 
-mds_nris_2 =
-    (DESCRIPTION =
-        (ADDRESS = (PROTOCOL = TCPS)(HOST = nrkdb03.bcgov)(PORT = 1543))
-        (CONNECT_DATA =
-            (SERVER = DEDICATED)
-            (SERVICE_NAME = enfprod1.nrs.bcgov)
-        )
-        (SECURITY=(ssl_server_cert_dn="CN=nrkdb03.bcgov"))
-    )
-
 mds_nris_3 =
     (DESCRIPTION =
         (ADDRESS = (PROTOCOL = TCPS)(HOST = nrkdb03.bcgov)(PORT = 1543))
@@ -53,12 +43,6 @@ mds_nris_6 =
         )
     )
 
-mds_nris_dlvr1 =
-(DESCRIPTION =
-(ADDRESS = (PROTOCOL = TCPS)(HOST = nrcdb01.bcgov)(PORT = 1543))
-(CONNECT_DATA =
-(SERVER = DEDICATED)
-(SERVICE_NAME = enfdlvr1.nrs.bcgov)
-)
-(SECURITY=(ssl_server_cert_dn="CN=NRCDB01.bcgov"))
-)
+mds_nris_7 = (DESCRIPTION = (ADDRESS = (PROTOCOL = TCPS)(HOST = nrkdb03.bcgov)(PORT = 1543)) (CONNECT_DATA = (SERVER = DEDICATED) (SERVICE_NAME = enfprod1.nrs.bcgov) ) (SECURITY=(ssl_server_cert_dn="CN=nrkdb03.bcgov")) )
+mds_nris_8 = (DESCRIPTION = (ADDRESS = (PROTOCOL = TCPS)(HOST = nrkdb03.bcgov)(PORT = 1543)) (CONNECT_DATA = (SERVER = DEDICATED) (SERVICE_NAME = enfprod1.nrs.bcgov) ) (SECURITY=(ssl_server_cert_dn="CN=csnrdbaProd@gov.bc.ca")) )
+mds_nris_9 = (DESCRIPTION = (ADDRESS = (PROTOCOL = TCPS)(HOST = nrcdb01.bcgov)(PORT = 1543)) (CONNECT_DATA = (SERVER = DEDICATED) (SERVICE_NAME = enfdlvr1.nrs.bcgov) ) (SECURITY=(ssl_server_cert_dn="CN=csnrdba@gov.bc.ca")) )
