@@ -247,7 +247,6 @@ export class NoticeOfWorkApplication extends Component {
   };
 
   toggleEditMode = () => {
-    console.log("im being called for some reason whyyyy");
     this.setState((prevState) => ({
       isViewMode: !prevState.isViewMode,
       menuVisible: false,
