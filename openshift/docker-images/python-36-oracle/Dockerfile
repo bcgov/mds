@@ -1,6 +1,6 @@
 FROM "__FROM_IMAGE_STREAM_DEFINED_IN_TEMPLATE__"
 
-ENV LD_LIBRARY_PATH="${APP_ROOT}/oracle_bin/instantclient" \
+ENV LD_LIBRARY_PATH="$APP_ROOT/oracle_bin/instantclient" \
     OCI_HOME="$APP_ROOT/oracle_bin/instantclient" \
     OCI_LIB_DIR="$APP_ROOT/oracle_bin/instantclient" \
     OCI_INCLUDE_DIR="$APP_ROOT/oracle_bin/instantclient/sdk/include" \
