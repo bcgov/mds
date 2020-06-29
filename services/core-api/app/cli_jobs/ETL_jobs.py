@@ -26,12 +26,13 @@ def run_ETL():
     try:
         print('Beginning Core ETL')
 
-        # db.session.execute('select transfer_mine_information();')
-        # db.session.commit()
-        # db.session.execute('select transfer_mine_manager_information();')
-        # db.session.commit()
+        db.session.execute('select transfer_mine_information();')
+        db.session.commit()
+        db.session.execute('select transfer_mine_manager_information();')
+        db.session.commit()
 
-        permit_etl(connection)
+        db.session.execute('select transfer_permit_permitee_information();')
+        db.session.commit()
 
         db.session.execute('select transfer_mine_status_information();')
         db.session.commit()
