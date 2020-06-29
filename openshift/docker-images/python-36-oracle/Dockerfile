@@ -4,7 +4,8 @@ ENV LD_LIBRARY_PATH="${APP_ROOT}/oracle_bin/instantclient" \
     OCI_HOME="$APP_ROOT/oracle_bin/instantclient" \
     OCI_LIB_DIR="$APP_ROOT/oracle_bin/instantclient" \
     OCI_INCLUDE_DIR="$APP_ROOT/oracle_bin/instantclient/sdk/include" \
-    TNS_ADMIN="$APP_ROOT/oracle_bin/instantclient"
+    TNS_ADMIN="$APP_ROOT/oracle_bin/instantclient" \
+    ORACLE_HOME="$APP_ROOT/oracle_bin/instantclient"
 
 RUN mkdir -p /tmp/oracle
 
