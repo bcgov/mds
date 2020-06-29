@@ -9,10 +9,10 @@ import {
   importNoticeOfWorkApplication,
 } from "@common/actionCreators/noticeOfWorkActionCreator";
 import { getDropdownInspectors } from "@common/selectors/partiesSelectors";
-import AssignLeadInspector from "@/components/noticeOfWork/applications/applicationStepOne/AssignLeadInspector";
-import VerifyNOWMineInformation from "@/components/noticeOfWork/applications/applicationStepOne/verification/VerifyNOWMineInformation";
+import AssignLeadInspector from "@/components/noticeOfWork/applications/verification/AssignLeadInspector";
+import VerifyNOWMineInformation from "@/components/noticeOfWork/applications/verification/verification/VerifyNOWMineInformation";
 import CustomPropTypes from "@/customPropTypes";
-import MajorMinePermitApplicationCreate from "@/components/noticeOfWork/applications/applicationStepOne/MajorMinePermitApplicationCreate";
+import MajorMinePermitApplicationCreate from "@/components/noticeOfWork/applications/verification/MajorMinePermitApplicationCreate";
 
 const propTypes = {
   mineGuid: PropTypes.string.isRequired,

@@ -36,7 +36,7 @@ import {
 import { getDocumentContextTemplate } from "@/reducers/documentReducer";
 import * as routes from "@/constants/routes";
 import NOWPermitGeneration from "@/components/noticeOfWork/applications/permitGeneration/NOWPermitGeneration";
-import ApplicationStepOne from "@/components/noticeOfWork/applications/applicationStepOne/ApplicationStepOne";
+import ApplicationStepOne from "@/components/noticeOfWork/applications/verification/ApplicationStepOne";
 import NOWApplicationReviews from "@/components/noticeOfWork/applications/referals/NOWApplicationReviews";
 import CustomPropTypes from "@/customPropTypes";
 import ReviewNOWApplication from "@/components/noticeOfWork/applications/review/ReviewNOWApplication";
@@ -247,6 +247,7 @@ export class NoticeOfWorkApplication extends Component {
   };
 
   toggleEditMode = () => {
+    console.log("im being called for some reason whyyyy");
     this.setState((prevState) => ({
       isViewMode: !prevState.isViewMode,
       menuVisible: false,
@@ -675,7 +676,8 @@ export class NoticeOfWorkApplication extends Component {
         <Prompt
           when={!this.state.isViewMode}
           message={(location, action) => {
-            if (action === "REPLACE") {
+            // handle user navigating away from technical while in editMode
+            if (action === "REPLACE" && !location.pathname.includes("technical-review")) {
               this.toggleEditMode();
             }
             return this.props.location.pathname === location.pathname
