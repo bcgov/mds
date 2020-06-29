@@ -232,7 +232,11 @@ export class NoticeOfWorkApplication extends Component {
   };
 
   handleVisibleChange = (flag) => {
-    this.setState({ menuVisible: flag, adminMenuVisible: flag });
+    this.setState({ menuVisible: flag });
+  };
+
+  handleAdminVisibleChange = (flag) => {
+    this.setState({ adminMenuVisible: flag });
   };
 
   handleMenuClick = () => {
@@ -795,7 +799,7 @@ export class NoticeOfWorkApplication extends Component {
                     <Dropdown
                       overlay={this.menu(false)}
                       placement="bottomLeft"
-                      onVisibleChange={this.handleVisibleChange}
+                      onVisibleChange={this.handleAdminVisibleChange}
                       visible={this.state.adminMenuVisible}
                     >
                       <Button type="secondary" className="full-mobile">
