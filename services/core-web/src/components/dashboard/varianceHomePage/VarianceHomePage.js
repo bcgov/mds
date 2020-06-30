@@ -27,6 +27,7 @@ import CustomPropTypes from "@/customPropTypes";
 import { VarianceTable } from "@/components/dashboard/customHomePage/VarianceTable";
 import * as router from "@/constants/routes";
 import VarianceSearch from "./VarianceSearch";
+import { PageTracker } from "@common/utils/trackers";
 
 /**
  * @class Variance page is a landing page for variance searching
@@ -211,6 +212,7 @@ export class VarianceHomePage extends Component {
   render() {
     return (
       <div className="landing-page">
+        <PageTracker title="Variance Page" />
         <div className="landing-page__header">
           <div>
             <h1>Browse Variances</h1>
