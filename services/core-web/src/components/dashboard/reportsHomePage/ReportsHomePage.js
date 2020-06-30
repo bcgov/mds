@@ -16,6 +16,7 @@ import CustomPropTypes from "@/customPropTypes";
 import ReportsTable from "@/components/dashboard/reportsHomePage/ReportsTable";
 import ReportsSearch from "@/components/dashboard/reportsHomePage/ReportsSearch";
 import { modalConfig } from "@/components/modalContent/config";
+import { PageTracker } from "@common/utils/trackers";
 
 const propTypes = {
   fetchReports: PropTypes.func.isRequired,
@@ -153,6 +154,7 @@ export class ReportsHomePage extends Component {
   render() {
     return (
       <div className="landing-page">
+        <PageTracker title="Reports Page" />
         <div className="landing-page__header">
           <div>
             <h1>Browse Reports</h1>
