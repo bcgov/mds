@@ -338,7 +338,7 @@ app {
 environments {
     'dev' {
         vars {
-            DB_PVC_SIZE = '10Gi'
+            DB_PVC_SIZE = '5Gi'
             DOCUMENT_PVC_SIZE = '1Gi'
             BACKUP_VERIFICATION_PVC_SIZE = '200Mi'
             LOG_PVC_SIZE = '1Gi'
@@ -390,17 +390,17 @@ environments {
                 }
                 python {
                     cpu_request = "50m"
-                    cpu_limit = "1"
-                    memory_request = "512Mi"
-                    memory_limit = "1Gi"
+                    cpu_limit = "100m"
+                    memory_request = "256Mi"
+                    memory_limit = "512Mi"
                     uwsgi_threads = 4
                     uwsgi_processes = 2
                     replica_min = 1
                     replica_max = 1
                 }
                 python_lite {
-                    cpu_request = "20m"
-                    cpu_limit = "200m"
+                    cpu_request = "10m"
+                    cpu_limit = "100m"
                     memory_request = "128Mi"
                     memory_limit = "256Mi"
                     uwsgi_threads = 2
@@ -409,10 +409,10 @@ environments {
                     replica_max = 1
                 }
                 postgres {
-                    cpu_request = "20m"
-                    cpu_limit = "300m"
-                    memory_request = "1Gi"
-                    memory_limit = "2Gi"
+                    cpu_request = "50m"
+                    cpu_limit = "100m"
+                    memory_request = "512Mi"
+                    memory_limit = "1Gi"
                 }
                 redis {
                     cpu_request = "10m"
