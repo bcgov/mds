@@ -21,9 +21,9 @@ RUN unzip /tmp/oracle/instantclient-basic-linux.x64-19.3.0.0.0.zip -d ${APP_ROOT
     unzip /tmp/oracle/instantclient-sdk-linux.x64-19.3.0.0.0.zip -d ${APP_ROOT}/oracle_bin && \
     mv ${APP_ROOT}/oracle_bin/instantclient_19_3 ${APP_ROOT}/oracle_bin/instantclient 
 
-# RUN echo /opt/app-root/oracle_bin/instantclient | tee -a /etc/ld.so.conf.d/oracle-instantclient.conf && ldconfig && \
-#     rm -rf /tmp/oracle/instantclient-basic-linux.x64-19.3.0.0.0.zip /tmp/oracle/instantclient-sdk-linux.x64-19.3.0.0.0.zip && \
-#     rm -rf /var/lib/apt/lists/*
+RUN echo /opt/app-root/oracle_bin/instantclient | tee -a /etc/ld.so.conf.d/oracle-instantclient.conf && ldconfig && \
+    rm -rf /tmp/oracle/instantclient-basic-linux.x64-19.3.0.0.0.zip /tmp/oracle/instantclient-sdk-linux.x64-19.3.0.0.0.zip && \
+    rm -rf /var/lib/apt/lists/*
 
 # Copy NRIS DB wallet
 RUN mkdir -p $APP_ROOT/oracle_bin/instantclient/network/admin/wallet
