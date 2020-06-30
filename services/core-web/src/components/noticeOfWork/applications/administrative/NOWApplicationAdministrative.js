@@ -4,7 +4,7 @@ import CustomPropTypes from "@/customPropTypes";
 import FinalPermitDocuments from "@/components/noticeOfWork/applications/FinalPermitDocuments";
 
 /**
- * @class NOWApplicationDecision- contains all information relating to the decision step on a Notice of Work Application
+ * @class NOWApplicationAdministrative- contains all information relating to the Administrative work on a Notice of Work Application
  */
 
 const propTypes = {
@@ -12,7 +12,7 @@ const propTypes = {
   noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
 };
 
-export const NOWApplicationDecision = (props) => {
+export const NOWApplicationAdministrative = (props) => {
   return (
     <div className="page__content">
       <FinalPermitDocuments mineGuid={props.mineGuid} noticeOfWork={props.noticeOfWork} />
@@ -20,6 +20,6 @@ export const NOWApplicationDecision = (props) => {
   );
 };
 
-NOWApplicationDecision.propTypes = propTypes;
+NOWApplicationAdministrative.propTypes = propTypes;
 
-export default NOWApplicationDecision;
+export default NOWApplicationAdministrative;

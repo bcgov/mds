@@ -351,7 +351,7 @@ export class NOWApplicationReviews extends Component {
     return (
       <div>
         <Row type="flex" justify="center">
-          <Col sm={22} md={22} lg={22} className="padding-large--top">
+          <Col lg={24} className="padding-large--top">
             <div className="inline-flex between">
               <div>
                 {!this.props.noticeOfWork.ready_for_review_date && (
@@ -501,7 +501,4 @@ const mapDispatchToProps = (dispatch) =>
 NOWApplicationReviews.propTypes = propTypes;
 NOWApplicationReviews.defaultProps = defaultProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(NOWApplicationReviews);
+export default connect(mapStateToProps, mapDispatchToProps)(NOWApplicationReviews);

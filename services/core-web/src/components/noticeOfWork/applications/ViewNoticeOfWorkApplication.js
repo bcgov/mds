@@ -101,12 +101,18 @@ export class ViewNoticeOfWorkApplication extends Component {
     }
   };
 
+  // making this generic/reusable between NoticeOfWorkApplication.js and this view
+  renderOriginalValues = () => {
+    return { value: "N/A", edited: false };
+  };
+
   render() {
     return (
       <div className="page">
         <LoadingWrapper condition={this.state.isLoaded}>
           <div
-            className={this.state.fixedTop ? "steps--header fixed-scroll-view" : "steps--header"}
+            style={{ padding: "30px" }}
+            className={this.state.fixedTop ? "view--header fixed-scroll-view" : "view--header"}
           >
             <div className="inline-flex between">
               <NoticeOfWorkPageHeader
@@ -127,7 +133,7 @@ export class ViewNoticeOfWorkApplication extends Component {
           </div>
           <div>
             <div
-              className={this.state.fixedTop ? "side-menu--fixed" : "side-menu"}
+              className={this.state.fixedTop ? "side-menu--fixed--view" : "side-menu"}
               style={
                 this.state.fixedTop && this.state.noticeOfWorkPageFromRoute
                   ? { paddingTop: "24px" }
@@ -148,6 +154,7 @@ export class ViewNoticeOfWorkApplication extends Component {
               }
             >
               <ReviewNOWApplication
+                renderOriginalValues={this.renderOriginalValues}
                 reclamationSummary={this.props.reclamationSummary}
                 isViewMode
                 initialValues={

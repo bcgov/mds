@@ -84,15 +84,14 @@
   }
 }
 
-.steps {
+.view {
+  padding: 10px;
   &--header {
-    padding: 30px;
     box-shadow: $default-box-shadow;
     &.fixed-scroll {
-      padding: 10px;
+      top: 60px;
       position: fixed;
       width: 100vw;
-      top: -20px;
       background-color: $pure-white;
       z-index: 50;
     }
@@ -117,6 +116,11 @@
   }
 }
 
+.now-tabs .ant-tabs-bar {
+  text-align: center;
+  margin: 0;
+}
+
 .fixed-top {
   position: relative;
 }
@@ -133,6 +137,12 @@
 
     @include tablet {
       display: none;
+    }
+
+    &--view {
+      position: fixed;
+      width: 240px;
+      top: 160px;
     }
   }
 
