@@ -1,8 +1,12 @@
+SQLNET.AUTHENTICATION_SERVICES= (NTS)
+
+NAMES.DIRECTORY_PATH= (TNSNAMES, EZCONNECT)
+
 WALLET_LOCATION =
    (SOURCE =
      (METHOD = FILE)
      (METHOD_DATA =
-       (DIRECTORY = /opt/app-root/oracle_bin/instantclient/network/admin)
+       (DIRECTORY = /opt/app-root/oracle_bin/instantclient/network/admin/wallet)
      )
    )
 
