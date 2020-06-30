@@ -96,6 +96,12 @@
       "value": "https://delivery.apps.gov.bc.ca/ext/sgw/geo.allgov"
     },
     {
+      "name": "MATOMO_URL",
+      "displayName": "Matomo Url",
+      "description": "URL for the tracking component",
+      "value": "https://matomo-empr-mds-test.pathfinder.gov.bc.ca/"
+    },
+    {
       "name": "CPU_LIMIT",
       "value": "250m"
     },
@@ -251,6 +257,10 @@
                   {
                     "name": "SITEMINDER_URL",
                     "value": "${SITEMINDER_URL}"
+                  },
+                  {
+                    "name": "MATOMO_URL",
+                    "value": "${MATOMO_URL}"
                   }
                 ],
                 "resources": {

@@ -164,7 +164,8 @@ app {
                             'KEYCLOAK_IDP_HINT': "${vars.keycloak.idpHint_minespace}",
                             'SITEMINDER_URL': "${vars.keycloak.siteminder_url}",
                             'API_URL': "https://${vars.modules.'mds-nginx'.HOST_CORE}${vars.modules.'mds-nginx'.PATH}/api",
-                            'DOCUMENT_MANAGER_URL': "https://${vars.modules.'mds-nginx'.HOST_CORE}${vars.modules.'mds-nginx'.PATH}/document-manager"
+                            'DOCUMENT_MANAGER_URL': "https://${vars.modules.'mds-nginx'.HOST_CORE}${vars.modules.'mds-nginx'.PATH}/document-manager",
+                            'MATOMO_URL': "${vars.deployment.matomo_url}"
                     ]
                 ],
                 [
@@ -448,6 +449,8 @@ environments {
                 elastic_service_name = "MDS Dev"
                 elastic_service_name_nris = "NRIS API Dev"
                 elastic_service_name_docman = 'DocMan Dev'
+                matomo_url = "https://matomo-empr-mds-test.pathfinder.gov.bc.ca/"
+
             }
             modules {
                 'mds-frontend' {
