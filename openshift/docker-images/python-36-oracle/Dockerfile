@@ -38,6 +38,8 @@ RUN chmod 777 $APP_ROOT/oracle_bin/instantclient/network/admin/tnsnames.ora
 COPY test_connection.py $APP_ROOT/oracle_bin/instantclient
 RUN chmod 777 $APP_ROOT/oracle_bin/instantclient/test_connection.py
 
+RUN chmod 777 /etc/ld.so.conf.d/oracle-instantclient.conf
+
 
 USER 1001
 
