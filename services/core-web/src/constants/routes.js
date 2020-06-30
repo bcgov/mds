@@ -242,16 +242,20 @@ export const CREATE_NOTICE_OF_WORK_APPLICATION = {
 };
 
 export const NOTICE_OF_WORK_APPLICATION = {
-  route: "/dashboard/notice-of-work/application/:id/",
-  dynamicRoute: (guid) => `/dashboard/notice-of-work/application/${guid}/`,
-  hashRoute: (guid, link) => `/dashboard/notice-of-work/application/${guid}/${link}`,
+  route: "/dashboard/notice-of-work/application/:id/:tab",
+  dynamicRoute: (guid, tab) =>
+    tab
+      ? `/dashboard/notice-of-work/application/${guid}/${tab}`
+      : `/dashboard/notice-of-work/application/${guid}/verification`,
+  hashRoute: (guid, tab, link) => `/dashboard/notice-of-work/application/${guid}/${tab}/${link}`,
   component: NoticeOfWorkApplication,
 };
 
 export const VIEW_NOTICE_OF_WORK_APPLICATION = {
-  route: "/dashboard/notice-of-work/application/:id/view",
-  dynamicRoute: (guid) => `/dashboard/notice-of-work/application/${guid}/view`,
-  hashRoute: (guid, link) => `/dashboard/notice-of-work/application/${guid}/view${link}`,
+  route: "/dashboard/notice-of-work/view-application/:id/:tab",
+  dynamicRoute: (guid) => `/dashboard/notice-of-work/view-application/${guid}/technical-review`,
+  hashRoute: (guid, tab, link) =>
+    `/dashboard/notice-of-work/view-application/${guid}/${tab}/${link}`,
   component: ViewNoticeOfWorkApplication,
 };
 

@@ -46,6 +46,7 @@ class DocumentManagerService():
             'filename': filename,
             'authorization': authorization_header
         }
+
         my_client = client.TusClient(cls.document_manager_url, headers=data)
         uploader = my_client.uploader(file_stream=io.BytesIO(file_content), chunk_size=2048)
         uploader.upload()

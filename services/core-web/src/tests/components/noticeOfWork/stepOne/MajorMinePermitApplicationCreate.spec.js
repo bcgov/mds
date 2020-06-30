@@ -1,6 +1,6 @@
 import React from "react";
 import { shallow } from "enzyme";
-import { MajorMinePermitApplicationCreate } from "@/components/noticeOfWork/applications/applicationStepOne/MajorMinePermitApplicationCreate";
+import { MajorMinePermitApplicationCreate } from "@/components/noticeOfWork/applications/verification/MajorMinePermitApplicationCreate";
 import * as MOCK from "@/tests/mocks/dataMocks";
 
 const dispatchProps = {};

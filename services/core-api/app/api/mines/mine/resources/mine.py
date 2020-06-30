@@ -165,7 +165,8 @@ class MineListResource(Resource, UserMixin):
             number_filter = Mine.mine_no.ilike('%{}%'.format(search_term))
             permit_filter = Permit.permit_no.ilike('%{}%'.format(search_term))
             mines_name_query = Mine.query.filter(name_filter | number_filter)
-            permit_query = Mine.query.join(Permit).filter(permit_filter)
+            permit_query = Mine.query.join(Permit).filter(permit_filter,
+                                                          Permit.deleted_ind == False)
             mines_query = mines_name_query.union(permit_query)
         # Filter by Major Mine, if provided
         if major_mine_filter_term == "true" or major_mine_filter_term == "false":
