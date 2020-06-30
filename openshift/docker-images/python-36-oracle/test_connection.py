@@ -7,6 +7,8 @@ dsn = 'mds_nris_prod_1'
 
 # dsn = 'mds_nris_test_1'
 
+cx_Oracle.init_oracle_client(config_dir='/opt/app-root/oracle_bin/instantclient')
+
 oracle_db = cx_Oracle.connect(user='PROXY_NRIS_MDS_TEMP', password='bgiu68hdl0dsecesqc0g', dsn=dsn, encoding="UTF-8")
 
 # oracle_db = cx_Oracle.connect(user='luke_test', password='luketest12#', dsn=dsn, encoding="UTF-8")
