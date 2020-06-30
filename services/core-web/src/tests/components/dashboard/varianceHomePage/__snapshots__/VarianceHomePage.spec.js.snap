@@ -4,6 +4,9 @@ exports[`VarianceHomePage renders properly 1`] = `
 <div
   className="landing-page"
 >
+  <PageTracker
+    title="Variance Page"
+  />
   <div
     className="landing-page__header"
   >

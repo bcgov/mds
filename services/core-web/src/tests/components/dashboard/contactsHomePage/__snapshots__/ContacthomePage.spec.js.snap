@@ -4,6 +4,9 @@ exports[`ContactHomePage renders properly 1`] = `
 <div
   className="landing-page"
 >
+  <PageTracker
+    title="Contacts Page"
+  />
   <div
     className="landing-page__header"
   >
