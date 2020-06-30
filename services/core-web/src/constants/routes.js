@@ -252,9 +252,10 @@ export const NOTICE_OF_WORK_APPLICATION = {
 };
 
 export const VIEW_NOTICE_OF_WORK_APPLICATION = {
-  route: "/dashboard/notice-of-work/view-application/:id",
-  dynamicRoute: (guid) => `/dashboard/notice-of-work/view-application/${guid}`,
-  hashRoute: (guid, link) => `/dashboard/notice-of-work/view-application/${guid}/${link}`,
+  route: "/dashboard/notice-of-work/view-application/:id/:tab",
+  dynamicRoute: (guid) => `/dashboard/notice-of-work/view-application/${guid}/technical-review`,
+  hashRoute: (guid, tab, link) =>
+    `/dashboard/notice-of-work/view-application/${guid}/${tab}/${link}`,
   component: ViewNoticeOfWorkApplication,
 };
 
