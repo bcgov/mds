@@ -34,6 +34,7 @@ import IncidentsSearch from "./IncidentsSearch";
 import { modalConfig } from "@/components/modalContent/config";
 import * as ModalContent from "@/constants/modalContent";
 import * as FORM from "@/constants/forms";
+import { PageTracker } from "@common/utils/trackers";
 
 /**
  * @class Incidents page is a landing page for all incidents in the system
@@ -247,6 +248,7 @@ export class IncidentsHomePage extends Component {
   render() {
     return (
       <div className="landing-page">
+        <PageTracker title="Incidents Page" />
         <div className="landing-page__header">
           <div>
             <h1>Browse Incidents</h1>
