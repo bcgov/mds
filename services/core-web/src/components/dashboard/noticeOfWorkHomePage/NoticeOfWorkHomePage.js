@@ -20,6 +20,7 @@ import CustomPropTypes from "@/customPropTypes";
 import NoticeOfWorkTable from "@/components/dashboard/noticeOfWorkHomePage/NoticeOfWorkTable";
 import NoticeOfWorkSearch from "@/components/dashboard/noticeOfWorkHomePage/NoticeOfWorkSearch";
 import ResponsivePagination from "@/components/common/ResponsivePagination";
+import { PageTracker } from "@common/utils/trackers";
 
 const propTypes = {
   fetchNoticeOfWorkApplications: PropTypes.func.isRequired,
@@ -108,6 +109,7 @@ export class NoticeOfWorkHomePage extends Component {
   render() {
     return (
       <div className="landing-page">
+        <PageTracker title="NoW Page" />
         <div className="landing-page__header">
           <div>
             <h1>Browse Notices of Work</h1>
