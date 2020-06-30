@@ -12,8 +12,8 @@ export const store = configureStore();
 const App = () => (
   <BrowserRouter basename={process.env.BASE_PATH}>
     <ScrollToTopWrapper>
+      <MatomoLinkTracing />
       <Fragment>
-        <MatomoLinkTracing />
         <Routes />
         <ModalWrapper />
       </Fragment>
