@@ -398,7 +398,11 @@ NOW_APPLICATION_MODEL = api.model(
         'security_total':
         fields.Fixed(decimals=2),
         'security_received_date':
-        Date
+        Date,
+        'last_updated_date':
+        Date,
+        'last_updated_by':
+        fields.String
     })
 
 NOW_VIEW_MODEL = api.model(

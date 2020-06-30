@@ -2,6 +2,7 @@
 export const DEFAULT_ENVIRONMENT = {
   apiUrl: "http://localhost:5000",
   docManUrl: "http://localhost:5001",
+  matomoUrl: "https://matomo-empr-mds-test.pathfinder.gov.bc.ca/",
   environment: "development",
   firstNationsLayerUrl: "https://delivery.apps.gov.bc.ca/ext/sgw/geo.allgov",
   keycloak_resource: "mines-application-local",
@@ -13,6 +14,7 @@ export const DEFAULT_ENVIRONMENT = {
 export const ENVIRONMENT = {
   apiUrl: "<API_URL>",
   docManUrl: "<DOCUMENT_MANAGER_URL>",
+  matomoUrl: "<MATOMO_URL>",
   firstNationsLayerUrl: "<FN_LAYER_URL>",
   environment: "<ENV>",
 };

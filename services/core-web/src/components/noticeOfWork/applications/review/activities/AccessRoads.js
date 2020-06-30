@@ -11,9 +11,10 @@ import RenderField from "@/components/common/RenderField";
 import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
 import RenderRadioButtons from "@/components/common/RenderRadioButtons";
 import CustomPropTypes from "@/customPropTypes";
-import { NOWFieldOriginTooltip } from "@/components/common/CoreTooltip";
+import { NOWFieldOriginTooltip, NOWOriginalValueTooltip } from "@/components/common/CoreTooltip";
 
 const propTypes = {
+  renderOriginalValues: PropTypes.func.isRequired,
   isViewMode: PropTypes.bool.isRequired,
   details: CustomPropTypes.activityDetails.isRequired,
   equipment: CustomPropTypes.activityEquipment.isRequired,
@@ -218,6 +219,14 @@ export const AccessRoads = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Proposed reclamation and timing for this specific activity
+            <NOWOriginalValueTooltip
+              originalValue={
+                props.renderOriginalValues("exploration_access.reclamation_description").value
+              }
+              isVisible={
+                props.renderOriginalValues("exploration_access.reclamation_description").edited
+              }
+            />
           </div>
           <Field
             id="reclamation_description"
@@ -230,6 +239,12 @@ export const AccessRoads = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Estimated Cost of reclamation activities described above
+            <NOWOriginalValueTooltip
+              originalValue={
+                props.renderOriginalValues("exploration_access.reclamation_cost").value
+              }
+              isVisible={props.renderOriginalValues("exploration_access.reclamation_cost").edited}
+            />
           </div>
           <Field
             id="reclamation_cost"

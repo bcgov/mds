@@ -58,6 +58,15 @@ class Permit(AuditMixin, Base):
     def __repr__(self):
         return '<Permit %r>' % self.permit_guid
 
+    def soft_delete(self):
+        if self.bonds:
+            raise Exception('Unable to delete permit with attached bonds.')
+        if self.permit_amendments:
+            for amendment in self.permit_amendments:
+                amendment.soft_delete(True)
+        self.deleted_ind = True
+        self.save()
+
     @classmethod
     def find_by_permit_guid(cls, _id):
         return cls.query.filter_by(permit_guid=_id, deleted_ind=False).first()

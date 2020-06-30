@@ -10,6 +10,7 @@ import {
   fetchMineIncidents,
   createMineIncident,
   updateMineIncident,
+  deleteMineIncident,
 } from "@common/actionCreators/incidentActionCreator";
 import { getMineIncidents } from "@common/selectors/incidentSelectors";
 import { getMines, getMineGuid } from "@common/selectors/mineSelectors";
@@ -53,6 +54,7 @@ const propTypes = {
   fetchMineIncidents: PropTypes.func.isRequired,
   createMineIncident: PropTypes.func.isRequired,
   updateMineIncident: PropTypes.func.isRequired,
+  deleteMineIncident: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
@@ -90,6 +92,12 @@ export class MineIncidents extends Component {
         this.props.closeModal();
         this.props.fetchMineIncidents(this.props.mineGuid);
       });
+  };
+
+  handleDeleteMineIncident = (values) => {
+    this.props.deleteMineIncident(this.props.mineGuid, values.mine_incident_guid).then(() => {
+      this.props.fetchMineIncidents(this.props.mineGuid);
+    });
   };
 
   parseIncidentIntoFormData = (existingIncident) => ({
@@ -186,6 +194,7 @@ export class MineIncidents extends Component {
           openMineIncidentModal={this.openMineIncidentModal}
           handleEditMineIncident={this.handleEditMineIncident}
           openViewMineIncidentModal={this.openViewMineIncidentModal}
+          handleDeleteMineIncident={this.handleDeleteMineIncident}
         />
       </div>
     );
@@ -211,6 +220,7 @@ const mapDispatchToProps = (dispatch) =>
       fetchMineIncidents,
       createMineIncident,
       updateMineIncident,
+      deleteMineIncident,
       destroy,
       openModal,
       closeModal,

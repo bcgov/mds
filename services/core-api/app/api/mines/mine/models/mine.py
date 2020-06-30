@@ -54,7 +54,11 @@ class Mine(AuditMixin, Base):
 
     #Almost always used, but faster to use selectin to load related data
     mine_permit = db.relationship(
-        'Permit', backref='mine', order_by='desc(Permit.create_timestamp)', lazy='selectin')
+        'Permit',
+        backref='mine',
+        order_by='desc(Permit.create_timestamp)',
+        primaryjoin="and_(Permit.mine_guid == Mine.mine_guid, Permit.deleted_ind==False)",
+        lazy='selectin')
 
     mine_type = db.relationship(
         'MineType',
@@ -71,7 +75,12 @@ class Mine(AuditMixin, Base):
         lazy='select')
 
     mine_party_appt = db.relationship('MinePartyAppointment', backref="mine", lazy='select')
-    mine_incidents = db.relationship('MineIncident', backref="mine", lazy='select')
+    mine_incidents = db.relationship(
+        'MineIncident',
+        backref="mine",
+        lazy='select',
+        primaryjoin="and_(MineIncident.mine_guid == Mine.mine_guid, MineIncident.deleted_ind==False)"
+    )
     mine_reports = db.relationship('MineReport', lazy='select')
 
     comments = db.relationship(
@@ -123,8 +132,8 @@ class Mine(AuditMixin, Base):
 
     @hybrid_property
     def mine_permit_numbers(self):
-        rows = db.session.query(
-            Permit.permit_no).filter(Permit.mine_guid == self.mine_guid).distinct().all()
+        rows = db.session.query(Permit.permit_no).filter(
+            Permit.mine_guid == self.mine_guid, Permit.deleted_ind == False).distinct().all()
         p_numbers = [permit_no for permit_no, in rows]
         return p_numbers
 
@@ -167,7 +176,8 @@ class Mine(AuditMixin, Base):
             number_filter = Mine.mine_no.ilike('%{}%'.format(term))
             permit_filter = Permit.permit_no.ilike('%{}%'.format(term))
             mines_q = Mine.query.filter(name_filter | number_filter).filter_by(deleted_ind=False)
-            permit_q = Mine.query.join(Permit).filter(permit_filter)
+            permit_q = Mine.query.join(Permit).filter(permit_filter).filter(
+                Permit.deleted_ind == False)
             mines_q = mines_q.union(permit_q)
         else:
             mines_q = Mine.query
@@ -179,7 +189,7 @@ class Mine(AuditMixin, Base):
 
     @classmethod
     def find_all_major_mines(cls):
-        return cls.query.filter_by(major_mine_ind=True).filter_by(deleted_ind=False).all()
+        return cls.query.filter_by(major_mine_ind=True, deleted_ind=False).all()
 
     @classmethod
     def find_by_mine_no_or_guid(cls, _id):

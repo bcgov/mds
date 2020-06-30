@@ -35,6 +35,8 @@ exports[`MinePermitInfo renders properly 1`] = `
   <Connect(MinePermitTable)
     expandedRowKeys={Array []}
     handleAddPermitAmendmentApplication={[Function]}
+    handleDeletePermit={[Function]}
+    handleDeletePermitAmendment={[Function]}
     isLoaded={false}
     major_mine_ind={true}
     onExpand={[Function]}

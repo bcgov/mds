@@ -65,7 +65,7 @@ export const createPermitAmendment = (mineGuid, permitGuid, payload) => (dispatc
   dispatch(showLoading("modal"));
   return CustomAxios()
     .post(
-      `${ENVIRONMENT.apiUrl}${API.PERMITAMENDMENTS(mineGuid, permitGuid)}`,
+      `${ENVIRONMENT.apiUrl}${API.PERMIT_AMENDMENTS(mineGuid, permitGuid)}`,
       payload,
       createRequestHeader()
     )
@@ -88,7 +88,7 @@ export const updatePermitAmendment = (mineGuid, permitGuid, permitAmdendmentGuid
   dispatch(showLoading());
   return CustomAxios()
     .put(
-      `${ENVIRONMENT.apiUrl}${API.PERMITAMENDMENT(mineGuid, permitGuid, permitAmdendmentGuid)}`,
+      `${ENVIRONMENT.apiUrl}${API.PERMIT_AMENDMENT(mineGuid, permitGuid, permitAmdendmentGuid)}`,
       payload,
       createRequestHeader()
     )
@@ -114,7 +114,7 @@ export const removePermitAmendmentDocument = (
   dispatch(showLoading());
   return CustomAxios()
     .delete(
-      `${ENVIRONMENT.apiUrl}${API.PERMITAMENDMENTDOCUMENT(
+      `${ENVIRONMENT.apiUrl}${API.PERMIT_AMENDMENT_DOCUMENT(
         mineGuid,
         permitGuid,
         permitAmdendmentGuid,
@@ -131,5 +131,45 @@ export const removePermitAmendmentDocument = (
       return response;
     })
     .catch(() => dispatch(error(reducerTypes.UPDATE_PERMIT_AMENDMENT_DOCUMENT)))
+    .finally(() => dispatch(hideLoading()));
+};
+
+export const deletePermit = (mineGuid, permitGuid) => (dispatch) => {
+  dispatch(request(reducerTypes.DELETE_PERMIT));
+  dispatch(showLoading());
+  return CustomAxios()
+    .delete(
+      `${ENVIRONMENT.apiUrl}${API.PERMIT_DELETE(mineGuid, permitGuid)}`,
+      createRequestHeader()
+    )
+    .then((response) => {
+      notification.success({
+        message: "Successfully deleted permit and all related permit amendments and documents.",
+        duration: 10,
+      });
+      dispatch(success(reducerTypes.DELETE_PERMIT));
+      return response;
+    })
+    .catch(() => dispatch(error(reducerTypes.DELETE_PERMIT)))
+    .finally(() => dispatch(hideLoading()));
+};
+
+export const deletePermitAmendment = (mineGuid, permitGuid, permitAmdendmentGuid) => (dispatch) => {
+  dispatch(request(reducerTypes.DELETE_PERMIT_AMENDMENT));
+  dispatch(showLoading());
+  return CustomAxios()
+    .delete(
+      `${ENVIRONMENT.apiUrl}${API.PERMIT_AMENDMENT(mineGuid, permitGuid, permitAmdendmentGuid)}`,
+      createRequestHeader()
+    )
+    .then((response) => {
+      notification.success({
+        message: "Successfully deleted permit amendment and all related documents.",
+        duration: 10,
+      });
+      dispatch(success(reducerTypes.DELETE_PERMIT_AMENDMENT));
+      return response;
+    })
+    .catch(() => dispatch(error(reducerTypes.DELETE_PERMIT_AMENDMENT)))
     .finally(() => dispatch(hideLoading()));
 };
