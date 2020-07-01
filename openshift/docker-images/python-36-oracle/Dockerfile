@@ -16,7 +16,7 @@ RUN mkdir -p ${APP_ROOT}/oracle_bin
 
 USER 0
 
-RUN yum -y install libaio1
+RUN yum -y install libaio
 
 
 RUN unzip /tmp/oracle/instantclient-basic-linux.x64-19.3.0.0.0.zip -d ${APP_ROOT}/oracle_bin && \
