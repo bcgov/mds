@@ -40,15 +40,16 @@ RUN chmod 777 $APP_ROOT/oracle_bin/instantclient/network/admin/tnsnames.ora
 COPY test_connection.py $APP_ROOT/oracle_bin/instantclient
 RUN chmod 777 $APP_ROOT/oracle_bin/instantclient/test_connection.py
 
-RUN mkdir -p $APP_ROOT/src/app/db/wallet
-COPY test_connection.py $APP_ROOT/src/app/db
-COPY wallet $APP_ROOT/src/app/db/wallet
-COPY sqlnet.ora $APP_ROOT/src/app/db
-COPY tnsnames.ora $APP_ROOT/src/app/db
-RUN chmod 777 $APP_ROOT/src/app/db/test_connection.py
-RUN chmod 777 -R $APP_ROOT/src/app/db/wallet
-RUN chmod 777 $APP_ROOT/src/app/db/sqlnet.ora
-RUN chmod 777 $APP_ROOT/src/app/db/tnsnames.ora
+# NOTE: These commands cause the build to fail
+# RUN mkdir -p $APP_ROOT/src/app/db/wallet
+# COPY test_connection.py $APP_ROOT/src/app/db
+# COPY wallet $APP_ROOT/src/app/db/wallet
+# COPY sqlnet.ora $APP_ROOT/src/app/db
+# COPY tnsnames.ora $APP_ROOT/src/app/db
+# RUN chmod 777 $APP_ROOT/src/app/db/test_connection.py
+# RUN chmod 777 -R $APP_ROOT/src/app/db/wallet
+# RUN chmod 777 $APP_ROOT/src/app/db/sqlnet.ora
+# RUN chmod 777 $APP_ROOT/src/app/db/tnsnames.ora
 
 USER 1001
 
