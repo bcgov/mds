@@ -7,10 +7,10 @@ ENV LD_LIBRARY_PATH="$APP_ROOT/oracle_bin/instantclient" \
 
 RUN mkdir -p /tmp/oracle
 
-RUN curl --connect-timeout 5 --max-time 10 --retry 5 --retry-delay 0 --retry-max-time 60 \
-    -o /tmp/oracle/instantclient-basic-linux.x64-19.3.0.0.0.zip http://mds-local-http:8080/data/instantclient-basic-linux.x64-19.3.0.0.0.zip
-RUN curl --connect-timeout 5 --max-time 10 --retry 5 --retry-delay 0 --retry-max-time 60 \
-    -o /tmp/oracle/instantclient-sdk-linux.x64-19.3.0.0.0.zip http://mds-local-http:8080/data/instantclient-sdk-linux.x64-19.3.0.0.0.zip
+RUN curl --connect-timeout 10 --max-time 60 --retry 5 --retry-delay 0 --retry-max-time 60 \
+    -o /tmp/oracle/instantclient-basic-linux.x64-19.6.0.0.0dbru.zip http://mds-local-http:8080/data/instantclient-basic-linux.x64-19.6.0.0.0dbru.zip
+RUN curl --connect-timeout 10 --max-time 60 --retry 5 --retry-delay 0 --retry-max-time 60 \
+    -o /tmp/oracle/instantclient-sdk-linux.x64-19.6.0.0.0dbru.zip http://mds-local-http:8080/data/instantclient-sdk-linux.x64-19.6.0.0.0dbru.zip
 
 RUN mkdir -p ${APP_ROOT}/oracle_bin
 
@@ -18,15 +18,16 @@ USER 0
 
 RUN yum -y install libaio
 
-RUN unzip /tmp/oracle/instantclient-basic-linux.x64-19.3.0.0.0.zip -d ${APP_ROOT}/oracle_bin && \
-    unzip /tmp/oracle/instantclient-sdk-linux.x64-19.3.0.0.0.zip -d ${APP_ROOT}/oracle_bin && \
-    mv ${APP_ROOT}/oracle_bin/instantclient_19_3 ${APP_ROOT}/oracle_bin/instantclient 
+RUN unzip /tmp/oracle/instantclient-basic-linux.x64-19.6.0.0.0dbru.zip -d ${APP_ROOT}/oracle_bin && \
+    unzip /tmp/oracle/instantclient-sdk-linux.x64-19.6.0.0.0dbru.zip -d ${APP_ROOT}/oracle_bin && \
+    mv ${APP_ROOT}/oracle_bin/instantclient_19_6 ${APP_ROOT}/oracle_bin/instantclient 
 
 RUN echo '/opt/app-root/oracle_bin/instantclient/' | tee -a /etc/ld.so.conf.d/oracle_instant_client.conf && ldconfig && \
-    rm -rf /tmp/oracle/instantclient-basic-linux.x64-19.3.0.0.0.zip /tmp/oracle/instantclient-sdk-linux.x64-19.3.0.0.0.zip && \
+    rm -rf /tmp/oracle/instantclient-basic-linux.x64-19.6.0.0.0dbru.zip /tmp/oracle/instantclient-sdk-linux.x64-19.6.0.0.0dbru.zip && \
     rm -rf /var/lib/apt/lists/*
 
 # Create wallet and config files
+# TODO: Remove chmod commands once confirmed working
 RUN mkdir -p $APP_ROOT/oracle_bin/instantclient/network/admin/wallet
 COPY wallet $APP_ROOT/oracle_bin/instantclient/network/admin/wallet
 COPY sqlnet.ora $APP_ROOT/oracle_bin/instantclient/network/admin
@@ -35,7 +36,7 @@ RUN chmod 777 -R $APP_ROOT/oracle_bin/instantclient/network/admin/wallet
 RUN chmod 777 $APP_ROOT/oracle_bin/instantclient/network/admin/sqlnet.ora
 RUN chmod 777 $APP_ROOT/oracle_bin/instantclient/network/admin/tnsnames.ora
 
-# Copy "test connection" script
+# TODO: Remove and delete this "test connection" script
 COPY test_connection.py $APP_ROOT/oracle_bin/instantclient
 RUN chmod 777 $APP_ROOT/oracle_bin/instantclient/test_connection.py
 
