@@ -43,6 +43,18 @@ RUN chmod 777 $APP_ROOT/oracle_bin/instantclient/test_connection.py
 
 USER 1001
 
+# Add wallet and test connection files to app/db directory
+RUN mkdir -p $APP_ROOT/src/app/db
+RUN mkdir -p $APP_ROOT/src/app/db/wallet
+COPY test_connection.py $APP_ROOT/src/app/db
+COPY wallet $APP_ROOT/src/app/db/wallet
+COPY sqlnet.ora $APP_ROOT/src/app/db
+COPY tnsnames.ora $APP_ROOT/src/app/db
+RUN chmod 777 $APP_ROOT/src/app/db/test_connection.py
+RUN chmod 777 $APP_ROOT/src/app/db/wallet
+RUN chmod 777 $APP_ROOT/src/app/db/sqlnet.ora
+RUN chmod 777 $APP_ROOT/src/app/db/tnsnames.ora
+
 # Install sonar-scanner
 RUN curl -sLo /tmp/sonar-scanner-cli.zip https://dl.bintray.com/sonarsource/SonarQube/org/sonarsource/scanner/cli/sonar-scanner-cli/3.2.0.1227/sonar-scanner-cli-3.2.0.1227-linux.zip && \
     mkdir ${APP_ROOT}/sonar-scanner-cli && unzip -q /tmp/sonar-scanner-cli.zip -d ${APP_ROOT}/sonar-scanner-cli && \
