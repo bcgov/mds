@@ -37,8 +37,6 @@ RUN chmod 777 -R $APP_ROOT/oracle_bin/instantclient/network/admin/wallet
 RUN chmod 777 $APP_ROOT/oracle_bin/instantclient/network/admin/sqlnet.ora
 RUN chmod 777 $APP_ROOT/oracle_bin/instantclient/network/admin/tnsnames.ora
 
-RUN export LD_LIBRARY_PATH=/opt/app-root/oracle_bin/instantclient
-
 # Copy "test connection" script
 COPY test_connection.py $APP_ROOT/oracle_bin/instantclient
 RUN chmod 777 $APP_ROOT/oracle_bin/instantclient/test_connection.py
@@ -60,3 +58,9 @@ RUN source /opt/app-root/etc/scl_enable && \
     set -x && \
     pip install -U pip setuptools wheel && \
     cd ${APP_ROOT}/src && pip install -r requirements.txt
+
+USER 0
+
+RUN export LD_LIBRARY_PATH=/opt/app-root/oracle_bin/instantclient
+
+USER 1001
