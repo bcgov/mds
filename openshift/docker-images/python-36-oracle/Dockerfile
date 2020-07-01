@@ -61,6 +61,6 @@ RUN source /opt/app-root/etc/scl_enable && \
 
 USER 0
 
-RUN export LD_LIBRARY_PATH=/opt/app-root/oracle_bin/instantclient
+RUN export LD_LIBRARY_PATH=/opt/app-root/oracle_bin/instantclient:$LD_LIBRARY_PATH
 
 USER 1001
