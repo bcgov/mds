@@ -1,7 +1,6 @@
 FROM "__FROM_IMAGE_STREAM_DEFINED_IN_TEMPLATE__"
 
-ENV LD_LIBRARY_PATH="$APP_ROOT/oracle_bin/instantclient" \
-    OCI_HOME="$APP_ROOT/oracle_bin/instantclient" \
+ENV OCI_HOME="$APP_ROOT/oracle_bin/instantclient" \
     OCI_LIB_DIR="$APP_ROOT/oracle_bin/instantclient" \
     OCI_INCLUDE_DIR="$APP_ROOT/oracle_bin/instantclient/sdk/include"
 
@@ -22,8 +21,7 @@ RUN unzip /tmp/oracle/instantclient-basic-linux.x64-19.6.0.0.0dbru.zip -d ${APP_
     unzip /tmp/oracle/instantclient-sdk-linux.x64-19.6.0.0.0dbru.zip -d ${APP_ROOT}/oracle_bin && \
     mv ${APP_ROOT}/oracle_bin/instantclient_19_6 ${APP_ROOT}/oracle_bin/instantclient 
 
-RUN echo '/opt/app-root/oracle_bin/instantclient/' | tee -a /etc/ld.so.conf.d/oracle_instant_client.conf && ldconfig && \
-    rm -rf /tmp/oracle/instantclient-basic-linux.x64-19.6.0.0.0dbru.zip /tmp/oracle/instantclient-sdk-linux.x64-19.6.0.0.0dbru.zip && \
+RUN rm -rf /tmp/oracle/instantclient-basic-linux.x64-19.6.0.0.0dbru.zip /tmp/oracle/instantclient-sdk-linux.x64-19.6.0.0.0dbru.zip && \
     rm -rf /var/lib/apt/lists/*
 
 # Create wallet and config files
