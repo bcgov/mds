@@ -205,7 +205,7 @@
             "env": [
               {
                 "name": "BUILD_LOGLEVEL",
-                "value": "3"
+                "value": "2"
               }
             ]
           }
