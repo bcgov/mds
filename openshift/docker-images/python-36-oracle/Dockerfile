@@ -18,7 +18,6 @@ USER 0
 
 RUN yum -y install libaio
 
-
 RUN unzip /tmp/oracle/instantclient-basic-linux.x64-19.3.0.0.0.zip -d ${APP_ROOT}/oracle_bin && \
     unzip /tmp/oracle/instantclient-sdk-linux.x64-19.3.0.0.0.zip -d ${APP_ROOT}/oracle_bin && \
     mv ${APP_ROOT}/oracle_bin/instantclient_19_3 ${APP_ROOT}/oracle_bin/instantclient 
@@ -27,8 +26,7 @@ RUN echo '/opt/app-root/oracle_bin/instantclient/' | tee -a /etc/ld.so.conf.d/or
     rm -rf /tmp/oracle/instantclient-basic-linux.x64-19.3.0.0.0.zip /tmp/oracle/instantclient-sdk-linux.x64-19.3.0.0.0.zip && \
     rm -rf /var/lib/apt/lists/*
 
-
-# Copy NRIS DB wallet
+# Create wallet and config files
 RUN mkdir -p $APP_ROOT/oracle_bin/instantclient/network/admin/wallet
 COPY wallet $APP_ROOT/oracle_bin/instantclient/network/admin/wallet
 COPY sqlnet.ora $APP_ROOT/oracle_bin/instantclient/network/admin
@@ -41,7 +39,6 @@ RUN chmod 777 $APP_ROOT/oracle_bin/instantclient/network/admin/tnsnames.ora
 COPY test_connection.py $APP_ROOT/oracle_bin/instantclient
 RUN chmod 777 $APP_ROOT/oracle_bin/instantclient/test_connection.py
 
-# Add wallet and test connection files to app/db directory
 # RUN mkdir -p $APP_ROOT/src/app/db
 # RUN mkdir -p $APP_ROOT/src/app/db/wallet
 # COPY test_connection.py $APP_ROOT/src/app/db
@@ -70,9 +67,3 @@ RUN source /opt/app-root/etc/scl_enable && \
     set -x && \
     pip install -U pip setuptools wheel && \
     cd ${APP_ROOT}/src && pip install -r requirements.txt
-
-USER 0
-
-RUN export LD_LIBRARY_PATH=/opt/app-root/oracle_bin/instantclient:$LD_LIBRARY_PATH
-
-USER 1001
