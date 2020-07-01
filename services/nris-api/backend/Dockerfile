@@ -8,8 +8,9 @@ ENV LD_LIBRARY_PATH="/opt/oracle/instantclient" \
 RUN curl -o instantclient-basic-linux.x64-19.6.0.0.0dbru.zip http://mds-local-http-empr-mds-tools.pathfinder.gov.bc.ca/data/instantclient-basic-linux.x64-19.6.0.0.0dbru.zip
 RUN curl -o instantclient-sdk-linux.x64-19.6.0.0.0dbru.zip http://mds-local-http-empr-mds-tools.pathfinder.gov.bc.ca/data/instantclient-sdk-linux.x64-19.6.0.0.0dbru.zip
 
+# TODO: Remove "vim"
 RUN apt-get update
-RUN BUILD_PACKAGES="build-essential unzip curl libaio1 python-minimal git" && \
+RUN BUILD_PACKAGES="build-essential unzip curl libaio1 git vim" && \
     apt-get install -y $BUILD_PACKAGES
 
 RUN mkdir -p opt/oracle && \
