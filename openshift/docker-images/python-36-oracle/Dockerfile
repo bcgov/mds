@@ -18,7 +18,6 @@ USER 0
 
 RUN yum -y install libaio1
 
-USER 1001
 
 RUN unzip /tmp/oracle/instantclient-basic-linux.x64-19.3.0.0.0.zip -d ${APP_ROOT}/oracle_bin && \
     unzip /tmp/oracle/instantclient-sdk-linux.x64-19.3.0.0.0.zip -d ${APP_ROOT}/oracle_bin && \
@@ -27,6 +26,9 @@ RUN unzip /tmp/oracle/instantclient-basic-linux.x64-19.3.0.0.0.zip -d ${APP_ROOT
 RUN echo '/opt/app-root/oracle_bin/instantclient/' | tee -a /etc/ld.so.conf.d/oracle_instant_client.conf && ldconfig && \
     rm -rf /tmp/oracle/instantclient-basic-linux.x64-19.3.0.0.0.zip /tmp/oracle/instantclient-sdk-linux.x64-19.3.0.0.0.zip && \
     rm -rf /var/lib/apt/lists/*
+
+USER 1001
+
 
 # Copy NRIS DB wallet
 RUN mkdir -p $APP_ROOT/oracle_bin/instantclient/network/admin/wallet
