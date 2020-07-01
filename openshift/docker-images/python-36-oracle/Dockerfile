@@ -26,8 +26,6 @@ RUN echo '/opt/app-root/oracle_bin/instantclient/' | tee -a /etc/ld.so.conf.d/or
     rm -rf /tmp/oracle/instantclient-basic-linux.x64-19.6.0.0.0dbru.zip /tmp/oracle/instantclient-sdk-linux.x64-19.6.0.0.0dbru.zip && \
     rm -rf /var/lib/apt/lists/*
 
-USER 1001
-
 # Create wallet and config files
 # TODO: Remove chmod commands once confirmed working
 RUN mkdir -p $APP_ROOT/oracle_bin/instantclient/network/admin/wallet
@@ -42,16 +40,17 @@ RUN chmod 777 $APP_ROOT/oracle_bin/instantclient/network/admin/tnsnames.ora
 COPY test_connection.py $APP_ROOT/oracle_bin/instantclient
 RUN chmod 777 $APP_ROOT/oracle_bin/instantclient/test_connection.py
 
-# NOTE: This causes the build to fail
-# RUN mkdir -p $APP_ROOT/src/app/db/wallet
-# COPY test_connection.py $APP_ROOT/src/app/db
-# COPY wallet $APP_ROOT/src/app/db/wallet
-# COPY sqlnet.ora $APP_ROOT/src/app/db
-# COPY tnsnames.ora $APP_ROOT/src/app/db
-# RUN chmod 777 $APP_ROOT/src/app/db/test_connection.py
-# RUN chmod 777 -R $APP_ROOT/src/app/db/wallet
-# RUN chmod 777 $APP_ROOT/src/app/db/sqlnet.ora
-# RUN chmod 777 $APP_ROOT/src/app/db/tnsnames.ora
+RUN mkdir -p $APP_ROOT/src/app/db/wallet
+COPY test_connection.py $APP_ROOT/src/app/db
+COPY wallet $APP_ROOT/src/app/db/wallet
+COPY sqlnet.ora $APP_ROOT/src/app/db
+COPY tnsnames.ora $APP_ROOT/src/app/db
+RUN chmod 777 $APP_ROOT/src/app/db/test_connection.py
+RUN chmod 777 -R $APP_ROOT/src/app/db/wallet
+RUN chmod 777 $APP_ROOT/src/app/db/sqlnet.ora
+RUN chmod 777 $APP_ROOT/src/app/db/tnsnames.ora
+
+USER 1001
 
 # Install sonar-scanner
 RUN curl -sLo /tmp/sonar-scanner-cli.zip https://dl.bintray.com/sonarsource/SonarQube/org/sonarsource/scanner/cli/sonar-scanner-cli/3.2.0.1227/sonar-scanner-cli-3.2.0.1227-linux.zip && \
