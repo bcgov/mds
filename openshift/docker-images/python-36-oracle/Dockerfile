@@ -1,6 +1,7 @@
 FROM "__FROM_IMAGE_STREAM_DEFINED_IN_TEMPLATE__"
 
 ENV LD_LIBRARY_PATH="$APP_ROOT/oracle_bin/instantclient" \
+    PATH="$APP_ROOT/oracle_bin/instantclient" \
     OCI_HOME="$APP_ROOT/oracle_bin/instantclient" \
     OCI_LIB_DIR="$APP_ROOT/oracle_bin/instantclient" \
     OCI_INCLUDE_DIR="$APP_ROOT/oracle_bin/instantclient/sdk/include"
@@ -11,6 +12,8 @@ RUN curl --connect-timeout 10 --max-time 60 --retry 5 --retry-delay 0 --retry-ma
     -o /tmp/oracle/instantclient-basic-linux.x64-19.6.0.0.0dbru.zip http://mds-local-http:8080/data/instantclient-basic-linux.x64-19.6.0.0.0dbru.zip
 RUN curl --connect-timeout 10 --max-time 60 --retry 5 --retry-delay 0 --retry-max-time 60 \
     -o /tmp/oracle/instantclient-sdk-linux.x64-19.6.0.0.0dbru.zip http://mds-local-http:8080/data/instantclient-sdk-linux.x64-19.6.0.0.0dbru.zip
+RUN curl --connect-timeout 10 --max-time 60 --retry 5 --retry-delay 0 --retry-max-time 60 \
+    -o /tmp/oracle/instantclient-sqlplus-linux.x64-19.6.0.0.0dbru.zip http://mds-local-http:8080/data/instantclient-sqlplus-linux.x64-19.6.0.0.0dbru.zip
 
 RUN mkdir -p ${APP_ROOT}/oracle_bin
 
@@ -20,10 +23,11 @@ RUN yum -y install libaio
 
 RUN unzip /tmp/oracle/instantclient-basic-linux.x64-19.6.0.0.0dbru.zip -d ${APP_ROOT}/oracle_bin && \
     unzip /tmp/oracle/instantclient-sdk-linux.x64-19.6.0.0.0dbru.zip -d ${APP_ROOT}/oracle_bin && \
+    unzip /tmp/oracle/instantclient-sqlplus-linux.x64-19.6.0.0.0dbru.zip -d ${APP_ROOT}/oracle_bin && \
     mv ${APP_ROOT}/oracle_bin/instantclient_19_6 ${APP_ROOT}/oracle_bin/instantclient 
 
 RUN echo '/opt/app-root/oracle_bin/instantclient/' | tee -a /etc/ld.so.conf.d/oracle_instant_client.conf && ldconfig && \
-    rm -rf /tmp/oracle/instantclient-basic-linux.x64-19.6.0.0.0dbru.zip /tmp/oracle/instantclient-sdk-linux.x64-19.6.0.0.0dbru.zip && \
+    rm -rf /tmp/oracle/instantclient-basic-linux.x64-19.6.0.0.0dbru.zip /tmp/oracle/instantclient-sdk-linux.x64-19.6.0.0.0dbru.zip /tmp/oracle/instantclient-sqlplus-linux.x64-19.6.0.0.0dbru.zip && \
     rm -rf /var/lib/apt/lists/*
 
 # Create wallet and config files
