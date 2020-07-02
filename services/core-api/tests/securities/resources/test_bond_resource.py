@@ -44,8 +44,8 @@ class TestBondsResource:
         """Should return the correct records with a 200 response code"""
 
         batch_size = 5
-        mine, permit = create_mine_and_permit()
-        permits = PermitFactory.create_batch(size=batch_size, mine=mine)
+        mine, permit = create_mine_and_permit(num_permits=batch_size)
+        permits = mine.mine_permit
         bonds = [bond for permit in permits for bond in permit.bonds]
 
         get_resp = test_client.get(
