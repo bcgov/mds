@@ -58,8 +58,7 @@ class Mine(AuditMixin, Base):
         'Permit',
         order_by='desc(Permit.create_timestamp)',
         lazy='selectin',
-        secondary='mine_permit_xref',
-        secondaryjoin="and_(Permit.mine_guid == Mine.mine_guid, Permit.deleted_ind==False)")
+        secondary='mine_permit_xref')
 
     #across all permit_identities
     _mine_permit_amendments = db.relationship('PermitAmendment', lazy='selectin')

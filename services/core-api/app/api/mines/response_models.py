@@ -105,24 +105,18 @@ PERMIT_AMENDMENT_MODEL = api.model(
         'related_documents': fields.List(fields.Nested(PERMIT_AMENDMENT_DOCUMENT_MODEL))
     })
 
-BOND_MODEL = api.model(
-    'Bond',
-    {
-        'bond_guid':fields.String
-    }
-)
+BOND_MODEL = api.model('Bond', {'bond_guid': fields.String})
 
 PERMIT_MODEL = api.model(
     'Permit',
     {
         'permit_id': fields.Integer,
         'permit_guid': fields.String,
-        'mine_guid': fields.String,
         'permit_no': fields.String,
         'permit_status_code': fields.String,
                                                                                  # 'permit_status_code_description': fields.String,
         'permit_amendments': fields.List(fields.Nested(PERMIT_AMENDMENT_MODEL)),
-        'bonds':fields.List(fields.Nested(BOND_MODEL))
+        'bonds': fields.List(fields.Nested(BOND_MODEL))
     })
 
 PERMIT_STATUS_CODE_MODEL = api.model('PermitStatusCode', {
@@ -151,11 +145,12 @@ STATUS_MODEL = api.model(
         'status_description': fields.String,
     })
 
-MINE_REPORT_SUBMISSION_STATUS = api.model('MineReportSubmissionStatus', {
-    'mine_report_submission_status_code': fields.String,
-    'description': fields.String,
-    'active_ind' : fields.Boolean
-})
+MINE_REPORT_SUBMISSION_STATUS = api.model(
+    'MineReportSubmissionStatus', {
+        'mine_report_submission_status_code': fields.String,
+        'description': fields.String,
+        'active_ind': fields.Boolean
+    })
 
 MINE_TSF_MODEL = api.model(
     'MineTailingsStorageFacility', {
@@ -403,7 +398,7 @@ MINE_REPORT_MODEL = api.model(
 MINE_REPORT_DEFINITION_CATEGORIES = api.model('MineReportDefinitionCategoriesModel', {
     'mine_report_category': fields.String,
     'description': fields.String,
-    'active_ind' : fields.Boolean
+    'active_ind': fields.Boolean
 })
 
 MINE_REPORT_DEFINITION_MODEL = api.model(
