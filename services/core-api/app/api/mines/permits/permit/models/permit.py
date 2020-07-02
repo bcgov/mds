@@ -93,27 +93,6 @@ class Permit(AuditMixin, Base):
             raise Exception('this getter is only available if _context_mine has been set')
         return self._context_mine
 
-    # @hybrid_property
-    # def mine(self):
-    #     mine = next(iter(self._all_mines), None)
-    #     if len(self._all_mines) > 1:
-    #         current_app.logger.WARN(
-    #             f'{self.permit_no}.mine returned {mine.mine_no},{mine.mine_name} out of {len(self._all_mines)}'
-    #         )
-    #     return mine
-
-    # @mine.setter
-    # def mine(self, value):
-    #     #factories use this setter. should not be used without
-    #     if len(self._all_mines < 2):
-    #         self._all_mines = [value]
-    #     else:
-    #         raise Exception(
-    #             "Permit is used by multiple mines, cannot override. try mine._all_mines.append()")
-
-    # def get_mine(self, mine_guid):
-    #     return next([m for m in self.all_mines if m.mine_guid == mine_guid], None)
-
     def get_amendments_by_mine_guid(self, mine_guid):
         return [pa for pa in self._all_permit_amendments if pa.mine_guid == mine_guid]
 
