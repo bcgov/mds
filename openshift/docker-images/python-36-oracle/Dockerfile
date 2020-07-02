@@ -1,7 +1,6 @@
 FROM "__FROM_IMAGE_STREAM_DEFINED_IN_TEMPLATE__"
 
 ENV LD_LIBRARY_PATH="$APP_ROOT/oracle_bin/instantclient" \
-    PATH="$APP_ROOT/oracle_bin/instantclient" \
     OCI_HOME="$APP_ROOT/oracle_bin/instantclient" \
     OCI_LIB_DIR="$APP_ROOT/oracle_bin/instantclient" \
     OCI_INCLUDE_DIR="$APP_ROOT/oracle_bin/instantclient/sdk/include"
@@ -43,6 +42,8 @@ RUN chmod 777 $APP_ROOT/oracle_bin/instantclient/network/admin/tnsnames.ora
 # TODO: Remove and delete this "test connection" script
 COPY test_connection.py $APP_ROOT/oracle_bin/instantclient
 RUN chmod 777 $APP_ROOT/oracle_bin/instantclient/test_connection.py
+
+RUN export PATH=$APP_ROOT/oracle_bin/instantclient:$PATH
 
 # NOTE: These commands cause the build to fail
 # RUN mkdir -p $APP_ROOT/src/app/db/wallet
