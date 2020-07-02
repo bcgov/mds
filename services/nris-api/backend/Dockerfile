@@ -1,6 +1,7 @@
 FROM python:3.6
 
-ENV LD_LIBRARY_PATH="/opt/oracle/instantclient" \
+ENV LD_LIBRARY_PATH="/opt/oracle/instantclient:${LD_LIBRARY_PATH}" \
+    PATH="/opt/oracle/instantclient:${PATH}" \
     OCI_HOME="/opt/oracle/instantclient" \
     OCI_LIB_DIR="/opt/oracle/instantclient" \
     OCI_INCLUDE_DIR="/opt/oracle/instantclient/sdk/include"
@@ -32,8 +33,6 @@ COPY tnsnames.ora /opt/oracle/instantclient/network/admin
 # TODO: Remove and delete this "test connection" script
 COPY test_connection.py /opt/oracle/instantclient
 RUN chmod 777 /opt/oracle/instantclient/test_connection.py
-
-RUN export PATH=/opt/oracle/instantclient:$PATH
 
 # Create working directory
 RUN mkdir /app
