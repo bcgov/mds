@@ -2,3 +2,5 @@
 mds_nris_prod_1=(DESCRIPTION=(ADDRESS=(PROTOCOL=TCPS)(HOST=nrkdb03.bcgov)(PORT=1543))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=enfprod1.nrs.bcgov))(SECURITY=(ssl_server_cert_dn="CN=csnrdbaProd@gov.bc.ca")))
 
 mds_nris_test_1=(DESCRIPTION=(ADDRESS=(PROTOCOL=TCPS)(HOST=nrcdb01.bcgov)(PORT=1543))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=enfdlvr1.nrs.bcgov))(SECURITY=(ssl_server_cert_dn="CN=csnrdba@gov.bc.ca")))
+
+mds_nris_test_2=(DESCRIPTION=(ADDRESS=(https_proxy=localhost)(https_proxy_port=80)(PROTOCOL=TCPS)(HOST=nrcdb01.bcgov)(PORT=1543))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=enfdlvr1.nrs.bcgov))(SECURITY=(ssl_server_cert_dn="CN=csnrdba@gov.bc.ca")))
