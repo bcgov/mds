@@ -107,7 +107,7 @@ def test_put_permit_bad_permit_guid(test_client, db_session, auth_headers):
 
 # DELETE
 def test_delete_permit(test_client, db_session, auth_headers):
-    mine, permit = create_mine_and_permit(permit_kwargs={"permit_status_code": 'O'})
+    mine, permit = create_mine_and_permit(permit_kwargs={"permit_status_code": 'O', "bonds": 0})
     permit_guid = permit.permit_guid
 
     delete_resp = test_client.delete(
@@ -116,7 +116,7 @@ def test_delete_permit(test_client, db_session, auth_headers):
 
 
 def test_delete_permit_fail(test_client, db_session, auth_headers):
-    permit = PermitFactory(bonds=1)
+    mine, permit = create_mine_and_permit(permit_kwargs={"bonds": 1})
     permit_guid = permit.permit_guid
 
     delete_resp = test_client.delete(
