@@ -8,13 +8,13 @@ print('test_connection.py')
 dsn = 'mds_nris_test_1'
 
 cx_Oracle.init_oracle_client(
-    lib_dir='/opt/oracle/instantclient',
-    config_dir='/opt/oracle/instantclient/network/admin')
+    lib_dir='/opt/oracle/instantclient', config_dir='/opt/oracle/instantclient/network/admin')
 
 # oracle_db = cx_Oracle.connect(
 #     user='PROXY_NRIS_MDS_TEMP', password='bgiu68hdl0dsecesqc0g', dsn=dsn, encoding="UTF-8")
 
 oracle_db = cx_Oracle.connect(user='luke_test', password='luketest12#', dsn=dsn, encoding="UTF-8")
+oracle_db.client_identifier = 'core'
 
 print('connected')
 
