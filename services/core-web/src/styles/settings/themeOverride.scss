@@ -305,7 +305,8 @@
 // SIDE MENU NAVIGATION
 .ant-anchor-wrapper {
   background-color: $lightest-grey;
-  height: 100%;
+  height: 100vh;
+  margin-bottom: 20px;
 }
 .ant-anchor-link-active {
   border-left: 10px solid $violet;
@@ -320,6 +321,10 @@
 .ant-anchor-link {
   border-bottom: 1px solid $light-grey;
   padding: 7px;
+}
+
+.ant-anchor-link:last-child {
+  border-bottom: none;
 }
 
 // Having html input inherit the antd styling to keep everything consistent

@@ -54,3 +54,21 @@ export const activitiesMenu = [
 export const renderActivities = (type, activity) => {
   return activityConditions[type].includes(activity);
 };
+
+export const draftPermitMenu = [
+  { href: "general-info", title: "General Information", alwaysVisible: true, children: [] },
+  { href: "preamble", title: "Preamble", alwaysVisible: true, children: [] },
+  {
+    href: "conditions",
+    title: "Conditions",
+    alwaysVisible: true,
+    children: [
+      { href: "general", title: "A. General" },
+      { href: "health-safety", title: "B. Healthy and Safety" },
+      { href: "geotechnical", title: "C. Geotechnical" },
+      { href: "environmental-land", title: "D. Environmantal Land" },
+      { href: "reclamation-closure", title: "E. Reclamation and Closure" },
+      { href: "additional-Conditions", title: "F. Additional Conditions" },
+    ],
+  },
+];

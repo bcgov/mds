@@ -87,6 +87,7 @@
 .view {
   padding: 10px;
   &--header {
+    height: 69px;
     box-shadow: $default-box-shadow;
     &.fixed-scroll {
       top: 60px;
@@ -108,7 +109,7 @@
 
   &--content {
     // adding white space to bottom, so scroll-to will take the element to the top of the page always
-    margin-bottom: 500px;
+    margin-bottom: 800px;
 
     &.with-fixed-top {
       margin-top: 80px;

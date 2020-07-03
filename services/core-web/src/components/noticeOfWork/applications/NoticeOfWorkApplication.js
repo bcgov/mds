@@ -323,9 +323,9 @@ export class NoticeOfWorkApplication extends Component {
   };
 
   handleScroll = () => {
-    if (window.pageYOffset > 100 && !this.state.fixedTop) {
+    if (window.pageYOffset > 170 && !this.state.fixedTop) {
       this.setState({ fixedTop: true });
-    } else if (window.pageYOffset <= 100 && this.state.fixedTop) {
+    } else if (window.pageYOffset <= 170 && this.state.fixedTop) {
       this.setState({ fixedTop: false });
     }
   };
@@ -519,20 +519,38 @@ export class NoticeOfWorkApplication extends Component {
       )[0];
     return (
       <>
-        {permittee ? (
-          <NOWPermitGeneration
-            noticeOfWork={this.props.noticeOfWork}
-            documentType={
-              isAmendment
-                ? this.props.generatableApplicationDocuments.PMA
-                : this.props.generatableApplicationDocuments.PMT
-            }
-            isAmendment={isAmendment}
-            handleGenerateDocumentFormSubmit={this.handleGenerateDocumentFormSubmit}
+        <div className={this.renderFixedHeaderClass()}>
+          <h2 className="padding-md"> Draft Permit</h2>
+        </div>
+        <div className={this.state.fixedTop ? "side-menu--fixed" : "side-menu"}>
+          <NOWSideMenu
+            route={routes.NOTICE_OF_WORK_APPLICATION}
+            noticeOfWorkType={this.props.noticeOfWork.notice_of_work_type_code}
+            tabSection="draft-permit"
           />
-        ) : (
-          <NullScreen type="no-permittee" />
-        )}
+        </div>
+        <div
+          className={
+            this.state.fixedTop
+              ? "view--content with-fixed-top side-menu--content"
+              : "view--content side-menu--content"
+          }
+        >
+          {permittee ? (
+            <NOWPermitGeneration
+              noticeOfWork={this.props.noticeOfWork}
+              documentType={
+                isAmendment
+                  ? this.props.generatableApplicationDocuments.PMA
+                  : this.props.generatableApplicationDocuments.PMT
+              }
+              isAmendment={isAmendment}
+              handleGenerateDocumentFormSubmit={this.handleGenerateDocumentFormSubmit}
+            />
+          ) : (
+            <NullScreen type="no-permittee" />
+          )}
+        </div>
       </>
     );
   };
@@ -666,6 +684,9 @@ export class NoticeOfWorkApplication extends Component {
     );
   };
 
+  renderFixedHeaderClass = () =>
+    this.state.fixedTop ? "view--header fixed-scroll" : "view--header";
+
   render() {
     if (this.state.showNullScreen) {
       return <NullScreen type="unauthorized-page" />;
@@ -676,9 +697,6 @@ export class NoticeOfWorkApplication extends Component {
     const errorsLength = Object.keys(flattenObject(this.props.formErrors)).length;
     const showErrors = errorsLength > 0 && this.state.submitting;
     const isImported = this.props.noticeOfWork.imported_to_core;
-
-    const renderFixedClass = () =>
-      this.state.fixedTop ? "view--header fixed-scroll" : "view--header";
 
     return (
       <React.Fragment>
@@ -733,7 +751,7 @@ export class NoticeOfWorkApplication extends Component {
             <TabPane tab="Technical Review" key="technical-review" disabled={!isImported}>
               <LoadingWrapper condition={this.state.isTabLoaded}>
                 <div>
-                  <div className={renderFixedClass()}>{this.renderEditModeNav()}</div>
+                  <div className={this.renderFixedHeaderClass()}>{this.renderEditModeNav()}</div>
                   <div
                     className={this.state.fixedTop ? "side-menu--fixed" : "side-menu"}
                     //  lower fixNav to account for error message
@@ -742,27 +760,26 @@ export class NoticeOfWorkApplication extends Component {
                     <NOWSideMenu
                       route={routes.NOTICE_OF_WORK_APPLICATION}
                       noticeOfWorkType={this.props.noticeOfWork.notice_of_work_type_code}
+                      tabSection="technical-review"
                     />
                   </div>
                   <div
                     className={
-                      this.state.fixedTop ? "steps--content with-fixed-top" : "steps--content"
+                      this.state.fixedTop ? "view--content with-fixed-top" : "view--content"
                     }
                   >
-                    <div>
-                      <ReviewNOWApplication
-                        reclamationSummary={this.props.reclamationSummary}
-                        isViewMode={this.state.isViewMode}
-                        noticeOfWorkType={this.props.noticeOfWork.notice_of_work_type_code}
-                        initialValues={
-                          this.state.showOriginalValues
-                            ? this.props.originalNoticeOfWork
-                            : this.props.noticeOfWork
-                        }
-                        noticeOfWork={this.props.noticeOfWork}
-                        renderOriginalValues={this.renderOriginalValues}
-                      />
-                    </div>
+                    <ReviewNOWApplication
+                      reclamationSummary={this.props.reclamationSummary}
+                      isViewMode={this.state.isViewMode}
+                      noticeOfWorkType={this.props.noticeOfWork.notice_of_work_type_code}
+                      initialValues={
+                        this.state.showOriginalValues
+                          ? this.props.originalNoticeOfWork
+                          : this.props.noticeOfWork
+                      }
+                      noticeOfWork={this.props.noticeOfWork}
+                      renderOriginalValues={this.renderOriginalValues}
+                    />
                   </div>
                 </div>
               </LoadingWrapper>
@@ -770,11 +787,7 @@ export class NoticeOfWorkApplication extends Component {
 
             <TabPane tab="Draft Permit" key="draft-permit" disabled={!isImported}>
               <LoadingWrapper condition={this.state.isTabLoaded}>
-                <div className="page__content">
-                  <h2> Draft Permit</h2>
-                  <Divider style={{ margin: 0 }} />
-                  {this.renderPermitGeneration()}
-                </div>
+                {this.renderPermitGeneration()}
               </LoadingWrapper>
             </TabPane>
 
