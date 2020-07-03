@@ -68,7 +68,7 @@ export const draftPermitMenu = [
       { href: "geotechnical", title: "C. Geotechnical" },
       { href: "environmental-land", title: "D. Environmantal Land" },
       { href: "reclamation-closure", title: "E. Reclamation and Closure" },
-      { href: "additional-Conditions", title: "F. Additional Conditions" },
+      { href: "additional-conditions", title: "F. Additional Conditions" },
     ],
   },
 ];

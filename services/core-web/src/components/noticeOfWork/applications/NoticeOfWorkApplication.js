@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Prompt } from "react-router-dom";
-import { Button, Dropdown, Menu, Icon, Popconfirm, Alert, Tabs, Divider } from "antd";
+import { Button, Dropdown, Menu, Icon, Popconfirm, Alert, Tabs } from "antd";
 import PropTypes from "prop-types";
 import { getFormValues, reset, getFormSyncErrors, focus } from "redux-form";
 import { bindActionCreators } from "redux";
@@ -793,9 +793,10 @@ export class NoticeOfWorkApplication extends Component {
 
             <TabPane tab="Referral/Consultation" key="referral-consultation" disabled={!isImported}>
               <LoadingWrapper condition={this.state.isTabLoaded}>
+                <div className={this.renderFixedHeaderClass()}>
+                  <h2 className="padding-md">Referral/Consultation</h2>
+                </div>
                 <div className="page__content">
-                  <h2>Referral/Consultation</h2>
-                  <Divider style={{ margin: 0 }} />
                   <NOWApplicationReviews
                     mineGuid={this.props.noticeOfWork.mine_guid}
                     noticeOfWork={this.props.noticeOfWork}
@@ -806,7 +807,7 @@ export class NoticeOfWorkApplication extends Component {
 
             <TabPane tab="Administrative" key="administrative" disabled={!isImported}>
               <LoadingWrapper condition={this.state.isTabLoaded}>
-                <div className="page__content">
+                <div className={this.renderFixedHeaderClass()}>
                   <div className="inline-flex block-mobile padding-md between">
                     <h2>Administrative</h2>
                     <Dropdown
@@ -821,7 +822,8 @@ export class NoticeOfWorkApplication extends Component {
                       </Button>
                     </Dropdown>
                   </div>
-                  <Divider style={{ margin: 0 }} />
+                </div>
+                <div className="page__content">
                   <NOWApplicationAdministrative
                     mineGuid={this.props.noticeOfWork.mine_guid}
                     noticeOfWork={this.props.noticeOfWork}

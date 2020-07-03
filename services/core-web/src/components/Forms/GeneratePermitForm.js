@@ -19,7 +19,6 @@ const propTypes = {
 
 export const GeneratePermitForm = (props) => (
   <Form layout="vertical" onSubmit={props.handleSubmit}>
-    <br />
     <ScrollContentWrapper id="general-info" title="General Information">
       <>
         <Row gutter={32}>
@@ -232,8 +231,8 @@ export const GeneratePermitForm = (props) => (
           </Panel>
           <Panel
             header="F. Additional Conditions"
-            key="additional-Conditions"
-            id="additional-Conditions"
+            key="additional-conditions"
+            id="additional-conditions"
           >
             <p>No conditions</p>
           </Panel>

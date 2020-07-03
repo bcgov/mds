@@ -88,19 +88,20 @@
   padding: 10px;
   &--header {
     height: 69px;
-    box-shadow: $default-box-shadow;
     &.fixed-scroll {
       top: 60px;
       position: fixed;
       width: 100vw;
       background-color: $pure-white;
       z-index: 50;
+      box-shadow: $default-box-shadow;
     }
     &.fixed-scroll-view {
       padding: 20px;
       padding-bottom: 10px;
       position: fixed;
       width: 100vw;
+      box-shadow: $default-box-shadow;
       top: 50px;
       background-color: $pure-white;
       z-index: 50;
@@ -109,7 +110,7 @@
 
   &--content {
     // adding white space to bottom, so scroll-to will take the element to the top of the page always
-    margin-bottom: 800px;
+    margin-bottom: 900px;
 
     &.with-fixed-top {
       margin-top: 80px;
@@ -155,6 +156,7 @@
     position: relative;
     padding-right: 20px;
     left: 250px;
+    top: 30px;
     width: calc(100vw - 270px);
 
     @include tablet {
