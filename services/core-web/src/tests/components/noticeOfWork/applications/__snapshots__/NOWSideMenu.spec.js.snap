@@ -52,7 +52,7 @@ exports[`NOWSideMenu renders properly 1`] = `
       />
       <AnchorLink
         className="now-menu-link-"
-        href="#additional-Conditions"
+        href="#additional-conditions"
         title="F. Additional Conditions"
       />
     </AnchorLink>
