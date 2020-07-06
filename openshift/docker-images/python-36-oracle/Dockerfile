@@ -42,7 +42,7 @@ RUN chmod 777 $APP_ROOT/oracle_bin/instantclient/network/admin/tnsnames.ora
 
 # TODO: Remove and delete this "test connection" script
 # COPY test_connection.py $APP_ROOT/oracle_bin/instantclient
-RUN chmod 777 $APP_ROOT/test_connection.py
+RUN chmod 777 $APP_ROOT/src/test_connection.py
 
 # NOTE: These commands cause the build to fail
 # RUN mkdir -p $APP_ROOT/src/app/db/wallet
