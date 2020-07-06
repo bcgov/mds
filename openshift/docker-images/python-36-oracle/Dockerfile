@@ -40,10 +40,6 @@ COPY tnsnames.ora $APP_ROOT/oracle_bin/instantclient/network/admin
 RUN chmod 777 $APP_ROOT/oracle_bin/instantclient/network/admin/sqlnet.ora
 RUN chmod 777 $APP_ROOT/oracle_bin/instantclient/network/admin/tnsnames.ora
 
-# TODO: Remove and delete this "test connection" script
-# COPY test_connection.py $APP_ROOT/oracle_bin/instantclient
-RUN chmod 777 $APP_ROOT/src/test_connection.py
-
 # NOTE: These commands cause the build to fail
 # RUN mkdir -p $APP_ROOT/src/app/db/wallet
 # COPY test_connection.py $APP_ROOT/src/app/db
@@ -76,3 +72,7 @@ RUN source /opt/app-root/etc/scl_enable && \
     set -x && \
     pip install -U pip setuptools wheel && \
     cd ${APP_ROOT}/src && pip install -r requirements.txt
+
+# TODO: Remove and delete this "test connection" script
+# COPY test_connection.py $APP_ROOT/oracle_bin/instantclient
+RUN chmod 777 $APP_ROOT/src/test_connection.py
