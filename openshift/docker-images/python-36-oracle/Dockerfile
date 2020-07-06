@@ -32,17 +32,17 @@ RUN echo '/opt/app-root/oracle_bin/instantclient/' | tee -a /etc/ld.so.conf.d/or
 
 # Create wallet and config files
 # TODO: Remove chmod commands once confirmed working
-RUN mkdir -p $APP_ROOT/oracle_bin/instantclient/network/admin/wallet
-COPY wallet $APP_ROOT/oracle_bin/instantclient/network/admin/wallet
+# RUN mkdir -p $APP_ROOT/oracle_bin/instantclient/network/admin/wallet
+# COPY wallet $APP_ROOT/oracle_bin/instantclient/network/admin/wallet
 COPY sqlnet.ora $APP_ROOT/oracle_bin/instantclient/network/admin
 COPY tnsnames.ora $APP_ROOT/oracle_bin/instantclient/network/admin
-RUN chmod 777 -R $APP_ROOT/oracle_bin/instantclient/network/admin/wallet
+# RUN chmod 777 -R $APP_ROOT/oracle_bin/instantclient/network/admin/wallet
 RUN chmod 777 $APP_ROOT/oracle_bin/instantclient/network/admin/sqlnet.ora
 RUN chmod 777 $APP_ROOT/oracle_bin/instantclient/network/admin/tnsnames.ora
 
 # TODO: Remove and delete this "test connection" script
-COPY test_connection.py $APP_ROOT/oracle_bin/instantclient
-RUN chmod 777 $APP_ROOT/oracle_bin/instantclient/test_connection.py
+# COPY test_connection.py $APP_ROOT/oracle_bin/instantclient
+RUN chmod 777 $APP_ROOT/test_connection.py
 
 # NOTE: These commands cause the build to fail
 # RUN mkdir -p $APP_ROOT/src/app/db/wallet

@@ -24,16 +24,6 @@ RUN mkdir -p opt/oracle && \
     rm -rf instantclient-basic-linux.x64-19.6.0.0.0dbru.zip instantclient-sdk-linux.x64-19.6.0.0.0dbru.zip instantclient-sqlplus-linux.x64-19.6.0.0.0dbru.zip && \
     rm -rf /var/lib/apt/lists/*
 
-# Create wallet and config files
-RUN mkdir -p /opt/oracle/instantclient/network/admin/wallet
-COPY wallet /opt/oracle/instantclient/network/admin/wallet
-COPY sqlnet.ora /opt/oracle/instantclient/network/admin
-COPY tnsnames.ora /opt/oracle/instantclient/network/admin
-
-# TODO: Remove and delete this "test connection" script
-COPY test_connection.py /opt/oracle/instantclient
-RUN chmod 777 /opt/oracle/instantclient/test_connection.py
-
 # Create working directory
 RUN mkdir /app
 WORKDIR /app
@@ -41,6 +31,14 @@ WORKDIR /app
 # Install the requirements
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
+
+# Oracle config files
+COPY sqlnet.ora /opt/oracle/instantclient/network/admin
+COPY tnsnames.ora /opt/oracle/instantclient/network/admin
+
+# TODO: Remove and delete this "test connection" script
+COPY test_connection.py /app
+RUN chmod 777 /app/test_connection.py
 
 # Run the server
 EXPOSE 5500
