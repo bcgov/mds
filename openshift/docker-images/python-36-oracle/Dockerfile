@@ -56,8 +56,8 @@ RUN chmod 777 $APP_ROOT/oracle_bin/instantclient/test_connection.py
 # RUN chmod 777 $APP_ROOT/src/app/db/tnsnames.ora
 
 # NRIS certificates
-# COPY certs /etc/pki/ca-trust/source/anchors
-# RUN update-ca-trust extract
+COPY certs /etc/pki/ca-trust/source/anchors
+RUN update-ca-trust extract
 
 USER 1001
 
