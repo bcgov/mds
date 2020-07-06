@@ -143,6 +143,7 @@ export class ViewNoticeOfWorkApplication extends Component {
               <NOWSideMenu
                 route={routes.VIEW_NOTICE_OF_WORK_APPLICATION}
                 noticeOfWorkType={this.props.noticeOfWork.notice_of_work_type_code}
+                tabSection="technical-review"
               />
             </div>
             <div
