@@ -57,7 +57,8 @@ RUN chmod 777 $APP_ROOT/oracle_bin/instantclient/test_connection.py
 
 # NRIS certificates
 ADD certs /etc/pki/ca-trust/source/anchors
-RUN update-ca-trust extract
+# RUN update-ca-trust extract
+
 USER 1001
 
 # Install sonar-scanner
