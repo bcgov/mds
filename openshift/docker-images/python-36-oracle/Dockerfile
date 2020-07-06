@@ -55,6 +55,12 @@ RUN chmod 777 $APP_ROOT/oracle_bin/instantclient/network/admin/tnsnames.ora
 COPY certs /etc/pki/ca-trust/source/anchors
 RUN update-ca-trust extract
 
+
+# TODO: Remove and delete this "test connection" script
+RUN mkdir -p $APP_ROOT/src/testUtils
+COPY test_connection.py $APP_ROOT/src/testUtils
+RUN chmod 777 $APP_ROOT/src/testUtils/test_connection.py
+
 USER 1001
 
 # Install sonar-scanner
@@ -72,7 +78,3 @@ RUN source /opt/app-root/etc/scl_enable && \
     set -x && \
     pip install -U pip setuptools wheel && \
     cd ${APP_ROOT}/src && pip install -r requirements.txt
-
-# TODO: Remove and delete this "test connection" script
-# COPY test_connection.py $APP_ROOT/oracle_bin/instantclient
-RUN chmod 777 $APP_ROOT/src/test_connection.py
