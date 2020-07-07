@@ -1,0 +1,454 @@
+{
+  "kind": "Template",
+  "apiVersion": "v1",
+  "metadata": {
+    "name": "mds-python-oracle-dc",
+    "creationTimestamp": null
+  },
+  "parameters": [
+    {
+      "name": "NAME",
+      "displayName": "Name",
+      "description": "A name for all objects",
+      "required": true
+    },
+    {
+      "name": "SUFFIX",
+      "displayName": "Name Suffix",
+      "description": "A suffix appended to all objects",
+      "required": true
+    },
+    {
+      "name": "DB_CONFIG_NAME",
+      "displayName": "Database Config Name",
+      "description": "Configuration name for the database",
+      "required": true
+    },
+    {
+      "name": "DB_HOST",
+      "displayName": "Database Host Name",
+      "required": true
+    },
+    {
+      "name": "VERSION",
+      "required": true
+    },
+    {
+      "name": "JWT_OIDC_WELL_KNOWN_CONFIG",
+      "displayName": "Keycloak config URL",
+      "required": true
+    },
+    {
+      "name": "JWT_OIDC_AUDIENCE",
+      "displayName": "Keycloak clientId",
+      "required": true
+    },
+    {
+      "name": "BASE_PATH",
+      "required": false,
+      "value": "/"
+    },
+    {
+      "name": "NRIS_ODB_CREDENTIALS",
+      "required": false,
+      "value": "template.mds-nris-odb-credentials"
+    },
+    {
+      "name": "CPU_LIMIT",
+      "value": "200m"
+    },
+    {
+      "name": "MEMORY_LIMIT",
+      "value": "1Gi"
+    },
+    {
+      "name": "CPU_REQUEST",
+      "value": "150m"
+    },
+    {
+      "name": "MEMORY_REQUEST",
+      "value": "768Mi"
+    },
+    {
+      "name": "UWSGI_PROCESSES",
+      "value": "2"
+    },
+    {
+      "name": "UWSGI_THREADS",
+      "value": "4"
+    },
+    {
+      "name": "REPLICA_MIN",
+      "value": "1"
+    },
+    {
+      "name": "REPLICA_MAX",
+      "value": "1"
+    },
+    {
+      "name": "MDS_ELASTIC_SECRET",
+      "required": false,
+      "value": "template.mds-elastic-secret"
+    },
+    {
+      "name": "ELASTIC_ENABLED",
+      "value": "1"
+    },
+    {
+      "name": "ELASTIC_SERVICE_NAME",
+      "value": "NRIS API Dev"
+    },
+    {
+      "name": "REDIS_CONFIG_NAME",
+      "required": false,
+      "value": "template.mds-redis-secret"
+    },
+    {
+      "name": "CACHE_REDIS_HOST",
+      "required": true
+    },
+    {
+      "name": "ENVIRONMENT_NAME",
+      "displayName": "Environment Name (Environment Id)",
+      "description": "The name or Id of the environment.  This variable is used by the webhook integration to identify the environment in which the backup notifications originate.",
+      "required": false,
+      "value": "dev"
+    }
+  ],
+  "objects": [
+    {
+      "kind": "ImageStream",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "${NAME}",
+        "creationTimestamp": null,
+        "labels": {
+          "shared": "true"
+        },
+        "annotations": {
+          "description": "Keeps track of changes in the application image"
+        }
+      },
+      "spec": {
+        "lookupPolicy": {
+          "local": false
+        },
+        "tags": []
+      }
+    },
+    {
+      "kind": "DeploymentConfig",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "${NAME}${SUFFIX}",
+        "creationTimestamp": null,
+        "labels": null,
+        "annotations": {
+          "description": "Defines how to deploy the application server"
+        }
+      },
+      "spec": {
+        "strategy": {
+          "type": "Rolling",
+          "rollingParams": {
+            "pre": {
+              "failurePolicy": "Retry",
+              "execNewPod": {
+                "containerName": "app",
+                "command": [
+                  "bash",
+                  "-c",
+                  "cd /opt/app-root/src && flask db upgrade"
+                ]
+              }
+            },
+            "maxSurge": "50%",
+            "maxUnavailable": 0,
+            "timeoutSeconds": 1200
+          },
+          "activeDeadlineSeconds": 21600
+        },
+        "triggers": [
+          {
+            "type": "ImageChange",
+            "imageChangeParams": {
+              "automatic": true,
+              "containerNames": ["app"],
+              "from": {
+                "kind": "ImageStreamTag",
+                "name": "${NAME}:${VERSION}"
+              }
+            }
+          },
+          {
+            "type": "ConfigChange"
+          }
+        ],
+        "replicas": "${{REPLICA_MIN}}",
+        "test": false,
+        "selector": {
+          "name": "${NAME}${SUFFIX}"
+        },
+        "template": {
+          "metadata": {
+            "name": "${NAME}${SUFFIX}",
+            "creationTimestamp": null,
+            "labels": {
+              "name": "${NAME}${SUFFIX}"
+            }
+          },
+          "spec": {
+            "containers": [
+              {
+                "name": "app",
+                "image": " ",
+                "ports": [
+                  {
+                    "containerPort": 5500,
+                    "protocol": "TCP"
+                  }
+                ],
+                "env": [
+                  {
+                    "name": "DB_USER",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${DB_CONFIG_NAME}",
+                        "key": "database-nris-user"
+                      }
+                    }
+                  },
+                  {
+                    "name": "DB_HOST",
+                    "value": "${DB_HOST}"
+                  },
+                  {
+                    "name": "DB_PASS",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${DB_CONFIG_NAME}",
+                        "key": "database-nris-password"
+                      }
+                    }
+                  },
+                  {
+                    "name": "DB_PORT",
+                    "value": "5432"
+                  },
+                  {
+                    "name": "DB_NAME",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${DB_CONFIG_NAME}",
+                        "key": "database-name"
+                      }
+                    }
+                  },
+                  {
+                    "name": "NRIS_DB_HOSTNAME",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${NRIS_ODB_CREDENTIALS}",
+                        "key": "db-host"
+                      }
+                    }
+                  },
+                  {
+                    "name": "NRIS_DB_SERVICENAME",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${NRIS_ODB_CREDENTIALS}",
+                        "key": "db-service"
+                      }
+                    }
+                  },
+                  {
+                    "name": "NRIS_DB_USER",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${NRIS_ODB_CREDENTIALS}",
+                        "key": "db-user"
+                      }
+                    }
+                  },
+                  {
+                    "name": "NRIS_DB_PASSWORD",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${NRIS_ODB_CREDENTIALS}",
+                        "key": "db-password"
+                      }
+                    }
+                  },
+                  {
+                    "name": "NRIS_DB_PORT",
+                    "value": "1521"
+                  },
+                  {
+                    "name": "UWSGI_PROCESSES",
+                    "value": "${UWSGI_PROCESSES}"
+                  },
+                  {
+                    "name": "UWSGI_THREADS",
+                    "value": "${UWSGI_THREADS}"
+                  },
+                  {
+                    "name": "ELASTIC_ENABLED",
+                    "value": "${ELASTIC_ENABLED}"
+                  },
+                  {
+                    "name": "ELASTIC_SERVICE_NAME",
+                    "value": "${ELASTIC_SERVICE_NAME}"
+                  },
+                  {
+                    "name": "ELASTIC_SECRET_TOKEN",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${MDS_ELASTIC_SECRET}",
+                        "key": "secret-token"
+                      }
+                    }
+                  },
+                  {
+                    "name": "ELASTIC_SERVER_URL",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${MDS_ELASTIC_SECRET}",
+                        "key": "server-url"
+                      }
+                    }
+                  },
+                  {
+                    "name": "FLASK_RUN_PORT",
+                    "value": "5500"
+                  },
+                  {
+                    "name": "FLASK_RUN_HOST",
+                    "value": "0.0.0.0"
+                  },
+                  {
+                    "name": "CACHE_REDIS_HOST",
+                    "value": "${CACHE_REDIS_HOST}"
+                  },
+                  {
+                    "name": "CACHE_REDIS_PASS",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${REDIS_CONFIG_NAME}",
+                        "key": "database-password"
+                      }
+                    }
+                  },
+                  {
+                    "name": "JWT_OIDC_WELL_KNOWN_CONFIG",
+                    "value": "${JWT_OIDC_WELL_KNOWN_CONFIG}"
+                  },
+                  {
+                    "name": "JWT_OIDC_AUDIENCE",
+                    "value": "${JWT_OIDC_AUDIENCE}"
+                  },
+                  {
+                    "name": "JWT_OIDC_ALGORITHMS",
+                    "value": "RS256"
+                  },
+                  {
+                    "name": "BASE_PATH",
+                    "value": "${BASE_PATH}"
+                  },
+                  {
+                    "name": "DOCUMENT_MANAGER_URL",
+                    "value": "${API_URL}"
+                  },
+                  {
+                    "name": "ENVIRONMENT_NAME",
+                    "value": "${ENVIRONMENT_NAME}"
+                  }
+                ],
+                "resources": {
+                  "limits": {
+                    "cpu": "${CPU_LIMIT}",
+                    "memory": "${MEMORY_LIMIT}"
+                  },
+                  "requests": {
+                    "cpu": "${CPU_REQUEST}",
+                    "memory": "${MEMORY_REQUEST}"
+                  }
+                },
+                "livenessProbe": {
+                  "httpGet": {
+                    "path": "${BASE_PATH}/health",
+                    "port": 5500,
+                    "scheme": "HTTP"
+                  },
+                  "initialDelaySeconds": 15,
+                  "timeoutSeconds": 3,
+                  "periodSeconds": 10
+                },
+                "readinessProbe": {
+                  "httpGet": {
+                    "path": "${BASE_PATH}/health",
+                    "port": 5500,
+                    "scheme": "HTTP"
+                  }
+                },
+                "terminationMessagePath": "/dev/termination-log",
+                "terminationMessagePolicy": "File",
+                "imagePullPolicy": "Always"
+              }
+            ],
+            "restartPolicy": "Always",
+            "dnsPolicy": "ClusterFirst",
+            "securityContext": {}
+          }
+        }
+      }
+    },
+    {
+      "apiVersion": "autoscaling/v1",
+      "kind": "HorizontalPodAutoscaler",
+      "metadata": {
+        "name": "${NAME}${SUFFIX}",
+        "labels": {
+          "name": "${NAME}${SUFFIX}"
+        }
+      },
+      "spec": {
+        "maxReplicas": "${{REPLICA_MAX}}",
+        "minReplicas": "${{REPLICA_MIN}}",
+        "scaleTargetRef": {
+          "apiVersion": "v1",
+          "kind": "DeploymentConfig",
+          "name": "${NAME}${SUFFIX}"
+        },
+        "targetCPUUtilizationPercentage": 95
+      }
+    },
+    {
+      "kind": "Service",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "${NAME}${SUFFIX}",
+        "creationTimestamp": null,
+        "labels": null,
+        "annotations": {
+          "description": "Exposes and load balances the application pods"
+        }
+      },
+      "spec": {
+        "ports": [
+          {
+            "name": "web",
+            "protocol": "TCP",
+            "port": 5500,
+            "targetPort": 5500
+          }
+        ],
+        "selector": {
+          "name": "${NAME}${SUFFIX}"
+        },
+        "type": "ClusterIP",
+        "sessionAffinity": "None"
+      }
+    }
+  ]
+}
