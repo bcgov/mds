@@ -632,6 +632,18 @@ class PermitFactory(BaseFactory):
             ReclamationInvoiceFactory(permit=obj, **kwargs)
 
 
+class MinePermitXrefFactory(BaseFactory):
+    class Meta:
+        model = MinePermitXref
+
+    class Params:
+        permit = factory.SubFactory(PermitFactory)
+        mine = factory.SubFactory('tests.factories.MineFactory', minimal=True)
+
+    permit_id = factory.SelfAttribute('permit.permit_id')
+    mine_guid = factory.SelfAttribute('mine.mine_guid')
+
+
 class PermitAmendmentFactory(BaseFactory):
     class Meta:
         model = PermitAmendment
