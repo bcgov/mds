@@ -13,6 +13,6 @@ def test_permit_used_by_multiple_mines(db_session):
     permit._all_mines.append(mine2)              # create xref. ideally pa Factory would make this
     PermitAmendmentFactory(mine=mine2, permit=permit)
 
-    assert len(mine.mine_permit) == 1
-    assert len(mine2.mine_permit) == 1
-    assert mine.mine_permit[0] is mine2.mine_permit[0]
+    assert len(mine.mine_permit) == 2
+    assert len(mine2.mine_permit) == 2
+    assert mine.mine_permit[0] in mine2.mine_permit

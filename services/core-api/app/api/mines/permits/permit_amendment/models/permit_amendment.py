@@ -48,6 +48,13 @@ class PermitAmendment(AuditMixin, Base):
     now_identity = db.relationship('NOWApplicationIdentity', lazy='select')
     mine = db.relationship('Mine', lazy='selectin')
 
+    mine_permit_xref = db.relationship(
+        'MinePermitXref',
+        uselist=False,
+        primaryjoin=
+        "and_(PermitAmendment.mine_guid==foreign(MinePermitXref.mine_guid), PermitAmendment.permit_id==foreign(MinePermitXref.permit_id))"
+    )
+
     def soft_delete(self, is_force_delete=False):
         if not is_force_delete and self.permit_amendment_type_code == 'OGP':
             raise Exception(
