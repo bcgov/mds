@@ -26,9 +26,9 @@
 FROM oraclelinux:7-slim
 
 # ADD oracle-instantclient*.rpm /tmp/
-ADD http://mds-local-http:8080/data/oracle-instantclient12.2-basic-12.2.0.1.0-1.x86_64.rpm /tmp/
-ADD http://mds-local-http:8080/data/oracle-instantclient12.2-devel-12.2.0.1.0-1.x86_64.rpm /tmp/
-ADD http://mds-local-http:8080/data/oracle-instantclient12.2-sqlplus-12.2.0.1.0-1.x86_64.rpm /tmp/
+ADD http://mds-local-http-empr-mds-tools.pathfinder.gov.bc.ca/data/oracle-instantclient12.2-basic-12.2.0.1.0-1.x86_64.rpm /tmp/
+ADD http://mds-local-http-empr-mds-tools.pathfinder.gov.bc.ca/data/oracle-instantclient12.2-devel-12.2.0.1.0-1.x86_64.rpm /tmp/
+ADD http://mds-local-http-empr-mds-tools.pathfinder.gov.bc.ca/data/oracle-instantclient12.2-sqlplus-12.2.0.1.0-1.x86_64.rpm /tmp/
 
 # RUN curl --connect-timeout 10 --max-time 60 --retry 5 --retry-delay 0 --retry-max-time 60 \
 #     -o /tmp/oracle/instantclient-basic-linux.x64-19.6.0.0.0dbru.zip 
