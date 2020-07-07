@@ -77,4 +77,4 @@ COPY tnsnames.ora sqlnet.ora wallet /usr/lib/oracle/${release}.${update}/client6
 # Uncomment if the tools package is added
 ENV PATH=$PATH:/usr/lib/oracle/${release}.${update}/client64/bin
 
-CMD ["sqlplus", "-v"]
+CMD ["tail", "-f", "/dev/null"]
