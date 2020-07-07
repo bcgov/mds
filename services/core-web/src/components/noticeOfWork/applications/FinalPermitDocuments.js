@@ -181,7 +181,7 @@ export class FinalPermitDocuments extends Component {
     ) : (
       <div>
         <div className="inline-flex between">
-          <h3>Final Permit Documents</h3>
+          <h4>Final Permit Documents</h4>
           <div>
             <Button
               type="secondary"

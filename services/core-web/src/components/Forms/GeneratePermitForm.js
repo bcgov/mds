@@ -5,8 +5,10 @@ import { Form, Button, Col, Row, Popconfirm, Collapse } from "antd";
 import { required } from "@common/utils/Validate";
 import { resetForm } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
+import CustomPropTypes from "@/customPropTypes";
 import { renderConfig } from "@/components/common/config";
 import ScrollContentWrapper from "@/components/noticeOfWork/applications/ScrollContentWrapper";
+import FinalPermitDocuments from "@/components/noticeOfWork/applications/FinalPermitDocuments";
 
 const { Panel } = Collapse;
 
@@ -15,6 +17,7 @@ const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   submitting: PropTypes.bool.isRequired,
   isAmendment: PropTypes.bool.isRequired,
+  noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
 };
 
 export const GeneratePermitForm = (props) => (
@@ -190,6 +193,11 @@ export const GeneratePermitForm = (props) => (
             />
           </Col>
         </Row>
+        <br />
+        <FinalPermitDocuments
+          mineGuid={props.noticeOfWork.mine_guid}
+          noticeOfWork={props.noticeOfWork}
+        />
       </>
     </ScrollContentWrapper>
     <ScrollContentWrapper id="conditions" title="Conditions">
