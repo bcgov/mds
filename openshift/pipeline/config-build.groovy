@@ -74,6 +74,14 @@ app {
                     ]
                 ],
                 [
+                    'file':'openshift/templates/nris-api-test/oracle-client.bc.json',
+                    'params':[
+                            'NAME':"mds-nris-backend",
+                            'SUFFIX': "${app.build.suffix}",
+                            'VERSION':"${app.build.version}",
+                    ]
+                ],
+                [
                     'file':'openshift/templates/_nginx.bc.json',
                     'params':[
                             'NAME':"mds-nginx",
