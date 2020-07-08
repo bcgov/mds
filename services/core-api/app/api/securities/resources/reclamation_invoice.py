@@ -55,10 +55,6 @@ class ReclamationInvoiceListResource(Resource, UserMixin):
             raise BadRequest('No permit was found with the guid provided.')
 
         reclamation_invoice.permit = permit
-
-        for doc in reclamation_invoice.documents:
-            doc.mine_guid = permit.get_mine(mine_guid).mine_guid
-
         reclamation_invoice.save()
 
         return reclamation_invoice, 201
