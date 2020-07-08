@@ -83,6 +83,7 @@ export class NOWPermitGeneration extends Component {
           documentList={this.createDocList(this.props.noticeOfWork)}
           onSubmit={this.handlePremitGenSubmit}
           isAmendment={this.props.isAmendment}
+          noticeOfWork={this.props.noticeOfWork}
         />
       </div>
     );
