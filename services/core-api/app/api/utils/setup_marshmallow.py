@@ -128,8 +128,8 @@ def setup_schema(Base, session):
                     mapper = inspect(class_)
                     for rel in mapper.relationships:
                         if hasattr(rel.entity.class_, "_schema"):
-                            # current_app.logger.debug(
-                            #     f'creating nested schema on relationship: {rel.key}')
+                            current_app.logger.debug(
+                                f'creating nested schema on relationship: {rel.key}')
                             class_._schema._declared_fields[rel.key] = fields.Nested(
                                 rel.entity.class_._schema, many=rel.uselist)
                             #exclude=[rel.backref.key] + [pk.name for pk in mapper.primary_keys])
