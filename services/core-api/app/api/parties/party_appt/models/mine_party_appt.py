@@ -183,7 +183,7 @@ class MinePartyAppointment(AuditMixin, Base):
                mine,
                party_guid,
                processed_by,
-               mine_party_appt_type_code='PMT',
+               mine_party_appt_type_code,
                start_date=None,
                end_date=None,
                permit=None,
