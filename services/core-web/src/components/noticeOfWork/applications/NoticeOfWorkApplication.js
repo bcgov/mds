@@ -703,11 +703,15 @@ export class NoticeOfWorkApplication extends Component {
         <Prompt
           when={!this.state.isViewMode}
           message={(location, action) => {
+            const onTechnicalReview =
+              location.pathname.includes("technical-review") &&
+              this.props.location.pathname.includes("technical-review");
             // handle user navigating away from technical while in editMode
             if (action === "REPLACE" && !location.pathname.includes("technical-review")) {
               this.toggleEditMode();
             }
-            return this.props.location.pathname === location.pathname
+            // if the pathname changes while still on the technicalReview tab, don't prompt user
+            return this.props.location.pathname === location.pathname || onTechnicalReview
               ? true
               : "You have unsaved changes. Are you sure you want to leave without saving?";
           }}
