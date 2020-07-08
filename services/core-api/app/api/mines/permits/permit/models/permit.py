@@ -72,14 +72,7 @@ class Permit(AuditMixin, Base):
     def permit_amendments(self):
         if not self._context_mine:
             raise Exception('this getter is only available if _context_mine has been set')
-
         return self._all_permit_amendments
-
-    @permit_amendments.setter
-    def permit_amendments(self, value):
-        if not self._context_mine:
-            raise Exception('this getter is only available if _context_mine has been set')
-        raise NotImplementedError('TODO')
 
     @hybrid_property
     def mine_guid(self):
