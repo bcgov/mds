@@ -98,6 +98,7 @@
     }
     &.fixed-scroll-view {
       padding: 20px;
+      height: 133px;
       padding-bottom: 10px;
       position: fixed;
       width: 100vw;
@@ -132,6 +133,10 @@
   position: absolute;
   left: 0;
 
+  @include tablet {
+    display: none;
+  }
+
   &--fixed {
     top: 130px;
     position: fixed;
@@ -141,11 +146,13 @@
       display: none;
     }
 
-    &--view {
-      position: fixed;
-      width: 240px;
-      top: 160px;
+    &.view-only {
+      top: 180px;
     }
+  }
+
+  &.view-only {
+    top: 180px;
   }
 
   ul {
@@ -162,6 +169,10 @@
     @include tablet {
       position: inherit;
       width: 100%;
+    }
+
+    &--view {
+      top: 50px;
     }
   }
 

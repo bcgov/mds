@@ -133,12 +133,7 @@ export class ViewNoticeOfWorkApplication extends Component {
           </div>
           <div>
             <div
-              className={this.state.fixedTop ? "side-menu--fixed--view" : "side-menu"}
-              style={
-                this.state.fixedTop && this.state.noticeOfWorkPageFromRoute
-                  ? { paddingTop: "24px" }
-                  : {}
-              }
+              className={this.state.fixedTop ? "side-menu--fixed view-only" : "side-menu view-only"}
             >
               <NOWSideMenu
                 route={routes.VIEW_NOTICE_OF_WORK_APPLICATION}
@@ -147,12 +142,8 @@ export class ViewNoticeOfWorkApplication extends Component {
               />
             </div>
             <div
-              className={this.state.fixedTop ? "steps--content with-fixed-top" : "steps--content"}
-              style={
-                this.state.fixedTop && this.state.noticeOfWorkPageFromRoute
-                  ? { paddingTop: "24px" }
-                  : {}
-              }
+              className={this.state.fixedTop ? "view---content with-fixed-top" : "view--content"}
+              style={{ paddingTop: "30px" }}
             >
               <ReviewNOWApplication
                 renderOriginalValues={this.renderOriginalValues}
