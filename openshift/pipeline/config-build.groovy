@@ -205,35 +205,8 @@ app {
                             'SOURCE_REPOSITORY_URL': "${app.git.uri}"
                     ]
                 ]
-                ],
-                // Monitoring components
-                [
-                    'file':'openshift/templates/monitoring/grafana.bc.json',
-                    'params':[
-                        'NAME':"grafana",
-                        'SUFFIX': "${app.build.suffix}",
-                        'TAG_NAME':"${app.build.version}",
-                        'DOCKER_IMAGE_DIRECTORY': "openshift/docker-images/monitoring/grafana",
-                    ]
-                ],  
-                [
-                    'file':'openshift/templates/monitoring/loki.bc.json',
-                    'params':[
-                        'NAME':"loki",
-                        'SUFFIX': "${app.build.suffix}",
-                        'TAG_NAME':"${app.build.version}",
-                        'DOCKER_IMAGE_DIRECTORY': "openshift/docker-images/monitoring/loki",
-                    ]
-                ],
-                                [
-                    'file':'openshift/templates/monitoring/promtail.bc.json',
-                    'params':[
-                        'NAME':"promtail",
-                        'SUFFIX': "${app.build.suffix}",
-                        'TAG_NAME':"${app.build.version}",
-                        'DOCKER_IMAGE_DIRECTORY': "openshift/docker-images/monitoring/promtail",
-                    ]
-                ]                
+            ]
+                // Monitoring components  
         ]
     }
 }

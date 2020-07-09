@@ -12,8 +12,8 @@ services:
   #     - KEYCLOAK_IMPORT=/tmp/keycloak-local-realm.json
   #     - DB_VENDOR=h2
   #   volumes:
-  #     - ./settings/keycloak/keycloak-local-realm.json:/tmp/keycloak-local-realm.json
-  #     - ./settings/keycloak/keycloak-local-user.sh:/tmp/keycloak-local-user.sh
+  #     - ./monitoring/keycloak/keycloak-local-realm.json:/tmp/keycloak-local-realm.json
+  #     - ./monitoring/keycloak/keycloak-local-user.sh:/tmp/keycloak-local-user.sh
   #   ports:
   #     - "8080:8080"
   #     - "8443:8443"
@@ -211,7 +211,6 @@ services:
     networks:
       - mds
 
-
   ####################### Logging and Monitoring #######################
 
   loki:
@@ -220,12 +219,12 @@ services:
       - "3100:3100"
     command: -config.file=/etc/loki/loki.local.yaml
     volumes:
-      - ./settings/loki/loki.local.yaml:/etc/loki/loki.local.yaml
+      - ./monitoring/loki/loki.local.yaml:/etc/loki/loki.local.yaml
 
   promtail:
     image: grafana/promtail:latest
     volumes:
-      - ./settings/promtail/promtail.local.yaml:/etc/promtail/promtail.local.yaml
+      - ./monitoring/promtail/promtail.local.yaml:/etc/promtail/promtail.local.yaml
       - core_api_logs:/mnt/core-api
       - core_web_logs:/mnt/core-web
     command: -config.file=/etc/promtail/promtail.local.yaml
@@ -236,7 +235,7 @@ services:
     image: prom/prometheus
     container_name: prometheus
     volumes:
-      - ./settings/prometheus/prometheus.local.yaml:/etc/prometheus/prometheus.local.yaml
+      - ./monitoring/prometheus/prometheus.local.yaml:/etc/prometheus/prometheus.local.yaml
       - prometheus_data:/prometheus
     command:
       - "--config.file=/etc/prometheus/prometheus.local.yaml"
@@ -257,9 +256,9 @@ services:
       - 3010:3000
     volumes:
       - grafana_storage:/var/lib/grafana
-      - ./settings/grafana/provisioning/:/etc/grafana/provisioning/
+      - ./monitoring/grafana/provisioning/:/etc/grafana/provisioning/
     env_file:
-      - ./settings/grafana/env
+      - ./monitoring/grafana/env
     restart: always
 
   # jaeger:

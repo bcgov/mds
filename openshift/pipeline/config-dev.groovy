@@ -331,36 +331,6 @@ app {
                 //             'MEMORY_LIMIT':"${vars.resources.digdag.memory_limit}"
                 //     ]
                 // ],
-                // [
-                //     'file':'openshift/templates/monitoring/loki.dc.json',
-                //     'params':[
-                //             'NAME':"loki",
-                //             'VERSION':"${app.deployment.version}",
-                //             'NAMESPACE':"${vars.deployment.namespace}",
-                //             'SUFFIX': "${vars.deployment.suffix}",
-                //             'ENVIRONMENT_NAME':"${app.deployment.env.name}",
-                //             'KEYCLOAK_DISCOVERY_URL':"${vars.keycloak.known_config_url}",
-                //             'APPLICATION_DOMAIN': "${vars.modules.'digdag'.HOST}",
-                //             'CPU_REQUEST':"${vars.resources.digdag.cpu_request}",
-                //             'CPU_LIMIT':"${vars.resources.digdag.cpu_limit}",
-                //             'MEMORY_REQUEST':"${vars.resources.digdag.memory_request}",
-                //             'MEMORY_LIMIT':"${vars.resources.digdag.memory_limit}"
-                //     ]
-                // ],
-                // 'file':'openshift/templates/digdag/grafana.dc.json',
-                //     'params':[
-                //             'NAME':"grafana",
-                //             'VERSION':"${app.deployment.version}",
-                //             'NAMESPACE':"${vars.deployment.namespace}",
-                //             'SUFFIX': "${vars.deployment.suffix}",
-                //             'ENVIRONMENT_NAME':"${app.deployment.env.name}",
-                //             'KEYCLOAK_DISCOVERY_URL':"${vars.keycloak.known_config_url}",
-                //             'APPLICATION_DOMAIN': "${vars.modules.'digdag'.HOST}",
-                //             'CPU_REQUEST':"${vars.resources.digdag.cpu_request}",
-                //             'CPU_LIMIT':"${vars.resources.digdag.cpu_limit}",
-                //             'MEMORY_REQUEST':"${vars.resources.digdag.memory_request}",
-                //             'MEMORY_LIMIT':"${vars.resources.digdag.memory_limit}"
-                // ]
         ]
     }
 }
