@@ -10,6 +10,7 @@ CLOSE_PERMIT = "core_close_permits"
 EDIT_DO = "core_edit_do"
 EDIT_VARIANCE = "core_edit_variances"
 MINESPACE_PROPONENT = "mds_minespace_proponents"
+MINE_ADMIN = "core_admin"
 
 
 def requires_role_view_all(func):
@@ -48,6 +49,7 @@ def requires_any_of(roles):
 
         wrapper.required_roles = _combine_role_flags(func, roles)
         return wrapper
+
     return decorator
 
 

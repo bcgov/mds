@@ -29,3 +29,14 @@ class ObjectStoreStorageService():
                 ('attachment; ' if as_attachment else '') + ('filename=' + display_name)
             })
         return resp
+
+    def upload_file(self, file_name):
+        key = f'{Config.S3_PREFIX}{file_name[1:]}'
+        self._client.upload_file(Filename=file_name, Bucket=Config.OBJECT_STORE_BUCKET, Key=key)
+        if (not self.check_file(key)):
+            raise Exception('Failed to upload file')
+        return key
+
+    def check_file(self, key):
+        objs = list(Config.OBJECT_STORE_BUCKET.objects.filter(Prefix=key))
+        return len(objs) > 0 and objs[0].key == key
