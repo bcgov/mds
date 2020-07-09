@@ -3,6 +3,7 @@ from flask import Response, stream_with_context, request, current_app
 from urllib.parse import urlparse, quote
 from app.extensions import cache
 from app.api.constants import VFCBC_COOKIES, TIMEOUT_60_MINUTES
+from app.config import Config
 
 
 def vfcbc_login(download_session):
@@ -56,7 +57,8 @@ class VFCBCDownloadService():
         file_download_req = download_session.get(file_url, stream=True)
 
         file_download_resp = Response(
-            stream_with_context(file_download_req.iter_content(chunk_size=2048)))
+            stream_with_context(
+                file_download_req.iter_content(chunk_size=Config.DOCUMENT_UPLOAD_CHUNK_SIZE_BYTES)))
 
         file_download_resp.headers['Content-Type'] = file_download_req.headers['Content-Type']
         file_download_resp.headers[

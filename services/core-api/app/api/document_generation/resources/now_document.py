@@ -6,6 +6,7 @@ from app.extensions import api, cache
 
 from app.api.utils.resources_mixins import UserMixin
 from app.api.constants import NOW_DOCUMENT_DOWNLOAD_TOKEN
+from app.config import Config
 
 from app.api.mines.documents.models.mine_document import MineDocument
 from app.api.now_applications.models.now_application_identity import NOWApplicationIdentity
@@ -77,6 +78,7 @@ class NoticeOfWorkDocumentResource(Resource, UserMixin):
 
         # Return the generated document
         file_gen_resp = Response(
-            stream_with_context(docgen_resp.iter_content(chunk_size=2048)),
+            stream_with_context(
+                docgen_resp.iter_content(chunk_size=Config.DOCUMENT_UPLOAD_CHUNK_SIZE_BYTES)),
             headers=dict(docgen_resp.headers))
         return file_gen_resp
