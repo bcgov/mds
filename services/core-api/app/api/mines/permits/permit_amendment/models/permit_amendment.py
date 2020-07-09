@@ -48,6 +48,8 @@ class PermitAmendment(AuditMixin, Base):
     now_identity = db.relationship('NOWApplicationIdentity', lazy='select')
     mine = db.relationship('Mine', lazy='selectin')
 
+    #no current use case for this relationship
+    #TODO Have factories use this to manage FK.
     mine_permit_xref = db.relationship(
         'MinePermitXref',
         uselist=False,
