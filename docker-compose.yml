@@ -168,8 +168,6 @@ services:
       context: services/tusd
     ports:
       - 1080:1080
-    depends_on:
-      - document_manager_backend
     env_file: ./services/tusd/.env
     networks:
       - mds
@@ -188,6 +186,7 @@ services:
       - postgres
       - redis
       - document_manager_migrate
+      - tusd
     env_file: ./services/document-manager/backend/.env
     networks:
       - mds

@@ -1,7 +1,7 @@
 import os
 from flask import current_app, request, Response, stream_with_context
 from flask_restplus import Resource
-from werkzeug.exceptions import BadRequest
+from werkzeug.exceptions import BadRequest, InternalServerError
 from app.extensions import api, cache
 
 from app.api.utils.resources_mixins import UserMixin
@@ -54,6 +54,9 @@ class NoticeOfWorkDocumentResource(Resource, UserMixin):
             mine=now_application_identity.mine,
             document_category='noticeofwork',
             authorization_header=token_data['authorization_header'])
+
+        if not document_manager_guid:
+            raise InternalServerError('Error uploading document')
 
         # Add the document to the Notice of Work's documents
         username = token_data['username']
