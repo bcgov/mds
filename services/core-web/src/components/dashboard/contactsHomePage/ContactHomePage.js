@@ -12,7 +12,6 @@ import {
   getPartyRelationshipTypesList,
 } from "@common/selectors/staticContentSelectors";
 import { getParties, getPartyPageData } from "@common/selectors/partiesSelectors";
-
 import * as Strings from "@common/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
 import * as FORM from "@/constants/forms";
@@ -25,6 +24,7 @@ import * as routes from "@/constants/routes";
 import { modalConfig } from "@/components/modalContent/config";
 import * as ModalContent from "@/constants/modalContent";
 import AddButton from "@/components/common/AddButton";
+import { PageTracker } from "@common/utils/trackers";
 
 /**
  * @class ContactHomePage contains a list, contact search, and create new contact button
@@ -133,6 +133,7 @@ export class ContactHomePage extends Component {
     const { page, per_page } = this.state.params;
     return (
       <div className="landing-page">
+        <PageTracker title="Contacts Page" />
         <div className="landing-page__header">
           <div className="inline-flex between center-mobile">
             <div>

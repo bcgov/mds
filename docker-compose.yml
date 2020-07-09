@@ -73,8 +73,11 @@ services:
     depends_on:
       - flyway
       - redis
-      # - nris_backend
-      # - document_manager_backend
+      - nris_backend
+      - document_manager_backend
+      - tusd
+    networks:
+      - mds
 
   ####################### Redis Definition #######################
   redis:
@@ -130,47 +133,66 @@ services:
   #     - nris_migrate
   #   env_file: ./services/nris-api/backend/.env
 
-  # nris_migrate:
-  #   restart: on-failure
-  #   container_name: nris_migrate
-  #   build:
-  #     context: services/nris-api/backend
-  #   volumes:
-  #     - ./services/nris-api/backend/:/app/
-  #   depends_on:
-  #     - flyway
-  #     - redis
-  #   command: flask db upgrade
-  #   env_file: ./services/nris-api/backend/.env
+  nris_migrate:
+    restart: on-failure
+    container_name: nris_migrate
+    build:
+      context: services/nris-api/backend
+    volumes:
+      - ./services/nris-api/backend/:/app/
+    depends_on:
+      - flyway
+      - redis
+    command: flask db upgrade
+    env_file: ./services/nris-api/backend/.env
+    networks:
+      - mds
+
+  ####################### TUSD Definition #######################
+  tusd:
+    container_name: tusd
+    build:
+      context: services/tusd
+    ports:
+      - 1080:1080
+    depends_on:
+      - document_manager_backend
+    env_file: ./services/tusd/.env
+    networks:
+      - mds
 
   ####################### DOCUMENT_MANAGER_BACKEND Definition #######################
-  # document_manager_backend:
-  #   restart: always
-  #   container_name: document_manager_backend
-  #   build:
-  #     context: services/document-manager/backend
-  #   ports:
-  #     - 5001:5001
-  #   volumes:
-  #     - ./services/document-manager/backend/:/app/
-  #   depends_on:
-  #     - flyway
-  #     - redis
-  #     - document_manager_migrate
-  #   env_file: ./services/document-manager/backend/.env
+  document_manager_backend:
+    restart: always
+    container_name: document_manager_backend
+    build:
+      context: services/document-manager/backend
+    ports:
+      - 5001:5001
+    volumes:
+      - ./services/document-manager/backend/:/app/
+    depends_on:
+      - postgres
+      - redis
+      - document_manager_migrate
+    env_file: ./services/document-manager/backend/.env
+    networks:
+      - mds
 
-  # document_manager_migrate:
-  #   restart: on-failure
-  #   container_name: document_manager_migrate
-  #   build:
-  #     context: services/document-manager/backend
-  #   volumes:
-  #     - ./services/document-manager/backend/:/app/
-  #   depends_on:
-  #     - flyway
-  #     - redis
-  #   command: flask db upgrade
-  #   env_file: ./services/document-manager/backend/.env
+  document_manager_migrate:
+    restart: on-failure
+    container_name: document_manager_migrate
+    build:
+      context: services/document-manager/backend
+    volumes:
+      - ./services/document-manager/backend/:/app/
+    depends_on:
+      - postgres
+      - redis
+    command: flask db upgrade
+    env_file: ./services/document-manager/backend/.env
+    networks:
+      - mds
 
   ####################### DOCUMENT_GENERATION Definition #######################
   docgen-api:

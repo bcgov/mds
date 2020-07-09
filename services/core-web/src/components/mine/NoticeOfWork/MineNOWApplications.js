@@ -20,7 +20,7 @@ const propTypes = {
   mineGuid: PropTypes.string.isRequired,
   mines: PropTypes.objectOf(CustomPropTypes.mine).isRequired,
   fetchMineNoticeOfWorkApplications: PropTypes.func.isRequired,
-  history: PropTypes.shape({ push: PropTypes.func }).isRequired,
+  history: PropTypes.shape({ replace: PropTypes.func }).isRequired,
   location: PropTypes.shape({ search: PropTypes.string }).isRequired,
   noticeOfWorkApplications: PropTypes.arrayOf(CustomPropTypes.importedNOWApplication).isRequired,
   mineRegionHash: PropTypes.objectOf(PropTypes.string).isRequired,
@@ -36,7 +36,6 @@ export class MineNOWApplications extends Component {
   state = {
     isLoaded: false,
     params: {
-      submissions_only: true,
       ...this.params,
     },
   };
@@ -44,19 +43,14 @@ export class MineNOWApplications extends Component {
   componentDidMount() {
     const params = this.props.location.search;
     const parsedParams = queryString.parse(params);
-    const {
-      page = this.state.params.page,
-      per_page = this.state.params.per_page,
-      submissions_only = this.state.params.submissions_only,
-    } = parsedParams;
+    const { page = this.state.params.page, per_page = this.state.params.per_page } = parsedParams;
     if (params) {
       this.renderDataFromURL();
     } else {
-      this.props.history.push(
+      this.props.history.replace(
         router.MINE_NOW_APPLICATIONS.dynamicRoute(this.props.mineGuid, {
           page,
           per_page,
-          submissions_only,
         })
       );
     }
@@ -93,35 +87,33 @@ export class MineNOWApplications extends Component {
       ...persistedParams,
       // Overwrite prev params with any newly provided search params
       ...searchParams,
-      submissions_only: true,
     };
 
-    this.props.history.push(
+    this.props.history.replace(
       router.MINE_NOW_APPLICATIONS.dynamicRoute(this.props.mineGuid, updatedParams)
     );
   };
 
   render() {
     const isMajorMine = this.props.mines[this.props.mineGuid].major_mine_ind;
-    const title = isMajorMine ? "Permit Applications" : "Notice of Work Applications";
+    const type = isMajorMine ? "Permit Application" : "Notice of Work Application";
     return (
       <div className="tab__content">
         <div>
-          <h2>{title}</h2>
+          <h2>{type}s</h2>
           <AuthorizationWrapper isMajorMine={isMajorMine} permission={Permission.EDIT_PERMITS}>
             <AddButton
               onClick={() =>
-                this.props.history.push(router.CREATE_NOTICE_OF_WORK_APPLICATION.route, {
+                this.props.history.replace(router.CREATE_NOTICE_OF_WORK_APPLICATION.route, {
                   mineGuid: this.props.mineGuid,
                 })
               }
             >
-              Add a Permit Application
+              Add a {type}
             </AddButton>
           </AuthorizationWrapper>
         </div>
         <Divider />
-
         <MineNoticeOfWorkTable
           isMajorMine={isMajorMine}
           isLoaded={this.state.isLoaded}

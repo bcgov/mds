@@ -24,6 +24,7 @@ body {
 .footer {
   height: 45px;
   background-color: $nav-color;
+  z-index: 100;
 }
 
 .center {
@@ -44,6 +45,11 @@ body {
 
 .right {
   text-align: right;
+}
+
+.position-right {
+  position: absolute;
+  right: 10px;
 }
 
 .left {
@@ -127,6 +133,10 @@ body {
       @include flex;
     }
   }
+}
+
+.flex-4 {
+  flex: 4;
 }
 
 .wrap {
@@ -317,6 +327,10 @@ body {
 
 .margin-large {
   margin: $default-margin-lg;
+}
+
+.margin-xlarge {
+  margin: 50px;
 }
 
 .lightest-grey-bg {

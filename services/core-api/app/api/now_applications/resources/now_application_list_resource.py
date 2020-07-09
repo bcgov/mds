@@ -40,7 +40,7 @@ class NOWApplicationListResource(Resource, UserMixin):
             'per_page': f'The number of records to return per page. Default: {PER_PAGE_DEFAULT}',
             'now_application_status_description':
             'Comma-separated list of statuses to include in results. Default: All statuses.',
-            'notice_of_work_type_description': 'Substring to match with a NoW\s type',
+            'notice_of_work_type_description': 'Substring to match with a NoW\'s type',
             'mine_region': 'Mine region code to match with a NoW. Default: All regions.',
             'now_number': 'Number of the NoW',
             'mine_search': 'Substring to match against a NoW mine number or mine name',
@@ -55,7 +55,7 @@ class NOWApplicationListResource(Resource, UserMixin):
             page_size=request.args.get('per_page', PER_PAGE_DEFAULT, type=int),
             sort_field=request.args.get('sort_field', 'received_date', type=str),
             sort_dir=request.args.get('sort_dir', 'desc', type=str),
-            originating_system=request.args.get('originating_system', 'desc', type=str),
+            originating_system=request.args.getlist('originating_system', type=str),
             mine_guid=request.args.get('mine_guid', type=str),
             now_application_status_description=request.args.getlist(
                 'now_application_status_description', type=str),
@@ -91,7 +91,7 @@ class NOWApplicationListResource(Resource, UserMixin):
                                       now_number=None,
                                       mine_search=None,
                                       now_application_status_description=[],
-                                      originating_system=None,
+                                      originating_system=[],
                                       submissions_only=None):
         filters = []
         base_query = NoticeOfWorkView.query
@@ -122,6 +122,9 @@ class NOWApplicationListResource(Resource, UserMixin):
 
         if mine_region:
             filters.append(Mine.mine_region.in_(mine_region))
+
+        if originating_system:
+            filters.append(NoticeOfWorkView.originating_system.in_(originating_system))
 
         if mine_name:
             filters.append(func.lower(Mine.mine_name).contains(func.lower(mine_name)))
@@ -173,7 +176,7 @@ class NOWApplicationListResource(Resource, UserMixin):
         new_now = NOWApplicationIdentity(mine_guid=data['mine_guid'], permit=permit)
         new_now.now_application = NOWApplication(
             notice_of_work_type_code=data['notice_of_work_type_code'],
-            now_application_status_code='SUB',
+            now_application_status_code='REC',
             submitted_date=data['submitted_date'],
             received_date=data['received_date'])
 

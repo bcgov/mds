@@ -20,12 +20,13 @@ exports[`AddBondModal renders properly 1`] = `
         "note": null,
         "payer": Object {},
         "payer_party_guid": "sethwrt",
-        "permit_guid": "463236",
+        "permit_guid": "1628847c-060b-45f2-990f-815877174801",
         "reference_number": "",
       }
     }
     closeModal={[MockFunction]}
     destroyOnUnmount={true}
+    editBond={false}
     enableReinitialize={false}
     forceUnregisterOnUnmount={false}
     form="ADD_BOND"
@@ -48,7 +49,7 @@ exports[`AddBondModal renders properly 1`] = `
         "note": null,
         "payer": Object {},
         "payer_party_guid": "sethwrt",
-        "permit_guid": "463236",
+        "permit_guid": "1628847c-060b-45f2-990f-815877174801",
         "reference_number": "",
       }
     }
@@ -59,10 +60,12 @@ exports[`AddBondModal renders properly 1`] = `
     provinceOptions={
       Array [
         Object {
+          "isActive": true,
           "label": "AB",
           "value": "AB",
         },
         Object {
+          "isActive": true,
           "label": "BC",
           "value": "BC",
         },

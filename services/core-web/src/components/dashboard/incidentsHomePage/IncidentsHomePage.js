@@ -3,7 +3,6 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { destroy } from "redux-form";
 import moment from "moment";
-import { debounce, isEmpty } from "lodash";
 import queryString from "query-string";
 import PropTypes from "prop-types";
 import { openModal, closeModal } from "@common/actions/modalActions";
@@ -18,13 +17,15 @@ import {
   getDangerousOccurrenceSubparagraphOptions,
   getDropdownIncidentDeterminationOptions,
   getDropdownIncidentStatusCodeOptions,
-  getIncidentFollowupActionOptions,
   getDropdownIncidentCategoryCodeOptions,
 } from "@common/selectors/staticContentSelectors";
 import { getDropdownInspectors } from "@common/selectors/partiesSelectors";
 import { getIncidents, getIncidentPageData } from "@common/selectors/incidentSelectors";
-import { fetchIncidents, updateMineIncident } from "@common/actionCreators/incidentActionCreator";
-import { formatParamStringToArray } from "@common/utils/helpers";
+import {
+  fetchIncidents,
+  updateMineIncident,
+  deleteMineIncident,
+} from "@common/actionCreators/incidentActionCreator";
 import * as Strings from "@common/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
 import { IncidentsTable } from "./IncidentsTable";
@@ -33,6 +34,7 @@ import IncidentsSearch from "./IncidentsSearch";
 import { modalConfig } from "@/components/modalContent/config";
 import * as ModalContent from "@/constants/modalContent";
 import * as FORM from "@/constants/forms";
+import { PageTracker } from "@common/utils/trackers";
 
 /**
  * @class Incidents page is a landing page for all incidents in the system
@@ -50,174 +52,100 @@ const propTypes = {
   updateMineIncident: PropTypes.func.isRequired,
   location: PropTypes.shape({ search: PropTypes.string }).isRequired,
   mineRegionOptions: CustomPropTypes.options.isRequired,
-  history: PropTypes.shape({ push: PropTypes.func }).isRequired,
+  history: PropTypes.shape({ replace: PropTypes.func }).isRequired,
   followupActions: PropTypes.arrayOf(CustomPropTypes.incidentFollowupType),
   followupActionsOptions: CustomPropTypes.options.isRequired,
   incidentDeterminationOptions: CustomPropTypes.options.isRequired,
+  incidentDeterminationOptionsActiveOnly: CustomPropTypes.options.isRequired,
   incidentStatusCodeOptions: CustomPropTypes.options.isRequired,
+  incidentStatusCodeOptionsActiveOnly: CustomPropTypes.options.isRequired,
   incidentCategoryCodeOptions: CustomPropTypes.options.isRequired,
   doSubparagraphOptions: CustomPropTypes.options.isRequired,
+  deleteMineIncident: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
   followupActions: [],
 };
 
-export const joinOrRemove = (param, key) => {
-  if (isEmpty(param)) {
-    return {};
-  }
-  return typeof param === "string" ? { [key]: param } : { [key]: param.join(",") };
-};
-export const removeEmptyStings = (param, key) => (isEmpty(param) ? {} : { [key]: param });
-
-// TODO: Implement the NoW dashboard pattern for cleaning props
-export const formatParams = ({
-  region = [],
-  year,
-  incident_status = [],
-  codes = [],
-  determination = [],
-  search,
-  major,
-  ...remainingParams
-}) => {
-  return {
-    ...joinOrRemove(region, "region"),
-    ...removeEmptyStings(year, "year"),
-    ...joinOrRemove(incident_status, "incident_status"),
-    ...joinOrRemove(codes, "codes"),
-    ...joinOrRemove(determination, "determination"),
-    ...removeEmptyStings(search, "search"),
-    ...removeEmptyStings(major, "major"),
-    ...remainingParams,
-  };
+const defaultParams = {
+  page: Strings.DEFAULT_PAGE,
+  per_page: Strings.DEFAULT_PER_PAGE,
+  sort_field: "incident_timestamp",
+  sort_dir: "desc",
+  search: undefined,
+  major: undefined,
+  region: [],
+  year: undefined,
+  incident_status: [],
+  codes: [],
+  determination: [],
 };
 
 export class IncidentsHomePage extends Component {
-  params = queryString.parse(this.props.location.search);
-
-  constructor(props) {
-    super(props);
-    this.handleIncidentSearchDebounced = debounce(this.handleIncidentSearch, 1000);
-    this.state = {
-      incidentsLoaded: false,
-      params: {
-        page: Strings.DEFAULT_PAGE,
-        per_page: Strings.DEFAULT_PER_PAGE,
-        region: formatParamStringToArray(this.params.region),
-        major: this.params.major,
-        search: this.params.search,
-        year: this.params.year,
-        incident_status: this.params.incident_status,
-        codes: this.params.codes,
-        determination: this.params.determination,
-        ...this.params,
-      },
-    };
-  }
+  state = {
+    incidentsLoaded: false,
+    params: defaultParams,
+  };
 
   componentDidMount() {
-    const params = this.props.location.search;
-    if (params) {
-      this.renderDataFromURL(params);
-    } else {
-      const defaultParams = {
-        page: Strings.DEFAULT_PAGE,
-        per_page: Strings.DEFAULT_PER_PAGE,
-      };
-      this.props.history.push(router.INCIDENTS_DASHBOARD.dynamicRoute(defaultParams));
-    }
-    this.props.fetchIncidents(this.state.params).then(() => {
-      this.setState({ incidentsLoaded: true });
-    });
+    const params = queryString.parse(this.props.location.search);
+    this.setState(
+      (prevState) => ({
+        params: {
+          ...prevState.params,
+          ...params,
+        },
+      }),
+      () => this.props.history.replace(router.INCIDENTS_DASHBOARD.dynamicRoute(this.state.params))
+    );
   }
 
   componentWillReceiveProps(nextProps) {
-    const locationChanged = nextProps.location !== this.props.location;
-    if (locationChanged) {
-      this.renderDataFromURL(nextProps.location.search);
+    if (nextProps.location !== this.props.location) {
+      this.setState({ incidentsLoaded: false }, () =>
+        this.renderDataFromURL(nextProps.location.search)
+      );
     }
   }
 
-  componentWillUnmount() {
-    this.handleIncidentSearchDebounced.cancel();
-    this.setState({
-      params: {},
-    });
-  }
-
   renderDataFromURL = (params) => {
-    const {
-      region,
-      major,
-      incident_status,
-      codes,
-      determination,
-      search,
-      ...remainingParams
-    } = queryString.parse(params);
+    const parsedParams = queryString.parse(params);
+    this.props.fetchIncidents(parsedParams).then(() => {
+      this.setState({ incidentsLoaded: true });
+    });
+  };
+
+  clearParams = () => {
     this.setState(
-      {
+      (prevState) => ({
         params: {
-          region: formatParamStringToArray(region),
-          incident_status: formatParamStringToArray(incident_status),
-          codes: formatParamStringToArray(codes),
-          determination: formatParamStringToArray(determination),
-          major,
-          search,
-          ...remainingParams,
+          ...defaultParams,
+          per_page: prevState.params.per_page || defaultParams.per_page,
+          sort_field: prevState.params.sort_field,
+          sort_dir: prevState.params.sort_dir,
         },
-      },
+      }),
       () => {
-        this.props.fetchIncidents(this.state.params);
+        this.props.history.replace(router.INCIDENTS_DASHBOARD.dynamicRoute(this.state.params));
       }
     );
   };
 
-  clearParams = () => {
-    this.setState({
-      params: {
-        region: [],
-        major: null,
-        search: null,
-        year: null,
-        incident_status: [],
-        codes: [],
-        determination: [],
-      },
-    });
-  };
-
-  handleIncidentSearch = (searchParams, clear = false) => {
-    const formattedSearchParams = formatParams(searchParams);
-    const persistedParams = clear ? {} : formatParams(this.state.params);
-    this.setState((prevState) => {
-      const updatedParams = {
-        // Start from existing state
-        ...persistedParams,
-        // Overwrite prev params with any newly provided search params
-        ...formattedSearchParams,
-        // Reset page number
-        page: prevState.params.page ? prevState.params.page : Strings.DEFAULT_PAGE,
-        // Retain per_page if present
-        per_page: prevState.params.per_page ? prevState.params.per_page : Strings.DEFAULT_PER_PAGE,
-      };
-      this.props.history.push(router.INCIDENTS_DASHBOARD.dynamicRoute(updatedParams));
-      return { params: updatedParams };
-    });
-  };
-
-  handleIncidentPageChange = (page, per_page) => {
-    this.setState({ incidentsLoaded: false });
-    return this.setState((prevState) => {
-      const params = { ...prevState.params, page, per_page };
-      this.props.history.push(router.INCIDENTS_DASHBOARD.dynamicRoute(formatParams(params)));
-      return {
-        incidentsLoaded: true,
+  handleIncidentSearch = (params) => {
+    this.setState(
+      {
         params,
-      };
-    });
+      },
+      () => this.props.history.replace(router.INCIDENTS_DASHBOARD.dynamicRoute(this.state.params))
+    );
+  };
+
+  onPageChange = (page, per_page) => {
+    this.setState(
+      (prevState) => ({ params: { ...prevState.params, page, per_page } }),
+      () => this.props.history.replace(router.INCIDENTS_DASHBOARD.dynamicRoute(this.state.params))
+    );
   };
 
   openViewMineIncidentModal = (event, incident) => {
@@ -237,6 +165,15 @@ export class IncidentsHomePage extends Component {
   handleEditMineIncident = (values) => {
     this.props.updateMineIncident(values.mine_guid, values.mine_incident_guid, values).then(() => {
       this.props.closeModal();
+    });
+  };
+
+  handleDeleteMineIncident = (values) => {
+    this.props.deleteMineIncident(values.mine_guid, values.mine_incident_guid).then(() => {
+      this.setState({ incidentsLoaded: false });
+      this.props.fetchIncidents(this.state.params).then(() => {
+        this.setState({ incidentsLoaded: true });
+      });
     });
   };
 
@@ -282,8 +219,8 @@ export class IncidentsHomePage extends Component {
         title,
         mineGuid: existingIncident.mine_guid,
         followupActionOptions: this.props.followupActionsOptions,
-        incidentDeterminationOptions: this.props.incidentDeterminationOptions,
-        incidentStatusCodeOptions: this.props.incidentStatusCodeOptions,
+        incidentDeterminationOptions: this.props.incidentDeterminationOptionsActiveOnly,
+        incidentStatusCodeOptions: this.props.incidentStatusCodeOptionsActiveOnly,
         incidentCategoryCodeOptions: this.props.incidentCategoryCodeOptions,
         doSubparagraphOptions: this.props.doSubparagraphOptions,
         inspectors: this.props.inspectors,
@@ -311,6 +248,7 @@ export class IncidentsHomePage extends Component {
   render() {
     return (
       <div className="landing-page">
+        <PageTracker title="Incidents Page" />
         <div className="landing-page__header">
           <div>
             <h1>Browse Incidents</h1>
@@ -319,9 +257,10 @@ export class IncidentsHomePage extends Component {
         <div className="landing-page__content">
           <div className="page__content">
             <IncidentsSearch
+              handleReset={this.clearParams}
               handleNameFieldReset={this.handleNameFieldReset}
               initialValues={this.state.params}
-              handleIncidentSearch={this.handleIncidentSearchDebounced}
+              handleIncidentSearch={this.handleIncidentSearch}
               mineRegionOptions={this.props.mineRegionOptions}
               incidentStatusCodeOptions={this.props.incidentStatusCodeOptions}
               incidentDeterminationOptions={this.props.incidentDeterminationOptions}
@@ -334,7 +273,7 @@ export class IncidentsHomePage extends Component {
                 isApplication={this.state.isApplication}
                 handleFilterChange={this.handleFilterChange}
                 pageData={this.props.incidentPageData}
-                handlePageChange={this.handleIncidentPageChange}
+                handlePageChange={this.onPageChange}
                 handleIncidentSearch={this.handleIncidentSearch}
                 params={this.state.params}
                 sortField={this.state.params.sort_field}
@@ -343,6 +282,7 @@ export class IncidentsHomePage extends Component {
                 openMineIncidentModal={this.openMineIncidentModal}
                 handleEditMineIncident={this.handleEditMineIncident}
                 openViewMineIncidentModal={this.openViewMineIncidentModal}
+                handleDeleteMineIncident={this.handleDeleteMineIncident}
               />
             </div>
           </div>
@@ -364,10 +304,11 @@ const mapStateToProps = (state) => ({
   complianceCodesHash: getHSRCMComplianceCodesHash(state),
   getDropdownHSRCMComplianceCodes: getDropdownHSRCMComplianceCodes(state),
   mineRegionOptions: getMineRegionDropdownOptions(state),
-  followupActions: getIncidentFollowupActionOptions(state),
   followupActionsOptions: getDropdownIncidentFollowupActionOptions(state),
-  incidentDeterminationOptions: getDropdownIncidentDeterminationOptions(state),
-  incidentStatusCodeOptions: getDropdownIncidentStatusCodeOptions(state),
+  incidentDeterminationOptions: getDropdownIncidentDeterminationOptions(state, false),
+  incidentDeterminationOptionsActiveOnly: getDropdownIncidentDeterminationOptions(state),
+  incidentStatusCodeOptions: getDropdownIncidentStatusCodeOptions(state, false),
+  incidentStatusCodeOptionsActiveOnly: getDropdownIncidentStatusCodeOptions(state),
   inspectors: getDropdownInspectors(state),
   doSubparagraphOptions: getDangerousOccurrenceSubparagraphOptions(state),
   incidentCategoryCodeOptions: getDropdownIncidentCategoryCodeOptions(state),
@@ -381,6 +322,7 @@ const mapDispatchToProps = (dispatch) =>
       destroy,
       openModal,
       closeModal,
+      deleteMineIncident,
     },
     dispatch
   );

@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
-import { Button, Icon } from "antd";
+import { Button, Icon, Popconfirm } from "antd";
 import _ from "lodash";
 import {
   getIncidentDeterminationHash,
@@ -19,7 +19,7 @@ import {
   truncateFilename,
 } from "@common/utils/helpers";
 import * as Strings from "@common/constants/strings";
-import { EDIT_OUTLINE_VIOLET } from "@/constants/assets";
+import { EDIT_OUTLINE_VIOLET, TRASHCAN } from "@/constants/assets";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
 import CustomPropTypes from "@/customPropTypes";
@@ -32,11 +32,15 @@ const propTypes = {
   incidents: PropTypes.arrayOf(CustomPropTypes.incident).isRequired,
   followupActions: PropTypes.arrayOf(CustomPropTypes.incidentFollowupType).isRequired,
   handleEditMineIncident: PropTypes.func.isRequired,
+  handleDeleteMineIncident: PropTypes.func.isRequired,
   openMineIncidentModal: PropTypes.func.isRequired,
   openViewMineIncidentModal: PropTypes.func.isRequired,
   isLoaded: PropTypes.bool.isRequired,
   incidentStatusCodeOptions: CustomPropTypes.options.isRequired,
   handleIncidentSearch: PropTypes.func,
+  params: PropTypes.objectOf(
+    PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.arrayOf(PropTypes.string)])
+  ).isRequired,
   incidentDeterminationHash: PropTypes.objectOf(PropTypes.string),
   complianceCodesHash: PropTypes.objectOf(PropTypes.string),
   incidentStatusCodeHash: PropTypes.objectOf(PropTypes.string),
@@ -54,8 +58,8 @@ const defaultProps = {
   incidentStatusCodeHash: {},
   incidentCategoryCodeHash: {},
   isDashboardView: false,
-  sortField: null,
-  sortDir: null,
+  sortField: undefined,
+  sortDir: undefined,
   isPaginated: false,
 };
 
@@ -67,10 +71,11 @@ const applySortIndicator = (_columns, field, dir) =>
     sortOrder: dir && column.sortField === field ? dir.concat("end") : false,
   }));
 
-const handleTableChange = (updateIncidentList) => (pagination, filters, sorter) => {
+const handleTableChange = (updateIncidentList, tableFilters) => (pagination, filters, sorter) => {
   const params = {
     results: pagination.pageSize,
     page: pagination.current,
+    ...tableFilters,
     sort_field: sorter.order ? sorter.field : undefined,
     sort_dir: sorter.order ? sorter.order.replace("end", "") : sorter.order,
     ...filters,
@@ -99,13 +104,14 @@ export class MineIncidentTable extends Component {
     incidents,
     actions,
     handleEditMineIncident,
+    handleDeleteMineIncident,
     openMineIncidentModal,
     openViewMineIncidentModal,
     determinationHash,
     statusHash
   ) =>
     incidents.map((incident) => {
-      return {
+      const values = {
         key: incident.mine_incident_guid,
         mine_incident_report_no: incident.mine_incident_report_no,
         incident_timestamp: formatDate(incident.incident_timestamp),
@@ -121,11 +127,20 @@ export class MineIncidentTable extends Component {
             x.mine_incident_followup_investigation_type_code ===
             incident.followup_investigation_type_code
         ),
+        incident_types:
+          incident.categories && incident.categories.length > 0
+            ? incident.categories.map(
+                (type) => this.props.incidentCategoryCodeHash[type.mine_incident_category_code]
+              )
+            : [],
         handleEditMineIncident,
+        handleDeleteMineIncident,
         openMineIncidentModal,
         openViewMineIncidentModal,
         incident,
       };
+
+      return values;
     });
 
   sortIncidentNumber = (a, b) =>
@@ -161,6 +176,16 @@ export class MineIncidentTable extends Component {
         render: (text, record) => (
           <div title="Mine" className={hideColumn(!this.props.isDashboardView)}>
             <Link to={router.MINE_SUMMARY.dynamicRoute(record.incident.mine_guid)}>{text}</Link>
+          </div>
+        ),
+      },
+      {
+        title: "Incident Type(s)",
+        key: "incident_types",
+        dataIndex: "incident_types",
+        render: (text) => (
+          <div title="Incident Type(s)">
+            {(text && text.length > 0 && text.join(", ")) || Strings.EMPTY_FIELD}
           </div>
         ),
       },
@@ -320,6 +345,19 @@ export class MineIncidentTable extends Component {
             >
               <Icon type="eye" className="icon-lg icon-svg-filter" />
             </Button>
+            <AuthorizationWrapper permission={Permission.ADMIN}>
+              <Popconfirm
+                placement="topLeft"
+                title="Are you sure you want to delete this incident?"
+                onConfirm={() => record.handleDeleteMineIncident(record.incident)}
+                okText="Delete"
+                cancelText="Cancel"
+              >
+                <Button ghost size="small" type="primary">
+                  <img name="remove" src={TRASHCAN} alt="Remove Incident" />
+                </Button>
+              </Popconfirm>
+            </AuthorizationWrapper>
           </div>
         ),
       },
@@ -337,6 +375,7 @@ export class MineIncidentTable extends Component {
           this.props.incidents,
           this.props.followupActions,
           this.props.handleEditMineIncident,
+          this.props.handleDeleteMineIncident,
           this.props.openMineIncidentModal,
           this.props.openViewMineIncidentModal,
           this.props.incidentDeterminationHash,
@@ -345,7 +384,7 @@ export class MineIncidentTable extends Component {
         )}
         tableProps={{
           onChange: this.props.isDashboardView
-            ? handleTableChange(this.props.handleIncidentSearch)
+            ? handleTableChange(this.props.handleIncidentSearch, this.props.params)
             : null,
           align: "left",
           pagination: this.props.isPaginated,

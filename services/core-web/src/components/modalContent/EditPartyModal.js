@@ -1,27 +1,41 @@
 import React from "react";
+import { connect } from "react-redux";
 import PropTypes from "prop-types";
+import { getParties } from "@common/selectors/partiesSelectors";
 import CustomPropTypes from "@/customPropTypes";
 import EditFullPartyForm from "@/components/Forms/parties/EditFullPartyForm";
 
 const propTypes = {
   onSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
-  isPerson: PropTypes.bool.isRequired,
+  parties: PropTypes.arrayOf(CustomPropTypes.party).isRequired,
+  partyGuid: PropTypes.string.isRequired,
   provinceOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
-  initialValues: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
-export const EditPartyModal = (props) => (
-  <div>
+export const EditPartyModal = (props) => {
+  const party = props.parties[props.partyGuid];
+  const initialValues = {
+    ...party,
+    ...(party.address[0] ? party.address[0] : {}),
+    email: party.email && party.email !== "Unknown" ? party.email : null,
+  };
+
+  return (
     <EditFullPartyForm
       onSubmit={props.onSubmit}
       closeModal={props.closeModal}
-      isPerson={props.isPerson}
+      party={party}
       provinceOptions={props.provinceOptions}
-      initialValues={props.initialValues}
+      initialValues={initialValues}
     />
-  </div>
-);
+  );
+};
+
+const mapStateToProps = (state) => ({
+  parties: getParties(state),
+});
 
 EditPartyModal.propTypes = propTypes;
-export default EditPartyModal;
+
+export default connect(mapStateToProps)(EditPartyModal);

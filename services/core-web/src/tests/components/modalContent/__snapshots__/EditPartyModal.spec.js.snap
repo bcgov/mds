@@ -1,39 +1,59 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`EditPartyModal renders properly 1`] = `
-<div>
-  <ReduxForm
-    closeModal={[MockFunction]}
-    destroyOnUnmount={true}
-    enableReinitialize={true}
-    forceUnregisterOnUnmount={false}
-    form="EDIT_FULL_PARTY"
-    getFormState={[Function]}
-    isPerson={true}
-    keepDirtyOnReinitialize={true}
-    onSubmitSuccess={[Function]}
-    persistentSubmitErrors={false}
-    provinceOptions={
-      Array [
-        Object {
-          "label": "AB",
-          "value": "AB",
-        },
-        Object {
-          "label": "BC",
-          "value": "BC",
-        },
-      ]
+<ReduxForm
+  closeModal={[MockFunction]}
+  destroyOnUnmount={true}
+  enableReinitialize={true}
+  forceUnregisterOnUnmount={false}
+  form="EDIT_FULL_PARTY"
+  getFormState={[Function]}
+  initialValues={
+    Object {
+      "address": Array [
+        Object {},
+      ],
+      "email": null,
+      "party_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+      "party_name": "mock name",
+      "party_type_code": "PER",
     }
-    pure={true}
-    shouldAsyncValidate={[Function]}
-    shouldError={[Function]}
-    shouldValidate={[Function]}
-    shouldWarn={[Function]}
-    submitAsSideEffect={false}
-    touchOnBlur={true}
-    touchOnChange={false}
-    updateUnregisteredFields={false}
-  />
-</div>
+  }
+  keepDirtyOnReinitialize={true}
+  onSubmitSuccess={[Function]}
+  party={
+    Object {
+      "address": Array [
+        Object {},
+      ],
+      "party_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+      "party_name": "mock name",
+      "party_type_code": "PER",
+    }
+  }
+  persistentSubmitErrors={false}
+  provinceOptions={
+    Array [
+      Object {
+        "isActive": true,
+        "label": "AB",
+        "value": "AB",
+      },
+      Object {
+        "isActive": true,
+        "label": "BC",
+        "value": "BC",
+      },
+    ]
+  }
+  pure={true}
+  shouldAsyncValidate={[Function]}
+  shouldError={[Function]}
+  shouldValidate={[Function]}
+  shouldWarn={[Function]}
+  submitAsSideEffect={false}
+  touchOnBlur={true}
+  touchOnChange={false}
+  updateUnregisteredFields={false}
+/>
 `;

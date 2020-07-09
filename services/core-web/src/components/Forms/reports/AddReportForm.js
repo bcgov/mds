@@ -13,6 +13,7 @@ import {
   resetForm,
   createDropDownList,
   formatComplianceCodeValueOrLabel,
+  sortListObjectsByPropertyLocaleCompare,
 } from "@common/utils/helpers";
 import {
   getDropdownMineReportCategoryOptions,
@@ -72,20 +73,26 @@ export class AddReportForm extends Component {
   };
 
   updateMineReportDefinitionOptions = (mineReportDefinitionOptions, selectedMineReportCategory) => {
-    let mineReportDefinitionOptionsFiltered = mineReportDefinitionOptions;
+    let mineReportDefinitionOptionsFiltered = mineReportDefinitionOptions.filter(
+      (option) => option.active_ind
+    );
 
     if (selectedMineReportCategory) {
-      mineReportDefinitionOptionsFiltered = mineReportDefinitionOptions.filter(
+      mineReportDefinitionOptionsFiltered = mineReportDefinitionOptionsFiltered.filter(
         (rd) =>
           rd.categories.filter((c) => c.mine_report_category === selectedMineReportCategory)
             .length > 0
       );
     }
 
-    const dropdownMineReportDefinitionOptionsFiltered = createDropDownList(
+    let dropdownMineReportDefinitionOptionsFiltered = createDropDownList(
       mineReportDefinitionOptionsFiltered,
       "report_name",
       "mine_report_definition_guid"
+    );
+    dropdownMineReportDefinitionOptionsFiltered = sortListObjectsByPropertyLocaleCompare(
+      dropdownMineReportDefinitionOptionsFiltered,
+      "label"
     );
 
     this.setState({

@@ -195,6 +195,17 @@ app {
                             'SOURCE_REPOSITORY_URL': "${app.git.uri}"
                     ]
                 ],
+                [
+                    'file':'openshift/templates/tusd.bc.json',
+                    'params':[
+                            'NAME':"tusd",
+                            'SUFFIX': "${app.build.suffix}",
+                            'VERSION':"${app.build.version}",
+                            'SOURCE_CONTEXT_DIR': "openshift/docker-images/tusd",
+                            'SOURCE_REPOSITORY_URL': "${app.git.uri}"
+                    ]
+                ]
+                ],
                 // Monitoring components
                 [
                     'file':'openshift/templates/monitoring/grafana.bc.json',

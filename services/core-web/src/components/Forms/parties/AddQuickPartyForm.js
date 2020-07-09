@@ -103,7 +103,7 @@ export const AddQuickPartyForm = (props) => (
           htmlType="submit"
           disabled={props.submitting}
         >
-          {props.isPerson ? "Create Personnel" : "Create Company"}
+          {props.isPerson ? "Create Person" : "Create Company"}
         </Button>
       </div>
     </Form>

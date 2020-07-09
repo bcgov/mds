@@ -164,8 +164,8 @@ app {
                             'KEYCLOAK_IDP_HINT': "${vars.keycloak.idpHint_minespace}",
                             'SITEMINDER_URL': "${vars.keycloak.siteminder_url}",
                             'API_URL': "https://${vars.modules.'mds-nginx'.HOST_CORE}${vars.modules.'mds-nginx'.PATH}/api",
-                            'DOCUMENT_MANAGER_URL': "https://${vars.modules.'mds-nginx'.HOST_CORE}${vars.modules.'mds-nginx'.PATH}/document-manager"
-
+                            'DOCUMENT_MANAGER_URL': "https://${vars.modules.'mds-nginx'.HOST_CORE}${vars.modules.'mds-nginx'.PATH}/document-manager",
+                            'MATOMO_URL': "${vars.deployment.matomo_url}"
                     ]
                 ],
                 [
@@ -189,7 +189,7 @@ app {
                             'NRIS_API_SERVICE_URL': "${vars.modules.'mds-nris-backend'.HOST}",
                             'DOCUMENT_MANAGER_SERVICE_URL': "${vars.modules.'mds-docman-backend'.HOST}",
                             'MINESPACE_SERVICE_URL': "${vars.modules.'mds-frontend-public'.HOST}",
-                            'API_SERVICE_URL': "${vars.modules.'mds-python-backend'.HOST}",
+                            'API_SERVICE_URL': "${vars.modules.'mds-python-backend'.HOST}"
                     ]
                 ],
                 [
@@ -252,6 +252,20 @@ app {
                             'DOCUMENT_CAPACITY_LOWER':"${vars.DOCUMENT_PVC_SIZE.toString().toLowerCase()}",
                             'ENVIRONMENT_NAME':"${app.deployment.env.name}",
                             'API_URL': "https://${vars.modules.'mds-nginx'.HOST_CORE}${vars.modules.'mds-nginx'.PATH}/document-manager",
+                            'OBJECT_STORE_ENABLED': '0',
+                            'TUSD_URL': "http://tusd${vars.deployment.suffix}:1080/files/"
+                    ]
+                ],
+                [
+                    'file':'openshift/templates/tusd.dc.json',
+                    'params':[
+                            'NAME':"tusd",
+                            'VERSION':"${app.deployment.version}",
+                            'SUFFIX': "${vars.deployment.suffix}",
+                            'CPU_REQUEST':"${vars.resources.tusd.cpu_request}",
+                            'CPU_LIMIT':"${vars.resources.tusd.cpu_limit}",
+                            'MEMORY_REQUEST':"${vars.resources.tusd.memory_request}",
+                            'MEMORY_LIMIT':"${vars.resources.tusd.memory_limit}"
                     ]
                 ],
                 [
@@ -388,6 +402,14 @@ environments {
                     replica_min = 1
                     replica_max = 1
                 }
+                tusd {
+                    cpu_request = "50m"
+                    cpu_limit = "100m"
+                    memory_request = "256Mi"
+                    memory_limit = "512Mi"
+                    replica_min = 1
+                    replica_max = 1
+                }
                 nginx {
                     cpu_request = "10m"
                     cpu_limit = "20m"
@@ -469,6 +491,8 @@ environments {
                 elastic_service_name = "MDS Dev"
                 elastic_service_name_nris = "NRIS API Dev"
                 elastic_service_name_docman = 'DocMan Dev'
+                matomo_url = "https://matomo-empr-mds-test.pathfinder.gov.bc.ca/"
+
             }
             modules {
                 'mds-frontend' {

@@ -11,11 +11,11 @@ from app.api.utils.resources_mixins import UserMixin
 
 
 class ApplicationStatusResource(Resource, UserMixin):
-    @api.doc(description='Get an application\'s status by messageid')
+    @api.doc(description='Get an application\'s status by Notice of Work Number')
     @requires_role_view_all
     @api.marshal_with(NOW_APPLICATION_STATUS_CODES, code=200)
-    def get(self, messageid):
-        application_identity = NOWApplicationIdentity.find_by_messageid(messageid)
+    def get(self, now_number):
+        application_identity = NOWApplicationIdentity.find_by_now_number(now_number)
         if not application_identity:
             raise NotFound('Application not found')
 
@@ -42,9 +42,8 @@ class ApplicationStatusListResource(Resource, UserMixin):
         updated_status_records = []
         for now_application in now_applications:
             updated_status_record = {
-                "messageid":
-                None if not now_application.now_application_identity else
-                now_application.now_application_identity.messageid,
+                "now_number":
+                now_application.now_application_identity.now_number,
                 "status_updated_date":
                 now_application.status_updated_date,
                 "status":

@@ -19,6 +19,7 @@ import {
   fetchMineBonds,
   createBond,
   updateBond,
+  transferBond,
   fetchMineReclamationInvoices,
   createReclamationInvoice,
   updateReclamationInvoice,
@@ -52,6 +53,7 @@ const propTypes = {
   fetchMineBonds: PropTypes.func.isRequired,
   createBond: PropTypes.func.isRequired,
   updateBond: PropTypes.func.isRequired,
+  transferBond: PropTypes.func.isRequired,
   fetchMineReclamationInvoices: PropTypes.func.isRequired,
   createReclamationInvoice: PropTypes.func.isRequired,
   updateReclamationInvoice: PropTypes.func.isRequired,
@@ -85,6 +87,30 @@ export class MineSecurityInfo extends Component {
     });
   };
 
+  recordsByPermit = (permit, records) =>
+    records.filter(({ permit_guid }) => permit_guid === permit.permit_guid);
+
+  activeBondCount = (permit) =>
+    this.props.bonds.filter(
+      ({ permit_guid, bond_status_code }) =>
+        permit_guid === permit.permit_guid && bond_status_code === "ACT"
+    ).length;
+
+  getSum = (status, permit) =>
+    this.props.bonds
+      .filter(
+        ({ bond_status_code, permit_guid }) =>
+          bond_status_code === status && permit_guid === permit.permit_guid
+      )
+      .reduce((sum, bond) => +sum + +bond.amount, 0);
+
+  getAmountSum = (permit) =>
+    this.props.invoices
+      .filter(({ permit_guid }) => permit_guid === permit.permit_guid)
+      .reduce((sum, invoice) => +sum + +invoice.amount, 0);
+
+  getBalance = (permit) => this.getSum("CON", permit) - this.getAmountSum(permit);
+
   openAddBondModal = (event, permitGuid) => {
     event.preventDefault();
     this.props.openModal({
@@ -115,6 +141,32 @@ export class MineSecurityInfo extends Component {
     });
   };
 
+  openTransferBondModal = (event, bond) => {
+    event.preventDefault();
+    this.props.openModal({
+      props: {
+        title: `Transfer Bond`,
+        onSubmit: this.transferBond,
+        editBond: true,
+        bond,
+        permitGuid: bond.permit_guid,
+        permits: this.props.permits,
+      },
+      width: "50vw",
+      content: modalConfig.TRANSFER_BOND_MODAL,
+    });
+  };
+
+  transferBond = (values, bond) => {
+    this.props.transferBond(values, bond.bond_guid).then(() => {
+      this.setState({ isBondLoaded: false });
+      this.props
+        .fetchMineBonds(this.props.mineGuid)
+        .then(() => this.props.closeModal())
+        .finally(() => this.setState({ isBondLoaded: true }));
+    });
+  };
+
   openViewBondModal = (event, bond) => {
     event.preventDefault();
     this.props.openModal({
@@ -136,10 +188,11 @@ export class MineSecurityInfo extends Component {
     delete payload.bond_guid;
     delete payload.payer;
     this.props.updateBond(payload, bondGuid).then(() => {
-      this.props.fetchMineBonds(this.props.mineGuid).then(() => {
-        this.props.closeModal();
-        this.setState({ isBondLoaded: true });
-      });
+      this.setState({ isBondLoaded: false });
+      this.props
+        .fetchMineBonds(this.props.mineGuid)
+        .then(() => this.props.closeModal())
+        .finally(() => this.setState({ isBondLoaded: true }));
     });
   };
 
@@ -163,10 +216,11 @@ export class MineSecurityInfo extends Component {
     };
 
     this.props.createBond(payload).then(() => {
-      this.props.fetchMineBonds(this.props.mineGuid).then(() => {
-        this.props.closeModal();
-        this.setState({ isBondLoaded: true });
-      });
+      this.setState({ isBondLoaded: false });
+      this.props
+        .fetchMineBonds(this.props.mineGuid)
+        .then(() => this.props.closeModal())
+        .finally(() => this.setState({ isBondLoaded: true }));
     });
   };
 
@@ -282,6 +336,10 @@ export class MineSecurityInfo extends Component {
                 bondTypeOptionsHash={this.props.bondTypeOptionsHash}
                 openViewBondModal={this.openViewBondModal}
                 openEditBondModal={this.openEditBondModal}
+                openTransferBondModal={this.openTransferBondModal}
+                recordsByPermit={this.recordsByPermit}
+                activeBondCount={this.activeBondCount}
+                getSum={this.getSum}
               />
             </div>
           </TabPane>
@@ -301,6 +359,10 @@ export class MineSecurityInfo extends Component {
               invoices={this.props.invoices}
               bonds={this.props.bonds}
               openEditReclamationInvoiceModal={this.openEditReclamationInvoiceModal}
+              recordsByPermit={this.recordsByPermit}
+              getBalance={this.getBalance}
+              getSum={this.getSum}
+              getAmountSum={this.getAmountSum}
             />
           </TabPane>
         </Tabs>
@@ -328,6 +390,7 @@ const mapDispatchToProps = (dispatch) =>
       fetchMineBonds,
       createBond,
       updateBond,
+      transferBond,
       fetchMineReclamationInvoices,
       createReclamationInvoice,
       updateReclamationInvoice,

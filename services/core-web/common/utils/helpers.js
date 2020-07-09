@@ -2,6 +2,7 @@
 import moment from "moment";
 import { reset } from "redux-form";
 import { createNumberMask } from "redux-form-input-masks";
+import { get } from "lodash";
 
 /**
  * Helper function to clear redux form after submission
@@ -37,8 +38,13 @@ export const createItemMap = (array, idField) => {
 // Function create id array for redux state. (used in src/reducers/<customReducer>)
 export const createItemIdsArray = (array, idField) => array.map((item) => item[idField]);
 
-export const createDropDownList = (array, labelField, valueField) =>
-  array.map((item) => ({ value: item[valueField], label: item[labelField] }));
+export const createDropDownList = (array, labelField, valueField, isActiveField = false) => {
+  return array.map((item) => ({
+    value: item[valueField],
+    label: item[labelField],
+    isActive: isActiveField ? item[isActiveField] : true,
+  }));
+};
 
 // Function to create a hash given an array of values and labels
 export const createLabelHash = (arr) =>
@@ -79,18 +85,25 @@ export const dateSorter = (key) => (a, b) => {
   return moment(a[key]) - moment(b[key]);
 };
 
-export const nullableStringSorter = (key) => (a, b) => {
-  if (a[key] === b[key]) {
+export const nullableStringSorter = (path) => (a, b) => {
+  const aObj = get(a, path, null);
+  const bObj = get(b, path, null);
+  if (aObj === bObj) {
     return 0;
   }
-  if (!a[key]) {
+  if (!aObj) {
     return 1;
   }
-  if (!b[key]) {
+  if (!bObj) {
     return -1;
   }
-  return a[key].localeCompare(b[key]);
+  return aObj.localeCompare(bObj);
 };
+
+export const sortListObjectsByPropertyLocaleCompare = (list, property) =>
+  list.sort(nullableStringSorter(property));
+
+export const sortListObjectsByPropertyDate = (list, property) => list.sort(dateSorter(property));
 
 // Case insensitive filter for a SELECT field by label string
 export const caseInsensitiveLabelFilter = (input, option) =>
@@ -262,7 +275,12 @@ export const flattenObject = (ob) => {
 
 export const formatMoney = (value) => {
   const number = Number(value);
-  return number === NaN
+  return isNaN(number)
     ? null
     : number.toLocaleString("en-US", { style: "currency", currency: "USD" });
 };
+
+export const renderLabel = (options, keyStr) =>
+  options && options.length > 0 && keyStr && keyStr.trim().length > 0
+    ? options.find((item) => item.value === keyStr).label
+    : "";

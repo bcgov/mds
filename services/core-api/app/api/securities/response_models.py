@@ -45,19 +45,42 @@ BOND = api.model(
         'payer': fields.Nested(BOND_PARTY),
         'project_id': fields.String,
         'permit_guid': fields.String(attribute='permit.permit_guid'),
+        'permit_no': fields.String(attribute='permit.permit_no'),
         'documents': fields.List(fields.Nested(BOND_DOCUMENT_MODEL))
+    })
+
+BOND_MINESPACE = api.model(
+    'BondMineSpace', {
+        'bond_id': fields.Integer,
+        'bond_guid': fields.String,
+        'amount': fields.Fixed(decimals=2),
+        'bond_type_code': fields.String,
+        'payer_party_guid': fields.String,
+        'bond_status_code': fields.String,
+        'reference_number': fields.String,
+        'issue_date': fields.DateTime,
+        'payer': fields.Nested(BOND_PARTY),
+        'project_id': fields.String,
+        'permit_guid': fields.String(attribute='permit.permit_guid'),
+        'permit_no': fields.String(attribute='permit.permit_no'),
     })
 
 BOND_STATUS = api.model('BondStatus', {
     'bond_status_code': fields.String,
-    'description': fields.String
+    'description': fields.String,
+    'active_ind': fields.Boolean
 })
 
-BOND_TYPE = api.model('BondType', {'bond_type_code': fields.String, 'description': fields.String})
+BOND_TYPE = api.model('BondType', {
+    'bond_type_code': fields.String,
+    'description': fields.String,
+    'active_ind': fields.Boolean
+})
 
 BOND_DOCUMENT_TYPE = api.model('BondDocumentType', {
     'bond_document_type_code': fields.String,
-    'description': fields.String
+    'description': fields.String,
+    'active_ind': fields.Boolean
 })
 
 RECLAMATION_INVOICE = api.model(
@@ -67,6 +90,7 @@ RECLAMATION_INVOICE = api.model(
         'project_id': fields.String,
         'amount': fields.Fixed(decimals=2),
         'vendor': fields.String,
+        'note': fields.String,
         'permit_guid': fields.String(attribute='permit.permit_guid'),
         'documents': fields.List(fields.Nested(RECLAMATION_INVOICE_DOCUMENT_MODEL))
     })

@@ -10,10 +10,11 @@ class BondDocumentType(Base, AuditMixin):
     bond_document_type_code = db.Column(db.String, nullable=False, primary_key=True)
     description = db.Column(db.String, nullable=False)
     active_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
+    display_order = db.Column(db.Integer, nullable=False)
 
     def __repr__(self):
         return '<BondDocumentType %r>' % self.bond_document_type_code
 
     @classmethod
-    def get_active(cls):
-        return cls.query.filter_by(active_ind=True).all()
+    def get_all(cls):
+        return cls.query.order_by(cls.display_order).all()

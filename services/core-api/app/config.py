@@ -55,7 +55,12 @@ class Config(object):
     NRIS_USER_NAME = os.environ.get('NRIS_USER_NAME', None)
     NRIS_PASS = os.environ.get('NRIS_PASS', None)
     ENVIRONMENT_NAME = os.environ.get('ENVIRONMENT_NAME', 'dev')
+
+    # SqlAlchemy config
     SQLALCHEMY_DATABASE_URI = DB_URL
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+    SQLALCHEMY_ENGINE_OPTIONS = {"pool_pre_ping": True}
+
     JWT_OIDC_WELL_KNOWN_CONFIG = os.environ.get(
         'JWT_OIDC_WELL_KNOWN_CONFIG',
         'https://URL/auth/realms/mds/.well-known/openid-configuration')
@@ -82,6 +87,12 @@ class Config(object):
     DOCUMENT_GENERATOR_URL = os.environ.get('DOCUMENT_GENERATOR_URL', 'http://docgen-api:3030')
     NRIS_TOKEN_URL = os.environ.get('NRIS_TOKEN_URL', None)
     NRIS_API_URL = os.environ.get('NRIS_API_URL', 'http://nris_backend:5500')
+
+    NROS_NOW_URL = os.environ.get('NROS_NOW_URL', None)
+    NROS_NOW_CLIENT_ID = os.environ.get('NROS_NOW_CLIENT_ID', None)
+    NROS_NOW_TOKEN_URL = os.environ.get('NROS_NOW_TOKEN_URL', None)
+    NROS_NOW_CLIENT_SECRET = os.environ.get('NROS_NOW_CLIENT_SECRET', None)
+
     # Cache settings
     CACHE_TYPE = os.environ.get('CACHE_TYPE', 'redis')
     CACHE_REDIS_HOST = os.environ.get('CACHE_REDIS_HOST', 'redis')
@@ -116,14 +127,17 @@ class Config(object):
     NROS_CLIENT_ID = os.environ.get('NROS_CLIENT_ID', None)
     NROS_TOKEN_URL = os.environ.get('NROS_TOKEN_URL', None)
 
-    # VFCBC
+    # vFCBC
     VFCBC_CLIENT_SECRET = os.environ.get('VFCBC_CLIENT_SECRET', None)
     VFCBC_CLIENT_ID = os.environ.get('VFCBC_CLIENT_ID', None)
 
-    # NRIS Remote API
+    # NRIS
     NRIS_REMOTE_CLIENT_SECRET = os.environ.get('NRIS_REMOTE_CLIENT_SECRET', None)
     NRIS_REMOTE_CLIENT_ID = os.environ.get('NRIS_REMOTE_CLIENT_ID', None)
     NRIS_REMOTE_TOKEN_URL = os.environ.get('NRIS_REMOTE_TOKEN_URL', None)
+
+    # OrgBook
+    ORGBOOK_API_URL = os.environ.get('ORGBOOK_API_URL', 'https://orgbook.gov.bc.ca/api/v2/')
 
 
 class TestConfig(Config):

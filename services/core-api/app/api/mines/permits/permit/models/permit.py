@@ -46,6 +46,7 @@ class Permit(AuditMixin, Base):
 
     bonds = db.relationship('Bond', lazy='select', secondary='bond_permit_xref')
     reclamation_invoices = db.relationship('ReclamationInvoice', lazy='select')
+    deleted_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
 
     @hybrid_property
     def current_permittee(self):
@@ -57,21 +58,30 @@ class Permit(AuditMixin, Base):
     def __repr__(self):
         return '<Permit %r>' % self.permit_guid
 
+    def soft_delete(self):
+        if self.bonds:
+            raise Exception('Unable to delete permit with attached bonds.')
+        if self.permit_amendments:
+            for amendment in self.permit_amendments:
+                amendment.soft_delete(True)
+        self.deleted_ind = True
+        self.save()
+
     @classmethod
     def find_by_permit_guid(cls, _id):
-        return cls.query.filter_by(permit_guid=_id).first()
+        return cls.query.filter_by(permit_guid=_id, deleted_ind=False).first()
 
     @classmethod
     def find_by_mine_guid(cls, _id):
-        return cls.query.filter_by(mine_guid=_id).all()
+        return cls.query.filter_by(mine_guid=_id, deleted_ind=False).all()
 
     @classmethod
     def find_by_permit_no(cls, _permit_no):
-        return cls.query.filter_by(permit_no=_permit_no).first()
+        return cls.query.filter_by(permit_no=_permit_no, deleted_ind=False).first()
 
     @classmethod
     def find_by_permit_no_all(cls, _permit_no):
-        return cls.query.filter_by(permit_no=_permit_no).all()
+        return cls.query.filter_by(permit_no=_permit_no, deleted_ind=False).all()
 
     @classmethod
     def find_by_permit_guid_or_no(cls, _permit_guid_or_no):

@@ -4,6 +4,9 @@ exports[`ContactHomePage renders properly 1`] = `
 <div
   className="landing-page"
 >
+  <PageTracker
+    title="Contacts Page"
+  />
   <div
     className="landing-page__header"
   >
@@ -167,12 +170,20 @@ exports[`ContactHomePage renders properly 1`] = `
           parties={
             Object {
               "18133c75-49ad-4101-85f3-a43e35ae989a": Object {
-                "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-                "name": "mock name",
+                "address": Array [
+                  Object {},
+                ],
+                "party_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                "party_name": "mock name",
+                "party_type_code": "PER",
               },
               "18145c75-49ad-0101-85f3-a43e45ae989a": Object {
-                "guid": "18145c75-49ad-0101-85f3-a43e45ae989a",
-                "name": "mock Two",
+                "address": Array [
+                  Object {},
+                ],
+                "party_guid": "18145c75-49ad-0101-85f3-a43e45ae989a",
+                "party_name": "mock Two",
+                "party_type_code": "PER",
               },
             }
           }

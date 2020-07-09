@@ -42,6 +42,7 @@ import MineMapLeaflet from "@/components/maps/MineMapLeaflet";
 import * as Permission from "@/constants/permissions";
 import * as ModalContent from "@/constants/modalContent";
 import AddButton from "@/components/common/AddButton";
+import { PageTracker } from "@common/utils/trackers";
 
 /**
  * @class Dashboard is the main landing page of the application, currently contains a List and Map View, ability to create a new mine, and search for a mine by name or lat/long.
@@ -278,6 +279,7 @@ export class Dashboard extends Component {
     const { map } = queryString.parse(this.props.location.search);
     return (
       <div>
+        <PageTracker title="Mines Page" />
         <Tabs
           className="center-tabs"
           activeKey={map ? "map" : "list"}
@@ -457,10 +459,10 @@ const mapStateToProps = (state) => ({
   mineTenureHash: getMineTenureTypesHash(state),
   mineCommodityOptionsHash: getCommodityOptionHash(state),
   mineDisturbanceOptionsHash: getDisturbanceOptionHash(state),
-  mineStatusDropDownOptions: getMineStatusDropDownOptions(state),
+  mineStatusDropDownOptions: getMineStatusDropDownOptions(state, false),
   mineRegionOptions: getMineRegionDropdownOptions(state),
-  mineTenureTypes: getMineTenureTypeDropdownOptions(state),
-  mineCommodityOptions: getDropdownCommodityOptions(state),
+  mineTenureTypes: getMineTenureTypeDropdownOptions(state, false),
+  mineCommodityOptions: getDropdownCommodityOptions(state, false),
   transformedMineTypes: getTransformedMineTypes(state),
 });
 

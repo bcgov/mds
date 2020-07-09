@@ -301,23 +301,31 @@ export const PARTY = {
   partyIds: ["18133c75-49ad-4101-85f3-a43e35ae989a", "18145c75-49ad-0101-85f3-a43e45ae989a"],
   parties: {
     "18133c75-49ad-4101-85f3-a43e35ae989a": {
-      guid: "18133c75-49ad-4101-85f3-a43e35ae989a",
-      name: "mock name",
+      party_guid: "18133c75-49ad-4101-85f3-a43e35ae989a",
+      party_name: "mock name",
+      party_type_code: "PER",
+      address: [{}],
     },
     "18145c75-49ad-0101-85f3-a43e45ae989a": {
-      guid: "18145c75-49ad-0101-85f3-a43e45ae989a",
-      name: "mock Two",
+      party_guid: "18145c75-49ad-0101-85f3-a43e45ae989a",
+      party_name: "mock Two",
+      party_type_code: "PER",
+      address: [{}],
     },
   },
   partiesWithAppointments: {
     "18133c75-49ad-4101-85f3-a43e35ae989a": {
-      guid: "18133c75-49ad-4101-85f3-a43e35ae989a",
-      name: "mock name",
+      party_guid: "18133c75-49ad-4101-85f3-a43e35ae989a",
+      party_name: "mock name",
+      party_type_code: "PER",
+      address: [{}],
       mine_party_appt: [],
     },
     "18145c75-49ad-0101-85f3-a43e45ae989a": {
-      guid: "18145c75-49ad-0101-85f3-a43e45ae989a",
-      name: "mock Two",
+      party_guid: "18145c75-49ad-0101-85f3-a43e45ae989a",
+      party_name: "mock Two",
+      party_type_code: "PER",
+      address: [{}],
       mine_party_appt: [],
     },
   },
@@ -394,14 +402,17 @@ export const STATUS_OPTIONS = {
       mine_operation_status: {
         mine_operation_status_code: "CLD",
         description: "Closed",
+        active_ind: true,
       },
       mine_operation_status_reason: {
         mine_operation_status_reason_code: "ORP",
         description: "Orphaned",
+        active_ind: true,
       },
       mine_operation_status_sub_reason: {
         mine_operation_status_sub_reason_code: "LTM",
         description: "Long-Term Maintenance",
+        active_ind: true,
       },
       description:
         "The permittee is not able or available to meet permit obligations. The Ministry has taken over responsibility for the mine. Reclamation work is under way. There are long-term care and maintenance activities on site. Contractors are performing the work.",
@@ -411,14 +422,17 @@ export const STATUS_OPTIONS = {
       mine_operation_status: {
         mine_operation_status_code: "CLD",
         description: "Closed",
+        active_ind: true,
       },
       mine_operation_status_reason: {
         mine_operation_status_reason_code: "REC",
         description: "Reclamation",
+        active_ind: true,
       },
       mine_operation_status_sub_reason: {
         mine_operation_status_sub_reason_code: "LTM",
         description: "Long-Term Maintenance",
+        active_ind: true,
       },
       description:
         "The mine is closed and not expected to re-open. Reclamation work is under way. There are long-term care and maintenance activities on site. Permit and HSRC obligations are still in place. Site is subject to inspection and still has reporting to file with the Ministry.",
@@ -428,14 +442,17 @@ export const STATUS_OPTIONS = {
       mine_operation_status: {
         mine_operation_status_code: "CLD",
         description: "Closed",
+        active_ind: true,
       },
       mine_operation_status_reason: {
         mine_operation_status_reason_code: "ORP",
         description: "Orphaned",
+        active_ind: true,
       },
       mine_operation_status_sub_reason: {
         mine_operation_status_sub_reason_code: "LWT",
         description: "Long-Term Maintenance & Water Treatment",
+        active_ind: true,
       },
       description:
         "The permittee is not able or available to meet permit obligations. The Ministry has taken over responsibility for the mine. Reclamation work is under way. There are long-term care and maintenance activities on site in addition to water treatment. Contractors are performing the work.",
@@ -445,14 +462,17 @@ export const STATUS_OPTIONS = {
       mine_operation_status: {
         mine_operation_status_code: "CLD",
         description: "Closed",
+        active_ind: true,
       },
       mine_operation_status_reason: {
         mine_operation_status_reason_code: "REC",
         description: "Reclamation",
+        active_ind: true,
       },
       mine_operation_status_sub_reason: {
         mine_operation_status_sub_reason_code: "LWT",
         description: "Long-Term Maintenance & Water Treatment",
+        active_ind: true,
       },
       description:
         "The mine is closed and not expected to re-open. Reclamation work is under way. There are long-term care and maintenance activities on site in addition to water treatment. Permit and HSRC obligations are still in place. Site is subject to inspection and still has reporting to file with the Ministry.",
@@ -462,14 +482,17 @@ export const STATUS_OPTIONS = {
       mine_operation_status: {
         mine_operation_status_code: "CLD",
         description: "Closed",
+        active_ind: true,
       },
       mine_operation_status_reason: {
         mine_operation_status_reason_code: "REC",
         description: "Reclamation",
+        active_ind: true,
       },
       mine_operation_status_sub_reason: {
         mine_operation_status_sub_reason_code: "PRP",
         description: "Permit Release Pending",
+        active_ind: true,
       },
       description:
         "Reclamation work is complete, no additional care required. Ministry needs to return bond and close permit for mine to be Abandoned.",
@@ -479,14 +502,17 @@ export const STATUS_OPTIONS = {
       mine_operation_status: {
         mine_operation_status_code: "CLD",
         description: "Closed",
+        active_ind: true,
       },
       mine_operation_status_reason: {
         mine_operation_status_reason_code: "ORP",
         description: "Orphaned",
+        active_ind: true,
       },
       mine_operation_status_sub_reason: {
         mine_operation_status_sub_reason_code: "RNS",
         description: "Reclamation Not Started",
+        active_ind: true,
       },
       description:
         "The permittee is not able or available to meet permit obligations. The Ministry has taken over responsibility for the mine. Reclamation work has not started. A contractor has not been retained to perform the work.",
@@ -496,14 +522,17 @@ export const STATUS_OPTIONS = {
       mine_operation_status: {
         mine_operation_status_code: "CLD",
         description: "Closed",
+        active_ind: true,
       },
       mine_operation_status_reason: {
         mine_operation_status_reason_code: "ORP",
         description: "Orphaned",
+        active_ind: true,
       },
       mine_operation_status_sub_reason: {
         mine_operation_status_sub_reason_code: "SVR",
         description: "Site Visit Required",
+        active_ind: true,
       },
       description:
         "The permittee is not able or available to meet permit obligations. The Ministry will take over responsibility for the mine. The site needs to be visited and assessed to determine status and work required.",
@@ -513,14 +542,17 @@ export const STATUS_OPTIONS = {
       mine_operation_status: {
         mine_operation_status_code: "ABN",
         description: "Abandoned",
+        active_ind: true,
       },
       mine_operation_status_reason: {
         mine_operation_status_reason_code: null,
         description: null,
+        active_ind: null,
       },
       mine_operation_status_sub_reason: {
         mine_operation_status_sub_reason_code: null,
         description: null,
+        active_ind: null,
       },
       description:
         "The mine site is shut down, the permit obligations have been fulfilled. Bond has been returned if permittee completed reclamation work.",
@@ -530,14 +562,17 @@ export const STATUS_OPTIONS = {
       mine_operation_status: {
         mine_operation_status_code: "CLD",
         description: "Closed",
+        active_ind: true,
       },
       mine_operation_status_reason: {
         mine_operation_status_reason_code: null,
         description: null,
+        active_ind: null,
       },
       mine_operation_status_sub_reason: {
         mine_operation_status_sub_reason_code: null,
         description: null,
+        active_ind: null,
       },
       description: null,
     },
@@ -546,14 +581,17 @@ export const STATUS_OPTIONS = {
       mine_operation_status: {
         mine_operation_status_code: "NS",
         description: "Not Started",
+        active_ind: true,
       },
       mine_operation_status_reason: {
         mine_operation_status_reason_code: null,
         description: null,
+        active_ind: null,
       },
       mine_operation_status_sub_reason: {
         mine_operation_status_sub_reason_code: null,
         description: null,
+        active_ind: null,
       },
       description:
         "No mine related work has started at this site (including exploration). The mine record may have been created as placeholder for an exploration permit. Sites with closed exploration permits that are constructing production facilities also fit into this category.",
@@ -563,14 +601,17 @@ export const STATUS_OPTIONS = {
       mine_operation_status: {
         mine_operation_status_code: "OP",
         description: "Operating",
+        active_ind: true,
       },
       mine_operation_status_reason: {
         mine_operation_status_reason_code: "SEA",
         description: "Seasonal",
+        active_ind: true,
       },
       mine_operation_status_sub_reason: {
         mine_operation_status_sub_reason_code: null,
         description: null,
+        active_ind: null,
       },
       description:
         "This mine operates seasonally. Dates shown are from the most recently approved NoW application. Confirm operating dates with operator or permittee before visiting.",
@@ -580,14 +621,17 @@ export const STATUS_OPTIONS = {
       mine_operation_status: {
         mine_operation_status_code: "OP",
         description: "Operating",
+        active_ind: true,
       },
       mine_operation_status_reason: {
         mine_operation_status_reason_code: "YR",
         description: "Year-Round",
+        active_ind: true,
       },
       mine_operation_status_sub_reason: {
         mine_operation_status_sub_reason_code: null,
         description: null,
+        active_ind: null,
       },
       description:
         "This mine operates year-round (can be conducting exploration and/or production activities).",
@@ -597,14 +641,17 @@ export const STATUS_OPTIONS = {
       mine_operation_status: {
         mine_operation_status_code: "CLD",
         description: "Closed",
+        active_ind: true,
       },
       mine_operation_status_reason: {
         mine_operation_status_reason_code: "UN",
         description: "Unknown",
+        active_ind: true,
       },
       mine_operation_status_sub_reason: {
         mine_operation_status_sub_reason_code: null,
         description: null,
+        active_ind: null,
       },
       description:
         "Ministry has not determined if the permittee is able or available to meet permit obligations. A visit to the site is required.",
@@ -614,14 +661,17 @@ export const STATUS_OPTIONS = {
       mine_operation_status: {
         mine_operation_status_code: "CLD",
         description: "Closed",
+        active_ind: true,
       },
       mine_operation_status_reason: {
         mine_operation_status_reason_code: "CM",
         description: "Care & Maintenance",
+        active_ind: true,
       },
       mine_operation_status_sub_reason: {
         mine_operation_status_sub_reason_code: null,
         description: null,
+        active_ind: null,
       },
       description:
         "The mine is temporarily closed. It is expected that it will eventually re-open. Permit and HSRC obligations are still in place. Site is subject to inspection and still has reporting to file with the Ministry.",
@@ -636,6 +686,7 @@ export const STATUS_OPTIONS_DROPDOWN = [
     title:
       "The mine site is shut down, the permit obligations have been fulfilled. Bond has been returned if permittee completed reclamation work.",
     value: "ABN",
+    isActive: true,
   },
   {
     children: [
@@ -645,6 +696,7 @@ export const STATUS_OPTIONS_DROPDOWN = [
         title:
           "The mine is temporarily closed. It is expected that it will eventually re-open. Permit and HSRC obligations are still in place. Site is subject to inspection and still has reporting to file with the Ministry.",
         value: "CM",
+        isActive: true,
       },
       {
         children: [
@@ -654,6 +706,7 @@ export const STATUS_OPTIONS_DROPDOWN = [
             title:
               "The permittee is not able or available to meet permit obligations. The Ministry has taken over responsibility for the mine. Reclamation work is under way. There are long-term care and maintenance activities on site. Contractors are performing the work.",
             value: "LTM",
+            isActive: true,
           },
           {
             children: [],
@@ -661,6 +714,7 @@ export const STATUS_OPTIONS_DROPDOWN = [
             title:
               "The permittee is not able or available to meet permit obligations. The Ministry has taken over responsibility for the mine. Reclamation work is under way. There are long-term care and maintenance activities on site in addition to water treatment. Contractors are performing the work.",
             value: "LWT",
+            isActive: true,
           },
           {
             children: [],
@@ -668,6 +722,7 @@ export const STATUS_OPTIONS_DROPDOWN = [
             title:
               "The permittee is not able or available to meet permit obligations. The Ministry has taken over responsibility for the mine. Reclamation work has not started. A contractor has not been retained to perform the work.",
             value: "RNS",
+            isActive: true,
           },
           {
             children: [],
@@ -675,11 +730,13 @@ export const STATUS_OPTIONS_DROPDOWN = [
             title:
               "The permittee is not able or available to meet permit obligations. The Ministry will take over responsibility for the mine. The site needs to be visited and assessed to determine status and work required.",
             value: "SVR",
+            isActive: true,
           },
         ],
         label: "Orphaned",
         title: null,
         value: "ORP",
+        isActive: true,
       },
       {
         children: [
@@ -689,6 +746,7 @@ export const STATUS_OPTIONS_DROPDOWN = [
             title:
               "The mine is closed and not expected to re-open. Reclamation work is under way. There are long-term care and maintenance activities on site. Permit and HSRC obligations are still in place. Site is subject to inspection and still has reporting to file with the Ministry.",
             value: "LTM",
+            isActive: true,
           },
           {
             children: [],
@@ -696,6 +754,7 @@ export const STATUS_OPTIONS_DROPDOWN = [
             title:
               "The mine is closed and not expected to re-open. Reclamation work is under way. There are long-term care and maintenance activities on site in addition to water treatment. Permit and HSRC obligations are still in place. Site is subject to inspection and still has reporting to file with the Ministry.",
             value: "LWT",
+            isActive: true,
           },
           {
             children: [],
@@ -703,11 +762,13 @@ export const STATUS_OPTIONS_DROPDOWN = [
             title:
               "Reclamation work is complete, no additional care required. Ministry needs to return bond and close permit for mine to be Abandoned.",
             value: "PRP",
+            isActive: true,
           },
         ],
         label: "Reclamation",
         title: null,
         value: "REC",
+        isActive: true,
       },
       {
         children: [],
@@ -715,11 +776,13 @@ export const STATUS_OPTIONS_DROPDOWN = [
         title:
           "Ministry has not determined if the permittee is able or available to meet permit obligations. A visit to the site is required.",
         value: "UN",
+        isActive: true,
       },
     ],
     label: "Closed",
     title: null,
     value: "CLD",
+    isActive: true,
   },
   {
     children: [],
@@ -727,6 +790,7 @@ export const STATUS_OPTIONS_DROPDOWN = [
     title:
       "No mine related work has started at this site (including exploration). The mine record may have been created as placeholder for an exploration permit. Sites with closed exploration permits that are constructing production facilities also fit into this category.",
     value: "NS",
+    isActive: true,
   },
   {
     children: [
@@ -736,6 +800,7 @@ export const STATUS_OPTIONS_DROPDOWN = [
         title:
           "This mine operates seasonally. Dates shown are from the most recently approved NoW application. Confirm operating dates with operator or permittee before visiting.",
         value: "SEA",
+        isActive: true,
       },
       {
         children: [],
@@ -743,12 +808,14 @@ export const STATUS_OPTIONS_DROPDOWN = [
         title:
           "This mine operates year-round (can be conducting exploration and/or production activities).",
         value: "YR",
+        isActive: true,
       },
     ],
     label: "Operating",
     title:
       "This mine operates year-round (can be conducting exploration and/or production activities).",
     value: "OP",
+    isActive: true,
   },
 ];
 
@@ -849,10 +916,10 @@ export const REGION_HASH = {
 };
 
 export const TENURE_TYPES_DROPDOWN_OPTIONS = [
-  { value: "COL", label: "Coal" },
-  { value: "MIN", label: "Mineral" },
-  { value: "PLR", label: "Placer" },
-  { value: "BCL", label: "BC Land" },
+  { value: "COL", label: "Coal", isActive: true },
+  { value: "MIN", label: "Mineral", isActive: true },
+  { value: "PLR", label: "Placer", isActive: true },
+  { value: "BCL", label: "BC Land", isActive: true },
 ];
 
 export const TENURE_TYPES_RESPONSE = {
@@ -948,6 +1015,7 @@ export const PERMITS = [
         received_date: null,
         issue_date: "2019-04-01",
         authorization_end_date: null,
+        security_total: "1000000",
         description: "Initial permit issued.",
         related_documents: [
           {
@@ -1036,55 +1104,68 @@ export const DROPDOWN_COMMODITY_OPTIONS = [
   {
     value: "TO",
     label: "Thermal Coal",
+    isActive: true,
   },
   {
     value: "MC",
     label: "Metallurgic",
+    isActive: true,
   },
   {
     value: "CG",
     label: "Construction Aggregate",
+    isActive: true,
   },
 
   {
     value: "SA",
     label: "Sand and Gravel",
+    isActive: true,
   },
   {
     value: "AE",
     label: "Agate",
+    isActive: true,
   },
   {
     value: "AL",
     label: "Aluminum",
+    isActive: true,
   },
   {
     value: "AI",
     label: "Alunite",
+    isActive: true,
   },
   {
     value: "AM",
     label: "Amber",
+    isActive: true,
   },
   {
     value: "AY",
     label: "Amethyst",
+    isActive: true,
   },
   {
     value: "AD",
     label: "Andalusite",
+    isActive: true,
   },
   {
     value: "AA",
     label: "Andesite",
+    isActive: true,
   },
   {
     value: "AN",
     label: "Anhydrite",
+    isActive: true,
   },
   {
     value: "SB",
     label: "Antimony",
+    isActive: true,
   },
 ];
 
@@ -1092,10 +1173,12 @@ export const DROPDOWN_PROVINCE_OPTIONS = [
   {
     value: "AB",
     label: "AB",
+    isActive: true,
   },
   {
     value: "BC",
     label: "BC",
+    isActive: true,
   },
 ];
 
@@ -2430,12 +2513,12 @@ export const MINE_DOCUMENT_SEARCH_RESULTS = [
 ];
 
 export const VARIANCE_DROPDOWN_STATUS_OPTIONS = [
-  { value: "RFD", label: "Ready for Decision" },
-  { value: "WIT", label: "Withdrawn" },
-  { value: "REV", label: "In Review" },
-  { value: "NAP", label: "Not Applicable" },
-  { value: "APP", label: "Approved" },
-  { value: "DEN", label: "Denied" },
+  { value: "RFD", label: "Ready for Decision", isActive: true },
+  { value: "WIT", label: "Withdrawn", isActive: true },
+  { value: "REV", label: "In Review", isActive: true },
+  { value: "NAP", label: "Not Applicable", isActive: true },
+  { value: "APP", label: "Approved", isActive: true },
+  { value: "DEN", label: "Denied", isActive: true },
 ];
 
 export const VARIANCE_STATUS_OPTIONS_HASH = {
@@ -2468,14 +2551,17 @@ export const VARIANCE_DOCUMENT_CATEGORY_OPTIONS_DROPDOWN = [
   {
     value: "REQ",
     label: "Request Document",
+    isActive: true,
   },
   {
     value: "REC",
     label: "Recommendation Document",
+    isActive: true,
   },
   {
     value: "DEC",
     label: "Decision Document",
+    isActive: true,
   },
 ];
 
@@ -2715,223 +2801,337 @@ export const BULK_STATIC_CONTENT_RESPONSE = {
   mineStatusOptions: [
     {
       mine_status_xref_guid: "94ac7344-ea11-4010-a8a2-826d9eefb1d3",
-      mine_operation_status: { mine_operation_status_code: "CLD", description: "Closed" },
+      mine_operation_status: {
+        mine_operation_status_code: "CLD",
+        description: "Closed",
+        active_ind: true,
+      },
       mine_operation_status_reason: {
         mine_operation_status_reason_code: "ORP",
         description: "Orphaned",
+        active_ind: true,
       },
       mine_operation_status_sub_reason: {
         mine_operation_status_sub_reason_code: "LTM",
         description: "Long-Term Maintenance",
+        active_ind: true,
       },
       description:
         "The permittee is not able or available to meet permit obligations. The Ministry has taken over responsibility for the mine. Reclamation work is under way. There are long-term care and maintenance activities on site. Contractors are performing the work.",
     },
     {
       mine_status_xref_guid: "43c1b20a-7719-4a9e-926a-6cafe25ca18c",
-      mine_operation_status: { mine_operation_status_code: "CLD", description: "Closed" },
+      mine_operation_status: {
+        mine_operation_status_code: "CLD",
+        description: "Closed",
+        active_ind: true,
+      },
       mine_operation_status_reason: {
         mine_operation_status_reason_code: "REC",
         description: "Reclamation",
+        active_ind: true,
       },
       mine_operation_status_sub_reason: {
         mine_operation_status_sub_reason_code: "LTM",
         description: "Long-Term Maintenance",
+        active_ind: true,
       },
       description:
         "The mine is closed and not expected to re-open. Reclamation work is under way. There are long-term care and maintenance activities on site. Permit and HSRC obligations are still in place. Site is subject to inspection and still has reporting to file with the Ministry.",
     },
     {
       mine_status_xref_guid: "ef9e2d1d-b635-46a2-8f67-1a3fb736186c",
-      mine_operation_status: { mine_operation_status_code: "CLD", description: "Closed" },
+      mine_operation_status: {
+        mine_operation_status_code: "CLD",
+        description: "Closed",
+        active_ind: true,
+      },
       mine_operation_status_reason: {
         mine_operation_status_reason_code: "ORP",
         description: "Orphaned",
+        active_ind: true,
       },
       mine_operation_status_sub_reason: {
         mine_operation_status_sub_reason_code: "LWT",
         description: "Long-Term Maintenance & Water Treatment",
+        active_ind: true,
       },
       description:
         "The permittee is not able or available to meet permit obligations. The Ministry has taken over responsibility for the mine. Reclamation work is under way. There are long-term care and maintenance activities on site in addition to water treatment. Contractors are performing the work.",
     },
     {
       mine_status_xref_guid: "bbcb118f-9a16-4f77-8f2f-46f7c2b4e667",
-      mine_operation_status: { mine_operation_status_code: "CLD", description: "Closed" },
+      mine_operation_status: {
+        mine_operation_status_code: "CLD",
+        description: "Closed",
+        active_ind: true,
+      },
       mine_operation_status_reason: {
         mine_operation_status_reason_code: "REC",
         description: "Reclamation",
+        active_ind: true,
       },
       mine_operation_status_sub_reason: {
         mine_operation_status_sub_reason_code: "LWT",
         description: "Long-Term Maintenance & Water Treatment",
+        active_ind: true,
       },
       description:
         "The mine is closed and not expected to re-open. Reclamation work is under way. There are long-term care and maintenance activities on site in addition to water treatment. Permit and HSRC obligations are still in place. Site is subject to inspection and still has reporting to file with the Ministry.",
     },
     {
       mine_status_xref_guid: "35e67918-643b-4698-9464-e5d6b62afad7",
-      mine_operation_status: { mine_operation_status_code: "CLD", description: "Closed" },
+      mine_operation_status: {
+        mine_operation_status_code: "CLD",
+        description: "Closed",
+        active_ind: true,
+      },
       mine_operation_status_reason: {
         mine_operation_status_reason_code: "REC",
         description: "Reclamation",
+        active_ind: true,
       },
       mine_operation_status_sub_reason: {
         mine_operation_status_sub_reason_code: "PRP",
         description: "Permit Release Pending",
+        active_ind: true,
       },
       description:
         "Reclamation work is complete, no additional care required. Ministry needs to return bond and close permit for mine to be Abandoned.",
     },
     {
       mine_status_xref_guid: "855abb0d-b104-45b5-8893-baafa52d974e",
-      mine_operation_status: { mine_operation_status_code: "CLD", description: "Closed" },
+      mine_operation_status: {
+        mine_operation_status_code: "CLD",
+        description: "Closed",
+        active_ind: true,
+      },
       mine_operation_status_reason: {
         mine_operation_status_reason_code: "ORP",
         description: "Orphaned",
+        active_ind: true,
       },
       mine_operation_status_sub_reason: {
         mine_operation_status_sub_reason_code: "RNS",
         description: "Reclamation Not Started",
+        active_ind: true,
       },
       description:
         "The permittee is not able or available to meet permit obligations. The Ministry has taken over responsibility for the mine. Reclamation work has not started. A contractor has not been retained to perform the work.",
     },
     {
       mine_status_xref_guid: "49264af9-a9c6-4971-b837-c243d71a4811",
-      mine_operation_status: { mine_operation_status_code: "CLD", description: "Closed" },
+      mine_operation_status: {
+        mine_operation_status_code: "CLD",
+        description: "Closed",
+        active_ind: true,
+      },
       mine_operation_status_reason: {
         mine_operation_status_reason_code: "ORP",
         description: "Orphaned",
+        active_ind: true,
       },
       mine_operation_status_sub_reason: {
         mine_operation_status_sub_reason_code: "SVR",
         description: "Site Visit Required",
+        active_ind: true,
       },
       description:
         "The permittee is not able or available to meet permit obligations. The Ministry will take over responsibility for the mine. The site needs to be visited and assessed to determine status and work required.",
     },
     {
       mine_status_xref_guid: "619b6b37-9e34-4413-8c8d-f906cda98ae0",
-      mine_operation_status: { mine_operation_status_code: "ABN", description: "Abandoned" },
-      mine_operation_status_reason: { mine_operation_status_reason_code: null, description: null },
+      mine_operation_status: {
+        mine_operation_status_code: "ABN",
+        description: "Abandoned",
+        active_ind: true,
+      },
+      mine_operation_status_reason: {
+        mine_operation_status_reason_code: null,
+        description: null,
+        active_ind: null,
+      },
       mine_operation_status_sub_reason: {
         mine_operation_status_sub_reason_code: null,
         description: null,
+        active_ind: null,
       },
       description:
         "The mine site is shut down, the permit obligations have been fulfilled. Bond has been returned if permittee completed reclamation work.",
     },
     {
       mine_status_xref_guid: "f6eba8e4-255f-4380-a518-27299cfc8f35",
-      mine_operation_status: { mine_operation_status_code: "CLD", description: "Closed" },
-      mine_operation_status_reason: { mine_operation_status_reason_code: null, description: null },
+      mine_operation_status: {
+        mine_operation_status_code: "CLD",
+        description: "Closed",
+        active_ind: true,
+      },
+      mine_operation_status_reason: {
+        mine_operation_status_reason_code: null,
+        description: null,
+        active_ind: null,
+      },
       mine_operation_status_sub_reason: {
         mine_operation_status_sub_reason_code: null,
         description: null,
+        active_ind: null,
       },
       description: null,
     },
     {
       mine_status_xref_guid: "3630d968-59e0-4437-8a31-d793d0c583b4",
-      mine_operation_status: { mine_operation_status_code: "NS", description: "Not Started" },
-      mine_operation_status_reason: { mine_operation_status_reason_code: null, description: null },
+      mine_operation_status: {
+        mine_operation_status_code: "NS",
+        description: "Not Started",
+        active_ind: true,
+      },
+      mine_operation_status_reason: {
+        mine_operation_status_reason_code: null,
+        description: null,
+        active_ind: null,
+      },
       mine_operation_status_sub_reason: {
         mine_operation_status_sub_reason_code: null,
         description: null,
+        active_ind: null,
       },
       description:
         "No mine related work has started at this site (including exploration). The mine record may have been created as placeholder for an exploration permit. Sites with closed exploration permits that are constructing production facilities also fit into this category.",
     },
     {
       mine_status_xref_guid: "d1d74d8f-0699-41f8-b0e2-c97955b6be7e",
-      mine_operation_status: { mine_operation_status_code: "OP", description: "Operating" },
-      mine_operation_status_reason: { mine_operation_status_reason_code: null, description: null },
+      mine_operation_status: {
+        mine_operation_status_code: "OP",
+        description: "Operating",
+        active_ind: true,
+      },
+      mine_operation_status_reason: {
+        mine_operation_status_reason_code: null,
+        description: null,
+        active_ind: null,
+      },
       mine_operation_status_sub_reason: {
         mine_operation_status_sub_reason_code: null,
         description: null,
+        active_ind: null,
       },
       description:
         "This mine operates year-round (can be conducting exploration and/or production activities).",
     },
     {
       mine_status_xref_guid: "08c6b6da-0d0d-45ae-8cc1-81bb6b521928",
-      mine_operation_status: { mine_operation_status_code: "OP", description: "Operating" },
+      mine_operation_status: {
+        mine_operation_status_code: "OP",
+        description: "Operating",
+        active_ind: true,
+      },
       mine_operation_status_reason: {
         mine_operation_status_reason_code: "SEA",
         description: "Seasonal",
+        active_ind: true,
       },
       mine_operation_status_sub_reason: {
         mine_operation_status_sub_reason_code: null,
         description: null,
+        active_ind: null,
       },
       description:
         "This mine operates seasonally. Dates shown are from the most recently approved NoW application. Confirm operating dates with operator or permittee before visiting.",
     },
     {
       mine_status_xref_guid: "6f6fe51f-5878-49d5-a49c-26544e5ae0af",
-      mine_operation_status: { mine_operation_status_code: "OP", description: "Operating" },
+      mine_operation_status: {
+        mine_operation_status_code: "OP",
+        description: "Operating",
+        active_ind: true,
+      },
       mine_operation_status_reason: {
         mine_operation_status_reason_code: "YR",
         description: "Year-Round",
+        active_ind: true,
       },
       mine_operation_status_sub_reason: {
         mine_operation_status_sub_reason_code: null,
         description: null,
+        active_ind: null,
       },
       description:
         "This mine operates year-round (can be conducting exploration and/or production activities).",
     },
     {
       mine_status_xref_guid: "7a5cc32a-fa3c-451e-977d-51feeeae0838",
-      mine_operation_status: { mine_operation_status_code: "CLD", description: "Closed" },
+      mine_operation_status: {
+        mine_operation_status_code: "CLD",
+        description: "Closed",
+        active_ind: true,
+      },
       mine_operation_status_reason: {
         mine_operation_status_reason_code: "UN",
         description: "Unknown",
+        active_ind: true,
       },
       mine_operation_status_sub_reason: {
         mine_operation_status_sub_reason_code: null,
         description: null,
+        active_ind: null,
       },
       description:
         "Ministry has not determined if the permittee is able or available to meet permit obligations. A visit to the site is required.",
     },
     {
       mine_status_xref_guid: "85a2593b-56f6-4f51-b19a-b65b50575df3",
-      mine_operation_status: { mine_operation_status_code: "CLD", description: "Closed" },
+      mine_operation_status: {
+        mine_operation_status_code: "CLD",
+        description: "Closed",
+        active_ind: true,
+      },
       mine_operation_status_reason: {
         mine_operation_status_reason_code: "ORP",
         description: "Orphaned",
+        active_ind: true,
       },
       mine_operation_status_sub_reason: {
         mine_operation_status_sub_reason_code: null,
         description: null,
+        active_ind: null,
       },
       description: "The permittee is not able or available to meet permit obligations.",
     },
     {
       mine_status_xref_guid: "7cf2894b-02fe-4cf5-bc62-cadfee5c46c2",
-      mine_operation_status: { mine_operation_status_code: "CLD", description: "Closed" },
+      mine_operation_status: {
+        mine_operation_status_code: "CLD",
+        description: "Closed",
+        active_ind: true,
+      },
       mine_operation_status_reason: {
         mine_operation_status_reason_code: "REC",
         description: "Reclamation",
+        active_ind: true,
       },
       mine_operation_status_sub_reason: {
         mine_operation_status_sub_reason_code: null,
         description: null,
+        active_ind: null,
       },
       description: "The mine is closed and not expected to re-open.",
     },
     {
       mine_status_xref_guid: "4b956d18-39df-4917-a628-ea66534d602e",
-      mine_operation_status: { mine_operation_status_code: "CLD", description: "Closed" },
+      mine_operation_status: {
+        mine_operation_status_code: "CLD",
+        description: "Closed",
+        active_ind: true,
+      },
       mine_operation_status_reason: {
         mine_operation_status_reason_code: "CM",
         description: "Care & Maintenance",
+        active_ind: true,
       },
       mine_operation_status_sub_reason: {
         mine_operation_status_sub_reason_code: null,
         description: null,
+        active_ind: null,
       },
       description:
         "The mine is temporarily closed. It is expected that it will eventually re-open. Permit and HSRC obligations are still in place. Site is subject to inspection and still has reporting to file with the Ministry.",
@@ -2945,10 +3145,10 @@ export const BULK_STATIC_CONTENT_RESPONSE = {
     { mine_region_code: "SE", description: "South East" },
   ],
   mineTenureTypes: [
-    { mine_tenure_type_code: "COL", description: "Coal" },
-    { mine_tenure_type_code: "MIN", description: "Mineral" },
-    { mine_tenure_type_code: "PLR", description: "Placer" },
-    { mine_tenure_type_code: "BCL", description: "BC Land" },
+    { mine_tenure_type_code: "COL", description: "Coal", active_ind: true },
+    { mine_tenure_type_code: "MIN", description: "Mineral", active_ind: true },
+    { mine_tenure_type_code: "PLR", description: "Placer", active_ind: true },
+    { mine_tenure_type_code: "BCL", description: "BC Land", active_ind: true },
   ],
   permitStatusCodes: [
     { permit_status_code: "O", description: "Open", display_order: 10 },
@@ -3009,8 +3209,13 @@ export const BULK_STATIC_CONTENT_RESPONSE = {
   ],
   exemptionFeeStatusOptions: [],
   provinceOptions: [
-    { sub_division_code: "AB", description: "Alberta", display_order: 10 },
-    { sub_division_code: "BC", description: "British Columbia", display_order: 20 },
+    { sub_division_code: "AB", description: "Alberta", display_order: 10, active_ind: true },
+    {
+      sub_division_code: "BC",
+      description: "British Columbia",
+      display_order: 20,
+      active_ind: true,
+    },
   ],
   complianceCodes: [
     {
@@ -3039,17 +3244,21 @@ export const BULK_STATIC_CONTENT_RESPONSE = {
     },
   ],
   varianceStatusOptions: [
-    { variance_application_status_code: "RFD", description: "Ready for Decision" },
-    { variance_application_status_code: "WIT", description: "Withdrawn" },
-    { variance_application_status_code: "REV", description: "In Review" },
-    { variance_application_status_code: "NAP", description: "Not Applicable" },
-    { variance_application_status_code: "APP", description: "Approved" },
-    { variance_application_status_code: "DEN", description: "Denied" },
+    {
+      variance_application_status_code: "RFD",
+      description: "Ready for Decision",
+      active_ind: true,
+    },
+    { variance_application_status_code: "WIT", description: "Withdrawn", active_ind: true },
+    { variance_application_status_code: "REV", description: "In Review", active_ind: true },
+    { variance_application_status_code: "NAP", description: "Not Applicable", active_ind: true },
+    { variance_application_status_code: "APP", description: "Approved", active_ind: true },
+    { variance_application_status_code: "DEN", description: "Denied", active_ind: true },
   ],
   varianceDocumentCategoryOptions: [
-    { variance_document_category_code: "REQ", description: "Request" },
-    { variance_document_category_code: "REC", description: "Recommendation" },
-    { variance_document_category_code: "DEC", description: "Decision" },
+    { variance_document_category_code: "REQ", description: "Request", active_ind: true },
+    { variance_document_category_code: "REC", description: "Recommendation", active_ind: true },
+    { variance_document_category_code: "DEC", description: "Decision", active_ind: true },
   ],
   mineReportDefinitionOptions: [
     {
@@ -3378,41 +3587,66 @@ export const BULK_STATIC_CONTENT_RESPONSE = {
     { mine_report_category: "TSF", description: "Tailings Storage Facility" },
     { mine_report_category: "OTH", description: "Other" },
   ],
+  partyRelationshipTypes: [],
   noticeOfWorkActivityTypeOptions: [
     {
       activity_type_code: "cut_lines_polarization_survey",
       description: "Cut Lines and Induced Polarization Survey",
+      active_ind: true,
     },
-    { activity_type_code: "water_supply", description: "Water Supply" },
+    { activity_type_code: "water_supply", description: "Water Supply", active_ind: true },
   ],
   noticeOfWorkUnitTypeOptions: [
-    { short_description: "km", unit_type_code: "KMT", description: "Kilometer " },
-    { short_description: "t", unit_type_code: "MTN", description: "Tonne (Metric Ton 1,000 kg)" },
-    { short_description: "m3", unit_type_code: "MEC", description: "Meters cubed" },
-    { short_description: "ha", unit_type_code: "HA", description: "Hectares" },
-    { short_description: "deg", unit_type_code: "DEG", description: "Degrees" },
-    { short_description: "%", unit_type_code: "PER", description: "Grade (Percent)" },
-    { short_description: "m", unit_type_code: "MTR", description: "Meters" },
+    { short_description: "km", unit_type_code: "KMT", description: "Kilometer ", active_ind: true },
+    {
+      short_description: "t",
+      unit_type_code: "MTN",
+      description: "Tonne (Metric Ton 1,000 kg)",
+      active_ind: true,
+    },
+    {
+      short_description: "m3",
+      unit_type_code: "MEC",
+      description: "Meters cubed",
+      active_ind: true,
+    },
+    { short_description: "ha", unit_type_code: "HA", description: "Hectares", active_ind: true },
+    { short_description: "deg", unit_type_code: "DEG", description: "Degrees", active_ind: true },
+    {
+      short_description: "%",
+      unit_type_code: "PER",
+      description: "Grade (Percent)",
+      active_ind: true,
+    },
+    { short_description: "m", unit_type_code: "MTR", description: "Meters", active_ind: true },
   ],
   noticeOfWorkApplicationTypeOptions: [
-    { notice_of_work_type_code: "QCA", description: "Quarry - Construction Aggregate" },
-    { notice_of_work_type_code: "COL", description: "Coal" },
-    { notice_of_work_type_code: "PLA", description: "Placer Operations" },
-    { notice_of_work_type_code: "MIN", description: "Mineral" },
-    { notice_of_work_type_code: "SAG", description: "Sand & Gravel" },
-    { notice_of_work_type_code: "QIM", description: "Quarry - Industrial Mineral" },
+    {
+      notice_of_work_type_code: "QCA",
+      description: "Quarry - Construction Aggregate",
+      active_ind: true,
+    },
+    { notice_of_work_type_code: "COL", description: "Coal", active_ind: true },
+    { notice_of_work_type_code: "PLA", description: "Placer Operations", active_ind: true },
+    { notice_of_work_type_code: "MIN", description: "Mineral", active_ind: true },
+    { notice_of_work_type_code: "SAG", description: "Sand & Gravel", active_ind: true },
+    {
+      notice_of_work_type_code: "QIM",
+      description: "Quarry - Industrial Mineral",
+      active_ind: true,
+    },
   ],
   noticeOfWorkApplicationStatusOptions: [
-    { now_application_status_code: "SUB", description: "Submitted" },
-    { now_application_status_code: "REF", description: "Referred" },
-    { now_application_status_code: "CDI", description: "Client Delay Info" },
-    { now_application_status_code: "CDB", description: "Client Delay Bond" },
-    { now_application_status_code: "GVD", description: "Govt Delay" },
-    { now_application_status_code: "CON", description: "Consultation" },
-    { now_application_status_code: "AIA", description: "Active/Issued/Approved" },
-    { now_application_status_code: "WDN", description: "Withdrawn" },
-    { now_application_status_code: "REJ", description: "Rejected" },
-    { now_application_status_code: "CLO", description: "Closed" },
+    { now_application_status_code: "SUB", description: "Submitted", active_ind: true },
+    { now_application_status_code: "REF", description: "Referred", active_ind: true },
+    { now_application_status_code: "CDI", description: "Client Delay Info", active_ind: true },
+    { now_application_status_code: "CDB", description: "Client Delay Bond", active_ind: true },
+    { now_application_status_code: "GVD", description: "Govt Delay", active_ind: true },
+    { now_application_status_code: "CON", description: "Consultation", active_ind: true },
+    { now_application_status_code: "AIA", description: "Active/Issued/Approved", active_ind: true },
+    { now_application_status_code: "WDN", description: "Withdrawn", active_ind: true },
+    { now_application_status_code: "REJ", description: "Rejected", active_ind: true },
+    { now_application_status_code: "CLO", description: "Closed", active_ind: true },
   ],
   noticeOfWorkApplicationDocumentTypeOptions: [
     {
@@ -3687,9 +3921,9 @@ export const BULK_STATIC_CONTENT_RESPONSE = {
     },
   ],
   noticeOfWorkUndergroundExplorationTypeOptions: [
-    { underground_exploration_type_code: "NEW", description: "New" },
-    { underground_exploration_type_code: "RHB", description: "Rehabilitation" },
-    { underground_exploration_type_code: "SUR", description: "Surface" },
+    { underground_exploration_type_code: "NEW", description: "New", active_ind: true },
+    { underground_exploration_type_code: "RHB", description: "Rehabilitation", active_ind: true },
+    { underground_exploration_type_code: "SUR", description: "Surface", active_ind: true },
   ],
   noticeOfWorkApplicationProgressStatusCodeOptions: [
     { application_progress_status_code: "VER", description: "Verification" },
@@ -3698,9 +3932,13 @@ export const BULK_STATIC_CONTENT_RESPONSE = {
     { application_progress_status_code: "DEC", description: "Decision" },
   ],
   noticeOfWorkApplicationPermitTypeOptions: [
-    { now_application_permit_type_code: "MY-ABP", description: "Multi-Year, Area-Based Permit" },
-    { now_application_permit_type_code: "OYP", description: "One-Year Permit" },
-    { now_application_permit_type_code: "MYP", description: "Multi-Year Permit" },
+    {
+      now_application_permit_type_code: "MY-ABP",
+      description: "Multi-Year, Area-Based Permit",
+      active_ind: true,
+    },
+    { now_application_permit_type_code: "OYP", description: "One-Year Permit", active_ind: true },
+    { now_application_permit_type_code: "MYP", description: "Multi-Year Permit", active_ind: true },
   ],
   noticeOfWorkApplicationReviewOptions: [
     { now_application_review_type_code: "REF", description: "Referral" },
@@ -3708,27 +3946,39 @@ export const BULK_STATIC_CONTENT_RESPONSE = {
     { now_application_review_type_code: "PUB", description: "Public Comment" },
   ],
   bondStatusOptions: [
-    { bond_status_code: "REL", description: "Released" },
-    { bond_status_code: "CON", description: "Confiscated" },
-    { bond_status_code: "ACT", description: "Active" },
+    { bond_status_code: "REL", description: "Released", active_ind: true },
+    { bond_status_code: "CON", description: "Confiscated", active_ind: true },
+    { bond_status_code: "ACT", description: "Active", active_ind: true },
   ],
   bondTypeOptions: [
-    { bond_type_code: "CEC", description: "Certified Cheque" },
-    { bond_type_code: "CAS", description: "Cash" },
-    { bond_type_code: "ILC", description: "Irrevocable Line of Credit" },
-    { bond_type_code: "MOR", description: "Money Order" },
-    { bond_type_code: "BDA", description: "Bank Draft" },
-    { bond_type_code: "SBO", description: "Surety Bond" },
-    { bond_type_code: "SAG", description: "Safekeeping Agreement" },
+    { bond_type_code: "CEC", description: "Certified Cheque", active_ind: true },
+    { bond_type_code: "CAS", description: "Cash", active_ind: true },
+    { bond_type_code: "ILC", description: "Irrevocable Line of Credit", active_ind: true },
+    { bond_type_code: "MOR", description: "Money Order", active_ind: true },
+    { bond_type_code: "BDA", description: "Bank Draft", active_ind: true },
+    { bond_type_code: "SBO", description: "Surety Bond", active_ind: true },
+    { bond_type_code: "SAG", description: "Safekeeping Agreement", active_ind: true },
   ],
   bondDocumentTypeOptions: [
-    { bond_document_type_code: "SRB", description: "Scan of Reclamation Security Bond" },
-    { bond_document_type_code: "RSF", description: "Release of Security Form" },
-    { bond_document_type_code: "RSL", description: "Release of Security Letter" },
-    { bond_document_type_code: "CSF", description: "Confiscation of Security Form" },
-    { bond_document_type_code: "CSL", description: "Confiscation of Security Letter" },
-    { bond_document_type_code: "REL", description: "Reminder Letter" },
-    { bond_document_type_code: "AKL", description: "Acknowledgement Letter" },
+    {
+      bond_document_type_code: "SRB",
+      description: "Scan of Reclamation Security Bond",
+      active_ind: true,
+    },
+    { bond_document_type_code: "RSF", description: "Release of Security Form", active_ind: true },
+    { bond_document_type_code: "RSL", description: "Release of Security Letter", active_ind: true },
+    {
+      bond_document_type_code: "CSF",
+      description: "Confiscation of Security Form",
+      active_ind: true,
+    },
+    {
+      bond_document_type_code: "CSL",
+      description: "Confiscation of Security Letter",
+      active_ind: true,
+    },
+    { bond_document_type_code: "REL", description: "Reminder Letter", active_ind: true },
+    { bond_document_type_code: "AKL", description: "Acknowledgement Letter", active_ind: true },
   ],
 };
 
@@ -4048,13 +4298,13 @@ export const MINE_REPORT_DEFINITION_HASH = {
 };
 
 export const DROPDOWN_BOND_TYPE_OPTIONS = [
-  { value: "CEC", label: "Certified Cheque" },
-  { value: "CAS", label: "Cash" },
-  { value: "ILC", label: "Irrevocable Line of Credit" },
-  { value: "MOR", label: "Money Order" },
-  { value: "BDA", label: "Bank Draft" },
-  { value: "SBO", label: "Surety Bond" },
-  { value: "SAG", label: "Safekeeping Agreement" },
+  { value: "CEC", label: "Certified Cheque", isActive: true },
+  { value: "CAS", label: "Cash", isActive: true },
+  { value: "ILC", label: "Irrevocable Line of Credit", isActive: true },
+  { value: "MOR", label: "Money Order", isActive: true },
+  { value: "BDA", label: "Bank Draft", isActive: true },
+  { value: "SBO", label: "Surety Bond", isActive: true },
+  { value: "SAG", label: "Safekeeping Agreement", isActive: true },
 ];
 
 export const BOND_TYPE_OPTIONS_HASH = {
@@ -4068,9 +4318,9 @@ export const BOND_TYPE_OPTIONS_HASH = {
 };
 
 export const DROPDOWN_BOND_STATUS_OPTIONS = [
-  { value: "REL", label: "Released" },
-  { value: "CON", label: "Confiscated" },
-  { value: "ACT", label: "Active" },
+  { value: "REL", label: "Released", isActive: true },
+  { value: "CON", label: "Confiscated", isActive: true },
+  { value: "ACT", label: "Active", isActive: true },
 ];
 
 export const BOND_STATUS_OPTIONS_HASH = {
@@ -4080,13 +4330,13 @@ export const BOND_STATUS_OPTIONS_HASH = {
 };
 
 export const DROPDOWN_BOND_DOCUMENT_TYPE_OPTIONS = [
-  { value: "SRB", label: "Scan of Reclamation Security Bond" },
-  { value: "RSF", label: "Release of Security Form" },
-  { value: "RSL", label: "Release of Security Letter" },
-  { value: "CSF", label: "Confiscation of Security Form" },
-  { value: "CSL", label: "Confiscation of Security Letter" },
-  { value: "REL", label: "Reminder Letter" },
-  { value: "AKL", label: "Acknowledgement Letter" },
+  { value: "SRB", label: "Scan of Reclamation Security Bond", isActive: true },
+  { value: "RSF", label: "Release of Security Form", isActive: true },
+  { value: "RSL", label: "Release of Security Letter", isActive: true },
+  { value: "CSF", label: "Confiscation of Security Form", isActive: true },
+  { value: "CSL", label: "Confiscation of Security Letter", isActive: true },
+  { value: "REL", label: "Reminder Letter", isActive: true },
+  { value: "AKL", label: "Acknowledgement Letter", isActive: true },
 ];
 
 export const BOND_DOCUMENT_TYPE_OPTIONS_HASH = {
@@ -4117,23 +4367,493 @@ export const BONDS = {
       institution_postal_code: null,
       note: null,
       payer: {},
-      permit_guid: "463236",
+      permit_guid: "1628847c-060b-45f2-990f-815877174801",
+      documents: [],
+    },
+    {
+      bond_id: 1,
+      bond_guid: "erjvnaqekrj",
+      amount: 900,
+      bond_type_code: "CAS",
+      payer_party_guid: "sethwrt",
+      bond_status_code: "ACT",
+      reference_number: "",
+      issue_date: "2018-10-16",
+      institution_name: null,
+      institution_street: null,
+      institution_city: null,
+      institution_province: null,
+      institution_postal_code: null,
+      note: null,
+      payer: {},
+      permit_guid: "1628847c-060b-45f2-990f-815877174801",
+      documents: [],
+    },
+    {
+      bond_id: 1,
+      bond_guid: "erjvnaqekrj",
+      amount: 1000,
+      bond_type_code: "CAS",
+      payer_party_guid: "sethwrt",
+      bond_status_code: "CON",
+      reference_number: "",
+      issue_date: "2018-10-16",
+      institution_name: null,
+      institution_street: null,
+      institution_city: null,
+      institution_province: null,
+      institution_postal_code: null,
+      note: null,
+      payer: {},
+      permit_guid: "1628847c-060b-45f2-990f-815877174801",
       documents: [],
     },
   ],
 };
 
 export const BOND_TOTALS = {
-  amountHeld: 300,
-  count: 1,
+  amountHeld: 1200,
+  count: 2,
 };
 
 export const BOND_RESPONSE = { records: BONDS };
 
-export const RECLAMATION_INVOICE = {
-  project_id: "3523461",
-  amount: "1251.46",
-  vendor: "John Doe",
+export const RECLAMATION_INVOICES = {
+  records: [
+    {
+      project_id: "3523461",
+      permit_guid: "1628847c-060b-45f2-990f-815877174801",
+      amount: 1251,
+      vendor: "John Doe",
+    },
+    {
+      project_id: "35434461",
+      permit_guid: "1628847c-060b-45f2-990f-815877174801",
+      amount: 200,
+      vendor: "John Peterson",
+    },
+  ],
 };
 
-export const RECLAMATION_INVOICES = { records: [RECLAMATION_INVOICE] };
+export const MINE_COMMENTS = {
+  records: [
+    {
+      mine_comment_guid: "245234634153",
+      comment_user: "mockUser",
+      mine_comment: "new comment",
+      comment_datetime: "2018-10-16",
+    },
+    {
+      mine_comment_guid: "356135",
+      comment_user: "mockUser",
+      mine_comment: "new comment again",
+      comment_datetime: "2018-10-16",
+    },
+  ],
+};
+
+export const ORGBOOK_SEARCH_RESULTS = [
+  {
+    id: 777855,
+    names: [
+      {
+        id: 712594,
+        text: "ZINEX MINING CORP.",
+        language: null,
+        credential_id: 777855,
+        type: "entity_name",
+      },
+    ],
+    inactive: false,
+  },
+];
+
+export const ORGBOOK_CREDENTIAL = {
+  id: 777855,
+  create_timestamp: "2019-06-25T23:01:10.740961-07:00",
+  effective_date: "2006-11-10T14:18:19-08:00",
+  inactive: false,
+  latest: true,
+  revoked: false,
+  revoked_date: null,
+  wallet_id: "92101ca6-1c55-4078-8146-855a1afb613c",
+  credential_type: {
+    id: 1,
+    issuer: {
+      id: 1,
+      has_logo: true,
+      create_timestamp: "2019-06-25T14:52:20.353243-07:00",
+      update_timestamp: "2020-05-06T12:02:01.492888-07:00",
+      did: "HR6vs6GEZ8rHaVgjg2WodM",
+      name: "BC Corporate Registry",
+      abbreviation: "BCReg",
+      email: "bcregistries@gov.bc.ca",
+      url:
+        "https://www2.gov.bc.ca/gov/content/governments/organizational-structure/ministries-organizations/ministries/citizens-services/bc-registries-online-services",
+      endpoint: null,
+    },
+    has_logo: true,
+    create_timestamp: "2019-06-25T14:52:20.428303-07:00",
+    update_timestamp: "2020-05-06T12:30:45.967845-07:00",
+    description: "Registration",
+    credential_def_id: "HR6vs6GEZ8rHaVgjg2WodM:3:CL:41051:tag",
+    last_issue_date: "2020-05-06T12:30:45.967739-07:00",
+    url:
+      "https://bcreg-x-proxy-devex-von-bc-registries-agent-prod.pathfinder.gov.bc.ca/bcreg/incorporation",
+    schema: {
+      id: 1,
+      create_timestamp: "2019-06-25T14:52:20.397843-07:00",
+      update_timestamp: "2020-05-06T12:02:01.516616-07:00",
+      name: "registration.registries.ca",
+      version: "1.0.42",
+      origin_did: "HR6vs6GEZ8rHaVgjg2WodM",
+    },
+  },
+  addresses: [],
+  attributes: [
+    {
+      id: 5381558,
+      type: "registration_date",
+      format: "datetime",
+      value: "2006-11-10T22:18:19+00:00",
+      credential_id: 777855,
+    },
+    {
+      id: 5381559,
+      type: "entity_name_effective",
+      format: "datetime",
+      value: "2006-11-10T22:18:19+00:00",
+      credential_id: 777855,
+    },
+    { id: 5381560, type: "entity_status", format: "category", value: "ACT", credential_id: 777855 },
+    {
+      id: 5381561,
+      type: "entity_status_effective",
+      format: "datetime",
+      value: "2006-11-10T22:18:19+00:00",
+      credential_id: 777855,
+    },
+    { id: 5381562, type: "entity_type", format: "category", value: "BC", credential_id: 777855 },
+    {
+      id: 5381563,
+      type: "home_jurisdiction",
+      format: "jurisdiction",
+      value: "BC",
+      credential_id: 777855,
+    },
+    {
+      id: 5381564,
+      type: "reason_description",
+      format: "category",
+      value: "Filing:ICORP",
+      credential_id: 777855,
+    },
+  ],
+  names: [
+    {
+      id: 712594,
+      text: "ZINEX MINING CORP.",
+      language: null,
+      credential_id: 777855,
+      type: "entity_name",
+    },
+  ],
+  local_name: {
+    id: 712594,
+    text: "ZINEX MINING CORP.",
+    language: null,
+    credential_id: 777855,
+    type: "entity_name",
+  },
+  remote_name: null,
+  topic: {
+    id: 683004,
+    create_timestamp: "2019-06-25T23:01:10.721202-07:00",
+    update_timestamp: "2019-06-25T23:01:10.721249-07:00",
+    source_id: "BC0774378",
+    type: "registration",
+    names: [
+      {
+        id: 712594,
+        text: "ZINEX MINING CORP.",
+        language: null,
+        credential_id: 777855,
+        type: "entity_name",
+      },
+    ],
+    local_name: {
+      id: 712594,
+      text: "ZINEX MINING CORP.",
+      language: null,
+      credential_id: 777855,
+      type: "entity_name",
+    },
+    remote_name: null,
+    addresses: [],
+    attributes: [
+      {
+        id: 5381558,
+        type: "registration_date",
+        format: "datetime",
+        value: "2006-11-10T22:18:19+00:00",
+        credential_id: 777855,
+        credential_type_id: 1,
+      },
+      {
+        id: 5381559,
+        type: "entity_name_effective",
+        format: "datetime",
+        value: "2006-11-10T22:18:19+00:00",
+        credential_id: 777855,
+        credential_type_id: 1,
+      },
+      {
+        id: 5381560,
+        type: "entity_status",
+        format: "category",
+        value: "ACT",
+        credential_id: 777855,
+        credential_type_id: 1,
+      },
+      {
+        id: 5381561,
+        type: "entity_status_effective",
+        format: "datetime",
+        value: "2006-11-10T22:18:19+00:00",
+        credential_id: 777855,
+        credential_type_id: 1,
+      },
+      {
+        id: 5381562,
+        type: "entity_type",
+        format: "category",
+        value: "BC",
+        credential_id: 777855,
+        credential_type_id: 1,
+      },
+      {
+        id: 5381563,
+        type: "home_jurisdiction",
+        format: "jurisdiction",
+        value: "BC",
+        credential_id: 777855,
+        credential_type_id: 1,
+      },
+      {
+        id: 5381564,
+        type: "reason_description",
+        format: "category",
+        value: "Filing:ICORP",
+        credential_id: 777855,
+        credential_type_id: 1,
+      },
+    ],
+  },
+  related_topics: [],
+  credential_set: {
+    id: 708701,
+    create_timestamp: "2019-06-25T23:01:10.780834-07:00",
+    update_timestamp: "2019-06-25T23:01:10.780864-07:00",
+    latest_credential_id: 777855,
+    topic_id: 683004,
+    first_effective_date: "2006-11-10T14:18:19-08:00",
+    last_effective_date: null,
+    credentials: [
+      {
+        id: 777855,
+        create_timestamp: "2019-06-25T23:01:10.740961-07:00",
+        effective_date: "2006-11-10T14:18:19-08:00",
+        inactive: false,
+        latest: true,
+        revoked: false,
+        revoked_date: null,
+        wallet_id: "92101ca6-1c55-4078-8146-855a1afb613c",
+        credential_type: {
+          id: 1,
+          issuer: {
+            id: 1,
+            has_logo: true,
+            create_timestamp: "2019-06-25T14:52:20.353243-07:00",
+            update_timestamp: "2020-05-06T12:02:01.492888-07:00",
+            did: "HR6vs6GEZ8rHaVgjg2WodM",
+            name: "BC Corporate Registry",
+            abbreviation: "BCReg",
+            email: "bcregistries@gov.bc.ca",
+            url:
+              "https://www2.gov.bc.ca/gov/content/governments/organizational-structure/ministries-organizations/ministries/citizens-services/bc-registries-online-services",
+            endpoint: null,
+          },
+          has_logo: true,
+          create_timestamp: "2019-06-25T14:52:20.428303-07:00",
+          update_timestamp: "2020-05-06T12:30:45.967845-07:00",
+          description: "Registration",
+          credential_def_id: "HR6vs6GEZ8rHaVgjg2WodM:3:CL:41051:tag",
+          last_issue_date: "2020-05-06T12:30:45.967739-07:00",
+          url:
+            "https://bcreg-x-proxy-devex-von-bc-registries-agent-prod.pathfinder.gov.bc.ca/bcreg/incorporation",
+          schema: {
+            id: 1,
+            create_timestamp: "2019-06-25T14:52:20.397843-07:00",
+            update_timestamp: "2020-05-06T12:02:01.516616-07:00",
+            name: "registration.registries.ca",
+            version: "1.0.42",
+            origin_did: "HR6vs6GEZ8rHaVgjg2WodM",
+          },
+        },
+        addresses: [],
+        attributes: [
+          {
+            id: 5381558,
+            type: "registration_date",
+            format: "datetime",
+            value: "2006-11-10T22:18:19+00:00",
+            credential_id: 777855,
+          },
+          {
+            id: 5381559,
+            type: "entity_name_effective",
+            format: "datetime",
+            value: "2006-11-10T22:18:19+00:00",
+            credential_id: 777855,
+          },
+          {
+            id: 5381560,
+            type: "entity_status",
+            format: "category",
+            value: "ACT",
+            credential_id: 777855,
+          },
+          {
+            id: 5381561,
+            type: "entity_status_effective",
+            format: "datetime",
+            value: "2006-11-10T22:18:19+00:00",
+            credential_id: 777855,
+          },
+          {
+            id: 5381562,
+            type: "entity_type",
+            format: "category",
+            value: "BC",
+            credential_id: 777855,
+          },
+          {
+            id: 5381563,
+            type: "home_jurisdiction",
+            format: "jurisdiction",
+            value: "BC",
+            credential_id: 777855,
+          },
+          {
+            id: 5381564,
+            type: "reason_description",
+            format: "category",
+            value: "Filing:ICORP",
+            credential_id: 777855,
+          },
+        ],
+        names: [
+          {
+            id: 712594,
+            text: "ZINEX MINING CORP.",
+            language: null,
+            credential_id: 777855,
+            type: "entity_name",
+          },
+        ],
+        local_name: {
+          id: 712594,
+          text: "ZINEX MINING CORP.",
+          language: null,
+          credential_id: 777855,
+          type: "entity_name",
+        },
+        remote_name: null,
+        topic: {
+          id: 683004,
+          create_timestamp: "2019-06-25T23:01:10.721202-07:00",
+          update_timestamp: "2019-06-25T23:01:10.721249-07:00",
+          source_id: "BC0774378",
+          type: "registration",
+          names: [
+            {
+              id: 712594,
+              text: "ZINEX MINING CORP.",
+              language: null,
+              credential_id: 777855,
+              type: "entity_name",
+            },
+          ],
+          local_name: {
+            id: 712594,
+            text: "ZINEX MINING CORP.",
+            language: null,
+            credential_id: 777855,
+            type: "entity_name",
+          },
+          remote_name: null,
+          addresses: [],
+          attributes: [
+            {
+              id: 5381558,
+              type: "registration_date",
+              format: "datetime",
+              value: "2006-11-10T22:18:19+00:00",
+              credential_id: 777855,
+              credential_type_id: 1,
+            },
+            {
+              id: 5381559,
+              type: "entity_name_effective",
+              format: "datetime",
+              value: "2006-11-10T22:18:19+00:00",
+              credential_id: 777855,
+              credential_type_id: 1,
+            },
+            {
+              id: 5381560,
+              type: "entity_status",
+              format: "category",
+              value: "ACT",
+              credential_id: 777855,
+              credential_type_id: 1,
+            },
+            {
+              id: 5381561,
+              type: "entity_status_effective",
+              format: "datetime",
+              value: "2006-11-10T22:18:19+00:00",
+              credential_id: 777855,
+              credential_type_id: 1,
+            },
+            {
+              id: 5381562,
+              type: "entity_type",
+              format: "category",
+              value: "BC",
+              credential_id: 777855,
+              credential_type_id: 1,
+            },
+            {
+              id: 5381563,
+              type: "home_jurisdiction",
+              format: "jurisdiction",
+              value: "BC",
+              credential_id: 777855,
+              credential_type_id: 1,
+            },
+            {
+              id: 5381564,
+              type: "reason_description",
+              format: "category",
+              value: "Filing:ICORP",
+              credential_id: 777855,
+              credential_type_id: 1,
+            },
+          ],
+        },
+        related_topics: [],
+      },
+    ],
+  },
+};

@@ -1,6 +1,6 @@
 import React from "react";
 import { shallow } from "enzyme";
-import { NOWApplicationDecision } from "@/components/noticeOfWork/applications/decision/NOWApplicationDecision";
+import { NOWApplicationAdministrative } from "@/components/noticeOfWork/applications/administrative/NOWApplicationAdministrative";
 import * as MOCK from "@/tests/mocks/dataMocks";
 import { IMPORTED_NOTICE_OF_WORK } from "@/tests/mocks/noticeOfWorkMocks";
 
@@ -22,9 +22,11 @@ beforeEach(() => {
   setupReducerProps();
 });
 
-describe("NOWApplicationDecision", () => {
+describe("NOWApplicationAdministrative", () => {
   it("renders properly", () => {
-    const component = shallow(<NOWApplicationDecision {...reducerProps} {...dispatchProps} />);
+    const component = shallow(
+      <NOWApplicationAdministrative {...reducerProps} {...dispatchProps} />
+    );
     expect(component).toMatchSnapshot();
   });
 });

@@ -134,7 +134,7 @@ exports[`AddQuickPartyForm renders properly 1`] = `
         loading={false}
         type="primary"
       >
-        Create Personnel
+        Create Person
       </Button>
     </div>
   </Form>

@@ -1,9 +1,9 @@
-from app.extensions import api
-from .config import Config
-
 from flask_jwt_oidc.exceptions import AuthError
-
+from flask import current_app
 from flask_restplus import Resource
+
+from app.extensions import api
+from app.config import Config
 
 
 def register_routes(app):

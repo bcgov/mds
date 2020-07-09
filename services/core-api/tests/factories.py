@@ -35,6 +35,7 @@ from app.api.parties.party_appt.models.party_business_role_appt import PartyBusi
 from app.api.mines.reports.models.mine_report import MineReport
 from app.api.mines.reports.models.mine_report_submission import MineReportSubmission
 from app.api.mines.reports.models.mine_report_comment import MineReportComment
+from app.api.mines.comments.models.mine_comment import MineComment
 
 GUID = factory.LazyFunction(uuid.uuid4)
 TODAY = factory.LazyFunction(datetime.utcnow)
@@ -148,6 +149,17 @@ class MineTailingsStorageFacilityFactory(BaseFactory):
     mine = factory.SubFactory('tests.factories.MineFactory', minimal=True)
 
 
+class MineCommentFactory(BaseFactory):
+    class Meta:
+        model = MineComment
+
+    class Params:
+        mine = factory.SubFactory('tests.factories.MineFactory')
+
+    mine_guid = factory.SelfAttribute('mine.mine_guid')
+    mine_comment = factory.Faker('paragraph')
+
+
 class VarianceFactory(BaseFactory):
     class Meta:
         model = Variance
@@ -172,6 +184,7 @@ class VarianceFactory(BaseFactory):
     parties_notified_ind = factory.Faker('boolean', chance_of_getting_true=50)
     received_date = TODAY
     documents = []
+    deleted_ind = False
 
     @factory.post_generation
     def documents(obj, create, extracted, **kwargs):
@@ -239,6 +252,7 @@ class MineIncidentFactory(BaseFactory):
         lambda o: SampleDangerousOccurrenceSubparagraphs(o.do_subparagraph_count)
         if o.determination_type_code == 'DO' else [])
     documents = []
+    deleted_ind = False
 
     @factory.post_generation
     def documents(obj, create, extracted, **kwargs):
@@ -449,7 +463,7 @@ class MinespaceUserFactory(BaseFactory):
         model = MinespaceUser
 
     keycloak_guid = GUID
-    email = factory.Faker('email')
+    email_or_username = factory.Faker('email')
 
 
 class SubscriptionFactory(BaseFactory):
@@ -560,6 +574,16 @@ class MineFactory(BaseFactory):
 
         MineReportFactory.create_batch(size=extracted, mine=obj, **kwargs)
 
+    @factory.post_generation
+    def comments(obj, create, extracted, **kwargs):
+        if not create:
+            return
+
+        if not isinstance(extracted, int):
+            extracted = 1
+
+        MineCommentFactory.create_batch(size=extracted, mine=obj, **kwargs)
+
 
 class PermitFactory(BaseFactory):
     class Meta:
@@ -569,6 +593,7 @@ class PermitFactory(BaseFactory):
     permit_no = factory.LazyFunction(RandomPermitNumber)
     permit_status_code = factory.LazyFunction(RandomPermitStatusCode)
     permit_amendments = []
+    deleted_ind = False
     mine = factory.SubFactory('tests.factories.MineFactory', minimal=True)
 
     @factory.post_generation
@@ -625,6 +650,7 @@ class PermitAmendmentFactory(BaseFactory):
     permit_amendment_type_code = 'AMD'
     description = factory.Faker('sentence', nb_words=6, variable_nb_words=True)
     related_documents = []
+    deleted_ind = False
 
 
 class PermitAmendmentDocumentFactory(BaseFactory):

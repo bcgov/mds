@@ -4,6 +4,9 @@ exports[`NoticeOfWorkHomePage renders properly 1`] = `
 <div
   className="landing-page"
 >
+  <PageTracker
+    title="NoW Page"
+  />
   <div
     className="landing-page__header"
   >
@@ -11,9 +14,6 @@ exports[`NoticeOfWorkHomePage renders properly 1`] = `
       <h1>
         Browse Notices of Work
       </h1>
-      <p>
-        Applications shown are from Core, NROS, and vFCBC only.
-      </p>
     </div>
   </div>
   <div
@@ -29,12 +29,44 @@ exports[`NoticeOfWorkHomePage renders properly 1`] = `
             "mine_search": undefined,
           }
         }
+        searchParams={
+          Object {
+            "lead_inspector_name": undefined,
+            "mine_name": undefined,
+            "mine_region": "SW,NE",
+            "mine_search": undefined,
+            "notice_of_work_type_description": Array [],
+            "now_application_status_description": Array [],
+            "now_number": undefined,
+            "originating_system": Array [],
+            "page": "1",
+            "per_page": "25",
+            "sort_dir": "desc",
+            "sort_field": "received_date",
+          }
+        }
       />
       <div>
         <div
           className="tab__content"
         >
           <withRouter(NoticeOfWorkTable)
+            defaultParams={
+              Object {
+                "lead_inspector_name": undefined,
+                "mine_name": undefined,
+                "mine_region": Array [],
+                "mine_search": undefined,
+                "notice_of_work_type_description": Array [],
+                "now_application_status_description": Array [],
+                "now_number": undefined,
+                "originating_system": Array [],
+                "page": "1",
+                "per_page": "25",
+                "sort_dir": "desc",
+                "sort_field": "received_date",
+              }
+            }
             handleSearch={[Function]}
             isLoaded={false}
             noticeOfWorkApplications={
@@ -63,16 +95,29 @@ exports[`NoticeOfWorkHomePage renders properly 1`] = `
             }
             searchParams={
               Object {
+                "lead_inspector_name": undefined,
+                "mine_name": undefined,
                 "mine_region": "SW,NE",
+                "mine_search": undefined,
+                "notice_of_work_type_description": Array [],
+                "now_application_status_description": Array [],
+                "now_number": undefined,
+                "originating_system": Array [],
+                "page": "1",
+                "per_page": "25",
+                "sort_dir": "desc",
+                "sort_field": "received_date",
               }
             }
+            sortDir="desc"
+            sortField="received_date"
           />
           <div
             className="center"
           >
             <ResponsivePagination
-              currentPage={NaN}
-              itemsPerPage={NaN}
+              currentPage={1}
+              itemsPerPage={25}
               onPageChange={[Function]}
               pageTotal={9000}
             />

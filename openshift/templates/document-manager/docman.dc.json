@@ -57,6 +57,11 @@
       "name": "API_URL",
       "required": true
     },
+    { "name": "OBJECT_STORE_ENABLED", "required": false, "value": "0" },
+    {
+      "name": "OBJECT_STORE_SECRET_NAME",
+      "value": "object-store-credentials"
+    },
     {
       "name": "CPU_LIMIT",
       "value": "200m"
@@ -126,6 +131,10 @@
       "description": "The name or Id of the environment.  This variable is used by the webhook integration to identify the environment in which the backup notifications originate.",
       "required": false,
       "value": "dev"
+    },
+    {
+      "name": "TUSD_URL",
+      "required": true
     }
   ],
   "objects": [
@@ -183,11 +192,7 @@
               "failurePolicy": "Retry",
               "execNewPod": {
                 "containerName": "app",
-                "command": [
-                  "bash",
-                  "-c",
-                  "cd /opt/app-root/src && flask db upgrade"
-                ]
+                "command": ["bash", "-c", "cd /opt/app-root/src && flask db upgrade"]
               }
             },
             "maxSurge": "50%",
@@ -358,6 +363,54 @@
                   {
                     "name": "ENVIRONMENT_NAME",
                     "value": "${ENVIRONMENT_NAME}"
+                  },
+                  {
+                    "name": "OBJECT_STORE_ENABLED",
+                    "value": "${OBJECT_STORE_ENABLED}"
+                  },
+                  {
+                    "name": "OBJECT_STORE_ACCESS_KEY_ID",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${OBJECT_STORE_SECRET_NAME}",
+                        "key": "key-id"
+                      }
+                    }
+                  },
+                  {
+                    "name": "OBJECT_STORE_ACCESS_KEY",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${OBJECT_STORE_SECRET_NAME}",
+                        "key": "secret-access-key"
+                      }
+                    }
+                  },
+                  {
+                    "name": "OBJECT_STORE_BUCKET",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${OBJECT_STORE_SECRET_NAME}",
+                        "key": "bucket-id"
+                      }
+                    }
+                  },
+                  {
+                    "name": "OBJECT_STORE_HOST",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${OBJECT_STORE_SECRET_NAME}",
+                        "key": "endpoint"
+                      }
+                    }
+                  },
+                  {
+                    "name": "S3_PREFIX",
+                    "value": "mds-files-${VERSION}/"
+                  },
+                  {
+                    "name": "TUSD_URL",
+                    "value": "${TUSD_URL}"
                   }
                 ],
                 "resources": {

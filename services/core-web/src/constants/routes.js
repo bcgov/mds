@@ -232,11 +232,7 @@ export const SEARCH_RESULTS = {
 
 export const NOTICE_OF_WORK_APPLICATIONS = {
   route: "/dashboard/reporting/notice-of-work",
-  dynamicRoute: ({ page, per_page, ...params }) =>
-    `/dashboard/reporting/notice-of-work?${queryString.stringify(
-      { page, per_page, ...params },
-      { sort: false }
-    )}`,
+  dynamicRoute: (params) => `/dashboard/reporting/notice-of-work?${queryString.stringify(params)}`,
   component: NoticeOfWorkHomePage,
 };
 
@@ -246,19 +242,28 @@ export const CREATE_NOTICE_OF_WORK_APPLICATION = {
 };
 
 export const NOTICE_OF_WORK_APPLICATION = {
-  route: "/dashboard/notice-of-work/application/:id/",
-  dynamicRoute: (guid) => `/dashboard/notice-of-work/application/${guid}/`,
-  hashRoute: (guid, link) => `/dashboard/notice-of-work/application/${guid}/${link}`,
+  route: "/dashboard/notice-of-work/application/:id/:tab",
+  dynamicRoute: (guid, tab) =>
+    tab
+      ? `/dashboard/notice-of-work/application/${guid}/${tab}`
+      : `/dashboard/notice-of-work/application/${guid}/verification`,
+  hashRoute: (guid, tab, link) => `/dashboard/notice-of-work/application/${guid}/${tab}/${link}`,
   component: NoticeOfWorkApplication,
 };
 
 export const VIEW_NOTICE_OF_WORK_APPLICATION = {
-  route: "/dashboard/notice-of-work/application/:id/view",
-  dynamicRoute: (guid) => `/dashboard/notice-of-work/application/${guid}/view`,
-  hashRoute: (guid, link) => `/dashboard/notice-of-work/application/${guid}/view${link}`,
+  route: "/dashboard/notice-of-work/view-application/:id/:tab",
+  dynamicRoute: (guid) => `/dashboard/notice-of-work/view-application/${guid}/technical-review`,
+  hashRoute: (guid, tab, link) =>
+    `/dashboard/notice-of-work/view-application/${guid}/${tab}/${link}`,
   component: ViewNoticeOfWorkApplication,
 };
 
 const MINESPACE_URL = "https://minespace.gov.bc.ca/";
 export const VIEW_MINESPACE = (mineGuid) =>
   `${MINESPACE_URL}/mines/${mineGuid}/overview?redirectingFromCore=true`;
+
+const ORGBOOK_URL = "https://orgbook.gov.bc.ca";
+export const ORGBOOK_ENTITY_URL = (sourceId) => `${ORGBOOK_URL}/en/organization/${sourceId}`;
+export const ORGBOOK_CREDENTIAL_URL = (sourceId, credentialId) =>
+  `${ORGBOOK_URL}/en/organization/${sourceId}/cred/${credentialId}`;
