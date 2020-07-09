@@ -72,7 +72,9 @@ class Permit(AuditMixin, Base):
     def permit_amendments(self):
         if not self._context_mine:
             raise Exception('this getter is only available if _context_mine has been set')
-        return self._all_permit_amendments
+        return [
+            pa for pa in self._all_permit_amendments if pa.mine_guid == self._context_mine.mine_guid
+        ]
 
     @hybrid_property
     def mine_guid(self):
