@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import moment from "moment";
+import { Button } from "antd";
 import { connect } from "react-redux";
 import { formatDate } from "@common/utils/helpers";
 import { getNoticeOfWorkApplicationTypeOptions } from "@common/selectors/staticContentSelectors";
@@ -23,6 +24,13 @@ const propTypes = {
 const defaultProps = {};
 
 export class NOWPermitGeneration extends Component {
+  state = { isDraft: false };
+
+  componentDidMount() {
+    // fetch draft permit
+    // set state isDraft
+  }
+
   createPermitGenObject = (noticeOfWork) => {
     const permitGenObject = {
       permit_number: "",
@@ -74,17 +82,30 @@ export class NOWPermitGeneration extends Component {
     });
   };
 
+  startDraftPermit = () => {
+    this.setState({ isDraft: true });
+  };
+
   render() {
     return (
       <div>
-        <GeneratePermitForm
-          initialValues={this.createPermitGenObject(this.props.noticeOfWork)}
-          cancelGeneration={this.props.returnToPrevStep}
-          documentList={this.createDocList(this.props.noticeOfWork)}
-          onSubmit={this.handlePremitGenSubmit}
-          isAmendment={this.props.isAmendment}
-          noticeOfWork={this.props.noticeOfWork}
-        />
+        {!this.state.isDraft ? (
+          <div>
+            Start a draft permit <br />
+            <Button onClick={this.startDraftPermit}>Start Drafting</Button>
+            <br />
+            By clicking start you will be starting the clock
+          </div>
+        ) : (
+          <GeneratePermitForm
+            initialValues={this.createPermitGenObject(this.props.noticeOfWork)}
+            cancelGeneration={this.props.returnToPrevStep}
+            documentList={this.createDocList(this.props.noticeOfWork)}
+            onSubmit={this.handlePremitGenSubmit}
+            isAmendment={this.props.isAmendment}
+            noticeOfWork={this.props.noticeOfWork}
+          />
+        )}
       </div>
     );
   }
