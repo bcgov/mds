@@ -239,7 +239,7 @@ def test_update_decimal_with_decimal_passes(db_session):
 
 
 def test_update_date_with_string_fails(db_session):
-    now_app = NOWApplicationIdentityFactory().now_application\
+    now_app = NOWApplicationIdentityFactory().now_application
 
     now_app_dict = marshal(now_app, NOW_APPLICATION_MODEL)
     now_app_dict['submitted_date'] = 'string'
@@ -258,7 +258,7 @@ def test_update_date_with_empty_list_fails(db_session):
 
 
 def test_update_date_with_empty_string_sets_null(db_session):
-    now_app = NOWApplicationIdentityFactory().now_application\
+    now_app = NOWApplicationIdentityFactory().now_application
 
     now_app_dict = marshal(now_app, NOW_APPLICATION_MODEL)
     now_app_dict['proposed_start_date'] = ''
@@ -269,7 +269,7 @@ def test_update_date_with_empty_string_sets_null(db_session):
 
 
 def test_update_date_with_null_sets_null(db_session):
-    now_app = NOWApplicationIdentityFactory().now_application\
+    now_app = NOWApplicationIdentityFactory().now_application
 
     now_app_dict = marshal(now_app, NOW_APPLICATION_MODEL)
     now_app_dict['proposed_start_date'] = None
