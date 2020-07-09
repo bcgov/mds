@@ -166,14 +166,14 @@ export class MinePermitInfo extends Component {
     this.props.openModal({
       props: {
         initialValues: {
-          mine_guid: permit.mine_guid,
+          mine_guid: this.props.mineGuid,
           permit_guid: permit.permit_guid,
           permit_amendment_type_code: type,
           amendments: permit.permit_amendments,
         },
         onSubmit,
         title,
-        mine_guid: permit.mine_guid,
+        mine_guid: this.props.mineGuid,
         amendments: permit.permit_amendments,
       },
       width: "50vw",
@@ -194,7 +194,7 @@ export class MinePermitInfo extends Component {
           permit_amendment.permit_amendment_type_code === originalPermit
             ? `Edit initial permit for ${permit.permit_no}`
             : `Edit permit amendment for ${permit.permit_no}`,
-        mine_guid: permit.mine_guid,
+        mine_guid: this.props.mineGuid,
         isMajorMine: this.props.mines[this.props.mineGuid].major_mine_ind,
         permit_guid: permit.permit_guid,
         handleRemovePermitAmendmentDocument: this.handleRemovePermitAmendmentDocument,
