@@ -96,6 +96,7 @@ class MinePartyAppointment(AuditMixin, Base):
         except ValueError:
             return None
 
+    # FIXME: This is only being used in one test, and is broken by permittee changes. Remove?
     @classmethod
     def find_by_mine_guid(cls, _id):
         try:
@@ -150,6 +151,7 @@ class MinePartyAppointment(AuditMixin, Base):
                 mine_tailings_storage_facility_guid=mine_tailings_storage_facility_guid)
         return built_query.all()
 
+    # FIXME: This may not work with permittee changes, since they don't have a mine_guid
     @classmethod
     def find_by(cls,
                 mine_guid=None,
