@@ -4,17 +4,20 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate, MigrateCommand
 from flask import current_app
 from elasticapm.contrib.flask import ElasticAPM
+# from app.utils.flask_celery import FlaskCelery
 
 from .config import Config
 from .helper import Api
 
 apm = ElasticAPM()
+# celery = FlaskCelery()
 db = SQLAlchemy()
 migrate = Migrate()
 jwt = JwtManager()
 cache = Cache()
 
-api = Api(prefix=f'{Config.BASE_PATH}',
-          doc=f'{Config.BASE_PATH}/',
-          default='document_manager',
-          default_label='Document storage and management')
+api = Api(
+    prefix=f'{Config.BASE_PATH}',
+    doc=f'{Config.BASE_PATH}/',
+    default='document_manager',
+    default_label='Document storage and management')

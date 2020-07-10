@@ -13,6 +13,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
+# RUN celery worker -A app.utils.flask_celery --concurrency=8 -l info -f celery.log &
+
 # Run the server
 EXPOSE 5001
 CMD ["flask", "run"]
