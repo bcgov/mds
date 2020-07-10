@@ -5,7 +5,6 @@ from app.api.utils.apm import register_apm
 from dotenv import load_dotenv, find_dotenv
 from flask import current_app
 from app.cli_jobs.etl.address_etl import address_etl
-from app.cli_jobs.etl.permit_etl import permit_etl
 
 ENV_FILE = find_dotenv()
 if ENV_FILE:
