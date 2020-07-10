@@ -56,8 +56,7 @@ def test_post_permit_amendment_no_params(test_client, db_session, auth_headers):
 def test_post_permit_amendment_with_date_params(test_client, db_session, auth_headers):
     mine, permit = create_mine_and_permit()
     #TODO Figure out how to make permit factory make it's own initial permittee
-    permittee = MinePartyAppointmentFactory(
-        permit_id=permit.permit_id, mine_party_appt_type_code='PMT', mine_guid=mine.mine_guid)
+    permittee = MinePartyAppointmentFactory(permittee=True, permit_id=permit.permit_id)
     party_guid = PartyFactory(company=True).party_guid
     data = {
         'permittee_party_guid': party_guid,

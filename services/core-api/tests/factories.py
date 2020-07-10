@@ -432,6 +432,9 @@ class MinePartyAppointmentFactory(BaseFactory):
     class Meta:
         model = MinePartyAppointment
 
+    class Params:
+        permittee = factory.Trait(mine_guid=None, mine_party_appt_type_code='PMT')
+
     mine_party_appt_guid = GUID
     mine = factory.SubFactory('tests.factories.MineFactory')
     mine_guid = factory.SelfAttribute('mine.mine_guid')

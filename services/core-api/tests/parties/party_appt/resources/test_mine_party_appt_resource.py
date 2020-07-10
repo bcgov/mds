@@ -8,8 +8,7 @@ def setup_info(db_session):
     mine = MineFactory()
     eor = MinePartyAppointmentFactory(mine=mine, mine_party_appt_type_code='EOR')
     mine_manager = MinePartyAppointmentFactory(mine=mine, mine_party_appt_type_code='MMG')
-    permitee = MinePartyAppointmentFactory(
-        mine=mine, mine_party_appt_type_code='PMT', party__company=True)
+    permitee = MinePartyAppointmentFactory(permittee=True, party__company=True)
 
     yield dict(
         mine_guid=str(mine.mine_guid),
@@ -25,7 +24,7 @@ def test_get_mine_party_appt_by_mine_guid(test_client, db_session, auth_headers,
         headers=auth_headers['full_auth_header'])
     get_data = json.loads(get_resp.data.decode())
     assert get_resp.status_code == 200
-    assert len(get_data) == 3
+    assert len(get_data) == 2                    #permitee can't be found by mine guid
     assert all(mpa['mine_guid'] == setup_info['mine_guid'] for mpa in get_data)
 
 
@@ -51,7 +50,7 @@ def test_get_mine_party_appt_by_type(test_client, db_session, auth_headers, setu
 
 def test_get_mine_party_appt_by_multiple_types(test_client, db_session, auth_headers, setup_info):
     get_resp = test_client.get(
-        f'/parties/mines?mine_guid={setup_info["mine_guid"]}&types=MMG&types=PMT',
+        f'/parties/mines?mine_guid={setup_info["mine_guid"]}&types=MMG&types=EOR',
         headers=auth_headers['full_auth_header'])
     get_data = json.loads(get_resp.data.decode())
     assert get_resp.status_code == 200

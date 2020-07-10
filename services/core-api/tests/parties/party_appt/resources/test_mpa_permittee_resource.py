@@ -16,7 +16,7 @@ def test_get_permittee_not_found(test_client, db_session, auth_headers):
 
 
 def test_get_permittee(test_client, db_session, auth_headers):
-    appt_guid = MinePartyAppointmentFactory(mine_party_appt_type_code='PMT').mine_party_appt_guid
+    appt_guid = MinePartyAppointmentFactory(permittee=True).mine_party_appt_guid
 
     get_resp = test_client.get(
         f'/parties/mines/{appt_guid}', headers=auth_headers['full_auth_header'])
