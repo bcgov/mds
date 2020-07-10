@@ -46,8 +46,7 @@ class Config(object):
     CACHE_REDIS_URL = 'redis://:{0}@{1}:{2}'.format(CACHE_REDIS_PASS, CACHE_REDIS_HOST,
                                                     CACHE_REDIS_PORT)
 
-    DOCUMENT_MANAGER_URL = os.environ.get('DOCUMENT_MANAGER_URL',
-                                          'http://document_manager_backend:5001')
+    DOCUMENT_MANAGER_URL = os.environ.get('DOCUMENT_MANAGER_URL', 'http://document_manager_backend:5001')
     UPLOADED_DOCUMENT_DEST = os.environ.get('UPLOADED_DOCUMENT_DEST', '/app/document_uploads')
 
     MAX_CONTENT_LENGTH = 750 * 1024 * 1024
@@ -56,7 +55,7 @@ class Config(object):
     TUSD_URL = os.environ.get('TUSD_URL', 'http://tusd:1080/files/')
 
     # Document hosting settings
-    OBJECT_STORE_ENABLED = os.environ.get('OBJECT_STORE_ENABLED', False)
+    OBJECT_STORE_ENABLED = bool(int(os.environ.get('OBJECT_STORE_ENABLED', '0')))
     OBJECT_STORE_HOST = os.environ.get('OBJECT_STORE_HOST', '')
     OBJECT_STORE_ACCESS_KEY_ID = os.environ.get('OBJECT_STORE_ACCESS_KEY_ID', '')
     OBJECT_STORE_ACCESS_KEY = os.environ.get('OBJECT_STORE_ACCESS_KEY', '')
