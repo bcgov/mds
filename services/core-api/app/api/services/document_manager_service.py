@@ -48,7 +48,9 @@ class DocumentManagerService():
         }
 
         my_client = client.TusClient(cls.document_manager_url, headers=data)
-        uploader = my_client.uploader(file_stream=io.BytesIO(file_content), chunk_size=2048)
+        uploader = my_client.uploader(
+            file_stream=io.BytesIO(file_content),
+            chunk_size=Config.DOCUMENT_UPLOAD_CHUNK_SIZE_BYTES)
         uploader.upload()
         document_manager_guid = uploader.url.rsplit('/', 1)[-1]
         return document_manager_guid
