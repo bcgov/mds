@@ -28,7 +28,6 @@ class TransferFileSystemToObjectStore(Resource):
 
         # Get the documents that aren't stored on the object store
         docs = Document.query.filter_by(object_store_path=None).order_by(Document.document_id).all()
-        # .filter(Document.document_id >= 70)
 
         if len(docs) == 0:
             return 'No documents need to be transferred', 201
@@ -36,7 +35,7 @@ class TransferFileSystemToObjectStore(Resource):
         transfer_id = str(uuid.uuid4())
 
         # Split the list of documents to transfer into N chunks to upload in parallel
-        UPLOAD_CHUNKS = 1
+        UPLOAD_CHUNKS = 8
         docs_chunks = numpy.array_split(docs, UPLOAD_CHUNKS)
         docs_chunks = [x.tolist() for x in docs_chunks if len(x) > 0]
         message = f'{transfer_id}: {len(docs)} files will be transferred in {len(docs_chunks)} chunks of size {len(docs_chunks[0])}'
