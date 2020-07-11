@@ -2,6 +2,7 @@ from app.services.object_store_storage_service import ObjectStoreStorageService
 from app.docman.models.document import Document
 from app import make_celery
 from flask import current_app
+from app.extensions import db
 
 celery = make_celery()
 
@@ -28,11 +29,14 @@ def transfer_docs(transfer_id, document_ids, chunk_index):
             )
             object_store_key = ObjectStoreStorageService().upload_file(
                 file_name=doc.full_storage_path)
-            # TODO: This part needs to be fixed, as when updating the key, it's trying to get update_user, etc., but can't due to no session/app context.
-            # Need to look into unbound_safe query.
-            with current_app.app_context():
-                doc.object_store_path = object_store_key
-                doc.save()
+            db.session.rollback()
+            db.session.add(doc)
+            doc.object_store_path = object_store_key
+            doc.update_user = 'mds'
+            db.session.commit()
+            print(
+                f'{transfer_id}: Completed transfer of document #{i} with ID {doc.document_id} from chunk {chunk_index}'
+            )
 
         except Exception as e:
             message = f'{transfer_id}: Failed to transfer document with ID {doc.document_id}: {e}'
