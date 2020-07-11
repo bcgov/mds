@@ -50,9 +50,7 @@ class Config(object):
 
     # Celery settings
     CELERY_RESULT_BACKEND = f"db+postgres://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
-    # transport://userid:password@hostname:port/virtual_host
-    BROKER_URL = f'redis://{CACHE_REDIS_USER}:{CACHE_REDIS_PASS}@{CACHE_REDIS_HOST}:{CACHE_REDIS_PORT}/{CACHE_REDIS_VIRTUAL_HOST}'
-    CELERY_BROKER_URL = BROKER_URL
+    CELERY_BROKER_URL = f'redis://{CACHE_REDIS_USER}:{CACHE_REDIS_PASS}@{CACHE_REDIS_HOST}:{CACHE_REDIS_PORT}/{CACHE_REDIS_VIRTUAL_HOST}'
 
     DOCUMENT_MANAGER_URL = os.environ.get('DOCUMENT_MANAGER_URL',
                                           'http://document_manager_backend:5001')
