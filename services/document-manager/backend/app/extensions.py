@@ -4,13 +4,11 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate, MigrateCommand
 from flask import current_app
 from elasticapm.contrib.flask import ElasticAPM
-# from app.utils.flask_celery import FlaskCelery
 
 from .config import Config
 from .helper import Api
 
 apm = ElasticAPM()
-# celery = FlaskCelery()
 db = SQLAlchemy()
 migrate = Migrate()
 jwt = JwtManager()

@@ -31,11 +31,12 @@ class ObjectStoreStorageService():
         return resp
 
     def upload_file(self, file_name):
-        key = f'{Config.S3_PREFIX}{file_name[1:]}'
-        self._client.upload_file(Filename=file_name, Bucket=Config.OBJECT_STORE_BUCKET, Key=key)
-        if (not self.check_file(key)):
-            raise Exception('Failed to upload file')
-        return key
+        object_store_key = f'{Config.S3_PREFIX}{file_name[1:]}'
+        self._client.upload_file(
+            Filename=file_name, Bucket=Config.OBJECT_STORE_BUCKET, Key=object_store_key)
+        # if (not self.check_file(object_store_key)):
+        #     raise Exception('Failed to upload file')
+        return object_store_key
 
     def check_file(self, key):
         objs = list(Config.OBJECT_STORE_BUCKET.objects.filter(Prefix=key))

@@ -16,7 +16,7 @@ class TransferFileSystemToObjectStore(Resource):
     parser = reqparse.RequestParser(trim=True)
     parser.add_argument('secret', type=str, required=True, help='Secret')
 
-    # @requires_any_of([MINE_ADMIN])
+    @requires_any_of([MINE_ADMIN])
     def post(self):
         from app.utils.tasks import transfer_docs
 
@@ -27,8 +27,8 @@ class TransferFileSystemToObjectStore(Resource):
             raise BadRequest()
 
         # Get the documents that aren't stored on the object store
-        docs = Document.query.filter_by(object_store_path=None).filter(
-            Document.document_id >= 70).order_by(Document.document_id).all()
+        docs = Document.query.filter_by(object_store_path=None).order_by(Document.document_id).all()
+        # .filter(Document.document_id >= 70)
 
         if len(docs) == 0:
             return 'No documents need to be transferred', 201
