@@ -1,7 +1,30 @@
-import boto3
 import io
+import os
+import sys
+import threading
+import boto3
+import hashlib
+
+from botocore.exceptions import ClientError
 from flask import send_file, Response, current_app
+
 from app.config import Config
+
+
+class ProgressPercentage(object):
+    def __init__(self, filename):
+        self._filename = filename
+        self._size = float(os.path.getsize(filename))
+        self._seen_so_far = 0
+        self._lock = threading.Lock()
+
+    def __call__(self, bytes_amount):
+        with self._lock:
+            self._seen_so_far += bytes_amount
+            percentage = (self._seen_so_far / self._size) * 100
+            sys.stdout.write('\r%s: %.2f%% (%s / %s)' %
+                             (self._filename, percentage, self._seen_so_far, self._size))
+            sys.stdout.flush()
 
 
 class ObjectStoreStorageService():
@@ -30,14 +53,67 @@ class ObjectStoreStorageService():
             })
         return resp
 
-    def upload_file(self, file_name):
-        object_store_key = f'{Config.S3_PREFIX}{file_name[1:]}'
-        self._client.upload_file(
-            Filename=file_name, Bucket=Config.OBJECT_STORE_BUCKET, Key=object_store_key)
-        # if (not self.check_file(object_store_key)):
-        #     raise Exception('Failed to upload file')
-        return object_store_key
+    def upload_file(self, filename, progress=False):
+        key = f'{Config.S3_PREFIX}{filename[1:]}'
 
-    def check_file(self, key):
-        objs = list(Config.OBJECT_STORE_BUCKET.objects.filter(Prefix=key))
-        return len(objs) > 0 and objs[0].key == key
+        # If an object already exists with this key, compare its ETag with the calculated ETag of the local file.
+        s3_etag = self.s3_etag(key)
+        if s3_etag is not None:
+            fs_etag = self.calculate_s3_etag(filename)
+
+            # If the ETags are the same, the files are identical and there is no reason to re-upload.
+            if (s3_etag == fs_etag):
+                return key
+
+        # Upload the file
+        try:
+            self._client.upload_file(
+                Filename=filename,
+                Bucket=Config.OBJECT_STORE_BUCKET,
+                Key=key,
+                Callback=ProgressPercentage(filename) if progress else None)
+        except ClientError as e:
+            raise Exception(f'Failed to upload the file: {e}')
+
+        # Ensure that the ETag of the uploaded file and local file are equal.
+        s3_etag = self.s3_etag(key)
+        fs_etag = fs_etag if fs_etag else self.calculate_s3_etag(filename)
+        if (s3_etag != fs_etag):
+            raise Exception('ETag of the uploaded file and local file do not match!')
+
+        # TODO: Here is where the local file could be safely deleted, or, perhaps make another method.
+        else:
+            pass
+
+        return key
+
+    # Returns the ETag of an object
+    def s3_etag(self, key):
+        try:
+            etag = self._client.head_object(
+                Bucket=Config.OBJECT_STORE_BUCKET, Key=key)['ETag'][1:-1]
+        except ClientError:
+            etag = None
+        return etag
+
+    # This implements the algorithm that is used to generate the ETag (MD5) for stored objects.
+    # NOTE: It is CRITICAL that the chunk size matches the chunk size that is used for multi-part uploads (default is 8).
+    def calculate_s3_etag(self, filename, chunk_size_mb=8):
+        md5s = []
+        chunk_size = chunk_size_mb * 1024 * 1024
+        with open(filename, 'rb') as fp:
+            while True:
+                data = fp.read(chunk_size)
+                if not data:
+                    break
+                md5s.append(hashlib.md5(data))
+
+        if len(md5s) < 1:
+            return '{}'.format(hashlib.md5().hexdigest())
+
+        if len(md5s) == 1:
+            return '{}'.format(md5s[0].hexdigest())
+
+        digests = b''.join(m.digest() for m in md5s)
+        digests_md5 = hashlib.md5(digests)
+        return '{}-{}'.format(digests_md5.hexdigest(), len(md5s))

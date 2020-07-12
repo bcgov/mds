@@ -69,6 +69,8 @@ class Config(object):
     OBJECT_STORE_BUCKET = os.environ.get('OBJECT_STORE_BUCKET', '')
     S3_PREFIX = os.environ.get('S3_PREFIX', 'mds-files-local/')
 
+    ADMIN_API_SECRET = os.environ.get('ADMIN_API_SECRET', None)
+
     def JWT_ROLE_CALLBACK(jwt_dict):
         return (jwt_dict['realm_access']['roles'])
 

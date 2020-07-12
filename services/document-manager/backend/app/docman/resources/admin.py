@@ -1,7 +1,7 @@
 import numpy
 import uuid
 
-from werkzeug.exceptions import BadRequest
+from werkzeug.exceptions import Forbidden
 from flask import current_app
 from flask_restplus import Resource, reqparse
 
@@ -9,6 +9,7 @@ from app.extensions import api
 from app.docman.models.document import Document
 from app.utils.access_decorators import requires_any_of, MINE_ADMIN
 from app.services.object_store_storage_service import ObjectStoreStorageService
+from app.config import Config
 
 
 @api.route('/admin/transfer-file-system-to-object-store')
@@ -20,17 +21,17 @@ class TransferFileSystemToObjectStore(Resource):
     def post(self):
         from app.utils.tasks import transfer_docs
 
-        # Ensure that the secret to initiate the transfer is correct
+        # Ensure that the admin API secret required to initiate the transfer is correct
         data = self.parser.parse_args()
         secret = data.get('secret')
-        if (secret != 'd053c125-eb4b-44ba-8560-e83d716dfb0c'):
-            raise BadRequest()
+        if (Config.ADMIN_API_SECRET is None or secret != Config.ADMIN_API_SECRET):
+            raise Forbidden()
 
         # Get the documents that aren't stored on the object store
         docs = Document.query.filter_by(object_store_path=None).order_by(Document.document_id).all()
 
         if len(docs) == 0:
-            return 'No documents need to be transferred', 201
+            return 'No documents need to be transferred', 200
 
         transfer_id = str(uuid.uuid4())
 
@@ -49,4 +50,4 @@ class TransferFileSystemToObjectStore(Resource):
                 f'{transfer_id}: Beginning transfer for chunk #{i}: {chunk_doc_data}')
             transfer_docs.delay(transfer_id, chunk_doc_data, i)
 
-        return message, 201
+        return message, 202
