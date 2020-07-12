@@ -28,20 +28,15 @@ def transfer_docs(transfer_id, document_ids, chunk):
         logger.info(f'{doc_prefix} Transferring...')
         try:
             # Upload the file to the object store
-            result = ObjectStoreStorageService().upload_file(filename=doc.full_storage_path)
-
-            # If there was no need to upload the file (ETags were equivalent), continue
-            if (result == True):
-                logger.info(f'{doc_prefix} Transfer UNNECESSARY')
-                continue
+            uploaded, key = ObjectStoreStorageService().upload_file(filename=doc.full_storage_path)
 
             # Update the object store path of the document
             db.session.rollback()
             db.session.add(doc)
-            doc.object_store_path = result
+            doc.object_store_path = key
             doc.update_user = 'mds'
             db.session.commit()
-            logger.info(f'{doc_prefix} Transfer COMPLETE')
+            logger.info(f'{doc_prefix} Transfer {"COMPLETE" if uploaded else "UNNECESSARY"}')
         except Exception as e:
             logger.error(f'{doc_prefix} Transfer ERROR\n{e}')
             errors.append({'exception': e, 'document': doc.json()})

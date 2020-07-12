@@ -67,7 +67,7 @@ class ObjectStoreStorageService():
 
             # If the ETags are the same, the files are identical and there is no reason to re-upload.
             if (s3_etag == fs_etag):
-                return True
+                return False, key
 
         # Upload the file
         try:
@@ -89,7 +89,7 @@ class ObjectStoreStorageService():
         else:
             pass
 
-        return key
+        return True, key
 
     def compare_etag(self, filename):
         key = self.get_key(filename)
