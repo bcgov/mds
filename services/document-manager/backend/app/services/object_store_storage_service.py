@@ -59,6 +59,13 @@ class ObjectStoreStorageService():
     def upload_file(self, filename, progress=False):
         key = self.get_key(filename)
 
+        # if (filename in [
+        #         '/app/document_uploads/mines/39bdd59e-a1a9-4b95-9065-dfe8f7ba728c/bonds/3990a6a7-b40a-432a-ae2f-0c18d4c402af',
+        #         '/app/document_uploads/mines/39bdd59e-a1a9-4b95-9065-dfe8f7ba728c/bonds/9c57faf5-f49b-4986-9054-b83ca369a108',
+        #         '/app/document_uploads/mines/39bdd59e-a1a9-4b95-9065-dfe8f7ba728c/bonds/6d6d38c7-dccc-470c-a036-5859ddfce965'
+        # ]):
+        #     raise Exception('*** FAKE EXCEPTION FOR TESTING ***')
+
         # If an object already exists with this key, compare its ETag with the calculated ETag of the local file.
         s3_etag = self.s3_etag(key)
         fs_etag = None

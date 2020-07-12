@@ -39,7 +39,7 @@ def transfer_docs(transfer_id, document_ids, chunk):
             logger.info(f'{doc_prefix} Transfer {"COMPLETE" if uploaded else "UNNECESSARY"}')
         except Exception as e:
             logger.error(f'{doc_prefix} Transfer ERROR\n{e}')
-            errors.append({'exception': e, 'document': doc.json()})
+            errors.append({'exception': str(e), 'document': doc.json()})
 
     # If there are any errors, consider the task to have failed
     if (len(errors) > 0):
@@ -80,7 +80,7 @@ def verify_docs(verify_id, document_ids, chunk):
                 logger.info(f'{doc_prefix} Verification FAILED')
         except Exception as e:
             logger.error(f'{doc_prefix} Verification ERROR\n{e}')
-            errors.append({'exception': e, 'document': doc.json()})
+            errors.append({'exception': str(e), 'document': doc.json()})
 
     # If there are any errors, consider the task to have failed
     if (len(errors) > 0):
