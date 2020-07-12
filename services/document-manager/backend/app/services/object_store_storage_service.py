@@ -67,7 +67,7 @@ class ObjectStoreStorageService():
 
             # If the ETags are the same, the files are identical and there is no reason to re-upload.
             if (s3_etag == fs_etag):
-                return key
+                return True
 
         # Upload the file
         try:
