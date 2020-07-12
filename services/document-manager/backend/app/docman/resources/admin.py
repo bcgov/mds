@@ -4,6 +4,7 @@ import uuid
 from werkzeug.exceptions import Forbidden
 from flask import current_app
 from flask_restplus import Resource, reqparse
+from celery import chord
 
 from app.extensions import api
 from app.docman.models.document import Document
@@ -17,9 +18,9 @@ class TransferDocsToObjectStore(Resource):
     parser = reqparse.RequestParser(trim=True)
     parser.add_argument('secret', type=str, required=True, help='Secret')
 
-    @requires_any_of([MINE_ADMIN])
+    # @requires_any_of([MINE_ADMIN])
     def post(self):
-        from app.utils.tasks import transfer_docs
+        from app.utils.tasks import transfer_docs, transfer_docs_result
 
         # Ensure that the admin API secret required to initiate the transfer is correct
         data = self.parser.parse_args()
@@ -28,27 +29,29 @@ class TransferDocsToObjectStore(Resource):
             raise Forbidden()
 
         # Get the documents that aren't stored on the object store
-        docs = Document.query.filter_by(object_store_path=None).order_by(Document.document_id).all()
-
+        docs = Document.query.filter_by(object_store_path=None).all()
         if len(docs) == 0:
             return 'No documents need to be transferred', 200
 
-        transfer_id = str(uuid.uuid4())
-
         # Split the list of documents to transfer into N chunks to upload in parallel
-        UPLOAD_CHUNKS = 8
-        docs_chunks = numpy.array_split(docs, UPLOAD_CHUNKS)
-        docs_chunks = [x.tolist() for x in docs_chunks if len(x) > 0]
-        message = f'{transfer_id}: {len(docs)} files will be transferred in {len(docs_chunks)} chunks of size {len(docs_chunks[0])}'
-        current_app.logger.info(message)
-        current_app.logger.info(docs_chunks)
+        chunks = numpy.array_split(docs, 8)
+        chunks = [x.tolist() for x in chunks if len(x) > 0]
+
+        # Create the transfer tasks
+        tasks = []
+        transfer_id = str(uuid.uuid4())
+        for i, chunk in enumerate(chunks):
+            doc_ids = [doc.document_id for doc in chunk]
+            tasks.append(transfer_docs.subtask((transfer_id, doc_ids, i)))
 
         # Start the transfer tasks
-        for i, chunk in enumerate(docs_chunks):
-            chunk_doc_data = [doc.document_id for doc in chunk]
-            current_app.logger.info(
-                f'{transfer_id}: Beginning transfer for chunk #{i}: {chunk_doc_data}')
-            transfer_docs.delay(transfer_id, chunk_doc_data, i)
+        callback = transfer_docs_result.subtask(kwargs={'transfer_id': transfer_id})
+        chord(tasks)(callback)
+
+        # Create message
+        message = f'Creating TRANSFER job with ID {transfer_id}: {len(docs)} docs will be transferred in {len(chunks)} chunks of size {len(chunks[0])}'
+        current_app.logger.info(message)
+        current_app.logger.debug(chunks)
 
         return message, 202
 
@@ -58,9 +61,9 @@ class CompareDocsOnObjectStore(Resource):
     parser = reqparse.RequestParser(trim=True)
     parser.add_argument('secret', type=str, required=True, help='Secret')
 
-    @requires_any_of([MINE_ADMIN])
+    # @requires_any_of([MINE_ADMIN])
     def post(self):
-        from app.utils.tasks import verify_docs
+        from app.utils.tasks import verify_docs, verify_docs_result
 
         # Ensure that the admin API secret required to initiate the verification is correct
         data = self.parser.parse_args()
@@ -70,25 +73,27 @@ class CompareDocsOnObjectStore(Resource):
 
         # Get the documents that are stored on the object store
         docs = Document.query.filter(Document.object_store_path != None).all()
-
         if len(docs) == 0:
             return 'No documents are stored on the object store', 200
 
-        verification_id = str(uuid.uuid4())
-
         # Split the list of documents to verify into N chunks to verify in parallel
-        VERIFY_CHUNKS = 8
-        docs_chunks = numpy.array_split(docs, VERIFY_CHUNKS)
-        docs_chunks = [x.tolist() for x in docs_chunks if len(x) > 0]
-        message = f'{verification_id}: {len(docs)} files will be verified in {len(docs_chunks)} chunks of size {len(docs_chunks[0])}'
-        current_app.logger.info(message)
-        current_app.logger.info(docs_chunks)
+        chunks = numpy.array_split(docs, 8)
+        chunks = [x.tolist() for x in chunks if len(x) > 0]
+
+        # Create the verification tasks
+        tasks = []
+        verify_id = str(uuid.uuid4())
+        for i, chunk in enumerate(chunks):
+            doc_ids = [doc.document_id for doc in chunk]
+            tasks.append(verify_docs.subtask((verify_id, doc_ids, i)))
 
         # Start the verification tasks
-        for i, chunk in enumerate(docs_chunks):
-            chunk_doc_data = [doc.document_id for doc in chunk]
-            current_app.logger.info(
-                f'{verification_id}: Beginning verification for chunk #{i}: {chunk_doc_data}')
-            verify_docs.delay(verification_id, chunk_doc_data, i)
+        callback = verify_docs_result.subtask(kwargs={'verify_id': verify_id})
+        chord(tasks)(callback)
+
+        # Create message
+        message = f'Creating VERIFICATION job with ID {verify_id}: {len(docs)} docs will be transferred in {len(chunks)} chunks of size {len(chunks[0])}'
+        current_app.logger.info(message)
+        current_app.logger.info(chunks)
 
         return message, 202
