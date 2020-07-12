@@ -16,7 +16,6 @@ def transfer_docs(transfer_id, document_ids, chunk_index):
     print(f'{transfer_id}: Chunk {chunk_index} transferring {len(document_ids)} docs')
 
     # Get the documents to transfer
-    # TODO: If this task was resumed, could also filter the list by documents that don't have object_store_path set, and/or, verify checksums.
     docs = Document.query.filter(Document.document_id.in_(document_ids)).all()
     print(docs)
 

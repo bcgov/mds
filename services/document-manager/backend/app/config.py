@@ -42,15 +42,13 @@ class Config(object):
     CACHE_TYPE = os.environ.get('CACHE_TYPE', 'redis')
     CACHE_REDIS_HOST = os.environ.get('CACHE_REDIS_HOST', 'redis')
     CACHE_REDIS_PORT = os.environ.get('CACHE_REDIS_PORT', 6379)
-    CACHE_REDIS_USER = ''
-    CACHE_REDIS_VIRTUAL_HOST = ''
     CACHE_REDIS_PASS = os.environ.get('CACHE_REDIS_PASS', 'redis-password')
     CACHE_REDIS_URL = 'redis://:{0}@{1}:{2}'.format(CACHE_REDIS_PASS, CACHE_REDIS_HOST,
                                                     CACHE_REDIS_PORT)
 
     # Celery settings
-    CELERY_RESULT_BACKEND = f"db+postgres://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
-    CELERY_BROKER_URL = f'redis://{CACHE_REDIS_USER}:{CACHE_REDIS_PASS}@{CACHE_REDIS_HOST}:{CACHE_REDIS_PORT}/{CACHE_REDIS_VIRTUAL_HOST}'
+    CELERY_RESULT_BACKEND = f'db+postgres://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}'
+    CELERY_BROKER_URL = f'redis://:{CACHE_REDIS_PASS}@{CACHE_REDIS_HOST}:{CACHE_REDIS_PORT}/'
 
     DOCUMENT_MANAGER_URL = os.environ.get('DOCUMENT_MANAGER_URL',
                                           'http://document_manager_backend:5001')

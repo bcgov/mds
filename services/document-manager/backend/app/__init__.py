@@ -30,8 +30,6 @@ def create_app(config_object=None):
     config = config_object if config_object else Config
     app.config.from_object(config)
 
-    # app.logger.info(f'config:\n{config.__dict__}')
-
     register_extensions(app)
     register_routes(app)
     register_commands(app)
