@@ -28,7 +28,7 @@ def transfer_docs(transfer_id, document_ids, chunk_index):
                 f'{transfer_id}: Starting transfer of document #{i} with ID {doc.document_id} from chunk {chunk_index}'
             )
             object_store_key = ObjectStoreStorageService().upload_file(
-                filename=doc.full_storage_path)
+                filename=doc.full_storage_path, progress=True)
             db.session.rollback()
             db.session.add(doc)
             doc.object_store_path = object_store_key

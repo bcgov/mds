@@ -58,6 +58,7 @@ class ObjectStoreStorageService():
 
         # If an object already exists with this key, compare its ETag with the calculated ETag of the local file.
         s3_etag = self.s3_etag(key)
+        fs_etag = None
         if s3_etag is not None:
             fs_etag = self.calculate_s3_etag(filename)
 
