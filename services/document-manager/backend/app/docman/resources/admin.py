@@ -92,7 +92,7 @@ class CompareDocsOnObjectStore(Resource):
         chord(tasks)(callback)
 
         # Create message
-        message = f'Creating VERIFICATION job with ID {verify_id}: {len(docs)} docs will be transferred in {len(chunks)} chunks of size {len(chunks[0])}'
+        message = f'Creating VERIFICATION job with ID {verify_id}: {len(docs)} docs will be verified in {len(chunks)} chunks of size {len(chunks[0])}'
         current_app.logger.info(message)
         current_app.logger.info(chunks)
 
