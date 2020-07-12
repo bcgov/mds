@@ -50,3 +50,48 @@ def transfer_docs(transfer_id, document_ids, chunk_index):
         )
 
     return f'{transfer_id}: Successfully completed the transfer'
+
+
+@celery.task()
+def verify_docs(verify_id, document_ids, chunk_index):
+    print(f'{verify_id}: Chunk {chunk_index} verifying {len(document_ids)} docs')
+
+    # Get the documents to verify
+    docs = Document.query.filter(Document.document_id.in_(document_ids)).all()
+    print(docs)
+
+    # Transfer the documents
+    errors = []
+    unequal_etag_doc_ids = []
+    for i, doc in enumerate(docs):
+        try:
+            print(
+                f'{verify_id}: Starting verification of document #{i} with ID {doc.document_id} from chunk {chunk_index}'
+            )
+            etags_equal = ObjectStoreStorageService().compare_etag(filename=doc.full_storage_path)
+            if (etags_equal):
+                print(
+                    f'{verify_id}: Verification completed successfully for document #{i} with ID {doc.document_id} from chunk {chunk_index}'
+                )
+            else:
+                unequal_etag_doc_ids.append(doc.document_id)
+                print(
+                    f'{verify_id}: Verification failed for document #{i} with ID {doc.document_id} from chunk {chunk_index}'
+                )
+
+        except Exception as e:
+            message = f'{verify_id}: Failed to verify document with ID {doc.document_id}: {e}'
+            print(message)
+            errors.append([message, doc.json()])
+
+    # Determine if the task failed
+    print(f'{verify_id}: Chunk {chunk_index} completed with {len(errors)} errors')
+    if (len(errors) > 0):
+        raise TaskFailure(
+            f'{verify_id}: Failed to successfully complete the verification with the following errors:\n{errors}'
+        )
+
+    result = 'All tested documents passed verification' if len(
+        unequal_etag_doc_ids
+    ) == 0 else f'Some documents failed verification: {unequal_etag_doc_ids}'
+    return f'{verify_id}: {result}'

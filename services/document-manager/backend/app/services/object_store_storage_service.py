@@ -38,6 +38,9 @@ class ObjectStoreStorageService():
             aws_secret_access_key=Config.OBJECT_STORE_ACCESS_KEY,
             endpoint_url=f'https://{Config.OBJECT_STORE_HOST}')
 
+    def get_key(self, filename):
+        return f'{Config.S3_PREFIX}{filename[1:]}'
+
     def download_file(self, path, display_name, as_attachment):
         def generate(result):
             for chunk in iter(lambda: result['Body'].read(1048576), b''):
@@ -54,7 +57,7 @@ class ObjectStoreStorageService():
         return resp
 
     def upload_file(self, filename, progress=False):
-        key = f'{Config.S3_PREFIX}{filename[1:]}'
+        key = self.get_key(filename)
 
         # If an object already exists with this key, compare its ETag with the calculated ETag of the local file.
         s3_etag = self.s3_etag(key)
@@ -87,6 +90,12 @@ class ObjectStoreStorageService():
             pass
 
         return key
+
+    def compare_etag(self, filename):
+        key = self.get_key(filename)
+        s3_etag = self.s3_etag(key)
+        fs_etag = self.calculate_s3_etag(filename)
+        return s3_etag == fs_etag
 
     # Returns the ETag of an object
     def s3_etag(self, key):

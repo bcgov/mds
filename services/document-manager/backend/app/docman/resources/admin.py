@@ -12,8 +12,8 @@ from app.services.object_store_storage_service import ObjectStoreStorageService
 from app.config import Config
 
 
-@api.route('/admin/transfer-file-system-to-object-store')
-class TransferFileSystemToObjectStore(Resource):
+@api.route('/admin/transfer-docs-to-object-store')
+class TransferDocsToObjectStore(Resource):
     parser = reqparse.RequestParser(trim=True)
     parser.add_argument('secret', type=str, required=True, help='Secret')
 
@@ -49,5 +49,46 @@ class TransferFileSystemToObjectStore(Resource):
             current_app.logger.info(
                 f'{transfer_id}: Beginning transfer for chunk #{i}: {chunk_doc_data}')
             transfer_docs.delay(transfer_id, chunk_doc_data, i)
+
+        return message, 202
+
+
+@api.route('/admin/compare-docs-on-object-store')
+class CompareDocsOnObjectStore(Resource):
+    parser = reqparse.RequestParser(trim=True)
+    parser.add_argument('secret', type=str, required=True, help='Secret')
+
+    @requires_any_of([MINE_ADMIN])
+    def post(self):
+        from app.utils.tasks import verify_docs
+
+        # Ensure that the admin API secret required to initiate the verification is correct
+        data = self.parser.parse_args()
+        secret = data.get('secret')
+        if (Config.ADMIN_API_SECRET is None or secret != Config.ADMIN_API_SECRET):
+            raise Forbidden()
+
+        # Get the documents that are stored on the object store
+        docs = Document.query.filter(Document.object_store_path != None).all()
+
+        if len(docs) == 0:
+            return 'No documents are stored on the object store', 200
+
+        verification_id = str(uuid.uuid4())
+
+        # Split the list of documents to verify into N chunks to verify in parallel
+        VERIFY_CHUNKS = 8
+        docs_chunks = numpy.array_split(docs, VERIFY_CHUNKS)
+        docs_chunks = [x.tolist() for x in docs_chunks if len(x) > 0]
+        message = f'{verification_id}: {len(docs)} files will be verified in {len(docs_chunks)} chunks of size {len(docs_chunks[0])}'
+        current_app.logger.info(message)
+        current_app.logger.info(docs_chunks)
+
+        # Start the verification tasks
+        for i, chunk in enumerate(docs_chunks):
+            chunk_doc_data = [doc.document_id for doc in chunk]
+            current_app.logger.info(
+                f'{verification_id}: Beginning verification for chunk #{i}: {chunk_doc_data}')
+            verify_docs.delay(verification_id, chunk_doc_data, i)
 
         return message, 202
