@@ -1,4 +1,5 @@
 #!/bin/sh
 
-celery worker -A app.utils.tasks --detach --loglevel info --logfile=celery.log --pidfile=celeryd.pid
+mkdir -p /var/log/celery /var/run/celery
+celery worker -A app.utils.tasks --detach --loglevel info --logfile=/var/log/celery/%n%I.log --pidfile=/var/run/celery/%n.pid
 flask run
