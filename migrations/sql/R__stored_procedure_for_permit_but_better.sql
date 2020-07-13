@@ -1,6 +1,5 @@
 
-CREATE OR REPLACE FUNCTION format_phone_number(tel_no varchar)
-RETURNS varchar AS $$
+CREATE OR REPLACE FUNCTION format_phone_number(tel_no varchar) RETURNS varchar AS $$
 BEGIN
     SELECT RIGHT(NULLIF(regexp_replace(tel_no, '\D', '','g'),''),10) INTO tel_no;
     RETURN(SELECT CASE
@@ -14,15 +13,15 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE OR REPLACE FUNCTION format_permitee_email(email varchar)
-RETURNS varchar AS $$
+
+CREATE OR REPLACE FUNCTION format_permitee_email(email varchar) RETURNS varchar AS $$
 BEGIN
     RETURN(SELECT NULLIF(regexp_replace(email,' ', '', 'g'),''));
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE OR REPLACE FUNCTION permitee_party_type(party_name varchar)
-RETURNS varchar AS $$
+
+CREATE OR REPLACE FUNCTION permitee_party_type(party_name varchar) RETURNS varchar AS $$
 DECLARE
 company_keyword_special varchar := '[-!0-9@#$&()`+/\"]|Mining|Mineral|Resources|National|Regional|Energy|Products| and | of |Pacific|Metal|Canada|Canadian|Engineering|Mountain|Lake';
 --case sensitive keyword
@@ -31,12 +30,12 @@ company_keyword_cs  varchar :='Corp|Inc|Expl|Mine|INC|South|North|West';
 company_keyword_ci  varchar :='ltd|limited|co.|holdings|Contracting|llp|Consultants|Enterprise|service|city|ulc|Association|Partnership|Trucking|Property|Division|Industries|Developments';
 BEGIN
     RETURN(
-        SELECT 
-            CASE 
-                WHEN 
+        SELECT
+            CASE
+                WHEN
                     party_name ~* company_keyword_special OR
                     party_name ~ company_keyword_cs OR
-                    party_name ~* company_keyword_ci 
+                    party_name ~* company_keyword_ci
                 THEN 'ORG'
                 ELSE 'PER'
             END
@@ -44,8 +43,8 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE OR REPLACE FUNCTION format_permitee_party_name(permitee_name varchar)
-RETURNS varchar AS $$
+
+CREATE OR REPLACE FUNCTION format_permitee_party_name(permitee_name varchar) RETURNS varchar AS $$
 BEGIN
     RETURN(
         SELECT CASE
@@ -56,8 +55,8 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE OR REPLACE FUNCTION format_permittee_first_name(first_name varchar)
-RETURNS varchar AS $$
+
+CREATE OR REPLACE FUNCTION format_permittee_first_name(first_name varchar) RETURNS varchar AS $$
 BEGIN
     RETURN(
         SELECT CASE
@@ -70,13 +69,14 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+
 CREATE OR REPLACE FUNCTION transfer_permit_permitee_but_better() RETURNS void AS $$
 BEGIN
 DECLARE
 		tmp_num_records integer;
         tmp1 integer;
         tmp2 integer;
-        tmp3 integer; 
+        tmp3 integer;
   BEGIN
 	CREATE TABLE IF NOT EXISTS ETL_PERMIT(
 	    mine_party_appt_guid   uuid                  ,
@@ -104,7 +104,7 @@ DECLARE
 	);
 	DROP TABLE IF EXISTS etl_valid_permits;
     CREATE TEMPORARY TABLE etl_valid_permits AS
-	SELECT 
+	SELECT
 	    mine_no||permit_no||recv_dt||iss_dt AS combo_id,
 	    max(cid) permit_cid
 	FROM mms.mmspmt mmspmt
@@ -121,7 +121,7 @@ DECLARE
 
     DROP TABLE IF EXISTS etl_permit_info;
     CREATE TEMPORARY TABLE etl_permit_info AS
-    SELECT 
+    SELECT
         ETL_MINE.mine_guid                                       ,
         mmspmt.mine_no                                      ,
         mmspmt.permit_no                                    ,
@@ -142,13 +142,13 @@ DECLARE
     WHERE mmspmt.cid IN (SELECT permit_cid FROM etl_valid_permits);
 
     SELECT COUNT(*) FROM etl_permit_info INTO tmp_num_records;
-    RAISE NOTICE '# of valid permit info rows found in mms: %', tmp_num_records;	
-	
+    RAISE NOTICE '# of valid permit info rows found in mms: %', tmp_num_records;
+
 	-- ################################################################
 	-- # Get three sources for Permittees
 	-- # Includes records related to mines that are not brought in
 	-- ################################################################
-	
+
 	    DROP TABLE IF EXISTS etl_mine_update_screen_permittees;
 	    CREATE TEMPORARY TABLE etl_mine_update_screen_permittees AS
 	    SELECT
@@ -171,11 +171,11 @@ DECLARE
         )--only use this if a mine has one permit by number
         group by mmsmin.mine_no,permit_info.cid,2,3,4,5,6
         having count(distinct permit_info.permit_no)<2;
-	
+
 	    SELECT COUNT(*) FROM etl_mine_update_screen_permittees INTO tmp_num_records;
 	    RAISE NOTICE '# of permitees from valid permits with details from mmsmin: %', tmp_num_records;
-	
-	
+
+
 	    DROP TABLE IF EXISTS etl_now_company_info_permittees;
 	    CREATE TEMPORARY TABLE etl_now_company_info_permittees AS
 	    SELECT
@@ -190,13 +190,13 @@ DECLARE
 	        now.cid=etl_permit_info.permit_cid
 	    INNER JOIN mms.mmscmp company ON
 	        company.cmp_cd = now.cmp_cd;
-	
+
 	    SELECT COUNT(*) FROM etl_now_company_info_permittees INTO tmp_num_records;
 	    RAISE NOTICE '# of permitees from valid permits with mmscmp connected through mmsnow: %', tmp_num_records;
-	
-	
+
+
 	  	DROP TABLE IF EXISTS etl_permit_permittees;
-	    create TEMPORARY TABLE etl_permit_permittees as 
+	    create TEMPORARY TABLE etl_permit_permittees as
 	    WITH
 	    most_recent_permittee AS (
 	        SELECT
@@ -221,27 +221,27 @@ DECLARE
 	        most_recent_permittee.contact_cid=contact_info.cid
 	    INNER JOIN mms.mmscmp company_info ON
 	    contact_info.cmp_cd=company_info.cmp_cd;
-	
-        
+
+
 
 	    SELECT COUNT(*) FROM etl_permit_permittees INTO tmp_num_records;
 	    RAISE NOTICE '# of permitees from valid permits with mmscmp connected through mmsccn: %', tmp_num_records;
-	
+
 	    DROP TABLE IF EXISTS all_permittee_info;
-	    CREATE TEMPORARY TABLE all_permittee_info AS 
+	    CREATE TEMPORARY TABLE all_permittee_info AS
 	    SELECT * from etl_mine_update_screen_permittees
 	    UNION
 	    SELECT * from etl_now_company_info_permittees
 	    UNION
 	    SELECT * from etl_permit_permittees;
-        --TODO not all permits will have permittees, should we revisit mmsmin table as last fall back? 
+        --TODO not all permits will have permittees, should we revisit mmsmin table as last fall back?
 	-- ################################################################
 	-- # Determine which source is best and update permittee
 	-- ################################################################
-	
+
 	    SELECT COUNT(*) FROM all_permittee_info INTO tmp_num_records;
 	    RAISE NOTICE '# of permitees from valid permits from all sources: %', tmp_num_records;
-	
+
 	    DROP TABLE IF EXISTS preferred_permittee_info;
 	    CREATE TEMPORARY TABLE preferred_permittee_info AS
 	    SELECT DISTINCT ON (permit_cid)
@@ -255,19 +255,19 @@ DECLARE
 	    from all_permittee_info
         where not (format_phone_number(tel_no) is null and format_permitee_email(email) is null)
 	    order by permit_cid, "source" desc, effective_date desc;
-	
+
 	    -- Handle cases where there are multiple permits on a mine
-	    
+
 	    SELECT COUNT(*) FROM preferred_permittee_info where source = 3 INTO tmp3;
 	    SELECT COUNT(*) FROM preferred_permittee_info where source = 2 INTO tmp2;
 	    SELECT COUNT(*) FROM preferred_permittee_info where source = 1 INTO tmp1;
 	    RAISE NOTICE '# of prefered permittees for valid permits from mmsmin: %', tmp3;
 	    RAISE NOTICE '# of prefered permittees for valid permits from mmscmp through mmsnow: %', tmp2;
-	    RAISE NOTICE '# of prefered permittees for valid permits from mmsmin through mmsccn: %', tmp1; 
-	
-	
-	
-	
+	    RAISE NOTICE '# of prefered permittees for valid permits from mmsmin through mmsccn: %', tmp1;
+
+
+
+
 	DROP TABLE IF EXISTS etl_all_permit_info;
 	CREATE TEMPORARY TABLE etl_all_permit_info AS
 	SELECT
@@ -311,22 +311,22 @@ DECLARE
 	    END AS new_permittee
 	FROM
 	    etl_permit_info
-	    LEFT JOIN preferred_permittee_info ppi 
+	    LEFT JOIN preferred_permittee_info ppi
 	        on etl_permit_info.permit_cid = ppi.permit_cid;
-	
+
 	   SELECT COUNT(*) into tmp1 FROM etl_all_permit_info;
 	   SELECT COUNT(*) INTO tmp2 FROM etl_all_permit_info where new_permit = true;
 	   SELECT COUNT(*) INTO tmp3 FROM etl_all_permit_info where new_permittee = true;
 	   RAISE NOTICE '# of etl_all_permit_info records: %', tmp1;
 	   RAISE NOTICE '# of etl_all_permit_info records tagged as new permits: %', tmp2;
 	   RAISE NOTICE '# of etl_all_permit_info records tagged as new permittees: %', tmp3;
-	
+
 	  end;
-	
+
 	-- ################################################################
 	-- # Update existing records in ETL_PERMIT
 	-- ################################################################
-	
+
 	UPDATE ETL_PERMIT
 	SET
 	    --permit info
@@ -352,11 +352,11 @@ DECLARE
 	    ETL_PERMIT.party_guid = info.party_guid
 	    AND
 	    ETL_PERMIT.permit_guid = info.permit_guid;
-	
+
 	-- ################################################################
 	-- # Insert new records into ETL_PERMIT
 	-- ################################################################
-	
+
 	INSERT INTO ETL_PERMIT(
 	    mine_party_appt_guid,
 	    --permit info
@@ -409,12 +409,12 @@ DECLARE
 	    info.new_permit = TRUE
 	    AND
 	    info.new_permittee = TRUE;
-	
-	
+
+
 	-- ################################################################
 	-- # Update permit records with the newest version in the MMS data
 	-- ################################################################
-	
+
 	UPDATE permit
 	SET
 	    update_user            = 'mms_migration'       ,
@@ -424,12 +424,12 @@ DECLARE
 		INNER JOIN mine_permit_xref mpx on etl.mine_guid=mpx.mine_guid
 	WHERE permit.permit_guid = etl.permit_guid
 		AND issue_date = (select max(issue_date) from ETL_PERMIT where etl.permit_no = ETL_PERMIT.permit_no);
-	
-	
+
+
 	-- ################################################################
 	-- # Update permit amendment records with the newest version in the MMS data
 	-- ################################################################
-	
+
 	UPDATE permit_amendment
 	SET
 	    received_date          = etl.received_date         ,
@@ -440,16 +440,16 @@ DECLARE
 	FROM ETL_PERMIT etl
 	WHERE
 	    permit_amendment.permit_amendment_guid = etl.permit_amendment_guid;
-	
-	
+
+
 	-- ################################################################
 	-- # Insert new permits
 	-- ################################################################
-	
+
 	WITH
 	new_permits AS (
 	    SELECT DISTINCT permit_no, MIN(permit_status_code) as permit_status_code
-	    FROM ETL_PERMIT etl 
+	    FROM ETL_PERMIT etl
 	    WHERE (permit_no) NOT IN (
 	        SELECT permit_no
 	        FROM permit
@@ -475,17 +475,17 @@ DECLARE
 	    'mms_migration'                ,
 	    now()
 	FROM new_permits;
-	
-	
-	
+
+
+
 	-- # ################################################################
 	-- # # Insert new permits into the mine permit xref
 	-- # ################################################################
-	
+
 	INSERT INTO mine_permit_xref (
-	    mine_guid, permit_id, create_user, create_timestamp , update_user, update_timestamp 
+	    mine_guid, permit_id, create_user, create_timestamp , update_user, update_timestamp
 	)
-	SELECT distinct mine_guid		   , 
+	SELECT distinct mine_guid		   ,
 	    permit.permit_id 			   ,
 	    'mms_migration'                ,
 	    now()                          ,
@@ -493,13 +493,13 @@ DECLARE
 	    now()
 	from permit LEFT JOIN ETL_PERMIT  on permit.permit_no = ETL_PERMIT.permit_no
 	WHERE (mine_guid, permit_id) NOT IN (SELECT mine_guid, permit_id FROM mine_permit_xref);
-	
-	
+
+
 	-- # ################################################################
 	-- # # Update ETL_PERMIT permit_guids from the newly entered permits.
 	-- # ################################################################
-	
-	UPDATE ETL_PERMIT SET permit_guid = 
+
+	UPDATE ETL_PERMIT SET permit_guid =
 	(select permit_guid from permit
 	inner join mine_permit_xref on permit.permit_id = mine_permit_xref.permit_id
 	WHERE ETL_PERMIT.permit_no=permit.permit_no and ETL_PERMIT.mine_guid = mine_permit_xref.mine_guid limit 1)
@@ -507,20 +507,20 @@ DECLARE
 	    SELECT permit_amendment_guid
 	    FROM permit_amendment
 	);
-	
-	
+
+
 	-- ################################################################
 	-- # Insert new permit amendments.
 	-- ################################################################
 	WITH
-	new_permit_amendments AS (    
+	new_permit_amendments AS (
 		SELECT distinct ETL_PERMIT.*
-	    FROM permit JOIN ETL_PERMIT on permit.permit_guid = ETL_PERMIT.permit_guid 
+	    FROM permit JOIN ETL_PERMIT on permit.permit_guid = ETL_PERMIT.permit_guid
 	    WHERE permit_amendment_guid NOT IN (
 	        SELECT permit_amendment_guid
 	        FROM permit_amendment
 	    )
-	    
+
 	), original_permits AS (
 	    SELECT
 	        permit_amendment_guid
@@ -565,16 +565,16 @@ DECLARE
 	    now()                          				,
 	    'mms_migration'                				,
 	    now()
-	FROM new_permit_amendments 
+	FROM new_permit_amendments
 		JOIN permit ON new_permit_amendments.permit_guid = permit.permit_guid
 		LEFT JOIN original_permits ON new_permit_amendments.permit_amendment_guid = original_permits.permit_amendment_guid;
-	
-	
-	
+
+
+
 	-- ################################################################
 	-- # Update existing parties from ETL_PERMIT
 	-- ################################################################
-	   
+
 	UPDATE party
 	SET
 	    first_name       = etl.first_name            ,
@@ -596,13 +596,13 @@ DECLARE
 	    OR party.effective_date != etl.effective_date
 	    OR party.party_type_code != etl.party_type
 	   );
-	
-	    
+
+
 	-- ################################################################
 	-- # Add new parties from ETL_PERMIT
 	-- ################################################################
-	
-	    
+
+
 	WITH new_parties AS (
 	    SELECT DISTINCT ON (party_guid)
 	        party_guid            ,
@@ -639,7 +639,7 @@ DECLARE
 	    party_name                           ,
 	    phone_no                             ,
 	    email                                ,
-	    effective_date                       ,
+	    COALESCE(effective_date , now()) AS effective_date,
 	    authorization_end_date as expiry_date,
 	    'mms_migration'                      ,
 	    now()                                ,
@@ -648,12 +648,12 @@ DECLARE
 	    party_type
 	FROM new_parties
 	where party_name is not null;
-	    
-	    
+
+
 	-- ################################################################
 	-- # Add new parties from ETL_PERMIT
 	-- ################################################################
-	
+
 	-- Not ideal, but no point changing this logic at this point:
 	DELETE FROM mine_party_appt
 	WHERE
@@ -667,9 +667,9 @@ DECLARE
 	        WHERE major_mine_ind = 'f'
 	        AND mine_guid in (select mine_guid from ETL_PERMIT)
 	    );
-	
-	    
-	    
+
+
+
 	INSERT INTO mine_party_appt (
 	    mine_party_appt_guid     ,
 	    permit_id              ,
@@ -702,11 +702,11 @@ DECLARE
 	FROM ETL_PERMIT
 	INNER JOIN ETL_MINE ON
 	    ETL_PERMIT.mine_guid = ETL_MINE.mine_guid
-	inner join permit p on 
+	inner join permit p on
 	    p.permit_guid = ETL_PERMIT.permit_guid
-	inner join permit p2 on 
+	inner join permit p2 on
 	    p.permit_no = p2.permit_no
-	inner join mine_permit_xref mpx on 
+	inner join mine_permit_xref mpx on
 	    p2.permit_id = mpx.permit_id
 	WHERE EXISTS (
 	    SELECT party_guid
