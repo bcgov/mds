@@ -113,7 +113,7 @@ class MinePartyAppointment(AuditMixin, Base):
 
     @classmethod
     def find_by_permit_id(cls, _id):
-        return cls.find_by(permit_id=_id)
+        return cls.query.filter_by(permit_id=_id).filter_by(deleted_ind=False).all()
 
 
 # given a permmit, and an issue date of a new amendment, order appointment start_dates
@@ -122,7 +122,7 @@ class MinePartyAppointment(AuditMixin, Base):
     @classmethod
     def find_appointment_end_dates(cls, _id, issue_datetime):
         start_dates = [issue_datetime]
-        appointments = cls.find_by(permit_id=_id)
+        appointments = cls.find_by_permit_id(_id)
         for appointment in appointments:
             start_dates.append(appointment.start_date)
         ordered_dates = sorted(start_dates, reverse=True)

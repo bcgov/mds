@@ -58,8 +58,7 @@ class PermitAmendment(AuditMixin, Base):
     )
 
     def __repr__(self):
-        return '<PermitAmendment %r, %r, %r>' % (self.permit_amendment_id, self.mine_guid,
-                                                 self.permit_id)
+        return '<PermitAmendment %r, %r>' % (self.mine_guid, self.permit_id)
 
     def soft_delete(self, is_force_delete=False):
         if not is_force_delete and self.permit_amendment_type_code == 'OGP':
