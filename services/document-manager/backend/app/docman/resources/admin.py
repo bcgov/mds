@@ -13,10 +13,10 @@ from app.services.object_store_storage_service import ObjectStoreStorageService
 from app.config import Config
 
 
-@api.route('/admin/transfer-docs-to-object-store')
+@api.route('/admin/transfer-docs-to-object-store', doc=False)
 class TransferDocsToObjectStore(Resource):
     parser = reqparse.RequestParser(trim=True)
-    parser.add_argument('secret', type=str, required=True, help='Secret')
+    parser.add_argument('secret', type=str, required=True)
 
     # @requires_any_of([MINE_ADMIN])
     def post(self):
@@ -28,7 +28,7 @@ class TransferDocsToObjectStore(Resource):
         if (Config.ADMIN_API_SECRET is None or secret != Config.ADMIN_API_SECRET):
             raise Forbidden()
 
-        # Get the documents that aren't stored on the object store
+        # Get the documents that aren't stored on the object store (return if they all are)
         docs = Document.query.filter_by(object_store_path=None).all()
         if len(docs) == 0:
             return 'No documents need to be transferred', 200
@@ -48,18 +48,18 @@ class TransferDocsToObjectStore(Resource):
         callback = transfer_docs_result.subtask(kwargs={'transfer_id': transfer_id})
         chord(tasks)(callback)
 
-        # Create message
-        message = f'Creating TRANSFER job with ID {transfer_id}: {len(docs)} docs will be transferred in {len(chunks)} chunks of size {len(chunks[0])}'
+        # Create the response message
+        message = f'Started transfer job with ID {transfer_id}: {len(docs)} docs will be transferred in {len(chunks)} chunks of size {len(chunks[0])}'
         current_app.logger.info(message)
         current_app.logger.debug(chunks)
 
         return message, 202
 
 
-@api.route('/admin/compare-docs-on-object-store')
+@api.route('/admin/compare-docs-on-object-store', doc=False)
 class CompareDocsOnObjectStore(Resource):
     parser = reqparse.RequestParser(trim=True)
-    parser.add_argument('secret', type=str, required=True, help='Secret')
+    parser.add_argument('secret', type=str, required=True)
 
     # @requires_any_of([MINE_ADMIN])
     def post(self):
@@ -71,7 +71,7 @@ class CompareDocsOnObjectStore(Resource):
         if (Config.ADMIN_API_SECRET is None or secret != Config.ADMIN_API_SECRET):
             raise Forbidden()
 
-        # Get the documents that are stored on the object store
+        # Get the documents that are stored on the object store (return if there are none)
         docs = Document.query.filter(Document.object_store_path != None).all()
         if len(docs) == 0:
             return 'No documents are stored on the object store', 200
@@ -91,9 +91,9 @@ class CompareDocsOnObjectStore(Resource):
         callback = verify_docs_result.subtask(kwargs={'verify_id': verify_id})
         chord(tasks)(callback)
 
-        # Create message
-        message = f'Creating VERIFICATION job with ID {verify_id}: {len(docs)} docs will be verified in {len(chunks)} chunks of size {len(chunks[0])}'
+        # Create the response message
+        message = f'Started verification job with ID {verify_id}: {len(docs)} docs will be verified in {len(chunks)} chunks of size {len(chunks[0])}'
         current_app.logger.info(message)
-        current_app.logger.info(chunks)
+        current_app.logger.debug(chunks)
 
         return message, 202
