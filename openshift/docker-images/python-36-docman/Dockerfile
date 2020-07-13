@@ -17,3 +17,4 @@ RUN source /opt/app-root/etc/scl_enable && \
     cd ${APP_ROOT}/src && pip install -r requirements.txt
 
 ENTRYPOINT ["./init.sh"]
+USER 1000
