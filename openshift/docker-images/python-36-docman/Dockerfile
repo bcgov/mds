@@ -18,6 +18,6 @@ RUN source /opt/app-root/etc/scl_enable && \
 
 USER 0
 RUN mkdir -p /var/log/celery /var/run/celery
-CMD cd /app && \
+CMD cd /app/app-root/src && \
     celery worker -A app.utils.tasks --detach --loglevel=info --logfile=/var/log/celery/celery.log --pidfile=/var/run/celery/celery.pid --concurrency=8
 USER 1001
