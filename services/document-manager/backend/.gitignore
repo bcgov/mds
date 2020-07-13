@@ -12,5 +12,3 @@ postgres-data/
 coverage.xml
 npm-debug.log
 document_uploads
-celery.log
-celeryd.pid
