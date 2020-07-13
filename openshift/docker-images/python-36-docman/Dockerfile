@@ -17,4 +17,4 @@ RUN source /opt/app-root/etc/scl_enable && \
     cd ${APP_ROOT}/src && pip install -r requirements.txt
 
 WORKDIR ${APP_ROOT}/src
-RUN celery worker -A app.utils.tasks --detach --loglevel=info --logfile=celery.log --pidfile=celery.pid --concurrency=1
+RUN celery worker -A app.utils.tasks --loglevel=info --logfile=celery.log --concurrency=1
