@@ -67,16 +67,22 @@ export class PartyProfile extends Component {
   componentDidMount() {
     const { id } = this.props.match.params;
     this.props.fetchPartyById(id);
-    this.props.fetchPartyRelationships({ party_guid: id, relationships: "party" }).then(() => {
-      const mine_guids = uniq(
-        this.props.partyRelationships
-          .filter((x) => x.mine_guid != "None")
-          .map(({ mine_guid }) => mine_guid)
-      );
-      this.props.fetchMineBasicInfoList(mine_guids).then(() => {
-        this.setState({ isLoaded: true });
+    this.props
+      .fetchPartyRelationships({
+        party_guid: id,
+        relationships: "party",
+        include_permittees: "true",
+      })
+      .then(() => {
+        const mine_guids = uniq(
+          this.props.partyRelationships
+            .filter((x) => x.mine_guid != "None")
+            .map(({ mine_guid }) => mine_guid)
+        );
+        this.props.fetchMineBasicInfoList(mine_guids).then(() => {
+          this.setState({ isLoaded: true });
+        });
       });
-    });
   }
 
   componentWillReceiveProps = (nextProps) => {
