@@ -103,6 +103,7 @@ export class MinePermitInfo extends Component {
     this.props.fetchPartyRelationships({
       mine_guid: this.props.mineGuid,
       relationships: "party",
+      include_permittees: "true",
     });
   };
 
