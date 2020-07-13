@@ -475,7 +475,8 @@ CREATE OR REPLACE FUNCTION transfer_permit_permitee_information() RETURNS void A
                 permittee_info.permit_cid = permit_info.permit_cid
             WHERE permit_info.permit_no not in (
                 select permit_no from permit p
-                join mine m on p.mine_guid=m.mine_guid
+                inner join mine_permit_xref mpx on p.permit_id = mpx.permit_id
+                join mine m on mpx.mine_guid=m.mine_guid
                 where m.major_mine_ind = true
                 );
 
@@ -593,11 +594,11 @@ CREATE OR REPLACE FUNCTION transfer_permit_permitee_information() RETURNS void A
             SELECT count(*) FROM permit_amendment INTO old_amendment_row;
 			
             RAISE NOTICE '.. Update ETL_PERMIT and all_permit_info with permit_guids for new amendments that may be for an existing permit';
-			UPDATE ETL_PERMIT SET permit_guid = (select permit_guid from permit WHERE ETL_PERMIT.permit_no=permit.permit_no and ETL_PERMIT.mine_guid = permit.mine_guid limit 1)
-			where permit_amendment_guid NOT IN (
-				SELECT permit_amendment_guid
-				FROM permit_amendment
-				);
+			UPDATE ETL_PERMIT SET permit_guid = (select permit_guid from permit
+				inner join mine_permit_xref mpx on mpx.permit_id = permit.permit_id
+				WHERE ETL_PERMIT.permit_no=permit.permit_no 
+				and ETL_PERMIT.mine_guid = mpx.mine_guid limit 1)
+            where permit_guid not in (select permit_guid from permit);--update permit_guids where permits weren't actually created
 
             -- Upsert permit data from ETL_PERMIT
             RAISE NOTICE '.. Update existing permit records with latest MMS data';
@@ -608,8 +609,9 @@ CREATE OR REPLACE FUNCTION transfer_permit_permitee_information() RETURNS void A
                 update_timestamp       = now()                     ,
                 permit_status_code     = etl.permit_status_code
             FROM ETL_PERMIT etl
+            inner join mine_permit_xref mpx on etl.mine_guid=mpx.mine_guid
             WHERE
-                permit.mine_guid = etl.mine_guid
+                mpx.mine_guid = etl.mine_guid
                 AND
                 permit.permit_guid = etl.permit_guid
 				AND
@@ -653,7 +655,6 @@ CREATE OR REPLACE FUNCTION transfer_permit_permitee_information() RETURNS void A
             ), inserted_rows AS (
                 INSERT INTO permit (
                     permit_guid         ,
-                    mine_guid           ,
                     permit_no           ,
                     permit_status_code  ,
                     create_user         ,
@@ -663,7 +664,6 @@ CREATE OR REPLACE FUNCTION transfer_permit_permitee_information() RETURNS void A
                 )
                 SELECT
                     gen_random_uuid() as permit_guid,
-                    new_permit.mine_guid           ,
                     new_permit.permit_no           ,
                     new_permit.permit_status_code  ,
                     'mms_migration'                ,
@@ -672,13 +672,32 @@ CREATE OR REPLACE FUNCTION transfer_permit_permitee_information() RETURNS void A
                     now()
                 FROM new_permit
                 INNER JOIN ETL_MINE ON
-                    new_permit.mine_guid = ETL_MINE.mine_guid
-                RETURNING 1
+                    new_permit.mine_guid = ETL_MINE.mine_guid 
+                RETURNING permit_id,permit_guid
+            ),
+            inserted_xrefs AS (INSERT INTO mine_permit_xref (
+                mine_guid,
+                permit_id
             )
+            SELECT etl_p.mine_guid, ir.permit_id 
+            from inserted_rows ir 
+            inner join ETL_PERMIT etl_p on ir.permit_guid = etl_p.permit_guid
+            returning 1
+            )
+ 
             SELECT COUNT(*) FROM inserted_rows INTO insert_row;
 
             RAISE NOTICE '.. Update ETL_PERMIT and all_permit_info with newly inserted permit_guids for new amendments';
-			UPDATE ETL_PERMIT SET permit_guid = (select permit_guid from permit WHERE ETL_PERMIT.permit_no=permit.permit_no and ETL_PERMIT.mine_guid = permit.mine_guid limit 1)
+			UPDATE ETL_PERMIT SET permit_guid = (
+                select permit_guid 
+                    from permit p
+                    inner join mine_permit_xref mpx on p.permit_id =mpx.permit_id
+                    WHERE ETL_PERMIT.permit_no=p.permit_no 
+                    and ETL_PERMIT.mine_guid = mpx.mine_guid
+                limit 1)
+
+
+
 			where permit_amendment_guid NOT IN (
 				SELECT permit_amendment_guid
 				FROM permit_amendment
@@ -886,7 +905,7 @@ CREATE OR REPLACE FUNCTION transfer_permit_permitee_information() RETURNS void A
             WITH inserted_rows AS (
                 INSERT INTO mine_party_appt (
                     mine_party_appt_guid     ,
-                    permit_guid              ,
+                    permit_id              ,
                     party_guid               ,
                     mine_guid                ,
                     mine_party_appt_type_code,
@@ -901,7 +920,7 @@ CREATE OR REPLACE FUNCTION transfer_permit_permitee_information() RETURNS void A
                 )
                 SELECT
                     ETL_PERMIT.mine_party_appt_guid,
-                    ETL_PERMIT.permit_guid         ,
+                    mpx.permit_id         ,
                     ETL_PERMIT.party_guid          ,
                     ETL_PERMIT.mine_guid           ,
                     'PMT'                          ,
@@ -916,6 +935,12 @@ CREATE OR REPLACE FUNCTION transfer_permit_permitee_information() RETURNS void A
                 FROM ETL_PERMIT
                 INNER JOIN ETL_MINE ON
                     ETL_PERMIT.mine_guid = ETL_MINE.mine_guid
+                inner join permit p on 
+                    p.permit_guid = ETL_PERMIT.permit_guid
+                inner join permit p2 on 
+                    p.permit_no = p2.permit_no
+                inner join mine_permit_xref mpx on 
+                    p2.permit_id = mpx.permit_id
 				WHERE ETL_PERMIT.permit_guid IS NOT NULL
                 AND EXISTS (
                     SELECT *

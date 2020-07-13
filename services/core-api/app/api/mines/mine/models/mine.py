@@ -10,6 +10,7 @@ from geoalchemy2 import Geometry
 from app.extensions import db
 from app.api.utils.models_mixins import AuditMixin, Base
 from app.api.mines.permits.permit.models.permit import Permit
+from app.api.mines.permits.permit.models.mine_permit_xref import MinePermitXref
 from app.api.users.minespace.models.minespace_user_mine import MinespaceUserMine
 from app.api.constants import *
 
@@ -53,12 +54,14 @@ class Mine(AuditMixin, Base):
         lazy='joined')
 
     #Almost always used, but faster to use selectin to load related data
-    mine_permit = db.relationship(
+    _permit_identities = db.relationship(
         'Permit',
-        backref='mine',
         order_by='desc(Permit.create_timestamp)',
-        primaryjoin="and_(Permit.mine_guid == Mine.mine_guid, Permit.deleted_ind==False)",
-        lazy='selectin')
+        lazy='selectin',
+        secondary='mine_permit_xref')
+
+    #across all permit_identities
+    _mine_permit_amendments = db.relationship('PermitAmendment', lazy='selectin')
 
     mine_type = db.relationship(
         'MineType',
@@ -131,10 +134,16 @@ class Mine(AuditMixin, Base):
         }
 
     @hybrid_property
+    def mine_permit(self):
+        permits_w_context = []
+        for p in self._permit_identities:
+            p._context_mine = self
+            permits_w_context.append(p)
+        return permits_w_context
+
+    @hybrid_property
     def mine_permit_numbers(self):
-        rows = db.session.query(Permit.permit_no).filter(
-            Permit.mine_guid == self.mine_guid, Permit.deleted_ind == False).distinct().all()
-        p_numbers = [permit_no for permit_no, in rows]
+        p_numbers = [mpi.permit_no for mpi in self._permit_identities]
         return p_numbers
 
     @hybrid_property
@@ -176,8 +185,7 @@ class Mine(AuditMixin, Base):
             number_filter = Mine.mine_no.ilike('%{}%'.format(term))
             permit_filter = Permit.permit_no.ilike('%{}%'.format(term))
             mines_q = Mine.query.filter(name_filter | number_filter).filter_by(deleted_ind=False)
-            permit_q = Mine.query.join(Permit).filter(permit_filter).filter(
-                Permit.deleted_ind == False)
+            permit_q = Mine.query.join(MinePermitXref).join(Permit).filter(permit_filter)
             mines_q = mines_q.union(permit_q)
         else:
             mines_q = Mine.query

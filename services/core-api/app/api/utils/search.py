@@ -47,7 +47,7 @@ simple_additional_search_targets = {
         'model': Permit,
         'primary_column': Permit.permit_guid,
         'description': 'Permits',
-        'entities_to_return': [Permit.permit_guid, Permit.mine_guid, Permit.permit_no],
+        'entities_to_return': [Permit.permit_guid, Permit.permit_no],
         'columns_to_search': [Permit.permit_no],
         'has_deleted_ind': True,
         'id_field': 'mine_guid',

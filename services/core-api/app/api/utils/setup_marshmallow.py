@@ -71,7 +71,6 @@ class CoreConverter(ModelConverter):
 
 
 def setup_marshmallow():
-    current_app.logger.debug('setup_marshmallow called')
     setup_static_data(BaseModel)
     setup_schema(BaseModel, db.session)()
 
@@ -94,6 +93,8 @@ def setup_schema(Base, session):
 
                     class Meta(object):
                         model = class_
+                        load_instance = True
+                        include_relationships = True
                         ordered = True
                         unknown = EXCLUDE
                         include_fk = True
