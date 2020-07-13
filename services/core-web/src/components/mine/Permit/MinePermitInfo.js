@@ -145,6 +145,8 @@ export class MinePermitInfo extends Component {
       : `${values.permit_type}-${values.permit_no}`;
     const payload = { ...values, permit_no };
 
+    console.log(payload);
+
     this.setState({ modifiedPermits: true });
 
     return this.props.createPermit(this.props.mineGuid, payload).then(this.closePermitModal);
@@ -160,7 +162,6 @@ export class MinePermitInfo extends Component {
   };
 
   // Amendment Modals
-
   openAddAmendmentModal = (event, onSubmit, title, permit, type) => {
     event.preventDefault();
     this.props.openModal({
@@ -269,7 +270,6 @@ export class MinePermitInfo extends Component {
     });
 
   handleDeletePermitAmendment = (record) => {
-    console.log(record);
     return this.props
       .deletePermitAmendment(
         this.props.mineGuid,

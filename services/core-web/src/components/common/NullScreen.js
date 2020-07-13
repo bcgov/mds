@@ -36,6 +36,7 @@ const propTypes = {
     "add-now-activity",
     "securities",
     "no-permittee",
+    "draft-permit",
   ]),
   message: PropTypes.string,
 };
@@ -68,7 +69,7 @@ const NullScreen = (props) => (
     )}
     {props.type === "manager-small" && (
       <div>
-        <img alt="min_img" src={MINER_TWO} />
+        <img alt="mine_img" src={MINER_TWO} />
         <h3>{String.NO_DATA}</h3>
         <p>{String.ADD_PARTY}</p>
       </div>
@@ -203,6 +204,12 @@ const NullScreen = (props) => (
       <div>
         <img alt="mine_img" src={PERMIT} />
         <h3>{String.NO_SECURITIES}</h3>
+      </div>
+    )}
+    {props.type === "draft-permit" && (
+      <div>
+        <img alt="mine_img" src={PERMIT} />
+        <h3>A draft permit has not been created</h3>
       </div>
     )}
   </div>

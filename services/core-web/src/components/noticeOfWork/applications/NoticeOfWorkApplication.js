@@ -512,46 +512,17 @@ export class NoticeOfWorkApplication extends Component {
 
   renderPermitGeneration = () => {
     const isAmendment = this.props.noticeOfWork.type_of_application !== "New Permit";
-    const permittee =
-      this.props.noticeOfWork.contacts &&
-      this.props.noticeOfWork.contacts.filter(
-        (contact) => contact.mine_party_appt_type_code_description === "Permittee"
-      )[0];
     return (
-      <>
-        <div className={this.renderFixedHeaderClass()}>
-          <h2 className="padding-md"> Draft Permit</h2>
-        </div>
-        <div className={this.state.fixedTop ? "side-menu--fixed" : "side-menu"}>
-          <NOWSideMenu
-            route={routes.NOTICE_OF_WORK_APPLICATION}
-            noticeOfWorkType={this.props.noticeOfWork.notice_of_work_type_code}
-            tabSection="draft-permit"
-          />
-        </div>
-        <div
-          className={
-            this.state.fixedTop
-              ? "view--content with-fixed-top side-menu--content"
-              : "view--content side-menu--content"
-          }
-        >
-          {permittee ? (
-            <NOWPermitGeneration
-              noticeOfWork={this.props.noticeOfWork}
-              documentType={
-                isAmendment
-                  ? this.props.generatableApplicationDocuments.PMA
-                  : this.props.generatableApplicationDocuments.PMT
-              }
-              isAmendment={isAmendment}
-              handleGenerateDocumentFormSubmit={this.handleGenerateDocumentFormSubmit}
-            />
-          ) : (
-            <NullScreen type="no-permittee" />
-          )}
-        </div>
-      </>
+      <NOWPermitGeneration
+        fixedTop={this.state.fixedTop}
+        noticeOfWork={this.props.noticeOfWork}
+        documentType={
+          isAmendment
+            ? this.props.generatableApplicationDocuments.PMA
+            : this.props.generatableApplicationDocuments.PMT
+        }
+        handleGenerateDocumentFormSubmit={this.handleGenerateDocumentFormSubmit}
+      />
     );
   };
 

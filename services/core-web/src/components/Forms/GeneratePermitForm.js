@@ -100,56 +100,11 @@ export const GeneratePermitForm = (props) => (
             <Field
               id="issue_date"
               name="issue_date"
-              label="Issue Date"
+              label={props.isAmendment ? "Amendment Issue Date" : "Issue Date"}
               required
               component={renderConfig.DATE}
               validate={[required]}
               disabled
-            />
-          </Col>
-          <Col xs={24} md={12}>
-            <Field
-              id="auth_end_date"
-              name="auth_end_date"
-              label="Authorization End Date"
-              required
-              component={renderConfig.DATE}
-              validate={[required]}
-            />
-          </Col>
-        </Row>
-        <Row gutter={32}>
-          <Col xs={24} md={12}>
-            <Field
-              id="lead_inspector"
-              name="lead_inspector"
-              label="Lead Inspector Name"
-              required
-              component={renderConfig.FIELD}
-              validate={[required]}
-              disabled
-            />
-          </Col>
-          <Col xs={24} md={12}>
-            <Field
-              id="lead_inspector_title"
-              name="lead_inspector_title"
-              label="Lead Inspector Title"
-              required
-              component={renderConfig.FIELD}
-              validate={[required]}
-            />
-          </Col>
-        </Row>
-        <Row gutter={32}>
-          <Col xs={24} md={12}>
-            <Field
-              id="regional_office"
-              name="regional_office"
-              label="Regional Office"
-              required
-              component={renderConfig.FIELD}
-              validate={[required]}
             />
           </Col>
           {props.isAmendment && (
@@ -164,6 +119,51 @@ export const GeneratePermitForm = (props) => (
               />
             </Col>
           )}
+        </Row>
+        <Row gutter={32}>
+          <Col xs={24} md={12}>
+            <Field
+              id="auth_end_date"
+              name="auth_end_date"
+              label="Authorization End Date"
+              required
+              component={renderConfig.DATE}
+              validate={[required]}
+            />
+          </Col>
+          <Col xs={24} md={12}>
+            <Field
+              id="lead_inspector"
+              name="lead_inspector"
+              label="Lead Inspector Name"
+              required
+              component={renderConfig.FIELD}
+              validate={[required]}
+              disabled
+            />
+          </Col>
+        </Row>
+        <Row gutter={32}>
+          <Col xs={24} md={12}>
+            <Field
+              id="lead_inspector_title"
+              name="lead_inspector_title"
+              label="Lead Inspector Title"
+              required
+              component={renderConfig.FIELD}
+              validate={[required]}
+            />
+          </Col>
+          <Col xs={24} md={12}>
+            <Field
+              id="regional_office"
+              name="regional_office"
+              label="Regional Office"
+              required
+              component={renderConfig.FIELD}
+              validate={[required]}
+            />
+          </Col>
         </Row>
       </>
     </ScrollContentWrapper>
@@ -194,17 +194,6 @@ export const GeneratePermitForm = (props) => (
           </Col>
         </Row>
         <Row gutter={32}>
-          {/* <Col xs={24} md={12}>
-            <Field
-              id="application_date"
-              name="application_date"
-              label="Application Date"
-              required
-              component={renderConfig.FIELD}
-              validate={[required]}
-              disabled
-            />
-          </Col> */}
           <Col xs={24} md={12}>
             <Field
               id="application_type"
