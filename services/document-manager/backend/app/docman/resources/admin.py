@@ -97,3 +97,23 @@ class CompareDocsOnObjectStore(Resource):
         current_app.logger.debug(chunks)
 
         return message, 202
+
+
+@api.route('/admin/untransfered-files', doc=False)
+class GetUntransferedFiles(Resource):
+    parser = reqparse.RequestParser(trim=True)
+    parser.add_argument('secret', type=str, required=True)
+
+    # @requires_any_of([MINE_ADMIN])
+    def get(self):
+
+        # Ensure that the admin API secret is correct
+        data = self.parser.parse_args()
+        secret = data.get('secret')
+        if (Config.ADMIN_API_SECRET is None or secret != Config.ADMIN_API_SECRET):
+            raise Forbidden()
+
+        # Get and return the documents that aren't stored on the object store
+        docs = Document.query.filter_by(object_store_path=None).all()
+        doc_jsons = [doc.json() for doc in docs]
+        return doc_jsons
