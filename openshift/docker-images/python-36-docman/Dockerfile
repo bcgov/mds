@@ -15,3 +15,5 @@ RUN source /opt/app-root/etc/scl_enable && \
     set -x && \
     pip install -U pip setuptools wheel && \
     cd ${APP_ROOT}/src && pip install -r requirements.txt
+
+ENTRYPOINT ["./init.sh"]
