@@ -12,7 +12,6 @@ from app.extensions import db
 from app.api.utils.models_mixins import AuditMixin, Base
 
 from app.api.parties.party.models.party import Party
-from app.api.mines.mine.models.mine import Mine
 from app.api.parties.party_appt.models.mine_party_appt_document_xref import MinePartyApptDocumentXref
 
 
@@ -152,13 +151,12 @@ class MinePartyAppointment(AuditMixin, Base):
                 mine_tailings_storage_facility_guid=mine_tailings_storage_facility_guid)
         return built_query.all()
 
-    # FIXME: This may not work with permittee changes, since they don't have a mine_guid
     @classmethod
     def find_by(cls,
                 mine_guid=None,
                 party_guid=None,
                 mine_party_appt_type_codes=None,
-                include_permittees=None):
+                include_permittees=False):
         built_query = cls.query.filter_by(deleted_ind=False)
         if mine_guid:
             built_query = built_query.filter_by(mine_guid=mine_guid)
@@ -169,6 +167,8 @@ class MinePartyAppointment(AuditMixin, Base):
                 cls.mine_party_appt_type_code.in_(mine_party_appt_type_codes))
         results = built_query.all()
         if include_permittees and mine_guid:
+            #avoid circular imports.
+            from app.api.mines.mine.models.mine import Mine
             mine = Mine.find_by_mine_guid(mine_guid)
             permit_permittees = [m.permittee_appointments[0] for m in mine.mine_permit]
             results.append(permit_permittees)
