@@ -102,6 +102,9 @@ PERMIT_AMENDMENT_MODEL = api.model(
         'security_total': fields.Fixed(description='Currency', decimals=2),
                                                                                          # 'permit_amendment_status_description': fields.String,                                                                            #'permit_amendment_type_description': fields.String,
         'description': fields.String,
+        'lead_inspector_title': fields.String,
+        'regional_office':fields.String,
+        'now_application_guid': fields.String,
         'related_documents': fields.List(fields.Nested(PERMIT_AMENDMENT_DOCUMENT_MODEL))
     })
 
