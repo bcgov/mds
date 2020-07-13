@@ -12,6 +12,7 @@ from app.extensions import db
 from app.api.utils.models_mixins import AuditMixin, Base
 
 from app.api.parties.party.models.party import Party
+from app.api.mines.mine.models.mine import Mine
 from app.api.parties.party_appt.models.mine_party_appt_document_xref import MinePartyApptDocumentXref
 
 
@@ -157,18 +158,21 @@ class MinePartyAppointment(AuditMixin, Base):
                 mine_guid=None,
                 party_guid=None,
                 mine_party_appt_type_codes=None,
-                permit_id=None):
+                include_permittees=None):
         built_query = cls.query.filter_by(deleted_ind=False)
         if mine_guid:
             built_query = built_query.filter_by(mine_guid=mine_guid)
         if party_guid:
             built_query = built_query.filter_by(party_guid=party_guid)
-        if permit_id:
-            built_query = built_query.filter_by(permit_id=permit_id)
         if mine_party_appt_type_codes:
             built_query = built_query.filter(
                 cls.mine_party_appt_type_code.in_(mine_party_appt_type_codes))
-        return built_query.all()
+        results = built_query.all()
+        if include_permittees and mine_guid:
+            mine = Mine.find_by_mine_guid(mine_guid)
+            permit_permittees = [m.permittee_appointments[0] for m in mine.mine_permit]
+            results.append(permit_permittees)
+        return results
 
     @classmethod
     def to_csv(cls, records, columns):
