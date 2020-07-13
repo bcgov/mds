@@ -34,7 +34,7 @@ def transfer_docs(transfer_id, doc_ids, chunk_index):
             # Update the document's object store path
             db.session.rollback()
             db.session.add(doc)
-            # doc.object_store_path = key
+            doc.object_store_path = key
             doc.update_user = 'mds'
             db.session.commit()
             success_transfers.append(doc.document_id)
