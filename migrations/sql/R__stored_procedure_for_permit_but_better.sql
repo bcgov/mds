@@ -687,9 +687,9 @@ DECLARE
 	)
 	SELECT
 	    ETL_PERMIT.mine_party_appt_guid,
-	    mpx.permit_id         ,
+	    mpx.permit_id                  ,
 	    ETL_PERMIT.party_guid          ,
-	    ETL_PERMIT.mine_guid           ,
+	    null		                   , --Permittees are not related to the mine.
 	    'PMT'                          ,
 	    'mms_migration'                ,
 	    now()                          ,
