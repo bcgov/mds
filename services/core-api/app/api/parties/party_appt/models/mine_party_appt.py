@@ -171,7 +171,7 @@ class MinePartyAppointment(AuditMixin, Base):
             from app.api.mines.mine.models.mine import Mine
             mine = Mine.find_by_mine_guid(mine_guid)
             permit_permittees = [m.permittee_appointments[0] for m in mine.mine_permit]
-            results.append(permit_permittees)
+            results = results + permit_permittees
         return results
 
     @classmethod
