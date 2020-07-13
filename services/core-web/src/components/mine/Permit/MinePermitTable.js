@@ -370,6 +370,7 @@ const transformRowData = (
   const firstAmendment = permit.permit_amendments[permit.permit_amendments.length - 1];
 
   const permittees = getPermittees(partyRelationships, permit);
+  console.log(permittees);
   const permitteeName = partyRelationships.length === 0 ? "" : getPermitteeName(permittees);
   const hasAmalgamated = permit.permit_amendments.find(
     (pa) => pa.permit_amendment_type_code === amalgamatedPermit
