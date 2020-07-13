@@ -16,5 +16,6 @@ RUN source /opt/app-root/etc/scl_enable && \
     pip install -U pip setuptools wheel && \
     cd ${APP_ROOT}/src && pip install -r requirements.txt
 
-ENTRYPOINT ["./init.sh"]
-USER 1000
+RUN mkdir -p /var/log/celery /var/run/celery
+CMD cd /app && \
+    celery worker -A app.utils.tasks --detach --loglevel=info --logfile=/var/log/celery/celery.log --pidfile=/var/run/celery/celery.pid --concurrency=8
