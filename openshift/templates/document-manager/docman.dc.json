@@ -69,11 +69,11 @@
     },
     {
       "name": "CPU_LIMIT",
-      "value": "200m"
+      "value": "500m"
     },
     {
       "name": "MEMORY_LIMIT",
-      "value": "1Gi"
+      "value": "2Gi"
     },
     {
       "name": "CPU_REQUEST",
@@ -81,7 +81,7 @@
     },
     {
       "name": "MEMORY_REQUEST",
-      "value": "768Mi"
+      "value": "1Gi"
     },
     {
       "name": "UWSGI_PROCESSES",
