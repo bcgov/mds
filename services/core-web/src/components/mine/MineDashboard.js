@@ -161,7 +161,11 @@ export class MineDashboard extends Component {
       this.props.fetchPermits(mine.mine_guid);
       this.setState({ isLoaded: true });
       this.props.fetchMineComplianceInfo(mine.mine_no, true);
-      this.props.fetchPartyRelationships({ mine_guid: id, relationships: "party" });
+      this.props.fetchPartyRelationships({
+        mine_guid: id,
+        relationships: "party",
+        include_permittees: "true",
+      });
     });
   }
 
