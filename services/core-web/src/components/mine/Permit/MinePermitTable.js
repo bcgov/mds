@@ -369,9 +369,9 @@ const transformRowData = (
   const latestAmendment = permit.permit_amendments[0];
   const firstAmendment = permit.permit_amendments[permit.permit_amendments.length - 1];
 
-  const permittees = getPermittees(partyRelationships, permit);
-  console.log(permittees);
-  const permitteeName = partyRelationships.length === 0 ? "" : getPermitteeName(permittees);
+  //const permittees = getPermittees(partyRelationships, permit);
+  //console.log(permittees);
+  //const permitteeName = partyRelationships.length === 0 ? "" : getPermitteeName(permittees);
   const hasAmalgamated = permit.permit_amendments.find(
     (pa) => pa.permit_amendment_type_code === amalgamatedPermit
   );
@@ -381,7 +381,7 @@ const transformRowData = (
     lastAmended: (latestAmendment && formatDate(latestAmendment.issue_date)) || Strings.EMPTY_FIELD,
     permitNo: permit.permit_no || Strings.EMPTY_FIELD,
     firstIssued: (firstAmendment && formatDate(firstAmendment.issue_date)) || Strings.EMPTY_FIELD,
-    permittee: permitteeName,
+    permittee: permit.current_permittee,
     authorizationEndDate:
       (latestAmendment && formatDate(latestAmendment.authorization_end_date)) ||
       Strings.EMPTY_FIELD,
