@@ -336,24 +336,6 @@ const childColumns = [
   },
 ];
 
-const getPermittees = (partyRelationships, permit) =>
-  orderBy(
-    partyRelationships.filter(({ related_guid }) => permit.permit_guid === related_guid),
-    (o) => (o.end_date && new Date(o.end_date).getTime()) || Infinity,
-    ["desc"]
-  );
-
-// Since end date is stored at yyyy-mm-dd, comparing current Date() to
-// the the start of the next day ensures appointments ending today are displayed.
-const isActive = (permittee) =>
-  (!permittee.end_date || moment(permittee.end_date).add(1, "days") > new Date()) &&
-  (!permittee.start_date || Date.parse(permittee.start_date) <= new Date());
-
-const getPermitteeName = (permittees) => {
-  const activePermittee = permittees.filter(isActive);
-  return activePermittee[0] ? activePermittee[0].party.name : Strings.EMPTY_FIELD;
-};
-
 const transformRowData = (
   permit,
   partyRelationships,
@@ -369,9 +351,6 @@ const transformRowData = (
   const latestAmendment = permit.permit_amendments[0];
   const firstAmendment = permit.permit_amendments[permit.permit_amendments.length - 1];
 
-  //const permittees = getPermittees(partyRelationships, permit);
-  //console.log(permittees);
-  //const permitteeName = partyRelationships.length === 0 ? "" : getPermitteeName(permittees);
   const hasAmalgamated = permit.permit_amendments.find(
     (pa) => pa.permit_amendment_type_code === amalgamatedPermit
   );
