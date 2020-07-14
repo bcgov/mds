@@ -105,7 +105,7 @@ class GetUntransferedFiles(Resource):
     parser.add_argument('secret', type=str, required=True)
 
     # @requires_any_of([MINE_ADMIN])
-    def get(self):
+    def post(self):
 
         # Ensure that the admin API secret is correct
         data = self.parser.parse_args()
