@@ -6,10 +6,6 @@ ALTER TABLE permit_status_code ADD COLUMN active_ind boolean DEFAULT true NOT nu
 INSERT INTO permit_status_code (permit_status_code, description, display_order, effective_date, create_user , create_timestamp , update_user , update_timestamp, active_ind)
 VALUES ('D', 'Draft', 30, now(), 'system-mds', now(), 'system-mds', now(), false );
 
-ALTER TABLE now_application 
-ADD COLUMN permit_guid uuid REFERENCES permit (permit_guid);
-
-
 ALTER TABLE permit_amendment 
 ADD COLUMN lead_inspector_title varchar;
 
