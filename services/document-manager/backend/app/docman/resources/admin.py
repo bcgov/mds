@@ -18,7 +18,7 @@ class TransferDocsToObjectStore(Resource):
     parser = reqparse.RequestParser(trim=True)
     parser.add_argument('secret', type=str, required=True)
 
-    # @requires_any_of([MINE_ADMIN])
+    @requires_any_of([MINE_ADMIN])
     def post(self):
         from app.utils.tasks import transfer_docs, transfer_docs_result
 
@@ -61,7 +61,7 @@ class CompareDocsOnObjectStore(Resource):
     parser = reqparse.RequestParser(trim=True)
     parser.add_argument('secret', type=str, required=True)
 
-    # @requires_any_of([MINE_ADMIN])
+    @requires_any_of([MINE_ADMIN])
     def post(self):
         from app.utils.tasks import verify_docs, verify_docs_result
 
@@ -104,7 +104,7 @@ class GetUntransferedFiles(Resource):
     parser = reqparse.RequestParser(trim=True)
     parser.add_argument('secret', type=str, required=True)
 
-    # @requires_any_of([MINE_ADMIN])
+    @requires_any_of([MINE_ADMIN])
     def post(self):
 
         # Ensure that the admin API secret is correct
