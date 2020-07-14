@@ -77,9 +77,7 @@ export const GeneratePermitForm = (props) => (
               id="permittee_email"
               name="permittee_email"
               label="Permitee Email"
-              required
               component={renderConfig.FIELD}
-              validate={[required]}
               disabled
             />
           </Col>
