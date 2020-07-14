@@ -1,5 +1,6 @@
-from sqlalchemy.dialects.postgresql import UUID
+from flask import current_app
 
+from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.orm import validates
@@ -7,6 +8,7 @@ from sqlalchemy.schema import FetchedValue
 from app.extensions import db
 
 from app.api.mines.permits.permit_amendment.models.permit_amendment import PermitAmendment
+from app.api.mines.permits.permit.models.mine_permit_xref import MinePermitXref
 #for schema creation
 from app.api.mines.permits.permit.models.permit_status_code import PermitStatusCode
 from app.api.mines.documents.models.mine_document import MineDocument
@@ -23,17 +25,18 @@ class Permit(AuditMixin, Base):
 
     permit_id = db.Column(db.Integer, primary_key=True)
     permit_guid = db.Column(UUID(as_uuid=True), server_default=FetchedValue())
-    mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine.mine_guid'))
     permit_no = db.Column(db.String(16), nullable=False)
     permit_status_code = db.Column(
         db.String(2), db.ForeignKey('permit_status_code.permit_status_code'))
-    permit_amendments = db.relationship(
+    _all_permit_amendments = db.relationship(
         'PermitAmendment',
         backref='permit',
         primaryjoin=
         'and_(PermitAmendment.permit_id == Permit.permit_id, PermitAmendment.deleted_ind==False)',
         order_by='desc(PermitAmendment.issue_date), desc(PermitAmendment.permit_amendment_id)',
         lazy='select')
+
+    _all_mines = db.relationship('Mine', lazy='selectin', secondary='mine_permit_xref')
 
     permittee_appointments = db.relationship(
         'MinePartyAppointment',
@@ -42,11 +45,21 @@ class Permit(AuditMixin, Base):
         'desc(MinePartyAppointment.start_date), desc(MinePartyAppointment.mine_party_appt_id)')
     permit_status = db.relationship('PermitStatusCode', lazy='select')
     permit_status_code_description = association_proxy('permit_status', 'description')
-    mine_name = association_proxy('mine', 'mine_name')
 
     bonds = db.relationship('Bond', lazy='select', secondary='bond_permit_xref')
     reclamation_invoices = db.relationship('ReclamationInvoice', lazy='select')
     deleted_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
+
+    _mine_associations = db.relationship('MinePermitXref')
+
+    # _context_mine allows a Permit() to be used thouugh it only belongs to that mine.
+    # legacy data has permits used by multiple mines, but at access time, our application
+    # should behave like permits only belong to one mine. If this is not set, many helper methods
+    # will fail. Any implicit instantiation of Permit() should set this where possible.
+    _context_mine = None
+
+    def __repr__(self):
+        return '<Permit %r, %r>' % (self.permit_id, self.permit_guid)
 
     @hybrid_property
     def current_permittee(self):
@@ -55,8 +68,29 @@ class Permit(AuditMixin, Base):
         else:
             return ""
 
-    def __repr__(self):
-        return '<Permit %r>' % self.permit_guid
+    @hybrid_property
+    def permit_amendments(self):
+        if not self._context_mine:
+            raise Exception('this getter is only available if _context_mine has been set')
+        current_app.logger.info(self._all_permit_amendments)
+        return [
+            pa for pa in self._all_permit_amendments if pa.mine_guid == self._context_mine.mine_guid
+        ]
+
+    @hybrid_property
+    def mine_guid(self):
+        if not self._context_mine:
+            raise Exception('this getter is only available if _context_mine has been set')
+        return self._context_mine.mine_guid
+
+    @hybrid_property
+    def mine(self):
+        if not self._context_mine:
+            raise Exception('this getter is only available if _context_mine has been set')
+        return self._context_mine
+
+    def get_amendments_by_mine_guid(self, mine_guid):
+        return [pa for pa in self._all_permit_amendments if pa.mine_guid == mine_guid]
 
     def soft_delete(self):
         if self.bonds:
@@ -72,16 +106,20 @@ class Permit(AuditMixin, Base):
         return cls.query.filter_by(permit_guid=_id, deleted_ind=False).first()
 
     @classmethod
+    def find_by_permit_id(cls, _id):
+        return cls.query.filter_by(permit_id=_id, deleted_ind=False).first()
+
+    @classmethod
     def find_by_mine_guid(cls, _id):
-        return cls.query.filter_by(mine_guid=_id, deleted_ind=False).all()
+        return cls.query.filter_by(mine_guid=_id, deleted_ind=False).filter(cls.permit_status_code != 'D').all()
 
     @classmethod
     def find_by_permit_no(cls, _permit_no):
-        return cls.query.filter_by(permit_no=_permit_no, deleted_ind=False).first()
+        return cls.query.filter_by(permit_no=_permit_no, deleted_ind=False).filter(cls.permit_status_code != 'D').first()
 
     @classmethod
     def find_by_permit_no_all(cls, _permit_no):
-        return cls.query.filter_by(permit_no=_permit_no, deleted_ind=False).all()
+        return cls.query.filter_by(permit_no=_permit_no, deleted_ind=False).filter(cls.permit_status_code != 'D').all()
 
     @classmethod
     def find_by_permit_guid_or_no(cls, _permit_guid_or_no):
@@ -91,12 +129,22 @@ class Permit(AuditMixin, Base):
         return result
 
     @classmethod
-    def create(cls, mine_guid, permit_no, permit_status_code, add_to_session=True):
-        mine_permit = cls(
-            mine_guid=mine_guid, permit_no=permit_no, permit_status_code=permit_status_code)
+    def find_by_now_application_guid(cls, _now_application_guid):
+        permit_amendment = PermitAmendment.find_by_now_application_guid(_now_application_guid)
+        permit = cls.find_by_permit_id(permit_amendment.permit_id)
+        permit._context_mine = permit_amendment.mine
+        return permit
+
+    @classmethod
+    def create(cls, mine, permit_no, permit_status_code, add_to_session=True):
+        permit = cls.find_by_permit_no(permit_no)
+        if not permit:
+            permit = cls(permit_no=permit_no, permit_status_code=permit_status_code)
+
+        permit._mine_associations.append(MinePermitXref(mine_guid=mine.mine_guid))
         if add_to_session:
-            mine_permit.save(commit=False)
-        return mine_permit
+            permit.save(commit=False)
+        return permit
 
     @validates('permit_status_code')
     def validate_status_code(self, key, permit_status_code):

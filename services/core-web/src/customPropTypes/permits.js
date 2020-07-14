@@ -13,7 +13,6 @@ export const permitAmendment = shape({
 
 export const permit = shape({
   permit_guid: PropTypes.string,
-  mine_guid: PropTypes.string,
   permit_no: PropTypes.string,
   permit_status_code: PropTypes.string,
   amendments: arrayOf(permitAmendment),

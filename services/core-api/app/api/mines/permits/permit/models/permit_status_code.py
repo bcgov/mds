@@ -1,4 +1,5 @@
 from sqlalchemy.orm import validates
+from sqlalchemy.schema import FetchedValue
 from app.extensions import db
 
 from app.api.utils.models_mixins import AuditMixin, Base
@@ -9,6 +10,7 @@ class PermitStatusCode(AuditMixin, Base):
     permit_status_code = db.Column(db.String(2), nullable=False, primary_key=True)
     description = db.Column(db.String(100), nullable=False)
     display_order = db.Column(db.Integer, nullable=False)
+    active_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
 
     def __repr__(self):
         return '<Permit %r>' % self.permit_status_code
@@ -19,7 +21,7 @@ class PermitStatusCode(AuditMixin, Base):
 
     @classmethod
     def get_all(cls):
-        return cls.query.all()
+        return cls.query.filter_by(active_ind=True).all()
         #TODO put active ind on this table
 
     @validates('permit_status_code')

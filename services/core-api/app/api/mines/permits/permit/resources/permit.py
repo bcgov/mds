@@ -18,6 +18,10 @@ from app.api.mines.response_models import PERMIT_MODEL
 class PermitListResource(Resource, UserMixin):
     parser = reqparse.RequestParser(trim=True)
     parser.add_argument(
+        'now_application_guid',
+        type=str,
+        help='Returns any draft permit and draft permit amendments related to this application.')
+    parser.add_argument(
         'permit_no', type=str, help='Number of the permit being added.', location='json')
     parser.add_argument(
         'permittee_party_guid',
@@ -39,10 +43,20 @@ class PermitListResource(Resource, UserMixin):
         type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None,
         location='json')
     parser.add_argument(
-        'permit_amendment_status_code',
+        'now_application_guid',
         type=str,
         location='json',
-        help='Status of the permit being added.')
+        help='The now_application_guid this permit is related to.')
+    parser.add_argument(
+        'lead_inspector_title',
+        type=str,
+        location='json',
+        help='Title of the lead inspector for this permit.')
+    parser.add_argument(
+        'regional_office',
+        type=str,
+        location='json',
+        help='The regional office for this permit.')
     parser.add_argument('description', type=str, location='json', help='Permit description')
     parser.add_argument('uploadedFiles', type=list, location='json', store_missing=False)
 
@@ -50,7 +64,12 @@ class PermitListResource(Resource, UserMixin):
     @requires_role_view_all
     @api.marshal_with(PERMIT_MODEL, envelope='records', code=200)
     def get(self, mine_guid):
-        results = Permit.find_by_mine_guid(mine_guid)
+        data = self.parser.parse_args()
+        now_application_guid = data.get('now_application_guid')
+        if now_application_guid:
+            results=[Permit.find_by_now_application_guid(now_application_guid)]
+        else:
+            results = Mine.find_by_mine_guid(mine_guid).mine_permit
         return results
 
     @api.doc(params={'permit_guid': 'Permit guid.'})
@@ -73,16 +92,19 @@ class PermitListResource(Resource, UserMixin):
 
         uploadedFiles = data.get('uploadedFiles', [])
 
-        permit = Permit.create(mine.mine_guid, data.get('permit_no'),
-                               data.get('permit_status_code'))
+        permit = Permit.create(mine, data.get('permit_no'), data.get('permit_status_code'))
 
         amendment = PermitAmendment.create(
             permit,
+            mine,
             data.get('received_date'),
             data.get('issue_date'),
             data.get('authorization_end_date'),
             'OGP',
-            description='Initial permit issued.')
+            description='Initial permit issued.',
+            lead_inspector_title=data.get('lead_inspector_title'),
+            regional_office=data.get('regional_office'),
+            now_application_guid=data.get('now_application_guid'))
 
         db.session.add(permit)
         db.session.add(amendment)
@@ -91,22 +113,24 @@ class PermitListResource(Resource, UserMixin):
             new_pa_doc = PermitAmendmentDocument(
                 document_name=newFile['fileName'],
                 document_manager_guid=newFile['document_manager_guid'],
-                mine_guid=permit.mine_guid,
+                mine_guid=mine.mine_guid,
             )
             amendment.related_documents.append(new_pa_doc)
         db.session.commit()
 
-        permittee_start_date = data.get('issue_date'),
+        permittee_start_date = data.get('issue_date')
         permittee = MinePartyAppointment.create(
-            mine.mine_guid,
+            None,
             data.get('permittee_party_guid'),
-            'PMT',
+            mine_party_appt_type_code='PMT',
             start_date=permittee_start_date,
             processed_by=self.get_user_info(),
-            permit_guid=permit.permit_guid)
+            permit=permit)
         db.session.add(permittee)
         db.session.commit()
 
+        #for marshalling
+        permit._context_mine = mine
         return permit
 
 
@@ -158,7 +182,7 @@ class PermitResource(Resource, UserMixin):
         permit = Permit.find_by_permit_guid_or_no(permit_guid)
         if not permit:
             raise NotFound('Permit not found.')
-        if not str(permit.mine_guid) == mine_guid:
+        if mine_guid not in [str(m.mine_guid) for m in permit._all_mines]:
             raise BadRequest('Permit and mine_guid mismatch.')
         return permit
 
@@ -169,9 +193,6 @@ class PermitResource(Resource, UserMixin):
         permit = Permit.find_by_permit_guid(permit_guid)
         if not permit:
             raise NotFound('Permit not found.')
-
-        if not str(permit.mine_guid) == mine_guid:
-            raise BadRequest('Permit and mine_guid mismatch.')
 
         data = self.parser.parse_args()
         for key, value in data.items():

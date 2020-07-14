@@ -22,6 +22,7 @@ from app.api.parties.party.models.party import Party
 from app.api.parties.party.models.address import Address
 from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
 from app.api.mines.permits.permit.models.permit import Permit
+from app.api.mines.permits.permit.models.mine_permit_xref import MinePermitXref
 from app.api.mines.permits.permit_amendment.models.permit_amendment import PermitAmendment
 from app.api.mines.permits.permit_amendment.models.permit_amendment_document import PermitAmendmentDocument
 from app.api.securities.models.bond import Bond
@@ -41,6 +42,19 @@ GUID = factory.LazyFunction(uuid.uuid4)
 TODAY = factory.LazyFunction(datetime.utcnow)
 
 FACTORY_LIST = []
+
+
+def create_mine_and_permit(mine_kwargs={},
+                           permit_kwargs={},
+                           num_permits=1,
+                           num_permit_amendments=1):
+    mine = MineFactory(mine_permit_amendments=0, **mine_kwargs)
+    for x in range(num_permits):
+        permit = PermitFactory(_context_mine=mine, **permit_kwargs)
+        permit._all_mines.append(mine)           ##create mine_permit_xref
+        PermitAmendmentFactory.create_batch(size=num_permit_amendments, mine=mine, permit=permit)
+        permit._context_mine = mine              # possibly redundant
+    return mine, permit
 
 
 class FactoryRegistry:
@@ -235,6 +249,7 @@ class MineIncidentFactory(BaseFactory):
         model = MineIncident
 
     class Params:
+
         mine = factory.SubFactory('tests.factories.MineFactory', minimal=True)
         do_subparagraph_count = 2
 
@@ -417,22 +432,23 @@ class MinePartyAppointmentFactory(BaseFactory):
     class Meta:
         model = MinePartyAppointment
 
+    class Params:
+        permittee = factory.Trait(mine_guid=None, mine_party_appt_type_code='PMT')
+
     mine_party_appt_guid = GUID
     mine = factory.SubFactory('tests.factories.MineFactory')
+    mine_guid = factory.SelfAttribute('mine.mine_guid')
     party = factory.SubFactory(PartyFactory, person=True)
     mine_party_appt_type_code = factory.LazyFunction(RandomMinePartyAppointmentTypeCode)
     start_date = factory.LazyFunction(datetime.utcnow().date)
     end_date = None
     processed_by = factory.Faker('first_name')
     processed_on = TODAY
-    permit_guid = factory.LazyAttribute(lambda o: o.mine.mine_permit[
-        0].permit_guid if o.mine.mine_permit and o.mine_party_appt_type_code == 'PMT' else None)
+    permit_id = factory.LazyAttribute(lambda o: o.mine.mine_permit[
+        0].permit_id if o.mine.mine_permit and o.mine_party_appt_type_code == 'PMT' else None)
     mine_tailings_storage_facility_guid = factory.LazyAttribute(
         lambda o: o.mine.mine_tailings_storage_facilities[0].mine_tailings_storage_facility_guid
         if o.mine_party_appt_type_code == 'EOR' else None)
-
-    permit_guid = factory.LazyAttribute(lambda o: o.mine.mine_permit[
-        0].permit_guid if o.mine.mine_permit and o.mine_party_appt_type_code == 'PMT' else None)
 
 
 class CoreUserFactory(BaseFactory):
@@ -494,10 +510,11 @@ class MineFactory(BaseFactory):
             verified_status=None,
             mine_status=None,
             mine_tailings_storage_facilities=0,
-            mine_permit=0,
+            mine_permit_amendments=0,
             mine_incidents=0,
             mine_variance=0,
-            mine_reports=0)
+            mine_reports=0,
+            comments=0)
         operating = factory.Trait(
             mine_status=factory.RelatedFactory(MineStatusFactory, 'mine', operating=True))
 
@@ -519,10 +536,11 @@ class MineFactory(BaseFactory):
     exemption_fee_status_code = factory.LazyFunction(RandomExemptionFeeStatusCode)
     exemption_fee_status_note = factory.Faker('sentence', nb_words=6, variable_nb_words=True)
     mine_tailings_storage_facilities = []
-    mine_permit = []
+    mine_permit_amendments = []
     mine_incidents = []
     mine_variance = []
     mine_reports = []
+    comments = []
 
     @factory.post_generation
     def mine_tailings_storage_facilities(obj, create, extracted, **kwargs):
@@ -535,14 +553,16 @@ class MineFactory(BaseFactory):
         MineTailingsStorageFacilityFactory.create_batch(size=extracted, mine=obj, **kwargs)
 
     @factory.post_generation
-    def mine_permit(obj, create, extracted, **kwargs):
+    def mine_permit_amendments(obj, create, extracted, **kwargs):
         if not create:
             return
 
         if not isinstance(extracted, int):
             extracted = 1
 
-        PermitFactory.create_batch(size=extracted, mine=obj, **kwargs)
+        permit = PermitFactory()
+        permit._all_mines.append(obj)
+        PermitAmendmentFactory.create_batch(size=extracted, mine=obj, permit=permit, **kwargs)
 
     @factory.post_generation
     def mine_incidents(obj, create, extracted, **kwargs):
@@ -592,20 +612,6 @@ class PermitFactory(BaseFactory):
     permit_guid = GUID
     permit_no = factory.LazyFunction(RandomPermitNumber)
     permit_status_code = factory.LazyFunction(RandomPermitStatusCode)
-    permit_amendments = []
-    deleted_ind = False
-    mine = factory.SubFactory('tests.factories.MineFactory', minimal=True)
-
-    @factory.post_generation
-    def permit_amendments(obj, create, extracted, **kwargs):
-        if not create:
-            return
-
-        if not isinstance(extracted, int):
-            extracted = 1
-
-        for n in range(extracted):
-            PermitAmendmentFactory(permit=obj, initial_permit=(n == 0), **kwargs)
 
     @factory.post_generation
     def bonds(obj, create, extracted, **kwargs):
@@ -630,6 +636,18 @@ class PermitFactory(BaseFactory):
             ReclamationInvoiceFactory(permit=obj, **kwargs)
 
 
+class MinePermitXrefFactory(BaseFactory):
+    class Meta:
+        model = MinePermitXref
+
+    class Params:
+        permit = factory.SubFactory(PermitFactory)
+        mine = factory.SubFactory('tests.factories.MineFactory', minimal=True)
+
+    permit_id = factory.SelfAttribute('permit.permit_id')
+    mine_guid = factory.SelfAttribute('mine.mine_guid')
+
+
 class PermitAmendmentFactory(BaseFactory):
     class Meta:
         model = PermitAmendment
@@ -640,9 +658,11 @@ class PermitAmendmentFactory(BaseFactory):
             permit_amendment_type_code='OGP',
         )
         permit = factory.SubFactory(PermitFactory, permit_amendments=0)
+        mine = factory.SubFactory('tests.factories.MineFactory', minimal=True)
 
     permit_amendment_guid = GUID
     permit_id = factory.SelfAttribute('permit.permit_id')
+    mine_guid = factory.SelfAttribute('mine.mine_guid')
     received_date = TODAY
     issue_date = TODAY
     authorization_end_date = factory.Faker('date_between', start_date='+31d', end_date='+90d')
@@ -650,6 +670,7 @@ class PermitAmendmentFactory(BaseFactory):
     permit_amendment_type_code = 'AMD'
     description = factory.Faker('sentence', nb_words=6, variable_nb_words=True)
     related_documents = []
+    mine = factory.SubFactory('tests.factories.MineFactory', minimal=True)
     deleted_ind = False
 
 
@@ -660,7 +681,7 @@ class PermitAmendmentDocumentFactory(BaseFactory):
     permit_amendment_document_guid = GUID
     permit_amendment_id = factory.SelfAttribute('permit_amendment.permit_amendment_id')
     document_name = factory.Faker('file_name')
-    mine_guid = factory.SelfAttribute('permit_amendment.permit.mine.mine_guid')
+    mine_guid = factory.SelfAttribute('permit_amendment.mine_guid')
     document_manager_guid = GUID
     permit_amendment = factory.SubFactory(PermitAmendmentFactory)
 
