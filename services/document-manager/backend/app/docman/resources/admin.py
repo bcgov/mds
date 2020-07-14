@@ -49,7 +49,7 @@ class TransferDocsToObjectStore(Resource):
         chord(tasks)(callback)
 
         # Create the response message
-        message = f'Started transfer job with ID {transfer_id}: {len(docs)} docs will be transferred in {len(chunks)} chunks of size {len(chunks[0])}'
+        message = f'Added transfer job with ID {transfer_id} to the task queue: {len(docs)} docs will be transferred in {len(chunks)} chunks of size {len(chunks[0])}'
         current_app.logger.info(message)
         current_app.logger.debug(chunks)
 
@@ -92,7 +92,7 @@ class CompareDocsOnObjectStore(Resource):
         chord(tasks)(callback)
 
         # Create the response message
-        message = f'Started verification job with ID {verify_id}: {len(docs)} docs will be verified in {len(chunks)} chunks of size {len(chunks[0])}'
+        message = f'Added verification job with ID {verify_id} to the task queue: {len(docs)} docs will be verified in {len(chunks)} chunks of size {len(chunks[0])}'
         current_app.logger.info(message)
         current_app.logger.debug(chunks)
 

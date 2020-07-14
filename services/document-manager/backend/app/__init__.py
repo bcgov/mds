@@ -78,6 +78,7 @@ def make_celery(app=None):
 
     class ContextTask(TaskBase):
         abstract = True
+        track_started = True
 
         def __call__(self, *args, **kwargs):
             with app.app_context():
