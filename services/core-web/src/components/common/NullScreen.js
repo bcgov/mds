@@ -35,6 +35,7 @@ const propTypes = {
     "now-contacts",
     "add-now-activity",
     "securities",
+    "no-permittee",
   ]),
   message: PropTypes.string,
 };
@@ -156,6 +157,13 @@ const NullScreen = (props) => (
         <img alt="mine_img" src={MINER_TWO} />
         <h3>No contacts found</h3>
         <p>Create a contact using the menu above</p>
+      </div>
+    )}
+    {props.type === "no-permittee" && (
+      <div>
+        <img alt="mine_img" src={MINER_TWO} />
+        <h3>No permittee</h3>
+        <p>There must be a permittee in order to draft a permit</p>
       </div>
     )}
     {props.type === "now-contacts" && (

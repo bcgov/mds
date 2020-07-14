@@ -5,6 +5,7 @@ import { fetchMetabaseDashboard } from "@common/actionCreators/reportingActionCr
 import ReactIframeResizer from "react-iframe-resizer-super";
 import SearchBar from "@/components/search/SearchBar";
 import { BACKGROUND, HSRC_PDF, MEMP_PDF } from "@/constants/assets";
+import { PageTracker } from "@common/utils/trackers";
 
 const iframeResizerOptions = { checkOrigin: false };
 
@@ -35,6 +36,7 @@ export class HomePage extends Component {
     const iframeUrlTwo = `${this.state.graph_urls[1]}#bordered=true&titled=false`;
     return (
       <div className="background" style={{ backgroundImage: `url(${BACKGROUND})` }}>
+        <PageTracker title="Home Page" />
         <Row type="flex" justify="center" gutter={[hGutter, vGutter]}>
           <Col xs={xs} sm={sm} md={md * 2} lg={lg * 2} xl={xl * 2}>
             <div className="search-container">

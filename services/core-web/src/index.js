@@ -33,7 +33,9 @@ class Index extends Component {
     if (this.state.environment) {
       return (
         <Provider store={store}>
-          <App />
+          <MatomoProvider value={instance}>
+            <App />
+          </MatomoProvider>
         </Provider>
       );
     }

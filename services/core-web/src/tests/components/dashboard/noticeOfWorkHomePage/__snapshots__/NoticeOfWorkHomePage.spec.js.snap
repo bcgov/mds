@@ -4,6 +4,9 @@ exports[`NoticeOfWorkHomePage renders properly 1`] = `
 <div
   className="landing-page"
 >
+  <PageTracker
+    title="NoW Page"
+  />
   <div
     className="landing-page__header"
   >

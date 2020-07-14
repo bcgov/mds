@@ -1,14 +1,10 @@
 import React, { Component } from "react";
-import { Divider, Icon } from "antd";
 import PropTypes from "prop-types";
 import moment from "moment";
 import { connect } from "react-redux";
-
-import * as Strings from "@common/constants/strings";
 import { formatDate } from "@common/utils/helpers";
 import { getNoticeOfWorkApplicationTypeOptions } from "@common/selectors/staticContentSelectors";
 import CustomPropTypes from "@/customPropTypes";
-import LinkButton from "@/components/common/LinkButton";
 import GeneratePermitForm from "@/components/Forms/GeneratePermitForm";
 
 /**
@@ -75,28 +71,19 @@ export class NOWPermitGeneration extends Component {
       ...newValues,
       document_list: this.createDocList(this.props.noticeOfWork),
     });
-    this.props.returnToPrevStep();
   };
 
   render() {
     return (
       <div>
-        <LinkButton className="padding-large" onClick={this.props.returnToPrevStep}>
-          <Icon type="arrow-left" style={{ paddingRight: "5px" }} />
-          Back to Notice of Work: {this.props.noticeOfWork.now_number || Strings.EMPTY_FIELD}
-        </LinkButton>
-        <div className="page__content">
-          <h1>Draft Permit</h1>
-          <Divider />
-
-          <GeneratePermitForm
-            initialValues={this.createPermitGenObject(this.props.noticeOfWork)}
-            cancelGeneration={this.props.returnToPrevStep}
-            documentList={this.createDocList(this.props.noticeOfWork)}
-            onSubmit={this.handlePremitGenSubmit}
-            isAmendment={this.props.isAmendment}
-          />
-        </div>
+        <GeneratePermitForm
+          initialValues={this.createPermitGenObject(this.props.noticeOfWork)}
+          cancelGeneration={this.props.returnToPrevStep}
+          documentList={this.createDocList(this.props.noticeOfWork)}
+          onSubmit={this.handlePremitGenSubmit}
+          isAmendment={this.props.isAmendment}
+          noticeOfWork={this.props.noticeOfWork}
+        />
       </div>
     );
   }

@@ -1,15 +1,14 @@
 import React, { Component } from "react";
 import { Prompt } from "react-router-dom";
-import { Steps, Button, Dropdown, Menu, Icon, Popconfirm, Alert } from "antd";
+import { Button, Dropdown, Menu, Icon, Popconfirm, Alert, Tabs } from "antd";
 import PropTypes from "prop-types";
 import { getFormValues, reset, getFormSyncErrors, focus } from "redux-form";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { get, isNull, isUndefined } from "lodash";
+import { get, isNull, isUndefined, kebabCase } from "lodash";
 import {
   fetchImportedNoticeOfWorkApplication,
   fetchOriginalNoticeOfWorkApplication,
-  createNoticeOfWorkApplicationProgress,
   updateNoticeOfWorkApplication,
 } from "@common/actionCreators/noticeOfWorkActionCreator";
 import { fetchMineRecordById } from "@common/actionCreators/mineActionCreator";
@@ -23,7 +22,6 @@ import {
 import { getMines } from "@common/selectors/mineSelectors";
 import {
   getDropdownNoticeOfWorkApplicationStatusOptions,
-  getNoticeOfWorkApplicationProgressStatusCodeOptions,
   getGeneratableNoticeOfWorkApplicationDocumentTypeOptions,
   getNoticeOfWorkApplicationStatusOptionsHash,
 } from "@common/selectors/staticContentSelectors";
@@ -36,10 +34,9 @@ import {
   fetchNoticeOfWorkApplicationContextTemplate,
 } from "@/actionCreators/documentActionCreator";
 import { getDocumentContextTemplate } from "@/reducers/documentReducer";
-import { EDIT_OUTLINE_VIOLET } from "@/constants/assets";
 import * as routes from "@/constants/routes";
 import NOWPermitGeneration from "@/components/noticeOfWork/applications/permitGeneration/NOWPermitGeneration";
-import ApplicationStepOne from "@/components/noticeOfWork/applications/applicationStepOne/ApplicationStepOne";
+import ApplicationStepOne from "@/components/noticeOfWork/applications/verification/ApplicationStepOne";
 import NOWApplicationReviews from "@/components/noticeOfWork/applications/referals/NOWApplicationReviews";
 import CustomPropTypes from "@/customPropTypes";
 import ReviewNOWApplication from "@/components/noticeOfWork/applications/review/ReviewNOWApplication";
@@ -49,9 +46,10 @@ import NoticeOfWorkPageHeader from "@/components/noticeOfWork/applications/Notic
 import * as FORM from "@/constants/forms";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
 import { modalConfig } from "@/components/modalContent/config";
-import { NOWApplicationDecision } from "@/components/noticeOfWork/applications/decision/NOWApplicationDecision";
+import { NOWApplicationAdministrative } from "@/components/noticeOfWork/applications/administrative/NOWApplicationAdministrative";
+import Loading from "@/components/common/Loading";
 
-const { Step } = Steps;
+const { TabPane } = Tabs;
 
 /**
  * @class NoticeOfWorkApplication- contains all information regarding a CORE notice of work application
@@ -60,7 +58,6 @@ const { Step } = Steps;
 const propTypes = {
   noticeOfWork: CustomPropTypes.importedNOWApplication,
   originalNoticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
-  createNoticeOfWorkApplicationProgress: PropTypes.func.isRequired,
   updateNoticeOfWorkApplication: PropTypes.func.isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
   fetchImportedNoticeOfWorkApplication: PropTypes.func.isRequired,
@@ -71,6 +68,7 @@ const propTypes = {
   reset: PropTypes.func.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func,
+    replace: PropTypes.func,
     location: PropTypes.shape({
       state: PropTypes.shape({ mineGuid: PropTypes.string, permitGuid: PropTypes.string }),
     }),
@@ -90,8 +88,6 @@ const propTypes = {
   inspectors: CustomPropTypes.groupOptions.isRequired,
   inspectorsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   noticeOfWorkApplicationStatusOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
-  applicationProgressStatusCodes: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string))
-    .isRequired,
   generatableApplicationDocuments: PropTypes.objectOf(PropTypes.objectOf(PropTypes.any)).isRequired,
   reclamationSummary: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.strings)).isRequired,
   openModal: PropTypes.func.isRequired,
@@ -103,16 +99,15 @@ const propTypes = {
 };
 
 const defaultProps = {
-  noticeOfWork: { application_progress: [] },
+  noticeOfWork: {},
   documentContextTemplate: {},
   formErrors: undefined,
 };
 
 export class NoticeOfWorkApplication extends Component {
   state = {
-    currentStep: 0,
-    prevStep: 0,
     isLoaded: false,
+    isTabLoaded: false,
     isMajorMine: null,
     associatedLeadInspectorPartyGuid: "",
     associatedStatus: "",
@@ -120,15 +115,14 @@ export class NoticeOfWorkApplication extends Component {
     showOriginalValues: false,
     fixedTop: false,
     menuVisible: false,
-    buttonValue: "REV",
-    buttonLabel: "Technical Review",
+    adminMenuVisible: false,
     noticeOfWorkPageFromRoute: undefined,
     showNullScreen: false,
     initialPermitGuid: "",
     isNewApplication: false,
     mineGuid: "",
     submitting: false,
-    isPermitGeneration: false,
+    activeTab: "verification",
   };
 
   count = 1;
@@ -148,6 +142,10 @@ export class NoticeOfWorkApplication extends Component {
       this.setState({ isNewApplication });
     }
 
+    if (this.props.match.params.tab) {
+      this.setActiveTab(this.props.match.params.tab);
+    }
+
     if (!this.props.history.location.state && !this.props.match.params.id) {
       this.setState({ showNullScreen: true });
     }
@@ -157,16 +155,13 @@ export class NoticeOfWorkApplication extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.location.pathname !== this.props.location.pathname) {
+    if (nextProps.match.params.id !== this.props.match.params.id) {
       this.loadNoticeOfWork(nextProps.match.params.id);
     }
-    if (
-      nextProps.noticeOfWork &&
-      this.props.noticeOfWork.application_progress &&
-      nextProps.noticeOfWork.application_progress.length !==
-        this.props.noticeOfWork.application_progress.length
-    ) {
-      this.handleProgressButtonLabels(nextProps.noticeOfWork.application_progress);
+
+    if (nextProps.match.params.tab !== this.props.match.params.tab) {
+      this.setState({ isTabLoaded: false });
+      this.setActiveTab(nextProps.match.params.tab);
     }
   }
 
@@ -180,6 +175,10 @@ export class NoticeOfWorkApplication extends Component {
       this.setState({ isMajorMine: data.major_mine_ind, mineGuid: data.mine_guid });
       onMineInfoLoaded();
     });
+  };
+
+  setActiveTab = (tab) => {
+    this.setState({ activeTab: tab, isTabLoaded: true });
   };
 
   renderOriginalValues = (path) => {
@@ -227,30 +226,21 @@ export class NoticeOfWorkApplication extends Component {
     await Promise.all([
       this.props.fetchOriginalNoticeOfWorkApplication(id),
       this.props.fetchImportedNoticeOfWorkApplication(id).then(({ data }) => {
-        this.handleProgressButtonLabels(data.application_progress);
         this.loadMineInfo(data.mine_guid, this.setState({ isLoaded: true }));
       }),
     ]);
-  };
-
-  handleProgressButtonLabels = (applicationProgress) => {
-    const currentStep = applicationProgress.length;
-    if (currentStep !== 3 && this.props.applicationProgressStatusCodes.length !== 0) {
-      const buttonLabel = this.props.applicationProgressStatusCodes[currentStep + 1].description;
-      const buttonValue = this.props.applicationProgressStatusCodes[currentStep + 1]
-        .application_progress_status_code;
-      this.setState({ buttonLabel, buttonValue, currentStep });
-    } else {
-      this.setState({ currentStep });
-    }
   };
 
   handleVisibleChange = (flag) => {
     this.setState({ menuVisible: flag });
   };
 
+  handleAdminVisibleChange = (flag) => {
+    this.setState({ adminMenuVisible: flag });
+  };
+
   handleMenuClick = () => {
-    this.setState({ menuVisible: false });
+    this.setState({ menuVisible: false, adminMenuVisible: false });
   };
 
   showApplicationForm = () => {
@@ -273,18 +263,6 @@ export class NoticeOfWorkApplication extends Component {
 
   toggleShowOriginalValues = () => {
     this.setState((prevState) => ({ showOriginalValues: !prevState.showOriginalValues }));
-  };
-
-  handleStepChange = (currentStep) => {
-    this.setState(
-      {
-        isLoaded: false,
-        currentStep,
-      },
-      () => {
-        this.setState({ isLoaded: true });
-      }
-    );
   };
 
   setLeadInspectorPartyGuid = (leadInspectorPartyGuid) => {
@@ -345,9 +323,9 @@ export class NoticeOfWorkApplication extends Component {
   };
 
   handleScroll = () => {
-    if (window.pageYOffset > 100 && !this.state.fixedTop) {
+    if (window.pageYOffset > 170 && !this.state.fixedTop) {
       this.setState({ fixedTop: true });
-    } else if (window.pageYOffset <= 100 && this.state.fixedTop) {
+    } else if (window.pageYOffset <= 170 && this.state.fixedTop) {
       this.setState({ fixedTop: false });
     }
   };
@@ -476,29 +454,6 @@ export class NoticeOfWorkApplication extends Component {
     });
   };
 
-  handleProgressChange = (status) => {
-    this.setState({ isLoaded: false });
-
-    const { id } = this.props.match.params;
-    this.props
-      .createNoticeOfWorkApplicationProgress(id, {
-        application_progress_status_code: status,
-      })
-      .then(() => {
-        this.props.fetchImportedNoticeOfWorkApplication(id).then(() => {
-          this.setState({ isLoaded: true });
-        });
-      });
-
-    const statusIndex = {
-      REV: 1,
-      REF: 2,
-      DEC: 3,
-    };
-
-    this.setState({ currentStep: statusIndex[status] });
-  };
-
   handleGenerateDocument = (menuItem) => {
     const documentTypeCode = menuItem.key;
     const documentType = this.props.generatableApplicationDocuments[documentTypeCode];
@@ -555,127 +510,126 @@ export class NoticeOfWorkApplication extends Component {
       });
   };
 
-  renderStepOne = () => {
-    return (
-      <ApplicationStepOne
-        isNewApplication={this.state.isNewApplication}
-        loadMineData={this.loadMineData}
-        isMajorMine={this.state.isMajorMine}
-        noticeOfWork={this.props.noticeOfWork}
-        mineGuid={this.state.mineGuid}
-        setLeadInspectorPartyGuid={this.setLeadInspectorPartyGuid}
-        handleUpdateLeadInspector={this.handleUpdateLeadInspector}
-        handleProgressChange={this.handleProgressChange}
-        loadNoticeOfWork={this.loadNoticeOfWork}
-        initialPermitGuid={this.state.initialPermitGuid}
-      />
-    );
-  };
-
-  renderStepTwo = () => {
-    return (
-      <ReviewNOWApplication
-        reclamationSummary={this.props.reclamationSummary}
-        isViewMode={this.state.isViewMode}
-        noticeOfWorkType={this.props.noticeOfWork.notice_of_work_type_code}
-        initialValues={
-          this.state.showOriginalValues ? this.props.originalNoticeOfWork : this.props.noticeOfWork
-        }
-        noticeOfWork={this.props.noticeOfWork}
-        renderOriginalValues={this.renderOriginalValues}
-      />
-    );
-  };
-
-  renderStepThree = () => {
-    return (
-      <NOWApplicationReviews
-        mineGuid={this.props.noticeOfWork.mine_guid}
-        noticeOfWork={this.props.noticeOfWork}
-      />
-    );
-  };
-
-  renderStepFour = () => {
-    return (
-      <NOWApplicationDecision
-        mineGuid={this.props.noticeOfWork.mine_guid}
-        noticeOfWork={this.props.noticeOfWork}
-      />
-    );
-  };
-
   renderPermitGeneration = () => {
     const isAmendment = this.props.noticeOfWork.type_of_application !== "New Permit";
+    const permittee =
+      this.props.noticeOfWork.contacts &&
+      this.props.noticeOfWork.contacts.filter(
+        (contact) => contact.mine_party_appt_type_code_description === "Permittee"
+      )[0];
     return (
-      <NOWPermitGeneration
-        returnToPrevStep={this.returnToPrevStep}
-        noticeOfWork={this.props.noticeOfWork}
-        documentType={
-          isAmendment
-            ? this.props.generatableApplicationDocuments.PMA
-            : this.props.generatableApplicationDocuments.PMT
-        }
-        isAmendment={isAmendment}
-        handleGenerateDocumentFormSubmit={this.handleGenerateDocumentFormSubmit}
-      />
+      <>
+        <div className={this.renderFixedHeaderClass()}>
+          <h2 className="padding-md"> Draft Permit</h2>
+        </div>
+        <div className={this.state.fixedTop ? "side-menu--fixed" : "side-menu"}>
+          <NOWSideMenu
+            route={routes.NOTICE_OF_WORK_APPLICATION}
+            noticeOfWorkType={this.props.noticeOfWork.notice_of_work_type_code}
+            tabSection="draft-permit"
+          />
+        </div>
+        <div
+          className={
+            this.state.fixedTop
+              ? "view--content with-fixed-top side-menu--content"
+              : "view--content side-menu--content"
+          }
+        >
+          {permittee ? (
+            <NOWPermitGeneration
+              noticeOfWork={this.props.noticeOfWork}
+              documentType={
+                isAmendment
+                  ? this.props.generatableApplicationDocuments.PMA
+                  : this.props.generatableApplicationDocuments.PMT
+              }
+              isAmendment={isAmendment}
+              handleGenerateDocumentFormSubmit={this.handleGenerateDocumentFormSubmit}
+            />
+          ) : (
+            <NullScreen type="no-permittee" />
+          )}
+        </div>
+      </>
     );
   };
 
-  renderProgressStatus = (stepIndex) => {
-    if (this.props.noticeOfWork.application_progress) {
-      const progressLength = this.props.noticeOfWork.application_progress.length;
-      if (progressLength === stepIndex) {
-        return "process";
-      }
-      if (progressLength > stepIndex) {
-        return "finish";
-      }
-    } else if (this.state.isNewApplication && stepIndex === 0) {
-      return "process";
-    }
-    return "wait";
+  handleTabChange = (key) => {
+    this.props.history.replace(
+      routes.NOTICE_OF_WORK_APPLICATION.dynamicRoute(
+        this.props.noticeOfWork.now_application_guid,
+        kebabCase(key)
+      )
+    );
   };
 
-  isStepDisabled = (stepIndex) => {
-    let isDisabled = true;
-    if (this.props.noticeOfWork.application_progress) {
-      isDisabled = this.props.noticeOfWork.application_progress.length < stepIndex;
-    }
-    return isDisabled;
+  renderEditModeNav = () => {
+    const errorsLength = Object.keys(flattenObject(this.props.formErrors)).length;
+    const showErrors = errorsLength > 0 && this.state.submitting;
+    return this.state.isViewMode ? (
+      <div className="inline-flex block-mobile padding-md between">
+        <h2>Technical Review</h2>
+        <Dropdown
+          overlay={this.menu(true)}
+          placement="bottomLeft"
+          onVisibleChange={this.handleVisibleChange}
+          visible={this.state.menuVisible}
+        >
+          <Button type="secondary" className="full-mobile">
+            Actions
+            <Icon type="down" />
+          </Button>
+        </Dropdown>
+      </div>
+    ) : (
+      <div className="center padding-md">
+        <div className="inline-flex flex-center block-mobile">
+          <Popconfirm
+            placement="bottomRight"
+            title="You have unsaved changes, Are you sure you want to cancel?"
+            onConfirm={this.handleCancelNOWEdit}
+            okText="Yes"
+            cancelText="No"
+          >
+            <Button type="secondary" className="full-mobile">
+              Cancel
+            </Button>
+          </Popconfirm>
+          {showErrors && (
+            <Button
+              type="danger"
+              className="full-mobile"
+              onClick={() => this.focusErrorInput(true)}
+            >
+              Next Issue
+            </Button>
+          )}
+          <Button type="primary" className="full-mobile" onClick={this.handleSaveNOWEdit}>
+            Save
+          </Button>
+        </div>
+        {showErrors && (
+          <div className="error">
+            <Alert
+              message={`You have ${errorsLength} ${
+                errorsLength === 1 ? "issue" : "issues"
+              } that must be fixed before proceeding`}
+              type="error"
+              showIcon
+            />
+          </div>
+        )}
+      </div>
+    );
   };
 
-  setPermitGenerationStep = (step) => {
-    this.setState({ prevStep: step });
-    this.setState({ currentStep: 100, isPermitGeneration: true });
-  };
-
-  returnToPrevStep = () => {
-    this.setState((prevState) => ({ currentStep: prevState.prevStep, isPermitGeneration: false }));
-  };
-
-  render() {
-    if (this.state.showNullScreen) {
-      return <NullScreen type="unauthorized-page" />;
-    }
-
+  menu = (isReview = false) => {
     const isImported = this.props.noticeOfWork.imported_to_core;
-
-    const isDecision =
-      this.props.noticeOfWork.application_progress &&
-      this.props.noticeOfWork.application_progress.length === 3;
-
-    const steps = {
-      0: this.renderStepOne(),
-      1: this.renderStepTwo(),
-      2: this.renderStepThree(),
-      3: this.renderStepFour(),
-      100: this.renderPermitGeneration(),
-    };
-
-    const menu = (
+    return (
       <Menu>
-        {isImported &&
+        {isReview &&
+          isImported &&
           this.props.noticeOfWork.submission_documents.filter(
             (x) => x.filename === "ApplicationForm.pdf"
           ).length > 0 && (
@@ -683,33 +637,29 @@ export class NoticeOfWorkApplication extends Component {
               Open Original Application Form
             </Menu.Item>
           )}
-        {this.state.currentStep === 1 && this.state.isViewMode && (
+        {isReview && (
           <Menu.Item key="edit" onClick={this.toggleEditMode}>
             Edit
           </Menu.Item>
         )}
-        {!isDecision && (
-          <Menu.Item
-            key="transfer-to-a-different-mine"
-            onClick={() => this.openChangeNOWMineModal(this.props.noticeOfWork)}
-          >
-            Transfer to a Different Mine
-          </Menu.Item>
-        )}
-        {!isDecision && (
-          <Menu.Item
-            key="edit-application-lat-long"
-            onClick={() => this.openChangeNOWLocationModal(this.props.noticeOfWork)}
-          >
-            Edit Application Lat/Long
-          </Menu.Item>
-        )}
-        {!isDecision && (
+        <Menu.Item
+          key="transfer-to-a-different-mine"
+          onClick={() => this.openChangeNOWMineModal(this.props.noticeOfWork)}
+        >
+          Transfer to a Different Mine
+        </Menu.Item>
+        <Menu.Item
+          key="edit-application-lat-long"
+          onClick={() => this.openChangeNOWLocationModal(this.props.noticeOfWork)}
+        >
+          Edit Application Lat/Long
+        </Menu.Item>
+        {!isReview && (
           <Menu.Item key="edit-application-status" onClick={() => this.openUpdateStatusModal()}>
             Edit Application Status
           </Menu.Item>
         )}
-        {!isDecision && this.props.noticeOfWork.lead_inspector_party_guid && (
+        {this.props.noticeOfWork.lead_inspector_party_guid && (
           <Menu.Item
             key="change-the-lead-inspector"
             onClick={() => this.openUpdateLeadInspectorModal()}
@@ -718,7 +668,7 @@ export class NoticeOfWorkApplication extends Component {
           </Menu.Item>
         )}
         {// TODO: Determine the actual condition that determines whether or not to show this submenu.
-        true && Object.values(this.props.generatableApplicationDocuments).length > 0 && (
+        true && !isReview && Object.values(this.props.generatableApplicationDocuments).length > 0 && (
           <Menu.SubMenu key="generate-documents" title="Generate Documents">
             {Object.values(this.props.generatableApplicationDocuments).map((document) => (
               <Menu.Item
@@ -730,53 +680,44 @@ export class NoticeOfWorkApplication extends Component {
             ))}
           </Menu.SubMenu>
         )}
-        {!isDecision && this.props.noticeOfWork.lead_inspector_party_guid && (
-          <Menu.Item
-            key="start-next-step"
-            onClick={() => this.handleProgressChange(this.state.buttonValue)}
-          >
-            Ready for {this.state.buttonLabel}
-          </Menu.Item>
-        )}
       </Menu>
     );
+  };
 
-    const headerSteps = [
-      <Step
-        status={this.renderProgressStatus(0)}
-        title={this.state.isMajorMine ? "Initialization" : "Verification"}
-      />,
-      <Step
-        status={this.renderProgressStatus(1)}
-        title="Technical Review"
-        disabled={this.isStepDisabled(1)}
-      />,
-      <Step
-        status={this.renderProgressStatus(2)}
-        title="Referral / Consultation"
-        disabled={this.isStepDisabled(2)}
-      />,
-      <Step
-        status={this.renderProgressStatus(3)}
-        title="Decision"
-        disabled={this.isStepDisabled(3)}
-      />,
-    ];
+  renderFixedHeaderClass = () =>
+    this.state.fixedTop ? "view--header fixed-scroll" : "view--header";
 
+  render() {
+    if (this.state.showNullScreen) {
+      return <NullScreen type="unauthorized-page" />;
+    }
+    if (!this.state.isLoaded) {
+      return <Loading />;
+    }
     const errorsLength = Object.keys(flattenObject(this.props.formErrors)).length;
     const showErrors = errorsLength > 0 && this.state.submitting;
+    const isImported = this.props.noticeOfWork.imported_to_core;
+
     return (
       <React.Fragment>
         <Prompt
           when={!this.state.isViewMode}
-          message={(location) => {
-            return this.props.location.pathname === location.pathname
+          message={(location, action) => {
+            const onTechnicalReview =
+              location.pathname.includes("technical-review") &&
+              this.props.location.pathname.includes("technical-review");
+            // handle user navigating away from technical while in editMode
+            if (action === "REPLACE" && !location.pathname.includes("technical-review")) {
+              this.toggleEditMode();
+            }
+            // if the pathname changes while still on the technicalReview tab, don't prompt user
+            return this.props.location.pathname === location.pathname || onTechnicalReview
               ? true
               : "You have unsaved changes. Are you sure you want to leave without saving?";
           }}
         />
         <div className="page">
-          <div className={this.state.fixedTop ? "steps--header fixed-scroll" : "steps--header"}>
+          <div className="padding-large">
             <div className="inline-flex between">
               <NoticeOfWorkPageHeader
                 noticeOfWork={this.props.noticeOfWork}
@@ -787,105 +728,114 @@ export class NoticeOfWorkApplication extends Component {
                 }
                 fixedTop={this.state.fixedTop}
               />
-              {!this.state.isPermitGeneration && (
-                <Button
-                  type="secondary"
-                  className="full-mobile"
-                  onClick={() => {
-                    this.setPermitGenerationStep(this.state.currentStep);
-                  }}
-                >
-                  <img alt="pencil" className="padding-small--right" src={EDIT_OUTLINE_VIOLET} />
-                  Draft Permit
-                </Button>
-              )}
             </div>
-            <br />
-            {this.state.isViewMode ? (
-              <div className="inline-flex flex-center block-mobile padding-md--right">
-                <Steps
-                  current={this.state.currentStep}
-                  onChange={this.handleStepChange}
-                  type="navigation"
-                >
-                  {headerSteps}
-                </Steps>
-                {this.state.isViewMode && isImported && (
-                  <Dropdown
-                    overlay={menu}
-                    placement="bottomLeft"
-                    onVisibleChange={this.handleVisibleChange}
-                    visible={this.state.menuVisible}
+          </div>
+          <Tabs
+            size="large"
+            activeKey={this.state.activeTab}
+            animated={{ inkBar: true, tabPane: false }}
+            className={this.state.fixedTop ? "now-tabs" : "now-tabs"}
+            onTabClick={this.handleTabChange}
+            style={{ margin: "0" }}
+          >
+            <TabPane tab="Verification" key="verification">
+              <ApplicationStepOne
+                isNewApplication={this.state.isNewApplication}
+                loadMineData={this.loadMineData}
+                isMajorMine={this.state.isMajorMine}
+                noticeOfWork={this.props.noticeOfWork}
+                mineGuid={this.state.mineGuid}
+                setLeadInspectorPartyGuid={this.setLeadInspectorPartyGuid}
+                handleUpdateLeadInspector={this.handleUpdateLeadInspector}
+                loadNoticeOfWork={this.loadNoticeOfWork}
+                initialPermitGuid={this.state.initialPermitGuid}
+              />
+            </TabPane>
+
+            <TabPane tab="Technical Review" key="technical-review" disabled={!isImported}>
+              <LoadingWrapper condition={this.state.isTabLoaded}>
+                <div>
+                  <div className={this.renderFixedHeaderClass()}>{this.renderEditModeNav()}</div>
+                  <div
+                    className={this.state.fixedTop ? "side-menu--fixed" : "side-menu"}
+                    //  lower fixNav to account for error message
+                    style={showErrors && this.state.fixedTop ? { top: "170px" } : {}}
                   >
-                    <Button type="secondary" className="full-mobile">
-                      Actions
-                      <Icon type="down" />
-                    </Button>
-                  </Dropdown>
-                )}
-              </div>
-            ) : (
-              <div className="center">
-                <div className="inline-flex flex-center block-mobile">
-                  <Popconfirm
-                    placement="bottomRight"
-                    title="You have unsaved changes, Are you sure you want to cancel?"
-                    onConfirm={this.handleCancelNOWEdit}
-                    okText="Yes"
-                    cancelText="No"
-                  >
-                    <Button type="secondary" className="full-mobile">
-                      Cancel
-                    </Button>
-                  </Popconfirm>
-                  {showErrors && (
-                    <Button
-                      type="danger"
-                      className="full-mobile"
-                      onClick={() => this.focusErrorInput(true)}
-                    >
-                      Next Issue
-                    </Button>
-                  )}
-                  <Button type="primary" className="full-mobile" onClick={this.handleSaveNOWEdit}>
-                    Save
-                  </Button>
-                </div>
-                {showErrors && (
-                  <div className="error">
-                    <Alert
-                      message={`You have ${errorsLength} ${
-                        errorsLength === 1 ? "issue" : "issues"
-                      } that must be fixed before proceeding`}
-                      type="error"
-                      showIcon
+                    <NOWSideMenu
+                      route={routes.NOTICE_OF_WORK_APPLICATION}
+                      noticeOfWorkType={this.props.noticeOfWork.notice_of_work_type_code}
+                      tabSection="technical-review"
                     />
                   </div>
-                )}
-              </div>
-            )}
-          </div>
-          <LoadingWrapper condition={this.state.isLoaded}>
-            <div>
-              <div
-                className={this.state.fixedTop ? "side-menu--fixed" : "side-menu"}
-                //  lower fixNav to account for error message
-                style={showErrors && this.state.fixedTop ? { top: "170px" } : {}}
-              >
-                {this.state.currentStep === 1 && (
-                  <NOWSideMenu
-                    route={routes.NOTICE_OF_WORK_APPLICATION}
-                    noticeOfWorkType={this.props.noticeOfWork.notice_of_work_type_code}
+                  <div
+                    className={
+                      this.state.fixedTop ? "view--content with-fixed-top" : "view--content"
+                    }
+                  >
+                    <ReviewNOWApplication
+                      reclamationSummary={this.props.reclamationSummary}
+                      isViewMode={this.state.isViewMode}
+                      noticeOfWorkType={this.props.noticeOfWork.notice_of_work_type_code}
+                      initialValues={
+                        this.state.showOriginalValues
+                          ? this.props.originalNoticeOfWork
+                          : this.props.noticeOfWork
+                      }
+                      noticeOfWork={this.props.noticeOfWork}
+                      renderOriginalValues={this.renderOriginalValues}
+                    />
+                  </div>
+                </div>
+              </LoadingWrapper>
+            </TabPane>
+
+            <TabPane tab="Draft Permit" key="draft-permit" disabled={!isImported}>
+              <LoadingWrapper condition={this.state.isTabLoaded}>
+                {this.renderPermitGeneration()}
+              </LoadingWrapper>
+            </TabPane>
+
+            <TabPane tab="Referral/Consultation" key="referral-consultation" disabled={!isImported}>
+              <LoadingWrapper condition={this.state.isTabLoaded}>
+                <div className={this.renderFixedHeaderClass()}>
+                  <h2 className="padding-md">Referral/Consultation</h2>
+                </div>
+                <div className="page__content">
+                  <NOWApplicationReviews
+                    mineGuid={this.props.noticeOfWork.mine_guid}
+                    noticeOfWork={this.props.noticeOfWork}
                   />
-                )}
-              </div>
-              <div
-                className={this.state.fixedTop ? "steps--content with-fixed-top" : "steps--content"}
-              >
-                {steps[this.state.currentStep]}
-              </div>
-            </div>
-          </LoadingWrapper>
+                </div>
+              </LoadingWrapper>
+            </TabPane>
+
+            <TabPane tab="Administrative" key="administrative" disabled={!isImported}>
+              <LoadingWrapper condition={this.state.isTabLoaded}>
+                <div className={this.renderFixedHeaderClass()}>
+                  <div className="inline-flex block-mobile padding-md between">
+                    <h2>Administrative</h2>
+                    <Dropdown
+                      overlay={this.menu(false)}
+                      placement="bottomLeft"
+                      onVisibleChange={this.handleAdminVisibleChange}
+                      visible={this.state.adminMenuVisible}
+                    >
+                      <Button type="secondary" className="full-mobile">
+                        Actions
+                        <Icon type="down" />
+                      </Button>
+                    </Dropdown>
+                  </div>
+                </div>
+                <div className="page__content">
+                  <NOWApplicationAdministrative
+                    mineGuid={this.props.noticeOfWork.mine_guid}
+                    noticeOfWork={this.props.noticeOfWork}
+                  />
+                </div>
+              </LoadingWrapper>
+            </TabPane>
+          </Tabs>
         </div>
       </React.Fragment>
     );
@@ -902,7 +852,6 @@ const mapStateToProps = (state) => ({
   inspectorsHash: getInspectorsHash(state),
   reclamationSummary: getNOWReclamationSummary(state),
   applicationStatusOptions: getDropdownNoticeOfWorkApplicationStatusOptions(state),
-  applicationProgressStatusCodes: getNoticeOfWorkApplicationProgressStatusCodeOptions(state),
   generatableApplicationDocuments: getGeneratableNoticeOfWorkApplicationDocumentTypeOptions(state),
   noticeOfWorkApplicationStatusOptionsHash: getNoticeOfWorkApplicationStatusOptionsHash(state),
   documentContextTemplate: getDocumentContextTemplate(state),
@@ -917,7 +866,6 @@ const mapDispatchToProps = (dispatch) =>
       generateNoticeOfWorkApplicationDocument,
       fetchNoticeOfWorkApplicationContextTemplate,
       fetchMineRecordById,
-      createNoticeOfWorkApplicationProgress,
       reset,
       openModal,
       closeModal,
