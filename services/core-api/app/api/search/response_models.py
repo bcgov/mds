@@ -23,11 +23,12 @@ MINE_STATUS_MODEL = api.model('MineStatus', {
 })
 
 PERMIT_SEARCH_MODEL = api.model(
-    'Permit', {
+    'Permit',
+    {
         'permit_guid': fields.String,
-        'mine_guid': fields.String,
+                                                 #'mine_guid': fields.String,
         'permit_no': fields.String,
-        'mine_name': fields.String,
+                                                 #'mine_name': fields.String,
         'current_permittee': fields.String,
     })
 
