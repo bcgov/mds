@@ -50,7 +50,7 @@ simple_additional_search_targets = {
         'entities_to_return': [Permit.permit_guid, Permit.permit_no],
         'columns_to_search': [Permit.permit_no],
         'has_deleted_ind': True,
-        'id_field': 'mine_guid',
+        'id_field': 'permit_guid',
         'value_field': 'permit_no',
         'score_multiplier': 1000
     }
