@@ -99,7 +99,7 @@ class CompareDocsOnObjectStore(Resource):
         return message, 202
 
 
-@api.route('/admin/untransfered-files', doc=False)
+@api.route('/admin/untransferred-files', doc=False)
 class GetUntransferedFiles(Resource):
     parser = reqparse.RequestParser(trim=True)
     parser.add_argument('secret', type=str, required=True)
