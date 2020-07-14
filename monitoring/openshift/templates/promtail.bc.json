@@ -56,7 +56,8 @@
       "metadata": {
         "name": "${NAME}",
         "labels": {
-          "shared": "true"
+          "shared": "true",
+          "app": "${APP_NAME}"
         },
         "annotations": {}
       },

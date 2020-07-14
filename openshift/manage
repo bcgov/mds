@@ -237,7 +237,7 @@ updateDeploymentParams() {
 
 deployApp(){
   (
-    _appName=${1:-matomo}
+    _appName=${1:-monitoring}
 
     # Deploy or update the configuration ...
     updateDeploymentParams ${DEPLOYMENT_ENV_NAME}
@@ -259,7 +259,7 @@ deployApp(){
 deleteResources()
 {
   (
-    _appName=${1:-matomo}
+    _appName=${1:-monitoring}
     oc -n $(getProjectName) delete all,secret,pvc,configmap -l app=${_appName}
   )
 }
@@ -267,7 +267,7 @@ deleteResources()
 cleanResources()
 {
   (
-    _appName=${1:-matomo}
+    _appName=${1:-monitoring}
     oc -n $(getProjectName) delete all,configmap -l app=${_appName}
   )
 }
@@ -305,17 +305,17 @@ case "${_cmd}" in
     ;;
 
   deploy)
-    appName=${1:-matomo}
+    appName=${1:-monitoring}
     deployApp ${appName}
     ;;
 
   clean)
-    appName=${1:-matomo}
+    appName=${1:-monitoring}
     cleanResources ${appName}
     ;;
 
   delete)
-    appName=${1:-matomo}
+    appName=${1:-monitoring}
     deleteResources ${appName}
     ;;
 

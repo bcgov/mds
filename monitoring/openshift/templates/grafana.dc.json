@@ -39,7 +39,7 @@
       "displayName": "Source Image Name",
       "description": "The name of the image to use for this resource.",
       "required": true,
-      "value": "matomo"
+      "value": "grafana"
     },
     {
       "name": "TAG_NAME",
@@ -136,7 +136,7 @@
           "openshift.io/generated-by": "OpenShiftNewApp"
         },
         "labels": {
-          "app": "${GRAFANA_SERVICE_NAME}"
+          "app": "${APP_NAME}"
         },
         "name": "${GRAFANA_SERVICE_NAME}"
       }
@@ -170,7 +170,7 @@
             },
             "creationTimestamp": null,
             "labels": {
-              "app": "${GRAFANA_SERVICE_NAME}",
+              "app": "${APP_NAME}",
               "deploymentconfig": "${GRAFANA_SERVICE_NAME}"
             }
           },
@@ -260,44 +260,7 @@
         },
         "generation": 6,
         "labels": {
-          "app": "${GRAFANA_SERVICE_NAME}"
-        },
-        "name": "${GRAFANA_SERVICE_NAME}"
-      }
-    },
-    {
-      "apiVersion": "image.openshift.io/v1",
-      "kind": "ImageStream",
-      "spec": {
-        "lookupPolicy": {
-          "local": false
-        },
-        "tags": [
-          {
-            "annotations": {
-              "openshift.io/imported-from": "grafana/grafana:6.2.0"
-            },
-            "from": {
-              "kind": "DockerImage",
-              "name": "grafana/grafana:6.2.0"
-            },
-            "generation": 2,
-            "importPolicy": {},
-            "name": "6.2.0",
-            "referencePolicy": {
-              "type": "Source"
-            }
-          }
-        ]
-      },
-      "metadata": {
-        "annotations": {
-          "openshift.io/generated-by": "OpenShiftNewApp",
-          "openshift.io/image.dockerRepositoryCheck": "2019-10-16 20:20:30 UTC"
-        },
-        "generation": 2,
-        "labels": {
-          "app": "${GRAFANA_SERVICE_NAME}"
+          "app": "${APP_NAME}"
         },
         "name": "${GRAFANA_SERVICE_NAME}"
       }
@@ -322,7 +285,7 @@
           "openshift.io/host.generated": "true"
         },
         "labels": {
-          "app": "${GRAFANA_SERVICE_NAME}"
+          "app": "${APP_NAME}"
         },
         "name": "${GRAFANA_SERVICE_NAME}"
       }
@@ -335,7 +298,7 @@
       "kind": "ConfigMap",
       "metadata": {
         "labels": {
-          "app": "${GRAFANA_SERVICE_NAME}"
+          "app": "${APP_NAME}"
         },
         "name": "${GRAFANA_SERVICE_NAME}-dashboard"
       }
@@ -348,7 +311,7 @@
       "kind": "ConfigMap",
       "metadata": {
         "labels": {
-          "app": "${GRAFANA_SERVICE_NAME}"
+          "app": "${APP_NAME}"
         },
         "name": "${GRAFANA_SERVICE_NAME}-dashboard-providers"
       }
@@ -361,7 +324,7 @@
       "kind": "ConfigMap",
       "metadata": {
         "labels": {
-          "app": "${GRAFANA_SERVICE_NAME}"
+          "app": "${APP_NAME}"
         },
         "name": "${GRAFANA_SERVICE_NAME}-datasources"
       }

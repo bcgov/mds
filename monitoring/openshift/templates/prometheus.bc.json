@@ -2,7 +2,7 @@
   "kind": "Template",
   "apiVersion": "v1",
   "metadata": {
-    "name": "grafana",
+    "name": "prometheus",
     "creationTimestamp": null
   },
   "parameters": [
@@ -11,7 +11,7 @@
       "displayName": "Name",
       "description": "A name used for all objects",
       "required": true,
-      "value": "grafana"
+      "value": "prometheus"
     },
     {
       "name": "APP_NAME",
@@ -25,7 +25,7 @@
       "displayName": "Output Image Tag",
       "description": "The tag given to the built image.",
       "required": true,
-      "value": "6.7.2"
+      "value": "v2.19.2"
     },
     {
       "name": "SOURCE_IMAGE_KIND",
@@ -39,14 +39,14 @@
       "displayName": "Source Image Name",
       "description": "The name of the source image.",
       "required": true,
-      "value": "grafana/grafana"
+      "value": "prom/prometheus"
     },
     {
       "name": "SOURCE_IMAGE_TAG",
       "displayName": "Source Image Tag",
       "description": "The tag of the source image.",
       "required": true,
-      "value": "6.7.2"
+      "value": "v2.19.2"
     }
   ],
   "objects": [
