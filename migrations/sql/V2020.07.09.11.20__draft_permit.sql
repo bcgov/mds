@@ -15,7 +15,3 @@ ADD COLUMN lead_inspector_title varchar;
 
 ALTER TABLE permit_amendment 
 ADD COLUMN regional_office varchar;
-
-select * from permit_amendment_status_code pasc 
-
-select * from permit_status_code psc;
