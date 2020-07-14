@@ -105,56 +105,56 @@ def register_routes(app):
         def get(self):
             return {'status': 'pass'}
 
-    # @api.errorhandler(AuthError)
-    # def jwt_oidc_auth_error_handler(error):
-    #     app.logger.error(str(error))
-    #     app.logger.error('REQUEST\n' + str(request))
-    #     app.logger.error('HEADERS\n ' + str(request.headers))
-    #     return {
-    #         'status': getattr(error, 'status_code', 401),
-    #         'message': str(error),
-    #     }, getattr(error, 'status_code', 401)
+    @api.errorhandler(AuthError)
+    def jwt_oidc_auth_error_handler(error):
+        app.logger.error(str(error))
+        app.logger.error('REQUEST\n' + str(request))
+        app.logger.error('HEADERS\n ' + str(request.headers))
+        return {
+            'status': getattr(error, 'status_code', 401),
+            'message': str(error),
+        }, getattr(error, 'status_code', 401)
 
-    # @api.errorhandler(Forbidden)
-    # def forbidden_error_handler(error):
-    #     app.logger.error(str(error))
-    #     app.logger.error('REQUEST\n' + str(request))
-    #     app.logger.error('HEADERS\n ' + str(request.headers))
-    #     return {
-    #         'status': getattr(error, 'status_code', 403),
-    #         'message': str(error),
-    #     }, getattr(error, 'status_code', 403)
+    @api.errorhandler(Forbidden)
+    def forbidden_error_handler(error):
+        app.logger.error(str(error))
+        app.logger.error('REQUEST\n' + str(request))
+        app.logger.error('HEADERS\n ' + str(request.headers))
+        return {
+            'status': getattr(error, 'status_code', 403),
+            'message': str(error),
+        }, getattr(error, 'status_code', 403)
 
-    # @api.errorhandler(AssertionError)
-    # def assertion_error_handler(error):
-    #     app.logger.error(str(error))
-    #     return {
-    #         'status': getattr(error, 'code', 400),
-    #         'message': str(error),
-    #     }, getattr(error, 'code', 400)
+    @api.errorhandler(AssertionError)
+    def assertion_error_handler(error):
+        app.logger.error(str(error))
+        return {
+            'status': getattr(error, 'code', 400),
+            'message': str(error),
+        }, getattr(error, 'code', 400)
 
-    # # Recursively add handler to every SQLAlchemy Error
-    # def sqlalchemy_error_handler(error):
-    #     app.logger.error(str(error))
-    #     app.logger.error(type(error))
-    #     return {
-    #         'status': getattr(error, 'status_code', 400),
-    #         'message': str(error),
-    #     }, getattr(error, 'status_code', 400)
+    # Recursively add handler to every SQLAlchemy Error
+    def sqlalchemy_error_handler(error):
+        app.logger.error(str(error))
+        app.logger.error(type(error))
+        return {
+            'status': getattr(error, 'status_code', 400),
+            'message': str(error),
+        }, getattr(error, 'status_code', 400)
 
-    # def _add_sqlalchemy_error_handlers(classname):
-    #     for subclass in classname.__subclasses__():
-    #         (api.errorhandler(subclass))(sqlalchemy_error_handler)
+    def _add_sqlalchemy_error_handlers(classname):
+        for subclass in classname.__subclasses__():
+            (api.errorhandler(subclass))(sqlalchemy_error_handler)
 
-    #         if len(subclass.__subclasses__()) != 0:
-    #             _add_sqlalchemy_error_handlers(subclass)
+            if len(subclass.__subclasses__()) != 0:
+                _add_sqlalchemy_error_handlers(subclass)
 
-    # _add_sqlalchemy_error_handlers(SQLAlchemyError)
+    _add_sqlalchemy_error_handlers(SQLAlchemyError)
 
-    # @api.errorhandler(Exception)
-    # def default_error_handler(error):
-    #     app.logger.error(str(error))
-    #     return {
-    #         'status': getattr(error, 'code', 500),
-    #         'message': str(error),
-    #     }, getattr(error, 'code', 500)
+    @api.errorhandler(Exception)
+    def default_error_handler(error):
+        app.logger.error(str(error))
+        return {
+            'status': getattr(error, 'code', 500),
+            'message': str(error),
+        }, getattr(error, 'code', 500)
