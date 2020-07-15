@@ -58,7 +58,7 @@ class Mine(AuditMixin, Base):
         'Permit',
         order_by='desc(Permit.create_timestamp)',
         lazy='selectin',
-        secondary='mine_permit_xref,
+        secondary='mine_permit_xref',
         secondaryjoin=
         'and_(foreign(MinePermitXref.permit_id) == remote(Permit.permit_id),Permit.deleted_ind == False)'
     )
