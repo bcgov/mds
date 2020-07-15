@@ -1,6 +1,7 @@
 export PROJECT_NAMESPACE=${PROJECT_NAMESPACE}
 export GIT_URI=${GIT_URI:-"https://github.com/bcgov/mds.git"}
 export GIT_REF=${GIT_REF:-"develop"}
+export SKIP_PIPELINE_PROCESSING="1"
 
 # The project components
 # - They are all contained under the main OpenShift folder.
