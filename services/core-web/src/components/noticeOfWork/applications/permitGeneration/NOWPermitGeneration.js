@@ -2,7 +2,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import moment from "moment";
-import { Button, Menu, Popconfirm, Dropdown, Icon } from "antd";
+import { Button, Menu, Popconfirm, Dropdown, Icon, Result, Alert, Row, Col } from "antd";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { formatDate } from "@common/utils/helpers";
@@ -13,10 +13,12 @@ import {
   fetchPermits,
   createPermitAmendment,
   updatePermitAmendment,
+  fetchDraftPermitByNOW,
 } from "@common/actionCreators/permitActionCreator";
+import { getDraftPermits, getPermits } from "@common/selectors/permitSelectors";
 import * as FORM from "@/constants/forms";
 import CustomPropTypes from "@/customPropTypes";
-import GeneratePermitForm from "@/components/Forms/GeneratePermitForm";
+import GeneratePermitForm from "@/components/Forms/permits/GeneratePermitForm";
 import NullScreen from "@/components/common/NullScreen";
 import * as routes from "@/constants/routes";
 import NOWSideMenu from "@/components/noticeOfWork/applications/NOWSideMenu";
@@ -40,7 +42,7 @@ const amalgamatedPermit = "ALG";
 const originalPermit = "OGP";
 
 export class NOWPermitGeneration extends Component {
-  state = { isDraft: false, isViewMode: true, permittee: {} };
+  state = { isDraft: false, isViewMode: true, permittee: {}, permit: {}, isExploration: {} };
 
   componentDidMount() {
     // get permittee, save to state
@@ -48,23 +50,46 @@ export class NOWPermitGeneration extends Component {
       (contact) => contact.mine_party_appt_type_code_description === "Permittee"
     )[0];
     this.setState({ permittee });
-
+    this.props.fetchPermits(this.props.noticeOfWork.mine_guid).then(() => {
+      console.log("WE GETTING PERMITS");
+    });
+    this.handleDraftPermit();
     // fetch draft permit
     // set state isDraft
   }
-
+  handleDraftPermit = () => {
+    this.props
+      .fetchDraftPermitByNOW(
+        this.props.noticeOfWork.mine_guid,
+        this.props.noticeOfWork.now_application_guid
+      )
+      .then((data) => {
+        if (this.props.draftPermits.length >= 1) {
+          const draft = this.props.draftPermits[0].permit_amendments.filter(
+            (amendment) =>
+              amendment.now_application_guid === this.props.noticeOfWork.now_application_guid
+          );
+          this.setState({ isDraft: true, draft: draft[0] });
+        }
+      });
+  };
   createPermit = () => {
     // generate permit number based on NoW application type
-    let permitNo;
+    // GENERATE A RANDOM NUMBER BASED OFF TYPE
+    let permitNo = "P-146734634";
     const permitType = this.props.noticeOfWork.notice_of_work_type_code[0];
-    console.log(permitType);
+    const permitObj = this.createPermitGenObject(this.props.noticeOfWork);
     const payload = {
       permittee_party_guid: this.state.permittee.party.party_guid,
-      permit_status_code: "DFT",
+      permit_status_code: "D",
       permit_is_exploration: false,
-      permit_number: permitNo,
+      permit_no: permitNo,
       permit_type: permitType,
+      now_application_guid: this.props.noticeOfWork.now_application_guid,
     };
+    this.props.createPermit(this.props.noticeOfWork.mine_guid, payload).then(() => {
+      this.setState({ isDraft: true });
+    });
   };
 
   createPermitGenObject = (noticeOfWork) => {
@@ -90,6 +115,8 @@ export class NOWPermitGeneration extends Component {
     permitGenObject.property = noticeOfWork.property_name;
     permitGenObject.mine_location = `Latitude: ${noticeOfWork.latitude}, Longitude: ${noticeOfWork.longitude}`;
     permitGenObject.application_date = noticeOfWork.submitted_date;
+    permitGenObject.permit_no =
+      this.props.draftPermits.length >= 1 ? this.props.draftPermits[0].permit_no : "";
     permitGenObject.application_type = this.props.appOptions.filter(
       (option) => option.notice_of_work_type_code === noticeOfWork.notice_of_work_type_code
     )[0].description;
@@ -135,7 +162,7 @@ export class NOWPermitGeneration extends Component {
   renderEditModeNav = () => {
     return this.state.isViewMode ? (
       <div className="inline-flex block-mobile padding-md between">
-        <h2>Draft Permit</h2>
+        <h2>{`Draft Permit (${this.props.noticeOfWork.type_of_application})`}</h2>
         {this.state.isDraft && (
           <Dropdown overlay={this.menu()} placement="bottomLeft">
             <Button type="secondary" className="full-mobile">
@@ -175,28 +202,36 @@ export class NOWPermitGeneration extends Component {
   };
 
   handleSaveDraftEdit = () => {
-    console.log(this.props.formValues);
-    // const { id } = this.props.match.params;
-    // this.props
-    //   .updateDraftPermit(this.props.formValues, this.props.noticeOfWork.now_application_guid)
-    //   .then(() => {
-    //     this.props.fetchDraftPermitFromNOW(id).then(() => {
-    //       this.setState((prevState) => ({
-    //         isViewMode: !prevState.isViewMode,
-    //       }));
-    //     });
-    //   });
+    const payload = {
+      ...this.props.formValues,
+      now_application_guid: this.state.draft.now_application_guid,
+    };
+    this.props
+      .updatePermitAmendment(
+        this.props.noticeOfWork.mine_guid,
+        this.props.draftPermits[0].permit_guid,
+        this.state.draft.permit_amendment_guid,
+        this.props.formValues
+      )
+      .then(() => {
+        this.handleDraftPermit();
+        this.setState({ isViewMode: true });
+      });
   };
 
   startDraftPermit = () => {
-    this.setState({ isDraft: true });
+    // this.setState({ isDraft: true });
     // create amendment object
-    // if (isAmendment) {
-    // createPermitAmendment
-    // }
+    if (this.state.isAmendment) {
+      // createPermitAmendment
+    } else {
+      this.createPermit();
+    }
   };
 
   render() {
+    console.log(this.state.draft);
+    console.log(this.props.permits);
     const isAmendment = this.props.noticeOfWork.type_of_application !== "New Permit";
     const permittee =
       this.props.noticeOfWork.contacts &&
@@ -228,6 +263,26 @@ export class NOWPermitGeneration extends Component {
                 <div className="null-screen">
                   <NullScreen type="draft-permit" />
                   <Button onClick={this.startDraftPermit}>Start Draft Permit</Button>
+                  <Result
+                    status="success"
+                    title={`${this.props.noticeOfWork.type_of_application}`}
+                    subTitle={
+                      isAmendment
+                        ? `Creating an ${this.props.noticeOfWork.type_of_application}, please select the related permit`
+                        : `Creating a ${this.props.noticeOfWork.type_of_application}, please let us know if this is an exploration permit`
+                    }
+                    extra={[
+                      <Row>
+                        <Col
+                          lg={{ span: 8, offset: 8 }}
+                          md={{ span: 10, offset: 7 }}
+                          sm={{ span: 12, offset: 6 }}
+                        >
+                          <p>select permit</p>
+                        </Col>
+                      </Row>,
+                    ]}
+                  />
                 </div>
               ) : (
                 <GeneratePermitForm
@@ -255,6 +310,9 @@ NOWPermitGeneration.defaultProps = defaultProps;
 const mapStateToProps = (state) => ({
   appOptions: getNoticeOfWorkApplicationTypeOptions(state),
   formValues: getFormValues(FORM.GENERATE_PERMIT)(state),
+  formValues: getFormValues(FORM.PRE_DRAFT_PERMIT)(state),
+  draftPermits: getDraftPermits(state),
+  permits: getPermits(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
@@ -265,6 +323,7 @@ const mapDispatchToProps = (dispatch) =>
       fetchPermits,
       createPermitAmendment,
       updatePermitAmendment,
+      fetchDraftPermitByNOW,
     },
     dispatch
   );

@@ -52,7 +52,7 @@ export const GeneratePermitForm = (props) => (
             <Field
               id="permittee"
               name="permittee"
-              label="Permitee"
+              label="Permittee"
               required
               component={renderConfig.FIELD}
               validate={[required]}
@@ -63,7 +63,7 @@ export const GeneratePermitForm = (props) => (
             <Field
               id="permittee_mailing_address"
               name="permittee_mailing_address"
-              label="Permitee Mailing address"
+              label="Permittee Mailing address"
               required
               component={renderConfig.AUTO_SIZE_FIELD}
               validate={[required]}
@@ -76,7 +76,7 @@ export const GeneratePermitForm = (props) => (
             <Field
               id="permittee_email"
               name="permittee_email"
-              label="Permitee Email"
+              label="Permittee Email"
               component={renderConfig.FIELD}
               disabled
             />
