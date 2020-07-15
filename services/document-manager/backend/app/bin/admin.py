@@ -1,5 +1,7 @@
+#! /usr/bin/env python
+
 from optparse import OptionParser
-from docman.resources.admin import TransferDocsToObjectStore, CompareDocsOnObjectStore, GetUntransferredFiles
+from app.docman.resources.admin import TransferDocsToObjectStore, CompareDocsOnObjectStore, GetUntransferredFiles
 
 
 def main():
