@@ -76,7 +76,7 @@ export class NOWPermitGeneration extends Component {
   createPermit = () => {
     // generate permit number based on NoW application type
     // GENERATE A RANDOM NUMBER BASED OFF TYPE
-    let permitNo = "P-146734634";
+    let permitNo = "P-6235642";
     const permitType = this.props.noticeOfWork.notice_of_work_type_code[0];
     const permitObj = this.createPermitGenObject(this.props.noticeOfWork);
     const payload = {
@@ -202,16 +202,23 @@ export class NOWPermitGeneration extends Component {
   };
 
   handleSaveDraftEdit = () => {
+    console.log(this.props.formValues);
     const payload = {
-      ...this.props.formValues,
-      now_application_guid: this.state.draft.now_application_guid,
+      issue_date: this.props.formValues.issue_date,
+      authorization_end_date: this.props.formValues.authorization_end_date,
+      // permit_amendment_status_code: 'DFT',
+      lead_inspector_title: this.props.formValues.lead_inspector_title,
+      regional_office: this.props.formValues.regional_office,
+      now_application_guid: this.props.noticeOfWork.now_application_guid,
     };
+    delete payload.permit_amendment_guid;
+    delete payload.permit_amendment_id;
     this.props
       .updatePermitAmendment(
         this.props.noticeOfWork.mine_guid,
         this.props.draftPermits[0].permit_guid,
         this.state.draft.permit_amendment_guid,
-        this.props.formValues
+        payload
       )
       .then(() => {
         this.handleDraftPermit();
@@ -310,7 +317,7 @@ NOWPermitGeneration.defaultProps = defaultProps;
 const mapStateToProps = (state) => ({
   appOptions: getNoticeOfWorkApplicationTypeOptions(state),
   formValues: getFormValues(FORM.GENERATE_PERMIT)(state),
-  formValues: getFormValues(FORM.PRE_DRAFT_PERMIT)(state),
+  // formValues: getFormValues(FORM.PRE_DRAFT_PERMIT)(state),
   draftPermits: getDraftPermits(state),
   permits: getPermits(state),
 });
