@@ -4,7 +4,6 @@ import uuid
 from flask import current_app
 from celery import chord
 
-# from app.extensions import api
 from app.docman.models.document import Document
 from app.utils.access_decorators import requires_any_of, MINE_ADMIN
 from app.services.object_store_storage_service import ObjectStoreStorageService
@@ -13,7 +12,7 @@ from app.config import Config
 from app.utils.tasks import transfer_docs, transfer_docs_result, verify_docs, verify_docs_result
 
 
-def transfer_local_files_to_object_store(self):
+def transfer_local_files_to_object_store(wait):
 
     # Get the documents that aren't stored on the object store (return if they all are)
     docs = Document.query.filter_by(object_store_path=None).all()
@@ -33,15 +32,22 @@ def transfer_local_files_to_object_store(self):
 
     # Start the transfer tasks
     callback = transfer_docs_result.subtask(kwargs={'transfer_id': transfer_id})
-    chord(tasks)(callback)
+    job = chord(tasks)(callback)
 
     # Create the response message
     message = f'Added transfer job with ID {transfer_id} to the task queue: {len(docs)} docs will be transferred in {len(chunks)} chunks of size {len(chunks[0])}'
     current_app.logger.info(message)
     current_app.logger.debug(chunks)
 
+    if (wait):
+        current_app.logger.info('Waiting for job to finish...')
+        result = job.get()
+        return result
 
-def verify_transferred_objects(self):
+    return message
+
+
+def verify_transferred_objects(wait):
     # Get the documents that are stored on the object store (return if there are none)
     docs = Document.query.filter(Document.object_store_path != None).all()
     if len(docs) == 0:
@@ -60,17 +66,22 @@ def verify_transferred_objects(self):
 
     # Start the verification tasks
     callback = verify_docs_result.subtask(kwargs={'verify_id': verify_id})
-    chord(tasks)(callback)
+    job = chord(tasks)(callback)
 
     # Create the response message
     message = f'Added verification job with ID {verify_id} to the task queue: {len(docs)} docs will be verified in {len(chunks)} chunks of size {len(chunks[0])}'
     current_app.logger.info(message)
     current_app.logger.debug(chunks)
 
+    if (wait):
+        current_app.logger.info('Waiting for job to finish...')
+        result = job.get()
+        return result
+
     return message
 
 
-def get_untransferred_files(self):
+def get_untransferred_files():
     docs = Document.query.filter_by(object_store_path=None).all()
     doc_jsons = [doc.json() for doc in docs]
     return doc_jsons
