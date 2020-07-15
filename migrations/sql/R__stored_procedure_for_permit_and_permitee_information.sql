@@ -918,7 +918,7 @@ CREATE OR REPLACE FUNCTION transfer_permit_permitee_information() RETURNS void A
                     processed_by             ,
                     processed_on
                 )
-                SELECT
+                SELECT DISTINCT
                     ETL_PERMIT.mine_party_appt_guid,
                     mpx.permit_id         ,
                     ETL_PERMIT.party_guid          ,
