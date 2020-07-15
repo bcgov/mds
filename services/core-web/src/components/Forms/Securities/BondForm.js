@@ -9,6 +9,8 @@ import {
   maxLength,
   dateNotInFuture,
   currency,
+  dateNotBeforeOther,
+  dateNotAfterOther,
 } from "@common/utils/Validate";
 import { resetForm, upperCase, currencyMask } from "@common/utils/helpers";
 import { BOND_DOCUMENTS } from "@common/constants/API";
@@ -180,7 +182,11 @@ export class BondForm extends Component {
                 label="Issue Date*"
                 showTime
                 component={RenderDate}
-                validate={[required, dateNotInFuture]}
+                validate={[
+                  required,
+                  dateNotInFuture,
+                  dateNotAfterOther(this.props.bond.closed_date),
+                ]}
               />
             </Form.Item>
           </Col>
@@ -219,7 +225,11 @@ export class BondForm extends Component {
                   label={`${bondStatusDescription} Date*`}
                   showTime
                   component={RenderDate}
-                  validate={[required, dateNotInFuture]}
+                  validate={[
+                    required,
+                    dateNotInFuture,
+                    dateNotBeforeOther(this.props.bond.issue_date),
+                  ]}
                 />
               </Form.Item>
             </Col>

@@ -102,6 +102,7 @@ exports[`BondForm renders properly 1`] = `
             Array [
               [Function],
               [Function],
+              [Function],
             ]
           }
         />

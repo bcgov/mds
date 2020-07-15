@@ -36,6 +36,7 @@ export const CloseBondModal = (props) => {
         onSubmit={handleCloseBond}
         closeModal={props.closeModal}
         title={props.title}
+        bond={props.bond}
         bondStatusCode={props.bondStatusCode}
         bondStatusOptionsHash={props.bondStatusOptionsHash}
       />
