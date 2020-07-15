@@ -26,9 +26,9 @@ PERMIT_SEARCH_MODEL = api.model(
     'Permit',
     {
         'permit_guid': fields.String,
-                                                 #'mine_guid': fields.String,
+        'mine_name': fields.List(fields.String, attribute='_all_mines'),
         'permit_no': fields.String,
-                                                 #'mine_name': fields.String,
+                                                                         #'mine_name': fields.String,
         'current_permittee': fields.String,
     })
 
