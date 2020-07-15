@@ -17,7 +17,7 @@ def transfer_local_files_to_object_store(wait):
     # Get the documents that aren't stored on the object store (return if they all are)
     docs = Document.query.filter_by(object_store_path=None).all()
     if len(docs) == 0:
-        return 'No documents need to be transferred', 200
+        return 'No documents need to be transferred'
 
     # Split the list of documents to transfer into N chunks to upload in parallel
     chunks = numpy.array_split(docs, 8)
@@ -51,7 +51,7 @@ def verify_transferred_objects(wait):
     # Get the documents that are stored on the object store (return if there are none)
     docs = Document.query.filter(Document.object_store_path != None).all()
     if len(docs) == 0:
-        return 'No documents are stored on the object store', 200
+        return 'No documents are stored on the object store'
 
     # Split the list of documents to verify into N chunks to verify in parallel
     chunks = numpy.array_split(docs, 8)
