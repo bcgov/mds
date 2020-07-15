@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import Highlight from "react-highlighter";
 import { Link } from "react-router-dom";
 import * as router from "@/constants/routes";
+import * as Strings from "@common/constants/strings";
 
 /**
  * @class  PermitResultsTable - displays a table of mine search results
@@ -26,23 +27,29 @@ export const PermitResultsTable = (props) => {
       render: (text, record) => [
         <Row>
           <Col span={24}>
-            <Link to={router.MINE_PERMITS.dynamicRoute(record.mine_guid)}>
+            <p>
               <Highlight search={props.highlightRegex}>{record.permit_no}</Highlight>
-            </Link>
+            </p>
           </Col>
           <Col xs={24} md={6}>
             <p>Permittee</p>
           </Col>
           <Col xs={24} md={18}>
             <p>
-              <Highlight search={props.highlightRegex}>{record.current_permittee}</Highlight>
+              <Highlight search={props.highlightRegex}>{record.current_permittee || Strings.NOT_APPLICABLE}</Highlight>
             </p>
           </Col>
           <Col xs={24} md={6}>
-            <p>Mine</p>
+            <p>Mine(s)</p>
           </Col>
           <Col xs={24} md={18}>
-            <p>{record.mine_name}</p>
+            {record.mine.map((mine) => (
+              <p>
+                <Link to={router.MINE_PERMITS.dynamicRoute(mine.mine_guid)}>
+                  <Highlight search={props.highlightRegex}>{mine.mine_name}</Highlight>
+                </Link>
+              </p>
+            ))}
           </Col>
         </Row>,
       ],

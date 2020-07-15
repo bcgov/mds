@@ -33,7 +33,7 @@ export const SearchBarDropdown = (props) => {
     ({
       mine: route.MINE_GENERAL.dynamicRoute(item.result.id),
       party: route.PARTY_PROFILE.dynamicRoute(item.result.id),
-      permit: route.MINE_PERMITS.dynamicRoute(item.result.id),
+      permit: route.SEARCH_RESULTS.dynamicRoute({ q: item.result.value }),
     }[item.type]);
 
   return (
@@ -46,34 +46,34 @@ export const SearchBarDropdown = (props) => {
     >
       {props.searchTerm.length && props.searchBarResults.length
         ? [
-            props.searchBarResults.map((item) => (
-              <Menu.Item key={URLFor(item)}>
-                <p>{`${item.result.value || ""}`}</p>
-              </Menu.Item>
-            )),
-            <Menu.Divider />,
-            <Menu.Item key={`/search?q=${props.searchTerm}`}>
-              <p>
-                <Icon className="icon-lg icon-svg-filter" type="file-search" />
+          props.searchBarResults.map((item) => (
+            <Menu.Item key={URLFor(item)}>
+              <p>{`${item.result.value || ""}`}</p>
+            </Menu.Item>
+          )),
+          <Menu.Divider />,
+          <Menu.Item key={`/search?q=${props.searchTerm}`}>
+            <p>
+              <Icon className="icon-lg icon-svg-filter" type="file-search" />
                 See all results...
               </p>
-            </Menu.Item>,
-          ]
+          </Menu.Item>,
+        ]
         : [
-            staticMenuItems,
-            props.searchTermHistory.length && [
-              <Menu.Divider />,
-              <Menu.ItemGroup title="Recent searches">
-                {props.searchTermHistory.map((pastSearchTerm) => (
-                  <Menu.Item key={`/search?q=${pastSearchTerm}`}>
-                    <p style={{ fontStyle: "italic" }}>
-                      <Icon type="search" /> {pastSearchTerm}
-                    </p>
-                  </Menu.Item>
-                ))}
-              </Menu.ItemGroup>,
-            ],
-          ]}
+          staticMenuItems,
+          props.searchTermHistory.length && [
+            <Menu.Divider />,
+            <Menu.ItemGroup title="Recent searches">
+              {props.searchTermHistory.map((pastSearchTerm) => (
+                <Menu.Item key={`/search?q=${pastSearchTerm}`}>
+                  <p style={{ fontStyle: "italic" }}>
+                    <Icon type="search" /> {pastSearchTerm}
+                  </p>
+                </Menu.Item>
+              ))}
+            </Menu.ItemGroup>,
+          ],
+        ]}
     </Menu>
   );
 };
