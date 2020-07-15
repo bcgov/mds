@@ -76,7 +76,7 @@ exports[`MineSecurityInfo renders properly 1`] = `
               "BDA": "Bank Draft",
               "CAS": "Cash",
               "CEC": "Certified Cheque",
-              "ILC": "Irrevocable Line of Credit",
+              "ILC": "Irrevocable Letter of Credit",
               "MOR": "Money Order",
               "SAG": "Safekeeping Agreement",
               "SBO": "Surety Bond",
