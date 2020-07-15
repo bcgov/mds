@@ -68,7 +68,7 @@ export class PartyProfile extends Component {
     const { id } = this.props.match.params;
     this.props.fetchPartyById(id).then(() => {
       const mine_guids = uniq(
-        this.props.partyRelationships
+        this.props.parties[id].mine_party_appt
           .filter((x) => x.mine_guid != "None")
           .map(({ mine_guid }) => mine_guid)
       );
@@ -259,7 +259,7 @@ export class PartyProfile extends Component {
                     align="left"
                     pagination={false}
                     columns={columns}
-                    dataSource={transformRowData(this.props.partyRelationships)}
+                    dataSource={transformRowData(this.props.parties[id].mine_party_appt)}
                     locale={{ emptyText: <NullScreen type="no-results" /> }}
                   />
                 </div>
@@ -276,7 +276,6 @@ export class PartyProfile extends Component {
 const mapStateToProps = (state) => ({
   parties: getParties(state),
   partyRelationshipTypeHash: getPartyRelationshipTypeHash(state),
-  partyRelationships: getParties(state).mine_party_appt,
   mineBasicInfoListHash: getMineBasicInfoListHash(state),
   provinceOptions: getDropdownProvinceOptions(state),
 });
