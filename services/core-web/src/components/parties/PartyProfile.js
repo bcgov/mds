@@ -127,13 +127,19 @@ export class PartyProfile extends Component {
     const party = this.props.parties[id];
     const columns = [
       {
-        title: "Mine Name",
+        title: "Name",
         dataIndex: "mineName",
-        render: (text, record) => (
-          <div title="Mine Name">
-            <Link to={routes.MINE_CONTACTS.dynamicRoute(record.mineGuid)}>{text}</Link>
-          </div>
-        ),
+        render: (text, record) => {
+          if (record.role === "Permittee") {
+            return <div title="Permit No">record.permit_no</div>;
+          } else {
+            return (
+              <div title="Mine Name">
+                <Link to={routes.MINE_CONTACTS.dynamicRoute(record.mineGuid)}>{text}</Link>
+              </div>
+            );
+          }
+        },
       },
       {
         title: "Role",
