@@ -28,7 +28,7 @@ PERMIT_SEARCH_MODEL = api.model(
         'mine_name':
         fields.String(attribute=lambda x: ', '.join([m.mine_name for m in x._all_mines])),
         'permit_no': fields.String,
-        'mine_guid': fields.String(attribute='_all_mines.0.mine_guid'),
+        'mine_guid': fields.String(attribute=lambda x:x._all_mines[0].mine_guid'),
         'current_permittee': fields.String,
     })
 
