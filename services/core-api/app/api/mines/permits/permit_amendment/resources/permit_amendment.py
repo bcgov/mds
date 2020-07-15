@@ -159,6 +159,18 @@ class PermitAmendmentResource(Resource, UserMixin):
     parser.add_argument('description', type=str, location='json', store_missing=False)
     parser.add_argument('security_total', type=str, location='json', store_missing=False)
     parser.add_argument('uploadedFiles', type=list, location='json', store_missing=False)
+    parser.add_argument(
+        'lead_inspector_title',
+        type=str,
+        location='json', 
+        store_missing=False,
+        help='Title of the lead inspector for this permit.')
+    parser.add_argument(
+        'regional_office',
+        type=str,
+        location='json', 
+        store_missing=False,
+        help='The regional office for this permit.')
 
     @api.doc(params={'permit_amendment_guid': 'Permit amendment guid.'})
     @requires_role_view_all
