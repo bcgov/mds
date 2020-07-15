@@ -63,11 +63,6 @@
       "value": "object-store-credentials"
     },
     {
-      "name": "MDS_DOCMAN_BACKEND_SECRET",
-      "required": false,
-      "value": "template.mds-docman-backend"
-    },
-    {
       "name": "CPU_LIMIT",
       "value": "200m"
     },
@@ -406,15 +401,6 @@
                       "secretKeyRef": {
                         "name": "${OBJECT_STORE_SECRET_NAME}",
                         "key": "endpoint"
-                      }
-                    }
-                  },
-                  {
-                    "name": "ADMIN_API_SECRET",
-                    "valueFrom": {
-                      "secretKeyRef": {
-                        "name": "${MDS_DOCMAN_BACKEND_SECRET}",
-                        "key": "admin-api-secret"
                       }
                     }
                   },
