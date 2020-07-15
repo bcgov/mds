@@ -180,6 +180,25 @@ export class MineSecurityInfo extends Component {
     });
   };
 
+  openCloseBondModal = (event, bond, bondStatusCode) => {
+    event.preventDefault();
+    this.props.openModal({
+      props: {
+        title:
+          (bondStatusCode === "REL" && "Release Bond") ||
+          (bondStatusCode === "CON" && "Confiscate Bond"),
+        onSubmit: this.closeBond,
+        editBond: true,
+        bond,
+        bondStatusCode,
+        permitGuid: bond.permit_guid,
+        mineGuid: this.props.mineGuid,
+      },
+      width: "50vw",
+      content: modalConfig.CLOSE_BOND_MODAL,
+    });
+  };
+
   editBond = (values, bondGuid) => {
     const payload = values;
     // payload expects the basic bond object without the following:
@@ -196,12 +215,13 @@ export class MineSecurityInfo extends Component {
     });
   };
 
-  releaseOrConfiscateBond = (code, bondGuid, bond) => {
-    // if bond is confiscated, convert to bond type to Cash
+  closeBond = (bondStatusCode, values, bond) => {
     const payload = {
       ...bond,
-      bond_status_code: code,
-      bond_type_code: code === "CON" ? "CAS" : bond.bond_type_code,
+      bond_status_code: bondStatusCode,
+      bond_type_code: bondStatusCode === "CON" ? "CAS" : bond.bond_type_code,
+      closed_date: values.closed_date,
+      closed_note: values.closed_note,
     };
     this.editBond(payload, bond.bond_guid);
   };
@@ -331,12 +351,12 @@ export class MineSecurityInfo extends Component {
                 onExpand={this.onExpand}
                 openAddBondModal={this.openAddBondModal}
                 bonds={this.props.bonds}
-                releaseOrConfiscateBond={this.releaseOrConfiscateBond}
                 bondStatusOptionsHash={this.props.bondStatusOptionsHash}
                 bondTypeOptionsHash={this.props.bondTypeOptionsHash}
                 openViewBondModal={this.openViewBondModal}
                 openEditBondModal={this.openEditBondModal}
                 openTransferBondModal={this.openTransferBondModal}
+                openCloseBondModal={this.openCloseBondModal}
                 recordsByPermit={this.recordsByPermit}
                 activeBondCount={this.activeBondCount}
                 getSum={this.getSum}

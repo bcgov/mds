@@ -29,12 +29,14 @@ const propTypes = {
   closeModal: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
   submitting: PropTypes.bool.isRequired,
+  pristine: PropTypes.bool.isRequired,
   bond: CustomPropTypes.bond.isRequired,
   mineGuid: PropTypes.string.isRequired,
   provinceOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
   bondTypeDropDownOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
   bondDocumentTypeDropDownOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
   bondDocumentTypeOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  bondStatusOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   initialPartyValue: PropTypes.objectOf(PropTypes.string),
   editBond: PropTypes.bool,
 };
@@ -94,6 +96,12 @@ export class BondForm extends Component {
       []
     );
 
+    const isBondClosed =
+      this.props.bond.bond_status_code === "REL" || this.props.bond.bond_status_code === "CON";
+    const bondStatusDescription = this.props.bondStatusOptionsHash[
+      this.props.bond.bond_status_code
+    ];
+
     return (
       <Form
         layout="vertical"
@@ -145,6 +153,7 @@ export class BondForm extends Component {
                 component={RenderSelect}
                 data={this.props.bondTypeDropDownOptions}
                 validate={[required]}
+                disabled={this.props.bond.bond_status_code === "CON"}
               />
             </Form.Item>
           </Col>
@@ -193,6 +202,40 @@ export class BondForm extends Component {
             </Form.Item>
           </Col>
         </Row>
+        <Row>
+          <Col md={24}>
+            <Form.Item>
+              <Field id="note" name="note" label="Notes" component={RenderAutoSizeField} />
+            </Form.Item>
+          </Col>
+        </Row>
+        {this.props.editBond && isBondClosed && (
+          <Row gutter={16}>
+            <Col md={12} sm={24}>
+              <Form.Item>
+                <Field
+                  id="closed_date"
+                  name="closed_date"
+                  label={`${bondStatusDescription} Date*`}
+                  showTime
+                  component={RenderDate}
+                  validate={[required, dateNotInFuture]}
+                />
+              </Form.Item>
+            </Col>
+            <Col md={12} sm={24}>
+              <Form.Item>
+                <Field
+                  id="closed_note"
+                  name="closed_note"
+                  label={`${bondStatusDescription} Notes`}
+                  component={RenderAutoSizeField}
+                  validate={[maxLength(4000)]}
+                />
+              </Form.Item>
+            </Col>
+          </Row>
+        )}
         <Row gutter={16}>
           <Col md={12} xs={24}>
             <h5>Institution</h5>
@@ -256,13 +299,6 @@ export class BondForm extends Component {
                 validate={[maxLength(6), postalCode]}
                 normalize={upperCase}
               />
-            </Form.Item>
-          </Col>
-        </Row>
-        <Row>
-          <Col md={24}>
-            <Form.Item>
-              <Field id="note" name="note" label="Notes" component={RenderAutoSizeField} />
             </Form.Item>
           </Col>
         </Row>
@@ -330,7 +366,7 @@ export class BondForm extends Component {
             className="full-mobile"
             type="primary"
             htmlType="submit"
-            disabled={this.props.submitting}
+            disabled={this.props.submitting || this.props.pristine}
           >
             {this.props.title}
           </Button>
