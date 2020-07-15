@@ -111,11 +111,11 @@ class PermitAmendment(AuditMixin, Base):
 
     @classmethod
     def find_by_permit_amendment_id(cls, _id):
-        return cls.query.filter_by(permit_amendment_id=_id).filter_by(deleted_ind=False).filter(cls.permit_amendment_status_code != 'DFT').first()
+        return cls.query.filter_by(permit_amendment_id=_id).filter_by(deleted_ind=False).first()
 
     @classmethod
     def find_by_permit_amendment_guid(cls, _guid):
-        return cls.query.filter_by(permit_amendment_guid=_guid).filter_by(deleted_ind=False).filter(cls.permit_amendment_status_code != 'DFT').first()
+        return cls.query.filter_by(permit_amendment_guid=_guid).filter_by(deleted_ind=False).first()
 
     @classmethod
     def find_by_permit_id(cls, _id):
