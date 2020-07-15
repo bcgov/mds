@@ -131,7 +131,7 @@ export class PartyProfile extends Component {
         dataIndex: "mineName",
         render: (text, record) => {
           if (record.role === "Permittee") {
-            return <div title="Permit No">record.permit_no</div>;
+            return <div title="Permit No">{record.permit_no}</div>;
           } else {
             return (
               <div title="Mine Name">
