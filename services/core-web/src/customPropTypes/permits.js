@@ -16,4 +16,5 @@ export const permit = shape({
   permit_no: PropTypes.string,
   permit_status_code: PropTypes.string,
   amendments: arrayOf(permitAmendment),
+  current_permittee: PropTypes.string,
 });

@@ -30,7 +30,7 @@ def run_ETL():
         db.session.execute('select transfer_mine_manager_information();')
         db.session.commit()
 
-        db.session.execute('select transfer_permit_permitee_information();')
+        db.session.execute('select transfer_permit_permitee_but_better();')
         db.session.commit()
 
         db.session.execute('select transfer_mine_status_information();')

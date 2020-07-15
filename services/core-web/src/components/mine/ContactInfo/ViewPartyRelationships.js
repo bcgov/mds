@@ -116,6 +116,7 @@ export class ViewPartyRelationships extends Component {
         this.props.fetchPartyRelationships({
           mine_guid: this.props.mine.mine_guid,
           relationships: "party",
+          include_permittees: "true",
         });
       });
   };
@@ -206,6 +207,7 @@ export class ViewPartyRelationships extends Component {
       this.props.fetchPartyRelationships({
         mine_guid: this.props.mine.mine_guid,
         relationships: "party",
+        include_permittees: "true",
       });
       this.props.closeModal();
     });
@@ -217,6 +219,7 @@ export class ViewPartyRelationships extends Component {
       this.props.fetchPartyRelationships({
         mine_guid: this.props.mine.mine_guid,
         relationships: "party",
+        include_permittees: "true",
       });
     });
   };

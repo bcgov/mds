@@ -113,7 +113,7 @@ class MinePartyAppointment(AuditMixin, Base):
 
     @classmethod
     def find_by_permit_id(cls, _id):
-        return cls.find_by(permit_id=_id)
+        return cls.query.filter_by(permit_id=_id).filter_by(deleted_ind=False).all()
 
 
 # given a permmit, and an issue date of a new amendment, order appointment start_dates
@@ -122,7 +122,7 @@ class MinePartyAppointment(AuditMixin, Base):
     @classmethod
     def find_appointment_end_dates(cls, _id, issue_datetime):
         start_dates = [issue_datetime]
-        appointments = cls.find_by(permit_id=_id)
+        appointments = cls.find_by_permit_id(_id)
         for appointment in appointments:
             start_dates.append(appointment.start_date)
         ordered_dates = sorted(start_dates, reverse=True)
@@ -151,24 +151,28 @@ class MinePartyAppointment(AuditMixin, Base):
                 mine_tailings_storage_facility_guid=mine_tailings_storage_facility_guid)
         return built_query.all()
 
-    # FIXME: This may not work with permittee changes, since they don't have a mine_guid
     @classmethod
     def find_by(cls,
                 mine_guid=None,
                 party_guid=None,
                 mine_party_appt_type_codes=None,
-                permit_id=None):
+                include_permittees=False):
         built_query = cls.query.filter_by(deleted_ind=False)
         if mine_guid:
             built_query = built_query.filter_by(mine_guid=mine_guid)
         if party_guid:
             built_query = built_query.filter_by(party_guid=party_guid)
-        if permit_id:
-            built_query = built_query.filter_by(permit_id=permit_id)
         if mine_party_appt_type_codes:
             built_query = built_query.filter(
                 cls.mine_party_appt_type_code.in_(mine_party_appt_type_codes))
-        return built_query.all()
+        results = built_query.all()
+        if include_permittees and mine_guid:
+            #avoid circular imports.
+            from app.api.mines.mine.models.mine import Mine
+            mine = Mine.find_by_mine_guid(mine_guid)
+            permit_permittees = [m.permittee_appointments[0] for m in mine.mine_permit]
+            results = results + permit_permittees
+        return results
 
     @classmethod
     def to_csv(cls, records, columns):

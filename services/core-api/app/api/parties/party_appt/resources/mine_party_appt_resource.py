@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 import uuid
 
-from flask import request
+from flask import request, current_app
 from flask_restplus import Resource
 from sqlalchemy import or_, exc as alch_exceptions
 from werkzeug.exceptions import BadRequest, InternalServerError, NotFound
@@ -11,6 +11,7 @@ from app.api.utils.access_decorators import requires_role_view_all, requires_rol
 from app.api.utils.resources_mixins import UserMixin
 from app.api.utils.custom_reqparser import CustomReqparser
 
+from app.api.mines.permits.permit.models.permit import Permit
 from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
 from app.api.parties.party_appt.models.mine_party_appt_type import MinePartyAppointmentType
 
@@ -35,15 +36,16 @@ class MinePartyApptResource(Resource, UserMixin):
         type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None,
         store_missing=False)
 
-    @api.doc(description='Returns a list of party appointments',
-             params={
-                 'mine_party_appt_guid': 'Mine party appointment serial id',
-                 'mine_guid': 'Mine serial id',
-                 'party_guid': 'Party serial id',
-                 'start_date': 'Date the mine appointment started',
-                 'end_date': "Date the mine appointment ended",
-                 'relationships': 'Relationship type - `party`'
-             })
+    @api.doc(
+        description='Returns a list of party appointments',
+        params={
+            'mine_party_appt_guid': 'Mine party appointment serial id',
+            'mine_guid': 'Mine serial id',
+            'party_guid': 'Party serial id',
+            'start_date': 'Date the mine appointment started',
+            'end_date': "Date the mine appointment ended",
+            'relationships': 'Relationship type - `party`'
+        })
     @requires_role_view_all
     def get(self, mine_party_appt_guid=None):
         relationships = request.args.get('relationships')
@@ -54,11 +56,18 @@ class MinePartyApptResource(Resource, UserMixin):
                 raise NotFound('Mine Party Appointment not found')
             result = mpa.json(relationships=relationships)
         else:
+            current_app.logger.info(request.args)
             mine_guid = request.args.get('mine_guid')
             party_guid = request.args.get('party_guid')
+            permit_guid = request.args.get('permit_guid')
+            incl_pmt = request.args.get('include_permittees', 'false').lower() == 'true'
             types = request.args.getlist('types') #list
+            permit = Permit.find_by_permit_guid(permit_guid)
             mpas = MinePartyAppointment.find_by(
-                mine_guid=mine_guid, party_guid=party_guid, mine_party_appt_type_codes=types)
+                mine_guid=mine_guid,
+                party_guid=party_guid,
+                mine_party_appt_type_codes=types,
+                include_permittees=incl_pmt)
             result = [x.json(relationships=relationships) for x in mpas]
         return result
 
