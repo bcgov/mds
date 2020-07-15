@@ -66,23 +66,16 @@ export class PartyProfile extends Component {
 
   componentDidMount() {
     const { id } = this.props.match.params;
-    this.props.fetchPartyById(id);
-    this.props
-      .fetchPartyRelationships({
-        party_guid: id,
-        relationships: "party",
-        include_permittees: "true",
-      })
-      .then(() => {
-        const mine_guids = uniq(
-          this.props.partyRelationships
-            .filter((x) => x.mine_guid != "None")
-            .map(({ mine_guid }) => mine_guid)
-        );
-        this.props.fetchMineBasicInfoList(mine_guids).then(() => {
-          this.setState({ isLoaded: true });
-        });
+    this.props.fetchPartyById(id).then(() => {
+      const mine_guids = uniq(
+        this.props.partyRelationships
+          .filter((x) => x.mine_guid != "None")
+          .map(({ mine_guid }) => mine_guid)
+      );
+      this.props.fetchMineBasicInfoList(mine_guids).then(() => {
+        this.setState({ isLoaded: true });
       });
+    });
   }
 
   componentWillReceiveProps = (nextProps) => {
@@ -130,7 +123,7 @@ export class PartyProfile extends Component {
         title: "Name",
         dataIndex: "mineName",
         render: (text, record) => {
-          if (record.role === "Permittee") {
+          if (record.relationship.mine_party_appt_type_code === "PMT") {
             return <div title="Permit No">{record.permit_no}</div>;
           } else {
             return (
@@ -165,6 +158,7 @@ export class PartyProfile extends Component {
         role: this.props.partyRelationshipTypeHash[relationship.mine_party_appt_type_code],
         endDate: formatDate(relationship.end_date) || "Present",
         startDate: formatDate(relationship.start_date) || "Unknown",
+        relationship,
       }));
 
     if (this.state.isLoaded && party) {
@@ -282,7 +276,7 @@ export class PartyProfile extends Component {
 const mapStateToProps = (state) => ({
   parties: getParties(state),
   partyRelationshipTypeHash: getPartyRelationshipTypeHash(state),
-  partyRelationships: getPartyRelationships(state),
+  partyRelationships: getParties(state).mine_party_appt,
   mineBasicInfoListHash: getMineBasicInfoListHash(state),
   provinceOptions: getDropdownProvinceOptions(state),
 });
