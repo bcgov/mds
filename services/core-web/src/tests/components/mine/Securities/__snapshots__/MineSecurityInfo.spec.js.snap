@@ -148,6 +148,7 @@ exports[`MineSecurityInfo renders properly 1`] = `
           isLoaded={false}
           onExpand={[Function]}
           openAddBondModal={[Function]}
+          openCloseBondModal={[Function]}
           openEditBondModal={[Function]}
           openTransferBondModal={[Function]}
           openViewBondModal={[Function]}
@@ -184,7 +185,6 @@ exports[`MineSecurityInfo renders properly 1`] = `
             ]
           }
           recordsByPermit={[Function]}
-          releaseOrConfiscateBond={[Function]}
         />
       </div>
     </TabPane>

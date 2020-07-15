@@ -17,6 +17,8 @@ const setupProps = () => {
   props.submitting = false;
   props.provinceOptions = MOCK.DROPDOWN_PROVINCE_OPTIONS;
   props.bondTypeOptions = [];
+  props.bondStatusOptionsHash = MOCK.BULK_STATIC_CONTENT_RESPONSE.bondStatusOptions;
+  // eslint-disable-next-line prefer-destructuring
   props.bond = MOCK.BONDS.records[0];
 };
 
