@@ -15,6 +15,5 @@ COPY . .
 
 # Run the server
 EXPOSE 5001
-RUN chmod 777 /app/app/bin/admin.py
 RUN mkdir -p /var/log/celery /var/run/celery
 ENTRYPOINT [ "./init.sh" ]
