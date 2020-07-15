@@ -60,8 +60,7 @@ class PermitAmendment(AuditMixin, Base):
     )
 
     def __repr__(self):
-        return '<PermitAmendment %r, %r, %r>' % (self.permit_amendment_id, self.mine_guid,
-                                                 self.permit_id)
+        return '<PermitAmendment %r, %r>' % (self.mine_guid, self.permit_id)
 
     def soft_delete(self, is_force_delete=False):
         if not is_force_delete and self.permit_amendment_type_code == 'OGP':
@@ -111,11 +110,11 @@ class PermitAmendment(AuditMixin, Base):
 
     @classmethod
     def find_by_permit_amendment_id(cls, _id):
-        return cls.query.filter_by(permit_amendment_id=_id).filter_by(deleted_ind=False).filter(cls.permit_amendment_status_code != 'DFT').first()
+        return cls.query.filter_by(permit_amendment_id=_id).filter_by(deleted_ind=False).first()
 
     @classmethod
     def find_by_permit_amendment_guid(cls, _guid):
-        return cls.query.filter_by(permit_amendment_guid=_guid).filter_by(deleted_ind=False).filter(cls.permit_amendment_status_code != 'DFT').first()
+        return cls.query.filter_by(permit_amendment_guid=_guid).filter_by(deleted_ind=False).first()
 
     @classmethod
     def find_by_permit_id(cls, _id):
