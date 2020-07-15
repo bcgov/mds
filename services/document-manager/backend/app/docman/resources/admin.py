@@ -6,27 +6,30 @@ from flask import current_app
 from flask_restplus import Resource, reqparse
 from celery import chord
 
-from app.extensions import api
+# from app.extensions import api
 from app.docman.models.document import Document
 from app.utils.access_decorators import requires_any_of, MINE_ADMIN
 from app.services.object_store_storage_service import ObjectStoreStorageService
 from app.config import Config
 
 
-@api.route('/admin/transfer-docs-to-object-store', doc=False)
+# @api.route('/admin/transfer-docs-to-object-store', doc=False)
 class TransferDocsToObjectStore(Resource):
     parser = reqparse.RequestParser(trim=True)
     parser.add_argument('secret', type=str, required=True)
 
     @requires_any_of([MINE_ADMIN])
     def post(self):
-        from app.utils.tasks import transfer_docs, transfer_docs_result
-
         # Ensure that the admin API secret required to initiate the transfer is correct
         data = self.parser.parse_args()
         secret = data.get('secret')
         if (Config.ADMIN_API_SECRET is None or secret != Config.ADMIN_API_SECRET):
             raise Forbidden()
+
+        return self.transfer_task()
+
+    def transfer_task(self):
+        from app.utils.tasks import transfer_docs, transfer_docs_result
 
         # Get the documents that aren't stored on the object store (return if they all are)
         docs = Document.query.filter_by(object_store_path=None).all()
@@ -56,20 +59,23 @@ class TransferDocsToObjectStore(Resource):
         return message, 202
 
 
-@api.route('/admin/compare-docs-on-object-store', doc=False)
+# @api.route('/admin/compare-docs-on-object-store', doc=False)
 class CompareDocsOnObjectStore(Resource):
     parser = reqparse.RequestParser(trim=True)
     parser.add_argument('secret', type=str, required=True)
 
     @requires_any_of([MINE_ADMIN])
     def post(self):
-        from app.utils.tasks import verify_docs, verify_docs_result
-
         # Ensure that the admin API secret required to initiate the verification is correct
         data = self.parser.parse_args()
         secret = data.get('secret')
         if (Config.ADMIN_API_SECRET is None or secret != Config.ADMIN_API_SECRET):
             raise Forbidden()
+
+        return self.verify_task()
+
+    def verify_task(self):
+        from app.utils.tasks import verify_docs, verify_docs_result
 
         # Get the documents that are stored on the object store (return if there are none)
         docs = Document.query.filter(Document.object_store_path != None).all()
@@ -99,8 +105,8 @@ class CompareDocsOnObjectStore(Resource):
         return message, 202
 
 
-@api.route('/admin/untransferred-files', doc=False)
-class GetUntransferedFiles(Resource):
+# @api.route('/admin/untransferred-files', doc=False)
+class GetUntransferredFiles(Resource):
     parser = reqparse.RequestParser(trim=True)
     parser.add_argument('secret', type=str, required=True)
 
@@ -113,7 +119,10 @@ class GetUntransferedFiles(Resource):
         if (Config.ADMIN_API_SECRET is None or secret != Config.ADMIN_API_SECRET):
             raise Forbidden()
 
+        return self.get_untransferred_files()
+
+    def get_untransferred_files(self):
         # Get and return the documents that aren't stored on the object store
         docs = Document.query.filter_by(object_store_path=None).all()
         doc_jsons = [doc.json() for doc in docs]
-        return doc_jsons
+        return doc_jsons, 200
