@@ -13,14 +13,13 @@ const propTypes = {
   closeModal: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
   bondStatusCode: PropTypes.string.isRequired,
+  bondStatusOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   submitting: PropTypes.bool.isRequired,
   pristine: PropTypes.bool.isRequired,
 };
 
 export const CloseBondForm = (props) => {
-  const closeType =
-    (props.bondStatusCode === "REL" && "Release") ||
-    (props.bondStatusCode === "CON" && "Confiscate");
+  const bondStatusDescription = props.bondStatusOptionsHash[props.bondStatusCode];
   return (
     <Form layout="vertical" onSubmit={props.handleSubmit}>
       <Row>
@@ -29,7 +28,7 @@ export const CloseBondForm = (props) => {
             <Field
               id="closed_date"
               name="closed_date"
-              label={`${closeType}d Date*`}
+              label={`${bondStatusDescription} Date*`}
               showTime
               component={RenderDate}
               validate={[required, dateNotInFuture]}
@@ -43,7 +42,7 @@ export const CloseBondForm = (props) => {
             <Field
               id="closed_note"
               name="closed_note"
-              label={`${closeType} Notes`}
+              label={`${bondStatusDescription} Notes`}
               component={RenderAutoSizeField}
               validate={[maxLength(4000)]}
             />

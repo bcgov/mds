@@ -9,6 +9,7 @@ const propTypes = {
   closeModal: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
   bond: CustomPropTypes.bond.isRequired,
+  bondStatusOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   bondStatusCode: PropTypes.string.isRequired,
 };
 
@@ -36,6 +37,7 @@ export const CloseBondModal = (props) => {
         closeModal={props.closeModal}
         title={props.title}
         bondStatusCode={props.bondStatusCode}
+        bondStatusOptionsHash={props.bondStatusOptionsHash}
       />
     </div>
   );

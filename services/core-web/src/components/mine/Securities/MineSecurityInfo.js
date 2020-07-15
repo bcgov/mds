@@ -191,6 +191,7 @@ export class MineSecurityInfo extends Component {
         editBond: true,
         bond,
         bondStatusCode,
+        bondStatusOptionsHash: this.props.bondStatusOptionsHash,
         permitGuid: bond.permit_guid,
         mineGuid: this.props.mineGuid,
       },
