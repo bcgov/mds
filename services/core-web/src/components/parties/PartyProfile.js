@@ -13,7 +13,7 @@ import {
 } from "@common/actionCreators/partiesActionCreator";
 import { fetchMineBasicInfoList } from "@common/actionCreators/mineActionCreator";
 import { openModal, closeModal } from "@common/actions/modalActions";
-import { getParties, getPartyRelationships } from "@common/selectors/partiesSelectors";
+import { getParties } from "@common/selectors/partiesSelectors";
 import { getMineBasicInfoListHash } from "@common/selectors/mineSelectors";
 import {
   getDropdownProvinceOptions,
