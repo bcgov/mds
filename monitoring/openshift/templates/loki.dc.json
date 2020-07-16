@@ -4,7 +4,7 @@
   "labels": {
     "template": "loki-template"
   },
-  "message": "The following service(s) have been created in your project: ${LOKI_SERVICE_NAME}.\nFor more information about using this template, including OpenShift considerations, contact the rocketchat community.",
+  "message": "The following service(s) have been created in your project: ${NAME}.\nFor more information about using this template, including OpenShift considerations, contact the rocketchat community.",
   "metadata": {
     "annotations": {
       "description": "MDS Loki Template. ",
@@ -49,13 +49,6 @@
       "value": "dev"
     },
     {
-      "description": "The name of the Loki service to connect to.",
-      "displayName": "Loki Service Name",
-      "name": "LOKI_SERVICE_NAME",
-      "required": true,
-      "value": "loki"
-    },
-    {
       "name": "CPU_REQUEST",
       "displayName": "Resources CPU Request",
       "description": "The resources CPU request (in cores) for this build.",
@@ -95,12 +88,9 @@
       "metadata": {
         "annotations": {},
         "labels": {
-          "app": "${APP_NAME}",
-          "chart": "loki-0.16.0",
-          "heritage": "Tiller",
-          "release": "${LOKI_SERVICE_NAME}"
+          "app": "${APP_NAME}"
         },
-        "name": "${LOKI_SERVICE_NAME}"
+        "name": "${NAME}"
       }
     },
     {
@@ -116,8 +106,7 @@
           }
         ],
         "selector": {
-          "app": "${LOKI_SERVICE_NAME}",
-          "release": "${LOKI_SERVICE_NAME}"
+          "app": "${APP_NAME}"
         },
         "sessionAffinity": "None",
         "type": "ClusterIP"
@@ -125,12 +114,9 @@
       "metadata": {
         "annotations": {},
         "labels": {
-          "app": "${APP_NAME}",
-          "chart": "loki-0.16.0",
-          "heritage": "Tiller",
-          "release": "${LOKI_SERVICE_NAME}"
+          "app": "${APP_NAME}"
         },
-        "name": "${LOKI_SERVICE_NAME}-headless"
+        "name": "${NAME}-headless"
       }
     },
     {
@@ -146,8 +132,7 @@
           }
         ],
         "selector": {
-          "app": "${LOKI_SERVICE_NAME}",
-          "release": "${LOKI_SERVICE_NAME}"
+          "app": "${APP_NAME}"
         },
         "sessionAffinity": "None",
         "type": "ClusterIP"
@@ -155,12 +140,41 @@
       "metadata": {
         "annotations": {},
         "labels": {
-          "app": "${APP_NAME}",
-          "chart": "loki-0.16.0",
-          "heritage": "Tiller",
-          "release": "${LOKI_SERVICE_NAME}"
+          "app": "${APP_NAME}"
         },
-        "name": "${LOKI_SERVICE_NAME}"
+        "name": "${NAME}"
+      }
+    },
+    {
+      "kind": "ImageStream",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "${SOURCE_IMAGE_NAME}",
+        "labels": {
+          "shared": "true",
+          "app": "${APP_NAME}"
+        },
+        "annotations": {}
+      },
+      "spec": {
+        "lookupPolicy": {
+          "local": false
+        },
+        "tags": [
+          {
+            "name": "${TAG_NAME}",
+            "annotations": null,
+            "from": {
+              "name": "${SOURCE_IMAGE_NAME}:${TAG_NAME}",
+              "namespace": "${IMAGE_NAMESPACE}"
+            },
+            "generation": 1,
+            "importPolicy": {},
+            "referencePolicy": {
+              "type": "Local"
+            }
+          }
+        ]
       }
     },
     {
@@ -187,8 +201,7 @@
             "creationTimestamp": null,
             "labels": {
               "app": "${APP_NAME}",
-              "name": "loki",
-              "release": "${NAME}"
+              "name": "${NAME}"
             }
           },
           "spec": {
@@ -196,8 +209,8 @@
             "containers": [
               {
                 "args": ["-config.file=/etc/loki/loki.yaml"],
-                "image": "grafana/loki:v0.3.0",
-                "imagePullPolicy": "IfNotPresent",
+                "image": "${SOURCE_IMAGE_NAME}:${TAG_NAME}",
+                "imagePullPolicy": "Always",
                 "livenessProbe": {
                   "failureThreshold": 3,
                   "httpGet": {
@@ -278,10 +291,7 @@
         "annotations": {},
         "generation": 2,
         "labels": {
-          "app": "${APP_NAME}",
-          "chart": "loki-0.16.0",
-          "heritage": "Tiller",
-          "release": "${NAME}"
+          "app": "${APP_NAME}"
         },
         "name": "${NAME}"
       }

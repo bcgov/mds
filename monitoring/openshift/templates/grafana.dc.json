@@ -4,7 +4,7 @@
   "labels": {
     "template": "grafana-template"
   },
-  "message": "The following service(s) have been created in your project: ${GRAFANA_SERVICE_NAME}.\nFor more information about using this template, including OpenShift considerations, contact the rocketchat community.",
+  "message": "The following service(s) have been created in your project: ${NAME}.\nFor more information about using this template, including OpenShift considerations, contact the rocketchat community.",
   "metadata": {
     "annotations": {
       "description": "MDS Grafana Template",
@@ -53,13 +53,6 @@
       "displayName": "Namespace",
       "name": "NAMESPACE",
       "value": "empr-mds-dev"
-    },
-    {
-      "description": "The name of the OpenShift Service exposed for the database.",
-      "displayName": "Grafana Service Name",
-      "name": "GRAFANA_SERVICE_NAME",
-      "required": true,
-      "value": "grafana"
     },
     {
       "description": "The name of the Loki service to connect to.",
@@ -125,8 +118,8 @@
           }
         ],
         "selector": {
-          "app": "${GRAFANA_SERVICE_NAME}",
-          "deploymentconfig": "${GRAFANA_SERVICE_NAME}"
+          "app": "${APP_NAME}",
+          "deploymentconfig": "${NAME}"
         },
         "sessionAffinity": "None",
         "type": "ClusterIP"
@@ -138,7 +131,7 @@
         "labels": {
           "app": "${APP_NAME}"
         },
-        "name": "${GRAFANA_SERVICE_NAME}"
+        "name": "${NAME}"
       }
     },
     {
@@ -148,8 +141,8 @@
         "replicas": 1,
         "revisionHistoryLimit": 10,
         "selector": {
-          "app": "${GRAFANA_SERVICE_NAME}",
-          "deploymentconfig": "${GRAFANA_SERVICE_NAME}"
+          "app": "${APP_NAME}",
+          "deploymentconfig": "${NAME}"
         },
         "strategy": {
           "activeDeadlineSeconds": 21600,
@@ -171,15 +164,15 @@
             "creationTimestamp": null,
             "labels": {
               "app": "${APP_NAME}",
-              "deploymentconfig": "${GRAFANA_SERVICE_NAME}"
+              "deploymentconfig": "${NAME}"
             }
           },
           "spec": {
             "containers": [
               {
-                "image": "grafana/grafana@sha256:ced97851c89ca7d1e67a43aabbe05452e144a9bc9ffc63d2220dc2f37fdc1a71",
-                "imagePullPolicy": "IfNotPresent",
-                "name": "${GRAFANA_SERVICE_NAME}",
+                "image": " ",
+                "imagePullPolicy": "Always",
+                "name": "${NAME}",
                 "ports": [
                   {
                     "containerPort": 3000,
@@ -214,21 +207,21 @@
               {
                 "configMap": {
                   "defaultMode": 420,
-                  "name": "${GRAFANA_SERVICE_NAME}-dashboard-providers"
+                  "name": "${NAME}-dashboard-providers"
                 },
                 "name": "volume-8vnen"
               },
               {
                 "configMap": {
                   "defaultMode": 420,
-                  "name": "${GRAFANA_SERVICE_NAME}-dashboard"
+                  "name": "${NAME}-dashboard"
                 },
                 "name": "volume-4ayfb"
               },
               {
                 "configMap": {
                   "defaultMode": 420,
-                  "name": "${GRAFANA_SERVICE_NAME}-datasources"
+                  "name": "${NAME}-datasources"
                 },
                 "name": "volume-u06ib"
               }
@@ -243,11 +236,11 @@
           {
             "imageChangeParams": {
               "automatic": true,
-              "containerNames": ["${GRAFANA_SERVICE_NAME}"],
+              "containerNames": ["${NAME}"],
               "from": {
                 "kind": "ImageStreamTag",
-                "name": "${GRAFANA_SERVICE_NAME}:6.2.0",
-                "namespace": "${NAMESPACE}"
+                "name": "${SOURCE_IMAGE_NAME}:${TAG_NAME}",
+                "namespace": "${IMAGE_NAMESPACE}"
               }
             },
             "type": "ImageChange"
@@ -262,20 +255,20 @@
         "labels": {
           "app": "${APP_NAME}"
         },
-        "name": "${GRAFANA_SERVICE_NAME}"
+        "name": "${NAME}"
       }
     },
     {
       "apiVersion": "route.openshift.io/v1",
       "kind": "Route",
       "spec": {
-        "host": "${GRAFANA_SERVICE_NAME}-${NAMESPACE}.${ROUTE_SUBDOMAIN}",
+        "host": "${NAME}-${NAMESPACE}.${ROUTE_SUBDOMAIN}",
         "port": {
           "targetPort": "3000-tcp"
         },
         "to": {
           "kind": "Service",
-          "name": "${GRAFANA_SERVICE_NAME}",
+          "name": "${NAME}",
           "weight": 100
         },
         "wildcardPolicy": "None"
@@ -287,7 +280,7 @@
         "labels": {
           "app": "${APP_NAME}"
         },
-        "name": "${GRAFANA_SERVICE_NAME}"
+        "name": "${NAME}"
       }
     },
     {
@@ -300,7 +293,7 @@
         "labels": {
           "app": "${APP_NAME}"
         },
-        "name": "${GRAFANA_SERVICE_NAME}-dashboard"
+        "name": "${NAME}-dashboard"
       }
     },
     {
@@ -313,7 +306,7 @@
         "labels": {
           "app": "${APP_NAME}"
         },
-        "name": "${GRAFANA_SERVICE_NAME}-dashboard-providers"
+        "name": "${NAME}-dashboard-providers"
       }
     },
     {
@@ -326,7 +319,7 @@
         "labels": {
           "app": "${APP_NAME}"
         },
-        "name": "${GRAFANA_SERVICE_NAME}-datasources"
+        "name": "${NAME}-datasources"
       }
     }
   ]
