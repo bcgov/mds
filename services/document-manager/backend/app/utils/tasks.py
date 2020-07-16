@@ -98,7 +98,8 @@ def verify_docs(verify_id, doc_ids, chunk_index):
         doc_prefix = f'[Chunk {chunk_index}, Doc {i + 1}/{len(docs)}, ID {doc.document_id}]:'
         logger.info(f'{doc_prefix} Verifying...')
         try:
-            equal = ObjectStoreStorageService().compare_etag(filename=doc.full_storage_path)
+            equal = ObjectStoreStorageService().compare_etag(
+                filename=doc.full_storage_path, key=doc.object_store_path)
             if (equal):
                 success_verifications.append(doc.document_id)
                 logger.info(f'{doc_prefix} Verification PASSED')
