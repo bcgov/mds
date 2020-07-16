@@ -170,9 +170,11 @@ class MinePartyAppointment(AuditMixin, Base):
             #avoid circular imports.
             from app.api.mines.mine.models.mine import Mine
             mine = Mine.find_by_mine_guid(mine_guid)
-            if mine.permittee_appointments:
-                permit_permittees = [m.permittee_appointments[0] for m in mine.mine_permit]
-                results = results + permit_permittees
+            permit_permittees = []
+            for mp in mine.mine_permit:
+                if mp.permittee_appointments:
+                    permit_permittees.append(mp.permittee_appointments[0])
+            results = results + permit_permittees
         return results
 
     @classmethod
