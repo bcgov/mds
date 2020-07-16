@@ -88,9 +88,9 @@ objects:
                 period: 168h
         storage_config:
           boltdb:
-            directory: /loki/index
+            directory: /data/loki/index
           filesystem:
-            directory: /loki/chunks
+            directory: /data/loki/chunks
         limits_config:
           enforce_metric_name: false
           reject_old_samples: true

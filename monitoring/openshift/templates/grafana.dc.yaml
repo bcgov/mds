@@ -137,11 +137,11 @@ objects:
               terminationMessagePolicy: File
               volumeMounts:
                 - mountPath: "/etc/grafana/provisioning/dashboards"
-                  name: volume-8vnen
+                  name: providers
                 - mountPath: "/var/lib/grafana/dashboards/"
-                  name: volume-4ayfb
+                  name: dashboards
                 - mountPath: "/etc/grafana/provisioning/datasources/"
-                  name: volume-u06ib
+                  name: datasources
           dnsPolicy: ClusterFirst
           restartPolicy: Always
           schedulerName: default-scheduler
@@ -151,15 +151,15 @@ objects:
             - configMap:
                 defaultMode: 420
                 name: "${NAME}-dashboard-providers"
-              name: volume-8vnen
+              name: providers
             - configMap:
                 defaultMode: 420
                 name: "${NAME}-dashboard"
-              name: volume-4ayfb
+              name: dashboards
             - configMap:
                 defaultMode: 420
                 name: "${NAME}-datasources"
-              name: volume-u06ib
+              name: datasources
       test: false
       triggers:
         - type: ConfigChange
@@ -173,9 +173,6 @@ objects:
               namespace: "${IMAGE_NAMESPACE}"
           type: ImageChange
     metadata:
-      annotations:
-        openshift.io/generated-by: OpenShiftNewApp
-      generation: 6
       labels:
         app: "${APP_NAME}"
       name: "${NAME}"
@@ -352,7 +349,7 @@ objects:
     data:
       dashboards.yml: |-
         apiVersion: 1
-        providers: <string> provider name
+        providers:
         - name: 'default'
           orgId: 1
           folder: ''
@@ -362,7 +359,7 @@ objects:
           editable: true
           updateIntervalSeconds: 10  
           options:
-            path: /var/lib/grafana/dashboards"
+            path: /var/lib/grafana/dashboards
     kind: ConfigMap
     metadata:
       labels:
@@ -373,19 +370,21 @@ objects:
       datasources.yaml: |-
         apiVersion: 1
         datasources:
-        - name: Prometheus
-          type: prometheus
-          access: proxy
-          orgId: 1
-          url: http://${PROMETHEUS_SERVICE_NAME}:80  
-          isDefault: true
-          version: 1
-          editable: true
+        # - name: Prometheus
+        #   type: prometheus
+        #   access: proxy
+        #   orgId: 1
+        #   url: http://${PROMETHEUS_SERVICE_NAME}:80  
+        #   version: 1
+        #   editable: true
         - name: Loki
           type: loki
           orgId: 1
           access: proxy
-          url: ${LOKI_SERVICE_NAME}:3100
+          url: http://${LOKI_SERVICE_NAME}:3100
+          isDefault: true
+          version: 1
+          editable: true
     kind: ConfigMap
     metadata:
       labels:
