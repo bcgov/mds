@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Field, reduxForm } from "redux-form";
-import { Form, Button, Col, Row, Popconfirm, Collapse } from "antd";
+import { Form, Col, Row, Collapse } from "antd";
 import { required } from "@common/utils/Validate";
 import { resetForm } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
@@ -13,16 +13,13 @@ import FinalPermitDocuments from "@/components/noticeOfWork/applications/FinalPe
 const { Panel } = Collapse;
 
 const propTypes = {
-  cancelGeneration: PropTypes.func.isRequired,
-  handleSubmit: PropTypes.func.isRequired,
-  submitting: PropTypes.bool.isRequired,
   isAmendment: PropTypes.bool.isRequired,
   noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
   isViewMode: PropTypes.bool.isRequired,
 };
 
 export const GeneratePermitForm = (props) => (
-  <Form layout="vertical" onSubmit={props.handleSubmit}>
+  <Form layout="vertical">
     <ScrollContentWrapper id="general-info" title="General Information">
       <>
         <Row gutter={32}>
@@ -264,22 +261,6 @@ export const GeneratePermitForm = (props) => (
         </Collapse>
       </>
     </ScrollContentWrapper>
-    <div className="right center-mobile">
-      <Popconfirm
-        placement="topRight"
-        onConfirm={() => props.cancelGeneration()}
-        title="Are you sure you want to cancel?"
-        okText="Yes"
-        cancelText="No"
-      >
-        <Button className="full-mobile" type="secondary">
-          Cancel
-        </Button>
-      </Popconfirm>
-      <Button className="full-mobile" type="primary" htmlType="submit" disabled={props.submitting}>
-        Generate
-      </Button>
-    </div>
   </Form>
 );
 
