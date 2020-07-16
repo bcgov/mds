@@ -1,0 +1,224 @@
+---
+apiVersion: v1
+kind: Template
+labels:
+  template: loki-template
+message: |-
+  The following service(s) have been created in your project: ${NAME}.
+  For more information about using this template, including OpenShift considerations, contact the rocketchat community.
+metadata:
+  annotations:
+    description: 'MDS Loki Template. '
+    tags: monitoring,loki
+  name: loki-template
+parameters:
+- name: NAME
+  displayName: Name
+  description: The name assigned to all of the OpenShift resources associated to the
+    server instance.
+  required: true
+  value: loki
+- name: APP_NAME
+  displayName: App Name
+  description: Used to group components together in the OpenShift console.
+  required: true
+  value: monitoring
+- name: IMAGE_NAMESPACE
+  displayName: Image Namespace
+  required: true
+  description: The namespace of the OpenShift project containing the imagestream for
+    the application.
+  value: empr-mds-tools
+- name: SOURCE_IMAGE_NAME
+  displayName: Source Image Name
+  description: The name of the image to use for this resource.
+  required: true
+  value: loki
+- name: TAG_NAME
+  displayName: Environment TAG name
+  description: The TAG name for this environment, e.g., dev, test, prod
+  required: true
+  value: dev
+- name: CPU_REQUEST
+  displayName: Resources CPU Request
+  description: The resources CPU request (in cores) for this build.
+  required: true
+  value: 100m
+- name: CPU_LIMIT
+  displayName: Resources CPU Limit
+  description: The resources CPU limit (in cores) for this build.
+  required: true
+  value: 250m
+- name: MEMORY_REQUEST
+  displayName: Resources Memory Request
+  description: The resources Memory request (in Mi, Gi, etc) for this build.
+  required: true
+  value: 100Mi
+- name: MEMORY_LIMIT
+  displayName: Resources Memory Limit
+  description: The resources Memory limit (in Mi, Gi, etc) for this build.
+  required: true
+  value: 512Mi
+objects:
+- apiVersion: v1
+  stringData:
+    loki.yaml: |-
+      auth_enabled: false
+      chunk_store_config:
+        max_look_back_period: 0
+      ingester:
+        chunk_block_size: 262144
+        chunk_idle_period: 3m
+        chunk_retain_period: 1m
+        lifecycler:
+          ring:
+            kvstore:
+              store: inmemory
+            replication_factor: 1
+      limits_config:
+        enforce_metric_name: false
+        reject_old_samples: true
+        reject_old_samples_max_age: 168h
+      schema_config:
+        configs:
+        - from: 2018-04-15
+          index:
+            period: 168h
+            prefix: index_
+          object_store: filesystem
+          schema: v9
+          store: boltdb
+      server:
+        http_listen_port: 3100
+      storage_config:
+        boltdb:
+          directory: /data/loki/index
+        filesystem:
+          directory: /data/loki/chunks
+      table_manager:
+        retention_deletes_enabled: false
+        retention_period: 0
+  kind: Secret
+  type: Opaque
+  metadata:
+    annotations: {}
+    labels:
+      app: "${APP_NAME}"
+    name: "${NAME}"
+- apiVersion: v1
+  kind: Service
+  spec:
+    ports:
+    - name: http-metrics
+      port: 3100
+      protocol: TCP
+      targetPort: http-metrics
+    selector:
+      app: "${APP_NAME}"
+    sessionAffinity: None
+    type: ClusterIP
+  metadata:
+    annotations: {}
+    labels:
+      app: "${APP_NAME}"
+    name: "${NAME}-headless"
+- apiVersion: v1
+  kind: Service
+  spec:
+    ports:
+    - name: http-metrics
+      port: 3100
+      protocol: TCP
+      targetPort: http-metrics
+    selector:
+      app: "${APP_NAME}"
+    sessionAffinity: None
+    type: ClusterIP
+  metadata:
+    annotations: {}
+    labels:
+      app: "${APP_NAME}"
+    name: "${NAME}"
+- apiVersion: apps/v1
+  kind: StatefulSet
+  spec:
+    podManagementPolicy: OrderedReady
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: "${APP_NAME}"
+    serviceName: "${NAME}-headless"
+    template:
+      metadata:
+        annotations:
+          checksum/config: 1a1db42c74b23fa57b31058016b0d6d279b0bd0dc39493d37569d18455c4e60d
+          prometheus.io/port: http-metrics
+          prometheus.io/scrape: 'true'
+        creationTimestamp: 
+        labels:
+          app: "${APP_NAME}"
+      spec:
+        affinity: {}
+        containers:
+        - args:
+          - "-config.file=/etc/loki/loki.yaml"
+          image: docker-registry.default.svc:5000/${IMAGE_NAMESPACE}/${SOURCE_IMAGE_NAME}:${TAG_NAME}
+          imagePullPolicy: Always
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: "/ready"
+              port: http-metrics
+              scheme: HTTP
+            initialDelaySeconds: 45
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          name: loki
+          ports:
+          - containerPort: 3100
+            name: http-metrics
+            protocol: TCP
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: "/ready"
+              port: http-metrics
+              scheme: HTTP
+            initialDelaySeconds: 45
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          resources: {}
+          securityContext:
+            readOnlyRootFilesystem: true
+          terminationMessagePath: "/dev/termination-log"
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: "/etc/loki"
+            name: config
+          - mountPath: "/data"
+            name: storage
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        serviceAccount: default
+        serviceAccountName: default
+        terminationGracePeriodSeconds: 30
+        volumes:
+        - name: config
+          secret:
+            defaultMode: 420
+            secretName: "${NAME}"
+        - emptyDir: {}
+          name: storage
+    updateStrategy:
+      type: RollingUpdate
+  metadata:
+    annotations: {}
+    generation: 2
+    labels:
+      app: "${APP_NAME}"
+    name: "${NAME}"
