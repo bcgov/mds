@@ -188,6 +188,7 @@ class PermitResource(Resource, UserMixin):
         permit = Permit.find_by_permit_guid(permit_guid)
         if not permit:
             raise NotFound('Permit not found.')
+        permit._context_mine = Mine.find_by_mine_guid(mine_guid)
 
         try:
             permit.soft_delete()
