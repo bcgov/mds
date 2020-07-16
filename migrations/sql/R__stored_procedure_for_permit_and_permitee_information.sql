@@ -884,17 +884,12 @@ CREATE OR REPLACE FUNCTION transfer_permit_permitee_information() RETURNS void A
             RAISE NOTICE '....# of records in mine_party_appt: %', old_row;
             WITH deleted_rows AS (
                 DELETE FROM mine_party_appt
-                WHERE
-                    -- Only records known to ETL_PERMIT
-                    mine_party_appt_type_code = 'PMT'
-                    -- Only on mines in ETL process
-                    AND
-                    mine_guid IN (
-                        SELECT mine_guid
-                        FROM ETL_MINE
-                        WHERE major_mine_ind = 'f'
-                        AND mine_guid in (select mine_guid from ETL_PERMIT)
-                    )
+                WHERE mine_party_appt_guid IN (                    
+                    SELECT mpa.mine_party_appt_guid FROM mine_party_appt mpa JOIN permit p ON 
+                    mpa.permit_id=p.permit_id JOIN mine_permit_xref mpx ON 
+                    p.permit_id=mpx.permit_id JOIN mine m ON mpx.mine_guid=m.mine_guid 
+                    WHERE mpa.mine_party_appt_type_code='PMT' and m.major_mine_ind='F'
+                )
                 RETURNING 1
             )
             SELECT COUNT(*) FROM deleted_rows INTO delete_row;
@@ -908,7 +903,6 @@ CREATE OR REPLACE FUNCTION transfer_permit_permitee_information() RETURNS void A
                     mine_party_appt_guid     ,
                     permit_id              ,
                     party_guid               ,
-                    mine_guid                ,
                     mine_party_appt_type_code,
                     create_user              ,
                     create_timestamp         ,
@@ -921,9 +915,8 @@ CREATE OR REPLACE FUNCTION transfer_permit_permitee_information() RETURNS void A
                 )
                 SELECT DISTINCT ON (ETL_PERMIT.mine_party_appt_guid)
                     ETL_PERMIT.mine_party_appt_guid,
-                    mpx.permit_id         ,
+                    mpx.permit_id                  ,
                     ETL_PERMIT.party_guid          ,
-                    ETL_PERMIT.mine_guid           ,
                     'PMT'                          ,
                     'mms_migration'                ,
                     now()                          ,
