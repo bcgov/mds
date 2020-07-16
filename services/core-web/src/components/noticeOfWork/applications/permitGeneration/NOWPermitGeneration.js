@@ -254,8 +254,9 @@ export class NOWPermitGeneration extends Component {
     this.setState({ isLoaded: false });
     if (this.props.preDraftFormValues.permit_guid) {
       const payload = {
-        issue_date: moment().format("YYYY-MM-DD"),
+        issue_date: null,
         permit_amendment_status_code: "DFT",
+        mine_guid: this.props.noticeOfWork.mine_guid,
         now_application_guid: this.props.noticeOfWork.now_application_guid,
       };
       this.props
