@@ -25,7 +25,7 @@ MINE_STATUS_MODEL = api.model('MineStatus', {
 PERMIT_SEARCH_MODEL = api.model(
     'Permit', {
         'permit_guid': fields.String,
-        'mine': fields.List(fields.Nested(MINE_MODEL), attribute=lambda x: x.all_mines),
+        'mine': fields.List(fields.Nested(MINE_MODEL), attribute=lambda x: x._all_mines),
         'permit_no': fields.String,
         'current_permittee': fields.String,
     })
