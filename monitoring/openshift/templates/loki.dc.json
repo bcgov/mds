@@ -146,38 +146,6 @@
       }
     },
     {
-      "kind": "ImageStream",
-      "apiVersion": "v1",
-      "metadata": {
-        "name": "${SOURCE_IMAGE_NAME}",
-        "labels": {
-          "shared": "true",
-          "app": "${APP_NAME}"
-        },
-        "annotations": {}
-      },
-      "spec": {
-        "lookupPolicy": {
-          "local": false
-        },
-        "tags": [
-          {
-            "name": "${TAG_NAME}",
-            "annotations": null,
-            "from": {
-              "name": "${SOURCE_IMAGE_NAME}:${TAG_NAME}",
-              "namespace": "${IMAGE_NAMESPACE}"
-            },
-            "generation": 1,
-            "importPolicy": {},
-            "referencePolicy": {
-              "type": "Local"
-            }
-          }
-        ]
-      }
-    },
-    {
       "apiVersion": "apps/v1",
       "kind": "StatefulSet",
       "spec": {
@@ -186,8 +154,7 @@
         "revisionHistoryLimit": 10,
         "selector": {
           "matchLabels": {
-            "app": "${APP_NAME}",
-            "release": "${NAME}"
+            "app": "${APP_NAME}"
           }
         },
         "serviceName": "${NAME}-headless",
@@ -200,8 +167,7 @@
             },
             "creationTimestamp": null,
             "labels": {
-              "app": "${APP_NAME}",
-              "name": "${NAME}"
+              "app": "${APP_NAME}"
             }
           },
           "spec": {
@@ -209,7 +175,7 @@
             "containers": [
               {
                 "args": ["-config.file=/etc/loki/loki.yaml"],
-                "image": "${SOURCE_IMAGE_NAME}:${TAG_NAME}",
+                "image": "docker-registry.default.svc:5000/${IMAGE_NAMESPACE}/${SOURCE_IMAGE_NAME}:${TAG_NAME}",
                 "imagePullPolicy": "Always",
                 "livenessProbe": {
                   "failureThreshold": 3,
