@@ -45,7 +45,6 @@ const propTypes = {
 
 const defaultProps = {};
 
-const amalgamatedPermit = "ALG";
 const originalPermit = "OGP";
 
 export class NOWPermitGeneration extends Component {
@@ -256,7 +255,6 @@ export class NOWPermitGeneration extends Component {
     if (this.props.preDraftFormValues.permit_guid) {
       const payload = {
         issue_date: moment().format("YYYY-MM-DD"),
-        permittee_party_guid: this.state.permittee.party.party_guid,
         permit_amendment_status_code: "DFT",
         now_application_guid: this.props.noticeOfWork.now_application_guid,
       };
