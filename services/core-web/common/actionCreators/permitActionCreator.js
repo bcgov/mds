@@ -77,6 +77,7 @@ export const updatePermit = (mineGuid, permitGuid, payload) => (dispatch) => {
 };
 
 export const createPermitAmendment = (mineGuid, permitGuid, payload) => (dispatch) => {
+  console.log("GETTING CALLED");
   dispatch(request(reducerTypes.CREATE_PERMIT_AMENDMENT));
   dispatch(showLoading("modal"));
   return CustomAxios()

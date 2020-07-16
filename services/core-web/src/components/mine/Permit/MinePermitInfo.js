@@ -146,8 +146,6 @@ export class MinePermitInfo extends Component {
       : `${values.permit_type}-${values.permit_no}`;
     const payload = { ...values, permit_no };
 
-    console.log(payload);
-
     this.setState({ modifiedPermits: true });
 
     return this.props.createPermit(this.props.mineGuid, payload).then(this.closePermitModal);

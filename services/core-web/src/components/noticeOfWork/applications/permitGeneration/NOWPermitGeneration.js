@@ -2,6 +2,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import moment from "moment";
+import { isEmpty } from "lodash";
 import { Button, Menu, Popconfirm, Dropdown, Icon, Result, Alert, Row, Col } from "antd";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -15,10 +16,15 @@ import {
   updatePermitAmendment,
   fetchDraftPermitByNOW,
 } from "@common/actionCreators/permitActionCreator";
-import { getDraftPermits, getPermits } from "@common/selectors/permitSelectors";
+import {
+  getDraftPermits,
+  getPermits,
+  getDraftPermitForNOW,
+} from "@common/selectors/permitSelectors";
 import * as FORM from "@/constants/forms";
 import CustomPropTypes from "@/customPropTypes";
 import GeneratePermitForm from "@/components/Forms/permits/GeneratePermitForm";
+import PreDraftPermitForm from "@/components/Forms/permits/PreDraftPermitForm";
 import NullScreen from "@/components/common/NullScreen";
 import * as routes from "@/constants/routes";
 import NOWSideMenu from "@/components/noticeOfWork/applications/NOWSideMenu";
@@ -42,7 +48,7 @@ const amalgamatedPermit = "ALG";
 const originalPermit = "OGP";
 
 export class NOWPermitGeneration extends Component {
-  state = { isDraft: false, isViewMode: true, permittee: {}, permit: {}, isExploration: {} };
+  state = { isPreDraft: false, isDraft: false, isViewMode: true, permittee: {}, permitObj: {} };
 
   componentDidMount() {
     // get permittee, save to state
@@ -50,9 +56,7 @@ export class NOWPermitGeneration extends Component {
       (contact) => contact.mine_party_appt_type_code_description === "Permittee"
     )[0];
     this.setState({ permittee });
-    this.props.fetchPermits(this.props.noticeOfWork.mine_guid).then(() => {
-      console.log("WE GETTING PERMITS");
-    });
+    this.props.fetchPermits(this.props.noticeOfWork.mine_guid);
     this.handleDraftPermit();
     // fetch draft permit
     // set state isDraft
@@ -64,21 +68,31 @@ export class NOWPermitGeneration extends Component {
         this.props.noticeOfWork.now_application_guid
       )
       .then((data) => {
-        if (this.props.draftPermits.length >= 1) {
-          const draft = this.props.draftPermits[0].permit_amendments.filter(
+        if (!isEmpty(this.props.draftPermitForNOW)) {
+          const draft = this.props.draftPermitForNOW.permit_amendments.filter(
             (amendment) =>
               amendment.now_application_guid === this.props.noticeOfWork.now_application_guid
           );
-          this.setState({ isDraft: true, draft: draft[0] });
+          const permitObj = this.createPermitGenObject(
+            this.props.noticeOfWork,
+            this.props.draftPermitForNOW
+          );
+          this.setState({ isDraft: true, draftAmendment: draft[0], permitObj });
         }
       });
   };
-  createPermit = () => {
+  createPermit = (isExploration) => {
     // generate permit number based on NoW application type
     // GENERATE A RANDOM NUMBER BASED OFF TYPE
-    let permitNo = "P-6235642";
+    const randomNumber = Math.floor(100000 + Math.random() * 900000);
     const permitType = this.props.noticeOfWork.notice_of_work_type_code[0];
-    const permitObj = this.createPermitGenObject(this.props.noticeOfWork);
+    const correctPermitType =
+      this.props.noticeOfWork.notice_of_work_type_code[0] === "S"
+        ? "G"
+        : this.props.noticeOfWork.notice_of_work_type_code[0];
+    let permitNo = isExploration
+      ? `${correctPermitType}X-${randomNumber}`
+      : `${correctPermitType}-${randomNumber}`;
     const payload = {
       permittee_party_guid: this.state.permittee.party.party_guid,
       permit_status_code: "D",
@@ -92,7 +106,7 @@ export class NOWPermitGeneration extends Component {
     });
   };
 
-  createPermitGenObject = (noticeOfWork) => {
+  createPermitGenObject = (noticeOfWork, draftPermit) => {
     const permitGenObject = {
       permit_number: "",
       issue_date: moment().format("MMM DD YYYY"),
@@ -115,8 +129,8 @@ export class NOWPermitGeneration extends Component {
     permitGenObject.property = noticeOfWork.property_name;
     permitGenObject.mine_location = `Latitude: ${noticeOfWork.latitude}, Longitude: ${noticeOfWork.longitude}`;
     permitGenObject.application_date = noticeOfWork.submitted_date;
-    permitGenObject.permit_no =
-      this.props.draftPermits.length >= 1 ? this.props.draftPermits[0].permit_no : "";
+    permitGenObject.permit_number = draftPermit.permit_no;
+    permitGenObject.auth_end_date = noticeOfWork.proposed_end_date;
     permitGenObject.application_type = this.props.appOptions.filter(
       (option) => option.notice_of_work_type_code === noticeOfWork.notice_of_work_type_code
     )[0].description;
@@ -202,22 +216,23 @@ export class NOWPermitGeneration extends Component {
   };
 
   handleSaveDraftEdit = () => {
-    console.log(this.props.formValues);
+    // console.log(this.props.formValues);
     const payload = {
-      issue_date: this.props.formValues.issue_date,
+      // ...this.state.draft,
+      issue_date: null,
       authorization_end_date: this.props.formValues.authorization_end_date,
-      // permit_amendment_status_code: 'DFT',
+      permit_amendment_status_code: "DFT",
       lead_inspector_title: this.props.formValues.lead_inspector_title,
       regional_office: this.props.formValues.regional_office,
       now_application_guid: this.props.noticeOfWork.now_application_guid,
     };
-    delete payload.permit_amendment_guid;
-    delete payload.permit_amendment_id;
+    // delete payload.permit_amendment_guid;
+    // delete payload.permit_amendment_id;
     this.props
       .updatePermitAmendment(
         this.props.noticeOfWork.mine_guid,
-        this.props.draftPermits[0].permit_guid,
-        this.state.draft.permit_amendment_guid,
+        this.props.draftPermitForNOW.permit_guid,
+        this.state.draftAmendment.permit_amendment_guid,
         payload
       )
       .then(() => {
@@ -227,24 +242,56 @@ export class NOWPermitGeneration extends Component {
   };
 
   startDraftPermit = () => {
-    // this.setState({ isDraft: true });
-    // create amendment object
-    if (this.state.isAmendment) {
+    // console.log(this.state.permittee)
+    if (this.props.preDraftFormValues.permit_guid) {
+      const payload = {
+        issue_date: moment().format("YYYY-MM-DD"),
+        permittee_party_guid: this.state.permittee.party.party_guid,
+        // authorization_end_date: this.props.formValues.authorization_end_date,
+        permit_amendment_status_code: "DFT",
+        now_application_guid: this.props.noticeOfWork.now_application_guid,
+        // lead_inspector_title: this.props.formValues.lead_inspector_title,
+        // regional_office: this.props.formValues.regional_office,
+      };
+      this.props
+        .createPermitAmendment(
+          this.props.noticeOfWork.mine_guid,
+          this.props.preDraftFormValues.permit_guid,
+          payload
+        )
+        .then(() => {
+          this.handleDraftPermit();
+        });
       // createPermitAmendment
     } else {
-      this.createPermit();
+      this.createPermit(this.props.preDraftFormValues.isExploration);
+    }
+  };
+
+  startPreDraft = () => {
+    const isAmendment = this.props.noticeOfWork.type_of_application !== "New Permit";
+    const isCoalorMineral =
+      this.props.noticeOfWork.notice_of_work_type_code === "MIN" ||
+      this.props.noticeOfWork.notice_of_work_type_code === "COL";
+    if (!isAmendment && isCoalorMineral) {
+      this.createPermit(false);
+    } else {
+      this.setState({ isPreDraft: true });
     }
   };
 
   render() {
-    console.log(this.state.draft);
-    console.log(this.props.permits);
+    console.log(this.props.draftPermitForNOW);
+    console.log(this.state.draftAmendment);
     const isAmendment = this.props.noticeOfWork.type_of_application !== "New Permit";
     const permittee =
       this.props.noticeOfWork.contacts &&
       this.props.noticeOfWork.contacts.filter(
         (contact) => contact.mine_party_appt_type_code_description === "Permittee"
       )[0];
+    const isCoalorMineral =
+      this.props.noticeOfWork.notice_of_work_type_code === "MIN" ||
+      this.props.noticeOfWork.notice_of_work_type_code === "COL";
     return (
       <div>
         <div className={this.props.fixedTop ? "view--header fixed-scroll" : "view--header"}>
@@ -268,37 +315,47 @@ export class NOWPermitGeneration extends Component {
             >
               {!this.state.isDraft ? (
                 <div className="null-screen">
-                  <NullScreen type="draft-permit" />
-                  <Button onClick={this.startDraftPermit}>Start Draft Permit</Button>
-                  <Result
-                    status="success"
-                    title={`${this.props.noticeOfWork.type_of_application}`}
-                    subTitle={
-                      isAmendment
-                        ? `Creating an ${this.props.noticeOfWork.type_of_application}, please select the related permit`
-                        : `Creating a ${this.props.noticeOfWork.type_of_application}, please let us know if this is an exploration permit`
-                    }
-                    extra={[
-                      <Row>
-                        <Col
-                          lg={{ span: 8, offset: 8 }}
-                          md={{ span: 10, offset: 7 }}
-                          sm={{ span: 12, offset: 6 }}
-                        >
-                          <p>select permit</p>
-                        </Col>
-                      </Row>,
-                    ]}
-                  />
+                  {this.state.isPreDraft ? (
+                    <Result
+                      status="success"
+                      title={`${this.props.noticeOfWork.type_of_application}`}
+                      subTitle={
+                        isAmendment
+                          ? `You are now creating an amendment for a permit. Please select the permit that this amendment is for.`
+                          : `You are now creating a new permit. Please check the box below if this is an exploratory permit.`
+                      }
+                      extra={[
+                        <Row>
+                          <Col
+                            lg={{ span: 8, offset: 8 }}
+                            md={{ span: 10, offset: 7 }}
+                            sm={{ span: 12, offset: 6 }}
+                          >
+                            <PreDraftPermitForm
+                              permits={this.props.permits}
+                              isAmendment={isAmendment}
+                              onSubmit={this.startDraftPermit}
+                            />
+                          </Col>
+                        </Row>,
+                      ]}
+                    />
+                  ) : (
+                    <>
+                      <NullScreen type="draft-permit" />
+                      <Button onClick={this.startPreDraft}>Start Draft Permit</Button>
+                    </>
+                  )}
                 </div>
               ) : (
                 <GeneratePermitForm
-                  initialValues={this.createPermitGenObject(this.props.noticeOfWork)}
+                  initialValues={this.state.permitObj}
                   cancelGeneration={this.props.returnToPrevStep}
                   documentList={this.createDocList(this.props.noticeOfWork)}
                   onSubmit={this.handlePremitGenSubmit}
                   isAmendment={isAmendment}
                   noticeOfWork={this.props.noticeOfWork}
+                  isViewMode={this.state.isViewMode}
                 />
               )}
             </div>
@@ -317,9 +374,10 @@ NOWPermitGeneration.defaultProps = defaultProps;
 const mapStateToProps = (state) => ({
   appOptions: getNoticeOfWorkApplicationTypeOptions(state),
   formValues: getFormValues(FORM.GENERATE_PERMIT)(state),
-  // formValues: getFormValues(FORM.PRE_DRAFT_PERMIT)(state),
+  preDraftFormValues: getFormValues(FORM.PRE_DRAFT_PERMIT)(state),
   draftPermits: getDraftPermits(state),
   permits: getPermits(state),
+  draftPermitForNOW: getDraftPermitForNOW(state),
 });
 
 const mapDispatchToProps = (dispatch) =>

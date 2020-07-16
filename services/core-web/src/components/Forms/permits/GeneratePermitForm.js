@@ -18,6 +18,7 @@ const propTypes = {
   submitting: PropTypes.bool.isRequired,
   isAmendment: PropTypes.bool.isRequired,
   noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
+  isViewMode: PropTypes.bool.isRequired,
 };
 
 export const GeneratePermitForm = (props) => (
@@ -44,6 +45,7 @@ export const GeneratePermitForm = (props) => (
               required
               component={renderConfig.FIELD}
               validate={[required]}
+              disabled
             />
           </Col>
         </Row>
@@ -127,6 +129,7 @@ export const GeneratePermitForm = (props) => (
               required
               component={renderConfig.DATE}
               validate={[required]}
+              disabled
             />
           </Col>
           <Col xs={24} md={12}>
@@ -150,6 +153,7 @@ export const GeneratePermitForm = (props) => (
               required
               component={renderConfig.FIELD}
               validate={[required]}
+              disabled={props.isViewMode}
             />
           </Col>
           <Col xs={24} md={12}>
@@ -160,6 +164,7 @@ export const GeneratePermitForm = (props) => (
               required
               component={renderConfig.FIELD}
               validate={[required]}
+              disabled={props.isViewMode}
             />
           </Col>
         </Row>
@@ -224,6 +229,7 @@ export const GeneratePermitForm = (props) => (
                   required
                   component={renderConfig.AUTO_SIZE_FIELD}
                   validate={[required]}
+                  disabled={props.isViewMode}
                 />
               </Col>
             </Row>
