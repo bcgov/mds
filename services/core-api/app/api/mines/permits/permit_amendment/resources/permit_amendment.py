@@ -22,7 +22,7 @@ class PermitAmendmentListResource(Resource, UserMixin):
         'permittee_party_guid',
         type=str,
         help='GUID of the party that is the permittee for this permit.',
-        location='json')
+        location='json', store_missing=False)
     parser.add_argument(
         'received_date', location='json', type=inputs.datetime_from_iso8601, store_missing=False)
     parser.add_argument(
@@ -61,60 +61,69 @@ class PermitAmendmentListResource(Resource, UserMixin):
 
         data = self.parser.parse_args()
         current_app.logger.info(f'creating permit_amendment with >> {data}')
+        
+        permittee_party_guid = data.get('permittee_party_guid')
+        permittee_end_date = None
+        if permittee_party_guid:
+            party = Party.find_by_party_guid(data.get('permittee_party_guid'))
+            if not party:
+                raise NotFound('Permittee party not found')
 
-        party = Party.find_by_party_guid(data.get('permittee_party_guid'))
-        if not party:
-            raise NotFound('Party not found')
+            
+            is_historical_permit = False
+            permit_issue_datetime = data.get('issue_date')
+            # convert permit_issue_date to a date object to compare with permittee start_date,
+            #Both dates are stored in the DB as Dates, and are being converted to SQLAlchemy dateTimes in the modals, but for some reason being returned as Python Dates.
+            if permit_issue_datetime:
+                permit_issue_date = datetime.date(permit_issue_datetime)
+                    
+            permittees = permit.permittee_appointments
+            if permittees:                        
+                    new_end_dates = MinePartyAppointment.find_appointment_end_dates(
+                        permit.permit_id, permit_issue_date)
 
-        permittees = permit.permittee_appointments
-        if not permittees:
-            raise NotFound('Party appointments not found')
+                    for permittee in permittees:
+                        # check if the new appointment is older than the current appointment, if so create a new permittee appointment
+                        if permittee.start_date > permit_issue_date:
+                            is_historical_permit = True
+                        else:
+                            # if the amendment is the newest, change the end dates of the other appointments
+                            position = new_end_dates.index(permittee.start_date)
+                            if new_end_dates.index(permittee.start_date) == 0:
+                                permittee.save()
+                            else:
+                                permittee.end_date = new_end_dates[position - 1]
+                                permittee.save()
+                    position = new_end_dates.index(permit_issue_date)
+                    permittee_end_date = new_end_dates[position - 1] if is_historical_permit else None
 
-        permit_issue_datetime = data.get('issue_date')
-        # convert permit_issue_date to a date object to compare with permittee start_date,
-        #Both dates are stored in the DB as Dates, and are being converted to SQLAlchemy dateTimes in the modals, but for some reason being returned as Python Dates.
-        permit_issue_date = datetime.date(permit_issue_datetime)
-        is_historical_permit = False
+            # create a new appointment, so every amendment is associated with a permittee
+            new_permittee = MinePartyAppointment.create(
+                None,
+                data.get('permittee_party_guid'),
+                mine_party_appt_type_code='PMT',
+                processed_by=self.get_user_info(),
+                start_date=permit_issue_date,
+                end_date=permittee_end_date,
+                permit=permit)
 
-        new_end_dates = MinePartyAppointment.find_appointment_end_dates(
-            permit.permit_id, permit_issue_date)
+            new_permittee.save()
 
-        for permittee in permittees:
-            # check if the new appointment is older than the current appointment, if so create a new permittee appointment
-            if permittee.start_date > permit_issue_date:
-                is_historical_permit = True
-            else:
-                # if the amendment is the newest, change the end dates of the other appointments
-                position = new_end_dates.index(permittee.start_date)
-                if new_end_dates.index(permittee.start_date) == 0:
-                    permittee.save()
-                else:
-                    permittee.end_date = new_end_dates[position - 1]
-                    permittee.save()
-
-        permittee_start_date = permit_issue_date
-        position = new_end_dates.index(permit_issue_date)
-        permittee_end_date = new_end_dates[position - 1] if is_historical_permit else None
-
-        # create a new appointment, so every amendment is associated with a permittee
-        new_permittee = MinePartyAppointment.create(
-            None,
-            data.get('permittee_party_guid'),
-            mine_party_appt_type_code='PMT',
-            processed_by=self.get_user_info(),
-            start_date=permittee_start_date,
-            end_date=permittee_end_date,
-            permit=permit)
-
-        new_permittee.save()
+        permit_amendment_type_code = data.get('permit_amendment_type_code')
+        permit_amendment_status_code = data.get('permit_amendment_status_code')
         new_pa = PermitAmendment.create(
             permit,
             mine,
-            data.get('received_date'),
-            data.get('issue_date'),
-            data.get('authorization_end_date'),
-            data.get('permit_amendment_type_code', 'AMD'),
-            description=data.get('description'))
+            received_date=data.get('received_date'),
+            issue_date=data.get('issue_date'),
+            authorization_end_date=data.get('authorization_end_date'),
+            permit_amendment_type_code=permit_amendment_type_code if permit_amendment_type_code else 'AMD',
+            description=data.get('description'),
+            permit_amendment_status_code=permit_amendment_status_code if permit_amendment_status_code else 'ACT',
+            lead_inspector_title=data.get('lead_inspector_title'),
+            regional_office=data.get('regional_office'),
+            now_application_guid=data.get('now_application_guid'),
+            )
 
         uploadedFiles = data.get('uploadedFiles', [])
         for newFile in uploadedFiles:
@@ -136,7 +145,8 @@ class PermitAmendmentResource(Resource, UserMixin):
         'permittee_party_guid',
         type=str,
         help='GUID of the party that is the permittee for this permit.',
-        location='json')
+        location='json',
+        store_missing=False)
     parser.add_argument(
         'received_date',
         location='json',
