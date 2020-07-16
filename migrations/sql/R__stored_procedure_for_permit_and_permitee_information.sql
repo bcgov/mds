@@ -831,6 +831,7 @@ CREATE OR REPLACE FUNCTION transfer_permit_permitee_information() RETURNS void A
                     SELECT  party_guid
                     FROM    party
                 )
+                AND party_name IS NOT NULL
             ), inserted_rows AS (
                 INSERT INTO party (
                     party_guid       ,
@@ -918,7 +919,7 @@ CREATE OR REPLACE FUNCTION transfer_permit_permitee_information() RETURNS void A
                     processed_by             ,
                     processed_on
                 )
-                SELECT
+                SELECT DISTINCT ON (ETL_PERMIT.mine_party_appt_guid)
                     ETL_PERMIT.mine_party_appt_guid,
                     mpx.permit_id         ,
                     ETL_PERMIT.party_guid          ,
@@ -946,6 +947,11 @@ CREATE OR REPLACE FUNCTION transfer_permit_permitee_information() RETURNS void A
                     SELECT *
                     FROM public.PERMIT
                     WHERE ETL_PERMIT.permit_guid = public.PERMIT.permit_guid
+                )
+                AND EXISTS (
+                    SELECT *
+                    FROM public.party
+                    WHERE ETL_PERMIT.party_guid = public.party.party_guid
                 )
                 RETURNING 1
             )
