@@ -84,7 +84,7 @@ class PermitAmendment(AuditMixin, Base):
                received_date,
                issue_date,
                authorization_end_date,
-               permit_amendment_type_code,
+               permit_amendment_type_code='AMD',
                description=None,
                permit_amendment_status_code='ACT',
                lead_inspector_title=None,
