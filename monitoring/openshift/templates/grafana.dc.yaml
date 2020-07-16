@@ -350,15 +350,19 @@ objects:
       name: "${NAME}-dashboard"
   - apiVersion: v1
     data:
-      dashboards.yml: "apiVersion: 1\n\nproviders:\n  # <string> provider name\n- name:
-        'default'\n  # <int> org id. will default to orgId 1 if not specified\n  orgId:
-        1\n  # <string, required> name of the dashboard folder. Required\n  folder:
-        ''\n  # <string> folder UID. will be automatically generated if not specified\n
-        \ folderUid: ''\n  # <string, required> provider type. Required\n  type: file\n
-        \ # <bool> disable dashboard deletion\n  disableDeletion: false\n  # <bool>
-        enable dashboard editing\n  editable: true\n  # <int> how often Grafana will
-        scan for changed dashboards\n  updateIntervalSeconds: 10  \n  options:\n    #
-        <string, required> path to dashboard files on disk. Required\n    path: /var/lib/grafana/dashboards"
+      dashboards.yml: |-
+        apiVersion: 1
+        providers: <string> provider name
+        - name: 'default'
+          orgId: 1
+          folder: ''
+          folderUid: ''
+          type: file
+          disableDeletion: false
+          editable: true
+          updateIntervalSeconds: 10  
+          options:
+            path: /var/lib/grafana/dashboards"
     kind: ConfigMap
     metadata:
       labels:
@@ -366,12 +370,22 @@ objects:
       name: "${NAME}-dashboard-providers"
   - apiVersion: v1
     data:
-      datasources.yaml: "  # config file version\n  apiVersion: 1\n\n  datasources:\n
-        \ - name: Prometheus\n    type: prometheus\n    access: proxy\n    orgId: 1\n
-        \   url: http://${PROMETHEUS_SERVICE_NAME}:80  \n    isDefault: true\n    version:
-        1\n    editable: true\n  - name: Loki\n    type: loki\n    orgId: 1\n    access:
-        proxy\n    url: ${LOKI_SERVICE_NAME}:3100  \n    jsonData:\n        maxLines:
-        1000"
+      datasources.yaml: |-
+        apiVersion: 1
+        datasources:
+        - name: Prometheus
+          type: prometheus
+          access: proxy
+          orgId: 1
+          url: http://${PROMETHEUS_SERVICE_NAME}:80  
+          isDefault: true
+          version: 1
+          editable: true
+        - name: Loki
+          type: loki
+          orgId: 1
+          access: proxy
+          url: ${LOKI_SERVICE_NAME}:3100
     kind: ConfigMap
     metadata:
       labels:
