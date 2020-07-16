@@ -1,5 +1,5 @@
 import React from "react";
-import { Menu, Dropdown, Button, Icon, Tooltip, Table, Popconfirm } from "antd";
+import { Menu, Dropdown, Button, Icon, Tooltip, Table } from "antd";
 import PropTypes from "prop-types";
 import * as Strings from "@common/constants/strings";
 import { formatDate, dateSorter, formatMoney } from "@common/utils/helpers";
@@ -34,7 +34,7 @@ const propTypes = {
   // eslint-disable-next-line react/no-unused-prop-types
   openAddBondModal: PropTypes.func.isRequired,
   // eslint-disable-next-line react/no-unused-prop-types
-  releaseOrConfiscateBond: PropTypes.func.isRequired,
+  openCloseBondModal: PropTypes.func.isRequired,
   // eslint-disable-next-line react/no-unused-prop-types
   onExpand: PropTypes.func.isRequired,
   // eslint-disable-next-line react/no-unused-prop-types
@@ -173,47 +173,36 @@ export const MineBondTable = (props) => {
         const menu = (
           <Menu>
             {record.bond_status_code === "ACT" && (
-              <span>
-                <div className="custom-menu-item">
-                  <Popconfirm
-                    placement="leftTop"
-                    title={`Are you sure you want to release Bond ${record.bond_id}?`}
-                    onConfirm={() => props.releaseOrConfiscateBond("REL", record.bond_guid, record)}
-                    okText="Release"
-                    cancelText="Cancel"
+              <>
+                <Menu.Item key="release" className="custom-menu-item">
+                  <button
+                    type="button"
+                    onClick={(event) => props.openCloseBondModal(event, record, "REL")}
                   >
-                    <button type="button" className="full">
-                      Release Bond
-                    </button>
-                  </Popconfirm>
-                </div>
-                <div className="custom-menu-item">
-                  <Popconfirm
-                    placement="leftTop"
-                    title="Are you sure you want to confiscate this bond? Doing so will convert the bond type to cash."
-                    onConfirm={() => props.releaseOrConfiscateBond("CON", record.bond_guid, record)}
-                    okText="Confiscate"
-                    cancelText="Cancel"
+                    Release Bond
+                  </button>
+                </Menu.Item>
+                <Menu.Item key="confiscate" className="custom-menu-item">
+                  <button
+                    type="button"
+                    onClick={(event) => props.openCloseBondModal(event, record, "CON")}
                   >
-                    <button type="button" className="full">
-                      Confiscate Bond
-                    </button>
-                  </Popconfirm>
-                </div>
+                    Confiscate Bond
+                  </button>
+                </Menu.Item>
                 {props.permits.length > 1 && (
-                  <div className="custom-menu-item">
+                  <Menu.Item key="transfer" className="custom-menu-item">
                     <button
                       type="button"
-                      className="full"
                       onClick={(event) => props.openTransferBondModal(event, record)}
                     >
                       Transfer Bond
                     </button>
-                  </div>
+                  </Menu.Item>
                 )}
-              </span>
+              </>
             )}
-            <Menu.Item key="2">
+            <Menu.Item key="edit" className="custom-menu-item">
               <button
                 type="button"
                 className="full"
