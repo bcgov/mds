@@ -948,6 +948,11 @@ CREATE OR REPLACE FUNCTION transfer_permit_permitee_information() RETURNS void A
                     FROM public.PERMIT
                     WHERE ETL_PERMIT.permit_guid = public.PERMIT.permit_guid
                 )
+                AND EXISTS (
+                    SELECT *
+                    FROM public.party
+                    WHERE ETL_PERMIT.party_guid = public.party.party_guid
+                )
                 RETURNING 1
             )
             SELECT count(*) FROM inserted_rows INTO insert_row;
