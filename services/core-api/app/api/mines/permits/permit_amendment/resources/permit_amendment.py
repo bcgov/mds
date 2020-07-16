@@ -38,6 +38,21 @@ class PermitAmendmentListResource(Resource, UserMixin):
         'permit_amendment_status_code', type=str, location='json', store_missing=False)
     parser.add_argument('description', type=str, location='json', store_missing=False)
     parser.add_argument('uploadedFiles', type=list, location='json', store_missing=False)
+    parser.add_argument(
+        'now_application_guid',
+        type=str,
+        location='json',
+        help='The now_application_guid this permit is related to.')
+    parser.add_argument(
+        'lead_inspector_title',
+        type=str,
+        location='json',
+        help='Title of the lead inspector for this permit.')
+    parser.add_argument(
+        'regional_office',
+        type=str,
+        location='json',
+        help='The regional office for this permit.')
 
     @api.doc(params={
         'permit_amendment_guid': 'Permit amendment guid.',
