@@ -47,6 +47,7 @@ exports[`BondForm renders properly 1`] = `
       >
         <Field
           component={[Function]}
+          disabled={false}
           id="bond_type_code"
           label="Bond Type*"
           name="bond_type_code"
@@ -101,6 +102,7 @@ exports[`BondForm renders properly 1`] = `
             Array [
               [Function],
               [Function],
+              [Function],
             ]
           }
         />
@@ -137,6 +139,24 @@ exports[`BondForm renders properly 1`] = `
           id="project_id"
           label="Project ID"
           name="project_id"
+        />
+      </FormItem>
+    </Col>
+  </Row>
+  <Row
+    gutter={0}
+  >
+    <Col
+      md={24}
+    >
+      <FormItem
+        hasFeedback={false}
+      >
+        <Field
+          component={[Function]}
+          id="note"
+          label="Notes"
+          name="note"
         />
       </FormItem>
     </Col>
@@ -268,24 +288,6 @@ exports[`BondForm renders properly 1`] = `
     </Col>
   </Row>
   <Row
-    gutter={0}
-  >
-    <Col
-      md={24}
-    >
-      <FormItem
-        hasFeedback={false}
-      >
-        <Field
-          component={[Function]}
-          id="note"
-          label="Notes"
-          name="note"
-        />
-      </FormItem>
-    </Col>
-  </Row>
-  <Row
     gutter={16}
   >
     <Col
@@ -404,7 +406,6 @@ exports[`BondForm renders properly 1`] = `
     <Button
       block={false}
       className="full-mobile"
-      disabled={false}
       ghost={false}
       htmlType="submit"
       loading={false}
