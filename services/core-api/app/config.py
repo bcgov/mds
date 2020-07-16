@@ -40,7 +40,8 @@ class Config(object):
             'backupCount': 0,
             'maxBytes': 100000000,
             'filename': '/var/log/core-api/core.log',
-            'formatter': 'default'
+            'formatter': 'default',
+            'level': FLASK_LOGGING_LEVEL
         }
         LOGGING_DICT_CONFIG['root']['handlers'] = ['customhandler']
 
