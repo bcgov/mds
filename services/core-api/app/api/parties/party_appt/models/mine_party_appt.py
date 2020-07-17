@@ -149,13 +149,13 @@ class MinePartyAppointment(AuditMixin, Base):
     def find_current_appointments(cls,
                                   mine_guid=None,
                                   mine_party_appt_type_code=None,
-                                  permit_guid=None,
+                                  permit_id=None,
                                   mine_tailings_storage_facility_guid=None):
         built_query = cls.query.filter_by(deleted_ind=False).filter_by(
             mine_guid=mine_guid).filter_by(
                 mine_party_appt_type_code=mine_party_appt_type_code).filter_by(end_date=None)
-        if permit_guid:
-            built_query = built_query.filter_by(permit_guid=permit_guid)
+        if permit_id:
+            built_query = built_query.filter_by(permit_id=permit_id)
         if mine_tailings_storage_facility_guid:
             built_query = built_query.filter_by(
                 mine_tailings_storage_facility_guid=mine_tailings_storage_facility_guid)
