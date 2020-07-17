@@ -60,6 +60,7 @@ class MinePartyAppointment(AuditMixin, Base):
             if not permit:
                 raise AssertionError(f'Permit with guid {related_guid} not found')
             self.permit_id = permit.permit_id
+            self.permit = permit
         return
 
     def save(self, commit=True):
