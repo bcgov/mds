@@ -107,6 +107,7 @@ def verify_docs(verify_id, doc_ids, chunk_index):
                 unequal.append(doc.document_id)
                 logger.info(f'{doc_prefix} Verification FAILED')
         except Exception as e:
+            unequal.append(doc.document_id)
             logger.error(f'{doc_prefix} Verification ERROR\n{e}')
             errors.append({'exception': str(e), 'document': doc.json()})
 
