@@ -149,6 +149,34 @@ DECLARE
 	-- # Includes records related to mines that are not brought in
 	-- ################################################################
 
+	  	DROP TABLE IF EXISTS etl_permit_permittees;
+	    create TEMPORARY TABLE etl_permit_permittees as
+	    WITH
+	    most_recent_permittee AS (
+	        SELECT
+	            cid  AS permit_cid  ,
+	            max(cid_ccn) AS contact_cid
+	        FROM mms.mmsccc
+	        WHERE
+	            SUBSTRING(type_ind, 4, 1)='Y'
+	            AND
+	            cid in (select permit_cid from etl_permit_info)
+	        GROUP BY cid
+	    )
+	    SELECT
+	        most_recent_permittee.permit_cid                ,
+	        contact_info.add_dt ::date AS effective_date    ,
+	        company_info.cmp_nm  AS permittee_name            ,
+	        company_info.tel_no                             ,
+	        company_info.email                              ,
+	        '1'::numeric AS source
+	    FROM most_recent_permittee
+	    INNER JOIN mms.mmsccn contact_info ON
+	        most_recent_permittee.contact_cid=contact_info.cid
+	    INNER JOIN mms.mmscmp company_info ON
+	    contact_info.cmp_cd=company_info.cmp_cd;
+
+
 	    DROP TABLE IF EXISTS etl_mine_update_screen_permittees;
 	    CREATE TEMPORARY TABLE etl_mine_update_screen_permittees AS
 	    SELECT
@@ -158,13 +186,15 @@ DECLARE
 	            THEN current_date --psql built-in
 	            ELSE to_date(mmsmin.entered_date, 'YYYY/MM/DD')
 	        END AS effective_date,
-	        mmsmin.cmp_nm AS permittee_name    ,
-	        mmsmin.ctel_no AS tel_no         ,
-	        mmsmin.cemail AS email           ,
+	        mmscmp.cmp_nm AS permittee_name    ,
+	        COALESCE(mmscmp.tel_no, mmscmp.ctel_no) AS tel_no,
+	        mmscmp.cemail AS email           ,
 	        '3'::numeric AS source
 	    FROM mms.mmspmt permit_info
 	    INNER JOIN mms.mmsmin mmsmin ON
 	        mmsmin.mine_no = permit_info.mine_no
+	    INNER JOIN mms.mmscmp mmscmp ON
+	        mmscmp.cmp_cd=mmsmin.cmp_cd
 	    WHERE permit_info.cid IN (
 	        SELECT permit_cid
 	        FROM etl_permit_info

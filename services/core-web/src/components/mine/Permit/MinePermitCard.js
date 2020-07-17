@@ -33,7 +33,7 @@ export const PermitCard = (props) => {
       <br />
       <br />
       <h6>Permittee</h6>
-      <span>{pmt ? pmt.party.name : <i>None Active</i>}</span>
+      <span>{pmt ? pmt.party.name : <i>None Assigned</i>}</span>
       <br />
       <br />
     </div>
