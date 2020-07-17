@@ -119,7 +119,8 @@ class MinePartyApptResource(Resource, UserMixin):
                     'mine_tailings_storage_facility_guid must be provided for Engineer of Record')
             #TODO move db foreign key constraint when services get separated
             pass
-
+        current_app.logger.warn('before pmt check')
+        current_app.logger.warn(new_mpa.__dict__)
         if new_mpa.mine_party_appt_type_code == "PMT":
             new_mpa.assign_related_guid(related_guid)
             if not new_mpa.permit_id:
@@ -127,6 +128,9 @@ class MinePartyApptResource(Resource, UserMixin):
             #TODO move db foreign key constraint when services get separated
             pass
         try:
+            current_app.logger.warn('before save')
+
+            current_app.logger.warn(new_mpa.__dict__)
             new_mpa.save()
         except alch_exceptions.IntegrityError as e:
             if "daterange_excl" in str(e):

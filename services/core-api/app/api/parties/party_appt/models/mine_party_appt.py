@@ -61,9 +61,12 @@ class MinePartyAppointment(AuditMixin, Base):
                 raise AssertionError(f'Permit with guid {related_guid} not found')
             self.permit_id = permit.permit_id
             self.permit = permit
+        current_app.logger.warn('end assign_related_guid')
+        current_app.logger.warn(self.__dict__)
         return
 
     def save(self, commit=True):
+        current_app.logger.warn('start save')
         current_app.logger.warn(self.__dict__)
         if not (self.permit or self.permit_id or self.mine_guid or self.mine):
             raise AssertionError("Must have a related permit or mine")
