@@ -66,14 +66,12 @@ class MinePartyAppointment(AuditMixin, Base):
         return
 
     def save(self, commit=True):
-        if commit:
-            current_app.logger.warn('start save')
-            current_app.logger.warn(self.__dict__)
-            if not (self.permit or self.permit_id or self.mine_guid or self.mine):
-                raise AssertionError("Must have a related permit or mine")
-            if self.mine_party_appt_type_code == "PMT" and (self.mine_guid
-                                                            or self.mine) is not None:
-                raise AssertionError("Permittees are not related to mines")
+        current_app.logger.warn('start save')
+        current_app.logger.warn(self.__dict__)
+        if self.permit_id == None and self.mine_guid == None:
+            raise AssertionError("Must have a related permit or mine")
+        if self.mine_party_appt_type_code == "PMT" and (self.mine_guid or self.mine) is not None:
+            raise AssertionError("Permittees are not related to mines")
 
         super(MinePartyAppointment, self).save(commit)
 
