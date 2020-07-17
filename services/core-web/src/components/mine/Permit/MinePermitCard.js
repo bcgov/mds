@@ -27,13 +27,13 @@ export const PermitCard = (props) => {
         {props.permit.permit_amendments[0] ? (
           formatDate(props.permit.permit_amendments[0].issue_date)
         ) : (
-          <i>No Amendments</i>
-        )}
+            <i>No Amendments</i>
+          )}
       </span>
       <br />
       <br />
       <h6>Permittee</h6>
-      <span>{pmt ? pmt.party.name : <i>None Assigned</i>}</span>
+      <span>{pmt ? pmt.party.name : <i>None Active</i>}</span>
       <br />
       <br />
     </div>
