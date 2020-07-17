@@ -205,7 +205,6 @@ app {
                             'SOURCE_REPOSITORY_URL': "${app.git.uri}"
                     ]
                 ]
-            ]
         ]
     }
 }
