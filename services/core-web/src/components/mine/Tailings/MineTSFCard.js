@@ -21,7 +21,7 @@ export const TSFCard = (props) => {
       <h4>{props.tailingsStorageFacility.mine_tailings_storage_facility_name}</h4>
       <br />
       <h6>Engineer Of Record</h6>
-      <span>{tsf_eor ? tsf_eor.party.name : <i>None Active</i>}</span>
+      <span>{tsf_eor ? tsf_eor.party.name : <i>None Assigned</i>}</span>
       <br />
       <br />
     </div>
