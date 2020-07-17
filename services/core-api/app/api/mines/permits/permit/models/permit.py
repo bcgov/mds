@@ -104,7 +104,7 @@ class Permit(AuditMixin, Base):
     @classmethod
     def find_by_permit_guid(cls, _id, mine_guid=None):
         pmt = cls.query.filter_by(permit_guid=_id, deleted_ind=False).first()
-        if mine_guid:
+        if pmt and mine_guid:
             pmt._context_mine = [m for m in pmt._all_mines if str(m.mine_guid) == str(mine_guid)][0]
         return pmt
 
