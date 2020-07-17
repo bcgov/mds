@@ -65,12 +65,15 @@ class MinePartyAppointment(AuditMixin, Base):
     def save(self, commit=True):
         if not (self.permit or self.permit_id or self.mine_guid or self.mine):
             raise AssertionError("Must have a related permit or mine")
+        if self.mine_party_appt_type_code == "PMT" and (self.mine_guid or self.mine) is not None:
+            raise AssertionError("Permittees are not related to mines")
+
         super(MinePartyAppointment, self).save(commit)
 
     def json(self, relationships=[]):
         result = {
             'mine_party_appt_guid': str(self.mine_party_appt_guid),
-            'mine_guid': str(self.mine_guid),
+            'mine_guid': str(self.mine_guid) if self.mine_guid else None,
             'party_guid': str(self.party_guid),
             'mine_party_appt_type_code': str(self.mine_party_appt_type_code),
             'start_date': str(self.start_date) if self.start_date else None,

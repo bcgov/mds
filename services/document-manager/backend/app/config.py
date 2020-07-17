@@ -46,7 +46,12 @@ class Config(object):
     CACHE_REDIS_URL = 'redis://:{0}@{1}:{2}'.format(CACHE_REDIS_PASS, CACHE_REDIS_HOST,
                                                     CACHE_REDIS_PORT)
 
-    DOCUMENT_MANAGER_URL = os.environ.get('DOCUMENT_MANAGER_URL', 'http://document_manager_backend:5001')
+    # Celery settings
+    CELERY_RESULT_BACKEND = f'db+postgres://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}'
+    CELERY_BROKER_URL = f'redis://:{CACHE_REDIS_PASS}@{CACHE_REDIS_HOST}:{CACHE_REDIS_PORT}/'
+
+    DOCUMENT_MANAGER_URL = os.environ.get('DOCUMENT_MANAGER_URL',
+                                          'http://document_manager_backend:5001')
     UPLOADED_DOCUMENT_DEST = os.environ.get('UPLOADED_DOCUMENT_DEST', '/app/document_uploads')
 
     MAX_CONTENT_LENGTH = 750 * 1024 * 1024

@@ -14,7 +14,8 @@ migrate = Migrate()
 jwt = JwtManager()
 cache = Cache()
 
-api = Api(prefix=f'{Config.BASE_PATH}',
-          doc=f'{Config.BASE_PATH}/',
-          default='document_manager',
-          default_label='Document storage and management')
+api = Api(
+    prefix=f'{Config.BASE_PATH}',
+    doc=f'{Config.BASE_PATH}/',
+    default='document_manager',
+    default_label='Document storage and management')

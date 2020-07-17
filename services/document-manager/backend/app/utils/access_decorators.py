@@ -48,6 +48,7 @@ def requires_any_of(roles):
 
         wrapper.required_roles = _combine_role_flags(func, roles)
         return wrapper
+
     return decorator
 
 
