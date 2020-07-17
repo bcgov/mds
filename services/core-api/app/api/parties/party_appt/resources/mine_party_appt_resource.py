@@ -94,14 +94,12 @@ class MinePartyApptResource(Resource, UserMixin):
             elif mine_party_appt_type_code == "PMT":
                 permit = Permit.find_by_permit_guid(related_guid)
                 current_mpa = MinePartyAppointment.find_current_appointments(
-                    mine_guid=mine_guid,
-                    mine_party_appt_type_code=mine_party_appt_type_code,
-                    permit_id=permit.permit_id)
+                    mine_party_appt_type_code=mine_party_appt_type_code, permit_id=permit.permit_id)
             else:
                 current_mpa = MinePartyAppointment.find_current_appointments(
                     mine_guid=mine_guid, mine_party_appt_type_code=mine_party_appt_type_code)
-            if len(current_mpa) > 1:
-                raise BadRequest('There is currently more than one active appointment.')
+            if len(current_mpa) != 1:
+                raise BadRequest('There is currently not exactly one active appointment.')
             current_mpa[0].end_date = start_date - timedelta(days=1)
             current_mpa[0].save()
         new_mpa = MinePartyAppointment.create(
