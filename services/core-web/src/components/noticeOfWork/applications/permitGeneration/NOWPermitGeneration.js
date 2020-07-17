@@ -294,7 +294,6 @@ export class NOWPermitGeneration extends Component {
   };
 
   render() {
-    console.log(this.state.draftAmendment);
     return (
       <div>
         <div className={this.props.fixedTop ? "view--header fixed-scroll" : "view--header"}>
