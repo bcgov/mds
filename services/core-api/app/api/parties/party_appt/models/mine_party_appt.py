@@ -60,7 +60,6 @@ class MinePartyAppointment(AuditMixin, Base):
             if not permit:
                 raise AssertionError(f'Permit with guid {related_guid} not found')
             self.permit_id = permit.permit_id
-            self.permit = permit
         current_app.logger.warn('end assign_related_guid')
         current_app.logger.warn(self.__dict__)
         return
