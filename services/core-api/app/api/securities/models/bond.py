@@ -44,6 +44,8 @@ class Bond(Base, AuditMixin):
     payer = db.relationship('Party', lazy='joined')
     permit = db.relationship('Permit', uselist=False, lazy='joined', secondary='bond_permit_xref')
     documents = db.relationship('BondDocument', lazy='select')
+    closed_date = db.Column(db.DateTime)
+    closed_note = db.Column(db.String)
 
     def __repr__(self):
         return '<Bond %r>' % self.bond_guid
