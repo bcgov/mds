@@ -113,6 +113,7 @@ export const GeneratePermitForm = (props) => (
                 required
                 component={renderConfig.DATE}
                 validate={[required]}
+                disabled
               />
             </Col>
           )}
