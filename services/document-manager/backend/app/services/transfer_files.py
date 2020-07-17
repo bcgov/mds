@@ -1,5 +1,6 @@
 import numpy
 import uuid
+import os
 
 from flask import current_app
 from celery import chord
@@ -85,3 +86,12 @@ def get_untransferred_files():
     docs = Document.query.filter_by(object_store_path=None).all()
     doc_jsons = [doc.json() for doc in docs]
     return doc_jsons
+
+
+def get_missing_files(path):
+    docs = Document.query.all()
+    missing = []
+    for doc in docs:
+        if (not os.path.isfile(doc.full_storage_path)):
+            missing.append(doc.full_storage_path if path else doc.document_id)
+    return missing
