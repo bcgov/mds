@@ -85,7 +85,6 @@ class MinePartyApptResource(Resource, UserMixin):
         mine_guid = data.get('mine_guid')
         start_date = data.get('start_date')
         mine = Mine.find_by_mine_guid(mine_guid)
-        permit = Permit.find_by_permit_guid(permit_guid)
         if end_current:
             if mine_party_appt_type_code == "EOR":
                 current_mpa = MinePartyAppointment.find_current_appointments(
@@ -93,6 +92,7 @@ class MinePartyApptResource(Resource, UserMixin):
                     mine_party_appt_type_code=mine_party_appt_type_code,
                     mine_tailings_storage_facility_guid=related_guid)
             elif mine_party_appt_type_code == "PMT":
+                permit = Permit.find_by_permit_guid(related_guid)
                 current_mpa = MinePartyAppointment.find_current_appointments(
                     mine_guid=mine_guid,
                     mine_party_appt_type_code=mine_party_appt_type_code,
