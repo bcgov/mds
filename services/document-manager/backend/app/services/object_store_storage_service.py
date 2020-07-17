@@ -103,6 +103,10 @@ class ObjectStoreStorageService():
     def calculate_s3_etag(self, filename, chunk_size_mb=8):
         md5s = []
         chunk_size = chunk_size_mb * 1024 * 1024
+
+        if (not os.path.isfile(filename)):
+            raise Exception(f'File does not exist: {filename}')
+
         with open(filename, 'rb') as fp:
             while True:
                 data = fp.read(chunk_size)
