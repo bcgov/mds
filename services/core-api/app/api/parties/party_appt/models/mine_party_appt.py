@@ -242,10 +242,3 @@ class MinePartyAppointment(AuditMixin, Base):
                 raise AssertionError(
                     'No mine_tailings_storage_facility_guid, but mine_party_appt_type_code is EOR.')
         return val
-
-    @validates('permit_id')
-    def validate_permit_id(self, key, val):
-        if self.mine_party_appt_type_code == 'PMT':
-            if not val:
-                raise AssertionError('No permit_id, but mine_party_appt_type_code is PMT.')
-        return val
