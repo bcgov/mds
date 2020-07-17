@@ -11,6 +11,7 @@ from app.api.utils.access_decorators import requires_role_view_all, requires_rol
 from app.api.utils.resources_mixins import UserMixin
 from app.api.utils.custom_reqparser import CustomReqparser
 
+from app.api.mines.mine.models.mine import Mine
 from app.api.mines.permits.permit.models.permit import Permit
 from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
 from app.api.parties.party_appt.models.mine_party_appt_type import MinePartyAppointmentType
@@ -83,6 +84,7 @@ class MinePartyApptResource(Resource, UserMixin):
         related_guid = data.get('related_guid')
         mine_guid = data.get('mine_guid')
         start_date = data.get('start_date')
+        mine = Mine.find_by_mine_guid(mine_guid)
 
         if end_current:
             if mine_party_appt_type_code == "EOR":
@@ -102,8 +104,8 @@ class MinePartyApptResource(Resource, UserMixin):
                 raise BadRequest('There is currently more than one active appointment.')
             current_mpa[0].end_date = start_date - timedelta(days=1)
             current_mpa[0].save()
-        new_mpa = MinePartyAppointment(
-            mine_guid=mine_guid,
+        new_mpa = MinePartyAppointment.create(
+            mine=mine if mine_party_appt_type_code != 'PMT' else None,
             party_guid=data.get('party_guid'),
             mine_party_appt_type_code=mine_party_appt_type_code,
             start_date=start_date,
