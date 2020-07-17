@@ -206,7 +206,6 @@ app {
                     ]
                 ]
             ]
-                // Monitoring components  
         ]
     }
 }

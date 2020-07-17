@@ -313,7 +313,7 @@ app {
                             'BASE_PATH': "${vars.modules.'mds-docgen-api'.PATH}",
                             'NODE_ENV': "${vars.deployment.node_env}"
                     ]
-                ],
+                ]
                 // [
                 //     'file':'openshift/templates/digdag/digdag.dc.json',
                 //     'params':[
