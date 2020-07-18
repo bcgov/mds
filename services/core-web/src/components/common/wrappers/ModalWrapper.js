@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
-import LoadingBar from "@/components/loadingBar";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Modal, Icon, Button, Popconfirm } from "antd";
@@ -13,6 +12,7 @@ import {
   getWidth,
   getIsViewOnly,
 } from "@common/selectors/modalSelectors";
+import LoadingBar from "@/components/loadingBar";
 import * as Styles from "@/constants/styles";
 import AddPartyComponentWrapper from "./AddPartyComponentWrapper";
 
