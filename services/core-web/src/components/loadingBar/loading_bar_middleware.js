@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import { DEFAULT_SCOPE, showLoading, hideLoading } from "./loading_bar_ducks";
 
 const defaultTypeSuffixes = ["PENDING", "FULFILLED", "REJECTED"];

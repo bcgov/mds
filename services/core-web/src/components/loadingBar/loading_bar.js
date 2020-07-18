@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import React, { Component } from "react";
 import { polyfill } from "react-lifecycles-compat";
 import { bool, number, object, string } from "prop-types";

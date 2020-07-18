@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 export const SHOW = "loading-bar/SHOW";
 export const HIDE = "loading-bar/HIDE";
 export const RESET = "loading-bar/RESET";
