@@ -57,7 +57,6 @@ class MinePartyApptResource(Resource, UserMixin):
                 raise NotFound('Mine Party Appointment not found')
             result = mpa.json(relationships=relationships)
         else:
-            current_app.logger.info(request.args)
             mine_guid = request.args.get('mine_guid')
             party_guid = request.args.get('party_guid')
             permit_guid = request.args.get('permit_guid')
