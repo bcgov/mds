@@ -57,7 +57,7 @@
     {
       "name": "TUSD_SERVICE_URL",
       "value": "tusd"
-    },    
+    },
     {
       "name": "CORE_DOMAIN",
       "required": true
@@ -99,9 +99,7 @@
         "name": "mds-access-logs${SUFFIX}"
       },
       "spec": {
-        "accessModes": [
-          "ReadWriteMany"
-        ],
+        "accessModes": ["ReadWriteMany"],
         "resources": {
           "requests": {
             "storage": "${LOG_PVC_SIZE}"
@@ -151,9 +149,7 @@
             "type": "ImageChange",
             "imageChangeParams": {
               "automatic": true,
-              "containerNames": [
-                "nginx"
-              ],
+              "containerNames": ["nginx"],
               "from": {
                 "kind": "ImageStreamTag",
                 "name": "${NAME}:${VERSION}"
@@ -261,11 +257,9 @@
                 }
               },
               {
-                "name": "promtail-config",
-                "image": "grafana/promtail",
-                "args": [
-                  "-config.file=/etc/promtail/promtail.yaml"
-                ],
+                "name": "promtail",
+                "image": "grafana/promtail:k14-60b97e3",
+                "args": ["-config.file=/etc/promtail/promtail.yaml"],
                 "volumeMounts": [
                   {
                     "mountPath": "/var/log/nginx",

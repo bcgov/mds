@@ -2,30 +2,18 @@ server:
     http_listen_port: 9080
     grpc_listen_port: 0
   
-  positions:
-    filename: /tmp/positions.yaml
+  # positions:
+  #   filename: /tmp/positions.yaml
   
   clients:
     - url: http://loki:3100/loki/api/v1/push
   
   scrape_configs:
-    - job_name: core-api
+    - job_name: core-nginx
       static_configs:
         - targets:
             - localhost
           labels:
             app: core
-            service: core-api
-            __path__: /mnt/core-api/*log
-        - targets:
-            - localhost
-          labels:
-            app: core
-            service: core-web
-            __path__: /mnt/core-web/*log
-        - targets:
-            - localhost
-          labels:
-            app: minespace
-            service: minespace-web
-            __path__: /mnt/minespace-web/*log
+            service: core-nginx
+            __path__: /var/log/nginx/*.log
