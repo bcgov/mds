@@ -72,7 +72,6 @@ class Permit(AuditMixin, Base):
     def permit_amendments(self):
         if not self._context_mine:
             raise Exception('this getter is only available if _context_mine has been set')
-        current_app.logger.info(self._all_permit_amendments)
         return [
             pa for pa in self._all_permit_amendments if pa.mine_guid == self._context_mine.mine_guid
         ]
@@ -102,8 +101,11 @@ class Permit(AuditMixin, Base):
         self.save()
 
     @classmethod
-    def find_by_permit_guid(cls, _id):
-        return cls.query.filter_by(permit_guid=_id, deleted_ind=False).first()
+    def find_by_permit_guid(cls, _id, mine_guid=None):
+        pmt = cls.query.filter_by(permit_guid=_id, deleted_ind=False).first()
+        if pmt and mine_guid:
+            pmt._context_mine = [m for m in pmt._all_mines if str(m.mine_guid) == str(mine_guid)][0]
+        return pmt
 
     @classmethod
     def find_by_permit_id(cls, _id):
