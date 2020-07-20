@@ -771,7 +771,7 @@
                   {
                     "mountPath": "/var/log/core-api",
                     "name": "logs",
-                    "readOnly": "true"
+                    "readOnly": true
                   },
                   {
                     "mountPath": "/etc/promtail",

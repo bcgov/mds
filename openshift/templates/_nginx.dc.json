@@ -267,7 +267,7 @@
                   {
                     "mountPath": "/var/log/nginx",
                     "name": "${NAME}${SUFFIX}-log",
-                    "readOnly": "true"
+                    "readOnly": true
                   },
                   {
                     "mountPath": "/etc/promtail",
