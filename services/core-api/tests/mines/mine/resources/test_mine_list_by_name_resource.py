@@ -75,7 +75,7 @@ def test_get_mines_by_list_search_by_mine_no(test_client, db_session, auth_heade
 
 
 def test_get_mines_by_list_search_by_permit_no(test_client, db_session, auth_headers):
-    mine = MineFactory(mine_permit=1)
+    mine = MineFactory(mine_permit_amendments=1)
 
     get_resp = test_client.get(
         f'/mines/search?term={mine.mine_permit[0].permit_no}',

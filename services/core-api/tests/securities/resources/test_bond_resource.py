@@ -1,6 +1,6 @@
 import json
 
-from tests.factories import BondFactory, MineFactory, PermitFactory, PartyFactory
+from tests.factories import BondFactory, MineFactory, PermitFactory, PartyFactory, create_mine_and_permit
 from app.api.now_applications.resources.now_application_list_resource import PAGE_DEFAULT, PER_PAGE_DEFAULT
 
 BOND_POST_DATA = {
@@ -44,8 +44,8 @@ class TestBondsResource:
         """Should return the correct records with a 200 response code"""
 
         batch_size = 5
-        mine = MineFactory(minimal=True)
-        permits = PermitFactory.create_batch(size=batch_size, mine=mine)
+        mine, permit = create_mine_and_permit(num_permits=batch_size)
+        permits = mine.mine_permit
         bonds = [bond for permit in permits for bond in permit.bonds]
 
         get_resp = test_client.get(
@@ -70,8 +70,8 @@ class TestBondsResource:
 
     def test_get_all_bonds_on_mine_no_permits(self, test_client, db_session, auth_headers):
         """Should return empty list"""
-
         mine = MineFactory(minimal=True)
+
         get_resp = test_client.get(
             f'/securities/bonds?mine_guid={mine.mine_guid}',
             headers=auth_headers['full_auth_header'])
@@ -81,9 +81,8 @@ class TestBondsResource:
 
     def test_get_bond_by_id(self, test_client, db_session, auth_headers):
         """Should return a specific bond"""
+        mine, permit = create_mine_and_permit()
 
-        mine = MineFactory(minimal=True)
-        permit = PermitFactory(mine=mine)
         bond = permit.bonds[0]
         get_resp = test_client.get(
             f'/securities/bonds/{bond.bond_guid}', headers=auth_headers['full_auth_header'])
@@ -101,12 +100,12 @@ class TestBondsResource:
         assert get_data['message'] is not None
 
     """POST BONDS"""
+
     def test_post_a_bond(self, test_client, db_session, auth_headers):
         """Should return the created bond with a 201 response code"""
-
-        mine = MineFactory(minimal=True)
+        mine, permit = create_mine_and_permit()
         party1 = PartyFactory(person=True)
-        permit = PermitFactory(mine=mine)
+
         BOND_POST_DATA['bond']['payer_party_guid'] = party1.party_guid
         BOND_POST_DATA['permit_guid'] = permit.permit_guid
 
@@ -132,10 +131,9 @@ class TestBondsResource:
 
     def test_post_a_bond_bad_data(self, test_client, db_session, auth_headers):
         """Should return an error and a 400 response code"""
+        mine, permit = create_mine_and_permit()
 
-        mine = MineFactory(minimal=True)
         party1 = PartyFactory(person=True)
-        permit = PermitFactory(mine=mine)
         BOND_POST_BAD_DATA['bond']['payer_party_guid'] = party1.party_guid
         BOND_POST_BAD_DATA['permit_guid'] = permit.permit_guid
 
@@ -146,11 +144,11 @@ class TestBondsResource:
         assert post_data['message'] is not None
 
     """PUT BONDS"""
+
     def test_put_a_bond(self, test_client, db_session, auth_headers):
         """Should return the edited bond with a 200 response code"""
 
-        mine = MineFactory(minimal=True)
-        permit = PermitFactory(mine=mine)
+        mine, permit = create_mine_and_permit()
         bond = permit.bonds[0]
         old_amount = bond.amount
         old_status = bond.bond_status_code
@@ -173,9 +171,7 @@ class TestBondsResource:
 
     def test_put_a_bond_missing_data(self, test_client, db_session, auth_headers):
         """Should return 400 response code with an error"""
-
-        mine = MineFactory(minimal=True)
-        permit = PermitFactory(mine=mine)
+        mine, permit = create_mine_and_permit()
         bond = permit.bonds[0]
 
         data = {

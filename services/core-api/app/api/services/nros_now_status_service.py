@@ -29,7 +29,7 @@ class NROSNOWStatusService():
 
         data = {
             "statusList": {
-                "applicationId": now_number.replace('-', ''),
+                "applicationId": now_number.replace('-', '') if now_number else '',
                 "applicationType": 'Mines Notice of Work',
                 "status": status,
                 "statusUpdatedDate": status_updated_date,

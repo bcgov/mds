@@ -19,6 +19,7 @@ export const partyRelationship = shape({
   party,
   mine_party_appt_type_code: PropTypes.string,
   related_guid: PropTypes.string,
+  permit_no: PropTypes.string,
   start_date: PropTypes.string,
   end_date: PropTypes.string,
 });

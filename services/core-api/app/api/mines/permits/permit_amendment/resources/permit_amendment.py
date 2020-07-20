@@ -3,6 +3,7 @@ from flask_restplus import Resource, reqparse, inputs
 from flask import current_app
 from werkzeug.exceptions import BadRequest, InternalServerError, NotFound
 
+from app.api.mines.mine.models.mine import Mine
 from app.api.mines.permits.permit.models.permit import Permit
 from app.api.mines.permits.permit_amendment.models.permit_amendment import PermitAmendment
 from app.api.mines.permits.permit_amendment.models.permit_amendment_document import PermitAmendmentDocument
@@ -52,8 +53,11 @@ class PermitAmendmentListResource(Resource, UserMixin):
         if not permit:
             raise NotFound('Permit does not exist.')
 
-        if not str(permit.mine_guid) == mine_guid:
-            raise BadRequest('Permits mine_guid and provided mine_guid mismatch.')
+        mine = Mine.find_by_mine_guid(mine_guid)
+        if not mine:
+            raise NotFound("Mine does not exist")
+        # if str(pid) not in [m.mine_guid for m in permit.all_mines]:
+        #     raise BadRequest('Permits mine_guid and provided mine_guid mismatch.')
 
         data = self.parser.parse_args()
         current_app.logger.info(f'creating permit_amendment with >> {data}')
@@ -62,7 +66,7 @@ class PermitAmendmentListResource(Resource, UserMixin):
         if not party:
             raise NotFound('Party not found')
 
-        permittees = MinePartyAppointment.find_by_permit_guid(permit_guid)
+        permittees = permit.permittee_appointments
         if not permittees:
             raise NotFound('Party appointments not found')
 
@@ -73,7 +77,7 @@ class PermitAmendmentListResource(Resource, UserMixin):
         is_historical_permit = False
 
         new_end_dates = MinePartyAppointment.find_appointment_end_dates(
-            permit_guid, permit_issue_date)
+            permit.permit_id, permit_issue_date)
 
         for permittee in permittees:
             # check if the new appointment is older than the current appointment, if so create a new permittee appointment
@@ -94,17 +98,18 @@ class PermitAmendmentListResource(Resource, UserMixin):
 
         # create a new appointment, so every amendment is associated with a permittee
         new_permittee = MinePartyAppointment.create(
-            permit.mine_guid,
+            None,
             data.get('permittee_party_guid'),
-            'PMT',
-            self.get_user_info(),
+            mine_party_appt_type_code='PMT',
+            processed_by=self.get_user_info(),
             start_date=permittee_start_date,
             end_date=permittee_end_date,
-            permit_guid=permit_guid)
+            permit=permit)
 
         new_permittee.save()
         new_pa = PermitAmendment.create(
             permit,
+            mine,
             data.get('received_date'),
             data.get('issue_date'),
             data.get('authorization_end_date'),
@@ -116,7 +121,7 @@ class PermitAmendmentListResource(Resource, UserMixin):
             new_pa_doc = PermitAmendmentDocument(
                 document_name=newFile['fileName'],
                 document_manager_guid=newFile['document_manager_guid'],
-                mine_guid=permit.mine_guid,
+                mine_guid=mine.mine_guid,
             )
             new_pa.related_documents.append(new_pa_doc)
 
