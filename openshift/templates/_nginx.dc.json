@@ -266,7 +266,8 @@
                 "volumeMounts": [
                   {
                     "mountPath": "/var/log/nginx",
-                    "name": "${NAME}${SUFFIX}-log"
+                    "name": "${NAME}${SUFFIX}-log",
+                    "readOnly": "true"
                   },
                   {
                     "mountPath": "/etc/promtail",
@@ -275,12 +276,12 @@
                 ],
                 "resources": {
                   "limits": {
-                    "cpu": "100m",
-                    "memory": "128Mi"
+                    "cpu": "20m",
+                    "memory": "64Mi"
                   },
                   "requests": {
-                    "cpu": "10m",
-                    "memory": "64Mi"
+                    "cpu": "5m",
+                    "memory": "16Mi"
                   }
                 }
               }
