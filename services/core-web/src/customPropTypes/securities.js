@@ -22,6 +22,8 @@ export const bond = PropTypes.shape({
   institution_province: PropTypes.string,
   institution_postal_code: PropTypes.string,
   note: PropTypes.string,
+  closed_date: PropTypes.string,
+  closed_note: PropTypes.string,
   payer,
   permit_guid: PropTypes.string,
   documents: PropTypes.arrayOf(mineDocument),

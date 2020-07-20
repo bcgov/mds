@@ -3953,7 +3953,7 @@ export const BULK_STATIC_CONTENT_RESPONSE = {
   bondTypeOptions: [
     { bond_type_code: "CEC", description: "Certified Cheque", active_ind: true },
     { bond_type_code: "CAS", description: "Cash", active_ind: true },
-    { bond_type_code: "ILC", description: "Irrevocable Line of Credit", active_ind: true },
+    { bond_type_code: "ILC", description: "Irrevocable Letter of Credit", active_ind: true },
     { bond_type_code: "MOR", description: "Money Order", active_ind: true },
     { bond_type_code: "BDA", description: "Bank Draft", active_ind: true },
     { bond_type_code: "SBO", description: "Surety Bond", active_ind: true },
@@ -4300,7 +4300,7 @@ export const MINE_REPORT_DEFINITION_HASH = {
 export const DROPDOWN_BOND_TYPE_OPTIONS = [
   { value: "CEC", label: "Certified Cheque", isActive: true },
   { value: "CAS", label: "Cash", isActive: true },
-  { value: "ILC", label: "Irrevocable Line of Credit", isActive: true },
+  { value: "ILC", label: "Irrevocable Letter of Credit", isActive: true },
   { value: "MOR", label: "Money Order", isActive: true },
   { value: "BDA", label: "Bank Draft", isActive: true },
   { value: "SBO", label: "Surety Bond", isActive: true },
@@ -4310,7 +4310,7 @@ export const DROPDOWN_BOND_TYPE_OPTIONS = [
 export const BOND_TYPE_OPTIONS_HASH = {
   CEC: "Certified Cheque",
   CAS: "Cash",
-  ILC: "Irrevocable Line of Credit",
+  ILC: "Irrevocable Letter of Credit",
   MOR: "Money Order",
   BDA: "Bank Draft",
   SBO: "Surety Bond",

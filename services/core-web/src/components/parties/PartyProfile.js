@@ -13,7 +13,7 @@ import {
 } from "@common/actionCreators/partiesActionCreator";
 import { fetchMineBasicInfoList } from "@common/actionCreators/mineActionCreator";
 import { openModal, closeModal } from "@common/actions/modalActions";
-import { getParties, getPartyRelationships } from "@common/selectors/partiesSelectors";
+import { getParties } from "@common/selectors/partiesSelectors";
 import { getMineBasicInfoListHash } from "@common/selectors/mineSelectors";
 import {
   getDropdownProvinceOptions,
@@ -66,9 +66,12 @@ export class PartyProfile extends Component {
 
   componentDidMount() {
     const { id } = this.props.match.params;
-    this.props.fetchPartyById(id);
-    this.props.fetchPartyRelationships({ party_guid: id, relationships: "party" }).then(() => {
-      const mine_guids = uniq(this.props.partyRelationships.map(({ mine_guid }) => mine_guid));
+    this.props.fetchPartyById(id).then(() => {
+      const mine_guids = uniq(
+        this.props.parties[id].mine_party_appt
+          .filter((x) => x.mine_guid != "None")
+          .map(({ mine_guid }) => mine_guid)
+      );
       this.props.fetchMineBasicInfoList(mine_guids).then(() => {
         this.setState({ isLoaded: true });
       });
@@ -117,13 +120,19 @@ export class PartyProfile extends Component {
     const party = this.props.parties[id];
     const columns = [
       {
-        title: "Mine Name",
+        title: "Name",
         dataIndex: "mineName",
-        render: (text, record) => (
-          <div title="Mine Name">
-            <Link to={routes.MINE_CONTACTS.dynamicRoute(record.mineGuid)}>{text}</Link>
-          </div>
-        ),
+        render: (text, record) => {
+          if (record.relationship.mine_party_appt_type_code === "PMT") {
+            return <div title="Permit No">{record.relationship.permit_no}</div>;
+          } else {
+            return (
+              <div title="Mine Name">
+                <Link to={routes.MINE_CONTACTS.dynamicRoute(record.mineGuid)}>{text}</Link>
+              </div>
+            );
+          }
+        },
       },
       {
         title: "Role",
@@ -149,6 +158,7 @@ export class PartyProfile extends Component {
         role: this.props.partyRelationshipTypeHash[relationship.mine_party_appt_type_code],
         endDate: formatDate(relationship.end_date) || "Present",
         startDate: formatDate(relationship.start_date) || "Unknown",
+        relationship,
       }));
 
     if (this.state.isLoaded && party) {
@@ -249,7 +259,7 @@ export class PartyProfile extends Component {
                     align="left"
                     pagination={false}
                     columns={columns}
-                    dataSource={transformRowData(this.props.partyRelationships)}
+                    dataSource={transformRowData(this.props.parties[id].mine_party_appt)}
                     locale={{ emptyText: <NullScreen type="no-results" /> }}
                   />
                 </div>
@@ -266,7 +276,6 @@ export class PartyProfile extends Component {
 const mapStateToProps = (state) => ({
   parties: getParties(state),
   partyRelationshipTypeHash: getPartyRelationshipTypeHash(state),
-  partyRelationships: getPartyRelationships(state),
   mineBasicInfoListHash: getMineBasicInfoListHash(state),
   provinceOptions: getDropdownProvinceOptions(state),
 });

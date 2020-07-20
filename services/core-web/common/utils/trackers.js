@@ -4,7 +4,7 @@ import { ENVIRONMENT } from "../constants/environment";
 
 export const trackEvent = (category, action) => {
   const { trackEvent } = useMatomo();
-  trackEvent({ category: category, action: action });
+  trackEvent({ category, action });
 };
 
 const trackPageView = (title) => {

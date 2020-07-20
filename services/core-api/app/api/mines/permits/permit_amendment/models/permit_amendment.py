@@ -22,6 +22,7 @@ class PermitAmendment(AuditMixin, Base):
     _edit_key = PERMIT_AMENDMENT_EDIT_GROUP
 
     permit_amendment_id = db.Column(db.Integer, primary_key=True)
+    mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine.mine_guid'), nullable=False)
     permit_amendment_guid = db.Column(UUID(as_uuid=True), server_default=FetchedValue())
     permit_id = db.Column(db.Integer, db.ForeignKey('permit.permit_id'), nullable=False)
     received_date = db.Column(db.DateTime, nullable=False)
@@ -38,7 +39,6 @@ class PermitAmendment(AuditMixin, Base):
     permit_amendment_status_description = association_proxy('permit_amendment_status',
                                                             'description')
     permit_guid = association_proxy('permit', 'permit_guid')
-    mine_guid = association_proxy('permit', 'mine_guid')
     permit_amendment_type = db.relationship('PermitAmendmentTypeCode')
     permit_amendment_type_description = association_proxy('permit_amendment_type', 'description')
 
@@ -46,6 +46,19 @@ class PermitAmendment(AuditMixin, Base):
     now_application_guid = db.Column(
         UUID(as_uuid=True), db.ForeignKey('now_application_identity.now_application_guid'))
     now_identity = db.relationship('NOWApplicationIdentity', lazy='select')
+    mine = db.relationship('Mine', lazy='selectin')
+
+    #no current use case for this relationship
+    #TODO Have factories use this to manage FK.
+    mine_permit_xref = db.relationship(
+        'MinePermitXref',
+        uselist=False,
+        primaryjoin=
+        "and_(PermitAmendment.mine_guid==foreign(MinePermitXref.mine_guid), PermitAmendment.permit_id==foreign(MinePermitXref.permit_id))"
+    )
+
+    def __repr__(self):
+        return '<PermitAmendment %r, %r>' % (self.mine_guid, self.permit_id)
 
     def soft_delete(self, is_force_delete=False):
         if not is_force_delete and self.permit_amendment_type_code == 'OGP':
@@ -65,6 +78,7 @@ class PermitAmendment(AuditMixin, Base):
     @classmethod
     def create(cls,
                permit,
+               mine,
                received_date,
                issue_date,
                authorization_end_date,
@@ -74,13 +88,14 @@ class PermitAmendment(AuditMixin, Base):
                add_to_session=True):
         new_pa = cls(
             permit_id=permit.permit_id,
+            mine_guid=mine.mine_guid,
             received_date=received_date,
             issue_date=issue_date,
             authorization_end_date=authorization_end_date,
             permit_amendment_type_code=permit_amendment_type_code,
             permit_amendment_status_code=permit_amendment_status_code,
             description=description)
-        permit.permit_amendments.append(new_pa)
+        permit._all_permit_amendments.append(new_pa)
         if add_to_session:
             new_pa.save(commit=False)
         return new_pa
