@@ -269,7 +269,29 @@
                     "mountPath": "/etc/promtail",
                     "name": "promtail-config"
                   }
-                ]
+                ],
+                "resources": {
+                  "limits": {
+                    "cpu": "100m",
+                    "memory": "128Mi"
+                  },
+                  "requests": {
+                    "cpu": "10m",
+                    "memory": "64Mi"
+                  }
+                },
+                "readinessProbe": {
+                  "failureThreshold": 3,
+                  "httpGet": {
+                    "path": "/ready",
+                    "port": 3101,
+                    "scheme": "HTTP"
+                  },
+                  "initialDelaySeconds": 25,
+                  "periodSeconds": 10,
+                  "successThreshold": 1,
+                  "timeoutSeconds": 1
+                }
               }
             ],
             "volumes": [
