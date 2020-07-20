@@ -63,14 +63,19 @@ class MinePartyAppointment(AuditMixin, Base):
         return
 
     def save(self, commit=True):
-        if not (self.permit or self.permit_id or self.mine_guid or self.mine):
-            raise AssertionError("Must have a related permit or mine")
+        if commit:
+            if not (self.permit or self.permit_id or self.mine_guid or self.mine):
+                raise AssertionError("Must have a related permit or mine")
+            if self.mine_party_appt_type_code == "PMT" and (self.mine_guid
+                                                            or self.mine) is not None:
+                raise AssertionError("Permittees are not related to mines")
+
         super(MinePartyAppointment, self).save(commit)
 
     def json(self, relationships=[]):
         result = {
             'mine_party_appt_guid': str(self.mine_party_appt_guid),
-            'mine_guid': str(self.mine_guid),
+            'mine_guid': str(self.mine_guid) if self.mine_guid else None,
             'party_guid': str(self.party_guid),
             'mine_party_appt_type_code': str(self.mine_party_appt_type_code),
             'start_date': str(self.start_date) if self.start_date else None,
@@ -139,13 +144,13 @@ class MinePartyAppointment(AuditMixin, Base):
     def find_current_appointments(cls,
                                   mine_guid=None,
                                   mine_party_appt_type_code=None,
-                                  permit_guid=None,
+                                  permit_id=None,
                                   mine_tailings_storage_facility_guid=None):
         built_query = cls.query.filter_by(deleted_ind=False).filter_by(
             mine_guid=mine_guid).filter_by(
                 mine_party_appt_type_code=mine_party_appt_type_code).filter_by(end_date=None)
-        if permit_guid:
-            built_query = built_query.filter_by(permit_guid=permit_guid)
+        if permit_id:
+            built_query = built_query.filter_by(permit_id=permit_id)
         if mine_tailings_storage_facility_guid:
             built_query = built_query.filter_by(
                 mine_tailings_storage_facility_guid=mine_tailings_storage_facility_guid)
@@ -170,7 +175,10 @@ class MinePartyAppointment(AuditMixin, Base):
             #avoid circular imports.
             from app.api.mines.mine.models.mine import Mine
             mine = Mine.find_by_mine_guid(mine_guid)
-            permit_permittees = [m.permittee_appointments[0] for m in mine.mine_permit]
+            permit_permittees = []
+            for mp in mine.mine_permit:
+                if mp.permittee_appointments:
+                    permit_permittees.append(mp.permittee_appointments[0])
             results = results + permit_permittees
         return results
 
@@ -228,11 +236,4 @@ class MinePartyAppointment(AuditMixin, Base):
             if not val:
                 raise AssertionError(
                     'No mine_tailings_storage_facility_guid, but mine_party_appt_type_code is EOR.')
-        return val
-
-    @validates('permit_id')
-    def validate_permit_id(self, key, val):
-        if self.mine_party_appt_type_code == 'PMT':
-            if not val:
-                raise AssertionError('No permit_id, but mine_party_appt_type_code is PMT.')
         return val

@@ -140,9 +140,8 @@ class Mine(AuditMixin, Base):
     def mine_permit(self):
         permits_w_context = []
         for p in self._permit_identities:
-            if p.deleted_ind == False:
-                p._context_mine = self
-                permits_w_context.append(p)
+            p._context_mine = self
+            permits_w_context.append(p)
         return permits_w_context
 
     @hybrid_property
@@ -164,7 +163,7 @@ class Mine(AuditMixin, Base):
         try:
             uuid.UUID(_id, version=4)
             return cls.query.filter_by(mine_guid=_id).filter_by(deleted_ind=False).first()
-        except ValueError:
+        except (ValueError, TypeError):
             return None
 
     @classmethod

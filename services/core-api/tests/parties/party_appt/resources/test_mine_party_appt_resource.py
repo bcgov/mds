@@ -104,7 +104,10 @@ def test_post_mine_party_appt_missing_mine_guid_and_permit_guid(test_client, db_
                                                                 auth_headers, setup_info):
     party_guid = PartyFactory(person=True).party_guid
 
-    test_data = {'party_guid': str(party_guid), 'mine_party_appt_type_code': 'BLA'}
+    test_data = {
+        'party_guid': str(party_guid),
+        'mine_party_appt_type_code': 'BLA',
+    }
     post_resp = test_client.post(
         '/parties/mines', data=test_data, headers=auth_headers['full_auth_header'])
     post_data = json.loads(post_resp.data.decode())

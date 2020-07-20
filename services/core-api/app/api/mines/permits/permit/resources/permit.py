@@ -190,7 +190,7 @@ class PermitResource(Resource, UserMixin):
     @requires_role_edit_permit
     @api.marshal_with(PERMIT_MODEL, code=200)
     def put(self, permit_guid, mine_guid):
-        permit = Permit.find_by_permit_guid(permit_guid)
+        permit = Permit.find_by_permit_guid(permit_guid, mine_guid)
         if not permit:
             raise NotFound('Permit not found.')
 
@@ -207,7 +207,7 @@ class PermitResource(Resource, UserMixin):
     @requires_role_mine_admin
     @api.response(204, 'Successfully deleted.')
     def delete(self, permit_guid, mine_guid):
-        permit = Permit.find_by_permit_guid(permit_guid)
+        permit = Permit.find_by_permit_guid(permit_guid, mine_guid)
         if not permit:
             raise NotFound('Permit not found.')
 
