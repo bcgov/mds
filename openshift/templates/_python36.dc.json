@@ -622,6 +622,12 @@
                   "timeoutSeconds": 3,
                   "periodSeconds": 15
                 },
+                "volumeMounts": [
+                  {
+                    "mountPath": "/var/log/uwsgi",
+                    "name": "logs"
+                  }
+                ],
                 "terminationMessagePath": "/dev/termination-log",
                 "terminationMessagePolicy": "File",
                 "imagePullPolicy": "IfNotPresent"
@@ -753,11 +759,61 @@
                     "memory": "128Mi"
                   }
                 }
+              },
+              {
+                "name": "promtail",
+                "image": "grafana/promtail:k14-60b97e3",
+                "args": [
+                  "-config.file=/etc/promtail/core-api.yaml",
+                  "--client.external-labels=environment=dev-${SUFFIX}"
+                ],
+                "volumeMounts": [
+                  {
+                    "mountPath": "/var/log/core-api",
+                    "name": "logs",
+                    "readOnly": "true"
+                  },
+                  {
+                    "mountPath": "/etc/promtail",
+                    "name": "promtail-config"
+                  }
+                ],
+                "resources": {
+                  "limits": {
+                    "cpu": "100m",
+                    "memory": "128Mi"
+                  },
+                  "requests": {
+                    "cpu": "10m",
+                    "memory": "64Mi"
+                  }
+                },
+                "readinessProbe": {
+                  "failureThreshold": 3,
+                  "httpGet": {
+                    "path": "/ready",
+                    "port": 3101,
+                    "scheme": "HTTP"
+                  },
+                  "initialDelaySeconds": 25,
+                  "periodSeconds": 10,
+                  "successThreshold": 1,
+                  "timeoutSeconds": 1
+                }
               }
             ],
             "restartPolicy": "Always",
             "dnsPolicy": "ClusterFirst",
-            "securityContext": {}
+            "securityContext": {},
+            "volumes": [
+              { "emptyDir": "{}", "name": "logs" },
+              {
+                "name": "promtail-config",
+                "configMap": {
+                  "name": "promtail-config"
+                }
+              }
+            ]
           }
         }
       }
