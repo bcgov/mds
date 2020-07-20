@@ -806,7 +806,7 @@
             "dnsPolicy": "ClusterFirst",
             "securityContext": {},
             "volumes": [
-              { "emptyDir": "{}", "name": "logs" },
+              { "emptyDir": {}, "name": "logs" },
               {
                 "name": "promtail-config",
                 "configMap": {
