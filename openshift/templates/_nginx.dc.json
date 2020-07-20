@@ -261,7 +261,7 @@
                 "image": "grafana/promtail:k14-60b97e3",
                 "args": [
                   "-config.file=/etc/promtail/promtail.yaml",
-                  "--client.external-labels=environment=dev-${SUFFIX}"
+                  "-client.external-labels=environment=dev-${SUFFIX}"
                 ],
                 "volumeMounts": [
                   {
