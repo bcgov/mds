@@ -108,7 +108,6 @@ PERMIT_AMENDMENT_MODEL = api.model(
         'related_documents': fields.List(fields.Nested(PERMIT_AMENDMENT_DOCUMENT_MODEL))
     })
 
-
 BOND_MODEL = api.model('Bond_guid', {'bond_guid': fields.String})
 
 PERMIT_MODEL = api.model(
