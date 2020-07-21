@@ -54,9 +54,11 @@ class Bond(Base, AuditMixin):
         bond_json = marshal(self, BOND)
         del bond_json['bond_guid']
         del bond_json['documents']
-
         bond_json['payer_name'] = bond_json['payer']['party_name']
-        current_app.logger.info(bond_json)
+        bond_json['update_timestamp'] = str(self.update_timestamp)
+        bond_json['update_user'] = self.update_user
+
+        current_app.logger.debug(bond_json)
         bond_hist = BondHistory._schema().load(bond_json)
         bond_hist.save()
         return bond_hist
