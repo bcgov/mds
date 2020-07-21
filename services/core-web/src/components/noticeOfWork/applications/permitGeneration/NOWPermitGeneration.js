@@ -150,7 +150,9 @@ export class NOWPermitGeneration extends Component {
     permitGenObject.application_date = noticeOfWork.submitted_date;
     permitGenObject.permit_number = draftPermit.permit_no;
     permitGenObject.auth_end_date = noticeOfWork.proposed_end_date;
-    permitGenObject.original_permit_issue_date = originalAmendment.issue_date;
+    permitGenObject.original_permit_issue_date = originalAmendment
+      ? originalAmendment.issue_date
+      : null;
     permitGenObject.application_type = this.props.appOptions.filter(
       (option) => option.notice_of_work_type_code === noticeOfWork.notice_of_work_type_code
     )[0].description;
