@@ -10,6 +10,7 @@ from app.extensions import api
 from app.api.utils.access_decorators import requires_role_view_all, requires_role_mine_edit
 from app.api.utils.resources_mixins import UserMixin
 from app.api.utils.custom_reqparser import CustomReqparser
+
 from app.api.mines.mine.models.mine import Mine
 from app.api.mines.permits.permit.models.permit import Permit
 from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment

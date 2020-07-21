@@ -1,4 +1,3 @@
-
 CREATE OR REPLACE FUNCTION format_phone_number(tel_no varchar) RETURNS varchar AS $$
 BEGIN
     SELECT RIGHT(NULLIF(regexp_replace(tel_no, '\D', '','g'),''),10) INTO tel_no;
@@ -149,6 +148,8 @@ DECLARE
 	-- # Includes records related to mines that are not brought in
 	-- ################################################################
 
+<<<<<<< HEAD
+=======
 	  	DROP TABLE IF EXISTS etl_permit_permittees;
 	    create TEMPORARY TABLE etl_permit_permittees as
 	    WITH
@@ -177,6 +178,7 @@ DECLARE
 	    contact_info.cmp_cd=company_info.cmp_cd;
 
 
+>>>>>>> develop
 	    DROP TABLE IF EXISTS etl_mine_update_screen_permittees;
 	    CREATE TEMPORARY TABLE etl_mine_update_screen_permittees AS
 	    SELECT
@@ -186,16 +188,24 @@ DECLARE
 	            THEN current_date --psql built-in
 	            ELSE to_date(mmsmin.entered_date, 'YYYY/MM/DD')
 	        END AS effective_date,
+<<<<<<< HEAD
+	        mmsmin.cmp_nm AS permittee_name    ,
+	        mmsmin.ctel_no AS tel_no         ,
+	        mmsmin.cemail AS email           ,
+=======
 	        mmscmp.cmp_nm AS permittee_name    ,
 	        COALESCE(mmscmp.tel_no, mmscmp.ctel_no) AS tel_no,
 	        mmscmp.cemail AS email           ,
+>>>>>>> develop
 	        '3'::numeric AS source
 	    FROM mms.mmspmt permit_info
 	    INNER JOIN mms.mmsmin mmsmin ON
 	        mmsmin.mine_no = permit_info.mine_no
-
+<<<<<<< HEAD
+=======
 	    INNER JOIN mms.mmscmp mmscmp ON
 	        mmscmp.cmp_cd=mmsmin.cmp_cd
+>>>>>>> develop
 	    WHERE permit_info.cid IN (
 	        SELECT permit_cid
 	        FROM etl_permit_info
