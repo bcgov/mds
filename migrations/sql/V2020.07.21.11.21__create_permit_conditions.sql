@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS permit_condition_category
 
 ALTER TABLE permit_condition_category OWNER TO mds;
 
-COMMENT ON TABLE party_orgbook_entity IS '';
+COMMENT ON TABLE permit_condition_category IS '';
 
 CREATE TABLE IF NOT EXISTS permit_conditions
 (
