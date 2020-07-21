@@ -88,7 +88,7 @@ class ReclamationInvoiceResource(Resource, UserMixin):
             raise BadRequest(e)
 
         for doc in reclamation_invoice.documents:
-            doc.mine_guid = reclamation_invoice.permit.mine.mine_guid
+            doc.mine_guid = reclamation_invoice.permit._all_mines[0].mine_guid
 
         reclamation_invoice.save()
 
