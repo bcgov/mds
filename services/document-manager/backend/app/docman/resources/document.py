@@ -234,7 +234,7 @@ class DocumentResource(Resource):
     @requires_any_of(DOCUMENT_UPLOAD_ROLES)
     def head(self, document_guid):
         file_path = cache.get(FILE_UPLOAD_PATH(document_guid))
-        if file_path is None or not os.path.lexists(file_path):
+        if file_path is None:
             raise NotFound('File does not exist')
 
         response = make_response('', 200)

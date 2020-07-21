@@ -17,6 +17,7 @@ from app.api.constants import MINE_MAP_CACHE
 #namespace imports
 from app.api.mines.response_models import MINE_LIST_MODEL, MINE_MODEL
 from app.api.mines.permits.permit.models.permit import Permit
+from app.api.mines.permits.permit.models.mine_permit_xref import MinePermitXref
 
 from app.api.mines.mine.models.mine import Mine
 from app.api.mines.mine.models.mine_type import MineType
@@ -165,8 +166,9 @@ class MineListResource(Resource, UserMixin):
             number_filter = Mine.mine_no.ilike('%{}%'.format(search_term))
             permit_filter = Permit.permit_no.ilike('%{}%'.format(search_term))
             mines_name_query = Mine.query.filter(name_filter | number_filter)
-            permit_query = Mine.query.join(Permit).filter(permit_filter,
-                                                          Permit.deleted_ind == False)
+
+            permit_query = Mine.query.join(MinePermitXref).join(Permit).filter(
+                permit_filter, Permit.deleted_ind == False)
             mines_query = mines_name_query.union(permit_query)
         # Filter by Major Mine, if provided
         if major_mine_filter_term == "true" or major_mine_filter_term == "false":

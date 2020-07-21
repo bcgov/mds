@@ -27,8 +27,7 @@ class ReclamationInvoiceListResource(Resource, UserMixin):
         if mine is None:
             return []
 
-        permits = Permit.find_by_mine_guid(mine.mine_guid)
-
+        permits = mine.mine_permit
         if not permits:
             return []
 
@@ -56,10 +55,6 @@ class ReclamationInvoiceListResource(Resource, UserMixin):
             raise BadRequest('No permit was found with the guid provided.')
 
         reclamation_invoice.permit = permit
-
-        for doc in reclamation_invoice.documents:
-            doc.mine_guid = permit.mine_guid
-
         reclamation_invoice.save()
 
         return reclamation_invoice, 201
@@ -93,7 +88,7 @@ class ReclamationInvoiceResource(Resource, UserMixin):
             raise BadRequest(e)
 
         for doc in reclamation_invoice.documents:
-            doc.mine_guid = reclamation_invoice.permit.mine_guid
+            doc.mine_guid = reclamation_invoice.permit._all_mines[0].mine_guid
 
         reclamation_invoice.save()
 

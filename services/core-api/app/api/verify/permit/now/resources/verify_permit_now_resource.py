@@ -39,7 +39,7 @@ class VerifyPermitNOWResource(Resource):
             permits = Permit.find_by_permit_no_all(permit_no)
 
             for permit in permits:
-                mine = Mine.find_by_mine_guid(str(permit.mine_guid))
+                mine = Mine.find_by_mine_guid(str(permit.mine.mine_guid))
 
                 # Mine must be operating.
                 if not mine.mine_status or mine.mine_status[

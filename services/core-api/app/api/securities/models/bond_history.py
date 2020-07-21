@@ -31,13 +31,10 @@ class BondHistory(Base):
     institution_postal_code = db.Column(db.String)
     note = db.Column(db.String)
     project_id = db.Column(db.String)
-    update_user = db.Column(
-        db.String,
-        nullable=False,
-        default=User().get_user_username,
-        onupdate=User().get_user_username)
-    update_timestamp = db.Column(
-        db.DateTime, nullable=False, default=datetime.utcnow, onupdate=datetime.utcnow)
+    closed_date = db.Column(db.DateTime)
+    closed_note = db.Column(db.String)
+    update_user = db.Column(db.String, nullable=False)
+    update_timestamp = db.Column(db.DateTime, nullable=False)
 
     def __repr__(self):
         return '<BondHistory %r>' % self.bond_id

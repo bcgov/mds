@@ -44,6 +44,10 @@ export const ViewBondModal = (props) => {
     []
   );
 
+  const isBondClosed =
+    props.bond.bond_status_code === "REL" || props.bond.bond_status_code === "CON";
+  const bondStatusDescription = props.bondStatusOptionsHash[props.bond.bond_status_code];
+
   return (
     <div>
       <div className="inline-flex between block-tablet">
@@ -53,7 +57,7 @@ export const ViewBondModal = (props) => {
         </div>
         <div className="flex-tablet">
           <p className="field-title">Status</p>
-          <p>{props.bondStatusOptionsHash[props.bond.bond_status_code] || Strings.EMPTY_FIELD}</p>
+          <p>{bondStatusDescription || Strings.EMPTY_FIELD}</p>
         </div>
       </div>
       <br />
@@ -90,6 +94,18 @@ export const ViewBondModal = (props) => {
           <p className="field-title">Notes</p>
           <p>{props.bond.note || Strings.EMPTY_FIELD}</p>
         </div>
+        {isBondClosed && (
+          <>
+            <div className="inline-flex padding-small">
+              <p className="field-title">{`${bondStatusDescription} Date`}</p>
+              <p>{formatDate(props.bond.closed_date) || Strings.EMPTY_FIELD}</p>
+            </div>
+            <div className="inline-flex padding-small">
+              <p className="field-title">{`${bondStatusDescription} Notes`}</p>
+              <p>{props.bond.closed_note || Strings.EMPTY_FIELD}</p>
+            </div>
+          </>
+        )}
       </div>
       <br />
       <div className="between block-tablet">

@@ -7,6 +7,7 @@ import {
   getBondTypeDropDownOptions,
   getBondDocumentTypeDropDownOptions,
   getBondDocumentTypeOptionsHash,
+  getBondStatusOptionsHash,
 } from "@common/selectors/staticContentSelectors";
 import BondForm from "@/components/Forms/Securities/BondForm";
 import CustomPropTypes from "@/customPropTypes";
@@ -19,6 +20,7 @@ const propTypes = {
   provinceOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
   bondDocumentTypeDropDownOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
   bondDocumentTypeOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  bondStatusOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   permitGuid: PropTypes.string.isRequired,
   mineGuid: PropTypes.string.isRequired,
   bond: CustomPropTypes.bond,
@@ -65,6 +67,7 @@ export const AddBondModal = (props) => {
         bondTypeDropDownOptions={props.bondTypeDropDownOptions}
         bondDocumentTypeDropDownOptions={props.bondDocumentTypeDropDownOptions}
         bondDocumentTypeOptionsHash={props.bondDocumentTypeOptionsHash}
+        bondStatusOptionsHash={props.bondStatusOptionsHash}
         initialValues={props.bond}
         bond={props.bond}
         mineGuid={props.mineGuid}
@@ -82,6 +85,7 @@ const mapStateToProps = (state) => ({
   bondTypeDropDownOptions: getBondTypeDropDownOptions(state),
   bondDocumentTypeDropDownOptions: getBondDocumentTypeDropDownOptions(state),
   bondDocumentTypeOptionsHash: getBondDocumentTypeOptionsHash(state),
+  bondStatusOptionsHash: getBondStatusOptionsHash(state),
 });
 
 export default connect(mapStateToProps)(AddBondModal);

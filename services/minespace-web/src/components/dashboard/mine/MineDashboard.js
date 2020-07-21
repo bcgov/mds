@@ -50,7 +50,11 @@ export class MineDashboard extends Component {
 
   componentDidMount() {
     const { id, activeTab } = this.props.match.params;
-    this.props.fetchPartyRelationships({ mine_guid: id, relationships: "party" });
+    this.props.fetchPartyRelationships({
+      mine_guid: id,
+      relationships: "party",
+      include_permittees: "true",
+    });
     if (activeTab) {
       this.setState({ activeTab });
     } else {
