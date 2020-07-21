@@ -260,7 +260,7 @@
                 "name": "promtail",
                 "image": "grafana/promtail:k14-60b97e3",
                 "args": [
-                  "-config.file=/etc/promtail/promtail.yaml",
+                  "-config.file=/etc/promtail/nginx.yaml",
                   "-client.external-labels=environment=dev-${SUFFIX}"
                 ],
                 "volumeMounts": [

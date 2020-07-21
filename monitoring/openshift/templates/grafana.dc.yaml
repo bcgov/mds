@@ -98,6 +98,18 @@ objects:
       labels:
         app: "${APP_NAME}"
       name: "${NAME}"
+  - apiVersion: v1
+    kind: PersistentVolumeClaim
+    metadata:
+      name: "${NAME}-persistence"
+      labels:
+        app: "${APP_NAME}"
+    spec:
+      accessModes:
+        - ReadWriteMany
+      resources:
+        requests:
+          storage: "5Gi"
   - apiVersion: apps.openshift.io/v1
     kind: DeploymentConfig
     spec:
@@ -142,6 +154,8 @@ objects:
                   name: dashboards
                 - mountPath: "/etc/grafana/provisioning/datasources/"
                   name: datasources
+                - mountPath: "/var/lib/grafana"
+                  name: persistence
           dnsPolicy: ClusterFirst
           restartPolicy: Always
           schedulerName: default-scheduler
@@ -160,6 +174,10 @@ objects:
                 defaultMode: 420
                 name: "${NAME}-datasources"
               name: datasources
+            - persistentVolumeClaim:
+                claimName: ${NAME}-persistence
+              name: persistence
+
       test: false
       triggers:
         - type: ConfigChange
