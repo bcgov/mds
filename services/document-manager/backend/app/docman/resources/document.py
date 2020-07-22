@@ -1,6 +1,8 @@
 import uuid
 import os
 import requests
+import base64
+
 from datetime import datetime
 from urllib.parse import urlparse
 from app.services.object_store_storage_service import ObjectStoreStorageService
@@ -69,12 +71,43 @@ class DocumentListResource(Resource):
 
         # If the object store is enabled, send the post request through to TUSD to the object store
         object_store_path = None
+
         if Config.OBJECT_STORE_ENABLED:
-            resp = requests.post(
-                url=Config.TUSD_URL,
-                headers={key: value
-                         for (key, value) in request.headers if key != 'Host'},
-                data=request.data)
+
+            def _parse_request_headers_upload_metadata(request_metadata):
+
+                if (not request_metadata):
+                    return {}
+
+                metadata = {}
+                for key_value in request_metadata.split(","):
+                    (key, value) = key_value.split(" ")
+                    metadata[key] = base64.b64decode(value).decode("utf-8")
+
+                return metadata
+
+            upload_metadata_header = _parse_request_headers_upload_metadata(
+                request.headers.get("Upload-Metadata"))
+            upload_metadata_header['path'] = file_path
+
+            headers = {
+                key: value
+                for (key, value) in request.headers if key not in ['Host', 'Upload-Metadata']
+            }
+            current_app.logger.info(request.headers['Upload-Metadata'])
+
+            filename = base64.b64encode(
+                upload_metadata_header["filename"].encode("utf-8")).decode('utf-8')
+            path = base64.b64encode(file_path.encode("utf-8")).decode('utf-8')
+            filetype = base64.b64encode(
+                upload_metadata_header["filetype"].encode("utf-8")).decode('utf-8')
+
+            headers['Upload-Metadata'] = f'filename {filename},filetype {filetype},path {path}'
+            current_app.logger.info(headers['Upload-Metadata'])
+
+            current_app.logger.info(headers)
+
+            resp = requests.post(url=Config.TUSD_URL, headers=headers, data=request.data)
             if resp.status_code != requests.codes.created:
                 message = f'Cannot upload file. Object store responded with {resp.status_code} ({resp.reason}): {resp._content}'
                 current_app.logger.error(f'POST resp.request:\n{resp.request.__dict__}')
@@ -83,7 +116,9 @@ class DocumentListResource(Resource):
                 raise BadGateway(message)
 
             object_store_upload_resource = urlparse(resp.headers['Location']).path.split('/')[-1]
-            object_store_path = Config.S3_PREFIX + object_store_upload_resource.split('+')[0]
+            object_store_path = Config.S3_PREFIX + file_path
+            # object_store_path = Config.S3_PREFIX + object_store_upload_resource.split('+')[0]
+            current_app.logger.info(object_store_path)
             cache.set(
                 OBJECT_STORE_UPLOAD_RESOURCE(document_guid), object_store_upload_resource,
                 TIMEOUT_24_HOURS)
