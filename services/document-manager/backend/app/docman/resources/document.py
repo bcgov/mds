@@ -71,42 +71,20 @@ class DocumentListResource(Resource):
 
         # If the object store is enabled, send the post request through to TUSD to the object store
         object_store_path = None
-
         if Config.OBJECT_STORE_ENABLED:
 
-            def _parse_request_headers_upload_metadata(request_metadata):
-
-                if (not request_metadata):
-                    return {}
-
-                metadata = {}
-                for key_value in request_metadata.split(","):
-                    (key, value) = key_value.split(" ")
-                    metadata[key] = base64.b64decode(value).decode("utf-8")
-
-                return metadata
-
             upload_metadata_header = _parse_request_headers_upload_metadata(
-                request.headers.get("Upload-Metadata"))
-            upload_metadata_header['path'] = file_path
+                request.headers.get('Upload-Metadata'))
 
+            # Add the path to be used in the post-finish tusd hook to set the correct object store path
             headers = {
                 key: value
                 for (key, value) in request.headers if key not in ['Host', 'Upload-Metadata']
             }
-            current_app.logger.info(request.headers['Upload-Metadata'])
+            path = base64.b64encode(file_path.encode('utf-8')).decode('utf-8')
+            headers['Upload-Metadata'] += f',path {path}'
 
-            filename = base64.b64encode(
-                upload_metadata_header["filename"].encode("utf-8")).decode('utf-8')
-            path = base64.b64encode(file_path.encode("utf-8")).decode('utf-8')
-            filetype = base64.b64encode(
-                upload_metadata_header["filetype"].encode("utf-8")).decode('utf-8')
-
-            headers['Upload-Metadata'] = f'filename {filename},filetype {filetype},path {path}'
-            current_app.logger.info(headers['Upload-Metadata'])
-
-            current_app.logger.info(headers)
-
+            # Send the request
             resp = requests.post(url=Config.TUSD_URL, headers=headers, data=request.data)
             if resp.status_code != requests.codes.created:
                 message = f'Cannot upload file. Object store responded with {resp.status_code} ({resp.reason}): {resp._content}'
