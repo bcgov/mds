@@ -46,14 +46,14 @@ exports[`ModalWrapper renders properly 1`] = `
     style={
       Object {
         "backgroundColor": "#5e46a1",
-        "height": "8px",
+        "height": "3px",
         "left": 0,
         "position": "absolute",
-        "top": "50px",
-        "width": "100%",
+        "top": "54px",
         "zIndex": 100,
       }
     }
+    useWidth={true}
   />
   <Connect(AddPartyComponentWrapper)
     childProps={

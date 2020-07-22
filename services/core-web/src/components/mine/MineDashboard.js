@@ -77,7 +77,11 @@ export class MineDashboard extends Component {
     const { id } = this.props.match.params;
     this.handleActiveButton(this.props.location.pathname);
     this.loadMineData(id);
-    this.props.fetchPartyRelationships({ mine_guid: id, relationships: "party" });
+    this.props.fetchPartyRelationships({
+      mine_guid: id,
+      relationships: "party",
+      include_permittees: "true",
+    });
     this.props.fetchSubscribedMinesByUser();
   }
 
@@ -157,7 +161,11 @@ export class MineDashboard extends Component {
       this.props.fetchPermits(mine.mine_guid);
       this.setState({ isLoaded: true });
       this.props.fetchMineComplianceInfo(mine.mine_no, true);
-      this.props.fetchPartyRelationships({ mine_guid: id, relationships: "party" });
+      this.props.fetchPartyRelationships({
+        mine_guid: id,
+        relationships: "party",
+        include_permittees: "true",
+      });
     });
   }
 

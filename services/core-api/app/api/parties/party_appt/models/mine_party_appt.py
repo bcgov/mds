@@ -1,7 +1,5 @@
 from datetime import datetime
-import re
-import uuid
-import requests
+import re, sys, uuid, requests
 
 from flask import request, current_app
 from sqlalchemy import func
@@ -35,8 +33,8 @@ class MinePartyAppointment(AuditMixin, Base):
     mine_tailings_storage_facility_guid = db.Column(
         UUID(as_uuid=True),
         db.ForeignKey('mine_tailings_storage_facility.mine_tailings_storage_facility_guid'))
-    permit_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('permit.permit_guid'))
-
+    permit_id = db.Column(db.Integer, db.ForeignKey('permit.permit_id'))
+    permit = db.relationship('Permit', lazy='select')
     deleted_ind = db.Column(db.Boolean, server_default=FetchedValue())
 
     # Relationships
@@ -52,17 +50,32 @@ class MinePartyAppointment(AuditMixin, Base):
         'MineDocument', lazy='joined', secondary='mine_party_appt_document_xref')
 
     def assign_related_guid(self, related_guid):
+        from app.api.mines.permits.permit.models.permit import Permit
+
         if self.mine_party_appt_type_code == "EOR":
             self.mine_tailings_storage_facility_guid = related_guid
 
         if self.mine_party_appt_type_code == "PMT":
-            self.permit_guid = related_guid
+            permit = Permit.find_by_permit_guid(related_guid)
+            if not permit:
+                raise AssertionError(f'Permit with guid {related_guid} not found')
+            self.permit_id = permit.permit_id
         return
+
+    def save(self, commit=True):
+        if commit:
+            if not (self.permit or self.permit_id or self.mine_guid or self.mine):
+                raise AssertionError("Must have a related permit or mine")
+            if self.mine_party_appt_type_code == "PMT" and (self.mine_guid
+                                                            or self.mine) is not None:
+                raise AssertionError("Permittees are not related to mines")
+
+        super(MinePartyAppointment, self).save(commit)
 
     def json(self, relationships=[]):
         result = {
             'mine_party_appt_guid': str(self.mine_party_appt_guid),
-            'mine_guid': str(self.mine_guid),
+            'mine_guid': str(self.mine_guid) if self.mine_guid else None,
             'party_guid': str(self.party_guid),
             'mine_party_appt_type_code': str(self.mine_party_appt_type_code),
             'start_date': str(self.start_date) if self.start_date else None,
@@ -75,7 +88,7 @@ class MinePartyAppointment(AuditMixin, Base):
         if self.mine_party_appt_type_code == "EOR":
             related_guid = str(self.mine_tailings_storage_facility_guid)
         elif self.mine_party_appt_type_code == "PMT":
-            related_guid = str(self.permit_guid)
+            related_guid = str(self.permit.permit_guid)
         result["related_guid"] = related_guid
         return result
 
@@ -88,6 +101,7 @@ class MinePartyAppointment(AuditMixin, Base):
         except ValueError:
             return None
 
+    # FIXME: This is only being used in one test, and is broken by permittee changes. Remove?
     @classmethod
     def find_by_mine_guid(cls, _id):
         try:
@@ -103,17 +117,17 @@ class MinePartyAppointment(AuditMixin, Base):
             return None
 
     @classmethod
-    def find_by_permit_guid(cls, _id):
-        return cls.find_by(permit_guid=_id)
+    def find_by_permit_id(cls, _id):
+        return cls.query.filter_by(permit_id=_id).filter_by(deleted_ind=False).all()
 
 
-# given a permmit guid, and an issue date of a new amendment, order appointment start_dates
+# given a permmit, and an issue date of a new amendment, order appointment start_dates
 # return the all appointment start_dates in order
 
     @classmethod
     def find_appointment_end_dates(cls, _id, issue_datetime):
         start_dates = [issue_datetime]
-        appointments = cls.find_by(permit_guid=_id)
+        appointments = cls.find_by_permit_id(_id)
         for appointment in appointments:
             start_dates.append(appointment.start_date)
         ordered_dates = sorted(start_dates, reverse=True)
@@ -130,13 +144,13 @@ class MinePartyAppointment(AuditMixin, Base):
     def find_current_appointments(cls,
                                   mine_guid=None,
                                   mine_party_appt_type_code=None,
-                                  permit_guid=None,
+                                  permit_id=None,
                                   mine_tailings_storage_facility_guid=None):
         built_query = cls.query.filter_by(deleted_ind=False).filter_by(
             mine_guid=mine_guid).filter_by(
                 mine_party_appt_type_code=mine_party_appt_type_code).filter_by(end_date=None)
-        if permit_guid:
-            built_query = built_query.filter_by(permit_guid=permit_guid)
+        if permit_id:
+            built_query = built_query.filter_by(permit_id=permit_id)
         if mine_tailings_storage_facility_guid:
             built_query = built_query.filter_by(
                 mine_tailings_storage_facility_guid=mine_tailings_storage_facility_guid)
@@ -147,18 +161,26 @@ class MinePartyAppointment(AuditMixin, Base):
                 mine_guid=None,
                 party_guid=None,
                 mine_party_appt_type_codes=None,
-                permit_guid=None):
+                include_permittees=False):
         built_query = cls.query.filter_by(deleted_ind=False)
         if mine_guid:
             built_query = built_query.filter_by(mine_guid=mine_guid)
         if party_guid:
             built_query = built_query.filter_by(party_guid=party_guid)
-        if permit_guid:
-            built_query = built_query.filter_by(permit_guid=permit_guid)
         if mine_party_appt_type_codes:
             built_query = built_query.filter(
                 cls.mine_party_appt_type_code.in_(mine_party_appt_type_codes))
-        return built_query.all()
+        results = built_query.all()
+        if include_permittees and mine_guid:
+            #avoid circular imports.
+            from app.api.mines.mine.models.mine import Mine
+            mine = Mine.find_by_mine_guid(mine_guid)
+            permit_permittees = []
+            for mp in mine.mine_permit:
+                if mp.permittee_appointments:
+                    permit_permittees.append(mp.permittee_appointments[0])
+            results = results + permit_permittees
+        return results
 
     @classmethod
     def to_csv(cls, records, columns):
@@ -172,33 +194,28 @@ class MinePartyAppointment(AuditMixin, Base):
 
     @classmethod
     def create(cls,
-               mine_guid,
+               mine,
                party_guid,
-               mine_party_appt_type_code,
                processed_by,
+               mine_party_appt_type_code,
                start_date=None,
                end_date=None,
-               permit_guid=None,
+               permit=None,
                add_to_session=True):
         mpa = cls(
-            mine_guid=mine_guid,
+            mine=mine,
             party_guid=party_guid,
-            permit_guid=permit_guid,
-            mine_party_appt_type_code="PMT",
+            mine_party_appt_type_code=mine_party_appt_type_code,
             start_date=start_date,
             end_date=end_date,
             processed_by=processed_by)
+        if mine_party_appt_type_code == 'PMT':
+            mpa.permit = permit
         if add_to_session:
             mpa.save(commit=False)
         return mpa
 
     # validators
-    @validates('mine_guid')
-    def validate_mine_guid(self, key, val):
-        if not val:
-            raise AssertionError('No mine guid provided.')
-        return val
-
     @validates('party_guid')
     def validate_party_guid(self, key, val):
         if not val:
@@ -219,11 +236,4 @@ class MinePartyAppointment(AuditMixin, Base):
             if not val:
                 raise AssertionError(
                     'No mine_tailings_storage_facility_guid, but mine_party_appt_type_code is EOR.')
-        return val
-
-    @validates('permit_guid')
-    def validate_permit_guid(self, key, val):
-        if self.mine_party_appt_type_code == 'PMT':
-            if not val:
-                raise AssertionError('No permit_guid, but mine_party_appt_type_code is PMT.')
         return val
