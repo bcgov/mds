@@ -73,16 +73,14 @@ class DocumentListResource(Resource):
         object_store_path = None
         if Config.OBJECT_STORE_ENABLED:
 
-            upload_metadata_header = _parse_request_headers_upload_metadata(
-                request.headers.get('Upload-Metadata'))
-
             # Add the path to be used in the post-finish tusd hook to set the correct object store path
             headers = {
                 key: value
                 for (key, value) in request.headers if key not in ['Host', 'Upload-Metadata']
             }
             path = base64.b64encode(file_path.encode('utf-8')).decode('utf-8')
-            headers['Upload-Metadata'] += f',path {path}'
+            headers['Upload-Metadata'] = f'{request.headers["Upload-Metadata"]},path {path}'
+            current_app.logger.info(headers['Upload-Metadata'])
 
             # Send the request
             resp = requests.post(url=Config.TUSD_URL, headers=headers, data=request.data)
