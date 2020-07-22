@@ -82,9 +82,11 @@ class PermitListResource(Resource, UserMixin):
         if not mine:
             raise NotFound('There was no mine found with the provided mine_guid.')
 
-        party = Party.find_by_party_guid(data.get('permittee_party_guid'))
-        if not party:
-            raise NotFound('Party not found')
+        permittee_party_guid = data.get('permittee_party_guid')
+        if permittee_party_guid:
+            party = Party.find_by_party_guid(permittee_party_guid)
+            if not party:
+                raise NotFound('Permittee party not found')
 
         permit = Permit.find_by_permit_no(data.get('permit_no'))
         if permit:
@@ -118,16 +120,17 @@ class PermitListResource(Resource, UserMixin):
             amendment.related_documents.append(new_pa_doc)
         db.session.commit()
 
-        permittee_start_date = data.get('issue_date')
-        permittee = MinePartyAppointment.create(
-            None,
-            data.get('permittee_party_guid'),
-            mine_party_appt_type_code='PMT',
-            start_date=permittee_start_date,
-            processed_by=self.get_user_info(),
-            permit=permit)
-        db.session.add(permittee)
-        db.session.commit()
+        if permittee_party_guid:
+            permittee_start_date = data.get('issue_date')
+            permittee = MinePartyAppointment.create(
+                None,
+                permittee_party_guid,
+                mine_party_appt_type_code='PMT',
+                start_date=permittee_start_date,
+                processed_by=self.get_user_info(),
+                permit=permit)
+            db.session.add(permittee)
+            db.session.commit()
 
         #for marshalling
         permit._context_mine = mine
