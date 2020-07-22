@@ -11,5 +11,5 @@ RUN source /opt/app-root/etc/scl_enable && \
     pip install -U pip setuptools wheel && \
     cd ${APP_ROOT}/src && pip install -r requirements.txt
 
-USER 1001
 ENTRYPOINT [ "./init.sh" ]
+USER 1000
