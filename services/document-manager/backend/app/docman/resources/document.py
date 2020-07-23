@@ -80,7 +80,6 @@ class DocumentListResource(Resource):
             }
             path = base64.b64encode(file_path.encode('utf-8')).decode('utf-8')
             headers['Upload-Metadata'] = f'{request.headers["Upload-Metadata"]},path {path}'
-            current_app.logger.info(headers['Upload-Metadata'])
 
             # Send the request
             resp = requests.post(url=Config.TUSD_URL, headers=headers, data=request.data)
@@ -93,8 +92,6 @@ class DocumentListResource(Resource):
 
             object_store_upload_resource = urlparse(resp.headers['Location']).path.split('/')[-1]
             object_store_path = Config.S3_PREFIX + file_path
-            # object_store_path = Config.S3_PREFIX + object_store_upload_resource.split('+')[0]
-            current_app.logger.info(object_store_path)
             cache.set(
                 OBJECT_STORE_UPLOAD_RESOURCE(document_guid), object_store_upload_resource,
                 TIMEOUT_24_HOURS)

@@ -1,24 +1,13 @@
-import uuid
-import requests
-import base64
-import sys
 import json
-import os
-import boto3
 
-from datetime import datetime
-from urllib.parse import urlparse
-from app.services.object_store_storage_service import ObjectStoreStorageService
+from werkzeug.exceptions import BadRequest, BadGateway
+from flask import request, current_app
+from flask_restplus import Resource
 
-from werkzeug.exceptions import BadRequest, NotFound, Conflict, RequestEntityTooLarge, InternalServerError, BadGateway
-from flask import request, current_app, send_file, make_response, jsonify
-from flask_restplus import Resource, reqparse
-
-from app.docman.models.document import Document
-from app.extensions import api, cache
-from app.utils.access_decorators import requires_any_of, MINE_EDIT, VIEW_ALL, MINESPACE_PROPONENT, EDIT_PARTY, EDIT_PERMIT, EDIT_DO, EDIT_VARIANCE
-from app.constants import OBJECT_STORE_PATH, OBJECT_STORE_UPLOAD_RESOURCE, FILE_UPLOAD_SIZE, FILE_UPLOAD_OFFSET, FILE_UPLOAD_PATH, DOWNLOAD_TOKEN, TIMEOUT_24_HOURS, TUS_API_VERSION, TUS_API_SUPPORTED_VERSIONS, FORBIDDEN_FILETYPES
+from app.extensions import api
 from app.config import Config
+from app.utils.access_decorators import requires_any_of, MINE_EDIT, MINESPACE_PROPONENT, EDIT_PARTY, EDIT_PERMIT, EDIT_DO, EDIT_VARIANCE
+from app.services.object_store_storage_service import ObjectStoreStorageService
 
 DOCUMENT_UPLOAD_ROLES = [
     MINE_EDIT, EDIT_PARTY, EDIT_PERMIT, EDIT_DO, EDIT_VARIANCE, MINESPACE_PROPONENT
@@ -26,10 +15,7 @@ DOCUMENT_UPLOAD_ROLES = [
 
 
 @api.route('/tusd-hooks')
-class TusdHook(Resource):
-    parser = reqparse.RequestParser(trim=True)
-    parser.add_argument('data', type=str, required=False)
-
+class TusdHooks(Resource):
     @requires_any_of(DOCUMENT_UPLOAD_ROLES)
     def post(self):
 
