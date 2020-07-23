@@ -1,6 +1,5 @@
 /* eslint-disable */
 import { createSelector } from "reselect";
-
 import { getNoticeOfWork } from "@common/selectors/noticeOfWorkSelectors";
 import * as permitReducer from "../reducers/permitReducer";
 

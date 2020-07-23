@@ -1,9 +1,8 @@
-/* eslint-disable */
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import moment from "moment";
 import { isEmpty } from "lodash";
-import { Button, Menu, Popconfirm, Dropdown, Icon, Result, Alert, Row, Col } from "antd";
+import { Button, Menu, Popconfirm, Dropdown, Icon, Result, Row, Col } from "antd";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { formatDate } from "@common/utils/helpers";
@@ -16,11 +15,7 @@ import {
   updatePermitAmendment,
   fetchDraftPermitByNOW,
 } from "@common/actionCreators/permitActionCreator";
-import {
-  getDraftPermits,
-  getPermits,
-  getDraftPermitForNOW,
-} from "@common/selectors/permitSelectors";
+import { getPermits, getDraftPermitForNOW } from "@common/selectors/permitSelectors";
 import * as FORM from "@/constants/forms";
 import CustomPropTypes from "@/customPropTypes";
 import GeneratePermitForm from "@/components/Forms/permits/GeneratePermitForm";
@@ -35,12 +30,25 @@ import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
  */
 
 const propTypes = {
-  returnToPrevStep: PropTypes.func.isRequired,
   noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
   appOptions: PropTypes.arrayOf(CustomPropTypes.options).isRequired,
   handleGenerateDocumentFormSubmit: PropTypes.func.isRequired,
   documentType: PropTypes.objectOf(PropTypes.any).isRequired,
   isAmendment: PropTypes.bool.isRequired,
+  toggleEditMode: PropTypes.func.isRequired,
+  isViewMode: PropTypes.bool.isRequired,
+  fixedTop: PropTypes.bool.isRequired,
+  reset: PropTypes.func.isRequired,
+  createPermit: PropTypes.func.isRequired,
+  fetchPermits: PropTypes.func.isRequired,
+  createPermitAmendment: PropTypes.func.isRequired,
+  updatePermitAmendment: PropTypes.func.isRequired,
+  fetchDraftPermitByNOW: PropTypes.func.isRequired,
+  formValues: CustomPropTypes.permitGenObj.isRequired,
+  preDraftFormValues: PropTypes.ObjectOf(PropTypes.oneOfType([PropTypes.strings, PropTypes.bool]))
+    .isRequired,
+  permits: PropTypes.arrayOf(CustomPropTypes.permit).isRequired,
+  draftPermits: CustomPropTypes.permit.isRequired,
 };
 
 const defaultProps = {};
@@ -53,7 +61,6 @@ export class NOWPermitGeneration extends Component {
     isPreDraft: false,
     isAmendment: false,
     isDraft: false,
-    isViewMode: true,
     permittee: {},
     draftAmendment: {},
     permitGenObj: {},
@@ -81,15 +88,15 @@ export class NOWPermitGeneration extends Component {
         this.props.noticeOfWork.now_application_guid
       )
       .then(() => {
-        if (!isEmpty(this.props.draftPermitForNOW)) {
-          const draftAmendment = this.props.draftPermitForNOW.permit_amendments.filter(
+        if (!isEmpty(this.props.draftPermits)) {
+          const draftAmendment = this.props.draftPermits.permit_amendments.filter(
             (amendment) =>
               amendment.now_application_guid === this.props.noticeOfWork.now_application_guid &&
               amendment.permit_amendment_status_code === draft
           )[0];
           const permitGenObj = this.createPermitGenObject(
             this.props.noticeOfWork,
-            this.props.draftPermitForNOW,
+            this.props.draftPermits,
             draftAmendment
           );
           this.setState({ isDraft: !isEmpty(draftAmendment), draftAmendment, permitGenObj });
@@ -102,7 +109,6 @@ export class NOWPermitGeneration extends Component {
     this.toggleLoading();
     // this logic will be moved to the BE when we generate Permit #
     const randomNumber = Math.floor(100000 + Math.random() * 900000);
-    const permitType = this.props.noticeOfWork.notice_of_work_type_code[0];
     const correctPermitType =
       this.props.noticeOfWork.notice_of_work_type_code[0] === "S"
         ? "G"
@@ -131,6 +137,7 @@ export class NOWPermitGeneration extends Component {
       current_month: moment().format("MMMM"),
       current_year: moment().format("YYYY"),
       conditions: "",
+      lead_inspector_title: "Inspector of Mines",
     };
     permitGenObject.mine_no = noticeOfWork.mine_no;
 
@@ -139,7 +146,7 @@ export class NOWPermitGeneration extends Component {
     )[0];
 
     const originalAmendment = draftPermit.permit_amendments.filter(
-      (amendment) => amendment.permit_amendment_type_code === originalPermit
+      (org) => org.permit_amendment_type_code === originalPermit
     )[0];
 
     permitGenObject.permittee = permittee.party.name;
@@ -157,9 +164,6 @@ export class NOWPermitGeneration extends Component {
       (option) => option.notice_of_work_type_code === noticeOfWork.notice_of_work_type_code
     )[0].description;
     permitGenObject.lead_inspector = noticeOfWork.lead_inspector.name;
-    permitGenObject.lead_inspector_title = isEmpty(amendment)
-      ? "Inspector of Mines"
-      : amendment.lead_inspector_title;
     permitGenObject.regional_office = isEmpty(amendment) ? "" : amendment.regional_office;
 
     return permitGenObject;
@@ -177,7 +181,9 @@ export class NOWPermitGeneration extends Component {
   handlePremitGenSubmit = () => {
     const newValues = this.props.formValues;
     if (this.props.isAmendment) {
-      newValues.original_permit_issue_date = formatDate(values.original_permit_issue_date);
+      newValues.original_permit_issue_date = formatDate(
+        this.props.formValues.original_permit_issue_date
+      );
     }
     newValues.auth_end_date = formatDate(this.props.formValues.auth_end_date);
     this.props.handleGenerateDocumentFormSubmit(this.props.documentType, {
@@ -186,15 +192,9 @@ export class NOWPermitGeneration extends Component {
     });
   };
 
-  toggleEditMode = () => {
-    this.setState((prevState) => ({ isViewMode: !prevState.isViewMode }));
-  };
-
   handleCancelDraftEdit = () => {
     this.props.reset(FORM.GENERATE_PERMIT);
-    this.setState((prevState) => ({
-      isViewMode: !prevState.isViewMode,
-    }));
+    this.props.toggleEditMode();
   };
 
   handleSaveDraftEdit = () => {
@@ -206,13 +206,13 @@ export class NOWPermitGeneration extends Component {
     this.props
       .updatePermitAmendment(
         this.props.noticeOfWork.mine_guid,
-        this.props.draftPermitForNOW.permit_guid,
+        this.props.draftPermits.permit_guid,
         this.state.draftAmendment.permit_amendment_guid,
         payload
       )
       .then(() => {
         this.handleDraftPermit();
-        this.setState({ isViewMode: true });
+        this.toggleEditMode();
       });
   };
 
@@ -249,10 +249,14 @@ export class NOWPermitGeneration extends Component {
     }
   };
 
+  cancelPreDraft = () => {
+    this.setState({ isPreDraft: false });
+  };
+
   menu = () => {
     return (
       <Menu>
-        <Menu.Item key="edit" onClick={this.toggleEditMode}>
+        <Menu.Item key="edit" onClick={this.props.toggleEditMode}>
           Edit
         </Menu.Item>
       </Menu>
@@ -260,7 +264,7 @@ export class NOWPermitGeneration extends Component {
   };
 
   renderEditModeNav = () => {
-    return this.state.isViewMode ? (
+    return this.props.isViewMode ? (
       <div className="inline-flex block-mobile padding-md between">
         <h2>{`Draft Permit (${this.props.noticeOfWork.type_of_application})`}</h2>
         {this.state.isDraft && (
@@ -339,6 +343,7 @@ export class NOWPermitGeneration extends Component {
                               sm={{ span: 12, offset: 6 }}
                             >
                               <PreDraftPermitForm
+                                cancelPreDraft={this.cancelPreDraft}
                                 permits={this.props.permits}
                                 isAmendment={this.state.isAmendment}
                                 onSubmit={this.startDraftPermit}
@@ -359,7 +364,7 @@ export class NOWPermitGeneration extends Component {
                     initialValues={this.state.permitGenObj}
                     isAmendment={this.state.isAmendment}
                     noticeOfWork={this.props.noticeOfWork}
-                    isViewMode={this.state.isViewMode}
+                    isViewMode={this.props.isViewMode}
                   />
                 )}
               </LoadingWrapper>
@@ -380,9 +385,8 @@ const mapStateToProps = (state) => ({
   appOptions: getNoticeOfWorkApplicationTypeOptions(state),
   formValues: getFormValues(FORM.GENERATE_PERMIT)(state),
   preDraftFormValues: getFormValues(FORM.PRE_DRAFT_PERMIT)(state),
-  draftPermits: getDraftPermits(state),
   permits: getPermits(state),
-  draftPermitForNOW: getDraftPermitForNOW(state),
+  draftPermits: getDraftPermitForNOW(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
