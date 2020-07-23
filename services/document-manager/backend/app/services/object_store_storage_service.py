@@ -89,6 +89,12 @@ class ObjectStoreStorageService():
         fs_etag = self.calculate_s3_etag(filename)
         return s3_etag == fs_etag
 
+    def copy_file(self, copy_source, key):
+        _client.copy(CopySource=copy_source, Bucket=Config.OBJECT_STORE_BUCKET, Key=key)
+
+    def delete_file(self, key):
+        _client.delete_object(Bucket=Config.OBJECT_STORE_BUCKET, Key=key)
+
     # Returns the ETag of an object
     def s3_etag(self, key):
         try:
