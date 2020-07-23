@@ -22,7 +22,6 @@ class PermitStatusCode(AuditMixin, Base):
     @classmethod
     def get_all(cls):
         return cls.query.filter_by(active_ind=True).all()
-        #TODO put active ind on this table
 
     @validates('permit_status_code')
     def validate_permit_status_code(self, key, permit_status_code):
