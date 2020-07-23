@@ -33,7 +33,8 @@ class PermitAmendmentDocument(AuditMixin, Base):
         'and_(PermitAmendment.permit_amendment_id == PermitAmendmentDocument.permit_amendment_id, PermitAmendmentDocument.deleted_ind==False)',
     )
 
-    mine_name = association_proxy('permit_amendment', 'permit.mine.mine_name')
+    mine = db.relationship('Mine', lazy='selectin')
+    mine_name = association_proxy('mine', 'mine_name')
 
     @classmethod
     def find_by_permit_amendment_document_guid(cls, _guid):
