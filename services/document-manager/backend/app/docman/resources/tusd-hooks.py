@@ -51,4 +51,4 @@ class TusdHooks(Resource):
         except Exception as e:
             raise BadGateway(f'Object store delete request failed: {e}')
 
-        return 204
+        return ('', 204)
