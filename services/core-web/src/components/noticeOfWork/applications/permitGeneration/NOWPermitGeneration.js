@@ -297,8 +297,6 @@ export class NOWPermitGeneration extends Component {
 
   render() {
     const isNOWTypeNull = isNull(this.props.noticeOfWork.type_of_application);
-    console.log(isNOWTypeNull);
-    console.log(this.props.noticeOfWork.type_of_application);
     return (
       <div>
         <div className={this.props.fixedTop ? "view--header fixed-scroll" : "view--header"}>
