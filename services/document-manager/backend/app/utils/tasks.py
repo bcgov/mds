@@ -1,4 +1,4 @@
-import numpy
+import json
 
 from celery.utils.log import get_task_logger
 
@@ -10,9 +10,11 @@ from app.config import Config
 
 celery = make_celery()
 
+# class ChordFailure(Exception):
+#     pass
 
-class TaskFailure(Exception):
-    pass
+# class TaskFailure(Exception):
+#     pass
 
 
 @celery.task()
@@ -52,14 +54,15 @@ def transfer_docs(transfer_id, doc_ids, chunk_index):
         'chunk': chunk_index,
         'success': success,
         'message': message,
-        'success_transfers': sorted(success_transfers),
-        'fail_transfers': sorted(list(numpy.setdiff1d(doc_ids, success_transfers))),
+        'success_transfers': list(sorted(success_transfers)),
+        'fail_transfers': list(sorted([i for i in doc_ids if i not in success_transfers])),
         'errors': errors
     }
+    result = json.dumps(result)
 
     # Return the result of the transfer
-    if (not success):
-        raise TaskFailure(result)
+    # if (not success):
+    #     raise TaskFailure(result)
     return result
 
 
@@ -67,6 +70,7 @@ def transfer_docs(transfer_id, doc_ids, chunk_index):
 def transfer_docs_result(transfer_results, transfer_id=None):
     logger = get_task_logger(transfer_id)
     logger.info(f'All tasks in transfer job with ID {transfer_id} have completed')
+    transfer_results = [json.loads(transfer_result) for transfer_result in transfer_results]
     success_transfers = [
         doc_id for transfer_result in transfer_results
         for doc_id in transfer_result['success_transfers']
@@ -76,12 +80,22 @@ def transfer_docs_result(transfer_results, transfer_id=None):
         for doc_id in transfer_result['fail_transfers']
     ]
     errors = [error for transfer_result in transfer_results for error in transfer_result['errors']]
-    return {
+    success_results = []
+    for transfer_result in transfer_results:
+        success_results.append(transfer_result['success'])
+
+    result = {
         'transfer_id': transfer_id,
-        'success_transfers': sorted(success_transfers),
-        'fail_transfers': sorted(fail_transfers),
+        'success': any(success_results),
+        'success_transfers': list(sorted(success_transfers)),
+        'fail_transfers': list(sorted(fail_transfers)),
         'errors': errors
     }
+    result = json.dumps(result)
+    logger.info(result)
+    # if (any(success_results)):
+    #     raise ChordFailure(result)
+    return result
 
 
 @celery.task()
@@ -120,14 +134,15 @@ def verify_docs(verify_id, doc_ids, chunk_index):
         'chunk': chunk_index,
         'success': success,
         'message': message,
-        'success_verifications': sorted(success_verifications),
-        'fail_verifications': sorted(list(numpy.setdiff1d(doc_ids, success_verifications))),
+        'success_verifications': list(sorted(success_verifications)),
+        'fail_verifications': list(sorted([i for i in doc_ids if i not in success_verifications])),
         'errors': errors
     }
+    result = json.dumps(result)
 
     # Return the result of the verification
-    if (not success):
-        raise TaskFailure(result)
+    # if (not success):
+    #     raise TaskFailure(result)
     return result
 
 
@@ -135,6 +150,7 @@ def verify_docs(verify_id, doc_ids, chunk_index):
 def verify_docs_result(verify_results, verify_id=None):
     logger = get_task_logger(verify_id)
     logger.info(f'All tasks in verification job with ID {verify_id} have completed')
+    verify_results = [json.loads(verify_result) for verify_result in verify_results]
     success_verifications = [
         doc_id for verify_result in verify_results
         for doc_id in verify_result['success_verifications']
@@ -143,12 +159,22 @@ def verify_docs_result(verify_results, verify_id=None):
         doc_id for verify_result in verify_results for doc_id in verify_result['fail_verifications']
     ]
     errors = [error for verify_result in verify_results for error in verify_result['errors']]
-    return {
+    success_results = []
+    for verify_result in verify_results:
+        success_results.append(verify_result['success'])
+
+    result = {
         'verify_id': verify_id,
-        'success_verifications': sorted(success_verifications),
-        'fail_verifications': sorted(fail_verifications),
+        'success': any(success_results),
+        'success_verifications': list(sorted(success_verifications)),
+        'fail_verifications': list(sorted(fail_verifications)),
         'errors': errors
     }
+    result = json.dumps(result)
+    logger.info(result)
+    # if (any(success_results)):
+    #     raise ChordFailure(result)
+    return result
 
 
 @celery.task()
@@ -170,10 +196,20 @@ def reorganize_docs(reorganize_id, doc_ids, chunk_index):
                 success_reorganized.append(doc.document_id)
                 logger.info(f'{doc_prefix} Reorganize UNNECESSARY')
 
-            # Copy the file to its proper more organized location
+            # Ensure the file to copy exists
             old_key = doc.object_store_path
+            if (not ObjectStoreStorageService().file_exists(old_key)):
+                raise Exception(f'File to copy does not exist: {old_key}')
+
+            # Copy the file to its proper more organized location
             new_key = f'{Config.S3_PREFIX}{doc.full_storage_path[1:]}'
-            ObjectStoreStorageService().copy_file(copy_source=old_key, key=new_key)
+            ObjectStoreStorageService().copy_file(source_key=old_key, key=new_key)
+
+            # Ensure that the file was copied to its new location
+            if (not ObjectStoreStorageService().file_exists(new_key)):
+                raise Exception('Copied file does not exist at its new location!')
+
+            # raise Exception('This is a FAKE EXCEPTION!')
 
             # Ensure that the ETag of the copied file and the old file are equal
             if (ObjectStoreStorageService().s3_etag(old_key) !=
@@ -207,14 +243,15 @@ def reorganize_docs(reorganize_id, doc_ids, chunk_index):
         'chunk': chunk_index,
         'success': success,
         'message': message,
-        'success_reorganized': sorted(success_reorganized),
-        'fail_reorganized': sorted(list(numpy.setdiff1d(doc_ids, success_reorganized))),
+        'success_reorganized': list(sorted(success_reorganized)),
+        'fail_reorganized': list(sorted([i for i in doc_ids if i not in success_reorganized])),
         'errors': errors
     }
+    result = json.dumps(result)
 
     # Return the result of the reorganization
-    if (not success):
-        raise TaskFailure(result)
+    # if (not success):
+    #     raise TaskFailure(result)
     return result
 
 
@@ -222,6 +259,7 @@ def reorganize_docs(reorganize_id, doc_ids, chunk_index):
 def reorganize_docs_result(reorganize_results, reorganize_id=None):
     logger = get_task_logger(reorganize_id)
     logger.info(f'All tasks in reorganization job with ID {reorganize_id} have completed')
+    reorganize_results = [json.loads(reorganize_result) for reorganize_result in reorganize_results]
     success_reorganized = [
         doc_id for reorganize_result in reorganize_results
         for doc_id in reorganize_result['success_reorganized']
@@ -233,9 +271,19 @@ def reorganize_docs_result(reorganize_results, reorganize_id=None):
     errors = [
         error for reorganize_result in reorganize_results for error in reorganize_result['errors']
     ]
-    return {
+    success_results = []
+    for reorganize_result in reorganize_results:
+        success_results.append(reorganize_result['success'])
+
+    result = {
         'reorganize_id': reorganize_id,
-        'success_reorganized': sorted(success_reorganized),
-        'fail_reorganized': sorted(fail_reorganized),
+        'success': any(success_results),
+        'success_reorganized': list(sorted(success_reorganized)),
+        'fail_reorganized': list(sorted(fail_reorganized)),
         'errors': errors
     }
+    result = json.dumps(result)
+    logger.info(result)
+    # if (any(success_results)):
+    #     raise ChordFailure(result)
+    return result

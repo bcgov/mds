@@ -35,17 +35,21 @@ class TusdHooks(Resource):
 
         # Parse data
         try:
+            # If the path is in the key there is no need to move the file
+            path = data["Upload"]["MetaData"]["path"][1:]
             key = data["Upload"]["Storage"]["Key"]
+            if (path in key):
+                return ('', 204)
+
             info_key = f'{key}.info'
             # NOTE: We need to remove the beginning slash from the path because the S3 prefix has a trailing slash
-            new_key = f'{Config.S3_PREFIX}{data["Upload"]["MetaData"]["path"][1:]}'
+            new_key = f'{Config.S3_PREFIX}{path}'
         except Exception as e:
             raise BadRequest(f'Failed to parse data: {e}')
 
         # Copy the file to its new location
         try:
-            copy_source = {'Bucket': Config.OBJECT_STORE_BUCKET, 'Key': key}
-            ObjectStoreStorageService().copy_file(copy_source, new_key)
+            ObjectStoreStorageService().copy_file(source_key=key, key=new_key)
         except Exception as e:
             raise BadGateway(f'Object store copy request failed: {e}')
 
