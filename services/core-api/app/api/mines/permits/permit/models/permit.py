@@ -133,7 +133,7 @@ class Permit(AuditMixin, Base):
     @classmethod
     def find_by_now_application_guid(cls, _now_application_guid):
         permit_amendment = PermitAmendment.find_by_now_application_guid(_now_application_guid)
-        permit = cls.find_by_permit_id(permit_amendment.permit_id)
+        permit = permit_amendment.permit
         permit._context_mine = permit_amendment.mine
         return permit
 
