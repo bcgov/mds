@@ -14,13 +14,27 @@ from app.services.object_store_storage_service import ObjectStoreStorageService
 class TusdHooks(Resource):
     @requires_role_document_upload
     def post(self):
+        hook = request.headers.get('Hook-Name', None)
+        if (hook is None):
+            raise BadRequest('Hook-Name header must be present')
 
-        # Parse data
+        try:
+            data = json.loads(request.data)
+        except Exception as e:
+            raise BadRequest(f'Failed to parse data: {e}')
+
+        if (hook == 'post-finish'):
+            return self.post_finish(data)
+
+        return ('', 204)
+
+    def post_finish(self, data):
         key = None
         info_key = None
         new_key = None
+
+        # Parse data
         try:
-            data = json.loads(request.data)
             key = data["Upload"]["Storage"]["Key"]
             info_key = f'{key}.info'
             # NOTE: We need to remove the beginning slash from the path because the S3 prefix has a trailing slash
