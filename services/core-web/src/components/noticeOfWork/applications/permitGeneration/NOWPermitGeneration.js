@@ -211,7 +211,7 @@ export class NOWPermitGeneration extends Component {
       )
       .then(() => {
         this.handleDraftPermit();
-        this.toggleEditMode();
+        this.props.toggleEditMode();
       });
   };
 

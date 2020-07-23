@@ -53,7 +53,7 @@ export const PreDraftPermitForm = (props) => {
       <div className="right center-mobile">
         <Popconfirm
           placement="topRight"
-          title="Are you sure you want to cancel?"
+          title="Are you sure you want to stop the process of starting a draft permit?"
           onConfirm={props.cancelPreDraft}
           okText="Yes"
           cancelText="No"
