@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import moment from "moment";
-import { isEmpty } from "lodash";
+import { isEmpty, isNull } from "lodash";
 import { Button, Menu, Popconfirm, Dropdown, Icon, Result, Row, Col } from "antd";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -34,7 +34,6 @@ const propTypes = {
   appOptions: PropTypes.arrayOf(CustomPropTypes.options).isRequired,
   handleGenerateDocumentFormSubmit: PropTypes.func.isRequired,
   documentType: PropTypes.objectOf(PropTypes.any).isRequired,
-  isAmendment: PropTypes.bool.isRequired,
   toggleEditMode: PropTypes.func.isRequired,
   isViewMode: PropTypes.bool.isRequired,
   fixedTop: PropTypes.bool.isRequired,
@@ -47,7 +46,7 @@ const propTypes = {
   formValues: CustomPropTypes.permitGenObj.isRequired,
   preDraftFormValues: CustomPropTypes.preDraftForm.isRequired,
   permits: PropTypes.arrayOf(CustomPropTypes.permit).isRequired,
-  draftPermits: CustomPropTypes.permit.isRequired,
+  draftPermit: CustomPropTypes.permit.isRequired,
 };
 
 const defaultProps = {};
@@ -76,10 +75,6 @@ export class NOWPermitGeneration extends Component {
     this.handleDraftPermit();
   }
 
-  toggleLoading = () => {
-    this.setState((prevState) => ({ isLoaded: !prevState.isLoaded }));
-  };
-
   handleDraftPermit = () => {
     this.props
       .fetchDraftPermitByNOW(
@@ -87,25 +82,25 @@ export class NOWPermitGeneration extends Component {
         this.props.noticeOfWork.now_application_guid
       )
       .then(() => {
-        if (!isEmpty(this.props.draftPermits)) {
-          const draftAmendment = this.props.draftPermits.permit_amendments.filter(
+        if (!isEmpty(this.props.draftPermit)) {
+          const draftAmendment = this.props.draftPermit.permit_amendments.filter(
             (amendment) =>
               amendment.now_application_guid === this.props.noticeOfWork.now_application_guid &&
               amendment.permit_amendment_status_code === draft
           )[0];
           const permitGenObj = this.createPermitGenObject(
             this.props.noticeOfWork,
-            this.props.draftPermits,
+            this.props.draftPermit,
             draftAmendment
           );
           this.setState({ isDraft: !isEmpty(draftAmendment), draftAmendment, permitGenObj });
         }
-        this.toggleLoading();
+        this.setState({ isLoaded: true });
       });
   };
 
   createPermit = (isExploration) => {
-    this.toggleLoading();
+    this.setState({ isLoaded: false });
     // this logic will be moved to the BE when we generate Permit #
     const randomNumber = Math.floor(100000 + Math.random() * 900000);
     const correctPermitType =
@@ -179,7 +174,7 @@ export class NOWPermitGeneration extends Component {
 
   handlePremitGenSubmit = () => {
     const newValues = this.props.formValues;
-    if (this.props.isAmendment) {
+    if (this.state.isAmendment) {
       newValues.original_permit_issue_date = formatDate(
         this.props.formValues.original_permit_issue_date
       );
@@ -205,7 +200,7 @@ export class NOWPermitGeneration extends Component {
     this.props
       .updatePermitAmendment(
         this.props.noticeOfWork.mine_guid,
-        this.props.draftPermits.permit_guid,
+        this.props.draftPermit.permit_guid,
         this.state.draftAmendment.permit_amendment_guid,
         payload
       )
@@ -301,6 +296,9 @@ export class NOWPermitGeneration extends Component {
   };
 
   render() {
+    const isNOWTypeNull = isNull(this.props.noticeOfWork.type_of_application);
+    console.log(isNOWTypeNull);
+    console.log(this.props.noticeOfWork.type_of_application);
     return (
       <div>
         <div className={this.props.fixedTop ? "view--header fixed-scroll" : "view--header"}>
@@ -370,7 +368,7 @@ export class NOWPermitGeneration extends Component {
             </div>
           </>
         ) : (
-          <NullScreen type="no-permittee" />
+          <NullScreen type={isNOWTypeNull ? "generic" : "no-permittee"} />
         )}
       </div>
     );
@@ -385,7 +383,7 @@ const mapStateToProps = (state) => ({
   formValues: getFormValues(FORM.GENERATE_PERMIT)(state),
   preDraftFormValues: getFormValues(FORM.PRE_DRAFT_PERMIT)(state),
   permits: getPermits(state),
-  draftPermits: getDraftPermitForNOW(state),
+  draftPermit: getDraftPermitForNOW(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
