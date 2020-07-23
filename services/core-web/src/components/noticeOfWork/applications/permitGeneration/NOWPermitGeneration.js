@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import moment from "moment";
-import { isEmpty, isNull } from "lodash";
+import { isEmpty } from "lodash";
 import { Button, Menu, Popconfirm, Dropdown, Icon, Result, Row, Col } from "antd";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -258,9 +258,12 @@ export class NOWPermitGeneration extends Component {
   };
 
   renderEditModeNav = () => {
+    const nowType = this.props.noticeOfWork.type_of_application
+      ? `(${this.props.noticeOfWork.type_of_application})`
+      : "";
     return this.props.isViewMode ? (
       <div className="inline-flex block-mobile padding-md between">
-        <h2>{`Draft Permit (${this.props.noticeOfWork.type_of_application})`}</h2>
+        <h2>{`Draft Permit ${nowType}`}</h2>
         {this.state.isDraft && (
           <Dropdown overlay={this.menu()} placement="bottomLeft">
             <Button type="secondary" className="full-mobile">
@@ -296,7 +299,6 @@ export class NOWPermitGeneration extends Component {
   };
 
   render() {
-    const isNOWTypeNull = isNull(this.props.noticeOfWork.type_of_application);
     return (
       <div>
         <div className={this.props.fixedTop ? "view--header fixed-scroll" : "view--header"}>
@@ -366,7 +368,7 @@ export class NOWPermitGeneration extends Component {
             </div>
           </>
         ) : (
-          <NullScreen type={isNOWTypeNull ? "generic" : "no-permittee"} />
+          <NullScreen type="no-permittee" />
         )}
       </div>
     );
