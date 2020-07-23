@@ -523,7 +523,7 @@ export class NoticeOfWorkApplication extends Component {
             ? this.props.generatableApplicationDocuments.PMA
             : this.props.generatableApplicationDocuments.PMT
         }
-        // handleGenerateDocumentFormSubmit={this.handleGenerateDocumentFormSubmit}
+        handleGenerateDocumentFormSubmit={this.handleGenerateDocumentFormSubmit}
       />
     );
   };
