@@ -24,3 +24,9 @@ def register_commands(app):
     def missing_files(path):
         from app.services.transfer_files import get_missing_files
         print(get_missing_files(path))
+
+    @app.cli.command()
+    @click.argument('path')
+    def unregistered_files(path):
+        from app.services.transfer_files import get_unregistered_files
+        print(get_unregistered_files(path))

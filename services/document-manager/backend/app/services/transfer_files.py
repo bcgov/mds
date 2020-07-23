@@ -95,3 +95,26 @@ def get_missing_files(path):
         if (not os.path.isfile(doc.full_storage_path)):
             missing.append(doc.full_storage_path if path else doc.document_id)
     return missing
+
+
+def get_unregistered_files(path):
+
+    # Validate the path
+    if (not os.path.isdir(path)):
+        raise Exception('Path does not exist')
+    if (not os.path.isabs(path)):
+        raise Exception('Path is not absolute')
+
+    # Get all files under the path
+    files = []
+    for dirpath, dirnames, filenames in os.walk(path):
+        for filename in filenames:
+            files.append(os.path.join(dirpath, filename))
+
+    # Get all files that aren't associated with a Document record
+    unregistered = []
+    for file in files:
+        doc = Document.query.filter_by(full_storage_path=file).first()
+        if (not doc):
+            unregistered.append(file)
+    return unregistered
