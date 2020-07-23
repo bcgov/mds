@@ -19,7 +19,7 @@ export const permit = shape({
   current_permittee: PropTypes.string,
 });
 
-export const permitGenObj = {
+export const permitGenObj = shape({
   permit_number: PropTypes.string,
   issue_date: PropTypes.string,
   auth_end_date: PropTypes.string,
@@ -37,4 +37,9 @@ export const permitGenObj = {
   application_type: PropTypes.string,
   notice_of_work_type_code: PropTypes.string,
   mine_no: PropTypes.string,
-};
+});
+
+export const preDraftForm = shape({
+  is_exploration: PropTypes.bool,
+  permit_guid: PropTypes.string,
+});

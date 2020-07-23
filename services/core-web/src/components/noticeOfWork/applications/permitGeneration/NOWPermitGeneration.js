@@ -45,8 +45,7 @@ const propTypes = {
   updatePermitAmendment: PropTypes.func.isRequired,
   fetchDraftPermitByNOW: PropTypes.func.isRequired,
   formValues: CustomPropTypes.permitGenObj.isRequired,
-  preDraftFormValues: PropTypes.ObjectOf(PropTypes.oneOfType([PropTypes.strings, PropTypes.bool]))
-    .isRequired,
+  preDraftFormValues: CustomPropTypes.preDraftForm.isRequired,
   permits: PropTypes.arrayOf(CustomPropTypes.permit).isRequired,
   draftPermits: CustomPropTypes.permit.isRequired,
 };
@@ -233,7 +232,7 @@ export class NOWPermitGeneration extends Component {
           this.handleDraftPermit();
         });
     } else {
-      this.createPermit(this.props.preDraftFormValues.isExploration);
+      this.createPermit(this.props.preDraftFormValues.is_exploration);
     }
   };
 

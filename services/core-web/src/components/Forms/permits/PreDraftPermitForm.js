@@ -39,8 +39,8 @@ export const PreDraftPermitForm = (props) => {
             <div className="left">
               <Form.Item>
                 <Field
-                  id="isExploration"
-                  name="isExploration"
+                  id="is_exploration"
+                  name="is_exploration"
                   label="Exploration Permit"
                   component={renderConfig.CHECKBOX}
                   validate={[required]}
