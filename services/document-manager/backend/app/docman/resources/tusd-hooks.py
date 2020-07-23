@@ -19,32 +19,27 @@ class TusdHooks(Resource):
     @requires_any_of(DOCUMENT_UPLOAD_ROLES)
     def post(self):
 
-        # Parse the data
+        # Parse data
         key = None
         info_key = None
         new_key = None
-        new_info_key = None
         try:
             data = json.loads(request.data)
             key = data["Upload"]["Storage"]["Key"]
             info_key = f'{key}.info'
             # NOTE: We need to remove the beginning slash from the path because the S3 prefix has a trailing slash
             new_key = f'{Config.S3_PREFIX}{data["Upload"]["MetaData"]["path"][1:]}'
-            new_info_key = f'{new_key}.info'
         except Exception as e:
             raise BadRequest(f'Failed to parse data: {e}')
 
+        # Copy the file to its new location
         try:
-            # Copy the file
             copy_source = {'Bucket': Config.OBJECT_STORE_BUCKET, 'Key': key}
             ObjectStoreStorageService().copy_file(copy_source, new_key)
-
-            # Copy the file's info file
-            copy_source['Key'] = info_key
-            ObjectStoreStorageService().copy_file(copy_source, new_info_key)
         except Exception as e:
             raise BadGateway(f'Object store copy request failed: {e}')
 
+        # Delete the old file and its .info file
         try:
             ObjectStoreStorageService().delete_file(key)
             ObjectStoreStorageService().delete_file(info_key)
