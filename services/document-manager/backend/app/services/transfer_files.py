@@ -3,6 +3,7 @@ import uuid
 import os
 
 from flask import current_app
+from sqlalchemy import and_
 from celery import chord
 
 from app.docman.models.document import Document
@@ -10,7 +11,7 @@ from app.utils.access_decorators import requires_any_of, MINE_ADMIN
 from app.services.object_store_storage_service import ObjectStoreStorageService
 from app.config import Config
 
-from app.utils.tasks import transfer_docs, transfer_docs_result, verify_docs, verify_docs_result
+from app.utils.tasks import transfer_docs, transfer_docs_result, verify_docs, verify_docs_result, reorganize_docs, reorganize_docs_result
 
 
 def transfer_local_files_to_object_store(wait):
@@ -71,6 +72,42 @@ def verify_transferred_objects(wait):
 
     # Create the response message
     message = f'Added verification job with ID {verify_id} to the task queue: {len(docs)} docs will be verified in {len(chunks)} chunks of size {len(chunks[0])}'
+    current_app.logger.info(message)
+    current_app.logger.debug(chunks)
+
+    if (wait):
+        current_app.logger.info('Waiting for job to finish...')
+        result = job.get()
+        return result
+
+    return message
+
+
+def reorganize_files(wait):
+    # Get the documents that are stored on the object store but not organized into the proper directory structure (return if there are none)
+    docs = Document.query.filter(
+        and_(Document.object_store_path != None,
+             ~Document.object_store_path.contains(Document.full_storage_path))).all()
+    if len(docs) == 0:
+        return 'No documents need to be reorganized'
+
+    # Split the list of documents to reorganize into N chunks to reorganize in parallel
+    chunks = numpy.array_split(docs, 8)
+    chunks = [x.tolist() for x in chunks if len(x) > 0]
+
+    # Create the reorganize tasks
+    tasks = []
+    reorganize_id = str(uuid.uuid4())
+    for i, chunk in enumerate(chunks):
+        doc_ids = [doc.document_id for doc in chunk]
+        tasks.append(reorganize_docs.subtask((reorganize_id, doc_ids, i)))
+
+    # Start the reorganize tasks
+    callback = reorganize_docs_result.subtask(kwargs={'reorganize_id': reorganize_id})
+    job = chord(tasks)(callback)
+
+    # Create the response message
+    message = f'Added reorganize job with ID {reorganize_id} to the task queue: {len(docs)} docs will be reorganized in {len(chunks)} chunks of size {len(chunks[0])}'
     current_app.logger.info(message)
     current_app.logger.debug(chunks)
 

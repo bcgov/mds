@@ -30,3 +30,9 @@ def register_commands(app):
     def unregistered_files(path):
         from app.services.transfer_files import get_unregistered_files
         print(get_unregistered_files(path))
+
+    @app.cli.command()
+    @click.argument('wait', default=False)
+    def reorganize_files(wait):
+        from app.services.transfer_files import reorganize_files
+        print(reorganize_files(wait))
