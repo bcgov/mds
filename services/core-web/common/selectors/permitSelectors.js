@@ -8,14 +8,6 @@ export const { getPermits, getDraftPermits } = permitReducer;
 
 export const getDraftPermitForNOW = createSelector(
   [getDraftPermits, getNoticeOfWork],
-  (draftPermits, noticeOfWork) => {
-    let draftPermit = {};
-    draftPermits.map((permit) => {
-      permit.permit_amendments.map((amendment) => {
-        amendment.now_application_guid === noticeOfWork.now_application_guid;
-        draftPermit = permit;
-      });
-    });
-    return draftPermit;
-  }
-);
+  (draftPermits, noticeOfWork) => draftPermits.find(({ permit_amendments }) =>
+    permit_amendments.some((amendment) =>
+      amendment.now_application_guid === noticeOfWork.now_application_guid)) || {});
