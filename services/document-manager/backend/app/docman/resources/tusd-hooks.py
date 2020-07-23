@@ -6,17 +6,13 @@ from flask_restplus import Resource
 
 from app.extensions import api
 from app.config import Config
-from app.utils.access_decorators import requires_any_of, MINE_EDIT, MINESPACE_PROPONENT, EDIT_PARTY, EDIT_PERMIT, EDIT_DO, EDIT_VARIANCE
+from app.utils.access_decorators import requires_role_document_upload
 from app.services.object_store_storage_service import ObjectStoreStorageService
-
-DOCUMENT_UPLOAD_ROLES = [
-    MINE_EDIT, EDIT_PARTY, EDIT_PERMIT, EDIT_DO, EDIT_VARIANCE, MINESPACE_PROPONENT
-]
 
 
 @api.route('/tusd-hooks')
 class TusdHooks(Resource):
-    @requires_any_of(DOCUMENT_UPLOAD_ROLES)
+    @requires_role_document_upload
     def post(self):
 
         # Parse data
