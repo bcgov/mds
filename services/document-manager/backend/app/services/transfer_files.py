@@ -9,9 +9,10 @@ from celery import chord
 from app.docman.models.document import Document
 from app.utils.access_decorators import requires_any_of, MINE_ADMIN
 from app.services.object_store_storage_service import ObjectStoreStorageService
-from app.config import Config
 
-from app.utils.tasks import transfer_docs, transfer_docs_result, verify_docs, verify_docs_result, reorganize_docs, reorganize_docs_result
+from app.tasks.transfer import transfer_docs, transfer_docs_result
+from app.tasks.verify import verify_docs, verify_docs_result
+from app.tasks.reorganize import reorganize_docs, reorganize_docs_result
 
 
 def transfer_local_files_to_object_store(wait):

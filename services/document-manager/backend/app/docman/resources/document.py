@@ -87,7 +87,7 @@ class DocumentListResource(Resource):
                 raise BadGateway(message)
 
             object_store_upload_resource = urlparse(resp.headers['Location']).path.split('/')[-1]
-            object_store_path = Config.S3_PREFIX + file_path[1:]
+            object_store_path = Config.S3_PREFIX + object_store_upload_resource.split('+')[0]
             cache.set(
                 OBJECT_STORE_UPLOAD_RESOURCE(document_guid), object_store_upload_resource,
                 TIMEOUT_24_HOURS)

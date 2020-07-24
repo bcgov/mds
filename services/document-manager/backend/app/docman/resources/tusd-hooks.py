@@ -1,10 +1,10 @@
 import json
 
-from werkzeug.exceptions import BadRequest, BadGateway
+from werkzeug.exceptions import BadRequest, BadGateway, InternalServerError
 from flask import request, current_app
 from flask_restplus import Resource
 
-from app.extensions import api
+from app.extensions import api, db
 from app.config import Config
 from app.utils.access_decorators import requires_role_document_upload
 from app.services.object_store_storage_service import ObjectStoreStorageService
@@ -52,6 +52,16 @@ class TusdHooks(Resource):
             ObjectStoreStorageService().copy_file(source_key=key, key=new_key)
         except Exception as e:
             raise BadGateway(f'Object store copy request failed: {e}')
+
+        # Update the document's object store path
+        try:
+            db.session.rollback()
+            db.session.add(doc)
+            doc.object_store_path = new_key
+            doc.update_user = 'mds'
+            db.session.commit()
+        except Exception as e:
+            raise InternalServerError(f'Failed to update object store path: {e}')
 
         # Delete the old file and its .info file
         try:
