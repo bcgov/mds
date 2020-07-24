@@ -39,27 +39,27 @@ class VerifyPermitNOWResource(Resource):
             permits = Permit.find_by_permit_no_all(permit_no)
 
             for permit in permits:
-                mine = Mine.find_by_mine_guid(str(permit.mine.mine_guid))
+                for mine in permit._all_mines:
 
-                # Mine must be operating.
-                if not mine.mine_status or mine.mine_status[
-                        0].mine_status_xref.mine_operation_status_code != "OP":
-                    break
-
-                if permit_prefix not in ["CX", "MX"]:
-                    break
-
-                for permit_amendment in permit.permit_amendments:
-                    if (permit_amendment.authorization_end_date -
-                            datetime.utcnow().date()).days > 30:
-                        #only want permits that expire 30 days or further in the future
-                        if permit_amendment.now_identity:
-                            now_info = now_info + str(
-                                permit_amendment.now_identity.now_number
-                            ) + " - " + str(permit_amendment.authorization_end_date) + '\r'
-                        else:
-                            now_info = now_info + " - " + str(permit_amendment.authorization_end_date) + '\r'
+                    # Mine must be operating.
+                    if not mine.mine_status or mine.mine_status[
+                            0].mine_status_xref.mine_operation_status_code != "OP":
                         break
+
+                    if permit_prefix not in ["CX", "MX"]:
+                        break
+
+                    for permit_amendment in permit.permit_amendments:
+                        if (permit_amendment.authorization_end_date -
+                                datetime.utcnow().date()).days > 30:
+                            #only want permits that expire 30 days or further in the future
+                            if permit_amendment.now_identity:
+                                now_info = now_info + str(
+                                    permit_amendment.now_identity.now_number
+                                ) + " - " + str(permit_amendment.authorization_end_date) + '\r'
+                            else:
+                                now_info = now_info + " - " + str(permit_amendment.authorization_end_date) + '\r'
+                            break
 
             if now_info != "":
                 result = "Success"
