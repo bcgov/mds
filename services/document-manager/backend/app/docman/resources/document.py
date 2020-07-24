@@ -75,7 +75,9 @@ class DocumentListResource(Resource):
                 for (key, value) in request.headers if key not in ['Host', 'Upload-Metadata']
             }
             path = base64.b64encode(file_path.encode('utf-8')).decode('utf-8')
-            headers['Upload-Metadata'] = f'{request.headers["Upload-Metadata"]},path {path}'
+            doc_guid = base64.b64encode(document_guid.encode('utf-8')).decode('utf-8')
+            upload_metadata = request.headers["Upload-Metadata"]
+            headers['Upload-Metadata'] = f'{upload_metadata},path {path},doc_guid {doc_guid}'
 
             # Send the request
             resp = requests.post(url=Config.TUSD_URL, headers=headers, data=request.data)

@@ -8,6 +8,7 @@ from app.extensions import api, db
 from app.config import Config
 from app.utils.access_decorators import requires_role_document_upload
 from app.services.object_store_storage_service import ObjectStoreStorageService
+from app.docman.models.document import Document
 
 
 @api.route('/tusd-hooks')
@@ -32,12 +33,14 @@ class TusdHooks(Resource):
         key = None
         info_key = None
         new_key = None
+        doc_guid = None
 
         # Parse data
         try:
             # If the path is in the key there is no need to move the file
             path = data["Upload"]["MetaData"]["path"][1:]
             key = data["Upload"]["Storage"]["Key"]
+            doc_guid = data["Upload"]["MetaData"]["DocGuid"]
             if (path in key):
                 return ('', 204)
 
@@ -54,7 +57,9 @@ class TusdHooks(Resource):
             raise BadGateway(f'Object store copy request failed: {e}')
 
         # Update the document's object store path
+
         try:
+            doc = Document.find_by_document_guid(doc_guid)
             db.session.rollback()
             db.session.add(doc)
             doc.object_store_path = new_key
