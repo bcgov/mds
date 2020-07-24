@@ -50,3 +50,4 @@ export const ADD_RECLAMATION_INVOICE = "ADD_RECLAMATION_INVOICE";
 
 // Permit Generation
 export const GENERATE_PERMIT = "GENERATE_PERMIT";
+export const PRE_DRAFT_PERMIT = "PRE_DRAFT_PERMIT";
