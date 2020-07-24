@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import moment from "moment";
-import { isEmpty, isNull } from "lodash";
+import { isEmpty } from "lodash";
 import { Button, Menu, Popconfirm, Dropdown, Icon, Result, Row, Col } from "antd";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -47,6 +47,7 @@ const propTypes = {
   preDraftFormValues: CustomPropTypes.preDraftForm.isRequired,
   permits: PropTypes.arrayOf(CustomPropTypes.permit).isRequired,
   draftPermit: CustomPropTypes.permit.isRequired,
+  isAmendment: PropTypes.bool.isRequired,
 };
 
 const defaultProps = {};
@@ -57,7 +58,6 @@ const draft = "DFT";
 export class NOWPermitGeneration extends Component {
   state = {
     isPreDraft: false,
-    isAmendment: false,
     isDraft: false,
     permittee: {},
     draftAmendment: {},
@@ -69,8 +69,7 @@ export class NOWPermitGeneration extends Component {
     const permittee = this.props.noticeOfWork.contacts.filter(
       (contact) => contact.mine_party_appt_type_code_description === "Permittee"
     )[0];
-    const isAmendment = this.props.noticeOfWork.type_of_application !== "New Permit";
-    this.setState({ permittee, isAmendment });
+    this.setState({ permittee });
     this.props.fetchPermits(this.props.noticeOfWork.mine_guid);
     this.handleDraftPermit();
   }
@@ -174,7 +173,7 @@ export class NOWPermitGeneration extends Component {
 
   handlePremitGenSubmit = () => {
     const newValues = this.props.formValues;
-    if (this.state.isAmendment) {
+    if (this.props.isAmendment) {
       newValues.original_permit_issue_date = formatDate(
         this.props.formValues.original_permit_issue_date
       );
@@ -258,9 +257,12 @@ export class NOWPermitGeneration extends Component {
   };
 
   renderEditModeNav = () => {
+    const nowType = this.props.noticeOfWork.type_of_application
+      ? `(${this.props.noticeOfWork.type_of_application})`
+      : "";
     return this.props.isViewMode ? (
       <div className="inline-flex block-mobile padding-md between">
-        <h2>{`Draft Permit (${this.props.noticeOfWork.type_of_application})`}</h2>
+        <h2>{`Draft Permit ${nowType}`}</h2>
         {this.state.isDraft && (
           <Dropdown overlay={this.menu()} placement="bottomLeft">
             <Button type="secondary" className="full-mobile">
@@ -271,28 +273,28 @@ export class NOWPermitGeneration extends Component {
         )}
       </div>
     ) : (
-        <div className="center padding-md">
-          <div className="inline-flex flex-center block-mobile">
-            <Popconfirm
-              placement="bottomRight"
-              title="You have unsaved changes, Are you sure you want to cancel?"
-              onConfirm={this.handleCancelDraftEdit}
-              okText="Yes"
-              cancelText="No"
-            >
-              <Button type="secondary" className="full-mobile">
-                Cancel
+      <div className="center padding-md">
+        <div className="inline-flex flex-center block-mobile">
+          <Popconfirm
+            placement="bottomRight"
+            title="You have unsaved changes, Are you sure you want to cancel?"
+            onConfirm={this.handleCancelDraftEdit}
+            okText="Yes"
+            cancelText="No"
+          >
+            <Button type="secondary" className="full-mobile">
+              Cancel
             </Button>
-            </Popconfirm>
-            <Button className="full-mobile" type="tertiary" onClick={this.handlePremitGenSubmit}>
-              Preview
+          </Popconfirm>
+          <Button className="full-mobile" type="tertiary" onClick={this.handlePremitGenSubmit}>
+            Preview
           </Button>
-            <Button type="primary" className="full-mobile" onClick={this.handleSaveDraftEdit}>
-              Save
+          <Button type="primary" className="full-mobile" onClick={this.handleSaveDraftEdit}>
+            Save
           </Button>
-          </div>
         </div>
-      );
+      </div>
+    );
   };
 
   render() {
@@ -326,7 +328,7 @@ export class NOWPermitGeneration extends Component {
                         status="success"
                         title={`${this.props.noticeOfWork.type_of_application}`}
                         subTitle={
-                          this.state.isAmendment
+                          this.props.isAmendment
                             ? `You are now creating an amendment for a permit. Please select the permit that this amendment is for.`
                             : `You are now creating a new permit. Please check the box below if this is an exploratory permit.`
                         }
@@ -340,7 +342,7 @@ export class NOWPermitGeneration extends Component {
                               <PreDraftPermitForm
                                 cancelPreDraft={this.cancelPreDraft}
                                 permits={this.props.permits}
-                                isAmendment={this.state.isAmendment}
+                                isAmendment={this.props.isAmendment}
                                 onSubmit={this.startDraftPermit}
                               />
                             </Col>
@@ -348,26 +350,26 @@ export class NOWPermitGeneration extends Component {
                         ]}
                       />
                     ) : (
-                        <>
-                          <NullScreen type="draft-permit" />
-                          <Button onClick={this.startPreDraft}>Start Draft Permit</Button>
-                        </>
-                      )}
+                      <>
+                        <NullScreen type="draft-permit" />
+                        <Button onClick={this.startPreDraft}>Start Draft Permit</Button>
+                      </>
+                    )}
                   </div>
                 ) : (
-                    <GeneratePermitForm
-                      initialValues={this.state.permitGenObj}
-                      isAmendment={this.state.isAmendment}
-                      noticeOfWork={this.props.noticeOfWork}
-                      isViewMode={this.props.isViewMode}
-                    />
-                  )}
+                  <GeneratePermitForm
+                    initialValues={this.state.permitGenObj}
+                    isAmendment={this.props.isAmendment}
+                    noticeOfWork={this.props.noticeOfWork}
+                    isViewMode={this.props.isViewMode}
+                  />
+                )}
               </LoadingWrapper>
             </div>
           </>
         ) : (
-            <NullScreen type={isNOWTypeNull ? "generic" : "no-permittee"} />
-          )}
+          <NullScreen type="no-permittee" />
+        )}
       </div>
     );
   }
