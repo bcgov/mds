@@ -41,6 +41,7 @@ class TusdHooks(Resource):
             path = data["Upload"]["MetaData"]["path"][1:]
             key = data["Upload"]["Storage"]["Key"]
             doc_guid = data["Upload"]["MetaData"]["DocGuid"]
+            doc_guid = data["Upload"]["MetaData"]["doc_guid"]
             if (path in key):
                 return ('', 204)
 
