@@ -103,35 +103,35 @@ services:
       - backend
     env_file: ./services/core-web/.env
 
-  # minespace:
-  #   restart: always
-  #   container_name: mds_minespace
-  #   build:
-  #     context: services/minespace-web
-  #   command: ["npm", "run", "serve"]
-  #   volumes:
-  #     - ./services/minespace-web/src/:/app/src/
-  #   ports:
-  #     - 3020:3020
-  #   depends_on:
-  #     - backend
-  #   env_file: ./services/minespace-web/.env
+  minespace:
+    restart: always
+    container_name: mds_minespace
+    build:
+      context: services/minespace-web
+    command: ["npm", "run", "serve"]
+    volumes:
+      - ./services/minespace-web/src/:/app/src/
+    ports:
+      - 3020:3020
+    depends_on:
+      - backend
+    env_file: ./services/minespace-web/.env
 
   ####################### NRIS_BACKEND Definition #######################
-  # nris_backend:
-  #   restart: always
-  #   container_name: nris_python
-  #   build:
-  #     context: services/nris-api/backend
-  #   ports:
-  #     - 5500:5500
-  #   volumes:
-  #     - ./services/nris-api/backend/:/app/
-  #   depends_on:
-  #     - flyway
-  #     - redis
-  #     - nris_migrate
-  #   env_file: ./services/nris-api/backend/.env
+  nris_backend:
+    restart: always
+    container_name: nris_python
+    build:
+      context: services/nris-api/backend
+    ports:
+      - 5500:5500
+    volumes:
+      - ./services/nris-api/backend/:/app/
+    depends_on:
+      - flyway
+      - redis
+      - nris_migrate
+    env_file: ./services/nris-api/backend/.env
 
   nris_migrate:
     restart: on-failure
@@ -145,8 +145,6 @@ services:
       - redis
     command: flask db upgrade
     env_file: ./services/nris-api/backend/.env
-    networks:
-      - mds
 
   ####################### TUSD Definition #######################
   tusd:
@@ -156,8 +154,6 @@ services:
     ports:
       - 1080:1080
     env_file: ./services/tusd/.env
-    networks:
-      - mds
 
   ####################### DOCUMENT_MANAGER_BACKEND Definition #######################
   document_manager_backend:
@@ -175,8 +171,6 @@ services:
       - document_manager_migrate
       - tusd
     env_file: ./services/document-manager/backend/.env
-    networks:
-      - mds
 
   document_manager_migrate:
     restart: on-failure
@@ -190,8 +184,6 @@ services:
       - redis
     command: flask db upgrade
     env_file: ./services/document-manager/backend/.env
-    networks:
-      - mds
 
   ####################### DOCUMENT_GENERATION Definition #######################
   docgen-api:
@@ -207,8 +199,6 @@ services:
     #  - ./services/docgen-api/:/carbone-api/
     ports:
       - 3030:3030
-    networks:
-      - mds
 
   ####################### Logging and Monitoring #######################
 
