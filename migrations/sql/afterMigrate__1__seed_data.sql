@@ -1251,7 +1251,7 @@ INSERT INTO permit_condition_category
 VALUES
 	('GEC', 'General Conditions', true, 10, 'system-mds', 'system-mds'),
 	('HSC', 'Health and Safety Conditions', true, 20, 'system-mds', 'system-mds'),
-	('GOC', 'Geotechnical Conditions', true, 'system-mds', 30, 'system-mds'),
+	('GOC', 'Geotechnical Conditions', true, 30, 'system-mds', 'system-mds'),
 	('ELC', 'Environmental Land and Watercourses Conditions', true, 40, 'system-mds', 'system-mds'),
   ('RCC', 'Reclamation and Closure Program Conditions', true, 50, 'system-mds', 'system-mds'),
 	('ADC', 'Additional Conditions', true, 60, 'system-mds', 'system-mds')
