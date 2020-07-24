@@ -185,7 +185,7 @@ export class AddVarianceForm extends Component {
             className="full-mobile"
             type="primary"
             htmlType="submit"
-            disabled={this.props.submitting}
+            loading={this.props.submitting}
           >
             Add Variance
           </Button>

@@ -289,7 +289,7 @@ export class AddPartyRelationshipForm extends Component {
             className="full-mobile"
             type="primary"
             htmlType="submit"
-            disabled={this.props.submitting}
+            loading={this.props.submitting}
           >
             {this.props.title}
           </Button>

@@ -14,7 +14,6 @@ const propTypes = {
   closeModal: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
   submitting: PropTypes.bool.isRequired,
-  pristine: PropTypes.bool.isRequired,
   permits: PropTypes.arrayOf(CustomPropTypes.permit).isRequired,
 };
 
@@ -55,12 +54,7 @@ export const TransferBondForm = (props) => (
           Cancel
         </Button>
       </Popconfirm>
-      <Button
-        className="full-mobile"
-        type="primary"
-        htmlType="submit"
-        disabled={props.submitting || props.pristine}
-      >
+      <Button className="full-mobile" type="primary" htmlType="submit" loading={props.submitting}>
         {props.title}
       </Button>
     </div>

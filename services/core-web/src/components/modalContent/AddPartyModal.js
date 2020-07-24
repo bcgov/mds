@@ -59,7 +59,7 @@ const invalidRolePayload = (roleNumbers, addRolesFormValues) =>
   );
 
 export class AddPartyModal extends Component {
-  state = { isPerson: true, current: 0, roleNumbers: [] };
+  state = { isPerson: true, current: 0, roleNumbers: [], submitting: false };
 
   componentWillMount() {
     this.props.fetchMineNameList();
@@ -111,6 +111,7 @@ export class AddPartyModal extends Component {
 
     return Promise.all(createdRoles).then(() => {
       this.props.reset(FORM.ADD_ROLES);
+      this.setState({ submitting: false });
     });
   };
 
@@ -203,10 +204,14 @@ export class AddPartyModal extends Component {
             <Button
               type="primary"
               className="full-mobile"
+              htmlType="submit"
               style={{ marginLeft: 0 }}
-              onClick={(event) => this.handlePartySubmit(event, true)}
+              onClick={(event) =>
+                this.setState({ submitting: true }, () => this.handlePartySubmit(event, true))
+              }
+              loading={this.state.submitting}
             >
-              Submit and Add another contact
+              Submit and Add Another Contact
             </Button>
           </Col>
         </Row>
@@ -266,7 +271,11 @@ export class AddPartyModal extends Component {
               <Button
                 type="primary"
                 className="full-mobile"
-                onClick={(event) => this.handlePartySubmit(event, false)}
+                htmlType="submit"
+                onClick={(event) =>
+                  this.setState({ submitting: true }, () => this.handlePartySubmit(event, false))
+                }
+                loading={this.state.submitting}
                 disabled={invalidRolePayload(this.state.roleNumbers, this.props.addRolesFormValues)}
               >
                 Submit
@@ -301,7 +310,4 @@ const mapDispatchToProps = (dispatch) =>
 AddPartyModal.propTypes = propTypes;
 AddPartyModal.defaultProps = defaultProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(AddPartyModal);
+export default connect(mapStateToProps, mapDispatchToProps)(AddPartyModal);

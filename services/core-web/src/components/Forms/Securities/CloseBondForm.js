@@ -17,7 +17,6 @@ const propTypes = {
   bondStatusCode: PropTypes.string.isRequired,
   bondStatusOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   submitting: PropTypes.bool.isRequired,
-  pristine: PropTypes.bool.isRequired,
 };
 
 export const CloseBondForm = (props) => {
@@ -64,12 +63,7 @@ export const CloseBondForm = (props) => {
             Cancel
           </Button>
         </Popconfirm>
-        <Button
-          className="full-mobile"
-          type="primary"
-          htmlType="submit"
-          disabled={props.submitting || props.pristine}
-        >
+        <Button className="full-mobile" type="primary" htmlType="submit" loading={props.submitting}>
           {props.title}
         </Button>
       </div>
