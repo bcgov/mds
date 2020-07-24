@@ -420,31 +420,11 @@ environments {
                     memory_request = "16Mi"
                     memory_limit = "32Mi"
                 }
-                // backup {
-                //     cpu_request = "0"
-                //     cpu_limit = "0"
-                //     memory_request = "0"
-                //     memory_limit = "0"
-                // }
                 // digdag {
                 //     cpu_request = "100m"
                 //     cpu_limit = "200m"
                 //     memory_request = "512Mi"
                 //     memory_limit = "1Gi"
-                // }
-                // loki {
-                //     cpu_request = "100m"
-                //     cpu_limit = "200m"
-                //     memory_request = "512Mi"
-                //     memory_limit = "1Gi"
-
-                // }
-                // grafana {
-                //     cpu_request = "100m"
-                //     cpu_limit = "200m"
-                //     memory_request = "512Mi"
-                //     memory_limit = "1Gi"
-                // }
             }
             deployment {
                 env {
