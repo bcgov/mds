@@ -20,7 +20,7 @@ class PermitAmendmentDocument(AuditMixin, Base):
     permit_amendment_id = db.Column(
         db.Integer, db.ForeignKey('permit_amendment.permit_amendment_id'), nullable=True)
     document_name = db.Column(db.String, nullable=False)
-    mine_guid = db.Column(UUID(as_uuid=True), nullable=False)
+    mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine.mine_guid'), nullable=False)
     document_manager_guid = db.Column(UUID(as_uuid=True))
     active_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
     deleted_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
