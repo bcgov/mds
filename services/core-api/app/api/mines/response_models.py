@@ -103,7 +103,7 @@ PERMIT_AMENDMENT_MODEL = api.model(
                                                                                          # 'permit_amendment_status_description': fields.String,                                                                            #'permit_amendment_type_description': fields.String,
         'description': fields.String,
         'lead_inspector_title': fields.String,
-        'regional_office':fields.String,
+        'regional_office': fields.String,
         'now_application_guid': fields.String,
         'related_documents': fields.List(fields.Nested(PERMIT_AMENDMENT_DOCUMENT_MODEL))
     })
@@ -473,4 +473,16 @@ MINE_COMPLIANCE_RESPONSE_MODEL = api.model(
         'year_to_date': fields.Nested(
             api.model('NUM_INSPECTIONS', {'num_inspections': fields.Integer})),
         'orders': fields.List(fields.Nested(ORDER_MODEL)),
+    })
+
+PERMIT_CONDITION_MODEL = api.model(
+    'PermitCondition', {
+        'permit_condition_id': fields.Integer,
+        'permit_amendment_id': fields.Integer,
+        'permit_condition_guid': fields.String,
+        'condition': fields.String,
+        'condition_category': fields.String,
+        'parent_condition_id': fields.Integer,
+        'sub_conditions': fields.Raw,
+        'display_order': fields.Integer,
     })

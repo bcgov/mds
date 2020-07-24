@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS permit_condition_category
     create_user                         character varying(60)                    NOT NULL,
     create_timestamp                    timestamp with time zone DEFAULT now()   NOT NULL,
     update_user                         character varying(60)                    NOT NULL,
-    update_timestamp                    timestamp with time zone DEFAULT now()   NOT NULL,
+    update_timestamp                    timestamp with time zone DEFAULT now()   NOT NULL
 );
 
 ALTER TABLE permit_condition_category OWNER TO mds;
@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS permit_conditions
 (
     permit_condition_id                                                SERIAL PRIMARY KEY,
     permit_amendment_id                 integer                           UNIQUE NOT NULL,
-    permit_condition_guid               uuid                              UNIQUE NOT NULL,
+    permit_condition_guid               uuid           DEFAULT gen_random_uuid() NOT NULL,
     condition                           varchar                                  NOT NULL,
     condition_category                  varchar                                  NOT NULL,
     deleted_ind                         boolean                    DEFAULT false NOT NULL,
@@ -43,7 +43,8 @@ COMMENT ON TABLE permit_conditions IS 'Contains the set of conditions for a draf
 CREATE TABLE IF NOT EXISTS standard_permit_conditions
 (
     standard_permit_condition_id                                       SERIAL PRIMARY KEY,
-    standard_permit_condition_guid      uuid                              UNIQUE NOT NULL,
+    standard_permit_condition_guid      uuid           DEFAULT gen_random_uuid() NOT NULL,
+    permit_type                         varchar                                  NOT NULL,
     condition                           varchar                                  NOT NULL,
     condition_category                  varchar                                  NOT NULL,
     deleted_ind                         boolean                    DEFAULT false NOT NULL,
@@ -54,9 +55,21 @@ CREATE TABLE IF NOT EXISTS standard_permit_conditions
     update_user                         character varying(60)                    NOT NULL,
     update_timestamp                    timestamp with time zone DEFAULT now()   NOT NULL,
 
-    FOREIGN KEY (condition_category) REFERENCES permit_condition_category(condition_category_code)
+    FOREIGN KEY (condition_category) REFERENCES permit_condition_category(condition_category_code),
+    FOREIGN KEY (permit_type) REFERENCES notice_of_work_type(notice_of_work_type_code)
 );
 
 ALTER TABLE standard_permit_conditions OWNER TO mds;
 
 COMMENT ON TABLE standard_permit_conditions IS 'Contains the set of standard conditions for every permit.';
+
+INSERT INTO permit_condition_category
+(condition_category_code, description, active_ind, display_order, create_user, update_user)
+VALUES
+	('GEC', 'General Conditions', true, 10, 'system-mds', 'system-mds'),
+	('HSC', 'Health and Safety Conditions', true, 20, 'system-mds', 'system-mds'),
+	('GOC', 'Geotechnical Conditions', true, 30, 'system-mds', 'system-mds'),
+	('ELC', 'Environmental Land and Watercourses Conditions', true, 40, 'system-mds', 'system-mds'),
+    ('RCC', 'Reclamation and Closure Program Conditions', true, 50, 'system-mds', 'system-mds'),
+	('ADC', 'Additional Conditions', true, 60, 'system-mds', 'system-mds')
+on conflict do nothing;
