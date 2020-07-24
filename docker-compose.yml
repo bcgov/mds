@@ -76,8 +76,6 @@ services:
       - nris_backend
       - document_manager_backend
       - tusd
-    networks:
-      - mds
 
   ####################### Redis Definition #######################
   redis:
