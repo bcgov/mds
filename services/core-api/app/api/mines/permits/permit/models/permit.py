@@ -108,16 +108,20 @@ class Permit(AuditMixin, Base):
         return pmt
 
     @classmethod
+    def find_by_permit_id(cls, _id):
+        return cls.query.filter_by(permit_id=_id, deleted_ind=False).first()
+
+    @classmethod
     def find_by_mine_guid(cls, _id):
-        return cls.query.filter_by(mine_guid=_id, deleted_ind=False).all()
+        return cls.query.filter_by(mine_guid=_id, deleted_ind=False).filter(cls.permit_status_code != 'D').all()
 
     @classmethod
     def find_by_permit_no(cls, _permit_no):
-        return cls.query.filter_by(permit_no=_permit_no, deleted_ind=False).first()
+        return cls.query.filter_by(permit_no=_permit_no, deleted_ind=False).filter(cls.permit_status_code != 'D').first()
 
     @classmethod
     def find_by_permit_no_all(cls, _permit_no):
-        return cls.query.filter_by(permit_no=_permit_no, deleted_ind=False).all()
+        return cls.query.filter_by(permit_no=_permit_no, deleted_ind=False).filter(cls.permit_status_code != 'D').all()
 
     @classmethod
     def find_by_permit_guid_or_no(cls, _permit_guid_or_no):
@@ -125,6 +129,13 @@ class Permit(AuditMixin, Base):
         if not result:
             result = cls.find_by_permit_no(_permit_guid_or_no)
         return result
+
+    @classmethod
+    def find_by_now_application_guid(cls, _now_application_guid):
+        permit_amendment = PermitAmendment.find_by_now_application_guid(_now_application_guid)
+        permit = permit_amendment.permit
+        permit._context_mine = permit_amendment.mine
+        return permit
 
     @classmethod
     def create(cls, mine, permit_no, permit_status_code, add_to_session=True):

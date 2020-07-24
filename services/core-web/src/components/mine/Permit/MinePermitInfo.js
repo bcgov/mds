@@ -161,7 +161,6 @@ export class MinePermitInfo extends Component {
   };
 
   // Amendment Modals
-
   openAddAmendmentModal = (event, onSubmit, title, permit, type) => {
     event.preventDefault();
     this.props.openModal({
@@ -270,7 +269,6 @@ export class MinePermitInfo extends Component {
     });
 
   handleDeletePermitAmendment = (record) => {
-    console.log(record);
     return this.props
       .deletePermitAmendment(
         this.props.mineGuid,

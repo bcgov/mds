@@ -39,6 +39,22 @@ export const fetchPermits = (mineGuid) => (dispatch) => {
     .finally(() => dispatch(hideLoading("modal")));
 };
 
+export const fetchDraftPermitByNOW = (mineGuid, nowApplicationGuid) => (dispatch) => {
+  dispatch(request(reducerTypes.GET_PERMITS));
+  return CustomAxios({ errorToastMessage: String.ERROR })
+    .get(
+      ENVIRONMENT.apiUrl + API.DRAFT_PERMITS(mineGuid, nowApplicationGuid),
+      createRequestHeader()
+    )
+    .then((response) => {
+      dispatch(success(reducerTypes.GET_PERMITS));
+      dispatch(permitActions.storeDraftPermits(response.data));
+    })
+    .catch(() => {
+      dispatch(error(reducerTypes.GET_PERMITS));
+    });
+};
+
 export const updatePermit = (mineGuid, permitGuid, payload) => (dispatch) => {
   dispatch(request(reducerTypes.UPDATE_PERMIT));
   dispatch(showLoading());
