@@ -142,6 +142,7 @@ export const GeneratePermitForm = (props) => (
             />
           </Col>
         </Row>
+        {/* this will be converted to a drop-down menu with pre-populated title options, currently defaulting to "Inspector of Mines" and disabled */}
         <Row gutter={32}>
           <Col xs={24} md={12}>
             <Field
@@ -151,7 +152,7 @@ export const GeneratePermitForm = (props) => (
               required
               component={renderConfig.FIELD}
               validate={[required]}
-              disabled={props.isViewMode}
+              disabled
             />
           </Col>
           <Col xs={24} md={12}>

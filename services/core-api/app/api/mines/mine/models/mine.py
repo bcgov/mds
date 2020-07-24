@@ -146,10 +146,7 @@ class Mine(AuditMixin, Base):
 
     @hybrid_property
     def mine_permit_numbers(self):
-        p_numbers = []
-        for p in self._permit_identities:
-            if p.deleted_ind == False and p.permit_status_code != 'D':
-                p_numbers.append(p)
+        p_numbers = [mpi.permit_no for mpi in self._permit_identities if mpi.permit_status_code != 'D']
         return p_numbers
 
     @hybrid_property

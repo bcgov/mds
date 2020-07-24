@@ -37,6 +37,7 @@ const propTypes = {
     "securities",
     "no-permittee",
     "draft-permit",
+    "incomplete-now",
   ]),
   message: PropTypes.string,
 };
