@@ -518,6 +518,7 @@ export class NoticeOfWorkApplication extends Component {
         toggleEditMode={this.toggleEditMode}
         fixedTop={this.state.fixedTop}
         noticeOfWork={this.props.noticeOfWork}
+        isAmendment={isAmendment}
         documentType={
           isAmendment
             ? this.props.generatableApplicationDocuments.PMA

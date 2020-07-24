@@ -47,6 +47,7 @@ const propTypes = {
   preDraftFormValues: CustomPropTypes.preDraftForm.isRequired,
   permits: PropTypes.arrayOf(CustomPropTypes.permit).isRequired,
   draftPermit: CustomPropTypes.permit.isRequired,
+  isAmendment: PropTypes.bool.isRequired,
 };
 
 const defaultProps = {};
@@ -57,7 +58,6 @@ const draft = "DFT";
 export class NOWPermitGeneration extends Component {
   state = {
     isPreDraft: false,
-    isAmendment: false,
     isDraft: false,
     permittee: {},
     draftAmendment: {},
@@ -69,8 +69,7 @@ export class NOWPermitGeneration extends Component {
     const permittee = this.props.noticeOfWork.contacts.filter(
       (contact) => contact.mine_party_appt_type_code_description === "Permittee"
     )[0];
-    const isAmendment = this.props.noticeOfWork.type_of_application !== "New Permit";
-    this.setState({ permittee, isAmendment });
+    this.setState({ permittee });
     this.props.fetchPermits(this.props.noticeOfWork.mine_guid);
     this.handleDraftPermit();
   }
@@ -174,7 +173,7 @@ export class NOWPermitGeneration extends Component {
 
   handlePremitGenSubmit = () => {
     const newValues = this.props.formValues;
-    if (this.state.isAmendment) {
+    if (this.props.isAmendment) {
       newValues.original_permit_issue_date = formatDate(
         this.props.formValues.original_permit_issue_date
       );
@@ -328,7 +327,7 @@ export class NOWPermitGeneration extends Component {
                         status="success"
                         title={`${this.props.noticeOfWork.type_of_application}`}
                         subTitle={
-                          this.state.isAmendment
+                          this.props.isAmendment
                             ? `You are now creating an amendment for a permit. Please select the permit that this amendment is for.`
                             : `You are now creating a new permit. Please check the box below if this is an exploratory permit.`
                         }
@@ -342,7 +341,7 @@ export class NOWPermitGeneration extends Component {
                               <PreDraftPermitForm
                                 cancelPreDraft={this.cancelPreDraft}
                                 permits={this.props.permits}
-                                isAmendment={this.state.isAmendment}
+                                isAmendment={this.props.isAmendment}
                                 onSubmit={this.startDraftPermit}
                               />
                             </Col>
@@ -359,7 +358,7 @@ export class NOWPermitGeneration extends Component {
                 ) : (
                   <GeneratePermitForm
                     initialValues={this.state.permitGenObj}
-                    isAmendment={this.state.isAmendment}
+                    isAmendment={this.props.isAmendment}
                     noticeOfWork={this.props.noticeOfWork}
                     isViewMode={this.props.isViewMode}
                   />
