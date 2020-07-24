@@ -92,13 +92,13 @@ def transfer_docs_result(transfer_results, transfer_id=None):
 
     result = {
         'transfer_id': transfer_id,
-        'success': any(success_results),
+        'success': all(success_results),
         'success_transfers': list(sorted(success_transfers)),
         'fail_transfers': list(sorted(fail_transfers)),
         'errors': errors
     }
     result = json.dumps(result)
     logger.info(result)
-    # if (any(success_results)):
+    # if (all(success_results)):
     #     raise ChordFailure(result)
     return result

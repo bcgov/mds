@@ -90,13 +90,13 @@ def verify_docs_result(verify_results, verify_id=None):
 
     result = {
         'verify_id': verify_id,
-        'success': any(success_results),
+        'success': all(success_results),
         'success_verifications': list(sorted(success_verifications)),
         'fail_verifications': list(sorted(fail_verifications)),
         'errors': errors
     }
     result = json.dumps(result)
     logger.info(result)
-    # if (any(success_results)):
+    # if (all(success_results)):
     #     raise ChordFailure(result)
     return result

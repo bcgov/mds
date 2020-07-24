@@ -6,7 +6,7 @@ from app.extensions import db
 from app.services.object_store_storage_service import ObjectStoreStorageService
 from app.docman.models.document import Document
 from app.config import Config
-from app.tasks.celery import celery
+from app.tasks.celery import celery, ChordFailure
 
 
 @celery.task()
@@ -25,10 +25,14 @@ def reorganize_docs(reorganize_id, doc_ids, chunk_index):
             doc_prefix = f'[Chunk {chunk_index}, Doc {i + 1}/{len(docs)}, ID {doc.document_id}]:'
             logger.info(f'{doc_prefix} Reorganizing...')
             try:
+                # if (chunk_index % 2 == 0):
+                #     raise Exception('Fake exception!')
+
                 # If the object store path already contains the full storage path, it is already organized
                 if doc.full_storage_path in doc.object_store_path:
                     success_reorganized.append(doc.document_id)
                     logger.info(f'{doc_prefix} Reorganize UNNECESSARY')
+                    continue
 
                 # Ensure the file to copy exists
                 old_key = doc.object_store_path
@@ -77,7 +81,8 @@ def reorganize_docs(reorganize_id, doc_ids, chunk_index):
             'message': message,
             'success_reorganized': list(sorted(success_reorganized)),
             'fail_reorganized': list(sorted([i for i in doc_ids if i not in success_reorganized])),
-            'errors': errors
+            'errors': errors,
+            'task_id': reorganize_docs.request.id
         }
         # Return the result of the reorganization
         # if (not success):
@@ -91,7 +96,8 @@ def reorganize_docs(reorganize_id, doc_ids, chunk_index):
             'message': f'An unexpected exception occurred: {e}',
             'success_reorganized': [],
             'fail_reorganized': [],
-            'errors': []
+            'errors': [],
+            'task_id': reorganize_docs.request.id
         }
 
     result = json.dumps(result)
@@ -117,17 +123,24 @@ def reorganize_docs_result(reorganize_results, reorganize_id=None):
     ]
     success_results = []
     for reorganize_result in reorganize_results:
-        success_results.append(reorganize_result['success'])
+        success_result = reorganize_result['success']
+        if (not success_result):
+            reorganize_docs_result.update_state(
+                task_id=reorganize_result['task_id'],
+                state='FAILURE',
+                meta=json.dumps(reorganize_result))
+        success_results.append(success_result)
 
+    success = all(success_results)
     result = {
         'reorganize_id': reorganize_id,
-        'success': any(success_results),
+        'success': success,
         'success_reorganized': list(sorted(success_reorganized)),
         'fail_reorganized': list(sorted(fail_reorganized)),
         'errors': errors
     }
     result = json.dumps(result)
     logger.info(result)
-    # if (any(success_results)):
-    #     raise ChordFailure(result)
+    if (not success):
+        raise ChordFailure(result)
     return result
