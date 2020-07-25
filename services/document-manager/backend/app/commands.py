@@ -6,22 +6,22 @@ def register_commands(app):
     @click.argument('wait', default=False)
     def transfer_files(wait):
         """Transfer documents that exist at their full_storage_path to the object store."""
-        from app.services.commands_helper import transfer_local_files_to_object_store
-        print(transfer_local_files_to_object_store(wait))
+        from app.services.commands_helper import create_transfer_files_job
+        print(create_transfer_files_job(wait))
 
     @app.cli.command()
     @click.argument('wait', default=False)
     def verify_files(wait):
         """Verify that documents that exist at their full_storage_path equal the file stored at their object_store_path."""
-        from app.services.commands_helper import verify_transferred_objects
-        print(verify_transferred_objects(wait))
+        from app.services.commands_helper import create_verify_files_job
+        print(create_verify_files_job(wait))
 
     @app.cli.command()
     @click.argument('wait', default=False)
     def reorganize_files(wait):
         """Reorganize documents on the object store so that their key includes their full_storage_path."""
-        from app.services.commands_helper import reorganize_files
-        print(reorganize_files(wait))
+        from app.services.commands_helper import create_reorganize_job
+        print(create_reorganize_job(wait))
 
     @app.cli.command()
     @click.argument('path', default=False)
