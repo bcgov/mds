@@ -58,7 +58,6 @@ class TusdHooks(Resource):
             raise BadGateway(f'Object store copy request failed: {e}')
 
         # Update the document's object store path
-
         try:
             doc = Document.find_by_document_guid(doc_guid)
             db.session.rollback()
