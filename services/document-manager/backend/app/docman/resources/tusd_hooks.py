@@ -1,19 +1,19 @@
 import json
 
 from werkzeug.exceptions import BadRequest, BadGateway, InternalServerError
-from flask import request, current_app
+from flask import request
 from flask_restplus import Resource
 
 from app.extensions import api, db
 from app.config import Config
-from app.utils.access_decorators import requires_role_document_upload
+from app.utils.access_decorators import requires_any_of, DOCUMENT_UPLOAD_ROLES
 from app.services.object_store_storage_service import ObjectStoreStorageService
 from app.docman.models.document import Document
 
 
 @api.route('/tusd-hooks')
 class TusdHooks(Resource):
-    @requires_role_document_upload
+    @requires_any_of(DOCUMENT_UPLOAD_ROLES)
     def post(self):
         hook = request.headers.get('Hook-Name', None)
         if (hook is None):

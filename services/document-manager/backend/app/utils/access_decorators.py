@@ -11,8 +11,8 @@ EDIT_DO = "core_edit_do"
 EDIT_VARIANCE = "core_edit_variances"
 MINESPACE_PROPONENT = "mds_minespace_proponents"
 
-DOCUMENT_UPLOAD_ROLES = [
-    MINE_EDIT, EDIT_PARTY, EDIT_PERMIT, EDIT_DO, EDIT_VARIANCE, MINESPACE_PROPONENT
+UPLOAD_DOCUMENT_ROLES = [
+    MINE_ADMIN, MINE_EDIT, EDIT_PARTY, EDIT_PERMIT, EDIT_DO, EDIT_VARIANCE, MINESPACE_PROPONENT
 ]
 
 
@@ -42,10 +42,6 @@ def requires_role_edit_do(func):
 
 def requires_role_close_permit(func):
     return _inner_wrapper(func, CLOSE_PERMIT)
-
-
-def requires_role_document_upload(func):
-    return jwt.has_one_of_roles(DOCUMENT_UPLOAD_ROLES)(func)
 
 
 def requires_any_of(roles):

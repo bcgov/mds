@@ -13,7 +13,7 @@ from flask_restplus import Resource, reqparse
 
 from app.docman.models.document import Document
 from app.extensions import api, cache
-from app.utils.access_decorators import requires_role_document_upload
+from app.utils.access_decorators import requires_any_of, DOCUMENT_UPLOAD_ROLES
 from app.constants import OBJECT_STORE_PATH, OBJECT_STORE_UPLOAD_RESOURCE, FILE_UPLOAD_SIZE, FILE_UPLOAD_OFFSET, FILE_UPLOAD_PATH, DOWNLOAD_TOKEN, TIMEOUT_24_HOURS, TUS_API_VERSION, TUS_API_SUPPORTED_VERSIONS, FORBIDDEN_FILETYPES
 from app.config import Config
 
@@ -33,7 +33,7 @@ class DocumentListResource(Resource):
     parser.add_argument(
         'filename', type=str, required=False, help='File name + extension of the document.')
 
-    @requires_role_document_upload
+    @requires_any_of(DOCUMENT_UPLOAD_ROLES)
     def post(self):
         if request.headers.get('Tus-Resumable') is None:
             raise BadRequest('Received file upload for unsupported file transfer protocol')
@@ -161,7 +161,7 @@ class DocumentListResource(Resource):
 
 @api.route(f'/documents/<string:document_guid>')
 class DocumentResource(Resource):
-    @requires_role_document_upload
+    @requires_any_of(DOCUMENT_UPLOAD_ROLES)
     def patch(self, document_guid):
         # Get and validate the file path (not required if object store is enabled)
         file_path = cache.get(FILE_UPLOAD_PATH(document_guid))
@@ -234,7 +234,7 @@ class DocumentResource(Resource):
             'Access-Control-Expose-Headers'] = 'Tus-Resumable,Tus-Version,Upload-Offset'
         return response
 
-    @requires_role_document_upload
+    @requires_any_of(DOCUMENT_UPLOAD_ROLES)
     def head(self, document_guid):
         file_path = cache.get(FILE_UPLOAD_PATH(document_guid))
         if file_path is None:
