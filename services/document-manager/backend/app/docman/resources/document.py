@@ -70,10 +70,7 @@ class DocumentListResource(Resource):
         if Config.OBJECT_STORE_ENABLED:
 
             # Add the path to be used in the post-finish tusd hook to set the correct object store path
-            headers = {
-                key: value
-                for (key, value) in request.headers if key not in ['Host', 'Upload-Metadata']
-            }
+            headers = {key: value for (key, value) in request.headers if key != 'Host'}
             path = base64.b64encode(file_path.encode('utf-8')).decode('utf-8')
             doc_guid = base64.b64encode(document_guid.encode('utf-8')).decode('utf-8')
             upload_metadata = request.headers["Upload-Metadata"]
@@ -83,9 +80,9 @@ class DocumentListResource(Resource):
             resp = requests.post(url=Config.TUSD_URL, headers=headers, data=request.data)
             if resp.status_code != requests.codes.created:
                 message = f'Cannot upload file. Object store responded with {resp.status_code} ({resp.reason}): {resp._content}'
+                current_app.logger.error(message)
                 current_app.logger.error(f'POST resp.request:\n{resp.request.__dict__}')
                 current_app.logger.error(f'POST resp:\n{resp.__dict__}')
-                current_app.logger.error(message)
                 raise BadGateway(message)
 
             object_store_upload_resource = urlparse(resp.headers['Location']).path.split('/')[-1]
