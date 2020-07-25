@@ -123,8 +123,8 @@ def reorganize_files(wait):
 
 def get_untransferred_files(path):
     docs = Document.query.filter_by(object_store_path=None).all()
-    doc_jsons = [doc.full_storage_path if path else doc.document_id for doc in docs]
-    return doc_jsons
+    untransferred = [doc.full_storage_path if path else doc.document_id for doc in docs]
+    return untransferred
 
 
 def get_missing_files(path):
