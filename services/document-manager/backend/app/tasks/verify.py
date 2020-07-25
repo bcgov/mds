@@ -5,7 +5,7 @@ from celery.utils.log import get_task_logger
 from app.extensions import db
 from app.services.object_store_storage_service import ObjectStoreStorageService
 from app.docman.models.document import Document
-from app.tasks.celery import celery
+from app.tasks.celery import celery, ChordFailure
 
 
 @celery.task()
@@ -49,13 +49,12 @@ def verify_docs(verify_id, doc_ids, chunk_index):
             'success_verifications': list(sorted(success_verifications)),
             'fail_verifications':
             list(sorted([i for i in doc_ids if i not in success_verifications])),
-            'errors': errors
+            'errors': errors,
+            'task_id': verify_docs.request.id
         }
-        # Return the result of the verification
-        # if (not success):
-        #     raise TaskFailure(result)
 
     except Exception as e:
+        logger.error(f'An unexpected exception occurred: {e}')
         result = {
             'verify_id': verify_id,
             'chunk': chunk_index,
@@ -63,9 +62,11 @@ def verify_docs(verify_id, doc_ids, chunk_index):
             'message': f'An unexpected exception occurred: {e}',
             'success_verifications': [],
             'fail_verifications': [],
-            'errors': []
+            'errors': [],
+            'task_id': verify_docs.request.id
         }
 
+    # Return the result of the verification
     result = json.dumps(result)
     return result
 
@@ -86,8 +87,13 @@ def verify_docs_result(verify_results, verify_id=None):
     errors = [error for verify_result in verify_results for error in verify_result['errors']]
     success_results = []
     for verify_result in verify_results:
-        success_results.append(verify_result['success'])
+        success_result = verify_result['success']
+        if (not success_result):
+            verify_docs_result.update_state(
+                task_id=verify_result['task_id'], state='FAILURE', meta=json.dumps(verify_result))
+        success_results.append(success_result)
 
+    success = all(success_results)
     result = {
         'verify_id': verify_id,
         'success': all(success_results),
@@ -97,6 +103,6 @@ def verify_docs_result(verify_results, verify_id=None):
     }
     result = json.dumps(result)
     logger.info(result)
-    # if (all(success_results)):
-    #     raise ChordFailure(result)
+    if (not success):
+        raise ChordFailure(result)
     return result

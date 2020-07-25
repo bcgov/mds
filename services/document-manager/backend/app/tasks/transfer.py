@@ -5,7 +5,7 @@ from celery.utils.log import get_task_logger
 from app.extensions import db
 from app.services.object_store_storage_service import ObjectStoreStorageService
 from app.docman.models.document import Document
-from app.tasks.celery import celery
+from app.tasks.celery import celery, ChordFailure
 
 
 @celery.task()
@@ -50,13 +50,12 @@ def transfer_docs(transfer_id, doc_ids, chunk_index):
             'message': message,
             'success_transfers': list(sorted(success_transfers)),
             'fail_transfers': list(sorted([i for i in doc_ids if i not in success_transfers])),
-            'errors': errors
+            'errors': errors,
+            'task_id': transfer_docs.request.id
         }
-        # Return the result of the transfer
-        # if (not success):
-        #     raise TaskFailure(result)
 
     except Exception as e:
+        logger.error(f'An unexpected exception occurred: {e}')
         result = {
             'transfer_id': transfer_id,
             'chunk': chunk_index,
@@ -64,9 +63,11 @@ def transfer_docs(transfer_id, doc_ids, chunk_index):
             'message': f'An unexpected exception occurred: {e}',
             'success_transfers': [],
             'fail_transfers': [],
-            'errors': []
+            'errors': [],
+            'task_id': transfer_docs.request.id
         }
 
+    # Return the result of the transfer
     result = json.dumps(result)
     return result
 
@@ -88,17 +89,24 @@ def transfer_docs_result(transfer_results, transfer_id=None):
     errors = [error for transfer_result in transfer_results for error in transfer_result['errors']]
     success_results = []
     for transfer_result in transfer_results:
-        success_results.append(transfer_result['success'])
+        success_result = transfer_result['success']
+        if (not success_result):
+            transfer_docs_result.update_state(
+                task_id=transfer_result['task_id'],
+                state='FAILURE',
+                meta=json.dumps(transfer_result))
+        success_results.append(success_result)
 
+    success = all(success_results)
     result = {
         'transfer_id': transfer_id,
-        'success': all(success_results),
+        'success': success,
         'success_transfers': list(sorted(success_transfers)),
         'fail_transfers': list(sorted(fail_transfers)),
         'errors': errors
     }
     result = json.dumps(result)
     logger.info(result)
-    # if (all(success_results)):
-    #     raise ChordFailure(result)
+    if (not success):
+        raise ChordFailure(result)
     return result

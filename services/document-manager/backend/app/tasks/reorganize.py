@@ -5,8 +5,8 @@ from celery.utils.log import get_task_logger
 from app.extensions import db
 from app.services.object_store_storage_service import ObjectStoreStorageService
 from app.docman.models.document import Document
-from app.config import Config
 from app.tasks.celery import celery, ChordFailure
+from app.config import Config
 
 
 @celery.task()
@@ -25,9 +25,6 @@ def reorganize_docs(reorganize_id, doc_ids, chunk_index):
             doc_prefix = f'[Chunk {chunk_index}, Doc {i + 1}/{len(docs)}, ID {doc.document_id}]:'
             logger.info(f'{doc_prefix} Reorganizing...')
             try:
-                # if (chunk_index % 2 == 0):
-                #     raise Exception('Fake exception!')
-
                 # If the object store path already contains the full storage path, it is already organized
                 if doc.full_storage_path in doc.object_store_path:
                     success_reorganized.append(doc.document_id)
@@ -84,11 +81,9 @@ def reorganize_docs(reorganize_id, doc_ids, chunk_index):
             'errors': errors,
             'task_id': reorganize_docs.request.id
         }
-        # Return the result of the reorganization
-        # if (not success):
-        #     raise TaskFailure(result)
 
     except Exception as e:
+        logger.error(f'An unexpected exception occurred: {e}')
         result = {
             'reorganize_id': reorganize_id,
             'chunk': chunk_index,
@@ -100,6 +95,7 @@ def reorganize_docs(reorganize_id, doc_ids, chunk_index):
             'task_id': reorganize_docs.request.id
         }
 
+    # Return the result of the reorganization
     result = json.dumps(result)
     return result
 
