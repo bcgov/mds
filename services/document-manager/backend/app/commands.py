@@ -20,8 +20,8 @@ def register_commands(app):
     @click.argument('wait', default=False)
     def reorganize_files(wait):
         """Reorganize documents on the object store so that their key includes their full_storage_path."""
-        from app.services.commands_helper import create_reorganize_job
-        print(create_reorganize_job(wait))
+        from app.services.commands_helper import create_reorganize_files_job
+        print(create_reorganize_files_job(wait))
 
     @app.cli.command()
     @click.argument('path', default=False)
