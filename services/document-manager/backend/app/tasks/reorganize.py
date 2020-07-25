@@ -5,7 +5,7 @@ from celery.utils.log import get_task_logger
 from app.extensions import db
 from app.services.object_store_storage_service import ObjectStoreStorageService
 from app.docman.models.document import Document
-from app.tasks.celery import celery
+from app.tasks.celery import celery, doc_task_result
 from app.config import Config
 
 
@@ -71,30 +71,27 @@ def reorganize_docs(reorganize_id, doc_ids, chunk_index):
         # Determine the result of the reorganization
         success = len(errors) == 0
         message = 'All tested documents passed reorganization' if success else f'{len(errors)}/{len(docs)} document(s) failed reorganization'
-        result = {
-            'job_id': reorganize_id,
-            'task_id': reorganize_docs.request.id,
-            'chunk': chunk_index,
-            'success': success,
-            'message': message,
-            'success_docs': list(sorted(success_reorganized)),
-            'fail_docs': list(sorted([i for i in doc_ids if i not in success_reorganized])),
-            'errors': errors
-        }
+        result = doc_task_result(
+            job_id=reorganize_id,
+            task_id=reorganize_docs.request.id,
+            chunk=chunk_index,
+            success=success,
+            message=message,
+            success_docs=success_reorganized,
+            errors=errors,
+            doc_ids=doc_ids)
 
     except Exception as e:
         logger.error(f'An unexpected exception occurred: {e}')
-        result = {
-            'job_id': reorganize_id,
-            'task_id': reorganize_docs.request.id,
-            'chunk': chunk_index,
-            'success': False,
-            'message': f'An unexpected exception occurred: {e}',
-            'success_docs': [],
-            'fail_docs': [],
-            'errors': []
-        }
+        result = doc_task_result(
+            job_id=reorganize_id,
+            task_id=reorganize_docs.request.id,
+            chunk=chunk_index,
+            success=False,
+            message=f'An unexpected exception occurred: {e}',
+            success_docs=[],
+            errors=[],
+            doc_ids=doc_ids)
 
     # Return the result of the reorganization
-    result = json.dumps(result)
     return result

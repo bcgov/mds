@@ -47,3 +47,17 @@ def doc_job_result(task_results, job_type, job_id):
     if (not job_success):
         raise JobFailure(result)
     return result
+
+
+def doc_task_result(job_id, task_id, chunk, success, message, success_docs, errors, doc_ids):
+    result = {
+        'job_id': job_id,
+        'task_id': task_id,
+        'chunk': chunk,
+        'success': success,
+        'message': message,
+        'success_docs': list(sorted(success_docs)),
+        'fail_docs': list(sorted([i for i in doc_ids if i not in success_docs])),
+        'errors': errors
+    }
+    return json.dumps(result)
