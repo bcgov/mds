@@ -97,7 +97,7 @@ def start_job(wait, job_type, docs, task):
     job = chord(tasks)(callback)
 
     # Create the response message
-    message = f'Created a {job_type} job with ID {job_id} to the task queue: {len(docs)} docs will be performed on in {len(chunks)} chunks of size {len(chunks[0])}'
+    message = f'Added a {job_type} job with ID {job_id} to the task queue: {len(docs)} docs will be performed on in {len(chunks)} chunks of size {len(chunks[0])}'
     current_app.logger.info(message)
 
     # If desired, wait for the job to finish and return its result
