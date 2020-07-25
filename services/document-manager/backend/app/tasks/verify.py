@@ -5,7 +5,7 @@ from celery.utils.log import get_task_logger
 from app.extensions import db
 from app.services.object_store_storage_service import ObjectStoreStorageService
 from app.docman.models.document import Document
-from app.tasks.celery import celery, ChordFailure
+from app.tasks.celery import celery
 
 
 @celery.task()
@@ -42,67 +42,29 @@ def verify_docs(verify_id, doc_ids, chunk_index):
         success = len(unequal) == 0 and len(errors) == 0
         message = 'All tested documents passed verification' if success else f'{len(unequal)}/{len(docs)} document(s) failed verification: {unequal}'
         result = {
-            'verify_id': verify_id,
+            'job_id': verify_id,
+            'task_id': verify_docs.request.id,
             'chunk': chunk_index,
             'success': success,
             'message': message,
-            'success_verifications': list(sorted(success_verifications)),
-            'fail_verifications':
-            list(sorted([i for i in doc_ids if i not in success_verifications])),
-            'errors': errors,
-            'task_id': verify_docs.request.id
+            'success_docs': list(sorted(success_verifications)),
+            'fail_docs': list(sorted([i for i in doc_ids if i not in success_verifications])),
+            'errors': errors
         }
 
     except Exception as e:
         logger.error(f'An unexpected exception occurred: {e}')
         result = {
-            'verify_id': verify_id,
+            'job_id': verify_id,
+            'task_id': verify_docs.request.id,
             'chunk': chunk_index,
             'success': False,
             'message': f'An unexpected exception occurred: {e}',
-            'success_verifications': [],
-            'fail_verifications': [],
-            'errors': [],
-            'task_id': verify_docs.request.id
+            'success_docs': [],
+            'fail_docs': [],
+            'errors': []
         }
 
     # Return the result of the verification
     result = json.dumps(result)
-    return result
-
-
-@celery.task()
-def verify_docs_result(verify_results, verify_id=None):
-    logger = get_task_logger(verify_id)
-    logger.info(f'All tasks in verification job with ID {verify_id} have completed')
-
-    verify_results = [json.loads(verify_result) for verify_result in verify_results]
-    success_verifications = [
-        doc_id for verify_result in verify_results
-        for doc_id in verify_result['success_verifications']
-    ]
-    fail_verifications = [
-        doc_id for verify_result in verify_results for doc_id in verify_result['fail_verifications']
-    ]
-    errors = [error for verify_result in verify_results for error in verify_result['errors']]
-    success_results = []
-    for verify_result in verify_results:
-        success_result = verify_result['success']
-        if (not success_result):
-            verify_docs_result.update_state(
-                task_id=verify_result['task_id'], state='FAILURE', meta=json.dumps(verify_result))
-        success_results.append(success_result)
-
-    success = all(success_results)
-    result = {
-        'verify_id': verify_id,
-        'success': all(success_results),
-        'success_verifications': list(sorted(success_verifications)),
-        'fail_verifications': list(sorted(fail_verifications)),
-        'errors': errors
-    }
-    result = json.dumps(result)
-    logger.info(result)
-    if (not success):
-        raise ChordFailure(result)
     return result

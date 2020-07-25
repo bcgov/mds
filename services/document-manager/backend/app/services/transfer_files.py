@@ -10,9 +10,10 @@ from app.docman.models.document import Document
 from app.utils.access_decorators import requires_any_of, MINE_ADMIN
 from app.services.object_store_storage_service import ObjectStoreStorageService
 
-from app.tasks.transfer import transfer_docs, transfer_docs_result
-from app.tasks.verify import verify_docs, verify_docs_result
-from app.tasks.reorganize import reorganize_docs, reorganize_docs_result
+from app.tasks.celery import doc_job_result
+from app.tasks.transfer import transfer_docs
+from app.tasks.verify import verify_docs
+from app.tasks.reorganize import reorganize_docs
 
 
 def transfer_local_files_to_object_store(wait):
@@ -28,17 +29,17 @@ def transfer_local_files_to_object_store(wait):
 
     # Create the transfer tasks
     tasks = []
-    transfer_id = str(uuid.uuid4())
+    job_id = str(uuid.uuid4())
     for i, chunk in enumerate(chunks):
         doc_ids = [doc.document_id for doc in chunk]
-        tasks.append(transfer_docs.subtask((transfer_id, doc_ids, i)))
+        tasks.append(transfer_docs.subtask((job_id, doc_ids, i)))
 
     # Start the transfer tasks
-    callback = transfer_docs_result.subtask(kwargs={'transfer_id': transfer_id})
+    callback = doc_job_result.subtask(kwargs={'job_type': 'transfer', 'job_id': job_id})
     job = chord(tasks)(callback)
 
     # Create the response message
-    message = f'Added transfer job with ID {transfer_id} to the task queue: {len(docs)} docs will be transferred in {len(chunks)} chunks of size {len(chunks[0])}'
+    message = f'Added transfer job with ID {job_id} to the task queue: {len(docs)} docs will be transferred in {len(chunks)} chunks of size {len(chunks[0])}'
     current_app.logger.info(message)
     current_app.logger.debug(chunks)
 
@@ -62,17 +63,17 @@ def verify_transferred_objects(wait):
 
     # Create the verification tasks
     tasks = []
-    verify_id = str(uuid.uuid4())
+    job_id = str(uuid.uuid4())
     for i, chunk in enumerate(chunks):
         doc_ids = [doc.document_id for doc in chunk]
-        tasks.append(verify_docs.subtask((verify_id, doc_ids, i)))
+        tasks.append(verify_docs.subtask((job_id, doc_ids, i)))
 
     # Start the verification tasks
-    callback = verify_docs_result.subtask(kwargs={'verify_id': verify_id})
+    callback = doc_job_result.subtask(kwargs={'job_type': 'verify', 'job_id': job_id})
     job = chord(tasks)(callback)
 
     # Create the response message
-    message = f'Added verification job with ID {verify_id} to the task queue: {len(docs)} docs will be verified in {len(chunks)} chunks of size {len(chunks[0])}'
+    message = f'Added verification job with ID {job_id} to the task queue: {len(docs)} docs will be verified in {len(chunks)} chunks of size {len(chunks[0])}'
     current_app.logger.info(message)
     current_app.logger.debug(chunks)
 
@@ -98,17 +99,17 @@ def reorganize_files(wait):
 
     # Create the reorganize tasks
     tasks = []
-    reorganize_id = str(uuid.uuid4())
+    job_id = str(uuid.uuid4())
     for i, chunk in enumerate(chunks):
         doc_ids = [doc.document_id for doc in chunk]
-        tasks.append(reorganize_docs.subtask((reorganize_id, doc_ids, i)))
+        tasks.append(reorganize_docs.subtask((job_id, doc_ids, i)))
 
     # Start the reorganize tasks
-    callback = reorganize_docs_result.subtask(kwargs={'reorganize_id': reorganize_id})
+    callback = doc_job_result.subtask(kwargs={'job_type': 'reorganize', 'job_id': job_id})
     job = chord(tasks)(callback)
 
     # Create the response message
-    message = f'Added reorganize job with ID {reorganize_id} to the task queue: {len(docs)} docs will be reorganized in {len(chunks)} chunks of size {len(chunks[0])}'
+    message = f'Added reorganize job with ID {job_id} to the task queue: {len(docs)} docs will be reorganized in {len(chunks)} chunks of size {len(chunks[0])}'
     current_app.logger.info(message)
     current_app.logger.debug(chunks)
 

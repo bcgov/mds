@@ -5,7 +5,7 @@ from celery.utils.log import get_task_logger
 from app.extensions import db
 from app.services.object_store_storage_service import ObjectStoreStorageService
 from app.docman.models.document import Document
-from app.tasks.celery import celery, ChordFailure
+from app.tasks.celery import celery
 
 
 @celery.task()
@@ -44,69 +44,29 @@ def transfer_docs(transfer_id, doc_ids, chunk_index):
         success = len(errors) == 0
         message = 'All required documents were transferred' if success else 'Transfer finished with errors'
         result = {
-            'transfer_id': transfer_id,
+            'job_id': transfer_id,
+            'task_id': transfer_docs.request.id,
             'chunk': chunk_index,
             'success': success,
             'message': message,
-            'success_transfers': list(sorted(success_transfers)),
-            'fail_transfers': list(sorted([i for i in doc_ids if i not in success_transfers])),
-            'errors': errors,
-            'task_id': transfer_docs.request.id
+            'success_docs': list(sorted(success_transfers)),
+            'fail_docs': list(sorted([i for i in doc_ids if i not in success_transfers])),
+            'errors': errors
         }
 
     except Exception as e:
         logger.error(f'An unexpected exception occurred: {e}')
         result = {
-            'transfer_id': transfer_id,
+            'job_id': transfer_id,
+            'task_id': transfer_docs.request.id,
             'chunk': chunk_index,
             'success': False,
             'message': f'An unexpected exception occurred: {e}',
-            'success_transfers': [],
-            'fail_transfers': [],
-            'errors': [],
-            'task_id': transfer_docs.request.id
+            'success_docs': [],
+            'fail_docs': [],
+            'errors': []
         }
 
     # Return the result of the transfer
     result = json.dumps(result)
-    return result
-
-
-@celery.task()
-def transfer_docs_result(transfer_results, transfer_id=None):
-    logger = get_task_logger(transfer_id)
-    logger.info(f'All tasks in transfer job with ID {transfer_id} have completed')
-
-    transfer_results = [json.loads(transfer_result) for transfer_result in transfer_results]
-    success_transfers = [
-        doc_id for transfer_result in transfer_results
-        for doc_id in transfer_result['success_transfers']
-    ]
-    fail_transfers = [
-        doc_id for transfer_result in transfer_results
-        for doc_id in transfer_result['fail_transfers']
-    ]
-    errors = [error for transfer_result in transfer_results for error in transfer_result['errors']]
-    success_results = []
-    for transfer_result in transfer_results:
-        success_result = transfer_result['success']
-        if (not success_result):
-            transfer_docs_result.update_state(
-                task_id=transfer_result['task_id'],
-                state='FAILURE',
-                meta=json.dumps(transfer_result))
-        success_results.append(success_result)
-
-    success = all(success_results)
-    result = {
-        'transfer_id': transfer_id,
-        'success': success,
-        'success_transfers': list(sorted(success_transfers)),
-        'fail_transfers': list(sorted(fail_transfers)),
-        'errors': errors
-    }
-    result = json.dumps(result)
-    logger.info(result)
-    if (not success):
-        raise ChordFailure(result)
     return result

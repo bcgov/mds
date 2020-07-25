@@ -5,7 +5,7 @@ from celery.utils.log import get_task_logger
 from app.extensions import db
 from app.services.object_store_storage_service import ObjectStoreStorageService
 from app.docman.models.document import Document
-from app.tasks.celery import celery, ChordFailure
+from app.tasks.celery import celery
 from app.config import Config
 
 
@@ -72,71 +72,29 @@ def reorganize_docs(reorganize_id, doc_ids, chunk_index):
         success = len(errors) == 0
         message = 'All tested documents passed reorganization' if success else f'{len(errors)}/{len(docs)} document(s) failed reorganization'
         result = {
-            'reorganize_id': reorganize_id,
+            'job_id': reorganize_id,
+            'task_id': reorganize_docs.request.id,
             'chunk': chunk_index,
             'success': success,
             'message': message,
-            'success_reorganized': list(sorted(success_reorganized)),
-            'fail_reorganized': list(sorted([i for i in doc_ids if i not in success_reorganized])),
-            'errors': errors,
-            'task_id': reorganize_docs.request.id
+            'success_docs': list(sorted(success_reorganized)),
+            'fail_docs': list(sorted([i for i in doc_ids if i not in success_reorganized])),
+            'errors': errors
         }
 
     except Exception as e:
         logger.error(f'An unexpected exception occurred: {e}')
         result = {
-            'reorganize_id': reorganize_id,
+            'job_id': reorganize_id,
+            'task_id': reorganize_docs.request.id,
             'chunk': chunk_index,
             'success': False,
             'message': f'An unexpected exception occurred: {e}',
-            'success_reorganized': [],
-            'fail_reorganized': [],
-            'errors': [],
-            'task_id': reorganize_docs.request.id
+            'success_docs': [],
+            'fail_docs': [],
+            'errors': []
         }
 
     # Return the result of the reorganization
     result = json.dumps(result)
-    return result
-
-
-@celery.task()
-def reorganize_docs_result(reorganize_results, reorganize_id=None):
-    logger = get_task_logger(reorganize_id)
-    logger.info(f'All tasks in reorganization job with ID {reorganize_id} have completed')
-
-    reorganize_results = [json.loads(reorganize_result) for reorganize_result in reorganize_results]
-    success_reorganized = [
-        doc_id for reorganize_result in reorganize_results
-        for doc_id in reorganize_result['success_reorganized']
-    ]
-    fail_reorganized = [
-        doc_id for reorganize_result in reorganize_results
-        for doc_id in reorganize_result['fail_reorganized']
-    ]
-    errors = [
-        error for reorganize_result in reorganize_results for error in reorganize_result['errors']
-    ]
-    success_results = []
-    for reorganize_result in reorganize_results:
-        success_result = reorganize_result['success']
-        if (not success_result):
-            reorganize_docs_result.update_state(
-                task_id=reorganize_result['task_id'],
-                state='FAILURE',
-                meta=json.dumps(reorganize_result))
-        success_results.append(success_result)
-
-    success = all(success_results)
-    result = {
-        'reorganize_id': reorganize_id,
-        'success': success,
-        'success_reorganized': list(sorted(success_reorganized)),
-        'fail_reorganized': list(sorted(fail_reorganized)),
-        'errors': errors
-    }
-    result = json.dumps(result)
-    logger.info(result)
-    if (not success):
-        raise ChordFailure(result)
     return result
