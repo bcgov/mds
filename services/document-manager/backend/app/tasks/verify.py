@@ -52,13 +52,14 @@ def verify_docs(verify_id, doc_ids, chunk_index):
             doc_ids=doc_ids)
 
     except Exception as e:
-        logger.error(f'An unexpected exception occurred: {e}')
+        message = f'An unexpected exception occurred: {e}'
+        logger.error(message)
         result = doc_task_result(
             job_id=verify_id,
             task_id=verify_docs.request.id,
             chunk=chunk_index,
             success=False,
-            message=f'An unexpected exception occurred: {e}',
+            message=message,
             success_docs=[],
             errors=[],
             doc_ids=doc_ids)
