@@ -7,8 +7,6 @@ from sqlalchemy import and_
 from celery import chord
 
 from app.docman.models.document import Document
-from app.services.object_store_storage_service import ObjectStoreStorageService
-
 from app.tasks.celery import doc_job_result
 from app.tasks.transfer import transfer_docs
 from app.tasks.verify import verify_docs
@@ -20,7 +18,7 @@ def create_transfer_files_job(wait):
     docs = Document.query.filter_by(object_store_path=None).all()
     if (len(docs) == 0):
         return 'No documents need to be transferred'
-    return start_job(wait, 'transfer', docs, verify_docs)
+    return start_job(wait, 'transfer', docs, transfer_docs)
 
 
 def create_verify_files_job(wait):
@@ -38,7 +36,7 @@ def create_reorganize_job(wait):
              ~Document.object_store_path.contains(Document.full_storage_path))).all()
     if (len(docs) == 0):
         return 'No documents need to be reorganized'
-    return start_job(wait, 'reorganize', docs, verify_docs)
+    return start_job(wait, 'reorganize', docs, reorganize_docs)
 
 
 def get_untransferred_files(path):
@@ -87,21 +85,20 @@ def start_job(wait, job_type, docs, task):
     chunks = numpy.array_split(docs, 8)
     chunks = [x.tolist() for x in chunks if len(x) > 0]
 
-    # Create the tasks
+    # Create a task for each chunk
     tasks = []
     job_id = str(uuid.uuid4())
     for i, chunk in enumerate(chunks):
         doc_ids = [doc.document_id for doc in chunk]
         tasks.append(task.subtask((job_id, doc_ids, i)))
 
-    # Start the verification tasks
+    # Create and start a job using the tasks
     callback = doc_job_result.subtask(kwargs={'job_type': job_type, 'job_id': job_id})
     job = chord(tasks)(callback)
 
     # Create the response message
-    message = f'Added {job_type} job with ID {job_id} to the task queue: {len(docs)} docs will be performed on in {len(chunks)} chunks of size {len(chunks[0])}'
+    message = f'Created a {job_type} job with ID {job_id} to the task queue: {len(docs)} docs will be performed on in {len(chunks)} chunks of size {len(chunks[0])}'
     current_app.logger.info(message)
-    current_app.logger.debug(chunks)
 
     # If desired, wait for the job to finish and return its result
     if (wait):
