@@ -16,6 +16,7 @@ from app.tasks.reorganize import reorganize_docs
 def create_transfer_files_job(wait):
     """Creates a job that transfers documents that exist at their full_storage_path to the object store."""
     docs = Document.query.filter_by(object_store_path=None).all()
+    docs = [doc for doc in docs if os.path.isfile(doc.full_storage_path)]
     if (len(docs) == 0):
         return 'No documents need to be transferred'
     return start_job(wait, 'transfer', docs, transfer_docs)
