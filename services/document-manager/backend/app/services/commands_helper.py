@@ -25,6 +25,7 @@ def create_transfer_files_job(wait):
 def create_verify_files_job(wait):
     """Creates a job that verifies that documents that exist at their full_storage_path equal the file stored at their object_store_path."""
     docs = Document.query.filter(Document.object_store_path != None).all()
+    docs = [doc for doc in docs if os.path.isfile(doc.full_storage_path)]
     if (len(docs) == 0):
         return 'No documents are stored on the object store'
     return start_job(wait, 'verify', docs, verify_docs)
