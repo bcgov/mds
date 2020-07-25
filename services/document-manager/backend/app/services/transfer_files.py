@@ -120,9 +120,9 @@ def reorganize_files(wait):
     return message
 
 
-def get_untransferred_files():
+def get_untransferred_files(path):
     docs = Document.query.filter_by(object_store_path=None).all()
-    doc_jsons = [doc.json() for doc in docs]
+    doc_jsons = [doc.full_storage_path if path else doc.document_id for doc in docs]
     return doc_jsons
 
 

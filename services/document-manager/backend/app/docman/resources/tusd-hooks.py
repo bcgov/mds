@@ -37,17 +37,15 @@ class TusdHooks(Resource):
 
         # Parse data
         try:
-            # If the path is in the key there is no need to move the file
             path = data["Upload"]["MetaData"]["path"][1:]
             key = data["Upload"]["Storage"]["Key"]
-            doc_guid = data["Upload"]["MetaData"]["DocGuid"]
+            info_key = f'{key}.info'
+            new_key = f'{Config.S3_PREFIX}{path}'
             doc_guid = data["Upload"]["MetaData"]["doc_guid"]
+
+            # If the path is in the key there is no need to move the file
             if (path in key):
                 return ('', 204)
-
-            info_key = f'{key}.info'
-            # NOTE: We need to remove the beginning slash from the path because the S3 prefix has a trailing slash
-            new_key = f'{Config.S3_PREFIX}{path}'
         except Exception as e:
             raise BadRequest(f'Failed to parse data: {e}')
 
@@ -66,7 +64,7 @@ class TusdHooks(Resource):
             doc.update_user = 'mds'
             db.session.commit()
         except Exception as e:
-            raise InternalServerError(f'Failed to update object store path: {e}')
+            raise InternalServerError(f'Failed to update the document\'s object store path: {e}')
 
         # Delete the old file and its .info file
         try:

@@ -15,9 +15,16 @@ def register_commands(app):
         print(verify_transferred_objects(wait))
 
     @app.cli.command()
-    def untransferred_files():
+    @click.argument('wait', default=False)
+    def reorganize_files(wait):
+        from app.services.transfer_files import reorganize_files
+        print(reorganize_files(wait))
+
+    @app.cli.command()
+    @click.argument('path', default=False)
+    def untransferred_files(path):
         from app.services.transfer_files import get_untransferred_files
-        print(get_untransferred_files())
+        print(get_untransferred_files(path))
 
     @app.cli.command()
     @click.argument('path', default=False)
@@ -30,9 +37,3 @@ def register_commands(app):
     def unregistered_files(path):
         from app.services.transfer_files import get_unregistered_files
         print(get_unregistered_files(path))
-
-    @app.cli.command()
-    @click.argument('wait', default=False)
-    def reorganize_files(wait):
-        from app.services.transfer_files import reorganize_files
-        print(reorganize_files(wait))
