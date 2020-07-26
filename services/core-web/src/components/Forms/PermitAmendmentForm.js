@@ -39,10 +39,10 @@ const validateBusinessRules = (values) => {
     )[0];
     const mostRecentAmendment = values.amendments[0];
     if (originalPermitAmendment && values.issue_date < originalPermitAmendment.issue_date) {
-      errors.issue_date = "Issue Date cannot be before the permits First Issued date.";
+      errors.issue_date = "Date cannot be before the permit's first issued date";
     }
     if (mostRecentAmendment && values.issue_date < mostRecentAmendment.issue_date) {
-      errors.issue_date = "Issue Date cannot be before the last amendments issued date";
+      errors.issue_date = "Date cannot be before the last amendment's issue date";
     }
   }
 
@@ -115,7 +115,7 @@ export class PermitAmendmentForm extends Component {
               <Field
                 id="issue_date"
                 name="issue_date"
-                label="Issue date*"
+                label="Issue Date*"
                 component={renderConfig.DATE}
                 validate={[required, dateNotInFuture]}
               />
