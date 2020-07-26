@@ -42,7 +42,7 @@ describe("`createMineIncident` action creator", () => {
     )(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);
-      expect(dispatch).toHaveBeenCalledTimes(2);
+      expect(dispatch).toHaveBeenCalledTimes(4);
     });
   });
 
@@ -51,7 +51,7 @@ describe("`createMineIncident` action creator", () => {
     return createMineIncident(mineGuid)(dispatch).catch(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
-      expect(dispatch).toHaveBeenCalledTimes(2);
+      expect(dispatch).toHaveBeenCalledTimes(4);
     });
   });
 });
@@ -98,7 +98,7 @@ describe("`updateMineIncident` action creator", () => {
     )(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);
-      expect(dispatch).toHaveBeenCalledTimes(2);
+      expect(dispatch).toHaveBeenCalledTimes(4);
     });
   });
 
@@ -111,7 +111,7 @@ describe("`updateMineIncident` action creator", () => {
     )(dispatch).catch(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
-      expect(dispatch).toHaveBeenCalledTimes(2);
+      expect(dispatch).toHaveBeenCalledTimes(4);
     });
   });
 });
