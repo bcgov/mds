@@ -27,9 +27,9 @@ export const createParty = (payload) => (dispatch) => {
     })
     .catch((err) => {
       dispatch(error(reducerTypes.CREATE_PARTY));
-      dispatch(hideLoading("modal"));
       throw new Error(err);
-    });
+    })
+    .finally(() => dispatch(hideLoading("modal")));
 };
 
 export const updateParty = (payload, partyGuid) => (dispatch) => {
@@ -51,9 +51,9 @@ export const updateParty = (payload, partyGuid) => (dispatch) => {
     })
     .catch((err) => {
       dispatch(error(reducerTypes.UPDATE_PARTY));
-      dispatch(hideLoading("modal"));
       throw new Error(err);
-    });
+    })
+    .finally(() => dispatch(hideLoading("modal")));
 };
 
 export const fetchParties = (params = {}) => (dispatch) => {
@@ -213,7 +213,7 @@ export const createPartyOrgBookEntity = (partyGuid, payload) => (dispatch) => {
     })
     .catch((err) => {
       dispatch(error(reducerTypes.PARTY_ORGBOOK_ENTITY));
-      dispatch(hideLoading("modal"));
       throw new Error(err);
-    });
+    })
+    .finally(() => dispatch(hideLoading("modal")));
 };

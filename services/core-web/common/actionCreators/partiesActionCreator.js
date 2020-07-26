@@ -228,7 +228,7 @@ export const createPartyOrgBookEntity = (partyGuid, payload) => (dispatch) => {
     })
     .catch((err) => {
       dispatch(error(reducerTypes.PARTY_ORGBOOK_ENTITY));
-      dispatch(hideLoading("modal"));
       throw new Error(err);
-    });
+    })
+    .finally(() => dispatch(hideLoading("modal")));
 };

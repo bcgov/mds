@@ -48,7 +48,7 @@ describe("`createMineIncident` action creator", () => {
 
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onPost(url).reply(418, MOCK.ERROR);
-    return createMineIncident(mineGuid)(dispatch).then(() => {
+    return createMineIncident(mineGuid)(dispatch).catch(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(2);
@@ -108,7 +108,7 @@ describe("`updateMineIncident` action creator", () => {
       mineGuid,
       mineIncidentGUID,
       mockPayload
-    )(dispatch).then(() => {
+    )(dispatch).catch(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(2);
@@ -163,7 +163,7 @@ describe("`deleteMineIncident` action creator", () => {
     return deleteMineIncident(
       mineGuid,
       mineIncidentGUID
-    )(dispatch).then(() => {
+    )(dispatch).catch(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);

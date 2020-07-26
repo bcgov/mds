@@ -62,7 +62,7 @@ describe("`createMineRecord` action creator", () => {
 
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onPost(url).reply(418, MOCK.ERROR);
-    return createMineRecord(mineName)(dispatch).then(() => {
+    return createMineRecord(mineName)(dispatch).catch(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
@@ -91,7 +91,7 @@ describe("`removeMineType` action creator", () => {
 
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onDelete(url).reply(418, MOCK.ERROR);
-    return removeMineType(mineTypeGuid)(dispatch).then(() => {
+    return removeMineType(mineTypeGuid)(dispatch).catch(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
@@ -122,7 +122,7 @@ describe("`createTailingsStorageFacility` action creator", () => {
     return createTailingsStorageFacility(
       mine_guid,
       mockPayload
-    )(dispatch).then(() => {
+    )(dispatch).catch(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
@@ -272,7 +272,7 @@ describe("`unSubscribe` action creator", () => {
     return unSubscribe(
       mineGuid,
       mineName
-    )(dispatch).then(() => {
+    )(dispatch).catch(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
@@ -302,7 +302,7 @@ describe("`subscribe` action creator", () => {
     return subscribe(
       mineGuid,
       mineName
-    )(dispatch).then(() => {
+    )(dispatch).catch(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
@@ -380,7 +380,7 @@ describe("`createMineComment` action creator", () => {
 
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onPost(url, MOCK.createMockHeader()).reply(418, MOCK.ERROR);
-    return createMineComment(mineGuid)(dispatch).then(() => {
+    return createMineComment(mineGuid)(dispatch).catch(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(2);
@@ -411,7 +411,7 @@ describe("`deleteMineComment` action creator", () => {
     return deleteMineComment(
       mineGuid,
       commentGuid
-    )(dispatch).then(() => {
+    )(dispatch).catch(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(2);
