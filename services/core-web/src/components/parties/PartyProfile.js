@@ -7,7 +7,6 @@ import { Tabs, Icon, Table, Button, Popconfirm } from "antd";
 import { uniq, isEmpty } from "lodash";
 import {
   fetchPartyById,
-  fetchPartyRelationships,
   updateParty,
   deleteParty,
 } from "@common/actionCreators/partiesActionCreator";
@@ -40,7 +39,6 @@ const { TabPane } = Tabs;
 
 const propTypes = {
   fetchPartyById: PropTypes.func.isRequired,
-  fetchPartyRelationships: PropTypes.func.isRequired,
   fetchMineBasicInfoList: PropTypes.func.isRequired,
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
   updateParty: PropTypes.func.isRequired,
@@ -48,7 +46,6 @@ const propTypes = {
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   parties: PropTypes.arrayOf(CustomPropTypes.party).isRequired,
-  partyRelationships: PropTypes.arrayOf(CustomPropTypes.partyRelationship),
   partyRelationshipTypeHash: PropTypes.objectOf(PropTypes.strings),
   mineBasicInfoListHash: PropTypes.objectOf(PropTypes.strings),
   match: CustomPropTypes.match.isRequired,
@@ -56,7 +53,6 @@ const propTypes = {
 };
 
 const defaultProps = {
-  partyRelationships: [],
   partyRelationshipTypeHash: {},
   mineBasicInfoListHash: {},
 };
@@ -69,7 +65,7 @@ export class PartyProfile extends Component {
     this.props.fetchPartyById(id).then(() => {
       const mine_guids = uniq(
         this.props.parties[id].mine_party_appt
-          .filter((x) => x.mine_guid != "None")
+          .filter((x) => x.mine_guid !== "None")
           .map(({ mine_guid }) => mine_guid)
       );
       this.props.fetchMineBasicInfoList(mine_guids).then(() => {
@@ -97,7 +93,7 @@ export class PartyProfile extends Component {
 
   editParty = (values) => {
     const { id } = this.props.match.params;
-    this.props.updateParty(values, id).then(() => {
+    return this.props.updateParty(values, id).then(() => {
       this.props.fetchPartyById(id);
       this.props.closeModal();
     });
@@ -125,13 +121,12 @@ export class PartyProfile extends Component {
         render: (text, record) => {
           if (record.relationship.mine_party_appt_type_code === "PMT") {
             return <div title="Permit No">{record.relationship.permit_no}</div>;
-          } else {
-            return (
-              <div title="Mine Name">
-                <Link to={routes.MINE_CONTACTS.dynamicRoute(record.mineGuid)}>{text}</Link>
-              </div>
-            );
           }
+          return (
+            <div title="Mine Name">
+              <Link to={routes.MINE_CONTACTS.dynamicRoute(record.mineGuid)}>{text}</Link>
+            </div>
+          );
         },
       },
       {
@@ -284,7 +279,6 @@ const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
       fetchPartyById,
-      fetchPartyRelationships,
       fetchMineBasicInfoList,
       deleteParty,
       updateParty,
