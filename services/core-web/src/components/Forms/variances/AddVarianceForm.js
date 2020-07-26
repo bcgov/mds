@@ -79,7 +79,7 @@ export class AddVarianceForm extends Component {
         <Form.Item label={this.state.isApplication ? "Received date" : "Received date*"}>
           {this.state.isApplication && (
             <p className="p-light">
-              If the received date is not specified it will be set to todays date
+              If the received date is not specified it will be set to today&apos;s date.
             </p>
           )}
           <Field
@@ -202,4 +202,5 @@ export default reduxForm({
   form: FORM.ADD_VARIANCE,
   touchOnBlur: false,
   onSubmitSuccess: resetForm(FORM.ADD_VARIANCE),
+  enableReinitialize: true,
 })(AddVarianceForm);
