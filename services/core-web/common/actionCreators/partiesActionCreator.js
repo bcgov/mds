@@ -84,7 +84,7 @@ export const fetchPartyById = (id) => (dispatch) => {
 
 export const addPartyRelationship = (payload) => (dispatch) => {
   dispatch(request(reducerTypes.ADD_PARTY_RELATIONSHIP));
-  dispatch(showLoading());
+  dispatch(showLoading("modal"));
   return CustomAxios()
     .post(ENVIRONMENT.apiUrl + API.PARTY_RELATIONSHIP, payload, createRequestHeader())
     .then((response) => {
@@ -95,13 +95,16 @@ export const addPartyRelationship = (payload) => (dispatch) => {
       dispatch(success(reducerTypes.ADD_PARTY_RELATIONSHIP));
       return response;
     })
-    .catch(() => dispatch(error(reducerTypes.ADD_PARTY_RELATIONSHIP)))
-    .finally(() => dispatch(hideLoading()));
+    .catch((err) => {
+      dispatch(error(reducerTypes.ADD_PARTY_RELATIONSHIP));
+      throw new Error(err);
+    })
+    .finally(() => dispatch(hideLoading("modal")));
 };
 
 export const updatePartyRelationship = (payload) => (dispatch) => {
   dispatch(request(reducerTypes.UPDATE_PARTY_RELATIONSHIP));
-  dispatch(showLoading());
+  dispatch(showLoading("modal"));
   return CustomAxios()
     .put(
       `${ENVIRONMENT.apiUrl + API.PARTY_RELATIONSHIP}/${payload.mine_party_appt_guid}`,
@@ -116,8 +119,11 @@ export const updatePartyRelationship = (payload) => (dispatch) => {
       dispatch(success(reducerTypes.UPDATE_PARTY_RELATIONSHIP));
       return response;
     })
-    .catch(() => dispatch(error(reducerTypes.UPDATE_PARTY_RELATIONSHIP)))
-    .finally(() => dispatch(hideLoading()));
+    .catch((err) => {
+      dispatch(error(reducerTypes.UPDATE_PARTY_RELATIONSHIP));
+      throw new Error(err);
+    })
+    .finally(() => dispatch(hideLoading("modal")));
 };
 
 export const fetchPartyRelationships = (params) => (dispatch) => {
@@ -152,7 +158,10 @@ export const removePartyRelationship = (mine_party_appt_guid) => (dispatch) => {
       dispatch(success(reducerTypes.REMOVE_PARTY_RELATIONSHIP));
       return response;
     })
-    .catch(() => dispatch(error(reducerTypes.REMOVE_PARTY_RELATIONSHIP)))
+    .catch((err) => {
+      dispatch(error(reducerTypes.REMOVE_PARTY_RELATIONSHIP));
+      throw new Error(err);
+    })
     .finally(() => dispatch(hideLoading()));
 };
 
@@ -169,7 +178,10 @@ export const deleteParty = (party_guid) => (dispatch) => {
       dispatch(success(reducerTypes.DELETE_PARTY));
       return response;
     })
-    .catch(() => dispatch(error(reducerTypes.DELETE_PARTY)))
+    .catch((err) => {
+      dispatch(error(reducerTypes.DELETE_PARTY));
+      throw new Error(err);
+    })
     .finally(() => dispatch(hideLoading()));
 };
 
@@ -193,7 +205,10 @@ export const addDocumentToRelationship = ({ mineGuid, minePartyApptGuid }, paylo
       dispatch(success(reducerTypes.ADD_DOCUMENT_TO_RELATIONSHIP));
       return response;
     })
-    .catch(() => dispatch(error(reducerTypes.ADD_DOCUMENT_TO_RELATIONSHIP)))
+    .catch((err) => {
+      dispatch(error(reducerTypes.ADD_DOCUMENT_TO_RELATIONSHIP));
+      throw new Error(err);
+    })
     .finally(() => dispatch(hideLoading("modal")));
 };
 
