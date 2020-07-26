@@ -58,7 +58,7 @@ const defaultProps = {
 };
 
 export class PartyProfile extends Component {
-  state = { isLoaded: false };
+  state = { isLoaded: false, deletingParty: false };
 
   componentDidMount() {
     const { id } = this.props.match.params;
@@ -101,14 +101,18 @@ export class PartyProfile extends Component {
 
   deleteParty = () => {
     const { id } = this.props.match.params;
-    this.props.deleteParty(id).then(() => {
-      this.props.history.push(
-        routes.CONTACT_HOME_PAGE.dynamicRoute({
-          page: String.DEFAULT_PAGE,
-          per_page: String.DEFAULT_PER_PAGE,
-        })
-      );
-    });
+    this.setState({ deletingParty: true });
+    this.props
+      .deleteParty(id)
+      .then(() => {
+        this.props.history.push(
+          routes.CONTACT_HOME_PAGE.dynamicRoute({
+            page: String.DEFAULT_PAGE,
+            per_page: String.DEFAULT_PER_PAGE,
+          })
+        );
+      })
+      .finally(() => this.setState({ deletingParty: false }));
   };
 
   render() {
@@ -179,8 +183,9 @@ export class PartyProfile extends Component {
                     onConfirm={this.deleteParty}
                     okText="Yes"
                     cancelText="No"
+                    disabled={this.state.deletingParty}
                   >
-                    <Button type="danger">
+                    <Button type="danger" disabled={this.state.deletingParty}>
                       <Icon className="btn-danger--icon" type="minus-circle" theme="outlined" />
                       Delete Party
                     </Button>
@@ -198,6 +203,7 @@ export class PartyProfile extends Component {
                         this.props.provinceOptions
                       )
                     }
+                    disabled={this.state.deletingParty}
                   >
                     <img alt="pencil" className="padding-small--right" src={EDIT} />
                     Update Party
