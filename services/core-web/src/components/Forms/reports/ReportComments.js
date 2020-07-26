@@ -38,7 +38,7 @@ export class ReportComments extends Component {
   }
 
   handleRemoveComment = (commentGuid) => {
-    this.props
+    return this.props
       .deleteMineReportComment(this.props.mineGuid, this.props.mineReportGuid, commentGuid)
       .then(() => this.fetchComments());
   };
