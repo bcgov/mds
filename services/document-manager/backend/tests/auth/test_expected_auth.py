@@ -1,15 +1,15 @@
 import pytest
-from app.utils.access_decorators import UPLOAD_DOCUMENT_ROLES
+from app.utils.access_decorators import DOCUMENT_UPLOAD_ROLES
 from app.docman.resources.document import DocumentResource, DocumentListResource
 from app.docman.resources.tusd_hooks import TusdHooks
 
 
 @pytest.mark.parametrize("resource,method,expected_roles",
                          [(DocumentListResource, "get", []),
-                          (DocumentListResource, "post", UPLOAD_DOCUMENT_ROLES),
-                          (DocumentResource, "patch", UPLOAD_DOCUMENT_ROLES),
-                          (DocumentResource, "head", UPLOAD_DOCUMENT_ROLES),
-                          (TusdHooks, "post", UPLOAD_DOCUMENT_ROLES)])
+                          (DocumentListResource, "post", DOCUMENT_UPLOAD_ROLES),
+                          (DocumentResource, "patch", DOCUMENT_UPLOAD_ROLES),
+                          (DocumentResource, "head", DOCUMENT_UPLOAD_ROLES),
+                          (TusdHooks, "post", DOCUMENT_UPLOAD_ROLES)])
 def test_endpoint_auth(resource, method, expected_roles):
     endpoint = getattr(resource, method, None)
     assert endpoint != None, '{0} does not have a {1} method.'.format(resource, method.upper())
