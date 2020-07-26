@@ -25,7 +25,7 @@ export const TransferBondForm = (props) => (
           <Field
             id="permit_guid"
             name="permit_guid"
-            label="Select a Permit *"
+            label="Permit *"
             component={RenderSelect}
             data={props.permits.map((p) => {
               return { value: p.permit_guid, label: p.permit_no };

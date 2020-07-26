@@ -9,6 +9,7 @@ import {
   maxLength,
   dateNotInFuture,
   currency,
+  date,
   dateNotBeforeOther,
   dateNotAfterOther,
 } from "@common/utils/Validate";
@@ -183,6 +184,7 @@ export class BondForm extends Component {
                 component={RenderDate}
                 validate={[
                   required,
+                  date,
                   dateNotInFuture,
                   dateNotAfterOther(this.props.bond.closed_date),
                 ]}
@@ -226,6 +228,7 @@ export class BondForm extends Component {
                   component={RenderDate}
                   validate={[
                     required,
+                    date,
                     dateNotInFuture,
                     dateNotBeforeOther(this.props.bond.issue_date),
                   ]}
