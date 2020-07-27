@@ -54,7 +54,7 @@ describe("`createVariance` action creator", () => {
     return createVariance(
       { mineGuid },
       mockPayload
-    )(dispatch).then(() => {
+    )(dispatch).catch(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
@@ -143,7 +143,7 @@ describe("`updateVariance` action creator", () => {
     return updateVariance(
       { mineGuid, varianceGuid, codeLabel },
       mockPayload
-    )(dispatch).then(() => {
+    )(dispatch).catch(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
@@ -177,7 +177,7 @@ describe("`addDocumentToVariance` action creator", () => {
     return addDocumentToVariance(
       { mineGuid, varianceGuid },
       mockPayload
-    )(dispatch).then(() => {
+    )(dispatch).catch(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
@@ -209,7 +209,7 @@ describe("`removeDocumentFromVariance` action creator", () => {
     return removeDocumentFromVariance(
       mineGuid,
       varianceGuid
-    )(dispatch).then(() => {
+    )(dispatch).catch(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
@@ -269,7 +269,7 @@ describe("`deleteVariance` action creator", () => {
     return deleteVariance(
       mineGuid,
       varianceGuid
-    )(dispatch).then(() => {
+    )(dispatch).catch(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);

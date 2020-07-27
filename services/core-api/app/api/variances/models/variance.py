@@ -39,7 +39,7 @@ class Variance(AuditMixin, Base):
     note = db.Column(db.String, nullable=False, server_default=FetchedValue())
     parties_notified_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
     issue_date = db.Column(db.DateTime)
-    received_date = db.Column(db.DateTime, nullable=False)
+    received_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     expiry_date = db.Column(db.DateTime)
     deleted_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
 

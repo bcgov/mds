@@ -31,7 +31,10 @@ export const createMineRecord = (payload) => (dispatch) => {
       dispatch(success(reducerTypes.CREATE_MINE_RECORD));
       return response;
     })
-    .catch(() => dispatch(error(reducerTypes.CREATE_MINE_RECORD)))
+    .catch((err) => {
+      dispatch(error(reducerTypes.CREATE_MINE_RECORD));
+      throw new Error(err);
+    })
     .finally(() => dispatch(hideLoading("modal")));
 };
 
@@ -48,7 +51,10 @@ export const updateMineRecord = (id, payload, mineName) => (dispatch) => {
       dispatch(success(reducerTypes.UPDATE_MINE_RECORD));
       return response;
     })
-    .catch(() => dispatch(error(reducerTypes.UPDATE_MINE_RECORD)))
+    .catch((err) => {
+      dispatch(error(reducerTypes.UPDATE_MINE_RECORD));
+      throw new Error(err);
+    })
     .finally(() => dispatch(hideLoading("modal")));
 };
 
@@ -78,7 +84,10 @@ export const removeMineType = (mineGuid, mineTypeGuid, tenure) => (dispatch) => 
       });
       dispatch(success(reducerTypes.REMOVE_MINE_TYPE));
     })
-    .catch(() => dispatch(error(reducerTypes.REMOVE_MINE_TYPE)))
+    .catch((err) => {
+      dispatch(error(reducerTypes.REMOVE_MINE_TYPE));
+      throw new Error(err);
+    })
     .finally(() => dispatch(hideLoading("modal")));
 };
 
@@ -95,7 +104,10 @@ export const createTailingsStorageFacility = (mine_guid, payload) => (dispatch) 
       dispatch(success(reducerTypes.CREATE_TSF));
       return response;
     })
-    .catch(() => dispatch(error(reducerTypes.CREATE_TSF)))
+    .catch((err) => {
+      dispatch(error(reducerTypes.CREATE_TSF));
+      throw new Error(err);
+    })
     .finally(() => dispatch(hideLoading("modal")));
 };
 
@@ -216,7 +228,10 @@ export const setMineVerifiedStatus = (mine_guid, payload) => (dispatch) => {
       dispatch(success(reducerTypes.SET_MINE_VERIFIED_STATUS));
       return response;
     })
-    .catch(() => dispatch(error(reducerTypes.SET_MINE_VERIFIED_STATUS)));
+    .catch((err) => {
+      dispatch(error(reducerTypes.SET_MINE_VERIFIED_STATUS));
+      throw new Error(err);
+    });
 };
 
 // mine subscription
@@ -291,7 +306,10 @@ export const createMineComment = (mineGuid, payload) => (dispatch) => {
       dispatch(success(reducerTypes.CREATE_MINE_COMMENTS));
       return response;
     })
-    .catch(() => dispatch(error(reducerTypes.CREATE_MINE_COMMENTS)));
+    .catch((err) => {
+      dispatch(error(reducerTypes.CREATE_MINE_COMMENTS));
+      throw new Error(err);
+    });
 };
 
 export const deleteMineComment = (mineGuid, commentGuid) => (dispatch) => {
@@ -309,5 +327,8 @@ export const deleteMineComment = (mineGuid, commentGuid) => (dispatch) => {
       dispatch(success(reducerTypes.DELETE_MINE_COMMENT));
       return response;
     })
-    .catch(() => dispatch(error(reducerTypes.DELETE_MINE_COMMENT)));
+    .catch((err) => {
+      dispatch(error(reducerTypes.DELETE_MINE_COMMENT));
+      throw new Error(err);
+    });
 };

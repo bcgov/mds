@@ -77,7 +77,10 @@ export const createNoticeOfWorkApplication = (payload) => (dispatch) => {
       });
       return response;
     })
-    .catch(() => dispatch(error(reducerTypes.CREATE_NOTICE_OF_WORK_APPLICATION)))
+    .catch((err) => {
+      dispatch(error(reducerTypes.CREATE_NOTICE_OF_WORK_APPLICATION));
+      throw new Error(err);
+    })
     .finally(() => dispatch(hideLoading()));
 };
 
@@ -178,7 +181,10 @@ export const createNoticeOfWorkApplicationProgress = (applicationGuid, payload) 
       dispatch(success(reducerTypes.CREATE_NOTICE_OF_WORK_APPLICATION_PROGRESS));
       return response;
     })
-    .catch(() => dispatch(error(reducerTypes.CREATE_NOTICE_OF_WORK_APPLICATION_PROGRESS)))
+    .catch((err) => {
+      dispatch(error(reducerTypes.CREATE_NOTICE_OF_WORK_APPLICATION_PROGRESS));
+      throw new Error(err);
+    })
     .finally(() => dispatch(hideLoading()));
 };
 
@@ -216,7 +222,10 @@ export const createNoticeOfWorkApplicationReview = (applicationGuid, payload) =>
       dispatch(success(reducerTypes.CREATE_NOTICE_OF_WORK_APPLICATION_REVIEW));
       return response;
     })
-    .catch(() => dispatch(error(reducerTypes.CREATE_NOTICE_OF_WORK_APPLICATION_REVIEW)))
+    .catch((err) => {
+      dispatch(error(reducerTypes.CREATE_NOTICE_OF_WORK_APPLICATION_REVIEW));
+      throw new Error(err);
+    })
     .finally(() => dispatch(hideLoading()));
 };
 

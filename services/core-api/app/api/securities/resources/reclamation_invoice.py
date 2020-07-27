@@ -65,7 +65,6 @@ class ReclamationInvoiceResource(Resource, UserMixin):
     @requires_role_view_all
     @api.marshal_with(RECLAMATION_INVOICE, code=200)
     def get(self, reclamation_invoice_guid):
-
         reclamation_invoice = ReclamationInvoice.find_by_reclamation_invoice_guid(
             reclamation_invoice_guid)
 
