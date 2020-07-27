@@ -200,7 +200,7 @@ export class AddPartyModal extends Component {
           </Col>
 
           <Col md={12} sm={24} xs={24} style={{ marginTop: "16px" }}>
-            <p>If you would like to create this contact add another, click the button below.</p>
+            <p>If you would like to create this contact and add another, click the button below.</p>
             <Button
               type="primary"
               className="full-mobile"

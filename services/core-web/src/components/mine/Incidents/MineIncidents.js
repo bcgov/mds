@@ -71,17 +71,19 @@ export class MineIncidents extends Component {
     });
   }
 
-  handleAddMineIncident = (values) =>
-    this.props
+  handleAddMineIncident = (values) => {
+    const { number_of_fatalities = 0, number_of_injuries = 0, ...other } = values;
+    return this.props
       .createMineIncident(this.props.mineGuid, {
-        number_of_fatalities: 0,
-        number_of_injuries: 0,
-        ...values,
+        number_of_fatalities,
+        number_of_injuries,
+        ...other,
       })
       .then(() => {
         this.props.closeModal();
         this.props.fetchMineIncidents(this.props.mineGuid);
       });
+  };
 
   handleEditMineIncident = (values) =>
     this.props
