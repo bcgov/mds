@@ -80,7 +80,7 @@ export const number = (value) =>
   value && Number.isNaN(Number(value)) ? "Input must be a number" : undefined;
 
 export const date = (value) =>
-  value && Date.parse(value) === NaN ? "Input must be a date" : undefined;
+  value && Number.isNaN(Date.parse(value)) ? "Input must be a date" : undefined;
 
 // Redux Forms 'Fields' component accepts an array of Field names, and applies the validation to both field inputs,
 // The raw input should be a number, the unit code comes from a dropdown and should be ignored
