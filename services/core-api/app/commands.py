@@ -63,8 +63,7 @@ def register_commands(app):
                 mine_manager = MinePartyAppointmentFactory(
                     mine=mine, mine_party_appt_type_code='MMG')
                 if len(mine.mine_permit) > 0:
-                    permitee = MinePartyAppointmentFactory(
-                        mine=mine, mine_party_appt_type_code='PMT', party__company=True)
+                    permitee = MinePartyAppointmentFactory(permittee=True, party__company=True)
                 NOWApplicationIdentityFactory(mine=mine)
             try:
                 db.session.commit()

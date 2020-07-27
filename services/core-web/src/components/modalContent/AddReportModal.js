@@ -12,13 +12,11 @@ const propTypes = {
   onSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   changeModalTitle: PropTypes.func.isRequired,
-  disableAddReport: PropTypes.bool,
   initialValues: PropTypes.objectOf(PropTypes.any),
 };
 
 const defaultProps = {
   initialValues: {},
-  disableAddReport: false,
 };
 
 export const AddReportModal = (props) => {
@@ -57,7 +55,6 @@ export const AddReportModal = (props) => {
         selectedForm={selectedForm}
         formContent={[
           <AddReportForm
-            disableAddReport={props.disableAddReport}
             onSubmit={props.onSubmit}
             closeModal={props.closeModal}
             title={props.title}

@@ -104,7 +104,6 @@ export class Home extends Component {
               position: "fixed",
               top: 53,
               zIndex: 999,
-              width: "100%",
               height: 8,
             }}
           />

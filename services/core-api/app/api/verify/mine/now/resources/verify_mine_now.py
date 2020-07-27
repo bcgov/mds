@@ -17,10 +17,10 @@ VERIFY_MINE_NOW_MODEL = api.model(
         'a_Timestamp': fields.DateTime
     })
 
+
 class VerifyMineNOWResource(Resource):
     @api.doc(
-        description=
-        'Verifies by mine which NoWs are valid.',
+        description='Verifies by mine which NoWs are valid.',
         params={
             'a_MineNumber': f'The mine number.',
         })
@@ -39,15 +39,16 @@ class VerifyMineNOWResource(Resource):
             if mine.mine_status or mine.mine_status[
                     0].mine_status_xref.mine_operation_status_code != "OP":
 
-                permits = Permit.find_by_mine_guid(mine.mine_guid)
+                permits = mine.mine_permit
                 for permit in permits:
                     for permit_amendment in permit.permit_amendments:
                         if permit_amendment.now_identity:
                             now_info = now_info + str(
-                                permit_amendment.now_identity.now_number
-                            ) + " - " + str(permit_amendment.authorization_end_date) + '\r'
+                                permit_amendment.now_identity.now_number) + " - " + str(
+                                    permit_amendment.authorization_end_date) + '\r'
                         else:
-                            now_info = now_info + " - " + str(permit_amendment.authorization_end_date) + '\r'
+                            now_info = now_info + " - " + str(
+                                permit_amendment.authorization_end_date) + '\r'
                         break
 
             if now_info != "":

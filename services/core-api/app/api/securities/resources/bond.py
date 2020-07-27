@@ -28,7 +28,7 @@ class BondListResource(Resource, UserMixin):
         if mine is None:
             return []
 
-        permits = Permit.find_by_mine_guid(mine.mine_guid)
+        permits = mine.mine_permit
 
         if not permits:
             return []
@@ -59,7 +59,7 @@ class BondListResource(Resource, UserMixin):
         bond.permit = permit
 
         for doc in bond.documents:
-            doc.mine_guid = permit.mine_guid
+            doc.mine_guid = permit._all_mines[0].mine_guid
 
         bond.save()
 
@@ -99,7 +99,7 @@ class BondResource(Resource, UserMixin):
             raise BadRequest(e)
 
         for doc in bond.documents:
-            doc.mine_guid = bond.permit.mine_guid
+            doc.mine_guid = bond.permit._all_mines[0].mine_guid
         try:
             bond.save()
         except:
@@ -130,16 +130,15 @@ class BondTransferResource(Resource, UserMixin):
             raise BadRequest('No permit was found with the permit_guid provided.')
         if permit.permit_guid == bond.permit.permit_guid:
             raise BadRequest('This bond is already associated with this permit.')
-        if bond.permit.mine_guid != permit.mine_guid:
+        if bond.permit.mine_guid not in [m.mine_guid for m in permit._all_mines]:
             raise BadRequest('You can only transfer to a permit on the same mine.')
 
-        # Get the note to apply to the bond and the transferred bond
+        # Get the note to apply to the bond's closed note and the transferred bond's note
         note = request.json.get('note', None)
-        if note:
-            bond.note = note
 
         # Release the bond
         bond.bond_status_code = "REL"
+        bond.closed_note = note
 
         # Create the new "transferred bond"
         new_bond_json = marshal(bond, BOND)

@@ -7,13 +7,12 @@ import { Tabs, Icon, Table, Button, Popconfirm } from "antd";
 import { uniq, isEmpty } from "lodash";
 import {
   fetchPartyById,
-  fetchPartyRelationships,
   updateParty,
   deleteParty,
 } from "@common/actionCreators/partiesActionCreator";
 import { fetchMineBasicInfoList } from "@common/actionCreators/mineActionCreator";
 import { openModal, closeModal } from "@common/actions/modalActions";
-import { getParties, getPartyRelationships } from "@common/selectors/partiesSelectors";
+import { getParties } from "@common/selectors/partiesSelectors";
 import { getMineBasicInfoListHash } from "@common/selectors/mineSelectors";
 import {
   getDropdownProvinceOptions,
@@ -40,7 +39,6 @@ const { TabPane } = Tabs;
 
 const propTypes = {
   fetchPartyById: PropTypes.func.isRequired,
-  fetchPartyRelationships: PropTypes.func.isRequired,
   fetchMineBasicInfoList: PropTypes.func.isRequired,
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
   updateParty: PropTypes.func.isRequired,
@@ -48,7 +46,6 @@ const propTypes = {
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   parties: PropTypes.arrayOf(CustomPropTypes.party).isRequired,
-  partyRelationships: PropTypes.arrayOf(CustomPropTypes.partyRelationship),
   partyRelationshipTypeHash: PropTypes.objectOf(PropTypes.strings),
   mineBasicInfoListHash: PropTypes.objectOf(PropTypes.strings),
   match: CustomPropTypes.match.isRequired,
@@ -56,19 +53,21 @@ const propTypes = {
 };
 
 const defaultProps = {
-  partyRelationships: [],
   partyRelationshipTypeHash: {},
   mineBasicInfoListHash: {},
 };
 
 export class PartyProfile extends Component {
-  state = { isLoaded: false };
+  state = { isLoaded: false, deletingParty: false };
 
   componentDidMount() {
     const { id } = this.props.match.params;
-    this.props.fetchPartyById(id);
-    this.props.fetchPartyRelationships({ party_guid: id, relationships: "party" }).then(() => {
-      const mine_guids = uniq(this.props.partyRelationships.map(({ mine_guid }) => mine_guid));
+    this.props.fetchPartyById(id).then(() => {
+      const mine_guids = uniq(
+        this.props.parties[id].mine_party_appt
+          .filter((x) => x.mine_guid !== "None")
+          .map(({ mine_guid }) => mine_guid)
+      );
       this.props.fetchMineBasicInfoList(mine_guids).then(() => {
         this.setState({ isLoaded: true });
       });
@@ -94,7 +93,7 @@ export class PartyProfile extends Component {
 
   editParty = (values) => {
     const { id } = this.props.match.params;
-    this.props.updateParty(values, id).then(() => {
+    return this.props.updateParty(values, id).then(() => {
       this.props.fetchPartyById(id);
       this.props.closeModal();
     });
@@ -102,14 +101,18 @@ export class PartyProfile extends Component {
 
   deleteParty = () => {
     const { id } = this.props.match.params;
-    this.props.deleteParty(id).then(() => {
-      this.props.history.push(
-        routes.CONTACT_HOME_PAGE.dynamicRoute({
-          page: String.DEFAULT_PAGE,
-          per_page: String.DEFAULT_PER_PAGE,
-        })
-      );
-    });
+    this.setState({ deletingParty: true });
+    this.props
+      .deleteParty(id)
+      .then(() => {
+        this.props.history.push(
+          routes.CONTACT_HOME_PAGE.dynamicRoute({
+            page: String.DEFAULT_PAGE,
+            per_page: String.DEFAULT_PER_PAGE,
+          })
+        );
+      })
+      .finally(() => this.setState({ deletingParty: false }));
   };
 
   render() {
@@ -117,13 +120,18 @@ export class PartyProfile extends Component {
     const party = this.props.parties[id];
     const columns = [
       {
-        title: "Mine Name",
+        title: "Name",
         dataIndex: "mineName",
-        render: (text, record) => (
-          <div title="Mine Name">
-            <Link to={routes.MINE_CONTACTS.dynamicRoute(record.mineGuid)}>{text}</Link>
-          </div>
-        ),
+        render: (text, record) => {
+          if (record.relationship.mine_party_appt_type_code === "PMT") {
+            return <div title="Permit No">{record.relationship.permit_no}</div>;
+          }
+          return (
+            <div title="Mine Name">
+              <Link to={routes.MINE_CONTACTS.dynamicRoute(record.mineGuid)}>{text}</Link>
+            </div>
+          );
+        },
       },
       {
         title: "Role",
@@ -149,6 +157,7 @@ export class PartyProfile extends Component {
         role: this.props.partyRelationshipTypeHash[relationship.mine_party_appt_type_code],
         endDate: formatDate(relationship.end_date) || "Present",
         startDate: formatDate(relationship.start_date) || "Unknown",
+        relationship,
       }));
 
     if (this.state.isLoaded && party) {
@@ -174,8 +183,9 @@ export class PartyProfile extends Component {
                     onConfirm={this.deleteParty}
                     okText="Yes"
                     cancelText="No"
+                    disabled={this.state.deletingParty}
                   >
-                    <Button type="danger">
+                    <Button type="danger" disabled={this.state.deletingParty}>
                       <Icon className="btn-danger--icon" type="minus-circle" theme="outlined" />
                       Delete Party
                     </Button>
@@ -193,6 +203,7 @@ export class PartyProfile extends Component {
                         this.props.provinceOptions
                       )
                     }
+                    disabled={this.state.deletingParty}
                   >
                     <img alt="pencil" className="padding-small--right" src={EDIT} />
                     Update Party
@@ -249,7 +260,7 @@ export class PartyProfile extends Component {
                     align="left"
                     pagination={false}
                     columns={columns}
-                    dataSource={transformRowData(this.props.partyRelationships)}
+                    dataSource={transformRowData(this.props.parties[id].mine_party_appt)}
                     locale={{ emptyText: <NullScreen type="no-results" /> }}
                   />
                 </div>
@@ -266,7 +277,6 @@ export class PartyProfile extends Component {
 const mapStateToProps = (state) => ({
   parties: getParties(state),
   partyRelationshipTypeHash: getPartyRelationshipTypeHash(state),
-  partyRelationships: getPartyRelationships(state),
   mineBasicInfoListHash: getMineBasicInfoListHash(state),
   provinceOptions: getDropdownProvinceOptions(state),
 });
@@ -275,7 +285,6 @@ const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
       fetchPartyById,
-      fetchPartyRelationships,
       fetchMineBasicInfoList,
       deleteParty,
       updateParty,

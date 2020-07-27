@@ -75,6 +75,7 @@ const actionVerb = (newIncident) => {
 
 const StepForms = (
   props,
+  state,
   next,
   prev,
   handleIncidentSubmit,
@@ -97,7 +98,7 @@ const StepForms = (
         type="tertiary"
         className="full-mobile"
         onClick={() => next()}
-        disabled={invalidReportingPayload(props.addIncidentFormValues)}
+        disabled={state.submitting || invalidReportingPayload(props.addIncidentFormValues)}
       >
         Next
       </Button>
@@ -124,7 +125,13 @@ const StepForms = (
     ),
     buttons: (
       <span>
-        <Button id="step-back" type="tertiary" className="full-mobile" onClick={() => prev()}>
+        <Button
+          id="step-back"
+          type="tertiary"
+          className="full-mobile"
+          onClick={() => prev()}
+          disabled={state.submitting}
+        >
           Back
         </Button>
         {props.addIncidentFormValues.determination_type_code !==
@@ -134,7 +141,7 @@ const StepForms = (
             type="tertiary"
             className="full-mobile"
             onClick={() => next()}
-            disabled={invalidDetailPayload(props.addIncidentFormValues)}
+            disabled={state.submitting || invalidDetailPayload(props.addIncidentFormValues)}
           >
             Next
           </Button>
@@ -144,6 +151,7 @@ const StepForms = (
           className="full-mobile"
           onClick={(event) => handleIncidentSubmit(event, false)}
           disabled={invalidDetailPayload(props.addIncidentFormValues)}
+          loading={state.submitting}
         >
           {actionVerb(props.newIncident)}
           {props.addIncidentFormValues.determination_type_code !==
@@ -175,7 +183,13 @@ const StepForms = (
       />
     ),
     buttons: [
-      <Button id="step-back" type="tertiary" className="full-mobile" onClick={() => prev()}>
+      <Button
+        id="step-back"
+        type="tertiary"
+        className="full-mobile"
+        onClick={() => prev()}
+        disabled={state.submitting}
+      >
         Back
       </Button>,
       <Button
@@ -183,6 +197,7 @@ const StepForms = (
         className="full-mobile"
         onClick={(event) => handleIncidentSubmit(event, false)}
         disabled={invalidFollowUpPayload(props.addIncidentFormValues)}
+        loading={state.submitting}
       >
         {actionVerb(props.newIncident)}
         Incident
@@ -197,6 +212,7 @@ export class AddIncidentModal extends Component {
     uploadedFiles: this.props.initialValues.documents
       ? [...this.props.initialValues.documents]
       : [],
+    submitting: false,
   };
 
   formatTimestamp = (dateString, momentInstance) =>
@@ -215,12 +231,14 @@ export class AddIncidentModal extends Component {
   });
 
   handleIncidentSubmit = () => {
-    this.props.onSubmit({
-      ...this.parseFormDataIntoPayload(this.props.addIncidentFormValues),
-      updated_documents: this.state.uploadedFiles,
-    });
-    // TODO: Catch error
-    this.close();
+    this.setState({ submitting: true });
+    this.props
+      .onSubmit({
+        ...this.parseFormDataIntoPayload(this.props.addIncidentFormValues),
+        updated_documents: this.state.uploadedFiles,
+      })
+      .then(() => this.close())
+      .finally(() => this.setState({ submitting: false }));
   };
 
   close = () => {
@@ -253,6 +271,7 @@ export class AddIncidentModal extends Component {
   render = () => {
     const Forms = StepForms(
       this.props,
+      this.state,
       this.next,
       this.prev,
       this.handleIncidentSubmit,
@@ -281,8 +300,9 @@ export class AddIncidentModal extends Component {
                 okText="Yes"
                 cancelText="No"
                 onConfirm={this.close}
+                disabled={this.state.submitting}
               >
-                <Button type="secondary" className="full-mobile">
+                <Button type="secondary" className="full-mobile" disabled={this.state.submitting}>
                   Cancel
                 </Button>
               </Popconfirm>

@@ -9,6 +9,7 @@ import {
   removePermitAmendmentDocument,
   deletePermitAmendment,
   deletePermit,
+  fetchDraftPermitByNOW,
 } from "@common/actionCreators/permitActionCreator";
 import * as genericActions from "@common/actions/genericActions";
 import { ENVIRONMENT } from "@common/constants/environment";
@@ -50,7 +51,7 @@ describe("`createPermit` action creator", () => {
 
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onPost(url).reply(418, MOCK.ERROR);
-    return createPermit(mine_guid)(dispatch).then(() => {
+    return createPermit(mine_guid)(dispatch).catch(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
@@ -77,6 +78,36 @@ describe("`fetchPermits` action creator", () => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+});
+
+describe("`fetchDraftPermitByNOW` action creator", () => {
+  const mine_guid = "12345-6789";
+  const nowApplicationGuid = "23461346819745";
+  const url = ENVIRONMENT.apiUrl + API.DRAFT_PERMITS(mine_guid, nowApplicationGuid);
+  it("Request successful, dispatches `success` with correct response", () => {
+    const mockResponse = { data: { success: true } };
+    mockAxios.onGet(url).reply(200, mockResponse);
+    return fetchDraftPermitByNOW(
+      mine_guid,
+      nowApplicationGuid
+    )(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(successSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(3);
+    });
+  });
+
+  it("Request failure, dispatches `error` with correct response", () => {
+    mockAxios.onGet(url, MOCK.createMockHeader()).reply(418, MOCK.ERROR);
+    return fetchDraftPermitByNOW(
+      mine_guid,
+      nowApplicationGuid
+    )(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(errorSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(2);
     });
   });
 });
@@ -110,7 +141,7 @@ describe("`updatePermit` action creator", () => {
       mine_guid,
       permit_guid,
       mockPayload
-    )(dispatch).then(() => {
+    )(dispatch).catch(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
@@ -145,7 +176,7 @@ describe("`createPermitAmendment` action creator", () => {
       mine_guid,
       permit_guid,
       mockPayload
-    )(dispatch).then(() => {
+    )(dispatch).catch(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
@@ -188,7 +219,7 @@ describe("`updatePermitAmendment` action creator", () => {
       permitGuid,
       permitAmdendmentGuid,
       mockPayload
-    )(dispatch).then(() => {
+    )(dispatch).catch(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
@@ -230,7 +261,7 @@ describe("`removePermitAmendmentDocument` action creator", () => {
       permitGuid,
       permitAmdendmentGuid,
       documentGuid
-    )(dispatch).then(() => {
+    )(dispatch).catch(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
@@ -261,7 +292,7 @@ describe("`deletePermit` action creator", () => {
     return deletePermit(
       mineGuid,
       permitGuid
-    )(dispatch).then(() => {
+    )(dispatch).catch(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
@@ -299,7 +330,7 @@ describe("`deletePermitAmendment` action creator", () => {
       mineGuid,
       permitGuid,
       permitAmdendmentGuid
-    )(dispatch).then(() => {
+    )(dispatch).catch(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);

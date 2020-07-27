@@ -29,26 +29,19 @@ const defaultProps = {
 };
 
 export class MajorMinePermitApplicationCreate extends Component {
-  state = {
-    isSubmitting: false,
-  };
-
   componentDidMount() {
     this.props.fetchPermits(this.props.mineGuid);
   }
 
   handleAddPermitApplication = (values) => {
     const newValues = { mine_guid: this.props.mineGuid, ...values };
-    this.setState({ isSubmitting: true });
-    this.props.createNoticeOfWorkApplication(newValues).then((response) => {
-      if (response) {
+    return this.props
+      .createNoticeOfWorkApplication(newValues)
+      .then((response) =>
         this.props.history.push(
           routes.NOTICE_OF_WORK_APPLICATION.dynamicRoute(response.data.now_application_guid)
-        );
-      } else {
-        this.setState({ isSubmitting: false });
-      }
-    });
+        )
+      );
   };
 
   render() {
@@ -64,7 +57,6 @@ export class MajorMinePermitApplicationCreate extends Component {
               initialValues={{ permit_guid: this.props.initialPermitGuid }}
               onSubmit={this.handleAddPermitApplication}
               minePermits={createDropDownList(this.props.minePermits, "permit_no", "permit_guid")}
-              isSubmitting={this.state.isSubmitting}
             />
           </Col>
         </Row>
