@@ -1,4 +1,4 @@
-FROM tusproject/tusd:latest
+FROM tusproject/tusd:v1.3.0
 
 COPY init.sh .
 
