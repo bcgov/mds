@@ -1,7 +1,5 @@
 import React from "react";
 import { Table, Menu, Dropdown, Button, Icon, Tooltip, Popconfirm } from "antd";
-import moment from "moment";
-import { orderBy } from "lodash";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { formatDate, renderLabel } from "@common/utils/helpers";
@@ -57,6 +55,7 @@ const renderDeleteButtonForPermitAmendments = (record) => {
     return;
   }
 
+  // eslint-disable-next-line consistent-return
   return (
     <AuthorizationWrapper permission={Permission.ADMIN}>
       <Popconfirm
@@ -150,7 +149,7 @@ const columns = [
                   className="padding-small add-permit-dropdown-button-icon"
                   theme="outlined"
                 />
-                {text.hasAmalgamated ? "Add permit amendment" : "Amalgamate permit"}
+                {text.hasAmalgamated ? "Add Permit Amendment" : "Amalgamate Permit"}
               </div>
             </button>
           </Menu.Item>
@@ -167,7 +166,7 @@ const columns = [
                     className="padding-small add-permit-dropdown-button-icon"
                     theme="outlined"
                   />
-                  Add permit amendment
+                  Add Permit Amendment
                 </div>
               </button>
             </Menu.Item>
@@ -186,9 +185,9 @@ const columns = [
                 src={EDIT_OUTLINE_VIOLET}
                 style={{ paddingRight: "15px" }}
               />
-              Edit permit status
+              Edit Permit Status
             </button>
-          </Menu.Item>{" "}
+          </Menu.Item>
           <div className="custom-menu-item" key="3">
             <button
               type="button"

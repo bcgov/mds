@@ -97,12 +97,7 @@ export const AddQuickPartyForm = (props) => (
         </Col>
       </Row>
       <div className="right center-mobile">
-        <Button
-          className="full-mobile"
-          type="primary"
-          htmlType="submit"
-          disabled={props.submitting}
-        >
+        <Button className="full-mobile" type="primary" htmlType="submit" loading={props.submitting}>
           {props.isPerson ? "Create Person" : "Create Company"}
         </Button>
       </div>

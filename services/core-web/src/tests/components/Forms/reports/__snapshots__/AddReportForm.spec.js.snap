@@ -82,6 +82,7 @@ exports[`AddReportForm renders properly 1`] = `
           validate={
             Array [
               [Function],
+              [Function],
             ]
           }
         />
@@ -97,6 +98,7 @@ exports[`AddReportForm renders properly 1`] = `
           placeholder="Select received date"
           validate={
             Array [
+              [Function],
               [Function],
             ]
           }
@@ -131,6 +133,7 @@ exports[`AddReportForm renders properly 1`] = `
       <Button
         block={false}
         className="full-mobile"
+        disabled={false}
         ghost={false}
         htmlType="button"
         loading={false}
@@ -142,7 +145,6 @@ exports[`AddReportForm renders properly 1`] = `
     <Button
       block={false}
       className="full-mobile"
-      disabled={false}
       ghost={false}
       htmlType="submit"
       loading={false}

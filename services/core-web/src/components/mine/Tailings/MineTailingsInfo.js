@@ -43,14 +43,14 @@ export class MineTailingsInfo extends Component {
   }
 
   handleEditReport = (report) => {
-    this.props
+    return this.props
       .updateMineReport(report.mine_guid, report.mine_report_guid, report)
       .then(() => this.props.closeModal())
       .then(() => this.props.fetchMineReports(report.mine_guid));
   };
 
   handleRemoveReport = (report) => {
-    this.props
+    return this.props
       .deleteMineReport(report.mine_guid, report.mine_report_guid)
       .then(() => this.props.fetchMineReports(report.mine_guid));
   };

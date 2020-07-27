@@ -73,7 +73,7 @@ class MineReportListResource(Resource, UserMixin):
             permit._context_mine = mine
             if permit.mine.mine_guid != mine.mine_guid:
                 raise BadRequest('The permit must be associated with the selected mine.')
-                
+
         mine_report = MineReport.create(
             mine_report_definition_id=mine_report_definition.mine_report_definition_id,
             mine_guid=mine.mine_guid,
