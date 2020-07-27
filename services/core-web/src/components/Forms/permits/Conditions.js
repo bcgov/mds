@@ -31,15 +31,7 @@ export class Conditions extends Component {
                     <Panel header="A. General Conditions" key="general" id="general">
                         <Row gutter={32}>
                             <Col xs={24} md={12}>
-                                <Field
-                                    id="conditions"
-                                    name="conditions"
-                                    label="Conditions"
-                                    required
-                                    component={renderConfig.AUTO_SIZE_FIELD}
-                                    validate={[required]}
-                                    disabled={props.isViewMode}
-                                />
+                                wat
                             </Col>
                         </Row>
                     </Panel>
