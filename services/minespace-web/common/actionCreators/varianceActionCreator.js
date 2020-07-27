@@ -15,7 +15,7 @@ export const createVariance = ({ mineGuid }, payload) => (dispatch) => {
       ? "Successfully applied for a new variance"
       : "Successfully added an approved variance";
   dispatch(request(reducerTypes.CREATE_MINE_VARIANCE));
-  dispatch(showLoading());
+  dispatch(showLoading("modal"));
   return CustomAxios()
     .post(ENVIRONMENT.apiUrl + API.MINE_VARIANCES(mineGuid), payload, createRequestHeader())
     .then((response) => {
@@ -23,13 +23,16 @@ export const createVariance = ({ mineGuid }, payload) => (dispatch) => {
       dispatch(success(reducerTypes.CREATE_MINE_VARIANCE));
       return response;
     })
-    .catch(() => dispatch(error(reducerTypes.CREATE_MINE_VARIANCE)))
-    .finally(() => dispatch(hideLoading()));
+    .catch((err) => {
+      dispatch(error(reducerTypes.CREATE_MINE_VARIANCE));
+      throw new Error(err);
+    })
+    .finally(() => dispatch(hideLoading("modal")));
 };
 
 export const updateVariance = ({ mineGuid, varianceGuid, codeLabel }, payload) => (dispatch) => {
   dispatch(request(reducerTypes.UPDATE_MINE_VARIANCE));
-  dispatch(showLoading());
+  dispatch(showLoading("modal"));
   return CustomAxios()
     .put(ENVIRONMENT.apiUrl + API.VARIANCE(mineGuid, varianceGuid), payload, createRequestHeader())
     .then((response) => {
@@ -40,8 +43,11 @@ export const updateVariance = ({ mineGuid, varianceGuid, codeLabel }, payload) =
       dispatch(success(reducerTypes.UPDATE_MINE_VARIANCE));
       return response;
     })
-    .catch(() => dispatch(error(reducerTypes.UPDATE_MINE_VARIANCE)))
-    .finally(() => dispatch(hideLoading()));
+    .catch((err) => {
+      dispatch(error(reducerTypes.UPDATE_MINE_VARIANCE));
+      throw new Error(err);
+    })
+    .finally(() => dispatch(hideLoading("modal")));
 };
 
 export const fetchVariancesByMine = ({ mineGuid }) => (dispatch) => {
@@ -83,7 +89,10 @@ export const addDocumentToVariance = ({ mineGuid, varianceGuid }, payload) => (d
       dispatch(success(reducerTypes.ADD_DOCUMENT_TO_VARIANCE));
       return response;
     })
-    .catch(() => dispatch(error(reducerTypes.ADD_DOCUMENT_TO_VARIANCE)))
+    .catch((err) => {
+      dispatch(error(reducerTypes.ADD_DOCUMENT_TO_VARIANCE));
+      throw new Error(err);
+    })
     .finally(() => dispatch(hideLoading("modal")));
 };
 
@@ -101,7 +110,10 @@ export const removeDocumentFromVariance = (mineGuid, varianceGuid, mineDocumentG
       dispatch(success(reducerTypes.REMOVE_DOCUMENT_FROM_VARIANCE));
       return response;
     })
-    .catch(() => dispatch(error(reducerTypes.REMOVE_DOCUMENT_FROM_VARIANCE)))
+    .catch((err) => {
+      dispatch(error(reducerTypes.REMOVE_DOCUMENT_FROM_VARIANCE));
+      throw new Error(err);
+    })
     .finally(() => dispatch(hideLoading("modal")));
 };
 
@@ -131,6 +143,9 @@ export const deleteVariance = (mineGuid, varianceGuid) => (dispatch) => {
       dispatch(success(reducerTypes.DELETE_VARIANCE));
       return response;
     })
-    .catch(() => dispatch(error(reducerTypes.DELETE_VARIANCE)))
+    .catch((err) => {
+      dispatch(error(reducerTypes.DELETE_VARIANCE));
+      throw new Error(err);
+    })
     .finally(() => dispatch(hideLoading()));
 };

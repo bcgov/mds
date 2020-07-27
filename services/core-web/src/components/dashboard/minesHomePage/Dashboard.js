@@ -29,6 +29,7 @@ import {
   getDropdownCommodityOptions,
 } from "@common/selectors/staticContentSelectors";
 import * as Strings from "@common/constants/strings";
+import { PageTracker } from "@common/utils/trackers";
 import ResponsivePagination from "@/components/common/ResponsivePagination";
 import CustomPropTypes from "@/customPropTypes";
 import MineList from "@/components/dashboard/minesHomePage/MineList";
@@ -42,7 +43,6 @@ import MineMapLeaflet from "@/components/maps/MineMapLeaflet";
 import * as Permission from "@/constants/permissions";
 import * as ModalContent from "@/constants/modalContent";
 import AddButton from "@/components/common/AddButton";
-import { PageTracker } from "@common/utils/trackers";
 
 /**
  * @class Dashboard is the main landing page of the application, currently contains a List and Map View, ability to create a new mine, and search for a mine by name or lat/long.
@@ -253,7 +253,7 @@ export class Dashboard extends Component {
 
   handleCreateMineRecordSubmit = (value) => {
     const mineStatus = value.mine_status.join(",");
-    this.props.createMineRecord({ ...value, mine_status: mineStatus }).then((response) => {
+    return this.props.createMineRecord({ ...value, mine_status: mineStatus }).then((response) => {
       this.props.createMineTypes(response.data.mine_guid, value.mine_types).then(() => {
         this.props.closeModal();
         const params = this.props.location.search;

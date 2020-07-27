@@ -42,16 +42,16 @@ describe("`createMineIncident` action creator", () => {
     )(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);
-      expect(dispatch).toHaveBeenCalledTimes(2);
+      expect(dispatch).toHaveBeenCalledTimes(4);
     });
   });
 
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onPost(url).reply(418, MOCK.ERROR);
-    return createMineIncident(mineGuid)(dispatch).then(() => {
+    return createMineIncident(mineGuid)(dispatch).catch(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
-      expect(dispatch).toHaveBeenCalledTimes(2);
+      expect(dispatch).toHaveBeenCalledTimes(4);
     });
   });
 });
@@ -98,7 +98,7 @@ describe("`updateMineIncident` action creator", () => {
     )(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);
-      expect(dispatch).toHaveBeenCalledTimes(2);
+      expect(dispatch).toHaveBeenCalledTimes(4);
     });
   });
 
@@ -108,10 +108,10 @@ describe("`updateMineIncident` action creator", () => {
       mineGuid,
       mineIncidentGUID,
       mockPayload
-    )(dispatch).then(() => {
+    )(dispatch).catch(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
-      expect(dispatch).toHaveBeenCalledTimes(2);
+      expect(dispatch).toHaveBeenCalledTimes(4);
     });
   });
 });
@@ -163,7 +163,7 @@ describe("`deleteMineIncident` action creator", () => {
     return deleteMineIncident(
       mineGuid,
       mineIncidentGUID
-    )(dispatch).then(() => {
+    )(dispatch).catch(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);

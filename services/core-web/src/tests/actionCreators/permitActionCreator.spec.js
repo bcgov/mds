@@ -51,7 +51,7 @@ describe("`createPermit` action creator", () => {
 
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onPost(url).reply(418, MOCK.ERROR);
-    return createPermit(mine_guid)(dispatch).then(() => {
+    return createPermit(mine_guid)(dispatch).catch(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
@@ -141,7 +141,7 @@ describe("`updatePermit` action creator", () => {
       mine_guid,
       permit_guid,
       mockPayload
-    )(dispatch).then(() => {
+    )(dispatch).catch(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
@@ -176,7 +176,7 @@ describe("`createPermitAmendment` action creator", () => {
       mine_guid,
       permit_guid,
       mockPayload
-    )(dispatch).then(() => {
+    )(dispatch).catch(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
@@ -219,7 +219,7 @@ describe("`updatePermitAmendment` action creator", () => {
       permitGuid,
       permitAmdendmentGuid,
       mockPayload
-    )(dispatch).then(() => {
+    )(dispatch).catch(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
@@ -261,7 +261,7 @@ describe("`removePermitAmendmentDocument` action creator", () => {
       permitGuid,
       permitAmdendmentGuid,
       documentGuid
-    )(dispatch).then(() => {
+    )(dispatch).catch(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
@@ -292,7 +292,7 @@ describe("`deletePermit` action creator", () => {
     return deletePermit(
       mineGuid,
       permitGuid
-    )(dispatch).then(() => {
+    )(dispatch).catch(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
@@ -330,7 +330,7 @@ describe("`deletePermitAmendment` action creator", () => {
       mineGuid,
       permitGuid,
       permitAmdendmentGuid
-    )(dispatch).then(() => {
+    )(dispatch).catch(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);

@@ -280,8 +280,9 @@ export class AddPartyRelationshipForm extends Component {
             onConfirm={this.props.closeModal}
             okText="Yes"
             cancelText="No"
+            disabled={this.props.submitting}
           >
-            <Button className="full-mobile" type="secondary">
+            <Button className="full-mobile" type="secondary" disabled={this.props.submitting}>
               Cancel
             </Button>
           </Popconfirm>
@@ -289,7 +290,7 @@ export class AddPartyRelationshipForm extends Component {
             className="full-mobile"
             type="primary"
             htmlType="submit"
-            disabled={this.props.submitting}
+            loading={this.props.submitting}
           >
             {this.props.title}
           </Button>

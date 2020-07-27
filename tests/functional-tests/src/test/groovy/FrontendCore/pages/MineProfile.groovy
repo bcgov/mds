@@ -16,7 +16,7 @@ class MineProfilePage extends Page {
         closeToastMessage (wait:true) {$("span.ant-notification-notice-close-x")}
         activeTab (wait:true) {$("li",id:"active-menu-btn").text()}
         createTSFDropdown (wait:true) {$("button.ant-dropdown-trigger", text:"Add/Edit")}
-        createTSFDropdownButton (wait:true) {$("button", text:"+ Add TSF")}
+        createTSFDropdownButton (wait:true) {$("button", text:"Add TSF")}
 
 
         //TabPanel
