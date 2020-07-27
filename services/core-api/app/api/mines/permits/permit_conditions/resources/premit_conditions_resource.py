@@ -25,27 +25,75 @@ class PermitConditionsListResource(Resource, UserMixin):
         if not permit_amendment:
             raise BadRequest('No permit amendment found with that guid.')
 
+        request.json['permit_condition'][
+            'permit_amendment_id'] = permit_amendment.permit_amendment_id
+
         try:
             permit_condition = PermitConditions._schema().load(request.json['permit_condition'])
         except MarshmallowError as e:
             raise BadRequest(e)
 
+        permit_condition.save()
+
         return permit_condition, 201
+
+    @api.doc(description='Get all permit conditions for a specific amendment')
+    @requires_role_edit_permit
+    @api.marshal_with(PERMIT_CONDITION_MODEL, code=200)
+    def get(self, mine_guid, permit_guid, permit_amendment_guid):
+        permit_amendment = PermitAmendment.find_by_permit_amendment_guid(permit_amendment_guid)
+
+        if not permit_amendment:
+            raise BadRequest('No permit amendment found with that guid.')
+
+        conditions = PermitConditions.find_all_by_permit_amendment_id(
+            permit_amendment.permit_amendment_id)
+
+        return conditions
 
 
 class PermitConditionsResource(Resource, UserMixin):
-    @api.doc(description='Get a bond')
-    @requires_any_of([VIEW_ALL, MINESPACE_PROPONENT])
+    @api.doc(description='Get a permit condition')
+    @requires_role_edit_permit
     @api.marshal_with(PERMIT_CONDITION_MODEL, code=200)
-    def get(self, bond_guid):
+    def get(self, mine_guid, permit_guid, permit_amendment_guid, permit_condition_guid):
+        permit_condition = PermitConditions.find_by_permit_condition_guid(permit_condition_guid)
 
-        return
+        if not permit_condition:
+            raise BadRequest('No permit condition found with that guid.')
 
-    @api.doc(description='Update a bond')
+        return permit_condition
+
+    @api.doc(description='Update a permit condition')
     @requires_role_edit_permit
     @api.expect(PERMIT_CONDITION_MODEL)
     @api.marshal_with(PERMIT_CONDITION_MODEL, code=200)
-    def put(self, bond_guid):
-        #remove the amount from the request if it exists as it should not be editable.
+    def put(self, mine_guid, permit_guid, permit_amendment_guid, permit_condition_guid):
 
-        return
+        try:
+            condition = PermitConditions._schema().load(
+                request.json,
+                instance=PermitConditions.find_by_permit_condition_guid(permit_condition_guid))
+        except MarshmallowError as e:
+            raise BadRequest(e)
+
+        condition.save()
+
+        return condition
+
+    @api.doc(description='delete a permit condition')
+    @requires_role_edit_permit
+    @api.expect(PERMIT_CONDITION_MODEL)
+    @api.marshal_with(PERMIT_CONDITION_MODEL, code=204)
+    def delete(self, mine_guid, permit_guid, permit_amendment_guid, permit_condition_guid):
+
+        permit_condition = PermitConditions.find_by_permit_condition_guid(permit_condition_guid)
+
+        if not permit_condition:
+            raise BadRequest('No permit condition found with that guid.')
+
+        permit_condition.deleted_ind = True
+
+        permit_condition.save()
+
+        return ('', 204)
