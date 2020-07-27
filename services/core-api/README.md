@@ -84,20 +84,20 @@ under the `__init__.py` file.
 *Pre-requisite to running the transfer-files, verify-files, and reorganize-files commands: ensure that a Celery worker is running. You can use the command `ps aux` to check.
 
 **I want to transfer all documents that exist on the filesystem to the object store**
-    **1.** Get a list of untransferred files:
-        `flask untransferred-files`
-    **2.** Transfer those files to the object store:
-        `flask transfer-files`
+ 1. Get a list of untransferred files:<br/>
+    `flask untransferred-files`
+ 2. Transfer those files to the object store:<br/>
+    `flask transfer-files`<br/>
     You can view the output of the task in the celery logfile.
-    **3.** Check the result of the transfer in the logfile or in the result backend. Act accordingly depending on the status of the job.
-    **4.** Get a list of untransferred files:
-        `flask untransferred-files`
+ 3. Check the result of the transfer in the logfile or in the result backend. Act accordingly depending on the status of the job.
+ 4. Get a list of untransferred files:<br/>
+    `flask untransferred-files`<br/>
     If the previous transfer task was successful, this list should be empty. If it contains documents, you should see the reason why in the job results.
-    **5.** Double-check that the transfer task was successful and that all locally-stored files match their corresponding files on the object store:
-        `flask verify-files`
-    If you want, log into Cyberduck or another tool to view the files that were transferred to the object store.
-
-See [here](https://github.com/bcgov/mds/pull/1380) for a more detailed instructional workflow.
+ 5. Double-check that the transfer task was successful and that all locally-stored files match their corresponding files on the object store:<br/>
+    `flask verify-files`<br/>
+    If you want, log into Cyberduck or another tool to view the files that were transferred to the object store.<br/>
+    
+See [here](https://github.com/bcgov/mds/pull/1380/) for a more detailed instructional workflow.
 
 ## Testing
 
