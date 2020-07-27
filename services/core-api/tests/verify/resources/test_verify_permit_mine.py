@@ -1,4 +1,4 @@
-import json, decimal
+import json, decimal, pytest
 from flask_restplus import marshal, fields
 
 from tests.factories import create_mine_and_permit
