@@ -204,7 +204,7 @@ class AddIncidentDetailForm extends Component {
             </Form.Item>
 
             {this.props.doDetermination ===
-            Strings.INCIDENT_DETERMINATION_TYPES.notADangerousOccurance ? (
+              Strings.INCIDENT_DETERMINATION_TYPES.notADangerousOccurance && (
               <span>
                 <Form.Item>
                   <Field
@@ -216,7 +216,7 @@ class AddIncidentDetailForm extends Component {
                   />
                 </Form.Item>
               </span>
-            ) : null}
+            )}
           </Col>
         </Row>
       </Form>

@@ -130,7 +130,6 @@ class PartyListResource(Resource, UserMixin):
             data.get('party_name'),
             data.get('phone_no'),
             data.get('party_type_code'),
-                                                 # Nullable fields
             email=data.get('email'),
             first_name=data.get('first_name'),
             phone_ext=data.get('phone_ext'))

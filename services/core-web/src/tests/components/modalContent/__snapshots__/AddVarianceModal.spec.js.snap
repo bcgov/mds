@@ -18,7 +18,7 @@ exports[`AddVarianceModal renders properly 1`] = `
       ]
     }
     destroyOnUnmount={true}
-    enableReinitialize={false}
+    enableReinitialize={true}
     forceUnregisterOnUnmount={false}
     form="ADD_VARIANCE"
     getFormState={[Function]}
