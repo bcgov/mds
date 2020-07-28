@@ -2,11 +2,13 @@ import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { Form, Col, Row, Collapse } from "antd";
+import { Divider, Col, Row, Collapse } from "antd";
 import { openModal, closeModal } from "@common/actions/modalActions";
 import {
 } from "@common/selectors/staticContentSelectors";
 import CustomPropTypes from "@/customPropTypes";
+import Condition from "@/components/Forms/permits/Condition";
+import AddButton from "@/components/common/AddButton";
 
 const { Panel } = Collapse;
 
@@ -29,11 +31,10 @@ export class Conditions extends Component {
             <>
                 <Collapse defaultActiveKey={["general"]}>
                     <Panel header="A. General Conditions" key="general" id="general">
-                        <Row gutter={32}>
-                            <Col xs={24} md={12}>
-                                wat
-                            </Col>
-                        </Row>
+                        <Condition />
+                        <Divider />
+                        <AddButton>Add Sub-Section</AddButton>
+                        <AddButton>Restore Deleted Standard Conditions</AddButton>
                     </Panel>
                     <Panel header="B. Healthy and Safety Conditions" key="health-safety" id="health-safety">
                         <p>No conditions</p>
