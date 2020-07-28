@@ -1,5 +1,5 @@
 from app.extensions import api
-from flask_restplus import fields
+from flask_restplus import fields, marshal
 
 from app.api.compliance.response_models import COMPLIANCE_ARTICLE_MODEL
 
@@ -7,6 +7,11 @@ from app.api.compliance.response_models import COMPLIANCE_ARTICLE_MODEL
 class DateTime(fields.Raw):
     def format(self, value):
         return value.strftime("%Y-%m-%d %H:%M") if value else None
+
+
+class PermitCondition(fields.Raw):
+    def format(self, value):
+        return marshal(value, PERMIT_CONDITION_MODEL)
 
 
 BASIC_MINE_LOCATION_MODEL = api.model(
@@ -483,6 +488,6 @@ PERMIT_CONDITION_MODEL = api.model(
         'condition': fields.String,
         'condition_category': fields.String,
         'parent_condition_id': fields.Integer,
-        'sub_conditions': fields.Raw,
+        'sub_conditions': fields.List(PermitCondition),
         'display_order': fields.Integer,
     })

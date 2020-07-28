@@ -1,5 +1,5 @@
 from flask_restplus import Resource, marshal
-from flask import request
+from flask import request, current_app
 from werkzeug.exceptions import BadRequest, NotFound, InternalServerError
 from marshmallow.exceptions import MarshmallowError
 
@@ -48,7 +48,7 @@ class PermitConditionsListResource(Resource, UserMixin):
 
         conditions = PermitConditions.find_all_by_permit_amendment_id(
             permit_amendment.permit_amendment_id)
-
+        current_app.logger.debug(conditions[0].sub_conditions)
         return conditions
 
 

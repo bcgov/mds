@@ -18,7 +18,7 @@ COMMENT ON TABLE permit_condition_category IS '';
 CREATE TABLE IF NOT EXISTS permit_conditions
 (
     permit_condition_id                                                SERIAL PRIMARY KEY,
-    permit_amendment_id                 integer                           UNIQUE NOT NULL,
+    permit_amendment_id                 integer                                  NOT NULL,
     permit_condition_guid               uuid           DEFAULT gen_random_uuid() NOT NULL,
     condition                           varchar                                  NOT NULL,
     condition_category                  varchar                                  NOT NULL,
