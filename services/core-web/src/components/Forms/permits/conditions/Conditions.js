@@ -2,22 +2,58 @@ import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { Divider, Col, Row, Collapse } from "antd";
+import { Divider, Icon, Row, Collapse, Button } from "antd";
 import { openModal, closeModal } from "@common/actions/modalActions";
 import {
 } from "@common/selectors/staticContentSelectors";
 import CustomPropTypes from "@/customPropTypes";
-import Condition from "@/components/Forms/permits/Condition";
+import Condition from "@/components/Forms/permits/conditions/Condition";
 import AddButton from "@/components/common/AddButton";
 
 const { Panel } = Collapse;
 
 const propTypes = {
     isViewMode: PropTypes.bool.isRequired,
+    conditions: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any))
 };
 
 const defaultProps = {
+    conditions:
+        [
+            {
+                step: '1.',
+                condition: 'Mine Emergency Response Plan',
+                condition_category: 'HSC',
+                condition_type: 'SEC',
+                conditions: [
+                    {
+                        step: '',
+                        condition: 'The Mine Emergency Response Plan ("MERP") must be implemented prior to commencement. In addition to addressing daily operational issues, the plan shall specifically address emergency evacuation of personnel due to injury and forest fire hazard. All persons employed or visiting on the mine shall be trained with the MERP. The plan shall be available on site for review upon request and must be updated as changes arise.',
+                        condition_category: 'HSC',
+                        condition_type: 'CON',
+                        conditions: [
+                            {
+                                step: 'a.',
+                                condition: 'Something in a list.',
+                                condition_category: 'HSC',
+                                condition_type: 'LST',
+                                conditions: []
+                            },
+                            {
+                                step: 'b.',
+                                condition: 'Something in a list.',
+                                condition_category: 'HSC',
+                                condition_type: 'LST',
+                                conditions: []
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
 };
+
+
 
 export class Conditions extends Component {
     state = {
@@ -31,10 +67,13 @@ export class Conditions extends Component {
             <>
                 <Collapse defaultActiveKey={["general"]}>
                     <Panel header="A. General Conditions" key="general" id="general">
-                        <Condition />
+                        <Condition condition={this.props.conditions[0]} />
                         <Divider />
-                        <AddButton>Add Sub-Section</AddButton>
-                        <AddButton>Restore Deleted Standard Conditions</AddButton>
+                        <AddButton type="secondary">Add Sub-Section</AddButton>
+                        <Button type="secondary" className="full-mobile btn--middle">
+                            <Icon type="undo" theme="outlined" className="padding-small--right icon-sm" />
+                            Restore Deleted Standard Conditions
+                        </Button>
                     </Panel>
                     <Panel header="B. Healthy and Safety Conditions" key="health-safety" id="health-safety">
                         <p>No conditions</p>

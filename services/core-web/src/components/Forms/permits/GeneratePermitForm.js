@@ -9,7 +9,7 @@ import CustomPropTypes from "@/customPropTypes";
 import { renderConfig } from "@/components/common/config";
 import ScrollContentWrapper from "@/components/noticeOfWork/applications/ScrollContentWrapper";
 import FinalPermitDocuments from "@/components/noticeOfWork/applications/FinalPermitDocuments";
-import Conditions from "@/components/Forms/permits/Conditions";
+import Conditions from "@/components/Forms/permits/conditions/Conditions";
 
 const { Panel } = Collapse;
 

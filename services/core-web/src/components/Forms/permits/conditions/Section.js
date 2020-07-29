@@ -4,17 +4,16 @@ import { Col, Row, Popconfirm, Button } from "antd";
 import { EDIT_OUTLINE_VIOLET, TRASHCAN } from "@/constants/assets";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
-import AddButton from "@/components/common/AddButton";
+import Condition from "@/components/Forms/permits/conditions/Condition";
 
 const propTypes = {
     condition: PropTypes.objectOf(PropTypes.any)
 };
 
 const defaultProps = {
-    condition: { 'condition_title': 'Mine Emergency Response Plan', 'condition': 'The Mine Emergency Response Plan ("MERP") must be implemented prior to commencement. In addition to addressing daily operational issues, the plan shall specifically address emergency evacuation of personnel due to injury and forest fire hazard. All persons employed or visiting on the mine shall be trained with the MERP. The plan shall be available on site for review upon request and must be updated as changes arise.', 'condition_category': 'HSC' }
 };
 
-const Condition = (props) => (
+const Section = (props) => (
     <>
         <Row gutter={32}>
             <Col md={2}>
@@ -23,16 +22,7 @@ const Condition = (props) => (
             <Col md={18}>
                 <Row>
                     <Col className="field-title">
-                        {props.condition.condition_title}
-                    </Col>
-                </Row>
-                <Row>
-                    <Col>{props.condition.condition}</Col>
-                </Row>
-                <Row>
-                    <Col>
-                        <AddButton>Add List Item</AddButton>
-                        <AddButton>Add Condition</AddButton>
+                        {props.condition.condition}
                     </Col>
                 </Row>
             </Col>
@@ -64,10 +54,11 @@ const Condition = (props) => (
                 </div>
             </Col>
         </Row>
+        {props.condition.conditions.map((condition) => <Condition condition={condition} />)}
     </>
 );
 
-Condition.propTypes = propTypes;
-Condition.defaultProps = defaultProps;
+Section.propTypes = propTypes;
+Section.defaultProps = defaultProps;
 
-export default Condition;
+export default Section;
