@@ -430,7 +430,7 @@ environments {
                 }
                 python {
                     cpu_request = "100m"
-                    cpu_limit = "200m"
+                    cpu_limit = "400m"
                     memory_request = "512Mi"
                     memory_limit = "2Gi"
                     uwsgi_threads = 2
