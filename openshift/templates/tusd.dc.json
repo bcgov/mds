@@ -39,6 +39,10 @@
     {
       "name": "VERSION",
       "required": true
+    },
+    {
+      "name": "DOCUMENT_MANAGER_URL",
+      "required": true
     }
   ],
   "objects": [
@@ -214,6 +218,10 @@
                   {
                     "name": "S3_PREFIX",
                     "value": "mds-files-${VERSION}/"
+                  },
+                  {
+                    "name": "DOCUMENT_MANAGER_URL",
+                    "value": "${DOCUMENT_MANAGER_URL}"
                   }
                 ],
                 "resources": {

@@ -25,7 +25,7 @@ exports[`TransferBondForm renders properly 1`] = `
             ]
           }
           id="permit_guid"
-          label="Select a Permit *"
+          label="Permit *"
           name="permit_guid"
           validate={
             Array [

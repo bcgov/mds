@@ -34,6 +34,14 @@ class Document(AuditMixin, Base):
             'object_store_path': self.object_store_path
         }
 
+    def task_json(self):
+        return {
+            'document_id': self.document_id,
+            'document_guid': str(self.document_guid),
+            'full_storage_path': self.full_storage_path,
+            'object_store_path': self.object_store_path
+        }
+
     @classmethod
     def find_by_document_guid(cls, document_guid):
         try:

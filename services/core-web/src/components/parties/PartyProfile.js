@@ -7,7 +7,6 @@ import { Tabs, Icon, Table, Button, Popconfirm } from "antd";
 import { uniq, isEmpty } from "lodash";
 import {
   fetchPartyById,
-  fetchPartyRelationships,
   updateParty,
   deleteParty,
 } from "@common/actionCreators/partiesActionCreator";
@@ -40,7 +39,6 @@ const { TabPane } = Tabs;
 
 const propTypes = {
   fetchPartyById: PropTypes.func.isRequired,
-  fetchPartyRelationships: PropTypes.func.isRequired,
   fetchMineBasicInfoList: PropTypes.func.isRequired,
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
   updateParty: PropTypes.func.isRequired,
@@ -48,7 +46,6 @@ const propTypes = {
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   parties: PropTypes.arrayOf(CustomPropTypes.party).isRequired,
-  partyRelationships: PropTypes.arrayOf(CustomPropTypes.partyRelationship),
   partyRelationshipTypeHash: PropTypes.objectOf(PropTypes.strings),
   mineBasicInfoListHash: PropTypes.objectOf(PropTypes.strings),
   match: CustomPropTypes.match.isRequired,
@@ -56,20 +53,19 @@ const propTypes = {
 };
 
 const defaultProps = {
-  partyRelationships: [],
   partyRelationshipTypeHash: {},
   mineBasicInfoListHash: {},
 };
 
 export class PartyProfile extends Component {
-  state = { isLoaded: false };
+  state = { isLoaded: false, deletingParty: false };
 
   componentDidMount() {
     const { id } = this.props.match.params;
     this.props.fetchPartyById(id).then(() => {
       const mine_guids = uniq(
         this.props.parties[id].mine_party_appt
-          .filter((x) => x.mine_guid != "None")
+          .filter((x) => x.mine_guid !== "None")
           .map(({ mine_guid }) => mine_guid)
       );
       this.props.fetchMineBasicInfoList(mine_guids).then(() => {
@@ -97,7 +93,7 @@ export class PartyProfile extends Component {
 
   editParty = (values) => {
     const { id } = this.props.match.params;
-    this.props.updateParty(values, id).then(() => {
+    return this.props.updateParty(values, id).then(() => {
       this.props.fetchPartyById(id);
       this.props.closeModal();
     });
@@ -105,14 +101,18 @@ export class PartyProfile extends Component {
 
   deleteParty = () => {
     const { id } = this.props.match.params;
-    this.props.deleteParty(id).then(() => {
-      this.props.history.push(
-        routes.CONTACT_HOME_PAGE.dynamicRoute({
-          page: String.DEFAULT_PAGE,
-          per_page: String.DEFAULT_PER_PAGE,
-        })
-      );
-    });
+    this.setState({ deletingParty: true });
+    this.props
+      .deleteParty(id)
+      .then(() => {
+        this.props.history.push(
+          routes.CONTACT_HOME_PAGE.dynamicRoute({
+            page: String.DEFAULT_PAGE,
+            per_page: String.DEFAULT_PER_PAGE,
+          })
+        );
+      })
+      .finally(() => this.setState({ deletingParty: false }));
   };
 
   render() {
@@ -125,13 +125,12 @@ export class PartyProfile extends Component {
         render: (text, record) => {
           if (record.relationship.mine_party_appt_type_code === "PMT") {
             return <div title="Permit No">{record.relationship.permit_no}</div>;
-          } else {
-            return (
-              <div title="Mine Name">
-                <Link to={routes.MINE_CONTACTS.dynamicRoute(record.mineGuid)}>{text}</Link>
-              </div>
-            );
           }
+          return (
+            <div title="Mine Name">
+              <Link to={routes.MINE_CONTACTS.dynamicRoute(record.mineGuid)}>{text}</Link>
+            </div>
+          );
         },
       },
       {
@@ -184,8 +183,9 @@ export class PartyProfile extends Component {
                     onConfirm={this.deleteParty}
                     okText="Yes"
                     cancelText="No"
+                    disabled={this.state.deletingParty}
                   >
-                    <Button type="danger">
+                    <Button type="danger" disabled={this.state.deletingParty}>
                       <Icon className="btn-danger--icon" type="minus-circle" theme="outlined" />
                       Delete Party
                     </Button>
@@ -203,6 +203,7 @@ export class PartyProfile extends Component {
                         this.props.provinceOptions
                       )
                     }
+                    disabled={this.state.deletingParty}
                   >
                     <img alt="pencil" className="padding-small--right" src={EDIT} />
                     Update Party
@@ -284,7 +285,6 @@ const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
       fetchPartyById,
-      fetchPartyRelationships,
       fetchMineBasicInfoList,
       deleteParty,
       updateParty,
