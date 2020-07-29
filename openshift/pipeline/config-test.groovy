@@ -404,9 +404,9 @@ environments {
                 }
                 python {
                     cpu_request = "100m"
-                    cpu_limit = "200m"
+                    cpu_limit = "400m"
                     memory_request = "384Mi"
-                    memory_limit = "1Gi"
+                    memory_limit = "2Gi"
                     uwsgi_threads = 2
                     uwsgi_processes = 4
                     replica_min = 3
