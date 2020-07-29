@@ -34,6 +34,8 @@ class PermitAmendment(AuditMixin, Base):
         db.String(3), db.ForeignKey('permit_amendment_type_code.permit_amendment_type_code'))
     description = db.Column(db.String, nullable=True)
     deleted_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
+    lead_inspector_title = db.Column(db.String, nullable=True)
+    regional_office = db.Column(db.String, nullable=True)
 
     permit_amendment_status = db.relationship('PermitAmendmentStatusCode')
     permit_amendment_status_description = association_proxy('permit_amendment_status',
@@ -82,9 +84,12 @@ class PermitAmendment(AuditMixin, Base):
                received_date,
                issue_date,
                authorization_end_date,
-               permit_amendment_type_code,
+               permit_amendment_type_code='AMD',
                description=None,
                permit_amendment_status_code='ACT',
+               lead_inspector_title=None,
+               regional_office=None,
+               now_application_guid=None,
                add_to_session=True):
         new_pa = cls(
             permit_id=permit.permit_id,
@@ -93,8 +98,11 @@ class PermitAmendment(AuditMixin, Base):
             issue_date=issue_date,
             authorization_end_date=authorization_end_date,
             permit_amendment_type_code=permit_amendment_type_code,
-            permit_amendment_status_code=permit_amendment_status_code,
-            description=description)
+            permit_amendment_status_code=permit_amendment_status_code if not permit.permit_status_code == 'D' else 'DFT',
+            description=description,
+            lead_inspector_title=lead_inspector_title,
+            regional_office=regional_office,
+            now_application_guid=now_application_guid)
         permit._all_permit_amendments.append(new_pa)
         if add_to_session:
             new_pa.save(commit=False)
@@ -110,7 +118,11 @@ class PermitAmendment(AuditMixin, Base):
 
     @classmethod
     def find_by_permit_id(cls, _id):
-        return cls.query.filter_by(permit_id=_id).filter_by(deleted_ind=False).all()
+        return cls.query.filter_by(permit_id=_id).filter_by(deleted_ind=False).filter(cls.permit_amendment_status_code != 'DFT').all()
+
+    @classmethod
+    def find_by_now_application_guid(cls, _id):
+        return cls.query.filter_by(now_application_guid=_id).first()
 
     @validates('permit_amendment_status_code')
     def validate_status_code(self, key, permit_amendment_status_code):
@@ -140,7 +152,7 @@ class PermitAmendment(AuditMixin, Base):
             original_permit_amendment = self.query.filter_by(permit_id=self.permit_id).filter_by(
                 permit_amendment_type_code='OGP').first()
             if original_permit_amendment and original_permit_amendment.issue_date:
-                if original_permit_amendment.issue_date > issue_date.date():
+                if issue_date and original_permit_amendment.issue_date > issue_date.date():
                     raise AssertionError(
                         'Permit amendment issue date cannot be before the permits First Issued date.'
                     )

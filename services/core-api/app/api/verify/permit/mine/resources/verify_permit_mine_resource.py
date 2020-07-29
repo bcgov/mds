@@ -41,24 +41,24 @@ class VerifyPermitMineResource(Resource):
             permits = Permit.find_by_permit_no_all(permit_no)
 
             for permit in permits:
-                mine = Mine.find_by_mine_guid(str(permit.mine.mine_guid))
+                for mine in permit._all_mines:
+                    
+                    # Mine must be operating.
+                    if not mine.mine_status or mine.mine_status[
+                            0].mine_status_xref.mine_operation_status_code != "OP":
+                        break
 
-                # Mine must be operating.
-                if not mine.mine_status or mine.mine_status[
-                        0].mine_status_xref.mine_operation_status_code != "OP":
-                    break
+                    # IP SURVEYS (Induced): Valid MMS mine types: 'CX','ES','EU'
+                    # There may be need of a check against mine_tenure_type_code IN ["MIN", "COL"] and mine_disturbance_code IN ["SUR", "UND"]
+                    # but this data is inconsistant for now.
+                    if type_of_deemed_auth == "INDUCED" and permit_prefix not in ["CX", "MX"]:
+                        break
 
-                # IP SURVEYS (Induced): Valid MMS mine types: 'CX','ES','EU'
-                # There may be need of a check against mine_tenure_type_code IN ["MIN", "COL"] and mine_disturbance_code IN ["SUR", "UND"]
-                # but this data is inconsistant for now.
-                if type_of_deemed_auth == "INDUCED" and permit_prefix not in ["CX", "MX"]:
-                    break
+                    # DRILL PROGRAM (Drill): Valid MMS mine types: 'CS','CU','MS','MU','IS','IU'
+                    if type_of_deemed_auth != "INDUCED" and permit_prefix not in ["C", "M"]:
+                        break
 
-                # DRILL PROGRAM (Drill): Valid MMS mine types: 'CS','CU','MS','MU','IS','IU'
-                if type_of_deemed_auth != "INDUCED" and permit_prefix not in ["C", "M"]:
-                    break
-
-                mine_info = mine_info + mine.mine_no + ' - ' + mine.mine_name + '\r'
+                    mine_info = mine_info + mine.mine_no + ' - ' + mine.mine_name + '\r'
 
             if mine_info != "":
                 result = "Success"

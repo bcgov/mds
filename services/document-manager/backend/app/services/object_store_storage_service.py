@@ -89,6 +89,22 @@ class ObjectStoreStorageService():
         fs_etag = self.calculate_s3_etag(filename)
         return s3_etag == fs_etag
 
+    def copy_file(self, source_key, key):
+        copy_source = {'Bucket': Config.OBJECT_STORE_BUCKET, 'Key': source_key}
+        self._client.copy(CopySource=copy_source, Bucket=Config.OBJECT_STORE_BUCKET, Key=key)
+
+    def delete_file(self, key):
+        self._client.delete_object(Bucket=Config.OBJECT_STORE_BUCKET, Key=key)
+
+    def file_exists(self, key):
+        try:
+            self._client.head_object(Bucket=Config.OBJECT_STORE_BUCKET, Key=key)
+            return True
+        except ClientError as e:
+            if (int(e.response['Error']['Code']) == 404):
+                return False
+            raise Exception(f'Failed to check if the file exists: {e}')
+
     # Returns the ETag of an object
     def s3_etag(self, key):
         try:

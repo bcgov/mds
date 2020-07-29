@@ -11,6 +11,7 @@ import CustomAxios from "../customAxios";
 
 export const createMineIncident = (mine_guid, payload) => (dispatch) => {
   dispatch(request(reducerTypes.CREATE_MINE_INCIDENT));
+  dispatch(showLoading("modal"));
   return CustomAxios()
     .post(`${ENVIRONMENT.apiUrl}${API.MINE_INCIDENTS(mine_guid)}`, payload, createRequestHeader())
     .then((response) => {
@@ -21,7 +22,11 @@ export const createMineIncident = (mine_guid, payload) => (dispatch) => {
       dispatch(success(reducerTypes.CREATE_MINE_INCIDENT));
       return response;
     })
-    .catch(() => dispatch(error(reducerTypes.CREATE_MINE_INCIDENT)));
+    .catch((err) => {
+      dispatch(error(reducerTypes.CREATE_MINE_INCIDENT));
+      throw new Error(err);
+    })
+    .finally(() => dispatch(hideLoading("modal")));
 };
 
 export const fetchMineIncidents = (mine_guid) => (dispatch) => {
@@ -40,6 +45,7 @@ export const fetchMineIncidents = (mine_guid) => (dispatch) => {
 
 export const updateMineIncident = (mineGuid, mineIncidentGuid, payload) => (dispatch) => {
   dispatch(request(reducerTypes.UPDATE_MINE_INCIDENT));
+  dispatch(showLoading("modal"));
   return CustomAxios()
     .put(
       `${ENVIRONMENT.apiUrl}${API.MINE_INCIDENT(mineGuid, mineIncidentGuid)}`,
@@ -54,7 +60,11 @@ export const updateMineIncident = (mineGuid, mineIncidentGuid, payload) => (disp
       dispatch(success(reducerTypes.UPDATE_MINE_INCIDENT));
       return response;
     })
-    .catch(() => dispatch(error(reducerTypes.UPDATE_MINE_INCIDENT)));
+    .catch((err) => {
+      dispatch(error(reducerTypes.UPDATE_MINE_INCIDENT));
+      throw new Error(err);
+    })
+    .finally(() => dispatch(hideLoading("modal")));
 };
 
 export const fetchIncidents = (payload) => (dispatch) => {
@@ -86,6 +96,9 @@ export const deleteMineIncident = (mineGuid, incidentGuid) => (dispatch) => {
       dispatch(success(reducerTypes.DELETE_INCIDENT));
       return response;
     })
-    .catch(() => dispatch(error(reducerTypes.DELETE_INCIDENT)))
+    .catch((err) => {
+      dispatch(error(reducerTypes.DELETE_INCIDENT));
+      throw new Error(err);
+    })
     .finally(() => dispatch(hideLoading()));
 };

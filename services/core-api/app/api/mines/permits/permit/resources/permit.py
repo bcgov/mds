@@ -18,6 +18,10 @@ from app.api.mines.response_models import PERMIT_MODEL
 class PermitListResource(Resource, UserMixin):
     parser = reqparse.RequestParser(trim=True)
     parser.add_argument(
+        'now_application_guid',
+        type=str,
+        help='Returns any draft permit and draft permit amendments related to this application.')
+    parser.add_argument(
         'permit_no', type=str, help='Number of the permit being added.', location='json')
     parser.add_argument(
         'permittee_party_guid',
@@ -39,10 +43,20 @@ class PermitListResource(Resource, UserMixin):
         type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None,
         location='json')
     parser.add_argument(
-        'permit_amendment_status_code',
+        'now_application_guid',
         type=str,
         location='json',
-        help='Status of the permit being added.')
+        help='The now_application_guid this permit is related to.')
+    parser.add_argument(
+        'lead_inspector_title',
+        type=str,
+        location='json',
+        help='Title of the lead inspector for this permit.')
+    parser.add_argument(
+        'regional_office',
+        type=str,
+        location='json',
+        help='The regional office for this permit.')
     parser.add_argument('description', type=str, location='json', help='Permit description')
     parser.add_argument('uploadedFiles', type=list, location='json', store_missing=False)
 
@@ -50,7 +64,12 @@ class PermitListResource(Resource, UserMixin):
     @requires_role_view_all
     @api.marshal_with(PERMIT_MODEL, envelope='records', code=200)
     def get(self, mine_guid):
-        results = Mine.find_by_mine_guid(mine_guid).mine_permit
+        data = self.parser.parse_args()
+        now_application_guid = data.get('now_application_guid')
+        if now_application_guid:
+            results=[Permit.find_by_now_application_guid(now_application_guid)]
+        else:
+            results = Mine.find_by_mine_guid(mine_guid).mine_permit
         return results
 
     @api.doc(params={'permit_guid': 'Permit guid.'})
@@ -63,9 +82,11 @@ class PermitListResource(Resource, UserMixin):
         if not mine:
             raise NotFound('There was no mine found with the provided mine_guid.')
 
-        party = Party.find_by_party_guid(data.get('permittee_party_guid'))
-        if not party:
-            raise NotFound('Party not found')
+        permittee_party_guid = data.get('permittee_party_guid')
+        if permittee_party_guid:
+            party = Party.find_by_party_guid(permittee_party_guid)
+            if not party:
+                raise NotFound('Permittee party not found')
 
         permit = Permit.find_by_permit_no(data.get('permit_no'))
         if permit:
@@ -82,7 +103,10 @@ class PermitListResource(Resource, UserMixin):
             data.get('issue_date'),
             data.get('authorization_end_date'),
             'OGP',
-            description='Initial permit issued.')
+            description='Initial permit issued.',
+            lead_inspector_title=data.get('lead_inspector_title'),
+            regional_office=data.get('regional_office'),
+            now_application_guid=data.get('now_application_guid'))
 
         db.session.add(permit)
         db.session.add(amendment)
@@ -96,16 +120,17 @@ class PermitListResource(Resource, UserMixin):
             amendment.related_documents.append(new_pa_doc)
         db.session.commit()
 
-        permittee_start_date = data.get('issue_date')
-        permittee = MinePartyAppointment.create(
-            None,
-            data.get('permittee_party_guid'),
-            mine_party_appt_type_code='PMT',
-            start_date=permittee_start_date,
-            processed_by=self.get_user_info(),
-            permit=permit)
-        db.session.add(permittee)
-        db.session.commit()
+        if permittee_party_guid:
+            permittee_start_date = data.get('issue_date')
+            permittee = MinePartyAppointment.create(
+                None,
+                permittee_party_guid,
+                mine_party_appt_type_code='PMT',
+                start_date=permittee_start_date,
+                processed_by=self.get_user_info(),
+                permit=permit)
+            db.session.add(permittee)
+            db.session.commit()
 
         #for marshalling
         permit._context_mine = mine

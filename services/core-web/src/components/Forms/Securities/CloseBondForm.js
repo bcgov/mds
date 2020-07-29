@@ -2,7 +2,13 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Field, reduxForm } from "redux-form";
 import { Form, Button, Col, Row, Popconfirm } from "antd";
-import { required, dateNotInFuture, maxLength, dateNotBeforeOther } from "@common/utils/Validate";
+import {
+  required,
+  date,
+  dateNotInFuture,
+  maxLength,
+  dateNotBeforeOther,
+} from "@common/utils/Validate";
 import { resetForm } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
 import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
@@ -17,11 +23,9 @@ const propTypes = {
   bondStatusCode: PropTypes.string.isRequired,
   bondStatusOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   submitting: PropTypes.bool.isRequired,
-  pristine: PropTypes.bool.isRequired,
 };
 
 export const CloseBondForm = (props) => {
-  console.log(props.bond);
   const bondStatusDescription = props.bondStatusOptionsHash[props.bondStatusCode];
   return (
     <Form layout="vertical" onSubmit={props.handleSubmit}>
@@ -34,7 +38,12 @@ export const CloseBondForm = (props) => {
               label={`${bondStatusDescription} Date*`}
               showTime
               component={RenderDate}
-              validate={[required, dateNotInFuture, dateNotBeforeOther(props.bond.issue_date)]}
+              validate={[
+                required,
+                date,
+                dateNotInFuture,
+                dateNotBeforeOther(props.bond.issue_date),
+              ]}
             />
           </Form.Item>
         </Col>
@@ -64,12 +73,7 @@ export const CloseBondForm = (props) => {
             Cancel
           </Button>
         </Popconfirm>
-        <Button
-          className="full-mobile"
-          type="primary"
-          htmlType="submit"
-          disabled={props.submitting || props.pristine}
-        >
+        <Button className="full-mobile" type="primary" htmlType="submit" loading={props.submitting}>
           {props.title}
         </Button>
       </div>

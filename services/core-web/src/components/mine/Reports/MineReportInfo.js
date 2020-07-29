@@ -5,7 +5,7 @@ import queryString from "query-string";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Row } from "antd";
-import { isEmpty, debounce } from "lodash";
+import { isEmpty } from "lodash";
 import {
   fetchMineReports,
   updateMineReport,
@@ -23,7 +23,6 @@ import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrap
 import AddButton from "@/components/common/AddButton";
 import MineReportTable from "@/components/mine/Reports/MineReportTable";
 import ReportFilterForm from "@/components/Forms/reports/ReportFilterForm";
-import * as ModalContent from "@/constants/modalContent";
 import * as routes from "@/constants/routes";
 import { modalConfig } from "@/components/modalContent/config";
 
@@ -73,7 +72,6 @@ export class MineReportInfo extends Component {
     params: defaultParams,
     filteredReports: [],
     isLoaded: false,
-    disableAddReport: false,
   };
 
   componentDidMount = () => {
@@ -114,23 +112,20 @@ export class MineReportInfo extends Component {
   };
 
   handleAddReport = (values) => {
-    this.setState({ disableAddReport: true }, () => {
-      this.props
-        .createMineReport(this.props.mineGuid, values)
-        .then(() => this.props.closeModal())
-        .then(() =>
-          this.props.fetchMineReports(this.props.mineGuid).then(() => {
-            this.setState({
-              filteredReports: this.props.mineReports,
-            });
-          })
-        )
-        .finally(this.setState({ disableAddReport: false }));
-    });
+    return this.props
+      .createMineReport(this.props.mineGuid, values)
+      .then(() => this.props.closeModal())
+      .then(() =>
+        this.props.fetchMineReports(this.props.mineGuid).then(() => {
+          this.setState({
+            filteredReports: this.props.mineReports,
+          });
+        })
+      );
   };
 
   handleRemoveReport = (report) => {
-    this.props.deleteMineReport(report.mine_guid, report.mine_report_guid).then(() =>
+    return this.props.deleteMineReport(report.mine_guid, report.mine_report_guid).then(() =>
       this.props.fetchMineReports(report.mine_guid).then(() => {
         this.setState({
           filteredReports: this.props.mineReports,
@@ -143,8 +138,7 @@ export class MineReportInfo extends Component {
     event.preventDefault();
     this.props.openModal({
       props: {
-        disableAddReport: this.state.disableAddReport,
-        onSubmit: debounce(this.handleAddReport, 2000),
+        onSubmit: this.handleAddReport,
         title: `Add report for ${this.state.mine.mine_name}`,
         mineGuid: this.props.mineGuid,
         changeModalTitle: this.props.changeModalTitle,
@@ -276,15 +270,7 @@ export class MineReportInfo extends Component {
         <div className="inline-flex flex-end">
           <Row>
             <AuthorizationWrapper permission={Permission.EDIT_REPORTS}>
-              <AddButton
-                onClick={(event) =>
-                  this.openAddReportModal(
-                    event,
-                    debounce(this.handleAddReport, 2000),
-                    `${ModalContent.ADD_REPORT} to ${this.state.mine.mine_name}`
-                  )
-                }
-              >
+              <AddButton onClick={(event) => this.openAddReportModal(event)}>
                 Add a Report
               </AddButton>
             </AuthorizationWrapper>
