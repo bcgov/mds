@@ -22,7 +22,7 @@ parameters:
   value: "1.18.1"
 - name: SOURCE_IMAGE_KIND
   displayName: Source Image Kind
-  description: The 'kind' (type) of the  source image; typically ImageStreamTag, or
+  description: The 'kind' (type) of the source image; typically ImageStreamTag, or
       DockerImage.
   required: true
   value: DockerImage

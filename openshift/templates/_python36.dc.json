@@ -816,7 +816,7 @@
               {
                 "name": "jaeger-configuration-volume",
                 "configMap": {
-                  "name": "jaeger-config"
+                  "name": "jaeger-configuration"
                 }
               }
             ]

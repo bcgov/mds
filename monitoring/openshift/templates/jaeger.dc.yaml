@@ -101,7 +101,7 @@ objects:
             prometheus.io/port: "14268"
         spec:
           containers:
-            - image: jaegertracing/jaeger-collector:1.9.0
+            - image: jaegertracing/jaeger-collector:1.18.1
               name: jaeger-collector
               args: ["--config-file=/conf/collector.yaml"]
               ports:
@@ -198,7 +198,7 @@ objects:
             prometheus.io/port: "16686"
         spec:
           containers:
-            - image: jaegertracing/jaeger-query:1.9.0
+            - image: jaegertracing/jaeger-query:1.18.1
               name: jaeger-query
               args: ["--config-file=/conf/query.yaml"]
               ports:
@@ -263,7 +263,7 @@ objects:
         spec:
           containers:
             - name: jaeger-agent
-              image: jaegertracing/jaeger-agent:1.9.0
+              image: jaegertracing/jaeger-agent:1.18.1
               args: ["--config-file=/conf/agent.yaml"]
               volumeMounts:
                 - name: jaeger-configuration-volume
