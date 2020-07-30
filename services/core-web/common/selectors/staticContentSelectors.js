@@ -36,6 +36,8 @@ export const {
   getBondTypeOptions,
   getBondDocumentTypeOptions,
   getExemptionFeeStatusOptions,
+  getPermitConditionCategoryOptions,
+  getPermitConditionTypeOptions,
 } = staticContentReducer;
 
 const getVisibilityFilterOption = (_state, showActiveOnly = true) => showActiveOnly;
