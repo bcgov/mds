@@ -24,6 +24,8 @@ class PermitConditions(AuditMixin, Base):
     permit_amendment_id = db.Column(
         db.Integer, db.ForeignKey('permit_amendment.permit_amendment_id'), nullable=False)
     permit_condition_guid = db.Column(UUID(as_uuid=True), server_default=FetchedValue())
+    permit_type = db.Column(
+        db.String, db.ForeignKey('notice_of_work_type.notice_of_work_type_code'), nullable=False)
     condition = db.Column(db.String, nullable=False)
     condition_category = db.Column(
         db.String,

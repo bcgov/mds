@@ -1256,3 +1256,11 @@ VALUES
   ('RCC', 'Reclamation and Closure Program Conditions', true, 50, 'system-mds', 'system-mds'),
 	('ADC', 'Additional Conditions', true, 60, 'system-mds', 'system-mds')
 on conflict do nothing;
+
+INSERT INTO permit_condition_type
+(condition_type_code, description, active_ind, display_order, create_user, update_user)
+VALUES
+	('SEC', 'Permit Section', true, 10, 'system-mds', 'system-mds'),
+	('CON', 'Condition', true, 20, 'system-mds', 'system-mds'),
+	('LIS', 'List Item', true, 30, 'system-mds', 'system-mds')
+on conflict do nothing;

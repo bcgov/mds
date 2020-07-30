@@ -1,6 +1,5 @@
 import * as actionTypes from "../constants/actionTypes";
 import { STATIC_CONTENT } from "../constants/reducerTypes";
-import { createDropDownList } from "../utils/helpers";
 
 /**
  * @file staticContentReducer.js
@@ -39,6 +38,8 @@ const initialState = {
   bondTypeOptions: [],
   bondDocumentTypeOptions: [],
   exemptionFeeStatusOptions: [],
+  permitConditionTypeOptions: [],
+  permitConditionCategoryOptions: [],
 };
 
 export const staticContentReducer = (state = initialState, action) => {
