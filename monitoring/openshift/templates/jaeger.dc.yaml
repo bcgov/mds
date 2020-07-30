@@ -32,7 +32,7 @@ parameters:
     displayName: Source Image Name
     description: The name of the image to use for this resource.
     required: true
-    value: grafana
+    value: jaeger
   - name: TAG_NAME
     displayName: Environment TAG name
     description: The TAG name for this environment, e.g., dev, test, prod
@@ -42,16 +42,6 @@ parameters:
     displayName: Namespace
     name: NAMESPACE
     value: empr-mds-prod
-  - description: The name of the Loki service to connect to.
-    displayName: Loki Service Name
-    name: LOKI_SERVICE_NAME
-    required: true
-    value: loki
-  - description: The name of the Prometheus service to connect to.
-    displayName: Prometheus Service Name
-    name: PROMETHEUS_SERVICE_NAME
-    required: true
-    value: prometheus
   - description: Default route subdomain
     displayName: Route subdomain
     name: ROUTE_SUBDOMAIN
