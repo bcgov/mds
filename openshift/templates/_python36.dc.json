@@ -229,11 +229,7 @@
               "failurePolicy": "Retry",
               "execNewPod": {
                 "containerName": "flyway-migration",
-                "command": [
-                  "bash",
-                  "-c",
-                  "$FLYWAY_HOME/scripts/run_migrations.sh"
-                ]
+                "command": ["bash", "-c", "$FLYWAY_HOME/scripts/run_migrations.sh"]
               }
             },
             "maxSurge": "50%",
@@ -247,9 +243,7 @@
             "type": "ImageChange",
             "imageChangeParams": {
               "automatic": true,
-              "containerNames": [
-                "app"
-              ],
+              "containerNames": ["app"],
               "from": {
                 "kind": "ImageStreamTag",
                 "name": "${NAME}:${VERSION}"
@@ -260,9 +254,7 @@
             "type": "ImageChange",
             "imageChangeParams": {
               "automatic": true,
-              "containerNames": [
-                "flyway-migration"
-              ],
+              "containerNames": ["flyway-migration"],
               "from": {
                 "kind": "ImageStreamTag",
                 "name": "${FLYWAY_NAME}:${VERSION}"
@@ -642,9 +634,7 @@
               },
               {
                 "name": "flyway-migration",
-                "command": [
-                  "cat"
-                ],
+                "command": ["cat"],
                 "stdin": true,
                 "image": " ",
                 "env": [
@@ -775,7 +765,7 @@
                 "image": "grafana/promtail:k14-60b97e3",
                 "args": [
                   "-config.file=/etc/promtail/core-api.yaml",
-                  "-client.external-labels=environment=dev-${SUFFIX}"
+                  "--client.external-labels=env=${VERSION},pod=${HOSTNAME}"
                 ],
                 "volumeMounts": [
                   {
