@@ -13,11 +13,14 @@ WARNING_DETAILS_RESPONSE_MODEL = api.model('order_warning_detail', {
 
 class OrderWarningDetail(Base):
     __tablename__ = "order_warning_detail"
-    __table_args__ = {'comment': 'For each inspection observation, this table contains details of a warning issued by an inspector.  A warning is a written notification to a person that is not in compliance with a specific Regulatory Requirement at the time of inspection.'}
+    __table_args__ = {
+        'comment':
+        'For each inspection observation, this table contains details of a warning issued by an inspector.  A warning is a written notification to a person that is not in compliance with a specific Regulatory Requirement at the time of inspection.'
+    }
     order_warning_detail_id = db.Column(db.Integer, primary_key=True)
     inspected_location_id = db.Column(db.Integer,
                                       db.ForeignKey('inspected_location.inspected_location_id'))
-    detail = db.Column(db.String())
+    detail = db.Column(db.String)
     respond_date = db.Column(db.DateTime)
 
     def __repr__(self):

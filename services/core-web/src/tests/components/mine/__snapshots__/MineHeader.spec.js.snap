@@ -57,7 +57,7 @@ exports[`MineHeader renders dispatchProperly 1`] = `
                         }
                       }
                     />
-                    + Add TSF
+                    Add TSF
                   </button>
                 </MenuItem>
               </Menu>

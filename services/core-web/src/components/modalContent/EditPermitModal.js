@@ -4,20 +4,11 @@ import EditPermitForm from "@/components/Forms/EditPermitForm";
 
 const propTypes = {
   onSubmit: PropTypes.func.isRequired,
-  title: PropTypes.string,
+  title: PropTypes.string.isRequired,
 };
 
-const defaultProps = {
-  title: "",
-};
-
-export const EditPermitModal = (props) => (
-  <div>
-    <EditPermitForm {...props} />
-  </div>
-);
+export const EditPermitModal = (props) => <EditPermitForm {...props} />;
 
 EditPermitModal.propTypes = propTypes;
-EditPermitModal.defaultProps = defaultProps;
 
 export default EditPermitModal;

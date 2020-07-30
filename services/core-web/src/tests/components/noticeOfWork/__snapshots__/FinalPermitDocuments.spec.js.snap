@@ -6,7 +6,7 @@ exports[`FinalPermitDocuments renders properly 1`] = `
     className="inline-flex between"
   >
     <h4>
-      Final Permit Documents
+      Final Application Package
     </h4>
     <div>
       <Button

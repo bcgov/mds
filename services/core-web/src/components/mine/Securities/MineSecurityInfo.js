@@ -129,7 +129,7 @@ export class MineSecurityInfo extends Component {
     event.preventDefault();
     this.props.openModal({
       props: {
-        title: `Edit Bond`,
+        title: "Edit Bond",
         onSubmit: this.editBond,
         editBond: true,
         bond,
@@ -145,7 +145,7 @@ export class MineSecurityInfo extends Component {
     event.preventDefault();
     this.props.openModal({
       props: {
-        title: `Transfer Bond`,
+        title: "Transfer Bond",
         onSubmit: this.transferBond,
         editBond: true,
         bond,
@@ -158,20 +158,22 @@ export class MineSecurityInfo extends Component {
   };
 
   transferBond = (values, bond) => {
-    this.props.transferBond(values, bond.bond_guid).then(() => {
-      this.setState({ isBondLoaded: false });
-      this.props
-        .fetchMineBonds(this.props.mineGuid)
-        .then(() => this.props.closeModal())
-        .finally(() => this.setState({ isBondLoaded: true }));
-    });
+    return this.props
+      .transferBond(values, bond.bond_guid)
+      .then(() => {
+        this.setState({ isBondLoaded: false });
+        this.props
+          .fetchMineBonds(this.props.mineGuid)
+          .finally(() => this.setState({ isBondLoaded: true }));
+      })
+      .then(() => this.props.closeModal());
   };
 
   openViewBondModal = (event, bond) => {
     event.preventDefault();
     this.props.openModal({
       props: {
-        title: `View Bond`,
+        title: "View Bond",
         bond,
       },
       width: "50vw",
@@ -202,18 +204,19 @@ export class MineSecurityInfo extends Component {
 
   editBond = (values, bondGuid) => {
     const payload = values;
-    // payload expects the basic bond object without the following:
     delete payload.permit_guid;
     delete payload.bond_id;
     delete payload.bond_guid;
     delete payload.payer;
-    this.props.updateBond(payload, bondGuid).then(() => {
-      this.setState({ isBondLoaded: false });
-      this.props
-        .fetchMineBonds(this.props.mineGuid)
-        .then(() => this.props.closeModal())
-        .finally(() => this.setState({ isBondLoaded: true }));
-    });
+    return this.props
+      .updateBond(payload, bondGuid)
+      .then(() => {
+        this.setState({ isBondLoaded: false });
+        this.props
+          .fetchMineBonds(this.props.mineGuid)
+          .finally(() => this.setState({ isBondLoaded: true }));
+      })
+      .then(() => this.props.closeModal());
   };
 
   closeBond = (bondStatusCode, values, bond) => {
@@ -224,7 +227,7 @@ export class MineSecurityInfo extends Component {
       closed_date: values.closed_date,
       closed_note: values.closed_note,
     };
-    this.editBond(payload, bond.bond_guid);
+    return this.editBond(payload, bond.bond_guid);
   };
 
   addBondToPermit = (values, permitGuid) => {
@@ -235,14 +238,15 @@ export class MineSecurityInfo extends Component {
       },
       permit_guid: permitGuid,
     };
-
-    this.props.createBond(payload).then(() => {
-      this.setState({ isBondLoaded: false });
-      this.props
-        .fetchMineBonds(this.props.mineGuid)
-        .then(() => this.props.closeModal())
-        .finally(() => this.setState({ isBondLoaded: true }));
-    });
+    return this.props
+      .createBond(payload)
+      .then(() => {
+        this.setState({ isBondLoaded: false });
+        this.props
+          .fetchMineBonds(this.props.mineGuid)
+          .finally(() => this.setState({ isBondLoaded: true }));
+      })
+      .then(() => this.props.closeModal());
   };
 
   onExpand = (expanded, record) =>
@@ -260,26 +264,29 @@ export class MineSecurityInfo extends Component {
       },
       permit_guid: permitGuid,
     };
-    this.props.createReclamationInvoice(payload).then(() => {
-      this.props.fetchMineReclamationInvoices(this.props.mineGuid).then(() => {
-        this.props.closeModal();
-        this.setState({ isInvoicesLoaded: true });
-      });
-    });
+    return this.props
+      .createReclamationInvoice(payload)
+      .then(() => {
+        this.props.fetchMineReclamationInvoices(this.props.mineGuid).then(() => {
+          this.setState({ isInvoicesLoaded: true });
+        });
+      })
+      .then(() => this.props.closeModal());
   };
 
   handleUpdateReclamationInvoice = (values, invoiceGuid) => {
     const payload = values;
-    // payload expects the basic invoice object without the following:
     delete payload.permit_guid;
     delete payload.reclamation_invoice_id;
     delete payload.reclamation_invoice_guid;
-    this.props.updateReclamationInvoice(payload, invoiceGuid).then(() => {
-      this.props.fetchMineReclamationInvoices(this.props.mineGuid).then(() => {
-        this.props.closeModal();
-        this.setState({ isInvoicesLoaded: true });
-      });
-    });
+    return this.props
+      .updateReclamationInvoice(payload, invoiceGuid)
+      .then(() => {
+        this.props.fetchMineReclamationInvoices(this.props.mineGuid).then(() => {
+          this.setState({ isInvoicesLoaded: true });
+        });
+      })
+      .then(() => this.props.closeModal());
   };
 
   openAddReclamationInvoiceModal = (event, permitGuid, balance) => {

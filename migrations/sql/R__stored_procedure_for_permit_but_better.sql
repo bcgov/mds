@@ -1,4 +1,3 @@
-
 CREATE OR REPLACE FUNCTION format_phone_number(tel_no varchar) RETURNS varchar AS $$
 BEGIN
     SELECT RIGHT(NULLIF(regexp_replace(tel_no, '\D', '','g'),''),10) INTO tel_no;
