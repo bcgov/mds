@@ -2,7 +2,7 @@
 kind: Template
 apiVersion: v1
 metadata:
-  name: docgen
+  name: loki
   creationTimestamp:
 parameters:
   - name: NAME

@@ -788,6 +788,18 @@
                     "memory": "64Mi"
                   }
                 }
+              },
+              {
+                "name": "jaeger-agent",
+                "image": "jaegertracing/jaeger-agent:1.18.1",
+                "ports": [
+                  { "containerPort": 5775, "protocol": "UDP" },
+                  { "containerPort": 6831, "protocol": "UDP" },
+                  { "containerPort": 6832, "protocol": "UDP" },
+                  { "containerPort": 5778, "protocol": "TCP" }
+                ],
+                "args": ["--collector.host-port=jaeger-collector.jaeger-infra.svc:14267"],
+                "volumeMounts": [{ "name": "jaeger-configuration-volume", "mountPath": "/conf" }]
               }
             ],
             "restartPolicy": "Always",
@@ -799,6 +811,12 @@
                 "name": "promtail-config",
                 "configMap": {
                   "name": "promtail-config"
+                }
+              },
+              {
+                "name": "jaeger-configuration-volume",
+                "configMap": {
+                  "name": "jaeger-config"
                 }
               }
             ]
