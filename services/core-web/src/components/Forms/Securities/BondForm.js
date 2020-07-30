@@ -9,6 +9,7 @@ import {
   maxLength,
   dateNotInFuture,
   currency,
+  date,
   dateNotBeforeOther,
   dateNotAfterOther,
 } from "@common/utils/Validate";
@@ -31,7 +32,6 @@ const propTypes = {
   closeModal: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
   submitting: PropTypes.bool.isRequired,
-  pristine: PropTypes.bool.isRequired,
   bond: CustomPropTypes.bond.isRequired,
   mineGuid: PropTypes.string.isRequired,
   provinceOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
@@ -184,6 +184,7 @@ export class BondForm extends Component {
                 component={RenderDate}
                 validate={[
                   required,
+                  date,
                   dateNotInFuture,
                   dateNotAfterOther(this.props.bond.closed_date),
                 ]}
@@ -227,6 +228,7 @@ export class BondForm extends Component {
                   component={RenderDate}
                   validate={[
                     required,
+                    date,
                     dateNotInFuture,
                     dateNotBeforeOther(this.props.bond.issue_date),
                   ]}
@@ -376,7 +378,7 @@ export class BondForm extends Component {
             className="full-mobile"
             type="primary"
             htmlType="submit"
-            disabled={this.props.submitting || this.props.pristine}
+            loading={this.props.submitting}
           >
             {this.props.title}
           </Button>

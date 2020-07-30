@@ -8,7 +8,7 @@ import { Field, reduxForm, formValueSelector } from "redux-form";
 import { Form, Button, Col, Row, Popconfirm, List } from "antd";
 import { renderConfig } from "@/components/common/config";
 import * as FORM from "@/constants/forms";
-import { required } from "@common/utils/Validate";
+import { required, date } from "@common/utils/Validate";
 import {
   resetForm,
   createDropDownList,
@@ -34,7 +34,6 @@ const propTypes = {
   initialValues: PropTypes.objectOf(PropTypes.any),
   selectedMineReportCategory: PropTypes.string,
   selectedMineReportDefinition: PropTypes.string,
-  disableAddReport: PropTypes.bool,
   mineReportStatusOptions: CustomPropTypes.options.isRequired,
   formMeta: PropTypes.any,
   showReportHistory: PropTypes.func.isRequired,
@@ -46,7 +45,6 @@ const defaultProps = {
   initialValues: {},
   selectedMineReportDefinition: undefined,
   selectedMineReportCategory: undefined,
-  disableAddReport: false,
 };
 
 const requiredReceivedDateIfUploadedFiles = (value, formValues) =>
@@ -229,7 +227,7 @@ export class AddReportForm extends Component {
                 label="Due Date*"
                 placeholder="Select due date"
                 component={renderConfig.DATE}
-                validate={[required]}
+                validate={[required, date]}
               />
             </Form.Item>
             <Form.Item>
@@ -239,7 +237,7 @@ export class AddReportForm extends Component {
                 label="Received Date"
                 placeholder="Select received date"
                 component={renderConfig.DATE}
-                validate={[requiredReceivedDateIfUploadedFiles]}
+                validate={[requiredReceivedDateIfUploadedFiles, date]}
               />
             </Form.Item>
             <ReportSubmissions
@@ -267,16 +265,17 @@ export class AddReportForm extends Component {
             onConfirm={this.props.closeModal}
             okText="Yes"
             cancelText="No"
+            disabled={this.props.submitting}
           >
-            <Button className="full-mobile" type="secondary">
+            <Button className="full-mobile" type="secondary" disabled={this.props.submitting}>
               Cancel
             </Button>
           </Popconfirm>
           <Button
-            disabled={this.props.disableAddReport}
             className="full-mobile"
             type="primary"
             htmlType="submit"
+            loading={this.props.submitting}
           >
             {this.props.title}
           </Button>

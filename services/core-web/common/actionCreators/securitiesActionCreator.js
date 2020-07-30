@@ -33,7 +33,10 @@ export const createBond = (payload) => (dispatch) => {
       dispatch(success(reducerTypes.CREATE_BOND));
       return response;
     })
-    .catch(() => dispatch(error(reducerTypes.CREATE_BOND)))
+    .catch((err) => {
+      dispatch(error(reducerTypes.CREATE_BOND));
+      throw new Error(err);
+    })
     .finally(() => dispatch(hideLoading("modal")));
 };
 
@@ -50,7 +53,10 @@ export const updateBond = (payload, bondGuid) => (dispatch) => {
       dispatch(success(reducerTypes.UPDATE_BOND));
       return response;
     })
-    .catch(() => dispatch(error(reducerTypes.UPDATE_BOND)))
+    .catch((err) => {
+      dispatch(error(reducerTypes.UPDATE_BOND));
+      throw new Error(err);
+    })
     .finally(() => dispatch(hideLoading("modal")));
 };
 
@@ -67,7 +73,10 @@ export const transferBond = (payload, bondGuid) => (dispatch) => {
       dispatch(success(reducerTypes.TRANSFER_BOND));
       return response;
     })
-    .catch(() => dispatch(error(reducerTypes.TRANSFER_BOND)))
+    .catch((err) => {
+      dispatch(error(reducerTypes.TRANSFER_BOND));
+      throw new Error(err);
+    })
     .finally(() => dispatch(hideLoading("modal")));
 };
 
@@ -96,7 +105,10 @@ export const createReclamationInvoice = (payload) => (dispatch) => {
       dispatch(success(reducerTypes.CREATE_RECLAMATION_INVOICE));
       return response;
     })
-    .catch(() => dispatch(error(reducerTypes.CREATE_RECLAMATION_INVOICE)))
+    .catch((err) => {
+      dispatch(error(reducerTypes.CREATE_RECLAMATION_INVOICE));
+      throw new Error(err);
+    })
     .finally(() => dispatch(hideLoading("modal")));
 };
 
@@ -113,6 +125,9 @@ export const updateReclamationInvoice = (payload, invoiceGuid) => (dispatch) => 
       dispatch(success(reducerTypes.UPDATE_RECLAMATION_INVOICE));
       return response;
     })
-    .catch(() => dispatch(error(reducerTypes.UPDATE_RECLAMATION_INVOICE)))
+    .catch((err) => {
+      dispatch(error(reducerTypes.UPDATE_RECLAMATION_INVOICE));
+      throw new Error(err);
+    })
     .finally(() => dispatch(hideLoading("modal")));
 };

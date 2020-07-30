@@ -171,6 +171,7 @@ class MinePartyAppointment(AuditMixin, Base):
             built_query = built_query.filter(
                 cls.mine_party_appt_type_code.in_(mine_party_appt_type_codes))
         results = built_query.all()
+        
         if include_permittees and mine_guid:
             #avoid circular imports.
             from app.api.mines.mine.models.mine import Mine

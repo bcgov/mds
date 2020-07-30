@@ -6,7 +6,6 @@ exports[`AddReportModal renders properly 1`] = `
     formContent={
       Array [
         <Memo(ConnectFunction)
-          disableAddReport={false}
           initialValues={Object {}}
           onSubmit={[MockFunction]}
           showReportHistory={[Function]}
