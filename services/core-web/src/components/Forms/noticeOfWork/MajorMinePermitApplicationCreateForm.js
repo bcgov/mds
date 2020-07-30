@@ -4,7 +4,7 @@ import { reduxForm, Field } from "redux-form";
 import { Form, Button, Col, Row } from "antd";
 import { compose } from "redux";
 import { connect } from "react-redux";
-import { required } from "@common/utils/Validate";
+import { required, date } from "@common/utils/Validate";
 import { resetForm } from "@common/utils/helpers";
 import { getDropdownNoticeOfWorkApplicationTypeOptions } from "@common/selectors/staticContentSelectors";
 import * as FORM from "@/constants/forms";
@@ -14,14 +14,11 @@ import { renderConfig } from "@/components/common/config";
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
-  isSubmitting: PropTypes.bool,
+  submitting: PropTypes.bool.isRequired,
   applicationTypeOptions: PropTypes.arrayOf(CustomPropTypes.options).isRequired,
   minePermits: PropTypes.arrayOf(CustomPropTypes.permit).isRequired,
 };
 
-const defaultProps = {
-  isSubmitting: false,
-};
 export const MajorMinePermitApplicationCreateForm = (props) => (
   <Form layout="vertical" onSubmit={props.handleSubmit}>
     <Row>
@@ -58,7 +55,7 @@ export const MajorMinePermitApplicationCreateForm = (props) => (
             name="submitted_date"
             label="Submitted Date *"
             component={renderConfig.DATE}
-            validate={[required]}
+            validate={[required, date]}
           />
         </Form.Item>
         <Form.Item>
@@ -67,18 +64,13 @@ export const MajorMinePermitApplicationCreateForm = (props) => (
             name="received_date"
             label="Received Date *"
             component={renderConfig.DATE}
-            validate={[required]}
+            validate={[required, date]}
           />
         </Form.Item>
       </Col>
     </Row>
     <div className="right center-mobile">
-      <Button
-        className="full-mobile"
-        type="primary"
-        htmlType="submit"
-        disabled={props.isSubmitting}
-      >
+      <Button className="full-mobile" type="primary" htmlType="submit" loading={props.submitting}>
         {props.title}
       </Button>
     </div>
@@ -90,7 +82,6 @@ const mapStateToProps = (state) => ({
 });
 
 MajorMinePermitApplicationCreateForm.propTypes = propTypes;
-MajorMinePermitApplicationCreateForm.defaultProps = defaultProps;
 
 export default compose(
   connect(mapStateToProps),

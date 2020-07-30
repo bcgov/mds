@@ -23,6 +23,7 @@ const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   party: CustomPropTypes.party.isRequired,
   closeModal: PropTypes.func.isRequired,
+  submitting: PropTypes.bool.isRequired,
   provinceOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
 };
 
@@ -288,10 +289,18 @@ export const EditFullPartyForm = (props) => {
             onConfirm={props.closeModal}
             okText="Yes"
             cancelText="No"
+            disabled={props.submitting}
           >
-            <Button className="full-mobile">Cancel</Button>
+            <Button className="full-mobile" disabled={props.submitting}>
+              Cancel
+            </Button>
           </Popconfirm>
-          <Button className="full-mobile" type="primary" htmlType="submit">
+          <Button
+            className="full-mobile"
+            type="primary"
+            htmlType="submit"
+            loading={props.submitting}
+          >
             {isPerson ? "Update Person" : "Update Company"}
           </Button>
         </div>

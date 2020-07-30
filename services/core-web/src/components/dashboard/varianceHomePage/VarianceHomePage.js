@@ -22,12 +22,12 @@ import {
   addDocumentToVariance,
 } from "@common/actionCreators/varianceActionCreator";
 import * as Strings from "@common/constants/strings";
+import { PageTracker } from "@common/utils/trackers";
 import { modalConfig } from "@/components/modalContent/config";
 import CustomPropTypes from "@/customPropTypes";
 import { VarianceTable } from "@/components/dashboard/customHomePage/VarianceTable";
 import * as router from "@/constants/routes";
 import VarianceSearch from "./VarianceSearch";
-import { PageTracker } from "@common/utils/trackers";
 
 /**
  * @class Variance page is a landing page for variance searching
@@ -73,7 +73,7 @@ export class VarianceHomePage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      variancesLoaded: false,
+      isLoaded: false,
       params: defaultParams,
     };
   }
@@ -94,17 +94,15 @@ export class VarianceHomePage extends Component {
   componentWillReceiveProps(nextProps) {
     const locationChanged = nextProps.location !== this.props.location;
     if (locationChanged) {
-      this.setState({ variancesLoaded: false }, () =>
-        this.renderDataFromURL(nextProps.location.search)
-      );
+      this.setState({ isLoaded: false }, () => this.renderDataFromURL(nextProps.location.search));
     }
   }
 
   renderDataFromURL = (params) => {
     const parsedParams = queryString.parse(params);
-    this.setState({ variancesLoaded: false });
+    this.setState({ isLoaded: false });
     this.props.fetchVariances(parsedParams).then(() => {
-      this.setState({ variancesLoaded: true });
+      this.setState({ isLoaded: true });
     });
   };
 
@@ -141,8 +139,7 @@ export class VarianceHomePage extends Component {
   };
 
   handleUpdateVariance = (files, variance, isApproved) => (values) => {
-    // if the application isApproved, set issue_date to today and set expiry_date 5 years from today,
-    // unless the user sets a custom expiry.
+    // If the application is approved, set the issue date to today and set the expiry date to 5 years from today if it is empty.
     const { variance_document_category_code } = values;
     let expiry_date;
     let issue_date;
@@ -156,24 +153,28 @@ export class VarianceHomePage extends Component {
     const mineGuid = variance.mine_guid;
     const varianceGuid = variance.variance_guid;
     const codeLabel = this.props.complianceCodesHash[variance.compliance_article_id];
-    this.props.updateVariance({ mineGuid, varianceGuid, codeLabel }, newValues).then(async () => {
-      await Promise.all(
-        Object.entries(files).map(([document_manager_guid, document_name]) =>
-          this.props.addDocumentToVariance(
-            { mineGuid, varianceGuid },
-            {
-              document_manager_guid,
-              document_name,
-              variance_document_category_code,
-            }
+    return this.props
+      .updateVariance({ mineGuid, varianceGuid, codeLabel }, newValues)
+      .then(async () => {
+        await Promise.all(
+          Object.entries(files).map(([document_manager_guid, document_name]) =>
+            this.props.addDocumentToVariance(
+              { mineGuid, varianceGuid },
+              {
+                document_manager_guid,
+                document_name,
+                variance_document_category_code,
+              }
+            )
           )
-        )
-      );
-      this.props.closeModal();
-      this.props.fetchVariances(this.state.params).then(() => {
-        this.setState({ variancesLoaded: true });
+        ).then(() => {
+          this.props.closeModal();
+          this.setState({ isLoaded: false });
+          this.props
+            .fetchVariances(this.state.params)
+            .finally(() => this.setState({ isLoaded: true }));
+        });
       });
-    });
   };
 
   openEditVarianceModal = (variance) => {
@@ -202,9 +203,9 @@ export class VarianceHomePage extends Component {
   };
 
   handleDeleteVariance = (variance) => {
-    this.props.deleteVariance(variance.mine_guid, variance.variance_guid).then(() => {
+    return this.props.deleteVariance(variance.mine_guid, variance.variance_guid).then(() => {
       this.props.fetchVariances(this.state.params).then(() => {
-        this.setState({ variancesLoaded: true });
+        this.setState({ isLoaded: true });
       });
     });
   };
@@ -232,7 +233,7 @@ export class VarianceHomePage extends Component {
             />
             <div>
               <VarianceTable
-                isLoaded={this.state.variancesLoaded}
+                isLoaded={this.state.isLoaded}
                 isApplication={this.state.isApplication}
                 variances={this.props.variances}
                 pageData={this.props.variancePageData}

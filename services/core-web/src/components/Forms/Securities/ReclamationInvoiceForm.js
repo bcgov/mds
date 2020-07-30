@@ -185,7 +185,7 @@ export class ReclamationInvoiceForm extends Component {
             className="full-mobile"
             type="primary"
             htmlType="submit"
-            disabled={this.props.submitting}
+            loading={this.props.submitting}
           >
             Save Reclamation Invoice
           </Button>
