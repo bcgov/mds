@@ -17,19 +17,3 @@ api = Api(
     doc='{}/'.format(Config.BASE_PATH),
     default='mds',
     default_label='MDS related operations')
-
-# config = Config(
-#     config={ # TODO: Read from from some yaml config
-#         'sampler': {
-#             'type': 'const',
-#             'param': 1,
-#         },
-#         'local_agent': {
-#             'reporting_host': 'jaeger' #TODO: Read from config
-#             'reporting_port': '5775'
-#         }
-#         'logging': True,
-#     },
-#     service_name='core-api',
-#     validate=True,
-# )

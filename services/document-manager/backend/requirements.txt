@@ -25,4 +25,3 @@ Werkzeug==0.15.4
 boto3==1.13.14
 celery==4.4.6
 numpy==1.19.0
-jaeger-client==4.3.0
