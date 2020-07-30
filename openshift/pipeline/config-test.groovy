@@ -231,7 +231,8 @@ app {
                             'CPU_REQUEST':"${vars.resources.tusd.cpu_request}",
                             'CPU_LIMIT':"${vars.resources.tusd.cpu_limit}",
                             'MEMORY_REQUEST':"${vars.resources.tusd.memory_request}",
-                            'MEMORY_LIMIT':"${vars.resources.tusd.memory_limit}"
+                            'MEMORY_LIMIT':"${vars.resources.tusd.memory_limit}",
+                            'DOCUMENT_MANAGER_URL': "${vars.modules.'mds-docman-backend'.HOST}${vars.modules.'mds-docman-backend'.PATH}"
                     ]
                 ],
                 [
@@ -403,9 +404,9 @@ environments {
                 }
                 python {
                     cpu_request = "100m"
-                    cpu_limit = "200m"
+                    cpu_limit = "400m"
                     memory_request = "384Mi"
-                    memory_limit = "1Gi"
+                    memory_limit = "2Gi"
                     uwsgi_threads = 2
                     uwsgi_processes = 4
                     replica_min = 3
