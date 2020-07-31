@@ -17,7 +17,7 @@ const Section = (props) => (
     <>
         <Row gutter={32}>
             <Col md={2}>
-                1.
+                {props.condition.step}
             </Col>
             <Col md={18}>
                 <Row>
@@ -54,7 +54,7 @@ const Section = (props) => (
                 </div>
             </Col>
         </Row>
-        {props.condition.conditions.map((condition) => <Condition condition={condition} />)}
+        {props.condition.sub_conditions.map((condition) => <Condition condition={condition} />)}
     </>
 );
 

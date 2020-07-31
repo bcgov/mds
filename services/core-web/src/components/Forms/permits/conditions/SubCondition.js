@@ -20,7 +20,7 @@ const SubCondition = (props) => (
             <Col md={2} />
             <Col md={18}>
                 <Row>
-                    <Col>{props.condition.condition}</Col>
+                    <Col>{props.condition.step}{props.condition.step && " "}{props.condition.condition}</Col>
                 </Row>
                 <Row>
                     <Col>
@@ -61,7 +61,7 @@ const SubCondition = (props) => (
                 </div>
             </Col>
         </Row>
-        {props.condition.conditions.map((condition) => <Condition condition={condition} />)}
+        {props.condition.sub_conditions.map((condition) => <Condition condition={condition} />)}
     </>
 );
 

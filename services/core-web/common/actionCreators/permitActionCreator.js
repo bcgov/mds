@@ -189,3 +189,24 @@ export const deletePermitAmendment = (mineGuid, permitGuid, permitAmdendmentGuid
     .catch(() => dispatch(error(reducerTypes.DELETE_PERMIT_AMENDMENT)))
     .finally(() => dispatch(hideLoading()));
 };
+
+
+export const fetchPermitConditions = (mineGuid, permitGuid, permitAmdendmentGuid) => (dispatch) => {
+  dispatch(request(reducerTypes.GET_PERMIT_CONDITIONS));
+  dispatch(showLoading());
+  return CustomAxios()
+    .get(
+      `${ENVIRONMENT.apiUrl}${API.PERMIT_CONDITIONS(mineGuid, permitGuid, permitAmdendmentGuid)}`,
+      createRequestHeader()
+    )
+    .then((response) => {
+      notification.success({
+        message: "Successfully fetched permit conditions.",
+        duration: 10,
+      });
+      dispatch(success(reducerTypes.GET_PERMIT_CONDITIONS));
+      dispatch(permitActions.storePermitConditions(response.data));
+    })
+    .catch(() => dispatch(error(reducerTypes.GET_PERMIT_CONDITIONS)))
+    .finally(() => dispatch(hideLoading()));
+};
