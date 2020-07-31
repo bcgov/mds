@@ -38,8 +38,8 @@ CREATE TABLE IF NOT EXISTS permit_conditions
     permit_amendment_id                 integer                                  NOT NULL,
     permit_condition_guid               uuid           DEFAULT gen_random_uuid() NOT NULL,
     condition                           varchar                                  NOT NULL,
-    condition_category                  varchar                                  NOT NULL,
-    condition_type                      varchar                                  NOT NULL,
+    condition_category_code             varchar                                  NOT NULL,
+    condition_type_code                 varchar                                  NOT NULL,
     deleted_ind                         boolean                    DEFAULT false NOT NULL,
     parent_condition_id                 integer                                          ,
     display_order                       integer                                  NOT NULL,
@@ -51,8 +51,8 @@ CREATE TABLE IF NOT EXISTS permit_conditions
 
     FOREIGN KEY (permit_amendment_id) REFERENCES permit_amendment(permit_amendment_id),
     FOREIGN KEY (parent_condition_id) REFERENCES permit_conditions(permit_condition_id),
-    FOREIGN KEY (condition_category) REFERENCES permit_condition_category(condition_category_code),
-    FOREIGN KEY (condition_type) REFERENCES permit_condition_type(condition_type_code)
+    FOREIGN KEY (condition_category_code) REFERENCES permit_condition_category(condition_category_code),
+    FOREIGN KEY (condition_type_code) REFERENCES permit_condition_type(condition_type_code)
 );
 
 ALTER TABLE permit_conditions OWNER TO mds;
