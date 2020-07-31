@@ -24,12 +24,14 @@ class PermitConditions(AuditMixin, Base):
     permit_amendment_id = db.Column(
         db.Integer, db.ForeignKey('permit_amendment.permit_amendment_id'), nullable=False)
     permit_condition_guid = db.Column(UUID(as_uuid=True), server_default=FetchedValue())
-    permit_type = db.Column(
-        db.String, db.ForeignKey('notice_of_work_type.notice_of_work_type_code'), nullable=False)
     condition = db.Column(db.String, nullable=False)
     condition_category = db.Column(
         db.String,
         db.ForeignKey('permit_condition_category.condition_category_code'),
+        nullable=False)
+    condition_type = db.Column(
+        db.String,
+        db.ForeignKey('permit_condition_type.permit_condition_type_code'),
         nullable=False)
     deleted_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
     parent_condition_id = db.Column(db.Integer,

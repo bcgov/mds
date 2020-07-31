@@ -39,7 +39,7 @@ class PermitConditionsListResource(Resource, UserMixin):
 
     @api.doc(description='Get all permit conditions for a specific amendment')
     @requires_role_edit_permit
-    @api.marshal_with(PERMIT_CONDITION_MODEL, code=200)
+    @api.marshal_with(PERMIT_CONDITION_MODEL, code=200, envelope='records')
     def get(self, mine_guid, permit_guid, permit_amendment_guid):
         permit_amendment = PermitAmendment.find_by_permit_amendment_guid(permit_amendment_guid)
 

@@ -17,7 +17,7 @@ const ListItem = (props) => (
     <>
         <Row gutter={32}>
             <Col md={2}>
-                a.
+                {props.condition.step}
             </Col>
             <Col md={18}>
                 <Row>

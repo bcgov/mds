@@ -487,6 +487,7 @@ PERMIT_CONDITION_MODEL = api.model(
         'permit_condition_guid': fields.String,
         'condition': fields.String,
         'condition_category': fields.String,
+        'condition_type': fields.String,
         'parent_condition_id': fields.Integer,
         'sub_conditions': fields.List(PermitCondition),
         'display_order': fields.Integer,
