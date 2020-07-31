@@ -48,7 +48,6 @@ class PermitConditionsListResource(Resource, UserMixin):
 
         conditions = PermitConditions.find_all_by_permit_amendment_id(
             permit_amendment.permit_amendment_id)
-        current_app.logger.debug(conditions[0].sub_conditions)
 
         return conditions
 
