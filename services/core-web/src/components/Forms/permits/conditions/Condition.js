@@ -17,7 +17,7 @@ const ConditionComponent = (props) =>
         'SEC': <Section {...props} />,
         'CON': <SubCondition {...props} />,
         'LST': <ListItem {...props} />,
-    }[props.condition.condition_type]);
+    }[props.condition.condition_type_code]);
 
 const Condition = (props) => (
     <Row>

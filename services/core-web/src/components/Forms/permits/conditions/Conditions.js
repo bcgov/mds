@@ -40,7 +40,7 @@ export class Conditions extends Component {
                 <Collapse>
                     {this.props.permitConditionCategoryOptions.map((conditionCategory) =>
                         <Panel header={conditionCategory.description} key={conditionCategory.condition_category_code} id={conditionCategory.condition_category_code}>
-                            {this.props.conditions.filter((condition) => condition.condition_category === conditionCategory.condition_category_code).map((condition) => <Condition condition={condition} />)}
+                            {this.props.conditions.filter((condition) => condition.condition_category_code === conditionCategory.condition_category_code).map((condition) => <Condition condition={condition} />)}
                         </Panel>
                     )}
                 </Collapse>
