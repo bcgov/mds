@@ -41,15 +41,15 @@ export class Conditions extends Component {
                     {this.props.permitConditionCategoryOptions.map((conditionCategory) =>
                         <Panel header={conditionCategory.description} key={conditionCategory.condition_category_code} id={conditionCategory.condition_category_code}>
                             {this.props.conditions.filter((condition) => condition.condition_category_code === conditionCategory.condition_category_code).map((condition) => <Condition condition={condition} />)}
+                            <Divider />
+                            <AddButton type="secondary">Add Sub-Section</AddButton>
+                            <Button type="secondary" className="full-mobile btn--middle">
+                                <Icon type="undo" theme="outlined" className="padding-small--right icon-sm" />
+                                Restore Deleted Standard Conditions
+                            </Button>
                         </Panel>
                     )}
                 </Collapse>
-                <Divider />
-                <AddButton type="secondary">Add Sub-Section</AddButton>
-                <Button type="secondary" className="full-mobile btn--middle">
-                    <Icon type="undo" theme="outlined" className="padding-small--right icon-sm" />
-                    Restore Deleted Standard Conditions
-                </Button>
             </>
         );
     }
