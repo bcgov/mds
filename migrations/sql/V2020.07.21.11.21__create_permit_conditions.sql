@@ -66,6 +66,7 @@ CREATE TABLE IF NOT EXISTS standard_permit_conditions
     permit_type                         varchar                                  NOT NULL,
     condition                           varchar                                  NOT NULL,
     condition_category                  varchar                                  NOT NULL,
+    condition_type                      varchar                                  NOT NULL,
     deleted_ind                         boolean                    DEFAULT false NOT NULL,
     display_order                       integer                                  NOT NULL,
 
@@ -75,7 +76,8 @@ CREATE TABLE IF NOT EXISTS standard_permit_conditions
     update_timestamp                    timestamp with time zone DEFAULT now()   NOT NULL,
 
     FOREIGN KEY (condition_category) REFERENCES permit_condition_category(condition_category_code),
-    FOREIGN KEY (permit_type) REFERENCES notice_of_work_type(notice_of_work_type_code)
+    FOREIGN KEY (permit_type) REFERENCES notice_of_work_type(notice_of_work_type_code),
+    FOREIGN KEY (condition_type) REFERENCES permit_condition_type(condition_type_code)
 );
 
 ALTER TABLE standard_permit_conditions OWNER TO mds;
