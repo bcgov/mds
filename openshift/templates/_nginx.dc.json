@@ -245,7 +245,7 @@
                 "name": "promtail",
                 "image": "grafana/promtail:k14-60b97e3",
                 "args": [
-                  "-config.file=/etc/promtail/nginx.yaml",
+                  "--config.file=/etc/promtail/nginx.yaml",
                   "--client.url=http://loki:3100/loki/api/v1/push",
                   "--client.external-labels=env=${VERSION},pod=${HOSTNAME}"
                 ],
