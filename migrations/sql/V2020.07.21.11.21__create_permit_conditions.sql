@@ -68,6 +68,7 @@ CREATE TABLE IF NOT EXISTS standard_permit_conditions
     condition_category                  varchar                                  NOT NULL,
     condition_type                      varchar                                  NOT NULL,
     deleted_ind                         boolean                    DEFAULT false NOT NULL,
+    parent_standard_permit_condition_id integer                                          ,
     display_order                       integer                                  NOT NULL,
 
     create_user                         character varying(60)                    NOT NULL,
@@ -76,6 +77,7 @@ CREATE TABLE IF NOT EXISTS standard_permit_conditions
     update_timestamp                    timestamp with time zone DEFAULT now()   NOT NULL,
 
     FOREIGN KEY (condition_category) REFERENCES permit_condition_category(condition_category_code),
+    FOREIGN KEY (parent_standard_permit_condition_id) REFERENCES standard_permit_conditions(standard_permit_condition_id),
     FOREIGN KEY (permit_type) REFERENCES notice_of_work_type(notice_of_work_type_code),
     FOREIGN KEY (condition_type) REFERENCES permit_condition_type(condition_type_code)
 );

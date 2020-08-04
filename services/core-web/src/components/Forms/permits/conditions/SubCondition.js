@@ -27,11 +27,6 @@ const SubCondition = (props) => (
                         <AddButton type="secondary">Add List Item</AddButton>
                     </Col>
                 </Row>
-                <Row>
-                    <Col>
-                        <AddButton type="secondary">Add Condition</AddButton>
-                    </Col>
-                </Row>
             </Col>
             <Col md={4}>
                 <div align="right" className="btn--middle flex">
