@@ -53,7 +53,6 @@ exports[`ModalWrapper renders properly 1`] = `
         "zIndex": 100,
       }
     }
-    useWidth={true}
   />
   <Connect(AddPartyComponentWrapper)
     childProps={
