@@ -133,13 +133,12 @@ class BondTransferResource(Resource, UserMixin):
         if bond.permit.mine_guid not in [m.mine_guid for m in permit._all_mines]:
             raise BadRequest('You can only transfer to a permit on the same mine.')
 
-        # Get the note to apply to the bond and the transferred bond
+        # Get the note to apply to the bond's closed note and the transferred bond's note
         note = request.json.get('note', None)
-        if note:
-            bond.note = note
 
         # Release the bond
         bond.bond_status_code = "REL"
+        bond.closed_note = note
 
         # Create the new "transferred bond"
         new_bond_json = marshal(bond, BOND)

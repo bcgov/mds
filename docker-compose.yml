@@ -1,26 +1,24 @@
-version: "2"
+version: "3"
 
 services:
   ####################### Keycloak Definition #######################
-  keycloak:
-    restart: always
-    container_name: mds_keycloak
-    image: jboss/keycloak
-    environment:
-      - KEYCLOAK_USER=admin
-      - KEYCLOAK_PASSWORD=admin
-      - KEYCLOAK_IMPORT=/tmp/keycloak-local-realm.json
-      - DB_VENDOR=h2
-    volumes:
-      - ./settings/keycloak/keycloak-local-realm.json:/tmp/keycloak-local-realm.json
-      - ./settings/keycloak/keycloak-local-user.sh:/tmp/keycloak-local-user.sh
-    ports:
-      - "8080:8080"
-      - "8443:8443"
-    networks:
-      - mds
-    # logging:
-    #     driver: none
+  # keycloak:
+  #   restart: always
+  #   container_name: mds_keycloak
+  #   image: jboss/keycloak
+  #   environment:
+  #     - KEYCLOAK_USER=admin
+  #     - KEYCLOAK_PASSWORD=admin
+  #     - KEYCLOAK_IMPORT=/tmp/keycloak-local-realm.json
+  #     - DB_VENDOR=h2
+  #   volumes:
+  #     - ./monitoring/keycloak/keycloak-local-realm.json:/tmp/keycloak-local-realm.json
+  #     - ./monitoring/keycloak/keycloak-local-user.sh:/tmp/keycloak-local-user.sh
+  #   ports:
+  #     - "8080:8080"
+  #     - "8443:8443"
+  #   # logging:
+  #   #     driver: none
 
   ####################### Postgres Definition #######################
   postgres:
@@ -36,9 +34,7 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - postgres-data:/var/lib/postgresql/data
-    networks:
-      - mds
+      - postgres_data:/var/lib/postgresql/data
 
   ####################### Flyway Migration Definition #######################
   flyway:
@@ -61,8 +57,6 @@ services:
       - METABASE_USER_PASSWORD=metabase_pass
     depends_on:
       - postgres
-    networks:
-      - mds
 
   ####################### Backend Definition #######################
   backend:
@@ -75,14 +69,13 @@ services:
       - 5000:5000
     volumes:
       - ./services/core-api/:/app/
+      - core_api_logs:/var/log/core-api/
     depends_on:
       - flyway
       - redis
       - nris_backend
       - document_manager_backend
       - tusd
-    networks:
-      - mds
 
   ####################### Redis Definition #######################
   redis:
@@ -92,8 +85,6 @@ services:
     command: redis-server --requirepass redis-password
     ports:
       - "6379:6379"
-    networks:
-      - mds
 
   ####################### Frontend Definition #######################
   frontend:
@@ -109,8 +100,6 @@ services:
     depends_on:
       - backend
     env_file: ./services/core-web/.env
-    networks:
-      - mds
 
   minespace:
     restart: always
@@ -125,8 +114,6 @@ services:
     depends_on:
       - backend
     env_file: ./services/minespace-web/.env
-    networks:
-      - mds
 
   ####################### NRIS_BACKEND Definition #######################
   nris_backend:
@@ -143,8 +130,6 @@ services:
       - redis
       - nris_migrate
     env_file: ./services/nris-api/backend/.env
-    networks:
-      - mds
 
   nris_migrate:
     restart: on-failure
@@ -158,8 +143,6 @@ services:
       - redis
     command: flask db upgrade
     env_file: ./services/nris-api/backend/.env
-    networks:
-      - mds
 
   ####################### TUSD Definition #######################
   tusd:
@@ -169,8 +152,6 @@ services:
     ports:
       - 1080:1080
     env_file: ./services/tusd/.env
-    networks:
-      - mds
 
   ####################### DOCUMENT_MANAGER_BACKEND Definition #######################
   document_manager_backend:
@@ -188,8 +169,6 @@ services:
       - document_manager_migrate
       - tusd
     env_file: ./services/document-manager/backend/.env
-    networks:
-      - mds
 
   document_manager_migrate:
     restart: on-failure
@@ -203,8 +182,6 @@ services:
       - redis
     command: flask db upgrade
     env_file: ./services/document-manager/backend/.env
-    networks:
-      - mds
 
   ####################### DOCUMENT_GENERATION Definition #######################
   docgen-api:
@@ -220,14 +197,123 @@ services:
     #  - ./services/docgen-api/:/carbone-api/
     ports:
       - 3030:3030
-    networks:
-      - mds
 
-####################### Networks Definition #######################
+  ####################### Logging and Monitoring #######################
+
+  loki:
+    image: grafana/loki:latest
+    ports:
+      - "3100:3100"
+    command: -config.file=/etc/loki/loki.local.yaml
+    volumes:
+      - ./monitoring/loki/loki.local.yaml:/etc/loki/loki.local.yaml
+
+  promtail:
+    image: grafana/promtail:latest
+    volumes:
+      - ./monitoring/promtail/promtail.local.yaml:/etc/promtail/promtail.local.yaml
+      - core_api_logs:/mnt/core-api
+      - core_web_logs:/mnt/core-web
+    command: -config.file=/etc/promtail/promtail.local.yaml
+    expose:
+      - 1514
+
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    volumes:
+      - ./monitoring/prometheus/prometheus.local.yaml:/etc/prometheus/prometheus.local.yaml
+      - prometheus_data:/prometheus
+    command:
+      - "--config.file=/etc/prometheus/prometheus.local.yaml"
+      - "--storage.tsdb.path=/prometheus"
+      - "--web.console.libraries=/usr/share/prometheus/console_libraries"
+      - "--web.console.templates=/usr/share/prometheus/consoles"
+    ports:
+      - "9090:9090"
+    restart: always
+
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    user: "104"
+    depends_on:
+      - prometheus
+    ports:
+      - 3010:3000
+    volumes:
+      - grafana_storage:/var/lib/grafana
+      - ./monitoring/grafana/provisioning/:/etc/grafana/provisioning/
+    env_file:
+      - ./monitoring/grafana/env
+    restart: always
+
+  # jaeger:
+  #   image: jaegertracing/all-in-one:latest
+  #   ports:
+  #     - "6831:6831/udp"
+  #     - "16686:16686"
+
+  ############################# Container metrics ###########################
+  # https://github.com/maheshmahadevan/docker-monitoring-windows
+  node-exporter:
+    image: prom/node-exporter
+    container_name: node-exporter
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+    command:
+      - "--path.procfs=/host/proc"
+      - "--path.sysfs=/host/sys"
+      - --collector.filesystem.ignored-mount-points
+      - "^/(sys|proc|dev|host|etc|rootfs/var/lib/docker/containers|rootfs/var/lib/docker/overlay2|rootfs/run/docker/netns|rootfs/var/lib/docker/aufs)($$|/)"
+    ports:
+      - 9100:9100
+    restart: always
+
+  cadvisor:
+    image: google/cadvisor
+    container_name: cadvisor
+    volumes:
+      - /var/run:/var/run:rw
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+    ports:
+      - 8080:8080
+    restart: always
+
+  ############################# Exporters ###################################
+  # https://github.com/rongfengliang/redis-exporter-prometheus-docker-compose
+  redis_monitoring:
+    image: oliver006/redis_exporter:latest
+    container_name: mds_cache_monitoring
+    command: -redis.addr redis://redis:6379 -redis.password redis-password
+    restart: always
+    depends_on:
+      - redis
+    ports:
+      - "9121"
+  # https://github.com/wrouesnel/postgres_exporter
+  postgres_monitoring:
+    image: wrouesnel/postgres_exporter
+    container_name: mds_postgres_monitoring
+    environment:
+      - DATA_SOURCE_NAME=postgresql://mds:test@postgres:5432/mds?sslmode=disable
+    restart: always
+    depends_on:
+      - postgres
+    ports:
+      - "9187"
+
+####################### Networks Definition ######################
 networks:
-  mds:
+  default:
     driver: "bridge"
 
 ####################### Volumes Definition #######################
 volumes:
-  postgres-data:
+  postgres_data: {}
+  prometheus_data: {}
+  grafana_storage: {}
+  core_api_logs: {}
+  core_web_logs: {}

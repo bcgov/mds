@@ -1,6 +1,8 @@
 import uuid
 import os
 import requests
+import base64
+
 from datetime import datetime
 from urllib.parse import urlparse
 from app.services.object_store_storage_service import ObjectStoreStorageService
@@ -11,13 +13,9 @@ from flask_restplus import Resource, reqparse
 
 from app.docman.models.document import Document
 from app.extensions import api, cache
-from app.utils.access_decorators import requires_any_of, MINE_EDIT, VIEW_ALL, MINESPACE_PROPONENT, EDIT_PARTY, EDIT_PERMIT, EDIT_DO, EDIT_VARIANCE
+from app.utils.access_decorators import requires_any_of, DOCUMENT_UPLOAD_ROLES
 from app.constants import OBJECT_STORE_PATH, OBJECT_STORE_UPLOAD_RESOURCE, FILE_UPLOAD_SIZE, FILE_UPLOAD_OFFSET, FILE_UPLOAD_PATH, DOWNLOAD_TOKEN, TIMEOUT_24_HOURS, TUS_API_VERSION, TUS_API_SUPPORTED_VERSIONS, FORBIDDEN_FILETYPES
 from app.config import Config
-
-DOCUMENT_UPLOAD_ROLES = [
-    MINE_EDIT, EDIT_PARTY, EDIT_PERMIT, EDIT_DO, EDIT_VARIANCE, MINESPACE_PROPONENT
-]
 
 
 @api.route('/documents')
@@ -70,16 +68,21 @@ class DocumentListResource(Resource):
         # If the object store is enabled, send the post request through to TUSD to the object store
         object_store_path = None
         if Config.OBJECT_STORE_ENABLED:
-            resp = requests.post(
-                url=Config.TUSD_URL,
-                headers={key: value
-                         for (key, value) in request.headers if key != 'Host'},
-                data=request.data)
+
+            # Add the path to be used in the post-finish tusd hook to set the correct object store path
+            headers = {key: value for (key, value) in request.headers if key != 'Host'}
+            path = base64.b64encode(file_path.encode('utf-8')).decode('utf-8')
+            doc_guid = base64.b64encode(document_guid.encode('utf-8')).decode('utf-8')
+            upload_metadata = request.headers["Upload-Metadata"]
+            headers['Upload-Metadata'] = f'{upload_metadata},path {path},doc_guid {doc_guid}'
+
+            # Send the request
+            resp = requests.post(url=Config.TUSD_URL, headers=headers, data=request.data)
             if resp.status_code != requests.codes.created:
                 message = f'Cannot upload file. Object store responded with {resp.status_code} ({resp.reason}): {resp._content}'
+                current_app.logger.error(message)
                 current_app.logger.error(f'POST resp.request:\n{resp.request.__dict__}')
                 current_app.logger.error(f'POST resp:\n{resp.__dict__}')
-                current_app.logger.error(message)
                 raise BadGateway(message)
 
             object_store_upload_resource = urlparse(resp.headers['Location']).path.split('/')[-1]

@@ -63,7 +63,7 @@ export class MineVariance extends Component {
   }
 
   handleDeleteVariance = (variance) => {
-    this.props.deleteVariance(variance.mine_guid, variance.variance_guid).then(() => {
+    return this.props.deleteVariance(variance.mine_guid, variance.variance_guid).then(() => {
       this.props.fetchVariancesByMine({ mineGuid: this.props.mineGuid });
     });
   };
@@ -91,15 +91,18 @@ export class MineVariance extends Component {
               }
             )
           )
-        );
-        this.props.closeModal();
-        this.props.fetchVariancesByMine({ mineGuid: this.props.mineGuid });
+        ).then(() => {
+          this.props.closeModal();
+          this.setState({ isLoaded: false });
+          this.props
+            .fetchVariancesByMine({ mineGuid: this.props.mineGuid })
+            .then(() => this.setState({ isLoaded: true }));
+        });
       });
   };
 
   handleUpdateVariance = (files, variance, isApproved) => (values) => {
-    // if the application isApproved, set issue_date to today and set expiry_date 5 years from today,
-    // unless the user sets dates
+    // If the application is approved, set the issue date to today and set the expiry date to 5 years from today if it is empty.
     const { variance_document_category_code } = values;
     let expiry_date;
     let issue_date;
@@ -111,7 +114,7 @@ export class MineVariance extends Component {
     }
     const varianceGuid = variance.variance_guid;
     const codeLabel = this.props.complianceCodesHash[variance.compliance_article_id];
-    this.props
+    return this.props
       .updateVariance(
         { mineGuid: this.props.mineGuid, varianceGuid, codeLabel },
         { ...values, issue_date, expiry_date }
@@ -129,8 +132,13 @@ export class MineVariance extends Component {
             )
           )
         );
+      })
+      .then(() => {
         this.props.closeModal();
-        this.props.fetchVariancesByMine({ mineGuid: this.props.mineGuid });
+        this.setState({ isLoaded: false });
+        this.props
+          .fetchVariancesByMine({ mineGuid: this.props.mineGuid })
+          .then(() => this.setState({ isLoaded: true }));
       });
   };
 

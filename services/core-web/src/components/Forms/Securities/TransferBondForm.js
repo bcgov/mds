@@ -14,7 +14,6 @@ const propTypes = {
   closeModal: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
   submitting: PropTypes.bool.isRequired,
-  pristine: PropTypes.bool.isRequired,
   permits: PropTypes.arrayOf(CustomPropTypes.permit).isRequired,
 };
 
@@ -26,7 +25,7 @@ export const TransferBondForm = (props) => (
           <Field
             id="permit_guid"
             name="permit_guid"
-            label="Select a Permit *"
+            label="Permit *"
             component={RenderSelect}
             data={props.permits.map((p) => {
               return { value: p.permit_guid, label: p.permit_no };
@@ -55,12 +54,7 @@ export const TransferBondForm = (props) => (
           Cancel
         </Button>
       </Popconfirm>
-      <Button
-        className="full-mobile"
-        type="primary"
-        htmlType="submit"
-        disabled={props.submitting || props.pristine}
-      >
+      <Button className="full-mobile" type="primary" htmlType="submit" loading={props.submitting}>
         {props.title}
       </Button>
     </div>

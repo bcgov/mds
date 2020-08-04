@@ -12,7 +12,7 @@ import {
   getWidth,
   getIsViewOnly,
 } from "@common/selectors/modalSelectors";
-import LoadingBar from "@/components/loadingBar";
+import LoadingBar from "react-redux-loading-bar";
 import * as Styles from "@/constants/styles";
 import AddPartyComponentWrapper from "./AddPartyComponentWrapper";
 
@@ -79,7 +79,6 @@ export class ModalWrapper extends Component {
           </Popconfirm>
         )}
         <LoadingBar
-          useWidth
           scope="modal"
           style={{
             position: "absolute",
