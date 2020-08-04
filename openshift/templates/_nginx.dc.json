@@ -93,21 +93,6 @@
   ],
   "objects": [
     {
-      "apiVersion": "v1",
-      "kind": "PersistentVolumeClaim",
-      "metadata": {
-        "name": "mds-access-logs${SUFFIX}"
-      },
-      "spec": {
-        "accessModes": ["ReadWriteMany"],
-        "resources": {
-          "requests": {
-            "storage": "${LOG_PVC_SIZE}"
-          }
-        }
-      }
-    },
-    {
       "kind": "ImageStream",
       "apiVersion": "v1",
       "metadata": {
@@ -287,12 +272,7 @@
               }
             ],
             "volumes": [
-              {
-                "name": "${NAME}${SUFFIX}-log",
-                "persistentVolumeClaim": {
-                  "claimName": "mds-access-logs${SUFFIX}"
-                }
-              },
+              { "emptyDir": {}, "name": "${NAME}${SUFFIX}-log" },
               {
                 "name": "promtail-config",
                 "configMap": {
