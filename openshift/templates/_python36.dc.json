@@ -624,7 +624,7 @@
                 },
                 "volumeMounts": [
                   {
-                    "mountPath": "/var/log/uwsgi",
+                    "mountPath": "/var/log",
                     "name": "logs"
                   }
                 ],
@@ -769,7 +769,7 @@
                 ],
                 "volumeMounts": [
                   {
-                    "mountPath": "/var/log/core-api",
+                    "mountPath": "/logs/",
                     "name": "logs",
                     "readOnly": true
                   },
