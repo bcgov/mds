@@ -25,6 +25,8 @@ class StandardPermitConditions(AuditMixin, Base):
     deleted_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
     parent_condition_id = db.Column(
         db.Integer, db.ForeignKey('permit_conditions.permit_condition_id'), nullable=False)
+    parent_standard_permit_condition_id = db.Column(db.Integer,
+                                    db.ForeignKey('standard_permit_conditions.standard_permit_condition_id'))
     display_order = db.Column(db.Integer, nullable=False)
 
     def __repr__(self):
