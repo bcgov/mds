@@ -3,7 +3,7 @@ import { createSelector } from "reselect";
 import { getNoticeOfWork } from "@common/selectors/noticeOfWorkSelectors";
 import * as permitReducer from "../reducers/permitReducer";
 
-export const { getPermits, getDraftPermits } = permitReducer;
+export const { getPermits, getDraftPermits, getPermitConditions } = permitReducer;
 
 export const getDraftPermitForNOW = createSelector(
   [getDraftPermits, getNoticeOfWork],

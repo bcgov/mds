@@ -1,5 +1,5 @@
 from app.extensions import api
-from flask_restplus import fields
+from flask_restplus import fields, marshal
 
 from app.api.compliance.response_models import COMPLIANCE_ARTICLE_MODEL
 
@@ -7,6 +7,11 @@ from app.api.compliance.response_models import COMPLIANCE_ARTICLE_MODEL
 class DateTime(fields.Raw):
     def format(self, value):
         return value.strftime("%Y-%m-%d %H:%M") if value else None
+
+
+class PermitCondition(fields.Raw):
+    def format(self, value):
+        return marshal(value, PERMIT_CONDITION_MODEL)
 
 
 BASIC_MINE_LOCATION_MODEL = api.model(
@@ -103,7 +108,7 @@ PERMIT_AMENDMENT_MODEL = api.model(
                                                                                          # 'permit_amendment_status_description': fields.String,                                                                            #'permit_amendment_type_description': fields.String,
         'description': fields.String,
         'lead_inspector_title': fields.String,
-        'regional_office':fields.String,
+        'regional_office': fields.String,
         'now_application_guid': fields.String,
         'related_documents': fields.List(fields.Nested(PERMIT_AMENDMENT_DOCUMENT_MODEL))
     })
@@ -474,3 +479,31 @@ MINE_COMPLIANCE_RESPONSE_MODEL = api.model(
             api.model('NUM_INSPECTIONS', {'num_inspections': fields.Integer})),
         'orders': fields.List(fields.Nested(ORDER_MODEL)),
     })
+
+PERMIT_CONDITION_MODEL = api.model(
+    'PermitCondition', {
+        'permit_condition_id': fields.Integer,
+        'permit_amendment_id': fields.Integer,
+        'permit_condition_guid': fields.String,
+        'condition': fields.String,
+        'condition_type_code': fields.String,
+        'condition_category_code': fields.String,
+        'parent_condition_id': fields.Integer,
+        'condition_type_code': fields.String,
+        'sub_conditions': fields.List(PermitCondition),
+        'step': fields.String,
+        'display_order': fields.Integer,
+    })
+
+PERMIT_CONDITION_CATEGORY_MODEL = api.model(
+    'PermitConditionCategory', {
+        'condition_category_code': fields.String,
+        'description': fields.String,
+        'display_order': fields.Integer
+    })
+
+PERMIT_CONDITION_TYPE_MODEL = api.model('PermitConditionType', {
+    'condition_type_code': fields.String,
+    'description': fields.String,
+    'display_order': fields.Integer
+})

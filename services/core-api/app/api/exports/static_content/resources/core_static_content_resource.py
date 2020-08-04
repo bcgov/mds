@@ -43,6 +43,8 @@ from app.api.now_applications.models.now_application_review_type import NOWAppli
 from app.api.securities.models.bond_status import BondStatus
 from app.api.securities.models.bond_type import BondType
 from app.api.securities.models.bond_document_type import BondDocumentType
+from app.api.mines.permits.permit_conditions.models.permit_condition_category import PermitConditionCategory
+from app.api.mines.permits.permit_conditions.models.permit_condition_type import PermitConditionType
 
 from app.api.parties.party.models.party import Party
 
@@ -55,7 +57,7 @@ MODELS_GET_ACTIVE = [
     UnitType, NOWApplicationType, NOWApplicationStatus, NOWApplicationDocumentType,
     UndergroundExplorationType, NOWApplicationProgressStatus, NOWApplicationPermitType,
     MinePartyAppointmentType, NOWApplicationReviewType, BondType, BondStatus, BondDocumentType,
-    ExemptionFeeStatus
+    ExemptionFeeStatus, PermitConditionType, PermitConditionCategory
 ]
 
 
@@ -74,7 +76,8 @@ class StaticContentResource(Resource):
     )
     @requires_role_view_all
     def get(self):
-        content_json = cache.get(STATIC_CONTENT_KEY)
+        # content_json = cache.get(STATIC_CONTENT_KEY)
+        content_json = None
         if not content_json:
             current_app.logger.debug('CACHE MISS - core-static-content')
             content = generate_static_content_dict()

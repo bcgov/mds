@@ -38,6 +38,8 @@ const baseExpectedValue = {
   bondTypeOptions: [],
   bondDocumentTypeOptions: [],
   exemptionFeeStatusOptions: [],
+  permitConditionTypeOptions: [],
+  permitConditionCategoryOptions: [],
 };
 
 // Creates deep copy of javascript object instead of setting a reference
