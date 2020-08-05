@@ -4,18 +4,18 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Divider, Icon, Row, Collapse, Button } from "antd";
 import { openModal, closeModal } from "@common/actions/modalActions";
-import CustomPropTypes from "@/customPropTypes";
-import Condition from "@/components/Forms/permits/conditions/Condition";
-import Section from "@/components/Forms/permits/conditions/Section";
-import AddButton from "@/components/common/AddButton";
 import {
   getPermitConditionCategoryOptions,
   getPermitConditionTypeOptions,
 } from "@common/selectors/staticContentSelectors";
-import { getPermitConditions } from "@common/selectors/permitSelectors";
+import { getPermitConditions, getDraftPermitForNOW } from "@common/selectors/permitSelectors";
 import { fetchPermitConditions } from "@common/actionCreators/permitActionCreator";
-import { getDraftPermitForNOW } from "@common/selectors/permitSelectors";
+
 import { getNoticeOfWork } from "@common/selectors/noticeOfWorkSelectors";
+import AddButton from "@/components/common/AddButton";
+import Section from "@/components/Forms/permits/conditions/Section";
+import Condition from "@/components/Forms/permits/conditions/Condition";
+import CustomPropTypes from "@/customPropTypes";
 
 const { Panel } = Collapse;
 
