@@ -190,7 +190,6 @@ export const deletePermitAmendment = (mineGuid, permitGuid, permitAmdendmentGuid
     .finally(() => dispatch(hideLoading()));
 };
 
-
 export const fetchPermitConditions = (mineGuid, permitGuid, permitAmdendmentGuid) => (dispatch) => {
   dispatch(request(reducerTypes.GET_PERMIT_CONDITIONS));
   dispatch(showLoading());
@@ -208,5 +207,46 @@ export const fetchPermitConditions = (mineGuid, permitGuid, permitAmdendmentGuid
       dispatch(permitActions.storePermitConditions(response.data));
     })
     .catch(() => dispatch(error(reducerTypes.GET_PERMIT_CONDITIONS)))
+    .finally(() => dispatch(hideLoading()));
+};
+
+export const createPermitCondition = (mineGuid, permitGuid, permitAmdendmentGuid, payload) => (dispatch) => {
+  dispatch(request(reducerTypes.CREATE_PERMIT_CONDITION));
+  dispatch(showLoading("modal"));
+  return CustomAxios()
+    .post(
+      `${ENVIRONMENT.apiUrl}${API.PERMIT_CONDITIONS(mineGuid, permitGuid, permitAmdendmentGuid)}`,
+      { permit_condition: payload },
+      createRequestHeader()
+    )
+    .then((response) => {
+      notification.success({
+        message: "Successfully created a new condition",
+        duration: 10,
+      });
+      dispatch(success(reducerTypes.CREATE_PERMIT_CONDITION));
+      return response;
+    })
+    .catch(() => dispatch(error(reducerTypes.CREATE_PERMIT_CONDITION)))
+    .finally(() => dispatch(hideLoading("modal")));
+};
+
+export const deletePermitCondition = (mineGuid, permitGuid, permitAmdendmentGuid) => (dispatch) => {
+  dispatch(request(reducerTypes.DELETE_PERMIT_CONDITION));
+  dispatch(showLoading());
+  return CustomAxios()
+    .delete(
+      `${ENVIRONMENT.apiUrl}${API.PERMIT_CONDITIONS(mineGuid, permitGuid, permitAmdendmentGuid)}`,
+      createRequestHeader()
+    )
+    .then((response) => {
+      notification.success({
+        message: "Successfully deleted permit condition.",
+        duration: 10,
+      });
+      dispatch(success(reducerTypes.DELETE_PERMIT_CONDITION));
+      return response;
+    })
+    .catch(() => dispatch(error(reducerTypes.DELETE_PERMIT_CONDITION)))
     .finally(() => dispatch(hideLoading()));
 };

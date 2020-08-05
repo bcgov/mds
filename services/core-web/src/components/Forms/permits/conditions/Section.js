@@ -1,15 +1,20 @@
 import React, { useState } from 'react';
 import PropTypes from "prop-types";
-import { Col, Row, Popconfirm, Button } from "antd";
+import { Form, Col, Row, Popconfirm, Button } from "antd";
+import { renderConfig } from "@/components/common/config";
+import { required } from "@common/utils/Validate";
 import { EDIT_OUTLINE_VIOLET, TRASHCAN } from "@/constants/assets";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
 import AddButton from "@/components/common/AddButton";
 import Condition from "@/components/Forms/permits/conditions/Condition";
+import SectionForm from "@/components/Forms/permits/conditions/SectionForm"
 
 const propTypes = {
     condition: PropTypes.objectOf(PropTypes.any),
     new: PropTypes.bool,
+    handleSubmit: PropTypes.func,
+    initialValues: PropTypes.objectOf(PropTypes.any),
 };
 
 const defaultProps = {
@@ -18,7 +23,9 @@ const defaultProps = {
         condition: '',
         sub_conditions: []
     },
-    new: false
+    new: false,
+    handleSubmit: () => { },
+    initialValues: {}
 };
 
 const Section = (props) => {
@@ -35,7 +42,7 @@ const Section = (props) => {
                             <Col className="field-title">
                                 {props.condition.condition}
                             </Col>)}
-                        {isEditing && (<Col>Edit</Col>)}
+                        {isEditing && (<Col><SectionForm onCancel={() => setIsEditing(false)} onSubmit={props.handleSubmit} initialValues={props.initialValues} /></Col>)}
                     </Row>
                 </Col>
                 <Col md={4}>
