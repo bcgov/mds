@@ -8,61 +8,56 @@ import AddButton from "@/components/common/AddButton";
 import Condition from "@/components/Forms/permits/conditions/Condition";
 
 const propTypes = {
-    condition: PropTypes.objectOf(PropTypes.any)
+  condition: PropTypes.objectOf(PropTypes.any),
 };
 
-const defaultProps = {
-};
+const defaultProps = {};
 
 const SubCondition = (props) => (
-    <>
-        <Row gutter={32}>
-            <Col md={2} />
-            <Col md={18}>
-                <Row>
-                    <Col>{props.condition.step}{props.condition.step && " "}{props.condition.condition}</Col>
-                </Row>
-                <Row>
-                    <Col>
-                        <AddButton type="secondary">Add List Item</AddButton>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col>
-                        <AddButton type="secondary">Add Condition</AddButton>
-                    </Col>
-                </Row>
-            </Col>
-            <Col md={4}>
-                <div align="right" className="btn--middle flex">
-                    <AuthorizationWrapper permission={Permission.ADMIN}>
-                        <Button
-                            type="primary"
-                            size="small"
-                            ghost
-                            onClick={() => { }}
-                        >
-                            <img src={EDIT_OUTLINE_VIOLET} alt="Edit Condition" />
-                        </Button>
-                    </AuthorizationWrapper>
-                    <AuthorizationWrapper permission={Permission.ADMIN}>
-                        <Popconfirm
-                            placement="topLeft"
-                            title="Are you sure you want to delete this condition?"
-                            onConfirm={() => { }}
-                            okText="Delete"
-                            cancelText="Cancel"
-                        >
-                            <Button ghost size="small" type="primary">
-                                <img name="remove" src={TRASHCAN} alt="Remove Condition" />
-                            </Button>
-                        </Popconfirm>
-                    </AuthorizationWrapper>
-                </div>
-            </Col>
+  <>
+    <Row gutter={32}>
+      <Col md={2} />
+      <Col md={18}>
+        <Row>
+          <Col>
+            {props.condition.step}
+            {props.condition.step && " "}
+            {props.condition.condition}
+          </Col>
         </Row>
-        {props.condition.sub_conditions.map((condition) => <Condition condition={condition} />)}
-    </>
+        <Row>
+          <Col>
+            <AddButton type="secondary">Add List Item</AddButton>
+          </Col>
+        </Row>
+      </Col>
+      <Col md={4}>
+        <div align="right" className="btn--middle flex">
+          <AuthorizationWrapper permission={Permission.ADMIN}>
+            <Button type="primary" size="small" ghost onClick={() => {}}>
+              <img src={EDIT_OUTLINE_VIOLET} alt="Edit Condition" />
+            </Button>
+          </AuthorizationWrapper>
+          <AuthorizationWrapper permission={Permission.ADMIN}>
+            <Popconfirm
+              placement="topLeft"
+              title="Are you sure you want to delete this condition?"
+              onConfirm={() => {}}
+              okText="Delete"
+              cancelText="Cancel"
+            >
+              <Button ghost size="small" type="primary">
+                <img name="remove" src={TRASHCAN} alt="Remove Condition" />
+              </Button>
+            </Popconfirm>
+          </AuthorizationWrapper>
+        </div>
+      </Col>
+    </Row>
+    {props.condition.sub_conditions.map((condition) => (
+      <Condition condition={condition} />
+    ))}
+  </>
 );
 
 SubCondition.propTypes = propTypes;
