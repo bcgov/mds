@@ -3,9 +3,9 @@ import PropTypes from "prop-types";
 import { Field, reduxForm } from "redux-form";
 import { Button, Popconfirm, Form } from "antd";
 import { required } from "@common/utils/Validate";
+import { resetForm } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
-import { resetForm } from "@common/utils/helpers";
 
 const propTypes = {
   onCancel: PropTypes.func.isRequired,

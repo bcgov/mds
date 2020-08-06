@@ -4,21 +4,21 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Divider, Icon, Row, Collapse, Button } from "antd";
 import { openModal, closeModal } from "@common/actions/modalActions";
-import CustomPropTypes from "@/customPropTypes";
-import Condition from "@/components/Forms/permits/conditions/Condition";
-import AddSection from "@/components/Forms/permits/conditions/AddSection";
 import {
   getPermitConditionCategoryOptions,
   getPermitConditionTypeOptions,
 } from "@common/selectors/staticContentSelectors";
-import { getPermitConditions } from "@common/selectors/permitSelectors";
+import { getPermitConditions , getDraftPermitForNOW } from "@common/selectors/permitSelectors";
 import {
   fetchPermitConditions,
   createPermitCondition,
 } from "@common/actionCreators/permitActionCreator";
-import { getDraftPermitForNOW } from "@common/selectors/permitSelectors";
+
 import { getNoticeOfWork } from "@common/selectors/noticeOfWorkSelectors";
 import { maxBy } from "lodash";
+import AddSection from "@/components/Forms/permits/conditions/AddSection";
+import Condition from "@/components/Forms/permits/conditions/Condition";
+import CustomPropTypes from "@/customPropTypes";
 
 const { Panel } = Collapse;
 
@@ -61,7 +61,7 @@ export class Conditions extends Component {
             amendment.now_application_guid === this.props.noticeOfWork.now_application_guid &&
             amendment.permit_amendment_status_code === draft
         )[0];
-      this.setState({ draftAmendment: draftAmendment }).then(() => {
+      this.setState({ draftAmendment }).then(() => {
         this.fetchPermitConditions();
       });
     }

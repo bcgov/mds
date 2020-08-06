@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { Form, Col, Row, Popconfirm, Button } from "antd";
-import { renderConfig } from "@/components/common/config";
 import { required } from "@common/utils/Validate";
+import { renderConfig } from "@/components/common/config";
 import { EDIT_OUTLINE_VIOLET, TRASHCAN } from "@/constants/assets";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
