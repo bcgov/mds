@@ -62,7 +62,7 @@ copy_aux_dir() {
 install_jaeger() {
     echo "---> Installing opentracing module and client"
     wget https://github.com/opentracing-contrib/nginx-opentracing/releases/download/v0.4.0/linux-amd64-nginx-1.14.0-ngx_http_module.so.tgz -O /tmp/linux-amd64-nginx-1.14.0-ngx_http_module.so.tgz
-    tar zxf /tmp/linux-amd64-nginx-1.14.0-ngx_http_module.so.tgz -C /usr/lib64/nginx/modules
+    mkdir -p /opt/app-root/modules && tar zxf /tmp/linux-amd64-nginx-1.14.0-ngx_http_module.so.tgz -C /opt/app-root/modules
     wget https://github.com/jaegertracing/jaeger-client-cpp/releases/download/v0.6.0/libjaegertracing_plugin.linux_amd64.so -O /usr/local/lib/libjaegertracing_plugin.so
 }
 
