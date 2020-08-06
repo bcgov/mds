@@ -12,14 +12,14 @@ const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
 };
 
-export const SectionForm = (props) => (
+export const ListItemForm = (props) => (
   <Form onSubmit={props.handleSubmit}>
     <Field
       id="condition"
       name="condition"
-      placeholder="Subsection Name"
+      placeholder="Type a list item"
       required
-      component={renderConfig.FIELD}
+      component={renderConfig.AUTO_SIZE_FIELD}
       validate={[required]}
     />
     <div className="right center-mobile">
@@ -41,9 +41,9 @@ export const SectionForm = (props) => (
   </Form>
 );
 
-SectionForm.propTypes = propTypes;
+ListItemForm.propTypes = propTypes;
 
 export default reduxForm({
-  form: FORM.CONDITION_SECTION,
-  onSubmitSuccess: resetForm(FORM.CONDITION_SECTION),
-})(SectionForm);
+  form: FORM.SUBCONDITION_LISTITEM,
+  onSubmitSuccess: resetForm(FORM.SUBCONDITION_LISTITEM),
+})(ListItemForm);

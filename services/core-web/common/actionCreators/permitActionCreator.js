@@ -199,10 +199,6 @@ export const fetchPermitConditions = (mineGuid, permitGuid, permitAmdendmentGuid
       createRequestHeader()
     )
     .then((response) => {
-      notification.success({
-        message: "Successfully fetched permit conditions.",
-        duration: 10,
-      });
       dispatch(success(reducerTypes.GET_PERMIT_CONDITIONS));
       dispatch(permitActions.storePermitConditions(response.data));
     })
@@ -251,4 +247,8 @@ export const deletePermitCondition = (mineGuid, permitGuid, permitAmdendmentGuid
     })
     .catch(() => dispatch(error(reducerTypes.DELETE_PERMIT_CONDITION)))
     .finally(() => dispatch(hideLoading()));
+};
+
+export const setEditingConditionFlag = (payload) => (dispatch) => {
+  dispatch(permitActions.storeEditingConditionFlag(payload));
 };

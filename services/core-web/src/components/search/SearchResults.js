@@ -225,7 +225,7 @@ export class SearchResults extends Component {
                       )}
                       {!type_filter && (
                         <Link
-                          style={{ float: "right" }}
+                          className="float-right"
                           to={router.SEARCH_RESULTS.dynamicRoute({
                             q: this.state.params.q,
                             t: group.type,

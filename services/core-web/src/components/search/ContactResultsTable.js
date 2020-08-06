@@ -100,8 +100,7 @@ export const ContactResultsTable = (props) => {
       />
       {props.showAdvancedLookup && (
         <Link
-          style={{ float: "right" }}
-          className="padding-large--left"
+          className="padding-large--left float-right"
           to={router.CONTACT_HOME_PAGE.dynamicRoute({
             ...parseQuery(props.query),
             page: Strings.DEFAULT_PAGE,

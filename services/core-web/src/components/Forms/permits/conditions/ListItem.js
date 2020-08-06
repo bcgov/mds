@@ -1,59 +1,69 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { Col, Row, Popconfirm, Button } from "antd";
 import { EDIT_OUTLINE_VIOLET, TRASHCAN } from "@/constants/assets";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
-import AddButton from "@/components/common/AddButton";
+import ListItemForm from "@/components/Forms/permits/conditions/ListItemForm";
 
 const propTypes = {
-    condition: PropTypes.objectOf(PropTypes.any)
+  condition: PropTypes.objectOf(PropTypes.any),
+  new: PropTypes.bool,
+  handleSubmit: PropTypes.func,
+  handleCancel: PropTypes.func,
+  initialValues: PropTypes.objectOf(PropTypes.any),
 };
 
 const defaultProps = {
+  condition: {
+    step: "",
+    condition: "",
+    sub_conditions: [],
+  },
+  new: false,
+  handleSubmit: () => {},
+  handleCancel: () => {},
+  initialValues: {},
 };
 
-const ListItem = (props) => (
-    <>
-        <Row gutter={32}>
-            <Col md={2}>
-                {props.condition.step}
-            </Col>
-            <Col md={18}>
-                <Row>
-                    <Col>{props.condition.condition}</Col>
-                </Row>
-            </Col>
-            <Col md={4}>
-                <div align="right" className="btn--middle flex">
-                    <AuthorizationWrapper permission={Permission.ADMIN}>
-                        <Button
-                            type="primary"
-                            size="small"
-                            ghost
-                            onClick={() => { }}
-                        >
-                            <img src={EDIT_OUTLINE_VIOLET} alt="Edit Condition" />
-                        </Button>
-                    </AuthorizationWrapper>
-                    <AuthorizationWrapper permission={Permission.ADMIN}>
-                        <Popconfirm
-                            placement="topLeft"
-                            title="Are you sure you want to delete this condition?"
-                            onConfirm={() => { }}
-                            okText="Delete"
-                            cancelText="Cancel"
-                        >
-                            <Button ghost size="small" type="primary">
-                                <img name="remove" src={TRASHCAN} alt="Remove Condition" />
-                            </Button>
-                        </Popconfirm>
-                    </AuthorizationWrapper>
-                </div>
-            </Col>
-        </Row>
-    </>
-);
+const ListItem = (props) => {
+  const [isEditing, setIsEditing] = useState(props.new);
+  return (
+    <Row gutter={32}>
+      <Col md={2} />
+      <Col md={1}>{!isEditing && props.condition.step}</Col>
+      <Col md={20} offset={2}>
+        {!isEditing && props.condition.condition}
+        {isEditing && (
+          <ListItemForm
+            onCancel={props.handleCancel}
+            onSubmit={props.handleSubmit}
+            initialValues={props.initialValues}
+          />
+        )}
+      </Col>
+      <Col md={2}>
+        {!isEditing && (
+          <div className="btn--middle flex float-right">
+            <AuthorizationWrapper permission={Permission.ADMIN}>
+              <Popconfirm
+                placement="topLeft"
+                title="Are you sure you want to delete this condition?"
+                onConfirm={() => {}}
+                okText="Delete"
+                cancelText="Cancel"
+              >
+                <Button ghost size="small" type="primary">
+                  <img name="remove" src={TRASHCAN} alt="Remove Condition" />
+                </Button>
+              </Popconfirm>
+            </AuthorizationWrapper>
+          </div>
+        )}
+      </Col>
+    </Row>
+  );
+};
 
 ListItem.propTypes = propTypes;
 ListItem.defaultProps = defaultProps;

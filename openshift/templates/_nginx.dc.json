@@ -93,21 +93,6 @@
   ],
   "objects": [
     {
-      "apiVersion": "v1",
-      "kind": "PersistentVolumeClaim",
-      "metadata": {
-        "name": "mds-access-logs${SUFFIX}"
-      },
-      "spec": {
-        "accessModes": ["ReadWriteMany"],
-        "resources": {
-          "requests": {
-            "storage": "${LOG_PVC_SIZE}"
-          }
-        }
-      }
-    },
-    {
       "kind": "ImageStream",
       "apiVersion": "v1",
       "metadata": {
@@ -260,8 +245,9 @@
                 "name": "promtail",
                 "image": "grafana/promtail:k14-60b97e3",
                 "args": [
-                  "-config.file=/etc/promtail/nginx.yaml",
-                  "-client.external-labels=environment=dev-${SUFFIX}"
+                  "--config.file=/etc/promtail/nginx.yaml",
+                  "--client.url=http://loki:3100/loki/api/v1/push",
+                  "--client.external-labels=env=${VERSION},pod=${HOSTNAME}"
                 ],
                 "volumeMounts": [
                   {
@@ -276,8 +262,8 @@
                 ],
                 "resources": {
                   "limits": {
-                    "cpu": "20m",
-                    "memory": "64Mi"
+                    "cpu": "100m",
+                    "memory": "128Mi"
                   },
                   "requests": {
                     "cpu": "5m",
@@ -287,12 +273,7 @@
               }
             ],
             "volumes": [
-              {
-                "name": "${NAME}${SUFFIX}-log",
-                "persistentVolumeClaim": {
-                  "claimName": "mds-access-logs${SUFFIX}"
-                }
-              },
+              { "emptyDir": {}, "name": "${NAME}${SUFFIX}-log" },
               {
                 "name": "promtail-config",
                 "configMap": {

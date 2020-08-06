@@ -31,7 +31,7 @@ export const AddIncidentReportingForm = (props) => (
             <h4>{`Ministry Incident No. ${props.initialValues.mine_incident_report_no}`}</h4>
           )}
           {props.initialValues.mms_inspector_initials ? (
-            <span style={{ float: "right" }}>
+            <span className="float-right">
               {`MMS Inspector Initials ${props.initialValues.mms_inspector_initials}`}
             </span>
           ) : (
