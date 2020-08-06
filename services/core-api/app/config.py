@@ -40,19 +40,6 @@ class Config(object):
         }
     }
 
-    UWSGI_DISABLED = os.environ.get('UWSGI_DISABLED', False)
-    if (UWSGI_DISABLED):
-        LOGGING_DICT_CONFIG['handlers']['customhandler'] = {
-            'class': 'logging.handlers.RotatingFileHandler',
-            'mode': 'a',
-            'backupCount': 0,
-            'maxBytes': 100000000,
-            'filename': '/var/log/core-api/core.log',
-            'formatter': 'default',
-            'level': FLASK_LOGGING_LEVEL
-        }
-        LOGGING_DICT_CONFIG['root']['handlers'] = ['customhandler']
-
     SECRET_KEY = os.environ.get('SECRET_KEY', 'dev')
     BASE_PATH = os.environ.get('BASE_PATH', '')
     DB_HOST = os.environ.get('DB_HOST', 'localhost')
