@@ -59,6 +59,12 @@ copy_aux_dir() {
     fi
 }
 
+install_jaeger() {
+    echo "---> Installing opentracing module and client"
+    yum install nginx-plus-module-opentracing -y
+    wget https://github.com/jaegertracing/jaeger-client-cpp/releases/download/v0.6.0/libjaegertracing_plugin.linux_amd64.so -O /usr/local/lib/libjaegertracing_plugin.so
+}
+
 cleanup() {
     echo "---> cleanup"
     rm -f /opt/app-root/run/nginx.pid $NGINX_VAR_DIR/log/nginx/error.log
@@ -69,5 +75,6 @@ restore_build_artifacts
 copy_static_files
 copy_server_configs
 copy_aux_dir
+install_jaeger
 
-cleanup
+cleanup 

@@ -209,6 +209,10 @@
                   {
                     "mountPath": "/var/log/nginx",
                     "name": "${NAME}${SUFFIX}-log"
+                  },
+                  {
+                    "mountPath": "/etc/jaeger",
+                    "name": "jaeger-config"
                   }
                 ],
                 "ports": [
@@ -295,9 +299,9 @@
                 }
               },
               {
-                "name": "promtail-config",
+                "name": "jaeger-config",
                 "configMap": {
-                  "name": "promtail-config"
+                  "name": "jaeger-config"
                 }
               }
             ]

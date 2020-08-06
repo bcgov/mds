@@ -1,0 +1,10 @@
+{
+  "service_name": "nginx",
+  "sampler": {
+    "type": "const",
+    "param": 1
+  },
+  "reporter": {
+    "localAgentHostPort": "jaeger-agent:6831"
+  }
+}

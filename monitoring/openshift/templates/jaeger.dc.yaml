@@ -233,7 +233,7 @@ objects:
         app.kubernetes.io/component: query
       type: LoadBalancer
   - apiVersion: extensions/v1beta1
-    kind: DaemonSet
+    kind: Deployment
     metadata:
       name: jaeger-agent
       labels:
