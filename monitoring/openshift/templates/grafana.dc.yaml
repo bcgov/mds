@@ -156,6 +156,9 @@ objects:
                   name: datasources
                 - mountPath: "/var/lib/grafana"
                   name: persistence
+                - mountPath: /etc/grafana/grafana.ini
+                  name: grafana
+                  subPath: grafana.ini
           dnsPolicy: ClusterFirst
           restartPolicy: Always
           schedulerName: default-scheduler
@@ -174,10 +177,13 @@ objects:
                 defaultMode: 420
                 name: "${NAME}-datasources"
               name: datasources
+            - configMap:
+                defaultMode: 420
+                name: grafana
+              name: grafana
             - persistentVolumeClaim:
                 claimName: ${NAME}-persistence
               name: persistence
-
       test: false
       triggers:
         - type: ConfigChange
@@ -200,6 +206,8 @@ objects:
       host: "${NAME}-${NAMESPACE}.${ROUTE_SUBDOMAIN}"
       port:
         targetPort: 3000-tcp
+      tls:
+        termination: edge
       to:
         kind: Service
         name: "${NAME}"
