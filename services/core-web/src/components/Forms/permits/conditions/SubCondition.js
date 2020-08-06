@@ -33,20 +33,23 @@ const SubCondition = (props) => {
     return (
         <>
             <Row gutter={32}>
-                <Col md={2} />
-                <Col md={18}>
+                <Col md={1} />
+                <Col md={1}>
+                    {!isEditing && props.condition.step}
+                </Col>
+                <Col md={20}>
                     <Row>
-                        <Col>{!isEditing && <>{props.condition.step}{props.condition.step && " "}{props.condition.condition}</>}</Col>
+                        <Col>{!isEditing && props.condition.condition}</Col>
                     </Row>
                     <Row>
-                        <Col>
-                            {isEditing && (<Col><SubConditionForm onCancel={props.handleCancel} onSubmit={props.handleSubmit} initialValues={props.initialValues} /></Col>)}
+                        <Col offset={3}>
+                            {isEditing && (<SubConditionForm onCancel={props.handleCancel} onSubmit={props.handleSubmit} initialValues={props.initialValues} />)}
                         </Col>
                     </Row>
                 </Col>
-                <Col md={4}>
+                <Col md={2}>
                     {!isEditing &&
-                        (<div align="right" className="btn--middle flex">
+                        (<div align="right" className="btn--middle flex float-right">
                             <AuthorizationWrapper permission={Permission.ADMIN}>
                                 <Popconfirm
                                     placement="topLeft"
@@ -64,12 +67,7 @@ const SubCondition = (props) => {
                 </Col>
             </Row>
             {props.condition.sub_conditions.length !== 0 && <Row gutter={32}><Col>&nbsp;</Col></Row>}
-            <Row gutter={32}>
-                <Col md={3} />
-                <Col md={21}>
-                    {props.condition.sub_conditions.map((condition) => <Condition condition={condition} />)}
-                </Col>
-            </Row>
+            {props.condition.sub_conditions.map((condition) => <Condition condition={condition} />)}
             {!isEditing && (
                 <Row>
                     <Col md={2} />
@@ -85,6 +83,7 @@ const SubCondition = (props) => {
                     </Col>
                 </Row>
             )}
+            {props.condition.sub_conditions.length === 0 && <Row gutter={32}><Col>&nbsp;</Col></Row>}
         </>
     )
 };

@@ -34,21 +34,21 @@ const Section = (props) => {
     return (
         <>
             <Row gutter={32}>
-                <Col md={2}>
-                    {!isEditing && props.condition.step}
-                </Col>
-                <Col md={18}>
-                    <Row>
-                        {!isEditing && (
-                            <Col className="field-title">
-                                {props.condition.condition}
-                            </Col>)}
-                        {isEditing && (<Col><SectionForm onCancel={props.handleCancel} onSubmit={props.handleSubmit} initialValues={props.initialValues} /></Col>)}
-                    </Row>
-                </Col>
-                <Col md={4}>
+                {!isEditing &&
+                    (
+                        <Col md={2}>
+                            {props.condition.step}
+                        </Col>)}
+                {!isEditing &&
+                    (
+                        <Col md={20} className="field-title">
+                            {props.condition.condition}
+                        </Col>
+                    )}
+                {isEditing && (<Col><SectionForm onCancel={props.handleCancel} onSubmit={props.handleSubmit} initialValues={props.initialValues} /></Col>)}
+                <Col md={1}>
                     {!isEditing &&
-                        (<div align="right" className="btn--middle flex">
+                        (<div align="right" className="btn--middle flex float-right">
                             <AuthorizationWrapper permission={Permission.ADMIN}>
                                 <Popconfirm
                                     placement="topLeft"

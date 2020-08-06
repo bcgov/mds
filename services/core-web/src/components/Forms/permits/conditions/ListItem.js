@@ -29,17 +29,18 @@ const defaultProps = {
 const ListItem = (props) => {
     const [isEditing, setIsEditing] = useState(props.new);
     return (
-        <>
-            <Row gutter={32}>
-                <Col md={2}>
-                    {!isEditing && props.condition.step}
-                </Col>
-                <Col md={18}>
-                    {!isEditing && props.condition.condition}
-                    {isEditing && (<ListItemForm onCancel={props.handleCancel} onSubmit={props.handleSubmit} initialValues={props.initialValues} />)}
-                </Col>
-                <Col md={4}>
-                    <div align="right" className="btn--middle flex">
+        <Row gutter={32}>
+            <Col md={2} />
+            <Col md={1}>
+                {!isEditing && props.condition.step}
+            </Col>
+            <Col md={20} offset={2}>
+                {!isEditing && props.condition.condition}
+                {isEditing && (<ListItemForm onCancel={props.handleCancel} onSubmit={props.handleSubmit} initialValues={props.initialValues} />)}
+            </Col>
+            <Col md={2}>
+                {!isEditing &&
+                    <div className="btn--middle flex float-right">
                         <AuthorizationWrapper permission={Permission.ADMIN}>
                             <Popconfirm
                                 placement="topLeft"
@@ -53,10 +54,9 @@ const ListItem = (props) => {
                                 </Button>
                             </Popconfirm>
                         </AuthorizationWrapper>
-                    </div>
-                </Col>
-            </Row>
-        </>
+                    </div>}
+            </Col>
+        </Row>
     )
 };
 

@@ -54,11 +54,11 @@ class PermitConditions(AuditMixin, Base):
             depth += 1
         step_format = depth % 3
         if step_format == 0:
-            return self.display_order
+            return str(self.display_order) + '.'
         elif step_format == 1:
-            return num_to_letter(self.display_order)
+            return num_to_letter(self.display_order) + '.'
         elif step_format == 2:
-            return num_to_roman(self.display_order)
+            return num_to_roman(self.display_order) + '.'
 
     def __repr__(self):
         return '<PermitConditions %r, %r>' % (self.permit_condition_id, self.permit_condition_guid)

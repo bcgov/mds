@@ -34,7 +34,7 @@ const ButtonText = (condition_type_code) =>
     ({
         'SEC': 'Add Sub-Section',
         'CON': 'Add Condition',
-        'LIS': 'Add List-Item',
+        'LIS': 'Add List Item',
     }[condition_type_code]);
 
 export class AddCondition extends Component {
@@ -53,7 +53,7 @@ export class AddCondition extends Component {
     render = () => {
         return (
             <>
-                {this.props.editingConditionFlag && <AddButton type="secondary" disabled >{ButtonText(this.props.initialValues.condition_type_code)}</AddButton>}
+                {!this.state.isEditing && this.props.editingConditionFlag && <AddButton type="secondary" disabled >{ButtonText(this.props.initialValues.condition_type_code)}</AddButton>}
                 {!this.props.editingConditionFlag && <AddButton type="secondary" onClick={() => {
                     this.props.setEditingConditionFlag(true);
                     this.setState({ isEditing: true });
