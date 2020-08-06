@@ -6,11 +6,10 @@ import { Divider, Icon, Row, Collapse, Button } from "antd";
 import { openModal, closeModal } from "@common/actions/modalActions";
 import CustomPropTypes from "@/customPropTypes";
 import Condition from "@/components/Forms/permits/conditions/Condition";
-import AddSection from "@/components/Forms/permits/conditions/AddSection";
+import AddCondition from "@/components/Forms/permits/conditions/AddCondition";
 import { getPermitConditionCategoryOptions, getPermitConditionTypeOptions } from "@common/selectors/staticContentSelectors";
-import { getPermitConditions } from "@common/selectors/permitSelectors";
-import { fetchPermitConditions, createPermitCondition } from "@common/actionCreators/permitActionCreator";
-import { getDraftPermitForNOW } from "@common/selectors/permitSelectors";
+import { getPermitConditions, getDraftPermitAmendmentForNOW } from "@common/selectors/permitSelectors";
+import { fetchPermitConditions, setEditingConditionFlag } from "@common/actionCreators/permitActionCreator";
 import {
     getNoticeOfWork
 } from "@common/selectors/noticeOfWorkSelectors";
@@ -24,71 +23,55 @@ const propTypes = {
     permitConditionCategoryOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
     permitConditionTypeOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
     fetchPermitConditions: PropTypes.func.isRequired,
-    createPermitCondition: PropTypes.func.isRequired,
     noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
-    draftPermit: CustomPropTypes.permit.isRequired,
+    draftPermitAmendment: CustomPropTypes.permit.isRequired,
+    setEditingConditionFlag: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
 };
 
-const draft = "DFT";
 
 export class Conditions extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            draftAmendment: this.props.draftPermit && this.props.draftPermit.permit_amendments.filter(
-                (amendment) =>
-                    amendment.now_application_guid === this.props.noticeOfWork.now_application_guid &&
-                    amendment.permit_amendment_status_code === draft
-            )[0]
         }
         this.fetchPermitConditions();
+        props.setEditingConditionFlag(false);
     }
 
     componentDidUpdate = (prevProps) => {
-        if (prevProps.draftPermit !== this.props.draftPermit) {
-            const draftAmendment = this.props.draftPermit && this.props.draftPermit.permit_amendments.filter(
-                (amendment) =>
-                    amendment.now_application_guid === this.props.noticeOfWork.now_application_guid &&
-                    amendment.permit_amendment_status_code === draft
-            )[0]
-            this.setState({ draftAmendment: draftAmendment }).then(() => { this.fetchPermitConditions(); });
+        if (prevProps.draftPermitAmendment !== this.props.draftPermitAmendment) {
+            this.fetchPermitConditions();
         }
     }
 
     fetchPermitConditions = () => {
-        if (this.state.draftAmendment) {
-            this.props.fetchPermitConditions(null, null, this.state.draftAmendment.permit_amendment_guid);
+        if (this.props.draftPermitAmendment) {
+            this.props.fetchPermitConditions(null, null, this.props.draftPermitAmendment.permit_amendment_guid);
         }
-    }
-
-    handleAddSection = (values) => {
-        this.props.createPermitCondition(null, null, this.state.draftAmendment.permit_amendment_guid, values).then(() => this.fetchPermitConditions());
     }
 
     render = () => <>
         <Collapse>
             {this.props.permitConditionCategoryOptions.map((conditionCategory) => {
                 const conditions = this.props.conditions.filter((condition) => condition.condition_category_code === conditionCategory.condition_category_code);
-                const nextNumber = conditions.length > 1 ? maxBy(conditions, 'display_order').display_order + 1 : 1;
                 return <Panel header={conditionCategory.description} key={conditionCategory.condition_category_code} id={conditionCategory.condition_category_code}>
-                    {conditions.map((condition) => <Condition condition={condition} />)}
+                    {conditions.map((condition) => <Condition condition={condition} handleSubmit={(values) => this.handleAddCondition(values)} />)}
                     <Divider />
-                    <AddSection initialValues={
+                    <AddCondition initialValues={
                         {
                             condition_category_code: conditionCategory.condition_category_code,
                             condition_type_code: 'SEC',
-                            display_order: nextNumber,
+                            display_order: conditions.length === 0 ? 1 : maxBy(conditions, 'display_order').display_order + 1,
                             parent_condition_id: null,
-                            permit_amendment_id: this.state.draftAmendment.permit_amendment_id
-                        }}
-                        handleSubmit={(values) => this.handleAddSection(values)} />
+                            permit_amendment_id: this.props.draftPermitAmendment.permit_amendment_id
+                        }} />
                     <Button type="secondary" className="full-mobile btn--middle">
                         <Icon type="undo" theme="outlined" className="padding-small--right icon-sm" />
-                                Restore Deleted Standard Conditions
-                            </Button>
+                        Restore Deleted Standard Conditions
+                    </Button>
                 </Panel>;
             })}
         </Collapse>
@@ -100,7 +83,7 @@ const mapStateToProps = (state) => ({
     permitConditionTypeOptions: getPermitConditionTypeOptions(state),
     conditions: getPermitConditions(state),
     noticeOfWork: getNoticeOfWork(state),
-    draftPermit: getDraftPermitForNOW(state),
+    draftPermitAmendment: getDraftPermitAmendmentForNOW(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
@@ -109,7 +92,7 @@ const mapDispatchToProps = (dispatch) =>
             openModal,
             closeModal,
             fetchPermitConditions,
-            createPermitCondition,
+            setEditingConditionFlag,
         },
         dispatch
     );

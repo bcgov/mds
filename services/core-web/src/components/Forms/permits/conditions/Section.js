@@ -1,19 +1,19 @@
 import React, { useState } from 'react';
 import PropTypes from "prop-types";
 import { Form, Col, Row, Popconfirm, Button } from "antd";
-import { renderConfig } from "@/components/common/config";
-import { required } from "@common/utils/Validate";
 import { EDIT_OUTLINE_VIOLET, TRASHCAN } from "@/constants/assets";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
-import AddButton from "@/components/common/AddButton";
 import Condition from "@/components/Forms/permits/conditions/Condition";
 import SectionForm from "@/components/Forms/permits/conditions/SectionForm"
+import AddCondition from './AddCondition';
+import { maxBy } from "lodash";
 
 const propTypes = {
     condition: PropTypes.objectOf(PropTypes.any),
     new: PropTypes.bool,
     handleSubmit: PropTypes.func,
+    handleCancel: PropTypes.func,
     initialValues: PropTypes.objectOf(PropTypes.any),
 };
 
@@ -25,6 +25,7 @@ const defaultProps = {
     },
     new: false,
     handleSubmit: () => { },
+    handleCancel: () => { },
     initialValues: {}
 };
 
@@ -42,22 +43,12 @@ const Section = (props) => {
                             <Col className="field-title">
                                 {props.condition.condition}
                             </Col>)}
-                        {isEditing && (<Col><SectionForm onCancel={() => setIsEditing(false)} onSubmit={props.handleSubmit} initialValues={props.initialValues} /></Col>)}
+                        {isEditing && (<Col><SectionForm onCancel={props.handleCancel} onSubmit={props.handleSubmit} initialValues={props.initialValues} /></Col>)}
                     </Row>
                 </Col>
                 <Col md={4}>
                     {!isEditing &&
                         (<div align="right" className="btn--middle flex">
-                            <AuthorizationWrapper permission={Permission.ADMIN}>
-                                <Button
-                                    type="primary"
-                                    size="small"
-                                    ghost
-                                    onClick={() => { }}
-                                >
-                                    <img src={EDIT_OUTLINE_VIOLET} alt="Edit Condition" />
-                                </Button>
-                            </AuthorizationWrapper>
                             <AuthorizationWrapper permission={Permission.ADMIN}>
                                 <Popconfirm
                                     placement="topLeft"
@@ -74,15 +65,24 @@ const Section = (props) => {
                         </div>)}
                 </Col>
             </Row>
-            {!isEditing && props.condition.sub_conditions.map((condition) => <Condition condition={condition} />)}
+            {props.condition.sub_conditions.map((condition) => <Condition condition={condition} handleSubmit={props.handleSubmit} />)}
             {!isEditing && (
                 <Row>
                     <Col md={2} />
                     <Col>
-                        <AddButton type="secondary">Add Condition</AddButton>
+                        <AddCondition initialValues={
+                            {
+                                condition_category_code: props.condition.condition_category_code,
+                                condition_type_code: 'CON',
+                                display_order: props.condition.sub_conditions.length === 0 ? 1 : maxBy(props.condition.sub_conditions, 'display_order').display_order + 1,
+                                parent_condition_id: props.condition.permit_condition_id,
+                                permit_amendment_id: props.condition.permit_amendment_id
+                            }} />
                     </Col>
                 </Row>
             )}
+            <Row gutter={32}><Col>&nbsp;</Col></Row>
+            <Row gutter={32}><Col>&nbsp;</Col></Row>
         </>
     )
 };
