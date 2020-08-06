@@ -14,13 +14,15 @@ from app.api.mines.mine.models.mine import Mine
 
 
 class PermitConditionsListResource(Resource, UserMixin):
-    @api.doc(description='Create a permit condition on the specified permit draft')
+    @api.doc(
+        description='Create a permit condition on the specified permit draft')
     @requires_role_edit_permit
     @api.expect(PERMIT_CONDITION_MODEL)
     @api.marshal_with(PERMIT_CONDITION_MODEL, code=201)
     def post(self, mine_guid, permit_guid, permit_amendment_guid):
 
-        permit_amendment = PermitAmendment.find_by_permit_amendment_guid(permit_amendment_guid)
+        permit_amendment = PermitAmendment.find_by_permit_amendment_guid(
+            permit_amendment_guid)
 
         if not permit_amendment:
             raise BadRequest('No permit amendment found with that guid.')
@@ -29,7 +31,8 @@ class PermitConditionsListResource(Resource, UserMixin):
             'permit_amendment_id'] = permit_amendment.permit_amendment_id
 
         try:
-            permit_condition = PermitConditions._schema().load(request.json['permit_condition'])
+            permit_condition = PermitConditions._schema().load(
+                request.json['permit_condition'])
         except MarshmallowError as e:
             raise BadRequest(e)
 
@@ -41,7 +44,8 @@ class PermitConditionsListResource(Resource, UserMixin):
     @requires_role_edit_permit
     @api.marshal_with(PERMIT_CONDITION_MODEL, code=200, envelope='records')
     def get(self, mine_guid, permit_guid, permit_amendment_guid):
-        permit_amendment = PermitAmendment.find_by_permit_amendment_guid(permit_amendment_guid)
+        permit_amendment = PermitAmendment.find_by_permit_amendment_guid(
+            permit_amendment_guid)
 
         if not permit_amendment:
             raise BadRequest('No permit amendment found with that guid.')
@@ -56,8 +60,10 @@ class PermitConditionsResource(Resource, UserMixin):
     @api.doc(description='Get a permit condition')
     @requires_role_edit_permit
     @api.marshal_with(PERMIT_CONDITION_MODEL, code=200)
-    def get(self, mine_guid, permit_guid, permit_amendment_guid, permit_condition_guid):
-        permit_condition = PermitConditions.find_by_permit_condition_guid(permit_condition_guid)
+    def get(self, mine_guid, permit_guid, permit_amendment_guid,
+            permit_condition_guid):
+        permit_condition = PermitConditions.find_by_permit_condition_guid(
+            permit_condition_guid)
 
         if not permit_condition:
             raise BadRequest('No permit condition found with that guid.')
@@ -68,12 +74,14 @@ class PermitConditionsResource(Resource, UserMixin):
     @requires_role_edit_permit
     @api.expect(PERMIT_CONDITION_MODEL)
     @api.marshal_with(PERMIT_CONDITION_MODEL, code=200)
-    def put(self, mine_guid, permit_guid, permit_amendment_guid, permit_condition_guid):
+    def put(self, mine_guid, permit_guid, permit_amendment_guid,
+            permit_condition_guid):
 
         try:
             condition = PermitConditions._schema().load(
                 request.json,
-                instance=PermitConditions.find_by_permit_condition_guid(permit_condition_guid))
+                instance=PermitConditions.find_by_permit_condition_guid(
+                    permit_condition_guid))
         except MarshmallowError as e:
             raise BadRequest(e)
 
@@ -85,9 +93,11 @@ class PermitConditionsResource(Resource, UserMixin):
     @requires_role_edit_permit
     @api.expect(PERMIT_CONDITION_MODEL)
     @api.marshal_with(PERMIT_CONDITION_MODEL, code=204)
-    def delete(self, mine_guid, permit_guid, permit_amendment_guid, permit_condition_guid):
+    def delete(self, mine_guid, permit_guid, permit_amendment_guid,
+               permit_condition_guid):
 
-        permit_condition = PermitConditions.find_by_permit_condition_guid(permit_condition_guid)
+        permit_condition = PermitConditions.find_by_permit_condition_guid(
+            permit_condition_guid)
 
         if not permit_condition:
             raise BadRequest('No permit condition found with that guid.')
