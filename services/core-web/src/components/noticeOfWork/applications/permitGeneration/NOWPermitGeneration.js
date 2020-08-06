@@ -88,7 +88,7 @@ export class NOWPermitGeneration extends Component {
             this.props.draftPermit,
             this.props.draftPermitAmendment
           );
-          this.setState({ isDraft: !isEmpty(this.props.draftPermitAmendment), this.props.draftPermitAmendment, permitGenObj });
+          this.setState({ isDraft: !isEmpty(this.props.draftPermitAmendment), permitGenObj });
         }
         this.setState({ isLoaded: true });
       });
@@ -196,7 +196,7 @@ export class NOWPermitGeneration extends Component {
       .updatePermitAmendment(
         this.props.noticeOfWork.mine_guid,
         this.props.draftPermit.permit_guid,
-        this.state.draftAmendment.permit_amendment_guid,
+        this.props.draftPermitAmendment.permit_amendment_guid,
         payload
       )
       .then(() => {
