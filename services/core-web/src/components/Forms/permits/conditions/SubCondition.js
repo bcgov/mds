@@ -32,24 +32,25 @@ const SubCondition = (props) => {
     const [isEditing, setIsEditing] = useState(props.new);
     return (
         <>
+            {props.condition.display_order !== 1 && <><Row gutter={32}><Col>&nbsp;</Col></Row><Row gutter={32}><Col>&nbsp;</Col></Row></>}
             <Row gutter={32}>
-                <Col md={1} />
-                <Col md={1}>
-                    {!isEditing && props.condition.step}
-                </Col>
-                <Col md={20}>
+                {!isEditing && <><Col span={1} />
+                    <Col span={1}>
+                        {!isEditing && props.condition.step}
+                    </Col></>}
+                <Col span={20}>
                     <Row>
                         <Col>{!isEditing && props.condition.condition}</Col>
                     </Row>
                     <Row>
-                        <Col offset={3}>
+                        <Col>
                             {isEditing && (<SubConditionForm onCancel={props.handleCancel} onSubmit={props.handleSubmit} initialValues={props.initialValues} />)}
                         </Col>
                     </Row>
                 </Col>
-                <Col md={2}>
+                <Col span={2} className="float-right">
                     {!isEditing &&
-                        (<div align="right" className="btn--middle flex float-right">
+                        (
                             <AuthorizationWrapper permission={Permission.ADMIN}>
                                 <Popconfirm
                                     placement="topLeft"
@@ -63,15 +64,14 @@ const SubCondition = (props) => {
                                     </Button>
                                 </Popconfirm>
                             </AuthorizationWrapper>
-                        </div>)}
+                        )}
                 </Col>
             </Row>
-            {props.condition.sub_conditions.length !== 0 && <Row gutter={32}><Col>&nbsp;</Col></Row>}
             {props.condition.sub_conditions.map((condition) => <Condition condition={condition} />)}
+            {props.condition.sub_conditions.length === 0 && <Row gutter={32}><Col>&nbsp;</Col></Row>}
             {!isEditing && (
-                <Row>
-                    <Col md={2} />
-                    <Col>
+                <Row gutter={32}>
+                    <Col span={22} offset={2}>
                         <AddCondition initialValues={
                             {
                                 condition_category_code: props.condition.condition_category_code,
@@ -83,7 +83,6 @@ const SubCondition = (props) => {
                     </Col>
                 </Row>
             )}
-            {props.condition.sub_conditions.length === 0 && <Row gutter={32}><Col>&nbsp;</Col></Row>}
         </>
     )
 };

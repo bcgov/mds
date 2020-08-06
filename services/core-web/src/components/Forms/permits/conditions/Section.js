@@ -33,22 +33,23 @@ const Section = (props) => {
     const [isEditing, setIsEditing] = useState(props.new);
     return (
         <>
+            {props.condition.sub_conditions.length === 0 && props.condition.display_order !== 1 && <Row gutter={32}><Col>&nbsp;</Col></Row>}
             <Row gutter={32}>
                 {!isEditing &&
                     (
-                        <Col md={2}>
+                        <Col span={2}>
                             {props.condition.step}
                         </Col>)}
                 {!isEditing &&
                     (
-                        <Col md={20} className="field-title">
+                        <Col span={18} className="field-title">
                             {props.condition.condition}
                         </Col>
                     )}
-                {isEditing && (<Col><SectionForm onCancel={props.handleCancel} onSubmit={props.handleSubmit} initialValues={props.initialValues} /></Col>)}
-                <Col md={1}>
+                {isEditing && (<Col span={20}><SectionForm onCancel={props.handleCancel} onSubmit={props.handleSubmit} initialValues={props.initialValues} /></Col>)}
+                <Col span={2} className="float-right">
                     {!isEditing &&
-                        (<div align="right" className="btn--middle flex float-right">
+                        (
                             <AuthorizationWrapper permission={Permission.ADMIN}>
                                 <Popconfirm
                                     placement="topLeft"
@@ -61,15 +62,13 @@ const Section = (props) => {
                                         <img name="remove" src={TRASHCAN} alt="Remove Condition" />
                                     </Button>
                                 </Popconfirm>
-                            </AuthorizationWrapper>
-                        </div>)}
+                            </AuthorizationWrapper>)}
                 </Col>
             </Row>
             {props.condition.sub_conditions.map((condition) => <Condition condition={condition} handleSubmit={props.handleSubmit} />)}
             {!isEditing && (
-                <Row>
-                    <Col md={2} />
-                    <Col>
+                <Row gutter={32}>
+                    <Col span={22} offset={2}>
                         <AddCondition initialValues={
                             {
                                 condition_category_code: props.condition.condition_category_code,
@@ -81,7 +80,6 @@ const Section = (props) => {
                     </Col>
                 </Row>
             )}
-            <Row gutter={32}><Col>&nbsp;</Col></Row>
             <Row gutter={32}><Col>&nbsp;</Col></Row>
         </>
     )
