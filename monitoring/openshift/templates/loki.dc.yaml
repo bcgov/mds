@@ -126,48 +126,6 @@ objects:
         app: "${APP_NAME}"
       name: "${NAME}"
   - apiVersion: v1
-    kind: ConfigMap
-    metadata:
-      annotations: {}
-      labels:
-        app: "${APP_NAME}"
-      name: promtail-config
-    data:
-      nginx.yaml: |-
-        server:
-          http_listen_port: 9080
-          grpc_listen_port: 0
-        positions:
-          filename: /tmp/positions.yaml
-        clients:
-          - url: http://loki:3100/loki/api/v1/push
-        scrape_configs:
-          - job_name: core-nginx
-            static_configs:
-              - targets:
-                  - localhost
-                labels:
-                  app: core
-                  service: nginx
-                  __path__: /var/log/nginx/*log
-      core-api.yaml: |-
-        server:
-          http_listen_port: 9080
-          grpc_listen_port: 0
-        positions:
-          filename: /tmp/positions.yaml
-        clients:
-          - url: http://loki:3100/loki/api/v1/push
-        scrape_configs:
-          - job_name: core-api
-            static_configs:
-              - targets:
-                  - localhost
-                labels:
-                  app: core
-                  service: core-api
-                  __path__: /var/log/core-api/*log
-  - apiVersion: v1
     kind: Service
     spec:
       ports:
@@ -201,6 +159,20 @@ objects:
       labels:
         app: "${APP_NAME}"
       name: "${NAME}"
+      apiVersion: v1
+  - apiVersion: v1
+    kind: PersistentVolumeClaim
+    metadata:
+      annotations:
+        volume.beta.kubernetes.io/storage-provisioner: netapp.io/trident
+      name: loki-storage
+    spec:
+      accessModes:
+        - ReadWriteMany
+      resources:
+        requests:
+          storage: 10Gi
+      storageClassName: netapp-file-standard
   - apiVersion: apps/v1
     kind: StatefulSet
     spec:
@@ -274,7 +246,8 @@ objects:
               configMap:
                 defaultMode: 420
                 name: "${NAME}"
-            - emptyDir: {}
+            - persistentVolumeClaim:
+                claimName: loki-storage
               name: storage
       updateStrategy:
         type: RollingUpdate

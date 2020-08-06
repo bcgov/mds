@@ -2,14 +2,14 @@
 kind: Template
 apiVersion: v1
 metadata:
-  name: docgen
+  name: promtail
   creationTimestamp:
 parameters:
   - name: NAME
     displayName: Name
     description: A name used for all objects
     required: true
-    value: loki
+    value: promtail
   - name: APP_NAME
     displayName: App Name
     description: Used to group components together in the OpenShift console.
@@ -30,7 +30,7 @@ parameters:
     displayName: Source Image Name
     description: The name of the source image.
     required: true
-    value: grafana/loki
+    value: grafana/promtail
   - name: SOURCE_IMAGE_TAG
     displayName: Source Image Tag
     description: The tag of the source image.
