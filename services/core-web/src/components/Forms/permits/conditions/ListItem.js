@@ -11,6 +11,7 @@ const propTypes = {
     new: PropTypes.bool,
     handleSubmit: PropTypes.func,
     handleCancel: PropTypes.func,
+    handleDelete: PropTypes.func,
     initialValues: PropTypes.objectOf(PropTypes.any),
 };
 
@@ -23,6 +24,7 @@ const defaultProps = {
     new: false,
     handleSubmit: () => { },
     handleCancel: () => { },
+    handleDelete: () => { },
     initialValues: {}
 };
 
@@ -48,7 +50,7 @@ const ListItem = (props) => {
                             <Popconfirm
                                 placement="topLeft"
                                 title="Are you sure you want to delete this condition?"
-                                onConfirm={() => { }}
+                                onConfirm={() => props.handleDelete(props.condition.permit_condition_guid)}
                                 okText="Delete"
                                 cancelText="Cancel"
                             >

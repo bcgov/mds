@@ -9,7 +9,7 @@ import Condition from "@/components/Forms/permits/conditions/Condition";
 import AddCondition from "@/components/Forms/permits/conditions/AddCondition";
 import { getPermitConditionCategoryOptions, getPermitConditionTypeOptions } from "@common/selectors/staticContentSelectors";
 import { getPermitConditions, getDraftPermitAmendmentForNOW } from "@common/selectors/permitSelectors";
-import { fetchPermitConditions, setEditingConditionFlag } from "@common/actionCreators/permitActionCreator";
+import { fetchPermitConditions, deletePermitCondition, setEditingConditionFlag } from "@common/actionCreators/permitActionCreator";
 import {
     getNoticeOfWork
 } from "@common/selectors/noticeOfWorkSelectors";
@@ -24,13 +24,10 @@ const propTypes = {
     permitConditionTypeOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
     fetchPermitConditions: PropTypes.func.isRequired,
     noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
-    draftPermitAmendment: CustomPropTypes.permit.isRequired,
+    draftPermitAmendment: CustomPropTypes.permitAmendment.isRequired,
     setEditingConditionFlag: PropTypes.func.isRequired,
+    deletePermitCondition: PropTypes.func.isRequired,
 };
-
-const defaultProps = {
-};
-
 
 export class Conditions extends Component {
     constructor(props) {
@@ -49,8 +46,12 @@ export class Conditions extends Component {
 
     fetchPermitConditions = () => {
         if (this.props.draftPermitAmendment) {
-            this.props.fetchPermitConditions(null, null, this.props.draftPermitAmendment.permit_amendment_guid);
+            this.props.fetchPermitConditions(this.props.draftPermitAmendment.permit_amendment_guid);
         }
+    }
+
+    handleDelete = (permitConditionGuid) => {
+        this.props.deletePermitCondition(this.props.draftPermitAmendment.permit_amendment_guid, permitConditionGuid).then(() => this.fetchPermitConditions());
     }
 
     render = () => <>
@@ -58,7 +59,7 @@ export class Conditions extends Component {
             {this.props.permitConditionCategoryOptions.map((conditionCategory) => {
                 const conditions = this.props.conditions.filter((condition) => condition.condition_category_code === conditionCategory.condition_category_code);
                 return <Panel header={conditionCategory.description} key={conditionCategory.condition_category_code} id={conditionCategory.condition_category_code}>
-                    {conditions.map((condition) => <Condition condition={condition} handleSubmit={(values) => this.handleAddCondition(values)} />)}
+                    {conditions.map((condition) => <Condition condition={condition} handleSubmit={(values) => this.handleAddCondition(values)} handleDelete={(permitConditionGuid) => this.handleDelete(permitConditionGuid)} />)}
                     <Divider />
                     <AddCondition initialValues={
                         {
@@ -68,10 +69,11 @@ export class Conditions extends Component {
                             parent_condition_id: null,
                             permit_amendment_id: this.props.draftPermitAmendment.permit_amendment_id
                         }} />
-                    <Button type="secondary" className="full-mobile btn--middle">
-                        <Icon type="undo" theme="outlined" className="padding-small--right icon-sm" />
+                    {false &&
+                        <Button type="secondary" className="full-mobile btn--middle">
+                            <Icon type="undo" theme="outlined" className="padding-small--right icon-sm" />
                         Restore Deleted Standard Conditions
-                    </Button>
+                    </Button>}
                 </Panel>;
             })}
         </Collapse>
@@ -93,11 +95,11 @@ const mapDispatchToProps = (dispatch) =>
             closeModal,
             fetchPermitConditions,
             setEditingConditionFlag,
+            deletePermitCondition,
         },
         dispatch
     );
 
 Conditions.propTypes = propTypes;
-Conditions.defaultProps = defaultProps;
 
 export default connect(mapStateToProps, mapDispatchToProps)(Conditions);

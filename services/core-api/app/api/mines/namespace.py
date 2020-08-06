@@ -34,7 +34,7 @@ from app.api.mines.variances.resources.variance_document_upload import MineVaria
 from app.api.mines.variances.resources.variance_uploaded_documents import MineVarianceUploadedDocumentsResource
 from app.api.parties.party_appt.resources.mine_party_appt_document_upload_resource import MinePartyApptDocumentUploadResource
 from app.api.mines.comments.resources.mine_comment import MineCommentListResource, MineCommentResource
-from app.api.mines.permits.permit_conditions.resources.premit_conditions_resource import PermitConditionsListResource, PermitConditionsResource
+from app.api.mines.permits.permit_conditions.resources.permit_conditions_resource import PermitConditionsListResource, PermitConditionsResource
 from app.api.mines.permits.permit_conditions.resources.permit_condition_category_resource import PermitConditionCategoryResource
 from app.api.mines.permits.permit_conditions.resources.permit_condition_type_resource import PermitConditionTypeResource
 

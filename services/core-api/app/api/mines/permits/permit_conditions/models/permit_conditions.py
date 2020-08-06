@@ -40,10 +40,14 @@ class PermitConditions(AuditMixin, Base):
                                     db.ForeignKey('permit_conditions.permit_condition_id'))
     display_order = db.Column(db.Integer, nullable=False)
 
-    sub_conditions = db.relationship(
+    all_sub_conditions = db.relationship(
         'PermitConditions',
         lazy='joined',
         backref=backref('parent', remote_side=[permit_condition_id]))
+
+    @hybrid_property
+    def sub_conditions(self):
+        return [x for x in self.all_sub_conditions if x.deleted_ind == False]
 
     @hybrid_property
     def step(self):

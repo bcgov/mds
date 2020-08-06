@@ -6,10 +6,7 @@ import Section from "@/components/Forms/permits/conditions/Section";
 import ListItem from "@/components/Forms/permits/conditions/ListItem";
 
 const propTypes = {
-    condition: PropTypes.objectOf(PropTypes.any)
-};
-
-const defaultProps = {
+    condition: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 const ConditionComponent = (props) =>
@@ -28,6 +25,5 @@ const Condition = (props) => (
 );
 
 Condition.propTypes = propTypes;
-Condition.defaultProps = defaultProps;
 
 export default Condition;

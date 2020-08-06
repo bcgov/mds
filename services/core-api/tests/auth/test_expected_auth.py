@@ -35,7 +35,7 @@ from app.api.now_submissions.resources.application_list_resource import Applicat
 from app.api.now_submissions.resources.application_nda_list_resource import ApplicationNDAListResource
 from app.api.securities.resources.bond import BondResource, BondListResource, BondTransferResource
 from app.api.mines.comments.resources.mine_comment import MineCommentResource, MineCommentListResource
-from app.api.mines.permits.permit_conditions.resources.premit_conditions_resource import PermitConditionsListResource, PermitConditionsResource
+from app.api.mines.permits.permit_conditions.resources.permit_conditions_resource import PermitConditionsListResource, PermitConditionsResource
 
 from app.api.now_applications.resources.now_activity_type_resource import NOWActivityTypeResource
 from app.api.now_applications.resources.now_application_import_resource import NOWApplicationImportResource

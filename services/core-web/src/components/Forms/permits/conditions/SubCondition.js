@@ -14,6 +14,8 @@ const propTypes = {
     condition: PropTypes.objectOf(PropTypes.any),
     new: PropTypes.bool,
     handleSubmit: PropTypes.func,
+    handleCancel: PropTypes.func,
+    handleDelete: PropTypes.func,
     initialValues: PropTypes.objectOf(PropTypes.any),
 };
 
@@ -25,6 +27,8 @@ const defaultProps = {
     },
     new: false,
     handleSubmit: () => { },
+    handleCancel: () => { },
+    handleDelete: () => { },
     initialValues: {}
 };
 
@@ -55,7 +59,7 @@ const SubCondition = (props) => {
                                 <Popconfirm
                                     placement="topLeft"
                                     title="Are you sure you want to delete this condition?"
-                                    onConfirm={() => { }}
+                                    onConfirm={() => props.handleDelete(props.condition.permit_condition_guid)}
                                     okText="Delete"
                                     cancelText="Cancel"
                                 >
@@ -67,7 +71,7 @@ const SubCondition = (props) => {
                         )}
                 </Col>
             </Row>
-            {props.condition.sub_conditions.map((condition) => <Condition condition={condition} />)}
+            {props.condition.sub_conditions.map((condition) => <Condition condition={condition} handleDelete={props.handleDelete} />)}
             {props.condition.sub_conditions.length === 0 && <Row gutter={32}><Col>&nbsp;</Col></Row>}
             {!isEditing && (
                 <Row gutter={32}>

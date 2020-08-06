@@ -190,12 +190,12 @@ export const deletePermitAmendment = (mineGuid, permitGuid, permitAmdendmentGuid
     .finally(() => dispatch(hideLoading()));
 };
 
-export const fetchPermitConditions = (mineGuid, permitGuid, permitAmdendmentGuid) => (dispatch) => {
+export const fetchPermitConditions = (permitAmdendmentGuid) => (dispatch) => {
   dispatch(request(reducerTypes.GET_PERMIT_CONDITIONS));
   dispatch(showLoading());
   return CustomAxios()
     .get(
-      `${ENVIRONMENT.apiUrl}${API.PERMIT_CONDITIONS(mineGuid, permitGuid, permitAmdendmentGuid)}`,
+      `${ENVIRONMENT.apiUrl}${API.PERMIT_CONDITIONS(null, null, permitAmdendmentGuid)}`,
       createRequestHeader()
     )
     .then((response) => {
@@ -206,12 +206,12 @@ export const fetchPermitConditions = (mineGuid, permitGuid, permitAmdendmentGuid
     .finally(() => dispatch(hideLoading()));
 };
 
-export const createPermitCondition = (mineGuid, permitGuid, permitAmdendmentGuid, payload) => (dispatch) => {
+export const createPermitCondition = (permitAmdendmentGuid, payload) => (dispatch) => {
   dispatch(request(reducerTypes.CREATE_PERMIT_CONDITION));
-  dispatch(showLoading("modal"));
+  dispatch(showLoading());
   return CustomAxios()
     .post(
-      `${ENVIRONMENT.apiUrl}${API.PERMIT_CONDITIONS(mineGuid, permitGuid, permitAmdendmentGuid)}`,
+      `${ENVIRONMENT.apiUrl}${API.PERMIT_CONDITIONS(null, null, permitAmdendmentGuid)}`,
       { permit_condition: payload },
       createRequestHeader()
     )
@@ -227,12 +227,12 @@ export const createPermitCondition = (mineGuid, permitGuid, permitAmdendmentGuid
     .finally(() => dispatch(hideLoading("modal")));
 };
 
-export const deletePermitCondition = (mineGuid, permitGuid, permitAmdendmentGuid) => (dispatch) => {
+export const deletePermitCondition = (permitAmdendmentGuid, permitConditionGuid) => (dispatch) => {
   dispatch(request(reducerTypes.DELETE_PERMIT_CONDITION));
   dispatch(showLoading());
   return CustomAxios()
     .delete(
-      `${ENVIRONMENT.apiUrl}${API.PERMIT_CONDITIONS(mineGuid, permitGuid, permitAmdendmentGuid)}`,
+      `${ENVIRONMENT.apiUrl}${API.PERMIT_CONDITION(null, null, permitAmdendmentGuid, permitConditionGuid)}`,
       createRequestHeader()
     )
     .then((response) => {

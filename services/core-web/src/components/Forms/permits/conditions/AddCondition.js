@@ -39,8 +39,8 @@ const ButtonText = (condition_type_code) =>
 
 export class AddCondition extends Component {
     state = { isEditing: false }
-    handleSubmit = (values) => this.props.createPermitCondition(null, null, this.props.draftPermitAmendment.permit_amendment_guid, values).then(() => {
-        this.props.fetchPermitConditions(null, null, this.props.draftPermitAmendment.permit_amendment_guid);
+    handleSubmit = (values) => this.props.createPermitCondition(this.props.draftPermitAmendment.permit_amendment_guid, values).then(() => {
+        this.props.fetchPermitConditions(this.props.draftPermitAmendment.permit_amendment_guid);
         this.props.setEditingConditionFlag(false);
         this.setState({ isEditing: false });
     });
