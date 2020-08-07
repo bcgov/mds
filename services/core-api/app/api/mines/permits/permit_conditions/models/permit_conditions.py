@@ -94,9 +94,9 @@ class PermitConditions(AuditMixin, Base):
 
         permit_condition.save(commit=False)
         for condition in sub_conditions:
-            PermitConditions.create(condition.condition_category,
-                                    condition.condition_type, permit_amendment,
-                                    condition.condition,
+            PermitConditions.create(condition.condition_category_code,
+                                    condition.condition_type_code,
+                                    permit_amendment, condition.condition,
                                     condition.display_order,
                                     condition.sub_conditions, permit_condition)
         return permit_condition

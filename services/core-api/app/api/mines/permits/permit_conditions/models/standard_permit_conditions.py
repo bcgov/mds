@@ -47,8 +47,8 @@ class StandardPermitConditions(AuditMixin, Base):
         backref=backref('parent', remote_side=[standard_permit_condition_id]))
 
     @classmethod
-    def find_by_notice_of_work_type_code(cls, permit_type):
-        return cls.query.filter_by(permit_type=permit_type,
+    def find_by_notice_of_work_type_code(cls, notice_of_work_type):
+        return cls.query.filter_by(notice_of_work_type=notice_of_work_type,
                                    parent_standard_permit_condition_id=None,
                                    deleted_ind=False).order_by(
                                        cls.display_order).all()
