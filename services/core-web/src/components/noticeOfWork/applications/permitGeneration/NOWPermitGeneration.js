@@ -15,7 +15,11 @@ import {
   updatePermitAmendment,
   fetchDraftPermitByNOW,
 } from "@common/actionCreators/permitActionCreator";
-import { getPermits, getDraftPermitForNOW } from "@common/selectors/permitSelectors";
+import {
+  getPermits,
+  getDraftPermitForNOW,
+  getDraftPermitAmendmentForNOW,
+} from "@common/selectors/permitSelectors";
 import * as FORM from "@/constants/forms";
 import CustomPropTypes from "@/customPropTypes";
 import GeneratePermitForm from "@/components/Forms/permits/GeneratePermitForm";
@@ -47,6 +51,7 @@ const propTypes = {
   preDraftFormValues: CustomPropTypes.preDraftForm.isRequired,
   permits: PropTypes.arrayOf(CustomPropTypes.permit).isRequired,
   draftPermit: CustomPropTypes.permit.isRequired,
+  draftPermitAmendment: CustomPropTypes.permitAmendment.isRequired,
   isAmendment: PropTypes.bool.isRequired,
 };
 
@@ -81,18 +86,13 @@ export class NOWPermitGeneration extends Component {
         this.props.noticeOfWork.now_application_guid
       )
       .then(() => {
-        if (!isEmpty(this.props.draftPermit)) {
-          const draftAmendment = this.props.draftPermit.permit_amendments.filter(
-            (amendment) =>
-              amendment.now_application_guid === this.props.noticeOfWork.now_application_guid &&
-              amendment.permit_amendment_status_code === draft
-          )[0];
+        if (!isEmpty(this.props.draftPermitAmendment)) {
           const permitGenObj = this.createPermitGenObject(
             this.props.noticeOfWork,
             this.props.draftPermit,
-            draftAmendment
+            this.props.draftPermitAmendment
           );
-          this.setState({ isDraft: !isEmpty(draftAmendment), draftAmendment, permitGenObj });
+          this.setState({ isDraft: !isEmpty(this.props.draftPermitAmendment), permitGenObj });
         }
         this.setState({ isLoaded: true });
       });
@@ -171,7 +171,7 @@ export class NOWPermitGeneration extends Component {
       }));
   };
 
-  handlePremitGenSubmit = () => {
+  handlePermitGenSubmit = () => {
     const newValues = this.props.formValues;
     if (this.props.isAmendment) {
       newValues.original_permit_issue_date = formatDate(
@@ -200,7 +200,7 @@ export class NOWPermitGeneration extends Component {
       .updatePermitAmendment(
         this.props.noticeOfWork.mine_guid,
         this.props.draftPermit.permit_guid,
-        this.state.draftAmendment.permit_amendment_guid,
+        this.props.draftPermitAmendment.permit_amendment_guid,
         payload
       )
       .then(() => {
@@ -286,7 +286,7 @@ export class NOWPermitGeneration extends Component {
               Cancel
             </Button>
           </Popconfirm>
-          <Button className="full-mobile" type="tertiary" onClick={this.handlePremitGenSubmit}>
+          <Button className="full-mobile" type="tertiary" onClick={this.handlePermitGenSubmit}>
             Preview
           </Button>
           <Button type="primary" className="full-mobile" onClick={this.handleSaveDraftEdit}>
@@ -383,6 +383,7 @@ const mapStateToProps = (state) => ({
   preDraftFormValues: getFormValues(FORM.PRE_DRAFT_PERMIT)(state),
   permits: getPermits(state),
   draftPermit: getDraftPermitForNOW(state),
+  draftPermitAmendment: getDraftPermitAmendmentForNOW(state),
 });
 
 const mapDispatchToProps = (dispatch) =>

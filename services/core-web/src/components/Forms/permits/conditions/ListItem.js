@@ -11,6 +11,7 @@ const propTypes = {
   new: PropTypes.bool,
   handleSubmit: PropTypes.func,
   handleCancel: PropTypes.func,
+  handleDelete: PropTypes.func,
   initialValues: PropTypes.objectOf(PropTypes.any),
 };
 
@@ -23,33 +24,39 @@ const defaultProps = {
   new: false,
   handleSubmit: () => {},
   handleCancel: () => {},
+  handleDelete: () => {},
   initialValues: {},
 };
 
 const ListItem = (props) => {
   const [isEditing, setIsEditing] = useState(props.new);
   return (
-    <Row gutter={32}>
-      <Col md={2} />
-      <Col md={1}>{!isEditing && props.condition.step}</Col>
-      <Col md={20} offset={2}>
-        {!isEditing && props.condition.condition}
-        {isEditing && (
-          <ListItemForm
-            onCancel={props.handleCancel}
-            onSubmit={props.handleSubmit}
-            initialValues={props.initialValues}
-          />
-        )}
-      </Col>
-      <Col md={2}>
-        {!isEditing && (
-          <div className="btn--middle flex float-right">
+    <>
+      {props.condition.display_order === 1 && (
+        <Row gutter={32}>
+          <Col>&nbsp;</Col>
+        </Row>
+      )}
+      <Row gutter={32}>
+        {!isEditing && <Col span={3} />}
+        <Col span={1}>{!isEditing && props.condition.step}</Col>
+        <Col span={18}>
+          {!isEditing && props.condition.condition}
+          {isEditing && (
+            <ListItemForm
+              onCancel={props.handleCancel}
+              onSubmit={props.handleSubmit}
+              initialValues={props.initialValues}
+            />
+          )}
+        </Col>
+        <Col span={2} className="float-right">
+          {!isEditing && (
             <AuthorizationWrapper permission={Permission.ADMIN}>
               <Popconfirm
                 placement="topLeft"
                 title="Are you sure you want to delete this condition?"
-                onConfirm={() => {}}
+                onConfirm={() => props.handleDelete(props.condition.permit_condition_guid)}
                 okText="Delete"
                 cancelText="Cancel"
               >
@@ -58,10 +65,10 @@ const ListItem = (props) => {
                 </Button>
               </Popconfirm>
             </AuthorizationWrapper>
-          </div>
-        )}
-      </Col>
-    </Row>
+          )}
+        </Col>
+      </Row>
+    </>
   );
 };
 

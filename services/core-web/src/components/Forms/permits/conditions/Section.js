@@ -14,6 +14,7 @@ const propTypes = {
   new: PropTypes.bool,
   handleSubmit: PropTypes.func,
   handleCancel: PropTypes.func,
+  handleDelete: PropTypes.func,
   initialValues: PropTypes.objectOf(PropTypes.any),
 };
 
@@ -26,6 +27,7 @@ const defaultProps = {
   new: false,
   handleSubmit: () => {},
   handleCancel: () => {},
+  handleDelete: () => {},
   initialValues: {},
 };
 
@@ -33,15 +35,20 @@ const Section = (props) => {
   const [isEditing, setIsEditing] = useState(props.new);
   return (
     <>
+      {props.condition.sub_conditions.length === 0 && props.condition.display_order !== 1 && (
+        <Row gutter={32}>
+          <Col>&nbsp;</Col>
+        </Row>
+      )}
       <Row gutter={32}>
-        {!isEditing && <Col md={2}>{props.condition.step}</Col>}
+        {!isEditing && <Col span={2}>{props.condition.step}</Col>}
         {!isEditing && (
-          <Col md={20} className="field-title">
+          <Col span={18} className="field-title">
             {props.condition.condition}
           </Col>
         )}
         {isEditing && (
-          <Col>
+          <Col span={20}>
             <SectionForm
               onCancel={props.handleCancel}
               onSubmit={props.handleSubmit}
@@ -49,33 +56,34 @@ const Section = (props) => {
             />
           </Col>
         )}
-        <Col md={1}>
+        <Col span={2} className="float-right">
           {!isEditing && (
-            <div align="right" className="btn--middle flex float-right">
-              <AuthorizationWrapper permission={Permission.ADMIN}>
-                <Popconfirm
-                  placement="topLeft"
-                  title="Are you sure you want to delete this condition?"
-                  onConfirm={() => {}}
-                  okText="Delete"
-                  cancelText="Cancel"
-                >
-                  <Button ghost size="small" type="primary">
-                    <img name="remove" src={TRASHCAN} alt="Remove Condition" />
-                  </Button>
-                </Popconfirm>
-              </AuthorizationWrapper>
-            </div>
+            <AuthorizationWrapper permission={Permission.ADMIN}>
+              <Popconfirm
+                placement="topLeft"
+                title="Are you sure you want to delete this condition?"
+                onConfirm={() => props.handleDelete(props.condition.permit_condition_guid)}
+                okText="Delete"
+                cancelText="Cancel"
+              >
+                <Button ghost size="small" type="primary">
+                  <img name="remove" src={TRASHCAN} alt="Remove Condition" />
+                </Button>
+              </Popconfirm>
+            </AuthorizationWrapper>
           )}
         </Col>
       </Row>
       {props.condition.sub_conditions.map((condition) => (
-        <Condition condition={condition} handleSubmit={props.handleSubmit} />
+        <Condition
+          condition={condition}
+          handleSubmit={props.handleSubmit}
+          handleDelete={props.handleDelete}
+        />
       ))}
       {!isEditing && (
-        <Row>
-          <Col md={2} />
-          <Col>
+        <Row gutter={32}>
+          <Col span={22} offset={2}>
             <AddCondition
               initialValues={{
                 condition_category_code: props.condition.condition_category_code,
@@ -84,16 +92,13 @@ const Section = (props) => {
                   props.condition.sub_conditions.length === 0
                     ? 1
                     : maxBy(props.condition.sub_conditions, "display_order").display_order + 1,
-                parent_condition_id: props.condition.permit_condition_id,
+                parent_permit_condition_id: props.condition.permit_condition_id,
                 permit_amendment_id: props.condition.permit_amendment_id,
               }}
             />
           </Col>
         </Row>
       )}
-      <Row gutter={32}>
-        <Col>&nbsp;</Col>
-      </Row>
       <Row gutter={32}>
         <Col>&nbsp;</Col>
       </Row>

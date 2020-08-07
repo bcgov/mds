@@ -12,5 +12,10 @@ export const storeDraftPermits = (payload) => ({
 
 export const storePermitConditions = (payload) => ({
   type: actionTypes.STORE_PERMIT_CONDITIONS,
-  payload
+  payload,
+});
+
+export const storeEditingConditionFlag = (payload) => ({
+  type: actionTypes.STORE_EDITING_CONDITION_FLAG,
+  payload,
 });

@@ -30,7 +30,6 @@ class PermitConditions(AuditMixin, Base):
         db.Integer,
         db.ForeignKey('permit_amendment.permit_amendment_id'),
         nullable=False)
-    permit_amendment = db.relationship('PermitAmendment', lazy='select')
     permit_condition_guid = db.Column(UUID(as_uuid=True),
                                       server_default=FetchedValue())
     condition = db.Column(db.String, nullable=False)
@@ -45,21 +44,24 @@ class PermitConditions(AuditMixin, Base):
     deleted_ind = db.Column(db.Boolean,
                             nullable=False,
                             server_default=FetchedValue())
-    parent_condition_id = db.Column(
+    parent_permit_condition_id = db.Column(
         db.Integer, db.ForeignKey('permit_conditions.permit_condition_id'))
     display_order = db.Column(db.Integer, nullable=False)
 
-    sub_conditions = db.relationship('PermitConditions',
-                                     lazy='joined',
-                                     backref=backref(
-                                         'parent',
-                                         remote_side=[permit_condition_id]))
+    all_sub_conditions = db.relationship(
+        'PermitConditions',
+        lazy='joined',
+        backref=backref('parent', remote_side=[permit_condition_id]))
+
+    @hybrid_property
+    def sub_conditions(self):
+        return [x for x in self.all_sub_conditions if x.deleted_ind == False]
 
     @hybrid_property
     def step(self):
         depth = 0
         condition = self
-        while condition.parent_condition_id is not None:
+        while condition.parent_permit_condition_id is not None:
             condition = condition.parent
             depth += 1
         step_format = depth % 3
@@ -102,7 +104,7 @@ class PermitConditions(AuditMixin, Base):
     @classmethod
     def find_all_by_permit_amendment_id(cls, permit_amendment_id):
         return cls.query.filter_by(permit_amendment_id=permit_amendment_id,
-                                   parent_condition_id=None,
+                                   parent_permit_condition_id=None,
                                    deleted_ind=False).order_by(
                                        cls.display_order).all()
 

@@ -48,18 +48,9 @@ export class AddCondition extends Component {
 
   handleSubmit = (values) =>
     this.props
-      .createPermitCondition(
-        null,
-        null,
-        this.props.draftPermitAmendment.permit_amendment_guid,
-        values
-      )
+      .createPermitCondition(this.props.draftPermitAmendment.permit_amendment_guid, values)
       .then(() => {
-        this.props.fetchPermitConditions(
-          null,
-          null,
-          this.props.draftPermitAmendment.permit_amendment_guid
-        );
+        this.props.fetchPermitConditions(this.props.draftPermitAmendment.permit_amendment_guid);
         this.props.setEditingConditionFlag(false);
         this.setState({ isEditing: false });
       });

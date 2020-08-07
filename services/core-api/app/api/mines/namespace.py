@@ -34,7 +34,7 @@ from app.api.mines.variances.resources.variance_document_upload import MineVaria
 from app.api.mines.variances.resources.variance_uploaded_documents import MineVarianceUploadedDocumentsResource
 from app.api.parties.party_appt.resources.mine_party_appt_document_upload_resource import MinePartyApptDocumentUploadResource
 from app.api.mines.comments.resources.mine_comment import MineCommentListResource, MineCommentResource
-from app.api.mines.permits.permit_conditions.resources.premit_conditions_resource import PermitConditionsListResource, PermitConditionsResource
+from app.api.mines.permits.permit_conditions.resources.permit_conditions_resource import PermitConditionsListResource, PermitConditionsResource
 from app.api.mines.permits.permit_conditions.resources.permit_condition_category_resource import PermitConditionCategoryResource
 from app.api.mines.permits.permit_conditions.resources.permit_condition_type_resource import PermitConditionTypeResource
 
@@ -51,43 +51,54 @@ api.add_resource(MineCommodityCodeResource, '/commodity-codes')
 api.add_resource(MineStatusXrefListResource, '/status')
 api.add_resource(MineRegionResource, '/region')
 
-api.add_resource(MineTailingsStorageFacilityListResource, '/<string:mine_guid>/tailings')
+api.add_resource(MineTailingsStorageFacilityListResource,
+                 '/<string:mine_guid>/tailings')
 api.add_resource(MineDocumentListResource, '/<string:mine_guid>/documents')
 
-api.add_resource(MineComplianceSummaryResource, '/<string:mine_no>/compliance/summary')
+api.add_resource(MineComplianceSummaryResource,
+                 '/<string:mine_no>/compliance/summary')
 
-api.add_resource(MineTypeResource, '/<string:mine_guid>/mine-types/<string:mine_type_guid>')
+api.add_resource(MineTypeResource,
+                 '/<string:mine_guid>/mine-types/<string:mine_type_guid>')
 api.add_resource(MineTypeListResource, '/<string:mine_guid>/mine-types')
 
 api.add_resource(MineBasicInfoResource, '/basicinfo')
-api.add_resource(MineVerifiedStatusResource, '/<string:mine_guid>/verified-status')
+api.add_resource(MineVerifiedStatusResource,
+                 '/<string:mine_guid>/verified-status')
 api.add_resource(MineVerifiedStatusListResource, '/verified-status')
 api.add_resource(MineSubscriptionResource, '/<string:mine_guid>/subscribe')
 api.add_resource(MineSubscriptionListResource, '/subscribe')
 
 api.add_resource(MineVarianceListResource, '/<string:mine_guid>/variances')
-api.add_resource(MineVarianceResource, '/<string:mine_guid>/variances/<string:variance_guid>')
-api.add_resource(MineVarianceDocumentUploadResource,
-                 '/<string:mine_guid>/variances/<string:variance_guid>/documents')
+api.add_resource(MineVarianceResource,
+                 '/<string:mine_guid>/variances/<string:variance_guid>')
+api.add_resource(
+    MineVarianceDocumentUploadResource,
+    '/<string:mine_guid>/variances/<string:variance_guid>/documents')
 api.add_resource(
     MineVarianceUploadedDocumentsResource,
-    '/<string:mine_guid>/variances/<string:variance_guid>/documents/<string:mine_document_guid>')
+    '/<string:mine_guid>/variances/<string:variance_guid>/documents/<string:mine_document_guid>'
+)
 
 api.add_resource(MineIncidentListResource, '/<string:mine_guid>/incidents')
-api.add_resource(MineIncidentResource, '/<string:mine_guid>/incidents/<string:mine_incident_guid>')
+api.add_resource(MineIncidentResource,
+                 '/<string:mine_guid>/incidents/<string:mine_incident_guid>')
 
 api.add_resource(
     MineIncidentDocumentResource,
     '/<string:mine_guid>/incidents/<string:mine_incident_guid>/documents/<string:mine_document_guid>'
 )
-api.add_resource(MineIncidentDocumentListResource, '/<string:mine_guid>/incidents/documents')
+api.add_resource(MineIncidentDocumentListResource,
+                 '/<string:mine_guid>/incidents/documents')
 
 api.add_resource(ReportsResource, '/reports')
 api.add_resource(MineReportListResource, '/<string:mine_guid>/reports')
-api.add_resource(MineReportResource, '/<string:mine_guid>/reports/<string:mine_report_guid>')
+api.add_resource(MineReportResource,
+                 '/<string:mine_guid>/reports/<string:mine_report_guid>')
 api.add_resource(MineReportDefinitionListResource, '/reports/definitions')
-api.add_resource(MineReportCommentListResource,
-                 '/<string:mine_guid>/reports/<string:mine_report_guid>/comments')
+api.add_resource(
+    MineReportCommentListResource,
+    '/<string:mine_guid>/reports/<string:mine_report_guid>/comments')
 api.add_resource(
     MineReportCommentResource,
     '/<string:mine_guid>/reports/<string:mine_report_guid>/comments/<string:mine_report_comment_guid>'
@@ -99,17 +110,21 @@ api.add_resource(
     '/<string:mine_guid>/reports/documents',
 )
 
-api.add_resource(PermitResource, '/<string:mine_guid>/permits/<string:permit_guid>')
+api.add_resource(PermitResource,
+                 '/<string:mine_guid>/permits/<string:permit_guid>')
 api.add_resource(PermitListResource, '/<string:mine_guid>/permits')
 api.add_resource(PermitStatusCodeResource, '/permits/status-codes')
-api.add_resource(PermitConditionCategoryResource, '/permits/condition-category-codes')
+api.add_resource(PermitConditionCategoryResource,
+                 '/permits/condition-category-codes')
 api.add_resource(PermitConditionTypeResource, '/permits/condition-type-codes')
 
-api.add_resource(PermitAmendmentListResource,
-                 '/<string:mine_guid>/permits/<string:permit_guid>/amendments')
+api.add_resource(
+    PermitAmendmentListResource,
+    '/<string:mine_guid>/permits/<string:permit_guid>/amendments')
 api.add_resource(
     PermitAmendmentResource,
-    '/<string:mine_guid>/permits/<string:permit_guid>/amendments/<string:permit_amendment_guid>')
+    '/<string:mine_guid>/permits/<string:permit_guid>/amendments/<string:permit_amendment_guid>'
+)
 
 api.add_resource(
     PermitAmendmentDocumentListResource,
@@ -134,8 +149,10 @@ api.add_resource(
     '/<string:mine_guid>/permits/<string:permit_guid>/amendments/<string:permit_amendment_guid>/conditions/<string:permit_condition_guid>',
 )
 
-api.add_resource(MinePartyApptDocumentUploadResource,
-                 '/<string:mine_guid>/party-appts/<string:mine_party_appt_guid>/documents')
+api.add_resource(
+    MinePartyApptDocumentUploadResource,
+    '/<string:mine_guid>/party-appts/<string:mine_party_appt_guid>/documents')
 
 api.add_resource(MineCommentListResource, '/<string:mine_guid>/comments')
-api.add_resource(MineCommentResource, '/<string:mine_guid>/comments/<string:mine_comment_guid>')
+api.add_resource(MineCommentResource,
+                 '/<string:mine_guid>/comments/<string:mine_comment_guid>')

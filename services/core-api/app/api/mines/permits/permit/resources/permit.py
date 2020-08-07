@@ -138,8 +138,8 @@ class PermitListResource(Resource, UserMixin):
                 standard_conditions = StandardPermitConditions.find_by_notice_of_work_type_code(
                     now_type)
                 for condition in standard_conditions:
-                    PermitConditions.create(condition.condition_category,
-                                            condition.condition_type,
+                    PermitConditions.create(condition.condition_category_code,
+                                            condition.condition_type_code,
                                             amendment, condition.condition,
                                             condition.display_order,
                                             condition.sub_conditions)

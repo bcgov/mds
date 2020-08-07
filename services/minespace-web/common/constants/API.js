@@ -58,6 +58,8 @@ export const DRAFT_PERMITS = (mineGuid, nowApplicationGuid) =>
   `/mines/${mineGuid}/permits?now_application_guid=${nowApplicationGuid}`;
 export const PERMIT_CONDITIONS = (mineGuid, permitGuid, permitAmendmentGuid) =>
   `/mines/${mineGuid}/permits/${permitGuid}/amendments/${permitAmendmentGuid}/conditions`;
+export const PERMIT_CONDITION = (mineGuid, permitGuid, permitAmendmentGuid, permitConditionGuid) =>
+  `/mines/${mineGuid}/permits/${permitGuid}/amendments/${permitAmendmentGuid}/conditions/${permitConditionGuid}`;
 
 // Search
 export const SEARCH = (params) => (params ? `/search?${queryString.stringify(params)}` : "/search");

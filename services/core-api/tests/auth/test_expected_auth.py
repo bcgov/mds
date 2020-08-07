@@ -35,7 +35,7 @@ from app.api.now_submissions.resources.application_list_resource import Applicat
 from app.api.now_submissions.resources.application_nda_list_resource import ApplicationNDAListResource
 from app.api.securities.resources.bond import BondResource, BondListResource, BondTransferResource
 from app.api.mines.comments.resources.mine_comment import MineCommentResource, MineCommentListResource
-from app.api.mines.permits.permit_conditions.resources.premit_conditions_resource import PermitConditionsListResource, PermitConditionsResource
+from app.api.mines.permits.permit_conditions.resources.permit_conditions_resource import PermitConditionsListResource, PermitConditionsResource
 
 from app.api.now_applications.resources.now_activity_type_resource import NOWActivityTypeResource
 from app.api.now_applications.resources.now_application_import_resource import NOWApplicationImportResource
@@ -74,9 +74,12 @@ from app.api.now_applications.resources.now_application_resource import NOWAppli
     (MineTenureTypeCodeResource, "get", [VIEW_ALL]),
     (MineTypeListResource, "post", [MINE_EDIT]),
     (MineTypeResource, "delete", [MINE_EDIT]),
-    (MineVarianceDocumentUploadResource, "post", [EDIT_VARIANCE, MINESPACE_PROPONENT]),
-    (MineVarianceDocumentUploadResource, "put", [EDIT_VARIANCE, MINESPACE_PROPONENT]),
-    (MineVarianceUploadedDocumentsResource, "delete", [EDIT_VARIANCE, MINESPACE_PROPONENT]),
+    (MineVarianceDocumentUploadResource, "post",
+     [EDIT_VARIANCE, MINESPACE_PROPONENT]),
+    (MineVarianceDocumentUploadResource, "put",
+     [EDIT_VARIANCE, MINESPACE_PROPONENT]),
+    (MineVarianceUploadedDocumentsResource, "delete",
+     [EDIT_VARIANCE, MINESPACE_PROPONENT]),
     (MineVarianceListResource, "get", [VIEW_ALL, MINESPACE_PROPONENT]),
     (MineVarianceListResource, "post", [EDIT_VARIANCE, MINESPACE_PROPONENT]),
     (MineVarianceResource, "get", [VIEW_ALL, MINESPACE_PROPONENT]),
@@ -133,7 +136,8 @@ from app.api.now_applications.resources.now_application_resource import NOWAppli
 ])
 def test_endpoint_auth(resource, method, expected_roles):
     endpoint = getattr(resource, method, None)
-    assert endpoint != None, '{0} does not have a {1} method.'.format(resource, method.upper())
+    assert endpoint != None, '{0} does not have a {1} method.'.format(
+        resource, method.upper())
 
     assigned_roles = getattr(endpoint, "required_roles", [])
     assert set(expected_roles) == set(
