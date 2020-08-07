@@ -61,7 +61,7 @@ COMMENT ON TABLE permit_conditions IS 'Contains the set of conditions for a draf
 
 CREATE TABLE IF NOT EXISTS standard_permit_conditions
 (
-    standard_permit_condition_id                                         PRIMARY KEY,
+    standard_permit_condition_id                                       SERIAL PRIMARY KEY,
     standard_permit_condition_guid      uuid           DEFAULT gen_random_uuid() NOT NULL,
     notice_of_work_type                         varchar                          NOT NULL,
     condition                           varchar                                  NOT NULL,
