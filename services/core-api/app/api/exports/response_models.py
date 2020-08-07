@@ -1,8 +1,7 @@
 from app.extensions import api
 from flask_restplus import fields
 
-from app.api.mines.response_models import MINE_TENURE_TYPE_CODE_MODEL, MINE_COMMODITY_CODE_MODEL, MINE_DISTURBANCE_CODE_MODEL, MINE_STATUS_CODE_MODEL, MINE_REGION_OPTION, MINE_REPORT_DEFINITION_CATEGORIES, MINE_REPORT_DEFINITION_MODEL, MINE_REPORT_SUBMISSION_STATUS, EXEMPTION_FEE_STATUS_CODE_MODEL
-from app.api.mines.response_models import PERMIT_STATUS_CODE_MODEL
+from app.api.mines.response_models import MINE_TENURE_TYPE_CODE_MODEL, MINE_COMMODITY_CODE_MODEL, MINE_DISTURBANCE_CODE_MODEL, MINE_STATUS_CODE_MODEL, MINE_REGION_OPTION, MINE_REPORT_DEFINITION_CATEGORIES, MINE_REPORT_DEFINITION_MODEL, MINE_REPORT_SUBMISSION_STATUS, EXEMPTION_FEE_STATUS_CODE_MODEL, PERMIT_STATUS_CODE_MODEL, PERMIT_CONDITION_CATEGORY_MODEL, PERMIT_CONDITION_TYPE_MODEL
 from app.api.compliance.response_models import COMPLIANCE_ARTICLE_MODEL
 from app.api.incidents.response_models import MINE_INCIDENT_CATEGORY_MODEL, MINE_INCIDENT_DETERMINATION_TYPE_MODEL, MINE_INCIDENT_STATUS_CODE_MODEL, MINE_INCIDENT_DOCUMENT_TYPE_CODE_MODEL, MINE_INCIDENT_FOLLOWUP_INVESTIGATION_TYPE_MODEL
 from app.api.parties.response_models import MINE_PARTY_APPT_TYPE_MODEL, SUB_DIVISION_CODE_MODEL
@@ -98,4 +97,9 @@ STATIC_CONTENT_MODEL = api.model(
         fields.List(fields.Nested(BOND_DOCUMENT_TYPE), attribute='BondDocumentType'),
         'exemptionFeeStatusOptions':
         fields.List(fields.Nested(EXEMPTION_FEE_STATUS_CODE_MODEL), attribute='ExemptionFeeStatus'),
+        'permitConditionTypeOptions':
+        fields.List(fields.Nested(PERMIT_CONDITION_TYPE_MODEL), attribute='PermitConditionType'),
+        'permitConditionCategoryOptions':
+        fields.List(
+            fields.Nested(PERMIT_CONDITION_CATEGORY_MODEL), attribute='PermitConditionCategory'),
     })

@@ -1245,3 +1245,22 @@ VALUES
     ('ROE', 'SE', 'MMD-Cranbrook@gov.bc.ca', '250 417-6134', NULL, '202-100 Cranbrook Street North', 'Cranbrook, B.C. V1C 3P9'),
     ('ROE', 'SW', 'SouthwestMinesDivision@gov.bc.ca', '778 698-3649', '250 953-3878', 'PO Box 9395, Stn Prov Govt', 'Victoria, B.C. V8W 9M9')
 ON CONFLICT DO NOTHING;
+
+INSERT INTO permit_condition_category
+(condition_category_code, description, active_ind, display_order, create_user, update_user)
+VALUES
+	('GEC', 'General Conditions', true, 10, 'system-mds', 'system-mds'),
+	('HSC', 'Health and Safety Conditions', true, 20, 'system-mds', 'system-mds'),
+	('GOC', 'Geotechnical Conditions', true, 30, 'system-mds', 'system-mds'),
+	('ELC', 'Environmental Land and Watercourses Conditions', true, 40, 'system-mds', 'system-mds'),
+  ('RCC', 'Reclamation and Closure Program Conditions', true, 50, 'system-mds', 'system-mds'),
+	('ADC', 'Additional Conditions', true, 60, 'system-mds', 'system-mds')
+on conflict do nothing;
+
+INSERT INTO permit_condition_type
+(condition_type_code, description, active_ind, display_order, create_user, update_user)
+VALUES
+	('SEC', 'Permit Section', true, 10, 'system-mds', 'system-mds'),
+	('CON', 'Condition', true, 20, 'system-mds', 'system-mds'),
+	('LIS', 'List Item', true, 30, 'system-mds', 'system-mds')
+on conflict do nothing;
