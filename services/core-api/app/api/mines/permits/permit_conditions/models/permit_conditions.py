@@ -36,7 +36,7 @@ class PermitConditions(AuditMixin, Base):
     condition_type_code = db.Column(
         db.String, db.ForeignKey('permit_condition_type.condition_type_code'), nullable=False)
     deleted_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
-    parent_condition_id = db.Column(db.Integer,
+    parent_permit_condition_id = db.Column(db.Integer,
                                     db.ForeignKey('permit_conditions.permit_condition_id'))
     display_order = db.Column(db.Integer, nullable=False)
 
@@ -53,7 +53,7 @@ class PermitConditions(AuditMixin, Base):
     def step(self):
         depth = 0
         condition = self
-        while condition.parent_condition_id is not None:
+        while condition.parent_permit_condition_id is not None:
             condition = condition.parent
             depth += 1
         step_format = depth % 3
@@ -70,7 +70,7 @@ class PermitConditions(AuditMixin, Base):
     @classmethod
     def find_all_by_permit_amendment_id(cls, permit_amendment_id):
         return cls.query.filter_by(
-            permit_amendment_id=permit_amendment_id, parent_condition_id=None,
+            permit_amendment_id=permit_amendment_id, parent_permit_condition_id=None,
             deleted_ind=False).order_by(cls.display_order).all()
 
     @classmethod

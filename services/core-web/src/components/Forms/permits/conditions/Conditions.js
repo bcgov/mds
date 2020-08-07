@@ -66,7 +66,7 @@ export class Conditions extends Component {
                             condition_category_code: conditionCategory.condition_category_code,
                             condition_type_code: 'SEC',
                             display_order: conditions.length === 0 ? 1 : maxBy(conditions, 'display_order').display_order + 1,
-                            parent_condition_id: null,
+                            parent_permit_condition_id: null,
                             permit_amendment_id: this.props.draftPermitAmendment.permit_amendment_id
                         }} />
                     {false &&

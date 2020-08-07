@@ -81,7 +81,7 @@ const SubCondition = (props) => {
                                 condition_category_code: props.condition.condition_category_code,
                                 condition_type_code: 'LIS',
                                 display_order: props.condition.sub_conditions.length === 0 ? 1 : maxBy(props.condition.sub_conditions, 'display_order').display_order + 1,
-                                parent_condition_id: props.condition.permit_condition_id,
+                                parent_permit_condition_id: props.condition.permit_condition_id,
                                 permit_amendment_id: props.condition.permit_amendment_id
                             }} />
                     </Col>

@@ -16,14 +16,18 @@ class StandardPermitConditions(AuditMixin, Base):
     standard_permit_condition_id = db.Column(db.Integer, primary_key=True)
     standard_permit_condition_guid = db.Column(UUID(as_uuid=True), server_default=FetchedValue())
     condition = db.Column(db.String, nullable=False)
-    condition_category = db.Column(
+    condition_category_code = db.Column(
         db.String,
         db.ForeignKey('permit_condition_category.condition_category_code'),
         nullable=False)
-    permit_type = db.Column(
+    condition_type_code = db.Column(
+        db.String,
+        db.ForeignKey('permit_condition_type.condition_type_code'),
+        nullable=False)
+    notice_of_work_type = db.Column(
         db.String, db.ForeignKey('notice_of_work_type.notice_of_work_type_code'), nullable=False)
     deleted_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
-    parent_condition_id = db.Column(
+    parent_permit_condition_id = db.Column(
         db.Integer, db.ForeignKey('permit_conditions.permit_condition_id'), nullable=False)
     parent_standard_permit_condition_id = db.Column(db.Integer,
                                     db.ForeignKey('standard_permit_conditions.standard_permit_condition_id'))
