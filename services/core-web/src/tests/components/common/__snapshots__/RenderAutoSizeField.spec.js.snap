@@ -9,7 +9,11 @@ exports[`RenderAutoSizeField renders properly 1`] = `
   validateStatus=""
 >
   <TextArea
-    autoSize={true}
+    autoSize={
+      Object {
+        "minRows": 4,
+      }
+    }
     disabled={false}
     id={1}
     placeholder=""
