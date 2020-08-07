@@ -68,7 +68,7 @@ VALUES
 -- Geotechnical
 -- condition === 'Site Stability'
   (36, 'SAG', 9, 'The Chief Inspector shall be advised in writing at the earliest opportunity of any unforeseen conditions that could adversely affect the extraction of materials, site stability, erosion control or the reclamation of the site;', 'GOC', 'CON', 1, 'system-mds', 'system-mds'),
-  (37, 'SAG', 9, 'The stability of the slopes shall be maintained at all times and erosion shall be controlled at all times (as described in Document X – updated as required if there is a sediment and erosion control plan – or remove reference to document);', 'GOC', 'CON', 2, 'system-mds', 'system-mds'),
+  (37, 'SAG', 9, 'The stability of the slopes shall be maintained at all times and erosion shall be controlled at all times (as described in <<document>> – updated as required if there is a sediment and erosion control plan – or remove reference to document);', 'GOC', 'CON', 2, 'system-mds', 'system-mds'),
   (38, 'SAG', 9, 'The discovery of any significant subsurface flows of water, seeps, substantial amounts of fine textured, soils, silts and clays, as well as significant adverse geological conditions shall be reported to the Chief Inspector as soon as possible and work shall cease until written approval from the Chief Inspector advises otherwise.', 'GOC', 'CON', 3, 'system-mds', 'system-mds'),
 
  -- Environmental Land and Watercourses Conditions
@@ -82,17 +82,17 @@ VALUES
 
 -- Reclamation and Closure Program Conditions
 -- condition === 'Security'
-  (43, 'SAG', 12, 'The Permittee shall maintain with the Minister of Finance security in the amount of X dollars ($<<bond_amt>>).  The security will be held by the Minister of Finance and for the proper performance of the approved program and all the conditions of this permit in a manner satisfactory to the Chief Inspector.', 'RCC', 'CON', 1, 'system-mds', 'system-mds'),
+  (43, 'SAG', 12, 'The Permittee shall maintain with the Minister of Finance security in the amount of <<X dollars>> ($<<bond_amt>>).  The security will be held by the Minister of Finance and for the proper performance of the approved program and all the conditions of this permit in a manner satisfactory to the Chief Inspector.', 'RCC', 'CON', 1, 'system-mds', 'system-mds'),
   -- condition === 'Obligation to Reclaim'
   (44, 'SAG', 13, 'The surface of the land and watercourses shall be reclaimed to the following end land use:  <<land_use>>;', 'RCC', 'CON', 1, 'system-mds', 'system-mds'),
   (45, 'SAG', 13, 'Excluding lands that are not to be reclaimed, the average land capability to be achieved on the remaining lands shall not be less than the average that existed prior to mining, unless the land capability is not consistent with the approved end land use;', 'RCC', 'CON', 2, 'system-mds', 'system-mds'),
-  (46, 'SAG', 13, 'Land shall be re-vegetated to a self-sustaining state using a certified native seed mix appropriate for the local BEC zone (XXXXX) – (project specific – update as required);', 'RCC', 'CON', 3, 'system-mds', 'system-mds'),
+  (46, 'SAG', 13, 'Land shall be re-vegetated to a self-sustaining state using a certified native seed mix appropriate for the local BEC zone <<zone>>;', 'RCC', 'CON', 3, 'system-mds', 'system-mds'),
   (47, 'SAG', 13, 'On all lands to be revegetated, the growth medium shall satisfy land use, productivity, and water quality objectives.  Topsoil and overburden (to rooting depth) shall be removed from operational areas prior to any disturbance of the land and stockpiled separately on the property for use in reclamation programs, unless the Permittee can provide evidence which demonstrates, to the satisfaction of the Chief Inspector, that reclamation objectives can otherwise be achieved;', 'RCC', 'CON', 4, 'system-mds', 'system-mds'),
   (48, 'SAG', 13, 'The Permittee shall undertake monitoring programs, as required by the Chief Inspector, to demonstrate that reclamation objectives are being achieved.', 'RCC', 'CON', 5, 'system-mds', 'system-mds'),
   -- condition === 'Watercourses and Aquatic Ecosystem Protection'
   (49, 'SAG', 14, 'Water which flows from disturbed areas shall be collected and diverted into settling ponds, unless water is effectively ex-filtrating through gravels;', 'RCC', 'CON', 1, 'system-mds', 'system-mds'),
   (50, 'SAG', 14, 'All water pumps used within fish-bearing streams are to be fitted with screens to prevent fish entrainment that meet the requirements of the Department of Fisheries and Oceans Freshwater Intake End-of-Pipe Fish Screen Guideline.', 'RCC', 'CON', 2, 'system-mds', 'system-mds'),
-  (51, 'SAG', 14, 'Works in and about a stream conditions from template.', 'RCC', 'CON', 3, 'system-mds', 'system-mds'),
+  (51, 'SAG', 14, '<<Works in and about a stream conditions from template.>>', 'RCC', 'CON', 3, 'system-mds', 'system-mds'),
   -- condition === 'Roads'
   (52, 'SAG', 15, 'All roads shall be reclaimed in accordance with land use objectives unless permanent access is required to be maintained;', 'RCC', 'CON', 1, 'system-mds', 'system-mds'),
   (53, 'SAG', 15, 'Individual roads will be exempted from the requirement for total reclamation under condition 4(a) if either:', 'RCC', 'CON', 1, 'system-mds', 'system-mds'),
