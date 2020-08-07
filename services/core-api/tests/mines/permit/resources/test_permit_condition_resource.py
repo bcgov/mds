@@ -5,7 +5,6 @@ from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointme
 
 from tests.factories import PermitFactory, PermitAmendmentFactory, PartyFactory, MinePartyAppointmentFactory, create_mine_and_permit
 
-
 # POST
 def test_get_permit_conditions_by_permit_amendment_by_guid(test_client, db_session, auth_headers):
     mine, permit = create_mine_and_permit()
