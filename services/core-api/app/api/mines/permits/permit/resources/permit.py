@@ -140,7 +140,8 @@ class PermitListResource(Resource, UserMixin):
                 for condition in standard_conditions:
                     PermitConditions.create(condition.condition_category_code,
                                             condition.condition_type_code,
-                                            amendment, condition.condition,
+                                            amendment.permit_amendment_id,
+                                            condition.condition,
                                             condition.display_order,
                                             condition.sub_conditions)
                 db.session.commit()

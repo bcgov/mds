@@ -80,14 +80,14 @@ class PermitConditions(AuditMixin, Base):
     def create(cls,
                condition_category_code,
                condition_type_code,
-               permit_amendment,
+               permit_amendment_id,
                condition,
                display_order,
                sub_conditions,
                parent=None):
         permit_condition = cls(condition_category_code=condition_category_code,
                                condition_type_code=condition_type_code,
-                               permit_amendment=permit_amendment,
+                               permit_amendment_id=permit_amendment_id,
                                condition=condition,
                                display_order=display_order,
                                parent=parent)
@@ -96,7 +96,7 @@ class PermitConditions(AuditMixin, Base):
         for condition in sub_conditions:
             PermitConditions.create(condition.condition_category_code,
                                     condition.condition_type_code,
-                                    permit_amendment, condition.condition,
+                                    permit_amendment_id, condition.condition,
                                     condition.display_order,
                                     condition.sub_conditions, permit_condition)
         return permit_condition
