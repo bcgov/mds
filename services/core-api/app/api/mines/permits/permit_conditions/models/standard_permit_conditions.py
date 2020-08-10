@@ -32,10 +32,6 @@ class StandardPermitConditions(AuditMixin, Base):
     deleted_ind = db.Column(db.Boolean,
                             nullable=False,
                             server_default=FetchedValue())
-    parent_permit_condition_id = db.Column(
-        db.Integer,
-        db.ForeignKey('permit_conditions.permit_condition_id'),
-        nullable=False)
     parent_standard_permit_condition_id = db.Column(
         db.Integer,
         db.ForeignKey(
