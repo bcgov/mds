@@ -35,6 +35,7 @@ from app.api.now_submissions.resources.application_list_resource import Applicat
 from app.api.now_submissions.resources.application_nda_list_resource import ApplicationNDAListResource
 from app.api.securities.resources.bond import BondResource, BondListResource, BondTransferResource
 from app.api.mines.comments.resources.mine_comment import MineCommentResource, MineCommentListResource
+from app.api.mines.permits.permit_conditions.resources.permit_conditions_resource import PermitConditionsListResource, PermitConditionsResource
 
 from app.api.now_applications.resources.now_activity_type_resource import NOWActivityTypeResource
 from app.api.now_applications.resources.now_application_import_resource import NOWApplicationImportResource
@@ -124,6 +125,11 @@ from app.api.now_applications.resources.now_application_resource import NOWAppli
     (MineCommentListResource, 'get', [VIEW_ALL]),
     (MineCommentListResource, 'post', [MINE_EDIT]),
     (MineCommentResource, 'delete', [MINE_ADMIN]),
+    (PermitConditionsListResource, 'post', [EDIT_PERMIT]),
+    (PermitConditionsListResource, 'get', [EDIT_PERMIT]),
+    (PermitConditionsResource, 'get', [EDIT_PERMIT]),
+    (PermitConditionsResource, 'put', [EDIT_PERMIT]),
+    (PermitConditionsResource, 'delete', [EDIT_PERMIT]),
 ])
 def test_endpoint_auth(resource, method, expected_roles):
     endpoint = getattr(resource, method, None)
