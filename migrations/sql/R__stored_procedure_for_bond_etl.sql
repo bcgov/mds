@@ -282,7 +282,7 @@ declare
 		upserted_bonds ub
 	where
 		ub.sec_cid = e.sec_cid
-	and ub.bond_id is null;
+	and e.core_bond_id is null;
 
 
 	---------------------- INSERT BOND_permit_xref
