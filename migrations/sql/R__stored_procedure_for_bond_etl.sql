@@ -11,11 +11,13 @@ declare
 	CREATE TABLE IF NOT EXISTS ETL_BOND(
 		core_permit_id integer,
 		core_bond_id integer,
-		core_party_name varchar, --local coalese
+		core_party_name varchar,
+		--local coalese secsec.cmp_nm is typed, secsec.first_nm,last_nm are autopoulated from permit
+		--secsec.cmp_nm is usually a 'companyName', or 'first last' or 'last, first' unsure how to parse.
 		core_payer_party_guid uuid,
 		etl_update_date TIMESTAMP,
-		--Source columns we care about
-		sec_cid varchar NOT NULL, --save for reverse lookups
+		-------Source columns we care about
+		sec_cid varchar NOT null unique , --save for reverse lookups
 		permit_no varchar NULL, -- used to lookup permit_id
 		mms_address varchar NULL, --preserving, but can't be converted.
 	--?? ignore bond.payer_party.address
@@ -28,31 +30,27 @@ declare
 		core_bond_type_code varchar null,
 		sec_typ varchar NULL, -- mapped to bond.bond_type_code
 		descript varchar NULL,--bond.reference_number
-		comment varchar NULL, --bond.comment
+		"comment" varchar NULL, --bond.comment (joine secsec.comment1 and secsec.comment2)
 		invloc varchar NULL, --bond.institution_name
 		iaddr1 varchar NULL,-- bond.institution_street
 		iaddr2 varchar NULL,-- ?? usually empty
 		iaddr3 varchar NULL,-- city/prov to be split for bond.institution_city, bond.institution_prov
 		ipost_cd varchar NULL, --bond.institution_postal_code
-		first_nm varchar NULL,-- bond.payer_party.first_name
-		cnt_title varchar NULL,-- bond.payer_party.job_title
 		project_no varchar null,-- bond.project_id
-
-		--UNKNOWN FIELDS
+		"status" varchar null,--?? ["",E,C]
 		cnt_dt timestamp NULL,-- bond.issue_date, originially Contract Date. 
-		-- exp_dt timestamp NULL,--?? Some date?last
+		return_dt timestamp NULL -- bond.closed_date
+
+		-- --IGNORED FIELDS Confirmed with Eva
 		-- mat_dt timestamp NULL,--?? Some date? maturity date?
 		-- pre_exp_dt timestamp NULL,--?? Some date?
-		"status" varchar NULL--?? ["",E,C]
+		-- exp_dt timestamp NULL,--?? Some date?last
 		-- rrlink varchar NULL,--?? ["",A]
 		-- xchng_amt numeric(12,2) NULL,--?? 16 records have non-zero, all negative. (return_dt ~1991/1992, status=C)
 		-- dep_dt timestamp NULL,--??
-		-- add_dt timestamp NULL,--??
+		-- add_dt timestamp NULL,--?? mms Entry date
 		-- last_dt timestamp NULL,--??
-		-- return_dt timestamp NULL, --?? 200 non-null records
 		-- action_dt timestamp NULL, --??
-
-		-- --IGNORED FIELDS
 		-- sec_group varchar NULL,--?? ["","1","3"]
 		-- cmp_sal varchar NULL,--?? ["","Mrs.","Mr."] 'Salutation?
 		-- ident_cd varchar NULL, --?? FName LastNAme. Sometimes?
@@ -62,12 +60,11 @@ declare
 		-- district varchar NULL,--?? Breakdown of permit number
 		-- "temp" varchar NULL,--?? Breakdown of permit number
 );
--- unmapped columns
--- bond.closed_date
+-- columns with no source
 -- bond.closed_note
 
 
-	------------------- FETCH NEW RECORDS
+	------------------- UPSERT RECORDS
 	SELECT count(*) FROM ETL_BOND into tmp1;
 
 	INSERT INTO ETL_BOND (
@@ -75,27 +72,39 @@ declare
 		permit_no ,
 		mms_address,
 		core_party_name,
-		note1 ,
+		note1,
 		sec_amt ,
+		core_bond_type_code,
 		sec_typ,
 		descript ,
-		comment,
+		"comment",
 		invloc ,
 		iaddr1 ,
 		iaddr2 ,
 		iaddr3 ,
 		ipost_cd ,
-		first_nm ,
-		cnt_title ,
 		project_no ,
+		return_dt,
 		etl_update_date)
 	SELECT
 		sec_cid,
 		replace(REPLACE(permit_no,' ',''),'--','-'),
 		CONCAT_WS(' ', TRIM(addr1),TRIM(addr2),TRIM(addr3), TRIM(post_cd)),
-		coalesce(nullif(TRIM(last_nm),''),TRIM(cmp_nm)),
+		coalesce(nullif(TRIM(cmp_nm),''),TRIM(last_nm)),
 		TRIM(note1),
 		sec_amt,
+		case
+			when TRIM(sec_typ) = 'Asset Security Agreement' then 'ASA'
+			when TRIM(sec_typ) = 'Cash' then 'CAS'
+			when TRIM(sec_typ) = 'Confiscation' then 'CAS'
+			when TRIM(sec_typ) = 'Letter of Credit' then 'ILC'
+			when TRIM(sec_typ) = 'Qualified Env. Trust' then 'QET'
+			when TRIM(sec_typ) = 'Safekeeping Agreement' then 'SAG'
+			when TRIM(sec_typ) = 'Receipt and Agreement' then 'SAG'
+			when TRIM(sec_typ) = 'Surety Bond' then 'SBO'
+			when TRIM(sec_typ) = 'Recl. Fund' then 'STR'
+			when TRIM(sec_typ) = 'Performance Bond' then 'PFB'
+		end as core_bond_type_code,
 		TRIM(sec_typ),
 		TRIM(descript),
 		CONCAT(TRIM(comment1),' ', TRIM(comment2)),
@@ -104,15 +113,37 @@ declare
 		TRIM(iaddr2),
 		TRIM(iaddr3),
 		TRIM(ipost_cd),
-		TRIM(first_nm),
-		TRIM(cnt_title),
 		TRIM(project_no),
+		return_dt,
 		now()
-	from mms.secsec
-	where mms.secsec.sec_cid not in (select sec_cid from ETL_BOND)
-	and TRIM(mms.secsec.sec_cid) != ''
+	from mms.secsec sec
+	where sec.sec_cid not in (select sec_cid from ETL_BOND)
+	and TRIM(sec.sec_cid) != ''
 	and replace(REPLACE(permit_no,' ',''),'--','-') in (select permit_no from permit)
-	and sec_typ not in ('ALC', '');
+	and sec_typ not in ('ALC', '')
+	ON CONFLICT (sec_cid)
+	DO
+		UPDATE
+			SET
+				sec_amt=excluded.sec_amt,
+				core_bond_type_code=excluded.core_bond_type_code,
+				descript= TRIM(excluded.descript),
+				core_payer_party_guid= CASE
+					WHEN ETL_BOND.mms_address != excluded.mms_address THEN null
+					when ETL_BOND.core_party_name  != excluded.core_party_name then null
+					else ETL_BOND.core_payer_party_guid
+				END,
+				etl_update_date=excluded.etl_update_date,
+				invloc=excluded.invloc,
+				iaddr1=excluded.iaddr1,
+				iaddr2=excluded.iaddr2,
+				iaddr3=excluded.iaddr3,
+				ipost_cd=excluded.ipost_cd,
+				note1=excluded.note1,
+				cnt_dt=excluded.cnt_dt,
+				project_no=excluded.project_no,
+				return_dt=excluded.return_dt
+	;
 
 
 	SELECT count(*) FROM ETL_BOND into tmp2;
@@ -123,24 +154,17 @@ declare
 	drop table if exists etl_new_bond_payer;
 	CREATE TEMPORARY TABLE etl_new_bond_payer AS
 	SELECT
-		first_nm as first_nm,
 		core_party_name,
 		now() as effective_date,
-		CASE
-			WHEN first_nm is null
-			or TRIM(first_nm) ='' THEN 'ORG'
-			ELSE 'PER'
-		end as party_type_code
+		permitee_party_type(core_party_name) as party_type_code --permittee_party_type defined in R__stored_procedure_for_permit_but_better.sql
 	FROM ETL_BOND
 	where ETL_BOND.core_payer_party_guid is null;
 	 --upsert parties
 	 --upsert bonds
-
 	SELECT count(*) FROM ETL_BOND where core_payer_party_guid is not null into tmp1;
 
 	with inserted_parties as (
 	INSERT INTO party (
-	    first_name         ,
 	    party_name         ,
 	    effective_date     ,
 	    party_type_code,
@@ -148,7 +172,6 @@ declare
 	    update_user
 	 )
 	select distinct
-	    first_nm          ,
 	    core_party_name as party_name,
 		effective_date    ,
 	    party_type_code	  ,
@@ -163,8 +186,7 @@ declare
 	from
 		inserted_parties up
 	where
-		(up.first_name = e.first_nm or (up.first_name is null and e.first_nm is null))
-		and up.party_name = e.core_party_name;
+		up.party_name = e.core_party_name;
 
 	SELECT count(*) FROM ETL_BOND where core_payer_party_guid is not null into tmp2;
 	SELECT count(distinct core_payer_party_guid) FROM ETL_BOND into tmp3;
@@ -183,7 +205,7 @@ declare
 
 	---------------------- INSERT BONDS
 
-	with inserted_bonds as (
+	with upserted_bonds as (
 	INSERT INTO bond (
 		sec_cid,
 		amount,
@@ -192,6 +214,7 @@ declare
 		bond_status_code,
 		reference_number,
 		create_user,
+		update_timestamp,
 		update_user,
 		institution_name,
 		institution_street,
@@ -207,18 +230,7 @@ declare
 	select
 		sec_cid,
 		sec_amt,
-		case
-			when sec_typ = 'Asset Security Agreement' then 'ASA'
-			when sec_typ = 'Cash' then 'CAS'
-			when sec_typ = 'Confiscation' then 'CAS'
-			when sec_typ = 'Letter of Credit' then 'ILC'
-			when sec_typ = 'Qualified Env. Trust' then 'QET'
-			when sec_typ = 'Safekeeping Agreement' then 'SAG'
-			when sec_typ = 'Receipt and Agreement' then 'SAG'
-			when sec_typ = 'Surety Bond' then 'SBO'
-			when sec_typ = 'Recl. Fund' then 'STR'
-			when sec_typ = 'Performance Bond' then 'PFB'
-		end as bond_type_code,
+		core_bond_type_code,
 		core_payer_party_guid,
 		CASE
 			WHEN "status" = 'E' THEN 'REL'
@@ -227,6 +239,7 @@ declare
 		end as bond_status_code,
 		descript,
 		'bond_etl',
+		etl_update_date,
 		'bond_etl',
 		invloc,
 		iaddr1,
@@ -236,10 +249,29 @@ declare
 		note1,
 		cnt_dt,
 		project_no,
-		null,
+		return_dt,
 		null
 	from ETL_BOND
-	ON CONFLICT DO NOTHING
+	ON CONFLICT (sec_cid)
+	DO
+		UPDATE
+			SET
+				amount=excluded.amount,
+				bond_type_code=excluded.bond_type_code,
+				payer_party_guid=excluded.payer_party_guid,
+				bond_status_code=excluded.bond_status_code,
+				reference_number=excluded.reference_number,
+				update_timestamp=excluded.update_timestamp,
+				update_user=excluded.update_user,
+				institution_name=excluded.institution_name,
+				institution_street=excluded.institution_street,
+				institution_city=excluded.institution_city,
+				institution_province=excluded.institution_province,
+				institution_postal_code=excluded.institution_postal_code,
+				note=excluded.note,
+				issue_date=excluded.issue_date,
+				project_id=excluded.project_id,
+				closed_date=excluded.closed_date
 	returning *
 	)
 
@@ -247,9 +279,10 @@ declare
 	set
 		core_bond_id =ub.bond_id
 	from
-		inserted_bonds ub
+		upserted_bonds ub
 	where
-		ub.sec_cid = e.sec_cid;
+		ub.sec_cid = e.sec_cid
+	and ub.bond_id is null;
 
 
 	---------------------- INSERT BOND_permit_xref
@@ -263,6 +296,7 @@ declare
 			core_bond_id,
 			core_permit_id
 	from ETL_BOND
+	where core_bond_id is not null
 	on conflict do nothing;
 
 END;
