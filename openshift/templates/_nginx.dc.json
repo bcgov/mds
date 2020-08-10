@@ -288,6 +288,34 @@
                     "memory": "16Mi"
                   }
                 }
+              },
+              {
+                "name": "jaeger-agent",
+                "image": "jaegertracing/jaeger-agent:1.18.1",
+                "args": ["--config-file=/conf/nginx-jaeger-config.json"],
+                "volumeMounts": [
+                  {
+                    "mountPath": "/conf",
+                    "name": "jaeger-config",
+                    "readOnly": true
+                  }
+                ],
+                "ports": [
+                  { "containerPort": 5775, "protocol": "UDP" },
+                  { "containerPort": 6831, "protocol": "UDP" },
+                  { "containerPort": 6832, "protocol": "UDP" },
+                  { "containerPort": 5778, "protocol": "TCP" }
+                ],
+                "resources": {
+                  "limits": {
+                    "cpu": "100m",
+                    "memory": "128Mi"
+                  },
+                  "requests": {
+                    "cpu": "5m",
+                    "memory": "16Mi"
+                  }
+                }
               }
             ],
             "volumes": [
