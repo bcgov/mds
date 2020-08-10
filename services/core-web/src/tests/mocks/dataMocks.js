@@ -3980,6 +3980,55 @@ export const BULK_STATIC_CONTENT_RESPONSE = {
     { bond_document_type_code: "REL", description: "Reminder Letter", active_ind: true },
     { bond_document_type_code: "AKL", description: "Acknowledgement Letter", active_ind: true },
   ],
+  permitConditionTypeOptions: [
+    {
+      condition_type_code: "SEC",
+      description: "Permit Section",
+      display_order: 10,
+    },
+    {
+      condition_type_code: "CON",
+      description: "Condition",
+      display_order: 20,
+    },
+    {
+      condition_type_code: "LIS",
+      description: "List Item",
+      display_order: 30,
+    },
+  ],
+  permitConditionCategoryOptions: [
+    {
+      condition_category_code: "GEC",
+      description: "General Conditions",
+      display_order: 10,
+    },
+    {
+      condition_category_code: "HSC",
+      description: "Health and Safety Conditions",
+      display_order: 20,
+    },
+    {
+      condition_category_code: "GOC",
+      description: "Geotechnical Conditions",
+      display_order: 30,
+    },
+    {
+      condition_category_code: "ELC",
+      description: "Environmental Land and Watercourses Conditions",
+      display_order: 40,
+    },
+    {
+      condition_category_code: "RCC",
+      description: "Reclamation and Closure Program Conditions",
+      display_order: 50,
+    },
+    {
+      condition_category_code: "ADC",
+      description: "Additional Conditions",
+      display_order: 60,
+    },
+  ],
 };
 
 export const MINE_REPORT_DEFINITION_HASH = {
