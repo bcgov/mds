@@ -7,14 +7,17 @@ declare
         tmp2 integer;
         tmp3 integer;
   begin
-	drop table if exists ETL_BOND;
+	--drop table if exists ETL_BOND;
 	CREATE TABLE IF NOT EXISTS ETL_BOND(
 		core_permit_id integer,
 		core_bond_id integer,
+		core_first_name varchar,
 		core_party_name varchar,
+		core_party_type varchar,
 		--local coalese secsec.cmp_nm is typed, secsec.first_nm,last_nm are autopoulated from permit
 		--secsec.cmp_nm is usually a 'companyName', or 'first last' or 'last, first' unsure how to parse.
 		core_payer_party_guid uuid,
+		etl_create_date TIMESTAMP,
 		etl_update_date TIMESTAMP,
 		-------Source columns we care about
 		sec_cid varchar NOT null unique , --save for reverse lookups
@@ -67,6 +70,7 @@ declare
 	------------------- UPSERT RECORDS
 	SELECT count(*) FROM ETL_BOND into tmp1;
 
+	with upserted_etl_bond as (
 	INSERT INTO ETL_BOND (
 		sec_cid,
 		permit_no ,
@@ -85,12 +89,13 @@ declare
 		ipost_cd ,
 		project_no ,
 		return_dt,
+		etl_create_date,
 		etl_update_date)
 	SELECT
 		sec_cid,
 		replace(REPLACE(permit_no,' ',''),'--','-'),
 		CONCAT_WS(' ', TRIM(addr1),TRIM(addr2),TRIM(addr3), TRIM(post_cd)),
-		coalesce(nullif(TRIM(cmp_nm),''),TRIM(last_nm)),
+		RTRIM(coalesce(nullif(TRIM(cmp_nm),''),TRIM(last_nm)),','),
 		TRIM(note1),
 		sec_amt,
 		case
@@ -115,6 +120,7 @@ declare
 		TRIM(ipost_cd),
 		TRIM(project_no),
 		return_dt,
+		now(),
 		now()
 	from mms.secsec sec
 	where sec.sec_cid not in (select sec_cid from ETL_BOND)
@@ -143,27 +149,37 @@ declare
 				cnt_dt=excluded.cnt_dt,
 				project_no=excluded.project_no,
 				return_dt=excluded.return_dt
-	;
-
+	returning 1)
+	SELECT count(*) FROM upserted_etl_bond into tmp3;
 
 	SELECT count(*) FROM ETL_BOND into tmp2;
+
 	RAISE NOTICE '....# of ETL_BOND record before.. %', tmp1;
 	RAISE NOTICE '....# of ETL_BOND records after.. %', tmp2;
+	RAISE NOTICE '....# of ETL_BOND records upserted. %', tmp3;
+
+
+	update ETL_BOND set
+	core_party_type = CASE
+			WHEN format_permitee_party_name(core_party_name) is null then 'ORG'
+			ELSE permitee_party_type(core_party_name)--permittee_party_type defined in R__stored_procedure_for_permit_but_better.sql
+		END
+	where core_payer_party_guid is null;
+
+	update ETL_BOND set
+	core_first_name = CASE
+						WHEN core_party_type = 'PER' THEN format_permittee_first_name(core_party_name)
+						ELSE NULL
+					END,
+	core_party_name = CASE
+						WHEN core_party_type = 'PER' then format_permitee_party_name(core_party_name)
+						else core_party_name
+					END
+	where core_payer_party_guid is null;
 
 	----------------- PAYERS AS PARTIES
-	drop table if exists etl_new_bond_payer;
-	CREATE TEMPORARY TABLE etl_new_bond_payer AS
-	SELECT
-		core_party_name,
-		now() as effective_date,
-		permitee_party_type(core_party_name) as party_type_code --permittee_party_type defined in R__stored_procedure_for_permit_but_better.sql
-	FROM ETL_BOND
-	where ETL_BOND.core_payer_party_guid is null;
-	 --upsert parties
-	 --upsert bonds
-	SELECT count(*) FROM ETL_BOND where core_payer_party_guid is not null into tmp1;
 
-	with inserted_parties as (
+	with inserted_org_parties as (
 	INSERT INTO party (
 	    party_name         ,
 	    effective_date     ,
@@ -172,27 +188,58 @@ declare
 	    update_user
 	 )
 	select distinct
-	    core_party_name as party_name,
-		effective_date    ,
-	    party_type_code	  ,
+	    core_party_name,
+		now(),
+	    core_party_type	  ,
 	   	'bond_etl'        ,
 	   	'bond_etl'
-	FROM etl_new_bond_payer
-	returning first_name, party_name, party_guid)
+	FROM ETL_BOND
+	where core_party_type = 'ORG'
+	and core_payer_party_guid is null
+	returning null::varchar as first_name, party_name, party_type_code, party_guid),
 
+	inserted_per_parties as (
+	INSERT INTO party (
+		first_name,
+	    party_name,
+	    effective_date,
+	    party_type_code,
+	    create_user,
+	    update_user
+	 )
+	select distinct
+		core_first_name,
+	    core_party_name,
+		now()    ,
+	    core_party_type	  ,
+	   	'bond_etl'        ,
+	   	'bond_etl'
+	FROM ETL_BOND
+	where core_party_type = 'PER'
+	and core_payer_party_guid is null
+	returning first_name, party_name, party_type_code, party_guid),
+	inserted_parties as(
+		select * from inserted_per_parties
+		UNION
+		select * from inserted_org_parties
+	),
+	bond_party_updates as (
 	update ETL_BOND e
 	set
 		core_payer_party_guid =up.party_guid
 	from
 		inserted_parties up
 	where
-		up.party_name = e.core_party_name;
+		up.party_name = e.core_party_name
+		and (up.first_name = e.core_first_name or up.first_name is null and e.core_first_name is null)
+		and up.party_type_code = e.core_party_type
+		and e.core_payer_party_guid is null
+	returning 1)
+	SELECT count(*) FROM inserted_parties into tmp2;
 
-	SELECT count(*) FROM ETL_BOND where core_payer_party_guid is not null into tmp2;
 	SELECT count(distinct core_payer_party_guid) FROM ETL_BOND into tmp3;
 
-	RAISE NOTICE '....# of ETL_BOND records with party_guid before.. %', tmp1;
-	RAISE NOTICE '....# of ETL_BOND records with party_guid after.. %', tmp2;
+	RAISE NOTICE '....# of party records created.. %', (tmp2);
 	RAISE NOTICE '....# of distinct parties used by ETL_BOND.. %', tmp3;
 
 	----------------------GET PERMIT ID's
@@ -302,3 +349,10 @@ declare
 END;
 END;
 $$ LANGUAGE PLPGSQL;
+
+
+SELECT mms_etl_bond_data();
+
+
+select format_permittee_first_name('B.A. Blacktop Kamloops') as first_name,
+	format_permitee_party_name('B.A. Blacktop Kamloops') as party_name ;
