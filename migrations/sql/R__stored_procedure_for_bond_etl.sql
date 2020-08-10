@@ -352,7 +352,3 @@ $$ LANGUAGE PLPGSQL;
 
 
 SELECT mms_etl_bond_data();
-
-
-select format_permittee_first_name('B.A. Blacktop Kamloops') as first_name,
-	format_permitee_party_name('B.A. Blacktop Kamloops') as party_name ;
