@@ -232,47 +232,65 @@ objects:
         app.kubernetes.io/name: jaeger
         app.kubernetes.io/component: query
       type: LoadBalancer
-  - apiVersion: extensions/v1beta1
-    kind: Deployment
+  - apiVersion: v1
+    data:
+      nginx-jaeger-config.json: |-
+        {
+          "service_name": "nginx",
+          "sampler": {
+            "type": "const",
+            "param": 1
+          },
+          "reporter": {
+            "localAgentHostPort": "jaeger-agent:6831"
+          }
+        }
+    kind: ConfigMap
     metadata:
-      name: jaeger-agent
       labels:
-        app: jaeger
-        app.kubernetes.io/name: jaeger
-        app.kubernetes.io/component: agent
-    spec:
-      template:
-        metadata:
-          labels:
-            app: jaeger
-            app.kubernetes.io/name: jaeger
-            app.kubernetes.io/component: agent
-          annotations:
-            prometheus.io/scrape: "true"
-            prometheus.io/port: "5778"
-        spec:
-          containers:
-            - name: jaeger-agent
-              image: jaegertracing/jaeger-agent:1.18.1
-              args: ["--config-file=/conf/agent.yaml"]
-              volumeMounts:
-                - name: jaeger-configuration-volume
-                  mountPath: /conf
-              ports:
-                - containerPort: 5775
-                  protocol: UDP
-                - containerPort: 6831
-                  protocol: UDP
-                - containerPort: 6832
-                  protocol: UDP
-                - containerPort: 5778
-                  protocol: TCP
-          hostNetwork: true
-          dnsPolicy: ClusterFirstWithHostNet
-          volumes:
-            - configMap:
-                name: jaeger-configuration
-                items:
-                  - key: agent
-                    path: agent.yaml
-              name: jaeger-configuration-volume
+        app: "${APP_NAME}"
+      name: "jaeger-config"
+  # - apiVersion: extensions/v1beta1
+  #   kind: Deployment
+  #   metadata:
+  #     name: jaeger-agent
+  #     labels:
+  #       app: jaeger
+  #       app.kubernetes.io/name: jaeger
+  #       app.kubernetes.io/component: agent
+  #   spec:
+  #     template:
+  #       metadata:
+  #         labels:
+  #           app: jaeger
+  #           app.kubernetes.io/name: jaeger
+  #           app.kubernetes.io/component: agent
+  #         annotations:
+  #           prometheus.io/scrape: "true"
+  #           prometheus.io/port: "5778"
+  #       spec:
+  #         containers:
+  #           - name: jaeger-agent
+  #             image: jaegertracing/jaeger-agent:1.18.1
+  #             args: ["--config-file=/conf/agent.yaml"]
+  #             volumeMounts:
+  #               - name: jaeger-configuration-volume
+  #                 mountPath: /conf
+  #             ports:
+  #               - containerPort: 5775
+  #                 protocol: UDP
+  #               - containerPort: 6831
+  #                 protocol: UDP
+  #               - containerPort: 6832
+  #                 protocol: UDP
+  #               - containerPort: 5778
+  #                 protocol: TCP
+  #         hostNetwork: true
+  #         dnsPolicy: ClusterFirstWithHostNet
+  #         volumes:
+  #           - configMap:
+  #               name: jaeger-configuration
+  #               items:
+  #                 - key: agent
+  #                   path: agent.yaml
+  #             name: jaeger-configuration-volume

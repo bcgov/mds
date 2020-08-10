@@ -416,3 +416,22 @@ objects:
       labels:
         app: "${APP_NAME}"
       name: "${NAME}-datasources"
+  - apiVersion: v1
+    data:
+      grafana.ini: |-
+        [server]
+        domain = grafana-empr-mds-dev.pathfinder.gov.bc.ca
+        root_url = https://%(domain)s/
+        [users]
+        allow_sign_up = false
+        [smtp]
+        enabled = true
+        host = apps.smtp.gov.bc.ca:25
+        skip_verify = true
+        from_address = noreply@gov.bc.ca
+        from_name = MDS Grafana
+    kind: ConfigMap
+    metadata:
+      labels:
+        app: "${APP_NAME}"
+      name: "grafana"
