@@ -254,7 +254,7 @@ declare
 
 	with upserted_bonds as (
 	INSERT INTO bond (
-		sec_cid,
+		mms_sec_cid,
 		amount,
 		bond_type_code,
 		payer_party_guid,
@@ -299,7 +299,7 @@ declare
 		return_dt,
 		null
 	from ETL_BOND
-	ON CONFLICT (sec_cid)
+	ON CONFLICT (mms_sec_cid)
 	DO
 		UPDATE
 			SET
@@ -328,7 +328,7 @@ declare
 	from
 		upserted_bonds ub
 	where
-		ub.sec_cid = e.sec_cid
+		ub.mms_sec_cid = e.sec_cid
 	and e.core_bond_id is null;
 
 
