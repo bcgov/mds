@@ -349,6 +349,3 @@ declare
 END;
 END;
 $$ LANGUAGE PLPGSQL;
-
-
-SELECT mms_etl_bond_data();
