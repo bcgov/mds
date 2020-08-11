@@ -1,0 +1,1 @@
+DROP SEQUENCE standard_permit_conditions_standard_permit_condition_id_seq cascade;
