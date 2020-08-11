@@ -67,8 +67,18 @@ parameters:
     description: The resources Memory limit (in Mi, Gi, etc) for this build.
     required: true
     value: 512Mi
+  - description: The name of the Jaeger Service.
+    displayName: Jaeger Service Name
+    name: JAEGER_SERVICE_NAME
+    required: true
+    value: jaeger
+  - description: The name of the Jaeger Zipkin Service.
+    displayName: Jaeger Zipkin Service Name
+    name: JAEGER_ZIPKIN_SERVICE_NAME
+    required: true
+    value: zipkin
 objects:
-  - apiVersion: extensions/v1beta1
+  - apiVersion: apps.openshift.io/v1
     kind: DeploymentConfig
     metadata:
       name: jaeger-collector
@@ -90,12 +100,17 @@ objects:
           updatePeriodSeconds: 1
         type: Rolling
       template:
+        metadata:
+          labels:
+            app: "${APP_NAME}"
         spec:
           containers:
             - image: " "
               name: jaeger-collector
               args: ["--config-file=/conf/collector.yaml"]
               ports:
+                - containerPort: 14250
+                  protocol: TCP
                 - containerPort: 14267
                   protocol: TCP
                 - containerPort: 14268
@@ -109,12 +124,12 @@ objects:
               volumeMounts:
                 - name: jaeger-configuration-volume
                   mountPath: /conf
-              # env:
-              #   - name: SPAN_STORAGE_TYPE
-              #     valueFrom:
-              #       configMapKeyRef:
-              #         name: jaeger-configuration
-              #         key: span-storage-type
+              env:
+                - name: SPAN_STORAGE_TYPE
+                  valueFrom:
+                    configMapKeyRef:
+                      name: jaeger-config
+                      key: span-storage-type
           dnsPolicy: ClusterFirst
           restartPolicy: Always
           schedulerName: default-scheduler
@@ -135,7 +150,7 @@ objects:
               - "jaeger-collector"
             from:
               kind: ImageStreamTag
-              name: "jaeger-collector":${TAG_NAME}"
+              name: "jaeger-collector:${TAG_NAME}"
               namespace: "${IMAGE_NAMESPACE}"
           type: ImageChange
   - apiVersion: v1
@@ -143,11 +158,13 @@ objects:
     metadata:
       name: jaeger-collector
       labels:
-        app: jaeger
-        app.kubernetes.io/name: jaeger
-        app.kubernetes.io/component: collector
+        app: ${APP_NAME}
     spec:
       ports:
+        - name: jaeger-collector-grpc
+          port: 14250
+          protocol: TCP
+          targetPort: 14250
         - name: jaeger-collector-tchannel
           port: 14267
           protocol: TCP
@@ -160,29 +177,21 @@ objects:
           port: 9411
           protocol: TCP
           targetPort: 9411
-      selector:
-        app.kubernetes.io/name: jaeger
-        app.kubernetes.io/component: collector
       type: ClusterIP
   - apiVersion: v1
     kind: Service
     metadata:
       name: zipkin
       labels:
-        app: jaeger
-        app.kubernetes.io/name: jaeger
-        app.kubernetes.io/component: zipkin
+        app: ${APP_NAME}
     spec:
       ports:
         - name: jaeger-collector-zipkin
           port: 9411
           protocol: TCP
           targetPort: 9411
-      selector:
-        app.kubernetes.io/name: jaeger
-        app.kubernetes.io/component: collector
       type: ClusterIP
-  - apiVersion: extensions/v1beta1
+  - apiVersion: apps.openshift.io/v1
     kind: DeploymentConfig
     metadata:
       name: jaeger-query
@@ -193,7 +202,6 @@ objects:
       revisionHistoryLimit: 10
       selector:
         app: "${APP_NAME}"
-        deploymentconfig: "${NAME}"
       strategy:
         activeDeadlineSeconds: 21600
         resources: {}
@@ -205,6 +213,9 @@ objects:
           updatePeriodSeconds: 1
         type: Rolling
       template:
+        metadata:
+          labels:
+            app: "${APP_NAME}"
         spec:
           containers:
             - image: " "
@@ -220,12 +231,12 @@ objects:
               volumeMounts:
                 - name: jaeger-configuration-volume
                   mountPath: /conf
-            # env:
-            #   - name: SPAN_STORAGE_TYPE
-            #     valueFrom:
-            #       configMapKeyRef:
-            #         name: jaeger-config
-            #         key: span-storage-type
+              env:
+                - name: SPAN_STORAGE_TYPE
+                  valueFrom:
+                    configMapKeyRef:
+                      name: jaeger-config
+                      key: span-storage-type
           dnsPolicy: ClusterFirst
           restartPolicy: Always
           schedulerName: default-scheduler
@@ -254,19 +265,28 @@ objects:
     metadata:
       name: jaeger-query
       labels:
-        app: jaeger
-        app.kubernetes.io/name: jaeger
-        app.kubernetes.io/component: query
+        app: ${APP_NAME}
     spec:
       ports:
         - name: jaeger-query
           port: 80
           protocol: TCP
           targetPort: 16686
-      selector:
-        app.kubernetes.io/name: jaeger
-        app.kubernetes.io/component: query
       type: LoadBalancer
+  - apiVersion: v1
+    kind: Route
+    metadata:
+      name: jaeger-query
+      labels:
+        app: ${APP_NAME}
+        jaeger-infra: query-route
+    spec:
+      tls:
+        insecureEdgeTerminationPolicy: Allow
+        termination: edge
+      to:
+        kind: Service
+        name: jaeger-query
   - apiVersion: v1
     data:
       nginx-jaeger-config.json: |-
@@ -280,6 +300,18 @@ objects:
             "localAgentHostPort": "jaeger-agent:6831"
           }
         }
+      span-storage-type: cassandra
+      collector: |
+        collector:
+          zipkin:
+            http-port: 9411
+        cassandra:
+          servers: cassandra
+          keyspace: jaeger_v1_dc1
+      query: |
+        cassandra:
+          servers: cassandra
+          keyspace: jaeger_v1_dc1
     kind: ConfigMap
     metadata:
       labels:

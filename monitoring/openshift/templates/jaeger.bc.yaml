@@ -19,7 +19,7 @@ objects:
   - kind: ImageStream
     apiVersion: v1
     metadata:
-      name: "jaeger-collector"
+      name: "jaeger-query"
       labels:
         shared: "true"
         app: "${APP_NAME}"
