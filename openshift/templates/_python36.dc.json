@@ -766,7 +766,7 @@
                 "args": [
                   "--config.file=/etc/promtail/core-api.yaml",
                   "--client.url=http://loki:3100/loki/api/v1/push",
-                  "--client.external-labels=env=${VERSION},pod=${POD_NAME},node=${NODE_NAME},namespace=${NAMESPACE}"
+                  "--client.external-labels=env=${VERSION},pod=$POD_NAME,node=$NODE_NAME,namespace=$NAMESPACE"
                 ],
                 "env": [
                   {
