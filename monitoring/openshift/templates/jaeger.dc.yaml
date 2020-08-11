@@ -69,29 +69,30 @@ parameters:
     value: 512Mi
 objects:
   - apiVersion: extensions/v1beta1
-    kind: Deployment
+    kind: DeploymentConfig
     metadata:
       name: jaeger-collector
       labels:
-        app: jaeger
-        app.kubernetes.io/name: jaeger
-        app.kubernetes.io/component: collector
+        app: ${APP_NAME}
     spec:
       replicas: 1
+      revisionHistoryLimit: 10
+      selector:
+        app: "${APP_NAME}"
       strategy:
-        type: Recreate
+        activeDeadlineSeconds: 21600
+        resources: {}
+        rollingParams:
+          intervalSeconds: 1
+          maxSurge: 25%
+          maxUnavailable: 25%
+          timeoutSeconds: 600
+          updatePeriodSeconds: 1
+        type: Rolling
       template:
-        metadata:
-          labels:
-            app: jaeger
-            app.kubernetes.io/name: jaeger
-            app.kubernetes.io/component: collector
-          annotations:
-            prometheus.io/scrape: "true"
-            prometheus.io/port: "14268"
         spec:
           containers:
-            - image: jaegertracing/jaeger-collector:1.18.1
+            - image: " "
               name: jaeger-collector
               args: ["--config-file=/conf/collector.yaml"]
               ports:
@@ -108,12 +109,17 @@ objects:
               volumeMounts:
                 - name: jaeger-configuration-volume
                   mountPath: /conf
-              env:
-                - name: SPAN_STORAGE_TYPE
-                  valueFrom:
-                    configMapKeyRef:
-                      name: jaeger-configuration
-                      key: span-storage-type
+              # env:
+              #   - name: SPAN_STORAGE_TYPE
+              #     valueFrom:
+              #       configMapKeyRef:
+              #         name: jaeger-configuration
+              #         key: span-storage-type
+          dnsPolicy: ClusterFirst
+          restartPolicy: Always
+          schedulerName: default-scheduler
+          securityContext: {}
+          terminationGracePeriodSeconds: 30
           volumes:
             - configMap:
                 name: jaeger-configuration
@@ -121,6 +127,17 @@ objects:
                   - key: collector
                     path: collector.yaml
               name: jaeger-configuration-volume
+      triggers:
+        - type: ConfigChange
+        - imageChangeParams:
+            automatic: true
+            containerNames:
+              - "jaeger-collector"
+            from:
+              kind: ImageStreamTag
+              name: "jaeger-collector":${TAG_NAME}"
+              namespace: "${IMAGE_NAMESPACE}"
+          type: ImageChange
   - apiVersion: v1
     kind: Service
     metadata:
@@ -166,29 +183,31 @@ objects:
         app.kubernetes.io/component: collector
       type: ClusterIP
   - apiVersion: extensions/v1beta1
-    kind: Deployment
+    kind: DeploymentConfig
     metadata:
       name: jaeger-query
       labels:
-        app: jaeger
-        app.kubernetes.io/name: jaeger
-        app.kubernetes.io/component: query
+        app: "${APP_NAME}"
     spec:
       replicas: 1
+      revisionHistoryLimit: 10
+      selector:
+        app: "${APP_NAME}"
+        deploymentconfig: "${NAME}"
       strategy:
-        type: Recreate
+        activeDeadlineSeconds: 21600
+        resources: {}
+        rollingParams:
+          intervalSeconds: 1
+          maxSurge: 25%
+          maxUnavailable: 25%
+          timeoutSeconds: 600
+          updatePeriodSeconds: 1
+        type: Rolling
       template:
-        metadata:
-          labels:
-            app: jaeger
-            app.kubernetes.io/name: jaeger
-            app.kubernetes.io/component: query
-          annotations:
-            prometheus.io/scrape: "true"
-            prometheus.io/port: "16686"
         spec:
           containers:
-            - image: jaegertracing/jaeger-query:1.18.1
+            - image: " "
               name: jaeger-query
               args: ["--config-file=/conf/query.yaml"]
               ports:
@@ -201,19 +220,35 @@ objects:
               volumeMounts:
                 - name: jaeger-configuration-volume
                   mountPath: /conf
-              env:
-                - name: SPAN_STORAGE_TYPE
-                  valueFrom:
-                    configMapKeyRef:
-                      name: jaeger-configuration
-                      key: span-storage-type
+            # env:
+            #   - name: SPAN_STORAGE_TYPE
+            #     valueFrom:
+            #       configMapKeyRef:
+            #         name: jaeger-config
+            #         key: span-storage-type
+          dnsPolicy: ClusterFirst
+          restartPolicy: Always
+          schedulerName: default-scheduler
+          securityContext: {}
+          terminationGracePeriodSeconds: 30
           volumes:
             - configMap:
-                name: jaeger-configuration
+                name: jaeger-config
                 items:
                   - key: query
                     path: query.yaml
               name: jaeger-configuration-volume
+      triggers:
+        - type: ConfigChange
+        - imageChangeParams:
+            automatic: true
+            containerNames:
+              - "jaeger-query"
+            from:
+              kind: ImageStreamTag
+              name: "jaeger-query:${TAG_NAME}"
+              namespace: "${IMAGE_NAMESPACE}"
+          type: ImageChange
   - apiVersion: v1
     kind: Service
     metadata:
