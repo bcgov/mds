@@ -88,7 +88,9 @@ declare
 		iaddr3 ,
 		ipost_cd ,
 		project_no ,
+		"status",
 		return_dt,
+		cnt_dt,
 		etl_create_date,
 		etl_update_date)
 	SELECT
@@ -119,12 +121,13 @@ declare
 		TRIM(iaddr3),
 		TRIM(ipost_cd),
 		TRIM(project_no),
+		"status",
 		return_dt,
+		cnt_dt,
 		now(),
 		now()
 	from mms.secsec sec
-	where sec.sec_cid not in (select sec_cid from ETL_BOND)
-	and TRIM(sec.sec_cid) != ''
+	where TRIM(sec.sec_cid) != ''
 	and replace(REPLACE(permit_no,' ',''),'--','-') in (select permit_no from permit)
 	and sec_typ not in ('ALC', '')
 	ON CONFLICT (sec_cid)
@@ -146,6 +149,7 @@ declare
 				iaddr3=excluded.iaddr3,
 				ipost_cd=excluded.ipost_cd,
 				note1=excluded.note1,
+				"status"=excluded.status,
 				cnt_dt=excluded.cnt_dt,
 				project_no=excluded.project_no,
 				return_dt=excluded.return_dt
