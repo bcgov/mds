@@ -138,7 +138,7 @@ declare
 				core_bond_type_code=excluded.core_bond_type_code,
 				descript= TRIM(excluded.descript),
 				core_payer_party_guid= CASE
-					WHEN ETL_BOND.mms_address != excluded.mms_address THEN null
+					--WHEN ETL_BOND.mms_address != excluded.mms_address THEN null
 					when ETL_BOND.core_party_name  != excluded.core_party_name then null
 					else ETL_BOND.core_payer_party_guid
 				END,
