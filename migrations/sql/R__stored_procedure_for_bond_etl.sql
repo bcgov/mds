@@ -96,7 +96,7 @@ declare
 		sec_cid,
 		replace(REPLACE(permit_no,' ',''),'--','-'),
 		CONCAT_WS(' ', TRIM(addr1),TRIM(addr2),TRIM(addr3), TRIM(post_cd)),
-		RTRIM(coalesce(nullif(TRIM(cmp_nm),''),TRIM(last_nm)),','),-- a record ends with a comma
+		RTRIM(coalesce(nullif(TRIM(cmp_nm),''),TRIM(last_nm)),','),-- 1 record ends with a comma
 		TRIM(note1),
 		sec_amt,
 		case
@@ -151,7 +151,7 @@ declare
 				cnt_dt=excluded.cnt_dt,
 				project_no=excluded.project_no,
 				return_dt=excluded.return_dt
-	returning *;
+	returning *
 	)
 	SELECT count(*) FROM upserted_etl_bond into tmp3;
 
@@ -171,19 +171,20 @@ declare
 	core_party_name = format_permitee_party_name(cmp_nm)
 	where core_payer_party_guid is null
 	and core_party_type='PER';
-	
+
 	update ETL_BOND set
 	core_party_name = cmp_nm
 	where core_party_type = 'ORG';
 
-	--revert failed parsings to organizations 1 
+	--revert failed parsings to organizations 1
 	update ETL_BOND set
 	core_party_type = 'ORG',
-	core_party_name = cmp_nm
+	core_party_name = cmp_nm,
+	core_first_name = null
 	where core_party_type = 'PER'
 	and (core_party_name = '' or core_party_name is null);
 
-	
+
 
 
 	----------------- PAYERS AS PARTIES
