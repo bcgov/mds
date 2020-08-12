@@ -21,12 +21,7 @@ declare
 		-------Source columns we care about
 		sec_cid varchar NOT null unique , --save for reverse lookups
 		permit_no varchar NULL, -- used to lookup permit_id
-		mms_address varchar NULL, --preserving, but can't be converted.
-	--?? ignore bond.payer_party.address
---		address varchar NULL,--?? Payer address
---		city varchar NULL,--?? Street, Ciry, Prov are all mixed between addr1,2,3
---		prov varchar NULL,
---		post_cd varchar NULL,--?? Payer post
+		mms_address varchar NULL, --preserving, but can't be converted
 		note1 varchar NULL,--?? Payer Contact Name
 		sec_amt numeric(12,2) NOT NULL, --bond.amount
 		core_bond_type_code varchar null,
@@ -67,7 +62,7 @@ declare
 
 
 	------------------- UPSERT RECORDS
-	--SELECT count(*) FROM ETL_BOND into tmp1;
+	SELECT count(*) FROM ETL_BOND into tmp1;
 
 	with upserted_etl_bond as (
 	INSERT INTO ETL_BOND (
