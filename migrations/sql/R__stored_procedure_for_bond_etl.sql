@@ -7,16 +7,15 @@ declare
         tmp2 integer;
         tmp3 integer;
   begin
-	--drop table if exists ETL_BOND;
 	CREATE TABLE IF NOT EXISTS ETL_BOND(
 		core_permit_id integer,
 		core_bond_id integer,
+		cmp_nm varchar,
 		core_first_name varchar,
 		core_party_name varchar,
 		core_party_type varchar,
-		--local coalese secsec.cmp_nm is typed, secsec.first_nm,last_nm are autopoulated from permit
-		--secsec.cmp_nm is usually a 'companyName', or 'first last' or 'last, first' unsure how to parse.
 		core_payer_party_guid uuid,
+
 		etl_create_date TIMESTAMP,
 		etl_update_date TIMESTAMP,
 		-------Source columns we care about
@@ -68,14 +67,14 @@ declare
 
 
 	------------------- UPSERT RECORDS
-	SELECT count(*) FROM ETL_BOND into tmp1;
+	--SELECT count(*) FROM ETL_BOND into tmp1;
 
 	with upserted_etl_bond as (
 	INSERT INTO ETL_BOND (
 		sec_cid,
 		permit_no ,
 		mms_address,
-		core_party_name,
+		cmp_nm,
 		note1,
 		sec_amt ,
 		core_bond_type_code,
@@ -97,7 +96,7 @@ declare
 		sec_cid,
 		replace(REPLACE(permit_no,' ',''),'--','-'),
 		CONCAT_WS(' ', TRIM(addr1),TRIM(addr2),TRIM(addr3), TRIM(post_cd)),
-		RTRIM(coalesce(nullif(TRIM(cmp_nm),''),TRIM(last_nm)),','),
+		RTRIM(coalesce(nullif(TRIM(cmp_nm),''),TRIM(last_nm)),','),-- a record ends with a comma
 		TRIM(note1),
 		sec_amt,
 		case
@@ -135,13 +134,12 @@ declare
 		UPDATE
 			SET
 				sec_amt=excluded.sec_amt,
+				core_payer_party_guid = case
+					when ETL_BOND.cmp_nm != EXCLUDED.cmp_nm then null
+					else ETL_BOND.core_payer_party_guid
+					end,
 				core_bond_type_code=excluded.core_bond_type_code,
 				descript= TRIM(excluded.descript),
-				core_payer_party_guid= CASE
-					--WHEN ETL_BOND.mms_address != excluded.mms_address THEN null
-					when ETL_BOND.core_party_name  != excluded.core_party_name then null
-					else ETL_BOND.core_payer_party_guid
-				END,
 				etl_update_date=excluded.etl_update_date,
 				invloc=excluded.invloc,
 				iaddr1=excluded.iaddr1,
@@ -153,7 +151,8 @@ declare
 				cnt_dt=excluded.cnt_dt,
 				project_no=excluded.project_no,
 				return_dt=excluded.return_dt
-	returning 1)
+	returning *;
+	)
 	SELECT count(*) FROM upserted_etl_bond into tmp3;
 
 	SELECT count(*) FROM ETL_BOND into tmp2;
@@ -162,24 +161,30 @@ declare
 	RAISE NOTICE '....# of ETL_BOND records after.. %', tmp2;
 	RAISE NOTICE '....# of ETL_BOND records upserted. %', tmp3;
 
-
+	--try using classifcation function
 	update ETL_BOND set
-	core_party_type = CASE
-			WHEN format_permitee_party_name(core_party_name) is null then 'ORG'
-			ELSE permitee_party_type(core_party_name)--permittee_party_type defined in R__stored_procedure_for_permit_but_better.sql
-		END
+	core_party_type = permitee_party_type(cmp_nm)--permittee_party_type defined in R__stored_procedure_for_permit_but_better.sql
 	where core_payer_party_guid is null;
-
+	--parse person firstname, lastname
 	update ETL_BOND set
-	core_first_name = CASE
-						WHEN core_party_type = 'PER' THEN format_permittee_first_name(core_party_name)
-						ELSE NULL
-					END,
-	core_party_name = CASE
-						WHEN core_party_type = 'PER' then format_permitee_party_name(core_party_name)
-						else core_party_name
-					END
-	where core_payer_party_guid is null;
+	core_first_name = format_permittee_first_name(cmp_nm),
+	core_party_name = format_permitee_party_name(cmp_nm)
+	where core_payer_party_guid is null
+	and core_party_type='PER';
+	
+	update ETL_BOND set
+	core_party_name = cmp_nm
+	where core_party_type = 'ORG';
+
+	--revert failed parsings to organizations 1 
+	update ETL_BOND set
+	core_party_type = 'ORG',
+	core_party_name = cmp_nm
+	where core_party_type = 'PER'
+	and (core_party_name = '' or core_party_name is null);
+
+	
+
 
 	----------------- PAYERS AS PARTIES
 
