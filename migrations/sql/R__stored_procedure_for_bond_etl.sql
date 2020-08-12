@@ -163,7 +163,7 @@ declare
 	--parse person firstname, lastname
 	update ETL_BOND set
 	core_first_name = format_permittee_first_name(cmp_nm),
-	core_party_name = format_permitee_party_name(cmp_nm)
+	core_party_name = format_permittee_party_name(cmp_nm)
 	where core_payer_party_guid is null
 	and core_party_type='PER';
 

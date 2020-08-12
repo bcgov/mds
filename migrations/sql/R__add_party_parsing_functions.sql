@@ -21,7 +21,7 @@ END;
 $$ LANGUAGE plpgsql;
 
 
-CREATE OR REPLACE FUNCTION format_permitee_party_name(permitee_name varchar) RETURNS varchar AS $$
+CREATE OR REPLACE FUNCTION format_permittee_party_name(permitee_name varchar) RETURNS varchar AS $$
 BEGIN
     RETURN(
         SELECT CASE

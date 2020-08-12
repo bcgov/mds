@@ -268,7 +268,7 @@ DECLARE
 	    gen_random_uuid() as party_guid,
 	    ppi.party_combo_id as party_combo_id,
 	    format_permittee_first_name(ppi.permittee_name) as first_name,
-	    format_permitee_party_name(ppi.permittee_name) as party_name,
+	    format_permittee_party_name(ppi.permittee_name) as party_name,
 	    permitee_party_type(ppi.permittee_name) as party_type,
 	    ppi.tel_no as phone_no,
 	    ppi.email as email,
