@@ -5,11 +5,8 @@ import { Button } from "antd";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { openModal, closeModal } from "@common/actions/modalActions";
-import { fetchDraftPermitByNOW } from "@common/actionCreators/permitActionCreator";
-import {
-  getDraftPermitAmendmentForNOW,
-  getDraftPermitForNOW,
-} from "@common/selectors/permitSelectors";
+import NOWDocuments from "@/components/noticeOfWork/applications//NOWDocuments";
+
 import { modalConfig } from "@/components/modalContent/config";
 import CustomPropTypes from "@/customPropTypes";
 import { EDIT_OUTLINE } from "@/constants/assets";
@@ -22,29 +19,25 @@ const propTypes = {
   mineGuid: PropTypes.string.isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
-  mineGuid: PropTypes.string.isRequired,
   noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
 };
 
-export class NOWSecurities extends Component {
-  componentDidMount() {
-    console.log(this.props.noticeOfWork);
-    this.props.fetchDraftPermitByNOW(this.props.noticeOfWork.now_application_guid);
-  }
+const securityDocuments = ["SRB", "NIA", "AKL", "SCD"];
 
-  openDocumentModal = (event) => {
-    event.preventDefault();
-    this.props.openModal({
-      props: {
-        title: "Add Security Documents",
-        onSubmit: () => {},
-        permitGuid: this.props.parentPermit.permit_guid,
-        mineGuid: this.props.mineGuid,
-      },
-      width: "50vw",
-      content: modalConfig.ADD_BOND_MODAL,
-    });
-  };
+export class NOWSecurities extends Component {
+  // openAddDocumentModal = (
+  // ) => {
+  //   openModal({
+  //     props: {
+  //       onSubmit: debounce(handleAddDocument(closeDocumentModal, addDocument), 2000),
+  //       title: `Add Notice of Work document`,
+  //       now_application_guid: this.props.noticeOfWork),
+  //       mine_guid,
+  //       categoriesToShow,
+  //     },
+  //     content: modalConfig.EDIT_NOTICE_OF_WORK_DOCUMENT,
+  //   });
+  // };
 
   render() {
     return (
@@ -60,21 +53,26 @@ export class NOWSecurities extends Component {
         </div>
         <p>
           Upload a copy of the security into the table below before sending the original to the
-          Securities Team. All documents will be visible under securities on a mine record once the
-          permit is issued.
+          Securities Team.
         </p>
+        <NOWDocuments
+          now_application_guid={this.props.noticeOfWork.now_application_guid}
+          mine_guid={this.props.mineGuid}
+          documents={this.props.noticeOfWork.documents.filter(
+            ({ now_application_document_type_code }) =>
+              securityDocuments.includes(now_application_document_type_code)
+          )}
+          isViewMode={false}
+          categoriesToShow={securityDocuments}
+        />
       </div>
     );
   }
 }
 
-const mapStateToProps = (state) => ({
-  draftPermitAmendment: getDraftPermitAmendmentForNOW(state),
-  parentPermit: getDraftPermitForNOW(state),
-});
+const mapStateToProps = (state) => ({});
 
-const mapDispatchToProps = (dispatch) =>
-  bindActionCreators({ openModal, closeModal, fetchDraftPermitByNOW }, dispatch);
+const mapDispatchToProps = (dispatch) => bindActionCreators({ openModal, closeModal }, dispatch);
 
 NOWSecurities.propTypes = propTypes;
 

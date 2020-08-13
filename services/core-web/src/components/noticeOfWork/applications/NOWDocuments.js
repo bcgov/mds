@@ -27,8 +27,9 @@ const propTypes = {
   arrayPush: PropTypes.func.isRequired,
   isViewMode: PropTypes.bool.isRequired,
   selectedRows: PropTypes.objectOf(PropTypes.any),
+  categoriesToShow: PropTypes.arrayOf(PropTypes.strings),
 };
-const defaultProps = { selectedRows: null };
+const defaultProps = { selectedRows: null, categoriesToShow: [] };
 
 const handleAddDocument = (closeDocumentModal, addDocument) => (values) => {
   const document = {
@@ -51,7 +52,8 @@ const openAddDocumentModal = (
   closeDocumentModal,
   addDocument,
   now_application_guid,
-  mine_guid
+  mine_guid,
+  categoriesToShow
 ) => {
   event.preventDefault();
   openDocumentModal({
@@ -60,6 +62,7 @@ const openAddDocumentModal = (
       title: `Add Notice of Work document`,
       now_application_guid,
       mine_guid,
+      categoriesToShow,
     },
     content: modalConfig.EDIT_NOTICE_OF_WORK_DOCUMENT,
   });
@@ -190,7 +193,8 @@ export const NOWDocuments = (props) => {
               props.closeModal,
               props.arrayPush,
               props.now_application_guid,
-              props.mine_guid
+              props.mine_guid,
+              props.categoriesToShow
             )
           }
         >
