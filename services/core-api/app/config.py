@@ -30,7 +30,7 @@ class Config(object):
                 'mode': 'a',
                 'backupCount': 0,
                 'maxBytes': 100000000,
-                'filename': 'log/core-api.log',
+                'filename': '/var/log/core-api.log',
                 'formatter': 'default',
             }
         },
