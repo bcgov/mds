@@ -28,7 +28,7 @@ exports[`WaterSupply renders properly 1`] = `
           "dataIndex": "estimate_rate",
           "key": "estimate_rate",
           "render": [Function],
-          "title": "Estimate",
+          "title": "Estimate (m/s)",
         },
       ]
     }

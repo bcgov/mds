@@ -85,6 +85,7 @@ const defaultListParams = {
   commodity: [],
   major: undefined,
   tsf: undefined,
+  verified: undefined,
 };
 
 export class Dashboard extends Component {
