@@ -27,9 +27,11 @@
             "cpu": "100m",
             "memory": "1Gi"
           }
-        }
+        },
+        "volumeMounts": [{ "mountPath": "/var/log", "name": "logs-volume" }]
       }
     ],
+    "volumes": [{ "name": "logs-volume", "emptyDir": {} }],
     "dnsPolicy": "ClusterFirst",
     "restartPolicy": "Never"
   }
