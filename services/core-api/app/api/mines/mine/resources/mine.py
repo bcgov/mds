@@ -87,8 +87,8 @@ class MineListResource(Resource, UserMixin):
             'region': 'A specific mine region to filter the mine list on.',
             'major': 'Filters the mine list by major mines or regional mines.',
             'tsf': 'Filters the mine list by mines with or without a TSF.',
-            'sort_field':
-            'enum[mine_name, mine_no, mine_operation_status_code, mine_region] Default: mine_name',
+            'verified': 'Filters the mine list by verified mines.'
+            'sort_field': 'enum[mine_name, mine_no, mine_operation_status_code, mine_region] Default: mine_name',
             'sort_dir': 'enum[asc, desc] Default: asc'
         },
         description='Returns a list of filtered mines.')
