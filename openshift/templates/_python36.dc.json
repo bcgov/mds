@@ -608,7 +608,7 @@
                     "port": 5000,
                     "scheme": "HTTP"
                   },
-                  "initialDelaySeconds": 10,
+                  "initialDelaySeconds": 180,
                   "timeoutSeconds": 3,
                   "periodSeconds": 20
                 },
@@ -618,7 +618,7 @@
                     "port": 5000,
                     "scheme": "HTTP"
                   },
-                  "initialDelaySeconds": 60,
+                  "initialDelaySeconds": 180,
                   "timeoutSeconds": 15,
                   "periodSeconds": 30
                 },
@@ -763,6 +763,8 @@
               {
                 "name": "promtail",
                 "image": "grafana/promtail:k14-60b97e3",
+                "entrypoint": "sh",
+                "command": ["-c", "/usr/bin/promtail"],
                 "args": [
                   "--config.file=/etc/promtail/core-api.yaml",
                   "--client.url=http://loki:3100/loki/api/v1/push",
