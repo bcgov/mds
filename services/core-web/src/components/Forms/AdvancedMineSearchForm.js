@@ -131,6 +131,21 @@ export class AdvancedMineSearchForm extends Component {
                 />
               </Col>
             </Row>
+            <Row gutter={6}>
+              <Col md={12} xs={24}>
+                <Field
+                  id="verified"
+                  name="verified"
+                  component={renderConfig.SELECT}
+                  data={[
+                    { value: "", label: "Verified and Un-verified Mines" },
+                    { value: "true", label: "Verified Mine" },
+                    { value: "false", label: "Un-verified" },
+                  ]}
+                />
+              </Col>
+              <Col md={12} xs={24} />
+            </Row>
           </div>
         )}
         <div className="left center-mobile">
