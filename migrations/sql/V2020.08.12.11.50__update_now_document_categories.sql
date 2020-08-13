@@ -5,3 +5,6 @@ VALUES
     ('NIA', 'No Interest Acknowledgement Form', true, 'system-mds','system-mds'),
     ('AKL', 'Acknowledgement of Security Letter', true, 'system-mds','system-mds')
 on conflict do nothing;
+
+
+ALTER TABLE permit_amendment ADD COLUMN security_received_date DATE;

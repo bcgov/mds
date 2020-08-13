@@ -1,15 +1,29 @@
 /* eslint-disable */
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Button } from "antd";
+import { Button, Popconfirm } from "antd";
 import { bindActionCreators } from "redux";
+import { isEmpty } from "lodash";
 import { connect } from "react-redux";
 import { openModal, closeModal } from "@common/actions/modalActions";
 import NOWDocuments from "@/components/noticeOfWork/applications//NOWDocuments";
+import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
+import { fetchImportedNoticeOfWorkApplication } from "@common/actionCreators/noticeOfWorkActionCreator";
+import {
+  updatePermitAmendment,
+  fetchDraftPermitByNOW,
+} from "@common/actionCreators/permitActionCreator";
+import {
+  getDraftPermitAmendmentForNOW,
+  getDraftPermitForNOW,
+} from "@common/selectors/permitSelectors";
 
 import { modalConfig } from "@/components/modalContent/config";
 import CustomPropTypes from "@/customPropTypes";
 import { EDIT_OUTLINE } from "@/constants/assets";
+import * as Permission from "@/constants/permissions";
+import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
+import PermitAmendmentSecurityForm from "@/components/Forms/permits/PermitAmendmentSecurityForm";
 
 /**
  * @class NOWSecurities- contains all information relating to the Securities/Bond tracking on a Notice of Work Application.
@@ -17,44 +31,85 @@ import { EDIT_OUTLINE } from "@/constants/assets";
 
 const propTypes = {
   mineGuid: PropTypes.string.isRequired,
-  openModal: PropTypes.func.isRequired,
-  closeModal: PropTypes.func.isRequired,
+  updatePermitAmendment: PropTypes.func.isRequired,
+  fetchDraftPermitByNOW: PropTypes.func.isRequired,
   noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
+  fetchImportedNoticeOfWorkApplication: PropTypes.func.isRequired,
 };
 
 const securityDocuments = ["SRB", "NIA", "AKL", "SCD"];
 
 export class NOWSecurities extends Component {
-  // openAddDocumentModal = (
-  // ) => {
-  //   openModal({
-  //     props: {
-  //       onSubmit: debounce(handleAddDocument(closeDocumentModal, addDocument), 2000),
-  //       title: `Add Notice of Work document`,
-  //       now_application_guid: this.props.noticeOfWork),
-  //       mine_guid,
-  //       categoriesToShow,
-  //     },
-  //     content: modalConfig.EDIT_NOTICE_OF_WORK_DOCUMENT,
-  //   });
-  // };
+  state = { isEditMode: false, isLoaded: false };
+
+  componentDidMount() {
+    this.handleFetchDraftPermit();
+  }
+
+  handleFetchDraftPermit = () => {
+    this.props
+      .fetchDraftPermitByNOW(
+        this.props.mineGuid,
+        this.props.noticeOfWork.now_application_document_type_code
+      )
+      .then(this.setState({ isLoaded: true }));
+  };
+
+  toggleEditMode = () => {
+    this.setState((prevState) => ({ isEditMode: !prevState.isEditMode }));
+  };
+
+  addSecurityToPermit = (payload) => {
+    this.props
+      .updatePermitAmendment(
+        this.props.mineGuid,
+        this.props.draftPermits.permit_guid,
+        this.props.draftPermit.permit_amendment_guid,
+        payload
+      )
+      .then(() => {
+        this.handleFetchDraftPermit();
+        this.toggleEditMode();
+      });
+  };
 
   render() {
+    console.log(this.props.draftPermit);
     return (
       <div>
         <div className="inline-flex between">
-          <h4>Securities</h4>
+          <h3>Securities</h3>
           <div>
-            <Button type="secondary" onClick={this.openDocumentModal}>
-              <img src={EDIT_OUTLINE} title="Edit" alt="Edit" className="padding-md--right" />
-              Add
-            </Button>
+            <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
+              {isEmpty(this.props.draftPermit) ? (
+                <Popconfirm
+                  placement="topLeft"
+                  title="In order to edit Securities Total and a Securities Date Recieved, you need to start a Draft Permit."
+                  okText="Ok"
+                  cancelText="Cancel"
+                >
+                  <Button type="secondary">
+                    <img src={EDIT_OUTLINE} title="Edit" alt="Edit" className="padding-md--right" />
+                    Edit
+                  </Button>
+                </Popconfirm>
+              ) : (
+                <Button type="secondary" onClick={this.toggleEditMode}>
+                  <img src={EDIT_OUTLINE} title="Edit" alt="Edit" className="padding-md--right" />
+                  Edit
+                </Button>
+              )}
+            </AuthorizationWrapper>
           </div>
         </div>
-        <p>
-          Upload a copy of the security into the table below before sending the original to the
-          Securities Team.
-        </p>
+        <LoadingWrapper condition={this.state.isLoaded}>
+          <PermitAmendmentSecurityForm
+            isEditMode={this.state.isEditMode}
+            initialValues={this.props.draftPermit}
+            onSubmit={this.addSecurityToPermit}
+          />
+        </LoadingWrapper>
+        <br />
         <NOWDocuments
           now_application_guid={this.props.noticeOfWork.now_application_guid}
           mine_guid={this.props.mineGuid}
@@ -63,6 +118,10 @@ export class NOWSecurities extends Component {
               securityDocuments.includes(now_application_document_type_code)
           )}
           isViewMode={false}
+          isAdminView
+          disclaimerText={
+            "Upload a copy of the security into the table below before sending the original to the Securities Team."
+          }
           categoriesToShow={securityDocuments}
         />
       </div>
@@ -70,9 +129,16 @@ export class NOWSecurities extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({});
+const mapStateToProps = (state) => ({
+  draftPermit: getDraftPermitAmendmentForNOW(state),
+  draftPermits: getDraftPermitForNOW(state),
+});
 
-const mapDispatchToProps = (dispatch) => bindActionCreators({ openModal, closeModal }, dispatch);
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators(
+    { updatePermitAmendment, fetchDraftPermitByNOW, fetchImportedNoticeOfWorkApplication },
+    dispatch
+  );
 
 NOWSecurities.propTypes = propTypes;
 

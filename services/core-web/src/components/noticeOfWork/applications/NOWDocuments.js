@@ -28,8 +28,15 @@ const propTypes = {
   isViewMode: PropTypes.bool.isRequired,
   selectedRows: PropTypes.objectOf(PropTypes.any),
   categoriesToShow: PropTypes.arrayOf(PropTypes.strings),
+  disclaimerText: PropTypes.string,
+  isAdminView: PropTypes.bool,
 };
-const defaultProps = { selectedRows: null, categoriesToShow: [] };
+const defaultProps = {
+  selectedRows: null,
+  categoriesToShow: [],
+  disclaimerText: "",
+  isAdminView: false,
+};
 
 const handleAddDocument = (closeDocumentModal, addDocument) => (values) => {
   const document = {
@@ -156,34 +163,54 @@ export const NOWDocuments = (props) => {
 
   return (
     <div>
-      {props.documents && props.documents.length >= 1 ? (
-        <Table
-          align="left"
-          pagination={false}
-          columns={columns(props.noticeOfWorkApplicationDocumentTypeOptionsHash)}
-          dataSource={transformDocuments(
-            props.documents,
-            props.now_application_guid,
-            props.noticeOfWorkApplicationDocumentTypeOptionsHash
-          )}
-          locale={{
-            emptyText: "There are no additional documents associated with this Notice of Work",
-          }}
-          rowSelection={
-            props.selectedRows
-              ? {
-                  selectedRowKeys: props.selectedRows.selectedCoreRows,
-                  onChange: (selectedRowKeys) => {
-                    props.selectedRows.setSelectedCoreRows(selectedRowKeys);
-                  },
-                }
-              : null
-          }
-        />
-      ) : (
-        <NullScreen type="documents" />
+      {props.isAdminView && (
+        <>
+          <div className="inline-flex between">
+            <p>{props.disclaimerText}</p>
+            <AddButton
+              disabled={props.isViewMode}
+              onClick={(event) =>
+                openAddDocumentModal(
+                  event,
+                  props.openModal,
+                  props.closeModal,
+                  props.arrayPush,
+                  props.now_application_guid,
+                  props.mine_guid,
+                  props.categoriesToShow
+                )
+              }
+            >
+              Add Document
+            </AddButton>
+          </div>
+        </>
       )}
-      {!props.selectedRows && !props.isViewMode && (
+      <Table
+        align="left"
+        pagination={false}
+        columns={columns(props.noticeOfWorkApplicationDocumentTypeOptionsHash)}
+        dataSource={transformDocuments(
+          props.documents,
+          props.now_application_guid,
+          props.noticeOfWorkApplicationDocumentTypeOptionsHash
+        )}
+        locale={{
+          emptyText: <NullScreen type="documents" />,
+        }}
+        rowSelection={
+          props.selectedRows
+            ? {
+                selectedRowKeys: props.selectedRows.selectedCoreRows,
+                onChange: (selectedRowKeys) => {
+                  props.selectedRows.setSelectedCoreRows(selectedRowKeys);
+                },
+              }
+            : null
+        }
+      />
+
+      {!props.selectedRows && !props.isViewMode && !props.isAdminView && (
         <AddButton
           disabled={props.isViewMode}
           onClick={(event) =>

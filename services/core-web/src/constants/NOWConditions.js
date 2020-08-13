@@ -13,7 +13,6 @@ export const activityConditions = {
 
 export const activitiesMenu = [
   { href: "application-info", title: "Application Info", alwaysVisible: true },
-  { href: "securities", title: "Securities", alwaysVisible: true },
   { href: "contacts", title: "Contacts", alwaysVisible: true },
   { href: "access", title: "Access", alwaysVisible: true },
   { href: "state-of-land", title: "State of Land", alwaysVisible: true },
