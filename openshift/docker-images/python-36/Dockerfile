@@ -1,5 +1,8 @@
 FROM "__FROM_IMAGE_STREAM_DEFINED_IN_TEMPLATE__"
 
+# Make log directory
+RUN mkdir -p ${APP_ROOT}/log 
+
 # Install sonar-scanner
 RUN curl -sLo /tmp/sonar-scanner-cli.zip https://dl.bintray.com/sonarsource/SonarQube/org/sonarsource/scanner/cli/sonar-scanner-cli/3.2.0.1227/sonar-scanner-cli-3.2.0.1227-linux.zip && \
     mkdir ${APP_ROOT}/sonar-scanner-cli && unzip -q /tmp/sonar-scanner-cli.zip -d ${APP_ROOT}/sonar-scanner-cli && \
