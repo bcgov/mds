@@ -22,6 +22,7 @@ from app.api.mines.permits.permit.models.mine_permit_xref import MinePermitXref
 from app.api.mines.mine.models.mine import Mine
 from app.api.mines.mine.models.mine_type import MineType
 from app.api.mines.mine.models.mine_type_detail import MineTypeDetail
+from app.api.mines.mine.models.mine_verified_status import MineVerifiedStatus
 
 from app.api.mines.status.models.mine_status import MineStatus
 from app.api.mines.status.models.mine_status_xref import MineStatusXref
@@ -157,6 +158,7 @@ class MineListResource(Resource, UserMixin):
         region_code_filter_term = args.getlist('region', type=str)
         major_mine_filter_term = args.get('major', None, type=str)
         tsf_filter_term = args.get('tsf', None, type=str)
+        verified_only_term = args.get('verified', None, type=str)
         # Base query:
         mines_query = Mine.query
         # Filter by search_term if provided
@@ -203,6 +205,13 @@ class MineListResource(Resource, UserMixin):
                 .join(MineType) \
                 .filter(tenure_filter, mine_type_active_filter)
             mines_query = mines_query.intersect(tenure_query)
+
+        #Create a filter on verified mine status
+        if verified_only_term == "true" or verified_only_term == "false":
+            verified_only_filter = MineVerifiedStatus.healthy_ind.is_(verified_only_term == "true")
+            verified_only_query = Mine.query.join(MineVerifiedStatus).filter(verified_only_filter)
+            mines_query = mines_query.intersect(verified_only_query)
+
         # Create a filter on mine status if one is provided
         if status_filter_term:
             status_filter = MineStatusXref.mine_operation_status_code.in_(status_filter_term)
