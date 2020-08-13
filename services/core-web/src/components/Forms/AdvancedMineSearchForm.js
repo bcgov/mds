@@ -34,8 +34,8 @@ export class AdvancedMineSearchForm extends Component {
       expandAdvancedSearch: !prevState.expandAdvancedSearch,
     }));
 
-  haveAdvancedSearchFilters = ({ status, region, tenure, commodity, tsf, major }) =>
-    tsf || major || some([status, region, tenure, commodity], negate(isEmpty));
+  haveAdvancedSearchFilters = ({ status, region, tenure, commodity, tsf, major, verified }) =>
+    tsf || major || verified || some([status, region, tenure, commodity], negate(isEmpty));
 
   componentWillReceiveProps = (nextProps) => {
     if (
