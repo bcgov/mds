@@ -34,7 +34,12 @@ class Party(AuditMixin, Base):
     postnominal_letters = db.Column(db.String, nullable=True)
     idir_username = db.Column(db.String, nullable=True)
 
-    business_role_appts = db.relationship('PartyBusinessRoleAppointment', lazy='joined')
+    business_role_appts = db.relationship(
+        'PartyBusinessRoleAppointment',
+        lazy='dynamic',
+        primaryjoin=
+        "and_(Party.party_guid == PartyBusinessRoleAppointment.party_guid, PartyBusinessRoleAppointment.deleted_ind==False)",
+    )
     party_orgbook_entity = db.relationship(
         'PartyOrgBookEntity', backref='party_orgbook_entity', uselist=False, lazy='select')
 
@@ -83,6 +88,11 @@ class Party(AuditMixin, Base):
                 'mine_party_appt': [item.json() for item in self.mine_party_appt],
             })
 
+        # if 'business_role_appts' in relationships:
+        #     context.update({
+        #         'business_role_appts': [item.json() for item in self.business_role_appts],
+        #     })
+
         return context
 
     @classmethod
@@ -117,24 +127,24 @@ class Party(AuditMixin, Base):
 
     @classmethod
     def create(
-        cls,
+            cls,
                                                  # Required fields
-        party_name,
-        phone_no,
-        party_type_code,
+            party_name,
+            phone_no,
+            party_type_code,
                                                  # Optional fields
-        address_type_code=None,
+            address_type_code=None,
                                                  # Nullable fields
-        email=None,
-        first_name=None,
-        phone_ext=None,
-        suite_no=None,
-        address_line_1=None,
-        address_line_2=None,
-        city=None,
-        sub_division_code=None,
-        post_code=None,
-        add_to_session=True):
+            email=None,
+            first_name=None,
+            phone_ext=None,
+            suite_no=None,
+            address_line_1=None,
+            address_line_2=None,
+            city=None,
+            sub_division_code=None,
+            post_code=None,
+            add_to_session=True):
         party = cls(
                                                  # Required fields
             party_name=party_name,

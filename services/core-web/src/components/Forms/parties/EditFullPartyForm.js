@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Field, reduxForm } from "redux-form";
+import { Field, reduxForm, FormSection } from "redux-form";
 import { Form, Col, Row, Button, Popconfirm, Descriptions, Typography } from "antd";
 import { isEmpty } from "lodash";
 import {
@@ -18,6 +18,7 @@ import CustomPropTypes from "@/customPropTypes";
 import { renderConfig } from "@/components/common/config";
 import PartyOrgBookForm from "@/components/Forms/parties/PartyOrgBookForm";
 import { ORGBOOK_ENTITY_URL, ORGBOOK_CREDENTIAL_URL } from "@/constants/routes";
+import * as Permission from "@/constants/permissions";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
@@ -282,6 +283,47 @@ export const EditFullPartyForm = (props) => {
               ))}
           </Col>
         </Row>
+        {isPerson && (
+          <AuthorizationWrapper permission={Permission.ADMIN}>
+            {/* <FormSection name="inspector_info"> */}
+            <Row>
+              <p>
+                By setting this checkbox you grant inspector role to this party. Please note that
+                removing this checkbox will not delete party from associated entities.
+              </p>
+              <Col md={12} sm={24}>
+                <Field
+                  id="set_to_inspector"
+                  name="set_to_inspector"
+                  label="Set to inspector"
+                  type="checkbox"
+                  component={renderConfig.CHECKBOX}
+                />
+              </Col>
+            </Row>
+            <Row gutter={16}>
+              <Col span={12}>
+                <Field
+                  label="Start Date"
+                  id={`inspector_start_date`}
+                  name={`inspector_start_date`}
+                  placeholder="yyyy-mm-dd"
+                  component={renderConfig.DATE}
+                />
+              </Col>
+              <Col span={12}>
+                <Field
+                  label="End Date"
+                  id={`inspector_end_date`}
+                  name={`inspector_end_date`}
+                  placeholder="yyyy-mm-dd"
+                  component={renderConfig.DATE}
+                />
+              </Col>
+            </Row>
+            {/* </FormSection> */}
+          </AuthorizationWrapper>
+        )}
         <div className="right center-mobile">
           <Popconfirm
             placement="topRight"

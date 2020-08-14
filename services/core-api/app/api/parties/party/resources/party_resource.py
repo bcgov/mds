@@ -3,11 +3,13 @@ from flask_restplus import Resource
 from sqlalchemy_filters import apply_pagination
 from sqlalchemy.exc import DBAPIError
 from werkzeug.exceptions import NotFound
+from datetime import datetime, timezone
 
-from app.extensions import api
+from app.extensions import api, jwt
 from app.api.utils.access_decorators import requires_role_view_all, requires_role_mine_edit, requires_role_mine_admin, requires_role_edit_party
 from app.api.utils.resources_mixins import UserMixin
 from app.api.utils.custom_reqparser import CustomReqparser
+from app.api.utils.access_decorators import MINE_ADMIN
 
 from app.api.parties.party.models.party import Party
 from app.api.parties.party.models.address import Address
@@ -87,6 +89,19 @@ class PartyResource(Resource, UserMixin):
         type=str,
         store_missing=False,
         help='The IDIR username of the party. Ex "IDIR\JSMITH"')
+    parser.add_argument(
+        'set_to_inspector',
+        type=bool,
+        store_missing=False,
+        help='Identifies if current party is inspector')
+    parser.add_argument(
+        'inspector_start_date',
+        type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None,
+        help='Identifies if current party is inspector')
+    parser.add_argument(
+        'inspector_end_date',
+        type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None,
+        help='Identifies if current party is inspector')
 
     PARTY_LIST_RESULT_LIMIT = 25
 
@@ -100,7 +115,6 @@ class PartyResource(Resource, UserMixin):
         party = Party.find_by_party_guid(party_guid)
         if not party:
             raise NotFound('Party not found')
-
         return party
 
     @api.expect(parser)
@@ -131,8 +145,32 @@ class PartyResource(Resource, UserMixin):
             for key, value in data.items():
                 setattr(existing_party.address[0], key, value)
 
-        existing_party.save()
+        # TODO refactor do not update if it is not required to do so
+        
+        # admin only
+        if jwt.validate_roles([MINE_ADMIN]):
+            # check if we create or update inspector info
+            business_role = existing_party.business_role_appts.filter_by(party_business_role_code="INS").first()
+            if data.get("set_to_inspector"):
+                start_date = data.inspector_start_date if data.get("inspector_start_date") else datetime.now(timezone.utc)
+                end_date = data.inspector_end_date if data.get("inspector_end_date") else None
+                if business_role and (start_date.date() != business_role.start_date.date() or end_date.date() != business_role.end_date.date()):                
+                    business_role.start_date = start_date
+                    business_role.end_date = end_date
+                    business_role.save()
+                elif not business_role:
+                    PartyBusinessRoleAppointment.create("INS", party_guid, start_date, end_date)                    
+            # deactivate inspector
+            elif business_role:
+                end_date = data.get("inspector_end_date")
+                today = datetime.now(timezone.utc).date()
+                if end_date and end_date.date() <= today:
+                    pass
+                else:
+                    business_role.end_date = today
+                    business_role.save()
 
+        existing_party.save()
         return existing_party
 
     @api.doc(

@@ -17,6 +17,7 @@ import { getMineBasicInfoListHash } from "@common/selectors/mineSelectors";
 import {
   getDropdownProvinceOptions,
   getPartyRelationshipTypeHash,
+  getPartyBusinessRoleOptionsHash,
 } from "@common/selectors/staticContentSelectors";
 import { formatTitleString, formatDate } from "@common/utils/helpers";
 import * as Strings from "@common/constants/strings";
@@ -47,6 +48,7 @@ const propTypes = {
   closeModal: PropTypes.func.isRequired,
   parties: PropTypes.arrayOf(CustomPropTypes.party).isRequired,
   partyRelationshipTypeHash: PropTypes.objectOf(PropTypes.strings),
+  partyBusinessRoleOptionsHash: PropTypes.objectOf(PropTypes.strings),
   mineBasicInfoListHash: PropTypes.objectOf(PropTypes.strings),
   match: CustomPropTypes.match.isRequired,
   provinceOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
@@ -55,6 +57,7 @@ const propTypes = {
 const defaultProps = {
   partyRelationshipTypeHash: {},
   mineBasicInfoListHash: {},
+  partyBusinessRoleOptionsHash: {},
 };
 
 export class PartyProfile extends Component {
@@ -126,6 +129,9 @@ export class PartyProfile extends Component {
           if (record.relationship.mine_party_appt_type_code === "PMT") {
             return <div title="Permit No">{record.relationship.permit_no}</div>;
           }
+          if (record.relationship.party_business_role_code === "INS") {
+            return "N/A";
+          }
           return (
             <div title="Mine Name">
               <Link to={routes.MINE_CONTACTS.dynamicRoute(record.mineGuid)}>{text}</Link>
@@ -149,8 +155,7 @@ export class PartyProfile extends Component {
       },
     ];
 
-    const transformRowData = (partyRelationships) =>
-      partyRelationships.map((relationship) => ({
+    const transformRowData = (partyRelationships) => partyRelationships.map((relationship) => ({
         key: relationship.mine_party_appt_guid,
         mineGuid: relationship.mine_guid,
         mineName: this.props.mineBasicInfoListHash[relationship.mine_guid],
@@ -158,6 +163,14 @@ export class PartyProfile extends Component {
         endDate: formatDate(relationship.end_date) || "Present",
         startDate: formatDate(relationship.start_date) || "Unknown",
         relationship,
+      }));
+
+    const transformBusinessRoleRowData = (businessPartyRecord) => businessPartyRecord.map((record) => ({
+        key: record.party_business_role_appt_id,
+        role: this.props.partyBusinessRoleOptionsHash[record.party_business_role_code],
+        endDate: formatDate(record.end_date) || "Present",
+        startDate: formatDate(record.start_date) || "Unknown",
+        relationship: { party_business_role_code: record.party_business_role_code },
       }));
 
     if (this.state.isLoaded && party) {
@@ -260,7 +273,10 @@ export class PartyProfile extends Component {
                     align="left"
                     pagination={false}
                     columns={columns}
-                    dataSource={transformRowData(this.props.parties[id].mine_party_appt)}
+                    // TODO do concat of transform data
+                    dataSource={transformRowData(this.props.parties[id].mine_party_appt).concat(
+                      transformBusinessRoleRowData(this.props.parties[id].business_role_appts)
+                    )}
                     locale={{ emptyText: <NullScreen type="no-results" /> }}
                   />
                 </div>
@@ -277,6 +293,7 @@ export class PartyProfile extends Component {
 const mapStateToProps = (state) => ({
   parties: getParties(state),
   partyRelationshipTypeHash: getPartyRelationshipTypeHash(state),
+  partyBusinessRoleOptionsHash: getPartyBusinessRoleOptionsHash(state),
   mineBasicInfoListHash: getMineBasicInfoListHash(state),
   provinceOptions: getDropdownProvinceOptions(state),
 });

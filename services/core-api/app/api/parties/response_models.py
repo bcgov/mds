@@ -21,6 +21,13 @@ MINE_PARTY_APPT_TYPE_MODEL = api.model(
         'active_ind': fields.Boolean
     })
 
+PARTY_BUSINESS_ROLE = api.model(
+    'PartyBusinessRoleCode', {
+        'party_business_role_code': fields.String,
+        'description': fields.String,
+        'active_ind': fields.Boolean
+    })
+
 MINE_PARTY_APPT = api.model(
     'MinePartyAppointment', {
         'mine_party_appt_guid': fields.String,
@@ -59,6 +66,14 @@ PARTY_ORGBOOK_ENTITY = api.model(
         'association_timestamp': fields.DateTime
     })
 
+PARTY_BUSINESS_ROLE_APPT = api.model(
+    'PartyBusinessRoleAppointment', {
+        'party_business_role_appt_id': fields.Integer,
+        'party_business_role_code': fields.String,
+        'start_date': fields.DateTime,
+        'end_date': fields.DateTime,
+    })
+
 PARTY = api.model(
     'Party', {
         'party_guid': fields.String,
@@ -76,7 +91,8 @@ PARTY = api.model(
         'job_title': fields.String,
         'postnominal_letters': fields.String,
         'idir_username': fields.String,
-        'party_orgbook_entity': fields.Nested(PARTY_ORGBOOK_ENTITY, skip_none=True)
+        'party_orgbook_entity': fields.Nested(PARTY_ORGBOOK_ENTITY, skip_none=True),
+        'business_role_appts': fields.List(fields.Nested(PARTY_BUSINESS_ROLE_APPT, skip_none=True))
     })
 
 PAGINATED_LIST = api.model(
