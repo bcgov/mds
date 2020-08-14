@@ -56,7 +56,7 @@ class PermitAmendment(AuditMixin, Base):
         'permit_amendment_type', 'description')
 
     security_total = db.Column(db.Numeric(16, 2))
-    security_received_date = db.Column(db.Date)
+    security_received_date = db.Column(db.DateTime)
     now_application_guid = db.Column(
         UUID(as_uuid=True),
         db.ForeignKey('now_application_identity.now_application_guid'))

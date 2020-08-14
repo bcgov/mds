@@ -1,12 +1,9 @@
 import React from "react";
-import { connect } from "react-redux";
-import { compose } from "redux";
 import PropTypes from "prop-types";
 import { Field, reduxForm } from "redux-form";
 import { Form, Button, Col, Row, Popconfirm } from "antd";
 import { currency } from "@common/utils/Validate";
 import { currencyMask } from "@common/utils/helpers";
-import { getDropdownPermitStatusOptions } from "@common/selectors/staticContentSelectors";
 import * as FORM from "@/constants/forms";
 
 import RenderField from "@/components/common/RenderField";
@@ -66,12 +63,8 @@ export const PermitAmendmentSecurityForm = (props) => (
 
 PermitAmendmentSecurityForm.propTypes = propTypes;
 
-export default compose(
-  connect((state) => ({
-    permitStatusOptions: getDropdownPermitStatusOptions(state),
-  })),
-  reduxForm({
-    form: FORM.EDIT_PERMIT,
-    touchOnBlur: false,
-  })
-)(PermitAmendmentSecurityForm);
+export default reduxForm({
+  form: FORM.EDIT_PERMIT,
+  touchOnBlur: false,
+  enableReinitialize: true,
+})(PermitAmendmentSecurityForm);

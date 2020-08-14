@@ -52,7 +52,7 @@ export class NOWSecurities extends Component {
         this.props.mineGuid,
         this.props.noticeOfWork.now_application_document_type_code
       )
-      .then(this.setState({ isLoaded: true }));
+      .then(() => this.setState({ isLoaded: true }));
   };
 
   toggleEditMode = () => {
