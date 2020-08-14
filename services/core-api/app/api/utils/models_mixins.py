@@ -45,7 +45,9 @@ def ensure_constrained(query):
             cls = mzero.class_
 
             # if model includes mine_guid, apply filter on mine_guid.
-            if hasattr(cls, 'mine_guid') and query._user_bound:
+            mapper = inspect(cls)
+
+            if 'mine_guid' in [c.name for c in mapper.columns] and query._user_bound:
                 query = query.enable_assertions(False).filter(
                     cls.mine_guid.in_(user_security.mine_ids))
 
