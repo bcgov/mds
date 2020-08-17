@@ -91,8 +91,8 @@
           "sourceStrategy": {
             "from": {
               "kind": "ImageStreamTag",
-              "namespace": "openshift",
-              "name": "bcgov-s2i-nginx:latest"
+              "namespace": "empr-mds-tools",
+              "name": "s2i-nginx:latest"
             },
             "env": [
               {
