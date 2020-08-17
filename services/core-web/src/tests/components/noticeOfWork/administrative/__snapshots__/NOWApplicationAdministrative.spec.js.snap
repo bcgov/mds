@@ -65,6 +65,7 @@ exports[`NOWApplicationAdministrative renders properly 1`] = `
   />
   <br />
   <Connect(NOWSecurities)
+    handleSaveNOWEdit={[MockFunction]}
     mineGuid="18133c75-49ad-4101-85f3-a43e35ae989a"
     noticeOfWork={
       Object {
@@ -139,6 +140,7 @@ exports[`NOWApplicationAdministrative renders properly 1`] = `
     }
     disclaimerText="In this table, please add all transitory, internal documents that may be related to the Notice of Work. All documents added to this section will not show up in the final application package unless otherwise specified."
     documents={Array []}
+    handleAfterUpload={[MockFunction]}
     isAdminView={true}
     isViewMode={false}
     mine_guid="18133c75-49ad-4101-85f3-a43e35ae989a"

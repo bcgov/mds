@@ -11,6 +11,7 @@ const setupDispatchProps = () => {
   dispatchProps.openModal = jest.fn();
   dispatchProps.closeModal = jest.fn();
   dispatchProps.arrayPush = jest.fn();
+  dispatchProps.handleAfterUpload = jest.fn();
 };
 
 const setupProps = () => {

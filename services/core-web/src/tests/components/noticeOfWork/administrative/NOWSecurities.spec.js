@@ -10,6 +10,7 @@ const props = {};
 const setupDispatchProps = () => {
   dispatchProps.updatePermitAmendment = jest.fn();
   dispatchProps.fetchDraftPermitByNOW = jest.fn(() => Promise.resolve());
+  dispatchProps.handleSaveNOWEdit = jest.fn();
 };
 
 const setupProps = () => {
