@@ -5,6 +5,7 @@ import { Form, Button, Col, Row, Popconfirm } from "antd";
 import { currency } from "@common/utils/Validate";
 import { currencyMask } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
+import { CoreTooltip } from "@/components/common/CoreTooltip";
 
 import RenderField from "@/components/common/RenderField";
 import RenderDate from "@/components/common/RenderDate";
@@ -19,7 +20,10 @@ export const PermitAmendmentSecurityForm = (props) => (
   <Form layout="vertical" onSubmit={props.handleSubmit}>
     <Row gutter={16}>
       <Col md={12} sm={24}>
-        <div className="field-title">Security Total</div>
+        <div className="field-title">
+          Security Total
+          <CoreTooltip title="Total amount assessed for this application will be added to the total assessed amount on the permit." />
+        </div>
         <Field
           id="security_total"
           name="security_total"
@@ -31,7 +35,10 @@ export const PermitAmendmentSecurityForm = (props) => (
         />
       </Col>
       <Col md={12} sm={24}>
-        <div className="field-title">Security Received</div>
+        <div className="field-title">
+          Security Received
+          <CoreTooltip title="Do not mark as received until the security amount is paid in full." />
+        </div>
         <Field
           id="security_received_date"
           name="security_received_date"

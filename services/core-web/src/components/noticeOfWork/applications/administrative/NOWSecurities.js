@@ -1,14 +1,9 @@
-/* eslint-disable */
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Button, Popconfirm } from "antd";
 import { bindActionCreators } from "redux";
 import { isEmpty } from "lodash";
 import { connect } from "react-redux";
-import { openModal, closeModal } from "@common/actions/modalActions";
-import NOWDocuments from "@/components/noticeOfWork/applications//NOWDocuments";
-import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
-import { fetchImportedNoticeOfWorkApplication } from "@common/actionCreators/noticeOfWorkActionCreator";
 import {
   updatePermitAmendment,
   fetchDraftPermitByNOW,
@@ -17,8 +12,8 @@ import {
   getDraftPermitAmendmentForNOW,
   getDraftPermitForNOW,
 } from "@common/selectors/permitSelectors";
-
-import { modalConfig } from "@/components/modalContent/config";
+import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
+import NOWDocuments from "@/components/noticeOfWork/applications//NOWDocuments";
 import CustomPropTypes from "@/customPropTypes";
 import { EDIT_OUTLINE } from "@/constants/assets";
 import * as Permission from "@/constants/permissions";
@@ -34,7 +29,8 @@ const propTypes = {
   updatePermitAmendment: PropTypes.func.isRequired,
   fetchDraftPermitByNOW: PropTypes.func.isRequired,
   noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
-  fetchImportedNoticeOfWorkApplication: PropTypes.func.isRequired,
+  draftPermits: CustomPropTypes.permit.isRequired,
+  draftAmendment: CustomPropTypes.permit.isRequired,
 };
 
 const securityDocuments = ["SRB", "NIA", "AKL", "SCD"];
@@ -64,7 +60,7 @@ export class NOWSecurities extends Component {
       .updatePermitAmendment(
         this.props.mineGuid,
         this.props.draftPermits.permit_guid,
-        this.props.draftPermit.permit_amendment_guid,
+        this.props.draftAmendment.permit_amendment_guid,
         payload
       )
       .then(() => {
@@ -74,14 +70,13 @@ export class NOWSecurities extends Component {
   };
 
   render() {
-    console.log(this.props.draftPermit);
     return (
       <div>
         <div className="inline-flex between">
           <h3>Securities</h3>
           <div>
             <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
-              {isEmpty(this.props.draftPermit) ? (
+              {isEmpty(this.props.draftAmendment) ? (
                 <Popconfirm
                   placement="topLeft"
                   title="In order to edit Securities Total and a Securities Date Recieved, you need to start a Draft Permit."
@@ -105,7 +100,7 @@ export class NOWSecurities extends Component {
         <LoadingWrapper condition={this.state.isLoaded}>
           <PermitAmendmentSecurityForm
             isEditMode={this.state.isEditMode}
-            initialValues={this.props.draftPermit}
+            initialValues={this.props.draftAmendment}
             onSubmit={this.addSecurityToPermit}
           />
         </LoadingWrapper>
@@ -119,9 +114,7 @@ export class NOWSecurities extends Component {
           )}
           isViewMode={false}
           isAdminView
-          disclaimerText={
-            "Upload a copy of the security into the table below before sending the original to the Securities Team."
-          }
+          disclaimerText="Upload a copy of the security into the table below before sending the original to the Securities Team."
           categoriesToShow={securityDocuments}
         />
       </div>
@@ -130,15 +123,12 @@ export class NOWSecurities extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  draftPermit: getDraftPermitAmendmentForNOW(state),
+  draftAmendment: getDraftPermitAmendmentForNOW(state),
   draftPermits: getDraftPermitForNOW(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
-  bindActionCreators(
-    { updatePermitAmendment, fetchDraftPermitByNOW, fetchImportedNoticeOfWorkApplication },
-    dispatch
-  );
+  bindActionCreators({ updatePermitAmendment, fetchDraftPermitByNOW }, dispatch);
 
 NOWSecurities.propTypes = propTypes;
 
