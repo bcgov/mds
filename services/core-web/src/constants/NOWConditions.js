@@ -13,8 +13,8 @@ export const activityConditions = {
 
 export const activitiesMenu = [
   { href: "application-info", title: "Application Info", alwaysVisible: true },
-  { href: "contacts", title: "Contacts", alwaysVisible: true },
   { href: "securities", title: "Securities", alwaysVisible: true },
+  { href: "contacts", title: "Contacts", alwaysVisible: true },
   { href: "access", title: "Access", alwaysVisible: true },
   { href: "state-of-land", title: "State of Land", alwaysVisible: true },
   { href: "first-aid", title: "First Aid", alwaysVisible: true },
@@ -54,3 +54,21 @@ export const activitiesMenu = [
 export const renderActivities = (type, activity) => {
   return activityConditions[type].includes(activity);
 };
+
+export const draftPermitMenu = [
+  { href: "general-info", title: "General Information", alwaysVisible: true, children: [] },
+  { href: "preamble", title: "Preamble", alwaysVisible: true, children: [] },
+  {
+    href: "conditions",
+    title: "Conditions",
+    alwaysVisible: true,
+    children: [
+      { href: "general", title: "A. General" },
+      { href: "health-safety", title: "B. Healthy and Safety" },
+      { href: "geotechnical", title: "C. Geotechnical" },
+      { href: "environmental-land", title: "D. Environmantal Land" },
+      { href: "reclamation-closure", title: "E. Reclamation and Closure" },
+      { href: "additional-conditions", title: "F. Additional Conditions" },
+    ],
+  },
+];

@@ -19,6 +19,7 @@ import {
   fetchMineBonds,
   createBond,
   updateBond,
+  transferBond,
   fetchMineReclamationInvoices,
   createReclamationInvoice,
   updateReclamationInvoice,
@@ -52,6 +53,7 @@ const propTypes = {
   fetchMineBonds: PropTypes.func.isRequired,
   createBond: PropTypes.func.isRequired,
   updateBond: PropTypes.func.isRequired,
+  transferBond: PropTypes.func.isRequired,
   fetchMineReclamationInvoices: PropTypes.func.isRequired,
   createReclamationInvoice: PropTypes.func.isRequired,
   updateReclamationInvoice: PropTypes.func.isRequired,
@@ -127,7 +129,7 @@ export class MineSecurityInfo extends Component {
     event.preventDefault();
     this.props.openModal({
       props: {
-        title: `Edit Bond`,
+        title: "Edit Bond",
         onSubmit: this.editBond,
         editBond: true,
         bond,
@@ -139,11 +141,39 @@ export class MineSecurityInfo extends Component {
     });
   };
 
+  openTransferBondModal = (event, bond) => {
+    event.preventDefault();
+    this.props.openModal({
+      props: {
+        title: "Transfer Bond",
+        onSubmit: this.transferBond,
+        editBond: true,
+        bond,
+        permitGuid: bond.permit_guid,
+        permits: this.props.permits,
+      },
+      width: "50vw",
+      content: modalConfig.TRANSFER_BOND_MODAL,
+    });
+  };
+
+  transferBond = (values, bond) => {
+    return this.props
+      .transferBond(values, bond.bond_guid)
+      .then(() => {
+        this.setState({ isBondLoaded: false });
+        this.props
+          .fetchMineBonds(this.props.mineGuid)
+          .finally(() => this.setState({ isBondLoaded: true }));
+      })
+      .then(() => this.props.closeModal());
+  };
+
   openViewBondModal = (event, bond) => {
     event.preventDefault();
     this.props.openModal({
       props: {
-        title: `View Bond`,
+        title: "View Bond",
         bond,
       },
       width: "50vw",
@@ -152,29 +182,52 @@ export class MineSecurityInfo extends Component {
     });
   };
 
+  openCloseBondModal = (event, bond, bondStatusCode) => {
+    event.preventDefault();
+    this.props.openModal({
+      props: {
+        title:
+          (bondStatusCode === "REL" && "Release Bond") ||
+          (bondStatusCode === "CON" && "Confiscate Bond"),
+        onSubmit: this.closeBond,
+        editBond: true,
+        bond,
+        bondStatusCode,
+        bondStatusOptionsHash: this.props.bondStatusOptionsHash,
+        permitGuid: bond.permit_guid,
+        mineGuid: this.props.mineGuid,
+      },
+      width: "50vw",
+      content: modalConfig.CLOSE_BOND_MODAL,
+    });
+  };
+
   editBond = (values, bondGuid) => {
     const payload = values;
-    // payload expects the basic bond object without the following:
     delete payload.permit_guid;
     delete payload.bond_id;
     delete payload.bond_guid;
     delete payload.payer;
-    this.props.updateBond(payload, bondGuid).then(() => {
-      this.props.fetchMineBonds(this.props.mineGuid).then(() => {
-        this.props.closeModal();
-        this.setState({ isBondLoaded: true });
-      });
-    });
+    return this.props
+      .updateBond(payload, bondGuid)
+      .then(() => {
+        this.setState({ isBondLoaded: false });
+        this.props
+          .fetchMineBonds(this.props.mineGuid)
+          .finally(() => this.setState({ isBondLoaded: true }));
+      })
+      .then(() => this.props.closeModal());
   };
 
-  releaseOrConfiscateBond = (code, bondGuid, bond) => {
-    // if bond is confiscated, convert to bond type to Cash
+  closeBond = (bondStatusCode, values, bond) => {
     const payload = {
       ...bond,
-      bond_status_code: code,
-      bond_type_code: code === "CON" ? "CAS" : bond.bond_type_code,
+      bond_status_code: bondStatusCode,
+      bond_type_code: bondStatusCode === "CON" ? "CAS" : bond.bond_type_code,
+      closed_date: values.closed_date,
+      closed_note: values.closed_note,
     };
-    this.editBond(payload, bond.bond_guid);
+    return this.editBond(payload, bond.bond_guid);
   };
 
   addBondToPermit = (values, permitGuid) => {
@@ -185,13 +238,15 @@ export class MineSecurityInfo extends Component {
       },
       permit_guid: permitGuid,
     };
-
-    this.props.createBond(payload).then(() => {
-      this.props.fetchMineBonds(this.props.mineGuid).then(() => {
-        this.props.closeModal();
-        this.setState({ isBondLoaded: true });
-      });
-    });
+    return this.props
+      .createBond(payload)
+      .then(() => {
+        this.setState({ isBondLoaded: false });
+        this.props
+          .fetchMineBonds(this.props.mineGuid)
+          .finally(() => this.setState({ isBondLoaded: true }));
+      })
+      .then(() => this.props.closeModal());
   };
 
   onExpand = (expanded, record) =>
@@ -209,26 +264,29 @@ export class MineSecurityInfo extends Component {
       },
       permit_guid: permitGuid,
     };
-    this.props.createReclamationInvoice(payload).then(() => {
-      this.props.fetchMineReclamationInvoices(this.props.mineGuid).then(() => {
-        this.props.closeModal();
-        this.setState({ isInvoicesLoaded: true });
-      });
-    });
+    return this.props
+      .createReclamationInvoice(payload)
+      .then(() => {
+        this.props.fetchMineReclamationInvoices(this.props.mineGuid).then(() => {
+          this.setState({ isInvoicesLoaded: true });
+        });
+      })
+      .then(() => this.props.closeModal());
   };
 
   handleUpdateReclamationInvoice = (values, invoiceGuid) => {
     const payload = values;
-    // payload expects the basic invoice object without the following:
     delete payload.permit_guid;
     delete payload.reclamation_invoice_id;
     delete payload.reclamation_invoice_guid;
-    this.props.updateReclamationInvoice(payload, invoiceGuid).then(() => {
-      this.props.fetchMineReclamationInvoices(this.props.mineGuid).then(() => {
-        this.props.closeModal();
-        this.setState({ isInvoicesLoaded: true });
-      });
-    });
+    return this.props
+      .updateReclamationInvoice(payload, invoiceGuid)
+      .then(() => {
+        this.props.fetchMineReclamationInvoices(this.props.mineGuid).then(() => {
+          this.setState({ isInvoicesLoaded: true });
+        });
+      })
+      .then(() => this.props.closeModal());
   };
 
   openAddReclamationInvoiceModal = (event, permitGuid, balance) => {
@@ -301,11 +359,12 @@ export class MineSecurityInfo extends Component {
                 onExpand={this.onExpand}
                 openAddBondModal={this.openAddBondModal}
                 bonds={this.props.bonds}
-                releaseOrConfiscateBond={this.releaseOrConfiscateBond}
                 bondStatusOptionsHash={this.props.bondStatusOptionsHash}
                 bondTypeOptionsHash={this.props.bondTypeOptionsHash}
                 openViewBondModal={this.openViewBondModal}
                 openEditBondModal={this.openEditBondModal}
+                openTransferBondModal={this.openTransferBondModal}
+                openCloseBondModal={this.openCloseBondModal}
                 recordsByPermit={this.recordsByPermit}
                 activeBondCount={this.activeBondCount}
                 getSum={this.getSum}
@@ -359,6 +418,7 @@ const mapDispatchToProps = (dispatch) =>
       fetchMineBonds,
       createBond,
       updateBond,
+      transferBond,
       fetchMineReclamationInvoices,
       createReclamationInvoice,
       updateReclamationInvoice,

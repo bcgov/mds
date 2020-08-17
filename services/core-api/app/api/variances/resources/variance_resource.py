@@ -86,7 +86,7 @@ class VarianceResource(Resource, UserMixin):
 
         status_filter_values = list(
             map(lambda x: x.variance_application_status_code,
-                VarianceApplicationStatusCode.get_active()))
+                VarianceApplicationStatusCode.get_all()))
 
         conditions = []
         if args["application_status"]:
@@ -129,8 +129,7 @@ class VarianceResource(Resource, UserMixin):
         if args["region"]:
             conditions.append(self._build_filter('Mine', 'mine_region', 'in', args["region"]))
 
-
-        query = Variance.query.join(Mine).join(ComplianceArticle)
+        query = Variance.query.filter_by(deleted_ind=False).join(Mine).join(ComplianceArticle)
 
         # Apply sorting
         if args['sort_field'] and args['sort_dir']:

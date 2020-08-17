@@ -7,7 +7,7 @@ from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.types import TypeEngine
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.ext.declarative import declarative_base
-from marshmallow_sqlalchemy import ModelSchema
+from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
 
 from app.extensions import db
 from app.api.constants import STATE_MODIFIED_DELETE_ON_PUT
@@ -45,7 +45,9 @@ def ensure_constrained(query):
             cls = mzero.class_
 
             # if model includes mine_guid, apply filter on mine_guid.
-            if hasattr(cls, 'mine_guid') and query._user_bound:
+            mapper = inspect(cls)
+
+            if 'mine_guid' in [c.name for c in mapper.columns] and query._user_bound:
                 query = query.enable_assertions(False).filter(
                     cls.mine_guid.in_(user_security.mine_ids))
 
@@ -66,7 +68,7 @@ class Base(db.Model):
 
     # This allows all models access to the default Marshmallow model Schema
     # but also allows them to override it if need be.
-    _ModelSchema = ModelSchema
+    _ModelSchema = SQLAlchemyAutoSchema
 
     def save(self, commit=True):
         db.session.add(self)
@@ -89,6 +91,13 @@ class Base(db.Model):
                 db.session.rollback()
                 raise e
 
+    def soft_delete(self):
+        if not (hasattr(self, 'deleted_ind')):
+            raise Exception("Provided entity does not have deleted_ind field.")
+
+        self.deleted_ind = True
+        self.save()
+
     def _deep_update_from_dict(self, data_dict, depth=0, _edit_key=None):
         """
         This function takes a python dictionary and assigns all present key value pairs to 
@@ -105,10 +114,11 @@ class Base(db.Model):
         Side-Effect: Self attributes have been overwritten by values in data_dict, matched on key, recursivly.
         """
         current_app.logger.debug(depth * '-' + f'updating{self}')
-        model = inspect(self.__class__)
+        mapper = inspect(self.__class__)
         editable_columns = [
-            c for c in model.columns if c.name not in [pk.name for pk in model.primary_key]
+            c for c in mapper.columns if c.name not in [pk.name for pk in mapper.primary_key]
         ]
+        class_relationships = mapper.relationships
 
         if not _edit_key:
             if not self._edit_key:
@@ -120,8 +130,10 @@ class Base(db.Model):
 
         for k, v in data_dict.items():
             current_app.logger.debug(depth * '>' + f'{type(v)}-{k}')
-
             if isinstance(v, dict):
+                if k not in [r for r, x in class_relationships.items()]:
+                    current_app.logger.debug(f'key <{k}> is not a relationship, skipping')
+                    continue
                 if len(v.keys()) < 1:
                     continue
                 rel = getattr(self.__class__, k)
@@ -131,7 +143,7 @@ class Base(db.Model):
                         f'COMBOBREAKER!!! {_edit_key} not in {rel_class} edit groups {rel_class._edit_groups}'
                     )
                     continue
-                current_app.logger.debug(depth * ' ' + f'recursivly updating {k}')
+                current_app.logger.debug(depth * ' ' + f'recursively updating {k}')
                 existing_obj = getattr(self, k)
                 if existing_obj is None:
                     setattr(self, k, rel_class())

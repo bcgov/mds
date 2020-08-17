@@ -13,6 +13,7 @@ import AuthenticationGuard from "@/HOC/AuthenticationGuard";
 import WarningBanner from "@/components/common/WarningBanner";
 import { detectIE } from "@/utils/environmentUtils";
 import configureStore from "./store/configureStore";
+import { MatomoLinkTracing } from "../common/utils/trackers";
 
 export const store = configureStore();
 
@@ -42,6 +43,7 @@ class App extends Component {
     return (
       <BrowserRouter basename={process.env.BASE_PATH}>
         <Fragment>
+          <MatomoLinkTracing />
           <Layout>
             <Header xs={xs} lg={lg} xl={xl} xxl={xxl} />
             <Layout>

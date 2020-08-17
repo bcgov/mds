@@ -11,6 +11,7 @@ import {
 } from "@common/actionCreators/reportActionCreator";
 import { changeModalTitle, openModal, closeModal } from "@common/actions/modalActions";
 import { getReports, getReportsPageData } from "@common/selectors/reportSelectors";
+import { PageTracker } from "@common/utils/trackers";
 import * as routes from "@/constants/routes";
 import CustomPropTypes from "@/customPropTypes";
 import ReportsTable from "@/components/dashboard/reportsHomePage/ReportsTable";
@@ -113,7 +114,7 @@ export class ReportsHomePage extends Component {
   };
 
   handleEditReport = (report) => {
-    this.props
+    return this.props
       .updateMineReport(report.mine_guid, report.mine_report_guid, report)
       .then(() => this.props.closeModal())
       .then(() =>
@@ -122,7 +123,7 @@ export class ReportsHomePage extends Component {
   };
 
   handleRemoveReport = (report) => {
-    this.props
+    return this.props
       .deleteMineReport(report.mine_guid, report.mine_report_guid)
       .then(() =>
         this.props.history.replace(routes.REPORTS_DASHBOARD.dynamicRoute(this.state.params))
@@ -153,6 +154,7 @@ export class ReportsHomePage extends Component {
   render() {
     return (
       <div className="landing-page">
+        <PageTracker title="Reports Page" />
         <div className="landing-page__header">
           <div>
             <h1>Browse Reports</h1>

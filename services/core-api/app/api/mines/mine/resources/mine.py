@@ -17,10 +17,12 @@ from app.api.constants import MINE_MAP_CACHE
 #namespace imports
 from app.api.mines.response_models import MINE_LIST_MODEL, MINE_MODEL
 from app.api.mines.permits.permit.models.permit import Permit
+from app.api.mines.permits.permit.models.mine_permit_xref import MinePermitXref
 
 from app.api.mines.mine.models.mine import Mine
 from app.api.mines.mine.models.mine_type import MineType
 from app.api.mines.mine.models.mine_type_detail import MineTypeDetail
+from app.api.mines.mine.models.mine_verified_status import MineVerifiedStatus
 
 from app.api.mines.status.models.mine_status import MineStatus
 from app.api.mines.status.models.mine_status_xref import MineStatusXref
@@ -85,6 +87,7 @@ class MineListResource(Resource, UserMixin):
             'region': 'A specific mine region to filter the mine list on.',
             'major': 'Filters the mine list by major mines or regional mines.',
             'tsf': 'Filters the mine list by mines with or without a TSF.',
+            'verified': 'Filters the mine list by verified mines.',
             'sort_field':
             'enum[mine_name, mine_no, mine_operation_status_code, mine_region] Default: mine_name',
             'sort_dir': 'enum[asc, desc] Default: asc'
@@ -156,6 +159,7 @@ class MineListResource(Resource, UserMixin):
         region_code_filter_term = args.getlist('region', type=str)
         major_mine_filter_term = args.get('major', None, type=str)
         tsf_filter_term = args.get('tsf', None, type=str)
+        verified_only_term = args.get('verified', None, type=str)
         # Base query:
         mines_query = Mine.query
         # Filter by search_term if provided
@@ -165,7 +169,9 @@ class MineListResource(Resource, UserMixin):
             number_filter = Mine.mine_no.ilike('%{}%'.format(search_term))
             permit_filter = Permit.permit_no.ilike('%{}%'.format(search_term))
             mines_name_query = Mine.query.filter(name_filter | number_filter)
-            permit_query = Mine.query.join(Permit).filter(permit_filter)
+
+            permit_query = Mine.query.join(MinePermitXref).join(Permit).filter(
+                permit_filter, Permit.deleted_ind == False)
             mines_query = mines_name_query.union(permit_query)
         # Filter by Major Mine, if provided
         if major_mine_filter_term == "true" or major_mine_filter_term == "false":
@@ -200,6 +206,13 @@ class MineListResource(Resource, UserMixin):
                 .join(MineType) \
                 .filter(tenure_filter, mine_type_active_filter)
             mines_query = mines_query.intersect(tenure_query)
+
+        #Create a filter on verified mine status
+        if verified_only_term == "true" or verified_only_term == "false":
+            verified_only_filter = MineVerifiedStatus.healthy_ind.is_(verified_only_term == "true")
+            verified_only_query = Mine.query.join(MineVerifiedStatus).filter(verified_only_filter)
+            mines_query = mines_query.intersect(verified_only_query)
+
         # Create a filter on mine status if one is provided
         if status_filter_term:
             status_filter = MineStatusXref.mine_operation_status_code.in_(status_filter_term)

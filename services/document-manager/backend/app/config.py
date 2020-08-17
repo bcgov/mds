@@ -14,8 +14,10 @@ class Config(object):
 
     ENVIRONMENT_NAME = os.environ.get('ENVIRONMENT_NAME', 'dev')
 
+    # SqlAlchemy config
     SQLALCHEMY_DATABASE_URI = DB_URL
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    SQLALCHEMY_ENGINE_OPTIONS = {"pool_pre_ping": True}
 
     JWT_OIDC_WELL_KNOWN_CONFIG = os.environ.get(
         'JWT_OIDC_WELL_KNOWN_CONFIG',
@@ -43,11 +45,27 @@ class Config(object):
     CACHE_REDIS_PASS = os.environ.get('CACHE_REDIS_PASS', 'redis-password')
     CACHE_REDIS_URL = 'redis://:{0}@{1}:{2}'.format(CACHE_REDIS_PASS, CACHE_REDIS_HOST,
                                                     CACHE_REDIS_PORT)
+
+    # Celery settings
+    CELERY_RESULT_BACKEND = f'db+postgres://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}'
+    CELERY_BROKER_URL = f'redis://:{CACHE_REDIS_PASS}@{CACHE_REDIS_HOST}:{CACHE_REDIS_PORT}/'
+
     DOCUMENT_MANAGER_URL = os.environ.get('DOCUMENT_MANAGER_URL',
                                           'http://document_manager_backend:5001')
     UPLOADED_DOCUMENT_DEST = os.environ.get('UPLOADED_DOCUMENT_DEST', '/app/document_uploads')
+
     MAX_CONTENT_LENGTH = 750 * 1024 * 1024
     JSONIFY_PRETTYPRINT_REGULAR = False
+
+    TUSD_URL = os.environ.get('TUSD_URL', 'http://tusd:1080/files/')
+
+    # Document hosting settings
+    OBJECT_STORE_ENABLED = bool(int(os.environ.get('OBJECT_STORE_ENABLED', '0')))
+    OBJECT_STORE_HOST = os.environ.get('OBJECT_STORE_HOST', '')
+    OBJECT_STORE_ACCESS_KEY_ID = os.environ.get('OBJECT_STORE_ACCESS_KEY_ID', '')
+    OBJECT_STORE_ACCESS_KEY = os.environ.get('OBJECT_STORE_ACCESS_KEY', '')
+    OBJECT_STORE_BUCKET = os.environ.get('OBJECT_STORE_BUCKET', '')
+    S3_PREFIX = os.environ.get('S3_PREFIX', 'mds-files-local/')
 
     def JWT_ROLE_CALLBACK(jwt_dict):
         return (jwt_dict['realm_access']['roles'])

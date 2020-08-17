@@ -135,6 +135,11 @@
       "value": "template.mds-elastic-secret"
     },
     {
+      "name": "MDS_NROS_NOW_SECRET",
+      "required": false,
+      "value": "template.mds-nros-now-secret"
+    },
+    {
       "name": "ELASTIC_ENABLED",
       "value": "0"
     },
@@ -419,6 +424,42 @@
                     }
                   },
                   {
+                    "name": "NROS_NOW_CLIENT_SECRET",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${MDS_NROS_NOW_SECRET}",
+                        "key": "secret"
+                      }
+                    }
+                  },
+                  {
+                    "name": "NROS_NOW_CLIENT_ID",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${MDS_NROS_NOW_SECRET}",
+                        "key": "client-id"
+                      }
+                    }
+                  },
+                  {
+                    "name": "NROS_NOW_URL",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${MDS_NROS_NOW_SECRET}",
+                        "key": "url"
+                      }
+                    }
+                  },
+                  {
+                    "name": "NROS_NOW_TOKEN_URL",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${MDS_NROS_NOW_SECRET}",
+                        "key": "token-url"
+                      }
+                    }
+                  },
+                  {
                     "name": "NRIS_API_URL",
                     "value": "${NRIS_API_URL}"
                   },
@@ -567,7 +608,7 @@
                     "port": 5000,
                     "scheme": "HTTP"
                   },
-                  "initialDelaySeconds": 10,
+                  "initialDelaySeconds": 120,
                   "timeoutSeconds": 3,
                   "periodSeconds": 20
                 },
@@ -577,10 +618,16 @@
                     "port": 5000,
                     "scheme": "HTTP"
                   },
-                  "initialDelaySeconds": 15,
-                  "timeoutSeconds": 3,
-                  "periodSeconds": 15
+                  "initialDelaySeconds": 120,
+                  "timeoutSeconds": 15,
+                  "periodSeconds": 30
                 },
+                "volumeMounts": [
+                  {
+                    "mountPath": "/var/log",
+                    "name": "logs"
+                  }
+                ],
                 "terminationMessagePath": "/dev/termination-log",
                 "terminationMessagePolicy": "File",
                 "imagePullPolicy": "IfNotPresent"
@@ -712,11 +759,50 @@
                     "memory": "128Mi"
                   }
                 }
+              },
+              {
+                "name": "promtail",
+                "image": "grafana/promtail:k14-60b97e3",
+                "args": [
+                  "--config.file=/etc/promtail/core-api.yaml",
+                  "--client.url=http://loki:3100/loki/api/v1/push",
+                  "--client.external-labels=env=${VERSION},pod=${HOSTNAME}"
+                ],
+                "volumeMounts": [
+                  {
+                    "mountPath": "/logs/",
+                    "name": "logs",
+                    "readOnly": true
+                  },
+                  {
+                    "mountPath": "/etc/promtail",
+                    "name": "promtail-config"
+                  }
+                ],
+                "resources": {
+                  "limits": {
+                    "cpu": "100m",
+                    "memory": "128Mi"
+                  },
+                  "requests": {
+                    "cpu": "10m",
+                    "memory": "64Mi"
+                  }
+                }
               }
             ],
             "restartPolicy": "Always",
             "dnsPolicy": "ClusterFirst",
-            "securityContext": {}
+            "securityContext": {},
+            "volumes": [
+              { "emptyDir": {}, "name": "logs" },
+              {
+                "name": "promtail-config",
+                "configMap": {
+                  "name": "promtail-config"
+                }
+              }
+            ]
           }
         }
       }

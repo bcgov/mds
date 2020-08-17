@@ -5,6 +5,8 @@ import React, { Component } from "react";
 import { render } from "react-dom";
 import { Provider } from "react-redux";
 
+import { MatomoProvider, createInstance } from "@datapunt/matomo-tracker-react";
+import { ENVIRONMENT } from "@common/constants/environment";
 import App from "./App";
 import "antd/dist/antd.less";
 import "./styles/index.scss";
@@ -13,11 +15,18 @@ import configureStore from "./store/configureStore";
 
 export const store = configureStore();
 
+let instance = {};
+
 export class Index extends Component {
   constructor() {
     super();
     this.state = { environment: false };
     fetchEnv().then(() => {
+      instance = createInstance({
+        urlBase: ENVIRONMENT.matomoUrl,
+        enableLinkTracking: false,
+        siteId: 2,
+      });
       this.setState({ environment: true });
     });
   }
@@ -26,7 +35,9 @@ export class Index extends Component {
     if (this.state.environment) {
       return (
         <Provider store={store}>
-          <App />
+          <MatomoProvider value={instance}>
+            <App />
+          </MatomoProvider>
         </Provider>
       );
     }

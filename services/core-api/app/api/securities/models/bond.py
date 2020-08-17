@@ -2,11 +2,15 @@ import uuid
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
 from marshmallow import fields, validate
+from flask_restplus import marshal
+from flask import current_app
 
 from app.extensions import db
 from app.api.utils.models_mixins import Base, AuditMixin
 from app.api.utils.field_template import FieldTemplate
 from app.api.securities.models.bond_document import BondDocument
+from app.api.securities.models.bond_history import BondHistory
+from app.api.securities.response_models import BOND
 
 
 class Bond(Base, AuditMixin):
@@ -14,7 +18,7 @@ class Bond(Base, AuditMixin):
 
     class _ModelSchema(Base._ModelSchema):
         bond_id = fields.Integer(dump_only=True)
-        bond_guid = fields.String(dump_only=True)
+        bond_guid = fields.UUID(dump_only=True)
         bond_type_code = FieldTemplate(field=fields.String, one_of='BondType')
         bond_status_code = FieldTemplate(field=fields.String, one_of='BondStatus')
 
@@ -40,9 +44,24 @@ class Bond(Base, AuditMixin):
     payer = db.relationship('Party', lazy='joined')
     permit = db.relationship('Permit', uselist=False, lazy='joined', secondary='bond_permit_xref')
     documents = db.relationship('BondDocument', lazy='select')
+    closed_date = db.Column(db.DateTime)
+    closed_note = db.Column(db.String)
 
     def __repr__(self):
         return '<Bond %r>' % self.bond_guid
+
+    def save_bond_history(self):
+        bond_json = marshal(self, BOND)
+        del bond_json['bond_guid']
+        del bond_json['documents']
+        bond_json['payer_name'] = bond_json['payer']['party_name']
+        bond_json['update_timestamp'] = str(self.update_timestamp)
+        bond_json['update_user'] = self.update_user
+
+        current_app.logger.debug(bond_json)
+        bond_hist = BondHistory._schema().load(bond_json)
+        bond_hist.save()
+        return bond_hist
 
     @classmethod
     def find_by_bond_guid(cls, bond_guid):

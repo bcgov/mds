@@ -29,6 +29,7 @@ import {
   getDropdownCommodityOptions,
 } from "@common/selectors/staticContentSelectors";
 import * as Strings from "@common/constants/strings";
+import { PageTracker } from "@common/utils/trackers";
 import ResponsivePagination from "@/components/common/ResponsivePagination";
 import CustomPropTypes from "@/customPropTypes";
 import MineList from "@/components/dashboard/minesHomePage/MineList";
@@ -84,6 +85,7 @@ const defaultListParams = {
   commodity: [],
   major: undefined,
   tsf: undefined,
+  verified: undefined,
 };
 
 export class Dashboard extends Component {
@@ -252,7 +254,7 @@ export class Dashboard extends Component {
 
   handleCreateMineRecordSubmit = (value) => {
     const mineStatus = value.mine_status.join(",");
-    this.props.createMineRecord({ ...value, mine_status: mineStatus }).then((response) => {
+    return this.props.createMineRecord({ ...value, mine_status: mineStatus }).then((response) => {
       this.props.createMineTypes(response.data.mine_guid, value.mine_types).then(() => {
         this.props.closeModal();
         const params = this.props.location.search;
@@ -278,6 +280,7 @@ export class Dashboard extends Component {
     const { map } = queryString.parse(this.props.location.search);
     return (
       <div>
+        <PageTracker title="Mines Page" />
         <Tabs
           className="center-tabs"
           activeKey={map ? "map" : "list"}
@@ -457,10 +460,10 @@ const mapStateToProps = (state) => ({
   mineTenureHash: getMineTenureTypesHash(state),
   mineCommodityOptionsHash: getCommodityOptionHash(state),
   mineDisturbanceOptionsHash: getDisturbanceOptionHash(state),
-  mineStatusDropDownOptions: getMineStatusDropDownOptions(state),
+  mineStatusDropDownOptions: getMineStatusDropDownOptions(state, false),
   mineRegionOptions: getMineRegionDropdownOptions(state),
-  mineTenureTypes: getMineTenureTypeDropdownOptions(state),
-  mineCommodityOptions: getDropdownCommodityOptions(state),
+  mineTenureTypes: getMineTenureTypeDropdownOptions(state, false),
+  mineCommodityOptions: getDropdownCommodityOptions(state, false),
   transformedMineTypes: getTransformedMineTypes(state),
 });
 

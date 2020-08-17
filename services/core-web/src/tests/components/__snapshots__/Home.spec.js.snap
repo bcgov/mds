@@ -22,7 +22,6 @@ exports[`Home renders properly 1`] = `
           "height": 8,
           "position": "fixed",
           "top": 53,
-          "width": "100%",
           "zIndex": 999,
         }
       }

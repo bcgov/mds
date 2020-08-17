@@ -42,6 +42,8 @@ BOND = api.model(
         'institution_province': fields.String,
         'institution_postal_code': fields.String,
         'note': fields.String,
+        'closed_date': fields.DateTime,
+        'closed_note': fields.String,
         'payer': fields.Nested(BOND_PARTY),
         'project_id': fields.String,
         'permit_guid': fields.String(attribute='permit.permit_guid'),
@@ -67,14 +69,20 @@ BOND_MINESPACE = api.model(
 
 BOND_STATUS = api.model('BondStatus', {
     'bond_status_code': fields.String,
-    'description': fields.String
+    'description': fields.String,
+    'active_ind': fields.Boolean
 })
 
-BOND_TYPE = api.model('BondType', {'bond_type_code': fields.String, 'description': fields.String})
+BOND_TYPE = api.model('BondType', {
+    'bond_type_code': fields.String,
+    'description': fields.String,
+    'active_ind': fields.Boolean
+})
 
 BOND_DOCUMENT_TYPE = api.model('BondDocumentType', {
     'bond_document_type_code': fields.String,
-    'description': fields.String
+    'description': fields.String,
+    'active_ind': fields.Boolean
 })
 
 RECLAMATION_INVOICE = api.model(

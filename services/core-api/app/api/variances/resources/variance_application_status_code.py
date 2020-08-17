@@ -13,4 +13,4 @@ class VarianceApplicationStatusCodeResource(Resource, UserMixin):
     @requires_any_of([VIEW_ALL, EDIT_VARIANCE, MINESPACE_PROPONENT])
     @api.marshal_with(VARIANCE_APPLICATION_STATUS_CODE, code=200, envelope='records')
     def get(self):
-        return VarianceApplicationStatusCode.get_active()
+        return VarianceApplicationStatusCode.get_all()

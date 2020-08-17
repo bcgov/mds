@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import { PropTypes } from "prop-types";
 import { Anchor } from "antd";
-import { activitiesMenu, renderActivities } from "@/constants/NOWConditions";
+import { activitiesMenu, renderActivities, draftPermitMenu } from "@/constants/NOWConditions";
 
 const { Link } = Anchor;
 
@@ -25,6 +25,7 @@ const propTypes = {
   }).isRequired,
   route: PropTypes.shape({ hashRoute: PropTypes.func }).isRequired,
   noticeOfWorkType: PropTypes.string.isRequired,
+  tabSection: PropTypes.string.isRequired,
 };
 
 export class NOWSideMenu extends Component {
@@ -49,7 +50,6 @@ export class NOWSideMenu extends Component {
 
     // Extracts "#blasting" from "#blasting&state=bd74ea1c-09e5-4d7e-810f-d...", for example.
     link = link.substr(0, link.indexOf("&"));
-
     this.updateUrlRoute(link);
     this.anchor.handleScrollTo(link);
   }
@@ -61,8 +61,9 @@ export class NOWSideMenu extends Component {
 
   handleAnchorOnChange = (currentActiveLink) => {
     if (
-      this.props.history.action === "POP" &&
-      currentActiveLink === this.props.history.location.hash
+      (this.props.history.action === "POP" &&
+        currentActiveLink === this.props.history.location.hash) ||
+      this.props.match.params.tab !== this.props.tabSection
     ) {
       return;
     }
@@ -72,7 +73,7 @@ export class NOWSideMenu extends Component {
 
   updateUrlRoute = (route) => {
     const nowGuid = this.props.match.params.id;
-    this.urlRoute = this.props.route.hashRoute(nowGuid, route);
+    this.urlRoute = this.props.route.hashRoute(nowGuid, this.props.tabSection, route);
 
     if (route === this.props.history.location.hash) {
       return;
@@ -82,24 +83,31 @@ export class NOWSideMenu extends Component {
   };
 
   render() {
+    const menu = this.props.tabSection === "technical-review" ? activitiesMenu : draftPermitMenu;
     return (
       <div>
         <Anchor
           affix={false}
-          offsetTop={195}
+          offsetTop={120}
           onChange={this.handleAnchorOnChange}
           onClick={this.handleAnchorOnClick}
           ref={(anchor) => {
             this.anchor = anchor;
           }}
         >
-          {activitiesMenu
+          {menu
             .filter(
               ({ href, alwaysVisible }) =>
                 alwaysVisible || renderActivities(this.props.noticeOfWorkType, href)
             )
-            .map(({ href, title }) => (
-              <Link href={`#${href}`} title={title} className="now-menu-link" />
+            .map(({ href, title, children }) => (
+              <Link href={`#${href}`} title={title} className="now-menu-link">
+                {children &&
+                  children.length > 1 &&
+                  children.map((child) => (
+                    <Link href={`#${child.href}`} title={child.title} className="now-menu-link-" />
+                  ))}
+              </Link>
             ))}
         </Anchor>
       </div>

@@ -55,6 +55,10 @@
       "value": "/"
     },
     {
+      "name": "TUSD_SERVICE_URL",
+      "value": "tusd"
+    },
+    {
       "name": "CORE_DOMAIN",
       "required": true
     },
@@ -88,23 +92,6 @@
     }
   ],
   "objects": [
-    {
-      "apiVersion": "v1",
-      "kind": "PersistentVolumeClaim",
-      "metadata": {
-        "name": "mds-access-logs${SUFFIX}"
-      },
-      "spec": {
-        "accessModes": [
-          "ReadWriteMany"
-        ],
-        "resources": {
-          "requests": {
-            "storage": "${LOG_PVC_SIZE}"
-          }
-        }
-      }
-    },
     {
       "kind": "ImageStream",
       "apiVersion": "v1",
@@ -147,9 +134,7 @@
             "type": "ImageChange",
             "imageChangeParams": {
               "automatic": true,
-              "containerNames": [
-                "nginx"
-              ],
+              "containerNames": ["nginx"],
               "from": {
                 "kind": "ImageStreamTag",
                 "name": "${NAME}:${VERSION}"
@@ -255,13 +240,44 @@
                   "successThreshold": 1,
                   "timeoutSeconds": 1
                 }
+              },
+              {
+                "name": "promtail",
+                "image": "grafana/promtail:k14-60b97e3",
+                "args": [
+                  "--config.file=/etc/promtail/nginx.yaml",
+                  "--client.url=http://loki:3100/loki/api/v1/push",
+                  "--client.external-labels=env=${VERSION},pod=${HOSTNAME}"
+                ],
+                "volumeMounts": [
+                  {
+                    "mountPath": "/var/log/nginx",
+                    "name": "${NAME}${SUFFIX}-log",
+                    "readOnly": true
+                  },
+                  {
+                    "mountPath": "/etc/promtail",
+                    "name": "promtail-config"
+                  }
+                ],
+                "resources": {
+                  "limits": {
+                    "cpu": "100m",
+                    "memory": "128Mi"
+                  },
+                  "requests": {
+                    "cpu": "5m",
+                    "memory": "16Mi"
+                  }
+                }
               }
             ],
             "volumes": [
+              { "emptyDir": {}, "name": "${NAME}${SUFFIX}-log" },
               {
-                "name": "${NAME}${SUFFIX}-log",
-                "persistentVolumeClaim": {
-                  "claimName": "mds-access-logs${SUFFIX}"
+                "name": "promtail-config",
+                "configMap": {
+                  "name": "promtail-config"
                 }
               }
             ]

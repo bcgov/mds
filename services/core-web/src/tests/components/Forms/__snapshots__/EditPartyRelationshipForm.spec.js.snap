@@ -68,6 +68,7 @@ exports[`EditPartyRelationshipForm renders properly 1`] = `
       <Button
         block={false}
         className="full-mobile"
+        disabled={false}
         ghost={false}
         htmlType="button"
         loading={false}
@@ -79,7 +80,6 @@ exports[`EditPartyRelationshipForm renders properly 1`] = `
     <Button
       block={false}
       className="full-mobile"
-      disabled={false}
       ghost={false}
       htmlType="submit"
       loading={false}

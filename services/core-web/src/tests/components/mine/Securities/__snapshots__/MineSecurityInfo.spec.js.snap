@@ -76,7 +76,7 @@ exports[`MineSecurityInfo renders properly 1`] = `
               "BDA": "Bank Draft",
               "CAS": "Cash",
               "CEC": "Certified Cheque",
-              "ILC": "Irrevocable Line of Credit",
+              "ILC": "Irrevocable Letter of Credit",
               "MOR": "Money Order",
               "SAG": "Safekeeping Agreement",
               "SBO": "Surety Bond",
@@ -148,7 +148,9 @@ exports[`MineSecurityInfo renders properly 1`] = `
           isLoaded={false}
           onExpand={[Function]}
           openAddBondModal={[Function]}
+          openCloseBondModal={[Function]}
           openEditBondModal={[Function]}
+          openTransferBondModal={[Function]}
           openViewBondModal={[Function]}
           permits={
             Array [
@@ -183,7 +185,6 @@ exports[`MineSecurityInfo renders properly 1`] = `
             ]
           }
           recordsByPermit={[Function]}
-          releaseOrConfiscateBond={[Function]}
         />
       </div>
     </TabPane>

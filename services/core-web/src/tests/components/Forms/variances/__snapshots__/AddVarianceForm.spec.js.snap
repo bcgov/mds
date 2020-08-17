@@ -65,7 +65,7 @@ exports[`AddVarianceForm renders properly 1`] = `
     <p
       className="p-light"
     >
-      If the received date is not specified it will be set to todays date
+      If the received date is not specified it will be set to today's date.
     </p>
     <Field
       component={[Function]}
@@ -111,14 +111,17 @@ exports[`AddVarianceForm renders properly 1`] = `
       data={
         Array [
           Object {
+            "isActive": true,
             "label": "Request Document",
             "value": "REQ",
           },
           Object {
+            "isActive": true,
             "label": "Recommendation Document",
             "value": "REC",
           },
           Object {
+            "isActive": true,
             "label": "Decision Document",
             "value": "DEC",
           },
@@ -177,7 +180,6 @@ exports[`AddVarianceForm renders properly 1`] = `
     <Button
       block={false}
       className="full-mobile"
-      disabled={false}
       ghost={false}
       htmlType="submit"
       loading={false}

@@ -24,6 +24,7 @@ body {
 .footer {
   height: 45px;
   background-color: $nav-color;
+  z-index: 100;
 }
 
 .center {
@@ -44,6 +45,15 @@ body {
 
 .right {
   text-align: right;
+}
+
+.float-right {
+  float:right;
+}
+
+.position-right {
+  position: absolute;
+  right: 10px;
 }
 
 .left {

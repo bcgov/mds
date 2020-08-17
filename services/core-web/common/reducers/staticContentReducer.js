@@ -1,6 +1,5 @@
 import * as actionTypes from "../constants/actionTypes";
 import { STATIC_CONTENT } from "../constants/reducerTypes";
-import { createDropDownList } from "../utils/helpers";
 
 /**
  * @file staticContentReducer.js
@@ -39,6 +38,8 @@ const initialState = {
   bondTypeOptions: [],
   bondDocumentTypeOptions: [],
   exemptionFeeStatusOptions: [],
+  permitConditionTypeOptions: [],
+  permitConditionCategoryOptions: [],
 };
 
 export const staticContentReducer = (state = initialState, action) => {
@@ -104,6 +105,10 @@ export const getBondDocumentTypeOptions = (state) => state[STATIC_CONTENT].bondD
 export const getExemptionFeeStatusOptions = (state) =>
   state[STATIC_CONTENT].exemptionFeeStatusOptions;
 export const getPartyRelationshipTypes = (state) => state[STATIC_CONTENT].partyRelationshipTypes;
+export const getPermitConditionCategoryOptions = (state) =>
+  state[STATIC_CONTENT].permitConditionCategoryOptions;
+export const getPermitConditionTypeOptions = (state) =>
+  state[STATIC_CONTENT].permitConditionTypeOptions;
 
 const isStaticContentLoaded = (state) =>
   Object.keys(state)

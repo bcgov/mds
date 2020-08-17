@@ -44,6 +44,9 @@ def randomUnitDescription():
 def randomNOWOriginatingSystem():
     return random.choice(['NROS', 'VFCBC', 'Core', 'MMS'])
 
+def randomNOWApplicationType():
+    return random.choice(['New Permit', 'Amendment'])
+
 
 class NOWSubmissionFactory(BaseFactory):
     class Meta:
@@ -182,6 +185,7 @@ class NOWSubmissionFactory(BaseFactory):
     receiveddate = factory.Faker('past_datetime')
     minenumber = factory.Faker('word')
     originating_system = factory.LazyFunction(randomNOWOriginatingSystem)
+    typeofapplication = factory.LazyFunction(randomNOWApplicationType)
 
     @factory.post_generation
     def documents(obj, create, extracted, **kwargs):
@@ -310,7 +314,7 @@ class NOWApplicationNDAFactory(BaseFactory):
     applicantclientid = factory.SelfAttribute('applicant.clientid')
     submitterclientid = factory.SelfAttribute('submitter.clientid')
     status = factory.LazyFunction(
-        lambda: random.choice([x.description for x in NOWApplicationStatus.get_active()]))
+        lambda: random.choice([x.description for x in NOWApplicationStatus.get_all()]))
     submitteddate = factory.Faker('past_datetime')
     receiveddate = factory.Faker('past_datetime')
     minenumber = factory.SelfAttribute('mine.mine_no')

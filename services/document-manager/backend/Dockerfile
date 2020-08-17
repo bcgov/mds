@@ -15,4 +15,5 @@ COPY . .
 
 # Run the server
 EXPOSE 5001
-CMD ["flask","run"]
+RUN mkdir -p /var/log/celery /var/run/celery
+ENTRYPOINT [ "./init.sh" ]

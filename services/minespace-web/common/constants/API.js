@@ -40,14 +40,26 @@ export const MINE_VERIFIED_STATUSES = (params = {}) =>
 export const MINE_VERIFIED_STATUS = (mine_guid) => `/mines/${mine_guid}/verified-status`;
 
 // Permits
-export const PERMITSTATUSCODES = () => `/mines/permits/status-codes`;
+export const PERMIT_STATUS_CODES = () => `/mines/permits/status-codes`;
 export const PERMITS = (mineGuid) => `/mines/${mineGuid}/permits`;
-export const PERMITAMENDMENTS = (mineGuid, permitGuid) =>
+export const PERMIT_AMENDMENTS = (mineGuid, permitGuid) =>
   `/mines/${mineGuid}/permits/${permitGuid}/amendments`;
-export const PERMITAMENDMENT = (mineGuid, permitGuid, permitAmendmentGuid) =>
+export const PERMIT_AMENDMENT = (mineGuid, permitGuid, permitAmendmentGuid) =>
   `/mines/${mineGuid}/permits/${permitGuid}/amendments/${permitAmendmentGuid}`;
-export const PERMITAMENDMENTDOCUMENT = (mineGuid, permitGuid, permitAmendmentGuid, documentGuid) =>
+export const PERMIT_AMENDMENT_DOCUMENT = (
+  mineGuid,
+  permitGuid,
+  permitAmendmentGuid,
+  documentGuid
+) =>
   `/mines/${mineGuid}/permits/${permitGuid}/amendments/${permitAmendmentGuid}/documents/${documentGuid}`;
+export const PERMIT_DELETE = (mineGuid, permitGuid) => `/mines/${mineGuid}/permits/${permitGuid}`;
+export const DRAFT_PERMITS = (mineGuid, nowApplicationGuid) =>
+  `/mines/${mineGuid}/permits?now_application_guid=${nowApplicationGuid}`;
+export const PERMIT_CONDITIONS = (mineGuid, permitGuid, permitAmendmentGuid) =>
+  `/mines/${mineGuid}/permits/${permitGuid}/amendments/${permitAmendmentGuid}/conditions`;
+export const PERMIT_CONDITION = (mineGuid, permitGuid, permitAmendmentGuid, permitConditionGuid) =>
+  `/mines/${mineGuid}/permits/${permitGuid}/amendments/${permitAmendmentGuid}/conditions/${permitConditionGuid}`;
 
 // Search
 export const SEARCH = (params) => (params ? `/search?${queryString.stringify(params)}` : "/search");
@@ -85,6 +97,8 @@ export const INCIDENT_DETERMINATION_TYPES = `/incidents/determination-types`;
 export const INCIDENT_STATUS_CODES = `/incidents/status-codes`;
 export const INCIDENT_DOCUMENT_TYPE = `/incidents/document-types`;
 export const INCIDENT_CATEGORY_CODES = `/incidents/category-codes`;
+export const INCIDENT_DELETE = (mineGuid, incidentGuid) =>
+  `/mines/${mineGuid}/incidents/${incidentGuid}`;
 
 // Reports
 export const REPORTS = (params = {}) => `/mines/reports?${queryString.stringify(params)}`;
@@ -144,6 +158,7 @@ export const NRIS_DOCUMENT_FILE_GET_URL = (externalId, inspectionId, token) =>
 export const MINE_BONDS = (mineGuid) => `/securities/bonds?mine_guid=${mineGuid}`;
 export const BOND = (bondGuid) =>
   bondGuid ? `/securities/bonds/${bondGuid}` : "/securities/bonds";
+export const BOND_TRANSFER = (bondGuid) => `/securities/bonds/${bondGuid}/transfer`;
 export const BOND_DOCUMENTS = (mineGuid) => `/securities/${mineGuid}/bonds/documents`;
 export const MINE_RECLAMATION_INVOICES = (mineGuid) =>
   `/securities/reclamation-invoices?mine_guid=${mineGuid}`;

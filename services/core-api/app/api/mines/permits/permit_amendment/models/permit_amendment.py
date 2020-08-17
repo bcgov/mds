@@ -22,6 +22,7 @@ class PermitAmendment(AuditMixin, Base):
     _edit_key = PERMIT_AMENDMENT_EDIT_GROUP
 
     permit_amendment_id = db.Column(db.Integer, primary_key=True)
+    mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine.mine_guid'), nullable=False)
     permit_amendment_guid = db.Column(UUID(as_uuid=True), server_default=FetchedValue())
     permit_id = db.Column(db.Integer, db.ForeignKey('permit.permit_id'), nullable=False)
     received_date = db.Column(db.DateTime, nullable=False)
@@ -33,12 +34,13 @@ class PermitAmendment(AuditMixin, Base):
         db.String(3), db.ForeignKey('permit_amendment_type_code.permit_amendment_type_code'))
     description = db.Column(db.String, nullable=True)
     deleted_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
+    lead_inspector_title = db.Column(db.String, nullable=True)
+    regional_office = db.Column(db.String, nullable=True)
 
     permit_amendment_status = db.relationship('PermitAmendmentStatusCode')
     permit_amendment_status_description = association_proxy('permit_amendment_status',
                                                             'description')
     permit_guid = association_proxy('permit', 'permit_guid')
-    mine_guid = association_proxy('permit', 'mine_guid')
     permit_amendment_type = db.relationship('PermitAmendmentTypeCode')
     permit_amendment_type_description = association_proxy('permit_amendment_type', 'description')
 
@@ -46,26 +48,62 @@ class PermitAmendment(AuditMixin, Base):
     now_application_guid = db.Column(
         UUID(as_uuid=True), db.ForeignKey('now_application_identity.now_application_guid'))
     now_identity = db.relationship('NOWApplicationIdentity', lazy='select')
+    mine = db.relationship('Mine', lazy='selectin')
+
+    #no current use case for this relationship
+    #TODO Have factories use this to manage FK.
+    mine_permit_xref = db.relationship(
+        'MinePermitXref',
+        uselist=False,
+        primaryjoin=
+        "and_(PermitAmendment.mine_guid==foreign(MinePermitXref.mine_guid), PermitAmendment.permit_id==foreign(MinePermitXref.permit_id))"
+    )
+
+    def __repr__(self):
+        return '<PermitAmendment %r, %r>' % (self.mine_guid, self.permit_id)
+
+    def soft_delete(self, is_force_delete=False):
+        if not is_force_delete and self.permit_amendment_type_code == 'OGP':
+            raise Exception(
+                "Deletion of permit amendment of type 'Original Permit' is not allowed, please, consider deleting the permit itself."
+            )
+
+        permit_amendment_documents = PermitAmendmentDocument.query.filter_by(
+            permit_amendment_id=self.permit_amendment_id, deleted_ind=False).all()
+        if permit_amendment_documents:
+            for document in permit_amendment_documents:
+                document.soft_delete()
+
+        self.deleted_ind = True
+        self.save()
 
     @classmethod
     def create(cls,
                permit,
+               mine,
                received_date,
                issue_date,
                authorization_end_date,
-               permit_amendment_type_code,
+               permit_amendment_type_code='AMD',
                description=None,
                permit_amendment_status_code='ACT',
+               lead_inspector_title=None,
+               regional_office=None,
+               now_application_guid=None,
                add_to_session=True):
         new_pa = cls(
             permit_id=permit.permit_id,
+            mine_guid=mine.mine_guid,
             received_date=received_date,
             issue_date=issue_date,
             authorization_end_date=authorization_end_date,
             permit_amendment_type_code=permit_amendment_type_code,
-            permit_amendment_status_code=permit_amendment_status_code,
-            description=description)
-        permit.permit_amendments.append(new_pa)
+            permit_amendment_status_code=permit_amendment_status_code if not permit.permit_status_code == 'D' else 'DFT',
+            description=description,
+            lead_inspector_title=lead_inspector_title,
+            regional_office=regional_office,
+            now_application_guid=now_application_guid)
+        permit._all_permit_amendments.append(new_pa)
         if add_to_session:
             new_pa.save(commit=False)
         return new_pa
@@ -80,7 +118,11 @@ class PermitAmendment(AuditMixin, Base):
 
     @classmethod
     def find_by_permit_id(cls, _id):
-        return cls.query.filter_by(permit_id=_id).filter_by(deleted_ind=False).all()
+        return cls.query.filter_by(permit_id=_id).filter_by(deleted_ind=False).filter(cls.permit_amendment_status_code != 'DFT').all()
+
+    @classmethod
+    def find_by_now_application_guid(cls, _id):
+        return cls.query.filter_by(now_application_guid=_id).first()
 
     @validates('permit_amendment_status_code')
     def validate_status_code(self, key, permit_amendment_status_code):
@@ -110,7 +152,7 @@ class PermitAmendment(AuditMixin, Base):
             original_permit_amendment = self.query.filter_by(permit_id=self.permit_id).filter_by(
                 permit_amendment_type_code='OGP').first()
             if original_permit_amendment and original_permit_amendment.issue_date:
-                if original_permit_amendment.issue_date > issue_date.date():
+                if issue_date and original_permit_amendment.issue_date > issue_date.date():
                     raise AssertionError(
                         'Permit amendment issue date cannot be before the permits First Issued date.'
                     )

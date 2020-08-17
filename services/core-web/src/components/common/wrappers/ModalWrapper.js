@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
-import LoadingBar from "react-redux-loading-bar";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Modal, Icon, Button, Popconfirm } from "antd";
@@ -13,6 +12,7 @@ import {
   getWidth,
   getIsViewOnly,
 } from "@common/selectors/modalSelectors";
+import LoadingBar from "react-redux-loading-bar";
 import * as Styles from "@/constants/styles";
 import AddPartyComponentWrapper from "./AddPartyComponentWrapper";
 
@@ -82,11 +82,10 @@ export class ModalWrapper extends Component {
           scope="modal"
           style={{
             position: "absolute",
-            top: "50px",
+            top: "54px",
             left: 0,
             backgroundColor: Styles.COLOR.violet,
-            width: "100%",
-            height: "8px",
+            height: "3px",
             zIndex: 100,
           }}
         />

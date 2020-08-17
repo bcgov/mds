@@ -4,7 +4,8 @@ import PropTypes from "prop-types";
 import { fetchMetabaseDashboard } from "@common/actionCreators/reportingActionCreator";
 import ReactIframeResizer from "react-iframe-resizer-super";
 import SearchBar from "@/components/search/SearchBar";
-import { BACKGROUND, HSRC_PDF } from "@/constants/assets";
+import { BACKGROUND, HSRC_PDF, MEMP_PDF } from "@/constants/assets";
+import { PageTracker } from "@common/utils/trackers";
 
 const iframeResizerOptions = { checkOrigin: false };
 
@@ -35,6 +36,7 @@ export class HomePage extends Component {
     const iframeUrlTwo = `${this.state.graph_urls[1]}#bordered=true&titled=false`;
     return (
       <div className="background" style={{ backgroundImage: `url(${BACKGROUND})` }}>
+        <PageTracker title="Home Page" />
         <Row type="flex" justify="center" gutter={[hGutter, vGutter]}>
           <Col xs={xs} sm={sm} md={md * 2} lg={lg * 2} xl={xl * 2}>
             <div className="search-container">
@@ -112,21 +114,12 @@ export class HomePage extends Component {
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    Inspector of Mines Training
+                    LAMP
                   </a>
                 </li>
                 <li>
                   <a href="https://minfile.gov.bc.ca/" target="_blank" rel="noopener noreferrer">
                     Mineral Inventory (MINFILE)
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="https://gww.nrs.gov.bc.ca/empr/mines-and-mineral-resources-division/mds-employee-info-resource-hub"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Project Information & Resources
                   </a>
                 </li>
                 <li>
@@ -146,6 +139,15 @@ export class HomePage extends Component {
                     rel="noopener noreferrer"
                   >
                     EMPR Sharepoint Requests Portal
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="https://projects.eao.gov.bc.ca/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    EPIC (EAO)
                   </a>
                 </li>
               </ul>
@@ -176,6 +178,11 @@ export class HomePage extends Component {
                     rel="noopener noreferrer"
                   >
                     Chief Inspector&apos;s Directives
+                  </a>
+                </li>
+                <li>
+                  <a href={MEMP_PDF} target="_blank" rel="noopener noreferrer">
+                    Mine Emergency Management Plan (MEMP)
                   </a>
                 </li>
               </ul>

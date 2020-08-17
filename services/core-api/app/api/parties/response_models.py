@@ -26,6 +26,8 @@ MINE_PARTY_APPT = api.model(
         'mine_party_appt_guid': fields.String,
         'mine_guid': fields.String,
         'party_guid': fields.String,
+        'related_guid': fields.String,
+        'permit_no': fields.String(attribute='permit.permit_no'),
         'mine_party_appt_type_code': fields.String,
         'start_date': fields.Date,
         'end_date': fields.Date,
@@ -89,8 +91,10 @@ PAGINATED_PARTY_LIST = api.inherit('PartyList', PAGINATED_LIST, {
     'records': fields.List(fields.Nested(PARTY)),
 })
 
-SUB_DIVISION_CODE_MODEL = api.model('SubDivisionCodeModel', {
-    'sub_division_code': fields.String,
-    'description': fields.String,
-    'display_order': fields.Integer
-})
+SUB_DIVISION_CODE_MODEL = api.model(
+    'SubDivisionCodeModel', {
+        'sub_division_code': fields.String,
+        'description': fields.String,
+        'display_order': fields.Integer,
+        'active_ind': fields.Boolean
+    })

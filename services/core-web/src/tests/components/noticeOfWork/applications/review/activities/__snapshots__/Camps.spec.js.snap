@@ -49,6 +49,11 @@ exports[`Camps renders properly 1`] = `
         className="field-title"
       >
         Do you propose to store fuel?
+        <NOWOriginalValueTooltip
+          isVisible={true}
+          originalValue="N/A"
+          style={Object {}}
+        />
       </div>
       <Field
         component={[Function]}
@@ -70,6 +75,11 @@ exports[`Camps renders properly 1`] = `
         className="field-title"
       >
         Volume of fuel stored
+        <NOWOriginalValueTooltip
+          isVisible={true}
+          originalValue="N/A"
+          style={Object {}}
+        />
       </div>
       <Field
         component={[Function]}
@@ -104,7 +114,20 @@ exports[`Camps renders properly 1`] = `
           component={[Function]}
           disabled={true}
           id="has_fuel_stored_in_bulk"
-          label="Bulk"
+          label={
+            <span>
+              Bulk
+              <NOWOriginalValueTooltip
+                isVisible={true}
+                originalValue="N/A"
+                style={
+                  Object {
+                    "marginLeft": "20%",
+                  }
+                }
+              />
+            </span>
+          }
           name="has_fuel_stored_in_bulk"
           validate={
             Array [
@@ -121,7 +144,20 @@ exports[`Camps renders properly 1`] = `
           component={[Function]}
           disabled={true}
           id="has_fuel_stored_in_barrels"
-          label="Barrell"
+          label={
+            <span>
+              Barrell
+              <NOWOriginalValueTooltip
+                isVisible={true}
+                originalValue="N/A"
+                style={
+                  Object {
+                    "marginLeft": "20%",
+                  }
+                }
+              />
+            </span>
+          }
           name="has_fuel_stored_in_barrels"
           validate={
             Array [
@@ -147,6 +183,11 @@ exports[`Camps renders properly 1`] = `
         className="field-title"
       >
         Proposed reclamation and timing for this specific activity
+        <NOWOriginalValueTooltip
+          isVisible={true}
+          originalValue="N/A"
+          style={Object {}}
+        />
       </div>
       <Field
         component={[Function]}
@@ -168,6 +209,11 @@ exports[`Camps renders properly 1`] = `
         className="field-title"
       >
         Estimated Cost of reclamation activities described above
+        <NOWOriginalValueTooltip
+          isVisible={true}
+          originalValue="N/A"
+          style={Object {}}
+        />
       </div>
       <Field
         component={[Function]}

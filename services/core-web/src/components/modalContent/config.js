@@ -25,6 +25,8 @@ import GenerateDocumentModal from "./GenerateDocumentModal";
 import AddBondModal from "./AddBondModal";
 import ViewBondModal from "./ViewBondModal";
 import AddReclamationInvoiceModal from "./AddReclamationInvoiceModal";
+import TransferBondModal from "./TransferBondModal";
+import CloseBondModal from "./CloseBondModal";
 
 export const modalConfig = {
   MINE_RECORD: MineRecordModal,
@@ -53,6 +55,8 @@ export const modalConfig = {
   CHANGE_NOW_LOCATION: ChangeNOWLocationModal,
   ADD_BOND_MODAL: AddBondModal,
   VIEW_BOND_MODAL: ViewBondModal,
+  TRANSFER_BOND_MODAL: TransferBondModal,
+  CLOSE_BOND_MODAL: CloseBondModal,
   ADD_RECLAMATION_INVOICE_MODAL: AddReclamationInvoiceModal,
 };
 

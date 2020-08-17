@@ -11,7 +11,7 @@ SIMPLE_SEARCH_MODEL = api.model('SimpleSearchResult', {
     'value': fields.String,
 })
 
-MINE_MODEL = api.model('Mine', {'mine_name': fields.String})
+MINE_MODEL = api.model('Mine_simple ', {'mine_name': fields.String, 'mine_guid': fields.String})
 
 MINE_PARTY_APPT_MODEL = api.model('MinePartyAppointment', {
     'mine_party_appt_type_code': fields.String,
@@ -25,9 +25,8 @@ MINE_STATUS_MODEL = api.model('MineStatus', {
 PERMIT_SEARCH_MODEL = api.model(
     'Permit', {
         'permit_guid': fields.String,
-        'mine_guid': fields.String,
+        'mine': fields.List(fields.Nested(MINE_MODEL), attribute=lambda x: x._all_mines),
         'permit_no': fields.String,
-        'mine_name': fields.String,
         'current_permittee': fields.String,
     })
 
@@ -38,7 +37,8 @@ MINE_SEARCH_MODEL = api.model(
         'mine_no': fields.String,
         'mine_region': fields.String,
         'mine_permit': fields.List(fields.Nested(PERMIT_SEARCH_MODEL)),
-        'mine_status': fields.Nested(MINE_STATUS_MODEL)
+        'mine_status': fields.Nested(MINE_STATUS_MODEL),
+        'mms_alias': fields.String,
     })
 
 PARTY_SEARCH_MODEL = api.model(

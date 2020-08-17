@@ -36,7 +36,7 @@ exports[`PermitAmendmentForm renders properly 1`] = `
         <Field
           component={[Function]}
           id="issue_date"
-          label="Issue date*"
+          label="Issue Date*"
           name="issue_date"
           validate={
             Array [
@@ -142,7 +142,6 @@ exports[`PermitAmendmentForm renders properly 1`] = `
     <Button
       block={false}
       className="full-mobile"
-      disabled={false}
       ghost={false}
       htmlType="submit"
       loading={false}

@@ -4,8 +4,8 @@ from app.extensions import jwt, api
 from app.api.utils.models_mixins import DictLoadingError
 from app.api.now_applications.models.activity_detail.camp_detail import CampDetail
 from tests.constants import VIEW_ONLY_AUTH_CLAIMS, TOKEN_HEADER
-from tests.factories import MineFactory, PermitFactory
-from tests.now_application_factories import NOWApplicationIdentityFactory
+from tests.factories import MineFactory, PermitFactory, create_mine_and_permit
+from tests.now_application_factories import NOWApplicationIdentityFactory, CampDetailFactory
 
 from flask_restplus import marshal, fields
 
@@ -48,13 +48,15 @@ def test_update_ignores_pk_change(db_session):
 
 def test_update_ignores_related_object_not_in_edit_group(db_session):
     mine = MineFactory()
+    now_app_identity = NOWApplicationIdentityFactory(mine=mine)
+
     mine_dict = {
         'mine': {
             'mine_name': "NEW_MINE_NAME"
         },
     }
 
-    mine.mine_permit[0].deep_update_from_dict(mine_dict)
+    now_app_identity.deep_update_from_dict(mine_dict)
     assert mine.mine_name != 'NEW_MINE_NAME'
 
 
@@ -67,16 +69,17 @@ def test_update_unexpected_type(db_session):
 
 
 def test_update_field_in_nested_item(db_session):
-    mine = MineFactory(mine_permit=5)
-    new_permit_no = 'XXX-9999'
-    partial_mine_permit_dict = marshal(
-        {'mine_permit': mine.mine_permit},
-        api.model('test_list', {'mine_permit': fields.List(fields.Nested(PERMIT_MODEL))}))
-    partial_mine_permit_dict['mine_permit'][1]['permit_no'] = new_permit_no
-    mine.deep_update_from_dict(partial_mine_permit_dict, _edit_key=PERMIT_EDIT_GROUP)
+    now_app = NOWApplicationIdentityFactory().now_application
 
-    mine = Mine.query.filter_by(mine_guid=mine.mine_guid).first()
-    assert mine.mine_permit[1].permit_no == new_permit_no
+    new_reclam_desc = "TEST DESCRIPTIONzzzz"
+
+    now_app_dict = marshal(now_app, NOW_APPLICATION_MODEL)
+    now_app_dict['camps']['reclamation_description'] = new_reclam_desc
+
+    now_app.deep_update_from_dict(now_app_dict)
+
+    db_session.refresh(now_app)
+    assert now_app.camps.reclamation_description == new_reclam_desc
 
 
 #schema implemented for now_application_activity_details only
@@ -102,7 +105,7 @@ def test_update_new_now_application_activity_detail(db_session):
     reason='didn\'t mark child records, will violate not null constraint (orphan permit amendment)')
 def test_delete_flag_in_nested_item_fail_orphan(db_session):
     init_length = 5
-    mine = MineFactory(mine_permit=init_length)
+    mine = MineFactory(mine_permit_amendments=init_length)
     partial_mine_permit_dict = marshal(
         {'mine_permit': mine.mine_permit},
         api.model('test_list', {'mine_permit': fields.List(fields.Nested(PERMIT_MODEL))}))
@@ -116,7 +119,7 @@ def test_delete_flag_in_nested_item_fail_orphan(db_session):
 @pytest.mark.xfail(reason='do not allow delete method on soft delete models')
 def test_delete_flag_in_nested_item_fail_deleted_ind(db_session):
     init_length = 5
-    mine = MineFactory(mine_permit=init_length)
+    mine = MineFactory(mine_permit_amendments=init_length)
     partial_mine_permit_dict = marshal(
         {'mine_permit': mine.mine_permit},
         api.model('test_list', {'mine_permit': fields.List(fields.Nested(PERMIT_MODEL))}))
@@ -146,25 +149,27 @@ def test_delete_flag_in_nested_item_success_nested(db_session):
     assert len(na.camps.details) == 0
 
 
-def test_missing_nested_item_not_deleted(db_session):
+def test_missing_nested_list_item_not_deleted(db_session):
     init_length = 5
-    mine = MineFactory(mine_permit=init_length)
+    now_app = NOWApplicationIdentityFactory().now_application
+    now_app.camps.details = CampDetailFactory.create_batch(size=init_length)
 
-    partial_mine_permit_dict = marshal(
-        {'mine_permit': mine.mine_permit},
-        api.model('test_list', {'mine_permit': fields.List(fields.Nested(PERMIT_MODEL))}))
-    partial_mine_permit_dict['mine_permit'] = partial_mine_permit_dict['mine_permit'][:2]
-    assert len(partial_mine_permit_dict['mine_permit']) < init_length
-    mine.deep_update_from_dict(partial_mine_permit_dict, _edit_key=PERMIT_EDIT_GROUP)
+    assert len(now_app.camps.details) == init_length
 
-    mine = Mine.query.filter_by(mine_guid=mine.mine_guid).first()
-    assert len(mine.mine_permit) == init_length
+    now_app_dict = marshal(now_app, NOW_APPLICATION_MODEL)
+    #remove some items
+    now_app_dict['camps']['details'] = now_app_dict['camps']['details'][:2]
+
+    now_app.deep_update_from_dict(now_app_dict)
+
+    db_session.refresh(now_app)
+    assert len(now_app.camps.details) == init_length
 
 
 @pytest.mark.xfail(
     reason='Global marshmallow schemas not implemented, example models have been deleted')
 def test_update_new_item_in_list(db_session):
-    mine = MineFactory(mine_permit=5)
+    mine = MineFactory(mine_permit_amendments=5)
     permit = PermitFactory()
 
     partial_mine_permit_dict = marshal(
@@ -234,69 +239,64 @@ def test_update_decimal_with_decimal_passes(db_session):
 
 
 def test_update_date_with_string_fails(db_session):
-    mine = MineFactory(mine_permit=1)
-    partial_mine_permit_dict = marshal(
-        {'mine_permit': mine.mine_permit},
-        api.model('test_list', {'mine_permit': fields.List(fields.Nested(PERMIT_MODEL))}))
-    partial_mine_permit_dict['mine_permit'][0]['permit_amendments'][0]['received_date'] = "foo"
-    assert pytest.raises(
-        ValueError,
-        mine.deep_update_from_dict,
-        partial_mine_permit_dict,
-        _edit_key=PERMIT_EDIT_GROUP)
+    now_app = NOWApplicationIdentityFactory().now_application
+
+    now_app_dict = marshal(now_app, NOW_APPLICATION_MODEL)
+    now_app_dict['submitted_date'] = 'string'
+
+    assert pytest.raises(ValueError, now_app.deep_update_from_dict, now_app_dict)
 
 
 def test_update_date_with_empty_list_fails(db_session):
-    mine = MineFactory(mine_permit=1)
-    partial_mine_permit_dict = marshal(
-        {'mine_permit': mine.mine_permit},
-        api.model('test_list', {'mine_permit': fields.List(fields.Nested(PERMIT_MODEL))}))
-    partial_mine_permit_dict['mine_permit'][0]['permit_amendments'][0]['received_date'] = []
-    assert pytest.raises(
-        AttributeError,
-        mine.deep_update_from_dict,
-        partial_mine_permit_dict,
-        _edit_key=PERMIT_EDIT_GROUP)
+    now_app = NOWApplicationIdentityFactory().now_application
+
+    new_date = []
+
+    now_app_dict = marshal(now_app, NOW_APPLICATION_MODEL)
+    now_app_dict['submitted_date'] = new_date
+    assert pytest.raises(AttributeError, now_app.deep_update_from_dict, now_app_dict)
 
 
 def test_update_date_with_empty_string_sets_null(db_session):
-    mine = MineFactory(mine_permit=1)
-    partial_mine_permit_dict = marshal(
-        {'mine_permit': mine.mine_permit},
-        api.model('test_list', {'mine_permit': fields.List(fields.Nested(PERMIT_MODEL))}))
-    partial_mine_permit_dict['mine_permit'][0]['permit_amendments'][0]['received_date'] = ''
-    mine.deep_update_from_dict(partial_mine_permit_dict, _edit_key=PERMIT_EDIT_GROUP)
-    assert mine.mine_permit[0].permit_amendments[0].received_date is None
+    now_app = NOWApplicationIdentityFactory().now_application
+
+    now_app_dict = marshal(now_app, NOW_APPLICATION_MODEL)
+    now_app_dict['proposed_start_date'] = ''
+
+    now_app.deep_update_from_dict(now_app_dict)
+
+    assert now_app.proposed_start_date is None
 
 
 def test_update_date_with_null_sets_null(db_session):
-    mine = MineFactory(mine_permit=1)
-    partial_mine_permit_dict = marshal(
-        {'mine_permit': mine.mine_permit},
-        api.model('test_list', {'mine_permit': fields.List(fields.Nested(PERMIT_MODEL))}))
-    partial_mine_permit_dict['mine_permit'][0]['permit_amendments'][0]['received_date'] = None
-    mine.deep_update_from_dict(partial_mine_permit_dict, _edit_key=PERMIT_EDIT_GROUP)
-    assert mine.mine_permit[0].permit_amendments[0].received_date is None
+    now_app = NOWApplicationIdentityFactory().now_application
+
+    now_app_dict = marshal(now_app, NOW_APPLICATION_MODEL)
+    now_app_dict['proposed_start_date'] = None
+
+    now_app.deep_update_from_dict(now_app_dict)
+
+    assert now_app.proposed_start_date is None
 
 
 def test_update_date_with_date_string_passes(db_session):
-    mine = MineFactory(mine_permit=1)
-    partial_mine_permit_dict = marshal(
-        {'mine_permit': mine.mine_permit},
-        api.model('test_list', {'mine_permit': fields.List(fields.Nested(PERMIT_MODEL))}))
+    now_app = NOWApplicationIdentityFactory().now_application
+
+    now_app_dict = marshal(now_app, NOW_APPLICATION_MODEL)
     date_receive = "2020-03-17"
     date_expect = datetime.date(2020, 3, 17)
-    partial_mine_permit_dict['mine_permit'][0]['permit_amendments'][0][
-        'received_date'] = date_receive
-    mine.deep_update_from_dict(partial_mine_permit_dict, _edit_key=PERMIT_EDIT_GROUP)
-    assert mine.mine_permit[0].permit_amendments[0].received_date == date_expect
+    now_app_dict['proposed_start_date'] = date_receive
+
+    now_app.deep_update_from_dict(now_app_dict)
+
+    assert now_app.proposed_start_date == date_expect
 
 
 """String parsing tests"""
 
 
 def test_update_string_with_empty_string_sets_null(db_session):
-    mine = MineFactory(mine_permit=1)
+    mine = MineFactory(mine_permit_amendments=1)
     mine_dict = {'mine_location_description': ''}
     mine.deep_update_from_dict(mine_dict, _edit_key=PERMIT_EDIT_GROUP)
     assert mine.mine_location_description is None

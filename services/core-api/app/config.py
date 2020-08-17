@@ -1,5 +1,6 @@
 import os
 
+from logging.handlers import SysLogHandler
 from dotenv import load_dotenv, find_dotenv
 ENV_FILE = find_dotenv()
 if ENV_FILE:
@@ -23,11 +24,19 @@ class Config(object):
                 'class': 'logging.StreamHandler',
                 'stream': 'ext://flask.logging.wsgi_errors_stream',
                 'formatter': 'default'
+            },
+            'file': {
+                'class': 'logging.handlers.RotatingFileHandler',
+                'mode': 'a',
+                'backupCount': 0,
+                'maxBytes': 100000000,
+                'filename': '/var/log/core-api.log',
+                'formatter': 'default',
             }
         },
         'root': {
             'level': FLASK_LOGGING_LEVEL,
-            'handlers': ['wsgi']
+            'handlers': ['file']
         }
     }
 
@@ -42,7 +51,12 @@ class Config(object):
     NRIS_USER_NAME = os.environ.get('NRIS_USER_NAME', None)
     NRIS_PASS = os.environ.get('NRIS_PASS', None)
     ENVIRONMENT_NAME = os.environ.get('ENVIRONMENT_NAME', 'dev')
+
+    # SqlAlchemy config
     SQLALCHEMY_DATABASE_URI = DB_URL
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+    SQLALCHEMY_ENGINE_OPTIONS = {"pool_pre_ping": True}
+
     JWT_OIDC_WELL_KNOWN_CONFIG = os.environ.get(
         'JWT_OIDC_WELL_KNOWN_CONFIG',
         'https://URL/auth/realms/mds/.well-known/openid-configuration')
@@ -67,8 +81,16 @@ class Config(object):
     DOCUMENT_MANAGER_URL = os.environ.get('DOCUMENT_MANAGER_URL',
                                           'http://document_manager_backend:5001')
     DOCUMENT_GENERATOR_URL = os.environ.get('DOCUMENT_GENERATOR_URL', 'http://docgen-api:3030')
+    DOCUMENT_UPLOAD_CHUNK_SIZE_BYTES = int(
+        os.environ.get('DOCUMENT_UPLOAD_CHUNK_SIZE_BYTES', '1048576'))
     NRIS_TOKEN_URL = os.environ.get('NRIS_TOKEN_URL', None)
     NRIS_API_URL = os.environ.get('NRIS_API_URL', 'http://nris_backend:5500')
+
+    NROS_NOW_URL = os.environ.get('NROS_NOW_URL', None)
+    NROS_NOW_CLIENT_ID = os.environ.get('NROS_NOW_CLIENT_ID', None)
+    NROS_NOW_TOKEN_URL = os.environ.get('NROS_NOW_TOKEN_URL', None)
+    NROS_NOW_CLIENT_SECRET = os.environ.get('NROS_NOW_CLIENT_SECRET', None)
+
     # Cache settings
     CACHE_TYPE = os.environ.get('CACHE_TYPE', 'redis')
     CACHE_REDIS_HOST = os.environ.get('CACHE_REDIS_HOST', 'redis')

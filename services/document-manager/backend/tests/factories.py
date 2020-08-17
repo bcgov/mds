@@ -44,3 +44,4 @@ class DocumentFactory(BaseFactory):
     file_display_name = factory.Faker('file_name')
     path_display_name = factory.LazyAttribute(lambda o: path.join(o.path_root, 'mine_name/category',
                                                                   o.file_display_name))
+    object_store_path = None

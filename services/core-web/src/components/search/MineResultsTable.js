@@ -36,6 +36,14 @@ export const MineResultsTable = (props) => {
         </Row>,
         <Row className="padding-small--top">
           <Col xs={24} md={4}>
+            <p>Legacy Alias</p>
+          </Col>
+          <Col xs={24} md={4}>
+            <p>
+              <Highlight search={props.highlightRegex}>{record.mms_alias}</Highlight>
+            </p>
+          </Col>
+          <Col xs={24} md={4}>
             <p>Mine No.</p>
           </Col>
           <Col xs={24} md={4}>
@@ -79,8 +87,7 @@ export const MineResultsTable = (props) => {
       />
       {props.showAdvancedLookup && (
         <Link
-          style={{ float: "right" }}
-          className="padding-large--left"
+          className="padding-large--left float-right"
           to={router.MINE_HOME_PAGE.dynamicRoute({
             search: props.query,
             page: Strings.DEFAULT_PAGE,

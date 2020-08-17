@@ -35,6 +35,9 @@ const propTypes = {
     "now-contacts",
     "add-now-activity",
     "securities",
+    "no-permittee",
+    "draft-permit",
+    "incomplete-now",
   ]),
   message: PropTypes.string,
 };
@@ -67,7 +70,7 @@ const NullScreen = (props) => (
     )}
     {props.type === "manager-small" && (
       <div>
-        <img alt="min_img" src={MINER_TWO} />
+        <img alt="mine_img" src={MINER_TWO} />
         <h3>{String.NO_DATA}</h3>
         <p>{String.ADD_PARTY}</p>
       </div>
@@ -158,6 +161,13 @@ const NullScreen = (props) => (
         <p>Create a contact using the menu above</p>
       </div>
     )}
+    {props.type === "no-permittee" && (
+      <div>
+        <img alt="mine_img" src={MINER_TWO} />
+        <h3>No permittee</h3>
+        <p>There must be a permittee in order to draft a permit</p>
+      </div>
+    )}
     {props.type === "now-contacts" && (
       <div>
         <img alt="mine_img" src={GROUP_MINERS} />
@@ -195,6 +205,12 @@ const NullScreen = (props) => (
       <div>
         <img alt="mine_img" src={PERMIT} />
         <h3>{String.NO_SECURITIES}</h3>
+      </div>
+    )}
+    {props.type === "draft-permit" && (
+      <div>
+        <img alt="mine_img" src={PERMIT} />
+        <h3>A draft permit has not been created</h3>
       </div>
     )}
   </div>

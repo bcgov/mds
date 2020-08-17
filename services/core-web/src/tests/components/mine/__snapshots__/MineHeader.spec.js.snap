@@ -57,7 +57,7 @@ exports[`MineHeader renders dispatchProperly 1`] = `
                         }
                       }
                     />
-                    + Add TSF
+                    Add TSF
                   </button>
                 </MenuItem>
               </Menu>
@@ -184,6 +184,18 @@ exports[`MineHeader renders dispatchProperly 1`] = `
           N/A
         </p>
       </div>
+    </div>
+    <div
+      className="inline-flex padding-small wrap"
+    >
+      <p
+        className="field-title"
+      >
+        Legacy Alias
+      </p>
+      <p>
+        N/A
+      </p>
     </div>
     <div
       className="inline-flex padding-small wrap"
