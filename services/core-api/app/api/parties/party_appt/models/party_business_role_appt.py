@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 import re
 import uuid
 import requests
@@ -61,6 +61,14 @@ class PartyBusinessRoleAppointment(AuditMixin, Base):
             built_query = built_query.filter(
                 cls.party_business_role_code.in_(party_business_role_codes))
         return built_query.all()
+
+    @classmethod
+    def get_current_business_appointment(cls, party_guid, party_business_role_code):
+        today = datetime.now(timezone.utc).date()
+        return cls.query.filter_by(
+            party_guid=party_guid, party_business_role_code=party_business_role_code).filter(
+                PartyBusinessRoleAppointment.start_date <= today).filter(
+                    PartyBusinessRoleAppointment.end_date > today).one_or_none()
 
     @classmethod
     def create(cls,

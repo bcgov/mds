@@ -1,8 +1,9 @@
 from flask import request, current_app
 from flask_restplus import Resource
+from sqlalchemy import or_, exc as alch_exceptions
 from sqlalchemy_filters import apply_pagination
 from sqlalchemy.exc import DBAPIError
-from werkzeug.exceptions import NotFound
+from werkzeug.exceptions import NotFound, BadRequest
 from datetime import datetime, timezone
 
 from app.extensions import api, jwt
@@ -145,25 +146,26 @@ class PartyResource(Resource, UserMixin):
             for key, value in data.items():
                 setattr(existing_party.address[0], key, value)
 
-        # TODO refactor do not update if it is not required to do so
-        
-        # admin only
+        # admin only can set inspector appointment
         if jwt.validate_roles([MINE_ADMIN]):
-            # check if we create or update inspector info
-            business_role = existing_party.business_role_appts.filter_by(party_business_role_code="INS").first()
+            today = datetime.now(timezone.utc).date()
+            business_role = PartyBusinessRoleAppointment.get_current_business_appointment(
+                existing_party.party_guid, "INS")
+
             if data.get("set_to_inspector"):
-                start_date = data.inspector_start_date if data.get("inspector_start_date") else datetime.now(timezone.utc)
+                start_date = data.inspector_start_date if data.get(
+                    "inspector_start_date") else datetime.now(timezone.utc)
                 end_date = data.inspector_end_date if data.get("inspector_end_date") else None
-                if business_role and (start_date.date() != business_role.start_date.date() or end_date.date() != business_role.end_date.date()):                
-                    business_role.start_date = start_date
-                    business_role.end_date = end_date
-                    business_role.save()
-                elif not business_role:
-                    PartyBusinessRoleAppointment.create("INS", party_guid, start_date, end_date)                    
+                new_bappt = PartyBusinessRoleAppointment.create("INS", party_guid, start_date, end_date)
+
+                try:
+                    new_bappt.save()
+                except alch_exceptions.IntegrityError as e:
+                    if "daterange_excl" in str(e):
+                        raise BadRequest(f'Date ranges for inspector appointment must not overlap')
             # deactivate inspector
             elif business_role:
                 end_date = data.get("inspector_end_date")
-                today = datetime.now(timezone.utc).date()
                 if end_date and end_date.date() <= today:
                     pass
                 else:
