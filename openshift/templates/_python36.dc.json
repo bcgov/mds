@@ -608,7 +608,7 @@
                     "port": 5000,
                     "scheme": "HTTP"
                   },
-                  "initialDelaySeconds": 10,
+                  "initialDelaySeconds": 120,
                   "timeoutSeconds": 3,
                   "periodSeconds": 20
                 },
@@ -618,10 +618,16 @@
                     "port": 5000,
                     "scheme": "HTTP"
                   },
-                  "initialDelaySeconds": 15,
-                  "timeoutSeconds": 3,
-                  "periodSeconds": 15
+                  "initialDelaySeconds": 120,
+                  "timeoutSeconds": 15,
+                  "periodSeconds": 30
                 },
+                "volumeMounts": [
+                  {
+                    "mountPath": "/var/log",
+                    "name": "logs"
+                  }
+                ],
                 "terminationMessagePath": "/dev/termination-log",
                 "terminationMessagePolicy": "File",
                 "imagePullPolicy": "IfNotPresent"
@@ -753,11 +759,50 @@
                     "memory": "128Mi"
                   }
                 }
+              },
+              {
+                "name": "promtail",
+                "image": "grafana/promtail:k14-60b97e3",
+                "args": [
+                  "--config.file=/etc/promtail/core-api.yaml",
+                  "--client.url=http://loki:3100/loki/api/v1/push",
+                  "--client.external-labels=env=${VERSION},pod=${HOSTNAME}"
+                ],
+                "volumeMounts": [
+                  {
+                    "mountPath": "/logs/",
+                    "name": "logs",
+                    "readOnly": true
+                  },
+                  {
+                    "mountPath": "/etc/promtail",
+                    "name": "promtail-config"
+                  }
+                ],
+                "resources": {
+                  "limits": {
+                    "cpu": "100m",
+                    "memory": "128Mi"
+                  },
+                  "requests": {
+                    "cpu": "10m",
+                    "memory": "64Mi"
+                  }
+                }
               }
             ],
             "restartPolicy": "Always",
             "dnsPolicy": "ClusterFirst",
-            "securityContext": {}
+            "securityContext": {},
+            "volumes": [
+              { "emptyDir": {}, "name": "logs" },
+              {
+                "name": "promtail-config",
+                "configMap": {
+                  "name": "promtail-config"
+                }
+              }
+            ]
           }
         }
       }

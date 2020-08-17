@@ -34,8 +34,8 @@ export class AdvancedMineSearchForm extends Component {
       expandAdvancedSearch: !prevState.expandAdvancedSearch,
     }));
 
-  haveAdvancedSearchFilters = ({ status, region, tenure, commodity, tsf, major }) =>
-    tsf || major || some([status, region, tenure, commodity], negate(isEmpty));
+  haveAdvancedSearchFilters = ({ status, region, tenure, commodity, tsf, major, verified }) =>
+    tsf || major || verified || some([status, region, tenure, commodity], negate(isEmpty));
 
   componentWillReceiveProps = (nextProps) => {
     if (
@@ -130,6 +130,21 @@ export class AdvancedMineSearchForm extends Component {
                   ]}
                 />
               </Col>
+            </Row>
+            <Row gutter={6}>
+              <Col md={12} xs={24}>
+                <Field
+                  id="verified"
+                  name="verified"
+                  component={renderConfig.SELECT}
+                  data={[
+                    { value: "", label: "Verified and Un-verified Mines" },
+                    { value: "true", label: "Verified Mine" },
+                    { value: "false", label: "Un-verified" },
+                  ]}
+                />
+              </Col>
+              <Col md={12} xs={24} />
             </Row>
           </div>
         )}

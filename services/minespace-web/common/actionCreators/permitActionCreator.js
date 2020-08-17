@@ -189,3 +189,64 @@ export const deletePermitAmendment = (mineGuid, permitGuid, permitAmdendmentGuid
     .catch(() => dispatch(error(reducerTypes.DELETE_PERMIT_AMENDMENT)))
     .finally(() => dispatch(hideLoading()));
 };
+
+export const fetchPermitConditions = (permitAmdendmentGuid) => (dispatch) => {
+  dispatch(request(reducerTypes.GET_PERMIT_CONDITIONS));
+  dispatch(showLoading());
+  return CustomAxios()
+    .get(
+      `${ENVIRONMENT.apiUrl}${API.PERMIT_CONDITIONS(null, null, permitAmdendmentGuid)}`,
+      createRequestHeader()
+    )
+    .then((response) => {
+      dispatch(success(reducerTypes.GET_PERMIT_CONDITIONS));
+      dispatch(permitActions.storePermitConditions(response.data));
+    })
+    .catch(() => dispatch(error(reducerTypes.GET_PERMIT_CONDITIONS)))
+    .finally(() => dispatch(hideLoading()));
+};
+
+export const createPermitCondition = (permitAmdendmentGuid, payload) => (dispatch) => {
+  dispatch(request(reducerTypes.CREATE_PERMIT_CONDITION));
+  dispatch(showLoading());
+  return CustomAxios()
+    .post(
+      `${ENVIRONMENT.apiUrl}${API.PERMIT_CONDITIONS(null, null, permitAmdendmentGuid)}`,
+      { permit_condition: payload },
+      createRequestHeader()
+    )
+    .then((response) => {
+      notification.success({
+        message: "Successfully created a new condition",
+        duration: 10,
+      });
+      dispatch(success(reducerTypes.CREATE_PERMIT_CONDITION));
+      return response;
+    })
+    .catch(() => dispatch(error(reducerTypes.CREATE_PERMIT_CONDITION)))
+    .finally(() => dispatch(hideLoading("modal")));
+};
+
+export const deletePermitCondition = (permitAmdendmentGuid, permitConditionGuid) => (dispatch) => {
+  dispatch(request(reducerTypes.DELETE_PERMIT_CONDITION));
+  dispatch(showLoading());
+  return CustomAxios()
+    .delete(
+      `${ENVIRONMENT.apiUrl}${API.PERMIT_CONDITION(null, null, permitAmdendmentGuid, permitConditionGuid)}`,
+      createRequestHeader()
+    )
+    .then((response) => {
+      notification.success({
+        message: "Successfully deleted permit condition.",
+        duration: 10,
+      });
+      dispatch(success(reducerTypes.DELETE_PERMIT_CONDITION));
+      return response;
+    })
+    .catch(() => dispatch(error(reducerTypes.DELETE_PERMIT_CONDITION)))
+    .finally(() => dispatch(hideLoading()));
+};
+
+export const setEditingConditionFlag = (payload) => (dispatch) => {
+  dispatch(permitActions.storeEditingConditionFlag(payload));
+}

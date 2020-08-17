@@ -1,5 +1,6 @@
 import os
 
+from logging.handlers import SysLogHandler
 from dotenv import load_dotenv, find_dotenv
 ENV_FILE = find_dotenv()
 if ENV_FILE:
@@ -23,11 +24,19 @@ class Config(object):
                 'class': 'logging.StreamHandler',
                 'stream': 'ext://flask.logging.wsgi_errors_stream',
                 'formatter': 'default'
+            },
+            'file': {
+                'class': 'logging.handlers.RotatingFileHandler',
+                'mode': 'a',
+                'backupCount': 0,
+                'maxBytes': 100000000,
+                'filename': '/var/log/core-api.log',
+                'formatter': 'default',
             }
         },
         'root': {
             'level': FLASK_LOGGING_LEVEL,
-            'handlers': ['wsgi']
+            'handlers': ['file']
         }
     }
 
