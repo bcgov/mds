@@ -1247,14 +1247,14 @@ VALUES
 ON CONFLICT DO NOTHING;
 
 INSERT INTO permit_condition_category
-(condition_category_code, description, active_ind, display_order, create_user, update_user)
+(condition_category_code, step, description, active_ind, display_order, create_user, update_user)
 VALUES
-	('GEC', 'General Conditions', true, 10, 'system-mds', 'system-mds'),
-	('HSC', 'Health and Safety Conditions', true, 20, 'system-mds', 'system-mds'),
-	('GOC', 'Geotechnical Conditions', true, 30, 'system-mds', 'system-mds'),
-	('ELC', 'Environmental Land and Watercourses Conditions', true, 40, 'system-mds', 'system-mds'),
-  ('RCC', 'Reclamation and Closure Program Conditions', true, 50, 'system-mds', 'system-mds'),
-	('ADC', 'Additional Conditions', true, 60, 'system-mds', 'system-mds')
+	('GEC', 'A.', 'General Conditions', true, 10, 'system-mds', 'system-mds'),
+	('HSC', 'B.', 'Health and Safety Conditions', true, 20, 'system-mds', 'system-mds'),
+	('GOC', 'C.', 'Geotechnical Conditions', true, 30, 'system-mds', 'system-mds'),
+	('ELC', 'D.', 'Environmental Land and Watercourses Conditions', true, 40, 'system-mds', 'system-mds'),
+    ('RCC', 'E.', 'Reclamation and Closure Program Conditions', true, 50, 'system-mds', 'system-mds'),
+	('ADC', 'F.', 'Additional Conditions', true, 60, 'system-mds', 'system-mds')
 on conflict do nothing;
 
 INSERT INTO permit_condition_type

@@ -498,6 +498,7 @@ PERMIT_CONDITION_MODEL = api.model(
 PERMIT_CONDITION_CATEGORY_MODEL = api.model(
     'PermitConditionCategory', {
         'condition_category_code': fields.String,
+        'step': fields.String,
         'description': fields.String,
         'display_order': fields.Integer
     })
