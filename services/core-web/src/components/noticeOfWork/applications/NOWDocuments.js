@@ -146,6 +146,7 @@ export const NOWDocuments = (props) => {
     now_application_guid,
     noticeOfWorkApplicationDocumentTypeOptionsHash
   ) =>
+    documents &&
     documents.map((document) => ({
       key: document.now_application_document_xref_guid,
       now_application_guid,
