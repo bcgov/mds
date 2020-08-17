@@ -36,8 +36,8 @@ def run_ETL():
         db.session.execute('select transfer_mine_status_information();')
         db.session.commit()
 
-        db.session.execute('select mms_etl_bond_data();')
-        db.session.commit()
+        # db.session.execute('select mms_etl_bond_data();') TODO make automatic after business validation
+        # db.session.commit()
     finally:
         connection.close()
 
