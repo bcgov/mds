@@ -27,7 +27,7 @@ const propTypes = {
   arrayPush: PropTypes.func.isRequired,
   isViewMode: PropTypes.bool.isRequired,
   selectedRows: PropTypes.objectOf(PropTypes.any),
-  categoriesToShow: PropTypes.arrayOf(PropTypes.strings),
+  categoriesToShow: PropTypes.arrayOf(PropTypes.string),
   disclaimerText: PropTypes.string,
   isAdminView: PropTypes.bool,
 };

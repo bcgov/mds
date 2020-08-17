@@ -23,7 +23,7 @@ const propTypes = {
     CustomPropTypes.dropdownListItem
   ).isRequired,
   change: PropTypes.func.isRequired,
-  categoriesToShow: PropTypes.arrayOf(PropTypes.strings),
+  categoriesToShow: PropTypes.arrayOf(PropTypes.string),
 };
 
 const defaultProps = {

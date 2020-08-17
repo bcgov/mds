@@ -7,7 +7,7 @@ const propTypes = {
   title: PropTypes.string,
   now_application_guid: PropTypes.string.isRequired,
   mine_guid: PropTypes.string.isRequired,
-  categoriesToShow: PropTypes.arrayOf(PropTypes.strings),
+  categoriesToShow: PropTypes.arrayOf(PropTypes.string),
 };
 
 const defaultProps = {
