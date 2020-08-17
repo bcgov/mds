@@ -46,7 +46,8 @@ class Permit(AuditMixin, Base):
     permit_status = db.relationship('PermitStatusCode', lazy='select')
     permit_status_code_description = association_proxy('permit_status', 'description')
 
-    bonds = db.relationship('Bond', lazy='select', secondary='bond_permit_xref')
+    bonds = db.relationship(
+        'Bond', lazy='select', secondary='bond_permit_xref', order_by='desc(Bond.issue_date)')
     reclamation_invoices = db.relationship('ReclamationInvoice', lazy='select')
     deleted_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
 
@@ -113,15 +114,18 @@ class Permit(AuditMixin, Base):
 
     @classmethod
     def find_by_mine_guid(cls, _id):
-        return cls.query.filter_by(mine_guid=_id, deleted_ind=False).filter(cls.permit_status_code != 'D').all()
+        return cls.query.filter_by(
+            mine_guid=_id, deleted_ind=False).filter(cls.permit_status_code != 'D').all()
 
     @classmethod
     def find_by_permit_no(cls, _permit_no):
-        return cls.query.filter_by(permit_no=_permit_no, deleted_ind=False).filter(cls.permit_status_code != 'D').first()
+        return cls.query.filter_by(
+            permit_no=_permit_no, deleted_ind=False).filter(cls.permit_status_code != 'D').first()
 
     @classmethod
     def find_by_permit_no_all(cls, _permit_no):
-        return cls.query.filter_by(permit_no=_permit_no, deleted_ind=False).filter(cls.permit_status_code != 'D').all()
+        return cls.query.filter_by(
+            permit_no=_permit_no, deleted_ind=False).filter(cls.permit_status_code != 'D').all()
 
     @classmethod
     def find_by_permit_guid_or_no(cls, _permit_guid_or_no):
