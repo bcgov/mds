@@ -813,6 +813,7 @@ export class NoticeOfWorkApplication extends Component {
                   <NOWApplicationAdministrative
                     mineGuid={this.props.noticeOfWork.mine_guid}
                     noticeOfWork={this.props.noticeOfWork}
+                    handleSaveNOWEdit={this.handleSaveNOWEdit}
                   />
                 </div>
               </LoadingWrapper>

@@ -31,6 +31,7 @@ const propTypes = {
   noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
   draftPermits: CustomPropTypes.permit.isRequired,
   draftAmendment: CustomPropTypes.permit.isRequired,
+  handleSaveNOWEdit: PropTypes.func.isRequired,
 };
 
 const securityDocuments = ["SRB", "NIA", "AKL", "SCD"];
@@ -116,6 +117,7 @@ export class NOWSecurities extends Component {
           isAdminView
           disclaimerText="Upload a copy of the security into the table below before sending the original to the Securities Team."
           categoriesToShow={securityDocuments}
+          handleAfterUpload={this.props.handleSaveNOWEdit}
         />
       </div>
     );

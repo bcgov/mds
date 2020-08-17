@@ -12,6 +12,7 @@ import NOWDocuments from "@/components/noticeOfWork/applications//NOWDocuments";
 const propTypes = {
   mineGuid: PropTypes.string.isRequired,
   noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
+  handleSaveNOWEdit: PropTypes.func.isRequired,
 };
 const governmentDocuments = ["CAL", "WDL", "RJL", "OTH"];
 export const NOWApplicationAdministrative = (props) => {
@@ -19,7 +20,11 @@ export const NOWApplicationAdministrative = (props) => {
     <div className="page__content">
       <FinalPermitDocuments mineGuid={props.mineGuid} noticeOfWork={props.noticeOfWork} />
       <br />
-      <NOWSecurities mineGuid={props.mineGuid} noticeOfWork={props.noticeOfWork} />
+      <NOWSecurities
+        mineGuid={props.mineGuid}
+        noticeOfWork={props.noticeOfWork}
+        handleSaveNOWEdit={props.handleSaveNOWEdit}
+      />
       <br />
       <h3>Government Documents</h3>
       <br />
@@ -33,6 +38,7 @@ export const NOWApplicationAdministrative = (props) => {
         isAdminView
         disclaimerText="In this table, please add all transitory, internal documents that may be related to the Notice of Work. All documents added to this section will not show up in the final application package unless otherwise specified."
         categoriesToShow={governmentDocuments}
+        handleAfterUpload={props.handleSaveNOWEdit}
       />
     </div>
   );

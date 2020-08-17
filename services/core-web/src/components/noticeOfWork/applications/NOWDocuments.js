@@ -30,15 +30,17 @@ const propTypes = {
   categoriesToShow: PropTypes.arrayOf(PropTypes.string),
   disclaimerText: PropTypes.string,
   isAdminView: PropTypes.bool,
+  handleAfterUpload: PropTypes.func,
 };
 const defaultProps = {
   selectedRows: null,
   categoriesToShow: [],
   disclaimerText: "",
   isAdminView: false,
+  handleAfterUpload: () => {},
 };
 
-const handleAddDocument = (closeDocumentModal, addDocument) => (values) => {
+const handleAddDocument = (closeDocumentModal, addDocument, handleAfterUpload) => (values) => {
   const document = {
     now_application_document_type_code: values.now_application_document_type_code,
     description: values.description,
@@ -51,6 +53,7 @@ const handleAddDocument = (closeDocumentModal, addDocument) => (values) => {
   };
   addDocument(FORM.EDIT_NOTICE_OF_WORK, "documents", document);
   closeDocumentModal();
+  handleAfterUpload();
 };
 
 const openAddDocumentModal = (
@@ -60,12 +63,16 @@ const openAddDocumentModal = (
   addDocument,
   now_application_guid,
   mine_guid,
-  categoriesToShow
+  categoriesToShow,
+  handleAfterUpload
 ) => {
   event.preventDefault();
   openDocumentModal({
     props: {
-      onSubmit: debounce(handleAddDocument(closeDocumentModal, addDocument), 2000),
+      onSubmit: debounce(
+        handleAddDocument(closeDocumentModal, addDocument, handleAfterUpload),
+        2000
+      ),
       title: `Add Notice of Work document`,
       now_application_guid,
       mine_guid,
@@ -178,7 +185,8 @@ export const NOWDocuments = (props) => {
                   props.arrayPush,
                   props.now_application_guid,
                   props.mine_guid,
-                  props.categoriesToShow
+                  props.categoriesToShow,
+                  props.handleAfterUpload
                 )
               }
             >
@@ -222,7 +230,8 @@ export const NOWDocuments = (props) => {
               props.arrayPush,
               props.now_application_guid,
               props.mine_guid,
-              props.categoriesToShow
+              props.categoriesToShow,
+              props.handleAfterUpload
             )
           }
         >
