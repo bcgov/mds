@@ -1,1 +1,1 @@
-ALTER TABLE permit_condition_category ALTER TABLE step SET NOT NULL;
+ALTER TABLE permit_condition_category ALTER COLUMN step SET NOT NULL;
