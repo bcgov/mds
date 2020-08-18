@@ -93,8 +93,7 @@ class BondResource(Resource, UserMixin):
         request.json['amount'] = temp_bond.amount
 
         try:
-            bond = Bond._schema().load(
-                request.json, instance=Bond.find_by_bond_guid(bond_guid))
+            bond = Bond._schema().load(request.json, instance=Bond.find_by_bond_guid(bond_guid))
         except MarshmallowError as e:
             history.delete()
             raise BadRequest(e)
@@ -128,16 +127,11 @@ class BondTransferResource(Resource, UserMixin):
             raise BadRequest('permit_guid is required.')
         permit = Permit.find_by_permit_guid(permit_guid)
         if not permit:
-            raise BadRequest(
-                'No permit was found with the permit_guid provided.')
+            raise BadRequest('No permit was found with the permit_guid provided.')
         if permit.permit_guid == bond.permit.permit_guid:
-            raise BadRequest(
-                'This bond is already associated with this permit.')
-        if bond.permit.mine_guid not in [
-                m.mine_guid for m in permit._all_mines
-        ]:
-            raise BadRequest(
-                'You can only transfer to a permit on the same mine.')
+            raise BadRequest('This bond is already associated with this permit.')
+        if bond.permit.mine_guid not in [m.mine_guid for m in permit._all_mines]:
+            raise BadRequest('You can only transfer to a permit on the same mine.')
 
         # Get the note to apply to the bond's closed note and the transferred bond's note
         note = request.json.get('note', None)

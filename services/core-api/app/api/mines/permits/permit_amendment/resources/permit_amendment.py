@@ -24,53 +24,38 @@ class PermitAmendmentListResource(Resource, UserMixin):
         help='GUID of the party that is the permittee for this permit.',
         location='json',
         store_missing=False)
-    parser.add_argument('received_date',
-                        location='json',
-                        type=inputs.datetime_from_iso8601,
-                        store_missing=False)
-    parser.add_argument('issue_date',
-                        location='json',
-                        type=inputs.datetime_from_iso8601,
-                        store_missing=False)
-    parser.add_argument('authorization_end_date',
-                        location='json',
-                        type=inputs.datetime_from_iso8601,
-                        store_missing=False)
-    parser.add_argument('permit_amendment_type_code',
-                        type=str,
-                        location='json',
-                        store_missing=False)
-    parser.add_argument('permit_amendment_status_code',
-                        type=str,
-                        location='json',
-                        store_missing=False)
-    parser.add_argument('description',
-                        type=str,
-                        location='json',
-                        store_missing=False)
-    parser.add_argument('uploadedFiles',
-                        type=list,
-                        location='json',
-                        store_missing=False)
+    parser.add_argument(
+        'received_date', location='json', type=inputs.datetime_from_iso8601, store_missing=False)
+    parser.add_argument(
+        'issue_date', location='json', type=inputs.datetime_from_iso8601, store_missing=False)
+    parser.add_argument(
+        'authorization_end_date',
+        location='json',
+        type=inputs.datetime_from_iso8601,
+        store_missing=False)
+    parser.add_argument(
+        'permit_amendment_type_code', type=str, location='json', store_missing=False)
+    parser.add_argument(
+        'permit_amendment_status_code', type=str, location='json', store_missing=False)
+    parser.add_argument('description', type=str, location='json', store_missing=False)
+    parser.add_argument('uploadedFiles', type=list, location='json', store_missing=False)
     parser.add_argument(
         'now_application_guid',
         type=str,
         location='json',
         help='The now_application_guid this permit is related to.')
-    parser.add_argument('lead_inspector_title',
-                        type=str,
-                        location='json',
-                        help='Title of the lead inspector for this permit.')
-    parser.add_argument('regional_office',
-                        type=str,
-                        location='json',
-                        help='The regional office for this permit.')
+    parser.add_argument(
+        'lead_inspector_title',
+        type=str,
+        location='json',
+        help='Title of the lead inspector for this permit.')
+    parser.add_argument(
+        'regional_office', type=str, location='json', help='The regional office for this permit.')
 
-    @api.doc(
-        params={
-            'permit_amendment_guid': 'Permit amendment guid.',
-            'permit_guid': 'Permit GUID'
-        })
+    @api.doc(params={
+        'permit_amendment_guid': 'Permit amendment guid.',
+        'permit_guid': 'Permit GUID'
+    })
     @requires_role_edit_permit
     @api.marshal_with(PERMIT_AMENDMENT_MODEL, code=201)
     def post(self, mine_guid, permit_guid, permit_amendment_guid=None):
@@ -122,8 +107,7 @@ class PermitAmendmentListResource(Resource, UserMixin):
                             permittee.end_date = new_end_dates[position - 1]
                             permittee.save()
                 position = new_end_dates.index(permit_issue_date)
-                permittee_end_date = new_end_dates[
-                    position - 1] if is_historical_permit else None
+                permittee_end_date = new_end_dates[position - 1] if is_historical_permit else None
 
             # create a new appointment, so every amendment is associated with a permittee
             new_permittee = MinePartyAppointment.create(
@@ -177,85 +161,69 @@ class PermitAmendmentResource(Resource, UserMixin):
         help='GUID of the party that is the permittee for this permit.',
         location='json',
         store_missing=False)
-    parser.add_argument('received_date',
-                        location='json',
-                        type=lambda x: inputs.datetime_from_iso8601(x)
-                        if x else None,
-                        store_missing=False)
-    parser.add_argument('issue_date',
-                        location='json',
-                        type=lambda x: inputs.datetime_from_iso8601(x)
-                        if x else None,
-                        store_missing=False)
-    parser.add_argument('authorization_end_date',
-                        location='json',
-                        type=lambda x: inputs.datetime_from_iso8601(x)
-                        if x else None,
-                        store_missing=False)
-    parser.add_argument('permit_amendment_type_code',
-                        type=str,
-                        location='json',
-                        store_missing=False)
-    parser.add_argument('permit_amendment_status_code',
-                        type=str,
-                        location='json',
-                        store_missing=False)
-    parser.add_argument('description',
-                        type=str,
-                        location='json',
-                        store_missing=False)
-    parser.add_argument('security_total',
-                        type=str,
-                        location='json',
-                        store_missing=False)
-    parser.add_argument('security_received_date',
-                        location='json',
-                        type=lambda x: inputs.datetime_from_iso8601(x)
-                        if x else None,
-                        store_missing=False)
-    parser.add_argument('uploadedFiles',
-                        type=list,
-                        location='json',
-                        store_missing=False)
-    parser.add_argument('lead_inspector_title',
-                        type=str,
-                        location='json',
-                        store_missing=False,
-                        help='Title of the lead inspector for this permit.')
-    parser.add_argument('regional_office',
-                        type=str,
-                        location='json',
-                        store_missing=False,
-                        help='The regional office for this permit.')
+    parser.add_argument(
+        'received_date',
+        location='json',
+        type=lambda x: inputs.datetime_from_iso8601(x) if x else None,
+        store_missing=False)
+    parser.add_argument(
+        'issue_date',
+        location='json',
+        type=lambda x: inputs.datetime_from_iso8601(x) if x else None,
+        store_missing=False)
+    parser.add_argument(
+        'authorization_end_date',
+        location='json',
+        type=lambda x: inputs.datetime_from_iso8601(x) if x else None,
+        store_missing=False)
+    parser.add_argument(
+        'permit_amendment_type_code', type=str, location='json', store_missing=False)
+    parser.add_argument(
+        'permit_amendment_status_code', type=str, location='json', store_missing=False)
+    parser.add_argument('description', type=str, location='json', store_missing=False)
+    parser.add_argument('security_total', type=str, location='json', store_missing=False)
+    parser.add_argument(
+        'security_received_date',
+        location='json',
+        type=lambda x: inputs.datetime_from_iso8601(x) if x else None,
+        store_missing=False)
+    parser.add_argument('uploadedFiles', type=list, location='json', store_missing=False)
+    parser.add_argument(
+        'lead_inspector_title',
+        type=str,
+        location='json',
+        store_missing=False,
+        help='Title of the lead inspector for this permit.')
+    parser.add_argument(
+        'regional_office',
+        type=str,
+        location='json',
+        store_missing=False,
+        help='The regional office for this permit.')
 
     @api.doc(params={'permit_amendment_guid': 'Permit amendment guid.'})
     @requires_role_view_all
     @api.marshal_with(PERMIT_AMENDMENT_MODEL, code=200)
     def get(self, mine_guid, permit_guid, permit_amendment_guid):
-        permit_amendment = PermitAmendment.find_by_permit_amendment_guid(
-            permit_amendment_guid)
+        permit_amendment = PermitAmendment.find_by_permit_amendment_guid(permit_amendment_guid)
         if not permit_amendment:
             raise NotFound("Permit Amendment not found.")
         if not str(permit_amendment.mine_guid) == mine_guid:
-            raise BadRequest(
-                'Permits mine_guid and supplied mine_guid mismatch.')
+            raise BadRequest('Permits mine_guid and supplied mine_guid mismatch.')
         return permit_amendment
 
-    @api.doc(
-        params={
-            'permit_amendment_guid': 'Permit amendment guid.',
-            'permit_guid': 'Permit GUID'
-        })
+    @api.doc(params={
+        'permit_amendment_guid': 'Permit amendment guid.',
+        'permit_guid': 'Permit GUID'
+    })
     @requires_role_edit_permit
     @api.marshal_with(PERMIT_AMENDMENT_MODEL, code=200)
     def put(self, mine_guid, permit_guid, permit_amendment_guid):
-        permit_amendment = PermitAmendment.find_by_permit_amendment_guid(
-            permit_amendment_guid)
+        permit_amendment = PermitAmendment.find_by_permit_amendment_guid(permit_amendment_guid)
         if not permit_amendment:
             raise NotFound("Permit Amendment not found.")
         if not str(permit_amendment.mine_guid) == mine_guid:
-            raise BadRequest(
-                'Permits mine_guid and supplied mine_guid mismatch.')
+            raise BadRequest('Permits mine_guid and supplied mine_guid mismatch.')
 
         data = self.parser.parse_args()
         current_app.logger.info(f'updating {permit_amendment} with >> {data}')
@@ -276,21 +244,18 @@ class PermitAmendmentResource(Resource, UserMixin):
 
         return permit_amendment
 
-    @api.doc(
-        params={
-            'permit_amendment_guid': 'Permit amendment guid.',
-            'permit_guid': 'Permit GUID'
-        })
+    @api.doc(params={
+        'permit_amendment_guid': 'Permit amendment guid.',
+        'permit_guid': 'Permit GUID'
+    })
     @requires_role_mine_admin
     @api.response(204, 'Successfully deleted.')
     def delete(self, mine_guid, permit_guid, permit_amendment_guid):
-        permit_amendment = PermitAmendment.find_by_permit_amendment_guid(
-            permit_amendment_guid)
+        permit_amendment = PermitAmendment.find_by_permit_amendment_guid(permit_amendment_guid)
         if not permit_amendment:
             raise NotFound("Permit Amendment not found.")
         if not str(permit_amendment.mine_guid) == mine_guid:
-            raise BadRequest(
-                'Permits mine_guid and supplied mine_guid mismatch.')
+            raise BadRequest('Permits mine_guid and supplied mine_guid mismatch.')
 
         try:
             permit_amendment.soft_delete()

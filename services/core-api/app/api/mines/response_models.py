@@ -8,11 +8,6 @@ class DateTime(fields.Raw):
     def format(self, value):
         return value.strftime("%Y-%m-%d %H:%M") if value else None
 
-class Date(fields.Raw):
-    def format(self, value):
-        return value.strftime("%Y-%m-%d") if value else None
-
-
 class PermitCondition(fields.Raw):
     def format(self, value):
         return marshal(value, PERMIT_CONDITION_MODEL)
