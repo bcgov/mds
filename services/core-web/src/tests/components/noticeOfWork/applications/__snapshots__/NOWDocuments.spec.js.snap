@@ -21,26 +21,6 @@ exports[`NOWDocuments renders properly 1`] = `
               "value": "Annual Summary",
             },
             Object {
-              "text": "Archaeological Chance Find Procedure",
-              "value": "Archaeological Chance Find Procedure",
-            },
-            Object {
-              "text": "Blasting Procedure",
-              "value": "Blasting Procedure",
-            },
-            Object {
-              "text": "Explosives Magazine Storage and Use Permit Application",
-              "value": "Explosives Magazine Storage and Use Permit Application",
-            },
-            Object {
-              "text": "Landowner Authorization Letter",
-              "value": "Landowner Authorization Letter",
-            },
-            Object {
-              "text": "Mine Emergency Response Plan",
-              "value": "Mine Emergency Response Plan",
-            },
-            Object {
               "text": "Other",
               "value": "Other",
             },
