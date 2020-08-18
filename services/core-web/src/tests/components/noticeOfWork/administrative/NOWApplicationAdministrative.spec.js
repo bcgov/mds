@@ -10,6 +10,7 @@ const reducerProps = {};
 const setupDispatchProps = () => {
   dispatchProps.fetchPermits = jest.fn();
   dispatchProps.createNoticeOfWorkApplication = jest.fn(() => Promise.resolve());
+  dispatchProps.handleSaveNOWEdit = jest.fn();
 };
 
 const setupReducerProps = () => {
