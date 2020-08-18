@@ -122,7 +122,7 @@ declare
 		now()
 	from mms.secsec sec
 	where TRIM(sec.sec_cid) != ''
-	and replace(REPLACE(permit_no,' ',''),'--','-') in (select permit_no from permit)
+	and replace(REPLACE(permit_no,' ',''),'--','-') in (select (select replace(permit_no,'-0','-') from permit)
 	and sec_typ not in ('ALC', '')
 	ON CONFLICT (sec_cid)
 	DO
@@ -252,7 +252,7 @@ declare
 	update ETL_BOND e
 	set core_permit_id = p.permit_id
 	from permit p
-	where p.permit_no = e.permit_no;
+	where (select replace(p.permit_no,'-0','-') = e.permit_no;
 	--initial fetch filtered out missing permit_no's
 
 	---------------------- INSERT BONDS
