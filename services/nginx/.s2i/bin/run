@@ -13,11 +13,12 @@ envsubst_config() {
   export DOLAR='$'
 
   if ls /opt/app-root/etc/nginx.conf.d/*.tmpl > /dev/null 2>&1 ; then
-    echo "---> substituting environment variables in templates"
+    printf "---> substituting environment variables in templates..."
     for file in /opt/app-root/etc/nginx.conf.d/*.tmpl; do
       target_file="/opt/app-root/etc/nginx.conf.d/$(basename "$file" .tmpl)"
       envsubst "`printf '${%s} ' $(bash -c "compgen -A variable")`" < "$file" > "$target_file"
     done
+    printf "done\n"
   fi
 }
 
@@ -26,7 +27,8 @@ generate_password_files() {
   # It will start from USERNAME and PASSWORD, USERNAME1 and PASSWORD1, USERNAME2 and PASSWORD2, etc. 
   # It starts from variable USERNAME and USERNAME instead of USERNAME0 and PASSWORD0
   # to prevent existing builds from breaking.
- 
+  echo "---> generating password files"
+
   rm -f -- /tmp/.htpasswd*
   if [ -n "$USERNAME" ] && [ -n "$PASSWORD" ]; then
     echo "---> Generating .htpasswd file"
