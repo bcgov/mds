@@ -298,7 +298,7 @@ declare
 		CONCAT(iaddr2,iaddr3),
 		null,
 		ipost_cd,
-		note1,
+		"comment",
 		cnt_dt,
 		project_no,
 		return_dt,
