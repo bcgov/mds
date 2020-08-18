@@ -83,13 +83,17 @@ const openAddDocumentModal = (
 };
 
 export const NOWDocuments = (props) => {
-  const columns = (noticeOfWorkApplicationDocumentTypeOptionsHash) => {
-    const categoryFilters = Object.values(noticeOfWorkApplicationDocumentTypeOptionsHash).map(
-      (dt) => ({
-        text: dt,
-        value: dt,
-      })
-    );
+  const columns = (noticeOfWorkApplicationDocumentTypeOptionsHash, categoriesToShow) => {
+    const filtered = Object.keys(noticeOfWorkApplicationDocumentTypeOptionsHash)
+      .filter((key) => (categoriesToShow.length > 0 ? categoriesToShow.includes(key) : key))
+      .reduce((obj, key) => {
+        obj[key] = noticeOfWorkApplicationDocumentTypeOptionsHash[key];
+        return obj;
+      }, {});
+    const categoryFilters = Object.values(filtered).map((dt) => ({
+      text: dt,
+      value: dt,
+    }));
     const fileNameColumn = props.selectedRows
       ? {
           title: "File Name",
@@ -198,7 +202,10 @@ export const NOWDocuments = (props) => {
       <Table
         align="left"
         pagination={false}
-        columns={columns(props.noticeOfWorkApplicationDocumentTypeOptionsHash)}
+        columns={columns(
+          props.noticeOfWorkApplicationDocumentTypeOptionsHash,
+          props.categoriesToShow
+        )}
         dataSource={transformDocuments(
           props.documents,
           props.now_application_guid,
