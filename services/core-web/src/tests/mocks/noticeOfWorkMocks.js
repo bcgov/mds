@@ -673,6 +673,26 @@ export const APPLICATION_DOCUMENT_TYPES = {
   records: [],
 };
 
+export const DROPDOWN_APPLICATION_DOCUMENT_TYPES = [
+  { value: "ANS", label: "Annual Summary" },
+  { value: "ACP", label: "Archaeological Chance Find Procedure" },
+  { value: "BLP", label: "Blasting Procedure" },
+  { value: "EMS", label: "Explosives Magazine Storage and Use Permit Application" },
+  { value: "LAL", label: "Landowner Authorization Letter" },
+  { value: "MRP", label: "Mine Emergency Response Plan" },
+  { value: "OTH", label: "Other" },
+];
+
+export const APPLICATION_DOCUMENT_TYPES_HASH = {
+  ANS: "Annual Summary",
+  ACP: "Archaeological Chance Find Procedure",
+  BLP: "Blasting Procedure",
+  EMS: "Explosives Magazine Storage and Use Permit Application",
+  LAL: "Landowner Authorization Letter",
+  MRP: "Mine Emergency Response Plan",
+  OTH: "Other",
+};
+
 export const APPLICATION_PROGRESS_STATUS_CODES = {
   records: [
     {
