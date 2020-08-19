@@ -22,15 +22,17 @@ export const EditPartyModal = (props) => {
     (role) =>
       role.party_business_role_code === "INS" &&
       today.isSameOrAfter(role.start_date, "day") &&
-      (today.isBefore(role.end_date, "day") || !role.end_date)
+      (!role.end_date || today.isBefore(role.end_date, "day"))
   );
 
   if (inspectorInfo) {
-    party.set_to_inspector = !(
-      !inspectorInfo.end_date || today.isSameOrAfter(inspectorInfo.end_date, "day")
-    );
-    party.inspector_start_date = moment(formatDate(inspectorInfo.start_date)).format("yyyy-MM-DD");
-    party.inspector_end_date = moment(formatDate(inspectorInfo.end_date)).format("yyyy-MM-DD");
+    party.set_to_inspector =
+      today.isSameOrAfter(inspectorInfo.start_date, "day") &&
+      (!inspectorInfo.end_date || today.isSameOrBefore(inspectorInfo.end_date, "day"));
+    party.inspector_start_date = moment(formatDate(inspectorInfo.start_date)).format("YYYY-MM-DD");
+    party.inspector_end_date = inspectorInfo.end_date
+      ? moment(formatDate(inspectorInfo.end_date)).format("YYYY-MM-DD")
+      : null;
   }
 
   const initialValues = {

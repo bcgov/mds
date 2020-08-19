@@ -19,7 +19,7 @@ import {
   getPartyRelationshipTypeHash,
   getPartyBusinessRoleOptionsHash,
 } from "@common/selectors/staticContentSelectors";
-import { formatTitleString, formatDate } from "@common/utils/helpers";
+import { formatTitleString, formatDate, dateSorter } from "@common/utils/helpers";
 import * as Strings from "@common/constants/strings";
 import { EDIT } from "@/constants/assets";
 import { modalConfig } from "@/components/modalContent/config";
@@ -147,6 +147,8 @@ export class PartyProfile extends Component {
       {
         title: "Dates",
         dataIndex: "dates",
+        sorter: dateSorter("startDate"),
+        defaultSortOrder: "descend",
         render: (text, record) => (
           <div title="Dates">
             {record.startDate} - {record.endDate}
@@ -155,7 +157,8 @@ export class PartyProfile extends Component {
       },
     ];
 
-    const transformRowData = (partyRelationships) => partyRelationships.map((relationship) => ({
+    const transformRowData = (partyRelationships) =>
+      partyRelationships.map((relationship) => ({
         key: relationship.mine_party_appt_guid,
         mineGuid: relationship.mine_guid,
         mineName: this.props.mineBasicInfoListHash[relationship.mine_guid],
@@ -165,13 +168,15 @@ export class PartyProfile extends Component {
         relationship,
       }));
 
-    const transformBusinessRoleRowData = (businessPartyRecord) => businessPartyRecord.map((record) => ({
+    const transformBusinessRoleRowData = (businessPartyRecord) =>
+      businessPartyRecord.map((record) => ({
         key: record.party_business_role_appt_id,
         role: this.props.partyBusinessRoleOptionsHash[record.party_business_role_code],
         endDate: formatDate(record.end_date) || "Present",
         startDate: formatDate(record.start_date) || "Unknown",
         relationship: { party_business_role_code: record.party_business_role_code },
       }));
+
 
     if (this.state.isLoaded && party) {
       const formattedName = formatTitleString(party.name);
@@ -273,7 +278,6 @@ export class PartyProfile extends Component {
                     align="left"
                     pagination={false}
                     columns={columns}
-                    // TODO do concat of transform data
                     dataSource={transformRowData(this.props.parties[id].mine_party_appt).concat(
                       transformBusinessRoleRowData(this.props.parties[id].business_role_appts)
                     )}

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Field, reduxForm, FormSection } from "redux-form";
 import { Form, Col, Row, Button, Popconfirm, Descriptions, Typography } from "antd";
@@ -19,6 +19,7 @@ import { renderConfig } from "@/components/common/config";
 import PartyOrgBookForm from "@/components/Forms/parties/PartyOrgBookForm";
 import { ORGBOOK_ENTITY_URL, ORGBOOK_CREDENTIAL_URL } from "@/constants/routes";
 import * as Permission from "@/constants/permissions";
+import PartySignatureUpload from "./PartySignatureUpload";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
@@ -30,13 +31,38 @@ const propTypes = {
 
 const { Paragraph, Text } = Typography;
 
-export const EditFullPartyForm = (props) => {
-  const isPerson = props.party.party_type_code === "PER";
-  const orgBookEntity = props.party.party_orgbook_entity;
-  const hasOrgBookEntity = !isEmpty(orgBookEntity);
-  return (
+export class EditFullPartyForm extends Component {
+  state = {
+    signature: null,
+  };
+
+  constructor(props) {
+    super(props);
+  }
+
+  onChangeSignature = (signatureBase64) => {
+    this.setState((prevState, props) => {
+      return {
+        signature: signatureBase64,
+      };
+    });
+  };
+
+  isPerson = this.props.party.party_type_code === "PER";
+  orgBookEntity = this.props.party.party_orgbook_entity;
+  hasOrgBookEntity = !isEmpty(this.props.orgBookEntity);
+  render = () => (
     <div>
-      <Form onSubmit={props.handleSubmit}>
+      <Form
+        onSubmit={this.props.handleSubmit((values) => {
+          debugger;
+          const party = {
+            ...values,
+            signature: this.state.signature,
+          };
+          return this.props.onSubmit(party);
+        })}
+      >
         <Row gutter={48}>
           <Col md={12} sm={24} className="border--right--layout">
             <Row gutter={16}>
@@ -44,7 +70,7 @@ export const EditFullPartyForm = (props) => {
                 <h5>Basic Details</h5>
               </Col>
             </Row>
-            {isPerson && (
+            {this.isPerson && (
               <Row gutter={16}>
                 <Col md={12} xs={24}>
                   <Form.Item>
@@ -70,7 +96,7 @@ export const EditFullPartyForm = (props) => {
                 </Col>
               </Row>
             )}
-            {!isPerson && (
+            {!this.isPerson && (
               <Row gutter={16}>
                 <Col span={24}>
                   <Form.Item>
@@ -80,7 +106,7 @@ export const EditFullPartyForm = (props) => {
                       label="Company Name *"
                       component={renderConfig.FIELD}
                       validate={[required]}
-                      disabled={hasOrgBookEntity}
+                      disabled={this.hasOrgBookEntity}
                     />
                   </Form.Item>
                 </Col>
@@ -174,7 +200,7 @@ export const EditFullPartyForm = (props) => {
                     label="Province"
                     format={null}
                     component={renderConfig.SELECT}
-                    data={[{ label: "None", value: null }, ...props.provinceOptions]}
+                    data={[{ label: "None", value: null }, ...this.props.provinceOptions]}
                   />
                 </Form.Item>
               </Col>
@@ -209,7 +235,7 @@ export const EditFullPartyForm = (props) => {
         </Row>
         <Row gutter={48}>
           <Col>
-            {(hasOrgBookEntity && (
+            {(this.hasOrgBookEntity && (
               <Row>
                 <Col>
                   <h5>OrgBook Entity</h5>
@@ -218,53 +244,55 @@ export const EditFullPartyForm = (props) => {
                     <br />
                     <Text>
                       Association completed by&nbsp;
-                      <Text strong>{orgBookEntity.association_user}</Text>
+                      <Text strong>{this.orgBookEntity.association_user}</Text>
                       &nbsp;on&nbsp;
-                      <Text strong>{formatDateTime(orgBookEntity.association_timestamp)}</Text>.
+                      <Text strong>{formatDateTime(this.orgBookEntity.association_timestamp)}</Text>
+                      .
                     </Text>
                   </Paragraph>
                   <Descriptions title="Entity Details" column={1}>
                     <Descriptions.Item label="Registration Name">
-                      {orgBookEntity.name_text}
+                      {this.orgBookEntity.name_text}
                     </Descriptions.Item>
                     <Descriptions.Item label="Registration ID">
                       <a
-                        href={ORGBOOK_ENTITY_URL(orgBookEntity.registration_id)}
+                        href={ORGBOOK_ENTITY_URL(this.orgBookEntity.registration_id)}
                         target="_blank"
                         rel="noopener noreferrer"
                       >
-                        {orgBookEntity.registration_id}
+                        {this.orgBookEntity.registration_id}
                       </a>
                     </Descriptions.Item>
                     <Descriptions.Item label="Registration Status">
-                      {orgBookEntity.registration_status ? "Active" : "Inactive"}
+                      {this.orgBookEntity.registration_status ? "Active" : "Inactive"}
                     </Descriptions.Item>
                     <Descriptions.Item label="Registration Date">
-                      {formatDateTime(orgBookEntity.registration_date)}
+                      {formatDateTime(this.orgBookEntity.registration_date)}
                     </Descriptions.Item>
                     <Descriptions.Item label="Latest Credential">
                       <a
                         href={ORGBOOK_CREDENTIAL_URL(
-                          orgBookEntity.registration_id,
-                          orgBookEntity.credential_id
+                          this.orgBookEntity.registration_id,
+                          this.orgBookEntity.credential_id
                         )}
                         target="_blank"
                         rel="noopener noreferrer"
                       >
-                        {orgBookEntity.credential_id}
+                        {this.orgBookEntity.credential_id}
                       </a>
                     </Descriptions.Item>
                   </Descriptions>
                   <Paragraph>
                     <Text>
                       Information captured on&nbsp;
-                      <Text strong>{formatDateTime(orgBookEntity.association_timestamp)}</Text>.
+                      <Text strong>{formatDateTime(this.orgBookEntity.association_timestamp)}</Text>
+                      .
                     </Text>
                   </Paragraph>
                 </Col>
               </Row>
             )) ||
-              (!isPerson && (
+              (!this.isPerson && (
                 <AuthorizationWrapper inTesting>
                   <Row>
                     <Col>
@@ -276,16 +304,15 @@ export const EditFullPartyForm = (props) => {
                         <Text strong>Associate</Text>
                         &nbsp;button.
                       </Paragraph>
-                      <PartyOrgBookForm party={props.party} />
+                      <PartyOrgBookForm party={this.props.party} />
                     </Col>
                   </Row>
                 </AuthorizationWrapper>
               ))}
           </Col>
         </Row>
-        {isPerson && (
+        {this.isPerson && (
           <AuthorizationWrapper permission={Permission.ADMIN}>
-            {/* <FormSection name="inspector_info"> */}
             <Row>
               <p>
                 By setting this checkbox you grant inspector role to this party. Please note that
@@ -321,19 +348,28 @@ export const EditFullPartyForm = (props) => {
                 />
               </Col>
             </Row>
-            {/* </FormSection> */}
+            <Row>
+              <Field
+                id="PartySignatureUpload"
+                name="PartySignatureUpload"
+                component={PartySignatureUpload}
+                onFileChange={this.onChangeSignature}
+                onRemove={this.onDeleteSignature}
+                signature={this.props.party.signature}
+              />
+            </Row>
           </AuthorizationWrapper>
         )}
         <div className="right center-mobile">
           <Popconfirm
             placement="topRight"
             title="Are you sure you want to cancel?"
-            onConfirm={props.closeModal}
+            onConfirm={this.props.closeModal}
             okText="Yes"
             cancelText="No"
-            disabled={props.submitting}
+            disabled={this.props.submitting}
           >
-            <Button className="full-mobile" disabled={props.submitting}>
+            <Button className="full-mobile" disabled={this.props.submitting}>
               Cancel
             </Button>
           </Popconfirm>
@@ -341,15 +377,15 @@ export const EditFullPartyForm = (props) => {
             className="full-mobile"
             type="primary"
             htmlType="submit"
-            loading={props.submitting}
+            loading={this.props.submitting}
           >
-            {isPerson ? "Update Person" : "Update Company"}
+            {this.isPerson ? "Update Person" : "Update Company"}
           </Button>
         </div>
       </Form>
     </div>
   );
-};
+}
 
 EditFullPartyForm.propTypes = propTypes;
 

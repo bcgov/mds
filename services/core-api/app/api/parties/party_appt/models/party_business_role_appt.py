@@ -3,6 +3,7 @@ import re
 import uuid
 import requests
 
+from sqlalchemy import or_
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
 from app.extensions import db
@@ -68,7 +69,8 @@ class PartyBusinessRoleAppointment(AuditMixin, Base):
         return cls.query.filter_by(
             party_guid=party_guid, party_business_role_code=party_business_role_code).filter(
                 PartyBusinessRoleAppointment.start_date <= today).filter(
-                    PartyBusinessRoleAppointment.end_date > today).one_or_none()
+                    or_(PartyBusinessRoleAppointment.end_date > today,
+                        PartyBusinessRoleAppointment.end_date == None)).one_or_none()
 
     @classmethod
     def create(cls,

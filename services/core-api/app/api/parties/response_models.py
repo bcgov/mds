@@ -92,7 +92,8 @@ PARTY = api.model(
         'postnominal_letters': fields.String,
         'idir_username': fields.String,
         'party_orgbook_entity': fields.Nested(PARTY_ORGBOOK_ENTITY, skip_none=True),
-        'business_role_appts': fields.List(fields.Nested(PARTY_BUSINESS_ROLE_APPT, skip_none=True))
+        'business_role_appts': fields.List(fields.Nested(PARTY_BUSINESS_ROLE_APPT, skip_none=True)),
+        'signature': fields.String
     })
 
 PAGINATED_LIST = api.model(

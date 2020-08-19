@@ -232,5 +232,3 @@ export const createPartyOrgBookEntity = (partyGuid, payload) => (dispatch) => {
     })
     .finally(() => dispatch(hideLoading("modal")));
 };
-
-// TODO maybe add specific method for party update

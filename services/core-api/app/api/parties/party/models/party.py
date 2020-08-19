@@ -35,6 +35,7 @@ class Party(AuditMixin, Base):
     job_title = db.Column(db.String, nullable=True)
     postnominal_letters = db.Column(db.String, nullable=True)
     idir_username = db.Column(db.String, nullable=True)
+    signature = db.Column(db.String, nullable=True)
 
     business_role_appts = db.relationship(
         'PartyBusinessRoleAppointment',
@@ -89,12 +90,6 @@ class Party(AuditMixin, Base):
             context.update({
                 'mine_party_appt': [item.json() for item in self.mine_party_appt],
             })
-
-        # if 'business_role_appts' in relationships:
-        #     context.update({
-        #         'business_role_appts': [item.json() for item in self.business_role_appts],
-        #     })
-
         return context
 
     @classmethod

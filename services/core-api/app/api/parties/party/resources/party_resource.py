@@ -103,6 +103,11 @@ class PartyResource(Resource, UserMixin):
         'inspector_end_date',
         type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None,
         help='Identifies if current party is inspector')
+    parser.add_argument(
+        'signature',
+        type=str,
+        store_missing=False,
+    )
 
     PARTY_LIST_RESULT_LIMIT = 25
 
@@ -146,23 +151,31 @@ class PartyResource(Resource, UserMixin):
             for key, value in data.items():
                 setattr(existing_party.address[0], key, value)
 
-        # admin only can set inspector appointment
+        # admin only can set inspector and signature
         if jwt.validate_roles([MINE_ADMIN]):
+            signature = data.get('signature') if data.get('signature') else None
             today = datetime.now(timezone.utc).date()
-            business_role = PartyBusinessRoleAppointment.get_current_business_appointment(
-                existing_party.party_guid, "INS")
+            business_role = PartyBusinessRoleAppointment.get_current_business_appointment(existing_party.party_guid, "INS")
+
+            if existing_party.signature != signature:
+                existing_party = signature
 
             if data.get("set_to_inspector"):
-                start_date = data.inspector_start_date if data.get(
-                    "inspector_start_date") else datetime.now(timezone.utc)
+                start_date = data.inspector_start_date if data.get("inspector_start_date") else datetime.now(timezone.utc)
                 end_date = data.inspector_end_date if data.get("inspector_end_date") else None
-                new_bappt = PartyBusinessRoleAppointment.create("INS", party_guid, start_date, end_date)
 
-                try:
-                    new_bappt.save()
-                except alch_exceptions.IntegrityError as e:
-                    if "daterange_excl" in str(e):
-                        raise BadRequest(f'Date ranges for inspector appointment must not overlap')
+                # update_required = business_role and business_role.start_date == start_date.date() and business_role.end_date == None and (end_date == None or business_role.end_date != end_date.date())
+                update_required = business_role and business_role.start_date == start_date.date() and (end_date == None or business_role.end_date != end_date.date())
+                if update_required:
+                    business_role.end_date = end_date
+                    business_role.save()
+                else:
+                    new_bappt = PartyBusinessRoleAppointment.create("INS", party_guid, start_date, end_date)
+                    try:
+                        new_bappt.save()
+                    except alch_exceptions.IntegrityError as e:
+                        if "daterange_excl" in str(e):
+                            raise BadRequest(f'Date ranges for inspector appointment must not overlap')
             # deactivate inspector
             elif business_role:
                 end_date = data.get("inspector_end_date")
