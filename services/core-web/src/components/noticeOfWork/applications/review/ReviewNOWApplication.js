@@ -14,15 +14,7 @@ import {
   getNoticeOfWorkApplicationPermitTypeOptionsHash,
   getNoticeOfWorkApplicationTypeOptionsHash,
 } from "@common/selectors/staticContentSelectors";
-import {
-  required,
-  lat,
-  lon,
-  maxLength,
-  number,
-  requiredRadioButton,
-  currency,
-} from "@common/utils/Validate";
+import { required, lat, lon, maxLength, number, requiredRadioButton } from "@common/utils/Validate";
 import CustomPropTypes from "@/customPropTypes";
 import RenderField from "@/components/common/RenderField";
 import RenderDate from "@/components/common/RenderDate";
@@ -313,34 +305,6 @@ export const ReviewNOWApplication = (props) => {
             component={RenderAutoSizeField}
             disabled={props.isViewMode}
             validate={[maxLength(4000)]}
-          />
-        </Col>
-      </Row>
-    </div>
-  );
-
-  const renderSecurities = () => (
-    <div>
-      <Row gutter={16}>
-        <Col md={12} sm={24}>
-          <div className="field-title">Security Total</div>
-          <Field
-            id="security_total"
-            name="security_total"
-            component={RenderField}
-            disabled={props.isViewMode}
-            allowClear
-            {...currencyMask}
-            validate={[currency]}
-          />
-        </Col>
-        <Col md={12} sm={24}>
-          <div className="field-title">Security Received</div>
-          <Field
-            id="security_received_date"
-            name="security_received_date"
-            component={RenderDate}
-            disabled={props.isViewMode}
           />
         </Col>
       </Row>
@@ -756,9 +720,6 @@ export const ReviewNOWApplication = (props) => {
           <Divider />
           <ScrollContentWrapper id="application-info" title="Application Info">
             {renderApplicationInfo()}
-          </ScrollContentWrapper>
-          <ScrollContentWrapper id="securities" title="Securities">
-            {renderSecurities()}
           </ScrollContentWrapper>
           <ScrollContentWrapper id="contacts" title="Contacts">
             <ReviewNOWContacts contacts={props.contacts} />
