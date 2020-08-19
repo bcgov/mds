@@ -19,6 +19,7 @@ import AddCondition from "@/components/Forms/permits/conditions/AddCondition";
 import Condition from "@/components/Forms/permits/conditions/Condition";
 import CustomPropTypes from "@/customPropTypes";
 import { modalConfig } from "@/components/modalContent/config";
+import { COLOR } from "@/constants/styles";
 
 const { Panel } = Collapse;
 
@@ -91,6 +92,7 @@ export class Conditions extends Component {
           );
           return (
             <Panel
+              style={{ padding: "18px 16px", backgroundColor: COLOR.lightGrey }}
               header={`${conditionCategory.step} ${conditionCategory.description} (${
                 conditions.reduce((a, e) => concat(a, e.sub_conditions), []).length
               } conditions)`}
