@@ -18,10 +18,13 @@ import { maxBy, concat } from "lodash";
 import AddCondition from "@/components/Forms/permits/conditions/AddCondition";
 import Condition from "@/components/Forms/permits/conditions/Condition";
 import CustomPropTypes from "@/customPropTypes";
+import { modalConfig } from "@/components/modalContent/config";
 
 const { Panel } = Collapse;
 
 const propTypes = {
+  openModal: PropTypes.func.isRequired,
+  closeModal: PropTypes.func.isRequired,
   conditions: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
   permitConditionCategoryOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
   fetchPermitConditions: PropTypes.func.isRequired,
@@ -33,7 +36,7 @@ const propTypes = {
 export class Conditions extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = { submitting: false };
     this.fetchPermitConditions();
     props.setEditingConditionFlag(false);
   }
@@ -51,12 +54,31 @@ export class Conditions extends Component {
   };
 
   handleDelete = (permitConditionGuid) => {
+    this.setState({ submitting: true });
     this.props
       .deletePermitCondition(
         this.props.draftPermitAmendment.permit_amendment_guid,
         permitConditionGuid
       )
-      .then(() => this.fetchPermitConditions());
+      .then(() => {
+        this.setState({ submitting: false });
+        this.props.closeModal();
+        this.fetchPermitConditions();
+      });
+  };
+
+  openDeleteConditionModal = (condition) => {
+    this.props.openModal({
+      props: {
+        title: "Delete condition",
+        handleDelete: this.handleDelete,
+        closeModal: this.props.closeModal,
+        submitting: this.state.submitting,
+        condition,
+      },
+      width: "50vw",
+      content: modalConfig.DELETE_CONDITION_MODAL,
+    });
   };
 
   render = () => (
@@ -79,7 +101,7 @@ export class Conditions extends Component {
                 <Condition
                   condition={condition}
                   handleSubmit={(values) => this.handleAddCondition(values)}
-                  handleDelete={(permitConditionGuid) => this.handleDelete(permitConditionGuid)}
+                  handleDelete={this.openDeleteConditionModal}
                 />
               ))}
               <Divider />
