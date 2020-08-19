@@ -96,4 +96,22 @@ class PermitConditionsResource(Resource, UserMixin):
 
         permit_condition.save()
 
+        if permit_condition.parent_permit_condition_id is not None:
+            parent = PermitConditions.find_by_permit_condition_id(
+                permit_condition.parent_permit_condition_id)
+            sorted_conditions = sorted(parent.sub_conditions, key=lambda x: x.display_order)
+            for i, condition in enumerate(sorted_conditions):
+                condition.display_order = i + 1
+            parent.save()
+        else:
+            conditions = PermitConditions.find_all_by_permit_amendment_id(
+                permit_condition.permit_amendment_id)
+            conditions = [
+                x for x in conditions
+                if x.condition_category_code == permit_condition.condition_category_code
+            ]
+            for i, condition in enumerate(conditions):
+                condition.display_order = i + 1
+                condition.save()
+
         return ('', 204)

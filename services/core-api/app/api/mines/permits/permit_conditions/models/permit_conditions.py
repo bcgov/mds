@@ -103,3 +103,8 @@ class PermitConditions(AuditMixin, Base):
     def find_by_permit_condition_guid(cls, permit_condition_guid):
         return cls.query.filter_by(
             permit_condition_guid=permit_condition_guid, deleted_ind=False).first()
+
+    @classmethod
+    def find_by_permit_condition_id(cls, permit_condition_id):
+        return cls.query.filter_by(
+            permit_condition_id=permit_condition_id, deleted_ind=False).first()
