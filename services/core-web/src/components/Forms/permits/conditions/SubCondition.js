@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import { Col, Row, Popconfirm, Button } from "antd";
+import { Col, Row, Button } from "antd";
 import { maxBy } from "lodash";
-import { EDIT_OUTLINE_VIOLET, TRASHCAN } from "@/constants/assets";
+import { TRASHCAN, EDIT_OUTLINE_VIOLET } from "@/constants/assets";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
-import AddButton from "@/components/common/AddButton";
 import Condition from "@/components/Forms/permits/conditions/Condition";
 import AddCondition from "@/components/Forms/permits/conditions/AddCondition";
 import SubConditionForm from "./SubConditionForm";
@@ -18,6 +17,7 @@ const propTypes = {
   handleDelete: PropTypes.func,
   handleEdit: PropTypes.func,
   initialValues: PropTypes.objectOf(PropTypes.any),
+  isViewOnly: PropTypes.bool,
 };
 
 const defaultProps = {
@@ -30,10 +30,13 @@ const defaultProps = {
   handleSubmit: () => {},
   handleCancel: () => {},
   handleDelete: () => {},
+  handleEdit: () => {},
   initialValues: {},
+  isViewOnly: false,
 };
 
 const SubCondition = (props) => {
+  // eslint-disable-next-line no-unused-vars
   const [isEditing, setIsEditing] = useState(props.new);
   return (
     <>
@@ -51,10 +54,10 @@ const SubCondition = (props) => {
         {!isEditing && (
           <>
             <Col span={1} />
-            <Col span={1}>{!isEditing && props.condition.step}</Col>
+            <Col span={props.isViewOnly ? 2 : 1}>{!isEditing && props.condition.step}</Col>
           </>
         )}
-        <Col span={20}>
+        <Col span={props.isViewOnly ? 19 : 20}>
           <Row>
             <Col>{!isEditing && props.condition.condition}</Col>
           </Row>
@@ -70,31 +73,30 @@ const SubCondition = (props) => {
             </Col>
           </Row>
         </Col>
-        <Col span={3} className="float-right">
-          {!isEditing && (
+        <Col span={2} className="float-right">
+          {!isEditing && !props.isViewOnly && (
             <div>
-              <Button
-                ghost
-                size="small"
-                type="primary"
-                onClick={() => {
-                  setIsEditing(!isEditing);
-                }}
-              >
-                <img name="edit" src={EDIT_OUTLINE_VIOLET} alt="Edit Condition" />
-              </Button>
               <AuthorizationWrapper permission={Permission.ADMIN}>
-                <Popconfirm
-                  placement="topLeft"
-                  title="Are you sure you want to delete this condition?"
-                  onConfirm={() => props.handleDelete(props.condition.permit_condition_guid)}
-                  okText="Delete"
-                  cancelText="Cancel"
+                <Button
+                  ghost
+                  size="small"
+                  type="primary"
+                  onClick={() => {
+                    setIsEditing(!isEditing);
+                  }}
                 >
-                  <Button ghost size="small" type="primary">
-                    <img name="remove" src={TRASHCAN} alt="Remove Condition" />
-                  </Button>
-                </Popconfirm>
+                  <img name="edit" src={EDIT_OUTLINE_VIOLET} alt="Edit Condition" />
+                </Button>
+              </AuthorizationWrapper>
+              <AuthorizationWrapper permission={Permission.ADMIN}>
+                <Button
+                  ghost
+                  size="small"
+                  type="primary"
+                  onClick={() => props.handleDelete(props.condition)}
+                >
+                  <img name="remove" src={TRASHCAN} alt="Remove Condition" />
+                </Button>
               </AuthorizationWrapper>
             </div>
           )}
@@ -105,6 +107,7 @@ const SubCondition = (props) => {
           condition={condition}
           handleEdit={props.handleEdit}
           handleDelete={props.handleDelete}
+          isViewOnly={props.isViewOnly}
         />
       ))}
       {props.condition.sub_conditions.length === 0 && (
@@ -112,7 +115,7 @@ const SubCondition = (props) => {
           <Col>&nbsp;</Col>
         </Row>
       )}
-      {!isEditing && (
+      {!isEditing && !props.isViewOnly && (
         <Row gutter={32}>
           <Col span={22} offset={2}>
             <AddCondition

@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import { Form, Col, Row, Popconfirm, Button } from "antd";
+import { Col, Row, Button } from "antd";
 import { maxBy } from "lodash";
-import { EDIT_OUTLINE_VIOLET, TRASHCAN } from "@/constants/assets";
+import { TRASHCAN, EDIT_OUTLINE_VIOLET } from "@/constants/assets";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
 import Condition from "@/components/Forms/permits/conditions/Condition";
@@ -18,6 +18,7 @@ const propTypes = {
   setConditionEditingFlag: PropTypes.func,
   initialValues: PropTypes.objectOf(PropTypes.any),
   editingConditionFlag: PropTypes.bool.isRequired,
+  isViewOnly: PropTypes.bool,
 };
 
 const defaultProps = {
@@ -28,9 +29,11 @@ const defaultProps = {
   handleDelete: () => {},
   setConditionEditingFlag: () => {},
   initialValues: {},
+  isViewOnly: false,
 };
 
 const Section = (props) => {
+  // eslint-disable-next-line no-unused-vars
   const [isEditing, setIsEditing] = useState(props.new);
 
   return (
@@ -63,7 +66,7 @@ const Section = (props) => {
           </Col>
         )}
         <Col span={3} className="float-right">
-          {!isEditing && !props.editingConditionFlag && (
+          {!isEditing && !props.editingConditionFlag && !props.isViewOnly && (
             <div>
               <Button
                 ghost
@@ -77,17 +80,14 @@ const Section = (props) => {
                 <img name="edit" src={EDIT_OUTLINE_VIOLET} alt="Edit Condition" />
               </Button>
               <AuthorizationWrapper permission={Permission.ADMIN}>
-                <Popconfirm
-                  placement="topLeft"
-                  title="Are you sure you want to delete this condition?"
-                  onConfirm={() => props.handleDelete(props.condition.permit_condition_guid)}
-                  okText="Delete"
-                  cancelText="Cancel"
+                <Button
+                  ghost
+                  size="small"
+                  type="primary"
+                  onClick={() => props.handleDelete(props.condition)}
                 >
-                  <Button ghost size="small" type="primary">
-                    <img name="remove" src={TRASHCAN} alt="Remove Condition" />
-                  </Button>
-                </Popconfirm>
+                  <img name="remove" src={TRASHCAN} alt="Remove Condition" />
+                </Button>
               </AuthorizationWrapper>
             </div>
           )}
@@ -97,12 +97,12 @@ const Section = (props) => {
         props.condition.sub_conditions.map((condition) => (
           <Condition
             condition={condition}
-            handleSubmit={props.handleEdit}
+            handleSubmit={props.handleSubmit}
             handleDelete={props.handleDelete}
             setConditionEditingFlag={props.setConditionEditingFlag}
           />
         ))}
-      {!isEditing && (
+      {!isEditing && !props.isViewOnly && (
         <Row gutter={32}>
           <Col span={22} offset={2}>
             <AddCondition

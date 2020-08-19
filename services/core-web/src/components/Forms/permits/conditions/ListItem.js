@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import { Col, Row, Popconfirm, Button } from "antd";
-import { EDIT_OUTLINE_VIOLET, TRASHCAN } from "@/constants/assets";
+import { Col, Row, Button } from "antd";
+import { TRASHCAN, EDIT_OUTLINE_VIOLET } from "@/constants/assets";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
 import ListItemForm from "@/components/Forms/permits/conditions/ListItemForm";
@@ -12,8 +12,8 @@ const propTypes = {
   handleSubmit: PropTypes.func,
   handleCancel: PropTypes.func,
   handleDelete: PropTypes.func,
-  handleEdit: PropTypes.func,
   initialValues: PropTypes.objectOf(PropTypes.any),
+  isViewOnly: PropTypes.bool,
 };
 
 const defaultProps = {
@@ -26,11 +26,12 @@ const defaultProps = {
   handleSubmit: () => {},
   handleCancel: () => {},
   handleDelete: () => {},
-  handleEdit: () => {},
   initialValues: {},
+  isViewOnly: false,
 };
 
 const ListItem = (props) => {
+  // eslint-disable-next-line no-unused-vars
   const [isEditing, setIsEditing] = useState(props.new);
   return (
     <>
@@ -41,43 +42,41 @@ const ListItem = (props) => {
       )}
       <Row gutter={32}>
         {!isEditing && <Col span={3} />}
-        <Col span={1}>{!isEditing && props.condition.step}</Col>
-        <Col span={18}>
+        <Col span={props.isViewOnly ? 2 : 1}>{!isEditing && props.condition.step}</Col>
+        <Col span={props.isViewOnly ? 17 : 18}>
           {!isEditing && props.condition.condition}
           {isEditing && (
             <ListItemForm
               onCancel={props.handleCancel}
-              onSubmit={props.handleEdit}
+              onSubmit={props.handleSubmit}
               initialValues={props.initialValues}
             />
           )}
         </Col>
         <Col span={3} className="float-right">
-          {!isEditing && (
+          {!isEditing && !props.isViewOnly && (
             <div>
-              <Button
-                ghost
-                size="small"
-                type="primary"
-                onClick={() => {
-                  setIsEditing(!isEditing);
-                }}
-              >
-                <img name="edit" src={EDIT_OUTLINE_VIOLET} alt="Edit Condition" />
-              </Button>
-
               <AuthorizationWrapper permission={Permission.ADMIN}>
-                <Popconfirm
-                  placement="topLeft"
-                  title="Are you sure you want to delete this condition?"
-                  onConfirm={() => props.handleDelete(props.condition.permit_condition_guid)}
-                  okText="Delete"
-                  cancelText="Cancel"
+                <Button
+                  ghost
+                  size="small"
+                  type="primary"
+                  onClick={() => {
+                    setIsEditing(!isEditing);
+                  }}
                 >
-                  <Button ghost size="small" type="primary">
-                    <img name="remove" src={TRASHCAN} alt="Remove Condition" />
-                  </Button>
-                </Popconfirm>
+                  <img name="edit" src={EDIT_OUTLINE_VIOLET} alt="Edit Condition" />
+                </Button>
+              </AuthorizationWrapper>
+              <AuthorizationWrapper permission={Permission.ADMIN}>
+                <Button
+                  ghost
+                  size="small"
+                  type="primary"
+                  onClick={() => props.handleDelete(props.condition)}
+                >
+                  <img name="remove" src={TRASHCAN} alt="Remove Condition" />
+                </Button>
               </AuthorizationWrapper>
             </div>
           )}
