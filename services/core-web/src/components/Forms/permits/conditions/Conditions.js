@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { Divider, Icon, Row, Collapse, Button } from "antd";
+import { Divider, Icon, Collapse, Button } from "antd";
 import { openModal, closeModal } from "@common/actions/modalActions";
 import {
   getPermitConditionCategoryOptions,
@@ -18,8 +18,7 @@ import {
   deletePermitCondition,
   setEditingConditionFlag,
 } from "@common/actionCreators/permitActionCreator";
-import { getNoticeOfWork } from "@common/selectors/noticeOfWorkSelectors";
-import { maxBy } from "lodash";
+import { maxBy, concat } from "lodash";
 import AddCondition from "@/components/Forms/permits/conditions/AddCondition";
 import Condition from "@/components/Forms/permits/conditions/Condition";
 import CustomPropTypes from "@/customPropTypes";
@@ -27,13 +26,10 @@ import CustomPropTypes from "@/customPropTypes";
 const { Panel } = Collapse;
 
 const propTypes = {
-  isViewMode: PropTypes.bool.isRequired,
   conditions: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
   permitConditionCategoryOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
-  permitConditionTypeOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
   editingConditionFlag: PropTypes.bool.isRequired,
   fetchPermitConditions: PropTypes.func.isRequired,
-  noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
   draftPermitAmendment: CustomPropTypes.permitAmendment.isRequired,
   setEditingConditionFlag: PropTypes.func.isRequired,
   deletePermitCondition: PropTypes.func.isRequired,
@@ -86,7 +82,9 @@ export class Conditions extends Component {
           );
           return (
             <Panel
-              header={conditionCategory.description}
+              header={`${conditionCategory.step} ${conditionCategory.description} (${
+                conditions.reduce((a, e) => concat(a, e.sub_conditions), []).length
+              } conditions)`}
               key={conditionCategory.condition_category_code}
               id={conditionCategory.condition_category_code}
             >
@@ -130,7 +128,6 @@ const mapStateToProps = (state) => ({
   permitConditionCategoryOptions: getPermitConditionCategoryOptions(state),
   permitConditionTypeOptions: getPermitConditionTypeOptions(state),
   conditions: getPermitConditions(state),
-  noticeOfWork: getNoticeOfWork(state),
   draftPermitAmendment: getDraftPermitAmendmentForNOW(state),
   editingConditionFlag: getEditingConditionFlag(state),
 });
