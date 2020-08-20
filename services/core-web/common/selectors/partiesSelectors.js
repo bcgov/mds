@@ -21,7 +21,7 @@ export const getSummaryPartyRelationships = createSelector(
     partyRelationships.filter((pr) => ["MMG", "PMT"].includes(pr.mine_party_appt_type_code))
 );
 
-// split investigators on active and inactive date based on business role
+// split inspectors on active and inactive based on business role
 export const getDropdownInspectors = createSelector([getInspectors], (parties) => {
   let today = moment().utc();
   const activeInspectors = parties
@@ -43,7 +43,7 @@ export const getDropdownInspectors = createSelector([getInspectors], (parties) =
         !!inspector.business_role_appts.find(
           (r) =>
             today.isAfter(r.end_date, "day") &&
-            !activeInspectors.find((ins) => ins.party_guid == inspector.party_guid)
+            !activeInspectors.find((ins) => ins.party_guid === inspector.party_guid)
         )
     )
     .map((inspector) => ({
