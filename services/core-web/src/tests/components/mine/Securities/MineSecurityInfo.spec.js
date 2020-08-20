@@ -67,6 +67,15 @@ describe("MineSecurityInfo", () => {
     expect(instance.getAmountSum(props.permits[0])).toEqual(1451);
   });
 
+  it("getTotalAssessedSum is called for the Total Assessed value", () => {
+    const component = shallow(<MineSecurityInfo {...dispatchProps} {...props} />);
+    const instance = component.instance();
+    const getTotalAssessedSumSpy = jest.spyOn(instance, "getTotalAssessedSum");
+    instance.getTotalAssessedSum(props.permits[0]);
+    expect(getTotalAssessedSumSpy).toHaveBeenCalledWith(props.permits[0]);
+    expect(instance.getTotalAssessedSum(props.permits[0])).toEqual(8000000);
+  });
+
   it("getBalance is called to calculate the amount remaining from the confiscated total", () => {
     const component = shallow(<MineSecurityInfo {...dispatchProps} {...props} />);
     const instance = component.instance();
