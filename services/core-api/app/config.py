@@ -20,10 +20,11 @@ class Config(object):
             }
         },
         'handlers': {
-            'wsgi': {
+            'console': {
                 'class': 'logging.StreamHandler',
-                'stream': 'ext://flask.logging.wsgi_errors_stream',
-                'formatter': 'default'
+                'stream': 'ext://sys.stdout',
+                'formatter': 'default',
+                'level': 'DEBUG'
             },
             'file': {
                 'class': 'logging.handlers.RotatingFileHandler',
@@ -36,7 +37,7 @@ class Config(object):
         },
         'root': {
             'level': FLASK_LOGGING_LEVEL,
-            'handlers': ['file']
+            'handlers': ['file', 'console']
         }
     }
 
