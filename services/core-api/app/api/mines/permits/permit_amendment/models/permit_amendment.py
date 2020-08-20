@@ -45,6 +45,7 @@ class PermitAmendment(AuditMixin, Base):
     permit_amendment_type_description = association_proxy('permit_amendment_type', 'description')
 
     security_total = db.Column(db.Numeric(16, 2))
+    security_received_date = db.Column(db.DateTime)
     now_application_guid = db.Column(
         UUID(as_uuid=True), db.ForeignKey('now_application_identity.now_application_guid'))
     now_identity = db.relationship('NOWApplicationIdentity', lazy='select')
@@ -98,7 +99,8 @@ class PermitAmendment(AuditMixin, Base):
             issue_date=issue_date,
             authorization_end_date=authorization_end_date,
             permit_amendment_type_code=permit_amendment_type_code,
-            permit_amendment_status_code=permit_amendment_status_code if not permit.permit_status_code == 'D' else 'DFT',
+            permit_amendment_status_code=permit_amendment_status_code
+            if not permit.permit_status_code == 'D' else 'DFT',
             description=description,
             lead_inspector_title=lead_inspector_title,
             regional_office=regional_office,
@@ -118,7 +120,8 @@ class PermitAmendment(AuditMixin, Base):
 
     @classmethod
     def find_by_permit_id(cls, _id):
-        return cls.query.filter_by(permit_id=_id).filter_by(deleted_ind=False).filter(cls.permit_amendment_status_code != 'DFT').all()
+        return cls.query.filter_by(permit_id=_id).filter_by(deleted_ind=False).filter(
+            cls.permit_amendment_status_code != 'DFT').all()
 
     @classmethod
     def find_by_now_application_guid(cls, _id):
