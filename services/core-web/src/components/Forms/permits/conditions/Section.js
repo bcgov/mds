@@ -67,23 +67,25 @@ const Section = (props) => {
         <Col span={3} className="float-right">
           {!isEditing && !props.isViewOnly && (
             <div>
-              <Button
-                ghost
-                size="small"
-                type="primary"
-                onClick={() => {
-                  props.setConditionEditingFlag(true);
-                  setIsEditing(!isEditing);
-                }}
-                disabled={props.editingConditionFlag}
-              >
-                <img
-                  className={props.editingConditionFlag ? "disabled-icon" : ""}
-                  name="edit"
-                  src={EDIT_OUTLINE_VIOLET}
-                  alt="Edit Condition"
-                />
-              </Button>
+              <AuthorizationWrapper permission={Permission.ADMIN}>
+                <Button
+                  ghost
+                  size="small"
+                  type="primary"
+                  onClick={() => {
+                    props.setConditionEditingFlag(true);
+                    setIsEditing(!isEditing);
+                  }}
+                  disabled={props.editingConditionFlag}
+                >
+                  <img
+                    className={props.editingConditionFlag ? "disabled-icon" : ""}
+                    name="edit"
+                    src={EDIT_OUTLINE_VIOLET}
+                    alt="Edit Condition"
+                  />
+                </Button>
+              </AuthorizationWrapper>
               <AuthorizationWrapper permission={Permission.ADMIN}>
                 <Button
                   ghost
