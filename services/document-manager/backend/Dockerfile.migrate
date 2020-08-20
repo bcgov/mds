@@ -15,4 +15,4 @@ COPY . .
 
 # Run the server
 EXPOSE 5001
-ENTRYPOINT [ "flask","db","upgrade" ]
+CMD [ "flask","db","upgrade" ]
