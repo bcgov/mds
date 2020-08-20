@@ -87,6 +87,7 @@ class PermitAmendment(AuditMixin, Base):
                authorization_end_date,
                permit_amendment_type_code='AMD',
                description=None,
+               security_total=None,
                permit_amendment_status_code='ACT',
                lead_inspector_title=None,
                regional_office=None,
@@ -102,6 +103,7 @@ class PermitAmendment(AuditMixin, Base):
             permit_amendment_status_code=permit_amendment_status_code
             if not permit.permit_status_code == 'D' else 'DFT',
             description=description,
+            security_total=security_total,
             lead_inspector_title=lead_inspector_title,
             regional_office=regional_office,
             now_application_guid=now_application_guid)
