@@ -1,0 +1,69 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NOWDocuments renders properly 1`] = `
+<div>
+  <withStore(Table)
+    align="left"
+    columns={
+      Array [
+        Object {
+          "dataIndex": "filename",
+          "key": "filename",
+          "render": [Function],
+          "sorter": [Function],
+          "title": "File Name",
+        },
+        Object {
+          "dataIndex": "category",
+          "filters": Array [
+            Object {
+              "text": "Annual Summary",
+              "value": "Annual Summary",
+            },
+            Object {
+              "text": "Other",
+              "value": "Other",
+            },
+          ],
+          "key": "category",
+          "onFilter": [Function],
+          "render": [Function],
+          "sorter": [Function],
+          "title": "Category",
+        },
+        Object {
+          "dataIndex": "description",
+          "key": "description",
+          "render": [Function],
+          "sorter": [Function],
+          "title": "Description",
+        },
+        Object {
+          "dataIndex": "upload_date",
+          "key": "upload_date",
+          "render": [Function],
+          "sorter": [Function],
+          "title": "Upload Date/Time",
+        },
+      ]
+    }
+    dataSource={Array []}
+    locale={
+      Object {
+        "emptyText": <NullScreen
+          message=""
+          type="documents"
+        />,
+      }
+    }
+    pagination={false}
+    rowSelection={null}
+  />
+  <AddButton
+    disabled={false}
+    onClick={[Function]}
+  >
+    Add Document
+  </AddButton>
+</div>
+`;
