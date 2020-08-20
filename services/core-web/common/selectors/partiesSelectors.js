@@ -23,7 +23,7 @@ export const getSummaryPartyRelationships = createSelector(
 
 // split inspectors on active and inactive based on business role
 export const getDropdownInspectors = createSelector([getInspectors], (parties) => {
-  let today = moment().utc();
+  const today = moment().utc();
   const activeInspectors = parties
     .filter(
       (inspector) =>
