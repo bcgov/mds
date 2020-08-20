@@ -16,6 +16,7 @@ import {
 import {
   fetchPermitConditions,
   deletePermitCondition,
+  updatePermitCondition,
   setEditingConditionFlag,
 } from "@common/actionCreators/permitActionCreator";
 import { maxBy, concat } from "lodash";
@@ -37,6 +38,7 @@ const propTypes = {
   draftPermitAmendment: CustomPropTypes.permitAmendment.isRequired,
   setEditingConditionFlag: PropTypes.func.isRequired,
   deletePermitCondition: PropTypes.func.isRequired,
+  updatePermitCondition: PropTypes.func.isRequired,
 };
 
 export class Conditions extends Component {
@@ -87,9 +89,11 @@ export class Conditions extends Component {
     });
   };
 
-  handleEdit = (values) => {
-    console.log(values);
-  };
+  handleEdit = (values) =>
+    this.props.updatePermitCondition(values.permit_condition_guid, values).then(() => {
+      this.props.fetchPermitConditions(this.props.draftPermitAmendment.permit_amendment_guid);
+      this.props.setEditingConditionFlag(false);
+    });
 
   setConditionEditingFlag = (value) => {
     this.props.setEditingConditionFlag(value);
@@ -164,6 +168,7 @@ const mapDispatchToProps = (dispatch) =>
       fetchPermitConditions,
       setEditingConditionFlag,
       deletePermitCondition,
+      updatePermitCondition,
     },
     dispatch
   );

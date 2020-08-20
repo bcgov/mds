@@ -35,7 +35,6 @@ const defaultProps = {
 const Section = (props) => {
   // eslint-disable-next-line no-unused-vars
   const [isEditing, setIsEditing] = useState(props.new);
-
   return (
     <>
       {props.condition &&
@@ -60,13 +59,13 @@ const Section = (props) => {
                 props.setConditionEditingFlag(false);
                 props.handleCancel(false);
               }}
-              onSubmit={props.handleSubmit}
+              onSubmit={(values) => props.handleSubmit(values).then(() => setIsEditing(!isEditing))}
               initialValues={props.condition || props.initialValues}
             />
           </Col>
         )}
         <Col span={3} className="float-right">
-          {!isEditing && !props.editingConditionFlag && !props.isViewOnly && (
+          {!isEditing && !props.isViewOnly && (
             <div>
               <Button
                 ghost
@@ -76,8 +75,14 @@ const Section = (props) => {
                   props.setConditionEditingFlag(true);
                   setIsEditing(!isEditing);
                 }}
+                disabled={props.editingConditionFlag}
               >
-                <img name="edit" src={EDIT_OUTLINE_VIOLET} alt="Edit Condition" />
+                <img
+                  className={props.editingConditionFlag ? "disabled-icon" : ""}
+                  name="edit"
+                  src={EDIT_OUTLINE_VIOLET}
+                  alt="Edit Condition"
+                />
               </Button>
               <AuthorizationWrapper permission={Permission.ADMIN}>
                 <Button
@@ -85,8 +90,14 @@ const Section = (props) => {
                   size="small"
                   type="primary"
                   onClick={() => props.handleDelete(props.condition)}
+                  disabled={props.editingConditionFlag}
                 >
-                  <img name="remove" src={TRASHCAN} alt="Remove Condition" />
+                  <img
+                    className={props.editingConditionFlag ? "disabled-icon" : ""}
+                    name="remove"
+                    src={TRASHCAN}
+                    alt="Remove Condition"
+                  />
                 </Button>
               </AuthorizationWrapper>
             </div>
@@ -100,6 +111,8 @@ const Section = (props) => {
             handleSubmit={props.handleSubmit}
             handleDelete={props.handleDelete}
             setConditionEditingFlag={props.setConditionEditingFlag}
+            editingConditionFlag={props.editingConditionFlag}
+            isViewOnly={props.isViewOnly}
           />
         ))}
       {!isEditing && !props.isViewOnly && (

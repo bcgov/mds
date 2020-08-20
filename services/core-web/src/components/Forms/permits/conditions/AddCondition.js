@@ -18,7 +18,6 @@ import SubCondition from "@/components/Forms/permits/conditions/SubCondition";
 import ListItem from "@/components/Forms/permits/conditions/ListItem";
 
 const propTypes = {
-  handleSubmit: PropTypes.func.isRequired,
   initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
   editingConditionFlag: PropTypes.bool.isRequired,
   setEditingConditionFlag: PropTypes.func.isRequired,
@@ -47,12 +46,12 @@ export class AddCondition extends Component {
   state = { isEditing: false };
 
   handleSubmit = (values) =>
-    this.propss
+    this.props
       .createPermitCondition(this.props.draftPermitAmendment.permit_amendment_guid, values)
       .then(() => {
+        this.setState({ isEditing: false });
         this.props.fetchPermitConditions(this.props.draftPermitAmendment.permit_amendment_guid);
         this.props.setEditingConditionFlag(false);
-        this.setState({ isEditing: false });
       });
 
   handleCancel = (value) => {

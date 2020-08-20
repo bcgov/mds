@@ -12,20 +12,19 @@ const propTypes = {
   handleSubmit: PropTypes.func,
   handleCancel: PropTypes.func,
   handleDelete: PropTypes.func,
+  setConditionEditingFlag: PropTypes.func,
   initialValues: PropTypes.objectOf(PropTypes.any),
+  editingConditionFlag: PropTypes.bool.isRequired,
   isViewOnly: PropTypes.bool,
 };
 
 const defaultProps = {
-  condition: {
-    step: "",
-    condition: "",
-    sub_conditions: [],
-  },
+  condition: undefined,
   new: false,
   handleSubmit: () => {},
   handleCancel: () => {},
   handleDelete: () => {},
+  setConditionEditingFlag: () => {},
   initialValues: {},
   isViewOnly: false,
 };
@@ -35,7 +34,7 @@ const ListItem = (props) => {
   const [isEditing, setIsEditing] = useState(props.new);
   return (
     <>
-      {props.condition.display_order === 1 && (
+      {props.condition && props.condition.display_order === 1 && (
         <Row gutter={32}>
           <Col>&nbsp;</Col>
         </Row>
@@ -47,9 +46,13 @@ const ListItem = (props) => {
           {!isEditing && props.condition.condition}
           {isEditing && (
             <ListItemForm
-              onCancel={props.handleCancel}
-              onSubmit={props.handleSubmit}
-              initialValues={props.initialValues}
+              onCancel={() => {
+                setIsEditing(!isEditing);
+                props.setConditionEditingFlag(false);
+                props.handleCancel(false);
+              }}
+              onSubmit={(values) => props.handleSubmit(values).then(() => setIsEditing(!isEditing))}
+              initialValues={props.condition || props.initialValues}
             />
           )}
         </Col>
@@ -62,10 +65,17 @@ const ListItem = (props) => {
                   size="small"
                   type="primary"
                   onClick={() => {
+                    props.setConditionEditingFlag(true);
                     setIsEditing(!isEditing);
                   }}
+                  disabled={props.editingConditionFlag}
                 >
-                  <img name="edit" src={EDIT_OUTLINE_VIOLET} alt="Edit Condition" />
+                  <img
+                    className={props.editingConditionFlag ? "disabled-icon" : ""}
+                    name="edit"
+                    src={EDIT_OUTLINE_VIOLET}
+                    alt="Edit Condition"
+                  />
                 </Button>
               </AuthorizationWrapper>
               <AuthorizationWrapper permission={Permission.ADMIN}>
@@ -74,8 +84,14 @@ const ListItem = (props) => {
                   size="small"
                   type="primary"
                   onClick={() => props.handleDelete(props.condition)}
+                  disabled={props.editingConditionFlag}
                 >
-                  <img name="remove" src={TRASHCAN} alt="Remove Condition" />
+                  <img
+                    className={props.editingConditionFlag ? "disabled-icon" : ""}
+                    name="remove"
+                    src={TRASHCAN}
+                    alt="Remove Condition"
+                  />
                 </Button>
               </AuthorizationWrapper>
             </div>
