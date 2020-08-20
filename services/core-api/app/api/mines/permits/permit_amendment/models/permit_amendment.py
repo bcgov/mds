@@ -43,7 +43,8 @@ class PermitAmendment(AuditMixin, Base):
     permit_guid = association_proxy('permit', 'permit_guid')
     permit_amendment_type = db.relationship('PermitAmendmentTypeCode')
     permit_amendment_type_description = association_proxy('permit_amendment_type', 'description')
-
+    #security_total is the amount assessed for work on the NoW,
+    # Securities_totals sum to create the total assessment for the permit
     security_total = db.Column(db.Numeric(16, 2))
     security_received_date = db.Column(db.DateTime)
     now_application_guid = db.Column(
