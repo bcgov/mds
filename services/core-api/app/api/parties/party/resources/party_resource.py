@@ -163,8 +163,6 @@ class PartyResource(Resource, UserMixin):
             if data.get("set_to_inspector"):
                 start_date = data.inspector_start_date if data.get("inspector_start_date") else datetime.now(timezone.utc)
                 end_date = data.inspector_end_date if data.get("inspector_end_date") else None
-
-                # update_required = business_role and business_role.start_date == start_date.date() and business_role.end_date == None and (end_date == None or business_role.end_date != end_date.date())
                 update_required = business_role and business_role.start_date == start_date.date() and (end_date == None or business_role.end_date != end_date.date())
                 if update_required:
                     business_role.end_date = end_date

@@ -305,12 +305,14 @@ export const PARTY = {
       party_name: "mock name",
       party_type_code: "PER",
       address: [{}],
+      business_role_appts: [{}],
     },
     "18145c75-49ad-0101-85f3-a43e45ae989a": {
       party_guid: "18145c75-49ad-0101-85f3-a43e45ae989a",
       party_name: "mock Two",
       party_type_code: "PER",
       address: [{}],
+      business_role_appts: [{}],
     },
   },
   partiesWithAppointments: {
@@ -320,6 +322,7 @@ export const PARTY = {
       party_type_code: "PER",
       address: [{}],
       mine_party_appt: [],
+      business_role_appts: [{}],
     },
     "18145c75-49ad-0101-85f3-a43e45ae989a": {
       party_guid: "18145c75-49ad-0101-85f3-a43e45ae989a",
@@ -327,6 +330,14 @@ export const PARTY = {
       party_type_code: "PER",
       address: [{}],
       mine_party_appt: [],
+      business_role_appts: [
+        {
+          end_date: "2020-08-29T00:00:00",
+          party_business_role_appt_id: 275,
+          party_business_role_code: "INS",
+          start_date: "2020-08-11T00:00:00",
+        },
+      ],
     },
   },
 };
@@ -3588,6 +3599,7 @@ export const BULK_STATIC_CONTENT_RESPONSE = {
     { mine_report_category: "OTH", description: "Other" },
   ],
   partyRelationshipTypes: [],
+  partyBusinessRoleOptions: [],
   noticeOfWorkActivityTypeOptions: [
     {
       activity_type_code: "cut_lines_polarization_survey",

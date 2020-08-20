@@ -1,4 +1,5 @@
 import json, uuid
+from datetime import datetime
 
 from tests.factories import PartyFactory
 from app.api.utils.custom_reqparser import DEFAULT_MISSING_REQUIRED
@@ -157,7 +158,8 @@ def test_put_person_success(test_client, db_session, auth_headers):
         "city": "Baz Town",
         "sub_division_code": "BC",
         "post_code": "X0X0X0",
-        "address_type_code": "CAN"
+        "address_type_code": "CAN",
+        "signature": "base64EncodedLineTemplate"
     }
     put_resp = test_client.put(
         f'/parties/{party_guid}', data=test_person_data, headers=auth_headers['full_auth_header'])
@@ -168,6 +170,7 @@ def test_put_person_success(test_client, db_session, auth_headers):
     assert put_data['phone_no'] == test_person_data['phone_no']
     assert put_data['party_type_code'] == test_person_data['party_type_code']
     assert put_data['first_name'] == test_person_data['first_name']
+    assert put_data['signature'] == test_person_data['signature']
 
     address = put_data['address'][0]
     assert address['suite_no'] == test_person_data['suite_no']
@@ -188,3 +191,71 @@ def test_delete_person_as_admin(test_client, db_session, auth_headers):
     assert delete_resp.status_code == 204
     get_resp = test_client.get(f'/parties/{party_guid}', headers=auth_headers['full_auth_header'])
     assert get_resp.status_code == 404
+
+
+def test_delete_inspector_signature(test_client, db_session, auth_headers):
+    party_guid = PartyFactory(person=True).party_guid
+
+    test_person_data = {
+        "party_name": "Changedlast",
+        "first_name": "Changedfirst",
+        "phone_no": "682-732-8490",
+    }
+    put_resp = test_client.put(
+        f'/parties/{party_guid}', data=test_person_data, headers=auth_headers['full_auth_header'])
+    put_data = json.loads(put_resp.data.decode())
+    assert put_resp.status_code == 200
+    assert put_data['party_name'] == test_person_data['party_name']
+    assert put_data['first_name'] == test_person_data['first_name']
+    assert put_data['phone_no'] == test_person_data['phone_no']
+    assert put_data['signature'] == None
+
+
+def test_set_party_to_inspector_by_admin_success(test_client, db_session, auth_headers):
+    party_guid = PartyFactory(person=True).party_guid
+
+    test_person_data = {
+        "party_name": "Changedlast",
+        "first_name": "Changedfirst",
+        "phone_no": "682-732-8490",
+        "signature": "base64EncodedLineTemplate",
+        "set_to_inspector": "true",
+        "inspector_start_date": "2020-08-01",
+        "inspector_end_date": "2020-08-05",
+    }
+    put_resp = test_client.put(
+        f'/parties/{party_guid}', data=test_person_data, headers=auth_headers['full_auth_header'])
+    put_data = json.loads(put_resp.data.decode())
+    assert put_resp.status_code == 200
+    assert put_data['party_name'] == test_person_data['party_name']
+    assert put_data['first_name'] == test_person_data['first_name']
+    assert put_data['signature'] == test_person_data['signature']
+    business_role = put_data['business_role_appts'][0]
+    assert datetime.strptime(
+        business_role['start_date'],
+        '%Y-%m-%dT%H:%M:%S').strftime('%Y-%m-%d') == test_person_data['inspector_start_date']
+    assert datetime.strptime(
+        business_role['end_date'],
+        '%Y-%m-%dT%H:%M:%S').strftime('%Y-%m-%d') == test_person_data['inspector_end_date']
+
+
+def test_set_party_to_inspector_not_by_admin_fail(test_client, db_session, auth_headers):
+    party_guid = PartyFactory(person=True).party_guid
+
+    test_person_data = {
+        "party_name": "Changedlast",
+        "first_name": "Changedfirst",
+        "phone_no": "682-732-8490",
+        "signature": "base64EncodedLineTemplate",
+        "set_to_inspector": "true",
+        "inspector_start_date": "2020-08-01",
+        "inspector_end_date": "2020-08-05",
+    }
+    put_resp = test_client.put(
+        f'/parties/{party_guid}',
+        data=test_person_data,
+        headers=auth_headers['core_edit_parties_only_auth_header'])
+    put_data = json.loads(put_resp.data.decode())
+    assert put_resp.status_code == 200
+    assert put_data['signature'] == test_person_data['signature']
+    assert not put_data['business_role_appts']

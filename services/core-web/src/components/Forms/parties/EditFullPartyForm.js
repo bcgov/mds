@@ -55,7 +55,6 @@ export class EditFullPartyForm extends Component {
     <div>
       <Form
         onSubmit={this.props.handleSubmit((values) => {
-          debugger;
           const party = {
             ...values,
             signature: this.state.signature,

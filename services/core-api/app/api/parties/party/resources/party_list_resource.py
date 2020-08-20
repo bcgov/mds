@@ -9,7 +9,7 @@ from app.extensions import api, cache
 from app.api.utils.access_decorators import requires_role_view_all, requires_role_edit_party, requires_any_of, VIEW_ALL, MINESPACE_PROPONENT
 from app.api.utils.resources_mixins import UserMixin
 from app.api.utils.custom_reqparser import CustomReqparser
-from app.api.constants import GET_ALL_INSPECTORS_KEY, TIMEOUT_15_MINUTES
+from app.api.constants import GET_ALL_INSPECTORS_KEY, TIMEOUT_60_MINUTES
 
 from app.api.parties.party.models.party import Party
 from app.api.parties.party.models.address import Address
@@ -90,13 +90,13 @@ class PartyListResource(Resource, UserMixin):
         })
     @requires_any_of([VIEW_ALL, MINESPACE_PROPONENT])
     def get(self):
-        # if dict(request.args) == ALL_INSPECTORS_QUERY_PARAMS:
-        #     result = cache.get(GET_ALL_INSPECTORS_KEY)
-        #     if result:
-        #         current_app.logger.debug(f'CACHE HIT - {GET_ALL_INSPECTORS_KEY}')
-        #         return result
-        #     else:
-        #         current_app.logger.debug(f'CACHE MISS - {GET_ALL_INSPECTORS_KEY}')
+        if dict(request.args) == ALL_INSPECTORS_QUERY_PARAMS:
+            result = cache.get(GET_ALL_INSPECTORS_KEY)
+            if result:
+                current_app.logger.debug(f'CACHE HIT - {GET_ALL_INSPECTORS_KEY}')
+                return result
+            else:
+                current_app.logger.debug(f'CACHE MISS - {GET_ALL_INSPECTORS_KEY}')
 
         paginated_parties, pagination_details = self.apply_filter_and_search(request.args)
         if not paginated_parties:
@@ -111,12 +111,10 @@ class PartyListResource(Resource, UserMixin):
                 'total': pagination_details.total_results,
             }, PAGINATED_PARTY_LIST)
 
-        # TODO revert timeOut
         if dict(request.args
                 ) == ALL_INSPECTORS_QUERY_PARAMS and pagination_details.total_results > 0:
             current_app.logger.debug(f'SET CACHE - {GET_ALL_INSPECTORS_KEY}')
-            cache.set(GET_ALL_INSPECTORS_KEY, result, timeout=1)
-            # cache.set(GET_ALL_INSPECTORS_KEY, result, timeout=TIMEOUT_15_MINUTES)
+            cache.set(GET_ALL_INSPECTORS_KEY, result, timeout=TIMEOUT_60_MINUTES)
         return result
 
     @api.expect(parser)
@@ -150,10 +148,6 @@ class PartyListResource(Resource, UserMixin):
                 sub_division_code=data.get('sub_division_code'),
                 post_code=data.get('post_code'))
             party.address.append(address)
-
-        # TODO do we want to have possibility to create inspector during the contact creation
-        # if data.get('set_to_inspector'):
-        #     inspector_role =
 
         party.save()
         return party
