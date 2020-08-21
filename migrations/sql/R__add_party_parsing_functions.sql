@@ -47,6 +47,20 @@ END;
 $$ LANGUAGE plpgsql;
 
 
+CREATE OR REPLACE FUNCTION convert_to_integer(v_input text) RETURNS INTEGER AS $$
+DECLARE v_int_value INTEGER DEFAULT NULL;
+BEGIN
+    BEGIN
+        v_int_value := v_input::INTEGER;
+    EXCEPTION WHEN OTHERS THEN
+        RAISE NOTICE 'Invalid integer value: "%".  Returning NULL.', v_input;
+        RETURN NULL;
+    END;
+RETURN v_int_value;
+END;
+$$ LANGUAGE plpgsql;
+
+
 CREATE OR REPLACE FUNCTION mms_permit_no_to_ses_convert(mms_permit_no varchar) RETURNS varchar AS $$
 BEGIN
     DECLARE
@@ -63,7 +77,7 @@ BEGIN
         UPPER(CONCAT(
             RPAD(TRIM(parts[1]),2, ' '),
             '-   -',
-            LPAD(TRIM(parts[2]::int::varchar),3,' ')
+            LPAD(TRIM(LTRIM(parts[2],'0')),3,' ')
         ))
         WHEN mms_permit_no ~ 'GEN' THEN
         -- GEN
@@ -76,7 +90,7 @@ BEGIN
                 WHEN parts[3]::int = 0 THEN
                 '   '
                 ELSE
-                LPAD(TRIM(parts[3]::int::varchar),3,' ')
+                LPAD(TRIM(LTRIM(parts[3],'0')),3,' ')
             END
         ))
         ELSE
@@ -88,14 +102,14 @@ BEGIN
                 WHEN parts[2]::int = 0 THEN
                 '   '
                 ELSE
-                LPAD(TRIM(parts[2]::int::varchar),3,' ')
+                LPAD(TRIM(LTRIM(parts[2],'0')),3,' ')
             END,
             '-',
             CASE
                 WHEN parts[3]::int = 0 THEN
                 '   '
                 ELSE
-                LPAD(TRIM(parts[3]::int::varchar),3,' ')
+                LPAD(TRIM(LTRIM(parts[3],'0')),3,' ')
             END
         ))
     END
