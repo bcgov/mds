@@ -14,6 +14,7 @@ class PermitConditionCategory(AuditMixin, Base):
     __tablename__ = 'permit_condition_category'
 
     condition_category_code = db.Column(db.String, nullable=False, primary_key=True)
+    step = db.Column(db.String)
     description = db.Column(db.String, nullable=False)
     active_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
     display_order = db.Column(db.Integer, nullable=False)

@@ -23,6 +23,11 @@ export const OPEN_DOC = {
 
 export const DOCUMENT = { ...PDF, ...DOC, ...OPEN_DOC };
 
+export const IMAGE = {
+  ".jpeg": "image/jpeg",
+  ".PNG": "image/png",
+};
+
 export const UNIQUELY_SPATIAL = {
   ".dbf": "application/dbf",
   ".geoJSon": "application/vnd.geo+json",

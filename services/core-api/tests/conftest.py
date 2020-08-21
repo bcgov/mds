@@ -35,14 +35,12 @@ def auth_headers(app):
     base_auth_token = _jwt.create_jwt(BASE_AUTH_CLAIMS, TOKEN_HEADER)
     full_auth_token = _jwt.create_jwt(FULL_AUTH_CLAIMS, TOKEN_HEADER)
     view_only_auth_token = _jwt.create_jwt(VIEW_ONLY_AUTH_CLAIMS, TOKEN_HEADER)
-    create_only_auth_token = _jwt.create_jwt(CREATE_ONLY_AUTH_CLAIMS,
-                                             TOKEN_HEADER)
-    admin_only_auth_token = _jwt.create_jwt(ADMIN_ONLY_AUTH_CLAIMS,
-                                            TOKEN_HEADER)
-    proponent_only_auth_token = _jwt.create_jwt(PROPONENT_ONLY_AUTH_CLAIMS,
-                                                TOKEN_HEADER)
-    nros_vfcbc_only_auth_token = _jwt.create_jwt(NROS_VFCBC_AUTH_CLAIMS,
-                                                 TOKEN_HEADER)
+    create_only_auth_token = _jwt.create_jwt(CREATE_ONLY_AUTH_CLAIMS, TOKEN_HEADER)
+    admin_only_auth_token = _jwt.create_jwt(ADMIN_ONLY_AUTH_CLAIMS, TOKEN_HEADER)
+    proponent_only_auth_token = _jwt.create_jwt(PROPONENT_ONLY_AUTH_CLAIMS, TOKEN_HEADER)
+    nros_vfcbc_only_auth_token = _jwt.create_jwt(NROS_VFCBC_AUTH_CLAIMS, TOKEN_HEADER)
+    core_edit_parties_only_auth_token = _jwt.create_jwt(CORE_EDIT_PARTIES_AUTH_CLAIMS, TOKEN_HEADER)
+
     return {
         'base_auth_header': {
             'Authorization': 'Bearer ' + base_auth_token
@@ -64,6 +62,9 @@ def auth_headers(app):
         },
         'nros_vfcbc_auth_header': {
             'Authorization': 'Bearer ' + nros_vfcbc_only_auth_token
+        },
+        'core_edit_parties_only_auth_header': {
+            'Authorization': 'Bearer ' + core_edit_parties_only_auth_token
         }
     }
 

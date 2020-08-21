@@ -135,13 +135,13 @@ services:
     restart: on-failure
     container_name: nris_migrate
     build:
+      dockerfile: Dockerfile.migrate
       context: services/nris-api/backend
     volumes:
       - ./services/nris-api/backend/:/app/
     depends_on:
       - flyway
       - redis
-    command: flask db upgrade
     env_file: ./services/nris-api/backend/.env
 
   ####################### TUSD Definition #######################
@@ -174,13 +174,13 @@ services:
     restart: on-failure
     container_name: document_manager_migrate
     build:
+      dockerfile: Dockerfile.migrate
       context: services/document-manager/backend
     volumes:
       - ./services/document-manager/backend/:/app/
     depends_on:
       - postgres
       - redis
-    command: flask db upgrade
     env_file: ./services/document-manager/backend/.env
 
   ####################### DOCUMENT_GENERATION Definition #######################
