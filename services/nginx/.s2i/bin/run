@@ -30,14 +30,11 @@ generate_password_files() {
 
   rm -f -- /tmp/.htpasswd*
 
-  echo "---> post rm"
-
   if [ -n "$USERNAME" ] && [ -n "$PASSWORD" ]; then
     echo "---> Generating .htpasswd file"
     `echo "$USERNAME:$(openssl passwd -crypt $PASSWORD)" > /tmp/.htpasswd`
   fi
   
-  echo "---> mid"
 
   COUNTER=1
   USER=USERNAME$COUNTER
@@ -51,13 +48,9 @@ generate_password_files() {
     echo $USER
   done
 
-  echo "---> final"
 }
 
 envsubst_config
 generate_password_files
-
-echo "----> prestart"
-env
 
 exec ${NGINX_BASE_DIR}/nginx -c "$NGINX_CONF"
