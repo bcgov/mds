@@ -108,10 +108,7 @@ objects:
           terminationGracePeriodSeconds: 1800
           containers:
             - name: ${CASSANDRA_SERVICE_NAME}
-              image: cassandra:3
-              command:
-                - /docker-entrypoint.sh
-                - "-R"
+              image: centos/cassandra-311-centos7:3.11
               ports:
                 - containerPort: 7000
                   name: intra-node
@@ -136,6 +133,11 @@ objects:
                   valueFrom:
                     fieldRef:
                       fieldPath: status.podIP
+                - name: CASSANDRA_ADMIN_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: cassandra
+                      key: admin-password
                 - name: CASSANDRA_CLUSTER_NAME
                   value: "${CASSANDRA_CLUSTER_NAME}"
                 - name: CASSANDRA_DC
@@ -150,7 +152,7 @@ objects:
                   value: "false"
               volumeMounts:
                 - name: ${CASSANDRA_SERVICE_NAME}-data
-                  mountPath: /var/lib/cassandra
+                  mountPath: /var/opt/rh/sclo-cassandra3/lib/cassandra
                 - name: ${CASSANDRA_SERVICE_NAME}-logs
                   mountPath: /var/log/cassandra
       volumeClaimTemplates:

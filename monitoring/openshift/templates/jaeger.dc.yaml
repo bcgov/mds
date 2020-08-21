@@ -81,7 +81,7 @@ objects:
   - apiVersion: apps.openshift.io/v1
     kind: DeploymentConfig
     metadata:
-      name: jaeger-collector
+      name: jaeger
       labels:
         app: ${APP_NAME}
     spec:
@@ -106,12 +106,18 @@ objects:
         spec:
           containers:
             - image: " "
-              name: jaeger-collector
-              args: ["--config-file=/conf/collector.yaml"]
+              name: jaeger-aio
+              #args: ["--config-file=/conf/collector.yaml"]
               ports:
-                - containerPort: 14250
+                - containerPort: 5775
+                  protocol: UDP
+                - containerPort: 6831
+                  protocol: UDP
+                - containerPort: 6832
+                  protocol: UDP
+                - containerPort: 5778
                   protocol: TCP
-                - containerPort: 14267
+                - containerPort: 16686
                   protocol: TCP
                 - containerPort: 14268
                   protocol: TCP
@@ -125,11 +131,8 @@ objects:
                 - name: jaeger-configuration-volume
                   mountPath: /conf
               env:
-                - name: SPAN_STORAGE_TYPE
-                  valueFrom:
-                    configMapKeyRef:
-                      name: jaeger-config
-                      key: span-storage-type
+                - name: COLLECTOR_ZIPKIN_HTTP_PORT
+                  value: "9411"
           dnsPolicy: ClusterFirst
           restartPolicy: Always
           schedulerName: default-scheduler
@@ -137,7 +140,7 @@ objects:
           terminationGracePeriodSeconds: 30
           volumes:
             - configMap:
-                name: jaeger-configuration
+                name: jaeger-config
                 items:
                   - key: collector
                     path: collector.yaml
@@ -147,10 +150,10 @@ objects:
         - imageChangeParams:
             automatic: true
             containerNames:
-              - "jaeger-collector"
+              - "jaeger-aio"
             from:
               kind: ImageStreamTag
-              name: "jaeger-collector:${TAG_NAME}"
+              name: "jaeger-aio:${TAG_NAME}"
               namespace: "${IMAGE_NAMESPACE}"
           type: ImageChange
   - apiVersion: v1
@@ -177,6 +180,8 @@ objects:
           port: 9411
           protocol: TCP
           targetPort: 9411
+      selector:
+        name: jaeger
       type: ClusterIP
   - apiVersion: v1
     kind: Service
@@ -190,76 +195,9 @@ objects:
           port: 9411
           protocol: TCP
           targetPort: 9411
-      type: ClusterIP
-  - apiVersion: apps.openshift.io/v1
-    kind: DeploymentConfig
-    metadata:
-      name: jaeger-query
-      labels:
-        app: "${APP_NAME}"
-    spec:
-      replicas: 1
-      revisionHistoryLimit: 10
       selector:
-        app: "${APP_NAME}"
-      strategy:
-        activeDeadlineSeconds: 21600
-        resources: {}
-        rollingParams:
-          intervalSeconds: 1
-          maxSurge: 25%
-          maxUnavailable: 25%
-          timeoutSeconds: 600
-          updatePeriodSeconds: 1
-        type: Rolling
-      template:
-        metadata:
-          labels:
-            app: "${APP_NAME}"
-        spec:
-          containers:
-            - image: " "
-              name: jaeger-query
-              args: ["--config-file=/conf/query.yaml"]
-              ports:
-                - containerPort: 16686
-                  protocol: TCP
-              readinessProbe:
-                httpGet:
-                  path: "/"
-                  port: 16687
-              volumeMounts:
-                - name: jaeger-configuration-volume
-                  mountPath: /conf
-              env:
-                - name: SPAN_STORAGE_TYPE
-                  valueFrom:
-                    configMapKeyRef:
-                      name: jaeger-config
-                      key: span-storage-type
-          dnsPolicy: ClusterFirst
-          restartPolicy: Always
-          schedulerName: default-scheduler
-          securityContext: {}
-          terminationGracePeriodSeconds: 30
-          volumes:
-            - configMap:
-                name: jaeger-config
-                items:
-                  - key: query
-                    path: query.yaml
-              name: jaeger-configuration-volume
-      triggers:
-        - type: ConfigChange
-        - imageChangeParams:
-            automatic: true
-            containerNames:
-              - "jaeger-query"
-            from:
-              kind: ImageStreamTag
-              name: "jaeger-query:${TAG_NAME}"
-              namespace: "${IMAGE_NAMESPACE}"
-          type: ImageChange
+        name: jaeger
+      type: ClusterIP
   - apiVersion: v1
     kind: Service
     metadata:
@@ -272,6 +210,8 @@ objects:
           port: 80
           protocol: TCP
           targetPort: 16686
+      selector:
+        name: jaeger
       type: LoadBalancer
   - apiVersion: v1
     kind: Route
@@ -297,21 +237,9 @@ objects:
             "param": 1
           },
           "reporter": {
-            "localAgentHostPort": "jaeger-agent:6831"
+            "localAgentHostPort": "localhost:6831"
           }
         }
-      span-storage-type: cassandra
-      collector: |
-        collector:
-          zipkin:
-            http-port: 9411
-        cassandra:
-          servers: cassandra
-          keyspace: jaeger_v1_dc1
-      query: |
-        cassandra:
-          servers: cassandra
-          keyspace: jaeger_v1_dc1
     kind: ConfigMap
     metadata:
       labels:

@@ -19,7 +19,7 @@ objects:
   - kind: ImageStream
     apiVersion: v1
     metadata:
-      name: "jaeger-query"
+      name: "jaeger-aio"
       labels:
         shared: "true"
         app: "${APP_NAME}"
@@ -32,28 +32,7 @@ objects:
           annotations:
           from:
             kind: DockerImage
-            name: "jaegertracing/jaeger-query:${SOURCE_IMAGE_TAG}"
-          generation: 1
-          importPolicy: {}
-          referencePolicy:
-            type: Local
-  - kind: ImageStream
-    apiVersion: v1
-    metadata:
-      name: "jaeger-collector"
-      labels:
-        shared: "true"
-        app: "${APP_NAME}"
-      annotations: {}
-    spec:
-      lookupPolicy:
-        local: false
-      tags:
-        - name: "${SOURCE_IMAGE_TAG}"
-          annotations:
-          from:
-            kind: DockerImage
-            name: "jaegertracing/jaeger-collector:${SOURCE_IMAGE_TAG}"
+            name: "jaegertracing/all-in-one:${SOURCE_IMAGE_TAG}"
           generation: 1
           importPolicy: {}
           referencePolicy:
