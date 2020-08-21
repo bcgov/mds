@@ -1017,7 +1017,7 @@ export const PERMITS = [
     mine_guid: "8e9ca839-a28e-427e-997e-9ef23d9d97cd",
     permit_no: "C-12345",
     permit_status_code: "O",
-    amendments: [
+    permit_amendments: [
       {
         permit_amendment_guid: "822310fd-3a2c-44a9-a9ce-dee81acc9585",
         permit_guid: "71d00d45-9fda-45d3-a4b0-59a7ceb6518e",
@@ -1028,6 +1028,25 @@ export const PERMITS = [
         authorization_end_date: null,
         security_total: "1000000",
         description: "Initial permit issued.",
+        related_documents: [
+          {
+            mine_guid: "8e9ca839-a28e-427e-997e-9ef23d9d97cd",
+            document_guid: "31204ba5-5207-4fb5-b6c3-d47e55a0971c",
+            document_name: "Adams_amendment_1.pdf",
+            document_manager_guid: "64caef0e-060d-4875-a470-6c225b242723",
+          },
+        ],
+      },
+      {
+        permit_amendment_guid: "8729830e-5e9a-4be8-9eef-dac4af775f1d",
+        permit_guid: "71d00d45-9fda-45d3-a4b0-59a7ceb6518e",
+        permit_amendment_status_code: "ACT",
+        permit_amendment_type_code: "AMD",
+        received_date: null,
+        issue_date: "2020-04-01",
+        authorization_end_date: null,
+        security_total: "7000000",
+        description: "Amendment",
         related_documents: [
           {
             mine_guid: "8e9ca839-a28e-427e-997e-9ef23d9d97cd",
