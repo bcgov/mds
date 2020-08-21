@@ -48,10 +48,14 @@ generate_password_files() {
     let "COUNTER+=1"
     USER=USERNAME$COUNTER
     PASS=PASSWORD$COUNTER
+    echo $USER
   done
+
+  echo "---> final"
 }
 
 envsubst_config
 generate_password_files
 
+echo "----> prestart"
 exec ${NGINX_BASE_DIR}/nginx -c "$NGINX_CONF"
