@@ -102,6 +102,7 @@ objects:
       template:
         metadata:
           labels:
+            name: jaeger
             app: "${APP_NAME}"
         spec:
           containers:
