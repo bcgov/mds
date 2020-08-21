@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { Col, Row, Button } from "antd";
 import { maxBy } from "lodash";
-import { TRASHCAN } from "@/constants/assets";
+import { TRASHCAN, EDIT_OUTLINE_VIOLET } from "@/constants/assets";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
 import Condition from "@/components/Forms/permits/conditions/Condition";
@@ -15,20 +15,19 @@ const propTypes = {
   handleSubmit: PropTypes.func,
   handleCancel: PropTypes.func,
   handleDelete: PropTypes.func,
+  setConditionEditingFlag: PropTypes.func,
   initialValues: PropTypes.objectOf(PropTypes.any),
+  editingConditionFlag: PropTypes.bool.isRequired,
   isViewOnly: PropTypes.bool,
 };
 
 const defaultProps = {
-  condition: {
-    step: "",
-    condition: "",
-    sub_conditions: [],
-  },
+  condition: undefined,
   new: false,
   handleSubmit: () => {},
   handleCancel: () => {},
   handleDelete: () => {},
+  setConditionEditingFlag: () => {},
   initialValues: {},
   isViewOnly: false,
 };
@@ -38,7 +37,7 @@ const SubCondition = (props) => {
   const [isEditing, setIsEditing] = useState(props.new);
   return (
     <>
-      {props.condition.display_order !== 1 && (
+      {props.condition && props.condition.display_order !== 1 && (
         <>
           <Row gutter={32}>
             <Col>&nbsp;</Col>
@@ -63,37 +62,74 @@ const SubCondition = (props) => {
             <Col>
               {isEditing && (
                 <SubConditionForm
-                  onCancel={props.handleCancel}
-                  onSubmit={props.handleSubmit}
-                  initialValues={props.initialValues}
+                  onCancel={() => {
+                    setIsEditing(!isEditing);
+                    props.setConditionEditingFlag(false);
+                    props.handleCancel(false);
+                  }}
+                  onSubmit={(values) =>
+                    props.handleSubmit(values).then(() => setIsEditing(!isEditing))
+                  }
+                  initialValues={props.condition || props.initialValues}
                 />
               )}
             </Col>
           </Row>
         </Col>
-        <Col span={2} className="float-right">
+        <Col span={3} className="float-right">
           {!isEditing && !props.isViewOnly && (
-            <AuthorizationWrapper permission={Permission.ADMIN}>
-              <Button
-                ghost
-                size="small"
-                type="primary"
-                onClick={() => props.handleDelete(props.condition)}
-              >
-                <img name="remove" src={TRASHCAN} alt="Remove Condition" />
-              </Button>
-            </AuthorizationWrapper>
+            <div>
+              <AuthorizationWrapper permission={Permission.ADMIN}>
+                <Button
+                  ghost
+                  size="small"
+                  type="primary"
+                  onClick={() => {
+                    props.setConditionEditingFlag(true);
+                    setIsEditing(!isEditing);
+                  }}
+                  disabled={props.editingConditionFlag}
+                >
+                  <img
+                    className={props.editingConditionFlag ? "disabled-icon" : ""}
+                    name="edit"
+                    src={EDIT_OUTLINE_VIOLET}
+                    alt="Edit Condition"
+                  />
+                </Button>
+              </AuthorizationWrapper>
+              <AuthorizationWrapper permission={Permission.ADMIN}>
+                <Button
+                  ghost
+                  size="small"
+                  type="primary"
+                  onClick={() => props.handleDelete(props.condition)}
+                  disabled={props.editingConditionFlag}
+                >
+                  <img
+                    className={props.editingConditionFlag ? "disabled-icon" : ""}
+                    name="remove"
+                    src={TRASHCAN}
+                    alt="Remove Condition"
+                  />
+                </Button>
+              </AuthorizationWrapper>
+            </div>
           )}
         </Col>
       </Row>
-      {props.condition.sub_conditions.map((condition) => (
-        <Condition
-          condition={condition}
-          handleDelete={props.handleDelete}
-          isViewOnly={props.isViewOnly}
-        />
-      ))}
-      {props.condition.sub_conditions.length === 0 && (
+      {props.condition &&
+        props.condition.sub_conditions.map((condition) => (
+          <Condition
+            condition={condition}
+            handleSubmit={props.handleSubmit}
+            handleDelete={props.handleDelete}
+            setConditionEditingFlag={props.setConditionEditingFlag}
+            editingConditionFlag={props.editingConditionFlag}
+            isViewOnly={props.isViewOnly}
+          />
+        ))}
+      {props.condition && props.condition.sub_conditions.length === 0 && (
         <Row gutter={32}>
           <Col>&nbsp;</Col>
         </Row>
