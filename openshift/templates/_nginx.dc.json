@@ -293,7 +293,10 @@
               {
                 "name": "jaeger-agent",
                 "image": "jaegertracing/jaeger-agent:1.18.1",
-                "args": ["--config-file=/conf/nginx-jaeger-config.json"],
+                "args": [
+                  "--reporter.type=tchannel",
+                  "--reporter.tchannel.host-port=jaeger-collector:14267"
+                ],
                 "volumeMounts": [
                   {
                     "mountPath": "/conf",
