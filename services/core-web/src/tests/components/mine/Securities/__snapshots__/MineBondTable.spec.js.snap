@@ -11,8 +11,8 @@ exports[`MineBondTable renders properly 1`] = `
         "title": "Permit No.",
       },
       Object {
-        "dataIndex": "security_total",
-        "key": "security_total",
+        "dataIndex": "total_assessed",
+        "key": "total_assessed",
         "render": [Function],
         "title": "Total Assessed",
       },
