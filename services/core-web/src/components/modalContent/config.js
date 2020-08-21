@@ -27,6 +27,7 @@ import ViewBondModal from "./ViewBondModal";
 import AddReclamationInvoiceModal from "./AddReclamationInvoiceModal";
 import TransferBondModal from "./TransferBondModal";
 import CloseBondModal from "./CloseBondModal";
+import DeleteConditionModal from "./DeleteConditionModal";
 
 export const modalConfig = {
   MINE_RECORD: MineRecordModal,
@@ -58,6 +59,7 @@ export const modalConfig = {
   TRANSFER_BOND_MODAL: TransferBondModal,
   CLOSE_BOND_MODAL: CloseBondModal,
   ADD_RECLAMATION_INVOICE_MODAL: AddReclamationInvoiceModal,
+  DELETE_CONDITION_MODAL: DeleteConditionModal,
 };
 
 export default modalConfig;

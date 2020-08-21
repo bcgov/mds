@@ -41,6 +41,7 @@ const propTypes = {
   recordsByPermit: PropTypes.func.isRequired,
   activeBondCount: PropTypes.func.isRequired,
   getSum: PropTypes.func.isRequired,
+  getTotalAssessedSum: PropTypes.func.isRequired,
 };
 
 export const MineBondTable = (props) => {
@@ -60,12 +61,12 @@ export const MineBondTable = (props) => {
       //   </div>
       // ),
       title: "Total Assessed",
-      dataIndex: "security_total",
-      key: "security_total",
+      dataIndex: "total_assessed",
+      key: "total_assessed",
       render: (text, record) => (
         <div title="Total Assessed">
           {record.permit_amendments && record.permit_amendments.length > 0
-            ? formatMoney(record.permit_amendments[0].security_total)
+            ? formatMoney(text)
             : Strings.EMPTY_FIELD}
         </div>
       ),
@@ -283,6 +284,7 @@ export const MineBondTable = (props) => {
         total_bonds: props.activeBondCount(permit),
         amount_confiscated: props.getSum("CON", permit),
         amount_held: props.getSum("ACT", permit),
+        total_assessed: props.getTotalAssessedSum(permit),
         ...permit,
       };
     });
