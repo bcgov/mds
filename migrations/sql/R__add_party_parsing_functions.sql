@@ -45,3 +45,63 @@ BEGIN
     END);
 END;
 $$ LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE FUNCTION mms_permit_no_to_ses_convert(mms_permit_no varchar) RETURNS varchar AS $$
+BEGIN
+    DECLARE
+        result varchar;
+        parts varchar[3];
+    BEGIN
+
+    select string_to_array(mms_permit_no,'-') into parts;
+
+    select
+    CASE
+        WHEN parts[3] is null THEN
+        --no second -.
+        UPPER(CONCAT(
+            RPAD(TRIM(parts[1]),2, ' '),
+            '-   -',
+            LPAD(TRIM(parts[2]::int::varchar),3,' ')
+        ))
+        WHEN mms_permit_no ~ 'GEN' THEN
+        -- GEN
+        UPPER(CONCAT(
+            RPAD(TRIM(parts[1]),2,'-'),
+            '-',
+            LPAD(TRIM(parts[2]),3,' '),
+            '-',
+            CASE
+                WHEN parts[3]::int = 0 THEN
+                '   '
+                ELSE
+                LPAD(TRIM(parts[3]::int::varchar),3,' ')
+            END
+        ))
+        ELSE
+        -- normal case
+        UPPER(CONCAT(
+            RPAD(TRIM(parts[1]),2,' '),
+            '-',
+            CASE
+                WHEN parts[2]::int = 0 THEN
+                '   '
+                ELSE
+                LPAD(TRIM(parts[2]::int::varchar),3,' ')
+            END,
+            '-',
+            CASE
+                WHEN parts[3]::int = 0 THEN
+                '   '
+                ELSE
+                LPAD(TRIM(parts[3]::int::varchar),3,' ')
+            END
+        ))
+    END
+    into result;
+
+    RETURN result;
+END;
+END;
+$$ LANGUAGE plpgsql;
