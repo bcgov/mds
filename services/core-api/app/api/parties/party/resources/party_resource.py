@@ -1,13 +1,16 @@
 from flask import request, current_app
 from flask_restplus import Resource
+from sqlalchemy import or_, exc as alch_exceptions
 from sqlalchemy_filters import apply_pagination
 from sqlalchemy.exc import DBAPIError
-from werkzeug.exceptions import NotFound
+from werkzeug.exceptions import NotFound, BadRequest
+from datetime import datetime, timezone
 
-from app.extensions import api
+from app.extensions import api, jwt
 from app.api.utils.access_decorators import requires_role_view_all, requires_role_mine_edit, requires_role_mine_admin, requires_role_edit_party
 from app.api.utils.resources_mixins import UserMixin
 from app.api.utils.custom_reqparser import CustomReqparser
+from app.api.utils.access_decorators import MINE_ADMIN
 
 from app.api.parties.party.models.party import Party
 from app.api.parties.party.models.address import Address
@@ -87,6 +90,24 @@ class PartyResource(Resource, UserMixin):
         type=str,
         store_missing=False,
         help='The IDIR username of the party. Ex "IDIR\JSMITH"')
+    parser.add_argument(
+        'set_to_inspector',
+        type=bool,
+        store_missing=False,
+        help='Identifies if current party is inspector')
+    parser.add_argument(
+        'inspector_start_date',
+        type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None,
+        help='Identifies if current party is inspector')
+    parser.add_argument(
+        'inspector_end_date',
+        type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None,
+        help='Identifies if current party is inspector')
+    parser.add_argument(
+        'signature',
+        type=str,
+        store_missing=False,
+    )
 
     PARTY_LIST_RESULT_LIMIT = 25
 
@@ -100,7 +121,6 @@ class PartyResource(Resource, UserMixin):
         party = Party.find_by_party_guid(party_guid)
         if not party:
             raise NotFound('Party not found')
-
         return party
 
     @api.expect(parser)
@@ -131,8 +151,39 @@ class PartyResource(Resource, UserMixin):
             for key, value in data.items():
                 setattr(existing_party.address[0], key, value)
 
-        existing_party.save()
+        # admin only can set inspector and signature
+        if jwt.validate_roles([MINE_ADMIN]):
+            signature = data.get('signature') if data.get('signature') else None
+            today = datetime.now(timezone.utc).date()
+            business_role = PartyBusinessRoleAppointment.get_current_business_appointment(existing_party.party_guid, "INS")
 
+            if existing_party.signature != signature:
+                existing_party = signature
+
+            if data.get("set_to_inspector"):
+                start_date = data.inspector_start_date if data.get("inspector_start_date") else datetime.now(timezone.utc)
+                end_date = data.inspector_end_date if data.get("inspector_end_date") else None
+                update_required = business_role and business_role.start_date == start_date.date() and (end_date == None or business_role.end_date != end_date.date())
+                if update_required:
+                    business_role.end_date = end_date
+                    business_role.save()
+                else:
+                    new_bappt = PartyBusinessRoleAppointment.create("INS", party_guid, start_date, end_date)
+                    try:
+                        new_bappt.save()
+                    except alch_exceptions.IntegrityError as e:
+                        if "daterange_excl" in str(e):
+                            raise BadRequest(f'Date ranges for inspector appointment must not overlap')
+            # deactivate inspector
+            elif business_role:
+                end_date = data.get("inspector_end_date")
+                if end_date and end_date.date() <= today:
+                    pass
+                else:
+                    business_role.end_date = today
+                    business_role.save()
+
+        existing_party.save()
         return existing_party
 
     @api.doc(

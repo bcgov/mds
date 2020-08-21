@@ -25,6 +25,7 @@ const initialState = {
   mineReportStatusOptions: [],
   mineReportCategoryOptions: [],
   partyRelationshipTypes: [],
+  partyBusinessRoleOptions: [],
   noticeOfWorkActivityTypeOptions: [],
   noticeOfWorkUnitTypeOptions: [],
   noticeOfWorkApplicationTypeOptions: [],
@@ -109,6 +110,8 @@ export const getPermitConditionCategoryOptions = (state) =>
   state[STATIC_CONTENT].permitConditionCategoryOptions;
 export const getPermitConditionTypeOptions = (state) =>
   state[STATIC_CONTENT].permitConditionTypeOptions;
+export const getPartyBusinessRoleOptions = (state) =>
+  state[STATIC_CONTENT].partyBusinessRoleOptions;
 
 const isStaticContentLoaded = (state) =>
   Object.keys(state)
