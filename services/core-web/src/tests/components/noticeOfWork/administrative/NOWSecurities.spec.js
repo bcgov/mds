@@ -17,7 +17,7 @@ const setupProps = () => {
   [props.mineGuid] = MOCK.MINES.mineIds;
   props.noticeOfWork = IMPORTED_NOTICE_OF_WORK;
   [props.draftPermits] = MOCK.PERMITS;
-  [props.draftAmendment] = MOCK.PERMITS[0].amendments;
+  [props.draftAmendment] = MOCK.PERMITS[0].permit_amendments;
 };
 
 beforeEach(() => {
