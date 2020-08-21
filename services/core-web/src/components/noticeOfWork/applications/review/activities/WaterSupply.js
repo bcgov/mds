@@ -101,7 +101,7 @@ export const WaterSupply = (props) => {
       ),
     },
     {
-      title: "Estimate",
+      title: "Estimate (m/s)",
       dataIndex: "estimate_rate",
       key: "estimate_rate",
       render: (text, record) => (

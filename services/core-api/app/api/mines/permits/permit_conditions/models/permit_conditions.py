@@ -37,7 +37,7 @@ class PermitConditions(AuditMixin, Base):
         db.String, db.ForeignKey('permit_condition_type.condition_type_code'), nullable=False)
     deleted_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
     parent_permit_condition_id = db.Column(db.Integer,
-                                    db.ForeignKey('permit_conditions.permit_condition_id'))
+                                           db.ForeignKey('permit_conditions.permit_condition_id'))
     display_order = db.Column(db.Integer, nullable=False)
 
     all_sub_conditions = db.relationship(
@@ -68,9 +68,35 @@ class PermitConditions(AuditMixin, Base):
         return '<PermitConditions %r, %r>' % (self.permit_condition_id, self.permit_condition_guid)
 
     @classmethod
+    def create(cls,
+               condition_category_code,
+               condition_type_code,
+               permit_amendment_id,
+               condition,
+               display_order,
+               sub_conditions,
+               parent=None):
+        permit_condition = cls(
+            condition_category_code=condition_category_code,
+            condition_type_code=condition_type_code,
+            permit_amendment_id=permit_amendment_id,
+            condition=condition,
+            display_order=display_order,
+            parent=parent)
+
+        permit_condition.save(commit=False)
+        for condition in sub_conditions:
+            PermitConditions.create(condition.condition_category_code,
+                                    condition.condition_type_code, permit_amendment_id,
+                                    condition.condition, condition.display_order,
+                                    condition.sub_conditions, permit_condition)
+        return permit_condition
+
+    @classmethod
     def find_all_by_permit_amendment_id(cls, permit_amendment_id):
         return cls.query.filter_by(
-            permit_amendment_id=permit_amendment_id, parent_permit_condition_id=None,
+            permit_amendment_id=permit_amendment_id,
+            parent_permit_condition_id=None,
             deleted_ind=False).order_by(cls.display_order).all()
 
     @classmethod

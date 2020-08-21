@@ -6,6 +6,9 @@ from werkzeug.exceptions import BadRequest, NotFound, InternalServerError
 from app.api.mines.permits.permit.models.permit import Permit
 from app.api.mines.permits.permit_amendment.models.permit_amendment import PermitAmendment
 from app.api.mines.permits.permit_amendment.models.permit_amendment_document import PermitAmendmentDocument
+from app.api.mines.permits.permit_conditions.models.standard_permit_conditions import StandardPermitConditions
+from app.api.mines.permits.permit_conditions.models.permit_conditions import PermitConditions
+from app.api.now_applications.models.now_application_identity import NOWApplicationIdentity
 from app.api.mines.mine.models.mine import Mine
 from app.api.parties.party.models.party import Party
 from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
@@ -20,45 +23,55 @@ class PermitListResource(Resource, UserMixin):
     parser.add_argument(
         'now_application_guid',
         type=str,
-        help='Returns any draft permit and draft permit amendments related to this application.')
-    parser.add_argument(
-        'permit_no', type=str, help='Number of the permit being added.', location='json')
+        help=
+        'Returns any draft permit and draft permit amendments related to this application.'
+    )
+    parser.add_argument('permit_no',
+                        type=str,
+                        help='Number of the permit being added.',
+                        location='json')
     parser.add_argument(
         'permittee_party_guid',
         type=str,
         help='GUID of the party that is the permittee for this permit.',
         location='json')
-    parser.add_argument(
-        'permit_status_code', type=str, location='json', help='Status of the permit being added.')
-    parser.add_argument(
-        'received_date',
-        type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None,
-        location='json')
-    parser.add_argument(
-        'issue_date',
-        type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None,
-        location='json')
-    parser.add_argument(
-        'authorization_end_date',
-        type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None,
-        location='json')
+    parser.add_argument('permit_status_code',
+                        type=str,
+                        location='json',
+                        help='Status of the permit being added.')
+    parser.add_argument('received_date',
+                        type=lambda x: datetime.strptime(x, '%Y-%m-%d')
+                        if x else None,
+                        location='json')
+    parser.add_argument('issue_date',
+                        type=lambda x: datetime.strptime(x, '%Y-%m-%d')
+                        if x else None,
+                        location='json')
+    parser.add_argument('authorization_end_date',
+                        type=lambda x: datetime.strptime(x, '%Y-%m-%d')
+                        if x else None,
+                        location='json')
     parser.add_argument(
         'now_application_guid',
         type=str,
         location='json',
         help='The now_application_guid this permit is related to.')
-    parser.add_argument(
-        'lead_inspector_title',
-        type=str,
-        location='json',
-        help='Title of the lead inspector for this permit.')
-    parser.add_argument(
-        'regional_office',
-        type=str,
-        location='json',
-        help='The regional office for this permit.')
-    parser.add_argument('description', type=str, location='json', help='Permit description')
-    parser.add_argument('uploadedFiles', type=list, location='json', store_missing=False)
+    parser.add_argument('lead_inspector_title',
+                        type=str,
+                        location='json',
+                        help='Title of the lead inspector for this permit.')
+    parser.add_argument('regional_office',
+                        type=str,
+                        location='json',
+                        help='The regional office for this permit.')
+    parser.add_argument('description',
+                        type=str,
+                        location='json',
+                        help='Permit description')
+    parser.add_argument('uploadedFiles',
+                        type=list,
+                        location='json',
+                        store_missing=False)
 
     @api.doc(params={'mine_guid': 'mine_guid to filter on'})
     @requires_role_view_all
@@ -67,7 +80,9 @@ class PermitListResource(Resource, UserMixin):
         data = self.parser.parse_args()
         now_application_guid = data.get('now_application_guid')
         if now_application_guid:
-            results=[Permit.find_by_now_application_guid(now_application_guid)]
+            results = [
+                Permit.find_by_now_application_guid(now_application_guid)
+            ]
         else:
             results = Mine.find_by_mine_guid(mine_guid).mine_permit
         return results
@@ -80,7 +95,8 @@ class PermitListResource(Resource, UserMixin):
 
         mine = Mine.find_by_mine_guid(mine_guid)
         if not mine:
-            raise NotFound('There was no mine found with the provided mine_guid.')
+            raise NotFound(
+                'There was no mine found with the provided mine_guid.')
 
         permittee_party_guid = data.get('permittee_party_guid')
         if permittee_party_guid:
@@ -94,7 +110,8 @@ class PermitListResource(Resource, UserMixin):
 
         uploadedFiles = data.get('uploadedFiles', [])
 
-        permit = Permit.create(mine, data.get('permit_no'), data.get('permit_status_code'))
+        permit = Permit.create(mine, data.get('permit_no'),
+                               data.get('permit_status_code'))
 
         amendment = PermitAmendment.create(
             permit,
@@ -110,6 +127,24 @@ class PermitListResource(Resource, UserMixin):
 
         db.session.add(permit)
         db.session.add(amendment)
+
+        now_application_guid = data.get('now_application_guid')
+        if now_application_guid is not None and permit.permit_status_code == 'D':
+            application_identity = NOWApplicationIdentity.find_by_guid(
+                now_application_guid)
+            if application_identity.now_application:
+                now_type = application_identity.now_application.notice_of_work_type_code
+
+                standard_conditions = StandardPermitConditions.find_by_notice_of_work_type_code(
+                    now_type)
+                for condition in standard_conditions:
+                    PermitConditions.create(condition.condition_category_code,
+                                            condition.condition_type_code,
+                                            amendment.permit_amendment_id,
+                                            condition.condition,
+                                            condition.display_order,
+                                            condition.sub_conditions)
+                db.session.commit()
 
         for newFile in uploadedFiles:
             new_pa_doc = PermitAmendmentDocument(
@@ -139,44 +174,50 @@ class PermitListResource(Resource, UserMixin):
 
 class PermitResource(Resource, UserMixin):
     parser = reqparse.RequestParser(trim=True)
-    parser.add_argument(
-        'permit_no', type=str, help='Number of the permit being added.', location='json')
+    parser.add_argument('permit_no',
+                        type=str,
+                        help='Number of the permit being added.',
+                        location='json')
     parser.add_argument(
         'permittee_party_guid',
         type=str,
         help='GUID of the party that is the permittee for this permit.',
         location='json',
         store_missing=False)
-    parser.add_argument(
-        'permit_status_code',
-        type=str,
-        location='json',
-        help='Status of the permit being added.',
-        store_missing=False)
-    parser.add_argument(
-        'received_date',
-        type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None,
-        location='json',
-        store_missing=False)
-    parser.add_argument(
-        'issue_date',
-        type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None,
-        location='json',
-        store_missing=False)
-    parser.add_argument(
-        'authorization_end_date',
-        type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None,
-        location='json',
-        store_missing=False)
-    parser.add_argument(
-        'permit_amendment_status_code',
-        type=str,
-        location='json',
-        help='Status of the permit being added.',
-        store_missing=False)
-    parser.add_argument(
-        'description', type=str, location='json', help='Permit description', store_missing=False)
-    parser.add_argument('uploadedFiles', type=list, location='json', store_missing=False)
+    parser.add_argument('permit_status_code',
+                        type=str,
+                        location='json',
+                        help='Status of the permit being added.',
+                        store_missing=False)
+    parser.add_argument('received_date',
+                        type=lambda x: datetime.strptime(x, '%Y-%m-%d')
+                        if x else None,
+                        location='json',
+                        store_missing=False)
+    parser.add_argument('issue_date',
+                        type=lambda x: datetime.strptime(x, '%Y-%m-%d')
+                        if x else None,
+                        location='json',
+                        store_missing=False)
+    parser.add_argument('authorization_end_date',
+                        type=lambda x: datetime.strptime(x, '%Y-%m-%d')
+                        if x else None,
+                        location='json',
+                        store_missing=False)
+    parser.add_argument('permit_amendment_status_code',
+                        type=str,
+                        location='json',
+                        help='Status of the permit being added.',
+                        store_missing=False)
+    parser.add_argument('description',
+                        type=str,
+                        location='json',
+                        help='Permit description',
+                        store_missing=False)
+    parser.add_argument('uploadedFiles',
+                        type=list,
+                        location='json',
+                        store_missing=False)
 
     @api.doc(params={'permit_guid': 'Permit guid.'})
     @requires_role_view_all
@@ -200,7 +241,7 @@ class PermitResource(Resource, UserMixin):
         data = self.parser.parse_args()
         for key, value in data.items():
             if key in ['permit_no', 'mine_guid', 'uploadedFiles']:
-                continue     # non-editable fields from put
+                continue  # non-editable fields from put
             setattr(permit, key, value)
 
         permit.save()
