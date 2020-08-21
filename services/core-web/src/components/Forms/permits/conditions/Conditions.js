@@ -4,14 +4,19 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Divider, Icon, Collapse, Button } from "antd";
 import { openModal, closeModal } from "@common/actions/modalActions";
-import { getPermitConditionCategoryOptions } from "@common/selectors/staticContentSelectors";
+import {
+  getPermitConditionCategoryOptions,
+  getPermitConditionTypeOptions,
+} from "@common/selectors/staticContentSelectors";
 import {
   getPermitConditions,
   getDraftPermitAmendmentForNOW,
+  getEditingConditionFlag,
 } from "@common/selectors/permitSelectors";
 import {
   fetchPermitConditions,
   deletePermitCondition,
+  updatePermitCondition,
   setEditingConditionFlag,
 } from "@common/actionCreators/permitActionCreator";
 import { maxBy, concat } from "lodash";
@@ -28,10 +33,12 @@ const propTypes = {
   closeModal: PropTypes.func.isRequired,
   conditions: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
   permitConditionCategoryOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
+  editingConditionFlag: PropTypes.bool.isRequired,
   fetchPermitConditions: PropTypes.func.isRequired,
   draftPermitAmendment: CustomPropTypes.permitAmendment.isRequired,
   setEditingConditionFlag: PropTypes.func.isRequired,
   deletePermitCondition: PropTypes.func.isRequired,
+  updatePermitCondition: PropTypes.func.isRequired,
 };
 
 export class Conditions extends Component {
@@ -82,6 +89,16 @@ export class Conditions extends Component {
     });
   };
 
+  handleEdit = (values) =>
+    this.props.updatePermitCondition(values.permit_condition_guid, values).then(() => {
+      this.props.fetchPermitConditions(this.props.draftPermitAmendment.permit_amendment_guid);
+      this.props.setEditingConditionFlag(false);
+    });
+
+  setConditionEditingFlag = (value) => {
+    this.props.setEditingConditionFlag(value);
+  };
+
   render = () => (
     <>
       <Collapse>
@@ -102,8 +119,10 @@ export class Conditions extends Component {
               {conditions.map((condition) => (
                 <Condition
                   condition={condition}
-                  handleSubmit={(values) => this.handleAddCondition(values)}
-                  handleDelete={this.openDeleteConditionModal}
+                  handleSubmit={this.handleEdit}
+                  handleDelete={(permitConditionGuid) => this.handleDelete(permitConditionGuid)}
+                  setConditionEditingFlag={this.setConditionEditingFlag}
+                  editingConditionFlag={this.props.editingConditionFlag}
                 />
               ))}
               <Divider />
@@ -135,8 +154,10 @@ export class Conditions extends Component {
 
 const mapStateToProps = (state) => ({
   permitConditionCategoryOptions: getPermitConditionCategoryOptions(state),
+  permitConditionTypeOptions: getPermitConditionTypeOptions(state),
   conditions: getPermitConditions(state),
   draftPermitAmendment: getDraftPermitAmendmentForNOW(state),
+  editingConditionFlag: getEditingConditionFlag(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
@@ -147,6 +168,7 @@ const mapDispatchToProps = (dispatch) =>
       fetchPermitConditions,
       setEditingConditionFlag,
       deletePermitCondition,
+      updatePermitCondition,
     },
     dispatch
   );
