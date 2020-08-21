@@ -25,26 +25,24 @@ export const getSummaryPartyRelationships = createSelector(
 export const getDropdownInspectors = createSelector([getInspectors], (parties) => {
   const today = moment().utc();
   const activeInspectors = parties
-    .filter(
-      (inspector) =>
-        !!inspector.business_role_appts.find(
-          (r) =>
-            today.isSameOrAfter(r.start_date, "day") &&
-            (today.isBefore(r.end_date, "day") || !r.end_date)
-        )
+    .filter((inspector) =>
+      inspector.business_role_appts.find(
+        (r) =>
+          today.isSameOrAfter(r.start_date, "day") &&
+          (today.isBefore(r.end_date, "day") || !r.end_date)
+      )
     )
     .map((inspector) => ({
       value: inspector.party_guid,
       label: inspector.name,
     }));
   const inactiveInspectors = parties
-    .filter(
-      (inspector) =>
-        !!inspector.business_role_appts.find(
-          (r) =>
-            today.isAfter(r.end_date, "day") &&
-            !activeInspectors.find((ins) => ins.party_guid === inspector.party_guid)
-        )
+    .filter((inspector) =>
+      inspector.business_role_appts.find(
+        (r) =>
+          today.isSameOrAfter(r.end_date, "day") &&
+          !activeInspectors.find((ins) => ins.value === inspector.party_guid)
+      )
     )
     .map((inspector) => ({
       value: inspector.party_guid,
