@@ -2,6 +2,7 @@ import logging
 from logging.config import dictConfig
 from flask import Flask, request
 from flask_cors import CORS
+from flask_opentracing import FlaskTracing
 from flask_restplus import Resource, apidoc
 from sqlalchemy.exc import SQLAlchemyError
 from flask_jwt_oidc.exceptions import AuthError
