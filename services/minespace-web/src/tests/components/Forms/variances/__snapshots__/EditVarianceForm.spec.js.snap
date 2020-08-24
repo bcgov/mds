@@ -91,7 +91,6 @@ exports[`EditVarianceForm renders properly 1`] = `
     </Popconfirm>
     <Button
       block={false}
-      disabled={false}
       ghost={false}
       htmlType="submit"
       loading={false}

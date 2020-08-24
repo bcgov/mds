@@ -23,7 +23,9 @@ class Party(AuditMixin, Base):
     phone_no = db.Column(db.String, nullable=False)
     phone_ext = db.Column(db.String, nullable=True)
     email = db.Column(db.String, nullable=True)
+    # obsolete
     effective_date = db.Column(db.DateTime, nullable=False, server_default=FetchedValue())
+    # obsolete
     expiry_date = db.Column(db.DateTime)
     party_type_code = db.Column(db.String, db.ForeignKey('party_type_code.party_type_code'))
     deleted_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
@@ -33,8 +35,14 @@ class Party(AuditMixin, Base):
     job_title = db.Column(db.String, nullable=True)
     postnominal_letters = db.Column(db.String, nullable=True)
     idir_username = db.Column(db.String, nullable=True)
+    signature = db.Column(db.String, nullable=True)
 
-    business_role_appts = db.relationship('PartyBusinessRoleAppointment', lazy='joined')
+    business_role_appts = db.relationship(
+        'PartyBusinessRoleAppointment',
+        lazy='dynamic',
+        primaryjoin=
+        "and_(Party.party_guid == PartyBusinessRoleAppointment.party_guid, PartyBusinessRoleAppointment.deleted_ind==False)",
+    )
     party_orgbook_entity = db.relationship(
         'PartyOrgBookEntity', backref='party_orgbook_entity', uselist=False, lazy='select')
 
@@ -82,7 +90,6 @@ class Party(AuditMixin, Base):
             context.update({
                 'mine_party_appt': [item.json() for item in self.mine_party_appt],
             })
-
         return context
 
     @classmethod
@@ -117,24 +124,24 @@ class Party(AuditMixin, Base):
 
     @classmethod
     def create(
-        cls,
+            cls,
                                                  # Required fields
-        party_name,
-        phone_no,
-        party_type_code,
+            party_name,
+            phone_no,
+            party_type_code,
                                                  # Optional fields
-        address_type_code=None,
+            address_type_code=None,
                                                  # Nullable fields
-        email=None,
-        first_name=None,
-        phone_ext=None,
-        suite_no=None,
-        address_line_1=None,
-        address_line_2=None,
-        city=None,
-        sub_division_code=None,
-        post_code=None,
-        add_to_session=True):
+            email=None,
+            first_name=None,
+            phone_ext=None,
+            suite_no=None,
+            address_line_1=None,
+            address_line_2=None,
+            city=None,
+            sub_division_code=None,
+            post_code=None,
+            add_to_session=True):
         party = cls(
                                                  # Required fields
             party_name=party_name,
