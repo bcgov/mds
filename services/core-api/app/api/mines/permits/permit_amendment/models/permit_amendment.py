@@ -51,6 +51,9 @@ class PermitAmendment(AuditMixin, Base):
         UUID(as_uuid=True), db.ForeignKey('now_application_identity.now_application_guid'))
     now_identity = db.relationship('NOWApplicationIdentity', lazy='select')
     mine = db.relationship('Mine', lazy='select')
+    conditions = db.relationship('PermitConditions', lazy='select',
+        primaryjoin=
+        "and_(PermitConditions.permit_amendment_id == PermitAmendment.permit_amendment_id, PermitConditions.deleted_ind==False)",)
 
     #no current use case for this relationship
     #TODO Have factories use this to manage FK.
