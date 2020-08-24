@@ -27,7 +27,7 @@ from app.api.orgbook.namespace import api as orgbook_api
 
 from app.commands import register_commands
 from app.config import Config
-from app.extensions import db, jwt, api, cache, tracer
+from app.extensions import db, jwt, api, cache, tracer, flask_tracing
 from app.api.utils.setup_marshmallow import setup_marshmallow
 
 
@@ -59,10 +59,6 @@ def register_extensions(app):
     apidoc.apidoc.static_url_path = '{}/swaggerui'.format(Config.BASE_PATH)
 
     api.init_app(app)
-    if app.config['TRACING_ENABLED'] == '1':
-        flask_tracing = FlaskTracing(tracer)
-    else:
-        app.logger.info('TRACING_ENABLED: FALSE, set TRACING_ENABLED=1 to enable')
 
     try:
         jwt.init_app(app)
@@ -101,7 +97,7 @@ def register_routes(app):
 
     # Healthcheck endpoint
     @api.route('/health')
-    @tracing.trace()
+    @flask_tracing.trace()
     class Healthcheck(Resource):
         def get(self):
             with tracer.start_span('TestSpan') as span:

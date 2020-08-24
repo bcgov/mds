@@ -17,3 +17,4 @@ api = Api(
     default_label='MDS related operations')
 
 tracer = Config.JAEGER_CONFIG.initialize_tracer()
+flask_tracing = FlaskTracing(tracer)
