@@ -3,7 +3,7 @@ from flask import request, current_app
 from werkzeug.exceptions import BadRequest, NotFound, InternalServerError
 from marshmallow.exceptions import MarshmallowError
 
-from app.extensions import api, jwt
+from app.extensions import api, jwt, db
 from app.api.mines.response_models import PERMIT_CONDITION_MODEL
 from app.api.mines.permits.permit_conditions.models.permit_conditions import PermitConditions
 from app.api.mines.permits.permit_amendment.models.permit_amendment import PermitAmendment
@@ -93,7 +93,21 @@ class PermitConditionsResource(Resource, UserMixin):
             raise BadRequest('No permit condition found with that guid.')
 
         permit_condition.deleted_ind = True
-
         permit_condition.save()
+
+        conditions = []
+        if permit_condition.parent_permit_condition_id is not None:
+            conditions = permit_condition.parent.sub_conditions
+        else:
+            conditions = [
+                x for x in PermitConditions.find_all_by_permit_amendment_id(permit_condition.permit_amendment_id)
+                if x.condition_category_code == permit_condition.condition_category_code
+            ]
+
+        for i, condition in enumerate(sorted(conditions, key=lambda x: x.display_order)):
+            condition.display_order = i + 1
+            condition.save(commit=False)
+            
+        db.session.commit()
 
         return ('', 204)
