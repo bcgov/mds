@@ -26,8 +26,10 @@ from app.api.orgbook.namespace import api as orgbook_api
 
 from app.commands import register_commands
 from app.config import Config
-from app.extensions import db, jwt, api, cache, tracer, flask_tracing
+from app.extensions import db, jwt, api, cache, tracing
 from app.api.utils.setup_marshmallow import setup_marshmallow
+
+from flask_opentracing import FlaskTracing
 
 
 def create_app(test_config=None):
@@ -68,6 +70,9 @@ def register_extensions(app):
     db.init_app(app)
     CORS(app)
 
+    # Setup tracing
+    tracing.init_app(app)
+
     # Set up Marshmallow
     with app.app_context():
         setup_marshmallow()
@@ -96,11 +101,11 @@ def register_routes(app):
 
     # Healthcheck endpoint
     @api.route('/health')
-    @flask_tracing.trace()
     class Healthcheck(Resource):
         def get(self):
-            with tracer.start_span('TestSpan') as span:
-                span.log_kv({'event': 'test message', 'life': 42})
+
+            # with tracer.start_span('TestSpan') as span:
+            #     span.log_kv({'event': 'test message', 'life': 42})
             return {'status': 'pass'}
 
     @api.errorhandler(AuthError)
