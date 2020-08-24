@@ -48,7 +48,7 @@ class PermitAmendment(AuditMixin, Base):
     now_application_guid = db.Column(
         UUID(as_uuid=True), db.ForeignKey('now_application_identity.now_application_guid'))
     now_identity = db.relationship('NOWApplicationIdentity', lazy='select')
-    mine = db.relationship('Mine', lazy='select')
+    mine = db.relationship('Mine', lazy='selectin')
 
     #no current use case for this relationship
     #TODO Have factories use this to manage FK.
