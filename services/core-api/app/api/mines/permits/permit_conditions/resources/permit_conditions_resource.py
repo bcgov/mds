@@ -80,35 +80,25 @@ class PermitConditionsResource(Resource, UserMixin):
         except MarshmallowError as e:
             raise BadRequest(e)
 
-        if old_display_order != condition.display_order:
-            if condition.parent_permit_condition_id is not None:
-                conditions = condition.parent.sub_conditions
-            else:
-                conditions = [
-                    x for x in PermitConditions.find_all_by_permit_amendment_id(
-                        condition.permit_amendment_id)
-                    if x.condition_category_code == condition.condition_category_code
-                ]
+        if condition.parent_permit_condition_id is not None:
+            conditions = condition.parent.sub_conditions
+        else:
+            conditions = [
+                x for x in PermitConditions.find_all_by_permit_amendment_id(
+                    condition.permit_amendment_id)
+                if x.condition_category_code == condition.condition_category_code
+            ]
 
-            found_target_condition = False
-            for i, cond in enumerate(sorted(conditions, key=lambda x: x.display_order)):
-                if cond.permit_condition_guid == condition.permit_condition_guid:
-                    found_target_condition = True
-                    cond.display_order = i + 1
-                else:
-                    if i + 1 == condition.display_order:
-                        if found_target_condition:
-                            cond.display_order = i
-                        else:
-                            cond.display_order = i + 2
-                    else:
-                        cond.display_order = i + 1
+        if condition.display_order > old_display_order:
+            conditions = sorted(conditions, key=lambda x: (x.display_order, x.permit_condition_guid == condition.permit_condition_guid))
+        else:
+            conditions = sorted(conditions, key=lambda x: (x.display_order, x.permit_condition_guid != condition.permit_condition_guid))
 
-                    cond.save(commit=False)
+        for i, cond in enumerate(conditions):
+            cond.display_order = i + 1
+            cond.save(commit=False)
 
-        condition.save(commit=False)
         db.session.commit()
-
         return condition
 
     @api.doc(description='delete a permit condition')
