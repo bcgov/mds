@@ -34,7 +34,7 @@ def register_extensions(app):
     apidoc.static_url_path = f'{Config.BASE_PATH}/swaggerui'
     api.init_app(app)
 
-    if app.config['ELASTIC_ENABLED'] == '1':
+    if app.config['TRACING_ENABLED'] == '1':
         apm.init_app(app)
 
     try:

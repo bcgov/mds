@@ -22,8 +22,8 @@ class Config(object):
     SQLALCHEMY_ENGINE_OPTIONS = {"pool_pre_ping": True}
 
     JWT_OIDC_WELL_KNOWN_CONFIG = os.environ.get(
-    'JWT_OIDC_WELL_KNOWN_CONFIG',
-    'https://localhost:8080/auth/realms/mds/.well-known/openid-configuration')
+        'JWT_OIDC_WELL_KNOWN_CONFIG',
+        'https://localhost:8080/auth/realms/mds/.well-known/openid-configuration')
     JWT_OIDC_AUDIENCE = os.environ.get('JWT_OIDC_AUDIENCE', 'mds')
     JWT_OIDC_ALGORITHMS = os.environ.get('JWT_OIDC_ALGORITHMS', 'RS256')
 
@@ -34,11 +34,10 @@ class Config(object):
     NRIS_DB_HOSTNAME = os.environ.get('NRIS_DB_HOSTNAME', 'localhost')
 
     # Elastic config
-    ELASTIC_ENABLED = os.environ.get('ELASTIC_ENABLED', '0')
+    TRACING_ENABLED = os.environ.get('TRACING_ENABLED', '0')
     ELASTIC_SERVICE_NAME = os.environ.get('ELASTIC_SERVICE_NAME', 'Local-Dev')
     ELASTIC_SECRET_TOKEN = os.environ.get('ELASTIC_SECRET_TOKEN', None)
-    ELASTIC_SERVER_URL = os.environ.get(
-        'ELASTIC_SERVER_URL', 'http://localhost:8200')
+    ELASTIC_SERVER_URL = os.environ.get('ELASTIC_SERVER_URL', 'http://localhost:8200')
     ELASTIC_DEBUG = os.environ.get('ELASTIC_DEBUG', True)
     ELASTIC_APM = {
         'SERVICE_NAME': ELASTIC_SERVICE_NAME,

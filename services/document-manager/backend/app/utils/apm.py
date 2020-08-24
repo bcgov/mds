@@ -11,17 +11,16 @@ def register_apm(name=None):
     :return: Wrapped function
     :rtype: func
     """
-
     def wrap(func):
         def wrapped_f(*args, **kwargs):
             config = None
             result = None
             if current_app:
                 config = current_app.config['ELASTIC_APM']
-                apm_enabled = str(current_app.config['ELASTIC_ENABLED']) == '1'
+                apm_enabled = str(current_app.config['TRACING_ENABLED']) == '1'
             elif sched.app:
                 config = sched.app.app_context().app.config['ELASTIC_APM']
-                apm_enabled = str(sched.app.app_context().app.config['ELASTIC_ENABLED']) == '1'
+                apm_enabled = str(sched.app.app_context().app.config['TRACING_ENABLED']) == '1'
 
             _name = name if name is not None else func.__name__
 

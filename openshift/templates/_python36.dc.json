@@ -140,7 +140,7 @@
       "value": "template.mds-nros-now-secret"
     },
     {
-      "name": "ELASTIC_ENABLED",
+      "name": "TRACING_ENABLED",
       "value": "0"
     },
     {
@@ -398,8 +398,8 @@
                     }
                   },
                   {
-                    "name": "ELASTIC_ENABLED",
-                    "value": "${ELASTIC_ENABLED}"
+                    "name": "TRACING_ENABLED",
+                    "value": "${TRACING_ENABLED}"
                   },
                   {
                     "name": "ELASTIC_SERVICE_NAME",

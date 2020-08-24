@@ -2,6 +2,8 @@ import os
 
 from logging.handlers import SysLogHandler
 from dotenv import load_dotenv, find_dotenv
+from jaeger_client import Config as JaegerConfig
+
 ENV_FILE = find_dotenv()
 if ENV_FILE:
     load_dotenv(ENV_FILE)
@@ -109,7 +111,7 @@ class Config(object):
     SQLALCHEMY_ENGINE_OPTIONS = {'pool_timeout': 300, 'max_overflow': 20}
 
     # Elastic config
-    ELASTIC_ENABLED = os.environ.get('ELASTIC_ENABLED', '0')
+    TRACING_ENABLED = os.environ.get('TRACING_ENABLED', '0')
     ELASTIC_SERVICE_NAME = os.environ.get('ELASTIC_SERVICE_NAME', 'Local-Dev')
     ELASTIC_SECRET_TOKEN = os.environ.get('ELASTIC_SECRET_TOKEN', None)
     ELASTIC_SERVER_URL = os.environ.get('ELASTIC_SERVER_URL', 'http://localhost:8200')
@@ -120,6 +122,20 @@ class Config(object):
         'SERVER_URL': ELASTIC_SERVER_URL,
         'DEBUG': ELASTIC_DEBUG,
     }
+
+    # Jaeger Config
+    JAEGER_CONFIG = JaegerConfig(
+        config={
+            'sampler': {
+                'type': 'const',
+                'param': 1
+            },
+            'local_agent': {
+                'reporting_host': os.environ.get('JAEGER_HOST'),
+                'reporting_port': os.environ.get('JAEGER_PORT'),
+            }
+        },
+        service_name='core-api')
 
     # NROS
     NROS_CLIENT_SECRET = os.environ.get('NROS_CLIENT_SECRET', None)

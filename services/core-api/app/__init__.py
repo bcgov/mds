@@ -58,11 +58,10 @@ def register_extensions(app):
     apidoc.apidoc.static_url_path = '{}/swaggerui'.format(Config.BASE_PATH)
 
     api.init_app(app)
-    if app.config['ELASTIC_ENABLED'] == '1':
-        apm.init_app(app)
-        logging.getLogger('elasticapm').setLevel(30)
+    if app.config['TRACING_ENABLED'] == '1':
+        flask_tracing = FlaskTracing(Config.JAEGER_CONFIG.initialize_tracer(), True, app)
     else:
-        app.logger.info('ELASTIC_ENABLED: FALSE, set ELASTIC_ENABLED=1 to enable')
+        app.logger.info('TRACING_ENABLED: FALSE, set TRACING_ENABLED=1 to enable')
 
     try:
         jwt.init_app(app)

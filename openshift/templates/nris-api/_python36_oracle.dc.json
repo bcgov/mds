@@ -91,7 +91,7 @@
       "value": "template.mds-elastic-secret"
     },
     {
-      "name": "ELASTIC_ENABLED",
+      "name": "TRACING_ENABLED",
       "value": "1"
     },
     {
@@ -155,11 +155,7 @@
               "failurePolicy": "Retry",
               "execNewPod": {
                 "containerName": "app",
-                "command": [
-                  "bash",
-                  "-c",
-                  "cd /opt/app-root/src && flask db upgrade"
-                ]
+                "command": ["bash", "-c", "cd /opt/app-root/src && flask db upgrade"]
               }
             },
             "maxSurge": "50%",
@@ -293,8 +289,8 @@
                     "value": "${UWSGI_THREADS}"
                   },
                   {
-                    "name": "ELASTIC_ENABLED",
-                    "value": "${ELASTIC_ENABLED}"
+                    "name": "TRACING_ENABLED",
+                    "value": "${TRACING_ENABLED}"
                   },
                   {
                     "name": "ELASTIC_SERVICE_NAME",
