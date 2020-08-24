@@ -232,7 +232,12 @@ export const deletePermitCondition = (permitAmdendmentGuid, permitConditionGuid)
   dispatch(showLoading());
   return CustomAxios()
     .delete(
-      `${ENVIRONMENT.apiUrl}${API.PERMIT_CONDITION(null, null, permitAmdendmentGuid, permitConditionGuid)}`,
+      `${ENVIRONMENT.apiUrl}${API.PERMIT_CONDITION(
+        null,
+        null,
+        permitAmdendmentGuid,
+        permitConditionGuid
+      )}`,
       createRequestHeader()
     )
     .then((response) => {
@@ -249,4 +254,25 @@ export const deletePermitCondition = (permitAmdendmentGuid, permitConditionGuid)
 
 export const setEditingConditionFlag = (payload) => (dispatch) => {
   dispatch(permitActions.storeEditingConditionFlag(payload));
-}
+};
+
+export const updatePermitCondition = (permitConditionGuid, payload) => (dispatch) => {
+  dispatch(request(reducerTypes.UPDATE_PERMIT_CONDITION));
+  dispatch(showLoading());
+  return CustomAxios()
+    .put(
+      `${ENVIRONMENT.apiUrl}${API.PERMIT_CONDITION(null, null, null, permitConditionGuid)}`,
+      payload,
+      createRequestHeader()
+    )
+    .then((response) => {
+      notification.success({
+        message: `Successfully updated permit condition`,
+        duration: 10,
+      });
+      dispatch(success(reducerTypes.UPDATE_PERMIT_CONDITION));
+      return response;
+    })
+    .catch(() => dispatch(error(reducerTypes.UPDATE_PERMIT_CONDITION)))
+    .finally(() => dispatch(hideLoading()));
+};

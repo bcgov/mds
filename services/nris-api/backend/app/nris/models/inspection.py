@@ -40,8 +40,12 @@ class Inspection(Base):
     }
     inspection_id = db.Column(db.Integer, primary_key=True)
     external_id = db.Column(db.Integer)
+
+    assessment_sub_type = db.Column(db.String)   #Visit Type
+
     inspection_date = db.Column(db.DateTime)
     completed_date = db.Column(db.DateTime)
+
     inspection_report_sent_date = db.Column(db.DateTime)
     inspection_status_id = db.Column(db.Integer,
                                      db.ForeignKey('inspection_status.inspection_status_id'))

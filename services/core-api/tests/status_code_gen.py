@@ -6,6 +6,8 @@ from app.api.incidents.models.mine_incident_status_code import MineIncidentStatu
 from app.api.incidents.models.mine_incident_document_type_code import MineIncidentDocumentTypeCode
 from app.api.mines.region.models.region import MineRegionCode
 from app.api.mines.permits.permit.models.permit_status_code import PermitStatusCode
+from app.api.mines.permits.permit_conditions.models.permit_condition_category import PermitConditionCategory
+from app.api.mines.permits.permit_conditions.models.permit_condition_type import PermitConditionType
 from app.api.mines.mine.models.excemption_fee_status import ExemptionFeeStatus
 from app.api.securities.models.bond_status import BondStatus
 from app.api.securities.models.bond_type import BondType
@@ -42,10 +44,14 @@ def RandomExemptionFeeStatusCode():
 def RandomBondStatusCode():
     return random.choice([x.bond_status_code for x in BondStatus.get_all()])
 
-
 def RandomBondTypeCode():
     return random.choice([x.bond_type_code for x in BondType.get_all()])
 
+def RandomConditionCategoryCode():
+    return random.choice([x.condition_category_code for x in PermitConditionCategory.get_all()])
+
+def RandomConditionTypeCode():
+    return random.choice([x.condition_type_code for x in PermitConditionType.get_all()])
 
 def RandomTenureTypeCode():
     return random.choice(

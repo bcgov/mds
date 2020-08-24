@@ -49,13 +49,13 @@ exports[`Reports renders properly 1`] = `
         <Connect(AuthorizationWrapper)>
           <Button
             block={false}
+            className="float-right"
             ghost={false}
             htmlType="button"
             loading={false}
             onClick={[Function]}
             style={
               Object {
-                "float": "right",
                 "zIndex": 1,
               }
             }

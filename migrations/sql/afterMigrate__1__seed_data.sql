@@ -615,7 +615,10 @@ VALUES
 	('RJL', 'Rejection Letter', true, 'system-mds', 'system-mds'),
     ('SCD', 'Security Calculation Document', true, 'system-mds', 'system-mds'),
     ('PMT','Working Permit', true, 'system-mds','system-mds'),
-    ('PMA','Working Permit for Amendment', true, 'system-mds','system-mds')
+    ('PMA','Working Permit for Amendment', true, 'system-mds','system-mds'),
+    ('SRB', 'Scan of Reclamation Security Document', true, 'system-mds','system-mds'),
+    ('NIA', 'No Interest Acknowledgement Form', true, 'system-mds','system-mds'),
+    ('AKL', 'Acknowledgement of Security Letter', true, 'system-mds','system-mds')
 on conflict do nothing;
 
 INSERT INTO now_application_review_type(

@@ -104,6 +104,9 @@ export class MineSecurityInfo extends Component {
       )
       .reduce((sum, bond) => +sum + +bond.amount, 0);
 
+  getTotalAssessedSum = (permit) =>
+    permit.permit_amendments.reduce((sum, amendment) => +sum + +amendment.security_total, 0);
+
   getAmountSum = (permit) =>
     this.props.invoices
       .filter(({ permit_guid }) => permit_guid === permit.permit_guid)
@@ -368,6 +371,7 @@ export class MineSecurityInfo extends Component {
                 recordsByPermit={this.recordsByPermit}
                 activeBondCount={this.activeBondCount}
                 getSum={this.getSum}
+                getTotalAssessedSum={this.getTotalAssessedSum}
               />
             </div>
           </TabPane>
