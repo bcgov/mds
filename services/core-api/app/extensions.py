@@ -15,3 +15,5 @@ api = Api(
     doc='{}/'.format(Config.BASE_PATH),
     default='mds',
     default_label='MDS related operations')
+
+tracer = Config.JAEGER_CONFIG.initialize_tracer()

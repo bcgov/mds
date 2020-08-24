@@ -27,7 +27,7 @@ from app.api.orgbook.namespace import api as orgbook_api
 
 from app.commands import register_commands
 from app.config import Config
-from app.extensions import db, jwt, api, cache
+from app.extensions import db, jwt, api, cache, tracer
 from app.api.utils.setup_marshmallow import setup_marshmallow
 
 
@@ -60,7 +60,7 @@ def register_extensions(app):
 
     api.init_app(app)
     if app.config['TRACING_ENABLED'] == '1':
-        flask_tracing = FlaskTracing(Config.JAEGER_CONFIG.initialize_tracer(), True, app)
+        flask_tracing = FlaskTracing(tracer)
     else:
         app.logger.info('TRACING_ENABLED: FALSE, set TRACING_ENABLED=1 to enable')
 
@@ -101,8 +101,11 @@ def register_routes(app):
 
     # Healthcheck endpoint
     @api.route('/health')
+    @tracing.trace()
     class Healthcheck(Resource):
         def get(self):
+            with tracer.start_span('TestSpan') as span:
+                span.log_kv({'event': 'test message', 'life': 42})
             return {'status': 'pass'}
 
     @api.errorhandler(AuthError)
