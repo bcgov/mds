@@ -26,7 +26,7 @@ from app.api.orgbook.namespace import api as orgbook_api
 
 from app.commands import register_commands
 from app.config import Config
-from app.extensions import db, jwt, api, cache, apm
+from app.extensions import db, jwt, api, cache
 from app.api.utils.setup_marshmallow import setup_marshmallow
 
 

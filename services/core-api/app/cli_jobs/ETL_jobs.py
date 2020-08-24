@@ -1,7 +1,6 @@
 import psycopg2, os
 
 from app.extensions import db
-from app.api.utils.apm import register_apm
 from dotenv import load_dotenv, find_dotenv
 from flask import current_app
 from app.cli_jobs.etl.address_etl import address_etl
@@ -17,7 +16,6 @@ DB_PORT = os.environ.get('DB_PORT')
 DB_NAME = os.environ.get('DB_NAME')
 
 
-@register_apm()
 def run_ETL():
 
     connection = psycopg2.connect(
@@ -42,6 +40,5 @@ def run_ETL():
         connection.close()
 
 
-@register_apm()
 def run_address_etl():
     address_etl()
