@@ -141,7 +141,15 @@
     },
     {
       "name": "TRACING_ENABLED",
-      "value": "0"
+      "value": "1"
+    },
+    {
+      "name": "JAEGER_HOST",
+      "value": "jaeger-collector"
+    },
+    {
+      "name": "JAEGER_PORT",
+      "value": "14268"
     },
     {
       "name": "ELASTIC_SERVICE_NAME",
@@ -400,6 +408,14 @@
                   {
                     "name": "TRACING_ENABLED",
                     "value": "${TRACING_ENABLED}"
+                  },
+                  {
+                    "name": "JAEGER_HOST",
+                    "value": "${JAEGER_HOST}"
+                  },
+                  {
+                    "name": "JAEGER_PORT",
+                    "value": "${JAEGER_PORT}"
                   },
                   {
                     "name": "ELASTIC_SERVICE_NAME",

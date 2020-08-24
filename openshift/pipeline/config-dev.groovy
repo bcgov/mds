@@ -437,7 +437,7 @@ environments {
                 application_suffix = "-pr-${vars.git.changeId}"
                 node_env = "development"
                 fn_layer_url = "https://delivery.apps.gov.bc.ca/ext/sgw/geo.allgov"
-                tracing_enabled_core = 0
+                tracing_enabled_core = 1
                 tracing_enabled_nris = 0
                 elastic_service_name = "MDS Dev"
                 elastic_service_name_nris = "NRIS API Dev"
