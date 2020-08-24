@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import { Col, Row, Button } from "antd";
+import { Col, Row, Button, Icon } from "antd";
 import { TRASHCAN, EDIT_OUTLINE_VIOLET } from "@/constants/assets";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
@@ -12,6 +12,7 @@ const propTypes = {
   handleSubmit: PropTypes.func,
   handleCancel: PropTypes.func,
   handleDelete: PropTypes.func,
+  reorderConditions: PropTypes.func,
   setConditionEditingFlag: PropTypes.func,
   initialValues: PropTypes.objectOf(PropTypes.any),
   editingConditionFlag: PropTypes.bool.isRequired,
@@ -24,6 +25,7 @@ const defaultProps = {
   handleSubmit: () => {},
   handleCancel: () => {},
   handleDelete: () => {},
+  reorderConditions: () => {},
   setConditionEditingFlag: () => {},
   initialValues: {},
   isViewOnly: false,
@@ -39,10 +41,10 @@ const ListItem = (props) => {
           <Col>&nbsp;</Col>
         </Row>
       )}
-      <Row gutter={32}>
+      <Row gutter={[16, 32]}>
         {!isEditing && <Col span={3} />}
         <Col span={props.isViewOnly ? 2 : 1}>{!isEditing && props.condition.step}</Col>
-        <Col span={props.isViewOnly ? 17 : 18}>
+        <Col span={props.isViewOnly ? 15 : 16}>
           {!isEditing && props.condition.condition}
           {isEditing && (
             <ListItemForm
@@ -56,12 +58,41 @@ const ListItem = (props) => {
             />
           )}
         </Col>
-        <Col span={3} className="float-right">
+        <Col span={4} className="float-right">
           {!isEditing && !props.isViewOnly && (
-            <div>
+            <div className="float-right">
               <AuthorizationWrapper permission={Permission.ADMIN}>
                 <Button
                   ghost
+                  className="no-margin"
+                  size="small"
+                  type="primary"
+                  onClick={() => {
+                    props.reorderConditions(props.condition, true);
+                  }}
+                  disabled={props.editingConditionFlag}
+                >
+                  <Icon type="up" theme="outlined" />
+                </Button>
+              </AuthorizationWrapper>
+              <AuthorizationWrapper permission={Permission.ADMIN}>
+                <Button
+                  ghost
+                  className="no-margin"
+                  size="small"
+                  type="primary"
+                  onClick={() => {
+                    props.reorderConditions(props.condition, false);
+                  }}
+                  disabled={props.editingConditionFlag}
+                >
+                  <Icon type="down" theme="outlined" />
+                </Button>
+              </AuthorizationWrapper>
+              <AuthorizationWrapper permission={Permission.ADMIN}>
+                <Button
+                  ghost
+                  className="no-margin"
                   size="small"
                   type="primary"
                   onClick={() => {
@@ -81,6 +112,7 @@ const ListItem = (props) => {
               <AuthorizationWrapper permission={Permission.ADMIN}>
                 <Button
                   ghost
+                  className="no-margin"
                   size="small"
                   type="primary"
                   onClick={() => props.handleDelete(props.condition)}

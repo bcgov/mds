@@ -95,6 +95,13 @@ export class Conditions extends Component {
       this.props.setEditingConditionFlag(false);
     });
 
+  reorderConditions = (condition, isMoveUp) => {
+    condition.display_order = isMoveUp ? condition.display_order - 1 : condition.display_order + 1;
+    return this.props.updatePermitCondition(condition.permit_condition_guid, condition).then(() => {
+      this.props.fetchPermitConditions(this.props.draftPermitAmendment.permit_amendment_guid);
+    });
+  };
+
   setConditionEditingFlag = (value) => {
     this.props.setEditingConditionFlag(value);
   };
@@ -119,6 +126,7 @@ export class Conditions extends Component {
               {conditions.map((condition) => (
                 <Condition
                   condition={condition}
+                  reorderConditions={this.reorderConditions}
                   handleSubmit={this.handleEdit}
                   handleDelete={(permitConditionGuid) => this.handleDelete(permitConditionGuid)}
                   setConditionEditingFlag={this.setConditionEditingFlag}
