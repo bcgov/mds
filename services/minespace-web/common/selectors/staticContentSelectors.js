@@ -32,6 +32,7 @@ export const {
   getNoticeOfWorkApplicationPermitTypeOptions,
   getNoticeOfWorkApplicationReviewOptions,
   getPartyRelationshipTypes,
+  getPartyBusinessRoleOptions,
   getBondStatusOptions,
   getBondTypeOptions,
   getBondDocumentTypeOptions,
@@ -562,6 +563,17 @@ export const getPartyRelationshipTypesList = createSelectorWrapper(
 
 export const getPartyRelationshipTypeHash = createSelector(
   [getPartyRelationshipTypesList],
+  createLabelHash
+);
+
+export const getPartyBusinessRoleDropDownOptions = createSelectorWrapper(
+  getPartyBusinessRoleOptions,
+  createDropDownList,
+  ["description", "party_business_role_code", "active_ind"]
+);
+
+export const getPartyBusinessRoleOptionsHash = createSelector(
+  [getPartyBusinessRoleDropDownOptions],
   createLabelHash
 );
 
