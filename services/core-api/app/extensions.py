@@ -4,6 +4,8 @@ from flask_caching import Cache
 from flask_jwt_oidc import JwtManager
 from flask_sqlalchemy import SQLAlchemy
 
+from flask_opentracing import FlaskTracing
+
 from .config import Config
 from .helper import Api
 
