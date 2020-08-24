@@ -292,10 +292,7 @@
               {
                 "name": "jaeger-agent",
                 "image": "jaegertracing/jaeger-agent:1.18.1",
-                "args": [
-                  "--reporter.type=tchannel",
-                  "--reporter.tchannel.host-port=jaeger-collector:14267"
-                ],
+                "args": ["--reporter.grpc.host-port=jaeger-collector:14267"],
                 "volumeMounts": [
                   {
                     "mountPath": "/conf",
