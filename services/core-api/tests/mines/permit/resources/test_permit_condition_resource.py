@@ -26,3 +26,16 @@ def test_get_permit_conditions_by_permit_amendment_by_guid(test_client, db_sessi
     post_data = json.loads(post_resp.data.decode())
     assert post_resp.status_code == 201, post_resp.response
     assert str(post_data['permit_amendment_id']) == str(permit_amendment.permit_amendment_id)
+
+# DELETE
+def test_delete_permit_condition(test_client, db_session, auth_headers):
+    mine, permit = create_mine_and_permit()
+    permit_amendment = permit.permit_amendments[0]
+    condition = permit_amendment.conditions[0]
+
+    delete_resp = test_client.delete(
+        f'/mines/{permit_amendment.mine_guid}/permits/{permit_amendment.permit_guid}/amendments/{permit_amendment.permit_amendment_guid}/conditions/{condition.permit_condition_guid}',
+        headers=auth_headers['full_auth_header'])
+    assert delete_resp.status_code == 204
+    assert permit_amendment.conditions[0].permit_condition_guid != condition.permit_condition_guid
+    assert permit_amendment.conditions[0].deleted_ind != True

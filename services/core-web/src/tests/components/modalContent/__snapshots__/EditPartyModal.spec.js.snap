@@ -13,6 +13,9 @@ exports[`EditPartyModal renders properly 1`] = `
       "address": Array [
         Object {},
       ],
+      "business_role_appts": Array [
+        Object {},
+      ],
       "email": null,
       "party_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
       "party_name": "mock name",
@@ -24,6 +27,9 @@ exports[`EditPartyModal renders properly 1`] = `
   party={
     Object {
       "address": Array [
+        Object {},
+      ],
+      "business_role_appts": Array [
         Object {},
       ],
       "party_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
