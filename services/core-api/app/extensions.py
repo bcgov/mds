@@ -18,4 +18,4 @@ api = Api(
     default='mds',
     default_label='MDS related operations')
 
-tracer = TracingManager()
+tracing = TracingManager()

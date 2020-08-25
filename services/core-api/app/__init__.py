@@ -103,7 +103,6 @@ def register_routes(app):
     @api.route('/health')
     class Healthcheck(Resource):
         def get(self):
-
             # with tracer.start_span('TestSpan') as span:
             #     span.log_kv({'event': 'test message', 'life': 42})
             return {'status': 'pass'}

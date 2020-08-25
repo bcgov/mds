@@ -116,10 +116,17 @@ class Config(object):
 
     # Jaeger Config
     JAEGER_CONFIG = JaegerConfig(
-        config={'sampler': {
-            'type': 'const',
-            'param': 1
-        }}, service_name='core-api')
+        config={
+            'sampler': {
+                'type': 'const',
+                'param': 1
+            },
+            # 'local_agent': {
+            #     'reporting_host': 'jaeger',
+            #     'reporting_port': '5775'
+            # }, 
+            'logging': True,
+        }, service_name=TRACING_SERVICE_NAME, validate=True)
 
     # NROS
     NROS_CLIENT_SECRET = os.environ.get('NROS_CLIENT_SECRET', None)
