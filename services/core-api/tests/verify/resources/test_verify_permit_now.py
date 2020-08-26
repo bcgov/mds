@@ -3,7 +3,6 @@ from flask_restplus import marshal, fields
 
 from tests.factories import create_mine_and_permit
 from tests.now_application_factories import NOWApplicationIdentityFactory
-from tests.now_submission_factories import NOWSubmissionFactory
 
 
 class TestVerifyPermitNOW:
@@ -13,8 +12,6 @@ class TestVerifyPermitNOW:
         #by default, authorization_end_date in the PermitAmendmentFactory is >30days
         now_app = NOWApplicationIdentityFactory(mine=mine)
         permit.permit_amendments[0].now_identity = now_app
-
-        now_sub = NOWSubmissionFactory()
 
         get_resp = test_client.get(
             f'/verify/permit/now?a_PermitNumber={permit.permit_no}',
