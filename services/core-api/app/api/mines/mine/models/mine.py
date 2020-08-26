@@ -142,11 +142,14 @@ class Mine(AuditMixin, Base):
         for p in self._permit_identities:
             p._context_mine = self
             permits_w_context.append(p)
-        return permits_w_context
+        filtered_permits = [x for x in permits_w_context if x.permit_status_code != 'D']
+        return filtered_permits
 
     @hybrid_property
     def mine_permit_numbers(self):
-        p_numbers = [mpi.permit_no for mpi in self._permit_identities if mpi.permit_status_code != 'D']
+        p_numbers = [
+            mpi.permit_no for mpi in self._permit_identities if mpi.permit_status_code != 'D'
+        ]
         return p_numbers
 
     @hybrid_property
