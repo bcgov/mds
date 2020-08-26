@@ -6,11 +6,12 @@ from sqlalchemy.exc import DBAPIError
 from werkzeug.exceptions import NotFound, BadRequest
 from datetime import datetime, timezone
 
-from app.extensions import api, jwt
+from app.extensions import api, jwt, cache
 from app.api.utils.access_decorators import requires_role_view_all, requires_role_mine_edit, requires_role_mine_admin, requires_role_edit_party
 from app.api.utils.resources_mixins import UserMixin
 from app.api.utils.custom_reqparser import CustomReqparser
 from app.api.utils.access_decorators import MINE_ADMIN
+from app.api.constants import GET_ALL_INSPECTORS_KEY
 
 from app.api.parties.party.models.party import Party
 from app.api.parties.party.models.address import Address
@@ -155,25 +156,32 @@ class PartyResource(Resource, UserMixin):
         if jwt.validate_roles([MINE_ADMIN]):
             signature = data.get('signature') if data.get('signature') else None
             today = datetime.now(timezone.utc).date()
-            business_role = PartyBusinessRoleAppointment.get_current_business_appointment(existing_party.party_guid, "INS")
+            business_role = PartyBusinessRoleAppointment.get_current_business_appointment(
+                existing_party.party_guid, "INS")
 
             if existing_party.signature != signature:
                 existing_party = signature
 
             if data.get("set_to_inspector"):
-                start_date = data.inspector_start_date if data.get("inspector_start_date") else datetime.now(timezone.utc)
+                start_date = data.inspector_start_date if data.get(
+                    "inspector_start_date") else datetime.now(timezone.utc)
                 end_date = data.inspector_end_date if data.get("inspector_end_date") else None
-                update_required = business_role and business_role.start_date == start_date.date() and (end_date == None or business_role.end_date != end_date.date())
+                update_required = business_role and business_role.start_date == start_date.date(
+                ) and (end_date == None or business_role.end_date != end_date.date())
                 if update_required:
                     business_role.end_date = end_date
                     business_role.save()
+                    cache.delete(GET_ALL_INSPECTORS_KEY)
                 else:
-                    new_bappt = PartyBusinessRoleAppointment.create("INS", party_guid, start_date, end_date)
+                    new_bappt = PartyBusinessRoleAppointment.create("INS", party_guid, start_date,
+                                                                    end_date)
                     try:
                         new_bappt.save()
                     except alch_exceptions.IntegrityError as e:
                         if "daterange_excl" in str(e):
-                            raise BadRequest(f'Date ranges for inspector appointment must not overlap')
+                            raise BadRequest(
+                                f'Date ranges for inspector appointment must not overlap')
+                    cache.delete(GET_ALL_INSPECTORS_KEY)
             # deactivate inspector
             elif business_role:
                 end_date = data.get("inspector_end_date")
@@ -182,6 +190,7 @@ class PartyResource(Resource, UserMixin):
                 else:
                     business_role.end_date = today
                     business_role.save()
+                    cache.delete(GET_ALL_INSPECTORS_KEY)
 
         existing_party.save()
         return existing_party
