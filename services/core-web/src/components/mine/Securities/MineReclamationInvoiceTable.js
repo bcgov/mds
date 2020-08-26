@@ -151,11 +151,7 @@ export const MineReclamationInvoiceTable = (props) => {
                 type="secondary"
                 className="permit-table-button"
                 onClick={(event) =>
-                  props.openEditReclamationInvoiceModal(
-                    event,
-                    record,
-                    props.getBalance(record.permit_guid)
-                  )
+                  props.openEditReclamationInvoiceModal(event, record, props.getBalance(record))
                 }
               >
                 <img
