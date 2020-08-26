@@ -34,7 +34,6 @@ from app.api.now_applications.models.now_application_review_type import NOWAppli
 def RandomMineRegionCode():
     return random.choice([x.mine_region_code for x in db.session.query(MineRegionCode).all()])
 
-
 def RandomPermitStatusCode():
     return random.choice([x.permit_status_code for x in db.session.query(PermitStatusCode).all()])
 
