@@ -53,7 +53,8 @@ class PermitAmendment(AuditMixin, Base):
     mine = db.relationship('Mine', lazy='select')
     conditions = db.relationship('PermitConditions', lazy='select',
         primaryjoin=
-        "and_(PermitConditions.permit_amendment_id == PermitAmendment.permit_amendment_id, PermitConditions.deleted_ind==False)",)
+        "and_(PermitConditions.permit_amendment_id == PermitAmendment.permit_amendment_id, PermitConditions.deleted_ind == False, PermitConditions.parent_permit_condition_id.is_(None))",
+        order_by='asc(PermitConditions.display_order)')
 
     #no current use case for this relationship
     #TODO Have factories use this to manage FK.

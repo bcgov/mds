@@ -70,6 +70,9 @@ class PermitConditionsResource(Resource, UserMixin):
     @api.marshal_with(PERMIT_CONDITION_MODEL, code=200)
     def put(self, mine_guid, permit_guid, permit_amendment_guid, permit_condition_guid):
 
+        old_condition = PermitConditions.find_by_permit_condition_guid(permit_condition_guid)
+        old_display_order = old_condition.display_order
+
         try:
             condition = PermitConditions._schema().load(
                 request.json,
@@ -77,8 +80,25 @@ class PermitConditionsResource(Resource, UserMixin):
         except MarshmallowError as e:
             raise BadRequest(e)
 
-        condition.save()
+        if condition.parent_permit_condition_id is not None:
+            conditions = condition.parent.sub_conditions
+        else:
+            conditions = [
+                x for x in PermitConditions.find_all_by_permit_amendment_id(
+                    condition.permit_amendment_id)
+                if x.condition_category_code == condition.condition_category_code
+            ]
 
+        if condition.display_order > old_display_order:
+            conditions = sorted(conditions, key=lambda x: (x.display_order, x.permit_condition_guid == condition.permit_condition_guid))
+        else:
+            conditions = sorted(conditions, key=lambda x: (x.display_order, x.permit_condition_guid != condition.permit_condition_guid))
+
+        for i, cond in enumerate(conditions):
+            cond.display_order = i + 1
+            cond.save(commit=False)
+
+        db.session.commit()
         return condition
 
     @api.doc(description='delete a permit condition')
@@ -100,14 +120,15 @@ class PermitConditionsResource(Resource, UserMixin):
             conditions = permit_condition.parent.sub_conditions
         else:
             conditions = [
-                x for x in PermitConditions.find_all_by_permit_amendment_id(permit_condition.permit_amendment_id)
+                x for x in PermitConditions.find_all_by_permit_amendment_id(
+                    permit_condition.permit_amendment_id)
                 if x.condition_category_code == permit_condition.condition_category_code
             ]
 
         for i, condition in enumerate(sorted(conditions, key=lambda x: x.display_order)):
             condition.display_order = i + 1
             condition.save(commit=False)
-            
+
         db.session.commit()
 
         return ('', 204)
