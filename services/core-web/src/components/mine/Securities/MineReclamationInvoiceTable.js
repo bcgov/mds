@@ -78,7 +78,7 @@ export const MineReclamationInvoiceTable = (props) => {
                 props.openAddReclamationInvoiceModal(
                   event,
                   record.permit_guid,
-                  props.getBalance(record.permit_guid)
+                  props.getBalance(record)
                 )
               }
             >
