@@ -683,6 +683,7 @@ class PermitAmendmentFactory(BaseFactory):
             extracted = 5
 
         PermitConditionsFactory.create_batch(size=extracted, permit_amendment=obj, **kwargs)
+        PermitConditionsFactory.reset_sequence()
 
 
 class PermitAmendmentDocumentFactory(BaseFactory):
@@ -710,7 +711,7 @@ class PermitConditionsFactory(BaseFactory):
     condition_category_code = factory.LazyFunction(RandomConditionCategoryCode)
     condition_type_code = factory.LazyFunction(RandomConditionTypeCode)
     condition = factory.Faker('sentence', nb_words=6, variable_nb_words=True)
-    display_order = factory.Sequence(lambda n: n)
+    display_order = factory.Sequence(lambda n: n+1)
 
 
 class BondFactory(BaseFactory):
