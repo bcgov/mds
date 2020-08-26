@@ -35,11 +35,7 @@ export const AddReclamationInvoiceModal = (props) => {
   const newBalance = props.formValues.amount
     ? props.balance - props.formValues.amount
     : props.balance;
-  const isValueDiff = Math.ceil(props.formValues.amount) !== Math.ceil(props.invoice.amount);
-  const updatedBalance =
-    props.edit && isValueDiff
-      ? props.balance - (props.formValues.amount - props.invoice.amount)
-      : props.balance;
+  const updatedBalance = props.balance - (props.formValues.amount - props.invoice.amount);
   const showErrors = props.balance < 0 || newBalance < 0;
   return (
     <div>
