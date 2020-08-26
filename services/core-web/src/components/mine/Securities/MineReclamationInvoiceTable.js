@@ -62,7 +62,7 @@ export const MineReclamationInvoiceTable = (props) => {
       title: (
         <div>
           Balance
-          <CoreTooltip title="This is the current amount of money available from the confiscated bonds. If this amount is negative, it means invoices have exceeded the confiscated bonds." />
+          <CoreTooltip title="Balance: This is the current amount of money available from the confiscated bonds. If this amount is negative, it means invoices have exceeded the confiscated bonds." />
         </div>
       ),
       dataIndex: "balance",
