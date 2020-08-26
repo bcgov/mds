@@ -294,7 +294,6 @@ export class MineSecurityInfo extends Component {
 
   openAddReclamationInvoiceModal = (event, permitGuid, balance) => {
     event.preventDefault();
-    console.log(balance);
     this.props.openModal({
       props: {
         title: "Add Reclamation Invoice",
@@ -309,8 +308,6 @@ export class MineSecurityInfo extends Component {
   };
 
   openEditReclamationInvoiceModal = (event, invoice, balance) => {
-    console.log("EDITIING ******");
-    console.log(balance);
     event.preventDefault();
     this.props.openModal({
       props: {
