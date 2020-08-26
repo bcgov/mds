@@ -120,7 +120,7 @@ export class Conditions extends Component {
                 <Condition
                   condition={condition}
                   handleSubmit={this.handleEdit}
-                  handleDelete={(permitConditionGuid) => this.handleDelete(permitConditionGuid)}
+                  handleDelete={this.openDeleteConditionModal}
                   setConditionEditingFlag={this.setConditionEditingFlag}
                   editingConditionFlag={this.props.editingConditionFlag}
                 />
