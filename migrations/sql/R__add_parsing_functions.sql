@@ -72,7 +72,7 @@ BEGIN
 
     select
     CASE
-        WHEN parts[3] is null THEN
+        WHEN convert_to_integer(parts[3]) is null THEN
         --no second -.
         UPPER(CONCAT(
             RPAD(TRIM(parts[1]),2, ' '),
@@ -87,7 +87,7 @@ BEGIN
             LPAD(TRIM(parts[2]),3,' '),
             '-',
             CASE
-                WHEN parts[3]::int = 0 THEN
+                WHEN convert_to_integer(parts[3]) = 0 THEN
                 '   '
                 ELSE
                 LPAD(TRIM(LTRIM(parts[3],'0')),3,' ')
@@ -99,14 +99,14 @@ BEGIN
             RPAD(TRIM(parts[1]),2,' '),
             '-',
             CASE
-                WHEN parts[2]::int = 0 THEN
+                WHEN convert_to_integer(parts[2]) = 0 THEN
                 '   '
                 ELSE
                 LPAD(TRIM(LTRIM(parts[2],'0')),3,' ')
             END,
             '-',
             CASE
-                WHEN parts[3]::int = 0 THEN
+                WHEN convert_to_integer(parts[3]) = 0 THEN
                 '   '
                 ELSE
                 LPAD(TRIM(LTRIM(parts[3],'0')),3,' ')
