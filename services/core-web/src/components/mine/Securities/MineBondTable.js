@@ -54,10 +54,10 @@ export const MineBondTable = (props) => {
     },
     {
       // commenting out code for now as it introduces a new bug (adds an additional column to the table)
-      // title: (
+      //  title: (
       //   <div>
       //     Total Assessed
-      //     <CoreTooltip title="Total Assessed: This is the total value of all bond assessments for the permit, including amendments. Assessed values are determined by permitting inspectors and come from the permits." />
+      //     <CoreTooltip title="Total Assessed: This is the total value of all bond assessments for the permit, including amendments. Assessed values are determined by permitting inspectors and come from the associated permit." />
       //   </div>
       // ),
       title: "Total Assessed",
