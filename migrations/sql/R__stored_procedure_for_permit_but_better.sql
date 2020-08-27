@@ -59,7 +59,7 @@ DECLARE
 	    max(cid) permit_cid
 	FROM mms.mmspmt mmspmt
 	WHERE
-	    (sta_cd ~* 'z'  OR sta_cd ~* 'a')
+	    (sta_cd ~* 'z'  OR sta_cd ~* 'a' OR sta_cd ~* 'r' OR sta_cd ~* 'n')
 	    AND
 	    ((permit_no !~ '^ *$' AND mmspmt.permit_no IS NOT NULL))
 	GROUP BY combo_id;
@@ -83,6 +83,7 @@ DECLARE
                 WHERE mms.mmsnow.cid = mmspmt.cid
         ) AS permit_expiry_dt                                    ,
         CASE mmspmt.sta_cd
+            WHEN 'R' THEN 'R' --confiscated
             WHEN 'Z' THEN 'C' --closed
             ELSE 'O' --open
         END AS sta_cd                                            ,
