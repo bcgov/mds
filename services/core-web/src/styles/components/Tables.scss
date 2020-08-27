@@ -2,7 +2,11 @@
   max-height: 25px * 6;
   overflow-y: auto;
 }
-
+.additional-table-header {
+.ant-table-thead > tr:first-child > th:first-child {
+  display: none
+}
+}
 .ant-table-body {
   overflow-x: auto;
 }

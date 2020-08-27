@@ -376,6 +376,7 @@ export class MineSecurityInfo extends Component {
             </div>
           </TabPane>
           <TabPane tab="Reclamation Invoices" key="2">
+            <br />
             <h4 className="uppercase">Reclamation Invoices</h4>
             <p>
               Record invoices for reclamation activities paid for with funds from confiscated bonds.
