@@ -48,7 +48,7 @@ body {
 }
 
 .float-right {
-  float:right;
+  float: right;
 }
 
 .position-right {
@@ -400,4 +400,12 @@ body {
 .collapsed-container {
   height: 50px;
   overflow: hidden;
+}
+
+.disabled-icon {
+  opacity: 0.3;
+}
+
+.no-margin {
+  margin: 0;
 }

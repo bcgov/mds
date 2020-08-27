@@ -6,7 +6,7 @@ exports[`AddReclamationInvoiceModal renders properly 1`] = `
     className="error center"
   >
     <Alert
-      message="Total Spent exceeds Total Confiscated. Balance including the current invoice amount: -$1,251.00"
+      message="Total Spent exceeds Total Confiscated. Current Balance: $0.00, Balance including new Invoice Amount: -$1,251.00"
       showIcon={true}
       type="warning"
     />

@@ -53,7 +53,7 @@ export const MineBondTable = (props) => {
       render: (text) => <div title="Permit No.">{text}</div>,
     },
     {
-      // commenting out code for now as it introduces a new bug (adds an additional )
+      // commenting out code for now as it introduces a new bug (adds an additional column to the table)
       // title: (
       //   <div>
       //     Total Assessed

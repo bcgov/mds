@@ -24,6 +24,7 @@ from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointme
 from app.api.mines.permits.permit.models.permit import Permit
 from app.api.mines.permits.permit.models.mine_permit_xref import MinePermitXref
 from app.api.mines.permits.permit_amendment.models.permit_amendment import PermitAmendment
+from app.api.mines.permits.permit_conditions.models.permit_conditions import PermitConditions
 from app.api.mines.permits.permit_amendment.models.permit_amendment_document import PermitAmendmentDocument
 from app.api.securities.models.bond import Bond
 from app.api.securities.models.bond_permit_xref import BondPermitXref
@@ -665,13 +666,24 @@ class PermitAmendmentFactory(BaseFactory):
     mine_guid = factory.SelfAttribute('mine.mine_guid')
     received_date = TODAY
     issue_date = TODAY
-    authorization_end_date = factory.Faker('date_between', start_date='+31d', end_date='+90d')
+    authorization_end_date = factory.Faker('date_between', start_date='+31d', end_date='+89d')
     permit_amendment_status_code = 'ACT'
     permit_amendment_type_code = 'AMD'
     description = factory.Faker('sentence', nb_words=6, variable_nb_words=True)
     related_documents = []
     mine = factory.SubFactory('tests.factories.MineFactory', minimal=True)
     deleted_ind = False
+
+    @factory.post_generation
+    def conditions(obj, create, extracted, **kwargs):
+        if not create:
+            return
+
+        if not isinstance(extracted, int):
+            extracted = 5
+
+        PermitConditionsFactory.create_batch(size=extracted, permit_amendment=obj, **kwargs)
+        PermitConditionsFactory.reset_sequence()
 
 
 class PermitAmendmentDocumentFactory(BaseFactory):
@@ -684,6 +696,22 @@ class PermitAmendmentDocumentFactory(BaseFactory):
     mine_guid = factory.SelfAttribute('permit_amendment.mine_guid')
     document_manager_guid = GUID
     permit_amendment = factory.SubFactory(PermitAmendmentFactory)
+
+
+class PermitConditionsFactory(BaseFactory):
+    class Meta:
+        model = PermitConditions
+
+    class Params:
+        permit_amendment = factory.SubFactory(PermitAmendmentFactory)
+
+    permit_condition_guid = GUID
+    permit_condition_guid = GUID
+    permit_amendment_id = factory.SelfAttribute('permit_amendment.permit_amendment_id')
+    condition_category_code = factory.LazyFunction(RandomConditionCategoryCode)
+    condition_type_code = factory.LazyFunction(RandomConditionTypeCode)
+    condition = factory.Faker('sentence', nb_words=6, variable_nb_words=True)
+    display_order = factory.Sequence(lambda n: n+1)
 
 
 class BondFactory(BaseFactory):
