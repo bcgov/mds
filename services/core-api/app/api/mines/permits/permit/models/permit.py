@@ -28,6 +28,7 @@ class Permit(AuditMixin, Base):
     permit_no = db.Column(db.String(16), nullable=False)
     permit_status_code = db.Column(
         db.String(2), db.ForeignKey('permit_status_code.permit_status_code'))
+    project_id = db.Column(db.String)
     _all_permit_amendments = db.relationship(
         'PermitAmendment',
         backref='permit',

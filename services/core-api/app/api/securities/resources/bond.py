@@ -46,6 +46,10 @@ class BondListResource(Resource, UserMixin):
     @api.marshal_with(BOND, code=201)
     def post(self):
 
+        #remove the project_id from the object as it lives on the permit
+        project_id = request.json['project_id']
+        del request.json['project_id']
+
         try:
             bond = Bond._schema().load(request.json['bond'])
         except MarshmallowError as e:
@@ -60,6 +64,9 @@ class BondListResource(Resource, UserMixin):
 
         for doc in bond.documents:
             doc.mine_guid = permit._all_mines[0].mine_guid
+
+        if project_id:
+            bond.permit.project_id = project_id
 
         bond.save()
 
@@ -92,6 +99,10 @@ class BondResource(Resource, UserMixin):
         history = temp_bond.save_bond_history()
         request.json['amount'] = temp_bond.amount
 
+        #remove the project_id from the object as it lives on the permit
+        project_id = request.json['project_id']
+        del request.json['project_id']
+
         try:
             bond = Bond._schema().load(request.json, instance=Bond.find_by_bond_guid(bond_guid))
         except MarshmallowError as e:
@@ -100,6 +111,11 @@ class BondResource(Resource, UserMixin):
 
         for doc in bond.documents:
             doc.mine_guid = bond.permit._all_mines[0].mine_guid
+
+        #update the permits project ID if needed.
+        if project_id != bond.permit.project_id:
+            bond.permit.project_id = project_id
+
         try:
             bond.save()
         except:
