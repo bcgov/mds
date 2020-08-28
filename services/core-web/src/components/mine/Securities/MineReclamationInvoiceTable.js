@@ -11,6 +11,7 @@ import CustomPropTypes from "@/customPropTypes";
 import { EDIT, EDIT_OUTLINE_VIOLET } from "@/constants/assets";
 import CoreTable from "@/components/common/CoreTable";
 import LinkButton from "@/components/common/LinkButton";
+import { CoreTooltip } from "@/components/common/CoreTooltip";
 
 /**
  * @class  MineReclamationInvoiceTable - displays a table of permits with their related invoices
@@ -64,7 +65,12 @@ export const MineReclamationInvoiceTable = (props) => {
       render: (text) => <div title="Total Spent">{formatMoney(text) || Strings.EMPTY_FIELD}</div>,
     },
     {
-      title: "Balance",
+      title: (
+        <div>
+          Balance
+          <CoreTooltip title="Balance: This is the current amount of money available from the confiscated bonds. If this amount is negative, it means invoices have exceeded the confiscated bonds." />
+        </div>
+      ),
       dataIndex: "balance",
       key: "balance",
       render: (text) => <div title="Balance">{formatMoney(text) || Strings.EMPTY_FIELD}</div>,
@@ -81,11 +87,7 @@ export const MineReclamationInvoiceTable = (props) => {
               type="secondary"
               className="permit-table-button"
               onClick={(event) =>
-                props.openAddReclamationInvoiceModal(
-                  event,
-                  record,
-                  props.getBalance(record.permit_guid)
-                )
+                props.openAddReclamationInvoiceModal(event, record, props.getBalance(record))
               }
             >
               <div className="padding-small">
@@ -151,11 +153,7 @@ export const MineReclamationInvoiceTable = (props) => {
                 type="secondary"
                 className="permit-table-button"
                 onClick={(event) =>
-                  props.openEditReclamationInvoiceModal(
-                    event,
-                    record,
-                    props.getBalance(record.permit_guid)
-                  )
+                  props.openEditReclamationInvoiceModal(event, record, props.getBalance(record))
                 }
               >
                 <img

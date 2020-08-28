@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import { Col, Row, Button } from "antd";
+import { Col, Row, Button, Icon } from "antd";
 import { maxBy } from "lodash";
 import { TRASHCAN, EDIT_OUTLINE_VIOLET } from "@/constants/assets";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
@@ -15,6 +15,7 @@ const propTypes = {
   handleSubmit: PropTypes.func,
   handleCancel: PropTypes.func,
   handleDelete: PropTypes.func,
+  reorderConditions: PropTypes.func,
   setConditionEditingFlag: PropTypes.func,
   initialValues: PropTypes.objectOf(PropTypes.any),
   editingConditionFlag: PropTypes.bool.isRequired,
@@ -27,6 +28,7 @@ const defaultProps = {
   handleSubmit: () => {},
   handleCancel: () => {},
   handleDelete: () => {},
+  reorderConditions: () => {},
   setConditionEditingFlag: () => {},
   initialValues: {},
   isViewOnly: false,
@@ -47,14 +49,14 @@ const SubCondition = (props) => {
           </Row>
         </>
       )}
-      <Row gutter={32}>
+      <Row gutter={[24, 32]}>
         {!isEditing && (
           <>
             <Col span={1} />
             <Col span={props.isViewOnly ? 2 : 1}>{!isEditing && props.condition.step}</Col>
           </>
         )}
-        <Col span={props.isViewOnly ? 19 : 20}>
+        <Col span={props.isViewOnly ? 17 : 18}>
           <Row>
             <Col>{!isEditing && props.condition.condition}</Col>
           </Row>
@@ -76,12 +78,41 @@ const SubCondition = (props) => {
             </Col>
           </Row>
         </Col>
-        <Col span={3} className="float-right">
+        <Col span={4} className="float-right">
           {!isEditing && !props.isViewOnly && (
-            <div>
+            <div className="float-right">
               <AuthorizationWrapper permission={Permission.ADMIN}>
                 <Button
                   ghost
+                  className="no-margin"
+                  size="small"
+                  type="primary"
+                  onClick={() => {
+                    props.reorderConditions(props.condition, true);
+                  }}
+                  disabled={props.editingConditionFlag}
+                >
+                  <Icon type="up" theme="outlined" />
+                </Button>
+              </AuthorizationWrapper>
+              <AuthorizationWrapper permission={Permission.ADMIN}>
+                <Button
+                  ghost
+                  className="no-margin"
+                  size="small"
+                  type="primary"
+                  onClick={() => {
+                    props.reorderConditions(props.condition, false);
+                  }}
+                  disabled={props.editingConditionFlag}
+                >
+                  <Icon type="down" theme="outlined" />
+                </Button>
+              </AuthorizationWrapper>
+              <AuthorizationWrapper permission={Permission.ADMIN}>
+                <Button
+                  ghost
+                  className="no-margin"
                   size="small"
                   type="primary"
                   onClick={() => {
@@ -101,6 +132,7 @@ const SubCondition = (props) => {
               <AuthorizationWrapper permission={Permission.ADMIN}>
                 <Button
                   ghost
+                  className="no-margin"
                   size="small"
                   type="primary"
                   onClick={() => props.handleDelete(props.condition)}
@@ -122,6 +154,7 @@ const SubCondition = (props) => {
         props.condition.sub_conditions.map((condition) => (
           <Condition
             condition={condition}
+            reorderConditions={props.reorderConditions}
             handleSubmit={props.handleSubmit}
             handleDelete={props.handleDelete}
             setConditionEditingFlag={props.setConditionEditingFlag}
