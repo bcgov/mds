@@ -215,7 +215,7 @@ export class MineSecurityInfo extends Component {
       .updateBond(payload, bondGuid)
       .then(() => {
         this.setState({ isBondLoaded: false });
-        this.props.fetchPermits();
+        this.props.fetchPermits(this.props.mineGuid);
         this.props
           .fetchMineBonds(this.props.mineGuid)
           .finally(() => this.setState({ isBondLoaded: true }));
@@ -246,7 +246,7 @@ export class MineSecurityInfo extends Component {
       .createBond(payload)
       .then(() => {
         this.setState({ isBondLoaded: false });
-        this.props.fetchPermits();
+        this.props.fetchPermits(this.props.mineGuid);
         this.props
           .fetchMineBonds(this.props.mineGuid)
           .finally(() => this.setState({ isBondLoaded: true }));
@@ -272,7 +272,7 @@ export class MineSecurityInfo extends Component {
     return this.props
       .createReclamationInvoice(payload)
       .then(() => {
-        this.props.fetchPermits();
+        this.props.fetchPermits(this.props.mineGuid);
         this.props.fetchMineReclamationInvoices(this.props.mineGuid).then(() => {
           this.setState({ isInvoicesLoaded: true });
         });
@@ -288,7 +288,7 @@ export class MineSecurityInfo extends Component {
     return this.props
       .updateReclamationInvoice(payload, invoiceGuid)
       .then(() => {
-        this.props.fetchPermits();
+        this.props.fetchPermits(this.props.mineGuid);
         this.props.fetchMineReclamationInvoices(this.props.mineGuid).then(() => {
           this.setState({ isInvoicesLoaded: true });
         });
