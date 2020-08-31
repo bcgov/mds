@@ -80,7 +80,7 @@ export const DocumentTable = (props) => {
     },
   ];
 
-  if (some(props.documents, "dated")) {
+  if (!some(props.documents, "dated")) {
     columns = columns.filter((column) => column.key !== "dated");
   }
 
