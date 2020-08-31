@@ -121,7 +121,8 @@ export class PermitAmendmentForm extends Component {
             </Form.Item>
             <Form.Item label="Security Assessment">
               <p className="p-light">
-                This amount will be added to the Total Assessed amount for this permit
+                This amount will be added to the Total Assessed amount for this permit. Changes to
+                this value in CORE will not be updated in MMS.
               </p>
               <Field
                 id="security_total"
