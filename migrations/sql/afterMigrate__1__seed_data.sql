@@ -1163,7 +1163,7 @@ INSERT INTO bond_type(
     )
 VALUES
     ('CAS', 'Cash', 'system-mds', 'system-mds'),
-    ('ILC', 'Irrevocable Letter of Credit', 'system-mds', 'system-mds'),
+    ('ILC', 'Letter of Credit', 'system-mds', 'system-mds'),
     ('SBO', 'Surety Bond', 'system-mds', 'system-mds'),
     ('SAG', 'Safekeeping Agreement', 'system-mds', 'system-mds'),
     ('QET', 'Qualified Environmental Trust', 'system-mds', 'system-mds'),
@@ -1213,7 +1213,9 @@ VALUES
     ('RSL', 'Release of Security Letter', true, 'system-mds', 'system-mds', 80),
     ('REL', 'Reminder Letter', false, 'system-mds', 'system-mds', 90),
     ('SRB', 'Scan of Reclamation Security Document', true, 'system-mds', 'system-mds', 100),
-    ('SIB', 'Security Instructions for Bank', true, 'system-mds', 'system-mds', 110)
+    ('SIB', 'Security Instructions for Bank', true, 'system-mds', 'system-mds', 110),
+    ('PRL', 'Payment Reminder Letter', true, 'system-mds', 'system-mds', 120),
+    ('BAL', 'Bank Acknowledgement Letter', true, 'system-mds', 'system-mds', 130)
 ON CONFLICT DO NOTHING;
 
 INSERT INTO regional_contact_type
