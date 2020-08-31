@@ -128,7 +128,7 @@ export class Conditions extends Component {
                   condition={condition}
                   reorderConditions={this.reorderConditions}
                   handleSubmit={this.handleEdit}
-                  handleDelete={(permitConditionGuid) => this.handleDelete(permitConditionGuid)}
+                  handleDelete={this.openDeleteConditionModal}
                   setConditionEditingFlag={this.setConditionEditingFlag}
                   editingConditionFlag={this.props.editingConditionFlag}
                 />

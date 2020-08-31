@@ -35,7 +35,7 @@ def RandomMineRegionCode():
     return random.choice([x.mine_region_code for x in db.session.query(MineRegionCode).all()])
 
 def RandomPermitStatusCode():
-    return random.choice([x.permit_status_code for x in db.session.query(PermitStatusCode).all()])
+    return random.choice([x.permit_status_code for x in db.session.query(PermitStatusCode).filter(PermitStatusCode.permit_status_code != 'D').all()])
 
 def RandomExemptionFeeStatusCode():
     return random.choice([x.exemption_fee_status_code for x in ExemptionFeeStatus.get_all()])
