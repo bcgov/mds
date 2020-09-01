@@ -70,6 +70,7 @@ class PermitListResource(Resource, UserMixin):
             results = [Permit.find_by_now_application_guid(now_application_guid)]
         else:
             results = Mine.find_by_mine_guid(mine_guid).mine_permit
+            # results = [x for x in all_results if x.permit_status_code != 'D']
         return results
 
     @api.doc(params={'permit_guid': 'Permit guid.'})
