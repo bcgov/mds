@@ -115,6 +115,7 @@ export class BondForm extends Component {
             (doc) => {
               doc.bond_document_type_code = values.bond_document_type_code;
               doc.document_date = values.document_date;
+              doc.mine_guid = this.props.mineGuid;
             }
           );
 
