@@ -213,6 +213,7 @@ exports[`MineSecurityInfo renders properly 1`] = `
       placeholder={null}
       tab="Reclamation Invoices"
     >
+      <br />
       <h4
         className="uppercase"
       >
