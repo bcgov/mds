@@ -64,13 +64,12 @@ class PermitListResource(Resource, UserMixin):
     @requires_role_view_all
     @api.marshal_with(PERMIT_MODEL, envelope='records', code=200)
     def get(self, mine_guid):
-        data = self.parser.parse_args()
-        now_application_guid = data.get('now_application_guid')
-        if now_application_guid:
+        now_application_guid = request.args.get('now_application_guid')
+        if now_application_guid is not None:
             results = [Permit.find_by_now_application_guid(now_application_guid)]
         else:
-            results = Mine.find_by_mine_guid(mine_guid).mine_permit
-            # results = [x for x in all_results if x.permit_status_code != 'D']
+            all_results = Mine.find_by_mine_guid(mine_guid).mine_permit
+            results = [x for x in all_results if x.permit_status_code != 'D']
         return results
 
     @api.doc(params={'permit_guid': 'Permit guid.'})
