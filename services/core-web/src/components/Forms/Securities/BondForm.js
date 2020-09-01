@@ -90,6 +90,7 @@ export class BondForm extends Component {
           mine_document_guid: doc.mine_document_guid,
           document_manager_guid: doc.document_manager_guid,
           name: doc.document_name,
+          date: doc.document_date,
           category: this.props.bondDocumentTypeOptionsHash[doc.bond_document_type_code],
           uploaded: doc.upload_date,
         },
@@ -110,13 +111,17 @@ export class BondForm extends Component {
         onSubmit={this.props.handleSubmit((values) => {
           // Set the bond document type code for each uploaded document to the selected value.
           this.state.uploadedFiles.map(
-            // eslint-disable-next-line no-return-assign, no-param-reassign
-            (doc) => (doc.bond_document_type_code = values.bond_document_type_code)
+            // eslint-disable-next-line array-callback-return
+            (doc) => {
+              doc.bond_document_type_code = values.bond_document_type_code;
+              doc.document_date = values.document_date;
+            }
           );
 
           // Delete this value from the bond, as it's not a valid property.
           // eslint-disable-next-line no-param-reassign
           delete values.bond_document_type_code;
+          delete values.document_date;
 
           // Create the bond's new document list by removing deleted documents and adding uploaded documents.
           const currentDocuments = this.props.bond.documents || [];
@@ -338,17 +343,33 @@ export class BondForm extends Component {
           add a different category of document, please submit and re-open the form.
         </p>
         <br />
-        <Form.Item>
-          <Field
-            id="bond_document_type_code"
-            name="bond_document_type_code"
-            label={filesUploaded ? "Document Category*" : "Document Category"}
-            placeholder="Please select category"
-            component={RenderSelect}
-            validate={filesUploaded ? [required] : []}
-            data={this.props.bondDocumentTypeDropDownOptions}
-          />
-        </Form.Item>
+        <Row gutter={16}>
+          <Col md={12} xs={24}>
+            <Form.Item>
+              <Field
+                id="document_date"
+                name="document_date"
+                label="Document Date"
+                showTime
+                component={RenderDate}
+                validate={[date, dateNotInFuture]}
+              />
+            </Form.Item>
+          </Col>
+          <Col md={12} xs={24}>
+            <Form.Item>
+              <Field
+                id="bond_document_type_code"
+                name="bond_document_type_code"
+                label={filesUploaded ? "Document Category*" : "Document Category"}
+                placeholder="Please select category"
+                component={RenderSelect}
+                validate={filesUploaded ? [required] : []}
+                data={this.props.bondDocumentTypeDropDownOptions}
+              />
+            </Form.Item>
+          </Col>
+        </Row>
         <Form.Item>
           <Field
             id="documents"

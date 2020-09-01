@@ -36,6 +36,7 @@ export const ViewBondModal = (props) => {
         mine_document_guid: doc.mine_document_guid,
         document_manager_guid: doc.document_manager_guid,
         name: doc.document_name,
+        dated: doc.document_date,
         category: props.bondDocumentTypeOptionsHash[doc.bond_document_type_code],
         uploaded: doc.upload_date,
       },
