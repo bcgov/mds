@@ -5,11 +5,11 @@
 // when adding a toolTip to ant design table headers, sometimes the table appends an additional column to the beginning of the table (bug with our implementation of our CoreTable/ant design table)
 // this class removes the additional column header
 .additional-table-header {
-.ant-table-thead > tr:first-child > th:first-child {
-  display: none
+  .ant-table-thead > tr:first-child > th:first-child {
+    display: none;
+  }
 }
 
-}
 .ant-table-body {
   overflow-x: auto;
 }
