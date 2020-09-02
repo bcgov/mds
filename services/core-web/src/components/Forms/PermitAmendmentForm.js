@@ -69,7 +69,6 @@ export class PermitAmendmentForm extends Component {
   };
 
   // Attached files handlers
-
   handleRemovePermitAmendmentDocument = (relatedDocuments, documentGuid) => {
     this.props.handleRemovePermitAmendmentDocument(
       this.props.permit_guid,
@@ -120,14 +119,25 @@ export class PermitAmendmentForm extends Component {
                 validate={[required, dateNotInFuture]}
               />
             </Form.Item>
-            <Form.Item>
+            <Form.Item label="Security Assessment">
+              <p className="p-light">
+                This amount will be added to the Total Assessed amount for this permit. Changes to
+                this value in CORE will not be updated in MMS.
+              </p>
               <Field
                 id="security_total"
                 name="security_total"
-                label="Security Assessment"
                 component={renderConfig.FIELD}
                 {...currencyMask}
                 validate={[number]}
+              />
+            </Form.Item>
+            <Form.Item>
+              <Field
+                label="Security Received"
+                id="security_received_date"
+                name="security_received_date"
+                component={renderConfig.DATE}
               />
             </Form.Item>
             {this.props.initialValues.permit_amendment_type_code !== originalPermit && (

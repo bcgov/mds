@@ -70,6 +70,7 @@ export const currencyMask = createNumberMask({
   locale: "en-CA",
   allowEmpty: true,
   stringValue: false,
+  allowNegative: true,
 });
 
 export const dateSorter = (key) => (a, b) => {
