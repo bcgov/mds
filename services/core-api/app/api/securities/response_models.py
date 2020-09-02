@@ -13,6 +13,7 @@ BOND_DOCUMENT_MODEL = api.model(
         'mine_guid': fields.String,
         'document_manager_guid': fields.String,
         'document_name': fields.String,
+        'document_date': fields.Date,
         'upload_date': fields.Date,
         'bond_document_type_code': fields.String
     })

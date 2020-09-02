@@ -138,9 +138,11 @@ class Permit(AuditMixin, Base):
     @classmethod
     def find_by_now_application_guid(cls, _now_application_guid):
         permit_amendment = PermitAmendment.find_by_now_application_guid(_now_application_guid)
-        permit = permit_amendment.permit
-        permit._context_mine = permit_amendment.mine
-        return permit
+        if permit_amendment is not None:
+            permit = permit_amendment.permit
+            permit._context_mine = permit_amendment.mine
+            return permit
+        return None
 
     @classmethod
     def create(cls, mine, permit_no, permit_status_code, add_to_session=True):
