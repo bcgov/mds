@@ -351,7 +351,7 @@ declare
 	set
 		p.project_id = e.project_no
 	from ETL_BOND e
-	where p.permit_id = e.core_permit_id
+	where p.permit_id = e.core_permit_id;
 
 END;
 END;
