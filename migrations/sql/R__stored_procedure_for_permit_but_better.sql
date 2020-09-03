@@ -299,7 +299,6 @@ DECLARE
 	    etl_permit_info
 	    LEFT JOIN preferred_permittee_info ppi
 	        on etl_permit_info.permit_cid = ppi.permit_cid;
-		LEFT JOIN  
 
 	   SELECT COUNT(*) into tmp1 FROM etl_all_permit_info;
 	   SELECT COUNT(*) INTO tmp2 FROM etl_all_permit_info where new_permit = true;
