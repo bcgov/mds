@@ -45,10 +45,7 @@ export class NOWSecurities extends Component {
 
   handleFetchDraftPermit = () => {
     this.props
-      .fetchDraftPermitByNOW(
-        this.props.mineGuid,
-        this.props.noticeOfWork.now_application_document_type_code
-      )
+      .fetchDraftPermitByNOW(this.props.mineGuid, this.props.noticeOfWork.now_application_guid)
       .then(() => this.setState({ isLoaded: true }));
   };
 
