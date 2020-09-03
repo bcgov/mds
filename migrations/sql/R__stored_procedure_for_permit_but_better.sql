@@ -273,6 +273,12 @@ DECLARE
 	    ppi.tel_no as phone_no,
 	    ppi.email as email,
 	    ppi.effective_date as effective_date,
+		--security assessment value
+		(
+			SELECT bond_inc_amt
+			FROM mms.mmsstream_now
+			WHERE etl_permit_info.permit_cid = mms.mmsstream_now.cid
+		) as security_adjustment,
 	    CASE
 	        WHEN etl_permit_info.permit_cid NOT IN (
 	            SELECT ETL_PERMIT.permit_cid
@@ -293,6 +299,7 @@ DECLARE
 	    etl_permit_info
 	    LEFT JOIN preferred_permittee_info ppi
 	        on etl_permit_info.permit_cid = ppi.permit_cid;
+		LEFT JOIN  
 
 	   SELECT COUNT(*) into tmp1 FROM etl_all_permit_info;
 	   SELECT COUNT(*) INTO tmp2 FROM etl_all_permit_info where new_permit = true;
@@ -359,7 +366,8 @@ DECLARE
 	    party_type            ,
 	    phone_no              ,
 	    email                 ,
-	    effective_date
+	    effective_date        ,
+		security_adjustment
 	)
 	SELECT
 	    gen_random_uuid()          ,
@@ -383,7 +391,8 @@ DECLARE
 	    info.party_type            ,
 	    info.phone_no              ,
 	    info.email                 ,
-	    info.effective_date
+	    info.effective_date        ,
+		info.security_adjustment
 	FROM etl_all_permit_info info
 	WHERE
 	    info.new_permit = TRUE
@@ -416,7 +425,8 @@ DECLARE
 	    issue_date             = etl.issue_date            ,
 	    update_user            = 'mms_migration'           ,
 	    update_timestamp       = now()                     ,
-	    authorization_end_date = etl.authorization_end_date
+	    authorization_end_date = etl.authorization_end_date,
+		security_adjustment    = etl.security_adjustment
 	FROM ETL_PERMIT etl
 	WHERE
 	    permit_amendment.permit_amendment_guid = etl.permit_amendment_guid;
@@ -527,6 +537,7 @@ DECLARE
 	    authorization_end_date 			,
 	    permit_amendment_type_code      ,
 	    permit_amendment_status_code    ,
+		security_adjustment             ,
 	    create_user            			,
 	    create_timestamp       			,
 	    update_user            			,
@@ -534,11 +545,12 @@ DECLARE
 	)
 	SELECT
 	    permit.permit_id				         	,
-	    new_permit_amendments.permit_amendment_guid  ,
-	    new_permit_amendments.mine_guid 					,
+	    new_permit_amendments.permit_amendment_guid ,
+	    new_permit_amendments.mine_guid 			,
 	    new_permit_amendments.received_date       	,
 	    new_permit_amendments.issue_date          	,
-	    new_permit_amendments.authorization_end_date	,
+	    new_permit_amendments.authorization_end_date,
+		new_permit_amendments.security_adjustment   ,
 	    CASE WHEN original_permits.permit_amendment_guid IS NOT NULL THEN 'OGP' ELSE 'AMD' END,
 	    'ACT'										,
 	    'mms_migration'                				,
