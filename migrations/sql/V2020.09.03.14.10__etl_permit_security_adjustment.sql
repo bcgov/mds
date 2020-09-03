@@ -1,0 +1,2 @@
+ALTER TABLE ETL_PERMIT
+ADD COLUMN IF NOT EXISTS security_adjustment numeric;
