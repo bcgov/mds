@@ -68,6 +68,9 @@ DECLARE
 	SELECT COUNT(*) FROM etl_valid_permits INTO tmp_num_records;
     RAISE NOTICE '# of valid permits found in mms: %', tmp_num_records;
 
+--Open - 'A','C','N','S','X'
+--Closed - 'R','Z'
+
 
     DROP TABLE IF EXISTS etl_permit_info;
     CREATE TEMPORARY TABLE etl_permit_info AS
@@ -84,6 +87,7 @@ DECLARE
         ) AS permit_expiry_dt                                    ,
         CASE mmspmt.sta_cd
             WHEN 'Z' THEN 'C' --closed
+            WHEN 'R' THEN 'C' --closed
             ELSE 'O' --open
         END AS sta_cd                                            ,
         mmspmt.upd_no
