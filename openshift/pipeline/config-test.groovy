@@ -467,8 +467,8 @@ environments {
                 application_suffix = "-pr-${vars.git.changeId}"
                 node_env = "test"
                 fn_layer_url = "https://delivery.apps.gov.bc.ca/ext/sgw/geo.allgov"
-                elastic_enabled_core = 1
-                elastic_enabled_nris = 1
+                elastic_enabled_core = 0
+                elastic_enabled_nris = 0
                 elastic_service_name = "MDS Test"
                 elastic_service_name_nris = "NRIS API Test"
                 elastic_service_name_docman = 'DocMan Test'

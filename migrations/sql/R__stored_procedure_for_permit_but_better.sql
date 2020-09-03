@@ -549,9 +549,9 @@ DECLARE
 	    new_permit_amendments.received_date       	,
 	    new_permit_amendments.issue_date          	,
 	    new_permit_amendments.authorization_end_date,
-		new_permit_amendments.security_adjustment   ,
 	    CASE WHEN original_permits.permit_amendment_guid IS NOT NULL THEN 'OGP' ELSE 'AMD' END,
 	    'ACT'										,
+		new_permit_amendments.security_adjustment   ,
 	    'mms_migration'                				,
 	    now()                          				,
 	    'mms_migration'                				,
@@ -584,7 +584,6 @@ DECLARE
 	    OR party.party_name != etl.party_name
 	    OR party.phone_no != etl.phone_no
 	    OR party.email != etl.email
-	    OR party.effective_date != etl.effective_date
 	    OR party.party_type_code != etl.party_type
 	   );
 
