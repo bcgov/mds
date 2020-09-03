@@ -175,7 +175,7 @@ exports[`MineSecurityInfo renders properly 1`] = `
                         "mine_guid": "8e9ca839-a28e-427e-997e-9ef23d9d97cd",
                       },
                     ],
-                    "security_total": "1000000",
+                    "security_adjustment": "1000000",
                   },
                   Object {
                     "authorization_end_date": null,
@@ -194,7 +194,7 @@ exports[`MineSecurityInfo renders properly 1`] = `
                         "mine_guid": "8e9ca839-a28e-427e-997e-9ef23d9d97cd",
                       },
                     ],
-                    "security_total": "7000000",
+                    "security_adjustment": "7000000",
                   },
                 ],
                 "permit_guid": "1628847c-060b-45f2-990f-815877174801",
@@ -213,6 +213,7 @@ exports[`MineSecurityInfo renders properly 1`] = `
       placeholder={null}
       tab="Reclamation Invoices"
     >
+      <br />
       <h4
         className="uppercase"
       >
@@ -331,7 +332,7 @@ exports[`MineSecurityInfo renders properly 1`] = `
                       "mine_guid": "8e9ca839-a28e-427e-997e-9ef23d9d97cd",
                     },
                   ],
-                  "security_total": "1000000",
+                  "security_adjustment": "1000000",
                 },
                 Object {
                   "authorization_end_date": null,
@@ -350,7 +351,7 @@ exports[`MineSecurityInfo renders properly 1`] = `
                       "mine_guid": "8e9ca839-a28e-427e-997e-9ef23d9d97cd",
                     },
                   ],
-                  "security_total": "7000000",
+                  "security_adjustment": "7000000",
                 },
               ],
               "permit_guid": "1628847c-060b-45f2-990f-815877174801",
