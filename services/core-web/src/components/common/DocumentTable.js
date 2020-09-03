@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { Table, Popconfirm, Button } from "antd";
 import { formatDate, dateSorter, nullableStringSorter } from "@common/utils/helpers";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
+import { some } from "lodash";
 import { TRASHCAN } from "@/constants/assets";
 import CustomPropTypes from "@/customPropTypes";
 import LinkButton from "@/components/common/LinkButton";
@@ -23,7 +24,7 @@ const defaultProps = {
 };
 
 export const DocumentTable = (props) => {
-  const columns = [
+  let columns = [
     {
       title: "Name",
       key: "name",
@@ -34,6 +35,14 @@ export const DocumentTable = (props) => {
           <LinkButton onClick={() => downloadFileFromDocumentManager(record)}>{text}</LinkButton>
         </div>
       ),
+    },
+    {
+      title: "Dated",
+      key: "dated",
+      dataIndex: "dated",
+      sorter: dateSorter("dated"),
+      defaultSortOrder: "descend",
+      render: (text) => <div title="Dated">{formatDate(text)}</div>,
     },
     {
       title: "Category",
@@ -70,6 +79,10 @@ export const DocumentTable = (props) => {
       ),
     },
   ];
+
+  if (!some(props.documents, "dated")) {
+    columns = columns.filter((column) => column.key !== "dated");
+  }
 
   return (
     <Table

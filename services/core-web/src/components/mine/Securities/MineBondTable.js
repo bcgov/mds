@@ -53,16 +53,14 @@ export const MineBondTable = (props) => {
       render: (text) => <div title="Permit No.">{text}</div>,
     },
     {
-      // commenting out code for now as it introduces a new bug (adds an additional )
-      // title: (
-      //   <div>
-      //     Total Assessed
-      //     <CoreTooltip title="Total Assessed: This is the total value of all bond assessments for the permit, including amendments. Assessed values are determined by permitting inspectors and come from the permits." />
-      //   </div>
-      // ),
-      title: "Total Assessed",
       dataIndex: "total_assessed",
       key: "total_assessed",
+      title: (
+        <span>
+          Total Assessed
+          <CoreTooltip title="Total Assessed: This is the total value of all bond assessments for the permit, including amendments. Assessed values are set by permitting inspectors and come from the associated permit." />
+        </span>
+      ),
       render: (text, record) => (
         <div title="Total Assessed">
           {record.permit_amendments && record.permit_amendments.length > 0
@@ -295,7 +293,7 @@ export const MineBondTable = (props) => {
       dataSource={transformRowData(props.permits)}
       columns={columns}
       tableProps={{
-        className: "nested-table",
+        className: "nested-table additional-table-header",
         rowClassName: "table-row-align-middle pointer fade-in",
         align: "left",
         pagination: false,

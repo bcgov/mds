@@ -24,6 +24,7 @@ class MineDocument(AuditMixin, Base):
     mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine.mine_guid'))
     document_manager_guid = db.Column(UUID(as_uuid=True))
     document_name = db.Column(db.String(255), nullable=False)
+    document_date = db.Column(db.DateTime)
     document_class = db.Column(db.String)
 
     deleted_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
