@@ -52,6 +52,11 @@ DECLARE
 	    email                  character varying(254),
 	    effective_date         date
 	);
+
+	-- Add security adjustment
+	ALTER TABLE ETL_PERMIT
+    ADD COLUMN IF NOT EXISTS security_adjustment numeric;
+
 	DROP TABLE IF EXISTS etl_valid_permits;
     CREATE TEMPORARY TABLE etl_valid_permits AS
 	SELECT
@@ -395,7 +400,7 @@ DECLARE
 	FROM etl_all_permit_info info
 	WHERE
 	    info.new_permit = TRUE
-	    AND
+	    OR
 	    info.new_permittee = TRUE;
 
 
