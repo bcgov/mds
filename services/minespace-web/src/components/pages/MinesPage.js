@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { Row, Col, Divider, Typography, Icon } from "antd";
+import { Row, Col, Divider, Typography } from "antd";
+import { EnvironmentOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { getUserInfo, isProponent } from "@/selectors/authenticationSelectors";
@@ -57,7 +58,8 @@ export class MinesPage extends Component {
                             <li key={mine.mine_guid}>
                               <Link to={routes.MINE_DASHBOARD.dynamicRoute(mine.mine_guid)}>
                                 <Title level={4}>
-                                  <Icon type="environment" style={{ paddingRight: "5px" }} />
+                                  <EnvironmentOutlined />
+                                  {/* <Icon type="environment" style={{ paddingRight: "5px" }} /> */}
                                   {mine.mine_name}{" "}
                                 </Title>
                                 <Text>Mine Number: {mine.mine_no || Strings.EMPTY_FIELD}</Text>

@@ -2,9 +2,10 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { compose } from "redux";
+import { UpOutlined, DownOutlined } from "@ant-design/icons";
 import { isEmpty, some, negate } from "lodash";
 import { Field, reduxForm } from "redux-form";
-import { Form, Button, Col, Icon, Row } from "antd";
+import { Form, Button, Col, Row } from "antd";
 import {
   getDropdownMineReportStatusOptions,
   getDropdownMineReportCategoryOptions,
@@ -228,7 +229,7 @@ export class ReportSearchForm extends Component {
         <div className="left center-mobile">
           <Button className="btn--dropdown" onClick={this.toggleIsAdvancedSearch}>
             {this.state.expandAdvancedSearch ? "Collapse Filters" : "Expand Filters"}
-            <Icon type={this.state.expandAdvancedSearch ? "up" : "down"} />
+            {this.state.expandAdvancedSearch ? <UpOutlined /> : <DownOutlined />}
           </Button>
         </div>
         <div className="right center-mobile">

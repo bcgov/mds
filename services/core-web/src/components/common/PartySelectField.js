@@ -3,7 +3,8 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { throttle } from "lodash";
 import PropTypes from "prop-types";
-import { Icon, Divider, AutoComplete } from "antd";
+import { Divider, AutoComplete } from "antd";
+import { PlusOutlined } from "@ant-design/icons";
 import { Field } from "redux-form";
 import { getSearchResults } from "@common/selectors/searchSelectors";
 import { getLastCreatedParty } from "@common/selectors/partiesSelectors";
@@ -51,7 +52,8 @@ const renderAddPartyFooter = (showAddParty, partyLabel) => (
     <Divider style={{ margin: "0" }} />
     <p className="footer-text">{`Can't find the ${partyLabel} you are looking for?`}</p>
     <LinkButton onClick={showAddParty}>
-      <Icon type="plus" style={{ paddingRight: "5px" }} />
+      <PlusOutlined />
+      {/* <Icon type="plus" style={{ paddingRight: "5px" }} /> */}
       {`Add a new ${partyLabel}`}
     </LinkButton>
   </div>

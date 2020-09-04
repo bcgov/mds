@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Prompt } from "react-router-dom";
-import { Button, Dropdown, Menu, Icon, Popconfirm, Alert, Tabs } from "antd";
+import { Button, Dropdown, Menu, Popconfirm, Alert, Tabs } from "antd";
+import { DownOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
 import { getFormValues, reset, getFormSyncErrors, focus } from "redux-form";
 import { bindActionCreators } from "redux";
@@ -552,7 +553,8 @@ export class NoticeOfWorkApplication extends Component {
         >
           <Button type="secondary" className="full-mobile">
             Actions
-            <Icon type="down" />
+            <DownOutlined />
+            {/* <Icon type="down" /> */}
           </Button>
         </Dropdown>
       </div>
@@ -804,7 +806,7 @@ export class NoticeOfWorkApplication extends Component {
                     >
                       <Button type="secondary" className="full-mobile">
                         Actions
-                        <Icon type="down" />
+                        <DownOutlined />
                       </Button>
                     </Dropdown>
                   </div>

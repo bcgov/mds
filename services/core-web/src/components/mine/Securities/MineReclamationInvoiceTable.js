@@ -1,5 +1,6 @@
 import React from "react";
-import { Button, Icon, Tooltip, Table } from "antd";
+import { Button, Tooltip, Table } from "antd";
+import { MinusSquareFilled, PlusSquareFilled } from "@ant-design/icons";
 import PropTypes from "prop-types";
 import * as Strings from "@common/constants/strings";
 import { formatMoney, truncateFilename } from "@common/utils/helpers";
@@ -196,11 +197,11 @@ export const MineReclamationInvoiceTable = (props) => {
     >
       {rowProps.expanded ? (
         <Tooltip title="Click to hide associated bonds." placement="right" mouseEnterDelay={1}>
-          <Icon type="minus-square" theme="filled" className="icon-lg--grey" />
+          <MinusSquareFilled />
         </Tooltip>
       ) : (
         <Tooltip title="Click to view associated bonds." placement="right" mouseEnterDelay={1}>
-          <Icon type="plus-square" theme="filled" className="icon-lg--grey" />
+          <PlusSquareFilled />
         </Tooltip>
       )}
     </a>

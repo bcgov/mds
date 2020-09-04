@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Layout, BackTop, Button, Icon } from "antd";
+import { Layout, BackTop, Button } from "antd";
+import { ArrowUpOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
 import MediaQuery from "react-responsive";
 import LoadingBar, { showLoading, hideLoading } from "react-redux-loading-bar";
@@ -119,7 +120,7 @@ export class Home extends Component {
           <DashboardRoutes />
           <BackTop>
             <Button type="primary">
-              <Icon type="arrow-up" theme="outlined" />
+              <ArrowUpOutlined />
             </Button>
           </BackTop>
         </Content>

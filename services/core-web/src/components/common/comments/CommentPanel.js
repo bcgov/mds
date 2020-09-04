@@ -1,7 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import { Spin, List, Icon, Button, Popconfirm } from "antd";
+import { Spin, List, Button, Popconfirm } from "antd";
+import { LoadingOutlined } from "@ant-design/icons";
 
 import CommentEditor from "@/components/common/comments/CommentEditor";
 import Comment from "@/components/common/comments/Comment";
@@ -27,9 +28,9 @@ const defaultProps = {
   onSubmit: () => {},
   onRemove: () => {},
 };
-const antIcon = (
-  <Icon type="loading" style={{ fontSize: 30, color: Style.COLOR.mediumGrey }} spin />
-);
+// const antIcon = (
+//   <Icon type="loading" style={{ fontSize: 30, color: Style.COLOR.mediumGrey }} spin />
+// );
 const CommentPanel = (props) => (
   <React.Fragment>
     {!props.loading ? (
@@ -65,7 +66,7 @@ const CommentPanel = (props) => (
       />
     ) : (
       <div className="center margin-xlarge">
-        <Spin id="spinner" indicator={antIcon} />
+        <Spin id="spinner" indicator={<LoadingOutlined />} />
       </div>
     )}
     {props.renderEditor && <CommentEditor onChange={props.onChange} onSubmit={props.onSubmit} />}

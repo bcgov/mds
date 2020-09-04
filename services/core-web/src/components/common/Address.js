@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Icon } from "antd";
 import { formatPostalCode } from "@common/utils/helpers";
+import { ContactsOutlined } from "@ant-design/icons";
 import * as Strings from "@common/constants/strings";
 
 const propTypes = {
@@ -26,9 +26,7 @@ export class Address extends Component {
 
   renderRowOne = (itemArr) => (
     <div className="inline-flex">
-      <div>
-        <Icon type="contacts" className="icon-sm" />
-      </div>
+      <ContactsOutlined />
       <p>{this.formatRowContent(itemArr)}</p>
     </div>
   );

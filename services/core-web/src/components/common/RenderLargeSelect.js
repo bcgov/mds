@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Form, AutoComplete, Input, Icon } from "antd";
+import { Form, AutoComplete, Input } from "antd";
+import { SearchOutlined } from "@ant-design/icons";
 
 /**
  * @constant RenderLargeSelect - Ant Design `AutoComplete` component for redux-form -- being used instead of 'RenderSelect' for large data sets that require a limit.
@@ -60,7 +61,7 @@ const RenderLargeSelect = (props) => (
       {...props.input}
     >
       <Input
-        suffix={<Icon type="search" className="certain-category-icon" />}
+        suffix={<SearchOutlined />} // <Icon type="search" className="certain-category-icon" />
         value={props.selectedOption.label}
       />
     </AutoComplete>

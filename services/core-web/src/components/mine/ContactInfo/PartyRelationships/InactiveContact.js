@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Icon, Card, Button } from "antd";
+import { Card, Button } from "antd";
+import { ClockCircleOutlined } from "@ant-design/icons";
 import { Redirect } from "react-router-dom";
 import * as router from "@/constants/routes";
 import CustomPropTypes from "@/customPropTypes";
@@ -44,7 +45,7 @@ export class InactiveContact extends Component {
           <div>
             <h3>{this.props.partyRelationshipTitle}</h3>
             <p>
-              <Icon type="clock-circle" />
+              <ClockCircleOutlined />
               &nbsp;&nbsp;None Active
             </p>
           </div>

@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import { Icon, Input, Button, Badge } from "antd";
+import { Input, Button, Badge } from "antd";
+import { SearchOutlined, EyeOutlined } from "@ant-design/icons";
 import { Link, withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import {
@@ -128,7 +129,7 @@ export class NoticeOfWorkTable extends Component {
             onClick={() => {
               this.props.handleSearch({ ...this.props.searchParams, [field]: this.searchInput });
             }}
-            icon="search"
+            icon={<SearchOutlined />}
             size="small"
             style={{ width: 90, marginRight: 8 }}
           >
@@ -150,7 +151,7 @@ export class NoticeOfWorkTable extends Component {
       );
     },
     filterIcon: (filtered) => (
-      <Icon type="search" style={{ color: filtered ? "#1890ff" : undefined }} />
+      <SearchOutlined style={{ color: filtered ? "#1890ff" : undefined }} />
     ),
   });
 
@@ -280,11 +281,7 @@ export class NoticeOfWorkTable extends Component {
               </Link>
             </AuthorizationWrapper>
             <Link to={this.createLinkTo(router.VIEW_NOTICE_OF_WORK_APPLICATION, record)}>
-              <Icon
-                type="eye"
-                title="View"
-                className="icon-lg icon-svg-filter padding-large--left"
-              />
+              <EyeOutlined title="View" className="icon-lg icon-svg-filter padding-large--left" />
             </Link>
           </div>
         ),

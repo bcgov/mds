@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Button, Icon, Badge, Popconfirm } from "antd";
+import { Button, Badge, Popconfirm } from "antd";
+import { EyeOutlined } from "@ant-design/icons";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import {
@@ -251,7 +252,8 @@ export class MineVarianceTable extends Component {
               ghost
               onClick={() => this.props.openViewVarianceModal(record.variance)}
             >
-              <Icon type="eye" alt="View" className="icon-lg icon-svg-filter" />
+              <EyeOutlined />
+              {/* <Icon type="eye" alt="View" className="icon-lg icon-svg-filter" /> */}
             </Button>
             <AuthorizationWrapper permission={Permission.ADMIN}>
               <Popconfirm

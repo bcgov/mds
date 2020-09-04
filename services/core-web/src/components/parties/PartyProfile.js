@@ -3,7 +3,13 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
-import { Tabs, Icon, Table, Button, Popconfirm } from "antd";
+import { Tabs, Table, Button, Popconfirm } from "antd";
+import {
+  PhoneOutlined,
+  MinusCircleOutlined,
+  MailOutlined,
+  CheckCircleOutlined,
+} from "@ant-design/icons";
 import { uniq, isEmpty } from "lodash";
 import {
   fetchPartyById,
@@ -177,7 +183,6 @@ export class PartyProfile extends Component {
         relationship: { party_business_role_code: record.party_business_role_code },
       }));
 
-
     if (this.state.isLoaded && party) {
       const formattedName = formatTitleString(party.name);
       return (
@@ -204,7 +209,8 @@ export class PartyProfile extends Component {
                     disabled={this.state.deletingParty}
                   >
                     <Button type="danger" disabled={this.state.deletingParty}>
-                      <Icon className="btn-danger--icon" type="minus-circle" theme="outlined" />
+                      <MinusCircleOutlined />
+                      {/* <Icon className="btn-danger--icon" type="minus-circle" theme="outlined" /> */}
                       Delete Party
                     </Button>
                   </Popconfirm>
@@ -232,7 +238,8 @@ export class PartyProfile extends Component {
             {!isEmpty(party.party_orgbook_entity) && (
               <div className="inline-flex">
                 <div className="padding-right">
-                  <Icon type="check-circle" className="icon-sm" />
+                  <CheckCircleOutlined />
+                  {/* <Icon type="check-circle" className="icon-sm" /> */}
                 </div>
                 <p>
                   <a
@@ -247,7 +254,8 @@ export class PartyProfile extends Component {
             )}
             <div className="inline-flex">
               <div className="padding-right">
-                <Icon type="mail" className="icon-sm" />
+                <MailOutlined />
+                {/* <Icon type="mail" className="icon-sm" /> */}
               </div>
               {party.email && party.email !== "Unknown" ? (
                 <a href={`mailto:${party.email}`}>{party.email}</a>
@@ -257,7 +265,8 @@ export class PartyProfile extends Component {
             </div>
             <div className="inline-flex">
               <div className="padding-right">
-                <Icon type="phone" className="icon-sm" />
+                <PhoneOutlined />
+                {/* <Icon type="phone" className="icon-sm" /> */}
               </div>
               <p>
                 {party.phone_no} {party.phone_ext ? `x${party.phone_ext}` : ""}

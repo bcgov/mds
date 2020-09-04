@@ -1,8 +1,8 @@
 import React from "react";
 import { PropTypes } from "prop-types";
-import { Spin, Icon } from "antd";
+import { Spin } from "antd";
 import * as Style from "@/constants/styles";
-
+import { LoadingOutlined } from "@ant-design/icons";
 /**
  * @constant LoadingWrapper renders react children or loading view
  */
@@ -13,16 +13,19 @@ const propTypes = {
 };
 
 export const LoadingWrapper = (props) => {
-  const antIcon = (
-    <Icon type="loading" style={{ fontSize: 80, color: Style.COLOR.mediumGrey }} spin />
-  );
+  // const antIcon = (
+  //   <Icon type="loading" style={{ fontSize: 80, color: Style.COLOR.mediumGrey }} spin />
+  // );
   return (
     <div>
       {props.condition ? (
         <div className="fade-in">{props.children}</div>
       ) : (
         <div className="loading-screen--small">
-          <Spin id="spinner" indicator={antIcon} />
+          <Spin
+            id="spinner"
+            indicator={<LoadingOutlined style={{ fontSize: 80, color: Style.COLOR.mediumGrey }} />}
+          />
         </div>
       )}
     </div>

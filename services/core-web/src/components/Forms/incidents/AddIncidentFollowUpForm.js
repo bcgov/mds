@@ -6,7 +6,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Field, reduxForm, FieldArray } from "redux-form";
-import { Form, Col, Row, Icon } from "antd";
+import { Form, Col, Row } from "antd";
+import { PlusOutlined } from "@ant-design/icons";
 import { required, dateNotInFuture } from "@common/utils/Validate";
 import { MINE_INCIDENT_DOCUMENT } from "@common/constants/API";
 import * as Strings from "@common/constants/strings";
@@ -42,7 +43,8 @@ const renderRecommendations = ({ fields }) => [
     />
   )),
   <LinkButton onClick={() => fields.push({})}>
-    <Icon type="plus" className="padding-small--right padding-large--bottom" />
+    <PlusOutlined />
+    {/* <Icon type="plus" className="padding-small--right padding-large--bottom" /> */}
     {fields.length ? `Add another recommendation` : `Add a recommendation`}
   </LinkButton>,
 ];

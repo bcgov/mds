@@ -1,5 +1,6 @@
 import React from "react";
-import { Menu, Dropdown, Button, Icon, Tooltip, Table } from "antd";
+import { Menu, Dropdown, Button, Tooltip, Table } from "antd";
+import { EyeOutlined, MinusSquareFilled, PlusSquareFilled } from "@ant-design/icons";
 import PropTypes from "prop-types";
 import * as Strings from "@common/constants/strings";
 import { formatDate, dateSorter, formatMoney } from "@common/utils/helpers";
@@ -220,7 +221,8 @@ export const MineBondTable = (props) => {
               onClick={(event) => props.openViewBondModal(event, record)}
             >
               <div className="padding-small">
-                <Icon type="eye" alt="View" className="icon-lg icon-svg-filter" />
+                <EyeOutlined />
+                {/* <Icon type="eye" alt="View" className="icon-lg icon-svg-filter" /> */}
               </div>
             </Button>
             <AuthorizationWrapper permission={Permission.EDIT_SECURITIES}>
@@ -265,11 +267,13 @@ export const MineBondTable = (props) => {
     >
       {rowProps.expanded ? (
         <Tooltip title="Click to hide associated bonds." placement="right" mouseEnterDelay={1}>
-          <Icon type="minus-square" theme="filled" className="icon-lg--grey" />
+          <MinusSquareFilled />
+          {/* <Icon type="minus-square" theme="filled" className="icon-lg--grey" /> */}
         </Tooltip>
       ) : (
         <Tooltip title="Click to view associated bonds." placement="right" mouseEnterDelay={1}>
-          <Icon type="plus-square" theme="filled" className="icon-lg--grey" />
+          <PlusSquareFilled />
+          {/* <Icon type="plus-square" theme="filled" className="icon-lg--grey" /> */}
         </Tooltip>
       )}
     </a>

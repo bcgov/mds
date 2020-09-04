@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import { Col, Row, Button, Icon } from "antd";
+import { Col, Row, Button } from "antd";
+import { UpOutlined, DownOutlined } from "@ant-design/icons";
 import { maxBy } from "lodash";
 import { TRASHCAN, EDIT_OUTLINE_VIOLET } from "@/constants/assets";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
@@ -92,7 +93,7 @@ const SubCondition = (props) => {
                   }}
                   disabled={props.editingConditionFlag}
                 >
-                  <Icon type="up" theme="outlined" />
+                  <UpOutlined />
                 </Button>
               </AuthorizationWrapper>
               <AuthorizationWrapper permission={Permission.ADMIN}>
@@ -106,7 +107,7 @@ const SubCondition = (props) => {
                   }}
                   disabled={props.editingConditionFlag}
                 >
-                  <Icon type="down" theme="outlined" />
+                  <DownOutlined />
                 </Button>
               </AuthorizationWrapper>
               <AuthorizationWrapper permission={Permission.ADMIN}>

@@ -6,7 +6,7 @@ import { render } from "react-dom";
 import { Provider } from "react-redux";
 
 import App, { store } from "./App";
-import "antd/dist/antd.less";
+// import "antd/dist/antd.less";
 import "./styles/index.scss";
 import fetchEnv from "./fetchEnv";
 

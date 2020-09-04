@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Field, reduxForm } from "redux-form";
-import { Form, Button, Col, Row, Icon } from "antd";
+import { Form, Button, Col, Row } from "antd";
+import { UpOutlined, DownOutlined } from "@ant-design/icons";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
 import CustomPropTypes from "@/customPropTypes";
@@ -143,7 +144,7 @@ export class VarianceSearchForm extends Component {
         <div className="left center-mobile">
           <Button className="btn--dropdown" onClick={this.props.toggleAdvancedSearch}>
             {this.props.isAdvanceSearch ? "Collapse Filters" : "Expand Filters"}
-            <Icon type={this.props.isAdvanceSearch ? "up" : "down"} />
+            {this.props.isAdvanceSearch ? <UpOutlined /> : <DownOutlined />}
           </Button>
         </div>
 

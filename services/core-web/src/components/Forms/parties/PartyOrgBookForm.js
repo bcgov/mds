@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Row, Col, Form, Select, Spin, Icon, Button } from "antd";
+import { Row, Col, Form, Select, Spin, Button } from "antd";
+import { LoadingOutlined, BookOutlined, CheckCircleOutlined } from "@ant-design/icons";
 import debounce, { isEmpty } from "lodash";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
@@ -106,7 +107,7 @@ export class PartyOrgBookForm extends Component {
               placeholder="Start typing to search OrgBook..."
               notFoundContent={
                 this.state.isSearching ? (
-                  <Spin size="small" indicator={<Icon type="loading" />} />
+                  <Spin size="small" indicator={<LoadingOutlined />} />
                 ) : null
               }
               filterOption={false}
@@ -134,7 +135,8 @@ export class PartyOrgBookForm extends Component {
             disabled={!hasOrgBookCredential}
           >
             <span>
-              <Icon type="book" className="padding-small--right" />
+              <BookOutlined />
+              {/* <Icon type="book" className="padding-small--right" /> */}
               View on OrgBook
             </span>
           </Button>
@@ -146,7 +148,8 @@ export class PartyOrgBookForm extends Component {
             loading={this.state.isAssociating}
           >
             <span>
-              <Icon type="check-circle" className="padding-small--right" />
+              <CheckCircleOutlined />
+              {/* <Icon type="check-circle" className="padding-small--right" /> */}
               Associate
             </span>
           </Button>

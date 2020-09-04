@@ -1,6 +1,7 @@
 import React from "react";
 import { Link, Redirect, Route, Switch } from "react-router-dom";
-import { Result, Button, Icon, Typography } from "antd";
+import { Result, Button, Typography } from "antd";
+import { ExclamationCircleOutlined } from "@ant-design/icons";
 import AuthenticationGuard from "@/HOC/AuthenticationGuard";
 import * as routes from "@/constants/routes";
 
@@ -34,7 +35,7 @@ const Routes = () => (
           title="Page Not Found"
           status="warning"
           subTitle={<Text>Sorry, the page you requested does not exist.</Text>}
-          icon={<Icon type="exclamation-circle" />}
+          icon={<ExclamationCircleOutlined />}
           extra={
             <Link to={routes.HOME.route}>
               <Button>Home</Button>

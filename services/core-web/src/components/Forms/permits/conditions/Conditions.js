@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { Divider, Icon, Collapse, Button } from "antd";
+import { Divider, Collapse, Button } from "antd";
+import { UndoOutlined } from "@ant-design/icons";
 import { openModal, closeModal } from "@common/actions/modalActions";
 import {
   getPermitConditionCategoryOptions,
@@ -148,7 +149,8 @@ export class Conditions extends Component {
               />
               {false && (
                 <Button type="secondary" className="full-mobile btn--middle">
-                  <Icon type="undo" theme="outlined" className="padding-small--right icon-sm" />
+                  <UndoOutlined />
+                  {/* <Icon type="undo" theme="outlined" className="padding-small--right icon-sm" /> */}
                   Restore Deleted Standard Conditions
                 </Button>
               )}

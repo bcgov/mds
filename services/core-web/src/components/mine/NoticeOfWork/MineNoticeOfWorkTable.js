@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import { Icon, Badge } from "antd";
+import { Badge } from "antd";
+import { EyeOutlined } from "@ant-design/icons";
 import { Link, withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import { formatDate } from "@common/utils/helpers";
@@ -138,7 +139,8 @@ export class MineNoticeOfWorkTable extends Component {
               </Link>
             </AuthorizationWrapper>
             <Link to={this.createLinkTo(router.VIEW_NOTICE_OF_WORK_APPLICATION, record)}>
-              <Icon type="eye" className="icon-lg icon-svg-filter padding-large--left" />
+              <EyeOutlined />
+              {/* <Icon type="eye" className="icon-lg icon-svg-filter padding-large--left" /> */}
             </Link>
           </div>
         ),

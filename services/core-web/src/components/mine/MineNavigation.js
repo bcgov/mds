@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
-import { Menu, Icon } from "antd";
+import { Menu } from "antd";
+import { DownOutlined } from "@ant-design/icons";
 import { includes } from "lodash";
 import { detectProdEnvironment } from "@common/utils/environmentUtils";
 import * as routes from "@/constants/routes";
@@ -29,7 +30,8 @@ export class MineNavigation extends Component {
           title={
             <span>
               Mine Information
-              <Icon className="padding-small--left" type="down" />
+              <DownOutlined />
+              {/* <Icon className="padding-small--left" type="down" /> */}
             </span>
           }
         >
@@ -49,7 +51,8 @@ export class MineNavigation extends Component {
           title={
             <span>
               Permits & Approvals
-              <Icon className="padding-small--left" type="down" />
+              <DownOutlined />
+              {/* <Icon className="padding-small--left" type="down" /> */}
             </span>
           }
         >
@@ -81,7 +84,8 @@ export class MineNavigation extends Component {
           title={
             <span>
               Oversight
-              <Icon className="padding-small--left" type="down" />
+              <DownOutlined />
+              {/* <Icon className="padding-small--left" type="down" /> */}
             </span>
           }
         >
@@ -103,7 +107,8 @@ export class MineNavigation extends Component {
           title={
             <span>
               Reports
-              <Icon className="padding-small--left" type="down" />
+              <DownOutlined />
+              {/* <Icon className="padding-small--left" type="down" /> */}
             </span>
           }
         >

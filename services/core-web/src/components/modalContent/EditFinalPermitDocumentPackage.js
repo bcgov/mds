@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import { Button, Icon, Popconfirm } from "antd";
+import { Button, Popconfirm } from "antd";
+import { DownloadOutlined } from "@ant-design/icons";
 import NOWDocuments from "../noticeOfWork/applications/NOWDocuments";
 
 const propTypes = {
@@ -39,7 +40,8 @@ export const EditFinalPermitDocumentPackage = (props) => {
           type="primary"
           onClick={() => props.onSubmit(selectedCoreRows)}
         >
-          <Icon type="download" theme="outlined" className="padding-small--right icon-sm" />
+          <DownloadOutlined />
+          {/* <Icon type="download" theme="outlined" className="padding-small--right icon-sm" /> */}
           Save Application Package
         </Button>
       </div>

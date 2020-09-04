@@ -1,7 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Field, reduxForm } from "redux-form";
-import { Form, Button, Icon } from "antd";
+import { Form, Button } from "antd";
+import { SearchOutlined } from "@ant-design/icons";
 import { required, maxLength, number, lat, lon } from "@common/utils/Validate";
 import { resetForm } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
@@ -33,7 +34,7 @@ export const SearchCoordinatesForm = (props) => (
     </Form.Item>
     <div className="right center-mobile">
       <Button className="full-mobile" type="primary" htmlType="submit">
-        <Icon type="search" />
+        <SearchOutlined />
       </Button>
     </div>
   </Form>

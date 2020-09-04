@@ -1,5 +1,6 @@
 import React from "react";
-import { Table, Menu, Dropdown, Button, Icon, Tooltip, Popconfirm } from "antd";
+import { Table, Menu, Dropdown, Button, Tooltip, Popconfirm } from "antd";
+import { MinusSquareFilled, PlusOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { formatDate } from "@common/utils/helpers";
@@ -142,11 +143,12 @@ const columns = [
               onClick={(event) => record.openAddAmalgamatedPermitModal(event, record.permit)}
             >
               <div>
-                <Icon
+                <PlusOutlined />
+                {/* <Icon
                   type="plus"
                   className="padding-small add-permit-dropdown-button-icon"
                   theme="outlined"
-                />
+                /> */}
                 {text.hasAmalgamated ? "Add Permit Amendment" : "Amalgamate Permit"}
               </div>
             </button>
@@ -159,11 +161,12 @@ const columns = [
                 onClick={(event) => record.openAddPermitAmendmentModal(event, record.permit)}
               >
                 <div>
-                  <Icon
+                  <PlusOutlined />
+                  {/* <Icon
                     type="plus"
                     className="padding-small add-permit-dropdown-button-icon"
                     theme="outlined"
-                  />
+                  /> */}
                   Add Permit Amendment
                 </div>
               </button>
@@ -414,11 +417,13 @@ export const RenderPermitTableExpandIcon = (rowProps) => (
   >
     {rowProps.expanded ? (
       <Tooltip title="Click to hide amendment history." placement="right" mouseEnterDelay={1}>
-        <Icon type="minus-square" theme="filled" className="icon-lg--grey" />
+        <MinusSquareFilled />
+        {/* <Icon type="minus-square" theme="filled" className="icon-lg--grey" /> */}
       </Tooltip>
     ) : (
       <Tooltip title="Click to view amendment history." placement="right" mouseEnterDelay={1}>
-        <Icon type="plus-square" theme="filled" className="icon-lg--grey" />
+        <PlusSquareFilled />
+        {/* <Icon type="plus-square" theme="filled" className="icon-lg--grey" /> */}
       </Tooltip>
     )}
   </a>

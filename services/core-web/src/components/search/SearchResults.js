@@ -3,7 +3,8 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import queryString from "query-string";
-import { Row, Col, Icon } from "antd";
+import { Row, Col } from "antd";
+import { ArrowLeftOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import { sumBy, map, mapValues, keyBy } from "lodash";
 import { getSearchResults, getSearchTerms } from "@common/selectors/searchSelectors";
@@ -178,31 +179,32 @@ export class SearchResults extends Component {
               <h1 className="padding-small--bottom">
                 {`${
                   type_filter ? this.props.searchOptionsHash[type_filter] : "Search results"
-                  } for ${results}`}
+                } for ${results}`}
               </h1>
               <div>
                 {type_filter ? (
                   <Link to={router.SEARCH_RESULTS.dynamicRoute({ q: this.state.params.q })}>
-                    <Icon type="arrow-left" className="padding-small--right" />
+                    <ArrowLeftOutlined />
+                    {/* <Icon type="arrow-left" className="padding-small--right" /> */}
                     {`Back to all search results for ${results}`}
                   </Link>
                 ) : (
-                    <p>
-                      <span className="padding-large--right">Just show me:</span>
-                      {this.props.searchOptions.map((o) => (
-                        <span className="padding-large" key={o.model_id}>
-                          <Link
-                            to={router.SEARCH_RESULTS.dynamicRoute({
-                              q: this.state.params.q,
-                              t: o.model_id,
-                            })}
-                          >
-                            {o.description}
-                          </Link>
-                        </span>
-                      ))}
-                    </p>
-                  )}
+                  <p>
+                    <span className="padding-large--right">Just show me:</span>
+                    {this.props.searchOptions.map((o) => (
+                      <span className="padding-large" key={o.model_id}>
+                        <Link
+                          to={router.SEARCH_RESULTS.dynamicRoute({
+                            q: this.state.params.q,
+                            t: o.model_id,
+                          })}
+                        >
+                          {o.description}
+                        </Link>
+                      </span>
+                    ))}
+                  </p>
+                )}
               </div>
             </div>
             <div className="landing-page__content">
@@ -224,7 +226,8 @@ export class SearchResults extends Component {
                         type_filter
                       )}
                       {!type_filter && (
-                        <Link className="float-right"
+                        <Link
+                          className="float-right"
                           to={router.SEARCH_RESULTS.dynamicRoute({
                             q: this.state.params.q,
                             t: group.type,

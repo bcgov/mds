@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
-import { Button, Icon, Popconfirm } from "antd";
+import { Button, Popconfirm } from "antd";
+import { EyeOutlined } from "@ant-design/icons";
 import _ from "lodash";
 import {
   getIncidentDeterminationHash,
@@ -343,7 +344,8 @@ export class MineIncidentTable extends Component {
               ghost
               onClick={(event) => record.openViewMineIncidentModal(event, record.incident)}
             >
-              <Icon type="eye" className="icon-lg icon-svg-filter" />
+              <EyeOutlined />
+              {/* <Icon type="eye" className="icon-lg icon-svg-filter" /> */}
             </Button>
             <AuthorizationWrapper permission={Permission.ADMIN}>
               <Popconfirm
