@@ -339,7 +339,8 @@ DECLARE
 	    party_type             = info.party_type            ,
 	    phone_no               = info.phone_no              ,
 	    email                  = info.email                 ,
-	    effective_date         = info.effective_date
+	    effective_date         = info.effective_date		,
+		security_adjustment    = info.security_adjustment
 	FROM etl_all_permit_info info
 	    WHERE
 	    ETL_PERMIT.mine_guid = info.mine_guid
