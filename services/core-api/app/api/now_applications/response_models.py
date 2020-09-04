@@ -395,7 +395,7 @@ NOW_APPLICATION_MODEL = api.model(
         Date,
         'public_comment_closed_on_date':
         Date,
-        'security_total':
+        'security_adjustment':
         fields.Fixed(decimals=2),
         'security_received_date':
         Date,

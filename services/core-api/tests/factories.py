@@ -401,8 +401,6 @@ class PartyFactory(BaseFactory):
     phone_no = factory.Faker('numerify', text='###-###-####')
     phone_ext = factory.Iterator([None, '123'])
     email = None
-    effective_date = TODAY
-    expiry_date = None
     party_type_code = None
 
     mine_party_appt = []
@@ -683,6 +681,7 @@ class PermitAmendmentFactory(BaseFactory):
             extracted = 5
 
         PermitConditionsFactory.create_batch(size=extracted, permit_amendment=obj, **kwargs)
+        PermitConditionsFactory.reset_sequence()
 
 
 class PermitAmendmentDocumentFactory(BaseFactory):
@@ -710,7 +709,7 @@ class PermitConditionsFactory(BaseFactory):
     condition_category_code = factory.LazyFunction(RandomConditionCategoryCode)
     condition_type_code = factory.LazyFunction(RandomConditionTypeCode)
     condition = factory.Faker('sentence', nb_words=6, variable_nb_words=True)
-    display_order = factory.Sequence(lambda n: n)
+    display_order = factory.Sequence(lambda n: n+1)
 
 
 class BondFactory(BaseFactory):

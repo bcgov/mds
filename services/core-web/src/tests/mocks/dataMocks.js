@@ -1026,7 +1026,7 @@ export const PERMITS = [
         received_date: null,
         issue_date: "2019-04-01",
         authorization_end_date: null,
-        security_total: "1000000",
+        security_adjustment: "1000000",
         description: "Initial permit issued.",
         related_documents: [
           {
@@ -1045,7 +1045,7 @@ export const PERMITS = [
         received_date: null,
         issue_date: "2020-04-01",
         authorization_end_date: null,
-        security_total: "7000000",
+        security_adjustment: "7000000",
         description: "Amendment",
         related_documents: [
           {

@@ -52,6 +52,11 @@ DECLARE
 	    email                  character varying(254),
 	    effective_date         date
 	);
+
+	-- Add security adjustment
+	ALTER TABLE ETL_PERMIT
+    ADD COLUMN IF NOT EXISTS security_adjustment numeric;
+
 	DROP TABLE IF EXISTS etl_valid_permits;
     CREATE TEMPORARY TABLE etl_valid_permits AS
 	SELECT
@@ -273,6 +278,12 @@ DECLARE
 	    ppi.tel_no as phone_no,
 	    ppi.email as email,
 	    ppi.effective_date as effective_date,
+		--security assessment value
+		(
+			SELECT bond_inc_amt
+			FROM mms.mmsstream_now
+			WHERE etl_permit_info.permit_cid = mms.mmsstream_now.cid
+		) as security_adjustment,
 	    CASE
 	        WHEN etl_permit_info.permit_cid NOT IN (
 	            SELECT ETL_PERMIT.permit_cid
@@ -359,7 +370,8 @@ DECLARE
 	    party_type            ,
 	    phone_no              ,
 	    email                 ,
-	    effective_date
+	    effective_date        ,
+		security_adjustment
 	)
 	SELECT
 	    gen_random_uuid()          ,
@@ -383,11 +395,12 @@ DECLARE
 	    info.party_type            ,
 	    info.phone_no              ,
 	    info.email                 ,
-	    info.effective_date
+	    info.effective_date        ,
+		info.security_adjustment
 	FROM etl_all_permit_info info
 	WHERE
 	    info.new_permit = TRUE
-	    AND
+	    OR
 	    info.new_permittee = TRUE;
 
 
@@ -416,7 +429,8 @@ DECLARE
 	    issue_date             = etl.issue_date            ,
 	    update_user            = 'mms_migration'           ,
 	    update_timestamp       = now()                     ,
-	    authorization_end_date = etl.authorization_end_date
+	    authorization_end_date = etl.authorization_end_date,
+		security_adjustment    = etl.security_adjustment
 	FROM ETL_PERMIT etl
 	WHERE
 	    permit_amendment.permit_amendment_guid = etl.permit_amendment_guid;
@@ -527,6 +541,7 @@ DECLARE
 	    authorization_end_date 			,
 	    permit_amendment_type_code      ,
 	    permit_amendment_status_code    ,
+		security_adjustment             ,
 	    create_user            			,
 	    create_timestamp       			,
 	    update_user            			,
@@ -534,13 +549,14 @@ DECLARE
 	)
 	SELECT
 	    permit.permit_id				         	,
-	    new_permit_amendments.permit_amendment_guid  ,
-	    new_permit_amendments.mine_guid 					,
+	    new_permit_amendments.permit_amendment_guid ,
+	    new_permit_amendments.mine_guid 			,
 	    new_permit_amendments.received_date       	,
 	    new_permit_amendments.issue_date          	,
-	    new_permit_amendments.authorization_end_date	,
+	    new_permit_amendments.authorization_end_date,
 	    CASE WHEN original_permits.permit_amendment_guid IS NOT NULL THEN 'OGP' ELSE 'AMD' END,
 	    'ACT'										,
+		new_permit_amendments.security_adjustment   ,
 	    'mms_migration'                				,
 	    now()                          				,
 	    'mms_migration'                				,
@@ -573,7 +589,6 @@ DECLARE
 	    OR party.party_name != etl.party_name
 	    OR party.phone_no != etl.phone_no
 	    OR party.email != etl.email
-	    OR party.effective_date != etl.effective_date
 	    OR party.party_type_code != etl.party_type
 	   );
 

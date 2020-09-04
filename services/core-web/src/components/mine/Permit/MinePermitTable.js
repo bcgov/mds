@@ -2,9 +2,9 @@ import React from "react";
 import { Table, Menu, Dropdown, Button, Icon, Tooltip, Popconfirm } from "antd";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { formatDate, renderLabel } from "@common/utils/helpers";
+import { formatDate } from "@common/utils/helpers";
 import { getPartyRelationships } from "@common/selectors/partiesSelectors";
-import { getDropdownPermitStatusOptions } from "@common/selectors/staticContentSelectors";
+import { getDropdownPermitStatusOptionsHash } from "@common/selectors/staticContentSelectors";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
 import * as Strings from "@common/constants/strings";
 import NullScreen from "@/components/common/NullScreen";
@@ -25,7 +25,7 @@ const originalPermit = "OGP";
 const propTypes = {
   permits: PropTypes.arrayOf(CustomPropTypes.permit).isRequired,
   partyRelationships: PropTypes.arrayOf(CustomPropTypes.partyRelationship),
-  permitStatusOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
+  permitStatusOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   major_mine_ind: PropTypes.bool.isRequired,
   openEditPermitModal: PropTypes.func.isRequired,
   openAddPermitAmendmentModal: PropTypes.func.isRequired,
@@ -100,9 +100,7 @@ const columns = [
     title: "Status",
     dataIndex: "status",
     key: "status",
-    render: (text, record) => (
-      <div title="Status">{renderLabel(record.permitStatusOptions, text)}</div>
-    ),
+    render: (text, record) => <div title="Status">{record.permitStatusOptionsHash[text]}</div>,
   },
   {
     title: "Permittee",
@@ -343,7 +341,7 @@ const transformRowData = (
   openAddPermitAmendmentModal,
   openAddAmalgamatedPermitModal,
   handleAddPermitAmendmentApplication,
-  permitStatusOptions,
+  permitStatusOptionsHash,
   handleDeletePermit,
   handleDeletePermitAmendment
 ) => {
@@ -373,7 +371,7 @@ const transformRowData = (
     openAddPermitAmendmentModal,
     openAddAmalgamatedPermitModal,
     handleAddPermitAmendmentApplication,
-    permitStatusOptions,
+    permitStatusOptionsHash,
     permit,
     handleDeletePermit,
     handleDeletePermitAmendment,
@@ -452,7 +450,7 @@ export const MinePermitTable = (props) => {
       props.openAddPermitAmendmentModal,
       props.openAddAmalgamatedPermitModal,
       props.handleAddPermitAmendmentApplication,
-      props.permitStatusOptions,
+      props.permitStatusOptionsHash,
       props.handleDeletePermit,
       props.handleDeletePermitAmendment
     )
@@ -481,7 +479,7 @@ export const MinePermitTable = (props) => {
 
 const mapStateToProps = (state) => ({
   partyRelationships: getPartyRelationships(state),
-  permitStatusOptions: getDropdownPermitStatusOptions(state),
+  permitStatusOptionsHash: getDropdownPermitStatusOptionsHash(state),
 });
 
 MinePermitTable.propTypes = propTypes;

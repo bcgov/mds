@@ -44,6 +44,7 @@ class PermitConditions(AuditMixin, Base):
     all_sub_conditions = db.relationship(
         'PermitConditions',
         lazy='joined',
+        order_by='asc(PermitConditions.display_order)',
         backref=backref('parent', remote_side=[permit_condition_id]))
 
     @hybrid_property
@@ -66,7 +67,8 @@ class PermitConditions(AuditMixin, Base):
             return num_to_roman(self.display_order) + '.'
 
     def __repr__(self):
-        return '<PermitConditions %r, %r>' % (self.permit_condition_id, self.permit_condition_guid)
+        return '<PermitConditions %r, %r, %r>' % (self.permit_condition_id,
+                                                  self.permit_condition_guid, self.display_order)
 
     @classmethod
     def create(cls,

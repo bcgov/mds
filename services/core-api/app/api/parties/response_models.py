@@ -81,8 +81,6 @@ PARTY = api.model(
         'phone_no': fields.String,
         'phone_ext': fields.String,
         'email': fields.String,
-        'effective_date': fields.Date,
-        'expiry_date': fields.Date,
         'party_name': fields.String,
         'name': fields.String,
         'first_name': fields.String,

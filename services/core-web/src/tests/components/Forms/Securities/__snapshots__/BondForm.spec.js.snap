@@ -333,18 +333,49 @@ exports[`BondForm renders properly 1`] = `
     All documents uploaded will be associated with the category selected. If you would like to add a different category of document, please submit and re-open the form.
   </p>
   <br />
-  <FormItem
-    hasFeedback={false}
+  <Row
+    gutter={16}
   >
-    <Field
-      component={[Function]}
-      id="bond_document_type_code"
-      label="Document Category"
-      name="bond_document_type_code"
-      placeholder="Please select category"
-      validate={Array []}
-    />
-  </FormItem>
+    <Col
+      md={12}
+      xs={24}
+    >
+      <FormItem
+        hasFeedback={false}
+      >
+        <Field
+          component={[Function]}
+          id="document_date"
+          label="Document Date"
+          name="document_date"
+          showTime={true}
+          validate={
+            Array [
+              [Function],
+              [Function],
+            ]
+          }
+        />
+      </FormItem>
+    </Col>
+    <Col
+      md={12}
+      xs={24}
+    >
+      <FormItem
+        hasFeedback={false}
+      >
+        <Field
+          component={[Function]}
+          id="bond_document_type_code"
+          label="Document Category"
+          name="bond_document_type_code"
+          placeholder="Please select category"
+          validate={Array []}
+        />
+      </FormItem>
+    </Col>
+  </Row>
   <FormItem
     hasFeedback={false}
   >

@@ -62,7 +62,7 @@ exports[`NOWSecurities renders properly 1`] = `
               "mine_guid": "8e9ca839-a28e-427e-997e-9ef23d9d97cd",
             },
           ],
-          "security_total": "1000000",
+          "security_adjustment": "1000000",
         }
       }
       isEditMode={false}
