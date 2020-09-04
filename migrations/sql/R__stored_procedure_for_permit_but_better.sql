@@ -52,6 +52,11 @@ DECLARE
 	    email                  character varying(254),
 	    effective_date         date
 	);
+
+	-- Add security adjustment
+	ALTER TABLE ETL_PERMIT
+    ADD COLUMN IF NOT EXISTS security_adjustment numeric;
+
 	DROP TABLE IF EXISTS etl_valid_permits;
     CREATE TEMPORARY TABLE etl_valid_permits AS
 	SELECT
@@ -399,7 +404,7 @@ DECLARE
 	FROM etl_all_permit_info info
 	WHERE
 	    info.new_permit = TRUE
-	    AND
+	    OR
 	    info.new_permittee = TRUE;
 
 
@@ -559,9 +564,9 @@ DECLARE
 	    new_permit_amendments.received_date       	,
 	    new_permit_amendments.issue_date          	,
 	    new_permit_amendments.authorization_end_date,
-		new_permit_amendments.security_adjustment   ,
 	    CASE WHEN original_permits.permit_amendment_guid IS NOT NULL THEN 'OGP' ELSE 'AMD' END,
 	    'ACT'										,
+		new_permit_amendments.security_adjustment   ,
 	    'mms_migration'                				,
 	    now()                          				,
 	    'mms_migration'                				,
@@ -582,8 +587,6 @@ DECLARE
 	    party_name       = etl.party_name            ,
 	    phone_no         = etl.phone_no              ,
 	    email            = etl.email                 ,
-	    effective_date   = etl.effective_date        ,
-	    expiry_date      = authorization_end_date    ,
 	    update_user      = 'mms_migration'           ,
 	    update_timestamp = now()                     ,
 	    party_type_code  = etl.party_type
@@ -594,7 +597,6 @@ DECLARE
 	    OR party.party_name != etl.party_name
 	    OR party.phone_no != etl.phone_no
 	    OR party.email != etl.email
-	    OR party.effective_date != etl.effective_date
 	    OR party.party_type_code != etl.party_type
 	   );
 
