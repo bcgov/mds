@@ -257,7 +257,7 @@ declare
 	update ETL_BOND e
 	set core_permit_id = p.permit_id
 	from permit p
-	where replace(p.permit_no,'-0','-') = e.permit_no;
+	where p.permit_no = e.permit_no;
 	--initial fetch filtered out missing permit_no's
 
 	---------------------- INSERT BONDS
