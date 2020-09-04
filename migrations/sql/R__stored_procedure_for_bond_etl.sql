@@ -96,7 +96,7 @@ declare
 		etl_update_date)
 	SELECT
 		sec_cid,
-		conv.conv,
+		conv.org,
 		CONCAT_WS(' ', TRIM(addr1),TRIM(addr2),TRIM(addr3), TRIM(post_cd)),
 		RTRIM(coalesce(nullif(TRIM(cmp_nm),''),TRIM(last_nm)),','),-- 1 record ends with a comma
 		TRIM(note1),
@@ -128,9 +128,9 @@ declare
 		now(),
 		now()
 	from mms.secsec sec
-	inner join convert_permit_no conv on sec.permit_no = conv.org
+	inner join convert_permit_no conv on sec.permit_no = conv.conv
 	where TRIM(sec.sec_cid) != ''
-	and replace(REPLACE(permit_no,' ',''),'--','-') in (select replace(permit_no,'-0','-') from permit)
+	and conv.org in (select permit_no from permit)
 	and sec_typ not in ('ALC', '')
 	ON CONFLICT (sec_cid)
 	DO
