@@ -346,7 +346,7 @@ DECLARE
 	    WHERE
 	    ETL_PERMIT.mine_guid = info.mine_guid
 	    AND
-	    ETL_PERMIT.party_guid = info.party_guid
+	    ETL_PERMIT.party_combo_id = info.party_combo_id
 	    AND
 	    ETL_PERMIT.permit_guid = info.permit_guid;
 
