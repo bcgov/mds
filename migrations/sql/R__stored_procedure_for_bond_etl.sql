@@ -60,9 +60,16 @@ declare
 -- columns with no source
 -- bond.closed_note
 
+	DROP TABLE IF EXISTS convert_permit_no;
+	CREATE TEMPORARY TABLE convert_permit_no as
+	select
+		mms_permit_no_to_ses_convert(permit_no) as conv,
+		permit_no as org
+	from mms.mmspmt;
 
 	------------------- UPSERT RECORDS
 	SELECT count(*) FROM ETL_BOND into tmp1;
+
 
 	with upserted_etl_bond as (
 	INSERT INTO ETL_BOND (
@@ -89,7 +96,7 @@ declare
 		etl_update_date)
 	SELECT
 		sec_cid,
-		replace(REPLACE(permit_no,' ',''),'--','-'),
+		conv.conv,
 		CONCAT_WS(' ', TRIM(addr1),TRIM(addr2),TRIM(addr3), TRIM(post_cd)),
 		RTRIM(coalesce(nullif(TRIM(cmp_nm),''),TRIM(last_nm)),','),-- 1 record ends with a comma
 		TRIM(note1),
@@ -121,6 +128,7 @@ declare
 		now(),
 		now()
 	from mms.secsec sec
+	inner join convert_permit_no conv on sec.permit_no = conv.org
 	where TRIM(sec.sec_cid) != ''
 	and replace(REPLACE(permit_no,' ',''),'--','-') in (select replace(permit_no,'-0','-') from permit)
 	and sec_typ not in ('ALC', '')
@@ -178,9 +186,6 @@ declare
 	core_first_name = null
 	where core_party_type = 'PER'
 	and (core_party_name = '' or core_party_name is null);
-
-
-
 
 	----------------- PAYERS AS PARTIES
 
