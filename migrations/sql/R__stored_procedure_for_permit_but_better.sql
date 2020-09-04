@@ -577,8 +577,6 @@ DECLARE
 	    party_name       = etl.party_name            ,
 	    phone_no         = etl.phone_no              ,
 	    email            = etl.email                 ,
-	    effective_date   = etl.effective_date        ,
-	    expiry_date      = authorization_end_date    ,
 	    update_user      = 'mms_migration'           ,
 	    update_timestamp = now()                     ,
 	    party_type_code  = etl.party_type
