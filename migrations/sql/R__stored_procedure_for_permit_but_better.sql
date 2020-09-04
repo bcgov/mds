@@ -60,7 +60,8 @@ DECLARE
 	DROP TABLE IF EXISTS etl_valid_permits;
     CREATE TEMPORARY TABLE etl_valid_permits AS
 	SELECT
-	    mine_no||permit_no||recv_dt||iss_dt AS combo_id,
+	    mine_no||permit_no||recv_dt||COALESCE(iss_dt::varchar,
+                                             ' null_issue_dt') AS combo_id,
 	    max(cid) permit_cid
 	FROM mms.mmspmt mmspmt
 	WHERE
