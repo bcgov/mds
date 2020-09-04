@@ -3,7 +3,9 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { compose } from "redux";
 import { Field, reduxForm, FieldArray, formValueSelector } from "redux-form";
-import { Form, Button, Col, Row, Popconfirm, Collapse, notification, Tag, Radio } from "antd";
+import { Form } from '@ant-design/compatible';
+import '@ant-design/compatible/assets/index.css';
+import { Button, Col, Row, Popconfirm, Collapse, notification, Tag, Radio } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { difference, map, isEmpty, uniq } from "lodash";
 import {

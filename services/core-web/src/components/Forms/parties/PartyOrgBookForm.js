@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Row, Col, Form, Select, Spin, Button } from "antd";
+import { Form } from '@ant-design/compatible';
+import '@ant-design/compatible/assets/index.css';
+import { Row, Col, Select, Spin, Button } from "antd";
 import { LoadingOutlined, BookOutlined, CheckCircleOutlined } from "@ant-design/icons";
 import debounce, { isEmpty } from "lodash";
 import { bindActionCreators } from "redux";

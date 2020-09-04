@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Field, reduxForm, FormSection } from "redux-form";
-import { Form, Col, Row, Button, Popconfirm, Descriptions, Typography } from "antd";
+import { Form } from '@ant-design/compatible';
+import '@ant-design/compatible/assets/index.css';
+import { Col, Row, Button, Popconfirm, Descriptions, Typography } from "antd";
 import { isEmpty } from "lodash";
 import {
   required,

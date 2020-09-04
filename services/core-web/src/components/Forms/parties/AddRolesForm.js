@@ -1,7 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Field, reduxForm } from "redux-form";
-import { AutoComplete, Collapse, Button, Popconfirm, Form, Col, Row } from "antd";
+import { Form } from '@ant-design/compatible';
+import '@ant-design/compatible/assets/index.css';
+import { AutoComplete, Collapse, Button, Popconfirm, Col, Row } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { required } from "@common/utils/Validate";
 import CustomPropTypes from "@/customPropTypes";

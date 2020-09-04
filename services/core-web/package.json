@@ -6,6 +6,7 @@
   "homepage": "${BASE_PATH}/",
   "dependencies": {
     "@ant-design/icons": "^4.2.2",
+    "@ant-design/compatible": "1.0.5",
     "@babel/runtime": "^7.5.5",
     "@babel/runtime-corejs3": "^7.5.5",
     "@datapunt/matomo-tracker-react": "^0.1.5",

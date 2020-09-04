@@ -1,7 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { reduxForm, Field } from "redux-form";
-import { Form, Button, Col, Row } from "antd";
+import { Form } from '@ant-design/compatible';
+import '@ant-design/compatible/assets/index.css';
+import { Button, Col, Row } from "antd";
 import { compose } from "redux";
 import { connect } from "react-redux";
 import { required, date } from "@common/utils/Validate";
