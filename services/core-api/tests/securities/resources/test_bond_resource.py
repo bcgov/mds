@@ -156,7 +156,8 @@ class TestBondsResource:
             "bond_type_code": "CAS",
             "payer_party_guid": str(bond.payer_party_guid),
             "bond_status_code": "ACT" if "ACT" != old_status else "REL",
-            "reference_number": "#test"
+            "reference_number": "#test",
+            "project_id": "#123 Testing"
         }
 
         post_resp = test_client.put(
@@ -177,7 +178,8 @@ class TestBondsResource:
             "amount": 5000010.00,
             "bond_type_code": "CAS",
             "bond_status_code": "ACT",
-            "reference_number": "#test"
+            "reference_number": "#test",
+            "project_id": "#123 Testing"
         }
 
         post_resp = test_client.put(

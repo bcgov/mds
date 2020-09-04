@@ -47,8 +47,8 @@ class BondListResource(Resource, UserMixin):
     def post(self):
 
         #remove the project_id from the object as it lives on the permit
-        project_id = request.json['project_id']
-        del request.json['project_id']
+        project_id = request.json['bond']['project_id']
+        del request.json['bond']['project_id']
 
         try:
             bond = Bond._schema().load(request.json['bond'])
