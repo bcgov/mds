@@ -2,6 +2,7 @@ import json
 
 from tests.factories import BondFactory, MineFactory, PermitFactory, PartyFactory, create_mine_and_permit
 from app.api.now_applications.resources.now_application_list_resource import PAGE_DEFAULT, PER_PAGE_DEFAULT
+from app.api.mines.permits.permit.models.permit import Permit
 
 BOND_POST_DATA = {
     "bond": {
@@ -100,7 +101,6 @@ class TestBondsResource:
         assert get_data['message'] is not None
 
     """POST BONDS"""
-
     def test_post_a_bond(self, test_client, db_session, auth_headers):
         """Should return the created bond with a 201 response code"""
         mine, permit = create_mine_and_permit()
@@ -144,7 +144,6 @@ class TestBondsResource:
         assert post_data['message'] is not None
 
     """PUT BONDS"""
-
     def test_put_a_bond(self, test_client, db_session, auth_headers):
         """Should return the edited bond with a 200 response code"""
 
@@ -188,3 +187,31 @@ class TestBondsResource:
         assert post_resp.status_code == 400, post_resp.response
         post_data = json.loads(post_resp.data.decode())
         assert post_data['message'] is not None
+
+    def test_put_a_bond_change_project_id(self, test_client, db_session, auth_headers):
+        """Should return the edited bond with a 200 response code and the permit project id should be changed"""
+        old_project_id = "test123"
+        mine, permit = create_mine_and_permit()
+        permit.project_id = old_project_id
+        bond = permit.bonds[0]
+        old_amount = bond.amount
+        old_status = bond.bond_status_code
+
+        data = {
+            "bond_type_code": "CAS",
+            "payer_party_guid": str(bond.payer_party_guid),
+            "bond_status_code": "ACT" if "ACT" != old_status else "REL",
+            "reference_number": "#test",
+            "project_id": "newtest123"
+        }
+
+        post_resp = test_client.put(
+            f'/securities/bonds/{bond.bond_guid}',
+            json=data,
+            headers=auth_headers['full_auth_header'])
+        changed_permit = bond.permit
+        assert post_resp.status_code == 200, post_resp.response
+        post_data = json.loads(post_resp.data.decode())
+        assert post_data['amount'] == str(old_amount)
+        assert post_data['bond_status_code'] != old_status
+        assert changed_permit.project_id != old_project_id

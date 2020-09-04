@@ -707,7 +707,7 @@ class PermitConditionsFactory(BaseFactory):
     condition_category_code = factory.LazyFunction(RandomConditionCategoryCode)
     condition_type_code = factory.LazyFunction(RandomConditionTypeCode)
     condition = factory.Faker('sentence', nb_words=6, variable_nb_words=True)
-    display_order = factory.Sequence(lambda n: n+1)
+    display_order = factory.Sequence(lambda n: n + 1)
 
 
 class BondFactory(BaseFactory):
@@ -740,7 +740,6 @@ class ReclamationInvoiceFactory(BaseFactory):
         model = ReclamationInvoice
 
     reclamation_invoice_guid = GUID
-    project_id = factory.Faker('numerify', text='#######')
     amount = factory.Faker(
         'pydecimal', right_digits=2, positive=True, min_value=50, max_value=500000)
     vendor = factory.Faker('company')
