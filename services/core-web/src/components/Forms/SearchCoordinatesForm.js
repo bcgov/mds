@@ -1,7 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Field, reduxForm } from "redux-form";
-import { Form, Button } from "antd";
+import { Form } from '@ant-design/compatible';
+import '@ant-design/compatible/assets/index.css';
+import { Button } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import { required, maxLength, number, lat, lon } from "@common/utils/Validate";
 import { resetForm } from "@common/utils/helpers";

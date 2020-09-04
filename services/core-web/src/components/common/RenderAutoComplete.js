@@ -1,6 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Form, AutoComplete } from "antd";
+import { Form } from '@ant-design/compatible';
+import '@ant-design/compatible/assets/index.css';
+import { AutoComplete } from "antd";
 import * as Styles from "@/constants/styles";
 
 /**

@@ -4,7 +4,9 @@ import { compose } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { reduxForm, Field, formValueSelector } from "redux-form";
-import { Form, Button, Col, Row, Popconfirm } from "antd";
+import { Form } from '@ant-design/compatible';
+import '@ant-design/compatible/assets/index.css';
+import { Button, Col, Row, Popconfirm } from "antd";
 
 import * as FORM from "@/constants/forms";
 import { resetForm } from "@common/utils/helpers";
