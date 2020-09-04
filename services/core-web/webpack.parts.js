@@ -11,7 +11,6 @@ const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 
 const ManifestPlugin = require("webpack-manifest-plugin");
-const AntdScssThemePlugin = require("antd-scss-theme-plugin");
 const HardSourceWebpackPlugin = require("hard-source-webpack-plugin");
 
 const postCSSLoader = {
@@ -68,12 +67,7 @@ exports.loadCSS = ({ include, exclude, theme } = {}) => ({
         test: /\.s?css$/,
         include,
         exclude,
-        use: [
-          "style-loader",
-          "css-loader",
-          postCSSLoader,
-          AntdScssThemePlugin.themify("sass-loader"),
-        ],
+        use: ["style-loader", "css-loader", postCSSLoader, "sass-loader"],
       },
       {
         test: /\.less$/,
@@ -83,12 +77,19 @@ exports.loadCSS = ({ include, exclude, theme } = {}) => ({
           "style-loader",
           "css-loader",
           postCSSLoader,
-          AntdScssThemePlugin.themify("less-loader"),
+          {
+            loader: "less-loader",
+            options: {
+              lessOptions: {
+                javascriptEnabled: true,
+              },
+            },
+          },
         ],
       },
     ],
   },
-  plugins: [new AntdScssThemePlugin(theme)],
+  plugins: [],
 });
 
 exports.extractCSS = ({ include, exclude, filename, theme } = {}) => ({
@@ -103,7 +104,7 @@ exports.extractCSS = ({ include, exclude, filename, theme } = {}) => ({
           MiniCssExtractPlugin.loader,
           "css-loader",
           postCSSLoader,
-          AntdScssThemePlugin.themify("sass-loader"),
+          "sass-loader",
         ],
       },
       {
@@ -115,13 +116,19 @@ exports.extractCSS = ({ include, exclude, filename, theme } = {}) => ({
           MiniCssExtractPlugin.loader,
           "css-loader",
           postCSSLoader,
-          AntdScssThemePlugin.themify("less-loader"),
+          {
+            loader: "less-loader",
+            options: {
+              lessOptions: {
+                javascriptEnabled: true,
+              },
+            },
+          },
         ],
       },
     ],
   },
   plugins: [
-    new AntdScssThemePlugin(theme),
     new MiniCssExtractPlugin({
       filename,
     }),
