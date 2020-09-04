@@ -30,7 +30,6 @@ class BondHistory(Base):
     institution_province = db.Column(db.String)
     institution_postal_code = db.Column(db.String)
     note = db.Column(db.String)
-    project_id = db.Column(db.String)
     closed_date = db.Column(db.DateTime)
     closed_note = db.Column(db.String)
     update_user = db.Column(db.String, nullable=False)
