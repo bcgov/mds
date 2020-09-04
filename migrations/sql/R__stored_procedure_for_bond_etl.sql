@@ -349,9 +349,18 @@ declare
 
 	UPDATE permit p
 	set
-		p.project_id = e.project_no
-	from ETL_BOND e
-	where p.permit_id = e.core_permit_id;
+		p.project_id = bond_data.project_no
+	from (
+		SELECT project_no, core_permit_id
+		FROM (
+      		SELECT permit_no, MAX(cnt_dt) as max_cnt_dt
+      		FROM ETL_BOND
+      		GROUP BY permit_no
+			) mbd
+		INNER JOIN ETL_BOND e
+		ON e.permit_no = mbd.permit_no AND e.cnt_dt = mbd.max_cnt_dt
+	) bond_data
+	where p.permit_id = bond_data.core_permit_id;
 
 END;
 END;
