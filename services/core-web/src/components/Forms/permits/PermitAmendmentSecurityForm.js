@@ -25,8 +25,8 @@ export const PermitAmendmentSecurityForm = (props) => (
           <CoreTooltip title="Amount assessed for this application will be added to the total assessed amount on the permit." />
         </div>
         <Field
-          id="security_total"
-          name="security_total"
+          id="security_adjustment"
+          name="security_adjustment"
           component={RenderField}
           disabled={!props.isEditMode}
           allowClear

@@ -107,7 +107,7 @@ class NOWApplication(Base, AuditMixin):
                                     uselist=False)
 
     # Securities
-    security_total = db.Column(db.Numeric(16, 2))
+    security_adjustment = db.Column(db.Numeric(16, 2))
     security_received_date = db.Column(db.Date)
 
     # Activities
