@@ -335,14 +335,15 @@ DECLARE
 	    party_type             = info.party_type            ,
 	    phone_no               = info.phone_no              ,
 	    email                  = info.email                 ,
-	    effective_date         = info.effective_date
+	    effective_date         = info.effective_date		,
+		security_adjustment    = info.security_adjustment
 	FROM etl_all_permit_info info
 	    WHERE
 	    ETL_PERMIT.mine_guid = info.mine_guid
 	    AND
-	    ETL_PERMIT.party_guid = info.party_guid
+	    ETL_PERMIT.party_combo_id = info.party_combo_id
 	    AND
-	    ETL_PERMIT.permit_guid = info.permit_guid;
+	    ETL_PERMIT.permit_no = info.permit_no;
 
 	-- ################################################################
 	-- # Insert new records into ETL_PERMIT
@@ -577,8 +578,6 @@ DECLARE
 	    party_name       = etl.party_name            ,
 	    phone_no         = etl.phone_no              ,
 	    email            = etl.email                 ,
-	    effective_date   = etl.effective_date        ,
-	    expiry_date      = authorization_end_date    ,
 	    update_user      = 'mms_migration'           ,
 	    update_timestamp = now()                     ,
 	    party_type_code  = etl.party_type
@@ -620,8 +619,6 @@ DECLARE
 	    party_name                          ,
 	    phone_no                            ,
 	    email                               ,
-	    effective_date                      ,
-	    expiry_date                         ,
 	    create_user                         ,
 	    create_timestamp                    ,
 	    update_user                         ,
@@ -634,8 +631,6 @@ DECLARE
 	    party_name                           ,
 	    phone_no                             ,
 	    email                                ,
-	    COALESCE(effective_date , now()) AS effective_date,
-	    authorization_end_date as expiry_date,
 	    'mms_migration'                      ,
 	    now()                                ,
 	    'mms_migration'                      ,

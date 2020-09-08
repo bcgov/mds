@@ -19,6 +19,7 @@ exports[`ReclamationInvoiceForm renders properly 1`] = `
       >
         <Field
           component={[Function]}
+          disabled={true}
           id="project_id"
           label="Project ID*"
           name="project_id"
