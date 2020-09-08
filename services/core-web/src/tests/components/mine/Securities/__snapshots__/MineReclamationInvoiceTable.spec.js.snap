@@ -11,6 +11,12 @@ exports[`MineReclamationInvoiceTable renders properly 1`] = `
         "title": "Permit No.",
       },
       Object {
+        "dataIndex": "project_id",
+        "key": "project_id",
+        "render": [Function],
+        "title": "Project ID",
+      },
+      Object {
         "dataIndex": "amount_confiscated",
         "key": "amount_confiscated",
         "render": [Function],
