@@ -45,6 +45,12 @@ export const MineReclamationInvoiceTable = (props) => {
       render: (text) => <div title="Permit No.">{text}</div>,
     },
     {
+      title: "Project ID",
+      dataIndex: "project_id",
+      key: "project_id",
+      render: (text) => <div title="Project ID">{text}</div>,
+    },
+    {
       title: "Total Confiscated",
       dataIndex: "amount_confiscated",
       key: "amount_confiscated",
@@ -81,11 +87,7 @@ export const MineReclamationInvoiceTable = (props) => {
               type="secondary"
               className="permit-table-button"
               onClick={(event) =>
-                props.openAddReclamationInvoiceModal(
-                  event,
-                  record.permit_guid,
-                  props.getBalance(record)
-                )
+                props.openAddReclamationInvoiceModal(event, record, props.getBalance(record))
               }
             >
               <div className="padding-small">
@@ -111,12 +113,6 @@ export const MineReclamationInvoiceTable = (props) => {
       dataIndex: "vendor",
       key: "vendor",
       render: (text) => <div title="Vendor">{text || Strings.EMPTY_FIELD}</div>,
-    },
-    {
-      title: "Project ID",
-      dataIndex: "project_id",
-      key: "project_id",
-      render: (text) => <div title="Project ID">{text || Strings.EMPTY_FIELD}</div>,
     },
     {
       title: "Notes",
