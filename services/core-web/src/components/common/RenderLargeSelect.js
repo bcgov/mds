@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Form } from '@ant-design/compatible';
-import '@ant-design/compatible/assets/index.css';
+import { Form } from "@ant-design/compatible";
+import "@ant-design/compatible/assets/index.css";
 import { AutoComplete, Input } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 
@@ -63,7 +63,7 @@ const RenderLargeSelect = (props) => (
       {...props.input}
     >
       <Input
-        suffix={<SearchOutlined />} // <Icon type="search" className="certain-category-icon" />
+        suffix={<SearchOutlined className="certain-category-icon" />}
         value={props.selectedOption.label}
       />
     </AutoComplete>

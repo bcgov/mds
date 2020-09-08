@@ -88,7 +88,6 @@ const ListItem = (props) => {
                   disabled={props.editingConditionFlag}
                 >
                   <DownOutlined />
-                  {/* <Icon type="down" theme="outlined" /> */}
                 </Button>
               </AuthorizationWrapper>
               <AuthorizationWrapper permission={Permission.ADMIN}>

@@ -92,7 +92,6 @@ export class HeaderDropdown extends Component {
             <Button className="header-dropdown-button">
               {this.props.userInfo.email}
               <CaretDownOutlined />
-              {/* <Icon type="caret-down" /> */}
             </Button>
           </Dropdown>
         </MediaQuery>

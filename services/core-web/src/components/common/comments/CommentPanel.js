@@ -28,9 +28,7 @@ const defaultProps = {
   onSubmit: () => {},
   onRemove: () => {},
 };
-// const antIcon = (
-//   <Icon type="loading" style={{ fontSize: 30, color: Style.COLOR.mediumGrey }} spin />
-// );
+
 const CommentPanel = (props) => (
   <React.Fragment>
     {!props.loading ? (
@@ -66,7 +64,10 @@ const CommentPanel = (props) => (
       />
     ) : (
       <div className="center margin-xlarge">
-        <Spin id="spinner" indicator={<LoadingOutlined />} />
+        <Spin
+          id="spinner"
+          indicator={<LoadingOutlined style={{ fontSize: 30, color: Style.COLOR.mediumGrey }} />}
+        />
       </div>
     )}
     {props.renderEditor && <CommentEditor onChange={props.onChange} onSubmit={props.onSubmit} />}

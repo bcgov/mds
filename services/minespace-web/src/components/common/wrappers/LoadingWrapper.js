@@ -31,15 +31,6 @@ export const LoadingWrapper = (props) => {
             marginLeft: -(props.iconSize / 2),
           }}
         />
-        // <Icon
-        //   type="loading"
-        //   className="color-primary"
-        //   style={{
-        //     fontSize: props.iconSize,
-        //     marginTop: props.iconSize / 2,
-        //     marginLeft: -(props.iconSize / 2),
-        //   }}
-        // />
       }
     >
       {props.children}

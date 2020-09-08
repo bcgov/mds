@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { Row, Col, Typography } from "antd";
+import { PlusCircleFilled } from "@ant-design/icons";
 import moment from "moment";
 import PropTypes from "prop-types";
 import { getMines } from "@common/selectors/mineSelectors";
@@ -160,7 +161,7 @@ export class Variances extends Component {
             type="primary"
             onClick={(event) => this.openCreateVarianceModal(event, this.state.mine.mine_name)}
           >
-            <Icon type="plus-circle" theme="filled" />
+          <PlusCircleFilled />
             Create Variance
           </Button> */}
           <Title level={4}>Variances</Title>

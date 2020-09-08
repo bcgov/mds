@@ -42,8 +42,7 @@ export const AddReportModal = (props) => {
         <br />
         <br />
         <LinkButton onClick={hideReportHistory}>
-          <ArrowLeftOutlined />
-          {/* <Icon type="arrow-left" style={{ paddingRight: "5px" }} /> */}
+          <ArrowLeftOutlined className="padding-small--right" />
           Back to Report
         </LinkButton>
       </div>

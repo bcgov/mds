@@ -182,8 +182,7 @@ export class MineDashboard extends Component {
         <AuthorizationWrapper inTesting>
           <div className="custom-menu-item">
             <button type="button" className="full" onClick={this.toggleDrawer}>
-              <MessageOutlined />
-              {/* <Icon type="message" className="padding-small icon-sm" /> */}
+              <MessageOutlined className="padding-small icon-sm" />
               Communication
             </button>
           </div>

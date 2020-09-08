@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
 import React from "react";
 import { Row, Col, Card, Typography } from "antd";
+import { CalendarOutlined, PhoneOutlined, MailOutlined, UserOutlined } from "@ant-design/icons";
 import { formatDate } from "@common/utils/helpers";
 import CustomPropTypes from "@/customPropTypes";
 import * as Strings from "@/constants/strings";
@@ -10,6 +11,7 @@ const { Paragraph, Text } = Typography;
 const ContactCardRow = (data) => (
   <Row className="contact-card-row">
     <Col>
+      {/* {...data.icon} */}
       {/* <Icon type={data.icon} className="contact-card-row-icon" /> */}
       <Paragraph className="contact-card-row-field">
         <Text strong className="contact-card-row-field-title">
@@ -34,27 +36,35 @@ const defaultProps = {
 export const ContactCard = (props) => (
   <Card title={props.title} className="contact-card">
     <ContactCardRow
-      icon="user"
+      icon={<UserOutlined />}
       label="Name"
       value={props.partyRelationship ? props.partyRelationship.party.name : Strings.UNKNOWN}
     />
     <ContactCardRow
-      icon="mail"
+      icon={<MailOutlined />}
       label="Email"
       value={
-        (props.partyRelationship && <a href={`mailto:${props.partyRelationship.party.email}`}>{props.partyRelationship.party.email}</a>) ||
+        (props.partyRelationship && (
+          <a href={`mailto:${props.partyRelationship.party.email}`}>
+            {props.partyRelationship.party.email}
+          </a>
+        )) ||
         Strings.UNKNOWN
       }
     />
     <ContactCardRow
-      icon="phone"
+      icon={<PhoneOutlined />}
       label="Phone"
       value={props.partyRelationship ? props.partyRelationship.party.phone_no : Strings.UNKNOWN}
     />
     <ContactCardRow
-      icon="calendar"
+      icon={<CalendarOutlined />}
       label={props.dateLabel}
-      value={props.partyRelationship ? formatDate(props.partyRelationship.effective_date) : Strings.UNKNOWN}
+      value={
+        props.partyRelationship
+          ? formatDate(props.partyRelationship.effective_date)
+          : Strings.UNKNOWN
+      }
     />
   </Card>
 );

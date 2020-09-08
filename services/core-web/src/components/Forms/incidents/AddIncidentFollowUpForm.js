@@ -6,8 +6,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Field, reduxForm, FieldArray } from "redux-form";
-import { Form } from '@ant-design/compatible';
-import '@ant-design/compatible/assets/index.css';
+import { Form } from "@ant-design/compatible";
+import "@ant-design/compatible/assets/index.css";
 import { Col, Row } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { required, dateNotInFuture } from "@common/utils/Validate";
@@ -45,8 +45,8 @@ const renderRecommendations = ({ fields }) => [
     />
   )),
   <LinkButton onClick={() => fields.push({})}>
-    <PlusOutlined />
-    {/* <Icon type="plus" className="padding-small--right padding-large--bottom" /> */}
+    <PlusOutlined className="padding-small--right padding-large--bottom" />
+    />
     {fields.length ? `Add another recommendation` : `Add a recommendation`}
   </LinkButton>,
 ];

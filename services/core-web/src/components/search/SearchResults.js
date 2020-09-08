@@ -184,8 +184,7 @@ export class SearchResults extends Component {
               <div>
                 {type_filter ? (
                   <Link to={router.SEARCH_RESULTS.dynamicRoute({ q: this.state.params.q })}>
-                    <ArrowLeftOutlined />
-                    {/* <Icon type="arrow-left" className="padding-small--right" /> */}
+                    <ArrowLeftOutlined className="padding-small--right" />
                     {`Back to all search results for ${results}`}
                   </Link>
                 ) : (

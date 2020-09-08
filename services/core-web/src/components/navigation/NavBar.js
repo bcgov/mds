@@ -66,7 +66,6 @@ export class NavBar extends Component {
         <button id={this.ifActiveButton("reporting")} type="button" className="menu__btn">
           <span className="padding-small--right">Provincial Reporting</span>
           <DownOutlined />
-          {/* <Icon type="down" /> */}
         </button>
       </Dropdown>
       <Link
@@ -104,8 +103,7 @@ export class NavBar extends Component {
       </AuthorizationWrapper>
       <Dropdown overlay={this.userMenu} placement="bottomLeft">
         <button type="button" className="menu__btn" id={this.ifActiveButton("my-dashboard")}>
-          <UserOutlined />
-          {/* <Icon className="padding-small--right icon-sm" type="user" /> */}
+          <UserOutlined className="padding-small--right icon-sm" />
           <span className="padding-small--right">{this.props.userInfo.preferred_username}</span>
           <DownOutlined />
         </button>
@@ -113,8 +111,7 @@ export class NavBar extends Component {
       <a href="https://mdsfider.pathfinder.gov.bc.ca/" target="_blank" rel="noopener noreferrer">
         <Tooltip title="Feedback" placement="bottom">
           <Button type="link" className="menu__btn--link">
-            <MessageOutlined />
-            {/* <Icon type="message" className="icon-sm" /> */}
+            <MessageOutlined className="icon-sm" />
           </Button>
         </Tooltip>
       </a>

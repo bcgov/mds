@@ -139,8 +139,7 @@ export class MineNoticeOfWorkTable extends Component {
               </Link>
             </AuthorizationWrapper>
             <Link to={this.createLinkTo(router.VIEW_NOTICE_OF_WORK_APPLICATION, record)}>
-              <EyeOutlined />
-              {/* <Icon type="eye" className="icon-lg icon-svg-filter padding-large--left" /> */}
+              <EyeOutlined className="icon-lg icon-svg-filter padding-large--left" />
             </Link>
           </div>
         ),

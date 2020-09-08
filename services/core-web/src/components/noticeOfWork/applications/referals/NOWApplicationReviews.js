@@ -357,15 +357,13 @@ export class NOWApplicationReviews extends Component {
               <div>
                 {!this.props.noticeOfWork.ready_for_review_date && (
                   <Tag className="ant-disabled">
-                    <InfoCircleOutlined />
-                    {/* <Icon type="info-circle" className="padding-small--right" /> */}
+                    <InfoCircleOutlined className="padding-small--right" />
                     Referral package not downloaded
                   </Tag>
                 )}
                 {this.props.noticeOfWork.ready_for_review_date && (
                   <Tag className="ant-disabled">
-                    <ClockCircleOutlined />
-                    {/* <Icon type="clock-circle" className="padding-small--right" /> */}
+                    <ClockCircleOutlined className="padding-small--right" />
                     {`Ready for review since: ${formatDate(
                       this.props.noticeOfWork.ready_for_review_date
                     )}`}
@@ -383,12 +381,7 @@ export class NOWApplicationReviews extends Component {
                       cancelText="No"
                     >
                       <Button type="secondary" className="full-mobile">
-                        <DownloadOutlined />
-                        {/* <Icon
-                          type="download"
-                          theme="outlined"
-                          className="padding-small--right icon-sm"
-                        /> */}
+                        <DownloadOutlined className="padding-small--right icon-sm" />
                         Download Referral Package
                       </Button>
                     </Popconfirm>
@@ -399,12 +392,7 @@ export class NOWApplicationReviews extends Component {
                       className="full-mobile"
                       onClick={this.openDownloadPackageModal}
                     >
-                      <DownloadOutlined />
-                      {/* <Icon
-                        type="download"
-                        theme="outlined"
-                        className="padding-small--right icon-sm"
-                      /> */}
+                      <DownloadOutlined className="padding-small--right icon-sm" />
                       Download Referral Package
                     </Button>
                   )}

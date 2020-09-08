@@ -9,7 +9,7 @@ import {
   fetchMineReports,
   updateMineReport,
 } from "@common/actionCreators/reportActionCreator";
-import { PlusCircleOutlined } from "@ant-design/icons";
+import { PlusCircleFilled } from "@ant-design/icons";
 import { openModal, closeModal } from "@common/actions/modalActions";
 import { getMineReports } from "@common/selectors/reportSelectors";
 import { getMineReportDefinitionOptions } from "@common/reducers/staticContentReducer";
@@ -179,8 +179,7 @@ export class Reports extends Component {
                   type="primary"
                   onClick={(event) => this.openAddReportModal(event, this.props.mine.mine_name)}
                 >
-                  <PlusCircleOutlined />
-                  {/* <Icon type="plus-circle" theme="filled" /> */}
+                  <PlusCircleFilled />
                   Submit Report
                 </Button>
               </AuthorizationWrapper>

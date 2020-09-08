@@ -252,8 +252,7 @@ export class MineVarianceTable extends Component {
               ghost
               onClick={() => this.props.openViewVarianceModal(record.variance)}
             >
-              <EyeOutlined />
-              {/* <Icon type="eye" alt="View" className="icon-lg icon-svg-filter" /> */}
+              <EyeOutlined className="icon-lg icon-svg-filter" />
             </Button>
             <AuthorizationWrapper permission={Permission.ADMIN}>
               <Popconfirm

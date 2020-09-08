@@ -344,8 +344,8 @@ export class MineIncidentTable extends Component {
               ghost
               onClick={(event) => record.openViewMineIncidentModal(event, record.incident)}
             >
-              <EyeOutlined />
-              {/* <Icon type="eye" className="icon-lg icon-svg-filter" /> */}
+              <EyeOutlined className="icon-lg icon-svg-filter" />
+              />
             </Button>
             <AuthorizationWrapper permission={Permission.ADMIN}>
               <Popconfirm

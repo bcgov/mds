@@ -58,8 +58,7 @@ export class MinesPage extends Component {
                             <li key={mine.mine_guid}>
                               <Link to={routes.MINE_DASHBOARD.dynamicRoute(mine.mine_guid)}>
                                 <Title level={4}>
-                                  <EnvironmentOutlined />
-                                  {/* <Icon type="environment" style={{ paddingRight: "5px" }} /> */}
+                                  <EnvironmentOutlined className="padding-small--right" />
                                   {mine.mine_name}{" "}
                                 </Title>
                                 <Text>Mine Number: {mine.mine_no || Strings.EMPTY_FIELD}</Text>

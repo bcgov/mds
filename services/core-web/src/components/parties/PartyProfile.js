@@ -209,8 +209,7 @@ export class PartyProfile extends Component {
                     disabled={this.state.deletingParty}
                   >
                     <Button type="danger" disabled={this.state.deletingParty}>
-                      <MinusCircleOutlined />
-                      {/* <Icon className="btn-danger--icon" type="minus-circle" theme="outlined" /> */}
+                      <MinusCircleOutlined className="btn-danger--icon" />
                       Delete Party
                     </Button>
                   </Popconfirm>
@@ -238,8 +237,7 @@ export class PartyProfile extends Component {
             {!isEmpty(party.party_orgbook_entity) && (
               <div className="inline-flex">
                 <div className="padding-right">
-                  <CheckCircleOutlined />
-                  {/* <Icon type="check-circle" className="icon-sm" /> */}
+                  <CheckCircleOutlined className="icon-sm" />
                 </div>
                 <p>
                   <a
@@ -254,8 +252,7 @@ export class PartyProfile extends Component {
             )}
             <div className="inline-flex">
               <div className="padding-right">
-                <MailOutlined />
-                {/* <Icon type="mail" className="icon-sm" /> */}
+                <MailOutlined className="icon-sm" />
               </div>
               {party.email && party.email !== "Unknown" ? (
                 <a href={`mailto:${party.email}`}>{party.email}</a>
@@ -265,8 +262,7 @@ export class PartyProfile extends Component {
             </div>
             <div className="inline-flex">
               <div className="padding-right">
-                <PhoneOutlined />
-                {/* <Icon type="phone" className="icon-sm" /> */}
+                <PhoneOutlined className="icon-sm" />
               </div>
               <p>
                 {party.phone_no} {party.phone_ext ? `x${party.phone_ext}` : ""}

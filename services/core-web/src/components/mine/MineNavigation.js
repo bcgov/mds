@@ -30,8 +30,7 @@ export class MineNavigation extends Component {
           title={
             <span>
               Mine Information
-              <DownOutlined />
-              {/* <Icon className="padding-small--left" type="down" /> */}
+              <DownOutlined className="padding-small--left" />
             </span>
           }
         >
@@ -51,8 +50,7 @@ export class MineNavigation extends Component {
           title={
             <span>
               Permits & Approvals
-              <DownOutlined />
-              {/* <Icon className="padding-small--left" type="down" /> */}
+              <DownOutlined className="padding-small--left" />
             </span>
           }
         >
@@ -84,8 +82,7 @@ export class MineNavigation extends Component {
           title={
             <span>
               Oversight
-              <DownOutlined />
-              {/* <Icon className="padding-small--left" type="down" /> */}
+              <DownOutlined className="padding-small--left" />
             </span>
           }
         >
@@ -107,8 +104,7 @@ export class MineNavigation extends Component {
           title={
             <span>
               Reports
-              <DownOutlined />
-              {/* <Icon className="padding-small--left" type="down" /> */}
+              <DownOutlined className="padding-small--left" />
             </span>
           }
         >

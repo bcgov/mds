@@ -554,7 +554,6 @@ export class NoticeOfWorkApplication extends Component {
           <Button type="secondary" className="full-mobile">
             Actions
             <DownOutlined />
-            {/* <Icon type="down" /> */}
           </Button>
         </Dropdown>
       </div>

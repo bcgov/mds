@@ -43,14 +43,13 @@ const RefreshButton = (props) => {
 
   return props.isNestedButton ? (
     <button type="button" className="full" onClick={triggerRefresh}>
-      <SyncOutlined />
-      {/* <Icon type="sync" theme="outlined" style={{ fontSize: "18px" }} className="padding-small" /> */}
+      <SyncOutlined style={{ fontSize: "18px" }} className="padding-small" />
       Refresh mine data
     </button>
   ) : (
     <Button type="primary" onClick={triggerRefresh} className="btn--middle">
-      <SyncOutlined />
-      {/* <Icon type="sync" theme="outlined" className="icon-sm" /> */}
+      <SyncOutlined className="icon-sm" />
+      />
     </Button>
   );
 };

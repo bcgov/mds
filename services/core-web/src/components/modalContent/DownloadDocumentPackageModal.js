@@ -70,8 +70,7 @@ export const DownloadDocumentPackageModal = (props) => {
           type="primary"
           onClick={() => props.onSubmit(selectedCoreRows, selectedSubmissionRows)}
         >
-          <DownloadOutlined />
-          {/* <Icon type="download" theme="outlined" className="padding-small--right icon-sm" /> */}
+          <DownloadOutlined className="padding-small--right icon-sm" />
           Download Referral Package
         </Button>
       </div>

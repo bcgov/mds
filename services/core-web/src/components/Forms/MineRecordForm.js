@@ -3,8 +3,8 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { compose } from "redux";
 import { Field, reduxForm, FieldArray, formValueSelector } from "redux-form";
-import { Form } from '@ant-design/compatible';
-import '@ant-design/compatible/assets/index.css';
+import { Form } from "@ant-design/compatible";
+import "@ant-design/compatible/assets/index.css";
 import { Button, Col, Row, Popconfirm, Collapse, notification, Tag, Radio } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { difference, map, isEmpty, uniq } from "lodash";
@@ -308,7 +308,6 @@ export class MineRecordForm extends Component {
         </Collapse>
         <Button className="btn--dropdown" onClick={(event) => this.addField(event, fields)}>
           <PlusOutlined style={{ color: Styles.COLOR.violet }} />
-          {/* <Icon type="plus" style={{ color: Styles.COLOR.violet }} /> */}
           {fields.length === 0 && !this.props.currentMineTypes
             ? "Add Mine Type"
             : "Add Another Mine Type"}

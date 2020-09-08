@@ -27,7 +27,6 @@ export const ReportsUploadedFilesList = (props) =>
             >
               <Button>
                 <CloseOutlined />
-                {/* <Icon type="close" /> */}
               </Button>
             </Popconfirm>
           </Col>

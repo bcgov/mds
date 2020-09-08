@@ -13,9 +13,6 @@ const propTypes = {
 };
 
 export const LoadingWrapper = (props) => {
-  // const antIcon = (
-  //   <Icon type="loading" style={{ fontSize: 80, color: Style.COLOR.mediumGrey }} spin />
-  // );
   return (
     <div>
       {props.condition ? (

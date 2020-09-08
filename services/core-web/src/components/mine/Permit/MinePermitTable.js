@@ -143,12 +143,7 @@ const columns = [
               onClick={(event) => record.openAddAmalgamatedPermitModal(event, record.permit)}
             >
               <div>
-                <PlusOutlined />
-                {/* <Icon
-                  type="plus"
-                  className="padding-small add-permit-dropdown-button-icon"
-                  theme="outlined"
-                /> */}
+                <PlusOutlined className="padding-small add-permit-dropdown-button-icon" />
                 {text.hasAmalgamated ? "Add Permit Amendment" : "Amalgamate Permit"}
               </div>
             </button>
@@ -161,12 +156,7 @@ const columns = [
                 onClick={(event) => record.openAddPermitAmendmentModal(event, record.permit)}
               >
                 <div>
-                  <PlusOutlined />
-                  {/* <Icon
-                    type="plus"
-                    className="padding-small add-permit-dropdown-button-icon"
-                    theme="outlined"
-                  /> */}
+                  <PlusOutlined className="padding-small add-permit-dropdown-button-icon" />
                   Add Permit Amendment
                 </div>
               </button>
@@ -417,13 +407,11 @@ export const RenderPermitTableExpandIcon = (rowProps) => (
   >
     {rowProps.expanded ? (
       <Tooltip title="Click to hide amendment history." placement="right" mouseEnterDelay={1}>
-        <MinusSquareFilled />
-        {/* <Icon type="minus-square" theme="filled" className="icon-lg--grey" /> */}
+        <MinusSquareFilled className="icon-lg--grey" />
       </Tooltip>
     ) : (
       <Tooltip title="Click to view amendment history." placement="right" mouseEnterDelay={1}>
-        <PlusSquareFilled />
-        {/* <Icon type="plus-square" theme="filled" className="icon-lg--grey" /> */}
+        <PlusSquareFilled className="icon-lg--grey" />
       </Tooltip>
     )}
   </a>

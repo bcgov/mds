@@ -227,8 +227,7 @@ export const MineBondTable = (props) => {
               onClick={(event) => props.openViewBondModal(event, record)}
             >
               <div className="padding-small">
-                <EyeOutlined />
-                {/* <Icon type="eye" alt="View" className="icon-lg icon-svg-filter" /> */}
+                <EyeOutlined className="icon-lg icon-svg-filter" />
               </div>
             </Button>
             <AuthorizationWrapper permission={Permission.EDIT_SECURITIES}>
@@ -273,13 +272,11 @@ export const MineBondTable = (props) => {
     >
       {rowProps.expanded ? (
         <Tooltip title="Click to hide associated bonds." placement="right" mouseEnterDelay={1}>
-          <MinusSquareFilled />
-          {/* <Icon type="minus-square" theme="filled" className="icon-lg--grey" /> */}
+          <MinusSquareFilled className="icon-lg--grey" />
         </Tooltip>
       ) : (
         <Tooltip title="Click to view associated bonds." placement="right" mouseEnterDelay={1}>
-          <PlusSquareFilled />
-          {/* <Icon type="plus-square" theme="filled" className="icon-lg--grey" /> */}
+          <PlusSquareFilled className="icon-lg--grey" />
         </Tooltip>
       )}
     </a>

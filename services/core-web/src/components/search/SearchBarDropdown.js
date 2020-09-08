@@ -55,8 +55,7 @@ export const SearchBarDropdown = (props) => {
             <Menu.Divider />,
             <Menu.Item key={`/search?q=${props.searchTerm}`}>
               <p>
-                <FileSearchOutlined />
-                {/* <Icon className="icon-lg icon-svg-filter" type="file-search" /> */}
+                <FileSearchOutlined className="icon-lg icon-svg-filter" />
                 See all results...
               </p>
             </Menu.Item>,

@@ -1,8 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Field, reduxForm } from "redux-form";
-import { Form } from '@ant-design/compatible';
-import '@ant-design/compatible/assets/index.css';
+import { Form } from "@ant-design/compatible";
+import "@ant-design/compatible/assets/index.css";
 import { AutoComplete, Collapse, Button, Popconfirm, Col, Row } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { required } from "@common/utils/Validate";
@@ -117,7 +117,6 @@ export const AddRolesForm = (props) => (
       </Collapse>
       <Button className="btn--dropdown" onClick={props.addField}>
         <PlusOutlined style={{ color: mediumGrey }} />
-        {/* <Icon type="plus" style={{ color: mediumGrey }} /> */}
         {props.roleNumbers.length > 0 ? "Add Another Role" : "Add Role"}
       </Button>
     </Form>

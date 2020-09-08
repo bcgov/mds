@@ -26,8 +26,7 @@ export class SlidingForms extends Component {
   renderWrappedForm = () => (
     <div>
       <LinkButton>
-        <ArrowLeftOutlined />
-        {/* <Icon type="arrow-left" style={{ paddingRight: "5px" }} /> */}
+        <ArrowLeftOutlined className="padding-small--right" />
         Back
       </LinkButton>
     </div>

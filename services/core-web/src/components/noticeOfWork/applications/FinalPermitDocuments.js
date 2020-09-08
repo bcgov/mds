@@ -189,8 +189,7 @@ export class FinalPermitDocuments extends Component {
               className="full-mobile"
               onClick={() => this.downloadDocumentPackage()}
             >
-              <DownloadOutlined />
-              {/* <Icon type="download" theme="outlined" className="padding-small--right icon-sm" /> */}
+              <DownloadOutlined className="padding-small--right icon-sm" />
               Download All
             </Button>
             <Button

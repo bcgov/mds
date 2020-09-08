@@ -269,7 +269,6 @@ export class NOWPermitGeneration extends Component {
             <Button type="secondary" className="full-mobile">
               Actions
               <DownOutlined />
-              {/* <Icon type="down" /> */}
             </Button>
           </Dropdown>
         )}

@@ -52,8 +52,7 @@ const renderAddPartyFooter = (showAddParty, partyLabel) => (
     <Divider style={{ margin: "0" }} />
     <p className="footer-text">{`Can't find the ${partyLabel} you are looking for?`}</p>
     <LinkButton onClick={showAddParty}>
-      <PlusOutlined />
-      {/* <Icon type="plus" style={{ paddingRight: "5px" }} /> */}
+      <PlusOutlined className="padding-small--right" />
       {`Add a new ${partyLabel}`}
     </LinkButton>
   </div>
