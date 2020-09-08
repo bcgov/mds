@@ -358,8 +358,6 @@ CREATE OR REPLACE FUNCTION transfer_mine_manager_information() RETURNS void AS $
                 phone_no         = etl.phone_no      ,
                 phone_ext        = null              ,
                 email            = etl.email         ,
-                effective_date   = etl.effective_date,
-                expiry_date      = NULL              ,
                 update_user      = 'mms_migration'   ,
                 update_timestamp = now()             ,
                 party_type_code  = 'PER'
@@ -368,8 +366,7 @@ CREATE OR REPLACE FUNCTION transfer_mine_manager_information() RETURNS void AS $
             AND (party.first_name != etl.first_name
                 OR party.party_name != etl.surname
                 OR party.phone_no != etl.phone_no
-                OR party.email != etl.email
-                OR party.effective_date != etl.effective_date)
+                OR party.email != etl.email)
             RETURNING 1
             )
             SELECT COUNT(*) FROM updated_rows INTO update_row;
@@ -400,8 +397,6 @@ CREATE OR REPLACE FUNCTION transfer_mine_manager_information() RETURNS void AS $
                     phone_no        ,
                     phone_ext       ,
                     email           ,
-                    effective_date  ,
-                    expiry_date     ,
                     create_user     ,
                     create_timestamp,
                     update_user     ,

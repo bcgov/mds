@@ -127,8 +127,8 @@ export class PermitAmendmentForm extends Component {
                 this value in CORE will not be updated in MMS.
               </p>
               <Field
-                id="security_total"
-                name="security_total"
+                id="security_adjustment"
+                name="security_adjustment"
                 component={renderConfig.FIELD}
                 {...currencyMask}
                 validate={[number]}
