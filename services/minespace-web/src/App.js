@@ -3,8 +3,7 @@ import { compose } from "redux";
 import { BrowserRouter } from "react-router-dom";
 // eslint-disable-next-line
 import { hot } from "react-hot-loader";
-import { Layout, BackTop, Row, Col, Spin } from "antd";
-import { LoadingOutlined} from "@ant-design/icons"
+import { Layout, BackTop, Row, Col, Spin, Icon } from "antd";
 
 import MediaQuery from "react-responsive";
 import Routes from "./routes/Routes";
@@ -19,7 +18,7 @@ import { MatomoLinkTracing } from "../common/utils/trackers";
 
 export const store = configureStore();
 
-Spin.setDefaultIndicator(<LoadingOutlined style={{ fontSize: 40 }}/><);
+Spin.setDefaultIndicator(<Icon type="loading" style={{ fontSize: 40 }} />);
 
 class App extends Component {
   state = { isIE: true, isMobile: true };

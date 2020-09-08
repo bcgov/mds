@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { Row, Col, Typography, Button } from "antd";
+import { Row, Col, Typography, Button, Icon } from "antd";
 import moment from "moment";
 import PropTypes from "prop-types";
 import {
@@ -9,7 +9,6 @@ import {
   fetchMineReports,
   updateMineReport,
 } from "@common/actionCreators/reportActionCreator";
-import { PlusCircleFilled } from "@ant-design/icons";
 import { openModal, closeModal } from "@common/actions/modalActions";
 import { getMineReports } from "@common/selectors/reportSelectors";
 import { getMineReportDefinitionOptions } from "@common/reducers/staticContentReducer";
@@ -179,7 +178,7 @@ export class Reports extends Component {
                   type="primary"
                   onClick={(event) => this.openAddReportModal(event, this.props.mine.mine_name)}
                 >
-                  <PlusCircleFilled />
+                  <Icon type="plus-circle" theme="filled" />
                   Submit Report
                 </Button>
               </AuthorizationWrapper>

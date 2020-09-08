@@ -1,7 +1,6 @@
 import React from "react";
 import { PropTypes } from "prop-types";
-import { Spin } from "antd";
-import { LoadingOutlined } from "@ant-design/icons";
+import { Spin, Icon } from "antd";
 
 const propTypes = {
   isLoaded: PropTypes.bool.isRequired,
@@ -24,7 +23,9 @@ export const LoadingWrapper = (props) => {
       spinning={!props.isLoaded}
       delay={props.delay}
       indicator={
-        <LoadingOutlined
+        <Icon
+          type="loading"
+          className="color-primary"
           style={{
             fontSize: props.iconSize,
             marginTop: props.iconSize / 2,
