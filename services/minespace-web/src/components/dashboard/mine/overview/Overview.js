@@ -99,7 +99,7 @@ export const Overview = (props) => (
             : Strings.NONE}
         </Descriptions.Item>
       </Descriptions>
-      {/* <Row gutter={[16, 16]}>
+      <Row gutter={[16, 16]}>
         <Col xl={{ span: 11 }} xxl={{ span: 10 }}>
           <ContactCard
             title="Mine Manager"
@@ -107,7 +107,7 @@ export const Overview = (props) => (
             dateLabel="Mine Manager Since"
           />
         </Col>
-      </Row> */}
+      </Row>
     </Col>
     <Col lg={{ span: 9, offset: 1 }} xl={{ offset: 1, span: 7 }}>
       <Row gutter={[0, 16]}>
