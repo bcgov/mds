@@ -192,14 +192,12 @@ declare
 	with inserted_org_parties as (
 	INSERT INTO party (
 	    party_name         ,
-	    effective_date     ,
 	    party_type_code,
 	    create_user,
 	    update_user
 	 )
 	select distinct
 	    core_party_name,
-		now(),
 	    core_party_type	  ,
 	   	'bond_etl'        ,
 	   	'bond_etl'
@@ -212,7 +210,6 @@ declare
 	INSERT INTO party (
 		first_name,
 	    party_name,
-	    effective_date,
 	    party_type_code,
 	    create_user,
 	    update_user
@@ -220,7 +217,6 @@ declare
 	select distinct
 		core_first_name,
 	    core_party_name,
-		now()    ,
 	    core_party_type	  ,
 	   	'bond_etl'        ,
 	   	'bond_etl'
