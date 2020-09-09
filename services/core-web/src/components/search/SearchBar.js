@@ -135,7 +135,4 @@ const mapDispatchToProps = (dispatch) =>
 SearchBar.propTypes = propTypes;
 SearchBar.defaultProps = defaultProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withRouter(SearchBar));
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(SearchBar));

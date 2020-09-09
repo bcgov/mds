@@ -1,10 +1,12 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Form } from '@ant-design/compatible';
-import '@ant-design/compatible/assets/index.css';
+import { Form } from "@ant-design/compatible";
+import "@ant-design/compatible/assets/index.css";
 import { Select } from "antd";
 import { caseInsensitiveLabelFilter } from "@common/utils/helpers";
 import CustomPropTypes from "@/customPropTypes";
+
+const { Option } = Select;
 
 /**
  * @constant RenderSelect - Ant Design `Select` component for redux-form - used for small data sets that (< 100);
@@ -47,7 +49,7 @@ export const RenderMultiSelect = (props) => (
       <Select
         disabled={!props.data || props.disabled}
         mode="multiple"
-        getPopupContainer={() => document.getElementById(props.id)}
+        // getPopupContainer={() => document.body(props.id)}
         placeholder={props.placeholder}
         id={props.id}
         onSearch={props.onSearch}
@@ -57,9 +59,9 @@ export const RenderMultiSelect = (props) => (
       >
         {props.data &&
           props.data.map(({ value, label, tooltip }) => (
-            <Select.Option key={value} title={tooltip}>
+            <Option key={value} title={tooltip}>
               {label}
-            </Select.Option>
+            </Option>
           ))}
       </Select>
     </Form.Item>

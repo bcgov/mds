@@ -1,8 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 import moment from "moment";
-import { Form } from '@ant-design/compatible';
-import '@ant-design/compatible/assets/index.css';
+import { Form } from "@ant-design/compatible";
+import "@ant-design/compatible/assets/index.css";
 import { DatePicker } from "antd";
 
 /**
@@ -47,7 +47,7 @@ const RenderDate = (props) => (
       value={props.input.value ? moment(props.input.value) : null}
       showTime={props.showTime && { format: "HH:mm" }}
       format={props.showTime && "YYYY-MM-DD HH:mm"}
-      style={props.showTime && { width: "100%" }}
+      style={props.showTime ? { width: "100%" } : {}}
     />
   </Form.Item>
 );
