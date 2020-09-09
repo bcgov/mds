@@ -59,6 +59,7 @@ def register_extensions(app):
 
     api.init_app(app)
     if app.config['ELASTIC_ENABLED'] == '1':
+        pass
         #apm.init_app(app)
         #logging.getLogger('elasticapm').setLevel(30)
     else:
