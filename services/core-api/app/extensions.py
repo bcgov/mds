@@ -8,7 +8,7 @@ from elasticapm.contrib.flask import ElasticAPM
 from .config import Config
 from .helper import Api
 
-apm = ElasticAPM(logging=logging.WARNING)
+#apm = ElasticAPM(logging=logging.WARNING)
 db = SQLAlchemy()
 jwt = JwtManager()
 cache = Cache()
