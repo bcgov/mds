@@ -422,6 +422,7 @@ DECLARE
 	FROM ETL_PERMIT etl
 		INNER JOIN mine_permit_xref mpx on etl.mine_guid=mpx.mine_guid
 	WHERE permit.permit_guid = etl.permit_guid
+	AND
 		(issue_date = (select max(issue_date) from ETL_PERMIT where etl.permit_no = ETL_PERMIT.permit_no)
 		OR
 		received_date = (select max(received_date) from ETL_PERMIT where etl.permit_no = ETL_PERMIT.permit_no));
