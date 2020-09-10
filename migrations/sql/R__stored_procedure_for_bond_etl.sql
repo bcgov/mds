@@ -348,9 +348,9 @@ declare
 	where core_bond_id is not null
 	on conflict do nothing;
 
-	UPDATE permit p
+	UPDATE permit
 	set
-		p.project_id = bond_data.project_no
+		project_id = bond_data.project_no
 	from (
 		SELECT project_no, core_permit_id
 		FROM (
@@ -361,7 +361,7 @@ declare
 		INNER JOIN ETL_BOND e
 		ON e.permit_no = mbd.permit_no AND e.cnt_dt = mbd.max_cnt_dt
 	) bond_data
-	where p.permit_id = bond_data.core_permit_id;
+	where permit.permit_id = bond_data.core_permit_id;
 
 END;
 END;
