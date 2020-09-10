@@ -51,10 +51,12 @@ export const RenderMultiSelect = (props) => (
         mode="multiple"
         size="small"
         // getPopupContainer={() => document.body(props.id)}
+        getPopupContainer={(trigger) => trigger.parentNode}
         placeholder={props.placeholder}
         id={props.id}
         onSearch={props.onSearch}
-        {...props.input}
+        value={props.input.value ? props.input.value : undefined}
+        onChange={props.input.onChange}
         filterOption={props.filterOption || caseInsensitiveLabelFilter}
         showArrow
       >

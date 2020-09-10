@@ -46,6 +46,11 @@ const RenderSelect = (props) => {
         ((props.meta.error && <span>{props.meta.error}</span>) ||
           (props.meta.warning && <span>{props.meta.warning}</span>))
       }
+      id={props.id}
+      onSelect={props.onSelect}
+      defaultValue={props.input.value}
+      value={props.input.value ? props.input.value : undefined}
+      onChange={props.input.onChange}
     >
       <Select
         disabled={props.disabled}

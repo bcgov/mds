@@ -58,7 +58,9 @@ const RenderGroupedSelect = (props) => (
         option.props.children.toLowerCase().includes(input.toLowerCase())
       }
       id={props.id}
-      {...props.input}
+      defaultValue={props.input.value}
+      value={props.input.value ? props.input.value : undefined}
+      onChange={props.input.onChange}
       onSelect={props.onSelect}
     >
       {props.data.map((group) => (
