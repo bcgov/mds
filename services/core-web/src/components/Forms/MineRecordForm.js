@@ -318,7 +318,7 @@ export class MineRecordForm extends Component {
     return (
       <Form layout="vertical" onSubmit={this.props.handleSubmit}>
         <Row gutter={16}>
-          <Col>
+          <Col span={24}>
             <Form.Item>
               <Field
                 id="mine_name"
