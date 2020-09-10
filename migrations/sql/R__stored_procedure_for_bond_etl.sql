@@ -62,7 +62,7 @@ declare
 
 	DROP TABLE IF EXISTS convert_permit_no;
 	CREATE TEMPORARY TABLE convert_permit_no as
-	select
+	select distinct
 		mms_permit_no_to_ses_convert(permit_no) as conv,
 		permit_no as org
 	from mms.mmspmt;
