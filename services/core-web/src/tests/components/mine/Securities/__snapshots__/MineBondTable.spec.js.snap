@@ -11,10 +11,21 @@ exports[`MineBondTable renders properly 1`] = `
         "title": "Permit No.",
       },
       Object {
+        "dataIndex": "project_id",
+        "key": "project_id",
+        "render": [Function],
+        "title": "Project ID",
+      },
+      Object {
         "dataIndex": "total_assessed",
         "key": "total_assessed",
         "render": [Function],
-        "title": "Total Assessed",
+        "title": <span>
+          Total Assessed
+          <CoreTooltip
+            title="Total Assessed: This is the total value of all bond assessments for the permit, including amendments. Assessed values are set by permitting inspectors and come from the associated permit."
+          />
+        </span>,
       },
       Object {
         "dataIndex": "amount_held",
@@ -53,7 +64,7 @@ exports[`MineBondTable renders properly 1`] = `
   tableProps={
     Object {
       "align": "left",
-      "className": "nested-table",
+      "className": "nested-table additional-table-header",
       "expandIcon": [Function],
       "expandRowByClick": true,
       "expandedRowKeys": Array [],

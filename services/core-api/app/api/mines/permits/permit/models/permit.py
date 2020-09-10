@@ -28,6 +28,7 @@ class Permit(AuditMixin, Base):
     permit_no = db.Column(db.String(16), nullable=False)
     permit_status_code = db.Column(
         db.String(2), db.ForeignKey('permit_status_code.permit_status_code'))
+    project_id = db.Column(db.String)
     _all_permit_amendments = db.relationship(
         'PermitAmendment',
         backref='permit',
@@ -137,9 +138,11 @@ class Permit(AuditMixin, Base):
     @classmethod
     def find_by_now_application_guid(cls, _now_application_guid):
         permit_amendment = PermitAmendment.find_by_now_application_guid(_now_application_guid)
-        permit = permit_amendment.permit
-        permit._context_mine = permit_amendment.mine
-        return permit
+        if permit_amendment is not None:
+            permit = permit_amendment.permit
+            permit._context_mine = permit_amendment.mine
+            return permit
+        return None
 
     @classmethod
     def create(cls, mine, permit_no, permit_status_code, add_to_session=True):

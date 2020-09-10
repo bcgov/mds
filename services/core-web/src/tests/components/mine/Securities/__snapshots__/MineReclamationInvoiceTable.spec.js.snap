@@ -11,6 +11,12 @@ exports[`MineReclamationInvoiceTable renders properly 1`] = `
         "title": "Permit No.",
       },
       Object {
+        "dataIndex": "project_id",
+        "key": "project_id",
+        "render": [Function],
+        "title": "Project ID",
+      },
+      Object {
         "dataIndex": "amount_confiscated",
         "key": "amount_confiscated",
         "render": [Function],
@@ -26,7 +32,12 @@ exports[`MineReclamationInvoiceTable renders properly 1`] = `
         "dataIndex": "balance",
         "key": "balance",
         "render": [Function],
-        "title": "Balance",
+        "title": <div>
+          Balance
+          <CoreTooltip
+            title="Balance: This is the current amount of money available from the confiscated bonds. If this amount is negative, it means invoices have exceeded the confiscated bonds."
+          />
+        </div>,
       },
       Object {
         "align": "right",

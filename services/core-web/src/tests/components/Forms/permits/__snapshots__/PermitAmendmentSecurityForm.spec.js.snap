@@ -17,9 +17,9 @@ exports[`PermitAmendmentSecurityForm renders properly 1`] = `
       <div
         className="field-title"
       >
-        Security Total
+        Security Assessment
         <CoreTooltip
-          title="Total amount assessed for this application will be added to the total assessed amount on the permit."
+          title="Amount assessed for this application will be added to the total assessed amount on the permit."
         />
       </div>
       <Field
@@ -28,8 +28,8 @@ exports[`PermitAmendmentSecurityForm renders properly 1`] = `
         component={[Function]}
         disabled={false}
         format={[Function]}
-        id="security_total"
-        name="security_total"
+        id="security_adjustment"
+        name="security_adjustment"
         normalize={[Function]}
         onChange={[Function]}
         onFocus={[Function]}

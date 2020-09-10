@@ -187,6 +187,11 @@ export const getDropdownPermitStatusOptions = createSelector([getPermitStatusOpt
   createDropDownList(options, "description", "permit_status_code")
 );
 
+export const getDropdownPermitStatusOptionsHash = createSelector(
+  getDropdownPermitStatusOptions,
+  createLabelHash
+);
+
 export const getDropdownIncidentDocumentTypeOptions = createSelectorWrapper(
   getIncidentDocumentTypeOptions,
   createDropDownList,
