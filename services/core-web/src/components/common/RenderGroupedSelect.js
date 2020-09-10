@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Form } from '@ant-design/compatible';
-import '@ant-design/compatible/assets/index.css';
+import { Form } from "@ant-design/compatible";
+import "@ant-design/compatible/assets/index.css";
 import { Select } from "antd";
 import CustomPropTypes from "@/customPropTypes";
 
@@ -48,7 +48,8 @@ const RenderGroupedSelect = (props) => (
   >
     <Select
       disabled={props.disabled}
-      getPopupContainer={props.doNotPinDropdown ? null : () => document.getElementById(props.id)}
+      dropdownMatchSelectWidth
+      getPopupContainer={(trigger) => trigger.parentNode}
       showSearch
       placeholder={props.placeholder}
       optionFilterProp="children"
