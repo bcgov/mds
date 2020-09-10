@@ -58,8 +58,8 @@ const RenderSelect = (props) => (
         option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
       }
       id={props.id}
-      {...props.input}
       onSelect={props.onSelect}
+      {...props.input}
     >
       {props.data.map((opt) => (
         <Select.Option
