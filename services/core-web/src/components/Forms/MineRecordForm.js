@@ -273,11 +273,11 @@ export class MineRecordForm extends Component {
                     // if data doesn't exist, the multi-select is disabled
                     data={
                       this.props.mine_types[index] &&
-                      this.props.mine_types[index].mine_tenure_type_code &&
-                      this.props.mine_types[index].mine_tenure_type_code.length >= 1
+                        this.props.mine_types[index].mine_tenure_type_code &&
+                        this.props.mine_types[index].mine_tenure_type_code.length >= 1
                         ? this.props.conditionalCommodityOptions[
-                            this.props.mine_types[index].mine_tenure_type_code
-                          ]
+                        this.props.mine_types[index].mine_tenure_type_code
+                        ]
                         : null
                     }
                   />
@@ -293,11 +293,11 @@ export class MineRecordForm extends Component {
                     component={renderConfig.MULTI_SELECT}
                     data={
                       this.props.mine_types[index] &&
-                      this.props.mine_types[index].mine_tenure_type_code &&
-                      this.props.mine_types[index].mine_tenure_type_code.length >= 1
+                        this.props.mine_types[index].mine_tenure_type_code &&
+                        this.props.mine_types[index].mine_tenure_type_code.length >= 1
                         ? this.props.conditionalDisturbanceOptions[
-                            this.props.mine_types[index].mine_tenure_type_code
-                          ]
+                        this.props.mine_types[index].mine_tenure_type_code
+                        ]
                         : null
                     }
                   />
@@ -331,7 +331,7 @@ export class MineRecordForm extends Component {
           </Col>
         </Row>
         <Row gutter={16}>
-          <Col>
+          <Col span={24}>
             <Form.Item>
               <Field
                 id="mine_status"
@@ -348,7 +348,7 @@ export class MineRecordForm extends Component {
           </Col>
         </Row>
         <Row gutter={16}>
-          <Col>
+          <Col span={24}>
             <Form.Item label="Is this a historic mine status?">
               <Radio.Group
                 onChange={this.toggleStatusDate}
@@ -421,7 +421,7 @@ export class MineRecordForm extends Component {
         <Form.Item label="Mine Type" />
         <FieldArray name="mine_types" component={renderTypeSelect} />
         <Row gutter={16}>
-          <Col>
+          <Col span={24}>
             <Form.Item>
               <Field
                 id="mine_note"
@@ -448,7 +448,7 @@ export class MineRecordForm extends Component {
           </Col>
         </Row>
         <Row gutter={16}>
-          <Col>
+          <Col span={24}>
             <Form.Item>
               <Field
                 id="exemption_fee_status_code"
@@ -462,7 +462,7 @@ export class MineRecordForm extends Component {
           </Col>
         </Row>
         <Row gutter={16}>
-          <Col>
+          <Col span={24}>
             <Form.Item>
               <Field
                 id="exemption_fee_status_note"

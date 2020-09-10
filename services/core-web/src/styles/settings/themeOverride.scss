@@ -1,11 +1,6 @@
 // stylying overrides for Ant components
 
 // TABS
-.center-tabs {
-  & .ant-tabs-bar {
-    text-align: center;
-  }
-}
 .ant-tabs-nav {
   .ant-tabs-tab {
     font-family: $default-font;
@@ -46,12 +41,17 @@
 .ant-btn-sm,
 .ant-btn-secondary {
   margin: 10px;
+  padding: 3px 11px;
   color: $secondary-btn-color;
   border: 1px solid $secondary-btn-color;
 
   &:hover {
     color: $secondary-btn-color-hover;
     border: 1px solid $secondary-btn-border-color-hover;
+  }
+  
+  span {
+    font-size: $font-size-base;
   }
 }
 
@@ -60,6 +60,11 @@
   background-color: white;
   border: 1px solid $danger-btn-color;
   &:hover {
+    background-color: white;
+    border: 1px solid $danger-btn-color-hover;
+    color: $danger-btn-color-hover;
+  }
+  &:focus {
     background-color: white;
     border: 1px solid $danger-btn-color-hover;
     color: $danger-btn-color-hover;
@@ -103,7 +108,13 @@
 .ant-btn-primary {
   font-weight: $light;
   color: $pure-white;
+  background-color: $primary-btn-color;
   &:hover {
+    color: $pure-white;
+    background-color: $primary-btn-color-hover;
+    border: 1px solid $primary-btn-border-color-hover;
+  }
+  &:focus {
     color: $pure-white;
     background-color: $primary-btn-color-hover;
     border: 1px solid $primary-btn-border-color-hover;
@@ -343,7 +354,6 @@ input {
   position: relative;
   display: inline-block;
   width: 100%;
-  height: 32px;
   padding: 4px 11px;
   color: rgba(0, 0, 0, 0.65);
   font-size: 1rem;
@@ -361,6 +371,10 @@ input {
     cursor: not-allowed;
     opacity: 1;
   }
+}
+
+.ant-input-affix-wrapper-lg {
+  padding: 4px 11px;
 }
 
 // when selects are disabled, remove border to match styling of other disabled inputs
@@ -448,8 +462,19 @@ select {
   .ant-tooltip-inner {
     background-color: $violet;
   }
-  .ant-tooltip-arrow::before,
-  .ant-tooltip-arrow::after {
+  .ant-tooltip-arrow-content {
     background-color: $violet !important;
   }
+}
+
+.ant-legacy-form-item-control-wrapper {
+  flex: 1 1 100%;
+}
+
+.ant-legacy-form-item {
+  margin-bottom: 6px;
+}
+
+.modal__close {
+  font-size: inherit !important;
 }
