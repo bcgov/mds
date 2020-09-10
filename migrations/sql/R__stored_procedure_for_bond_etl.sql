@@ -62,7 +62,7 @@ declare
 
 	DROP TABLE IF EXISTS convert_permit_no;
 	CREATE TEMPORARY TABLE convert_permit_no as
-	select
+	select distinct
 		mms_permit_no_to_ses_convert(permit_no) as conv,
 		permit_no as org
 	from mms.mmspmt;
@@ -94,7 +94,7 @@ declare
 		cnt_dt,
 		etl_create_date,
 		etl_update_date)
-	SELECT
+	SELECT DISTINCT
 		sec_cid,
 		conv.org,
 		CONCAT_WS(' ', TRIM(addr1),TRIM(addr2),TRIM(addr3), TRIM(post_cd)),
@@ -137,10 +137,10 @@ declare
 		UPDATE
 			SET
 				sec_amt=excluded.sec_amt,
-				core_payer_party_guid = case
-					when ETL_BOND.cmp_nm != EXCLUDED.cmp_nm then null
-					else ETL_BOND.core_payer_party_guid
-					end,
+				-- core_payer_party_guid = case
+				-- 	when ETL_BOND.cmp_nm != EXCLUDED.cmp_nm then null
+				-- 	else ETL_BOND.core_payer_party_guid
+				-- 	end,
 				core_bond_type_code=excluded.core_bond_type_code,
 				descript= TRIM(excluded.descript),
 				etl_update_date=excluded.etl_update_date,
@@ -348,9 +348,9 @@ declare
 	where core_bond_id is not null
 	on conflict do nothing;
 
-	UPDATE permit p
+	UPDATE permit
 	set
-		p.project_id = bond_data.project_no
+		project_id = bond_data.project_no
 	from (
 		SELECT project_no, core_permit_id
 		FROM (
@@ -361,7 +361,7 @@ declare
 		INNER JOIN ETL_BOND e
 		ON e.permit_no = mbd.permit_no AND e.cnt_dt = mbd.max_cnt_dt
 	) bond_data
-	where p.permit_id = bond_data.core_permit_id;
+	where permit.permit_id = bond_data.core_permit_id;
 
 END;
 END;
