@@ -50,7 +50,7 @@ class Party(AuditMixin, Base):
     def business_roles_codes(self):
         return [
             x.party_business_role_code for x in self.business_role_appts
-            if (not x.end_date or x.end_date > datetime.utcnow())
+            if (not x.end_date or x.end_date > datetime.utcnow().date())
         ]
 
     @name.expression
