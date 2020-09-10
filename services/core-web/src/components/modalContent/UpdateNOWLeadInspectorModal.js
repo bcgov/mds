@@ -38,7 +38,7 @@ export class UpdateNOWLeadInspectorModal extends Component {
     return (
       <div>
         <Row gutter={16}>
-          <Col>
+          <Col span={24}>
             <UpdateNOWLeadInspectorForm
               initialValues={{
                 lead_inspector_party_guid: this.props.lead_inspector_party_guid,

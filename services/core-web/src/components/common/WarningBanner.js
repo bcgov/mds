@@ -17,7 +17,7 @@ const propTypes = {
 };
 
 const defaultProps = {
-  onClose: () => {},
+  onClose: () => { },
 };
 
 const testWarningData = {
@@ -69,7 +69,7 @@ const WarningBanner = (props) => {
   return (
     warningData && (
       <Row>
-        <Col>
+        <Col span={24}>
           <Alert
             className="warning-banner"
             message={<Text strong>{warningData.message}</Text>}

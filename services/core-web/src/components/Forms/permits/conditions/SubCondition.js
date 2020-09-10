@@ -26,11 +26,11 @@ const propTypes = {
 const defaultProps = {
   condition: undefined,
   new: false,
-  handleSubmit: () => {},
-  handleCancel: () => {},
-  handleDelete: () => {},
-  reorderConditions: () => {},
-  setConditionEditingFlag: () => {},
+  handleSubmit: () => { },
+  handleCancel: () => { },
+  handleDelete: () => { },
+  reorderConditions: () => { },
+  setConditionEditingFlag: () => { },
   initialValues: {},
   isViewOnly: false,
 };
@@ -43,10 +43,10 @@ const SubCondition = (props) => {
       {props.condition && props.condition.display_order !== 1 && (
         <>
           <Row gutter={32}>
-            <Col>&nbsp;</Col>
+            <Col span={24}>&nbsp;</Col>
           </Row>
           <Row gutter={32}>
-            <Col>&nbsp;</Col>
+            <Col span={24}>&nbsp;</Col>
           </Row>
         </>
       )}
@@ -59,10 +59,10 @@ const SubCondition = (props) => {
         )}
         <Col span={props.isViewOnly ? 17 : 18}>
           <Row>
-            <Col>{!isEditing && props.condition.condition}</Col>
+            <Col span={24}>{!isEditing && props.condition.condition}</Col>
           </Row>
           <Row>
-            <Col>
+            <Col span={24}>
               {isEditing && (
                 <SubConditionForm
                   onCancel={() => {
@@ -165,7 +165,7 @@ const SubCondition = (props) => {
         ))}
       {props.condition && props.condition.sub_conditions.length === 0 && (
         <Row gutter={32}>
-          <Col>&nbsp;</Col>
+          <Col span={24}>&nbsp;</Col>
         </Row>
       )}
       {!isEditing && !props.isViewOnly && (

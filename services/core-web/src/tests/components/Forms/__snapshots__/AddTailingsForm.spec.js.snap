@@ -10,7 +10,7 @@ exports[`AddTailingsForm renders properly 1`] = `
   <Row
     gutter={16}
   >
-    <Col>
+    <Col span={24}>
       <FormItem
         hasFeedback={false}
       >

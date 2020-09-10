@@ -24,7 +24,7 @@ const propTypes = {
 export const MajorMinePermitApplicationCreateForm = (props) => (
   <Form layout="vertical" onSubmit={props.handleSubmit}>
     <Row>
-      <Col>
+      <Col span={24}>
         <Form.Item>
           <Field
             id="permit_guid"
@@ -38,7 +38,7 @@ export const MajorMinePermitApplicationCreateForm = (props) => (
       </Col>
     </Row>
     <Row>
-      <Col>
+      <Col span={24}>
         <Form.Item>
           <Field
             id="notice_of_work_type_code"
@@ -50,7 +50,7 @@ export const MajorMinePermitApplicationCreateForm = (props) => (
           />
         </Form.Item>
       </Col>
-      <Col>
+      <Col span={24}>
         <Form.Item>
           <Field
             id="submitted_date"

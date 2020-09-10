@@ -94,7 +94,6 @@
 
 .ant-pagination-prev .ant-pagination-item-link,
 .ant-pagination-next .ant-pagination-item-link,
-.ant-select-selection,
 .ant-pagination-item {
   & a {
     text-decoration: none !important;
@@ -103,6 +102,10 @@
     color: $pagination-item-hover;
     border: 1px solid $pagination-item-border-hover;
   }
+}
+
+.ant-select-selection-item {
+  line-height: 20px;
 }
 
 .ant-btn-primary {
@@ -140,6 +143,10 @@
   border-style: none;
   box-shadow: none;
   &:hover {
+    border-style: none !important;
+    border: 0px;
+  }
+  &:focus {
     border-style: none !important;
     border: 0px;
   }
@@ -232,8 +239,9 @@
 }
 
 // DATE PICKER
-.ant-calendar-picker {
+.ant-picker {
   width: 100%;
+  padding: 4px 11px;
 }
 
 // COLLAPSE
@@ -268,6 +276,17 @@
   &:hover {
     background-color: $light-grey;
   }
+}
+
+//  SUBMENU
+.ant-menu-submenu {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.ant-menu-horizontal > .ant-menu-submenu > .ant-menu-submenu-title {
+  padding-left: 20px;
+  padding-right: 20px;
 }
 
 .ant-dropdown-menu-submenu-title {
@@ -373,6 +392,8 @@ input {
   }
 }
 
+.ant-input-affix-wrapper,
+.ant-input-affix-wrapper-sm,
 .ant-input-affix-wrapper-lg {
   padding: 4px 11px;
 }
@@ -467,12 +488,26 @@ select {
   }
 }
 
+
+//Legacy form fields
+.ant-radio-wrapper > span,
+.ant-legacy-form-item-label > label {
+  font-size: 1rem;
+}
+
 .ant-legacy-form-item-control-wrapper {
   flex: 1 1 100%;
 }
 
 .ant-legacy-form-item {
   margin-bottom: 6px;
+}
+
+.ant-legacy-form-vertical {
+  .ant-legacy-form-item {
+    padding-bottom: 2px;
+
+  }
 }
 
 .modal__close {

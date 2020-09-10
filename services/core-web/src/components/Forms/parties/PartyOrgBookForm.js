@@ -100,7 +100,7 @@ export class PartyOrgBookForm extends Component {
 
     return (
       <Row>
-        <Col>
+        <Col span={24}>
           <Form.Item>
             <Select
               showSearch
@@ -125,7 +125,7 @@ export class PartyOrgBookForm extends Component {
             </Select>
           </Form.Item>
         </Col>
-        <Col>
+        <Col span={24}>
           <Button
             className="full-mobile"
             href={

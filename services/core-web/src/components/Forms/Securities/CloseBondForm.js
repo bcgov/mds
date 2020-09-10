@@ -32,7 +32,7 @@ export const CloseBondForm = (props) => {
   return (
     <Form layout="vertical" onSubmit={props.handleSubmit}>
       <Row>
-        <Col>
+        <Col span={24}>
           <Form.Item>
             <Field
               id="closed_date"
@@ -51,7 +51,7 @@ export const CloseBondForm = (props) => {
         </Col>
       </Row>
       <Row>
-        <Col>
+        <Col span={24}>
           <Form.Item>
             <Field
               id="closed_note"

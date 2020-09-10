@@ -171,7 +171,7 @@ export class NoticeOfWorkApplication extends Component {
     window.removeEventListener("scroll", this.handleScroll);
   }
 
-  loadMineInfo = (mineGuid, onMineInfoLoaded = () => {}) => {
+  loadMineInfo = (mineGuid, onMineInfoLoaded = () => { }) => {
     this.props.fetchMineRecordById(mineGuid).then(({ data }) => {
       this.setState({ isMajorMine: data.major_mine_ind, mineGuid: data.mine_guid });
       onMineInfoLoaded();
@@ -349,7 +349,7 @@ export class NoticeOfWorkApplication extends Component {
     if (
       !this.state.associatedLeadInspectorPartyGuid ||
       this.state.associatedLeadInspectorPartyGuid ===
-        this.props.noticeOfWork.lead_inspector_party_guid
+      this.props.noticeOfWork.lead_inspector_party_guid
     ) {
       finalAction();
       return;
@@ -360,7 +360,7 @@ export class NoticeOfWorkApplication extends Component {
         { lead_inspector_party_guid: this.state.associatedLeadInspectorPartyGuid },
         this.props.noticeOfWork.now_application_guid,
         `Successfully assigned ${
-          this.props.inspectorsHash[this.state.associatedLeadInspectorPartyGuid]
+        this.props.inspectorsHash[this.state.associatedLeadInspectorPartyGuid]
         } as the Lead Inspector`
       )
       .then(() => {
@@ -399,7 +399,7 @@ export class NoticeOfWorkApplication extends Component {
         { now_application_status_code: this.state.associatedStatus },
         this.props.noticeOfWork.now_application_guid,
         `Successfully changed status to ${
-          this.props.noticeOfWorkApplicationStatusOptionsHash[this.state.associatedStatus]
+        this.props.noticeOfWorkApplicationStatusOptionsHash[this.state.associatedStatus]
         }`
       )
       .then(() => {
@@ -558,45 +558,45 @@ export class NoticeOfWorkApplication extends Component {
         </Dropdown>
       </div>
     ) : (
-      <div className="center padding-md">
-        <div className="inline-flex flex-center block-mobile">
-          <Popconfirm
-            placement="bottomRight"
-            title="You have unsaved changes, Are you sure you want to cancel?"
-            onConfirm={this.handleCancelNOWEdit}
-            okText="Yes"
-            cancelText="No"
-          >
-            <Button type="secondary" className="full-mobile">
-              Cancel
-            </Button>
-          </Popconfirm>
-          {showErrors && (
-            <Button
-              type="danger"
-              className="full-mobile"
-              onClick={() => this.focusErrorInput(true)}
+        <div className="center padding-md">
+          <div className="inline-flex flex-center block-mobile">
+            <Popconfirm
+              placement="bottomRight"
+              title="You have unsaved changes, Are you sure you want to cancel?"
+              onConfirm={this.handleCancelNOWEdit}
+              okText="Yes"
+              cancelText="No"
             >
-              Next Issue
+              <Button type="secondary" className="full-mobile">
+                Cancel
             </Button>
-          )}
-          <Button type="primary" className="full-mobile" onClick={this.handleSaveNOWEdit}>
-            Save
+            </Popconfirm>
+            {showErrors && (
+              <Button
+                type="danger"
+                className="full-mobile"
+                onClick={() => this.focusErrorInput(true)}
+              >
+                Next Issue
+              </Button>
+            )}
+            <Button type="primary" className="full-mobile" onClick={this.handleSaveNOWEdit}>
+              Save
           </Button>
-        </div>
-        {showErrors && (
-          <div className="error">
-            <Alert
-              message={`You have ${errorsLength} ${
-                errorsLength === 1 ? "issue" : "issues"
-              } that must be fixed before proceeding`}
-              type="error"
-              showIcon
-            />
           </div>
-        )}
-      </div>
-    );
+          {showErrors && (
+            <div className="error">
+              <Alert
+                message={`You have ${errorsLength} ${
+                  errorsLength === 1 ? "issue" : "issues"
+                  } that must be fixed before proceeding`}
+                type="error"
+                showIcon
+              />
+            </div>
+          )}
+        </div>
+      );
   };
 
   menu = (isReview = false) => {
@@ -720,6 +720,7 @@ export class NoticeOfWorkApplication extends Component {
             className={this.state.fixedTop ? "now-tabs" : "now-tabs"}
             onTabClick={this.handleTabChange}
             style={{ margin: "0" }}
+            centered
           >
             <TabPane tab="Verification" key="verification">
               <ApplicationStepOne

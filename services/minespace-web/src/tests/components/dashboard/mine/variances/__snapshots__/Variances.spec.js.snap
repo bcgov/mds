@@ -4,7 +4,7 @@ exports[`Variances renders properly 1`] = `
 <Row
   gutter={0}
 >
-  <Col>
+  <Col span={24}>
     <Title
       level={4}
     >

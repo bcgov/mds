@@ -19,7 +19,7 @@ const propTypes = {
 export const ChangeNOWMineForm = (props) => (
   <Form layout="vertical" onSubmit={props.handleSubmit}>
     <Row gutter={16}>
-      <Col>
+      <Col span={24}>
         <Form.Item>
           <Field
             id="mine_guid"

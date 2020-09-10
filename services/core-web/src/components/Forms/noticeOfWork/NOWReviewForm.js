@@ -32,7 +32,7 @@ const propTypes = {
   selectedNowApplicationReviewTypeCode: PropTypes.string,
 };
 const defaultProps = {
-  change: () => {},
+  change: () => { },
   selectedNowApplicationReviewTypeCode: "",
 };
 
@@ -65,7 +65,7 @@ export class NOWReviewForm extends Component {
     return (
       <Form layout="vertical" onSubmit={this.props.handleSubmit}>
         <Row gutter={16}>
-          <Col>
+          <Col span={24}>
             <Form.Item>
               <Field
                 id="now_application_review_type_code"

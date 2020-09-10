@@ -245,9 +245,9 @@ export class AddPartyRelationshipForm extends Component {
                   name="end_current"
                   label={`Would you like to set the end date of ${
                     this.state.currentAppointment.party.name
-                  } to ${moment(this.props.start_date)
-                    .subtract(1, "days")
-                    .format("MMMM Do YYYY")}`}
+                    } to ${moment(this.props.start_date)
+                      .subtract(1, "days")
+                      .format("MMMM Do YYYY")}`}
                   type="checkbox"
                   component={renderConfig.CHECKBOX}
                 />
@@ -256,7 +256,7 @@ export class AddPartyRelationshipForm extends Component {
           </Col>
         </Row>
         <Row gutter={16}>
-          <Col md={12} xs={24}>
+          <Col span={24}>
             {options}
             {this.props.partyRelationshipType.mine_party_appt_type_code === "MMG" && (
               <div>

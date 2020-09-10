@@ -9,7 +9,7 @@ const { Paragraph, Text } = Typography;
 
 const ContactCardRow = (data) => (
   <Row className="contact-card-row">
-    <Col>
+    <Col span={24}>
       <Icon type={data.icon} className="contact-card-row-icon" />
       <Paragraph className="contact-card-row-field">
         <Text strong className="contact-card-row-field-title">

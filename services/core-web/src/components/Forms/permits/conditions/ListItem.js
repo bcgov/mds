@@ -23,11 +23,11 @@ const propTypes = {
 const defaultProps = {
   condition: undefined,
   new: false,
-  handleSubmit: () => {},
-  handleCancel: () => {},
-  handleDelete: () => {},
-  reorderConditions: () => {},
-  setConditionEditingFlag: () => {},
+  handleSubmit: () => { },
+  handleCancel: () => { },
+  handleDelete: () => { },
+  reorderConditions: () => { },
+  setConditionEditingFlag: () => { },
   initialValues: {},
   isViewOnly: false,
 };
@@ -39,7 +39,7 @@ const ListItem = (props) => {
     <>
       {props.condition && props.condition.display_order === 1 && (
         <Row gutter={32}>
-          <Col>&nbsp;</Col>
+          <Col span={24}>&nbsp;</Col>
         </Row>
       )}
       <Row gutter={[16, 32]}>

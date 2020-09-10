@@ -28,7 +28,7 @@ export const AddIncidentReportingForm = (props) => (
   <div>
     <Form layout="vertical">
       <Row gutter={48}>
-        <Col>
+        <Col span={24}>
           {props.initialValues.mine_incident_id_year && (
             <h4>{`Ministry Incident No. ${props.initialValues.mine_incident_report_no}`}</h4>
           )}
