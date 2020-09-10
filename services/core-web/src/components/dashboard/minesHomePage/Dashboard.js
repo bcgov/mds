@@ -267,7 +267,7 @@ export class Dashboard extends Component {
     event.preventDefault();
     this.props.openModal({
       props: {
-        handleDelete: () => {},
+        handleDelete: () => { },
         onSubmit,
         title,
         isNewRecord: true,
@@ -282,11 +282,11 @@ export class Dashboard extends Component {
       <div>
         <PageTracker title="Mines Page" />
         <Tabs
-          className="center-tabs"
           activeKey={map ? "map" : "list"}
           size="large"
           animated={{ inkBar: false, tabPane: false }}
           onTabClick={this.handleTabChange}
+          centered
         >
           <TabPane tab="List" key="list">
             <MineSearch
@@ -379,8 +379,8 @@ export class Dashboard extends Component {
                         Results for: <span className="p">{this.state.mapParams.mineName}</span>
                       </h2>
                     ) : (
-                      <h2> Result for coordinate search:</h2>
-                    )}
+                        <h2> Result for coordinate search:</h2>
+                      )}
                   </div>
                   <div className="center">
                     <div className="inline-flex evenly center-mobile">

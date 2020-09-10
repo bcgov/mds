@@ -257,8 +257,8 @@ export class PartyProfile extends Component {
               {party.email && party.email !== "Unknown" ? (
                 <a href={`mailto:${party.email}`}>{party.email}</a>
               ) : (
-                <p>{Strings.EMPTY_FIELD}</p>
-              )}
+                  <p>{Strings.EMPTY_FIELD}</p>
+                )}
             </div>
             <div className="inline-flex">
               <div className="padding-right">
@@ -272,10 +272,10 @@ export class PartyProfile extends Component {
           </div>
           <div className="profile__content">
             <Tabs
-              className="center-tabs"
               activeKey="history"
               size="large"
               animated={{ inkBar: true, tabPane: false }}
+              centered
             >
               <TabPane tab="History" key="history">
                 <div className="tab__content ">

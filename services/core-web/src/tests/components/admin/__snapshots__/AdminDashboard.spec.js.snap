@@ -32,12 +32,12 @@ exports[`AdminDashboard renders properly 1`] = `
           "tabPane": false,
         }
       }
-      className="center-tabs"
       defaultActiveKey="summary"
       hideAdd={false}
       onChange={[Function]}
       size="large"
       tabPosition="top"
+      centered
     >
       <TabPane
         key="verifiedMines"

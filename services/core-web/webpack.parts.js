@@ -82,6 +82,24 @@ exports.loadCSS = ({ include, exclude, theme } = {}) => ({
             options: {
               lessOptions: {
                 javascriptEnabled: true,
+                modifyVars: {
+                  'white': '#f1f1f2',
+                  'blue': '#003366',
+                  'primary-color': '#5e46a1',
+                  'link-color': '#1DA57A',
+                  'success-color': '#45a766',
+                  'warning-color': '#f3cd65',
+                  'error-color': '#d40d0d',
+                  'item-hover-bg': '#ded9d9',
+                  'background-color-light': '#f4f0f0',
+                  'item-hover-bg': '#f4f0f0',
+                  'table-selected-row-bg': '#f4f0f0',
+                  'font-size-base': '1rem',
+                  'font-size-lg': '1.125rem',
+                  'font-size-sm': '0.875rem',
+                  'font-family': '"Open Sans", sans-serif',
+                  'border-radius-base': '5px',
+                }
               },
             },
           },
