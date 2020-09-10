@@ -94,7 +94,7 @@ declare
 		cnt_dt,
 		etl_create_date,
 		etl_update_date)
-	SELECT
+	SELECT DISTINCT
 		sec_cid,
 		conv.org,
 		CONCAT_WS(' ', TRIM(addr1),TRIM(addr2),TRIM(addr3), TRIM(post_cd)),
