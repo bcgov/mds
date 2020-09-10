@@ -53,6 +53,8 @@ export const RenderMultiSelect = (props) => (
         placeholder={props.placeholder}
         id={props.id}
         onSearch={props.onSearch}
+        value={props.input.value ? props.input.value : undefined}
+        onChange={props.input.onChange}
         filterOption={props.filterOption || caseInsensitiveLabelFilter}
         showArrow
       >

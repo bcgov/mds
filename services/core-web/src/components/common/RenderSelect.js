@@ -59,7 +59,9 @@ const RenderSelect = (props) => (
       }
       id={props.id}
       onSelect={props.onSelect}
-      {...props.input}
+      defaultValue={props.input.value}
+      value={props.input.value ? props.input.value : undefined}
+      onChange={props.input.onChange}
     >
       {props.data.map((opt) => (
         <Select.Option
