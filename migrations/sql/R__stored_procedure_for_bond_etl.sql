@@ -137,10 +137,10 @@ declare
 		UPDATE
 			SET
 				sec_amt=excluded.sec_amt,
-				core_payer_party_guid = case
-					when ETL_BOND.cmp_nm != EXCLUDED.cmp_nm then null
-					else ETL_BOND.core_payer_party_guid
-					end,
+				-- core_payer_party_guid = case
+				-- 	when ETL_BOND.cmp_nm != EXCLUDED.cmp_nm then null
+				-- 	else ETL_BOND.core_payer_party_guid
+				-- 	end,
 				core_bond_type_code=excluded.core_bond_type_code,
 				descript= TRIM(excluded.descript),
 				etl_update_date=excluded.etl_update_date,
