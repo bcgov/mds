@@ -19,6 +19,7 @@ const isSpatialFile = (document) =>
     Object.keys(UNIQUELY_SPATIAL).includes(document.filename.substr(document.filename.length - 4)));
 
 const transformDocuments = (documents, now_application_guid, spatial = false) =>
+  documents &&
   documents
     .filter((document) => (spatial ? isSpatialFile(document) : !isSpatialFile(document)))
     .map((document) => ({
