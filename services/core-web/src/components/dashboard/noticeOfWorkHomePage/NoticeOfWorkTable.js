@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Input, Button, Badge } from "antd";
+import { omitBy, isNil } from "lodash";
 import { SearchOutlined, EyeOutlined } from "@ant-design/icons";
 import { Link, withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
@@ -185,7 +186,6 @@ export class NoticeOfWorkTable extends Component {
       dataIndex: "mine_region",
       sortField: "mine_region",
       sorter: true,
-      filtered: true,
       filteredValue: this.ensureListValue(this.props.searchParams.mine_region),
       filters: optionsFilterLabelAndValue(this.props.mineRegionOptions).sort((a, b) =>
         a.value > b.value ? 1 : -1
@@ -198,7 +198,6 @@ export class NoticeOfWorkTable extends Component {
       dataIndex: "notice_of_work_type_description",
       sortField: "notice_of_work_type_description",
       sorter: true,
-      filtered: true,
       filteredValue: this.ensureListValue(this.props.searchParams.notice_of_work_type_description),
       filters: optionsFilterLabelOnly(this.props.applicationTypeOptions).sort((a, b) =>
         a.value > b.value ? 1 : -1
@@ -228,7 +227,6 @@ export class NoticeOfWorkTable extends Component {
       dataIndex: "now_application_status_description",
       sortField: "now_application_status_description",
       sorter: true,
-      filtered: true,
       filteredValue: this.ensureListValue(
         this.props.searchParams.now_application_status_description
       ),
@@ -255,7 +253,6 @@ export class NoticeOfWorkTable extends Component {
       dataIndex: "originating_system",
       sortField: "originating_system",
       sorter: true,
-      filtered: true,
       filteredValue: this.ensureListValue(this.props.searchParams.originating_system),
       filters: [
         { text: "Core", value: "Core" },
