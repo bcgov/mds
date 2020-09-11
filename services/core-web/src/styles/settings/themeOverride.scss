@@ -49,7 +49,7 @@
     color: $secondary-btn-color-hover;
     border: 1px solid $secondary-btn-border-color-hover;
   }
-  
+
   span {
     font-size: $font-size-base;
   }
@@ -219,6 +219,7 @@
 .ant-alert-description,
 .ant-alert-close-icon .anticon-close {
   color: $pure-white;
+  line-height: 2rem;
 }
 
 .ant-alert-close-icon .anticon-close:hover {
@@ -488,7 +489,6 @@ select {
   }
 }
 
-
 //Legacy form fields
 .ant-radio-wrapper > span,
 .ant-legacy-form-item-label > label {
@@ -506,7 +506,6 @@ select {
 .ant-legacy-form-vertical {
   .ant-legacy-form-item {
     padding-bottom: 2px;
-
   }
 }
 

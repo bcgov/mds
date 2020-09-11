@@ -2,13 +2,6 @@
   max-height: 25px * 6;
   overflow-y: auto;
 }
-// when adding a toolTip to ant design table headers, sometimes the table appends an additional column to the beginning of the table (bug with our implementation of our CoreTable/ant design table)
-// this class removes the additional column header
-.additional-table-header {
-  .ant-table-thead > tr:first-child > th:first-child {
-    display: none;
-  }
-}
 
 .ant-table-filter-dropdown-link.confirm {
   position: relative;

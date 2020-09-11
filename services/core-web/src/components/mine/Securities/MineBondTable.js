@@ -300,7 +300,7 @@ export const MineBondTable = (props) => {
       dataSource={transformRowData(props.permits)}
       columns={columns}
       tableProps={{
-        className: "nested-table additional-table-header",
+        className: "nested-table",
         rowClassName: "table-row-align-middle pointer fade-in",
         align: "left",
         pagination: false,
