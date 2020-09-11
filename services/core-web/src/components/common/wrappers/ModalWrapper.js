@@ -64,7 +64,7 @@ export class ModalWrapper extends Component {
       >
         {this.props.isViewOnly ? (
           <Button ghost className="modal__close" onClick={(event) => this.closeModal(event)}>
-            <CloseOutlined />
+            <CloseOutlined className="icon-sm" />
           </Button>
         ) : (
           <Popconfirm
@@ -75,7 +75,7 @@ export class ModalWrapper extends Component {
             onConfirm={(event) => this.closeModal(event)}
           >
             <Button ghost className="modal__close">
-              <CloseOutlined />
+              <CloseOutlined className="icon-sm" />
             </Button>
           </Popconfirm>
         )}

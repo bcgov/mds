@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Field, reduxForm, FormSection } from "redux-form";
-import { Form } from '@ant-design/compatible';
-import '@ant-design/compatible/assets/index.css';
-import { Col, Row, Button, Popconfirm, Descriptions, Typography } from "antd";
+import { Field, reduxForm } from "redux-form";
+import { Form } from "@ant-design/compatible";
+import "@ant-design/compatible/assets/index.css";
+import { Col, Row, Button, Popconfirm, Descriptions, Typography, Divider } from "antd";
 import { isEmpty } from "lodash";
 import {
   required,
@@ -313,53 +313,64 @@ export class EditFullPartyForm extends Component {
           </Col>
         </Row>
         {this.isPerson && (
-          <AuthorizationWrapper permission={Permission.ADMIN}>
-            <Row>
-              <p>
-                By setting this checkbox you grant inspector role to this party. Please note that
-                removing this checkbox will not delete party from associated entities.
-              </p>
-              <Col md={12} sm={24}>
-                <Field
-                  id="set_to_inspector"
-                  name="set_to_inspector"
-                  label="Set to inspector"
-                  type="checkbox"
-                  component={renderConfig.CHECKBOX}
-                />
-              </Col>
-            </Row>
+          <>
+            <br />
+            <Divider />
             <Row gutter={16}>
-              <Col span={12}>
-                <Field
-                  label="Start Date"
-                  id={`inspector_start_date`}
-                  name={`inspector_start_date`}
-                  placeholder="yyyy-mm-dd"
-                  component={renderConfig.DATE}
-                />
-              </Col>
-              <Col span={12}>
-                <Field
-                  label="End Date"
-                  id={`inspector_end_date`}
-                  name={`inspector_end_date`}
-                  placeholder="yyyy-mm-dd"
-                  component={renderConfig.DATE}
-                />
+              <Col md={24}>
+                <h5>Assign Inspector Role</h5>
               </Col>
             </Row>
-            <Row>
-              <Field
-                id="PartySignatureUpload"
-                name="PartySignatureUpload"
-                component={PartySignatureUpload}
-                onFileChange={this.onChangeSignature}
-                onRemove={this.onDeleteSignature}
-                signature={this.props.party.signature}
-              />
-            </Row>
-          </AuthorizationWrapper>
+            <AuthorizationWrapper permission={Permission.ADMIN}>
+              <Row>
+                <p>
+                  By setting this checkbox you grant inspector role to this party. Please note that
+                  removing this checkbox will not delete party from associated entities.
+                </p>
+                <Col md={12} sm={24}>
+                  <Field
+                    id="set_to_inspector"
+                    name="set_to_inspector"
+                    label="Set to inspector"
+                    type="checkbox"
+                    component={renderConfig.CHECKBOX}
+                  />
+                </Col>
+              </Row>
+              <Row gutter={16}>
+                <Col span={12}>
+                  <Field
+                    label="Start Date"
+                    id={`inspector_start_date`}
+                    name={`inspector_start_date`}
+                    placeholder="yyyy-mm-dd"
+                    component={renderConfig.DATE}
+                  />
+                </Col>
+                <Col span={12}>
+                  <Field
+                    label="End Date"
+                    id={`inspector_end_date`}
+                    name={`inspector_end_date`}
+                    placeholder="yyyy-mm-dd"
+                    component={renderConfig.DATE}
+                  />
+                </Col>
+              </Row>
+              <Row>
+                <Col span={24}>
+                  <Field
+                    id="PartySignatureUpload"
+                    name="PartySignatureUpload"
+                    component={PartySignatureUpload}
+                    onFileChange={this.onChangeSignature}
+                    onRemove={this.onDeleteSignature}
+                    signature={this.props.party.signature}
+                  />
+                </Col>
+              </Row>
+            </AuthorizationWrapper>
+          </>
         )}
         <div className="right center-mobile">
           <Popconfirm

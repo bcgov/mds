@@ -1,5 +1,5 @@
-import { Form } from '@ant-design/compatible';
-import '@ant-design/compatible/assets/index.css';
+import { Form } from "@ant-design/compatible";
+import "@ant-design/compatible/assets/index.css";
 import { IMAGE } from "@/constants/fileTypes";
 import React, { useState } from "react";
 import PropTypes from "prop-types";
