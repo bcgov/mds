@@ -19,7 +19,6 @@ import * as String from "@common/constants/strings";
 import Loading from "@/components/common/Loading";
 import * as router from "@/constants/routes";
 import CustomPropTypes from "@/customPropTypes";
-import NullScreen from "@/components/common/NullScreen";
 
 /**
  * @class RelationshipProfile - profile view for party relationship types
@@ -131,21 +130,21 @@ export class RelationshipProfile extends Component {
     const mine = this.props.mines[id];
     const permitColumn = isPermittee
       ? [
-        {
-          title: "Permit",
-          dataIndex: "permit",
-          render: (text) => <div title="Permit">{text}</div>,
-        },
-      ]
+          {
+            title: "Permit",
+            dataIndex: "permit",
+            render: (text) => <div title="Permit">{text}</div>,
+          },
+        ]
       : [];
     const EORColumn = isEOR
       ? [
-        {
-          title: "Tailings Storage Facility",
-          dataIndex: "tailingsStorageFacility",
-          render: (text) => <div title="Tailings Storage Facility">{text}</div>,
-        },
-      ]
+          {
+            title: "Tailings Storage Facility",
+            dataIndex: "tailingsStorageFacility",
+            render: (text) => <div title="Tailings Storage Facility">{text}</div>,
+          },
+        ]
       : [];
     const columns = [
       {
@@ -229,7 +228,7 @@ export class RelationshipProfile extends Component {
                     pagination={false}
                     columns={columns}
                     dataSource={transformRowData(filteredRelationships)}
-                    locale={{ emptyText: <NullScreen type="no-results" /> }}
+                    locale={{ emptyText: "No Data Yet" }}
                   />
                 </div>
               </TabPane>

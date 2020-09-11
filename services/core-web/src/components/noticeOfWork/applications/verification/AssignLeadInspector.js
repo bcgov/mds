@@ -31,23 +31,22 @@ const AssignLeadInspector = (props) => {
             icon={<LikeOutlined />}
             title="You're almost done..."
             subTitle="Please assign a Lead Inspector to continue to Technical Review."
-            extra={[
-              <UpdateNOWLeadInspectorForm
-                initialValues={{
-                  lead_inspector_party_guid: props.noticeOfWork.lead_inspector_party_guid,
-                }}
-                inspectors={props.inspectors}
-                setLeadInspectorPartyGuid={props.setLeadInspectorPartyGuid}
-              />,
-              <Button
-                type="primary"
-                onClick={props.handleUpdateLeadInspector}
-                disabled={invalidUpdateLeadInspectorPayload(props.updateLeadInspectorFormValues)}
-              >
-                Ready for Technical Review
-              </Button>,
-            ]}
           />
+          <UpdateNOWLeadInspectorForm
+            initialValues={{
+              lead_inspector_party_guid: props.noticeOfWork.lead_inspector_party_guid,
+            }}
+            inspectors={props.inspectors}
+            setLeadInspectorPartyGuid={props.setLeadInspectorPartyGuid}
+          />
+          <Button
+            type="primary"
+            className="no-margin center-mobile"
+            onClick={props.handleUpdateLeadInspector}
+            disabled={invalidUpdateLeadInspectorPayload(props.updateLeadInspectorFormValues)}
+          >
+            Assign Lead Inspector
+          </Button>
         </Col>
       </Row>
     </div>

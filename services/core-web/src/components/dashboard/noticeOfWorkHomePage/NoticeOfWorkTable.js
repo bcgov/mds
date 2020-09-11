@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { Input, Button, Badge } from "antd";
-import { omitBy, isNil } from "lodash";
 import { SearchOutlined, EyeOutlined } from "@ant-design/icons";
 import { Link, withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
@@ -12,7 +11,6 @@ import {
 import * as Strings from "@common/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
 import * as router from "@/constants/routes";
-import NullScreen from "@/components/common/NullScreen";
 import CoreTable from "@/components/common/CoreTable";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import { EDIT_OUTLINE_VIOLET } from "@/constants/assets";
@@ -298,7 +296,7 @@ export class NoticeOfWorkTable extends Component {
         tableProps={{
           align: "left",
           pagination: false,
-          locale: { emptyText: <NullScreen type="no-results" /> },
+          locale: { emptyText: "No Data Yet" },
           onChange: handleTableChange(this.props.handleSearch, this.props.searchParams),
         }}
       />

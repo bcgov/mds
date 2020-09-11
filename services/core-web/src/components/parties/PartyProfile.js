@@ -35,7 +35,6 @@ import * as ModalContent from "@/constants/modalContent";
 import * as Permission from "@/constants/permissions";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import CustomPropTypes from "@/customPropTypes";
-import NullScreen from "@/components/common/NullScreen";
 import Address from "@/components/common/Address";
 
 /**
@@ -257,8 +256,8 @@ export class PartyProfile extends Component {
               {party.email && party.email !== "Unknown" ? (
                 <a href={`mailto:${party.email}`}>{party.email}</a>
               ) : (
-                  <p>{Strings.EMPTY_FIELD}</p>
-                )}
+                <p>{Strings.EMPTY_FIELD}</p>
+              )}
             </div>
             <div className="inline-flex">
               <div className="padding-right">
@@ -286,7 +285,7 @@ export class PartyProfile extends Component {
                     dataSource={transformRowData(this.props.parties[id].mine_party_appt).concat(
                       transformBusinessRoleRowData(this.props.parties[id].business_role_appts)
                     )}
-                    locale={{ emptyText: <NullScreen type="no-results" /> }}
+                    locale={{ emptyText: "No Data Yet" }}
                   />
                 </div>
               </TabPane>

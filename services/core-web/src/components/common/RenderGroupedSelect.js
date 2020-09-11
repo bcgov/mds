@@ -21,7 +21,6 @@ const propTypes = {
   data: CustomPropTypes.groupOptions,
   disabled: PropTypes.bool,
   onSelect: PropTypes.func,
-  doNotPinDropdown: PropTypes.bool,
 };
 
 const defaultProps = {
@@ -31,7 +30,6 @@ const defaultProps = {
   disabled: false,
   meta: {},
   onSelect: () => {},
-  doNotPinDropdown: false,
 };
 
 const RenderGroupedSelect = (props) => (

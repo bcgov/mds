@@ -1,7 +1,6 @@
 import React from "react";
 import { PropTypes } from "prop-types";
 import { Table } from "antd";
-import NullScreen from "@/components/common/NullScreen";
 
 /**
  * @constant CoreTable renders react children or a skeleton loading view using the column headers
@@ -27,7 +26,7 @@ const defaultProps = {
 
 export const CoreTable = (props) => {
   const baseProps = {
-    locale: { emptyText: <NullScreen type="no-results" /> },
+    locale: { emptyText: "No Data Yet" },
     pagination: false,
     rowClassName: "fade-in",
     tableLayout: "auto",

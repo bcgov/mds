@@ -8,7 +8,6 @@ import { getPartyRelationships } from "@common/selectors/partiesSelectors";
 import { getDropdownPermitStatusOptionsHash } from "@common/selectors/staticContentSelectors";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
 import * as Strings from "@common/constants/strings";
-import NullScreen from "@/components/common/NullScreen";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
 import CustomPropTypes from "@/customPropTypes";
@@ -205,16 +204,16 @@ const columns = [
           {...(() => {
             return record.permit.bonds && record.permit.bonds.length > 0
               ? {
-                title: "You cannot delete a permit that has associated bond records.",
-                okText: "Ok",
-              }
+                  title: "You cannot delete a permit that has associated bond records.",
+                  okText: "Ok",
+                }
               : {
-                title:
-                  "Are you sure you want to delete this permit and all related permit amendments and permit documents?",
-                onConfirm: () => record.handleDeletePermit(record.permit.permit_guid),
-                okText: "Delete",
-                cancelText: "Cancel",
-              };
+                  title:
+                    "Are you sure you want to delete this permit and all related permit amendments and permit documents?",
+                  onConfirm: () => record.handleDeletePermit(record.permit.permit_guid),
+                  okText: "Delete",
+                  cancelText: "Cancel",
+                };
           })()}
         >
           <Button ghost type="primary" size="small">
@@ -294,8 +293,8 @@ const childColumns = [
                   <span> (amalgamated)</span>
                 </>
               ) : (
-                  renderDocumentLink(file, file.document_name)
-                )}
+                renderDocumentLink(file, file.document_name)
+              )}
             </li>
           ))}
         </ul>
@@ -410,10 +409,10 @@ export const RenderPermitTableExpandIcon = (rowProps) => (
         <MinusSquareFilled className="icon-lg--grey" />
       </Tooltip>
     ) : (
-        <Tooltip title="Click to view amendment history." placement="right" mouseEnterDelay={1}>
-          <PlusSquareFilled className="icon-lg--grey" />
-        </Tooltip>
-      )}
+      <Tooltip title="Click to view amendment history." placement="right" mouseEnterDelay={1}>
+        <PlusSquareFilled className="icon-lg--grey" />
+      </Tooltip>
+    )}
   </a>
 );
 
@@ -459,7 +458,7 @@ export const MinePermitTable = (props) => {
         rowClassName: "table-row-align-middle pointer fade-in",
         align: "left",
         pagination: false,
-        locale: { emptyText: <NullScreen type="permit" /> },
+        locale: { emptyText: "No Data Yet" },
         expandIcon: RenderPermitTableExpandIcon,
         expandRowByClick: true,
         expandedRowRender: amendmentHistory,

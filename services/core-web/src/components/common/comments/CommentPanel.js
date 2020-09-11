@@ -36,7 +36,7 @@ const CommentPanel = (props) => (
         className="comment-list"
         itemLayout="horizontal"
         dataSource={props.comments}
-        locale={{ emptyText: "No comments" }}
+        locale={{ emptyText: "No Data Yet" }}
         renderItem={(item) => (
           <li key={item.key}>
             <div className="inline-flex">

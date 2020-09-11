@@ -17,7 +17,6 @@ import {
 } from "@common/selectors/staticContentSelectors";
 import { Link } from "react-router-dom";
 import { Badge } from "antd";
-import NullScreen from "@/components/common/NullScreen";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
 import CustomPropTypes from "@/customPropTypes";
@@ -284,7 +283,7 @@ export const MineReportTable = (props) => {
       tableProps={{
         align: "left",
         pagination: props.isPaginated,
-        locale: { emptyText: <NullScreen type="reports" /> },
+        locale: { emptyText: "No Data Yet" },
         onChange: handleTableChange(props.handleTableChange, props.filters),
       }}
     />

@@ -10,7 +10,6 @@ import * as Permission from "@/constants/permissions";
 import { EDIT_OUTLINE_VIOLET, TRASHCAN } from "@/constants/assets";
 import LinkButton from "@/components/common/LinkButton";
 import CoreTable from "@/components/common/CoreTable";
-import NullScreen from "@/components/common/NullScreen";
 
 const propTypes = {
   noticeOfWorkReviews: PropTypes.arrayOf(CustomPropTypes.NOWApplicationReview).isRequired,
@@ -135,7 +134,7 @@ export const NOWApplicationReviewsTable = (props) => {
       )}
       tableProps={{
         pagination: false,
-        locale: { emptyText: <NullScreen type="no-results" /> },
+        locale: { emptyText: "No Data Yet" },
       }}
     />
   );

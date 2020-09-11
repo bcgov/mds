@@ -5,7 +5,6 @@ import PropTypes from "prop-types";
 import * as Strings from "@common/constants/strings";
 import { formatMoney, truncateFilename } from "@common/utils/helpers";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
-import NullScreen from "@/components/common/NullScreen";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
 import CustomPropTypes from "@/customPropTypes";
@@ -224,7 +223,7 @@ export const MineReclamationInvoiceTable = (props) => {
         rowClassName: "table-row-align-middle pointer fade-in",
         align: "left",
         pagination: false,
-        locale: { emptyText: <NullScreen type="securities" /> },
+        locale: { emptyText: "No Data Yet" },
         expandIcon: RenderTableExpandIcon,
         expandRowByClick: true,
         expandedRowRender: invoices,

@@ -24,7 +24,6 @@ import { EDIT_OUTLINE_VIOLET, TRASHCAN } from "@/constants/assets";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
 import CustomPropTypes from "@/customPropTypes";
-import NullScreen from "@/components/common/NullScreen";
 import LinkButton from "@/components/common/LinkButton";
 import CoreTable from "@/components/common/CoreTable";
 import * as router from "@/constants/routes";
@@ -390,9 +389,7 @@ export class MineIncidentTable extends Component {
           align: "left",
           pagination: this.props.isPaginated,
           locale: {
-            emptyText: (
-              <NullScreen type={this.props.isDashboardView ? "no-results" : "incidents"} />
-            ),
+            emptyText: "No Data Yet",
           },
         }}
       />

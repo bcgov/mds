@@ -212,7 +212,7 @@ export const NOWDocuments = (props) => {
           props.noticeOfWorkApplicationDocumentTypeOptionsHash
         )}
         locale={{
-          emptyText: <NullScreen type="documents" />,
+          emptyText: "No Data Yet",
         }}
         rowSelection={
           props.selectedRows

@@ -13,14 +13,12 @@ const propTypes = {
   isViewOnly: PropTypes.bool,
   // eslint-disable-next-line react/no-unused-prop-types
   removeDocument: PropTypes.func,
-  tableEmptyMessage: PropTypes.string,
 };
 
 const defaultProps = {
   documents: [],
   isViewOnly: false,
   removeDocument: () => {},
-  tableEmptyMessage: "There are no attached documents.",
 };
 
 export const DocumentTable = (props) => {
@@ -89,7 +87,7 @@ export const DocumentTable = (props) => {
       align="left"
       pagination={false}
       columns={columns}
-      locale={{ emptyText: props.tableEmptyMessage }}
+      locale={{ emptyText: "No Data Yet" }}
       dataSource={props.documents}
     />
   );

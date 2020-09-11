@@ -82,7 +82,7 @@ export const NOWSubmissionDocuments = (props) => {
             columns={columns}
             dataSource={transformDocuments(props.documents, props.now_application_guid)}
             locale={{
-              emptyText: "There are no submission documents associated with this Notice of Work",
+              emptyText: "No Data Yet",
             }}
             rowSelection={
               props.selectedRows
@@ -109,7 +109,7 @@ export const NOWSubmissionDocuments = (props) => {
             columns={columns}
             dataSource={transformDocuments(props.documents, props.now_application_guid, true)}
             locale={{
-              emptyText: "There are no spatial files associated with this Notice of Work",
+              emptyText: "No Data Yet",
             }}
             rowSelection={
               props.selectedRows

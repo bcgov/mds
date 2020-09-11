@@ -16,7 +16,6 @@ import CustomPropTypes from "@/customPropTypes";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
 import { RED_CLOCK, EDIT_OUTLINE_VIOLET, TRASHCAN } from "@/constants/assets";
-import NullScreen from "@/components/common/NullScreen";
 import LinkButton from "@/components/common/LinkButton";
 import * as router from "@/constants/routes";
 import CoreTable from "@/components/common/CoreTable";
@@ -286,11 +285,7 @@ export class MineVarianceTable extends Component {
           align: "left",
           pagination: this.props.isPaginated,
           locale: {
-            emptyText: (
-              <NullScreen
-                type={this.props.isApplication ? "variance-applications" : "approved-variances"}
-              />
-            ),
+            emptyText: "No Data Yet",
           },
         }}
       />

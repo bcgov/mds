@@ -4,7 +4,6 @@ import PropTypes from "prop-types";
 import * as Strings from "@common/constants/strings";
 import { TRASHCAN } from "@/constants/assets";
 import CustomPropTypes from "@/customPropTypes";
-import NullScreen from "@/components/common/NullScreen";
 import CoreTable from "@/components/common/CoreTable";
 
 const propTypes = {
@@ -96,7 +95,7 @@ export const MinespaceUserList = (props) => (
     tableProps={{
       align: "center",
       pagination: false,
-      locale: { emptyText: <NullScreen type="no-results" /> },
+      locale: { emptyText: "No Data Yet" },
     }}
   />
 );

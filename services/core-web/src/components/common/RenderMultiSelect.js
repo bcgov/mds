@@ -29,7 +29,7 @@ const defaultProps = {
   data: [],
   disabled: false,
   meta: {},
-  onSearch: () => { },
+  onSearch: () => {},
   filterOption: false,
 };
 
@@ -50,7 +50,6 @@ export const RenderMultiSelect = (props) => (
         disabled={!props.data || props.disabled}
         mode="multiple"
         size="small"
-        // getPopupContainer={() => document.body(props.id)}
         getPopupContainer={(trigger) => trigger.parentNode}
         placeholder={props.placeholder}
         id={props.id}
@@ -59,6 +58,7 @@ export const RenderMultiSelect = (props) => (
         onChange={props.input.onChange}
         filterOption={props.filterOption || caseInsensitiveLabelFilter}
         showArrow
+        placement="bottomCenter"
       >
         {props.data &&
           props.data.map(({ value, label, tooltip }) => (

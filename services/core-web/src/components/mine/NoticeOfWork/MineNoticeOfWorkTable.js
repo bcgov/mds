@@ -7,7 +7,6 @@ import { formatDate } from "@common/utils/helpers";
 import * as Strings from "@common/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
 import * as router from "@/constants/routes";
-import NullScreen from "@/components/common/NullScreen";
 import CoreTable from "@/components/common/CoreTable";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import { EDIT_OUTLINE_VIOLET } from "@/constants/assets";
@@ -160,7 +159,7 @@ export class MineNoticeOfWorkTable extends Component {
           align: "left",
           pagination: false,
           locale: {
-            emptyText: <NullScreen type="notice-of-work" />,
+            emptyText: "No Data Yet",
           },
           onChange: handleTableChange(this.props.handleSearch),
         }}
