@@ -131,7 +131,7 @@ export const LandingPage = (props) => (
           added to your Business BCeID account be given access to MineSpace.
         </Paragraph>
         <Row type="flex" justify="center">
-          <Col>
+          <Col span={24}>
             <a
               href="https://www.bceid.ca/register/business/getting_started/getting_started.aspx"
               target="_blank"
@@ -155,7 +155,7 @@ export const LandingPage = (props) => (
       <Col sm={{ span: 24 }} xl={{ span: 12 }} xxl={{ span: 10 }}>
         <Card title="Questions?">
           <Row>
-            <Col>
+            <Col span={24}>
               <Paragraph>
                 Please let us know about any questions or comments you have regarding your
                 experience using MineSpace.

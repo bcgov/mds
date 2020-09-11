@@ -23,7 +23,7 @@ const createFields = (fields) => (
         .filter((field) => !field["read-only"])
         .map((field) => (
           <Row key={field.id}>
-            <Col>
+            <Col span={24}>
               <Form.Item>{getGenerateDocumentFormField(field)}</Form.Item>
             </Col>
           </Row>
@@ -34,7 +34,7 @@ const createFields = (fields) => (
 export const GenerateDocumentForm = (props) => (
   <Form layout="vertical" onSubmit={props.handleSubmit}>
     <Row gutter={16}>
-      <Col>{createFields(props.documentType.document_template.form_spec)}</Col>
+      <Col span={24}>{createFields(props.documentType.document_template.form_spec)}</Col>
     </Row>
     <div className="right center-mobile">
       <Popconfirm

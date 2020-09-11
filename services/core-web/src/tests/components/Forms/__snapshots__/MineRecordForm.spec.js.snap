@@ -10,7 +10,7 @@ exports[`MineRecordForm renders properly 1`] = `
   <Row
     gutter={16}
   >
-    <Col>
+    <Col span={24}>
       <FormItem
         hasFeedback={false}
       >
@@ -33,7 +33,7 @@ exports[`MineRecordForm renders properly 1`] = `
   <Row
     gutter={16}
   >
-    <Col>
+    <Col span={24}>
       <FormItem
         hasFeedback={false}
       >
@@ -57,7 +57,7 @@ exports[`MineRecordForm renders properly 1`] = `
   <Row
     gutter={16}
   >
-    <Col>
+    <Col span={24}>
       <FormItem
         hasFeedback={false}
         label="Is this a historic mine status?"
@@ -191,7 +191,7 @@ exports[`MineRecordForm renders properly 1`] = `
   <Row
     gutter={16}
   >
-    <Col>
+    <Col span={24}>
       <FormItem
         hasFeedback={false}
       >
@@ -212,7 +212,7 @@ exports[`MineRecordForm renders properly 1`] = `
   <Row
     gutter={16}
   >
-    <Col>
+    <Col span={24}>
       <FormItem
         hasFeedback={false}
       >
@@ -234,7 +234,7 @@ exports[`MineRecordForm renders properly 1`] = `
   <Row
     gutter={16}
   >
-    <Col>
+    <Col span={24}>
       <FormItem
         hasFeedback={false}
       >
@@ -251,7 +251,7 @@ exports[`MineRecordForm renders properly 1`] = `
   <Row
     gutter={16}
   >
-    <Col>
+    <Col span={24}>
       <FormItem
         hasFeedback={false}
       >

@@ -30,32 +30,21 @@ const defaultProps = {
   data: [],
   disabled: false,
   meta: {},
-  onSelect: () => {},
+  onSelect: () => { },
   doNotPinDropdown: false,
 };
 
-const RenderSelect = (props) => (
-  <Form.Item
-    label={props.label}
-    validateStatus={
-      props.meta.touched ? (props.meta.error && "error") || (props.meta.warning && "warning") : ""
-    }
-    help={
-      props.meta.touched &&
-      ((props.meta.error && <span>{props.meta.error}</span>) ||
-        (props.meta.warning && <span>{props.meta.warning}</span>))
-    }
-  >
-    <Select
-      disabled={props.disabled}
-      allowClear
-      dropdownMatchSelectWidth
-      getPopupContainer={(trigger) => trigger.parentNode}
-      showSearch
-      placeholder={props.placeholder}
-      optionFilterProp="children"
-      filterOption={(input, option) =>
-        option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+const RenderSelect = (props) => {
+  return (
+    <Form.Item
+      label={props.label}
+      validateStatus={
+        props.meta.touched ? (props.meta.error && "error") || (props.meta.warning && "warning") : ""
+      }
+      help={
+        props.meta.touched &&
+        ((props.meta.error && <span>{props.meta.error}</span>) ||
+          (props.meta.warning && <span>{props.meta.warning}</span>))
       }
       id={props.id}
       onSelect={props.onSelect}
@@ -63,18 +52,36 @@ const RenderSelect = (props) => (
       value={props.input.value ? props.input.value : undefined}
       onChange={props.input.onChange}
     >
-      {props.data.map((opt) => (
-        <Select.Option
-          disabled={props.usedOptions && props.usedOptions.includes(opt.value)}
-          key={opt.value}
-          value={opt.value}
-        >
-          {opt.label}
-        </Select.Option>
-      ))}
-    </Select>
-  </Form.Item>
-);
+      <Select
+        disabled={props.disabled}
+        allowClear
+        dropdownMatchSelectWidth
+        getPopupContainer={(trigger) => trigger.parentNode}
+        showSearch
+        placeholder={props.placeholder}
+        optionFilterProp="children"
+        filterOption={(input, option) =>
+          option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+        }
+        id={props.id}
+        defaultValue={props.input.value}
+        value={props.input.value ? props.input.value : undefined}
+        onChange={props.input.onChange}
+        onSelect={props.onSelect}
+      >
+        {props.data.map((opt) => (
+          <Select.Option
+            disabled={props.usedOptions && props.usedOptions.includes(opt.value)}
+            key={opt.value}
+            value={opt.value}
+          >
+            {opt.label}
+          </Select.Option>
+        ))}
+      </Select>
+    </Form.Item>
+  )
+};
 
 RenderSelect.propTypes = propTypes;
 RenderSelect.defaultProps = defaultProps;

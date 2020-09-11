@@ -153,7 +153,7 @@ export class Variances extends Component {
   render() {
     return (
       <Row>
-        <Col>
+        <Col span={24}>
           {/* Disabled for now, until we want variance creation enabled. */}
           {/* <Button
             style={{ display: "inline", float: "right" }}

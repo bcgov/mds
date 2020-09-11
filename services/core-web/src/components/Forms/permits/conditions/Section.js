@@ -26,11 +26,11 @@ const propTypes = {
 const defaultProps = {
   condition: undefined,
   new: false,
-  handleSubmit: () => {},
-  handleCancel: () => {},
-  handleDelete: () => {},
-  reorderConditions: () => {},
-  setConditionEditingFlag: () => {},
+  handleSubmit: () => { },
+  handleCancel: () => { },
+  handleDelete: () => { },
+  reorderConditions: () => { },
+  setConditionEditingFlag: () => { },
   initialValues: {},
   isViewOnly: false,
 };
@@ -44,7 +44,7 @@ const Section = (props) => {
         props.condition.sub_conditions.length === 0 &&
         props.condition.display_order !== 1 && (
           <Row gutter={32}>
-            <Col>&nbsp;</Col>
+            <Col span={24}>&nbsp;</Col>
           </Row>
         )}
       <Row gutter={[32, 32]}>
@@ -170,7 +170,7 @@ const Section = (props) => {
         </Row>
       )}
       <Row gutter={32}>
-        <Col>&nbsp;</Col>
+        <Col span={24}>&nbsp;</Col>
       </Row>
     </>
   );

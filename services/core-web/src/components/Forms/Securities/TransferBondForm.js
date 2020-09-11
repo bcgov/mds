@@ -22,7 +22,7 @@ const propTypes = {
 export const TransferBondForm = (props) => (
   <Form layout="vertical" onSubmit={props.handleSubmit}>
     <Row>
-      <Col>
+      <Col span={24}>
         <Form.Item>
           <Field
             id="permit_guid"

@@ -11,7 +11,7 @@ exports[`AddIncidentFollowUpForm renders properly 1`] = `
     <Row
       gutter={48}
     >
-      <Col>
+      <Col span={24}>
         <h4>
           Follow-up Information
         </h4>

@@ -47,7 +47,6 @@ const RenderDate = (props) => (
       value={props.input.value ? moment(props.input.value) : null}
       showTime={props.showTime && { format: "HH:mm" }}
       format={props.showTime && "YYYY-MM-DD HH:mm"}
-      style={props.showTime ? { width: "100%" } : {}}
     />
   </Form.Item>
 );

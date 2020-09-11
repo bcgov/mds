@@ -42,7 +42,7 @@ export class Inspections extends Component {
       });
     return (
       <Row>
-        <Col>
+        <Col span={24}>
           <Title level={4}>Inspections</Title>
           <Paragraph>
             This table shows your mine&apos;s&nbsp;
@@ -90,8 +90,8 @@ export class Inspections extends Component {
                         {formatDate(this.props.mineComplianceInfo.last_inspection)}
                       </div>
                     ) : (
-                      Strings.EMPTY_FIELD
-                    )
+                        Strings.EMPTY_FIELD
+                      )
                   }
                   icon="file-text"
                   type="info"

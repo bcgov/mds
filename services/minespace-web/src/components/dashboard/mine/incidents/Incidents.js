@@ -37,7 +37,7 @@ export class Incidents extends Component {
   render() {
     return (
       <Row>
-        <Col>
+        <Col span={24}>
           <Title level={4}>Incidents</Title>
           <Paragraph>
             This table shows your mine&apos;s history of&nbsp;

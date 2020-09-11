@@ -363,7 +363,7 @@ export class MineRecordForm extends Component {
         </Row>
         {this.state.showStatusDate && (
           <Row gutter={16}>
-            <Col>
+            <Col span={24}>
               <Form.Item label="Date of Status Change" className="padding-large">
                 <p className="p-light">
                   The date will default to todays date, unless otherwise specified.
@@ -434,7 +434,7 @@ export class MineRecordForm extends Component {
           </Col>
         </Row>
         <Row gutter={16}>
-          <Col>
+          <Col span={24}>
             <Form.Item>
               <Field
                 id="major_mine_ind"

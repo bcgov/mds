@@ -215,7 +215,7 @@ exports[`LandingPage renders properly 1`] = `
         justify="center"
         type="flex"
       >
-        <Col>
+        <Col span={24}>
           <a
             href="https://www.bceid.ca/register/business/getting_started/getting_started.aspx"
             rel="noopener noreferrer"
@@ -273,7 +273,7 @@ exports[`LandingPage renders properly 1`] = `
         <Row
           gutter={0}
         >
-          <Col>
+          <Col span={24}>
             <Paragraph>
               Please let us know about any questions or comments you have regarding your experience using MineSpace.
             </Paragraph>

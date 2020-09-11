@@ -1,6 +1,6 @@
 import React from "react";
 import { Table, Menu, Dropdown, Button, Tooltip, Popconfirm } from "antd";
-import { MinusSquareFilled, PlusOutlined } from "@ant-design/icons";
+import { MinusSquareFilled, PlusOutlined, PlusSquareFilled } from "@ant-design/icons";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { formatDate } from "@common/utils/helpers";
@@ -205,16 +205,16 @@ const columns = [
           {...(() => {
             return record.permit.bonds && record.permit.bonds.length > 0
               ? {
-                  title: "You cannot delete a permit that has associated bond records.",
-                  okText: "Ok",
-                }
+                title: "You cannot delete a permit that has associated bond records.",
+                okText: "Ok",
+              }
               : {
-                  title:
-                    "Are you sure you want to delete this permit and all related permit amendments and permit documents?",
-                  onConfirm: () => record.handleDeletePermit(record.permit.permit_guid),
-                  okText: "Delete",
-                  cancelText: "Cancel",
-                };
+                title:
+                  "Are you sure you want to delete this permit and all related permit amendments and permit documents?",
+                onConfirm: () => record.handleDeletePermit(record.permit.permit_guid),
+                okText: "Delete",
+                cancelText: "Cancel",
+              };
           })()}
         >
           <Button ghost type="primary" size="small">
@@ -294,8 +294,8 @@ const childColumns = [
                   <span> (amalgamated)</span>
                 </>
               ) : (
-                renderDocumentLink(file, file.document_name)
-              )}
+                  renderDocumentLink(file, file.document_name)
+                )}
             </li>
           ))}
         </ul>
@@ -410,10 +410,10 @@ export const RenderPermitTableExpandIcon = (rowProps) => (
         <MinusSquareFilled className="icon-lg--grey" />
       </Tooltip>
     ) : (
-      <Tooltip title="Click to view amendment history." placement="right" mouseEnterDelay={1}>
-        <PlusSquareFilled className="icon-lg--grey" />
-      </Tooltip>
-    )}
+        <Tooltip title="Click to view amendment history." placement="right" mouseEnterDelay={1}>
+          <PlusSquareFilled className="icon-lg--grey" />
+        </Tooltip>
+      )}
   </a>
 );
 

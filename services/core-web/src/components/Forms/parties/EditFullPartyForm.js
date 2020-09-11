@@ -235,10 +235,10 @@ export class EditFullPartyForm extends Component {
           </Col>
         </Row>
         <Row gutter={48}>
-          <Col>
+          <Col span={24}>
             {(this.hasOrgBookEntity && (
               <Row>
-                <Col>
+                <Col span={24}>
                   <h5>OrgBook Entity</h5>
                   <Paragraph>
                     <Text>This party has been associated with the following OrgBook entity.</Text>
@@ -296,7 +296,7 @@ export class EditFullPartyForm extends Component {
               (!this.isPerson && (
                 <AuthorizationWrapper inTesting>
                   <Row>
-                    <Col>
+                    <Col span={24}>
                       <h5>OrgBook Entity</h5>
                       <Paragraph>
                         This party has not been associated with an entity on OrgBook. To associate

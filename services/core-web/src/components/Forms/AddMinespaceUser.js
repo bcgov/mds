@@ -27,9 +27,9 @@ const minespaceUserNotExists = (value, allValues, props) =>
 
 export const AddMinespaceUser = (props) => (
   <Form layout="vertical" onSubmit={props.handleSubmit}>
-    <Col>
+    <Col span={24}>
       <Row>
-        <Col>
+        <Col span={24}>
           <Form.Item>
             <Field
               id="email_or_username"
@@ -42,7 +42,7 @@ export const AddMinespaceUser = (props) => (
             />
           </Form.Item>
         </Col>
-        <Col>
+        <Col span={24}>
           <Form.Item>
             <Field
               id="mine_guids"

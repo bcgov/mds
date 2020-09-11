@@ -29,7 +29,7 @@ const defaultProps = {
   data: [],
   disabled: false,
   meta: {},
-  onSearch: () => {},
+  onSearch: () => { },
   filterOption: false,
 };
 
@@ -49,6 +49,8 @@ export const RenderMultiSelect = (props) => (
       <Select
         disabled={!props.data || props.disabled}
         mode="multiple"
+        size="small"
+        // getPopupContainer={() => document.body(props.id)}
         getPopupContainer={(trigger) => trigger.parentNode}
         placeholder={props.placeholder}
         id={props.id}

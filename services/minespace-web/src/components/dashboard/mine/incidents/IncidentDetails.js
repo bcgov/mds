@@ -64,16 +64,16 @@ const IncidentField = (props) => (
 );
 const InitialReport = (props) => (
   <Row>
-    <Col>
+    <Col span={24}>
       <Title level={4}>Initial Report</Title>
       <IncidentField
         title="Incident type(s)"
         content={
           props.incident.categories && props.incident.categories.length > 0
             ? props.incident.categories
-                .sort((a, b) => (a.display_order > b.display_order ? 1 : -1))
-                .map((c) => c.description)
-                .join(", ")
+              .sort((a, b) => (a.display_order > b.display_order ? 1 : -1))
+              .map((c) => c.description)
+              .join(", ")
             : Strings.EMPTY_FIELD
         }
       />
@@ -120,7 +120,7 @@ const InitialReport = (props) => (
 const Details = (props) => (
   <React.Fragment>
     <Row>
-      <Col>
+      <Col span={24}>
         <Title level={4}>Incident Details</Title>
 
         <IncidentField
@@ -150,7 +150,7 @@ const Details = (props) => (
     </Row>
 
     <Row>
-      <Col>
+      <Col span={24}>
         <Title level={4}>Dangerous Occurrence Determination</Title>
         <IncidentField
           title="Inspector's determination"
@@ -171,8 +171,8 @@ const Details = (props) => (
                   ))}
                 </div>
               ) : (
-                Strings.EMPTY_FIELD
-              )
+                  Strings.EMPTY_FIELD
+                )
             }
           />
         )}
@@ -203,7 +203,7 @@ const Details = (props) => (
 );
 const InitialDocuments = (props) => (
   <Row>
-    <Col>
+    <Col span={24}>
       <Title level={4}>Preliminary Documents</Title>
       <UploadedDocumentsTable
         files={props.incident.documents.filter(
@@ -219,7 +219,7 @@ const FollowupInformation = (props) => {
 
   return (
     <Row>
-      <Col>
+      <Col span={24}>
         <Title level={4}>Follow-up Information</Title>
         <IncidentField
           title="Was there a follow-up inspection?"
@@ -272,7 +272,7 @@ const FollowupInformation = (props) => {
 
 const FinalDocuments = (props) => (
   <Row>
-    <Col>
+    <Col span={24}>
       <Title level={4}>Final Documents</Title>
       <UploadedDocumentsTable
         files={props.incident.documents.filter(

@@ -40,7 +40,7 @@ export const EditNoticeOfWorkDocumentForm = (props) => {
   return (
     <Form layout="vertical" onSubmit={props.handleSubmit}>
       <Row gutter={16}>
-        <Col>
+        <Col span={24}>
           <Form.Item>
             <Field
               id="now_application_document_type_code"

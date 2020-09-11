@@ -23,7 +23,7 @@ export const PreDraftPermitForm = (props) => {
   return (
     <Form layout="vertical" onSubmit={props.handleSubmit}>
       <Row gutter={16}>
-        <Col>
+        <Col span={24}>
           {props.isAmendment ? (
             <Form.Item>
               <Field
@@ -38,18 +38,18 @@ export const PreDraftPermitForm = (props) => {
               />
             </Form.Item>
           ) : (
-            <div className="left">
-              <Form.Item>
-                <Field
-                  id="is_exploration"
-                  name="is_exploration"
-                  label="Exploration Permit"
-                  component={renderConfig.CHECKBOX}
-                  validate={[required]}
-                />
-              </Form.Item>
-            </div>
-          )}
+              <div className="left">
+                <Form.Item>
+                  <Field
+                    id="is_exploration"
+                    name="is_exploration"
+                    label="Exploration Permit"
+                    component={renderConfig.CHECKBOX}
+                    validate={[required]}
+                  />
+                </Form.Item>
+              </div>
+            )}
         </Col>
       </Row>
       <div className="right center-mobile">
