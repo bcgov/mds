@@ -308,7 +308,6 @@ exports[`BondForm renders properly 1`] = `
         documents={Array []}
         isViewOnly={false}
         removeDocument={[Function]}
-        tableEmptyMessage="There are no attached documents."
       />
     </Col>
   </Row>

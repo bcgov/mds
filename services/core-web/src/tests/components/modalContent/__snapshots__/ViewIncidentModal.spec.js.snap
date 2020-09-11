@@ -278,7 +278,7 @@ exports[`ViewIncidentModal renders properly 1`] = `
       }
       locale={
         Object {
-          "emptyText": "This incident does not contain any initial documents",
+          "emptyText": "No Data Yet",
         }
       }
       pagination={false}
@@ -377,7 +377,7 @@ exports[`ViewIncidentModal renders properly 1`] = `
       dataSource={Array []}
       locale={
         Object {
-          "emptyText": "This incident does not contain any final documents",
+          "emptyText": "No Data Yet",
         }
       }
       pagination={false}

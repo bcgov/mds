@@ -47,7 +47,7 @@ exports[`Equipment renders edit properly 1`] = `
     }
     locale={
       Object {
-        "emptyText": "No equipment related to this activity",
+        "emptyText": "No Data Yet",
       }
     }
     pagination={false}
@@ -114,7 +114,7 @@ exports[`Equipment renders view properly 1`] = `
     }
     locale={
       Object {
-        "emptyText": "No equipment related to this activity",
+        "emptyText": "No Data Yet",
       }
     }
     pagination={false}

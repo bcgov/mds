@@ -65,7 +65,7 @@ exports[`UndergroundExploration renders properly 1`] = `
     dataSource={Array []}
     locale={
       Object {
-        "emptyText": "No data",
+        "emptyText": "No Data Yet",
       }
     }
     pagination={false}

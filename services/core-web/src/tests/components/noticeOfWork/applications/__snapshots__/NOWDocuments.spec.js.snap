@@ -50,10 +50,7 @@ exports[`NOWDocuments renders properly 1`] = `
     dataSource={Array []}
     locale={
       Object {
-        "emptyText": <NullScreen
-          message=""
-          type="documents"
-        />,
+        "emptyText": "No Data Yet",
       }
     }
     pagination={false}

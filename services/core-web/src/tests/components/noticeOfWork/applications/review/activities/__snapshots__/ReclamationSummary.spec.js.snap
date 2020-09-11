@@ -31,7 +31,7 @@ exports[`ReclamationSummary renders properly 1`] = `
     }
     locale={
       Object {
-        "emptyText": "No data",
+        "emptyText": "No Data Yet",
       }
     }
     pagination={false}
