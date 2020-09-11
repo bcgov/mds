@@ -26,7 +26,6 @@ const defaultProps = {
 
 export const CoreTable = (props) => {
   const baseProps = {
-    locale: { emptyText: "No Data Yet" },
     pagination: false,
     rowClassName: "fade-in",
     tableLayout: "auto",
@@ -44,7 +43,12 @@ export const CoreTable = (props) => {
     <div>
       {props.condition ? (
         <div>
-          <Table {...combinedProps} columns={props.columns} dataSource={props.dataSource} />
+          <Table
+            {...combinedProps}
+            columns={props.columns}
+            dataSource={props.dataSource}
+            locale={{ emptyText: "No Data Yet" }}
+          />
         </div>
       ) : (
         <div className="skeleton-table">

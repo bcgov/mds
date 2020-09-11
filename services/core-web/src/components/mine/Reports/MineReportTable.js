@@ -283,7 +283,6 @@ export const MineReportTable = (props) => {
       tableProps={{
         align: "left",
         pagination: props.isPaginated,
-        locale: { emptyText: "No Data Yet" },
         onChange: handleTableChange(props.handleTableChange, props.filters),
       }}
     />

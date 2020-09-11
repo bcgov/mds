@@ -388,9 +388,6 @@ export class MineIncidentTable extends Component {
             : null,
           align: "left",
           pagination: this.props.isPaginated,
-          locale: {
-            emptyText: "No Data Yet",
-          },
         }}
       />
     );

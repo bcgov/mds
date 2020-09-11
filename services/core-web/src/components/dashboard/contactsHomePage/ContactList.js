@@ -129,9 +129,6 @@ export const ContactList = (props) => (
     tableProps={{
       align: "left",
       pagination: false,
-      locale: {
-        emptyText: "No Data Yet",
-      },
       onChange: handleTableChange(props.handleSearch),
     }}
   />

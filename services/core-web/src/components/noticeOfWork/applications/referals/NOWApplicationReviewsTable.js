@@ -134,7 +134,6 @@ export const NOWApplicationReviewsTable = (props) => {
       )}
       tableProps={{
         pagination: false,
-        locale: { emptyText: "No Data Yet" },
       }}
     />
   );

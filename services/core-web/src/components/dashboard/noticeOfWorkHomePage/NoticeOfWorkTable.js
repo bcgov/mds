@@ -296,7 +296,6 @@ export class NoticeOfWorkTable extends Component {
         tableProps={{
           align: "left",
           pagination: false,
-          locale: { emptyText: "No Data Yet" },
           onChange: handleTableChange(this.props.handleSearch, this.props.searchParams),
         }}
       />

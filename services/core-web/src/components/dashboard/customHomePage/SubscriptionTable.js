@@ -168,7 +168,6 @@ export class SubscriptionTable extends Component {
         tableProps={{
           align: "left",
           pagination: false,
-          locale: { emptyText: "No Data Yet" },
         }}
       />
     );

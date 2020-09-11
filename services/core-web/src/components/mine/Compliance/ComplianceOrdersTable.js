@@ -154,7 +154,6 @@ const ComplianceOrdersTable = (props) => (
     tableProps={{
       align: "left",
       pagination: true,
-      locale: { emptyText: "No Data Yet" },
       className: `center-pagination page-count-${pageCount(props.filteredOrders)}`,
     }}
   />

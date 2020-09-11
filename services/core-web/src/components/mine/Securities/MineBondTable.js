@@ -303,7 +303,6 @@ export const MineBondTable = (props) => {
         rowClassName: "table-row-align-middle pointer fade-in",
         align: "left",
         pagination: false,
-        locale: { emptyText: "No Data Yet" },
         expandIcon: RenderTableExpandIcon,
         expandRowByClick: true,
         expandedRowRender: bonds,

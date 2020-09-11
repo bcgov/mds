@@ -95,7 +95,6 @@ export const MinespaceUserList = (props) => (
     tableProps={{
       align: "center",
       pagination: false,
-      locale: { emptyText: "No Data Yet" },
     }}
   />
 );

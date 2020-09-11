@@ -458,7 +458,6 @@ export const MinePermitTable = (props) => {
         rowClassName: "table-row-align-middle pointer fade-in",
         align: "left",
         pagination: false,
-        locale: { emptyText: "No Data Yet" },
         expandIcon: RenderPermitTableExpandIcon,
         expandRowByClick: true,
         expandedRowRender: amendmentHistory,

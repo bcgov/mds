@@ -57,7 +57,6 @@ export const AdminVerifiedMinesList = (props) => (
         align: "center",
         pagination: false,
         scroll: { y: 500 },
-        locale: { emptyText: "No Data Yet" },
       }}
     />
   </div>

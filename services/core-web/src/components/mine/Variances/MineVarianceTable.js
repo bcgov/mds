@@ -284,9 +284,6 @@ export class MineVarianceTable extends Component {
           onChange: handleTableChange(this.props.handleVarianceSearch, this.props.params),
           align: "left",
           pagination: this.props.isPaginated,
-          locale: {
-            emptyText: "No Data Yet",
-          },
         }}
       />
     );
