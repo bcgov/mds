@@ -64,7 +64,7 @@ exports[`MineBondTable renders properly 1`] = `
   tableProps={
     Object {
       "align": "left",
-      "className": "nested-table additional-table-header",
+      "className": "nested-table",
       "expandIcon": [Function],
       "expandRowByClick": true,
       "expandedRowKeys": Array [],

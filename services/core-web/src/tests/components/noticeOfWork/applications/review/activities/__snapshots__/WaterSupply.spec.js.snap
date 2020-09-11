@@ -2,7 +2,7 @@
 
 exports[`WaterSupply renders properly 1`] = `
 <div>
-  <withStore(Table)
+  <Table
     align="left"
     columns={
       Array [
@@ -39,6 +39,7 @@ exports[`WaterSupply renders properly 1`] = `
       }
     }
     pagination={false}
+    rowKey="key"
   />
   <br />
   <h4>

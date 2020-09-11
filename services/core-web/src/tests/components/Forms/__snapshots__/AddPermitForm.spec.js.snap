@@ -144,15 +144,10 @@ exports[`AddPermitForm renders properly 1`] = `
   <div
     className="right center-mobile"
   >
-    <Popconfirm
+    <ForwardRef
       cancelText="No"
       disabled={false}
-      icon={
-        <Icon
-          theme="filled"
-          type="exclamation-circle"
-        />
-      }
+      icon={<ForwardRef(ExclamationCircleFilled) />}
       okText="Yes"
       okType="primary"
       onConfirm={[MockFunction]}
@@ -171,7 +166,7 @@ exports[`AddPermitForm renders properly 1`] = `
       >
         Cancel
       </Button>
-    </Popconfirm>
+    </ForwardRef>
     <Button
       block={false}
       className="full-mobile"

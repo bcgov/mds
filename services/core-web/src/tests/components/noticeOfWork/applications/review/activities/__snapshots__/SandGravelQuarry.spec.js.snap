@@ -309,7 +309,7 @@ exports[`SandGravelQuarry renders properly 1`] = `
     </Col>
   </Row>
   <br />
-  <withStore(Table)
+  <Table
     align="left"
     columns={
       Array [
@@ -340,6 +340,7 @@ exports[`SandGravelQuarry renders properly 1`] = `
       }
     }
     pagination={false}
+    rowKey="key"
   />
   <br />
   <Equipment

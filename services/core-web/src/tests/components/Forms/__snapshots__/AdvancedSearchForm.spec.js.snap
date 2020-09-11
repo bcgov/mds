@@ -36,9 +36,7 @@ exports[`AdvancedMineSearchForm renders properly 1`] = `
       onClick={[Function]}
     >
       Expand Filters
-      <Icon
-        type="down"
-      />
+      <ForwardRef(DownOutlined) />
     </Button>
   </div>
   <div

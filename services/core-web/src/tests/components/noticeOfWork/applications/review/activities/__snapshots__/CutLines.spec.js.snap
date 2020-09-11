@@ -6,7 +6,7 @@ exports[`CutLines renders properly 1`] = `
   <h4>
     Exploration Grid
   </h4>
-  <withStore(Table)
+  <Table
     align="left"
     columns={
       Array [
@@ -37,6 +37,7 @@ exports[`CutLines renders properly 1`] = `
       }
     }
     pagination={false}
+    rowKey="key"
   />
   <br />
   <h4>
