@@ -410,8 +410,6 @@ CREATE OR REPLACE FUNCTION transfer_mine_manager_information() RETURNS void AS $
                     phone_no            ,
                     null                ,
                     email               ,
-                    effective_date      ,
-                    NULL                ,
                     'mms_migration'     ,
                     now()               ,
                     'mms_migration'     ,

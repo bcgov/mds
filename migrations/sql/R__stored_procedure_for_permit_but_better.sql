@@ -60,11 +60,12 @@ DECLARE
 	DROP TABLE IF EXISTS etl_valid_permits;
     CREATE TEMPORARY TABLE etl_valid_permits AS
 	SELECT
-	    mine_no||permit_no||recv_dt||iss_dt AS combo_id,
+	    mine_no||permit_no||recv_dt||COALESCE(iss_dt::varchar,
+                                             ' null_issue_dt') AS combo_id,
 	    max(cid) permit_cid
 	FROM mms.mmspmt mmspmt
 	WHERE
-	    (sta_cd ~* 'z'  OR sta_cd ~* 'a')
+	    (sta_cd ~* 'z'  OR sta_cd ~* 'a' OR sta_cd ~* 'r' or sta_cd ~* 'c')
 	    AND
 	    ((permit_no !~ '^ *$' AND mmspmt.permit_no IS NOT NULL))
 	GROUP BY combo_id;
@@ -72,6 +73,9 @@ DECLARE
 
 	SELECT COUNT(*) FROM etl_valid_permits INTO tmp_num_records;
     RAISE NOTICE '# of valid permits found in mms: %', tmp_num_records;
+
+--Open - 'A','C','N','S','X'
+--Closed - 'R','Z'
 
 
     DROP TABLE IF EXISTS etl_permit_info;
@@ -89,6 +93,7 @@ DECLARE
         ) AS permit_expiry_dt                                    ,
         CASE mmspmt.sta_cd
             WHEN 'Z' THEN 'C' --closed
+            WHEN 'R' THEN 'C' --closed
             ELSE 'O' --open
         END AS sta_cd                                            ,
         mmspmt.upd_no
@@ -417,7 +422,10 @@ DECLARE
 	FROM ETL_PERMIT etl
 		INNER JOIN mine_permit_xref mpx on etl.mine_guid=mpx.mine_guid
 	WHERE permit.permit_guid = etl.permit_guid
-		AND issue_date = (select max(issue_date) from ETL_PERMIT where etl.permit_no = ETL_PERMIT.permit_no);
+	AND
+		(issue_date = (select max(issue_date) from ETL_PERMIT where etl.permit_no = ETL_PERMIT.permit_no)
+		OR
+		received_date = (select max(received_date) from ETL_PERMIT where etl.permit_no = ETL_PERMIT.permit_no));
 
 
 	-- ################################################################
@@ -449,7 +457,11 @@ DECLARE
 	        SELECT permit_no
 	        FROM permit
 	    )
-	    AND issue_date = (select max(issue_date) from ETL_PERMIT where etl.permit_no = ETL_PERMIT.permit_no)
+	    AND
+		(issue_date = (select max(issue_date) from ETL_PERMIT where etl.permit_no = ETL_PERMIT.permit_no)
+		OR
+		received_date = (select max(received_date) from ETL_PERMIT where etl.permit_no = ETL_PERMIT.permit_no))
+
 	    GROUP BY permit_no
 	)
 	INSERT INTO permit (

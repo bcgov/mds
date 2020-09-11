@@ -21,8 +21,8 @@ class PartyBusinessRoleAppointment(AuditMixin, Base):
     party_business_role_code = db.Column(
         db.String(32), db.ForeignKey('party_business_role_code.party_business_role_code'))
     party_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('party.party_guid'))
-    start_date = db.Column(db.DateTime)
-    end_date = db.Column(db.DateTime)
+    start_date = db.Column(db.Date)
+    end_date = db.Column(db.Date)
     deleted_ind = db.Column(db.Boolean, server_default=FetchedValue())
 
     # Relationships
