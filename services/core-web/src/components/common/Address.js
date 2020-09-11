@@ -26,7 +26,7 @@ export class Address extends Component {
 
   renderRowOne = (itemArr) => (
     <div className="inline-flex">
-      <ContactsOutlined />
+      <ContactsOutlined className="icon-sm padding-small--right" />
       <p>{this.formatRowContent(itemArr)}</p>
     </div>
   );
