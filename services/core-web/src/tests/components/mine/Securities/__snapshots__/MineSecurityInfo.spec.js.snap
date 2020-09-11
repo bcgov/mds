@@ -9,18 +9,15 @@ exports[`MineSecurityInfo renders properly 1`] = `
   </h2>
   <br />
   <Tabs
-    hideAdd={false}
     style={
       Object {
         "textAlign": "left !important",
       }
     }
-    tabPosition="top"
     type="card"
   >
     <TabPane
       key="1"
-      placeholder={null}
       tab="Bonds"
     >
       <div>
@@ -210,7 +207,6 @@ exports[`MineSecurityInfo renders properly 1`] = `
     </TabPane>
     <TabPane
       key="2"
-      placeholder={null}
       tab="Reclamation Invoices"
     >
       <br />

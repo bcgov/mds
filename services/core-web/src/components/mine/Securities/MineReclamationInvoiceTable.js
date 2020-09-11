@@ -193,11 +193,11 @@ export const MineReclamationInvoiceTable = (props) => {
     >
       {rowProps.expanded ? (
         <Tooltip title="Click to hide associated bonds." placement="right" mouseEnterDelay={1}>
-          <MinusSquareFilled />
+          <MinusSquareFilled className="icon-lg--grey" />
         </Tooltip>
       ) : (
         <Tooltip title="Click to view associated bonds." placement="right" mouseEnterDelay={1}>
-          <PlusSquareFilled />
+          <PlusSquareFilled className="icon-lg--grey" />
         </Tooltip>
       )}
     </a>

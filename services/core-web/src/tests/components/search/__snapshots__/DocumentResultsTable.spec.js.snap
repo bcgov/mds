@@ -6,7 +6,7 @@ exports[`DocumentResultsTable renders properly 1`] = `
     Mine Documents
   </h2>
   <Divider />
-  <withStore(Table)
+  <Table
     align="left"
     className="nested-table padding-large--bottom"
     columns={
@@ -66,6 +66,7 @@ exports[`DocumentResultsTable renders properly 1`] = `
       ]
     }
     pagination={false}
+    rowKey="key"
     showHeader={false}
   />
 </div>

@@ -45,7 +45,9 @@ TODAY = factory.LazyFunction(datetime.utcnow)
 FACTORY_LIST = []
 
 
-def create_mine_and_permit(mine_kwargs={}, permit_kwargs={}, num_permits=1,
+def create_mine_and_permit(mine_kwargs={},
+                           permit_kwargs={},
+                           num_permits=1,
                            num_permit_amendments=1):
     mine = MineFactory(mine_permit_amendments=0, **mine_kwargs)
     for x in range(num_permits):
@@ -421,7 +423,7 @@ class PartyBusinessRoleFactory(BaseFactory):
 
     party_business_role_code = factory.LazyFunction(RandomPartyBusinessRole)
     party = factory.SubFactory(PartyFactory, person=True)
-    start_date = TODAY
+    start_date = datetime.utcnow().date()
     end_date = None
 
 

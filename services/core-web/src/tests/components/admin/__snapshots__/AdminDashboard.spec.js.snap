@@ -7,9 +7,7 @@ exports[`AdminDashboard renders properly 1`] = `
   <div
     className="landing-page__header"
   >
-    <Row
-      gutter={0}
-    >
+    <Row>
       <Col
         lg={12}
         md={14}
@@ -32,16 +30,13 @@ exports[`AdminDashboard renders properly 1`] = `
           "tabPane": false,
         }
       }
+      centered={true}
       defaultActiveKey="summary"
-      hideAdd={false}
       onChange={[Function]}
       size="large"
-      tabPosition="top"
-      centered
     >
       <TabPane
         key="verifiedMines"
-        placeholder={null}
         tab="Verified Mines"
       >
         <div
@@ -63,7 +58,6 @@ exports[`AdminDashboard renders properly 1`] = `
       </TabPane>
       <TabPane
         key="unverifiedMines"
-        placeholder={null}
         tab="Unverified Mines"
       >
         <div
@@ -85,7 +79,6 @@ exports[`AdminDashboard renders properly 1`] = `
       </TabPane>
       <TabPane
         key="managerMinespaceUsers"
-        placeholder={null}
         tab="Manage MineSpace Users"
       >
         <div

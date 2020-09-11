@@ -6,9 +6,8 @@ exports[`RenderAutoComplete renders properly 1`] = `
   label=""
   validateStatus=""
 >
-  <AutoComplete
+  <ForwardRef(AutoComplete)
     allowClear={true}
-    choiceTransitionName="zoom"
     dataSource={
       Object {
         "mines": Array [
@@ -44,15 +43,12 @@ exports[`RenderAutoComplete renders properly 1`] = `
     notFoundContent="Not Found"
     onChange={[Function]}
     onSelect={[MockFunction]}
-    optionLabelProp="children"
     placeholder=""
-    showSearch={false}
     style={
       Object {
         "width": "100%",
       }
     }
-    transitionName="slide-up"
   />
 </FormItem>
 `;

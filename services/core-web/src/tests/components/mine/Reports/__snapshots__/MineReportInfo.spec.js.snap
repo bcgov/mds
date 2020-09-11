@@ -7,9 +7,7 @@ exports[`MineReportInfo renders properly 1`] = `
   <div
     className="inline-flex flex-end"
   >
-    <Row
-      gutter={0}
-    >
+    <Row>
       <Connect(AuthorizationWrapper)
         permission="role_edit_reports"
       >

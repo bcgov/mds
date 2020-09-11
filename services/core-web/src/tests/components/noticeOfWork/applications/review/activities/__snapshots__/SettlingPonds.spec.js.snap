@@ -24,7 +24,7 @@ exports[`SettlingPonds renders properly 1`] = `
     </Col>
   </Row>
   <br />
-  <withStore(Table)
+  <Table
     align="left"
     columns={
       Array [
@@ -85,6 +85,7 @@ exports[`SettlingPonds renders properly 1`] = `
       }
     }
     pagination={false}
+    rowKey="key"
   />
   <br />
   <Row

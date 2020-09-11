@@ -4,7 +4,9 @@ exports[`Inspections renders properly 1`] = `
 <Row
   gutter={0}
 >
-  <Col span={24}>
+  <Col
+    span={24}
+  >
     <Title
       level={4}
     >

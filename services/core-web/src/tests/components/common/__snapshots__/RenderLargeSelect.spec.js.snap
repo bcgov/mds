@@ -7,9 +7,8 @@ exports[`RenderLargeSelect renders properly 1`] = `
   label=""
   validateStatus=""
 >
-  <AutoComplete
+  <ForwardRef(AutoComplete)
     backfill={true}
-    choiceTransitionName="zoom"
     dataSource={Array []}
     defaultActiveFirstOption={false}
     dropdownMatchSelectWidth={true}
@@ -33,26 +32,22 @@ exports[`RenderLargeSelect renders properly 1`] = `
     }
     onSearch={[Function]}
     onSelect={[Function]}
-    optionLabelProp="children"
     placeholder=""
-    showSearch={false}
     style={
       Object {
         "width": "100%",
       }
     }
-    transitionName="slide-up"
     value=""
   >
     <Input
       suffix={
-        <Icon
+        <ForwardRef(SearchOutlined)
           className="certain-category-icon"
-          type="search"
         />
       }
       type="text"
     />
-  </AutoComplete>
+  </ForwardRef(AutoComplete)>
 </FormItem>
 `;

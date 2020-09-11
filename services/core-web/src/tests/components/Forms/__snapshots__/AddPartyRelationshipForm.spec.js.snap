@@ -78,8 +78,7 @@ exports[`AddPartyRelationshipForm renders properly 1`] = `
     gutter={16}
   >
     <Col
-      md={12}
-      xs={24}
+      span={24}
     >
       <div />
       <div>
@@ -101,15 +100,10 @@ exports[`AddPartyRelationshipForm renders properly 1`] = `
   <div
     className="right center-mobile"
   >
-    <Popconfirm
+    <ForwardRef
       cancelText="No"
       disabled={false}
-      icon={
-        <Icon
-          theme="filled"
-          type="exclamation-circle"
-        />
-      }
+      icon={<ForwardRef(ExclamationCircleFilled) />}
       okText="Yes"
       okType="primary"
       placement="topRight"
@@ -128,7 +122,7 @@ exports[`AddPartyRelationshipForm renders properly 1`] = `
       >
         Cancel
       </Button>
-    </Popconfirm>
+    </ForwardRef>
     <Button
       block={false}
       className="full-mobile"
