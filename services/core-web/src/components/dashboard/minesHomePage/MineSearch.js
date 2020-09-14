@@ -23,7 +23,7 @@ const propTypes = {
 };
 
 const defaultProps = {
-  handleReset: () => {},
+  handleReset: () => { },
   mineNameList: [],
   isMapView: false,
 };
@@ -42,12 +42,7 @@ export class MineSearch extends Component {
 
   transformData = (data) =>
     data.map(({ latitude = "", longitude = "", mine_name = "", mine_no = "", mine_guid }) => (
-      <AutoComplete.Option
-        key={mine_guid}
-        value={JSON.stringify({ latitude, longitude, mine_name, mine_guid })}
-      >
-        {`${mine_name} - ${mine_no}`}
-      </AutoComplete.Option>
+      { label: `${mine_name} - ${mine_no}`, value: JSON.stringify({ latitude, longitude, mine_name, mine_guid }) }
     ));
 
   render() {

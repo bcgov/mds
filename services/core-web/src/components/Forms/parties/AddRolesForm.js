@@ -51,9 +51,7 @@ const panelHeader = (removeField, roleNumber) => (
 
 const transformMineNames = (names) =>
   names.map(({ mine_name, mine_guid }) => (
-    <AutoComplete.Option key={mine_guid} value={mine_guid}>
-      {mine_name}
-    </AutoComplete.Option>
+    { label: mine_name, value: mine_guid }
   ));
 
 export const AddRolesForm = (props) => (

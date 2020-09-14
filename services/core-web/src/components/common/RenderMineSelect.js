@@ -38,7 +38,7 @@ const defaultProps = {
   disabled: false,
   showCard: false,
   majorMineOnly: undefined,
-  onMineSelect: () => {},
+  onMineSelect: () => { },
   meta: {},
   label: "Select a mine",
   input: { value: "" },
@@ -83,9 +83,7 @@ export class RenderMineSelect extends Component {
 
   transformData = (data) =>
     data.map(({ mine_guid, mine_name, mine_no }) => (
-      <AutoComplete.Option key={mine_guid} value={mine_guid}>
-        {`${mine_name} - ${mine_no}`}
-      </AutoComplete.Option>
+      { label: `${mine_name} - ${mine_no}`, value: mine_guid }
     ));
 
   render() {
