@@ -47,7 +47,6 @@ const RenderGroupedSelect = (props) => (
     <Select
       disabled={props.disabled}
       dropdownMatchSelectWidth
-      // getPopupContainer={(trigger) => trigger.parentNode}
       showSearch
       placeholder={props.placeholder}
       optionFilterProp="children"

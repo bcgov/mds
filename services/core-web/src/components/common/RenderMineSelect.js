@@ -97,6 +97,7 @@ export class RenderMineSelect extends Component {
           {...this.props}
           placeholder="Search for a mine by name"
           handleSelect={this.handleSelect}
+          {...this.props.input}
           data={this.transformData(this.props.mineNameList)}
           handleChange={this.handleChange}
         />
