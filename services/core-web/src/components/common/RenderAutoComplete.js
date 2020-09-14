@@ -61,8 +61,7 @@ const RenderAutoComplete = (props) => {
           option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
         }
         disabled={props.disabled}
-        // {...props.input}/
-        value={props.input.value}
+        {...props.input}
         onSelect={props.handleSelect}
         onChange={(event) => {
           props.handleChange(event);
