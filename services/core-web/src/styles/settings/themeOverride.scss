@@ -41,7 +41,7 @@
 .ant-btn-sm,
 .ant-btn-secondary {
   margin: 10px;
-  padding: 3px 11px;
+  padding: 0px 11px;
   color: $secondary-btn-color;
   border: 1px solid $secondary-btn-color;
 
@@ -243,6 +243,13 @@
 .ant-picker {
   width: 100%;
   padding: 4px 11px;
+}
+.ant-picker-today-btn {
+  color: $a-color;
+
+  &:hover {
+    color: $violet;
+  }
 }
 
 // COLLAPSE
