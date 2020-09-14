@@ -4,7 +4,7 @@ import requests
 import base64
 
 from datetime import datetime
-from urllib.parse import urlparse
+from urllib.parse import urlparse, quote
 from app.services.object_store_storage_service import ObjectStoreStorageService
 
 from werkzeug.exceptions import BadRequest, NotFound, Conflict, RequestEntityTooLarge, InternalServerError, BadGateway
@@ -150,7 +150,7 @@ class DocumentListResource(Resource):
         if document.object_store_path:
             return ObjectStoreStorageService().download_file(
                 path=document.object_store_path,
-                display_name=document.file_display_name,
+                display_name=quote(document.file_display_name),
                 as_attachment=as_attachment)
         else:
             return send_file(
