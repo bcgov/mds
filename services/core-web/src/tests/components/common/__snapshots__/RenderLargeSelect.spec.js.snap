@@ -7,9 +7,10 @@ exports[`RenderLargeSelect renders properly 1`] = `
   label=""
   validateStatus=""
 >
-  <ForwardRef(AutoComplete)
+  <Select
     backfill={true}
-    dataSource={Array []}
+    bordered={true}
+    choiceTransitionName=""
     defaultActiveFirstOption={false}
     dropdownMatchSelectWidth={true}
     filterOption={[Function]}
@@ -19,7 +20,7 @@ exports[`RenderLargeSelect renders properly 1`] = `
       [MockFunction] {
         "calls": Array [
           Array [
-            "1",
+            undefined,
           ],
         ],
         "results": Array [
@@ -33,21 +34,13 @@ exports[`RenderLargeSelect renders properly 1`] = `
     onSearch={[Function]}
     onSelect={[Function]}
     placeholder=""
+    showSearch={true}
     style={
       Object {
         "width": "100%",
       }
     }
-    value=""
-  >
-    <Input
-      suffix={
-        <ForwardRef(SearchOutlined)
-          className="certain-category-icon"
-        />
-      }
-      type="text"
-    />
-  </ForwardRef(AutoComplete)>
+    transitionName="slide-up"
+  />
 </FormItem>
 `;
