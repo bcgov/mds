@@ -309,7 +309,7 @@ exports[`EditFullPartyForm renders properly 1`] = `
       gutter={16}
     >
       <Col
-        md={24}
+        span={24}
       >
         <h5>
           Assign Inspector Role
