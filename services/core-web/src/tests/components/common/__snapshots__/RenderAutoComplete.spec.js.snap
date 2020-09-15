@@ -3,12 +3,21 @@
 exports[`RenderAutoComplete renders properly 1`] = `
 <FormItem
   hasFeedback={false}
-  label=""
   validateStatus=""
 >
-  <ForwardRef(AutoComplete)
+  <Select
     allowClear={true}
-    dataSource={
+    bordered={true}
+    choiceTransitionName=""
+    defaultActiveFirstOption={false}
+    defaultValue=""
+    disabled={false}
+    dropdownMatchSelectWidth={true}
+    filterOption={[Function]}
+    notFoundContent="Not Found"
+    onSearch={[Function]}
+    onSelect={[MockFunction]}
+    options={
       Object {
         "mines": Array [
           Object {
@@ -35,20 +44,14 @@ exports[`RenderAutoComplete renders properly 1`] = `
         ],
       }
     }
-    defaultActiveFirstOption={false}
-    defaultValue=""
-    disabled={false}
-    dropdownMatchSelectWidth={true}
-    filterOption={[Function]}
-    notFoundContent="Not Found"
-    onChange={[Function]}
-    onSelect={[MockFunction]}
     placeholder=""
+    showSearch={true}
     style={
       Object {
         "width": "100%",
       }
     }
+    transitionName="slide-up"
   />
 </FormItem>
 `;
