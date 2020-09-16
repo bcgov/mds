@@ -23,6 +23,11 @@ exports[`ReclamationInvoiceForm renders properly 1`] = `
           id="project_id"
           label="Project ID*"
           name="project_id"
+          validate={
+            Array [
+              [Function],
+            ]
+          }
         />
       </FormItem>
     </Col>

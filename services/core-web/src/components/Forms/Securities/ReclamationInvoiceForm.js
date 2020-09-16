@@ -100,6 +100,7 @@ export class ReclamationInvoiceForm extends Component {
                 name="project_id"
                 label="Project ID*"
                 component={RenderField}
+                validate={[required]}
                 disabled
               />
             </Form.Item>
