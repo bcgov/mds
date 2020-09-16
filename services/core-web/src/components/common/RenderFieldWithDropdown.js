@@ -1,14 +1,12 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Form } from '@ant-design/compatible';
-import '@ant-design/compatible/assets/index.css';
+import { Form } from "@ant-design/compatible";
+import "@ant-design/compatible/assets/index.css";
 import { Input, Select } from "antd";
 
 /**
  * @constant RenderFieldWithDropdown - Ant Design `Input` component for redux-form that also has a small dropdown attached for inputs like units.
  */
-
-const { Option } = Select;
 
 const propTypes = {
   id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
@@ -37,9 +35,9 @@ const selectAfter = (data, id, isDisabled, input) => {
   return (
     <Select style={{ width: 80 }} disabled={isDisabled} {...input} id={id}>
       {data.map((d) => (
-        <Option value={d.value} key={d.value}>
+        <Select.Option value={d.value} key={d.value}>
           {d.label}
-        </Option>
+        </Select.Option>
       ))}
     </Select>
   );
