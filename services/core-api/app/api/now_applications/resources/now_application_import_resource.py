@@ -56,7 +56,7 @@ class NOWApplicationImportResource(Resource, UserMixin):
             raise NotFound('No identity record for this application guid.')
 
         application = transmogrify_now(now_application_identity)
-        application.mine = mine
+        application.mine_guid = mine_guid
         application.latitude = latitude
         application.longitude = longitude
         application.now_application_guid = application_guid
