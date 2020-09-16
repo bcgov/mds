@@ -10,7 +10,6 @@ exports[`RenderAutoComplete renders properly 1`] = `
     bordered={true}
     choiceTransitionName=""
     defaultActiveFirstOption={false}
-    defaultValue=""
     disabled={false}
     dropdownMatchSelectWidth={true}
     filterOption={[Function]}

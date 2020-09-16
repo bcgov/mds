@@ -723,7 +723,7 @@ export class NoticeOfWorkApplication extends Component {
             <Tabs.TabPane tab="Verification" key="verification">
               <ApplicationStepOne
                 isNewApplication={this.state.isNewApplication}
-                loadMineData={this.loadMineData}
+                loadMineData={this.loadMineInfo}
                 isMajorMine={this.state.isMajorMine}
                 noticeOfWork={this.props.noticeOfWork}
                 mineGuid={this.state.mineGuid}

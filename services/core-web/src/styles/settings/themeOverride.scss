@@ -104,16 +104,17 @@
   }
 }
 
-.ant-select-selection-item {
-  line-height: 20px;
+.ant-select-multiple.ant-select-show-arrow .ant-select-selector,
+.ant-select-multiple.ant-select-allow-clear .ant-select-selector {
+  padding-right: 1px;
 }
-.ant-select-multiple .ant-select-selection-item-content {
-  display: inline-block;
-  margin-right: 4px;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
+
+.ant-select-multiple .ant-select-selection-item {
+  height: 25px;
+  line-height: initial;
+  margin: 2px;
 }
+
 .ant-btn-primary {
   font-weight: $light;
   color: $pure-white;
