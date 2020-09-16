@@ -4,8 +4,6 @@ import { Result, Button, Typography, Icon } from "antd";
 import AuthenticationGuard from "@/HOC/AuthenticationGuard";
 import * as routes from "@/constants/routes";
 
-const { Text } = Typography;
-
 const Routes = () => (
   <Switch>
     {/* PUBLIC ROUTES */}
@@ -33,7 +31,7 @@ const Routes = () => (
         <Result
           title="Page Not Found"
           status="warning"
-          subTitle={<Text>Sorry, the page you requested does not exist.</Text>}
+          subTitle={<Typography.Text>Sorry, the page you requested does not exist.</Typography.Text>}
           icon={<Icon type="exclamation-circle" />}
           extra={
             <Link to={routes.HOME.route}>

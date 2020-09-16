@@ -9,8 +9,6 @@ export const WARNING_TYPES = {
   MOBILE: "mobile",
 };
 
-const { Text } = Typography;
-
 const propTypes = {
   type: PropTypes.oneOf(Object.values(WARNING_TYPES)).isRequired,
   onClose: PropTypes.func,
@@ -72,8 +70,8 @@ const WarningBanner = (props) => {
         <Col span={24}>
           <Alert
             className="warning-banner"
-            message={<Text strong>{warningData.message}</Text>}
-            description={<Text>{warningData.description}</Text>}
+            message={<Typography.Text strong>{warningData.message}</Typography.Text>}
+            description={<Typography.Text>{warningData.description}</Typography.Text>}
             type="warning"
             closable
             onClose={props.onClose}
