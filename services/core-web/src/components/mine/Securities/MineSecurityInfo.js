@@ -185,7 +185,6 @@ export class MineSecurityInfo extends Component {
 
   openCloseBondModal = (event, bond, bondStatusCode) => {
     event.preventDefault();
-    console.log(bond);
     this.props.openModal({
       props: {
         title:
