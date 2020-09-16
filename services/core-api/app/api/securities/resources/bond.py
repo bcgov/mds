@@ -145,7 +145,7 @@ class BondTransferResource(Resource, UserMixin):
         permit = Permit.find_by_permit_guid(permit_guid)
         if not permit:
             raise BadRequest('No permit was found with the permit_guid provided.')
-        if permit.permit_guid == bond.permit.permit_guid:
+        if permit.permit_id in [ma.permit_id for ma in bond.permit._mine_associations]:
             raise BadRequest('This bond is already associated with this permit.')
         if bond.permit.mine_guid not in [m.mine_guid for m in permit._all_mines]:
             raise BadRequest('You can only transfer to a permit on the same mine.')
