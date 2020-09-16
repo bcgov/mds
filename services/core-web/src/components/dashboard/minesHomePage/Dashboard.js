@@ -48,8 +48,6 @@ import AddButton from "@/components/common/AddButton";
  * @class Dashboard is the main landing page of the application, currently contains a List and Map View, ability to create a new mine, and search for a mine by name or lat/long.
  */
 
-const { TabPane } = Tabs;
-
 const propTypes = {
   fetchMineRecordById: PropTypes.func.isRequired,
   fetchMineRecords: PropTypes.func.isRequired,
@@ -267,7 +265,7 @@ export class Dashboard extends Component {
     event.preventDefault();
     this.props.openModal({
       props: {
-        handleDelete: () => { },
+        handleDelete: () => {},
         onSubmit,
         title,
         isNewRecord: true,
@@ -288,7 +286,7 @@ export class Dashboard extends Component {
           onTabClick={this.handleTabChange}
           centered
         >
-          <TabPane tab="List" key="list">
+          <Tabs.TabPane tab="List" key="list">
             <MineSearch
               initialValues={this.state.listParams}
               handleSearch={this.handleListViewSearch}
@@ -319,8 +317,8 @@ export class Dashboard extends Component {
                 />
               </div>
             </div>
-          </TabPane>
-          <TabPane tab="Map" key="map">
+          </Tabs.TabPane>
+          <Tabs.TabPane tab="Map" key="map">
             <div>
               <div className="landing-page__content--search">
                 <Col md={10} xs={24}>
@@ -379,8 +377,8 @@ export class Dashboard extends Component {
                         Results for: <span className="p">{this.state.mapParams.mineName}</span>
                       </h2>
                     ) : (
-                        <h2> Result for coordinate search:</h2>
-                      )}
+                      <h2> Result for coordinate search:</h2>
+                    )}
                   </div>
                   <div className="center">
                     <div className="inline-flex evenly center-mobile">
@@ -415,7 +413,7 @@ export class Dashboard extends Component {
                 </Element>
               </LoadingWrapper>
             </div>
-          </TabPane>
+          </Tabs.TabPane>
         </Tabs>
       </div>
     );

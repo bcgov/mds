@@ -31,8 +31,6 @@ const propTypes = {
   provinceOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
 };
 
-const { Paragraph, Text } = Typography;
-
 export class EditFullPartyForm extends Component {
   state = {
     signature: null,
@@ -241,15 +239,21 @@ export class EditFullPartyForm extends Component {
                 <Col span={24}>
                   <h5>OrgBook Entity</h5>
                   <Typography.Paragraph>
-                    <Typography.Text>This party has been associated with the following OrgBook entity.</Typography.Text>
+                    <Typography.Text>
+                      This party has been associated with the following OrgBook entity.
+                    </Typography.Text>
                     <br />
                     <Typography.Text>
                       Association completed by&nbsp;
-                      <Typography.Text strong>{this.orgBookEntity.association_user}</Text>
+                      <Typography.Text strong>
+                        {this.orgBookEntity.association_user}
+                      </Typography.Text>
                       &nbsp;on&nbsp;
-                      <Typography.Text strong>{formatDateTime(this.orgBookEntity.association_timestamp)}</Text>
+                      <Typography.Text strong>
+                        {formatDateTime(this.orgBookEntity.association_timestamp)}
+                      </Typography.Text>
                       .
-                    </Text>
+                    </Typography.Text>
                   </Typography.Paragraph>
                   <Descriptions title="Entity Details" column={1}>
                     <Descriptions.Item label="Registration Name">
@@ -286,7 +290,9 @@ export class EditFullPartyForm extends Component {
                   <Typography.Paragraph>
                     <Typography.Text>
                       Information captured on&nbsp;
-                      <Typography.Text strong>{formatDateTime(this.orgBookEntity.association_timestamp)}</Typography.Text>
+                      <Typography.Text strong>
+                        {formatDateTime(this.orgBookEntity.association_timestamp)}
+                      </Typography.Text>
                       .
                     </Typography.Text>
                   </Typography.Paragraph>
@@ -302,7 +308,7 @@ export class EditFullPartyForm extends Component {
                         This party has not been associated with an entity on OrgBook. To associate
                         this party with an entity on OrgBook, search for the correct entity using
                         the search below and then select the&nbsp;
-                        <Typography.Text strong>Associate</Text>
+                        <Typography.Text strong>Associate</Typography.Text>
                         &nbsp;button.
                       </Typography.Paragraph>
                       <PartyOrgBookForm party={this.props.party} />

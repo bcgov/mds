@@ -71,9 +71,9 @@ const InitialReport = (props) => (
         content={
           props.incident.categories && props.incident.categories.length > 0
             ? props.incident.categories
-              .sort((a, b) => (a.display_order > b.display_order ? 1 : -1))
-              .map((c) => c.description)
-              .join(", ")
+                .sort((a, b) => (a.display_order > b.display_order ? 1 : -1))
+                .map((c) => c.description)
+                .join(", ")
             : Strings.EMPTY_FIELD
         }
       />
@@ -171,8 +171,8 @@ const Details = (props) => (
                   ))}
                 </div>
               ) : (
-                  Strings.EMPTY_FIELD
-                )
+                Strings.EMPTY_FIELD
+              )
             }
           />
         )}
