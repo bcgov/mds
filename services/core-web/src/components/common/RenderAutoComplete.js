@@ -63,7 +63,6 @@ const RenderAutoComplete = (props) => {
           option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0
         }
         disabled={props.disabled}
-        // {...props.input}
         onChange={props.input ? props.input.onChange : undefined}
         onSelect={props.handleSelect}
         onSearch={(event) => {
