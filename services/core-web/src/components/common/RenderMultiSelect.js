@@ -6,8 +6,6 @@ import { Select } from "antd";
 import { caseInsensitiveLabelFilter } from "@common/utils/helpers";
 import CustomPropTypes from "@/customPropTypes";
 
-const { Option } = Select;
-
 /**
  * @constant RenderSelect - Ant Design `Select` component for redux-form - used for small data sets that (< 100);
  */
@@ -29,7 +27,7 @@ const defaultProps = {
   data: [],
   disabled: false,
   meta: {},
-  onSearch: () => {},
+  onSearch: () => { },
   filterOption: false,
 };
 
@@ -62,9 +60,9 @@ export const RenderMultiSelect = (props) => (
       >
         {props.data &&
           props.data.map(({ value, label, tooltip }) => (
-            <Option key={value} title={tooltip}>
+            <Select.Option key={value} title={tooltip}>
               {label}
-            </Option>
+            </Select.Option>
           ))}
       </Select>
     </Form.Item>
