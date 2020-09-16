@@ -46,7 +46,7 @@ BOND = api.model(
         'closed_date': fields.DateTime,
         'closed_note': fields.String,
         'payer': fields.Nested(BOND_PARTY),
-        'project_id': fields.String,
+        'project_id': fields.String(attribute='permit.project_id'),
         'permit_guid': fields.String(attribute='permit.permit_guid'),
         'permit_no': fields.String(attribute='permit.permit_no'),
         'documents': fields.List(fields.Nested(BOND_DOCUMENT_MODEL))
@@ -80,11 +80,12 @@ BOND_TYPE = api.model('BondType', {
     'active_ind': fields.Boolean
 })
 
-BOND_DOCUMENT_TYPE = api.model('BondDocumentType', {
-    'bond_document_type_code': fields.String,
-    'description': fields.String,
-    'active_ind': fields.Boolean
-})
+BOND_DOCUMENT_TYPE = api.model(
+    'BondDocumentType', {
+        'bond_document_type_code': fields.String,
+        'description': fields.String,
+        'active_ind': fields.Boolean
+    })
 
 RECLAMATION_INVOICE = api.model(
     'ReclamationInvoice', {
@@ -94,6 +95,7 @@ RECLAMATION_INVOICE = api.model(
         'amount': fields.Fixed(decimals=2),
         'vendor': fields.String,
         'note': fields.String,
+        'project_id': fields.String(attribute='permit.project_id'),
         'permit_guid': fields.String(attribute='permit.permit_guid'),
         'documents': fields.List(fields.Nested(RECLAMATION_INVOICE_DOCUMENT_MODEL))
     })

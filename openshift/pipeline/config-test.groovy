@@ -103,7 +103,8 @@ app {
                             'KEYCLOAK_URL': "${vars.keycloak.url}",
                             'KEYCLOAK_IDP_HINT': "${vars.keycloak.idpHint_core}",
                             'API_URL': "https://${vars.modules.'mds-nginx'.HOST_CORE}${vars.modules.'mds-nginx'.PATH}/api",
-                            'DOCUMENT_MANAGER_URL': "https://${vars.modules.'mds-nginx'.HOST_CORE}${vars.modules.'mds-nginx'.PATH}/document-manager"
+                            'DOCUMENT_MANAGER_URL': "https://${vars.modules.'mds-nginx'.HOST_CORE}${vars.modules.'mds-nginx'.PATH}/document-manager",
+                            'MATOMO_URL': "${vars.deployment.matomo_url}"
                     ]
                 ],
                 [
@@ -467,8 +468,8 @@ environments {
                 application_suffix = "-pr-${vars.git.changeId}"
                 node_env = "test"
                 fn_layer_url = "https://delivery.apps.gov.bc.ca/ext/sgw/geo.allgov"
-                elastic_enabled_core = 1
-                elastic_enabled_nris = 1
+                elastic_enabled_core = 0
+                elastic_enabled_nris = 0
                 elastic_service_name = "MDS Test"
                 elastic_service_name_nris = "NRIS API Test"
                 elastic_service_name_docman = 'DocMan Test'

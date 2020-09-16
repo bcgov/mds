@@ -53,6 +53,12 @@ export const MineBondTable = (props) => {
       render: (text) => <div title="Permit No.">{text}</div>,
     },
     {
+      title: "Project ID",
+      dataIndex: "project_id",
+      key: "project_id",
+      render: (text) => <div title="Project ID">{text}</div>,
+    },
+    {
       dataIndex: "total_assessed",
       key: "total_assessed",
       title: (

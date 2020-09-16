@@ -37,10 +37,10 @@ const isPartyRelationshipActive = (pr) =>
 const getMineManager = (partyRelationships) => {
   const mineManagers = partyRelationships
     ? partyRelationships.filter(
-        (pr) => pr.mine_party_appt_type_code === "MMG" && isPartyRelationshipActive(pr)
-      )
+      (pr) => pr.mine_party_appt_type_code === "MMG" && isPartyRelationshipActive(pr)
+    )
     : null;
-  const mineManager = mineManagers && mineManagers.length > 0 ? mineManagers[0].party : null;
+  const mineManager = mineManagers && mineManagers.length > 0 ? mineManagers[0] : null;
   return mineManager;
 };
 
@@ -77,20 +77,20 @@ export const Overview = (props) => (
         </Descriptions.Item>
         <Descriptions.Item span={2} label="Commodity">
           {props.transformedMineTypes &&
-          props.transformedMineTypes.mine_commodity_code &&
-          props.transformedMineTypes.mine_commodity_code.length > 0
+            props.transformedMineTypes.mine_commodity_code &&
+            props.transformedMineTypes.mine_commodity_code.length > 0
             ? props.transformedMineTypes.mine_commodity_code
-                .map((code) => props.mineCommodityOptionsHash[code])
-                .join(", ")
+              .map((code) => props.mineCommodityOptionsHash[code])
+              .join(", ")
             : Strings.UNKNOWN}
         </Descriptions.Item>
         <Descriptions.Item span={2} label="Disturbance">
           {props.transformedMineTypes &&
-          props.transformedMineTypes.mine_disturbance_code &&
-          props.transformedMineTypes.mine_disturbance_code.length > 0
+            props.transformedMineTypes.mine_disturbance_code &&
+            props.transformedMineTypes.mine_disturbance_code.length > 0
             ? props.transformedMineTypes.mine_disturbance_code
-                .map((code) => props.mineDisturbanceOptionsHash[code])
-                .join(", ")
+              .map((code) => props.mineDisturbanceOptionsHash[code])
+              .join(", ")
             : Strings.UNKNOWN}
         </Descriptions.Item>
         <Descriptions.Item span={2} label="Active Permits">
@@ -103,7 +103,7 @@ export const Overview = (props) => (
         <Col xl={{ span: 11 }} xxl={{ span: 10 }}>
           <ContactCard
             title="Mine Manager"
-            party={getMineManager(props.partyRelationships)}
+            partyRelationship={getMineManager(props.partyRelationships)}
             dateLabel="Mine Manager Since"
           />
         </Col>
@@ -128,20 +128,20 @@ export const Overview = (props) => (
             </Card>
           </Col>
         )) || [
-          <Col>
-            <Card title="Regional Ministry Contacts">
-              {getRegionalMineRegionalContacts(props.mine.mine_region).map((contact) => (
-                <MinistryContactItem contact={contact} key={contact.title} />
-              ))}
-            </Card>
-          </Col>,
-          <Col>
-            <Card title="General Ministry Contacts">
-              <MinistryContactItem contact={Contacts.CHIEF_INSPECTOR} />
-              <MinistryContactItem contact={Contacts.EXEC_LEAD_AUTH} />
-            </Card>
-          </Col>,
-        ]}
+            <Col>
+              <Card title="Regional Ministry Contacts">
+                {getRegionalMineRegionalContacts(props.mine.mine_region).map((contact) => (
+                  <MinistryContactItem contact={contact} key={contact.title} />
+                ))}
+              </Card>
+            </Col>,
+            <Col>
+              <Card title="General Ministry Contacts">
+                <MinistryContactItem contact={Contacts.CHIEF_INSPECTOR} />
+                <MinistryContactItem contact={Contacts.EXEC_LEAD_AUTH} />
+              </Card>
+            </Col>,
+          ]}
       </Row>
     </Col>
   </Row>

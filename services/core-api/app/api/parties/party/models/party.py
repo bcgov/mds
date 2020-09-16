@@ -23,10 +23,6 @@ class Party(AuditMixin, Base):
     phone_no = db.Column(db.String, nullable=False)
     phone_ext = db.Column(db.String, nullable=True)
     email = db.Column(db.String, nullable=True)
-    # obsolete
-    effective_date = db.Column(db.DateTime, nullable=False, server_default=FetchedValue())
-    # obsolete
-    expiry_date = db.Column(db.DateTime)
     party_type_code = db.Column(db.String, db.ForeignKey('party_type_code.party_type_code'))
     deleted_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
 
@@ -54,7 +50,7 @@ class Party(AuditMixin, Base):
     def business_roles_codes(self):
         return [
             x.party_business_role_code for x in self.business_role_appts
-            if (not x.end_date or x.end_date > datetime.utcnow())
+            if (not x.end_date or x.end_date > datetime.utcnow().date())
         ]
 
     @name.expression
@@ -72,8 +68,6 @@ class Party(AuditMixin, Base):
             'phone_no': self.phone_no,
             'phone_ext': self.phone_ext,
             'email': self.email,
-            'effective_date': self.effective_date.isoformat(),
-            'expiry_date': self.expiry_date.isoformat() if self.expiry_date is not None else None,
             'party_name': self.party_name,
             'name': self.name,
             'address': self.address[0].json() if len(self.address) > 0 else [{}],

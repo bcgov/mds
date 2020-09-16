@@ -165,8 +165,8 @@ app {
                             'KEYCLOAK_IDP_HINT': "${vars.keycloak.idpHint_minespace}",
                             'SITEMINDER_URL': "${vars.keycloak.siteminder_url}",
                             'API_URL': "https://${vars.modules.'mds-nginx'.HOST_CORE}${vars.modules.'mds-nginx'.PATH}/api",
-                            'DOCUMENT_MANAGER_URL': "https://${vars.modules.'mds-nginx'.HOST_CORE}${vars.modules.'mds-nginx'.PATH}/document-manager"
-
+                            'DOCUMENT_MANAGER_URL': "https://${vars.modules.'mds-nginx'.HOST_CORE}${vars.modules.'mds-nginx'.PATH}/document-manager",
+                            'MATOMO_URL': "${vars.deployment.matomo_url}"
                     ]
                 ],
                 [
@@ -509,8 +509,8 @@ environments {
                 namespace = 'empr-mds-prod'
                 node_env = "production"
                 fn_layer_url = "https://apps.gov.bc.ca/ext/sgw/geo.allgov"
-                elastic_enabled_core = 1
-                elastic_enabled_nris = 1
+                elastic_enabled_core = 0
+                elastic_enabled_nris = 0
                 elastic_service_name = "MDS Prod"
                 elastic_service_name_nris = "NRIS API Prod"
                 elastic_service_name_docman = 'DocMan Prod'

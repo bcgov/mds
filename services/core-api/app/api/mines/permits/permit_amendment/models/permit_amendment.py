@@ -43,9 +43,9 @@ class PermitAmendment(AuditMixin, Base):
     permit_guid = association_proxy('permit', 'permit_guid')
     permit_amendment_type = db.relationship('PermitAmendmentTypeCode')
     permit_amendment_type_description = association_proxy('permit_amendment_type', 'description')
-    #security_total is the amount of work assessed for the new amendment,
+    #security_adjustment is the change of work assessed for the new amendment,
     # This value is added to previous amendments to create the new total assessment for the permit
-    security_total = db.Column(db.Numeric(16, 2))
+    security_adjustment = db.Column(db.Numeric(16, 2))
     security_received_date = db.Column(db.DateTime)
     now_application_guid = db.Column(
         UUID(as_uuid=True), db.ForeignKey('now_application_identity.now_application_guid'))
@@ -94,7 +94,7 @@ class PermitAmendment(AuditMixin, Base):
                authorization_end_date,
                permit_amendment_type_code='AMD',
                description=None,
-               security_total=None,
+               security_adjustment=None,
                permit_amendment_status_code='ACT',
                lead_inspector_title=None,
                regional_office=None,
@@ -110,7 +110,7 @@ class PermitAmendment(AuditMixin, Base):
             permit_amendment_status_code=permit_amendment_status_code
             if not permit.permit_status_code == 'D' else 'DFT',
             description=description,
-            security_total=security_total,
+            security_adjustment=security_adjustment,
             lead_inspector_title=lead_inspector_title,
             regional_office=regional_office,
             now_application_guid=now_application_guid)

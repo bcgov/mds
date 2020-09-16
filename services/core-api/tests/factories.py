@@ -401,8 +401,6 @@ class PartyFactory(BaseFactory):
     phone_no = factory.Faker('numerify', text='###-###-####')
     phone_ext = factory.Iterator([None, '123'])
     email = None
-    effective_date = TODAY
-    expiry_date = None
     party_type_code = None
 
     mine_party_appt = []
@@ -425,7 +423,7 @@ class PartyBusinessRoleFactory(BaseFactory):
 
     party_business_role_code = factory.LazyFunction(RandomPartyBusinessRole)
     party = factory.SubFactory(PartyFactory, person=True)
-    start_date = TODAY
+    start_date = datetime.utcnow().date()
     end_date = None
 
 
@@ -711,7 +709,7 @@ class PermitConditionsFactory(BaseFactory):
     condition_category_code = factory.LazyFunction(RandomConditionCategoryCode)
     condition_type_code = factory.LazyFunction(RandomConditionTypeCode)
     condition = factory.Faker('sentence', nb_words=6, variable_nb_words=True)
-    display_order = factory.Sequence(lambda n: n+1)
+    display_order = factory.Sequence(lambda n: n + 1)
 
 
 class BondFactory(BaseFactory):
@@ -744,7 +742,6 @@ class ReclamationInvoiceFactory(BaseFactory):
         model = ReclamationInvoice
 
     reclamation_invoice_guid = GUID
-    project_id = factory.Faker('numerify', text='#######')
     amount = factory.Faker(
         'pydecimal', right_digits=2, positive=True, min_value=50, max_value=500000)
     vendor = factory.Faker('company')

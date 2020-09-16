@@ -105,7 +105,7 @@ export class MineSecurityInfo extends Component {
       .reduce((sum, bond) => +sum + +bond.amount, 0);
 
   getTotalAssessedSum = (permit) =>
-    permit.permit_amendments.reduce((sum, amendment) => +sum + +amendment.security_total, 0);
+    permit.permit_amendments.reduce((sum, amendment) => +sum + +amendment.security_adjustment, 0);
 
   getAmountSum = (permit) =>
     this.props.invoices
@@ -215,6 +215,7 @@ export class MineSecurityInfo extends Component {
       .updateBond(payload, bondGuid)
       .then(() => {
         this.setState({ isBondLoaded: false });
+        this.props.fetchPermits(this.props.mineGuid);
         this.props
           .fetchMineBonds(this.props.mineGuid)
           .finally(() => this.setState({ isBondLoaded: true }));
@@ -245,6 +246,7 @@ export class MineSecurityInfo extends Component {
       .createBond(payload)
       .then(() => {
         this.setState({ isBondLoaded: false });
+        this.props.fetchPermits(this.props.mineGuid);
         this.props
           .fetchMineBonds(this.props.mineGuid)
           .finally(() => this.setState({ isBondLoaded: true }));
@@ -270,6 +272,7 @@ export class MineSecurityInfo extends Component {
     return this.props
       .createReclamationInvoice(payload)
       .then(() => {
+        this.props.fetchPermits(this.props.mineGuid);
         this.props.fetchMineReclamationInvoices(this.props.mineGuid).then(() => {
           this.setState({ isInvoicesLoaded: true });
         });
@@ -285,6 +288,7 @@ export class MineSecurityInfo extends Component {
     return this.props
       .updateReclamationInvoice(payload, invoiceGuid)
       .then(() => {
+        this.props.fetchPermits(this.props.mineGuid);
         this.props.fetchMineReclamationInvoices(this.props.mineGuid).then(() => {
           this.setState({ isInvoicesLoaded: true });
         });
@@ -292,13 +296,14 @@ export class MineSecurityInfo extends Component {
       .then(() => this.props.closeModal());
   };
 
-  openAddReclamationInvoiceModal = (event, permitGuid, balance) => {
+  openAddReclamationInvoiceModal = (event, permit, balance) => {
     event.preventDefault();
     this.props.openModal({
       props: {
         title: "Add Reclamation Invoice",
         onSubmit: this.handleAddReclamationInvoice,
-        permitGuid,
+        permitGuid: permit.permit_guid,
+        invoice: { project_id: permit.project_id },
         mineGuid: this.props.mineGuid,
         balance,
       },
