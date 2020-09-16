@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Form } from '@ant-design/compatible';
-import '@ant-design/compatible/assets/index.css';
+import { Form } from "@ant-design/compatible";
+import "@ant-design/compatible/assets/index.css";
 import { Input } from "antd";
 
 /**
@@ -23,7 +23,6 @@ const defaultProps = {
   rows: 5,
 };
 
-const { TextArea } = Input;
 const RenderScrollField = (props) => (
   <Form.Item
     label={props.label}
@@ -37,7 +36,12 @@ const RenderScrollField = (props) => (
         (props.meta.warning && <span>{props.meta.warning}</span>))
     }
   >
-    <TextArea id={props.id} {...props.input} rows={props.rows} placeholder={props.placeholder} />
+    <Input.TextArea
+      id={props.id}
+      {...props.input}
+      rows={props.rows}
+      placeholder={props.placeholder}
+    />
   </Form.Item>
 );
 

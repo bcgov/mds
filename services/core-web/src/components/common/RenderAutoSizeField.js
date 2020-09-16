@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Form } from '@ant-design/compatible';
-import '@ant-design/compatible/assets/index.css';
+import { Form } from "@ant-design/compatible";
+import "@ant-design/compatible/assets/index.css";
 import { Input } from "antd";
 
 /**
@@ -23,7 +23,6 @@ const defaultProps = {
   disabled: false,
 };
 
-const { TextArea } = Input;
 const RenderAutoSizeField = (props) => (
   <Form.Item
     label={props.label}
@@ -37,7 +36,7 @@ const RenderAutoSizeField = (props) => (
         (props.meta.warning && <span>{props.meta.warning}</span>))
     }
   >
-    <TextArea
+    <Input.TextArea
       disabled={props.disabled}
       id={props.id}
       {...props.input}
