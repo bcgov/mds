@@ -228,10 +228,9 @@ export class MineSecurityInfo extends Component {
   closeBond = (bondStatusCode, values, bond) => {
     const payload = {
       ...bond,
+      ...values,
       bond_status_code: bondStatusCode,
       bond_type_code: bondStatusCode === "CON" ? "CAS" : bond.bond_type_code,
-      closed_date: values.closed_date,
-      closed_note: values.closed_note,
     };
     return this.editBond(payload, bond.bond_guid);
   };
