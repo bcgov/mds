@@ -8,8 +8,6 @@ import { detectProdEnvironment } from "@common/utils/environmentUtils";
 import * as routes from "@/constants/routes";
 import CustomPropTypes from "@/customPropTypes";
 
-const { SubMenu } = Menu;
-
 const propTypes = {
   mine: CustomPropTypes.mine.isRequired,
   activeButton: PropTypes.string.isRequired,
@@ -25,7 +23,7 @@ export class MineNavigation extends Component {
     const isTailingsVisible = this.props.mine.mine_tailings_storage_facilities.length >= 1;
     return (
       <Menu mode="horizontal" selectedKeys={this.props.openSubMenuKey}>
-        <SubMenu
+        <Menu.SubMenu
           id={this.ifActiveButton("mine-information")}
           title={
             <span>
@@ -44,8 +42,8 @@ export class MineNavigation extends Component {
               </Link>
             </Menu.Item>
           </Menu>
-        </SubMenu>
-        <SubMenu
+        </Menu.SubMenu>
+        <Menu.SubMenu
           id={this.ifActiveButton("permits-and-approvals")}
           title={
             <span>
@@ -74,8 +72,8 @@ export class MineNavigation extends Component {
               </Link>
             </Menu.Item>
           </Menu>
-        </SubMenu>
-        <SubMenu
+        </Menu.SubMenu>
+        <Menu.SubMenu
           id={this.ifActiveButton("oversight")}
           title={
             <span>
@@ -96,8 +94,8 @@ export class MineNavigation extends Component {
               </Link>
             </Menu.Item>
           </Menu>
-        </SubMenu>
-        <SubMenu
+        </Menu.SubMenu>
+        <Menu.SubMenu
           id={this.ifActiveButton("reports")}
           title={
             <span>
@@ -120,7 +118,7 @@ export class MineNavigation extends Component {
               </Menu.Item>
             )}
           </Menu>
-        </SubMenu>
+        </Menu.SubMenu>
       </Menu>
     );
   }

@@ -89,7 +89,6 @@ export class Home extends Component {
   };
 
   render() {
-    const { Content } = Layout;
     return (
       <Layout className="layout">
         <div className="header">
@@ -116,14 +115,14 @@ export class Home extends Component {
             <WarningBanner type={WARNING_TYPES.MOBILE} onClose={this.handleMobileWarningClose} />
           )}
         </MediaQuery>
-        <Content className="content">
+        <Layout.Content className="content">
           <DashboardRoutes />
           <BackTop>
             <Button type="primary">
               <ArrowUpOutlined />
             </Button>
           </BackTop>
-        </Content>
+        </Layout.Content>
         <div className="footer" />
       </Layout>
     );
