@@ -24,8 +24,6 @@ import CustomPropTypes from "@/customPropTypes";
  * @class RelationshipProfile - profile view for party relationship types
  */
 
-const { TabPane } = Tabs;
-
 const propTypes = {
   fetchMineRecordById: PropTypes.func.isRequired,
   fetchPermits: PropTypes.func.isRequired,
@@ -221,7 +219,7 @@ export class RelationshipProfile extends Component {
               animated={{ inkBar: true, tabPane: false }}
               centered
             >
-              <TabPane tab="History" key="history">
+              <Tabs.TabPane tab="History" key="history">
                 <div className="tab__content">
                   <Table
                     align="left"
@@ -231,7 +229,7 @@ export class RelationshipProfile extends Component {
                     locale={{ emptyText: "No Data Yet" }}
                   />
                 </div>
-              </TabPane>
+              </Tabs.TabPane>
             </Tabs>
           </div>
         </div>

@@ -41,8 +41,6 @@ import Address from "@/components/common/Address";
  * @class PartyProfile - profile view for personnel/companies
  */
 
-const { TabPane } = Tabs;
-
 const propTypes = {
   fetchPartyById: PropTypes.func.isRequired,
   fetchMineBasicInfoList: PropTypes.func.isRequired,
@@ -276,7 +274,7 @@ export class PartyProfile extends Component {
               animated={{ inkBar: true, tabPane: false }}
               centered
             >
-              <TabPane tab="History" key="history">
+              <Tabs.TabPane tab="History" key="history">
                 <div className="tab__content ">
                   <Table
                     align="left"
@@ -288,7 +286,7 @@ export class PartyProfile extends Component {
                     locale={{ emptyText: "No Data Yet" }}
                   />
                 </div>
-              </TabPane>
+              </Tabs.TabPane>
             </Tabs>
           </div>
         </div>
