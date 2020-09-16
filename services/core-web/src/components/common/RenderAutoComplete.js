@@ -54,7 +54,8 @@ const RenderAutoComplete = (props) => {
         notFoundContent="Not Found"
         allowClear
         dropdownMatchSelectWidth
-        defaultValue={props.defaultValue}
+        defaultValue={props.input ? props.input.value : undefined}
+        value={props.input ? props.input.value : undefined}
         style={{ width: "100%" }}
         options={props.data}
         placeholder={props.placeholder}
@@ -62,7 +63,8 @@ const RenderAutoComplete = (props) => {
           option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0
         }
         disabled={props.disabled}
-        {...props.input}
+        // {...props.input}
+        onChange={props.input ? props.input.onChange : undefined}
         onSelect={props.handleSelect}
         onSearch={(event) => {
           props.handleChange(event);

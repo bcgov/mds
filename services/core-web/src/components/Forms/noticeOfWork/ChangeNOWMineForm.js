@@ -1,8 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { reduxForm, Field } from "redux-form";
-import { Form } from '@ant-design/compatible';
-import '@ant-design/compatible/assets/index.css';
+import { Form } from "@ant-design/compatible";
+import "@ant-design/compatible/assets/index.css";
 import { Button, Col, Row, Popconfirm } from "antd";
 import { resetForm } from "@common/utils/helpers";
 import { required } from "@common/utils/Validate";
@@ -26,7 +26,6 @@ export const ChangeNOWMineForm = (props) => (
             name="mine_guid"
             component={RenderMineSelect}
             validate={[required]}
-            showCard
           />
         </Form.Item>
       </Col>

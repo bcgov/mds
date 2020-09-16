@@ -3,8 +3,8 @@ import PropTypes from "prop-types";
 import { compose } from "redux";
 import { connect } from "react-redux";
 import { reduxForm, Field, formValueSelector } from "redux-form";
-import { Form } from '@ant-design/compatible';
-import '@ant-design/compatible/assets/index.css';
+import { Form } from "@ant-design/compatible";
+import "@ant-design/compatible/assets/index.css";
 import { Button, Col, Row, Popconfirm, Badge } from "antd";
 import { required, lat, lon } from "@common/utils/Validate";
 import { resetForm } from "@common/utils/helpers";
@@ -51,13 +51,12 @@ export class ChangeNOWLocationForm extends Component {
         <Row gutter={16}>
           {!this.props.locationOnly && (
             <Col md={12} s={24}>
-              <Form.Item>
+              <Form.Item label="Mine Name">
                 <Field
                   id="mine_guid"
                   name="mine_guid"
                   component={RenderMineSelect}
                   validate={[required]}
-                  showCard
                   fullWidth
                   additionalPin={additionalPin}
                 />
