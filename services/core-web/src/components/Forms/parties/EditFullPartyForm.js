@@ -240,17 +240,17 @@ export class EditFullPartyForm extends Component {
               <Row>
                 <Col span={24}>
                   <h5>OrgBook Entity</h5>
-                  <Paragraph>
-                    <Text>This party has been associated with the following OrgBook entity.</Text>
+                  <Typography.Paragraph>
+                    <Typography.Text>This party has been associated with the following OrgBook entity.</Typography.Text>
                     <br />
-                    <Text>
+                    <Typography.Text>
                       Association completed by&nbsp;
-                      <Text strong>{this.orgBookEntity.association_user}</Text>
+                      <Typography.Text strong>{this.orgBookEntity.association_user}</Text>
                       &nbsp;on&nbsp;
-                      <Text strong>{formatDateTime(this.orgBookEntity.association_timestamp)}</Text>
+                      <Typography.Text strong>{formatDateTime(this.orgBookEntity.association_timestamp)}</Text>
                       .
                     </Text>
-                  </Paragraph>
+                  </Typography.Paragraph>
                   <Descriptions title="Entity Details" column={1}>
                     <Descriptions.Item label="Registration Name">
                       {this.orgBookEntity.name_text}
@@ -283,13 +283,13 @@ export class EditFullPartyForm extends Component {
                       </a>
                     </Descriptions.Item>
                   </Descriptions>
-                  <Paragraph>
-                    <Text>
+                  <Typography.Paragraph>
+                    <Typography.Text>
                       Information captured on&nbsp;
-                      <Text strong>{formatDateTime(this.orgBookEntity.association_timestamp)}</Text>
+                      <Typography.Text strong>{formatDateTime(this.orgBookEntity.association_timestamp)}</Typography.Text>
                       .
-                    </Text>
-                  </Paragraph>
+                    </Typography.Text>
+                  </Typography.Paragraph>
                 </Col>
               </Row>
             )) ||
@@ -298,13 +298,13 @@ export class EditFullPartyForm extends Component {
                   <Row>
                     <Col span={24}>
                       <h5>OrgBook Entity</h5>
-                      <Paragraph>
+                      <Typography.Paragraph>
                         This party has not been associated with an entity on OrgBook. To associate
                         this party with an entity on OrgBook, search for the correct entity using
                         the search below and then select the&nbsp;
-                        <Text strong>Associate</Text>
+                        <Typography.Text strong>Associate</Text>
                         &nbsp;button.
-                      </Paragraph>
+                      </Typography.Paragraph>
                       <PartyOrgBookForm party={this.props.party} />
                     </Col>
                   </Row>
