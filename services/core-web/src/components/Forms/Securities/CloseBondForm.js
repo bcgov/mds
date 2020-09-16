@@ -98,6 +98,7 @@ CloseBondForm.propTypes = propTypes;
 
 export default reduxForm({
   form: FORM.CLOSE_BOND,
+  enableReinitialize: true,
   touchOnBlur: false,
   onSubmitSuccess: resetForm(FORM.CLOSE_BOND),
 })(CloseBondForm);
