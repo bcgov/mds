@@ -27,8 +27,6 @@ import CustomPropTypes from "@/customPropTypes";
 import { modalConfig } from "@/components/modalContent/config";
 import { COLOR } from "@/constants/styles";
 
-const { Panel } = Collapse;
-
 const propTypes = {
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
@@ -116,11 +114,11 @@ export class Conditions extends Component {
               condition.condition_category_code === conditionCategory.condition_category_code
           );
           return (
-            <Panel
+            <Collapse.Panel
               style={{ padding: "18px 16px", backgroundColor: COLOR.lightGrey }}
               header={`${conditionCategory.step} ${conditionCategory.description} (${
                 conditions.reduce((a, e) => concat(a, e.sub_conditions), []).length
-              } conditions)`}
+                } conditions)`}
               key={conditionCategory.condition_category_code}
               id={conditionCategory.condition_category_code}
             >
@@ -153,7 +151,7 @@ export class Conditions extends Component {
                   Restore Deleted Standard Conditions
                 </Button>
               )}
-            </Panel>
+            </Collapse.Panel>
           );
         })}
       </Collapse>
