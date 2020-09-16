@@ -13,8 +13,6 @@ import {
 import * as router from "@/constants/routes";
 import { SearchBarDropdown } from "@/components/search/SearchBarDropdown";
 
-const { Search } = Input;
-
 const propTypes = {
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
   fetchSearchBarResults: PropTypes.func.isRequired,
@@ -99,7 +97,7 @@ export class SearchBar extends Component {
           trigger={[""]}
           visible={this.state.isSelected}
         >
-          <Search
+          <Input.Search
             size="large"
             value={this.state.searchTerm}
             placeholder={this.state.isSelected ? selectedPlaceholderText : defaultPlaceholderText}

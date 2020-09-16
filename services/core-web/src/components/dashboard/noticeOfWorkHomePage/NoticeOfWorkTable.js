@@ -48,6 +48,14 @@ const handleTableChange = (updateNOWList, tableFilters) => (pagination, filters,
   const params = {
     ...tableFilters,
     ...filters,
+    now_application_status_description: filters.now_application_status_description
+      ? filters.now_application_status_description
+      : [],
+    mine_region: filters.mine_region ? filters.mine_region : [],
+    originating_system: filters.originating_system ? filters.originating_system : [],
+    notice_of_work_type_description: filters.notice_of_work_type_description
+      ? filters.notice_of_work_type_description
+      : [],
     sort_field: sorter.order ? sorter.field : undefined,
     sort_dir: sorter.order ? sorter.order.replace("end", "") : undefined,
   };

@@ -317,7 +317,7 @@ export class EditFullPartyForm extends Component {
             <br />
             <Divider />
             <Row gutter={16}>
-              <Col md={24}>
+              <Col span={24}>
                 <h5>Assign Inspector Role</h5>
               </Col>
             </Row>
