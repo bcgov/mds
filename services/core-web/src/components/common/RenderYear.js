@@ -1,7 +1,9 @@
 /* eslint-disable */
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Form, DatePicker } from "antd";
+import { Form } from '@ant-design/compatible';
+import '@ant-design/compatible/assets/index.css';
+import { DatePicker } from "antd";
 import moment from "moment";
 
 /**

@@ -4,7 +4,9 @@ import { compose } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { reduxForm, Field, formValueSelector } from "redux-form";
-import { Form, Button, Col, Row, Popconfirm } from "antd";
+import { Form } from '@ant-design/compatible';
+import '@ant-design/compatible/assets/index.css';
+import { Button, Col, Row, Popconfirm } from "antd";
 
 import * as FORM from "@/constants/forms";
 import { resetForm } from "@common/utils/helpers";
@@ -30,7 +32,7 @@ const propTypes = {
   selectedNowApplicationReviewTypeCode: PropTypes.string,
 };
 const defaultProps = {
-  change: () => {},
+  change: () => { },
   selectedNowApplicationReviewTypeCode: "",
 };
 
@@ -63,7 +65,7 @@ export class NOWReviewForm extends Component {
     return (
       <Form layout="vertical" onSubmit={this.props.handleSubmit}>
         <Row gutter={16}>
-          <Col>
+          <Col span={24}>
             <Form.Item>
               <Field
                 id="now_application_review_type_code"

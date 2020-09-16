@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Layout, BackTop, Button, Icon } from "antd";
+import { Layout, BackTop, Button } from "antd";
+import { ArrowUpOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
 import MediaQuery from "react-responsive";
 import LoadingBar, { showLoading, hideLoading } from "react-redux-loading-bar";
@@ -88,7 +89,6 @@ export class Home extends Component {
   };
 
   render() {
-    const { Content } = Layout;
     return (
       <Layout className="layout">
         <div className="header">
@@ -115,14 +115,14 @@ export class Home extends Component {
             <WarningBanner type={WARNING_TYPES.MOBILE} onClose={this.handleMobileWarningClose} />
           )}
         </MediaQuery>
-        <Content className="content">
+        <Layout.Content className="content">
           <DashboardRoutes />
           <BackTop>
             <Button type="primary">
-              <Icon type="arrow-up" theme="outlined" />
+              <ArrowUpOutlined />
             </Button>
           </BackTop>
-        </Content>
+        </Layout.Content>
         <div className="footer" />
       </Layout>
     );

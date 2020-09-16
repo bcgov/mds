@@ -167,7 +167,7 @@ export const MechanicalTrenching = (props) => {
         columns={columns(props.isViewMode)}
         dataSource={transformData(props.details || [])}
         locale={{
-          emptyText: "No data",
+          emptyText: "No Data Yet",
         }}
       />
       {!props.isViewMode && (

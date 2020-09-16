@@ -3,7 +3,8 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { Button, Row, Col, notification, Divider, Badge, Icon, Tag, Popconfirm } from "antd";
+import { Button, Row, Col, notification, Divider, Badge, Tag, Popconfirm } from "antd";
+import { DownloadOutlined, InfoCircleOutlined, ClockCircleOutlined } from "@ant-design/icons";
 import { formatDate } from "@common/utils/helpers";
 
 import { openModal, closeModal } from "@common/actions/modalActions";
@@ -356,13 +357,13 @@ export class NOWApplicationReviews extends Component {
               <div>
                 {!this.props.noticeOfWork.ready_for_review_date && (
                   <Tag className="ant-disabled">
-                    <Icon type="info-circle" className="padding-small--right" />
+                    <InfoCircleOutlined className="padding-small--right" />
                     Referral package not downloaded
                   </Tag>
                 )}
                 {this.props.noticeOfWork.ready_for_review_date && (
                   <Tag className="ant-disabled">
-                    <Icon type="clock-circle" className="padding-small--right" />
+                    <ClockCircleOutlined className="padding-small--right" />
                     {`Ready for review since: ${formatDate(
                       this.props.noticeOfWork.ready_for_review_date
                     )}`}
@@ -380,11 +381,7 @@ export class NOWApplicationReviews extends Component {
                       cancelText="No"
                     >
                       <Button type="secondary" className="full-mobile">
-                        <Icon
-                          type="download"
-                          theme="outlined"
-                          className="padding-small--right icon-sm"
-                        />
+                        <DownloadOutlined className="padding-small--right icon-sm" />
                         Download Referral Package
                       </Button>
                     </Popconfirm>
@@ -395,11 +392,7 @@ export class NOWApplicationReviews extends Component {
                       className="full-mobile"
                       onClick={this.openDownloadPackageModal}
                     >
-                      <Icon
-                        type="download"
-                        theme="outlined"
-                        className="padding-small--right icon-sm"
-                      />
+                      <DownloadOutlined className="padding-small--right icon-sm" />
                       Download Referral Package
                     </Button>
                   )}

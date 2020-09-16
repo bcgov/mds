@@ -39,7 +39,7 @@ export class UpdateNOWStatusModal extends Component {
     return (
       <div>
         <Row gutter={16}>
-          <Col>
+          <Col span={24}>
             <UpdateNOWStatusForm
               initialValues={{
                 now_application_status_code: this.props.now_application_status_code,

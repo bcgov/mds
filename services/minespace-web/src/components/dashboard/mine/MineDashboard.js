@@ -104,9 +104,9 @@ export class MineDashboard extends Component {
     return (
       (this.state.isLoaded && this.props.staticContentLoadingIsComplete && (
         <Row>
-          <Col>
+          <Col span={24}>
             <Row gutter={[0, 48]}>
-              <Col>
+              <Col span={24}>
                 <Title style={{ marginBottom: 8 }}>{mine.mine_name || Strings.UNKNOWN}</Title>
                 <Title level={4} style={{ margin: 0 }}>
                   Mine Number: {mine.mine_no || Strings.UNKNOWN}
@@ -114,7 +114,7 @@ export class MineDashboard extends Component {
               </Col>
             </Row>
             <Row gutter={[0, 48]}>
-              <Col>
+              <Col span={24}>
                 <Tabs
                   activeKey={this.state.activeTab}
                   defaultActiveKey={initialTab}

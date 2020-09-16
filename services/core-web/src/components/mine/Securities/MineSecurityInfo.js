@@ -33,8 +33,6 @@ import MineDashboardContentCard from "@/components/mine/MineDashboardContentCard
 import { CoreTooltip } from "@/components/common/CoreTooltip";
 import { modalConfig } from "@/components/modalContent/config";
 
-const { TabPane } = Tabs;
-
 /**
  * @class  MineSecurityInfo - contains all information relating to bonds and securities
  */
@@ -335,7 +333,7 @@ export class MineSecurityInfo extends Component {
         <h2>Securities</h2>
         <br />
         <Tabs type="card" style={{ textAlign: "left !important" }}>
-          <TabPane tab="Bonds" key="1">
+          <Tabs.TabPane tab="Bonds" key="1">
             <div>
               <div className="dashboard--cards">
                 <MineDashboardContentCard
@@ -380,8 +378,8 @@ export class MineSecurityInfo extends Component {
                 getTotalAssessedSum={this.getTotalAssessedSum}
               />
             </div>
-          </TabPane>
-          <TabPane tab="Reclamation Invoices" key="2">
+          </Tabs.TabPane>
+          <Tabs.TabPane tab="Reclamation Invoices" key="2">
             <br />
             <h4 className="uppercase">Reclamation Invoices</h4>
             <p>
@@ -403,7 +401,7 @@ export class MineSecurityInfo extends Component {
               getSum={this.getSum}
               getAmountSum={this.getAmountSum}
             />
-          </TabPane>
+          </Tabs.TabPane>
         </Tabs>
       </div>
     );

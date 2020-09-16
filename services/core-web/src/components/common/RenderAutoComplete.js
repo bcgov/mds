@@ -1,6 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Form, AutoComplete } from "antd";
+import { Form } from "@ant-design/compatible";
+import "@ant-design/compatible/assets/index.css";
+import { Select } from "antd";
 import * as Styles from "@/constants/styles";
 
 /**
@@ -36,7 +38,7 @@ const defaultProps = {
 const RenderAutoComplete = (props) => {
   return (
     <Form.Item
-      label={props.label}
+      label={JSON.stringify(props.selected)}
       validateStatus={
         props.meta.touched ? (props.meta.error && "error") || (props.meta.warning && "warning") : ""
       }
@@ -46,22 +48,24 @@ const RenderAutoComplete = (props) => {
           (props.meta.warning && <span>{props.meta.warning}</span>))
       }
     >
-      <AutoComplete
+      <Select
+        showSearch
         defaultActiveFirstOption={false}
         notFoundContent="Not Found"
         allowClear
         dropdownMatchSelectWidth
-        defaultValue={props.defaultValue}
+        defaultValue={props.input ? props.input.value : undefined}
+        value={props.input ? props.input.value : undefined}
         style={{ width: "100%" }}
-        dataSource={props.data}
+        options={props.data}
         placeholder={props.placeholder}
         filterOption={(input, option) =>
-          option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+          option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0
         }
         disabled={props.disabled}
-        {...props.input}
+        onChange={props.input ? props.input.onChange : undefined}
         onSelect={props.handleSelect}
-        onChange={(event) => {
+        onSearch={(event) => {
           props.handleChange(event);
           if (props.input) {
             props.input.onChange(event);

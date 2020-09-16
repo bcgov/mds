@@ -154,7 +154,6 @@ exports[`ViewBondModal renders properly 1`] = `
         documents={Array []}
         isViewOnly={true}
         removeDocument={[Function]}
-        tableEmptyMessage="There are no attached documents."
       />
     </div>
   </div>

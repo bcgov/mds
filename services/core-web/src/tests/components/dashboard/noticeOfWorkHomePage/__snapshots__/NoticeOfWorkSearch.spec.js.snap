@@ -2,9 +2,7 @@
 
 exports[`NoticeOfWorkSearch renders properly 1`] = `
 <div>
-  <Row
-    gutter={0}
-  >
+  <Row>
     <Col
       md={
         Object {

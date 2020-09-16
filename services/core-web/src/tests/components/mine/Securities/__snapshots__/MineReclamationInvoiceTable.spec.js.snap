@@ -58,12 +58,6 @@ exports[`MineReclamationInvoiceTable renders properly 1`] = `
       "expandRowByClick": true,
       "expandedRowKeys": Array [],
       "expandedRowRender": [Function],
-      "locale": Object {
-        "emptyText": <NullScreen
-          message=""
-          type="securities"
-        />,
-      },
       "onExpand": [MockFunction],
       "pagination": false,
       "rowClassName": "table-row-align-middle pointer fade-in",

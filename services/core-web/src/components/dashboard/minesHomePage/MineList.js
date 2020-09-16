@@ -5,7 +5,6 @@ import { uniqBy, flattenDeep } from "lodash";
 import { formatDate } from "@common/utils/helpers";
 import * as Strings from "@common/constants/strings";
 import * as router from "@/constants/routes";
-import NullScreen from "@/components/common/NullScreen";
 import CoreTable from "@/components/common/CoreTable";
 import CustomPropTypes from "@/customPropTypes";
 import { SUCCESS_CHECKMARK } from "@/constants/assets";
@@ -198,7 +197,6 @@ export const MineList = (props) => (
     tableProps={{
       align: "left",
       pagination: false,
-      locale: { emptyText: <NullScreen type="no-results" /> },
       onChange: handleTableChange(props.handleSearch, props.filters),
     }}
   />

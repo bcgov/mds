@@ -4,6 +4,7 @@ import { BrowserRouter } from "react-router-dom";
 // eslint-disable-next-line
 import { hot } from "react-hot-loader";
 import { Layout, BackTop, Row, Col, Spin, Icon } from "antd";
+
 import MediaQuery from "react-responsive";
 import Routes from "./routes/Routes";
 import { Header } from "@/components/layout/Header";

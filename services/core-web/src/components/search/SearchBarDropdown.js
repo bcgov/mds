@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Menu, Icon } from "antd";
+import { Menu } from "antd";
+import { SearchOutlined, FileSearchOutlined } from "@ant-design/icons";
 import * as route from "@/constants/routes";
 
 import { MINE, TEAM } from "@/constants/assets";
@@ -46,34 +47,35 @@ export const SearchBarDropdown = (props) => {
     >
       {props.searchTerm.length && props.searchBarResults.length
         ? [
-          props.searchBarResults.map((item) => (
-            <Menu.Item key={URLFor(item)}>
-              <p>{`${item.result.value || ""}`}</p>
-            </Menu.Item>
-          )),
-          <Menu.Divider />,
-          <Menu.Item key={`/search?q=${props.searchTerm}`}>
-            <p>
-              <Icon className="icon-lg icon-svg-filter" type="file-search" />
+            props.searchBarResults.map((item) => (
+              <Menu.Item key={URLFor(item)}>
+                <p>{`${item.result.value || ""}`}</p>
+              </Menu.Item>
+            )),
+            <Menu.Divider />,
+            <Menu.Item key={`/search?q=${props.searchTerm}`}>
+              <p>
+                <FileSearchOutlined className="icon-lg icon-svg-filter" />
                 See all results...
               </p>
-          </Menu.Item>,
-        ]
+            </Menu.Item>,
+          ]
         : [
-          staticMenuItems,
-          props.searchTermHistory.length && [
-            <Menu.Divider />,
-            <Menu.ItemGroup title="Recent searches">
-              {props.searchTermHistory.map((pastSearchTerm) => (
-                <Menu.Item key={`/search?q=${pastSearchTerm}`}>
-                  <p style={{ fontStyle: "italic" }}>
-                    <Icon type="search" /> {pastSearchTerm}
-                  </p>
-                </Menu.Item>
-              ))}
-            </Menu.ItemGroup>,
-          ],
-        ]}
+            staticMenuItems,
+            props.searchTermHistory.length && [
+              <Menu.Divider />,
+              <Menu.ItemGroup title="Recent searches">
+                {props.searchTermHistory.map((pastSearchTerm) => (
+                  <Menu.Item key={`/search?q=${pastSearchTerm}`}>
+                    <p style={{ fontStyle: "italic" }}>
+                      <SearchOutlined />
+                      {pastSearchTerm}
+                    </p>
+                  </Menu.Item>
+                ))}
+              </Menu.ItemGroup>,
+            ],
+          ]}
     </Menu>
   );
 };

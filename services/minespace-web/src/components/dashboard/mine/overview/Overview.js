@@ -111,13 +111,13 @@ export const Overview = (props) => (
     </Col>
     <Col lg={{ span: 9, offset: 1 }} xl={{ offset: 1, span: 7 }}>
       <Row gutter={[0, 16]}>
-        <Col>
+        <Col span={24}>
           <div style={{ height: "200px" }}>
             <Map mine={props.mine} controls={false} />
           </div>
         </Col>
         {(props.mine.major_mine_ind && (
-          <Col>
+          <Col span={24}>
             <Card title="Ministry Contacts">
               <MinistryContactItem contact={Contacts.MM_OFFICE} />
               <MinistryContactItem contact={Contacts.CHIEF_INSPECTOR} />
@@ -128,14 +128,14 @@ export const Overview = (props) => (
             </Card>
           </Col>
         )) || [
-            <Col>
+            <Col span={24}>
               <Card title="Regional Ministry Contacts">
                 {getRegionalMineRegionalContacts(props.mine.mine_region).map((contact) => (
                   <MinistryContactItem contact={contact} key={contact.title} />
                 ))}
               </Card>
             </Col>,
-            <Col>
+            <Col span={24}>
               <Card title="General Ministry Contacts">
                 <MinistryContactItem contact={Contacts.CHIEF_INSPECTOR} />
                 <MinistryContactItem contact={Contacts.EXEC_LEAD_AUTH} />

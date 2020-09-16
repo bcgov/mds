@@ -1,7 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { reduxForm, Field } from "redux-form";
-import { Form, Button, Col, Row } from "antd";
+import { Form } from '@ant-design/compatible';
+import '@ant-design/compatible/assets/index.css';
+import { Button, Col, Row } from "antd";
 import { compose } from "redux";
 import { connect } from "react-redux";
 import { required, date } from "@common/utils/Validate";
@@ -22,7 +24,7 @@ const propTypes = {
 export const MajorMinePermitApplicationCreateForm = (props) => (
   <Form layout="vertical" onSubmit={props.handleSubmit}>
     <Row>
-      <Col>
+      <Col span={24}>
         <Form.Item>
           <Field
             id="permit_guid"
@@ -36,7 +38,7 @@ export const MajorMinePermitApplicationCreateForm = (props) => (
       </Col>
     </Row>
     <Row>
-      <Col>
+      <Col span={24}>
         <Form.Item>
           <Field
             id="notice_of_work_type_code"
@@ -48,7 +50,7 @@ export const MajorMinePermitApplicationCreateForm = (props) => (
           />
         </Form.Item>
       </Col>
-      <Col>
+      <Col span={24}>
         <Form.Item>
           <Field
             id="submitted_date"

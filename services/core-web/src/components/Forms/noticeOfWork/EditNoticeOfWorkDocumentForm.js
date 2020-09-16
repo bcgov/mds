@@ -3,7 +3,9 @@ import { connect } from "react-redux";
 import { compose } from "redux";
 import PropTypes from "prop-types";
 import { Field, reduxForm } from "redux-form";
-import { Form, Button, Col, Row, Popconfirm } from "antd";
+import { Form } from '@ant-design/compatible';
+import '@ant-design/compatible/assets/index.css';
+import { Button, Col, Row, Popconfirm } from "antd";
 import { required, maxLength } from "@common/utils/Validate";
 import { resetForm } from "@common/utils/helpers";
 import { getDropdownNoticeOfWorkApplicationDocumentTypeOptions } from "@common/selectors/staticContentSelectors";
@@ -38,7 +40,7 @@ export const EditNoticeOfWorkDocumentForm = (props) => {
   return (
     <Form layout="vertical" onSubmit={props.handleSubmit}>
       <Row gutter={16}>
-        <Col>
+        <Col span={24}>
           <Form.Item>
             <Field
               id="now_application_document_type_code"

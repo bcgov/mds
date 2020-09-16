@@ -28,9 +28,9 @@ export class Bonds extends Component {
   render() {
     return (
       <Row>
-        <Col>
+        <Col span={24}>
           <Row>
-            <Col>
+            <Col span={24}>
               <Title level={4}>Bonds</Title>
               <Paragraph>
                 This table shows&nbsp;
@@ -43,7 +43,7 @@ export class Bonds extends Component {
             </Col>
           </Row>
           <Row gutter={[16, 32]}>
-            <Col>
+            <Col span={24}>
               <BondsTable bonds={this.props.bonds} isLoaded={this.state.isLoaded} />
             </Col>
           </Row>
