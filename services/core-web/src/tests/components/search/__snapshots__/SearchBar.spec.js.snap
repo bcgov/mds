@@ -49,7 +49,6 @@ exports[`SearchBar renders properly 1`] = `
         />
       </Card>
     }
-    placement="bottomLeft"
     trigger={
       Array [
         "",

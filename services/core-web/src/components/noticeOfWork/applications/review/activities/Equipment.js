@@ -137,7 +137,7 @@ export const Equipment = (props) => {
         columns={columns(props.isViewMode)}
         dataSource={transformData(props.equipment)}
         locale={{
-          emptyText: "No equipment related to this activity",
+          emptyText: "No Data Yet",
         }}
       />
       {!props.isViewMode && (

@@ -19,23 +19,22 @@ exports[`AddFullPartyForm renders properly 1`] = `
         <div
           className="center margin-large"
         >
-          <RadioGroup
-            buttonStyle="outline"
+          <Memo(RadioGroup)
             defaultValue={true}
             onChange={[MockFunction]}
             size="large"
           >
-            <RadioButton
+            <ForwardRef(RadioButton)
               value={true}
             >
               Person
-            </RadioButton>
-            <RadioButton
+            </ForwardRef(RadioButton)>
+            <ForwardRef(RadioButton)
               value={false}
             >
               Company
-            </RadioButton>
-          </RadioGroup>
+            </ForwardRef(RadioButton)>
+          </Memo(RadioGroup)>
         </div>
         <Row
           gutter={16}

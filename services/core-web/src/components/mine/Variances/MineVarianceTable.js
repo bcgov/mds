@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Button, Icon, Badge, Popconfirm } from "antd";
+import { Button, Badge, Popconfirm } from "antd";
+import { EyeOutlined } from "@ant-design/icons";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import {
@@ -15,7 +16,6 @@ import CustomPropTypes from "@/customPropTypes";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
 import { RED_CLOCK, EDIT_OUTLINE_VIOLET, TRASHCAN } from "@/constants/assets";
-import NullScreen from "@/components/common/NullScreen";
 import LinkButton from "@/components/common/LinkButton";
 import * as router from "@/constants/routes";
 import CoreTable from "@/components/common/CoreTable";
@@ -251,7 +251,7 @@ export class MineVarianceTable extends Component {
               ghost
               onClick={() => this.props.openViewVarianceModal(record.variance)}
             >
-              <Icon type="eye" alt="View" className="icon-lg icon-svg-filter" />
+              <EyeOutlined className="icon-lg icon-svg-filter" />
             </Button>
             <AuthorizationWrapper permission={Permission.ADMIN}>
               <Popconfirm
@@ -284,13 +284,6 @@ export class MineVarianceTable extends Component {
           onChange: handleTableChange(this.props.handleVarianceSearch, this.props.params),
           align: "left",
           pagination: this.props.isPaginated,
-          locale: {
-            emptyText: (
-              <NullScreen
-                type={this.props.isApplication ? "variance-applications" : "approved-variances"}
-              />
-            ),
-          },
         }}
       />
     );

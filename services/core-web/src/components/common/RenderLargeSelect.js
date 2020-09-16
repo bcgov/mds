@@ -1,6 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Form, AutoComplete, Input, Icon } from "antd";
+import { Form } from "@ant-design/compatible";
+import "@ant-design/compatible/assets/index.css";
+import { Select } from "antd";
+import { SearchOutlined } from "@ant-design/icons";
 
 /**
  * @constant RenderLargeSelect - Ant Design `AutoComplete` component for redux-form -- being used instead of 'RenderSelect' for large data sets that require a limit.
@@ -22,7 +25,7 @@ const propTypes = {
   handleSelect: PropTypes.func,
 };
 
-const doNothing = () => {};
+const doNothing = () => { };
 const defaultProps = {
   label: "",
   placeholder: "",
@@ -42,28 +45,23 @@ const RenderLargeSelect = (props) => (
         (props.meta.warning && <span>{props.meta.warning}</span>))
     }
   >
-    <AutoComplete
+    <Select
+      showSearch
       id={props.id}
       defaultActiveFirstOption={false}
       notFoundContent="Not Found"
       dropdownMatchSelectWidth
       backfill
       style={{ width: "100%" }}
-      dataSource={props.input.value.length > 0 ? props.dataSource : []}
+      options={props.dataSource}
       placeholder={props.placeholder}
       filterOption={() => true}
       onSearch={props.handleSearch}
       onSelect={props.handleSelect}
       onChange={props.input.onChange}
-      onBlur={props.input.onChange(props.selectedOption.key)}
-      value={props.selectedOption.key}
-      {...props.input}
-    >
-      <Input
-        suffix={<Icon type="search" className="certain-category-icon" />}
-        value={props.selectedOption.label}
-      />
-    </AutoComplete>
+      onBlur={props.input.onChange(props.selectedOption.value)}
+
+    />
   </Form.Item>
 );
 

@@ -13,7 +13,6 @@ import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetwork
 import * as Strings from "@common/constants/strings";
 import LinkButton from "@/components/common/LinkButton";
 import AddButton from "@/components/common/AddButton";
-import NullScreen from "@/components/common/NullScreen";
 import { modalConfig } from "@/components/modalContent/config";
 import * as FORM from "@/constants/forms";
 
@@ -212,7 +211,7 @@ export const NOWDocuments = (props) => {
           props.noticeOfWorkApplicationDocumentTypeOptionsHash
         )}
         locale={{
-          emptyText: <NullScreen type="documents" />,
+          emptyText: "No Data Yet",
         }}
         rowSelection={
           props.selectedRows

@@ -5,7 +5,7 @@ exports[`Equipment renders edit properly 1`] = `
   <h4>
     Equipment
   </h4>
-  <withStore(Table)
+  <Table
     align="left"
     columns={
       Array [
@@ -47,10 +47,11 @@ exports[`Equipment renders edit properly 1`] = `
     }
     locale={
       Object {
-        "emptyText": "No equipment related to this activity",
+        "emptyText": "No Data Yet",
       }
     }
     pagination={false}
+    rowKey="key"
   />
   <Button
     block={false}
@@ -71,7 +72,7 @@ exports[`Equipment renders view properly 1`] = `
   <h4>
     Equipment
   </h4>
-  <withStore(Table)
+  <Table
     align="left"
     columns={
       Array [
@@ -113,10 +114,11 @@ exports[`Equipment renders view properly 1`] = `
     }
     locale={
       Object {
-        "emptyText": "No equipment related to this activity",
+        "emptyText": "No Data Yet",
       }
     }
     pagination={false}
+    rowKey="key"
   />
   <Button
     block={false}

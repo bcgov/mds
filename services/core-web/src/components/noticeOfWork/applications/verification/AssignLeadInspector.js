@@ -1,5 +1,6 @@
 import React from "react";
-import { Button, Icon, Result, Col, Row } from "antd";
+import { Button, Result, Col, Row } from "antd";
+import { LikeOutlined } from "@ant-design/icons";
 import { connect } from "react-redux";
 import { getFormValues } from "redux-form";
 import PropTypes from "prop-types";
@@ -27,26 +28,25 @@ const AssignLeadInspector = (props) => {
       <Row>
         <Col lg={{ span: 12, offset: 6 }} md={{ span: 16, offset: 4 }} xs={{ span: 20, offset: 2 }}>
           <Result
-            icon={<Icon type="like" />}
+            icon={<LikeOutlined />}
             title="You're almost done..."
             subTitle="Please assign a Lead Inspector to continue to Technical Review."
-            extra={[
-              <UpdateNOWLeadInspectorForm
-                initialValues={{
-                  lead_inspector_party_guid: props.noticeOfWork.lead_inspector_party_guid,
-                }}
-                inspectors={props.inspectors}
-                setLeadInspectorPartyGuid={props.setLeadInspectorPartyGuid}
-              />,
-              <Button
-                type="primary"
-                onClick={props.handleUpdateLeadInspector}
-                disabled={invalidUpdateLeadInspectorPayload(props.updateLeadInspectorFormValues)}
-              >
-                Ready for Technical Review
-              </Button>,
-            ]}
           />
+          <UpdateNOWLeadInspectorForm
+            initialValues={{
+              lead_inspector_party_guid: props.noticeOfWork.lead_inspector_party_guid,
+            }}
+            inspectors={props.inspectors}
+            setLeadInspectorPartyGuid={props.setLeadInspectorPartyGuid}
+          />
+          <Button
+            type="primary"
+            className="no-margin center-mobile"
+            onClick={props.handleUpdateLeadInspector}
+            disabled={invalidUpdateLeadInspectorPayload(props.updateLeadInspectorFormValues)}
+          >
+            Assign Lead Inspector
+          </Button>
         </Col>
       </Row>
     </div>

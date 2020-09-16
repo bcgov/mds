@@ -232,9 +232,7 @@ exports[`MineSummary renders properly 1`] = `
   />
   <br />
   <div>
-    <Row
-      gutter={0}
-    >
+    <Row>
       <Col
         span={24}
       >
@@ -310,9 +308,7 @@ exports[`MineSummary renders properly 1`] = `
         />
       </Col>
     </Row>
-    <Row
-      gutter={0}
-    >
+    <Row>
       <Col
         span={24}
       >
@@ -352,9 +348,8 @@ exports[`MineSummary renders properly 1`] = `
           bordered={false}
           className="compliance-card"
           title={
-            <Row
+            <ForwardRef
               align="middle"
-              gutter={0}
               justify="center"
               type="flex"
             >
@@ -367,7 +362,7 @@ exports[`MineSummary renders properly 1`] = `
                   No inspections in NRIS
                 </span>
               </div>
-            </Row>
+            </ForwardRef>
           }
         >
           <div
@@ -387,9 +382,8 @@ exports[`MineSummary renders properly 1`] = `
           bordered={false}
           className="compliance-card"
           title={
-            <Row
+            <ForwardRef
               align="middle"
-              gutter={0}
               justify="center"
               type="flex"
             >
@@ -410,7 +404,7 @@ exports[`MineSummary renders properly 1`] = `
               <span
                 className="info-display"
               />
-            </Row>
+            </ForwardRef>
           }
         >
           <div
@@ -430,9 +424,8 @@ exports[`MineSummary renders properly 1`] = `
           bordered={false}
           className="compliance-card"
           title={
-            <Row
+            <ForwardRef
               align="middle"
-              gutter={0}
               justify="center"
               type="flex"
             >
@@ -453,7 +446,7 @@ exports[`MineSummary renders properly 1`] = `
               <span
                 className="info-display"
               />
-            </Row>
+            </ForwardRef>
           }
         >
           <div
@@ -466,9 +459,7 @@ exports[`MineSummary renders properly 1`] = `
         </Card>
       </Col>
     </Row>
-    <Row
-      gutter={0}
-    >
+    <Row>
       <Col
         span={24}
       >
@@ -497,9 +488,7 @@ exports[`MineSummary renders properly 1`] = `
         <Divider />
       </Col>
     </Row>
-    <Row
-      gutter={0}
-    >
+    <Row>
       <Col
         key="e2629897-053e-4218-9299-479375e47f34"
         lg={8}
@@ -520,9 +509,7 @@ exports[`MineSummary renders properly 1`] = `
         />
       </Col>
     </Row>
-    <Row
-      gutter={0}
-    >
+    <Row>
       <Col
         span={24}
       >

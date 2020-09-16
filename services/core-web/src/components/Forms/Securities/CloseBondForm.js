@@ -1,7 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Field, reduxForm } from "redux-form";
-import { Form, Button, Col, Row, Popconfirm } from "antd";
+import { Form } from '@ant-design/compatible';
+import '@ant-design/compatible/assets/index.css';
+import { Button, Col, Row, Popconfirm } from "antd";
 import {
   required,
   date,
@@ -30,7 +32,7 @@ export const CloseBondForm = (props) => {
   return (
     <Form layout="vertical" onSubmit={props.handleSubmit}>
       <Row>
-        <Col>
+        <Col span={24}>
           <Form.Item>
             <Field
               id="closed_date"
@@ -49,7 +51,7 @@ export const CloseBondForm = (props) => {
         </Col>
       </Row>
       <Row>
-        <Col>
+        <Col span={24}>
           <Form.Item>
             <Field
               id="closed_note"

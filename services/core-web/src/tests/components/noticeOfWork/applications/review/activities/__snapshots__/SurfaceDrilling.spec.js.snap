@@ -6,7 +6,7 @@ exports[`SurfaceDrilling renders properly 1`] = `
   <h4>
     Drilling
   </h4>
-  <withStore(Table)
+  <Table
     align="left"
     columns={
       Array [
@@ -39,10 +39,11 @@ exports[`SurfaceDrilling renders properly 1`] = `
     dataSource={Array []}
     locale={
       Object {
-        "emptyText": "No data",
+        "emptyText": "No Data Yet",
       }
     }
     pagination={false}
+    rowKey="key"
   />
   <br />
   <h4>

@@ -54,9 +54,7 @@ exports[`SearchCoordinatesForm renders properly 1`] = `
       loading={false}
       type="primary"
     >
-      <Icon
-        type="search"
-      />
+      <ForwardRef(SearchOutlined) />
     </Button>
   </div>
 </Form>

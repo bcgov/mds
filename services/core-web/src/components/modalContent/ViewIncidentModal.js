@@ -186,7 +186,7 @@ export class ViewIncidentModal extends Component {
           align="left"
           pagination={false}
           columns={this.columns()}
-          locale={{ emptyText: "This incident does not contain any initial documents" }}
+          locale={{ emptyText: "No Data Yet" }}
           dataSource={this.transformRowData(initialDocuments)}
         />
         <br />
@@ -257,7 +257,7 @@ export class ViewIncidentModal extends Component {
           align="left"
           pagination={false}
           columns={this.columns()}
-          locale={{ emptyText: "This incident does not contain any final documents" }}
+          locale={{ emptyText: "No Data Yet" }}
           dataSource={this.transformRowData(finalDocuments)}
         />
         <br />

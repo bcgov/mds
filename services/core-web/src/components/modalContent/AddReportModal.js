@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import { Icon } from "antd";
+import { ArrowLeftOutlined } from "@ant-design/icons";
 import AddReportForm from "@/components/Forms/reports/AddReportForm";
 import ReportHistory from "@/components/Forms/reports/ReportHistory";
 import { SlidingForms } from "@/components/common/SlidingForms";
@@ -42,7 +42,7 @@ export const AddReportModal = (props) => {
         <br />
         <br />
         <LinkButton onClick={hideReportHistory}>
-          <Icon type="arrow-left" style={{ paddingRight: "5px" }} />
+          <ArrowLeftOutlined className="padding-small--right" />
           Back to Report
         </LinkButton>
       </div>

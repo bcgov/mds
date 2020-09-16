@@ -76,7 +76,6 @@ exports[`VarianceDetails renders properly 1`] = `
     documents={Array []}
     isViewOnly={false}
     removeDocument={[MockFunction]}
-    tableEmptyMessage="There are no attached documents."
   />
 </div>
 `;

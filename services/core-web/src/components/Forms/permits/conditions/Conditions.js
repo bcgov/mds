@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { Divider, Icon, Collapse, Button } from "antd";
+import { Divider, Collapse, Button } from "antd";
+import { UndoOutlined } from "@ant-design/icons";
 import { openModal, closeModal } from "@common/actions/modalActions";
 import {
   getPermitConditionCategoryOptions,
@@ -25,8 +26,6 @@ import Condition from "@/components/Forms/permits/conditions/Condition";
 import CustomPropTypes from "@/customPropTypes";
 import { modalConfig } from "@/components/modalContent/config";
 import { COLOR } from "@/constants/styles";
-
-const { Panel } = Collapse;
 
 const propTypes = {
   openModal: PropTypes.func.isRequired,
@@ -115,11 +114,11 @@ export class Conditions extends Component {
               condition.condition_category_code === conditionCategory.condition_category_code
           );
           return (
-            <Panel
+            <Collapse.Panel
               style={{ padding: "18px 16px", backgroundColor: COLOR.lightGrey }}
               header={`${conditionCategory.step} ${conditionCategory.description} (${
                 conditions.reduce((a, e) => concat(a, e.sub_conditions), []).length
-              } conditions)`}
+                } conditions)`}
               key={conditionCategory.condition_category_code}
               id={conditionCategory.condition_category_code}
             >
@@ -148,11 +147,11 @@ export class Conditions extends Component {
               />
               {false && (
                 <Button type="secondary" className="full-mobile btn--middle">
-                  <Icon type="undo" theme="outlined" className="padding-small--right icon-sm" />
+                  <UndoOutlined className="padding-small--right icon-sm" />
                   Restore Deleted Standard Conditions
                 </Button>
               )}
-            </Panel>
+            </Collapse.Panel>
           );
         })}
       </Collapse>

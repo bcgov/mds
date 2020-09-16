@@ -95,12 +95,6 @@ exports[`SubscriptionTable renders properly 1`] = `
   tableProps={
     Object {
       "align": "left",
-      "locale": Object {
-        "emptyText": <NullScreen
-          message=""
-          type="subscription"
-        />,
-      },
       "pagination": false,
     }
   }

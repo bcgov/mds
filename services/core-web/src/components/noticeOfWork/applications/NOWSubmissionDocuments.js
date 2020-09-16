@@ -5,7 +5,6 @@ import { downloadNowDocument } from "@common/utils/actionlessNetworkCalls";
 import * as Strings from "@common/constants/strings";
 import LinkButton from "@/components/common/LinkButton";
 import { UNIQUELY_SPATIAL } from "@/constants/fileTypes";
-import NullScreen from "@/components/common/NullScreen";
 
 const propTypes = {
   now_application_guid: PropTypes.string.isRequired,
@@ -20,6 +19,7 @@ const isSpatialFile = (document) =>
     Object.keys(UNIQUELY_SPATIAL).includes(document.filename.substr(document.filename.length - 4)));
 
 const transformDocuments = (documents, now_application_guid, spatial = false) =>
+  documents &&
   documents
     .filter((document) => (spatial ? isSpatialFile(document) : !isSpatialFile(document)))
     .map((document) => ({
@@ -75,56 +75,48 @@ export const NOWSubmissionDocuments = (props) => {
   return (
     <div>
       <div>
-        {props.documents && props.documents.length >= 1 ? (
-          <Table
-            align="left"
-            pagination={false}
-            columns={columns}
-            dataSource={transformDocuments(props.documents, props.now_application_guid)}
-            locale={{
-              emptyText: "There are no submission documents associated with this Notice of Work",
-            }}
-            rowSelection={
-              props.selectedRows
-                ? {
-                    selectedRowKeys: props.selectedRows.selectedSubmissionRows,
-                    onChange: (selectedRowKeys) => {
-                      props.selectedRows.setSelectedSubmissionRows(selectedRowKeys);
-                    },
-                  }
-                : null
-            }
-          />
-        ) : (
-          <NullScreen type="documents" />
-        )}
+        <Table
+          align="left"
+          pagination={false}
+          columns={columns}
+          dataSource={transformDocuments(props.documents, props.now_application_guid)}
+          locale={{
+            emptyText: "No Data Yet",
+          }}
+          rowSelection={
+            props.selectedRows
+              ? {
+                  selectedRowKeys: props.selectedRows.selectedSubmissionRows,
+                  onChange: (selectedRowKeys) => {
+                    props.selectedRows.setSelectedSubmissionRows(selectedRowKeys);
+                  },
+                }
+              : null
+          }
+        />
       </div>
       <br />
       <h4>Submission Spatial Files</h4>
       <div>
-        {props.documents && props.documents.length >= 1 ? (
-          <Table
-            align="left"
-            pagination={false}
-            columns={columns}
-            dataSource={transformDocuments(props.documents, props.now_application_guid, true)}
-            locale={{
-              emptyText: "There are no spatial files associated with this Notice of Work",
-            }}
-            rowSelection={
-              props.selectedRows
-                ? {
-                    selectedRowKeys: props.selectedRows.selectedSubmissionRows,
-                    onChange: (selectedRowKeys) => {
-                      props.selectedRows.setSelectedSubmissionRows(selectedRowKeys);
-                    },
-                  }
-                : null
-            }
-          />
-        ) : (
-          <NullScreen type="documents" />
-        )}
+        <Table
+          align="left"
+          pagination={false}
+          columns={columns}
+          dataSource={transformDocuments(props.documents, props.now_application_guid, true)}
+          locale={{
+            emptyText: "No Data Yet",
+          }}
+          rowSelection={
+            props.selectedRows
+              ? {
+                  selectedRowKeys: props.selectedRows.selectedSubmissionRows,
+                  onChange: (selectedRowKeys) => {
+                    props.selectedRows.setSelectedSubmissionRows(selectedRowKeys);
+                  },
+                }
+              : null
+          }
+        />
       </div>
     </div>
   );
