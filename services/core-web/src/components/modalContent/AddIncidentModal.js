@@ -14,8 +14,6 @@ import AddIncidentFollowUpForm from "@/components/Forms/incidents/AddIncidentFol
 
 import CustomPropTypes from "@/customPropTypes";
 
-const { Step } = Steps;
-
 const propTypes = {
   newIncident: PropTypes.bool.isRequired,
   onSubmit: PropTypes.func.isRequired,
@@ -286,7 +284,7 @@ export class AddIncidentModal extends Component {
           <div>
             <Steps current={this.state.current}>
               {Forms.map((step) => (
-                <Step key={step.title} title={step.title} />
+                <Steps.Step key={step.title} title={step.title} />
               ))}
             </Steps>
             <br />
