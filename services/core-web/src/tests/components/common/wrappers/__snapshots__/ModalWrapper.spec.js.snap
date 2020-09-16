@@ -12,15 +12,10 @@ exports[`ModalWrapper renders properly 1`] = `
   visible={false}
   width={520}
 >
-  <Popconfirm
+  <ForwardRef
     cancelText="No"
     disabled={false}
-    icon={
-      <Icon
-        theme="filled"
-        type="exclamation-circle"
-      />
-    }
+    icon={<ForwardRef(ExclamationCircleFilled) />}
     okText="Yes"
     okType="primary"
     onConfirm={[Function]}
@@ -36,11 +31,11 @@ exports[`ModalWrapper renders properly 1`] = `
       htmlType="button"
       loading={false}
     >
-      <Icon
-        type="close"
+      <ForwardRef(CloseOutlined)
+        className="icon-sm"
       />
     </Button>
-  </Popconfirm>
+  </ForwardRef>
   <Connect(LoadingBar)
     scope="modal"
     style={

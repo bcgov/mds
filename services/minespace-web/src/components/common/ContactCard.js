@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import React from "react";
-import { Row, Col, Card, Icon, Typography } from "antd";
+import { Row, Col, Card, Typography, Icon } from "antd";
 import { formatDate } from "@common/utils/helpers";
 import CustomPropTypes from "@/customPropTypes";
 import * as Strings from "@/constants/strings";
@@ -9,7 +9,7 @@ const { Paragraph, Text } = Typography;
 
 const ContactCardRow = (data) => (
   <Row className="contact-card-row">
-    <Col>
+    <Col span={24}>
       <Icon type={data.icon} className="contact-card-row-icon" />
       <Paragraph className="contact-card-row-field">
         <Text strong className="contact-card-row-field-title">
@@ -42,7 +42,11 @@ export const ContactCard = (props) => (
       icon="mail"
       label="Email"
       value={
-        (props.partyRelationship && <a href={`mailto:${props.partyRelationship.party.email}`}>{props.partyRelationship.party.email}</a>) ||
+        (props.partyRelationship && (
+          <a href={`mailto:${props.partyRelationship.party.email}`}>
+            {props.partyRelationship.party.email}
+          </a>
+        )) ||
         Strings.UNKNOWN
       }
     />
@@ -54,7 +58,11 @@ export const ContactCard = (props) => (
     <ContactCardRow
       icon="calendar"
       label={props.dateLabel}
-      value={props.partyRelationship ? formatDate(props.partyRelationship.effective_date) : Strings.UNKNOWN}
+      value={
+        props.partyRelationship
+          ? formatDate(props.partyRelationship.effective_date)
+          : Strings.UNKNOWN
+      }
     />
   </Card>
 );

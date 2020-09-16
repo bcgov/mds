@@ -13,8 +13,6 @@ import { AdminVerifiedMinesList } from "@/components/admin/AdminVerifiedMinesLis
  * @class AdminDashboard houses everything related to admin tasks, this is a permission-based route.
  */
 
-const { TabPane } = Tabs;
-
 const propTypes = {
   fetchMineVerifiedStatuses: PropTypes.func.isRequired,
 };
@@ -64,14 +62,14 @@ export class AdminDashboard extends Component {
         </div>
         <div className="landing-page__content">
           <Tabs
-            className="center-tabs"
             activeKey={this.state.activeTab}
             defaultActiveKey="summary"
             onChange={this.handleTabChange}
             size="large"
             animated={{ inkBar: true, tabPane: false }}
+            centered
           >
-            <TabPane tab="Verified Mines" key="verifiedMines">
+            <Tabs.TabPane tab="Verified Mines" key="verifiedMines">
               <div className="tab__content">
                 <div>
                   <h4>{this.state.verifiedMines.length}&nbsp;Verified Mines</h4>
@@ -83,8 +81,8 @@ export class AdminDashboard extends Component {
                   </div>
                 </div>
               </div>
-            </TabPane>
-            <TabPane tab="Unverified Mines" key="unverifiedMines">
+            </Tabs.TabPane>
+            <Tabs.TabPane tab="Unverified Mines" key="unverifiedMines">
               <div className="tab__content">
                 <div>
                   <h4>{this.state.unverifiedMines.length}&nbsp;Mines Needing Re-Verification</h4>
@@ -96,12 +94,12 @@ export class AdminDashboard extends Component {
                   </div>
                 </div>
               </div>
-            </TabPane>
-            <TabPane tab="Manage MineSpace Users" key="managerMinespaceUsers">
+            </Tabs.TabPane>
+            <Tabs.TabPane tab="Manage MineSpace Users" key="managerMinespaceUsers">
               <div className="tab__content">
                 <MinespaceUserManagement />
               </div>
-            </TabPane>
+            </Tabs.TabPane>
           </Tabs>
         </div>
       </div>

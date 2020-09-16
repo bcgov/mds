@@ -1,7 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Field, reduxForm } from "redux-form";
-import { Form, Col, Row, Collapse } from "antd";
+import { Form } from "@ant-design/compatible";
+import "@ant-design/compatible/assets/index.css";
+import { Col, Row } from "antd";
 import { required } from "@common/utils/Validate";
 import { resetForm } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
@@ -10,8 +12,6 @@ import { renderConfig } from "@/components/common/config";
 import ScrollContentWrapper from "@/components/noticeOfWork/applications/ScrollContentWrapper";
 import FinalPermitDocuments from "@/components/noticeOfWork/applications/FinalPermitDocuments";
 import Conditions from "@/components/Forms/permits/conditions/Conditions";
-
-const { Panel } = Collapse;
 
 const propTypes = {
   isAmendment: PropTypes.bool.isRequired,

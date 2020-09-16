@@ -5,7 +5,6 @@ import { Popconfirm, Tooltip } from "antd";
 import { uniqBy, flattenDeep } from "lodash";
 import * as Strings from "@common/constants/strings";
 import * as router from "@/constants/routes";
-import NullScreen from "@/components/common/NullScreen";
 import CustomPropTypes from "@/customPropTypes";
 import CoreTable from "@/components/common/CoreTable";
 import { UNSUBSCRIBE } from "@/constants/assets";
@@ -169,7 +168,6 @@ export class SubscriptionTable extends Component {
         tableProps={{
           align: "left",
           pagination: false,
-          locale: { emptyText: <NullScreen type="subscription" /> },
         }}
       />
     );

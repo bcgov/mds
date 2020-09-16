@@ -3,7 +3,9 @@ import { connect } from "react-redux";
 import { compose } from "redux";
 import PropTypes from "prop-types";
 import { Field, reduxForm } from "redux-form";
-import { Form, Button, Col, Row, Popconfirm } from "antd";
+import { Form } from '@ant-design/compatible';
+import '@ant-design/compatible/assets/index.css';
+import { Button, Col, Row, Popconfirm } from "antd";
 import { required } from "@common/utils/Validate";
 import { resetForm } from "@common/utils/helpers";
 import { getDropdownPermitStatusOptions } from "@common/selectors/staticContentSelectors";
@@ -22,7 +24,7 @@ const propTypes = {
 export const EditPermitForm = (props) => (
   <Form layout="vertical" onSubmit={props.handleSubmit}>
     <Row gutter={16}>
-      <Col>
+      <Col span={24}>
         <Form.Item>
           <Field
             id="permit_status_code"

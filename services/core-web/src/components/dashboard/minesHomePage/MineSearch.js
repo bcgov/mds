@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
-import { AutoComplete, Row, Col } from "antd";
+import { Row, Col } from "antd";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { fetchMineNameList } from "@common/actionCreators/mineActionCreator";
@@ -41,14 +41,10 @@ export class MineSearch extends Component {
   };
 
   transformData = (data) =>
-    data.map(({ latitude = "", longitude = "", mine_name = "", mine_no = "", mine_guid }) => (
-      <AutoComplete.Option
-        key={mine_guid}
-        value={JSON.stringify({ latitude, longitude, mine_name, mine_guid })}
-      >
-        {`${mine_name} - ${mine_no}`}
-      </AutoComplete.Option>
-    ));
+    data.map(({ latitude = "", longitude = "", mine_name = "", mine_no = "", mine_guid }) => ({
+      label: `${mine_name} - ${mine_no}`,
+      value: JSON.stringify({ latitude, longitude, mine_name, mine_guid }),
+    }));
 
   render() {
     if (this.props.isMapView) {
@@ -95,7 +91,4 @@ const mapDispatchToProps = (dispatch) =>
 MineSearch.propTypes = propTypes;
 MineSearch.defaultProps = defaultProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(MineSearch);
+export default connect(mapStateToProps, mapDispatchToProps)(MineSearch);

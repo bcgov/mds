@@ -3,7 +3,8 @@ import React from "react";
 import PropTypes from "prop-types";
 import "filepond-polyfill";
 import { FilePond, registerPlugin } from "react-filepond";
-import { Switch, Icon } from "antd";
+import { Switch } from "antd";
+import { FunnelPlotOutlined } from "@ant-design/icons";
 import "filepond/dist/filepond.min.css";
 import FilePondPluginFileValidateSize from "filepond-plugin-file-validate-size";
 import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type";
@@ -96,8 +97,8 @@ class FileUpload extends React.Component {
       >
         <Switch
           className="ant-switch-overlay"
-          checkedChildren={<Icon type="funnel-plot" />}
-          unCheckedChildren={<Icon type="funnel-plot" />}
+          checkedChildren={<FunnelPlotOutlined />}
+          unCheckedChildren={<FunnelPlotOutlined />}
           checked={this.state.showWhirlpool}
           onChange={() => {
             if (!this.waterSound) {

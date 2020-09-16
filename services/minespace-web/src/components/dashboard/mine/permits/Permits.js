@@ -30,7 +30,7 @@ export class Permits extends Component {
   render() {
     return (
       <Row>
-        <Col>
+        <Col span={24}>
           <Title level={4}>Permits</Title>
           <Paragraph>
             The below table displays all of the&nbsp;

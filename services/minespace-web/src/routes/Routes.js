@@ -1,10 +1,8 @@
 import React from "react";
 import { Link, Redirect, Route, Switch } from "react-router-dom";
-import { Result, Button, Icon, Typography } from "antd";
+import { Result, Button, Typography, Icon } from "antd";
 import AuthenticationGuard from "@/HOC/AuthenticationGuard";
 import * as routes from "@/constants/routes";
-
-const { Text } = Typography;
 
 const Routes = () => (
   <Switch>
@@ -33,7 +31,7 @@ const Routes = () => (
         <Result
           title="Page Not Found"
           status="warning"
-          subTitle={<Text>Sorry, the page you requested does not exist.</Text>}
+          subTitle={<Typography.Text>Sorry, the page you requested does not exist.</Typography.Text>}
           icon={<Icon type="exclamation-circle" />}
           extra={
             <Link to={routes.HOME.route}>

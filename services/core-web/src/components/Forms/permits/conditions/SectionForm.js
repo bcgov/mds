@@ -1,7 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Field, reduxForm } from "redux-form";
-import { Button, Popconfirm, Form } from "antd";
+import { Form } from '@ant-design/compatible';
+import '@ant-design/compatible/assets/index.css';
+import { Button, Popconfirm } from "antd";
 import { required } from "@common/utils/Validate";
 import { resetForm } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";

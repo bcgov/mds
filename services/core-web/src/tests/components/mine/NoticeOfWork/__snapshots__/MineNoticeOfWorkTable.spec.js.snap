@@ -78,12 +78,6 @@ exports[`MineNoticeOfWorkTable renders properly 1`] = `
   tableProps={
     Object {
       "align": "left",
-      "locale": Object {
-        "emptyText": <NullScreen
-          message=""
-          type="notice-of-work"
-        />,
-      },
       "onChange": [Function],
       "pagination": false,
     }

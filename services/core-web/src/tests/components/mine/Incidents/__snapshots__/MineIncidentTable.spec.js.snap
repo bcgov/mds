@@ -156,12 +156,6 @@ exports[`MineIncidentTable renders properly 1`] = `
   tableProps={
     Object {
       "align": "left",
-      "locale": Object {
-        "emptyText": <NullScreen
-          message=""
-          type="incidents"
-        />,
-      },
       "onChange": null,
       "pagination": false,
     }

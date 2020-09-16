@@ -1,5 +1,11 @@
 import React from "react";
-import { Icon, Tag } from "antd";
+import { Tag } from "antd";
+import {
+  ArrowLeftOutlined,
+  UserOutlined,
+  TagOutlined,
+  EnvironmentOutlined,
+} from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import * as Strings from "@common/constants/strings";
@@ -35,7 +41,7 @@ const NoticeOfWorkPageHeader = (props) => {
               to={router.MINE_GENERAL.dynamicRoute(props.noticeOfWork.mine_guid)}
               disabled={!props.noticeOfWork.mine_guid}
             >
-              <Icon type="environment" className="padding-small--right" />
+              <EnvironmentOutlined className="padding-small--right" />
               {nowMineName}
             </Link>
           </Tag>
@@ -45,19 +51,19 @@ const NoticeOfWorkPageHeader = (props) => {
               to={router.PARTY_PROFILE.dynamicRoute(props.noticeOfWork.lead_inspector_party_guid)}
               disabled={!props.noticeOfWork.lead_inspector_party_guid}
             >
-              <Icon type="user" className="padding-small--right" />
+              <UserOutlined className="padding-small--right" />
               {nowLeadInspectorName}
             </Link>
           </Tag>
           <Tag title={`Status: ${nowStatus}`}>
-            <Icon type="tag" className="padding-small--right" />
+            <TagOutlined className="padding-small--right" />
             {nowStatus}
           </Tag>
         </span>
       </h1>
       {props.noticeOfWorkPageFromRoute && !props.fixedTop && (
         <Link to={props.noticeOfWorkPageFromRoute.route}>
-          <Icon type="arrow-left" style={{ paddingRight: "5px" }} />
+          <ArrowLeftOutlined className="padding-small--right" />
           Back to: {props.noticeOfWorkPageFromRoute.title}
         </Link>
       )}

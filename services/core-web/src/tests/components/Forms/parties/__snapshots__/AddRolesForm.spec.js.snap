@@ -16,14 +16,6 @@ exports[`AddFullPartyForm renders properly 1`] = `
         ]
       }
       bordered={true}
-      expandIconPosition="left"
-      openAnimation={
-        Object {
-          "appear": [Function],
-          "enter": [Function],
-          "leave": [Function],
-        }
-      }
     />
     <Button
       block={false}
@@ -33,13 +25,12 @@ exports[`AddFullPartyForm renders properly 1`] = `
       loading={false}
       onClick={[Function]}
     >
-      <Icon
+      <ForwardRef(PlusOutlined)
         style={
           Object {
             "color": "#6b6363",
           }
         }
-        type="plus"
       />
       Add Role
     </Button>

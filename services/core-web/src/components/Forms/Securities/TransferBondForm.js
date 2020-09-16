@@ -1,7 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Field, reduxForm } from "redux-form";
-import { Form, Button, Col, Row, Popconfirm } from "antd";
+import { Form } from '@ant-design/compatible';
+import '@ant-design/compatible/assets/index.css';
+import { Button, Col, Row, Popconfirm } from "antd";
 import { required } from "@common/utils/Validate";
 import { resetForm } from "@common/utils/helpers";
 import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
@@ -20,7 +22,7 @@ const propTypes = {
 export const TransferBondForm = (props) => (
   <Form layout="vertical" onSubmit={props.handleSubmit}>
     <Row>
-      <Col>
+      <Col span={24}>
         <Form.Item>
           <Field
             id="permit_guid"

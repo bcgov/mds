@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import PropTypes from "prop-types";
-import { Radio, Icon, Divider } from "antd";
+import { Radio, Divider } from "antd";
+import { ArrowLeftOutlined } from "@ant-design/icons";
 // Ant design Carousel is based on react-slick and kind of sucks. Tabbing breaks it, dynamically rendering content breaks it,
 // and you need to use Refs to interact with it for a number of features. Brought in react-responsive-carousel instead.
 import { Carousel } from "react-responsive-carousel";
@@ -90,7 +91,7 @@ export class AddPartyComponentWrapper extends Component {
     <div>
       <h2>Add new {this.props.addPartyFormState.partyLabel}</h2>
       <LinkButton onClick={this.resetAddPartyForm}>
-        <Icon type="arrow-left" style={{ paddingRight: "5px" }} />
+        <ArrowLeftOutlined className="padding-small--right" />
         Back to: {this.props.childProps.title}
       </LinkButton>
       <Divider />
@@ -163,7 +164,4 @@ const mapDispatchToProps = (dispatch) =>
 AddPartyComponentWrapper.propTypes = propTypes;
 AddPartyComponentWrapper.defaultProps = defaultProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(AddPartyComponentWrapper);
+export default connect(mapStateToProps, mapDispatchToProps)(AddPartyComponentWrapper);

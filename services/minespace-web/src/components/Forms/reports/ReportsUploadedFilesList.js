@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Col, Row, Popconfirm, Icon, Button } from "antd";
+import { Col, Row, Popconfirm, Button, Icon } from "antd";
 
 const propTypes = {
   files: PropTypes.arrayOf(PropTypes.any).isRequired,

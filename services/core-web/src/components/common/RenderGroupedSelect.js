@@ -1,6 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Form, Select } from "antd";
+import { Form } from "@ant-design/compatible";
+import "@ant-design/compatible/assets/index.css";
+import { Select } from "antd";
 import CustomPropTypes from "@/customPropTypes";
 
 /**
@@ -19,7 +21,6 @@ const propTypes = {
   data: CustomPropTypes.groupOptions,
   disabled: PropTypes.bool,
   onSelect: PropTypes.func,
-  doNotPinDropdown: PropTypes.bool,
 };
 
 const defaultProps = {
@@ -29,7 +30,6 @@ const defaultProps = {
   disabled: false,
   meta: {},
   onSelect: () => {},
-  doNotPinDropdown: false,
 };
 
 const RenderGroupedSelect = (props) => (
@@ -46,7 +46,7 @@ const RenderGroupedSelect = (props) => (
   >
     <Select
       disabled={props.disabled}
-      getPopupContainer={props.doNotPinDropdown ? null : () => document.getElementById(props.id)}
+      dropdownMatchSelectWidth
       showSearch
       placeholder={props.placeholder}
       optionFilterProp="children"
@@ -55,7 +55,9 @@ const RenderGroupedSelect = (props) => (
         option.props.children.toLowerCase().includes(input.toLowerCase())
       }
       id={props.id}
-      {...props.input}
+      defaultValue={props.input.value}
+      value={props.input.value ? props.input.value : undefined}
+      onChange={props.input.onChange}
       onSelect={props.onSelect}
     >
       {props.data.map((group) => (

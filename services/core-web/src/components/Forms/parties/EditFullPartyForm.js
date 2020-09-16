@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Field, reduxForm, FormSection } from "redux-form";
-import { Form, Col, Row, Button, Popconfirm, Descriptions, Typography } from "antd";
+import { Field, reduxForm } from "redux-form";
+import { Form } from "@ant-design/compatible";
+import "@ant-design/compatible/assets/index.css";
+import { Col, Row, Button, Popconfirm, Descriptions, Typography, Divider } from "antd";
 import { isEmpty } from "lodash";
 import {
   required,
@@ -28,8 +30,6 @@ const propTypes = {
   submitting: PropTypes.bool.isRequired,
   provinceOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
 };
-
-const { Paragraph, Text } = Typography;
 
 export class EditFullPartyForm extends Component {
   state = {
@@ -233,22 +233,28 @@ export class EditFullPartyForm extends Component {
           </Col>
         </Row>
         <Row gutter={48}>
-          <Col>
+          <Col span={24}>
             {(this.hasOrgBookEntity && (
               <Row>
-                <Col>
+                <Col span={24}>
                   <h5>OrgBook Entity</h5>
-                  <Paragraph>
-                    <Text>This party has been associated with the following OrgBook entity.</Text>
+                  <Typography.Paragraph>
+                    <Typography.Text>
+                      This party has been associated with the following OrgBook entity.
+                    </Typography.Text>
                     <br />
-                    <Text>
+                    <Typography.Text>
                       Association completed by&nbsp;
-                      <Text strong>{this.orgBookEntity.association_user}</Text>
+                      <Typography.Text strong>
+                        {this.orgBookEntity.association_user}
+                      </Typography.Text>
                       &nbsp;on&nbsp;
-                      <Text strong>{formatDateTime(this.orgBookEntity.association_timestamp)}</Text>
+                      <Typography.Text strong>
+                        {formatDateTime(this.orgBookEntity.association_timestamp)}
+                      </Typography.Text>
                       .
-                    </Text>
-                  </Paragraph>
+                    </Typography.Text>
+                  </Typography.Paragraph>
                   <Descriptions title="Entity Details" column={1}>
                     <Descriptions.Item label="Registration Name">
                       {this.orgBookEntity.name_text}
@@ -281,28 +287,30 @@ export class EditFullPartyForm extends Component {
                       </a>
                     </Descriptions.Item>
                   </Descriptions>
-                  <Paragraph>
-                    <Text>
+                  <Typography.Paragraph>
+                    <Typography.Text>
                       Information captured on&nbsp;
-                      <Text strong>{formatDateTime(this.orgBookEntity.association_timestamp)}</Text>
+                      <Typography.Text strong>
+                        {formatDateTime(this.orgBookEntity.association_timestamp)}
+                      </Typography.Text>
                       .
-                    </Text>
-                  </Paragraph>
+                    </Typography.Text>
+                  </Typography.Paragraph>
                 </Col>
               </Row>
             )) ||
               (!this.isPerson && (
                 <AuthorizationWrapper inTesting>
                   <Row>
-                    <Col>
+                    <Col span={24}>
                       <h5>OrgBook Entity</h5>
-                      <Paragraph>
+                      <Typography.Paragraph>
                         This party has not been associated with an entity on OrgBook. To associate
                         this party with an entity on OrgBook, search for the correct entity using
                         the search below and then select the&nbsp;
-                        <Text strong>Associate</Text>
+                        <Typography.Text strong>Associate</Typography.Text>
                         &nbsp;button.
-                      </Paragraph>
+                      </Typography.Paragraph>
                       <PartyOrgBookForm party={this.props.party} />
                     </Col>
                   </Row>
@@ -311,53 +319,64 @@ export class EditFullPartyForm extends Component {
           </Col>
         </Row>
         {this.isPerson && (
-          <AuthorizationWrapper permission={Permission.ADMIN}>
-            <Row>
-              <p>
-                By setting this checkbox you grant inspector role to this party. Please note that
-                removing this checkbox will not delete party from associated entities.
-              </p>
-              <Col md={12} sm={24}>
-                <Field
-                  id="set_to_inspector"
-                  name="set_to_inspector"
-                  label="Set to inspector"
-                  type="checkbox"
-                  component={renderConfig.CHECKBOX}
-                />
-              </Col>
-            </Row>
+          <>
+            <br />
+            <Divider />
             <Row gutter={16}>
-              <Col span={12}>
-                <Field
-                  label="Start Date"
-                  id={`inspector_start_date`}
-                  name={`inspector_start_date`}
-                  placeholder="yyyy-mm-dd"
-                  component={renderConfig.DATE}
-                />
-              </Col>
-              <Col span={12}>
-                <Field
-                  label="End Date"
-                  id={`inspector_end_date`}
-                  name={`inspector_end_date`}
-                  placeholder="yyyy-mm-dd"
-                  component={renderConfig.DATE}
-                />
+              <Col span={24}>
+                <h5>Assign Inspector Role</h5>
               </Col>
             </Row>
-            <Row>
-              <Field
-                id="PartySignatureUpload"
-                name="PartySignatureUpload"
-                component={PartySignatureUpload}
-                onFileChange={this.onChangeSignature}
-                onRemove={this.onDeleteSignature}
-                signature={this.props.party.signature}
-              />
-            </Row>
-          </AuthorizationWrapper>
+            <AuthorizationWrapper permission={Permission.ADMIN}>
+              <Row>
+                <p>
+                  By setting this checkbox you grant inspector role to this party. Please note that
+                  removing this checkbox will not delete party from associated entities.
+                </p>
+                <Col md={12} sm={24}>
+                  <Field
+                    id="set_to_inspector"
+                    name="set_to_inspector"
+                    label="Set to inspector"
+                    type="checkbox"
+                    component={renderConfig.CHECKBOX}
+                  />
+                </Col>
+              </Row>
+              <Row gutter={16}>
+                <Col span={12}>
+                  <Field
+                    label="Start Date"
+                    id={`inspector_start_date`}
+                    name={`inspector_start_date`}
+                    placeholder="yyyy-mm-dd"
+                    component={renderConfig.DATE}
+                  />
+                </Col>
+                <Col span={12}>
+                  <Field
+                    label="End Date"
+                    id={`inspector_end_date`}
+                    name={`inspector_end_date`}
+                    placeholder="yyyy-mm-dd"
+                    component={renderConfig.DATE}
+                  />
+                </Col>
+              </Row>
+              <Row>
+                <Col span={24}>
+                  <Field
+                    id="PartySignatureUpload"
+                    name="PartySignatureUpload"
+                    component={PartySignatureUpload}
+                    onFileChange={this.onChangeSignature}
+                    onRemove={this.onDeleteSignature}
+                    signature={this.props.party.signature}
+                  />
+                </Col>
+              </Row>
+            </AuthorizationWrapper>
+          </>
         )}
         <div className="right center-mobile">
           <Popconfirm

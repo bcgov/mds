@@ -6,7 +6,7 @@ exports[`MineResultsTable renders properly 1`] = `
     Mines
   </h2>
   <Divider />
-  <withStore(Table)
+  <Table
     align="left"
     className="nested-table padding-large--bottom"
     columns={
@@ -163,6 +163,7 @@ exports[`MineResultsTable renders properly 1`] = `
       ]
     }
     pagination={false}
+    rowKey="key"
     showHeader={false}
   />
 </div>

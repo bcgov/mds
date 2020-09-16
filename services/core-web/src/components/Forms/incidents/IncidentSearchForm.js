@@ -1,7 +1,10 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Field, reduxForm } from "redux-form";
-import { Form, Button, Col, Row, Icon } from "antd";
+import { Form } from '@ant-design/compatible';
+import '@ant-design/compatible/assets/index.css';
+import { Button, Col, Row } from "antd";
+import { UpOutlined, DownOutlined } from "@ant-design/icons";
 import { yearNotInFuture } from "@common/utils/Validate";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
@@ -114,7 +117,7 @@ export class IncidentSearchForm extends Component {
         <div className="left center-mobile">
           <Button className="btn--dropdown" onClick={this.props.toggleAdvancedSearch}>
             {this.props.isAdvanceSearch ? "Collapse Filters" : "Expand Filters"}
-            <Icon type={this.props.isAdvanceSearch ? "up" : "down"} />
+            {this.props.isAdvanceSearch ? <UpOutlined /> : <DownOutlined />}
           </Button>
         </div>
 

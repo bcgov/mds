@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Prompt } from "react-router-dom";
-import { Button, Dropdown, Menu, Icon, Popconfirm, Alert, Tabs } from "antd";
+import { Button, Dropdown, Menu, Popconfirm, Alert, Tabs } from "antd";
+import { DownOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
 import { getFormValues, reset, getFormSyncErrors, focus } from "redux-form";
 import { bindActionCreators } from "redux";
@@ -48,8 +49,6 @@ import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
 import { modalConfig } from "@/components/modalContent/config";
 import { NOWApplicationAdministrative } from "@/components/noticeOfWork/applications/administrative/NOWApplicationAdministrative";
 import Loading from "@/components/common/Loading";
-
-const { TabPane } = Tabs;
 
 /**
  * @class NoticeOfWorkApplication- contains all information regarding a CORE notice of work application
@@ -552,7 +551,7 @@ export class NoticeOfWorkApplication extends Component {
         >
           <Button type="secondary" className="full-mobile">
             Actions
-            <Icon type="down" />
+            <DownOutlined />
           </Button>
         </Dropdown>
       </div>
@@ -719,11 +718,12 @@ export class NoticeOfWorkApplication extends Component {
             className={this.state.fixedTop ? "now-tabs" : "now-tabs"}
             onTabClick={this.handleTabChange}
             style={{ margin: "0" }}
+            centered
           >
-            <TabPane tab="Verification" key="verification">
+            <Tabs.TabPane tab="Verification" key="verification">
               <ApplicationStepOne
                 isNewApplication={this.state.isNewApplication}
-                loadMineData={this.loadMineData}
+                loadMineData={this.loadMineInfo}
                 isMajorMine={this.state.isMajorMine}
                 noticeOfWork={this.props.noticeOfWork}
                 mineGuid={this.state.mineGuid}
@@ -732,9 +732,9 @@ export class NoticeOfWorkApplication extends Component {
                 loadNoticeOfWork={this.loadNoticeOfWork}
                 initialPermitGuid={this.state.initialPermitGuid}
               />
-            </TabPane>
+            </Tabs.TabPane>
 
-            <TabPane tab="Technical Review" key="technical-review" disabled={!isImported}>
+            <Tabs.TabPane tab="Technical Review" key="technical-review" disabled={!isImported}>
               <LoadingWrapper condition={this.state.isTabLoaded}>
                 <div>
                   <div className={this.renderFixedHeaderClass()}>{this.renderEditModeNav()}</div>
@@ -769,15 +769,19 @@ export class NoticeOfWorkApplication extends Component {
                   </div>
                 </div>
               </LoadingWrapper>
-            </TabPane>
+            </Tabs.TabPane>
 
-            <TabPane tab="Draft Permit" key="draft-permit" disabled={!isImported}>
+            <Tabs.TabPane tab="Draft Permit" key="draft-permit" disabled={!isImported}>
               <LoadingWrapper condition={this.state.isTabLoaded}>
                 {this.renderPermitGeneration()}
               </LoadingWrapper>
-            </TabPane>
+            </Tabs.TabPane>
 
-            <TabPane tab="Referral/Consultation" key="referral-consultation" disabled={!isImported}>
+            <Tabs.TabPane
+              tab="Referral/Consultation"
+              key="referral-consultation"
+              disabled={!isImported}
+            >
               <LoadingWrapper condition={this.state.isTabLoaded}>
                 <div className={this.renderFixedHeaderClass()}>
                   <h2 className="padding-md">Referral/Consultation</h2>
@@ -789,9 +793,9 @@ export class NoticeOfWorkApplication extends Component {
                   />
                 </div>
               </LoadingWrapper>
-            </TabPane>
+            </Tabs.TabPane>
 
-            <TabPane tab="Administrative" key="administrative" disabled={!isImported}>
+            <Tabs.TabPane tab="Administrative" key="administrative" disabled={!isImported}>
               <LoadingWrapper condition={this.state.isTabLoaded}>
                 <div className={this.renderFixedHeaderClass()}>
                   <div className="inline-flex block-mobile padding-md between">
@@ -804,7 +808,7 @@ export class NoticeOfWorkApplication extends Component {
                     >
                       <Button type="secondary" className="full-mobile">
                         Actions
-                        <Icon type="down" />
+                        <DownOutlined />
                       </Button>
                     </Dropdown>
                   </div>
@@ -817,7 +821,7 @@ export class NoticeOfWorkApplication extends Component {
                   />
                 </div>
               </LoadingWrapper>
-            </TabPane>
+            </Tabs.TabPane>
           </Tabs>
         </div>
       </React.Fragment>

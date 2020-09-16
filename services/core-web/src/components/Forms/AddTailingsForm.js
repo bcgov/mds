@@ -1,7 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Field, reduxForm } from "redux-form";
-import { Form, Button, Col, Row, Popconfirm } from "antd";
+import { Form } from '@ant-design/compatible';
+import '@ant-design/compatible/assets/index.css';
+import { Button, Col, Row, Popconfirm } from "antd";
 import { required } from "@common/utils/Validate";
 import { resetForm } from "@common/utils/helpers";
 import RenderField from "@/components/common/RenderField";
@@ -17,7 +19,7 @@ const propTypes = {
 export const AddTailingsForm = (props) => (
   <Form layout="vertical" onSubmit={props.handleSubmit}>
     <Row gutter={16}>
-      <Col>
+      <Col span={24}>
         <Form.Item>
           <Field
             id="mine_tailings_storage_facility_name"

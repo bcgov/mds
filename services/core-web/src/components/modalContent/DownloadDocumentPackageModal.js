@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { Button, Progress, Icon, Popconfirm } from "antd";
+import { DownloadOutlined } from "@ant-design/icons";
+import { Button, Progress, Popconfirm } from "antd";
 import { getDocumentDownloadState } from "@common/selectors/noticeOfWorkSelectors";
 import NOWSubmissionDocuments from "@/components/noticeOfWork/applications/NOWSubmissionDocuments";
 import NOWDocuments from "../noticeOfWork/applications/NOWDocuments";
@@ -69,7 +70,7 @@ export const DownloadDocumentPackageModal = (props) => {
           type="primary"
           onClick={() => props.onSubmit(selectedCoreRows, selectedSubmissionRows)}
         >
-          <Icon type="download" theme="outlined" className="padding-small--right icon-sm" />
+          <DownloadOutlined className="padding-small--right icon-sm" />
           Download Referral Package
         </Button>
       </div>
