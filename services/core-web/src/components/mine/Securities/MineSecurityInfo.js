@@ -187,6 +187,7 @@ export class MineSecurityInfo extends Component {
 
   openCloseBondModal = (event, bond, bondStatusCode) => {
     event.preventDefault();
+    console.log(bond);
     this.props.openModal({
       props: {
         title:
@@ -199,6 +200,7 @@ export class MineSecurityInfo extends Component {
         bondStatusOptionsHash: this.props.bondStatusOptionsHash,
         permitGuid: bond.permit_guid,
         mineGuid: this.props.mineGuid,
+        initialValues: { project_id: bond.project_id },
       },
       width: "50vw",
       content: modalConfig.CLOSE_BOND_MODAL,

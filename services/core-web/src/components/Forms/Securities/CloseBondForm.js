@@ -13,6 +13,7 @@ import { resetForm } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
 import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
 import RenderDate from "@/components/common/RenderDate";
+import RenderField from "@/components/common/RenderField";
 import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
@@ -31,6 +32,18 @@ export const CloseBondForm = (props) => {
     <Form layout="vertical" onSubmit={props.handleSubmit}>
       <Row>
         <Col>
+          {props.bondStatusCode === "CON" && (
+            <Form.Item>
+              <Field
+                id="project_id"
+                name="project_id"
+                label={`Project Id`}
+                showTime
+                component={RenderField}
+                validate={[required]}
+              />
+            </Form.Item>
+          )}
           <Form.Item>
             <Field
               id="closed_date"
