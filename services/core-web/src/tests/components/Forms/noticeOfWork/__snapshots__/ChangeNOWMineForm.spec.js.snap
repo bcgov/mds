@@ -28,7 +28,6 @@ exports[`ChangeNOWMineForm renders properly 1`] = `
           }
           id="mine_guid"
           name="mine_guid"
-          showCard={true}
           validate={
             Array [
               [Function],
