@@ -5,8 +5,8 @@ import PropTypes from "prop-types";
 import moment from "moment";
 import { isEmpty } from "lodash";
 import { Field, reduxForm, formValueSelector } from "redux-form";
-import { Form } from '@ant-design/compatible';
-import '@ant-design/compatible/assets/index.css';
+import { Form } from "@ant-design/compatible";
+import "@ant-design/compatible/assets/index.css";
 import { Button, Col, Row, Popconfirm } from "antd";
 import { required, validateDateRanges } from "@common/utils/Validate";
 import { renderConfig } from "@/components/common/config";
@@ -245,9 +245,9 @@ export class AddPartyRelationshipForm extends Component {
                   name="end_current"
                   label={`Would you like to set the end date of ${
                     this.state.currentAppointment.party.name
-                    } to ${moment(this.props.start_date)
-                      .subtract(1, "days")
-                      .format("MMMM Do YYYY")}`}
+                  } to ${moment(this.props.start_date)
+                    .subtract(1, "days")
+                    .format("MMMM Do YYYY")}`}
                   type="checkbox"
                   component={renderConfig.CHECKBOX}
                 />

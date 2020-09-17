@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
 import { Select } from "antd";
-import { SearchOutlined } from "@ant-design/icons";
 
 /**
  * @constant RenderLargeSelect - Ant Design `AutoComplete` component for redux-form -- being used instead of 'RenderSelect' for large data sets that require a limit.
@@ -14,7 +13,11 @@ const propTypes = {
   label: PropTypes.string,
   placeholder: PropTypes.string,
   dataSource: PropTypes.arrayOf(PropTypes.any).isRequired,
-  selectedOption: PropTypes.shape({ key: PropTypes.string, label: PropTypes.label }).isRequired,
+  selectedOption: PropTypes.shape({
+    key: PropTypes.string,
+    label: PropTypes.label,
+    value: PropTypes.string,
+  }).isRequired,
   input: PropTypes.shape({ value: PropTypes.string, onChange: PropTypes.func }).isRequired,
   meta: PropTypes.shape({
     touched: PropTypes.bool,

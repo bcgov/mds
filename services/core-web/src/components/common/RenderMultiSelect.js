@@ -27,7 +27,7 @@ const defaultProps = {
   data: [],
   disabled: false,
   meta: {},
-  onSearch: () => { },
+  onSearch: () => {},
   filterOption: false,
 };
 
