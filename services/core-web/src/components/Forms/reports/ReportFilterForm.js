@@ -3,8 +3,8 @@ import { connect } from "react-redux";
 import { compose } from "redux";
 import PropTypes from "prop-types";
 import { Field, reduxForm, formValueSelector } from "redux-form";
-import { Form } from '@ant-design/compatible';
-import '@ant-design/compatible/assets/index.css';
+import { Form } from "@ant-design/compatible";
+import "@ant-design/compatible/assets/index.css";
 import { Button, Col, Row } from "antd";
 import {
   getDropdownMineReportStatusOptions,
