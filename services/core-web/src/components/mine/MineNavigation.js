@@ -119,6 +119,23 @@ export class MineNavigation extends Component {
             )}
           </Menu>
         </Menu.SubMenu>
+        <Menu.SubMenu
+          id={this.ifActiveButton("documents")}
+          title={
+            <span>
+              Documents
+              <DownOutlined className="padding-small--left" />
+            </span>
+          }
+        >
+          <Menu className="sub-menu">
+            <Menu.Item key="documents">
+              <Link to={routes.MINE_DOCUMENTS.dynamicRoute(this.props.mine.mine_guid)}>
+                Documents
+              </Link>
+            </Menu.Item>
+          </Menu>
+        </Menu.SubMenu>
       </Menu>
     );
   }
