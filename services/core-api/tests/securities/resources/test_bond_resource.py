@@ -101,6 +101,7 @@ class TestBondsResource:
         assert get_data['message'] is not None
 
     """POST BONDS"""
+
     def test_post_a_bond(self, test_client, db_session, auth_headers):
         """Should return the created bond with a 201 response code"""
         mine, permit = create_mine_and_permit()
@@ -144,6 +145,7 @@ class TestBondsResource:
         assert post_data['message'] is not None
 
     """PUT BONDS"""
+
     def test_put_a_bond(self, test_client, db_session, auth_headers):
         """Should return the edited bond with a 200 response code"""
 
@@ -217,3 +219,23 @@ class TestBondsResource:
         assert post_data['amount'] == str(old_amount)
         assert post_data['bond_status_code'] != old_status
         assert changed_permit.project_id != old_project_id
+
+    def test_transfer_bond_happy(self, test_client, db_session, auth_headers):
+        """Should return the edited bond with a 200 response code and the permit project id should be changed"""
+        mine, permit = create_mine_and_permit()
+        bond = permit.bonds[0]
+        bond.bond_status_code = "ACT"
+
+        permit2 = PermitFactory()
+        permit2._all_mines.append(mine)
+
+        data = {
+            "permit_guid": permit2.permit_guid,
+        }
+
+        post_resp = test_client.put(
+            f'/securities/bonds/{bond.bond_guid}/transfer',
+            json=data,
+            headers=auth_headers['full_auth_header'])
+
+        assert post_resp.status_code == 200, post_resp.response
