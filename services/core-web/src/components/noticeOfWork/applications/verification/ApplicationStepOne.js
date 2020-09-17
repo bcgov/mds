@@ -48,7 +48,6 @@ export class ApplicationStepOne extends Component {
   }
 
   handleNOWImport = (values) => {
-    console.log(values);
     this.props
       .importNoticeOfWorkApplication(this.props.noticeOfWork.now_application_guid, values)
       .then(() => {
