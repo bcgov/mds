@@ -60,7 +60,7 @@ const RenderLargeSelect = (props) => (
       onSelect={props.handleSelect}
       onChange={props.input.onChange}
       onBlur={props.input.onChange(props.selectedOption.value)}
-
+      {...props.input}
     />
   </Form.Item>
 );
