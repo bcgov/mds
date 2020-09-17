@@ -23,11 +23,11 @@ const propTypes = {
 const defaultProps = {
   condition: undefined,
   new: false,
-  handleSubmit: () => { },
-  handleCancel: () => { },
-  handleDelete: () => { },
-  reorderConditions: () => { },
-  setConditionEditingFlag: () => { },
+  handleSubmit: () => {},
+  handleCancel: () => {},
+  handleDelete: () => {},
+  reorderConditions: () => {},
+  setConditionEditingFlag: () => {},
   initialValues: {},
   isViewOnly: false,
 };

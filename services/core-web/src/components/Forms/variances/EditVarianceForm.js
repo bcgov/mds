@@ -4,16 +4,16 @@ import { Field, reduxForm, getFormValues } from "redux-form";
 import { fromPairs, isEmpty } from "lodash";
 import { connect } from "react-redux";
 import { compose } from "redux";
-import { Form } from '@ant-design/compatible';
-import '@ant-design/compatible/assets/index.css';
+import { Form } from "@ant-design/compatible";
+import "@ant-design/compatible/assets/index.css";
 import { Button, Popconfirm, Row, Col } from "antd";
 import { required } from "@common/utils/Validate";
 import { resetForm } from "@common/utils/helpers";
 import * as String from "@common/constants/strings";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
-import VarianceFileUpload from "./VarianceFileUpload";
 import CustomPropTypes from "@/customPropTypes";
+import VarianceFileUpload from "./VarianceFileUpload";
 import { VarianceDetails } from "../../mine/Variances/VarianceDetails";
 
 const propTypes = {
