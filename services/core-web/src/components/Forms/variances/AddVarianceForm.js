@@ -2,15 +2,15 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Field, reduxForm, change } from "redux-form";
 import { fromPairs } from "lodash";
-import { Form } from '@ant-design/compatible';
-import '@ant-design/compatible/assets/index.css';
+import { Form } from "@ant-design/compatible";
+import "@ant-design/compatible/assets/index.css";
 import { Button, Popconfirm, Radio } from "antd";
 import { required, dateNotInFuture, maxLength } from "@common/utils/Validate";
 import { resetForm } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
-import VarianceFileUpload from "./VarianceFileUpload";
 import CustomPropTypes from "@/customPropTypes";
+import VarianceFileUpload from "./VarianceFileUpload";
 
 const propTypes = {
   change: PropTypes.func.isRequired,

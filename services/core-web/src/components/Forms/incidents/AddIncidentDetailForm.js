@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Field, reduxForm } from "redux-form";
-import { Form } from '@ant-design/compatible';
-import '@ant-design/compatible/assets/index.css';
+import { Form } from "@ant-design/compatible";
+import "@ant-design/compatible/assets/index.css";
 import { Col, Row } from "antd";
 import { required, maxLength, number, dateNotInFuture } from "@common/utils/Validate";
 import { MINE_INCIDENT_DOCUMENT } from "@common/constants/API";
@@ -143,20 +143,20 @@ class AddIncidentDetailForm extends Component {
             ) : null}
             {this.props.doDetermination ===
               Strings.INCIDENT_DETERMINATION_TYPES.dangerousOccurance && (
-                <span>
-                  <Form.Item>
-                    <Field
-                      id="dangerous_occurrence_subparagraph_ids"
-                      name="dangerous_occurrence_subparagraph_ids"
-                      label="Which section(s) of the code apply to this dangerous occurrence?*"
-                      placeholder="Please choose one or more"
-                      component={renderConfig.MULTI_SELECT}
-                      data={this.props.doSubparagraphOptions}
-                      validate={[this.validateDoSubparagraphs]}
-                    />
-                  </Form.Item>
-                </span>
-              )}
+              <span>
+                <Form.Item>
+                  <Field
+                    id="dangerous_occurrence_subparagraph_ids"
+                    name="dangerous_occurrence_subparagraph_ids"
+                    label="Which section(s) of the code apply to this dangerous occurrence?*"
+                    placeholder="Please choose one or more"
+                    component={renderConfig.MULTI_SELECT}
+                    data={this.props.doSubparagraphOptions}
+                    validate={[this.validateDoSubparagraphs]}
+                  />
+                </Form.Item>
+              </span>
+            )}
             <Form.Item>
               <Field
                 id="mine_determination_type_code"
@@ -207,18 +207,18 @@ class AddIncidentDetailForm extends Component {
 
             {this.props.doDetermination ===
               Strings.INCIDENT_DETERMINATION_TYPES.notADangerousOccurance && (
-                <span>
-                  <Form.Item>
-                    <Field
-                      id="status_code"
-                      name="status_code"
-                      label="Incident status?*"
-                      component={renderConfig.SELECT}
-                      data={this.props.incidentStatusCodeOptions}
-                    />
-                  </Form.Item>
-                </span>
-              )}
+              <span>
+                <Form.Item>
+                  <Field
+                    id="status_code"
+                    name="status_code"
+                    label="Incident status?*"
+                    component={renderConfig.SELECT}
+                    data={this.props.incidentStatusCodeOptions}
+                  />
+                </Form.Item>
+              </span>
+            )}
           </Col>
         </Row>
       </Form>

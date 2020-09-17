@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Form } from '@ant-design/compatible';
-import '@ant-design/compatible/assets/index.css';
+import { Form } from "@ant-design/compatible";
+import "@ant-design/compatible/assets/index.css";
 import { Radio } from "antd";
 import { Field } from "redux-form";
 import CustomPropTypes from "@/customPropTypes";

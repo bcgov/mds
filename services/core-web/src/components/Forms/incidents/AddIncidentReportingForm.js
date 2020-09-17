@@ -1,8 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Field, reduxForm } from "redux-form";
-import { Form } from '@ant-design/compatible';
-import '@ant-design/compatible/assets/index.css';
+import { Form } from "@ant-design/compatible";
+import "@ant-design/compatible/assets/index.css";
 import { Col, Row } from "antd";
 import {
   required,
@@ -37,8 +37,8 @@ export const AddIncidentReportingForm = (props) => (
               {`MMS Inspector Initials ${props.initialValues.mms_inspector_initials}`}
             </span>
           ) : (
-              ""
-            )}
+            ""
+          )}
           <Form.Item>
             <Field
               id="categories"

@@ -8,8 +8,6 @@ import CustomPropTypes from "@/customPropTypes";
 /**
  * @constant RenderSelect - Ant Design `Select` component for redux-form - used for small data sets that (< 100);
  * There is a bug when the data sets are large enough to cause the dropdown to scroll, and the field is in a modal.
- * In the case where the modal cannot scroll, it is better to pass in the prop doNotPinDropdown.  It allows the
- * dropdown to render properly
  */
 
 const propTypes = {
@@ -21,7 +19,7 @@ const propTypes = {
   data: CustomPropTypes.options,
   disabled: PropTypes.bool,
   onSelect: PropTypes.func,
-  doNotPinDropdown: PropTypes.bool,
+  usedOptions: PropTypes.arrayOf(PropTypes.string),
 };
 
 const defaultProps = {
@@ -30,8 +28,8 @@ const defaultProps = {
   data: [],
   disabled: false,
   meta: {},
-  onSelect: () => { },
-  doNotPinDropdown: false,
+  onSelect: () => {},
+  usedOptions: [],
 };
 
 const RenderSelect = (props) => {
@@ -80,7 +78,7 @@ const RenderSelect = (props) => {
         ))}
       </Select>
     </Form.Item>
-  )
+  );
 };
 
 RenderSelect.propTypes = propTypes;

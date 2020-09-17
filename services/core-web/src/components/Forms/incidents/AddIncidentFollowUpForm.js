@@ -46,7 +46,6 @@ const renderRecommendations = ({ fields }) => [
   )),
   <LinkButton onClick={() => fields.push({})}>
     <PlusOutlined className="padding-small--right padding-large--bottom" />
-    />
     {fields.length ? `Add another recommendation` : `Add a recommendation`}
   </LinkButton>,
 ];
@@ -58,7 +57,7 @@ export class AddIncidentFollowUpForm extends Component {
 
   uncommonBehaviourWarning = () =>
     this.props.determinationTypeCode === Strings.INCIDENT_DETERMINATION_TYPES.pending &&
-      this.props.hasFollowUp
+    this.props.hasFollowUp
       ? "Warning: It's uncommon for an inspection to occur if a determination has not been made"
       : undefined;
 
