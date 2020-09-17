@@ -15,7 +15,7 @@ const propTypes = {
 };
 
 const defaultProps = {
-  onClose: () => { },
+  onClose: () => {},
 };
 
 const testWarningData = {
@@ -62,6 +62,8 @@ const WarningBanner = (props) => {
     case WARNING_TYPES.IE:
       warningData = ieWarningData;
       break;
+    default:
+      warningData = undefined;
   }
 
   return (
