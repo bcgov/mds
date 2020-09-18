@@ -75,6 +75,7 @@ export const NOWSubmissionDocuments = (props) => {
   return (
     <div>
       <div>
+        <p>These files were included in the original application from the proponent</p>
         <Table
           align="left"
           pagination={false}

@@ -182,7 +182,10 @@ export class FinalPermitDocuments extends Component {
     ) : (
       <div>
         <div className="inline-flex between">
-          <h3>Final Application Package</h3>
+          <div>
+            <h3>Final Application Package</h3>
+            <p>All files in this list will appear in the Preamble on the permit</p>
+          </div>
           <div>
             <Button
               type="secondary"

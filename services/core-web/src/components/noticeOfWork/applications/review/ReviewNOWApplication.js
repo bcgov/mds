@@ -710,15 +710,26 @@ export const ReviewNOWApplication = (props) => {
     <div>
       <Form layout="vertical">
         <div className="side-menu--content">
-          <h2>General Information</h2>
-          {props.noticeOfWork.last_updated_date && (
-            <p className="violet">
-              Last Updated: {formatDate(props.noticeOfWork.last_updated_date)}
+          <div className="inline-flex between">
+            <p className="center">
+              The technical review tab is for reviewing and editing the information and documents
+              sent in with a Notice of Work.
+              <br /> All information provided by the proponent, and any additional files requested
+              during the application review live here
+              <br /> Use the Actions button to update information about this application.
             </p>
-          )}
-          {props.noticeOfWork.last_updated_by && (
-            <p className="violet">Updated By: {props.noticeOfWork.last_updated_by}</p>
-          )}
+            <div>
+              {props.noticeOfWork.last_updated_date && (
+                <p className="violet">
+                  Last Updated: {formatDate(props.noticeOfWork.last_updated_date)}
+                </p>
+              )}
+              {props.noticeOfWork.last_updated_by && (
+                <p className="violet">Updated By: {props.noticeOfWork.last_updated_by}</p>
+              )}
+            </div>
+          </div>
+          {/* <h2>General Information</h2> */}
           <Divider />
           <ScrollContentWrapper id="application-info" title="Application Info">
             {renderApplicationInfo()}
@@ -761,6 +772,7 @@ export const ReviewNOWApplication = (props) => {
               mine_guid={props.mine_guid}
               documents={props.documents}
               isViewMode={props.isViewMode}
+              disclaimerText="Attach any file revisions or new files requested from the proponent here."
             />
           </ScrollContentWrapper>
         </div>
