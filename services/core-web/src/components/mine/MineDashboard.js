@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
-import { Menu, Icon, Button, Dropdown, Popconfirm, Tooltip, Drawer } from "antd";
+import { Menu, Button, Dropdown, Popconfirm, Tooltip, Drawer } from "antd";
+import { DownOutlined, MessageOutlined, CloseOutlined } from "@ant-design/icons";
 import { fetchPermits } from "@common/actionCreators/permitActionCreator";
 import {
   fetchMineRecordById,
@@ -181,7 +182,7 @@ export class MineDashboard extends Component {
         <AuthorizationWrapper inTesting>
           <div className="custom-menu-item">
             <button type="button" className="full" onClick={this.toggleDrawer}>
-              <Icon type="message" className="padding-small icon-sm" />
+              <MessageOutlined className="padding-small icon-sm" />
               Communication
             </button>
           </div>
@@ -292,7 +293,7 @@ export class MineDashboard extends Component {
           visible={this.state.isDrawerVisible}
         >
           <Button ghost className="modal__close" onClick={this.toggleDrawer}>
-            <Icon type="close" />
+            <CloseOutlined />
           </Button>
           <MineComments mineGuid={mine.mine_guid} />
         </Drawer>
@@ -347,7 +348,7 @@ export class MineDashboard extends Component {
                 >
                   <Button type="secondary">
                     Options
-                    <Icon type="down" />
+                    <DownOutlined />
                   </Button>
                 </Dropdown>
               </div>

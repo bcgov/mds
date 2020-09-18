@@ -1,7 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { reduxForm, focus } from "redux-form";
-import { Form, Button, Col, Row, Popconfirm } from "antd";
+import { Form } from "@ant-design/compatible";
+import "@ant-design/compatible/assets/index.css";
+import { Button, Col, Row, Popconfirm } from "antd";
 import { resetForm } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
 import { getGenerateDocumentFormField } from "@/components/common/GenerateDocumentFormField";
@@ -21,7 +23,7 @@ const createFields = (fields) => (
         .filter((field) => !field["read-only"])
         .map((field) => (
           <Row key={field.id}>
-            <Col>
+            <Col span={24}>
               <Form.Item>{getGenerateDocumentFormField(field)}</Form.Item>
             </Col>
           </Row>
@@ -32,7 +34,7 @@ const createFields = (fields) => (
 export const GenerateDocumentForm = (props) => (
   <Form layout="vertical" onSubmit={props.handleSubmit}>
     <Row gutter={16}>
-      <Col>{createFields(props.documentType.document_template.form_spec)}</Col>
+      <Col span={24}>{createFields(props.documentType.document_template.form_spec)}</Col>
     </Row>
     <div className="right center-mobile">
       <Popconfirm

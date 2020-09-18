@@ -1,7 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Field, reduxForm } from "redux-form";
-import { Form, Col, Row } from "antd";
+import { Form } from "@ant-design/compatible";
+import "@ant-design/compatible/assets/index.css";
+import { Col, Row } from "antd";
 import {
   required,
   requiredList,
@@ -26,7 +28,7 @@ export const AddIncidentReportingForm = (props) => (
   <div>
     <Form layout="vertical">
       <Row gutter={48}>
-        <Col>
+        <Col span={24}>
           {props.initialValues.mine_incident_id_year && (
             <h4>{`Ministry Incident No. ${props.initialValues.mine_incident_report_no}`}</h4>
           )}
@@ -35,8 +37,8 @@ export const AddIncidentReportingForm = (props) => (
               {`MMS Inspector Initials ${props.initialValues.mms_inspector_initials}`}
             </span>
           ) : (
-              ""
-            )}
+            ""
+          )}
           <Form.Item>
             <Field
               id="categories"

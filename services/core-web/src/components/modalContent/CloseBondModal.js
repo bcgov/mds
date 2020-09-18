@@ -11,6 +11,11 @@ const propTypes = {
   bond: CustomPropTypes.bond.isRequired,
   bondStatusOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   bondStatusCode: PropTypes.string.isRequired,
+  initialValues: PropTypes.objectOf(PropTypes.string),
+};
+
+const defaultProps = {
+  initialValues: {},
 };
 
 export const CloseBondModal = (props) => {
@@ -39,11 +44,13 @@ export const CloseBondModal = (props) => {
         bond={props.bond}
         bondStatusCode={props.bondStatusCode}
         bondStatusOptionsHash={props.bondStatusOptionsHash}
+        initialValues={props.initialValues}
       />
     </div>
   );
 };
 
 CloseBondModal.propTypes = propTypes;
+CloseBondModal.defaultProps = defaultProps;
 
 export default CloseBondModal;

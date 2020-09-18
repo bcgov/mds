@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { Result, Alert, Row, Col } from "antd";
+import { Result, Alert, Row } from "antd";
 import PropTypes from "prop-types";
 import {
   createNoticeOfWorkApplication,
@@ -79,20 +79,14 @@ export class ApplicationStepOne extends Component {
         title={`${title} Complete!`}
         subTitle={`You've already completed the ${title} step.`}
         extra={[
-          <Row>
-            <Col
-              lg={{ span: 8, offset: 8 }}
-              md={{ span: 10, offset: 7 }}
-              sm={{ span: 12, offset: 6 }}
-            >
-              <Alert
-                message="Need to change something?"
-                description="You can transfer the Notice of Work to a different mine or change its Lead Inspector on the Administrative tab"
-                type="info"
-                showIcon
-                style={{ textAlign: "left" }}
-              />
-            </Col>
+          <Row gutter={48} justify="center">
+            <Alert
+              message="Need to change something?"
+              description="You can transfer the Notice of Work to a different mine or change its Lead Inspector on the Administrative tab"
+              type="info"
+              showIcon
+              style={{ textAlign: "left", height: "100px" }}
+            />
           </Row>,
         ]}
       />

@@ -65,7 +65,8 @@ class PermitListResource(Resource, UserMixin):
     @api.marshal_with(PERMIT_MODEL, envelope='records', code=200)
     def get(self, mine_guid):
         now_application_guid = request.args.get('now_application_guid')
-        current_app.logger.info(now_application_guid)
+        if now_application_guid:
+            current_app.logger.info('Supplied now_application_guid: ' + str(now_application_guid))
         if now_application_guid is not None:
             permit = Permit.find_by_now_application_guid(now_application_guid)
             results = [permit] if permit else []

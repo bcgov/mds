@@ -5,7 +5,9 @@ import PropTypes from "prop-types";
 import moment from "moment";
 import { isEmpty } from "lodash";
 import { Field, reduxForm, formValueSelector } from "redux-form";
-import { Form, Button, Col, Row, Popconfirm } from "antd";
+import { Form } from "@ant-design/compatible";
+import "@ant-design/compatible/assets/index.css";
+import { Button, Col, Row, Popconfirm } from "antd";
 import { required, validateDateRanges } from "@common/utils/Validate";
 import { renderConfig } from "@/components/common/config";
 import PartySelectField from "@/components/common/PartySelectField";
@@ -254,7 +256,7 @@ export class AddPartyRelationshipForm extends Component {
           </Col>
         </Row>
         <Row gutter={16}>
-          <Col md={12} xs={24}>
+          <Col span={24}>
             {options}
             {this.props.partyRelationshipType.mine_party_appt_type_code === "MMG" && (
               <div>

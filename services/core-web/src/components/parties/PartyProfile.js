@@ -3,7 +3,13 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
-import { Tabs, Icon, Table, Button, Popconfirm } from "antd";
+import { Tabs, Table, Button, Popconfirm } from "antd";
+import {
+  PhoneOutlined,
+  MinusCircleOutlined,
+  MailOutlined,
+  CheckCircleOutlined,
+} from "@ant-design/icons";
 import { uniq, isEmpty } from "lodash";
 import {
   fetchPartyById,
@@ -29,14 +35,11 @@ import * as ModalContent from "@/constants/modalContent";
 import * as Permission from "@/constants/permissions";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import CustomPropTypes from "@/customPropTypes";
-import NullScreen from "@/components/common/NullScreen";
 import Address from "@/components/common/Address";
 
 /**
  * @class PartyProfile - profile view for personnel/companies
  */
-
-const { TabPane } = Tabs;
 
 const propTypes = {
   fetchPartyById: PropTypes.func.isRequired,
@@ -177,7 +180,6 @@ export class PartyProfile extends Component {
         relationship: { party_business_role_code: record.party_business_role_code },
       }));
 
-
     if (this.state.isLoaded && party) {
       const formattedName = formatTitleString(party.name);
       return (
@@ -204,7 +206,7 @@ export class PartyProfile extends Component {
                     disabled={this.state.deletingParty}
                   >
                     <Button type="danger" disabled={this.state.deletingParty}>
-                      <Icon className="btn-danger--icon" type="minus-circle" theme="outlined" />
+                      <MinusCircleOutlined className="btn-danger--icon" />
                       Delete Party
                     </Button>
                   </Popconfirm>
@@ -232,7 +234,7 @@ export class PartyProfile extends Component {
             {!isEmpty(party.party_orgbook_entity) && (
               <div className="inline-flex">
                 <div className="padding-right">
-                  <Icon type="check-circle" className="icon-sm" />
+                  <CheckCircleOutlined className="icon-sm" />
                 </div>
                 <p>
                   <a
@@ -247,7 +249,7 @@ export class PartyProfile extends Component {
             )}
             <div className="inline-flex">
               <div className="padding-right">
-                <Icon type="mail" className="icon-sm" />
+                <MailOutlined className="icon-sm" />
               </div>
               {party.email && party.email !== "Unknown" ? (
                 <a href={`mailto:${party.email}`}>{party.email}</a>
@@ -257,7 +259,7 @@ export class PartyProfile extends Component {
             </div>
             <div className="inline-flex">
               <div className="padding-right">
-                <Icon type="phone" className="icon-sm" />
+                <PhoneOutlined className="icon-sm" />
               </div>
               <p>
                 {party.phone_no} {party.phone_ext ? `x${party.phone_ext}` : ""}
@@ -267,12 +269,12 @@ export class PartyProfile extends Component {
           </div>
           <div className="profile__content">
             <Tabs
-              className="center-tabs"
               activeKey="history"
               size="large"
               animated={{ inkBar: true, tabPane: false }}
+              centered
             >
-              <TabPane tab="History" key="history">
+              <Tabs.TabPane tab="History" key="history">
                 <div className="tab__content ">
                   <Table
                     align="left"
@@ -281,10 +283,10 @@ export class PartyProfile extends Component {
                     dataSource={transformRowData(this.props.parties[id].mine_party_appt).concat(
                       transformBusinessRoleRowData(this.props.parties[id].business_role_appts)
                     )}
-                    locale={{ emptyText: <NullScreen type="no-results" /> }}
+                    locale={{ emptyText: "No Data Yet" }}
                   />
                 </div>
-              </TabPane>
+              </Tabs.TabPane>
             </Tabs>
           </div>
         </div>

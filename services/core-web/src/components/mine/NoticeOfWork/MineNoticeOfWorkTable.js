@@ -1,12 +1,12 @@
 import React, { Component } from "react";
-import { Icon, Badge } from "antd";
+import { Badge } from "antd";
+import { EyeOutlined } from "@ant-design/icons";
 import { Link, withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import { formatDate } from "@common/utils/helpers";
 import * as Strings from "@common/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
 import * as router from "@/constants/routes";
-import NullScreen from "@/components/common/NullScreen";
 import CoreTable from "@/components/common/CoreTable";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import { EDIT_OUTLINE_VIOLET } from "@/constants/assets";
@@ -138,7 +138,7 @@ export class MineNoticeOfWorkTable extends Component {
               </Link>
             </AuthorizationWrapper>
             <Link to={this.createLinkTo(router.VIEW_NOTICE_OF_WORK_APPLICATION, record)}>
-              <Icon type="eye" className="icon-lg icon-svg-filter padding-large--left" />
+              <EyeOutlined className="icon-lg icon-svg-filter padding-large--left" />
             </Link>
           </div>
         ),
@@ -158,9 +158,6 @@ export class MineNoticeOfWorkTable extends Component {
         tableProps={{
           align: "left",
           pagination: false,
-          locale: {
-            emptyText: <NullScreen type="notice-of-work" />,
-          },
           onChange: handleTableChange(this.props.handleSearch),
         }}
       />

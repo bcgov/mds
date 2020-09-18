@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Form, Radio } from "antd";
+import { Form } from "@ant-design/compatible";
+import "@ant-design/compatible/assets/index.css";
+import { Radio } from "antd";
 
 /**
  * @class RenderRadioButtons - Ant Design `Radio` component used for boolean values in redux-form.
@@ -22,7 +24,10 @@ class RenderRadioButtons extends Component {
   state = { value: false };
 
   render() {
-    const options = [{ label: "Yes", value: true }, { label: "No", value: false }];
+    const options = [
+      { label: "Yes", value: true },
+      { label: "No", value: false },
+    ];
     return (
       <Form.Item
         validateStatus={this.props.meta.touched ? this.props.meta.error && "error" : ""}

@@ -5,7 +5,6 @@ import { formatDate, compareCodes, formatDateTime, dateSorter } from "@common/ut
 import { downloadNRISDocument } from "@common/utils/actionlessNetworkCalls";
 import { RED_CLOCK } from "@/constants/assets";
 import CustomPropTypes from "@/customPropTypes";
-import NullScreen from "@/components/common/NullScreen";
 import CoreTable from "@/components/common/CoreTable";
 import LinkButton from "@/components/common/LinkButton";
 
@@ -155,7 +154,6 @@ const ComplianceOrdersTable = (props) => (
     tableProps={{
       align: "left",
       pagination: true,
-      locale: { emptyText: <NullScreen type="no-results" /> },
       className: `center-pagination page-count-${pageCount(props.filteredOrders)}`,
     }}
   />

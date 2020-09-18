@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { Button, Icon, Progress, notification } from "antd";
+import { Button, Progress, notification } from "antd";
+import { DownloadOutlined } from "@ant-design/icons";
 import { getDocumentDownloadToken } from "@common/utils/actionlessNetworkCalls";
 import { getDocumentDownloadState } from "@common/selectors/noticeOfWorkSelectors";
 import {
@@ -188,7 +189,7 @@ export class FinalPermitDocuments extends Component {
               className="full-mobile"
               onClick={() => this.downloadDocumentPackage()}
             >
-              <Icon type="download" theme="outlined" className="padding-small--right icon-sm" />
+              <DownloadOutlined className="padding-small--right icon-sm" />
               Download All
             </Button>
             <Button

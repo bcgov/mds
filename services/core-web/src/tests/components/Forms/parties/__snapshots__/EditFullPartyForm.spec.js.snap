@@ -299,14 +299,27 @@ exports[`EditFullPartyForm renders properly 1`] = `
     <Row
       gutter={48}
     >
-      <Col />
+      <Col
+        span={24}
+      />
+    </Row>
+    <br />
+    <Divider />
+    <Row
+      gutter={16}
+    >
+      <Col
+        span={24}
+      >
+        <h5>
+          Assign Inspector Role
+        </h5>
+      </Col>
     </Row>
     <Connect(AuthorizationWrapper)
       permission="role_admin"
     >
-      <Row
-        gutter={0}
-      >
+      <Row>
         <p>
           By setting this checkbox you grant inspector role to this party. Please note that removing this checkbox will not delete party from associated entities.
         </p>
@@ -349,29 +362,26 @@ exports[`EditFullPartyForm renders properly 1`] = `
           />
         </Col>
       </Row>
-      <Row
-        gutter={0}
-      >
-        <Field
-          component={[Function]}
-          id="PartySignatureUpload"
-          name="PartySignatureUpload"
-          onFileChange={[Function]}
-        />
+      <Row>
+        <Col
+          span={24}
+        >
+          <Field
+            component={[Function]}
+            id="PartySignatureUpload"
+            name="PartySignatureUpload"
+            onFileChange={[Function]}
+          />
+        </Col>
       </Row>
     </Connect(AuthorizationWrapper)>
     <div
       className="right center-mobile"
     >
-      <Popconfirm
+      <ForwardRef
         cancelText="No"
         disabled={false}
-        icon={
-          <Icon
-            theme="filled"
-            type="exclamation-circle"
-          />
-        }
+        icon={<ForwardRef(ExclamationCircleFilled) />}
         okText="Yes"
         okType="primary"
         onConfirm={[MockFunction]}
@@ -389,7 +399,7 @@ exports[`EditFullPartyForm renders properly 1`] = `
         >
           Cancel
         </Button>
-      </Popconfirm>
+      </ForwardRef>
       <Button
         block={false}
         className="full-mobile"

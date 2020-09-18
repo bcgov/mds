@@ -1,9 +1,9 @@
 import React from "react";
-import { Menu, Dropdown, Button, Icon, Tooltip, Table } from "antd";
+import { Menu, Dropdown, Button, Tooltip, Table } from "antd";
+import { EyeOutlined, MinusSquareFilled, PlusSquareFilled } from "@ant-design/icons";
 import PropTypes from "prop-types";
 import * as Strings from "@common/constants/strings";
 import { formatDate, dateSorter, formatMoney } from "@common/utils/helpers";
-import NullScreen from "@/components/common/NullScreen";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
 import CustomPropTypes from "@/customPropTypes";
@@ -226,7 +226,7 @@ export const MineBondTable = (props) => {
               onClick={(event) => props.openViewBondModal(event, record)}
             >
               <div className="padding-small">
-                <Icon type="eye" alt="View" className="icon-lg icon-svg-filter" />
+                <EyeOutlined className="icon-lg icon-svg-filter" />
               </div>
             </Button>
             <AuthorizationWrapper permission={Permission.EDIT_SECURITIES}>
@@ -271,11 +271,11 @@ export const MineBondTable = (props) => {
     >
       {rowProps.expanded ? (
         <Tooltip title="Click to hide associated bonds." placement="right" mouseEnterDelay={1}>
-          <Icon type="minus-square" theme="filled" className="icon-lg--grey" />
+          <MinusSquareFilled className="icon-lg--grey" />
         </Tooltip>
       ) : (
         <Tooltip title="Click to view associated bonds." placement="right" mouseEnterDelay={1}>
-          <Icon type="plus-square" theme="filled" className="icon-lg--grey" />
+          <PlusSquareFilled className="icon-lg--grey" />
         </Tooltip>
       )}
     </a>
@@ -299,11 +299,10 @@ export const MineBondTable = (props) => {
       dataSource={transformRowData(props.permits)}
       columns={columns}
       tableProps={{
-        className: "nested-table additional-table-header",
+        className: "nested-table",
         rowClassName: "table-row-align-middle pointer fade-in",
         align: "left",
         pagination: false,
-        locale: { emptyText: <NullScreen type="securities" /> },
         expandIcon: RenderTableExpandIcon,
         expandRowByClick: true,
         expandedRowRender: bonds,

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import { Col, Row, Button, Icon } from "antd";
+import { Col, Row, Button } from "antd";
+import { UpOutlined, DownOutlined } from "@ant-design/icons";
 import { maxBy } from "lodash";
 import { TRASHCAN, EDIT_OUTLINE_VIOLET } from "@/constants/assets";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
@@ -43,7 +44,7 @@ const Section = (props) => {
         props.condition.sub_conditions.length === 0 &&
         props.condition.display_order !== 1 && (
           <Row gutter={32}>
-            <Col>&nbsp;</Col>
+            <Col span={24}>&nbsp;</Col>
           </Row>
         )}
       <Row gutter={[32, 32]}>
@@ -80,7 +81,7 @@ const Section = (props) => {
                   }}
                   disabled={props.editingConditionFlag}
                 >
-                  <Icon type="up" theme="outlined" />
+                  <UpOutlined />
                 </Button>
               </AuthorizationWrapper>
               <AuthorizationWrapper permission={Permission.ADMIN}>
@@ -94,7 +95,7 @@ const Section = (props) => {
                   }}
                   disabled={props.editingConditionFlag}
                 >
-                  <Icon type="down" theme="outlined" />
+                  <DownOutlined />
                 </Button>
               </AuthorizationWrapper>
               <AuthorizationWrapper permission={Permission.ADMIN}>
@@ -169,7 +170,7 @@ const Section = (props) => {
         </Row>
       )}
       <Row gutter={32}>
-        <Col>&nbsp;</Col>
+        <Col span={24}>&nbsp;</Col>
       </Row>
     </>
   );

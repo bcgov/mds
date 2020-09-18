@@ -1,10 +1,10 @@
 import React from "react";
-import { Button, Icon, Tooltip, Table } from "antd";
+import { Button, Tooltip, Table } from "antd";
+import { MinusSquareFilled, PlusSquareFilled } from "@ant-design/icons";
 import PropTypes from "prop-types";
 import * as Strings from "@common/constants/strings";
 import { formatMoney, truncateFilename } from "@common/utils/helpers";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
-import NullScreen from "@/components/common/NullScreen";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
 import CustomPropTypes from "@/customPropTypes";
@@ -192,11 +192,11 @@ export const MineReclamationInvoiceTable = (props) => {
     >
       {rowProps.expanded ? (
         <Tooltip title="Click to hide associated bonds." placement="right" mouseEnterDelay={1}>
-          <Icon type="minus-square" theme="filled" className="icon-lg--grey" />
+          <MinusSquareFilled className="icon-lg--grey" />
         </Tooltip>
       ) : (
         <Tooltip title="Click to view associated bonds." placement="right" mouseEnterDelay={1}>
-          <Icon type="plus-square" theme="filled" className="icon-lg--grey" />
+          <PlusSquareFilled className="icon-lg--grey" />
         </Tooltip>
       )}
     </a>
@@ -223,7 +223,6 @@ export const MineReclamationInvoiceTable = (props) => {
         rowClassName: "table-row-align-middle pointer fade-in",
         align: "left",
         pagination: false,
-        locale: { emptyText: <NullScreen type="securities" /> },
         expandIcon: RenderTableExpandIcon,
         expandRowByClick: true,
         expandedRowRender: invoices,

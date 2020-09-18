@@ -258,12 +258,6 @@ exports[`MineReportTable renders properly 1`] = `
   tableProps={
     Object {
       "align": "left",
-      "locale": Object {
-        "emptyText": <NullScreen
-          message=""
-          type="reports"
-        />,
-      },
       "onChange": [Function],
       "pagination": false,
     }

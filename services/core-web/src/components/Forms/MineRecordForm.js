@@ -3,7 +3,10 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { compose } from "redux";
 import { Field, reduxForm, FieldArray, formValueSelector } from "redux-form";
-import { Form, Button, Col, Row, Popconfirm, Icon, Collapse, notification, Tag, Radio } from "antd";
+import { Form } from "@ant-design/compatible";
+import "@ant-design/compatible/assets/index.css";
+import { Button, Col, Row, Popconfirm, Collapse, notification, Tag, Radio } from "antd";
+import { PlusOutlined } from "@ant-design/icons";
 import { difference, map, isEmpty, uniq } from "lodash";
 import {
   required,
@@ -304,7 +307,7 @@ export class MineRecordForm extends Component {
           ))}
         </Collapse>
         <Button className="btn--dropdown" onClick={(event) => this.addField(event, fields)}>
-          <Icon type="plus" style={{ color: Styles.COLOR.violet }} />
+          <PlusOutlined style={{ color: Styles.COLOR.violet }} />
           {fields.length === 0 && !this.props.currentMineTypes
             ? "Add Mine Type"
             : "Add Another Mine Type"}
@@ -315,7 +318,7 @@ export class MineRecordForm extends Component {
     return (
       <Form layout="vertical" onSubmit={this.props.handleSubmit}>
         <Row gutter={16}>
-          <Col>
+          <Col span={24}>
             <Form.Item>
               <Field
                 id="mine_name"
@@ -328,7 +331,7 @@ export class MineRecordForm extends Component {
           </Col>
         </Row>
         <Row gutter={16}>
-          <Col>
+          <Col span={24}>
             <Form.Item>
               <Field
                 id="mine_status"
@@ -345,7 +348,7 @@ export class MineRecordForm extends Component {
           </Col>
         </Row>
         <Row gutter={16}>
-          <Col>
+          <Col span={24}>
             <Form.Item label="Is this a historic mine status?">
               <Radio.Group
                 onChange={this.toggleStatusDate}
@@ -360,7 +363,7 @@ export class MineRecordForm extends Component {
         </Row>
         {this.state.showStatusDate && (
           <Row gutter={16}>
-            <Col>
+            <Col span={24}>
               <Form.Item label="Date of Status Change" className="padding-large">
                 <p className="p-light">
                   The date will default to todays date, unless otherwise specified.
@@ -418,7 +421,7 @@ export class MineRecordForm extends Component {
         <Form.Item label="Mine Type" />
         <FieldArray name="mine_types" component={renderTypeSelect} />
         <Row gutter={16}>
-          <Col>
+          <Col span={24}>
             <Form.Item>
               <Field
                 id="mine_note"
@@ -431,7 +434,7 @@ export class MineRecordForm extends Component {
           </Col>
         </Row>
         <Row gutter={16}>
-          <Col>
+          <Col span={24}>
             <Form.Item>
               <Field
                 id="major_mine_ind"
@@ -445,7 +448,7 @@ export class MineRecordForm extends Component {
           </Col>
         </Row>
         <Row gutter={16}>
-          <Col>
+          <Col span={24}>
             <Form.Item>
               <Field
                 id="exemption_fee_status_code"
@@ -459,7 +462,7 @@ export class MineRecordForm extends Component {
           </Col>
         </Row>
         <Row gutter={16}>
-          <Col>
+          <Col span={24}>
             <Form.Item>
               <Field
                 id="exemption_fee_status_note"

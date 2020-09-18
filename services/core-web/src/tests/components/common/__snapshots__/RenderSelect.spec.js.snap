@@ -4,12 +4,17 @@ exports[`RenderSelect renders properly 1`] = `
 <FormItem
   hasFeedback={false}
   help={false}
+  id="1"
   label=""
+  onSelect={[Function]}
   validateStatus=""
 >
   <Select
-    choiceTransitionName="zoom"
+    allowClear={true}
+    bordered={true}
+    choiceTransitionName=""
     disabled={false}
+    dropdownMatchSelectWidth={true}
     filterOption={[Function]}
     getPopupContainer={[Function]}
     id="1"
@@ -19,8 +24,12 @@ exports[`RenderSelect renders properly 1`] = `
     showSearch={true}
     transitionName="slide-up"
   >
-    <Option />
-    <Option />
+    <Option
+      disabled={false}
+    />
+    <Option
+      disabled={false}
+    />
   </Select>
 </FormItem>
 `;

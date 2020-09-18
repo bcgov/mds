@@ -1,5 +1,6 @@
 import React from "react";
-import { Table, Menu, Dropdown, Button, Icon, Tooltip, Popconfirm } from "antd";
+import { Table, Menu, Dropdown, Button, Tooltip, Popconfirm } from "antd";
+import { MinusSquareFilled, PlusOutlined, PlusSquareFilled } from "@ant-design/icons";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { formatDate } from "@common/utils/helpers";
@@ -7,7 +8,6 @@ import { getPartyRelationships } from "@common/selectors/partiesSelectors";
 import { getDropdownPermitStatusOptionsHash } from "@common/selectors/staticContentSelectors";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
 import * as Strings from "@common/constants/strings";
-import NullScreen from "@/components/common/NullScreen";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
 import CustomPropTypes from "@/customPropTypes";
@@ -142,11 +142,7 @@ const columns = [
               onClick={(event) => record.openAddAmalgamatedPermitModal(event, record.permit)}
             >
               <div>
-                <Icon
-                  type="plus"
-                  className="padding-small add-permit-dropdown-button-icon"
-                  theme="outlined"
-                />
+                <PlusOutlined className="padding-small add-permit-dropdown-button-icon" />
                 {text.hasAmalgamated ? "Add Permit Amendment" : "Amalgamate Permit"}
               </div>
             </button>
@@ -159,11 +155,7 @@ const columns = [
                 onClick={(event) => record.openAddPermitAmendmentModal(event, record.permit)}
               >
                 <div>
-                  <Icon
-                    type="plus"
-                    className="padding-small add-permit-dropdown-button-icon"
-                    theme="outlined"
-                  />
+                  <PlusOutlined className="padding-small add-permit-dropdown-button-icon" />
                   Add Permit Amendment
                 </div>
               </button>
@@ -414,11 +406,11 @@ export const RenderPermitTableExpandIcon = (rowProps) => (
   >
     {rowProps.expanded ? (
       <Tooltip title="Click to hide amendment history." placement="right" mouseEnterDelay={1}>
-        <Icon type="minus-square" theme="filled" className="icon-lg--grey" />
+        <MinusSquareFilled className="icon-lg--grey" />
       </Tooltip>
     ) : (
       <Tooltip title="Click to view amendment history." placement="right" mouseEnterDelay={1}>
-        <Icon type="plus-square" theme="filled" className="icon-lg--grey" />
+        <PlusSquareFilled className="icon-lg--grey" />
       </Tooltip>
     )}
   </a>
@@ -466,7 +458,6 @@ export const MinePermitTable = (props) => {
         rowClassName: "table-row-align-middle pointer fade-in",
         align: "left",
         pagination: false,
-        locale: { emptyText: <NullScreen type="permit" /> },
         expandIcon: RenderPermitTableExpandIcon,
         expandRowByClick: true,
         expandedRowRender: amendmentHistory,

@@ -33,8 +33,6 @@ import MineDashboardContentCard from "@/components/mine/MineDashboardContentCard
 import { CoreTooltip } from "@/components/common/CoreTooltip";
 import { modalConfig } from "@/components/modalContent/config";
 
-const { TabPane } = Tabs;
-
 /**
  * @class  MineSecurityInfo - contains all information relating to bonds and securities
  */
@@ -199,6 +197,7 @@ export class MineSecurityInfo extends Component {
         bondStatusOptionsHash: this.props.bondStatusOptionsHash,
         permitGuid: bond.permit_guid,
         mineGuid: this.props.mineGuid,
+        initialValues: { project_id: bond.project_id },
       },
       width: "50vw",
       content: modalConfig.CLOSE_BOND_MODAL,
@@ -226,10 +225,9 @@ export class MineSecurityInfo extends Component {
   closeBond = (bondStatusCode, values, bond) => {
     const payload = {
       ...bond,
+      ...values,
       bond_status_code: bondStatusCode,
       bond_type_code: bondStatusCode === "CON" ? "CAS" : bond.bond_type_code,
-      closed_date: values.closed_date,
-      closed_note: values.closed_note,
     };
     return this.editBond(payload, bond.bond_guid);
   };
@@ -334,7 +332,7 @@ export class MineSecurityInfo extends Component {
         <h2>Securities</h2>
         <br />
         <Tabs type="card" style={{ textAlign: "left !important" }}>
-          <TabPane tab="Bonds" key="1">
+          <Tabs.TabPane tab="Bonds" key="1">
             <div>
               <div className="dashboard--cards">
                 <MineDashboardContentCard
@@ -379,8 +377,8 @@ export class MineSecurityInfo extends Component {
                 getTotalAssessedSum={this.getTotalAssessedSum}
               />
             </div>
-          </TabPane>
-          <TabPane tab="Reclamation Invoices" key="2">
+          </Tabs.TabPane>
+          <Tabs.TabPane tab="Reclamation Invoices" key="2">
             <br />
             <h4 className="uppercase">Reclamation Invoices</h4>
             <p>
@@ -402,7 +400,7 @@ export class MineSecurityInfo extends Component {
               getSum={this.getSum}
               getAmountSum={this.getAmountSum}
             />
-          </TabPane>
+          </Tabs.TabPane>
         </Tabs>
       </div>
     );

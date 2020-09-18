@@ -1,11 +1,6 @@
 // stylying overrides for Ant components
 
 // TABS
-.center-tabs {
-  & .ant-tabs-bar {
-    text-align: center;
-  }
-}
 .ant-tabs-nav {
   .ant-tabs-tab {
     font-family: $default-font;
@@ -46,12 +41,17 @@
 .ant-btn-sm,
 .ant-btn-secondary {
   margin: 10px;
+  padding: 0px 11px;
   color: $secondary-btn-color;
   border: 1px solid $secondary-btn-color;
 
   &:hover {
     color: $secondary-btn-color-hover;
     border: 1px solid $secondary-btn-border-color-hover;
+  }
+
+  span {
+    font-size: $font-size-base;
   }
 }
 
@@ -60,6 +60,11 @@
   background-color: white;
   border: 1px solid $danger-btn-color;
   &:hover {
+    background-color: white;
+    border: 1px solid $danger-btn-color-hover;
+    color: $danger-btn-color-hover;
+  }
+  &:focus {
     background-color: white;
     border: 1px solid $danger-btn-color-hover;
     color: $danger-btn-color-hover;
@@ -89,7 +94,6 @@
 
 .ant-pagination-prev .ant-pagination-item-link,
 .ant-pagination-next .ant-pagination-item-link,
-.ant-select-selection,
 .ant-pagination-item {
   & a {
     text-decoration: none !important;
@@ -100,10 +104,27 @@
   }
 }
 
+.ant-select-multiple.ant-select-show-arrow .ant-select-selector,
+.ant-select-multiple.ant-select-allow-clear .ant-select-selector {
+  padding-right: 1px;
+}
+
+.ant-select-multiple .ant-select-selection-item {
+  height: 25px;
+  line-height: initial;
+  margin: 2px;
+}
+
 .ant-btn-primary {
   font-weight: $light;
   color: $pure-white;
+  background-color: $primary-btn-color;
   &:hover {
+    color: $pure-white;
+    background-color: $primary-btn-color-hover;
+    border: 1px solid $primary-btn-border-color-hover;
+  }
+  &:focus {
     color: $pure-white;
     background-color: $primary-btn-color-hover;
     border: 1px solid $primary-btn-border-color-hover;
@@ -129,6 +150,10 @@
   border-style: none;
   box-shadow: none;
   &:hover {
+    border-style: none !important;
+    border: 0px;
+  }
+  &:focus {
     border-style: none !important;
     border: 0px;
   }
@@ -201,6 +226,7 @@
 .ant-alert-description,
 .ant-alert-close-icon .anticon-close {
   color: $pure-white;
+  line-height: 2rem;
 }
 
 .ant-alert-close-icon .anticon-close:hover {
@@ -221,8 +247,16 @@
 }
 
 // DATE PICKER
-.ant-calendar-picker {
+.ant-picker {
   width: 100%;
+  padding: 4px 11px;
+}
+.ant-picker-today-btn {
+  color: $a-color;
+
+  &:hover {
+    color: $violet;
+  }
 }
 
 // COLLAPSE
@@ -257,6 +291,17 @@
   &:hover {
     background-color: $light-grey;
   }
+}
+
+//  SUBMENU
+.ant-menu-submenu {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.ant-menu-horizontal > .ant-menu-submenu > .ant-menu-submenu-title {
+  padding-left: 20px;
+  padding-right: 20px;
 }
 
 .ant-dropdown-menu-submenu-title {
@@ -343,7 +388,6 @@ input {
   position: relative;
   display: inline-block;
   width: 100%;
-  height: 32px;
   padding: 4px 11px;
   color: rgba(0, 0, 0, 0.65);
   font-size: 1rem;
@@ -361,6 +405,12 @@ input {
     cursor: not-allowed;
     opacity: 1;
   }
+}
+
+.ant-input-affix-wrapper,
+.ant-input-affix-wrapper-sm,
+.ant-input-affix-wrapper-lg {
+  padding: 4px 11px;
 }
 
 // when selects are disabled, remove border to match styling of other disabled inputs
@@ -448,8 +498,31 @@ select {
   .ant-tooltip-inner {
     background-color: $violet;
   }
-  .ant-tooltip-arrow::before,
-  .ant-tooltip-arrow::after {
+  .ant-tooltip-arrow-content {
     background-color: $violet !important;
   }
+}
+
+//Legacy form fields
+.ant-radio-wrapper > span,
+.ant-legacy-form-item-label > label {
+  font-size: 1rem;
+}
+
+.ant-legacy-form-item-control-wrapper {
+  flex: 1 1 100%;
+}
+
+.ant-legacy-form-item {
+  margin-bottom: 6px;
+}
+
+.ant-legacy-form-vertical {
+  .ant-legacy-form-item {
+    padding-bottom: 2px;
+  }
+}
+
+.modal__close {
+  font-size: inherit !important;
 }

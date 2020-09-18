@@ -210,9 +210,7 @@ exports[`ViewIncidentModal renders properly 1`] = `
         <div
           className="block"
         >
-          <Tag
-            closable={false}
-          />
+          <Tag />
         </div>
       </div>
       <div
@@ -258,7 +256,7 @@ exports[`ViewIncidentModal renders properly 1`] = `
     <h5>
       Initial Report Documents
     </h5>
-    <withStore(Table)
+    <Table
       align="left"
       columns={
         Array [
@@ -280,10 +278,11 @@ exports[`ViewIncidentModal renders properly 1`] = `
       }
       locale={
         Object {
-          "emptyText": "This incident does not contain any initial documents",
+          "emptyText": "No Data Yet",
         }
       }
       pagination={false}
+      rowKey="key"
     />
     <br />
   </div>
@@ -364,7 +363,7 @@ exports[`ViewIncidentModal renders properly 1`] = `
     <h5>
       Final Investigation Report
     </h5>
-    <withStore(Table)
+    <Table
       align="left"
       columns={
         Array [
@@ -378,10 +377,11 @@ exports[`ViewIncidentModal renders properly 1`] = `
       dataSource={Array []}
       locale={
         Object {
-          "emptyText": "This incident does not contain any final documents",
+          "emptyText": "No Data Yet",
         }
       }
       pagination={false}
+      rowKey="key"
     />
     <br />
   </div>

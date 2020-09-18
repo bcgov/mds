@@ -37,7 +37,7 @@ export const ReclamationSummary = (props) => {
         columns={columns}
         dataSource={props.summary}
         locale={{
-          emptyText: "No data",
+          emptyText: "No Data Yet",
         }}
       />
     </div>

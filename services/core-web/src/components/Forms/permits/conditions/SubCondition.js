@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import { Col, Row, Button, Icon } from "antd";
+import { Col, Row, Button } from "antd";
+import { UpOutlined, DownOutlined } from "@ant-design/icons";
 import { maxBy } from "lodash";
 import { TRASHCAN, EDIT_OUTLINE_VIOLET } from "@/constants/assets";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
@@ -42,10 +43,10 @@ const SubCondition = (props) => {
       {props.condition && props.condition.display_order !== 1 && (
         <>
           <Row gutter={32}>
-            <Col>&nbsp;</Col>
+            <Col span={24}>&nbsp;</Col>
           </Row>
           <Row gutter={32}>
-            <Col>&nbsp;</Col>
+            <Col span={24}>&nbsp;</Col>
           </Row>
         </>
       )}
@@ -58,10 +59,10 @@ const SubCondition = (props) => {
         )}
         <Col span={props.isViewOnly ? 17 : 18}>
           <Row>
-            <Col>{!isEditing && props.condition.condition}</Col>
+            <Col span={24}>{!isEditing && props.condition.condition}</Col>
           </Row>
           <Row>
-            <Col>
+            <Col span={24}>
               {isEditing && (
                 <SubConditionForm
                   onCancel={() => {
@@ -92,7 +93,7 @@ const SubCondition = (props) => {
                   }}
                   disabled={props.editingConditionFlag}
                 >
-                  <Icon type="up" theme="outlined" />
+                  <UpOutlined />
                 </Button>
               </AuthorizationWrapper>
               <AuthorizationWrapper permission={Permission.ADMIN}>
@@ -106,7 +107,7 @@ const SubCondition = (props) => {
                   }}
                   disabled={props.editingConditionFlag}
                 >
-                  <Icon type="down" theme="outlined" />
+                  <DownOutlined />
                 </Button>
               </AuthorizationWrapper>
               <AuthorizationWrapper permission={Permission.ADMIN}>
@@ -164,7 +165,7 @@ const SubCondition = (props) => {
         ))}
       {props.condition && props.condition.sub_conditions.length === 0 && (
         <Row gutter={32}>
-          <Col>&nbsp;</Col>
+          <Col span={24}>&nbsp;</Col>
         </Row>
       )}
       {!isEditing && !props.isViewOnly && (

@@ -12,8 +12,6 @@ import * as FORM from "@/constants/forms";
 import AddFullPartyForm from "@/components/Forms/parties/AddFullPartyForm";
 import AddRolesForm from "@/components/Forms/parties/AddRolesForm";
 
-const { Step } = Steps;
-
 const propTypes = {
   fetchData: PropTypes.func.isRequired,
   fetchMineNameList: PropTypes.func.isRequired,
@@ -234,7 +232,7 @@ export class AddPartyModal extends Component {
         <div>
           <Steps current={this.state.current}>
             {steps.map((step) => (
-              <Step key={step.title} title={step.title} />
+              <Steps.Step key={step.title} title={step.title} />
             ))}
           </Steps>
           <div>{steps[this.state.current].content}</div>

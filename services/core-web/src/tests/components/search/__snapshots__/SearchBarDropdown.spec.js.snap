@@ -29,9 +29,8 @@ exports[`SearchBarDropdown renders properly 1`] = `
     key="/search?q=Abb"
   >
     <p>
-      <Icon
+      <ForwardRef(FileSearchOutlined)
         className="icon-lg icon-svg-filter"
-        type="file-search"
       />
       See all results...
     </p>

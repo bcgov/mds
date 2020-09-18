@@ -18,10 +18,8 @@ exports[`FinalPermitDocuments renders properly 1`] = `
         onClick={[Function]}
         type="secondary"
       >
-        <Icon
+        <ForwardRef(DownloadOutlined)
           className="padding-small--right icon-sm"
-          theme="outlined"
-          type="download"
         />
         Download All
       </Button>

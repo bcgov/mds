@@ -4,11 +4,15 @@ exports[`Reports renders properly 1`] = `
 <Row
   gutter={0}
 >
-  <Col>
+  <Col
+    span={24}
+  >
     <Row
       gutter={0}
     >
-      <Col>
+      <Col
+        span={24}
+      >
         <Title
           level={4}
         >
@@ -45,7 +49,9 @@ exports[`Reports renders properly 1`] = `
         ]
       }
     >
-      <Col>
+      <Col
+        span={24}
+      >
         <Connect(AuthorizationWrapper)>
           <Button
             block={false}
@@ -78,7 +84,9 @@ exports[`Reports renders properly 1`] = `
         ]
       }
     >
-      <Col>
+      <Col
+        span={24}
+      >
         <Connect(ReportsTable)
           isLoaded={false}
           openEditReportModal={[Function]}

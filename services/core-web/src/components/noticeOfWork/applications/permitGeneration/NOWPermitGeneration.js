@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import moment from "moment";
 import { isEmpty } from "lodash";
-import { Button, Menu, Popconfirm, Dropdown, Icon, Result, Row, Col } from "antd";
+import { Button, Menu, Popconfirm, Dropdown, Result, Row, Col } from "antd";
+import { DownOutlined } from "@ant-design/icons";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { formatDate } from "@common/utils/helpers";
@@ -15,7 +16,11 @@ import {
   updatePermitAmendment,
   fetchDraftPermitByNOW,
 } from "@common/actionCreators/permitActionCreator";
-import { getPermits, getDraftPermitForNOW, getDraftPermitAmendmentForNOW } from "@common/selectors/permitSelectors";
+import {
+  getPermits,
+  getDraftPermitForNOW,
+  getDraftPermitAmendmentForNOW,
+} from "@common/selectors/permitSelectors";
 import * as FORM from "@/constants/forms";
 import CustomPropTypes from "@/customPropTypes";
 import GeneratePermitForm from "@/components/Forms/permits/GeneratePermitForm";
@@ -263,34 +268,34 @@ export class NOWPermitGeneration extends Component {
           <Dropdown overlay={this.menu()} placement="bottomLeft">
             <Button type="secondary" className="full-mobile">
               Actions
-              <Icon type="down" />
+              <DownOutlined />
             </Button>
           </Dropdown>
         )}
       </div>
     ) : (
-        <div className="center padding-md">
-          <div className="inline-flex flex-center block-mobile">
-            <Popconfirm
-              placement="bottomRight"
-              title="You have unsaved changes, Are you sure you want to cancel?"
-              onConfirm={this.handleCancelDraftEdit}
-              okText="Yes"
-              cancelText="No"
-            >
-              <Button type="secondary" className="full-mobile">
-                Cancel
+      <div className="center padding-md">
+        <div className="inline-flex flex-center block-mobile">
+          <Popconfirm
+            placement="bottomRight"
+            title="You have unsaved changes, Are you sure you want to cancel?"
+            onConfirm={this.handleCancelDraftEdit}
+            okText="Yes"
+            cancelText="No"
+          >
+            <Button type="secondary" className="full-mobile">
+              Cancel
             </Button>
-            </Popconfirm>
-            <Button className="full-mobile" type="tertiary" onClick={this.handlePermitGenSubmit}>
-              Preview
+          </Popconfirm>
+          <Button className="full-mobile" type="tertiary" onClick={this.handlePermitGenSubmit}>
+            Preview
           </Button>
-            <Button type="primary" className="full-mobile" onClick={this.handleSaveDraftEdit}>
-              Save
+          <Button type="primary" className="full-mobile" onClick={this.handleSaveDraftEdit}>
+            Save
           </Button>
-          </div>
         </div>
-      );
+      </div>
+    );
   };
 
   render() {
@@ -345,26 +350,26 @@ export class NOWPermitGeneration extends Component {
                         ]}
                       />
                     ) : (
-                        <>
-                          <NullScreen type="draft-permit" />
-                          <Button onClick={this.startPreDraft}>Start Draft Permit</Button>
-                        </>
-                      )}
+                      <>
+                        <NullScreen type="draft-permit" />
+                        <Button onClick={this.startPreDraft}>Start Draft Permit</Button>
+                      </>
+                    )}
                   </div>
                 ) : (
-                    <GeneratePermitForm
-                      initialValues={this.state.permitGenObj}
-                      isAmendment={this.props.isAmendment}
-                      noticeOfWork={this.props.noticeOfWork}
-                      isViewMode={this.props.isViewMode}
-                    />
-                  )}
+                  <GeneratePermitForm
+                    initialValues={this.state.permitGenObj}
+                    isAmendment={this.props.isAmendment}
+                    noticeOfWork={this.props.noticeOfWork}
+                    isViewMode={this.props.isViewMode}
+                  />
+                )}
               </LoadingWrapper>
             </div>
           </>
         ) : (
-            <NullScreen type="no-permittee" />
-          )}
+          <NullScreen type="no-permittee" />
+        )}
       </div>
     );
   }

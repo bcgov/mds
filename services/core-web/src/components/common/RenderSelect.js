@@ -1,13 +1,13 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Form, Select } from "antd";
+import { Form } from "@ant-design/compatible";
+import "@ant-design/compatible/assets/index.css";
+import { Select } from "antd";
 import CustomPropTypes from "@/customPropTypes";
 
 /**
  * @constant RenderSelect - Ant Design `Select` component for redux-form - used for small data sets that (< 100);
  * There is a bug when the data sets are large enough to cause the dropdown to scroll, and the field is in a modal.
- * In the case where the modal cannot scroll, it is better to pass in the prop doNotPinDropdown.  It allows the
- * dropdown to render properly
  */
 
 const propTypes = {
@@ -19,7 +19,7 @@ const propTypes = {
   data: CustomPropTypes.options,
   disabled: PropTypes.bool,
   onSelect: PropTypes.func,
-  doNotPinDropdown: PropTypes.bool,
+  usedOptions: PropTypes.arrayOf(PropTypes.string),
 };
 
 const defaultProps = {
@@ -29,46 +29,57 @@ const defaultProps = {
   disabled: false,
   meta: {},
   onSelect: () => {},
-  doNotPinDropdown: false,
+  usedOptions: [],
 };
 
-const RenderSelect = (props) => (
-  <Form.Item
-    label={props.label}
-    validateStatus={
-      props.meta.touched ? (props.meta.error && "error") || (props.meta.warning && "warning") : ""
-    }
-    help={
-      props.meta.touched &&
-      ((props.meta.error && <span>{props.meta.error}</span>) ||
-        (props.meta.warning && <span>{props.meta.warning}</span>))
-    }
-  >
-    <Select
-      disabled={props.disabled}
-      getPopupContainer={props.doNotPinDropdown ? null : () => document.getElementById(props.id)}
-      showSearch
-      placeholder={props.placeholder}
-      optionFilterProp="children"
-      filterOption={(input, option) =>
-        option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+const RenderSelect = (props) => {
+  return (
+    <Form.Item
+      label={props.label}
+      validateStatus={
+        props.meta.touched ? (props.meta.error && "error") || (props.meta.warning && "warning") : ""
+      }
+      help={
+        props.meta.touched &&
+        ((props.meta.error && <span>{props.meta.error}</span>) ||
+          (props.meta.warning && <span>{props.meta.warning}</span>))
       }
       id={props.id}
-      {...props.input}
       onSelect={props.onSelect}
+      defaultValue={props.input.value}
+      value={props.input.value ? props.input.value : undefined}
+      onChange={props.input.onChange}
     >
-      {props.data.map((opt) => (
-        <Select.Option
-          disabled={props.usedOptions && props.usedOptions.includes(opt.value)}
-          key={opt.value}
-          value={opt.value}
-        >
-          {opt.label}
-        </Select.Option>
-      ))}
-    </Select>
-  </Form.Item>
-);
+      <Select
+        disabled={props.disabled}
+        allowClear
+        dropdownMatchSelectWidth
+        getPopupContainer={(trigger) => trigger.parentNode}
+        showSearch
+        placeholder={props.placeholder}
+        optionFilterProp="children"
+        filterOption={(input, option) =>
+          option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+        }
+        id={props.id}
+        defaultValue={props.input.value}
+        value={props.input.value ? props.input.value : undefined}
+        onChange={props.input.onChange}
+        onSelect={props.onSelect}
+      >
+        {props.data.map((opt) => (
+          <Select.Option
+            disabled={props.usedOptions && props.usedOptions.includes(opt.value)}
+            key={opt.value}
+            value={opt.value}
+          >
+            {opt.label}
+          </Select.Option>
+        ))}
+      </Select>
+    </Form.Item>
+  );
+};
 
 RenderSelect.propTypes = propTypes;
 RenderSelect.defaultProps = defaultProps;
