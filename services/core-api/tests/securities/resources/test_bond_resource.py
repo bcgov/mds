@@ -1,4 +1,4 @@
-import json
+import json, random
 
 from tests.factories import BondFactory, MineFactory, PermitFactory, PartyFactory, create_mine_and_permit
 from app.api.now_applications.resources.now_application_list_resource import PAGE_DEFAULT, PER_PAGE_DEFAULT
@@ -221,7 +221,7 @@ class TestBondsResource:
         assert changed_permit.project_id != old_project_id
 
     def test_transfer_bond_happy(self, test_client, db_session, auth_headers):
-        """Should return the edited bond with a 200 response code and the permit project id should be changed"""
+        """Should return a new bond with a 200 preserving all details of the original bond"""
         mine, permit = create_mine_and_permit()
         bond = permit.bonds[0]
         bond.bond_status_code = "ACT"
@@ -239,3 +239,63 @@ class TestBondsResource:
             headers=auth_headers['full_auth_header'])
 
         assert post_resp.status_code == 200, post_resp.response
+        post_data = json.loads(post_resp.data.decode())
+        assert {k: bond.__dict__[k] for k in post_data.keys()} == post_data
+
+    def test_transfer_bond_no_permit_guid(self, test_client, db_session, auth_headers):
+        """Should return an error because the target permit_guid does not exist"""
+        mine, permit = create_mine_and_permit()
+        bond = permit.bonds[0]
+        bond.bond_status_code = "ACT"
+
+        permit2 = PermitFactory()
+        permit2._all_mines.append(mine)
+
+        data = {"permit_guid": BAD_GUID}
+
+        post_resp = test_client.put(
+            f'/securities/bonds/{bond.bond_guid}/transfer',
+            json=data,
+            headers=auth_headers['full_auth_header'])
+
+        assert post_resp.status_code == 400, post_resp.response
+
+    def test_transfer_bond_only_allow_within_mine(self, test_client, db_session, auth_headers):
+        """Should return the edited bond with a 200 response code and the permit project id should be changed"""
+        mine, permit = create_mine_and_permit()
+        bond = permit.bonds[0]
+        bond.bond_status_code = "ACT"
+
+        permit2 = PermitFactory()
+        #permit2._all_mines.append(mine)
+
+        data = {
+            "permit_guid": permit2.permit_guid,
+        }
+
+        post_resp = test_client.put(
+            f'/securities/bonds/{bond.bond_guid}/transfer',
+            json=data,
+            headers=auth_headers['full_auth_header'])
+
+        assert post_resp.status_code == 400, post_resp.response
+
+    def test_transfer_bond_only_allow_active(self, test_client, db_session, auth_headers):
+        """Should return a 400 error because the bond is not in the active (ACT) state"""
+        mine, permit = create_mine_and_permit()
+        bond = permit.bonds[0]
+        bond.bond_status_code = random.choice(["CON", "REL"])
+
+        permit2 = PermitFactory()
+        #permit2._all_mines.append(mine)
+
+        data = {
+            "permit_guid": permit2.permit_guid,
+        }
+
+        post_resp = test_client.put(
+            f'/securities/bonds/{bond.bond_guid}/transfer',
+            json=data,
+            headers=auth_headers['full_auth_header'])
+
+        assert post_resp.status_code == 400, post_resp.response
