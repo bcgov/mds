@@ -53,6 +53,10 @@ export class NOWSecurities extends Component {
     this.setState((prevState) => ({ isEditMode: !prevState.isEditMode }));
   };
 
+  openEditMode = () => {
+    this.setState({ isEditMode: true });
+  };
+
   addSecurityToPermit = (payload) => {
     this.props
       .updatePermitAmendment(
@@ -87,7 +91,7 @@ export class NOWSecurities extends Component {
                   </Button>
                 </Popconfirm>
               ) : (
-                <Button type="secondary" onClick={this.toggleEditMode}>
+                <Button type="secondary" onClick={this.openEditMode}>
                   <img src={EDIT_OUTLINE} title="Edit" alt="Edit" className="padding-md--right" />
                   Edit
                 </Button>
@@ -100,6 +104,7 @@ export class NOWSecurities extends Component {
             isEditMode={this.state.isEditMode}
             initialValues={this.props.draftAmendment}
             onSubmit={this.addSecurityToPermit}
+            onCancel={this.toggleEditMode}
           />
         </LoadingWrapper>
         <br />
