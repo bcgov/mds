@@ -67,6 +67,7 @@ exports[`NOWSecurities renders properly 1`] = `
       }
       isEditMode={false}
       keepDirtyOnReinitialize={false}
+      onCancel={[Function]}
       onSubmit={[Function]}
       persistentSubmitErrors={false}
       pure={true}

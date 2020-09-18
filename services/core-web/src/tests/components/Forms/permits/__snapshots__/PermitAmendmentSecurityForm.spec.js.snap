@@ -69,6 +69,7 @@ exports[`PermitAmendmentSecurityForm renders properly 1`] = `
       icon={<ForwardRef(ExclamationCircleFilled) />}
       okText="Yes"
       okType="primary"
+      onConfirm={[Function]}
       placement="topRight"
       title="Are you sure you want to cancel?"
       transitionName="zoom-big"
