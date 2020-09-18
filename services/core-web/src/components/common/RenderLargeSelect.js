@@ -28,7 +28,7 @@ const propTypes = {
   handleSelect: PropTypes.func,
 };
 
-const doNothing = () => {};
+const doNothing = () => { };
 const defaultProps = {
   label: "",
   placeholder: "",
@@ -63,6 +63,7 @@ const RenderLargeSelect = (props) => (
       onSelect={props.handleSelect}
       onChange={props.input.onChange}
       onBlur={props.input.onChange(props.selectedOption.value)}
+      {...props.input}
     />
   </Form.Item>
 );

@@ -41,6 +41,7 @@ exports[`RenderLargeSelect renders properly 1`] = `
       }
     }
     transitionName="slide-up"
+    value=""
   />
 </FormItem>
 `;
