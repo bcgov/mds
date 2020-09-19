@@ -31,6 +31,11 @@ const propTypes = {
   openModal: PropTypes.func.isRequired,
   setNoticeOfWorkApplicationDocumentDownloadState: PropTypes.func.isRequired,
   documentDownloadState: CustomPropTypes.documentDownloadState.isRequired,
+  adminView: PropTypes.bool,
+};
+
+const defaultProps = {
+  adminView: false,
 };
 
 export class FinalPermitDocuments extends Component {
@@ -182,10 +187,10 @@ export class FinalPermitDocuments extends Component {
     ) : (
       <div>
         <div className="inline-flex between">
-          <div>
-            <h3>Final Application Package</h3>
+          <>
+            {!this.props.adminView && <h4>Final Application Package</h4>}
             <p>All files in this list will appear in the Preamble on the permit</p>
-          </div>
+          </>
           <div>
             <Button
               type="secondary"
@@ -234,5 +239,6 @@ const mapDispatchToProps = (dispatch) =>
   );
 
 FinalPermitDocuments.propTypes = propTypes;
+FinalPermitDocuments.defaultProps = defaultProps;
 
 export default connect(mapStateToProps, mapDispatchToProps)(FinalPermitDocuments);

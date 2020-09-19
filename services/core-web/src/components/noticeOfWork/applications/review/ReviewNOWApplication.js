@@ -729,7 +729,6 @@ export const ReviewNOWApplication = (props) => {
               )}
             </div>
           </div>
-          {/* <h2>General Information</h2> */}
           <Divider />
           <ScrollContentWrapper id="application-info" title="Application Info">
             {renderApplicationInfo()}
@@ -760,13 +759,16 @@ export const ReviewNOWApplication = (props) => {
             noticeOfWork={props.initialValues}
             renderOriginalValues={props.renderOriginalValues}
           />
-          <ScrollContentWrapper id="submission-documents" title="Submission Documents (vFCBC/NROS)">
+          <ScrollContentWrapper id="application-files" title="vFCBC/NROS Application Files">
             <NOWSubmissionDocuments
               now_application_guid={props.now_application_guid}
               documents={props.submission_documents}
             />
           </ScrollContentWrapper>
-          <ScrollContentWrapper id="additional-documents" title="Additional Documents">
+          <ScrollContentWrapper
+            id="additional-application-files"
+            title="Additional Application Files"
+          >
             <NOWDocuments
               now_application_guid={props.now_application_guid}
               mine_guid={props.mine_guid}

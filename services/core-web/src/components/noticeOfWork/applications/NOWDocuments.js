@@ -199,6 +199,7 @@ export const NOWDocuments = (props) => {
         </>
       )}
       {!props.isAdminView && <p>{props.disclaimerText}</p>}
+      <br />
       <Table
         align="left"
         pagination={false}
