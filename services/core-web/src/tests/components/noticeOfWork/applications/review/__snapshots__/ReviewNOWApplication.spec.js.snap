@@ -11,9 +11,20 @@ exports[`ReviewNOWApplication renders properly 1`] = `
     <div
       className="side-menu--content"
     >
-      <h2>
-        General Information
-      </h2>
+      <div
+        className="inline-flex between"
+      >
+        <p
+          className="center"
+        >
+          The technical review tab is for reviewing and editing the information and documents sent in with a Notice of Work.
+          <br />
+           All information provided by the proponent, and any additional files requested during the application review live here
+          <br />
+           Use the Actions button to update information about this application.
+        </p>
+        <div />
+      </div>
       <Divider />
       <withRouter(Connect(ScrollContentWrapper))
         id="application-info"
@@ -1412,18 +1423,19 @@ exports[`ReviewNOWApplication renders properly 1`] = `
         }
       />
       <withRouter(Connect(ScrollContentWrapper))
-        id="submission-documents"
-        title="Submission Documents (vFCBC/NROS)"
+        id="application-files"
+        title="vFCBC/NROS Application Files"
       >
         <NOWSubmissionDocuments
           selectedRows={null}
         />
       </withRouter(Connect(ScrollContentWrapper))>
       <withRouter(Connect(ScrollContentWrapper))
-        id="additional-documents"
-        title="Additional Documents"
+        id="additional-application-files"
+        title="Additional Application Files"
       >
         <Connect(NOWDocuments)
+          disclaimerText="Attach any file revisions or new files requested from the proponent here."
           isViewMode={true}
         />
       </withRouter(Connect(ScrollContentWrapper))>
