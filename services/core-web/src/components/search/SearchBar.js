@@ -103,7 +103,6 @@ export class SearchBar extends Component {
             placeholder={this.state.isSelected ? selectedPlaceholderText : defaultPlaceholderText}
             onSearch={(searchTerm) => this.search(searchTerm)}
             onChange={this.changeSearchTerm}
-            onClick={this.clearSearchBar}
             onFocus={this.clearSearchBar}
             onBlur={() =>
               this.setState({
