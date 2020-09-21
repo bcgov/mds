@@ -225,6 +225,9 @@ export class NoticeOfWorkApplication extends Component {
     await Promise.all([
       this.props.fetchOriginalNoticeOfWorkApplication(id),
       this.props.fetchImportedNoticeOfWorkApplication(id).then(({ data }) => {
+        if (data.imported_to_core && data.lead_inspector_party_guid) {
+          this.handleTabChange("technical-review");
+        }
         this.loadMineInfo(data.mine_guid, this.setState({ isLoaded: true }));
       }),
     ]);
