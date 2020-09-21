@@ -109,9 +109,6 @@ class TestBondsResource:
 
         BOND_POST_DATA['bond']['payer_party_guid'] = party1.party_guid
         BOND_POST_DATA['permit_guid'] = permit.permit_guid
-        BOND_POST_DATA['bond']['amount'] = 12345.12
-        BOND_POST_DATA['bond']['institution_name'] = "Bank of Mines Digital Services"
-        BOND_POST_DATA['bond']['reference_number'] = "PO#98732"
 
         post_resp = test_client.post(
             '/securities/bonds', json=BOND_POST_DATA, headers=auth_headers['full_auth_header'])
@@ -119,9 +116,9 @@ class TestBondsResource:
         post_data = json.loads(post_resp.data.decode())
         assert post_data['permit_guid'] == str(permit.permit_guid)
         assert post_data['payer_party_guid'] == str(party1.party_guid)
-        assert post_data['institution_name'] == BOND_POST_DATA['bond']['institution_name']
-        assert post_data['reference_number'] == BOND_POST_DATA['bond']['reference_number']
-        assert float(post_data['amount']) == BOND_POST_DATA['bond']['amount']
+        assert all(
+            str(post_data[k]) == str(BOND_POST_DATA['bond'][k])
+            for k in BOND_POST_DATA['bond'].keys()), str(post_data) + str(BOND_POST_DATA['bond'])
 
     def test_post_a_bond_bad_permit_guid(self, test_client, db_session, auth_headers):
         """Should return an error and a 400 response code"""
