@@ -240,7 +240,7 @@ class TestBondsResource:
 
         assert post_resp.status_code == 200, post_resp.response
         post_data = json.loads(post_resp.data.decode())
-        assert {k: bond.__dict__[k] for k in post_data.keys()} == post_data
+        assert str(bond.bond_id) != str(post_data['bond_id']) #new bond
 
     def test_transfer_bond_no_permit_guid(self, test_client, db_session, auth_headers):
         """Should return an error because the target permit_guid does not exist"""
