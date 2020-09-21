@@ -77,7 +77,7 @@ export class NOWSecurities extends Component {
                 {isEmpty(this.props.draftAmendment) ? (
                   <Popconfirm
                     placement="topLeft"
-                    title="In order to edit Securities Total and a Securities Date Recieved, you need to start a Draft Permit."
+                    title="In order to edit Securities Total and a Securities Date Received, you need to start a Draft Permit."
                     okText="Ok"
                     cancelText="Cancel"
                   >
