@@ -226,6 +226,13 @@ export class NoticeOfWorkApplication extends Component {
     await Promise.all([
       this.props.fetchOriginalNoticeOfWorkApplication(id),
       this.props.fetchImportedNoticeOfWorkApplication(id).then(({ data }) => {
+        if (
+          data.imported_to_core &&
+          data.lead_inspector_party_guid &&
+          !this.props.match.params.tab
+        ) {
+          this.handleTabChange("technical-review");
+        }
         this.loadMineInfo(data.mine_guid, this.setState({ isLoaded: true }));
       }),
     ]);
@@ -676,6 +683,7 @@ export class NoticeOfWorkApplication extends Component {
     const errorsLength = Object.keys(flattenObject(this.props.formErrors)).length;
     const showErrors = errorsLength > 0 && this.state.submitting;
     const isImported = this.props.noticeOfWork.imported_to_core;
+    const verificationComplete = isImported && this.props.noticeOfWork.lead_inspector_party_guid;
     return (
       <React.Fragment>
         <Prompt
@@ -772,7 +780,7 @@ export class NoticeOfWorkApplication extends Component {
               </LoadingWrapper>
             </Tabs.TabPane>
 
-            <Tabs.TabPane tab="Draft Permit" key="draft-permit" disabled={!isImported}>
+            <Tabs.TabPane tab="Draft Permit" key="draft-permit" disabled={!verificationComplete}>
               <LoadingWrapper condition={this.state.isTabLoaded}>
                 {this.renderPermitGeneration()}
               </LoadingWrapper>
@@ -781,7 +789,7 @@ export class NoticeOfWorkApplication extends Component {
             <Tabs.TabPane
               tab="Referral/Consultation"
               key="referral-consultation"
-              disabled={!isImported}
+              disabled={!verificationComplete}
             >
               <LoadingWrapper condition={this.state.isTabLoaded}>
                 <div className={this.renderFixedHeaderClass()}>
@@ -796,7 +804,11 @@ export class NoticeOfWorkApplication extends Component {
               </LoadingWrapper>
             </Tabs.TabPane>
 
-            <Tabs.TabPane tab="Administrative" key="administrative" disabled={!isImported}>
+            <Tabs.TabPane
+              tab="Administrative"
+              key="administrative"
+              disabled={!verificationComplete}
+            >
               <LoadingWrapper condition={this.state.isTabLoaded}>
                 <div className={this.renderFixedHeaderClass()}>
                   <div className="inline-flex block-mobile padding-md between">

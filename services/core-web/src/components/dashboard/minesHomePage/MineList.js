@@ -145,7 +145,7 @@ const transformRowData = (mines, mineRegionHash, mineTenureHash, mineCommodityHa
         : [],
     mine_region: mine.mine_region ? mineRegionHash[mine.mine_region] : Strings.EMPTY_FIELD,
     commodity:
-      mine.mine_type && mine.mine_type.length > 0
+      mine.mine_type && mine.mine_type.detail && mine.mine_type.length > 0
         ? uniqBy(
             flattenDeep(
               mine.mine_type.reduce((result, type) => {
