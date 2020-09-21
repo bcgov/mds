@@ -187,10 +187,10 @@ export class FinalPermitDocuments extends Component {
     ) : (
       <div>
         <div className="inline-flex between">
-          <>
+          <div>
             {!this.props.adminView && <h4>Final Application Package</h4>}
             <p>All files in this list will appear in the Preamble on the permit</p>
-          </>
+          </div>
           <div>
             <Button
               type="secondary"
