@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import Tour from "reactour";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
@@ -27,6 +28,12 @@ import CustomPropTypes from "@/customPropTypes";
 import { modalConfig } from "@/components/modalContent/config";
 import { COLOR } from "@/constants/styles";
 
+const tourConfig = [
+  {
+    selector: '[data-tut="reactour__conditions"]',
+    content: `Let's take a look at the conditions builder.`,
+  },
+];
 const propTypes = {
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
@@ -43,10 +50,18 @@ const propTypes = {
 export class Conditions extends Component {
   constructor(props) {
     super(props);
-    this.state = { submitting: false };
+    this.state = { submitting: false, isTourOpen: false };
     this.fetchPermitConditions();
     props.setEditingConditionFlag(false);
   }
+
+  closeTour = () => {
+    this.setState({ isTourOpen: false });
+  };
+
+  openTour = () => {
+    this.setState({ isTourOpen: true });
+  };
 
   componentDidUpdate = (prevProps) => {
     if (prevProps.draftPermitAmendment !== this.props.draftPermitAmendment) {
@@ -107,7 +122,17 @@ export class Conditions extends Component {
 
   render = () => (
     <>
-      <Collapse>
+      <Button onClick={this.openTour}>Tour me</Button>
+      <Tour
+        onRequestClose={this.closeTour}
+        steps={tourConfig}
+        isOpen={this.state.isTourOpen}
+        maskClassName="mask"
+        className="helper"
+        rounded={5}
+        accentColor="#5cb7b7"
+      />
+      <Collapse data-tut="reactour__copy">
         {this.props.permitConditionCategoryOptions.map((conditionCategory) => {
           const conditions = this.props.conditions.filter(
             (condition) =>

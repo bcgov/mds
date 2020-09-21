@@ -26,7 +26,7 @@ const defaultProps = {
 };
 
 const defaultPlaceholderText = "Search";
-const selectedPlaceholderText = "Search for mines, contacts, & more";
+const selectedPlaceholderText = "";
 
 export class SearchBar extends Component {
   state = {
