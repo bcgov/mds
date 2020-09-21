@@ -7,17 +7,15 @@ exports[`SearchBarDropdown renders properly 1`] = `
   selectable={false}
 >
   <MenuItem
-    key="/mine-dashboard/aa3cb08a-ee1b-4dc9-8bf6-f54eb7484d4d/mine-information/general"
+    key="/search?q=Abb"
   >
-    <p>
-      Abbott Inc
-    </p>
-  </MenuItem>
-  <MenuItem
-    key="/mine-dashboard/5a993f02-1006-4a07-a448-f4064294de11/mine-information/general"
-  >
-    <p>
-      Abbott PLC
+    <p
+      className="btn--middle"
+    >
+      <ForwardRef(FileSearchOutlined)
+        className="icon-lg icon-svg-filter"
+      />
+      See search results...
     </p>
   </MenuItem>
   <Divider
@@ -25,15 +23,42 @@ exports[`SearchBarDropdown renders properly 1`] = `
     disabled={true}
     style={Object {}}
   />
-  <MenuItem
-    key="/search?q=Abb"
+  <MenuItemGroup
+    disabled={true}
+    title="Quick results"
   >
-    <p>
-      <ForwardRef(FileSearchOutlined)
-        className="icon-lg icon-svg-filter"
-      />
-      See all results...
-    </p>
-  </MenuItem>
+    <MenuItem
+      key="/mine-dashboard/aa3cb08a-ee1b-4dc9-8bf6-f54eb7484d4d/mine-information/general"
+    >
+      <p>
+        <img
+          className="icon-svg-filter"
+          height={25}
+          src={
+            Object {
+              "process": [Function],
+            }
+          }
+        />
+        Abbott Inc
+      </p>
+    </MenuItem>
+    <MenuItem
+      key="/mine-dashboard/5a993f02-1006-4a07-a448-f4064294de11/mine-information/general"
+    >
+      <p>
+        <img
+          className="icon-svg-filter"
+          height={25}
+          src={
+            Object {
+              "process": [Function],
+            }
+          }
+        />
+        Abbott PLC
+      </p>
+    </MenuItem>
+  </MenuItemGroup>
 </Menu>
 `;
