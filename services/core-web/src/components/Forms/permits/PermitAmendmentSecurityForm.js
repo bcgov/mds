@@ -57,6 +57,7 @@ export const PermitAmendmentSecurityForm = (props) => (
           title="Are you sure you want to cancel?"
           okText="Yes"
           cancelText="No"
+          disabled={props.submitting}
           onConfirm={() => props.onCancel()}
         >
           <Button className="full-mobile" type="secondary" disabled={props.submitting}>
