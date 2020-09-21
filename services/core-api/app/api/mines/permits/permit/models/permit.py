@@ -90,6 +90,17 @@ class Permit(AuditMixin, Base):
             raise Exception('this getter is only available if _context_mine has been set')
         return self._context_mine
 
+    @hybrid_property
+    def assessed_liability_total(self):
+        return sum([pa.security_adjustment for pa in self._all_permit_amendments])
+
+    @hybrid_property
+    def confiscated_bond_total(self):
+        return sum([b.amount for b in self.bonds if b.bond_status_code == "CON"])
+
+    @hybrid_property
+    def 
+
     def get_amendments_by_mine_guid(self, mine_guid):
         return [pa for pa in self._all_permit_amendments if pa.mine_guid == mine_guid]
 

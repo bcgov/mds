@@ -17,10 +17,8 @@ DECLARE
 		from bond b
 		join bond_permit_xref bpx on b.bond_id = bpx.bond_id
 		join permit p on bpx.permit_id = p.permit_id
-		where b.bond_status_code = 'ACT'
+		where b.bond_status_code = 'ACT' or b.bond_status_code = 'CON'
 		group by p.permit_id;
-
-	select * from etl_permit_assessment_info;
 
 	UPDATE permit_amendment
 	set security_adjustment = 0;
