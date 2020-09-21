@@ -710,14 +710,7 @@ export const ReviewNOWApplication = (props) => {
     <div>
       <Form layout="vertical">
         <div className="side-menu--content">
-          <div className="inline-flex between">
-            <p className="center">
-              The technical review tab is for reviewing and editing the information and documents
-              sent in with a Notice of Work.
-              <br /> All information provided by the proponent, and any additional files requested
-              during the application review live here
-              <br /> Use the Actions button to update information about this application.
-            </p>
+          <div className="right">
             <div>
               {props.noticeOfWork.last_updated_date && (
                 <p className="violet">
