@@ -34,8 +34,5 @@ DECLARE
 		WHERE
 			permit_amendment.permit_amendment_id = epai.permit_amendment_id;
 
-	select * from permit_amendment pa 
-	where pa.security_adjustment != 0;
-
 END;
 $$ LANGUAGE PLPGSQL;
