@@ -300,7 +300,6 @@ export class MineRecordForm extends Component {
                           ]
                         : null
                     }
-                    validate={[required]}
                   />
                 </Col>
               </Row>
