@@ -49,6 +49,7 @@ import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
 import { modalConfig } from "@/components/modalContent/config";
 import { NOWApplicationAdministrative } from "@/components/noticeOfWork/applications/administrative/NOWApplicationAdministrative";
 import Loading from "@/components/common/Loading";
+import { CoreTooltip } from "@/components/common/CoreTooltip";
 
 /**
  * @class NoticeOfWorkApplication- contains all information regarding a CORE notice of work application
@@ -799,7 +800,13 @@ export class NoticeOfWorkApplication extends Component {
               <LoadingWrapper condition={this.state.isTabLoaded}>
                 <div className={this.renderFixedHeaderClass()}>
                   <div className="inline-flex block-mobile padding-md between">
-                    <h2>Administrative</h2>
+                    <h2>
+                      Administrative
+                      <CoreTooltip
+                        title="This page contains information about securities and any internal files
+                      relevant to processing the application. It is also where the permit is issued."
+                      />
+                    </h2>
                     <Dropdown
                       overlay={this.menu(false)}
                       placement="bottomLeft"
