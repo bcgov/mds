@@ -118,7 +118,7 @@ export class Conditions extends Component {
               style={{ padding: "18px 16px", backgroundColor: COLOR.lightGrey }}
               header={`${conditionCategory.step} ${conditionCategory.description} (${
                 conditions.reduce((a, e) => concat(a, e.sub_conditions), []).length
-                } conditions)`}
+              } conditions)`}
               key={conditionCategory.condition_category_code}
               id={conditionCategory.condition_category_code}
             >
