@@ -2,6 +2,10 @@
 
 exports[`NOWDocuments renders properly 1`] = `
 <div>
+  <p>
+    This test is explaining the purpose of this section
+  </p>
+  <br />
   <Table
     align="left"
     columns={

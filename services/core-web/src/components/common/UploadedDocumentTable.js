@@ -41,7 +41,9 @@ const updateDateTimeColumn = {
   key: "upload_date",
   sorter: (a, b) => (moment(a.upload_date) > moment(b.upload_date) ? -1 : 1),
   render: (text, record) => (
-    <div title="Due">{formatDateTime(record.file.upload_date) || "Pending"}</div>
+    <div title="Due">
+      {formatDateTime(record.file.upload_date) || "Click save to complete upload"}
+    </div>
   ),
 };
 
