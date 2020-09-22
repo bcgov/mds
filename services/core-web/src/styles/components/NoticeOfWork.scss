@@ -205,3 +205,22 @@
   width: 25px;
   height: 25px;
 }
+
+.tab-disclaimer {
+  width: 800px;
+  position: relative;
+  top: -10px;
+  margin: auto;
+
+  &.draft {
+    left: -120px;
+  }
+
+  @include mobile {
+    display: none;
+  }
+
+  @include tablet {
+    width: 400px;
+  }
+}

@@ -51,6 +51,7 @@ exports[`BondForm renders properly 1`] = `
           id="bond_type_code"
           label="Bond Type*"
           name="bond_type_code"
+          placeholder="Please select bond type"
           validate={
             Array [
               [Function],
@@ -259,6 +260,7 @@ exports[`BondForm renders properly 1`] = `
           id="institution_province"
           label="Province"
           name="institution_province"
+          placeholder="Please select province"
         />
       </FormItem>
     </Col>

@@ -177,6 +177,7 @@ export const MineReclamationInvoiceTable = (props) => {
         pagination={false}
         columns={invoiceColumns}
         dataSource={props.recordsByPermit(record, props.invoices)}
+        locale={{ emptyText: "No Data Yet" }}
       />
     );
   };

@@ -26,7 +26,7 @@ export const NOWApplicationAdministrative = (props) => {
           adminView
         />
       </ScrollContentWrapper>
-      <ScrollContentWrapper id="application-files" title="Reclimation Securities">
+      <ScrollContentWrapper id="application-files" title="Reclamation Securities">
         <NOWSecurities
           mineGuid={props.mineGuid}
           noticeOfWork={props.noticeOfWork}
