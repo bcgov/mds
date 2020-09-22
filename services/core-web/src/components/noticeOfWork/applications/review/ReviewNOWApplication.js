@@ -641,7 +641,7 @@ export const ReviewNOWApplication = (props) => {
       <Row gutter={16}>
         <Col md={12} sm={24}>
           <div className="field-title">
-            Proposed First Aid equipment on site
+            Proposed First Aid equipment on-site
             <NOWOriginalValueTooltip
               originalValue={props.renderOriginalValues("first_aid_equipment_on_site").value}
               isVisible={props.renderOriginalValues("first_aid_equipment_on_site").edited}
