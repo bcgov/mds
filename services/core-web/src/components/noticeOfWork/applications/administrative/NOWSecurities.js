@@ -70,38 +70,48 @@ export class NOWSecurities extends Component {
   render() {
     return (
       <div>
-        <div className="inline-flex between">
-          <h3>Securities</h3>
+        <div className="right">
           <div>
-            <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
-              {isEmpty(this.props.draftAmendment) ? (
-                <Popconfirm
-                  placement="topLeft"
-                  title="In order to edit Securities Total and a Securities Date Recieved, you need to start a Draft Permit."
-                  okText="Ok"
-                  cancelText="Cancel"
-                >
-                  <Button type="secondary">
+            {!this.state.isEditMode && (
+              <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
+                {isEmpty(this.props.draftAmendment) ? (
+                  <Popconfirm
+                    placement="topLeft"
+                    title="In order to edit Securities Total and a Securities Date Received, you need to start a Draft Permit."
+                    okText="Ok"
+                    cancelText="Cancel"
+                  >
+                    <Button type="secondary">
+                      <img
+                        src={EDIT_OUTLINE}
+                        title="Edit"
+                        alt="Edit"
+                        className="padding-md--right"
+                      />
+                      Edit
+                    </Button>
+                  </Popconfirm>
+                ) : (
+                  <Button type="secondary" onClick={this.toggleEditMode}>
                     <img src={EDIT_OUTLINE} title="Edit" alt="Edit" className="padding-md--right" />
                     Edit
                   </Button>
-                </Popconfirm>
-              ) : (
-                <Button type="secondary" onClick={this.toggleEditMode}>
-                  <img src={EDIT_OUTLINE} title="Edit" alt="Edit" className="padding-md--right" />
-                  Edit
-                </Button>
-              )}
-            </AuthorizationWrapper>
+                )}
+              </AuthorizationWrapper>
+            )}
           </div>
         </div>
         <LoadingWrapper condition={this.state.isLoaded}>
-          <PermitAmendmentSecurityForm
-            isEditMode={this.state.isEditMode}
-            initialValues={this.props.draftAmendment}
-            onSubmit={this.addSecurityToPermit}
-          />
+          <div style={this.state.isEditMode ? { backgroundColor: "#f3f0f0", padding: "20px" } : {}}>
+            <PermitAmendmentSecurityForm
+              isEditMode={this.state.isEditMode}
+              initialValues={this.props.draftAmendment}
+              onSubmit={this.addSecurityToPermit}
+              onCancel={this.toggleEditMode}
+            />
+          </div>
         </LoadingWrapper>
+        <br />
         <br />
         <NOWDocuments
           now_application_guid={this.props.noticeOfWork.now_application_guid}
