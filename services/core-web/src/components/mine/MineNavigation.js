@@ -121,7 +121,7 @@ export class MineNavigation extends Component {
           id={this.ifActiveButton("documents")}
           title={
             <span>
-              Documents
+              Archived Files
               <DownOutlined className="padding-small--left" />
             </span>
           }
@@ -129,7 +129,7 @@ export class MineNavigation extends Component {
           <Menu className="sub-menu">
             <Menu.Item key="documents">
               <Link to={routes.MINE_DOCUMENTS.dynamicRoute(this.props.mine.mine_guid)}>
-                Documents
+                Archived Files
               </Link>
             </Menu.Item>
           </Menu>
