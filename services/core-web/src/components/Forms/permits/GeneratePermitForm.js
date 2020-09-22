@@ -162,8 +162,15 @@ export const GeneratePermitForm = (props) => (
               name="regional_office"
               label="Regional Office"
               required
-              component={renderConfig.FIELD}
+              component={renderConfig.SELECT}
               validate={[required]}
+              data={[
+                { value: "Cranbrook", label: "Cranbrook" },
+                { value: "Kamloops", label: "Kamloops" },
+                { value: "Prince George", label: "Prince George" },
+                { value: "Smithers", label: "Smithers" },
+                { value: "Victoria", label: "Victoria" },
+              ]}
               disabled={props.isViewMode}
             />
           </Col>

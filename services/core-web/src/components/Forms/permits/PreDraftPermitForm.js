@@ -25,18 +25,20 @@ export const PreDraftPermitForm = (props) => {
       <Row gutter={16}>
         <Col span={24}>
           {props.isAmendment ? (
-            <Form.Item>
-              <Field
-                id="permit_guid"
-                name="permit_guid"
-                label="Permit *"
-                placeholder="Select a Permit"
-                doNotPinDropdown
-                component={renderConfig.SELECT}
-                data={permitDropdown}
-                validate={[required]}
-              />
-            </Form.Item>
+            <div className="left">
+              <Form.Item>
+                <Field
+                  id="permit_guid"
+                  name="permit_guid"
+                  label="Permit *"
+                  placeholder="Select a Permit"
+                  doNotPinDropdown
+                  component={renderConfig.SELECT}
+                  data={permitDropdown}
+                  validate={[required]}
+                />
+              </Form.Item>
+            </div>
           ) : (
             <div className="left">
               <Form.Item>

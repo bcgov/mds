@@ -74,7 +74,7 @@ exports[`NavBar renders properly 1`] = `
               <span
                 className="padding-small--right"
               >
-                Provincial Reporting
+                Browse...
               </span>
               <ForwardRef(DownOutlined) />
             </button>

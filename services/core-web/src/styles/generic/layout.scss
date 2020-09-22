@@ -176,7 +176,7 @@ body {
 
 .page__content,
 .tab__content {
-  padding: $default-padding-lg $default-padding-xxl;
+  padding: $default-padding-lg 40px;
 
   @include mobile {
     padding: 0 $default-padding-lg;
