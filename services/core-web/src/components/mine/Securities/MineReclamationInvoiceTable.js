@@ -32,8 +32,8 @@ const propTypes = {
   // eslint-disable-next-line react/no-unused-prop-types
   recordsByPermit: PropTypes.func.isRequired,
   getBalance: PropTypes.func.isRequired,
-  getSum: PropTypes.func.isRequired,
   getAmountSum: PropTypes.func.isRequired,
+  getTotalConfiscatedSum: PropTypes.func.isRequired,
 };
 
 export const MineReclamationInvoiceTable = (props) => {
@@ -206,7 +206,7 @@ export const MineReclamationInvoiceTable = (props) => {
     permits.map((permit) => {
       return {
         key: permit.permit_guid,
-        amount_confiscated: props.getSum("CON", permit),
+        amount_confiscated: props.getTotalConfiscatedSum(permit),
         amount_spent: props.getAmountSum(permit),
         balance: props.getBalance(permit),
         ...permit,
