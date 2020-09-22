@@ -39,7 +39,7 @@ export const CloseBondForm = (props) => {
               <Field
                 id="project_id"
                 name="project_id"
-                label={`Project Id`}
+                label="Project Id*"
                 showTime
                 component={RenderField}
                 validate={[required]}
