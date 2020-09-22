@@ -11,6 +11,15 @@ exports[`ReviewNOWApplication renders properly 1`] = `
     <div
       className="side-menu--content"
     >
+      <div
+        className="right"
+        style={
+          Object {
+            "position": "relative",
+            "top": "30px",
+          }
+        }
+      />
       <withRouter(Connect(ScrollContentWrapper))
         id="application-info"
         title="Application Info"
