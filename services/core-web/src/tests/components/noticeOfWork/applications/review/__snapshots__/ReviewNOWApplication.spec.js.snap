@@ -11,12 +11,6 @@ exports[`ReviewNOWApplication renders properly 1`] = `
     <div
       className="side-menu--content"
     >
-      <div
-        className="right"
-      >
-        <div />
-      </div>
-      <Divider />
       <withRouter(Connect(ScrollContentWrapper))
         id="application-info"
         title="Application Info"
