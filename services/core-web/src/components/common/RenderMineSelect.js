@@ -35,7 +35,7 @@ const defaultProps = {
   placeholder: "Search for a mine by name",
   disabled: false,
   majorMineOnly: undefined,
-  onMineSelect: () => {},
+  onMineSelect: () => { },
   meta: {},
   label: "Select a mine",
   input: { value: "" },

@@ -4,7 +4,7 @@ import { Menu } from "antd";
 import { SearchOutlined, FileSearchOutlined } from "@ant-design/icons";
 import * as route from "@/constants/routes";
 
-import { MINE, TEAM } from "@/constants/assets";
+import { MINE, PROFILE_NOCIRCLE, DOC } from "@/constants/assets";
 
 const propTypes = {
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
@@ -14,27 +14,20 @@ const propTypes = {
 };
 
 export const SearchBarDropdown = (props) => {
-  const createStaticMenuItem = (text, url, img) => (
-    <Menu.Item key={url}>
-      <p>
-        <img className="icon-svg-filter" src={img} alt={text} height={25} />
-        {text}
-      </p>
-    </Menu.Item>
-  );
-
-  const staticMenuItems = [
-    <Menu.ItemGroup title="Look up">
-      {createStaticMenuItem("Mines", route.MINE_HOME_PAGE.route, MINE)}
-      {createStaticMenuItem("Contacts", route.CONTACT_HOME_PAGE.route, TEAM)}
-    </Menu.ItemGroup>,
-  ];
-
   const URLFor = (item) =>
     ({
       mine: route.MINE_GENERAL.dynamicRoute(item.result.id),
       party: route.PARTY_PROFILE.dynamicRoute(item.result.id),
       permit: route.SEARCH_RESULTS.dynamicRoute({ q: item.result.value }),
+    }[item.type]);
+
+  const IconFor = (item) =>
+    ({
+      mine: <img className="icon-svg-filter" src={MINE} alt={item.value} height={25} />,
+      party: (
+        <img className="icon-svg-filter" src={PROFILE_NOCIRCLE} alt={item.value} height={25} />
+      ),
+      permit: <img className="icon-svg-filter" src={DOC} alt={item.value} height={25} />,
     }[item.type]);
 
   return (
@@ -45,36 +38,46 @@ export const SearchBarDropdown = (props) => {
       onClick={({ key }) => props.history.push(key)}
       selectable={false}
     >
-      {props.searchTerm.length && props.searchBarResults.length
+      {props.searchTerm.length
         ? [
-            props.searchBarResults.map((item) => (
-              <Menu.Item key={URLFor(item)}>
-                <p>{`${item.result.value || ""}`}</p>
-              </Menu.Item>
-            )),
-            <Menu.Divider />,
             <Menu.Item key={`/search?q=${props.searchTerm}`}>
-              <p>
+              <p className="btn--middle">
                 <FileSearchOutlined className="icon-lg icon-svg-filter" />
-                See all results...
+                See search results...
               </p>
             </Menu.Item>,
-          ]
-        : [
-            staticMenuItems,
-            props.searchTermHistory.length && [
-              <Menu.Divider />,
-              <Menu.ItemGroup title="Recent searches">
-                {props.searchTermHistory.map((pastSearchTerm) => (
-                  <Menu.Item key={`/search?q=${pastSearchTerm}`}>
-                    <p style={{ fontStyle: "italic" }}>
-                      <SearchOutlined />
-                      {pastSearchTerm}
+            <Menu.Divider />,
+            props.searchBarResults && props.searchBarResults.length > 0 && (
+              <Menu.ItemGroup title="Quick results">
+                {props.searchBarResults.map((item) => (
+                  <Menu.Item key={URLFor(item)}>
+                    <p>
+                      {IconFor(item)}
+                      {`${item.result.value || ""}`}
                     </p>
                   </Menu.Item>
                 ))}
-              </Menu.ItemGroup>,
-            ],
+              </Menu.ItemGroup>
+            ),
+          ]
+        : [
+            props.searchTermHistory.length ? (
+              [
+                <Menu.Divider />,
+                <Menu.ItemGroup title="Recent searches">
+                  {props.searchTermHistory.map((pastSearchTerm) => (
+                    <Menu.Item key={`/search?q=${pastSearchTerm}`}>
+                      <p className="btn--middle" style={{ fontStyle: "italic" }}>
+                        <SearchOutlined />
+                        {pastSearchTerm}
+                      </p>
+                    </Menu.Item>
+                  ))}
+                </Menu.ItemGroup>,
+              ]
+            ) : (
+              <Menu.ItemGroup title="Enter your search, then hit enter or click the 'See search results' option" />
+            ),
           ]}
     </Menu>
   );

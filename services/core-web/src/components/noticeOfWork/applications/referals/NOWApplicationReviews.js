@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { Button, Row, Col, notification, Divider, Badge, Tag, Popconfirm } from "antd";
+import { Button, Row, Col, notification, Badge, Tag, Popconfirm } from "antd";
 import { DownloadOutlined, InfoCircleOutlined, ClockCircleOutlined } from "@ant-design/icons";
 import { formatDate } from "@common/utils/helpers";
 
@@ -30,6 +30,7 @@ import {
 import { getNoticeOfWorkReviews } from "@common/selectors/noticeOfWorkSelectors";
 import { getDropdownNoticeOfWorkApplicationReviewTypeOptions } from "@common/selectors/staticContentSelectors";
 import NOWApplicationReviewsTable from "@/components/noticeOfWork/applications/referals/NOWApplicationReviewsTable";
+import ScrollContentWrapper from "@/components/noticeOfWork/applications/ScrollContentWrapper";
 
 /**
  * @constant ReviewNOWApplication renders edit/view for the NoW Application review step
@@ -62,18 +63,15 @@ const ReviewerLabels = {
 };
 
 const ApplicationReview = (props) => (
-  <Row type="flex" justify="center">
-    <Col sm={22} md={22} lg={22} className="padding-large--bottom">
-      <div className="padding-large--bottom">
-        <h3>{props.reviewType.label}</h3>
-        {!props.readyForReview && <Badge status="default" text="Not started" />}
-        {props.readyForReview && !props.completeDate && (
-          <Badge status="processing" text="In progress" />
-        )}
-        {props.readyForReview && props.completeDate && (
-          <Badge status="success" text={`Completed on ${formatDate(props.completeDate)}`} />
-        )}
-      </div>
+  <div className="padding-large--bottom">
+    <ScrollContentWrapper id={props.reviewType.label} title={props.reviewType.label}>
+      {!props.readyForReview && <Badge status="default" text="Not started" />}
+      {props.readyForReview && !props.completeDate && (
+        <Badge status="processing" text="In progress" />
+      )}
+      {props.readyForReview && props.completeDate && (
+        <Badge status="success" text={`Completed on ${formatDate(props.completeDate)}`} />
+      )}
       <NOWApplicationReviewsTable
         isLoaded={props.isLoaded}
         noticeOfWorkReviews={props.noticeOfWorkReviews.filter(
@@ -101,9 +99,8 @@ const ApplicationReview = (props) => (
           </AuthorizationWrapper>
         </div>
       )}
-      <Divider />
-    </Col>
-  </Row>
+    </ScrollContentWrapper>
+  </div>
 );
 
 export class NOWApplicationReviews extends Component {
@@ -353,16 +350,16 @@ export class NOWApplicationReviews extends Component {
       <div>
         <Row type="flex" justify="center">
           <Col lg={24} className="padding-large--top">
-            <div className="inline-flex between">
+            <div className="inline-flex between center-mobile">
               <div>
                 {!this.props.noticeOfWork.ready_for_review_date && (
-                  <Tag className="ant-disabled">
+                  <Tag className="ant-disable full-mobile">
                     <InfoCircleOutlined className="padding-small--right" />
                     Referral package not downloaded
                   </Tag>
                 )}
                 {this.props.noticeOfWork.ready_for_review_date && (
-                  <Tag className="ant-disabled">
+                  <Tag className="ant-disabled full-mobile">
                     <ClockCircleOutlined className="padding-small--right" />
                     {`Ready for review since: ${formatDate(
                       this.props.noticeOfWork.ready_for_review_date
@@ -371,7 +368,7 @@ export class NOWApplicationReviews extends Component {
                 )}
               </div>
               <div>
-                <div className="inline-flex">
+                <div className="inline-flex center-mobile">
                   {!this.props.noticeOfWork.ready_for_review_date && (
                     <Popconfirm
                       placement="topRight"
@@ -410,7 +407,7 @@ export class NOWApplicationReviews extends Component {
           </Col>
         </Row>
         {this.props.noticeOfWorkReviews && (
-          <React.Fragment>
+          <div className="page__content">
             {this.props.noticeOfWorkReviewTypes.some(
               (reviewType) => reviewType.value === "REF"
             ) && (
@@ -462,7 +459,7 @@ export class NOWApplicationReviews extends Component {
                 }
               />
             )}
-          </React.Fragment>
+          </div>
         )}
       </div>
     );

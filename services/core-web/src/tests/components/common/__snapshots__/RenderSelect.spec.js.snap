@@ -24,8 +24,12 @@ exports[`RenderSelect renders properly 1`] = `
     showSearch={true}
     transitionName="slide-up"
   >
-    <Option />
-    <Option />
+    <Option
+      disabled={false}
+    />
+    <Option
+      disabled={false}
+    />
   </Select>
 </FormItem>
 `;

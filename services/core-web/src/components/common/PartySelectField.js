@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { throttle } from "lodash";
 import PropTypes from "prop-types";
-import { Divider, AutoComplete } from "antd";
+import { Divider } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { Field } from "redux-form";
 import { getSearchResults } from "@common/selectors/searchSelectors";
@@ -12,9 +12,9 @@ import { fetchSearchResults } from "@common/actionCreators/searchActionCreator";
 import { setAddPartyFormState } from "@common/actionCreators/partiesActionCreator";
 import { createItemMap, createItemIdsArray } from "@common/utils/helpers";
 import { Validate } from "@common/utils/Validate";
-import RenderLargeSelect from "./RenderLargeSelect";
 import LinkButton from "@/components/common/LinkButton";
 import CustomPropTypes from "@/customPropTypes";
+import RenderLargeSelect from "./RenderLargeSelect";
 
 const propTypes = {
   id: PropTypes.string,
@@ -59,16 +59,15 @@ const renderAddPartyFooter = (showAddParty, partyLabel) => (
 );
 
 const transformData = (data, options, footer) => {
-  const transformedData = data.map((opt) =>
-    ({
-      value: options[opt].party_guid,
-      label: `${options[opt].name}, ${Validate.checkEmail(options[opt].email) ? options[opt].email : "Email Unknown"}`
-    }));
+  const transformedData = data.map((opt) => ({
+    value: options[opt].party_guid,
+    label: `${options[opt].name}, ${
+      Validate.checkEmail(options[opt].email) ? options[opt].email : "Email Unknown"
+    }`,
+  }));
 
   // Display footer only if desired (Add new party behavior is enabled.)
-  return footer
-    ? transformedData.concat({ value: "footer", label: footer })
-    : transformedData;
+  return footer ? transformedData.concat({ value: "footer", label: footer }) : transformedData;
 };
 
 export class PartySelectField extends Component {
@@ -128,7 +127,7 @@ export class PartySelectField extends Component {
           createItemIdsArray(filteredParties, "party_guid"),
           createItemMap(filteredParties, "party_guid"),
           this.props.allowAddingParties &&
-          renderAddPartyFooter(this.showAddPartyForm, this.props.partyLabel)
+            renderAddPartyFooter(this.showAddPartyForm, this.props.partyLabel)
         );
         return { partyDataSource: newPartyDataSource };
       });
@@ -149,7 +148,7 @@ export class PartySelectField extends Component {
     if (value.length > 2) {
       this.fetchSearchResultsThrottled(value, "party");
     }
-    this.setState({ selectedOption: { value: value, label: value } });
+    this.setState({ selectedOption: { value, label: value } });
   };
 
   handleSelect = (value, option) => {

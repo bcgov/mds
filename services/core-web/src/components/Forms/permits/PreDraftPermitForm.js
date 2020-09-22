@@ -1,8 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Field, reduxForm } from "redux-form";
-import { Form } from '@ant-design/compatible';
-import '@ant-design/compatible/assets/index.css';
+import { Form } from "@ant-design/compatible";
+import "@ant-design/compatible/assets/index.css";
 import { Button, Col, Row, Popconfirm } from "antd";
 import { required } from "@common/utils/Validate";
 import { resetForm, createDropDownList } from "@common/utils/helpers";
@@ -25,31 +25,33 @@ export const PreDraftPermitForm = (props) => {
       <Row gutter={16}>
         <Col span={24}>
           {props.isAmendment ? (
-            <Form.Item>
-              <Field
-                id="permit_guid"
-                name="permit_guid"
-                label="Permit *"
-                placeholder="Select a Permit"
-                doNotPinDropdown
-                component={renderConfig.SELECT}
-                data={permitDropdown}
-                validate={[required]}
-              />
-            </Form.Item>
+            <div className="left">
+              <Form.Item>
+                <Field
+                  id="permit_guid"
+                  name="permit_guid"
+                  label="Permit *"
+                  placeholder="Select a Permit"
+                  doNotPinDropdown
+                  component={renderConfig.SELECT}
+                  data={permitDropdown}
+                  validate={[required]}
+                />
+              </Form.Item>
+            </div>
           ) : (
-              <div className="left">
-                <Form.Item>
-                  <Field
-                    id="is_exploration"
-                    name="is_exploration"
-                    label="Exploration Permit"
-                    component={renderConfig.CHECKBOX}
-                    validate={[required]}
-                  />
-                </Form.Item>
-              </div>
-            )}
+            <div className="left">
+              <Form.Item>
+                <Field
+                  id="is_exploration"
+                  name="is_exploration"
+                  label="Exploration Permit"
+                  component={renderConfig.CHECKBOX}
+                  validate={[required]}
+                />
+              </Form.Item>
+            </div>
+          )}
         </Col>
       </Row>
       <div className="right center-mobile">

@@ -1,8 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Field, reduxForm } from "redux-form";
-import { Form } from '@ant-design/compatible';
-import '@ant-design/compatible/assets/index.css';
+import { Form } from "@ant-design/compatible";
+import "@ant-design/compatible/assets/index.css";
 import { Button, Col, Row, Popconfirm } from "antd";
 import { currency } from "@common/utils/Validate";
 import { currencyMask } from "@common/utils/helpers";
@@ -16,6 +16,7 @@ const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   submitting: PropTypes.bool.isRequired,
   isEditMode: PropTypes.bool.isRequired,
+  onCancel: PropTypes.func.isRequired,
 };
 
 export const PermitAmendmentSecurityForm = (props) => (
@@ -57,6 +58,7 @@ export const PermitAmendmentSecurityForm = (props) => (
           okText="Yes"
           cancelText="No"
           disabled={props.submitting}
+          onConfirm={() => props.onCancel()}
         >
           <Button className="full-mobile" type="secondary" disabled={props.submitting}>
             Cancel

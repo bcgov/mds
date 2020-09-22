@@ -48,7 +48,6 @@ export class ApplicationStepOne extends Component {
   }
 
   handleNOWImport = (values) => {
-    console.log(values);
     this.props
       .importNoticeOfWorkApplication(this.props.noticeOfWork.now_application_guid, values)
       .then(() => {
@@ -78,7 +77,7 @@ export class ApplicationStepOne extends Component {
       <Result
         status="success"
         title={`${title} Complete!`}
-        subTitle={`You've already completed the ${title} step.`}
+        subTitle={`${title} step has been completed.`}
         extra={[
           <Row gutter={48} justify="center">
             <Alert
