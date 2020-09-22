@@ -229,7 +229,7 @@ export class NoticeOfWorkApplication extends Component {
         if (
           data.imported_to_core &&
           data.lead_inspector_party_guid &&
-          !this.props.match.params.tab
+          this.props.match.params.tab === "initial"
         ) {
           this.handleTabChange("technical-review");
         }
@@ -550,7 +550,15 @@ export class NoticeOfWorkApplication extends Component {
     const showErrors = errorsLength > 0 && this.state.submitting;
     return this.state.isViewMode ? (
       <div className="inline-flex block-mobile padding-md between">
-        <h2>Technical Review</h2>
+        <h2>
+          Technical Review
+          <CoreTooltip
+            title="  This page is for reviewing and editing the information and documents sent in
+            with a Notice of Work. All information provided by the proponent, and any
+            additional files requested during the application review live here. Use the
+            Actions button to update information about this application."
+          />
+        </h2>
         <Dropdown
           overlay={this.menu(true)}
           placement="bottomLeft"
@@ -793,7 +801,14 @@ export class NoticeOfWorkApplication extends Component {
             >
               <LoadingWrapper condition={this.state.isTabLoaded}>
                 <div className={this.renderFixedHeaderClass()}>
-                  <h2 className="padding-md">Referral/Consultation</h2>
+                  <h2 className="padding-md">
+                    Referral/Consultation
+                    <CoreTooltip
+                      title="This page contains basic information about any referrals or consultations
+                        related to this application. You can create document packages for reviewers
+                        and attach any responses that reviewers send back."
+                    />
+                  </h2>
                 </div>
                 <div className="page__content">
                   <NOWApplicationReviews

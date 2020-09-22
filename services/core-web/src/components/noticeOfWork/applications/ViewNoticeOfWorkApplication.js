@@ -143,7 +143,7 @@ export class ViewNoticeOfWorkApplication extends Component {
             </div>
             <div
               className={this.state.fixedTop ? "view---content with-fixed-top" : "view--content"}
-              style={{ paddingTop: "30px" }}
+              style={{ paddingTop: "60px" }}
             >
               <ReviewNOWApplication
                 renderOriginalValues={this.renderOriginalValues}

@@ -246,7 +246,7 @@ export const NOTICE_OF_WORK_APPLICATION = {
   dynamicRoute: (guid, tab) =>
     tab
       ? `/dashboard/notice-of-work/application/${guid}/${tab}`
-      : `/dashboard/notice-of-work/application/${guid}/verification`,
+      : `/dashboard/notice-of-work/application/${guid}/initial`,
   hashRoute: (guid, tab, link) => `/dashboard/notice-of-work/application/${guid}/${tab}/${link}`,
   component: NoticeOfWorkApplication,
 };

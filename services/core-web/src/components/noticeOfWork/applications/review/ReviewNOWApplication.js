@@ -710,7 +710,7 @@ export const ReviewNOWApplication = (props) => {
     <div>
       <Form layout="vertical">
         <div className="side-menu--content">
-          <div className="right">
+          {/* <div className="right">
             <div>
               {props.noticeOfWork.last_updated_date && (
                 <p className="violet">
@@ -722,7 +722,7 @@ export const ReviewNOWApplication = (props) => {
               )}
             </div>
           </div>
-          <Divider />
+          <Divider /> */}
           <ScrollContentWrapper id="application-info" title="Application Info">
             {renderApplicationInfo()}
           </ScrollContentWrapper>
