@@ -29,7 +29,6 @@ import NullScreen from "@/components/common/NullScreen";
 import * as routes from "@/constants/routes";
 import NOWSideMenu from "@/components/noticeOfWork/applications/NOWSideMenu";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
-import { CoreTooltip } from "@/components/common/CoreTooltip";
 
 /**
  * @class NOWPermitGeneration - contains the form and information to generate a permit document form a Notice of Work
@@ -272,14 +271,7 @@ export class NOWPermitGeneration extends Component {
       : "";
     return this.props.isViewMode ? (
       <div className="inline-flex block-mobile padding-md between">
-        <h2>
-          {`Draft Permit ${nowType}`}
-          <CoreTooltip
-            title="This page contains all the information that will appear in the permit when
-            it is issued. The Conditions sections is prepopulated with conditions based
-            on the permit type. You can add or remove any condition."
-          />
-        </h2>
+        <h2>{`Draft Permit ${nowType}`}</h2>
         {this.state.isDraft && (
           <Dropdown overlay={this.menu()} placement="bottomLeft">
             <Button type="secondary" className="full-mobile">

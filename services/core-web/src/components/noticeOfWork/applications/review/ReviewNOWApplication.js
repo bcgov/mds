@@ -710,19 +710,16 @@ export const ReviewNOWApplication = (props) => {
     <div>
       <Form layout="vertical">
         <div className="side-menu--content">
-          {/* <div className="right">
-            <div>
-              {props.noticeOfWork.last_updated_date && (
-                <p className="violet">
-                  Last Updated: {formatDate(props.noticeOfWork.last_updated_date)}
-                </p>
-              )}
-              {props.noticeOfWork.last_updated_by && (
-                <p className="violet">Updated By: {props.noticeOfWork.last_updated_by}</p>
-              )}
-            </div>
+          <div className="right" style={{ position: "relative", top: "30px" }}>
+            {props.noticeOfWork.last_updated_date && (
+              <p className="violet">
+                Last Updated: {formatDate(props.noticeOfWork.last_updated_date)}
+              </p>
+            )}
+            {props.noticeOfWork.last_updated_by && (
+              <p className="violet">Updated By: {props.noticeOfWork.last_updated_by}</p>
+            )}
           </div>
-          <Divider /> */}
           <ScrollContentWrapper id="application-info" title="Application Info">
             {renderApplicationInfo()}
           </ScrollContentWrapper>

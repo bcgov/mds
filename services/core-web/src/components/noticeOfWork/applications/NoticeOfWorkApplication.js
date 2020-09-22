@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Prompt } from "react-router-dom";
-import { Button, Dropdown, Menu, Popconfirm, Alert, Tabs } from "antd";
+import { Button, Dropdown, Menu, Popconfirm, Alert, Tabs, Divider } from "antd";
 import { DownOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
 import { getFormValues, reset, getFormSyncErrors, focus } from "redux-form";
@@ -49,7 +49,6 @@ import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
 import { modalConfig } from "@/components/modalContent/config";
 import { NOWApplicationAdministrative } from "@/components/noticeOfWork/applications/administrative/NOWApplicationAdministrative";
 import Loading from "@/components/common/Loading";
-import { CoreTooltip } from "@/components/common/CoreTooltip";
 
 /**
  * @class NoticeOfWorkApplication- contains all information regarding a CORE notice of work application
@@ -550,15 +549,7 @@ export class NoticeOfWorkApplication extends Component {
     const showErrors = errorsLength > 0 && this.state.submitting;
     return this.state.isViewMode ? (
       <div className="inline-flex block-mobile padding-md between">
-        <h2>
-          Technical Review
-          <CoreTooltip
-            title="  This page is for reviewing and editing the information and documents sent in
-            with a Notice of Work. All information provided by the proponent, and any
-            additional files requested during the application review live here. Use the
-            Actions button to update information about this application."
-          />
-        </h2>
+        <h2>Technical Review</h2>
         <Dropdown
           overlay={this.menu(true)}
           placement="bottomLeft"
@@ -606,6 +597,7 @@ export class NoticeOfWorkApplication extends Component {
               } that must be fixed before proceeding`}
               type="error"
               showIcon
+              style={{ width: "50vw", margin: "auto", top: "8px" }}
             />
           </div>
         )}
@@ -688,8 +680,6 @@ export class NoticeOfWorkApplication extends Component {
     if (!this.state.isLoaded) {
       return <Loading />;
     }
-    const errorsLength = Object.keys(flattenObject(this.props.formErrors)).length;
-    const showErrors = errorsLength > 0 && this.state.submitting;
     const isImported = this.props.noticeOfWork.imported_to_core;
     const verificationComplete = isImported && this.props.noticeOfWork.lead_inspector_party_guid;
     return (
@@ -752,46 +742,63 @@ export class NoticeOfWorkApplication extends Component {
             </Tabs.TabPane>
 
             <Tabs.TabPane tab="Technical Review" key="technical-review" disabled={!isImported}>
-              <LoadingWrapper condition={this.state.isTabLoaded}>
-                <div>
-                  <div className={this.renderFixedHeaderClass()}>{this.renderEditModeNav()}</div>
-                  <div
-                    className={this.state.fixedTop ? "side-menu--fixed" : "side-menu"}
-                    //  lower fixNav to account for error message
-                    style={showErrors && this.state.fixedTop ? { top: "170px" } : {}}
-                  >
-                    <NOWSideMenu
-                      route={routes.NOTICE_OF_WORK_APPLICATION}
-                      noticeOfWorkType={this.props.noticeOfWork.notice_of_work_type_code}
-                      tabSection="technical-review"
-                    />
-                  </div>
-                  <div
-                    className={
-                      this.state.fixedTop ? "view--content with-fixed-top" : "view--content"
-                    }
-                  >
-                    <ReviewNOWApplication
-                      reclamationSummary={this.props.reclamationSummary}
-                      isViewMode={this.state.isViewMode}
-                      noticeOfWorkType={this.props.noticeOfWork.notice_of_work_type_code}
-                      initialValues={
-                        this.state.showOriginalValues
-                          ? this.props.originalNoticeOfWork
-                          : this.props.noticeOfWork
-                      }
-                      noticeOfWork={this.props.noticeOfWork}
-                      renderOriginalValues={this.renderOriginalValues}
-                    />
-                  </div>
+              <>
+                <div className="tab-disclaimer">
+                  <p className="center">
+                    This page is for reviewing and editing the information and documents sent in
+                    with a Notice of Work. All information provided by the proponent, and any
+                    additional files requested during the application review live here. Use the
+                    Actions button to update information about this application.
+                  </p>
                 </div>
-              </LoadingWrapper>
+                <Divider style={{ margin: "0" }} />
+                <LoadingWrapper condition={this.state.isTabLoaded}>
+                  <div>
+                    <div className={this.renderFixedHeaderClass()}>{this.renderEditModeNav()}</div>
+                    <div className={this.state.fixedTop ? "side-menu--fixed" : "side-menu"}>
+                      <NOWSideMenu
+                        route={routes.NOTICE_OF_WORK_APPLICATION}
+                        noticeOfWorkType={this.props.noticeOfWork.notice_of_work_type_code}
+                        tabSection="technical-review"
+                      />
+                    </div>
+                    <div
+                      className={
+                        this.state.fixedTop ? "view--content with-fixed-top" : "view--content"
+                      }
+                    >
+                      <ReviewNOWApplication
+                        reclamationSummary={this.props.reclamationSummary}
+                        isViewMode={this.state.isViewMode}
+                        noticeOfWorkType={this.props.noticeOfWork.notice_of_work_type_code}
+                        initialValues={
+                          this.state.showOriginalValues
+                            ? this.props.originalNoticeOfWork
+                            : this.props.noticeOfWork
+                        }
+                        noticeOfWork={this.props.noticeOfWork}
+                        renderOriginalValues={this.renderOriginalValues}
+                      />
+                    </div>
+                  </div>
+                </LoadingWrapper>
+              </>
             </Tabs.TabPane>
 
             <Tabs.TabPane tab="Draft Permit" key="draft-permit" disabled={!verificationComplete}>
-              <LoadingWrapper condition={this.state.isTabLoaded}>
-                {this.renderPermitGeneration()}
-              </LoadingWrapper>
+              <>
+                <div className="tab-disclaimer">
+                  <p className="center">
+                    This page contains all the information that will appear in the permit when it is
+                    issued. The Conditions sections is pre-populated with conditions based on the
+                    permit type. You can add or remove any condition.
+                  </p>
+                </div>
+                <Divider style={{ margin: "0" }} />
+                <LoadingWrapper condition={this.state.isTabLoaded}>
+                  {this.renderPermitGeneration()}
+                </LoadingWrapper>
+              </>
             </Tabs.TabPane>
 
             <Tabs.TabPane
@@ -799,24 +806,27 @@ export class NoticeOfWorkApplication extends Component {
               key="referral-consultation"
               disabled={!verificationComplete}
             >
-              <LoadingWrapper condition={this.state.isTabLoaded}>
-                <div className={this.renderFixedHeaderClass()}>
-                  <h2 className="padding-md">
-                    Referral/Consultation
-                    <CoreTooltip
-                      title="This page contains basic information about any referrals or consultations
-                        related to this application. You can create document packages for reviewers
-                        and attach any responses that reviewers send back."
+              <>
+                <div className="tab-disclaimer">
+                  <p className="center">
+                    This page contains basic information about any referrals or consultations
+                    related to this application. You can create document packages for reviewers and
+                    attach any responses that reviewers send back.
+                  </p>
+                </div>
+                <Divider style={{ margin: "0" }} />
+                <LoadingWrapper condition={this.state.isTabLoaded}>
+                  <div className={this.renderFixedHeaderClass()}>
+                    <h2 className="padding-md">Referral/Consultation</h2>
+                  </div>
+                  <div className="page__content">
+                    <NOWApplicationReviews
+                      mineGuid={this.props.noticeOfWork.mine_guid}
+                      noticeOfWork={this.props.noticeOfWork}
                     />
-                  </h2>
-                </div>
-                <div className="page__content">
-                  <NOWApplicationReviews
-                    mineGuid={this.props.noticeOfWork.mine_guid}
-                    noticeOfWork={this.props.noticeOfWork}
-                  />
-                </div>
-              </LoadingWrapper>
+                  </div>
+                </LoadingWrapper>
+              </>
             </Tabs.TabPane>
 
             <Tabs.TabPane
@@ -824,37 +834,40 @@ export class NoticeOfWorkApplication extends Component {
               key="administrative"
               disabled={!verificationComplete}
             >
-              <LoadingWrapper condition={this.state.isTabLoaded}>
-                <div className={this.renderFixedHeaderClass()}>
-                  <div className="inline-flex block-mobile padding-md between">
-                    <h2>
-                      Administrative
-                      <CoreTooltip
-                        title="This page contains information about securities and any internal files
-                      relevant to processing the application. It is also where the permit is issued."
-                      />
-                    </h2>
-                    <Dropdown
-                      overlay={this.menu(false)}
-                      placement="bottomLeft"
-                      onVisibleChange={this.handleAdminVisibleChange}
-                      visible={this.state.adminMenuVisible}
-                    >
-                      <Button type="secondary" className="full-mobile">
-                        Actions
-                        <DownOutlined />
-                      </Button>
-                    </Dropdown>
+              <>
+                <div className="tab-disclaimer">
+                  <p className="center">
+                    This page contains information about securities and any internal files relevant
+                    to processing the application. It is also where the permit is issued.
+                  </p>
+                </div>
+                <Divider style={{ margin: "0" }} />
+                <LoadingWrapper condition={this.state.isTabLoaded}>
+                  <div className={this.renderFixedHeaderClass()}>
+                    <div className="inline-flex block-mobile padding-md between">
+                      <h2>Administrative</h2>
+                      <Dropdown
+                        overlay={this.menu(false)}
+                        placement="bottomLeft"
+                        onVisibleChange={this.handleAdminVisibleChange}
+                        visible={this.state.adminMenuVisible}
+                      >
+                        <Button type="secondary" className="full-mobile">
+                          Actions
+                          <DownOutlined />
+                        </Button>
+                      </Dropdown>
+                    </div>
                   </div>
-                </div>
-                <div className="page__content">
-                  <NOWApplicationAdministrative
-                    mineGuid={this.props.noticeOfWork.mine_guid}
-                    noticeOfWork={this.props.noticeOfWork}
-                    handleSaveNOWEdit={this.handleSaveNOWEdit}
-                  />
-                </div>
-              </LoadingWrapper>
+                  <div className="page__content">
+                    <NOWApplicationAdministrative
+                      mineGuid={this.props.noticeOfWork.mine_guid}
+                      noticeOfWork={this.props.noticeOfWork}
+                      handleSaveNOWEdit={this.handleSaveNOWEdit}
+                    />
+                  </div>
+                </LoadingWrapper>
+              </>
             </Tabs.TabPane>
           </Tabs>
         </div>
