@@ -229,7 +229,7 @@ export class NoticeOfWorkApplication extends Component {
         if (
           data.imported_to_core &&
           data.lead_inspector_party_guid &&
-          this.props.match.params.tab === "initial"
+          this.props.match.params.tab === "verification"
         ) {
           this.handleTabChange("technical-review");
         }
