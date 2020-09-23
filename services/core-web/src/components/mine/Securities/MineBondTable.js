@@ -261,6 +261,7 @@ export const MineBondTable = (props) => {
         pagination={false}
         columns={bondColumns}
         dataSource={props.recordsByPermit(record, props.bonds)}
+        locale={{ emptyText: "No Data Yet" }}
       />
     );
   };

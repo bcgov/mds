@@ -71,7 +71,7 @@ exports[`NOWApplicationAdministrative renders properly 1`] = `
   </withRouter(Connect(ScrollContentWrapper))>
   <withRouter(Connect(ScrollContentWrapper))
     id="application-files"
-    title="Reclimation Securities"
+    title="Reclamation Securities"
   >
     <Connect(NOWSecurities)
       handleSaveNOWEdit={[MockFunction]}
