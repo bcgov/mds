@@ -32,7 +32,7 @@ export const NOWFieldOriginTooltip = () => (
     placement="right"
     mouseEnterDelay={0.3}
   >
-    <ExceptionOutlined className="info-tooltip icon-sm violet" />
+    <ExceptionOutlined className="info-tooltip icon-sm" />
   </Tooltip>
 );
 
