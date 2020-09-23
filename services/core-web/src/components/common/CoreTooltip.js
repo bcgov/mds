@@ -2,6 +2,7 @@ import React from "react";
 import { PropTypes } from "prop-types";
 import { Tooltip } from "antd";
 import { INFO_CIRCLE } from "@/constants/assets";
+import { ExceptionOutlined } from "@ant-design/icons";
 
 const propTypes = {
   title: PropTypes.string,
@@ -26,7 +27,13 @@ export const CoreTooltip = (props) => (
 );
 
 export const NOWFieldOriginTooltip = () => (
-  <CoreTooltip title="This field is not being sent by NROS or vFCBC. Open the original PDF to see the data." />
+  <Tooltip
+    title="This field is not being sent by NROS or vFCBC. Open the original PDF to see the data."
+    placement="right"
+    mouseEnterDelay={0.3}
+  >
+    <ExceptionOutlined className="info-tooltip icon-sm violet" />
+  </Tooltip>
 );
 
 export const NOWOriginalValueTooltip = (props) => (

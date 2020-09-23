@@ -48,7 +48,6 @@ export class ApplicationStepOne extends Component {
   }
 
   handleNOWImport = (values) => {
-    console.log(values);
     const term_of_application = 4;
     const payload = { term_of_application, ...values };
     this.props
