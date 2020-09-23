@@ -516,6 +516,28 @@ export class NoticeOfWorkApplication extends Component {
       });
   };
 
+  handleExportDocument = (menuItem) => {
+    const documentTypeCode = menuItem.key;
+    const documentType = this.props.generatableApplicationDocuments[documentTypeCode];
+
+    this.exportNowDocument(documentType, this.props.noticeOfWork);
+  };
+
+  exportNowDocument = (documentType, values) => {
+    const documentTypeCode = documentType.now_application_document_type_code;
+
+    const payload = {
+      now_application_guid: this.props.noticeOfWork.now_application_guid,
+      template_data: values,
+    };
+
+    this.props.generateNoticeOfWorkApplicationDocument(
+      documentTypeCode,
+      payload,
+      `Successfully exported ${documentType.description} for this Notice of Work`
+    );
+  };
+
   renderPermitGeneration = () => {
     const isAmendment = this.props.noticeOfWork.type_of_application !== "New Permit";
     return (
@@ -654,7 +676,8 @@ export class NoticeOfWorkApplication extends Component {
               .filter(
                 ({ now_application_document_type_code }) =>
                   now_application_document_type_code !== "PMA" &&
-                  now_application_document_type_code !== "PMT"
+                  now_application_document_type_code !== "PMT" &&
+                  now_application_document_type_code !== "NTR"
               )
               .map((document) => (
                 <Menu.Item
@@ -666,6 +689,22 @@ export class NoticeOfWorkApplication extends Component {
               ))}
           </Menu.SubMenu>
         )}
+        {/* TODO: this is work in progress and subject to review/change */}
+        <Menu.SubMenu key="export-now-documents" title="Export NOW documents">
+          {Object.values(this.props.generatableApplicationDocuments)
+            .filter(
+              ({ now_application_document_type_code }) =>
+                now_application_document_type_code === "NTR"
+            )
+            .map((document) => (
+              <Menu.Item
+                key={document.now_application_document_type_code}
+                onClick={this.handleExportDocument}
+              >
+                {document.description}
+              </Menu.Item>
+            ))}
+        </Menu.SubMenu>
       </Menu>
     );
   };
