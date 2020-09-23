@@ -161,6 +161,7 @@ export class BondForm extends Component {
                 name="bond_type_code"
                 label="Bond Type*"
                 component={RenderSelect}
+                placeholder="Please select bond type"
                 data={this.props.bondTypeDropDownOptions}
                 validate={[required]}
                 disabled={this.props.bond.bond_status_code === "CON"}
@@ -303,6 +304,7 @@ export class BondForm extends Component {
                 id="institution_province"
                 name="institution_province"
                 label="Province"
+                placeholder="Please select province"
                 component={RenderSelect}
                 data={this.props.provinceOptions}
               />

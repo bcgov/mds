@@ -5,9 +5,9 @@ import { DownloadOutlined } from "@ant-design/icons";
 import { Button, Progress, Popconfirm } from "antd";
 import { getDocumentDownloadState } from "@common/selectors/noticeOfWorkSelectors";
 import NOWSubmissionDocuments from "@/components/noticeOfWork/applications/NOWSubmissionDocuments";
-import NOWDocuments from "../noticeOfWork/applications/NOWDocuments";
 import { COLOR } from "@/constants/styles";
 import CustomPropTypes from "@/customPropTypes";
+import NOWDocuments from "../noticeOfWork/applications/NOWDocuments";
 
 const propTypes = {
   submissionDocuments: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
@@ -39,7 +39,7 @@ export const DownloadDocumentPackageModal = (props) => {
     </div>
   ) : (
     <div>
-      <h4>Submission Documents (vFCBC/NROS)</h4>
+      <h4>vFCBC/NROS Application Files</h4>
       <NOWSubmissionDocuments
         now_application_guid={props.noticeOfWorkGuid}
         documents={props.submissionDocuments}

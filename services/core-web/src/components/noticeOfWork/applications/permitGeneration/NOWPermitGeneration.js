@@ -59,14 +59,20 @@ const propTypes = {
 const defaultProps = {};
 
 const originalPermit = "OGP";
-const draft = "DFT";
+
+const regionHash = {
+  SE: "Cranbrook",
+  SC: "Kamloops",
+  NE: "Prince George",
+  NW: "Smithers",
+  SW: "Victoria",
+};
 
 export class NOWPermitGeneration extends Component {
   state = {
     isPreDraft: false,
     isDraft: false,
     permittee: {},
-    draftAmendment: {},
     permitGenObj: {},
     isLoaded: false,
   };
@@ -126,7 +132,7 @@ export class NOWPermitGeneration extends Component {
       permit_number: "",
       issue_date: moment().format("MMM DD YYYY"),
       auth_end_date: "",
-      regional_office: "",
+      regional_office: regionHash[noticeOfWork.mine_region],
       current_date: moment().format("Do"),
       current_month: moment().format("MMMM"),
       current_year: moment().format("YYYY"),
@@ -158,7 +164,9 @@ export class NOWPermitGeneration extends Component {
       (option) => option.notice_of_work_type_code === noticeOfWork.notice_of_work_type_code
     )[0].description;
     permitGenObject.lead_inspector = noticeOfWork.lead_inspector.name;
-    permitGenObject.regional_office = isEmpty(amendment) ? "" : amendment.regional_office;
+    permitGenObject.regional_office = !amendment.regional_office
+      ? regionHash[noticeOfWork.mine_region]
+      : amendment.regional_office;
 
     return permitGenObject;
   };

@@ -3,11 +3,8 @@
 exports[`NOWSecurities renders properly 1`] = `
 <div>
   <div
-    className="inline-flex between"
+    className="right"
   >
-    <h3>
-      Securities
-    </h3>
     <div>
       <Connect(AuthorizationWrapper)
         permission="role_edit_permits"
@@ -38,48 +35,54 @@ exports[`NOWSecurities renders properly 1`] = `
   <LoadingWrapper
     condition={false}
   >
-    <ReduxForm
-      destroyOnUnmount={true}
-      enableReinitialize={true}
-      forceUnregisterOnUnmount={false}
-      form="EDIT_PERMIT"
-      getFormState={[Function]}
-      initialValues={
-        Object {
-          "authorization_end_date": null,
-          "description": "Initial permit issued.",
-          "issue_date": "2019-04-01",
-          "permit_amendment_guid": "822310fd-3a2c-44a9-a9ce-dee81acc9585",
-          "permit_amendment_status_code": "ACT",
-          "permit_amendment_type_code": "OGP",
-          "permit_guid": "71d00d45-9fda-45d3-a4b0-59a7ceb6518e",
-          "received_date": null,
-          "related_documents": Array [
-            Object {
-              "document_guid": "31204ba5-5207-4fb5-b6c3-d47e55a0971c",
-              "document_manager_guid": "64caef0e-060d-4875-a470-6c225b242723",
-              "document_name": "Adams_amendment_1.pdf",
-              "mine_guid": "8e9ca839-a28e-427e-997e-9ef23d9d97cd",
-            },
-          ],
-          "security_adjustment": "1000000",
+    <div
+      style={Object {}}
+    >
+      <ReduxForm
+        destroyOnUnmount={true}
+        enableReinitialize={true}
+        forceUnregisterOnUnmount={false}
+        form="EDIT_PERMIT"
+        getFormState={[Function]}
+        initialValues={
+          Object {
+            "authorization_end_date": null,
+            "description": "Initial permit issued.",
+            "issue_date": "2019-04-01",
+            "permit_amendment_guid": "822310fd-3a2c-44a9-a9ce-dee81acc9585",
+            "permit_amendment_status_code": "ACT",
+            "permit_amendment_type_code": "OGP",
+            "permit_guid": "71d00d45-9fda-45d3-a4b0-59a7ceb6518e",
+            "received_date": null,
+            "related_documents": Array [
+              Object {
+                "document_guid": "31204ba5-5207-4fb5-b6c3-d47e55a0971c",
+                "document_manager_guid": "64caef0e-060d-4875-a470-6c225b242723",
+                "document_name": "Adams_amendment_1.pdf",
+                "mine_guid": "8e9ca839-a28e-427e-997e-9ef23d9d97cd",
+              },
+            ],
+            "security_adjustment": "1000000",
+          }
         }
-      }
-      isEditMode={false}
-      keepDirtyOnReinitialize={false}
-      onSubmit={[Function]}
-      persistentSubmitErrors={false}
-      pure={true}
-      shouldAsyncValidate={[Function]}
-      shouldError={[Function]}
-      shouldValidate={[Function]}
-      shouldWarn={[Function]}
-      submitAsSideEffect={false}
-      touchOnBlur={false}
-      touchOnChange={false}
-      updateUnregisteredFields={false}
-    />
+        isEditMode={false}
+        keepDirtyOnReinitialize={false}
+        onCancel={[Function]}
+        onSubmit={[Function]}
+        persistentSubmitErrors={false}
+        pure={true}
+        shouldAsyncValidate={[Function]}
+        shouldError={[Function]}
+        shouldValidate={[Function]}
+        shouldWarn={[Function]}
+        submitAsSideEffect={false}
+        touchOnBlur={false}
+        touchOnChange={false}
+        updateUnregisteredFields={false}
+      />
+    </div>
   </LoadingWrapper>
+  <br />
   <br />
   <Connect(NOWDocuments)
     categoriesToShow={

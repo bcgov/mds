@@ -21,6 +21,7 @@ const propTypes = {
   data: CustomPropTypes.groupOptions,
   disabled: PropTypes.bool,
   onSelect: PropTypes.func,
+  usedOptions: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 const defaultProps = {
@@ -50,10 +51,6 @@ const RenderGroupedSelect = (props) => (
       showSearch
       placeholder={props.placeholder}
       optionFilterProp="children"
-      filterOption={(input, option) =>
-        typeof option.props.children === "string" &&
-        option.props.children.toLowerCase().includes(input.toLowerCase())
-      }
       id={props.id}
       defaultValue={props.input.value}
       value={props.input.value ? props.input.value : undefined}

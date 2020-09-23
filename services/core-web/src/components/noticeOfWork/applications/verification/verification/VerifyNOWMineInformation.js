@@ -15,7 +15,11 @@ export const VerifyNOWMineInformation = (props) => (
       record.
     </p>
     <br />
-    <p>You can change the mine and/or update the NoW&lsquo;s Longitude and Latitude.</p>
+    <p>
+      You can change the mine and/or update the NoW&lsquo;s Longitude and Latitude. All information
+      can be updated on the Administrative tab after the initial verification until issuance of the
+      permit.
+    </p>
     <br />
     <ChangeNOWLocationForm
       initialValues={props.values}
