@@ -48,8 +48,11 @@ export class ApplicationStepOne extends Component {
   }
 
   handleNOWImport = (values) => {
+    console.log(values);
+    const term_of_application = 4;
+    const payload = { term_of_application, ...values };
     this.props
-      .importNoticeOfWorkApplication(this.props.noticeOfWork.now_application_guid, values)
+      .importNoticeOfWorkApplication(this.props.noticeOfWork.now_application_guid, payload)
       .then(() => {
         return this.props
           .fetchImportedNoticeOfWorkApplication(this.props.noticeOfWork.now_application_guid)

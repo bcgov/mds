@@ -62,6 +62,7 @@ class NOWApplication(Base, AuditMixin):
     proposed_end_date = db.Column(db.Date)
     directions_to_site = db.Column(db.String)
     type_of_application = db.Column(db.String)
+    term_of_application = db.Column(db.Integer)
 
     now_application_identity = db.relationship('NOWApplicationIdentity', uselist=False)
 

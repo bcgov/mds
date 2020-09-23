@@ -28,6 +28,7 @@ from app.api.now_applications.models.now_application_status import NOWApplicatio
 class NOWApplicationImportResource(Resource, UserMixin):
     parser = CustomReqparser()
     parser.add_argument('mine_guid', type=str, help='guid of the mine.', required=True)
+    parser.add_argument('term_of_application', type=int, help='Calculation of term', required=True)
     parser.add_argument(
         'longitude',
         type=lambda x: Decimal(x) if x else None,
@@ -46,6 +47,7 @@ class NOWApplicationImportResource(Resource, UserMixin):
         mine_guid = data.get('mine_guid')
         latitude = data.get('latitude')
         longitude = data.get('longitude')
+        term_of_application = data.get('term_of_application')
         mine = Mine.find_by_mine_guid(mine_guid)
         if not mine:
             raise NotFound('Mine not found')
@@ -59,6 +61,7 @@ class NOWApplicationImportResource(Resource, UserMixin):
         application.mine_guid = mine_guid
         application.latitude = latitude
         application.longitude = longitude
+        application.term_of_application = term_of_application
         application.now_application_guid = application_guid
 
         # This is a first pass but by no means exhaustive solution to preventing the now application from being saved more than once.

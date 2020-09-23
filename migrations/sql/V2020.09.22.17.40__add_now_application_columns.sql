@@ -1,0 +1,1 @@
+ALTER TABLE now_application ADD COLUMN term_of_application integer;

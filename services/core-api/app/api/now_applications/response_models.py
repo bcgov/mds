@@ -337,6 +337,7 @@ NOW_APPLICATION_MODEL = api.model(
         fields.String,
         'type_of_application':
         fields.String,
+        'term_of_application': fields.Integer,
         'crown_grant_or_district_lot_numbers':
         fields.String,
         'req_access_authorization_numbers':

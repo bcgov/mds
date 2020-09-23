@@ -30,9 +30,14 @@ import ReclamationSummary from "./activities/ReclamationSummary";
 import NOWDocuments from "@/components/noticeOfWork/applications//NOWDocuments";
 import NOWSubmissionDocuments from "@/components/noticeOfWork/applications//NOWSubmissionDocuments";
 import ReviewNOWContacts from "./ReviewNOWContacts";
-import { NOWFieldOriginTooltip, NOWOriginalValueTooltip } from "@/components/common/CoreTooltip";
+import {
+  NOWFieldOriginTooltip,
+  NOWOriginalValueTooltip,
+  CoreTooltip,
+} from "@/components/common/CoreTooltip";
 import { currencyMask, formatDate } from "@common/utils/helpers";
 import * as Strings from "@common/constants/strings";
+import moment from "moment";
 
 /**
  * @constant ReviewNOWApplication renders edit/view for the NoW Application review step
@@ -135,7 +140,7 @@ export const ReviewNOWApplication = (props) => {
       <Row gutter={16}>
         <Col md={12} sm={24}>
           <div className="field-title">
-            Lat{" "}
+            Lat
             <NOWOriginalValueTooltip
               originalValue={props.renderOriginalValues("latitude").value}
               isVisible={props.renderOriginalValues("latitude").edited}
@@ -217,9 +222,15 @@ export const ReviewNOWApplication = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Term of Application
-            <NOWFieldOriginTooltip />
+            <CoreTooltip title="This field is calculated based on the proposed start and end dates. If this field is to be altered, the applicant must re-apply for a notice of work" />
           </div>
-          <Field id="" name="" component={RenderField} disabled validate={[number]} />
+          <Field
+            id="term_of_application"
+            name="term_of_application"
+            component={RenderField}
+            disabled
+            validate={[number]}
+          />
         </Col>
       </Row>
       <Row gutter={16}>
@@ -245,16 +256,13 @@ export const ReviewNOWApplication = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Proposed Start Date
-            <NOWOriginalValueTooltip
-              originalValue={props.renderOriginalValues("proposed_start_date").value}
-              isVisible={props.renderOriginalValues("proposed_start_date").edited}
-            />
+            <CoreTooltip title="Altering this field requires the applicant to pay a different application fee that was previously paid. If this field is to be altered, the applicant must re-apply for a notice of work" />
           </div>
           <Field
             id="proposed_start_date"
             name="proposed_start_date"
             component={RenderDate}
-            disabled={props.isViewMode}
+            disabled
           />
         </Col>
       </Row>
@@ -278,18 +286,10 @@ export const ReviewNOWApplication = (props) => {
         </Col>
         <Col md={12} sm={24}>
           <div className="field-title">
-            Proposed End Date
-            <NOWOriginalValueTooltip
-              originalValue={props.renderOriginalValues("proposed_end_date").value}
-              isVisible={props.renderOriginalValues("proposed_end_date").edited}
-            />
+            Proposed End Date{" "}
+            <CoreTooltip title="Altering this field requires the applicant to pay a different application fee that was previously paid. If this field is to be altered, the applicant must re-apply for a notice of work" />
           </div>
-          <Field
-            id="proposed_end_date"
-            name="proposed_end_date"
-            component={RenderDate}
-            disabled={props.isViewMode}
-          />
+          <Field id="proposed_end_date" name="proposed_end_date" component={RenderDate} disabled />
         </Col>
       </Row>
       <Row gutter={16}>
@@ -705,7 +705,13 @@ export const ReviewNOWApplication = (props) => {
       <ReclamationSummary summary={props.reclamationSummary} />
     </div>
   );
-
+  const start = moment(props.noticeOfWork.proposed_start_date);
+  const end = moment(props.noticeOfWork.proposed_end_date);
+  const termOfApplication = moment(props.noticeOfWork.proposed_start_date).diff(
+    moment(props.noticeOfWork.proposed_end_date)
+  );
+  console.log(termOfApplication);
+  console.log(props.noticeOfWork.proposed_start_date);
   return (
     <div>
       <Form layout="vertical">
