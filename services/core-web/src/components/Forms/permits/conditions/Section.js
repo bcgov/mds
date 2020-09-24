@@ -70,7 +70,7 @@ const Section = (props) => {
         <Col span={4} className="float-right">
           {!isEditing && !props.isViewOnly && (
             <div className="float-right">
-              <AuthorizationWrapper permission={Permission.EDIT_PERMIT}>
+              <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
                 <Button
                   className="no-margin"
                   ghost
@@ -84,7 +84,7 @@ const Section = (props) => {
                   <UpOutlined />
                 </Button>
               </AuthorizationWrapper>
-              <AuthorizationWrapper permission={Permission.EDIT_PERMIT}>
+              <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
                 <Button
                   ghost
                   className="no-margin"
@@ -98,7 +98,7 @@ const Section = (props) => {
                   <DownOutlined />
                 </Button>
               </AuthorizationWrapper>
-              <AuthorizationWrapper permission={Permission.EDIT_PERMIT}>
+              <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
                 <Button
                   ghost
                   className="no-margin"
@@ -118,7 +118,7 @@ const Section = (props) => {
                   />
                 </Button>
               </AuthorizationWrapper>
-              <AuthorizationWrapper permission={Permission.EDIT_PERMIT}>
+              <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
                 <Button
                   className="no-margin"
                   ghost
